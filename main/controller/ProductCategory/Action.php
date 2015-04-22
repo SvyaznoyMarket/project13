@@ -9,59 +9,6 @@ class Action {
     protected $pageTitle;
 
     /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
-     * @return \Http\JsonResponse
-     * @throws \Exception\NotFoundException
-     */
-    public function count($categoryPath, \Http\Request $request) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
-
-        if (!$request->isXmlHttpRequest()) {
-            throw new \Exception\NotFoundException('Request is not xml http request');
-        }
-
-        $categoryToken = explode('/', $categoryPath);
-        $categoryToken = end($categoryToken);
-
-        $region = \App::user()->getRegion();
-
-        $repository = \RepositoryManager::productCategory();
-        $category = $repository->getEntityByToken($categoryToken);
-        if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
-        }
-
-        // фильтры
-        try {
-            $filters = \RepositoryManager::productFilter()->getCollectionByCategory($category, $region);
-        } catch (\Exception $e) {
-            \App::exception()->add($e);
-            \App::logger()->error($e);
-
-            $filters = [];
-        }
-
-        $shop = null;
-        try {
-            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
-                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
-            }
-        } catch (\Exception $e) {
-            \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
-        }
-
-        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category, null, $request, $shop);
-
-        $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
-
-        return new \Http\JsonResponse([
-            'success' => true,
-            'count'   => $count,
-        ]);
-    }
-
-    /**
      * @param \Http\Request $request
      * @param string        $categoryPath
      * @param string|null   $brandToken
@@ -556,10 +503,7 @@ class Action {
             $totalText = '';
 
             if ( $productCount > 0 ) {
-                $totalText = $productCount . ' ' . ($child->getHasLine()
-                        ? $page->helper->numberChoice($productCount, array('серия', 'серии', 'серий'))
-                        : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
-                    );
+                $totalText = $productCount . ' ' . ($page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров')));
             }
 
             $linkUrl = $child->getLink();
@@ -614,7 +558,7 @@ class Action {
         }
 
         // вид товаров
-        $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
+        $productView = $request->get('view', $category->getProductView());
         // листалка
         if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
             $itemsPerPage = 21;

@@ -18,8 +18,6 @@ class User {
     private $region;
     /** @var Cart */
     private $cart;
-    /** @var Cart\LifeGift */
-    private $lifeGiftCart;
     /** @var Cart\OneClick */
     private $oneClickCart;
 
@@ -238,17 +236,6 @@ class User {
         }
 
         return $this->cart;
-    }
-
-    /**
-     * @return Cart\LifeGift
-     */
-    public function getLifeGiftCart() {
-        if (!$this->lifeGiftCart) {
-            $this->lifeGiftCart = new Cart\LifeGift();
-        }
-
-        return $this->lifeGiftCart;
     }
 
     /**

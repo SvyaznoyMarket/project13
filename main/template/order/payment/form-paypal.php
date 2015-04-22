@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page       \View\Order\CreatePage
+ * @var $page       \Templating\HtmlLayout
  * @var $user       \Session\User
  * @var $url        string
  * @var $url_params array|null

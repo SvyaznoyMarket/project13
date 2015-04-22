@@ -18,12 +18,6 @@ class RecommendedAction {
             $productId = null;
         }
 
-        if ($test = \App::abTest()->getTest('recommended_product')) {
-            if ($productId && $test->getEnabled() && $test->getChosenCase() && ('old_recommendation' == $test->getChosenCase()->getKey())) {
-                return (new \Controller\Product\OldRecommendedAction())->execute($request, $productId);
-            }
-        }
-
         try {
             // поставщик из http-запроса
             $sendersByType = $this->getSendersIndexedByTypeByHttpRequest($request);

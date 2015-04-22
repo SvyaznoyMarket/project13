@@ -36,8 +36,6 @@ class BasicEntity {
     protected $kit = [];
     /** @var bool */
     protected $isKitLocked = false;
-    /** @var Line\Entity */
-    protected $line;
     /** @var Category\Entity */
     protected $mainCategory;
     /** @var Category\Entity */
@@ -97,7 +95,6 @@ class BasicEntity {
         };
         if (isset($data['price'])) $this->setPrice($data['price']);
         if (isset($data['state']) && (bool)$data['state']) $this->setState(new State\Entity($data['state']));
-        if (isset($data['line']) && (bool)$data['line']) $this->setLine(new Line\Entity($data['line']));
         if (isset($data['stock']) && is_array($data['stock'])) $this->setStock(array_map(function($data) {
             return new Stock\Entity($data);
         }, $data['stock']));
@@ -363,20 +360,6 @@ class BasicEntity {
     public function getIsKitLocked()
     {
         return $this->isKitLocked;
-    }
-
-    /**
-     * @param \Model\Product\Line\Entity $line|null
-     */
-    public function setLine(Line\Entity $line = null) {
-        $this->line = $line;
-    }
-
-    /**
-     * @return Line\Entity
-     */
-    public function getLine() {
-        return $this->line;
     }
 
     /**

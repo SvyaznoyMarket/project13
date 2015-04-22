@@ -76,9 +76,9 @@ class ProductButtonAction {
             $data['partnerName'] = $slotPartnerOffer['name'];
             $data['partnerOfferUrl'] = $slotPartnerOffer['offer'];
         } else if ($product->isGifteryCertificate()) {
-            $data['isSlot'] = true;
+            $data['isGiftery'] = true;
             $data['url'] = '#';
-            $data['class'] .= ' btn btn--slot giftery-show-widget ' . ('product-card' !== $location ? 'btn--short' : 'btn--big');
+            $data['class'] .= ' btnBuy__eLink giftery-show-widget ';
             $data['value'] = 'Купить';
         } else if ($product->isInShopStockOnly() && \App::user()->getRegion()->getForceDefaultBuy()) { // Резерв товара
             $data['id'] = 'quickBuyButton-' . $product->getId();

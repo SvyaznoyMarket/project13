@@ -26,6 +26,21 @@
                 float: left;
                 margin: 0 0 0 15px;
                 width: 625px;
+                .bProductDescImg {
+                    width: 600px;
+                    position: relative;
+                    &Big {
+                        width: 600px;
+                        height: 500px;
+                        .bProductDescImgBig__eImg{
+                            min-width: 500px;
+                            width: auto;
+                            height: 500px;
+                            .inline-block();
+                            float: none;
+                        }
+                    }
+                }
             }
             &__section-right {
                 float: right;
@@ -119,13 +134,6 @@
                         text-decoration: underline;
                     }
                 }
-            }
-            &__bordered {
-                padding: 0 10px;
-                margin: 10px -10px 0;
-                border-top: 1px solid @lightgreyBr;
-                overflow: hidden;
-                position: relative;
             }
             &__desc {
                 margin-top: 10px;

@@ -56,6 +56,10 @@ trait ABHelperTrait {
         return $colorClass;
     }
 
+    public static function isShowSalePercentage() {
+        return !in_array(\App::request()->attributes->get('route'), ['slice.category', 'slice.show'], true) || \App::request()->attributes->get('sliceToken') !== 'all_labels' || \App::abTest()->getTest('salePercentage')->getChosenCase()->getKey() !== 'hide';
+    }
+
     /** Онлайн-мотивация при покупке?
      * @param $ordersCount int Количество заказов
      * @return bool

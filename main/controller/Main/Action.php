@@ -231,7 +231,7 @@ class Action {
             },null, $timeout);
             $rrClient->execute();
         } catch (\Exception $e) {
-            if ($e->getCode() == 28) {
+            if ($e->getCode() == \Curl\Client::CODE_TIMEOUT) {
                 \App::exception()->remove($e);
             }
         }

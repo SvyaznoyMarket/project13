@@ -304,37 +304,6 @@ class Repository {
         ], [], $done, $fail);
     }
 
-    /**
-     * @param array $filter
-     * @param \Model\Region\Entity $region
-     * @return int
-     */
-    public function countByFilter(array $filter = [], \Model\Region\Entity $region = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
-
-        $client = clone $this->client;
-
-        $count = 0;
-        $client->addQuery('listing/list',
-            [
-                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-                'filter' => [
-                    'filters' => $filter,
-                    'sort'    => [],
-                    'offset'  => null,
-                    'limit'   => null,
-                ],
-            ],
-            [],
-            function($data) use(&$count){
-                $count = !empty($data['count']) ? (int)$data['count'] : 0;
-            }
-        );
-        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        return $count;
-    }
-
     public function prepareIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null, $done, $fail = null) {
         //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
@@ -821,19 +790,12 @@ class Repository {
     public function getKitProducts(\Model\Product\Entity $product, array $parts = [], \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
         $productRepository = \RepositoryManager::product();
         $productRepository->setEntityClass('\Model\Product\Entity');
-        $productLine = $product->getLine();
         $restParts = [];
 
         // Получим основные товары набора
         $productPartsIds = [];
         foreach ($product->getKit() as $part) {
             $productPartsIds[] = $part->getId();
-        }
-
-        // Если товар находится в какой-либо линии, то запросим остальные продукты линии
-        if ($productLine instanceof \Model\Product\Line\Entity ) {
-            $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
-            $restPartsIds = array_diff($line->getProductId(), $productPartsIds);
         }
 
         // Получим сущности по id

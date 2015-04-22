@@ -81,18 +81,6 @@ class ProductAction {
             $cart->setProduct($product, $quantity, $params, $moveProductToUp);
             $cartProduct = $cart->getProductById($product->getId());
 
-            $returnRedirect = $request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage'));
-            if (\App::abTest()->getTest('other')) {
-                switch (\App::abTest()->getTest('other') && \App::abTest()->getTest('other')->getChosenCase()->getKey()) {
-                    case 'upsell':
-                        $returnRedirect = \App::router()->generate('product.upsell', ['productToken' => $product->getToken()]);
-                        break;
-                    case 'order2cart':
-                        $returnRedirect = \App::router()->generate('cart');
-                        break;
-                }
-            }
-
             $productInfo = [
                 'id'        => $product->getId(),
                 'article'   => $product->getArticle(),
@@ -125,7 +113,7 @@ class ProductAction {
                         'full_price'    => $cart->getSum(),
                         'old_price'     => $cart->getOriginalSum(),
                         'link'          => \App::router()->generate('order'),
-                        'products'      => $cart->getProductsDumpNC(),
+                        'products'      => $cart->getProductDump(),
                     ],
                     'product'     => $productInfo,
                     'category_id' => $parentCategoryId,
@@ -133,7 +121,7 @@ class ProductAction {
                     'sender'      => $sender,
                 ]);
             } else {
-                $response = new \Http\RedirectResponse($returnRedirect);
+                $response = new \Http\RedirectResponse($request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage')));
             }
 
             return $response;
@@ -238,14 +226,19 @@ class ProductAction {
 
                 $quantity += $cart->getQuantityByProduct($productId);
             }
-            $cart->fill();
+            $cart->update();
 
             $result = [];
             $client->addQuery(
                 'cart/get-price',
                 ['geo_id' => \App::user()->getRegion()->getId()],
                 [
-                    'product_list'  => $cart->getProductData(),
+                    'product_list'  => array_map(function($item) {
+                        return [
+                            'id'       => $item['id'],
+                            'quantity' => $item['quantity'],
+                        ];
+                    }, $cart->getProductData()),
                 ],
                 function ($data) use (&$result) {
                     $result = $data;
@@ -292,7 +285,7 @@ class ProductAction {
                     'full_price'    => $cart->getSum(),
                     'old_price'     => $cart->getOriginalSum(),
                     'link'          => \App::router()->generate('order'),
-                    'products'      => $cart->getProductsDumpNC(),
+                    'products'      => $cart->getProductDump(),
                 ],
                 'products'  => $productsInfo,
                 'sender'    => $sender,

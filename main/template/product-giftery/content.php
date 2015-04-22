@@ -7,11 +7,9 @@
  * @var $accessories            \Model\Product\Entity[]
  * @var $accessoryCategory      \Model\Product\Category\Entity[]
  * @var $kit                    \Model\Product\Entity[]
- * @var $relatedKits            array
  * @var $additionalData         array
  * @var $shopStates             \Model\Product\ShopState\Entity[]
  * @var $creditData             array
- * @var $line                   \Model\Line\Entity
  * @var $deliveryData           array
  * @var $isTchibo               boolean
  * @var $addToCartJS     string
@@ -42,46 +40,47 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
+<div class="product-wrapper">
+    <div class="product-card__section-left">
+        <div class="product-card__head">
+            <h1 class="product-card__head__title clearfix" itemprop="name">
+                    <? if ($product->getPrefix()): ?>
+                        <?= $product->getPrefix() ?>
+                    <? endif ?>
+                    <?= $product->getWebName() ?>
+            </h1>
+            <span class="product-card__head__article">Артикул: <?= $product->getArticle() ?></span>
+        </div>
 
-<div class="product-card__section-left bProductSectionLeftCol">
-    <div class="product-card__head">
-        <h1 class="product-card__head__title clearfix" itemprop="name">
-                <? if ($product->getPrefix()): ?>
-                    <?= $product->getPrefix() ?>
-                <? endif ?>
-                <?= $product->getWebName() ?>
-        </h1>
-        <span class="product-card__head__article">Артикул: <?= $product->getArticle() ?></span>
+        <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens]) ?>
     </div>
 
-    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
-</div>
+    <div class="product-card__section-right">
 
-<div class="product-card__section-right">
+        <?= $helper->render('product-giftery/__price', ['product' => $product]) // Цена ?>
 
-    <?= $helper->render('product-giftery/__price', ['product' => $product]) // Цена ?>
+        <div class="product-card__info">
+            <span>Электронный подарочный сертификат на покупки в Enter.</span>
+            <?= $helper->render('cart/__button-product', [
+                'product'  => $product,
+                'sender'   => $buySender,
+                'location' => 'product-card',
+            ]) ?>
+        </div>
 
-    <div class="product-card__info--recall">
-        <span>Электронный подарочный сертификат на покупки в Enter.</span>
-        <?= $helper->render('cart/__button-product', [
-            'product'  => $product,
-            'sender'   => $buySender,
-            'location' => 'product-card',
-        ]) ?>
+        <div class="product-card__specify" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+            <?= $helper->render('product/__mainProperties', ['product' => $product]) ?>
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="js-showTopBar"></div>
+
     </div>
-
-    <div class="product-card__specify" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-        <?= $helper->render('product/__mainProperties', ['product' => $product]) ?>
-    </div>
-
-    <div class="clear"></div>
-
-    <div class="js-showTopBar"></div>
-
 </div>
 
 <div class="clear"></div>
-<? /*
+
 <div class="product-card__bordered">
     <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
@@ -100,16 +99,22 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
         ]) ?>
     <? endif ?>
 </div>
-*/ ?>
+
 <div class="product-card__bordered">
-    <div class="product-card__desc">
-        <?= $product->getDescription() ?>
-    </div>
-    <div class="product-card__props">
-        <? if ($product->getSecondaryGroupedProperties()): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
+    
+    <? if ($product->getDescription()):?>
+        <div class="product-card__desc">
+            <?= $product->getDescription() ?>
+        </div>
+    <? endif ?>
+
+    
+    <? if ($product->getSecondaryGroupedProperties()): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
+        <div class="product-card__props">
             <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]) // Характеристики ?>
-        <? endif ?>
-    </div>
+        </div>
+    <? endif ?>
+    
 
     <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [

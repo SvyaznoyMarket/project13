@@ -27,14 +27,6 @@ if (!isset($isAddInfo)) $isAddInfo = false;
                 'itemsPerRow' => $itemsPerRow,
             ]);
             break;
-        case 'line':
-            print $page->render('jewel/product/list/_line', [
-                'pager' => $pager,
-                'isAjax' => $isAjax,
-                'isAddInfo' => $isAddInfo,
-                'itemsPerRow' => $itemsPerRow,
-            ]);
-            break;
         default:
             print $page->render('jewel/product/list/_compact', [
                 'pager' => $pager,

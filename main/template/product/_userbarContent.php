@@ -5,7 +5,6 @@
  */
 $helper = new \Helper\TemplateHelper();
 $links = [];
-if (!isset($line)) $line = false;
 
 if ($product) {
     $links[] = ['name' => $product->getParentCategory() ? $product->getParentCategory()->getName() : '', 'url' => $product->getParentCategory() ? $product->getParentCategory()->getLink() : null, 'last' => false];
@@ -24,7 +23,7 @@ $productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->g
     </div>
 </div>
 
-<div class="topbarfix_buy js-topbarfixBuy <?= $line ? 'hidden' : 'none' ?>">
+<div class="topbarfix_buy js-topbarfixBuy none">
 
     <?/*= $helper->render('cart/__button-product', [
         'product'  => $product,

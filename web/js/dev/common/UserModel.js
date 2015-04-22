@@ -140,6 +140,13 @@
 		}
 	});
 
+    // Удаление товара из корзины (RetailRocket, etc)
+    $body.on('removeFromCart', function(e, product) {
+        if (!product.id) return;
+        console.info('RetailRocket removeFromCart id = %s', product.id);
+        if (window.rrApiOnReady) window.rrApiOnReady.push(function(){ window.rrApi.removeFromBasket(product.id) });
+    });
+
 	/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
 	$body.on('mouseover', '.btnBuy-inf', function(){
 		if (!docCookies.hasItem('enter_ab_self_delivery_view_info')) {

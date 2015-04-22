@@ -41,7 +41,7 @@ class CompletePage extends Layout {
                 if (!$order->isCredit()) continue;
 
                 // Данные для "Купи-в-кредит"
-                $data = new \View\Order\Credit\Kupivkredit($order, $this->params['products']);
+                $data = new Credit\Kupivkredit($order, $this->params['products']);
                 $creditData[$order->getNumber()]['kupivkredit'] = [
                     'widget' => 'kupivkredit',
                     'vars'   => [

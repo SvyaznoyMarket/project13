@@ -1,6 +1,6 @@
 <?php
 
-namespace View\Order\Credit;
+namespace View\OrderV3\Credit;
 
 class Kupivkredit {
     private $config;

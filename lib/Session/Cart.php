@@ -3,11 +3,8 @@
 namespace Session;
 
 class Cart {
-
-    /** @var string */
-    private $sessionName;
     /** @var string Сессионное имя новой корзины */
-    private $sessionNameNC = 'cart';
+    private $sessionName;
     /** @var \Http\Session */
     private $storage;
     /** @var \Model\Cart\Product\Entity[]|null */
@@ -15,49 +12,44 @@ class Cart {
     /** @var array */
     private $actions = null;
     /** @var int */
-    private $sum = null;
-    /** @var int */
-    private $originalSum = null;
-    /** @var int */
     private $productLimit = null;
 
     public function __construct() {
-        $this->sessionName = \App::config()->cart['sessionName'];
+        $this->sessionName = \App::config()->cart['sessionName'] ?: 'cart';
         $this->storage = \App::session();
-        $session = $this->storage->all();
-
         $this->productLimit = \App::config()->cart['productLimit'];
 
-        // если пользователь впервые, то заводим ему пустую корзину
-        if (empty($session[$this->sessionName])) {
-            $this->storage->set($this->sessionName, [
-                'productList'     => [],
-            ]);
-            return;
-        }
-
-        if (!array_key_exists('productList', $session[$this->sessionName])) {
-            $data = $this->storage->get($this->sessionName);
-            $data['productList'] = [];
-            $this->storage->set($this->sessionName, $data);
-        }
-
-        // лимит товаров
-        $data = $this->storage->get($this->sessionName);
-        $productCount = count($data['productList']);
-        if ($productCount >= $this->productLimit) {
-            $data['productList'] = array_slice($data['productList'], $productCount - $this->productLimit, $this->productLimit, true);
-            $this->storage->set($this->sessionName, $data);
-            \App::logger()->warn(sprintf('Пользователь sessionId=%s добавил %s-й товар в корзину', $this->storage->getId(), $productCount), ['session', 'cart']);
-        }
+        // очистить старую корзину
+        $this->storage->remove('userCart');
 
         // новый формат корзины
-        $data = $this->storage->get('cart');
+        $data = $this->storage->get($this->sessionName);
         if (!isset($data['product']) || !is_array($data['product'])) {
-            $this->storage->set('cart', [
-                'product' => [],
-            ]);
+            $this->storage->set(
+                $this->sessionName,
+                [
+                    'updated' => null,
+                    'product' => [],
+                ]
+            );
         }
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getUpdatedTime() {
+        $data = $this->storage->get($this->sessionName);
+
+        $date = null;
+        try {
+            $updated = isset($data['updated']) ? $data['updated'] : null;
+            if ($updated) {
+                $date = new \DateTime($data['updated']);
+            }
+        } catch (\Exception $e) {}
+
+        return $date;
     }
 
     /**
@@ -68,13 +60,9 @@ class Cart {
     }
 
     public function clear() {
-        $this->storage->set($this->sessionName, null);
-        $this->sum = null;
         $this->products = null;
         $this->actions = null;
-
-        // Для мобильного сайта
-        $this->storage->set('cart', null);
+        $this->storage->set($this->sessionName, null);
     }
 
     /**
@@ -85,14 +73,9 @@ class Cart {
     public function setProduct(\Model\Product\Entity $product, $quantity = 1, array $params = [], $moveProductToUp = false) {
         if ($quantity < 0) $quantity = 0;
 
-        $data = $this->storage->get($this->sessionName, []);
-        $data['productList'][$product->getId()] = (int)$quantity;
-
-        $this->storage->set($this->sessionName, $data);
-
-        // новый формат
-        $data = $this->storage->get($this->sessionNameNC);
-        $item = $this->formatProductNC($product, $quantity);
+         // новый формат
+        $data = $this->storage->get($this->sessionName);
+        $item = $this->formatProduct($product, $quantity);
         if (!isset($data['product'][$product->getId()]['added'])) {
             $item['added'] = date('c');
         } else {
@@ -108,14 +91,18 @@ class Cart {
         $data['product'][$product->getId()] = $item;
 
         if ($quantity == 0 ) unset($data['product'][$product->getId()]);
-        $this->storage->set($this->sessionNameNC, $data);
+
+        $this->update(true);
+
+        $this->storage->set($this->sessionName, $data);
     }
 
-    /** Дополняет данные в сессии для продукта (новая корзина)
+    /**
+     * Дополняет данные в сессии для продукта (новая корзина)
      * @param \Model\Product\Entity $product
      */
-    public function updateProductNC(\Model\Product\Entity $product) {
-        $data = $this->storage->get($this->sessionNameNC);
+    public function updateProduct(\Model\Product\Entity $product) {
+        $data = $this->storage->get($this->sessionName);
         $item = $data['product'][$product->getId()];
 
         $item['name']   = $product->getName();
@@ -133,15 +120,16 @@ class Cart {
 
         $data['product'][$product->getId()] = $item;
 
-        $this->storage->set($this->sessionNameNC, $data);
+        $this->storage->set($this->sessionName, $data);
     }
 
-    /** Возвращает массив данных для продукта в сессии (новая корзина)
+    /**
+     * Возвращает массив данных для продукта в сессии (новая корзина)
      * @param \Model\Product\Entity $product
      * @param $quantity
      * @return array
      */
-    public function formatProductNC(\Model\Product\Entity $product, $quantity) {
+    public function formatProduct(\Model\Product\Entity $product, $quantity) {
         return [
             'id'            => $product->getId(),
             'ui'            => $product->getUi(),
@@ -161,26 +149,87 @@ class Cart {
         ];
     }
 
-    /** Возвращает данные новой корзины
+    /**
+     * Возвращает продукты новой корзины
      * @return array|null
      */
-    public function getCartNC() {
-        return $this->storage->get($this->sessionNameNC);
+    public function getProductData() {
+        $data = $this->storage->get($this->sessionName);
+
+        return (isset($data['product']) && is_array($data['product'])) ? $data['product'] : [];
     }
 
-    /** Возвращает продукты новой корзины
-     * @return array|null
+    public function update($force = false) {
+        $data = $this->storage->get($this->sessionName);
+
+        $productData = (isset($data['product']) && is_array($data['product'])) ? $data['product'] : [];
+
+        $updateMinutes = \App::config()->cart['updateTime'] ?: 1; // время обновления в минутах
+        $isUpdated = false;
+        $now = new \DateTime('now');
+        $updated = $this->getUpdatedTime();
+
+        if (
+            $productData
+            && (
+                $force
+                || !$updated
+                || ($updated->diff($now, true)->i > $updateMinutes) // больше n-минут
+            )
+        ) {
+            \App::coreClientV2()->addQuery(
+                'cart/get-price',
+                ['geo_id' => \App::user()->getRegion()->getId()],
+                [
+                    'product_list'  => array_map(function($item) {
+                        return [
+                            'id'       => $item['id'],
+                            'quantity' => $item['quantity'],
+                        ];
+                    }, $this->getProductData()),
+                ],
+                function ($response) use (&$productData, &$data, &$isUpdated) {
+                    if (!isset($response['product_list'][0])) return;
+
+                    $data['sum'] = array_key_exists('sum', $response) ? $response['sum'] : 0;
+                    $data['originalSum'] = array_key_exists('original_sum', $response) ? $response['original_sum'] : 0;
+
+                    foreach ($response['product_list'] as $item) {
+                        $product = (isset($item['id']) && isset($productData[$item['id']])) ? $productData[$item['id']] : null;
+                        if (!$product) continue;
+
+                        if (!empty($item['price'])) {
+                            $product['price'] = (float)$item['price'];
+                            $product['sum'] = (float)$item['sum'];
+                            $isUpdated = true;
+                        }
+
+                        $productData[$item['id']] = $product;
+                    }
+                }
+            );
+            \App::coreClientV2()->execute();
+
+            if ($isUpdated) {
+                $data['product'] = $productData;
+                $data['updated'] = (new \DateTime('now'))->format('c');
+                $this->storage->set($this->sessionName, $data);
+            }
+        }
+
+        foreach ($productData as $item) {
+            $this->products[$item['id']] = new \Model\Cart\Product\Entity($item);
+        }
+
+    }
+
+    /**
+     * @return array
      */
-    public function getProductsNC(){
-        $data = $this->storage->get($this->sessionNameNC);
-
-        return isset($data['product']) ? $data['product'] : null;
-    }
-
-    public function getProductsDumpNC() {
+    public function getProductDump() {
         $products = [];
         $helper = \App::helper();
-        foreach ($this->getProductsNC() as $cartProduct) {
+        foreach ($this->getProductData() as $cartProduct) {
 
             if (!$cartProduct) { // SITE-4400
                 \App::logger()->error(['Товар не найден', 'product' => ['id' => $cartProduct['id']], 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);
@@ -212,17 +261,18 @@ class Cart {
      * @return bool
      */
     public function hasProduct($productId) {
-        $data = $this->storage->get($this->sessionNameNC);
+        $data = $this->storage->get($this->sessionName) ?: [];
 
         return array_key_exists($productId, $data['product']);
     }
 
-    /** Возвращает массив id продуктов, добавленных в кредит (или пустой массив)
+    /**
+     * Возвращает массив id продуктов, добавленных в кредит (или пустой массив)
      * @return array
      */
     public function getCreditProductIds(){
         $ids = [];
-        foreach ((array)$this->getProductsNC() as $product) {
+        foreach ((array)$this->getProductData() as $product) {
             if (isset($product['credit']['enabled']) && (true == $product['credit']['enabled'])) $ids[] = $product['id'];
         }
         return $ids;
@@ -233,45 +283,39 @@ class Cart {
      * @return int
      */
     public function getQuantityByProduct($productId) {
-        $data = $this->getData();
         $productId = (int)$productId;
+        $products = $this->getProductData();
 
-        if (array_key_exists($productId, $data['productList'])) {
-            return $data['productList'][$productId];
-        }
-
-        return 0;
+        return isset($products[$productId]['quantity']) ? (int)$products[$productId]['quantity'] : 0;
     }
 
     /**
      * @return int
      */
     public function getSum() {
-        if (null === $this->sum) {
-            $this->fill();
-        }
+        $this->update();
 
-        return $this->sum;
+        $data = $this->storage->get($this->sessionName);
+
+        return isset($data['sum']) ? $data['sum'] : 0;
     }
 
     /**
      * @return int
      */
     public function getOriginalSum() {
-        if (null === $this->originalSum) {
-            $this->fill();
-        }
+        $this->update();
 
-        return $this->originalSum;
+        $data = $this->storage->get($this->sessionName);
+
+        return isset($data['originalSum']) ? $data['originalSum'] : 0;
     }
 
     /**
      * @return \Model\Cart\Product\Entity[]
      */
     public function getProducts() {
-        if (null === $this->products) {
-            $this->fill();
-        }
+        $this->update();
 
         return $this->products;
     }
@@ -281,9 +325,7 @@ class Cart {
      * @return \Model\Cart\Product\Entity|null
      */
     public function getProductById($productId) {
-        if (null === $this->products) {
-            $this->fill();
-        }
+        $this->update();
 
         return isset($this->products[$productId]) ? $this->products[$productId] : null;
     }
@@ -292,76 +334,14 @@ class Cart {
      * @return int
      */
     public function getProductsQuantity() {
-        $data = $this->getData();
+        $products = $this->getProductData();
 
-        return count($data['productList']);
-    }
-
-    public function getData() {
-        return $this->storage->get($this->sessionName);
+        return count($products);
     }
 
     /**
-     * TODO получать товары из новой корзины
-     * @return array
+     * @return int
      */
-    public function getProductData() {
-        $data = $this->getData();
-        $return = [];
-        foreach ($data['productList'] as $productId => $productQuantity) {
-            if ($productQuantity == 0) continue;
-            $return[] = [
-                'id'       => $productId,
-                'quantity' => $productQuantity
-            ];
-        }
-
-        return $return;
-    }
-
-    public function fill() {
-        // получаем список цен
-        $default = [
-            'product_list'   => [],
-            'price_total'    => 0,
-        ];
-
-        try {
-            $response = $default;
-
-            // если в корзине есть товары или услуги
-            if ((bool)$this->getProductsQuantity()) {
-
-                \App::coreClientV2()->addQuery(
-                    'cart/get-price',
-                    ['geo_id' => \App::user()->getRegion()->getId()],
-                    [
-                        'product_list'  => $this->getProductData(),
-                    ],
-                    function ($data) use (&$response) {
-                        if ((bool)$data) {
-                            $response = $data;
-                        }
-                    }
-                );
-                \App::coreClientV2()->execute();
-            }
-        } catch(\Exception $e) {
-            \App::logger()->error($e, ['session', 'cart']);
-            $response = $default;
-        }
-
-        $this->sum = array_key_exists('sum', $response) ? $response['sum'] : 0;
-        $this->originalSum = array_key_exists('original_sum', $response) ? $response['original_sum'] : 0;
-
-        $this->products = [];
-        if (array_key_exists('product_list', $response)) {
-            foreach ($response['product_list'] as $productData) {
-                $this->products[$productData['id']] = new \Model\Cart\Product\Entity($productData);
-            }
-        }
-    }
-
     public function count() {
         return count($this->getProducts());
     }

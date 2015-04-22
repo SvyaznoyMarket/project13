@@ -3,6 +3,7 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Session\User $user,
+    $hasProductsOnlyFromPartner,
     array $bonusCards,
     $error = null,
     $previousPost = null
@@ -47,8 +48,9 @@ return function(
                             <? if ($userEntity && $userEntity->isEnterprizeMember()) : ?>
                             <? else : ?>
                             <span class="orderU_hint">
-                                <input type="checkbox" name="" id="subscribe" class="customInput customInput-defcheck js-customInput jsOrderV3SubscribeCheckbox" <?= \App::abTest()->getTest('order_email') ? 'checked' : '' ?>>
-                                <label for="subscribe" class="customLabel customLabel-defcheck jsOrderV3SubscribeLabel">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
+                                <? $checked = \App::abTest()->getTest('order_email'); ?>
+                                <input class="customInput customInput-defcheck jsCustomRadio js-customInput jsOrderV3SubscribeCheckbox" type="checkbox" name="subscribe" value="" id="orderV3Subscribe" <?= $checked ? 'checked' : '' ?>>
+                                <label class="customLabel customLabel-defcheck <?= $checked ? 'mChecked' : '' ?> jsOrderV3SubscribeLabel" for="orderV3Subscribe">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
                             </span>
                             <? endif ?>
                         <? endif ?>
@@ -102,7 +104,7 @@ return function(
 
                         <? endif ?>
 
-                        <? if ($config->partners['MnogoRu']['enabled']) : ?>
+                        <? if ($config->partners['MnogoRu']['enabled'] && !$hasProductsOnlyFromPartner) : ?>
                             <!-- Карта Много.ру -->
                             <div class="bonusCnt_i" data-eq="<?= count($bonusCards) ?>">
                                 <img class="bonusCnt_img" src="/styles/order/img/mnogoru-mini.png" alt="mnogo.ru" />

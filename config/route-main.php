@@ -36,10 +36,6 @@ return [
         'pattern' => '/search',
         'action'  => ['Search\Action', 'execute'],
     ],
-    'search.count' => [
-        'pattern' => '/ajax/search/_count',
-        'action'  => ['Search\Action', 'count'],
-    ],
     // поиск бесконечная прокрутка
     'search.infinity' => [
         'pattern' => '/search/_infinity',
@@ -71,11 +67,6 @@ return [
         'pattern' => '/ajax/subscribe/status/set/{status}',
         'action'  => ['User\InfoAction', 'setSubscribeStatus'],
     ],*/
-    // инфо пользователя
-    'old.user.info' => [
-        'pattern' => '/user/shortinfo',
-        'action'  => ['User\OldInfoAction', 'execute'],
-    ],
     // вход пользователя
     'user.login' => [
         'pattern' => '/login',
@@ -217,12 +208,6 @@ return [
         'action'  => ['ProductCategory\Action', 'slider'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
-    // общее количество отфильтрованных товаров
-    'product.category.count' => [
-        'pattern' => '/ajax/catalog/{categoryPath}/_count',
-        'action'  => ['ProductCategory\Action', 'count'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
     // каталог товаров с бесконечной прокруткой
     'product.category.infinity' => [
         'pattern' => '/ajax/catalog/{categoryPath}/_infinity',
@@ -258,11 +243,6 @@ return [
         'pattern' => '/product/{productPath}',
         'action'  => ['Product\IndexAction', 'execute'],
         'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
-    ],
-    // карточка линии товара
-    'product.line' => [
-        'pattern' => '/line/{lineToken}',
-        'action'  => ['Product\LineAction', 'execute'],
     ],
     // расчет доставки товара
     'old.product.delivery' => [
@@ -318,11 +298,6 @@ return [
         'pattern' => '/products/widget/{productBarcodes}',
         'action'  => ['Product\SetAction', 'widget'],
     ],
-    'product.upsell' => [
-        'pattern' => '/tocart/{productToken}',
-        'action'  => ['Product\UpsellAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
     //reviews
     'product.review.create' => [
         'pattern' => '/product-reviews/create/{productUi}',
@@ -366,23 +341,6 @@ return [
         'pattern' => '/tags/{tagToken}/{categoryToken}/_infinity',
         'action'  => ['Tag\Action', 'index'],
     ],
-    // общее количество отфильтрованных товаров для тегов
-    'tag.count' => [
-        'pattern' => '/ajax/tags/{tagToken}/_count',
-        'action'  => ['Tag\Action', 'count'],
-        'require' => [
-            'tagToken' => '[\w\d-_]+\/?[\w\d-_]+',
-        ],
-    ],
-    // общее количество отфильтрованных товаров для категорий тегов
-    'tag.category.count' => [
-        'pattern' => '/ajax/tags/{tagToken}/{categoryToken}/_count',
-        'action'  => ['Tag\Action', 'count'],
-        'require' => [
-            'tagToken'      => '[\w\d-_]+\/?[\w\d-_]+',
-            'categoryToken' => '[\w\d-_]+\/?[\w\d-_]+',
-        ],
-    ],
     'product.rating.create_total' => [
         'pattern' => '/product-rating/createtotal/{productId}/{rating}',
         'require' => ['productId' => '\d+', 'rating' => '\d+'],
@@ -425,28 +383,6 @@ return [
         'pattern' => '/cart/set-products',
         'action'  => ['Cart\ProductAction', 'setList'],
     ],
-    // добавление товара в корзину
-    'cart.paypal.product.set' => [
-        'pattern' => '/cart/paypal/add-product/{productId}',
-        'action'  => ['Cart\Paypal\ProductAction', 'set'],
-    ],
-    // удаление товара из корзины
-    'cart.paypal.product.delete' => [
-        'pattern' => '/cart/paypal/delete-product/{productId}',
-        'action'  => ['Cart\Paypal\ProductAction', 'delete'],
-    ],
-
-    // добавление товара в корзину
-    'cart.lifeGift.product.set' => [
-        'pattern' => '/cart/life-gift/add-product/{productId}',
-        'action'  => ['Cart\LifeGift\ProductAction', 'set'],
-    ],
-    // удаление товара из корзины
-    'cart.lifeGift.product.delete' => [
-        'pattern' => '/cart/life-gift/delete-product/{productId}',
-        'action'  => ['Cart\LifeGift\ProductAction', 'delete'],
-    ],
-
     // добавление товара в корзину
     'cart.oneClick.product.set' => [
         'pattern' => '/cart/one-click/add-product/{productId}',
@@ -547,6 +483,12 @@ return [
         'action'    => ['OrderV3\LifeGiftAction', 'complete']
     ],
 
+    'orderV3.svyaznoyClub.complete' => [
+        'pattern' => '/orders/svyaznoy-club',
+        'action'  => ['OrderV3\CompleteAction', 'execute'],
+        'method'  => ['GET'],
+    ],
+
     'orderV3OneClick.delivery' => [
         'pattern' => '/order-1click/delivery',
         'action'  => ['OrderV3OneClick\DeliveryAction', 'execute'],
@@ -564,96 +506,18 @@ return [
         'action'  => ['OrderV3OneClick\FormAction', 'execute'],
     ],
 
-
     // заказ
-    'order.1click' => [
-        'pattern' => '/orders/1click',
-        'action'  => ['Order\OneClickAction', 'execute'],
-        'method'  => ['POST'],
-    ],
     'order.oneClick.new' => [
         'pattern' => '/orders/one-click/new',
         'action'  => ['Order\OneClick\NewAction', 'execute'],
-    ],
-    'order.oneClick.create' => [
-        'pattern' => '/orders/one-click/create',
-        'action'  => ['Order\OneClick\CreateAction', 'execute'],
-        'method'  => ['POST'],
     ],
     'order' => [
         'pattern' => '/orders/new',
         'action'  => ['Order\NewAction', 'execute'],
     ],
-    'order.create' => [
-        'pattern' => '/orders/create',
-        'action'  => ['Order\CreateAction', 'execute'],
-        'method'  => ['POST'],
-    ],
-    'order.delivery' => [
-        'pattern' => '/ajax/order-delivery',
-        'action'  => ['Order\DeliveryAction', 'execute'],
-    ],
-    'order.externalCreate' => [
-        'pattern' => '/orders/create-external',
-        'action'  => ['Order\ExternalCreateAction', 'execute'],
-    ],
     'order.complete' => [
         'pattern' => '/orders/complete',
         'action'  => ['Order\Action', 'complete'],
-    ],
-    'order.paymentComplete' => [
-        'pattern' => '/orders/payment/{orderNumber}',
-        'action'  => ['Order\Action', 'paymentComplete'],
-    ],
-    'order.paymentSuccess' => [
-        'pattern' => '/orders/complete_payment',
-        'action'  => ['Order\Action', 'paymentSuccess'],
-    ],
-    'order.paymentFail' => [
-        'pattern' => '/orders/fail_payment',
-        'action'  => ['Order\Action', 'paymentFail'],
-    ],
-    'order.paypal.new' => [
-        'pattern' => '/orders/paypal/new',
-        'action'  => ['Order\Paypal\NewAction', 'execute'],
-    ],
-    'order.paypal.create' => [
-        'pattern' => '/orders/paypal/create',
-        'action'  => ['Order\Paypal\CreateAction', 'execute'],
-        'method'  => ['POST'],
-    ],
-    'order.lifeGift.new' => [
-        'pattern' => '/orders/life-gift/new',
-        'action'  => ['Order\LifeGift\NewAction', 'execute'],
-    ],
-    'order.lifeGift.create' => [
-        'pattern' => '/orders/life-gift/create',
-        'action'  => ['Order\LifeGift\CreateAction', 'execute'],
-        'method'  => ['POST'],
-    ],
-    'order.bill' => [
-        'pattern' => '/private/orders/{orderNumber}/bill',
-        'action'  => ['Order\BillAction', 'execute'],
-    ],
-    'order.clearPaymentUrl' => [
-        'pattern' => '/orders/clearPaymentUrl',
-        'action'  => ['Order\Action', 'clearPaymentUrl'],
-    ],
-
-    // paypal
-    'order.paypal.complete' => [
-        'pattern' => '/orders/paypal-complete',
-        'action'  => ['Order\PaypalAction', 'complete'],
-    ],
-    'order.paypal.fail' => [
-        'pattern' => '/orders/paypal-fail',
-        'action'  => ['Order\PaypalAction', 'fail'],
-    ],
-
-    'order.svyaznoyClub.complete' => [
-        'pattern' => '/orders/svyaznoy-club',
-        'action'  => ['OrderV3\CompleteAction', 'execute'],
-        'method'  => ['GET'],
     ],
 
     'order.slot.create' => [
@@ -685,16 +549,6 @@ return [
     'product.recommended' => [
         'pattern' => '/product-recommended',
         'action' => ['Product\RecommendedAction', 'execute'],
-    ],
-    'product.similar' => [
-        'pattern' => '/ajax/product-similar/{productId}',
-        'action'  => ['Product\SimilarAction', 'execute'],
-        'require' => ['productId' => '\d+'],
-    ],
-    'product.alsoViewed' => [
-        'pattern' => '/ajax/product-also-viewed/{productId}',
-        'action'  => ['Product\AlsoViewedAction', 'execute'],
-        'require' => ['productId' => '\d+'],
     ],
     'product.upsale' => [
         'pattern' => '/ajax/upsale/{productId}',

@@ -1,9 +1,11 @@
 <?php
+
+use \Model\Product\Filter\Option\Entity as Option;
+
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
-    $baseUrl,
-    $countUrl
+    $baseUrl
 ) {
 
     /** @var \Model\Product\Filter\Entity $priceFilter */
@@ -46,6 +48,11 @@ return function(
                 }
             }
         } else {
+            if ($property->isBrand()) { // Сортировка брендов по алфавиту
+                $option = $property->getOption();
+                usort($option, function(Option $a, Option $b){ return $a->getName() > $b->getName(); });
+                $property->setOption($option);
+            }
             $tyreFilters[$key] = $property;
         }
 
@@ -58,7 +65,7 @@ return function(
     ?>
 
     <div class="fltrBtn fltrBtn-bt">
-        <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
+        <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" data-count-url="<?//= $countUrl ?>" method="GET">
             <? // Для IE9 (чтобы он отправлял форму при нажатии на клавишу enter в текстовом поле ввода) ?>
             <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
 

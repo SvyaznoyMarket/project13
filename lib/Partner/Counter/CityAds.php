@@ -33,8 +33,6 @@ class CityAds {
      * @return bool|null|string
      */
     public static function getCityAdspixLink(\Model\Order\Entity $order,  array &$productsById = [], $page, $isScript = false) {
-        /** @var  $page \View\Order\CreatePage*/
-
         $request = \App::request();
         $click_id = $request->cookies->get('click_id');
         $prx = $request->cookies->get('prx');

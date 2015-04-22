@@ -17,14 +17,10 @@ $helper = new \Helper\TemplateHelper();
 
 if (!isset($categoryClass)) $categoryClass = null;
 
-$hasFurnitureConstructor = \App::config()->product['furnitureConstructor'] && $product->getLine() && (256 == $product->getLine()->getId()); // Серия Байкал
-
 $reviewsPresent = !(empty($reviewsData['review_list']));
 ?>
 
-<? if ($hasFurnitureConstructor): ?>
-    <? require __DIR__ . '/show/_furniture.php' ?>
-<? elseif ($categoryClass && file_exists(__DIR__ . '/show/_' . $categoryClass . '.php')): ?>
+<? if ($categoryClass && file_exists(__DIR__ . '/show/_' . $categoryClass . '.php')): ?>
     <? require __DIR__ . '/show/_' . $categoryClass . '.php' ?>
 <? else: ?>
     <? require __DIR__ . '/show/_default.php' ?>

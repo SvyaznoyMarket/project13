@@ -138,11 +138,8 @@ class IndexAction {
         // похожие товары
         $similarProducts = [];
 
-        $line = null;
-
         // набор пакеты
         $kit = [];
-        $relatedKits = [];
         $kitProducts = [];
         if ((bool)$product->getKit()) {
             // получим основные товары набора
@@ -347,7 +344,6 @@ class IndexAction {
         $page->setParam('accessoryCategory', $accessoryCategory);
         $page->setParam('kit', $kit);
         $page->setParam('kitProducts', $kitProducts);
-        $page->setParam('relatedKits', $relatedKits);
         $page->setParam('additionalData', $additionalData);
         $page->setParam('creditData', $creditData);
         $page->setParam('shopStates', $shopStates);
