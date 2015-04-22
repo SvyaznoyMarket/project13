@@ -8,7 +8,7 @@
         $productPhotoThumbs = $('.jsProductThumbList'),
         $productPhotoThumbsBtn = $('.jsProductThumbBtn'),
         productPhotoThumbsWidth = $productPhotoThumbs.width() - 2,
-        productPhotoThumbsFullWidth = $productPhotoThumbs.get(0).scrollWidth,
+        productPhotoThumbsFullWidth = $productPhotoThumbs.get(0) ? $productPhotoThumbs.get(0).scrollWidth : 0,
         thumbActiveClass = 'product-card-photo-thumbs__i--act',
         thumbBtnDisabledClass = 'product-card-photo-thumbs__btn--disabled',
         thumbsCount = $popupPhotoThumbs.length,
