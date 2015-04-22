@@ -85,7 +85,7 @@
         });
     }
 
-    $body.scrollspy({ target: '#jsScrollSpy', offset: 100 });
+    $body.scrollspy({ target: '#jsScrollSpy', offset: 120 });
 
     $body.on('click', '.jsProductTabs a', function(e) {
         var hash = $(this).attr('href');
