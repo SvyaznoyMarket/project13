@@ -203,15 +203,17 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 			</div>
 			<!--/ применить скидку -->
 
-            <?= $helper->render('cart/__button-product', [
-                'product'  => $product,
-                'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
-                'sender'   => $buySender + [
-                        'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
-                    ],
-                'sender2' => $buySender2,
-                'location' => 'product-card',
-            ]) // Кнопка купить ?>
+            <div class="buy-online">
+                <?= $helper->render('cart/__button-product', [
+                    'product'  => $product,
+                    'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
+                    'sender'   => $buySender + [
+                            'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
+                        ],
+                    'sender2' => $buySender2,
+                    'location' => 'product-card',
+                ]) // Кнопка купить ?>
+            </div>
 
 			<? if ($product->getPrice() >= \App::config()->product['minCreditPrice']) : ?>
                 <!-- купить в кредит -->
