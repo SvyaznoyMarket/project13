@@ -214,7 +214,7 @@ class Cart {
     public function hasProduct($productId) {
         $data = $this->storage->get($this->sessionNameNC) ?: [];
 
-        return array_key_exists($productId, $data['product']);
+        return array_key_exists($productId, isset($data['product']) ? $data['product'] : []);
     }
 
     /** Возвращает массив id продуктов, добавленных в кредит (или пустой массив)
