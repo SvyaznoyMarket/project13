@@ -1,0 +1,59 @@
+.personalData {
+	margin: 0 0 35px;
+
+	&_left {
+		.inline-block();
+		width: 600px;
+	}
+
+	&_right {
+		.inline-block();
+		float: right;
+
+		width: 320px;
+
+		.personalData_text {
+			width: 100%;
+		}
+	}
+
+	&_clear {
+		clear: both;
+		text-align: center;
+		margin-top: 20px;
+	}
+
+	&_text{
+		width: 450px;
+	} 
+
+	&_col {
+		.inline-block();
+		margin: 0 30px 15px 0;
+	}
+
+	// заполнить обязательное поле
+	&_warn {
+		position: relative;
+
+		&_text {
+			background: url("/css/user/img/help.png") no-repeat 0 0;
+			font-size: 11px;
+		    position: absolute;
+		    top: 47px;
+		    right: -65px;
+
+		    width: 155px;
+			padding: 14px 0 17px 45px;
+		}
+	}
+}
+
+
+.personalSubscr {
+	margin: 0 0 35px;
+
+	&_row {
+		margin: 0 0 20px;
+	}
+}

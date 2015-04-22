@@ -2,7 +2,6 @@
 /**
  * @var $page       \View\User\OrderPage
  */
-
 $helper = new \Helper\TemplateHelper();
 $route = \App::request()->attributes->get('route');
 // $activeLinkCss = 'personalControl_link-active';
@@ -24,7 +23,7 @@ $activeMenuCss = 'personalControl_item-active';
     </li>
 
     <li class="personalControl_item <?= $route == 'user.edit' ? $activeMenuCss : '' ?>">
-        <a href="<?= $helper->url('user.edit') ?>" class="personalControl_link">Личные данные и пароль</a>
+        <a href="<?= $helper->url('user.edit') ?>" class="personalControl_link">Личные данные</a>
     </li>
 
     <li class="personalControl_item <?= $route == 'user.subscriptions' ? $activeMenuCss : '' ?>">
