@@ -576,6 +576,11 @@ return [
         'pattern' => '/private/orders',
         'action'  => ['User\OrdersAction', 'execute'],
     ],
+    // редактирование данных пользователя
+    'user.favorites' => [
+        'pattern' => '/private/favorites',
+        'action'  => ['User\FavoritesAction', 'execute'],
+    ],
     // данные о заказе пользователя
     'user.order' => [
         'pattern'   => '/private/order/{orderId}',
