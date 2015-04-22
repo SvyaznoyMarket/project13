@@ -107,6 +107,8 @@ class ShowAction {
                     } else {
                         $iDelay = null;
                         foreach ($queryData[$index]['delays'] as &$iDelay) {
+                            if (!isset($iDelay['value'])) continue;
+
                             if ($delay == $iDelay['value']) {
                                 $iDelay['selected'] = true;
                                 $iDelay['http_code'] = isset($queryData[$index]['info']['http_code']) ? $queryData[$index]['info']['http_code'] : null;
