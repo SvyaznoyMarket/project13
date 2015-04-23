@@ -13,7 +13,7 @@ $(function() {
 
         xhr = $.post($el.attr('href'))
             .done(function(response) {
-                // TODO: добавить модификатор к кнопке
+                $('body').trigger('updateWidgets', response.widgets);
             })
             .always(function() {
                 $el.data('xhr', null);

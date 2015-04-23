@@ -339,6 +339,8 @@ class IndexAction {
         // избранные товары
         $favoriteProductsByUi = [];
         foreach ($actionResponse->favoriteQuery->response->products as $item) {
+            if (!isset($item['is_favorite']) || !$item['is_favorite']) continue;
+
             $ui = isset($item['uid']) ? (string)$item['uid'] : null;
             if (!$ui) continue;
 

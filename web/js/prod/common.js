@@ -88,7 +88,7 @@ $body=$('body');$('.jsEvent_documentReady').each(function(i,el){var
 event=$(el).data('value');if(!event.name)return;$body.trigger(event.name,event.data||[]);console.info('event',event.name,event.data);});});
 $(function(){$('body').on('click','.jsFavoriteLink',function(e){var
 $el=$(e.currentTarget),xhr=$el.data('xhr');console.info({'.jsFavoriteLink click':$el});try{if(xhr)xhr.abort();}catch(error){console.error(error);}
-xhr=$.post($el.attr('href')).done(function(response){}).always(function(){$el.data('xhr',null);});$el.data('xhr',xhr);e.preventDefault();});});
+xhr=$.post($el.attr('href')).done(function(response){$('body').trigger('updateWidgets',response.widgets);}).always(function(){$el.data('xhr',null);});$el.data('xhr',xhr);e.preventDefault();});});
 (function(){var goToId=function goToId(){var to=$(this).data('goto');$(document).stop().scrollTo($('#'+to),800);return false;};$(document).ready(function(){$('.jsGoToId').bind('click',goToId);});}());
 (function(){var handleHotLinksToggle=function(){var toggle=$(this);if(toggle.hasClass('expanded')){toggle.parent().parent().find('.toHide').hide();toggle.html('Все метки');toggle.removeClass('expanded');}else{toggle.parent().parent().find('.toHide').show();toggle.html('Основные метки');toggle.addClass('expanded');}
 return false;};$(document).ready(function(){$('.hotlinksToggle').bind('click',handleHotLinksToggle);});}());
@@ -316,4 +316,5 @@ if(topBtn.length){topBtn.on('click',upToFilter);}
 if(scrollTarget.length){w.on('scroll',function(){checkScroll();});}else{w.on('scroll',function(){checkScroll(true);});}
 $body.on('userLogged',function(){checkScroll();});}
 else{overlay.remove();overlay=false;}}(window.ENTER));
+$(function(){$('body').on('updateWidgets',function(e,widgets){$.each(widgets,function(id,value){$(id).replaceWith(value);})});});
 //@ sourceMappingURL=common.js.map

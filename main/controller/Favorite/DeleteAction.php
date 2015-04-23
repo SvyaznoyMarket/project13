@@ -4,7 +4,7 @@ namespace Controller\Favorite;
 
 use EnterQuery as Query;
 
-class SetAction {
+class DeleteAction {
     use \EnterApplication\CurlTrait;
 
     /**
@@ -36,7 +36,7 @@ class SetAction {
         }
         $product = new \Model\Product\Entity(reset($productQuery->response->products));
 
-        $favoriteQuery = (new Query\User\Favorite\Set($user->getEntity()->getUi(), $product->getUi()))->prepare();
+        $favoriteQuery = (new Query\User\Favorite\Delete($user->getEntity()->getUi(), $product->getUi()))->prepare();
         $curl->execute();
 
         if ($favoriteQuery->error) {
@@ -51,7 +51,7 @@ class SetAction {
                     [
                         'helper'          => \App::helper(),
                         'product'         => $product,
-                        'favoriteProduct' => new \Model\Favorite\Product\Entity(['uid' => $product->getUi()]),
+                        'favoriteProduct' => null,
                     ]
                 ),
             ],

@@ -922,6 +922,13 @@ return [
             'productUi' => '[\w\d-_]+',
         ],
     ],
+    'favorite.delete' => [
+        'pattern' => '/favorite/delete-product/{productUi}',
+        'action'  => ['Favorite\DeleteAction', 'execute'],
+        'require' => [
+            'productUi' => '[\w\d-_]+',
+        ],
+    ],
 
     'compare' => [
         'pattern' => '/compare',
