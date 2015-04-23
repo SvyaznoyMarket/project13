@@ -75,7 +75,7 @@ $f = function (
             <div class="product-accessoires">
                 <ul class="product-accessoires-list">
                     <? $i = 0; foreach ($categories as $category): ?>
-                        <li id="<?= $sliderId . '-category-' . $category->getId() ?>" class="product-accessoires-list-item <? if (0 == $i): ?> mActive<? endif ?>" data-product="<?= $category->getId() ? 'self' : 'all' ?>">
+                        <li id="<?= $sliderId . '-category-' . $category->getId() ?>" class="product-accessoires-list-item js-product-accessoires <? if (0 == $i): ?> mActive<? endif ?>" data-product="<?= $category->getId() ? 'self' : 'all' ?>">
                             <span class="product-accessoires-list-item__name"><?= $category->getName() ?></span>
                         </li>
                         <? $i++; endforeach ?>
