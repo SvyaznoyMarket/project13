@@ -336,6 +336,15 @@ class IndexAction {
 
         $deliveryData = (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
 
+        // избранные товары
+        $favoriteProductsByUi = [];
+        foreach ($actionResponse->favoriteQuery->response->products as $item) {
+            $ui = isset($item['uid']) ? (string)$item['uid'] : null;
+            if (!$ui) continue;
+
+            $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
+        }
+
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('product', $product);
         $page->setParam('lifeGiftProduct', $lifeGiftProduct);
@@ -353,7 +362,7 @@ class IndexAction {
         $page->setParam('useLens', $useLens);
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactors', $trustfactors);
-        $page->setParam('line', $line);
+        $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
         $page->setParam('deliveryData', $deliveryData);
         $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);

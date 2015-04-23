@@ -246,6 +246,7 @@ namespace EnterApplication\Action\ProductCard
             $response->productQuery = $productQuery;
             $response->productDescriptionQuery = $productDescriptionQuery;
             $response->userQuery = $userQuery;
+            $response->favoriteQuery = $favoriteQuery;
             $response->subscribeQuery = $subscribeQuery;
             $response->redirectQuery = $redirectQuery;
             $response->abTestQuery = $abTestQuery;
