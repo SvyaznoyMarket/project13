@@ -154,7 +154,9 @@ class DeliveryAction {
                     $splitData,
                     $i * \App::config()->coreV2['timeout']
                 );
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+                if ($e->getCode() == \Curl\Client::CODE_TIMEOUT) \App::exception()->remove($e);
+            }
 
             if ($orderDeliveryData) break; // если получен ответ прекращаем попытки
         }
