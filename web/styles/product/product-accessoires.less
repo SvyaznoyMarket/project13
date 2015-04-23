@@ -35,16 +35,21 @@
         &-item {
             height: 34px;
             line-height: 34px;
+            cursor: pointer;
 
             &__name {
                 display: block;
                 font-size: 12px;
                 background-color: #fff;
+                padding-left: 10px;
             }
             &.mActive {
                 cursor: default;
             }
             &.mActive &__name {
+                background: #f0f0f0;
+            }
+            &:hover &__name{
                 background: #f0f0f0;
             }
         }
