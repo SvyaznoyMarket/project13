@@ -61,6 +61,12 @@ class DeliveryAction {
                     'orderDelivery' => $result['OrderDeliveryModel'],
                 ]);
 
+                $quantityError = array_filter($result['OrderDeliveryModel']->errors, function(\Model\OrderDelivery\Error $error){ return $error->code == 708; });
+
+                if ($quantityError && isset($quantityError[0]->details['max_available_quantity'])) {
+                    $result['warn'] = 'Запрошенного количества нет в наличии, будет оформлено '. $quantityError[0]->details['max_available_quantity'] . ' шт.';
+                }
+
             } catch (\Curl\Exception $e) {
                 \App::exception()->remove($e);
                 $result['error']    = ['message' => $e->getMessage()];
@@ -109,6 +115,13 @@ class DeliveryAction {
 
     }
 
+    /**
+     * @param array $data
+     * @param null $shopId
+     * @param $product_list
+     * @return \Model\OrderDelivery\Entity
+     * @throws \Exception
+     */
     public function getSplit(array $data = null, $shopId = null, $product_list) {
         if (!(bool)$product_list) throw new \Exception('Пустая корзина');
 
