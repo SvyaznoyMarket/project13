@@ -252,20 +252,18 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
                        class="product-card-tools__lk jsCompareLink"
                        data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>"
                        data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>"
-                        >
+                    >
                         <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
                         <span class="product-card-tools__tx">Сравнить</span>
                     </a>
                 </li>
 
-                <? if (false) : // Функционал избранного оставляем на потом ?>
-                    <li class="product-card-tools__i product-card-tools__i--wish">
-                        <a href="" class="product-card-tools__lk">
-                            <i class="product-card-tools__icon i-tools-icon i-tools-icon--wish"></i>
-                            <span class="product-card-tools__tx">В избранное</span>
-                        </a>
-                    </li>
-                <? endif ?>
+                <li class="product-card-tools__i product-card-tools__i--wish">
+                    <a href="<?= $helper->url('favorite.add', ['productUi' => $product->getUi()]) ?>" class="jsFavoriteLink product-card-tools__lk">
+                        <i class="product-card-tools__icon i-tools-icon i-tools-icon--wish"></i>
+                        <span class="product-card-tools__tx">В избранное</span>
+                    </a>
+                </li>
 			</ul>
 			<!--/ сравнить, добавить в виш лист -->
 
