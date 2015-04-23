@@ -56,6 +56,11 @@ module.exports = function (grunt, options) {
             tasks: ['concat:compareJS', 'uglify:compareJS']
         },
 
+        favoriteJS:{
+            files: [ pathDev + 'favorite/*.js'],
+            tasks: ['concat:favoriteJS', 'uglify:favoriteJS']
+        },
+
         commonJS:{
             files: [ pathDev + 'common/*.js'],
             tasks: ['concat:commonJS', 'uglify:commonJS', 'jsmin-sourcemap:common']

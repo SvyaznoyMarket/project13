@@ -14,7 +14,11 @@
 
 	<div class="table-favorites table table--border-cell-hor">
 		<? foreach ($products as $product): ?>
-		<div class="table-row">
+		<?
+			$rowId = 'id-favoriteRow-' . $product->getUi() ?: uniqid();
+		?>
+
+		<div class="table-row <?= $rowId ?>">
 			<div class="table-favorites__cell-left table-cell">
 				<a href="<?= $product->getLink() ?>">
 					<img src="<?= $product->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getName()) ?>" class="table-favorites__img">
@@ -30,7 +34,9 @@
 
 			<div class="table-favorites__cell-right table-cell">
 				<div class="btnBuy"><a href="" class="btn-type btn-type--buy js-orderButton jsBuyButton">В корзину</a></div>
-				<div class="table-favorites__delete"><a href="" class="undrl">Удалить</a></div>
+				<div class="table-favorites__delete">
+					<a data-ajax="true" href="<?= $helper->url('favorite.delete', ['productUi' => $product->getUi()]) ?>" class="jsFavoriteDeleteLink undrl" data-target=".<?= $rowId ?>">Удалить</a>
+				</div>
 			</div>
 		</div>
 		<? endforeach ?>

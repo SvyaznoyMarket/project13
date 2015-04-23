@@ -52,6 +52,13 @@ module.exports = function (grunt, options) {
             srcRoot: '/js',
             cwd: 'web/js'
         },
+        favorite: {
+            src: ['dev/favorite/*.js'],
+            dest: 'prod/favorite.js',
+            destMap: 'prod/favorite.js.map',
+            srcRoot: '/js',
+            cwd: 'web/js'
+        },
         common: {
             src: ['dev/common/*.js'],
             dest: 'prod/common.js',

@@ -24,6 +24,11 @@ module.exports = {
 		dest: '<%= pathProd %>compare.js'
 	},
 
+	favoriteJS : {
+		src: ['<%= pathDev %>favorite/*.js'],
+		dest: '<%= pathProd %>favorite.js'
+	},
+
     commonJS : {
         src: ['<%= pathDev %>common/*.js'],
         dest: '<%= pathProd %>common.js'
