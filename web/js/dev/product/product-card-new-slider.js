@@ -15,7 +15,8 @@
         popupDefaults = {
             centered: true,
             closeSelector: '.jsPopupCloser',
-            preventScroll: true
+            preventScroll: true,
+            closeClick: false
         },
         /* Функция для зума фотографии */
         setZoom = function(direction) {

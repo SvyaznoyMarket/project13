@@ -110,19 +110,26 @@
         if ($div.find('.jsDeliveryMapPoints').length > 0) {
             $div.lightbox_me({
                 centered: true,
-                preventScroll: true
+                preventScroll: true,
+                closeClick: false
             });
             return ;
         }
 
+        if ($div.data('xhr')) return;
+
         $.ajax('/ajax/product/map/' + productId, {
             dataType: 'json',
             beforeSend: function(){
+                $div.data('xhr', true);
                 $div.lightbox_me({
                     centered: true,
-                    preventScroll: true
+                    preventScroll: true,
+                    closeClick: false
                 })
             }
+        }).always(function(){
+            $div.data('xhr', false)
         }).done(function(data){
 
             if (!data.success) {
