@@ -11,7 +11,8 @@
         tabsOffset,// это не очень хорошее поведение, т.к. при добавлении сверху элементов (AJAX, например) offset не изменяется
         popupDefaults = {
             centered: true,
-            closeSelector: '.jsPopupCloser'
+            closeSelector: '.jsPopupCloser',
+            closeClick: false
         };
 
     /* Если это не новая карточка, то do nothing */
