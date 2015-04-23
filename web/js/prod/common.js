@@ -1770,21 +1770,27 @@ $(function() {
 
         console.info({'.jsFavoriteLink click': $el});
 
-        try {
-            if (xhr)  xhr.abort();
-        } catch (error) { console.error(error); }
 
-        xhr = $.post($el.attr('href'))
-            .done(function(response) {
-                $('body').trigger('updateWidgets', response.widgets);
-            })
-            .always(function() {
-                $el.data('xhr', null);
-            })
-        ;
-        $el.data('xhr', xhr);
 
-        e.preventDefault();
+        if ($el.data('ajax')) {
+            e.stopPropagation();
+
+            try {
+                if (xhr)  xhr.abort();
+            } catch (error) { console.error(error); }
+
+            xhr = $.post($el.attr('href'))
+                .done(function(response) {
+                    $('body').trigger('updateWidgets', response.widgets);
+                })
+                .always(function() {
+                    $el.data('xhr', null);
+                })
+            ;
+            $el.data('xhr', xhr);
+
+            e.preventDefault();
+        }
     });
 });
 /**
@@ -5071,7 +5077,8 @@ $(document).ready(function() {
 $(function() {
     $('body').on('updateWidgets', function(e, widgets){
         $.each(widgets, function(id, value) {
-            $(id).replaceWith(value);
+            console.info('replace ' + id +' with ' + value);
+            $(id).html($(value).html());
         })
     });
 });

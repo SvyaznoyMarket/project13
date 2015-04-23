@@ -37,24 +37,31 @@ class DeleteAction {
         $product = new \Model\Product\Entity(reset($productQuery->response->products));
 
         $favoriteQuery = (new Query\User\Favorite\Delete($user->getEntity()->getUi(), $product->getUi()))->prepare();
+
         $curl->execute();
 
         if ($favoriteQuery->error) {
             throw new $favoriteQuery->error;
         }
 
-        return new \Http\JsonResponse([
-            'success' => true,
-            'widgets' => [
-                '.id-favoriteButton-' . $product->getUi() => \App::helper()->render(
-                    'product/__favoriteButton',
-                    [
-                        'helper'          => \App::helper(),
-                        'product'         => $product,
-                        'favoriteProduct' => null,
-                    ]
-                ),
-            ],
-        ]);
+        if ($request->isXmlHttpRequest()) {
+            $response = new \Http\JsonResponse([
+                'success' => true,
+                'widgets' => [
+                    '.id-favoriteButton-' . $product->getUi() => \App::helper()->render(
+                        'product/__favoriteButton',
+                        [
+                            'helper'          => \App::helper(),
+                            'product'         => $product,
+                            'favoriteProduct' => null,
+                        ]
+                    ),
+                ],
+            ]);
+        } else {
+            $response =  new \Http\RedirectResponse($request->headers->get('referer') ?: '/');
+        }
+
+        return $response;
     }
 }
