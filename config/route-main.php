@@ -916,8 +916,11 @@ return [
     ],
 
     'favorite.add' => [
-        'pattern' => '/favorite/add-product',
+        'pattern' => '/favorite/add-product/{productUi}',
         'action'  => ['Favorite\SetAction', 'execute'],
+        'require' => [
+            'productUi' => '[\w\d-_]+',
+        ],
     ],
 
     'compare' => [
