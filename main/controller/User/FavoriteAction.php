@@ -35,7 +35,7 @@ class FavoriteAction {
 
         $products = [];
         if ($favoriteProductsByUi) {
-            $productQuery = (new Query\Product\GetDescriptionByUiList(array_keys($favoriteProductsByUi)))->prepare();
+            $productQuery = (new Query\Product\GetByUiList(array_keys($favoriteProductsByUi), \App::user()->getRegion()->getId()))->prepare();
 
             $curl->execute();
 
