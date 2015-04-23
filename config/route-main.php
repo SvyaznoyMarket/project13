@@ -584,7 +584,7 @@ return [
     // редактирование данных пользователя
     'user.favorites' => [
         'pattern' => '/private/favorites',
-        'action'  => ['User\FavoritesAction', 'execute'],
+        'action'  => ['User\FavoriteAction', 'get'],
     ],
     // данные о заказе пользователя
     'user.order' => [

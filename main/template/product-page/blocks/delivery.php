@@ -15,11 +15,11 @@ $f = function (
         <span class="buy-now-inshop__tl">В наличии</span>
 
         <? if ($deliveryPickup) : ?>
-            <div class="buy-now-inshop__line">Самовывоз <span class="buy-now-inshop__mark"><?= mb_strtolower($helper->humanizeDate($deliveryPickup->getMinDate()->date)) ?>, <?= $deliveryPickup->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryPickup->price) . '&nbsp;<span class="rubl">p</span>' ?></span></div>
+            <div class="buy-now-inshop__line jsDeliveryPickupAvailable">Самовывоз <span class="buy-now-inshop__mark"><?= mb_strtolower($helper->humanizeDate($deliveryPickup->getMinDate()->date)) ?>, <?= $deliveryPickup->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryPickup->price) . '&nbsp;<span class="rubl">p</span>' ?></span></div>
         <? endif ?>
 
         <? if ($deliveryDelivery) : ?>
-            <div class="buy-now-inshop__line">Доставка <span class="buy-now-inshop__mark"><?= mb_strtolower($helper->humanizeDate($deliveryDelivery->getMinDate()->date)) ?>, <?= $deliveryDelivery->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryDelivery->price) . '&nbsp;<span class="rubl">p</span>' ?></span></div>
+            <div class="buy-now-inshop__line jsDeliveryStandardAvailable">Доставка <span class="buy-now-inshop__mark"><?= mb_strtolower($helper->humanizeDate($deliveryDelivery->getMinDate()->date)) ?>, <?= $deliveryDelivery->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryDelivery->price) . '&nbsp;<span class="rubl">p</span>' ?></span></div>
         <? endif ?>
 
     </div>
