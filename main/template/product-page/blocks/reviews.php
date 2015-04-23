@@ -80,7 +80,8 @@
 
         <div class="form-ctrl__group">
             <label class="form-ctrl__textarea-lbl" for="reviewFormPros">Достоинства:</label>
-            <textarea id="reviewFormPros" class="form-ctrl__textarea" name="review[advantage]"></textarea>
+            <textarea id="reviewFormPros" class="form-ctrl__textarea form-ctrl__textarea--err" name="review[advantage]"></textarea>
+            <label class="form-ctrl__textarea-lbl--err">Не указаны достоинства</label>
         </div>
 
         <div class="form-ctrl__group">
@@ -97,6 +98,14 @@
             <button class="btn-type btn-type--buy" type="submit">Отправить</button>
         </div>
     </form>
+    <!-- после отправки отзыва появляется: -->
+    <div class="popup-form-success">
+        <div class="popup-form-success__txt">Спасибо! Ваш отзыв появится на сайте после проверки модератором.</div>
+        <div class="popup-form-success__subscribtion">
+            <input type="checkbox">
+            Подписаться на рассылку и получить купон со скидкой 300₽ на следующую покупку.
+        </div>
+    </div>
 </div>
 <!--/ попап добавления отзыва -->
 
