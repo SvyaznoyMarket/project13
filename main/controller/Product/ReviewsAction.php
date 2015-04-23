@@ -53,6 +53,7 @@ class ReviewsAction {
      * @param \Http\Request $request
      * @param string $productUi
      * @return \Http\JsonResponse
+     * @throws \Exception
      */
     public function create(\Http\Request $request, $productUi) {
         //\App::logger()->debug('Exec ' . __METHOD__);
@@ -90,7 +91,7 @@ class ReviewsAction {
                 $form->setError('author_email', 'Указан не корректный e-mail');
             }
 
-            // TODO SITE-2756 Полученную из формы оценку умножаем на 2
+            // SITE-2756 Полученную из формы оценку умножаем на 2
             $form->setScore($form->getScore() * 2);
 
             if ($form->isValid()) {

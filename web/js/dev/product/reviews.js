@@ -32,11 +32,12 @@
 			url = '/product-reviews/'+productId,
 			dataToSend;
 		// end of vars
-		
+
 		var reviewsResponse = function reviewsResponse( data ) {
-			$('.'+containerClass).html($('.'+containerClass).html() + data.content);
+            var $container = $('.'+containerClass);
+			$container.html($container.html() + data.content);
 			reviewCurrentPage[type]++;
-			reviewPageCount[type] = data.pageCount;
+			reviewPageCount[type] = data['pageCount'];
 
 			if ( reviewCurrentPage[type] + 1 >= reviewPageCount[type] ) {
 				moreReviewsButton.hide();
@@ -82,6 +83,9 @@
 		reviewsContainerClass = reviewWrap.attr('data-container');
 
 		reviewTab.click(function() {
+
+            var $reviewContainer = $('.'+reviewsContainerClass);
+
 			reviewsContainerClass = $(this).attr('data-container');
 
 			if ( reviewsContainerClass === undefined ) {
@@ -92,7 +96,7 @@
 			reviewTab.removeClass('active');
 			$(this).addClass('active');
 			reviewContent.hide();
-			$('.'+reviewsContainerClass).show();
+			$reviewContainer.show();
 
 			moreReviewsButton.hide();
 
@@ -100,7 +104,7 @@
 				moreReviewsButton.html('Показать ещё отзывы');
 			}
 
-			if ( !$('.'+reviewsContainerClass).html() ) {
+			if ( !$reviewContainer.html() ) {
 				getReviews(reviewsProductUi, reviewsType, reviewsContainerClass);
 			}
 			else {
@@ -141,7 +145,7 @@
 //
 //	$('.jsLeaveReview').on('click', leaveReview);
 
-}());
+}(jQuery));
 
 
 
@@ -457,71 +461,3 @@
         openPopup();
     }
 }());
-
-/**
- * Обработчик для sprosikupi
- */
-$(function() {
-	if (!$('#spk-widget-reviews').length) {
-		return;
-	}
-
-    if ('#add-review' == location.hash) {
-        location.href = '?spkPreState=addReview';
-    }
-
-	$('.sprosikupiRating .spk-good-rating a').live('click', function(e) {
-		$(document).stop().scrollTo($(e.currentTarget).attr('href'), 800);
-		return false;
-	});
-
-	$.getScript("//static.sprosikupi.ru/js/widget/sprosikupi.bootstrap.js");
-});
-
-/**
- * Обработчик для shoppilot
- */
-$(function() {
-	var reviewsContainer = $('#shoppilot-reviews-container');
-	if (!reviewsContainer.length) {
-		return;
-	}
-
-	_shoppilot = window._shoppilot || [];
-	_shoppilot.push(['_setStoreId', '535a852cec8d830a890000a6']);
-	_shoppilot.push(['_setOnReady', function (Shoppilot) {
-		(new Shoppilot.ProductWidget({
-			name: 'product-rating',
-			styles: 'product-reviews',
-			product_id: reviewsContainer.data('productId')
-		})).appendTo('#shoppilot-rating-container');
-
-		(new Shoppilot.ProductWidget({
-			name: 'product-reviews',
-			styles: 'product-reviews',
-			product_id: reviewsContainer.data('productId')
-		})).appendTo(reviewsContainer[0]);
-
-        if ('#add-review' == location.hash) {
-            (new Shoppilot.Surveybox({
-                product_id: reviewsContainer.data('productId')
-            })).open();
-        }
-	}]);
-
-	(function() {
-		var script = document.createElement('script');
-		script.type = 'text/javascript';
-		script.async = true;
-		script.src = '//ugc.shoppilot.ru/javascripts/require.js';
-		script.setAttribute('data-main',
-			'//ugc.shoppilot.ru/javascripts/social-apps.js');
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(script, s);
-	})();
-
-    $('#shoppilot-rating-container').on('click', 'a.sp-product-inline-rating-label', function(e) {
-		$(document).stop().scrollTo($(e.currentTarget).attr('href').replace(/^.*?#/, '#'), 800);
-		return false;
-	});
-});

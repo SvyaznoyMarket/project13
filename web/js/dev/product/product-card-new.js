@@ -6,6 +6,7 @@
     var $window = $(window),
         $body = $(document.body),
         $creditButton = $body.find('.jsProductCreditButton'),
+        $reviewFormStars = $('.jsReviewFormRating'),
         $userbar = $('.js-topbar-fixed'),
         $tabs = $('.jsProductTabs'),
         tabsOffset,// это не очень хорошее поведение, т.к. при добавлении сверху элементов (AJAX, например) offset не изменяется
@@ -39,7 +40,7 @@
 
     // Добавление отзыва
     $body.on('click', '.jsReviewAdd', function(){
-        $('.jsReviewForm').lightbox_me($.extend(popupDefaults, {
+        $('.jsReviewForm2').lightbox_me($.extend(popupDefaults, {
             onLoad: function() {},
             onClose: function() {}
         }));
@@ -228,5 +229,29 @@
             if ($(goodsSlider).data('position') == 'ProductSimilar') $('.jsSimilarTab').show();
         }
     });
+
+    $reviewFormStars.on('click', function(){
+        var activeClass = 'popup-rating__i--fill',
+            rate = $(this).index();
+        $reviewFormStars.removeClass(activeClass);
+        $(this).addClass(activeClass).prevAll().addClass(activeClass);
+        $('#reviewFormRating').val(++rate)
+    });
+
+    $('#reviewForm').on('submit', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'post',
+            url: $(this).attr('action'),
+            data: $(this).serializeArray(),
+            dataType: 'json',
+            success: function(data){
+                console.log(data);
+            },
+            complete: function(data) {
+                console.log(data);
+            }
+        });
+    })
 
 })(jQuery);
