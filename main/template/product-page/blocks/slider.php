@@ -59,8 +59,7 @@ $f = function (
     ?>
 
 
-    <div
-        class="goods-slider js-slider-2 clearfix <? if ((bool)$categories): ?> mWithCategory goods-slider--5items<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>"
+    <div class="goods-slider js-slider-2 clearfix <? if ((bool)$categories): ?> goods-slider--width goods-slider--5items<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>"
         id="<?= $id ?>"
         data-position="<?= $sender['position'] ?>"
         data-slider="<?= $helper->json([
@@ -73,11 +72,11 @@ $f = function (
         ]) ?>" >
 
         <? if ((bool)$categories): ?>
-            <div class="bGoodsSlider__eCat">
-                <ul>
+            <div class="product-accessoires">
+                <ul class="product-accessoires-list">
                     <? $i = 0; foreach ($categories as $category): ?>
-                        <li id="<?= $sliderId . '-category-' . $category->getId() ?>" class="bGoodsSlider__eCatItem <? if (0 == $i): ?> mActive<? endif ?>" data-product="<?= $category->getId() ? 'self' : 'all' ?>">
-                            <span><?= $category->getName() ?></span>
+                        <li id="<?= $sliderId . '-category-' . $category->getId() ?>" class="product-accessoires-list-item <? if (0 == $i): ?> mActive<? endif ?>" data-product="<?= $category->getId() ? 'self' : 'all' ?>">
+                            <span class="product-accessoires-list-item__name"><?= $category->getName() ?></span>
                         </li>
                         <? $i++; endforeach ?>
                 </ul>
