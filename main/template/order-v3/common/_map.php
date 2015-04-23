@@ -157,7 +157,7 @@
                                     <div class="pickup-item__time" data-bind="text: regtime"></div>
                                 </td>
                                 <!-- если товар доступен для заказа, выводим это: -->
-                                <td class="pickup-item__info">
+                                <td class="pickup-item__info" valign="middle">
                                     <div class="pickup-item__date" data-bind="text: humanNearestDay"></div>
                                     <div class="pickup-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div>
                                 </div>
@@ -172,7 +172,7 @@
 
                                 <!-- конец -->
                                 <!-- если товар только на витрине, выводим это: -->
-                                 <!-- <td class="pickup-item__info pickup-item__info--nobtn">
+                                 <!-- <td class="pickup-item__info pickup-item__info--nobtn" valign="middle">
                                     <span class="pickup-item__ondisplay-lbl">На витрине</span>
                                     <i class="i-product i-product--info-normal i-info__icon pickup-item__ondisplay-icon"></i>
                                     <?//попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open?>
