@@ -278,7 +278,8 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 
 	<!-- с этим товаром покупают -->
 	<div class="product-section product-section--inn product-section--border-top">
-<!--		<div class="product-section__h3">С этим товаром покупают</div>-->
+        <div class="product-section__h3">С этим товаром покупают</div>
+
         <? if (\App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product-page/blocks/slider', [
                 'type'           => 'alsoBought',
@@ -296,6 +297,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
                 'sender2' => $sender2,
             ]) ?>
         <? endif ?>
+    </div>
     <!--/ с этим товаром покупают -->
 
     <!-- ссылки связной, сбер и многору -->
@@ -375,7 +377,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 
 	<? if ($reviewsData) : ?>
         <!-- отзывы -->
-        <div class="product-section" id="reviews">
+        <div class="product-section product-section--reviews" id="reviews">
             <div class="product-section__tl">Отзывы</div>
 
             <?= $helper->render('product-page/blocks/reviews', ['reviewsData' => $reviewsData, 'product' => $product ]) ?>
@@ -387,7 +389,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 
 	<!-- похожие товары -->
 	<div class="product-section product-section--inn" id="similar">
-<!--		<div class="product-section__h3">Похожие товары</div>-->
+        <div class="product-section__h3">Похожие товары</div>
         <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product-page/blocks/slider', [
                 'type'     => 'similar',
@@ -409,7 +411,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 
 	<!-- вы смотрели -->
 	<div class="product-section product-section--inn">
-<!--		<div class="product-section__h3">Вы смотрели</div>-->
+        <!-- <div class="product-section__h3">Вы смотрели</div> -->
         <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
             <?= $helper->render('product-page/blocks/slider', [
                 'type'      => 'viewed',
