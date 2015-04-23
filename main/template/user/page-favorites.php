@@ -33,7 +33,15 @@
 			</div>
 
 			<div class="table-favorites__cell-right table-cell">
-				<div class="btnBuy"><a href="" class="btn-type btn-type--buy js-orderButton jsBuyButton">В корзину</a></div>
+				<?= $helper->render('cart/__button-product', [
+					'product'  => $product,
+					'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
+					//'sender'   => $buySender + ['from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER'))],
+					//'sender2'  => $buySender2,
+					'location' => 'user-favorites',
+				]) // Кнопка купить ?>
+
+				<!--<div class="btnBuy"><a href="" class="btn-type btn-type--buy js-orderButton jsBuyButton">В корзину</a></div>-->
 				<div class="table-favorites__delete">
 					<a data-ajax="true" href="<?= $helper->url('favorite.delete', ['productUi' => $product->getUi()]) ?>" class="jsFavoriteDeleteLink undrl" data-target=".<?= $rowId ?>">Удалить</a>
 				</div>
