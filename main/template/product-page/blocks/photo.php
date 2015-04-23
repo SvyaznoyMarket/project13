@@ -21,8 +21,6 @@ $f = function(
             <? endif ?>
             <img src="<?= $product->getImageUrl(3) ?>"
                  class="product-card-photo__img js-photo-zoomedImg jsOpenProductImgPopup jsProductMiddlePhoto"
-                 data-zoom-image="<?= $product->getImageUrl(5) // elevatezoom ?>"
-                 data-zoom-disable="true"
                  alt="<?= $helper->escape($product->getName()) ?>"
                  data-is-slot="<?= $product->getSlotPartnerOffer() ? 'true' : 'false' ?>"
                  style="cursor: zoom-in"
