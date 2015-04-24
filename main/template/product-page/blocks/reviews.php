@@ -80,7 +80,8 @@
 
         <div class="form-ctrl__group">
             <label class="form-ctrl__textarea-lbl" for="reviewFormPros">Достоинства:</label>
-            <textarea id="reviewFormPros" class="form-ctrl__textarea" name="review[advantage]"></textarea>
+            <textarea id="reviewFormPros" class="form-ctrl__textarea form-ctrl__textarea--err" name="review[advantage]"></textarea>
+            <label class="form-ctrl__textarea-lbl--err">Не указаны достоинства</label>
         </div>
 
         <div class="form-ctrl__group">
@@ -97,6 +98,58 @@
             <button class="btn-type btn-type--buy" type="submit">Отправить</button>
         </div>
     </form>
+    <!-- успешная отправка + подписка на рассылку -->
+    <i class="closer jsPopupCloser">×</i>
+
+    <div class="popup__tl">Отзыв о товаре</div>
+    <div class="popup__product-line">
+        <div class="popup__product-line-img-wrap">
+            <img class="popup__product-line-img" src="<?= $product->getImageUrl() ?>">
+        </div>
+
+        <div class="popup__product-line-tl">
+            <?= $product->getName() ?>
+        </div>
+    </div>
+    <div class="popup-form-success">
+        <div class="popup-form-success__txt">Спасибо! Ваш отзыв появится на сайте после проверки модератором.</div>
+        <div class="popup-form-success__subscribtion">
+            <form class="form-ctrl">
+                <div class="form-ctrl__group">
+                    <input class="customInput customInput-defcheck jsCustomRadio js-customInput js-registerForm-subscribe" type="checkbox" name="subscribe" id="subscribe">
+                    <label class="customLabel customLabel-defcheck mChecked" for="subscribe">Подписаться на рассылку и получить купон со скидкой 300 <span class="rubl">p</span> на следующую покупку.</label>
+                </div>
+                <div class="form-ctrl__btn-container">
+                    <button class="btn-type btn-type--buy" type="submit">Продолжить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- конец блока подписки -->
+    <!-- успешная отправка + вы уже подписаны -->
+    <i class="closer jsPopupCloser">×</i>
+
+    <div class="popup-form-success">
+        <div class="popup-form-success__txt">Вы уже подписаны на нашу рассылку.<br/>Не забывайте проверять письма от Enter!</div>
+        <div class="popup-form-success__txt popup-form-success__txt--small">Чтобы не пропускать наши новости и акции, добавьте <a href="mailto:info@enter.ru">info@enter.ru</a> в свою адресную книгу.</div>
+        <div class="popup-form-success__subscribtion popup-form-success__subscribtion--already-done">
+            <button class="btn-type btn-type--buy" type="submit">Продолжить</button>
+        </div>
+    </div>
+    <!-- конец блока -->
+    <!-- успешная отправка + спасибо -->
+    <i class="closer jsPopupCloser">×</i>
+
+    <div class="popup-form-success">
+        <div class="popup-form-success__txt">Письмо с подтверждением подписки отправлено на mail@mail.ru.</div>
+        <div class="popup-form-success__txt popup-form-success__txt--small">Проверьте папку «Спам», возможно, письмо попало туда.</div>
+        <div class="popup-form-success__txt popup-form-success__txt--small">Чтобы не пропускать наши новости и акции, добавьте <a href="mailto:info@enter.ru">info@enter.ru</a> в свою адресную книгу.</div>
+        <div class="popup-form-success__subscribtion popup-form-success__subscribtion--already-done">
+            <button class="btn-type btn-type--buy" type="submit">Продолжить</button>
+        </div>
+    </div>
+    <!-- конец блока -->
+
 </div>
 <!--/ попап добавления отзыва -->
 

@@ -113,9 +113,25 @@
         &-lbl {
             font-size: 12px;
             font-weight: bold;
-            margin: 0 0 5px 0;
+            margin: 0 0 8px 0;
             display: block;
             color: #363636;
+
+            &--err{
+                display: none;
+                position: absolute;
+                color: @error;
+                font-size: 12px;
+                background-color: @white;
+                top: 15px;
+                left: 10px;
+            }
+        }
+        &--err{
+            border-color: @error;
+            &+.form-ctrl__textarea-lbl--err{
+                display: block;
+            }
         }
     }
 
