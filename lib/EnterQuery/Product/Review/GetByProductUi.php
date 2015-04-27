@@ -46,7 +46,14 @@ namespace EnterQuery\Product\Review
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode);
 
-                    $this->response->reviews = isset($result['review_list'][0]) ? $result['review_list'] : [];
+                    $this->response->reviews = [];
+
+                    if (isset($result['review_list'][0])) {
+                        foreach ($result['review_list'] as $review) {
+                            $this->response->reviews[] = new \Model\Review\ReviewEntity($review);
+                        }
+                    }
+
                     $this->response->reviewCount = isset($result['num_reviews']) ? $result['num_reviews'] : null;
                     $this->response->score = isset($result['avg_score']) ? $result['avg_score'] : null;
                     $this->response->starScore = isset($result['avg_star_score']) ? $result['avg_star_score'] : null;

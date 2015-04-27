@@ -21,6 +21,11 @@ class ReviewsAction {
         $reviewsData = [];
         \RepositoryManager::review()->prepareData($productUi, $reviewsType, $page, $numReviewsOnPage, function($data) use(&$reviewsData) {
             $reviewsData = (array)$data;
+            if (isset($reviewsData['review_list'][0])) {
+                foreach ($reviewsData['review_list'] as $key => $review) {
+                    $reviewsData['review_list'][$key] = new \Model\Review\ReviewEntity($review);
+                }
+            }
         });
         \App::curl()->execute();
 
