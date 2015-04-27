@@ -143,7 +143,7 @@ class FormAction {
         try {
             $authSource = $session->get('authSource', null);
             if ($user) {
-                if ('phone' === $authSource && $user->getMobilePhone() !== $form->getMobile()) {
+                if ($form->getMobile() && ('phone' === $authSource) && ($user->getMobilePhone() !== $form->getMobile())) {
                     throw new \Curl\Exception('Нельзя изменить мобильный телефон');
                 } elseif ('email' === $authSource && $user->getEmail() !== $form->getEmail()) {
                     throw new \Curl\Exception('Нельзя изменить email');

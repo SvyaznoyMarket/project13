@@ -399,6 +399,9 @@ class IndexAction {
      * @return array
      */
     public function getDataForCredit(\Model\Product\Entity $product, \EnterQuery\PaymentGroup\GetByCart $paymentGroupQuery = null) {
+
+        if (!\App::config()->payment['creditEnabled']) return ['creditIsAllowed' => false];
+
         $user = \App::user();
         $region = $user->getRegion();
 
