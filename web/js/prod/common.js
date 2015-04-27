@@ -4,11 +4,29 @@
 
 ;(function($, ko){
 
-    ENTER.DeliveryPoints = function DeliveryPointsF (points) {
+    var balloonTemplate =
+        '<table class="pickup-list"><tbody><tr class="pickup-item clearfix" ><td class="pickup-item__logo">'+
+        '<img src="{{ icon }}" class="pickup-item__img" >'+
+        '<span class="pickup-item__name">{{ listName }}</span>'+
+        '</td><td class="pickup-item__addr">'+
+        '{{# subway }}' +
+        '<div class="pickup-item__metro" style="background: {{ subway.line.color }};">'+
+        '<div class="pickup-item__metro-inn">{{ subway.name }}</div></div>'+
+        '{{/ subway }}'+
+        '<div class="pickup-item__addr-name">{{ address }}</div>'+
+        '<div class="pickup-item__time">{{ regtime }}</div></td>'+
+        '<td class="pickup-item__info pickup-item__info--nobtn">'+
+        '<div class="pickup-item__date" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
+        '<div class="pickup-item__price"><span >{{ humanCost }}</span> {{# showRubles }}<span class="rubl">p</span></div>{{/ showRubles }}'+
+        '</td></tr></tbody></table>';
+
+    ENTER.DeliveryPoints = function DeliveryPointsF (points, mapParam) {
 
         var self = this,
             pointsBounds,
             map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map;
+
+        if (mapParam) map = mapParam;
 
         self.searchInput = ko.observable();
         self.searchAutocompleteList = ko.observableArray();
@@ -142,8 +160,6 @@
          * Отображаем на карте только те точки, которые были выбраны в первом дропдауне
          */
         self.choosenTokens.subscribe(function(arr){
-            var map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map; // TODO уже можно вынести
-
             map.geoObjects.each(function(geoObject){
                 if (arr.length == 0) {
                     geoObject.options.set('visible', true)
@@ -155,17 +171,17 @@
 
         /* INIT */
 
-        $.each(points, function(token, pointsArr) {
-            $.each(pointsArr, function(index, point){
-                self.availablePoints.push(point);
-                if (typeof pointsBounds == 'undefined') pointsBounds = [[point.latitude, point.longitude], [point.latitude, point.longitude]];
-                else {
-                    if (point.latitude < pointsBounds[0][0]) pointsBounds[0][0] = point.latitude;
-                    if (point.latitude > pointsBounds[1][0]) pointsBounds[1][0] = point.latitude;
-                    if (point.longitude < pointsBounds[0][1]) pointsBounds[0][1] = point.longitude;
-                    if (point.longitude > pointsBounds[1][1]) pointsBounds[1][1] = point.longitude;
-                }
-            });
+        console.log('Init DeliveryPointsModel with ', {points: points, mapParam: mapParam});
+
+        $.each(points, function(index, point) {
+            self.availablePoints.push(point);
+            if (typeof pointsBounds == 'undefined') pointsBounds = [[point.latitude, point.longitude], [point.latitude, point.longitude]];
+            else {
+                if (point.latitude < pointsBounds[0][0]) pointsBounds[0][0] = point.latitude;
+                if (point.latitude > pointsBounds[1][0]) pointsBounds[1][0] = point.latitude;
+                if (point.longitude < pointsBounds[0][1]) pointsBounds[0][1] = point.longitude;
+                if (point.longitude > pointsBounds[1][1]) pointsBounds[1][1] = point.longitude;
+            }
         });
 
         window.map = self;
@@ -174,34 +190,44 @@
 
     };
 
-    ENTER.Placemark = function(point, visible) {
+    ENTER.Placemark = function(point, visible, buyButtonClass) {
 
         var visibility = typeof visible == 'undefined' ? true : visible,
-            balloonContent = '<b>Адрес:</b> ' + point.address,
-            placemark;
+            balloonContent, placemark;
+
+        if (!buyButtonClass) buyButtonClass = 'jsChangePoint';
+
+        // Для шаблона
+        if (point.cost == 0) {
+            point.humanCost = 'Бесплатно';
+            point.showRubles = false;
+        } else {
+            point.humanCost = point.cost;
+            point.showRubles = true;
+        }
 
         if (!point.latitude || !point.longitude) throw 'Не указаны координаты точки';
 
-        if (point.regtime) balloonContent += '<br /> <b>Время работы:</b> ' + point.regtime;
+        balloonContent = Mustache.render(balloonTemplate, point);
 
         // кнопка "Выбрать магазин"
         balloonContent += $('<button />', {
-                'text':'Выбрать',
-                'class': 'btnLightGrey bBtnLine btnView jsChangePoint',
+                'text':'Купить',
+                'class': 'btn-type btn-type--buy ' + buyButtonClass,
                 'style': 'display: block',
-                'data-id': point.id,
+                'data-shop': point.id,
                 'data-token': point.token,
                 'data-blockname': point.orderToken
             }
         )[0].outerHTML;
 
         placemark = new ymaps.Placemark([point.latitude, point.longitude], {
-            balloonContentHeader: point.name,
+            // balloonContentHeader: point.name,
             balloonContentBody: balloonContent,
             hintContent: point.name,
             enterToken: point.token // Дополняем собственными свойствами
         }, {
-            balloonMaxWidth: 200,
+            balloonMaxWidth: 428,
             iconLayout: 'default#image',
             iconImageHref: point.marker.iconImageHref,
             iconImageSize: point.marker.iconImageSize,
@@ -209,6 +235,7 @@
             visible: visibility
         });
 
+        // Максимальная ширина балуна
         //placemark.balloon.set('maxWidth', 100);
 
         return placemark;
@@ -480,6 +507,8 @@
 				$elem = $(element),
 				productId = $elem.data('id'),
 				typeId = $elem.data('type-id'),
+                activeLinkClass = 'btnCmpr_lk-act',
+                buttonText = 'Добавить к сравнению',
 				comparableProducts;
 
 			var location = '';
@@ -488,17 +517,22 @@
 			} else if (ENTER.config.pageConfig.location.indexOf('product') != -1) {
 				location = 'product';
 			}
+
+            if (ENTER.config.pageConfig.newProductPage) {
+                activeLinkClass = 'product-card-tools__lk--active';
+                buttonText = 'Сравнить';
+            }
 			
 			if (ENTER.utils.getObjectWithElement(compare, 'id', productId)) {
 				$elem
 					.addClass('btnCmpr-act')
-					.find('a.btnCmpr_lk').addClass('btnCmpr_lk-act').attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}))
+					.find('.jsCompareLink').addClass(activeLinkClass).attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}))
 					.find('span').text('Убрать из сравнения');
 			} else {
 				$elem
 					.removeClass('btnCmpr-act')
-					.find('a.btnCmpr_lk').removeClass('btnCmpr_lk-act').attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId, location: location}))
-					.find('span').text('Добавить к сравнению');
+					.find('.jsCompareLink').removeClass(activeLinkClass).attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId, location: location}))
+					.find('span').text(buttonText);
 			}
 	
 			// массив продуктов, которые можно сравнить с данным продуктом
@@ -622,7 +656,7 @@
 
 	// Биндинги на нужные элементы
 	// Топбар, кнопка Купить на странице продукта, листинги, слайдер аксессуаров
-	$('.js-topbarfix, .js-topbarfixBuy, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-lineListing, .js-slider, .jsKnockoutCart').each(function(){
+	$('.js-topbarfix, .js-topbarfixBuy, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-lineListing, .js-slider, .jsKnockoutCart, .js-compareProduct').each(function(){
 		ko.applyBindings(ENTER.UserModel, this);
 	});
 
@@ -1728,6 +1762,38 @@ $(function() {
         
         $body.trigger(event.name, event.data || []);
         console.info('event', event.name, event.data);
+    });
+});
+$(function() {
+    $('body').on('click', '.jsFavoriteLink', function(e){
+        var
+            $el = $(e.currentTarget),
+            xhr = $el.data('xhr')
+        ;
+
+        console.info({'.jsFavoriteLink click': $el});
+
+
+
+        if ($el.data('ajax')) {
+            e.stopPropagation();
+
+            try {
+                if (xhr)  xhr.abort();
+            } catch (error) { console.error(error); }
+
+            xhr = $.post($el.attr('href'))
+                .done(function(response) {
+                    $('body').trigger('updateWidgets', response.widgets);
+                })
+                .always(function() {
+                    $el.data('xhr', null);
+                })
+            ;
+            $el.data('xhr', xhr);
+
+            e.preventDefault();
+        }
     });
 });
 /**
@@ -2983,7 +3049,13 @@ $(document).ready(function() {
 
 		var
 			button = $(e.currentTarget),
-			$target = $('#jsOneClickContent');
+			$target = $('#jsOneClickContent'),
+            $productInfo = $('#product-info'),
+            productUi;
+
+        productUi = $productInfo.length > 0 ? $productInfo.data('ui') : button.data('product-ui');
+
+        if (!productUi) throw 'Не обнаружен ui продукта';
 
 		if ($target.length) {
 			openPopup(false);
@@ -2991,7 +3063,7 @@ $(document).ready(function() {
 		} else {
 			oneClickOpening = true;
 			$.ajax({
-				url: ENTER.utils.generateUrl('orderV3OneClick.form', {productUid: button.data('product-ui'), sender: button.data('sender'), sender2: button.data('sender2')}),
+				url: ENTER.utils.generateUrl('orderV3OneClick.form', {productUid: productUi, sender: button.data('sender'), sender2: button.data('sender2')}),
 				type: 'POST',
 				dataType: 'json',
 				closeClick: false,
@@ -3086,20 +3158,21 @@ $(document).ready(function() {
 						$('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
 					}
 				}).done(function(data) {
-					console.log("Query: %s", data.result.OrderDeliveryRequest);
-					console.log("Model:", data.result.OrderDeliveryModel);
-					$orderContent.empty().html($(data.result.page).html());
+					//console.log("Query: %s", data.result.OrderDeliveryRequest);
+					//console.log("Model:", data.result.OrderDeliveryModel);
 
                     if (data.result.warn) $('#OrderV3ErrorBlock').text(data.result.warn).show();
 
-                    $.each($('.jsNewPoints'), function(i,val) {
-                        var E = ENTER.OrderV31Click,
-                            pointData = JSON.parse($(this).find('script.jsMapData').html()),
-                            points = new ENTER.DeliveryPoints(pointData.points, E.map);
+                    var $data = $(data.result.page);
 
-                        E.koModels.push(points);
-                        ko.applyBindings(points, val);
-                    });
+                    $orderContent.empty().html($data.html());
+
+                    var E = ENTER.OrderV31Click,
+                        pointData = JSON.parse($data.find('script.jsMapData').html()),
+                        points = new ENTER.DeliveryPoints(pointData.points, E.map);
+
+                    E.koModels.push(points);
+                    ko.applyBindings(points, $orderContent[0]);
 
 					ENTER.OrderV31Click.functions.initAddress();
 					$orderContent.find('input[name=address]').focus();
@@ -4486,281 +4559,6 @@ $(document).ready(function() {
 	});
 });
 
-/**
- * Саджест для поля поиска
- * Нужен рефакторинг
- *
- * @author		Zaytsev Alexandr
- * @requires	jQuery, jQuery.placeholder
- *
- * @param	{Object}	searchInput			Поле поиска
- * @param	{Object}	suggestWrapper		Обертка для подсказок
- * @param	{Object}	suggestItem			Результаты поиска
- * 
- * @param	{Number}	nowSelectSuggest	Текущий выделенный элемент, если -1 - значит выделенных элементов нет
- * @param	{Number}	suggestLen			Количество результатов поиска
- */
-;(function() {
-	var
-		body = $('body'),
-		searchForm = $('div.searchbox form'),
-        searchInput = searchForm.find('input.searchtext'),
-		suggestWrapper = $('#searchAutocomplete'),
-		suggestItem = $('.bSearchSuggest__eRes'),
-
-		nowSelectSuggest = -1,
-		suggestLen = 0,
-
-		suggestCache = {},
-
-		tID = null;
-	// end of vars	
-
-
-	var
-		suggestAnalytics = function suggestAnalytics() {
-			var
-				link = suggestItem.eq(nowSelectSuggest).attr('href'),
-				type = ( suggestItem.eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes') ) ? 'suggest_category' : 'suggest_product';
-			// end of vars
-			
-			if ( typeof(_gaq) !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'Search', type, link]);
-			}
-		},
-
-		/**
-		 * Загрузить ответ от поиска: получить и показать его, с запоминанием (memoization)
-		 *
-		 * @returns {boolean}
-		 */
-		loadResponse = function loadResponse() {
-			var
-				text = searchInput.val(),
-
-				/**
-				 * Отрисовка данных с сервера
-				 *
-				 * @param	{String}	response	Ответ от сервера
-				 */
-				renderResponse = function renderResponse( response ) {
-					if ( !response.success ) {
-						return;
-					}
-
-					suggestCache[text] = response.content; // memoization
-					suggestWrapper.html(response.content);
-					suggestItem = $('.bSearchSuggest__eRes');
-					suggestLen = suggestItem.length;
-					if ( suggestLen ) {
-						//searchInputFocusin();
-						setTimeout(searchInputFocusin, 99);
-					}
-				},
-
-				/**
-				 * Запрос на получение данных с сервера
-				 */
-				getResFromServer = function getResFromServer() {
-					var
-						//text = searchInput.val(),
-						url = '/search/autocomplete?q=';
-
-					if ( text.length < 3 ) {
-						return false;
-					}
-					url += encodeURI( text );
-
-					$.ajax({
-						type: 'GET',
-						url: url,
-						success: renderResponse
-					});
-				};
-			// end of functions and vars
-
-			if ( text.length === 0 ) {
-				suggestWrapper.empty();
-
-				return false;
-			}
-
-			clearTimeout(tID);
-
-			// memoization
-			if ( suggestCache[text] ) {
-				renderResponse(suggestCache[text]);
-
-				return false;
-			}
-
-			tID = setTimeout(getResFromServer, 300);
-		}, // end of loadResponse()
-
-		/**
-		 * Экранируем лишние пробелы перед отправкой на сервер
-		 * вызывается по нажатию Ентера либо кнопки "Отправить"
-		 */
-		escapeSearchQuery = function escapeSearchQuery() {
-			var s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
-			searchInput.val(s);
-		}
-
-		/**
-		 * Обработчик поднятия клавиши
-		 * 
-		 * @param	{Event}		event
-		 * @param	{Number}	keyCode	Код нажатой клавиши
-		 * @param	{String}	text	Текст в поле ввода
-		 */
-		suggestKeyUp = function suggestKeyUp( event ) {
-			var
-				keyCode = event.which;
-
-			if ( (keyCode >= 37 && keyCode <= 40) ||  keyCode === 27 || keyCode === 13) { // Arrow Keys or ESC Key or ENTER Key
-				return false;
-			}
-
-			loadResponse();
-		},
-
-		/**
-		 * Обработчик нажатия клавиши
-		 * 
-		 * @param	{Event}		event
-		 * @param	{Number}	keyCode	Код нажатой клавиши
-		 */
-		suggestKeyDown = function suggestKeyDown( event ) {
-			var
-				keyCode = event.which;
-
-			var
-				markSuggestItem = function markSuggestItem() {
-					suggestItem.removeClass('hover').eq(nowSelectSuggest).addClass('hover');
-				},
-
-				selectUpItem = function selectUpItem() {
-					if ( nowSelectSuggest - 1 >= 0 ) {
-						nowSelectSuggest--;
-						markSuggestItem();
-					}
-					else {
-						nowSelectSuggest = -1;
-						suggestItem.removeClass('hover');
-						$(this).focus();
-					}
-				},
-
-				selectDownItem = function selectDownItem() {
-					if ( nowSelectSuggest + 1 <= suggestLen - 1 ) {
-						nowSelectSuggest++;
-						markSuggestItem();
-					}
-				},
-
-				enterSelectedItem = function enterSelectedItem() {
-					var link = suggestItem.eq(nowSelectSuggest).attr('href');
-
-					suggestAnalytics();
-					document.location.href = link;
-				};
-			// end of functions
-
-			if ( keyCode === 38 ) { // Arrow Up
-				selectUpItem();
-
-				return false;
-			}
-			else if ( keyCode === 40 ) { // Arrow Down
-				selectDownItem();
-
-				return false;
-			}
-			else if ( keyCode === 27 ) { // ESC Key
-				suggestWrapper.empty();
-				
-				return false;
-			}
-			else if ( keyCode === 13 ) {
-				escapeSearchQuery();
-				if ( nowSelectSuggest !== -1 ) { // Press Enter and suggest has selected item
-					enterSelectedItem();
-
-					return false;
-				}
-			}
-		},
-
-		searchSubmit = function searchSubmit() {
-			var text = searchInput.attr('value');
-
-			if ( text.length === 0 ) {
-				return false;
-			}
-			escapeSearchQuery();
-		},
-
-		searchInputFocusin = function searchInputFocusin() {
-			suggestWrapper.show();
-		},
-		
-		suggestCloser = function suggestCloser( e ) {
-			var
-				targ = e.target.className;
-
-			if ( !(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1) ) {
-				suggestWrapper.hide();
-			}
-		},
-
-		/**
-		 * Срабатывание выделения и запоминание индекса выделенного элемента по наведению мыши
-		 */
-		hoverForItem = function hoverForItem() {
-			var index = 0;
-
-			suggestItem.removeClass('hover');
-			index = $(this).addClass('hover').index();
-			nowSelectSuggest = index - 1;
-		},
-
-
-		/**
-		 * Подставляет поисковую подсказку в строку поиска
-		 */
-		searchHintSelect = function searchHintSelect() {
-			var
-				hintValue = $(this).text()/*,
-				searchValue = searchInput.val()*/;
-			//if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
-			searchInput.val(hintValue + ' ').focus();
-			if ( typeof(_gaq) !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'tooltip', hintValue]);
-			}
-			loadResponse();
-		};
-	// end of functions
-
-
-	/**
-	 * Attach handlers
-	 */
-	$(document).ready(function() {
-		searchInput.bind('keydown', suggestKeyDown);
-		searchInput.bind('keyup', suggestKeyUp);
-
-		searchInput.bind('focus', searchInputFocusin);
-        searchForm.bind('submit', searchSubmit);
-
-		searchInput.placeholder();
-
-		body.bind('click', suggestCloser);
-		body.on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
-		body.on('click', '.bSearchSuggest__eRes', suggestAnalytics);
-		body.on('click', '.sHint_value', searchHintSelect);
-	});
-}());
-
 ;(function(){
 
     // https://jira.enter.ru/browse/SITE-3508
@@ -4813,33 +4611,6 @@ $(document).ready(function() {
     $body.on('TLT_processDOMEvent', TLT_processDOMEvent);
 
 })(jQuery);
-;$(function($){
-
-	// var $menu = $('.js-mainmenu-level2');
-
-	// $menu.menuAim({
-	// 	activate: activateSubmenu,
-	// 	deactivate: deactivateSubmenu,
-	// 	exitOnMouseOut: true
-	// });
-
-	// function activateSubmenu(row) {
-	// 	var $row = $(row),
-	//       $submenu = $row.children('ul');
-
-	// 	$row.addClass('hover');
-	// 	$submenu.css({display: 'block'});
-	// }
-
-	// function deactivateSubmenu(row) {
-	// 	var $row = $(row),
-	// 		$submenu = $row.children('ul');
-
-	// 	$row.removeClass('hover');
-	// 	$submenu.css('display', 'none');
-	// }
-
-}(jQuery));
 /**
  * Кнопка наверх
  *
@@ -4867,11 +4638,11 @@ $(document).ready(function() {
 		if (!visible && $window.scrollTop() > offset && (!showWhenFullCartOnly || cartLength)) {
 			//появление
 			visible = true;
-			$upper.animate({marginTop: '0'}, 400);
+			$upper.fadeIn(400);
 		} else if (visible && ($window.scrollTop() < offset || showWhenFullCartOnly && !cartLength)) {
 			//исчезновение
 			visible = false;
-			$upper.animate({marginTop: '-55px'}, 400);
+			$upper.fadeOut(400);
 		}
 	}
 
@@ -5024,6 +4795,10 @@ $(document).ready(function() {
 		}
 		// end of function
 
+		setTimeout(function() {
+			userBarFixed.removeClass('userbar--show');
+		}, 100);
+
 		// только BuyInfoBlock
 		if ( !upsaleWrap.hasClass('mhintDdOn') ) {
 			removeBuyInfoBlock();
@@ -5051,6 +4826,8 @@ $(document).ready(function() {
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
+
+		userBarFixed.addClass('userbar--show');
 
 		var	buyInfo = $('.topbarfix_cartOn');
 
@@ -5301,3 +5078,12 @@ $(document).ready(function() {
 	}
 
 }(window.ENTER));
+
+$(function() {
+    $('body').on('updateWidgets', function(e, widgets){
+        $.each(widgets, function(id, value) {
+            console.info('replace ' + id +' with ' + value);
+            $(id).html($(value).html());
+        })
+    });
+});
