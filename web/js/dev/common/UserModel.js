@@ -92,33 +92,36 @@
 	});
 
 	// Обновление данных о пользователе и корзине
+	/*
 	$.ajax({
 		url: userInfoURL,
 		beforeSend: function(){
 			startTime = new Date().getTime();
 		},
 		success: function(data){
-			endTime = new Date().getTime();
-			spendTime = endTime - startTime;
-			ENTER.UserModel.update(data);
-			if (typeof ga == 'function') {
-				ga('send', 'timing', 'userInfo', 'Load User Info', spendTime);
-				console.log('[Google Analytics] Send user/info timing: %s ms', spendTime)
-			}
-
-			ENTER.config.userInfo = data;
-
-			if (!docCookies.hasItem(authorized_cookie)) {
-				if (data && data.user && typeof data.user.id != 'undefined') {
-					docCookies.setItem(authorized_cookie, 1, 60*60, '/'); // on
-				} else {
-					docCookies.setItem(authorized_cookie, 0, 60*60, '/'); // off
-				}
-			}
-
-			$body.trigger('userLogged', [data]);
+			...
 		}
 	});
+	*/
+	(function(data){
+		ENTER.UserModel.update(data);
+		if (typeof ga == 'function') {
+			ga('send', 'timing', 'userInfo', 'Load User Info', spendTime);
+			console.log('[Google Analytics] Send user/info timing: %s ms', spendTime)
+		}
+
+		ENTER.config.userInfo = data;
+
+		if (!docCookies.hasItem(authorized_cookie)) {
+			if (data && data.user && typeof data.user.id != 'undefined') {
+				docCookies.setItem(authorized_cookie, 1, 60*60, '/'); // on
+			} else {
+				docCookies.setItem(authorized_cookie, 0, 60*60, '/'); // off
+			}
+		}
+
+		$body.trigger('userLogged', [data]);
+	})($.parseJSON($('#data-userInfo').html()));
 
 	$body.on('catalogLoadingComplete', function(){
 		$('.js-listing, .js-jewelListing').each(function(){

@@ -15,28 +15,41 @@ class InfoAction {
             throw new \Exception\NotFoundException('Request is not xml http');
         }
 
-        $user = \App::user();
-        /* @var $cart   \Session\Cart */
-        $cart = $user->getCart();
-
-        $helper = new \Helper\TemplateHelper();
-
         /** @var $cookies \Http\Cookie[] */
         $cookies = [];
-
+        $responseData = [];
         try {
             if (!$request->cookies->has('infScroll')) {
-                $cookies[] = new \Http\Cookie(
-                    'infScroll',
-                    1,
-                    time() + (4 * 7 * 24 * 60 * 60),
-                    '/',
-                    \App::config()->session['cookie_domain'],
-                    false,
+                $cookies[] = new \Http\Cookie('infScroll', 1, time() + (4 * 7 * 24 * 60 * 60), '/',
+                    \App::config()->session['cookie_domain'], false,
                     false // важно httpOnly=false, чтобы js мог получить куку
                 );
             }
 
+            $responseData = $this->getResponseData($request);
+        } catch (\Exception $e) {
+        }
+
+
+        $response = new \Http\JsonResponse($responseData);
+
+        foreach ($cookies as $cookie) {
+            $response->headers->setCookie($cookie);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @return array
+     */
+    public function getResponseData(\Http\Request $request) {
+        $user = \App::user();
+        $cart = $user->getCart();
+
+        $responseData = [];
+        try {
             $responseData = [
                 'success' => true,
                 'user'    => [
@@ -108,15 +121,8 @@ class InfoAction {
             $responseData['success'] = false;
         }
 
-        $response = new \Http\JsonResponse($responseData);
-
-        foreach ($cookies as $cookie) {
-            $response->headers->setCookie($cookie);
-        }
-
-        return $response;
+        return $responseData;
     }
-
 
     /**
      * @param \Http\Request $request
