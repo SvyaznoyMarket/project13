@@ -2,25 +2,54 @@
 * Выпадающие блоки из блока корзины и логина
 */
 .userbar-dd {
-	position: absolute;
+    position: absolute;
     z-index: 101;
     top: 50px;
 
     display: none;
 
     color: @black;
-    border: 1px solid #ccc;
+    border: 1px solid #c7c7c7;
     background: @white;
-    -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, .2);
-       -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, .2);
-            box-shadow: 0 2px 7px -1px rgba(0, 0, 0, .2);
+
+    .drop-shadow(0, 0, 12px, .3);
+    &--account {
+        left: -5px;
+        &:after {
+            position: absolute;
+            top: -7px;
+            left: 12px;
+
+            width: 0;
+            height: 0;
+
+            content: '';
+
+            border-right: 6px solid transparent;
+            border-bottom: 7px solid #fff;
+            border-left: 6px solid transparent;
+        }
+        &:before {
+            position: absolute;
+            top: -9px;
+            left: 10px;
+
+            width: 0;
+            height: 0;
+
+            content: '';
+
+            border-right: 8px solid transparent;
+            border-bottom: 9px solid #bbb;
+            border-left: 8px solid transparent;
+        }
+    }
 }
 
 .minicart {
     right: 0;
 
     width: 227px;
-
     &__buy {
         padding: 10px;
 
@@ -34,131 +63,144 @@
 }
 
 .topbarfix {
-
-	&_logOut {
-		width: 180px;
-		padding: 10px;
-	}
+    &_logout {
+        width: 180px;
+        padding: 10px;
+    }
 }
 
 .hintDd {
-		position: absolute;
-		top: 50px;
-		width: 732px;
-		left: -839px;
-		background: #fff;
-		height: 0;
-		/* Переход */
-	    .transition(all 0.2s ease-out 0.1s);
-	    overflow: hidden;
-	    border: 1px solid #ccc;
-		border-top: none;
-		border-bottom: none;
+    position: absolute;
+    top: 50px;
+    left: -839px;
 
-		.bHeadSection {
-			padding: 10px 0 0 10px;
-			font-size: 16px;
-			margin: 0;
-			border-top: 1px solid #ccc;
-		}
+    overflow: hidden;
 
-		&.mhintDdOn {
-			height: 270px;
-			.drop-shadow(0px, 4px, 11px, 0.2);
-			border-bottom: 1px solid #ccc;
-		}
+    width: 732px;
+    height: 0;
 
-		.slideItem {
-			width: 700px;
-			margin: 0 auto;
-		}
-	}
+    border: 1px solid #ccc;
+    border-top: none;
+    border-bottom: none;
+    background: #fff;
+    /* Переход */
+
+    .transition(all .2s ease-out .1s);
+    .bHeadSection {
+        font-size: 16px;
+
+        margin: 0;
+        padding: 10px 0 0 10px;
+
+        border-top: 1px solid #ccc;
+    }
+    &.mhintDdOn {
+        height: 270px;
+
+        border-bottom: 1px solid #ccc;
+
+        .drop-shadow(0px, 4px, 11px, .2);
+    }
+    .slideItem {
+        width: 700px;
+        margin: 0 auto;
+    }
+}
 
 
 
 .buyInfo {
-	border-top: 3px solid #f99b1c;
-	text-align: center;
-	padding: 10px 0 8px;
+    padding: 10px 0 8px;
 
-	&_pr {
-		font-size: 20px;
-		font-weight: bold;
-		margin: 5px 0;
-	}
+    text-align: center;
 
-	&_lk {
-		text-decoration: underline;
-	}
+    border-top: 3px solid #f99b1c;
+    &_pr {
+        font-size: 20px;
+        font-weight: bold;
 
-	&_self {
-		color: #f99b1c;
-		font-weight: bold;
-		font-size: 20px;
-	}
+        margin: 5px 0;
+    }
+    &_lk {
+        text-decoration: underline;
+    }
+    &_self {
+        font-size: 20px;
+        font-weight: bold;
+
+        color: #f99b1c;
+    }
 }
 
 
 .ddBlock {
-	display: block;
+    display: block;
 }
 /*
 Новая верстка - таблица
 */
-.topbarfix-cart-wrap{
-	max-height: 207px;
-	overflow-y: auto;
-	overflow-x: hidden;
+.topbarfix-cart-wrap {
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    max-height: 207px;
 }
-.table-cart{
-	border: none;
+.table-cart {
+    border: none;
+    &__i {
+        font-size: 11px;
 
-	&__i{
-		height: 55px;
-		overflow: hidden;
-		font-size: 11px;
-		vertical-align: top;
-	}
-	&__img{
-		max-height: 40px;
-		max-width: 30px;
-		&-wrap{
-			padding: 5px;
-			width: 40px;
-		}
+        overflow: hidden;
 
-	}
-	&__name{
-		line-height: 1.2;
-		padding: 5px 5px 5px 0;
-		width: 100%;
-		max-width: 0;
-		&-inn{
-			max-width: 120px;
-			display: block;
-			position: relative;
-			overflow: hidden;
-			max-height: 40px;
-			&:after{
-				.after-gradient-stub(15px);
-			}
-		}
-	}
-	&__inf{
-		padding:5px 10px 5px 0px;
+        height: 55px;
 
-		white-space: nowrap;
-		.price{
-			white-space: nowrap;
-			display: block;
-			min-width: 50px;
-		}
-		.quan{
-			display: block;
-		}
-		.del{
-			display: block;
-			text-decoration: underline;
-		}
-	}
+        vertical-align: top;
+    }
+    &__img {
+        max-width: 30px;
+        max-height: 40px;
+        &-wrap {
+            width: 40px;
+            padding: 5px;
+        }
+    }
+    &__name {
+        line-height: 1.2;
+
+        width: 100%;
+        max-width: 0;
+        padding: 5px 5px 5px 0;
+        &-inn {
+            position: relative;
+
+            display: block;
+            overflow: hidden;
+
+            max-width: 120px;
+            max-height: 40px;
+            &:after {
+                .after-gradient-stub(15px);
+            }
+        }
+    }
+    &__inf {
+        padding: 5px 10px 5px 0;
+
+        white-space: nowrap;
+        .price {
+            display: block;
+
+            min-width: 50px;
+
+            white-space: nowrap;
+        }
+        .quan {
+            display: block;
+        }
+        .del {
+            display: block;
+
+            text-decoration: underline;
+        }
+    }
 }

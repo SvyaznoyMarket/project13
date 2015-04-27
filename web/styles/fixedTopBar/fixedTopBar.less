@@ -45,8 +45,6 @@
     &_cart {
         position: relative;
         z-index: 101;
-
-        background: @white;
         &:hover {
             .userbar-dd {
                 display: block;
@@ -94,7 +92,7 @@
     }
     &_log {
         position: relative;
-        z-index: 10;
+        z-index: 101;
 
         max-width: 120px;
 
@@ -167,10 +165,7 @@
     &_cmpr {
         position: relative;
         z-index: 101;
-
-        background: @white;
         &-full {
-            background-color: @white;
             .i-header--compare {
                 background-position: -208px 0;
             }
@@ -200,16 +195,14 @@
             .inline-block();
         }
         &_popup {
-            font-size: 16px;
-
             position: absolute;
             z-index: 101;
             top: 66px;
-            right: -80px;
+            right: 0;
 
             overflow: hidden;
 
-            width: 410px;
+            width: 310px;
             height: 0;
 
             color: #808080;
@@ -222,44 +215,43 @@
             &_inn {
                 position: relative;
 
-                padding: 20px 30px 10px;
+                padding: 10px;
 
-                border: 1px solid #bbb;
+                border: 1px solid #c7c7c7;
                 background: @white;
 
-                .drop-shadow(0, 0, 20px, .4);
-                .rounded(4px);
+                .drop-shadow(0, 0, 12px, .3);
                 &:after {
                     position: absolute;
-                    top: -16px;
-                    left: 261px;
+                    top: -7px;
+                    right: 12px;
 
                     width: 0;
                     height: 0;
 
                     content: '';
 
-                    border-right: 15px solid transparent;
-                    border-bottom: 16px solid #fff;
-                    border-left: 15px solid transparent;
+                    border-right: 6px solid transparent;
+                    border-bottom: 7px solid #fff;
+                    border-left: 6px solid transparent;
                 }
                 &:before {
                     position: absolute;
-                    top: -18px;
-                    left: 259px;
+                    top: -9px;
+                    right: 10px;
 
                     width: 0;
                     height: 0;
 
                     content: '';
 
-                    border-right: 17px solid transparent;
-                    border-bottom: 18px solid #bbb;
-                    border-left: 17px solid transparent;
+                    border-right: 8px solid transparent;
+                    border-bottom: 9px solid #bbb;
+                    border-left: 8px solid transparent;
                 }
             }
             &-show {
-                top: 56px;
+                top: 50px;
 
                 overflow: visible;
 
@@ -268,20 +260,15 @@
                 .opacity(1);
             }
             .cmprAdd {
-                font-size: 14px;
-
-                margin: 10px 0 10px;
+                margin: 10px 0 0;
                 &_img {
-                    vertical-align: middle;
-
-                    .inline-block();
+                    .inline-block-middle();
                 }
                 &_n {
-                    width: 300px;
+                    width: 238px;
+                    margin-left: 5px;
 
-                    vertical-align: middle;
-
-                    .inline-block();
+                    .inline-block-middle();
                 }
             }
         }

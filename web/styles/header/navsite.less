@@ -3,38 +3,38 @@
 @full-size: 100%;
 
 // навигация по сайту
-.navsite{
+.navsite {
     height: @full-size;
 
     .table();
-    &_i{
+    &_i {
         position: relative;
 
         text-align: center;
         vertical-align: top;
 
         .table-cell();
-        &:hover{
-            .navsite2{
+        &:hover {
+            .navsite2 {
                 display: block;
             }
         }
-        &:first-child{
-            &:hover{
-                .navsite2{
+        &:first-child {
+            &:hover {
+                .navsite2 {
                     left: -6px;
                 }
             }
         }
-        &:nth-last-child(4)~li{
-            &:hover{
-                .navsite2{
+        &:nth-last-child(4) ~ li {
+            &:hover {
+                .navsite2 {
                     left: -141px;
-                    &_i{
-                        &-child{
-                            .navsite2_lk{
-                                &:hover{
-                                    &:before{
+                    &_i {
+                        &-child {
+                            .navsite2_lk {
+                                &:hover {
+                                    &:before {
                                         z-index: 9;
                                         right: 198px;
 
@@ -42,29 +42,29 @@
 
                                         .pseudo-corner-left(8px, @white, 50%);
                                     }
-                                    &:after{
+                                    &:after {
                                         .pseudo-corner-right(0, transparent, 50%);
                                     }
                                 }
                             }
                         }
                     }
-
                 }
             }
-            .navsite3{
+            .navsite3 {
                 left: -200px;
 
                 width: 195px;
                 padding-right: 209px;
                 padding-left: 0;
+
                 background-position: 198px;
             }
         }
-        &-child{
-            &:hover{
-                .navsite_lk{
-                    &:after{
+        &-child {
+            &:hover {
+                .navsite_lk {
+                    &:after {
                         left: 50%;
 
                         margin-left: -6px;
@@ -74,14 +74,13 @@
                 }
             }
         }
-
         &-act {
             .navsite_lk {
                 border-bottom: 2px solid @black;
             }
         }
     }
-    &_icon{
+    &_icon {
         font-family: 'menuIconFont';
         font-size: 90px;
         line-height: .5;
@@ -91,41 +90,42 @@
 
         color: @black;
     }
-    &_imgw{
+    &_imgw {
         overflow: hidden;
 
         height: 45px;
         margin: 0 0 5px;
     }
-    &_img{
+    &_img {
         width: auto;
         height: 100%;
 
         .inline-block();
     }
-    &_tx{
+    &_tx {
         font-family: 'Enter type';
         font-size: 11px;
         line-height: 1;
 
-        text-transform: uppercase;
+        display: block;
 
         max-width: 70px;
-        display: block;
+
+        text-transform: uppercase;
     }
-    &_lk{
+    &_lk {
         line-height: 1;
 
         display: block;
 
         height: 85px;
-        &:hover{
+        &:hover {
             text-decoration: none;
         }
     }
 }
 
-.navsite2{
+.navsite2 {
     position: absolute;
     z-index: 100;
     top: 85px;
@@ -140,35 +140,34 @@
     border: 1px solid @darkgrey4;
     border-top-width: 6px;
     background: @white;
-
-//    .transition(all .3s ease);
+    //    .transition(all .3s ease);
     // &:hover {
     //  width: 415px;
     // }
-    &_i{
-        &:hover,
+    &_i {
+        &:hover ,
         &.hover {
-            .navsite3{
-                transition-property: visibility;
-                transition-delay: 100ms;
+            .navsite3 {
                 display: block;
                 visibility: visible;
 
+                transition-delay: 100ms;
+                transition-property: visibility;
+
                 .opacity(1);
             }
-            .navsite2_lk{
+            .navsite2_lk {
                 text-decoration: none;
 
                 background: #e3e3e3;
             }
         }
     }
-
     &-new {
         .navsite2_i {
             &:hover {
-                .navsite2_lk{
-                    &:after{
+                .navsite2_lk {
+                    &:after {
                         right: -3px;
 
                         margin-top: -8px;
@@ -179,8 +178,7 @@
             }
         }
     }
-
-    &_lk{
+    &_lk {
         font-size: 14px;
         line-height: 1.2;
 
@@ -191,8 +189,8 @@
 
         width: 185px;
         padding: 5px 10px;
-        &:hover{
-            .navsite2_tx{
+        &:hover {
+            .navsite2_tx {
                 text-decoration: none;
 
                 border-bottom: 1px solid @darkgrey5;
@@ -201,7 +199,7 @@
     }
 }
 .navsite_i {
-    &:nth-last-child(4)~li {
+    &:nth-last-child(4) ~ li {
         .navsite2.navsite2-new {
             .navsite2_i {
                 &:hover {
@@ -211,7 +209,9 @@
                         }
                         &:before {
                             left: -3px;
+
                             margin-top: -8px;
+
                             .pseudo-corner-left(8px, @white, 50%);
                         }
                     }
@@ -222,7 +222,7 @@
 }
 
 
-.navsite3{
+.navsite3 {
     position: absolute;
     top: -6px;
     left: -1px;
@@ -235,18 +235,17 @@
     padding-right: 5px;
     padding-left: 205px;
 
+    transition-delay: 110ms;
+    transition-property: visibility;
+
     border: 1px solid @darkgrey4;
     border-top-width: 6px;
     background: url('@{base-url}/mainpage/img/nav-shadow.png') repeat-y 204px 0 @white;
 
-    transition-property: visibility;
-    transition-delay: 110ms;
-
-//    .transition(all .3s ease);
     .opacity(100);
-    &_i{
+    &_i {
         padding: 5px 10px;
-        &-tl{
+        &-tl {
             font-size: 14px;
 
             margin: 0 0 5px;
@@ -254,9 +253,9 @@
             text-align: center;
         }
     }
-    &_lk{
+    &_lk {
         font-size: 12px;
-        &:hover{
+        &:hover {
             text-decoration: none;
 
             border-bottom: 1px solid @darkgrey5;
@@ -264,11 +263,11 @@
     }
 }
 
-.navitem{
+.navitem {
     margin: 5px 0 0;
 
     text-align: center;
-    &_tl{
+    &_tl {
         font-size: 13px;
         font-weight: bold;
 
@@ -276,149 +275,25 @@
 
         text-transform: uppercase;
     }
-    &_cnt{
+    &_cnt {
         display: block;
-        &:hover{
+        &:hover {
             text-decoration: none;
-            .navitem_n{
+            .navitem_n {
                 text-decoration: none;
 
                 border-bottom: 1px solid @darkgrey5;
             }
         }
     }
-    &_img{
+    &_img {
         display: block;
 
         width: 120px;
         height: 120px;
         margin: 0 auto 2px;
     }
-    &_pr{
+    &_pr {
         font-size: 21px;
     }
 }
-
-// стили для сторой навигации - убить к чертям, после перехода на новый дизайн
-.header_nav{
-    float: right;
-
-    width: 850px;
-    margin: 14px 5px 0 0;
-    .navsite{
-        &_i{
-            padding: 0 3px;
-            .navsite_lk{
-                color: @white;
-                &:hover{
-                    color: #ffa901;
-                    .navsite_icon{
-                        color: #ffa901;
-                    }
-                }
-            }
-            &-child{
-                &:hover{
-                    .navsite_lk{
-                        &:after{
-                            .pseudo-corner-top(6px, #ffa901, 80px);
-                        }
-                    }
-                }
-            }
-
-            &:nth-last-child(4)~li{
-                &:hover{
-                    .navsite2{
-                        &_i{
-                            &-child{
-                                //.navsite2_lk{
-                                    &:hover{
-                                        &:before{
-                                            z-index: 9;
-                                            right: 198px;
-
-                                            margin-top: -8px;
-
-                                            .pseudo-corner-left(8px, @white, 50%);
-                                        }
-                                        &:after{
-                                            .pseudo-corner-right(8px, transparent, 50%);
-                                        }
-                                    }
-                              //  }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        &_icon{
-            font-size: 78px;
-            font-weight: normal;
-
-            height: 40px;
-            margin: 0 0 10px;
-
-            color: @white;
-        }
-        &_tx{
-            font-size: 11px;
-        }
-        &_imgw{
-            overflow: hidden;
-
-            width: auto;
-            height: 45px;
-            margin: 0 0 5px;
-        }
-    }
-    .navsite2{
-        padding-top: 5px;
-        padding-bottom: 5px;
-
-        border-color: #ffa901;
-
-        .rounded(3px);
-        &_i{
-            &:hover{
-                .navsite2_lk{
-                    background: #e6e6e6;
-                }
-            }
-            &-child{
-                .navsite2_lk{
-                    &:hover{
-                        &:after{
-                            .pseudo-corner-right(8px, transparent, 50%);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    .navsite3{
-        padding-top: 5px;
-        padding-bottom: 5px;
-
-        border-color: #ffa901;
-        background-image: url('/css/header/img/border.gif');
-        background-position: 205px 0;
-
-        .rounded(3px);
-        &_i{
-            &-tl{
-                font-family: 'Enter';
-                font-size: 18px;
-                line-height: 1.1;
-
-                text-align: left;
-                text-transform: uppercase;
-
-                color: #ffa901;
-            }
-        }
-    }
-
-}
-
