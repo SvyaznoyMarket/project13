@@ -3087,6 +3087,8 @@ $(document).ready(function() {
 					console.log("Model:", data.result.OrderDeliveryModel);
 					$orderContent.empty().html($(data.result.page).html());
 
+                    if (data.result.warn) $('#OrderV3ErrorBlock').text(data.result.warn).show();
+
                     $.each($('.jsNewPoints'), function(i,val) {
                         var E = ENTER.OrderV31Click,
                             pointData = JSON.parse($(this).find('script.jsMapData').html()),
