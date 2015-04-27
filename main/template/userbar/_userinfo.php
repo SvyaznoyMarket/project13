@@ -4,6 +4,15 @@
  */
 ?>
 
+<?
+$helper = new \Helper\TemplateHelper();
+
+$userData = (new \Controller\User\InfoAction())->getResponseData(\App::request());
+
+?>
+
+<?= $helper->jsonInScriptTag($userData, 'data-userInfo') ?>
+
 <li class="userbtn_i topbarfix_log topbarfix_log-unlogin" data-bind="visible: !name()">
     <a href="/login" class="topbarfix_log_lk bAuthLink"><span class="topbarfix_log_tx">Вход</span></a>
 </li>
