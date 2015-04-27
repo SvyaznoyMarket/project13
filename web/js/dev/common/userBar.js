@@ -44,7 +44,7 @@
 		if (disableAnimation) {
 			userBarFixed.show(0, onOpen || function(){});
 		} else {
-			userBarFixed.slideDown();
+			userBarFixed.fadeIn('300');
 		}
 
 		if (userBarFixed.length) {
@@ -56,7 +56,7 @@
 	 * Скрытие юзербара
 	 */
 	function hideUserbar() {
-		userBarFixed.slideUp();
+		userBarFixed.fadeOut('300');
 		userbarStatic.css('visibility','visible');
 	}
 
