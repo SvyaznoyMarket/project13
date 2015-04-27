@@ -7,7 +7,12 @@
 <?
 $helper = new \Helper\TemplateHelper();
 
-$userData = (new \Controller\User\InfoAction())->getResponseData(\App::request());
+$userData = [];
+try {
+    $userData = (new \Controller\User\InfoAction())->getResponseData(\App::request());
+} catch (\Exception $e) {
+    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['user-info', 'critical']);
+}
 
 ?>
 
