@@ -123,6 +123,8 @@
 					//console.log("Query: %s", data.result.OrderDeliveryRequest);
 					//console.log("Model:", data.result.OrderDeliveryModel);
 
+                    if (data.result.warn) $('#OrderV3ErrorBlock').text(data.result.warn).show();
+
                     var $data = $(data.result.page);
 
                     $orderContent.empty().html($data.html());
