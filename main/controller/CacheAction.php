@@ -43,6 +43,8 @@ class CacheAction {
             $categoryToken = explode('/', $httpRequest->attributes->get('categoryPath'));
             $categoryToken = end($categoryToken);
 
+            $brandToken = $httpRequest->attributes->get('brandToken');
+
             if ($categoryToken) {
                 $action = new Action\ProductCatalog\GetByCategory();
                 $request = $action->createRequest();
@@ -51,10 +53,16 @@ class CacheAction {
                 $request->regionId = $regionId;
                 $request->userToken = \App::user()->getToken() ?: null;
 
+                if ($brandToken) {
+                    $request->brandCriteria = ['token' => $brandToken];
+                }
+
                 $response = $action->execute($request);
                 \Controller\ProductCategory\Action::$actionResponse = $response; // FIXME
             }
         };
+        // каталог товаров бренда
+        $actionByRoute['product.category.brand'] = $actionByRoute['product.category'];
 
         if ($route && isset($actionByRoute[$route])) {
             call_user_func($actionByRoute[$route], $request);

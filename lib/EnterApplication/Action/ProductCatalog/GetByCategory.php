@@ -39,8 +39,18 @@ namespace EnterApplication\Action\ProductCatalog
             // проверка региона
             $this->checkRegionQuery($regionQuery);
 
+            // бренд
+            $brandQuery = null;
+            if (!empty($request->brandCriteria['token'])) {
+                $brandQuery = (new Query\Brand\GetByToken($request->brandCriteria['token'], $regionQuery->response->region['id']))->prepare();
+            }
+
             // категория
-            $categoryQuery = (new Query\Product\Category\GetByToken($request->categoryCriteria['token'], $regionQuery->response->region['id']))->prepare();
+            $categoryQuery = (new Query\Product\Category\GetByToken(
+                $request->categoryCriteria['token'],
+                $regionQuery->response->region['id'],
+                isset($request->brandCriteria['token']) ? $request->brandCriteria['token'] : null
+            ))->prepare();
 
             // дерево категорий для меню
             //$categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
@@ -117,6 +127,8 @@ namespace EnterApplication\Action\ProductCatalog
             $response->redirectQuery = $redirectQuery;
             $response->abTestQuery = $abTestQuery;
             $response->regionQuery = $regionQuery;
+            $response->categoryQuery = $categoryQuery;
+            $response->brandQuery = $brandQuery;
             $response->mainRegionQuery = $mainRegionQuery;
             $response->subscribeChannelQuery = $subscribeChannelQuery;
             $response->categoryRootTreeQuery = $categoryRootTreeQuery;
@@ -147,8 +159,10 @@ namespace EnterApplication\Action\ProductCatalog\GetByCategory
         public $regionId;
         /** @var string|null */
         public $userToken;
-        /** @var array */
+        /** @var array|null */
         public $categoryCriteria;
+        /** @var array|null */
+        public $brandCriteria;
     }
 
     class Response
@@ -163,6 +177,10 @@ namespace EnterApplication\Action\ProductCatalog\GetByCategory
         public $abTestQuery;
         /** @var Query\Region\GetById */
         public $regionQuery;
+        /** @var Query\Product\Category\GetByToken */
+        public $categoryQuery;
+        /** @var Query\Brand\GetByToken|null */
+        public $brandQuery;
         /** @var Query\Product\Filter\Get */
         public $filterQuery;
         /** @var Query\Region\GetMain */
