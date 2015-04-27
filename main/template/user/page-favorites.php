@@ -13,6 +13,10 @@
 	<div class="personalTitle">Избранное</div>
 
 	<div class="table-favorites table table--border-cell-hor">
+		<? if (!$products): ?>
+			У вас нет избранных товаров
+		<? endif ?>
+
 		<? foreach ($products as $product): ?>
 		<?
 			$rowId = 'id-favoriteRow-' . $product->getUi() ?: uniqid();

@@ -20,7 +20,7 @@
 		    		<i class="user-account__icon i-header i-header--person" data-bind="css: {'i-header--person-ep': isEnterprizeMember}"></i><span class="user-account__text undrl">Личный кабинет</span>
 	    		</a>
     		</li>
-    		<li class="user-account__i"><a href="" class="user-account__lk"><i class="user-account__icon i-header i-header--wishlist"></i><span class="user-account__text undrl">Избранное</span></a></li>
+    		<li class="user-account__i"><a href="<?= $page->url('user.favorites') ?>" class="user-account__lk"><i class="user-account__icon i-header i-header--wishlist"></i><span class="user-account__text undrl">Избранное</span></a></li>
     		<li class="user-account__i"><a href="<?= $page->url('user.logout') ?>" class="user-account__lk"><i class="user-account__icon"></i><span class="user-account__text undrl">Выйти</span></a></li>
     	</ul>
     </div>
