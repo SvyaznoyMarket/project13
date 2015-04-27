@@ -102,16 +102,17 @@ class ReviewsAction {
             if ($form->isValid()) {
                 try {
                     $data = [
+                        'product_uid'   => $productUi,
                         'advantage'     => $form->getAdvantage(),
                         'disadvantage'  => $form->getDisadvantage(),
                         'extract'       => $form->getExtract(),
                         'score'         => $form->getScore(),
                         'author_name'   => $form->getAuthorName(),
                         'author_email'  => $form->getAuthorEmail(),
-                        'date'          => $form->getDate(),
+                        'datetime'      => (new \DateTime())->format('Y-m-d H:i:s'),
                     ];
 
-                    \App::reviewsClient()->query('add', ['product_ui' => $productUi], $data, \App::config()->coreV2['hugeTimeout']);
+                    \App::reviewsClient()->query('add.json', [], $data, \App::config()->coreV2['hugeTimeout']);
 
                     return new \Http\JsonResponse([
                         'success'   => true,

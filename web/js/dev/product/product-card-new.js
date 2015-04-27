@@ -239,6 +239,10 @@
     });
 
     $('#reviewForm').on('submit', function(e){
+        var $form = $(this),
+            textareaErrClass = 'form-ctrl__textarea--err',
+            inputErrClass = 'form-ctrl__input--err',
+            textareaLblErrClass = 'form-ctrl__textarea-lbl--err';
         e.preventDefault();
         $.ajax({
             type: 'post',
@@ -246,10 +250,30 @@
             data: $(this).serializeArray(),
             dataType: 'json',
             success: function(data){
-                console.log(data);
+                if (data.error) {
+                    console.log('errors in review form', data);
+                    $.each(data.form.error, function(i,val){
+                        var $field = $form.find('[name="review['+ val.field +']"]');
+                        $field.removeClass(textareaErrClass).removeClass(inputErrClass); // снимаем ошибки
+                        if (val.message) {
+                            if ($field.is('textarea')) {
+                                $field.addClass(textareaErrClass);
+                                $field.siblings('.' + textareaLblErrClass).show();
+                            }
+                            if ($field.is('input')) $field.addClass(inputErrClass);
+                        } else {
+                            $field.siblings('.' + textareaLblErrClass).hide();
+                        }
+                    });
+                } else if (data.success) {
+                    var $successDiv = $('.jsReviewSuccessAdd');
+                    $('.jsReviewFormInner').hide();
+                    $('.jsReviewForm2').animate({'height': $successDiv.height()});
+                    $successDiv.fadeIn();
+                }
             },
             complete: function(data) {
-                console.log(data);
+                //console.log('complete', data);
             }
         });
     })
