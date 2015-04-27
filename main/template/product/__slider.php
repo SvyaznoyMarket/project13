@@ -78,7 +78,9 @@ $f = function (
         <div class="bGoodsSlider__eCat">
             <ul>
                 <? $i = 0; foreach ($categories as $category): ?>
-                    <li id="<?= $sliderId . '-category-' . $category->getId() ?>" class="bGoodsSlider__eCatItem <? if (0 == $i): ?> mActive<? endif ?>" data-product="<?= $category->getId() ? 'self' : 'all' ?>">
+                    <li id="<?= $sliderId . '-category-' . $category->getId() ?>"
+                        class="bGoodsSlider__eCatItem <? if (0 == $i): ?> mActive<? endif ?>"
+                        data-product="<?= $category->getId() ? 'self' : 'all' ?>">
                         <span><?= $category->getName() ?></span>
                     </li>
                 <? $i++; endforeach ?>

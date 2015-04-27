@@ -75,7 +75,9 @@ $f = function (
             <div class="product-accessoires">
                 <ul class="product-accessoires-list">
                     <? $i = 0; foreach ($categories as $category): ?>
-                        <li id="<?= $sliderId . '-category-' . $category->getId() ?>" class="product-accessoires-list-item js-product-accessoires <? if (0 == $i): ?> mActive<? endif ?>" data-product="<?= $category->getId() ? 'self' : 'all' ?>">
+                        <li id="<?= $sliderId . '-category-' . $category->getId() ?>"
+                            class="product-accessoires-list-item js-product-accessoires-category <? if (0 == $i): ?> mActive<? endif ?>"
+                            data-product="<?= $category->getId() ? 'self' : 'all' ?>">
                             <span class="product-accessoires-list-item__name"><?= $category->getName() ?></span>
                         </li>
                         <? $i++; endforeach ?>
@@ -126,7 +128,13 @@ $f = function (
                     $category = $product->getParentCategory() ? $product->getParentCategory() : null;
                     ?>
 
-                    <li class="goods-slider-list__i" data-category="" data-product="">
+                    <li class="goods-slider-list__i"
+                        data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>"
+                        data-product="<?= $helper->json([
+                            'article'  => $product->getArticle(),
+                            'name'     => $product->getName(),
+                            'isUpsale' => $product->getIsUpsale(),
+                        ]) ?>" >
 
                         <? if ($product->getLabel()) : ?>
                             <img class="slideItem_stick" src="<?= $product->getLabel()->getImageUrl() ?>" alt="<?= $product->getLabel()->getName() ?>">

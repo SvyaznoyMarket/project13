@@ -220,7 +220,7 @@
         sliderWrapperSelector: '.goods-slider__inn',
         sliderSelector: '.goods-slider-list',
         itemSelector: '.goods-slider-list__i',
-        //categoryItemSelector: '.bGoodsSlider__eCatItem',
+        categoryItemSelector: '.js-product-accessoires-category',
         //pageTitleSelector: '.slideItem_cntr',
         onLoad: function(goodsSlider) {
             ko.applyBindings(ENTER.UserModel, goodsSlider);
