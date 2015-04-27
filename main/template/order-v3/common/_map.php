@@ -28,34 +28,34 @@
 
     ?>
 
-    <div class="selShop popupFl pickup <?= $class ?>" style="display: <?= $visible ? 'block' : 'none';  ?>" data-block_name="<?= $order->block_name ?>">
+    <div class="selShop popupFl pick-point <?= $class ?>" style="display: <?= $visible ? 'block' : 'none';  ?>" data-block_name="<?= $order->block_name ?>">
 
         <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= 'map-' . $uniqId ?>"></div>
 
-        <div class="pickup__title">Выберите точку самовывоза</div>
+        <div class="pick-point__title">Выберите точку самовывоза</div>
 
         <!-- Новая верстка -->
         <div class="common-wrap clearfix">
         <div class="popup-left-container">
-            <div class="pickup-ctrls">
+            <div class="pick-point-ctrls">
 
-                <div class="pickup-search">
-                    <div class="pickup-search__input-wrap">
-                        <input class="pickup-search-input" type="text" placeholder="Искать по улице, метро" data-bind="click: enableAutocompleteListVisible, value: searchInput, valueUpdate: 'afterkeydown'" />
-                        <div class="pickup-search__clear" data-bind="click: clearSearchInput, visible: searchInput ">×</div>
+                <div class="pick-point-search">
+                    <div class="pick-point-search__input-wrap">
+                        <input class="pick-point-search-input" type="text" placeholder="Искать по улице, метро" data-bind="click: enableAutocompleteListVisible, value: searchInput, valueUpdate: 'afterkeydown'" />
+                        <div class="pick-point-search__clear" data-bind="click: clearSearchInput, visible: searchInput ">×</div>
                     </div>
-                    <div class="pickup-suggest" style="display: none"
+                    <div class="pick-point-suggest" style="display: none"
                          data-bind="visible: searchAutocompleteListVisible() && searchAutocompleteList().length > 0, event: { mouseleave: disableAutocompleteListVisible }">
-                        <ul class="pickup-suggest__list" data-bind="foreach: searchAutocompleteList">
-                            <li class="pickup-suggest__i" data-bind="text: name, attr: { 'data-bounds': bounds }, click: $parent.setMapCenter"></li>
+                        <ul class="pick-point-suggest__list" data-bind="foreach: searchAutocompleteList">
+                            <li class="pick-point-suggest__i" data-bind="text: name, attr: { 'data-bounds': bounds }, click: $parent.setMapCenter"></li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="pickup-sel-group fltrBtn_kit fltrBtn_kit-box js-category-v2-filter-otherGroups">
+                <div class="pick-point-sel-group fltrBtn_kit fltrBtn_kit-box js-category-v2-filter-otherGroups">
 
                     <!-- Точка самовывоза -->
-                    <div class="pickup-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
+                    <div class="pick-point-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
                         <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: choosenTokens().length > 0 }">
                             <span class="fltrBtnBox_tggl_tx" data-bind="text: pointsText">Все точки</span>
                             <i class="fltrBtnBox_tggl_corner"></i>
@@ -82,7 +82,7 @@
                     </div>
 
                     <!-- Cтоимость -->
-                    <div class="pickup-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
+                    <div class="pick-point-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
                         <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: $root.choosenCosts().length > 0 }">
                             <span class="fltrBtnBox_tggl_tx" data-bind="html: costsText">Стоимость</span>
                             <i class="fltrBtnBox_tggl_corner"></i>
@@ -109,7 +109,7 @@
                     </div>
 
                     <!-- Дата самовывоза -->
-                    <div class="pickup-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
+                    <div class="pick-point-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
                         <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: choosenDates().length > 0 }">
                             <span class="fltrBtnBox_tggl_tx" data-bind="text: datesText">Дата</span>
                             <i class="fltrBtnBox_tggl_corner"></i>
@@ -135,33 +135,33 @@
 
                 </div>
             </div>
-                
+
                 <div class="selShop_l" data-token="shops" data-bind="css:{'nobefore': points().length == 0}">
 
-                    <span class="pickup-nomatch" data-bind="visible: points().length == 0">Поиск не дал результатов</span>
+                    <span class="pick-point-nomatch" data-bind="visible: points().length == 0">Поиск не дал результатов</span>
 
-                    <table class="pickup-list">
+                    <table class="pick-point-list">
                         <tbody data-bind="foreach: points">
-                            <tr class="pickup-item jsChangePoint clearfix" data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }">
-                                <td class="pickup-item__logo">
-                                    <img src="" class="pickup-item__img" data-bind="attr: { src: icon }" />
-                                    <span class="pickup-item__name" data-bind="text: listName"></span>
+                            <tr class="pick-point-item jsChangePoint clearfix" data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }">
+                                <td class="pick-point-item__logo">
+                                    <img src="" class="pick-point-item__img" data-bind="attr: { src: icon }" />
+                                    <span class="pick-point-item__name" data-bind="text: listName"></span>
                                 </td>
-                                <td class="pickup-item__addr">
+                                <td class="pick-point-item__addr">
                                     <!-- ko if: $.isArray(subway) -->
-                                    <div class="pickup-item__metro" data-bind="style: { background: subway[0].line.color }">
-                                       <div class="pickup-item__metro-inn" data-bind="text: subway[0].name"></div>
+                                    <div class="pick-point-item__metro" data-bind="style: { background: subway[0].line.color }">
+                                       <div class="pick-point-item__metro-inn" data-bind="text: subway[0].name"></div>
                                     </div>
                                     <!-- /ko -->
-                                    <div class="pickup-item__addr-name" data-bind="text: address"></div>
-                                    <div class="pickup-item__time" data-bind="text: regtime"></div>
+                                    <div class="pick-point-item__addr-name" data-bind="text: address"></div>
+                                    <div class="pick-point-item__time" data-bind="text: regtime"></div>
                                 </td>
                                 <!-- если товар доступен для заказа, выводим это: -->
-                                <td class="pickup-item__info" valign="middle">
-                                    <div class="pickup-item__date" data-bind="text: humanNearestDay"></div>
-                                    <div class="pickup-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div>
+                                <td class="pick-point-item__info" valign="middle">
+                                    <div class="pick-point-item__date" data-bind="text: humanNearestDay"></div>
+                                    <div class="pick-point-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div>
                                 </div>
-                                <div class="pickup-item__buy">
+                                <div class="pick-point-item__buy">
                                     <a
                                         href=""
                                         class="btn-type btn-type--buy jsOneClickButton-new jsOneClickButtonOnDeliveryMap"
@@ -172,11 +172,11 @@
 
                                 <!-- конец -->
                                 <!-- если товар только на витрине, выводим это: -->
-                                 <!-- <td class="pickup-item__info pickup-item__info--nobtn" valign="middle">
-                                    <span class="pickup-item__ondisplay-lbl">На витрине</span>
-                                    <i class="i-product i-product--info-normal i-info__icon pickup-item__ondisplay-icon"></i>
+                                 <!-- <td class="pick-point-item__info pick-point-item__info--nobtn" valign="middle">
+                                    <span class="pick-point-item__ondisplay-lbl">На витрине</span>
+                                    <i class="i-product i-product--info-normal i-info__icon pick-point-item__ondisplay-icon"></i>
                                     <?//попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open?>
-                                    <div class="pickup-item__ondisplay-popup info-popup info-popup--ondisplay">
+                                    <div class="pick-point-item__ondisplay-popup info-popup info-popup--ondisplay">
                                         <p>Чтобы купить товар с витрины,<br/>нужно приехать в магазин и обратиться к продавцу.</p>
                                     </div>
                                 </td> -->
