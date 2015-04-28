@@ -8,7 +8,7 @@ $f = function(
 
     <?= $review->isEnterReview() ? '' : '<noindex>' ?>
 
-    <div class="reviews__i jsReviewItem" style="display: <?= $hidden ? 'none' : 'block' ?>">
+    <div class="reviews__i jsReviewItem" style="display: <?= $hidden ? 'none' : 'block' ?>" data-review-ui="<?= $review->ui ?>">
         <div class="reviews__cpt"><div class="reviews__author"><?= $review->author ? : 'Аноним' ?></div>,
             <div class="reviews__date"><?= \Util\Date::strftimeRu('%e %B2 %G', $review->date->format('U')) ?></div></div>
 
@@ -27,10 +27,10 @@ $f = function(
         <div class="reviews__tl">Комментарий:</div>
         <p class="reviews__tx"><?= $review->extract ?></p>
 
-        <div class="reviews-voting">
+        <div class="reviews-voting jsReviewVote" data-user-vote="<?= $review->userVote ?>">
             <div class="reviews-voting__tl">Полезный отзыв?</div>
-            <span class="reviews-vote reviews-vote--positive"><?= $review->getPositiveCount() ?></span>
-            <span class="reviews-vote reviews-vote--negative"><?= $review->getNegativeCount() ?></span>
+            <span class="reviews-vote reviews-vote--positive <?= $review->userVote > 0 ?  'reviews-vote--active' : null ?> jsReviewVoteBtn" data-vote="1"><?= $review->getPositiveCount() ?></span>
+            <span class="reviews-vote reviews-vote--negative <?= $review->userVote < 0 ?  'reviews-vote--active' : null ?> jsReviewVoteBtn" data-vote="-1"><?= $review->getNegativeCount() ?></span>
         </div>
     </div>
 

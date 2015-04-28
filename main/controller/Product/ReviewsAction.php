@@ -139,4 +139,44 @@ class ReviewsAction {
 
         return new \Http\JsonResponse($responseData);
     }
+
+    public function vote(\Http\Request $request) {
+
+        try {
+
+            $userUi = \App::user()->getEntity() && \App::user()->getEntity()->getUi() ? \App::user()->getEntity()->getUi() : null;
+            $reviewUi = $request->request->get('review-ui');
+            $userVote = (int)$request->request->get('vote');
+
+            if (!$reviewUi || !in_array($userVote, [-1, 0, 1])) throw new \Exception('Ошибка входящих параметров', 400);
+            if (!$userUi) throw new \Exception('Пользователь не авторизован', 403);
+
+            $scmsResponse = \App::scmsClient()->query('api/reviews/vote.json',
+                [],
+                [   'review_uid' => $reviewUi,
+                    'user_uid' => $userUi,
+                    'score' => $userVote
+                ]);
+
+            if ($scmsResponse['status'] == false) throw new \Exception('Ошибка голосования');
+
+            $response = [
+                'success' => true,
+                'vote' => $userVote,
+                'positive' => $scmsResponse['total_positive'],
+                'negative' => $scmsResponse['total_negative']
+            ];
+
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+            $code = $e->getCode();
+            $response = [
+                'success' => false,
+                'error'   => $e->getMessage()
+            ];
+        }
+
+        return new \Http\JsonResponse($response, isset($code) ? $code : 200);
+
+    }
 }

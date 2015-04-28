@@ -42,6 +42,8 @@ class ReviewEntity {
     public $positive;
     /** @var int Количество авторизованных пользователей посчитавших этот отзыв бесполезным */
     public $negative;
+    /** @var int Оценка пользователя */
+    public $userVote = 0;
 
     public function __construct($arr) {
         if (isset($arr['uid'])) $this->ui = $arr['uid'];
@@ -55,12 +57,13 @@ class ReviewEntity {
         if (isset($arr['cons'])) $this->cons = $arr['cons'];
         if (isset($arr['author']) && !empty($arr['author'])) $this->author = $arr['author'];
         if (isset($arr['score'])) $this->score = $arr['score'];
-        if (isset($arr['score_star'])) $this->scoreStar = $arr['score_star'];
+        if (isset($arr['star_score'])) $this->scoreStar = $arr['star_score'];
         if (isset($arr['date'])) $this->date = new \DateTime($arr['date']);
         if (isset($arr['useful_count'])) $this->usefulCount = $arr['useful_count'];
         if (isset($arr['not_useful_count'])) $this->notUsefulCount = $arr['not_useful_count'];
         if (isset($arr['positive'])) $this->positive = $arr['positive'];
         if (isset($arr['negative'])) $this->negative = $arr['negative'];
+        if (isset($arr['user_vote'])) $this->userVote = $arr['user_vote'];
     }
 
     /** Положительная полезность отзыва
