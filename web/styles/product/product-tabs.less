@@ -23,15 +23,27 @@
 }
 
 @keyframes voteDown {
-  0% {.opacity(1)}
-  50% {.opacity(.4)}
-  100% {.opacity(1)}
+    0% {
+        .opacity(1);
+    }
+    50% {
+        .opacity(.4);
+    }
+    100% {
+        .opacity(1);
+    }
 }
 
 @keyframes voteUp {
-  0% {.opacity(.4)}
-  50% {.opacity(1)}
-  100% {.opacity(.4)}
+    0% {
+        .opacity(.4);
+    }
+    50% {
+        .opacity(1);
+    }
+    100% {
+        .opacity(.4);
+    }
 }
 
 
@@ -99,8 +111,8 @@
     visibility: visible;
     overflow: hidden;
 
-    height: 0;
     width: 210px;
+    height: 0;
     margin-right: -540px;
 
     .opacity(0);
@@ -199,6 +211,13 @@
 
         border-bottom: 1px solid #e8e8e8;
     }
+    &__msg {
+        line-height: 26px;
+
+        margin-right: 15px;
+
+        .inline-block();
+    }
     &-percentage {
         &__tl {
             font-size: 12px;
@@ -265,11 +284,11 @@
         line-height: 34px;
 
         position: relative;
-        cursor: pointer;
 
         height: 34px;
         margin-left: 5px;
         padding-left: 30px;
+
         cursor: pointer;
 
         .inline-block-middle();
@@ -282,15 +301,6 @@
             &:after {
                 .opacity(1);
             }
-        }
-        &--voting {
-          animation: voteDown 1s infinite;
-        }
-        &--active:after {
-          .opacity(1);
-          &--voting {
-            animation: voteUp 1s infinite;
-          }
         }
         &--positive:after {
             position: absolute;
@@ -314,7 +324,7 @@
 
             .sprite-temp(-0px, -0px, 25px, 25px);
         }
-        &.active:after{
+        &.active:after {
             .opacity(1);
         }
     }
