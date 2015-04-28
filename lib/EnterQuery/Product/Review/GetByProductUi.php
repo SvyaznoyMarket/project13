@@ -32,15 +32,19 @@ namespace EnterQuery\Product\Review
          */
         public function prepare()
         {
+
+            $queryParams = [
+                'product_ui'   => $this->productUi,
+                'current_page' => $this->pageNum,
+                'page_size'    => $this->pageSize,
+            ];
+
+            if (\App::user()->getEntity()) $queryParams['user_uid'] = \App::user()->getEntity()->getUi();
+
             $this->prepareCurlQuery(
                 $this->buildUrl(
                     'reviews/list',
-                    [
-                        'product_ui'   => $this->productUi,
-                        'current_page' => $this->pageNum,
-                        'page_size'    => $this->pageSize,
-                        'type'         => 'user', // TODO: удалить
-                    ]
+                    $queryParams
                 ),
                 [], // data
                 function($response, $statusCode) {

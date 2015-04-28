@@ -255,6 +255,47 @@
                 console.log(data);
             }
         });
+    });
+
+    $body.on('click', '.jsReviewVote', function(e){
+        var $button = $(e.target),
+            buttonVote = $button.data('vote'),
+            $voteDiv = $(this),
+            userVote = $voteDiv.data('user-vote'),
+            reviewUi = $voteDiv.closest('.jsReviewItem').data('review-ui'),
+            $voteButtons = $voteDiv.find('.jsReviewVoteBtn'),
+            activeClass = 'reviews-vote--active',
+            voteClass = 'reviews-vote--voting';
+
+        if ($voteDiv.data('xhr')) return;
+
+        $.ajax(
+            '/product-reviews/vote',
+            {   type: 'post',
+                data: {
+                    'review-ui': reviewUi,
+                    'vote': userVote == buttonVote ? 0 : buttonVote
+                    },
+                beforeSend: function() {
+                    $button.addClass(voteClass);
+                    $voteDiv.data('xhr', true);
+                },
+                success: function(data){
+                    if (data.success) {
+                        $voteDiv.data('user-vote', data.vote);
+                        $voteDiv.find('.jsReviewVoteBtn').removeClass(activeClass);
+                        if (data.vote != 0) $voteButtons.eq(data.vote == 1 ? 0 : 1).addClass(activeClass);
+                        if (typeof data.positive != 'undefined') $voteButtons.eq(0).text(data.positive);
+                        if (typeof data.negative != 'undefined') $voteButtons.eq(1).text(data.negative);
+
+                    } else {
+                        console.error('Ошибка голосования: %s', data.error)
+                    }
+                }
+            }).always(function(){
+                $button.removeClass(voteClass);
+                $voteDiv.data('xhr', false);
+            })
     })
 
 })(jQuery);

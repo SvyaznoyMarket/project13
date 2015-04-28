@@ -304,6 +304,10 @@ return [
         'require' => ['productUi' => '[\w\d-_]+\/?[\w\d-_]+'],
         'action'  => ['Product\ReviewsAction', 'create'],
     ],
+    'product.review.vote' => [
+        'pattern' => '/product-reviews/vote',
+        'action'  => ['Product\ReviewsAction', 'vote'],
+    ],
     'product.reviews' => [
         'pattern' => '/product-reviews/{productUi}',
         'require' => ['productUi' => '[\w\d-_]+\/?[\w\d-_]+'],
