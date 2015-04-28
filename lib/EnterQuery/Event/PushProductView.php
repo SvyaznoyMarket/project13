@@ -29,6 +29,12 @@ namespace EnterQuery\Event
          */
         public function prepare()
         {
+            $config = (array)\App::config()->eventService + [
+                'url'       => null,
+                'client_id' => null,
+                'timeout'   => null,
+            ];
+
             $this->prepareCurlQuery(
                 $this->buildUrl(
                     'product/view',
@@ -37,6 +43,7 @@ namespace EnterQuery\Event
                 [
                     'product_uid' => $this->productUi,
                     'user_uid'    => $this->userUi,
+                    'client_id'   => $config['client_id'],
                 ], // data
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];

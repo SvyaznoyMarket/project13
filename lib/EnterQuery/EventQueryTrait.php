@@ -19,7 +19,7 @@ trait EventQueryTrait
             'timeout'   => null,
         ];
 
-        $query['client_id'] = $config['client_id'];
+        //$query['client_id'] = $config['client_id'];
 
         return
             $config['url']
