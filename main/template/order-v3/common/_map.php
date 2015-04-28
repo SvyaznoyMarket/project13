@@ -52,17 +52,17 @@
                     </div>
                 </div>
 
-                <div class="pick-point-sel-group fltrBtn_kit fltrBtn_kit-box js-category-v2-filter-otherGroups">
+                <div class="drop-filter-kit drop-filter-kit-box js-category-v2-filter-otherGroups">
 
                     <!-- Точка самовывоза -->
-                    <div class="pick-point-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
-                        <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: choosenTokens().length > 0 }">
-                            <span class="fltrBtnBox_tggl_tx" data-bind="text: pointsText">Все точки</span>
-                            <i class="fltrBtnBox_tggl_corner"></i>
+                    <div class="drop-filter-box js-category-v2-filter-dropBox jsOrderV3Dropbox" data-bind="css: { picked: choosenTokens().length > 0 }">
+                        <div class="drop-filter-box__tggl js-category-v2-filter-dropBox-opener">
+                            <span class="drop-filter-box__tggl-tx" data-bind="text: pointsText">Все точки</span>
+                            <i class="drop-filter-box__tggl-corner"></i>
                         </div>
 
-                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
-                            <div class="fltrBtnBox_dd_inn">
+                        <div class="drop-filter-box__dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
+                            <div class="drop-filter-box__dd-inn">
                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
                                     <? foreach ($uniqueTokens as $token) : ?>
 
@@ -82,14 +82,14 @@
                     </div>
 
                     <!-- Cтоимость -->
-                    <div class="pick-point-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
-                        <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: $root.choosenCosts().length > 0 }">
-                            <span class="fltrBtnBox_tggl_tx" data-bind="html: costsText">Стоимость</span>
-                            <i class="fltrBtnBox_tggl_corner"></i>
+                    <div class="drop-filter-box js-category-v2-filter-dropBox jsOrderV3Dropbox" data-bind="css: { picked: $root.choosenCosts().length > 0 }">
+                        <div class="drop-filter-box__tggl js-category-v2-filter-dropBox-opener">
+                            <span class="drop-filter-box__tggl-tx" data-bind="html: costsText">Стоимость</span>
+                            <i class="drop-filter-box__tggl-corner"></i>
                         </div>
 
-                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
-                            <div class="fltrBtnBox_dd_inn">
+                        <div class="drop-filter-box__dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
+                            <div class="drop-filter-box__dd-inn">
                                 <div class="fltrBtn_param">
                                     <? foreach ($uniqueCosts as $cost) : ?>
 
@@ -109,14 +109,14 @@
                     </div>
 
                     <!-- Дата самовывоза -->
-                    <div class="pick-point-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
-                        <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: choosenDates().length > 0 }">
-                            <span class="fltrBtnBox_tggl_tx" data-bind="text: datesText">Дата</span>
-                            <i class="fltrBtnBox_tggl_corner"></i>
+                    <div class="drop-filter-box js-category-v2-filter-dropBox jsOrderV3Dropbox" data-bind="css: { picked: choosenDates().length > 0 }">
+                        <div class="drop-filter-box__tggl js-category-v2-filter-dropBox-opener">
+                            <span class="drop-filter-box__tggl-tx" data-bind="text: datesText">Дата</span>
+                            <i class="drop-filter-box__tggl-corner"></i>
                         </div>
 
-                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
-                            <div class="fltrBtnBox_dd_inn">
+                        <div class="drop-filter-box__dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
+                            <div class="drop-filter-box__dd-inn">
                                 <div class="fltrBtn_param">
                                     <? foreach ($uniqueDays as $day) : ?>
                                         <div class="fltrBtn_ln ">
