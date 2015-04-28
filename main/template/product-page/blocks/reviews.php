@@ -11,7 +11,8 @@
 <div class="reviews clearfix">
     <div class="reviews__l jsReviewsList">
         <? if ($reviewsData['num_reviews'] == 0) : ?>
-            Пока нет отзывов.
+            <span class="reviews__msg">Пока нет отзывов.</span>
+            <div class="btn-type btn-type--normal jsReviewAdd">+ Добавить отзыв</div>
         <? else : ?>
             <? foreach ($reviews as $key => $review) : ?>
                 <?= $helper->render('product-page/blocks/reviews.single', ['review' => $review, 'hidden' => $key > 1]) ?>
@@ -20,10 +21,10 @@
     </div>
 
     <div class="reviews__r">
-        <div class="btn-type btn-type--normal jsReviewAdd">+ Добавить отзыв</div>
+        
 
         <? if ($reviewsData['num_reviews'] > 0) : ?>
-
+            <div class="btn-type btn-type--normal jsReviewAdd">+ Добавить отзыв</div>
             <span class="reviews-percentage__tl">Всего <?= $helper->numberChoiceWithCount($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span>
             <?= $helper->render('product-page/blocks/reviews.rating', ['scores' => (array)$reviewsData['num_users_by_score']]) ?>
         <? endif ?>

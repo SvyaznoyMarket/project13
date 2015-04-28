@@ -6,7 +6,7 @@
 .common-wrap{
 
 }
-.selShop.pickup {
+.selShop.pick-point {
     width: 900px;
     .rounded(0px);
     height: auto;
@@ -42,18 +42,21 @@
         width: 480px;
         height: 453px;
     }
-    .pickup__title,
+    .pick-point__title,
     .deliv__title {
         margin: 0 0 10px 10px;
         font-size: 18px;
     }
+    .pick-point__title{
+        margin: 0 0 10px 15px;
+    }
 }
-.pickup-nomatch {
+.pick-point-nomatch {
     margin-top: 10px;
     color: #616161;
     .inline-block();
 }
-.pickup-list {
+.pick-point-list {
     overflow-y: auto;
     overflow-x: hidden;
     display: block;
@@ -67,7 +70,7 @@
         width: 100%;
         display: block;
     }
-    .pickup-item {
+    .pick-point-item {
         // padding: 12px 3px 5px;
         border-bottom: 1px solid @lightgrey-2;
         cursor: pointer;
@@ -77,14 +80,14 @@
         .selShop_l &:hover {
             background: rgba(249,155,28,0.1);
         }
-        .selShop_l &:hover .pickup-item__metro-inn{
+        .selShop_l &:hover .pick-point-item__metro-inn{
             background: #fff5e8;
         }
-        &:hover .pickup-item__buy{
+        &:hover .pick-point-item__buy{
             display: block;
         }
-        &:hover .pickup-item__info:not(.pickup-item__info--nobtn) .pickup-item__date,
-        &:hover .pickup-item__info:not(.pickup-item__info--nobtn) .pickup-item__price{
+        &:hover .pick-point-item__info:not(.pick-point-item__info--nobtn) .pick-point-item__date,
+        &:hover .pick-point-item__info:not(.pick-point-item__info--nobtn) .pick-point-item__price{
             display: none;
         }
 
@@ -219,150 +222,7 @@
     }
 }
 
-.pickup-ctrls {
-    margin-right:10px;
-    border-bottom: 1px solid #d3d3d3;
 
-    .pickup-sel {
-        padding: 0 5px;
-        margin-right: 0px;
-        line-height: 24px;
-        color: #515151;
-        padding: 0 10px 0 0;
-
-        &:not(.opn) .fltrBtnBox_tggl {
-            margin: 2px 0;
-
-            &.picked {
-                border: 2px solid orange;
-                outline: none;
-                .rounded(2px);
-                margin: 0px;
-                padding: 6px 9px 3px;
-
-                .fltrBtnBox_tggl_tx {
-                    border-bottom-color: transparent;
-                }
-            }
-        }
-        &.fltrBtnBox.opn {
-
-            .fltrBtnBox_tggl_tx {
-                margin-top: 2px;
-            }
-            .picked .fltrBtnBox_tggl_tx {
-                margin-top: 1px;
-            }
-            .fltrBtnBox_tggl {
-                border-bottom: none;
-            }
-        }
-    }
-    .pickup-search {
-        height: 35px;
-        border: 1px solid #c7c7c7;
-        padding-left: 40px;
-        width: 356px;
-        position: relative;
-
-        &:after {
-            content: '';
-            position: absolute;
-            top: 0px;
-            left: 8px;
-            width: 23px;
-            height: 35px;
-            background: url(/styles/mainpage/img/i-header.png) no-repeat -186px 5px;
-        }
-        &-input {
-            height: 33px;
-            line-height: 33px;
-            border: none;
-            outline: none;
-            width: 350px;
-        }
-        &__input-wrap{
-        	position: relative;
-        	width: 350px;
-        	height: 33px;
-        }
-        &__clear{
-        	cursor: pointer;
-        	position: absolute;
-        	right: 5px;
-        	top: 50%;
-        	margin-top: -9px;
-        	width: 18px;
-        	height: 18px;
-        	line-height: 18px;
-        	background: #7a7a7a;
-        	color: @white;
-        	font-size: 14px;
-        	text-align: center;
-        	cursor: pointer;
-        	.rounded(9px);
-        }
-        .pickup-suggest {
-            width: 100%;
-            height: 155px;
-            position: absolute;
-            top: 35px;
-            left: -1px;
-            border: 1px solid #c7c7c7;
-            background: @white;
-            overflow: hidden;
-            z-index: 1;
-
-            &:after {
-                content: '';
-                position: absolute;
-                bottom: 0px;
-                left: 0px;
-                height: 23px;
-                width: 96%;
-                .gradient(rgba(255, 255, 255, 0), #fff, rgba(255, 255, 255, 0));
-            }
-            &__list {
-                padding: 5px 10px 0px;
-                height: 155px;
-                overflow-x: scroll;
-            }
-            &__i {
-                padding: 2px 0px 2px 5px;
-                font-size: 14px;
-                color: #686868;
-                cursor: pointer;
-
-                &:hover {
-                    background: rgba(249, 155, 28, 0.15);
-                }
-                &:last-child{
-                    margin-bottom: 23px;
-                }
-            }
-        }
-    }
-    .fltrBtn_kit-box {
-        padding-left: 0px;
-        padding-top: 2px;
-        border: none;
-    }
-    .fltrBtnBox_tggl_tx {
-        color: #686868;
-    }
-    .fltrBtnBox_tggl {
-        padding-top: 6px;
-        height: 16px;
-    }
-    .fltrBtnBox.opn {
-        .fltrBtnBox_dd {
-            top: 26px;
-        }
-    }
-    .customLabel {
-        font-size: 12px;
-    }
-}
 .deliv{
     &-info{
 
@@ -410,10 +270,10 @@
 .ymaps-2-1-23-balloon__content ymaps{
     height: auto!important;
     width: 100%!important;
-    .pickup-list{
+    .pick-point-list{
         padding-top: 0px;
     }
-    .pickup-item{
+    .pick-point-item{
         border: none;
         & td{
             padding-bottom: 5px;
