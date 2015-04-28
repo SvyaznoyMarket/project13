@@ -13,5 +13,10 @@
 		</ul>
 
 		<?= $page->slotUserbarContent() ?>
+
+		<div class="ep-fixed js-pp-ep-fishka">
+	        <div class="ep-fixed__fishka">%</div>
+	        <div class="ep-fixed__desc">Фишка со скидкой 20% на этот товар</div>
+	    </div>
 	</div>
 </div>

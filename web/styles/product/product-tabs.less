@@ -15,12 +15,6 @@
 
         .animation(fadeIn, .3s, 0, ease);
         .drop-shadow(0, 4px, 28px, .5);
-        .product-ep {
-            // visibility: visible;
-            // overflow: visible;
-            // height: auto;
-            // .opacity(1);
-        }
     }
     .product-tabs {
         width: 920px;
@@ -62,6 +56,9 @@
             }
         }
     }
+    &__right {
+        float: right;
+    }
     &__lk {
         text-decoration: none;
 
@@ -80,16 +77,22 @@
     }
 }
 
-.product-ep {
+.ep-fixed {
+    position: absolute;
+    z-index: 10;
+    top: 45px;
+    right: 50%;
+
     visibility: visible;
     overflow: hidden;
 
     height: 0;
-    margin: -5px 0 0;
+    width: 210px;
+    margin-right: -540px;
 
     .opacity(0);
-    .transition(all .2s ease);
-    &-fishka {
+    .transition(all .3s ease-out);
+    &__fishka {
         font-size: 16px;
         line-height: 62px;
 
@@ -101,13 +104,16 @@
 
         .inline-block-middle();
     }
-    &-desc {
+    &__desc {
         width: 130px;
         margin: 0 0 0 5px;
 
         color: #363636;
 
         .inline-block-middle();
+    }
+    &.fadeIn {
+        margin-right: -500px;
     }
 }
 
@@ -179,11 +185,6 @@
         padding: 0 10px 15px 10px;
 
         border-bottom: 1px solid #e8e8e8;
-    }
-    &__msg{
-        line-height: 26px;
-        margin-right: 15px;
-        .inline-block();
     }
     &-percentage {
         &__tl {

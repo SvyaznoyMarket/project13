@@ -9,6 +9,7 @@
         $reviewFormStars = $('.jsReviewFormRating'),
         $userbar = $('.js-topbar-fixed'),
         $tabs = $('.jsProductTabs'),
+        $epFishka = $('.js-pp-ep-fishka'),
         tabsOffset,// это не очень хорошее поведение, т.к. при добавлении сверху элементов (AJAX, например) offset не изменяется
         popupDefaults = {
             centered: true,
@@ -79,9 +80,11 @@
             var fixedClass = 'pp-fixed';
             if ($window.scrollTop() - 110 > tabsOffset) {
                 $tabs.addClass(fixedClass);
+                $epFishka.addClass('fadeIn');
                 $userbar.addClass(fixedClass);
             } else {
                 $tabs.removeClass(fixedClass);
+                $epFishka.removeClass('fadeIn');
                 $userbar.removeClass(fixedClass);
             }
         });
@@ -220,7 +223,7 @@
         sliderWrapperSelector: '.goods-slider__inn',
         sliderSelector: '.goods-slider-list',
         itemSelector: '.goods-slider-list__i',
-        categoryItemSelector: '.js-product-accessoires-category',
+        //categoryItemSelector: '.bGoodsSlider__eCatItem',
         //pageTitleSelector: '.slideItem_cntr',
         onLoad: function(goodsSlider) {
             ko.applyBindings(ENTER.UserModel, goodsSlider);
@@ -239,10 +242,6 @@
     });
 
     $('#reviewForm').on('submit', function(e){
-        var $form = $(this),
-            textareaErrClass = 'form-ctrl__textarea--err',
-            inputErrClass = 'form-ctrl__input--err',
-            textareaLblErrClass = 'form-ctrl__textarea-lbl--err';
         e.preventDefault();
         $.ajax({
             type: 'post',
@@ -250,30 +249,10 @@
             data: $(this).serializeArray(),
             dataType: 'json',
             success: function(data){
-                if (data.error) {
-                    console.log('errors in review form', data);
-                    $.each(data.form.error, function(i,val){
-                        var $field = $form.find('[name="review['+ val.field +']"]');
-                        $field.removeClass(textareaErrClass).removeClass(inputErrClass); // снимаем ошибки
-                        if (val.message) {
-                            if ($field.is('textarea')) {
-                                $field.addClass(textareaErrClass);
-                                $field.siblings('.' + textareaLblErrClass).show();
-                            }
-                            if ($field.is('input')) $field.addClass(inputErrClass);
-                        } else {
-                            $field.siblings('.' + textareaLblErrClass).hide();
-                        }
-                    });
-                } else if (data.success) {
-                    var $successDiv = $('.jsReviewSuccessAdd');
-                    $('.jsReviewFormInner').hide();
-                    $('.jsReviewForm2').animate({'height': $successDiv.height()});
-                    $successDiv.fadeIn();
-                }
+                console.log(data);
             },
             complete: function(data) {
-                //console.log('complete', data);
+                console.log(data);
             }
         });
     })
