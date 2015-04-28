@@ -255,6 +255,7 @@
         height: 34px;
         margin-left: 5px;
         padding-left: 30px;
+        cursor: pointer;
 
         .inline-block-middle();
         &:after {
@@ -288,6 +289,9 @@
             background-image: url('@{base-url}/product/img/i-product.png');
 
             .sprite-temp(-0px, -0px, 25px, 25px);
+        }
+        &.active:after{
+            .opacity(1);
         }
     }
 }
