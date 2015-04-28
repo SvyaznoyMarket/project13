@@ -1,10 +1,14 @@
 .userbar {
-    display: none;
+    visibility: visible;
+    overflow: hidden;
+
+    height: 0;
 
     background: @white;
-    -webkit-box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .5);
-       -moz-box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .5);
-            box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .5);
+
+    .opacity(0);
+    .transition(all .3s ease-out);
+    .drop-shadow(0, 4px, 28px, .5);
     // фиксированнй юзербар
     &--fixed {
         position: fixed;
@@ -19,12 +23,15 @@
     &--pp {
         &.pp-fixed {
             border-bottom: 1px solid #e8e8e8;
-            -webkit-box-shadow: none;
-               -moz-box-shadow: none;
-                    box-shadow: none;
-            .hintDd,
+
+            .box-shadow(none);
+            .hintDd ,
             .userbar-dd {
                 top: 51px;
+            }
+            &:after ,
+            &:before {
+                height: 125px;
             }
         }
         .userbar-crumbs {
@@ -42,6 +49,14 @@
                     background: none;
                 }
             }
+        }
+    }
+    &.shadow-false {
+        &:after ,
+        &:before {
+            background: none;
+            width: 0;
+            height: 0;
         }
     }
     &__inn {
@@ -90,18 +105,6 @@
         background:         linear-gradient(to right, rgba(255,255,255,1) 41%, rgba(255,255,255,0) 100%);
 
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
-    }
-    &--show {
-        &:after {
-            width: 0;
-
-            background: none;
-        }
-        &:before {
-            width: 0;
-
-            background: none;
-        }
     }
 }
 
@@ -173,5 +176,40 @@
 
             background: none;
         }
+    }
+}
+
+.fadeIn {
+    visibility: visible;
+    overflow: visible;
+
+    height: auto;
+
+    .animation(fadeIn, .3s, 0, ease);
+    .opacity(1);
+}
+
+@keyframes fadeIn {
+    0% {
+        .opacity(0);
+    }
+    100% {
+        .opacity(1);
+    }
+}
+@-webkit-keyframes fadeIn {
+    0% {
+        .opacity(0);
+    }
+    100% {
+        .opacity(1);
+    }
+}
+@-moz-keyframes fadeIn {
+    0% {
+        .opacity(0);
+    }
+    100% {
+        .opacity(1);
     }
 }

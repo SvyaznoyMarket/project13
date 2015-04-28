@@ -44,7 +44,7 @@
 		if (disableAnimation) {
 			userBarFixed.show(0, onOpen || function(){});
 		} else {
-			userBarFixed.fadeIn('300');
+			userBarFixed.addClass('fadeIn');
 		}
 
 		if (userBarFixed.length) {
@@ -56,7 +56,7 @@
 	 * Скрытие юзербара
 	 */
 	function hideUserbar() {
-		userBarFixed.fadeOut('300');
+		userBarFixed.removeClass('fadeIn');
 		userbarStatic.css('visibility','visible');
 	}
 
@@ -136,7 +136,7 @@
 		// end of function
 
 		setTimeout(function() {
-			userBarFixed.removeClass('userbar--show');
+			userBarFixed.removeClass('fadeIn shadow-false');
 		}, 100);
 
 		// только BuyInfoBlock
@@ -167,7 +167,7 @@
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		userBarFixed.addClass('userbar--show');
+		userBarFixed.addClass('fadeIn shadow-false');
 
 		var	buyInfo = $('.topbarfix_cartOn');
 
