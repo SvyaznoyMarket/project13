@@ -104,7 +104,17 @@ class AppConfig {
         'debug'        => null,
         'chunk_size'   => null,
     ];
-	
+
+    /**
+     * @var array
+     */
+    public $eventService = [
+        'enabled'   => null,
+        'url'       => null,
+        'client_id' => null,
+        'timeout'   => null,
+    ];
+
     /**
      * @var array
      */
