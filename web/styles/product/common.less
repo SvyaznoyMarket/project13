@@ -257,20 +257,40 @@
     }
 }
 //блок с шарингами
-.product-card-sharing-list{
-    float:left;
-    height: 22px;
-    white-space: nowrap;
+.product-card-sharing-list {
     font-size: 0;
 
-    &__i{
-        .inline-block-middle();
-        margin-right: 4px;
-        cursor: pointer;
+    float: left;
 
-        &:last-child{
-            margin-right: 0px;
+    height: 22px;
+
+    white-space: nowrap;
+    .addthis_toolbox {
+        margin-top: 3px;
+        .at4-icon {
+            padding: 1px;
+
+            background-color: #acacac !important;
+            background-position: 50% 50%;
+
+            .transition(all .3s ease);
+            &:hover {
+                &.aticon-facebook {
+                    background-color: rgb(48, 88, 145) !important;
+                }
+                &.aticon-twitter {
+                    background-color: rgb(44, 168, 210) !important;
+                }
+                &.aticon-vk {
+                    background-color: rgb(50, 80, 120) !important;
+                }
+                &.aticon-compact {
+                    background-color: rgb(252, 109, 76) !important;
+                }
+            }
+        }
+        .addthis_counter.addthis_bubble_style {
+            margin: 1px 0 0 0;
         }
     }
-
 }
