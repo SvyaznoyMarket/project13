@@ -295,7 +295,7 @@
             }).always(function(){
                 setTimeout(function () {
                     $button.removeClass(voteClass);
-                }, 600);
+                }, 400);
                 $voteDiv.data('xhr', false);
             })
     })

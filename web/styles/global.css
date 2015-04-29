@@ -13529,9 +13529,9 @@ img[height='0'] {
   *zoom: 1;
 }
 .reviews-vote.voting:before {
-  -webkit-animation: heightDown 0.8s 0 ease;
-  -moz-animation: heightDown 0.8s 0 ease;
-  -ms-animation: heightDown 0.8s 0 ease;
+  -webkit-animation: heightDown 0.6s 0 ease;
+  -moz-animation: heightDown 0.6s 0 ease;
+  -ms-animation: heightDown 0.6s 0 ease;
   -webkit-animation-iteration-count: 1;
   -moz-animation-iteration-count: 1;
   -ms-animation-iteration-count: 1;
