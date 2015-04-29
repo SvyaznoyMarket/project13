@@ -22,31 +22,6 @@
     }
 }
 
-@keyframes voteDown {
-    0% {
-        .opacity(1);
-    }
-    50% {
-        .opacity(.4);
-    }
-    100% {
-        .opacity(1);
-    }
-}
-
-@keyframes voteUp {
-    0% {
-        .opacity(.4);
-    }
-    50% {
-        .opacity(1);
-    }
-    100% {
-        .opacity(.4);
-    }
-}
-
-
 .product-tabs {
     padding: 0 20px;
     &__i {
@@ -298,35 +273,93 @@
         }
         &:hover {
             text-decoration: none;
+        }
+        &--active {
             &:after {
                 .opacity(1);
             }
         }
-        &--positive:after {
+        &:before {
             position: absolute;
+            z-index: 1;
             top: 0;
             left: 0;
 
-            content: '';
-
-            background-image: url('@{base-url}/product/img/i-product.png');
-
-            .sprite-temp(-25px, -0px, 25px, 25px);
-        }
-        &--negative:after {
-            position: absolute;
-            top: 6px;
-            left: 0;
+            max-height: 25px;
 
             content: '';
 
             background-image: url('@{base-url}/product/img/i-product.png');
+        }
+        &--positive {
+            &:after {
+                position: absolute;
+                top: 0;
+                left: 0;
 
-            .sprite-temp(-0px, -0px, 25px, 25px);
+                content: '';
+
+                background-image: url('@{base-url}/product/img/i-product.png');
+
+                .sprite-temp(-25px, -0px, 25px, 25px);
+            }
+            &:before {
+                .sprite-temp(-25px, -0px, 25px, 0);
+            }
         }
-        &.active:after {
-            .opacity(1);
+        &--negative {
+            &:after {
+                position: absolute;
+                top: 6px;
+                left: 0;
+
+                content: '';
+
+                background-image: url('@{base-url}/product/img/i-product.png');
+
+                .sprite-temp(-0px, -0px, 25px, 25px);
+            }
+            &:before {
+                top: 6px;
+
+                .sprite-temp(-0px, -0px, 25px, 0);
+            }
         }
+        &.voting {
+            &:before {
+                .animation(heightDown, .8s);
+            }
+        }
+        &.active {
+            &:after {
+                .opacity(1);
+            }
+        }
+    }
+}
+
+@-webkit-keyframes heightDown {
+    0% {
+        height: 0;
+    }
+    100% {
+        height: 25px;
+    }
+}
+@-moz-keyframes heightDown {
+    0% {
+        height: 0;
+    }
+    100% {
+        height: 25px;
+    }
+}
+@keyframes heightDown {
+    0% {
+        height: 0;
+    }
+    100% {
+        height: 25px;
     }
 }
 

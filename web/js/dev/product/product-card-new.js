@@ -264,8 +264,8 @@
             userVote = $voteDiv.data('user-vote'),
             reviewUi = $voteDiv.closest('.jsReviewItem').data('review-ui'),
             $voteButtons = $voteDiv.find('.jsReviewVoteBtn'),
-            activeClass = 'reviews-vote--active',
-            voteClass = 'reviews-vote--voting';
+            activeClass = 'active',
+            voteClass = 'voting';
 
         if ($voteDiv.data('xhr')) return;
 
@@ -293,7 +293,9 @@
                     }
                 }
             }).always(function(){
-                $button.removeClass(voteClass);
+                setTimeout(function () {
+                    $button.removeClass(voteClass);
+                }, 600);
                 $voteDiv.data('xhr', false);
             })
     })

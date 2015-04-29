@@ -105,23 +105,20 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 				</li>
 			</ul>
 
-			<ul class="product-card-sharing-list">
-				<li class="product-card-sharing-list__i">
-					<i class="product-card-sharing-list__icon i-sharing-icon i-sharing-icon--fb"></i>
-				</li>
-				<li class="product-card-sharing-list__i">
-					<i class="product-card-sharing-list__icon i-sharing-icon i-sharing-icon--vk"></i>
-				</li>
-				<li class="product-card-sharing-list__i">
-					<i class="product-card-sharing-list__icon i-sharing-icon i-sharing-icon--tw"></i>
-				</li>
-				<li class="product-card-sharing-list__i">
-					<i class="product-card-sharing-list__icon i-sharing-icon i-sharing-icon--pi"></i>
-				</li>
-				<li class="product-card-sharing-list__i">
-					<i class="product-card-sharing-list__icon i-sharing-icon i-sharing-icon--gp"></i>
-				</li>
-			</ul>
+			<div class="product-card-sharing-list">
+                <!-- AddThis Button BEGIN -->
+                <div class="addthis_toolbox addthis_default_style mt15 ">
+                    <a class="addthis_button_facebook"></a>
+                    <a class="addthis_button_twitter"></a>
+                    <a class="addthis_button_vk"></a>
+                    <a class="addthis_button_compact"></a>
+                    <a class="addthis_counter addthis_bubble_style"></a>
+                </div>
+                <script type="text/javascript">var addthis_config = {"data_track_addressbar":true, ui_language: "ru"};</script>
+                <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1&domready=1"></script>
+                <!-- AddThis Button END -->
+			</div>
+
 			<ul class="pay-system-list">
                 <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--visa"></i></li>
                 <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--mastercard"></i></li>
@@ -239,8 +236,6 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
                             'value' => 'Купить в 1 клик'
                         ]) // Покупка в один клик ?>
                     <? endif ?>
-
-
 				</li>
 
                 <li class="product-card-tools__i product-card-tools__i--compare js-compareProduct"

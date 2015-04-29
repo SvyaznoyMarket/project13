@@ -103,10 +103,13 @@
          -o-transition-delay: @delayTime;
             transition-delay: @delayTime;
 }
-.animation(@name, @duration: 300ms, @delay: 0, @ease: ease) {
+.animation(@name, @duration: 300ms, @delay: 0, @ease: ease, @iteration: 1) {
     -webkit-animation: @name @duration @delay @ease;
-    -moz-animation:    @name @duration @delay @ease;
-    -ms-animation:     @name @duration @delay @ease;
+       -moz-animation: @name @duration @delay @ease;
+        -ms-animation: @name @duration @delay @ease;
+        -webkit-animation-iteration-count: @iteration;
+        -moz-animation-iteration-count: @iteration;
+        -ms-animation-iteration-count: @iteration;
 }
 .inner-shadow(@horizontal:0, @vertical:1px, @blur:2px, @color) {
     -webkit-box-shadow: inset @horizontal @vertical @blur @color;
