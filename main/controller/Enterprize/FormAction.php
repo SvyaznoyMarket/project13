@@ -475,7 +475,6 @@ class FormAction {
         $productCategoryRepository = \RepositoryManager::productCategory();
 
         $productRepository = \RepositoryManager::product();
-        $productRepository->setEntityClass('\\Model\\Product\\Entity');
 
         $limit = null;
         if (!empty(\App::config()->enterprize['itemsInSlider'])) {
@@ -506,6 +505,7 @@ class FormAction {
 
                 $filters[] = ['category', 1, $rootCategoriesIds, false];
                 $productIds = $productRepository->getIdsByFilter($filters, ['rating' => 'desc'], 0, $limit*4, $region);
+                $medias = [];
 
                 // получаем товары по productIds
                 if (!empty($productIds)) {
@@ -519,7 +519,12 @@ class FormAction {
                             $products[] = $entity;
                         }
                     });
+
+                    \RepositoryManager::product()->prepareProductsMediasByIds($productIds, $medias);
+
                     $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+                    \RepositoryManager::product()->setMediasForProducts($products, $medias);
                 }
             } else {
                 /** @var $slice \Model\Slice\Entity|null */
@@ -575,6 +580,7 @@ class FormAction {
                                 $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
                                 if (!empty($productIds)) {
+                                    $medias = [];
                                     $productRepository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
                                         if (!isset($data[0])) return;
 
@@ -587,7 +593,12 @@ class FormAction {
                                             $products[] = $entity;
                                         }
                                     });
+
+                                    \RepositoryManager::product()->prepareProductsMediasByIds($productIds, $medias);
+
                                     $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+                                    \RepositoryManager::product()->setMediasForProducts($products, $medias);
                                 }
                             }
                         }
@@ -619,6 +630,9 @@ class FormAction {
                             });
                         }
                         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+                        \RepositoryManager::product()->prepareProductsMediasByIds(array_map(function(\Model\Product\Entity $product) { return $product->getId(); }, $products), $medias);
+                        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+                        \RepositoryManager::product()->setMediasForProducts($products, $medias);
                         break;
                 }
             }
@@ -635,6 +649,7 @@ class FormAction {
                 $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
                 if (!empty($productIds)) {
+                    $medias = [];
                     $productRepository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
                         foreach ($data as $item) {
                             $entity = new \Model\Product\Entity($item);
@@ -645,7 +660,12 @@ class FormAction {
                             $products[] = $entity;
                         }
                     });
+
+                    \RepositoryManager::product()->prepareProductsMediasByIds($productIds, $medias);
+
                     $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+                    \RepositoryManager::product()->setMediasForProducts($products, $medias);
                 }
             }
         }

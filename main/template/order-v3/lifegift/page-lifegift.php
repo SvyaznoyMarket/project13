@@ -24,7 +24,7 @@ return function(
                 <legend class="orderLgift_st">Подарок</legend>
 
                 <div class="orderLgift_prod">
-                    <img class="orderLgift_img" src="<?= $product->getImageUrl(2) ?>" alt="<?= $product->getName() ?>">
+                    <img class="orderLgift_img" src="<?= $product->getMainImageUrl('product_160') ?>" alt="<?= $product->getName() ?>">
 
                     <div class="orderLgift_dscr">
                         <div class="orderLgift_dscr_n"><?= $product->getPrefix() ?></div>

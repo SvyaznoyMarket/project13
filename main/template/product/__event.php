@@ -2,11 +2,11 @@
 
 /**
  * @param \Helper\TemplateHelper $helper
- * @param \Model\Product\BasicEntity $product
+ * @param \Model\Product\Entity $product
  */
 $f = function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\BasicEntity $product
+    \Model\Product\Entity $product
 ) {
     $events = [];
 

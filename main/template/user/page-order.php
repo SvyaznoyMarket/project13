@@ -109,7 +109,7 @@
 
         <div class="personalTable_row">
             <div class="personalTable_cell personalTable_cell-mini">
-                <img class="imgProd" src="<?= $product->getImageUrl(0) ?>" alt="" />
+                <img class="imgProd" src="<?= $product->getMainImageUrl('product_60') ?>" alt="" />
             </div>
 
             <div class="personalTable_cell personalTable_cell-text">

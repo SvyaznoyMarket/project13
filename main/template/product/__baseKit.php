@@ -22,14 +22,15 @@ return function (
     </div>
 
     <? foreach ($products as $p) : ?>
-
-        <? if ($p['lineName'] == 'baseLine') : ?>
-
+        <?
+        /** @var \Model\Product\Entity $product */
+        $product = $p['product'];
+        ?>
         <div class="packageSetBodyItem">
-            <a class="packageSetBodyItem_img rown" href="<?= $p['product']->getLink() ?>"><img src="<?= $p['product']->getImageUrl() ?>" /></a><!--/ изображение товара -->
+            <a class="packageSetBodyItem_img rown" href="<?= $product->getLink() ?>"><img src="<?= $product->getMainImageUrl('product_120') ?>" /></a><!--/ изображение товара -->
 
             <div class="packageSetBodyItem_desc rown">
-                <div class="name"><a class="" href="<?= $p['product']->getLink() ?>"><?= $p['product']->getName(); ?></a></div><!--/ название товара -->
+                <div class="name"><a class="" href="<?= $product->getLink() ?>"><?= $product->getName(); ?></a></div><!--/ название товара -->
 
                 <? if ($p['height']!='' || $p['width']!='' || $p['depth']!='') : ?>
 
@@ -77,14 +78,11 @@ return function (
             </div><!--/ доставка -->
 
             <div class="packageSetBodyItem_price rown">
-                <?= $helper->formatPrice($p['product']->getPrice()) ?>&nbsp;<span class="rubl">p</span>
+                <?= $helper->formatPrice($product->getPrice()) ?>&nbsp;<span class="rubl">p</span>
             </div><!--/ цена -->
 
             <div class="packageSetBodyItem_qnt rown"><?= $p['count'] ?> шт.</div><!--/ количество в наборе -->
         </div><!--/ элемент комплекта -->
-
-        <? endif; ?>
-
     <? endforeach; ?>
     <!-- элемент комплекта -->
 

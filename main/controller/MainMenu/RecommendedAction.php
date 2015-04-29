@@ -68,7 +68,9 @@ class RecommendedAction {
         }
         $client->execute(null, 1); // нихай, пускай только один раз запрашивает
 
+        /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
+        $medias = [];
         foreach (array_chunk(array_values($productIdsByCategoryId), \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
             \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
                 foreach ((array)$data as $item) {
@@ -81,9 +83,13 @@ class RecommendedAction {
                     $productsById[$product->getId()] = $product;
                 }
             });
+
+            \RepositoryManager::product()->prepareProductsMediasByIds($productsInChunk, $medias);
         }
 
         \App::coreClientV2()->execute();
+
+        \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
 
         // ответ
         $responseData = [

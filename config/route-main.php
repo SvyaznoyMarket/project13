@@ -265,26 +265,6 @@ return [
         'action'  => ['Product\StockAction', 'execute'],
         'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
     ],
-    'product.accessory' => [
-        'pattern' => '/products/accessories/{productToken}',
-        'action'  => ['Product\AccessoryAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
-    'product.accessory.jewel' => [
-        'pattern' => '/jewel/products/accessories/{productToken}',
-        'action'  => ['Jewel\Product\AccessoryAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
-    'product.related' => [
-        'pattern' => '/products/related/{productToken}',
-        'action'  => ['Product\RelatedAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
-    'product.related.jewel' => [
-        'pattern' => '/jewel/products/related/{productToken}',
-        'action'  => ['Jewel\Product\RelatedAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
     'product.comment' => [
         'pattern' => '/product/{productPath}/comments',
         'action'  => ['Product\CommentAction', 'execute'],

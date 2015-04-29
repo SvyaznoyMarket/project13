@@ -160,6 +160,7 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // связанные товары: аксессуары, наборы, ...
+            /** @var Query\Product\GetByIdList[] $relatedProductQueries */
             $relatedProductQueries = [];
             call_user_func(function() use (&$productQuery, &$relatedProductQueries) {
                 $ids = []; // идентификаторы товаров
@@ -195,14 +196,6 @@ namespace EnterApplication\Action\ProductCard
                 $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $productQuery->regionId))->prepare();
             });
 
-            // описание товара из scms
-            call_user_func(function() use (&$productQuery, &$productDescriptionQuery) {
-                $productUi = $productQuery->response->product['ui'];
-                if (!$productUi) return;
-
-                $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList([$productUi]))->prepare();
-            });
-
             // избранные товары пользователя
             call_user_func(function() use (&$userQuery, &$productQuery, &$favoriteQuery) {
                 $userUi = ($userQuery && $userQuery->response->user['ui']) ? $userQuery->response->user['ui'] : null;
@@ -215,6 +208,7 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // товар для Подари Жизнь
+            /** @var Query\Product\GetByUi $lifeGiftProductQuery */
             call_user_func(function() use (&$productQuery, &$lifeGiftProductQuery) {
                 $product = $productQuery->response->product;
                 if (!$product['ui']) return;
@@ -232,6 +226,34 @@ namespace EnterApplication\Action\ProductCard
             // выполнение запросов
             $curl->execute();
 
+            // описание товара из scms
+            call_user_func(function() use (&$productQuery, &$productDescriptionQueries, &$relatedProductQueries, &$lifeGiftProductQuery) {
+                $uis = [];
+                if (isset($productQuery->response->product['ui'])) {
+                    $uis[] = $productQuery->response->product['ui'];
+                }
+
+                foreach ($relatedProductQueries as $relatedProductQuery) {
+                    if (is_array($relatedProductQuery->response->products)) {
+                        foreach ($relatedProductQuery->response->products as $product) {
+                            if (isset($product['ui'])) {
+                                $uis[] = $product['ui'];
+                            }
+                        }
+                    }
+                }
+
+                if (isset($lifeGiftProductQuery->response->product['ui'])) {
+                    $uis[] = $lifeGiftProductQuery->response->product['ui'];
+                }
+
+                foreach (array_chunk($uis, \App::config()->coreV2['chunk_size']) as $uisChunk) {
+                    $productDescriptionQueries[] = (new Query\Product\GetDescriptionByUiList($uisChunk))->prepare();
+                }
+            });
+
+            $curl->execute();
+
             $this->removeCurl();
 
             // обработка ошибок
@@ -244,7 +266,7 @@ namespace EnterApplication\Action\ProductCard
             // response
             $response = new Response();
             $response->productQuery = $productQuery;
-            $response->productDescriptionQuery = $productDescriptionQuery;
+            $response->productDescriptionQueries = $productDescriptionQueries;
             $response->userQuery = $userQuery;
             $response->subscribeQuery = $subscribeQuery;
             $response->redirectQuery = $redirectQuery;
@@ -301,8 +323,8 @@ namespace EnterApplication\Action\ProductCard\Get
     {
         /** @var Query\Product\GetByToken */
         public $productQuery;
-        /** @var Query\Product\GetDescriptionByUiList|null */
-        public $productDescriptionQuery;
+        /** @var Query\Product\GetDescriptionByUiList[] */
+        public $productDescriptionQueries = [];
         /** @var Query\User\GetByToken|null */
         public $userQuery;
         /** @var Query\Subscribe\GetByUserToken|null */

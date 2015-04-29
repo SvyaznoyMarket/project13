@@ -34,43 +34,50 @@ class Sociomantic
     }
 
 
+    /**
+     * @param \Model\Product\Entity[] $products
+     * @param \Model\Cart\Product\Entity[] $cartProductsById
+     * @return array
+     */
     public function makeCartProducts($products, $cartProductsById)
     {
         $cart_prods = [];
 
-        if ( !empty($products) and is_array($products) )
-        foreach ($products as $product):
-            $cartProduct = isset($cartProductsById[$product->getId()]) ? $cartProductsById[$product->getId()] : null;
-            if (!$cartProduct) continue;
-            $one_prod = [];
+        if ($products && is_array($products)) {
+            foreach ($products as $product) {
+                $cartProduct = isset($cartProductsById[$product->getId()]) ? $cartProductsById[$product->getId()] : null;
+                if (!$cartProduct) continue;
+                $one_prod = [];
 
-            // $product <--> Model\Product\CartEntity
-            $one_prod['identifier'] = $this->resetProductId($product);
+                $one_prod['identifier'] = $this->resetProductId($product);
 
-            $one_prod['quantity'] = $cartProduct->getQuantity();
-            //$one_prod['amount'] = $this->helper->formatPrice( $cartProduct->getPrice() * $one_prod['quantity'] );
-            $one_prod['amount'] = $cartProduct->getPrice() * $one_prod['quantity'];
-            $one_prod['currency'] = 'RUB';
+                $one_prod['quantity'] = $cartProduct->getQuantity();
+                //$one_prod['amount'] = $this->helper->formatPrice( $cartProduct->getPrice() * $one_prod['quantity'] );
+                $one_prod['amount'] = $cartProduct->getPrice() * $one_prod['quantity'];
+                $one_prod['currency'] = 'RUB';
 
-            $cart_prods[] = $one_prod;
-            if (!$cartProduct) continue;
-        endforeach;
+                $cart_prods[] = $one_prod;
+                if (!$cartProduct) continue;
+            }
+        }
 
         $this->makeSession( $products );
 
         return $cart_prods;
     }
 
-
+    /**
+     * @param \Model\Product\Entity[] $products
+     */
     public function makeSession( $products ) {
         $ids_arr = null;
 
-        if ( is_array($products) and !empty($products) )
-        foreach ($products as $product):
-            // $product <--> Model\Product\CartEntity
-            $id = $this->resetProductId($product);
-            $ids_arr[ $product->getId() ] = $id;
-        endforeach;
+        if ($products && is_array($products)) {
+            foreach ($products as $product) {
+                $id = $this->resetProductId($product);
+                $ids_arr[$product->getId()] = $id;
+            }
+        }
 
         if ( is_array($ids_arr) and !empty($ids_arr)  ) return $this->setInSession( $ids_arr );
         return false;
@@ -165,7 +172,7 @@ class Sociomantic
         $domain = $_SERVER['HTTP_HOST'] ? : $_SERVER['SERVER_NAME'];
         //$region_id = \App::user()->getRegion()->getId();
         $brand = $product->getBrand() ? $product->getBrand()->getName() : null;
-        $photo = $product->getImageUrl(3);
+        $photo = $product->getMainImageUrl('product_500');
 
         $prod['identifier'] = $this->resetProductId($product);
         $prod['fn'] = $product->getName();

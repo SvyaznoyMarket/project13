@@ -76,7 +76,9 @@ class IndexAction {
             }
         });
 
+        /** @var \Model\Product\Entity[] $products */
         $products = [];
+        $medias = [];
         $productsIds = [];
         // перевариваем данные изображений
         // используя айдишники товаров из секции image.products, получим мини-карточки товаров для баннере
@@ -84,19 +86,21 @@ class IndexAction {
             $productsIds = array_merge($productsIds, $image->getProducts());
         }
         $productsIds = array_unique($productsIds);
-        if (count($productsIds) > 0) {
+        if ($productsIds) {
             \RepositoryManager::product()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
                 foreach ($data as $item) {
                     if (!isset($item['id'])) continue;
                     $products[ $item['id'] ] = new \Model\Product\Entity($item);
                 }
             });
+
+            \RepositoryManager::product()->prepareProductsMediasByIds($productsIds, $medias);
         }
 
         // выполнение 2-го пакета запросов в ядро
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
-
+        \RepositoryManager::product()->setMediasForProducts($products, $medias);
 
         // перевариваем данные изображений для слайдера в $slideData
         foreach ($promo->getImage() as $image) {
@@ -107,7 +111,7 @@ class IndexAction {
                 $product = $products[$productId];
                 /** @var $product \Model\Product\Entity */
                 $itemProducts[] = [
-                    'image'         => $product->getImageUrl(2), // 163х163 seize
+                    'image'         => $product->getMainImageUrl('product_160'),
                     'link'          => $product->getLink(),
                     'name'          => $product->getName(),
                     'price'         => $product->getPrice(),

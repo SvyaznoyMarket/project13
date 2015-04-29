@@ -74,7 +74,7 @@ class SliderAction {
                             : ceil($product->getPrice() - $product->getPrice() * $enterpizeCoupon->getPrice() / 100)
                         ),
                         'name'          => $product->getName(),
-                        'image'         => $product->getImageUrl(),
+                        'image'         => $product->getMainImageUrl('product_120'),
                         'cartButton'    =>
                             $enterpizeCoupon->getDiscount()
                             ? $cartButtonAction->execute(

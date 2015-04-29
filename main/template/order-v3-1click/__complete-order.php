@@ -24,7 +24,7 @@ $f = function(
 
     <div class="orderCol_cnt clearfix">
         <div class="orderCol_lk">
-            <img class="orderCol_img" src="<?= $product->getImageUrl(1) ?>">
+            <img class="orderCol_img" src="<?= $product->getMainImageUrl('product_120') ?>">
         </div>
 
         <? if ($product): ?>

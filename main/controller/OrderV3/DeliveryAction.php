@@ -12,11 +12,6 @@ class DeliveryAction extends OrderV3 {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-//        $controller = parent::execute($request);
-//        if ($controller) {
-//            return $controller;
-//        }
-
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         if ($request->isXmlHttpRequest()) {
@@ -75,8 +70,20 @@ class DeliveryAction extends OrderV3 {
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
             $orderDelivery = $this->getSplit($data);
 
+            $medias = [];
             foreach($orderDelivery->orders as $order) {
                 $this->logger(['delivery-self-price' => $order->delivery->price]);
+                \RepositoryManager::product()->prepareProductsMediasByIds(array_map(function(\Model\OrderDelivery\Entity\Order\Product $product) { return $product->id; }, $order->products), $medias);
+            }
+
+            \App::coreClientV2()->execute();
+
+            foreach($orderDelivery->orders as $order) {
+                foreach ($order->products as $product) {
+                    if (isset($medias[$product->id])) {
+                        $product->medias = $medias[$product->id];
+                    }
+                }
             }
 
             $subscribeResult = false;  // ответ на подписку

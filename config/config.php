@@ -325,22 +325,6 @@ $c->product['pullRecommendation']     = true;
 $c->product['pushRecommendation']     = true;
 $c->product['viewedEnabled']          = true;
 
-$c->productPhoto['url'] = [
-    0 => '/1/1/60/',
-    1 => '/1/1/120/',
-    2 => '/1/1/163/',
-    3 => '/1/1/500/',
-    4 => '/1/1/2500/',
-    5 => '/1/1/1500/',
-    6 => '/1/1/350/',
-    7 => '/1/1/200/',
-];
-
-$c->productPhoto3d['url'] = [
-    0 => '/1/2/500/',
-    1 => '/1/2/2500/',
-];
-
 $c->productLabel['url'] = [
     0 => '/7/1/66x23/',
     1 => '/7/1/124x38/',
@@ -431,14 +415,6 @@ $c->kladr = [
     'key'       => 'c20b52a7dc6f6b28023e3d8ef81b9dbdb51ff74b',
     'itemLimit' => 20,
 ];
-
-$c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
-$c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
-$c->maybe3d['swfUrl']     = 'http://fs01.enter.ru/3d/flash/';
-$c->maybe3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
-$c->maybe3d['timeout']    = 30;
-
-$c->img3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
 
 $c->tag['numSidebarCategoriesShown'] = 3;
 
