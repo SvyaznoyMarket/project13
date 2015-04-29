@@ -4,6 +4,9 @@
 namespace Model\OrderDelivery;
 
 class Error {
+
+    const CODE_MAX_QUANTITY = 708;
+
     /** @var int */
     public $code;
     /** @var string */
@@ -20,4 +23,9 @@ class Error {
             $order->orders[$arr['details']['block_name']]->errors[] = &$this;
         }
     }
+
+    public function isMaxQuantityError() {
+        return $this->code == self::CODE_MAX_QUANTITY;
+    }
+
 }
