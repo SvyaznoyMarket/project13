@@ -16,7 +16,7 @@
             centered: true,
             closeSelector: '.jsPopupCloser',
             preventScroll: true,
-            closeClick: false
+            closeClick: true
         },
         /* Функция для зума фотографии */
         setZoom = function(direction) {

@@ -14,7 +14,7 @@
         popupDefaults = {
             centered: true,
             closeSelector: '.jsPopupCloser',
-            closeClick: false
+            closeClick: true
         };
 
     /* Если это не новая карточка, то do nothing */
@@ -115,8 +115,7 @@
         if ($div.find('.jsDeliveryMapPoints').length > 0) {
             $div.lightbox_me({
                 centered: true,
-                preventScroll: true,
-                closeClick: false
+                preventScroll: true
             });
             return ;
         }
@@ -129,8 +128,7 @@
                 $div.data('xhr', true);
                 $div.lightbox_me({
                     centered: true,
-                    preventScroll: true,
-                    closeClick: false
+                    preventScroll: true
                 })
             }
         }).always(function(){

@@ -396,9 +396,9 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 
 	<!-- вы смотрели -->
 	<div class="product-section product-section--inn">
-        <!-- <div class="product-section__h3">Вы смотрели</div> -->
+<!--         <div class="product-section__h3">Вы смотрели</div>-->
         <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
-            <?= $helper->render('product-page/blocks/slider', [
+            <?= $helper->render('product/__slider', [
                 'type'      => 'viewed',
                 'title'     => 'Вы смотрели',
                 'products'  => [],
