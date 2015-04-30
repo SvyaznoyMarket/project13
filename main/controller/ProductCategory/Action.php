@@ -585,53 +585,6 @@ class Action {
         $repository = \RepositoryManager::product();
         $repository->setEntityClass('\\Model\\Product\\Entity');
 
-        if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
-            $productIds = [];
-            $productCount = 0;
-            $repository->prepareIteratorByFilter(
-                $productFilter->dump(),
-                $sort,
-                $offset,
-                $limit,
-                $region,
-                function($data) use (&$productIds, &$productCount) {
-                    if (isset($data['list'][0])) $productIds = $data['list'];
-                    if (isset($data['count'])) $productCount = (int)$data['count'];
-                }
-            );
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-            $products = [];
-            if ((bool)$productIds) {
-                $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                    foreach ($data as $item) {
-                        $products[] = new \Model\Product\Entity($item);
-                    }
-                });
-            }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-            $scoreData = [];
-            if ((bool)$products) {
-                $productUIs = [];
-                foreach ($products as $product) {
-                    if (!$product instanceof \Model\Product\BasicEntity) continue;
-                    $productUIs[] = $product->getUi();
-                }
-
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
-                    if (isset($data['product_scores'][0])) {
-                        $scoreData = $data;
-                    }
-                });
-            }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-            \RepositoryManager::review()->addScores($products, $scoreData);
-
-            $pagerAll = new \Iterator\EntityPager($products, $productCount);
-        }
-
         $filters = $productFilter->dump();
 
         $smartChoiceEnabled = isset($catalogJson['smartchoice']) ? $catalogJson['smartchoice'] : false;
@@ -675,90 +628,82 @@ class Action {
             }
         }
 
-        if (!empty($pagerAll)) {
-            $productPager = $pagerAll;
-        } else {
-            $productError = null;
+        $productError = null;
+        $productPager = null;
 
-            $productPager = null;
+        $productIds = [];
+        $productCount = 0;
+        $repository->prepareIteratorByFilter(
+            $filters,
+            $sort,
+            $offset,
+            $limit,
+            $region,
+            function($data) use (&$productIds, &$productCount, &$productError) {
+                if (is_array($data)) {
+                    if (isset($data['list'][0])) $productIds = $data['list'];
+                    if (isset($data['count'])) $productCount = (int)$data['count'];
+                } else {
+                    $productError = new \Exception('Товары не получены');
+                }
+            },
+            function(\Exception $e) use (&$productError) {
+                $productError = $e;
+            }
+        );
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            $productIds = [];
-            $productCount = 0;
-            $repository->prepareIteratorByFilter(
-                $filters,
-                $sort,
-                $offset,
-                $limit,
+        // HINT Можно добавлять ID неопубликованных продуктов для показа в листингах
+        // array_unshift($productIds, 201540);
+
+        // TODO удалить (электронный сертификат в листинг сертификатов)
+        if ($category->ui === 'b2885b1b-06bc-4c6f-b40d-9a0af22ff61c') array_unshift($productIds, 201540);
+
+        $products = [];
+        if ((bool)$productIds) {
+            $repository->prepareCollectionById(
+                $productIds,
                 $region,
-                function($data) use (&$productIds, &$productCount, &$productError) {
+                function($data) use (&$products, &$productError) {
                     if (is_array($data)) {
-                        if (isset($data['list'][0])) $productIds = $data['list'];
-                        if (isset($data['count'])) $productCount = (int)$data['count'];
+                        foreach ($data as $item) {
+                            $products[] = new \Model\Product\Entity($item);
+                        }
                     } else {
                         $productError = new \Exception('Товары не получены');
+                        \App::logger()->error(['error' => $productError, 'core.response' => $data, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
                     }
                 },
                 function(\Exception $e) use (&$productError) {
                     $productError = $e;
                 }
             );
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-            // HINT Можно добавлять ID неопубликованных продуктов для показа в листингах
-            // array_unshift($productIds, 201540);
-
-            // TODO удалить (электронный сертификат в листинг сертификатов)
-            if ($category->ui === 'b2885b1b-06bc-4c6f-b40d-9a0af22ff61c') array_unshift($productIds, 201540);
-
-            $products = [];
-            if ((bool)$productIds) {
-                $repository->prepareCollectionById(
-                    $productIds,
-                    $region,
-                    function($data) use (&$products, &$productError) {
-                        if (is_array($data)) {
-                            foreach ($data as $item) {
-                                $products[] = new \Model\Product\Entity($item);
-                            }
-                        } else {
-                            $productError = new \Exception('Товары не получены');
-                            \App::logger()->error(['error' => $productError, 'core.response' => $data, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
-                        }
-                    },
-                    function(\Exception $e) use (&$productError) {
-                        $productError = $e;
-                    }
-                );
-            }
-            \App::coreClientV2()->execute();
-
-            if ($productError && !$products && ('true' == $request->get('ajax'))) {
-                throw new \Exception('Товары не найдены');
-            }
-
-            $scoreData = [];
-            if ((bool)$products) {
-                $productUIs = [];
-                foreach ($products as $product) {
-                    if (!$product instanceof \Model\Product\BasicEntity) continue;
-                    $productUIs[] = $product->getUi();
-                }
-
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
-                    if (isset($data['product_scores'][0])) {
-                        $scoreData = $data;
-                    }
-                });
-            }
-
-            $repository->prepareProductsMedias($products);
-
-            \App::coreClientV2()->execute();
-
-            \RepositoryManager::review()->addScores($products, $scoreData);
-
-            $productPager = new \Iterator\EntityPager($products, $productCount);
         }
+        \App::coreClientV2()->execute();
+
+        if ($productError && !$products && ('true' == $request->get('ajax'))) {
+            throw new \Exception('Товары не найдены');
+        }
+
+        if ((bool)$products) {
+            $productUIs = [];
+            foreach ($products as $product) {
+                if (!$product instanceof \Model\Product\BasicEntity) continue;
+                $productUIs[] = $product->getUi();
+            }
+
+            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use(&$products) {
+                if (isset($data['product_scores'][0])) {
+                    \RepositoryManager::review()->addScores($products, $data);
+                }
+            });
+        }
+
+        $repository->prepareProductsMedias($products);
+
+        \App::coreClientV2()->execute();
+
+        $productPager = new \Iterator\EntityPager($products, $productCount);
 
         // Если товаров слишком мало (меньше 3 строк в листинге), то не показываем SmartChoice
         if ($productPager->count() < 7) $smartChoiceData = [];
