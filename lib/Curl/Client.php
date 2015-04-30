@@ -108,7 +108,7 @@ class Client {
                 'data'    => $data,
                 'info'    => isset($info) ? $info : null,
                 'header'  => isset($header) ? $header : null,
-                'resonse' => mb_substr($response, 0, 512),
+                'response' => mb_substr($response, 0, 512),
                 'timeout' => $timeout,
                 'startAt' => $startedAt,
                 'endAt'   => microtime(true),
