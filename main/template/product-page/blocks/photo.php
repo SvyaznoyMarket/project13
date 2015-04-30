@@ -25,6 +25,7 @@ $f = function(
                  data-is-slot="<?= $product->getSlotPartnerOffer() ? 'true' : 'false' ?>"
                  style="cursor: zoom-in"
                 />
+            <div class="product-card-photo__overlay">Нет в наличии</div>
         </div>
 
         <!-- если картинок больше 5 добавляем класс product-card-photo-thumbs--slides -->
@@ -42,7 +43,6 @@ $f = function(
 
             <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled jsProductThumbBtn" data-dir="+="></div>
             <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r jsProductThumbBtn" data-dir="-="></div>
-
         </div>
 
         <ul class="product-card-media jsProductMediaButton">
@@ -108,7 +108,6 @@ $f = function(
                 <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r"></div>
             </div>
 
-<!--            <a href="" class="btn-type btn-type--buy">В корзину</a>-->
             <?= $helper->render('cart/__button-product', [
                 'product'  => $product,
                 'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
@@ -118,9 +117,6 @@ $f = function(
 
         </div>
         <!--/ попап просмотра большого изображения -->
-
-
-
     </div>
 
 <?}; return $f;

@@ -55,6 +55,42 @@
         width: 220px;
         margin-right: -10px;
     }
+    // карточка товара в два столбца
+    &--2col {
+        .product-card__c {
+            width: 540px;
+            margin-right: -10px;
+        }
+    }
+    // карточка товара - нет в наличии
+    &--not {
+        .buy-online {
+            margin: 0 20px 20px 0;
+
+            .inline-block-middle();
+        }
+        .product-card-rating {
+            margin: 0 0 20px;
+
+            .inline-block-middle();
+        }
+        .product-card-tools {
+            float: right;
+
+            margin-bottom: 20px;
+            &__i {
+                float: right;
+
+                margin: 2px 0 0 10px;
+                &:last-child {
+                    margin-left: 0;
+                }
+            }
+        }
+        .product-card-prop {
+            width: 280px;
+        }
+    }
 }
 
 // описание товара
