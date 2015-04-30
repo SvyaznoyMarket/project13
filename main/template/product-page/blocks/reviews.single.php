@@ -29,8 +29,8 @@ $f = function(
 
         <div class="reviews-voting jsReviewVote" data-user-vote="<?= $review->userVote ?>">
             <div class="reviews-voting__tl">Полезный отзыв?</div>
-            <span class="reviews-vote reviews-vote--positive <?= $review->userVote > 0 ?  'reviews-vote--active' : null ?> jsReviewVoteBtn" data-vote="1"><?= $review->getPositiveCount() ?></span>
-            <span class="reviews-vote reviews-vote--negative <?= $review->userVote < 0 ?  'reviews-vote--active' : null ?> jsReviewVoteBtn" data-vote="-1"><?= $review->getNegativeCount() ?></span>
+            <span class="reviews-vote reviews-vote--positive <?= $review->userVote > 0 ?  'active' : null ?>jsReviewVoteBtn" data-vote="1"><?= $review->getPositiveCount() ?></span>
+            <span class="reviews-vote reviews-vote--negative <?= $review->userVote < 0 ?  'active' : null ?>jsReviewVoteBtn" data-vote="-1"><?= $review->getNegativeCount() ?></span>
         </div>
     </div>
 

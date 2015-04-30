@@ -55,11 +55,12 @@
                 background: #f99b1c;
             }
         }
-        &:hover{
-            .product-tabs__lk{
-                .transition(all .3s ease-out);
-                border-color: @black;
+        &:hover {
+            .product-tabs__lk {
                 color: @black;
+                border-color: @black;
+
+                .transition(all .3s ease-out);
             }
         }
     }
@@ -274,19 +275,11 @@
         .inline-block-middle();
         &:after {
             .opacity(.4);
-            .transition-duration(.3s);
-        }
-        &:hover {
-            text-decoration: none;
-        }
-        &--active {
-            &:after {
-                .opacity(1);
-            }
         }
         &:before {
             position: absolute;
             z-index: 1;
+            .opacity(0);
             top: 0;
             left: 0;
 
@@ -296,49 +289,58 @@
 
             background-image: url('@{base-url}/product/img/i-product.png');
         }
+        &:after {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            content: '';
+
+            background-image: url('@{base-url}/product/img/i-product.png');
+        }
         &--positive {
             &:after {
-                position: absolute;
-                top: 0;
-                left: 0;
-
-                content: '';
-
-                background-image: url('@{base-url}/product/img/i-product.png');
-
-                .sprite-temp(-25px, -0px, 25px, 25px);
+                .sprite-temp(-25px, 0px, 25px, 25px);
             }
             &:before {
-                .sprite-temp(-25px, -0px, 25px, 0);
+                .sprite-temp(-25px, 0px, 25px, 25px);
             }
         }
         &--negative {
             &:after {
-                position: absolute;
                 top: 6px;
-                left: 0;
 
-                content: '';
-
-                background-image: url('@{base-url}/product/img/i-product.png');
-
-                .sprite-temp(-0px, -0px, 25px, 25px);
+                .sprite-temp(0px, 0px, 25px, 25px);
             }
             &:before {
                 top: 6px;
 
-                .sprite-temp(-0px, -0px, 25px, 0);
-            }
-        }
-        &.voting {
-            &:before {
-                .animation(heightDown, .6s);
+                .sprite-temp(0px, 0px, 25px, 25px);
             }
         }
         &.active {
             &:after {
                 .opacity(1);
             }
+             &.voting {
+                &:after {
+                    .opacity(.4);
+                }
+                &:before {
+                    .animation(blinkRevers, 1.9s, 0, ease-in, infinite);
+                }
+            }
+        }
+        &.voting {
+            &:after {
+                .opacity(.4);
+            }
+            &:before {
+                .animation(blink, 1.9s, 0, ease-in, infinite);
+            }
+        }
+        &:hover {
+            text-decoration: none;
         }
     }
 }

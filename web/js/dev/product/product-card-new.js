@@ -291,9 +291,7 @@
                     }
                 }
             }).always(function(){
-                setTimeout(function () {
-                    $button.removeClass(voteClass);
-                }, 400);
+                $button.removeClass(voteClass);
                 $voteDiv.data('xhr', false);
             })
     })
