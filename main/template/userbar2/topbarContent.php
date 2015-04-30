@@ -23,8 +23,12 @@
     </ul>
 
     <ul class="header_i userbtn js-topbarfix">
-        <?= $page->render('userbar/_userinfo') ?>
-        <?= $page->render('userbar/_usercompare') ?>
-        <?= $page->render('userbar/_usercart') ?>
+        <? if (\App::config()->ssi['enabled']): ?>
+            <!--# include virtual="/ssi.php?path=/userbar" -->
+        <? else: ?>
+            <?= $page->render('userbar/_userinfo') ?>
+            <?= $page->render('userbar/_usercompare') ?>
+            <?= $page->render('userbar/_usercart') ?>
+        <? endif ?>
     </ul>
 </div>

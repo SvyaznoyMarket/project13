@@ -77,6 +77,13 @@ class AppConfig {
         'cookie_lifetime' => null,
         'cookie_domain'   => null,
     ];
+    /**
+     * nginx ssi
+     * @var array
+     */
+    public $ssi = [
+        'enabled' => null,
+    ];
     /** @var array */
     public $redirect301 = [
         'enabled' => null,
