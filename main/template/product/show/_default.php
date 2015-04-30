@@ -31,7 +31,6 @@
 <?
 $region = \App::user()->getRegion();
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
-$isKit = (bool)$product->getKit();
 
 $isProductAvailable = $product->isAvailable();
 if (\App::config()->preview) {
@@ -40,7 +39,6 @@ if (\App::config()->preview) {
 
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
 $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
-$sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '';
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>

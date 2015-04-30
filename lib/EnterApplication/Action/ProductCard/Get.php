@@ -206,12 +206,10 @@ namespace EnterApplication\Action\ProductCard
             // избранные товары пользователя
             call_user_func(function() use (&$userQuery, &$productQuery, &$favoriteQuery) {
                 $userUi = ($userQuery && $userQuery->response->user['ui']) ? $userQuery->response->user['ui'] : null;
-                if (!$userUi) return;
-
                 $productUi = $productQuery->response->product['ui'];
-                if (!$productUi) return;
 
-                $favoriteQuery = (new Query\User\Favorite\Check($userUi, [$productUi]))->prepare();
+                $favoriteQuery = new Query\User\Favorite\Check($userUi, [$productUi]);
+                if ($productUi && $userUi) $favoriteQuery->prepare();
             });
 
             // товар для Подари Жизнь
