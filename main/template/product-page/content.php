@@ -24,6 +24,7 @@
  * @var $reviewsDataSummary     array   Данные отзывов
  * @var $videoHtml              string|null
  * @var $properties3D           []
+ * @var $isKit                  bool
  */
 
 $helper = \App::helper();
@@ -228,7 +229,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 			<ul class="product-card-tools">
 				<li class="product-card-tools__i product-card-tools__i--onclick">
 
-                    <? if (!$hasFurnitureConstructor && !count($product->getPartnersOffer()) && (!$isKit || $product->getIsKitLocked())): ?>
+                    <? if (!count($product->getPartnersOffer()) && (!$isKit || $product->getIsKitLocked())): ?>
                         <?= $helper->render('cart/__button-product-oneClick', [
                             'product' => $product,
                             'sender'  => $buySender,

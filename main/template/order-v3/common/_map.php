@@ -28,7 +28,7 @@
 
     ?>
 
-    <div class="selShop popupFl pick-point <?= $class ?>" style="display: <?= $visible ? 'block' : 'none';  ?>" data-block_name="<?= $order->block_name ?>">
+    <div class="selShop popupFl pick-point <?= $class ?>" style="display: <?= $visible ? 'block' : 'none';  ?>" data-block_name="<?= isset($order) ? $order->block_name : '' ?>">
 
         <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= 'map-' . $uniqId ?>"></div>
 
@@ -165,7 +165,7 @@
                                     <a
                                         href=""
                                         class="btn-type btn-type--buy jsOneClickButton-new jsOneClickButtonOnDeliveryMap"
-                                        <? if ($product) : ?>data-product-ui="<?= $product->getUi() ?>"<? endif ?>
+                                        <? if (isset($product)) : ?>data-product-ui="<?= $product->getUi() ?>"<? endif ?>
                                         data-bind="attr: { 'data-shop': id }">Купить</a>
                                 </div>
                                 </td>

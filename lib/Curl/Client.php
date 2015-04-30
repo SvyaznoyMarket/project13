@@ -139,7 +139,7 @@ class Client {
 
                 return true;
             } else {
-                \App::logger()->error(['error' => sprintf('Запрос %s %s не попал в кеш', $url, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)), 'sender' => __FILE__ . ' ' .  __LINE__], ['critical', 'curl-cache']);
+                \App::logger()->warn(['message' => sprintf('Запрос %s %s не попал в кеш', $url, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE))], ['curl-cache']);
             }
         }
 

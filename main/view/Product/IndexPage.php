@@ -54,6 +54,9 @@ class IndexPage extends \View\DefaultLayout {
             $page->setKeywords(sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $product->getName()));
         }
 
+        if (!$this->hasParam('sender2')) $this->setParam('sender2', $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '');
+        if (!$this->hasParam('isKit')) $this->setParam('isKit', (bool)$product->getKit());
+
         $this->setTitle($page->getTitle());
         $this->addMeta('description', $page->getDescription());
         $this->addMeta('keywords', $page->getKeywords());

@@ -125,7 +125,7 @@ class MapView {
                     'id' => $p->id,
                     'name' => $p->name,
                     'address' => \App::helper()->noBreakSpaceAfterDot($p->address),
-                    'subway'    => reset($p->subway),
+                    'subway'    => is_array($p->subway) ? reset($p->subway) : null,
 
                     /* MapPoint */
                     'regtime' => $p->regtime,

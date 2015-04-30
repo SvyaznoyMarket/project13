@@ -29,7 +29,8 @@ $f = function(
 
         <!-- если картинок больше 5 добавляем класс product-card-photo-thumbs--slides -->
         <div class="product-card-photo-thumbs jsProductThumbHolder <?= count($product->getPhoto()) > 5 ? 'product-card-photo-thumbs--slides' : ''?>"
-            style="display: <?= count($product->getPhoto()) > 1 ? 'block' : 'none' ?>">
+            <? if (count($product->getPhoto()) < 2) : ?>style="display: none"<? endif ?>
+        >
             <ul class="product-card-photo-thumbs-list jsProductThumbList">
                 <? foreach ($product->getPhoto() as $key => $photo) : ?>
                     <li class="product-card-photo-thumbs__i jsProductPhotoThumb <?= $key == 0 ? 'product-card-photo-thumbs__i--act' : '' ?>"
