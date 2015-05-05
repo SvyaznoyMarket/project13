@@ -10,13 +10,6 @@ $appConfig = \App::config();
 $router = \App::router();
 $helper = new \Helper\TemplateHelper();
 
-$userData = [];
-try {
-    $userData = (new \Controller\User\InfoAction())->getResponseData(\App::request());
-} catch (\Exception $e) {
-    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['user-info', 'critical']);
-}
-
 try {
     $classFile = $appConfig->appDir . '/vendor/Mobile-Detect/Mobile_Detect.php';
     if (file_exists($classFile)) {
@@ -69,5 +62,3 @@ $config = array_merge([
 ?>
 
 <div id="page-config" data-value="<?= $page->json($config) ?>"></div>
-
-<?= $helper->jsonInScriptTag($userData, 'data-userInfo') ?>

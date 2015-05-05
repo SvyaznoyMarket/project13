@@ -12,11 +12,7 @@ class UserbarAction {
 
         $page = new \View\DefaultLayout();
 
-        $content =
-            $page->render('userbar/_userinfo')
-            . $page->render('userbar/_usercompare')
-            . $page->render('userbar/_usercart')
-        ;
+        $content = $page->render('userbar/_userbar', ['class' => 'header_i userbtn js-topbarfix']);
 
         return new \Http\Response($content);
     }

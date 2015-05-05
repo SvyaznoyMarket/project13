@@ -638,7 +638,8 @@
 		}
 	});
 	*/
-	(function(data){
+	(function(){
+		var data = $('.js-userbar-userbar').data('user-config');
 		ENTER.UserModel.update(data);
 		if (typeof ga == 'function') {
 			ga('send', 'timing', 'userInfo', 'Load User Info', spendTime);
@@ -656,7 +657,7 @@
 		}
 
 		$body.trigger('userLogged', [data]);
-	})($.parseJSON($('#data-userInfo').html()));
+	})();
 
 	$body.on('catalogLoadingComplete', function(){
 		$('.js-listing, .js-jewelListing').each(function(){
