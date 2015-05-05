@@ -56,7 +56,7 @@
             iH = $popupPhoto.height();
 
         if (e.type == 'wheel') {
-            setZoom(e.originalEvent['wheelDeltaY'] > 0 ? 1 : -1);
+            setZoom(e.originalEvent['deltaY'] < 0 ? 1 : -1);
             e.stopPropagation(); // иначе будет скролл страницы
         }
 
