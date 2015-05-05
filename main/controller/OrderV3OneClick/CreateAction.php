@@ -183,6 +183,10 @@ class CreateAction {
             'lastPartner' => \App::partner()->getName(),
         ];
 
+        if (\App::config()->googleAnalytics['enabled']) {
+            $result['orderAnalytics'] = \Util\Analytics::getForOrder($createdOrders);
+        }
+
         return $request->isXmlHttpRequest() ? new \Http\JsonResponse(['result' => $result]) : new \Http\RedirectResponse($referer);
     }
 }

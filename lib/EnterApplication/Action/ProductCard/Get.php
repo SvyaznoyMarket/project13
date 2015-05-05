@@ -83,6 +83,14 @@ namespace EnterApplication\Action\ProductCard
             // выполнение запросов
             $curl->execute();
 
+            call_user_func(function() use (&$productQuery, &$userQuery, &$productViewEventQuery) {
+                $productUi = $productQuery->response->product['ui'];
+                if (!$productUi || !$userQuery || !\App::config()->eventService['enabled']) return;
+
+                // product view событие
+                $productViewEventQuery = (new Query\Event\PushProductView($productUi, $userQuery->response->user['ui']))->prepare();
+            });
+
             // доставка
             call_user_func(function() use (&$productQuery, &$deliveryQuery) {
                 $productId = $productQuery->response->product['id'];

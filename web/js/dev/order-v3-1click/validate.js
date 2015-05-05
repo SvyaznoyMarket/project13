@@ -156,16 +156,10 @@
 								});
 							});
 						})();
-					}
 
-					var $orderContainer = $('#jsOrderV3OneClickOrder');
-					if ($orderContainer.length) {
-						$.get($orderContainer.data('url')).done(function(response) {
-							$orderContainer.html(response.result.page);
-
-							if (typeof ENTER.utils.sendOrderToGA == 'function') ENTER.utils.sendOrderToGA($('#jsOrder').data('value'));
-
-						});
+						if (response.result.orderAnalytics) {
+							ENTER.utils.sendOrderToGA(response.result.orderAnalytics);
+						}
 					}
 				})
 				.fail(function(jqXHR){

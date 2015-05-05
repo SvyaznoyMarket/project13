@@ -112,7 +112,7 @@ class SelectedFilter {
 
                 if ($from != '') { // SITE-4114 if (isset($from) && !($isEqualNumeric($from, $filter->getMin()))) {
                     $links[] = [
-                        'name' => $isPrice ? sprintf('от %sр', $helper->formatPrice($from)) : sprintf('от %s', round($from, 1)),
+                        'name' => $isPrice ? 'от ' . $helper->formatPrice($from) . 'р' : 'от ' . round($from, 1) . ' ' . $property->getUnit(),
                         'url'  => $helper->replacedUrl(
                             [
                                 \View\Name::productCategoryFilter($property, 'from') => null,
@@ -130,7 +130,7 @@ class SelectedFilter {
 
                 if ($to != '') { // SITE-4114 if (isset($to) && !($isEqualNumeric($to, $filter->getMax()))) {
                     $links[] = [
-                        'name' => $isPrice ? sprintf('до %sр', $helper->formatPrice($to)) : sprintf('до %s', round($to, 1)),
+                        'name' => $isPrice ? 'до ' . $helper->formatPrice($to) . 'р' : 'до ' . round($to, 1) . ' ' . $property->getUnit(),
                         'url'  => $helper->replacedUrl(
                             [
                                 \View\Name::productCategoryFilter($property, 'to') => null,
@@ -201,6 +201,7 @@ class SelectedFilter {
         return $links;
     }
 
+    /*
     private function getFilterValues(\Model\Product\Filter $productFilter, $selected) {
         $filterValues = [];
 
@@ -256,4 +257,5 @@ class SelectedFilter {
 
         return $filterValues;
     }
+    */
 }

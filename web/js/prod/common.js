@@ -2890,7 +2890,7 @@ $(document).ready(function() {
 		if (typeof url == 'string' && !$el.data(lKey) === true) {
 
 			// отрезаем от url параметры для ключа в localstorage
-			key = url.substring(0, url.indexOf('?'));
+			key = url.indexOf('?') === -1 ? url : url.substring(0, url.indexOf('?'));
 
 			if (!storage.get(key, $el)) {
 

@@ -54,6 +54,11 @@ $c->coreV2['retryTimeout'] = [
 $c->coreV2['chunk_size']   = 50;
 $c->coreV2['debug']        = false;
 
+$c->eventService['url'] = 'http://event.enter.ru/';
+$c->eventService['enabled'] = true; // FIXME
+$c->eventService['timeout'] = 0.2;
+$c->eventService['client_id'] = 'site';
+
 $c->corePrivate['url']          = 'http://api.enter.ru/private/';
 $c->corePrivate['user']         = 'Developer';
 $c->corePrivate['password']     = 'dEl23sTOas';

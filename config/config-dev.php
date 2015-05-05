@@ -5,19 +5,7 @@ $c = require __DIR__ . '/config.php';
 
 $c->debug = true;
 
-// $c->coreV2['url'] = 'http://tester.core.ent3.ru/v2/';
-
-/*
-$c->coreV2['timeout']      *= 1.5;
-$c->corePrivate['timeout']      *= 1.5;
-
-$c->reviewsStore['timeout']      *= 1.5;
-
-$c->wordpress['timeout']        *= 1.5;
-$c->wordpress['throwException'] = false;
-
-$c->dataStore['timeout'] *= 1.5;
-*/
+//$c->eventService['url'] = 'http://event.ent3.ru/';
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/apitest/';
 
