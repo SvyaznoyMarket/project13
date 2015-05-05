@@ -302,13 +302,15 @@
 
 	&_img {
 		height: 100px;
-		display: block;
+		.table-cell();
+		vertical-align: middle;
+		width: 210px;
 		text-align: center;
 		.transition(all 0.3s ease);
 
 		img {
-			width: 100px;
-			height: 100px;
+			max-width: 100%;
+			max-height: 100%;
 		}
 	}
 
