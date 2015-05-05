@@ -25,7 +25,9 @@ $f = function(
                  data-is-slot="<?= $product->getSlotPartnerOffer() ? 'true' : 'false' ?>"
                  style="cursor: zoom-in"
                 />
-            <div class="product-card-photo__overlay">Нет в наличии</div>
+            <? if (!$product->isAvailable()) : ?>
+                <div class="product-card-photo__overlay">Нет в наличии</div>
+            <? endif ?>
         </div>
 
         <!-- если картинок больше 5 добавляем класс product-card-photo-thumbs--slides -->

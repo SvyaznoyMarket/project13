@@ -9,10 +9,10 @@
 		var
 			notiferWrapper = $('.priceSale'),
 			notiferButton = $('.jsLowPriceNotifer'),
-			submitBtn = $('.bLowPriceNotiferPopup__eSubmitEmail'),
-			input = $('.bLowPriceNotiferPopup__eInputEmail'),
+			submitBtn = $('.jsLowerPriceSubmitBtn'),
+			input = $('.jsLowerPriceEmailInput'),
 			notiferPopup = $('.bLowPriceNotiferPopup'),
-			error = $('.bLowPriceNotiferPopup__eError'),
+			error = $('.jsLowerPriceError'),
 			subscribe = $('.jsSubscribe');
 		// end of vars
 
@@ -20,7 +20,7 @@
 			/**
 			 * Скрыть окно подписки на снижение цены
 			 */
-			lowPriceNitiferHide = function lowPriceNitiferHide() {
+			lowPriceNotifierHide = function lowPriceNotifierHide() {
 				notiferPopup.fadeOut(300);
 
 				return false;
@@ -48,9 +48,9 @@
 			/**
 			 * Показать окно подписки на снижение цены
 			 */
-			lowPriceNitiferShow = function lowPriceNitiferShow() {
+			lowPriceNotifierShow = function lowPriceNotifierShow() {
 				notiferPopup.fadeIn(300);
-				notiferPopup.find('.close').bind('click', lowPriceNitiferHide);
+				notiferPopup.find('.close').bind('click', lowPriceNotifierHide);
 
 				return false;
 			},
@@ -65,17 +65,17 @@
 					input.addClass('red');
 
 					if ( res.error.message ) {
-						error.show().html(res.error.message);
+						error.hide().html(res.error.message).slideDown().delay(3000).slideUp();
 					}
 
 					return false;
 				}
 
-				if (subscribe[0] && subscribe[0].checked && typeof _gaq != 'undefined') {
-					_gaq.push(['_trackEvent', 'subscription', 'subscribe_price_alert', input.val()]);
+				if (subscribe.is(':checked')) {
+					$('body').trigger('trackGoogleEvent', ['subscription', 'subscribe_price_alert', input.val()]);
 				}
 
-				lowPriceNitiferHide();
+				lowPriceNotifierHide();
 				notiferPopup.remove();
 				notiferButton.remove();
 			},
@@ -84,22 +84,17 @@
 			 * Проверка чекбокса "Акции и суперпредложения"
 			 */
 			checkSubscribe = function checkSubscribe() {
-				if ( subscribe.length && subscribe.is(':checked') ) {
-					return true;
-				}
-
-				return false;
+				return !!(subscribe.length && subscribe.is(':checked'));
 			},
 
 			/**
 			 * Отправка данных на сервер
 			 */
-			lowPriceNotiferSubmit = function lowPriceNotiferSubmit() {
-				var
-					submitUrl = submitBtn.data('url');
-				// end of vars
-				
-				submitUrl += encodeURI('?email=' + input.val() + '&subscribe=' + (checkSubscribe() ? 1 : 0));
+			lowPriceNotifierSubmit = function lowPriceNotifierSubmit() {
+				var submitUrl;
+				console.log('click');
+                submitUrl = ENTER.utils.setURLParam('email', input.val(), submitBtn.data('url'));
+                submitUrl = ENTER.utils.setURLParam('subscribe', checkSubscribe() ? '1' : '0', submitUrl);
 				$.get( submitUrl, resFromServer);
 
 				return false;
@@ -107,9 +102,9 @@
 		// end of functions
 
 		
-		submitBtn.bind('click', lowPriceNotiferSubmit);
-		notiferButton.bind('click', lowPriceNitiferShow);
-		$('body').bind('userLogged', userLogged);
+		submitBtn.on('click', lowPriceNotifierSubmit);
+		notiferButton.on('click', lowPriceNotifierShow);
+		$('body').on('userLogged', userLogged);
 	};
 
 

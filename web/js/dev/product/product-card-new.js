@@ -10,6 +10,7 @@
         $userbar = $('.js-topbar-fixed'),
         $tabs = $('.jsProductTabs'),
         $epFishka = $('.js-pp-ep-fishka'),
+        $bestPricePopup = $('.jsBestPricePopup'),
         tabsOffset,// это не очень хорошее поведение, т.к. при добавлении сверху элементов (AJAX, например) offset не изменяется
         popupDefaults = {
             centered: true,
@@ -294,6 +295,15 @@
                 $button.removeClass(voteClass);
                 $voteDiv.data('xhr', false);
             })
-    })
+    });
+
+    // форма подписки на снижение цены
+    $('.jsBestPricePopupOpener').on('click', function(){
+        $bestPricePopup.toggleClass('info-popup--open');
+    });
+
+    $('.jsBestPricePopupCloser').on('click', function(){
+        $bestPricePopup.removeClass('info-popup--open');
+    });
 
 })(jQuery);
