@@ -21,7 +21,7 @@
                             <span class="orderPayment_msg_shop_addr"><?= $order->getAddress() ?></span>
                         </span>
                     <? else : ?>
-                        <div class="orderPayment_msg_info">
+                        <div class="orderPayment_msg_info info-phrase">
                         Адрес и дату доставки вашего заказа уточнит по&nbsp;телефону наш менеджер.
                         </div>
                     <? endif ?>
