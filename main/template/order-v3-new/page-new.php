@@ -26,7 +26,7 @@ return function(
     <section class="orderCnt jsOrderV3PageNew">
         <h1 class="orderCnt_t">Получатель</h1>
 
-        <?= $helper->render('order-v3-new/__error', ['error' => $error]) ?>
+        <?= $helper->render('order-v3-new/__error', ['error' => $error, 'orderDelivery' => null]) ?>
 
         <form class="orderU orderU-v2 clearfix" action="" method="POST" accept-charset="utf-8">
             <input type="hidden" value="changeUserInfo" name="action" />
