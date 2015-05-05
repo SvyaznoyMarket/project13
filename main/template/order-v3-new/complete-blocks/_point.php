@@ -72,9 +72,9 @@
                 <div class="orderPayment_msg_head">
                     Время и место
                 </div>
-                <span class="markerList_col">
+                <div class="orderPayment_msg_info">
                     Адрес и дату доставки вашего заказа уточнит по&nbsp;телефону наш менеджер.
-                </span>
+                </div>
                 <? if ($order->comment) : ?>
                     <div class="orderPayment_msg_adding">Дополнительные пожелания:<br/> «<?= $order->comment ?>»</div>
                 <? endif ?>
