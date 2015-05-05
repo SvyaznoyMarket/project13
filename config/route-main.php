@@ -12,7 +12,7 @@ return [
         'action'  => ['Main\Action', 'recommendations'],
     ],
 
-    'ssi' => [
+    'ssi.userbar' => [
         'pattern' => '/ssi/userbar',
         'action'  => ['Ssi\UserbarAction', 'execute'],
     ],
