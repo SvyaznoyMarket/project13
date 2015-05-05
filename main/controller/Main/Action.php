@@ -222,19 +222,37 @@ class Action {
             'personal' => []
         ];
 
-        try {
-            $rrClient->addQuery('ItemsToMain',[],[],function($data) use (&$ids) {
+        $rrClient->addQuery(
+            'ItemsToMain',
+            [],
+            [],
+            function($data) use (&$ids) {
                 $ids['popular'] = (array)$data;
-            },null, $timeout);
-            if ($rrUserId) $rrClient->addQuery('PersonalRecommendation',['rrUserId' => $rrUserId],[],function($data) use (&$ids) {
-                $ids['personal'] = (array)$data;
-            },null, $timeout);
-            $rrClient->execute();
-        } catch (\Exception $e) {
-            if ($e->getCode() == \Curl\Client::CODE_TIMEOUT) {
+            },
+            function(\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['fatal', 'recommendation', 'retailrocket']);
                 \App::exception()->remove($e);
-            }
+            },
+            $timeout
+        );
+        if ($rrUserId) {
+            $rrClient->addQuery(
+                'PersonalRecommendation',
+                ['rrUserId' => $rrUserId],
+                [],
+                function($data) use (&$ids) {
+                    $ids['personal'] = (array)$data;
+                },
+                function(\Exception $e) {
+                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['fatal', 'recommendation', 'retailrocket']);
+                    \App::exception()->remove($e);
+                },
+                $timeout
+            );
         }
+
+        $rrClient->execute();
+
 
         // если нет персональных рекомендаций, то выдадим половину популярных за персональные
         if (empty($ids['personal']) && !empty($ids['popular'])) {
