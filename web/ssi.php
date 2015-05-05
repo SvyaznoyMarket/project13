@@ -1,5 +1,5 @@
 <?php
 
-$path = isset($_GET['path']) ? $_GET['path'] : null;
+$_GET['SSI'] = true;
 
-echo $path;
+include __DIR__ . '/index.php';

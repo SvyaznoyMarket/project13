@@ -4,6 +4,10 @@
  * @var $user           \Session\User
  */
 ?>
+
+<?
+$helper = \App::helper();
+?>
 <div class="header_t clearfix">
     <div class="header_i hdcontacts">
         <a class="hdcontacts_lk jsChangeRegion undrl" href="<?= $page->url('region.change', ['regionId' => $user->getRegion()->getId()]) ?>"><?= $user->getRegion()->getName() ?></a>
@@ -24,7 +28,7 @@
 
     <ul class="header_i userbtn js-topbarfix">
         <? if (\App::config()->ssi['enabled']): ?>
-            <!--# include virtual="/ssi.php?path=/userbar" -->
+            <?= $helper->render('__ssi', ['path' => '/userbar']) ?>
         <? else: ?>
             <?= $page->render('userbar/_userinfo') ?>
             <?= $page->render('userbar/_usercompare') ?>
