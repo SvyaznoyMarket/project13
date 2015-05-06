@@ -131,6 +131,8 @@ namespace EnterApplication\Action\ProductCard
 
             // группы оплаты
             call_user_func(function() use (&$productQuery, &$paymentGroupQuery) {
+                return false; // SITE-5460
+
                 $productId = $productQuery->response->product['id'];
                 if (!$productId) return;
 

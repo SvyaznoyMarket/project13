@@ -94,9 +94,17 @@ class DeliveryAction extends OrderV3 {
             $oldErrors = $this->session->flash();
             if ($oldErrors && is_array($oldErrors)) {
                 foreach ($oldErrors as $error) {
+
+                    if (!$error instanceof \Model\OrderDelivery\Error) continue;
+
                     // распихиваем их по заказам
-                    if ($error instanceof \Model\OrderDelivery\Error && isset($error->details['block_name']) && isset($orderDelivery->orders[$error->details['block_name']])) {
+                    if (isset($error->details['block_name']) && isset($orderDelivery->orders[$error->details['block_name']])) {
                         $orderDelivery->orders[$error->details['block_name']]->errors[] = $error;
+                    } else if ($error->isMaxQuantityError() && count($orderDelivery->orders) == 1) {
+                        $ord = reset($orderDelivery->orders);
+                        $orderDelivery->orders[$ord->block_name]->errors[] = $error;
+                    } else if ($error->isMaxQuantityError()) {
+                        $orderDelivery->errors[] = $error;
                     }
                 }
             }

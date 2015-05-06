@@ -27,25 +27,6 @@
 			},
 
 			/**
-			 * Авторизованность пользователя
-			 * Вызывается событием «userLogged» у body
-			 *
-			 * @param event
-			 * @param userInfo — данные пользователя (если существуют)
-			 */
-			userLogged = function userLogin( event, userInfo ) {
-				if ( userInfo ) {
-					if( userInfo.name ) {
-						// Если существует имя, значит юзер точно зарегистрирован и его данные получены
-						notiferWrapper.show();
-					}
-					if( userInfo.email ) {
-						input.val(userInfo.email);
-					}
-				}
-			},
-
-			/**
 			 * Показать окно подписки на снижение цены
 			 */
 			lowPriceNitiferShow = function lowPriceNitiferShow() {
@@ -109,7 +90,6 @@
 		
 		submitBtn.bind('click', lowPriceNotiferSubmit);
 		notiferButton.bind('click', lowPriceNitiferShow);
-		$('body').bind('userLogged', userLogged);
 	};
 
 

@@ -655,9 +655,13 @@
 				docCookies.setItem(authorized_cookie, 0, 60*60, '/'); // off
 			}
 		}
+<<<<<<< HEAD
 
 		$body.trigger('userLogged', [data]);
 	})();
+=======
+	})($.parseJSON($('#data-userInfo').html()));
+>>>>>>> 104.3
 
 	$body.on('catalogLoadingComplete', function(){
 		$('.js-listing, .js-jewelListing').each(function(){
@@ -4883,10 +4887,11 @@ $(document).ready(function() {
 
 	$window.scroll(checkScroll);
 
-	// Если showWhenFullCartOnly = true, то проверку надо выполнять лишь после того, как станут доступны данные корзины (которые становятся доступны после userLogged)
-	$body.on('userLogged closeBuyInfo showBuyInfo', function(){
+	$body.on('closeBuyInfo showBuyInfo', function(){
 		checkScroll();
 	});
+
+	checkScroll();
 }());
 /**
  * White floating user bar
@@ -5291,10 +5296,7 @@ $(document).ready(function() {
 			w.on('scroll', function(){ checkScroll(true); });
 		}
 
-		// Если showWhenFullCartOnly = true, то проверку надо выполнять лишь после того, как станут доступны данные корзины (которые становятся доступны после userLogged)
-		$body.on('userLogged', function(){
-			checkScroll();
-		});
+		checkScroll();
 	}
 	else {
 		overlay.remove();
