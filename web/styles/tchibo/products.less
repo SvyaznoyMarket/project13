@@ -30,7 +30,10 @@
             .drop-shadow(0, 0, 10px, .2);
         }
         &__hover {
-            width: 98%;
+            position: relative;
+
+            width: 100%;
+            height: 100%;
             &:hover {
                 z-index: 100;
 
@@ -43,43 +46,47 @@
                 }
             }
         }
-        &__imgBox {
-            width: 100%;
-            height: 70%;
-
-            .table();
-        }
-        &__imgLink {
+        &__imgbox {
             position: relative;
+            top: 0;
+            left: 0;
 
             width: 100%;
-            height: 70%;
-
-            text-align: center;
-
-            .table-cell();
+            height: 100%;
         }
-        &__img {
+        &__imglink {
             position: relative;
 
             display: block;
 
-            max-width: 100%;
-            max-height: 55%;
-            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+        }
+        &__img {
+            position: absolute;
+            top: -60px;
+            right: 0;
+            bottom: 0;
+            left: 0;
 
-            vertical-align: middle;
+            max-width: 80%;
+            max-height: 80%;
+            margin: auto;
+
+            text-align: center;
         }
         &__desc {
-            position: relative;
+            position: absolute;
+            bottom: 5px;
 
             width: 100%;
-            margin: -40px 0 0;
             padding: 5px 0 5px;
 
             background: @white;
             background: rgba(255, 255, 255, .6);
             .inner {
+                position: relative;
+
                 width: 200px;
                 margin: 0 auto;
                 padding: 0;
@@ -90,26 +97,43 @@
                 display: block;
                 overflow: hidden;
 
-                margin: 0 10px 2px 0;
+                margin: 0 10px 5px 0;
             }
             .price {
                 font-size: 18px;
                 font-weight: bold;
+                line-height: 29px;
 
                 float: left;
             }
             .bOptions {
+                margin-top: 8px;
+
                 background-image: url('@{base-url}/tchibo/img/options.png');
             }
             .bBtnLine {
-                margin-top: 5px;
+                float: right;
+
+                margin-top: 0;
+
+                .btnCmprb {
+                    float: left;
+                }
             }
             .bOptionsSection {
-                margin-top: 8px;
+                position: absolute;
+                right: 0;
+                bottom: -65px;
+
+                min-width: 100px;
+                padding: 5px 15px;
+
+                background: @white;
                 .bCorner {
                     top: -7px;
 
                     border-width: 7px;
+                    border-bottom: 10px solid #fff;
                 }
                 .bCornerDark {
                     top: -8px;
@@ -120,7 +144,8 @@
         }
     }
     .btnBuy {
-        margin-right: 11px;
+        margin-right: 0;
+        margin-left: 10px;
         .btnBuy__eLink {
             padding: 5px 0 6px;
 
