@@ -1,28 +1,25 @@
-.tchiboProducts{
-    .productInner{
+.tchiboProducts {
+    .productInner {
         z-index: 5;
-
-        &-off{
-            .productInner__hover{
+        &-off {
+            .productInner__hover {
                 .opacity(.5);
             }
         }
-        &:hover{
+        &:hover {
             z-index: 10;
         }
-
-        .bProductDescSticker{
+        .bProductDescSticker {
             z-index: 102;
             top: 5px;
-            &.mLeft{
+            &.mLeft {
                 left: 5px;
             }
-            &.mRight{
+            &.mRight {
                 right: 5px;
             }
         }
-
-        .stockSticker{
+        .stockSticker {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -32,57 +29,62 @@
             .rounded(4px);
             .drop-shadow(0, 0, 10px, .2);
         }
-
-        &__hover{
+        &__hover {
             width: 98%;
-
-            &:hover{
+            &:hover {
                 z-index: 100;
 
                 background: @white;
 
                 .box-shadow(0 0 3px rgba(0,0,0,.5));
-
-                .bBtnLine,
-                .bOptionsSection{
+                .bBtnLine ,
+                .bOptionsSection {
                     display: block;
                 }
             }
         }
-
-        &__imgbox{
+        &__imgBox {
             width: 100%;
+            height: 70%;
+
+            .table();
         }
-
-        &__imgLink{
-            display: block;
-
-            text-align: center;
-        }
-
-        &__img{
+        &__imgLink {
             position: relative;
 
-            width: 70%;
+            width: 100%;
+            height: 70%;
+
+            text-align: center;
+
+            .table-cell();
+        }
+        &__img {
+            position: relative;
+
+            display: block;
+
+            max-width: 100%;
+            max-height: 55%;
+            margin: 0 auto;
 
             vertical-align: middle;
         }
-
-        &__desc{
+        &__desc {
             position: relative;
 
             width: 100%;
-            margin: -20px 0 0;
+            margin: -40px 0 0;
             padding: 5px 0 5px;
 
             background: @white;
-            background: rgba(255, 255, 255, .5);
-            .inner{
+            background: rgba(255, 255, 255, .6);
+            .inner {
                 width: 200px;
                 margin: 0 auto;
                 padding: 0;
             }
-            .name{
+            .name {
                 font-size: 14px;
 
                 display: block;
@@ -90,26 +92,26 @@
 
                 margin: 0 10px 2px 0;
             }
-            .price{
+            .price {
                 font-size: 18px;
                 font-weight: bold;
 
                 float: left;
             }
-            .bOptions{
+            .bOptions {
                 background-image: url('@{base-url}/tchibo/img/options.png');
             }
-            .bBtnLine{
+            .bBtnLine {
                 margin-top: 5px;
             }
-            .bOptionsSection{
+            .bOptionsSection {
                 margin-top: 8px;
-                .bCorner{
+                .bCorner {
                     top: -7px;
 
                     border-width: 7px;
                 }
-                .bCornerDark{
+                .bCornerDark {
                     top: -8px;
 
                     border-width: 8px;
@@ -117,22 +119,21 @@
             }
         }
     }
-
-    .btnBuy{
+    .btnBuy {
         margin-right: 11px;
-        .btnBuy__eLink{
+        .btnBuy__eLink {
             padding: 5px 0 6px;
 
             border-color: #002958;
 
             .orangeGradLight();
-            &.mBought{
+            &.mBought {
                 color: #a6a6a6;
                 border: 1px solid #e6e6e6;
                 background: none repeat scroll 0 0 #e6e6e6;
                 box-shadow: none;
             }
-            &.mDisabled{
+            &.mDisabled {
                 cursor: default;
 
                 color: #cbcbcb;
@@ -140,7 +141,7 @@
                 background: none repeat scroll 0 0 #f1f0f0;
                 box-shadow: none;
             }
-            &.mShopsOnly{
+            &.mShopsOnly {
                 border: 1px solid #a1a1a1;
 
                 .blackGrad();
