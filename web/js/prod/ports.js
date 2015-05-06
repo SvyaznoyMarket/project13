@@ -229,11 +229,6 @@ window.ANALYTICS = {
 			// SITE-4382
 			liveTexUserInfo(ENTER.config.userInfo);
 			loadLiveTex();
-		} else {
-			$('body').on('userLogged', function(event, userInfo){
-				liveTexUserInfo(userInfo);
-				loadLiveTex();
-			});
 		}
 
 		console.groupEnd();
@@ -1155,13 +1150,6 @@ window.ANALYTICS = {
 		};
 
 		if (ENTER.UserModel && ENTER.UserModel.cart()) fillProducts(ENTER.UserModel.cart());
-
-		body.on('userLogged', function(e,data){
-			if (data && data.cartProducts && $.isArray(data.cartProducts)) {
-				products = [];
-				fillProducts(data.cartProducts);
-			}
-		});
 
 		body.on('addtocart', function(e,data){
 			if (data.product) {

@@ -40,8 +40,9 @@
 
 	$window.scroll(checkScroll);
 
-	// Если showWhenFullCartOnly = true, то проверку надо выполнять лишь после того, как станут доступны данные корзины (которые становятся доступны после userLogged)
-	$body.on('userLogged closeBuyInfo showBuyInfo', function(){
+	$body.on('closeBuyInfo showBuyInfo', function(){
 		checkScroll();
 	});
+
+	checkScroll();
 }());

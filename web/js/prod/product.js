@@ -140,16 +140,16 @@
 
 		};
 
-		$body.on('userLogged', function(e, data) {
-			if ($.isArray(data.cartProducts)) {
+		if (ENTER.config.userInfo) {
+			if ($.isArray(ENTER.config.userInfo.cartProducts)) {
 				var product_id = $('#jsProductCard').data('value')['id'];
-				$.each(data.cartProducts, function(i, val) {
+				$.each(ENTER.config.userInfo.cartProducts, function(i, val) {
 					if (val['isCredit'] && val['id'] == product_id) {
 						$('#creditinput').attr('checked', true).trigger('change')
 					}
 				})
 			}
-		});
+		}
 
         $body.on('click', '.jsProductCreditRadio', function(){
             $body.trigger('trackGoogleEvent', ['Credit', 'Выбор опции', 'Карточка товара']);
@@ -507,25 +507,6 @@
 			},
 
 			/**
-			 * Авторизованность пользователя
-			 * Вызывается событием «userLogged» у body
-			 *
-			 * @param event
-			 * @param userInfo — данные пользователя (если существуют)
-			 */
-			userLogged = function userLogin( event, userInfo ) {
-				if ( userInfo ) {
-					if( userInfo.name ) {
-						// Если существует имя, значит юзер точно зарегистрирован и его данные получены
-						notiferWrapper.show();
-					}
-					if( userInfo.email ) {
-						input.val(userInfo.email);
-					}
-				}
-			},
-
-			/**
 			 * Показать окно подписки на снижение цены
 			 */
 			lowPriceNitiferShow = function lowPriceNitiferShow() {
@@ -589,7 +570,6 @@
 		
 		submitBtn.bind('click', lowPriceNotiferSubmit);
 		notiferButton.bind('click', lowPriceNitiferShow);
-		$('body').bind('userLogged', userLogged);
 	};
 
 
@@ -1210,10 +1190,9 @@ $(document).ready(function() {
 		/**
 		 * Заполнение данных пользователя в форме (поля "Ваше имя" и "Ваш e-mail") и скрытие полей.
 		 *
-		 * @param  {Event} e
 		 * @param  {Object} userInfo
 		 */
-		fillUserData = function fillUserData( e, userInfo ) {
+		fillUserData = function fillUserData( userInfo ) {
 			if ( userInfo ) {
 				// если присутствует имя пользователя
 				if ( userInfo.name ) {
@@ -1236,7 +1215,7 @@ $(document).ready(function() {
 
 	body.on('click', '.jsReviewSend', openPopup);
 	body.on('submit', '.jsReviewForm', formSubmit);
-	body.on('userLogged', fillUserData);
+	fillUserData(ENTER.config.userInfo.user);
 
 	reviewStar.hover(hoverStar, unhoverStar);
 	reviewStar.on('unhover', unhoverStar);

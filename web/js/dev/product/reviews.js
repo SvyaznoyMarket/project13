@@ -421,10 +421,9 @@
 		/**
 		 * Заполнение данных пользователя в форме (поля "Ваше имя" и "Ваш e-mail") и скрытие полей.
 		 *
-		 * @param  {Event} e
 		 * @param  {Object} userInfo
 		 */
-		fillUserData = function fillUserData( e, userInfo ) {
+		fillUserData = function fillUserData( userInfo ) {
 			if ( userInfo ) {
 				// если присутствует имя пользователя
 				if ( userInfo.name ) {
@@ -447,7 +446,7 @@
 
 	body.on('click', '.jsReviewSend', openPopup);
 	body.on('submit', '.jsReviewForm', formSubmit);
-	body.on('userLogged', fillUserData);
+	fillUserData(ENTER.config.userInfo.user);
 
 	reviewStar.hover(hoverStar, unhoverStar);
 	reviewStar.on('unhover', unhoverStar);

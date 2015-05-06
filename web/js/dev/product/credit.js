@@ -49,16 +49,16 @@
 
 		};
 
-		$body.on('userLogged', function(e, data) {
-			if ($.isArray(data.cartProducts)) {
+		if (ENTER.config.userInfo) {
+			if ($.isArray(ENTER.config.userInfo.cartProducts)) {
 				var product_id = $('#jsProductCard').data('value')['id'];
-				$.each(data.cartProducts, function(i, val) {
+				$.each(ENTER.config.userInfo.cartProducts, function(i, val) {
 					if (val['isCredit'] && val['id'] == product_id) {
 						$('#creditinput').attr('checked', true).trigger('change')
 					}
 				})
 			}
-		});
+		}
 
         $body.on('click', '.jsProductCreditRadio', function(){
             $body.trigger('trackGoogleEvent', ['Credit', 'Выбор опции', 'Карточка товара']);

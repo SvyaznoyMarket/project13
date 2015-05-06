@@ -119,8 +119,6 @@
 				docCookies.setItem(authorized_cookie, 0, 60*60, '/'); // off
 			}
 		}
-
-		$body.trigger('userLogged', [data]);
 	})($.parseJSON($('#data-userInfo').html()));
 
 	$body.on('catalogLoadingComplete', function(){
