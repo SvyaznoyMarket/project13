@@ -215,12 +215,22 @@
             .after-gradient-stub(10px);
         }
     }
-    &_img{
+    &_img-wrap{
         width: 48px;
         height: 48px;
 
         .inline-block-middle();
-        .rounded(3px);
+        &:after{
+            content: "";
+            width: 0;
+            height: 100%;
+            .inline-block-middle();
+        }
+    }
+    &_img{
+        max-height: 100%;
+        max-width: 100%;
+        .inline-block-middle();
     }
     &_tx{
         width: 218px;
