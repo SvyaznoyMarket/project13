@@ -27,7 +27,7 @@ class SmartChoiceAction {
         $productData['link']        = $product->getLink();
         $productData['prefix']      = $product->getPrefix();
         $productData['webname']     = $product->getWebName();
-        $productData['image']       = $product->getImageUrl(3);
+        $productData['image']       = $product->getMainImageUrl('product_500');
         $productData['tagline']     = $product->getTagline();
         $productData['price']       = $helper->formatPrice($product->getPrice());
         $productData['onePrice']    = true;

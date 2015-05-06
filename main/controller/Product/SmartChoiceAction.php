@@ -3,8 +3,7 @@
 namespace Controller\Product;
 
 use \Http\JsonResponse,
-    \Http\Request,
-    \Model\Product\Entity as ProductEntity;
+    \Http\Request;
 
 class SmartChoiceAction {
 
@@ -19,13 +18,12 @@ class SmartChoiceAction {
 
         $rrConfig = \App::config()->partners['RetailRocket'];
         $region = \App::user()->getRegion();
-        $productIds = [];
-        $recommendedIds = [];
+        $recommendedProducts = [];
 
         $products = $request->query->get('products');
 
         if ($products && is_array($products)) {
-
+            $productIds = [];
             // Проверяем существование продуктов
             foreach ($products as $id) {
                 $product = \RepositoryManager::product()->getEntityById($id);
@@ -40,9 +38,9 @@ class SmartChoiceAction {
             foreach ($productIds as $id) {
                 $queryUrl = "{$rrConfig['apiUrl']}Recomendation/UpSellItemToItems/{$rrConfig['account']}/$id";
 
-                \App::curl()->addQuery($queryUrl, [], function ($data) use (&$recommendedIds, $id) {
+                \App::curl()->addQuery($queryUrl, [], function ($data) use (&$recommendedProducts, $id) {
                     if ((bool)$data) {
-                        $recommendedIds[$id] = $data;
+                        $recommendedProducts[$id] = $data;
                     }
                 }, function(\Exception $e) {
                     \App::exception()->remove($e);
@@ -52,36 +50,45 @@ class SmartChoiceAction {
             \App::curl()->execute(null, 1);
 
             // Если для продуктов есть рекомендации
-            if (count($recommendedIds)) {
-                foreach ($recommendedIds as &$value) {
+            if ($recommendedProducts) {
+                $medias = [];
+
+                foreach ($recommendedProducts as &$value) {
                     \RepositoryManager::product()->prepareCollectionById($value, $region, function ($data) use (&$value) {
                         if (!is_array($data)) return;
 
                         foreach ($data as $key => &$product) {
-                            $product = new ProductEntity($product);
-                            if (!$product instanceof ProductEntity) continue;
-                            if ( !$product->getIsBuyable()) {
+                            $product = new \Model\Product\Entity($product);
+                            if (!$product->getIsBuyable()) {
                                 unset($data[$key]);
                             }
                         }
+
                         $value = $data;
                     });
+
+                    \RepositoryManager::product()->prepareProductsMediasByIds($value, $medias);
+                }
+
+                // Запрашиваем продукты
+                \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+                foreach ($recommendedProducts as $value) {
+                    \RepositoryManager::product()->setMediasForProducts($value, $medias);
                 }
             }
-            // Запрашиваем продукты
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
             $recommend = [];
 
-            foreach ($recommendedIds as $id => $products) {
-                if (count($products)>0) {
+            foreach ($recommendedProducts as $id => $products) {
+                if ($products) {
                     $recommend[$id] = [
                         'success' => true,
                         'content' => \App::closureTemplating()->render('product/__slider', [
-                                'title' => null,
-                                'products' => $products,
-                                'class' => 'smartChoiceSlider smartChoiceId-' . $id,
-                            ]),
+                            'title' => null,
+                            'products' => $products,
+                            'class' => 'smartChoiceSlider smartChoiceId-' . $id,
+                        ]),
                     ];
                 }
             }

@@ -68,9 +68,10 @@ class Action {
         $client->execute();
 
         // товары, услуги, категории
-        /** @var $productsById \Model\Product\BasicEntity[] */
+        /** @var $productsById \Model\Product\Entity[] */
         $productsById = [];
-        /** @var $productsById \Model\Product\Category\Entity[] */
+        $medias = [];
+        /** @var $categoriesById \Model\Product\Category\Entity[] */
         $categoriesById = [];
         foreach ($itemsByBanner as $items) {
             foreach ($items as $item) {
@@ -101,6 +102,8 @@ class Action {
                 \App::exception()->remove($e);
                 \App::logger()->error('Не удалось получить товары для баннеров');
             });
+
+            \RepositoryManager::product()->prepareProductsMediasByIds(array_keys($productsById), $medias);
         }
 
         // запрашиваем категории товаров
@@ -123,6 +126,8 @@ class Action {
         if ((bool)$productsById || (bool)$categoriesById) {
             // выполнение 2-го пакета запросов
             $client->execute();
+
+            \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
         }
 
         // формируем ссылки для баннеров
@@ -195,7 +200,6 @@ class Action {
             $rrProductsById = array_merge($rrProductsById, $collection);
         }
 
-        \RepositoryManager::product()->setEntityClass('\Model\Product\Entity');
 
         // получаем продукты из ядра
         $products = \RepositoryManager::product()->getCollectionById(array_unique($rrProductsById), null, false);

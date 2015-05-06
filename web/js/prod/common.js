@@ -292,7 +292,7 @@
 		// Throttled ajax query
 		ko.computed(function(){
 			var val = self.searchInput();
-			var params = {q: val, sender: 'knockout'};
+			var params = {q: val};
 
 			if (self.currentCategory() != null) params.catId = self.currentCategory().id;
 
@@ -1932,7 +1932,6 @@ $(function() {
 		self.id = product.id;
 		self.url = product.url;
 		self.name = product.name;
-		self.line = product.lineName;
 		self.price = product.price;
 		self.image = product.image;
 		self.height = product.height;

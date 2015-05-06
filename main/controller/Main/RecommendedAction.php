@@ -50,7 +50,9 @@ class RecommendedAction {
         $sender['method'] = 'Popular';
 
         /* Получаем продукты из ядра */
+        /** @var \Model\Product\Entity[] $products */
         $products = [];
+        $medias = [];
         foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
             \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$products) {
                 foreach ((array)$data as $item) {
@@ -66,12 +68,16 @@ class RecommendedAction {
                     // если товар недоступен для покупки - пропустить
                     if (!$product->isAvailable() || $product->isInShopShowroomOnly()) continue;
 
-                    $products[] = $product;
+                    $products[$product->getId()] = $product;
                 }
             });
+
+            \RepositoryManager::product()->prepareProductsMediasByIds($productsInChunk, $medias);
         }
 
         \App::coreClientV2()->execute();
+
+        \RepositoryManager::product()->setMediasForProducts($products, $medias);
 
         try {
             // TODO: вынести в репозиторий

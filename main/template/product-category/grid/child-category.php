@@ -5,7 +5,7 @@
  * @var $category           \Model\Product\Category\Entity
  * @var $catalogConfig      array
  * @var $rootCategoryInMenu \Model\Product\Category\TreeEntity|null
- * @var $productsById       \Model\Product\CompactEntity[]
+ * @var $productsByUi       \Model\Product\Entity[]
  */
 ?>
 

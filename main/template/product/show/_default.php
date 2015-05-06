@@ -7,7 +7,6 @@
  * @var $accessories            \Model\Product\Entity[]
  * @var $accessoryCategory      \Model\Product\Category\Entity[]
  * @var $kit                    \Model\Product\Entity[]
- * @var $additionalData         array
  * @var $shopStates             \Model\Product\ShopState\Entity[]
  * @var $creditData             array
  * @var $deliveryData           array
@@ -15,7 +14,6 @@
  * @var $addToCartJS     string
  * @var $actionChannelName string
  * @var $kitProducts            array   Продукты кита
- * @var $useLens                bool    Показывать лупу
  * @var $reviewsData            array   Данные отзывов
  * @var $breadcrumbs            array   Хлебные крошки
  * @var $trustfactors           array   Трастфакторы
@@ -43,7 +41,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
 <?= $helper->render('product/__data', ['product' => $product]) ?>
 
 <div class="bProductSectionLeftCol">
-    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens]) ?>
+    <?= $helper->render('product/__photo', ['product' => $product]) ?>
 
     <div class="bProductDesc<? if (!$creditData['creditIsAllowed'] || $user->getRegion()->getHasTransportCompany()): ?> mNoCredit<? endif ?>" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 
@@ -121,9 +119,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             'count'          => count($product->getAccessoryId()),
             'limit'          => (bool)$accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
             'page'           => 1,
-            //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
             'gaEvent'        => 'Accessorize',
-            'additionalData' => $additionalData,
             'class'          => (bool)$accessoryCategory ? 'slideItem-3item' : 'slideItem-5item',
             'sender'         => [
                 'name'     => 'enter',
@@ -141,7 +137,6 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             'count'          => null,
             'limit'          => \App::config()->product['itemsInSlider'],
             'page'           => 1,
-            'additionalData' => $additionalData,
             'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
             'sender'         => [
                 'name'     => 'retailrocket',

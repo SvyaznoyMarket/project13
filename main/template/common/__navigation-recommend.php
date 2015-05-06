@@ -28,8 +28,8 @@ $f = function(
 <div class="navitem">
     <div class="navitem_tl">ТОВАР ДНЯ</div>
     <a id="<?= $id ?>" href="<?= $link ?>" class="navitem_cnt jsRecommendedItemInMenu" data-sender="<?= $helper->json($sender)?>" <?= $linkTarget ?>>
-        <img data-src="<?= $product->getImageUrl(3) ?>" alt="<?= $helper->escape($product->getName()) ?>" class="navitem_img menuImgLazy">
-        <noscript><img src="<?= $product->getImageUrl(3) ?>" alt="<?= $helper->escape($product->getName()) ?>" class="navitem_img"></noscript>
+        <img data-src="<?= $product->getMainImageUrl('product_500') ?>" alt="<?= $helper->escape($product->getName()) ?>" class="navitem_img menuImgLazy">
+        <noscript><img src="<?= $product->getMainImageUrl('product_500') ?>" alt="<?= $helper->escape($product->getName()) ?>" class="navitem_img"></noscript>
         <span class="navitem_n"><?= $product->getName() ?></span>
     </a>
 

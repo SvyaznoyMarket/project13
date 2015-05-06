@@ -79,8 +79,10 @@ class OrderAction {
 
         // подготовка 2-го пакета запросов (продукты)
         $products =  [];
+        $productIds = $order->getAllProductsIds();
+        $medias = [];
         \RepositoryManager::product()->prepareCollectionById(
-            $order->getAllProductsIds(),
+            $productIds,
             $user->getRegion(),
             function ($data) use (&$products) {
                 foreach ($data as $item) {
@@ -88,6 +90,8 @@ class OrderAction {
                 }
             }
         );
+
+        \RepositoryManager::product()->prepareProductsMediasByIds($productIds, $medias);
 
         $delivery = $order->getDelivery() ? \RepositoryManager::deliveryType()->getEntityById($order->getDelivery()->getTypeId()) : null;
 
@@ -108,6 +112,8 @@ class OrderAction {
 
         // выполнение 2-го пакета запросов
         $client->execute();
+
+        \RepositoryManager::product()->setMediasForProducts($products, $medias);
 
         return ['order' => $order, 'products' => $products, 'delivery' => $delivery, 'shop' => $shop, 'current_orders_count' => $currentOrdersCount];
 
