@@ -138,7 +138,15 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
 \App::logger()->info(['message' => 'Start app', 'env' => \App::$env]);
 
 // request
-$request = \App::request();
+$request =
+    (isset($_GET['SSI']) && (true === $_GET['SSI']) && \App::config()->ssi['enabled'])
+    ? \Http\Request::create(
+        '/ssi' . (!empty($_GET['path']) ? $_GET['path'] : ''),
+        'GET',
+        $_GET
+    )
+    : \App::request()
+;
 // router
 $router = \App::router();
 

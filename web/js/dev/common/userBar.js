@@ -401,10 +401,7 @@
 			w.on('scroll', function(){ checkScroll(true); });
 		}
 
-		// Если showWhenFullCartOnly = true, то проверку надо выполнять лишь после того, как станут доступны данные корзины (которые становятся доступны после userLogged)
-		$body.on('userLogged', function(){
-			checkScroll();
-		});
+		checkScroll();
 	}
 	else {
 		overlay.remove();

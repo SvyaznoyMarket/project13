@@ -10,12 +10,10 @@
 
 //	if (cartInfoBlock.length > 0) ko.applyBindings(ENTER.UserModel, cartInfoBlock[0]);
 
-	$body.on('userLogged', function(){
-		if (user.cartSum() < config.selfDeliveryLimit && user.cartSum() != 0) {
-			if (config.selfDeliveryTest) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + config.user.region.name, 'увидел', 'статичная корзина']);
-			else $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + config.user.region.name, 'не увидел', 'статичная корзина']);
-		}
-	});
+	if (user.cartSum() < config.selfDeliveryLimit && user.cartSum() != 0) {
+		if (config.selfDeliveryTest) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + config.user.region.name, 'увидел', 'статичная корзина']);
+		else $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + config.user.region.name, 'не увидел', 'статичная корзина']);
+	}
 
 	/* Трекинг добавления в корзину из блока рекомендаций */
 	$body.on('click', '.basketLine .jsBuyButton', function(e){

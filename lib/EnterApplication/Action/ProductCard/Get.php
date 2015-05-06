@@ -69,12 +69,9 @@ namespace EnterApplication\Action\ProductCard
             // пользователь и его подписки
             /** @var Query\User\GetByToken $userQuery */
             $userQuery = null;
-            $subscribeQuery = null;
             if ($request->userToken) {
                 // пользователь
                 $userQuery = (new Query\User\GetByToken($request->userToken))->prepare();
-                // подписки пользователя
-                $subscribeQuery = (new Query\Subscribe\GetByUserToken($request->userToken))->prepare();
             }
 
             // каналы подписок
@@ -256,7 +253,6 @@ namespace EnterApplication\Action\ProductCard
             $response->productQuery = $productQuery;
             $response->productDescriptionQuery = $productDescriptionQuery;
             $response->userQuery = $userQuery;
-            $response->subscribeQuery = $subscribeQuery;
             $response->redirectQuery = $redirectQuery;
             $response->abTestQuery = $abTestQuery;
             $response->regionQuery = $regionQuery;
@@ -315,8 +311,6 @@ namespace EnterApplication\Action\ProductCard\Get
         public $productDescriptionQuery;
         /** @var Query\User\GetByToken|null */
         public $userQuery;
-        /** @var Query\Subscribe\GetByUserToken|null */
-        public $subscribeQuery;
         /** @var Query\Redirect\GetByUrl */
         public $redirectQuery;
         /** @var Query\AbTest\GetActive */
