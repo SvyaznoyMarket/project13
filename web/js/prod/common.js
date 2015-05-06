@@ -655,13 +655,7 @@
 				docCookies.setItem(authorized_cookie, 0, 60*60, '/'); // off
 			}
 		}
-<<<<<<< HEAD
-
-		$body.trigger('userLogged', [data]);
 	})();
-=======
-	})($.parseJSON($('#data-userInfo').html()));
->>>>>>> 104.3
 
 	$body.on('catalogLoadingComplete', function(){
 		$('.js-listing, .js-jewelListing').each(function(){
@@ -2896,7 +2890,7 @@ $(document).ready(function() {
 		if (typeof url == 'string' && !$el.data(lKey) === true) {
 
 			// отрезаем от url параметры для ключа в localstorage
-			key = url.substring(0, url.indexOf('?'));
+			key = url.indexOf('?') === -1 ? url : url.substring(0, url.indexOf('?'));
 
 			if (!storage.get(key, $el)) {
 
