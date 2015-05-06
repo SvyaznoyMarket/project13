@@ -1,8 +1,9 @@
 ;(function(w,ko,$) {
 
+    var address;
+
 	ENTER.OrderV31Click.functions.initAddress = function(){
-        var address,
-            kladrConfig = $('#kladr-config').data('value'),
+        var kladrConfig = $('#kladr-config').data('value'),
             region = $('#page-config').data('value').user.region;
     
         function AddressModel () {
@@ -227,9 +228,10 @@
     
         // начинаем отсюдова
     
-        address = new AddressModel();
+        if (typeof address == 'undefined') address = new AddressModel();
     
         ENTER.OrderV31Click.address = address;
         ENTER.OrderV31Click.functions.smartAddressInit();
 	};
+
 }(window, ko, jQuery));
