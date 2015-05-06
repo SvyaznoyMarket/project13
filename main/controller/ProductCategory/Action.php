@@ -700,7 +700,7 @@ class Action {
         if ((bool)$products) {
             $productUIs = [];
             foreach ($products as $product) {
-                if (!$product instanceof \Model\Product\BasicEntity) continue;
+                if (!$product instanceof \Model\Product\Entity) continue;
                 $productUIs[] = $product->getUi();
             }
 
