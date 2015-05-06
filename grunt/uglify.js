@@ -165,11 +165,6 @@ module.exports = function (grunt, options) {
         serviceHaJS: {
             src: pathDev + 'service_ha/*.js',
             dest: pathProd + 'service_ha.min.js'
-        },
-
-        tealeaf: {
-            src: pathDev + 'tealeaf/*.js',
-            dest: pathProd + 'tealeaf.min.js'
         }
     }
 };

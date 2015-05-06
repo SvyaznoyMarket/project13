@@ -112,7 +112,7 @@ $f = function (
                     if (count($products) == $index + 1) $needCloseLiTag = true;
                 }
 
-                $elementId = 'productLink-' . $product->getId() . '-' . md5(json_encode([$sender]));    // для tealeaf
+                $elementId = 'productLink-' . $product->getId() . '-' . md5(json_encode([$sender])); // для tealeaf
 
                 $urlParams = [];
                 if ($sender['name']) {
