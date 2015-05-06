@@ -13,7 +13,6 @@
  * @var $deliveryData           array
  * @var $isTchibo               boolean
  * @var $addToCartJS     string
- * @var $isUserSubscribedToEmailActions boolean
  * @var $actionChannelName string
  * @var $kitProducts            array   Продукты кита
  * @var $useLens                bool    Показывать лупу

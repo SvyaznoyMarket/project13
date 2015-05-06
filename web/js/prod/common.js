@@ -655,13 +655,7 @@
 				docCookies.setItem(authorized_cookie, 0, 60*60, '/'); // off
 			}
 		}
-<<<<<<< HEAD
-
-		$body.trigger('userLogged', [data]);
 	})();
-=======
-	})($.parseJSON($('#data-userInfo').html()));
->>>>>>> 104.3
 
 	$body.on('catalogLoadingComplete', function(){
 		$('.js-listing, .js-jewelListing').each(function(){

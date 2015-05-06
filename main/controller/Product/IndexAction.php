@@ -172,18 +172,6 @@ class IndexAction {
             }
         }
 
-        // подписка
-        $isUserSubscribedToEmailActions = false;
-        if ($actionResponse->subscribeQuery) {
-            foreach ($actionResponse->subscribeQuery->response->subscribes as $item) {
-                $entity = new \Model\Subscribe\Entity($item);
-                if (1 == $entity->getChannelId() && 'email' === $entity->getType() && $entity->getIsConfirmed()) {
-                    $isUserSubscribedToEmailActions = true;
-                    break;
-                }
-            }
-        }
-
         $actionChannelName = '';
         if ($actionResponse->subscribeChannelQuery) {
             foreach ($actionResponse->subscribeChannelQuery->response->channels as $item) {
@@ -352,7 +340,6 @@ class IndexAction {
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactors', $trustfactors);
         $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery));
-        $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);
         $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);
         $page->setParam('viewParams', [

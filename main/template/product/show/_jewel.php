@@ -12,7 +12,6 @@
  * @var $deliveryData      array
  * @var $isTchibo          boolean
  * @var $addToCartJS string
- * @var $isUserSubscribedToEmailActions boolean
  * @var $actionChannelName string
  */
 
@@ -35,7 +34,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
 
         <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
 
-        <?= $helper->render('product/__notification-lowerPrice', ['product' => $product, 'isUserSubscribedToEmailActions' => $isUserSubscribedToEmailActions, 'actionChannelName' => $actionChannelName]) // Узнать о снижении цены ?>
+        <?= $helper->render('product/__lowPriceNotifier', ['product' => $product, 'actionChannelName' => $actionChannelName]) // Узнать о снижении цены ?>
 
         <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
 

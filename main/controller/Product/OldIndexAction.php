@@ -137,24 +137,6 @@ class OldIndexAction {
             }
         }
 
-        $isUserSubscribedToEmailActions = false;
-        if ($user->getEntity()) {
-            $client->addQuery(
-                'subscribe/get',
-                ['token' => $user->getEntity()->getToken()],
-                [],
-                function($data) use(&$isUserSubscribedToEmailActions) {
-                    foreach ($data as $item) {
-                        $entity = new \Model\Subscribe\Entity($item);
-                        if (1 == $entity->getChannelId() && 'email' === $entity->getType() && $entity->getIsConfirmed()) {
-                            $isUserSubscribedToEmailActions = true;
-                            break;
-                        }
-                    }
-                }
-            );
-        }
-
         $actionChannelName = '';
         $client->addQuery(
             'subscribe/get-channel',
@@ -472,7 +454,6 @@ class OldIndexAction {
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactors', $trustfactors);
         $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId()));
-        $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);
         $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);
         $page->setParam('viewParams', [
