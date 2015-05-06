@@ -14,7 +14,7 @@ return function(
     <?= $helper->render('order-v3/__error', ['error' => null]) ?>
 
     <div class="orderOneClick_hd">
-        <img class="orderOneClick_hd_l" src="<?= $product->getMainImageUrl('product_120') ?>" />
+        <span class="orderOneClick_hd_wr"><img class="orderOneClick_hd_l" src="<?= $product->getMainImageUrl('product_120') ?>" /></span>
         <div class="orderOneClick_hd_r">
             <div class="orderOneClick_hd_n">
                 <? if ($product->getPrefix()): ?>
