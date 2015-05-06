@@ -8,12 +8,18 @@
 	padding-bottom: 15px;
 
 	&__img {
-		display: inline-block;
+		.inline-block();
 		vertical-align: top;
 		width: 120px;
-
-		*display: inline;
-		zoom: 1;
+		text-align: center;
+		height: 120px;
+		a{
+			display: block;
+			img{
+				max-height: 100%;
+				max-width: 100%;
+			}
+		}
 	}
 
 
