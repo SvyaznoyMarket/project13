@@ -8,14 +8,17 @@
 
         var self = this,
             pointsBounds,
+            searchAutocompleteListClicked = false,
             map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map;
 
         self.searchInput = ko.observable();
         self.searchAutocompleteList = ko.observableArray();
         self.searchAutocompleteListVisible = ko.observable(false);
+        self.searchAutocompleteListClicked = false; //
         self.enableAutocompleteListVisible = function(){self.searchAutocompleteListVisible(true)};
         self.disableAutocompleteListVisible = function(){self.searchAutocompleteListVisible(false)};
         self.limitedSearchInput = ko.computed(self.searchInput).extend({throttle: 500});
+
         self.limitedSearchInput.subscribe(function(text) {
 
             var extendValue = 0.5,
@@ -25,6 +28,11 @@
 
             self.searchAutocompleteList.removeAll();
             self.searchAutocompleteListVisible(false);
+
+            if (searchAutocompleteListClicked) {
+                searchAutocompleteListClicked = false;
+                return;
+            }
 
             ymaps.geocode(text, { boundedBy: extendedBounds, strictBounds: true }).then(
                 function(res){
@@ -41,12 +49,47 @@
                 }
             )
         });
+
+        self.autocompleteNavigation = function(data, e){
+            var keycode = e.which,
+                $elements = $('.jsDeliverySuggestLi'),
+                $list = $('.deliv-suggest__list'),
+                activeClass = 'deliv-suggest__i--active',
+                index = $elements.index($elements.filter('.'+activeClass));
+
+            $elements.removeClass(activeClass);
+
+            switch (keycode) {
+                case 13: // Enter key
+                    if (index > -1) {
+                        self.autocompleteItemClick($elements.eq(index).data('element'));
+                        return false;
+                    }
+                    break;
+                case 38: // up key
+                    if (index == -1) index = self.searchAutocompleteList.length;
+                    $elements.eq(index - 1).addClass(activeClass);
+                    $list.scrollTo('.' + activeClass);
+                    break;
+                case 40: // down key
+                    $elements.eq(index + 1).addClass(activeClass);
+                    $list.scrollTo('.' + activeClass);
+                    break
+            }
+
+            return true;
+        };
+
         self.clearSearchInput = function(){
             self.searchInput('');
             self.searchAutocompleteList.removeAll();
         };
-        self.setMapCenter = function(val) {
+
+        self.autocompleteItemClick = function(val) {
+            console.log(val);
             map.setCenter(val.bounds[0], 14);
+            searchAutocompleteListClicked = true;
+            self.searchInput(val.name);
             self.searchAutocompleteListVisible(false);
         };
 
@@ -250,8 +293,6 @@
 				activeClass = 'searchdd_lk_iact',
 				index = $links.index($links.filter('.'+activeClass));
 
-            console.log(keycode, index);
-
 			if (!self.isNoSearchResult()) {
 				$links.removeClass(activeClass);
 				switch (keycode) {
@@ -292,7 +333,7 @@
 		// Throttled ajax query
 		ko.computed(function(){
 			var val = self.searchInput();
-			var params = {q: val, sender: 'knockout'};
+			var params = {q: val};
 
 			if (self.currentCategory() != null) params.catId = self.currentCategory().id;
 
@@ -638,7 +679,8 @@
 		}
 	});
 	*/
-	(function(data){
+	(function(){
+		var data = $('.js-userConfig').data('value');
 		ENTER.UserModel.update(data);
 		if (typeof ga == 'function') {
 			ga('send', 'timing', 'userInfo', 'Load User Info', spendTime);
@@ -654,9 +696,7 @@
 				docCookies.setItem(authorized_cookie, 0, 60*60, '/'); // off
 			}
 		}
-
-		$body.trigger('userLogged', [data]);
-	})($.parseJSON($('#data-userInfo').html()));
+	})();
 
 	$body.on('catalogLoadingComplete', function(){
 		$('.js-listing, .js-jewelListing').each(function(){
@@ -1933,7 +1973,6 @@ $(function() {
 		self.id = product.id;
 		self.url = product.url;
 		self.name = product.name;
-		self.line = product.lineName;
 		self.price = product.price;
 		self.image = product.image;
 		self.height = product.height;
@@ -2891,7 +2930,7 @@ $(document).ready(function() {
 		if (typeof url == 'string' && !$el.data(lKey) === true) {
 
 			// отрезаем от url параметры для ключа в localstorage
-			key = url.substring(0, url.indexOf('?'));
+			key = url.indexOf('?') === -1 ? url : url.substring(0, url.indexOf('?'));
 
 			if (!storage.get(key, $el)) {
 
@@ -4217,7 +4256,7 @@ $(document).ready(function() {
             var
                 data = $(el).data('slider'),
                 //rrviewed = docCookies.getItem('rrviewed')
-                rrviewed = docCookies.getItem('product_viewed')
+                rrviewed = docCookies.getItem('product_viewed') || ''
             ;
 
             if (('viewed' == data.type) && typeof rrviewed === 'string') {
@@ -4781,38 +4820,6 @@ $(document).ready(function() {
     }
 
 }());
-;(function($) {
-
-    var
-        $body = $('body'),
-
-        TLT = (typeof this.TLT === 'object') ? this.TLT : null,
-
-        TLT_logCustomEvent = function(event, TLT_eventName, TLT_eventData) {
-            try {
-                console.info('TLT_logCustomEvent', TLT_eventName, TLT_eventData);
-
-                TLT.logCustomEvent(TLT_eventName, TLT_eventData);
-            } catch (e) {
-                console.error(e);
-            }
-        },
-
-        TLT_processDOMEvent = function(event, originalEvent) {
-            try {
-                console.info('TLT_processDOMEvent', originalEvent);
-
-                TLT.processDOMEvent(originalEvent);
-            } catch (e) {
-                console.error(e);
-            }
-        }
-    ;
-
-    //$body.on('TLT_logCustomEvent', TLT_logCustomEvent);
-    $body.on('TLT_processDOMEvent', TLT_processDOMEvent);
-
-})(jQuery);
 ;$(function($){
 
 	// var $menu = $('.js-mainmenu-level2');
@@ -4882,10 +4889,11 @@ $(document).ready(function() {
 
 	$window.scroll(checkScroll);
 
-	// Если showWhenFullCartOnly = true, то проверку надо выполнять лишь после того, как станут доступны данные корзины (которые становятся доступны после userLogged)
-	$body.on('userLogged closeBuyInfo showBuyInfo', function(){
+	$body.on('closeBuyInfo showBuyInfo', function(){
 		checkScroll();
 	});
+
+	checkScroll();
 }());
 /**
  * White floating user bar
@@ -5290,10 +5298,7 @@ $(document).ready(function() {
 			w.on('scroll', function(){ checkScroll(true); });
 		}
 
-		// Если showWhenFullCartOnly = true, то проверку надо выполнять лишь после того, как станут доступны данные корзины (которые становятся доступны после userLogged)
-		$body.on('userLogged', function(){
-			checkScroll();
-		});
+		checkScroll();
 	}
 	else {
 		overlay.remove();

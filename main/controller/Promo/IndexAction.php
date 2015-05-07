@@ -17,7 +17,7 @@ class IndexAction {
         }
 
         // товары, услуги, категории
-        /** @var $productsById \Model\Product\BasicEntity[] */
+        /** @var $productsById \Model\Product\Entity[] */
         $productsById = [];
         /** @var $productsById \Model\Product\Category\Entity[] */
         $categoriesById = [];
@@ -38,7 +38,7 @@ class IndexAction {
             foreach (array_chunk(array_keys($productsById), \App::config()->coreV2['chunk_size']) as $ids) {
                 \RepositoryManager::product()->prepareCollectionById($ids, $region, function($data) use (&$productsById) {
                     foreach ($data as $item) {
-                        $productsById[(int)$item['id']] = new \Model\Product\BasicEntity($item);
+                        $productsById[(int)$item['id']] = new \Model\Product\Entity($item);
                     }
                 }, function(\Exception $e) {
                     \App::exception()->remove($e);

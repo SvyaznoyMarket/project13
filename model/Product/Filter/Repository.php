@@ -153,6 +153,7 @@ class Repository {
         // добывание фильтров из http-запроса
         $values = $this->getFilterValuesFromHttpRequest($request);
         $values = $this->deleteNotExistsValues($values, $filters);
+        $values = $this->correctPriceRangeOutside($values, $filters);
 
         if (\App::request()->get('instore')) {
             $values['instore'] = 1; // TODO SITE-2403 Вернуть фильтр instore
@@ -277,6 +278,7 @@ class Repository {
             }
         }
 
+        // SITE-5017
         foreach ($values as $k => $v) {
             if (isset($v['from']) && isset($v['to'])) {
                 if ($v['from'] > $v['to']) {
@@ -295,7 +297,6 @@ class Repository {
     }
 
     /**
-     * @param array $values
      * @param \Model\Product\Filter\Entity[] $filters
      * @return array
      */
@@ -334,5 +335,49 @@ class Repository {
         }
 
         return $values;
+    }
+
+    /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     * @return array
+     */
+    private function correctPriceRangeOutside(array $values, array $filters) {
+        if (isset($values['price'])) {
+            $filter = $this->getFilterById('price', $filters);
+
+            if ($filter) {
+                $min = $filter->getMin();
+                $max = $filter->getMax();
+
+                if (isset($values['price']['from'])) {
+                    if ($values['price']['from'] > $max) {
+                        $values['price']['from'] = $max;
+                    }
+                }
+
+                if (isset($values['price']['to'])) {
+                    if ($values['price']['to'] < $min) {
+                        $values['price']['to'] = $min;
+                    }
+                }
+            }
+        }
+
+        return $values;
+    }
+
+    /**
+     * @param string $id
+     * @param \Model\Product\Filter\Entity[] $filters
+     * @return \Model\Product\Filter\Entity|null
+     */
+    private function getFilterById($id, array $filters) {
+        foreach ($filters as $filter) {
+            if ($filter->getId() === $id) {
+                return $filter;
+            }
+        }
+
+        return null;
     }
 }

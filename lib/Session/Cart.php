@@ -107,7 +107,7 @@ class Cart {
 
         $item['name']   = $product->getName();
         $item['price']  = $product->getPrice();
-        $item['image']  = $product->getImageUrl();
+        $item['image']  = $product->getMainImageUrl('product_120');
         $item['url']    = $product->getLink();
         $item['category']       = [
             'id'    => $product->getLastCategory() ? $product->getLastCategory()->getId() : null,
@@ -136,7 +136,7 @@ class Cart {
             'quantity'      => (int)$quantity,
             'name'          => $product->getName(),
             'price'         => $product->getPrice(),
-            'image'         => $product->getImageUrl(),
+            'image'         => $product->getMainImageUrl('product_120'),
             'url'           => $product->getLink(),
             'rootCategory'  => [
                 'id'    => $product->getMainCategory() ? $product->getMainCategory()->getId() : null,

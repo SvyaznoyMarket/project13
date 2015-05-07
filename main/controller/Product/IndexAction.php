@@ -16,10 +16,6 @@ class IndexAction {
     public function execute($productPath, \Http\Request $request) {
         $actionResponse = self::$actionResponse;
 
-        if (!$actionResponse) {
-            return (new \Controller\Product\OldIndexAction())->execute($productPath, $request);
-        }
-
         // регион
         $region =
             $actionResponse->regionQuery->response->region
@@ -27,24 +23,35 @@ class IndexAction {
             : null
         ;
 
+        $productDescriptionsByUi = [];
+        call_user_func(function() use (&$actionResponse, &$productDescriptionsByUi) {
+            foreach ($actionResponse->productDescriptionQueries as $productDescriptionQuery) {
+                if (is_array($productDescriptionQuery->response->products)) {
+                    foreach ($productDescriptionQuery->response->products as $product) {
+                        $productDescriptionsByUi[$product['uid']] = $product;
+                    }
+                }
+            }
+        });
+
         // товар
         /** @var $product \Model\Product\Entity */
-        $productItem = [];
-        if ($actionResponse->productQuery->response->product) {
-            $productItem = array_merge($productItem, $actionResponse->productQuery->response->product);
-        }
-        call_user_func(function() use (&$actionResponse, &$productItem) {
-            if ($actionResponse->productDescriptionQuery->response->products) {
-                $productDescriptionItem = reset($actionResponse->productDescriptionQuery->response->products);
+        call_user_func(function() use (&$actionResponse, &$productDescriptionsByUi, &$product) {
+            $productItem = [];
+            if ($actionResponse->productQuery->response->product) {
+                $productItem = $actionResponse->productQuery->response->product;
+            }
+
+            // осторожно! Если ядро не вернуло товар...
+            if (empty($productItem['id'])) {
+                throw new \Exception\NotFoundException(sprintf(sprintf('Товар @%s не получен от ядра', $productItem['token'])));
+            }
+
+            if (isset($productDescriptionsByUi[$productItem['ui']])) {
+                $productDescriptionItem = $productDescriptionsByUi[$productItem['ui']];
                 // проверка на корректность данных от scms
                 if (empty($productDescriptionItem['uid'])) {
                     return;
-                }
-
-                // осторожно! Если ядро не вернуло товар...
-                if (empty($productItem['id'])) {
-                    \App::exception()->add(new \Exception(sprintf('Товар @%s не получен от ядра', $productDescriptionItem['slug'])));
-                    $productItem = $productDescriptionItem;
                 }
 
                 $propertyData = isset($productDescriptionItem['properties'][0]) ? $productDescriptionItem['properties'] : [];
@@ -57,16 +64,63 @@ class IndexAction {
                     $productItem['property_group'] = $propertyGroupData;
                 }
             }
+
+            $product = $productItem ? new \Model\Product\Entity($productItem) : null;
         });
 
-        $product =
-            (bool)$productItem
-            ? new \Model\Product\Entity($productItem)
-            : null
-        ;
         if (!$product) {
             throw new \Exception\NotFoundException(sprintf('Товар не найден'));
         }
+
+        /** @var Trustfactor[] $trustfactors */
+        $trustfactors = [];
+        call_user_func(function() use ($actionResponse, $product, &$productDescriptionsByUi, &$trustfactors) {
+            if (!$actionResponse->productDescriptionQueries) return;
+
+            $data = isset($productDescriptionsByUi[$product->getUi()]) ? $productDescriptionsByUi[$product->getUi()] : [];
+            if (!$data) return;
+
+            if (isset($data['trustfactors']) && is_array($data['trustfactors'])) {
+                foreach ($data['trustfactors'] as $trustfactor) {
+                    if (is_array($trustfactor)) {
+                        $trustfactors[] = new Trustfactor($trustfactor);
+                    }
+                }
+            }
+
+            // Трастфакторы "Спасибо от Сбербанка" и Много.ру не должны отображаться на партнерских товарах
+            if (is_array($product->getPartnersOffer()) && count($product->getPartnersOffer()) != 0) {
+                foreach ($trustfactors as $key => $trustfactor) {
+                    if ('right' === $trustfactor->type
+                        && in_array($trustfactor->uid, [
+                            '10259a2e-ce37-49a7-8971-8366de3337d3', // много.ру
+                            'ab3ca73c-6cc4-4820-b303-8165317420d5'  // сбербанк
+                        ])) {
+                        unset($trustfactors[$key]);
+                    }
+                }
+            }
+
+            if (isset($data['title'])) {
+                $product->setSeoTitle($data['title']);
+            }
+
+            if (isset($data['meta_keywords'])) {
+                $product->setSeoKeywords($data['meta_keywords']);
+            }
+
+            if (isset($data['meta_description'])) {
+                $product->setSeoDescription($data['meta_description']);
+            }
+
+            if (isset($data['medias']) && is_array($data['medias'])) {
+                $product->medias = array_map(function($media) { return new \Model\Media($media); }, $data['medias']);
+            }
+
+            if (isset($data['json3d']) && is_array($data['json3d'])) {
+                $product->json3d = $data['json3d'];
+            }
+        });
 
         \Session\ProductPageSenders::add($product->getUi(), $request->query->get('sender'));
         \Session\ProductPageSendersForMarketplace::add($product->getUi(), $request->query->get('sender2'));
@@ -77,6 +131,10 @@ class IndexAction {
             ? new \Model\Product\Entity($actionResponse->lifeGiftProductQuery->response->product)
             : null
         ;
+
+        if ($lifeGiftProduct && isset($productDescriptionsByUi[$lifeGiftProduct->getUi()]['medias']) && is_array($productDescriptionsByUi[$lifeGiftProduct->getUi()]['medias'])) {
+            $lifeGiftProduct->medias = array_map(function($media) { return new \Model\Media($media); }, $productDescriptionsByUi[$lifeGiftProduct->getUi()]['medias']);
+        }
 
         $catalogJson =
             ($actionResponse->categoryQuery && $actionResponse->categoryQuery->response->category)
@@ -109,6 +167,9 @@ class IndexAction {
         foreach ($actionResponse->relatedProductQueries as $relatedProductQuery) {
             foreach ($relatedProductQuery->response->products as $item) {
                 $relatedProduct = new \Model\Product\Entity($item);
+                if (isset($productDescriptionsByUi[$relatedProduct->getUi()]['medias']) && is_array($productDescriptionsByUi[$relatedProduct->getUi()]['medias'])) {
+                    $relatedProduct->medias = array_map(function($media) { return new \Model\Media($media); }, $productDescriptionsByUi[$relatedProduct->getUi()]['medias']);
+                }
 
                 $relatedProductsById[$relatedProduct->getId()] = $relatedProduct;
             }
@@ -146,9 +207,9 @@ class IndexAction {
             $kit = [];
             foreach ($product->getKit() as $part) {
                 $part = isset($relatedProductsById[$part->getId()]) ? $relatedProductsById[$part->getId()] : null;
-                if (!$part) continue;
-
-                $kit[] = $part;
+                if ($part) {
+                    $kit[] = $part;
+                }
             }
 
             $kitProducts = \RepositoryManager::product()->getKitProducts($product, $kit, $actionResponse->deliveryQuery);
@@ -159,31 +220,6 @@ class IndexAction {
         // карточку показываем в обычном лэйауте, если включена соответствующая настройка
         if(!empty($catalogJson['regular_product_page'])) $categoryClass = null;
 
-        $useLens = false;
-        if ( isset($catalogJson['use_lens']) ) {
-            if ( $catalogJson['use_lens'] ) $useLens = true;
-        }
-        else {
-            $photos = $product->getPhoto();
-            if ( isset($photos[0]) ) {
-                if ( $photos[0]->getHeight() > 750 || $photos[0]->getWidth() > 750 ) {
-                    $useLens = true;
-                }
-            }
-        }
-
-        // подписка
-        $isUserSubscribedToEmailActions = false;
-        if ($actionResponse->subscribeQuery) {
-            foreach ($actionResponse->subscribeQuery->response->subscribes as $item) {
-                $entity = new \Model\Subscribe\Entity($item);
-                if (1 == $entity->getChannelId() && 'email' === $entity->getType() && $entity->getIsConfirmed()) {
-                    $isUserSubscribedToEmailActions = true;
-                    break;
-                }
-            }
-        }
-
         $actionChannelName = '';
         if ($actionResponse->subscribeChannelQuery) {
             foreach ($actionResponse->subscribeChannelQuery->response->channels as $item) {
@@ -192,74 +228,6 @@ class IndexAction {
                     $actionChannelName = $channel->getName();
                     break;
                 }
-            }
-        }
-
-        // трастфакторы
-        /** @var Trustfactor[] $trustfactors */
-        $trustfactors = [];
-        call_user_func(function() use ($actionResponse, $product, &$trustfactors) {
-            if (!$actionResponse->productDescriptionQuery) return;
-
-            $data =
-                isset($actionResponse->productDescriptionQuery->response->products[$product->getUi()])
-                ? $actionResponse->productDescriptionQuery->response->products[$product->getUi()]
-                : []
-            ;
-            if (!$data) return;
-
-            if (isset($data['trustfactors']) && is_array($data['trustfactors'])) {
-                foreach ($data['trustfactors'] as $trustfactor) {
-                    if (is_array($trustfactor)) {
-                        $trustfactors[] = new Trustfactor($trustfactor);
-                    }
-                }
-            }
-
-            // Трастфакторы "Спасибо от Сбербанка" и Много.ру не должны отображаться на партнерских товарах
-            if (is_array($product->getPartnersOffer()) && count($product->getPartnersOffer()) != 0) {
-                foreach ($trustfactors as $key => $trustfactor) {
-                    if ('right' === $trustfactor->type
-                        && in_array($trustfactor->uid, [
-                            '10259a2e-ce37-49a7-8971-8366de3337d3', // много.ру
-                            'ab3ca73c-6cc4-4820-b303-8165317420d5'  // сбербанк
-                        ])) {
-                        unset($trustfactors[$key]);
-                    }
-                }
-            }
-
-            if (isset($data['title'])) {
-                $product->setSeoTitle($data['title']);
-            }
-
-            if (isset($data['meta_keywords'])) {
-                $product->setSeoKeywords($data['meta_keywords']);
-            }
-
-            if (isset($data['meta_description'])) {
-                $product->setSeoDescription($data['meta_description']);
-            }
-
-            if (isset($data['medias']) && is_array($data['medias'])) {
-                foreach ($data['medias'] as $media) {
-                    if (is_array($media)) {
-                        $product->medias[] = new \Model\Media($media);
-                    }
-                }
-            }
-
-            if (isset($data['json3d']) && is_array($data['json3d'])) {
-                $product->json3d = $data['json3d'];
-            }
-        });
-
-        // какая-то хрень
-        $additionalData = [];
-        $accessoriesCount = 1;
-        foreach ($relatedProductsById as $item) {
-            if (isset($accessories[$item->getId()])) {
-                $accessoriesCount++;
             }
         }
 
@@ -342,17 +310,14 @@ class IndexAction {
         $page->setParam('accessoryCategory', $accessoryCategory);
         $page->setParam('kit', $kit);
         $page->setParam('kitProducts', $kitProducts);
-        $page->setParam('additionalData', $additionalData);
         $page->setParam('creditData', $creditData);
         $page->setParam('shopStates', $shopStates);
         $page->setParam('reviewsData', $reviewsData);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
         $page->setParam('categoryClass', $categoryClass);
-        $page->setParam('useLens', $useLens);
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactors', $trustfactors);
         $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery));
-        $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);
         $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);
         $page->setParam('viewParams', [

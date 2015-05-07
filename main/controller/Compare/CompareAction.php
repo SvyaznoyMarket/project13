@@ -29,23 +29,17 @@ class CompareAction {
             $lastProduct = end($compareProducts);
 
             $productDataByUi = [];
+            $medias = [];
 
             $client = \App::coreClientV2();
-            $client->addQuery(
-                'product/get',
-                [
-                    'select_type' => 'id',
-                    'id'          => $productIds,
-                    'geo_id'      => \App::user()->getRegion()->getId(),
-                ],
-                [],
-                function($data) use(&$productDataByUi) {
-                    foreach ($data as $item) {
-                        if (!isset($item['ui'])) continue;
-                        $productDataByUi[$item['ui']] = $item;
-                    }
+            \RepositoryManager::product()->prepareCollectionById($productIds, null, function($data) use(&$productDataByUi) {
+                foreach ($data as $item) {
+                    if (!isset($item['ui'])) continue;
+                    $productDataByUi[$item['ui']] = $item;
                 }
-            );
+            });
+
+            \RepositoryManager::product()->prepareProductsMediasByIds($productIds, $medias);
 
             \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use(&$reviewsData){
                 $reviewsData = $data;
@@ -74,6 +68,7 @@ class CompareAction {
                 $productsById[$item['id']] = new \Model\Product\Entity($item);
             }
 
+            \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
 
             $compareGroups = $this->getCompareGroups($compareProducts, $productsById, $reviewsData);
         } else {
@@ -147,7 +142,7 @@ class CompareAction {
                         'inShopShowroomOnly' => $product->isInShopShowroomOnly(),
                         'isBuyable' => $product->getIsBuyable(),
                         'statusId' => $product->getStatusId(),
-                        'imageUrl' => $product->getImageUrl(1),
+                        'imageUrl' => $product->getMainImageUrl('product_120'),
                         'partnerName' => $slotPartnerOffer ? $slotPartnerOffer['name'] : '',
                         'partnerOfferUrl' => $slotPartnerOffer ? $slotPartnerOffer['offer'] : '',
                         'isSlot' => (bool)$slotPartnerOffer,
@@ -285,7 +280,7 @@ class CompareAction {
                 'product' => [
                     'prefix' => $product->getPrefix(),
                     'webName' => $product->getWebName(),
-                    'imageUrl' => $product->getImageUrl(0),
+                    'imageUrl' => $product->getMainImageUrl('product_60'),
                 ],
             ]);
         }

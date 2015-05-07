@@ -337,14 +337,20 @@ class Action {
                         $productsIds = array_merge($productsIds, $image->getProducts());
                     }
                     $productsIds = array_unique($productsIds);
-                    if (count($productsIds) > 0) {
+                    if ($productsIds) {
+                        $medias = [];
                         \RepositoryManager::product()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
                             foreach ($data as $item) {
                                 if (!isset($item['id'])) continue;
                                 $products[ $item['id'] ] = new \Model\Product\Entity($item);
                             }
                         });
+
+                        \RepositoryManager::product()->prepareProductsMediasByIds($productsIds, $medias);
+
                         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+
+                        \RepositoryManager::product()->setMediasForProducts($products, $medias);
                     }
 
                     // перевариваем данные изображений для слайдера в $slideData
@@ -357,7 +363,7 @@ class Action {
                             $product = $products[$productId];
                             /** @var $product \Model\Product\Entity */
                             $itemProducts[] = [
-                                'image'     => $product->getImageUrl(2), // 163х163 seize
+                                'image'     => $product->getMainImageUrl('product_160'),
                                 'link'      => $product->getLink(),
                                 'name'      => $product->getName(),
                                 'price'     => $product->getPrice(),
@@ -583,12 +589,12 @@ class Action {
         }
 
         $repository = \RepositoryManager::product();
-        $repository->setEntityClass('\\Model\\Product\\Entity');
 
         $filters = $productFilter->dump();
 
         $smartChoiceEnabled = isset($catalogJson['smartchoice']) ? $catalogJson['smartchoice'] : false;
         $smartChoiceData = [];
+        $medias = [];
 
         if ($smartChoiceEnabled) {
             try {
@@ -607,6 +613,7 @@ class Action {
                 $smartChoiceProductsIds = array_map(function ($a) {
                     return $a['products'][0]['id'];
                 }, $smartChoiceData);
+
                 $repository->prepareCollectionById($smartChoiceProductsIds, $region, function ($data) use (&$smartChoiceProducts, &$smartChoiceData) {
                     try {
                         if (count($data) === 3) {
@@ -623,6 +630,8 @@ class Action {
                         $smartChoiceData = [];
                     }
                 });
+
+                \RepositoryManager::product()->prepareProductsMediasByIds($smartChoiceProductsIds, $medias);
             } catch (\Exception $e) {
                 $smartChoiceData = [];
             }
@@ -652,6 +661,12 @@ class Action {
             }
         );
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+        foreach ($smartChoiceData as $smartChoiceDataItem) {
+            if (isset($smartChoiceDataItem['product'])) {
+                \RepositoryManager::product()->setMediasForProducts([$smartChoiceDataItem['product']], $medias);
+            }
+        }
 
         // HINT Можно добавлять ID неопубликованных продуктов для показа в листингах
         // array_unshift($productIds, 201540);
@@ -688,7 +703,7 @@ class Action {
         if ((bool)$products) {
             $productUIs = [];
             foreach ($products as $product) {
-                if (!$product instanceof \Model\Product\BasicEntity) continue;
+                if (!$product instanceof \Model\Product\Entity) continue;
                 $productUIs[] = $product->getUi();
             }
 

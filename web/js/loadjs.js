@@ -83,7 +83,7 @@
 
 		directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
         adfoxUrl = 'adfox_lib_ff.min.js', // 'adfox.asyn.code.ver3.min.js',
-		yandexMapUrl, yandexMapUrlv2_1, mustacheUrl, historyUrl, kladr, knockoutUrl, tealeafUrl,
+		yandexMapUrl, yandexMapUrlv2_1, mustacheUrl, historyUrl, kladr, knockoutUrl,
 
 		debug = false,
 		templateType = document.body.getAttribute('data-template') || '',
@@ -241,7 +241,6 @@
 	mustacheUrl = ( debug ) ? '/js/vendor/mustache.js' : '/js/prod/mustache.min.js';
 	historyUrl = ( debug ) ? '/js/vendor/history.js' : '/js/prod/history.min.js';
 	kladr = ( debug ) ? '/js/vendor/jquery.kladr.js' : '/js/prod/jquery.kladr.min.js';
-	tealeafUrl = ( debug ) ? '/js/prod/tealeaf.js' : '/js/prod/tealeaf.min.js';
 
 	/**
 	 * Загрузка скриптов по шаблону
@@ -642,7 +641,6 @@
 	if ( loadScripts.hasOwnProperty(templateType) ) {
 		console.log('Загрузка скриптов. Шаблон %s', templateType);
 		loadScripts[templateType]();
-		if (pageConfig.tealeaf === true) $LAB.script( getWithVersion('tealeaf.js') );
 	}
 	else {
 		console.log('Шаблон %s не найден. Загрузка стандартного набора скриптов', templateType);

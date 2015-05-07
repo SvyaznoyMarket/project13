@@ -32,8 +32,6 @@
 				activeClass = 'searchdd_lk_iact',
 				index = $links.index($links.filter('.'+activeClass));
 
-            console.log(keycode, index);
-
 			if (!self.isNoSearchResult()) {
 				$links.removeClass(activeClass);
 				switch (keycode) {
@@ -74,7 +72,7 @@
 		// Throttled ajax query
 		ko.computed(function(){
 			var val = self.searchInput();
-			var params = {q: val, sender: 'knockout'};
+			var params = {q: val};
 
 			if (self.currentCategory() != null) params.catId = self.currentCategory().id;
 

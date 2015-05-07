@@ -387,9 +387,10 @@
 })(jQuery);
 ;(function(w,ko,$) {
 
+    var address;
+
 	ENTER.OrderV31Click.functions.initAddress = function(){
-        var address,
-            kladrConfig = $('#kladr-config').data('value'),
+        var kladrConfig = $('#kladr-config').data('value'),
             region = $('#page-config').data('value').user.region;
     
         function AddressModel () {
@@ -614,11 +615,12 @@
     
         // начинаем отсюдова
     
-        address = new AddressModel();
+        if (typeof address == 'undefined') address = new AddressModel();
     
         ENTER.OrderV31Click.address = address;
         ENTER.OrderV31Click.functions.smartAddressInit();
 	};
+
 }(window, ko, jQuery));
 (function($) {
 	ENTER.OrderV31Click.functions.initYandexMaps = function(){
@@ -1191,16 +1193,10 @@
 								});
 							});
 						})();
-					}
 
-					var $orderContainer = $('#jsOrderV3OneClickOrder');
-					if ($orderContainer.length) {
-						$.get($orderContainer.data('url')).done(function(response) {
-							$orderContainer.html(response.result.page);
-
-							if (typeof ENTER.utils.sendOrderToGA == 'function') ENTER.utils.sendOrderToGA($('#jsOrder').data('value'));
-
-						});
+						if (response.result.orderAnalytics) {
+							ENTER.utils.sendOrderToGA(response.result.orderAnalytics);
+						}
 					}
 				})
 				.fail(function(jqXHR){

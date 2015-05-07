@@ -341,7 +341,6 @@ class App {
 
         return $instance;
     }
-	
 
     /**
      * @static

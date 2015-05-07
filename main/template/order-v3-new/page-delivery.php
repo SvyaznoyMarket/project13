@@ -27,8 +27,6 @@ return function(
 <section id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
     <h1 class="orderCnt_t">Самовывоз и доставка</h1>
 
-    <?= $helper->render('order-v3-new/__error', ['error' => $error]) ?>
-
     <? if ($orderCount != 1) : ?>
         <p class="orderInf">Товары будут оформлены как <strong><?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></strong></p>
     <? endif; ?>
@@ -39,6 +37,8 @@ return function(
 
         <button class="btnLightGrey orderCnt_btn fl-r jsChangeRegion">Изменить регион</button>
     </div>
+
+    <?= $helper->render('order-v3-new/__error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
     <? foreach ($orderDelivery->orders as $order): $i++;?>
         <? if ((bool)$order->validationErrors) : ?>
@@ -62,7 +62,7 @@ return function(
             <? foreach ($order->products as $product): ?>
             <div class="orderCol_cnt clearfix">
                 <a href="<?= $product->link ?>" class="orderCol_lk" target="_blank">
-                    <img class="orderCol_img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->name) ?>" />
+                    <img class="orderCol_img" src="<?= $product->getMainImageUrl('product_60') ?>" alt="<?= $helper->escape($product->name) ?>" />
                 </a>
 
                 <a href="<?= $product->link ?>" target="_blank" class="orderCol_n">

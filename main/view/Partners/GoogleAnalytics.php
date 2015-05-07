@@ -239,15 +239,13 @@ class GoogleAnalytics {
         $SKUs = '';
         $userEntity = $this->user->getEntity();
         $cartProductsById = $this->getParam('cartProductsById');
+        /** @var $products \Model\Product\Entity[] */
         $products = $this->getParam('products');
 
         if (!$cartProductsById) return false;
 
         foreach ($products as $product) {
             if (!isset($cartProductsById[$product->getId()])) continue;
-            //$cartProduct = $cartProductsById[$product->getId()];
-            /** @var $cartProduct \Model\Cart\Product\Entity */
-            /** @var $product \Model\Product\CartEntity */
             $SKUs .= $product->getArticle() . ',';
             $total += $product->getPrice();
         }

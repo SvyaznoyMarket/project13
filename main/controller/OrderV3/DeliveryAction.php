@@ -12,11 +12,6 @@ class DeliveryAction extends OrderV3 {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-//        $controller = parent::execute($request);
-//        if ($controller) {
-//            return $controller;
-//        }
-
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         if ($request->isXmlHttpRequest()) {
@@ -35,6 +30,7 @@ class DeliveryAction extends OrderV3 {
                 ];
 
                 $orderDeliveryModel = $this->getSplit($request->request->all());
+                $this->bindErrors($orderDeliveryModel->errors, $orderDeliveryModel);
 
                 if (\App::debug()) {
                     $result['OrderDeliveryRequest'] = json_encode($splitData, JSON_UNESCAPED_UNICODE);
@@ -75,8 +71,20 @@ class DeliveryAction extends OrderV3 {
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
             $orderDelivery = $this->getSplit($data);
 
+            $medias = [];
             foreach($orderDelivery->orders as $order) {
                 $this->logger(['delivery-self-price' => $order->delivery->price]);
+                \RepositoryManager::product()->prepareProductsMediasByIds(array_map(function(\Model\OrderDelivery\Entity\Order\Product $product) { return $product->id; }, $order->products), $medias);
+            }
+
+            \App::coreClientV2()->execute();
+
+            foreach($orderDelivery->orders as $order) {
+                foreach ($order->products as $product) {
+                    if (isset($medias[$product->id])) {
+                        $product->medias = $medias[$product->id];
+                    }
+                }
             }
 
             $subscribeResult = false;  // ответ на подписку
@@ -91,15 +99,7 @@ class DeliveryAction extends OrderV3 {
             }
 
             // вытаскиваем старые ошибки из предыдущих разбиений
-            $oldErrors = $this->session->flash();
-            if ($oldErrors && is_array($oldErrors)) {
-                foreach ($oldErrors as $error) {
-                    // распихиваем их по заказам
-                    if ($error instanceof \Model\OrderDelivery\Error && isset($error->details['block_name']) && isset($orderDelivery->orders[$error->details['block_name']])) {
-                        $orderDelivery->orders[$error->details['block_name']]->errors[] = $error;
-                    }
-                }
-            }
+            $this->bindErrors($this->session->flash(), $orderDelivery);
 
             $page = new \View\OrderV3\DeliveryPage();
             $page->setParam('orderDelivery', $orderDelivery);
@@ -348,5 +348,29 @@ class DeliveryAction extends OrderV3 {
             // "code":910,"message":"Не удается добавить подписку, указанный email уже подписан на этот канал рассылок"
             if ($e->getCode() == 910) $subscribeResult = true;
         });
+    }
+
+    /** Распихиваем ошибки из общего блока ошибок по заказам
+     * @param $errors
+     * @param \Model\OrderDelivery\Entity $orderDelivery
+     */
+    private function bindErrors($errors, \Model\OrderDelivery\Entity &$orderDelivery) {
+
+        if (!is_array($errors)) return;
+
+        foreach ($errors as $error) {
+
+            if (!$error instanceof \Model\OrderDelivery\Error) continue;
+
+            // распихиваем их по заказам
+            if (isset($error->details['block_name']) && isset($orderDelivery->orders[$error->details['block_name']])) {
+                $orderDelivery->orders[$error->details['block_name']]->errors[] = $error;
+            } else if ($error->isMaxQuantityError() && count($orderDelivery->orders) == 1) {
+                $ord = reset($orderDelivery->orders);
+                $orderDelivery->orders[$ord->block_name]->errors[] = $error;
+            } else if ($error->isMaxQuantityError()) {
+                $orderDelivery->errors[] = $error;
+            }
+        }
     }
 }

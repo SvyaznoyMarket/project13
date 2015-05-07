@@ -87,8 +87,11 @@ class ChildAction {
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         $productsByUi = array_filter($productsByUi, function($product) {
-            return $product instanceof \Model\Product\BasicEntity;
+            return $product instanceof \Model\Product\Entity;
         });
+
+        \RepositoryManager::product()->prepareProductsMedias($productsByUi);
+        \App::coreClientV2()->execute();
 
         if (
             ($category->getProductCount() == 0)
