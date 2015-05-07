@@ -8,11 +8,13 @@
 
         var self = this,
             pointsBounds,
+            searchAutocompleteListClicked = false,
             map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map;
 
         self.searchInput = ko.observable();
         self.searchAutocompleteList = ko.observableArray();
         self.searchAutocompleteListVisible = ko.observable(false);
+        self.searchAutocompleteListClicked = false; //
         self.enableAutocompleteListVisible = function(){self.searchAutocompleteListVisible(true)};
         self.disableAutocompleteListVisible = function(){self.searchAutocompleteListVisible(false)};
         self.limitedSearchInput = ko.computed(self.searchInput).extend({throttle: 500});
@@ -25,6 +27,11 @@
 
             self.searchAutocompleteList.removeAll();
             self.searchAutocompleteListVisible(false);
+
+            if (searchAutocompleteListClicked) {
+                searchAutocompleteListClicked = false;
+                return;
+            }
 
             ymaps.geocode(text, { boundedBy: extendedBounds, strictBounds: true }).then(
                 function(res){
@@ -45,8 +52,10 @@
             self.searchInput('');
             self.searchAutocompleteList.removeAll();
         };
-        self.setMapCenter = function(val) {
+        self.autocompleteItemClick = function(val) {
             map.setCenter(val.bounds[0], 14);
+            searchAutocompleteListClicked = true;
+            self.searchInput(val.name);
             self.searchAutocompleteListVisible(false);
         };
 

@@ -74,7 +74,7 @@ return function(
                     </div>
                     <div class="deliv-suggest" data-bind="visible: searchAutocompleteListVisible() && searchAutocompleteList().length > 0, event: { mouseleave: disableAutocompleteListVisible }">
                         <ul class="deliv-suggest__list" data-bind="foreach: searchAutocompleteList">
-                            <li class="deliv-suggest__i" data-bind="text: name, attr: { 'data-bounds': bounds }, click: $parent.setMapCenter"></li>
+                            <li class="deliv-suggest__i" data-bind="text: name, attr: { 'data-bounds': bounds }, click: $parent.autocompleteItemClick"></li>
                         </ul>
                     </div>
                 </div>
