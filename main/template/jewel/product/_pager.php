@@ -19,12 +19,6 @@ $filterData = isset($productFilter) ? http_build_query(array(\View\Product\Filte
 if (!isset($isAddInfo)) $isAddInfo = false;
 ?>
 
-<? if ('expanded' == $view) : ?>
-<input type="hidden" id="dlvrlinks"
-    data-shoplink="<?= $page->url('shop') ?>"
-    data-calclink="<?= $page->url('old.product.delivery') ?>" />
-<?php endif ?>
-
 <? if ($pager->hasPages()): ?>
 <div class="fr allpagerJewel mBtn" alt="все товары в категории" title="все товары в категории"
      data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route') . ( strpos($request->attributes->get('route'), 'sliderInfinity') !== false ? '' : '.sliderInfinity') ) ?>"
