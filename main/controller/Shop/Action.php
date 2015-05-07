@@ -199,8 +199,6 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Shop @%s not found', $shopToken));
         }
 
-        $currentRegion = $shop->getRegion();
-
         // hardcode
         if (in_array($shop->getId(), [1])) {
             $shop->setPanorama(new \Model\Shop\Panorama\Entity([
@@ -218,7 +216,7 @@ class Action {
                 [],
                 null,
                 null,
-                $currentRegion,
+                $shop->getRegion(),
                 function($data) use (&$shop) {
                     $shop->setProductCount(isset($data['count']) ? $data['count'] : null);
                 },
@@ -231,7 +229,6 @@ class Action {
         \App::curl()->execute();
 
         $page = new \View\Shop\ShowPage();
-        $page->setParam('currentRegion', $currentRegion);
         $page->setParam('shop', $shop);
 
         return new \Http\Response($page->show());

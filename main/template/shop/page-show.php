@@ -1,7 +1,6 @@
 <?php
 /**
  * @var $page          \View\Shop\ShowPage
- * @var $currentRegion \Model\Region\Entity
  * @var $shop          \Model\Shop\Entity
  */
 ?>
