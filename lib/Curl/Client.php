@@ -221,22 +221,6 @@ class Client {
                     //$this->logger->debug('Curl response info: ' . $this->encodeInfo($info), ['curl']);
 
                     if ($done['result'] !== CURLM_OK) {
-                        // удаляет только текущий запрос, ретраи остаются
-                        call_user_func(function($handler) {
-                            foreach ($this->queries[$this->queryIndex[(string)$handler]]['resources'] as $i => $resource) {
-                                if (is_resource($resource) && ($resource === $handler)) {
-                                    curl_multi_remove_handle($this->multiHandler, $resource);
-                                    curl_close($resource);
-                                    unset($this->queries[$this->queryIndex[(string)$handler]]['resources'][$i]);
-                                    break;
-                                }
-                            }
-                            // если все ретраи удалены, то удаляет запрос
-                            if (!count($this->queries[$this->queryIndex[(string)$handler]]['resources'])) {
-                                unset($this->queries[$this->queryIndex[(string)$handler]]);
-                            }
-                        }, $handler);
-
                         $this->logger->error([
                             'message'      => 'Fail curl',
                             'error'        => ['code' => (int)$done['result'], 'message' => curl_error($done['handle'])],
@@ -249,6 +233,22 @@ class Client {
                             'startAt'      => $startedAt,
                             'endAt'        => microtime(true),
                         ], ['curl']);
+
+                        if (count($this->queries[$this->queryIndex[(string)$handler]]['resources']) < $retryCount) {
+                            //$this->logger->debug(microtime(true) . ': посылаю еще один запрос в ядро: ' . $query['query']['url'], ['curl']);
+                            $this->logger->info([
+                                'message' => 'Query retry',
+                                'url'     => $this->queries[$this->queryIndex[(string)$handler]]['query']['url'],
+                                'data'    => $this->queries[$this->queryIndex[(string)$handler]]['query']['data'],
+                            ], ['curl']);
+                            $this->addQuery(
+                                $this->queries[$this->queryIndex[(string)$handler]]['query']['url'],
+                                $this->queries[$this->queryIndex[(string)$handler]]['query']['data'],
+                                $this->successCallbacks[(string)$this->queries[$this->queryIndex[(string)$handler]]['resources'][0]],
+                                isset($this->failCallbacks[(string)$this->queries[$this->queryIndex[(string)$handler]]['resources'][0]]) ? $this->failCallbacks[(string)$this->queries[$this->queryIndex[(string)$handler]]['resources'][0]] : null,
+                                isset($query['query']['timeout']) ? $query['query']['timeout'] : null
+                            );
+                        }
 
                         continue;
                     }
@@ -440,6 +440,7 @@ class Client {
         curl_setopt($connection, CURLOPT_URL, $url);
         curl_setopt($connection, CURLOPT_HTTPHEADER, ['X-Request-Id: ' . \App::$id, 'Expect:']);
         curl_setopt($connection, CURLOPT_ENCODING, 'gzip,deflate');
+        curl_setopt($connection, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0); // для решения проблемы {"code":56,"message":"Problem (2) in the Chunked-Encoded data"}
 
         if(isset($data['http_user']) && isset($data['http_password'])) {
             curl_setopt($connection, CURLOPT_USERPWD, $data['http_user'].":".$data['http_password']);
