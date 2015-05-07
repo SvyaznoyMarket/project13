@@ -18,6 +18,7 @@
         self.enableAutocompleteListVisible = function(){self.searchAutocompleteListVisible(true)};
         self.disableAutocompleteListVisible = function(){self.searchAutocompleteListVisible(false)};
         self.limitedSearchInput = ko.computed(self.searchInput).extend({throttle: 500});
+
         self.limitedSearchInput.subscribe(function(text) {
 
             var extendValue = 0.5,
@@ -48,11 +49,44 @@
                 }
             )
         });
+
+        self.autocompleteNavigation = function(data, e){
+            var keycode = e.which,
+                $elements = $('.jsDeliverySuggestLi'),
+                $list = $('.deliv-suggest__list'),
+                activeClass = 'deliv-suggest__i--active',
+                index = $elements.index($elements.filter('.'+activeClass));
+
+            $elements.removeClass(activeClass);
+
+            switch (keycode) {
+                case 13: // Enter key
+                    if (index > -1) {
+                        self.autocompleteItemClick($elements.eq(index).data('element'));
+                        return false;
+                    }
+                    break;
+                case 38: // up key
+                    if (index == -1) index = self.searchAutocompleteList.length;
+                    $elements.eq(index - 1).addClass(activeClass);
+                    $list.scrollTo('.' + activeClass);
+                    break;
+                case 40: // down key
+                    $elements.eq(index + 1).addClass(activeClass);
+                    $list.scrollTo('.' + activeClass);
+                    break
+            }
+
+            return true;
+        };
+
         self.clearSearchInput = function(){
             self.searchInput('');
             self.searchAutocompleteList.removeAll();
         };
+
         self.autocompleteItemClick = function(val) {
+            console.log(val);
             map.setCenter(val.bounds[0], 14);
             searchAutocompleteListClicked = true;
             self.searchInput(val.name);

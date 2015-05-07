@@ -69,12 +69,12 @@ return function(
 
                 <div class="deliv-search">
                     <div class="deliv-search__input-wrap">
-                        <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро" data-bind="click: enableAutocompleteListVisible, value: searchInput, valueUpdate: 'afterkeydown'" />
+                        <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро" data-bind="click: enableAutocompleteListVisible, value: searchInput, valueUpdate: 'afterkeydown', event: { keydown: autocompleteNavigation }" />
                         <div class="deliv-search__clear" data-bind="click: clearSearchInput, visible: searchInput ">×</div>
                     </div>
                     <div class="deliv-suggest" data-bind="visible: searchAutocompleteListVisible() && searchAutocompleteList().length > 0, event: { mouseleave: disableAutocompleteListVisible }">
                         <ul class="deliv-suggest__list" data-bind="foreach: searchAutocompleteList">
-                            <li class="deliv-suggest__i" data-bind="text: name, attr: { 'data-bounds': bounds }, click: $parent.autocompleteItemClick"></li>
+                            <li class="deliv-suggest__i jsDeliverySuggestLi" data-bind="text: name, attr: { 'data-element': ko.toJSON($data) }, click: $parent.autocompleteItemClick"></li>
                         </ul>
                     </div>
                 </div>

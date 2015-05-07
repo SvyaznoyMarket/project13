@@ -32,8 +32,6 @@
 				activeClass = 'searchdd_lk_iact',
 				index = $links.index($links.filter('.'+activeClass));
 
-            console.log(keycode, index);
-
 			if (!self.isNoSearchResult()) {
 				$links.removeClass(activeClass);
 				switch (keycode) {
