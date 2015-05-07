@@ -680,7 +680,7 @@
 	});
 	*/
 	(function(){
-		var data = $('.js-userbar-userbar').data('user-config');
+		var data = $('.js-userConfig').data('value');
 		ENTER.UserModel.update(data);
 		if (typeof ga == 'function') {
 			ga('send', 'timing', 'userInfo', 'Load User Info', spendTime);
@@ -4256,7 +4256,7 @@ $(document).ready(function() {
             var
                 data = $(el).data('slider'),
                 //rrviewed = docCookies.getItem('rrviewed')
-                rrviewed = docCookies.getItem('product_viewed')
+                rrviewed = docCookies.getItem('product_viewed') || ''
             ;
 
             if (('viewed' == data.type) && typeof rrviewed === 'string') {

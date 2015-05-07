@@ -104,7 +104,7 @@
 	});
 	*/
 	(function(){
-		var data = $('.js-userbar-userbar').data('user-config');
+		var data = $('.js-userConfig').data('value');
 		ENTER.UserModel.update(data);
 		if (typeof ga == 'function') {
 			ga('send', 'timing', 'userInfo', 'Load User Info', spendTime);

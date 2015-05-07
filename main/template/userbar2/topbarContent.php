@@ -26,9 +26,5 @@ $helper = \App::helper();
         <li class="hdlk_i"><a href="/how_get_order" class="hdlk_lk undrl">Доставка</a></li>
     </ul>
 
-    <? if (\App::config()->ssi['enabled']): ?>
-        <?= $helper->render('__ssi', ['path' => '/userbar']) ?>
-    <? else: ?>
-        <?= $page->render('userbar/_userbar', ['class' => 'header_i userbtn js-topbarfix']) ?>
-    <? endif ?>
+    <?= $page->render('userbar/_userbar', ['class' => 'header_i userbtn js-topbarfix']) ?>
 </div>

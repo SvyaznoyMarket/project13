@@ -34,9 +34,10 @@ class RouteAction {
             ];
 
             $action = array_merge([
-                'url'    => null,
-                'method' => 'GET',
-                'data'   => [],
+                'url'     => null,
+                'method'  => 'GET',
+                'data'    => [],
+                'referer' => $request->headers->get('referer'),
             ], (array)$action);
             if (!is_array($action['data'])) {
                 $action['data'] = [];
