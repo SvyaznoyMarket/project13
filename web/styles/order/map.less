@@ -202,12 +202,21 @@
             line-height: 33px;
             border: none;
             outline: none;
-            width: 350px;
+            width: 340px;
         }
         &__input-wrap{
         	position: relative;
-        	width: 350px;
+        	width: 355px;
         	height: 33px;
+            &:after{
+                content:"";
+                width:30px;
+                height: 100%;
+                position: absolute;
+                right:0;
+                top:0;
+                .smoke-lrgradient(@start:rgba(255,255,255,0), @stop:#fff);
+            }
         }
         &__clear{
         	cursor: pointer;
@@ -224,6 +233,7 @@
         	text-align: center;
         	cursor: pointer;
         	.rounded(9px);
+            z-index: 1;
         }
         .deliv-suggest {
             width: 100%;
