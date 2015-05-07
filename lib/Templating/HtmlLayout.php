@@ -331,6 +331,14 @@ class HtmlLayout {
         return $result;
     }
 
+    public function slotUserConfig() {
+        if (\App::config()->ssi['enabled']) {
+            return \App::helper()->render('__ssi', ['path' => '/user-config']);
+        } else {
+            return \App::helper()->render('__userConfig');
+        }
+    }
+
     protected function getMustacheTemplateInsertion($id, $path) {
         return
             '<script id="' . $id . '" type="text/html">' . "\n" .

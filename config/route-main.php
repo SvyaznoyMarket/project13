@@ -12,9 +12,9 @@ return [
         'action'  => ['Main\Action', 'recommendations'],
     ],
 
-    'ssi.userbar' => [
-        'pattern' => '/ssi/userbar',
-        'action'  => ['Ssi\UserbarAction', 'execute'],
+    'ssi.userConfig' => [
+        'pattern' => '/ssi/user-config',
+        'action'  => ['Ssi\UserConfigAction', 'execute'],
     ],
 
     'category.mainMenu' => [ // TODO: переименовать в mainMenu

@@ -2,7 +2,7 @@
 
 namespace Controller\Ssi;
 
-class UserbarAction {
+class UserConfigAction {
     /**
      * @param \Http\Request $request
      * @return \Http\Response
@@ -10,10 +10,6 @@ class UserbarAction {
     public function execute(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        $page = new \View\DefaultLayout();
-
-        $content = $page->render('userbar/_userbar', ['class' => 'header_i userbtn js-topbarfix']);
-
-        return new \Http\Response($content);
+        return new \Http\Response(\App::helper()->render('__userConfig'));
     }
 }
