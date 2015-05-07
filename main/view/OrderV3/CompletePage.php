@@ -183,6 +183,8 @@ class CompletePage extends Layout {
                 'orderSum' => $order->getSum(),
             ];
 
+            if (\App::partner()->getName()) $orderData['partner'] = \App::partner()->getName();
+
             /* Дополнительные данные для LinkProfit */
             if (\App::config()->partners['LinkProfit']['enabled'] && \App::partner()->getName() == 'linkprofit') {
                 $orderData['webmaster_id'] = \App::request()->cookies->get(\App::config()->partners['LinkProfit']['cookieName'], 0);
