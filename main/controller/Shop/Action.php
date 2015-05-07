@@ -123,7 +123,6 @@ class Action {
 
         $page = new \View\Shop\RegionPage();
         $page->setParam('shopAvailableRegions', $shopAvailableRegions);
-        $page->setParam('currentRegion', null);
         $page->setParam('regions', $regions);
         $page->setParam('shops', $shops);
         $page->setParam('markers', $markers);
