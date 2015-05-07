@@ -221,13 +221,21 @@ class Client {
                     //$this->logger->debug('Curl response info: ' . $this->encodeInfo($info), ['curl']);
 
                     if ($done['result'] !== CURLM_OK) {
-                        if (isset($this->queries[$this->queryIndex[(string)$handler]])) {
-                            if (is_resource($handler)) {
-                                curl_multi_remove_handle($this->multiHandler, $handler);
-                                curl_close($handler);
+                        // удаляет только текущий запрос, ретраи остаются
+                        call_user_func(function($handler) {
+                            foreach ($this->queries[$this->queryIndex[(string)$handler]]['resources'] as $i => $resource) {
+                                if (is_resource($resource) && ($resource === $handler)) {
+                                    curl_multi_remove_handle($this->multiHandler, $resource);
+                                    curl_close($resource);
+                                    unset($this->queries[$this->queryIndex[(string)$handler]]['resources'][$i]);
+                                    break;
+                                }
                             }
-                            unset($this->queries[$this->queryIndex[(string)$handler]]);
-                        }
+                            // если все ретраи удалены, то удаляет запрос
+                            if (!count($this->queries[$this->queryIndex[(string)$handler]]['resources'])) {
+                                unset($this->queries[$this->queryIndex[(string)$handler]]);
+                            }
+                        }, $handler);
 
                         $this->logger->error([
                             'message'      => 'Fail curl',
