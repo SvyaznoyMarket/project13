@@ -216,6 +216,35 @@ class Client {
                     //$this->logger->info(microtime(true) . ': получен ответ на запрос ' . $this->queries[$this->queryIndex[(string)$handler]]['query']['url'] . '[' . (string)$handler . ']');
                     //$this->logger->debug(microtime(true) . ': <- [' . (string)$handler . ']', ['curl']);
 
+                    $info = curl_getinfo($handler);
+                    //$this->logger->debug('Curl response resource: ' . $handler, ['curl']);
+                    //$this->logger->debug('Curl response info: ' . $this->encodeInfo($info), ['curl']);
+
+                    if ($done['result'] !== CURLM_OK) {
+                        if (isset($this->queries[$this->queryIndex[(string)$handler]])) {
+                            if (is_resource($handler)) {
+                                curl_multi_remove_handle($this->multiHandler, $handler);
+                                curl_close($handler);
+                            }
+                            unset($this->queries[$this->queryIndex[(string)$handler]]);
+                        }
+
+                        $this->logger->error([
+                            'message'      => 'Fail curl',
+                            'error'        => ['code' => (int)$done['result'], 'message' => curl_error($done['handle'])],
+                            'url'          => isset($info['url']) ? $info['url'] : null,
+                            'data'         => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
+                            'info'         => isset($info) ? $info : null,
+                            'retryTimeout' => $retryTimeout,
+                            'retryCount'   => $retryCount,
+                            'timeout'      => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['timeout']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['timeout'] : null,
+                            'startAt'      => $startedAt,
+                            'endAt'        => microtime(true),
+                        ], ['curl']);
+
+                        continue;
+                    }
+
                     //удаляем запрос из массива запросов на исполнение и прерываем дублирующие запросы
                     foreach ($this->queries[$this->queryIndex[(string)$handler]]['resources'] as $resource) {
                         if (is_resource($resource) && ($resource !== $handler)) {
@@ -223,10 +252,6 @@ class Client {
                             curl_close($resource);
                         }
                     }
-
-                    $info = curl_getinfo($handler);
-                    //$this->logger->debug('Curl response resource: ' . $handler, ['curl']);
-                    //$this->logger->debug('Curl response info: ' . $this->encodeInfo($info), ['curl']);
 
                     try {
                         if (curl_errno($handler) > 0) {
