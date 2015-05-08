@@ -118,8 +118,7 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
                 $response = $action->execute();
             }
         } else {
-            \App::partner()->set($response);
-            \App::sclubManager()->set($response);
+//            \App::sclubManager()->set($response);
         }
 
         // debug panel
