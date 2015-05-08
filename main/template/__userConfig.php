@@ -11,4 +11,7 @@ return function(
 ?>
 
     <span class="js-userConfig" data-value="<?= $helper->json($userConfig) ?>" style="display: none;"></span>
+
+    <?= $helper->jsonInScriptTag(\App::partner()->setPartner(), 'lastPartnerJSON') ?>
+
 <? };
