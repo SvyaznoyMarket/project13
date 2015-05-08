@@ -48,7 +48,11 @@ class CompareAction {
             $client->execute();
 
             // описание товара из scms
-            $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList(array_keys($productDataByUi)))->prepare();
+            $productDescriptionQuery = new Query\Product\GetDescriptionByUiList();
+            $productDescriptionQuery->uis = array_keys($productDataByUi);
+            $productDescriptionQuery->filter->media = true;
+            $productDescriptionQuery->filter->property = true;
+            $productDescriptionQuery->prepare();
             $this->getCurl()->execute();
 
             foreach ($productDescriptionQuery->response->products as $ui => $descriptionItem) {

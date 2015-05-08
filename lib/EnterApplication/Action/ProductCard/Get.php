@@ -237,7 +237,15 @@ namespace EnterApplication\Action\ProductCard
             call_user_func(function() use (&$productQuery, &$productDescriptionQueries, &$relatedProductQueries, &$lifeGiftProductQuery) {
                 $uis = [];
                 if (isset($productQuery->response->product['ui'])) {
-                    $uis[] = $productQuery->response->product['ui'];
+                    $query = new Query\Product\GetDescriptionByUiList();
+                    $query->uis = [$productQuery->response->product['ui']];
+                    $query->filter->trustfactor = true;
+                    $query->filter->media = true;
+                    $query->filter->seo = true;
+                    $query->filter->property = true;
+                    $query->prepare();
+
+                    $productDescriptionQueries[] = $query;
                 }
 
                 foreach ($relatedProductQueries as $relatedProductQuery) {
@@ -255,7 +263,12 @@ namespace EnterApplication\Action\ProductCard
                 }
 
                 foreach (array_chunk($uis, \App::config()->coreV2['chunk_size']) as $uisChunk) {
-                    $productDescriptionQueries[] = (new Query\Product\GetDescriptionByUiList($uisChunk))->prepare();
+                    $query = new Query\Product\GetDescriptionByUiList();
+                    $query->uis = $uisChunk;
+                    $query->filter->media = true;
+                    $query->prepare();
+
+                    $productDescriptionQueries[] = $query;
                 }
             });
 
