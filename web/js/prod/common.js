@@ -2043,20 +2043,43 @@ $(function() {
 		}
 	}
 });
-;$(document).ready(function(){
+;$(document).ready(function() {
+
+    var partnerData = {
+        lastPartner: '',
+        cookie: []
+    };
+
+    try {
+        partnerData = $.parseJSON($('#lastPartnerJSON').html());
+    } catch (e) {
+        console.error('Ошибка получения партнера')
+    }
+
 	// при любом клике на странице
 	$(document.body).on('click', function(){
-		var last_p = window.last_partner_second_click;
-		// ставим куку last_partner на 30 дней, если есть переменная window.last_partner_second_click
-		if (typeof last_p != 'undefined') {
+		// ставим куку last_partner на 30 дней
+		if (partnerData.lastPartner) {
 			docCookies.setItem(
 				'last_partner',
-				last_p,
+                partnerData.lastPartner,
 				60 * 60 *24 *30,
 				'/'
 			);
+            console.info('[PARTNER] Установлен партнер %s', partnerData.lastPartner);
 		}
-	})
+        // и остальные куки партнеров
+        $.each(partnerData.cookie, function(i,v) {
+            docCookies.setItem(
+                v['name'],
+                v['value'],
+                typeof v['time'] != 'undefined' ? v['time'] : 60 * 60 *24 *30,
+                '/'
+            );
+            console.info('[PARTNER] Установлена кука партнера', v);
+        })
+	});
+
 });
 ;(function( ENTER ) {
 	function changeSocnetLinks(isSubscribe) {

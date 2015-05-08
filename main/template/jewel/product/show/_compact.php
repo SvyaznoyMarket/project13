@@ -37,7 +37,11 @@ if ($product->getPriceOld()) {
 
         <a class="lstn_n" href="<?= $product->getLink() ?>" <?= $linkTarget ?>><?= $product->getName() ?></a>
 
-        <a class="lstn_imglk" href="<?= $product->getLink() ?>" <?= $linkTarget ?>><img class="lstn_img" src="<?= $product->getMainImageUrl(3 == $itemsPerRow ? 'product_350' : 'product_160') ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" /></a>
+        <div class="lstn_imgbox">
+            <a class="lstn_imglk" href="<?= $product->getLink() ?>" <?= $linkTarget ?>>
+                <img class="lstn_img" src="<?= $product->getMainImageUrl(3 == $itemsPerRow ? 'product_350' : 'product_160') ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" />
+            </a>
+        </div>
 
         <ul class="stickLst clearfix">
             <? if ($product->getLabel() && $product->getLabel()->getImageUrl()): ?>
