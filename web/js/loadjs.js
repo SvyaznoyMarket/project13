@@ -217,6 +217,7 @@
 	global.ENTER.config.debug = debug;
 	global.ENTER.config.jsStartTime = jsStartTime;
 	global.ENTER.config.pageConfig = pageConfig;
+	global.ENTER.config.userInfo = $('.js-userConfig').data('value');
 
 	extendApp('ENTER.constructors');
 

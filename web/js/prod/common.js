@@ -680,17 +680,14 @@
 	});
 	*/
 	(function(){
-		var data = $('.js-userConfig').data('value');
-		ENTER.UserModel.update(data);
+		ENTER.UserModel.update(ENTER.config.userInfo);
 		if (typeof ga == 'function') {
 			ga('send', 'timing', 'userInfo', 'Load User Info', spendTime);
 			console.log('[Google Analytics] Send user/info timing: %s ms', spendTime)
 		}
 
-		ENTER.config.userInfo = data;
-
 		if (!docCookies.hasItem(authorized_cookie)) {
-			if (data && data.user && typeof data.user.id != 'undefined') {
+			if (ENTER.config.userInfo && ENTER.config.userInfo.user && typeof ENTER.config.userInfo.user.id != 'undefined') {
 				docCookies.setItem(authorized_cookie, 1, 60*60, '/'); // on
 			} else {
 				docCookies.setItem(authorized_cookie, 0, 60*60, '/'); // off
