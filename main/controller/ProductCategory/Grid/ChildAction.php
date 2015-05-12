@@ -72,8 +72,8 @@ class ChildAction {
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        // внимание! получаем значения массива
-        foreach (array_chunk($productsByUi, \App::config()->coreV2['chunk_size'], true) as $uisInChunk) {
+        // SITE-5513
+        foreach (array_chunk($productsByUi, 10, true) as $uisInChunk) {
             \RepositoryManager::product()->prepareCollectionByUi(array_values($uisInChunk), \App::user()->getRegion(), function($data) use (&$productsByUi, &$uisInChunk) {
                 foreach ($data as $item) {
                     $key = array_search($item['ui'], $productsByUi, true);
