@@ -150,7 +150,7 @@ return function(
             <? endif ?>
         </ul><!--/view product section -->
 
-        <? if ($images): ?>
+        <? if (count($images) > 1): ?>
             <div class="prod-photoslider js-photoslider">
                 <div class="prod-photoslider__wrap">
                     <ul id="productImgGallery" class="prod-photoslider__gal clearfix js-photoslider-gal">
