@@ -7,60 +7,52 @@ $(document).ready(function() {
 	 * @requires jQuery, jQuery.elevateZoom
 	 */
 	(function () {
-		var image = $('.js-photo-zoomedImg');
+		var
+			thumbImageActiveClass = 'prod-photoslider__gal__link--active',
+			$image = $('.js-photo-zoomedImg');
 
-		if ( !image.length ) {
+		if (!$image.length) {
 			console.warn('Нет изображения для elevateZoom');
-
 			return;
 		}
 
-		var
-			zoomDisable = ( image.data('zoom-disable') !== undefined ) ? image.data('zoom-disable') : true,
-			zoomConfig = {
-				gallery: 'productImgGallery',
-				galleryActiveClass: 'prod-photoslider__gal__link--active',
-				zoomWindowOffety: 0,
-				zoomWindowOffetx: 19,
-				zoomWindowWidth: image.data('is-slot') ? 344 : 519,
-				borderSize: 1,
-				borderColour: '#C7C7C7',
-				disableZoom: zoomDisable
-			};
-		// end of vars
+		var zoomConfig = {
+			$imageContainer: $('.js-product-bigImg'),
+			zoomWindowOffety: 0,
+			zoomWindowOffetx: 19,
+			zoomWindowWidth: $image.data('is-slot') ? 344 : 519,
+			borderSize: 1,
+			borderColour: '#C7C7C7'
+		};
 
-		var
-			/**
-			 * Обработчик клика на изображение в галерее.
-			 * Нужен для инициализации/удаления зумера
-			 */
-			photoGalleryLinkClick = function() {
-				if ( $(this).data("zoom-disable") == undefined ) {
-					return;
-				}
+		if ($image.data('zoom-image')) {
+			$image.elevateZoom(zoomConfig);
+		}
 
-				if ( $(this).data("zoom-disable") == zoomDisable ) {
-					return;
-				}
+		$('.jsPhotoGalleryLink').on('click', function(e) {
+			e.preventDefault();
 
-				zoomDisable = $(this).data("zoom-disable");
+			var $link = $(e.currentTarget);
+			if ($link.hasClass(thumbImageActiveClass)) {
+				return;
+			}
 
-				// инициализация зумера
-				if( !zoomDisable ) {
-					zoomConfig.disableZoom = zoomDisable;
-					image.elevateZoom(zoomConfig);
-				}
-				else { // удаления зумера
-					$.removeData(image, 'elevateZoom');//remove zoom instance from image
-					$('.zoomContainer').remove();//remove zoom container from DOM
-				}
+			$('.jsPhotoGalleryLink').removeClass(thumbImageActiveClass);
+			$link.addClass(thumbImageActiveClass);
 
-				return false;
-			};
-		// end of functions
+			if ($image.data('elevateZoom')) {
+				$image.data('elevateZoom').destroy();
+			}
 
-		image.elevateZoom(zoomConfig);
-		$('.jsPhotoGalleryLink').on('click', photoGalleryLinkClick);
+			if ($link.data('zoom-image')) {
+				$image.data('zoom-image', $link.data('zoom-image'));
+				$image.one('load', function() {
+					$image.elevateZoom(zoomConfig);
+				});
+			}
+
+			$image.attr('src', $link.data('image'));
+		});
 	})();
 
 
