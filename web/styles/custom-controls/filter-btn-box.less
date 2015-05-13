@@ -72,4 +72,22 @@
 			}
 		}
 	}
+	&.filter-btn-box--bordered{
+		.filter-btn-box__toggle{
+			padding-bottom: 4px;
+			.rounded(2px); 
+		}
+		&.filter-btn-box--open .filter-btn-box__toggle{
+			margin-bottom: 1px;
+		}
+		&:not(.filter-btn-box--open) .filter-btn-box__toggle{
+			border: 1px solid #ccc;
+		}
+		.filter-btn-box__tx{
+			border: none;
+		}
+		.filter-btn-box__dd{
+			top: 28px;
+		}
+	}
 }

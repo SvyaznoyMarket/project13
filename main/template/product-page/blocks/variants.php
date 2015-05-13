@@ -14,7 +14,7 @@ $f = function(
         <span class="product-card-filter__tl"><?= $property->getName() ?></span>
 
         <div class="product-card-filter__box">
-            <div class="filter-btn-box" onclick="$(this).toggleClass('filter-btn-box--open')">
+            <div class="filter-btn-box filter-btn-box--bordered" onclick="$(this).toggleClass('filter-btn-box--open')">
 
                 <div class="filter-btn-box__toggle">
                     <span class="filter-btn-box__tx"><?= $product->getPropertyById($property->getId())->getStringValue() ?></span>
