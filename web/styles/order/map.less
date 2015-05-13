@@ -8,8 +8,8 @@
     .rounded(0px);
 
     .selShop_l {
-        width: 410px;
-        display: inline-block;
+        width: auto;
+        display: block;
         position: relative;
         border-top: 1px solid #d3d3d3;
 
@@ -182,11 +182,13 @@
         }
     }
     .deliv-search {
-        height: 35px;
+        height: 37px;
         border: 1px solid #c7c7c7;
         padding-left: 40px;
-        width: 355px;
+        
         position: relative;
+        .box-sizing(border-box);
+        width: 100%;
 
         &:after {
             content: '';
@@ -202,12 +204,12 @@
             line-height: 33px;
             border: none;
             outline: none;
-            width: 340px;
+            width: 100%;
+            .box-sizing(border-box);
         }
         &__input-wrap{
         	position: relative;
-        	width: 355px;
-        	height: 33px;
+        	height: 35px;
             &:after{
                 content:"";
                 width:30px;
