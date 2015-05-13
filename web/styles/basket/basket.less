@@ -8,16 +8,22 @@
 	padding-bottom: 15px;
 
 	&__img {
-		.inline-block();
-		vertical-align: top;
+		.inline-block-middle();
 		width: 120px;
-		text-align: center;
-		height: 120px;
+		position: relative;
+		padding: 0 10px;
 		a{
 			display: block;
+			width: 100%;
 			img{
-				max-height: 100%;
-				max-width: 100%;
+				max-width: 96%;
+				.inline-block-middle();
+			}
+			&:after{
+				content: "";
+				height: 100%;
+				width: 0;
+				.inline-block-middle();
 			}
 		}
 	}
