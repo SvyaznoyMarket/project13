@@ -134,6 +134,14 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
 
 });
 
+// восстановление параметров родительского запроса для SSI
+if (isset($_GET['SSI']) && (true === $_GET['SSI']) && \App::config()->ssi['enabled']) {
+    $queryStrPosition = strpos($_SERVER['REQUEST_URI'], '?');
+    $parent_query = substr($_SERVER['REQUEST_URI'], $queryStrPosition === false ? 0 : $queryStrPosition + 1);
+    parse_str($parent_query, $params);
+    $_GET = array_merge($_GET, $params);
+}
+
 \App::logger()->info(['message' => 'Start app', 'env' => \App::$env]);
 
 // request

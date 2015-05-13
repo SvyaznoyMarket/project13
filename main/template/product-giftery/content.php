@@ -57,7 +57,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
         <?= $helper->render('product-giftery/__price', ['product' => $product]) // Цена ?>
 
         <div class="product-card__info">
-            <span>Описание: Электронный подарочный сертификат на покупки в Enter.</span>
+            <span>Электронный подарочный сертификат на покупки в Enter.</span>
             <?= $helper->render('cart/__button-product', [
                 'product'  => $product,
                 'sender'   => $buySender,
@@ -101,6 +101,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
     
     <? if ($product->getDescription()):?>
         <div class="product-card__desc">
+            <h3 class="bHeadSection">Описание</h3>
             <?= $product->getDescription() ?>
         </div>
     <? endif ?>
