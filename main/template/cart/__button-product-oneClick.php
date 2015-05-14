@@ -113,8 +113,10 @@ return function (
     $id = 'quickBuyButton-' . $product->getId();
 ?>
 
+    <!--noindex-->
     <div class="btnOneClickBuy">
         <a href="<?= $url ?>" id="<?= $id ?>" class="btnOneClickBuy__eLink <?= $class ?>" data-shop="<?= $shop ? $shop->getId() : null ?>" data-product-ui="<?= $helper->escape($product->getUi()) ?>" data-sender="<?= $helper->json($sender) ?>" data-sender2="<?= $helper->escape($sender2) ?>"><?= $value ?></a>
     </div>
+    <!--/noindex-->
 
 <? };

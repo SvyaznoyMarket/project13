@@ -37,7 +37,7 @@ return function(
             <? endif ?>
 
             <? if (\App::config()->product['pushReview']): ?>
-                <a id="send-review" class="reviewSend jsReviewSend" href="">Добавить отзыв</a>
+                <!--noindex--><a id="send-review" class="reviewSend jsReviewSend" href="">Добавить отзыв</a><!--/noindex-->
 
                 <div class="popup reviewPopup jsReviewPopup" id="review-block">
                     <i title="Закрыть" class="close">Закрыть</i>

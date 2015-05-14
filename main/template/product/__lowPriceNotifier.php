@@ -15,6 +15,7 @@ return function(
         : 0;
 ?>
 
+    <!--noindex-->
     <div class="priceSale js-lowPriceNotifier" data-values="<?= $helper->json([
         'price' => $price && $price < $product->getPrice() ? $helper->formatPrice($price) : null,
         'actionChannelName' => $actionChannelName,
@@ -23,6 +24,7 @@ return function(
     ]) ?>">
         <span class="dotted js-lowPriceNotifier-opener">Узнать о снижении цены</span>
     </div>
+    <!--/noindex-->
 
     <script id="tpl-lowPriceNotifier-popup" type="text/html" data-partial="<?= $helper->json([]) ?>">
         <?= file_get_contents(\App::config()->templateDir . '/product/lowPriceNotifier/popup.mustache') ?>
