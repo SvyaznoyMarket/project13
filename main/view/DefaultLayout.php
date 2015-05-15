@@ -310,6 +310,8 @@ class DefaultLayout extends Layout {
             if (\App::config()->partners['TagMan']['enabled']) {
                 $return .= '<div id="TagManJS" class="jsanalytics"></div>';
             }
+
+            $return .= $this->slotMyThings(['route' => $routeName]);
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
@@ -322,6 +324,13 @@ class DefaultLayout extends Layout {
         return $this->tryRender('_config');
     }
 
+    public function slotMyThings($data) {
+        if (\App::config()->partners['MyThings']['enabled'] && \App::partner()->getName() == 'mythings') {
+            $data = array_merge(['EventType' => 'Visit'], $data);
+            return sprintf('<div id="myThingsJS" data-vars="%s"></div>', $this->json($data));
+        }
+        return '';
+    }
 
     public function slotSociomantic() {
         if (!\App::config()->partners['sociomantic']['enabled']) return '';

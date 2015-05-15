@@ -81,4 +81,17 @@ class IndexPage extends \View\DefaultLayout {
             return '';
         }
     }
+
+    public function slotMyThings($data) {
+        $data = ['Action' => '1013'];
+        if (\App::user()->getCart()->count()) {
+            /** @var $product \Model\Cart\Product\Entity */
+            $products = \App::user()->getCart()->getProducts();
+            $product = end($products); // Последний продукт
+            $data['ProductId'] = (string)$product->getId();
+        }
+        return parent::slotMyThings($data);
+    }
+
+
 }

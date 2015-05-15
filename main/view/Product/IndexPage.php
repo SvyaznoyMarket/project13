@@ -238,4 +238,13 @@ class IndexPage extends \View\DefaultLayout {
 
         return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
+
+    public function slotMyThings($data) {
+        return parent::slotMyThings([
+            'Action'    => '1010',
+            'ProductId' => (string)$this->product->getId()
+        ]);
+    }
+
+
 }
