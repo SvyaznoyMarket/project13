@@ -76,12 +76,6 @@ return function(
                                     <span class="starsList__item mEmpty"></span>
                                     <span class="starsList__item mEmpty"></span>
                                     <span class="starsList__item mEmpty"></span>
-
-                                    <!--                             <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
-                                                                <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
-                                                                <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
-                                                                <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
-                                                                <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*"> -->
                                 </div>
                             </div>
                         </fieldset>

@@ -751,148 +751,38 @@ $(document).ready(function() {
 })();
 
 ;(function() {
-	// текущая страница для каждой вкладки
-	var reviewCurrentPage = {
-			user: -1,
-			pro: -1
-		},
-		// количество страниц для каждой вкладки
-		reviewPageCount = {
-			user: 0,
-			pro: 0
-		},
-		reviewsProductUi = null,
-		reviewsType = null,
-		reviewsContainerClass = null,
+	var
+		reviewWrap = $('.js-reviews-wrapper'),
+		reviewList = $('.js-reviews-list'),
+		moreReviewsButton = $('.js-reviews-getMore'),
+		reviewCurrentPage = 0,
+		reviewPageCount = reviewWrap.attr('data-page-count');
 
-		//nodes
-		moreReviewsButton = $('.jsGetReviews'),
-		reviewTab = $('.bReviewsTabs__eTab'),
-		reviewWrap = $('.bReviewsWrapper'),
-		reviewContent = $('.bReviewsContent');
-	// end of vars
+	if (!reviewWrap.length) {
+		return;
+	}
 
-	/**
-	 * Получение отзывов
-	 * @param	{String}	productId
-	 * @param	{String}	type
-	 * @param	{String}	containerClass
-	 */
-	var getReviews = function( productId, type, containerClass ) {
-		var page = reviewCurrentPage[type] + 1,
-			layout = false,
-			url = '/product-reviews/'+productId,
-			dataToSend;
-		// end of vars
-		
-		var reviewsResponse = function reviewsResponse( data ) {
-			$('.'+containerClass).html($('.'+containerClass).html() + data.content);
-			reviewCurrentPage[type]++;
-			reviewPageCount[type] = data.pageCount;
-
-			if ( reviewCurrentPage[type] + 1 >= reviewPageCount[type] ) {
-				moreReviewsButton.hide();
-			}
-			else {
-				moreReviewsButton.show();
-			}
-		};
-		// end of functions
-
-		if ( $('body').hasClass('jewel') ) {
-			layout = 'jewel';
-		}
-
-		dataToSend = {
-			page: page,
-			type: type,
-			layout: layout
-		};
-
+	moreReviewsButton.click(function() {
 		$.ajax({
 			type: 'GET',
-			data: dataToSend,
-			url: url,
-			success: reviewsResponse
-		});
-	};
+			url: ENTER.utils.generateUrl('product.reviews.get', {productUi: reviewWrap.attr('data-product-ui')}),
+			data: {
+				page: reviewCurrentPage + 1
+			},
+			success: function(data) {
+				reviewList.html(reviewList.html() + data.content);
 
-	// карточка товара - отзывы - переключение по табам
-	if ( reviewTab.length ) {
-		// начальная инициализация
-		var initialType = reviewWrap.attr('data-reviews-type');
+				reviewCurrentPage++;
+				reviewPageCount = data.pageCount;
 
-		reviewCurrentPage[initialType]++;
-		reviewPageCount[initialType] = reviewWrap.attr('data-page-count');
-
-		if ( reviewPageCount[initialType] > 1 ) {
-			moreReviewsButton.show();
-		}
-
-		reviewsProductUi = reviewWrap.attr('data-product-ui');
-		reviewsType = reviewWrap.attr('data-reviews-type');
-		reviewsContainerClass = reviewWrap.attr('data-container');
-
-		reviewTab.click(function() {
-			reviewsContainerClass = $(this).attr('data-container');
-
-			if ( reviewsContainerClass === undefined ) {
-				return;
-			}
-
-			reviewsType = $(this).attr('data-reviews-type');
-			reviewTab.removeClass('active');
-			$(this).addClass('active');
-			reviewContent.hide();
-			$('.'+reviewsContainerClass).show();
-
-			moreReviewsButton.hide();
-
-			if (reviewsType === 'user') {
-				moreReviewsButton.html('Показать ещё отзывы');
-			}
-
-			if ( !$('.'+reviewsContainerClass).html() ) {
-				getReviews(reviewsProductUi, reviewsType, reviewsContainerClass);
-			}
-			else {
-				// проверяем что делать с кнопкой "показать еще" - скрыть/показать
-				if ( reviewCurrentPage[reviewsType] + 1 >= reviewPageCount[reviewsType] ) {
+				if (reviewCurrentPage + 1 >= reviewPageCount) {
 					moreReviewsButton.hide();
-				}
-				else {
+				} else {
 					moreReviewsButton.show();
 				}
 			}
 		});
-
-		moreReviewsButton.click(function() {
-			getReviews(reviewsProductUi, reviewsType, reviewsContainerClass);
-		});
-	}
-
-//	var leaveReview = function() {
-//		if ( !$('#jsProductCard').length ) {
-//			return false;
-//		}
-//
-//		var productInfo = $('#jsProductCard').data('value'),
-//			pid = $(this).data('pid'),
-//			name = productInfo.name,
-//			src = 'http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&' + $.param({key: pid, name: name});
-//		// end of vars
-//
-//		$('.reviewPopup').lightbox_me({
-//			onLoad: function() {
-//				$('#rframe').attr('src', src);
-//			}
-//		});
-//
-//		return false;
-//	};
-//
-//	$('.jsLeaveReview').on('click', leaveReview);
-
+	});
 }());
 
 
