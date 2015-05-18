@@ -334,7 +334,7 @@ class HtmlLayout {
     public function slotUserConfig() {
         // Проверяем заголовок от балансера - если страница попадает под кэширование, то можно рендерить # include virtual
         // В остальных случаях можно обойтись без дополнительного запроса к /ssi.php
-        if (\App::request()->headers->get('SSI') == 'on') {
+        if (\App::request()->headers->get('SSI') == 'on' && \App::config()->ssi['enabled']) {
             return \App::helper()->render('__ssi', ['path' => '/user-config']);
         } else {
             return \App::helper()->render('__userConfig');
