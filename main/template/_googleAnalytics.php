@@ -62,7 +62,7 @@
                         $(document).trigger('googleAnalyticsCall', [{
                             functionName: '_gaq.push',
                             functionArguments: JSON.stringify(arguments),
-                            event: arguments[0] ? {category: arguments[0][1], action: arguments[0][2], label: arguments[0][3], value: arguments[0][4]} : null
+                            event: arguments[0] && arguments[0][0] == '_trackEvent' ? {category: arguments[0][1], action: arguments[0][2], label: arguments[0][3], value: arguments[0][4]} : null
                         }]);
 
                         originalFunction.apply(this, arguments);
