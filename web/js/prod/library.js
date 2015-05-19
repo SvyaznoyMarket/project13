@@ -4329,7 +4329,7 @@ if ( !Array.prototype.indexOf ) {
 
 		return url;
 	};
-	
+
 	utils.getObjectWithElement = function(array, elementKey, expectedElementValue) {
 		var object = null;
 		if (array) {
@@ -4340,7 +4340,7 @@ if ( !Array.prototype.indexOf ) {
 				}
 			});
 		}
-		
+
 		return object;
 	};
 
@@ -4425,6 +4425,8 @@ if ( !Array.prototype.indexOf ) {
         var	oData = orderData || { orders: [] };
 
 		console.log('[Google Analytics] Start processing orders', oData.orders);
+
+		var productUis = [];
 		$.each(oData.orders, function(i,o) {
 			var googleOrderTrackingData = {};
 			googleOrderTrackingData.transaction = {
@@ -4493,6 +4495,8 @@ if ( !Array.prototype.indexOf ) {
 					})();
 				}
 
+				productUis.push(p.ui);
+
 				return {
 					'id': p.id,
 					'name': productName,
@@ -4514,6 +4518,28 @@ if ( !Array.prototype.indexOf ) {
 			console.log('[Google Analytics] Order', googleOrderTrackingData);
 			$body.trigger('trackGoogleTransaction', [googleOrderTrackingData]);
 		});
+
+		// SITE-5466
+		(function() {
+			var
+				action = '',
+				label = '';
+
+			var reviewProducts = ENTER.utils.analytics.reviews.get(productUis);
+
+			if (reviewProducts.length) {
+				for (var i = 0; i < reviewProducts.length; i++) {
+					action += (i > 0 ? '_' : '') + (i + 1) + '_All_' + reviewProducts[i].avgScore + '_Top_' + reviewProducts[i].firstPageAvgScore;
+					label += (i > 0 ? '_' : '') + (i + 1) + '_' + reviewProducts[i].categoryName;
+				}
+
+				$body.trigger('trackGoogleEvent', {
+					category: 'Items_review_transaction',
+					action: action,
+					label: label
+				});
+			}
+		})();
 	};
 
 	utils.sendAdd2BasketGaEvent = function(productArticle, productPrice, isOnlyFromPartner, isSlot, senderName) {
@@ -4551,6 +4577,72 @@ if ( !Array.prototype.indexOf ) {
 
 	utils.getCategoryPath = function() {
 		return document.location.pathname.replace(/^\/(?:catalog|product)\/([^\/]*).*$/i, '$1');
+	};
+
+	utils.analytics = {
+		// SITE-5466
+		reviews: {
+			add: function(productUi, avgScore, firstPageAvgScore, categoryName) {
+				if (!window.localStorage) {
+					return;
+				}
+
+				try {
+					var data = JSON.parse(localStorage.getItem('enter.analytics.reviews')) || [];
+				} catch(e) {
+					data = [];
+				}
+
+				// Поскольку при переполнении переменной удаляются первые товары, важно, чтобы повторное добавление
+				// товара перемещало его в конец массива
+				for (var i = 0; i < data.length; i++) {
+					if (data[i][0] == productUi) {
+						data.splice(i, 1);
+						break;
+					}
+				}
+
+				data.push([productUi, avgScore, firstPageAvgScore, categoryName]);
+
+				while (JSON.stringify(data).length > 3000) {
+					data.shift();
+				}
+
+				localStorage.setItem('enter.analytics.reviews', JSON.stringify(data));
+			},
+			get: function(productUis) {
+				if (!window.localStorage) {
+					return;
+				}
+
+				try {
+					var data = JSON.parse(localStorage.getItem('enter.analytics.reviews')) || [];
+				} catch(e) {
+					data = [];
+				}
+
+				var result = [];
+				for (var i = 0; i < data.length; i++) {
+					if (productUis.indexOf(data[i][0]) != -1) {
+						result.push({
+							avgScore: data[i][1],
+							firstPageAvgScore: data[i][2],
+							categoryName: data[i][3]
+						});
+					}
+				}
+
+				return result;
+			},
+			// Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+			clean: function() {
+				if (!window.localStorage) {
+					return;
+				}
+
+				localStorage.removeItem('enter.analytics.reviews');
+			}
+		}
 	};
 
 }(window.ENTER));

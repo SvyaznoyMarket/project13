@@ -38,7 +38,6 @@
 
         _gaq.push(['_setCustomVar', 2, 'authenticated_user', '<?= \App::user()->getEntity() ? 1 : 0 ?>', 3]);
 
-        <? /* Маркировка продуктов Marketplace */ ?>
         <? if (isset($product) && $product instanceof \Model\Product\Entity): ?>
             <? if ($product->getSlotPartnerOffer()): ?>
                 _gaq.push(['_setCustomVar', 12, 'shop_type', 'marketplace-slot', 3]);
@@ -47,6 +46,8 @@
                 _gaq.push(['_setCustomVar', 12, 'shop_type', 'marketplace', 3]);
                 if (console && typeof console.log == 'function') console.log('[Google Analytics] _setCustomVar 11 shop_type marketplace');
             <? endif ?>
+
+            _gaq.push(['_setCustomVar', 21, 'Items_review', '<?= $product->getNumReviews() ? 'Yes' : 'No' ?>', 3]);
         <? endif ?>
 
         _gaq.push(['_trackPageview']);

@@ -1,36 +1,73 @@
 ;(function() {
 	var
-		reviewWrap = $('.js-reviews-wrapper'),
-		reviewList = $('.js-reviews-list'),
-		moreReviewsButton = $('.js-reviews-getMore'),
+		$window = $(window),
+		$body = $(document.body),
+		$reviewWrap = $('.js-reviews-wrapper'),
+		$reviewList = $('.js-reviews-list'),
+		$moreReviewsButton = $('.js-reviews-getMore'),
 		reviewCurrentPage = 0,
-		reviewPageCount = reviewWrap.attr('data-page-count');
+		reviewPageCount = $reviewWrap.attr('data-page-count'),
+		productUi = $reviewWrap.attr('data-product-ui'),
+		avgScore = $reviewWrap.data('avg-score'),
+		firstPageAvgScore = $reviewWrap.data('first-page-avg-score'),
+		categoryName = $reviewWrap.data('category-name');
 
-	if (!reviewWrap.length) {
+	if (!$reviewWrap.length) {
 		return;
 	}
 
-	moreReviewsButton.click(function() {
+	$moreReviewsButton.click(function() {
 		$.ajax({
 			type: 'GET',
-			url: ENTER.utils.generateUrl('product.reviews.get', {productUi: reviewWrap.attr('data-product-ui')}),
+			url: ENTER.utils.generateUrl('product.reviews.get', {productUi: productUi}),
 			data: {
 				page: reviewCurrentPage + 1
 			},
 			success: function(data) {
-				reviewList.html(reviewList.html() + data.content);
+				$reviewList.html($reviewList.html() + data.content);
 
 				reviewCurrentPage++;
 				reviewPageCount = data.pageCount;
 
 				if (reviewCurrentPage + 1 >= reviewPageCount) {
-					moreReviewsButton.hide();
+					$moreReviewsButton.hide();
 				} else {
-					moreReviewsButton.show();
+					$moreReviewsButton.show();
 				}
 			}
 		});
 	});
+
+	// SITE-5466
+	(function() {
+		var timer;
+		function checkReviewsShowing() {
+			var windowHeight = $window.height();
+			if ($window.scrollTop() + windowHeight > $reviewWrap.offset().top) {
+				if (!timer) {
+					timer = setTimeout(function() {
+						$window.unbind('scroll', checkReviewsShowing);
+
+						$body.trigger('trackGoogleEvent', {
+							category: 'Items_review',
+							action: 'All_' + avgScore + '_Top_' + firstPageAvgScore,
+							label: categoryName
+						});
+
+						ENTER.utils.analytics.reviews.add(productUi, avgScore, firstPageAvgScore, categoryName);
+					}, 2000);
+				}
+			} else {
+				if (timer) {
+					clearTimeout(timer);
+					timer = null;
+				}
+			}
+		}
+
+		$window.scroll(checkReviewsShowing);
+		checkReviewsShowing();
+	})();
 }());
 
 

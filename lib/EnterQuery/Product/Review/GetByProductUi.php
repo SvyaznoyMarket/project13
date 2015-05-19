@@ -74,6 +74,8 @@ namespace EnterQuery\Product\Review\GetByProductUi
         public $score;
         /** @var float */
         public $starScore;
+        /** @var float */
+        public $currentPageAvgScore;
         /** @var array */
         public $groupedScoreCount;
         /** @var int */

@@ -145,12 +145,13 @@ class IndexAction {
         $reviewsData =
             $actionResponse->reviewQuery
             ? [
-                'review_list'        => $actionResponse->reviewQuery->response->reviews,
-                'num_reviews'        => $actionResponse->reviewQuery->response->reviewCount,
-                'avg_score'          => $actionResponse->reviewQuery->response->score,
-                'avg_star_score'     => $actionResponse->reviewQuery->response->starScore,
-                'num_users_by_score' => $actionResponse->reviewQuery->response->groupedScoreCount,
-                'page_count'         => $actionResponse->reviewQuery->response->pageCount,
+                'review_list'            => $actionResponse->reviewQuery->response->reviews,
+                'num_reviews'            => $actionResponse->reviewQuery->response->reviewCount,
+                'avg_score'              => $actionResponse->reviewQuery->response->score,
+                'avg_star_score'         => $actionResponse->reviewQuery->response->starScore,
+                'current_page_avg_score' => $actionResponse->reviewQuery->response->currentPageAvgScore,
+                'num_users_by_score'     => $actionResponse->reviewQuery->response->groupedScoreCount,
+                'page_count'             => $actionResponse->reviewQuery->response->pageCount,
             ]
             : []
         ;
