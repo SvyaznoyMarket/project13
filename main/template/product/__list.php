@@ -36,7 +36,7 @@ return function(
             break;
     } ?>
 
-    <ul class="bListing<? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> <?= $listingClass ?> <?= $class ?> js-listing"><!-- mPandora если необходимо застилить листинги под пандору -->
+    <ul class="bListing bListing-list <? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> <?= $listingClass ?> <?= $class ?> js-listing"><!-- mPandora если необходимо застилить листинги под пандору -->
         <?= $helper->renderWithMustache($templatePath, (new \View\Product\ListAction())->execute($helper, $pager, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $view, $cartButtonSender)) ?>
     </ul>
 
