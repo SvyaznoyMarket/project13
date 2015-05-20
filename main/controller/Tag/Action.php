@@ -205,7 +205,7 @@ class Action {
                 }
             });
 
-            \RepositoryManager::product()->prepareProductsMedias($products);
+            \RepositoryManager::product()->enrichProductsFromScms($products, 'media');
         }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 

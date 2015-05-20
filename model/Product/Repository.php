@@ -2,8 +2,10 @@
 
 namespace Model\Product;
 
-use Model\Media\Source;
 use Model\MediaHostTrait;
+use Model\Product\Property\Entity as Property;
+use Model\Product\Property\Group\Entity as PropertyGroup;
+use Model\Tag\Entity as Tag;
 
 class Repository {
     use MediaHostTrait;
@@ -252,21 +254,26 @@ class Repository {
         return empty($response['list']) ? [] : $response['list'];
     }
 
-    /**
+    /** Обогащает продукты данными из SCMS
      * @param \Model\Product\Entity[] $products
+     * @param string $props Необходимые свойства товара через пробел: media property tag seo
+     * @param callable $failCallback
      */
-    public function prepareProductsMedias($products) {
-        if ($products) {
+    public function enrichProductsFromScms($products, $props, $failCallback = null) {
+        // Формируем массив необходимых свойств
+        $properties = array_fill_keys(array_intersect(explode(' ', (string)$props), explode(' ', 'media property tag seo')), 1);
+
+        if ($products && $properties) {
             \App::scmsClient()->addQuery(
                 'product/get-description/v1',
-                ['uids' => array_map(function(\Model\Product\Entity $product) { return $product->getUi(); }, $products), 'media' => 1],
+                ['uids' => array_map(function(\Model\Product\Entity $product) { return $product->getUi(); }, $products)] + $properties,
                 [],
-                function($data) use($products) {
+                function($data) use($products, $properties) {
                     foreach ($products as $product) {
                         if (isset($data['products'][$product->getUi()])) {
                             $productData = $data['products'][$product->getUi()];
 
-                            if (isset($productData['medias']) && is_array($productData['medias'])) {
+                            if (isset($properties['media']) && isset($productData['medias']) && is_array($productData['medias'])) {
                                 foreach ($productData['medias'] as $media) {
                                     if (is_array($media)) {
                                         $product->medias[] = new \Model\Media($media);
@@ -274,16 +281,32 @@ class Repository {
                                 }
                             }
 
-                            if (isset($productData['json3d']) && is_array($productData['json3d'])) {
+                            if (isset($properties['media']) && isset($productData['json3d']) && is_array($productData['json3d'])) {
                                 $product->json3d = $productData['json3d'];
                             }
+
+                            if (isset($properties['property']) && isset($productData['properties']) && is_array($productData['properties'])) {
+                                $product->setProperty(array_map(function($data) { return new Property($data); }, $productData['properties']));
+                            }
+
+                            if (isset($properties['property']) && isset($productData['property_groups']) && is_array($productData['property_groups'])) {
+                                $product->setPropertyGroup(array_map(function($data) { return new PropertyGroup($data); }, $productData['property_groups']));
+                            }
+
+                            if (isset($properties['tag']) && isset($productData['tags']) && is_array($productData['tags'])) {
+                                $product->setTag(array_map(function($data) { return new Tag($data); }, $productData['tags']));
+                            }
+
+                            if (isset($properties['seo'])) {
+                                if (isset($productData['title'])) $product->setSeoTitle($productData['title']);
+                                if (isset($productData['meta_description'])) $product->setSeoKeywords($productData['meta_description']);
+                                if (isset($productData['meta_keywords'])) $product->setSeoDescription($productData['meta_keywords']);
+                            }
+
                         }
                     }
                 },
-                function(\Exception $e) {
-                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__]);
-                    \App::exception()->remove($e);
-                }
+                $failCallback
             );
         }
     }

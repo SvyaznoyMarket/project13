@@ -90,7 +90,7 @@ class ChildAction {
             return $product instanceof \Model\Product\Entity;
         });
 
-        \RepositoryManager::product()->prepareProductsMedias($productsByUi);
+        \RepositoryManager::product()->enrichProductsFromScms($productsByUi, 'media');
         \App::coreClientV2()->execute();
 
         if (

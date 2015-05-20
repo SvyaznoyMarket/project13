@@ -711,7 +711,7 @@ class Action {
             });
         }
 
-        $repository->prepareProductsMedias($products);
+        $repository->enrichProductsFromScms($products, 'media property');
 
         \App::coreClientV2()->execute();
 
