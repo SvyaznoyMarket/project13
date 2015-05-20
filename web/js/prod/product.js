@@ -836,11 +836,11 @@ $(document).ready(function() {
 		submitReviewButton = $('.jsFormSubmit'),
 		submitReviewButtonText = submitReviewButton.val(),
 
-		reviewStar = form.find('.starsList__item'),
+		reviewStar = form.find('.stars-list__item'),
 		reviewStarCount = form.find('.jsReviewStarsCount'),
 		starStateClass = {
-			fill: 'mFill',
-			empty: 'mEmpty'
+			fill: 'star-fill',
+			empty: 'star-empty'
 		},
 
 		advantageField = $('.jsAdvantage'),

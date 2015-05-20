@@ -1,0 +1,34 @@
+
+//TODO: отрефакторить старые стили листинга
+.bListing.horiz-lstn{
+
+    .bListingItem{
+        display: block;
+        width: 940px;
+        .box-sizing(border-box);
+        margin-left: 0;
+        margin-right: 0;
+        height: auto;
+        &:hover{
+            z-index: 0;
+        }
+        .bListingItem__eInner{
+            width: auto;
+            border: none;
+            .box-shadow(none);
+        }
+        .bBtnLine{
+            display: block;
+            margin-left: 200px;
+        }
+        .bProductImg{
+            float: left;
+        }
+        .bSimplyDesc{
+            margin-left: 200px;
+        }
+        .bPriceLine{
+            margin-left: 200px;
+        }
+    }
+}

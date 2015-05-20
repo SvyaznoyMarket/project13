@@ -6,7 +6,7 @@
   <span class="gray"><?= $emptyText ?></span>
 <? } else { ?>
   <? for ($i=0; $i < (int)$score; $i++) { ?>
-    <span class="star"></span>
+    <span class="star star-fill"></span>
   <? } ?>
   <? if(ceil($score) > $score) { ?>
     <span class="star star-half"></span>

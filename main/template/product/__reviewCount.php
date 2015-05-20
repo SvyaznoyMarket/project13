@@ -70,12 +70,12 @@ return function(
                             <div class="reviewForm__stars">
                                 <strong class="reviewForm__label">Оценка</strong>
                                 <input class="jsReviewStarsCount" name="review[score]" value="0"/>
-                                <div class="starsList">
-                                    <span class="starsList__item mEmpty"></span>
-                                    <span class="starsList__item mEmpty"></span>
-                                    <span class="starsList__item mEmpty"></span>
-                                    <span class="starsList__item mEmpty"></span>
-                                    <span class="starsList__item mEmpty"></span>
+                                <div class="stars-list">
+                                    <span class="star stars-list__item star-empty"></span>
+                                    <span class="star stars-list__item star-empty"></span>
+                                    <span class="star stars-list__item star-empty"></span>
+                                    <span class="star stars-list__item star-empty"></span>
+                                    <span class="star stars-list__item star-empty"></span>
                                 </div>
                             </div>
                         </fieldset>
