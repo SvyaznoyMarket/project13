@@ -101,11 +101,6 @@ module.exports = function (grunt, options) {
             tasks: ['concat:orderJS', 'uglify:orderJS']
         },
 
-        orderV3JS: {
-            files: [ pathDev + 'order-v3/*.js'],
-            tasks: ['concat:orderV3JS', 'uglify:orderV3JS', 'jsmin-sourcemap:orderV3JS']
-        },
-
         orderV31ClickJS: {
             files: [ pathDev + 'order-v3-1click/*.js'],
             tasks: ['concat:orderV31ClickJS', 'uglify:orderV31ClickJS', 'jsmin-sourcemap:orderV31ClickJS']
@@ -151,21 +146,11 @@ module.exports = function (grunt, options) {
             tasks: ['concat:shopJS', 'uglify:shopJS', 'jsmin-sourcemap:shop']
         },
 
-        tchiboJS:{
-            files: [ pathDev + 'tchibo/*.js'],
-            tasks: ['concat:tchiboJS', 'uglify:tchiboJS']
-        },
-
         watch3dJS:{
             files: [ pathDev + 'watch3d/*.js'],
             tasks: ['concat:watch3dJS', 'uglify:watch3dJS']
         },
 		
-		gameSlotsJs:{
-            files: [ pathDev + 'game/slots/jquery.transit.js', pathDev + 'game/slots/slots.js'],
-            tasks: ['concat:gameSlotsJs', 'uglify:gameSlotsJs']
-        },
-
         serviceHaJS:{
             files: [ pathDev + 'service_ha/*.js'],
             tasks: ['concat:serviceHaJS', 'uglify:serviceHaJS']

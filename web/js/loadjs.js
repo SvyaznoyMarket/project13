@@ -448,22 +448,6 @@
 				}).runQueue();
 		},
 
-        'order-v3': function() {
-            $LAB.queueScript(yandexMapUrlv2_1)
-                .queueWait( function() {
-                    $LAB.script( getWithVersion('jquery-plugins.js') )
-                        .script( getWithVersion('library.js') )
-                        .script( mustacheUrl )
-                        .script( knockoutUrl )
-                        .script( loadDebugPanel )
-                        .wait()
-                        .script( getWithVersion('common.js') )
-                        .script( getWithVersion('order-v3.js') )
-                        .wait()
-                        .script( getWithVersion('ports.js') );
-                }).runQueue();
-        },
-
 		'order-v3-new': function() {
 			$LAB.queueScript(yandexMapUrlv2_1)
 				.queueWait( function() {
@@ -523,7 +507,6 @@
 					.wait()
 					.script( getWithVersion('common.js') )
                     .script( getWithVersion('infopage.js') )
-					.script( getWithVersion('tchibo.js') )
 					.script( getWithVersion('catalog.js') )
 					.script( getWithVersion('pandora.js') )
 					.wait()

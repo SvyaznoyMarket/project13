@@ -54,11 +54,6 @@ module.exports = {
         dest: '<%= pathProd %>main.js'
     },
 
-    orderV3JS: {
-        src: ['<%= pathDev %>order-v3/*.js'],
-        dest: '<%= pathProd %>order-v3.js'
-    },
-
     orderV31ClickJS: {
         src: ['<%= pathDev %>order-v3-1click/*.js'],
         dest: '<%= pathProd %>order-v3-1click.js'
@@ -104,22 +99,9 @@ module.exports = {
         dest: '<%= pathProd %>shop.js'
     },
 
-    tchiboJS : {
-        src: ['<%= pathDev %>tchibo/*.js'],
-        dest: '<%= pathProd %>tchibo.js'
-    },
-
     watch3dJS : {
         src: ['<%= pathDev %>watch3d/*.js'],
         dest: '<%= pathProd %>watch3d.js'
-    },
-
-    gameSlotsJs: {
-        src: [
-			'<%= pathDev %>game/slots/jquery.transit.js',
-			'<%= pathDev %>game/slots/slots.js'
-        ],
-        dest: '<%= pathProd %>game/slots.js'
     },
 
     serviceHaJS : {
