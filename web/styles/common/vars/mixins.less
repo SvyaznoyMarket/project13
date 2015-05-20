@@ -171,7 +171,12 @@
 
         -ms-box-sizing: @sizing;
 }
-
+.background-size(@size) {
+    -webkit-background-size: @size;
+    -moz-background-size: @size;
+    -o-background-size: @size;
+    background-size: @size;
+}
 .inline-block() {
     display: inline-block;
 
