@@ -278,6 +278,10 @@
     }
     &_cnt{
         display: block;
+        width: 120px;
+        height: 120px;
+        line-height: 120px;
+
         &:hover{
             text-decoration: none;
             .navitem_n{
@@ -286,13 +290,21 @@
                 border-bottom: 1px solid @darkgrey5;
             }
         }
+        &:after{
+            content: "";
+            .inline-block-middle();
+            width: 0;
+            height: 100%;
+        }
     }
     &_img{
         display: block;
 
         width: auto;
-        height: 120px;
+        max-width: 90px;
+        max-height: 90px;
         margin: 0 auto 2px;
+        .inline-block-middle();
     }
     &_pr{
         font-size: 21px;
