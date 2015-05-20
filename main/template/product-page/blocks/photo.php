@@ -14,21 +14,42 @@ $f = function(
 
     <!-- слайдер изображений товара -->
     <div class="product-card__l">
+    <!-- блок с уголком и фишкой - верхняя часть -->
+    <div id="fpc_effect-back">
+        <div id="fpc_box">
+    <!-- END: блок с уголком и фишкой - верхняя часть -->
+            <div class="product-card-photo">
+                <? if ($product->getLabel()): ?>
+                    <a class="product-card-photo-sticker" href=""><img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>"></a>
+                <? endif ?>
+                <img src="<?= $product->getImageUrl(3) ?>"
+                     class="product-card-photo__img js-photo-zoomedImg jsOpenProductImgPopup jsProductMiddlePhoto"
+                     alt="<?= $helper->escape($product->getName()) ?>"
+                     data-is-slot="<?= $product->getSlotPartnerOffer() ? 'true' : 'false' ?>"
+                     style="cursor: zoom-in"
+                    />
+                <? if (!$product->isAvailable()) : ?>
+                    <div class="product-card-photo__overlay">Нет в наличии</div>
+                <? endif ?>
+            </div>
 
-        <div class="product-card-photo">
-            <? if ($product->getLabel()): ?>
-                <a class="product-card-photo-sticker" href=""><img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>"></a>
-            <? endif ?>
-            <img src="<?= $product->getImageUrl(3) ?>"
-                 class="product-card-photo__img js-photo-zoomedImg jsOpenProductImgPopup jsProductMiddlePhoto"
-                 alt="<?= $helper->escape($product->getName()) ?>"
-                 data-is-slot="<?= $product->getSlotPartnerOffer() ? 'true' : 'false' ?>"
-                 style="cursor: zoom-in"
-                />
-            <? if (!$product->isAvailable()) : ?>
-                <div class="product-card-photo__overlay">Нет в наличии</div>
-            <? endif ?>
+
+
+        <!-- блок с уголком и фишкой - нижяя часть -->
+            <div id="fpc_corner-box">
+                    <a id="fpc_page-tip" href="#">
+                    <div id="fpc_corner-contents">
+                      <div id="fpc_corner-button">
+                        <div class="fishka">
+                            <strong>Получи скидку</strong>
+                        </div>
+                      </div>
+                      </div>
+                    </a>
+            </div>
         </div>
+    </div>
+    <!-- END: блок с уголком и фишкой - нижняя часть -->
 
         <!-- если картинок больше 5 добавляем класс product-card-photo-thumbs--slides -->
         <div class="product-card-photo-thumbs jsProductThumbHolder <?= count($product->getPhoto()) > 5 ? 'product-card-photo-thumbs--slides' : ''?>"
