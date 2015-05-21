@@ -89,6 +89,11 @@ class ShowAction {
             'isNewWindow'       => \App::abTest()->isNewWindow() // открытие товаров в новом окне
         ];
 
+        // Дополняем свойствами для каталога в виде листинга
+        if (\App::abTest()->isCatalogListing()) {
+            $productItem['properties']= $product->getPropertiesInView(3);
+        }
+
         // oldPrice and priceSale
         if ( $product->getPriceOld() ) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());

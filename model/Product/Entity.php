@@ -839,6 +839,22 @@ class Entity {
         return false;
     }
 
+    /** Возвращает N свойств с in_view_list = true
+     * @param $count
+     * @return array
+     */
+    public function getPropertiesInView($count) {
+        $propertiesInView = array_filter($this->property, function(Property\Entity $entity){ return $entity->getIsInList(); });
+        usort($propertiesInView, function(Property\Entity $a, Property\Entity $b) { return $a->getPosition() > $b->getPosition(); });
+        $slicedProperties = array_slice($propertiesInView, 0, $count);
+        // проставляем значения свойств
+        foreach ($slicedProperties as $prop) {
+            /** @var $prop Property\Entity */
+            if (!$prop->getValue() && $prop->getOption()) $prop->setValue($prop->getOption()[0]->getValue());
+        }
+        return $slicedProperties;
+    }
+
     /**
      * @param int $connectedProductsViewMode
      */

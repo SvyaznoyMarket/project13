@@ -50,21 +50,16 @@
             {{! Блок с названием и характеристиками }}
             <div class="listing__desc">
                 <a class="listing__title" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a>
-                
+
                 <ul class="listing-props">
+                {{#properties}}
                     <li class="listing-props__i">
-                        <span class="listing-props__name"><span class="listing-props__name-wrap">Диагональ</span></span>
-                        <span class="listing-props__val">19''</span>
+                        <span class="listing-props__name"><span class="listing-props__name-wrap">{{getName}}</span></span>
+                        <span class="listing-props__val">{{getValue}}{{getUnit}}</span>
                     </li>
-                    <li class="listing-props__i">
-                        <span class="listing-props__name"><span class="listing-props__name-wrap">3G</span></span>
-                        <span class="listing-props__val">есть</span>
-                    </li>
-                    <li class="listing-props__i">
-                        <span class="listing-props__name"><span class="listing-props__name-wrap">4G</span></span>
-                        <span class="listing-props__val">нет</span>
-                    </li>
+                {{/properties}}
                 </ul>
+
             </div>
             {{! END: Блок с названием и характеристиками }}
             {{! Блок с ценой, рейтингом }}
