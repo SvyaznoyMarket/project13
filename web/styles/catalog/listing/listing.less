@@ -62,6 +62,7 @@
     &__title{
         font-size: 14px;
         margin-bottom: 10px;
+        color: #363636;
 
     }
     &-props{
@@ -88,6 +89,7 @@
             .inline-block();
             top: 3px;
             position: relative;
+            color: #363636;
         }
     }
     &__info{
@@ -121,7 +123,7 @@
     }
     &__btn-group{
         margin: 10px 0;
-        float: right;
+        text-align: right;
 
         .btnBuy{
             .inline-block();
@@ -129,11 +131,21 @@
             .btnBuy__eLink{
                 width: 125px;
             }
+            .mDisabled{
+                background-color: #fff;
+                color: #a0a0a0;
+                border: 1px solid;
+            }
         }
 
     }
     &__item-state{
-
+        margin: 0 0 10px;
+        color: #a0a0a0;
+        font-size: 12px;
+        text-align: center;
+        min-width: 125px;
+        float: right;
     }
     .btn-compare{
         width: 22px;
@@ -153,7 +165,7 @@
 .sorting-top{
     .lstn-type{
         &-btn{
-            padding: 5px;
+            padding: 1px 5px;
             font-size: 12px;
             color: #363636;
             .inline-block();
@@ -190,7 +202,7 @@
             text-transform: none;
             line-height: 1em;
             margin-right: 5px;
-            font-size: 18px;
+            font-size: 16px;
             &.bar{
                 &:before { content: '\e800'; }
             }
