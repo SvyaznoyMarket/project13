@@ -14,6 +14,7 @@ return function(
 ) {
 
     if (\App::abTest()->isCatalogListing()) $view = 'list';
+    $listingClass = '';
 
     $partials = [
         'cart/_button-product' => file_get_contents(\App::config()->templateDir . '/cart/_button-product.mustache'),
@@ -37,7 +38,6 @@ return function(
             $templatePath = 'product/list/_list';
             break;
         default:
-            $listingClass = '';
             $templatePath = 'product/list/_compact';
             break;
     } ?>
