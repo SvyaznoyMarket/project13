@@ -12,6 +12,9 @@ return function(
     $class = '',
     array $cartButtonSender = []
 ) {
+
+    if (\App::abTest()->isCatalogListing()) $view = 'list';
+
     $partials = [
         'cart/_button-product' => file_get_contents(\App::config()->templateDir . '/cart/_button-product.mustache'),
         'product/_review-compact' => file_get_contents(\App::config()->templateDir . '/product/_review-compact.mustache')
@@ -29,6 +32,9 @@ return function(
         case 'light_without_description':
             $listingClass = 'lstn-light lstn';
             $templatePath = 'product/list/_light';
+            break;
+        case 'list':
+            $templatePath = 'product/list/_list';
             break;
         default:
             $listingClass = '';
