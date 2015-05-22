@@ -17,6 +17,13 @@
         <span class="suppliers__support">По всем вопросам звоните<br>+7 (495) 775-00-06</span>
         <div class="btn-wrap"><a class="load-btn" href="#">Изменить</a></div>
     </div>
+     <div class="user-info-text">
+                    107045, г . Москва, Луков Переулок, д. 7<br>
+ИНН 7714259876<br>
+КПП 770801001<br>
+Р/С 40702810480900017838<br>
+К/С 30101810900000000767
+                </div>
 </div>
 <div class="suppliers__cnt">
     <div class="suppliers__sect suppliers__files">
