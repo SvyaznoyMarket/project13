@@ -135,10 +135,23 @@ return [
         'action'    => ['Supplier\NewAction', 'execute']
     ],
 
-    // Регистрация поставщика
+    // Кабинет поставщика
     'supplier.cabinet' => [
         'pattern'   => '/supplier/cabinet',
-        'action'    => ['Supplier\CabinetAction', 'execute']
+        'action'    => ['Supplier\CabinetAction', 'index']
+    ],
+
+    // Загрузка прайс-листа
+    'supplier.load' => [
+        'pattern'   => '/supplier/load',
+        'action'    => ['Supplier\CabinetAction', 'load'],
+        'method'  => ['POST']
+    ],
+
+    // Тестирование curl-client
+    'supplier.test' => [
+        'pattern'   => '/supplier/load-test',
+        'action'    => ['Supplier\CabinetAction', 'loadTest']
     ],
 
     // регион

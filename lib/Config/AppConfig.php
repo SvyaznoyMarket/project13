@@ -571,6 +571,14 @@ class AppConfig {
 	];
 
     /** @var array */
+    public $fileStorage = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+
+    /** @var array */
     public $flocktoryExchange = [
         'enabled' => null,
     ];

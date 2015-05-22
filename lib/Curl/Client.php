@@ -45,7 +45,7 @@ class Client {
     }
 	
 	
-	public function setNativePost($val=true) {
+	public function setNativePost() {
 		$this->nativePost = true;
 	}
 
@@ -430,16 +430,17 @@ class Client {
 			 * The usage of the @filename API for file uploading is deprecated for php >=5.5
 			 * Но мы поддержим, т.к. не очень понимаю как тут нормально добавить эту фичу пишу тут
 			 */
-			if((float)PHP_VERSION>=5.5) {
+			if((float)PHP_VERSION >= 5.5) {
 				foreach($data as $k => $v) {
-					if($v[0] !=='@')
+					if(is_array($v) && $v[0] !=='@')
 						continue;
 					
-					$data[$k] = $this->initPostFile($v);
+					//$data[$k] = $this->initPostFile($v);
 				}
 			}
 			
 			curl_setopt($connection, CURLOPT_POST, true);
+//			curl_setopt($connection, CURLOPT_SAFE_UPLOAD, true);
             curl_setopt($connection, CURLOPT_POSTFIELDS, $data);
 		}
 

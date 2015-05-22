@@ -194,6 +194,21 @@ $c->crm['retryTimeout'] = [
 ];
 $c->crm['debug'] = false;
 
+$c->fileStorage = [
+    'url'          => 'http://api.enter.ru/v2/',
+    'client_id'    => 'site',
+    'timeout'      => 5,
+    'retryTimeout' => [
+        'default' => 0.18,
+        'tiny'    => 0.18,
+        'short'   => 0.25,
+        'medium'  => 0.5,
+        'long'    => 1,
+        'huge'    => 2,
+    ],
+    'retryCount'   => 2,
+];
+
 $c->connectTerminal = true;
 
 $c->company['phone'] = '+7 (800) 700-00-09';
