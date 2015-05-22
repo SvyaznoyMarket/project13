@@ -3,9 +3,11 @@
 namespace View\Supplier;
 
 
-class CabinetPage extends \View\DefaultLayout {
-
-    protected $layout  = 'layout-supplier';
+/** Страница загрузки файлов и редактирования информации
+ * Class CabinetPage
+ * @package View\Supplier
+ */
+class CabinetPage extends SupplierLayout {
 
     public function slotContent() {
         return $this->render('supplier/page-cabinet', $this->params);
