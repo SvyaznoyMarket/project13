@@ -129,6 +129,12 @@ return [
         'action'  => ['User\ExternalLoginResponseAction', 'execute'],
     ],
 
+    // Регистрация поставщика
+    'supplier.new' => [
+        'pattern'   => '/supplier/new',
+        'action'    => ['Supplier\NewAction', 'execute']
+    ],
+
     // регион
     'region.init' => [
         'pattern' => '/region/init',
