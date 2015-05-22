@@ -278,10 +278,9 @@
     }
     &_cnt{
         display: block;
-        width: 120px;
-        max-height: 120px;
-        margin-left: auto;
-        margin-right: auto;
+        width: 100%;
+        
+        text-align: center;
 
         &:hover{
             text-decoration: none;
@@ -291,24 +290,20 @@
                 border-bottom: 1px solid @darkgrey5;
             }
         }
-        &:after{
-            content: "";
-            .inline-block-middle();
-            width: 0;
-            height: 100%;
-        }
     }
     &_img{
-        display: block;
+        .inline-block();
 
-        width: auto;
-        max-width: 90%;
-        max-height: 90%;
-        margin: 0 auto 2px;
-        .inline-block-middle();
+        max-width: 120px;
+        max-height: 120px;
+        margin: 0 0 2px;
+        
     }
     &_pr{
         font-size: 21px;
+    }
+    &_n{
+        display: block;
     }
 }
 
