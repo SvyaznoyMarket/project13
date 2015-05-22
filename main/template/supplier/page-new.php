@@ -1,8 +1,8 @@
-<div class="suppliers__head">
+<div class="suppliers__head clearfix">
     <div class="suppliers__tl"><i class="suppliers-icon"></i>Регистрация поставщика</div>
     <div class="suppliers-login"><span class="suppliers-login__tl">Регистрировались?</span><a href="#" class="suppliers-login__lk supply-btn">Войти</a></div>
 </div>
-<div class="suppliers__head">
+<div class="suppliers__head clearfix">
     <div class="suppliers__tl"><i class="suppliers-icon"></i>
             <div class="user">
                 <div class="user__name">ООО Пупкин и партнеры 42</div>
@@ -13,7 +13,10 @@
                 </ul>
             </div>
     </div>
-    <div class="suppliers__right-top"><span class="suppliers__support">По всем вопросам звоните<br>+7 (495) 775-00-06</span></div>
+    <div class="suppliers__right-top">
+        <span class="suppliers__support">По всем вопросам звоните<br>+7 (495) 775-00-06</span>
+        <div class="btn-wrap"><a class="load-btn" href="#">Изменить</a></div>
+    </div>
 </div>
 <div class="suppliers__cnt">
     <div class="suppliers__sect suppliers__files">
@@ -26,6 +29,27 @@
     </div>
 
     <div class="suppliers__form suppliers__sect">
+        <div class="prices">
+            <div class="suppliers__sect-tl">Ваши прайс-листы</div>
+            <ul class="prices-list">
+                <li class="prices-list__i">
+                    <i class="suppliers-load__icon"></i><span class="prices-list__file-name">Книга-1.xlsx</span>
+                    <span class="prices-list__date">22.05.2015</span>
+                </li>
+                <li class="prices-list__i">
+                    <i class="suppliers-load__icon"></i><span class="prices-list__file-name">Книга-1.xlsx</span>
+                    <span class="prices-list__date">22.05.2015</span>
+                </li>
+                <li class="prices-list__i">
+                    <i class="suppliers-load__icon"></i><span class="prices-list__file-name">Книга-1.xlsx</span>
+                    <span class="prices-list__date">22.05.2015</span>
+                </li>
+                <li class="prices-list__i">
+                    <i class="suppliers-load__icon"></i><span class="prices-list__file-name">Книга-1.xlsx</span>
+                    <span class="prices-list__date">22.05.2015</span>
+                </li>
+            </ul>
+        </div>
         <form>
             <div class="suppliers__sect-tl">Зарегистрировать поставщика</div>
             <div class="control-group">
@@ -40,7 +64,7 @@
             </div>
             <div class="control-group">
                 <label class="control-group__lbl">Юридический адрес</label>
-                <input class="control-group__input" placeholder="">
+                <input class="control-group__input error" placeholder="">
             </div>
             <div class="control-group">
                 <label class="control-group__lbl">Фактический адрес</label>
@@ -70,7 +94,10 @@
                 <label class="control-group__lbl">Код ОКПО</label>
                 <input class="control-group__input" placeholder="">
             </div>
-            <input class="supply-btn" value="Сохранить" type="submit">
+            <div class="control-group">
+                <input class="supply-btn" value="Сохранить" type="submit">
+                <div class="details-info">Реквизиты сохранены. Заполните все поля.</div>
+            </div>
         </form>
     </div>
     

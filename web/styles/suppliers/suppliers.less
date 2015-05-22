@@ -36,6 +36,7 @@
     }
     &__right-top{
         float: right;
+        text-align: right;
     }
     &__tl{
         font-size: 24px;
@@ -91,7 +92,7 @@
         text-decoration: none;
 
         &__icon{
-            .inline-block();
+            .inline-block-middle();
             width: 31px;
             height: 31px;
             margin-right: 5px;
@@ -122,7 +123,30 @@
         }
     }
 }
+.prices{
+        &-list{
+            &__i{
+                height: 40px;
+                line-height: 40px;
+                padding: 0 10px;
+                &:nth-child(2n-1){
+                    background-color: #f5f5f5;
+                }
 
+            }
+            &__file-name{
+                color: #363636;
+                width: 240px;
+                margin:0 5px;
+                font-size: 16px;
+                .inline-block();
+            }
+            &__date{
+                color: #666666;
+                font-size: 14px;
+            }
+        }
+    }
 .control-group{
     margin-bottom: 20px;
     &__lbl{
@@ -140,6 +164,16 @@
         border: 1px solid #a0a0a0;
         .box-sizing(border-box);
         height: 35px;
+        &.error{
+            border: 2px solid #ef404a;
+        }
+    }
+    .details-info{
+        color: #ef404a;
+        font-size: 16px;
+        .inline-block-middle();
+        width: 170px;
+        margin-left: 54px;
     }
 }
 .supply-btn{
