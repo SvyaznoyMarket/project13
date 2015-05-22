@@ -135,6 +135,12 @@ return [
         'action'    => ['Supplier\NewAction', 'execute']
     ],
 
+    // Регистрация поставщика
+    'supplier.cabinet' => [
+        'pattern'   => '/supplier/cabinet',
+        'action'    => ['Supplier\CabinetAction', 'execute']
+    ],
+
     // регион
     'region.init' => [
         'pattern' => '/region/init',
