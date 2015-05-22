@@ -1,0 +1,182 @@
+.suppliers{
+    &__head{
+        padding: 20px 10px;
+        margin:0 -10px;
+        //background-color: rgba(255,255,255,0.9);
+
+        background-color: rgba(247, 247, 247, 0.75);
+        //.box-shadow(0 10px 6px -10px rgba(0, 0, 0, 0.31));
+        //.box-shadow(0 2px 3px 0 rgba(0, 0, 0, 0.31));
+        border-bottom: 1px solid #bebebe;
+        .user{
+            .inline-block-middle();
+            &__name{
+                color: #363636;
+                font-size: 24px;
+                margin-bottom: 5px;
+            }
+            &-info-list{
+                &__i{
+                    float:left;
+                    font-size: 14px;
+                    color: #363636;
+                    padding: 0 10px;
+                    border-left: 1px solid;
+                    &:first-child{
+                        border: none;
+                        padding-left: 0;
+                    }
+                }
+            }
+        }
+
+    }
+    &__support{
+        font-size: 14px;
+    }
+    &__right-top{
+        float: right;
+    }
+    &__tl{
+        font-size: 24px;
+        color: #363636;
+        .inline-block-middle();
+    }
+    &-icon{
+        width: 48px;
+        height: 49px;
+        background: url("@{base-url}/suppliers/img/suppliers-icon.png") no-repeat;
+        .inline-block-middle;
+        margin-right: 10px;
+    }
+    &-login{
+        .inline-block-middle();
+        margin-left: 200px;
+        &__tl{
+            font-size: 18px;
+            margin-right: 10px;
+            .inline-block-middle();
+        }
+
+    }
+    &__cnt{
+        // background-color: rgba(255,255,255,0.9);
+        background-color: #f7f7f7;
+
+    }
+    &__form{
+        background-color: #fff;
+        &-tl{
+           
+        }
+    }
+    &__sect{
+        width: 380px;
+        margin-right: 520px;
+        padding: 0 40px 0 10px;
+        &-tl{
+            font-size: 22px;
+            color: #666666;
+            margin-bottom: 15px;
+            padding-top: 20px;
+        }
+    }
+    &__files{
+        float: right;
+        width: 460px;
+        margin-left: -510px;
+        margin-right: 0px;
+    }
+    &-load{
+        text-decoration: none;
+
+        &__icon{
+            .inline-block();
+            width: 31px;
+            height: 31px;
+            margin-right: 5px;
+            background: url("@{base-url}/suppliers/img/icon-excel.png") no-repeat;
+        }
+        &__inn{
+            text-decoration: none;
+            border-bottom: 1px solid #000;
+            
+        }
+        &-list{
+            
+            &__i{
+                counter-increment: cnt;
+                font-size: 16px;
+                color: #666666;
+                line-height: 30px;
+                margin-top: 18px;
+                &:before{
+                    content: counter(cnt)". ";
+                    .inline-block();
+                    margin-right: 5px;
+                }
+            }
+        }
+        &:hover{
+            text-decoration: none;
+        }
+    }
+}
+
+.control-group{
+    margin-bottom: 20px;
+    &__lbl{
+        color: #666666;
+        font-size: 16px;
+        margin-bottom: 5px;
+        display: block;
+    }
+    &__input{
+        .rounded(3px);
+        width: 100%;
+        color: #363636;
+        
+        padding: 7px 10px;
+        border: 1px solid #a0a0a0;
+        .box-sizing(border-box);
+        height: 35px;
+    }
+}
+.supply-btn{
+    border: none;
+    outline: none;
+    height: 32px;
+    .box-sizing(border-box);
+    .inline-block-middle();
+    font-size: 18px;
+    background-color: #f99b1c;
+    color: #fff;
+    .rounded(3px);
+    border-bottom: 2px solid #f08a00;
+    line-height: 32px;
+    padding: 0 30px;
+    min-width: 150px;
+    text-align: center;
+
+    &:active{
+        border-bottom: 0;
+    }
+}
+
+.load-btn{
+    border: none;
+    outline: none;
+    height: 32px;
+    .box-sizing(border-box);
+    .inline-block-middle();
+    font-size: 14px;
+    color: #363636;
+    .rounded(3px);
+    border: 1px solid #363636;
+    line-height: 32px;
+    padding: 0 30px;
+    min-width: 150px;
+    text-align: center;
+    margin: 10px 0 0 20px;
+
+}
