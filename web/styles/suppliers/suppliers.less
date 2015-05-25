@@ -265,18 +265,6 @@
             margin-bottom: 10px;
         }
     }
-    &-popup{
-        width: 280px;
-        padding: 20px;
-        border: 1px solid #a0a0a0;
-        .rounded(3px);
-        .box-shadow(0 2px 3px 0 rgba(0, 0, 0, 0.29));
-        background-color: #fff;
-        &__tl{
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-    }
 }
 .prices{
         &-list{
@@ -368,6 +356,7 @@
 
     &:active{
         border-bottom: 0;
+        margin-top: 2px;
     }
     &:hover{
         text-decoration: none;
@@ -405,4 +394,9 @@
     margin: 10px 0 0 20px;
     background-color: transparent;
 
+}
+.supplier-login{
+    &.popup-auth#auth-block{
+        height: 253px;
+    }
 }

@@ -81,22 +81,3 @@
         </form>
     </div>
 </div>
-
-<div class="suppliers-popup" style="display: none">
-    <div class="popupFl_clsr"></div>
-    <div class="suppliers-popup__tl">Вход в Enter B2B</div>
-    <form>
-        <div class="control-group">
-                <label class="control-group__lbl">Логин</label>
-                <input class="control-group__input" placeholder="">
-            </div>
-            <div class="control-group">
-                <label class="control-group__lbl">Пароль</label>
-                <input class="control-group__input forgot-password__block" placeholder="">
-                <a href="#" class="forgot-password">забыли?</a>
-            </div>
-            <div class="control-group supply-btn__lo">
-                <a href="#" class="suppliers-login__lk supply-btn">Войти</a>
-            </div>
-    </form>
-</div>
