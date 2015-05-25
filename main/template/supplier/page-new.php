@@ -82,7 +82,7 @@
     </div>
 </div>
 
-<div class="suppliers-popup" style="display: none">
+<div class="suppliers-popup">
     <div class="popupFl_clsr"></div>
     <div class="suppliers-popup__tl">Вход в Enter B2B</div>
     <form>
