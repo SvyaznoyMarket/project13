@@ -7,6 +7,7 @@ use Exception\AccessDeniedException;
 use Http\Request;
 use Http\Response;
 use Http\JsonResponse;
+use Model\Supplier\File;
 use View\Supplier\CabinetPage;
 
 /** Кабинет поставщика
@@ -31,12 +32,15 @@ class CabinetAction {
             $prices = $client->query('file/get', [], ['ui' => \App::user()->getEntity()->getUi()]);
             if (is_array($prices)) {
                 foreach ($prices as $price) {
-                    $userPrices[] = $price;
+                    $userPrices[] = new File($price);
                 }
             }
         } catch (\Exception $e) {
             \App::exception()->remove($e);
         }
+
+        // Новые прайс-листы сверху
+        usort($userPrices, function(File $a, File $b) { return $a->added < $b->added; });
 
         $page->setParam('userPrices', $userPrices);
         $page->setParam('userEntity', \App::user()->getEntity());
@@ -53,6 +57,7 @@ class CabinetAction {
         $clientResponse = [];
         $files = $request->files->all();
         $localFiles = [];
+        $html = '';
 
         $params = [ 'token' => \App::user()->getEntity()->getToken() ];
         $data = [ 'ui' => \App::user()->getEntity()->getUi() ];
@@ -62,8 +67,10 @@ class CabinetAction {
             $localFiles[] = $file->getRealPath();
             $data['file'] = new \CURLFile($file->getRealPath(), $file->getClientMimeType(), $file->getClientOriginalName());
             $client->addQuery('file/new', $params, $data,
-                function($data) use (&$clientResponse) {
-                    $clientResponse[] = $data;
+                function($data) use (&$clientResponse, &$html) {
+                    $file = new File($data);
+                    $clientResponse[] = $file;
+                    $html .= \App::templating()->render('supplier/_file', ['file' => $file]);
                 },
                 null,
                 10);
@@ -83,7 +90,7 @@ class CabinetAction {
             unlink($path);
         }
 
-        return new JsonResponse(['success' => $success, 'result' => $clientResponse]);
+        return new JsonResponse(['success' => $success, 'result' => $clientResponse, 'html' => $html]);
 
     }
 
@@ -93,7 +100,17 @@ class CabinetAction {
      */
     public function update(Request $request) {
         $fields = $request->request->all();
-        return new JsonResponse(['result' => $fields]);
+        try {
+            $result = \App::coreClientV2()->query('user/update',
+                ['token' => \App::user()->getEntity()->getToken()],
+                ['detail' => $fields['detail']]);
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+        }
+
+        return new JsonResponse([
+            'success' => isset($result['confirmed']) && (bool)$result['confirmed'],
+            'fields' => $fields['detail']]);
     }
 
 }

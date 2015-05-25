@@ -76,6 +76,7 @@ class Entity {
     public $legalDetails = [
         'name' => '',
         'name_full' => '',
+        'legal_type' => '',
         'legal_address' => '',
         'real_address' => '',
         'okpo' => '',
@@ -670,7 +671,7 @@ class Entity {
      * @return bool
      */
     public function isLegalDetailsFull() {
-        $fields = ['name', 'name_full', 'legal_address', 'real_address', 'okpo', 'inn', 'kpp', 'bik', 'account', 'korr_account', 'oktmo'];
+        $fields = ['name', 'name_full', 'legal_type', 'legal_address', 'real_address', 'okpo', 'inn', 'kpp', 'bik', 'account', 'korr_account'];
         foreach ($fields as $field) {
             if (empty($this->legalDetails[$field])) return false;
         }

@@ -32,26 +32,29 @@
     </ul>
     <div class="suppliers__short-form">
         <div class="supply-btn__wrap">
-            <a href="#" class="supply-btn supply-btn-big">Стать партнером</a>
+            <a href="#weCan" class="supply-btn supply-btn-big">Стать партнером</a>
         </div>
     <div class="suppliers-collab__info">По всем вопросам звоните +7 (495) 775-00-06</div>
 
-        <form   action="<?= \App::helper()->url('supplier.new') ?>"
+        <form   id="b2bRegisterForm"
+                action="<?= \App::helper()->url('supplier.new') ?>"
                 method="post">
             
-            <div class="suppliers__slogan">Мы умеем продавать!</div>
+            <div id="weCan" class="suppliers__slogan">Мы умеем продавать!</div>
 
             <div class="control-group">
                 <label class="control-group__lbl">Наименование организации</label>
-                <input name="detail[name]" class="control-group__input error" placeholder="">
+                <input name="detail[name]" class="control-group__input" placeholder="">
             </div>
             <div class="control-group">
                 <label class="control-group__lbl">Форма собственности</label>
                 <div class="custom-select custom-select--suppliers">
                     <select name="detail[legal_type]" class="custom-select__inn">
-                        <option class="custom-select__i">Индивидуальный предприниматель</option>
-                        <option class="custom-select__i">Общество с ограниченной ответственностью</option>
-                        <option class="custom-select__i">Акционерное общество</option>
+                        <option value="ИП">Индивидуальный предприниматель (ИП)</option>
+                        <option value="ООО">Общество с ограниченной ответственностью (ООО)</option>
+                        <option value="ОАО">Открытое Акционерное общество (ОАО)</option>
+                        <option value="ЗАО">Закрытое Акционерное общество (ЗАО)</option>
+                        <option value="Другая форма">Другая форма</option>
                     </select>
                 </div>
             </div>
@@ -68,10 +71,10 @@
                 <input name="mobile" class="control-group__input" placeholder="">
             </div>
             <div class="control-group">
-                <input type="checkbox" class="customInput customInput-checkbox js-customInput" id="accept" name="" value="">
+                <input type="checkbox" class="customInput customInput-checkbox js-customInput" id="accept" name="agree" value="">
 
                 <label class="customLabel customLabel-checkbox" for="accept">
-                    Принимаю условия <a class="suppliers-offer" href="#">договора оферты</a>
+                    Принимаю условия <a class="suppliers-offer" href="http://content.enter.ru/wp-content/uploads/2013/10/оферта-для-юридических-лиц.docx">договора оферты</a>
                 </label>
           
             </div>
