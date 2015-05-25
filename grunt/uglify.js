@@ -170,6 +170,11 @@ module.exports = function (grunt, options) {
         tealeaf: {
             src: pathDev + 'tealeaf/*.js',
             dest: pathProd + 'tealeaf.min.js'
+        },
+
+        supplier: {
+            src: pathDev + 'supplier/*.js',
+            dest: pathProd + 'supplier.min.js'
         }
     }
 };

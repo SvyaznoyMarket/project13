@@ -72,6 +72,20 @@ class Entity {
     private $isPhoneConfirmed;
     /** @var \Model\User\SubscriptionEntity[]|null */
     public $subscriptions;
+    /** @var array Данные о юридическом пользователе */
+    public $legalDetails = [
+        'name' => '',
+        'name_full' => '',
+        'legal_address' => '',
+        'real_address' => '',
+        'okpo' => '',
+        'inn' => '',
+        'kpp' => '',
+        'bik' => '',
+        'account' => '',
+        'korr_account' => '',
+        'oktmo' => ''
+    ];
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -105,6 +119,7 @@ class Entity {
         if (array_key_exists('bonus_card', $data)) $this->setBonusCard($data['bonus_card']);
         if (array_key_exists('is_email_confirmed', $data)) $this->setIsEmailConfirmed($data['is_email_confirmed']);
         if (array_key_exists('is_phone_confirmed', $data)) $this->setIsPhoneConfirmed($data['is_phone_confirmed']);
+        if (array_key_exists('legal_detail', $data) && is_array($data['legal_detail'])) $this->legalDetails = array_replace($this->legalDetails, $data['legal_detail']);
     }
 
     /**
