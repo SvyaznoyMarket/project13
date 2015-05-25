@@ -20,13 +20,23 @@ class CabinetAction {
     }
 
     /** Index-страница
-     * @param Request $request
      * @return Response
      */
-    public function index(Request $request) {
+    public function index() {
         $page = new CabinetPage();
         $userPrices = [];
+        $client = \App::fileStorageClient();
 
+        try {
+            $prices = $client->query('file/get', [], ['ui' => \App::user()->getEntity()->getUi()], 10);
+            if (is_array($prices)) {
+                foreach ($prices as $price) {
+                    $userPrices[] = $price;
+                }
+            }
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+        }
 
         $page->setParam('userPrices', $userPrices);
         $page->setParam('userEntity', \App::user()->getEntity());

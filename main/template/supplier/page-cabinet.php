@@ -52,27 +52,19 @@
     </div>
 
     <div class="suppliers__form suppliers__sect">
+        <? if ($userPrices) : ?>
         <div class="prices">
             <div class="suppliers__sect-tl">Ваши прайс-листы</div>
             <ul class="prices-list">
-                <li class="prices-list__i">
-                    <i class="suppliers-load__icon"></i><span class="prices-list__file-name">Книга-1.xlsx</span>
-                    <span class="prices-list__date">22.05.2015</span>
-                </li>
-                <li class="prices-list__i">
-                    <i class="suppliers-load__icon"></i><span class="prices-list__file-name">Книга-1.xlsx</span>
-                    <span class="prices-list__date">22.05.2015</span>
-                </li>
-                <li class="prices-list__i">
-                    <i class="suppliers-load__icon"></i><span class="prices-list__file-name">Книга-1.xlsx</span>
-                    <span class="prices-list__date">22.05.2015</span>
-                </li>
-                <li class="prices-list__i">
-                    <i class="suppliers-load__icon"></i><span class="prices-list__file-name">Книга-1.xlsx</span>
-                    <span class="prices-list__date">22.05.2015</span>
-                </li>
+                <? foreach ($userPrices as $key => $price) : ?>
+                    <li class="prices-list__i">
+                        <i class="suppliers-load__icon"></i><span class="prices-list__file-name">Книга-1.xlsx</span>
+                        <span class="prices-list__date">22.05.2015</span>
+                    </li>
+                <? endforeach ?>
             </ul>
         </div>
+        <? endif ?>
         <form>
             <div class="suppliers__sect-tl">Зарегистрировать поставщика</div>
             <div class="control-group">
