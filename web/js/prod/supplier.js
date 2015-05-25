@@ -15,5 +15,5 @@ Plugin.prototype={init:function()
 {return this.each(function()
 {if(!$.data(this,"plugin_"+pluginName))
 {$.data(this,"plugin_"+pluginName,new Plugin(this,options));}});};})(jQuery,window,document);
-+function(){var $form=$('#priceForm'),$fileInput=$('#priceInput'),$button=$('#priceButton');$form.fileUpload();$button.on('click',function(e){e.preventDefault();$fileInput.click();});$fileInput.on('change',function(){console.log('file input');$form.submit();})}();
++function(){var $fileForm=$('#priceForm'),$detailsForm=$('#detailsForm'),$fileInput=$('#priceInput'),$fileButton=$('#priceButton');$fileForm.fileUpload();$fileButton.on('click',function(e){e.preventDefault();$fileInput.click();});$fileInput.on('change',function(){$fileForm.submit();});$detailsForm.on('submit',function(e){e.preventDefault();$.ajax($detailsForm.attr('action'),{type:'POST',data:$detailsForm.serialize(),success:function(data){console.log(data);},error:function(){console.error('User update failed')}})})}();
 //@ sourceMappingURL=supplier.js.map

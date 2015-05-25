@@ -148,6 +148,13 @@ return [
         'method'  => ['POST']
     ],
 
+    // Обновление данных о поставщике
+    'supplier.update' => [
+        'pattern'   => '/supplier/update',
+        'action'    => ['Supplier\CabinetAction', 'update'],
+        'method'  => ['POST']
+    ],
+
     // Тестирование curl-client
     'supplier.test' => [
         'pattern'   => '/supplier/load-test',

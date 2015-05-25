@@ -28,7 +28,7 @@ class CabinetAction {
         $client = \App::fileStorageClient();
 
         try {
-            $prices = $client->query('file/get', [], ['ui' => \App::user()->getEntity()->getUi()], 10);
+            $prices = $client->query('file/get', [], ['ui' => \App::user()->getEntity()->getUi()]);
             if (is_array($prices)) {
                 foreach ($prices as $price) {
                     $userPrices[] = $price;
@@ -85,6 +85,15 @@ class CabinetAction {
 
         return new JsonResponse(['success' => $success, 'result' => $clientResponse]);
 
+    }
+
+    /** Обновление данных о поставщике/пользователе
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function update(Request $request) {
+        $fields = $request->request->all();
+        return new JsonResponse(['result' => $fields]);
     }
 
 }
