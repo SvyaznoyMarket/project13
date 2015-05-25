@@ -13,4 +13,10 @@ class SupplierLayout extends DefaultLayout {
 
     protected $layout  = 'layout-supplier';
 
+    public function slotBodyClassAttribute()
+    {
+        return parent::slotBodyClassAttribute() . ' body-supplier';
+    }
+
+
 }
