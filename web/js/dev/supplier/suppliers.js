@@ -3,21 +3,37 @@
  */
 +function(){
 
-    var $form = $('#priceForm'),
+    var $fileForm = $('#priceForm'),
+        $detailsForm = $('#detailsForm'),
         $fileInput = $('#priceInput'),
-        $button  = $('#priceButton');
+        $fileButton  = $('#priceButton');
 
-    $form.fileUpload();
+    $fileForm.fileUpload();
 
-    $button.on('click',function(e){
+    // Открытие окна выбора прайс-листа
+    $fileButton.on('click',function(e){
         e.preventDefault();
         $fileInput.click();
     });
 
+    // Отправка прайс-листа при изменении fileinput-а
     $fileInput.on('change', function(){
-        console.log('file input');
+        $fileForm.submit();
+    });
 
-        $form.submit();
+    // Обновление данных о пользователе
+    $detailsForm.on('submit', function(e){
+        e.preventDefault();
+        $.ajax($detailsForm.attr('action'), {
+            type: 'POST',
+            data: $detailsForm.serialize(),
+            success: function(data){
+                console.log(data);
+            },
+            error: function(){
+                console.error('User update failed')
+            }
+        })
     })
 
 }();

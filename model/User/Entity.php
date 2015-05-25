@@ -665,4 +665,16 @@ class Entity {
         $this->subscriptions = $userChannels;
         return $this->subscriptions;
     }
+
+    /** Проверка заполненности всех полей о юр. лице
+     * @return bool
+     */
+    public function isLegalDetailsFull() {
+        $fields = ['name', 'name_full', 'legal_address', 'real_address', 'okpo', 'inn', 'kpp', 'bik', 'account', 'korr_account', 'oktmo'];
+        foreach ($fields as $field) {
+            if (empty($this->legalDetails[$field])) return false;
+        }
+        return true;
+    }
+
 }

@@ -55,69 +55,74 @@
 
     <div class="suppliers__form suppliers__sect">
         <? if ($userPrices) : ?>
-        <div class="prices">
-            <div class="suppliers__sect-tl">Ваши прайс-листы</div>
-            <ul class="prices-list">
-                <? foreach ($userPrices as $key => $price) : ?>
-                    <li class="prices-list__i">
-                        <i class="suppliers-load__icon"></i><span class="prices-list__file-name">Книга-1.xlsx</span>
-                        <span class="prices-list__date">22.05.2015</span>
-                    </li>
-                <? endforeach ?>
-            </ul>
-        </div>
+            <div class="prices">
+                <div class="suppliers__sect-tl">Ваши прайс-листы</div>
+                <ul class="prices-list">
+                    <? foreach ($userPrices as $key => $price) : ?>
+                        <li class="prices-list__i">
+                            <i class="suppliers-load__icon"></i><span class="prices-list__file-name">Книга-1.xlsx</span>
+                            <span class="prices-list__date">22.05.2015</span>
+                        </li>
+                    <? endforeach ?>
+                </ul>
+            </div>
         <? endif ?>
-        <form>
-            <div class="suppliers__sect-tl">Зарегистрировать поставщика</div>
-            <div class="control-group">
-                <label class="control-group__lbl">Форма собственности</label>
-                <div class="custom-select custom-select--suppliers">
-                    <select class="custom-select__inn">
-                        <option value="ИП">Индивидуальный предприниматель (ИП)</option>
-                        <option value="ООО">Общество с ограниченной ответственностью (ООО)</option>
-                        <option value="ОАО">Открытое Акционерное общество (ОАО)</option>
-                        <option value="ЗАО">Закрытое Акционерное общество (ЗАО)</option>
-                        <option value="Другая форма">Другая форма</option>
-                    </select>
+
+        <? if (!$userEntity->isLegalDetailsFull()) : ?>
+            <form action="<?= \App::helper()->url('supplier.update') ?>"
+                  id="detailsForm"
+                  method="post">
+                <div class="suppliers__sect-tl">Зарегистрировать поставщика</div>
+                <div class="control-group">
+                    <label class="control-group__lbl">Форма собственности</label>
+                    <div class="custom-select custom-select--suppliers">
+                        <select name="detail[legal_type]" class="custom-select__inn">
+                            <option value="ИП">Индивидуальный предприниматель (ИП)</option>
+                            <option value="ООО">Общество с ограниченной ответственностью (ООО)</option>
+                            <option value="ОАО">Открытое Акционерное общество (ОАО)</option>
+                            <option value="ЗАО">Закрытое Акционерное общество (ЗАО)</option>
+                            <option value="Другая форма">Другая форма</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="control-group">
-                <label class="control-group__lbl">Юридический адрес</label>
-                <input class="control-group__input error" placeholder="">
-            </div>
-            <div class="control-group">
-                <label class="control-group__lbl">Фактический адрес</label>
-                <input class="control-group__input" placeholder="">
-            </div>
-            <div class="control-group">
-                <label class="control-group__lbl">ИНН</label>
-                <input class="control-group__input" placeholder="">
-            </div>
-            <div class="control-group">
-                <label class="control-group__lbl">КПП</label>
-                <input class="control-group__input" placeholder="">
-            </div>
-            <div class="control-group">
-                <label class="control-group__lbl">Расчетный счет</label>
-                <input class="control-group__input" placeholder="">
-            </div>
-            <div class="control-group">
-                <label class="control-group__lbl">Корреспондентский счет</label>
-                <input class="control-group__input" placeholder="">
-            </div>
-            <div class="control-group">
-                <label class="control-group__lbl">БИК</label>
-                <input class="control-group__input" placeholder="">
-            </div>
-            <div class="control-group">
-                <label class="control-group__lbl">Код ОКПО</label>
-                <input class="control-group__input" placeholder="">
-            </div>
-            <div class="control-group clearfix">
-                <input class="supply-btn" value="Сохранить" type="submit">
-                <div class="details-info">Реквизиты сохранены. Заполните все поля.</div>
-            </div>
-        </form>
+                <div class="control-group">
+                    <label class="control-group__lbl">Юридический адрес</label>
+                    <input name="detail[legal_address]" class="control-group__input error" placeholder="">
+                </div>
+                <div class="control-group">
+                    <label class="control-group__lbl">Фактический адрес</label>
+                    <input name="detail[real_address]" class="control-group__input" placeholder="">
+                </div>
+                <div class="control-group">
+                    <label class="control-group__lbl">ИНН</label>
+                    <input name="detail[inn]" class="control-group__input" placeholder="">
+                </div>
+                <div class="control-group">
+                    <label class="control-group__lbl">КПП</label>
+                    <input name="detail[kpp]" class="control-group__input" placeholder="">
+                </div>
+                <div class="control-group">
+                    <label class="control-group__lbl">Расчетный счет</label>
+                    <input name="detail[account]" class="control-group__input" placeholder="">
+                </div>
+                <div class="control-group">
+                    <label class="control-group__lbl">Корреспондентский счет</label>
+                    <input name="detail[korr_account]" class="control-group__input" placeholder="">
+                </div>
+                <div class="control-group">
+                    <label class="control-group__lbl">БИК</label>
+                    <input name="detail[bik]" class="control-group__input" placeholder="">
+                </div>
+                <div class="control-group">
+                    <label class="control-group__lbl">Код ОКПО</label>
+                    <input name="detail[okpo]" class="control-group__input" placeholder="">
+                </div>
+                <div class="control-group">
+                    <input class="supply-btn" value="Сохранить" type="submit">
+                    <div class="details-info"><span style="display: none">Реквизиты сохранены.</span>Заполните все поля.</div>
+                </div>
+            </form>
+        <? endif ?>
     </div>
 
 </div>

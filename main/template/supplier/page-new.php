@@ -1,7 +1,9 @@
 <div class="suppliers__head">
     <div class="suppliers__head-inn">
         <div class="suppliers__tl"><i class="suppliers-icon"></i>Регистрация поставщика</div>
-        <div class="suppliers-login"><span class="suppliers-login__tl">Регистрировались?</span><a href="#" class="suppliers-login__lk supply-btn">Войти</a></div>
+        <div class="suppliers-login"><span class="suppliers-login__tl">Регистрировались?</span>
+            <a href="#" class="suppliers-login__lk supply-btn">Войти</a>
+        </div>
     </div>
 </div>
 <div class="suppliers__cnt">
@@ -29,22 +31,24 @@
         <li class="suppliers-collab-list__i">более 1000 точек самовывоза.</li>
     </ul>
     <div class="suppliers__short-form">
-    <div class="supply-btn__wrap">
-        <a href="#" class="supply-btn supply-btn-big">Стать партнером</a>
-    </div>
+        <div class="supply-btn__wrap">
+            <a href="#" class="supply-btn supply-btn-big">Стать партнером</a>
+        </div>
     <div class="suppliers-collab__info">По всем вопросам звоните +7 (495) 775-00-06</div>
-        <form>
+
+        <form   action="<?= \App::helper()->url('supplier.new') ?>"
+                method="post">
             
             <div class="suppliers__slogan">Мы умеем продавать!</div>
 
             <div class="control-group">
                 <label class="control-group__lbl">Наименование организации</label>
-                <input class="control-group__input error" placeholder="">
+                <input name="detail[name]" class="control-group__input error" placeholder="">
             </div>
             <div class="control-group">
                 <label class="control-group__lbl">Форма собственности</label>
                 <div class="custom-select custom-select--suppliers">
-                    <select class="custom-select__inn">
+                    <select name="detail[legal_type]" class="custom-select__inn">
                         <option class="custom-select__i">Индивидуальный предприниматель</option>
                         <option class="custom-select__i">Общество с ограниченной ответственностью</option>
                         <option class="custom-select__i">Акционерное общество</option>
@@ -53,15 +57,15 @@
             </div>
             <div class="control-group">
                 <label class="control-group__lbl">Контактное лицо</label>
-                <input class="control-group__input" placeholder="">
+                <input name="first_name" class="control-group__input" placeholder="">
             </div>
             <div class="control-group">
                 <label class="control-group__lbl">E-mail</label>
-                <input class="control-group__input" placeholder="">
+                <input name="email" class="control-group__input" placeholder="">
             </div>
             <div class="control-group">
                 <label class="control-group__lbl">Мобильный телефон</label>
-                <input class="control-group__input" placeholder="">
+                <input name="mobile" class="control-group__input" placeholder="">
             </div>
             <div class="control-group">
                 <input type="checkbox" class="customInput customInput-checkbox js-customInput" id="accept" name="" value="">
@@ -77,7 +81,8 @@
         </form>
     </div>
 </div>
-<!--div class="suppliers-popup">
+
+<div class="suppliers-popup" style="display: none">
     <div class="popupFl_clsr"></div>
     <div class="suppliers-popup__tl">Вход в Enter B2B</div>
     <form>
@@ -94,4 +99,4 @@
                 <a href="#" class="suppliers-login__lk supply-btn">Войти</a>
             </div>
     </form>
-</div-->
+</div>
