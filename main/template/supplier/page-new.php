@@ -35,7 +35,7 @@
     <div class="suppliers-collab__info">По всем вопросам звоните +7 (495) 775-00-06</div>
         <form>
             
-            <div class="suppliers__slogan">Продавайте с нами!</div>
+            <div class="suppliers__slogan">Мы умеем продавать!</div>
 
             <div class="control-group">
                 <label class="control-group__lbl">Наименование организации</label>
@@ -77,9 +77,9 @@
         </form>
     </div>
 </div>
-<div class="suppliers-popup">
+<!--div class="suppliers-popup">
     <div class="popupFl_clsr"></div>
-    <div class="suppliers-popup__tl">Войти в B2B</div>
+    <div class="suppliers-popup__tl">Вход в Enter B2B</div>
     <form>
         <div class="control-group">
                 <label class="control-group__lbl">Логин</label>
@@ -90,5 +90,8 @@
                 <input class="control-group__input forgot-password__block" placeholder="">
                 <a href="#" class="forgot-password">забыли?</a>
             </div>
+            <div class="control-group supply-btn__lo">
+                <a href="#" class="suppliers-login__lk supply-btn">Войти</a>
+            </div>
     </form>
-</div>
+</div-->
