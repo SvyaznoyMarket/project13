@@ -29,12 +29,12 @@
         <li class="suppliers-collab-list__i">более 1000 точек самовывоза.</li>
     </ul>
     <div class="suppliers__short-form">
-
+    <div class="supply-btn__wrap">
+        <a href="#" class="supply-btn supply-btn-big">Стать партнером</a>
+    </div>
+    <div class="suppliers-collab__info">По всем вопросам звоните +7 (495) 775-00-06</div>
         <form>
-            <div class="supply-btn__wrap">
-                <input type="submit" class="supply-btn supply-btn-big" value="Стать партнером" />
-            </div>
-            <div class="suppliers-collab__info">По всем вопросам звоните +7 (495) 775-00-06</div>
+            
             <div class="suppliers__slogan">Продавайте с нами!</div>
 
             <div class="control-group">
