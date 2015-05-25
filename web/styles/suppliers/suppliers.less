@@ -188,7 +188,7 @@
     }
     &-our-nums-list{
         margin: 35px auto 30px;
-        width: 850px;
+        width: 940px;
         &__i{
             float: left;
             padding: 0px 20px;
@@ -198,6 +198,7 @@
             font-size: 66px;
             display: block;
             text-align: center;
+            line-height: 73px;
             &.month-volume{
                 color: @firmBlue;
             }
@@ -220,6 +221,7 @@
             color: #363636;
             font-size: 36px;
             text-align: center;
+            font-family: 'Enter type';
         }
         &-list{
             width: 320px;
@@ -258,6 +260,22 @@
             margin-left: -100px;
             margin-right: -100px;
         }
+        .suppliers__slogan{
+            margin-top: 70px;
+            margin-bottom: 10px;
+        }
+    }
+    &-popup{
+        width: 280px;
+        padding: 20px;
+        border: 1px solid #a0a0a0;
+        .rounded(3px);
+        .box-shadow(0 2px 3px 0 rgba(0, 0, 0, 0.29));
+        background-color: #fff;
+        &__tl{
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
     }
 }
 .prices{
@@ -286,6 +304,7 @@
     }
 .control-group{
     margin-bottom: 20px;
+    position: relative;
     &__lbl{
         color: #666666;
         font-size: 16px;
@@ -316,6 +335,18 @@
     .customLabel{
         font-size: 16px;
         color: #666666;
+    }
+    .forgot-password{
+        font-size: 14px;
+        color: #363636;
+        padding: 5px;
+        background-color: #f6f6f6;
+        position: absolute;
+        right: 3px;
+        bottom: 3px;
+        &__block{
+            padding-right: 70px;
+        }
     }
 }
 .supply-btn{

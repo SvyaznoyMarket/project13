@@ -9,16 +9,16 @@
     <img class="suppliers__sl-icon" src="/styles/suppliers/img/sup-icons.png">
     <ul class="suppliers-our-nums-list clearfix">
         <li class="suppliers-our-nums-list__i">
-            <span class="suppliers-our-nums-list__num month-volume">1,8 млрд <span class="rubl">p</span></span>
-            <span class="suppliers-our-nums-list__txt">оборот в месяц</span>
+            <span class="suppliers-our-nums-list__num week-orders">115&thinsp;000</span>
+            <span class="suppliers-our-nums-list__txt">заказов в неделю</span>
         </li>
         <li class="suppliers-our-nums-list__i">
-            <span class="suppliers-our-nums-list__num day-watchers">500 000</span>
+            <span class="suppliers-our-nums-list__num day-watchers">500&thinsp;000</span>
             <span class="suppliers-our-nums-list__txt">уникальных посетителей в день</span>
         </li>
         <li class="suppliers-our-nums-list__i">
-            <span class="suppliers-our-nums-list__num week-orders">115 000</span>
-            <span class="suppliers-our-nums-list__txt">заказов в неделю</span>
+            <span class="suppliers-our-nums-list__num month-volume">1&thinsp;800&thinsp;000&thinsp;000</span>
+            <span class="suppliers-our-nums-list__txt">оборот в месяц, руб.</span>
         </li>
     </ul>
     <h4 class="suppliers-collab__head">Cотрудничество с нами это:</h4>
@@ -35,7 +35,7 @@
                 <input type="submit" class="supply-btn supply-btn-big" value="Стать партнером" />
             </div>
             <div class="suppliers-collab__info">По всем вопросам звоните +7 (495) 775-00-06</div>
-            <div class="suppliers__slogan">Мы умеем продавать!</div>
+            <div class="suppliers__slogan">Продавайте с нами!</div>
 
             <div class="control-group">
                 <label class="control-group__lbl">Наименование организации</label>
@@ -76,4 +76,19 @@
             </div>
         </form>
     </div>
+</div>
+<div class="suppliers-popup">
+    <div class="popupFl_clsr"></div>
+    <div class="suppliers-popup__tl">Войти в B2B</div>
+    <form>
+        <div class="control-group">
+                <label class="control-group__lbl">Логин</label>
+                <input class="control-group__input" placeholder="">
+            </div>
+            <div class="control-group">
+                <label class="control-group__lbl">Пароль</label>
+                <input class="control-group__input forgot-password__block" placeholder="">
+                <a href="#" class="forgot-password">забыли?</a>
+            </div>
+    </form>
 </div>
