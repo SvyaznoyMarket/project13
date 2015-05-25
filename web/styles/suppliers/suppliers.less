@@ -1,13 +1,45 @@
+.body-supplier{
+    background-color: #fff;
+    .wrapper{
+        width: 100%;
+        padding: 0;
+    }
+    .header{
+        width: 100%;
+        background-color: #000;
+        margin: 0 0 10px 0;
+        padding: 0;
+    }
+    .js-topbar-static{
+        background-color: #fff;
+    }
+    .header_t{
+        width: 940px;
+        margin: 0 auto;
+    }
+    .header_c{
+        width: 940px;
+        margin: 0 auto;
+    }
+    .content{
+
+    }
+}
 .suppliers{
     &__head{
-        padding: 20px 10px;
-        margin:0 -10px;
+        padding: 20px 0;
+        position: relative;
+        width: 100%;
+        .box-sizing(border-box);
         //background-color: rgba(255,255,255,0.9);
 
-        background-color: rgba(247, 247, 247, 0.75);
-        //.box-shadow(0 10px 6px -10px rgba(0, 0, 0, 0.31));
-        //.box-shadow(0 2px 3px 0 rgba(0, 0, 0, 0.31));
-        border-bottom: 1px solid #bebebe;
+        //background-color: rgba(247, 247, 247, 0.75);
+        &-inn{
+            width: 920px;
+            padding: 0 10px;
+            margin: 0 auto;
+        }
+        
         .user{
             .inline-block-middle();
             &__name{
@@ -34,6 +66,15 @@
                 padding-left: 65px;
 
             }
+        }
+        &:after{
+            content: "";
+            .box-shadow(0 10px 12px -10px rgba(0, 0, 0, 0.31));
+            height: 40px;
+            width: 100%;
+            position: absolute;
+            left:0;
+            bottom: 0px;
         }
 
     }
@@ -68,7 +109,8 @@
     }
     &__cnt{
         // background-color: rgba(255,255,255,0.9);
-        background-color: #f7f7f7;
+        width: 940px;
+        margin: 0 auto;
 
     }
     &__form{
@@ -86,6 +128,9 @@
             color: #666666;
             margin-bottom: 15px;
             padding-top: 20px;
+        }
+        &-cnt{
+            background-color: #f7f7f7;
         }
     }
     &__files{
@@ -128,6 +173,92 @@
             text-decoration: none;
         }
     }
+    &__slogan{
+        text-align: center;
+        font-size: 56px;
+        font-family: 'Enter';
+        margin: 20px 0 30px;
+        color: @firmBlue;
+        text-transform: uppercase;
+    }
+    &__sl-icon{
+        display: block;
+        width: 750px;
+        margin: 0 auto;
+    }
+    &-our-nums-list{
+        margin: 35px auto 30px;
+        width: 850px;
+        &__i{
+            float: left;
+            padding: 0px 20px;
+            font-family: 'Enter type';
+        }
+        &__num{
+            font-size: 66px;
+            display: block;
+            text-align: center;
+            &.month-volume{
+                color: @firmBlue;
+            }
+            &.day-watchers{
+                color: @firmOrange;
+            }
+            &.week-orders{
+                color: @firmLGreen;
+            }
+        }
+        &__txt{
+            font-size: 19px;
+            color: #363636;
+            display: block;
+            text-align: center;
+        }
+    }
+    &-collab{
+        &__head{
+            color: #363636;
+            font-size: 36px;
+            text-align: center;
+        }
+        &-list{
+            width: 320px;
+            margin: 15px auto 20px;
+
+            &__i{
+                
+                font-size: 18px;
+                font-family: 'Enter type';
+                &:before{
+                    content:"•";
+                    .inline-block();
+                    margin-right: 10px;
+                }
+            }
+        }
+        &__info{
+            text-align: center;
+            font-size: 18px;
+            font-family: 'Enter type';
+            color: #363636;
+        }
+    }
+    &-offer{
+        text-decoration: none;
+        color: #363636;
+        border-bottom: 1px solid;
+        &:hover{
+            text-decoration: none;
+        }
+    }
+    &__short-form{
+        width: 390px;
+        margin: 0 auto;
+        .suppliers__slogan{
+            margin-left: -100px;
+            margin-right: -100px;
+        }
+    }
 }
 .prices{
         &-list{
@@ -143,7 +274,7 @@
             &__file-name{
                 color: #363636;
                 width: 240px;
-                margin:0 5px;
+                margin:0 4px;
                 font-size: 16px;
                 .inline-block();
             }
@@ -181,12 +312,16 @@
         width: 170px;
         margin-left: 54px;
     }
+    .customLabel{
+        font-size: 16px;
+        color: #666666;
+    }
 }
 .supply-btn{
     border: none;
     outline: none;
     height: 32px;
-    .box-sizing(border-box);
+    .box-sizing(content-box);
     .inline-block-middle();
     font-size: 18px;
     background-color: #f99b1c;
@@ -200,6 +335,18 @@
 
     &:active{
         border-bottom: 0;
+    }
+    &-big{
+        height: 46px;
+        font-size: 24px;
+        padding: 0 90px;
+        &:active{
+            margin-top: 2px;
+            margin-bottom: -2px;
+        }
+    }
+    &__wrap{
+        text-align: center;
     }
 }
 
@@ -218,5 +365,6 @@
     min-width: 150px;
     text-align: center;
     margin: 10px 0 0 20px;
+    background-color: transparent;
 
 }

@@ -1,27 +1,28 @@
-<div class="suppliers__head clearfix">
-    <div class="suppliers__tl"><i class="suppliers-icon"></i>
-        <div class="user">
-            <div class="user__name">ООО Пупкин и партнеры 42</div>
-            <ul class="user-info-list">
-                <li class="user-info-list__i">Феофан Фролов</li>
-                <li class="user-info-list__i">+7 (495) 775-00-06</li>
-                <li class="user-info-list__i">feofan@pupkin42.ru</li>
-            </ul>
+<div class="suppliers__head">
+    <div class="suppliers__head-inn clearfix">
+        <div class="suppliers__tl"><i class="suppliers-icon"></i>
+            <div class="user">
+                <div class="user__name">ООО Пупкин и партнеры 42</div>
+                <ul class="user-info-list">
+                    <li class="user-info-list__i">Феофан Фролов</li>
+                    <li class="user-info-list__i">+7 (495) 775-00-06</li>
+                    <li class="user-info-list__i">feofan@pupkin42.ru</li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <div class="suppliers__right-top">
-        <span class="suppliers__support">По всем вопросам звоните<br>+7 (495) 775-00-06</span>
-        <div class="btn-wrap"><a class="load-btn" href="#">Изменить</a></div>
-    </div>
-    <div class="user-info-text">
-        107045, г . Москва, Луков Переулок, д. 7<br>
-        ИНН 7714259876<br>
-        КПП 770801001<br>
-        Р/С 40702810480900017838<br>
-        К/С 30101810900000000767
-    </div>
+        <div class="suppliers__right-top">
+            <span class="suppliers__support">По всем вопросам звоните<br>+7 (495) 775-00-06</span>
+            <div class="btn-wrap"><a class="load-btn" href="#">Изменить</a></div>
+        </div>
+        <div class="user-info-text">
+            107045, г . Москва, Луков Переулок, д. 7<br>
+            ИНН 7714259876<br>
+            КПП 770801001<br>
+            Р/С 40702810480900017838<br>
+            К/С 30101810900000000767
+        </div></div>
 </div>
-<div class="suppliers__cnt">
+<div class="suppliers__cnt suppliers__sect-cnt">
     <div class="suppliers__sect suppliers__files">
         <div class="suppliers__sect-tl">Загрузить файл</div>
         <ul class="suppliers-load-list">
