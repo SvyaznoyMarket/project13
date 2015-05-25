@@ -20,11 +20,26 @@ class CabinetAction {
     }
 
     /** Index-страница
-     * @param Request $request
      * @return Response
      */
-    public function index(Request $request) {
+    public function index() {
         $page = new CabinetPage();
+        $userPrices = [];
+        $client = \App::fileStorageClient();
+
+        try {
+            $prices = $client->query('file/get', [], ['ui' => \App::user()->getEntity()->getUi()], 10);
+            if (is_array($prices)) {
+                foreach ($prices as $price) {
+                    $userPrices[] = $price;
+                }
+            }
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+        }
+
+        $page->setParam('userPrices', $userPrices);
+        $page->setParam('userEntity', \App::user()->getEntity());
         return new Response($page->show());
     }
 
@@ -34,32 +49,42 @@ class CabinetAction {
      */
     public function load(Request $request) {
 
-    }
-
-    // Тестирование
-    public function loadTest(){
-        $clientResponse = null;
         $client = \App::fileStorageClient();
-        $page = new CabinetPage();
+        $clientResponse = [];
+        $files = $request->files->all();
+        $localFiles = [];
 
-        $params = [
-            'token' => \App::user()->getEntity()->getToken()
-        ];
+        $params = [ 'token' => \App::user()->getEntity()->getToken() ];
+        $data = [ 'ui' => \App::user()->getEntity()->getUi() ];
 
-        $data = [
-            //'ui'    => \App::user()->getEntity()->getUi()
-        ];
-
-        $data['file'] = new \CURLFile('apple-touch-icon.png', 'image/png', 'test_name');
+        foreach ($files as $file) {
+            /** @var $file \Http\File\UploadedFile */
+            $localFiles[] = $file->getRealPath();
+            $data['file'] = new \CURLFile($file->getRealPath(), $file->getClientMimeType(), $file->getClientOriginalName());
+            $client->addQuery('file/new', $params, $data,
+                function($data) use (&$clientResponse) {
+                    $clientResponse[] = $data;
+                },
+                null,
+                10);
+        }
 
         try {
-            $clientResponse = $client->query('file/new', $params, $data);
+            $client->execute();
+            $success = true;
         } catch (\Exception $e) {
-            $clientResponse = $e->getMessage();
+            $success = false;
+            $clientResponse[] = $e->getMessage();
             \App::exception()->remove($e);
         }
 
-        return new JsonResponse($clientResponse);
+        // На всякий случай удаляем файлы
+        foreach ($localFiles as $path) {
+            unlink($path);
+        }
+
+        return new JsonResponse(['success' => $success, 'result' => $clientResponse]);
+
     }
 
 }
