@@ -2,7 +2,7 @@
     <div class="suppliers__head-inn">
         <div class="suppliers__tl"><i class="suppliers-icon"></i>Регистрация поставщика</div>
         <div class="suppliers-login"><span class="suppliers-login__tl">Регистрировались?</span>
-            <a href="#" class="suppliers-login__lk supply-btn">Войти</a>
+            <a href="#" class="suppliers-login__lk supply-btn jsSupplierLoginButton">Войти</a>
         </div>
     </div>
 </div>
@@ -82,7 +82,7 @@
     </div>
 </div>
 
-<div class="suppliers-popup">
+<div class="suppliers-popup" style="display: none">
     <div class="popupFl_clsr"></div>
     <div class="suppliers-popup__tl">Вход в Enter B2B</div>
     <form>
