@@ -113,7 +113,7 @@
                 <label class="control-group__lbl">Код ОКПО</label>
                 <input class="control-group__input" placeholder="">
             </div>
-            <div class="control-group">
+            <div class="control-group clearfix">
                 <input class="supply-btn" value="Сохранить" type="submit">
                 <div class="details-info">Реквизиты сохранены. Заполните все поля.</div>
             </div>
