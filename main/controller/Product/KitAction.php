@@ -19,6 +19,7 @@ class KitAction {
 
         /** @var \Model\Product\Entity|null $product */
         $product = null;
+        $medias = [];
 
         // запрашиваем текущий регион, если есть кука региона
         $regionConfig = [];
@@ -43,8 +44,14 @@ class KitAction {
             }
         });
 
+        \RepositoryManager::product()->prepareProductsMediasByUids([$productUi], $medias);
+
         // выполнение 1-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
+
+        if ($product) {
+            \RepositoryManager::product()->setMediasForProducts([$product->getId() => $product], $medias);
+        }
 
         $regionEntity = $user->getRegion();
         if ($regionEntity instanceof \Model\Region\Entity) {
@@ -68,7 +75,7 @@ class KitAction {
                 'article' => $product->getArticle(),
                 'prefix' => $product->getPrefix(),
                 'webname' => $product->getWebname(),
-                'imageUrl' => $product->getImageUrl(3),
+                'imageUrl' => $product->getMainImageUrl('product_500'),
                 'kitProducts' => \RepositoryManager::product()->getKitProducts($product),
             ],
         ]);

@@ -39,7 +39,6 @@ class SetAction {
 
         \RepositoryManager::product()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products, &$categoriesById) {
             foreach ($data as $item) {
-                //$products[] = new \Model\Product\ExpandedEntity($item);
                 $product = new \Model\Product\Entity($item);
                 if (!$product->isAvailable()) continue;
 

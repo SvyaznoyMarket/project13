@@ -74,7 +74,7 @@
 		// Throttled ajax query
 		ko.computed(function(){
 			var val = self.searchInput();
-			var params = {q: val, sender: 'knockout'};
+			var params = {q: val};
 
 			if (self.currentCategory() != null) params.catId = self.currentCategory().id;
 

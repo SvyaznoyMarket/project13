@@ -6,7 +6,7 @@ return function(
     $meanQuery,
     $forceMean,
     $count,
-    \Model\Product\Category\BasicEntity $category = null
+    \Model\Product\Category\Entity $category = null
 ) { ?>
 
     <? if ($count) { // если товары найдены ?>

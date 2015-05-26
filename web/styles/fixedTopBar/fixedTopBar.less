@@ -226,12 +226,21 @@
 		text-align: center;
 		line-height: 47px;
 		height: 50px;
+        width: 50px;
 
 		.crumbsImg {
 			max-height: 40px;
+            max-width: 40px;
 			.inline-block();
 			vertical-align: middle;
 		}
+        &:after{
+            content: "";
+            width: 0;
+            height: 100%;
+            .inline-block();
+            vertical-align: middle;
+        }
 	}
 
 	&_crumbsList {
@@ -497,6 +506,9 @@
 				&_img {
 					.inline-block();
 					vertical-align: middle;
+                    max-height: 40px;
+                    width: auto;
+                    max-width: 40px;
 				}
 
 				&_n {

@@ -77,7 +77,7 @@ class ProductButtonAction {
         } else if ($product->isGifteryCertificate()) {
             $data['isGiftery'] = true;
             $data['url'] = '#';
-            $data['class'] .= ' btnBuy__eLink giftery-show-widget ';
+            $data['class'] .= ' btnBuy__eLink giftery-show-widget' . $colorClass;
             $data['value'] = 'Купить';
         } else if ($product->isInShopStockOnly() && \App::user()->getRegion()->getForceDefaultBuy()) { // Резерв товара
             $data['id'] = 'quickBuyButton-' . $product->getId();

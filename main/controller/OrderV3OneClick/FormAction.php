@@ -33,6 +33,8 @@ class FormAction {
             });
         }
 
+        $medias = [];
+
         \RepositoryManager::product()->prepareEntityByUid($productUid, function($data) use (&$product) {
             if (!is_array($data)) return;
 
@@ -43,8 +45,14 @@ class FormAction {
             }
         });
 
+        \RepositoryManager::product()->prepareProductsMediasByUids([$productUid], $medias);
+
         // выполнение 1-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
+
+        if ($product) {
+            \RepositoryManager::product()->setMediasForProducts([$product->getId() => $product], $medias);
+        }
 
         $regionEntity = $user->getRegion();
         if ($regionEntity instanceof \Model\Region\Entity) {

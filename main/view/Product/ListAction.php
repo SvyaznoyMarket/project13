@@ -48,7 +48,7 @@ class ListAction {
                 $showState,
                 $cartButtonAction,
                 $reviewAction,
-                (3 === $columnCount) ? 6 : 7,
+                (3 === $columnCount) ? 'product_350' : 'product_200',
                 $cartButtonSender
             );
         }

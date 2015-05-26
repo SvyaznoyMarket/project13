@@ -6,13 +6,11 @@
  * @var $accessories       \Model\Product\Entity[]
  * @var $accessoryCategory \Model\Product\Category\Entity[]
  * @var $kit               \Model\Product\Entity[]
- * @var $additionalData    array
  * @var $shopStates        \Model\Product\ShopState\Entity[]
  * @var $creditData        array
  * @var $deliveryData      array
  * @var $isTchibo          boolean
  * @var $addToCartJS string
- * @var $isUserSubscribedToEmailActions boolean
  * @var $actionChannelName string
  */
 
@@ -28,14 +26,14 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
 <?= $helper->render('product/__data', ['product' => $product]) ?>
 
 <div class="bProductSectionLeftCol">
-    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens]) ?>
+    <?= $helper->render('product/__photo', ['product' => $product]) ?>
 
     <div class="bProductDesc<? if (!$creditData['creditIsAllowed'] || $user->getRegion()->getHasTransportCompany()): ?> mNoCredit<? endif ?>" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
         <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
 
-        <?= $helper->render('product/__notification-lowerPrice', ['product' => $product, 'isUserSubscribedToEmailActions' => $isUserSubscribedToEmailActions, 'actionChannelName' => $actionChannelName]) // Узнать о снижении цены ?>
+        <?= $helper->render('product/__lowPriceNotifier', ['product' => $product, 'actionChannelName' => $actionChannelName]) // Узнать о снижении цены ?>
 
         <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
 
@@ -96,9 +94,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             'count'          => count($product->getAccessoryId()),
             'limit'          => (bool)$accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
             'page'           => 1,
-            //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
             'gaEvent'        => 'Accessorize',
-            'additionalData' => $additionalData,
             'sender'         => [
                 'position' => 'ProductAccessoriesManual',
             ],
@@ -114,7 +110,6 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             'count'          => null,
             'limit'          => \App::config()->product['itemsInSlider'],
             'page'           => 1,
-            'additionalData' => $additionalData,
             'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
             'sender'         => [
                 'name'     => 'retailrocket',

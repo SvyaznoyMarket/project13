@@ -38,6 +38,7 @@
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
     <?= $page->slotConfig() ?>
     <?= $page->slotContent() ?>
+    <?= $page->slotUserConfig() ?>
     <?= $page->slotMustacheTemplates() ?>
 
     <div style="position:absolute; height: 0; top:0; z-index:-1;">

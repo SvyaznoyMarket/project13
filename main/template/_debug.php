@@ -52,6 +52,8 @@
                                 <th>Retry</th>
                                 <th>Server</th>
                                 <th>Mode</th>
+                                <th title="Response body length (in bytes)">Length</th>
+                                <th>Error</th>
                                 <th>Query</th>
                             </tr>
                         {{#value}}
@@ -72,6 +74,8 @@
                                 <!--<td class="query-cell"><span title="Retry count">{{retryCount}}</span></td>-->
                                 <td class="query-cell">{{header.X-Server-Name}}</td>
                                 <td class="query-cell">{{header.X-API-Mode}}</td>
+                                <td class="query-cell">{{responseBodyLength}}</td>
+                                <td class="query-cell">{{#error}}({{code}}) {{message}}{{/error}}</td>
                                 <td class="query-cell">
                                     <a href="{{^data}}{{url}}{{/data}}{{#data}}/debug/query?data={{encodedData}}&url={{encodedUrl}}{{/data}}" target="_blank" class="openDirectly">&#11016;</a>
                                     <a class="query
@@ -311,6 +315,9 @@
     }
     .debug-panel .property-value .query-default {
         color: #ffffff;
+    }
+    .debug-panel .property-value th[title] {
+        cursor: help;
     }
     .debug-panel .property-value .query-cell {
         padding: 2px 10px 2px 0;

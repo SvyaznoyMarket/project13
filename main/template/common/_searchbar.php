@@ -79,7 +79,7 @@ $btnTypes = array(
             <div class="searchdd_t" data-bind="visible: searchResultProducts().length > 0"><span class="searchdd_t_tx">Товары</span></div>
                 <!-- ko foreach:  searchResultProducts -->
                 <a href="" class="searchdd_lk jsSearchSuggestProduct" data-bind="attr: { href: link }">
-                    <img alt="" class="searchdd_img" data-bind="attr: { src: image }" />
+                    <span class="searchdd_img-wrap"><img alt="" class="searchdd_img" data-bind="attr: { src: image }" /></span>
                     <span class="searchdd_tx"><span class="undrlh" data-bind="text: name"></span></span>
                 </a>
                 <!-- /ko -->

@@ -85,7 +85,7 @@ class ProductAction {
                 'id'        => $product->getId(),
                 'article'   => $product->getArticle(),
                 'name'      => $product->getName(),
-                'img'       => $product->getImageUrl(),
+                'img'       => $product->getMainImageUrl('product_120'),
                 'link'      => $product->getLink(),
                 'price'     => $product->getPrice(),
                 'deleteUrl' => $cartProduct  ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,
@@ -179,7 +179,7 @@ class ProductAction {
                 throw new \Exception('Не получены данные о товарах');
             }
 
-            /** @var $productsById \Model\Product\CompactEntity[] */
+            /** @var $productsById \Model\Product\Entity[] */
             $productsById = [];
             /** @var $productQuantitiesById array */
             $productQuantitiesById = [];
@@ -203,14 +203,19 @@ class ProductAction {
                 throw new \Exception('Не собраны ид товаров');
             }
 
+            $medias = [];
             foreach (array_chunk(array_keys($productsById), \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
                 \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
                     foreach ($data as $item) {
                         $productsById[$item['id']] = new \Model\Product\Entity($item);
                     }
                 });
+
+                \RepositoryManager::product()->prepareProductsMediasByIds($productsInChunk, $medias);
             }
             \App::coreClientV2()->execute();
+
+            \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
 
             $quantity = 0;
             foreach ($productsById as $productId => $product) {
@@ -264,7 +269,7 @@ class ProductAction {
                 $productInfo = [
                     'id'    => $product->getId(),
                     'name'  =>  $product->getName(),
-                    'img'   =>  $product->getImageUrl(2),
+                    'img'   =>  $product->getMainImageUrl('product_160'),
                     'link'  =>  $product->getLink(),
                     'price' =>  $product->getPrice(),
                     'deleteUrl' => $cartProduct  ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,
