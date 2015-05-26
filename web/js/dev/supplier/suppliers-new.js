@@ -6,16 +6,19 @@
         authClass = 'supplier-login',
         inputErrorClass = 'error',
         $registerForm = $('#b2bRegisterForm'),
-        validate;
+        validate,
+        $inputs = $registerForm.find('input'),
+        $detailName = $registerForm.find('[name=detail\\[name\\]]'),
+        $userName = $registerForm.find('[name=first_name]'),
+        $email = $registerForm.find('[name=email]'),
+        $phone = $registerForm.find('[name=mobile]'),
+        $agreed = $registerForm.find('[name=agree]');
+
+    $.mask.placeholder= " ";
+    $phone.mask('8 999 999 99 99');
 
     /* Функция валидации формы */
     validate = function(){
-        var $inputs = $registerForm.find('input'),
-            $detailName = $registerForm.find('[name=detail\\[name\\]]'),
-            $userName = $registerForm.find('[name=first_name]'),
-            $email = $registerForm.find('[name=email]'),
-            $phone = $registerForm.find('[name=mobile]'),
-            $agreed = $registerForm.find('[name=agree]');
 
         // Очищаем классы ошибок
         $inputs.removeClass(inputErrorClass);
@@ -56,11 +59,11 @@
                     $supplierLoginButton.click();
                     // Подставим email в попап логина
                     $authPopup.find('[name=signin\\[username\\]]').val($registerForm.find('[name=email]').val());
-                    // TODO дописать "Пароль отправлен на ваш email (и телефон)"
+                    $('<div style="font-weight: bold; margin: 10px 0; color: gray" />').text('Пароль выслан на телефон и email').insertAfter($title)
                 }
 
                 if (data.error == 'Некорректный email' || data.error == 'Такой email уже занят') $registerForm.find('[name=email]').addClass(inputErrorClass);
-                if (data.error == '"Должен быть мобильный номер телефона"') $registerForm.find('[name=mobile]').addClass(inputErrorClass);
+                if (data.error == '"Должен быть мобильный номер телефона"' || data.error == 'Такой номер уже занят') $registerForm.find('[name=mobile]').addClass(inputErrorClass);
             },
             error: function(){
                 console.error('User registration error');

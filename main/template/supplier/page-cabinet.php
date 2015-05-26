@@ -109,7 +109,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-group__lbl">Расчетный счет</label>
-                    <input name="detail[account]" data-mask="9999999999999?9999999999" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['account'] ?>">
+                    <input name="detail[account]" data-mask="9999999999999?999999999999" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['account'] ?>">
                 </div>
                 <div class="control-group">
                     <label class="control-group__lbl">Корреспондентский счет</label>

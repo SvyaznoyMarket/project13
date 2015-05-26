@@ -46,6 +46,7 @@
                 <label class="control-group__lbl">Наименование организации</label>
                 <input name="detail[name]" class="control-group__input" placeholder="">
             </div>
+
             <div class="control-group">
                 <label class="control-group__lbl">Форма собственности</label>
                 <div class="custom-select custom-select--suppliers">
@@ -58,26 +59,31 @@
                     </select>
                 </div>
             </div>
+
             <div class="control-group">
                 <label class="control-group__lbl">Контактное лицо</label>
                 <input name="first_name" class="control-group__input" placeholder="">
             </div>
+
             <div class="control-group">
                 <label class="control-group__lbl">E-mail</label>
                 <input name="email" class="control-group__input" placeholder="">
             </div>
+
             <div class="control-group">
                 <label class="control-group__lbl">Мобильный телефон</label>
-                <input name="mobile" class="control-group__input" placeholder="">
+                <input name="mobile" class="control-group__input" placeholder="8 (926) 123 45 67">
             </div>
+
             <div class="control-group">
                 <input type="checkbox" class="customInput customInput-checkbox js-customInput" id="accept" name="agree" value="">
 
                 <label class="customLabel customLabel-checkbox" for="accept">
-                    Принимаю условия <a class="suppliers-offer" href="http://content.enter.ru/wp-content/uploads/2013/10/оферта-для-юридических-лиц.docx">договора оферты</a>
+                    Принимаю условия <a class="suppliers-offer" href="//content.enter.ru/wp-content/uploads/2013/10/оферта-для-юридических-лиц.docx">договора оферты</a>
                 </label>
           
             </div>
+
             <div class="supply-btn__wrap">
                 <input type="submit" class="supply-btn supply-btn-big" value="Стать партнером" />
             </div>

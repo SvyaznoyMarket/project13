@@ -22,6 +22,8 @@
         $bik = $('[name=detail\\[bik\\]]'),
         $okpo = $('[name=detail\\[okpo\\]]');
 
+    if (!/supplier\/cabinet/.test(window.location.href)) return;
+
     validate = function(){
 
         var result;
