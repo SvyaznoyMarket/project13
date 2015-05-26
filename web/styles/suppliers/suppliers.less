@@ -272,10 +272,30 @@
                 height: 40px;
                 line-height: 40px;
                 padding: 0 10px;
+                position: relative;
+                cursor: pointer;
                 &:nth-child(2n-1){
                     background-color: #f5f5f5;
+                    .prices-list__file-name{
+                        &:after{
+                            .after-gradient-stub(30px,@start:rgba(255,255,255,0), @stop:#f5f5f5);
+                        }
+                    }
                 }
-
+                &:hover:after{
+                    background: #333;
+                    background: rgba(0, 0, 0, 0.4);
+                    border-radius: 5px;
+                    bottom: 30px;
+                    color: #fff;
+                    content: attr(hint);
+                    left: 10px;
+                    padding: 3px 5px;
+                    position: absolute;
+                    z-index: 98;
+                    width: 350px;
+                    line-height: 18px;
+                }
             }
             &__file-name{
                 color: #363636;
@@ -283,6 +303,13 @@
                 margin:0 4px;
                 font-size: 16px;
                 .inline-block();
+                white-space: nowrap;
+                position: relative;
+                overflow: hidden;
+                &:after{
+                    .after-gradient-stub(30px);
+                }
+
             }
             &__date{
                 color: #666666;
@@ -316,7 +343,7 @@
         color: #ef404a;
         font-size: 16px;
         .inline-block-middle();
-        width: 170px;
+        width: 152px;
         float: right;
         margin-bottom: 20px;
     }
