@@ -52,7 +52,10 @@
         beforeSubmit  : function(uploadData){
             console.log (uploadData);
             if (uploadData.success) {
-                if (uploadData.html) $('.jsPricesList').prepend(uploadData.html);
+                if (uploadData.html) {
+                    $('.jsPricesDiv').show();
+                    $('.jsPricesList').prepend(uploadData.html);
+                }
             }
             return true;
         },
