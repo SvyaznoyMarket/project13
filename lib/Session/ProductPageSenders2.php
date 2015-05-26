@@ -3,23 +3,23 @@
 namespace Session;
 
 /**
- * SITE-5062
+ * SITE-5072
  */
-class ProductPageSenders {
+class ProductPageSenders2 {
     /**
      * @param string $productUid
-     * @return array
+     * @return string
      */
     public static function get($productUid) {
-        $productPageSenders = \App::session()->get(\App::config()->product['productPageSendersSessionKey']);
+        $productPageSenders = \App::session()->get(\App::config()->product['productPageSenders2SessionKey']);
         if (isset($productPageSenders[$productUid])) {
             return $productPageSenders[$productUid];
         }
 
-        return [];
+        return '';
     }
 
     public static function clean() {
-        \App::session()->set(\App::config()->product['productPageSendersSessionKey'], []);
+        \App::session()->set(\App::config()->product['productPageSenders2SessionKey'], []);
     }
 }

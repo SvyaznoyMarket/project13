@@ -9,8 +9,9 @@ $f = function (
     \Helper\TemplateHelper $helper,
     array $shopStates = [],
     \Model\Product\Entity $product,
-    array $sender = [],
-    $sender2 = ''
+    $sender = [],
+    $sender2 = '',
+    $location = ''
 ) {
     $currentRegionId = \App::user()->getRegionId();
 ?>
@@ -77,6 +78,7 @@ $f = function (
                                 'value'   => 'Купить',
                                 'sender'  => $sender,
                                 'sender2' => $sender2,
+                                'location'  => $location,
                             ]) ?>
                         <? else: ?>
                             <span class="btnText">На витрине</span>

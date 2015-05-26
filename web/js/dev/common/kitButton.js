@@ -28,7 +28,11 @@
 					destroyOnClose: true
 				});
 
-				ko.applyBindings(new PopupModel(result.product, $button.data('sender'), $button.data('sender2') || ''), $popup[0]);
+				ko.applyBindings(new PopupModel(
+					result.product,
+					ENTER.utils.analytics.productPageSenders.get($button),
+					ENTER.utils.analytics.productPageSenders2.get($button)
+				), $popup[0]);
 
 				// Закрытие окна
 				$body.one('addtocart', function(){
@@ -84,17 +88,21 @@
 				id = 0;
 
 			ko.utils.arrayForEach(self.products(), function(item){
-				if (item.count() > 0 ) {
+				if (item.count() > 0) {
 					link += 'product['+id+'][id]=' + item.id + '&product['+id+'][quantity]=' + item.count() + '&';
 					id += 1;
 				}
 			});
 
-			link += $.param({sender: sender});
+			if (sender) {
+				link += $.param({sender: sender}) + '&';
+			}
 
 			if (sender2) {
-				link += '&' + $.param({sender2: sender2});
+				link += $.param({sender2: sender2}) + '&';
 			}
+
+			link = link.slice(0, -1);
 
 			return link;
 		});

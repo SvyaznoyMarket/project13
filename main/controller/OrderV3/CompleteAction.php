@@ -6,7 +6,7 @@ use Model\Order\Entity;
 use Model\PaymentMethod\PaymentEntity;
 use Model\Point\PointEntity;
 use Session\ProductPageSenders;
-use Session\ProductPageSendersForMarketplace;
+use Session\ProductPageSenders2;
 
 class CompleteAction extends OrderV3 {
 
@@ -30,7 +30,7 @@ class CompleteAction extends OrderV3 {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         ProductPageSenders::clean();
-        ProductPageSendersForMarketplace::clean();
+        ProductPageSenders2::clean();
 
         /** @var \Model\Order\Entity[] $orders */
         $orders = [];

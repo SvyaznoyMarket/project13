@@ -122,9 +122,6 @@ class IndexAction {
             }
         });
 
-        \Session\ProductPageSenders::add($product->getUi(), $request->query->get('sender'));
-        \Session\ProductPageSendersForMarketplace::add($product->getUi(), $request->query->get('sender2'));
-
         // товар для Подари Жизнь
         $lifeGiftProduct =
             ($actionResponse->lifeGiftProductQuery && $actionResponse->lifeGiftProductQuery->response->product)

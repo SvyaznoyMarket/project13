@@ -3,19 +3,23 @@
  *
  * @requires jQuery
  */
-(function() {
-	var
-		productInfo = $('#jsProductCard').data('value') || {},
-	// end of vars
+$(function() {
+	var $productCardData = $('#jsProductCard');
+	if (!$productCardData.length || $('body').data('template') != 'product_card') {
+		return;
+	}
 
+	var
+		product = $productCardData.data('value') || {},
+		query = $.deparam((location.search || '').slice(1)),
 		reviewsYandexClick = function ( e ) {
 			console.log('reviewsYandexClick');
 			var
 				link = this //, url = link.href
 			;
 
-			if ( 'undefined' !==  productInfo.article ) {
-				_gaq.push(['_trackEvent', 'YM_link', productInfo.article]);
+			if ( 'undefined' !==  product.article ) {
+				_gaq.push(['_trackEvent', 'YM_link', product.article]);
 				e.preventDefault();
 				if ( 'undefined' !== link ) {
 					setTimeout(function () {
@@ -25,11 +29,9 @@
 				}
 			}
 		};
-	// end of functions and vars
-	
-	if ( !$('#jsProductCard').length ) {
-		return false;
-	}
+
+	ENTER.utils.analytics.productPageSenders.add(product.ui, query.sender);
+	ENTER.utils.analytics.productPageSenders2.add(product.ui, query.sender2);
 
 	if ( typeof _gaq !== 'undefined' ) {
 		// GoogleAnalitycs for review click
@@ -37,4 +39,4 @@
 			$(this).one( "click", reviewsYandexClick); // переопределяем только первый клик
 		});
 	}
-})();
+});

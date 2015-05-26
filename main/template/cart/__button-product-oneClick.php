@@ -7,8 +7,9 @@ return function (
     $class = null,
     $value = 'Купить быстро в 1 клик',
     \Model\Shop\Entity $shop = null,
-    array $sender = [],
-    $sender2 = ''
+    $sender = [],
+    $sender2 = '',
+    $location = ''
 ) {
     $region = \App::user()->getRegion();
 
@@ -59,10 +60,6 @@ return function (
         $urlParams = [
             'productId' => $product->getId(),
         ];
-
-        if ($helper->hasParam('sender')) {
-            $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
-        }
 
         if ($sender) {
             $urlParams = array_merge($urlParams, [
@@ -115,7 +112,18 @@ return function (
 
     <!--noindex-->
     <div class="btnOneClickBuy">
-        <a href="<?= $url ?>" id="<?= $id ?>" class="btnOneClickBuy__eLink <?= $class ?>" data-shop="<?= $shop ? $shop->getId() : null ?>" data-product-ui="<?= $helper->escape($product->getUi()) ?>" data-sender="<?= $helper->json($sender) ?>" data-sender2="<?= $helper->escape($sender2) ?>"><?= $value ?></a>
+        <a
+            href="<?= $url ?>"
+            id="<?= $id ?>"
+            class="btnOneClickBuy__eLink <?= $class ?>"
+            data-shop="<?= $shop ? $shop->getId() : null ?>"
+            data-product-ui="<?= $helper->escape($product->getUi()) ?>"
+            data-sender="<?= $helper->json($sender) ?>"
+            data-sender2="<?= $helper->escape($sender2) ?>"
+            <? if ($location): ?>
+                data-location="<?= $helper->escape($location) ?>"
+            <? endif ?>
+        ><?= $value ?></a>
     </div>
     <!--/noindex-->
 

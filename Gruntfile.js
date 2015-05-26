@@ -14,6 +14,7 @@ module.exports = function(grunt) {
                 jsDevPath+'jquery-plugins/jquery.maskedinput.js',
                 jsDevPath+'jquery-plugins/jquery.put_cursor_at_end.js',
                 jsDevPath+'jquery-plugins/goodsCounter.js',
+                jsDevPath+'jquery-plugins/jquery.deparam.js',
                 jsDevPath+'jquery-plugins/jquery.elevatezoom.js',
                 jsDevPath+'jquery-plugins/customDropDown.js',
                 jsDevPath+'jquery-plugins/goodsSlider.js',

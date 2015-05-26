@@ -32,8 +32,8 @@ $isKitPage = (bool)$product->getKit();
 
 $isProductAvailable = $product->isAvailable();
 
-$buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
-$buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
+$buySender = $request->get('sender');
+$buySender2 = $request->get('sender2');
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -61,6 +61,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
             <?= $helper->render('cart/__button-product', [
                 'product'  => $product,
                 'sender'   => $buySender,
+                'sender2'  => $buySender2,
                 'location' => 'product-card',
             ]) ?>
         </div>
