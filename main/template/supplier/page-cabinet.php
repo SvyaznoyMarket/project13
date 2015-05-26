@@ -102,27 +102,27 @@
                 </div>
                 <div class="control-group">
                     <label class="control-group__lbl">ИНН</label>
-                    <input name="detail[inn]" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['inn'] ?>">
+                    <input name="detail[inn]" data-mask="9999999999?99" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['inn'] ?>">
                 </div>
                 <div class="control-group">
                     <label class="control-group__lbl">КПП</label>
-                    <input name="detail[kpp]" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['kpp'] ?>">
+                    <input name="detail[kpp]" data-mask="999999999" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['kpp'] ?>">
                 </div>
                 <div class="control-group">
                     <label class="control-group__lbl">Расчетный счет</label>
-                    <input name="detail[account]" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['account'] ?>">
+                    <input name="detail[account]" data-mask="9999999999999?9999999999" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['account'] ?>">
                 </div>
                 <div class="control-group">
                     <label class="control-group__lbl">Корреспондентский счет</label>
-                    <input name="detail[korr_account]" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['korr_account'] ?>">
+                    <input name="detail[korr_account]" data-mask="99999999999999999999" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['korr_account'] ?>">
                 </div>
                 <div class="control-group">
                     <label class="control-group__lbl">БИК</label>
-                    <input name="detail[bik]" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['bik'] ?>">
+                    <input name="detail[bik]" data-mask="999999999" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['bik'] ?>">
                 </div>
                 <div class="control-group">
                     <label class="control-group__lbl">Код ОКПО</label>
-                    <input name="detail[okpo]" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['okpo'] ?>">
+                    <input name="detail[okpo]" data-mask="99999999" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['okpo'] ?>">
                 </div>
                 <div class="control-group">
                     <input class="supply-btn" value="Сохранить" type="submit">

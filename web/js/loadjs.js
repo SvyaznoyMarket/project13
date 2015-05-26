@@ -259,6 +259,7 @@
                     .wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )
+                    .script( getWithVersion('supplier.js') )
                     .script( getWithVersion('ports.js') )
 			}).runQueue();
 		},
