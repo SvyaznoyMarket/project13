@@ -29,7 +29,12 @@ class Layout extends \View\DefaultLayout {
         // SociaPlus
         $html .= '<div id="sociaPlusJs" class="jsanalytics"></div>';
 
-        $actionpayData = \App::partner()->getName() == 'actionpay' ?  (new \View\Partners\ActionPay($routeName, $this->params))->execute() : [];
+        if ($routeName != 'orderV3.complete') {
+            $actionpayData = (new \View\Partners\ActionPay($routeName, $this->params))->execute();
+        } else {
+            $actionpayData = \App::partner()->getName() == 'actionpay' ?  (new \View\Partners\ActionPay($routeName, $this->params))->execute() : [];
+        }
+
         $html .= '<div id="ActionPayJS" data-vars="' . $this->json($actionpayData) . '" class="jsanalytics"></div>';
 
         return $html;
