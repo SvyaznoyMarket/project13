@@ -7,6 +7,8 @@
         $detailsForm = $('#detailsForm'),
         $fileInput = $('#priceInput'),
         $fileButton  = $('#priceButton'),
+        $editButton = $('.jsEditDetails'),
+        $fillFormMessage = $('.jsFillFormSpan'),
         inputErrorClass = 'error',
         validate, initMaskedInput,
         $name = $('[name=detail\\[name\\]]'),
@@ -22,13 +24,20 @@
 
     validate = function(){
 
+        var result;
+
         $detailsForm.find('input').removeClass(inputErrorClass);
 
         $.each([$name, $nameFull, $address, $realAddress, $inn, $kpp, $account, $corrAccount, $bik, $okpo], function(i,$elem){
             if ($elem.val() == '') $elem.addClass(inputErrorClass);
         });
 
-        return $detailsForm.find('input.'+inputErrorClass).length > 0
+        result = $detailsForm.find('input.'+inputErrorClass).length > 0;
+
+        if (!result) $fillFormMessage.hide();
+        else $fillFormMessage.show();
+
+        return result;
     };
 
     // jquery.maskedinput
@@ -79,6 +88,11 @@
                 console.error('User update failed')
             }
         })
+    });
+
+    $editButton.on('click', function(e){
+        e.preventDefault();
+        $detailsForm.show();
     });
 
     validate();

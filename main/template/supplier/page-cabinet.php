@@ -19,7 +19,7 @@
         </div>
         <div class="suppliers__right-top">
             <span class="suppliers__support">По всем вопросам звоните<br>+7 (495) 775-00-06</span>
-            <div class="btn-wrap"><a class="load-btn" href="#">Изменить</a></div>
+            <div class="btn-wrap"><a class="load-btn jsEditDetails" href="#">Изменить</a></div>
         </div>
         <div class="user-info-text">
             <? if ($userEntity->isLegalDetailsFull()) : ?>
@@ -67,10 +67,10 @@
             </div>
         <? endif ?>
 
-        <? if (!$userEntity->isLegalDetailsFull()) : ?>
             <form action="<?= \App::helper()->url('supplier.update') ?>"
                   id="detailsForm"
-                  method="post">
+                  method="post"
+                  style="display: <?= $userEntity->isLegalDetailsFull() ? 'none':'block' ?>">
                 <div class="suppliers__sect-tl">Зарегистрировать поставщика</div>
                 <div class="control-group">
                     <label class="control-group__lbl">Наименование юридического лица</label>
@@ -126,10 +126,9 @@
                 </div>
                 <div class="control-group">
                     <input class="supply-btn" value="Сохранить" type="submit">
-                    <div class="details-info"><span class="jsAddressSaved" style="display: none">Реквизиты сохранены.</span> Заполните все поля.</div>
+                    <div class="details-info"><span class="jsAddressSaved" style="display: none; color: #3cb371">Реквизиты сохранены.</span> <span class="jsFillFormSpan" style="display: <?= $userEntity->isLegalDetailsFull() ? 'none' : 'inline' ?>">Заполните все поля.</span></div>
                 </div>
             </form>
-        <? endif ?>
     </div>
 
 </div>
