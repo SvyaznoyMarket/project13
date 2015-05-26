@@ -100,7 +100,7 @@ class CompareAction {
 
             foreach ($compareProducts as $compareProduct) {
                 /** @var \Model\Product\Entity $product */
-                $product = $products[$compareProduct['id']];
+                $product = isset($products[$compareProduct['id']]) ? $products[$compareProduct['id']] : null;
                 if (!$product) continue;
 
                 $typeId = $product->getType() ? $product->getType()->getId() : null;

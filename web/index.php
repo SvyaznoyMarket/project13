@@ -134,10 +134,10 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
 
 });
 
-// восстановление параметров родительского запроса для SSI
-if (isset($_GET['SSI']) && (true === $_GET['SSI']) && \App::config()->ssi['enabled']) {
-    $queryStrPosition = strpos($_SERVER['REQUEST_URI'], '?');
-    $parent_query = substr($_SERVER['REQUEST_URI'], $queryStrPosition === false ? 0 : $queryStrPosition + 1);
+// восстановление параметров родительского запроса для SSI, родительский запрос передается в headers x-uri
+if ($_SERVER['SCRIPT_NAME'] == '/ssi.php') {
+    $queryStrPosition = strpos($_SERVER['HTTP_X_URI'], '?');
+    $parent_query = substr($_SERVER['HTTP_X_URI'], $queryStrPosition === false ? 0 : $queryStrPosition + 1);
     parse_str($parent_query, $params);
     $_GET = array_merge($_GET, $params);
 }
@@ -146,7 +146,7 @@ if (isset($_GET['SSI']) && (true === $_GET['SSI']) && \App::config()->ssi['enabl
 
 // request
 $request =
-    (isset($_GET['SSI']) && (true === $_GET['SSI']) && \App::config()->ssi['enabled'])
+    $_SERVER['SCRIPT_NAME'] == '/ssi.php'
     ? \Http\Request::create(
         '/ssi' . (!empty($_GET['path']) ? $_GET['path'] : ''),
         'GET',

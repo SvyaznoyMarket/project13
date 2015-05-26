@@ -71,20 +71,8 @@ class DeliveryAction extends OrderV3 {
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
             $orderDelivery = $this->getSplit($data);
 
-            $medias = [];
             foreach($orderDelivery->orders as $order) {
                 $this->logger(['delivery-self-price' => $order->delivery->price]);
-                \RepositoryManager::product()->prepareProductsMediasByIds(array_map(function(\Model\OrderDelivery\Entity\Order\Product $product) { return $product->id; }, $order->products), $medias);
-            }
-
-            \App::coreClientV2()->execute();
-
-            foreach($orderDelivery->orders as $order) {
-                foreach ($order->products as $product) {
-                    if (isset($medias[$product->id])) {
-                        $product->medias = $medias[$product->id];
-                    }
-                }
             }
 
             $subscribeResult = false;  // ответ на подписку
@@ -184,7 +172,7 @@ class DeliveryAction extends OrderV3 {
         }
 
         $orderDelivery = new \Model\OrderDelivery\Entity($orderDeliveryData);
-        if (!(bool)$orderDelivery->orders) {
+        if (!$orderDelivery->orders) {
             foreach ($orderDelivery->errors as $error) {
                 if (708 == $error->code) {
                     throw new \Exception('Товара нет в наличии');
@@ -192,6 +180,21 @@ class DeliveryAction extends OrderV3 {
             }
 
             throw new \Exception('Отстуствуют данные по заказам');
+        }
+
+        $medias = [];
+        foreach($orderDelivery->orders as $order) {
+            \RepositoryManager::product()->prepareProductsMediasByIds(array_map(function(\Model\OrderDelivery\Entity\Order\Product $product) { return $product->id; }, $order->products), $medias);
+        }
+
+        \App::coreClientV2()->execute();
+
+        foreach($orderDelivery->orders as $order) {
+            foreach ($order->products as $product) {
+                if (isset($medias[$product->id])) {
+                    $product->medias = $medias[$product->id];
+                }
+            }
         }
 
         // обновляем корзину пользователя
