@@ -172,12 +172,15 @@ window.ANALYTICS = {
 
 				window.LiveTex = {
 					onLiveTexReady: function () {
+                        var widgetHidden = $('.lt-invite').is(':hidden');
 						window.LiveTex.setName(LTData.username);
 						LiveTex.on('chat_open', function(){
 							if ('undefined' != typeof(_gaq)) {
 								_gaq.push(['_trackEvent', 'webchat', 'chat_started']);
 							}
 						});
+                        console.log('onLiveTexReady, widget hidden: ', widgetHidden);
+                        body.trigger('trackGoogleEvent', ['webchat', 'chat_visibility', widgetHidden ? 'hidden' : 'visible']);
 					},
 
 					invitationShowing: true,
