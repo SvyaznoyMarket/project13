@@ -7,7 +7,7 @@
     .header{
         width: 100%;
         background-color: #000;
-        margin: 0 0 10px 0;
+        margin: 0;
         padding: 0;
     }
     .js-topbar-static{
@@ -31,9 +31,10 @@
         position: relative;
         width: 100%;
         .box-sizing(border-box);
-        //background-color: rgba(255,255,255,0.9);
 
-        //background-color: rgba(247, 247, 247, 0.75);
+        background-color: rgba(247, 247, 247, 0.75);
+        .box-shadow(0 2px 3px 0 rgba(0, 0, 0, 0.31));
+
         &-inn{
             width: 920px;
             padding: 0 10px;
@@ -67,16 +68,6 @@
 
             }
         }
-        &:after{
-            content: "";
-            .box-shadow(0 10px 12px -8px rgba(0, 0, 0, 0.31));
-            height: 20px;
-            width: 100%;
-            position: absolute;
-            left:0;
-            bottom: 0px;
-        }
-
     }
     &__support{
         font-size: 14px;

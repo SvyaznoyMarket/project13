@@ -5,7 +5,7 @@
  */
 ?>
 
-<div class="suppliers__head clearfix">
+<div class="suppliers__head">
     <div class="suppliers__head-inn clearfix">
         <div class="suppliers__tl"><i class="suppliers-icon"></i>
             <div class="user">
