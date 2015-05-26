@@ -56,8 +56,8 @@
     </div>
 
     <div class="suppliers__form suppliers__sect">
-        <? if ($userPrices) : ?>
-            <div class="prices">
+
+            <div class="prices jsPricesDiv" style="display: <?= $userPrices ? 'block' : 'none' ?>">
                 <div class="suppliers__sect-tl">Ваши прайс-листы</div>
                 <ul class="prices-list jsPricesList">
                     <? foreach ($userPrices as $key => $price) : ?>
@@ -65,7 +65,6 @@
                     <? endforeach ?>
                 </ul>
             </div>
-        <? endif ?>
 
             <form action="<?= \App::helper()->url('supplier.update') ?>"
                   id="detailsForm"
