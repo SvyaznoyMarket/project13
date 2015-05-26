@@ -19,7 +19,7 @@
         </div>
         <div class="suppliers__right-top">
             <span class="suppliers__support">По всем вопросам звоните<br>+7 (495) 775-00-06</span>
-            <div class="btn-wrap"><a class="load-btn jsEditDetails" href="#">Изменить</a></div>
+            <div class="btn-wrap" style="display: <?= !$userEntity->isLegalDetailsFull() ? 'none' : 'block' ?>"><a class="load-btn jsEditDetails" href="#">Изменить</a></div>
         </div>
         <div class="user-info-text">
             <? if ($userEntity->isLegalDetailsFull()) : ?>

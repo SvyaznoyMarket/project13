@@ -100,6 +100,4 @@
         $detailsForm.show();
     });
 
-    validate();
-
 }(jQuery);
