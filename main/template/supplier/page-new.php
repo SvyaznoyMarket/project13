@@ -72,7 +72,7 @@
 
             <div class="control-group">
                 <label class="control-group__lbl">Мобильный телефон</label>
-                <input name="mobile" class="control-group__input" placeholder="8 (926) 123 45 67">
+                <input name="mobile" class="control-group__input" placeholder="">
             </div>
 
             <div class="control-group">

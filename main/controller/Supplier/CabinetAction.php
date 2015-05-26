@@ -4,6 +4,7 @@ namespace controller\Supplier;
 
 
 use Exception\AccessDeniedException;
+use Http\RedirectResponse;
 use Http\Request;
 use Http\Response;
 use Http\JsonResponse;
@@ -17,13 +18,16 @@ use View\Supplier\CabinetPage;
 class CabinetAction {
 
     public function __construct() {
-        if (!\App::user()->getEntity()) throw new AccessDeniedException();
+        // if (!\App::user()->getEntity()) throw new AccessDeniedException();
     }
 
     /** Index-страница
      * @return Response
      */
     public function index() {
+
+        if (!\App::user()->getEntity()) return new RedirectResponse(\App::helper()->url('supplier.new'));
+
         $page = new CabinetPage();
         $userPrices = [];
         $client = \App::fileStorageClient();
