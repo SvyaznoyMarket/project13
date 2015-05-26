@@ -22,11 +22,13 @@
             <div class="btn-wrap"><a class="load-btn" href="#">Изменить</a></div>
         </div>
         <div class="user-info-text">
-            <? if ($userEntity->legalDetails['legal_address']) : ?><?= $userEntity->legalDetails['legal_address'] ?><br><? endif ?>
-            <? if ($userEntity->legalDetails['inn']) : ?>ИНН <?= $userEntity->legalDetails['inn'] ?><br><? endif ?>
-            <? if ($userEntity->legalDetails['kpp']) : ?>КПП <?= $userEntity->legalDetails['kpp'] ?><br><? endif ?>
-            <? if ($userEntity->legalDetails['account']) : ?>Р/С <?= $userEntity->legalDetails['account'] ?><br><? endif ?>
-            <? if ($userEntity->legalDetails['korr_account']) : ?>К/С <?= $userEntity->legalDetails['korr_account'] ?><? endif ?>
+            <? if ($userEntity->isLegalDetailsFull()) : ?>
+                <?= $userEntity->legalDetails['legal_address'] ?><br>
+                ИНН <?= $userEntity->legalDetails['inn'] ?><br>
+                КПП <?= $userEntity->legalDetails['kpp'] ?><br>
+                Р/С <?= $userEntity->legalDetails['account'] ?><br>
+                К/С <?= $userEntity->legalDetails['korr_account'] ?>
+            <? endif ?>
         </div>
     </div>
 </div>
@@ -70,6 +72,14 @@
                   id="detailsForm"
                   method="post">
                 <div class="suppliers__sect-tl">Зарегистрировать поставщика</div>
+                <div class="control-group">
+                    <label class="control-group__lbl">Наименование юридического лица</label>
+                    <input name="detail[name]" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['name'] ?>">
+                </div>
+                <div class="control-group">
+                    <label class="control-group__lbl">Полное наименование юридического лица</label>
+                    <input name="detail[name_full]" class="control-group__input" placeholder="" value="<?= $userEntity->legalDetails['name_full'] ?>">
+                </div>
                 <div class="control-group">
                     <label class="control-group__lbl">Форма собственности</label>
                     <div class="custom-select custom-select--suppliers">

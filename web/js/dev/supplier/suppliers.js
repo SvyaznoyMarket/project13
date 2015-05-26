@@ -11,7 +11,9 @@
         validate;
 
     validate = function(){
-        var $address = $('[name=detail\\[legal_address\\]]'),
+        var $name = $('[name=detail\\[name\\]]'),
+            $nameFull = $('[name=detail\\[name_full\\]]'),
+            $address = $('[name=detail\\[legal_address\\]]'),
             $realAddress = $('[name=detail\\[real_address\\]]'),
             $inn = $('[name=detail\\[inn\\]]'),
             $kpp = $('[name=detail\\[kpp\\]]'),
@@ -22,7 +24,7 @@
 
         $detailsForm.find('input').removeClass(inputErrorClass);
 
-        $.each([$address, $realAddress, $inn, $kpp, $account, $corrAccount, $bik, $okpo], function(i,$elem){
+        $.each([$name, $nameFull, $address, $realAddress, $inn, $kpp, $account, $corrAccount, $bik, $okpo], function(i,$elem){
             if ($elem.val() == '') $elem.addClass(inputErrorClass);
         });
 
