@@ -230,6 +230,11 @@ namespace Model\OrderDelivery\Entity {
                         case 'shops_svyaznoy':
                             $this->list[(string)$item['id']] = new Point\Svyaznoy($item);
                             break;
+                        case 'self_partner_euroset_pred_supplier':
+                        case 'self_partner_euroset':
+                            $this->list[(string)$item['id']] = new Point\Shop($item);
+                            $this->list[(string)$item['id']]->listName = 'Евросеть';
+                            break;
                         default:
                             $this->list[(string)$item['id']] = new Point\Shop($item);
                     }
@@ -249,6 +254,12 @@ namespace Model\OrderDelivery\Entity {
                         $this->marker['iconImageHref'] = '/images/deliv-icon/svyaznoy.png';
                         $this->icon = '/images/deliv-logo/svyaznoy.png';
                         $this->dropdown_name = 'Магазины Связной';
+                        break;
+                    case 'self_partner_euroset_pred_supplier':
+                    case 'self_partner_euroset':
+                        $this->marker['iconImageHref'] = '/images/deliv-icon/euroset.png';
+                        $this->icon = '/images/deliv-logo/euroset.png';
+                        $this->dropdown_name = 'Магазины Евросеть';
                         break;
                     default:
                         $this->marker['iconImageHref'] = '/images/deliv-icon/enter.png';
