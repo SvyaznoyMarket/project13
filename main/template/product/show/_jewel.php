@@ -129,7 +129,7 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
         <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]); // Характеристики ?>
     <? endif ?>
 
-    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
+    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent]) ?>
 
     <? if (!$showSimilarOnTop): ?>
         <? if (\App::config()->product['pullRecommendation']): ?>

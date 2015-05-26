@@ -18,8 +18,6 @@
  * @var $breadcrumbs            array   Хлебные крошки
  * @var $trustfactors           array   Трастфакторы
  * @var $reviewsDataSummary     array   Данные отзывов
- * @var $sprosikupiReviews      array   Данные отзывов
- * @var $shoppilotReviews       array   Данные отзывов
  */
 $helper = new \Helper\TemplateHelper();
 

@@ -252,16 +252,6 @@ class AppConfig {
         'TagMan' => [
             'enabled' => null,
         ],
-        'SprosiKupi' => [
-            'timeout' => 1000,
-            'logEnabled' => false,
-            'logDataEnabled' => false,
-        ],
-        'ShopPilot' => [
-            'timeout' => 1000,
-            'logEnabled' => false,
-            'logDataEnabled' => false,
-        ],
     ];
 
     /** @var array */

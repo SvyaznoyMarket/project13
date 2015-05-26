@@ -18,8 +18,6 @@
  * @var $breadcrumbs            array   Хлебные крошки
  * @var $trustfactors           array   Трастфакторы
  * @var $reviewsDataSummary     array   Данные отзывов
- * @var $sprosikupiReviews      array   Данные отзывов
- * @var $shoppilotReviews       array   Данные отзывов
  */
 ?>
 
@@ -156,7 +154,7 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
         <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]) // Характеристики ?>
     <? endif ?>
 
-    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
+    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent]) ?>
 
     <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [

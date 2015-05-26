@@ -325,19 +325,6 @@ class IndexAction {
         $page->setGlobalParam('addToCartJS', $addToCartJS);
         $page->setGlobalParam('similarProducts', $similarProducts);
 
-        $page->setParam('sprosikupiReviews', null);
-        $page->setParam('shoppilotReviews', null);
-        switch (\App::abTest()->getTest('reviews')->getChosenCase()->getKey()) {
-            case 'sprosikupi':
-                $client = new \SprosiKupi\Client(\App::config()->partners['SprosiKupi'], \App::logger());
-                $page->setParam('sprosikupiReviews', $client->query($product->getId()));
-                break;
-            case 'shoppilot':
-                $client = new \ShopPilot\Client(\App::config()->partners['ShopPilot'], \App::logger());
-                $page->setParam('shoppilotReviews', $client->query($product->getId()));
-                break;
-        }
-
         return new \Http\Response($page->show());
     }
 

@@ -86,15 +86,9 @@ class ListAction {
                 break;
         }
 
-        $chosenCaseKey = \App::abTest()->getTest('reviews') ? \App::abTest()->getTest('reviews')->getChosenCase()->getKey() : null;
         return [
             'products' => $productData,
             'productCount' => count($productData), // кол-во продуктов на странице с учётом смещений
-            'abtestKeys' => [
-                'sprosikupi' => ('sprosikupi' === $chosenCaseKey),
-                'shoppilot' => ('shoppilot' === $chosenCaseKey),
-                'default' => ('default' === $chosenCaseKey),
-            ],
             'view' => $templateView,
         ];
     }
