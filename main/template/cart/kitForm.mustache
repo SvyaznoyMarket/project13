@@ -17,9 +17,9 @@
 
         <div class="packageSet_inner" data-bind="foreach: products">
             <div class="packageSetBodyItem" data-bind="css: { mDisabled: count() < 1 }">
-                <a class="packageSetBodyItem_img" href="" data-bind="attr: { href : url }"><img src="" data-bind="attr: { src: image }" /></a>
+                <a class="packageSetBodyItem_img rown" href="" data-bind="attr: { href : url }"><img src="" data-bind="attr: { src: image }" /></a>
 
-                <div class="packageSetBodyItem_desc">
+                <div class="packageSetBodyItem_desc rown">
                     <div class="name"><a class="" href="" data-bind="text: name, attr: { href : url }"></a></div>
 
                     <div class="price"><span data-bind="html: prettyItemPrice"></span>&nbsp;<span class="rubl">p</span></div>
@@ -60,14 +60,14 @@
                     </div>
                 </div>
 
-                <div class="bCountSection clearfix">
+                <div class="bCountSection rown">
                     <button class="bCountSection__eM" data-bind="click: minusClick, css: { mDisabled : count() == 0 }">-</button>
                     <input type="text" value="" class="bCountSection__eNum" data-bind="value: count, valueUpdate: 'input', event: { keydown: countKeydown, keyup: countKeyUp }">
                     <button class="bCountSection__eP" data-bind="click: plusClick, css: { mDisabled : count() == maxCount() }">+</button>
                     <span>шт.</span>
                 </div>
 
-                <div class="packageSetBodyItem_price">
+                <div class="packageSetBodyItem_price rown">
                     <span data-bind="html: prettyPrice"></span>&nbsp;<span class="rubl">p</span>
                 </div>
             </div>

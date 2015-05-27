@@ -26,7 +26,9 @@ class UpsaleAction extends BasicRecommendedAction {
             }
 
             $relatedId = null;
-            $products = null;
+            /** @var \Model\Product\Entity[] $products */
+            $products = [];
+            $medias = [];
 
             // получаем ids связанных товаров
             // SITE-2818 Список связанных товаров дозаполняем товарами, полученными от RR по методу CrossSellItemToItems
@@ -59,21 +61,23 @@ class UpsaleAction extends BasicRecommendedAction {
                     ];
                 }
 
-                $chunckedIds = array_chunk($relatedId, \App::config()->coreV2['chunk_size']);
-                foreach ($chunckedIds as $chunk) {
-                    \RepositoryManager::product()->prepareCollectionById($chunk, \App::user()->getRegion(),
-                        function($data) use(&$collection) {
-                            foreach ($data as $value) {
-                                if (!isset($value['id']) || !isset($value['link'])) continue;
-                                $entity = new \Model\Product\Entity($value);
-                                $collection[$entity->getId()] = $entity;
-                            }
-                        });
+                foreach (array_chunk($relatedId, \App::config()->coreV2['chunk_size']) as $chunk) {
+                    \RepositoryManager::product()->prepareCollectionById($chunk, \App::user()->getRegion(), function($data) use(&$collection) {
+                        foreach ($data as $value) {
+                            if (!isset($value['id']) || !isset($value['link'])) continue;
+                            $entity = new \Model\Product\Entity($value);
+                            $collection[$entity->getId()] = $entity;
+                        }
+                    });
+
+                    \RepositoryManager::product()->prepareProductsMediasByIds($chunk, $medias);
                 }
+
                 \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+                \RepositoryManager::product()->setMediasForProducts($collection, $medias);
             }
 
-            $products = [];
             foreach ($relatedId as $id) {
                 if (!isset($collection[$id])) continue;
                 $products[] = $collection[$id];

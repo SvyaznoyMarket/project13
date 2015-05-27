@@ -27,20 +27,15 @@ return function(
 ?>
 
     <div class="specialPrice clearfix js-specialPrice">
-
-    <? foreach ($smartChoiceProducts as $key => $product) : ?>
-
-        <?= $helper->renderWithMustache(
-                'product/_smartChoice', array(
-                    'product' =>  $showAction->execute($helper, $product['product'], null, $cartButtonAction),
-                    'name' => $product['name'],
-                    'typeMod' => $typeMod[$product['name']],
-                    'first' => $key == 0,
-                    'last' => $key == 2,
-                )); ?>
-
-    <?  endforeach  ?>
-
+        <? foreach ($smartChoiceProducts as $key => $product): ?>
+            <?= $helper->renderWithMustache('product/_smartChoice', array(
+                'product' =>  $showAction->execute($helper, $product['product'], null, $cartButtonAction),
+                'name' => $product['name'],
+                'typeMod' => $typeMod[$product['name']],
+                'first' => $key == 0,
+                'last' => $key == 2,
+            )); ?>
+        <?  endforeach  ?>
     </div>
 
     <div class="specialBorderBox jsDataSmartChoice" data-smartchoice="<?= $helper->json($smartChoiceIds); ?>"></div>

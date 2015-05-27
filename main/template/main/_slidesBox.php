@@ -3,8 +3,8 @@
  * @var $page           \View\Main\IndexPage
  * @var $blockname      string
  * @var $class          string|null
- * @var $productList    \Model\Product\BasicEntity[]
- * @var $product        \Model\Product\BasicEntity
+ * @var $productList    \Model\Product\Entity[]
+ * @var $product        \Model\Product\Entity
  * @var $rrProducts     array
  */
 
@@ -12,7 +12,7 @@
 
 // фильтруем массив rr
 foreach ($rrProducts as &$value) {
-    if (@$productList[$value] instanceof \Model\Product\BasicEntity) {
+    if (@$productList[$value] instanceof \Model\Product\Entity) {
         $value = $productList[$value];
     } else {
         unset($value);
@@ -22,7 +22,7 @@ foreach ($rrProducts as &$value) {
 /* Сортируем блок "Популярные товары" */
 if (false && @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ') {
     try {
-        usort($rrProducts, function (\Model\Product\BasicEntity $a, \Model\Product\BasicEntity $b) {
+        usort($rrProducts, function (\Model\Product\Entity $a, \Model\Product\Entity $b) {
             if ($b->getIsBuyable() != $a->getIsBuyable()) {
                 return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
             } else if ($b->getPrice() != $a->getPrice()) {
@@ -41,8 +41,8 @@ if (false && @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ') {
 if (@$blockname == 'МЫ РЕКОМЕНДУЕМ') $rrProducts = \Controller\Product\ProductHelperTrait::filterByModelId($rrProducts);
 
 $rrProducts = array_filter($rrProducts, function($p){
-    /** @var \Model\Product\BasicEntity $p */
-    return ($p instanceof \Model\Product\BasicEntity) && $p->getIsBuyable() && !$p->isInShopShowroomOnly(); // SITE-5000
+    /** @var \Model\Product\Entity $p */
+    return ($p instanceof \Model\Product\Entity) && $p->getIsBuyable() && !$p->isInShopShowroomOnly(); // SITE-5000
 });
 
 $blocks = array_chunk($rrProducts, 4);
@@ -84,7 +84,7 @@ $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
                     'sender[from]'      => 'MainPage'
                 ]) ?>
                 <div class="item">
-                    <a href="<?= $productLink ?>" class="item_imgw" <?= $linkTarget ?>><img src="<?= $product->getImageUrl(2) ?>" class="item_img" alt="<?= $product->getName() ?>"/></a>
+                    <a href="<?= $productLink ?>" class="item_imgw" <?= $linkTarget ?>><img src="<?= $product->getMainImageUrl('product_160') ?>" class="item_img" alt="<?= $product->getName() ?>"/></a>
                     <div class="item_n"><a href="<?= $productLink ?>" <?= $linkTarget ?>><?= $product->getName() ?></a></div>
                     <div class="item_pr"><?= $helper->formatPrice($product->getPrice()) ?>&nbsp;<span class="rubl">p</span></div>
                     <?= $helper->render('cart/__button-product', [

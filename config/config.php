@@ -29,6 +29,8 @@ $c->session['cookie_lifetime'] = 2592000; // 30 дней
 $c->session['cookie_domain'] = '.enter.ru';
 $c->session['compareKey']   = 'compare'; // ключ для массива сравнения
 
+$c->ssi['enabled'] = false;
+
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
@@ -53,6 +55,11 @@ $c->coreV2['retryTimeout'] = [
 ];
 $c->coreV2['chunk_size']   = 50;
 $c->coreV2['debug']        = false;
+
+$c->eventService['url'] = 'http://event.enter.ru/';
+$c->eventService['enabled'] = true; // FIXME
+$c->eventService['timeout'] = 0.2;
+$c->eventService['client_id'] = 'site';
 
 $c->corePrivate['url']          = 'http://api.enter.ru/private/';
 $c->corePrivate['user']         = 'Developer';
@@ -188,6 +195,21 @@ $c->crm['retryTimeout'] = [
     'huge'    => 1.5,
 ];
 $c->crm['debug'] = false;
+
+$c->fileStorage = [
+    'url'          => 'http://api.enter.ru/v2/',
+    'client_id'    => 'site',
+    'timeout'      => 5,
+    'retryTimeout' => [
+        'default' => 0.18,
+        'tiny'    => 0.18,
+        'short'   => 0.25,
+        'medium'  => 0.5,
+        'long'    => 1,
+        'huge'    => 2,
+    ],
+    'retryCount'   => 2,
+];
 
 $c->connectTerminal = true;
 
@@ -325,22 +347,6 @@ $c->product['pullRecommendation']     = true;
 $c->product['pushRecommendation']     = true;
 $c->product['viewedEnabled']          = true;
 
-$c->productPhoto['url'] = [
-    0 => '/1/1/60/',
-    1 => '/1/1/120/',
-    2 => '/1/1/163/',
-    3 => '/1/1/500/',
-    4 => '/1/1/2500/',
-    5 => '/1/1/1500/',
-    6 => '/1/1/350/',
-    7 => '/1/1/200/',
-];
-
-$c->productPhoto3d['url'] = [
-    0 => '/1/2/500/',
-    1 => '/1/2/2500/',
-];
-
 $c->productLabel['url'] = [
     0 => '/7/1/66x23/',
     1 => '/7/1/124x38/',
@@ -432,14 +438,6 @@ $c->kladr = [
     'itemLimit' => 20,
 ];
 
-$c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
-$c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
-$c->maybe3d['swfUrl']     = 'http://fs01.enter.ru/3d/flash/';
-$c->maybe3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
-$c->maybe3d['timeout']    = 30;
-
-$c->img3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
-
 $c->tag['numSidebarCategoriesShown'] = 3;
 
 $c->sphinx['showFacets'] = false;
@@ -490,7 +488,7 @@ $c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
 $c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 $c->svyaznoyClub['cardNumber']['cookieName'] = 'scid';
 
-$c->flocktoryExchange['enabled'] = false;
+$c->flocktoryExchange['enabled'] = true;
 $c->flocktoryPostCheckout['enabled'] = true;
 
 
@@ -511,7 +509,5 @@ $c->siteVersionSwitcher['cookieName'] = 'mobile';
 $c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;
 
 $c->bandit['enabled'] = false;
-
-$c->tealeaf['enabled'] = true;
 
 return $c;

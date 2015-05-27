@@ -649,7 +649,6 @@ namespace Model\OrderDelivery\Entity\Order {
     }
 
     class Product {
-        use \Model\MediaHostTrait;
         /** @var int */
         public $id;
         /** @var string */
@@ -670,10 +669,10 @@ namespace Model\OrderDelivery\Entity\Order {
         public $original_sum;
         /** @var int */
         public $quantity;
-        /** @var string */
-        public $image;
         /** @var int */
         public $stock;
+        /** @var \Model\Media[] */
+        public $medias = [];
 
         public function __construct(array $data = []) {
 
@@ -698,22 +697,39 @@ namespace Model\OrderDelivery\Entity\Order {
                 throw new \Exception('Не указано количество продукта');
             }
 
-            if (isset($data['image'])) $this->image = (string)$data['image'];
             if (isset($data['stock'])) $this->stock = (int)$data['stock'];
         }
 
         /**
-         * @param int $size
-         * @return null|string
+         * @param string|null $provider
+         * @param string|null $tag
+         * @return \Model\Media[]
          */
-        public function getImageUrl($size = 0) {
-            if ($this->image) {
-                $urls = \App::config()->productPhoto['url'];
-
-                return $this->getHost() . $urls[$size] . $this->image;
-            } else {
-                return null;
+        private function getMedias($provider = null, $tag = null) {
+            if ($provider === null && $tag === null) {
+                return $this->medias;
             }
+
+            $medias = [];
+            foreach ($this->medias as $media) {
+                if (($provider === null || $media->provider === $provider) && ($tag === null || in_array($tag, $media->tags, true))) {
+                    $medias[] = $media;
+                }
+            }
+
+            return $medias;
+        }
+
+        public function getMainImageUrl($sourceType) {
+            $images = $this->getMedias('image', 'main');
+            if ($images) {
+                $source = $images[0]->getSource($sourceType);
+                if ($source) {
+                    return $source->url;
+                }
+            }
+
+            return '';
         }
     }
 

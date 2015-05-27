@@ -5,19 +5,7 @@ $c = require __DIR__ . '/config.php';
 
 $c->debug = true;
 
-// $c->coreV2['url'] = 'http://tester.core.ent3.ru/v2/';
-
-/*
-$c->coreV2['timeout']      *= 1.5;
-$c->corePrivate['timeout']      *= 1.5;
-
-$c->reviewsStore['timeout']      *= 1.5;
-
-$c->wordpress['timeout']        *= 1.5;
-$c->wordpress['throwException'] = false;
-
-$c->dataStore['timeout'] *= 1.5;
-*/
+//$c->eventService['url'] = 'http://event.ent3.ru/';
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/apitest/';
 
@@ -29,7 +17,6 @@ $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 $c->adFox['enabled'] = false;
 $c->googleTagManager['enabled'] = false;
-$c->tealeaf['enabled'] = false;
 
 $c->partners['Revolver']['enabled'] = false;
 $c->partners['GetIntent']['enabled'] = false;
@@ -58,7 +45,5 @@ $c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoic
 
 $c->mainMenu['requestMenu'] = false;
 $c->mainMenu['recommendationsEnabled'] = false;
-
-$c->tealeaf['enabled'] = false;
 
 return $c;

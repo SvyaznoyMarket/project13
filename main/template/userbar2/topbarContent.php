@@ -4,6 +4,10 @@
  * @var $user           \Session\User
  */
 ?>
+
+<?
+$helper = \App::helper();
+?>
 <div class="header_t clearfix">
     <div class="header_i hdcontacts">
         <a class="hdcontacts_lk jsChangeRegion undrl" href="<?= $page->url('region.change', ['regionId' => $user->getRegion()->getId()]) ?>"><?= $user->getRegion()->getName() ?></a>
@@ -23,9 +27,5 @@
         <li class="hdlk_i"><a href="/how_pay" class="hdlk_lk undrl">Оплата</a></li>
     </ul>
 
-    <ul class="header_i userbtn js-topbarfix">
-        <?= $page->render('userbar/_userinfo') ?>
-        <?= $page->render('userbar/_usercompare') ?>
-        <?= $page->render('userbar/_usercart') ?>
-    </ul>
+    <?= $page->render('userbar/_userbar', ['class' => 'header_i userbtn js-topbarfix']) ?>
 </div>

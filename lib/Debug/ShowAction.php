@@ -96,6 +96,7 @@ class ShowAction {
                     $queryData[$index]['retryCount'] = isset($message['retryCount']) ? $message['retryCount'] : null;
                     $queryData[$index]['retryTimeout'] = isset($message['retryTimeout']) ? $message['retryTimeout'] : null;
                     $queryData[$index]['header'] = isset($message['header']) ? $message['header'] : null;
+                    $queryData[$index]['responseBodyLength'] = isset($message['responseBodyLength']) ? $message['responseBodyLength'] : null;
                     $queryData[$index]['cache'] = isset($message['cache']);
                     $queryData[$index]['delay'] = $delay;
                     if (empty($queryData[$index]['delays'])) {

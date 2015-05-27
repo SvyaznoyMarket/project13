@@ -17,7 +17,7 @@
             <table class="table-cart">
                 <tbody data-bind="foreach: cart">
                     <tr class="table-cart__i">
-                        <td class="table-cart__img-wrap">
+                        <td class="table-cart__img-wrap" valign="middle">
                             <a data-bind="attr: { href: link }">
                                 <img class="table-cart__img" src="" data-bind="attr: { src: img }"/>
                             </a>

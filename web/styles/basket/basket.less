@@ -8,12 +8,24 @@
 	padding-bottom: 15px;
 
 	&__img {
-		display: inline-block;
-		vertical-align: top;
+		.inline-block-middle();
 		width: 120px;
-
-		*display: inline;
-		zoom: 1;
+		position: relative;
+		padding: 0 10px;
+		a{
+			display: block;
+			width: 100%;
+			img{
+				max-width: 96%;
+				.inline-block-middle();
+			}
+			&:after{
+				content: "";
+				height: 100%;
+				width: 0;
+				.inline-block-middle();
+			}
+		}
 	}
 
 

@@ -495,7 +495,6 @@ class Action {
         $region = \App::user()->getRegion();
 
         $repository = \RepositoryManager::product();
-        $repository->setEntityClass('\\Model\\Product\\Entity');
 
         $productIds = [];
         $productCount = 0;
@@ -536,7 +535,7 @@ class Action {
         if ($products) {
             $productUIs = [];
             foreach ($products as $product) {
-                if (!$product instanceof \Model\Product\BasicEntity) continue;
+                if (!$product instanceof \Model\Product\Entity) continue;
                 $productUIs[] = $product->getUi();
             }
 

@@ -8,6 +8,7 @@
 <?
 $appConfig = \App::config();
 $router = \App::router();
+$helper = new \Helper\TemplateHelper();
 
 try {
     $classFile = $appConfig->appDir . '/vendor/Mobile-Detect/Mobile_Detect.php';
@@ -30,7 +31,6 @@ $config = array_merge([
     'userUrl'               => $router->generate('user.info'),
     'routeUrl'              => $router->generate('route'),
     'f1Certificate'         => $appConfig->f1Certificate['enabled'],
-    'tealeaf'               => $appConfig->tealeaf['enabled'],
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
     'prepayment'            => $appConfig->order['prepayment'],
     'isMobile'              => $isMobile,

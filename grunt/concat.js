@@ -135,5 +135,10 @@ module.exports = {
     tealeaf : {
         src: ['<%= pathDev %>tealeaf/*.js'],
         dest: '<%= pathProd %>tealeaf.js'
+    },
+
+    supplier: {
+        src: ['<%= pathDev %>supplier/*.js'],
+        dest: '<%= pathProd %>supplier.js'
     }
 };

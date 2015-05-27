@@ -6,7 +6,6 @@
  * @var $accessories        \Model\Product\Entity[]
  * @var $accessoryCategory  \Model\Product\Category\Entity[]
  * @var $kit                \Model\Product\Entity[]
- * @var $additionalData     array
  * @var $shopStates         \Model\Product\ShopState\Entity[]
  * @var $creditData         array
  * @var $deliveryDataResponse   array

@@ -159,7 +159,7 @@ class IndexPage extends \View\DefaultLayout {
             'vendor'    => $this->product->getBrand(),
             'price'     => $this->product->getPrice(),
             'url'       => \App::router()->generate('product', ['productPath' => $this->product->getToken()], true),
-            'picture'   => $this->product->getImageUrl(),
+            'picture'   => $this->product->getMainImageUrl('product_120'),
             'name'      => $this->product->getName(),
             'category'  => $this->product->getLastCategory() ? $this->product->getLastCategory()->getId() : null
         ];

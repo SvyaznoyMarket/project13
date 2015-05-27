@@ -7,7 +7,7 @@
 ?>
 
 <?
-$json = array('jsref' => $product->getToken(), 'jstitle' => $product->getName(), 'jsprice' => $product->getPrice(), 'jssimg' => $product->getImageUrl(1), 'jsimg' => $product->getImageUrl(3), 'jsbimg' => $product->getImageUrl(2), 'jsshortcut' => $product->getArticle(), 'jsitemid' => $product->getId(), 'jsregionid' => $user->getRegion()->getId(), 'jsregion' => $user->getRegion()->getName());
+$json = array('jsref' => $product->getToken(), 'jstitle' => $product->getName(), 'jsprice' => $product->getPrice(), 'jssimg' => $product->getMainImageUrl('product_120'), 'jsimg' => $product->getMainImageUrl('product_500'), 'jsbimg' => $product->getMainImageUrl('product_160'), 'jsshortcut' => $product->getArticle(), 'jsitemid' => $product->getId(), 'jsregionid' => $user->getRegion()->getId(), 'jsregion' => $user->getRegion()->getName());
 ?>
 <div class="clear"></div>
 

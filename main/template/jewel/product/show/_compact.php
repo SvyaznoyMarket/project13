@@ -25,7 +25,6 @@ if ($disabled) {
 // открытие товаров в новом окне
 $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
 
-$imgSize = isset($itemsPerRow) && 3 == $itemsPerRow ? 6 : 2;
 if ($product->getPriceOld()) {
     $priceSale = round( ( 1 - ($product->getPrice() / $product->getPriceOld() ) ) *100, 0 );
 } else {
@@ -34,11 +33,15 @@ if ($product->getPriceOld()) {
 ?>
 
 <li class="lstn_i js-jewelListing js-goodsbox">
-    <div class="lstn_i_inn js-goodsboxContainer" data-url="<?= $product->getLink() ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
+    <div class="lstn_i_inn js-goodsboxContainer" data-url="<?= $product->getLink() ?>" <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
 
         <a class="lstn_n" href="<?= $product->getLink() ?>" <?= $linkTarget ?>><?= $product->getName() ?></a>
 
-        <a class="lstn_imglk" href="<?= $product->getLink() ?>" <?= $linkTarget ?>><img class="lstn_img" src="<?= $product->getImageUrl($imgSize) ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" /></a>
+        <div class="lstn_imgbox">
+            <a class="lstn_imglk" href="<?= $product->getLink() ?>" <?= $linkTarget ?>>
+                <img class="lstn_img" src="<?= $product->getMainImageUrl(3 == $itemsPerRow ? 'product_350' : 'product_160') ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" />
+            </a>
+        </div>
 
         <ul class="stickLst clearfix">
             <? if ($product->getLabel() && $product->getLabel()->getImageUrl()): ?>

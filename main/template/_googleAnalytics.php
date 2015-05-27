@@ -36,6 +36,8 @@
             _gaq.push(['_setCustomVar', 1, 'city', '<?= \App::user()->getRegion()->getName() ?>', 2]);
         <? endif ?>
 
+        _gaq.push(['_setCustomVar', 2, 'authenticated_user', '<?= \App::user()->getEntity() ? 1 : 0 ?>', 3]);
+
         <? /* Маркировка продуктов Marketplace */ ?>
         <? if (isset($product) && $product instanceof \Model\Product\Entity): ?>
             <? if ($product->getSlotPartnerOffer()): ?>

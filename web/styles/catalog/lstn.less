@@ -163,21 +163,34 @@
     .notBuying {
         display: none;
     }
+    &_imgbox {
+        width: 100%;
+    }
     &_imglk {
         display: block;
+        text-align: center;
 
-        width: 200px;
+        width: 100%;
         height: 200px;
-        margin: 0 auto 8px;
+        padding: 0 0 8px;
+
         &-hover {
             display: none;
         }
+        &:hover{
+            text-decoration: none;
+        }
+        &:after{
+            content:"";
+            .inline-block-middle();
+            width: 0;
+            height: 100%;
+        }
     }
     &_img {
-        display: block;
-
-        width: 200px;
-        height: 200px;
+        max-width: 90%;
+        max-height: 90%;
+        .inline-block-middle();
     }
     &_pr {
         display: table-cell;
@@ -378,12 +391,7 @@
                     border-color: #f9f9f9;
                 }
             }
-            &_img {
-                width: 160px;
-                height: 160px;
-            }
             &_imglk {
-                width: 160px;
                 height: 160px;
             }
             &_pr {
@@ -412,9 +420,7 @@
                         height: 328px;
                     }
                 }
-                &_img ,
                 &_imglk {
-                    width: 260px;
                     height: 260px;
                 }
                 &_pr {

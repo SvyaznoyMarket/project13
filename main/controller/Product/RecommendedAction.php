@@ -89,7 +89,9 @@ class RecommendedAction {
 
             $productIds = array_filter(array_values(array_unique($productIds)));
 
+            /** @var \Model\Product\Entity[] $productsById */
             $productsById = [];
+            $medias = [];
             foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
                 \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
                     foreach ((array)$data as $item) {
@@ -98,9 +100,13 @@ class RecommendedAction {
                         $productsById[$item['id']] = new \Model\Product\Entity($item);
                     }
                 });
+
+                \RepositoryManager::product()->prepareProductsMediasByIds($productsInChunk, $medias);
             }
 
             $client->execute(); // 2-й пакет запросов
+
+            \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
 
             /**
              * Главный товар

@@ -2,68 +2,20 @@
 
 namespace Model\Product;
 
+use Model\Media\Source;
+use Model\MediaHostTrait;
+
 class Repository {
+    use MediaHostTrait;
+    
     /** @var \Core\ClientInterface */
     private $client;
-    private $entityClass = '\Model\Product\Entity';
 
     /**
      * @param \Core\ClientInterface $client
      */
     public function __construct(\Core\ClientInterface $client) {
         $this->client = $client;
-    }
-
-    /**
-     * @param string $class
-     */
-    public function setEntityClass($class) {
-        $this->entityClass = $class;
-    }
-
-    /**
-     * @param $token
-     * @param \Model\Region\Entity $region
-     * @return Entity|null
-     */
-    public function getEntityByToken($token, \Model\Region\Entity $region = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
-
-        $client = clone $this->client;
-
-        $entity = null;
-        $client->addQuery('product/get',
-            [
-                'select_type' => 'slug',
-                'slug'        => $token,
-                'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-            ],
-            [],
-            function($data) use(&$entity) {
-                $data = reset($data);
-                $entity = $data ? new Entity($data) : null;
-            }
-        );
-
-        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
-
-
-        return $entity;
-    }
-
-    /**
-     * @param int                  $id
-     * @param \Model\Region\Entity $region
-     * @param                      $callback
-     */
-    public function prepareEntityById($id, \Model\Region\Entity $region = null, $callback) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
-
-        $this->client->addQuery('product/get', [
-            'select_type' => 'id',
-            'id'        => [$id],
-            'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ], [], $callback);
     }
 
     /**
@@ -103,10 +55,11 @@ class Repository {
     public function getEntityById($id, \Model\Region\Entity $region = null) {
         //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $client = clone $this->client;
+        $medias = [];
 
+        /** @var Entity $entity */
         $entity = null;
-        $client->addQuery('product/get',
+        $this->client->addQuery('product/get',
             [
                 'select_type' => 'id',
                 'id'          => $id,
@@ -119,72 +72,31 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+        \App::scmsClient()->addQuery(
+            'product/get-description/v1',
+            ['ids' => [$id], 'media' => 1],
+            [],
+            function($data) use(&$medias) {
+                if (isset($data['products']) && is_array($data['products'])) {
+                    $product = reset($data['products']);
+                    if (isset($product['medias'])) {
+                        $medias = array_map(function($media) { return new \Model\Media($media); }, $product['medias']);
+                    }
+                }
+            },
+            function(\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__]);
+                \App::exception()->remove($e);
+            }
+        );
+
+        $this->client->execute(\App::config()->coreV2['retryTimeout']['short']);
+
+        if ($entity) {
+            $entity->medias = $medias;
+        }
 
         return $entity;
-    }
-
-    /**
-     * @param array $tokens
-     * @param \Model\Region\Entity $region
-     * @return Entity[]
-     */
-    public function getCollectionByToken(array $tokens, \Model\Region\Entity $region = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
-
-        if (!(bool)$tokens) return [];
-
-        $client = clone $this->client;
-
-        $collection = [];
-        $entityClass = $this->entityClass;
-        $client->addQuery('product/get', [
-            'select_type' => 'slug',
-            'slug'        => $tokens,
-            'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ], [], function($data) use (&$collection, $entityClass) {
-            foreach ($data as $entity) {
-                $collection[] = new $entityClass($entity);
-            }
-        });
-
-        $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
-
-        $collection = \RepositoryManager::review()->addScores($collection);
-
-        return $collection;
-    }
-
-    /**
-     * @param array $barcodes
-     * @param \Model\Region\Entity $region
-     * @return Entity[]
-     */
-    public function getCollectionByBarcode(array $barcodes, \Model\Region\Entity $region = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
-
-        if (!(bool)$barcodes) return [];
-
-        $client = clone $this->client;
-
-        $collection = [];
-        $entityClass = $this->entityClass;
-
-        $client->addQuery('product/get', [
-            'select_type' => 'bar_code',
-            'bar_code'    => $barcodes,
-            'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ], [], function($data) use (&$collection, $entityClass) {
-            foreach ($data as $entity) {
-                $collection[] = new $entityClass($entity);
-            }
-        });
-        
-        $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
-
-        $collection = \RepositoryManager::review()->addScores($collection);
-
-        return $collection;
     }
 
     /**
@@ -214,40 +126,42 @@ class Repository {
 
         if (!(bool)$ids) return [];
 
-        $client = clone $this->client;
-
-        $chunckedIds = array_chunk($ids, \App::config()->coreV2['chunk_size']);
-
+        /** @var \Model\Product\Entity[] $collection */
         $collection = [];
-        $entityClass = $this->entityClass;
-        foreach ($chunckedIds as $i => $chunk) {
-            $client->addQuery('product/get',
+        $medias = [];
+        foreach (array_chunk($ids, \App::config()->coreV2['chunk_size']) as $chunk) {
+            $this->client->addQuery('product/get',
                 [
                     'select_type' => 'id',
                     'id'          => $chunk,
                     'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
                 ],
                 [],
-                function($data) use(&$collection, $entityClass, $i) {
-                    if (!is_array($data)) return;
-
-                    foreach ($data as $item) {
-                        $collection[$i][] = new $entityClass($item);
+                function($data) use(&$collection) {
+                    if (is_array($data)) {
+                        foreach ($data as $item) {
+                            $product = new \Model\Product\Entity($item);
+                            $collection[$product->getId()] = $product;
+                        }
                     }
+
                 }
             );
+
+            $this->prepareProductsMediasByIds($chunk, $medias);
         }
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $result = [];
-        foreach ($collection as $chunk) {
-            $result = array_merge($result, $chunk);
+        $this->setMediasForProducts($collection, $medias);
+
+        $collection = array_values($collection);
+
+        if ($addScores) {
+            $collection = \RepositoryManager::review()->addScores($collection);
         }
 
-        if ($addScores) $result = \RepositoryManager::review()->addScores($result);
-
-        return $result;
+        return $collection;
     }
 
     /**
@@ -286,24 +200,6 @@ class Repository {
         ], [], $done, $fail);
     }
 
-    /**
-     * @param array                 $eans
-     * @param \Model\Region\Entity  $region
-     * @param                       $done
-     * @param                       $fail
-     */
-    public function prepareCollectionByEan(array $eans, \Model\Region\Entity $region = null, $done, $fail = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
-
-        if (!(bool)$eans) return;
-
-        $this->client->addQuery('product/get', [
-            'select_type' => 'id',
-            'ean'          => $eans,
-            'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ], [], $done, $fail);
-    }
-
     public function prepareIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null, $done, $fail = null) {
         //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
@@ -322,64 +218,6 @@ class Repository {
             $fail
         );
     }
-
-    /**
-     * @param array $filter
-     * @param array $sort
-     * @param null $offset
-     * @param null $limit
-     * @param \Model\Region\Entity $region
-     * @return array
-     */
-    public function getCollectionByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
-
-        $client = clone $this->client;
-
-        $response = [];
-        $client->addQuery('listing/list',
-            [
-                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-                'filter' => [
-                    'filters' => $filter,
-                    'sort'    => $sort,
-                    'offset'  => $offset,
-                    'limit'   => $limit,
-                ],
-            ],
-            [],
-            function($data) use(&$response) {
-                $response = $data;
-            }
-        );
-        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        $collection = [];
-        $entityClass = $this->entityClass;
-        if (!empty($response['list'])) {
-            foreach (array_chunk($response['list'], \App::config()->coreV2['chunk_size']) as $idsInChunk) {
-                $client->addQuery('product/get',
-                    [
-                        'select_type' => 'id',
-                        'id'          => $idsInChunk,
-                        'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-                    ],
-                    [],
-                    function($data) use(&$collection, $entityClass) {
-                        foreach ($data as $item) {
-                            $collection[] = new $entityClass($item);
-                        }
-                    }
-                );
-            }
-            $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-        }
-
-        $collection = \RepositoryManager::review()->addScores($collection);
-
-        return $collection;
-    }
-
 
     /**
      * @param array $filter
@@ -414,95 +252,6 @@ class Repository {
         return empty($response['list']) ? [] : $response['list'];
     }
 
-
-    /**
-     * @param array $filters
-     * @param array $sort
-     * @param null $offset
-     * @param null $limit
-     * @param \Model\Region\Entity $region
-     * @return \Iterator\EntityPager[]
-     */
-    public function getIteratorsByFilter(array $filters = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
-
-        $client = clone $this->client;
-
-        // собираем все идентификаторы товаров, чтобы сделать один запрос в ядро
-        $ids = [];
-        $response = [];
-        $client->addQuery('listing/multilist', [], [
-            'filter_list' => array_map(function($filter) use ($sort, $offset, $limit) {
-
-                return [
-                    'filters' => $filter,
-                    'sort'    => $sort,
-                    'offset'  => $offset,
-                    'limit'   => $limit,
-                ];
-            }, $filters),
-            'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ], function($data) use(&$ids, &$response) {
-            $response = $data;
-
-            foreach ($data as $item) {
-                $ids = array_merge($ids, $item['list']);
-            }
-        });
-        $client->execute(\App::config()->coreV2['retryTimeout']['long']);
-
-        if (!(bool)$response) {
-            return [];
-        }
-
-        // товары сгруппированные по идентификаторам
-        $collectionById = [];
-
-        if ((bool)$ids) {
-            $entityClass = $this->entityClass;
-            foreach (array_chunk($ids, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
-                $client->addQuery('product/get',
-                    [
-                        'select_type' => 'id',
-                        'id'          => $idsInChunk,
-                        'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-                    ],
-                    [],
-                    function($data) use(&$collectionById, $entityClass) {
-                        foreach ($data as $item) {
-                            $collectionById[$item['id']] = new $entityClass($item);
-                        }
-                    }
-                );
-            }
-            $client->execute(\App::config()->coreV2['retryTimeout']['long']);
-        }
-
-        $collections = [];
-        foreach ($response as $data) {
-            $collection = [];
-            foreach ($data['list'] as $id) {
-                if (!isset($collectionById[$id])) {
-                    \App::logger()->error(sprintf('В списке %s отсутствует товар #%s', json_encode($collectionById), $id));
-                    \App::exception()->add(new \Exception(sprintf('В списке %s отсутсвует один или несколько товаров', json_encode($collectionById))));
-                    continue;
-                }
-                $collection[] = $collectionById[$id];
-            }
-
-            $collections[] = ['collection' => $collection, 'count' => $data['count']];
-        }
-
-        $collections = \RepositoryManager::review()->addScoresGrouped($collections);
-
-        $iterators = [];
-        foreach ($collections as $collectionData) {
-            $iterators[] = new \Iterator\EntityPager($collectionData['collection'], $collectionData['count']);
-        }
-
-        return $iterators;
-    }
-
     /**
      * @param \Model\Product\Entity[] $products
      */
@@ -532,10 +281,64 @@ class Repository {
                     }
                 },
                 function(\Exception $e) {
-                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
+                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__]);
                     \App::exception()->remove($e);
                 }
             );
+        }
+    }
+
+    public function prepareProductsMediasByIds($productIds, &$medias) {
+        \App::scmsClient()->addQuery(
+            'product/get-description/v1',
+            ['ids' => $productIds, 'media' => 1],
+            [],
+            function($data) use(&$medias) {
+                if (isset($data['products']) && is_array($data['products'])) {
+                    foreach ($data['products'] as $product) {
+                        if (isset($product['core_id']) && isset($product['medias'])) {
+                            $medias[$product['core_id']] = array_map(function($media) { return new \Model\Media($media); }, $product['medias']);
+                        }
+                    }
+                }
+            },
+            function(\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__]);
+                \App::exception()->remove($e);
+            }
+        );
+    }
+
+    public function prepareProductsMediasByUids($productUids, &$medias) {
+        \App::scmsClient()->addQuery(
+            'product/get-description/v1',
+            ['uids' => $productUids, 'media' => 1],
+            [],
+            function($data) use(&$medias) {
+                if (isset($data['products']) && is_array($data['products'])) {
+                    foreach ($data['products'] as $product) {
+                        if (isset($product['core_id']) && isset($product['medias'])) {
+                            $medias[$product['core_id']] = array_map(function($media) { return new \Model\Media($media); }, $product['medias']);
+                        }
+                    }
+                }
+            },
+            function(\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__]);
+                \App::exception()->remove($e);
+            }
+        );
+    }
+
+    /**
+     * @param \Model\Product\Entity[] $products
+     * @param array|null $medias
+     */
+    public function setMediasForProducts($products, $medias) {
+        foreach ($products as $product) {
+            if (isset($medias[$product->getId()])) {
+                $product->medias = $medias[$product->getId()];
+            }
         }
     }
 
@@ -787,85 +590,61 @@ class Repository {
         return $productsGrouped;
     }
 
-    public function getKitProducts(\Model\Product\Entity $product, array $parts = [], \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
-        $productRepository = \RepositoryManager::product();
-        $productRepository->setEntityClass('\Model\Product\Entity');
-        $restParts = [];
-
-        // Получим основные товары набора
-        $productPartsIds = [];
-        foreach ($product->getKit() as $part) {
-            $productPartsIds[] = $part->getId();
-        }
-
+    public function getKitProducts(\Model\Product\Entity $kitProduct, array $partProducts = [], \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
         // Получим сущности по id
         try {
-            if (!$parts) {
-                $parts = $productRepository->getCollectionById($productPartsIds);
-            }
-            if (isset($restPartsIds) && count($restPartsIds) > 0) {
-                $restParts = $productRepository->getCollectionById($restPartsIds);
-            } else {
-                $restParts = [];
+            if (!$partProducts) {
+                // Получим основные товары набора
+                $productPartsIds = [];
+                foreach ($kitProduct->getKit() as $part) {
+                    $productPartsIds[] = $part->getId();
+                }
+
+                $partProducts = $this->getCollectionById($productPartsIds);
             }
         } catch (\Exception $e) {
             \App::exception()->add($e);
             \App::logger()->error($e);
         }
 
-        // Приготовим набор для отображения на сайте
-        return $this->prepareKit($parts, $restParts, $product, $deliveryQuery);
-    }
-
-    /**
-     * Подготовка данных для набора продуктов
-     * @var array $products
-     * @var array $restProducts
-     * @var \Model\Product\Entity $product
-     */
-    private function prepareKit($products, $restProducts, $mainProduct, \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
         $result = [];
 
-        foreach (array('baseLine' => $products, 'restLine' => $restProducts) as $lineName => $products) {
+        foreach ($partProducts as $key => $product) {
+            $id = $product->getId();
 
-            foreach ($products as $key => $product) {
-                $id = $product->getId();
-                $result[$id]['id'] = $id;
-                $result[$id]['name'] = $product->getName();
-                $result[$id]['article'] = $product->getArticle();
-                $result[$id]['token'] = $product->getToken();
-                $result[$id]['url'] = $product->getLink();
-                $result[$id]['image'] = $product->getImageUrl();
-                $result[$id]['product'] = $product;
-                $result[$id]['price'] = $product->getPrice();
-                $result[$id]['lineName'] = $lineName;
-                $result[$id]['height'] = '';
-                $result[$id]['width'] = '';
-                $result[$id]['depth'] = '';
-                $result[$id]['deliveryDate'] = '';
+            $result[$id]['id'] = $id;
+            $result[$id]['name'] = $product->getName();
+            $result[$id]['article'] = $product->getArticle();
+            $result[$id]['token'] = $product->getToken();
+            $result[$id]['url'] = $product->getLink();
+            $result[$id]['image'] = $product->getMainImageUrl('product_120');
+            $result[$id]['product'] = $product;
+            $result[$id]['price'] = $product->getPrice();
+            $result[$id]['height'] = '';
+            $result[$id]['width'] = '';
+            $result[$id]['depth'] = '';
+            $result[$id]['deliveryDate'] = '';
 
-                // добавляем размеры
-                $dimensionsTranslate = [
-                    'Высота' => 'height',
-                    'Ширина' => 'width',
-                    'Глубина' => 'depth'
-                ];
-                if ($product->getProperty()) {
-                    foreach ($product->getProperty() as $property) {
-                        if (in_array($property->getName(), array('Высота', 'Ширина', 'Глубина'))) {
-                            $result[$id][$dimensionsTranslate[$property->getName()]] = $property->getValue();
-                        }
+            // добавляем размеры
+            $dimensionsTranslate = [
+                'Высота' => 'height',
+                'Ширина' => 'width',
+                'Глубина' => 'depth'
+            ];
+            if ($product->getProperty()) {
+                foreach ($product->getProperty() as $property) {
+                    if (in_array($property->getName(), array('Высота', 'Ширина', 'Глубина'))) {
+                        $result[$id][$dimensionsTranslate[$property->getName()]] = $property->getValue();
                     }
                 }
             }
-
         }
 
         foreach ($result as &$value) {
             $value['count'] = 0;
         }
 
-        foreach ($mainProduct->getKit() as $kitPart) {
+        foreach ($kitProduct->getKit() as $kitPart) {
             if (isset($result[$kitPart->getId()])) $result[$kitPart->getId()]['count'] = $kitPart->getCount();
         }
 
@@ -890,5 +669,4 @@ class Repository {
 
         return $result;
     }
-
 }

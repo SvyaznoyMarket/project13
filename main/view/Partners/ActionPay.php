@@ -96,9 +96,10 @@ class ActionPay {
         $this->sendData['basketProducts'] = [];
         foreach ((array)$this->cart->getProductData() as $product) {
             $this->sendData['basketProducts'][] = array(
-                'id' => @$product['id'],
-                'price' => @$product['price'],
-                'quantity' => @$product['quantity'],
+                'id' => isset($product['id']) ? $product['id'] : null,
+                'price' => isset($product['price']) ? $product['price'] : null,
+                'quantity' => isset($product['quantity']) ? $product['quantity'] : null,
+                'name' => isset($product['name']) ? $product['name'] : null,
             );
         }
     }

@@ -38,6 +38,7 @@
 
     <?= $page->render('order/_footer') ?>
 
+    <?= $page->slotUserConfig() ?>
     <?= $page->slotBodyJavascript() ?>
     <?= $page->slotInnerJavascript() ?>
     <?= $page->slotAuth() ?>

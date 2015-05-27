@@ -68,9 +68,10 @@ class Action {
         $client->execute();
 
         // товары, услуги, категории
-        /** @var $productsById \Model\Product\BasicEntity[] */
+        /** @var $productsById \Model\Product\Entity[] */
         $productsById = [];
-        /** @var $productsById \Model\Product\Category\Entity[] */
+        $medias = [];
+        /** @var $categoriesById \Model\Product\Category\Entity[] */
         $categoriesById = [];
         foreach ($itemsByBanner as $items) {
             foreach ($items as $item) {
@@ -101,6 +102,8 @@ class Action {
                 \App::exception()->remove($e);
                 \App::logger()->error('Не удалось получить товары для баннеров');
             });
+
+            \RepositoryManager::product()->prepareProductsMediasByIds(array_keys($productsById), $medias);
         }
 
         // запрашиваем категории товаров
@@ -123,6 +126,8 @@ class Action {
         if ((bool)$productsById || (bool)$categoriesById) {
             // выполнение 2-го пакета запросов
             $client->execute();
+
+            \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
         }
 
         // формируем ссылки для баннеров
@@ -195,7 +200,6 @@ class Action {
             $rrProductsById = array_merge($rrProductsById, $collection);
         }
 
-        \RepositoryManager::product()->setEntityClass('\Model\Product\Entity');
 
         // получаем продукты из ядра
         $products = \RepositoryManager::product()->getCollectionById(array_unique($rrProductsById), null, false);
@@ -222,19 +226,37 @@ class Action {
             'personal' => []
         ];
 
-        try {
-            $rrClient->addQuery('ItemsToMain',[],[],function($data) use (&$ids) {
+        $rrClient->addQuery(
+            'ItemsToMain',
+            [],
+            [],
+            function($data) use (&$ids) {
                 $ids['popular'] = (array)$data;
-            },null, $timeout);
-            if ($rrUserId) $rrClient->addQuery('PersonalRecommendation',['rrUserId' => $rrUserId],[],function($data) use (&$ids) {
-                $ids['personal'] = (array)$data;
-            },null, $timeout);
-            $rrClient->execute();
-        } catch (\Exception $e) {
-            if ($e->getCode() == \Curl\Client::CODE_TIMEOUT) {
+            },
+            function(\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['fatal', 'recommendation', 'retailrocket']);
                 \App::exception()->remove($e);
-            }
+            },
+            $timeout
+        );
+        if ($rrUserId) {
+            $rrClient->addQuery(
+                'PersonalRecommendation',
+                ['rrUserId' => $rrUserId],
+                [],
+                function($data) use (&$ids) {
+                    $ids['personal'] = (array)$data;
+                },
+                function(\Exception $e) {
+                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['fatal', 'recommendation', 'retailrocket']);
+                    \App::exception()->remove($e);
+                },
+                $timeout
+            );
         }
+
+        $rrClient->execute();
+
 
         // если нет персональных рекомендаций, то выдадим половину популярных за персональные
         if (empty($ids['personal']) && !empty($ids['popular'])) {

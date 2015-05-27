@@ -27,7 +27,10 @@ class SetAction {
             throw new \Exception('Не передан productUi');
         }
 
-        $productQuery = (new Query\Product\GetDescriptionByUiList([$productUi]))->prepare();
+        $productQuery = new Query\Product\GetDescriptionByUiList();
+        $productQuery->uis = [$productUi];
+        $productQuery->filter->media = true;
+        $productQuery->prepare();
         $curl->execute();
 
         // проверяет, если такой товар, чтобы не пихать в избранное мусор

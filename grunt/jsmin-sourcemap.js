@@ -220,6 +220,14 @@ module.exports = function (grunt, options) {
                 destMap: 'prod/tealeaf.js.map',
                 srcRoot: '/js',
                 cwd: 'web/js'
+        },
+
+        supplier: {
+            src: ['dev/supplier/*.js'],
+            dest: 'prod/supplier.js',
+            destMap: 'prod/supplier.js.map',
+            srcRoot: '/js',
+            cwd: 'web/js'
         }
     }
 };

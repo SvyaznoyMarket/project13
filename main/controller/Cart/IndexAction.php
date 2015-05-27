@@ -59,58 +59,31 @@ class IndexAction {
 
         $productIds = array_keys($cartProductsById);
 
-        /** @var $products \Model\Product\CartEntity[] */
+        /** @var \Model\Product\Entity[] $products */
         $products = [];
-        /** @var $products \Model\Product\Entity[] */
-        $productEntities = [];
+        $medias = [];
 
         // запрашиваем список товаров
         if ((bool)$productIds) {
-            \RepositoryManager::product()->prepareCollectionById($productIds, $region, function($data) use(&$products, $cartProductsById, &$productEntities) {
+            \RepositoryManager::product()->prepareCollectionById($productIds, $region, function($data) use(&$products, $cartProductsById) {
                 foreach ($data as $item) {
                     $products[] = new \Model\Product\Entity($item);
-                    $productEntities[] = new \Model\Product\Entity($item);
                 }
             });
+
+            \RepositoryManager::product()->prepareProductsMediasByIds($productIds, $medias);
         }
 
         // выполнение 2-го пакета запросов
         $client->execute();
 
-        $categoryIdByProductId = [];
-        foreach ($productEntities as $key => $productEntity) {
-            if($productEntity->getParentCategory()) {
-                $categoryIdByProductId[$productEntity->getId()] = $productEntity->getParentCategory()->getId();
-            }
-        }
-
-        // подготовка 3-го пакета запросов
-        $hasAnyoneKit = false;
-        $productKitsById = [];
-        foreach ($products as $product) {
-            $kitIds = array_map(function($kit) { /** @var $kit \Model\Product\Kit\Entity */ return $kit->getId(); }, $product->getKit());
-            if ((bool)$kitIds) {
-                $hasAnyoneKit = true;
-                \RepositoryManager::product()->prepareCollectionById($kitIds, $region, function($data) use(&$productKitsById) {
-                    foreach ($data as $item) {
-                        $productKitsById[$item['id']] = new \Model\Product\CartEntity($item);
-                    }
-                });
-            }
-        }
-
-        // выполнение 3-го пакета запросов
-        if ($hasAnyoneKit) {
-            $client->execute();
-        }
+        \RepositoryManager::product()->setMediasForProducts($products, $medias);
 
         $page = new \View\Cart\IndexPage();
         $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
-        $page->setParam('productEntities', $productEntities);
+        $page->setParam('productEntities', $products);
         $page->setParam('products', $products);
         $page->setParam('cartProductsById', $cartProductsById);
-        $page->setParam('productKitsById', $productKitsById);
-        $page->setParam('categoryIdByProductId', $categoryIdByProductId);
 
         return new \Http\Response($page->show());
     }

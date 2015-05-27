@@ -40,10 +40,17 @@
                     &Big {
                         width: 632px;
                         height:632px;
+                        text-align: center;
+                        &:after{
+                            content:"";
+                            .inline-block-middle();
+                            height: 100%;
+                            width: 0;
+                        }
                         .bProductDescImgBig__eImg{
-                             width: 632px;
+                            width: auto;
                             height: auto;
-                            .inline-block();
+                            .inline-block-middle();
                             float: none;
                         }
                     }
@@ -77,10 +84,18 @@
             &__desc {
                 margin: 15px 0 0;
                 font-size: 14px;
+                .bHeadSection{
+                    font-size: 16px;
+                }
             }
         }//
         .btn--container{
                 margin-top: 25px;
             }
+        .bGoodsSlider{
+            .slideItem_inn{
+                width: 910px;
+            }
+        }
     }
 }

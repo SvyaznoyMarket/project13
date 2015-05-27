@@ -278,6 +278,11 @@
     &_cnt {
         display: block;
         &:hover {
+        width: 100%;
+        
+        text-align: center;
+
+        &:hover{
             text-decoration: none;
             .navitem_n {
                 text-decoration: none;
@@ -286,12 +291,17 @@
             }
         }
     }
-    &_img {
-        display: block;
+    &_img{
+        .inline-block();
 
-        width: 120px;
-        height: 120px;
-        margin: 0 auto 2px;
+        max-width: 120px;
+        max-height: 120px;
+        margin: 0 0 2px;
+        &-wrap{
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
     }
     &_pr {
         font-size: 21px;

@@ -7,16 +7,13 @@
  * @var $accessories            \Model\Product\Entity[]
  * @var $accessoryCategory      \Model\Product\Category\Entity[]
  * @var $kit                    \Model\Product\Entity[]
- * @var $additionalData         array
  * @var $shopStates             \Model\Product\ShopState\Entity[]
  * @var $creditData             array
  * @var $deliveryData           array
  * @var $isTchibo               boolean
  * @var $addToCartJS     string
- * @var $isUserSubscribedToEmailActions boolean
  * @var $actionChannelName string
  * @var $kitProducts            array   Продукты кита
- * @var $useLens                bool    Показывать лупу
  * @var $reviewsData            array   Данные отзывов
  * @var $breadcrumbs            array   Хлебные крошки
  * @var $trustfactors           array   Трастфакторы
@@ -52,7 +49,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
             <span class="product-card__head__article">Артикул: <?= $product->getArticle() ?></span>
         </div>
 
-        <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens]) ?>
+        <?= $helper->render('product/__photo', ['product' => $product]) ?>
     </div>
 
     <div class="product-card__section-right">
@@ -104,6 +101,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
     
     <? if ($product->getDescription()):?>
         <div class="product-card__desc">
+            <h3 class="bHeadSection">Описание</h3>
             <?= $product->getDescription() ?>
         </div>
     <? endif ?>
@@ -124,7 +122,6 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
             'count'          => null,
             'limit'          => \App::config()->product['itemsInSlider'],
             'page'           => 1,
-            'additionalData' => $additionalData,
             'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
             'sender'         => [
                 'name'     => 'retailrocket',

@@ -11,8 +11,8 @@ return function(
         'name'    => $product->getName(),
         'price'   => $product->getPrice(),
         'image'   => [
-            'default' => $product->getImageUrl(3),
-            'big'     => $product->getImageUrl(2),
+            'default' => $product->getMainImageUrl('product_500'),
+            'big'     => $product->getMainImageUrl('product_160'),
         ],
         'category'  => $product->getCategory(),
         'isSupplied'  => $product->getState() ? $product->getState()->getIsSupplier() : false, // @deprecated ?

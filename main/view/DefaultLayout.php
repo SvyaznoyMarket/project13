@@ -57,6 +57,9 @@ class DefaultLayout extends Layout {
         return $this->tryRender('_googleAnalytics');
     }
 
+    /** Наименования шаблона для load.js
+     * @return string
+     */
     public function slotBodyDataAttribute() {
         return 'default';
     }

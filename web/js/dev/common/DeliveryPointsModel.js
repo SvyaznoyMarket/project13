@@ -232,7 +232,8 @@
             iconImageHref: point.marker.iconImageHref,
             iconImageSize: point.marker.iconImageSize,
             iconImageOffset: point.marker.iconImageOffset,
-            visible: visibility
+            visible: visibility,
+            zIndex: point.token == 'shops' ? 1000 : 0
         });
 
         // Максимальная ширина балуна

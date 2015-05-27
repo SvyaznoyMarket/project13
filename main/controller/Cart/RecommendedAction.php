@@ -39,7 +39,9 @@ class RecommendedAction {
         }
 
         /* Получаем продукты из ядра */
+        /** @var \Model\Product\Entity[] $products */
         $products = [];
+        $medias = [];
         foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
             \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$products, &$cartProductIds) {
                 if (!is_array($data)) return;
@@ -51,12 +53,16 @@ class RecommendedAction {
                     $iProduct = new \Model\Product\Entity($item);
                     // если товар недоступен для покупки - пропустить
                     if (!$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly() || $iProduct->isInShopOnly()) continue;
-                    $products[] = $iProduct;
+                    $products[$iProduct->getId()] = $iProduct;
                 }
             });
+
+            \RepositoryManager::product()->prepareProductsMediasByIds($productsInChunk, $medias);
         }
 
         \App::coreClientV2()->execute();
+
+        \RepositoryManager::product()->setMediasForProducts($products, $medias);
 
         try {
             // TODO: вынести в репозиторий
@@ -113,7 +119,9 @@ class RecommendedAction {
         }
 
         /* Получаем продукты из ядра */
+        /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
+        $medias = [];
         foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
             \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById, &$cartProductIds) {
                 foreach ($data as $item) {
@@ -126,9 +134,13 @@ class RecommendedAction {
                     $productsById[$iProduct->getId()] = $iProduct;
                 }
             });
+
+            \RepositoryManager::product()->prepareProductsMediasByIds($productsInChunk, $medias);
         }
 
         \App::coreClientV2()->execute();
+
+        \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
 
         $responseData = ['success'=> true, 'recommend' => []];
         foreach ($productIdsByType as $type => $productIds) {

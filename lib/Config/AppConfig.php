@@ -77,6 +77,13 @@ class AppConfig {
         'cookie_lifetime' => null,
         'cookie_domain'   => null,
     ];
+    /**
+     * nginx ssi
+     * @var array
+     */
+    public $ssi = [
+        'enabled' => null,
+    ];
     /** @var array */
     public $redirect301 = [
         'enabled' => null,
@@ -104,7 +111,17 @@ class AppConfig {
         'debug'        => null,
         'chunk_size'   => null,
     ];
-	
+
+    /**
+     * @var array
+     */
+    public $eventService = [
+        'enabled'   => null,
+        'url'       => null,
+        'client_id' => null,
+        'timeout'   => null,
+    ];
+
     /**
      * @var array
      */
@@ -325,14 +342,6 @@ class AppConfig {
         'recommendationPush'     => null, // отправлять данные для расчета рекоммендованных товаров
     ];
     /** @var array */
-    public $productPhoto = [
-        'url' => [],
-    ];
-    /** @var array */
-    public $productPhoto3d = [
-        'url' => [],
-    ];
-    /** @var array */
     public $productLabel = [
         'url' => [],
     ];
@@ -457,21 +466,6 @@ class AppConfig {
     ];
     /** @var bool */
     public $newDeliveryCalc;
-    /**
-     * @var array
-     * @hidden
-     */
-    public $maybe3d = [
-        'xmlUrl' => null,
-        'customerId' => null,
-        'swfUrl' => null,
-        'cmsFolder' => null,
-        'timeout' => null,
-    ];
-    /** @var array */
-    public $img3d = [
-        'cmsFolder' => null,
-    ];
     /** @var array */
     public $tag = [
         'numSidebarCategoriesShown' => null,
@@ -561,6 +555,14 @@ class AppConfig {
 	];
 
     /** @var array */
+    public $fileStorage = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+
+    /** @var array */
     public $flocktoryExchange = [
         'enabled' => null,
     ];
@@ -619,10 +621,6 @@ class AppConfig {
     public $self_delivery = [
         'limit'     => 0,
         'regions'   => []
-    ];
-
-    public $tealeaf = [
-        'enabled' => null,
     ];
 
     public function __construct() {

@@ -21,7 +21,7 @@ return function (
             'id'    => $product->getArticle(),
             'title' => $product->getName(),
             'price' => $product->getPrice(),
-            'image' => $product->getImageUrl(),
+            'image' => $product->getMainImageUrl('product_120'),
             'count' => $orderProduct->getQuantity(),
         ];
     }

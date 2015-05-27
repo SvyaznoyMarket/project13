@@ -45,7 +45,7 @@ class Client {
     }
 	
 	
-	public function setNativePost($val=true) {
+	public function setNativePost() {
 		$this->nativePost = true;
 	}
 
@@ -90,6 +90,7 @@ class Client {
                 'data'    => $data,
                 'info'    => isset($info) ? $info : null,
                 'header'  => isset($header) ? $header : null,
+                'responseBodyLength' => is_string($response) ? strlen($response) : 0,
                 'timeout' => $timeout,
                 'startAt' => $startedAt,
                 'endAt'   => microtime(true),
@@ -216,6 +217,43 @@ class Client {
                     //$this->logger->info(microtime(true) . ': получен ответ на запрос ' . $this->queries[$this->queryIndex[(string)$handler]]['query']['url'] . '[' . (string)$handler . ']');
                     //$this->logger->debug(microtime(true) . ': <- [' . (string)$handler . ']', ['curl']);
 
+                    $info = curl_getinfo($handler);
+                    //$this->logger->debug('Curl response resource: ' . $handler, ['curl']);
+                    //$this->logger->debug('Curl response info: ' . $this->encodeInfo($info), ['curl']);
+
+                    if ($done['result'] !== CURLM_OK) {
+                        $this->logger->error([
+                            'message'      => 'Fail curl',
+                            'error'        => ['code' => (int)$done['result'], 'message' => curl_error($done['handle'])],
+                            'url'          => isset($info['url']) ? $info['url'] : null,
+                            'data'         => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
+                            'info'         => isset($info) ? $info : null,
+                            'retryTimeout' => $retryTimeout,
+                            'retryCount'   => $retryCount,
+                            'timeout'      => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['timeout']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['timeout'] : null,
+                            'startAt'      => $startedAt,
+                            'endAt'        => microtime(true),
+                        ], ['curl']);
+
+                        if (count($this->queries[$this->queryIndex[(string)$handler]]['resources']) < $retryCount) {
+                            //$this->logger->debug(microtime(true) . ': посылаю еще один запрос в ядро: ' . $query['query']['url'], ['curl']);
+                            $this->logger->info([
+                                'message' => 'Query retry',
+                                'url'     => $this->queries[$this->queryIndex[(string)$handler]]['query']['url'],
+                                'data'    => $this->queries[$this->queryIndex[(string)$handler]]['query']['data'],
+                            ], ['curl']);
+                            $this->addQuery(
+                                $this->queries[$this->queryIndex[(string)$handler]]['query']['url'],
+                                $this->queries[$this->queryIndex[(string)$handler]]['query']['data'],
+                                $this->successCallbacks[(string)$this->queries[$this->queryIndex[(string)$handler]]['resources'][0]],
+                                isset($this->failCallbacks[(string)$this->queries[$this->queryIndex[(string)$handler]]['resources'][0]]) ? $this->failCallbacks[(string)$this->queries[$this->queryIndex[(string)$handler]]['resources'][0]] : null,
+                                isset($query['query']['timeout']) ? $query['query']['timeout'] : null
+                            );
+                        }
+
+                        continue;
+                    }
+
                     //удаляем запрос из массива запросов на исполнение и прерываем дублирующие запросы
                     foreach ($this->queries[$this->queryIndex[(string)$handler]]['resources'] as $resource) {
                         if (is_resource($resource) && ($resource !== $handler)) {
@@ -223,10 +261,6 @@ class Client {
                             curl_close($resource);
                         }
                     }
-
-                    $info = curl_getinfo($handler);
-                    //$this->logger->debug('Curl response resource: ' . $handler, ['curl']);
-                    //$this->logger->debug('Curl response info: ' . $this->encodeInfo($info), ['curl']);
 
                     try {
                         if (curl_errno($handler) > 0) {
@@ -260,6 +294,7 @@ class Client {
                             'data'         => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
                             'info'         => isset($info) ? $info : null,
                             'header'       => isset($header) ? $header : null,
+                            'responseBodyLength' => is_string($content) ? strlen($content) : 0,
                             //'response'      => isset($content) ? $content : null,
                             'retryTimeout' => $retryTimeout,
                             'retryCount'   => $retryCount,
@@ -407,6 +442,7 @@ class Client {
         curl_setopt($connection, CURLOPT_URL, $url);
         curl_setopt($connection, CURLOPT_HTTPHEADER, ['X-Request-Id: ' . \App::$id, 'Expect:']);
         curl_setopt($connection, CURLOPT_ENCODING, 'gzip,deflate');
+        curl_setopt($connection, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0); // для решения проблемы {"code":56,"message":"Problem (2) in the Chunked-Encoded data"}
 
         if(isset($data['http_user']) && isset($data['http_password'])) {
             curl_setopt($connection, CURLOPT_USERPWD, $data['http_user'].":".$data['http_password']);
@@ -430,16 +466,17 @@ class Client {
 			 * The usage of the @filename API for file uploading is deprecated for php >=5.5
 			 * Но мы поддержим, т.к. не очень понимаю как тут нормально добавить эту фичу пишу тут
 			 */
-			if((float)PHP_VERSION>=5.5) {
+			if((float)PHP_VERSION >= 5.5) {
 				foreach($data as $k => $v) {
-					if($v[0] !=='@')
+					if(is_array($v) && $v[0] !=='@')
 						continue;
 					
-					$data[$k] = $this->initPostFile($v);
+					//$data[$k] = $this->initPostFile($v);
 				}
 			}
 			
 			curl_setopt($connection, CURLOPT_POST, true);
+//			curl_setopt($connection, CURLOPT_SAFE_UPLOAD, true);
             curl_setopt($connection, CURLOPT_POSTFIELDS, $data);
 		}
 

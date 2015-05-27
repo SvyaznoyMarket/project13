@@ -25,21 +25,26 @@ return function(
         </div>
     <? endif ?>
 
-    <div class="bProductDescImgBig">
-        <img itemprop="image" class="bProductDescImgBig__eImg bZoomedImg js-photo-zoomedImg"
-             src="<?= $product->getImageUrl(3) ?>"
-             <? if ($useLens): ?>
-                data-zoom-image="<?= $product->getImageUrl(5) ?>"
-             <? endif ?>
-             data-zoom-disable="<?= $useLens ? false : true ?>"
-             alt="<?= $helper->escape($product->getName()) ?>"
-             <? if ($product->getSlotPartnerOffer()): ?>data-is-slot="true"<? endif ?>
-        />
+    <? if ($images): ?>
+        <?
+        $sourceStandard = $product->isGifteryCertificate() ? $images[0]->getSource('product_1500') : $images[0]->getSource('product_500');
+        $sourceBig = $images[0]->getSource('product_1500');
+        $sourceOriginal = $images[0]->getSource('original');
+        ?>
 
-        <? if (!$product->isAvailable() && (!$product->getLabel() || mb_strtolower($product->getLabel()->getName()) !== 'подари жизнь')): ?>
-            <div class="bProductDescImgBig_none">Нет в наличии</div>
-        <? endif ?>
-    </div><!--/product big image section -->
+        <div class="bProductDescImgBig js-product-bigImg">
+            <img itemprop="image" class="bProductDescImgBig__eImg bZoomedImg mLoader js-photo-zoomedImg"
+                src="<?= $sourceStandard ? $helper->escape($sourceStandard->url) : '' ?>"
+                <? if ($sourceBig && $sourceOriginal && ($sourceOriginal->height > 750 || $sourceOriginal->width > 750)): ?>data-zoom-image="<?= $helper->escape($sourceBig->url) ?>"<? endif ?>
+                alt="<?= $helper->escape($product->getName()) ?>"
+                <? if ($product->getSlotPartnerOffer()): ?>data-is-slot="true"<? endif ?>
+            />
+
+            <? if (!$product->isAvailable() && (!$product->getLabel() || mb_strtolower($product->getLabel()->getName()) !== 'подари жизнь')): ?>
+                <div class="bProductDescImgBig_none">Нет в наличии</div>
+            <? endif ?>
+        </div>
+    <? endif ?>
 
     <div class="bPhotoAction clearfix">
         <ul class="bPhotoViewer">
@@ -87,18 +92,25 @@ return function(
             <? endif ?>
         </ul><!--/view product section -->
 
-        <? if (count($product->getPhoto()) > 1): ?>
-                <div class="prod-photoslider js-photoslider">
+        <? if (count($images) > 1): ?>
+            <div class="prod-photoslider js-photoslider">
                 <div class="prod-photoslider__wrap">
                     <ul id="productImgGallery" class="prod-photoslider__gal clearfix js-photoslider-gal">
-                        <? $i = 0; foreach ($product->getPhoto() as $photo):
-                            $zoomDisable = ($photo->getHeight() > 750 || $photo->getWidth() > 750) ? false : true; ?>
-                            <li class="prod-photoslider__gal__i js-photoslider-gal-i">
-                                <a class="prod-photoslider__gal__link jsPhotoGalleryLink<? if (0 == $i): ?> prod-photoslider__gal__link--active<? endif ?>" data-zoom-image="<?= $photo->getUrl(5) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#" data-zoom-disable="<?= $zoomDisable ?>">
-                                    <img class="prod-photoslider__gal__img" src="<?= $photo->getUrl(0) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
-                                </a>
-                            </li>
-                        <? $i++; endforeach ?>
+                        <? foreach ($images as $i => $image): ?>
+                            <?
+                            $sourceBig = $image->getSource('product_1500');
+                            $sourceStandard = $product->isGifteryCertificate() ? $image->getSource('product_1500') : $image->getSource('product_500');
+                            $sourceOriginal = $image->getSource('original');
+                            $sourceSmall = $image->getSource('product_60');
+                            ?>
+                            <? if ($sourceStandard && $sourceStandard->url): ?>
+                                <li class="prod-photoslider__gal__i js-photoslider-gal-i">
+                                    <a class="prod-photoslider__gal__link jsPhotoGalleryLink<? if (0 == $i): ?> prod-photoslider__gal__link--active<? endif ?>" <? if ($sourceBig && $sourceOriginal && ($sourceOriginal->height > 750 || $sourceOriginal->width > 750)): ?>data-zoom-image="<?= $helper->escape($sourceBig->url) ?>"<? endif ?> data-image="<?= $helper->escape($sourceStandard->url) ?>" href="#">
+                                        <img class="prod-photoslider__gal__img" src="<?= $sourceSmall ? $helper->escape($sourceSmall->url) : '' ?>" alt="<?= $helper->escape($product->getName()) ?>" />
+                                    </a>
+                                </li>
+                            <? endif ?>
+                        <? endforeach ?>
                     </ul>
                 </div>
 

@@ -24,11 +24,9 @@ class Media {
         if (isset($data['provider'])) $this->provider = $data['provider'];
         if (isset($data['tags']) && is_array($data['tags'])) $this->tags = $data['tags'];
 
-        if (isset($data['sources']) && is_array($data['sources'])) {
+        if (isset($data['sources'][0])) {
             foreach ($data['sources'] as $source) {
-                if (is_array($source)) {
-                    $this->sources[] = new Source($source);
-                }
+                $this->sources[] = new Source($source);
             }
         }
     }
@@ -37,7 +35,7 @@ class Media {
      * @param string $type
      * @return Source|null
      */
-    public function getSourceByType($type) {
+    public function getSource($type) {
         foreach ($this->sources as $source) {
             if ($source->type === $type) {
                 return $source;
