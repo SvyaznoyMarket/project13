@@ -177,10 +177,10 @@
     -o-background-size: @size;
     background-size: @size;
 }
-.inline-block() {
+.inline-block(@valign: baseline) {
     display: inline-block;
 
-    vertical-align: top;
+    vertical-align: @valign;
     /* IE6-8 */
 
     *display: inline;

@@ -15,13 +15,14 @@ $productPageSender = \Session\ProductPageSenders::get($product->getUi());
 $productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 ?>
 
-<div class="topbarfix_crumbs">
-    <div class="topbarfix_crumbsImg"><img class="crumbsImg" src="<?= $product ? $product->getMainImageUrl('product_60') : '' ?>" /></div>
+<div class="userbar-crumbs">
+    <div class="userbar-crumbs-img"><img class="userbar-crumbs-img__img" src="<?= $product ? $product->getImageUrl() : '' ?>" /></div>
 
     <div class="userbar-crumbs-wrap">
         <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
     </div>
 </div>
+
 
 <div class="topbarfix_buy js-topbarfixBuy none">
 

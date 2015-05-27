@@ -14,10 +14,7 @@ $f = function(
 
     <!-- слайдер изображений товара -->
     <div class="product-card__l">
-    <!-- блок с уголком и фишкой - верхняя часть -->
-    <div id="fpc_effect-back">
-        <div id="fpc_box">
-    <!-- END: блок с уголком и фишкой - верхняя часть -->
+
             <div class="product-card-photo">
                 <? if ($product->getLabel()): ?>
                     <a class="product-card-photo-sticker" href=""><img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>"></a>
@@ -32,24 +29,6 @@ $f = function(
                     <div class="product-card-photo__overlay">Нет в наличии</div>
                 <? endif ?>
             </div>
-
-
-
-        <!-- блок с уголком и фишкой - нижяя часть -->
-            <div id="fpc_corner-box">
-                    <a id="fpc_page-tip" href="#">
-                    <div id="fpc_corner-contents">
-                      <div id="fpc_corner-button">
-                        <div class="fishka">
-                            <strong>Получи скидку</strong>
-                        </div>
-                      </div>
-                      </div>
-                    </a>
-            </div>
-        </div>
-    </div>
-    <!-- END: блок с уголком и фишкой - нижняя часть -->
 
         <!-- если картинок больше 5 добавляем класс product-card-photo-thumbs--slides -->
         <div class="product-card-photo-thumbs jsProductThumbHolder <?= count($product->getMedias('image')) > 5 ? 'product-card-photo-thumbs--slides' : ''?>"
