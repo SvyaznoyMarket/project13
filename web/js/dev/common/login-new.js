@@ -13,6 +13,21 @@
 		$authBlock = $('#auth-block'),
 
         init = function() {
+			$('body').on('click', '.bAuthLink', function() {
+				$authBlock.lightbox_me({
+					centered: true,
+					autofocus: true,
+					onLoad: function() {
+						$authBlock.find('input:first').focus();
+					},
+					onClose: function() {
+						$authBlock.trigger('changeState', ['default']);
+					}
+				});
+
+				return false;
+			});
+
 			$('.js-registerForm-subscribe').change(function(e) {
 				changeSocnetLinks(e.currentTarget.checked);
 			});
