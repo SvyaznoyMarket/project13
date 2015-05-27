@@ -120,10 +120,10 @@ class IndexPage extends \View\DefaultLayout {
 
         return "<meta property=\"og:title\" content=\"" . $this->escape($this->product->getName()) . "\"/>\r\n" .
             "<meta property=\"og:description\" content=\"" . $this->escape($description) . "\"/>\r\n" .
-            "<meta property=\"og:image\" content=\"" . $this->escape($this->product->getImageUrl(3).'?'.time()) . "\"/>\r\n".
+            "<meta property=\"og:image\" content=\"" . $this->escape($this->product->getMainImageUrl('product_120').'?'.time()) . "\"/>\r\n".
             "<meta property=\"og:site_name\" content=\"ENTER\"/>\r\n".
             "<meta property=\"og:type\" content=\"website\"/>\r\n".
-            "<link rel=\"image_src\" href=\"". $this->escape($this->product->getImageUrl(3)). "\" />\r\n";
+            "<link rel=\"image_src\" href=\"". $this->escape($this->product->getMainImageUrl('product_120')). "\" />\r\n";
     }
 
     public function slotConfig() {
@@ -241,7 +241,7 @@ class IndexPage extends \View\DefaultLayout {
         $properties3D = ['type' => null, 'url' => null];
 
         foreach ($this->product->medias as $media) {
-            $source = $media->getSourceByType('reference');
+            $source = $media->getSource('reference');
             switch ($media->provider) {
                 case 'vimeo':
                     if ($source) {

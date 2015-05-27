@@ -232,7 +232,8 @@
             iconImageHref: point.marker.iconImageHref,
             iconImageSize: point.marker.iconImageSize,
             iconImageOffset: point.marker.iconImageOffset,
-            visible: visibility
+            visible: visibility,
+            zIndex: point.token == 'shops' ? 1000 : 0
         });
 
         // Максимальная ширина балуна
@@ -319,7 +320,7 @@
 		// Throttled ajax query
 		ko.computed(function(){
 			var val = self.searchInput();
-			var params = {q: val, sender: 'knockout'};
+			var params = {q: val};
 
 			if (self.currentCategory() != null) params.catId = self.currentCategory().id;
 
@@ -672,25 +673,21 @@
 		}
 	});
 	*/
-	(function(data){
-		ENTER.UserModel.update(data);
+	(function(){
+		ENTER.UserModel.update(ENTER.config.userInfo);
 		if (typeof ga == 'function') {
 			ga('send', 'timing', 'userInfo', 'Load User Info', spendTime);
 			console.log('[Google Analytics] Send user/info timing: %s ms', spendTime)
 		}
 
-		ENTER.config.userInfo = data;
-
 		if (!docCookies.hasItem(authorized_cookie)) {
-			if (data && data.user && typeof data.user.id != 'undefined') {
+			if (ENTER.config.userInfo && ENTER.config.userInfo.user && typeof ENTER.config.userInfo.user.id != 'undefined') {
 				docCookies.setItem(authorized_cookie, 1, 60*60, '/'); // on
 			} else {
 				docCookies.setItem(authorized_cookie, 0, 60*60, '/'); // off
 			}
 		}
-
-		$body.trigger('userLogged', [data]);
-	})($.parseJSON($('#data-userInfo').html()));
+	})();
 
 	$body.on('catalogLoadingComplete', function(){
 		$('.js-listing, .js-jewelListing').each(function(){
@@ -1999,7 +1996,6 @@ $(function() {
 		self.id = product.id;
 		self.url = product.url;
 		self.name = product.name;
-		self.line = product.lineName;
 		self.price = product.price;
 		self.image = product.image;
 		self.height = product.height;
@@ -2070,20 +2066,43 @@ $(function() {
 		}
 	}
 });
-;$(document).ready(function(){
+;$(document).ready(function() {
+
+    var partnerData = {
+        lastPartner: '',
+        cookie: []
+    };
+
+    try {
+        partnerData = $.parseJSON($('#lastPartnerJSON').html());
+    } catch (e) {
+        console.error('Ошибка получения партнера')
+    }
+
 	// при любом клике на странице
 	$(document.body).on('click', function(){
-		var last_p = window.last_partner_second_click;
-		// ставим куку last_partner на 30 дней, если есть переменная window.last_partner_second_click
-		if (typeof last_p != 'undefined') {
+		// ставим куку last_partner на 30 дней
+		if (partnerData.lastPartner) {
 			docCookies.setItem(
 				'last_partner',
-				last_p,
+                partnerData.lastPartner,
 				60 * 60 *24 *30,
 				'/'
 			);
+            console.info('[PARTNER] Установлен партнер %s', partnerData.lastPartner);
 		}
-	})
+        // и остальные куки партнеров
+        $.each(partnerData.cookie, function(i,v) {
+            docCookies.setItem(
+                v['name'],
+                v['value'],
+                typeof v['time'] != 'undefined' ? v['time'] : 60 * 60 *24 *30,
+                '/'
+            );
+            console.info('[PARTNER] Установлена кука партнера', v);
+        })
+	});
+
 });
 ;(function( ENTER ) {
 	function changeSocnetLinks(isSubscribe) {
@@ -2957,7 +2976,7 @@ $(document).ready(function() {
 		if (typeof url == 'string' && !$el.data(lKey) === true) {
 
 			// отрезаем от url параметры для ключа в localstorage
-			key = url.substring(0, url.indexOf('?'));
+			key = url.indexOf('?') === -1 ? url : url.substring(0, url.indexOf('?'));
 
 			if (!storage.get(key, $el)) {
 
@@ -4290,7 +4309,7 @@ $(document).ready(function() {
             var
                 data = $(el).data('slider'),
                 //rrviewed = docCookies.getItem('rrviewed')
-                rrviewed = docCookies.getItem('product_viewed')
+                rrviewed = docCookies.getItem('product_viewed') || ''
             ;
 
             if (('viewed' == data.type) && typeof rrviewed === 'string') {
@@ -4579,38 +4598,6 @@ $(document).ready(function() {
     }
 
 }());
-;(function($) {
-
-    var
-        $body = $('body'),
-
-        TLT = (typeof this.TLT === 'object') ? this.TLT : null,
-
-        TLT_logCustomEvent = function(event, TLT_eventName, TLT_eventData) {
-            try {
-                console.info('TLT_logCustomEvent', TLT_eventName, TLT_eventData);
-
-                TLT.logCustomEvent(TLT_eventName, TLT_eventData);
-            } catch (e) {
-                console.error(e);
-            }
-        },
-
-        TLT_processDOMEvent = function(event, originalEvent) {
-            try {
-                console.info('TLT_processDOMEvent', originalEvent);
-
-                TLT.processDOMEvent(originalEvent);
-            } catch (e) {
-                console.error(e);
-            }
-        }
-    ;
-
-    //$body.on('TLT_logCustomEvent', TLT_logCustomEvent);
-    $body.on('TLT_processDOMEvent', TLT_processDOMEvent);
-
-})(jQuery);
 /**
  * Кнопка наверх
  *
@@ -4653,10 +4640,11 @@ $(document).ready(function() {
 
 	$window.scroll(checkScroll);
 
-	// Если showWhenFullCartOnly = true, то проверку надо выполнять лишь после того, как станут доступны данные корзины (которые становятся доступны после userLogged)
-	$body.on('userLogged closeBuyInfo showBuyInfo', function(){
+	$body.on('closeBuyInfo showBuyInfo', function(){
 		checkScroll();
 	});
+
+	checkScroll();
 }());
 /**
  * White floating user bar
@@ -5067,10 +5055,7 @@ $(document).ready(function() {
 			w.on('scroll', function(){ checkScroll(true); });
 		}
 
-		// Если showWhenFullCartOnly = true, то проверку надо выполнять лишь после того, как станут доступны данные корзины (которые становятся доступны после userLogged)
-		$body.on('userLogged', function(){
-			checkScroll();
-		});
+		checkScroll();
 	}
 	else {
 		overlay.remove();

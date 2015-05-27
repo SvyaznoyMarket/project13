@@ -22,7 +22,7 @@ $f = function(
                 <? if ($product->getLabel()): ?>
                     <a class="product-card-photo-sticker" href=""><img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>"></a>
                 <? endif ?>
-                <img src="<?= $product->getImageUrl(3) ?>"
+                <img src="<?= $product->getMainImageUrl('product_550') ?>"
                      class="product-card-photo__img js-photo-zoomedImg jsOpenProductImgPopup jsProductMiddlePhoto"
                      alt="<?= $helper->escape($product->getName()) ?>"
                      data-is-slot="<?= $product->getSlotPartnerOffer() ? 'true' : 'false' ?>"
@@ -52,15 +52,15 @@ $f = function(
     <!-- END: блок с уголком и фишкой - нижняя часть -->
 
         <!-- если картинок больше 5 добавляем класс product-card-photo-thumbs--slides -->
-        <div class="product-card-photo-thumbs jsProductThumbHolder <?= count($product->getPhoto()) > 5 ? 'product-card-photo-thumbs--slides' : ''?>"
-            <? if (count($product->getPhoto()) < 2) : ?>style="display: none"<? endif ?>
+        <div class="product-card-photo-thumbs jsProductThumbHolder <?= count($product->getMedias('image')) > 5 ? 'product-card-photo-thumbs--slides' : ''?>"
+            <? if (count($product->getMedias('image')) < 2) : ?>style="display: none"<? endif ?>
         >
             <ul class="product-card-photo-thumbs-list jsProductThumbList">
-                <? foreach ($product->getPhoto() as $key => $photo) : ?>
+                <? foreach ($product->getMedias('image') as $key => $photo) : ?>
                     <li class="product-card-photo-thumbs__i jsProductPhotoThumb <?= $key == 0 ? 'product-card-photo-thumbs__i--act' : '' ?>"
-                        data-middle-img="<?= $photo->getUrl(3) ?>"
-                        data-big-img="<?= $photo->getUrl(5) ?>"
-                        ><img src="<?= $photo->getUrl() ?>" class="product-card-photo-thumbs__img" /></li>
+                        data-middle-img="<?= $photo->getSource('product_500')->url ?>"
+                        data-big-img="<?= $photo->getSource('product_550')->url ?>"
+                        ><img src="<?= $photo->getSource('product_500')->url ?>" class="product-card-photo-thumbs__img" /></li>
                 <? endforeach ?>
             </ul>
 
@@ -120,10 +120,10 @@ $f = function(
 
             <div class="product-card-photo-thumbs" style="max-width: 670px;">
                 <ul class="product-card-photo-thumbs-list">
-                    <? foreach ($product->getPhoto() as $key => $photo) : ?>
+                    <? foreach ($product->getMedias('image') as $key => $photo) : ?>
                         <li class="product-card-photo-thumbs__i jsPopupPhotoThumb"
-                            data-big-img="<?= $photo->getUrl(5) ?>"
-                            ><img src="<?= $photo->getUrl() ?>" class="product-card-photo-thumbs__img"></li>
+                            data-big-img="<?= $photo->getSource('product_1500')->url ?>"
+                            ><img src="<?= $photo->getSource('product_120')->url ?>" class="product-card-photo-thumbs__img"></li>
                     <? endforeach ?>
                 </ul>
 

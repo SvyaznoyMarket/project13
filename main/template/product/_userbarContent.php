@@ -16,7 +16,7 @@ $productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->g
 ?>
 
 <div class="topbarfix_crumbs">
-    <div class="topbarfix_crumbsImg"><img class="crumbsImg" src="<?= $product ? $product->getMainImageUrl('product_120') : '' ?>" /></div>
+    <div class="topbarfix_crumbsImg"><img class="crumbsImg" src="<?= $product ? $product->getMainImageUrl('product_60') : '' ?>" /></div>
 
     <div class="userbar-crumbs-wrap">
         <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>

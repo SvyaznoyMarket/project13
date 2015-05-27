@@ -91,7 +91,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
                 'count'          => null,
                 'limit'          => \App::config()->product['itemsInSlider'],
                 'page'           => 1,
-                'additionalData' => $additionalData,
+//                'additionalData' => $additionalData,
                 'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
                 'sender'         => [
                     'name'     => 'retailrocket',

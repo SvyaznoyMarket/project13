@@ -1241,6 +1241,13 @@ class Entity {
         return $this->partnersOffer;
     }
 
+    /** Возвращает наименование первого партнера
+     * @return string|null
+     */
+    public function getPartnerName(){
+        return !empty($this->partnersOffer) && isset($this->partnersOffer[0]['name']) ? $this->partnersOffer[0]['name'] : null;
+    }
+
     /**
      * @return boolean
      */
@@ -1368,6 +1375,10 @@ class Entity {
         }
 
         return $medias;
+    }
+
+    public function getImageUrl(){
+        return $this->getMainImageUrl('product_120');
     }
 
     public function getMainImageUrl($sourceType) {
