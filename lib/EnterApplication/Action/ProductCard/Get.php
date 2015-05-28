@@ -231,6 +231,7 @@ namespace EnterApplication\Action\ProductCard
                     $query->filter->media = true;
                     $query->filter->seo = true;
                     $query->filter->property = true;
+                    $query->filter->label = true;
                     $query->prepare();
 
                     $productDescriptionQueries[] = $query;

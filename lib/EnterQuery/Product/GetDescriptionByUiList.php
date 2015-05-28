@@ -39,6 +39,7 @@ namespace EnterQuery\Product
                         'seo'         => $this->filter->seo,
                         'media'       => $this->filter->media,
                         'property'    => $this->filter->property,
+                        'label'       => $this->filter->label,
                     ]
                 ),
                 [], // data
@@ -74,5 +75,7 @@ namespace EnterQuery\Product\GetDescriptionByUiList
         public $media = false;
         /** @var bool */
         public $property = false;
+        /** @var bool */
+        public $label = false;
     }
 }
