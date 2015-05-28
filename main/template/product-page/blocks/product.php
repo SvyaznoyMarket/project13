@@ -2,7 +2,7 @@
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    $videoHtml, $properties3D, $reviewsData, $creditData, $isKit, $buySender, $buySender2, $request
+    $trustfactors, $videoHtml, $properties3D, $reviewsData, $creditData, $isKit, $buySender, $buySender2, $request
 ){
 
 ?>
@@ -30,23 +30,7 @@ $f = function(
         <? endforeach ?>
     </dl>
 
-    <ul class="product-card-assure">
-        <li class="product-card-assure__i">
-            <div class="product-card-assure__l">
-                <img class="product-card-assure__img" src="/styles/product/img/pandora.png">
-            </div>
-
-            <span class="product-card-assure__r">Гарантия подлинности и качества</span>
-        </li>
-
-        <li class="product-card-assure__i">
-            <div class="product-card-assure__l">
-                <img class="product-card-assure__img" src="/styles/product/img/jewelery-guar.png">
-            </div>
-
-            <span class="product-card-assure__r">Обмен в течение 30 дней<br/>Возврат по гарантии в течение 1 года</span>
-        </li>
-    </ul>
+    <?= $helper->render('product-page/blocks/trustfactors', ['trustfactors' => $trustfactors]) ?>
 
     <div class="product-card-sharing-list">
         <!-- AddThis Button BEGIN -->

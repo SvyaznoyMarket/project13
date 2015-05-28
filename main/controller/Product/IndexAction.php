@@ -332,7 +332,7 @@ class IndexAction {
         $page->setParam('trustfactors', $trustfactors);
         $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
         $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery));
-        $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
+//        $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);
         $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);
         $page->setParam('viewParams', [

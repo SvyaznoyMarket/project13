@@ -68,6 +68,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 	<!-- карточка товара -->
     <?= $helper->render( $product->isAvailable() ? 'product-page/blocks/product' : 'product-page/blocks/product.not_available', [
         'product' => $product,
+        'trustfactors' => $trustfactors,
         'videoHtml' => $videoHtml,
         'properties3D' => $properties3D,
         'reviewsData' => $reviewsData,

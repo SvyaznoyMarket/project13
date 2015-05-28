@@ -4,6 +4,11 @@ namespace Model;
 use Model\Media\Source;
 
 class Media {
+
+    const PROVIDER_IMAGE = 'image';
+    const PROVIDER_FILE = 'file';
+    const TYPE_ORIGINAL = 'original';
+
     /** @var string|null */
     public $uid;
     /** @var string|null */
@@ -45,11 +50,18 @@ class Media {
         return null;
     }
 
-    /** Является ли медиа файловым вложением (не картинкой)
+    /** Является ли медиа файловым вложением
      * @return bool
      */
-    public function isFile(){
-        return $this->provider === 'file';
+    public function isFile() {
+        return $this->provider === self::PROVIDER_FILE;
+    }
+
+    /** Является ли медиа изображением
+     * @return bool
+     */
+    public function isImage() {
+        return $this->provider === self::PROVIDER_IMAGE;
     }
 
     /** Ссылка на файл (если это файловое вложение)
@@ -58,4 +70,12 @@ class Media {
     public function getFileLink() {
         return $this->isFile() && $this->sources ? $this->sources[0]->url : null;
     }
+
+    /** Ссылка на оригинальное изображение
+     * @return null|string
+     */
+    public function getOriginalImage() {
+        return $this->getSource(self::TYPE_ORIGINAL) ? $this->getSource(self::TYPE_ORIGINAL)->url : null;
+    }
+
 }

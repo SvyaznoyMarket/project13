@@ -41,4 +41,12 @@ class Trustfactor {
     public function hasTag($tag) {
         return in_array($tag, $this->tags);
     }
+
+    /** Возвращает URL оригинального изображения
+     * @return null|string
+     */
+    public function getImage() {
+        return $this->media ? $this->media->getOriginalImage() : null;
+    }
+
 }
