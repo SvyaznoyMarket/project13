@@ -47,6 +47,11 @@
         })
     });
 
+    $('.jsSupplierToHide').on('click', function(e){
+        e.preventDefault();
+        $('.supplierToHide').hide()
+    });
+
     // Обработчик
     $registerForm.on('submit', function(e) {
         e.preventDefault();

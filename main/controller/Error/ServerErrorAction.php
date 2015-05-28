@@ -4,9 +4,8 @@ namespace Controller\Error;
 
 class ServerErrorAction {
     public function execute() {
-        //\App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->ssi['enabled'] && (true === \App::request()->get('SSI'))) {
+        if (\App::request()->headers->get('SSI') == 'on') {
             $content = '<b>!</b>';
         } else {
             $content = \App::templating()->render('error/page-500');
