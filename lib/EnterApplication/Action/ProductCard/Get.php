@@ -16,8 +16,6 @@ namespace EnterApplication\Action\ProductCard
          */
         public function execute(Request $request)
         {
-            //$startAt = microtime(true);
-            //$GLOBALS['startAt'] = $startAt;
             \Debug\Timer::start('curl');
 
             $curl = $this->getCurl();
@@ -52,19 +50,7 @@ namespace EnterApplication\Action\ProductCard
             $productQuery->prepare();
 
             // дерево категорий для меню
-            //$categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
             $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($regionQuery->response->region['id'], 3))->prepare();
-
-            // отзывы о товаре
-            /*
-            $reviewQuery = null;
-            if ($request->productCriteria['token']) {
-                $reviewQuery = new Query\Product\Review\GetByProductToken($request->productCriteria['token'], 0, 7);
-            }
-            if ($reviewQuery) {
-                $reviewQuery->prepare($reviewError);
-            }
-            */
 
             // пользователь и его подписки
             /** @var Query\User\GetByToken $userQuery */
@@ -86,6 +72,10 @@ namespace EnterApplication\Action\ProductCard
 
                 // product view событие
                 $productViewEventQuery = (new Query\Event\PushProductView($productUi, $userQuery->response->user['ui']))->prepare();
+            });
+
+            call_user_func(function() use (&$productQuery, &$couponQuery) {
+                $couponQuery = new Query\Product\Coupon\GetCouponByProductsUi($productQuery->response->product['ui']);
             });
 
             // доставка
@@ -287,7 +277,7 @@ namespace EnterApplication\Action\ProductCard
             $response->productDescriptionQueries = $productDescriptionQueries;
             $response->userQuery = $userQuery;
             $response->favoriteQuery = $favoriteQuery;
-            $response->subscribeQuery = $subscribeQuery;
+//            $response->subscribeQuery = $subscribeQuery;
             $response->redirectQuery = $redirectQuery;
             $response->abTestQuery = $abTestQuery;
             $response->regionQuery = $regionQuery;
@@ -302,10 +292,7 @@ namespace EnterApplication\Action\ProductCard
             $response->reviewQuery = $reviewQuery;
             $response->categoryQuery = $categoryQuery;
             $response->lifeGiftProductQuery = $lifeGiftProductQuery;
-
-            //var_dump($GLOBALS['enter/curl/query/cache']);
-            //var_dump($response);
-            //die(var_dump('done'));
+            $response->couponQuery = $couponQuery;
 
             \Debug\Timer::stop('curl');
 
@@ -376,5 +363,7 @@ namespace EnterApplication\Action\ProductCard\Get
         public $favoriteQuery;
         /** @var Query\Product\GetByToken */
         public $lifeGiftProductQuery;
+        /** @var Query\Product\Coupon\GetCouponByProductsUi */
+        public $couponQuery;
     }
 }
