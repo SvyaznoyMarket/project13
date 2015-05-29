@@ -50,6 +50,19 @@ class Media {
         return null;
     }
 
+    /** Возвращает первый source с заданным тэгом
+     * @param $tag
+     * @return Source|null
+     */
+    public function getFirstSourceWithTag($tag) {
+        foreach ($this->sources as $source) {
+            if (in_array($tag, $this->tags)) {
+                return $source;
+            }
+        }
+        return null;
+    }
+
     /** Является ли медиа файловым вложением
      * @return bool
      */

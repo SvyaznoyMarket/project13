@@ -2,6 +2,7 @@
 
 namespace Controller\Product;
 
+use Model\Product\Label;
 use Model\Product\Trustfactor;
 
 class IndexAction {
@@ -116,6 +117,8 @@ class IndexAction {
             if (isset($data['medias']) && is_array($data['medias'])) {
                 $product->medias = array_map(function($media) { return new \Model\Media($media); }, $data['medias']);
             }
+
+            if (isset($data['label']['uid'])) $product->setLabel(new Label($data['label']));
 
             if (isset($data['json3d']) && is_array($data['json3d'])) {
                 $product->json3d = $data['json3d'];

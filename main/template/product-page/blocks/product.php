@@ -1,4 +1,7 @@
 <?php
+
+use \Model\Product\Label;
+
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
@@ -41,8 +44,8 @@ $f = function(
             <a class="addthis_button_compact"></a>
             <a class="addthis_counter addthis_bubble_style"></a>
         </div>
-        <script type="text/javascript">var addthis_config = {"data_track_addressbar":true, ui_language: "ru"};</script>
-        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1&domready=1"></script>
+        <script type="text/javascript">var addthis_config = { data_track_addressbar:true, ui_language: "ru" };</script>
+        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1&domready=1" async></script>
         <!-- AddThis Button END -->
     </div>
 
@@ -56,32 +59,29 @@ $f = function(
 
 <!-- купить -->
 <div class="product-card__r">
-    <div class="product-card-action i-info" style="display: none">
-        <span class="product-card-action__tx i-info__tx">Акция действует<br>ещё 1 день 22:11:07</span>
-        <i class="product-card-action__icon i-product i-product--info-warn i-info__icon"></i>
 
-        <!-- попап - подробности акции, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
-        <div class="info-popup info-popup--action info-popup--open" style="display: none">
-            <i class="closer">×</i>
-            <div class="info-popup__inn">
-                <a href="" title=""><img src="/styles/product/img/trust-sale.png" alt=""></a>
-            </div>
-        </div>
-        <!--/ попап - подробности акции -->
+    <? if ($product->getLabel() && $product->getLabel()->expires && !$product->getLabel()->isExpired()) : ?>
+        <!-- Шильдик с правой стороны -->
+        <div class="product-card-action i-info">
 
-        <!-- попап - подробности акции, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
-        <div class="action-hint info-popup info-popup--action info-popup--open" style="display: none">
-            <i class="closer">×</i>
-            <div class="info-popup__inn">
-                <div class="action-hint__desc">
-                    <img class="action-hint__img" src="/styles/product/img/shild-124x38.png">
+            <span class="product-card-action__tx i-info__tx"
+                  data-expires="<?= $product->getLabel()->expires->format('U') ?>">Акция действует<br>ещё <span><?= $product->getLabel()->getDateDiffString() ?></span>
+            </span>
 
-                    <a class="action-hint__lk">Черная пятница в Enter</a>
+            <? if ($product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE)) : ?>
+                <i class="product-card-action__icon i-product i-product--info-warn i-info__icon"></i>
+
+                <!-- попап - подробности акции, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
+                <div class="info-popup info-popup--action">
+                    <i class="closer">×</i>
+                    <div class="info-popup__inn">
+                        <a href="" title=""><img src="<?= $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) ?>" alt=""></a>
+                    </div>
                 </div>
-            </div>
+                <!--/ попап - подробности акции -->
+            <? endif ?>
         </div>
-        <!--/ попап - подробности акции -->
-    </div>
+    <? endif ?>
 
     <? if ($product->getPriceOld()) : ?>
         <div class="product-card-old-price">
