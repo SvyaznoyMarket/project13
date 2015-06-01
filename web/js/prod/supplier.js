@@ -335,7 +335,7 @@
 
     $('.jsSupplierToHide').on('click', function(e){
         e.preventDefault();
-        $('.supplierToHide').hide();
+        $('.supplierToHide').hide()
     });
 
     // Обработчик
