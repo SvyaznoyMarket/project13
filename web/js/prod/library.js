@@ -3361,6 +3361,9 @@ var toObject = function (o) {
 				label = '';
 
 			var reviewProducts = ENTER.utils.analytics.reviews.get(productUis);
+            console.log('localstorage', localStorage.getItem('enter.analytics.reviews'));
+            console.log('products ui', productUis);
+            console.log('reviewProducts', reviewProducts);
 
 			if (reviewProducts.length) {
 				for (var i = 0; i < reviewProducts.length; i++) {
@@ -3482,7 +3485,7 @@ var toObject = function (o) {
 			},
 			get: function(productUis) {
 				var result = abstractAnalytics.get('enter.analytics.reviews', productUis);
-				for (var i = 0; i < result.length; result++) {
+				for (var i = 0; i < result.length; i++) {
 					result[i] = {
 						avgScore: result[i][1],
 						firstPageAvgScore: result[i][2],
