@@ -1,5 +1,6 @@
 <?php
-setlocale(LC_TIME, 'ru_RU', 'ru_RU.utf8');
+setlocale(LC_TIME, 'ru_RU', 'ru_RU.utf8'); // Для вывода даты на русском языке
+setlocale(LC_CTYPE, 'ru_RU', 'ru_RU.utf8'); // Для правильной работы basename
 set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, [
     realpath(__DIR__ . '/../v2/Enter'),
 ]));

@@ -184,6 +184,22 @@ module.exports = function (grunt, options) {
                 destMap: 'prod/service_ha.js.map',
                 srcRoot: '/js',
                 cwd: 'web/js'
+        },
+
+        tealeaf: {
+            src: ['dev/tealeaf/*.js'],
+                dest: 'prod/tealeaf.js',
+                destMap: 'prod/tealeaf.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+
+        supplier: {
+            src: ['dev/supplier/*.js'],
+            dest: 'prod/supplier.js',
+            destMap: 'prod/supplier.js.map',
+            srcRoot: '/js',
+            cwd: 'web/js'
         }
     }
 };

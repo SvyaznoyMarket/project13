@@ -29,8 +29,6 @@ $c->session['cookie_lifetime'] = 2592000; // 30 дней
 $c->session['cookie_domain'] = '.enter.ru';
 $c->session['compareKey']   = 'compare'; // ключ для массива сравнения
 
-$c->ssi['enabled'] = false;
-
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
@@ -195,6 +193,21 @@ $c->crm['retryTimeout'] = [
     'huge'    => 1.5,
 ];
 $c->crm['debug'] = false;
+
+$c->fileStorage = [
+    'url'          => 'http://api.enter.ru/v2/',
+    'client_id'    => 'site',
+    'timeout'      => 5,
+    'retryTimeout' => [
+        'default' => 0.18,
+        'tiny'    => 0.18,
+        'short'   => 0.25,
+        'medium'  => 0.5,
+        'long'    => 1,
+        'huge'    => 2,
+    ],
+    'retryCount'   => 2,
+];
 
 $c->connectTerminal = true;
 

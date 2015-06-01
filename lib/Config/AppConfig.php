@@ -77,13 +77,6 @@ class AppConfig {
         'cookie_lifetime' => null,
         'cookie_domain'   => null,
     ];
-    /**
-     * nginx ssi
-     * @var array
-     */
-    public $ssi = [
-        'enabled' => null,
-    ];
     /** @var array */
     public $redirect301 = [
         'enabled' => null,
@@ -543,6 +536,14 @@ class AppConfig {
 	public $photoContest = [
 		'client'	=> []
 	];
+
+    /** @var array */
+    public $fileStorage = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
 
     /** @var array */
     public $flocktoryExchange = [

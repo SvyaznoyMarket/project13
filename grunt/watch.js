@@ -159,6 +159,11 @@ module.exports = function (grunt, options) {
         loadJS:{
             files: [ pathRoot + 'loadjs.js'],
             tasks: ['uglify:loadJS']
+        },
+
+        supplier:{
+            files: [ pathDev + 'supplier/*.js'],
+            tasks: ['concat:supplier', 'uglify:supplier', 'jsmin-sourcemap:supplier']
         }
     }
 };
