@@ -150,7 +150,7 @@ class Entity {
         if (isset($data['token'])) $this->setToken($data['token']);
         if (isset($data['article'])) $this->setArticle($data['article']);
         if (isset($data['bar_code'])) $this->setBarcode($data['bar_code']);
-        if (false && isset($data['category']) && (bool)$data['category']) {
+        if (isset($data['category']) && (bool)$data['category']) {
             $categoryData = reset($data['category']);
             if ((bool)$categoryData) $this->setMainCategory(new Category\Entity($categoryData));
 
