@@ -120,8 +120,6 @@ class Entity {
     protected $label;
     /** @var Type\Entity|null */
     protected $type;
-    /** @var int */
-    protected $commentCount;
     /** @var float */
     protected $priceAverage;
     /** @var float */
@@ -152,7 +150,7 @@ class Entity {
         if (isset($data['token'])) $this->setToken($data['token']);
         if (isset($data['article'])) $this->setArticle($data['article']);
         if (isset($data['bar_code'])) $this->setBarcode($data['bar_code']);
-        if (isset($data['category']) && (bool)$data['category']) {
+        if (false && isset($data['category']) && (bool)$data['category']) {
             $categoryData = reset($data['category']);
             if ((bool)$categoryData) $this->setMainCategory(new Category\Entity($categoryData));
 
@@ -222,7 +220,6 @@ class Entity {
             }
         }
         if (array_key_exists('type', $data) && (bool)$data['type']) $this->setType(new Type\Entity($data['type']));
-        if (array_key_exists('comment_count', $data)) $this->setCommentCount($data['comment_count']);
         if (array_key_exists('price_average', $data)) $this->setPriceAverage($data['price_average']);
         if (array_key_exists('price_old', $data)) $this->setPriceOld($data['price_old']);
         if (array_key_exists('related', $data)) $this->setRelatedId($data['related']);
@@ -387,20 +384,6 @@ class Entity {
 
     public function getBrand() {
         return $this->brand;
-    }
-
-    /**
-     * @param int $commentCount
-     */
-    public function setCommentCount($commentCount) {
-        $this->commentCount = (int)$commentCount;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCommentCount() {
-        return $this->commentCount;
     }
 
     /**
