@@ -147,14 +147,6 @@ ANALYTICS.gaJS = function(data) {
             /** Событие нажатия кнопки «Купить» или «Резерв» */
             $body.on('click', 'a.btnBuy__eLink', function ga_btnBuy() {
                 if ( 'undefined' !== product ) {
-
-                    /* На наборах выполняется другой трекинговый код */
-                    if ($(this).hasClass('js-kitButton')) {
-                        console.log('GA: send event addedCollection collection %s', product.article);
-                        ga('send', 'event', 'addedCollection', 'collection', product.article);
-                        return ;
-                    }
-
                     console.log('GA: btn Buy');
                     if ($(this).hasClass('mShopsOnly')) {
                         ga('send', 'event', 'reserve', product.name, product.article, product.price);
@@ -211,15 +203,6 @@ ANALYTICS.gaJS = function(data) {
                 ga('send', 'event', 'Items after Search', data.upperCat, product.article);
             }
 
-            if (/product\/tchibo/.test(document.location.href)) {
-                if (/catalog\/tchibo/.test(ref)) {
-                    trackEvent('tchibo_item_visit', 'From_Tchibo', ref, null, true);
-                    window.docCookies.setItem('tchibo_track', 1, 0, '/');
-                }
-                if (/catalog/.test(ref) && !/tchibo/.test(ref)) trackEvent('tchibo_item_visit', 'From_Enter', ref, null, true);
-                if (!/catalog/.test(ref)) trackEvent('tchibo_item_visit', 'Other', ref, null, true);
-                if (ref=='') trackEvent('tchibo_item_visit', 'From Ads', ref, null, true);
-            }
         },
 
         ga_orderComplete = function ga_orderComplete() {

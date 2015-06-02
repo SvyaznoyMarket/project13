@@ -30,19 +30,11 @@
 			centered: true,
 			onLoad: function() {
 				videoStartTime = new Date().getTime();
-
-				if (typeof(_gaq) !== 'undefined') {
-					_gaq.push(['_trackEvent', 'Video', 'Play', productUrl]);
-				}
 			},
 			onClose: function() {
 				$('.js-product-video-iframeContainer').empty();
 				videoEndTime = new Date().getTime();
 				var videoSpent = videoEndTime - videoStartTime;
-
-				if (typeof _gaq !== 'undefined') {
-					_gaq.push(['_trackEvent', 'Video', 'Stop', productUrl, videoSpent]);
-				}
 			}
 		});
 

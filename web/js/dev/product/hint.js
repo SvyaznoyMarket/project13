@@ -10,22 +10,9 @@
 		var hintLnk = $('.bHint_eLink');
 		var hintCloseLnk = $('.bHint_ePopup .close');
 
-		var hintAnalytics = function(data){
-			if (typeof(_gaq) !== 'undefined') {
-				_gaq.push(['_trackEvent', 'Hints', data.hintTitle, data.url]);
-			}
-		};
-
 		var hintShow = function(){
 			hintPopup.hide();
 			$(this).parent().find('.bHint_ePopup').fadeIn(150);
-
-			var analyticsData = {
-				hintTitle: $(this).html(),
-				url: window.location.href
-			};
-			hintAnalytics(analyticsData);
-
 			return false;
 		};
 

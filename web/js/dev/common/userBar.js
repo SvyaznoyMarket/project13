@@ -278,9 +278,6 @@
 					console.log(e);
 				}
 			}
-
-			// google analytics
-			typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
 		}
 
 		console.log(upsale);
@@ -311,27 +308,6 @@
 			url: url,
 			success: responseFromServer
 		});
-	}
-
-	/**
-	 * Обработчик клика по товару из списка рекомендаций
-	 */
-	function upsaleProductClick() {
-		var
-			product = $(this).parents('.jsSliderItem').data('product');
-		//end of vars
-
-		if ( !product.article ) {
-			console.warn('Не получен article продукта');
-
-			return;
-		}
-
-		console.log('Трекинг при клике по товару из списка рекомендаций');
-		// google analytics
-		_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_clicked', product.article]);
-
-		//window.docCookies.setItem('used_cart_rec', 1, 1, 4*7*24*60*60, '/');
 	}
 
 	function showEmptyCompareNotice(e, emptyCompareNoticeName, $userbar) {
@@ -375,7 +351,6 @@
 
 	userBar.show = showUserbar;
 
-	$body.on('click', '.jsUpsaleProduct', upsaleProductClick);
 	$body.on('click', '.jsCartDelete', deleteProductHandler);
 
 	$('.js-noProductsForCompareLink', userBarFixed).click(function(e) { showEmptyCompareNotice(e, 'fixed', userBarFixed); });
