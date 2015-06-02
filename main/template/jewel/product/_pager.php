@@ -40,8 +40,6 @@ if (!isset($isAddInfo)) $isAddInfo = false;
     'itemsPerRow' => $page->getParam('itemsPerRow')
 ]) ?>
 
-<?= $page->render('jewel/product-category/_loading_bottom') ?>
-
 <? if ($pager->hasPages()): ?>
 <div class="fr allpagerJewel mBtn" alt="все товары в категории" title="все товары в категории"
      data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route') . ( strpos($request->attributes->get('route'), 'sliderInfinity') !== false ? '' : '.sliderInfinity') ) ?>"
