@@ -331,6 +331,16 @@ class HtmlLayout {
         return $result;
     }
 
+    public function slotUserConfig() {
+        // Проверяем заголовок от балансера - если страница попадает под кэширование, то можно рендерить # include virtual
+        // В остальных случаях можно обойтись без дополнительного запроса к /ssi.php
+        if (\App::request()->headers->get('SSI') == 'on') {
+            return \App::helper()->render('__ssi', ['path' => '/user-config']);
+        } else {
+            return \App::helper()->render('__userConfig');
+        }
+    }
+
     protected function getMustacheTemplateInsertion($id, $path) {
         return
             '<script id="' . $id . '" type="text/html">' . "\n" .

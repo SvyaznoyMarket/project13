@@ -32,9 +32,14 @@ class Manager {
     }
 
     /**
-     * @param \Http\Response $response
+     *
      */
-    public function set(\Http\Response $response = null) {
+    public function setPartner() {
+
+        $result = [
+            'lastPartner'   => null,
+            'cookie'        => []
+        ];
 
         try {
 
@@ -84,23 +89,18 @@ class Manager {
                         if (isset($paidSources[$nameSource]['cookie']) && is_array($paidSources[$nameSource]['cookie'])) {
                             foreach ($paidSources[$nameSource]['cookie'] as $partnerCookieName) {
                                 if ($request->query->has($partnerCookieName)) {
-                                    $this->cookieArray[] = new \Http\Cookie(
-                                        $partnerCookieName,
-                                        $request->query->get($partnerCookieName),
-                                        time() + $this->cookieLifetime,
-                                        '/',
-                                        $this->cookieDomain,
-                                        false,
-                                        false
-                                    );
+                                    $this->cookieArray[] = [
+                                        'name'  => $partnerCookieName,
+                                        'value' => $request->query->get($partnerCookieName),
+                                        'time'  => $this->cookieLifetime
+                                    ];
                                 }
                             }
                         }
 
                         // если нет utm_source cookie или же она была проставлена не этим партнером
-                        // SITE-4834 ставим js-переменную last_partner_second_click, кука last_partner будет проставлена позже через common/last_partner.js
                         if ($request->cookies->get($this->cookieName) != $lastPartner) {
-                            $response->setContent(str_replace('<!-- last_partner_second_click -->', "<script type='text/javascript'>var last_partner_second_click = '$lastPartner';</script>", $response->getContent()));
+                            $result['lastPartner'] = $lastPartner;
                         }
 
                     }
@@ -110,44 +110,39 @@ class Manager {
                 // Бесплатные партнеры
                 if ($lastPartner === null && !$request->cookies->has($this->cookieName)) {
                     foreach ($freeHosts as $freeHost) {
-                        if (preg_match('/'.$freeHost.'/', $refererHost)) {
+                        if (preg_match('/' . $freeHost . '/', $refererHost)) {
                             $lastPartner = $freeHost;
                             // кука для отслеживания заказа
-                            $this->cookieArray[] = new \Http\Cookie(
-                                $this->cookieName,
-                                $freeHost,
-                                0,
-                                '/',
-                                $this->cookieDomain
-                            );
+                            $this->cookieArray[] = [
+                                'name'  => $this->cookieName,
+                                'value' => $freeHost
+                            ];
                         }
                     }
                 }
 
                 // Рефералка
                 if ($lastPartner === null && !$request->cookies->has($this->cookieName)) {
-                    $this->cookieArray[] = new \Http\Cookie(
-                        $this->cookieName,
-                        $request->cookies->has($this->cookieName) && in_array($request->cookies->get($this->cookieName), array_keys($paidSources))
+                    $this->cookieArray[] = [
+                        'name'  => $this->cookieName,
+                        'value' => $request->cookies->has($this->cookieName) && in_array($request->cookies->get($this->cookieName), array_keys($paidSources))
                             ? $request->cookies->get($this->cookieName)
-                            : $refererHost,
-                        0,
-                        '/',
-                        $this->cookieDomain
-                    );
+                            : $refererHost
+                        ];
                 }
 
             }
 
             foreach ($this->cookieArray as $cookie) {
-                if ($cookie instanceof \Http\Cookie) {
-                    $response->headers->setCookie($cookie);
-                }
+                $result['cookie'][] = $cookie;
             }
 
         } catch (\Exception $e) {
             \App::logger()->error($e, ['partner']);
+            \App::exception()->remove($e);
         }
+
+        return $result;
     }
 
     public function getName() {

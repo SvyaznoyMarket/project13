@@ -133,7 +133,6 @@
 		self.id = product.id;
 		self.url = product.url;
 		self.name = product.name;
-		self.line = product.lineName;
 		self.price = product.price;
 		self.image = product.image;
 		self.height = product.height;

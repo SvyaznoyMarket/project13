@@ -3,6 +3,8 @@
 namespace Controller\User;
 
 class InfoAction {
+    use \EnterApplication\CurlTrait;
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse
@@ -53,19 +55,21 @@ class InfoAction {
             $responseData = [
                 'success' => true,
                 'user'    => [
-                    'name'         => null,
-                    'firstName'    => null,
-                    'lastName'     => null,
-                    'isSubscribed' => null,
-                    'link' => \App::router()->generate('user.login'),
-                    'id' =>  null,
-                    'email' =>  null,
+                    'isLogined'    => false,
+                    'name'         => '',
+                    'firstName'    => '',
+                    'lastName'     => '',
+                    'isSubscribed' => false,
+                    'link'         => \App::router()->generate('user.login'),
+                    'id'           => '',
+                    'email'        => '',
+                    'isSubscribedToActionChannel' => false,
                 ],
                 'cart'    => [
                     'sum'      => 0,
                     'quantity' => 0,
                 ],
-                'compare'   => \App::session()->get(\App::config()->session['compareKey']),
+                'compare' => \App::session()->get(\App::config()->session['compareKey']),
                 'order'   => [
                     'hasCredit' => 1 == $request->cookies->get('credit_on'),
                 ],
@@ -75,6 +79,7 @@ class InfoAction {
             // если пользователь авторизован
             /** @var \Model\User\Entity|null $userEntity */
             if ($userEntity = $user->getEntity()) {
+                $responseData['user']['isLogined'] = true;
                 $responseData['user']['name'] = $userEntity->getName();
                 $responseData['user']['firstName'] = $userEntity->getFirstName();
                 $responseData['user']['lastName'] = $userEntity->getLastName();
@@ -90,6 +95,19 @@ class InfoAction {
                 // sclubNumber
                 $sclubCard = $userEntity->getSclubCard() ?: [];
                 $responseData['user']['sclubNumber'] = !empty($sclubCard) && isset($sclubCard['number']) ? $sclubCard['number'] : null;
+
+                $subscribeQuery = (new \EnterQuery\Subscribe\GetByUserToken($userEntity->getToken()))->prepare();
+                $this->getCurl()->execute();
+
+                if (is_array($subscribeQuery->response->subscribes)) {
+                    foreach ($subscribeQuery->response->subscribes as $item) {
+                        $subscribe = new \Model\Subscribe\Entity($item);
+                        if (1 == $subscribe->getChannelId() && 'email' === $subscribe->getType() && $subscribe->getIsConfirmed()) {
+                            $responseData['user']['isSubscribedToActionChannel'] = true;
+                            break;
+                        }
+                    }
+                }
             }
 
             if (!$cart->isEmpty()) {

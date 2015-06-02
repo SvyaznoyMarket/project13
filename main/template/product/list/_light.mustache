@@ -31,14 +31,16 @@
                 </ul>
 
                 {{#hoverImage}}
-                    <a href="{{link}}" target="_blank" class="lstn_imglk lstn_imglk-default js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
-                    <a href="{{link}}" target="_blank" class="lstn_imglk lstn_imglk-hover js-listing-item-img"><img class="lstn_img" src="{{hoverImage}}" alt="" /></a>
+                    <div class="lstn_imgbox">
+                        <a href="{{link}}" target="_blank" class="lstn_imglk lstn_imglk-default js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
+                        <a href="{{link}}" target="_blank" class="lstn_imglk lstn_imglk-hover js-listing-item-img"><img class="lstn_img" src="{{hoverImage}}" alt="" /></a>
+                    </div>
                 {{/hoverImage}}
 
                 {{^hoverImage}}
-                    <a href="{{link}}" target="_blank" class="lstn_imglk js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
+                    <div class="lstn_imgbox"><a href="{{link}}" target="_blank" class="lstn_imglk js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a></div>
                 {{/hoverImage}}
-                
+
                 <div style="display: table; width: 100%;">
                     <div class="lstn_pr">
                         {{#oldPrice}}
@@ -80,7 +82,7 @@
                         </div>
                     {{/view.extraContent}}
                 </div>
-                
+
                 {{#view.bottomDescription}}
                     <div class="lstn_desc"><a href="{{link}}" target="_blank">{{name}}</a></div>
                     {{#review}}{{> product/_review-compact }}{{/review}}

@@ -12,6 +12,11 @@ return [
         'action'  => ['Main\Action', 'recommendations'],
     ],
 
+    'ssi.userConfig' => [
+        'pattern' => '/ssi/user-config',
+        'action'  => ['Ssi\UserConfigAction', 'execute'],
+    ],
+
     'category.mainMenu' => [ // TODO: переименовать в mainMenu
         'pattern' => '/category/main_menu',
         'action'  => ['ProductCategory\MainMenuAction', 'execute'],
@@ -127,6 +132,38 @@ return [
     'user.login.external.response' => [
         'pattern' => '/login-{providerName}/response',
         'action'  => ['User\ExternalLoginResponseAction', 'execute'],
+    ],
+
+    // Регистрация поставщика
+    'supplier.new' => [
+        'pattern'   => '/supplier/new',
+        'action'    => ['Supplier\NewAction', 'execute']
+    ],
+
+    // Кабинет поставщика
+    'supplier.cabinet' => [
+        'pattern'   => '/supplier/cabinet',
+        'action'    => ['Supplier\CabinetAction', 'index']
+    ],
+
+    // Загрузка прайс-листа
+    'supplier.load' => [
+        'pattern'   => '/supplier/load',
+        'action'    => ['Supplier\CabinetAction', 'load'],
+        'method'  => ['POST']
+    ],
+
+    // Обновление данных о поставщике
+    'supplier.update' => [
+        'pattern'   => '/supplier/update',
+        'action'    => ['Supplier\CabinetAction', 'update'],
+        'method'  => ['POST']
+    ],
+
+    // Тестирование curl-client
+    'supplier.test' => [
+        'pattern'   => '/supplier/load-test',
+        'action'    => ['Supplier\CabinetAction', 'loadTest']
     ],
 
     // регион
@@ -264,26 +301,6 @@ return [
         'pattern' => '/product/{productPath}/stock',
         'action'  => ['Product\StockAction', 'execute'],
         'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
-    ],
-    'product.accessory' => [
-        'pattern' => '/products/accessories/{productToken}',
-        'action'  => ['Product\AccessoryAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
-    'product.accessory.jewel' => [
-        'pattern' => '/jewel/products/accessories/{productToken}',
-        'action'  => ['Jewel\Product\AccessoryAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
-    'product.related' => [
-        'pattern' => '/products/related/{productToken}',
-        'action'  => ['Product\RelatedAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
-    'product.related.jewel' => [
-        'pattern' => '/jewel/products/related/{productToken}',
-        'action'  => ['Jewel\Product\RelatedAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
     ],
     'product.comment' => [
         'pattern' => '/product/{productPath}/comments',

@@ -12,7 +12,7 @@ class ShowAction {
      * @param bool $showState
      * @param \View\Cart\ProductButtonAction $cartButtonAction
      * @param \View\Product\ReviewCompactAction $reviewtAction
-     * @param int $imageSize
+     * @param string $imageSourceType
      * @param array $cartButtonSender
      * @return array
      */
@@ -23,7 +23,7 @@ class ShowAction {
         $showState = true,
         $cartButtonAction = null,
         $reviewtAction = null,
-        $imageSize = 2,
+        $imageSourceType = 'product_160',
         array $cartButtonSender = []
     ) {
         $user = \App::user();
@@ -49,11 +49,11 @@ class ShowAction {
                 ? ['name' => $product->getLabel()->getName(), 'image' => $product->getLabel()->getImageUrl()]
                 : null
             ,
-            'showCartButton' => !($product->getLabel() && $product->getLabel()->getId() == \Model\Product\BasicEntity::LABEL_ID_PODARI_ZHIZN),
+            'showCartButton' => !($product->getLabel() && $product->getLabel()->getId() == \Model\Product\Entity::LABEL_ID_PODARI_ZHIZN),
             'showCompareButton' => !$product->getKit() || $product->getIsKitLocked(),
             'cartButton'   => [],
-            'image'        => $product->getImageUrl($imageSize),
-            'hoverImage'   => $this->getHoverImageUrl($product, $imageSize),
+            'image'        => $product->getMainImageUrl($imageSourceType),
+            'hoverImage'   => $product->getHoverImageUrl($imageSourceType),
             'price'        => $helper->formatPrice($product->getPrice()),
             'oldPrice'     => null,
             'isBuyable'    => $product->getIsBuyable(),
@@ -106,15 +106,5 @@ class ShowAction {
         if ($product->isGifteryCertificate()) $productItem['price'] = 'от ' . \App::config()->partners['Giftery']['lowestPrice'];
 
         return $productItem;
-    }
-
-    private function getHoverImageUrl(\Model\Product\Entity $product, $imageSize) {
-        foreach ($product->getPhoto() as $photo) {
-            if (40 == $photo->getPosition()) {
-                return $photo->getUrl($imageSize);
-            }
-        }
-
-        return null;
     }
 }

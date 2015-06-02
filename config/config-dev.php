@@ -17,7 +17,6 @@ $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 $c->adFox['enabled'] = false;
 $c->googleTagManager['enabled'] = false;
-$c->tealeaf['enabled'] = false;
 
 $c->partners['Revolver']['enabled'] = false;
 $c->partners['GetIntent']['enabled'] = false;
@@ -46,7 +45,5 @@ $c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoic
 
 $c->mainMenu['requestMenu'] = false;
 $c->mainMenu['recommendationsEnabled'] = false;
-
-$c->tealeaf['enabled'] = false;
 
 return $c;

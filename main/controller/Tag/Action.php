@@ -166,7 +166,6 @@ class Action {
         // листалка
         $limit = \App::config()->product['itemsPerPage'];
         $repository = \RepositoryManager::product();
-        $repository->setEntityClass('\\Model\\Product\\Entity');
 
         $productIds = [];
         $productCount = 0;
@@ -196,7 +195,7 @@ class Action {
         if ((bool)$products) {
             $productUIs = [];
             foreach ($products as $product) {
-                if (!$product instanceof \Model\Product\BasicEntity) continue;
+                if (!$product instanceof \Model\Product\Entity) continue;
                 $productUIs[] = $product->getUi();
             }
 
@@ -205,6 +204,8 @@ class Action {
                     \RepositoryManager::review()->addScores($products, $data);
                 }
             });
+
+            \RepositoryManager::product()->prepareProductsMedias($products);
         }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 

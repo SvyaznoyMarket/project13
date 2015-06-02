@@ -67,7 +67,7 @@
             var
                 data = $(el).data('slider'),
                 //rrviewed = docCookies.getItem('rrviewed')
-                rrviewed = docCookies.getItem('product_viewed')
+                rrviewed = docCookies.getItem('product_viewed') || ''
             ;
 
             if (('viewed' == data.type) && typeof rrviewed === 'string') {

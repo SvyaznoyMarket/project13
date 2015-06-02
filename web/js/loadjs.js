@@ -83,7 +83,7 @@
 
 		directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
         adfoxUrl = 'adfox_lib_ff.min.js', // 'adfox.asyn.code.ver3.min.js',
-		yandexMapUrl, yandexMapUrlv2_1, mustacheUrl, historyUrl, kladr, knockoutUrl, tealeafUrl,
+		yandexMapUrl, yandexMapUrlv2_1, mustacheUrl, historyUrl, kladr, knockoutUrl,
 
 		debug = false,
 		templateType = document.body.getAttribute('data-template') || '',
@@ -217,6 +217,7 @@
 	global.ENTER.config.debug = debug;
 	global.ENTER.config.jsStartTime = jsStartTime;
 	global.ENTER.config.pageConfig = pageConfig;
+	global.ENTER.config.userInfo = $('.js-userConfig').data('value');
 
 	extendApp('ENTER.constructors');
 
@@ -241,7 +242,6 @@
 	mustacheUrl = ( debug ) ? '/js/vendor/mustache.js' : '/js/prod/mustache.min.js';
 	historyUrl = ( debug ) ? '/js/vendor/history.js' : '/js/prod/history.min.js';
 	kladr = ( debug ) ? '/js/vendor/jquery.kladr.js' : '/js/prod/jquery.kladr.min.js';
-	tealeafUrl = ( debug ) ? '/js/prod/tealeaf.js' : '/js/prod/tealeaf.min.js';
 
 	/**
 	 * Загрузка скриптов по шаблону
@@ -259,6 +259,7 @@
                     .wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )
+                    .script( getWithVersion('supplier.js') )
                     .script( getWithVersion('ports.js') )
 			}).runQueue();
 		},
@@ -642,7 +643,6 @@
 	if ( loadScripts.hasOwnProperty(templateType) ) {
 		console.log('Загрузка скриптов. Шаблон %s', templateType);
 		loadScripts[templateType]();
-		if (pageConfig.tealeaf === true) $LAB.script( getWithVersion('tealeaf.js') );
 	}
 	else {
 		console.log('Шаблон %s не найден. Загрузка стандартного набора скриптов', templateType);

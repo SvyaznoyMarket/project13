@@ -3,7 +3,7 @@
 return function(
     \Helper\TemplateHelper $helper,
     array $creditData,
-    \Model\Product\BasicEntity $product
+    \Model\Product\Entity $product
 ) {
     $user = \App::user();
 

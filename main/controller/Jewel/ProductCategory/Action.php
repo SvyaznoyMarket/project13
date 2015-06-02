@@ -170,7 +170,6 @@ class Action extends \Controller\ProductCategory\Action {
         // листалка
         $limit = \App::config()->product['itemsPerPageJewel'];
         $repository = \RepositoryManager::product();
-        $repository->setEntityClass('\Model\Product\Entity');
 
         $productIds = [];
         $productCount = 0;
@@ -203,7 +202,7 @@ class Action extends \Controller\ProductCategory\Action {
         if ((bool)$products) {
             $productUIs = [];
             foreach ($products as $product) {
-                if (!$product instanceof \Model\Product\BasicEntity) continue;
+                if (!$product instanceof \Model\Product\Entity) continue;
                 $productUIs[] = $product->getUi();
             }
 

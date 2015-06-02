@@ -112,7 +112,7 @@ $f = function (
                     if (count($products) == $index + 1) $needCloseLiTag = true;
                 }
 
-                $elementId = 'productLink-' . $product->getId() . '-' . md5(json_encode([$sender]));    // для tealeaf
+                $elementId = 'productLink-' . $product->getId() . '-' . md5(json_encode([$sender])); // для tealeaf
 
                 $urlParams = [];
                 if ($sender['name']) {
@@ -170,7 +170,7 @@ $f = function (
                     <? endif ?>
 
                     <a id="<?= $elementId . '-image' ?>" class="<? if ($isRetailrocketProduct): ?>jsRecommendedItem <? endif ?>slideItem_imgw<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>>
-                        <img class="slideItem_img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" />
+                        <img class="slideItem_img" src="<?= $product->getMainImageUrl('product_120') ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                     </a>
 
                     <? if (!$isCompact): ?>

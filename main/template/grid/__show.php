@@ -22,7 +22,7 @@ $f = function(
     <? foreach ($gridCells as $cell): ?>
         <?
         /** @var \Model\Product\Entity|null $product */
-        $product = ((\Model\GridCell\Entity::TYPE_PRODUCT === $cell->getType()) && (isset($productsByUi[$cell->getObjectUi()]) && $productsByUi[$cell->getObjectUi()] instanceof \Model\Product\BasicEntity) ? $productsByUi[$cell->getObjectUi()] : null);
+        $product = ((\Model\GridCell\Entity::TYPE_PRODUCT === $cell->getType()) && (isset($productsByUi[$cell->getObjectUi()]) && $productsByUi[$cell->getObjectUi()] instanceof \Model\Product\Entity) ? $productsByUi[$cell->getObjectUi()] : null);
         ?>
 
         <div class="productInner js-gridListing<? if ($product && $product->isSoldOut()): ?> productInner-off<? endif ?>" style="position: absolute;
@@ -52,7 +52,7 @@ $f = function(
                         false,
                         $cartButtonAction,
                         null,
-                        3
+                        'product_500'
                     )) ?>
                 <? endif ?>
             <? elseif (\Model\GridCell\Entity::TYPE_IMAGE === $cell->getType()): ?>

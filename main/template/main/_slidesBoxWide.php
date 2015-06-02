@@ -26,34 +26,34 @@
                 <ul class="slidesBox_items">
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Примула Pandora 791489</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Теннис Pandora 791510</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-primula-pandora-791489-2034000003141" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pan-2034000003141.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-tennis-pandora-791510-2034000003189" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-tennis.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Клетчатые флаги Pandora 791508ENMX</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Сияющие маргаритки Pandora 791493CZ</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-kletchatie-flagi-pandora-791508enmx-2034000003455" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pan-2034000003455.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-siyayushchie-margaritki-pandora-791493cz-2034000003547" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-margaritki.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Фиолетовая нежность Pandora 791499ACZ</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Клевер Pandora 791496CZN</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-fioletovaya-negnost-pandora-791499acz-2034000003400" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pan-2034000003400.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-klever-pandora-791496czn-2034000003363" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-klever.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Маргаритка Pandora 791491CZ</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Pandora 791250CZ</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-margaritka-pandora-791491cz-2034000003332" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pan-2034000003332.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-pandora-791250cz-2350000077068" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-serdca.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
@@ -61,7 +61,7 @@
                             <div class="slideItem_flt_i">Подвеска-шарм Сердце Великобритании Pandora 791512ENMX</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-serdtse-velikobritanii-pandora-791512enmx-2034000003479" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pan-2034000003479.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-serdtse-velikobritanii-pandora-791512enmx-2034000003479" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-gb.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
                 </ul>
                 <a href="/catalog/jewel/pandora-1320" class="slidesBox_btnview">Посмотреть<br/>коллекцию</a>

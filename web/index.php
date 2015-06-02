@@ -1,5 +1,6 @@
 <?php
-setlocale(LC_TIME, 'ru_RU', 'ru_RU.utf8');
+setlocale(LC_TIME, 'ru_RU', 'ru_RU.utf8'); // Для вывода даты на русском языке
+setlocale(LC_CTYPE, 'ru_RU', 'ru_RU.utf8'); // Для правильной работы basename
 set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, [
     realpath(__DIR__ . '/../v2/Enter'),
 ]));
@@ -118,8 +119,7 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
                 $response = $action->execute();
             }
         } else {
-            \App::partner()->set($response);
-            \App::sclubManager()->set($response);
+//            \App::sclubManager()->set($response);
         }
 
         // debug panel
@@ -135,10 +135,26 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
 
 });
 
+// восстановление параметров родительского запроса для SSI, родительский запрос передается в headers x-uri
+if ($_SERVER['SCRIPT_NAME'] == '/ssi.php') {
+    $queryStrPosition = strpos($_SERVER['HTTP_X_URI'], '?');
+    $parent_query = substr($_SERVER['HTTP_X_URI'], $queryStrPosition === false ? 0 : $queryStrPosition + 1);
+    parse_str($parent_query, $params);
+    $_GET = array_merge($_GET, $params);
+}
+
 \App::logger()->info(['message' => 'Start app', 'env' => \App::$env]);
 
 // request
-$request = \App::request();
+$request =
+    $_SERVER['SCRIPT_NAME'] == '/ssi.php'
+    ? \Http\Request::create(
+        '/ssi' . (!empty($_GET['path']) ? $_GET['path'] : ''),
+        'GET',
+        $_GET
+    )
+    : \App::request()
+;
 // router
 $router = \App::router();
 

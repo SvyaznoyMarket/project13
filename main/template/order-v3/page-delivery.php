@@ -62,7 +62,7 @@ return function(
             <? foreach ($order->products as $product): ?>
             <div class="orderCol_cnt clearfix">
                 <a href="<?= $product->link ?>" class="orderCol_lk" target="_blank">
-                    <img class="orderCol_img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->name) ?>" />
+                    <img class="orderCol_img" src="<?= $product->getMainImageUrl('product_60') ?>" alt="<?= $helper->escape($product->name) ?>" />
                 </a>
 
                 <a href="<?= $product->link ?>" target="_blank" class="orderCol_n">
