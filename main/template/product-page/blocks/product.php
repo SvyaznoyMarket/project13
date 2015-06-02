@@ -59,7 +59,12 @@ $f = function(
 
 <!-- купить -->
 <div class="product-card__r">
-
+    <div class="ep js-pp-ep-fishka">
+       <div class="ep__fishka">%</div>
+       <!--div class="ep__fishka"><span class="rubl">p</span></div-->
+       
+       <div class="ep__desc">Фишка со скидкой 20% на этот товар</div>
+    </div>
     <? if ($product->getLabel() && $product->getLabel()->expires && !$product->getLabel()->isExpired()) : ?>
         <!-- Шильдик с правой стороны -->
         <div class="product-card-action i-info">
