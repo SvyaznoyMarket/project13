@@ -29,10 +29,17 @@
 	&:before { content: '\e800'; } 
 }
 
-.jewel .star{
-    color: @black;
+.jewel {
+    .star{
+        color: @black;
+    }
+    .bReviews .bReviewsSummary__eCol .reviewsBarBg {
+      background-color: #edecee;
+    }
+    .bReviews .bReviewsSummary__eCol .reviewsBarBg .reviewsBar{
+        background-color: @black;
+    }
 }
-
 .stars-list{
     .inline-block();
         &__item{
