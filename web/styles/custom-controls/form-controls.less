@@ -1,0 +1,143 @@
+.form-ctrl{
+
+
+    &__line {
+        
+    }
+
+    &__group{
+        position: relative;
+        margin: 0 0 20px 0;
+
+        &--inline {
+            margin: 0 20px 20px 0;
+            .inline-block();
+
+            &:last-child{
+                margin: 0 0 20px 0;
+            }
+        }
+    }
+
+    &__inf {
+        position: absolute;
+        top: 8px;
+        left: 275px;
+        display: block;
+        width: 19px;
+        height: 19px;
+        cursor: pointer;
+        background: no-repeat 0 0 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAA5klEQVQoz41SQQ6CMBDsjR9445+8gW9xYNKDkegFUaIHuWk4aEIVHDcIpYCJTNJk225mZ3ZXKQvtI0CEAkZOhED7aorMQ6irnCUNGzklc+oKYeY5SckKcSqfYximRJysBqb4zN84S2LHiDB1Pho++HLuwhi2wnU1lLtwK6p2PPFtS+tKzCDIbdKVxy46SNwjJwKFqLQPN9676Chxj5KIFAozE/5gIhoHxygUTDNrxEYSXVMwP9j2TsGBzdH2xdq6dLU5Tnu/Y7ROx30ja+lZPSrZ9m06BcOYz/kUFs904YYs3rf/2/sB+Dc7oEscnqEAAAAASUVORK5CYII=);
+    }
+
+    &-err {
+        position: absolute;
+        color: @error;
+        bottom: 10px;
+        left: 15px;
+    }
+
+    &__input {
+        width: 300px;
+        height: 35px;
+        line-height: 33px;
+        padding: 0 0 0 90px;
+        border: 1px solid @input-border;
+        .rounded(4px);
+        .box-sizing();
+        position: relative;
+
+        &-lbl {
+            background-color: #efefef;
+            border: 1px solid @input-border;
+            font-size: 12px;
+            color: #363636;
+            width: 80px;
+            padding: 0 5px 0 12px;
+            height: 35px;
+            line-height: 33px;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            .rounded(4px 0 0 4px);
+            .box-sizing();
+
+            .form-ctrl__input--err + & {
+                border: 2px solid @error;
+                background: @error;
+                color: @white;
+                line-height: 31px;
+            }
+            
+            &--required {
+                    
+                    &:after{
+                        content: "*";
+                        font-family: Arial, Helvetica, sans-serif;
+                        color: @orange-2;
+                        position: absolute;
+                        top: 2px;
+                        left: 2px;
+                        font-size: 20px;
+                    }
+
+                    .form-ctrl__input--err + & {
+                        
+                        &:after{
+                            color: @white;
+                        }
+                    }
+            }
+        }
+
+        &--err {
+            border-color: @error;
+            border-width: 2px;
+            line-height: 31px;
+        }
+        &:not(.form-ctrl__input--err):focus,
+        &:not(.form-ctrl__input--err):focus + .form-ctrl__input-lbl {
+                border-color: @input-focused-border;
+        }
+    }
+    &__textarea {
+        border: 1px solid @input-border;
+        .rounded(3px);
+        font-size: 14px;
+        padding: 10px;
+        width: 608px;
+        height: 85px;
+        color: #363636;
+        resize: none;
+
+        &-lbl {
+            font-size: 12px;
+            font-weight: bold;
+            margin: 0 0 8px 0;
+            display: block;
+            color: #363636;
+
+            &--err{
+                display: none;
+                position: absolute;
+                color: @error;
+                font-size: 12px;
+                background-color: @white;
+                top: 15px;
+                left: 10px;
+            }
+        }
+        &--err{
+            border-color: @error;
+            &+.form-ctrl__textarea-lbl--err{
+                display: block;
+            }
+        }
+    }
+
+    &__btn-container {
+        margin: 20px 0 0;
+        text-align: center;
+    }
+
+}

@@ -1,6 +1,8 @@
 <?php
 
 namespace Controller\Product;
+use \Model\Product\Entity as Product;
+use Model\Product\Delivery\ProductDelivery;
 
 class DeliveryAction {
     /**
@@ -22,9 +24,10 @@ class DeliveryAction {
      * @param array $product
      * @param int $region
      * @param \EnterQuery\Delivery\GetByCart|null $deliveryQuery
+     * @param Product $productModel
      * @return array
      */
-    public function getResponseData($product, $region = null, \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
+    public function getResponseData($product, $region = null, \EnterQuery\Delivery\GetByCart $deliveryQuery = null, &$productModel) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         $helper = new \View\Helper();
@@ -148,6 +151,8 @@ class DeliveryAction {
 
             \App::coreClientV2()->execute();
 
+            if ($productModel instanceof Product) $productModel->delivery = new ProductDelivery($result, $productModel->getId());
+
             foreach ($result['product_list'] as $item) {
                 if (!in_array($item['id'], $productIds)) continue;
 
@@ -234,5 +239,47 @@ class DeliveryAction {
         }
 
         return $responseData;
+    }
+
+    public function map (\Http\Request $request, $productId) {
+
+        $result = [
+            'success' => false
+        ];
+
+        $splitResult = \App::coreClientV2()->query('cart/split',
+            [
+                'geo_id'     => \App::user()->getRegionId(),
+                'request_id' => \App::$id,
+            ],
+            [ 'cart' => [
+                    'product_list' => [
+                        $productId => [
+                            'id' => $productId,
+                            'quantity'  => 1
+                        ]
+                    ]
+                ]
+            ]);
+
+        $order = new \Model\OrderDelivery\Entity($splitResult);
+
+        if ($order && $order->orders) {
+            $map = new \View\PointsMap\MapView();
+            $map->preparePointsWithOrder(reset($order->orders), $order);
+            $result = [
+                'success'   => true,
+                'html'      => \App::templating()->render('order-v3/common/_map',
+                    ['dataPoints' => $map,
+                        'visible' => true,
+                        'class'   => 'jsDeliveryMapPoints'
+                    ])
+            ];
+        } else {
+            $result['error'] = 'Ошибка разбиения';
+        }
+
+        return new \Http\JsonResponse($result);
+
     }
 }

@@ -855,17 +855,11 @@
 					"url": '/order/log'
 				})
 			},
-			showMap = function(elem, token) {
+			showMap = function(elem) {
 				var $currentMap = elem.find('.js-order-map').first(),
                     mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
 					mapOptions = ENTER.OrderV31Click.mapOptions,
 					map = ENTER.OrderV31Click.map;
-
-				if (!token) {
-					token = Object.keys(mapData.points)[0];
-					$currentMap.siblings('.selShop_l').hide();
-					$currentMap.siblings('.selShop_l[data-token='+token+']').show();
-				}
 
 				if (mapData && typeof map.getType == 'function') {
 
@@ -877,13 +871,11 @@
 					map.container.fitToViewport();
 
                     // добавляем невидимые точки на карту
-                    $.each(mapData.points, function(token){
-                        for (var i = 0; i < mapData.points[token].length; i++) {
-                            try {
-                                map.geoObjects.add(new ENTER.Placemark(mapData.points[token][i], false));
-                            } catch (e) {
-                                console.error('Ошибка добавления точки на карту', e);
-                            }
+                    $.each(mapData.points, function(i, point){
+                        try {
+                            map.geoObjects.add(new ENTER.Placemark(point, false));
+                        } catch (e) {
+                            console.error('Ошибка добавления точки на карту', e);
                         }
                     });
 
@@ -900,14 +892,12 @@
                         })
                     }
 
-				} else {
-					console.error('No map data for token = "%s"', token,  elem);
 				}
 
 			},
 			chooseDelivery = function(){
 				var token = $(this).data('token'),
-					id = $(this).closest('.popupFl').attr('id');
+					$map = $(this).closest('.jsNewPoints').first();
 				// переключение списка магазинов
 				$('.selShop_l').hide();
 				$('.selShop_l[data-token='+token+']').show();
@@ -915,7 +905,7 @@
 				$('.selShop_tab').removeClass('selShop_tab-act');
 				$('.selShop_tab[data-token='+token+']').addClass('selShop_tab-act');
 				// показ карты
-				showMap($('#'+id), token);
+				//showMap($map);
 			},
 			choosePoint = function() {
 				var id = $(this).data('id'),
@@ -923,8 +913,8 @@
 				if (id && token) {
 					$body.trigger('trackUserAction', ['2_2 Ввод_данных_Самовывоза|Доставки']);
 					$body.children('.selShop').remove();
-					$body.children('.lb_overlay').last().remove();
-					changePoint($(this).closest('.selShop').data('block_name'), id, token);
+					//$body.children('.lb_overlay')[1].remove();
+					changePoint($('.jsOneClickOrderRow').data('block_name'), id, token);
 				}
 			};
 
@@ -944,34 +934,28 @@
 
 		// клик по "изменить дату" и "изменить место"
 		$orderContent.on('click', '.orderCol_date, .js-order-changePlace-link', function(e) {
-			var $elem = $($(this).data('content'));
+			var $elem = $(this).parent().parent().next();
 			e.stopPropagation();
 			$('.popupFl').hide();
 
 			if ($(this).hasClass('js-order-changePlace-link')) {
-				var token = $elem.find('.selShop_l:first').data('token');
-				// скрываем все списки точек и показываем первую
-				$elem.find('.selShop_l').hide().first().show();
-				// первая вкладка активная
-				$elem.find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
 				$elem.lightbox_me({
 					centered: true,
 					closeSelector: '.jsCloseFl',
 					removeOtherOnCreate: false
 				});
-				showMap($elem, token);
+				showMap($elem);
 				$body.trigger('trackUserAction', ['2_1 Место_самовывоза|Адрес_доставки']);
 
 				// клик по способу доставки
-				$elem.off('click', '.selShop_tab:not(.selShop_tab-act)', chooseDelivery);
-				$elem.on('click', '.selShop_tab:not(.selShop_tab-act)', chooseDelivery);
+				//$elem.off('click', '.selShop_tab:not(.selShop_tab-act)', chooseDelivery);
+				//$elem.on('click', '.selShop_tab:not(.selShop_tab-act)', chooseDelivery);
 
 				// клик по списку точек самовывоза
-				$elem.off('click', '.jsChangePoint', choosePoint);
-				$elem.on('click', '.jsChangePoint', choosePoint);
+				$body.on('click', '.jsChangePoint', choosePoint);
+				//$elem.on('click', '.jsChangePoint', choosePoint);
 			} else {
 				$elem.show();
-				log({'action':'view-date'});
 				//$body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
 			}
 

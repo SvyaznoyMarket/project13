@@ -25,11 +25,11 @@
 		if (!visible && $window.scrollTop() > offset && (!showWhenFullCartOnly || cartLength)) {
 			//появление
 			visible = true;
-			$upper.animate({marginTop: '0'}, 400);
+			$upper.fadeIn(400);
 		} else if (visible && ($window.scrollTop() < offset || showWhenFullCartOnly && !cartLength)) {
 			//исчезновение
 			visible = false;
-			$upper.animate({marginTop: '-55px'}, 400);
+			$upper.fadeOut(400);
 		}
 	}
 

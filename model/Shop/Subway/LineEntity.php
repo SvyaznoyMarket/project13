@@ -16,9 +16,11 @@ class LineEntity {
     /** @var string */
     private $color;
 
-    public function __construct(array $data = []) {
-        if (array_key_exists('name', $data)) $this->setName($data['name']);
-        if (array_key_exists('color', $data)) $this->setColor($data['color']);
+    public function __construct($data = []) {
+        if (is_array($data)) {
+            if (array_key_exists('name', $data)) $this->setName($data['name']);
+            if (array_key_exists('color', $data)) $this->setColor($data['color']);
+        }
     }
 
     /**

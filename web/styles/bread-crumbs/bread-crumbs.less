@@ -1,0 +1,29 @@
+.bread-crumbs {
+    margin: 0 0 5px;
+    &__i {
+        margin: 0 2px 0 0;
+
+        color: #545454;
+
+        .inline-block();
+        &:after {
+            font-size: 10px;
+
+            padding-left: 5px;
+
+            content: '>';
+        }
+        &:last-child {
+            &:after {
+                content: '';
+            }
+        }
+    }
+    &__lk {
+        color: #545454;
+        border-bottom: 1px solid #9c9c9c;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}

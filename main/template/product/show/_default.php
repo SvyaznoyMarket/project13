@@ -18,13 +18,14 @@
  * @var $breadcrumbs            array   Хлебные крошки
  * @var $trustfactors           array   Трастфакторы
  * @var $reviewsDataSummary     array   Данные отзывов
+ * @var $videoHtml              string|null
+ * @var $properties3D           []
  */
 ?>
 
 <?
 $region = \App::user()->getRegion();
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
-$isKit = (bool)$product->getKit();
 
 $isProductAvailable = $product->isAvailable();
 if (\App::config()->preview) {
@@ -39,7 +40,7 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
 <?= $helper->render('product/__data', ['product' => $product]) ?>
 
 <div class="bProductSectionLeftCol">
-    <?= $helper->render('product/__photo', ['product' => $product]) ?>
+    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
 
     <div class="bProductDesc<? if (!$creditData['creditIsAllowed'] || $user->getRegion()->getHasTransportCompany()): ?> mNoCredit<? endif ?>" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 

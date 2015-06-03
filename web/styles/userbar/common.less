@@ -1,0 +1,180 @@
+.userbar {
+    visibility: visible;
+    overflow: hidden;
+
+    height: 0;
+
+    background: @white;
+
+    .opacity(0);
+    .transition(all .3s ease-out);
+    .drop-shadow(0, 4px, 28px, .5);
+    // фиксированнй юзербар
+    &--fixed {
+        position: fixed;
+        z-index: 999;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        min-width: 960px;
+    }
+    // юзербар в карточке товара
+    &--pp {
+        &.pp-fixed {
+            border-bottom: 1px solid #e8e8e8;
+
+            .box-shadow(none);
+            .hintDd ,
+            .userbar-dd {
+                top: 51px;
+            }
+            &:after ,
+            &:before {
+                height: 125px;
+            }
+        }
+        .userbar-crumbs {
+            &-wrap {
+                float: none;
+
+                width: 280px;
+
+                .inline-block-middle();
+            }
+            &-list {
+                &__i {
+                    display: block;
+
+                    background: none;
+                }
+            }
+        }
+    }
+    &.shadow-false {
+        &:after ,
+        &:before {
+            background: none;
+            width: 0;
+            height: 0;
+        }
+    }
+    &__inn {
+        position: relative;
+
+        width: 960px;
+        height: 50px;
+        margin: 0 auto;
+    }
+    &:after {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        width: 200px;
+        height: 75px;
+
+        content: '';
+
+        background: rgba(31,37,31,0);
+        background:    -moz-linear-gradient(left, rgba(31,37,31,0) 0%, rgba(31,37,31,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 59%);
+        background: -webkit-gradient(left top, right top, color-stop(0%, rgba(31,37,31,0)), color-stop(0%, rgba(31,37,31,0)), color-stop(0%, rgba(255,255,255,0)), color-stop(59%, rgba(255,255,255,1)));
+        background: -webkit-linear-gradient(left, rgba(31,37,31,0) 0%, rgba(31,37,31,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 59%);
+        background:      -o-linear-gradient(left, rgba(31,37,31,0) 0%, rgba(31,37,31,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 59%);
+        background:     -ms-linear-gradient(left, rgba(31,37,31,0) 0%, rgba(31,37,31,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 59%);
+        background:         linear-gradient(to right, rgba(31,37,31,0) 0%, rgba(31,37,31,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 59%);
+
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f251f', endColorstr='#ffffff', GradientType=1 );
+    }
+    &:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 200px;
+        height: 75px;
+
+        content: '';
+
+        background: rgba(255,255,255,1);
+        background:    -moz-linear-gradient(left, rgba(255,255,255,1) 41%, rgba(255,255,255,0) 100%);
+        background: -webkit-gradient(left top, right top, color-stop(41%, rgba(255,255,255,1)), color-stop(100%, rgba(255,255,255,0)));
+        background: -webkit-linear-gradient(left, rgba(255,255,255,1) 41%, rgba(255,255,255,0) 100%);
+        background:      -o-linear-gradient(left, rgba(255,255,255,1) 41%, rgba(255,255,255,0) 100%);
+        background:     -ms-linear-gradient(left, rgba(255,255,255,1) 41%, rgba(255,255,255,0) 100%);
+        background:         linear-gradient(to right, rgba(255,255,255,1) 41%, rgba(255,255,255,0) 100%);
+
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
+    }
+}
+
+@media (max-width: 1330px) {
+    .userbar {
+        &:after {
+            width: 100px;
+        }
+        &:before {
+            width: 100px;
+        }
+    }
+}
+
+@media (max-width: 1130px) {
+    .userbar {
+        &:after {
+            width: 50px;
+        }
+        &:before {
+            width: 50px;
+        }
+    }
+}
+
+@media (max-width: 1020px) {
+    .userbar {
+        &:after {
+            width: 25px;
+        }
+        &:before {
+            width: 25px;
+        }
+    }
+}
+
+@media (max-width: 970px) {
+    .userbar {
+        &:after {
+            width: 0;
+
+            background: none;
+        }
+        &:before {
+            width: 0;
+
+            background: none;
+        }
+    }
+}
+
+//fix box-shadow
+.lt-ie9 {
+    .userbar {
+        border-bottom: 1px solid #e8e8e8;
+    }
+}
+
+//fix background gradient
+.no-cssgradients {
+    .userbar {
+        &:after {
+            width: 0;
+
+            background: none;
+        }
+        &:before {
+            width: 0;
+
+            background: none;
+        }
+    }
+}

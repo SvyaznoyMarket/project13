@@ -1,0 +1,111 @@
+.btn-mix() {
+    font-size: 14px;
+    line-height: 1;
+
+    padding: 5px 15px;
+
+    cursor: pointer;
+
+    border-width: 1px;
+    border-style: solid;
+    border-bottom-width: 3px;
+
+    .rounded(3px);
+    .inline-block();
+}
+
+.btn-type {
+    .btn-mix();
+    &--normal {
+        border-color: #c7c7c7;
+        background-color: @white;
+    }
+    &--longer {
+        width: 100%;
+        padding: 5px 10px;
+
+        text-align: center;
+
+        .box-sizing(border-box);
+    }
+    &--buy {
+        font-size: 16px;
+
+        color: #fff;
+        border-color: #f99b1c;
+        border-bottom-color: #bf7716;
+        background-color: #f99b1c;
+
+        .transition(background-color .2s ease);
+        &--bigger {
+            font-size: 22px;
+
+            padding: 10px;
+        }
+        &:hover {
+            background-color: #ff9f1d;
+        }
+        &:active {
+            background-color: #f99b1c;
+        }
+    }
+    &--olive {
+        border-color: #d4e463;
+        border-bottom-color: #c4cf54;
+        background-color: #d4e463;
+
+        .transition(background-color .2s ease);
+        &:hover {
+            background-color: #d4e463;
+        }
+        &:active {
+            background-color: #d4e463;
+        }
+    }
+    &:hover {
+        text-decoration: none;
+    }
+    &:active {
+        margin-top: 2px;
+
+        border-bottom-width: 1px;
+    }
+    &--light {
+        border-bottom-width: 1px;
+        border-color: #f08a00;
+        font-size: 12px;
+        padding: 2px 5px;
+
+        &:active {
+            margin-top: 0;
+
+            border-bottom-width: 1px;
+        }
+    }
+}
+
+.closer {
+    font-size: 18px;
+    line-height: 18px;
+
+    position: absolute;
+    z-index: 100;
+    top: 3px;
+    right: 3px;
+
+    width: 18px;
+
+    cursor: pointer;
+    text-align: center;
+
+    color: #828282;
+
+    .transition(all .3 ease-out);
+    &:hover {
+        color: rgba(0, 0, 0, .7);
+    }
+}
+
+.line-through {
+    text-decoration: line-through;
+}

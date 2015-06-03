@@ -419,6 +419,7 @@
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('lk.js') )
+					.script( getWithVersion('favorite.js') )
 					.script( getWithVersion('product.js') )
 					.wait()
 					.script(yandexMapUrlv2_1)

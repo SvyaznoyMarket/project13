@@ -47,6 +47,8 @@ class ProductButtonAction {
                 ]),
                 'noUpdate'  => $noUpdate,
             ],
+            'divClass'  => 'btnBuy',
+            'surroundDiv' => true
         ];
 
         if (!$product->getIsBuyable()) {
@@ -94,6 +96,19 @@ class ProductButtonAction {
             $data['url'] = $this->getBuyUrl($helper, $product, $sender, $sender2);
             $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton' . $colorClass;
             $data['value'] = 'Купить';
+            if (\App::abTest()->isNewProductPage() && in_array($location, ['product-card', 'userbar'])) $data['value'] = 'В корзину';
+        }
+
+        /* Новая карточка товара */
+        if (\App::abTest()->isNewProductPage() && $location !== null) {
+            $data['class'] = str_replace('btnBuy__eLink', '', $data['class']) . ' btn-type btn-type--buy';
+            if ('product-card' === $location) $data['class'] .= ' btn-type--longer btn-type--buy--bigger';
+            if ('slider' === $location) $data['class'] .= ' btn-type--light';
+            if ('userbar' === $location) {
+                $data['class'] .= ' topbarfix_buy-btn';
+                $data['surroundDiv'] = false;
+            }
+            $data['divClass'] = 'buy-online';
         }
 
         return $data;

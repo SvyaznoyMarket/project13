@@ -1,0 +1,160 @@
+// блок филььтра с параметрами
+
+.drop-filter{
+        // секция фильтра
+    &-kit{
+
+        &-box{
+            padding: 0 5px;
+            margin-right: 0px;
+            line-height: 24px;
+            color: #515151;
+            padding: 10px 10px 10px 0;
+        }
+    }
+    &-box{
+        position: relative;
+
+        margin: 0 5px 0 0;
+
+        border: 2px solid @white;
+
+        .inline-block();
+        .rounded(3px);
+        padding-left: 0px;
+        padding-top: 2px;
+        
+        &.opn{
+            border-width: 1px;
+            border-color: @lightgrey9;
+            border-bottom: none;
+
+            .drop-filter-box__tggl{
+                z-index: 16;
+
+                padding-bottom: 4px;
+                
+                margin: 1px;
+
+                &-corner{
+                    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAP0lEQVQI12NgAIL/jE6T/jMywIBTgtN/pwQox4/X6TmQ+9yPF8x17gJygNC5C8RRc/4J5f50VmNw2grhgOFWABRpHkDXZMHuAAAAAElFTkSuQmCC');
+                }
+                
+            }
+            .drop-filter-box__dd{
+                display: block;
+                top: 26px;
+            }
+            &.picked {
+                border-color: @lightgrey9;
+                .drop-filter-box__tggl{
+                    padding: 4px 10px;
+                }
+            }
+        }
+
+
+        &__tggl{
+            font-size: 14px;
+            line-height: 1;
+            height: 16px;
+            position: relative;
+
+            padding: 4px 10px 3px;
+
+            cursor: pointer;
+
+            border: 2px solid @white;
+            background-color: @white;
+
+            .inline-block-middle();
+            .rounded(3px 3px 0 0);
+
+            &-tx{
+                padding: 0 0 3px;
+
+                border-bottom: 1px dotted #515151;
+
+                .inline-block();
+                color: #686868;
+            }
+
+            &-corner{
+                width: 7px;
+                height: 6px;
+
+                background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAQElEQVQI12Nw2ur0Hw63MjirOf+EcJx/OqsxMDA4d0G5XQwg4Mfr9BzIfe7HywABzvFAuXgGGPjP6DTpPyOIBQCDch5A9YNPpAAAAABJRU5ErkJggg==') no-repeat 0 0;
+
+                .inline-block-middle();
+            }
+
+            &-dsbld {
+                color: #828282;
+            }
+        }
+        &.picked {
+                border-color: @orange-2;
+                .fltrBtnBox__tggl{
+                    padding: 3px 9px 2px;
+                }
+                .fltrBtnBox__tggl-tx{
+                    border: none;
+                }
+        }
+
+        // выпадашка с параметрами фильтрации
+        &__dd{
+            position: absolute;
+            z-index: 15;
+            top: 25px;
+            min-width: 100%;
+            .box-sizing();
+
+            display: none;
+
+            white-space: nowrap;
+
+            border: 1px solid @lightgrey9;
+            background: @white;
+
+            .rounded(0 0 3px 3px);
+            .drop-shadow(0, 3px, 5px, .3);
+            &:after{
+                top: 0;
+                left: 0;
+
+                width: 100%;
+                height: 15px;
+                .pseudo-class();
+                .whiteTopTranspGrad();
+            }
+            &:before{
+                bottom: 0;
+                left: 0;
+
+                width: 100%;
+                height: 15px;
+                .pseudo-class();
+                .whiteBottomTranspGrad();
+            }
+            &-inn{
+                overflow-x: hidden;
+                overflow-y: auto;
+
+                box-sizing: border-box;
+                width: 100%;
+                max-height: 250px;
+                padding: 15px 10px 5px 10px;
+            }
+        }
+    }
+}
+/*============================================================================*/
+.pick-point-ctrls {
+    margin-right:10px;
+    border-bottom: 1px solid #d3d3d3;
+
+    .customLabel {
+        font-size: 12px;
+    }
+}

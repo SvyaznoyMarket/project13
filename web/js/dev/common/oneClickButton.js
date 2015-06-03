@@ -11,7 +11,13 @@
 
 		var
 			$button = $(e.currentTarget),
-			$target = $('#jsOneClickContent');
+			$target = $('#jsOneClickContent'),
+            $productInfo = $('#product-info'),
+            productUi;
+
+        productUi = $productInfo.length > 0 ? $productInfo.data('ui') : button.data('product-ui');
+
+        if (!productUi) throw 'Не обнаружен ui продукта';
 
 		if ($target.length) {
 			openPopup(false);
@@ -20,11 +26,11 @@
 			oneClickOpening = true;
 
 			$.ajax({
-				url: ENTER.utils.generateUrl('orderV3OneClick.form', {
-					productUid: $button.data('product-ui'),
-					sender: ENTER.utils.analytics.productPageSenders.get($button),
-					sender2: ENTER.utils.analytics.productPageSenders2.get($button)
-				}),
+                url: ENTER.utils.generateUrl('orderV3OneClick.form', {
+                    productUid: $button.data('product-ui'),
+                    sender: ENTER.utils.analytics.productPageSenders.get($button),
+                    sender2: ENTER.utils.analytics.productPageSenders2.get($button)
+                }),
 				type: 'POST',
 				dataType: 'json',
 				closeClick: false,
@@ -119,20 +125,21 @@
 						$('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
 					}
 				}).done(function(data) {
-					console.log("Query: %s", data.result.OrderDeliveryRequest);
-					console.log("Model:", data.result.OrderDeliveryModel);
-					$orderContent.empty().html($(data.result.page).html());
+					//console.log("Query: %s", data.result.OrderDeliveryRequest);
+					//console.log("Model:", data.result.OrderDeliveryModel);
 
                     if (data.result.warn) $('#OrderV3ErrorBlock').text(data.result.warn).show();
 
-                    $.each($('.jsNewPoints'), function(i,val) {
-                        var E = ENTER.OrderV31Click,
-                            pointData = JSON.parse($(this).find('script.jsMapData').html()),
-                            points = new ENTER.DeliveryPoints(pointData.points, E.map);
+                    var $data = $(data.result.page);
 
-                        E.koModels.push(points);
-                        ko.applyBindings(points, val);
-                    });
+                    $orderContent.empty().html($data.html());
+
+                    var E = ENTER.OrderV31Click,
+                        pointData = JSON.parse($data.find('script.jsMapData').html()),
+                        points = new ENTER.DeliveryPoints(pointData.points, E.map);
+
+                    E.koModels.push(points);
+                    ko.applyBindings(points, $orderContent[0]);
 
 					ENTER.OrderV31Click.functions.initAddress();
 					$orderContent.find('input[name=address]').focus();

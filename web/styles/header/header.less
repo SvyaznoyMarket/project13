@@ -1,256 +1,442 @@
-#mainPage .header,
-.enterprize .header {
-	background: @black;
-}
-.topbar {
-	border-bottom: none;
-
-	&_l {
-		float: left;
-	}
-
-	&_r {
-		float: right;
-	}
-
-	&_c {
-		margin: 0 auto;
-		text-align: center;
-		display: block;
-
-		.navsite_i {
-			min-width: 60px;
-		}
-	}
-
-	&_loc {
-		color: @black;
-		.inline-block();
-	    float: left;
-	    font-size: 12px;
-	    line-height: 50px;
-	    padding-right: 10px;
-	    max-width: 80px;
-	    min-width: 50px;
-	    white-space: nowrap;
-	    overflow: hidden;
-	    text-decoration: underline;
-	    position: relative;
-
-	    &:after {
-	    	content: "";
-		    height: 100%;
-		    position: absolute;
-		    right: 0;
-		    top: 0;
-		    width: 10px;
-			background: rgba(246,246,246,0);
-			background: -moz-linear-gradient(left, rgba(246,246,246,0) 0%, rgba(244,244,244,0.65) 46%, rgba(244,244,244,1) 71%);
-			background: -webkit-gradient(left top, right top, color-stop(0%, rgba(246,246,246,0)), color-stop(46%, rgba(244,244,244,0.65)), color-stop(71%, rgba(244,244,244,1)));
-			background: -webkit-linear-gradient(left, rgba(246,246,246,0) 0%, rgba(244,244,244,0.65) 46%, rgba(244,244,244,1) 71%);
-			background: -o-linear-gradient(left, rgba(246,246,246,0) 0%, rgba(244,244,244,0.65) 46%, rgba(244,244,244,1) 71%);
-			background: -ms-linear-gradient(left, rgba(246,246,246,0) 0%, rgba(244,244,244,0.65) 46%, rgba(244,244,244,1) 71%);
-			background: linear-gradient(to right, rgba(246,246,246,0) 0%, rgba(244,244,244,0.65) 46%, rgba(244,244,244,1) 71%);
-			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f6f6', endColorstr='#f4f4f4', GradientType=1 );
-		}
-	}
-
-	&_call {
-		float: left;
-
-		&_t {
-			background: url("@{base-url}/header/img/icons.png") no-repeat 5px 3px;
-			.inline-block();
-			color: #f99b1c;
-		    font-size: 12px;
-		    font-weight: bold;
-		    line-height: 1.1;
-		    margin: 9px 10px 0 0;
-		    vertical-align: top;
-		    width: 52px;
-		    border: 1px solid firmOrange;
-		    border: 1px solid rgba(249, 155, 28, 0.51);
-			.rounded(3px);
-			padding: 2px 0 3px 20px;
-		}
-
-		&_lst {
-			.inline-block();
-			font-size: 14px;
-			margin: 7px 20px 0 0;
-			font-weight: bold;
-		}
-
-		&_i {
-			display: block;
-
-			&:last-child {
-				color: #808080;
-			}
-		}
-	}
-
-	&_lks {
-		.inline-block();
-		margin: 9px 0 0;
-
-		&_i {
-			display: block;
-			color: #808080;
-			font-size: 12px;
-			text-decoration: underline;
-		}
-	}
-
-	&_ep {
-		background: url("@{base-url}/header/img/icons.png") no-repeat 0 -192px;
-		display: inline-block;
-		height: 49px;
-		line-height: 49px;
-	    padding: 0 0 0 30px;
-	    font-size: 22px;
-	    font-family: "Enter";
-
-	    &_mark {
-	    	color: #f99b1c;
-	    }
-
-	    &:hover {
-	    	text-decoration: none;
-	    }
-	}
-
-	.menuItem {
-		background: url("@{base-url}/header/img/bgTrans.gif") repeat-y 100% 0;
-		float: right;
-		margin: -10px 0 0;
-		height: 49px;
-
-		&__link {
-			color: @white;
-			background: url("@{base-url}/header/img/bgTopMenuItem.gif") @black no-repeat 0 0;
-			display: block;
-			height: 27px;
-			font: normal 11px/27px 'Enter Type';
-			padding: 0 15px 0 12px;
-			text-transform: uppercase;
-			margin: 10px 0 0;
-
-			&:hover {
-				text-decoration: none;
-			}
-		}
-
-		&__text {
-			background-position: 0 50%;
-			background-repeat: no-repeat;
-			padding-left: 20px;
-			display: block;
-		}
-	}
-}
-
-#mainPage{
-    background: @black;
-
-    .topbar{
-	    margin: 0 0 20px 0;
-	    padding: 0;
-	    width: 100%;
-	    background: none;
-	    border: none;
-	    border-bottom: 1px solid @typLinkColor;
-	    height: 50px;
-
-	    &_ep {
-	    	color: #fff;
-	    	background-position: 0 -240px;
-	    	line-height: 50px;
-	    }
-
-	    &_loc {
-	    	color: @white;
-	    	margin-left: 10px;
-
-	    	&:after {
-				background: rgba(0,0,0,0);
-				background: -moz-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 48%, rgba(0,0,0,1) 100%);
-				background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,0,0,0)), color-stop(48%, rgba(0,0,0,1)), color-stop(100%, rgba(0,0,0,1)));
-				background: -webkit-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 48%, rgba(0,0,0,1) 100%);
-				background: -o-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 48%, rgba(0,0,0,1) 100%);
-				background: -ms-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 48%, rgba(0,0,0,1) 100%);
-				background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 48%, rgba(0,0,0,1) 100%);
-				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000', GradientType=1 );
-			}
-	    }
-
-	    &_call {
-
-	    	&_lst {
-	    		color: @white;
-	    	}
-	    }
-	}
-}
-
-.enterprize {
-
-	.topbar_ep {
-    	background-position: 0 -240px;
-    	line-height: 50px;
+// header var
+@header-height: 50px;
+@full-size: 100%;
+.userbar {
+    .header_t {
+        border: none;
     }
+}
 
-    .topbar {
-    	&_loc {
-	    	color: @white;
-	    	margin-left: 10px;
+.header {
+    width: 100%;
 
-	    	&:after {
-				background: rgba(0,0,0,0);
-				background: -moz-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 48%, rgba(0,0,0,1) 100%);
-				background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,0,0,0)), color-stop(48%, rgba(0,0,0,1)), color-stop(100%, rgba(0,0,0,1)));
-				background: -webkit-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 48%, rgba(0,0,0,1) 100%);
-				background: -o-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 48%, rgba(0,0,0,1) 100%);
-				background: -ms-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 48%, rgba(0,0,0,1) 100%);
-				background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 48%, rgba(0,0,0,1) 100%);
-				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000', GradientType=1 );
-			}
-	    }
+    background: @white;
+    // верхний блок шапки
+    &_t {
+        height: @header-height;
+        padding: 0 0 0 10px;
+
+        background: @white;
     }
+    &_i {
+        .inline-block-middle();
+    }
+    &__width {
+        background: @black;
+    }
+    &_c {
+        height: 60px;
+        padding: 5px 0;
+        // поиск вариант 2
+        &-v1 {
+            .hdsearch {
+                margin: 14px 0 0;
 
-	.topbar_r {
-	    .topbarfix {
+                background: @white;
 
-			&_cmpr {
-				background: @black;
-				border: none;
+                .rounded(4px);
+                .box-shadow(1px 1px 2px rgba(0,0,0,.4) inset);
+                &_lbl {
+                    display: none;
+                }
+                &_it {
+                    padding: 7px 0;
 
-				&-full {
+                    background: transparent;
+                }
+                &_itb {
+                    width: 463px;
+                    margin: 0;
 
-					.topbarfix_cmpr_tl {
-						background-position: 0 -323px;
-					}
-				}
+                    border: none;
+                    background: transparent;
+                    &:after {
+                        background-position: -186px 5px;
+                    }
+                }
+                &_f {
+                    position: relative;
+                }
+                &_btn {
+                    font-size: 14px;
 
-				&_tl {
-					color: @white;
-					background-position: 0 -285px;
-				}
-			}
+                    position: absolute;
+                    z-index: 2;
+                    top: 3px;
+                    right: 3px;
 
-			&_log {
+                    padding: 5px 13px 6px;
 
-				&:after {
-					background: rgba(0,0,0,0);
-					background: -moz-linear-gradient(left, rgba(0,0,0,0) 17%, rgba(0,0,0,0.58) 55%, rgba(0,0,0,1) 82%, rgba(0,0,0,1) 93%, rgba(0,0,0,1) 100%);
-					background: -webkit-gradient(left top, right top, color-stop(17%, rgba(0,0,0,0)), color-stop(55%, rgba(0,0,0,0.58)), color-stop(82%, rgba(0,0,0,1)), color-stop(93%, rgba(0,0,0,1)), color-stop(100%, rgba(0,0,0,1)));
-					background: -webkit-linear-gradient(left, rgba(0,0,0,0) 17%, rgba(0,0,0,0.58) 55%, rgba(0,0,0,1) 82%, rgba(0,0,0,1) 93%, rgba(0,0,0,1) 100%);
-					background: -o-linear-gradient(left, rgba(0,0,0,0) 17%, rgba(0,0,0,0.58) 55%, rgba(0,0,0,1) 82%, rgba(0,0,0,1) 93%, rgba(0,0,0,1) 100%);
-					background: -ms-linear-gradient(left, rgba(0,0,0,0) 17%, rgba(0,0,0,0.58) 55%, rgba(0,0,0,1) 82%, rgba(0,0,0,1) 93%, rgba(0,0,0,1) 100%);
-					background: linear-gradient(to right, rgba(0,0,0,0) 17%, rgba(0,0,0,0.58) 55%, rgba(0,0,0,1) 82%, rgba(0,0,0,1) 93%, rgba(0,0,0,1) 100%);
-					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000', GradientType=1 );
-				}
-			}
-		}
-	}
+                    border-color: @black;
+                    background: @black;
+
+                    .rounded(3px);
+                }
+            }
+            .hdlogo {
+                margin: 0 30px 0 20px;
+            }
+            .hdgift {
+                float: left;
+                overflow: hidden;
+
+                width: 85px;
+                height: 70px;
+                margin: -5px 0 0 60px;
+                padding: 0;
+
+                text-align: center;
+
+                border-right: medium none;
+                background: url('@{base-url}/mainpage/img/enter_presents_v2.png') no-repeat 0 -7px;
+                &_tx {
+                    font-family: 'Enter type';
+                    font-size: 11px;
+                    line-height: 1.2;
+
+                    width: 55px;
+                    margin: 2px 0 0 3px;
+
+                    text-transform: uppercase;
+
+                    color: @black;
+                }
+                &_img {
+                    display: block;
+
+                    margin: 4px auto 5px;
+                }
+            }
+            .hdep {
+                float: right;
+
+                margin: 11px 20px 0 0;
+
+                text-align: center;
+            }
+        }
+        // поиск вариант 3
+        &-v2 {
+            .hdsearch {
+                margin: 14px 0 0;
+
+                background: @white;
+
+                .rounded(4px);
+                .box-shadow(1px 1px 2px rgba(0,0,0,.4) inset);
+                &_lbl {
+                    display: none;
+                }
+                &_it {
+                    padding: 7px 0;
+
+                    background: transparent;
+                }
+                &_itb {
+                    width: 479px;
+                    margin: 0;
+
+                    border: none;
+                    background: transparent;
+                    &:after {
+                        background-position: -186px 5px;
+                    }
+                }
+                &_f {
+                    position: relative;
+                }
+                &_btn {
+                    font-size: 14px;
+
+                    position: absolute;
+                    z-index: 2;
+                    top: 3px;
+                    right: 3px;
+
+                    padding: 5px 13px 6px;
+
+                    border-color: @black;
+                    border-bottom: 2px solid #7f7f7f;
+                    background: @black;
+
+                    .rounded(3px);
+                }
+            }
+            .hdlogo {
+                margin: 0 30px 0 20px;
+            }
+            .hdep {
+                float: right;
+
+                margin: 11px 20px 0 0;
+
+                text-align: center;
+            }
+        }
+    }
+    &_b {
+        position: relative;
+        z-index: 100;
+
+        height: 85px;
+        padding: 5px 5px 0;
+
+        border-bottom: 2px solid #e8e8e8;
+        background: @white;
+        .navsite_i {
+            min-width: 50px;
+            padding: 0 4px;
+        }
+    }
+    &.header-new {
+        .box-shadow(0px 0px 26px 0px rgba(50, 50, 50, .25));
+    }
+    .header-icon-ddnav {
+        display: none;
+    }
+    // Гамбургер
+    &-ddnav {
+        .header_b {
+            position: absolute;
+            top: 50px;
+
+            float: left;
+
+            height: 70px;
+            padding: 0 5px 0 10px;
+
+            border: none;
+            background: @black;
+        }
+
+        .header_c {
+            float: right;
+
+            width: 881px;
+        }
+        .header-ddnav-wrap {
+            position: relative;
+            z-index: 99;
+            &:hover {
+                .header-ddnav-box {
+                    display: block;
+                    visibility: visible;
+
+                    transition-delay: 100ms;
+                    transition-property: visibility;
+                }
+            }
+        }
+        .header-icon-ddnav {
+            display: block;
+
+            width: 44px;
+            height: 70px;
+            margin: 0;
+
+            cursor: pointer;
+            cursor: pointer;
+
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAzAQAAAADEf9fiAAAAAnRSTlMAAHaTzTgAAAAXSURBVHgBY6A3YPz///8PrBTd9dENAACB2S+JmUkSHwAAAABJRU5ErkJggg==') no-repeat 50% 50% @black;
+        }
+        .header-ddnav-box {
+            position: absolute;
+            bottom: -90px;
+            left: -10px;
+
+            display: block;
+            visibility: hidden;
+
+            width: 950px;
+            padding: 5px 5px 0;
+
+            transition-delay: 1000ms;
+            transition-property: visibility;
+
+            background: @white;
+
+            .box-shadow(0 2px 3px 0 rgba(0, 0, 0, .5));
+            &:after {
+                left: 22px;
+
+                .pseudo-corner-top(9px, @white, -8px);
+            }
+            &.show {
+                display: block;
+            }
+        }
+        .hdlogo {
+            margin: 0 35px 0 0;
+        }
+        .hdsearch_itb {
+            width: 481px;
+            padding: 0 10px 0 5px;
+            &:after {
+                background: none;
+            }
+        }
+        .hdgift--new {
+            margin: 18px 0 0 21px;
+        }
+        .hdep {
+            margin: 11px 0 0 0;
+        }
+    }
+}
+// контакты
+.hdcontacts {
+    margin: 0 10px 0 0;
+    &_lk {
+        color: #808080;
+    }
+    &_phone {
+        font-size: 14px;
+        font-weight: bold;
+
+        color: #424242;
+    }
+}
+// ссылки в шапке
+.hdlk {
+    &_i {
+        line-height: @header-height;
+
+        margin: 0 0 0 20px;
+
+        .inline-block();
+    }
+    &_lk {
+        color: #424242;
+    }
+}
+// звонок с сайта
+.hdcall {
+    font-weight: bold;
+
+    padding: 2px 3px 2px 4px;
+
+    color: @orange-2;
+    border: 1px solid @orange-2;
+
+    .rounded(3px);
+    &:hover {
+        text-decoration: none;
+    }
+    &_tx {
+        line-height: 1.2;
+
+        .inline-block();
+    }
+}
+
+.hdlogo {
+    float: left;
+    //margin: 0 85px 0 0;
+
+    margin: 0 35px 0 0;
+}
+
+// логотип
+.sitelogo {
+    width: 71px;
+    height: 60px;
+
+    background: url('@{base-url}/mainpage/img/logo.png') no-repeat 0 50%;
+}
+
+// энтерпрайз
+.hdep {
+    float: right;
+
+    margin: 11px 0 0;
+
+    text-align: center;
+
+    color: #dbdbdb;
+    &_h {
+        line-height: 1;
+
+        margin: 0 0 5px;
+    }
+}
+
+.hdgift {
+    float: right;
+
+    margin: 14px 10px 0 0;
+    padding: 1px 15px 2px 0;
+
+    border-right: 1px dotted @white;
+    &_i {
+        .inline-block();
+    }
+    &_img {
+        .inline-block();
+    }
+    &_tx {
+        font-size: 12px;
+        line-height: 1.1;
+
+        width: 55px;
+        margin: 2px 0 0 3px;
+
+        color: #dbdbdb;
+    }
+    &--new {
+        float: left;
+        overflow: hidden;
+
+        width: 133px;
+        width: 130px;
+        height: 25px;
+        margin: 18px 0 0 30px;
+        padding: 0;
+
+        text-align: center;
+
+        color: #fff;
+        border-right: medium none;
+        background: #ef404a;
+
+        .box-shadow(0 2px 0 #a91507);
+        .rounded(2px);
+        &_tx ,
+        &_img {
+            display: none;
+        }
+        &_lk {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+        }
+        .hdgift_tx {
+            font-family: 'Enter type';
+            font-size: 16px;
+            line-height: 25px;
+
+            width: auto;
+            margin: 0;
+
+            color: #fff;
+
+            .inline-block();
+        }
+        .hdgift_img {
+            display: none;
+        }
+        &-cursive {
+            .hdgift_tx {
+                font-family: 'Enter';
+                font-size: 15px;
+
+                text-transform: uppercase;
+            }
+        }
+    }
+    &--old {
+        padding: 1px 29px 2px 0;
+
+        border-right: medium none;
+    }
 }

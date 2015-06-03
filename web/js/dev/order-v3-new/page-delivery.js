@@ -197,13 +197,11 @@
                 map.container.fitToViewport();
 
                 // добавляем невидимые точки на карту
-                $.each(mapData.points, function(token){
-                    for (var i = 0; i < mapData.points[token].length; i++) {
-                        try {
-                            map.geoObjects.add(new ENTER.Placemark(mapData.points[token][i], false));
-                        } catch (e) {
-                            console.error('Ошибка добавления точки на карту', e);
-                        }
+                $.each(mapData.points, function(i, point){
+                    try {
+                        map.geoObjects.add(new ENTER.Placemark(point, false));
+                    } catch (e) {
+                        console.error('Ошибка добавления точки на карту', e);
                     }
                 });
 
@@ -264,11 +262,10 @@
         $('.popupFl').hide();
 
         if ($(this).hasClass('js-order-changePlace-link')) {
-            showMap($(elemId));
+            showMap($(this).parent().next());
             $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
         } else {
             $(elemId).show();
-            log({'action':'view-date'});
             $body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
         }
 
@@ -277,8 +274,8 @@
 
     // клик по способу доставки
 	$body.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
-        var token = $(this).data('token'),
-            id = $(this).closest('.popupFl').attr('id');
+        var token = $(this).data('token');
+            //map = $(this).parent().next();
         // переключение списка магазинов
         $('.selShop_l').hide();
         $('.selShop_l[data-token='+token+']').show();
@@ -286,7 +283,7 @@
         $('.selShop_tab').removeClass('selShop_tab-act');
         $('.selShop_tab[data-token='+token+']').addClass('selShop_tab-act');
         // показ карты
-        showMap($('#'+id));
+        //showMap(map);
     });
 
     // клик по "Ввести код скидки"

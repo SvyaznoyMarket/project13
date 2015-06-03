@@ -2,7 +2,7 @@
 
 namespace Model\Product;
 
-use Model\Media\Source;
+use Model\Product\Delivery\ProductDelivery;
 
 class Entity {
     use \Model\MediaHostTrait;
@@ -116,7 +116,7 @@ class Entity {
     protected $tag = [];
     /** @var \Model\Brand\Entity|null */
     protected $brand;
-    /** @var Label\Entity|null */
+    /** @var Label|null */
     protected $label;
     /** @var Type\Entity|null */
     protected $type;
@@ -134,6 +134,8 @@ class Entity {
     protected $relatedId = [];
     /** @var \Model\Region\Entity */
     protected $nearestCity = [];
+    /** @var ProductDelivery|null */
+    public $delivery;
     /** @var \Model\Media[] */
     public $medias = [];
     /** @var array */
@@ -212,13 +214,7 @@ class Entity {
         }, $data['tag']));
 
         if (array_key_exists('brand', $data) && (bool)$data['brand']) $this->setBrand(new \Model\Brand\Entity($data['brand']));
-        if (array_key_exists('label', $data)) {
-            if (isset($data['label'][0]) && (bool)$data['label'][0]) {
-                $this->setLabel(new Label\Entity($data['label'][0]));
-            } elseif ((bool)$data['label']) {
-                $this->setLabel(new Label\Entity($data['label']));
-            }
-        }
+
         if (array_key_exists('type', $data) && (bool)$data['type']) $this->setType(new Type\Entity($data['type']));
         if (array_key_exists('price_average', $data)) $this->setPriceAverage($data['price_average']);
         if (array_key_exists('price_old', $data)) $this->setPriceOld($data['price_old']);
@@ -244,7 +240,7 @@ class Entity {
         }
 
         $propertiesCount = $this->getPropertiesCount();
-        if (((!$this->getTagline() && !count($this->getModel()) && !$this->getDescription() && $propertiesCount < 16) || $propertiesCount < 8) && !$this->hasLongProperties()) {
+        if (((!$this->getTagline() && !$this->getModel() && !$this->getDescription() && $propertiesCount < 16) || $propertiesCount < 8) && !$this->hasLongProperties()) {
             foreach ($this->groupedProperties as $group) {
                 if (!(bool)$group['properties']) continue;
 
@@ -332,7 +328,7 @@ class Entity {
     /**
      * @return string
      */
-    public function getLink($withSuffix = true, $region = null) {
+    public function getLink() {
         return $this->link;
     }
 
@@ -357,7 +353,7 @@ class Entity {
         $this->announce = (string)$announce;
     }
 
-    /**
+    /** Краткое описание товара
      * @return string
      */
     public function getAnnounce() {
@@ -563,6 +559,7 @@ class Entity {
                 return $property;
             }
         }
+        return null;
     }
 
     /**
@@ -754,14 +751,14 @@ class Entity {
     }
 
     /**
-     * @param \Model\Product\Label\Entity|null $label
+     * @param Label|null $label
      */
-    public function setLabel(Label\Entity $label = null) {
+    public function setLabel(Label $label = null) {
         $this->label = $label;
     }
 
     /**
-     * @return \Model\Product\Label\Entity|null
+     * @return Label|null
      */
     public function getLabel() {
         return $this->label;
@@ -779,17 +776,6 @@ class Entity {
      */
     public function getType() {
         return $this->type;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasSaleLabel() {
-        if ($this->label) {
-            return $this->label->isSale();
-        }
-
-        return false;
     }
 
     /**
@@ -1221,6 +1207,13 @@ class Entity {
         return $this->partnersOffer;
     }
 
+    /** Возвращает наименование первого партнера
+     * @return string|null
+     */
+    public function getPartnerName(){
+        return !empty($this->partnersOffer) && isset($this->partnersOffer[0]['name']) ? $this->partnersOffer[0]['name'] : null;
+    }
+
     /**
      * @return boolean
      */
@@ -1348,6 +1341,10 @@ class Entity {
         }
 
         return $medias;
+    }
+
+    public function getImageUrl(){
+        return $this->getMainImageUrl('product_120');
     }
 
     public function getMainImageUrl($sourceType) {

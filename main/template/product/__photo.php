@@ -2,72 +2,14 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\Entity $product
+    \Model\Product\Entity $product,
+    $useLens = true,
+    $videoHtml,
+    $properties3D
 ) {
-    $videoHtml = '';
+
     $maybe3dHtml5Source = null;
 
-    $megavisor3dUrl = '';
-    $swf3dUrl = '';
-    $maybe3dSwfUrl = '';
-    foreach ($product->getMedias() as $media) {
-        switch ($media->provider) {
-            case 'vimeo':
-                $source = $media->getSource('reference');
-                if ($source) {
-                    $width = 700;
-                    $height = ceil($width / ($source->width / $source->height));
-                    $videoHtml = '<iframe src="' . $helper->escape($source->url) . '" width="' . $width . '" height="' . $height . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
-                }
-
-                break;
-            case 'youtube':
-                $source = $media->getSource('reference');
-                if ($source) {
-                    $width = 700;
-                    $height = ceil($width / ($source->width / $source->height));
-                    $videoHtml = '<iframe src="//www.youtube.com/embed/' . $helper->escape($source->id) . '" width="' . $width . '" height="' . $height . '" frameborder="0" allowfullscreen></iframe>';
-                }
-
-                break;
-            case 'megavisor':
-                $source = $media->getSource('reference');
-                if ($source) {
-                    $megavisor3dUrl = 'http://media.megavisor.com/player/player.swf?uuid=' . urlencode($source->id);
-                }
-
-                break;
-            case 'swf':
-                $source = $media->getSource('reference');
-                if ($source) {
-                    $swf3dUrl = $source->url;
-                }
-
-                break;
-            case 'maybe3d':
-                // Временно отключаем maybe3d html5 модели из-за проблем, описанных в SITE-3783
-                /*if ($source = $media->getSource('html5')) {
-                    $maybe3dHtml5Source = $source;
-                } else*/ if ($source = $media->getSource('swf')) {
-                    $maybe3dSwfUrl = $source->url;
-                }
-
-                break;
-        }
-    }
-
-    if ($maybe3dSwfUrl) {
-        $model3dSwfUrl = $maybe3dSwfUrl;
-    } else if ($megavisor3dUrl) {
-        $model3dSwfUrl = $megavisor3dUrl;
-    } else if ($swf3dUrl) {
-        $model3dSwfUrl = $swf3dUrl;
-    } else {
-        $model3dSwfUrl = '';
-    }
-
-    /** @var \Model\Media[] $images */
-    $images = array_merge($product->getMedias('image', 'main'), $product->getMedias('image', 'additional'));
 ?>
 
 <div class="bProductDescImg">
@@ -110,27 +52,27 @@ return function(
                 <li class="bPhotoViewer__eItem mVideo js-product-video">
                     <a class="bPhotoLink" href="#"></a>
                     <div class="blackPopup blackPopupVideo js-product-video-container">
-                        <div class="close"></div>
+                        <div class="close jsPopupCloser"></div>
                         <div class="productVideo_iframe js-product-video-iframeContainer"><?= $videoHtml ?></div>
                     </div>
                 </li>
             <? endif ?>
 
-            <? if ($maybe3dHtml5Source): ?>
+            <? if ($properties3D['type'] == 'html5'): ?>
                 <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-html5-opener">
                     <a class="bPhotoLink" href=""></a>
-                    <div id="maybe3dModelPopup" class="popup js-product-3d-html5-popup" data-url="<?= $helper->escape($maybe3dHtml5Source->url); ?>" data-id="<?= $helper->escape($maybe3dHtml5Source->id); ?>">
-                        <i class="close" title="Закрыть">Закрыть</i>
+                    <div id="maybe3dModelPopup" class="popup js-product-3d-html5-popup" data-url="<?= $helper->escape($properties3D['url']); ?>" data-id="<?= $helper->escape($properties3D['id']); ?>">
+                        <i class="close jsPopupCloser" title="Закрыть">Закрыть</i>
                         <div class="js-product-3d-html5-popup-container" style="position: relative;">
                             <div id="js-product-3d-html5-popup-model" class="model"></div>
                         </div>
                     </div>
                 </li>
-            <? elseif ($model3dSwfUrl): ?>
+            <? elseif ($properties3D['type'] == 'swf'): ?>
                 <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-swf-opener">
                     <a class="bPhotoLink" href=""></a>
-                    <div id="maybe3dModelPopup" class="popup js-product-3d-swf-popup" data-url="<?= $helper->escape($model3dSwfUrl); ?>">
-                        <i class="close" title="Закрыть">Закрыть</i>
+                    <div id="maybe3dModelPopup" class="popup js-product-3d-swf-popup" data-url="<?= $properties3D['url']; ?>">
+                        <i class="close jsPopupCloser" title="Закрыть">Закрыть</i>
                         <div class="js-product-3d-swf-popup-container" style="position: relative;">
                             <div id="js-product-3d-swf-popup-model">
                                 <a href="http://www.adobe.com/go/getflashplayer">
@@ -144,7 +86,7 @@ return function(
                 <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-img-opener">
                     <a class="bPhotoLink" href=""></a>
                     <div class="popup js-product-3d-img-popup" data-value="<?= $helper->json($product->json3d); ?>" data-host="<?= $helper->json(['http://' . App::request()->getHost()]) ?>">
-                        <i class="close" title="Закрыть">Закрыть</i>
+                        <i class="close jsPopupCloser" title="Закрыть">Закрыть</i>
                     </div>
                 </li>
             <? endif ?>

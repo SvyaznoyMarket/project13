@@ -181,7 +181,7 @@
 				 * Переключение на следующий слайд. Проверка состояния кнопок.
 				 */
 				nextSlide = function nextSlide(e) {
-					if ( $(this).hasClass('mDisabled') ) {
+					if ( $(this).hasClass('mDisabled disabled') ) {
 						return false;
 					}
 
@@ -189,15 +189,15 @@
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					leftBtn.removeClass('mDisabled');
+					leftBtn.removeClass('mDisabled disabled');
 
 					if ( nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW ) {
 						nowLeft = slider.width() - elementOnSlide * itemW;
-						rightBtn.addClass('mDisabled');
+						rightBtn.addClass('mDisabled disabled');
 					}
 					else {
 						nowLeft = nowLeft + elementOnSlide * itemW;
-						rightBtn.removeClass('mDisabled');
+						rightBtn.removeClass('mDisabled disabled');
 					}
 
 					console.info(itemW);
@@ -217,7 +217,7 @@
 				 * Переключение на предыдущий слайд. Проверка состояния кнопок.
 				 */
 				prevSlide = function prevSlide(e) {
-					if ( $(this).hasClass('mDisabled') ) {
+					if ( $(this).hasClass('mDisabled disabled') ) {
 						return false;
 					}
 
@@ -225,15 +225,15 @@
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					rightBtn.removeClass('mDisabled');
+					rightBtn.removeClass('mDisabled disabled');
 
 					if ( nowLeft - elementOnSlide * itemW <= 0 ) {
 						nowLeft = 0;
-						leftBtn.addClass('mDisabled');
+						leftBtn.addClass('mDisabled disabled');
 					}
 					else {
 						nowLeft = nowLeft - elementOnSlide * itemW;
-						leftBtn.removeClass('mDisabled');
+						leftBtn.removeClass('mDisabled disabled');
 					}
 
 					slider.animate({'left': -nowLeft });
@@ -265,16 +265,16 @@
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					leftBtn.addClass('mDisabled');
-					rightBtn.addClass('mDisabled');
+					leftBtn.addClass('mDisabled disabled');
+					rightBtn.addClass('mDisabled disabled');
 
 					if ( nowItems.length > elementOnSlide ) {
-						rightBtn.removeClass('mDisabled');
+						rightBtn.removeClass('mDisabled disabled');
 					}
 
 					slider.width(nowItems.length * itemW);
 					nowLeft = 0;
-					leftBtn.addClass('mDisabled');
+					leftBtn.addClass('mDisabled disabled');
 					slider.css({'left':nowLeft});
 					wrap.removeClass('mLoader');
 					nowItems.show();
@@ -319,7 +319,7 @@
 					newSlider = $(res.content)[0];
 					$self.before(newSlider);
 					$self.remove();
-					$(newSlider).goodsSlider();
+					$(newSlider).goodsSlider(options);
 
 					if (params.onLoad) {
 						params.onLoad(newSlider);
