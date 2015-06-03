@@ -7,8 +7,9 @@ return function (
     $class = null,
     $value = 'Купить быстро в 1 клик',
     \Model\Shop\Entity $shop = null,
-    array $sender = [],
-    $sender2 = ''
+    $sender = [],
+    $sender2 = '',
+    $location = ''
 ) {
 
     $data = [
@@ -18,14 +19,15 @@ return function (
         'url'       => $url,
         'text'      => $value,
         'sender'    => $helper->json($sender),
-        'sender2'   => $sender2
+        'sender2'   => $sender2,
+        'location'  => $location
     ];
 
     if (
         !$product->getIsBuyable()
         || (5 === $product->getStatusId()) // SITE-2924
     ) {
-        return '';
+        return ;
     }
 
     $urlParams = [];
@@ -65,8 +67,9 @@ return function (
         $data['url'] = $helper->url('cart.oneClick.product.setList', $urlParams);
     }
 
-    echo \App::abTest()->isNewProductPage()
+    echo '<!--noindex-->' . \App::abTest()->isNewProductPage()
         ? $helper->renderWithMustache('product-page/_buyButtonOneClick', $data)
-        : $helper->renderWithMustache('product/_buyButtonOneClick', $data);
+        : $helper->renderWithMustache('product/_buyButtonOneClick', $data)
+        . '<!--/noindex-->';
 
 };

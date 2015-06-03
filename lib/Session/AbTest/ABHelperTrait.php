@@ -107,6 +107,6 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isNewProductPage() {
-        return true;
+        return \App::abTest()->getTest('productCard') && \App::abTest()->getTest('productCard')->getChosenCase()->getKey() == 'new';
     }
 }

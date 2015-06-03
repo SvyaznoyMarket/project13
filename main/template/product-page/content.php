@@ -41,8 +41,7 @@ $showDescription = $product->getDescription()
     || $product->getSecondaryGroupedProperties();
 
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
-$buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
-
+$buySender2 = $request->get('sender2');
 ?>
 
 <div id="product-info"
@@ -98,7 +97,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
                     'name'     => 'retailrocket',
                     'position' => $isProductAvailable ? 'ProductAccessories' : 'ProductMissing', // все правильно - так и надо!
                 ],
-                'sender2' => $sender2,
+                'sender2' => $buySender2,
             ]) ?>
         <? endif ?>
     </div>
@@ -168,7 +167,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
                     'name'     => 'enter',
                     'position' => $isProductAvailable ? 'ProductAccessoriesManual' : 'ProductMissing',
                 ],
-                'sender2' => $sender2,
+                'sender2' => $buySender2,
             ]) ?>
 	</div>
 	<!--/ аксессуары -->
@@ -202,7 +201,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
                     'name'     => 'retailrocket',
                     'position' => 'ProductSimilar',
                 ],
-                'sender2' => $sender2,
+                'sender2' => $buySender2,
             ]) ?>
         <? endif ?>
 	</div>
@@ -225,7 +224,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
                     'from'     => 'productPage',
                     'position' => $isProductAvailable ? 'Viewed' : 'ProductMissing',
                 ],
-                'sender2' => $sender2,
+                'sender2' => $buySender2,
             ]) ?>
         <? endif ?>
 	</div>

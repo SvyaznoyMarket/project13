@@ -7,8 +7,6 @@ $f = function(
 ){
 
     $request = \App::request();
-    $productPageSender = \Session\ProductPageSenders::get($product->getUi());
-    $productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 
     ?>
 
@@ -112,9 +110,9 @@ $f = function(
 
             <?= $helper->render('cart/__button-product', [
                 'product'  => $product,
-                'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
+                'sender'   => ($request->get('sender') ? (array)$request->get('sender') : []) + ['name' => null, 'method' => null, 'position' => null],
                 'location' => 'userbar',
-                'sender2'  => $productPageSender2,
+                'sender2'  => '',
             ]) // Кнопка купить ?>
 
         </div>
