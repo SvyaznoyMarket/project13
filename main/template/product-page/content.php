@@ -103,14 +103,8 @@ $buySender2 = $request->get('sender2');
     </div>
     <!--/ с этим товаром покупают -->
 
-    <!-- ссылки связной, сбер и многору -->
-    <div class="product-discounts">
-        <ul class="product-discounts-list">
-            <li class="product-discounts-list__i"><a class="product-discounts-list__lk" href="/mnogo-ru"><img src="/styles/product/img/mnogoru.png"></a></li>
-            <li class="product-discounts-list__i"><a class="product-discounts-list__lk" href="/sberbank_spasibo"><img src="/styles/product/img/sberbank.png"></a></li>
-        </ul>
-    </div>
-    <!--/ ссылки связной, сбер и многору -->
+    <? /* Трастфакторы партнеров */ ?>
+    <?= $helper->render('product-page/blocks/trustfactors.partner', ['trustfactors' => $trustfactors]) ?>
 
     <div style="height: 50px">
         <!-- навигация по странице -->
