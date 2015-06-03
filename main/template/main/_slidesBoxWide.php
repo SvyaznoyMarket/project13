@@ -3,11 +3,12 @@
         <div class="slidesBox_btn slidesBox_btn-l jsSlidesWideLeft"></div>
 
         <div class="slidesBox_h_c">
-            <div class="slidesBox_t jsSlidesWideName">Новая ювелирная коллекция</div>
+            <? if (false): ?><div class="slidesBox_t jsSlidesWideName">Новая ювелирная коллекция</div><? endif ?>
+            <div class="slidesBox_t jsSlidesWideName">Guess</div>
 
             <ul class="slidesBox_dott">
-                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Новая ювелирная коллекция"></li>
-                <li class="slidesBox_dott_i" data-name="Guess"></li>
+                <? if (false): ?><li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Новая ювелирная коллекция"></li><? endif ?>
+                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Guess"></li>
                 <li class="slidesBox_dott_i" data-name="Magic Moments"></li>
             </ul>
         </div>
@@ -18,7 +19,7 @@
     <div class="slidesBox_inn">
         <ul class="slidesBox_lst clearfix jsSlidesWideHolder">
 
-            <li class="slidesBox_i jsSlidesWideItem">
+            <? if (false): ?><li class="slidesBox_i jsSlidesWideItem">
                 <a href="/catalog/jewel/pandora-1320" class="slidesBox_lk">
                     <img src="styles/mainpage/img/pandora/pan-banner24052015.jpg" alt="" class="slidesBox_img">
                 </a>
@@ -65,7 +66,7 @@
                     </li>
                 </ul>
                 <a href="/catalog/jewel/pandora-1320" class="slidesBox_btnview">Посмотреть<br/>коллекцию</a>
-            </li>
+            </li><? endif ?>
 
             <li class="slidesBox_i jsSlidesWideItem">
                 <a href="/catalog/jewel/guess-5ec8?from=jewel">
