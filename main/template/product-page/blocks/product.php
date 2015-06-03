@@ -8,8 +8,9 @@ $f = function(
     $trustfactors, $videoHtml, $properties3D, $reviewsData, $creditData, $isKit, $buySender, $buySender2, $request
 ){
 
-?>
+$coupon = $product->coupons ? $product->getBestCoupon() : null;
 
+?>
 
 <div class="product-card clearfix">
 
@@ -59,12 +60,14 @@ $f = function(
 
 <!-- купить -->
 <div class="product-card__r">
-    <div class="ep js-pp-ep-fishka">
-       <div class="ep__fishka">%</div>
-       <!--div class="ep__fishka"><span class="rubl">p</span></div-->
-       
-       <div class="ep__desc">Фишка со скидкой 20% на этот товар</div>
-    </div>
+
+    <? if ($coupon) : ?>
+        <div class="ep js-pp-ep-fishka">
+           <div class="ep__fishka">%</div>
+           <div class="ep__desc">Фишка со скидкой <?= sprintf('%u%s', $coupon->getPrice(), $coupon->getIsCurrency() ? '<span class="rubl">p</span>' : '%') ?> на этот товар</div>
+        </div>
+    <? endif; ?>
+
     <? if ($product->getLabel() && $product->getLabel()->expires && !$product->getLabel()->isExpired()) : ?>
         <!-- Шильдик с правой стороны -->
         <div class="product-card-action i-info">
