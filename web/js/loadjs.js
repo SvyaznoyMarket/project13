@@ -533,6 +533,7 @@
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('product.js') )
+                        .script( getWithVersion('enterprize.js') )
 						.wait()
                         .script(yandexMapUrlv2_1)
                         .script( getWithVersion('order-v3-1click.js') )
