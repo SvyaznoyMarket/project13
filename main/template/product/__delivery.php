@@ -18,7 +18,7 @@ return function (
 
             // Если есть самовывоз от Связного, то добавим его в результирующий список
             // Если еще есть и наш самовывоз, то наш потом затрет связновский
-            if ($item['token'] == 'self_partner_svyaznoy') {
+            if (($item['token'] == 'self_partner_svyaznoy') && !isset($delivery['self'])) {
                 $delivery['self'] = $item;
                 $delivery['self']['isOnlyFromPartner'] = true;
             }
