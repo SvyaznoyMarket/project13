@@ -21,13 +21,24 @@
 	&_lk {
 		.inline-block();
 		width: 40px;
+		height: 40px;
 		margin: 0 10px;
+		&:after{
+			content:"";
+			width: 0;
+			height: 100%;
+			.inline-block(middle);
+		}
+		&:hover{
+			text-decoration: none;
+		}
 	}
 
 	&_img {
-		display: block;
+		.inline-block(middle);
+		max-width: 99%;
+		max-height: 99%;
 
-		width: 40px;
 	}
 
 	&_n {
