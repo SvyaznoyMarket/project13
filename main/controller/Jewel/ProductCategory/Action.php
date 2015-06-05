@@ -169,7 +169,7 @@ class Action extends \Controller\ProductCategory\Action {
         $productView = $category->getProductView();
         // листалка
         $limit = \App::config()->product['itemsPerPageJewel'];
-        $repository = \RepositoryManager::product();
+        $repository = \RepositoryManager::product()->useV3();
 
         $productIds = [];
         $productCount = 0;
