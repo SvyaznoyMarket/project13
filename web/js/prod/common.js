@@ -2291,7 +2291,7 @@ $(function() {
             $productInfo = $('#product-info'),
             productUi;
 
-        productUi = $productInfo.length > 0 ? $productInfo.data('ui') : button.data('product-ui');
+        productUi = $productInfo.length > 0 ? $productInfo.data('ui') : $button.data('product-ui');
 
         if (!productUi) throw 'Не обнаружен ui продукта';
 
