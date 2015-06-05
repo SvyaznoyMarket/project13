@@ -2,14 +2,16 @@
 
 namespace Model\Product;
 
-use Model\Media\Source;
-use Model\MediaHostTrait;
 
 class Repository {
-    use MediaHostTrait;
-    
+
+    const URL_V2 = 'product/get';
+    const URL_V3 = 'product/get-v3';
+
     /** @var \Core\ClientInterface */
     private $client;
+    /** @var string URL для product-get */
+    private $productGetUrl = self::URL_V2;
 
     /**
      * @param \Core\ClientInterface $client
@@ -18,14 +20,29 @@ class Repository {
         $this->client = $client;
     }
 
+    /** Использовать product/get V2 (обычный метод)
+     * @return $this
+     */
+    public function useV2() {
+        $this->productGetUrl = self::URL_V2;
+        return $this;
+    }
+
+    /** Использовать product/get V3 (облегченный)
+     * @return $this
+     */
+    public function useV3() {
+        $this->productGetUrl = self::URL_V3;
+        return $this;
+    }
+
     /**
      * @param string $uid
      * @param        $successCallback
      */
     public function prepareEntityByUid($uid, $successCallback) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('product/get', [
+        $this->client->addQuery($this->productGetUrl, [
             'select_type' => 'ui',
             'ui'        => [$uid],
             'geo_id'      => \App::user()->getRegion()->getId(),
@@ -38,9 +55,8 @@ class Repository {
      * @param                      $callback
      */
     public function prepareEntityByToken($token, \Model\Region\Entity $region = null, $callback) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('product/get', [
+        $this->client->addQuery($this->productGetUrl, [
             'select_type' => 'slug',
             'slug'        => $token,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
@@ -53,13 +69,12 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityById($id, \Model\Region\Entity $region = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $medias = [];
 
         /** @var Entity $entity */
         $entity = null;
-        $this->client->addQuery('product/get',
+        $this->client->addQuery($this->productGetUrl,
             [
                 'select_type' => 'id',
                 'id'          => $id,
@@ -106,9 +121,8 @@ class Repository {
      * @param                      $fail
      */
     public function prepareCollectionByBarcode(array $barcodes, \Model\Region\Entity $region = null, $done, $fail = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('product/get', [
+        $this->client->addQuery($this->productGetUrl, [
             'select_type' => 'bar_code',
             'bar_code'    => $barcodes,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
@@ -122,7 +136,6 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionById(array $ids, \Model\Region\Entity $region = null, $addScores = true) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$ids) return [];
 
@@ -130,7 +143,7 @@ class Repository {
         $collection = [];
         $medias = [];
         foreach (array_chunk($ids, \App::config()->coreV2['chunk_size']) as $chunk) {
-            $this->client->addQuery('product/get',
+            $this->client->addQuery($this->productGetUrl,
                 [
                     'select_type' => 'id',
                     'id'          => $chunk,
@@ -171,11 +184,10 @@ class Repository {
      * @param null $fail
      */
     public function prepareCollectionById(array $ids, \Model\Region\Entity $region = null, $done, $fail = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$ids || !is_array($ids)) return;
 
-        $this->client->addQuery('product/get', [
+        $this->client->addQuery($this->productGetUrl, [
             'select_type' => 'id',
             'id'          => $ids,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
@@ -189,11 +201,10 @@ class Repository {
      * @param null $fail
      */
     public function prepareCollectionByUi(array $uis, \Model\Region\Entity $region = null, $done, $fail = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$uis) return;
 
-        $this->client->addQuery('product/get', [
+        $this->client->addQuery($this->productGetUrl, [
             'select_type' => 'ui',
             'ui'          => $uis,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
@@ -201,7 +212,6 @@ class Repository {
     }
 
     public function prepareIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null, $done, $fail = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('listing/list',
             [
@@ -228,7 +238,6 @@ class Repository {
      * @return array
      */
     public function getIdsByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -348,7 +357,7 @@ class Repository {
      *
      * TODO: отрефакторить этот г*код
      *
-     * @param $product
+     * @param \Model\Product\Entity $product
      * @param $accessoryItems
      * @param int|null $category
      * @param int|null $limit
@@ -444,7 +453,7 @@ class Repository {
      * Получает текущие аксессуары продукта
      * Возвращает массив с продуктами-аксессуарами
      *
-     * @param $product
+     * @param \Model\Product\Entity $product
      * @return array
      */
     public static function getAccessories($product) {
