@@ -176,20 +176,26 @@
                 "url": '/order/log'
             })
         },
-        showMap = function(elem) {
-            var $currentMap = elem.find('.js-order-map').first(),
+        /**
+         * Функция отображения карты
+         * @param $elem - попап
+         */
+        showMap = function($elem) {
+            var $currentMap = $elem.find('.js-order-map').first(),
+                $parent = $elem.parent(),
                 mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
                 mapOptions = ENTER.OrderV3.mapOptions,
                 map = ENTER.OrderV3.map;
 
             if (mapData && typeof map.getType == 'function') {
 
-                elem.lightbox_me({
+                $elem.lightbox_me({
                     centered: true,
-                    closeSelector: '.jsCloseFl'
+                    closeSelector: '.jsCloseFl',
+                    onClose: function(){ $parent.append($elem) } // возвращаем элемент на место
                 });
 
-                if (!elem.is(':visible')) elem.show();
+                if (!$elem.is(':visible')) $elem.show();
 
                 map.geoObjects.removeAll();
                 map.setCenter([mapOptions.latitude, mapOptions.longitude], mapOptions.zoom);
@@ -262,7 +268,7 @@
         $('.popupFl').hide();
 
         if ($(this).hasClass('js-order-changePlace-link')) {
-            showMap($(this).parent().next());
+            showMap($(this).closest('.jsOrderRow').find('.jsNewPoints'));
             $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
         } else {
             $(elemId).show();
