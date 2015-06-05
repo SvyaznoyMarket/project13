@@ -54,7 +54,7 @@ class RecommendedAction {
         $products = [];
         $medias = [];
         foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-            \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$products) {
+            \RepositoryManager::product()->useV3()->prepareCollectionById($productsInChunk, $region, function($data) use (&$products) {
                 foreach ((array)$data as $item) {
                     if (empty($item['id'])) continue;
 
