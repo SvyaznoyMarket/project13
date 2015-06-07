@@ -183,8 +183,8 @@ return function(
             <!-- способ доставки -->
             <? if (!$order->delivery->use_user_address): ?>
                 <? $point = $order->delivery->point ? $orderDelivery->points[$order->delivery->point->token]->list[$order->delivery->point->id] : null ?>
-
-                <div class="orderCol_delivrIn <?= $order->delivery->point ? 'orderCol_delivrIn-pl' : 'orderCol_delivrIn-empty' ?>">
+                <!--Добавляем класс orderCol_delivrIn-warn если у нас будет текст-предупреждение: -->
+                <div class="orderCol_delivrIn orderCol_delivrIn-warn <?= $order->delivery->point ? 'orderCol_delivrIn-pl' : 'orderCol_delivrIn-empty' ?>">
 
                     <? if (!$order->delivery->point) : ?>
                         <span class="js-order-changePlace-link brb-dt" style="cursor: pointer;" data-content="#id-order-changePlace-content-<?= $order->id ?>">Указать место самовывоза</span>
@@ -210,7 +210,7 @@ return function(
                                 <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные<? endif; ?><? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта<? endif; ?>
                             <? endif; ?>
                         </div>
-
+                    <span class="order-warning">Оплатить покупку в магазине «Связной» можно только наличными. Если вы хотите расплатиться банковской картой или бонусами «Спасибо» от Сбербанка, вам подойдут другие варианты получения заказа.</span>
                 </div>
 
                 <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order-v3-new/__payment-methods', ['order' => $order]) : '' ?>
