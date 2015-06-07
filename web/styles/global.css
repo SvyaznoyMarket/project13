@@ -10406,29 +10406,29 @@ img[height='0'] {
   .deliv-info-more-link:hover {
     text-decoration: none;
   }
-  .ymaps-2-1-23-balloon__content {
+  .ymaps-2-1-26-balloon__content {
     width: 388px;
     padding: 10px;
     margin: 0px;
     text-align: center;
   }
-  .ymaps-2-1-23-balloon__content .btn-type {
+  .ymaps-2-1-26-balloon__content .btn-type {
     display: inline-block !important;
   }
-  .ymaps-2-1-23-balloon__content ymaps {
+  .ymaps-2-1-26-balloon__content ymaps {
     height: auto!important;
     width: 100%!important;
   }
-  .ymaps-2-1-23-balloon__content ymaps .pick-point-list {
+  .ymaps-2-1-26-balloon__content ymaps .pick-point-list {
     padding-top: 0px;
   }
-  .ymaps-2-1-23-balloon__content ymaps .pick-point-item {
+  .ymaps-2-1-26-balloon__content ymaps .pick-point-item {
     border: none;
   }
-  .ymaps-2-1-23-balloon__content ymaps .pick-point-item td {
+  .ymaps-2-1-26-balloon__content ymaps .pick-point-item td {
     padding-bottom: 5px;
   }
-  .ymaps-2-1-23-balloon__close-button {
+  .ymaps-2-1-26-balloon__close-button {
     display: none;
   }
 }

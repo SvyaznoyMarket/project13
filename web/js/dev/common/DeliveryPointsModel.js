@@ -5,19 +5,19 @@
 ;(function($, ko){
 
     var balloonTemplate =
-        '<table class="pickup-list"><tbody><tr class="pickup-item clearfix" ><td class="pickup-item__logo">'+
-        '<img src="{{ icon }}" class="pickup-item__img" >'+
-        '<span class="pickup-item__name">{{ listName }}</span>'+
-        '</td><td class="pickup-item__addr">'+
+        '<table class="pick-point-list"><tbody><tr class="pick-point-item clearfix" ><td class="pick-point-item__logo">'+
+        '<img src="{{ icon }}" class="pick-point-item__img" >'+
+        '<span class="pick-point-item__name">{{ listName }}</span>'+
+        '</td><td class="pick-point-item__addr">'+
         '{{# subway }}' +
-        '<div class="pickup-item__metro" style="background: {{ subway.line.color }};">'+
-        '<div class="pickup-item__metro-inn">{{ subway.name }}</div></div>'+
+        '<div class="pick-point-item__metro" style="background: {{ subway.line.color }};">'+
+        '<div class="pick-point-item__metro-inn">{{ subway.name }}</div></div>'+
         '{{/ subway }}'+
-        '<div class="pickup-item__addr-name">{{ address }}</div>'+
-        '<div class="pickup-item__time">{{ regtime }}</div></td>'+
-        '<td class="pickup-item__info pickup-item__info--nobtn">'+
-        '<div class="pickup-item__date" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
-        '<div class="pickup-item__price"><span >{{ humanCost }}</span> {{# showRubles }}<span class="rubl">p</span></div>{{/ showRubles }}'+
+        '<div class="pick-point-item__addr-name">{{ address }}</div>'+
+        '<div class="pick-point-item__time">{{ regtime }}</div></td>'+
+        '<td class="pick-point-item__info pick-point-item__info--nobtn">'+
+        '<div class="pick-point-item__date" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
+        '<div class="pick-point-item__price"><span >{{ humanCost }}</span> {{# showRubles }}<span class="rubl">p</span></div>{{/ showRubles }}'+
         '</td></tr></tbody></table>';
 
     ENTER.DeliveryPoints = function DeliveryPointsF (points, mapParam) {
@@ -270,7 +270,7 @@
             hintContent: point.name,
             enterToken: point.token // Дополняем собственными свойствами
         }, {
-            balloonMaxWidth: 428,
+            balloonMaxWidth: 388,
             iconLayout: 'default#image',
             iconImageHref: point.marker.iconImageHref,
             iconImageSize: point.marker.iconImageSize,
