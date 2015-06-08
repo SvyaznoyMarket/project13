@@ -46,6 +46,15 @@ class Repository {
         return $this;
     }
 
+    /** Не проверять доступность у нас на складах
+     *  О подробностях действия флага спрашивать ядерщиков
+     * @return $this
+     */
+    public function withoutPartnerStock() {
+        $this->options['isCoreAvailable'] = 0;
+        return $this;
+    }
+
     /**
      * @param string $uid
      * @param        $successCallback
