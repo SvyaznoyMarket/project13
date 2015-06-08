@@ -13,6 +13,8 @@ class Repository {
     /** @var string URL для product-get */
     private $productGetUrl = self::URL_V2;
 
+    private $options = [];
+
     /**
      * @param \Core\ClientInterface $client
      */
@@ -33,6 +35,23 @@ class Repository {
      */
     public function useV3() {
         $this->productGetUrl = self::URL_V3;
+        return $this;
+    }
+
+    /** Не запрашивать модели внутри товара
+     * @return $this
+     */
+    public function withoutModels() {
+        $this->options['withModels'] = 0;
+        return $this;
+    }
+
+    /** Не проверять доступность у нас на складах
+     *  О подробностях действия флага спрашивать ядерщиков
+     * @return $this
+     */
+    public function withoutPartnerStock() {
+        $this->options['getCoreAvailability'] = 0;
         return $this;
     }
 
@@ -148,7 +167,7 @@ class Repository {
                     'select_type' => 'id',
                     'id'          => $chunk,
                     'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-                ],
+                ] + $this->options,
                 [],
                 function($data) use(&$collection) {
                     if (is_array($data)) {
@@ -191,7 +210,7 @@ class Repository {
             'select_type' => 'id',
             'id'          => $ids,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ], [], $done, $fail);
+        ] + $this->options, [], $done, $fail);
     }
 
     /**
@@ -208,7 +227,7 @@ class Repository {
             'select_type' => 'ui',
             'ui'          => $uis,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ], [], $done, $fail);
+        ] + $this->options, [], $done, $fail);
     }
 
     public function prepareIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null, $done, $fail = null) {
@@ -345,7 +364,7 @@ class Repository {
      */
     public function setMediasForProducts($products, $medias) {
         foreach ($products as $product) {
-            if (isset($medias[$product->getId()])) {
+            if ($product && isset($medias[$product->getId()])) {
                 $product->medias = $medias[$product->getId()];
             }
         }

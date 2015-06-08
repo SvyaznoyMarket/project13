@@ -8,6 +8,7 @@ class Action {
      * @param \Http\Request $request
      * @return \Http\Response
      * @throws \Exception\NotFoundException
+     * @deprecated
      */
     public function execute($qrcode, \Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
