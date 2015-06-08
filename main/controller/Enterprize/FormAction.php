@@ -474,7 +474,7 @@ class FormAction {
 
         $productCategoryRepository = \RepositoryManager::productCategory();
 
-        $productRepository = \RepositoryManager::product();
+        $productRepository = \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock();
 
         $limit = null;
         if (!empty(\App::config()->enterprize['itemsInSlider'])) {

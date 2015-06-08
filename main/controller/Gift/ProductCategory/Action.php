@@ -494,7 +494,7 @@ class Action {
 
         $region = \App::user()->getRegion();
 
-        $repository = \RepositoryManager::product();
+        $repository = \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock();
 
         $productIds = [];
         $productCount = 0;

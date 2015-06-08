@@ -51,7 +51,7 @@ class Repository {
      * @return $this
      */
     public function withoutPartnerStock() {
-        $this->options['isCoreAvailable'] = 0;
+        $this->options['getCoreAvailability'] = 0;
         return $this;
     }
 

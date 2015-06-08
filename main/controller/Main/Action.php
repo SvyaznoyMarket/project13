@@ -92,7 +92,7 @@ class Action {
         // подготовка 2-го пакета запросов
         // запрашиваем товары
         if ((bool)$productsById) {
-            \RepositoryManager::product()->useV3()->prepareCollectionById(array_keys($productsById), $region, function($data) use (&$productsById) {
+            \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->prepareCollectionById(array_keys($productsById), $region, function($data) use (&$productsById) {
                 if (!is_array($data)) return;
 
                 foreach ($data as $item) {
@@ -202,7 +202,7 @@ class Action {
 
 
         // получаем продукты из ядра
-        $products = \RepositoryManager::product()->useV3()->getCollectionById(array_unique($rrProductsById), null, false);
+        $products = \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->getCollectionById(array_unique($rrProductsById), null, false);
         foreach ($products as $product) {
             $productsById[$product->getId()] = $product;
         }
