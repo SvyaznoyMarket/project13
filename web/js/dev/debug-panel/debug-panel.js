@@ -219,7 +219,7 @@
 		/**
 		 * Инициализация панели отладки
 		 */
-		initPanel = function( node, data ) {
+		initPanel = function( node, data, doesNotHighlightGeneralTabOnError ) {
 			var
 				html,
 				key;
@@ -238,6 +238,18 @@
 				}
 
 				node.append(html);
+			}
+
+			// Подсвечиваем заголовок вкладки красным цветом, если в запросах к ядру есть ошибки
+			if (data.query && data.query.value) {
+				for (key in data.query.value) {
+					if (data.query.value.hasOwnProperty(key) && data.query.value[key].error) {
+						node.closest('.jsDebugPanelItem').find('.jsOpenDebugPanelItem').addClass('debug-panel-open-error');
+						if (!doesNotHighlightGeneralTabOnError) {
+							debugPanel.find('.jsOpenDebugPanelContent').addClass('debug-panel-open-error');
+						}
+					}
+				}
 			}
 		},
 
@@ -345,7 +357,7 @@
 
 
 	initPanel( currentDebugPanelItemContent, currentDebugPanelItemConfig );
-	initPanel( prevDebugPanelItemContent, prevDebugPanelItemConfig );
+	initPanel( prevDebugPanelItemContent, prevDebugPanelItemConfig, true );
 
 	debugPanel.on('click', '.jsExpandValue', expandValue);
 	debugPanel.on('click', '.jsOpenDebugPanelItem', openDebugPanel);
