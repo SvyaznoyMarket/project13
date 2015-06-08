@@ -210,7 +210,9 @@ return function(
                                 <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные<? endif; ?><? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта<? endif; ?>
                             <? endif; ?>
                         </div>
-                    <span class="order-warning">Оплатить покупку в магазине «Связной» можно только наличными. Если вы хотите расплатиться банковской картой или бонусами «Спасибо» от Сбербанка, вам подойдут другие варианты получения заказа.</span>
+                    <? if ($order->delivery->point && $order->delivery->point->isSvyaznoy()) : ?>
+                        <span class="order-warning">Оплатить покупку в магазине «Связной» можно только наличными. Если вы хотите расплатиться банковской картой или бонусами «Спасибо» от Сбербанка, вам подойдут другие варианты получения заказа.</span>
+                    <? endif ?>
                 </div>
 
                 <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order-v3-new/__payment-methods', ['order' => $order]) : '' ?>
