@@ -839,6 +839,8 @@ ANALYTICS.MyThingsJS = function() {
     var token = window.mtAdvertiserToken = '1989-100-ru',
         data = $('#MyThingsJS').data('value');
 
+    window.mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com";
+
     window._mt_ready = function() {
         var obj = $.extend({}, data, {
             EventType: MyThings.Event[data.EventType]
