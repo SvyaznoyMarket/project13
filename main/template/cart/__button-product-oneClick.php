@@ -59,7 +59,6 @@ return function (
         $data['text'] = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет в наличии';
     } else if (!isset($url)) {
         $urlParams['productId'] = $product->getId();
-        if ($helper->hasParam('sender'))  $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
         $data['url'] = $helper->url('cart.oneClick.product.set', $urlParams);
     }
 
