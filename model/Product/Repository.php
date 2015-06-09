@@ -287,7 +287,10 @@ class Repository {
         if ($products) {
             \App::scmsClient()->addQuery(
                 'product/get-description/v1',
-                ['uids' => array_map(function(\Model\Product\Entity $product) { return $product->getUi(); }, $products), 'media' => 1],
+                ['uids' => array_map(function(\Model\Product\Entity $product) { return $product->getUi(); }, $products),
+                    'media' => 1,
+                    'label' => 1
+                ],
                 [],
                 function($data) use($products) {
                     foreach ($products as $product) {
@@ -300,6 +303,15 @@ class Repository {
                                         $product->medias[] = new \Model\Media($media);
                                     }
                                 }
+                            }
+
+                            // пока так, рефакторинг скоро будет
+                            if (isset($productData['label']['uid'])) {
+                                $product->setLabel(new Label\Entity([
+                                    'id'        => @$productData['label']['core_id'],
+                                    'name'      => @$productData['label']['name'],
+                                    'medias'    => @$productData['label']['medias'],
+                                ]));
                             }
 
                             if (isset($productData['json3d']) && is_array($productData['json3d'])) {
