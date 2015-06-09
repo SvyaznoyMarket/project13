@@ -351,7 +351,7 @@ class Action {
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
         if ($productsIds) {
-            $products = \RepositoryManager::product()->getCollectionById($productsIds, null, false);
+            $products = \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->getCollectionById($productsIds, null, false);
         }
 
         foreach ($products as $product) {
