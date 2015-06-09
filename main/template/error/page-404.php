@@ -21,6 +21,7 @@ $helper = new \Helper\TemplateHelper();
     <script src="/js/prod/html5.min.js" type="text/javascript"></script>
     <?= $page->slotHeadJavascript() ?>
     <?= $page->slotGoogleAnalytics() ?>
+    <?= $page->slotUserConfig() ?>
 </head>
 <body class='b404' data-template="page404" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
 <?= $page->slotConfig() ?>
