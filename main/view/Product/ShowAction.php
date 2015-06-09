@@ -100,7 +100,7 @@ class ShowAction {
         if ($buyMethod && in_array(strtolower($buyMethod), ['none', 'false'])) {
             $productItem['cartButton'] = null;
         } else {
-            $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product, null, false, $cartButtonSender, false) : null;
+            $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product, null, $cartButtonSender, false) : null;
         }
 
         if ($product->isGifteryCertificate()) $productItem['price'] = 'от ' . \App::config()->partners['Giftery']['lowestPrice'];

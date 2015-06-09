@@ -81,7 +81,6 @@ class SliderAction {
                                 new \Helper\TemplateHelper(),
                                 $product,
                                 null,
-                                false,
                                 [],
                                 false,
                                 'slider'
