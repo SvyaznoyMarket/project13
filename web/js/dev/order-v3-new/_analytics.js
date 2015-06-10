@@ -27,9 +27,4 @@
     // common listener for triggering from another files or functions
     body.on('trackUserAction.orderV3Tracking', sendAnalytic);
 
-    // TODO вынести инициализацию трекера из ports.js
-    if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length == 0) {
-        ga( 'create', 'UA-25485956-5', 'enter.ru' );
-    }
-
 })(jQuery);

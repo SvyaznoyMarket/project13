@@ -305,8 +305,6 @@ ANALYTICS.gaJS = function(data) {
             console.groupEnd();
             return false; // метод ga не определён, ошибка, нечего анализировать, выходим
         }
-        ga('create', 'UA-25485956-5', 'enter.ru');
-        ga('require', 'displayfeatures');
 
         if ( true === useTchiboAnalytics ) {
             ga('create', 'UA-12345-6', 'auto', {'name': 'tchiboTracker'});

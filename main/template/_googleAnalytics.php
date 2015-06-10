@@ -1,4 +1,5 @@
 <? if (\App::config()->googleAnalytics['enabled']): ?>
+
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-25485956-1']);
@@ -84,42 +85,54 @@
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
 
-        /* Universal Google Analytics */
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    </script>
 
-            <? if (\App::config()->debug): ?>
-                a.onload = function() {
-                    var originalFunction = ga;
-                    ga = function() {
-                        var event = null;
-                        if (arguments[0] == 'send') {
-                            if (typeof arguments[1] == 'object' && arguments[1] && arguments[1].hitType == 'event') {
-                                event = {category: arguments[1].eventCategory, action: arguments[1].eventAction, label: arguments[1].eventLabel, value: arguments[1].eventValue};
-                            } else if (arguments[1] == 'event') {
-                                event = {category: arguments[2], action: arguments[3], label: arguments[4], value: arguments[5]};
-                            }
-                        }
+        <!-- Universal Google Analytics (async method) -->
+    <script async src='//www.google-analytics.com/analytics.js'></script>
 
-                        $(document).trigger('googleAnalyticsCall', [{
-                            functionName: 'ga',
-                            functionArguments: JSON.stringify(arguments),
-                            event: event
-                        }]);
+    <script>
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 
-                        originalFunction.apply(this, arguments);
-                    };
-
-                    for (var key in originalFunction) {
-                        if (originalFunction.hasOwnProperty(key)) {
-                            ga[key] = originalFunction[key];
+        <? if (\App::config()->debug): ?>
+            /* В debug-режиме добавляем логирование вызовов в панель */
+            ga(function() {
+                var originalFunction = ga;
+                ga = function() {
+                    var event = null;
+                    if (arguments[0] == 'send') {
+                        if (typeof arguments[1] == 'object' && arguments[1] && arguments[1].hitType == 'event') {
+                            event = {category: arguments[1].eventCategory, action: arguments[1].eventAction, label: arguments[1].eventLabel, value: arguments[1].eventValue};
+                        } else if (arguments[1] == 'event') {
+                            event = {category: arguments[2], action: arguments[3], label: arguments[4], value: arguments[5]};
                         }
                     }
-                };
-            <? endif ?>
 
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+                    $(document).trigger('googleAnalyticsCall', [{
+                        functionName: 'ga',
+                        functionArguments: JSON.stringify(arguments),
+                        event: event
+                    }]);
+
+                    originalFunction.apply(this, arguments);
+                };
+
+                for (var key in originalFunction) {
+                    if (originalFunction.hasOwnProperty(key)) {
+                        ga[key] = originalFunction[key];
+                    }
+                }
+            });
+        <? endif ?>
+
+        /* Создаем два Universal-трекера */
+        ga( 'create', 'UA-25485956-1', 'enter.ru' ); // основной (premium-аккаунт)
+        ga( 'create', 'UA-25485956-5', 'enter.ru', { 'name': 'secondary'} ); // дополнительный
+
+        /* The display features plugin for analytics.js can be used to enable Advertising Features in Google Analytics,
+        such as Remarketing, Demographics and Interest Reporting, and more */
+        ga( 'require', 'displayfeatures' );
+        ga( 'secondary.require', 'displayfeatures' );
 
     </script>
+
 <? endif ?>

@@ -232,14 +232,4 @@
     body.on('trackGoogleEvent', trackGoogleEvent);
     body.on('trackGoogleTransaction', trackGoogleTransaction);
 
-    // TODO вынести инициализацию трекера из ports.js
-    try {
-        if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length == 0) {
-			console.warn('Creating ga tracker');
-            ga( 'create', 'UA-25485956-5', 'enter.ru' );
-        }
-    } catch (e) {
-        console.error(e);
-    }
-
 })(jQuery);
