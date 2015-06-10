@@ -3,7 +3,6 @@
         $body = $(body),
         $orderContent = $('.orderCnt'),
         $jsOrder = $('#jsOrder'),
-        region = $('.jsRegion').data('value'),
         isOnlineMotivPage = $('.jsNewOnlineCompletePage').length > 0,
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
@@ -69,9 +68,9 @@
             });
 
             /* При выборе варианта заявки на кредит */
-            if (bank_id == 1) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '19_1 Заявка_кредит_Оплата', 'Тинькофф']);
-            if (bank_id == 2) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '19_1 Заявка_кредит_Оплата', 'Ренесанс']);
-            if (bank_id == 3) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '19_1 Заявка_кредит_Оплата', 'ОТП-Банк']);
+            if (bank_id == 1) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '19_1 Заявка_кредит_Оплата', 'Тинькофф']);
+            if (bank_id == 2) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '19_1 Заявка_кредит_Оплата', 'Ренесанс']);
+            if (bank_id == 3) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '19_1 Заявка_кредит_Оплата', 'ОТП-Банк']);
 
         },
 
@@ -133,15 +132,15 @@
         switch (id) {
             case 5:
                 getForm(5, orderId, orderNumber, action);
-                $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17_1 Оплатить_онлайн_Оплата', 'Онлайн-оплата']);
+                $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '17_1 Оплатить_онлайн_Оплата', 'Онлайн-оплата']);
                 break;
             case 8:
                 getForm(8, orderId, orderNumber, action);
-                $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17_1 Оплатить_онлайн_Оплата', 'Psb']);
+                $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '17_1 Оплатить_онлайн_Оплата', 'Psb']);
                 break;
             case 13:
                 getForm(13, orderId, orderNumber, action);
-                $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17_1 Оплатить_онлайн_Оплата', 'PayPal']);
+                $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '17_1 Оплатить_онлайн_Оплата', 'PayPal']);
                 break;
 			case 14:
 				getForm(14, orderId, orderNumber, action);
@@ -154,7 +153,7 @@
 	$orderContent.on('click', '.jsOnlinePaymentPossible', function(){
 		$(this).find('.jsOnlinePaymentDiscount').hide();
         $orderContent.find('.jsOnlinePaymentDiscountPayNow').show();
-        $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17 Оплатить_онлайн_вход_Оплата']);
+        $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '17 Оплатить_онлайн_вход_Оплата']);
 	});
 
     $orderContent.on('click', '.jsOnlinePaymentPossibleNoMotiv', function(){
@@ -192,7 +191,7 @@
         $(this).siblings('.jsCreditList').show();
         e.preventDefault();
         e.stopPropagation();
-        $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '19 Заявка_кредит_Оплата']);
+        $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '19 Заявка_кредит_Оплата']);
     });
 
     // клик по кредитному банку
@@ -206,7 +205,7 @@
 
         /* При клике условия кредитования */
         if ( $(e.target).hasClass('jsCreditListOnlineMotivRules') ) {
-            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '19_2 Условия_кредит_Оплата']);
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '19_2 Условия_кредит_Оплата']);
             return true;
         }
 
@@ -227,21 +226,21 @@
         /* АНАЛИТИКА МОТИВАЦИИ ОНЛАЙН-ОПЛАТЫ */
         if (isOnlineMotivPage) {
             // если невозможна онлайн-оплата
-            if ($('.jsGAOnlinePaymentNotPossible').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '16 Вход_Оплата_ОБЯЗАТЕЛЬНО', 'нет онлайн оплаты']);
+            if ($('.jsGAOnlinePaymentNotPossible').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '16 Вход_Оплата_ОБЯЗАТЕЛЬНО', 'нет онлайн оплаты']);
             // Без мотиватора
-            if ($('.jsOnlinePaymentPossibleNoMotiv').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '16 Вход_Оплата_ОБЯЗАТЕЛЬНО', 'нет мотиватора']);
+            if ($('.jsOnlinePaymentPossibleNoMotiv').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '16 Вход_Оплата_ОБЯЗАТЕЛЬНО', 'нет мотиватора']);
             // При попадании пользователя на экран “Варианты оплаты онлайн”
-            if ($('.jsOnlinePaymentBlockVisible').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17 Оплатить_онлайн_вход_Оплата']);
+            if ($('.jsOnlinePaymentBlockVisible').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '17 Оплатить_онлайн_вход_Оплата']);
             // При попадании на экран с вариантами заявок на кредит */
-            if ($('.jsCreditBlock').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '19 Заявка_кредит_Оплата']);
+            if ($('.jsCreditBlock').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '19 Заявка_кредит_Оплата']);
             // При клике на ссылку “как добраться”
-            $body.on('click', '.jsCompleteOrderShowShop', function(){ $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '16_1 Как_добраться']); })
+            $body.on('click', '.jsCompleteOrderShowShop', function(){ $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '16_1 Как_добраться']); })
         } else {
             $body.trigger('trackUserAction', ['16 Вход_Оплата_ОБЯЗАТЕЛЬНО']);
         }
 
         // При успешной онлайн-оплате
-        if ($('.jsOrderPaid').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '18 Успешная_Оплата']);
+        if ($('.jsOrderPaid').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '18 Успешная_Оплата']);
 
         // Сбрасываем куку mnogo.ru и PandaPay
         if (docCookies.hasItem('enter_mnogo_ru')) docCookies.setItem('enter_mnogo_ru', '', 1, '/');

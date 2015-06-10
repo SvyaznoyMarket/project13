@@ -1,9 +1,6 @@
 ;$(function(){
 	var $body = $(document.body),
-		region = ENTER.config.pageConfig.user.region.name,
-		userInfoURL = ENTER.config.pageConfig.userUrl.addParameterToUrl('ts', new Date().getTime() + Math.floor(Math.random() * 1000)),
-		authorized_cookie = '_authorized',
-		startTime, endTime, spendTime;
+		authorized_cookie = '_authorized';
 
 	/* Модель продукта в корзине */
 	function createCartModel(cart) {
@@ -111,11 +108,6 @@
 	*/
 	(function(){
 		ENTER.UserModel.update(ENTER.config.userInfo);
-		if (typeof ga == 'function') {
-			ga('send', 'timing', 'userInfo', 'Load User Info', spendTime);
-			console.log('[Google Analytics] Send user/info timing: %s ms', spendTime)
-		}
-
 		if (!docCookies.hasItem(authorized_cookie)) {
 			if (ENTER.config.userInfo && ENTER.config.userInfo.user && typeof ENTER.config.userInfo.user.id != 'undefined') {
 				docCookies.setItem(authorized_cookie, 1, 60*60, '/'); // on
@@ -156,8 +148,8 @@
 	$body.on('mouseover', '.btnBuy-inf', function(){
 		if (!docCookies.hasItem('enter_ab_self_delivery_view_info')) {
 			docCookies.setItem('enter_ab_self_delivery_view_info', true);
-			if (ENTER.UserModel.cartSum() < ENTER.config.pageConfig.selfDeliveryLimit) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'увидел всплывашку платный самовывоз', 'всплывающая корзина']);
-			if (ENTER.UserModel.cartSum() >= ENTER.config.pageConfig.selfDeliveryLimit) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'самовывоз бесплатно', 'всплывающая корзина']);
+			if (ENTER.UserModel.cartSum() < ENTER.config.pageConfig.selfDeliveryLimit) $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'увидел всплывашку платный самовывоз', 'всплывающая корзина']);
+			if (ENTER.UserModel.cartSum() >= ENTER.config.pageConfig.selfDeliveryLimit) $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'самовывоз бесплатно', 'всплывающая корзина']);
 		}
 		ENTER.UserModel.infoIconVisible(false);
 	});
@@ -165,8 +157,8 @@
 	$body.on('showUserCart', function(e){
 		var $target = $(e.target);
 
-		if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.UserModel.infoIconVisible()) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'увидел подсказку', 'всплывающая корзина']);
-		else if (ENTER.config.pageConfig.selfDeliveryTest && !ENTER.UserModel.infoIconVisible()) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'не увидел подсказку', 'всплывающая корзина']);
+		if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.UserModel.infoIconVisible()) $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'увидел подсказку', 'всплывающая корзина']);
+		else if (ENTER.config.pageConfig.selfDeliveryTest && !ENTER.UserModel.infoIconVisible()) $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'не увидел подсказку', 'всплывающая корзина']);
 
 		/* Если человек еще не наводил на иконку в всплывающей корзине */
 		if (ENTER.config.pageConfig.selfDeliveryTest) {
@@ -176,7 +168,7 @@
 		}
 
 		if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.UserModel.infoBlock_2Visible() && !ENTER.UserModel.infoIconVisible()) {
-			$body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'самовывоз бесплатно', 'всплывающая корзина']);
+			$body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'самовывоз бесплатно', 'всплывающая корзина']);
 		}
 	});
 
@@ -201,7 +193,7 @@
 		if (href) {
 			e.preventDefault();
 			$body.trigger('trackGoogleEvent',
-				{	category: 'Платный_самовывоз_' + region,
+				{	category: 'Платный_самовывоз',
 					action:'добрать товар',
 					label:'всплывающая корзина',
 					hitCallback: function(){

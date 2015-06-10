@@ -96,11 +96,6 @@
 		ko.applyBindings(new SearchModel(), this);
 	});
 
-	// Аналитика на фокусе строки поиска
-	$body.on('focus', '.jsSearchInput', function(){
-		$body.trigger('trackGoogleEvent',['search_string', 'string'])
-	});
-
 	// Клик по категории в подсказке
 	$body.on('click', '.jsSearchSuggestCategory', function(e){
 		e.preventDefault();

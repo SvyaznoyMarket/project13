@@ -51,13 +51,13 @@
 			var rrEventLabel = '';
 			if (ENTER.config.pageConfig.product) {
 				if (ENTER.config.pageConfig.product.isSlot) {
-					rrEventLabel = '_marketplace-slot';
+					rrEventLabel = '(marketplace-slot)';
 				} else if (ENTER.config.pageConfig.product.isOnlyFromPartner) {
-					rrEventLabel = '_marketplace';
+					rrEventLabel = '(marketplace)';
 				}
 			}
 
-            $body.trigger('trackGoogleEvent',['RR_Взаимодействие' + rrEventLabel, 'Пролистывание', sender.position]);
+            $body.trigger('trackGoogleEvent',['RR_взаимодействие ' + rrEventLabel, 'Пролистывание', sender.position]);
         } catch (e) { console.error(e); }
     });
 
