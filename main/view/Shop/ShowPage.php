@@ -20,8 +20,9 @@ class ShowPage extends \View\DefaultLayout {
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = [];
+            $shopRegionNameInPrepositionalCase = $this->getParam('shopRegionNameInPrepositionalCase');
             $breadcrumbs[] = array(
-                'name' => 'Магазины Enter в  ' . $region->getInflectedName(5),
+                'name' => 'Магазины Enter в ' . ($shopRegionNameInPrepositionalCase ? $shopRegionNameInPrepositionalCase : 'городе ' . $region->getName()),
                 'url'  => \App::router()->generate('shop.region', array('regionId' => $region->getId())),
             );
             $breadcrumbs[] = array(
