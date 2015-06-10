@@ -611,6 +611,11 @@ namespace Model\OrderDelivery\Entity\Point {
             if (isset($data['regtime'])) $this->regtime = (string)$data['regtime'];
             if (isset($data['latitude'])) $this->latitude = (float)$data['latitude'];
             if (isset($data['longitude'])) $this->longitude = (float)$data['longitude'];
+            if (isset($data['subway']) && is_array($data['subway'])) {
+                foreach ($data['subway'] as $item) {
+                    $this->subway[] = new \Model\OrderDelivery\Entity\Subway($item);
+                }
+            }
         }
     }
 
@@ -618,11 +623,6 @@ namespace Model\OrderDelivery\Entity\Point {
 
         public function __construct(array $data = []) {
             parent::__construct($data);
-            if (isset($data['subway']) && is_array($data['subway'])) {
-                foreach ($data['subway'] as $item) {
-                    $this->subway[] = new \Model\OrderDelivery\Entity\Subway($item);
-                }
-            }
             $this->listName = 'Магазин Enter';
         }
     }
