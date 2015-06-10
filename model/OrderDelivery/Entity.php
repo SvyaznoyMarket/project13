@@ -235,6 +235,16 @@ namespace Model\OrderDelivery\Entity {
                         case self::TOKEN_SVYAZNOY_3:
                             $this->list[(string)$item['id']] = new Point\Svyaznoy($item);
                             break;
+                        case 'self_partner_euroset_pred_supplier':
+                        case 'self_partner_euroset':
+                            $this->list[(string)$item['id']] = new Point\Shop($item);
+                            $this->list[(string)$item['id']]->listName = 'Евросеть';
+                            break;
+                        case 'self_partner_hermes_pred_supplier':
+                        case 'self_partner_hermes':
+                            $this->list[(string)$item['id']] = new Point\Shop($item);
+                            $this->list[(string)$item['id']]->listName = 'HermesDPD';
+                            break;
                         default:
                             $this->list[(string)$item['id']] = new Point\Shop($item);
                     }
@@ -254,6 +264,18 @@ namespace Model\OrderDelivery\Entity {
                         $this->marker['iconImageHref'] = '/images/deliv-icon/svyaznoy.png';
                         $this->icon = '/images/deliv-logo/svyaznoy.png';
                         $this->dropdown_name = 'Магазины Связной';
+                        break;
+                    case 'self_partner_euroset_pred_supplier':
+                    case 'self_partner_euroset':
+                        $this->marker['iconImageHref'] = '/images/deliv-icon/euroset.png';
+                        $this->icon = '/images/deliv-logo/euroset.png';
+                        $this->dropdown_name = 'Магазины Евросеть';
+                        break;
+                    case 'self_partner_hermes_pred_supplier':
+                    case 'self_partner_hermes':
+                        $this->marker['iconImageHref'] = '/images/deliv-icon/hermes.png';
+                        $this->icon = '/images/deliv-logo/hermes.png';
+                        $this->dropdown_name = 'Постаматы Гермес DPD';
                         break;
                     default:
                         $this->marker['iconImageHref'] = '/images/deliv-icon/enter.png';
