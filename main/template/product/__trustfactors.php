@@ -22,7 +22,8 @@ $f = function (
     <? foreach ($trustfactors as $trustfactor): ?>
 
         <? /** @var $trustfactor Trustfactor */
-            if ($trustfactor->hasTag(Trustfactor::TAG_NEW_PRODUCT_CARD)) continue;
+            if ($trustfactor->hasTag(Trustfactor::TAG_NEW_PRODUCT_CARD) ||
+                $trustfactor->hasTag(Trustfactor::TAG_NEW_PRODUCT_CARD_PARTNER)) continue;
         ?>
 
         <? if ($trustfactor->media && ($trustfactor->type === $type)): ?>

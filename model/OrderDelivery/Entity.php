@@ -194,6 +194,11 @@ namespace Model\OrderDelivery\Entity {
     }
 
     class Point {
+
+        const TOKEN_SVYAZNOY_1 = 'self_partner_svyaznoy_pred_supplier';
+        const TOKEN_SVYAZNOY_2 = 'self_partner_svyaznoy';
+        const TOKEN_SVYAZNOY_3 = 'shops_svyaznoy';
+
         /** @var string */
         public $token;
         /** @var string */
@@ -225,9 +230,9 @@ namespace Model\OrderDelivery\Entity {
                         case 'self_partner_pickpoint':
                             $this->list[(string)$item['id']] = new Point\Pickpoint($item);
                             break;
-                        case 'self_partner_svyaznoy_pred_supplier':
-                        case 'self_partner_svyaznoy':
-                        case 'shops_svyaznoy':
+                        case self::TOKEN_SVYAZNOY_1:
+                        case self::TOKEN_SVYAZNOY_2:
+                        case self::TOKEN_SVYAZNOY_3:
                             $this->list[(string)$item['id']] = new Point\Svyaznoy($item);
                             break;
                         case 'self_partner_euroset_pred_supplier':
@@ -846,6 +851,9 @@ namespace Model\OrderDelivery\Entity\Order {
 }
 
 namespace Model\OrderDelivery\Entity\Order\Delivery {
+
+    use Model\OrderDelivery\Entity\Point as P;
+
     class Point {
         /** @var string */
         public $token;
@@ -857,6 +865,13 @@ namespace Model\OrderDelivery\Entity\Order\Delivery {
             if (isset($data['token'])) $this->token = (string)$data['token'];
             if (isset($data['id'])) $this->id = (string)$data['id'];
 
+        }
+
+        /** Точка Связного?
+         * @return bool
+         */
+        public function isSvyaznoy() {
+            return in_array($this->token, [P::TOKEN_SVYAZNOY_1, P::TOKEN_SVYAZNOY_2, P::TOKEN_SVYAZNOY_3]);
         }
     }
 }

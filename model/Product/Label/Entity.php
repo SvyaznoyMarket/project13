@@ -2,6 +2,8 @@
 
 namespace Model\Product\Label;
 
+use Model\Media;
+
 class Entity {
     use \Model\MediaHostTrait;
 
@@ -30,11 +32,16 @@ class Entity {
     private $name;
     /** @var string */
     private $image;
+    /** @var Media[]  */
+    private $medias;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
-        if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
+        if (array_key_exists('media_image', $data) && !empty($data['media_image'])) $this->setImage($data['media_image']);
+        if (array_key_exists('medias', $data) && is_array($data['medias'])) {
+            $this->medias = array_map(function($mediaData){ return new Media($mediaData); }, $data['medias']);
+        }
     }
 
     public function setId($id) {
@@ -72,13 +79,16 @@ class Entity {
      * @return null|string
      */
     public function getImageUrl($size = 0) {
+        $tag = $size == 0 ? '66x23' : '124x38';
         if ($this->image) {
             $urls = \App::config()->productLabel['url'];
-
             return $this->getHost() . $urls[$size] . $this->image;
-        } else {
-            return null;
+        } elseif ($this->medias) {
+            foreach ($this->medias as $media) {
+                if (in_array($tag, $media->tags)) return isset($media->sources[0]) ? $media->sources[0]->url : null;
+            }
         }
+        return null;
     }
 
     /**
