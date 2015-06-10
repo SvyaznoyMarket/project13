@@ -2411,7 +2411,12 @@ if ( typeof Object.create !== 'function' ) {
 				if ( typeof window.ENTER.utils.packageReq === 'function' ) {
                     try {
                         if ('viewed' == sliderParams.type) {
-                            sliderParams.url += ((-1 != sliderParams.url.indexOf('?')) ? '&' : '?') + 'rrviewed=' + sliderParams.rrviewed + '&' + $.param({senders: [sliderParams.sender]}) + (sliderParams.sender2 ? '&' + $.param({sender2: sliderParams.sender2}) : '');
+                            sliderParams.url += ((-1 != sliderParams.url.indexOf('?')) ? '&' : '?') +
+								(sliderParams.rrviewed ? 'rrviewed=' + sliderParams.rrviewed + '&' : '') +
+								$.param({senders: [sliderParams.sender]}) +
+								(sliderParams.sender2 ? '&' +
+								$.param({sender2: sliderParams.sender2}) : '')
+							;
 
                             getSlidersData(sliderParams.url, sliderParams.type, function(res) {
                                 res.recommend && res.recommend.viewed && authFromServer(res.recommend.viewed);
