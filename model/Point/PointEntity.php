@@ -10,6 +10,7 @@ class PointEntity {
     const TYPE_SHOP = 'shop';
     const TYPE_PICKPOINT = 'pickpoint';
     const TYPE_SVYAZNOY = 'svyaznoy';
+    const TYPE_HERMES = 'hermes';
 
     /** @var int */
     public $id;
@@ -55,6 +56,13 @@ class PointEntity {
      */
     public function isSvyaznoyShop(){
         return $this->type == self::TYPE_SVYAZNOY;
+    }
+
+    /** Пункт выдачи Hermes-DPD?
+     * @return bool
+     */
+    public function isHermesPoint(){
+        return $this->type == self::TYPE_HERMES;
     }
 
 }
