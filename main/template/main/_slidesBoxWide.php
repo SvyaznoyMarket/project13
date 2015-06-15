@@ -3,12 +3,11 @@
         <div class="slidesBox_btn slidesBox_btn-l jsSlidesWideLeft"></div>
 
         <div class="slidesBox_h_c">
-            <? if (false): ?><div class="slidesBox_t jsSlidesWideName">Новая ювелирная коллекция</div><? endif ?>
-            <div class="slidesBox_t jsSlidesWideName">Игры на свежем воздухе</div>
+            <div class="slidesBox_t jsSlidesWideName">Новая коллекция Pandora</div>
 
             <ul class="slidesBox_dott">
-                <? if (false): ?><li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Новая ювелирная коллекция"></li><? endif ?>
-                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Игры на свежем воздухе"></li>
+                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Новая коллекция Pandora"></li>
+                <li class="slidesBox_dott_i" data-name="Игры на свежем воздухе"></li>
                 <li class="slidesBox_dott_i" data-name="MyDiamonds"></li>
                 <li class="slidesBox_dott_i" data-name="Звуки лета"></li>
             </ul>
@@ -20,54 +19,55 @@
     <div class="slidesBox_inn">
         <ul class="slidesBox_lst clearfix jsSlidesWideHolder">
 
-            <? if (false): ?><li class="slidesBox_i jsSlidesWideItem">
-                <a href="/catalog/jewel/pandora-1320" class="slidesBox_lk">
-                    <img src="styles/mainpage/img/pandora/pan-banner24052015.jpg" alt="" class="slidesBox_img">
+            <li class="slidesBox_i jsSlidesWideItem">
+                <a href="/catalog/jewel/pandora-1320">
+                    <img src="styles/mainpage/img/pandora/pandora-main-b.jpg" alt="" class="slidesBox_img">
                 </a>
 
                 <ul class="slidesBox_items">
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Теннис Pandora 791510</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Сверкающая пальма Pandora 791540CZ</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-tennis-pandora-791510-2034000003189" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-tennis.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-sverkayushchaya-palma-pandora-791540cz-2034000005701" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand1.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Сияющие маргаритки Pandora 791493CZ</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Pandora 791499SBQ</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-siyayushchie-margaritki-pandora-791493cz-2034000003547" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-margaritki.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-pandora-791499sbq-2034000005657" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand2.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Клевер Pandora 791496CZN</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Все краски океана Pandora 791261MCZMX</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-klever-pandora-791496czn-2034000003363" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-klever.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-vse-kraski-okeana-pandora-791261mczmx-2034000005633" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand3.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Pandora 791250CZ</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Pandora 791499SGQ</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-pandora-791250cz-2350000077068" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-serdca.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-pandora-791499sgq-2034000005664" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand4.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Сердце Великобритании Pandora 791512ENMX</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Дружелюбный дельфин Pandora 791541CZ</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-serdtse-velikobritanii-pandora-791512enmx-2034000003479" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-gb.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-drugelyubniy-delfin-pandora-791541cz-2034000005718" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand5.png" alt="" class="slidesBox_items_img"></a>
                     </li>
                 </ul>
+
                 <a href="/catalog/jewel/pandora-1320" class="slidesBox_btnview">Посмотреть<br/>коллекцию</a>
-            </li><? endif ?>
+            </li>
 
             <li class="slidesBox_i jsSlidesWideItem">
                 <a href="/catalog/tchibo/dlya-detey-igri-na-svegem-vozduhe-e58d">
