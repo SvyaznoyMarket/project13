@@ -17,6 +17,8 @@
                         Ждем вас <?= $order->getDeliveredAt()->format('d.m.Y') ?> в магазине
                     <? elseif ($order->point->isPickpoint()) : ?>
                         Вы можете забрать заказ из постамата <?= $order->getDeliveredAt()->format('d.m.Y') ?>
+                    <? elseif ($order->point->isHermesPoint()) : ?>
+                        Вы можете забрать заказ в пункте выдачи Hermes-DPD <?= $order->getDeliveredAt()->format('d.m.Y') ?>
                     <? endif ?>
                 </div>
                 <div class="orderPayment_msg_shop markerLst_row">
@@ -60,6 +62,8 @@
                         PaymentMethodEntity::PAYMENT_PSB
                     ])) : ?>
                         Вы можете оплатить заказ при получении.
+                    <? elseif ($order->point && $order->point->isHermesPoint()) : ?>
+                        Оплата наличными при получении.
                     <? else : ?>
                         Оплата при получении — наличными или картой.
                     <? endif ?>

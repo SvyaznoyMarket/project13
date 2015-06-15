@@ -207,7 +207,12 @@ return function(
                             <? if (isset($point)) : ?>
                                 <br />
                                 <span class="orderCol_tm_t">Оплата при получении: </span>
-                                <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные<? endif; ?><? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта<? endif; ?>
+                                <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?>
+                                    <!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные
+                                <? endif; ?>
+                                <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
+                                    <!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта
+                                <? endif; ?>
                             <? endif; ?>
                         </div>
                     <? if ($order->delivery->point && $order->delivery->point->isSvyaznoy()) : ?>
