@@ -13,6 +13,7 @@ class PointEntity extends BasicPoint {
     const TYPE_SHOP = 'shop';
     const TYPE_PICKPOINT = 'pickpoint';
     const TYPE_SVYAZNOY = 'svyaznoy';
+    const TYPE_HERMES = 'hermes';
 
     /** @var string */
     public $ui;
@@ -47,6 +48,13 @@ class PointEntity extends BasicPoint {
      */
     public function isSvyaznoyShop(){
         return $this->type == self::TYPE_SVYAZNOY;
+    }
+
+    /** Пункт выдачи Hermes-DPD?
+     * @return bool
+     */
+    public function isHermesPoint(){
+        return $this->type == self::TYPE_HERMES;
     }
 
 }

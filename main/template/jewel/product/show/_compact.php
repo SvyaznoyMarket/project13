@@ -62,7 +62,7 @@ if ($product->getPriceOld()) {
         </ul>
 
         <div class="lstn_pr">
-            <? if ($product->getPriceOld()): ?>
+            <? if ($product->getPriceOld() && $product->getLabel()): ?>
                 <span class="lstn_pr_old">
                     <span class="td-lineth"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
 

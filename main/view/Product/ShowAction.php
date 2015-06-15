@@ -90,7 +90,7 @@ class ShowAction {
         ];
 
         // oldPrice and priceSale
-        if ( $product->getPriceOld() ) {
+        if ( $product->getPriceOld() && $product->getLabel()) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
             $productItem['priceSale'] = round( ( 1 - ($product->getPrice() / $product->getPriceOld() ) ) *100, 0 );
             $productItem['showPriceSale'] = AbTest::isShowSalePercentage();

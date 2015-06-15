@@ -2,6 +2,11 @@
 
 namespace Controller\Promo;
 
+/**
+ * Class IndexAction
+ * Страницы вида /promo/{token}
+ * @package Controller\Promo
+ */
 class IndexAction {
     public function execute($promoToken, \Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
@@ -36,7 +41,7 @@ class IndexAction {
         // запрашиваем товары
         if ((bool)$productsById) {
             foreach (array_chunk(array_keys($productsById), \App::config()->coreV2['chunk_size']) as $ids) {
-                \RepositoryManager::product()->prepareCollectionById($ids, $region, function($data) use (&$productsById) {
+                \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->prepareCollectionById($ids, $region, function($data) use (&$productsById) {
                     foreach ($data as $item) {
                         $productsById[(int)$item['id']] = new \Model\Product\Entity($item);
                     }

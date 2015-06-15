@@ -194,6 +194,11 @@ namespace Model\OrderDelivery\Entity {
     }
 
     class Point {
+
+        const TOKEN_SVYAZNOY_1 = 'self_partner_svyaznoy_pred_supplier';
+        const TOKEN_SVYAZNOY_2 = 'self_partner_svyaznoy';
+        const TOKEN_SVYAZNOY_3 = 'shops_svyaznoy';
+
         /** @var string */
         public $token;
         /** @var string */
@@ -225,10 +230,20 @@ namespace Model\OrderDelivery\Entity {
                         case 'self_partner_pickpoint':
                             $this->list[(string)$item['id']] = new Point\Pickpoint($item);
                             break;
-                        case 'self_partner_svyaznoy_pred_supplier':
-                        case 'self_partner_svyaznoy':
-                        case 'shops_svyaznoy':
+                        case self::TOKEN_SVYAZNOY_1:
+                        case self::TOKEN_SVYAZNOY_2:
+                        case self::TOKEN_SVYAZNOY_3:
                             $this->list[(string)$item['id']] = new Point\Svyaznoy($item);
+                            break;
+                        case 'self_partner_euroset_pred_supplier':
+                        case 'self_partner_euroset':
+                            $this->list[(string)$item['id']] = new Point\Shop($item);
+                            $this->list[(string)$item['id']]->listName = 'Евросеть';
+                            break;
+                        case 'self_partner_hermes_pred_supplier':
+                        case 'self_partner_hermes':
+                            $this->list[(string)$item['id']] = new Point\Shop($item);
+                            $this->list[(string)$item['id']]->listName = 'HermesDPD';
                             break;
                         default:
                             $this->list[(string)$item['id']] = new Point\Shop($item);
@@ -249,6 +264,18 @@ namespace Model\OrderDelivery\Entity {
                         $this->marker['iconImageHref'] = '/images/deliv-icon/svyaznoy.png';
                         $this->icon = '/images/deliv-logo/svyaznoy.png';
                         $this->dropdown_name = 'Магазины Связной';
+                        break;
+                    case 'self_partner_euroset_pred_supplier':
+                    case 'self_partner_euroset':
+                        $this->marker['iconImageHref'] = '/images/deliv-icon/euroset.png';
+                        $this->icon = '/images/deliv-logo/euroset.png';
+                        $this->dropdown_name = 'Магазины Евросеть';
+                        break;
+                    case 'self_partner_hermes_pred_supplier':
+                    case 'self_partner_hermes':
+                        $this->marker['iconImageHref'] = '/images/deliv-icon/hermes.png';
+                        $this->icon = '/images/deliv-logo/hermes.png';
+                        $this->dropdown_name = 'Постаматы Гермес DPD';
                         break;
                     default:
                         $this->marker['iconImageHref'] = '/images/deliv-icon/enter.png';
@@ -586,6 +613,11 @@ namespace Model\OrderDelivery\Entity\Point {
             if (isset($data['regtime'])) $this->regtime = (string)$data['regtime'];
             if (isset($data['latitude'])) $this->latitude = (float)$data['latitude'];
             if (isset($data['longitude'])) $this->longitude = (float)$data['longitude'];
+            if (isset($data['subway']) && is_array($data['subway'])) {
+                foreach ($data['subway'] as $item) {
+                    $this->subway[] = new \Model\OrderDelivery\Entity\Subway($item);
+                }
+            }
         }
     }
 
@@ -593,11 +625,6 @@ namespace Model\OrderDelivery\Entity\Point {
 
         public function __construct(array $data = []) {
             parent::__construct($data);
-            if (isset($data['subway']) && is_array($data['subway'])) {
-                foreach ($data['subway'] as $item) {
-                    $this->subway[] = new \Model\OrderDelivery\Entity\Subway($item);
-                }
-            }
             $this->listName = 'Магазин Enter';
         }
     }
@@ -819,6 +846,9 @@ namespace Model\OrderDelivery\Entity\Order {
 }
 
 namespace Model\OrderDelivery\Entity\Order\Delivery {
+
+    use Model\OrderDelivery\Entity\Point as P;
+
     class Point {
         /** @var string */
         public $token;
@@ -830,6 +860,13 @@ namespace Model\OrderDelivery\Entity\Order\Delivery {
             if (isset($data['token'])) $this->token = (string)$data['token'];
             if (isset($data['id'])) $this->id = (string)$data['id'];
 
+        }
+
+        /** Точка Связного?
+         * @return bool
+         */
+        public function isSvyaznoy() {
+            return in_array($this->token, [P::TOKEN_SVYAZNOY_1, P::TOKEN_SVYAZNOY_2, P::TOKEN_SVYAZNOY_3]);
         }
     }
 }
