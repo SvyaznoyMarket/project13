@@ -155,6 +155,7 @@ $request =
     )
     : \App::request()
 ;
+
 // router
 $router = \App::router();
 
@@ -190,6 +191,16 @@ try {
         \App::abTest()->setCookie($response);
     }
 } catch (\Exception\NotFoundException $e) {
+    \App::logger()->warn([
+        'request' => [
+            'uri'     => $request->getRequestUri(),
+            'method'  => $request->getMethod(),
+            'query'   => (array)$request->query->all(),
+            'data'    => (array)$request->request->all(),
+            'headers' => (array)$request->headers->all(),
+        ],
+    ]);
+
     \App::request()->attributes->set('pattern', '');
     \App::request()->attributes->set('route', '');
     \App::request()->attributes->set('action', ['Error\NotFoundAction', 'execute']);
