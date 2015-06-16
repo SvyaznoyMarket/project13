@@ -24,7 +24,8 @@ namespace EnterQuery\AbTest
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'api/ab_test/get-active'
+                    'api/ab_test/get-active',
+                    ['tags' => ['site-web']]
                 ),
                 [], // data
                 function($response, $statusCode) {
