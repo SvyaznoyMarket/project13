@@ -121,6 +121,11 @@
         },
         sendChanges = function sendChangesF (action, params) {
             console.info('Sending action "%s" with params:', action, params);
+
+            var hideContent = true;
+
+            if ($.inArray(action, ['changeDate', 'changeInterval', 'changeOrderComment']) != -1) hideContent = false;
+
             $.ajax({
                 type: 'POST',
                 data: {
@@ -128,7 +133,7 @@
                     'params' : params
                 },
                 beforeSend: function() {
-                    $orderContent.fadeOut(500);
+                    if (hideContent) $orderContent.fadeOut(500);
                     if (spinner) spinner.spin(body)
                 }
             }).fail(function(jqXHR){
