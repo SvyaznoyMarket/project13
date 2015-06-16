@@ -40,7 +40,7 @@ class Entity {
     /** @var bool */
     protected $isKitLocked = false;
     /** @var Category\Entity */
-    protected $mainCategory;
+    protected $rootCategory;
     /** @var Category\Entity */
     protected $parentCategory;
     /** @var Stock\Entity[] */
@@ -157,7 +157,7 @@ class Entity {
         if (isset($data['bar_code'])) $this->setBarcode($data['bar_code']);
         if (isset($data['category']) && (bool)$data['category']) {
             $categoryData = reset($data['category']);
-            if ((bool)$categoryData) $this->setMainCategory(new Category\Entity($categoryData));
+            if ((bool)$categoryData) $this->setRootCategory(new Category\Entity($categoryData));
 
             $categoryData = end($data['category']);
             if ((bool)$categoryData) $this->setParentCategory(new Category\Entity($categoryData));
@@ -939,32 +939,31 @@ class Entity {
     public function getNameWithCategory() {
         $name = $this->name;
 
-        if ($this->mainCategory) {
-            $name .= ' - ' . $this->mainCategory->getName();
+        if ($this->rootCategory) {
+            $name .= ' - ' . $this->rootCategory->getName();
         }
 
         return $name;
     }
 
     /**
-     * @param \Model\Product\Category\Entity $mainCategory
+     * @param \Model\Product\Category\Entity $rootCategory
      */
-    public function setMainCategory(Category\Entity $mainCategory = null) {
-        $this->mainCategory = $mainCategory;
+    public function setRootCategory(Category\Entity $rootCategory = null) {
+        $this->rootCategory = $rootCategory;
     }
 
     /**
      * @return \Model\Product\Category\Entity
      */
-    public function getMainCategory() {
-        return $this->mainCategory;
+    public function getRootCategory() {
+        return $this->rootCategory;
     }
 
     /**
      * @return bool
      */
     public function getIsBuyable() {
-//        return true;
         return
             $this->getState() && $this->getState()->getIsBuyable()
             && (\App::config()->product['allowBuyOnlyInshop'] ? true : !$this->isInShopStockOnly())
@@ -1319,8 +1318,8 @@ class Entity {
      */
     public function isSoldOut() {
         return
-            $this->getMainCategory()
-            && ('tchibo' === $this->getMainCategory()->getToken())
+            $this->getRootCategory()
+            && ('tchibo' === $this->getRootCategory()->getToken())
             && !$this->isAvailable()
             && !$this->hasAvailableModels()
             ;

@@ -9,7 +9,7 @@ $order = reset($orders);
 $items = array_values(array_map(function (\Model\Product\Entity $product){
     return [
         'id'        => $product->getId(),
-        'category'  => $product->getMainCategory() ? $product->getMainCategory()->getId() : null,
+        'category'  => $product->getRootCategory() ? $product->getRootCategory()->getId() : null,
         'price'     => $product->getPrice()
     ];
 }, $productsById));

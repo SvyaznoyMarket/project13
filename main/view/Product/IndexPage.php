@@ -100,8 +100,8 @@ class IndexPage extends \View\DefaultLayout {
             'pagetype' => 'product',
             'pname' => $this->product->getName(),
             'pcat' => ($category) ? $category->getToken() : '',
-            'pcat_upper' => $this->product->getMainCategory() ? $this->product->getMainCategory()->getToken() : '',
-            'pvalue' => $this->product->getPrice()
+            'pcat_upper' => $this->product->getRootCategory() ? $this->product->getRootCategory()->getToken() : '',
+            'pvalue' => $this->product->getPrice(),
         ];
 
         return parent::slotGoogleRemarketingJS($tag_params);

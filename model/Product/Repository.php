@@ -289,7 +289,8 @@ class Repository {
                 'product/get-description/v1',
                 ['uids' => array_map(function(\Model\Product\Entity $product) { return $product->getUi(); }, $products),
                     'media' => 1,
-                    'label' => 1
+                    'label' => 1,
+                    'category' => 1,
                 ],
                 [],
                 function($data) use($products) {
@@ -316,6 +317,22 @@ class Repository {
 
                             if (isset($productData['json3d']) && is_array($productData['json3d'])) {
                                 $product->json3d = $productData['json3d'];
+                            }
+
+                            if (isset($productData['categories']) && is_array($productData['categories'])) {
+                                foreach ($productData['categories'] as $category) {
+                                    if ($category['main']) {
+                                        $product->setParentCategory(new \Model\Product\Category\Entity($category));
+
+                                        // TODO: создать метод \Model\Product\Category\Entity::getRoot, возвращающий корневую категорию, найденную через свойство \Model\Product\Category\Entity::$parent; переименовать \Model\Product\Entity::getParentCategory в getMainCategory
+                                        while (isset($category['parent']) && $category['parent']) {
+                                            $category = $category['parent'];
+                                        }
+
+                                        $product->setRootCategory(new \Model\Product\Category\Entity($category));
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }

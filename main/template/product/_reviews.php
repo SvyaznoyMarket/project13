@@ -36,7 +36,7 @@
                 </div>
 
                 <? if ($reviewsData['page_count'] > 1): ?>
-                    <div class="js-reviews-getMore bReviewsToggle product-btn-toggle">Показать еще отзывы...</div>
+                    <div class="js-reviews-getMore bReviewsToggle product-btn-toggle">Показать другие отзывы...</div>
                 <? endif ?>
             </div>
         <? endif ?>

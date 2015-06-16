@@ -144,11 +144,6 @@ class GoogleAnalytics {
         $categories = $product->getCategory();
         $categoryUpper = reset($categories);
         $categoryDown = end($categories);
-        /*
-        $categoryMain = $product->getMainCategory();
-        if ( !$categoryMain ) {
-            $categoryMain = end( $categories );
-        }*/
 
         if (!empty($_SERVER['HTTP_REFERER'])) {
             if (strpos($_SERVER['HTTP_REFERER'], 'search?q=') > 0) {
@@ -317,7 +312,7 @@ class GoogleAnalytics {
                 $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : false;
 
                 $categoryName = null;
-                $mainCategory = $product ? $product->getMainCategory() : null;
+                $mainCategory = $product ? $product->getRootCategory() : null;
                 $parentCategory = $product ? $product->getParentCategory() : null;
 
                 $productName = $product ? $product->getName() : '';

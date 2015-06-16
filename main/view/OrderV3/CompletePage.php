@@ -73,7 +73,7 @@ class CompletePage extends Layout {
                         'quantity' => (int)$orderProduct->getQuantity(),
                         'price'    => (int)$orderProduct->getPrice(),
                         'articul'  => $product->getArticle(),
-                        'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null)
+                        'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getRootCategory() ? $product->getRootCategory()->getToken() : null)
                     ];
                 }
             }
