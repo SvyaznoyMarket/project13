@@ -348,4 +348,13 @@ return function(
         </div>
     </div>
 </div>
+
+<div class="popup popup-simple deliv-free-popup js-free-delivery" style="display: block;">
+
+    <div class="popup_inn">
+        <span class="info">До бесплатного самовывоза и оформления заказа осталось</span>
+        <span class="remain-sum">179 <span class="rubl">p</span></span>
+        <a href="#" class="to-cart-lnk">Вернуться в корзину</a>
+    </div>
+</div>
 <? };

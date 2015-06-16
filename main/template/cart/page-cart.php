@@ -39,6 +39,10 @@ $helper = new \Helper\TemplateHelper();
 <div class="basketBuy mNoPrint jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">
     <a href="<?= $page->url('order') ?>" class="bBigOrangeButton">Оформить заказ</a>
 </div>
+<div class="deliv-free-alert">
+    <span class="deliv-free-alert__info">До бесплатного самовывоза и оформления заказа осталось</span>
+    <span class="deliv-free-alert__remain-sum">179 <span class="rubl">p</span></span>
+</div>
 
 <div class="clear"></div>
 

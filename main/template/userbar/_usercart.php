@@ -11,7 +11,7 @@
         <strong class="topbarfix_cart_qn topbarfix_cartQuan" data-bind="text: cart().length"></strong>
     </a>
 
-    <div class="topbarfix_dd topbarfix_cartOn" >
+    <div class="topbarfix_dd topbarfix_cartOn">
         <div class="topbarfix-cart-wrap">
             <table class="table-cart">
                 <tbody data-bind="foreach: cart">
@@ -44,6 +44,17 @@
 
         <div class="buyInfo" data-bind="visible: !infoIconVisible() && infoBlock_2Visible() ">
             <div class="buyInfo_self">Самовывоз<br/>БЕСПЛАТНО</div>
+        </div>
+
+        <!-- Бесплатный самовывоз Воронеж -->
+        <div class="deliv-free-info">
+            <span class="deliv-free-info__intro">До бесплатного самовывоза и оформления заказа осталось</span>
+            <span class="deliv-free-info__remain-sum">179 <span class="rubl">p</span></span>
+            <a href="#" class="deliv-free-info__sale-lnk">Выбрать товары по суперцене</a>
+        </div>
+        <div class="deliv-free-info completed">
+            <span class="deliv-free-info__intro">Самовывоз</span>
+            <span class="deliv-free-info__alert">БЕСПЛАТНО</span>
         </div>
     </div>
 
