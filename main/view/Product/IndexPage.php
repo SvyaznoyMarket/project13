@@ -112,7 +112,7 @@ class IndexPage extends \View\DefaultLayout {
             'pagetype' => 'product',
             'pname' => $product->getName(),
             'pcat' => ($category) ? $category->getToken() : '',
-            'pcat_upper' => $product->getMainCategory() ? $product->getMainCategory()->getToken() : '',
+            'pcat_upper' => $product->getRootCategory() ? $product->getRootCategory()->getToken() : '',
             'pvalue' => $product->getPrice()
         ];
 

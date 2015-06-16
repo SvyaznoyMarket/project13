@@ -321,7 +321,7 @@ class IndexAction {
         $page->setParam('viewParams', [
             'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
         ]);
-        $page->setGlobalParam('isTchibo', ($product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName()));
+        $page->setGlobalParam('isTchibo', ($product->getRootCategory() && 'Tchibo' === $product->getRootCategory()->getName()));
         $page->setGlobalParam('addToCartJS', $addToCartJS);
         $page->setGlobalParam('similarProducts', $similarProducts);
 
@@ -343,7 +343,7 @@ class IndexAction {
 
         $result = [];
 
-        $category = $product->getMainCategory();
+        $category = $product->getRootCategory();
         $cart = \App::user()->getCart();
         try {
             $productType = $category ? \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($category->getToken()) : '';

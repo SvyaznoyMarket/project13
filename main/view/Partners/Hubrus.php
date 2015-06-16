@@ -56,7 +56,7 @@ class Hubrus {
         if ($product instanceof \Model\Product\Entity) {
             return [
                 'id'        => $product->getId(),
-                'category'  => $product->getMainCategory() ? $product->getMainCategory()->getId() : null,
+                'category'  => $product->getRootCategory() ? $product->getRootCategory()->getId() : null,
                 'price'     => $product->getPrice()
             ];
         }

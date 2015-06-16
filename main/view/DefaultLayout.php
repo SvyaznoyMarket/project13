@@ -367,8 +367,8 @@ class DefaultLayout extends Layout {
 
             $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
             if ( $product ) {
-                /** @var @var $product \Model\Product\Entity */
-                $category = $product->getMainCategory();
+                /** @var $product \Model\Product\Entity */
+                $category = $product->getRootCategory();
                 $categories = $product->getCategory();
                 if (!$category) $category = reset($categories);
                 $prod_cats = array_map(function($a){ return $a->getName(); }, $categories);

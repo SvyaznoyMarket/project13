@@ -34,7 +34,7 @@ class ShowAction {
             $inShopOnlyLabel = null;
         }
 
-        if (!$product->isInShopOnly() && $product->getMainCategory() && $product->getMainCategory()->getIsFurniture() && $product->getState() && $product->getState()->getIsStore() && !$product->getSlotPartnerOffer()) {
+        if (!$product->isInShopOnly() && $product->getRootCategory() && $product->getRootCategory()->getIsFurniture() && $product->getState() && $product->getState()->getIsStore() && !$product->getSlotPartnerOffer()) {
             $inStoreLabel = ['name' => 'Товар со склада', 'inStore' => true]; // SITE-3131
         } else {
             $inStoreLabel = null;

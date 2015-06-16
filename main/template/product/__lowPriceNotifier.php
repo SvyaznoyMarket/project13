@@ -6,12 +6,12 @@ return function(
     $actionChannelName
 ) {
 
-    if (!(\App::config()->product['lowerPriceNotification'] && $product->getMainCategory() && $product->getMainCategory()->getPriceChangeTriggerEnabled())) {
+    if (!(\App::config()->product['lowerPriceNotification'] && $product->getRootCategory() && $product->getRootCategory()->getPriceChangeTriggerEnabled())) {
         return '';
     }
 
-    $price = ($product->getMainCategory() && $product->getMainCategory()->getPriceChangePercentTrigger())
-        ? round($product->getPrice() * $product->getMainCategory()->getPriceChangePercentTrigger())
+    $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceChangePercentTrigger())
+        ? round($product->getPrice() * $product->getRootCategory()->getPriceChangePercentTrigger())
         : 0;
 ?>
 

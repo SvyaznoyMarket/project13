@@ -114,8 +114,8 @@ class Cart {
             'name'  => $product->getLastCategory() ? $product->getLastCategory()->getName() : null
         ];
         $item['rootCategory']   = [
-            'id'    => $product->getMainCategory() ? $product->getMainCategory()->getId() : null,
-            'name'  => $product->getMainCategory() ? $product->getMainCategory()->getName() : null
+            'id'    => $product->getRootCategory() ? $product->getRootCategory()->getId() : null,
+            'name'  => $product->getRootCategory() ? $product->getRootCategory()->getName() : null
         ];
 
         $data['product'][$product->getId()] = $item;
@@ -139,8 +139,8 @@ class Cart {
             'image'         => $product->getMainImageUrl('product_120'),
             'url'           => $product->getLink(),
             'rootCategory'  => [
-                'id'    => $product->getMainCategory() ? $product->getMainCategory()->getId() : null,
-                'name'  => $product->getMainCategory() ? $product->getMainCategory()->getName() : null
+                'id'    => $product->getRootCategory() ? $product->getRootCategory()->getId() : null,
+                'name'  => $product->getRootCategory() ? $product->getRootCategory()->getName() : null
             ],
             'category'      => [
                 'id'    => $product->getLastCategory() ? $product->getLastCategory()->getId() : null,

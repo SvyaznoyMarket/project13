@@ -37,7 +37,7 @@ class Actionpay {
 
                     $categoriesArr = $product->getCategory();
 
-                    $mainCategory = $product->getMainCategory();
+                    $mainCategory = $product->getRootCategory();
                     if (!$mainCategory) {
                         \App::logger()->warn(sprintf('В заказе @%s не найдена категория для товара #%s', $order->getNumber(), $orderProduct->getId()));
 
