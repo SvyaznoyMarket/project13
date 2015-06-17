@@ -49,6 +49,8 @@
                 _gaq.push(['_setCustomVar', 12, 'shop_type', 'marketplace', 3]);
                 if (console && typeof console.log == 'function') console.log('[Google Analytics] _setCustomVar 11 shop_type marketplace');
             <? endif ?>
+
+            _gaq.push(['_setCustomVar', 21, 'Items_review', '<?= $product->getNumReviews() ? 'Yes' : 'No' ?>', 3]);
         <? endif ?>
 
         _gaq.push(['_trackPageview']);
@@ -56,6 +58,28 @@
         /* Classic Google Analytics */
         (function()
         {   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+
+            <? if (\App::config()->debug): ?>
+                ga.onload = function() {
+                    var originalFunction = _gaq.push;
+                    _gaq.push = function() {
+                        $(document).trigger('googleAnalyticsCall', [{
+                            functionName: '_gaq.push',
+                            functionArguments: JSON.stringify(arguments),
+                            event: arguments[0] && arguments[0][0] == '_trackEvent' ? {category: arguments[0][1], action: arguments[0][2], label: arguments[0][3], value: arguments[0][4]} : null
+                        }]);
+
+                        originalFunction.apply(this, arguments);
+                    };
+
+                    for (var key in originalFunction) {
+                        if (originalFunction.hasOwnProperty(key)) {
+                            _gaq.push[key] = originalFunction[key];
+                        }
+                    }
+                };
+            <? endif ?>
+
             ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
@@ -63,6 +87,37 @@
         /* Universal Google Analytics */
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+
+            <? if (\App::config()->debug): ?>
+                a.onload = function() {
+                    var originalFunction = ga;
+                    ga = function() {
+                        var event = null;
+                        if (arguments[0] == 'send') {
+                            if (typeof arguments[1] == 'object' && arguments[1] && arguments[1].hitType == 'event') {
+                                event = {category: arguments[1].eventCategory, action: arguments[1].eventAction, label: arguments[1].eventLabel, value: arguments[1].eventValue};
+                            } else if (arguments[1] == 'event') {
+                                event = {category: arguments[2], action: arguments[3], label: arguments[4], value: arguments[5]};
+                            }
+                        }
+
+                        $(document).trigger('googleAnalyticsCall', [{
+                            functionName: 'ga',
+                            functionArguments: JSON.stringify(arguments),
+                            event: event
+                        }]);
+
+                        originalFunction.apply(this, arguments);
+                    };
+
+                    for (var key in originalFunction) {
+                        if (originalFunction.hasOwnProperty(key)) {
+                            ga[key] = originalFunction[key];
+                        }
+                    }
+                };
+            <? endif ?>
+
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 

@@ -148,7 +148,7 @@ class ActionPay {
         $product = $this->getParam('product');
 
         /* @var $category \Model\Product\Category\Entity */
-        $category = $product->getMainCategory();
+        $category = $product->getRootCategory();
 
         if ( !$category ) {
             $categories = $product->getCategory();

@@ -180,6 +180,14 @@
 		}
 	});
 
+    // Аналитика минимальной суммы заказа для Воронежа
+    $body.on('showUserCart', function(){
+        if (ENTER.UserModel.minOrderSum !== false) {
+            if (ENTER.UserModel.isMinOrderSumVisible()) $body.trigger('trackGoogleEvent', ['pickup', 'no', (ENTER.UserModel.minOrderSum - ENTER.UserModel.cartSum()) + '']);
+            else $body.trigger('trackGoogleEvent', ['pickup', 'yes']);
+        }
+    });
+
 	$body.on('userModelUpdate', function(e) {
 		if (ENTER.config.pageConfig.selfDeliveryTest) {
 			if (!docCookies.hasItem('enter_ab_self_delivery_view_info') && ENTER.UserModel.cartSum() < ENTER.config.pageConfig.selfDeliveryLimit) {

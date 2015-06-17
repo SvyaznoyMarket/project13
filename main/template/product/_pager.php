@@ -20,12 +20,6 @@ if (!isset($isAddInfo)) $isAddInfo = false;
 if (!isset($inSearch)) $inSearch = false;
 ?>
 
-<? if ('expanded' == $view) : ?>
-<input type="hidden" id="dlvrlinks"
-    data-shoplink="<?= $page->url('shop') ?>"
-    data-calclink="<?= $page->url('old.product.delivery') ?>" />
-<?php endif ?>
-
 <? if(!empty($showPagerHeader)): ?>
     <div class="mBoldh3"><?= $pager->count() . ' ' . $page->helper->numberChoice($pager->count(), array('товар', 'товара', 'товаров')) ?></div>
 <? endif ?>

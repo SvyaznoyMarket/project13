@@ -16,51 +16,13 @@ class Repository {
         $this->client = $client;
     }
 
-    /**
-     * Получает информацию по отзывам для товара
-     *
-     * @param $productId
-     * @param string $reviewsType
-     * @param int $currentPage
-     * @param int $perPage
-     * @internal param $product
-     * @return array
-     */
-    public function getReviews($productId, $reviewsType = '', $currentPage = 0, $perPage = self::NUM_REVIEWS_ON_PAGE) {
-
-        $client = clone $this->client;
-
-        $result = [];
-
-        $client->addQuery(
-            'list',
-            [
-                'product_id'   => $productId,
-                'current_page' => $currentPage,
-                'page_size'    => $perPage,
-                'type'         => $reviewsType,
-            ],
-            [],
-            function($data) use(&$result) {
-                $result = $data;
-            },  function(\Exception $e) use (&$exception) {
-                $exception = $e;
-                \App::exception()->remove($e);
-            }
-        );
-        $client->execute(\App::config()->reviewsStore['retryTimeout']['medium']);
-
-        return $result;
-    }
-
-    public function prepareData($productUi, $reviewsType = '', $currentPage = 0, $perPage = self::NUM_REVIEWS_ON_PAGE, $done) {
+    public function prepareData($productUi, $currentPage = 0, $perPage = self::NUM_REVIEWS_ON_PAGE, $done) {
         $this->client->addQuery(
             'list',
             [
                 'product_ui'   => $productUi,
                 'current_page' => $currentPage,
                 'page_size'    => $perPage,
-                'type'         => $reviewsType,
             ],
             [],
             $done,
@@ -221,24 +183,21 @@ class Repository {
      * @return array
      */
     public function getReviewsDataSummary($userData) {
-        $summaryData = [
-            'user' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0],
-        ];
+        $summaryData = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
 
-        $type = 'user';
         if(!empty($userData['num_users_by_score'])) {
             foreach ($userData['num_users_by_score'] as $grade) {
                 $score = (float)($grade['score']);
                 if($score <= 2.0) {
-                    $summaryData[$type][1] += $grade['count'];
+                    $summaryData[1] += $grade['count'];
                 } elseif($score > 2.0 && $score <= 4.0) {
-                    $summaryData[$type][2] += $grade['count'];
+                    $summaryData[2] += $grade['count'];
                 } elseif($score > 4.0 && $score <= 6.0) {
-                    $summaryData[$type][3] += $grade['count'];
+                    $summaryData[3] += $grade['count'];
                 } elseif($score > 6.0 && $score <= 8.0) {
-                    $summaryData[$type][4] += $grade['count'];
+                    $summaryData[4] += $grade['count'];
                 } elseif($score > 8.0) {
-                    $summaryData[$type][5] += $grade['count'];
+                    $summaryData[5] += $grade['count'];
                 }
             }
         }

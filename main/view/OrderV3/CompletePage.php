@@ -73,7 +73,7 @@ class CompletePage extends Layout {
                         'quantity' => (int)$orderProduct->getQuantity(),
                         'price'    => (int)$orderProduct->getPrice(),
                         'articul'  => $product->getArticle(),
-                        'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null)
+                        'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getRootCategory() ? $product->getRootCategory()->getToken() : null)
                     ];
                 }
             }
@@ -123,6 +123,21 @@ class CompletePage extends Layout {
         // Flocktory
         if ($config->flocktoryExchange['enabled'] || $config->flocktoryPostCheckout['enabled'])
             $html .= '<div id="flocktoryScriptJS" class="jsanalytics" ></div>';
+
+        if (\App::config()->partners['MyThings']['enabled'] && \App::partner()->getName() == 'mythings') {
+            /** @var $order \Model\Order\Entity */
+            $order = reset($this->orders);
+            $data = [
+                'EventType' => 'Conversion',
+                'Action'    => '9902',
+                'Products'  => array_map(function(\Model\Order\Product\Entity $p) {
+                    return ['id' => (string)$p->getId(), 'price' => (string)$p->getPrice(), 'qty' => $p->getQuantity()];
+                }, $order->getProduct()),
+                'TransactionReference'  => $order->getNumber(),
+                'TransactionAmount'     => (string)$order->getSum()
+            ];
+            $html .= sprintf('<div id="myThingsJS" data-vars="%s"></div>', $this->json($data));
+        }
 
         return $html;
     }
@@ -182,6 +197,8 @@ class CompletePage extends Layout {
                 'orderNumber' => $order->getNumber(),
                 'orderSum' => $order->getSum(),
             ];
+
+            if (\App::partner()->getName()) $orderData['partner'] = \App::partner()->getName();
 
             /* Дополнительные данные для LinkProfit */
             if (\App::config()->partners['LinkProfit']['enabled'] && \App::partner()->getName() == 'linkprofit') {

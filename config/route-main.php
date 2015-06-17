@@ -319,12 +319,12 @@ return [
     'product.review.create' => [
         'pattern' => '/product-reviews/create/{productUi}',
         'require' => ['productUi' => '[\w\d-_]+\/?[\w\d-_]+'],
-        'action'  => ['Product\ReviewsAction', 'create'],
+        'action'  => ['Product\Reviews\Create', 'execute'],
     ],
-    'product.reviews' => [
+    'product.reviews.get' => [
         'pattern' => '/product-reviews/{productUi}',
         'require' => ['productUi' => '[\w\d-_]+\/?[\w\d-_]+'],
-        'action'  => ['Product\ReviewsAction', 'execute'],
+        'action'  => ['Product\Reviews\Get', 'execute'],
     ],
     'product.notification.lowerPrice' => [
         'pattern' => '/ajax/product-notification/{productId}',

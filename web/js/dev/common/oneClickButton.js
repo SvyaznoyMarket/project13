@@ -10,7 +10,7 @@
 		}
 
 		var
-			button = $(e.currentTarget),
+			$button = $(e.currentTarget),
 			$target = $('#jsOneClickContent');
 
 		if ($target.length) {
@@ -18,8 +18,13 @@
 			init();
 		} else {
 			oneClickOpening = true;
+
 			$.ajax({
-				url: ENTER.utils.generateUrl('orderV3OneClick.form', {productUid: button.data('product-ui'), sender: button.data('sender'), sender2: button.data('sender2')}),
+				url: ENTER.utils.generateUrl('orderV3OneClick.form', {
+					productUid: $button.data('product-ui'),
+					sender: ENTER.utils.analytics.productPageSenders.get($button),
+					sender2: ENTER.utils.analytics.productPageSenders2.get($button)
+				}),
 				type: 'POST',
 				dataType: 'json',
 				closeClick: false,
@@ -71,8 +76,8 @@
 
 			if ($target.length) {
 				var data = $.parseJSON($orderContent.data('param'));
-				data.quantity = button.data('quantity');
-				data.shopId = button.data('shop');
+				data.quantity = $button.data('quantity');
+				data.shopId = $button.data('shop');
 				$orderContent.data('shop', data.shopId);
 
 				$target.lightbox_me({

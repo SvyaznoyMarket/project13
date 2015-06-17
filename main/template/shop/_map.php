@@ -2,7 +2,6 @@
 /**
  * @var $page                 \View\Shop\ShowPage
  * @var $shopAvailableRegions \Model\Region\Entity[]
- * @var $currentRegion        \Model\Region\Entity
  * @var $markers              array
  */
 ?>

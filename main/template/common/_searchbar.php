@@ -16,6 +16,7 @@ $btnTypes = array(
     <a href="/" class="hdlogo sitelogo"></a>
 
     <div class="hdsearch jsKnockoutSearch" data-bind="css: { 'hdsearch-v2': advancedSearch }">
+        <!--noindex-->
         <form action="<?= $page->url('search')?>" class="hdsearch_f">
 
             <label class="hdsearch_lbl" for="">Все товары для жизни по выгодным ценам!</label>
@@ -69,6 +70,7 @@ $btnTypes = array(
             <button class="hdsearch_btn btn3" data-bind="enable: searchInput().length > 1">Найти</button>
 
         </form>
+        <!--/noindex-->
 
         <!-- саджест поиска -->
         <div class="searchdd jsSearchbarResults" style="display: none;" data-bind="visible: searchResultsVisibility() && searchInput().length > 2 && !isNoSearchResult()">

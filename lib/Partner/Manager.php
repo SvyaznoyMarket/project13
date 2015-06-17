@@ -183,8 +183,8 @@ class Manager {
             } else {
                 $keyName .= '.id.' . $product->getId();
             }
-            if ($product->getMainCategory()) {
-                $return[$keyName . '.category'] = $product->getMainCategory()->getId();
+            if ($product->getRootCategory()) {
+                $return[$keyName . '.category'] = $product->getRootCategory()->getId();
             }
         }
 

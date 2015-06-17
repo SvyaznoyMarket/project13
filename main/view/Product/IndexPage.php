@@ -112,7 +112,7 @@ class IndexPage extends \View\DefaultLayout {
             'pagetype' => 'product',
             'pname' => $product->getName(),
             'pcat' => ($category) ? $category->getToken() : '',
-            'pcat_upper' => $product->getMainCategory() ? $product->getMainCategory()->getToken() : '',
+            'pcat_upper' => $product->getRootCategory() ? $product->getRootCategory()->getToken() : '',
             'pvalue' => $product->getPrice()
         ];
 
@@ -238,4 +238,13 @@ class IndexPage extends \View\DefaultLayout {
 
         return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
+
+    public function slotMyThings($data) {
+        return parent::slotMyThings([
+            'Action'    => '1010',
+            'ProductId' => (string)$this->product->getId()
+        ]);
+    }
+
+
 }

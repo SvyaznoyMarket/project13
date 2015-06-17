@@ -18,8 +18,6 @@
  * @var $breadcrumbs            array   Хлебные крошки
  * @var $trustfactors           array   Трастфакторы
  * @var $reviewsDataSummary     array   Данные отзывов
- * @var $sprosikupiReviews      array   Данные отзывов
- * @var $shoppilotReviews       array   Данные отзывов
  */
 $helper = new \Helper\TemplateHelper();
 
@@ -38,8 +36,8 @@ foreach ($equipment as $key => $value) {
     $equipment[$key] = preg_replace('/\s*<br \/>$/', '', trim(mb_strtoupper(mb_substr($value, 0, 1)) . mb_substr($value, 1)));
 }
 
-$buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
-$buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
+$buySender = $request->get('sender');
+$buySender2 = $request->get('sender2');
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>

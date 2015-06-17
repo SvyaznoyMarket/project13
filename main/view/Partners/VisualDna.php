@@ -108,8 +108,8 @@ class VisualDna {
     private function getProductCategoryId(\Model\Product\Entity $product) {
         $productCategory = null;
 
-        if ( $product->getMainCategory() ) {
-            $productCategory = $product->getMainCategory();
+        if ( $product->getRootCategory() ) {
+            $productCategory = $product->getRootCategory();
         }else{
             $productCategory = $product->getCategory();
             $productCategory = reset($productCategory);

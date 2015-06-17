@@ -34,7 +34,7 @@ class ShowAction {
             $inShopOnlyLabel = null;
         }
 
-        if (!$product->isInShopOnly() && $product->getMainCategory() && $product->getMainCategory()->getIsFurniture() && $product->getState() && $product->getState()->getIsStore() && !$product->getSlotPartnerOffer()) {
+        if (!$product->isInShopOnly() && $product->getRootCategory() && $product->getRootCategory()->getIsFurniture() && $product->getState() && $product->getState()->getIsStore() && !$product->getSlotPartnerOffer()) {
             $inStoreLabel = ['name' => 'Товар со склада', 'inStore' => true]; // SITE-3131
         } else {
             $inStoreLabel = null;
@@ -100,7 +100,7 @@ class ShowAction {
         if ($buyMethod && in_array(strtolower($buyMethod), ['none', 'false'])) {
             $productItem['cartButton'] = null;
         } else {
-            $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product, null, false, $cartButtonSender, false) : null;
+            $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product, null, $cartButtonSender, false) : null;
         }
 
         if ($product->isGifteryCertificate()) $productItem['price'] = 'от ' . \App::config()->partners['Giftery']['lowestPrice'];

@@ -131,4 +131,9 @@ class IndexPage extends \View\DefaultLayout {
         return $return;
     }
 
+    public function slotMyThings($data) {
+        return parent::slotMyThings(['Action' => '200']);
+    }
+
+
 }

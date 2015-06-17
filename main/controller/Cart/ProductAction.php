@@ -93,7 +93,7 @@ class ProductAction {
                 'cartButton'     => [
                     'id' => \View\Id::cartButtonForProduct($product->getId()),
                 ],
-                'isTchiboProduct' => $product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName(),
+                'isTchiboProduct' => $product->getRootCategory() && 'Tchibo' === $product->getRootCategory()->getName(),
                 'category'        => $this->getCategories($product),
                 'quantity'        => $cartProduct ? $cartProduct->getQuantity() : 0,
                 'isSlot' => (bool)$product->getSlotPartnerOffer(),

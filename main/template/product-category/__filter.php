@@ -87,7 +87,7 @@ return function(
         <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter" action="<?= $baseUrl ?>" method="GET">
             <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
                 <? if ($showParamsButton): ?>
-                    <a class="bFilterToggle btnGrey <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton js-category-v1-filter-otherParamsToggleButton" href="#"><span class="bToggleText">Бренды и параметры</span></a>
+                    <a class="bFilterToggle btnGrey <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton js-category-v1-filter-otherParamsToggleButton" href="#"><!--noindex--><span class="bToggleText">Бренды и параметры</span><!--/noindex--></a>
                 <? endif ?>
 
                 <? if ($priceFilter && $productFilter): ?>
