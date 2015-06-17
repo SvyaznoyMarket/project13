@@ -31,6 +31,7 @@
     <?= $page->slotGoogleAnalytics() ?>
     <?= $page->slotMetaOg() ?>
     <?= $page->slotGifteryJS() ?>
+    <?= $page->slotUserConfig() ?>
 </head>
 
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>

@@ -54,7 +54,7 @@ class PreAction {
 
         \App::scmsClient()->addQuery(
             'api/ab_test/get-active',
-            [],
+            ['tags' => ['site-web']],
             [],
             function($data) {
                 if (isset($data[0])) {
