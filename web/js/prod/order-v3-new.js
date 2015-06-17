@@ -1174,6 +1174,13 @@
                         points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map);
                     ENTER.OrderV3.koModels.push(points);
                     ko.applyBindings(points, val);
+                });
+
+                // Попап с сообщением о минимальной сумма заказа
+                $orderContent.find('.jsMinOrderSumPopup').lightbox_me({
+                    closeClick: false,
+                    closeEsc: false,
+                    centered: true
                 })
 
             }).always(function(){
@@ -1452,6 +1459,13 @@
 	$body.on('click', '.js-oferta-tab', function(){
 		tabsOfertaAction(this)
 	});
+
+    // Попап с сообщением о минимальной сумма заказа
+    $('.jsMinOrderSumPopup').lightbox_me({
+        closeClick: false,
+        closeEsc: false,
+        centered: true
+    });
 
 	// ДЛЯ АБ-ТЕСТА ПО МОТИВАЦИИ ОНЛАЙН-ОПЛАТЫ
 	$body.on('click', '.jsPaymentMethodRadio', function(){

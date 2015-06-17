@@ -836,6 +836,7 @@ ANALYTICS.marinConversionTagJS = function() {
     this.marinSoftwarePageAddJS(marinConversionTagJSHandler);
 };
 ANALYTICS.MyThingsJS = function() {
+    /* Необходимые переменные в глоб. области: mtAdvertiserToken, mtHost, _mt_ready */
     var token = window.mtAdvertiserToken = '1989-100-ru',
         data = $('#MyThingsJS').data('value');
 
