@@ -313,6 +313,8 @@ class DefaultLayout extends Layout {
             if (\App::config()->partners['TagMan']['enabled']) {
                 $return .= '<div id="TagManJS" class="jsanalytics"></div>';
             }
+
+            $return .= $this->slotMyThings(['route' => $routeName]);
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
@@ -325,6 +327,13 @@ class DefaultLayout extends Layout {
         return $this->tryRender('_config');
     }
 
+    public function slotMyThings($data) {
+        if (\App::config()->partners['MyThings']['enabled'] && \App::partner()->getName() == 'mythings') {
+            $data = array_merge(['EventType' => 'Visit'], $data);
+            return sprintf('<div id="MyThingsJS" class="jsanalytics" data-value="%s"></div>', $this->json($data));
+        }
+        return '';
+    }
 
     public function slotSociomantic() {
         if (!\App::config()->partners['sociomantic']['enabled']) return '';
@@ -358,8 +367,8 @@ class DefaultLayout extends Layout {
 
             $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
             if ( $product ) {
-                /** @var @var $product \Model\Product\Entity */
-                $category = $product->getMainCategory();
+                /** @var $product \Model\Product\Entity */
+                $category = $product->getRootCategory();
                 $categories = $product->getCategory();
                 if (!$category) $category = reset($categories);
                 $prod_cats = array_map(function($a){ return $a->getName(); }, $categories);

@@ -26,5 +26,7 @@ $helper = \App::helper();
         <li class="hdlk_i"><a href="/how_get_order" class="hdlk_lk undrl">Доставка</a></li>
     </ul>
 
+    <!--noindex-->
     <?= $page->render('userbar/_userbar', ['class' => 'header_i userbtn js-topbarfix']) ?>
+    <!--/noindex-->
 </div>

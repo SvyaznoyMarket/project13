@@ -6,7 +6,7 @@ return function (
     \Helper\TemplateHelper $helper,
     array $products,
     \Model\Product\Entity $product,
-    array $sender = [],
+    $sender = [],
     $sender2 = ''
 ) {
 

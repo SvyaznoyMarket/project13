@@ -172,13 +172,38 @@
     </div>
 </script>
 
+<script id="tpl-debug-googleAnalyticsCalls-row" type="text/html">
+    <tr>
+        <td>{{event.category}}</td>
+        <td>{{event.action}}</td>
+        <td>{{event.label}}</td>
+        <td>{{event.value}}</td>
+        <td>{{functionName}}</td>
+        <td><div class="debug-panel-item-content-googleAnalyticsCalls-row-functionArguments">{{functionArguments}}</div></td>
+    </tr>
+</script>
+
 <div class="jsDebugPanel debug-panel" data-value="" data-prev-value="">
     <script type="application/json"><?= json_encode($debugData, JSON_UNESCAPED_UNICODE) ?></script>
     <script type="application/json"><?= json_encode($prevDebugData, JSON_UNESCAPED_UNICODE) ?></script>
     <a class="debug-panel-open jsOpenDebugPanelContent" href="#">debug</a>
     <div class="debug-panel-content jsDebugPanelContent">
-        <div class="debug-panel-item-prev" title="Previous document debug">
-            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#"><?= $helper->escape($prevDebugData['server']['value']['REQUEST_URI']) ?></a>
+        <div>
+            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#">Google analytics calls</a>
+            <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
+            <table class="debug-panel-item-content debug-panel-item-content-googleAnalyticsCalls jsDebugPanelItemContent js-debugPanel-googleAnalyticsCalls-content">
+                <tr>
+                    <th title="Event category">Category</th>
+                    <th title="Event action">Action</th>
+                    <th title="Event label">Label</th>
+                    <th title="Event value">Value</th>
+                    <th title="Google analytics function name">Function</th>
+                    <th title="Google analytics function call arguments">Call arguments</th>
+                </tr>
+            </table>
+        </div>
+        <div class="debug-panel-item-prev">
+            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#" title="Previous document debug"><?= $helper->escape($prevDebugData['server']['value']['REQUEST_URI']) ?></a>
             <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
             <table class="debug-panel-item-content jsDebugPanelItemContent jsPrevDebugPanelItemContent"></table>
         </div>
@@ -216,6 +241,22 @@
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
+    .debug-panel-item-content-googleAnalyticsCalls {
+        border-collapse: collapse;
+    }
+
+    .debug-panel-item-content-googleAnalyticsCalls th, .debug-panel-item-content-googleAnalyticsCalls td {
+        padding: 5px;
+        text-align: left;
+        border: 1px solid #ccc;
+    }
+    
+    .debug-panel-item-content-googleAnalyticsCalls-row-functionArguments {
+        max-width: 400px;
+        overflow: auto;
+        white-space: nowrap;
+    }
+
     .debug-panel-item-prev {
         opacity: 0.3;
     }
@@ -234,6 +275,10 @@
         opacity: 0.95;
         /*max-height: 280px;*/
         /*overflow: auto;*/
+    }
+
+    .debug-panel th[title] {
+        cursor: help;
     }
 
     .debug-panel a, .debug-panel a:hover {

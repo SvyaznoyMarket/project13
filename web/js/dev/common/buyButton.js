@@ -23,9 +23,27 @@
 
 		$button.addClass('mLoading');
 
+		var
+			url = $button.attr('href'),
+			sender = ENTER.utils.analytics.productPageSenders.get($button),
+			sender2 = ENTER.utils.analytics.productPageSenders2.get($button)
+		;
+
+		if (sender && JSON.stringify(sender) != JSON.stringify($button.data('sender'))) {
+			for (var key in sender) {
+				if (sender.hasOwnProperty(key)) {
+					url = ENTER.utils.setURLParam('sender[' + key + ']', sender[key], url);
+				}
+			}
+		}
+
+		if (sender2 && sender2 != $button.data('sender2')) {
+			url = ENTER.utils.setURLParam('sender2', sender2, url);
+		}
+
 		// Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
 		$.ajax({
-			url: $button.attr('href'),
+			url: url,
 			type: 'GET',
 			success: function(data) {
 				var

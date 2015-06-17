@@ -249,7 +249,10 @@
     }
 
     if ($jsOrder.length != 0) {
-		if (typeof ENTER.utils.sendOrderToGA == 'function') ENTER.utils.sendOrderToGA($jsOrder.data('value'));
+		ENTER.utils.sendOrderToGA($jsOrder.data('value'));
+		ENTER.utils.analytics.reviews.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+		ENTER.utils.analytics.productPageSenders.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+		ENTER.utils.analytics.productPageSenders2.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
     }
 
 	$(function(){

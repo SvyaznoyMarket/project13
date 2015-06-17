@@ -18,8 +18,6 @@
  * @var $breadcrumbs            array   Хлебные крошки
  * @var $trustfactors           array   Трастфакторы
  * @var $reviewsDataSummary     array   Данные отзывов
- * @var $sprosikupiReviews      array   Данные отзывов
- * @var $shoppilotReviews       array   Данные отзывов
  */
 ?>
 
@@ -33,9 +31,9 @@ if (\App::config()->preview) {
     $isProductAvailable = true;
 }
 
-$buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
-$buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
-$sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '';
+$buySender = $request->get('sender');
+$buySender2 = $request->get('sender2');
+$recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '';
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -80,7 +78,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
                         'name'     => 'retailrocket',
                         'position' => 'ProductMissing',
                     ],
-                    'sender2' => $sender2,
+                    'sender2' => $recommendationSender2,
                 ]) ?>
             <? endif ?>
         <? endif ?>
@@ -125,7 +123,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
                 'name'     => 'enter',
                 'position' => $isProductAvailable ? 'ProductAccessoriesManual' : 'ProductMissing',
             ],
-            'sender2' => $sender2,
+            'sender2' => $recommendationSender2,
         ]) ?>
     <? endif ?>
 
@@ -142,7 +140,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
                 'name'     => 'retailrocket',
                 'position' => $isProductAvailable ? 'ProductAccessories' : 'ProductMissing', // все правильно - так и надо!
             ],
-            'sender2' => $sender2,
+            'sender2' => $recommendationSender2,
         ]) ?>
     <? endif ?>
 
@@ -156,7 +154,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
         <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]) // Характеристики ?>
     <? endif ?>
 
-    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
+    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent]) ?>
 
     <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
@@ -171,7 +169,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
                 'name'     => 'retailrocket',
                 'position' => 'ProductSimilar',
             ],
-            'sender2' => $sender2,
+            'sender2' => $recommendationSender2,
         ]) ?>
     <? endif ?>
 
@@ -183,7 +181,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
 
     <? if (5 !== $product->getStatusId() && (bool)$shopStates): // SITE-3109 ?>
         <div class="bWidgetBuy bWidgetBuy-shops mWidget js-WidgetBuy">
-            <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product, 'sender'  => $buySender, 'sender2'  => $buySender2]) // Доставка ?>
+            <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product, 'sender'  => $buySender, 'sender2'  => $buySender2, 'location'  => 'product-card']) // Доставка ?>
         </div>
     <? endif ?>
 
@@ -200,7 +198,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             <?= $helper->render('cart/__button-product', [
                 'product'  => $product,
                 'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
-                'sender'   => $buySender + [
+                'sender'   => (is_array($buySender) ? $buySender : []) + [
                     'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
                 ],
                 'sender2' => $buySender2,
@@ -210,7 +208,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             <div class="js-showTopBar"></div>
 
             <? if (!count($product->getPartnersOffer()) && (!$isKit || $product->getIsKitLocked())): ?>
-                <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender, 'sender2' => $buySender2]) // Покупка в один клик ?>
+                <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender, 'sender2' => $buySender2, 'location'  => 'product-card']) // Покупка в один клик ?>
             <? endif ?>
 
             <? if (!$isKit || $product->getIsKitLocked()) : ?>
@@ -269,7 +267,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             'name'     => 'retailrocket',
             'position' => 'ProductUpSale',
         ],
-        'sender2' => $sender2,
+        'sender2' => $recommendationSender2,
     ]) ?>
 <? endif ?>
 
@@ -287,7 +285,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             'from'     => 'productPage',
             'position' => $isProductAvailable ? 'Viewed' : 'ProductMissing',
         ],
-        'sender2' => $sender2,
+        'sender2' => $recommendationSender2,
     ]) ?>
 <? endif ?>
 

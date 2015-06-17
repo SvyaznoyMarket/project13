@@ -8,7 +8,7 @@
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    array $sender = null
+    $sender = null
 ) {
     $link = $helper->url('product', [
         'productPath' => $product->getPath(),

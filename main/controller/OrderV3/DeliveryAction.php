@@ -2,6 +2,7 @@
 
 namespace Controller\OrderV3;
 
+use Model\OrderDelivery\Error;
 use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
 
 class DeliveryAction extends OrderV3 {
@@ -30,6 +31,7 @@ class DeliveryAction extends OrderV3 {
                 ];
 
                 $orderDeliveryModel = $this->getSplit($request->request->all());
+                $this->bindErrors($orderDeliveryModel->errors, $orderDeliveryModel);
 
                 if (\App::debug()) {
                     $result['OrderDeliveryRequest'] = json_encode($splitData, JSON_UNESCAPED_UNICODE);
@@ -86,23 +88,7 @@ class DeliveryAction extends OrderV3 {
             }
 
             // вытаскиваем старые ошибки из предыдущих разбиений
-            $oldErrors = $this->session->flash();
-            if ($oldErrors && is_array($oldErrors)) {
-                foreach ($oldErrors as $error) {
-
-                    if (!$error instanceof \Model\OrderDelivery\Error) continue;
-
-                    // распихиваем их по заказам
-                    if (isset($error->details['block_name']) && isset($orderDelivery->orders[$error->details['block_name']])) {
-                        $orderDelivery->orders[$error->details['block_name']]->errors[] = $error;
-                    } else if ($error->isMaxQuantityError() && count($orderDelivery->orders) == 1) {
-                        $ord = reset($orderDelivery->orders);
-                        $orderDelivery->orders[$ord->block_name]->errors[] = $error;
-                    } else if ($error->isMaxQuantityError()) {
-                        $orderDelivery->errors[] = $error;
-                    }
-                }
-            }
+            $this->bindErrors($this->session->flash(), $orderDelivery);
 
             $page = new \View\OrderV3\DeliveryPage();
             $page->setParam('orderDelivery', $orderDelivery);
@@ -366,5 +352,32 @@ class DeliveryAction extends OrderV3 {
             // "code":910,"message":"Не удается добавить подписку, указанный email уже подписан на этот канал рассылок"
             if ($e->getCode() == 910) $subscribeResult = true;
         });
+    }
+
+    /** Распихиваем ошибки из общего блока ошибок по заказам
+     * @param $errors
+     * @param \Model\OrderDelivery\Entity $orderDelivery
+     */
+    private function bindErrors($errors, \Model\OrderDelivery\Entity &$orderDelivery) {
+
+        if (!is_array($errors)) return;
+
+        foreach ($errors as $error) {
+
+            if (!$error instanceof \Model\OrderDelivery\Error) continue;
+
+            // распихиваем их по заказам
+            if (isset($error->details['block_name']) && isset($orderDelivery->orders[$error->details['block_name']])) {
+                // Если кода этой ошибки нет в уже существующих ошибках заказа
+                if (!in_array($error->code, array_map(function(Error $err){ return $err->code; }, $orderDelivery->orders[$error->details['block_name']]->errors))) {
+                    $orderDelivery->orders[$error->details['block_name']]->errors[] = $error;
+                }
+            } else if ($error->isMaxQuantityError() && count($orderDelivery->orders) == 1) {
+                $ord = reset($orderDelivery->orders);
+                $orderDelivery->orders[$ord->block_name]->errors[] = $error;
+            } else if ($error->isMaxQuantityError()) {
+                $orderDelivery->errors[] = $error;
+            }
+        }
     }
 }

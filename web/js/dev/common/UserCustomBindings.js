@@ -9,11 +9,23 @@
 				isBuyable = $elem.data('is-buyable'),
 				statusId = $elem.data('status-id'),
                 noUpdate = $elem.data('noUpdate'),
-				buyUrl = $elem.data('buy-url'),
 				isSlot = $elem.data('is-slot'),
 				colorClass = $elem.data('color-class') || '',
-                sender = $elem.data('sender') || {}
+                sender = $elem.data('sender'),
+                sender2 = $elem.data('sender2')
             ;
+
+			if (sender && typeof sender == 'object') {
+				sender = {sender: sender};
+			} else {
+				sender = {};
+			}
+
+			if (sender2 && typeof sender2 == 'string') {
+				sender2 = {sender2: sender2};
+			} else {
+				sender2 = {};
+			}
 
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
 				$elem
@@ -48,7 +60,7 @@
 					.addClass('js-orderButton jsOneClickButton-new')
 					.addClass(colorClass)
 					.removeClass('jsBuyButton')
-					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', $.extend({productId: productId}, sender)));
+					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', $.extend({productId: productId}, sender, sender2)));
 			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId) && !noUpdate) {
 				$elem
 					.text('В корзине')
@@ -66,7 +78,7 @@
 					.removeClass('mBought')
 					.addClass('js-orderButton jsBuyButton')
 					.addClass(colorClass)
-					.attr('href', buyUrl ? buyUrl : ENTER.utils.generateUrl('cart.product.set', $.extend({productId: productId}, sender)));
+					.attr('href', ENTER.utils.generateUrl('cart.product.set', $.extend({productId: productId}, sender, sender2)));
 			}
 		}
 	};

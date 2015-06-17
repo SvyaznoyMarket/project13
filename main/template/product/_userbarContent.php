@@ -11,8 +11,8 @@ if ($product) {
     $links[] = ['name' => $product->getName(), 'url' => null, 'last' => true];
 }
 
-$productPageSender = \Session\ProductPageSenders::get($product->getUi());
-$productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
+$buySender = $request->get('sender');
+$buySender2 = $request->get('sender2');
 ?>
 
 <div class="topbarfix_crumbs">
@@ -28,9 +28,9 @@ $productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->g
     <?= $helper->render('cart/__button-product', [
         'product'  => $product,
         'onClick'  => $addToCartJS ? $addToCartJS : null,
-        'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
+        'sender'   => $buySender,
+        'sender2'  => $buySender2,
         'location' => 'userbar',
-        'sender2'  => $productPageSender2,
     ]) // Кнопка купить ?>
 
     <? if (!$product->getSlotPartnerOffer() && $product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && (!$product->getKit() || $product->getIsKitLocked())): ?>

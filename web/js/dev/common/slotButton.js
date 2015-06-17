@@ -85,7 +85,8 @@
 
 		var
 			$button = $(this),
-			sender = $button.data('sender') || {},
+			sender = ENTER.utils.analytics.productPageSenders.get($button),
+			sender2 = ENTER.utils.analytics.productPageSenders2.get($button),
 			productArticle = $button.data('product-article'),
 			productPrice = $button.data('product-price'),
 			$popup = $(Mustache.render($('#tpl-cart-slot-form').html(), {
@@ -95,8 +96,8 @@
 				partnerOfferUrl: $button.data('partner-offer-url'),
 				productUrl: $button.data('product-url'),
 				productId: $button.data('product-id'),
-				sender: $button.attr('data-sender'),
-				sender2: $button.data('sender2') || '',
+				sender: JSON.stringify(sender),
+				sender2: sender2,
 				userPhone: String(ENTER.utils.Base64.decode(ENTER.config.userInfo.user.mobile || '')).replace(/^8/, '+7'),
 				userEmail: ENTER.config.userInfo.user.email || '',
 				userName: ENTER.config.userInfo.user.firstName || ''
@@ -198,7 +199,7 @@
 			})
 		});
 
-		ENTER.utils.sendAdd2BasketGaEvent(productArticle, productPrice, true, true, sender.name);
+		ENTER.utils.sendAdd2BasketGaEvent(productArticle, productPrice, true, true, ($button.data('sender') || {}).name);
 
 		$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '1 Вход', catalogPath]);
 

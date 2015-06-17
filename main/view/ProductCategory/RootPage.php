@@ -63,4 +63,13 @@ class RootPage extends Layout {
         return $return;
     }
 
+    public function slotMyThings($data) {
+        /** @var $category \Model\Product\Category\Entity */
+        return parent::slotMyThings([
+            'Action'    => '1011',
+            'Category'  => ($category = $this->getParam('category')) && $category instanceof \Model\Product\Category\Entity ? $category->getName() : null
+        ]);
+    }
+
+
 }

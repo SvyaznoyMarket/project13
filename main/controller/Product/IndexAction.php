@@ -122,9 +122,6 @@ class IndexAction {
             }
         });
 
-        \Session\ProductPageSenders::add($product->getUi(), $request->query->get('sender'));
-        \Session\ProductPageSendersForMarketplace::add($product->getUi(), $request->query->get('sender2'));
-
         // товар для Подари Жизнь
         $lifeGiftProduct =
             ($actionResponse->lifeGiftProductQuery && $actionResponse->lifeGiftProductQuery->response->product)
@@ -145,12 +142,13 @@ class IndexAction {
         $reviewsData =
             $actionResponse->reviewQuery
             ? [
-                'review_list'        => $actionResponse->reviewQuery->response->reviews,
-                'num_reviews'        => $actionResponse->reviewQuery->response->reviewCount,
-                'avg_score'          => $actionResponse->reviewQuery->response->score,
-                'avg_star_score'     => $actionResponse->reviewQuery->response->starScore,
-                'num_users_by_score' => $actionResponse->reviewQuery->response->groupedScoreCount,
-                'page_count'         => $actionResponse->reviewQuery->response->pageCount,
+                'review_list'            => $actionResponse->reviewQuery->response->reviews,
+                'num_reviews'            => $actionResponse->reviewQuery->response->reviewCount,
+                'avg_score'              => $actionResponse->reviewQuery->response->score,
+                'avg_star_score'         => $actionResponse->reviewQuery->response->starScore,
+                'current_page_avg_score' => $actionResponse->reviewQuery->response->currentPageAvgScore,
+                'num_users_by_score'     => $actionResponse->reviewQuery->response->groupedScoreCount,
+                'page_count'             => $actionResponse->reviewQuery->response->pageCount,
             ]
             : []
         ;
@@ -323,22 +321,9 @@ class IndexAction {
         $page->setParam('viewParams', [
             'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
         ]);
-        $page->setGlobalParam('isTchibo', ($product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName()));
+        $page->setGlobalParam('isTchibo', ($product->getRootCategory() && 'Tchibo' === $product->getRootCategory()->getName()));
         $page->setGlobalParam('addToCartJS', $addToCartJS);
         $page->setGlobalParam('similarProducts', $similarProducts);
-
-        $page->setParam('sprosikupiReviews', null);
-        $page->setParam('shoppilotReviews', null);
-        switch (\App::abTest()->getTest('reviews')->getChosenCase()->getKey()) {
-            case 'sprosikupi':
-                $client = new \SprosiKupi\Client(\App::config()->partners['SprosiKupi'], \App::logger());
-                $page->setParam('sprosikupiReviews', $client->query($product->getId()));
-                break;
-            case 'shoppilot':
-                $client = new \ShopPilot\Client(\App::config()->partners['ShopPilot'], \App::logger());
-                $page->setParam('shoppilotReviews', $client->query($product->getId()));
-                break;
-        }
 
         return new \Http\Response($page->show());
     }
@@ -358,7 +343,7 @@ class IndexAction {
 
         $result = [];
 
-        $category = $product->getMainCategory();
+        $category = $product->getRootCategory();
         $cart = \App::user()->getCart();
         try {
             $productType = $category ? \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($category->getToken()) : '';

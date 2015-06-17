@@ -7,7 +7,6 @@
         data-product-id="{{data.productId}}"
         data-product-ui="{{productUi}}"
         data-upsale="{{data.upsale}}"
-        data-buy-url="{{buyUrl}}"
         data-sender="{{&sender}}"
         data-sender2="{{sender2}}"
         data-color-class="{{colorClass}}"
@@ -17,6 +16,7 @@
         {{#productPrice}}data-product-price="{{productPrice}}"{{/productPrice}}
         {{#partnerName}}data-partner-name="{{partnerName}}"{{/partnerName}}
         {{#partnerOfferUrl}}data-partner-offer-url="{{partnerOfferUrl}}"{{/partnerOfferUrl}}
+        {{#location}}data-location="{{location}}"{{/location}}
         {{#data.noUpdate}}data-no-update="{{data.noUpdate}}"{{/data.noUpdate}}
         {{#onClick}}onclick="{{onClick}}"{{/onClick}}
         data-bind="buyButtonBinding: cart"

@@ -6,7 +6,8 @@
 		currentDebugPanelItemConfig = $.parseJSON(debugPanel.find('script').eq(0).html()),
 		currentDebugPanelItemContent = debugPanel.find('.jsCurrentDebugPanelItemContent'),
 		prevDebugPanelItemConfig = $.parseJSON(debugPanel.find('script').eq(1).html()),
-		prevDebugPanelItemContent = debugPanel.find('.jsPrevDebugPanelItemContent');
+		prevDebugPanelItemContent = debugPanel.find('.jsPrevDebugPanelItemContent'),
+		googleAnalyticsCallsContent = debugPanel.find('.js-debugPanel-googleAnalyticsCalls-content');
 	// end of vars
 
 	var
@@ -274,6 +275,10 @@
 			initPanel( outNode, debugInfo );
 		},
 
+		googleAnalyticsCall = function(e, data) {
+			googleAnalyticsCallsContent.append(Mustache.render($('#tpl-debug-googleAnalyticsCalls-row').html(), data));
+		},
+
 		/**
 		 * Сворачивание\Разворачивание значений
 		 */
@@ -348,5 +353,6 @@
 	debugPanel.on('click', '.jsOpenDebugPanelContent', openDebugPanelContent);
 
 	d.ajaxSuccess(ajaxResponse);
+	d.on('googleAnalyticsCall', googleAnalyticsCall);
 
 }(window, document, jQuery, ENTER, Mustache));

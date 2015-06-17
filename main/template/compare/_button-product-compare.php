@@ -14,7 +14,7 @@ $typeId = $product->getType() ? $product->getType()->getId() : null;
      data-type-id="<?= $typeId ?>">
 
     <a id="<?= 'compareButton-' . $id ?>" class="btnCmpr_lk jsCompareLink" href="<?= \App::router()->generate('compare.add', ['productId' => $id, 'location' => 'product']) ?>" data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>" data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>">
-        <span class="btnCmpr_tx">Добавить к сравнению</span>
+        <!--noindex--><span class="btnCmpr_tx">Добавить к сравнению</span><!--/noindex-->
     </a>
 
     <!-- если в сравнении есть несколько товаров из одной категории -->

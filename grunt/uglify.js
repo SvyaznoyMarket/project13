@@ -97,11 +97,6 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'main.min.js'
         },
 
-        orderV3JS: {
-            src: pathDev + 'order-v3/*.js',
-            dest: pathProd + 'order-v3.min.js'
-        },
-
 		orderV3newJS: {
             src: pathDev + 'order-v3-new/*.js',
             dest: pathProd + 'order-v3-new.min.js'
@@ -147,19 +142,9 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'shop.min.js'
         },
 
-        tchiboJS: {
-            src: pathDev + 'tchibo/*.js',
-            dest: pathProd + 'tchibo.min.js'
-        },
-
         watch3dJS: {
             src: pathDev + 'watch3d/*.js',
             dest: pathProd + 'watch3d.min.js'
-        },
-
-        gameSlotsJs: {
-            src: [ pathDev + 'game/slots/jquery.transit.js', pathDev + 'game/slots/slots.js'],
-            dest: pathProd + 'game/slots.min.js'
         },
 
         serviceHaJS: {

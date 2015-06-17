@@ -1,50 +1,3 @@
-;(function( ENTER ) {
-	var utils = ENTER.utils;
-
-	utils.cloneObject = function cloneObject( obj ) {
-		var copy,
-			attr,
-			i,
-			len;
-		
-		// Handle the 3 simple types, and null or undefined
-		if ( obj == null || typeof obj !== 'object' ) {
-			return obj;
-		}
-		
-		// Handle Date
-		if ( obj instanceof Date ) {
-			copy = new Date();
-			copy.setTime(obj.getTime());
-
-			return copy;
-		}
-		
-		// Handle Array
-		if ( obj instanceof Array ) {
-			copy = [];
-			
-			for ( i = 0, len = obj.length; i < len; i++ ) {
-				copy[i] = cloneObject(obj[i]);
-			}
-			
-			return copy;
-		}
-		
-		// Handle Object
-		if ( obj instanceof Object ) {
-			copy = {};
-			
-			for ( attr in obj ) {
-				if ( obj.hasOwnProperty(attr) ) {
-					copy[attr] = cloneObject(obj[attr]);
-				}
-			}
-			
-			return copy;
-		}
-	};
-}(window.ENTER));
 /*
     json2.js
     2013-05-26
@@ -532,69 +485,6 @@ if (typeof JSON !== 'object') {
     }
 }());
 
-//Copyright (c) 2010 Morgan Roderick http://roderick.dk
-var PubSub = {};
-(function(p){
-	"use strict";
-	p.version = "1.0.1";
-	var messages = {};
-	var lastUid = -1;
-	var publish = function( message, data, sync ){
-		if ( !messages.hasOwnProperty( message ) ){
-			return false;
-		}
-		
-		var deliverMessage = function(){
-			var subscribers = messages[message];
-			var throwException = function(e){
-				return function(){
-					throw e;
-				};
-			}; 
-			for ( var i = 0, j = subscribers.length; i < j; i++ ){
-				try {
-					subscribers[i].func( message, data );
-				} catch( e ){
-					setTimeout( throwException(e), 0);
-				}
-			}
-		};
-		
-		if ( sync === true ){
-			deliverMessage();
-		} else {
-			setTimeout( deliverMessage, 0 );
-		}
-		return true;
-	};
-	p.publish = function( message, data ){
-		return publish( message, data, false );
-	};    
-	p.publishSync = function( message, data ){
-		return publish( message, data, true );
-	};
-	p.subscribe = function( message, func ){
-		if ( !messages.hasOwnProperty( message ) ){
-			messages[message] = [];
-		}
-		var token = (++lastUid).toString();
-		messages[message].push( { token : token, func : func } );
-		return token;
-	};
-	p.unsubscribe = function( token ){
-		for ( var m in messages ){
-			if ( messages.hasOwnProperty( m ) ){
-				for ( var i = 0, j = messages[m].length; i < j; i++ ){
-					if ( messages[m][i].token === token ){
-						messages[m].splice( i, 1 );
-						return token;
-					}
-				}
-			}
-		}
-		return false;
-	};
-}(PubSub));
 /**
  * Проверка является ли строка e-mail
  *
@@ -746,934 +636,6 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
 		return data ? fn( data ) : fn;
 	};
 })();
-function brwsr () {
-	var userag      = navigator.userAgent.toLowerCase();
-	this.isAndroid  = userag.indexOf("android") > -1;
-	this.isOSX      = ( userag.indexOf('ipad') > -1 ||  userag.indexOf('iphone') > -1 );
-	this.isOSX4     = this.isOSX && userag.indexOf('os 5') === -1;
-	this.isOpera    = userag.indexOf("opera") > -1;
-	
-	this.isTouch    = this.isOSX || this.isAndroid;
-}
-
-// function mediaLib( jn ) {
-// 	if ( ! jn.length ) {
-// 		return;
-// 	}
-// 	var self = this;
-// 	var popup = jn;
-// 	var gii = null;
-// 	var running360 = false;
-// 	var vis = false;
-	
-// 	this.show = function( ntype, url ) {
-// 		if (! vis ) {
-// 			var currentfunction = function(){};
-// 			switch ( ntype ) {
-// 				case 'image':
-// 					currentfunction = self.openEnormous;
-// 					break;
-// 				case '360':
-// 					currentfunction = self.open360;
-// 					break;
-// 			}
-			
-// 			$(popup).lightbox_me({
-// 				centered: true, 
-// 				onLoad: function() {
-// 						currentfunction( url );
-// 					},
-// 				onClose: function() {
-// 						self.close();
-// 						vis = false;
-// 					},
-// 				reallyBig: true	
-// 			});
-// 			vis = true;
-// 		}
-// 		else { // toggle
-// 			self.close();
-// 			switch ( ntype ) {
-// 				case 'image':
-// 					$('<img>').attr('src', url ).attr('id','gii').appendTo($('.photobox', popup));
-// 					gii = new gigaimage( $('#gii'), 2,  $('.scale', popup));
-// 					gii.addZoom();
-// 					break;
-// 				case '360':
-// 					if( ! running360 ){					
-// 						if( typeof(lkmv.start)!=='undefined' ) {
-// 							lkmv.start();
-// 						}
-// 						running360 = true;
-// 					}
-// 					else{
-// 						if( typeof(lkmv.show)!=='undefined' ) {
-// 							lkmv.show();
-// 						}
-// 					}
-// 					break;
-// 			}
-// 		}
-		
-// 		return false;
-// 	};
-	
-// 	this.close = function() {
-// 		if ( gii ) {
-// 			gii.destroy();
-// 			gii = null;		
-// 			$('#gii').remove();
-// 		}
-// 		if ( running360 && lkmv ) {	
-// 			if( typeof(lkmv.hide)!=='undefined' ) {
-// 				lkmv.hide();
-// 			}
-// 		}
-// 	};
-	
-// 	this.openEnormous = function( url ) {				
-// 		$('<img>').attr('src', url ).attr('id','gii').appendTo($('.photobox', popup));
-// 		gii = new gigaimage( $('#gii'), 2,  $('.scale', popup));
-// 		gii.addZoom();
-// 	};
-	
-// 	this.open360 = function() {	
-// 		if( ! running360 ){					
-// 			if( typeof(lkmv.start)!=='undefined' ) {
-// 				lkmv.start();
-// 			}
-// 			running360 = true;
-// 		} else
-// 			if( typeof(lkmv.show)!=='undefined' ) {
-// 				lkmv.show();
-// 			}
-// 	};
-	
-// } // mediaLib object
-
-/* Credit Brokers */
-var DirectCredit = {
-
-	basketPull : [],
-
-	output : null,
-	input  : null,
-
-	init : function( input, output ) {
-		console.info('DirectCredit');
-		if( !input || !output ) {
-			return 'incorrect input data';
-		}
-		this.input  = input;
-		this.output = output;
-		for( var i=0, l=input.length; i < l; i++ ) {
-			var tmp = {
-				id : input[i].id,
-				price : input[i].price,
-				count : input[i].quantity,
-				type : input[i].type
-			};
-
-			this.basketPull.push( tmp );
-		}
-		this.sendCredit();
-	},
-
-	change : function( message, data ) {
-		var self = DirectCredit;
-		if( data.q > 0 ) {
-			var item = self.findProduct( self.basketPull, data.id );
-			if( item < 0 ) {
-				PubSub.publish( 'bankAnswered', null ); // hack
-				return;
-			}
-			item.count = data.q;
-		} else {
-			var key = self.findProductKey( self.basketPull, data.id );
-			if( key < 0 ) {
-				PubSub.publish( 'bankAnswered', null ); // hack
-				return;
-			}
-			self.basketPull.splice( key, 1 );
-		}
-		self.sendCredit();
-	},
-
-	findProduct : function( array, id) {
-		for( var key=0, lk=array.length; key < lk; key++ ) {
-			if( array[key].id == id ) {
-				return array[key];
-			}
-		}
-		return -1;
-	},
-
-	findProductKey : function( array, id) {
-		for( var key=0, lk=array.length; key < lk; key++ ) {
-			if( array[key].id == id ) {
-				return key;
-			}
-		}
-		return -1;
-	},
-	
-	sendCredit : function(  ) {
-		var self = this;
-		dc_getCreditForTheProduct(
-			'4427',
-			'none',
-			'getPayment', 
-			{ products : self.basketPull },
-			function(result){
-				console.info('sendCredit', self.basketPull);
-
-				if ( result.payment > 0) {
-					self.output.html( window.printPrice( Math.ceil( result.payment ) ) );
-				}
-				else {
-					self.output.parent('.paymentWrap').hide();
-				}
-
-				PubSub.publish( 'bankAnswered', null );
-			}
-		);
-	}
-}; // DirectCredit singleton
-
-
-/* Date object upgrade */
-if ( !Date.prototype.toISOString ) {
-	
-	( function() {
-	
-		function pad(number) {
-			var r = String(number);
-			if ( r.length === 1 ) {
-				r = '0' + r;
-			}
-			return r;
-		}
- 
-		Date.prototype.toISOString = function() {
-			return this.getUTCFullYear() +
-				'-' + pad( this.getUTCMonth() + 1 ) +
-				'-' + pad( this.getUTCDate() ) +
-				'T' + pad( this.getUTCHours() ) +
-				':' + pad( this.getUTCMinutes() ) +
-				':' + pad( this.getUTCSeconds() ) +
-				'.' + String( (this.getUTCMilliseconds()/1000).toFixed(3) ).slice( 2, 5 ) +
-				'Z';
-		};
-  
-	}() );
-}
-
-// function parseISO8601(dateStringInRange) {
-// 	var isoExp = /^\s*(\d{4})-(\d\d)-(\d\d)\s*$/,
-// 		date = new Date(NaN), month,
-// 		parts = isoExp.exec(dateStringInRange);
-
-// 	if (parts) {
-// 		month = +parts[2];
-// 		date.setFullYear(parts[1], month - 1, parts[3]);
-// 		if (month != date.getMonth() + 1) {
-// 			date.setTime(NaN);
-// 		}
-// 	}
-// 	return date.getTime();
-// };
-
-/* MAP Object */
-
-function MapGoogleWithShops( center, templateIWnode, DOMid, updateIWT ) {
-	/* Arguments:
-	 center is a center of a map
-	 templateIWnode is node(jQ) which include template for InfoWindow popup
-	 DOMid is selector (id) for google.maps.Map initialization
-	 updateIWT is a procedure calling each time after marker is clicked
-	 */
-	var self         = this,
-		mapWS        = null,
-		infoWindow   = null,
-		positionC    = null,
-		markers      = [],
-		currMarker   = null,
-		mapContainer = $('#'+DOMid),
-		infoWindowTemplate = templateIWnode.prop('innerHTML');
-
-	self.updateInfoWindowTemplate = function( marker ) {
-		if( typeof(updateIWT) !== 'undefined' ) {
-			updateIWT( marker );
-		}
-		infoWindowTemplate = templateIWnode.prop('innerHTML');
-	};
-
-	function create() {
-		positionC = new google.maps.LatLng(center.latitude, center.longitude);
-		var options = {
-			zoom: 11,
-			center: positionC,
-			scrollwheel: false,
-			mapTypeId: google.maps.MapTypeId.ROADMAP,
-			mapTypeControlOptions: {
-				style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-			}
-		};
-		mapWS      = new google.maps.Map( document.getElementById( DOMid ), options );
-		infoWindow = new google.maps.InfoWindow({
-			maxWidth: 400,
-			disableAutoPan: false
-		});
-	}
-
-	this.showInfobox = function( markerId ) {
-		if( currMarker ){
-			currMarker.setVisible(true); // show preceding marker
-		}
-		var marker = markers[markerId].ref;
-		currMarker = marker;
-		var item = markers[marker.id];
-		marker.setVisible(false); // hides marker
-		self.updateInfoWindowTemplate( item );
-		infoWindow.setContent( infoWindowTemplate );
-		infoWindow.setPosition( marker.position );
-		infoWindow.open( mapWS );
-		google.maps.event.addListener( infoWindow, 'closeclick', function() {
-			marker.setVisible(true);
-		});
-	};
-
-	this.hideInfobox = function() {
-		infoWindow.close();
-	};
-
-	var handlers = [];
-
-	this.addHandlerMarker = function( e, callback ) {
-		handlers.push( { 'event': e, 'callback': callback } );
-	};
-
-	this.showMarkers = function( argmarkers ) {
-		mapContainer.show();
-		$.each( markers, function(i, item) {
-			if( typeof( item.ref ) !== 'undefined' ){
-				item.ref.setMap(null);
-			}
-		});
-		markers = argmarkers;
-		google.maps.event.trigger( mapWS, 'resize' );
-		mapWS.setCenter( positionC );
-		var latMax = 0, longMax = 0, latMin = 90, longMin = 90;
-		var len = 0;
-		$.each( markers, function(i, item) {
-			len ++;
-			if( item.latitude > latMax ){
-				latMax = item.latitude;
-			}
-			if( item.longitude > longMax ){
-				longMax = item.longitude;
-			}
-			if( item.latitude < latMin ){
-				latMin = item.latitude;
-			}
-			if( item.longitude < longMin ){
-				longMin = item.longitude;
-			}
-
-			var marker = new google.maps.Marker({
-				position: new google.maps.LatLng(item.latitude, item.longitude),
-				map: mapWS,
-				title: item.name,
-				icon: '/images/marker.png',
-				id: item.id
-			});
-			google.maps.event.addListener(marker, 'click', function() {
-				self.showInfobox(this.id);
-			});
-			$.each( handlers, function( h, handler ) {
-				google.maps.event.addListener( marker, handler.event, function() {
-					handler.callback(item);
-				});
-			});
-
-			markers[marker.id].ref = marker;
-		});
-		if( len === 1 ) {
-			latMin -= 0.001;
-			latMin -= 0.001;
-			latMax = latMax*1 +  0.001;
-			longMax = longMax*1 + 0.001;
-		}
-		var sw = new google.maps.LatLng( latMin , longMin );
-		var ne = new google.maps.LatLng( latMax , longMax );
-		var bounds = new google.maps.LatLngBounds(sw, ne);
-		if( len ){
-			mapWS.fitBounds(bounds);
-		}
-	};
-
-	this.closeMap = function( callback ) {
-		infoWindow.close();
-		mapContainer.hide('blind', null, 800, function() {
-			if( callback ){
-				callback();
-			}
-		});
-	};
-
-	this.closePopupMap = function( callback ) {
-		infoWindow.close();
-		if( callback ){
-			callback();
-		}
-	};
-
-	this.addHandler = function( selector, callback ) {
-		mapContainer.delegate( selector, 'click', function(e) { //desktops
-			e.preventDefault();
-			callback( e.target );
-		});
-		var bw = new brwsr();
-		if( bw.isTouch ){
-			mapContainer[0].addEventListener("touchstart",  //touch devices
-				function(e) {
-					e.preventDefault();
-					if( e.target.is( selector ) ){
-						callback( e.target );
-					}
-				} , false);
-		}
-	};
-
-	/* main() */
-	create();
-
-} // object MapGoogleWithShops
-
-function MapYandexWithShops( center, templateIWnode, DOMid ) {
-	/* Arguments:
-	 center is a center of a map
-	 templateIWnode is node(jQ) which include template for InfoWindow popup
-	 DOMid is selector (id) for google.maps.Map initialization
-	 */
-	var self         = this,
-		mapWS        = null,
-		infoWindow   = null,
-		positionC    = null,
-		markers      = [],
-		currMarker   = null,
-		mapContainer = $('#'+DOMid),
-		infoWindowTemplate = templateIWnode.prop('innerHTML');
-
-	this.updateInfoWindowTemplate = function( marker ) {
-		// if( updateInfoWindowTemplate )
-		//     updateInfoWindowTemplate( marker )
-		// infoWindowTemplate = templateIWnode.prop('innerHTML')
-	};
-
-	function create() {
-		mapWS = new ymaps.Map(DOMid, {
-			center: [center.latitude, center.longitude],
-			zoom: 10
-		});
-
-		mapWS.controls
-			.add('zoomControl');
-		// setTimeout( function() {
-		//     mapWS = new ymaps.Map(DOMid, {
-		//         center: [center.latitude, center.longitude],
-		//         zoom: 10
-		//     })
-
-		//     mapWS.controls
-		//     .add('zoomControl')
-		//     //.add('typeSelector', { left: 5, top: 15 })// Список типов карты
-		// }, 1200)
-	}
-
-	this.showInfobox = function( markerId ) {
-		markers[markerId].ref.balloon.open();
-	};
-
-	this.hideInfobox = function() {
-		// infoWindow.close()
-	};
-
-	var handlers = [];
-
-	this.addHandlerMarker = function( e, callback ) {
-		// handlers.push( { 'event': e, 'callback': callback } )
-	};
-
-	this.clear = function() {
-		mapWS.geoObjects.each( function( mapObj ) {
-			mapWS.geoObjects.remove(mapObj);
-		});
-	};
-
-	this.showMarkers = function( argmarkers ) {
-		// console.info(argmarkers)
-		mapContainer.show();
-		mapWS.container.fitToViewport();
-		mapWS.setCenter([center.latitude, center.longitude]);
-		self.clear();
-		markers = argmarkers;
-		var myCollection = new ymaps.GeoObjectCollection();
-		$.each( markers, function(i, item) {
-			// Создаем метку и задаем изображение для ее иконки
-			var tmpitem = {
-				id: item.id,
-				name: item.name,
-				address: item.address,
-				link: item.link,
-				regtime: (item.regtime) ? item.regtime : item.regime,
-				regime: (item.regtime) ? item.regtime : item.regime
-			};
-			var marker = new ymaps.Placemark( [item.latitude, item.longitude], tmpitem, {
-					iconImageHref: '/images/marker.png', // картинка иконки
-					iconImageSize: [39, 59],
-					iconImageOffset: [-19, -57]
-				}
-			);
-			myCollection.add(marker);
-			markers[item.id].ref = marker;
-		});
-// console.info(markers)
-		// Создаем шаблон для отображения контента балуна
-		var myBalloonLayout = ymaps.templateLayoutFactory.createClass(templateIWnode.prop('innerHTML').replace(/<%=([a-z]+)%>/g, '$[properties.$1]'));
-
-		// Помещаем созданный шаблон в хранилище шаблонов. Теперь наш шаблон доступен по ключу 'my#superlayout'.
-		ymaps.layout.storage.add('my#superlayout', myBalloonLayout);
-		// Задаем наш шаблон для балунов геобъектов коллекции.
-		myCollection.options.set({
-			balloonContentBodyLayout:'my#superlayout',
-			// Максимальная ширина балуна в пикселах
-			balloonMaxWidth: 350
-		});
-		mapWS.geoObjects.add( myCollection );
-		var bounds = myCollection.getBounds();
-		if( bounds[0][0] !== bounds[1][0] ){ // cause setBounds() hit a bug if only one point
-			mapWS.setBounds( bounds );
-		}
-		else{
-			$.each( markers, function(i, item) {
-				mapWS.setCenter([markers[i].latitude, markers[i].longitude], 14);
-			});
-		}
-	};
-
-	this.showCluster = function( argmarkers ){
-		// console.log('cluster!')
-		// mapContainer.show()
-		// mapWS.container.fitToViewport()
-		mapWS.setCenter([center.latitude, center.longitude]);
-		self.clear();
-		var dots = argmarkers;
-		var clusterer = new ymaps.Clusterer({clusterDisableClickZoom: false, maxZoom:8, synchAdd:true, minClusterSize:1});
-		$.each( dots, function(i, item) {
-			// Создаем метку и задаем изображение для ее иконки
-			var tmpitem = {
-				id: item.id,
-				name: item.name,
-				address: item.address,
-				link: item.link,
-				regtime: (item.regtime) ? item.regtime : item.regime,
-				regime: (item.regtime) ? item.regtime : item.regime
-			};
-			var marker = new ymaps.Placemark( [item.latitude, item.longitude], tmpitem, {
-					iconImageHref: '/images/marker.png', // картинка иконки
-					iconImageSize: [39, 59],
-					iconImageOffset: [-19, -57]
-				}
-			);
-			clusterer.add(marker);
-			dots[i].ref = marker;
-			// console.log(dots)
-		});
-		var myBalloonLayout = ymaps.templateLayoutFactory.createClass(
-			templateIWnode.prop('innerHTML').replace(/<%=([a-z]+)%>/g, '$[properties.$1]')
-		);
-
-		// Помещаем созданный шаблон в хранилище шаблонов. Теперь наш шаблон доступен по ключу 'my#superlayout'.
-		ymaps.layout.storage.add('my#superlayout', myBalloonLayout);
-		// Задаем наш шаблон для балунов геобъектов коллекции.
-		clusterer.options.set({
-			balloonContentBodyLayout:'my#superlayout',
-			// Максимальная ширина балуна в пикселах
-			balloonMaxWidth: 350
-		});
-		mapWS.geoObjects.add(clusterer);
-		mapWS.setZoom(4);
-	};
-
-	this.chZoomCenter = function( center, zoom ) {
-		mapWS.setCenter([center.latitude, center.longitude], zoom, { checkZoomRange: true, duration:800 } );
-	};
-
-	this.closeMap = function( callback ) {
-		// infoWindow.close()
-		mapContainer.hide('blind', null, 800, function() {
-			if( callback ){
-				callback();
-			}
-		});
-	};
-
-	this.closePopupMap = function( callback ) {
-		// infoWindow.close()
-		if( callback ){
-			callback();
-		}
-	};
-
-	this.addHandler = function( selector, callback ) {
-		mapContainer.delegate( selector, 'click', function(e) { //desktops
-			e.preventDefault();
-			callback( e.target );
-		});
-		var bw = new brwsr();
-		if( bw.isTouch ){
-			mapContainer[0].addEventListener("touchstart",  //touch devices
-				function(e) {
-					e.preventDefault();
-					if( e.target.is( selector ) ){
-						callback( e.target );
-					}
-				} , false);
-		}
-	};
-
-	/* main() */
-	create();
-
-} // object MapYandexWithShops
-
-function MapOnePoint( position, nodeId ) {
-	if( !position ){
-		return false;
-	}
-	if( !position.longitude || !position.latitude ){
-		return false;
-	}
-	var self = this;
-
-	var markerPreset = {
-		iconImageHref: '/images/marker.png',
-		iconImageSize: [39, 59],
-		iconImageOffset: [-19, -57]
-	};
-
-	if ($('#staticYMap').length){ //static map for printPage
-		var url = "http://static-maps.yandex.ru/1.x/?";
-		var statType = 'l=map';
-		var statCord = 'll='+position.longitude+','+position.latitude;
-		var statZoom = 'spn=0.004,0.004';
-		var statSize = 'size=650,450'; // it's max value :`(
-		var statPlacemark = 'pt='+position.longitude+','+position.latitude+',pm2dol';
-		var src = url+statCord+'&'+statZoom+'&'+statType+'&'+statSize+'&'+statPlacemark;
-		$('#staticYMap img').attr('src',src);
-	}
-
-	self.yandex = function() {
-		var point = [ position.latitude*1 , position.longitude*1 ];
-		var myMap = new ymaps.Map ( nodeId, {
-			center: point,
-			zoom: 16
-		});
-		myMap.controls.add('zoomControl');
-
-		var myPlacemark = new ymaps.Placemark( point, {}, markerPreset);
-		myMap.geoObjects.add(myPlacemark);
-
-		myMap.zoomRange.get( point ).then( function (range) {
-			myMap.setZoom( range[1] );
-		});
-	};
-
-	self.google = function() {
-		var options = {
-			zoom: 16,
-			// center: position,
-			scrollwheel: false,
-			mapTypeId: google.maps.MapTypeId.ROADMAP,
-			mapTypeControlOptions: {
-				style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-			}
-		};
-
-		var point = new google.maps.LatLng( position.latitude , position.longitude );
-		options.center = point;
-		var map = new google.maps.Map(document.getElementById( nodeId ), options);
-
-		var marker = new google.maps.Marker({
-			position: point,
-			map: map,
-			icon: markerPreset.iconImageHref
-		});
-	};
-
-} // object MapOnePoint
-
-function calcMCenter( shops ) {
-	var latitude = 0, longitude = 0, l = 0;
-	for(var i in shops ) {
-		latitude  += shops[i].latitude*1;
-		longitude += shops[i].longitude*1;
-		l++;
-	}
-	var mapCenter = {
-		latitude  : latitude / l,
-		longitude : longitude / l
-	};
-	return mapCenter;
-}
-
-window.MapInterface = (function() {
-	var vendor, tmplSource;
-
-	return {
-		ready: function( vendorName, tmpl) {
-			var mapReady = $.Deferred();
-			vendor     = vendorName;
-			tmplSource = tmpl;
-			if( vendor==='yandex' ) {
-				ymaps.ready( function() {
-					// console.info('yandexIsReady')
-					PubSub.publish('yandexIsReady');
-					ymaps.isReady = true;
-					mapReady.resolve();
-				});
-			}
-			return mapReady.promise();
-			// if( vendor==='google' ) {
-			//      $LAB.sandbox().script( 'http://maps.google.com/maps/api/js?sensor=false' )
-			// } else // $LAB.sandbox().script( 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' ).wait( function() {
-		},
-
-		init: function( coordinates, mapContainerId, callback, updater ) {
-			// console.log('инитимся..', coordinates, mapContainerId, callback, updater)
-			if( vendor === 'yandex' ) {
-				if( typeof(ymaps)!=='undefined') {
-					// console.info('1')
-					window.regionMap = new MapYandexWithShops(
-						coordinates,
-						tmplSource.yandex,
-						mapContainerId
-					);
-					if( typeof( callback ) !== 'undefined' ) {
-						callback();
-					}
-				}
-				else {
-					// console.info('2')
-					PubSub.subscribe( 'yandexIsReady', function() {
-						window.regionMap = new MapYandexWithShops(
-							coordinates,
-							tmplSource.yandex,
-							mapContainerId
-						);
-						if( typeof( callback ) !== 'undefined' ) {
-							callback();
-						}
-					});
-				}
-			}
-			if( vendor === 'google' ) {
-				window.regionMap = new MapGoogleWithShops(
-					coordinates,
-					tmplSource.google,
-					mapContainerId,
-					updater
-				);
-				if( typeof( callback ) !== 'undefined' ) {
-					callback();
-				}
-			}
-		},
-
-		onePoint: function( coordinates, mapContainerId ) {
-			var mtmp = new MapOnePoint( coordinates, mapContainerId );
-
-			if( vendor === 'yandex' ) {
-				if( typeof(ymaps)!=='undefined' && ymaps.isReady ) {
-					mtmp[vendor]();
-				}
-				else {
-					PubSub.subscribe('yandexIsReady', function() {
-						mtmp[vendor]();
-					});
-				}
-			}
-			if( vendor === 'google' ) {
-				mtmp[vendor]();
-			}
-		},
-
-		getMapContainer: function() {
-			// TODO
-			// return window.regionMap
-		}
-
-		// TODO wrap fn calcMCenter as a method
-	};
-}() ); // singleton
-;(function( ENTER ) {
-	var userUrl = ENTER.config.pageConfig.userUrl,
-		constructors = ENTER.constructors;
-	// end of vars
-
-	
-	/**
-	 * Новый класс по работе с картой
-	 *
-	 * @author	Zaytsev Alexandr
-	 * 
-	 * @this	{CreateMap}
-	 *
-	 * @param	{Object}	nodeId			DOM объект в который необходимо вывести карту
-	 * @param	{Array}		points			Массив точек, которые необходимо вывести на карту
-	 * @param	{Object}	baloonTemplate	Шаблон для балунов на карте
-	 *
-	 * @constructor
-	 */
-	constructors.CreateMap = (function() {
-		'use strict';
-	
-		function CreateMap( nodeId, points, baloonTemplate ) {
-			// enforces new
-			if ( !(this instanceof CreateMap) ) {
-				return new CreateMap(nodeId, points, baloonTemplate);
-			}
-			// constructor body
-			
-			console.info('CreateMap');
-			console.log(points);
-
-			this.points = points;
-			this.template = baloonTemplate ? baloonTemplate.html() : null;
-			this.center = this._calcCenter();
-
-            this.$nodeId = $('#'+nodeId);
-
-			console.log(this.center);
-
-//            var
-//                init = function init() {
-//
-//                };
-//            // end of functions
-//
-//
-//            ymaps.ready(init);
-
-            console.info('ymaps.ready. init map');
-
-            if ( !this.$nodeId.length || this.$nodeId.width() === 0 || this.$nodeId.height() === 0 || this.$nodeId.is('visible') === false ) {
-                console.warn('Do you have a problem with init map?');
-
-                console.log(this.$nodeId.width());
-                console.log(this.$nodeId.height());
-                console.log(this.$nodeId.is('visible'));
-            }
-
-
-            this.mapWS = new ymaps.Map(nodeId, {
-                center: [this.center.latitude, this.center.longitude],
-                zoom: 10
-            });
-
-            this.mapWS.controls.add('zoomControl');
-
-            //this._showMarkers();
-		}
-
-		/**
-		 * Расчет центра карты для исходного массива точек
-		 */
-		CreateMap.prototype._calcCenter = function() {
-			console.info('calcCenter');
-
-			var latitude = 0,
-				longitude = 0,
-				l = 0,
-				i = 0,
-
-				mapCenter = {};
-			// end of vars
-
-			for ( i = this.points.length - 1; i >= 0; i-- ) {
-                if (!this.points[i].latitude || !this.points[i].longitude) continue;
-				latitude  += this.points[i].latitude * 1;
-				longitude += this.points[i].longitude * 1;
-
-				l++;
-			}
-
-			mapCenter = {
-				latitude  : latitude / l,
-				longitude : longitude / l
-			};
-
-			return mapCenter;
-		};
-
-		CreateMap.prototype._showMarkers = function() {
-			var currPoint = null,
-				tmpPlacemark = null,
-				pointsCollection = new ymaps.GeoObjectArray(),
-				pointContentLayout = ymaps.templateLayoutFactory.createClass(this.template), // layout for baloon
-				i;
-			// end of vars
-
-			for ( i = this.points.length - 1; i >= 0; i--) {
-				currPoint = this.points[i];
-                if (!currPoint.latitude || !currPoint.longitude) continue;
-
-				tmpPlacemark = new ymaps.Placemark(
-					// координаты точки
-					[
-						currPoint.latitude,
-						currPoint.longitude
-					],
-
-					// данные для шаблона
-					{
-						id: currPoint.id,
-						name: currPoint.name,
-						address: currPoint.address,
-						link: currPoint.link,
-						regtime: currPoint.regtime,
-						parentBoxToken: currPoint.parentBoxToken,
-						buttonName: currPoint.buttonName
-					},
-
-					// оформление метки на карте
-					{
-						iconImageHref: currPoint.pointImage, // картинка иконки
-						//iconImageHref: '/images/marker.png', // картинка иконки
-						//iconImageSize: [39, 59],
-						//iconImageOffset: [-19, -57]
-					}
-				);
-
-				pointsCollection.add(tmpPlacemark);
-			}
-
-			ymaps.layout.storage.add('my#superlayout', pointContentLayout);
-			pointsCollection.options.set({
-				balloonContentBodyLayout:'my#superlayout',
-				balloonMaxWidth: 350
-			});
-
-			this.mapWS.geoObjects.add(pointsCollection);
-		};
-	
-	
-		return CreateMap;
-	
-	}());
-}(window.ENTER));
-
 /**
  * Валидатор форм
  *
@@ -2305,53 +1267,6 @@ var UpdateUrlString = function(key, value) {
 	}
 };
 String.prototype.addParameterToUrl = UpdateUrlString;
-/**
- * Блокер экрана
- *
- * @requires jQuery, jQuery.lightbox_me, ENTER.utils
- *
- * @author	Zaytsev Alexandr
- *
- * @param	{Object}		noti		Объект jQuery блокера экрана
- * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
- * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
- */
-;(function( ENTER ) {
-	var utils = ENTER.utils;
-	
-	utils.blockScreen = {
-		noti: null,
-		block: function( text ) {
-			var self = this;
-
-			console.warn('block screen');
-
-			if ( self.noti ) {
-				self.unblock();
-			}
-
-			self.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
-			self.noti.appendTo('body');
-
-			self.noti.lightbox_me({
-				centered:true,
-				closeClick:false,
-				closeEsc:false,
-				onClose: function() {
-					self.noti.remove();
-				}
-			});
-		},
-
-		unblock: function() {
-			if ( this.noti ) {
-				console.warn('unblock screen');
-				
-				this.noti.trigger('close');
-			}
-		}
-	};
-}(window.ENTER));
 ;(function(){
     var clone = docCookies.setItem;
     docCookies.setItem = function(){
@@ -3693,30 +2608,6 @@ var toObject = function (o) {
 });
 
 /**
- * IE indexOf fix
- */
-if ( !Array.prototype.indexOf ) {
-	Array.prototype.indexOf = function(elt /*, from*/) {
-		var len = this.length >>> 0,
-			from = Number(arguments[1]) || 0;
-		// end of vars
-		
-		from = (from < 0) ? Math.ceil(from) : Math.floor(from);
-
-		if ( from < 0 ) {
-			from += len;
-		}
-
-		for ( ; from < len; from++ ) {
-			if ( from in this && this[from] === elt ) {
-					return from;
-			}
-		}
-
-		return -1;
-	};
-}
-/**
  * lscache library
  * Copyright (c) 2011, Pamela Fox
  *
@@ -4068,62 +2959,6 @@ if ( !Array.prototype.indexOf ) {
 }));
 
 /**
- * Работа с числами
- * 
- * @requires ENTER.utils
- * @author	Zaytsev Alexandr
- *
- * @param	{Object}	ENTER	Enter namespace
- */
-;(function( ENTER ) {
-
-	console.info('utils.numMethods module init');
-
-	var 
-		utils = ENTER.utils;
-	// end of vars
-	
-	utils.numMethods = (function() {
-		var
-			/**
-			 * Суммирование чисел с плавающей точкой
-			 * WARNING: только для чисел до 2 знака после запятой
-			 * 
-			 * @param	{String}	a	Первое число
-			 * @param	{String}	b	Второе число
-			 * 
-			 * @return	{String}		Результат сложения
-			 */
-			sumDecimal = function sumDecimal( a, b ) {
-
-				var 
-					overA = ( ( parseFloat(a).toFixed(2) ).toString() ).replace(/\./,''),
-					overB = ( ( parseFloat(b).toFixed(2) ).toString() ).replace(/\./,''),
-					overSum = (parseInt(overA, 10) + parseInt(overB, 10)).toString(),
-					firstNums = overSum.substr(0, overSum.length - 2),
-					lastNums = overSum.substr(overSum.length - 2),
-					res;
-				// end of vars
-
-				if ( lastNums === '00' ) {
-					res = firstNums;
-				}
-				else {
-					res = firstNums + '.' + lastNums;
-				}
-
-				return res;
-			};
-		// end of functions
-
-
-		return {
-			sumDecimal: sumDecimal
-		};
-	}());
-
-}(window.ENTER));
-/**
  * Пакетная отправка данных на сервер
  *
  * @author	Zaytsev Alexandr
@@ -4329,7 +3164,7 @@ if ( !Array.prototype.indexOf ) {
 
 		return url;
 	};
-	
+
 	utils.getObjectWithElement = function(array, elementKey, expectedElementValue) {
 		var object = null;
 		if (array) {
@@ -4340,7 +3175,7 @@ if ( !Array.prototype.indexOf ) {
 				}
 			});
 		}
-		
+
 		return object;
 	};
 
@@ -4425,6 +3260,8 @@ if ( !Array.prototype.indexOf ) {
         var	oData = orderData || { orders: [] };
 
 		console.log('[Google Analytics] Start processing orders', oData.orders);
+
+		var productUis = [];
 		$.each(oData.orders, function(i,o) {
 			var googleOrderTrackingData = {};
 			googleOrderTrackingData.transaction = {
@@ -4467,7 +3304,7 @@ if ( !Array.prototype.indexOf ) {
 				// Отправляем RR_покупка не только для retailrocket товаров
 				if (p.sender) {
 					var rrEventLabel = '';
-					// Если товар был куплен из рекомендаций с карточки товаров маркетплейс
+					// Если товар был куплен из рекомендаций с карточки товара маркетплейс
 					if (p.sender2 == 'slot') {
 						rrEventLabel = '_marketplace-slot';
 					} else if (p.sender2 == 'marketplace') {
@@ -4493,6 +3330,8 @@ if ( !Array.prototype.indexOf ) {
 					})();
 				}
 
+				productUis.push(p.ui);
+
 				return {
 					'id': p.id,
 					'name': productName,
@@ -4514,6 +3353,31 @@ if ( !Array.prototype.indexOf ) {
 			console.log('[Google Analytics] Order', googleOrderTrackingData);
 			$body.trigger('trackGoogleTransaction', [googleOrderTrackingData]);
 		});
+
+		// SITE-5466
+		(function() {
+			var
+				action = '',
+				label = '';
+
+			var reviewProducts = ENTER.utils.analytics.reviews.get(productUis);
+            console.log('localstorage', localStorage.getItem('enter.analytics.reviews'));
+            console.log('products ui', productUis);
+            console.log('reviewProducts', reviewProducts);
+
+			if (reviewProducts.length) {
+				for (var i = 0; i < reviewProducts.length; i++) {
+					action += (i > 0 ? '_' : '') + (i + 1) + '_All_' + reviewProducts[i].avgScore + '_Top_' + reviewProducts[i].firstPageAvgScore;
+					label += (i > 0 ? '_' : '') + (i + 1) + '_' + reviewProducts[i].categoryName;
+				}
+
+				$body.trigger('trackGoogleEvent', {
+					category: 'Items_review_transaction',
+					action: action,
+					label: label
+				});
+			}
+		})();
 	};
 
 	utils.sendAdd2BasketGaEvent = function(productArticle, productPrice, isOnlyFromPartner, isSlot, senderName) {
@@ -4551,6 +3415,175 @@ if ( !Array.prototype.indexOf ) {
 
 	utils.getCategoryPath = function() {
 		return document.location.pathname.replace(/^\/(?:catalog|product)\/([^\/]*).*$/i, '$1');
+	};
+
+	var abstractAnalytics = {
+		add: function(storageName, itemData, storageMaxLength) {
+			if (!window.localStorage) {
+				return;
+			}
+
+			try {
+				var data = JSON.parse(localStorage.getItem(storageName)) || [];
+			} catch(e) {
+				data = [];
+			}
+
+			// Поскольку при переполнении переменной удаляются первые товары, важно, чтобы повторное добавление
+			// товара перемещало его в конец массива
+			for (var i = 0; i < data.length; i++) {
+				if (data[i][0] == itemData[0]) {
+					data.splice(i, 1);
+					break;
+				}
+			}
+
+			data.push(itemData);
+
+			while (JSON.stringify(data).length > storageMaxLength) {
+				data.shift();
+			}
+
+			localStorage.setItem(storageName, JSON.stringify(data));
+		},
+		get: function(storageName, itemsIdentifiers) {
+			if (!window.localStorage) {
+				return;
+			}
+
+			try {
+				var data = JSON.parse(localStorage.getItem(storageName)) || [];
+			} catch(e) {
+				data = [];
+			}
+
+			var result = [];
+			for (var i = 0; i < data.length; i++) {
+				if (itemsIdentifiers.indexOf(data[i][0]) != -1) {
+					result.push(data[i]);
+				}
+			}
+
+			return result;
+		},
+		clean: function(storageName) {
+			if (!window.localStorage) {
+				return;
+			}
+
+			localStorage.removeItem(storageName);
+		}
+	};
+
+	utils.analytics = {
+		// SITE-5466
+		reviews: {
+			add: function(productUi, avgScore, firstPageAvgScore, categoryName) {
+				// Размер хранилища выбран на основе исследования из задачи ADM-457 За эталон одной записи была взята
+				// запись "["00203e03-68ce-4a85-8862-8e7cd1542756",8.78,8.78,"Мобильные телефоны"]".
+				return abstractAnalytics.add('enter.analytics.reviews', [productUi, avgScore, firstPageAvgScore, categoryName], 3000);
+			},
+			get: function(productUis) {
+				var result = abstractAnalytics.get('enter.analytics.reviews', productUis);
+				for (var i = 0; i < result.length; i++) {
+					result[i] = {
+						avgScore: result[i][1],
+						firstPageAvgScore: result[i][2],
+						categoryName: result[i][3]
+					};
+				}
+
+				return result;
+			},
+			// Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа
+			// через обычное оформление заказа (не через одноклик или слоты).
+			clean: function() {
+				return abstractAnalytics.clean('enter.analytics.reviews');
+			}
+		},
+		// SITE-5062
+		productPageSenders: {
+			add: function(productUi, sender) {
+				// Размер хранилища выбран на основе исследования из задачи ADM-457 За эталон одной записи была взята
+				// запись "["00203e03-68ce-4a85-8862-8e7cd1542756",{"name":"retailrocket","position":"ProductAccessories","type":"alsoBought","method":"CrossSellItemToItems","from":"cart_rec"}],".
+				if (sender) {
+					return abstractAnalytics.add('enter.analytics.productPageSenders', [productUi, sender], 2500);
+				}
+			},
+			get: function($button) {
+				var sender = $button.data('sender') || {};
+
+				if ($('body').data('template') == 'product_card' && ($button.data('location') == 'product-card' || $button.data('location') == 'userbar')) {
+					var
+						product = $('#jsProductCard').data('value') || {},
+						productPageSender = abstractAnalytics.get('enter.analytics.productPageSenders', [product.ui])
+					;
+
+					productPageSender = (productPageSender[0] ? productPageSender[0][1] : null) || product.oldProductPageSender; // TODO: удалить oldProductPageSender через неделю после релиза SITE-5543
+
+					if (productPageSender && typeof productPageSender == 'object') {
+						function isSenderPresent(sender) {
+							if (sender && typeof sender == 'object') {
+								for (var key in sender) {
+									if (sender.hasOwnProperty(key) && key != 'from' && sender[key]) {
+										return true;
+									}
+								}
+							}
+
+							return false;
+						}
+
+						if (!isSenderPresent(sender)) {
+							sender = productPageSender;
+						}
+					}
+				}
+
+				return sender;
+			},
+			// Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа
+			// через обычное оформление заказа (не через одноклик или слоты).
+			clean: function() {
+				return abstractAnalytics.clean('enter.analytics.productPageSenders');
+			}
+		},
+		// SITE-5072
+		// Используется для сохранения источников переходов, осуществлённых из рекомендаций с карточек товаров
+		// маркетплейс. Используется отдельное хранилище (а не хранилище productPageSenders), т.к. данные источники
+		// не должны перезатирать источники из productPageSenders.
+		productPageSenders2: {
+			add: function(productUi, sender2) {
+				// Размер хранилища выбран на основе исследования из задачи ADM-457. За эталон одной записи была взята
+				// запись "["00203e03-68ce-4a85-8862-8e7cd1542756","marketplace"],".
+				if (sender2) {
+					return abstractAnalytics.add('enter.analytics.productPageSenders2', [productUi, sender2], 1000);
+				}
+			},
+			get: function($button) {
+				var sender2 = $button.data('sender2') || '';
+
+				if ($('body').data('template') == 'product_card' && ($button.data('location') == 'product-card' || $button.data('location') == 'userbar')) {
+					var
+						product = $('#jsProductCard').data('value') || {},
+						productPageSender2 = abstractAnalytics.get('enter.analytics.productPageSenders2', [product.ui])
+					;
+
+					productPageSender2 = (productPageSender2[0] ? productPageSender2[0][1] : null) || product.oldProductPageSender2; // TODO: удалить oldProductPageSender2 через неделю после релиза SITE-5543
+
+					if (productPageSender2 && !sender2) {
+						sender2 = productPageSender2;
+					}
+				}
+
+				return sender2;
+			},
+			// Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа
+			// через обычное оформление заказа (не через одноклик или слоты).
+			clean: function() {
+				return abstractAnalytics.clean('enter.analytics.productPageSenders2');
+			}
+		}
 	};
 
 }(window.ENTER));
