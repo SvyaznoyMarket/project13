@@ -59,6 +59,7 @@ class DeliveryAction {
 
                 $result['page'] = \App::closureTemplating()->render('order-v3-1click/__delivery', [
                     'orderDelivery' => $result['OrderDeliveryModel'],
+                    'shopId'        => $shopId,
                 ]);
 
                 $quantityError = array_filter($result['OrderDeliveryModel']->errors, function(\Model\OrderDelivery\Error $error){ return $error->code == 708; });
