@@ -2,6 +2,7 @@
 
 namespace Controller\OrderV3;
 
+use Model\OrderDelivery\Error;
 use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
 
 class DeliveryAction extends OrderV3 {
@@ -367,7 +368,10 @@ class DeliveryAction extends OrderV3 {
 
             // распихиваем их по заказам
             if (isset($error->details['block_name']) && isset($orderDelivery->orders[$error->details['block_name']])) {
-                $orderDelivery->orders[$error->details['block_name']]->errors[] = $error;
+                // Если кода этой ошибки нет в уже существующих ошибках заказа
+                if (!in_array($error->code, array_map(function(Error $err){ return $err->code; }, $orderDelivery->orders[$error->details['block_name']]->errors))) {
+                    $orderDelivery->orders[$error->details['block_name']]->errors[] = $error;
+                }
             } else if ($error->isMaxQuantityError() && count($orderDelivery->orders) == 1) {
                 $ord = reset($orderDelivery->orders);
                 $orderDelivery->orders[$ord->block_name]->errors[] = $error;
