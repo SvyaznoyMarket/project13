@@ -308,7 +308,7 @@ return function(
 
             <div class="popup_inn">
                 <span class="info">До бесплатного самовывоза и оформления заказа осталось</span>
-                <span class="remain-sum"><?= \App::config()->minOrderSum - $orderDelivery->getProductsSum() ?> <span class="rubl">p</span></span>
+                <span class="remain-sum"><?= \App::config()->minOrderSum - $orderDelivery->getProductsSum() ?>&thinsp;<span class="rubl">p</span></span>
                 <a href="/cart" class="to-cart-lnk">Вернуться в корзину</a>
             </div>
         </div>
