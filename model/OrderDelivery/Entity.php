@@ -124,6 +124,13 @@ namespace Model\OrderDelivery {
             return $products;
         }
 
+        /** Возвращает сумму всех продуктов
+         * @return float
+         */
+        public function getProductsSum() {
+            return array_reduce($this->getProductsById(), function($carry, Product $product){ return $carry + $product->price * $product->quantity; }, 0.0);
+        }
+
         /** Различные странные ситуации, которые надо проверить
          * @throws ValidateException
          */

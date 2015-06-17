@@ -31,6 +31,13 @@ trait ABHelperTrait {
         return false;
     }
 
+    /** Минимальная сумма заказа для Воронежа
+     * @return bool
+     */
+    public static function isOrderMinSumRestriction(){
+        return \App::user()->getRegionId() == 18074;
+    }
+
     public static function getColorClass(Entity $product, $location = null){
         // SITE-5394 цвет кнопки купить
         $colorClass = null;

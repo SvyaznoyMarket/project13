@@ -616,6 +616,11 @@ class AppConfig {
         'regions'   => []
     ];
 
+    /** Минимальная сумма заказа (для Воронежа)
+     * @var int
+     */
+    public $minOrderSum = 0;
+
     public function __construct() {
 
         $this->vkontakteOauth = new OAuth\VkontakteConfig();

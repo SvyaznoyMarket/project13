@@ -56,7 +56,8 @@ $config = array_merge([
         'order.slot.create'         => ['pattern' => $routerRules['order.slot.create']['pattern']],
     ],
     'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS
-    'selfDeliveryLimit'    => $appConfig->self_delivery['limit'] // стоимость платного самовывоза, удалять осторожно, поломается JS
+    'selfDeliveryLimit'    => $appConfig->self_delivery['limit'], // стоимость платного самовывоза, удалять осторожно, поломается JS
+    'minOrderSum'  => \App::abTest()->isOrderMinSumRestriction() ? $appConfig->minOrderSum : false,
 ], isset($config) ? (array)$config : []);
 ?>
 

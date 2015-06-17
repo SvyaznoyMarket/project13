@@ -80,6 +80,12 @@
 			return ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit <= model.cartSum() && docCookies.hasItem('enter_ab_self_delivery_view_info');
 		});
 
+        // Минимальная стоимость заказа
+        model.minOrderSum = ENTER.config.pageConfig.minOrderSum;
+        model.isMinOrderSumVisible = ko.computed(function(){
+            return model.minOrderSum !== false && model.minOrderSum > model.cartSum()
+        });
+
 		return model;
 	}
 

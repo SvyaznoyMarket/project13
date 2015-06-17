@@ -31,6 +31,7 @@ return function (
     if (
         !$product->getIsBuyable()
         || (5 === $product->getStatusId()) // SITE-2924
+        || (\App::abTest()->isOrderMinSumRestriction() && $product->getPrice() < \App::config()->minOrderSum)
     ) {
         return '';
     }

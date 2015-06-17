@@ -11,11 +11,6 @@ $btnTypes = array(
     );
 ?>
 
-<!-- баннер для Воронежа -->
-<div class="header__bann">
-    <div class="close-btn"></div>
-</div>
-<!-- END: баннер для Воронежа -->
 <!-- поиск -->
 <div class="header_c clearfix header_c-v2">
     <a href="/" class="hdlogo sitelogo"></a>

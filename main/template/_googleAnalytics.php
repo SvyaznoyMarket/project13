@@ -38,6 +38,8 @@
 
         _gaq.push(['_setCustomVar', 2, 'authenticated_user', '<?= \App::user()->getEntity() ? 1 : 0 ?>', 3]);
 
+        _gaq.push(['_setCustomVar', 23, 'minOrderSum', '<?= \App::abTest()->isOrderMinSumRestriction() ? 'minOrderSum_enabled' : 'minOrderSum_disabled' ?>', 2]);
+
         <? /* Маркировка продуктов Marketplace */ ?>
         <? if (isset($product) && $product instanceof \Model\Product\Entity): ?>
             <? if ($product->getSlotPartnerOffer()): ?>

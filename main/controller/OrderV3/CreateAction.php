@@ -2,8 +2,10 @@
 
 namespace Controller\OrderV3;
 
+use Http\RedirectResponse;
 use Http\Response;
 use Model\Order\OrderEntity;
+use Model\OrderDelivery\Entity;
 
 class CreateAction extends OrderV3 {
 
@@ -21,6 +23,7 @@ class CreateAction extends OrderV3 {
         $params = [];           // параметры запроса на ядро
 
         $splitResult = $this->session->get($this->splitSessionKey);
+        $orderDelivery = new Entity($splitResult);
 
         if ($this->user->getEntity() && $this->user->getEntity()->getToken()) {
             $params['token'] = $this->user->getEntity()->getToken();
@@ -32,6 +35,11 @@ class CreateAction extends OrderV3 {
 
             if (!isset($splitResult['orders']) || empty($splitResult['orders'])) {
                 throw new \Exception('Ошибка создания заказа: невозможно получить предыдущее разбиение');
+            }
+
+            // Минимальная сумма заказа для Воронежа
+            if (\App::abTest()->isOrderMinSumRestriction() && \App::config()->minOrderSum > $orderDelivery->getProductsSum()) {
+                return new RedirectResponse(\App::router()->generate('cart'));
             }
 
             foreach ($splitResult['orders'] as &$splitOrder) {

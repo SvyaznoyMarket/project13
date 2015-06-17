@@ -303,6 +303,17 @@ return function(
         </form>
     </div>
 
+    <? if (\App::abTest()->isOrderMinSumRestriction() && \App::config()->minOrderSum > $orderDelivery->getProductsSum()) : ?>
+        <div class="popup popup-simple deliv-free-popup jsMinOrderSumPopup" style="display: none;">
+
+            <div class="popup_inn">
+                <span class="info">До бесплатного самовывоза и оформления заказа осталось</span>
+                <span class="remain-sum"><?= \App::config()->minOrderSum - $orderDelivery->getProductsSum() ?> <span class="rubl">p</span></span>
+                <a href="/cart" class="to-cart-lnk">Вернуться в корзину</a>
+            </div>
+        </div>
+    <? endif ?>
+
 </section>
 
 <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json($initialMapCords)?>"></div>
@@ -349,12 +360,4 @@ return function(
     </div>
 </div>
 
-<div class="popup popup-simple deliv-free-popup js-free-delivery" style="display: block;">
-
-    <div class="popup_inn">
-        <span class="info">До бесплатного самовывоза и оформления заказа осталось</span>
-        <span class="remain-sum">179 <span class="rubl">p</span></span>
-        <a href="#" class="to-cart-lnk">Вернуться в корзину</a>
-    </div>
-</div>
 <? };
