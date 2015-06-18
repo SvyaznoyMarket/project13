@@ -283,7 +283,8 @@
 	});
 
     // Баннер про минимальную стоимость заказа
-    $minOrderSumBanner.on('click', function(){
+    $minOrderSumBanner.on('click', function(e){
+        e.preventDefault();
         $minOrderSumBanner.parent().hide();
         sessionStorage && sessionStorage.setItem('minOrderSumBanner', 'hidden')
     });
