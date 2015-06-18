@@ -40,11 +40,9 @@
         <!-- шапка -->
         <div class="header header-new <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?>">
 
-            <? if (\App::abTest()->isOrderMinSumRestriction()) : ?>
-                <div class="header__bann">
-                    <div class="close-btn jsMainOrderSumBannerCloser"></div>
-                </div>
-            <? endif ?>
+            <a class="header__bann <?= \App::abTest()->isOrderMinSumRestriction() ? 'voronezh' : '' ?>" href="<?= \App::abTest()->isOrderMinSumRestriction() ? '/self-points' : '' ?>">
+                <div class="close-btn jsMainOrderSumBannerCloser"></div>
+            </a>
 
             <?= $page->slotTopbar() ?>
 

@@ -290,7 +290,7 @@
 
     if ($minOrderSumBanner.length > 0 && sessionStorage && sessionStorage.getItem('minOrderSumBanner') != 'hidden') {
         setTimeout(function(){
-            $minOrderSumBanner.parent().show();
+            $minOrderSumBanner.parent().addClass('shown');
         }, 1000)
     }
 
