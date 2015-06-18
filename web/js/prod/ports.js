@@ -926,10 +926,10 @@ ANALYTICS.sociaPlusJs = function() {
     var _spapi = _spapi || [];
     _spapi.push(['_partner', 'enter']);
 
-    $LAB.script('enter.api.sociaplus.com/partner.js');
+    $LAB.script('//enter.api.sociaplus.com/partner.js');
 };
 ANALYTICS.sociomanticJS = function () {
-    $LAB.script('eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru' + (ENTER.config.pageConfig.isMobile ? '-m' : ''));
+    $LAB.script('//eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru' + (ENTER.config.pageConfig.isMobile ? '-m' : ''));
 };
 
 // финальная страница оформления заказа
