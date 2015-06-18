@@ -283,14 +283,15 @@
 	});
 
     // Баннер про минимальную стоимость заказа
-    $minOrderSumBanner.on('click', function(){
+    $minOrderSumBanner.on('click', function(e){
+        e.preventDefault();
         $minOrderSumBanner.parent().hide();
         sessionStorage && sessionStorage.setItem('minOrderSumBanner', 'hidden')
     });
 
     if ($minOrderSumBanner.length > 0 && sessionStorage && sessionStorage.getItem('minOrderSumBanner') != 'hidden') {
         setTimeout(function(){
-            $minOrderSumBanner.parent().show();
+            $minOrderSumBanner.parent().addClass('shown');
         }, 1000)
     }
 
