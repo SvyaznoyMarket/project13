@@ -133,6 +133,11 @@
         ga( 'require', 'displayfeatures' );
         ga( 'secondary.require', 'displayfeatures' );
 
+        <? if (\App::user()->getEntity()) : ?>
+            ga('set', '&uid', '<?= \App::user()->getEntity()->getId() ?>');
+            ga('secondary.set', '&uid', '<?= \App::user()->getEntity()->getId() ?>');
+        <? endif ?>
+
     </script>
 
 <? endif ?>
