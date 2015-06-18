@@ -99,7 +99,11 @@
     $('.adfoxWrapper').each(function() {
         var id = this['id'] + '';
         if ( id in ADFOX ) {
-            ADFOX[id](this);
+            try {
+                ADFOX[id](this);
+            } catch (e) {
+                console.warn('ADFOX error',e);
+            }
         }
     });
 

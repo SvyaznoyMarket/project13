@@ -91,7 +91,7 @@ ANALYTICS.gaJS = function(data) {
                 if ( engine ) {
                     //event.preventDefault(); // for debug
                     console.log('GA: Recommended link clicked, engine =', engine);
-                    ga('set', 'dimension1', engine);
+                    //ga('set', 'dimension1', engine);
                 }
             });
 
@@ -108,7 +108,7 @@ ANALYTICS.gaJS = function(data) {
 
             if ( cartData && cartData.sum ) {
                 console.log('event Cart items', cartData.SKUs, cartData.uid, cartData.sum);
-                ga('send', 'event', 'Cart items', cartData.SKUs, cartData.uid, cartData.sum);
+                $body.trigger('trackGoogleEvent', ['Cart items', cartData.SKUs, cartData.uid, cartData.sum]);
             }
         },
 
@@ -162,6 +162,7 @@ ANALYTICS.gaJS = function(data) {
             console.log('GA: send pageview');
             console.log(data.vars);
             ga('send', 'pageview', data.vars); // трекаем весь массив с полями {dimensionN: <*М*>}
+            ga('secondary.send', 'pageview', data.vars); // трекаем весь массив с полями {dimensionN: <*М*>}
         }
 
         /** Событие добавления в корзину */
@@ -180,6 +181,7 @@ ANALYTICS.gaJS = function(data) {
                 regionName = $(this).text();
             console.log('GA: dimension8 (ChangeRegion)', regionName);
             ga('set', 'dimension8', regionName);
+            ga('secondary.set', 'dimension8', regionName);
         });
 
     }
