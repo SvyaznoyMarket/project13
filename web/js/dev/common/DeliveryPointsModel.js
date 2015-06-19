@@ -84,6 +84,7 @@
         self.clearSearchInput = function(){
             self.searchInput('');
             self.searchAutocompleteList.removeAll();
+            map.setBounds(map.geoObjects.getBounds());
         };
 
         self.autocompleteItemClick = function(val) {
