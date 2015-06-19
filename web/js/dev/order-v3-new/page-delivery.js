@@ -499,6 +499,16 @@
             'hitCallback': link
         }]);
 
+    });
+
+    $body.on('change', '.jsDeliveryMapFilters input', function(){
+        var type = $(this).data('type'),
+            val = $(this).next().find('span').text();
+        $body.trigger('trackGoogleEvent', ['pickup_ux', 'filter', type + '_' + val]);
+    });
+
+    $body.on('click', '.jsMapDeliveryList .jsChangePoint', function(){
+        $body.trigger('trackGoogleEvent', ['pickup_ux', 'list_point', 'выбор'])
     })
 
 })(jQuery);
