@@ -11,7 +11,7 @@ use Util\Date;
  */
 class Label {
 
-    const MEDIA_TAG_IMAGE_TOP = 'site-image-hover';
+    const MEDIA_TAG_IMAGE_TOP = '66x23';
     const MEDIA_TAG_RIGHT_SIDE = 'site-right-side';
 
     /** @var string */

@@ -308,7 +308,7 @@ class Repository {
 
                             // пока так, рефакторинг скоро будет
                             if (isset($productData['label']['uid'])) {
-                                $product->setLabel(new Label\Entity([
+                                $product->setLabel(new Label([
                                     'id'        => @$productData['label']['core_id'],
                                     'name'      => @$productData['label']['name'],
                                     'medias'    => @$productData['label']['medias'],
