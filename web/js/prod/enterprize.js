@@ -339,7 +339,6 @@
 
     // показываем описание фишки
     body.on('click', '.js-enterprize-coupon', function() {
-        console.log('click');
         var $self = $(this),
             template = $('#tplEnterprizeForm'),
             templateHint = template.html(),
@@ -364,6 +363,7 @@
             $self.addClass(activeClass);
             $self.closest('.js-enterprize-coupon-parent').append(html);
             $self.siblings('.js-enterprize-coupon-hint-holder').append(html); // карточка товара
+            $hint = $('.js-enterprize-coupon-hint');
             $hint.addClass(selectClass);
 
 			$('.js-phone-mask').each(function() {
@@ -393,7 +393,7 @@
                 if (response.content) {
                     $sliderContainer.removeClass('mLoader').html(response.content);
 
-                    if ( $slider.data('slider').count != 0 ) {
+                    if ( $slider.data('slider') && $slider.data('slider').count != 0 ) {
                         $('.js-ep-slides').show(500);
                     }
                 }
@@ -433,6 +433,23 @@
         $('.js-enterprize-coupon-hint').toggle()
     });
 
+    // Автоматическое раскрытие фишки и скролл к этому элементу
+    $('.js-enterprize-coupon').each(function(i,elem){
+
+        var dataValue = $(elem).data('value');
+
+        if (dataValue && window.location.hash == '#' + dataValue.token) {
+
+            window.onload = function(){
+                setTimeout(function(){
+                    $(elem).trigger('click');
+                    $.scrollTo(elem);
+                }, 10);
+            };
+
+            return false;
+        }
+    });
 
 }(window.ENTER));
 
