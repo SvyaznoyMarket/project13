@@ -376,8 +376,10 @@ class Client {
                                     call_user_func($this->failCallbacks[(string)$query['resources'][0]]);
                                 } else {
                                     // иначе выбросим TimeoutException
-                                    throw new TimeoutException();
+                                    //throw new TimeoutException();
                                 }
+
+                                continue;
                             };
                             //$this->logger->debug(microtime(true) . ': посылаю еще один запрос в ядро: ' . $query['query']['url'], ['curl']);
                             $this->logger->info([
