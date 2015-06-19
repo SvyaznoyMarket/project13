@@ -2,10 +2,13 @@
 
 namespace Controller\OrderV3;
 
+use EnterApplication\CurlTrait;
 use Http\RedirectResponse;
-use \Model\OrderDelivery\ValidateException;
+use Model\OrderDelivery\ValidateException;
+use EnterQuery as Query;
 
 class NewAction extends OrderV3 {
+    use CurlTrait;
 
     /**
      * @param \Http\Request $request
@@ -17,6 +20,9 @@ class NewAction extends OrderV3 {
         $post = null;
 
         try {
+            if ($request->isMethod('GET')) {
+                $this->pushEvent(['step' => 1]);
+            }
 
             if ($request->isMethod('POST')) {
                 $post = $request->request->all();
