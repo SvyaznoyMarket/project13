@@ -63,6 +63,7 @@ class InfoAction {
                     'link'         => \App::router()->generate('user.login'),
                     'id'           => '',
                     'email'        => '',
+                    'mobile'       => '',
                     'isSubscribedToActionChannel' => false,
                 ],
                 'cart'    => [
