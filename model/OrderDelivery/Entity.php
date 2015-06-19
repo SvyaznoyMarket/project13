@@ -282,7 +282,7 @@ namespace Model\OrderDelivery\Entity {
                     case 'self_partner_hermes':
                         $this->marker['iconImageHref'] = '/images/deliv-icon/hermes.png';
                         $this->icon = '/images/deliv-logo/hermes.png';
-                        $this->dropdown_name = 'Постаматы Гермес DPD';
+                        $this->dropdown_name = 'Пункты выдачи Hermes-DPD';
                         break;
                     default:
                         $this->marker['iconImageHref'] = '/images/deliv-icon/enter.png';
