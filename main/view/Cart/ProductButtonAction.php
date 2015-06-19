@@ -23,7 +23,7 @@ class ProductButtonAction {
         $noUpdate = false, // Не обновлять кнопку купить
         $location = null, // местоположение кнопки купить: userbar, product-card, ...
         $sender2 = '',
-        $useNewStyles
+        $useNewStyles = false
     ) {
         $colorClass = AbTest::getColorClass($product, $location);
 
