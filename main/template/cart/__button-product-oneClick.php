@@ -66,9 +66,9 @@ return function (
         $data['url'] = $helper->url('cart.oneClick.product.setList', $urlParams);
     }
 
-    echo '<!--noindex-->' . \App::abTest()->isNewProductPage()
+    echo '<!--noindex-->' . (\App::abTest()->isNewProductPage()
         ? $helper->renderWithMustache('product-page/_buyButtonOneClick', $data)
-        : $helper->renderWithMustache('product/_buyButtonOneClick', $data)
+        : $helper->renderWithMustache('product/_buyButtonOneClick', $data))
         . '<!--/noindex-->';
 
 };

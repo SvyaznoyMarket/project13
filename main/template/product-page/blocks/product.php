@@ -105,7 +105,7 @@ $coupon = $product->coupons ? $product->getBestCoupon() : null;
             <strong class="best-price-popup__tl">Узнать о снижении цены</strong>
 
             <p class="best-price-popup__desc">Вы получите письмо,<br>когда цена станет ниже
-                <?= $helper->formatPrice($product->getPrice() * ($product->getMainCategory() ? $product->getMainCategory()->getPriceChangePercentTrigger() : 1)) ?>&nbsp;<span class="rubl">p</span></p>
+                <?= $helper->formatPrice($product->getPrice() * ($product->getRootCategory() ? $product->getRootCategory()->getPriceChangePercentTrigger() : 1)) ?>&nbsp;<span class="rubl">p</span></p>
 
             <input class="best-price-popup__it textfield jsLowerPriceEmailInput" placeholder="Ваш email" value="">
             <div class="jsLowerPriceError" style="color: #cb3735"></div>
