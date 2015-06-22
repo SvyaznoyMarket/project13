@@ -5,7 +5,7 @@ use \Model\Product\Label;
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    $trustfactors, $videoHtml, $properties3D, $reviewsData, $creditData, $isKit, $buySender, $buySender2, $request
+    $trustfactors, $videoHtml, $properties3D, $reviewsData, $creditData, $isKit, $buySender, $buySender2, $request, $favoriteProductsByUi
 ){
 
 $coupon = $product->coupons ? $product->getBestCoupon() : null;

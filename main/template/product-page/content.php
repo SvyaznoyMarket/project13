@@ -75,7 +75,8 @@ $buySender2 = $request->get('sender2');
         'isKit' => $isKit,
         'buySender' => $buySender,
         'buySender2' => $buySender2,
-        'request' => \App::request()
+        'request' => \App::request(),
+        'favoriteProductsByUi' => $favoriteProductsByUi
     ]) ?>
 	<!--/ карточка товара -->
 
