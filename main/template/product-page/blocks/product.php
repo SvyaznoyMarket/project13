@@ -10,6 +10,8 @@ $f = function(
 
 $coupon = $product->coupons ? $product->getBestCoupon() : null;
 
+$modelName = $product->getModel() && $product->getModel()->getProperty() ? $product->getModel()->getProperty()[0]->getName() : null;
+
 ?>
 
 <div class="product-card clearfix">
@@ -29,6 +31,7 @@ $coupon = $product->coupons ? $product->getBestCoupon() : null;
 
     <dl class="product-card-prop">
         <? foreach ($product->getMainProperties() as $property) : ?>
+            <? if ($property->getName() == $modelName) continue ?>
             <dt class="product-card-prop__i product-card-prop__i--name"><?= $property->getName() ?></dt>
             <dd class="product-card-prop__i product-card-prop__i--val"><?= $property->getStringValue() ?></dd>
         <? endforeach ?>
