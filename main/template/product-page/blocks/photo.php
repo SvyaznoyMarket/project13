@@ -28,23 +28,6 @@ $f = function(
                 <? endif ?>
             </div>
 
-        <!-- если картинок больше 5 добавляем класс product-card-photo-thumbs--slides -->
-        <div class="product-card-photo-thumbs jsProductThumbHolder <?= count($product->getMedias('image')) > 5 ? 'product-card-photo-thumbs--slides' : ''?>"
-            <? if (count($product->getMedias('image')) < 2) : ?>style="display: none"<? endif ?>
-        >
-            <ul class="product-card-photo-thumbs-list jsProductThumbList">
-                <? foreach ($product->getMedias('image') as $key => $photo) : ?>
-                    <li class="product-card-photo-thumbs__i jsProductPhotoThumb <?= $key == 0 ? 'product-card-photo-thumbs__i--act' : '' ?>"
-                        data-middle-img="<?= $photo->getSource('product_500')->url ?>"
-                        data-big-img="<?= $photo->getSource('product_550')->url ?>"
-                        ><img src="<?= $photo->getSource('product_500')->url ?>" class="product-card-photo-thumbs__img" /></li>
-                <? endforeach ?>
-            </ul>
-
-            <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled jsProductThumbBtn" data-dir="+="></div>
-            <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r jsProductThumbBtn" data-dir="-="></div>
-        </div>
-
         <ul class="product-card-media jsProductMediaButton">
             <? if ($product->hasVideo()) : ?>
                 <li class="product-card-media__i product-card-media__i--video"></li>
@@ -77,6 +60,23 @@ $f = function(
                 <!--/ Попап 3D -->
             <? endif ?>
         </ul>
+
+        <!-- если картинок больше 5 добавляем класс product-card-photo-thumbs--slides -->
+        <div class="product-card-photo-thumbs jsProductThumbHolder <?= count($product->getMedias('image')) > 5 ? 'product-card-photo-thumbs--slides' : ''?>"
+            <? if (count($product->getMedias('image')) < 2) : ?>style="display: none"<? endif ?>
+        >
+            <ul class="product-card-photo-thumbs-list jsProductThumbList">
+                <? foreach ($product->getMedias('image') as $key => $photo) : ?>
+                    <li class="product-card-photo-thumbs__i jsProductPhotoThumb <?= $key == 0 ? 'product-card-photo-thumbs__i--act' : '' ?>"
+                        data-middle-img="<?= $photo->getSource('product_500')->url ?>"
+                        data-big-img="<?= $photo->getSource('product_550')->url ?>"
+                        ><img src="<?= $photo->getSource('product_500')->url ?>" class="product-card-photo-thumbs__img" /></li>
+                <? endforeach ?>
+            </ul>
+
+            <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled jsProductThumbBtn" data-dir="+="></div>
+            <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r jsProductThumbBtn" data-dir="-="></div>
+        </div>
 
         <!-- попап просмотра большого изображения -->
         <div class="popup popup--photo jsProductImgPopup" style="display: none">
