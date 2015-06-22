@@ -97,7 +97,7 @@ class ProductButtonAction {
             $data['url'] = $this->getBuyUrl($helper, $product, $sender, $sender2);
             $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton' . $colorClass;
             $data['value'] = 'Купить';
-            if (\App::abTest()->isNewProductPage() && in_array($location, ['product-card', 'userbar'])) $data['value'] = 'В корзину';
+            if (\App::abTest()->isNewProductPage() && in_array($location, ['product-card', 'userbar'])) $data['value'] = 'Купить';
         }
 
         /* Новая карточка товара */
