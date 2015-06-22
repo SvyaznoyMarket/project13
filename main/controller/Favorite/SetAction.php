@@ -56,7 +56,7 @@ class SetAction {
                         [
                             'helper'          => \App::helper(),
                             'product'         => $product,
-                            'favoriteProduct' => new \Model\Favorite\Product\Entity(['uid' => $product->getUi()]),
+                            'favoriteProduct' => new \Model\Favorite\Product\Entity(['uid' => $product->getUi(), 'is_favorite' => true]),
                         ]
                     ),
                 ],
