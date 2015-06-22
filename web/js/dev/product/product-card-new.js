@@ -42,6 +42,9 @@
 
     // Добавление отзыва
     $body.on('click', '.jsReviewAdd', function(){
+        var user = ENTER.config.userInfo.user;
+        if (user.name) $('[name=review\\[author_name\\]]').val(user.name);
+        if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
         $('.jsReviewForm2').lightbox_me($.extend(popupDefaults, {
             onLoad: function() {},
             onClose: function() {}
@@ -222,7 +225,7 @@
         sliderWrapperSelector: '.goods-slider__inn',
         sliderSelector: '.goods-slider-list',
         itemSelector: '.goods-slider-list__i',
-        //categoryItemSelector: '.bGoodsSlider__eCatItem',
+        categoryItemSelector: '.js-product-accessoires-category',
         //pageTitleSelector: '.slideItem_cntr',
         onLoad: function(goodsSlider) {
             ko.applyBindings(ENTER.UserModel, goodsSlider);
@@ -278,7 +281,7 @@
                 //console.log('complete', data);
             }
         });
-    })
+    });
 
     $body.on('click', '.jsReviewVote', function(e){
         var $button = $(e.target),

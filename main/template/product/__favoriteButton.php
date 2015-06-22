@@ -5,7 +5,10 @@ return function(
     \Model\Product\Entity $product,
     \Model\Favorite\Product\Entity $favoriteProduct = null
 ) {
-    if ($favoriteProduct) {
+
+    $isInFavorite = $favoriteProduct && $favoriteProduct->isFavourite;
+
+    if ($isInFavorite) {
         $text = 'Убрать из избранного';
         $url = $helper->url('favorite.delete', ['productUi' => $product->getUi()]);
     } else {
@@ -18,7 +21,7 @@ return function(
     <a
         data-ajax="true"
         href="<?= $url ?>"
-        class="jsFavoriteLink product-card-tools__lk <? if ($favoriteProduct): ?> product-card-tools__lk--active<? endif ?>"
+        class="jsFavoriteLink product-card-tools__lk <? if ($isInFavorite): ?> product-card-tools__lk--active<? endif ?>"
     >
         <i class="product-card-tools__icon i-tools-icon i-tools-icon--wish"></i>
         <span class="product-card-tools__tx"><?= $text ?></span>
