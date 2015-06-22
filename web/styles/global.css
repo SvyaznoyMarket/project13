@@ -8621,7 +8621,7 @@ img[height="0"] {
 }
 @media all {
   .popup-left-container {
-    width: 450px;
+    width: 465px;
     float: left;
   }
   .selShop.deliv-wrap {
@@ -8661,7 +8661,7 @@ img[height="0"] {
     background: -moz-linear-gradient(center bottom, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
   }
   .selShop.deliv-wrap .selShop_r {
-    width: 440px;
+    width: 430px;
     height: 433px;
   }
   .selShop.deliv-wrap .selShop_hh {
