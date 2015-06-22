@@ -1624,6 +1624,25 @@
 				$phoneInput.addClass('textfield-err').siblings('.errTx').show();
 			} else {
 				$phoneInput.removeClass('textfield-err').siblings('.errTx').hide();
+
+				// event
+				try {
+					if ($phoneInput.data('event')) {
+						$.post(
+							'/event/push',
+							{
+								name: 'pushOrderStep',
+								data: {
+									step: 1,
+									user: {
+										phone: $phoneInput.val()
+									}
+								}
+							}
+						);
+						$phoneInput.data('event', false);
+					}
+				} catch (error) { console.error(error); }
 			}
 
 			if (($subscribeInput.is(':checked') || $emailInput.hasClass('jsOrderV3EmailRequired')) && $emailInput.val().length == 0) {

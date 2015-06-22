@@ -98,12 +98,14 @@ class OrderV3 {
                 ],
                 'session_id'  => \App::session()->getId(),
                 'cart'        => [
-                    'products' => array_map(function ($item) {
-                        return [
-                            'uid'      => $item['ui'],
-                            'quantity' => $item['quantity'],
-                        ];
-                    }, $cart->getProductData()
+                    'products' => array_map(
+                        function ($item) {
+                            return [
+                                'uid'      => $item['ui'],
+                                'quantity' => $item['quantity'],
+                            ];
+                        },
+                        $cart->getProductData()
                     ),
                     'sum'      => $cart->getSum(),
                 ],

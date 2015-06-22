@@ -665,6 +665,12 @@ return [
         'action'  => ['Subscribe\Action', 'confirm'],
     ],
 
+    'event.push' => [
+        'pattern' => '/event/push',
+        'action'  => ['EventAction', 'push'],
+        'method'  => ['POST'],
+    ],
+
     // qrcode
     'qrcode' => [
         'pattern' => '/qr/{qrcode}',
