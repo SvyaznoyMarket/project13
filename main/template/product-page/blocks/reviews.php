@@ -58,17 +58,17 @@
         <div class="popup-rating">
             <span class="popup-rating__tl">Оценка:</span>
         <span class="popup-rating__state">
-            <i class="popup-rating__i popup-rating__i--1 jsReviewFormRating"></i>
-            <i class="popup-rating__i popup-rating__i--2 jsReviewFormRating"></i>
-            <i class="popup-rating__i popup-rating__i--3 jsReviewFormRating"></i>
-            <i class="popup-rating__i popup-rating__i--4 jsReviewFormRating"></i>
-            <i class="popup-rating__i popup-rating__i--5 jsReviewFormRating"></i>
+            <i class="popup-rating__i popup-rating__i--1 popup-rating__i--fill jsReviewFormRating"></i>
+            <i class="popup-rating__i popup-rating__i--2 popup-rating__i--fill jsReviewFormRating"></i>
+            <i class="popup-rating__i popup-rating__i--3 popup-rating__i--fill jsReviewFormRating"></i>
+            <i class="popup-rating__i popup-rating__i--4 popup-rating__i--fill jsReviewFormRating"></i>
+            <i class="popup-rating__i popup-rating__i--5 popup-rating__i--fill jsReviewFormRating"></i>
         </span>
         </div>
 
         <form id="reviewForm" class="popup-form popup-form--review form-ctrl" method="post" action="<?= $helper->url('product.review.create', ['productUi' => $product->getUi()]) ?>">
 
-            <input id="reviewFormRating" type="hidden" name="review[score]" value="0">
+            <input id="reviewFormRating" type="hidden" name="review[score]" value="5">
 
             <fieldset class="form-ctrl__line">
                 <div class="form-ctrl__group form-ctrl__group--inline">
