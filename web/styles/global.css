@@ -9856,7 +9856,7 @@ img[height='0'] {
     margin-bottom: 10px;
   }
   .selShop.deliv-wrap .selShop_r {
-    width: 440px;
+    width: 420px;
     height: 433px;
   }
   .deliv-nomatch {
@@ -10144,7 +10144,7 @@ img[height='0'] {
 }
 @media all {
   .popup-left-container {
-    width: 465px;
+    width: 470px;
     float: left;
   }
   .selShop.pick-point {
@@ -10187,7 +10187,7 @@ img[height='0'] {
     z-index: 1;
   }
   .selShop.pick-point .selShop_r {
-    width: 430px;
+    width: 420px;
     height: 433px;
   }
   .selShop.pick-point .pick-point__title,
