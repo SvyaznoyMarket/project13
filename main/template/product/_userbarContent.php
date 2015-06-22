@@ -23,6 +23,7 @@ $buySender2 = $request->get('sender2');
     </div>
 </div>
 
+<? if (!$product->getIsBuyable()) return ?>
 
 <div class="topbarfix_buy js-topbarfixBuy none">
 

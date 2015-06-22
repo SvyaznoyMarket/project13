@@ -15,8 +15,6 @@ $f = function(
 
         <div class="product-card__c">
             
-           
-
             <!-- сравнить, добавить в виш лист -->
             <ul class="product-card-tools">
                 <li class="product-card-tools__i product-card-tools__i--compare js-compareProduct"
@@ -40,41 +38,11 @@ $f = function(
             </ul>
             <!--/ сравнить, добавить в виш лист -->
 
-             <?//= $helper->render('product-page/blocks/variants', ['product' => $product]) ?>
-            <div class="product-card-filter">
-                <span class="product-card-filter__tl">Размеры наматрасника</span>
-
-                <div class="product-card-filter__box">
-                    <div class="filter-btn-box filter-btn-box--bordered" onclick="$(this).toggleClass('filter-btn-box--open')">
-
-                        <div class="filter-btn-box__toggle">
-                            <span class="filter-btn-box__tx">120 х 200 см</span>
-                            <i class="filter-btn-box__corner"></i>
-                        </div>
-
-                        <div class="filter-btn-box__dd" onmouseleave="$(this).parent().removeClass('filter-btn-box--open')">
-                            <div class="filter-btn-box__inn">
-                                <ul class="filter-btn-box-lst">
-                                    <li class="filter-btn-box-lst__i"><a href="/product/furniture/dargez-steganiy-namatrasnik-90-h-200-sm-dargez-ideal-gold-2040502003947-120-h-200-sm" class="filter-btn-box-lst__lk">120 х 200 см</a></li>
-                                    <li class="filter-btn-box-lst__i"><a href="/product/furniture/dargez-steganiy-namatrasnik-90-h-200-sm-dargez-ideal-gold-2040502003961-160-h-200-sm" class="filter-btn-box-lst__lk">160 х 200 см</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                
-            </div>
-
             <div class="buy-online">
                 <a class="btn-type btn-type--olive js-orderButton jsBuyButton" href="#">Сообщить о наличии</a>
             </div>
 
             <?= $helper->render('product-page/blocks/reviews.short', ['reviewsData' => $reviewsData]) ?>
-
-            
-
-            <?= $helper->render('product-page/blocks/variants', ['product' => $product]) ?>
 
             <!-- краткое описание товара -->
             <p class="product-card-desc"><?= $product->getAnnounce() ?></p>
