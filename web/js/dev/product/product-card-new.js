@@ -337,11 +337,11 @@
             $offer = $('.jsProductPartnerOfferDiv');
 
         if (!link) return;
-
+        link = link.replace(/^http:\/\/.*?\//, '/');
 
         if ($offer.length == 0) {
             $.get(link).done(function (doc) {
-                $('<div class="jsProductPartnerOfferDiv" style="height: 90%; background-color: #f5f5f5; overflow-y: scroll;"/>')
+                $('<div class="jsProductPartnerOfferDiv" style="height: 90%; background-color: #fff; overflow-y: scroll;"/>')
                     .append($(doc).find('.content'))
                     .lightbox_me()
             });
