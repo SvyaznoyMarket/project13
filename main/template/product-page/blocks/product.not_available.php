@@ -2,7 +2,7 @@
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    $videoHtml, $properties3D, $reviewsData, $creditData, $isKit, $buySender, $buySender2, $request
+    $videoHtml, $properties3D, $reviewsData, $creditData, $isKit, $buySender, $buySender2, $request, $favoriteProductsByUi
 ){
 
     ?>
