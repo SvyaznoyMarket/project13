@@ -1216,6 +1216,13 @@ class Entity {
         return !empty($this->partnersOffer) && isset($this->partnersOffer[0]['name']) ? $this->partnersOffer[0]['name'] : null;
     }
 
+    /** Возвращает оферту первого партнера
+     * @return string|null
+     */
+    public function getPartnerOfferLink() {
+        return !empty($this->partnersOffer) && isset($this->partnersOffer[0]['offer']) ? $this->partnersOffer[0]['offer'] : null;
+    }
+
     /**
      * @return boolean
      */

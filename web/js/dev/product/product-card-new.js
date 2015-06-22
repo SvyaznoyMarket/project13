@@ -330,4 +330,25 @@
         $bestPricePopup.removeClass('info-popup--open');
     });
 
+    // Оферта партнера
+    $('.jsProductPartnerOffer').on('click', function(e){
+        e.preventDefault();
+        var link = $(this).attr('href'),
+            $offer = $('.jsProductPartnerOfferDiv');
+
+        if (!link) return;
+
+
+        if ($offer.length == 0) {
+            $.get(link).done(function (doc) {
+                $('<div class="jsProductPartnerOfferDiv" style="height: 90%; background-color: #f5f5f5; overflow-y: scroll;"/>')
+                    .append($(doc).find('.content'))
+                    .lightbox_me()
+            });
+        } else {
+            $offer.lightbox_me()
+        }
+
+    })
+
 })(jQuery);

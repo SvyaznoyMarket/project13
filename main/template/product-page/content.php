@@ -57,8 +57,8 @@ $buySender2 = $request->get('sender2');
 	<? if ($product->isOnlyFromPartner() && $product->getPartnerName()) : ?>
         <!-- Информация о партнере -->
         <div class="vandor-offer">
-            <a href="" class="vandor-offer__lk i-info">
-                <span class="i-info__tx">Продавец: <?= $product->getPartnerName() ?></span> <i class="i-info__icon i-product i-product--info-normal"></i>
+            <a href="<?= $product->getPartnerOfferLink() ?>" class="vandor-offer__lk i-info jsProductPartnerOffer" target="_blank">
+                <span class="i-info__tx">Продавец: <?= $product->getPartnerName() ?></span> <i class="i-info__icon i-product i-product--info-normal "></i>
             </a>
         </div>
         <!-- /Информация о партнере -->
