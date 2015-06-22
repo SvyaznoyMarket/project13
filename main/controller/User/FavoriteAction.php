@@ -15,10 +15,9 @@ class FavoriteAction {
     }
 
     /**
-     * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\Response
      */
-    public function get(\Http\Request $request) {
+    public function get() {
         $curl = $this->getCurl();
 
         $favoriteQuery = (new Query\User\Favorite\Get(\App::user()->getEntity()->getUi()))->prepare();
@@ -43,6 +42,9 @@ class FavoriteAction {
                 $products[] = new \Model\Product\Entity($item);
             }
         }
+
+        \RepositoryManager::product()->enrichProductsFromScms($products, 'media');
+        $curl->execute();
 
         $page = new \View\User\FavoritesPage();
         $page->setParam('products', $products);

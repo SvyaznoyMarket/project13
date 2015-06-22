@@ -122,14 +122,14 @@ $buySender2 = $request->get('sender2');
     <? if ($showDescription) : ?>
 
         <!-- характеристики/описание товара -->
-        <div class="product-section clearfix">
+        <div class="product-section clearfix" id="more">
 
             <?= $helper->render('product-page/blocks/properties', ['product' => $product]) ?>
 
             <? if ($hasMedia || $product->getDescription()) : ?>
 
                 <div class="product-section__desc">
-                    <div class="product-section__tl" id="more">Описание</div>
+                    <div class="product-section__tl">Описание</div>
                     <?= $helper->render('product-page/blocks/guides', ['trustfactors' => $trustfactors]) ?>
                     <div class="product-section__content"><?= $product->getDescription() ?></div>
                 </div>
