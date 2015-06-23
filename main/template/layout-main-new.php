@@ -40,7 +40,10 @@
         <!-- шапка -->
         <div class="header header-new <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?>">
 
-            <a class="header__bann <?= \App::abTest()->isOrderMinSumRestriction() ? 'voronezh' : '' ?>" href="/self-points">
+            <a class="header__bann" href="/self-points">
+                <div class="header__bann-tl">БЕСПЛАТНЫЙ САМОВЫВОЗ!</div>
+                 <div class="header__bann-c">* Минимальная сумма заказа — 1990 ₽</div>
+                 <div class="header__bann-msg">25 точек выдачи в <?= \App::abTest()->isOrderMinSumRestriction() ? 'Воронеже' : 'Название города' ?></div>
                 <div class="close-btn jsMainOrderSumBannerCloser"></div>
             </a>
 
