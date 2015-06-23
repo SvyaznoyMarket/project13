@@ -27,7 +27,7 @@ return function(
     foreach ($order->possible_points as $token => $points) {
         foreach ($points as $point) {
             $p = $point['point'];
-            $dataValue['points'][$token][] = [
+            $pointData = [
                 'id' => $p->id,
                 'name' => $p->name,
                 'address' => $helper->noBreakSpaceAfterDot($p->address),
@@ -46,8 +46,28 @@ return function(
                 'listName'  => $p->listName,
                 'subway'    => $p->subway
             ];
+
             $pointsCost[] = $point['cost'];
             $nearestDays[] = $point['nearestDay'];
+
+            /* Хотфикс для разделения иконок Pickpoint */
+            /* SITE-5703 TODO remove */
+            if (strpos($p->name, 'Постамат') === 0) {
+                $tokenPostamat = $token . '_postamat';
+                $pointData['marker']['iconImageHref'] = '/images/deliv-icon/pickpoint-postamat.png';
+                $pointData['icon'] = '/images/deliv-logo/pickpoint-postamat.png';
+                $pointData['dropdownName'] = 'Постаматы PickPoint';
+                $pointData['token'] = $tokenPostamat;
+                if (!array_key_exists($tokenPostamat, $order->possible_points)) {
+                    $order->possible_points[$tokenPostamat] = [];
+                    $newPoint = new \Model\OrderDelivery\Entity\Point(['token' => $tokenPostamat]);
+                    $newPoint->dropdown_name = 'Постаматы Pickpoint';
+                    $orderDelivery->points[$tokenPostamat] = $newPoint;
+                }
+                $dataValue['points'][$tokenPostamat][] = $pointData;
+            } else {
+                $dataValue['points'][$token][] = $pointData;
+            }
         }
     }
 
@@ -91,7 +111,9 @@ return function(
                         <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
                             <div class="fltrBtnBox_dd_inn">
                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
-                                    <? foreach ($order->possible_points as $token => $points) : ?>
+                                    <? /* Хотфикс для разделения иконок Pickpoint */
+                                     /* SITE-5703 TODO remove (was $order->possible_points) */ ?>
+                                    <? foreach (array_intersect_key($order->possible_points, $dataValue['points']) as $token => $points) : ?>
 
                                         <div class="fltrBtn_ln ">
                                             <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput"

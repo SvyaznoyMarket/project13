@@ -40,9 +40,7 @@
         <!-- шапка -->
         <div class="header header-new <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?>">
 
-            <a class="header__bann <?= \App::abTest()->isOrderMinSumRestriction() ? 'voronezh' : '' ?>" href="/self-points">
-                <div class="close-btn jsMainOrderSumBannerCloser"></div>
-            </a>
+            <?= $page->render('main/banner.pickup') ?>
 
             <?= $page->slotTopbar() ?>
 
