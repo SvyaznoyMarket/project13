@@ -68,7 +68,6 @@ return function(
             } else {
                 $dataValue['points'][$token][] = $pointData;
             }
-
         }
     }
 
@@ -112,7 +111,9 @@ return function(
                         <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
                             <div class="fltrBtnBox_dd_inn">
                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
-                                    <? foreach ($order->possible_points as $token => $points) : ?>
+                                    <? /* Хотфикс для разделения иконок Pickpoint */
+                                     /* SITE-5703 TODO remove (was $order->possible_points) */ ?>
+                                    <? foreach (array_intersect_key($order->possible_points, $dataValue['points']) as $token => $points) : ?>
 
                                         <div class="fltrBtn_ln ">
                                             <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput"
