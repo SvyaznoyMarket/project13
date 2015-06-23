@@ -180,16 +180,7 @@ class Repository {
                 }
             );
 
-            $productIds = call_user_func(function() use (&$chunk) {
-                $return = [];
-                foreach ($chunk as $ids) {
-                    $return = array_merge($return, $ids);
-                }
-
-                return array_unique($return);
-            });
-
-            $this->prepareProductsMediasByIds($productIds, $medias);
+            $this->prepareProductsMediasByIds($chunk, $medias);
         }
 
         $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
