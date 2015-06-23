@@ -241,7 +241,7 @@ class DeliveryAction {
         return $responseData;
     }
 
-    public function map (\Http\Request $request, $productId) {
+    public function map ($productId, $productUi) {
 
         $result = [
             'success' => false
@@ -272,7 +272,8 @@ class DeliveryAction {
                 'html'      => \App::templating()->render('order-v3/common/_map',
                     ['dataPoints' => $map,
                         'visible' => true,
-                        'class'   => 'jsDeliveryMapPoints'
+                        'class'   => 'jsDeliveryMapPoints',
+                        'productUi' => $productUi
                     ])
             ];
         } else {

@@ -341,7 +341,7 @@ return [
     ],
     // Карта со всеми точками самовывоза
     'product.map' => [
-        'pattern' => '/ajax/product/map/{productId}',
+        'pattern' => '/ajax/product/map/{productId}/{productUi}',
         'action'  => ['Product\DeliveryAction', 'map']
     ],
 

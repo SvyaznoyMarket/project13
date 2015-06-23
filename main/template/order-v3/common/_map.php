@@ -165,7 +165,7 @@
                                     <a
                                         href=""
                                         class="btn-type btn-type--buy jsOneClickButton-new jsOneClickButtonOnDeliveryMap"
-                                        <? if (isset($product)) : ?>data-product-ui="<?= $product->getUi() ?>"<? endif ?>
+                                        <? if (isset($productUi)) : ?>data-product-ui="<?= $productUi ?>"<? endif ?>
                                         data-bind="attr: { 'data-shop': id }">Купить</a>
                                 </div>
                                 </td>

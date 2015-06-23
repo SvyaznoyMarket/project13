@@ -110,6 +110,7 @@
     $body.on('click', '.jsShowDeliveryMap', function(){
 
         var productId = $(this).data('product-id'),
+            productUi = $(this).data('product-ui'),
             $div = $('.jsProductPointsMap');
 
         // Если нет пунктов самовывоза
@@ -126,7 +127,7 @@
 
         if ($div.data('xhr')) return;
 
-        $.ajax('/ajax/product/map/' + productId, {
+        $.ajax('/ajax/product/map/' + productId + '/' + productUi, {
             dataType: 'json',
             beforeSend: function(){
                 $div.data('xhr', true);

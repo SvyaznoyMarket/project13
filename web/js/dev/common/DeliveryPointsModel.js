@@ -18,7 +18,8 @@
         '<td class="pick-point-item__info pick-point-item__info--nobtn">'+
         '<div class="pick-point-item__date" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
         '<div class="pick-point-item__price"><span >{{ humanCost }}</span> {{# showRubles }}<span class="rubl">p</span></div>{{/ showRubles }}'+
-        '</td></tr></tbody></table>';
+        '</td></tr></tbody></table>',
+        productUi = $('#product-info').data('ui');
 
     ENTER.DeliveryPoints = function DeliveryPointsF (points, mapParam) {
 
@@ -260,7 +261,8 @@
                 'style': 'display: block',
                 'data-shop': point.id,
                 'data-token': point.token,
-                'data-blockname': point.orderToken
+                'data-blockname': point.orderToken,
+                'data-product-ui': productUi
             }
         )[0].outerHTML;
 
