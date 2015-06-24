@@ -62,9 +62,16 @@ namespace EnterApplication\Action\ProductCard
 
             // каналы подписок
             $subscribeChannelQuery = (new Query\Subscribe\Channel\Get())->prepare();
-
+            
             // выполнение запросов
             $curl->execute();
+            
+            call_user_func(function() use (&$productQuery, &$regionQuery, &$productNextQuery) {
+                $productUi = $productQuery->response->product['ui'];
+                if (!$productUi) return;
+
+                $productNextQuery = (new Query\Product\Next\GetByUi($productUi, $regionQuery->response->region['id']))->prepare();
+            });
 
             call_user_func(function() use (&$productQuery, &$userQuery, &$productViewEventQuery) {
                 $productUi = $productQuery->response->product['ui'];
@@ -221,6 +228,13 @@ namespace EnterApplication\Action\ProductCard
             // выполнение запросов
             $curl->execute();
 
+            call_user_func(function() use (&$productNextQuery, &$regionQuery, &$nextProductsQuery) {
+                $productUis = array_merge($productNextQuery->response->beforeProductUis, $productNextQuery->response->afterProductUis);
+                if (!$productUis) return;
+
+                $nextProductsQuery = (new Query\Product\GetByUiListV3($productUis, $regionQuery->response->region['id']))->prepare();
+            });
+            
             // описание товара из scms
             call_user_func(function() use (&$productQuery, &$productDescriptionQueries, &$relatedProductQueries, &$lifeGiftProductQuery) {
                 $uis = [];
@@ -293,6 +307,7 @@ namespace EnterApplication\Action\ProductCard
             $response->reviewQuery = $reviewQuery;
             $response->categoryQuery = $categoryQuery;
             $response->lifeGiftProductQuery = $lifeGiftProductQuery;
+            $response->nextProductsQuery = $nextProductsQuery;
             $response->couponQuery = $couponQuery;
 
             \Debug\Timer::stop('curl');
@@ -366,5 +381,7 @@ namespace EnterApplication\Action\ProductCard\Get
         public $lifeGiftProductQuery;
         /** @var Query\Product\Coupon\GetCouponByProductsUi */
         public $couponQuery;
+        /** @var Query\Product\GetByUiListV3|null */
+        public $nextProductsQuery;
     }
 }
