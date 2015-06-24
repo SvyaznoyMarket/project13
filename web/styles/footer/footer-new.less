@@ -3,6 +3,16 @@
 
 .footer {
 
+    &-menu-wrap{
+        width: @full-size;
+        background-color: @typLightGray;
+    }
+
+    &-wrap {
+        width: 960px;
+        margin: 0 auto;
+    }
+
     &_t {
         background: @white;
     }
@@ -36,11 +46,11 @@
     }
     // информация о компании
     &_cmpn {
-        margin: 0 0 10px;
+        margin: 0 auto 10px;
         padding: 11px 0;
         .table();
-        width: @full-size;
-        background-color: @typLightGray;
+        width: 960px;
+
         &_i {
             .table-cell();
             padding: 0 52px 0 10px;
