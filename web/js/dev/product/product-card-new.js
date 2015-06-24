@@ -82,7 +82,7 @@
     if ($tabs.length) {
         $window.on('scroll', function(){
             var fixedClass = 'pp-fixed';
-            if ($window.scrollTop() - 110 > tabsOffset) {
+            if ($window.scrollTop() - 100 > tabsOffset) {
                 $tabs.addClass(fixedClass);
                 $epFishka.addClass('fadeIn');
                 $userbar.addClass(fixedClass);
@@ -100,7 +100,7 @@
         var hash = $(this).attr('href');
         e.preventDefault();
         window.location.hash = hash;
-        window.scrollTo(0, $(hash).offset().top - 100);
+        window.scrollTo(0, $(hash).offset().top - 105);
     });
 
     $body.on('click', '.jsOneClickButtonOnDeliveryMap', function(){

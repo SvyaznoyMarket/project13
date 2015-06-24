@@ -203,8 +203,7 @@ $buySender2 = $request->get('sender2');
 	<!--/ похожие товары -->
 
 	<!-- вы смотрели -->
-	<div class="product-section product-section--inn">
-<!--         <div class="product-section__h3">Вы смотрели</div>-->
+	<div class="product-section product-section--inn" style="margin-top: 40px;">
         <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
             <?= $helper->render('product/__slider', [
                 'type'      => 'viewed',
