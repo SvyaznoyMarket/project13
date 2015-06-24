@@ -105,7 +105,8 @@ class ShowAction {
         }
 
         if ($product->isGifteryCertificate()) $productItem['price'] = 'от ' . \App::config()->partners['Giftery']['lowestPrice'];
-        if ($tag = $product->getTagByUi(Tag::UID_SOBERI_SAM)) $productItem['stateLabel'] = ['name' => $tag->name];
+
+        if ($tag = $product->getTagByUi(Tag::UID_SOBERI_SAM)) $productItem['stateLabel'] = ['name' => $tag->name, 'inStore' => true];
 
         return $productItem;
     }
