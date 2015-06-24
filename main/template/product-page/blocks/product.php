@@ -30,8 +30,13 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <p class="product-card-desc"><?= $product->getAnnounce() ?></p>
 
     <dl class="product-card-prop">
-        <? foreach ($product->getMainProperties() as $property) : ?>
+        <? foreach ($product->getMainProperties() as $i => $property) : ?>
             <? if ($property->getName() == $modelName) continue ?>
+            <? if ($i == 5) : ?>
+                <dt class="product-card-prop__i product-card-prop__i--name">
+                    <a href="#more" onclick="$('.jsScrollSpyMoreLink').trigger('click'); return false;">Все характеристики</a>
+                </dt>
+            <? break; endif; ?>
             <dt class="product-card-prop__i product-card-prop__i--name"><?= $property->getName() ?></dt>
             <dd class="product-card-prop__i product-card-prop__i--val"><?= $property->getStringValue() ?></dd>
         <? endforeach ?>
