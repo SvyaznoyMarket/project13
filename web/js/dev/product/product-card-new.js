@@ -353,6 +353,13 @@
             $offer.lightbox_me()
         }
 
+    });
+
+    // Таблица размеров в лайтбоксе
+    $body.on('click', '.jsImageInLightBox', function(e){
+        e.preventDefault();
+        var imageLink = $(this).data('href');
+        $('<div />', {'style': 'background-color: #fff'}).append($('<img />', { src: imageLink})).lightbox_me({destroyOnClose: true, centered: true});
     })
 
 })(jQuery);
