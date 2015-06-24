@@ -155,13 +155,11 @@
 					map.container.fitToViewport();
 
                     // добавляем точки на карту
-                    $.each(mapData.points, function(token){
-                        for (var i = 0; i < mapData.points[token].length; i++) {
-                            try {
-                                map.geoObjects.add(new ENTER.Placemark(mapData.points[token][i], true));
-                            } catch (e) {
-                                console.error('Ошибка добавления точки на карту', e);
-                            }
+                    $.each(mapData.points, function(i, point){
+                        try {
+                            map.geoObjects.add(new ENTER.Placemark(point, true));
+                        } catch (e) {
+                            console.error('Ошибка добавления точки на карту', e, point);
                         }
                     });
 
