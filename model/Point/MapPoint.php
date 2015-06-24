@@ -5,6 +5,8 @@ namespace Model\Point;
 
 class MapPoint extends BasicPoint {
 
+    const POSTAMAT_SUFFIX = '_postamat';
+
     /** @var string Токен точки (shops, pickpoint) */
     public $token;
     /** @var string */
@@ -13,7 +15,7 @@ class MapPoint extends BasicPoint {
     public $latitude;
     /** @var float */
     public $longitude;
-    /** @var string */
+    /** @var array */
     public $marker;
     /** @var string */
     public $icon;
@@ -49,11 +51,24 @@ class MapPoint extends BasicPoint {
         if (isset($data['listName'])) $this->listName = $data['listName'];
 
         $this->humanNearestDay = $this->humanizeDate();
+        $this->postamatFix();
 
     }
 
     public function humanizeDate() {
         return \App::helper()->humanizeDate(\DateTime::createFromFormat('Y-m-d', $this->nearestDay));
+    }
+
+    /**
+     * Фикс для разделения точек Pickpoint на постаматы и ПВЗ
+     */
+    private function postamatFix() {
+        if (strpos($this->name, 'Постамат') === 0 && strpos($this->token, 'pickpoint') !== false) {
+            $this->marker['iconImageHref'] = '/images/deliv-icon/pickpoint-postamat.png';
+            $this->icon = '/images/deliv-logo/pickpoint-postamat.png';
+            $this->dropdownName = 'Постаматы PickPoint';
+            $this->token .= self::POSTAMAT_SUFFIX;
+        }
     }
 
 }

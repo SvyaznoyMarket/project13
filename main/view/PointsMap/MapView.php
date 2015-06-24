@@ -5,7 +5,8 @@ namespace View\PointsMap;
 use \Model\OrderDelivery\Entity\Order as SingleOrder;
 use \Model\OrderDelivery\Entity as Order;
 use \Model\Point\MapPoint as Point;
-use Model\Product\Delivery\ProductDelivery;
+use \Model\Product\Delivery\ProductDelivery;
+use \Model\Point\MapPoint;
 
 class MapView {
 
@@ -49,20 +50,19 @@ class MapView {
         switch ($token) {
             case 'self_partner_pickpoint_pred_supplier':
             case 'self_partner_pickpoint':
-//                $this->marker['iconImageHref'] = '/images/deliv-icon/pickpoint.png';
-//                $this->icon = '/images/deliv-logo/pickpoint.png';
-                return 'Точки самовывоза Pickpoint';
+                return 'Пункты выдачи Pickpoint';
                 break;
             case 'self_partner_svyaznoy_pred_supplier':
             case 'self_partner_svyaznoy':
             case 'shops_svyaznoy':
-//                $this->marker['iconImageHref'] = '/images/deliv-icon/svyaznoy.png';
-//                $this->icon = '/images/deliv-logo/svyaznoy.png';
                 return 'Магазины Связной';
                 break;
+            case 'self_partner_hermes_pred_supplier':
+            case 'self_partner_hermes':
+                return 'Пункты выдачи Hermes-DPD';
+                break;
             default:
-//                $this->marker['iconImageHref'] = '/images/deliv-icon/enter.png';
-//                $this->icon = '/images/deliv-logo/enter.png';
+                if (strpos($token, MapPoint::POSTAMAT_SUFFIX) !== false) return 'Постаматы Pickpoint';
                 return 'Магазины Enter';
         }
     }
