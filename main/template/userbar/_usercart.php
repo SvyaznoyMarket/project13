@@ -34,10 +34,33 @@
                 </tbody>
             </table>
         </div>
+        <!-- для кнопки с иконкой btnBuy-inf -->
+        <div class="btnBuy quickOrder" data-bind="css: {'btnBuy-inf': infoIconVisible() }, visible: !isMinOrderSumVisible()"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
 
-        <div class="minicart__buy">
-            <a href="<?= $page->url('order') ?>" class="minicart__btn btn-type btn-type--buy btn-type--longer">Оформить заказ</a>
+        <div class="buyInfo" data-bind="visible: !infoIconVisible() && infoBlock_1Visible() ">
+            До бесплатного самовывоза осталось
+            <div class="buyInfo_pr"><span data-bind="text: ENTER.config.pageConfig.selfDeliveryLimit - cartSum()">175</span> <span class="rubl">p</span></div>
+            <a class="buyInfo_lk jsAbSelfDeliveryLink" href="/slices/all_labels">Выбрать товары по суперценам</a> >
         </div>
+
+        <div class="buyInfo" data-bind="visible: !infoIconVisible() && infoBlock_2Visible() ">
+            <div class="buyInfo_self">Самовывоз<br/>БЕСПЛАТНО</div>
+        </div>
+
+        <? if (\App::abTest()->isOrderMinSumRestriction()) : ?>
+        <!-- Минимальная сумма заказа -->
+        <div class="deliv-free-info" data-bind="visible: isMinOrderSumVisible()">
+            <span class="deliv-free-info__intro">До бесплатного самовывоза и оформления заказа осталось</span>
+            <span class="deliv-free-info__remain-sum"><span data-bind="text: minOrderSum - cartSum()"><?= \App::config()->minOrderSum ?></span>&thinsp;<span class="rubl">p</span></span>
+            <a href="/slices/all_labels" class="deliv-free-info__sale-lnk">Выбрать товары по суперцене</a>
+        </div>
+
+        <div class="deliv-free-info completed" data-bind="visible: !isMinOrderSumVisible()">
+            <span class="deliv-free-info__intro">Самовывоз</span>
+            <span class="deliv-free-info__alert">БЕСПЛАТНО</span>
+        </div>
+        <? endif ?>
+
     </div>
 
     <div class="hintDd"><!-- если похожии товары есть то добавляем класс mhintDdOn -->

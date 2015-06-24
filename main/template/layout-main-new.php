@@ -40,6 +40,8 @@
         <!-- шапка -->
         <div class="header header-new <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?>">
 
+            <?= $page->render('main/banner.pickup') ?>
+
             <?= $page->slotTopbar() ?>
 
             <?= $page->slotSearchBar() ?>

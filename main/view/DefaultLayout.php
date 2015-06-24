@@ -328,7 +328,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotMyThings($data) {
-        if (\App::config()->partners['MyThings']['enabled'] && \App::partner()->getName() == 'mythings') {
+        if (\App::config()->partners['MyThings']['enabled']) {
             $data = array_merge(['EventType' => 'Visit'], $data);
             return sprintf('<div id="MyThingsJS" class="jsanalytics" data-value="%s"></div>', $this->json($data));
         }

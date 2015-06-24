@@ -870,12 +870,14 @@
 					$currentMap.append(ENTER.OrderV31Click.$map.show());
 					map.container.fitToViewport();
 
-                    // добавляем невидимые точки на карту
-                    $.each(mapData.points, function(i, point){
-                        try {
-                            map.geoObjects.add(new ENTER.Placemark(point, false));
-                        } catch (e) {
-                            console.error('Ошибка добавления точки на карту', e);
+                    // добавляем точки на карту
+                    $.each(mapData.points, function(token){
+                        for (var i = 0; i < mapData.points[token].length; i++) {
+                            try {
+                                map.geoObjects.add(new ENTER.Placemark(mapData.points[token][i], true));
+                            } catch (e) {
+                                console.error('Ошибка добавления точки на карту', e);
+                            }
                         }
                     });
 
@@ -885,11 +887,11 @@
                     } else {
                         map.setBounds(map.geoObjects.getBounds());
                         // точки становятся видимыми только при увеличения зума
-                        map.events.once('boundschange', function(event){
+                        /*map.events.once('boundschange', function(event){
                             if (event.get('oldZoom') < event.get('newZoom')) {
                                 map.geoObjects.each(function(point) { point.options.set('visible', true)})
                             }
-                        })
+                        })*/
                     }
 
 				}

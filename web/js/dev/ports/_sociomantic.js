@@ -1,5 +1,5 @@
 ANALYTICS.sociomanticJS = function () {
-    $LAB.script('eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru' + (ENTER.config.pageConfig.isMobile ? '-m' : ''));
+    $LAB.script('//eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru' + (ENTER.config.pageConfig.isMobile ? '-m' : ''));
 };
 
 // финальная страница оформления заказа

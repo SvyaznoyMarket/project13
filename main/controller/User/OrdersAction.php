@@ -97,9 +97,14 @@ class OrdersAction {
                 }
             });
 
-            $products = \RepositoryManager::product()->getCollectionById(
-                array_map(function(\Model\User\Order\Entity $order) { return $order->getAllProductsIds(); }, $orders)
-            );
+            $products = call_user_func(function() use (&$orders) {
+                $ids = [];
+                foreach ($orders as $order) {
+                    $ids = array_merge($ids, $order->getAllProductsIds());
+                }
+
+                return $ids ? \RepositoryManager::product()->getCollectionById($ids) : [];
+            });
             foreach ($products as $product) {
                 $products_by_id[$product->getId()] = $product;
             }

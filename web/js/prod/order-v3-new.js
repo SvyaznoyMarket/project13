@@ -728,6 +728,18 @@
             }
         });
 
+        E.map.geoObjects.events.add('click', function () {
+            $body.trigger('trackGoogleEvent', ['pickup_ux', 'map_point', 'клик'])
+        });
+
+        E.map.geoObjects.events.add('hintopen', function () {
+            $body.trigger('trackGoogleEvent', ['pickup_ux', 'map_point', 'наведение'])
+        });
+
+        $body.on('click', '.js-order-map .jsChangePoint', function(){
+            $body.trigger('trackGoogleEvent', ['pickup_ux', 'map_point', 'выбор'])
+        });
+
         $.each($('.jsNewPoints'), function(i,val) {
             var pointData = JSON.parse($(this).find('script.jsMapData').html()),
                 points = new ENTER.DeliveryPoints(pointData.points, E.map);
@@ -1179,6 +1191,13 @@
                         points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map);
                     ENTER.OrderV3.koModels.push(points);
                     ko.applyBindings(points, val);
+                });
+
+                // Попап с сообщением о минимальной сумма заказа
+                $orderContent.find('.jsMinOrderSumPopup').lightbox_me({
+                    closeClick: false,
+                    closeEsc: false,
+                    centered: true
                 })
 
             }).always(function(){
@@ -1220,12 +1239,14 @@
                 $currentMap.append(ENTER.OrderV3.$map.show());
                 map.container.fitToViewport();
 
-                // добавляем невидимые точки на карту
-                $.each(mapData.points, function(i, point){
-                    try {
-                        map.geoObjects.add(new ENTER.Placemark(point, false));
-                    } catch (e) {
-                        console.error('Ошибка добавления точки на карту', e);
+                // добавляем точки на карту
+                $.each(mapData.points, function(token){
+                    for (var i = 0; i < mapData.points[token].length; i++) {
+                        try {
+                            map.geoObjects.add(new ENTER.Placemark(mapData.points[token][i], true));
+                        } catch (e) {
+                            console.error('Ошибка добавления точки на карту', e);
+                        }
                     }
                 });
 
@@ -1235,11 +1256,11 @@
                 } else {
                     map.setBounds(map.geoObjects.getBounds());
                     // точки становятся видимыми только при увеличения зума
-                    map.events.once('boundschange', function(event){
+                    /*map.events.once('boundschange', function(event){
                         if (event.get('oldZoom') < event.get('newZoom')) {
                             map.geoObjects.each(function(point) { point.options.set('visible', true)})
                         }
-                    })
+                    })*/
                 }
 
             }
@@ -1461,6 +1482,13 @@
 		tabsOfertaAction(this)
 	});
 
+    // Попап с сообщением о минимальной сумма заказа
+    $('.jsMinOrderSumPopup').lightbox_me({
+        closeClick: false,
+        closeEsc: false,
+        centered: true
+    });
+
 	// ДЛЯ АБ-ТЕСТА ПО МОТИВАЦИИ ОНЛАЙН-ОПЛАТЫ
 	$body.on('click', '.jsPaymentMethodRadio', function(){
 		var $this = $(this),
@@ -1506,6 +1534,16 @@
             'hitCallback': link
         }]);
 
+    });
+
+    $body.on('change', '.jsDeliveryMapFilters input', function(){
+        var type = $(this).data('type'),
+            val = $(this).next().find('span').text();
+        $body.trigger('trackGoogleEvent', ['pickup_ux', 'filter', type + '_' + val]);
+    });
+
+    $body.on('click', '.jsMapDeliveryList .jsChangePoint', function(){
+        $body.trigger('trackGoogleEvent', ['pickup_ux', 'list_point', 'выбор'])
     })
 
 })(jQuery);

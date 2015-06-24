@@ -159,6 +159,10 @@ class IndexAction {
         // получаем рейтинги
         $reviewsDataSummary = [];
         if (\App::config()->product['reviewEnabled']) {
+            if(!empty($reviewsData['avg_score'])) $product->setAvgScore($reviewsData['avg_score']);
+            if(!empty($reviewsData['avg_star_score'])) $product->setAvgStarScore($reviewsData['avg_star_score']);
+            if(!empty($reviewsData['num_reviews'])) $product->setNumReviews($reviewsData['num_reviews']);
+
             $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData);
         }
 
