@@ -360,6 +360,8 @@
         e.preventDefault();
         var imageLink = $(this).data('href');
         $('<div />', {'style': 'background-color: #fff'}).append($('<img />', { src: imageLink})).lightbox_me({destroyOnClose: true, centered: true});
-    })
+    });
+
+    $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); })
 
 })(jQuery);
