@@ -3,19 +3,31 @@
 namespace Model\Tag;
 
 class Entity {
+
+    const UID_SOBERI_SAM = 'f68c0fd6-7ed0-4d93-b3ff-cb4b8017f788';
+
+    /** @var string */
+    public $uid;
     /** @var int */
-    private $id;
+    public $id;
     /** @var string */
-    private $name;
+    public $name;
     /** @var string */
-    private $token;
+    public $token;
     /** @var Category\Entity[] */
-    private $category;
+    public $category;
 
     public function __construct(array $data = []) {
-        if (array_key_exists('id', $data)) $this->setId($data['id']);
-        if (array_key_exists('name', $data)) $this->setName($data['name']);
-        if (array_key_exists('token', $data)) $this->setToken($data['token']);
+        if (array_key_exists('uid', $data)) $this->uid = $data['uid'];
+
+        if (array_key_exists('id', $data)) $this->id = $data['id'];
+        if (array_key_exists('core_id', $data)) $this->id = $data['core_id']; // scms
+
+        if (array_key_exists('name', $data)) $this->name = $data['name'];
+
+        if (array_key_exists('token', $data)) $this->token = $data['token'];
+        if (array_key_exists('slug', $data)) $this->token = $data['token']; // scms
+
         if (array_key_exists('product', $data) && !empty($data['product']['category_statistics'])) {
             foreach ((array)$data['product']['category_statistics'] as $categoryData) {
                 $this->addCategory(new Category\Entity($categoryData));
@@ -23,24 +35,12 @@ class Entity {
         };
     }
 
-    public function setId($id) {
-        $this->id = (int)$id;
-    }
-
     public function getId() {
         return $this->id;
     }
 
-    public function setName($name) {
-        $this->name = (string)$name;
-    }
-
     public function getName() {
         return $this->name;
-    }
-
-    public function setToken($token) {
-        $this->token = (string)$token;
     }
 
     public function getToken() {

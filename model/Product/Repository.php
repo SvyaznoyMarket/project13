@@ -2,6 +2,7 @@
 
 namespace Model\Product;
 
+use \Model\Tag\Entity as Tag;
 
 class Repository {
 
@@ -291,6 +292,7 @@ class Repository {
                     'media' => 1,
                     'label' => 1,
                     'category' => 1,
+                    'tag'   => 1
                 ],
                 [],
                 function($data) use($products) {
@@ -332,6 +334,12 @@ class Repository {
                                         $product->setRootCategory(new \Model\Product\Category\Entity($category));
                                         break;
                                     }
+                                }
+                            }
+
+                            if (isset($productData['tags']) && is_array($productData['tags'])) {
+                                foreach ($productData['tags'] as $tagData) {
+                                    $product->addTag(new Tag($tagData));
                                 }
                             }
                         }

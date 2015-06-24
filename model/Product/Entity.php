@@ -698,6 +698,18 @@ class Entity {
     }
 
     /**
+     * @param $uid
+     *
+     * @return \Model\Tag\Entity|null
+     */
+    public function getTagByUi($uid) {
+        foreach ($this->tag as $tag) {
+            if ($tag->uid == $uid) return $tag;
+        }
+        return null;
+    }
+
+    /**
      * @param string $tagline
      */
     public function setTagline($tagline) {
