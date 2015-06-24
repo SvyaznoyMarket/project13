@@ -201,9 +201,15 @@ class IndexAction {
         }
 
         // SITE-5035
-        // похожие товары
         $similarProducts = [];
-
+        if ($actionResponse->nextProductsQuery->response->products) {
+            call_user_func(function() use(&$actionResponse, &$similarProducts) {
+                foreach ($actionResponse->nextProductsQuery->response->products as $product) {
+                    $similarProducts[] = new \Model\Product\Entity($product);
+                }
+            });
+        }
+        
         // набор пакеты
         $kit = [];
         $kitProducts = [];
