@@ -5584,7 +5584,7 @@ img[height='0'] {
   .topbarfix_log {
     position: relative;
     z-index: 101;
-    max-width: 120px;
+    max-width: 200px;
     white-space: nowrap;
   }
   .topbarfix_log:after {
@@ -5627,7 +5627,7 @@ img[height='0'] {
   .topbarfix_log_lk {
     display: table-cell;
     overflow: hidden;
-    max-width: 200px;
+    max-width: 195px;
     height: 50px;
     padding-left: 15px;
     vertical-align: middle;
