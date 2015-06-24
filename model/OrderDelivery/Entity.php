@@ -124,6 +124,13 @@ namespace Model\OrderDelivery {
             return $products;
         }
 
+        /** Возвращает сумму всех продуктов
+         * @return float
+         */
+        public function getProductsSum() {
+            return array_reduce($this->getProductsById(), function($carry, Product $product){ return $carry + $product->price * $product->quantity; }, 0.0);
+        }
+
         /** Различные странные ситуации, которые надо проверить
          * @throws ValidateException
          */
@@ -275,7 +282,7 @@ namespace Model\OrderDelivery\Entity {
                     case 'self_partner_hermes':
                         $this->marker['iconImageHref'] = '/images/deliv-icon/hermes.png';
                         $this->icon = '/images/deliv-logo/hermes.png';
-                        $this->dropdown_name = 'Постаматы Гермес DPD';
+                        $this->dropdown_name = 'Пункты выдачи Hermes-DPD';
                         break;
                     default:
                         $this->marker['iconImageHref'] = '/images/deliv-icon/enter.png';

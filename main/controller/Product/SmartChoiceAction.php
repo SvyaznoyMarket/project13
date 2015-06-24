@@ -73,6 +73,16 @@ class SmartChoiceAction {
                 // Запрашиваем продукты
                 \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
+                call_user_func(function() use (&$recommendedProducts) {
+                    foreach ($recommendedProducts as &$products) {
+                        foreach ($products as $i => $product) {
+                            if (!$product instanceof \Model\Product\Entity) {
+                                unset($products[$i]);
+                            }
+                        }
+                    }
+                });
+
                 foreach ($recommendedProducts as $value) {
                     \RepositoryManager::product()->setMediasForProducts($value, $medias);
                 }

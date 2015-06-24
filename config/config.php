@@ -480,6 +480,8 @@ $c->self_delivery['enabled'] = true;
 $c->self_delivery['limit'] = 500;
 $c->self_delivery['regions'] = [119623, 93746, 14974];
 
+$c->minOrderSum = 1990;
+
 $c->preview = false;
 
 $c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
