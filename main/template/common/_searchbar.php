@@ -77,16 +77,18 @@ $btnTypes = array(
                 <!-- саджест поиска -->
                 <div class="searchdd jsSearchbarResults" style="display: none;" data-bind="visible: searchResultsVisibility() && searchInput().length > 2 && !isNoSearchResult()">
                     <div class="searchdd_t" data-bind="visible: searchResultCategories().length > 0"><span class="searchdd_t_tx" >Категории</span></div>
-                        <!-- ko foreach:  searchResultCategories -->
-                        <a href="" class="searchdd_lk jsSearchSuggestCategory" data-bind="attr: { href: link }"><span class="undrlh" data-bind="text: name"></span></a>
-                        <!-- /ko -->
+                    <!-- ko foreach:  searchResultCategories -->
+                    <a href="" class="searchdd_lk jsSearchSuggestCategory" data-bind="attr: { href: link }"><span class="undrlh" data-bind="text: name"></span></a>
+                    <!-- /ko -->
                     <div class="searchdd_t" data-bind="visible: searchResultProducts().length > 0"><span class="searchdd_t_tx">Товары</span></div>
-                        <!-- ko foreach:  searchResultProducts -->
-                        <a href="" class="searchdd_lk jsSearchSuggestProduct" data-bind="attr: { href: link }">
+                    <!-- ko foreach:  searchResultProducts -->
+                    <a href="" class="searchdd_lk jsSearchSuggestProduct" data-bind="attr: { href: link }">
+                        <span class="searchdd_img-wrap">
                             <img alt="" class="searchdd_img" data-bind="attr: { src: image }" />
-                            <span class="searchdd_tx"><span class="undrlh" data-bind="text: name"></span></span>
-                        </a>
-                        <!-- /ko -->
+                        </span>
+                        <span class="searchdd_tx"><span class="undrlh" data-bind="text: name"></span></span>
+                    </a>
+                    <!-- /ko -->
                     </a>
                 </div>
                 <!--/ саджест поиска -->
