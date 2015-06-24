@@ -391,7 +391,11 @@
 
             xhr.done(function(response) {
                 if (response.content) {
-                    $sliderContainer.removeClass('mLoader').html(response.content);
+                    console.log($sliderContainer);
+                    $sliderContainer.removeClass('mLoader').html(response.content)
+                        .find('.mLoader').removeClass('mLoader');
+
+                    $sliderContainer.find('.js-slider').goodsSlider();
 
                     if ( $slider.data('slider') && $slider.data('slider').count != 0 ) {
                         $('.js-ep-slides').show(500);
@@ -400,7 +404,6 @@
             });
             xhr.always(function() {
                 body.data('enterprizeSliderXhr', null);
-                $slider.goodsSlider();
             });
 
             body.data('enterprizeSliderXhr', xhr);
