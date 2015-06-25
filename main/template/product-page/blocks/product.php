@@ -151,6 +151,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
                     'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
                 ],
             'sender2' => $buySender2,
+            'noUpdate'  => true,
             'location' => 'product-card',
         ]) // Кнопка купить ?>
     </div>
