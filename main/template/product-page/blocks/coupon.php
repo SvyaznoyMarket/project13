@@ -15,7 +15,8 @@ $f = function(
     <div class="ep js-pp-ep-fishka">
 
         <div class="ep__fishka js-enterprize-coupon"
-             data-value="<?= $helper->json(array_merge(CouponTrait::getCouponData($coupon),['slider' => [], 'isProductCard' => true])) ?>">%</div>
+             data-value="<?= $helper->json(array_merge(CouponTrait::getCouponData($coupon),['slider' => [], 'isProductCard' => true])) ?>">
+            <?= $coupon->getIsCurrency() ? '<span class="rubl">p</span>' : '%' ?></div>
 
         <div class="ep__desc">Фишка со скидкой <?= $discount ?> на этот товар</div>
 
