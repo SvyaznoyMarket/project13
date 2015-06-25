@@ -1,16 +1,28 @@
+<?
+/**
+ * @var $points Model\Point\ScmsPoint[]
+ * @var $partners []
+ * @var $page View\Content\DeliveryMapPage
+ */
+$helper = \App::helper();
+?>
+
+<?= $helper->jsonInScriptTag($points, 'pointsJSON') ?>
+<?= $helper->jsonInScriptTag($partners, 'partnersJSON') ?>
+
 <!---->
 <div class="delivery-page__info clearfix">
     <div class="delivery-region">
         <span class="delivery-region__msg">Ваш регион</span>
-        <span class="delivery-region__current">Москва и Московская область</span>
-        <a href="#" class="delivery-region__change-lnk"><span class="delivery-region__change-inn">Изменить</span></a>
+        <span class="delivery-region__current"><?= \App::user()->getRegion()->getName() ?></span>
+        <a href="#" class="delivery-region__change-lnk"><span class="delivery-region__change-inn jsChangeRegion">Изменить</span></a>
     </div>
     <div class="deliv-ctrls">
     <!-- Поиск такой же как в одноклике -->
         <div class="deliv-search">
             <div class="deliv-search__input-wrap">
                 <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро"/>
-                <div class="deliv-search__clear" data-bind="click: clearSearchInput, visible: searchInput ">×</div>
+                <div class="deliv-search__clear">×</div>
             </div>
             <!-- Саджест такой же как в одноклике -->
             <div class="deliv-suggest" style="display:none">
@@ -22,190 +34,37 @@
     </div>
 </div>
 <div class="delivery-map-wrap">
+
     <!-- Чтобы фон был без градиента - удаляем класс gradient-->
     <ul class="delivery-logo-lst gradient">
-        <li class="delivery-logo-lst-i active">
-            <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/logo1.png">
-            <!-- картинка для плоского фона - другая: <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/logo1-plain.png"> -->
-            <div class="delivery-logo-lst-i__close">×</div>
-        </li>
-        <li class="delivery-logo-lst-i">
-            <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/logo2.png">
-            <!-- картинка для плоского фона - другая: <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/logo2-plain.png"> -->
-            <div class="delivery-logo-lst-i__close">×</div>
-        </li>
-        <li class="delivery-logo-lst-i">
-            <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/logo3.png">
-            <!-- картинка для плоского фона - другая: <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/logo3-plain.png"> -->
-            <div class="delivery-logo-lst-i__close">×</div>
-        </li>
-        <li class="delivery-logo-lst-i">
-            <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/logo4.png">
-            <!-- картинка для плоского фона - другая: <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/logo4-plain.png"> -->
-            <div class="delivery-logo-lst-i__close">×</div>
-        </li>
-        <li class="delivery-logo-lst-i">
-            <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/logo5.png">
-            <!-- картинка для плоского фона - другая: <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/logo5-plain.png"> -->
-            <div class="delivery-logo-lst-i__close">×</div>
-        </li>
+        <? foreach ($partners as $partner) : ?>
+            <? if (!isset($partner['slug'])) continue ?>
+            <!-- Для активности добавить класс active-->
+            <li class="delivery-logo-lst-i jsPartnerListItem" data-value="<?= $partner['slug'] ?>">
+                <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/<?= $partner['slug'] ?>.png">
+                <!-- картинка для плоского фона - другая: <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/logo1-plain.png"> -->
+                <div class="delivery-logo-lst-i__close">×</div>
+            </li>
+        <? endforeach ?>
     </ul>
+
     <div class="delivery-map">
         <ul class="points-lst deliv-list">
-            <li class="points-lst-i">
+            <? foreach ($points as $point) : ?>
+            <li class="points-lst-i" id="uid-<?= $point->uid ?>">
+                <div class=""><?= $partners[$point->partner]['name'] ?></div>
                 <div class="deliv-item__addr">
-                    <!-- ko if: $.isArray(subway) -->
-                    <div class="deliv-item__metro" style="background: rgb(182, 29, 142);" data-bind="style: { background: subway[0].line.color }">
-                       <div class="deliv-item__metro-inn" data-bind="text: subway[0].name">Кузьминки</div>
+                    <? if ($point->subway) : ?>
+                    <div class="deliv-item__metro" style="background: <?= $point->subway->getLine()->getColor() ?>">
+                       <div class="deliv-item__metro-inn"><?= $point->subway->getName() ?></div>
                     </div>
-                    <!-- /ko -->
-                    <div class="deliv-item__addr-name" data-bind="text: address">Волгоградский пр-т, д.&nbsp;119а.</div>
-                    <div class="deliv-item__time" data-bind="text: regtime">с 10.00 до 22.00</div>
+                    <? endif ?>
+                    <div class="deliv-item__addr-name"><?= $point->address ?></div>
+<!--                    <div class="deliv-item__time">--><?//= $point->workingTime ?><!--</div>-->
+                    <!-- Ссылка Подробнее -->
                 </div>
             </li>
-            <li class="points-lst-i">
-                <div class="deliv-item__addr">
-                    <!-- ko if: $.isArray(subway) -->
-                    <div class="deliv-item__metro" style="background: rgb(182, 29, 142);" data-bind="style: { background: subway[0].line.color }">
-                       <div class="deliv-item__metro-inn" data-bind="text: subway[0].name">Кузьминки</div>
-                    </div>
-                    <!-- /ko -->
-                    <div class="deliv-item__addr-name" data-bind="text: address">Волгоградский пр-т, д.&nbsp;119а.</div>
-                    <div class="deliv-item__time" data-bind="text: regtime">с 10.00 до 22.00</div>
-                </div>
-            </li>
-            <li class="points-lst-i">
-                <div class="deliv-item__addr">
-                    <!-- ko if: $.isArray(subway) -->
-                    <div class="deliv-item__metro" style="background: rgb(182, 29, 142);" data-bind="style: { background: subway[0].line.color }">
-                       <div class="deliv-item__metro-inn" data-bind="text: subway[0].name">Кузьминки</div>
-                    </div>
-                    <!-- /ko -->
-                    <div class="deliv-item__addr-name" data-bind="text: address">Волгоградский пр-т, д.&nbsp;119а.</div>
-                    <div class="deliv-item__time" data-bind="text: regtime">с 10.00 до 22.00</div>
-                </div>
-            </li>
-            <li class="points-lst-i">
-                <div class="deliv-item__addr">
-                    <!-- ko if: $.isArray(subway) -->
-                    <div class="deliv-item__metro" style="background: rgb(182, 29, 142);" data-bind="style: { background: subway[0].line.color }">
-                       <div class="deliv-item__metro-inn" data-bind="text: subway[0].name">Кузьминки</div>
-                    </div>
-                    <!-- /ko -->
-                    <div class="deliv-item__addr-name" data-bind="text: address">Волгоградский пр-т, д.&nbsp;119а.</div>
-                    <div class="deliv-item__time" data-bind="text: regtime">с 10.00 до 22.00</div>
-                </div>
-            </li>
-            <li class="points-lst-i current">
-                <div class="deliv-item__addr">
-                    <!-- ko if: $.isArray(subway) -->
-                    <div class="deliv-item__metro" style="background: rgb(182, 29, 142);" data-bind="style: { background: subway[0].line.color }">
-                       <div class="deliv-item__metro-inn" data-bind="text: subway[0].name">Кузьминки</div>
-                    </div>
-                    <!-- /ko -->
-                    <div class="deliv-item__addr-name" data-bind="text: address">Волгоградский пр-т, д.&nbsp;119а.</div>
-                    <div class="deliv-item__time" data-bind="text: regtime">с 10.00 до 22.00</div>
-                </div>
-            </li>
-            <li class="points-lst-i">
-                <div class="deliv-item__addr">
-                    <!-- ko if: $.isArray(subway) -->
-                    <div class="deliv-item__metro" style="background: rgb(182, 29, 142);" data-bind="style: { background: subway[0].line.color }">
-                       <div class="deliv-item__metro-inn" data-bind="text: subway[0].name">Кузьминки</div>
-                    </div>
-                    <!-- /ko -->
-                    <div class="deliv-item__addr-name" data-bind="text: address">Волгоградский пр-т, д.&nbsp;119а.</div>
-                    <div class="deliv-item__time" data-bind="text: regtime">с 10.00 до 22.00</div>
-                </div>
-            </li>
-            <li class="points-lst-i">
-                <div class="deliv-item__addr">
-                    <!-- ko if: $.isArray(subway) -->
-                    <div class="deliv-item__metro" style="background: rgb(182, 29, 142);" data-bind="style: { background: subway[0].line.color }">
-                       <div class="deliv-item__metro-inn" data-bind="text: subway[0].name">Кузьминки</div>
-                    </div>
-                    <!-- /ko -->
-                    <div class="deliv-item__addr-name" data-bind="text: address">Волгоградский пр-т, д.&nbsp;119а.</div>
-                    <div class="deliv-item__time" data-bind="text: regtime">с 10.00 до 22.00</div>
-                </div>
-            </li>
-            <li class="points-lst-i">
-                <div class="deliv-item__addr">
-                    <!-- ko if: $.isArray(subway) -->
-                    <div class="deliv-item__metro" style="background: rgb(182, 29, 142);" data-bind="style: { background: subway[0].line.color }">
-                       <div class="deliv-item__metro-inn" data-bind="text: subway[0].name">Кузьминки</div>
-                    </div>
-                    <!-- /ko -->
-                    <div class="deliv-item__addr-name" data-bind="text: address">Волгоградский пр-т, д.&nbsp;119а.</div>
-                    <div class="deliv-item__time" data-bind="text: regtime">с 10.00 до 22.00</div>
-                </div>
-            </li>
-            <li class="points-lst-i">
-                <div class="deliv-item__addr">
-                    <!-- ko if: $.isArray(subway) -->
-                    <div class="deliv-item__metro" style="background: rgb(182, 29, 142);" data-bind="style: { background: subway[0].line.color }">
-                       <div class="deliv-item__metro-inn" data-bind="text: subway[0].name">Кузьминки</div>
-                    </div>
-                    <!-- /ko -->
-                    <div class="deliv-item__addr-name" data-bind="text: address">Волгоградский пр-т, д.&nbsp;119а.</div>
-                    <div class="deliv-item__time" data-bind="text: regtime">с 10.00 до 22.00</div>
-                </div>
-            </li>
-            <li class="points-lst-i">
-                <div class="deliv-item__addr">
-                    <!-- ko if: $.isArray(subway) -->
-                    <div class="deliv-item__metro" style="background: rgb(182, 29, 142);" data-bind="style: { background: subway[0].line.color }">
-                       <div class="deliv-item__metro-inn" data-bind="text: subway[0].name">Кузьминки</div>
-                    </div>
-                    <!-- /ko -->
-                    <div class="deliv-item__addr-name" data-bind="text: address">Волгоградский пр-т, д.&nbsp;119а.</div>
-                    <div class="deliv-item__time" data-bind="text: regtime">с 10.00 до 22.00</div>
-                </div>
-            </li>
-            <li class="points-lst-i">
-                <div class="deliv-item__addr">
-                    <!-- ko if: $.isArray(subway) -->
-                    <div class="deliv-item__metro" style="background: rgb(182, 29, 142);" data-bind="style: { background: subway[0].line.color }">
-                       <div class="deliv-item__metro-inn" data-bind="text: subway[0].name">Кузьминки</div>
-                    </div>
-                    <!-- /ko -->
-                    <div class="deliv-item__addr-name" data-bind="text: address">Волгоградский пр-т, д.&nbsp;119а.</div>
-                    <div class="deliv-item__time" data-bind="text: regtime">с 10.00 до 22.00</div>
-                </div>
-            </li>
-            <li class="points-lst-i">
-                <div class="deliv-item__addr">
-                    <!-- ko if: $.isArray(subway) -->
-                    <div class="deliv-item__metro" style="background: rgb(182, 29, 142);" data-bind="style: { background: subway[0].line.color }">
-                       <div class="deliv-item__metro-inn" data-bind="text: subway[0].name">Кузьминки</div>
-                    </div>
-                    <!-- /ko -->
-                    <div class="deliv-item__addr-name" data-bind="text: address">Волгоградский пр-т, д.&nbsp;119а.</div>
-                    <div class="deliv-item__time" data-bind="text: regtime">с 10.00 до 22.00</div>
-                </div>
-            </li>
-            <li class="points-lst-i">
-                <div class="deliv-item__addr">
-                    <!-- ko if: $.isArray(subway) -->
-                    <div class="deliv-item__metro" style="background: rgb(182, 29, 142);" data-bind="style: { background: subway[0].line.color }">
-                       <div class="deliv-item__metro-inn" data-bind="text: subway[0].name">Кузьминки</div>
-                    </div>
-                    <!-- /ko -->
-                    <div class="deliv-item__addr-name" data-bind="text: address">Волгоградский пр-т, д.&nbsp;119а.</div>
-                    <div class="deliv-item__time" data-bind="text: regtime">с 10.00 до 22.00</div>
-                </div>
-            </li>
-            <li class="points-lst-i active">
-                <div class="deliv-item__addr">
-                    <!-- ko if: $.isArray(subway) -->
-                    <div class="deliv-item__metro" style="background: rgb(182, 29, 142);" data-bind="style: { background: subway[0].line.color }">
-                       <div class="deliv-item__metro-inn" data-bind="text: subway[0].name">Кузьминки</div>
-                    </div>
-                    <!-- /ko -->
-                    <div class="deliv-item__addr-name" data-bind="text: address">Волгоградский пр-т, д.&nbsp;119а.</div>
-                    <div class="deliv-item__time" data-bind="text: regtime">с 10.00 до 22.00</div>
-                </div>
-            </li>
+            <? endforeach ?>
         </ul>
         <div id="jsDeliveryMap" style="width: 685px; height: 600px"></div>
     </div>
