@@ -318,7 +318,7 @@ class HtmlLayout {
 
     public function slotMustacheTemplates() {
         $templates = [
-            'tpl-cart-kitForm' => 'cart/kitForm.mustache',
+            'tpl-cart-kitForm' => \App::abTest()->isNewProductPage() ? 'cart/kitForm2.mustache' : 'cart/kitForm.mustache',
             'tpl-cart-slot-form' => 'cart/slot/form.mustache',
             'tpl-cart-slot-form-result' => 'cart/slot/form/result.mustache',
         ];
