@@ -350,12 +350,12 @@ class Repository {
 
     /** Обогащает продукты данными из SCMS
      * @param \Model\Product\Entity[] $products
-     * @param string $props Необходимые свойства товара через пробел: media property tag seo
+     * @param string $props Необходимые свойства товара через пробел: media property tag seo label
      * @param callable $failCallback
      */
     public function enrichProductsFromScms($products, $props, $failCallback = null) {
         // Формируем массив необходимых свойств
-        $properties = array_fill_keys(array_intersect(explode(' ', (string)$props), explode(' ', 'media property tag seo')), 1);
+        $properties = array_fill_keys(array_intersect(explode(' ', (string)$props), explode(' ', 'media property tag seo label')), 1);
 
         if ($products && $properties) {
             \App::scmsClient()->addQuery(
@@ -395,6 +395,10 @@ class Repository {
                                 if (isset($productData['title'])) $product->setSeoTitle($productData['title']);
                                 if (isset($productData['meta_description'])) $product->setSeoKeywords($productData['meta_description']);
                                 if (isset($productData['meta_keywords'])) $product->setSeoDescription($productData['meta_keywords']);
+                            }
+
+                            if (isset($properties['label'])) {
+                                if (isset($productData['label'])) $product->setLabel(new Label($productData['label']));
                             }
 
                         }
