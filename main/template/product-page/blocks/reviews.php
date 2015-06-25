@@ -51,7 +51,7 @@
             </div>
 
             <div class="popup__product-line-tl">
-                <?= $product->getName() ?>
+                <span><?= $product->getName() ?></span>
             </div>
         </div>
 

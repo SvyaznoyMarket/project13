@@ -22,24 +22,36 @@
         &-tl {
             font-size: 18px;
 
-            width: 568px;
+            width: 100%;
 
             color: @product-font;
 
-            .inline-block-middle();
+            display: block;
+            min-height: 46px;
+
+            span{
+                max-width: 89%;
+                .inline-block(middle);
+            }
+            &:after{
+                content: '';
+                .inline-block(middle);
+                height: 46px;
+                width: 0;
+            }
         }
         &-img {
             height: 100%;
+
             &-wrap {
                 position: relative;
 
                 overflow: hidden;
 
-//                width: 46px;
                 height: 46px;
-
-                .rounded(3px);
-                .inline-block-middle();
+                min-width: 46px;
+                float: left;
+                margin-right: 5px;
             }
         }
     }
