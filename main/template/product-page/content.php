@@ -121,8 +121,8 @@ $buySender2 = $request->get('sender2');
 	    <!--/ навигация по странице -->
     </div>
 
-    <? if ($product->getKit()) : ?>
-        <?= $helper->render('product-page/blocks/kit', ['product' => $product]) ?>
+    <? if ($isKit) : ?>
+        <?= $helper->render('product-page/blocks/kit', ['product' => $product, 'products' => $kitProducts, 'sender' => $buySender, 'sender2' => $buySender2]) ?>
     <? endif ?>
 
     <? if ($showDescription) : ?>
