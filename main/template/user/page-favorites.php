@@ -40,6 +40,7 @@
 				<?= $product->getIsBuyable() ? $helper->render('cart/__button-product', [
 					'product'  => $product,
 					'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
+                    'noUpdate'  => true,
 					//'sender'   => $buySender + ['from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER'))],
 					//'sender2'  => $buySender2,
 					'location' => 'user-favorites',

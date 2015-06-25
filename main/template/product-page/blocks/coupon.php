@@ -11,14 +11,18 @@ $f = function(
     $discount = sprintf('%u%s', $coupon->getPrice(), $coupon->getIsCurrency() ? '<span class="rubl">p</span>' : '%');
 
 ?>
+    <div class="ep">
 
-    <div class="ep js-pp-ep-fishka">
-
-        <div class="ep__fishka js-enterprize-coupon"
+        <div class="js-pp-ep-fishka js-enterprize-coupon"
              data-value="<?= $helper->json(array_merge(CouponTrait::getCouponData($coupon),['slider' => [], 'isProductCard' => true])) ?>">
-            <?= $coupon->getIsCurrency() ? '<span class="rubl">p</span>' : '%' ?></div>
 
-        <div class="ep__desc">Фишка со скидкой <?= $discount ?> на этот товар</div>
+            <div class="ep__fishka "
+                 >
+                <?= $coupon->getIsCurrency() ? '<span class="rubl">p</span>' : '%' ?></div>
+
+            <div class="ep__desc">Фишка со скидкой <?= $discount ?> на этот товар</div>
+
+        </div>
 
         <div class="js-enterprize-coupon-hint-holder"></div>
 
@@ -27,5 +31,6 @@ $f = function(
         </script>
 
     </div>
+
 
 <? }; return $f;
