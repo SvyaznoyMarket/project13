@@ -366,7 +366,7 @@
     $('.js-description-expand').on('click', function(){
 
         $(this).removeClass('collapsed js-description-expand');
-        
+
     });
 
 })(jQuery);
