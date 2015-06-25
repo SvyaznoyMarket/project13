@@ -363,5 +363,10 @@
     });
 
     $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); })
+    $('.js-description-expand').on('click', function(){
+        var $this = $(this);
+
+        $this.removeClass('collapsed js-description-expand');
+    });
 
 })(jQuery);
