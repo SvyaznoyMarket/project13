@@ -37,7 +37,7 @@ $f = function (
 
                 <? if ('image' === $trustfactor->media->provider): ?>
                     <? if (isset($trustfactor->link)): ?>
-                        <a id="trustfactor-<?= $type ?>-<?= md5(json_encode([$trustfactor])) ?>" href="<?= $helper->escape($trustfactor->link) ?>">
+                        <a id="trustfactor-<?= $type ?>-<?= md5(json_encode([$trustfactor])) ?>" href="<?= $helper->escape($trustfactor->link) ?>" target="_blank">
                     <? endif ?>
 
                     <? foreach ($trustfactor->media->sources as $source): ?>
