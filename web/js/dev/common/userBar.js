@@ -47,9 +47,9 @@
 			userBarFixed.addClass('fadeIn');
 		}
 
-		if (userBarFixed.length) {
+		/*if (userBarFixed.length) {
 			userbarStatic.css('visibility','hidden');
-		}
+		}*/
 	}
 
 	/**
