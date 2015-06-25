@@ -35,7 +35,10 @@
             </table>
         </div>
         <!-- для кнопки с иконкой btnBuy-inf -->
-        <div class="btnBuy quickOrder" data-bind="css: {'btnBuy-inf': infoIconVisible() }, visible: !isMinOrderSumVisible()"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
+        <div class="btnBuy quickOrder" data-bind="css: {'btnBuy-inf': infoIconVisible() }, visible: !isMinOrderSumVisible()">
+            <a href="<?= $page->url('order') ?>"
+               class="<?= \App::abTest()->isNewProductPage() ? 'btn-type btn-type--buy' : 'btnBuy__eLink quickOrder__link' ?>">Оформить заказ</a>
+        </div>
 
         <div class="buyInfo" data-bind="visible: !infoIconVisible() && infoBlock_1Visible() ">
             До бесплатного самовывоза осталось
