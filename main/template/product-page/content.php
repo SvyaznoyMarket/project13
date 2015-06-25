@@ -111,6 +111,7 @@ $buySender2 = $request->get('sender2');
         <!-- навигация по странице -->
         <div id="jsScrollSpy" class="product-tabs-scroll jsProductTabs">
             <ul class="nav product-tabs">
+                <? if ($product->getKit()) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit" title="">Состав</a></li><? endif ?>
                 <? if ($showDescription) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
                 <? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
                 <li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li>
@@ -119,6 +120,10 @@ $buySender2 = $request->get('sender2');
         </div>
 	    <!--/ навигация по странице -->
     </div>
+
+    <? if ($product->getKit()) : ?>
+        <?= $helper->render('product-page/blocks/kit', ['product' => $product]) ?>
+    <? endif ?>
 
     <? if ($showDescription) : ?>
 
