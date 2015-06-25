@@ -86,7 +86,7 @@ class ProductButtonAction {
         } else if ($product->getKit() && !$product->getIsKitLocked()) {
             $data['isKit'] = $location === 'slider' ? false : true;
             $data['value'] = 'Купить';
-            $data['class'] .= ' btnBuy__eLink js-orderButton js-kitButton' . $colorClass;
+            $data['class'] .= ' btnBuy__eLink btn-type--buy-kit js-orderButton js-kitButton' . $colorClass;
             $data['url'] = $this->getKitBuyUrl($helper, $product, $sender, $sender2);
 		} else if (\App::user()->getCart()->hasProduct($product->getId()) && !$noUpdate) {
             $data['url'] = $helper->url('cart');
