@@ -345,8 +345,8 @@
 
         if ($offer.length == 0) {
             $.get(link).done(function (doc) {
-                $('<div class="jsProductPartnerOfferDiv" style="height: 90%; background-color: #fff; overflow-y: scroll;"/>')
-                    .append($(doc).find('.content'))
+                $('<div class="jsProductPartnerOfferDiv partner-offer-popup" style="height: 90%; background-color: #fff; overflow-y: scroll;"></div>')
+                    .append($(doc).find('.content').append('<i class="closer jsPopupCloser">×</i>'))
                     .lightbox_me()
             });
         } else {
