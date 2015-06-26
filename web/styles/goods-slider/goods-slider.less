@@ -18,13 +18,19 @@
             margin-right: 36px;
 
             text-align: center;
+            position: relative;
+
             &:hover {
                 .goods-slider-list__img {
                     .opacity(1);
                 }
             }
-            .slideItem_stick{
+            .sticker-img{
                 width: 45px;
+                position: absolute;
+                top: 0px;
+                z-index: 1;
+                left: 0;
             }
         }
         &__action {
