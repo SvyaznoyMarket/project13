@@ -2,13 +2,15 @@
 /**
  * @var $points Model\Point\ScmsPoint[]
  * @var $partners []
+ * @var $partnersBySlug []
+ * @var $objectManagerData []
  * @var $page View\Content\DeliveryMapPage
  */
 $helper = \App::helper();
 ?>
 
-<?= $helper->jsonInScriptTag($points, 'pointsJSON') ?>
-<?= $helper->jsonInScriptTag($partners, 'partnersJSON') ?>
+<?= $helper->jsonInScriptTag($partnersBySlug, 'partnersJSON') ?>
+<?= $helper->jsonInScriptTag($objectManagerData, 'objectManagerDataJSON') ?>
 
 <!---->
 <div class="delivery-page__info clearfix">
@@ -49,10 +51,10 @@ $helper = \App::helper();
     </ul>
 
     <div class="delivery-map">
-        <ul class="points-lst deliv-list">
+        <ul class="points-lst deliv-list jsPointList">
             <? foreach ($points as $point) : ?>
-            <li class="points-lst-i" id="uid-<?= $point->uid ?>">
-                <div class=""><?= $partners[$point->partner]['name'] ?></div>
+            <li class="points-lst-i jsPointListItem" id="uid-<?= $point->uid ?>" data-partner="<?= $point->partner ?>">
+                <div class=""><?= $partnersBySlug[$point->partner]['name'] ?></div>
                 <div class="deliv-item__addr">
                     <? if ($point->subway) : ?>
                     <div class="deliv-item__metro" style="background: <?= $point->subway->getLine()->getColor() ?>">
