@@ -150,6 +150,8 @@
 		wrapLogIn.removeClass(openClass);
 		wrap.removeClass(openClass);
 
+        $('.js-topbarfixLogin').removeClass('blocked');
+
 		removeBuyInfoBlock();
 		removeOverlay();
 		return false;
@@ -168,6 +170,8 @@
 		});
 
 		userBarFixed.addClass('fadeIn shadow-false');
+
+        $('.js-topbarfixLogin').addClass('blocked');
 
 		var	buyInfo = $('.topbarfix_cartOn');
 

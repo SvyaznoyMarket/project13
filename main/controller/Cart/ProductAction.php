@@ -124,6 +124,8 @@ class ProductAction {
                 $response = new \Http\RedirectResponse($request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage')));
             }
 
+            $cart->pushStateEvent([]);
+
             return $response;
 
         } catch (\Exception $e) {
@@ -295,6 +297,8 @@ class ProductAction {
                 'products'  => $productsInfo,
                 'sender'    => $sender,
             ];
+
+            $cart->pushStateEvent([]);
 
             $response = new \Http\JsonResponse($responseData);
 
