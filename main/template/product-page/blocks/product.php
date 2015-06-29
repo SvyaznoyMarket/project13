@@ -27,7 +27,9 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
 
     <?= $helper->render('product-page/blocks/variants', ['product' => $product]) ?>
 
+    <? if ($product->getAnnounce()) : ?>
     <p class="product-card-desc collapsed js-description-expand"><?= $product->getAnnounce() ?></p>
+    <? endif ?>
 
     <dl class="product-card-prop">
         <? foreach ($product->getMainProperties() as $i => $property) : ?>
