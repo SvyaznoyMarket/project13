@@ -7,7 +7,7 @@ module.exports = function (grunt, options) {
     return {
 
         stylesLite: {
-            files: ['web/lite/less/*.less', 'web/lite/less/**/*.less'],
+            files: ['frontend/css/*.less', 'frontend/css/**/*.less'],
             tasks: ['less:compileLite', 'less:compressLite']
         },
 
@@ -25,7 +25,7 @@ module.exports = function (grunt, options) {
             files: ['web/css/photoContest/*.less'],
             tasks: ['less:photoContestCompile', 'less:photoContestCompress']
         },
-		
+
 		gameSlots: {
             files: ['web/styles/game/slots/*.less'],
             tasks: ['less:gameSlotsCompile', 'less:gameSlotsCompress']
@@ -115,7 +115,7 @@ module.exports = function (grunt, options) {
             files: [ pathDev + 'order-v3-new/*.js'],
             tasks: ['concat:orderV3newJS', 'uglify:orderV3newJS', 'jsmin-sourcemap:orderV3newJS']
         },
-        
+
         orderV3lifegiftJS: {
             files: [ pathDev + 'order-v3-lifegift/*.js'],
             tasks: ['concat:orderV3lifegiftJS', 'uglify:orderV3lifegiftJS', 'jsmin-sourcemap:orderV3lifegiftJS']
@@ -155,7 +155,7 @@ module.exports = function (grunt, options) {
             files: [ pathDev + 'watch3d/*.js'],
             tasks: ['concat:watch3dJS', 'uglify:watch3dJS']
         },
-		
+
         serviceHaJS:{
             files: [ pathDev + 'service_ha/*.js'],
             tasks: ['concat:serviceHaJS', 'uglify:serviceHaJS']

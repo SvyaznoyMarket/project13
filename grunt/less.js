@@ -3,23 +3,23 @@ module.exports = {
     // компиляция LESS
     compileLite: {
         options: {
-            paths: ['web/lite/less/'],
-            sourceMapBasepath: 'web/lite/less/',
+            paths: ['frontend/css/'],
+            sourceMapBasepath: 'frontend/css/',
             sourceMap: true
         },
         files: {
-            'web/lite/css/global.css': ['web/lite/less/global.less']
+            'public/css/global.css': ['frontend/css/global.less']
         }
     },
 
     // компиляция и минификация LESS
     compressLite: {
         options: {
-            paths: ['web/lite/less/'],
+            paths: ['frontend/css/'],
             compress: true
         },
         files: {
-            'web/lite/css/global.min.css': ['web/lite/less/global.less']
+            'public/css/global.min.css': ['frontend/css/global.less']
         }
     },
 
@@ -67,7 +67,7 @@ module.exports = {
             'web/styles/global.min.css': ['web/styles/global.less']
         }
     },
-	
+
 	photoContestCompile: {
 		options: {
 			paths: ['web/css/photoContest/']
@@ -76,7 +76,7 @@ module.exports = {
 			'web/css/photoContest/style.css': ['web/css/photoContest/style.less']
 		}
 	},
-	
+
 	photoContestCompress: {
 		options: {
 			paths: ['web/css/photoContest/'],
@@ -86,8 +86,8 @@ module.exports = {
 			'web/css/photoContest/style.min.css': ['web/css/photoContest/style.less']
 		}
 	},
-	
-	
+
+
 	gameSlotsCompile: {
 		options: {
 			paths: ['web/styles/game/slots']
@@ -96,7 +96,7 @@ module.exports = {
 			'web/styles/game/slots/style.css': ['web/styles/game/slots/style.less']
 		}
 	},
-	
+
 	gameSlotsCompress: {
 		options: {
 			paths: ['web/styles/game/slots'],
