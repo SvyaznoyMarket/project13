@@ -25,6 +25,7 @@
  * @var $videoHtml              string|null
  * @var $properties3D           []
  * @var $isKit                  bool
+ * @var $similarProducts        \Model\Product\Entity[]
  */
 
 $helper = \App::helper();
@@ -231,9 +232,16 @@ $buySender2 = $request->get('sender2');
 
     <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product-page/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
 
-    <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
-    
-    <?= $page->tryRender('product/_similarProducts', ['products' => $similarProducts]) ?>
+    <!-- seo информация -->
+    <div class="bottom-content">
+        <?= $page->tryRender('product/_tag', ['product' => $product, 'newVersion' => true]) ?>
+        <?= $page->tryRender('product/_similarProducts', ['products' => $similarProducts, 'newVersion' => true]) ?>
+        <?php /*<p class="bottom-content__p bottom-content__text">
+
+        </p>*/ ?>
+    </div>
+    <!--/ seo информация -->
+
 </section>
 
 
