@@ -68,8 +68,10 @@ class Label {
      * @return string
      */
     public function getDateDiffString() {
-        if ($diff = $this->getDateDiff()) return \App::helper()->numberChoiceWithCount($diff->days, ['день', 'дня', 'дней'])
+        if ($diff = $this->getDateDiff()) {
+            return ($diff->days != 0 ? \App::helper()->numberChoiceWithCount($diff->days, ['день', 'дня', 'дней']) : '')
             . ' '. $diff->format('%h:%I:%S');
+        }
         return '';
     }
 
