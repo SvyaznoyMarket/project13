@@ -369,4 +369,8 @@
 
     });
 
+    $body.on('click', '.jsProductCardNewLabelInfo', function(){
+        $('.jsProductCardNewLabelPopup').toggleClass('info-popup--open');
+    })
+
 })(jQuery);
