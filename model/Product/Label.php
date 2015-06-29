@@ -12,7 +12,7 @@ use Util\Date;
 class Label {
 
     const MEDIA_TAG_IMAGE_TOP = '66x23';
-    const MEDIA_TAG_RIGHT_SIDE = 'site-right-side';
+    const MEDIA_TAG_RIGHT_SIDE = '256x76';
 
     /** @var string */
     public $uid;
@@ -69,8 +69,11 @@ class Label {
      */
     public function getDateDiffString() {
         if ($diff = $this->getDateDiff()) {
-            return ($diff->days != 0 ? \App::helper()->numberChoiceWithCount($diff->days, ['день', 'дня', 'дней']) : '')
-            . ' '. $diff->format('%h:%I:%S');
+            if ($diff->days != 0) {
+                return \App::helper()->numberChoiceWithCount($diff->days, ['день', 'дня', 'дней']). ' '. $diff->format('%h:%I:%S');
+            } else {
+                return $diff->format('%h ч %I мин %S');
+            }
         }
         return '';
     }

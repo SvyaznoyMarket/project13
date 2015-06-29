@@ -82,13 +82,13 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
             </span>
 
             <? if ($product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE)) : ?>
-                <i class="product-card-action__icon i-product i-product--info-warn i-info__icon"></i>
+                <i class="product-card-action__icon i-product i-product--info-warn i-info__icon jsProductCardNewLabelInfo"></i>
 
                 <!-- попап - подробности акции, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
-                <div class="info-popup info-popup--action">
-                    <i class="closer">×</i>
+                <div class="info-popup info-popup--action jsProductCardNewLabelPopup">
+                    <i class="closer jsProductCardNewLabelInfo">×</i>
                     <div class="info-popup__inn">
-                        <a href="" title=""><img src="<?= $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) ?>" alt=""></a>
+                        <img src="<?= $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) ?>" alt="">
                     </div>
                 </div>
                 <!--/ попап - подробности акции -->
