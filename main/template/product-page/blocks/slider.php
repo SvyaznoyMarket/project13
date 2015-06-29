@@ -137,7 +137,7 @@ $f = function (
                         ]) ?>" >
 
                         <? if ($product->getLabel()) : ?>
-                            <img class="slideItem_stick" src="<?= $product->getLabel()->getImageUrl() ?>" alt="<?= $product->getLabel()->getName() ?>">
+                            <img class="sticker-img" src="<?= $product->getLabel()->getImageUrl() ?>" alt="<?= $product->getLabel()->getName() ?>">
                         <? endif ?>
 
                         <a id="<?= $elementId ?>" class="goods-slider-list__link" href="<?= $link ?>" target="_blank">

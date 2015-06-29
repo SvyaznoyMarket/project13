@@ -1169,12 +1169,12 @@ $(function() {
 
         if ($offer.length == 0) {
             $.get(link).done(function (doc) {
-                $('<div class="jsProductPartnerOfferDiv" style="height: 90%; background-color: #fff; overflow-y: scroll;"/>')
-                    .append($(doc).find('.content'))
-                    .lightbox_me()
+                $('<div class="jsProductPartnerOfferDiv partner-offer-popup" style="height: 90%; background-color: #fff; overflow-y: scroll;"></div>')
+                    .append($(doc).find('.content').append('<i class="closer jsPopupCloser">×</i>'))
+                    .lightbox_me(popupDefaults)
             });
         } else {
-            $offer.lightbox_me()
+            $offer.lightbox_me(popupDefaults)
         }
 
     });
@@ -1187,6 +1187,11 @@ $(function() {
     });
 
     $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); })
+    $('.js-description-expand').on('click', function(){
+
+        $(this).removeClass('collapsed js-description-expand');
+
+    });
 
 })(jQuery);
 

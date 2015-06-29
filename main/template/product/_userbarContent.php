@@ -42,6 +42,7 @@ $buySender2 = $request->get('sender2');
         'onClick'  => $addToCartJS ? $addToCartJS : null,
         'sender'   => $buySender,
         'sender2'  => $buySender2,
+        'noUpdate'  => true,
         'location' => 'userbar',
     ]) // Кнопка купить ?>
 

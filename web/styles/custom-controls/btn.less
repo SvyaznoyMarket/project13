@@ -42,6 +42,26 @@
 
             padding: 10px;
         }
+        &-kit:not(.btnBuy__eLink){
+
+            &:before{
+                content: '\e800';
+
+                font-family: 'kit';
+                font-style: normal;
+                font-weight: normal;
+
+                .inline-block();
+
+                text-align: center;
+                font-variant: normal;
+                text-transform: none;
+
+                line-height: 1em;
+                margin-right: 0.5em;
+            }
+
+        }
         &:hover {
             background-color: #ff9f1d;
         }
@@ -108,4 +128,30 @@
 
 .line-through {
     text-decoration: line-through;
+}
+// кнопки на пандоре
+.jewel{
+        .btn-type {
+            &--buy{
+                border-color: #000;
+                background-color: #363636;
+            }
+        }
+        .orderOneClick .orderCompl_btn{
+        border-color: #000;
+        background-color: #363636;
+    }
+    .hintDd, .userbar-dd{
+        .btn-type {
+            &--buy{
+                border-color: #f99b1c;
+                border-bottom-color: #bf7716;
+                background-color: #f99b1c;
+            }
+            &--light{
+                border-color: #f99b1c;
+                background-color: #f99b1c;
+            }
+        }
+    }
 }

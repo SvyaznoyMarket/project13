@@ -1,15 +1,24 @@
 .userbar-crumbs {
-    .inline-block-middle();
+    .inline-block(middle);
+    height: 50px;
+
+    &:after{
+        content: '';
+        .inline-block(middle);
+        height: 100%;
+        width: 0px;
+    }
     &-wrap {
         position: relative;
 
         overflow: hidden;
 
-        width: 260px;
+        width: 250px;
 
-        .inline-block-middle();
+        .inline-block(middle);
+
+        
         &:after {
-            position: absolute;
             position: absolute;
             top: 0;
             right: 0;
@@ -31,13 +40,15 @@
     }
     &-list {
         white-space: nowrap;
+        max-width: 95%;
 
-        .inline-block-middle();
+        .inline-block(middle);
+
         &__i {
             line-height: 1.5;
 			background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAAAAAAUmmrnAAAANklEQVR4AWOY9Pv///8MNm4fgeRLC+0H/xn+fw8Wf8nw/4GO5WeGk+Lh3/8z6Ff9A8ru/w8EALASHTT5A2ZBAAAAAElFTkSuQmCC') no-repeat 100% 6px;
 			padding-right: 10px;
-			.inline-block();
+			.inline-block(middle);
 
             &--last {
                 font-size: 14px;
@@ -54,6 +65,7 @@
                 border-bottom: none;
             }
         }
+
     }
     &-img {
         line-height: 47px;

@@ -9,7 +9,7 @@
 </li>
 
 <li class="userbtn_i topbarfix_log topbarfix_log-login js-topbarfixLogin" data-bind="visible: name()" style="display: none">
-    <a href="" class="topbarfix_log_lk" data-bind="attr: { href: link }">
+    <a href="" class="topbarfix_log_lk" data-bind="attr: { href: link }, css: {'ep-member': isEnterprizeMember}">
         <!--ko text: firstName--><!--/ko--> <!--ko text: lastName--><!--/ko-->
     </a>
 

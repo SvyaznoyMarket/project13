@@ -1,0 +1,82 @@
+<div class="popup popup--product-set jsKitPopup">
+    <i class="closer jsPopupCloser">×</i>
+
+    <div class="popup__tl" itemprop="name" data-bind="html: $root.productWebname"></div>
+
+    <div class="set-section-main-img"><img data-bind="attr: {src: $root.productImageUrl}" /></div>
+
+    <div class="set-section__r">
+        <div class="set-section-package__tl clearfix">
+            Уточните комплектацию
+        </div>
+        <div class="set-section__inn">
+            <ul class="set-section-package" data-bind="foreach: products">
+
+                    <li class="set-section-package-i" data-bind="css: { mDisabled: count() < 1 }">
+                        <a class="set-section-package-i__img rown" href="" data-bind="attr: { href : url }"><img src="" data-bind="attr: { src: image }" /></a>
+
+                        <div class="set-section-package-i__desc rown">
+                            <div class="name"><a class="" href="" data-bind="text: name, attr: { href : url }"></a></div>
+
+                            <div class="price"><span data-bind="html: prettyItemPrice"></span>&nbsp;<span class="rubl">p</span></div>
+
+                            <div class="column dimention">
+                                <span class="dimention__name">Высота</span>
+                                <span class="dimention__val" data-bind="text: height"></span>
+                            </div>
+
+                            <div class="column dimention">
+                                <span class="dimention__name">&nbsp;</span>
+                                <span class="dimention__val separation">x</span>
+                            </div>
+
+                            <div class="column dimention">
+                                <span class="dimention__name">Ширина</span>
+                                <span class="dimention__val" data-bind="text: width"></span>
+                            </div>
+
+                            <div class="column dimention">
+                                <span class="dimention__name">&nbsp;</span>
+                                <span class="dimention__val separation">x</span>
+                            </div>
+
+                            <div class="column dimention">
+                                <span class="dimention__name">Глубина</span>
+                                <span class="dimention__val" data-bind="text: depth"></span>
+                            </div>
+
+                            <div class="column dimention">
+                                <span class="dimention__name">&nbsp;</span>
+                                <span class="dimention__val">см</span>
+                            </div>
+
+                        </div>
+
+                        <div class="count-group rown">
+                            <button class="count-group__btn-minus" data-bind="click: minusClick, css: { mDisabled : count() == 0 }">-</button>
+                            <input type="text" value="" class="count-group__qnt" data-bind="value: count, valueUpdate: 'input', event: { keydown: countKeydown, keyup: countKeyUp }">
+                            <button class="count-group__btn-plus" data-bind="click: plusClick, css: { mDisabled : count() == maxCount() }">+</button>
+                            <span>шт.</span>
+                        </div>
+
+                        <div class="set-section-package-i__price rown">
+                            <span data-bind="html: prettyPrice"></span>&nbsp;<span class="rubl">p</span>
+                        </li>
+
+                </ul>
+            </div>
+            <div class="set-section__footer">
+                <div class="set-section__default packageSetDefault">
+                    <input type="checkbox" id="defaultSet" class="bInputHidden bCustomInput jsCustomRadio" data-bind="click: resetToBaseKit">
+                    <label for="defaultSet" class="packageSetLabel" data-bind="css: { mChecked : isBaseKit }, click: resetToBaseKit">Базовый комплект</label>
+                </div>
+
+                <div class="set-section__price">Итого за <span data-bind="text: totalCount"></span> предметов: <strong data-bind="html: totalPrice"></strong> <span class="rubl">p</span></div>
+
+                <div class="set-section__buy btnBuy">
+                    <a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger jsBuyButton" href="" data-bind="css: { mDisabled: totalCount() == 0 }, attr: { href: buyLink, 'data-upsale': dataUpsale($root.productId) }">Купить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

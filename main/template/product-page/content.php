@@ -25,6 +25,7 @@
  * @var $videoHtml              string|null
  * @var $properties3D           []
  * @var $isKit                  bool
+ * @var $similarProducts        \Model\Product\Entity[]
  */
 
 $helper = \App::helper();
@@ -111,6 +112,7 @@ $buySender2 = $request->get('sender2');
         <!-- навигация по странице -->
         <div id="jsScrollSpy" class="product-tabs-scroll jsProductTabs">
             <ul class="nav product-tabs">
+                <? if ($product->getKit()) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit" title="">Состав</a></li><? endif ?>
                 <? if ($showDescription) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
                 <? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
                 <li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li>
@@ -119,6 +121,10 @@ $buySender2 = $request->get('sender2');
         </div>
 	    <!--/ навигация по странице -->
     </div>
+
+    <? if ($isKit) : ?>
+        <?= $helper->render('product-page/blocks/kit', ['product' => $product, 'products' => $kitProducts, 'sender' => $buySender, 'sender2' => $buySender2]) ?>
+    <? endif ?>
 
     <? if ($showDescription) : ?>
 
@@ -226,19 +232,16 @@ $buySender2 = $request->get('sender2');
 
     <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product-page/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
 
-	<!-- seo информация -->
-	<!--<div class="bottom-content">
-		<p class="bottom-content__p">
-			<span class="bottom-content__tl">Теги: </span>
-		</p>
-		<p class="bottom-content__p">
-			<span class="bottom-content__tl">Похожие товары: </span>
-		</p>
-		<p class="bottom-content__p bottom-content__text">
+    <!-- seo информация -->
+    <div class="bottom-content">
+        <?= $page->tryRender('product/_tag', ['product' => $product, 'newVersion' => true]) ?>
+        <?= $page->tryRender('product/_similarProducts', ['products' => $similarProducts, 'newVersion' => true]) ?>
+        <?php /*<p class="bottom-content__p bottom-content__text">
 
-		</p>
-	</div>-->
-	<!--/ seo информация -->
+        </p>*/ ?>
+    </div>
+    <!--/ seo информация -->
+
 </section>
 
 

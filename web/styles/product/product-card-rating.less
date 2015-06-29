@@ -11,15 +11,33 @@
         .inline-block-middle();
     }
     &__i {
-        width: 11px;
-        height: 10px;
-        margin: 0 3px 0 0;
+        .inline-block();
 
-        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAAz0lEQVR42oWMMQrCQBREB+xV7OxFtPQAdlpbiIWglpZaiGewUkFMzC7EWqysLATP4ElUkuzW+gcMhCTgwLL737z9SCdy0LQaH974F6OwijT6vDPle4vyS6HETaGHnkjH8wAFo/HgTM6eHkIXbSnuctZybqFCAxJ7QEs+LsjZ0wO3WAXXeBghJ+Ts6YF57lAkCBzUkqKwqmz32ac3DKVYxp9/8pQc6VCUoms0xvI+yXsi7w55nuxbjYsI82CDSqQw4yz8mpHDPeqUkowzeTx/AXE9c606iYtFAAAAAElFTkSuQmCC') no-repeat 0 0;
+        font-size: 12px;
+        font-family: "rate-stars";
+        font-style: normal;
+        font-weight: normal;
+        speak: none;
 
-        .inline-block-middle();
+        display: inline-block;
+        text-decoration: inherit;
+        width: 1em;
+
+        text-align: center;
+        font-variant: normal;
+        text-transform: none;
+
+        line-height: 1em;
+        color: @firmOrange;
+        margin-right: 2px;
+
+        &:before { content: '\e800'; }
+
         &--fill{
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAAv0lEQVR42oWQzQnCQBSEB7yrWIRgF3bgyYutpAFPCqLoJmABgnjwZAv2INhADCbZJHpQZ8QF2Qg+eCwz8+3bH/iVLdCzIZ5a8a9ygzXhh9ZamEzRvhi0NCldYUDwrMnsRFq+cnHIIvQFvNugEOg6DxG7TBw2QzQodgRLAX7LVy4OqniGpo2wZVB5YMHpe+X+w0YM7x58kw+/OGH8AaqCd3SnyP/1ZQcCp9IguE7QsUsE0txwrMHpHF1B3560fKdfSCafJUEManEAAAAASUVORK5CYII=');
+            &:before { content: '\e801'; }
+        }
+        &--half{
+            &:before { content: '\e802'; }
         }
     }
     &__tx {
@@ -57,6 +75,17 @@
             height: 3px;
 
             background: #f99b1c;
+        }
+    }
+}
+
+.jewel {
+    .product-card-rating {
+        &__i {
+            color: #363636;
+        }
+        &-chart__val{
+            background-color: #363636;
         }
     }
 }

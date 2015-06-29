@@ -35,7 +35,7 @@ $(function() {
 
 					if (!inCompare) {
 						if (!$comparePopup) {
-							var $userbar = ENTER.userBar.userBarFixed;
+							var $userbar = ENTER.userBar.userBarStatic;
 							$comparePopup = $('.js-compare-addPopup', $userbar);
 
 							$('.js-compare-addPopup-closer', $comparePopup).click(function() {

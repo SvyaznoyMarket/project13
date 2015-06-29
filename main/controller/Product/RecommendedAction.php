@@ -91,22 +91,18 @@ class RecommendedAction {
 
             /** @var \Model\Product\Entity[] $productsById */
             $productsById = [];
-            $medias = [];
-            foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-                \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
-                    foreach ((array)$data as $item) {
-                        if (empty($item['id'])) continue;
+            \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->prepareCollectionById($productIds, $region, function($data) use (&$productsById) {
+                foreach ((array)$data as $item) {
+                    if (empty($item['id'])) continue;
 
-                        $productsById[$item['id']] = new \Model\Product\Entity($item);
-                    }
-                });
-
-                \RepositoryManager::product()->prepareProductsMediasByIds($productsInChunk, $medias);
-            }
+                    $productsById[$item['id']] = new \Model\Product\Entity($item);
+                }
+            });
 
             $client->execute(); // 2-й пакет запросов
 
-            \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
+            \RepositoryManager::product()->enrichProductsFromScms($productsById, 'media label');
+            $client->execute();
 
             /**
              * Главный товар
