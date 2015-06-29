@@ -410,6 +410,10 @@
         } else {
             $sliderContainer.remove();
         }
+
+        // Открытие фишки в новом окне (на новой карточке товара)
+        $('.product-card-new .jsEnterprizeGetCouponForm').attr('target', '_blank');
+
     });
 
     body.on('click', '.js-ep-hint-closer', function(e) {
