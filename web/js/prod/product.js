@@ -1171,10 +1171,10 @@ $(function() {
             $.get(link).done(function (doc) {
                 $('<div class="jsProductPartnerOfferDiv partner-offer-popup" style="height: 90%; background-color: #fff; overflow-y: scroll;"></div>')
                     .append($(doc).find('.content').append('<i class="closer jsPopupCloser">×</i>'))
-                    .lightbox_me()
+                    .lightbox_me(popupDefaults)
             });
         } else {
-            $offer.lightbox_me()
+            $offer.lightbox_me(popupDefaults)
         }
 
     });
