@@ -32,13 +32,13 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <? endif ?>
 
     <dl class="product-card-prop">
-        <? foreach ($product->getMainProperties() as $i => $property) : ?>
-            <? if ($property->getName() == $modelName) continue ?>
-            <? if ($i == 5) : ?>
+        <? $i = 0; foreach ($product->getMainProperties() as $property) : $i++ ?>
+            <? if ($i == 5 && count($product->getMainProperties()) >= 5 && $product->getSecondaryGroupedProperties()) : ?>
 
                     <a class="product-card-prop__lk" href="#more" onclick="$('.jsScrollSpyMoreLink').trigger('click'); return false;">Все характеристики</a>
 
             <? break; endif; ?>
+            <? if ($property->getName() == $modelName) continue ?>
             <dt class="product-card-prop__i product-card-prop__i--name"><?= $property->getName() ?></dt>
             <dd class="product-card-prop__i product-card-prop__i--val"><?= $property->getStringValue() ?></dd>
         <? endforeach ?>
