@@ -179,7 +179,5 @@ $buySender2 = $request->get('sender2');
     <? endif ?>
 
     <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
-
-    <?= $helper->render('product/__event', ['product' => $product]) ?>
     </div>
 </div>

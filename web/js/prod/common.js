@@ -1195,8 +1195,6 @@
 	$body.on('click', '.jsBuyButton', function(e) {
 		var $button = $(e.currentTarget);
 
-        $body.trigger('TL_buyButton_clicked');
-
 		if ( $button.hasClass('mDisabled') ) {
 			//return false;
             e.preventDefault();
@@ -2262,8 +2260,6 @@ $(function() {
 					}
 				}
 			});
-
-			$el.trigger('TL_recommendation_clicked');
 
 		} catch (e) { console.error(e); }
 	});

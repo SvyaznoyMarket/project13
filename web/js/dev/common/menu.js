@@ -122,8 +122,6 @@
 				}
 			});
 
-			$el.trigger('TL_recommendation_clicked');
-
 		} catch (e) { console.error(e); }
 	});
 
