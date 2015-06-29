@@ -14,7 +14,7 @@
         <? $count = count($products) ?>
         <? foreach ($products as $product): ?>
             <? $i++ ?>
-            <a href="<?= $page->url('product', ['productPath' => $product->getPath(), 'sender' => ['name' => 'retailrocket', 'position' => 'SEO', 'type' => 'similar', 'method' => 'UpSellItemToItems'], 'from' => 'cart_rec']) ?>" class="underline js-product-similarProducts-link"><?= $product->getName() ?></a><? if ($i < $count): ?>, <? endif ?>
+            <a href="<?= $page->url('product', ['productPath' => $product->getPath()]) ?>" class="underline js-product-similarProducts-link"><?= $product->getName() ?></a><? if ($i < $count): ?>, <? endif ?>
         <? endforeach ?>
     </div>
 <? endif ?>
