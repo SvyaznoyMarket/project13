@@ -123,6 +123,8 @@ class Action {
                     \App::user()->signIn($userEntity, $response);
                     //\Session\User::enableInfoCookie($response); // — делаем внутри signIn()
 
+                    \App::user()->getCart()->pushStateEvent([]);
+
                     try {
                         \App::coreClientV2()->query('user/update', ['token' => \App::user()->getToken()], [
                             'geo_id' => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
@@ -218,6 +220,8 @@ class Action {
 
         // SITE-1763
         $user->getCart()->clear();
+
+        \App::user()->getCart()->pushStateEvent([]);
 
         return $response;
     }
