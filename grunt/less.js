@@ -1,6 +1,29 @@
 module.exports = {
 
     // компиляция LESS
+    compileLite: {
+        options: {
+            paths: ['web/lite/less/'],
+            sourceMapBasepath: 'web/lite/less/',
+            sourceMap: true
+        },
+        files: {
+            'web/lite/css/global.css': ['web/lite/less/global.less']
+        }
+    },
+
+    // компиляция и минификация LESS
+    compressLite: {
+        options: {
+            paths: ['web/lite/less/'],
+            compress: true
+        },
+        files: {
+            'web/lite/css/global.min.css': ['web/lite/less/global.less']
+        }
+    },
+
+    // компиляция LESS
     compile: {
         options: {
             paths: ['web/css/'],
