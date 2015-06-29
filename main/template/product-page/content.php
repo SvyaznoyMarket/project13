@@ -231,19 +231,9 @@ $buySender2 = $request->get('sender2');
 
     <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product-page/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
 
-	<!-- seo информация -->
-	<!--<div class="bottom-content">
-		<p class="bottom-content__p">
-			<span class="bottom-content__tl">Теги: </span>
-		</p>
-		<p class="bottom-content__p">
-			<span class="bottom-content__tl">Похожие товары: </span>
-		</p>
-		<p class="bottom-content__p bottom-content__text">
-
-		</p>
-	</div>-->
-	<!--/ seo информация -->
+    <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
+    
+    <?= $page->tryRender('product/_similarProducts', ['products' => $similarProducts]) ?>
 </section>
 
 
