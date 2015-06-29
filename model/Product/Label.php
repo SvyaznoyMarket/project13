@@ -28,7 +28,7 @@ class Label {
     public function __construct($data) {
         if (isset($data['uid'])) $this->uid = $data['uid'];
         if (isset($data['name'])) $this->name = $data['name'];
-        if (isset($data['affect_price'])) $this->affectPrice = $data['affect_price'];
+        if (isset($data['affects_price'])) $this->affectPrice = $data['affects_price'];
         if (isset($data['expires_at']) && Date::isDateTimeString($data['expires_at'])) {
             $this->expires = new \DateTime($data['expires_at']);
         }

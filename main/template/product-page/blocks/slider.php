@@ -150,7 +150,7 @@ $f = function (
                         </a>
 
                         <div class="goods-slider-list__price-old">
-                            <? if ($product->getPriceOld()) : ?>
+                            <? if ($product->getPriceOld() && $product->getLabel() && $product->getLabel()->affectPrice) : ?>
                                 <span class="line-through"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
                             <? endif ?>
                         </div>
