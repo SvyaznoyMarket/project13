@@ -14,6 +14,28 @@ $f = function(
         <!--/ блок с фото -->
 
         <div class="product-card__c">
+
+            <!-- похожие товары -->
+            <div class="product-section product-section--inn" id="similar">
+                <div class="product-section__h3">Похожие товары</div>
+                <? if (\App::config()->product['pullRecommendation']): ?>
+                    <?= $helper->render('product-page/blocks/slider', [
+                        'type'     => 'similar',
+                        'title'    => 'Похожие товары',
+                        'products' => [],
+                        'count'    => null,
+                        'limit'    => \App::config()->product['itemsInSlider'],
+                        'page'     => 1,
+                        'url'      => $helper->url('product.recommended', ['productId' => $product->getId()]),
+                        'sender'   => [
+                            'name'     => 'retailrocket',
+                            'position' => 'ProductSimilar',
+                        ],
+                        'sender2' => $buySender2,
+                    ]) ?>
+                <? endif ?>
+            </div>
+            <!--/ похожие товары -->
             
             <!-- сравнить, добавить в виш лист -->
             <ul class="product-card-tools">
@@ -38,9 +60,11 @@ $f = function(
             </ul>
             <!--/ сравнить, добавить в виш лист -->
 
-            <div class="buy-online">
-                <a class="btn-type btn-type--olive js-orderButton jsBuyButton" href="#">Сообщить о наличии</a>
-            </div>
+            <? if (false) : ?>
+                <div class="buy-online">
+                    <a class="btn-type btn-type--olive js-orderButton jsBuyButton" href="#">Сообщить о наличии</a>
+                </div>
+            <? endif ?>
 
             <?= $helper->render('product-page/blocks/reviews.short', ['reviewsData' => $reviewsData]) ?>
 
