@@ -1,6 +1,5 @@
 <?php
 /**
- * @var $page      \View\Layout
  * @var $exception \Exception
  */
 

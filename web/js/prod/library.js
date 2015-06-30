@@ -93,14 +93,15 @@ else{return url;}}};String.prototype.addParameterToUrl=UpdateUrlString;
 !function(root,module){var
 CountDown=module();if(typeof define==='function'&&define.amd){define('CountDown',[],function(){return CountDown;});}else if(typeof exports!=='undefined'){exports.CountDown=CountDown;}else if(typeof modules!=='undefined'&&typeof modules.define==='function'){modules.define('CountDown',[],function(provide){provide(CountDown);});}else{root.CountDown=CountDown;}}(this,function(){'use strict';var
 CountDown=(function(){var
-ONE_SEC=1000,ONE_MIN=60*ONE_SEC,ONE_HOUR=60*ONE_MIN,ONE_DAY=24*ONE_HOUR,helpers={isObject:function(obj){var
+ONE_SEC=1000,ONE_MIN=60*ONE_SEC,ONE_HOUR=60*ONE_MIN,ONE_DAY=24*ONE_HOUR,SUCCESSFUL_COMPLETE=true,helpers={isObject:function(obj){var
 type=typeof obj;return type==='function'||type==='object'&&!!obj;},isFunction:function(obj){return typeof obj=='function'||false;},isNumber:function(obj){return toString.call(obj)==='[object Number]'&&!isNaN(obj);}},updateCounter=function(){var
-now=(new Date()).getTime(),end=this.endDate.getTime(),diff=end-now;if(diff<=0){console.log('Достигли даты завершения');this.stop();}
-this.tick&&this.tick({days:Math.floor(diff/ONE_DAY),hours:Math.floor((diff%ONE_DAY)/ONE_HOUR),minutes:Math.floor(((diff%ONE_DAY)%ONE_HOUR)/ONE_MIN),seconds:Math.floor((((diff%ONE_DAY)%ONE_HOUR)%ONE_MIN)/ONE_SEC)})};CountDown=function CountDown(options){if(!(this instanceof CountDown)){return new CountDown(options);}
+now=(new Date()).getTime(),end=this.endDate.getTime(),diff=end-now;if(diff<=0){console.log('Достигли даты завершения');this.stop(SUCCESSFUL_COMPLETE);}
+this.tick&&this.tick({days:Math.floor(diff/ONE_DAY),hours:Math.floor((diff%ONE_DAY)/ONE_HOUR),minutes:Math.floor(((diff%ONE_DAY)%ONE_HOUR)/ONE_MIN),seconds:Math.floor((((diff%ONE_DAY)%ONE_HOUR)%ONE_MIN)/ONE_SEC)});};CountDown=function CountDown(options){if(!(this instanceof CountDown)){return new CountDown(options);}
 if(!helpers.isObject(options)){throw new Error('Параметры должны быть объектом');}
 if(!helpers.isNumber(options.timestamp)){throw new Error('Параметр "timestamp" должен быть объектом');}
 if(!helpers.isFunction(options.tick)){throw new Error('Параметр "tick" должен быть функцией');}
-this.endDate=new Date(options.timestamp);this.tick=options.tick;this.iid=setInterval(updateCounter.bind(this),1000);};CountDown.prototype.stop=function(){clearInterval(this.iid);};return CountDown;}());return CountDown;});
+if(options.success&&!helpers.isFunction(options.success)){throw new Error('Параметр "success" должен быть функцией');}
+this.endDate=new Date(options.timestamp);this.tick=options.tick;this.success=options.success;this.iid=setInterval(updateCounter.bind(this),1000);};CountDown.prototype.stop=function(successfulComplete){clearInterval(this.iid);if(successfulComplete&&this.success){this.success();}};return CountDown;}());return CountDown;});
 ;(function(){var clone=docCookies.setItem;docCookies.setItem=function(){var args=Array.prototype.slice.call(arguments);if(typeof args[4]=='undefined')args[4]='.'+/[A-Za-z0-9]+\.[A-Za-z0-9]+$/.exec(window.location.hostname)[0];return clone.apply(this,args);}}());
 ;(function(definition){if(typeof define=="function"){define(definition);}else if(typeof YUI=="function"){YUI.add("es5",definition);}else{definition();}})(function(){function Empty(){}
 if(!Function.prototype.bind){Function.prototype.bind=function bind(that){var target=this;if(typeof target!="function"){throw new TypeError("Function.prototype.bind called on incompatible "+target);}
