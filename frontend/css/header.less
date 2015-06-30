@@ -1,0 +1,92 @@
+.header {
+    padding: 10px;
+
+    .clearfix();
+    &__left {
+        float: left;
+    }
+    &__right {
+        float: right;
+    }
+}
+
+.logotype {
+    display: block;
+
+    width: 64px;
+    height: 64px;
+
+    background: url('@{base-url}/logo.png') no-repeat 0 0;
+
+    .inline-block(middle);
+}
+
+.location {
+    margin-left: 10px;
+
+    .inline-block(middle);
+    &__city {
+        line-height: 1.2;
+    }
+    &__phone {
+        font-family: 'GloberBold';
+        font-size: 1.1666em;
+    }
+}
+
+.header-shop-info {
+    .inline-block(middle);
+    &__item {
+        margin: 0 0 0 15px;
+
+        .inline-block(middle);
+    }
+}
+
+.search-bar {
+    .inline-block(middle);
+}
+
+.user-controls {
+    .inline-block(middle);
+    &__item {
+        position: relative;
+        margin: 0 10px;
+
+        .inline-block(middle);
+        text-align: center;
+    }
+    &__icon {
+        .inline-block(middle);
+
+        width: 49px;
+        height: 49px;
+        margin: 0 0 2px;
+
+        .blueGradient();
+        .rounded(50%);
+    }
+    &__count {
+        line-height: 23px;
+
+        position: absolute;
+        top: -2px;
+        right: -2px;
+
+        display: block;
+
+        width: 23px;
+        height: 23px;
+
+        text-align: center;
+
+        color: @white;
+
+        .orangeGradient();
+        .rounded(50%);
+    }
+    &__text {
+        font-family: 'GloberSemiBold';
+        display: block;
+    }
+}

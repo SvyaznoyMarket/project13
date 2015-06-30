@@ -11,16 +11,43 @@
    ========================================================================== */
 
 html {
-    color: #222;
+    font-family: 'GloberRegular', Tahoma, Geneva, Helvetica, sans-serif;
     font-size: 100%;
     line-height: 1.4;
-    font-family: 'GloberRegular', Tahoma, Geneva, Helvetica, sans-serif;
+    color: @text-color;
 }
 
 body {
     font-size: 75%;
 }
 
+* {
+    .box-sizing();
+}
+
+a {
+    color: @text-color;
+    text-decoration: none;
+
+    &:active,
+    &:hover,
+    &:visited {
+        color: @text-color;
+    }
+
+    &.underline {
+        border-bottom: 1px solid #a0a0a0;
+    }
+}
+
+ul, ol, nav {
+    margin: 0;
+    padding: 0;
+    li {
+        margin-bottom: 10px;
+        list-style-type: none;
+    }
+}
 /*
  * Remove text-shadow in selection highlight:
  * https://twitter.com/miketaylr/status/12228805301
@@ -30,12 +57,12 @@ body {
  */
 
 ::-moz-selection {
-    background: #b3d4fc;
+    background: #FFF6E5;
     text-shadow: none;
 }
 
 ::selection {
-    background: #b3d4fc;
+    background: #FFF6E5;
     text-shadow: none;
 }
 
@@ -45,11 +72,13 @@ body {
 
 hr {
     display: block;
+
     height: 1px;
-    border: 0;
-    border-top: 1px solid #ccc;
     margin: 1em 0;
     padding: 0;
+
+    border: 0;
+    border-top: 1px solid #ccc;
 }
 
 /*
@@ -58,11 +87,11 @@ hr {
  * https://github.com/h5bp/html5-boilerplate/issues/440
  */
 
-audio,
-canvas,
-iframe,
-img,
-svg,
+audio ,
+canvas ,
+iframe ,
+img ,
+svg ,
 video {
     vertical-align: middle;
 }
@@ -72,9 +101,10 @@ video {
  */
 
 fieldset {
-    border: 0;
     margin: 0;
     padding: 0;
+
+    border: 0;
 }
 
 /*
@@ -88,6 +118,12 @@ textarea {
 /* ==========================================================================
    Helper classes
    ========================================================================== */
+.it {
+    border: 1px solid @input-border;
+    padding: 5px;
+    height: 35px;
+    line-height: 35px;
+}
 
 /*
  * Hide visually and from screen readers:
@@ -103,14 +139,17 @@ textarea {
  */
 
 .visuallyhidden {
-    border: 0;
+    position: absolute;
+
+    overflow: hidden;
     clip: rect(0 0 0 0);
+
+    width: 1px;
     height: 1px;
     margin: -1px;
-    overflow: hidden;
     padding: 0;
-    position: absolute;
-    width: 1px;
+
+    border: 0;
 }
 
 /*
@@ -119,14 +158,16 @@ textarea {
  * https://www.drupal.org/node/897638
  */
 
-.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:active ,
 .visuallyhidden.focusable:focus {
+    position: static;
+
+    overflow: visible;
     clip: auto;
+
+    width: auto;
     height: auto;
     margin: 0;
-    overflow: visible;
-    position: static;
-    width: auto;
 }
 
 /*
@@ -149,10 +190,11 @@ textarea {
  *    `:before` to contain the top-margins of child elements.
  */
 
-.clearfix:before,
+.clearfix:before ,
 .clearfix:after {
-    content: " "; /* 1 */
     display: table; /* 2 */
+
+    content: ' '; /* 1 */
 }
 
 .clearfix:after {

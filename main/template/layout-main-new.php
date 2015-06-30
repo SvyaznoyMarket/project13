@@ -10,55 +10,62 @@
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
 
-        <link rel="stylesheet" href="public/css/global.css">
+        <?= $page->slotStylesheet() ?>
+        <?= $page->slotHeadJavascript() ?>
     </head>
 
     <body>
         <div class="wrapper">
             <div class="header">
-                <a class="logotype"></a>
+                <div class="header__left">
+                    <a href="" class="logotype"></a>
 
-                <div class="location">
-                    <a href="" class="location__city">Набережные челны</a>
-                    <div class="location__phone">+7 (495) 775-00-06</div>
+                    <div class="location">
+                        <a href="" class="location__city underline">Набережные челны</a>
+                        <div class="location__phone">+7 (495) 775-00-06</div>
+                    </div>
                 </div>
 
-                <ul class="header-shop-info">
-                    <li class="header-shop-info__item"><a href="" class="header-shop-info__link"></a></li>
-                    <li class="header-shop-info__item"><a href="" class="header-shop-info__link">Магазины и самовывоз</a></li>
-                    <li class="header-shop-info__item"><a href="" class="header-shop-info__link">Доставка</a></li>
-                    <li class="header-shop-info__item"><a href="" class="header-shop-info__link">Оплата</a></li>
-                    <li class="header-shop-info__item"><a href="" class="header-shop-info__link">Партнерам</a></li>
-                </ul>
+                <div class="header__right">
+                    <ul class="header-shop-info">
+                        <li class="header-shop-info__item"><a href="" class="header-shop-info__link"></a></li>
+                        <li class="header-shop-info__item"><a href="" class="header-shop-info__link underline">Магазины и самовывоз</a></li>
+                        <li class="header-shop-info__item"><a href="" class="header-shop-info__link underline">Доставка</a></li>
+                        <li class="header-shop-info__item"><a href="" class="header-shop-info__link underline">Оплата</a></li>
+                        <li class="header-shop-info__item"><a href="" class="header-shop-info__link underline">Партнерам</a></li>
+                    </ul>
 
-                <form class="search-bar">
-                    <input type="text" class="search-bar__it" placeholder="Поиск товаров">
-                    <button class="search-bar__btn">Найти</button>
-                </form>
+                    <form class="search-bar">
+                        <input type="text" class="search-bar__it it" placeholder="Поиск товаров">
+                        <button class="search-bar__btn">Найти</button>
+                    </form>
 
-                <ul class="user-controls">
-                    <li class="user-controls__item">
-                        <a href="" class="user-controls__link">
-                            <span class="user-controls__icon"><i></i></span>
-                            <span class="user-controls__text">Сравнение</span>
-                            <div class="user-controls__count">33</div>
-                        </a>
-                    </li>
-                    <li class="user-controls__item">
-                        <a href="" class="user-controls__link">
-                            <span class="user-controls__icon"><i></i></span>
-                            <span class="user-controls__text">Личный кабинет</span>
-                        </a>
-                    </li>
-                    <li class="user-controls__item">
-                        <a href="" class="user-controls__link">
-                            <span class="user-controls__icon"><i></i></span>
-                            <span class="user-controls__text">Корзина</span>
-                            <div class="user-controls__count">33</div>
-                        </a>
-                    </li>
-                </ul>
+                    <ul class="user-controls">
+                        <li class="user-controls__item">
+                            <a href="" class="user-controls__link">
+                                <span class="user-controls__icon"><i></i></span>
+                                <span class="user-controls__text">Сравнение</span>
+                                <div class="user-controls__count">33</div>
+                            </a>
+                        </li>
+                        <li class="user-controls__item">
+                            <a href="" class="user-controls__link">
+                                <span class="user-controls__icon"><i></i></span>
+                                <span class="user-controls__text">Личный кабинет</span>
+                            </a>
+                        </li>
+                        <li class="user-controls__item">
+                            <a href="" class="user-controls__link">
+                                <span class="user-controls__icon"><i></i></span>
+                                <span class="user-controls__text">Корзина</span>
+                                <div class="user-controls__count">33</div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
+
+            <hr class="hr-orange">
 
             <aside class="left-bar">
                 <nav class="site-menu">

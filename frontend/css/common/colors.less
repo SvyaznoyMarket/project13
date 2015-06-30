@@ -1,11 +1,11 @@
-/* ==========================================================================
-   Стили используемых цветов
-   ========================================================================== */
-
 // base
 
 @white: #fff;
 @black: #000;
+
+@text-color: #363636;
+
+@input-border: #c7c7c7;
 
 // orange
 
@@ -76,3 +76,12 @@
 @grey-light-2: #D7D7D7;
 @grey-light-3: #EBEBEB;
 @grey-light-4: #F2F2F2;
+
+//gradients
+.blueGradient() {
+	.linear-gradient( 135deg, @blue-normal, @blue-bright );
+}
+
+.orangeGradient() {
+	.linear-gradient( 315deg, @orange-bright, @orange-normal );
+}
