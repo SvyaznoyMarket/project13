@@ -72,7 +72,7 @@
 
             <fieldset class="form-ctrl__line">
                 <div class="form-ctrl__group form-ctrl__group--inline">
-                    <input id="reviewFormName" class="form-ctrl__input" type="text" name="review[author_name]">
+                    <input id="reviewFormName" class="form-ctrl__input" type="text" name="review[author_name]" maxlength="20">
                     <label class="form-ctrl__input-lbl" for="reviewFormName">Имя</label>
                 </div>
 
