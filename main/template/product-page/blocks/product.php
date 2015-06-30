@@ -11,6 +11,9 @@ $f = function(
 $coupon = $product->coupons ? $product->getBestCoupon() : null;
 
 $modelName = $product->getModel() && $product->getModel()->getProperty() ? $product->getModel()->getProperty()[0]->getName() : null;
+    $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceChangePercentTrigger())
+        ? round($product->getPrice() * $product->getRootCategory()->getPriceChangePercentTrigger())
+        : 0;
 
 ?>
 
@@ -106,30 +109,17 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <div class="product-card-price i-info">
         <span class="product-card-price__val i-info__tx"><?= $helper->formatPrice($product->getPrice()) ?><span class="rubl">p</span></span>
 
-        <i class="i-product i-product--info-normal i-info__icon jsBestPricePopupOpener"></i>
+        <i class="i-product i-product--info-normal i-info__icon js-lowPriceNotifier-opener js-lowPriceNotifier" data-values="<?= $helper->json([
+            'price' => $price && $price < $product->getPrice() ? $helper->formatPrice($price) : null,
+            'actionChannelName' => '',
+            'userOfficeUrl' => $helper->url(\App::config()->user['defaultRoute']),
+            'submitUrl' => $helper->url('product.notification.lowerPrice', ['productId' => $product->getId()]),
+        ]) ?>"></i>
 
-        <!-- попап - узнатьо снижении цены, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
-        <div class="best-price-popup info-popup info-popup--best-price jsBestPricePopup jsLowPriceNotifer">
-            <i class="closer jsBestPricePopupCloser">×</i>
+        <script id="tpl-lowPriceNotifier-popup" type="text/html" data-partial="<?= $helper->json([]) ?>">
+            <?= file_get_contents(\App::config()->templateDir . '/product-page/blocks/lowPricePopup.mustache') ?>
+        </script>
 
-            <strong class="best-price-popup__tl">Узнать о снижении цены</strong>
-
-            <p class="best-price-popup__desc">Вы получите письмо,<br>когда цена станет ниже
-                <?= $helper->formatPrice($product->getPrice() * ($product->getRootCategory() ? $product->getRootCategory()->getPriceChangePercentTrigger() : 1)) ?>&nbsp;<span class="rubl">p</span></p>
-
-            <input class="best-price-popup__it textfield jsLowerPriceEmailInput" placeholder="Ваш email" value="">
-            <div class="jsLowerPriceError" style="color: #cb3735"></div>
-
-            <input type="checkbox" name="subscribe" id="subscribe" value="1" autocomplete="off" class="customInput customInput-defcheck jsCustomRadio js-customInput jsSubscribe" checked="">
-            <label class="best-price-popup__check customLabel customLabel-defcheck mChecked" for="subscribe">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
-
-            <div style="text-align: center">
-                <a href="#" class="best-price-popup__btn btn-type btn-type--buy jsLowerPriceSubmitBtn"
-                   data-url="<?= $helper->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>"
-                    >Сохранить</a>
-            </div>
-        </div>
-        <!--/ попап - узнатьо снижении цены -->
     </div>
     <!--/ цена товара -->
 
