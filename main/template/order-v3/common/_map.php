@@ -4,6 +4,7 @@
  * @var $product    \Model\Product\Entity
  * @var $visible    bool
  * @var $class      string
+ * @var $page       string (order|product)
  */
 
     $helper = \App::helper();
@@ -11,6 +12,9 @@
 
     // для дропбоксов
     $onmouseleave = "this.style.display='none'; $(this).parent().removeClass('opn')";
+
+
+    if ($page == 'product') array_walk($dataPoints->points, function( \Model\Point\MapPoint $point){ $point->showBuyButton = false; });
 
     $mapData = [
         'latitude'  => $dataPoints->mapConfig['latitude'],
@@ -161,13 +165,17 @@
                                     <div class="pick-point-item__date" data-bind="text: humanNearestDay"></div>
                                     <div class="pick-point-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div>
                                 </div>
+
+                                <!-- ko if: showBuyButton -->
                                 <div class="pick-point-item__buy">
-                                    <a
+                                    <button
                                         href=""
-                                        class="btn-type btn-type--buy jsOneClickButton-new jsOneClickButtonOnDeliveryMap"
+                                        class="btn-type btn-type--buy <? if ($page == 'page') : ?>jsOneClickButton-new<? endif ?>"
                                         <? if (isset($productUi)) : ?>data-product-ui="<?= $productUi ?>"<? endif ?>
-                                        data-bind="attr: { 'data-shop': id }">Купить</a>
+                                        data-bind="attr: { 'data-shop': id }">Купить</button>
                                 </div>
+                                <!-- /ko -->
+
                                 </td>
 
                                 <!-- конец -->

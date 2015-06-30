@@ -103,6 +103,7 @@ return function(
 
             <?= \App::templating()->render('order-v3/common/_map', [
                 'dataPoints'    => $dataPoints,
+                'page'          => 'order'
             ]) ?>
 
             <!--/ способ доставки -->

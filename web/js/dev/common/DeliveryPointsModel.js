@@ -257,11 +257,12 @@
         balloonContent = Mustache.render(balloonTemplate, point);
 
         // кнопка "Выбрать магазин"
-        balloonContent += $('<button />', {
+        // показываем только на странице продукта
+        if (point.showBuyButton) balloonContent += $('<button />', {
                 'text':'Купить',
                 'class': 'btn-type btn-type--buy ' + buyButtonClass,
                 'style': 'display: block',
-                'data-shop': point.id,
+                'data-id': point.id,
                 'data-token': point.token,
                 'data-blockname': point.orderToken,
                 'data-product-ui': productUi
@@ -274,7 +275,7 @@
             hintContent: point.name,
             enterToken: point.token // Дополняем собственными свойствами
         }, {
-            balloonMaxWidth: 388,
+            balloonMaxWidth: 350,
             iconLayout: 'default#image',
             iconImageHref: point.marker.iconImageHref,
             iconImageSize: point.marker.iconImageSize,

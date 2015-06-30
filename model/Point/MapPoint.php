@@ -30,6 +30,8 @@ class MapPoint extends BasicPoint {
     public $orderToken;
     public $dropdownName;
     public $listName;
+    /** @var bool Показывать кнопку Купить на карте и в списке точек */
+    public $showBuyButton = true;
 
     public function __construct(array $data = []) {
         parent::__construct($data);

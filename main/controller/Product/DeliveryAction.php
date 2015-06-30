@@ -273,7 +273,8 @@ class DeliveryAction {
                     ['dataPoints' => $map,
                         'visible' => true,
                         'class'   => 'jsDeliveryMapPoints',
-                        'productUi' => $productUi
+                        'productUi' => $productUi,
+                        'page'      => 'product'
                     ])
             ];
         } else {

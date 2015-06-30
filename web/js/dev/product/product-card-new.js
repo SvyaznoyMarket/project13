@@ -102,7 +102,7 @@
         window.scrollTo(0, $(hash).offset().top - 105);
     });
 
-    $body.on('click', '.jsOneClickButtonOnDeliveryMap', function(){
+    $body.on('click', '.jsOneClickButton-new', function(){
         $('.jsProductPointsMap').trigger('close');
     });
 
@@ -157,9 +157,11 @@
 
                     yMap = new ymaps.Map(mapDivId, {
                         center: [mapData.latitude, mapData.longitude],
-                        zoom: mapData.zoom
+                        zoom: mapData.zoom,
+                        controls: ['zoomControl', 'fullscreenControl', 'geolocationControl', 'typeSelector']
                     },{
-                        autoFitToViewport: 'always'
+                        autoFitToViewport: 'always',
+                        suppressMapOpenBlock: true
                     });
 
                     yMap.controls.remove('searchControl');
@@ -184,7 +186,7 @@
                     // добавляем видимые точки на карту
                     $.each(mapData.points, function(i, point){
                         try {
-                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButtonOnDeliveryMap jsOneClickButton-new'));
+                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButton-new'));
                         } catch (e) {
                             console.error('Ошибка добавления точки на карту', e);
                         }
