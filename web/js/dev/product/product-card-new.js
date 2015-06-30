@@ -335,8 +335,8 @@
 
         if ($offer.length == 0) {
             $.get(link).done(function (doc) {
-                $('<div class="jsProductPartnerOfferDiv partner-offer-popup" style="height: 90%; background-color: #fff; overflow-y: scroll;"></div>')
-                    .append($(doc).find('.content').append('<i class="closer jsPopupCloser">×</i>'))
+                $('<div class="jsProductPartnerOfferDiv partner-offer-popup"></div>')
+                    .append($('<i class="closer jsPopupCloser">×</i>'), $(doc).find('h1'), $(doc).find('article'))
                     .lightbox_me(popupDefaults)
             });
         } else {
@@ -352,7 +352,8 @@
         $('<div />', {'style': 'background-color: #fff'}).append($('<img />', { src: imageLink})).lightbox_me({destroyOnClose: true, centered: true});
     });
 
-    $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); })
+    $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); });
+
     $('.js-description-expand').on('click', function(){
 
         $(this).removeClass('collapsed js-description-expand');
