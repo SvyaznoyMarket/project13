@@ -380,9 +380,9 @@
  * Обратный счетчик акции
  */
 !function() {
-    console.info('CountDown....');
     var
         countDownWrapper = $('.js-countdown'),
+        countDownOut     = $('.js-countdown-out'),
         expDate          = countDownWrapper.attr('data-expires'),
 
         getDeclension = function( days ) {
@@ -404,9 +404,14 @@
 
         tick = function( opts ) {
             var
-                str = ( ( opts.days > 0 ) ? opts.days + ' ' + getDeclension(opts.days) + ' ' : '' ) + opts.hours + ':' + opts.minutes + ':' + opts.seconds;
+                mask = ( opts.days > 0 ) ? 'D ' + getDeclension(opts.days) + ' HH:MM:SS' : 'HH:MM:SS';
 
-            console.log(str);
+            mask = mask.replace(/(D+)/, function( str, d) { return (d.length > 1 && opts.days < 10 ) ? '0' + opts.days : opts.days });
+            mask = mask.replace(/(H+)/, function( str, h) { return (h.length > 1 && opts.hours < 10 ) ? '0' + opts.hours : opts.hours });
+            mask = mask.replace(/(M+)/, function( str, m) { return (m.length > 1 && opts.minutes < 10 ) ? '0' + opts.minutes : opts.minutes });
+            mask = mask.replace(/(S+)/, function( str, s) { return (s.length > 1 && opts.seconds < 10 ) ? '0' + opts.seconds : opts.seconds });
+
+            countDownOut.html(mask);
         },
 
         countDown;
@@ -422,5 +427,4 @@
         console.warn(err);
     }
 
-    console.log('CountDown enabled');
 }();

@@ -78,7 +78,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         <div class="product-card-action i-info">
 
             <span class="product-card-action__tx i-info__tx js-countdown"
-                  data-expires="<?= $product->getLabel()->expires->format('U') ?>">Акция действует<br>ещё <span><?= $product->getLabel()->getDateDiffString() ?></span>
+                  data-expires="<?= $product->getLabel()->expires->format('U') ?>">Акция действует<br>ещё <span class="js-countdown-out"><?= $product->getLabel()->getDateDiffString() ?></span>
             </span>
 
             <? if ($product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE)) : ?>
