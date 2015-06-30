@@ -28,7 +28,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
 
     <?= $helper->render('product-page/blocks/reviews.short', ['reviewsData' => $reviewsData]) ?>
 
-    <?= $helper->render('product-page/blocks/variants', ['product' => $product]) ?>
+    <?= $helper->render('product-page/blocks/variants', ['product' => $product, 'trustfactors' => $trustfactors]) ?>
 
     <? if ($product->getAnnounce()) : ?>
     <p class="product-card-desc collapsed js-description-expand"><?= $product->getAnnounce() ?></p>
