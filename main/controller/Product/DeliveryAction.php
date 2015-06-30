@@ -27,7 +27,7 @@ class DeliveryAction {
      * @param Product $productModel
      * @return array
      */
-    public function getResponseData($product, $region = null, \EnterQuery\Delivery\GetByCart $deliveryQuery = null, &$productModel) {
+    public function getResponseData($product, $region = null, \EnterQuery\Delivery\GetByCart $deliveryQuery = null, &$productModel = null) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         $helper = new \View\Helper();
