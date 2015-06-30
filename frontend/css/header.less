@@ -1,0 +1,37 @@
+.header {
+    padding: 10px;
+
+    .clearfix();
+
+    &__left {
+    	float: left;
+    }
+
+    &__right {
+    	float: right;
+    }
+}
+
+.logotype {
+    display: block;
+
+    width: 64px;
+    height: 64px;
+    .inline-block(middle);
+
+    background: url('@{base-url}/logo.png') no-repeat 0 0;
+}
+
+.location {
+	.inline-block(middle);
+	margin-left: 10px;
+
+	&__city {
+		line-height: 1.2;
+	}
+
+	&__phone {
+		font-family: 'GloberBold';
+		font-size: 1.1666em
+	}
+}
