@@ -247,6 +247,8 @@ class DeliveryAction {
             'success' => false
         ];
 
+        $product = \RepositoryManager::product()->getEntityById($productId);
+
         $splitResult = \App::coreClientV2()->query('cart/split',
             [
                 'geo_id'     => \App::user()->getRegionId(),
@@ -267,6 +269,18 @@ class DeliveryAction {
         if ($order && $order->orders) {
             $map = new \View\PointsMap\MapView();
             $map->preparePointsWithOrder(reset($order->orders), $order);
+
+            foreach ($product->getStock() as $stock) {
+                if ($stock->getQuantityShowroom() && $stock->getShopId()) {
+                    foreach ($map->points as $point) {
+                        if ($point->id == $stock->getShopId()) {
+                            $point->productInShowroom = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
             $result = [
                 'success'   => true,
                 'html'      => \App::templating()->render('order-v3/common/_map',

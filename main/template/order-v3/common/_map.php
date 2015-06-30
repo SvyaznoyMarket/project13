@@ -160,11 +160,14 @@
                                     <div class="pick-point-item__addr-name" data-bind="text: address"></div>
                                     <div class="pick-point-item__time" data-bind="text: regtime"></div>
                                 </td>
-                                <!-- если товар доступен для заказа, выводим это: -->
+
+
                                 <td class="pick-point-item__info" valign="middle">
+
+                                <!-- ko if: !productInShowroom -->
                                     <div class="pick-point-item__date" data-bind="text: humanNearestDay"></div>
-                                    <div class="pick-point-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div>
-                                </div>
+                                    <div class="pick-point-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div></div>
+                                <!-- /ko -->
 
                                 <!-- ko if: showBuyButton -->
                                 <div class="pick-point-item__buy">
@@ -176,19 +179,17 @@
                                 </div>
                                 <!-- /ko -->
 
-                                </td>
-
-                                <!-- конец -->
-                                <!-- если товар только на витрине, выводим это: -->
-                                 <!-- <td class="pick-point-item__info pick-point-item__info--nobtn" valign="middle">
+                                <!-- ko if: productInShowroom -->
                                     <span class="pick-point-item__ondisplay-lbl">На витрине</span>
-                                    <i class="i-product i-product--info-normal i-info__icon pick-point-item__ondisplay-icon"></i>
+                                    <i class="i-product i-product--info-normal i-info__icon pick-point-item__ondisplay-icon" onclick="$(this).next().toggleClass('info-popup--open')"></i>
                                     <?//попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open?>
-                                    <div class="pick-point-item__ondisplay-popup info-popup info-popup--ondisplay">
+                                    <div class="pick-point-item__ondisplay-popup info-popup info-popup--ondisplay ">
                                         <p>Чтобы купить товар с витрины,<br/>нужно приехать в магазин и обратиться к продавцу.</p>
                                     </div>
-                                </td> -->
-                                <!-- конец -->
+                                <!-- /ko -->
+
+                                </td>
+
                             </tr>
                         </tbody>
 
