@@ -16,7 +16,7 @@ class DeliveryPage extends Layout {
     }
 
     public function slotContent() {
-        return \App::closureTemplating()->render( 'order-v3-new/page-delivery', $this->params);
+        return \App::closureTemplating()->render('order-v3-new/page-delivery', $this->params);
     }
 
     public function slotBodyDataAttribute() {

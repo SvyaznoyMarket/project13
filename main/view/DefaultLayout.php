@@ -6,7 +6,7 @@ use Session\AbTest\AbTest;
 
 class DefaultLayout extends Layout {
 
-    protected $layout  = 'layout-twoColumn';
+    protected $layout  = 'layout-oneColumn';
     protected $breadcrumbsPath = null;
     protected $useTchiboAnalytics = false;
 
@@ -111,10 +111,6 @@ class DefaultLayout extends Layout {
     }
 
     public function slotContent() {
-        return '';
-    }
-
-    public function slotSidebar() {
         return '';
     }
 

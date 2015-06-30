@@ -618,12 +618,6 @@ return [
         'pattern' => '/private/subscriptions',
         'action'  => ['User\SubscriptionsAction', 'execute'],
     ],
-    // адвокат клиента
-    // @deprecated
-    'user.consultation' => [
-        'pattern' => '/private/consultation',
-        'action'  => ['User\ConsultationAction', 'execute'],
-    ],
 
     // маршрутизатор нескольких запросов
     'route' => [
