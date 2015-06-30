@@ -36,7 +36,7 @@
 		width: auto;
 		box-sizing: border-box;
 		.rounded(0 0 3px 3px);
-		padding: 5px 0px 7px;
+		padding: 5px 0px 0px;
 		background: @white;
 		white-space: nowrap;
 		z-index: 1;
@@ -65,9 +65,10 @@
 		}
 		
   		.filter-btn-box__inn {
-  			overflow: auto;
+  			overflow-y: auto;
+            overflow-x: hidden;
   			max-height: 150px;
-  			padding: 0 10px;
+  			padding: 0;
   		}
 	}
 
@@ -94,11 +95,16 @@
 	&-lst {
 
 		&__i {
-			margin: 0 0 5px;
+			margin: 0;
+            padding: 2.5px 10px;
+            cursor: pointer;
 			
 			&:last-child {
 				margin: 0;
 			}
+            &:hover{
+                background-color: rgba(247, 171, 47, 0.2);
+            }
 		}
 	}
 	&.filter-btn-box--bordered{
