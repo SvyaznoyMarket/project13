@@ -336,7 +336,7 @@
         if ($offer.length == 0) {
             $.get(link).done(function (doc) {
                 $('<div class="jsProductPartnerOfferDiv partner-offer-popup"></div>')
-                    .append($('<i class="closer jsPopupCloser">×</i>'), $(doc).find('h1'), $(doc).find('article'))
+                    .append($('<i class="closer jsPopupCloser">×</i>'), $('<div class="inn" />').append($(doc).find('h1'), $(doc).find('article')))
                     .lightbox_me(popupDefaults)
             });
         } else {
