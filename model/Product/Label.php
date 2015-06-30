@@ -12,7 +12,7 @@ use Util\Date;
 class Label {
 
     const MEDIA_TAG_IMAGE_TOP = '66x23';
-    const MEDIA_TAG_RIGHT_SIDE = '256x76';
+    const MEDIA_TAG_RIGHT_SIDE = 'label-preview';
 
     /** @var string */
     public $uid;
