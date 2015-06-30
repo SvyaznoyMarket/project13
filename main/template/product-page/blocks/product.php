@@ -77,7 +77,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         <!-- Шильдик с правой стороны -->
         <div class="product-card-action i-info">
 
-            <span class="product-card-action__tx i-info__tx"
+            <span class="product-card-action__tx i-info__tx js-countdown"
                   data-expires="<?= $product->getLabel()->expires->format('U') ?>">Акция действует<br>ещё <span><?= $product->getLabel()->getDateDiffString() ?></span>
             </span>
 
