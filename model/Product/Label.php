@@ -70,9 +70,9 @@ class Label {
     public function getDateDiffString() {
         if ($diff = $this->getDateDiff()) {
             if ($diff->days != 0) {
-                return \App::helper()->numberChoiceWithCount($diff->days, ['день', 'дня', 'дней']). ' '. $diff->format('%h:%I:%S');
+                return \App::helper()->numberChoiceWithCount($diff->days, ['день', 'дня', 'дней']). ' '. $diff->format('%H:%I:%S');
             } else {
-                return $diff->format('%h ч %I мин %S');
+                return $diff->format('%H:%I:%S');
             }
         }
         return '';
