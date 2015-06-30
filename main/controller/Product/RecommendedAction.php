@@ -91,22 +91,18 @@ class RecommendedAction {
 
             /** @var \Model\Product\Entity[] $productsById */
             $productsById = [];
-            $medias = [];
-            foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-                \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
-                    foreach ((array)$data as $item) {
-                        if (empty($item['id'])) continue;
+            \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->prepareCollectionById($productIds, $region, function($data) use (&$productsById) {
+                foreach ((array)$data as $item) {
+                    if (empty($item['id'])) continue;
 
-                        $productsById[$item['id']] = new \Model\Product\Entity($item);
-                    }
-                });
-
-                \RepositoryManager::product()->prepareProductsMediasByIds($productsInChunk, $medias);
-            }
+                    $productsById[$item['id']] = new \Model\Product\Entity($item);
+                }
+            });
 
             $client->execute(); // 2-й пакет запросов
 
-            \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
+            \RepositoryManager::product()->enrichProductsFromScms($productsById, 'media label category');
+            $client->execute();
 
             /**
              * Главный товар
@@ -180,9 +176,12 @@ class RecommendedAction {
                     $rowsCount = 2;
                 }
 
+                $template = \App::abTest()->isNewProductPage() && 'viewed' != $sender['type'] ? 'product-page/blocks/slider' : 'product/__slider';
+//                $template = 'product/__slider';
+
                 $recommendData[$type] = [
                     'success'   => true,
-                    'content'   => $templating->render('product/__slider', [
+                    'content'   => $templating->render($template, [
                         'title'          => $this->getTitleByType($type),
                         'products'       => $products,
                         'count'          => count($products),

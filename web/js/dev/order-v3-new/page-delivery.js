@@ -121,6 +121,11 @@
         },
         sendChanges = function sendChangesF (action, params) {
             console.info('Sending action "%s" with params:', action, params);
+
+            var hideContent = true;
+
+            if ($.inArray(action, ['changeDate', 'changeInterval', 'changeOrderComment']) != -1) hideContent = false;
+
             $.ajax({
                 type: 'POST',
                 data: {
@@ -128,7 +133,7 @@
                     'params' : params
                 },
                 beforeSend: function() {
-                    $orderContent.fadeOut(500);
+                    if (hideContent) $orderContent.fadeOut(500);
                     if (spinner) spinner.spin(body)
                 }
             }).fail(function(jqXHR){
@@ -161,6 +166,13 @@
                         points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map);
                     ENTER.OrderV3.koModels.push(points);
                     ko.applyBindings(points, val);
+                });
+
+                // Попап с сообщением о минимальной сумма заказа
+                $orderContent.find('.jsMinOrderSumPopup').lightbox_me({
+                    closeClick: false,
+                    closeEsc: false,
+                    centered: true
                 })
 
             }).always(function(){
@@ -176,34 +188,38 @@
                 "url": '/order/log'
             })
         },
-        showMap = function(elem) {
-            var $currentMap = elem.find('.js-order-map').first(),
+        /**
+         * Функция отображения карты
+         * @param $elem - попап
+         */
+        showMap = function($elem) {
+            var $currentMap = $elem.find('.js-order-map').first(),
+                $parent = $elem.parent(),
                 mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
                 mapOptions = ENTER.OrderV3.mapOptions,
                 map = ENTER.OrderV3.map;
 
             if (mapData && typeof map.getType == 'function') {
 
-                elem.lightbox_me({
+                $elem.lightbox_me({
                     centered: true,
-                    closeSelector: '.jsCloseFl'
+                    closeSelector: '.jsCloseFl',
+                    onClose: function(){ $parent.append($elem) } // возвращаем элемент на место
                 });
 
-                if (!elem.is(':visible')) elem.show();
+                if (!$elem.is(':visible')) $elem.show();
 
                 map.geoObjects.removeAll();
                 map.setCenter([mapOptions.latitude, mapOptions.longitude], mapOptions.zoom);
                 $currentMap.append(ENTER.OrderV3.$map.show());
                 map.container.fitToViewport();
 
-                // добавляем невидимые точки на карту
-                $.each(mapData.points, function(token){
-                    for (var i = 0; i < mapData.points[token].length; i++) {
-                        try {
-                            map.geoObjects.add(new ENTER.Placemark(mapData.points[token][i], false));
-                        } catch (e) {
-                            console.error('Ошибка добавления точки на карту', e);
-                        }
+                // добавляем точки на карту
+                $.each(mapData.points, function(i, point){
+                    try {
+                        map.geoObjects.add(new ENTER.Placemark(point, true));
+                    } catch (e) {
+                        console.error('Ошибка добавления точки на карту', e, point);
                     }
                 });
 
@@ -213,11 +229,11 @@
                 } else {
                     map.setBounds(map.geoObjects.getBounds());
                     // точки становятся видимыми только при увеличения зума
-                    map.events.once('boundschange', function(event){
+                    /*map.events.once('boundschange', function(event){
                         if (event.get('oldZoom') < event.get('newZoom')) {
                             map.geoObjects.each(function(point) { point.options.set('visible', true)})
                         }
-                    })
+                    })*/
                 }
 
             }
@@ -264,11 +280,10 @@
         $('.popupFl').hide();
 
         if ($(this).hasClass('js-order-changePlace-link')) {
-            showMap($(elemId));
+            showMap($(this).closest('.jsOrderRow').find('.jsNewPoints'));
             $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
         } else {
             $(elemId).show();
-            log({'action':'view-date'});
             $body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
         }
 
@@ -277,8 +292,8 @@
 
     // клик по способу доставки
 	$body.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
-        var token = $(this).data('token'),
-            id = $(this).closest('.popupFl').attr('id');
+        var token = $(this).data('token');
+            //map = $(this).parent().next();
         // переключение списка магазинов
         $('.selShop_l').hide();
         $('.selShop_l[data-token='+token+']').show();
@@ -286,7 +301,7 @@
         $('.selShop_tab').removeClass('selShop_tab-act');
         $('.selShop_tab[data-token='+token+']').addClass('selShop_tab-act');
         // показ карты
-        showMap($('#'+id));
+        //showMap(map);
     });
 
     // клик по "Ввести код скидки"
@@ -440,6 +455,13 @@
 		tabsOfertaAction(this)
 	});
 
+    // Попап с сообщением о минимальной сумма заказа
+    $('.jsMinOrderSumPopup').lightbox_me({
+        closeClick: false,
+        closeEsc: false,
+        centered: true
+    });
+
 	// ДЛЯ АБ-ТЕСТА ПО МОТИВАЦИИ ОНЛАЙН-ОПЛАТЫ
 	$body.on('click', '.jsPaymentMethodRadio', function(){
 		var $this = $(this),
@@ -485,6 +507,16 @@
             'hitCallback': link
         }]);
 
+    });
+
+    $body.on('change', '.jsDeliveryMapFilters input', function(){
+        var type = $(this).data('type'),
+            val = $(this).next().find('span').text();
+        $body.trigger('trackGoogleEvent', ['pickup_ux', 'filter', type + '_' + val]);
+    });
+
+    $body.on('click', '.jsMapDeliveryList .jsChangePoint', function(){
+        $body.trigger('trackGoogleEvent', ['pickup_ux', 'list_point', 'выбор'])
     })
 
 })(jQuery);

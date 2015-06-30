@@ -3,6 +3,7 @@
 ?>
 
 <li class="userbtn_i topbarfix_cmpr" data-bind="css: { 'topbarfix_cmpr-full': compare().length > 0 }">
+    <i class="i-header i-header--compare"></i>
     <a href="<?= \App::router()->generate('compare')?>" class="topbarfix_cmpr_tl" data-bind="visible: compare().length > 0" style="display: none">Сравнение</a>
     <span class="topbarfix_cmpr_tl js-noProductsForCompareLink" data-bind="visible: compare().length == 0">Сравнение</span>
     <span class="topbarfix_cmpr_qn" style="display: none" data-bind="visible: compare().length > 0, text: compare().length"></span>

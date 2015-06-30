@@ -57,6 +57,11 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'compare.min.js'
         },
 
+        favoriteJS: {
+            src: pathDev + 'favorite/*.js',
+            dest: pathProd + 'favorite.min.js'
+        },
+
         commonJS: {
             src: pathDev + 'common/*.js',
             dest: pathProd + 'common.min.js'
@@ -95,11 +100,6 @@ module.exports = function (grunt, options) {
         mainJS: {
             src: pathDev + 'main/*.js',
             dest: pathProd + 'main.min.js'
-        },
-
-        orderV3JS: {
-            src: pathDev + 'order-v3/*.js',
-            dest: pathProd + 'order-v3.min.js'
         },
 
 		orderV3newJS: {
@@ -147,24 +147,19 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'shop.min.js'
         },
 
-        tchiboJS: {
-            src: pathDev + 'tchibo/*.js',
-            dest: pathProd + 'tchibo.min.js'
-        },
-
         watch3dJS: {
             src: pathDev + 'watch3d/*.js',
             dest: pathProd + 'watch3d.min.js'
         },
 
-        gameSlotsJs: {
-            src: [ pathDev + 'game/slots/jquery.transit.js', pathDev + 'game/slots/slots.js'],
-            dest: pathProd + 'game/slots.min.js'
-        },
-
         serviceHaJS: {
             src: pathDev + 'service_ha/*.js',
             dest: pathProd + 'service_ha.min.js'
+        },
+
+        supplier: {
+            src: pathDev + 'supplier/*.js',
+            dest: pathProd + 'supplier.min.js'
         }
     }
 };

@@ -3,6 +3,7 @@
 namespace Controller\ProductCategory;
 
 use Model\Product\Filter\Entity;
+use View\Partial\ProductCategory\RootPage\Brands;
 use View\Product\FilterForm;
 
 class Action {
@@ -55,18 +56,6 @@ class Action {
 
         // подготовка 2-го пакета запросов
 
-        // запрашиваем бренд по токену
-        /** @var $brand \Model\Brand\Entity */
-        $brand = null;
-        if ($brandToken) {
-            \RepositoryManager::brand()->prepareEntityByToken($brandToken, $region, function($data) use (&$brand) {
-                $data = reset($data);
-                if ((bool)$data) {
-                    $brand = new \Model\Brand\Entity($data);
-                }
-            });
-        }
-
         /** @var $category \Model\Product\Category\Entity|null */
         $category = null;
         $catalogJson = [];
@@ -104,12 +93,24 @@ class Action {
             \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region);
         }
 
-        // запрашиваем фильтры
+        // запрашиваем фильтры и извлекаем из них бренды
         /** @var $filters \Model\Product\Filter\Entity[] */
+        /** @var $brand \Model\Brand\Entity */
+        /** @var $brands \Model\Brand\Entity[] */
+        $brand = null;
         $filters = [];
-        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, [], function($data) use (&$filters) {
+        $brands = [];
+        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, [], function($data) use (&$filters, &$brands, &$brand, $brandToken) {
             foreach ($data as $item) {
                 $filters[] = new \Model\Product\Filter\Entity($item);
+                // бренды
+                if (isset($item['filter_id']) && $item['filter_id'] == 'brand' && is_array($item['options'])) {
+                    foreach ($item['options'] as $brandData) {
+                        $brandEntity = new \Model\Brand\Entity($brandData);
+                        $brands[] = $brandEntity;
+                        if (isset($brandData['token']) && $brandData['token'] == $brandToken) $brand = $brandEntity;
+                    }
+                }
             }
         });
 
@@ -248,38 +249,18 @@ class Action {
                 }
                 // сортировка брендов по наибольшему количеству товаров
                 usort($brandOptions, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) { return $b->getQuantity() - $a->getQuantity(); });
-                $brandOptions = array_slice($brandOptions, 0, 60);
-                /** @var \Model\Brand\Entity[] $brands */
-                $brands = [];
-                if ((bool)$brandOptions) {
-                    \RepositoryManager::brand()->prepareByIds(
-                        array_map(function(\Model\Product\Filter\Option\Entity $option) { return $option->getId(); }, $brandOptions),
-                        null,
-                        function($data) use (&$brands) {
-                            if (isset($data[0])) {
-                                foreach ($data as $item) {
-                                    if (empty($item['token'])) continue;
 
-                                    $brands[] = new \Model\Brand\Entity($item);
-                                }
-                            }
-                        },
-                        function(\Exception $e) { \App::exception()->remove($e); }
-                    );
-
-                    \App::coreClientV2()->execute();
-
-                    foreach ($brands as $iBrand) {
-                        $hotlinks[] = new \Model\Seo\Hotlink\Entity([
-                            'group' => '',
-                            'name' => $iBrand->getName(),
-                            'url' => \App::router()->generate('product.category.brand', [
-                                'categoryPath' => $categoryPath,
-                                'brandToken'   => $iBrand->getToken(),
-                            ]),
-                        ]);
-                    }
+                foreach ($brands as $iBrand) {
+                    $hotlinks[] = new \Model\Seo\Hotlink\Entity([
+                        'group' => '',
+                        'name' => $iBrand->getName(),
+                        'url' => \App::router()->generate('product.category.brand', [
+                            'categoryPath' => $categoryPath,
+                            'brandToken'   => $iBrand->getToken(),
+                        ]),
+                    ]);
                 }
+
             }
         } catch (\Exception $e) {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['hotlinks']);
@@ -336,7 +317,7 @@ class Action {
                     $productsIds = array_unique($productsIds);
                     if ($productsIds) {
                         $medias = [];
-                        \RepositoryManager::product()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
+                        \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
                             foreach ($data as $item) {
                                 if (!isset($item['id'])) continue;
                                 $products[ $item['id'] ] = new \Model\Product\Entity($item);
@@ -585,7 +566,7 @@ class Action {
             $limit = $limit - (1 === $pageNum ? 1 : 0);
         }
 
-        $repository = \RepositoryManager::product();
+        $repository = \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock();
 
         $filters = $productFilter->dump();
 
@@ -711,7 +692,7 @@ class Action {
             });
         }
 
-        $repository->enrichProductsFromScms($products, 'media property');
+        $repository->enrichProductsFromScms($products, 'media label category property');
 
         \App::coreClientV2()->execute();
 

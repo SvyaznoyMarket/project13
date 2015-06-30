@@ -1,26 +1,20 @@
 /*
- * Copyright (C) 1999-2009 Jive Software. All rights reserved.
+ * $ lightbox_me
+ * By: Buck Wilson
+ * Version : 2.4
  *
- * This software is the proprietary information of Jive Software. Use is subject to license terms.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
-/*
-* $ lightbox_me
-* By: Buck Wilson
-* Version : 2.2 + fix by ivn
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
 
 
 (function($) {
@@ -31,228 +25,189 @@
 
             var
                 opts = $.extend({}, $.fn.lightbox_me.defaults, options),
-                $overlay = $('div.' + opts.classPrefix + '_overlay'),
+                $overlay = $(),
                 $self = $(this),
-                $iframe = $('iframe#lb_iframe'),
-                ie6 = ($.browser.msie && $.browser.version < 7);
+                $iframe = $('<iframe id="foo" style="z-index: ' + (opts.zIndex + 1) + ';border: none; margin: 0; padding: 0; position: absolute; width: 100%; height: 100%; top: 0; left: 0; filter: mask();"/>');
 
-            if (($overlay.length > 0) && opts.removeOtherOnCreate) {
-                $overlay[0].removeModal(); // if the overlay exists, then a modal probably exists. Ditch it!
-            } else {
-                $overlay =  $('<div class="' + opts.classPrefix + '_overlay" style="display:none;"/>'); // otherwise just create an all new overlay.
-            }
-
-            $iframe = ($iframe.length > 0) ? $iframe : $iframe = $('<iframe id="lb_iframe" style="z-index: ' + (opts.zIndex + 1) + '; display: none; border: none; margin: 0; padding: 0; position: absolute; width: 100%; height: 100%; top: 0; left: 0;"/>');
-
-            /*----------------------------------------------------
-               DOM Building
-            ---------------------------------------------------- */
-            if (ie6) {
-                var src = /^https/i.test(window.location.href || '') ? 'javascript:false' : 'about:blank';
-                $iframe.attr('src', src);
-                $('body').append($iframe);
-            } // iframe shim for ie6, to hide select elements
-            if( opts.reallyBig ) {
-            	$('body').append( $('<div>').addClass('bPopupWrap').append($self) ).append($overlay)
-            } else {
-            	$('body').append($self).append($overlay)
-            }
-
-            /*----------------------------------------------------
-               CSS stuffs
-            ---------------------------------------------------- */
-			function setHeight( jnode ) {
-				var jHeight = ($(window).height() - 80);
-				if( jHeight < 500 ) 
-					jHeight = 500
-				jnode.css('height', jHeight)
-			}
-            // set css of the modal'd window
-            
-			if( opts.reallyBig ) { // fix for mediaLibrary by IVN
-				$self.css({marginLeft: '50px', marginRight:  '50px' });
-				setWrapPosition( $self.parent() );
-				setHeight( $self );
-			} else {
-				$self.css({position: 'fixed'}) //IVN fixed on repeated opening
-            	setSelfPosition();
-            	$self.css({left: '50%', marginLeft: ($self.outerWidth() / 2) * -1,  zIndex: (opts.zIndex + 3) });
-			}
-            // set css of the overlay
-
-            setOverlayHeight(); // pulled this into a function because it is called on window resize.
-            //IVN $overlay.css({ position: 'absolute', width: '100%', top: 0, left: 0, right: 0, bottom: 0, zIndex: (opts.zIndex + 2) })
-            $overlay.css({ position: 'fixed', width: '100%', height:'100%', top: 0, left: 0, zIndex: (opts.zIndex + 2) })
-                    .css(opts.overlayCSS);
-
-            /*----------------------------------------------------
-               Animate it in.
-            ---------------------------------------------------- */
-            if( opts.autofocus ) {
-                var cusLoad = opts.onLoad
-                opts.onLoad = function() {
-                    cusLoad()
-                    $self.find('input:text').first().focus()
+            if (opts.showOverlay) {
+                //check if there's an existing overlay, if so, make subequent ones clear
+                var $currentOverlays = $(".js_lb_overlay:visible");
+                if ($currentOverlays.length > 0){
+                    $overlay = $('<div class="lb_overlay_clear js_lb_overlay"/>');
+                } else {
+                    $overlay = $('<div class="' + opts.classPrefix + '_overlay js_lb_overlay"/>');
                 }
             }
-            if ($overlay.is(":hidden")) {
+
+            /*----------------------------------------------------
+             DOM Building
+             ---------------------------------------------------- */
+            $('body').append($self.hide()).append($overlay);
+
+
+            /*----------------------------------------------------
+             Overlay CSS stuffs
+             ---------------------------------------------------- */
+
+            // set css of the overlay
+            if (opts.showOverlay) {
+                setOverlayHeight(); // pulled this into a function because it is called on window resize.
+                $overlay.css({ position: 'absolute', width: '100%', top: 0, left: 0, right: 0, bottom: 0, zIndex: (opts.zIndex + 2), display: 'none' });
+                if (!$overlay.hasClass('lb_overlay_clear')){
+                    $overlay.css(opts.overlayCSS);
+                }
+            }
+
+            /*----------------------------------------------------
+             Animate it in.
+             ---------------------------------------------------- */
+            //
+            if (opts.showOverlay) {
                 $overlay.fadeIn(opts.overlaySpeed, function() {
-                    $self[opts.appearEffect](opts.lightboxSpeed, function() { setOverlayHeight(); opts.onLoad()});
+                    setSelfPosition();
+                    $self[opts.appearEffect](opts.lightboxSpeed, function() { setOverlayHeight(); setSelfPosition(); opts.onLoad()});
                 });
             } else {
-                $self[opts.appearEffect](opts.lightboxSpeed, function() { setOverlayHeight(); opts.onLoad()});
+                setSelfPosition();
+                $self[opts.appearEffect](opts.lightboxSpeed, function() { opts.onLoad()});
             }
 
             /*----------------------------------------------------
-               Bind Events
-            ---------------------------------------------------- */
+             Hide parent if parent specified (parentLightbox should be jquery reference to any parent lightbox)
+             ---------------------------------------------------- */
+            if (opts.parentLightbox) {
+                opts.parentLightbox.fadeOut(200);
+            }
+
+
+            /*----------------------------------------------------
+             Bind Events
+             ---------------------------------------------------- */
+
             $(window).resize(setOverlayHeight)
-                     .resize( function(){ ( opts.reallyBig ) ? setWrapPosition( $self.parent() ) : setSelfPosition() })//IVN
-                     .resize( function(){ if( opts.reallyBig ) setHeight( $self ) } )
-                     .scroll( function(){ if ( !opts.reallyBig ) setSelfPosition() })//IVN
-                     .keydown(observeEscapePress);
-			$('body').addClass('showModal');
-            $self.find(opts.closeSelector).click(function() { removeModal(true); return false; });
-            $overlay.click( function(e) { 
-            	e.preventDefault();
-            	return false;
-            });
-            function overlayclick () {
-            	$overlay.click( function() { 
-            		if(opts.closeClick){ removeModal(true); return false;} 
-            	})
+                .resize(setSelfPosition)
+                .scroll(setSelfPosition);
+
+            $(window).bind('keyup.lightbox_me', observeKeyPress);
+
+            if (opts.closeClick) {
+                $overlay.click(function(e) { closeLightbox(); e.preventDefault; });
             }
-            setTimeout( overlayclick,500 );
+            $self.delegate(opts.closeSelector, "click", function(e) {
+                closeLightbox(); e.preventDefault();
+            });
+            $self.bind('close', closeLightbox);
+            $self.bind('reposition', setSelfPosition);
 
 
-            $self.bind('close.lme', function() { removeModal(true) });
-            $self.bind('resize.lme', function(){ ( opts.reallyBig ) ? setWrapPosition( $self.parent() ) : setSelfPosition() });//IVN
-            $overlay[0].removeModal = removeModal;
 
-            /*----------------------------------------------------------------------------------------------------------------------------------------
-              ---------------------------------------------------------------------------------------------------------------------------------------- */
+            /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+             -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
 
             /*----------------------------------------------------
-               Private Functions
-            ---------------------------------------------------- */
+             Private Functions
+             ---------------------------------------------------- */
 
+            /* Remove or hide all elements */
+            function closeLightbox() {
+                var s = $self[0].style;
+                if (opts.destroyOnClose) {
+                    $self.add($overlay).remove();
+                } else {
+                    $self.add($overlay).hide();
+                }
 
-            function removeModal(removeO) {
-                // fades & removes modal, then unbinds events
-                $self[opts.disappearEffect](opts.lightboxDisappearSpeed, function() {
+                //show the hidden parent lightbox
+                if (opts.parentLightbox) {
+                    opts.parentLightbox.fadeIn(200);
+                }
+                if (opts.preventScroll) {
+                    $('body').css('overflow', '');
+                }
+                $iframe.remove();
 
-                    if (removeO) {
-                      removeOverlay();
-                    }
+                // clean up events.
+                $self.undelegate(opts.closeSelector, "click");
+                $self.unbind('close', closeLightbox);
+                $self.unbind('repositon', setSelfPosition);
 
-                    opts.destroyOnClose ? $self.remove() : $self.hide()
-                    if( opts.reallyBig ) { $('.bPopupWrap').remove() }
-
-                    $self.find(opts.closeSelector).unbind('click');
-                    $self.unbind('.lme');//IVN
-                    //$self.unbind('close');
-                    //$self.unbind('resize');
-                    $(window).unbind('scroll', setSelfPosition);
-                    $(window).unbind('resize', setSelfPosition);
-
-					$('body').removeClass('showModal');
-                });
+                $(window).unbind('resize', setOverlayHeight);
+                $(window).unbind('resize', setSelfPosition);
+                $(window).unbind('scroll', setSelfPosition);
+                $(window).unbind('keyup.lightbox_me');
+                opts.onClose();
             }
 
 
-            function removeOverlay() {
-                // fades & removes overlay, then unbinds events
-                $overlay.fadeOut(opts.overlayDisappearSpeed, function() {
-                    $(window).unbind('resize', setOverlayHeight);
-
-                    $overlay.remove();
-                    $overlay.unbind('click');
-
-
-                    opts.onClose();
-
-                })
+            /* Function to bind to the window to observe the escape/enter key press */
+            function observeKeyPress(e) {
+                if((e.keyCode == 27 || (e.DOM_VK_ESCAPE == 27 && e.which==0)) && opts.closeEsc) closeLightbox();
             }
 
-
-
-            /* Function to bind to the window to observe the escape key press */
-            function observeEscapePress(e) {
-                if((e.keyCode == 27 || (e.DOM_VK_ESCAPE == 27 && e.which==0)) && opts.closeEsc) removeModal(true);
-            }
 
             /* Set the height of the overlay
-                    : if the document height is taller than the window, then set the overlay height to the document height.
-                    : otherwise, just set overlay height: 100%
-            */
+             : if the document height is taller than the window, then set the overlay height to the document height.
+             : otherwise, just set overlay height: 100%
+             */
             function setOverlayHeight() {
                 if ($(window).height() < $(document).height()) {
                     $overlay.css({height: $(document).height() + 'px'});
+                    $iframe.css({height: $(document).height() + 'px'});
                 } else {
                     $overlay.css({height: '100%'});
-                    if (ie6) {$('html,body').css('height','100%'); } // ie6 hack for height: 100%; TODO: handle this in IE7
                 }
             }
 
-            /* Set the position of the modal'd window ($self)
-                    : if $self is taller than the window, then make it absolutely positioned
-                    : otherwise fixed
-            */
-            function setWrapPosition( $node ) {//IVN
-            	var s = $node[0].style;
-            	//var topOffset = $(document).scrollTop() + 40;
-            	var topOffset = window.pageYOffset;
-            	if (! topOffset ) 
-            		topOffset = document.documentElement.scrollTop ;
-				$node.css({position: 'absolute', top: (topOffset + 40)*1 + 'px', marginTop: 0})
-				if (ie6) {
-					s.removeExpression('top');
-				}
-            }
 
+            /* Set the position of the modal'd window ($self)
+             : if $self is taller than the window, then make it absolutely positioned
+             : otherwise fixed
+             */
             function setSelfPosition() {
                 var s = $self[0].style;
 
-                if (($self.height() + 80  >= $(window).height() || !opts.sticky) && ($self.css('position') != 'absolute' || ie6)) {
+                // reset CSS so width is re-calculated for margin-left CSS
+                $self.css({left: '50%', marginLeft: ($self.outerWidth() / 2) * -1,  zIndex: (opts.zIndex + 3) });
+
+
+                /* we have to get a little fancy when dealing with height, because lightbox_me
+                 is just so fancy.
+                 */
+
+                // if the height of $self is bigger than the window and self isn't already position absolute
+                if (($self.height() + 80  >= $(window).height()) && ($self.css('position') != 'absolute')) {
+
+                    // we are going to make it positioned where the user can see it, but they can still scroll
+                    // so the top offset is based on the user's scroll position.
                     var topOffset = $(document).scrollTop() + 40;
                     $self.css({position: 'absolute', top: topOffset + 'px', marginTop: 0})
-                    if (ie6) {
-                        s.removeExpression('top');
-                    }
-                } else if ($self.height()+ 80  < $(window).height() && opts.sticky) {
-                    if (ie6) {
-                        s.position = 'absolute';
-                        if (opts.centered) {
-                            s.setExpression('top', '(document.documentElement.clientHeight || document.body.clientHeight) / 2 - (this.offsetHeight / 2) + (blah = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop) + "px"')
-                            s.marginTop = 0;
-                        } else {
-                            var top = (opts.modalCSS && opts.modalCSS.top) ? parseInt(opts.modalCSS.top) : 0;
-                            s.setExpression('top', '((blah = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop) + '+top+') + "px"')
-                        }
+                } else if ($self.height()+ 80  < $(window).height()) {
+                    //if the height is less than the window height, then we're gonna make this thing position: fixed.
+                    if (opts.centered) {
+                        $self.css({ position: 'fixed', top: '50%', marginTop: ($self.outerHeight() / 2) * -1})
                     } else {
-                        if (opts.centered) {
-                            $self.css({ position: 'fixed', top: '50%', marginTop: ($self.outerHeight() / 2) * -1})
-                        } else {
-                            $self.css({ position: 'fixed'}).css(opts.modalCSS);
-                        }
+                        $self.css({ position: 'fixed'}).css(opts.modalCSS);
+                    }
+                    if (opts.preventScroll) {
+                        $('body').css('overflow', 'hidden');
                     }
                 }
             }
-        });
-    };
 
+        });
+
+
+
+    };
 
     $.fn.lightbox_me.defaults = {
 
-        // animation when appears
+        // animation
         appearEffect: "fadeIn",
-        overlaySpeed: 300,
-        lightboxSpeed: "fast",
-
-        // animation when dissapears
-        disappearEffect: "fadeOut",
-        overlayDisappearSpeed: 300,
-        lightboxDisappearSpeed: "fast",
+        appearEase: "",
+        overlaySpeed: 250,
+        lightboxSpeed: 300,
 
         // close
         closeSelector: ".close",
@@ -261,23 +216,21 @@
 
         // behavior
         destroyOnClose: false,
+        showOverlay: true,
+        parentLightbox: false,
+        preventScroll: false,
 
         // callbacks
         onLoad: function() {},
         onClose: function() {},
-        removeOtherOnCreate: true, // удалять другие окна при создании
-        autofocus: false, 
 
         // style
         classPrefix: 'lb',
         zIndex: 999,
         centered: false,
-		sticky: true,
         modalCSS: {top: '40px'},
-        overlayCSS: {background: 'black', opacity: .4}
+        overlayCSS: {background: 'black', opacity: .3}
     }
-
-
 })(jQuery);
 /**
  * Copyright (c) 2007-2013 Ariel Flesler - aflesler<a>gmail<d>com | http://flesler.blogspot.com
@@ -538,45 +491,6 @@ $.fn.infiniteCarousel = function () {
     };
 
 })(jQuery);
-/*
-* jQuery.fn.typewriter( speed, callback );
-*
-* Typewriter, writes your text in a flow
-*
-* USAGE:
-* $('.element').typewriter( speed, callback );
-*
-*
-* Version 1.0.1
-* www.labs.skengdon.com/typewriter/
-* www.labs.skengdon.com/typewriter/js/typewriter.min.js
-*/
-;(function($){
-	$.fn.typewriter = function( speed, callback ) {
-		if ( typeof callback !== 'function' ) callback = function(){};
-		var write = function( e, text, time ) {
-			var next = $(e).text().length + 1;
-			if ( next <= text.length ) {
-				$(e).text( text.substr( 0, next ) );
-				setTimeout( function( ) {
-					write( e, text, time );
-				}, time);
-			} else {
-				e.callback();
-			}
-		};
-		return this.each(function() {
-			this.callback = callback;
-			var text = $(this).text();
-			var time = speed/text.length;
-			
-			$(this).text('');
-			
-			write( this, text, time )
-		});
-	}
-}(jQuery));
-
 /*
  jQuery Masked Input Plugin
  Copyright (c) 2007 - 2014 Josh Bush (digitalbush.com)
@@ -982,6 +896,104 @@ $.fn.infiniteCarousel = function () {
 	};
 
 })(jQuery);
+/*
+ jQuery deparam is an extraction of the deparam method from Ben Alman's jQuery BBQ
+ http://benalman.com/projects/jquery-bbq-plugin/
+ */
+;(function ($) {
+    $.deparam = function (params, coerce) {
+        var obj = {},
+            coerce_types = { 'true': !0, 'false': !1, 'null': null };
+
+        // Iterate over all name=value pairs.
+        $.each(params.replace(/\+/g, ' ').split('&'), function (j,v) {
+            var param = v.split('='),
+                key = decodeURIComponent(param[0]),
+                val,
+                cur = obj,
+                i = 0,
+
+            // If key is more complex than 'foo', like 'a[]' or 'a[b][c]', split it
+            // into its component parts.
+                keys = key.split(']['),
+                keys_last = keys.length - 1;
+
+            // If the first keys part contains [ and the last ends with ], then []
+            // are correctly balanced.
+            if (/\[/.test(keys[0]) && /\]$/.test(keys[keys_last])) {
+                // Remove the trailing ] from the last keys part.
+                keys[keys_last] = keys[keys_last].replace(/\]$/, '');
+
+                // Split first keys part into two parts on the [ and add them back onto
+                // the beginning of the keys array.
+                keys = keys.shift().split('[').concat(keys);
+
+                keys_last = keys.length - 1;
+            } else {
+                // Basic 'foo' style key.
+                keys_last = 0;
+            }
+
+            // Are we dealing with a name=value pair, or just a name?
+            if (param.length === 2) {
+                val = decodeURIComponent(param[1]);
+
+                // Coerce values.
+                if (coerce) {
+                    val = val && !isNaN(val)              ? +val              // number
+                        : val === 'undefined'             ? undefined         // undefined
+                        : coerce_types[val] !== undefined ? coerce_types[val] // true, false, null
+                        : val;                                                // string
+                }
+
+                if ( keys_last ) {
+                    // Complex key, build deep object structure based on a few rules:
+                    // * The 'cur' pointer starts at the object top-level.
+                    // * [] = array push (n is set to array length), [n] = array if n is
+                    //   numeric, otherwise object.
+                    // * If at the last keys part, set the value.
+                    // * For each keys part, if the current level is undefined create an
+                    //   object or array based on the type of the next keys part.
+                    // * Move the 'cur' pointer to the next level.
+                    // * Rinse & repeat.
+                    for (; i <= keys_last; i++) {
+                        key = keys[i] === '' ? cur.length : keys[i];
+                        cur = cur[key] = i < keys_last
+                            ? cur[key] || (keys[i+1] && isNaN(keys[i+1]) ? {} : [])
+                            : val;
+                    }
+
+                } else {
+                    // Simple key, even simpler rules, since only scalars and shallow
+                    // arrays are allowed.
+
+                    if ($.isArray(obj[key])) {
+                        // val is already an array, so push on the next value.
+                        obj[key].push( val );
+
+                    } else if (obj[key] !== undefined) {
+                        // val isn't an array, but since a second value has been specified,
+                        // convert val into an array.
+                        obj[key] = [obj[key], val];
+
+                    } else {
+                        // val is a scalar.
+                        obj[key] = val;
+                    }
+                }
+
+            } else if (key) {
+                // No value was defined, so set something meaningful.
+                obj[key] = coerce
+                    ? undefined
+                    : '';
+            }
+        });
+
+        return obj;
+    };
+})(jQuery);
+
 /*
  *	jQuery elevateZoom 2.5.6
  *	+ fix by Alexandr Zaytcev:
@@ -2008,237 +2020,6 @@ if ( typeof Object.create !== 'function' ) {
 	};
 
 })( jQuery, window, document );
-/**!
- * @preserve Shadow animation 1.11
- * http://www.bitstorm.org/jquery/shadow-animation/
- * Copyright 2011, 2013 Edwin Martin <edwin@bitstorm.org>
- * Contributors: Mark Carver, Xavier Lepretre and Jason Redding
- * Released under the MIT and GPL licenses.
- */
-
-jQuery(function($, undefined) {
-	/**
-	 * Check whether the browser supports RGBA color mode.
-	 *
-	 * Author Mehdi Kabab <http://pioupioum.fr>
-	 * @return {boolean} True if the browser support RGBA. False otherwise.
-	 */
-	function isRGBACapable() {
-		var $script = $('script:first'),
-		color = $script.css('color'),
-		result = false;
-		if (/^rgba/.test(color)) {
-			result = true;
-		} else {
-			try {
-				result = (color !== $script.css('color', 'rgba(0, 0, 0, 0.5)').css('color'));
-				$script.css('color', color);
-			} catch (e) {
-			}
-		}
-		$script.removeAttr('style');
-
-		return result;
-	}
-
-	$.extend(true, $, {
-		support: {
-			'rgba': isRGBACapable()
-		}
-	});
-
-	/*************************************/
-
-	// First define which property to use
-	var styles = $('html').prop('style');
-	var boxShadowProperty;
-	$.each(['boxShadow', 'MozBoxShadow', 'WebkitBoxShadow'], function(i, property) {
-		var val = styles[property];
-		if (typeof val !== 'undefined') {
-			boxShadowProperty = property;
-			return false;
-		}
-	});
-
-	// Extend the animate-function
-	if (boxShadowProperty) {
-		$['Tween']['propHooks']['boxShadow'] = {
-			get: function(tween) {
-				return $(tween.elem).css(boxShadowProperty);
-			},
-			set: function(tween) {
-				var style = tween.elem.style;
-				var p_begin = parseShadows($(tween.elem)[0].style[boxShadowProperty] || $(tween.elem).css(boxShadowProperty));
-				var p_end = parseShadows(tween.end);
-				var maxShadowCount = Math.max(p_begin.length, p_end.length);
-				var i;
-				for(i = 0; i < maxShadowCount; i++) {
-					p_end[i] = $.extend({}, p_begin[i], p_end[i]);
-					if (p_begin[i]) {
-						if (!('color' in p_begin[i]) || $.isArray(p_begin[i].color) === false) {
-							p_begin[i].color = p_end[i].color || [0, 0, 0, 0];
-						}
-					} else {
-						p_begin[i] = parseShadows('0 0 0 0 rgba(0,0,0,0)')[0];
-					}
-				}
-				tween['run'] = function(progress) {
-					var rs = calculateShadows(p_begin, p_end, progress);
-					style[boxShadowProperty] = rs;
-				};
-			}
-		};
-	}
-
-	// Calculate an in-between shadow.
-	function calculateShadows(beginList, endList, pos) {
-		var shadows = [];
-		$.each(beginList, function(i) {
-			var parts = [], begin = beginList[i], end = endList[i];
-
-			if (begin.inset) {
-				parts.push('inset');
-			}
-			if (typeof end.left !== 'undefined') {
-				parts.push(parseFloat(begin.left + pos * (end.left - begin.left)) + 'px '
-				+ parseFloat(begin.top + pos * (end.top - begin.top)) + 'px');
-			}
-			if (typeof end.blur !== 'undefined') {
-				parts.push(parseFloat(begin.blur + pos * (end.blur - begin.blur)) + 'px');
-			}
-			if (typeof end.spread !== 'undefined') {
-				parts.push(parseFloat(begin.spread + pos * (end.spread - begin.spread)) + 'px');
-			}
-			if (typeof end.color !== 'undefined') {
-				var color = 'rgb' + ($.support['rgba'] ? 'a' : '') + '('
-				+ parseInt((begin.color[0] + pos * (end.color[0] - begin.color[0])), 10) + ','
-				+ parseInt((begin.color[1] + pos * (end.color[1] - begin.color[1])), 10) + ','
-				+ parseInt((begin.color[2] + pos * (end.color[2] - begin.color[2])), 10);
-				if ($.support['rgba']) {
-					color += ',' + parseFloat(begin.color[3] + pos * (end.color[3] - begin.color[3]));
-				}
-				color += ')';
-				parts.push(color);
-			}
-			shadows.push(parts.join(' '));
-		});
-		return shadows.join(', ');
-	}
-
-	// Parse the shadow value and extract the values.
-	function parseShadows(shadow) {
-		var parsedShadows = [];
-		var parsePosition = 0;
-		var parseLength = shadow.length;
-
-		function findInset() {
-			var m = /^inset\b/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsedShadow.inset = true;
-				parsePosition += m[0].length;
-				return true;
-			}
-			return false;
-		}
-		function findOffsets() {
-			var m = /^(-?[0-9\.]+)(?:px)?\s+(-?[0-9\.]+)(?:px)?(?:\s+(-?[0-9\.]+)(?:px)?)?(?:\s+(-?[0-9\.]+)(?:px)?)?/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsedShadow.left = parseInt(m[1], 10);
-				parsedShadow.top = parseInt(m[2], 10);
-				parsedShadow.blur = (m[3] ? parseInt(m[3], 10) : 0);
-				parsedShadow.spread = (m[4] ? parseInt(m[4], 10) : 0);
-				parsePosition += m[0].length;
-				return true;
-			}
-			return false;
-		}
-		function findColor() {
-			var m = /^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsedShadow.color = [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16), 1];
-				parsePosition += m[0].length;
-				return true;
-			}
-			m = /^#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsedShadow.color = [parseInt(m[1], 16) * 17, parseInt(m[2], 16) * 17, parseInt(m[3], 16) * 17, 1];
-				parsePosition += m[0].length;
-				return true;
-			}
-			m = /^rgb\(\s*([0-9\.]+)\s*,\s*([0-9\.]+)\s*,\s*([0-9\.]+)\s*\)/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsedShadow.color = [parseInt(m[1], 10), parseInt(m[2], 10), parseInt(m[3], 10), 1];
-				parsePosition += m[0].length;
-				return true;
-			}
-			m = /^rgba\(\s*([0-9\.]+)\s*,\s*([0-9\.]+)\s*,\s*([0-9\.]+)\s*,\s*([0-9\.]+)\s*\)/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsedShadow.color = [parseInt(m[1], 10), parseInt(m[2], 10), parseInt(m[3], 10), parseFloat(m[4])];
-				parsePosition += m[0].length;
-				return true;
-			}
-			return false;
-		}
-		function findWhiteSpace() {
-			var m = /^\s+/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsePosition += m[0].length;
-				return true;
-			}
-			return false;
-		}
-		function findComma() {
-			var m = /^\s*,\s*/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsePosition += m[0].length;
-				return true;
-			}
-			return false;
-		}
-		function normalizeShadow(shadow) {
-			if ($.isPlainObject(shadow)) {
-				var i, sColor, cLength = 0, color = [];
-				if ($.isArray(shadow.color)) {
-					sColor = shadow.color;
-					cLength = sColor.length;
-				}
-				for(i = 0; i < 4; i++) {
-					if (i < cLength) {
-						color.push(sColor[i]);
-					} else if (i === 3) {
-						color.push(1);
-					} else {
-						color.push(0);
-					}
-				}
-			}
-			return $.extend({
-				'left': 0,
-				'top': 0,
-				'blur': 0,
-				'spread': 0
-			}, shadow);
-		}
-		var parsedShadow = normalizeShadow();
-
-		while (parsePosition < parseLength) {
-			if (findInset()) {
-				findWhiteSpace();
-			} else if (findOffsets()) {
-				findWhiteSpace();
-			} else if (findColor()) {
-				findWhiteSpace();
-			} else if (findComma()) {
-				parsedShadows.push(normalizeShadow(parsedShadow));
-				parsedShadow = {};
-			} else {
-				break;
-			}
-		}
-		parsedShadows.push(normalizeShadow(parsedShadow));
-		return parsedShadows;
-	}
-});
 ;(function($){
 	/**
 	 * Плагин кастомных элементов select для карточки товара
@@ -2460,7 +2241,7 @@ jQuery(function($, undefined) {
 				 * Переключение на следующий слайд. Проверка состояния кнопок.
 				 */
 				nextSlide = function nextSlide(e) {
-					if ( $(this).hasClass('mDisabled') ) {
+					if ( $(this).hasClass('mDisabled disabled') ) {
 						return false;
 					}
 
@@ -2468,15 +2249,15 @@ jQuery(function($, undefined) {
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					leftBtn.removeClass('mDisabled');
+					leftBtn.removeClass('mDisabled disabled');
 
 					if ( nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW ) {
 						nowLeft = slider.width() - elementOnSlide * itemW;
-						rightBtn.addClass('mDisabled');
+						rightBtn.addClass('mDisabled disabled');
 					}
 					else {
 						nowLeft = nowLeft + elementOnSlide * itemW;
-						rightBtn.removeClass('mDisabled');
+						rightBtn.removeClass('mDisabled disabled');
 					}
 
 					console.info(itemW);
@@ -2496,7 +2277,7 @@ jQuery(function($, undefined) {
 				 * Переключение на предыдущий слайд. Проверка состояния кнопок.
 				 */
 				prevSlide = function prevSlide(e) {
-					if ( $(this).hasClass('mDisabled') ) {
+					if ( $(this).hasClass('mDisabled disabled') ) {
 						return false;
 					}
 
@@ -2504,15 +2285,15 @@ jQuery(function($, undefined) {
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					rightBtn.removeClass('mDisabled');
+					rightBtn.removeClass('mDisabled disabled');
 
 					if ( nowLeft - elementOnSlide * itemW <= 0 ) {
 						nowLeft = 0;
-						leftBtn.addClass('mDisabled');
+						leftBtn.addClass('mDisabled disabled');
 					}
 					else {
 						nowLeft = nowLeft - elementOnSlide * itemW;
-						leftBtn.removeClass('mDisabled');
+						leftBtn.removeClass('mDisabled disabled');
 					}
 
 					slider.animate({'left': -nowLeft });
@@ -2544,16 +2325,16 @@ jQuery(function($, undefined) {
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					leftBtn.addClass('mDisabled');
-					rightBtn.addClass('mDisabled');
+					leftBtn.addClass('mDisabled disabled');
+					rightBtn.addClass('mDisabled disabled');
 
 					if ( nowItems.length > elementOnSlide ) {
-						rightBtn.removeClass('mDisabled');
+						rightBtn.removeClass('mDisabled disabled');
 					}
 
 					slider.width(nowItems.length * itemW);
 					nowLeft = 0;
-					leftBtn.addClass('mDisabled');
+					leftBtn.addClass('mDisabled disabled');
 					slider.css({'left':nowLeft});
 					wrap.removeClass('mLoader');
 					nowItems.show();
@@ -2598,7 +2379,7 @@ jQuery(function($, undefined) {
 					newSlider = $(res.content)[0];
 					$self.before(newSlider);
 					$self.remove();
-					$(newSlider).goodsSlider();
+					$(newSlider).goodsSlider(options);
 
 					if (params.onLoad) {
 						params.onLoad(newSlider);
@@ -2630,7 +2411,12 @@ jQuery(function($, undefined) {
 				if ( typeof window.ENTER.utils.packageReq === 'function' ) {
                     try {
                         if ('viewed' == sliderParams.type) {
-                            sliderParams.url += ((-1 != sliderParams.url.indexOf('?')) ? '&' : '?') + 'rrviewed=' + sliderParams.rrviewed + '&' + $.param({senders: [sliderParams.sender]}) + (sliderParams.sender2 ? '&' + $.param({sender2: sliderParams.sender2}) : '');
+                            sliderParams.url += ((-1 != sliderParams.url.indexOf('?')) ? '&' : '?') +
+								(sliderParams.rrviewed ? 'rrviewed=' + sliderParams.rrviewed + '&' : '') +
+								$.param({senders: [sliderParams.sender]}) +
+								(sliderParams.sender2 ? '&' +
+								$.param({sender2: sliderParams.sender2}) : '')
+							;
 
                             getSlidersData(sliderParams.url, sliderParams.type, function(res) {
                                 res.recommend && res.recommend.viewed && authFromServer(res.recommend.viewed);
@@ -6013,131 +5799,6 @@ $.widget( "ui.slider", $.ui.mouse, {
 
 }(jQuery));
 
-(function($) {
-
-  $.rimages = {
-    $els: $('[data-rimage]'),
-    breakpoints: {},
-
-    init: function() {
-      $.rimages.$body = $('body');
-      $.rimages.scrollbarWidth = $.rimages.getScrollbarWidth();
-
-      if (!$.rimages.$els[0]) {
-        return;
-      }
-      $.rimages.pixelRatio = window.devicePixelRatio;
-      $.rimages.$els.each(function() {
-        var elData = $(this).data();
-        for (var key in elData) {
-          var isSrc = /^src/.test(key);
-          var is2x = /at2x$/.test(key);
-          var baseKey = key.replace('at2x', '');
-          var has2x = $(this).data(key + 'at2x');
-          var width = /\d+/.exec(baseKey);
-          width = width ? parseInt(width[0]) : null;
-          var shouldAdd = false;
-          var add2x = false;
-          var isNotApplicable = !isSrc || ($.rimages.pixelRatio !== 2 && is2x) || ($.rimages.pixelRatio === 2 && !is2x && has2x);
-
-          if (!isNotApplicable) {
-            $.rimages.addToBreakpoint(baseKey, width, elData[key], this);
-          }
-        }
-      });
-
-      $(window).on('resize', $.rimages.setPerWindowWidth);
-      $.rimages.setPerWindowWidth();
-    },
-
-    getScrollbarWidth: function() {
-      $.rimages.$body = $('body');
-      var overflow = $.rimages.$body.css('overflow');
-      $.rimages.$body.css({
-        'overflow': 'hidden'
-      });
-      var widthWithoutScrollbar = $.rimages.$body.outerWidth();
-      $.rimages.$body.css({
-        'overflow': 'scroll',
-        'height': '10000px'
-      });
-      var widthWithScrollbar = $.rimages.$body.outerWidth();
-      $.rimages.$body.removeAttr('style');
-      return widthWithoutScrollbar - widthWithScrollbar;
-    },
-
-    addToBreakpoint: function(breakpointId, width, src, el) {
-      if (!$.rimages.breakpoints[breakpointId]) {
-        $.rimages.breakpoints[breakpointId] = {
-          max: /^srcmax/.test(breakpointId),
-          width: width,
-          els: []
-        };
-      }
-      $.rimages.breakpoints[breakpointId].els.push({$el: $(el), src: src});
-    },
-
-    set: function(breakpointId) {
-      if (typeof($.rimages.breakpoints[breakpointId]) !== "undefined") return;
-
-      var images = $.rimages.breakpoints[breakpointId]['els'];
-      for (var i = 0; i < images.length; i++) {
-        var image = images[i];
-        var $image = images[i].$el;
-        if ($image.data('currentBreakpointId') !== breakpointId) {
-          $image.attr('src', image['src']);
-        }
-        $image.data('currentBreakpointId', breakpointId);
-      }
-    },
-
-    setPerWindowWidth: function() {
-      var windowWidth = $(window).width();
-      var windowHeight = $(window).height();
-      var bodyHeight = $.rimages.$body.height();
-      var breakpointsToApply = [];
-      var maxBreakpointToApply;
-      var minBreakpointToApply;
-      var maxBreakpointWidth = Infinity;
-      var minBreakpointWidth = -Infinity;
-
-      if (bodyHeight > windowHeight) {
-        windowWidth += $.rimages.scrollbarWidth;
-      }
-
-      for (var breakpointId in $.rimages.breakpoints) {
-        var breakpoint = $.rimages.breakpoints[breakpointId];
-
-        // check max
-        if (breakpoint['max'] && breakpoint['width'] >= windowWidth && breakpoint['width'] < maxBreakpointWidth) {
-          maxBreakpointToApply = breakpointId;
-          maxBreakpointWidth = breakpoint['width'];
-        }
-
-        // check min
-        if (!breakpoint['max'] && breakpoint['width'] >= windowWidth && breakpoint['width'] < minBreakpointWidth) {
-          minBreakpointToApply = breakpointId;
-          minBreakpointWidth = breakpoint['width'];
-        }
-      }
-
-      if (!maxBreakpointToApply && !minBreakpointToApply) {
-        $.rimages.set('src');
-      }
-
-      if (maxBreakpointToApply) {
-        $.rimages.set(maxBreakpointToApply);
-      }
-
-      if (minBreakpointToApply) {
-        $.rimages.set(minBreakpointToApply);
-      }
-    }
-  };
-
-  $.rimages.init();
-
-})(jQuery);
 (function($) {
     $.kladr = {};
     

@@ -23,8 +23,8 @@ class IndexPage extends \View\DefaultLayout {
             $this->products = $this->getParam('products');
             foreach (array_reverse($this->products) as $product) {
                 /** @var $product \Model\Product\Entity */
-                if ($product->getMainCategory() instanceof \Model\Product\Category\Entity) {
-                    $backlink = $product->getMainCategory()->getLink();
+                if ($product->getRootCategory() instanceof \Model\Product\Category\Entity) {
+                    $backlink = $product->getRootCategory()->getLink();
                     break;
                 }
             }
@@ -58,7 +58,7 @@ class IndexPage extends \View\DefaultLayout {
             $tag_params['prodid'][] = $product->getId();
             $tag_params['pname'][] = $product->getName();
             $tag_params['pcat'][] = $category ? $category->getToken() : '';
-            $tag_params['pcat_upper'][] = $product->getMainCategory() ? $product->getMainCategory()->getToken() : '';
+            $tag_params['pcat_upper'][] = $product->getRootCategory() ? $product->getRootCategory()->getToken() : '';
         }
 
         return parent::slotGoogleRemarketingJS($tag_params);

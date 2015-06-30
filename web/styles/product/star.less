@@ -1,14 +1,48 @@
 .star {
 	.inline-block();
-	width: 15px;
-	height: 14px;
-	background: url('/images/reviews_star.png');
-}
+	
+	font-size: 14px;
+    font-family: "rate-stars";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+ 
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
 
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+
+    line-height: 1em;
+    color: @firmOrange;
+}
+.star-fill{
+    &:before { content: '\e801'; }
+}
 .star-half {
-	background-image: url('/images/reviews_star_half.png');
+	&:before { content: '\e802'; } 
 }
 
 .star-empty {
-	background-image: url('/images/reviews_star_empty.png');
+	&:before { content: '\e800'; } 
 }
+
+.jewel {
+    .star{
+        color: @black;
+    }
+    .bReviews .bReviewsSummary__eCol .reviewsBarBg {
+      background-color: #edecee;
+    }
+    .bReviews .bReviewsSummary__eCol .reviewsBarBg .reviewsBar{
+        background-color: @black;
+    }
+}
+.stars-list{
+    .inline-block();
+        &__item{
+            cursor: pointer;
+        }
+    }

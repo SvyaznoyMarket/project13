@@ -40,14 +40,31 @@ class SetAction {
         $product = new \Model\Product\Entity(reset($productQuery->response->products));
 
         $favoriteQuery = (new Query\User\Favorite\Set($user->getEntity()->getUi(), $product->getUi()))->prepare();
+
         $curl->execute();
 
         if ($favoriteQuery->error) {
             throw new $favoriteQuery->error;
         }
 
-        return new \Http\JsonResponse([
-            'success' => true,
-        ]);
+        if ($request->isXmlHttpRequest()) {
+            $response = new \Http\JsonResponse([
+                'success' => true,
+                'widgets' => [
+                    '.id-favoriteButton-' . $product->getUi() => \App::helper()->render(
+                        'product/__favoriteButton',
+                        [
+                            'helper'          => \App::helper(),
+                            'product'         => $product,
+                            'favoriteProduct' => new \Model\Favorite\Product\Entity(['uid' => $product->getUi(), 'is_favorite' => true]),
+                        ]
+                    ),
+                ],
+            ]);
+        } else {
+            $response =  new \Http\RedirectResponse($request->headers->get('referer') ?: '/');
+        }
+
+        return $response;
     }
 }

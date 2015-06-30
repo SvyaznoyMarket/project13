@@ -29,8 +29,6 @@ $c->session['cookie_lifetime'] = 2592000; // 30 дней
 $c->session['cookie_domain'] = '.enter.ru';
 $c->session['compareKey']   = 'compare'; // ключ для массива сравнения
 
-$c->ssi['enabled'] = true;
-
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
@@ -196,6 +194,21 @@ $c->crm['retryTimeout'] = [
 ];
 $c->crm['debug'] = false;
 
+$c->fileStorage = [
+    'url'          => 'http://api.enter.ru/v2/',
+    'client_id'    => 'site',
+    'timeout'      => 5,
+    'retryTimeout' => [
+        'default' => 0.18,
+        'tiny'    => 0.18,
+        'short'   => 0.25,
+        'medium'  => 0.5,
+        'long'    => 1,
+        'huge'    => 2,
+    ],
+    'retryCount'   => 2,
+];
+
 $c->connectTerminal = true;
 
 $c->company['phone'] = '+7 (800) 700-00-09';
@@ -319,7 +332,7 @@ $c->product['minCreditPrice']           = 3000;
 $c->product['totalCount']               = 55000;
 $c->product['recommendationSessionKey']     = 'recommendationProductIds';
 $c->product['productPageSendersSessionKey'] = 'productPageSenders';
-$c->product['productPageSendersForMarketplaceSessionKey'] = 'productPageSendersForMarketplace';
+$c->product['productPageSenders2SessionKey'] = 'productPageSendersForMarketplace';
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
@@ -423,8 +436,6 @@ $c->kladr = [
     'itemLimit' => 20,
 ];
 
-$c->tag['numSidebarCategoriesShown'] = 3;
-
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
@@ -466,6 +477,8 @@ $c->abTest = [
 $c->self_delivery['enabled'] = true;
 $c->self_delivery['limit'] = 500;
 $c->self_delivery['regions'] = [119623, 93746, 14974];
+
+$c->minOrderSum = 1990;
 
 $c->preview = false;
 

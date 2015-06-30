@@ -179,7 +179,7 @@ class Action {
 
         $products = $productRepository->getCollectionById($result['data']);
 
-        $productRepository->enrichProductsFromScms($products, 'media');
+        $productRepository->enrichProductsFromScms($products, 'media label category');
 
         $bannerPlaceholder = [];
         \App::scmsClient()->addQuery('category/get/v1', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId(), 'load_inactive' => 1], [], function($data) use (&$bannerPlaceholder) {
@@ -351,7 +351,7 @@ class Action {
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
         if ($productsIds) {
-            $products = \RepositoryManager::product()->getCollectionById($productsIds, null, false);
+            $products = \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->getCollectionById($productsIds, null, false);
         }
 
         foreach ($products as $product) {

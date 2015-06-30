@@ -6,7 +6,7 @@ use Session\AbTest\AbTest;
 
 class DefaultLayout extends Layout {
 
-    protected $layout  = 'layout-twoColumn';
+    protected $layout  = 'layout-oneColumn';
     protected $breadcrumbsPath = null;
     protected $useTchiboAnalytics = false;
 
@@ -57,6 +57,9 @@ class DefaultLayout extends Layout {
         return $this->tryRender('_googleAnalytics');
     }
 
+    /** Наименования шаблона для load.js
+     * @return string
+     */
     public function slotBodyDataAttribute() {
         return 'default';
     }
@@ -108,10 +111,6 @@ class DefaultLayout extends Layout {
     }
 
     public function slotContent() {
-        return '';
-    }
-
-    public function slotSidebar() {
         return '';
     }
 
@@ -325,9 +324,9 @@ class DefaultLayout extends Layout {
     }
 
     public function slotMyThings($data) {
-        if (\App::config()->partners['MyThings']['enabled'] && \App::partner()->getName() == 'mythings') {
+        if (\App::config()->partners['MyThings']['enabled']) {
             $data = array_merge(['EventType' => 'Visit'], $data);
-            return sprintf('<div id="myThingsJS" data-vars="%s"></div>', $this->json($data));
+            return sprintf('<div id="MyThingsJS" class="jsanalytics" data-value="%s"></div>', $this->json($data));
         }
         return '';
     }
@@ -364,8 +363,8 @@ class DefaultLayout extends Layout {
 
             $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
             if ( $product ) {
-                /** @var @var $product \Model\Product\Entity */
-                $category = $product->getMainCategory();
+                /** @var $product \Model\Product\Entity */
+                $category = $product->getRootCategory();
                 $categories = $product->getCategory();
                 if (!$category) $category = reset($categories);
                 $prod_cats = array_map(function($a){ return $a->getName(); }, $categories);

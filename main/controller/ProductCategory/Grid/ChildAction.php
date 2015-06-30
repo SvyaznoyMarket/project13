@@ -74,7 +74,7 @@ class ChildAction {
 
         // SITE-5513
         foreach (array_chunk($productsByUi, 10, true) as $uisInChunk) {
-            \RepositoryManager::product()->prepareCollectionByUi(array_values($uisInChunk), \App::user()->getRegion(), function($data) use (&$productsByUi, &$uisInChunk) {
+            \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->prepareCollectionByUi(array_values($uisInChunk), \App::user()->getRegion(), function($data) use (&$productsByUi, &$uisInChunk) {
                 foreach ($data as $item) {
                     $key = array_search($item['ui'], $productsByUi, true);
                     if (!isset($productsByUi[$key])) {
@@ -90,7 +90,7 @@ class ChildAction {
             return $product instanceof \Model\Product\Entity;
         });
 
-        \RepositoryManager::product()->enrichProductsFromScms($productsByUi, 'media');
+        \RepositoryManager::product()->enrichProductsFromScms($productsByUi, 'media label category');
         \App::coreClientV2()->execute();
 
         if (

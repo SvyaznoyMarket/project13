@@ -154,8 +154,6 @@ class Repository {
 
         // добывание фильтров из http-запроса
         $values = $this->getFilterValuesFromHttpRequest($request);
-        $values = $this->deleteNotExistsValues($values, $filters);
-        $values = $this->correctPriceRangeOutside($values, $filters);
 
         if (\App::request()->get('instore')) {
             $values['instore'] = 1; // TODO SITE-2403 Вернуть фильтр instore
@@ -169,9 +167,11 @@ class Repository {
 
         //если есть фильтр по магазину
         if ($shop) {
-            /** @var \Model\Shop\Entity $shop */
-            $values['shop'] = $shop->getId();
+            $values['shop'] = [$shop->getId()];
         }
+
+        $values = $this->deleteNotExistsValues($values, $filters);
+        $values = $this->correctPriceRangeOutside($values, $filters);
 
         // проверяем есть ли в запросе фильтры
         if ((bool)$values) {
@@ -316,7 +316,7 @@ class Repository {
                             $optionIds[] = (string)$option->getId();
                         }
 
-                        foreach ($propertyValues as $i => $value) {
+                        foreach ((array)$propertyValues as $i => $value) {
                             if (!in_array((string)$value, $optionIds, true)) {
                                 unset($values[$propertyId][$i]);
                             }

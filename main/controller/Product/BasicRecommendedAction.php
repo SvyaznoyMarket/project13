@@ -16,53 +16,6 @@ class BasicRecommendedAction {
         \RetailRocket\Client::NAME,
     ];
 
-
-    /**
-     * @param string        $productId
-     * @param \Http\Request $request
-     * @return \Http\JsonResponse
-     * @throws \Exception\NotFoundException
-     */
-    public function execute($productId, \Http\Request $request) {
-        $responseData = [];
-
-        try {
-            $product = \RepositoryManager::product()->getEntityById($productId);
-            if (!$product) {
-                throw new \Exception(sprintf('Товар #%s не найден', $productId));
-            }
-
-            $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName); // UPD
-
-            if ( !is_array($products) ) {
-                throw new \Exception(sprintf('Not found products data in response. ActionType: %s', $this->actionType));
-            }
-
-            $responseData = [
-                'success' => true,
-                'content' => \App::closureTemplating()->render('product/__slider', [
-                    'title'                        => $this->actionTitle,
-                    'products'                     => $products,
-                    'count'                        => count($products),
-                    'isRetailrocketRecommendation' => true,
-                    'retailrocketMethod'           => $this->retailrocketMethodName,
-                ]),
-            ];
-
-
-        } catch (\Exception $e) {
-            \App::logger()->error($e, [$this->actionType]);
-
-            $responseData = [
-                'success' => false,
-                'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
-            ];
-        }
-
-        return new \Http\JsonResponse($responseData);
-    }
-
-
     /**
      * @param   array()                         $ids
      * @param   string                          $senderName

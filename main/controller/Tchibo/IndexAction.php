@@ -87,7 +87,7 @@ class IndexAction {
         }
         $productsIds = array_unique($productsIds);
         if ($productsIds) {
-            \RepositoryManager::product()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
+            \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
                 foreach ($data as $item) {
                     if (!isset($item['id'])) continue;
                     $products[ $item['id'] ] = new \Model\Product\Entity($item);

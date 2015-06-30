@@ -2,7 +2,11 @@
 
 namespace Session;
 
+use EnterApplication\CurlTrait;
+
 class Cart {
+    use CurlTrait;
+
     /** @var string Сессионное имя новой корзины */
     private $sessionName;
     /** @var \Http\Session */
@@ -114,8 +118,8 @@ class Cart {
             'name'  => $product->getLastCategory() ? $product->getLastCategory()->getName() : null
         ];
         $item['rootCategory']   = [
-            'id'    => $product->getMainCategory() ? $product->getMainCategory()->getId() : null,
-            'name'  => $product->getMainCategory() ? $product->getMainCategory()->getName() : null
+            'id'    => $product->getRootCategory() ? $product->getRootCategory()->getId() : null,
+            'name'  => $product->getRootCategory() ? $product->getRootCategory()->getName() : null
         ];
 
         $data['product'][$product->getId()] = $item;
@@ -139,8 +143,8 @@ class Cart {
             'image'         => $product->getMainImageUrl('product_120'),
             'url'           => $product->getLink(),
             'rootCategory'  => [
-                'id'    => $product->getMainCategory() ? $product->getMainCategory()->getId() : null,
-                'name'  => $product->getMainCategory() ? $product->getMainCategory()->getName() : null
+                'id'    => $product->getRootCategory() ? $product->getRootCategory()->getId() : null,
+                'name'  => $product->getRootCategory() ? $product->getRootCategory()->getName() : null
             ],
             'category'      => [
                 'id'    => $product->getLastCategory() ? $product->getLastCategory()->getId() : null,
@@ -344,5 +348,41 @@ class Cart {
      */
     public function count() {
         return count($this->getProducts());
+    }
+
+    /**
+     * @param array $data
+     */
+    public function pushStateEvent(array $data) {
+        try {
+            $userEntity = \App::user()->getEntity();
+            if (!$userEntity) {
+                return;
+            }
+
+            $data = array_replace_recursive([
+                'user' => [
+                    'uid' => $userEntity ? $userEntity->getUi() : null,
+                ],
+                'session_id'  => \App::session()->getId(),
+                'cart'        => [
+                    'products' => array_map(
+                        function ($item) {
+                            return [
+                                'uid'      => $item['ui'],
+                                'quantity' => $item['quantity'],
+                            ];
+                        },
+                        $this->getProductData()
+                    ),
+                    'sum'     => $this->getSum(),
+                ],
+            ], $data);
+            (new \EnterQuery\Event\PushCartState($data))->prepare();
+
+            $this->getCurl()->execute();
+        } catch (\Exception $e) {
+            \App::logger()->error(['error' => $e]);
+        }
     }
 }

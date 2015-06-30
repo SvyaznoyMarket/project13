@@ -12,21 +12,21 @@
  * @var $isTchibo          boolean
  * @var $addToCartJS string
  * @var $actionChannelName string
+ * @var $videoHtml              string|null
+ * @var $properties3D           []
  */
-
-$isKitPage = (bool)$product->getKit();
 
 $showSimilarOnTop = !$product->isAvailable();
 
-$buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
-$buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
-$sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '';
+$buySender = $request->get('sender');
+$buySender2 = $request->get('sender2');
+$recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '';
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
 
 <div class="bProductSectionLeftCol">
-    <?= $helper->render('product/__photo', ['product' => $product]) ?>
+    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
 
     <div class="bProductDesc<? if (!$creditData['creditIsAllowed'] || $user->getRegion()->getHasTransportCompany()): ?> mNoCredit<? endif ?>" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
@@ -68,7 +68,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
                         'name'     => 'retailrocket',
                         'position' => 'ProductMissing',
                     ],
-                    'sender2' => $sender2,
+                    'sender2' => $recommendationSender2,
                 ]) ?>
             <? endif ?>
         <? endif ?>
@@ -98,7 +98,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             'sender'         => [
                 'position' => 'ProductAccessoriesManual',
             ],
-            'sender2' => $sender2,
+            'sender2' => $recommendationSender2,
         ]) ?>
     <? endif ?>
 
@@ -115,7 +115,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
                 'name'     => 'retailrocket',
                 'position' => 'ProductAccessories', // все правильно - так и надо!
             ],
-            'sender2' => $sender2,
+            'sender2' => $recommendationSender2,
         ]) ?>
     <? endif ?>
 
@@ -129,7 +129,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
         <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]); // Характеристики ?>
     <? endif ?>
 
-    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
+    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent]) ?>
 
     <? if (!$showSimilarOnTop): ?>
         <? if (\App::config()->product['pullRecommendation']): ?>
@@ -145,7 +145,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
                     'name'     => 'retailrocket',
                     'position' => 'ProductSimilar',
                 ],
-                'sender2' => $sender2,
+                'sender2' => $recommendationSender2,
             ]) ?>
         <? endif ?>
     <? endif ?>
@@ -156,7 +156,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
 
     <? if (5 !== $product->getStatusId() && (bool)$shopStates): // SITE-3109 ?>
         <div class="bWidgetBuy bWidgetBuy-shops mWidget js-WidgetBuy">
-            <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product]) // Доставка ?>
+            <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product, 'sender'  => $buySender, 'sender2'  => $buySender2, 'location'  => 'product-card']) // Доставка ?>
         </div>
     <? endif ?>
 
@@ -181,7 +181,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             <div class="js-showTopBar"></div>
 
             <? if (!$isKitPage || $product->getIsKitLocked()): ?>
-                <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender, 'sender2' => $buySender2]) // Покупка в один клик ?>
+                <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender, 'sender2' => $buySender2, 'location'  => 'product-card']) // Покупка в один клик ?>
             <? endif ?>
 
             <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
@@ -236,7 +236,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             'name'     => 'retailrocket',
             'position' => 'ProductUpSale',
         ],
-        'sender2' => $sender2,
+        'sender2' => $recommendationSender2,
     ]) ?>
 <? endif ?>
 
@@ -254,7 +254,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             'position' => 'Viewed',
             'from'     => 'productPage',
         ],
-        'sender2' => $sender2,
+        'sender2' => $recommendationSender2,
     ]) ?>
 <? endif ?>
 

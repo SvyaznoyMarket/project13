@@ -4,12 +4,32 @@
 
 ;(function($, ko){
 
-    ENTER.DeliveryPoints = function DeliveryPointsF (points) {
+    var balloonTemplate =
+        '<table class="pick-point-list"><tbody><tr class="pick-point-item clearfix" ><td class="pick-point-item__logo">'+
+        '<img src="{{ icon }}" class="pick-point-item__img" >'+
+        '<span class="pick-point-item__name">{{ listName }}</span>'+
+        '</td><td class="pick-point-item__addr">'+
+        '{{# subway }}' +
+        '<div class="pick-point-item__metro" style="background: {{ subway.line.color }};">'+
+        '<div class="pick-point-item__metro-inn">{{ subway.name }}</div></div>'+
+        '{{/ subway }}'+
+        '<div class="pick-point-item__addr-name">{{ address }}</div>'+
+        '<div class="pick-point-item__time">{{ regtime }}</div></td>'+
+        '<td class="pick-point-item__info pick-point-item__info--nobtn">'+
+        '<div class="pick-point-item__date" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
+        '<div class="pick-point-item__price"><span >{{ humanCost }}</span> {{# showRubles }}<span class="rubl">p</span></div>{{/ showRubles }}'+
+        '</td></tr></tbody></table>',
+        productUi = $('#product-info').data('ui');
+
+    ENTER.DeliveryPoints = function DeliveryPointsF (points, mapParam) {
 
         var self = this,
             pointsBounds,
             searchAutocompleteListClicked = false,
-            map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map;
+            map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map,
+            $body = $(document.body);
+
+        if (mapParam) map = mapParam;
 
         self.searchInput = ko.observable();
         self.searchAutocompleteList = ko.observableArray();
@@ -83,10 +103,11 @@
         self.clearSearchInput = function(){
             self.searchInput('');
             self.searchAutocompleteList.removeAll();
+            map.setBounds(map.geoObjects.getBounds());
         };
 
         self.autocompleteItemClick = function(val) {
-            console.log(val);
+            $body.trigger('trackGoogleEvent', ['pickup_ux', 'search', val.name]);
             map.setCenter(val.bounds[0], 14);
             searchAutocompleteListClicked = true;
             self.searchInput(val.name);
@@ -185,8 +206,6 @@
          * Отображаем на карте только те точки, которые были выбраны в первом дропдауне
          */
         self.choosenTokens.subscribe(function(arr){
-            var map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map; // TODO уже можно вынести
-
             map.geoObjects.each(function(geoObject){
                 if (arr.length == 0) {
                     geoObject.options.set('visible', true)
@@ -198,17 +217,17 @@
 
         /* INIT */
 
-        $.each(points, function(token, pointsArr) {
-            $.each(pointsArr, function(index, point){
-                self.availablePoints.push(point);
-                if (typeof pointsBounds == 'undefined') pointsBounds = [[point.latitude, point.longitude], [point.latitude, point.longitude]];
-                else {
-                    if (point.latitude < pointsBounds[0][0]) pointsBounds[0][0] = point.latitude;
-                    if (point.latitude > pointsBounds[1][0]) pointsBounds[1][0] = point.latitude;
-                    if (point.longitude < pointsBounds[0][1]) pointsBounds[0][1] = point.longitude;
-                    if (point.longitude > pointsBounds[1][1]) pointsBounds[1][1] = point.longitude;
-                }
-            });
+        console.log('Init DeliveryPointsModel with ', {points: points, mapParam: mapParam});
+
+        $.each(points, function(index, point) {
+            self.availablePoints.push(point);
+            if (typeof pointsBounds == 'undefined') pointsBounds = [[point.latitude, point.longitude], [point.latitude, point.longitude]];
+            else {
+                if (point.latitude < pointsBounds[0][0]) pointsBounds[0][0] = point.latitude;
+                if (point.latitude > pointsBounds[1][0]) pointsBounds[1][0] = point.latitude;
+                if (point.longitude < pointsBounds[0][1]) pointsBounds[0][1] = point.longitude;
+                if (point.longitude > pointsBounds[1][1]) pointsBounds[1][1] = point.longitude;
+            }
         });
 
         window.map = self;
@@ -217,34 +236,45 @@
 
     };
 
-    ENTER.Placemark = function(point, visible) {
+    ENTER.Placemark = function(point, visible, buyButtonClass) {
 
         var visibility = typeof visible == 'undefined' ? true : visible,
-            balloonContent = '<b>Адрес:</b> ' + point.address,
-            placemark;
+            balloonContent, placemark;
+
+        if (!buyButtonClass) buyButtonClass = 'jsChangePoint';
+
+        // Для шаблона
+        if (point.cost == 0) {
+            point.humanCost = 'Бесплатно';
+            point.showRubles = false;
+        } else {
+            point.humanCost = point.cost;
+            point.showRubles = true;
+        }
 
         if (!point.latitude || !point.longitude) throw 'Не указаны координаты точки';
 
-        if (point.regtime) balloonContent += '<br /> <b>Время работы:</b> ' + point.regtime;
+        balloonContent = Mustache.render(balloonTemplate, point);
 
         // кнопка "Выбрать магазин"
         balloonContent += $('<button />', {
-                'text':'Выбрать',
-                'class': 'btnLightGrey bBtnLine btnView jsChangePoint',
+                'text':'Купить',
+                'class': 'btn-type btn-type--buy ' + buyButtonClass,
                 'style': 'display: block',
-                'data-id': point.id,
+                'data-shop': point.id,
                 'data-token': point.token,
-                'data-blockname': point.orderToken
+                'data-blockname': point.orderToken,
+                'data-product-ui': productUi
             }
         )[0].outerHTML;
 
         placemark = new ymaps.Placemark([point.latitude, point.longitude], {
-            balloonContentHeader: point.name,
+            // balloonContentHeader: point.name,
             balloonContentBody: balloonContent,
             hintContent: point.name,
             enterToken: point.token // Дополняем собственными свойствами
         }, {
-            balloonMaxWidth: 200,
+            balloonMaxWidth: 388,
             iconLayout: 'default#image',
             iconImageHref: point.marker.iconImageHref,
             iconImageSize: point.marker.iconImageSize,
@@ -253,6 +283,7 @@
             zIndex: point.token == 'shops' ? 1000 : 0
         });
 
+        // Максимальная ширина балуна
         //placemark.balloon.set('maxWidth', 100);
 
         return placemark;
@@ -439,11 +470,23 @@
 				isBuyable = $elem.data('is-buyable'),
 				statusId = $elem.data('status-id'),
                 noUpdate = $elem.data('noUpdate'),
-				buyUrl = $elem.data('buy-url'),
 				isSlot = $elem.data('is-slot'),
 				colorClass = $elem.data('color-class') || '',
-                sender = $elem.data('sender') || {}
+                sender = $elem.data('sender'),
+                sender2 = $elem.data('sender2')
             ;
+
+			if (sender && typeof sender == 'object') {
+				sender = {sender: sender};
+			} else {
+				sender = {};
+			}
+
+			if (sender2 && typeof sender2 == 'string') {
+				sender2 = {sender2: sender2};
+			} else {
+				sender2 = {};
+			}
 
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
 				$elem
@@ -478,7 +521,7 @@
 					.addClass('js-orderButton jsOneClickButton-new')
 					.addClass(colorClass)
 					.removeClass('jsBuyButton')
-					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', $.extend({productId: productId}, sender)));
+					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', $.extend({productId: productId}, sender, sender2)));
 			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId) && !noUpdate) {
 				$elem
 					.text('В корзине')
@@ -496,7 +539,7 @@
 					.removeClass('mBought')
 					.addClass('js-orderButton jsBuyButton')
 					.addClass(colorClass)
-					.attr('href', buyUrl ? buyUrl : ENTER.utils.generateUrl('cart.product.set', $.extend({productId: productId}, sender)));
+					.attr('href', ENTER.utils.generateUrl('cart.product.set', $.extend({productId: productId}, sender, sender2)));
 			}
 		}
 	};
@@ -522,6 +565,8 @@
 				$elem = $(element),
 				productId = $elem.data('id'),
 				typeId = $elem.data('type-id'),
+                activeLinkClass = 'btnCmpr_lk-act',
+                buttonText = 'Добавить к сравнению',
 				comparableProducts;
 
 			var location = '';
@@ -530,17 +575,22 @@
 			} else if (ENTER.config.pageConfig.location.indexOf('product') != -1) {
 				location = 'product';
 			}
+
+            if (ENTER.config.pageConfig.newProductPage) {
+                activeLinkClass = 'product-card-tools__lk--active';
+                buttonText = 'Сравнить';
+            }
 			
 			if (ENTER.utils.getObjectWithElement(compare, 'id', productId)) {
 				$elem
 					.addClass('btnCmpr-act')
-					.find('a.btnCmpr_lk').addClass('btnCmpr_lk-act').attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}))
+					.find('.jsCompareLink').addClass(activeLinkClass).attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}))
 					.find('span').text('Убрать из сравнения');
 			} else {
 				$elem
 					.removeClass('btnCmpr-act')
-					.find('a.btnCmpr_lk').removeClass('btnCmpr_lk-act').attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId, location: location}))
-					.find('span').text('Добавить к сравнению');
+					.find('.jsCompareLink').removeClass(activeLinkClass).attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId, location: location}))
+					.find('span').text(buttonText);
 			}
 	
 			// массив продуктов, которые можно сравнить с данным продуктом
@@ -657,6 +707,12 @@
 			return ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit <= model.cartSum() && docCookies.hasItem('enter_ab_self_delivery_view_info');
 		});
 
+        // Минимальная стоимость заказа
+        model.minOrderSum = ENTER.config.pageConfig.minOrderSum;
+        model.isMinOrderSumVisible = ko.computed(function(){
+            return model.minOrderSum !== false && model.minOrderSum > model.cartSum()
+        });
+
 		return model;
 	}
 
@@ -664,7 +720,7 @@
 
 	// Биндинги на нужные элементы
 	// Топбар, кнопка Купить на странице продукта, листинги, слайдер аксессуаров
-	$('.js-topbarfix, .js-topbarfixBuy, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-lineListing, .js-slider, .jsKnockoutCart').each(function(){
+	$('.js-topbarfix, .js-topbarfixBuy, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-lineListing, .js-slider, .jsKnockoutCart, .js-compareProduct').each(function(){
 		ko.applyBindings(ENTER.UserModel, this);
 	});
 
@@ -750,6 +806,14 @@
 			$body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'самовывоз бесплатно', 'всплывающая корзина']);
 		}
 	});
+
+    // Аналитика минимальной суммы заказа для Воронежа
+    $body.on('showUserCart', function(){
+        if (ENTER.UserModel.minOrderSum !== false) {
+            if (ENTER.UserModel.isMinOrderSumVisible()) $body.trigger('trackGoogleEvent', ['pickup', 'no', (ENTER.UserModel.minOrderSum - ENTER.UserModel.cartSum()) + '']);
+            else $body.trigger('trackGoogleEvent', ['pickup', 'yes']);
+        }
+    });
 
 	$body.on('userModelUpdate', function(e) {
 		if (ENTER.config.pageConfig.selfDeliveryTest) {
@@ -1122,187 +1186,6 @@
 
 })(jQuery);
 /**
- * Обработчик для личного кабинета
- *
- * @author    Trushkevich Anton
- * @requires  jQuery
- */
-(function(){
-  var checkedSms = false;
-  var checkedEmail = false;
-
-  var handleSubscribeSms = function() {
-    if ( checkedSms ) {
-      $('#mobilePhoneWrapper').hide();
-      $('#mobilePhoneWrapper').parent().find('.red').html('');
-      checkedSms = false;
-    } else {
-      $('#mobilePhoneWrapper').show();
-      checkedSms = true;
-    }
-  };
-
-  var handleSubscribeEmail = function() {
-    if ( checkedEmail ) {
-      $('#emailWrapper').hide();
-      $('#emailWrapper').parent().find('.red').html('');
-      checkedEmail = false;
-    } else {
-      $('#emailWrapper').show();
-      checkedEmail = true;
-    }
-  };
-
-  $(document).ready(function(){
-    checkedSms = $('.smsCheckbox').hasClass('checked');
-    if ( !$('#user_mobile_phone').val() ) {
-      $('.smsCheckbox').bind('click', handleSubscribeSms);
-    }
-    checkedEmail = $('.emailCheckbox').hasClass('checked');
-    if ( !$('#user_email').val() ) {
-      $('.emailCheckbox').bind('click', handleSubscribeEmail);
-    }
-  });
-}());
-
-
-
-// (function(){
-//   $(function(){
-//     if($('.bCtg__eMore').length) {
-//       var expanded = false;
-//       $('.bCtg__eMore').click(function(){
-//         if(expanded) {
-//           $(this).siblings('.more_item').hide();
-//           $(this).find('a').html('еще...');
-//         } else {
-//           $(this).siblings('.more_item').show();
-//           $(this).find('a').html('скрыть');
-//         }
-//         expanded = !expanded;
-//         return false;
-//       });
-//     }
-
-//     /* Cards Carousel  */
-//     function cardsCarouselTag ( nodes, noajax ) {
-//       var current = 1;
-
-//       var wi  = nodes.width*1;
-//       var viswi = nodes.viswidth*1;
-
-//       if( !isNaN($(nodes.times).html()) )
-//         var max = $(nodes.times).html() * 1;
-//       else
-//         var max = Math.ceil(wi / viswi);
-
-//       if((noajax !== undefined) && (noajax === true)) {
-//         var buffer = 100;
-//       } else {
-//         var buffer = 2;
-//       }
-
-//       var ajaxflag = false;
-
-
-//       var notify = function() {
-//         $(nodes.crnt).html( current );
-//         if(refresh_max_page) {
-//           $(nodes.times).html( max );
-//         }
-//         if ( current == 1 )
-//           $(nodes.prev).addClass('disabled');
-//         else
-//           $(nodes.prev).removeClass('disabled');
-//         if ( current == max )
-//           $(nodes.next).addClass('disabled');
-//         else
-//           $(nodes.next).removeClass('disabled');
-//       }
-
-//       var shiftme = function() {  
-//         var boxes = $(nodes.wrap).find('.goodsbox')
-//         $(boxes).hide()
-//         var le = boxes.length
-//         for(var j = (current - 1) * viswi ; j < current  * viswi ; j++) {
-//           boxes.eq( j ).show()
-//         }
-//       }
-
-//       $(nodes.next).bind('click', function() {
-//         if( current < max && !ajaxflag ) {
-//           if( current + 1 == max ) { //the last pull is loaded , so special shift
-
-//             var boxes = $(nodes.wrap).find('.goodsbox')
-//             $(boxes).hide()
-//             var le = boxes.length
-//             var rest = ( wi % viswi ) ?  wi % viswi  : viswi
-//             for(var j = 1; j <= rest; j++)
-//               boxes.eq( le - j ).show()
-//             current++
-//           } else {
-//             if( current + 1 >= buffer ) { // we have to get new pull from server
-
-//               $(nodes.next).css('opacity','0.4') // addClass dont work ((
-//               ajaxflag = true
-//               var getData = []
-//               if( $('form.product_filter-block').length )
-//                 getData = $('form.product_filter-block').serializeArray()
-//               getData.push( {name: 'page', value: buffer+1 } )  
-//               $.get( $(nodes.prev).attr('data-url') , getData, function(data) {
-//                 buffer++
-//                 $(nodes.next).css('opacity','1')
-//                 ajaxflag = false
-//                 var tr = $('<div>')
-//                 $(tr).html( data )
-//                 $(tr).find('.goodsbox').css('display','none')
-//                 $(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
-//                 tr = null
-//               })
-//               current++
-//               shiftme()
-//             } else { // we have new portion as already loaded one     
-//               current++
-//               shiftme() // TODO repair
-//             }
-//           }
-//           notify()
-//         }
-//         return false
-//       })
-
-//       $(nodes.prev).click( function() {
-//         if( current > 1 ) {
-//           current--
-//           shiftme()
-//           notify()
-//         }
-//         return false
-//       })
-
-//       var refresh_max_page = false
-//     } // cardsCarousel object
-
-//     $('.carouseltitle').each( function(){
-//       if($(this).find('.jshm').html()) {
-//         var width = $(this).find('.jshm').html().replace(/\D/g,'');
-//       } else {
-//         var width = 3;
-//       }
-//       cardsCarouselTag({
-//         'prev'  : $(this).find('.back'),
-//         'next'  : $(this).find('.forvard'),
-//         'crnt'  : $(this).find('.none'),
-//         'times' : $(this).find('span:eq(1)'),
-//         'width' : width,
-//         'wrap'  : $(this).find('~ .carousel').first(),
-//         'viswidth' : 3
-//       });
-//     })
-//   });
-// })();
-
-/**
  * @author		Zaytsev Alexandr
  */
 (function(ENTER) {
@@ -1311,8 +1194,6 @@
 	// Обработчик для кнопок купить
 	$body.on('click', '.jsBuyButton', function(e) {
 		var $button = $(e.currentTarget);
-
-        $body.trigger('TL_buyButton_clicked');
 
 		if ( $button.hasClass('mDisabled') ) {
 			//return false;
@@ -1327,9 +1208,27 @@
 
 		$button.addClass('mLoading');
 
+		var
+			url = $button.attr('href'),
+			sender = ENTER.utils.analytics.productPageSenders.get($button),
+			sender2 = ENTER.utils.analytics.productPageSenders2.get($button)
+		;
+
+		if (sender && JSON.stringify(sender) != JSON.stringify($button.data('sender'))) {
+			for (var key in sender) {
+				if (sender.hasOwnProperty(key)) {
+					url = ENTER.utils.setURLParam('sender[' + key + ']', sender[key], url);
+				}
+			}
+		}
+
+		if (sender2 && sender2 != $button.data('sender2')) {
+			url = ENTER.utils.setURLParam('sender2', sender2, url);
+		}
+
 		// Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
 		$.ajax({
-			url: $button.attr('href'),
+			url: url,
 			type: 'GET',
 			success: function(data) {
 				var
@@ -1486,7 +1385,7 @@ $(function() {
 
 					if (!inCompare) {
 						if (!$comparePopup) {
-							var $userbar = ENTER.userBar.userBarFixed;
+							var $userbar = ENTER.userBar.userBarStatic;
 							$comparePopup = $('.js-compare-addPopup', $userbar);
 
 							$('.js-compare-addPopup-closer', $comparePopup).click(function() {
@@ -1752,20 +1651,36 @@ $(function() {
 		updateInput($(input));
 	});
 });
-;$(function(){
-    var
-        $body = $('body')
-    ;
-
-    $('.jsEvent_documentReady').each(function(i, el) {
+$(function() {
+    $('body').on('click', '.jsFavoriteLink', function(e){
         var
-            event = $(el).data('value')
+            $el = $(e.currentTarget),
+            xhr = $el.data('xhr')
         ;
 
-        if (!event.name) return;
-        
-        $body.trigger(event.name, event.data || []);
-        console.info('event', event.name, event.data);
+        console.info({'.jsFavoriteLink click': $el});
+
+
+
+        if ($el.data('ajax')) {
+            e.stopPropagation();
+
+            try {
+                if (xhr)  xhr.abort();
+            } catch (error) { console.error(error); }
+
+            xhr = $.post($el.attr('href'))
+                .done(function(response) {
+                    $('body').trigger('updateWidgets', response.widgets);
+                })
+                .always(function() {
+                    $el.data('xhr', null);
+                })
+            ;
+            $el.data('xhr', xhr);
+
+            e.preventDefault();
+        }
     });
 });
 /**
@@ -1787,35 +1702,6 @@ $(function() {
 		$('.jsGoToId').bind('click',goToId);
 	});
 }());
-/**
- * Обработчик горячих ссылок
- *
- * @author    Trushkevich Anton
- * @requires  jQuery
- */
-(function(){
-  var handleHotLinksToggle = function() {
-    var toggle = $(this);
-    if(toggle.hasClass('expanded')) {
-      toggle.parent().parent().find('.toHide').hide();
-      toggle.html('Все метки');
-      toggle.removeClass('expanded');
-    } else {
-      toggle.parent().parent().find('.toHide').show();
-      toggle.html('Основные метки');
-      toggle.addClass('expanded');
-    }
-    return false;
-  };
-
-
-  $(document).ready(function(){
-    $('.hotlinksToggle').bind('click', handleHotLinksToggle);
-  });
-}());
-
-
-
 /**
  * JIRA
  */
@@ -1866,7 +1752,11 @@ $(function() {
 					destroyOnClose: true
 				});
 
-				ko.applyBindings(new PopupModel(result.product, $button.data('sender'), $button.data('sender2') || ''), $popup[0]);
+				ko.applyBindings(new PopupModel(
+					result.product,
+					ENTER.utils.analytics.productPageSenders.get($button),
+					ENTER.utils.analytics.productPageSenders2.get($button)
+				), $popup[0]);
 
 				// Закрытие окна
 				$body.one('addtocart', function(){
@@ -1922,17 +1812,21 @@ $(function() {
 				id = 0;
 
 			ko.utils.arrayForEach(self.products(), function(item){
-				if (item.count() > 0 ) {
+				if (item.count() > 0) {
 					link += 'product['+id+'][id]=' + item.id + '&product['+id+'][quantity]=' + item.count() + '&';
 					id += 1;
 				}
 			});
 
-			link += $.param({sender: sender});
+			if (sender) {
+				link += $.param({sender: sender}) + '&';
+			}
 
 			if (sender2) {
-				link += '&' + $.param({sender2: sender2});
+				link += $.param({sender2: sender2}) + '&';
 			}
+
+			link = link.slice(0, -1);
 
 			return link;
 		});
@@ -2079,7 +1973,12 @@ $(function() {
 	});
 
 });
-;(function( ENTER ) {
+;$(function( ENTER ) {
+	var
+		$authBlock = $('#auth-block'),
+		isFirstOpen = true
+	;
+
 	function changeSocnetLinks(isSubscribe) {
 		$('.js-registerForm-socnetLink').each(function(index, link) {
 			var $link = $(link);
@@ -2087,61 +1986,68 @@ $(function() {
 		});
 	}
 
-	var $subscribe = $('.js-registerForm-subscribe');
-	changeSocnetLinks($subscribe.length && $subscribe[0].checked);
+	$('body').on('click', '.bAuthLink', function(e) {
+		e.preventDefault();
 
-	var
-		$authBlock = $('#auth-block'),
+		if (isFirstOpen) {
+			isFirstOpen = false;
 
-        init = function() {
-			$('.js-registerForm-subscribe').change(function(e) {
+			var $subscribe = $('.js-registerForm-subscribe');
+
+			if (!ENTER.config.userInfo.user.isSubscribedToActionChannel) {
+				$subscribe.attr('checked', 'checked');
+			}
+
+			changeSocnetLinks($subscribe.length && $subscribe[0].checked);
+
+			$subscribe.change(function(e) {
 				changeSocnetLinks(e.currentTarget.checked);
 			});
 
-            // изменение состояния блока авторизации
-            $authBlock.on('changeState', function(e, state) {
-                var
-                    $el = $(this)
-                ;
+			// изменение состояния блока авторизации
+			$authBlock.on('changeState', function(e, state) {
+				var
+					$el = $(this)
+					;
 
-                console.info({'message': 'authBlock.changeState', 'state': state});
+				console.info({'message': 'authBlock.changeState', 'state': state});
 
-                if (state) {
-                    var
-                        oldClass = $el.attr('data-state') ? ('state_' + $el.attr('data-state')) : null,
-                        newClass = 'state_' + state
-                    ;
+				if (state) {
+					var
+						oldClass = $el.attr('data-state') ? ('state_' + $el.attr('data-state')) : null,
+						newClass = 'state_' + state
+						;
 
-                    oldClass && $el.removeClass(oldClass);
-                    $el.addClass(newClass);
-                    $el.attr('data-state', state);
-                }
+					oldClass && $el.removeClass(oldClass);
+					$el.addClass(newClass);
+					$el.attr('data-state', state);
+				}
 
-                $('.js-resetForm, .js-authForm, .js-registerForm').trigger('clearError');
-            });
+				$('.js-resetForm, .js-authForm, .js-registerForm').trigger('clearError');
+			});
 
-            // клик по ссылкам
-            $authBlock.find('.js-link').on('click', function(e) {
-                var
-                    $el = $(e.target),
-                    $target = $($el.data('value').target),
-                    state = $el.data('value').state
-                ;
+			// клик по ссылкам
+			$authBlock.find('.js-link').on('click', function(e) {
+				var
+					$el = $(e.target),
+					$target = $($el.data('value').target),
+					state = $el.data('value').state
+					;
 
-                console.info({'$target': $target, 'state': state});
-                $target.trigger('changeState', [state]);
-            });
+				console.info({'$target': $target, 'state': state});
+				$target.trigger('changeState', [state]);
+			});
 
-            // формы
-            $('.js-resetForm, .js-authForm, .js-registerForm')
-                // отправка форм
-                .on('submit', function(e) {
-                    var
-                        $el = $(e.target),
-                        data = $el.serializeArray()
-                    ;
+			// формы
+			$('.js-resetForm, .js-authForm, .js-registerForm')
+				// отправка форм
+				.on('submit', function(e) {
+					var
+						$el = $(e.target),
+						data = $el.serializeArray()
+						;
 
-                    $.post($el.attr('action'), data).done(function(response) {
+					$.post($el.attr('action'), data).done(function(response) {
 						function getFieldValue(fieldName) {
 							for (var i = 0; i < data.length; i++) {
 								if (data[i]['name'] == fieldName) {
@@ -2156,727 +2062,81 @@ $(function() {
 							_gaq.push(['_trackEvent', 'subscription', 'subscribe_registration', getFieldValue('register[email]')]);
 						}
 
-                        if (response.data && response.data.link) {
-                            window.location.href = response.data.link ? response.data.link : window.location.href;
+						if (response.data && response.data.link) {
+							window.location.href = response.data.link ? response.data.link : window.location.href;
 
-                            return true;
-                        }
+							return true;
+						}
 
-                        $el.trigger('clearError');
+						$el.trigger('clearError');
 
-                        var message = response.message;
-                        if (!message && response.notice && response.notice.message) {
-                            message = response.notice.message;
-                        }
+						var message = response.message;
+						if (!message && response.notice && response.notice.message) {
+							message = response.notice.message;
+						}
 
-                        if (message) {
-                            $el.find('.js-message').html(message);
-                        }
+						if (message) {
+							$el.find('.js-message').html(message);
+						}
 
-                        response.form && response.form.error && $.each(response.form.error, function(i, error) {
-                            console.warn(error);
+						response.form && response.form.error && $.each(response.form.error, function(i, error) {
+							console.warn(error);
 
-                            $el.trigger('fieldError', [error]);
-                        });
-                    });
+							$el.trigger('fieldError', [error]);
+						});
+					});
 
-                    e.preventDefault();
-                })
+					e.preventDefault();
+				})
 
-                .on('fieldError', function(e, error) {
-                    var
-                        $el = $(e.target),
-                        $field = $el.find('[name*="' + error.field + '"]')
-                    ;
+				.on('fieldError', function(e, error) {
+					var
+						$el = $(e.target),
+						$field = $el.find('[name*="' + error.field + '"]')
+						;
 
-                    if ($field.length) {
-                        $field.prev('.js-fieldError').remove();
-                        if (error.message) {
-                            $field.before('<div class="js-fieldError bErrorText"><div class="bErrorText__eInner">' + error.message + '</div></div>');
-                        }
-                    }
-                })
+					if ($field.length) {
+						$field.prev('.js-fieldError').remove();
+						if (error.message) {
+							$field.before('<div class="js-fieldError bErrorText"><div class="bErrorText__eInner">' + error.message + '</div></div>');
+						}
+					}
+				})
 
-                // очистить ошибки
-                .on('clearError', function() {
-                    var $el = $(this);
+				// очистить ошибки
+				.on('clearError', function() {
+					var $el = $(this);
 
-                    $el.find('.js-message').html('');
+					$el.find('.js-message').html('');
 
-                    $el.find('input').each(function(i, el) {
-                        $el.trigger('fieldError', [{field: $(el).attr('name')}]);
-                    });
-                })
+					$el.find('input').each(function(i, el) {
+						$el.trigger('fieldError', [{field: $(el).attr('name')}]);
+					});
+				})
 
-                .on('focus', 'input', function() {
-                    var $el = $(this);
+				.on('focus', 'input', function() {
+					var $el = $(this);
 
-                    $el.closest('form').trigger('fieldError', [{field: $el.attr('name')}])
-                })
-            ;
+					$el.closest('form').trigger('fieldError', [{field: $el.attr('name')}])
+				})
+			;
 
 			$.mask.definitions['n'] = '[0-9]';
 			$('.js-registerForm .js-phoneField').mask('+7 (nnn) nnn-nn-nn');
-        };
-    ;
-
-	$(document).ready(function() {
-		init();
-	});
-
-}(window.ENTER));
-;(function( ENTER ) {
-	var constructors = ENTER.constructors,
-		body = $('body'),
-		authBlock = $('#auth-block'),
-		registerMailPhoneField = $('.jsRegisterUsername'),
-		resetPwdForm = $('.jsResetPwdForm'),
-		registerForm = $('.jsRegisterForm'),
-		loginForm = $('.jsLoginForm'),
-		completeRegister = $('.jsRegisterFormComplete'),
-		showLoginFormLink = $('.jsShowLoginForm'),
-
-		/**
-		 * Конфигурация валидатора для формы логина
-		 * @type {Object}
-		 */
-		signinValidationConfig = {
-			fields: [
-				{
-					fieldNode: $('.jsSigninUsername', authBlock),
-					require: true,
-					customErr: 'Не указан логин'
-				},
-				{
-					fieldNode: $('.jsSigninPassword', authBlock),
-					require: true,
-					customErr: 'Не указан пароль'
-				}
-			]
-		},
-		signinValidator = new FormValidator(signinValidationConfig),
-
-		/**
-		 * Конфигурация валидатора для формы регистрации
-		 * @type {Object}
-		 */
-		registerValidationConfig = {
-			fields: [
-				{
-					fieldNode: $('.jsRegisterFirstName', authBlock),
-					require: true,
-					customErr: 'Не указано имя'
-				},
-				{
-					fieldNode: registerMailPhoneField,
-					validBy: 'isEmail',
-					require: true,
-					customErr: 'Некорректно введен e-mail'
-				}
-			]
-		},
-		registerValidator = new FormValidator(registerValidationConfig),
-
-		/**
-		 * Конфигурация валидатора для формы регистрации
-		 * @type {Object}
-		 */
-		forgotPwdValidationConfig = {
-			fields: [
-				{
-					fieldNode: $('.jsForgotPwdLogin', authBlock),
-					require: true,
-					customErr: 'Не указан email или мобильный телефон',
-					validateOnChange: true
-				}
-			]
-		},
-		forgotValidator = new FormValidator(forgotPwdValidationConfig);
-	// end of vars
-
-	var
-		/**
-		 * Задаем настройки валидаторов.
-		 * Глобальные настройки позволяют навешивать кастомные валидаторы на различные авторизационные формы.
-		 */
-		setValidatorSettings = function() {
-			ENTER.utils.signinValidationConfig = signinValidationConfig;
-			ENTER.utils.signinValidator = signinValidator;
-			ENTER.utils.registerValidationConfig = registerValidationConfig;
-			ENTER.utils.registerValidator = registerValidator;
-			ENTER.utils.forgotPwdValidationConfig = forgotPwdValidationConfig;
-			ENTER.utils.forgotValidator = forgotValidator;
-		};
-	// end of functions
-
-	setValidatorSettings();
-
-	/**
-	 * Класс по работе с окном входа на сайт
-	 *
-	 * @author  Shaposhnik Vitaly
-	 *
-	 * @this    {Login}
-	 *
-	 * @constructor
-	 */
-	constructors.Login = (function() {
-		'use strict';
-
-		function Login() {
-			// enforces new
-			if ( !(this instanceof Login) ) {
-				return new Login();
-			}
-			// constructor body
-
-			this.form = null; // текущая форма
-			this.redirect_to = null;
-
-			body.on('click', '.registerAnotherWayBtn', $.proxy(this.registerAnotherWay, this));
-			body.on('click', '.bAuthLink', this.openAuth);
-			$('.jsLoginForm, .jsRegisterForm, .jsResetPwdForm').data('redirect', true).on('submit', $.proxy(this.formSubmit, this));
-			body.on('click', '.jsForgotPwdTrigger, .jsRememberPwdTrigger', this.forgotFormToggle);
-			body.on('click', '#bUserlogoutLink', this.logoutLinkClickLog);
-
-			if ( showLoginFormLink.length ) {
-				loginForm.hide();
-				body.on('click', '.jsShowLoginForm', this.showLoginForm);
-			}
 		}
 
-
-		/**
-		 * Показ сообщений об ошибках
-		 *
-		 * @param   {String}    msg     Сообщение которое необходимо показать пользователю
-		 *
-		 * @this   {Login}
-		 * @public
-		 */
-		Login.prototype.showError = function( msg, callback ) {
-			var error = $('ul.error_list', this.form);
-			// end of vars
-
-			if ( callback !== undefined ) {
-				callback();
-			}
-
-			if ( error.length ) {
-				error.html('<li>' + msg + '</li>');
-			}
-			else {
-				$('.bFormLogin__ePlaceTitle', this.form).after($('<ul class="error_list" />').append('<li>' + msg + '</li>'));
-			}
-
-			return false;
-		};
-
-		/**
-		 * Обработка ошибок формы
-		 *
-		 * @param   {Object}    formError   Объект с полем содержащим ошибки
-		 *
-		 * @this   {Login}
-		 * @public
-		 */
-		Login.prototype.formErrorHandler = function( formError ) {
-			var validator = this.getFormValidator(),
-				field = $('[name="' + this.getFormName() + '[' + formError.field + ']"]');
-			// end of vars
-
-			var clearError = function clearError() {
-				validator._unmarkFieldError($(this));
-			};
-			// end of functions
-
-			console.warn('Ошибка в поле');
-
-			validator._markFieldError(field, formError.message);
-			field.bind('focus', clearError);
-
-			return false;
-		};
-
-		/**
-		 * Обработка ошибок из ответа сервера
-		 *
-		 * @this   {Login}
-		 * @public
-		 */
-		Login.serverErrorHandler = {
-			'default': function( res ) {
-				console.log('Обработчик ошибки');
-
-				if ( !res.redirect ) {
-					res.redirect = window.location.href;
-				}
-
-				if ( res.error && res.error.message ) {
-					this.showError(res.error.message, function() {
-						document.location.href = res.redirect;
-					});
-
-					return false;
-				}
-
-				document.location.href = res.redirect;
+		$authBlock.lightbox_me({
+			centered: true,
+			autofocus: true,
+			onLoad: function() {
+				$authBlock.find('input:first').focus();
 			},
-
-			0: function( res ) {
-				var formError = null;
-				// end of vars
-
-				console.warn('Обработка ошибок формы');
-
-				if ( res.redirect ) {
-					this.showError(res.error.message, function() {
-						document.location.href = res.redirect;
-					});
-
-					return;
-				}
-
-				// очищаем блок с глобальными ошибками
-				if ( $('ul.error_list', this.form).length ) {
-					$('ul.error_list', this.form).html('');
-				}
-				//this.showError(res.error.message);
-
-				for ( var i = res.form.error.length - 1; i >= 0; i-- ) {
-					formError = res.form.error[i];
-					console.warn(formError);
-
-					if ( formError.field !== 'global' && formError.message !== null ) {
-						$.proxy(this.formErrorHandler, this)(formError);
-					}
-					else if ( formError.field === 'global' && formError.message !== null ) {
-						this.showError(formError.message);
-					}
-				}
-
-				return false;
+			onClose: function() {
+				$authBlock.trigger('changeState', ['default']);
 			}
-		};
-
-		/**
-		 * Проверяем как e-mail
-		 *
-		 * @return  {Boolean}   Выбрано ли поле e-mail в качестве регистрационных данных
-		 *
-		 * @this   {Login}
-		 * @public
-		 */
-		Login.prototype.checkEmail = function() {
-			return registerMailPhoneField.hasClass('jsRegisterPhone') ? false : true;
-		};
-
-		/**
-		 * Переключение типов проверки
-		 *
-		 * @this   {Login}
-		 * @public
-		 */
-		Login.prototype.registerAnotherWay = function() {
-			var label = $('.registerAnotherWay'),
-				btn = $('.registerAnotherWayBtn');
-			// end of vars
-
-			registerMailPhoneField.val('');
-
-			if ( this.checkEmail() ) {
-				label.html('Ваш мобильный телефон:');
-				btn.html('Ввести e-mail');
-				registerMailPhoneField.addClass('jsRegisterPhone');
-				registerValidator.setValidate( registerMailPhoneField, {validBy: 'isPhone', customErr: 'Некорректно введен телефон'} );
-
-				// устанавливаем маску для поля "Ваш мобильный телефон"
-				$.mask.definitions['n'] = '[0-9]';
-				registerMailPhoneField.mask('+7 (nnn) nnn-nn-nn');
-			}
-			else {
-				label.html('Ваш e-mail:');
-				btn.html('У меня нет e-mail');
-				registerMailPhoneField.removeClass('jsRegisterPhone');
-				registerValidator.setValidate( registerMailPhoneField, {validBy: 'isEmail', customErr: 'Некорректно введен e-mail'} );
-
-				// убераем маску с поля "Ваш мобильный телефон"
-				registerMailPhoneField.unmask();
-			}
-
-			return false;
-		};
-
-		/**
-		 * Authorization process
-		 *
-		 * @public
-		 */
-		Login.prototype.openAuth = function() {
-			var
-				/**
-				 * При закрытии попапа убераем ошибки с полей
-				 */
-				removeErrors = function() {
-					var
-						validators = ['signin', 'register', 'forgot'],
-						validator,
-						config,
-						self,
-						i, j;
-					// end of vars
-
-					for (j in validators) {
-						validator = eval('ENTER.utils.' + validators[j] + 'Validator');
-						config = eval('ENTER.utils.' + validators[j] + 'ValidationConfig');
-
-						if ( !config || !config.fields || !validator ) {
-							continue;
-						}
-
-						for (i in config.fields) {
-							self = config.fields[i].fieldNode;
-							self && validator._unmarkFieldError(self);
-						}
-					}
-				};
-			// end of functions
-
-			setValidatorSettings();
-
-			authBlock.lightbox_me({
-				centered: true,
-				autofocus: true,
-				onLoad: function() {
-					authBlock.find('input:first').focus();
-				},
-                onClose: function() {
-                    removeErrors();
-                    authBlock.trigger('changeState', ['default']);
-                }
-			});
-
-			return false;
-		};
-
-		/**
-		 * Изменение значения кнопки сабмита при отправке ajax запроса
-		 *
-		 * @param btn Кнопка сабмита
-		 *
-		 * @this   {Login}
-		 * @public
-		 */
-		Login.prototype.submitBtnLoadingDisplay = function( btn ) {
-			if ( btn.length ) {
-				var value1 = btn.val(),
-					value2 = btn.data('loading-value');
-				// end of vars
-
-				btn.attr('disabled', (btn.attr('disabled') === 'disabled' ? false : true)).val(value2).data('loading-value', value1);
-			}
-
-			return false;
-		};
-
-		/**
-		 * Валидатор формы
-		 *
-		 * @return  {Object}   Валидатор для текущей формы
-		 *
-		 * @this   {Login}
-		 * @public
-		 */
-		Login.prototype.getFormValidator = function() {
-			return eval('ENTER.utils.' + this.getFormName() + 'Validator');
-		};
-
-		/**
-		 * Получить название формы
-		 *
-		 * @return {string} Название текущей формы
-		 *
-		 * @this   {Login}
-		 * @public
-		 */
-		Login.prototype.getFormName = function() {
-			return ( this.form.hasClass('jsLoginForm') ) ? 'signin' : (this.form.hasClass('jsRegisterForm') ? 'register' : (this.form.hasClass('jsResetPwdForm') ? 'forgot' : ''));
-		};
-
-		/**
-		 * Сабмит формы регистрации или авторизации
-		 *
-		 * @this   {Login}
-		 * @public
-		 */
-		Login.prototype.formSubmit = function( e, param ) {
-			e.preventDefault();
-			this.form = $(e.target);
-
-			var formData = this.form.serializeArray(),
-				validator = this.getFormValidator(),
-				formSubmit = $('.jsSubmit', this.form),
-				forgotPwdLogin = $('.jsForgotPwdLogin', this.form),
-				urlParams = this.getUrlParams(),
-				timeout;
-			// end of vars
-
-			// устанавливаем редирект
-			this.redirect_to = window.location.href;
-			if ( urlParams['redirect_to'] ) {
-				this.redirect_to = urlParams['redirect_to'];
-			}
-
-			var responseFromServer = function( response ) {
-					// когда пришел ответ с сервера, очищаем timeout
-					clearTimeout(timeout);
-
-					if ( response.error ) {
-						console.warn('Form has error');
-
-						if ( Login.serverErrorHandler.hasOwnProperty(response.error.code) ) {
-							console.log('Есть обработчик');
-							$.proxy(Login.serverErrorHandler[response.error.code], this)(response);
-						}
-						else {
-							console.log('Стандартный обработчик');
-							Login.serverErrorHandler['default'](response);
-						}
-
-						this.submitBtnLoadingDisplay( formSubmit );
-
-						return false;
-					}
-
-					$.proxy(this.formSubmitLog, this);
-
-					// если форма "Восстановление пароля" то скрываем елементы и выводим сообщение
-					if ( forgotPwdLogin.length && forgotPwdLogin.is(':visible') ) {
-						this.submitBtnLoadingDisplay( formSubmit );
-						forgotPwdLogin.hide();
-						$('.jsForgotPwdLoginLabel', this.form).hide();
-						formSubmit.hide();
-						this.showError(response.notice.message);
-					}
-
-					console.log(this.form.data('redirect'));
-					console.log(response.data.link);
-					if ( typeof(gaRun) != 'undefined' && typeof(gaRun.register) === 'function' ) {
-						gaRun.register();
-					}
-
-					if ( this.form.data('redirect') ) {
-						if ( typeof (response.data.link) !== 'undefined' ) {
-							console.info('try to redirect to2 ' + response.data.link);
-							console.log(typeof response.data.link);
-
-							document.location.href = response.data.link.replace(/#.*$/, '');
-
-							return false;
-						}
-						else {
-							// this.form.unbind('submit');
-							// this.form.submit();
-
-							completeRegister.html(response.message);
-							completeRegister.show();
-							registerForm.hide();
-							this.showLoginForm();
-
-							// Закомментил следующую строку так как изза нее возникает баг SITE-3389
-							// document.location.href = window.location.href;
-						}
-					}
-					else {
-						authBlock.trigger('close');
-					}
-
-					//for order page
-					if ( $('#order-form').length ) {
-						$('#user-block').html('Привет, <strong><a href="' + response.data.link + '">' + response.data.user.first_name + '</a></strong>');
-						$('#order_recipient_first_name').val(response.data.user.first_name);
-						$('#order_recipient_last_name').val(response.data.user.last_name);
-						$('#order_recipient_phonenumbers').val(response.data.user.mobile_phone.slice(1));
-						$('#qiwi_phone').val(response.data.user.mobile_phone.slice(1));
-					}
-				},
-
-				requestToServer = function() {
-					this.submitBtnLoadingDisplay( formSubmit );
-					formData.push({name: 'redirect_to', value: this.redirect_to});
-					$.post(this.form.attr('action'), formData, $.proxy(responseFromServer, this), 'json');
-
-					/*
-					 SITE-3174 Ошибка авторизации.
-					 Принято решение перезагружать страничку через 5 сек, после отправки запроса на логин.
-					 */
-					timeout = setTimeout($.proxy(function() {document.location.href = this.redirect_to;}, this), 5000);
-				};
-			// end of functions
-
-			validator.validate({
-				onInvalid: function( err ) {
-					console.warn('invalid');
-					console.log(err);
-				},
-				onValid: $.proxy(requestToServer, this)
-			});
-
-			return false;
-		};
-
-		/**
-		 * Показать форму логина на странице /login
-		 */
-		Login.prototype.showLoginForm = function() {
-			showLoginFormLink.hide();
-			loginForm.slideDown(300);
-			$.scrollTo(loginForm, 500);
-		};
-
-
-		/**
-		 * Отображение формы "Забыли пароль"
-		 *
-		 * @public
-		 */
-		Login.prototype.forgotFormToggle = function() {
-			if ( resetPwdForm.is(':visible') ) {
-				resetPwdForm.hide();
-				loginForm.show();
-			}
-			else {
-				resetPwdForm.show();
-				loginForm.hide();
-			}
-
-			return false;
-		};
-
-		/**
-		 * Логирование при сабмите формы регистрации или авторизации
-		 *
-		 * @this   {Login}
-		 * @public
-		 */
-		Login.prototype.formSubmitLog = function() {
-			var type = '';
-			// end of vars
-			if ( typeof(gaRun) && typeof(gaRun.login) === 'function' ) {
-				gaRun.login();
-			}
-			if ( 'signin' === this.getFormName() ) {
-				if ( typeof(_gaq) !== 'undefined' ) {
-					type = ( (this.form.find('.jsSigninUsername').val().search('@')) !== -1 ) ? 'email' : 'mobile';
-					_gaq.push(['_trackEvent', 'Account', 'Log in', type, window.location.href]);
-				}
-
-			}
-			else if ( 'register' === this.getFormName() ) {
-				if ( typeof(_gaq) !== 'undefined' ) {
-					type = ( this.checkEmail() ) ? 'email' : 'mobile';
-					_gaq.push(['_trackEvent', 'Account', 'Create account', type]);
-				}
-
-			}
-			else if ( 'forgot' === this.getFormName() ) {
-				if ( typeof(_gaq) !== 'undefined' ) {
-					type = ( (this.form.find('.jsForgotPwdLogin').val().search('@')) !== -1 ) ? 'email' : 'mobile';
-					_gaq.push(['_trackEvent', 'Account', 'Forgot password', type]);
-				}
-			}
-		};
-
-		/**
-		 * Логирование при клике на ссылку выхода
-		 *
-		 * @public
-		 */
-		Login.prototype.logoutLinkClickLog = function() {
-		};
-
-		/**
-		 * Получение get параметров текущей страницы
-		 */
-		Login.prototype.getUrlParams = function() {
-			var $_GET = {},
-				__GET = window.location.search.substring(1).split('&'),
-				getVar,
-				i;
-			// end of vars
-
-			for ( i = 0; i < __GET.length; i++ ) {
-				getVar = __GET[i].split('=');
-				$_GET[getVar[0]] = typeof( getVar[1] ) === 'undefined' ? '' : getVar[1];
-			}
-
-			return $_GET;
-		};
-
-		return Login;
-	}());
-
-
-	$(document).ready(function() {
-		var login = new ENTER.constructors.Login();
+		});
 	});
-
 }(window.ENTER));
-$(document).ready(function() {
-	/**
-	 * Подписка
-	 */
-	$('body').on('click', '.bSubscibe', function() {
-		if ( $(this).hasClass('checked') ) {
-			$(this).removeClass('checked');
-			$(this).find('.subscibe').removeAttr('checked');
-			$(this).find('input[name="subscribe"]').val(0);
-		} else {
-			$(this).addClass('checked');
-			$(this).find('.subscibe').attr('checked','checked');
-			$(this).find('input[name="subscribe"]').val(1);
-		}
-
-		return false;
-	});
-
-
-	/* GA categories referrer */
-	function categoriesSpy( e ) {
-		if ( typeof(_gaq) !== 'undefined' ) {
-			_gaq.push(['_trackEvent', 'CategoryClick', e.data, window.location.pathname ]);
-		}
-
-		return true;
-	}
-
-	$('.bMainMenuLevel-1__eLink').bind('click', 'Верхнее меню', categoriesSpy );
-	$('.bMainMenuLevel-2__eLink').bind('click', 'Верхнее меню', categoriesSpy );
-	$('.bMainMenuLevel-3__eLink').bind('click', 'Верхнее меню', categoriesSpy );
-	$('.breadcrumbs').first().find('a').bind( 'click', 'Хлебные крошки сверху', categoriesSpy );
-	$('.breadcrumbs-footer').find('a').bind( 'click', 'Хлебные крошки снизу', categoriesSpy );
-
-	$('.bCtg__eMore').bind('click', function(e) {
-		e.preventDefault();
-		var el = $(this);
-		el.parent().find('li.hf').slideToggle();
-		var link = el.find('a');
-		link.text('еще...' == link.text() ? 'скрыть' : 'еще...');
-	});
-
-	$('.product_buy-container').each(function() {
-		var order = $(this).data('order');
-
-		if ( typeof(order) == 'object' && !$.isEmptyObject(order) ) {
-			$.ajax({
-				url: ($(this).data('url')),
-				data: order,
-				type: 'POST',
-				timeout: 20000
-			});
-		}
-	});
-});
 ;(function($){
 
 	var $body = $(document.body),
@@ -3001,8 +2261,6 @@ $(document).ready(function() {
 				}
 			});
 
-			$el.trigger('TL_recommendation_clicked');
-
 		} catch (e) { console.error(e); }
 	});
 
@@ -3042,16 +2300,27 @@ $(document).ready(function() {
 		}
 
 		var
-			button = $(e.currentTarget),
-			$target = $('#jsOneClickContent');
+			$button = $(e.currentTarget),
+			$target = $('#jsOneClickContent'),
+            $productInfo = $('#product-info'),
+            productUi;
+
+        productUi = $productInfo.length > 0 ? $productInfo.data('ui') : $button.data('product-ui');
+
+        if (!productUi) throw 'Не обнаружен ui продукта';
 
 		if ($target.length) {
 			openPopup(false);
 			init();
 		} else {
 			oneClickOpening = true;
+
 			$.ajax({
-				url: ENTER.utils.generateUrl('orderV3OneClick.form', {productUid: button.data('product-ui'), sender: button.data('sender'), sender2: button.data('sender2')}),
+                url: ENTER.utils.generateUrl('orderV3OneClick.form', {
+                    productUid: $button.data('product-ui'),
+                    sender: ENTER.utils.analytics.productPageSenders.get($button),
+                    sender2: ENTER.utils.analytics.productPageSenders2.get($button)
+                }),
 				type: 'POST',
 				dataType: 'json',
 				closeClick: false,
@@ -3103,8 +2372,8 @@ $(document).ready(function() {
 
 			if ($target.length) {
 				var data = $.parseJSON($orderContent.data('param'));
-				data.quantity = button.data('quantity');
-				data.shopId = button.data('shop');
+				data.quantity = $button.data('quantity');
+				data.shopId = $button.data('shop');
 				$orderContent.data('shop', data.shopId);
 
 				$target.lightbox_me({
@@ -3146,20 +2415,21 @@ $(document).ready(function() {
 						$('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
 					}
 				}).done(function(data) {
-					console.log("Query: %s", data.result.OrderDeliveryRequest);
-					console.log("Model:", data.result.OrderDeliveryModel);
-					$orderContent.empty().html($(data.result.page).html());
+					//console.log("Query: %s", data.result.OrderDeliveryRequest);
+					//console.log("Model:", data.result.OrderDeliveryModel);
 
                     if (data.result.warn) $('#OrderV3ErrorBlock').text(data.result.warn).show();
 
-                    $.each($('.jsNewPoints'), function(i,val) {
-                        var E = ENTER.OrderV31Click,
-                            pointData = JSON.parse($(this).find('script.jsMapData').html()),
-                            points = new ENTER.DeliveryPoints(pointData.points, E.map);
+                    var $data = $(data.result.page);
 
-                        E.koModels.push(points);
-                        ko.applyBindings(points, val);
-                    });
+                    $orderContent.empty().html($data.html());
+
+                    var E = ENTER.OrderV31Click,
+                        pointData = JSON.parse($data.find('script.jsMapData').html()),
+                        points = new ENTER.DeliveryPoints(pointData.points, E.map);
+
+                    E.koModels.push(points);
+                    ko.applyBindings(points, $orderContent[0]);
 
 					ENTER.OrderV31Click.functions.initAddress();
 					$orderContent.find('input[name=address]').focus();
@@ -4403,7 +3673,8 @@ $(document).ready(function() {
 
 		var
 			$button = $(this),
-			sender = $button.data('sender') || {},
+			sender = ENTER.utils.analytics.productPageSenders.get($button),
+			sender2 = ENTER.utils.analytics.productPageSenders2.get($button),
 			productArticle = $button.data('product-article'),
 			productPrice = $button.data('product-price'),
 			$popup = $(Mustache.render($('#tpl-cart-slot-form').html(), {
@@ -4413,8 +3684,8 @@ $(document).ready(function() {
 				partnerOfferUrl: $button.data('partner-offer-url'),
 				productUrl: $button.data('product-url'),
 				productId: $button.data('product-id'),
-				sender: $button.attr('data-sender'),
-				sender2: $button.data('sender2') || '',
+				sender: JSON.stringify(sender),
+				sender2: sender2,
 				userPhone: String(ENTER.utils.Base64.decode(ENTER.config.userInfo.user.mobile || '')).replace(/^8/, '+7'),
 				userEmail: ENTER.config.userInfo.user.email || '',
 				userName: ENTER.config.userInfo.user.firstName || ''
@@ -4516,7 +3787,7 @@ $(document).ready(function() {
 			})
 		});
 
-		ENTER.utils.sendAdd2BasketGaEvent(productArticle, productPrice, true, true, sender.name);
+		ENTER.utils.sendAdd2BasketGaEvent(productArticle, productPrice, true, true, ($button.data('sender') || {}).name);
 
 		$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '1 Вход', catalogPath]);
 
@@ -4546,281 +3817,6 @@ $(document).ready(function() {
 	});
 });
 
-/**
- * Саджест для поля поиска
- * Нужен рефакторинг
- *
- * @author		Zaytsev Alexandr
- * @requires	jQuery, jQuery.placeholder
- *
- * @param	{Object}	searchInput			Поле поиска
- * @param	{Object}	suggestWrapper		Обертка для подсказок
- * @param	{Object}	suggestItem			Результаты поиска
- * 
- * @param	{Number}	nowSelectSuggest	Текущий выделенный элемент, если -1 - значит выделенных элементов нет
- * @param	{Number}	suggestLen			Количество результатов поиска
- */
-;(function() {
-	var
-		body = $('body'),
-		searchForm = $('div.searchbox form'),
-        searchInput = searchForm.find('input.searchtext'),
-		suggestWrapper = $('#searchAutocomplete'),
-		suggestItem = $('.bSearchSuggest__eRes'),
-
-		nowSelectSuggest = -1,
-		suggestLen = 0,
-
-		suggestCache = {},
-
-		tID = null;
-	// end of vars	
-
-
-	var
-		suggestAnalytics = function suggestAnalytics() {
-			var
-				link = suggestItem.eq(nowSelectSuggest).attr('href'),
-				type = ( suggestItem.eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes') ) ? 'suggest_category' : 'suggest_product';
-			// end of vars
-			
-			if ( typeof(_gaq) !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'Search', type, link]);
-			}
-		},
-
-		/**
-		 * Загрузить ответ от поиска: получить и показать его, с запоминанием (memoization)
-		 *
-		 * @returns {boolean}
-		 */
-		loadResponse = function loadResponse() {
-			var
-				text = searchInput.val(),
-
-				/**
-				 * Отрисовка данных с сервера
-				 *
-				 * @param	{String}	response	Ответ от сервера
-				 */
-				renderResponse = function renderResponse( response ) {
-					if ( !response.success ) {
-						return;
-					}
-
-					suggestCache[text] = response.content; // memoization
-					suggestWrapper.html(response.content);
-					suggestItem = $('.bSearchSuggest__eRes');
-					suggestLen = suggestItem.length;
-					if ( suggestLen ) {
-						//searchInputFocusin();
-						setTimeout(searchInputFocusin, 99);
-					}
-				},
-
-				/**
-				 * Запрос на получение данных с сервера
-				 */
-				getResFromServer = function getResFromServer() {
-					var
-						//text = searchInput.val(),
-						url = '/search/autocomplete?q=';
-
-					if ( text.length < 3 ) {
-						return false;
-					}
-					url += encodeURI( text );
-
-					$.ajax({
-						type: 'GET',
-						url: url,
-						success: renderResponse
-					});
-				};
-			// end of functions and vars
-
-			if ( text.length === 0 ) {
-				suggestWrapper.empty();
-
-				return false;
-			}
-
-			clearTimeout(tID);
-
-			// memoization
-			if ( suggestCache[text] ) {
-				renderResponse(suggestCache[text]);
-
-				return false;
-			}
-
-			tID = setTimeout(getResFromServer, 300);
-		}, // end of loadResponse()
-
-		/**
-		 * Экранируем лишние пробелы перед отправкой на сервер
-		 * вызывается по нажатию Ентера либо кнопки "Отправить"
-		 */
-		escapeSearchQuery = function escapeSearchQuery() {
-			var s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
-			searchInput.val(s);
-		}
-
-		/**
-		 * Обработчик поднятия клавиши
-		 * 
-		 * @param	{Event}		event
-		 * @param	{Number}	keyCode	Код нажатой клавиши
-		 * @param	{String}	text	Текст в поле ввода
-		 */
-		suggestKeyUp = function suggestKeyUp( event ) {
-			var
-				keyCode = event.which;
-
-			if ( (keyCode >= 37 && keyCode <= 40) ||  keyCode === 27 || keyCode === 13) { // Arrow Keys or ESC Key or ENTER Key
-				return false;
-			}
-
-			loadResponse();
-		},
-
-		/**
-		 * Обработчик нажатия клавиши
-		 * 
-		 * @param	{Event}		event
-		 * @param	{Number}	keyCode	Код нажатой клавиши
-		 */
-		suggestKeyDown = function suggestKeyDown( event ) {
-			var
-				keyCode = event.which;
-
-			var
-				markSuggestItem = function markSuggestItem() {
-					suggestItem.removeClass('hover').eq(nowSelectSuggest).addClass('hover');
-				},
-
-				selectUpItem = function selectUpItem() {
-					if ( nowSelectSuggest - 1 >= 0 ) {
-						nowSelectSuggest--;
-						markSuggestItem();
-					}
-					else {
-						nowSelectSuggest = -1;
-						suggestItem.removeClass('hover');
-						$(this).focus();
-					}
-				},
-
-				selectDownItem = function selectDownItem() {
-					if ( nowSelectSuggest + 1 <= suggestLen - 1 ) {
-						nowSelectSuggest++;
-						markSuggestItem();
-					}
-				},
-
-				enterSelectedItem = function enterSelectedItem() {
-					var link = suggestItem.eq(nowSelectSuggest).attr('href');
-
-					suggestAnalytics();
-					document.location.href = link;
-				};
-			// end of functions
-
-			if ( keyCode === 38 ) { // Arrow Up
-				selectUpItem();
-
-				return false;
-			}
-			else if ( keyCode === 40 ) { // Arrow Down
-				selectDownItem();
-
-				return false;
-			}
-			else if ( keyCode === 27 ) { // ESC Key
-				suggestWrapper.empty();
-				
-				return false;
-			}
-			else if ( keyCode === 13 ) {
-				escapeSearchQuery();
-				if ( nowSelectSuggest !== -1 ) { // Press Enter and suggest has selected item
-					enterSelectedItem();
-
-					return false;
-				}
-			}
-		},
-
-		searchSubmit = function searchSubmit() {
-			var text = searchInput.attr('value');
-
-			if ( text.length === 0 ) {
-				return false;
-			}
-			escapeSearchQuery();
-		},
-
-		searchInputFocusin = function searchInputFocusin() {
-			suggestWrapper.show();
-		},
-		
-		suggestCloser = function suggestCloser( e ) {
-			var
-				targ = e.target.className;
-
-			if ( !(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1) ) {
-				suggestWrapper.hide();
-			}
-		},
-
-		/**
-		 * Срабатывание выделения и запоминание индекса выделенного элемента по наведению мыши
-		 */
-		hoverForItem = function hoverForItem() {
-			var index = 0;
-
-			suggestItem.removeClass('hover');
-			index = $(this).addClass('hover').index();
-			nowSelectSuggest = index - 1;
-		},
-
-
-		/**
-		 * Подставляет поисковую подсказку в строку поиска
-		 */
-		searchHintSelect = function searchHintSelect() {
-			var
-				hintValue = $(this).text()/*,
-				searchValue = searchInput.val()*/;
-			//if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
-			searchInput.val(hintValue + ' ').focus();
-			if ( typeof(_gaq) !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'tooltip', hintValue]);
-			}
-			loadResponse();
-		};
-	// end of functions
-
-
-	/**
-	 * Attach handlers
-	 */
-	$(document).ready(function() {
-		searchInput.bind('keydown', suggestKeyDown);
-		searchInput.bind('keyup', suggestKeyUp);
-
-		searchInput.bind('focus', searchInputFocusin);
-        searchForm.bind('submit', searchSubmit);
-
-		searchInput.placeholder();
-
-		body.bind('click', suggestCloser);
-		body.on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
-		body.on('click', '.bSearchSuggest__eRes', suggestAnalytics);
-		body.on('click', '.sHint_value', searchHintSelect);
-	});
-}());
-
 ;(function(){
 
     // https://jira.enter.ru/browse/SITE-3508
@@ -4841,33 +3837,6 @@ $(document).ready(function() {
     }
 
 }());
-;$(function($){
-
-	// var $menu = $('.js-mainmenu-level2');
-
-	// $menu.menuAim({
-	// 	activate: activateSubmenu,
-	// 	deactivate: deactivateSubmenu,
-	// 	exitOnMouseOut: true
-	// });
-
-	// function activateSubmenu(row) {
-	// 	var $row = $(row),
-	//       $submenu = $row.children('ul');
-
-	// 	$row.addClass('hover');
-	// 	$submenu.css({display: 'block'});
-	// }
-
-	// function deactivateSubmenu(row) {
-	// 	var $row = $(row),
-	// 		$submenu = $row.children('ul');
-
-	// 	$row.removeClass('hover');
-	// 	$submenu.css('display', 'none');
-	// }
-
-}(jQuery));
 /**
  * Кнопка наверх
  *
@@ -4891,15 +3860,15 @@ $(document).ready(function() {
 	}
 
 	function checkScroll() {
-		var cartLength = ENTER.UserModel.cart().length;
+		var cartLength = ENTER.UserModel ? ENTER.UserModel.cart().length : 0;
 		if (!visible && $window.scrollTop() > offset && (!showWhenFullCartOnly || cartLength)) {
 			//появление
 			visible = true;
-			$upper.animate({marginTop: '0'}, 400);
+			$upper.fadeIn(400);
 		} else if (visible && ($window.scrollTop() < offset || showWhenFullCartOnly && !cartLength)) {
 			//исчезновение
 			visible = false;
-			$upper.animate({marginTop: '-55px'}, 400);
+			$upper.fadeOut(400);
 		}
 	}
 
@@ -4962,19 +3931,19 @@ $(document).ready(function() {
 		if (disableAnimation) {
 			userBarFixed.show(0, onOpen || function(){});
 		} else {
-			userBarFixed.slideDown();
+			userBarFixed.addClass('fadeIn');
 		}
 
-		if (userBarFixed.length) {
+		/*if (userBarFixed.length) {
 			userbarStatic.css('visibility','hidden');
-		}
+		}*/
 	}
 
 	/**
 	 * Скрытие юзербара
 	 */
 	function hideUserbar() {
-		userBarFixed.slideUp();
+		userBarFixed.removeClass('fadeIn');
 		userbarStatic.css('visibility','visible');
 	}
 
@@ -5053,6 +4022,10 @@ $(document).ready(function() {
 		}
 		// end of function
 
+		setTimeout(function() {
+			userBarFixed.removeClass('fadeIn shadow-false');
+		}, 100);
+
 		// только BuyInfoBlock
 		if ( !upsaleWrap.hasClass('mhintDdOn') ) {
 			removeBuyInfoBlock();
@@ -5063,6 +4036,8 @@ $(document).ready(function() {
 		upsaleWrap.removeClass('mhintDdOn');
 		wrapLogIn.removeClass(openClass);
 		wrap.removeClass(openClass);
+
+        $('.js-topbarfixLogin').removeClass('blocked');
 
 		removeBuyInfoBlock();
 		removeOverlay();
@@ -5080,6 +4055,10 @@ $(document).ready(function() {
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
+
+		userBarFixed.addClass('fadeIn shadow-false');
+
+        $('.js-topbarfixLogin').addClass('blocked');
 
 		var	buyInfo = $('.topbarfix_cartOn');
 
@@ -5327,3 +4306,12 @@ $(document).ready(function() {
 	}
 
 }(window.ENTER));
+
+$(function() {
+    $('body').on('updateWidgets', function(e, widgets){
+        $.each(widgets, function(id, value) {
+            console.info('replace ' + id +' with ' + value);
+            $(id).html($(value).html());
+        })
+    });
+});

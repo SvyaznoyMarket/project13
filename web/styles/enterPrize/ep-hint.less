@@ -1,9 +1,8 @@
 .ep-hint {
 	background: @white;
-	margin: 0 0 10px 0;
+	margin: 0 0 34px 0;
     position: relative;
     .box-shadow(0 0 10px rgba(0, 0, 0, 0.8));
-    top: -25px;
     width: 960px;
     z-index: 30;
     clear: both;
@@ -78,10 +77,8 @@
 	}
 
 	&--position {
-		left: 0;
-	    margin: 0;
-	    position: absolute;
-	    top: 213px;
+		margin-bottom: 24px;
+	    position: relative;
 	    z-index: 26;
 
 	    .ep-hint__row--cut {
@@ -106,6 +103,10 @@
 				border-top: 1px dotted;
 			}
 		}
+
+        .product-card-new &--cut {
+            display: none;
+        }
 
 		&--cmplt {
 			text-align: center;

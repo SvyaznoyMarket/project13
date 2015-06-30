@@ -1,54 +1,110 @@
  /**
   * Стили шаблона
   */
-.wrapper {
-	width: 940px;
-	height: auto !important;
-	height: 100%;
-	min-height: 100%;
-	margin: 0 auto;
-	padding: 0 10px;
+@full-size: 100%;
+html,
+body {
+    min-width: 960px;
+}
 
-	background: @white;
+.wrapper {
+    width: @full-size;
+    height: auto !important;
+    height: @full-size;
+    min-height: @full-size;
+    margin: 0 auto;
+    padding: 0;
+
+    background: @white;
 }
 
 /**
  * Шапка
  */
 .header {
-	position: relative;
+    position: relative;
+
+    margin: 0 0 10px;
+    &__inn {
+        width: 960px;
+        margin: 0 auto;
+    }
+}
+
+.inn {
+    width: 940px;
+    margin: 0 auto;
+    padding: 0 10px;
 }
 
 /**
  * Контентная часть
  */
 .content {
+    padding: 0 0 255px;
+    &.mContentOrder {
+        padding-bottom: 0;
+        margin: 0 auto;
+        width: 940px;
+    }
+}
 
-	&.mContentOrder {
-		padding-bottom: 0;
-	}
+.footer {
+    position: relative;
+
+    width: @full-size;
+    height: 235px;
+    margin: -235px auto 0;
+
+    background: @black;
+}
+
+.main-new {
+    background: @white url('@{base-url}/mainpage/img/spring-bg.jpg') no-repeat 50% 0;
+    background-attachment: fixed;
+    background-size: cover;
+    .wrapper {
+        background: rgb(255,255,255);
+        background: transparent\9;
+        background: rgba(255,255,255,.6);
+
+        .box-shadow(0px 0px 26px 0px rgba(50, 50, 50, .25));
+        &:nth-child(n) {
+            filter: none;
+        }
+    }
+    .header {
+        margin-bottom: 0;
+    }
+    .wrapper ,
+    .footer {
+        width: 960px;
+        margin-right: auto;
+        margin-left: auto;
+    }
 }
 
 /**
  * Фикс однопиксельной картинки, которая выводится после футера.
  */
-img[height="1"],
-img[height="0"] {
-	display: block;
+img[height='1'] ,
+img[height='0'] {
+    display: block;
 }
 
 /* fix заразы */
-#tndFrame, #market_context_headcrab {
-   display: none !important;
-   visibility: hidden !important;
-   overflow: hidden !important;
+#tndFrame ,
+#market_context_headcrab {
+    font-size: 0 !important;
+    line-height: 0 !important;
 
-   width: 0 !important;
-   height: 0 !important;
+    display: none !important;
+    visibility: hidden !important;
+    overflow: hidden !important;
 
-   font-size: 0 !important;
-   line-height: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
 }
-.underline{
-  text-decoration: underline;
+.underline {
+    text-decoration: underline;
 }

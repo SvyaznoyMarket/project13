@@ -18,8 +18,8 @@
  * @var $breadcrumbs            array   Хлебные крошки
  * @var $trustfactors           array   Трастфакторы
  * @var $reviewsDataSummary     array   Данные отзывов
- * @var $sprosikupiReviews      array   Данные отзывов
- * @var $shoppilotReviews       array   Данные отзывов
+ * @var $videoHtml              string|null
+ * @var $properties3D           []
  */
 $helper = new \Helper\TemplateHelper();
 
@@ -38,8 +38,8 @@ foreach ($equipment as $key => $value) {
     $equipment[$key] = preg_replace('/\s*<br \/>$/', '', trim(mb_strtoupper(mb_substr($value, 0, 1)) . mb_substr($value, 1)));
 }
 
-$buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
-$buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
+$buySender = $request->get('sender');
+$buySender2 = $request->get('sender2');
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -55,7 +55,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
         <span class="product-card__head__article">Артикул: <?= $product->getArticle() ?></span>
     </div>
 
-    <?= $helper->render('product/__photo', ['product' => $product]) ?>
+    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
 </div>
 
 <div class="product-card__section-right">
@@ -179,7 +179,5 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
     <? endif ?>
 
     <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
-
-    <?= $helper->render('product/__event', ['product' => $product]) ?>
     </div>
 </div>

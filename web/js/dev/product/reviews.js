@@ -1,36 +1,73 @@
 ;(function() {
 	var
-		reviewWrap = $('.js-reviews-wrapper'),
-		reviewList = $('.js-reviews-list'),
-		moreReviewsButton = $('.js-reviews-getMore'),
+		$window = $(window),
+		$body = $(document.body),
+		$reviewWrap = $('.js-reviews-wrapper'),
+		$reviewList = $('.js-reviews-list'),
+		$moreReviewsButton = $('.js-reviews-getMore'),
 		reviewCurrentPage = 0,
-		reviewPageCount = reviewWrap.attr('data-page-count');
+		reviewPageCount = $reviewWrap.attr('data-page-count'),
+		productUi = $reviewWrap.attr('data-product-ui'),
+		avgScore = $reviewWrap.data('avg-score'),
+		firstPageAvgScore = $reviewWrap.data('first-page-avg-score'),
+		categoryName = $reviewWrap.data('category-name');
 
-	if (!reviewWrap.length) {
+	if (!$reviewWrap.length) {
 		return;
 	}
 
-	moreReviewsButton.click(function() {
+	$moreReviewsButton.click(function() {
 		$.ajax({
 			type: 'GET',
-			url: ENTER.utils.generateUrl('product.reviews.get', {productUi: reviewWrap.attr('data-product-ui')}),
+			url: ENTER.utils.generateUrl('product.reviews.get', {productUi: productUi}),
 			data: {
 				page: reviewCurrentPage + 1
 			},
 			success: function(data) {
-				reviewList.html(reviewList.html() + data.content);
+				$reviewList.html($reviewList.html() + data.content);
 
 				reviewCurrentPage++;
 				reviewPageCount = data.pageCount;
 
 				if (reviewCurrentPage + 1 >= reviewPageCount) {
-					moreReviewsButton.hide();
+					$moreReviewsButton.hide();
 				} else {
-					moreReviewsButton.show();
+					$moreReviewsButton.show();
 				}
 			}
 		});
 	});
+
+	// SITE-5466
+	(function() {
+		var timer;
+		function checkReviewsShowing() {
+			var windowHeight = $window.height();
+			if ($window.scrollTop() + windowHeight > $reviewWrap.offset().top) {
+				if (!timer) {
+					timer = setTimeout(function() {
+						$window.unbind('scroll', checkReviewsShowing);
+
+						$body.trigger('trackGoogleEvent', {
+							category: 'Items_review',
+							action: 'All_' + avgScore + '_Top_' + firstPageAvgScore,
+							label: categoryName
+						});
+
+						ENTER.utils.analytics.reviews.add(productUi, avgScore, firstPageAvgScore, categoryName);
+					}, 2000);
+				}
+			} else {
+				if (timer) {
+					clearTimeout(timer);
+					timer = null;
+				}
+			}
+		}
+
+		$window.scroll(checkReviewsShowing);
+		checkReviewsShowing();
+	})();
 }());
 
 
@@ -47,11 +84,11 @@
 		submitReviewButton = $('.jsFormSubmit'),
 		submitReviewButtonText = submitReviewButton.val(),
 
-		reviewStar = form.find('.starsList__item'),
+		reviewStar = form.find('.stars-list__item'),
 		reviewStarCount = form.find('.jsReviewStarsCount'),
 		starStateClass = {
-			fill: 'mFill',
-			empty: 'mEmpty'
+			fill: 'star-fill',
+			empty: 'star-empty'
 		},
 
 		advantageField = $('.jsAdvantage'),
@@ -346,71 +383,3 @@
         openPopup();
     }
 }());
-
-/**
- * Обработчик для sprosikupi
- */
-$(function() {
-	if (!$('#spk-widget-reviews').length) {
-		return;
-	}
-
-    if ('#add-review' == location.hash) {
-        location.href = '?spkPreState=addReview';
-    }
-
-	$('.sprosikupiRating .spk-good-rating a').live('click', function(e) {
-		$(document).stop().scrollTo($(e.currentTarget).attr('href'), 800);
-		return false;
-	});
-
-	$.getScript("//static.sprosikupi.ru/js/widget/sprosikupi.bootstrap.js");
-});
-
-/**
- * Обработчик для shoppilot
- */
-$(function() {
-	var reviewsContainer = $('#shoppilot-reviews-container');
-	if (!reviewsContainer.length) {
-		return;
-	}
-
-	_shoppilot = window._shoppilot || [];
-	_shoppilot.push(['_setStoreId', '535a852cec8d830a890000a6']);
-	_shoppilot.push(['_setOnReady', function (Shoppilot) {
-		(new Shoppilot.ProductWidget({
-			name: 'product-rating',
-			styles: 'product-reviews',
-			product_id: reviewsContainer.data('productId')
-		})).appendTo('#shoppilot-rating-container');
-
-		(new Shoppilot.ProductWidget({
-			name: 'product-reviews',
-			styles: 'product-reviews',
-			product_id: reviewsContainer.data('productId')
-		})).appendTo(reviewsContainer[0]);
-
-        if ('#add-review' == location.hash) {
-            (new Shoppilot.Surveybox({
-                product_id: reviewsContainer.data('productId')
-            })).open();
-        }
-	}]);
-
-	(function() {
-		var script = document.createElement('script');
-		script.type = 'text/javascript';
-		script.async = true;
-		script.src = '//ugc.shoppilot.ru/javascripts/require.js';
-		script.setAttribute('data-main',
-			'//ugc.shoppilot.ru/javascripts/social-apps.js');
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(script, s);
-	})();
-
-    $('#shoppilot-rating-container').on('click', 'a.sp-product-inline-rating-label', function(e) {
-		$(document).stop().scrollTo($(e.currentTarget).attr('href').replace(/^.*?#/, '#'), 800);
-		return false;
-	});
-});

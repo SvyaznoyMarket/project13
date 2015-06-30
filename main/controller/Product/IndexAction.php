@@ -2,6 +2,7 @@
 
 namespace Controller\Product;
 
+use Model\Product\Label;
 use Model\Product\Trustfactor;
 
 class IndexAction {
@@ -93,8 +94,8 @@ class IndexAction {
                 foreach ($trustfactors as $key => $trustfactor) {
                     if ('right' === $trustfactor->type
                         && in_array($trustfactor->uid, [
-                            '10259a2e-ce37-49a7-8971-8366de3337d3', // много.ру
-                            'ab3ca73c-6cc4-4820-b303-8165317420d5'  // сбербанк
+                            Trustfactor::UID_MNOGO_RU,
+                            Trustfactor::UID_SBERBANK_SPASIBO
                         ])) {
                         unset($trustfactors[$key]);
                     }
@@ -117,13 +118,12 @@ class IndexAction {
                 $product->medias = array_map(function($media) { return new \Model\Media($media); }, $data['medias']);
             }
 
+            if (isset($data['label']['uid'])) $product->setLabel(new Label($data['label']));
+
             if (isset($data['json3d']) && is_array($data['json3d'])) {
                 $product->json3d = $data['json3d'];
             }
         });
-
-        \Session\ProductPageSenders::add($product->getUi(), $request->query->get('sender'));
-        \Session\ProductPageSendersForMarketplace::add($product->getUi(), $request->query->get('sender2'));
 
         // товар для Подари Жизнь
         $lifeGiftProduct =
@@ -145,12 +145,13 @@ class IndexAction {
         $reviewsData =
             $actionResponse->reviewQuery
             ? [
-                'review_list'        => $actionResponse->reviewQuery->response->reviews,
-                'num_reviews'        => $actionResponse->reviewQuery->response->reviewCount,
-                'avg_score'          => $actionResponse->reviewQuery->response->score,
-                'avg_star_score'     => $actionResponse->reviewQuery->response->starScore,
-                'num_users_by_score' => $actionResponse->reviewQuery->response->groupedScoreCount,
-                'page_count'         => $actionResponse->reviewQuery->response->pageCount,
+                'review_list'            => $actionResponse->reviewQuery->response->reviews,
+                'num_reviews'            => $actionResponse->reviewQuery->response->reviewCount,
+                'avg_score'              => $actionResponse->reviewQuery->response->score,
+                'avg_star_score'         => $actionResponse->reviewQuery->response->starScore,
+                'current_page_avg_score' => $actionResponse->reviewQuery->response->currentPageAvgScore,
+                'num_users_by_score'     => $actionResponse->reviewQuery->response->groupedScoreCount,
+                'page_count'             => $actionResponse->reviewQuery->response->pageCount,
             ]
             : []
         ;
@@ -158,6 +159,10 @@ class IndexAction {
         // получаем рейтинги
         $reviewsDataSummary = [];
         if (\App::config()->product['reviewEnabled']) {
+            if(!empty($reviewsData['avg_score'])) $product->setAvgScore($reviewsData['avg_score']);
+            if(!empty($reviewsData['avg_star_score'])) $product->setAvgStarScore($reviewsData['avg_star_score']);
+            if(!empty($reviewsData['num_reviews'])) $product->setNumReviews($reviewsData['num_reviews']);
+
             $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData);
         }
 
@@ -196,9 +201,15 @@ class IndexAction {
         }
 
         // SITE-5035
-        // похожие товары
         $similarProducts = [];
-
+        if ($actionResponse->nextProductsQuery->response->products) {
+            call_user_func(function() use(&$actionResponse, &$similarProducts) {
+                foreach ($actionResponse->nextProductsQuery->response->products as $product) {
+                    $similarProducts[] = new \Model\Product\Entity($product);
+                }
+            });
+        }
+        
         // набор пакеты
         $kit = [];
         $kitProducts = [];
@@ -302,6 +313,21 @@ class IndexAction {
             $page = new \View\Product\IndexPage();
         }
 
+        $deliveryData = (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
+
+        // избранные товары
+        $favoriteProductsByUi = [];
+        foreach ($actionResponse->favoriteQuery->response->products as $item) {
+            if (!isset($item['is_favorite']) || !$item['is_favorite']) continue;
+
+            $ui = isset($item['uid']) ? (string)$item['uid'] : null;
+            if (!$ui) continue;
+
+            $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
+        }
+
+        $product->setCoupons($actionResponse->couponQuery->response->getCouponsForProduct($product->getUi()));
+
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('product', $product);
         $page->setParam('lifeGiftProduct', $lifeGiftProduct);
@@ -317,28 +343,17 @@ class IndexAction {
         $page->setParam('categoryClass', $categoryClass);
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactors', $trustfactors);
+        $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
         $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery));
+//        $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);
         $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);
         $page->setParam('viewParams', [
             'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
         ]);
-        $page->setGlobalParam('isTchibo', ($product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName()));
+        $page->setGlobalParam('isTchibo', ($product->getRootCategory() && 'Tchibo' === $product->getRootCategory()->getName()));
         $page->setGlobalParam('addToCartJS', $addToCartJS);
         $page->setGlobalParam('similarProducts', $similarProducts);
-
-        $page->setParam('sprosikupiReviews', null);
-        $page->setParam('shoppilotReviews', null);
-        switch (\App::abTest()->getTest('reviews')->getChosenCase()->getKey()) {
-            case 'sprosikupi':
-                $client = new \SprosiKupi\Client(\App::config()->partners['SprosiKupi'], \App::logger());
-                $page->setParam('sprosikupiReviews', $client->query($product->getId()));
-                break;
-            case 'shoppilot':
-                $client = new \ShopPilot\Client(\App::config()->partners['ShopPilot'], \App::logger());
-                $page->setParam('shoppilotReviews', $client->query($product->getId()));
-                break;
-        }
 
         return new \Http\Response($page->show());
     }
@@ -358,7 +373,7 @@ class IndexAction {
 
         $result = [];
 
-        $category = $product->getMainCategory();
+        $category = $product->getRootCategory();
         $cart = \App::user()->getCart();
         try {
             $productType = $category ? \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($category->getToken()) : '';

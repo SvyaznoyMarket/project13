@@ -14,6 +14,8 @@
         $bannersButtons = $('.jsMainBannersButton'),    // кнопки вверх-вниз у превьюшек
         bannersUpClass = 'jsMainBannersUpButton',
 
+        $minOrderSumBanner = $('.jsMainOrderSumBannerCloser'),
+
 		slidesWidth = 473,
 		slidesDotClass = 'slidesBox_dott_i',
 
@@ -279,5 +281,18 @@
 			hitCallback: aTarget == '_blank' ? null : link
 		})
 	});
+
+    // Баннер про минимальную стоимость заказа
+    $minOrderSumBanner.on('click', function(e){
+        e.preventDefault();
+        $minOrderSumBanner.parent().hide();
+        sessionStorage && sessionStorage.setItem('minOrderSumBanner', 'hidden')
+    });
+
+    if ($minOrderSumBanner.length > 0 && sessionStorage && sessionStorage.getItem('minOrderSumBanner') != 'hidden') {
+        setTimeout(function(){
+            $minOrderSumBanner.parent().addClass('shown');
+        }, 1000)
+    }
 
 }(jQuery));

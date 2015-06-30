@@ -1,0 +1,138 @@
+.i-info {
+    position: relative;
+
+    display: block;
+    &__tx {
+        .inline-block-middle();
+    }
+    &__icon {
+        margin-left: 2px;
+
+        cursor: pointer;
+
+        .inline-block-middle();
+    }
+}
+
+.info-popup {
+    position: absolute;
+    z-index: 5;
+
+    visibility: hidden;
+    overflow: hidden;
+    cursor: default;
+
+    padding: 10px;
+
+    border: 1px solid #c7c7c7;
+    background: @white;
+
+    .opacity(0);
+    .transition(all .2s ease-out);
+    .box-shadow(0 0 15px rgba(0, 0, 0, .4));
+    &--open {
+        visibility: visible;
+        overflow: visible;
+
+        .opacity(1);
+    }
+    &__inn {
+        overflow: hidden;
+    }
+    &--best-price {
+        top: 50px;
+        right: 0;
+
+        width: 250px;
+    }
+    &--action {
+        right: -1px;
+        bottom: 42px;
+
+        width: 100%;
+        padding: 0;
+
+        text-align: center;
+        &:after {
+            right: 10px;
+            bottom: -8px;
+
+            .pseudo-class();
+            .pseudo-corner-bottom(8px, #fff);
+        }
+        &:before {
+            right: 8px;
+            bottom: -10px;
+
+            .pseudo-class();
+            .pseudo-corner-bottom(10px, #c7c7c7);
+        }
+    }
+}
+
+.partner-offer-popup{
+    border: 1px solid #c7c7c7;
+    background: @white;
+
+    .transition(all .2s ease-out);
+    .box-shadow(0 0 15px rgba(0, 0, 0, .4));
+}
+
+.action-hint {
+
+    &__desc {
+        padding: 10px;
+        text-align: center;
+    }
+
+    &__img {
+        display: block;
+        max-width: 100%;
+        margin: 0 auto 10px;
+    }
+
+    &__lk {
+        color: #363636;
+        border-bottom: 1px solid;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+
+.prop-hint {
+    top: 20px;
+    right: -23px;
+    padding: 10px 20px 10px 10px;
+    width: 300px;
+
+    &:after {
+        right: 22px;
+
+        .pseudo-class();
+        .pseudo-corner-top(6px, #fff, -6px);
+    }
+    &:before {
+        right: 20px;
+
+        .pseudo-class();
+        .pseudo-corner-top(8px, #c7c7c7, -8px);
+    }
+}
+.ep-hint.ep-hint-card{
+    position: absolute;
+    right: 0;
+    top:100%;
+    margin-top: 8px;
+
+    &:after{
+        top: -8px;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid #ffffff;
+        border-left: 8px solid transparent;
+        left: auto!important;
+        right: 193px;
+    }
+}

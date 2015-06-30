@@ -381,9 +381,13 @@ class OrderEntity {
                 $data['last_partner'] = $request->cookies->get('last_partner');
 
                 // Много.ру
-                if (\App::config()->partners['MnogoRu']['enabled'] && !empty($request->cookies->get(\App::config()->partners['MnogoRu']['cookieName']))) {
-                    $data['mnogo_ru_card'] = $request->cookies->get(\App::config()->partners['MnogoRu']['cookieName']);
+                if (\App::config()->partners['MnogoRu']['enabled']) {
+                    $mnogoruCookieValue = $request->cookies->get(\App::config()->partners['MnogoRu']['cookieName']);
+                    if (!empty($mnogoruCookieValue) && $mnogoruCookieValue != 'undefined') {
+                        $data['mnogo_ru_card'] = $mnogoruCookieValue;
+                    }
                 }
+
 
                 // Присваиваем заказ actionpay, если активировали промокод через PandaPay
                 if (!empty($request->cookies->get(\App::config()->partners['PandaPay']['cookieName']))) {

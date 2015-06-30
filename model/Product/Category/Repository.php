@@ -47,9 +47,10 @@ class Repository {
     }
 
     /**
-     * @param string               $token
+     * @param string $token
      * @param \Model\Region\Entity $region
      * @param                      $callback
+     * @param string|null $brandSlug
      */
     public function prepareEntityByToken($token, \Model\Region\Entity $region = null, $callback, $brandSlug = null) {
         //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));

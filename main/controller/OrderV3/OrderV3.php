@@ -3,8 +3,11 @@
 
 namespace Controller\OrderV3;
 
+use EnterApplication\CurlTrait;
+use EnterQuery as Query;
 
 class OrderV3 {
+    use CurlTrait;
 
     /** Флаг первичного просмотра страницы */
     const SESSION_IS_READED_KEY = 'orderV3_is_readed';
@@ -66,4 +69,53 @@ class OrderV3 {
         return new \Http\JsonResponse();
     }
 
+    /**
+     * @param array $data
+     */
+    protected function pushEvent(array $data) {
+        try {
+            $sessionData = (array)$this->session->get($this->splitSessionKey) + [
+                    'orders'    => [],
+                    'user_info' => [],
+                ];
+
+            $userInfo = (array)$sessionData['user_info'] + [
+                    'email'      => null,
+                    'phone'      => null,
+                    'first_name' => null,
+                ];
+
+            $userEntity = \App::user()->getEntity();
+            $cart = \App::user()->getCart();
+
+            $data = array_replace_recursive([
+                'step'        => null,
+                'user'        => [
+                    'uid'   => $userEntity ? $userEntity->getUi() : null,
+                    'email' => $userInfo['email'],
+                    'phone' => $userInfo['phone'],
+                    'name'  => $userInfo['first_name'],
+                ],
+                'session_id'  => \App::session()->getId(),
+                'cart'        => [
+                    'products' => array_map(
+                        function ($item) {
+                            return [
+                                'uid'      => $item['ui'],
+                                'quantity' => $item['quantity'],
+                            ];
+                        },
+                        $cart->getProductData()
+                    ),
+                    'sum'      => $cart->getSum(),
+                ],
+                'order_count' => isset($sessionData['orders']) ? count($sessionData['orders']) : null,
+            ], $data);
+            (new Query\Event\PushOrderStep($data))->prepare();
+
+            $this->getCurl()->execute();
+        } catch (\Exception $e) {
+            \App::logger()->error(['error' => $e]);
+        }
+    }
 } 

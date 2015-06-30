@@ -54,10 +54,12 @@ $config = array_merge([
         'product.kit'               => ['pattern' => $routerRules['product.kit']['pattern']],
         'orderV3OneClick.form'      => ['pattern' => $routerRules['orderV3OneClick.form']['pattern']],
         'order.slot.create'         => ['pattern' => $routerRules['order.slot.create']['pattern']],
-        'product.reviews.get'       => ['pattern' => $routerRules['product.reviews.get']['pattern']],
+        'product.reviews.get'       => ['pattern' => $routerRules['product.reviews']['pattern']],
     ],
+    'newProductPage' => \App::abTest()->isNewProductPage(),
     'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS
-    'selfDeliveryLimit'    => $appConfig->self_delivery['limit'] // стоимость платного самовывоза, удалять осторожно, поломается JS
+    'selfDeliveryLimit'    => $appConfig->self_delivery['limit'], // стоимость платного самовывоза, удалять осторожно, поломается JS
+    'minOrderSum'  => \App::abTest()->isOrderMinSumRestriction() ? $appConfig->minOrderSum : false,
 ], isset($config) ? (array)$config : []);
 ?>
 

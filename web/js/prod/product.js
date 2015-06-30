@@ -5,7 +5,7 @@
 		$LAB.script('/maybe3dPlayer/player.min.js').wait(function() {
 			$('.js-product-3d-html5-popup').lightbox_me({
 				centered: true,
-				closeSelector: '.close',
+				closeSelector: '.jsPopupCloser',
 				onLoad: function() {
 					var $popup = $('.js-product-3d-html5-popup');
 					Maybe3D.Starter.setModelPathHTML5($popup.data('url'));
@@ -55,7 +55,7 @@
 
 				$popup.lightbox_me({
 					centered: true,
-					closeSelector: '.close',
+					closeSelector: '.jsPopupCloser',
 					onClose: function() {
 						swfobject.removeSWF(swfId);
 					}
@@ -82,12 +82,226 @@
 
 				$element.lightbox_me({
 					centered: true,
-					closeSelector: '.close'
+					closeSelector: '.jsPopupCloser'
 				});
 			}
 			catch (err) {}
 		});
 	});
+});
+/* ========================================================================
+ * Bootstrap: scrollspy.js v3.3.4
+ * http://getbootstrap.com/javascript/#scrollspy
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+    'use strict';
+
+    // SCROLLSPY CLASS DEFINITION
+    // ==========================
+
+    function ScrollSpy(element, options) {
+        this.$body          = $(document.body)
+        this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
+        this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
+        this.selector       = (this.options.target || '') + ' .nav li > a'
+        this.offsets        = []
+        this.targets        = []
+        this.activeTarget   = null
+        this.scrollHeight   = 0
+
+        this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
+        this.refresh()
+        this.process()
+    }
+
+    ScrollSpy.VERSION  = '3.3.4'
+
+    ScrollSpy.DEFAULTS = {
+        offset: 10
+    }
+
+    ScrollSpy.prototype.getScrollHeight = function () {
+        return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
+    }
+
+    ScrollSpy.prototype.refresh = function () {
+        var that          = this
+        var offsetMethod  = 'offset'
+        var offsetBase    = 0
+
+        this.offsets      = []
+        this.targets      = []
+        this.scrollHeight = this.getScrollHeight()
+
+        if (!$.isWindow(this.$scrollElement[0])) {
+            offsetMethod = 'position'
+            offsetBase   = this.$scrollElement.scrollTop()
+        }
+
+        this.$body
+            .find(this.selector)
+            .map(function () {
+                var $el   = $(this)
+                var href  = $el.data('target') || $el.attr('href')
+                var $href = /^#./.test(href) && $(href)
+
+                return ($href
+                    && $href.length
+                    && $href.is(':visible')
+                    && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+            })
+            .sort(function (a, b) { return a[0] - b[0] })
+            .each(function () {
+                that.offsets.push(this[0])
+                that.targets.push(this[1])
+            })
+    }
+
+    ScrollSpy.prototype.process = function () {
+        var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
+        var scrollHeight = this.getScrollHeight()
+        var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
+        var offsets      = this.offsets
+        var targets      = this.targets
+        var activeTarget = this.activeTarget
+        var i
+
+        if (this.scrollHeight != scrollHeight) {
+            this.refresh()
+        }
+
+        if (scrollTop >= maxScroll) {
+            return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
+        }
+
+        if (activeTarget && scrollTop < offsets[0]) {
+            this.activeTarget = null
+            return this.clear()
+        }
+
+        for (i = offsets.length; i--;) {
+            activeTarget != targets[i]
+            && scrollTop >= offsets[i]
+            && (offsets[i + 1] === undefined || scrollTop < offsets[i + 1])
+            && this.activate(targets[i])
+        }
+    }
+
+    ScrollSpy.prototype.activate = function (target) {
+        this.activeTarget = target
+
+        this.clear()
+
+        var selector = this.selector +
+            '[data-target="' + target + '"],' +
+            this.selector + '[href="' + target + '"]'
+
+        var active = $(selector)
+            .parents('li')
+            .addClass('active')
+
+        if (active.parent('.dropdown-menu').length) {
+            active = active
+                .closest('li.dropdown')
+                .addClass('active')
+        }
+
+        active.trigger('activate.bs.scrollspy')
+    }
+
+    ScrollSpy.prototype.clear = function () {
+        $(this.selector)
+            .parentsUntil(this.options.target, '.active')
+            .removeClass('active')
+    }
+
+
+    // SCROLLSPY PLUGIN DEFINITION
+    // ===========================
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this   = $(this)
+            var data    = $this.data('bs.scrollspy')
+            var options = typeof option == 'object' && option
+
+            if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
+            if (typeof option == 'string') data[option]()
+        })
+    }
+
+    var old = $.fn.scrollspy
+
+    $.fn.scrollspy             = Plugin
+    $.fn.scrollspy.Constructor = ScrollSpy
+
+
+    // SCROLLSPY NO CONFLICT
+    // =====================
+
+    $.fn.scrollspy.noConflict = function () {
+        $.fn.scrollspy = old
+        return this
+    }
+
+
+    // SCROLLSPY DATA-API
+    // ==================
+
+    $(window).on('load.bs.scrollspy.data-api', function () {
+        $('[data-spy="scroll"]').each(function () {
+            var $spy = $(this)
+            Plugin.call($spy, $spy.data())
+        })
+    })
+
+}(jQuery);
+/**
+ * Аналитика просмотра карточки товара
+ *
+ * @requires jQuery
+ */
+$(function() {
+	var $productCardData = $('#jsProductCard');
+	if (!$productCardData.length || $('body').data('template') != 'product_card') {
+		return;
+	}
+
+	var
+		product = $productCardData.data('value') || {},
+		query = $.deparam((location.search || '').slice(1)),
+		reviewsYandexClick = function ( e ) {
+			console.log('reviewsYandexClick');
+			var
+				link = this //, url = link.href
+			;
+
+			if ( 'undefined' !==  product.article ) {
+				_gaq.push(['_trackEvent', 'YM_link', product.article]);
+				e.preventDefault();
+				if ( 'undefined' !== link ) {
+					setTimeout(function () {
+						//document.location.href = url; // не подходит, нужно в новом окне открывать
+						link.click(); // эмулируем клик по ссылке
+					}, 500);
+				}
+			}
+		};
+
+	ENTER.utils.analytics.productPageSenders.add(product.ui, query.sender);
+	ENTER.utils.analytics.productPageSenders2.add(product.ui, query.sender2);
+
+	if ( typeof _gaq !== 'undefined' ) {
+		// GoogleAnalitycs for review click
+		$( 'a.reviewLink.yandex' ).each(function() {
+			$(this).one( "click", reviewsYandexClick); // переопределяем только первый клик
+		});
+	}
 });
 /**
  * Кредит для карточки товара
@@ -326,159 +540,6 @@
 	});
 }());
 /**
- * Планировщик шкафов купе
- *
- * @requires jQuery, ENTER.utils.logError
- */
-;(function( global ) {
-	/**
-	 * Имя объекта для конструктора шкафов купе
-	 *
-	 * ВНИМАНИЕ
-	 * Имя переменной менять нельзя. Захардкожено в файле KupeConstructorScript.js
-	 * Переменная должна находится в глобальной области видимости
-	 */
-	global.Planner3dKupeConstructor = null;
-
-
-	/**
-	 * Callback Инициализации конструктора шкафов
-	 *
-	 * ВНИМАНИЕ
-	 * Название функции менять нельзя. Захардкожено в файле KupeConstructorScript.js
-	 * Функция должна находится в глобальной области видимости
-	 */
-	global.Planner3d_Init = function ( ApiIds ) {
-		// console.info(ApiIds)
-	};
-
-
-	/**
-	 * Callback изменений в конструкторе шкафов
-	 * 
-	 * ВНИМАНИЕ
-	 * Название функции менять нельзя. Захардкожено в файле KupeConstructorScript.js
-	 * Функция должна находится в глобальной области видимости
-	 */
-	global.Planner3d_UpdatePrice = function ( IdsWithInfo ) {
-		var url = $('#planner3D').data('cart-sum-url'),
-			product = {};
-		// end of vars
-
-		product.product = {};
-
-		var authFromServer = function( res ) {
-			if ( !res.success ) {
-				return false;
-			}
-
-			$('.jsPrice').html(printPrice(res.sum));
-		};
-
-		for ( var i = 0, len = IdsWithInfo.length; i < len; i++ ) {
-			var prodID = IdsWithInfo[i].id;
-
-			if ( IdsWithInfo[i].error !== '' ) {
-				$('.jsBuyButton').addClass('mDisabled');
-				$('#coupeError').html('Вставки продаются только парами!').show();
-
-				return false;
-			}
-
-			$('.jsBuyButton').removeClass('mDisabled');
-			$('#coupeError').hide();
-
-			if ( product.product[prodID+''] !== undefined ) {
-				product.product[prodID+''].quantity++;
-			}
-			else {
-				product.product[prodID+''] = {
-					id : prodID,
-					quantity : 1
-				};
-			}
-		}
-
-		$.ajax({
-			type: 'POST',
-			url: url,
-			data: product,
-			success: authFromServer
-		});
-	};
-
-
-	/**
-	 * Добавление шкафа купе в корзину
-	 */
-	var kupe2basket = function() {
-		if ( $(this).hasClass('mDisabled') ) {
-			return false;
-		}
-
-		var structure = global.Planner3dKupeConstructor.GetBasketContent(),
-			url = $(this).attr('href'),
-			product = {};
-		// end of vars
-
-		var resFromServer = function( res ) {
-			if ( !res.success ) {
-				return false;
-			}
-
-			$('.jsBuyButton').html('В корзине').addClass('mBought').attr('href','/cart');
-
-			/* костыль */
-			res.product.name = $('.bMainContainer__eHeader-title').html();
-			res.product.price = $('.jsPrice').eq('1').html();
-			res.product.article = $('.bMainContainer__eHeader-article').html();
-			/* */
-			
-			$('body').trigger('addtocart', [res]);
-		};
-
-		product.product = structure;
-
-		$.ajax({
-			type: 'POST',
-			url: url,
-			data: product,
-			success: resFromServer
-		});
-
-		return false;
-	};
-
-	var initPlanner = function() {
-		try {
-			var coupeInfo = $('#planner3D').data('product');
-			
-			global.Planner3dKupeConstructor = new DKupe3dConstructor(document.getElementById('planner3D'),'/css/item/coupe_img/','/css/item/coupe_tex/', '/css/item/test_coupe_icons/');
-			global.Planner3dKupeConstructor.Initialize('/js/KupeConstructorData.json', coupeInfo.id);
-		}
-		catch ( err ) {
-			var dataToLog = {
-					event: 'Kupe3dConstructor error',
-					type:'ошибка загрузки Kupe3dConstructor',
-					err: err
-				};
-			// end of vars
-			
-			global.ENTER.utils.logError(dataToLog);
-		}
-
-		$('.jsBuyButton').off();
-		$('.jsBuyButton').bind('click', kupe2basket);
-	};
-
-
-	$(document).ready(function() {
-		if ( $('#planner3D').length ) {
-			$LAB.script( 'KupeConstructorScript.min.js' ).script( 'three.min.js' ).wait(initPlanner);
-		}
-	});
-}(this));
-/**
  * Подписка на снижение цены
  */
 ;$(function() {
@@ -570,7 +631,626 @@
 		$opener.on('click', showPopup);
 	}
 });
+;+function($){
+
+    var $body = $(document.body),
+        $imgPopup = $body.find('.jsProductImgPopup'),
+        $popupPhoto = $body.find('.jsProductPopupBigPhoto'),
+        $popupPhotoHolder = $('.jsProductPopupBigPhotoHolder'),
+        $popupPhotoThumbs = $('.jsPopupPhotoThumb'),
+        $productPhotoThumbs = $('.jsProductThumbList'),
+        $productPhotoThumbsBtn = $('.jsProductThumbBtn'),
+        productPhotoThumbsWidth = $productPhotoThumbs.width() - 2,
+        productPhotoThumbsFullWidth = $productPhotoThumbs.get(0) ? $productPhotoThumbs.get(0).scrollWidth : 0,
+        thumbActiveClass = 'product-card-photo-thumbs__i--act',
+        thumbBtnDisabledClass = 'product-card-photo-thumbs__btn--disabled',
+        thumbsCount = $popupPhotoThumbs.length,
+        popupDefaults = {
+            centered: true,
+            closeSelector: '.jsPopupCloser',
+            preventScroll: true,
+            closeClick: true
+        },
+        /* Функция для зума фотографии */
+        setZoom = function(direction) {
+            var cssInc = direction < 0 ? '+=' : '-=',
+                hInc = direction > 0 ? '+=' : '-=',
+                dataZoom = $popupPhoto.data('zoom'),
+                multiply = 500;
+
+            if (typeof dataZoom == 'undefined') {
+                if (direction < 0) return;
+                else $popupPhoto.data('zoom', direction);
+            } else if (dataZoom == 0 && direction < 0) {
+                return;
+            } else {
+                $popupPhoto.data('zoom', dataZoom + direction)
+            }
+
+            $popupPhoto.css('height', hInc + multiply).css('top', cssInc + multiply/2).css('left', cssInc + multiply/2);
+            if (dataZoom == 1 && direction < 0) $popupPhoto.css('top', '0px').css('left', '0px'); // fix при установке в 0
+        },
+        setPhoto = function(index) {
+            // отмечаем активным классом thumb
+            $popupPhotoThumbs.removeClass(thumbActiveClass).eq(index).addClass(thumbActiveClass);
+            // меняем картинку
+            $popupPhoto.css('top', '0px').css('left', '0px').css('height', $popupPhotoHolder.height()).data('zoom', 0);
+            $popupPhoto.attr('src', $popupPhotoThumbs.eq(index).data('big-img'));
+        };
+
+    // Перемещение увеличенной фотографии по движению мыши
+    $popupPhotoHolder.on('mousemove mouseleave wheel', function(e){
+        var parentOffset = $(this).parent().offset(),
+            relX = e.pageX - parentOffset.left,
+            relY = e.pageY - parentOffset.top,
+            hW = $(this).width(),
+            hH = $(this).height(),
+            iW = $popupPhoto.width(),
+            iH = $popupPhoto.height();
+
+        if (e.type == 'wheel') {
+            setZoom(e.originalEvent['deltaY'] < 0 ? 1 : -1);
+            e.stopPropagation(); // иначе будет скролл страницы
+        }
+
+        if (typeof $popupPhoto.data('zoom') == 'undefined' || $popupPhoto.data('zoom') == 0) return;
+
+        if (e.type == 'mousemove') $popupPhoto.css('left', relX/hW * (hW - iW)).css('top', relY/hH * (hH - iH));
+        if (e.type == 'mouseleave') $popupPhoto.css('left', (hW - iW)/2).css('top', (hH - iH)/2);
+
+    });
+
+    /* Клик по фото в карточке товара */
+    $body.on('click', '.jsOpenProductImgPopup', function(){
+        var $activeThumb = $('.' + thumbActiveClass);
+        // устанавливаем большую картинку
+        $imgPopup.find('.jsProductPopupBigPhoto').attr('src', $activeThumb.data('big-img'));
+        // активируем thumb в попапе
+        $popupPhotoThumbs.removeClass(thumbActiveClass)
+            .eq($activeThumb.index()).addClass(thumbActiveClass);
+        // и открываем popup
+        $imgPopup.lightbox_me(popupDefaults);
+    });
+
+    /* Меняем большое изображение в popup при клике на миниатюру */
+    $body.find('.jsProductPhotoThumb').on('click', function(){
+        var $this = $(this);
+        $this.siblings().removeClass('product-card-photo-thumbs__i--act');
+        $this.addClass('product-card-photo-thumbs__i--act');
+        $body.find('.jsProductMiddlePhoto').attr('src', $this.data('middle-img'));
+    });
+
+    /* Зум в попапе */
+    $body.on('click', '.jsProductPopupZoom', function(){
+        var direction = parseInt($(this).data('dir'), 10);
+        setZoom(direction);
+    });
+
+    /* Слайд в попапе */
+    $body.on('click', '.jsProductPopupSlide', function(){
+        var direction = $(this).data('dir'),
+            curIndex = $popupPhotoThumbs.index($imgPopup.find('.'+thumbActiveClass));
+        if (curIndex + direction == thumbsCount) setPhoto(0);
+        else setPhoto(curIndex + direction);
+    });
+
+    $popupPhotoThumbs.on('click', function(){
+        setPhoto($popupPhotoThumbs.index($(this)));
+    });
+
+    $productPhotoThumbsBtn.on('click', function(){
+        if (!$productPhotoThumbs.is(':animated'))
+        $productPhotoThumbs.animate({
+            'margin-left': $(this).data('dir') + productPhotoThumbsWidth
+        }, function(){
+            var margin = parseInt($productPhotoThumbs.css('margin-left'));
+            $productPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
+            if (productPhotoThumbsFullWidth + margin < productPhotoThumbsWidth) $productPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
+            if (margin > 0) $productPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
+        });
+    });
+
+    // Youtube и 3D
+    $body.on('click', '.jsProductMediaButton', function(e){
+        var $popup = $(e.target).next(),
+            $iframe = $popup.find('iframe'),
+            src = $iframe.data('src'),
+            $3dContainer = $popup.find('.jsProduct3DContainer'),
+            $3DJSONContainer = $popup.find('.jsProduct3DJSON');
+
+        // Загружаем видео только при открытии попапа
+        if (src) $iframe.attr('src', src);
+
+        if ($3dContainer.length == 0 && $3DJSONContainer.length == 0) {
+            // Видео
+            $popup.lightbox_me($.extend(popupDefaults, {
+                destroyOnClose: true,
+                onClose: function(){
+                    $iframe.removeAttr('src');
+                    $(e.target).parent().append($popup.clone().hide()); // Возвращаем всё на место
+                }
+            }))
+        } else {
+            // 3D
+            if ($3dContainer.data('type') == 'swf') {
+                $LAB.script('swfobject.min.js').wait(function() {
+                    var id = 'js-product-3d-swf-popup-object';
+
+                    swfobject.embedSWF(
+                        $3dContainer.data('url'),
+                        'js-product-3d-swf-popup-model', '700px', '500px', '10.0.0', 'js/vendor/expressInstall.swf',
+                        { language: 'auto' },
+                        {
+                            menu: 'false',
+                            scale: 'noScale',
+                            allowFullscreen: 'true',
+                            allowScriptAccess: 'always',
+                            wmode: 'direct'
+                        },
+                        { id: id }
+                    );
+
+                    $popup.lightbox_me($.extend(popupDefaults, {
+                        onClose: function() {
+                            $(e.target).parent().append($popup.clone().hide());
+                        }
+                    }))
+
+                });
+            } else if ($3DJSONContainer.length > 0) {
+                $LAB.script('DAnimFramePlayer.min.js').wait(function() {
+                    var data = $3DJSONContainer.data('value'),
+                        host = $3DJSONContainer.data('host');
+
+                    try {
+                        if (!$('#js-product-3d-img-container').length) {
+                            (new DAnimFramePlayer($3DJSONContainer[0], host)).DoLoadModel(data);
+                        }
+
+                        $popup.lightbox_me($.extend(popupDefaults, {
+                            onClose: function() {
+                                $(e.target).parent().append($popup.clone().hide());
+                            }
+                        }));
+                    }
+                    catch (err) {
+                        console.error(err)
+                    }
+                });
+            }
+        }
+    });
+
+}(jQuery);
+/*
+* Новая карточка товара
+* */
+;(function($){
+
+    var $window = $(window),
+        $body = $(document.body),
+        $creditButton = $body.find('.jsProductCreditButton'),
+        $reviewFormStars = $('.jsReviewFormRating'),
+        $userbar = $('.js-topbar-fixed'),
+        $tabs = $('.jsProductTabs'),
+        $epFishka = $('.js-pp-ep-fishka'),
+        $bestPricePopup = $('.jsBestPricePopup'),
+        tabsOffset,// это не очень хорошее поведение, т.к. при добавлении сверху элементов (AJAX, например) offset не изменяется
+        popupDefaults = {
+            centered: true,
+            closeSelector: '.jsPopupCloser',
+            closeClick: true
+        };
+
+    /* Если это не новая карточка, то do nothing */
+    if (!$body.hasClass('product-card-new')) return;
+
+    tabsOffset = $tabs.offset().top;
+
+
+    // Кредит
+    if ($creditButton.length > 0 && typeof window['dc_getCreditForTheProduct'] == 'function') {
+        window['dc_getCreditForTheProduct'](
+            4427,
+            window.docCookies.getItem('enter_auth'),
+            'getPayment',
+            { price : $creditButton.data('credit')['price'], count : 1, type : $creditButton.data('credit')['product_type'] },
+            function( result ) {
+                if( typeof result['payment'] != 'undefined' && result['payment'] > 0 ) {
+                    $creditButton.find('.jsProductCreditPrice').text( printPrice( Math.ceil(result['payment']) ) );
+                    $creditButton.show();
+                }
+            }
+        )
+    }
+
+    // Добавление отзыва
+    $body.on('click', '.jsReviewAdd', function(){
+        var user = ENTER.config.userInfo.user;
+        if (user.name) $('[name=review\\[author_name\\]]').val(user.name);
+        if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
+        $('.jsReviewForm2').lightbox_me($.extend(popupDefaults, {
+            onLoad: function() {},
+            onClose: function() {}
+        }));
+    });
+
+    // Отзывы
+    $body.on('click', '.jsShowMoreReviews', function(){
+        var productUi = $(this).data('ui'),
+            totalNum = $(this).data('total-num'),
+            $hiddenReviews = $('.jsReviewItem:hidden'),
+            currentCount;
+        if ($hiddenReviews.length > 0) {
+            $hiddenReviews.show();
+            if ($('.jsReviewItem').length == totalNum) $('.jsShowMoreReviews').hide();
+        } else {
+            currentCount = $('.jsReviewItem').length;
+            $.ajax(
+                '/product-reviews/' + productUi, {
+                    data: {
+                        page: currentCount / 10,
+                        numOnPage: 10
+                    }
+                }
+            ).done(function(data){
+                    if (data.content) {
+                        $('.jsReviewsList').append(data.content);
+                        if ($('.jsReviewItem').length == totalNum) $('.jsShowMoreReviews').hide();
+                    }
+                });
+        }
+    });
+
+    // Плавающая навигация ala scrollspy
+    if ($tabs.length) {
+        $window.on('scroll', function(){
+            var fixedClass = 'pp-fixed';
+            if ($window.scrollTop() - 100 > tabsOffset) {
+                $tabs.addClass(fixedClass);
+                $epFishka.addClass('fadeIn');
+                $userbar.addClass(fixedClass);
+            } else {
+                $tabs.removeClass(fixedClass);
+                $epFishka.removeClass('fadeIn');
+                $userbar.removeClass(fixedClass);
+            }
+        });
+    }
+
+    $body.scrollspy({ target: '#jsScrollSpy', offset: 120 });
+
+    $body.on('click', '.jsProductTabs a', function(e) {
+        var hash = $(this).attr('href');
+        e.preventDefault();
+        window.location.hash = hash;
+        window.scrollTo(0, $(hash).offset().top - 105);
+    });
+
+    $body.on('click', '.jsOneClickButtonOnDeliveryMap', function(){
+        $('.jsProductPointsMap').trigger('close');
+    });
+
+    $body.on('click', '.jsShowDeliveryMap', function(){
+
+        var productId = $(this).data('product-id'),
+            productUi = $(this).data('product-ui'),
+            $div = $('.jsProductPointsMap');
+
+        // Если нет пунктов самовывоза
+        if ($('.jsDeliveryPickupAvailable').length == 0) return;
+
+        // Если точки были загружены, то просто показываем этот div
+        if ($div.find('.jsDeliveryMapPoints').length > 0) {
+            $div.lightbox_me({
+                centered: true,
+                preventScroll: true
+            });
+            return ;
+        }
+
+        if ($div.data('xhr')) return;
+
+        $.ajax('/ajax/product/map/' + productId + '/' + productUi, {
+            dataType: 'json',
+            beforeSend: function(){
+                $div.data('xhr', true);
+                $div.lightbox_me({
+                    centered: true,
+                    preventScroll: true
+                })
+            }
+        }).always(function(){
+            $div.data('xhr', false)
+        }).done(function(data){
+
+            if (!data.success) {
+                console.error('product/map response: %s', data.error);
+            } else {
+                var $mapContainer = $(data.html),
+                    mapData = $.parseJSON($mapContainer.find('.jsMapData').html()),
+                    mapDivId = $mapContainer.find('.js-order-map').first().attr('id'),
+                    yMap, pointsModel;
+
+                $div.html(data.html);
+
+                $body.on('click', '.jsCloseFl', function(){
+                    $div.trigger('close');
+                });
+
+                if (mapData) {
+
+                    yMap = new ymaps.Map(mapDivId, {
+                        center: [mapData.latitude, mapData.longitude],
+                        zoom: mapData.zoom
+                    },{
+                        autoFitToViewport: 'always'
+                    });
+
+                    yMap.controls.remove('searchControl');
+
+                    yMap.geoObjects.removeAll();
+                    yMap.container.fitToViewport();
+
+                    pointsModel = new ENTER.DeliveryPoints(mapData.points, yMap);
+
+                    // Эвент на изменение размера карты (для фильтрации точек)
+                    yMap.events.add('boundschange', function (event) {
+                        var bounds;
+                        if (event.get('newBounds')) {
+                            bounds = event.get('target').getBounds();
+                            pointsModel.latitudeMin(bounds[0][0]);
+                            pointsModel.latitudeMax(bounds[1][0]);
+                            pointsModel.longitudeMin(bounds[0][1]);
+                            pointsModel.longitudeMax(bounds[1][1]);
+                        }
+                    });
+
+                    // добавляем видимые точки на карту
+                    $.each(mapData.points, function(i, point){
+                        try {
+                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButtonOnDeliveryMap jsOneClickButton-new'));
+                        } catch (e) {
+                            console.error('Ошибка добавления точки на карту', e);
+                        }
+                    });
+
+                    if (yMap.geoObjects.getLength() === 1) {
+                        yMap.setCenter(yMap.geoObjects.get(0).geometry.getCoordinates(), 15);
+                        yMap.geoObjects.get(0).options.set('visible', true);
+                    } else {
+                        yMap.setBounds(yMap.geoObjects.getBounds());
+                        // точки становятся видимыми только при увеличения зума
+                        yMap.events.once('boundschange', function(event){
+                            if (event.get('oldZoom') < event.get('newZoom')) {
+                                yMap.geoObjects.each(function(point) { point.options.set('visible', true)})
+                            }
+                        })
+                    }
+
+                    ko.applyBindings(pointsModel, $div[0]);
+
+
+                    $body.on('click', '.jsOrderV3Dropbox',function(){
+                        $(this).siblings().removeClass('opn').find('.jsOrderV3DropboxInner').hide(); // скрываем все, кроме потомка
+                        $(this).find('.jsOrderV3DropboxInner').toggle(); // потомка переключаем
+                        $(this).hasClass('opn') ? $(this).removeClass('opn') : $(this).addClass('opn');
+                    });
+
+                }
+            }
+
+        })
+
+    });
+
+    $('.js-slider-2').goodsSlider({
+        leftArrowSelector: '.goods-slider__btn--prev',
+        rightArrowSelector: '.goods-slider__btn--next',
+        sliderWrapperSelector: '.goods-slider__inn',
+        sliderSelector: '.goods-slider-list',
+        itemSelector: '.goods-slider-list__i',
+        categoryItemSelector: '.js-product-accessoires-category',
+        //pageTitleSelector: '.slideItem_cntr',
+        onLoad: function(goodsSlider) {
+            ko.applyBindings(ENTER.UserModel, goodsSlider);
+
+            // Для табов в новой карточке товара
+            if ($(goodsSlider).data('position') == 'ProductSimilar') $('.jsSimilarTab').show();
+        }
+    });
+
+    $reviewFormStars.on('click', function(){
+        var activeClass = 'popup-rating__i--fill',
+            rate = $(this).index();
+        $reviewFormStars.removeClass(activeClass);
+        $(this).addClass(activeClass).prevAll().addClass(activeClass);
+        $('#reviewFormRating').val(++rate)
+    });
+
+    $('#reviewForm').on('submit', function(e){
+        var $form = $(this),
+            textareaErrClass = 'form-ctrl__textarea--err',
+            inputErrClass = 'form-ctrl__input--err',
+            textareaLblErrClass = 'form-ctrl__textarea-lbl--err';
+        e.preventDefault();
+        $.ajax({
+            type: 'post',
+            url: $(this).attr('action'),
+            data: $(this).serializeArray(),
+            dataType: 'json',
+            success: function(data){
+                if (data.error) {
+                    console.log('errors in review form', data);
+                    $.each(data.form.error, function(i,val){
+                        var $field = $form.find('[name="review['+ val.field +']"]');
+                        $field.removeClass(textareaErrClass).removeClass(inputErrClass); // снимаем ошибки
+                        if (val.message) {
+                            if ($field.is('textarea')) {
+                                $field.addClass(textareaErrClass);
+                                $field.siblings('.' + textareaLblErrClass).show();
+                            }
+                            if ($field.is('input')) $field.addClass(inputErrClass);
+                        } else {
+                            $field.siblings('.' + textareaLblErrClass).hide();
+                        }
+                    });
+                } else if (data.success) {
+                    var $successDiv = $('.jsReviewSuccessAdd');
+                    $('.jsReviewFormInner').hide();
+                    $('.jsReviewForm2').animate({'height': $successDiv.height()});
+                    $successDiv.fadeIn();
+                }
+            },
+            complete: function(data) {
+                //console.log('complete', data);
+            }
+        });
+    });
+
+    $body.on('click', '.jsReviewVote', function(e){
+        var $button = $(e.target),
+            buttonVote = $button.data('vote'),
+            $voteDiv = $(this),
+            userVote = $voteDiv.data('user-vote'),
+            reviewUi = $voteDiv.closest('.jsReviewItem').data('review-ui'),
+            $voteButtons = $voteDiv.find('.jsReviewVoteBtn'),
+            activeClass = 'active',
+            voteClass = 'voting';
+
+        if ($voteDiv.data('xhr')) return;
+
+        $.ajax(
+            '/product-reviews/vote',
+            {   type: 'post',
+                data: {
+                    'review-ui': reviewUi,
+                    'vote': userVote == buttonVote ? 0 : buttonVote
+                    },
+                beforeSend: function() {
+                    $button.addClass(voteClass);
+                    $voteDiv.data('xhr', true);
+                },
+                success: function(data){
+                    if (data.success) {
+                        $voteDiv.data('user-vote', data.vote);
+                        $voteDiv.find('.jsReviewVoteBtn').removeClass(activeClass);
+                        if (data.vote != 0) $voteButtons.eq(data.vote == 1 ? 0 : 1).addClass(activeClass);
+                        if (typeof data.positive != 'undefined') $voteButtons.eq(0).text(data.positive);
+                        if (typeof data.negative != 'undefined') $voteButtons.eq(1).text(data.negative);
+
+                    } else {
+                        console.error('Ошибка голосования: %s', data.error)
+                    }
+                }
+            }).always(function(){
+                $button.removeClass(voteClass);
+                $voteDiv.data('xhr', false);
+            })
+    });
+
+    // форма подписки на снижение цены
+    $('.jsBestPricePopupOpener').on('click', function(){
+        $bestPricePopup.toggleClass('info-popup--open');
+    });
+
+    $('.jsBestPricePopupCloser').on('click', function(){
+        $bestPricePopup.removeClass('info-popup--open');
+    });
+
+    // Оферта партнера
+    $('.jsProductPartnerOffer').on('click', function(e){
+        e.preventDefault();
+        var link = $(this).attr('href'),
+            $offer = $('.jsProductPartnerOfferDiv');
+
+        if (!link) return;
+        link = link.replace(/^http:\/\/.*?\//, '/');
+
+        if ($offer.length == 0) {
+            $.get(link).done(function (doc) {
+                $('<div class="jsProductPartnerOfferDiv partner-offer-popup" style="height: 90%; background-color: #fff; overflow-y: scroll;"></div>')
+                    .append($(doc).find('.content').append('<i class="closer jsPopupCloser">×</i>'))
+                    .lightbox_me(popupDefaults)
+            });
+        } else {
+            $offer.lightbox_me(popupDefaults)
+        }
+
+    });
+
+    // Таблица размеров в лайтбоксе
+    $body.on('click', '.jsImageInLightBox', function(e){
+        e.preventDefault();
+        var imageLink = $(this).data('href');
+        $('<div />', {'style': 'background-color: #fff'}).append($('<img />', { src: imageLink})).lightbox_me({destroyOnClose: true, centered: true});
+    });
+
+    $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); })
+    $('.js-description-expand').on('click', function(){
+
+        $(this).removeClass('collapsed js-description-expand');
+
+    });
+
+    $body.on('click', '.jsProductCardNewLabelInfo', function(){
+        $('.jsProductCardNewLabelPopup').toggleClass('info-popup--open');
+    });
+
+})(jQuery);
+
+
+/**
+ * Обратный счетчик акции
+ */
+!function() {
+    console.info('CountDown....');
+    var
+        countDownWrapper = $('.js-countdown'),
+        expDate          = countDownWrapper.attr('data-expires'),
+
+        getDeclension = function( days ) {
+            var
+                str      = days + '',
+                lastChar = str.slice(-1),
+                lastNum  = lastChar * 1;
+
+            if ( days > 4 && days < 21 ) {
+                return 'дней';
+            } else if ( lastNum > 4 && days > 20 ) {
+                return 'дней';
+            } else if ( lastNum > 1 && lastNum < 5 ) {
+                return 'дня';
+            }
+
+            return 'день';
+        },
+
+        tick = function( opts ) {
+            var
+                str = ( ( opts.days > 0 ) ? opts.days + ' ' + getDeclension(opts.days) + ' ' : '' ) + opts.hours + ':' + opts.minutes + ':' + opts.seconds;
+
+            console.log(str);
+        },
+
+        countDown;
+
+    try {
+        countDown = new CountDown({
+            // timestamp: 1445597200000,
+            timestamp: expDate * 1000,
+            tick: tick
+        });
+    } catch ( err ) {
+        console.warn('Не удалось запустить обратный счетчик акции');
+        console.warn(err);
+    }
+
+    console.log('CountDown enabled');
+}();
 $(document).ready(function() {
+
+    var $productDescriptionToggle = $('#productDescriptionToggle');
 
 
 	/**
@@ -638,12 +1318,9 @@ $(document).ready(function() {
 		onChange:function( count ){
 			var spinnerFor = this.attr('data-spinner-for'),
 				bindButton = $('.'+spinnerFor),
-                bindOneClickButton = $('.' + spinnerFor + '-oneClick')
+                bindOneClickButton = $('.' + spinnerFor + '-oneClick'),
 				newHref = bindButton.attr('href') || '';
 			// end of vars
-
-			console.log('counter change');
-			console.log(bindButton);
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
             bindOneClickButton.data('quantity', count);
@@ -670,16 +1347,13 @@ $(document).ready(function() {
 	 */
 	$('.bDescSelectItem').customDropDown({
 		changeHandler: function( option ) {
-			var url = option.data('url');
-
-			document.location.href = url;
+			document.location.href = option.data('url');
 		}
 	});
 
-
 	// карточка товара - характеристики товара краткие/полные
-	if ( $('#productDescriptionToggle').length ) {
-		$('#productDescriptionToggle').toggle(
+	if ( $productDescriptionToggle.length ) {
+        $productDescriptionToggle.toggle(
 			function( e ) {
 				e.preventDefault();
 				$(this).parent().parent().find('.descriptionlist:not(.short)').show();
@@ -708,81 +1382,78 @@ $(document).ready(function() {
     } catch (e) {
         console.error(e);
     }
+
 });
-/**
- * Аналитика просмотра карточки товара
- *
- * @requires jQuery
- */
-(function() {
-	var
-		productInfo = $('#jsProductCard').data('value') || {},
-	// end of vars
-
-		reviewsYandexClick = function ( e ) {
-			console.log('reviewsYandexClick');
-			var
-				link = this //, url = link.href
-			;
-
-			if ( 'undefined' !==  productInfo.article ) {
-				_gaq.push(['_trackEvent', 'YM_link', productInfo.article]);
-				e.preventDefault();
-				if ( 'undefined' !== link ) {
-					setTimeout(function () {
-						//document.location.href = url; // не подходит, нужно в новом окне открывать
-						link.click(); // эмулируем клик по ссылке
-					}, 500);
-				}
-			}
-		};
-	// end of functions and vars
-	
-	if ( !$('#jsProductCard').length ) {
-		return false;
-	}
-
-	if ( typeof _gaq !== 'undefined' ) {
-		// GoogleAnalitycs for review click
-		$( 'a.reviewLink.yandex' ).each(function() {
-			$(this).one( "click", reviewsYandexClick); // переопределяем только первый клик
-		});
-	}
-})();
-
 ;(function() {
 	var
-		reviewWrap = $('.js-reviews-wrapper'),
-		reviewList = $('.js-reviews-list'),
-		moreReviewsButton = $('.js-reviews-getMore'),
+		$window = $(window),
+		$body = $(document.body),
+		$reviewWrap = $('.js-reviews-wrapper'),
+		$reviewList = $('.js-reviews-list'),
+		$moreReviewsButton = $('.js-reviews-getMore'),
 		reviewCurrentPage = 0,
-		reviewPageCount = reviewWrap.attr('data-page-count');
+		reviewPageCount = $reviewWrap.attr('data-page-count'),
+		productUi = $reviewWrap.attr('data-product-ui'),
+		avgScore = $reviewWrap.data('avg-score'),
+		firstPageAvgScore = $reviewWrap.data('first-page-avg-score'),
+		categoryName = $reviewWrap.data('category-name');
 
-	if (!reviewWrap.length) {
+	if (!$reviewWrap.length) {
 		return;
 	}
 
-	moreReviewsButton.click(function() {
+	$moreReviewsButton.click(function() {
 		$.ajax({
 			type: 'GET',
-			url: ENTER.utils.generateUrl('product.reviews.get', {productUi: reviewWrap.attr('data-product-ui')}),
+			url: ENTER.utils.generateUrl('product.reviews.get', {productUi: productUi}),
 			data: {
 				page: reviewCurrentPage + 1
 			},
 			success: function(data) {
-				reviewList.html(reviewList.html() + data.content);
+				$reviewList.html($reviewList.html() + data.content);
 
 				reviewCurrentPage++;
 				reviewPageCount = data.pageCount;
 
 				if (reviewCurrentPage + 1 >= reviewPageCount) {
-					moreReviewsButton.hide();
+					$moreReviewsButton.hide();
 				} else {
-					moreReviewsButton.show();
+					$moreReviewsButton.show();
 				}
 			}
 		});
 	});
+
+	// SITE-5466
+	(function() {
+		var timer;
+		function checkReviewsShowing() {
+			var windowHeight = $window.height();
+			if ($window.scrollTop() + windowHeight > $reviewWrap.offset().top) {
+				if (!timer) {
+					timer = setTimeout(function() {
+						$window.unbind('scroll', checkReviewsShowing);
+
+						$body.trigger('trackGoogleEvent', {
+							category: 'Items_review',
+							action: 'All_' + avgScore + '_Top_' + firstPageAvgScore,
+							label: categoryName
+						});
+
+						ENTER.utils.analytics.reviews.add(productUi, avgScore, firstPageAvgScore, categoryName);
+					}, 2000);
+				}
+			} else {
+				if (timer) {
+					clearTimeout(timer);
+					timer = null;
+				}
+			}
+		}
+
+		$window.scroll(checkReviewsShowing);
+		checkReviewsShowing();
+	})();
 }());
 
 
@@ -799,11 +1470,11 @@ $(document).ready(function() {
 		submitReviewButton = $('.jsFormSubmit'),
 		submitReviewButtonText = submitReviewButton.val(),
 
-		reviewStar = form.find('.starsList__item'),
+		reviewStar = form.find('.stars-list__item'),
 		reviewStarCount = form.find('.jsReviewStarsCount'),
 		starStateClass = {
-			fill: 'mFill',
-			empty: 'mEmpty'
+			fill: 'star-fill',
+			empty: 'star-empty'
 		},
 
 		advantageField = $('.jsAdvantage'),
@@ -1098,90 +1769,13 @@ $(document).ready(function() {
         openPopup();
     }
 }());
-
-/**
- * Обработчик для sprosikupi
- */
-$(function() {
-	if (!$('#spk-widget-reviews').length) {
-		return;
-	}
-
-    if ('#add-review' == location.hash) {
-        location.href = '?spkPreState=addReview';
-    }
-
-	$('.sprosikupiRating .spk-good-rating a').live('click', function(e) {
-		$(document).stop().scrollTo($(e.currentTarget).attr('href'), 800);
-		return false;
-	});
-
-	$.getScript("//static.sprosikupi.ru/js/widget/sprosikupi.bootstrap.js");
-});
-
-/**
- * Обработчик для shoppilot
- */
-$(function() {
-	var reviewsContainer = $('#shoppilot-reviews-container');
-	if (!reviewsContainer.length) {
-		return;
-	}
-
-	_shoppilot = window._shoppilot || [];
-	_shoppilot.push(['_setStoreId', '535a852cec8d830a890000a6']);
-	_shoppilot.push(['_setOnReady', function (Shoppilot) {
-		(new Shoppilot.ProductWidget({
-			name: 'product-rating',
-			styles: 'product-reviews',
-			product_id: reviewsContainer.data('productId')
-		})).appendTo('#shoppilot-rating-container');
-
-		(new Shoppilot.ProductWidget({
-			name: 'product-reviews',
-			styles: 'product-reviews',
-			product_id: reviewsContainer.data('productId')
-		})).appendTo(reviewsContainer[0]);
-
-        if ('#add-review' == location.hash) {
-            (new Shoppilot.Surveybox({
-                product_id: reviewsContainer.data('productId')
-            })).open();
-        }
-	}]);
-
-	(function() {
-		var script = document.createElement('script');
-		script.type = 'text/javascript';
-		script.async = true;
-		script.src = '//ugc.shoppilot.ru/javascripts/require.js';
-		script.setAttribute('data-main',
-			'//ugc.shoppilot.ru/javascripts/social-apps.js');
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(script, s);
-	})();
-
-    $('#shoppilot-rating-container').on('click', 'a.sp-product-inline-rating-label', function(e) {
-		$(document).stop().scrollTo($(e.currentTarget).attr('href').replace(/^.*?#/, '#'), 800);
-		return false;
-	});
-});
 ;$(function() {
-	var $body = $('body');
-
-	/** Событие клика на товар в слайдере */
-	$('.js-product-similarProducts-link').on('click', function(event) {
-		try {
-			$body.trigger('trackGoogleEvent', {
-				category: 'RR_взаимодействие',
-				action: 'Перешел на карточку товара',
-				label: 'SEO',
-				hitCallback: $(this).attr('href')
-			});
-
-			event.stopPropagation();
-
-		} catch (e) { console.error(e); }
+	$('.js-product-similarProducts-link').on('click', function() {
+		$('body').trigger('trackGoogleEvent', {
+			category: 'RR_взаимодействие',
+			action: 'Перешел на карточку товара',
+			label: 'SEO'
+		});
 	});
 });
 /**
@@ -1210,7 +1804,7 @@ $(function() {
 		$iframeContainer.append(iframeHtml);
 
 		var $iframe = $('iframe', $iframeContainer);
-		$iframe.attr('src', $iframe.attr('src') + '?autoplay=1');
+		$iframe.attr('src', $iframe.data('src'));
 
 		$('.js-product-video-container').lightbox_me({
 			centered: true,

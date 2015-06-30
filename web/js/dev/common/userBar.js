@@ -44,19 +44,19 @@
 		if (disableAnimation) {
 			userBarFixed.show(0, onOpen || function(){});
 		} else {
-			userBarFixed.slideDown();
+			userBarFixed.addClass('fadeIn');
 		}
 
-		if (userBarFixed.length) {
+		/*if (userBarFixed.length) {
 			userbarStatic.css('visibility','hidden');
-		}
+		}*/
 	}
 
 	/**
 	 * Скрытие юзербара
 	 */
 	function hideUserbar() {
-		userBarFixed.slideUp();
+		userBarFixed.removeClass('fadeIn');
 		userbarStatic.css('visibility','visible');
 	}
 
@@ -135,6 +135,10 @@
 		}
 		// end of function
 
+		setTimeout(function() {
+			userBarFixed.removeClass('fadeIn shadow-false');
+		}, 100);
+
 		// только BuyInfoBlock
 		if ( !upsaleWrap.hasClass('mhintDdOn') ) {
 			removeBuyInfoBlock();
@@ -145,6 +149,8 @@
 		upsaleWrap.removeClass('mhintDdOn');
 		wrapLogIn.removeClass(openClass);
 		wrap.removeClass(openClass);
+
+        $('.js-topbarfixLogin').removeClass('blocked');
 
 		removeBuyInfoBlock();
 		removeOverlay();
@@ -162,6 +168,10 @@
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
+
+		userBarFixed.addClass('fadeIn shadow-false');
+
+        $('.js-topbarfixLogin').addClass('blocked');
 
 		var	buyInfo = $('.topbarfix_cartOn');
 

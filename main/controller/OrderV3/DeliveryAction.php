@@ -2,10 +2,10 @@
 
 namespace Controller\OrderV3;
 
-use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
+use Model\OrderDelivery\Error;
+use Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
 
 class DeliveryAction extends OrderV3 {
-
     /** Main function
      * @param \Http\Request $request
      * @return \Http\Response
@@ -56,6 +56,8 @@ class DeliveryAction extends OrderV3 {
             }
 
             return new \Http\JsonResponse(['result' => $result], isset($result['error']) ? 500 : 200);
+        } else {
+            $this->pushEvent(['step' => 2]);
         }
 
         try {
@@ -71,20 +73,8 @@ class DeliveryAction extends OrderV3 {
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
             $orderDelivery = $this->getSplit($data);
 
-            $medias = [];
             foreach($orderDelivery->orders as $order) {
                 $this->logger(['delivery-self-price' => $order->delivery->price]);
-                \RepositoryManager::product()->prepareProductsMediasByIds(array_map(function(\Model\OrderDelivery\Entity\Order\Product $product) { return $product->id; }, $order->products), $medias);
-            }
-
-            \App::coreClientV2()->execute();
-
-            foreach($orderDelivery->orders as $order) {
-                foreach ($order->products as $product) {
-                    if (isset($medias[$product->id])) {
-                        $product->medias = $medias[$product->id];
-                    }
-                }
             }
 
             $subscribeResult = false;  // ответ на подписку
@@ -124,18 +114,19 @@ class DeliveryAction extends OrderV3 {
             $page = new \View\OrderV3\ErrorPage();
             $page->setParam('error', 'CORE: '.$e->getMessage());
             $page->setParam('step', 2);
+
             return new \Http\Response($page->show(), 500);
         } catch (\Exception $e) {
             \App::logger()->error($e->getMessage(), ['cart/split']);
             $page = new \View\OrderV3\ErrorPage();
             $page->setParam('error', $e->getMessage());
             $page->setParam('step', 2);
+
             return new \Http\Response($page->show(), 500);
         }
-
     }
 
-    public function getSplit(array $data = null, $shopId = null) {
+    public function getSplit(array $data = null, $shopId = null, $userData = null) {
 
         if (!$this->cart->count()) throw new \Exception('Пустая корзина');
 
@@ -145,14 +136,18 @@ class DeliveryAction extends OrderV3 {
                 'changes'        => $this->formatChanges($data, $this->session->get($this->splitSessionKey))
             ];
         } else {
-            $product_list = [];
-            foreach ($this->cart->getProductData() as $product) $product_list[$product['id']] = $product;
+            $productList = [];
+            foreach ($this->cart->getProductData() as $product) $productList[$product['id']] = $product;
 
             $splitData = [
                 'cart' => [
-                    'product_list' => $product_list
+                    'product_list' => $productList
                 ]
             ];
+
+            if ($userData) {
+                $splitData += ['user_info' => $userData];
+            }
 
             if ($shopId) $splitData['shop_id'] = (int)$shopId;
             // Проверка метода getCreditProductIds необходима, т.к. Cart/OneClickCart не имеет этого метода
@@ -184,7 +179,7 @@ class DeliveryAction extends OrderV3 {
         }
 
         $orderDelivery = new \Model\OrderDelivery\Entity($orderDeliveryData);
-        if (!(bool)$orderDelivery->orders) {
+        if (!$orderDelivery->orders) {
             foreach ($orderDelivery->errors as $error) {
                 if (708 == $error->code) {
                     throw new \Exception('Товара нет в наличии');
@@ -192,6 +187,21 @@ class DeliveryAction extends OrderV3 {
             }
 
             throw new \Exception('Отстуствуют данные по заказам');
+        }
+
+        $medias = [];
+        foreach($orderDelivery->orders as $order) {
+            \RepositoryManager::product()->prepareProductsMediasByIds(array_map(function(\Model\OrderDelivery\Entity\Order\Product $product) { return $product->id; }, $order->products), $medias);
+        }
+
+        \App::coreClientV2()->execute();
+
+        foreach($orderDelivery->orders as $order) {
+            foreach ($order->products as $product) {
+                if (isset($medias[$product->id])) {
+                    $product->medias = $medias[$product->id];
+                }
+            }
         }
 
         // обновляем корзину пользователя
@@ -242,7 +252,9 @@ class DeliveryAction extends OrderV3 {
                 $changes['orders'] = array(
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
                 );
-                $changes['orders'][$data['params']['block_name']]['delivery']['point'] = ['id' => $data['params']['id'], 'token' => $data['params']['token']];
+                // SITE-5703 TODO remove
+                $true_token = strpos($data['params']['token'], '_postamat') !== false ? str_replace('_postamat', '', $data['params']['token']) : $data['params']['token'];
+                $changes['orders'][$data['params']['block_name']]['delivery']['point'] = ['id' => $data['params']['id'], 'token' => $true_token];
                 break;
 
             case 'changeDate':
@@ -364,7 +376,10 @@ class DeliveryAction extends OrderV3 {
 
             // распихиваем их по заказам
             if (isset($error->details['block_name']) && isset($orderDelivery->orders[$error->details['block_name']])) {
-                $orderDelivery->orders[$error->details['block_name']]->errors[] = $error;
+                // Если кода этой ошибки нет в уже существующих ошибках заказа
+                if (!in_array($error->code, array_map(function(Error $err){ return $err->code; }, $orderDelivery->orders[$error->details['block_name']]->errors))) {
+                    $orderDelivery->orders[$error->details['block_name']]->errors[] = $error;
+                }
             } else if ($error->isMaxQuantityError() && count($orderDelivery->orders) == 1) {
                 $ord = reset($orderDelivery->orders);
                 $orderDelivery->orders[$ord->block_name]->errors[] = $error;

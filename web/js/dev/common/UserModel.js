@@ -80,6 +80,12 @@
 			return ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit <= model.cartSum() && docCookies.hasItem('enter_ab_self_delivery_view_info');
 		});
 
+        // Минимальная стоимость заказа
+        model.minOrderSum = ENTER.config.pageConfig.minOrderSum;
+        model.isMinOrderSumVisible = ko.computed(function(){
+            return model.minOrderSum !== false && model.minOrderSum > model.cartSum()
+        });
+
 		return model;
 	}
 
@@ -87,7 +93,7 @@
 
 	// Биндинги на нужные элементы
 	// Топбар, кнопка Купить на странице продукта, листинги, слайдер аксессуаров
-	$('.js-topbarfix, .js-topbarfixBuy, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-lineListing, .js-slider, .jsKnockoutCart').each(function(){
+	$('.js-topbarfix, .js-topbarfixBuy, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-lineListing, .js-slider, .jsKnockoutCart, .js-compareProduct').each(function(){
 		ko.applyBindings(ENTER.UserModel, this);
 	});
 
@@ -173,6 +179,14 @@
 			$body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'самовывоз бесплатно', 'всплывающая корзина']);
 		}
 	});
+
+    // Аналитика минимальной суммы заказа для Воронежа
+    $body.on('showUserCart', function(){
+        if (ENTER.UserModel.minOrderSum !== false) {
+            if (ENTER.UserModel.isMinOrderSumVisible()) $body.trigger('trackGoogleEvent', ['pickup', 'no', (ENTER.UserModel.minOrderSum - ENTER.UserModel.cartSum()) + '']);
+            else $body.trigger('trackGoogleEvent', ['pickup', 'yes']);
+        }
+    });
 
 	$body.on('userModelUpdate', function(e) {
 		if (ENTER.config.pageConfig.selfDeliveryTest) {

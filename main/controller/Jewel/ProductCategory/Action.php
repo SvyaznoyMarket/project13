@@ -169,7 +169,7 @@ class Action extends \Controller\ProductCategory\Action {
         $productView = $category->getProductView();
         // листалка
         $limit = \App::config()->product['itemsPerPageJewel'];
-        $repository = \RepositoryManager::product();
+        $repository = \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock();
 
         $productIds = [];
         $productCount = 0;
@@ -213,7 +213,7 @@ class Action extends \Controller\ProductCategory\Action {
             });
         }
 
-        $repository->enrichProductsFromScms($products, 'media');
+        $repository->enrichProductsFromScms($products, 'media label category');
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 

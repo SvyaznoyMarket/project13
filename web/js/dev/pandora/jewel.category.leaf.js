@@ -4,13 +4,14 @@ $(document).ready(function() {
 
     /* Infinity scroll */
     var ableToLoadJewel = true,
+        preloaderClass = 'mLoader',
+        $preloader = $('<li />').addClass(preloaderClass),
         checkScrollJewel = function(){},
         liveScrollJewel = function( lsURL, filters, pageid ) {
             var params = [],
-                tmpnodeJewel = $('.js-jewel-category'),
-                $ajaxGoods = $('#ajaxgoods');
+                tmpnodeJewel = $('.js-jewel-category');
 
-            $ajaxGoods.show();
+            tmpnodeJewel.append($preloader);
 
             if ( lsURL.match(/\?/) ) {
                 lsURL += '&page=' + pageid;
@@ -23,7 +24,7 @@ $(document).ready(function() {
                     ableToLoadJewel = true;
                     tmpnodeJewel.append(data.products);
                 }
-                $ajaxGoods.hide();
+                $('.' + preloaderClass).remove();
             });
         },
         switch_to_scroll = function(checkScrollJewel) {

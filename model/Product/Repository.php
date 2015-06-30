@@ -2,16 +2,21 @@
 
 namespace Model\Product;
 
-use Model\MediaHostTrait;
 use Model\Product\Property\Entity as Property;
 use Model\Product\Property\Group\Entity as PropertyGroup;
 use Model\Tag\Entity as Tag;
 
 class Repository {
-    use MediaHostTrait;
-    
+
+    const URL_V2 = 'product/get';
+    const URL_V3 = 'product/get-v3';
+
     /** @var \Core\ClientInterface */
     private $client;
+    /** @var string URL для product-get */
+    private $productGetUrl = self::URL_V2;
+
+    private $options = [];
 
     /**
      * @param \Core\ClientInterface $client
@@ -20,14 +25,46 @@ class Repository {
         $this->client = $client;
     }
 
+    /** Использовать product/get V2 (обычный метод)
+     * @return $this
+     */
+    public function useV2() {
+        $this->productGetUrl = self::URL_V2;
+        return $this;
+    }
+
+    /** Использовать product/get V3 (облегченный)
+     * @return $this
+     */
+    public function useV3() {
+        $this->productGetUrl = self::URL_V3;
+        return $this;
+    }
+
+    /** Не запрашивать модели внутри товара
+     * @return $this
+     */
+    public function withoutModels() {
+        $this->options['withModels'] = 0;
+        return $this;
+    }
+
+    /** Не проверять доступность у нас на складах
+     *  О подробностях действия флага спрашивать ядерщиков
+     * @return $this
+     */
+    public function withoutPartnerStock() {
+        $this->options['getCoreAvailability'] = 0;
+        return $this;
+    }
+
     /**
      * @param string $uid
      * @param        $successCallback
      */
     public function prepareEntityByUid($uid, $successCallback) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('product/get', [
+        $this->client->addQuery($this->productGetUrl, [
             'select_type' => 'ui',
             'ui'        => [$uid],
             'geo_id'      => \App::user()->getRegion()->getId(),
@@ -40,9 +77,8 @@ class Repository {
      * @param                      $callback
      */
     public function prepareEntityByToken($token, \Model\Region\Entity $region = null, $callback) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('product/get', [
+        $this->client->addQuery($this->productGetUrl, [
             'select_type' => 'slug',
             'slug'        => $token,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
@@ -55,13 +91,12 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityById($id, \Model\Region\Entity $region = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $medias = [];
 
         /** @var Entity $entity */
         $entity = null;
-        $this->client->addQuery('product/get',
+        $this->client->addQuery($this->productGetUrl,
             [
                 'select_type' => 'id',
                 'id'          => $id,
@@ -108,9 +143,8 @@ class Repository {
      * @param                      $fail
      */
     public function prepareCollectionByBarcode(array $barcodes, \Model\Region\Entity $region = null, $done, $fail = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('product/get', [
+        $this->client->addQuery($this->productGetUrl, [
             'select_type' => 'bar_code',
             'bar_code'    => $barcodes,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
@@ -124,7 +158,6 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionById(array $ids, \Model\Region\Entity $region = null, $addScores = true) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$ids) return [];
 
@@ -132,12 +165,12 @@ class Repository {
         $collection = [];
         $medias = [];
         foreach (array_chunk($ids, \App::config()->coreV2['chunk_size']) as $chunk) {
-            $this->client->addQuery('product/get',
+            $this->client->addQuery($this->productGetUrl,
                 [
                     'select_type' => 'id',
                     'id'          => $chunk,
                     'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-                ],
+                ] + $this->options,
                 [],
                 function($data) use(&$collection) {
                     if (is_array($data)) {
@@ -173,15 +206,14 @@ class Repository {
      * @param null $fail
      */
     public function prepareCollectionById(array $ids, \Model\Region\Entity $region = null, $done, $fail = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$ids || !is_array($ids)) return;
 
-        $this->client->addQuery('product/get', [
+        $this->client->addQuery($this->productGetUrl, [
             'select_type' => 'id',
             'id'          => $ids,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ], [], $done, $fail);
+        ] + $this->options, [], $done, $fail);
     }
 
     /**
@@ -191,19 +223,17 @@ class Repository {
      * @param null $fail
      */
     public function prepareCollectionByUi(array $uis, \Model\Region\Entity $region = null, $done, $fail = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$uis) return;
 
-        $this->client->addQuery('product/get', [
+        $this->client->addQuery($this->productGetUrl, [
             'select_type' => 'ui',
             'ui'          => $uis,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ], [], $done, $fail);
+        ] + $this->options, [], $done, $fail);
     }
 
     public function prepareIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null, $done, $fail = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('listing/list',
             [
@@ -230,7 +260,6 @@ class Repository {
      * @return array
      */
     public function getIdsByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -256,12 +285,12 @@ class Repository {
 
     /** Обогащает продукты данными из SCMS
      * @param \Model\Product\Entity[] $products
-     * @param string $props Необходимые свойства товара через пробел: media property tag seo
+     * @param string $properties Необходимые свойства товара через пробел: media property label category
      * @param callable $failCallback
      */
-    public function enrichProductsFromScms($products, $props, $failCallback = null) {
+    public function enrichProductsFromScms($products, $properties, $failCallback = null) {
         // Формируем массив необходимых свойств
-        $properties = array_fill_keys(array_intersect(explode(' ', (string)$props), explode(' ', 'media property tag seo')), 1);
+        $properties = array_fill_keys(array_intersect(explode(' ', (string)$properties), explode(' ', 'media property label category')), 1);
 
         if ($products && $properties) {
             \App::scmsClient()->addQuery(
@@ -273,36 +302,54 @@ class Repository {
                         if (isset($data['products'][$product->getUi()])) {
                             $productData = $data['products'][$product->getUi()];
 
-                            if (isset($properties['media']) && isset($productData['medias']) && is_array($productData['medias'])) {
-                                foreach ($productData['medias'] as $media) {
-                                    if (is_array($media)) {
-                                        $product->medias[] = new \Model\Media($media);
+                            if (isset($properties['media'])) {
+                                if (isset($productData['medias']) && is_array($productData['medias'])) {
+                                    foreach ($productData['medias'] as $media) {
+                                        if (is_array($media)) {
+                                            $product->medias[] = new \Model\Media($media);
+                                        }
                                     }
+                                }
+
+                                if (isset($productData['json3d']) && is_array($productData['json3d'])) {
+                                    $product->json3d = $productData['json3d'];
                                 }
                             }
 
-                            if (isset($properties['media']) && isset($productData['json3d']) && is_array($productData['json3d'])) {
-                                $product->json3d = $productData['json3d'];
+                            if (isset($properties['property'])) {
+                                if (isset($productData['properties']) && is_array($productData['properties'])) {
+                                    $product->setProperty(array_map(function($data) { return new Property($data); }, $productData['properties']));
+                                }
+
+                                if (isset($productData['property_groups']) && is_array($productData['property_groups'])) {
+                                    $product->setPropertyGroup(array_map(function($data) { return new PropertyGroup($data); }, $productData['property_groups']));
+                                }
                             }
 
-                            if (isset($properties['property']) && isset($productData['properties']) && is_array($productData['properties'])) {
-                                $product->setProperty(array_map(function($data) { return new Property($data); }, $productData['properties']));
+                            // пока так, рефакторинг скоро будет
+                            if (isset($properties['label']) && isset($productData['label']['uid'])) {
+                                $product->setLabel(new Label([
+                                    'id'        => @$productData['label']['core_id'],
+                                    'name'      => @$productData['label']['name'],
+                                    'medias'    => @$productData['label']['medias'],
+                                ]));
                             }
 
-                            if (isset($properties['property']) && isset($productData['property_groups']) && is_array($productData['property_groups'])) {
-                                $product->setPropertyGroup(array_map(function($data) { return new PropertyGroup($data); }, $productData['property_groups']));
-                            }
+                            if (isset($properties['category']) && isset($productData['categories']) && is_array($productData['categories'])) {
+                                foreach ($productData['categories'] as $category) {
+                                    if ($category['main']) {
+                                        $product->setParentCategory(new \Model\Product\Category\Entity($category));
 
-                            if (isset($properties['tag']) && isset($productData['tags']) && is_array($productData['tags'])) {
-                                $product->setTag(array_map(function($data) { return new Tag($data); }, $productData['tags']));
-                            }
+                                        // TODO: создать метод \Model\Product\Category\Entity::getRoot, возвращающий корневую категорию, найденную через свойство \Model\Product\Category\Entity::$parent; переименовать \Model\Product\Entity::getParentCategory в getMainCategory
+                                        while (isset($category['parent']) && $category['parent']) {
+                                            $category = $category['parent'];
+                                        }
 
-                            if (isset($properties['seo'])) {
-                                if (isset($productData['title'])) $product->setSeoTitle($productData['title']);
-                                if (isset($productData['meta_description'])) $product->setSeoKeywords($productData['meta_description']);
-                                if (isset($productData['meta_keywords'])) $product->setSeoDescription($productData['meta_keywords']);
+                                        $product->setRootCategory(new \Model\Product\Category\Entity($category));
+                                        break;
+                                    }
+                                }
                             }
-
                         }
                     }
                 },
@@ -359,7 +406,7 @@ class Repository {
      */
     public function setMediasForProducts($products, $medias) {
         foreach ($products as $product) {
-            if (isset($medias[$product->getId()])) {
+            if ($product && isset($medias[$product->getId()])) {
                 $product->medias = $medias[$product->getId()];
             }
         }
@@ -371,7 +418,7 @@ class Repository {
      *
      * TODO: отрефакторить этот г*код
      *
-     * @param $product
+     * @param \Model\Product\Entity $product
      * @param $accessoryItems
      * @param int|null $category
      * @param int|null $limit
@@ -467,7 +514,7 @@ class Repository {
      * Получает текущие аксессуары продукта
      * Возвращает массив с продуктами-аксессуарами
      *
-     * @param $product
+     * @param \Model\Product\Entity $product
      * @return array
      */
     public static function getAccessories($product) {

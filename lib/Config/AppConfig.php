@@ -77,13 +77,6 @@ class AppConfig {
         'cookie_lifetime' => null,
         'cookie_domain'   => null,
     ];
-    /**
-     * nginx ssi
-     * @var array
-     */
-    public $ssi = [
-        'enabled' => null,
-    ];
     /** @var array */
     public $redirect301 = [
         'enabled' => null,
@@ -251,16 +244,6 @@ class AppConfig {
         ],
         'TagMan' => [
             'enabled' => null,
-        ],
-        'SprosiKupi' => [
-            'timeout' => 1000,
-            'logEnabled' => false,
-            'logDataEnabled' => false,
-        ],
-        'ShopPilot' => [
-            'timeout' => 1000,
-            'logEnabled' => false,
-            'logDataEnabled' => false,
         ],
     ];
 
@@ -466,10 +449,6 @@ class AppConfig {
     ];
     /** @var bool */
     public $newDeliveryCalc;
-    /** @var array */
-    public $tag = [
-        'numSidebarCategoriesShown' => null,
-    ];
 
     /** @var array */
     public $sphinx = [
@@ -555,6 +534,14 @@ class AppConfig {
 	];
 
     /** @var array */
+    public $fileStorage = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+
+    /** @var array */
     public $flocktoryExchange = [
         'enabled' => null,
     ];
@@ -614,6 +601,11 @@ class AppConfig {
         'limit'     => 0,
         'regions'   => []
     ];
+
+    /** Минимальная сумма заказа (для Воронежа)
+     * @var int
+     */
+    public $minOrderSum = 0;
 
     public function __construct() {
 

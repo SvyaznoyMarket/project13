@@ -45,7 +45,7 @@ return function(
             <div class="jsOrderValidationErrors" data-value="<?= $helper->json($order->validationErrors) ?>"></div>
         <? endif; ?>
     <!-- блок разбиения заказа -->
-    <div class="orderRow clearfix <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>" data-block_name="<?= $order->block_name ?>">
+    <div class="orderRow clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>" data-block_name="<?= $order->block_name ?>">
         <!-- информация о заказе -->
         <div class="orderCol">
             <div class="orderCol_h">
@@ -183,8 +183,8 @@ return function(
             <!-- способ доставки -->
             <? if (!$order->delivery->use_user_address): ?>
                 <? $point = $order->delivery->point ? $orderDelivery->points[$order->delivery->point->token]->list[$order->delivery->point->id] : null ?>
-
-                <div class="orderCol_delivrIn <?= $order->delivery->point ? 'orderCol_delivrIn-pl' : 'orderCol_delivrIn-empty' ?>">
+                <!--Добавляем класс orderCol_delivrIn-warn если у нас будет текст-предупреждение: -->
+                <div class="orderCol_delivrIn orderCol_delivrIn-warn <?= $order->delivery->point ? 'orderCol_delivrIn-pl' : 'orderCol_delivrIn-empty' ?>">
 
                     <? if (!$order->delivery->point) : ?>
                         <span class="js-order-changePlace-link brb-dt" style="cursor: pointer;" data-content="#id-order-changePlace-content-<?= $order->id ?>">Указать место самовывоза</span>
@@ -207,10 +207,17 @@ return function(
                             <? if (isset($point)) : ?>
                                 <br />
                                 <span class="orderCol_tm_t">Оплата при получении: </span>
-                                <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные<? endif; ?><? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта<? endif; ?>
+                                <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?>
+                                    <!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные
+                                <? endif; ?>
+                                <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
+                                    <!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта
+                                <? endif; ?>
                             <? endif; ?>
                         </div>
-
+                    <? if ($order->delivery->point && $order->delivery->point->isSvyaznoy()) : ?>
+                        <span class="order-warning">В магазинах «Связной» не принимаются бонусы «Спасибо от Сбербанка»</span>
+                    <? endif ?>
                 </div>
 
                 <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order-v3-new/__payment-methods', ['order' => $order]) : '' ?>
@@ -243,10 +250,13 @@ return function(
 
             <? endif ?>
 
-            <?= $helper->render('order-v3/common/_map', [
-                'id'            => 'id-order-changePlace-content-' . $order->id,
-                'order'         => $order,
-                'orderDelivery' => $orderDelivery
+            <?
+                $dataPoints = (new \View\PointsMap\MapView());
+                $dataPoints->preparePointsWithOrder($order, $orderDelivery);
+            ?>
+
+            <?= \App::templating()->render('order-v3/common/_map', [
+                'dataPoints'    => $dataPoints,
             ]) ?>
 
             <!--/ способ доставки -->
@@ -296,6 +306,17 @@ return function(
         </form>
     </div>
 
+    <? if (\App::abTest()->isOrderMinSumRestriction() && \App::config()->minOrderSum > $orderDelivery->getProductsSum()) : ?>
+        <div class="popup popup-simple deliv-free-popup jsMinOrderSumPopup" style="display: none;">
+
+            <div class="popup_inn">
+                <span class="info">До бесплатного самовывоза и оформления заказа осталось</span>
+                <span class="remain-sum"><?= \App::config()->minOrderSum - $orderDelivery->getProductsSum() ?>&thinsp;<span class="rubl">p</span></span>
+                <a href="/cart" class="to-cart-lnk">Вернуться в корзину</a>
+            </div>
+        </div>
+    <? endif ?>
+
 </section>
 
 <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json($initialMapCords)?>"></div>
@@ -341,4 +362,5 @@ return function(
         </div>
     </div>
 </div>
+
 <? };

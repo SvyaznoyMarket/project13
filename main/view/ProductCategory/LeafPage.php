@@ -3,8 +3,6 @@
 namespace View\ProductCategory;
 
 class LeafPage extends Layout {
-    protected $layout  = 'layout-oneColumn';
-
     public function slotContent() {
         $this->params['request'] = \App::request();
 

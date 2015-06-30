@@ -58,7 +58,7 @@ class SetAction {
         // выполнение 1-го запроса
         $client->execute();
 
-        \RepositoryManager::product()->enrichProductsFromScms($products, 'media');
+        \RepositoryManager::product()->enrichProductsFromScms($products, 'media label category');
         $client->execute();
 
         // сортировка

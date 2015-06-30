@@ -17,7 +17,7 @@ $maxUser = max($reviewsDataSummary);
         <? foreach ($reviewsDataSummary as $numStars => $count) { ?>
             <div class="bcolStarRow clearfix">
               <? for ($i=0; $i < $numStars; $i++) { ?>
-                  <span class="star"></span>
+                  <span class="star star-fill"></span>
               <? } ?>
             </div>
         <? } ?>

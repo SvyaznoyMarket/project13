@@ -14,20 +14,8 @@
             <div class="bListingItem__eInner">
                 <!-- Блок с именем продукта и иконками доп. просмотра товара -->
                 <div class="bSimplyDesc">
-                    {{#abtestKeys.sprosikupi}}
-                        <div class="sprosikupiCategoryRating">
-                            <div class="spk-good-rating" shop-id="52dbdd369928f539612151" good-id="{{id}}"></div>
-                        </div>
-                    {{/abtestKeys.sprosikupi}}
-
-                    {{#abtestKeys.shoppilot}}
-                        <div class="shoppilot-category-container" data-product-id="{{id}}"></div>
-                    {{/abtestKeys.shoppilot}}
-
                     <p class="bSimplyDesc__eText"><a href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a></p>
-                    {{#abtestKeys.default}}
-                        {{#review}}{{> product/_review-compact }}{{/review}}
-                    {{/abtestKeys.default}}
+                    {{#review}}{{> product/_review-compact }}{{/review}}
 
                     <ul class="bSimplyDescStikers clearfix">
                         {{#label}}

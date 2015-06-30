@@ -134,6 +134,38 @@ return [
         'action'  => ['User\ExternalLoginResponseAction', 'execute'],
     ],
 
+    // Регистрация поставщика
+    'supplier.new' => [
+        'pattern'   => '/supplier/new',
+        'action'    => ['Supplier\NewAction', 'execute']
+    ],
+
+    // Кабинет поставщика
+    'supplier.cabinet' => [
+        'pattern'   => '/supplier/cabinet',
+        'action'    => ['Supplier\CabinetAction', 'index']
+    ],
+
+    // Загрузка прайс-листа
+    'supplier.load' => [
+        'pattern'   => '/supplier/load',
+        'action'    => ['Supplier\CabinetAction', 'load'],
+        'method'  => ['POST']
+    ],
+
+    // Обновление данных о поставщике
+    'supplier.update' => [
+        'pattern'   => '/supplier/update',
+        'action'    => ['Supplier\CabinetAction', 'update'],
+        'method'  => ['POST']
+    ],
+
+    // Тестирование curl-client
+    'supplier.test' => [
+        'pattern'   => '/supplier/load-test',
+        'action'    => ['Supplier\CabinetAction', 'loadTest']
+    ],
+
     // регион
     'region.init' => [
         'pattern' => '/region/init',
@@ -287,12 +319,16 @@ return [
     'product.review.create' => [
         'pattern' => '/product-reviews/create/{productUi}',
         'require' => ['productUi' => '[\w\d-_]+\/?[\w\d-_]+'],
-        'action'  => ['Product\Reviews\Create', 'execute'],
+        'action'  => ['Product\ReviewsAction', 'create'],
     ],
-    'product.reviews.get' => [
+    'product.review.vote' => [
+        'pattern' => '/product-reviews/vote',
+        'action'  => ['Product\ReviewsAction', 'vote'],
+    ],
+    'product.reviews' => [
         'pattern' => '/product-reviews/{productUi}',
         'require' => ['productUi' => '[\w\d-_]+\/?[\w\d-_]+'],
-        'action'  => ['Product\Reviews\Get', 'execute'],
+        'action'  => ['Product\ReviewsAction', 'execute'],
     ],
     'product.notification.lowerPrice' => [
         'pattern' => '/ajax/product-notification/{productId}',
@@ -302,6 +338,11 @@ return [
     'product.kit' => [
         'pattern' => '/ajax/product/kit/{productUi}',
         'action'  => ['Product\KitAction', 'execute'],
+    ],
+    // Карта со всеми точками самовывоза
+    'product.map' => [
+        'pattern' => '/ajax/product/map/{productId}/{productUi}',
+        'action'  => ['Product\DeliveryAction', 'map']
     ],
 
     // теги
@@ -557,6 +598,11 @@ return [
         'pattern' => '/private/orders',
         'action'  => ['User\OrdersAction', 'execute'],
     ],
+    // редактирование данных пользователя
+    'user.favorites' => [
+        'pattern' => '/private/favorites',
+        'action'  => ['User\FavoriteAction', 'get'],
+    ],
     // данные о заказе пользователя
     'user.order' => [
         'pattern'   => '/private/order/{orderId}',
@@ -571,12 +617,6 @@ return [
     'user.subscriptions' => [
         'pattern' => '/private/subscriptions',
         'action'  => ['User\SubscriptionsAction', 'execute'],
-    ],
-    // адвокат клиента
-    // @deprecated
-    'user.consultation' => [
-        'pattern' => '/private/consultation',
-        'action'  => ['User\ConsultationAction', 'execute'],
     ],
 
     // маршрутизатор нескольких запросов
@@ -617,6 +657,12 @@ return [
     'subscribe.confirm' => [
         'pattern' => '/subscribe/confirm',
         'action'  => ['Subscribe\Action', 'confirm'],
+    ],
+
+    'event.push' => [
+        'pattern' => '/event/push',
+        'action'  => ['EventAction', 'push'],
+        'method'  => ['POST'],
     ],
 
     // qrcode
@@ -887,8 +933,18 @@ return [
     ],
 
     'favorite.add' => [
-        'pattern' => '/favorite/add-product',
+        'pattern' => '/favorite/add-product/{productUi}',
         'action'  => ['Favorite\SetAction', 'execute'],
+        'require' => [
+            'productUi' => '[\w\d-_]+',
+        ],
+    ],
+    'favorite.delete' => [
+        'pattern' => '/favorite/delete-product/{productUi}',
+        'action'  => ['Favorite\DeleteAction', 'execute'],
+        'require' => [
+            'productUi' => '[\w\d-_]+',
+        ],
     ],
 
     'compare' => [

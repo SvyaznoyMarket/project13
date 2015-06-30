@@ -31,6 +31,13 @@ trait ABHelperTrait {
         return false;
     }
 
+    /** Минимальная сумма заказа для Воронежа, Н.Новгорода, Рязани
+     * @return bool
+     */
+    public static function isOrderMinSumRestriction(){
+        return in_array(\App::user()->getRegionId(), [18074, 99958, 10374]);
+    }
+
     public static function getColorClass(Entity $product, $location = null){
         // SITE-5394 цвет кнопки купить
         $colorClass = null;
@@ -108,5 +115,12 @@ trait ABHelperTrait {
      */
     public static function isCatalogListing() {
         return true;
+    }
+
+    /** Новая карточка товара
+     * @return bool
+     */
+    public static function isNewProductPage() {
+        return \App::abTest()->getTest('productCard') && \App::abTest()->getTest('productCard')->getChosenCase()->getKey() == 'new';
     }
 }

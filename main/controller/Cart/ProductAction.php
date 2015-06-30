@@ -93,7 +93,7 @@ class ProductAction {
                 'cartButton'     => [
                     'id' => \View\Id::cartButtonForProduct($product->getId()),
                 ],
-                'isTchiboProduct' => $product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName(),
+                'isTchiboProduct' => $product->getRootCategory() && 'Tchibo' === $product->getRootCategory()->getName(),
                 'category'        => $this->getCategories($product),
                 'quantity'        => $cartProduct ? $cartProduct->getQuantity() : 0,
                 'isSlot' => (bool)$product->getSlotPartnerOffer(),
@@ -123,6 +123,8 @@ class ProductAction {
             } else {
                 $response = new \Http\RedirectResponse($request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage')));
             }
+
+            $cart->pushStateEvent([]);
 
             return $response;
 
@@ -295,6 +297,8 @@ class ProductAction {
                 'products'  => $productsInfo,
                 'sender'    => $sender,
             ];
+
+            $cart->pushStateEvent([]);
 
             $response = new \Http\JsonResponse($responseData);
 

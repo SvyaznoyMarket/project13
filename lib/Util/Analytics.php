@@ -87,11 +87,12 @@ class Analytics {
                 $compareProduct = static::getCompareProduct($product->getUi());
 
                 $productData = [
+                    'id'       => $product->getId(),
+                    'ui'       => $product->getUi(),
                     'quantity' => $orderProduct->getQuantity(),
                     'price'    => $orderProduct->getPrice(),
                     'article'  => $product->getArticle(),
                     'barcode'  => $product->getBarcode(),
-                    'id'       => $product->getId(),
                     'name'     => $product->getName(),
                     'token'    => $product->getToken(),
                     'link'     => $product->getLink(),

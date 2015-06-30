@@ -232,7 +232,7 @@ class ShowAction {
         $productCount = 0;
         /** @var \Model\Product\Entity[] $products */
         $products = [];
-        $productRepository = \RepositoryManager::product();
+        $productRepository = \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock();
         $limit = \App::config()->product['itemsPerPage'];
 
         $productRepository->prepareIteratorByFilter(array_merge($productFilter->dump(), $sliceFiltersForSearchClientRequest), $productSorting->dump(), ($pageNum - 1) * $limit, $limit, $region, function ($data) use (&$productIds, &$productCount) {
@@ -273,7 +273,7 @@ class ShowAction {
             });
         }
 
-        $productRepository->enrichProductsFromScms($products, 'media');
+        $productRepository->enrichProductsFromScms($products, 'media label category');
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 

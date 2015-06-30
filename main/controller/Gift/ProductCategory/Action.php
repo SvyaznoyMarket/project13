@@ -494,7 +494,7 @@ class Action {
 
         $region = \App::user()->getRegion();
 
-        $repository = \RepositoryManager::product();
+        $repository = \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock();
 
         $productIds = [];
         $productCount = 0;
@@ -530,7 +530,7 @@ class Action {
         }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $repository->enrichProductsFromScms($products, 'media');
+        $repository->enrichProductsFromScms($products, 'media label category');
 
         if ($products) {
             $productUIs = [];

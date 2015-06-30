@@ -17,9 +17,7 @@ return function (
     $urlParams = [
         'productId' => $product->getId(),
     ];
-    if ($helper->hasParam('sender')) {
-        $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
-    }
+
     $url = $helper->url('orderV3.lifegift', $urlParams);
 
 ?>

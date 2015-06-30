@@ -8,8 +8,8 @@
 		utils = global.ENTER.utils;
 	// end of vars
 
-	utils.packageReq = function packageReq( reqArray, onLoad ) {
-		console.info('Пакетный запрос');
+	utils.packageReq = function packageReq( reqArray ) {
+		console.info('Выполнение пакетного запроса', reqArray);
 
 		var
 			dataToSend = {},
@@ -26,7 +26,7 @@
 					i, len;
 				// end of vars
 
-				console.info('Обработка ответа пакетого запроса');
+				console.info('Обработка ответа пакетого запроса', res);
 
 				if ( res.success === false || (res.actions && res.actions.length === 0) ) {
 					console.warn('Route false');
@@ -41,7 +41,6 @@
 		// end of functions
 
 		for ( i = 0, len = reqArray.length - 1; i <= len; i++ ) {
-			console.log(i);
 
 			// Обход странного бага с IE
 			if ( !(reqArray[i] && reqArray[i].url) ) {

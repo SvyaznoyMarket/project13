@@ -45,7 +45,7 @@ class Client {
     }
 	
 	
-	public function setNativePost($val=true) {
+	public function setNativePost() {
 		$this->nativePost = true;
 	}
 
@@ -109,7 +109,7 @@ class Client {
                 'data'    => $data,
                 'info'    => isset($info) ? $info : null,
                 'header'  => isset($header) ? $header : null,
-                'resonse' => mb_substr($response, 0, 512),
+                'response' => mb_substr($response, 0, 512),
                 'timeout' => $timeout,
                 'startAt' => $startedAt,
                 'endAt'   => microtime(true),
@@ -140,7 +140,7 @@ class Client {
 
                 return true;
             } else {
-                \App::logger()->error(['error' => sprintf('Запрос %s %s не попал в кеш', $url, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)), 'sender' => __FILE__ . ' ' .  __LINE__], ['critical', 'curl-cache']);
+                \App::logger()->warn(['message' => sprintf('Запрос %s %s не попал в кеш', $url, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE))], ['curl-cache']);
             }
         }
 
@@ -478,16 +478,17 @@ class Client {
 			 * The usage of the @filename API for file uploading is deprecated for php >=5.5
 			 * Но мы поддержим, т.к. не очень понимаю как тут нормально добавить эту фичу пишу тут
 			 */
-			if((float)PHP_VERSION>=5.5) {
+			if((float)PHP_VERSION >= 5.5) {
 				foreach($data as $k => $v) {
-					if($v[0] !=='@')
+					if(is_array($v) && $v[0] !=='@')
 						continue;
 					
-					$data[$k] = $this->initPostFile($v);
+					//$data[$k] = $this->initPostFile($v);
 				}
 			}
 			
 			curl_setopt($connection, CURLOPT_POST, true);
+//			curl_setopt($connection, CURLOPT_SAFE_UPLOAD, true);
             curl_setopt($connection, CURLOPT_POSTFIELDS, $data);
 		}
 

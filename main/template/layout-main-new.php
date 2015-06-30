@@ -32,24 +32,32 @@
 
 </head>
 
-<body class="main main-new jsMainNew <?= $page->slotBodyClassAttribute() ?>" data-template="main" data-id="<?= \App::$id ?>" data-debug=<?= $page->json(\App::config()->debug) ?>>
+<body class="main jsMainNew <?= $page->slotBodyClassAttribute() ?>" data-template="main" data-id="<?= \App::$id ?>" data-debug=<?= $page->json(\App::config()->debug) ?>>
 
 <?= $page->slotConfig() ?>
 
     <div class="wrapper">
         <!-- шапка -->
-        <div class="header header-new <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?>">
+        <div class="header <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?>">
 
-            <?= $page->slotTopbar() ?>
+            <?= $page->render('main/banner.pickup') ?>
+
+            <div class="header__inn">
+                <?= $page->slotTopbar() ?>
+            </div>
 
             <?= $page->slotSearchBar() ?>
 
-            <?= $page->slotNavigation() ?>
+            <div class="header__inn">
+                <?= $page->slotNavigation() ?>
+            </div>
 
         </div>
         <!--/ шапка -->
 
         <div class="content">
+
+            <div class="inn">
 
             <?= $page->render('main/_banner2', ['banners' => (array)$page->getParam('bannerData')]) ?>
 
@@ -64,6 +72,8 @@
             <?= $page->render('main/_slidesBoxWide') ?>
 
             <?= $page->render('main/_popularBrands') ?>
+
+            </div>
 
         </div><!--/ Контент -->
     </div><!--/ Шаблон -->

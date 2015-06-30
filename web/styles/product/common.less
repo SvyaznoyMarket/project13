@@ -1,0 +1,392 @@
+.best-price-popup {
+    color: #363636;
+    &__it {
+        width: 100%;
+        margin: 0 0 10px;
+    }
+    .customInput-defcheck + .customLabel {
+        margin: 0 0 10px;
+
+        background-position: 0 3px;
+    }
+    &__btn {
+        margin: 0 auto;
+    }
+}
+
+// название товара
+.product-name {
+    font-size: 26px;
+
+    margin: 0;
+}
+
+// ссылка на оффер староннего поставщика
+.vandor-offer {
+    &__lk {
+        color: #9c9c9c;
+
+        .inline-block();
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+
+// карточка товара
+.product-card {
+    margin: 25px 0 20px;
+    &__l {
+        float: left;
+
+        width: 350px;
+        margin: 0 60px 0 0;
+
+        text-align: center;
+
+        .product-card-photo{
+
+            &__img{
+                max-width: 96%;
+                max-height: 350px;
+            }
+        }
+    }
+    &__c {
+        float: left;
+
+        width: 280px;
+    }
+    &__r {
+        float: right;
+
+        width: 220px;
+        margin-right: -10px;
+        .ep{
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+    }
+    // карточка товара в два столбца
+    &--2col {
+        .product-card__c {
+            width: 540px;
+            margin-right: -10px;
+        }
+    }
+    // карточка товара - нет в наличии
+    &--not {
+        .buy-online {
+            margin: 0 20px 20px 0;
+
+            .inline-block-middle();
+        }
+        .product-card-rating {
+            margin: 0 0 20px;
+
+            .inline-block-middle();
+        }
+        .product-card-tools {
+            float: right;
+
+            margin-bottom: 20px;
+            &__i {
+                &:last-child {
+                    margin-left: 0;
+                }
+            }
+        }
+        .product-card-prop {
+            width: 280px;
+        }
+    }
+}
+
+// описание товара
+.product-card-desc {
+    margin: 0 0 5px;
+
+    color: #9c9c9c;
+    &.collapsed{
+        height: 60px;
+        overflow: hidden;
+        cursor: pointer;
+        position: relative;
+
+        &:after{
+            content: '';
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            height: 12px;
+            width: 100%;
+            .gradient(rgba(255, 255, 255, 0.01), #fff, rgba(255, 255, 255, 0.01));
+        }
+    }
+}
+
+// фильтр моделей
+.product-card-filter {
+    margin: 10px 0 20px;
+    &__tl {
+        font-size: 14px;
+
+        margin: 5px 5px 0 0;
+
+        .inline-block();
+    }
+    &__box {
+        .inline-block();
+    }
+}
+
+// краткие характеристики
+.product-card-prop {
+    margin: 0 0 15px;
+
+    color: #9c9c9c;
+    &__i {
+        width: 135px;
+        margin: 0 0 6px;
+
+        .inline-block();
+        &--val {
+            margin-left: 5px;
+        }
+    }
+    &__lk{
+        .inline-block();
+        color: #9c9c9c;
+        border-bottom: 1px dotted;
+        text-decoration: none;
+        margin-top: 5px;
+        &:hover{
+            text-decoration: none;
+        }
+    }
+}
+
+// старая цена
+.product-card-old-price {
+    font-size: 18px;
+
+    color: #9c9c9c;
+    &__inn {
+        position: relative;
+        &:after {
+            position: absolute;
+            top: 50%;
+            left: 0;
+
+            width: 100%;
+            height: 1px;
+
+            content: '';
+
+            background: #8c8989;
+        }
+    }
+}
+
+// цена
+.product-card-price {
+    margin: 0 0 10px;
+    &__val {
+        font-size: 44px;
+        line-height: 1.2;
+
+        margin: 0 5px 0 0;
+
+        color: #363636;
+    }
+}
+
+// блок акций
+.product-card-action {
+    line-height: 1.2;
+
+    position: relative;
+
+    margin: 0 0 10px;
+    padding: 5px 10px;
+
+    cursor: pointer;
+
+    color: #ef404a;
+    border: 1px dotted #ef404a;
+    &__tx {
+        font-weight: bold;
+
+        width: 177px;
+        min-height: 29px;
+    }
+}
+
+.buy-online {
+    margin: 0 0 10px;
+}
+
+.buy-on-credit {
+    margin: 0 0 10px;
+    &__tl {
+        font-size: 18px;
+
+        display: block;
+
+        margin: 0 0 2px;
+
+        color: #f99b1c;
+    }
+    &__tx {
+        font-size: 11px;
+
+        color: #8c8c8c;
+    }
+    &__mark {
+        color: #363636;
+        background: none;
+    }
+}
+
+.buy-now-inshop {
+    padding: 7px 10px 10px;
+
+    cursor: pointer;
+
+    border: 1px solid #80c342;
+    &__tl {
+        font-size: 14px;
+
+        color: #80c342;
+        border-bottom: 1px solid #80c342;
+
+        .inline-block();
+    }
+    &__line {
+        margin: 3px 0 0;
+    }
+    &__mark {
+        color: #9c9c9c;
+    }
+}
+
+.product-card-discount-switch {
+    margin: 0 0 10px;
+    &__i {
+        .inline-block-middle();
+        &--tx {
+            max-width: 110px;
+            margin: 0 2px 0 5px;
+
+            color: #8c8c8c;
+        }
+    }
+}
+
+//блок с дисконтами
+.product-discounts {
+    margin: 0 -10px;
+
+    text-align: center;
+
+    border-top: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+    &-list {
+        font-size: 0;
+        font-size: 0;
+
+        width: 700px;
+        margin: 0 auto;
+        padding: 20px 10px;
+
+        white-space: nowrap;
+        &__i {
+            width: 140px;
+            height: 30px;
+            margin: 0 0 0 140px;
+
+            .inline-block();
+            &:first-child {
+                margin: 0;
+            }
+        }
+        &__lk {
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+}
+//блок с платежными системами
+.pay-system-list {
+    float: right;
+    &__i {
+        margin: 0 0 0 10px;
+
+        .inline-block-middle();
+        .opacity(.5);
+    }
+}
+//блок с шарингами
+.product-card-sharing-list {
+    font-size: 0;
+
+    float: left;
+
+    height: 22px;
+
+    white-space: nowrap;
+    .addthis_toolbox {
+        margin-top: 3px;
+        .at4-icon {
+            padding: 1px;
+
+            background-color: #acacac !important;
+            background-position: 50% 50%;
+
+            .transition(all .3s ease);
+            &:hover {
+                &.aticon-facebook {
+                    background-color: rgb(48, 88, 145) !important;
+                }
+                &.aticon-twitter {
+                    background-color: rgb(44, 168, 210) !important;
+                }
+                &.aticon-vk {
+                    background-color: rgb(50, 80, 120) !important;
+                }
+                &.aticon-compact {
+                    background-color: rgb(252, 109, 76) !important;
+                }
+            }
+        }
+        .addthis_counter.addthis_bubble_style {
+            margin: 1px 0 0 0;
+        }
+    }
+}
+.best-price-popup .customInput-defcheck {
+    & + .customLabel{
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQCAYAAADwMZRfAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAmklEQVQ4EWO8evUq2+fPn7v+//8fx8DAIAjExIL3jIyMi3h5ectYgAZ0S0lJ5cnIyDAABYk1gAFoqeCTJ0/ynz17xsAE5MSSagDIJpCFIH0gHzAB+YKkuADZqVB9giBDKAajhmAG4WiYYA+T98CkiylDhAhU33smYNJdBMxIoDxAhDaEEpB6kD6Qfsbbt2+zv337thMoSHZRAAAF+0B8XgLClgAAAABJRU5ErkJggg==');
+        background-position: 0 2px;
+        padding-left: 25px;
+    }
+
+    &:checked + .customLabel{
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQCAYAAADwMZRfAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABnUlEQVQ4EZ2UMUgCURjH/++8uzRzOIkou4aKaC2QBIsaWtwDg6BobIjagqBoCaIcGgpsFKE5GlqdosWICKRBIikRIszBpNJ393rPHDw8S3twcN//vf/v+7537x1JpVJqsVg8YIwtAdD40+ooEELiHo9nQ+aAiM/nW9N1HVxsFQCeVMtms+u5XA4SDxbbBYhMIqHwiQ4kHmvtVFBfas2nCUhrgxmgmTPQ6y2wrzeLpyUIoyXQ5DaQmAN7OAVMaoHIlqhSgll6BnEPgCjunyn6AXq1CuUpBqpqkCejIK4ei81SiflyCXruh3ExBfM1WV1Ib3agZGIwTCdI8ARED1kAIrBApL5pSINhyO+3oIl53j9v4f4IBlSwQBSOoXADoAEChwsO/y6odwZq5RHsbg8y+QQbWYE8umwLaIRwhXT6IE0cosw0KF0GyloQjrHNpgBbSFXsHoccPIbpnYUSiPCN7P0VYv06dUul4QWw/hCI01un2r+KjS3wo2s7+xeg5itI/OjG+UUSd8AW1EwU64VP+Ek6ne7I5/P7XPz3r+AbH9mSP80JthkAAAAASUVORK5CYII=');
+    }
+
+    //ie8 fix
+    &.mChecked{
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQCAYAAADwMZRfAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABnUlEQVQ4EZ2UMUgCURjH/++8uzRzOIkou4aKaC2QBIsaWtwDg6BobIjagqBoCaIcGgpsFKE5GlqdosWICKRBIikRIszBpNJ393rPHDw8S3twcN//vf/v+7537x1JpVJqsVg8YIwtAdD40+ooEELiHo9nQ+aAiM/nW9N1HVxsFQCeVMtms+u5XA4SDxbbBYhMIqHwiQ4kHmvtVFBfas2nCUhrgxmgmTPQ6y2wrzeLpyUIoyXQ5DaQmAN7OAVMaoHIlqhSgll6BnEPgCjunyn6AXq1CuUpBqpqkCejIK4ei81SiflyCXruh3ExBfM1WV1Ib3agZGIwTCdI8ARED1kAIrBApL5pSINhyO+3oIl53j9v4f4IBlSwQBSOoXADoAEChwsO/y6odwZq5RHsbg8y+QQbWYE8umwLaIRwhXT6IE0cosw0KF0GyloQjrHNpgBbSFXsHoccPIbpnYUSiPCN7P0VYv06dUul4QWw/hCI01un2r+KjS3wo2s7+xeg5itI/OjG+UUSd8AW1EwU64VP+Ek6ne7I5/P7XPz3r+AbH9mSP80JthkAAAAASUVORK5CYII=');
+    }
+}
+.jewel{
+    .best-price-popup .customInput-defcheck{
+        &:checked + .customLabel, &.mChecked{
+
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQCAAAAADVWsuDAAAAdUlEQVR4AWVQtwEFIQi1fOMwjVO4jovcBHaXpqCl/jkgXk6vBF7CKff1hp7VMWveoMyu3w/KqHd1PqLeT+p4P0w0ArWOE/3IfRqEz3wTKYhWgL/neZKAkAheNuUIEIg/2+QeAFS6dxeCP+WRJOvk2uLa9PINA4yO5jmsmDGRAAAAAElFTkSuQmCC');
+
+        }
+    }
+}

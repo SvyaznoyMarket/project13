@@ -52,6 +52,13 @@ module.exports = function (grunt, options) {
             srcRoot: '/js',
             cwd: 'web/js'
         },
+        favorite: {
+            src: ['dev/favorite/*.js'],
+            dest: 'prod/favorite.js',
+            destMap: 'prod/favorite.js.map',
+            srcRoot: '/js',
+            cwd: 'web/js'
+        },
         common: {
             src: ['dev/common/*.js'],
             dest: 'prod/common.js',
@@ -68,21 +75,15 @@ module.exports = function (grunt, options) {
         },
         library: {
             src: [
-                'dev/library/cloneObject.js',
                 'dev/library/getKeysLength.js',
                 'dev/library/JSON.js',
-                'dev/library/pubSub.js',
                 'dev/library/isTrueEmail.js',
                 'dev/library/printPrice.js',
                 'dev/library/doc_cookies.js',
                 'dev/library/simple_templating.js',
-                'dev/library/library.js',
-                'dev/library/mapDriver.js',
-                'dev/library/mapDriver-v2.js',
                 'dev/library/black_box.js',
                 'dev/library/formValidator.js',
                 'dev/library/addParameterToUrl.js',
-                'dev/library/blockScreen.js',
                 'dev/library/*.js'
             ],
                 dest: 'prod/library.js',
@@ -99,12 +100,11 @@ module.exports = function (grunt, options) {
                 'dev/jquery-plugins/jquery.placeholder.js',
                 'dev/jquery-plugins/jquery.infinityCarousel.js',
                 'dev/jquery-plugins/jquery.visible.js',
-                'dev/jquery-plugins/typewriter.js',
                 'dev/jquery-plugins/jquery.maskedinput.js',
                 'dev/jquery-plugins/jquery.put_cursor_at_end.js',
                 'dev/jquery-plugins/goodsCounter.js',
+                'dev/jquery-plugins/jquery.deparam.js',
                 'dev/jquery-plugins/jquery.elevatezoom.js',
-                'dev/jquery-plugins/jquery.animate-shadow.js',
                 'dev/jquery-plugins/customDropDown.js',
                 'dev/jquery-plugins/goodsSlider.js',
                 'dev/jquery-plugins/jquery-ui-1.10.3.custom.js'
@@ -134,13 +134,6 @@ module.exports = function (grunt, options) {
                 destMap: 'prod/main.js.map',
                 srcRoot: '/js',
                 cwd: 'web/js'
-        },
-        orderV3JS: {
-            src: ['dev/order-v3/*.js'],
-            dest: 'prod/order-v3.js',
-            destMap: 'prod/order-v3.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
         },
         orderV31ClickJS: {
             src: ['dev/order-v3-1click/*.js'],
@@ -184,13 +177,6 @@ module.exports = function (grunt, options) {
                 srcRoot: '/js',
                 cwd: 'web/js'
         },
-        tchibo: {
-            src: ['dev/tchibo/*.js'],
-                dest: 'prod/tchibo.js',
-                destMap: 'prod/tchibo.js.map',
-                srcRoot: '/js',
-                cwd: 'web/js'
-        },
         watch3d: {
             src: ['dev/watch3d/*.js'],
                 dest: 'prod/watch3d.js',
@@ -205,6 +191,14 @@ module.exports = function (grunt, options) {
                 destMap: 'prod/service_ha.js.map',
                 srcRoot: '/js',
                 cwd: 'web/js'
+        },
+
+        supplier: {
+            src: ['dev/supplier/*.js'],
+            dest: 'prod/supplier.js',
+            destMap: 'prod/supplier.js.map',
+            srcRoot: '/js',
+            cwd: 'web/js'
         }
     }
 };

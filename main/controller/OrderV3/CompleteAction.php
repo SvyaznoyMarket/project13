@@ -6,7 +6,7 @@ use Model\Order\Entity;
 use Model\PaymentMethod\PaymentEntity;
 use Model\Point\PointEntity;
 use Session\ProductPageSenders;
-use Session\ProductPageSendersForMarketplace;
+use Session\ProductPageSenders2;
 
 class CompleteAction extends OrderV3 {
 
@@ -30,7 +30,7 @@ class CompleteAction extends OrderV3 {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         ProductPageSenders::clean();
-        ProductPageSendersForMarketplace::clean();
+        ProductPageSenders2::clean();
 
         /** @var \Model\Order\Entity[] $orders */
         $orders = [];
@@ -45,6 +45,8 @@ class CompleteAction extends OrderV3 {
         $shopIds = [];
         $pointUis = [];
         $errors = [];
+
+        $this->pushEvent(['step' => 3]);
 
         try {
 
@@ -150,7 +152,7 @@ class CompleteAction extends OrderV3 {
                 $data['order-number'] = $order->numberErp;
                 $data['order-products'] = $productIds;
                 $data['order-names'] = array_map(function(\Model\Product\Entity $product) { return $product->getName(); }, $productsForOrder);
-                $data['order-product-category'] = array_map(function(\Model\Product\Entity $product) { $category = $product->getMainCategory(); return $category ? $category->getName() : null; }, $productsForOrder);
+                $data['order-product-category'] = array_map(function(\Model\Product\Entity $product) { $category = $product->getRootCategory(); return $category ? $category->getName() : null; }, $productsForOrder);
                 $data['order-product-price'] = array_map(function(\Model\Product\Entity $product) { return $product->getPrice(); }, $productsForOrder);
                 $data['order-sum'] = $order->getSum();
                 $data['order-delivery-price'] = $order->getDelivery() ? $order->getDelivery()->getPrice() : '';

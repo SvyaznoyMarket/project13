@@ -75,8 +75,8 @@ class CityAds {
                 $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
                 if (!$product) continue;
 
-                if ($product->getMainCategory()) {
-                    $category = $product->getMainCategory();
+                if ($product->getRootCategory()) {
+                    $category = $product->getRootCategory();
                 } else {
                     $category = $product->getCategory();
                     $category = reset($category);

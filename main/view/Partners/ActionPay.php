@@ -96,9 +96,10 @@ class ActionPay {
         $this->sendData['basketProducts'] = [];
         foreach ((array)$this->cart->getProductData() as $product) {
             $this->sendData['basketProducts'][] = array(
-                'id' => @$product['id'],
-                'price' => @$product['price'],
-                'quantity' => @$product['quantity'],
+                'id' => isset($product['id']) ? $product['id'] : null,
+                'price' => isset($product['price']) ? $product['price'] : null,
+                'quantity' => isset($product['quantity']) ? $product['quantity'] : null,
+                'name' => isset($product['name']) ? $product['name'] : null,
             );
         }
     }
@@ -147,7 +148,7 @@ class ActionPay {
         $product = $this->getParam('product');
 
         /* @var $category \Model\Product\Category\Entity */
-        $category = $product->getMainCategory();
+        $category = $product->getRootCategory();
 
         if ( !$category ) {
             $categories = $product->getCategory();

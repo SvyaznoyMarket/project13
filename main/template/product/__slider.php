@@ -29,7 +29,7 @@ $f = function (
     $url = null,
     $type = null,
     $namePosition = null,
-    array $sender = [],
+    $sender = [],
     $isCompact = false,
     $showPageCounter = false,
     $rowsCount = 1,
@@ -78,7 +78,9 @@ $f = function (
         <div class="bGoodsSlider__eCat">
             <ul>
                 <? $i = 0; foreach ($categories as $category): ?>
-                    <li id="<?= $sliderId . '-category-' . $category->getId() ?>" class="bGoodsSlider__eCatItem <? if (0 == $i): ?> mActive<? endif ?>" data-product="<?= $category->getId() ? 'self' : 'all' ?>">
+                    <li id="<?= $sliderId . '-category-' . $category->getId() ?>"
+                        class="bGoodsSlider__eCatItem <? if (0 == $i): ?> mActive<? endif ?>"
+                        data-product="<?= $category->getId() ? 'self' : 'all' ?>">
                         <span><?= $category->getName() ?></span>
                     </li>
                 <? $i++; endforeach ?>
@@ -186,7 +188,6 @@ $f = function (
                         <?= $helper->render('cart/__button-product', [
                             'product'        => $product,
                             'onClick'        => $addToCartJS ? $addToCartJS : null,
-                            'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
                             'sender'         => $sender,
                             'noUpdate'       => true,
                             'location'       => 'slider',
