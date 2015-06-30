@@ -36,11 +36,39 @@
 		width: auto;
 		box-sizing: border-box;
 		.rounded(0 0 3px 3px);
-		padding: 5px 10px 7px;
+		padding: 5px 0px 7px;
 		background: @white;
 		white-space: nowrap;
 		z-index: 1;
 		top: 25px;
+		
+  		
+		&.scrolling{
+			&:after{
+	  			content: '';
+	  			position: absolute;
+	            bottom: 0px;
+	            left: 0px;
+	            height: 30px;
+	            width: 100%;
+	            .gradient(rgba(255, 255, 255, 0), #fff, rgba(255, 255, 255, 0));
+	  		}
+	  		&:before{
+	  			content: '';
+	  			position: absolute;
+	            top: 0px;
+	            left: 0px;
+	            height: 30px;
+	            width: 100%;
+	            .gradient(#fff, rgba(255, 255, 255, 0), #fff);
+	  		}
+		}
+		
+  		.filter-btn-box__inn {
+  			overflow: auto;
+  			max-height: 150px;
+  			padding: 0 10px;
+  		}
 	}
 
 	&--open {
@@ -67,7 +95,7 @@
 
 		&__i {
 			margin: 0 0 5px;
-
+			
 			&:last-child {
 				margin: 0;
 			}

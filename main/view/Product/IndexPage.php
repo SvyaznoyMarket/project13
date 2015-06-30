@@ -275,11 +275,11 @@ class IndexPage extends \View\DefaultLayout {
 
                     break;
                 case 'maybe3d':
-                    /*if ($source = $media->getSourceByType('html5')) {
+                    /*if ($source = $media->getSource('html5')) {
                         $properties3D['type'] = 'html5';
                         $properties3D['url'] = $source->url;
                         $properties3D['id'] = $source->id;
-                    } else*/ if ($source = $media->getSourceByType('swf')) {
+                    } else*/ if ($source = $media->getSource('swf')) {
                         $properties3D['type'] = 'swf';
                         $properties3D['url'] = $source->url;
                     }

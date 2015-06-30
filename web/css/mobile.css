@@ -265,11 +265,6 @@
     font-size: 15px;
     margin: 0 10px;
   }
-  .bLogo {
-    background: url('/css/mobile/header/img/logo.png') no-repeat 0 0;
-    height: 60px;
-    width: 85px;
-  }
   .bSelectRegion {
     margin: 10px 0 10px 5px;
     overflow: hidden;
@@ -461,10 +456,6 @@
   }
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
-  .bLogo {
-    background: url("/css/mobile/header/img/logo_R.png") no-repeat 0 0;
-    background-size: 85px 60px;
-  }
   .mCategoryIcon_80 {
     background: url('/css/mobile/categoryMenu/img/retina/icons_id_80.png') no-repeat 0 0;
     background-size: 71px 71px;
@@ -519,10 +510,6 @@
   }
 }
 @media only screen and (min-device-pixel-ratio: 1.5) {
-  .bLogo {
-    background: url("/css/mobile/header/img/logo_R.png") no-repeat 0 0;
-    background-size: 85px 60px;
-  }
   .mCategoryIcon_80 {
     background: url('/css/mobile/categoryMenu/img/retina/icons_id_80.png') no-repeat 0 0;
     background-size: 71px 71px;

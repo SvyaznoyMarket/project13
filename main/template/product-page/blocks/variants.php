@@ -22,7 +22,7 @@ $f = function(
                 </div>
 
                 <div class="filter-btn-box__dd" onmouseleave="$(this).parent().removeClass('filter-btn-box--open')">
-                    <div class="filter-btn-box__inn">
+                    <div class="filter-btn-box__inn" onscroll="(function(a){ var $this = $(a); $this.parent().addClass('scrolling'); setTimeout(function(){ $this.parent().removeClass('scrolling')}, 100)})(this)">
                         <ul class="filter-btn-box-lst">
                             <? foreach ($property->getOption() as $option): ?>
                                 <li class="filter-btn-box-lst__i"><a href="<?= $option->getProduct()->getLink() ?>" class="filter-btn-box-lst__lk"><?= $option->getHumanizedName() ?></a></li>

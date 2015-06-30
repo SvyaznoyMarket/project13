@@ -12,7 +12,7 @@ use Util\Date;
 class Label {
 
     const MEDIA_TAG_IMAGE_TOP = '66x23';
-    const MEDIA_TAG_RIGHT_SIDE = 'site-right-side';
+    const MEDIA_TAG_RIGHT_SIDE = '256x76';
 
     /** @var string */
     public $uid;
@@ -28,7 +28,7 @@ class Label {
     public function __construct($data) {
         if (isset($data['uid'])) $this->uid = $data['uid'];
         if (isset($data['name'])) $this->name = $data['name'];
-        if (isset($data['affect_price'])) $this->affectPrice = $data['affect_price'];
+        if (isset($data['affects_price'])) $this->affectPrice = $data['affects_price'];
         if (isset($data['expires_at']) && Date::isDateTimeString($data['expires_at'])) {
             $this->expires = new \DateTime($data['expires_at']);
         }
@@ -68,8 +68,13 @@ class Label {
      * @return string
      */
     public function getDateDiffString() {
-        if ($diff = $this->getDateDiff()) return \App::helper()->numberChoiceWithCount($diff->days, ['день', 'дня', 'дней'])
-            . ' '. $diff->format('%h:%I:%S');
+        if ($diff = $this->getDateDiff()) {
+            if ($diff->days != 0) {
+                return \App::helper()->numberChoiceWithCount($diff->days, ['день', 'дня', 'дней']). ' '. $diff->format('%h:%I:%S');
+            } else {
+                return $diff->format('%h ч %I мин %S');
+            }
+        }
         return '';
     }
 

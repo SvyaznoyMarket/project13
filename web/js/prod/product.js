@@ -1193,8 +1193,61 @@ $(function() {
 
     });
 
+    $body.on('click', '.jsProductCardNewLabelInfo', function(){
+        $('.jsProductCardNewLabelPopup').toggleClass('info-popup--open');
+    });
+
 })(jQuery);
 
+
+/**
+ * Обратный счетчик акции
+ */
+!function() {
+    console.info('CountDown....');
+    var
+        countDownWrapper = $('.js-countdown'),
+        expDate          = countDownWrapper.attr('data-expires'),
+
+        getDeclension = function( days ) {
+            var
+                str      = days + '',
+                lastChar = str.slice(-1),
+                lastNum  = lastChar * 1;
+
+            if ( days > 4 && days < 21 ) {
+                return 'дней';
+            } else if ( lastNum > 4 && days > 20 ) {
+                return 'дней';
+            } else if ( lastNum > 1 && lastNum < 5 ) {
+                return 'дня';
+            }
+
+            return 'день';
+        },
+
+        tick = function( opts ) {
+            var
+                str = ( ( opts.days > 0 ) ? opts.days + ' ' + getDeclension(opts.days) + ' ' : '' ) + opts.hours + ':' + opts.minutes + ':' + opts.seconds;
+
+            console.log(str);
+        },
+
+        countDown;
+
+    try {
+        countDown = new CountDown({
+            // timestamp: 1445597200000,
+            timestamp: expDate * 1000,
+            tick: tick
+        });
+    } catch ( err ) {
+        console.warn('Не удалось запустить обратный счетчик акции');
+        console.warn(err);
+    }
+
+    console.log('CountDown enabled');
+}();
 $(document).ready(function() {
 
     var $productDescriptionToggle = $('#productDescriptionToggle');
@@ -1329,6 +1382,7 @@ $(document).ready(function() {
     } catch (e) {
         console.error(e);
     }
+
 });
 ;(function() {
 	var

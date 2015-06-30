@@ -27,16 +27,18 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
 
     <?= $helper->render('product-page/blocks/variants', ['product' => $product]) ?>
 
+    <? if ($product->getAnnounce()) : ?>
     <p class="product-card-desc collapsed js-description-expand"><?= $product->getAnnounce() ?></p>
+    <? endif ?>
 
     <dl class="product-card-prop">
-        <? foreach ($product->getMainProperties() as $i => $property) : ?>
-            <? if ($property->getName() == $modelName) continue ?>
-            <? if ($i == 5) : ?>
+        <? $i = 0; foreach ($product->getMainProperties() as $property) : $i++ ?>
+            <? if ($i == 5 && count($product->getMainProperties()) >= 5 && $product->getSecondaryGroupedProperties()) : ?>
 
                     <a class="product-card-prop__lk" href="#more" onclick="$('.jsScrollSpyMoreLink').trigger('click'); return false;">Все характеристики</a>
 
             <? break; endif; ?>
+            <? if ($property->getName() == $modelName) continue ?>
             <dt class="product-card-prop__i product-card-prop__i--name"><?= $property->getName() ?></dt>
             <dd class="product-card-prop__i product-card-prop__i--val"><?= $property->getStringValue() ?></dd>
         <? endforeach ?>
@@ -75,18 +77,18 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         <!-- Шильдик с правой стороны -->
         <div class="product-card-action i-info">
 
-            <span class="product-card-action__tx i-info__tx"
+            <span class="product-card-action__tx i-info__tx js-countdown"
                   data-expires="<?= $product->getLabel()->expires->format('U') ?>">Акция действует<br>ещё <span><?= $product->getLabel()->getDateDiffString() ?></span>
             </span>
 
             <? if ($product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE)) : ?>
-                <i class="product-card-action__icon i-product i-product--info-warn i-info__icon"></i>
+                <i class="product-card-action__icon i-product i-product--info-warn i-info__icon jsProductCardNewLabelInfo"></i>
 
                 <!-- попап - подробности акции, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
-                <div class="info-popup info-popup--action">
-                    <i class="closer">×</i>
+                <div class="info-popup info-popup--action jsProductCardNewLabelPopup">
+                    <i class="closer jsProductCardNewLabelInfo">×</i>
                     <div class="info-popup__inn">
-                        <a href="" title=""><img src="<?= $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) ?>" alt=""></a>
+                        <img src="<?= $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) ?>" alt="">
                     </div>
                 </div>
                 <!--/ попап - подробности акции -->
