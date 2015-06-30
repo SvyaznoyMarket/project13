@@ -84,20 +84,21 @@ $f = function(
 
             <div class="product-card-photo jsProductPopupBigPhotoHolder">
                 <!-- <div class="product-card-photo__img" style="height: 620px; margin: 0 auto; overflow: hidden; width: 785px"> -->
-                <img src="" class="product-card-photo__img jsProductPopupBigPhoto" style="height: 620px; position: relative; top: 0; left: 0;" />
+                <img src="" class="product-card-photo__img jsProductPopupBigPhoto" />
                 <!-- </div> -->
-                <? if (count($product->getMedias('image')) > 1) : ?>
-                    <div class="product-card-photo__ctrl product-card-photo__ctrl--prev jsProductPopupSlide" data-dir="-1"><span class="symb"></span></div>
-                    <div class="product-card-photo__ctrl product-card-photo__ctrl--next jsProductPopupSlide" data-dir="1"><span class="symb"></span></div>
-                <? endif ?>
-
-                <div class="product-card-photo-zoom">
-                    <div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--in jsProductPopupZoom" data-dir="+1">+</div>
-                    <div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--out jsProductPopupZoom" data-dir="-1">–</div>
-                </div>
             </div>
 
-            <div class="product-card-photo-thumbs" style="max-width: 670px;">
+            <? if (count($product->getMedias('image')) > 1) : ?>
+                <div class="product-card-photo__ctrl product-card-photo__ctrl--prev jsProductPopupSlide" data-dir="-1"><span class="symb"></span></div>
+                <div class="product-card-photo__ctrl product-card-photo__ctrl--next jsProductPopupSlide" data-dir="1"><span class="symb"></span></div>
+            <? endif ?>
+
+            <div class="product-card-photo-zoom">
+                <div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--in jsProductPopupZoom" data-dir="+1">+</div>
+                <div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--out jsProductPopupZoom" data-dir="-1">–</div>
+            </div>
+
+            <div class="product-card-photo-thumbs">
                 <ul class="product-card-photo-thumbs-list">
                     <? foreach ($product->getMedias('image') as $key => $photo) : ?>
                         <li class="product-card-photo-thumbs__i jsPopupPhotoThumb"

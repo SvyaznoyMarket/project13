@@ -46,26 +46,26 @@
         };
 
     // Перемещение увеличенной фотографии по движению мыши
-    $popupPhotoHolder.on('mousemove mouseleave wheel', function(e){
-        var parentOffset = $(this).parent().offset(),
-            relX = e.pageX - parentOffset.left,
-            relY = e.pageY - parentOffset.top,
-            hW = $(this).width(),
-            hH = $(this).height(),
-            iW = $popupPhoto.width(),
-            iH = $popupPhoto.height();
+    // $popupPhotoHolder.on('mousemove mouseleave wheel', function(e){
+    //     var parentOffset = $(this).parent().offset(),
+    //         relX = e.pageX - parentOffset.left,
+    //         relY = e.pageY - parentOffset.top,
+    //         hW = $(this).width(),
+    //         hH = $(this).height(),
+    //         iW = $popupPhoto.width(),
+    //         iH = $popupPhoto.height();
 
-        if (e.type == 'wheel') {
-            setZoom(e.originalEvent['deltaY'] < 0 ? 1 : -1);
-            e.stopPropagation(); // иначе будет скролл страницы
-        }
+    //     if (e.type == 'wheel') {
+    //         setZoom(e.originalEvent['deltaY'] < 0 ? 1 : -1);
+    //         e.stopPropagation(); // иначе будет скролл страницы
+    //     }
 
-        if (typeof $popupPhoto.data('zoom') == 'undefined' || $popupPhoto.data('zoom') == 0) return;
+    //     if (typeof $popupPhoto.data('zoom') == 'undefined' || $popupPhoto.data('zoom') == 0) return;
 
-        if (e.type == 'mousemove') $popupPhoto.css('left', relX/hW * (hW - iW)).css('top', relY/hH * (hH - iH));
-        if (e.type == 'mouseleave') $popupPhoto.css('left', (hW - iW)/2).css('top', (hH - iH)/2);
+    //     if (e.type == 'mousemove') $popupPhoto.css('left', relX/hW * (hW - iW)).css('top', relY/hH * (hH - iH));
+    //     if (e.type == 'mouseleave') $popupPhoto.css('left', (hW - iW)/2).css('top', (hH - iH)/2);
 
-    });
+    // });
 
     /* Клик по фото в карточке товара */
     $body.on('click', '.jsOpenProductImgPopup', function(){
@@ -76,7 +76,12 @@
         $popupPhotoThumbs.removeClass(thumbActiveClass)
             .eq($activeThumb.index()).addClass(thumbActiveClass);
         // и открываем popup
-        $imgPopup.lightbox_me(popupDefaults);
+        $imgPopup.lightbox_me({
+            centered: false,
+            closeSelector: '.jsPopupCloser',
+            modalCSS: {top: '0', left: '0'},
+            closeClick: true
+        });
     });
 
     /* Меняем большое изображение в popup при клике на миниатюру */
