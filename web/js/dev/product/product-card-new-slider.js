@@ -174,7 +174,7 @@
     });
 
     // Youtube и 3D
-    $body.on('click', '.jsProductMediaButton', function(e){
+    $body.on('click', '.jsProductMediaButton li', function(e){
         var $popup = $(e.target).next(),
             $iframe = $popup.find('iframe'),
             src = $iframe.data('src'),

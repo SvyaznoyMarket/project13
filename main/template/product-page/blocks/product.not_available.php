@@ -17,7 +17,6 @@ $f = function(
 
             <!-- похожие товары -->
             <div class="product-section product-section--inn" id="similar">
-                <div class="product-section__h3">Похожие товары</div>
                 <? if (\App::config()->product['pullRecommendation']): ?>
                     <?= $helper->render('product-page/blocks/slider', [
                         'type'     => 'similar',
