@@ -17,7 +17,7 @@ $helper = \App::helper();
     <div class="delivery-region">
         <span class="delivery-region__msg">Ваш регион</span>
         <span class="delivery-region__current"><?= \App::user()->getRegion()->getName() ?></span>
-        <a href="#" class="delivery-region__change-lnk"><span class="delivery-region__change-inn jsChangeRegion">Изменить</span></a>
+        <a href="#" class="delivery-region__change-lnk"><span class="delivery-region__change-inn jsChangeRegion">Изменить регион</span></a>
     </div>
     <div class="deliv-ctrls">
     <!-- Поиск такой же как в одноклике -->
@@ -53,8 +53,8 @@ $helper = \App::helper();
     <div class="delivery-map">
         <ul class="points-lst deliv-list jsPointList">
             <? foreach ($points as $point) : ?>
-            <li class="points-lst-i jsPointListItem" id="uid-<?= $point->uid ?>" data-partner="<?= $point->partner ?>">
-                <div class="jsPointListItemPartner"><?= $partnersBySlug[$point->partner]['name'] ?></div>
+            <li class="points-lst-i jsPointListItem" id="uid-<?= $point->uid ?>" data-geo="<?= $helper->json([$point->latitude, $point->longitude]) ?>" data-partner="<?= $point->partner ?>">
+                <div class="jsPointListItemPartner"><?= $point->getPartnerName() ?></div>
                 <div class="deliv-item__addr">
                     <? if ($point->subway) : ?>
                     <div class="deliv-item__metro" style="background: <?= $point->subway->getLine()->getColor() ?>">

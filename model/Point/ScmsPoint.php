@@ -50,4 +50,17 @@ class ScmsPoint {
         }
     }
 
+    /**
+     * @return string
+     */
+    public function getPartnerName() {
+        switch ($this->partner) {
+            case 'enter'        : return 'Магазин Enter';
+            case 'pickpoint'    : return strpos($this->name, 'Постамат') === false ? 'Пункт выдачи Pickpoint' : 'Постамат Pickpoint';
+            case 'hermes'       : return 'Пункт выдачи Hermes-DPD';
+            case 'svyaznoy'      : return 'Магазин Связной';
+            default             : return '';
+        }
+    }
+
 }
