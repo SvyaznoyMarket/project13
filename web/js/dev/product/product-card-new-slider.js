@@ -88,6 +88,7 @@
             $popupPhoto.css({'max-height' : '100%', 'max-width' : '100%', 'top' : 0, 'left' : 0}); // fix при установке в 0
             $popupPhoto.data('zoom', 0);
             $zoomBtn.removeClass('disabled');
+            $('.jsProductPopupZoomOut').addClass('disabled');
             if ( $popupPhoto.hasClass('ui-draggable') ) {
                 $popupPhoto.draggable('destroy')
             }

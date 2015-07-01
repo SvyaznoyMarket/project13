@@ -94,8 +94,8 @@ $f = function(
             <? endif ?>
 
             <div class="product-card-photo-zoom">
-                <div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--in jsProductPopupZoom" data-dir="+1">+</div>
-                <div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--out jsProductPopupZoom" data-dir="-1">–</div>
+                <div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--in jsProductPopupZoom jsProductPopupZoomIn" data-dir="+1">+</div>
+                <div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--out disabled jsProductPopupZoom jsProductPopupZoomOut" data-dir="-1">–</div>
             </div>
 
             <div class="product-card-photo-thumbs">
