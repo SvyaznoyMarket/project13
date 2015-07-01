@@ -83,7 +83,6 @@ $buySender2 = $request->get('sender2');
 
 	<!-- с этим товаром покупают -->
 	<div class="product-section product-section--inn product-section--border-top">
-        <div class="product-section__h3">С этим товаром покупают</div>
 
         <? if (\App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product-page/blocks/slider', [
@@ -188,7 +187,6 @@ $buySender2 = $request->get('sender2');
 
 	<!-- похожие товары -->
 	<div class="product-section product-section--inn" id="similar">
-        <div class="product-section__h3">Похожие товары</div>
         <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product-page/blocks/slider', [
                 'type'     => 'similar',
