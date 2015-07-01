@@ -122,7 +122,8 @@
 .ep{
     &__fishka {
         font-size: 16px;
-        line-height: 40px;
+        line-height: 1;
+        padding: 8px 0;
 
         width: 40px;
 
@@ -133,8 +134,18 @@
         .inline-block-middle();
         background-size: 100%;
         cursor: pointer;
+        &-value {
+            .inline-block(middle);
+            line-height: 40px;
+            line-height: 1.4;
+
+            &--text {
+                margin-left: 1px;
+            }
+        }
         .rubl{
-            margin: 0 0 0 -1px;
+            margin: 0;
+            line-height: 1;
         }
     }
     &__desc {
