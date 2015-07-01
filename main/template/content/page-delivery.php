@@ -17,7 +17,7 @@ $helper = \App::helper();
     <div class="delivery-region">
         <span class="delivery-region__msg">Ваш регион</span>
         <span class="delivery-region__current"><?= \App::user()->getRegion()->getName() ?></span>
-        <a href="#" class="delivery-region__change-lnk"><span class="delivery-region__change-inn jsChangeRegion">Изменить</span></a>
+        <a href="#" class="delivery-region__change-lnk"><span class="delivery-region__change-inn jsChangeRegion">Изменить регион</span></a>
     </div>
     <div class="deliv-ctrls">
     <!-- Поиск такой же как в одноклике -->
@@ -54,7 +54,7 @@ $helper = \App::helper();
         <ul class="points-lst deliv-list jsPointList">
             <? foreach ($points as $point) : ?>
             <li class="points-lst-i jsPointListItem" id="uid-<?= $point->uid ?>" data-partner="<?= $point->partner ?>">
-                <div class="jsPointListItemPartner"><?= $partnersBySlug[$point->partner]['name'] ?></div>
+                <div class="points-lst-i__partner jsPointListItemPartner"><?= $partnersBySlug[$point->partner]['name'] ?></div>
                 <div class="deliv-item__addr">
                     <? if ($point->subway) : ?>
                     <div class="deliv-item__metro" style="background: <?= $point->subway->getLine()->getColor() ?>">
@@ -63,8 +63,11 @@ $helper = \App::helper();
                     <? endif ?>
                     <div class="deliv-item__addr-name"><?= $point->address ?></div>
 <!--                    <div class="deliv-item__time">--><?//= $point->workingTime ?><!--</div>-->
-                    <!-- Ссылка Подробнее -->
+
+
                 </div>
+                <!-- Ссылка Подробнее -->
+                <!--a href="" class="points-lst-i__more">Подробнее</a-->
             </li>
             <? endforeach ?>
         </ul>
