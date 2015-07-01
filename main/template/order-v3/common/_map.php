@@ -36,7 +36,7 @@
 
         <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= 'map-' . $uniqId ?>"></div>
 
-        <div class="pick-point__title">Выберите точку самовывоза</div>
+        <div class="pick-point__title"><?= $page == 'order' ? 'Выберите точку самовывоза' : 'Точки самовывоза' ?></div>
 
         <!-- Новая верстка -->
         <div class="common-wrap clearfix">
@@ -146,11 +146,16 @@
 
                     <table class="pick-point-list">
                         <tbody data-bind="foreach: points">
-                            <tr class="pick-point-item jsChangePoint clearfix" data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }">
+
+                            <tr class="pick-point-item clearfix jsChangePoint"
+                                data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }
+                                <? if ($page == 'product') : ?>, click: $root.setMapCenter <? endif ?>">
+
                                 <td class="pick-point-item__logo">
                                     <img src="" class="pick-point-item__img" data-bind="attr: { src: icon }" />
                                     <span class="pick-point-item__name" data-bind="text: listName"></span>
                                 </td>
+
                                 <td class="pick-point-item__addr">
                                     <!-- ko if: $.isArray(subway) -->
                                     <div class="pick-point-item__metro" data-bind="style: { background: subway[0].line.color }">
@@ -162,7 +167,7 @@
                                 </td>
 
 
-                                <td class="pick-point-item__info" valign="middle">
+                                <td class="pick-point-item__info <?= $page == 'product' ? 'no-hide-info' : '' ?>" valign="middle">
 
                                 <!-- ko if: !productInShowroom -->
                                     <div class="pick-point-item__date" data-bind="text: humanNearestDay"></div>
