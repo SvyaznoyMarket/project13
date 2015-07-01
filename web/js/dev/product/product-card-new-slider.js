@@ -46,7 +46,7 @@
             if ( direction < 0) {
 
                 $popupPhoto.css({'max-height' : '100%', 'max-width' : '100%', 'top' : 0, 'left' : 0}); // fix при установке в 0
-                $popupPhoto.data('zoom') = 0;
+                $popupPhoto.data('zoom', 0);
             }
         },
         setPhoto = function(index) {
@@ -138,7 +138,7 @@
     });
 
     // Youtube и 3D
-    $body.on('click', '.jsProductMediaButton', function(e){
+    $body.on('click', '.jsProductMediaButton li', function(e){
         var $popup = $(e.target).next(),
             $iframe = $popup.find('iframe'),
             src = $iframe.data('src'),
