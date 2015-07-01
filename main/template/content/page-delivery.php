@@ -73,7 +73,7 @@ $helper = \App::helper();
             </li>
             <? endforeach ?>
         </ul>
-        <div id="jsDeliveryMap" style="width: 685px; height: 600px"></div>
+        <div class="map-container" id="jsDeliveryMap"></div>
     </div>
     <div class="delivery-text">
         <h2>Получение заказа в обычном магазине Enter</h2>
