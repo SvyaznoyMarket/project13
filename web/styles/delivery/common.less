@@ -18,6 +18,12 @@
                 .deliv-suggest{
                     z-index: 2;
                 }
+                &__input-wrap{
+                    padding-right: 18px;
+                    &:after{
+                        right: 12px;
+                    }
+                }
             }
 
         }
@@ -63,10 +69,14 @@
         overflow-x: hidden;
         .box-sizing(border-box);
         border: 1px solid #e6e6e6;
-        height: 480px;
+
 
         .deliv-list .deliv-item__addr{
             margin-left: -8px;
+        }
+        .map-container{
+            width: 100%;
+            height: 480px;
         }
     }
     &-logo{
@@ -151,12 +161,13 @@
         overflow-y: scroll;
         position: absolute;
         top: 0px;
-        right: -15px;
+        right: -18px;
         z-index: 1;
         padding-top: 0;
         padding-right: 23px;
 
         &-i{
+            width: 100%;
             padding: 10px 5px 10px 7px;
             background-color: #fff;
             overflow: hidden;
