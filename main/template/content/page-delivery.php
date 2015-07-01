@@ -53,8 +53,10 @@ $helper = \App::helper();
     <div class="delivery-map">
         <ul class="points-lst deliv-list jsPointList">
             <? foreach ($points as $point) : ?>
-            <li class="points-lst-i jsPointListItem" id="uid-<?= $point->uid ?>" data-partner="<?= $point->partner ?>">
-                <div class="points-lst-i__partner jsPointListItemPartner"><?= $partnersBySlug[$point->partner]['name'] ?></div>
+
+            <li class="points-lst-i jsPointListItem" id="uid-<?= $point->uid ?>" data-geo="<?= $helper->json([$point->latitude, $point->longitude]) ?>" data-partner="<?= $point->partner ?>">
+                <div class="points-lst-i__partner jsPointListItemPartner"><?= $point->getPartnerName() ?></div>
+
                 <div class="deliv-item__addr">
                     <? if ($point->subway) : ?>
                     <div class="deliv-item__metro" style="background: <?= $point->subway->getLine()->getColor() ?>">

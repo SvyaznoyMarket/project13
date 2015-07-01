@@ -9,7 +9,7 @@
         $pointList = $('.jsPointListItem'),
         $pointListItemPartners = $('.jsPointListItemPartner'),
         pointActiveClass = 'current',
-        activePartners = [], map, objectManager, uidsToShow = [];
+        activePartners = [], map, objectManager, uidsToShow = [], manualSelection = false;
 
     if ($mapContainer.length == 0) return ;
 
@@ -17,6 +17,7 @@
     console.log('Список для geoManager', geoObjects);
 
     function filterPointsList() {
+        if (manualSelection) return;
         $pointList.each(function(){
             if ($.inArray(this.id.slice(4), uidsToShow) === -1) {
                 $(this).hide()
@@ -76,6 +77,9 @@
         map.geoObjects.add(objectManager);
         map.setBounds(map.geoObjects.getBounds());
 
+        var position = map.getGlobalPixelCenter();
+        map.setGlobalPixelCenter([ position[0] + 110, position[1] ]);
+
     });
 
     // Переключение партнеров
@@ -106,7 +110,7 @@
             });
         }
 
-        if (activePartners.length == 1) {
+        if (activePartners.length == 1 && activePartners[0] != 'pickpoint') {
             $pointListItemPartners.hide()
         } else {
             $pointListItemPartners.show()
@@ -120,6 +124,7 @@
             uid = $(this).attr('id').slice(4);
 
         if ($this.hasClass(pointActiveClass)) {
+            manualSelection = false;
             $this.removeClass(pointActiveClass);
             if (typeof objectManager != 'undefined') {
                 objectManager.setFilter(function(point){
@@ -127,6 +132,7 @@
                 });
             }
         } else {
+            manualSelection = true;
             if (typeof objectManager != 'undefined') {
                 objectManager.setFilter(function(point){
                     return point.properties.eUid == uid;
@@ -134,6 +140,11 @@
             }
             $pointList.removeClass(pointActiveClass);
             $this.addClass(pointActiveClass);
+            if (map) {
+                map.setCenter($this.data('geo'), map.getZoom());
+                var position = map.getGlobalPixelCenter();
+                map.setGlobalPixelCenter([ position[0] + 110, position[1] ]);
+            }
         }
 
         if (map && typeof map.events.fire == 'function') {
