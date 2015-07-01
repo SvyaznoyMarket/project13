@@ -23,12 +23,12 @@ $helper = \App::helper();
     <!-- Поиск такой же как в одноклике -->
         <div class="deliv-search">
             <div class="deliv-search__input-wrap">
-                <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро"/>
-                <div class="deliv-search__clear">×</div>
+                <input id="searchInput" class="deliv-search-input" type="text" placeholder="Искать по улице, метро"/>
+                <div class="deliv-search__clear jsSearchClear" style="display: none">×</div>
             </div>
             <!-- Саджест такой же как в одноклике -->
-            <div class="deliv-suggest" style="display:none">
-                <ul class="deliv-suggest__list">
+            <div class="deliv-suggest jsSearchAutocompleteHolder" style="display:none">
+                <ul class="deliv-suggest__list jsSearchAutocompleteList">
                     <li class="deliv-suggest__i"></li>
                 </ul>
             </div>

@@ -9,7 +9,11 @@
         $pointList = $('.jsPointListItem'),
         $pointListItemPartners = $('.jsPointListItemPartner'),
         pointActiveClass = 'current',
-        activePartners = [], map, objectManager, uidsToShow = [], manualSelection = false;
+        $searchInput = $('#searchInput'),
+        $searchClear = $('.jsSearchClear'),
+        $searchAutocompleteList = $('.jsSearchAutocompleteList'),
+        $searchAutocompleteHolder = $('.jsSearchAutocompleteHolder'),
+        activePartners = [], map, objectManager, uidsToShow = [];
 
     if ($mapContainer.length == 0) return ;
 
@@ -17,7 +21,6 @@
     console.log('Список для geoManager', geoObjects);
 
     function filterPointsList() {
-        if (manualSelection) return;
         $pointList.each(function(){
             if ($.inArray(this.id.slice(4), uidsToShow) === -1) {
                 $(this).hide()
@@ -26,6 +29,78 @@
             }
         });
     }
+
+    // Поиск
+    $searchInput.on('keyup', function(e){
+        var text = $(this).val(),
+            keycode = e.which,
+            $elements = $('.jsSearchAutocompleteItem'),
+            $list = $('.deliv-suggest__list'),
+            activeClass = 'deliv-suggest__i--active',
+            index = $elements.index($elements.filter('.'+activeClass));
+
+        if (text.length == 0) {
+            $searchClear.hide()
+        } else {
+            $searchClear.show()
+        }
+
+        if (!ymaps || typeof ymaps.geocode != 'function') return;
+
+        if ($.inArray(keycode, [13,38,40]) === -1) ymaps.geocode(text, { /*boundedBy: extendedBounds, strictBounds: true*/ }).then(
+            function(res){
+                var $list = $searchAutocompleteList.empty();
+                res.geoObjects.each(function(obj){
+                    $list.append(
+                        $('<li class="deliv-suggest__i jsSearchAutocompleteItem" />')
+                            .data('bounds', obj.geometry.getBounds())
+                            .text(obj.properties.get('name') + ', ' + obj.properties.get('description')));
+                });
+                $searchAutocompleteHolder.show();
+                $elements = $('.jsSearchAutocompleteItem');
+            },
+            function(err){
+                console.warn('Geocode error', err)
+            }
+        );
+
+        $elements.removeClass(activeClass);
+
+        switch (keycode) {
+            case 13: // Enter key
+                if (index > -1) {
+                    $elements.eq(index).click();
+                    return false;
+                }
+                return false;
+            case 38: // up key
+                if (index == -1) index = $elements.length;
+                $elements.eq(index - 1).addClass(activeClass);
+                $list.scrollTo('.' + activeClass);
+                return false;
+            case 40: // down key
+                $elements.eq(index + 1).addClass(activeClass);
+                $list.scrollTo('.' + activeClass);
+                return false;
+        }
+
+    });
+
+    // Очистка поиска
+    $searchClear.on('click', function() {
+        $searchInput.val('');
+        $searchClear.hide();
+        $searchAutocompleteHolder.hide();
+    });
+
+    $(document.body).on('click', '.jsSearchAutocompleteItem', function() {
+        var bounds = $(this).data('bounds');
+        if (bounds) {
+            map.setCenter(bounds[0], 14);
+            $searchAutocompleteHolder.hide();
+            $searchInput.val($(this).text())
+        }
+    });
 
     // инициализация карты
     ymaps.ready(function(){
@@ -120,11 +195,9 @@
 
     $pointList.on('click', function(){
 
-        var $this = $(this),
-            uid = $(this).attr('id').slice(4);
+        var $this = $(this);
 
         if ($this.hasClass(pointActiveClass)) {
-            manualSelection = false;
             $this.removeClass(pointActiveClass);
             if (typeof objectManager != 'undefined') {
                 objectManager.setFilter(function(point){
@@ -132,16 +205,10 @@
                 });
             }
         } else {
-            manualSelection = true;
-            if (typeof objectManager != 'undefined') {
-                objectManager.setFilter(function(point){
-                    return point.properties.eUid == uid;
-                });
-            }
             $pointList.removeClass(pointActiveClass);
             $this.addClass(pointActiveClass);
             if (map) {
-                map.setCenter($this.data('geo'), map.getZoom());
+                map.setCenter($this.data('geo'), 15);
                 var position = map.getGlobalPixelCenter();
                 map.setGlobalPixelCenter([ position[0] + 110, position[1] ]);
             }
