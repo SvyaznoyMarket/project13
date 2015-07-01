@@ -7,18 +7,29 @@
         $partnersList = $('.jsPartnerListItem'),
         $pointListHolder= $('.jsPointList'),
         $pointList = $('.jsPointListItem'),
+        $pointListItemPartners = $('.jsPointListItemPartner'),
         pointActiveClass = 'current',
-        activePartners = [], map, objectManager;
+        activePartners = [], map, objectManager, uidsToShow = [];
 
     if ($mapContainer.length == 0) return ;
 
     console.log('Список партнеров', partners);
     console.log('Список для geoManager', geoObjects);
 
+    function filterPointsList() {
+        $pointList.each(function(){
+            if ($.inArray(this.id.slice(4), uidsToShow) === -1) {
+                $(this).hide()
+            } else {
+                $(this).show()
+            }
+        });
+    }
+
     // инициализация карты
     ymaps.ready(function(){
 
-        objectManager = new ymaps.ObjectManager();
+        objectManager = window.om = new ymaps.ObjectManager();
         objectManager.objects.options.set('iconLayout', 'default#image');
         objectManager.objects.options.set('iconImageSize', [23,30]);
 
@@ -27,11 +38,11 @@
                 idSelector ='#uid-' + objId;
 
             $pointList.removeClass(pointActiveClass).filter(idSelector).addClass(pointActiveClass);
-            $pointListHolder.scrollTo(idSelector);
+            $pointListHolder.scrollTo(idSelector, 100, {offset: {top: -100}});
 
         });
 
-        map = window.map = new ymaps.Map("jsDeliveryMap", {
+        map = window.omap = new ymaps.Map("jsDeliveryMap", {
             center: [68, 68],
             zoom: 11,
             controls: ['geolocationControl', 'zoomControl']
@@ -39,6 +50,26 @@
             autoFitToViewport: 'always',
             suppressMapOpenBlock: true,
             suppressObsoleteBrowserNotifier: true
+        });
+
+        map.events.add('boundschange', function (event) {
+            var bounds = event.get('newBounds') ? event.get('newBounds') : map.getBounds();
+            var uids = [];
+            bounds = event.get('target').getBounds();
+            objectManager.objects.each(function(object) {
+                var state = objectManager.getObjectState(object.id),
+                    geo = object.geometry.coordinates,
+                    uid = object.properties.eUid,
+                    inBounds;
+
+                inBounds = bounds[0][0] < geo[0] && bounds[0][1] < geo[1] && bounds[1][0] > geo[0] && bounds[1][1] > geo[1];
+
+                if (!state.isFilteredOut && inBounds) {
+                    uids.push(uid)
+                }
+            });
+            uidsToShow = uids;
+            filterPointsList();
         });
 
         objectManager.add(geoObjects);
@@ -57,8 +88,6 @@
         activePartners = $.map($partnersList.filter(function(){return $(this).hasClass(activeClass)}),
             function(obj){ return $(obj).data('value')});
 
-        console.log(activePartners);
-
         if (typeof objectManager != 'undefined') {
             objectManager.setFilter(function(point) {
                 return activePartners.length == 0 ? true : $.inArray(point.properties.ePartner, activePartners) !== -1;
@@ -68,9 +97,19 @@
         if (activePartners.length == 0) {
             $pointList.show();
         } else {
-            $pointList.filter(function (i, domEl) {
-                return $.inArray($(domEl).data('partner'), activePartners) === -1;
-            }).hide();
+            $pointList.each(function(){
+                if ($.inArray($(this).data('partner'), activePartners) === -1) {
+                    $(this).hide()
+                } else {
+                    $(this).show()
+                }
+            });
+        }
+
+        if (activePartners.length == 1) {
+            $pointListItemPartners.hide()
+        } else {
+            $pointListItemPartners.show()
         }
 
     });
@@ -87,17 +126,19 @@
                     return activePartners.length == 0 ? true : $.inArray(point.properties.ePartner, activePartners) !== -1;
                 });
             }
-            return;
+        } else {
+            if (typeof objectManager != 'undefined') {
+                objectManager.setFilter(function(point){
+                    return point.properties.eUid == uid;
+                });
+            }
+            $pointList.removeClass(pointActiveClass);
+            $this.addClass(pointActiveClass);
         }
 
-        if (typeof objectManager != 'undefined') {
-            objectManager.setFilter(function(point){
-                return point.properties.eUid == uid;
-            });
+        if (map && typeof map.events.fire == 'function') {
+            map.events.fire('boundschange');
         }
-
-        $pointList.removeClass(pointActiveClass);
-        $this.addClass(pointActiveClass);
     });
 
 

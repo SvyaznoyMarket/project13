@@ -54,7 +54,7 @@ $helper = \App::helper();
         <ul class="points-lst deliv-list jsPointList">
             <? foreach ($points as $point) : ?>
             <li class="points-lst-i jsPointListItem" id="uid-<?= $point->uid ?>" data-partner="<?= $point->partner ?>">
-                <div class=""><?= $partnersBySlug[$point->partner]['name'] ?></div>
+                <div class="jsPointListItemPartner"><?= $partnersBySlug[$point->partner]['name'] ?></div>
                 <div class="deliv-item__addr">
                     <? if ($point->subway) : ?>
                     <div class="deliv-item__metro" style="background: <?= $point->subway->getLine()->getColor() ?>">
