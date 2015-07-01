@@ -2,6 +2,7 @@
 
 namespace Model\Product;
 
+use Model\Media;
 use Model\Product\Delivery\ProductDelivery;
 use Model\EnterprizeCoupon\Entity as Coupon;
 
@@ -226,6 +227,8 @@ class Entity {
         if (array_key_exists('nearest_city', $data) && is_array($data['nearest_city'])) foreach ($data['nearest_city'] as $city) {
             $this->addNearestCity(new \Model\Region\Entity($city));
         }
+
+        if (array_key_exists('medias', $data) && is_array($data['medias'])) $this->medias = array_map(function($mediaData) {return new Media($mediaData);}, $data['medias']);
 
         $indexedPropertyGroups = [];
         foreach ($this->propertyGroup as $group) {

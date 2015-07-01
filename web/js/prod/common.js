@@ -89,7 +89,7 @@ currLabel.removeClass('mChecked');});label.addClass('mChecked');}else{label.remo
 body.on('change','.bCustomInput, .js-customInput',function(e){updateInput($(e.currentTarget));});inputs.each(function(index,input){updateInput($(input));});});
 $(function(){$('body').on('click','.jsFavoriteLink',function(e){var
 $el=$(e.currentTarget),xhr=$el.data('xhr');console.info({'.jsFavoriteLink click':$el});if($el.data('ajax')){e.stopPropagation();try{if(xhr)xhr.abort();}catch(error){console.error(error);}
-xhr=$.post($el.attr('href')).done(function(response){$('body').trigger('updateWidgets',response.widgets);}).always(function(){$el.data('xhr',null);});$el.data('xhr',xhr);e.preventDefault();}});});
+xhr=$.post($el.attr('href')).done(function(response){$('body').trigger('updateWidgets',{widgets:response.widgets,callback:$el.attr('href').indexOf('delete-product')!==-1?null:function(){var $widget=$("#favourite-userbar-popup-widget"),showClass='topbarfix_cmpr_popup-show';$widget.addClass(showClass);setTimeout(function(){$widget.removeClass(showClass)},2000)}});}).always(function(){$el.data('xhr',null);});$el.data('xhr',xhr);e.preventDefault();}});});
 (function(){var goToId=function goToId(){var to=$(this).data('goto');$(document).stop().scrollTo($('#'+to),800);return false;};$(document).ready(function(){$('.jsGoToId').bind('click',goToId);});}());
 ;(function(){$.ajax({url:'https://jira.enter.ru/s/ru_RU-istibo/773/3/1.2.4/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2e17c5d6',type:'get',cache:true,dataType:'script'});window.ATL_JQ_PAGE_PROPS={'triggerFunction':function(showCollectorDialog){$('#jira').click(function(e){e.preventDefault();showCollectorDialog();});}};}());
 ;$(function(){var
@@ -279,5 +279,5 @@ if(topBtn.length){topBtn.on('click',upToFilter);}
 if(scrollTarget.length){w.on('scroll',function(){checkScroll();});}else{w.on('scroll',function(){checkScroll(true);});}
 checkScroll();}
 else{overlay.remove();overlay=false;}}(window.ENTER));
-$(function(){$('body').on('updateWidgets',function(e,widgets){$.each(widgets,function(id,value){console.info('replace '+id+' with '+value);$(id).html($(value).html());})});});
+$(function(){$('body').on('updateWidgets',function(e,widgetAndCallbackObj){$.each(widgetAndCallbackObj.widgets,function(id,value){var oldNode=document.querySelector(id),newNode=$(value)[0];console.info('replace '+id+' with '+value);oldNode.parentNode.replaceChild(newNode,oldNode);});if(typeof widgetAndCallbackObj.callback=='function'){console.info('call callback '+widgetAndCallbackObj.callback);widgetAndCallbackObj.callback();}});});
 //@ sourceMappingURL=common.js.map

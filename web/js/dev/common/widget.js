@@ -1,8 +1,20 @@
 $(function() {
-    $('body').on('updateWidgets', function(e, widgets){
-        $.each(widgets, function(id, value) {
+    $('body').on('updateWidgets', function(e, widgetAndCallbackObj){
+
+        $.each(widgetAndCallbackObj.widgets, function(id, value) {
+
+            var oldNode = document.querySelector(id),
+                newNode = $(value)[0];
+
             console.info('replace ' + id +' with ' + value);
-            $(id).html($(value).html());
-        })
+
+            oldNode.parentNode.replaceChild(newNode, oldNode);
+        });
+
+        if (typeof widgetAndCallbackObj.callback == 'function') {
+            console.info('call callback ' + widgetAndCallbackObj.callback);
+            widgetAndCallbackObj.callback();
+        }
+
     });
 });
