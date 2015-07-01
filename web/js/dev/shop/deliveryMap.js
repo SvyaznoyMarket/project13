@@ -30,6 +30,12 @@
         });
     }
 
+    function fireMapEvent(eventName) {
+        if (map && typeof map.events.fire == 'function') {
+            map.events.fire(eventName);
+        }
+    }
+
     // Поиск
     $searchInput.on('keyup', function(e){
         var text = $(this).val(),
@@ -169,21 +175,16 @@
 
         if (typeof objectManager != 'undefined') {
             objectManager.setFilter(function(point) {
-                return activePartners.length == 0 ? true : $.inArray(point.properties.ePartner, activePartners) !== -1;
+                var inActivePartners =  $.inArray(point.properties.ePartner, activePartners) !== -1,
+                    $listItem = $('#uid-' + point.properties.eUid);
+
+                if (inActivePartners && activePartners.length != 0) {$listItem.show()} else {$listItem.hide()}
+
+                return activePartners.length == 0 ? true : inActivePartners;
             });
         }
 
-        if (activePartners.length == 0) {
-            $pointList.show();
-        } else {
-            $pointList.each(function(){
-                if ($.inArray($(this).data('partner'), activePartners) === -1) {
-                    $(this).hide()
-                } else {
-                    $(this).show()
-                }
-            });
-        }
+        fireMapEvent('boundschange');
 
         if (activePartners.length == 1 && activePartners[0] != 'pickpoint') {
             $pointListItemPartners.hide()
@@ -214,9 +215,7 @@
             }
         }
 
-        if (map && typeof map.events.fire == 'function') {
-            map.events.fire('boundschange');
-        }
+        fireMapEvent('boundschange');
     });
 
 
