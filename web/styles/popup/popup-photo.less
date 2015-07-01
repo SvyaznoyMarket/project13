@@ -58,11 +58,17 @@
             width: auto;
             margin: 0;
             &__img {
+                position: absolute;
+                left: 0;
+                right: 0;
+
                 max-width: 100%;
                 max-height: 100%;
-                position: relative;
-                top: 0;
-                left: 0;
+                margin: auto;
+                &.fixed {
+                    bottom: 0;
+                    top: 0;
+                }
             }
             &__ctrl {
                 position: absolute;
@@ -119,10 +125,13 @@
                     border: 1px solid @input-border;
 
                     .rounded(3px);
-                    .opacity(.5);
+                    .opacity(.7);
                     .transition(all .2s ease-out);
                     &:hover {
                         .opacity(.9);
+                    }
+                    &.disabled {
+                        .opacity(.3);
                     }
                 }
             }

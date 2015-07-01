@@ -7,6 +7,7 @@
         $popupPhotoThumbs = $('.jsPopupPhotoThumb'),
         $productPhotoThumbs = $('.jsProductThumbList'),
         $productPhotoThumbsBtn = $('.jsProductThumbBtn'),
+        $zoomBtn   = $('.jsProductPopupZoom'),
         productPhotoThumbsWidth = $productPhotoThumbs.width() - 2,
         productPhotoThumbsFullWidth = $productPhotoThumbs.get(0) ? $productPhotoThumbs.get(0).scrollWidth : 0,
         thumbActiveClass = 'product-card-photo-thumbs__i--act',
@@ -41,46 +42,64 @@
             initWidth = newImage.width;
             initHeight = newImage.height;
 
-            $popupPhoto.css({'max-height' : initHeight, 'max-width' : initWidth});
+            // нажали плюс и размеры картинки больше контейнера
+            if ( direction > 0 && ( initWidth > $popupPhotoHolder.width() || initHeight > $popupPhotoHolder.height() ) ) {
+                $popupPhoto
+                    .removeClass('fixed')
+                    .css({'max-height' : initHeight, 'max-width' : initWidth});
 
+                var
+                    parentOffset       = $popupPhotoHolder.offset(),
+                    parentOffsetHeight = $popupPhotoHolder.height(),
+                    parentOffsetWidth  = $popupPhotoHolder.width(),
+                    imgWidth           = $popupPhoto.width(),
+                    imgHeight          = $popupPhoto.height(),
+                    right              = parentOffset.left,
+                    bottom             = parentOffset.top,
+                    left, top;
+
+                if ( imgWidth > parentOffsetWidth ) {
+                    left = parentOffsetWidth - imgWidth + right;
+                } else {
+                    left = 0;
+                }
+
+                if ( imgHeight > parentOffsetHeight ) {
+                    top = parentOffsetHeight - imgHeight + bottom;
+                } else {
+                    top = 0;
+                }
+
+                $popupPhoto.draggable({
+                    containment: [left, top, right, bottom],
+                    scroll: false
+                });
+            }
+
+            // нажали минус
             if ( direction < 0) {
-
-                $popupPhoto.css({'max-height' : '100%', 'max-width' : '100%', 'top' : 0, 'left' : 0}); // fix при установке в 0
-                $popupPhoto.data('zoom') = 0;
+                setDefaultSetting();
             }
         },
+
+        // начальные установки для блока большого изображения
+        setDefaultSetting = function() {
+            $popupPhoto.addClass('fixed');
+            $popupPhoto.css({'max-height' : '100%', 'max-width' : '100%', 'top' : 0, 'left' : 0}); // fix при установке в 0
+            $popupPhoto.data('zoom', 0);
+            $zoomBtn.removeClass('disabled');
+            if ( $popupPhoto.hasClass('ui-draggable') ) {
+                $popupPhoto.draggable('destroy')
+            }
+        },
+
         setPhoto = function(index) {
             // отмечаем активным классом thumb
             $popupPhotoThumbs.removeClass(thumbActiveClass).eq(index).addClass(thumbActiveClass);
             // меняем картинку
             $popupPhoto.attr('src', $popupPhotoThumbs.eq(index).data('big-img')).css({'max-height' : '100%', 'max-width' : '100%', 'top' : 0, 'left' : 0});
+            setDefaultSetting();
         };
-
-        // Перемещение увеличенной фотографии по движению мыши
-        // $popupPhotoHolder.on('mousemove mouseleave wheel', function(e){
-        //     var parentOffset = $(this).parent().offset(),
-        //         relX = e.pageX - parentOffset.left,
-        //         relY = e.pageY - parentOffset.top,
-        //         hW = $(this).width(),
-        //         hH = $(this).height(),
-        //         iW = $popupPhoto.width(),
-        //         iH = $popupPhoto.height();
-
-        //     // if (e.type == 'wheel') {
-        //     //     setZoom(e.originalEvent['deltaY'] < 0 ? 1 : -1);
-        //     //     e.stopPropagation(); // иначе будет скролл страницы
-        //     // }
-
-        //     if (typeof $popupPhoto.data('zoom') == 'undefined' || $popupPhoto.data('zoom') == 0) return;
-
-        //     if (e.type == 'mousemove') {
-        //         $popupPhoto.css('left', relX/hW * (hW - iW)).css('top', relY/hH * (hH - iH));
-        //     }
-
-        //     if (e.type == 'mouseleave') {
-        //         $popupPhoto.css('left', (hW - iW)/2).css('top', (hH - iH)/2);
-        //     }
-        // });
 
     /* Клик по фото в карточке товара */
     $body.on('click', '.jsOpenProductImgPopup', function(){
@@ -95,7 +114,18 @@
             centered: false,
             closeSelector: '.jsPopupCloser',
             modalCSS: {top: '0', left: '0'},
-            closeClick: true
+            closeClick: true,
+            onLoad: function() {
+                $('html').css({'overflow':'hidden'});
+            },
+            onClose: function() {
+                setDefaultSetting();
+                $('html').css({'overflow':'auto'});
+            }
+        });
+
+        $(window).on('resize', function() {
+            setDefaultSetting();
         });
     });
 
@@ -109,7 +139,13 @@
 
     // /* Зум в попапе */
     $body.on('click', '.jsProductPopupZoom', function(){
-        var direction = parseInt($(this).data('dir'), 10);
+        var
+            $this     = $(this),
+            direction = parseInt($(this).data('dir'), 10);
+
+        $zoomBtn.removeClass('disabled');
+        $this.addClass('disabled');
+
         setZoom(direction);
     });
 

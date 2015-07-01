@@ -84,7 +84,7 @@ $f = function(
 
             <div class="product-card-photo jsProductPopupBigPhotoHolder">
                 <!-- <div class="product-card-photo__img" style="height: 620px; margin: 0 auto; overflow: hidden; width: 785px"> -->
-                <img src="" class="product-card-photo__img jsProductPopupBigPhoto" />
+                <img src="" class="product-card-photo__img fixed jsProductPopupBigPhoto" />
                 <!-- </div> -->
             </div>
 
