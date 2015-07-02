@@ -1270,7 +1270,7 @@ String.prototype.addParameterToUrl = UpdateUrlString;
 /**
  * Модуль обратного счетчика
  *
- * @module      сountDown
+ * @module      CountDown
  * @version     0.1
  *
  * @author      Zaytsev Alexandr
@@ -1309,10 +1309,11 @@ String.prototype.addParameterToUrl = UpdateUrlString;
          */
         CountDown = (function() {
             var
-                ONE_SEC  = 1000,
-                ONE_MIN  = 60 * ONE_SEC,
-                ONE_HOUR = 60 * ONE_MIN,
-                ONE_DAY  = 24 * ONE_HOUR,
+                ONE_SEC             = 1000,
+                ONE_MIN             = 60 * ONE_SEC,
+                ONE_HOUR            = 60 * ONE_MIN,
+                ONE_DAY             = 24 * ONE_HOUR,
+                SUCCESSFUL_COMPLETE = true,
 
                 helpers = {
                     isObject: function( obj ) {
@@ -1334,7 +1335,7 @@ String.prototype.addParameterToUrl = UpdateUrlString;
                 /**
                  * Обновление счетчика
                  *
-                 * @memberOf    module:countDown~CountDown#
+                 * @memberOf    module:CountDown~CountDown#
                  * @method      setExpression
                  * @private
                  *
@@ -1348,7 +1349,7 @@ String.prototype.addParameterToUrl = UpdateUrlString;
 
                     if ( diff <= 0 ) {
                         console.log('Достигли даты завершения');
-                        this.stop();
+                        this.stop(SUCCESSFUL_COMPLETE);
                     }
 
                     this.tick && this.tick({
@@ -1356,7 +1357,7 @@ String.prototype.addParameterToUrl = UpdateUrlString;
                         hours: Math.floor((diff % ONE_DAY) / ONE_HOUR),
                         minutes: Math.floor(((diff % ONE_DAY) % ONE_HOUR) / ONE_MIN),
                         seconds: Math.floor((((diff % ONE_DAY) % ONE_HOUR) % ONE_MIN) / ONE_SEC)
-                    })
+                    });
                 };
 
                 /**
@@ -1371,6 +1372,7 @@ String.prototype.addParameterToUrl = UpdateUrlString;
                  * @param       {Object}        options
                  * @param       {Number}        options.timestamp   Время, до которого ведем обратный отсчет
                  * @param       {Function}      options.tick        Обратный вызов на каждый шаг счетчика
+                 * @param       {Function}      [options.success]   Обратный вызов завершения счетчика
                  *
                  * @return      {CountDown}
                  */
@@ -1393,20 +1395,31 @@ String.prototype.addParameterToUrl = UpdateUrlString;
                         throw new Error('Параметр "tick" должен быть функцией');
                     }
 
+                    if ( options.success && !helpers.isFunction(options.success) ) {
+                        throw new Error('Параметр "success" должен быть функцией');
+                    }
+
                     this.endDate = new Date(options.timestamp);
                     this.tick    = options.tick;
+                    this.success = options.success;
                     this.iid     = setInterval(updateCounter.bind(this), 1000);
                 };
 
             /**
              * Остановка счетчика
              *
-             * @memberOf    module:countDown~CountDown#
+             * @memberOf    module:CountDown~CountDown#
              * @method      stop
              * @public
+             *
+             * @param       {Boolean}   successfulComplete  Флаг успешного завершения счетчика
              */
-            CountDown.prototype.stop = function() {
+            CountDown.prototype.stop = function( successfulComplete ) {
                 clearInterval(this.iid);
+
+                if ( successfulComplete && this.success ) {
+                    this.success();
+                }
             };
 
             return CountDown;

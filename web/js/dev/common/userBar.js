@@ -36,20 +36,12 @@
 	/**
 	 * Показ юзербара
 	 */
-	function showUserbar(disableAnimation, onOpen) {
+	function showUserbar() {
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		if (disableAnimation) {
-			userBarFixed.show(0, onOpen || function(){});
-		} else {
-			userBarFixed.addClass('fadeIn');
-		}
-
-		/*if (userBarFixed.length) {
-			userbarStatic.css('visibility','hidden');
-		}*/
+		userBarFixed.addClass('fadeIn');
 	}
 
 	/**
@@ -136,7 +128,7 @@
 		// end of function
 
 		setTimeout(function() {
-			userBarFixed.removeClass('fadeIn shadow-false');
+			userBarFixed.removeClass('shadow-false');
 		}, 100);
 
 		// только BuyInfoBlock
@@ -169,7 +161,7 @@
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		userBarFixed.addClass('fadeIn shadow-false');
+		userBarFixed.addClass('shadow-false');
 
         $('.js-topbarfixLogin').addClass('blocked');
 
@@ -189,7 +181,7 @@
 			buyInfo.show();
 		}
 
-		showUserbar(true);
+		showUserbar();
 		if (upsale) {
 			showUpsell(data, upsale);
 		}

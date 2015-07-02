@@ -18,7 +18,16 @@ $(function() {
 
             xhr = $.post($el.attr('href'))
                 .done(function(response) {
-                    $('body').trigger('updateWidgets', response.widgets);
+                    $('body').trigger('updateWidgets', {
+                        widgets: response.widgets,
+                        callback: $el.attr('href').indexOf('delete-product') !== -1 ? null : function() {
+                            var $widget = $("#favourite-userbar-popup-widget"),
+                                showClass = 'topbarfix_cmpr_popup-show';
+
+                            $widget.addClass(showClass);
+                            setTimeout(function(){ $widget.removeClass(showClass) }, 2000)
+                            }
+                        });
                 })
                 .always(function() {
                     $el.data('xhr', null);

@@ -58,7 +58,6 @@ $f = function (
     // слайдер товаров для слайдера с аксессуарами применяем модификатор goods-slider--5items
     ?>
 
-
     <div class="goods-slider js-slider-2 clearfix <? if ((bool)$categories): ?> goods-slider--width goods-slider--5items<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>"
         id="<?= $id ?>"
         data-position="<?= $sender['position'] ?>"
@@ -70,6 +69,10 @@ $f = function (
             'sender' => $sender,
             'sender2' => $sender2,
         ]) ?>" >
+
+        <? if ($title): ?>
+            <h3 class="product-section__h3"><?= $title ?></h3>
+        <? endif ?>
 
         <? if ((bool)$categories): ?>
             <div class="product-accessoires">

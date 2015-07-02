@@ -11,7 +11,11 @@ $f = function (
 
 ?>
     <!-- в наличии -->
-    <div class="buy-now-inshop jsShowDeliveryMap" data-product-id="<?= $product->getId() ?>" data-product-ui="<?= $product->getUi() ?>">
+    <div class="buy-now-inshop <? if ($deliveryPickup) : ?>jsShowDeliveryMap<? endif ?>"
+         data-product-id="<?= $product->getId() ?>"
+         data-product-ui="<?= $product->getUi() ?>"
+         <? if (!$deliveryPickup) : ?>style="cursor: default"<? endif ?>
+        >
         <span class="buy-now-inshop__tl">В наличии</span>
 
         <? if ($deliveryPickup) : ?>
@@ -79,7 +83,7 @@ $f = function (
                }
         }
     </style>
-    <div class="jsProductPointsMap" style="width: 922px; height: 520px; display: none; background: white">
+    <div class="jsProductPointsMap" style="width: 922px; height: 520px; display: none;">
         <div class="spinner">
             <div class="rect1"></div>
             <div class="rect2"></div>

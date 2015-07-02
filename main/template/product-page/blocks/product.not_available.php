@@ -2,7 +2,7 @@
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    $videoHtml, $properties3D, $reviewsData, $creditData, $isKit, $buySender, $buySender2, $request, $favoriteProductsByUi
+    $videoHtml, $properties3D, $reviewsData, $creditData, $isKit, $buySender, $buySender2, $request, $favoriteProductsByUi, $trustfactors
 ){
 
     ?>
@@ -16,8 +16,7 @@ $f = function(
         <div class="product-card__c">
 
             <!-- похожие товары -->
-            <div class="product-section product-section--inn" id="similar">
-                <div class="product-section__h3">Похожие товары</div>
+            <div class="product-section product-section--inn goods-slider--4items" id="similar">
                 <? if (\App::config()->product['pullRecommendation']): ?>
                     <?= $helper->render('product-page/blocks/slider', [
                         'type'     => 'similar',
@@ -36,7 +35,7 @@ $f = function(
                 <? endif ?>
             </div>
             <!--/ похожие товары -->
-            
+
             <!-- сравнить, добавить в виш лист -->
             <ul class="product-card-tools">
                 <li class="product-card-tools__i product-card-tools__i--compare js-compareProduct"
@@ -65,6 +64,8 @@ $f = function(
                     <a class="btn-type btn-type--olive js-orderButton jsBuyButton" href="#">Сообщить о наличии</a>
                 </div>
             <? endif ?>
+
+            <?= $helper->render('product-page/blocks/variants', ['product' => $product, 'trustfactors' => $trustfactors]) ?>
 
             <?= $helper->render('product-page/blocks/reviews.short', ['reviewsData' => $reviewsData]) ?>
 

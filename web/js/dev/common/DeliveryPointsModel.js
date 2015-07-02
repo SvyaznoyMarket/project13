@@ -215,6 +215,11 @@
             });
         });
 
+
+        self.setMapCenter = function (point) {
+            map.setCenter([point.latitude, point.longitude], 14)
+        };
+
         /* INIT */
 
         console.log('Init DeliveryPointsModel with ', {points: points, mapParam: mapParam});
@@ -257,11 +262,12 @@
         balloonContent = Mustache.render(balloonTemplate, point);
 
         // кнопка "Выбрать магазин"
-        balloonContent += $('<button />', {
-                'text':'Купить',
+        // показываем только на странице продукта
+        if (point.showBaloonBuyButton) balloonContent += $('<button />', {
+                'text':'Выбрать',
                 'class': 'btn-type btn-type--buy ' + buyButtonClass,
                 'style': 'display: block',
-                'data-shop': point.id,
+                'data-id': point.id,
                 'data-token': point.token,
                 'data-blockname': point.orderToken,
                 'data-product-ui': productUi
@@ -274,7 +280,7 @@
             hintContent: point.name,
             enterToken: point.token // Дополняем собственными свойствами
         }, {
-            balloonMaxWidth: 388,
+            balloonMaxWidth: 390,
             iconLayout: 'default#image',
             iconImageHref: point.marker.iconImageHref,
             iconImageSize: point.marker.iconImageSize,

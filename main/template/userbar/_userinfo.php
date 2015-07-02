@@ -24,4 +24,8 @@
     		<li class="user-account__i"><a href="<?= $page->url('user.logout') ?>" class="user-account__lk"><i class="user-account__icon"></i><span class="user-account__text undrl">Выйти</span></a></li>
     	</ul>
     </div>
+
+    <!-- Favourite widget -->
+    <div id="favourite-userbar-popup-widget"></div>
+
 </li>

@@ -10,7 +10,6 @@
         $userbar = $('.js-topbar-fixed'),
         $tabs = $('.jsProductTabs'),
         $epFishka = $('.js-pp-ep-fishka'),
-        $bestPricePopup = $('.jsBestPricePopup'),
         tabsOffset,// это не очень хорошее поведение, т.к. при добавлении сверху элементов (AJAX, например) offset не изменяется
         popupDefaults = {
             centered: true,
@@ -42,12 +41,15 @@
 
     // Добавление отзыва
     $body.on('click', '.jsReviewAdd', function(){
+        var $reviewForm = $('.jsReviewForm2');
         var user = ENTER.config.userInfo.user;
-        if (user.name) $('[name=review\\[author_name\\]]').val(user.name);
+        if (user.name) $('[name=review\\[author_name\\]]').val(user.name.slice(0,19));
         if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
-        $('.jsReviewForm2').lightbox_me($.extend(popupDefaults, {
+        $reviewForm.lightbox_me($.extend(popupDefaults, {
             onLoad: function() {},
-            onClose: function() {}
+            onClose: function() {
+                $reviewForm.find('.form-ctrl__textarea--err, .form-ctrl__input--err').removeClass('form-ctrl__textarea--err form-ctrl__input--err')
+            }
         }));
     });
 
@@ -103,7 +105,7 @@
         window.scrollTo(0, $(hash).offset().top - 105);
     });
 
-    $body.on('click', '.jsOneClickButtonOnDeliveryMap', function(){
+    $body.on('click', '.jsOneClickButton-new', function(){
         $('.jsProductPointsMap').trigger('close');
     });
 
@@ -158,9 +160,11 @@
 
                     yMap = new ymaps.Map(mapDivId, {
                         center: [mapData.latitude, mapData.longitude],
-                        zoom: mapData.zoom
+                        zoom: mapData.zoom,
+                        controls: ['zoomControl', 'fullscreenControl', 'geolocationControl', 'typeSelector']
                     },{
-                        autoFitToViewport: 'always'
+                        autoFitToViewport: 'always',
+                        suppressMapOpenBlock: true
                     });
 
                     yMap.controls.remove('searchControl');
@@ -185,7 +189,7 @@
                     // добавляем видимые точки на карту
                     $.each(mapData.points, function(i, point){
                         try {
-                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButtonOnDeliveryMap jsOneClickButton-new'));
+                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButton-new'));
                         } catch (e) {
                             console.error('Ошибка добавления точки на карту', e);
                         }
@@ -325,15 +329,6 @@
             })
     });
 
-    // форма подписки на снижение цены
-    $('.jsBestPricePopupOpener').on('click', function(){
-        $bestPricePopup.toggleClass('info-popup--open');
-    });
-
-    $('.jsBestPricePopupCloser').on('click', function(){
-        $bestPricePopup.removeClass('info-popup--open');
-    });
-
     // Оферта партнера
     $('.jsProductPartnerOffer').on('click', function(e){
         e.preventDefault();
@@ -345,8 +340,8 @@
 
         if ($offer.length == 0) {
             $.get(link).done(function (doc) {
-                $('<div class="jsProductPartnerOfferDiv partner-offer-popup" style="height: 90%; background-color: #fff; overflow-y: scroll;"></div>')
-                    .append($(doc).find('.content').append('<i class="closer jsPopupCloser">×</i>'))
+                $('<div class="jsProductPartnerOfferDiv partner-offer-popup"></div>')
+                    .append($('<i class="closer jsPopupCloser">×</i>'), $('<div class="inn" />').append($(doc).find('h1'), $(doc).find('article')))
                     .lightbox_me(popupDefaults)
             });
         } else {
@@ -362,7 +357,8 @@
         $('<div />', {'style': 'background-color: #fff'}).append($('<img />', { src: imageLink})).lightbox_me({destroyOnClose: true, centered: true});
     });
 
-    $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); })
+    $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); });
+
     $('.js-description-expand').on('click', function(){
 
         $(this).removeClass('collapsed js-description-expand');
@@ -380,9 +376,9 @@
  * Обратный счетчик акции
  */
 !function() {
-    console.info('CountDown....');
     var
         countDownWrapper = $('.js-countdown'),
+        countDownOut     = $('.js-countdown-out'),
         expDate          = countDownWrapper.attr('data-expires'),
 
         getDeclension = function( days ) {
@@ -404,9 +400,14 @@
 
         tick = function( opts ) {
             var
-                str = ( ( opts.days > 0 ) ? opts.days + ' ' + getDeclension(opts.days) + ' ' : '' ) + opts.hours + ':' + opts.minutes + ':' + opts.seconds;
+                mask = ( opts.days > 0 ) ? 'D ' + getDeclension(opts.days) + ' HH:MM:SS' : 'HH:MM:SS';
 
-            console.log(str);
+            mask = mask.replace(/(D+)/, function( str, d) { return (d.length > 1 && opts.days < 10 ) ? '0' + opts.days : opts.days });
+            mask = mask.replace(/(H+)/, function( str, h) { return (h.length > 1 && opts.hours < 10 ) ? '0' + opts.hours : opts.hours });
+            mask = mask.replace(/(M+)/, function( str, m) { return (m.length > 1 && opts.minutes < 10 ) ? '0' + opts.minutes : opts.minutes });
+            mask = mask.replace(/(S+)/, function( str, s) { return (s.length > 1 && opts.seconds < 10 ) ? '0' + opts.seconds : opts.seconds });
+
+            countDownOut.html(mask);
         },
 
         countDown;
@@ -422,5 +423,4 @@
         console.warn(err);
     }
 
-    console.log('CountDown enabled');
 }();

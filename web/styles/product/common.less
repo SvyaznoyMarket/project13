@@ -24,6 +24,8 @@
 // ссылка на оффер староннего поставщика
 .vandor-offer {
     &__lk {
+        line-height: 15px;
+
         color: #9c9c9c;
 
         .inline-block();
@@ -43,11 +45,20 @@
         margin: 0 60px 0 0;
 
         text-align: center;
+        .product-card-photo {
+            display: table-cell;
 
-        .product-card-photo{
+            width: 350px;
+            max-width: 350px;
+            height: 350px;
+            max-height: 350px;
+            padding: 0 0 10px;
 
-            &__img{
-                max-width: 96%;
+            text-align: center;
+            vertical-align: middle;
+            &__img {
+                max-width: 100%;
+                height: auto;
                 max-height: 350px;
             }
         }
@@ -62,9 +73,10 @@
 
         width: 220px;
         margin-right: -10px;
-        .ep{
-            cursor: pointer;
+        .ep {
             margin-bottom: 10px;
+
+            cursor: pointer;
         }
     }
     // карточка товара в два столбца
@@ -89,6 +101,7 @@
         .product-card-tools {
             float: right;
 
+            width: 155px;
             margin-bottom: 20px;
             &__i {
                 &:last-child {
@@ -100,6 +113,21 @@
             width: 280px;
         }
     }
+    .btnBuy.mBuySet {
+        width: 100%;
+    }
+    .product-card__c {
+        .goods-slider {
+            border-top: 1px solid #e6e6e6;
+            border-bottom: 1px solid #e6e6e6;
+            .product-section__h3 {
+                margin: 5px 0 15px;
+            }
+            .goods-slider__inn {
+                margin: 0 auto 15px;
+            }
+        }
+    }
 }
 
 // описание товара
@@ -107,20 +135,25 @@
     margin: 0 0 5px;
 
     color: #9c9c9c;
-    &.collapsed{
-        height: 60px;
-        overflow: hidden;
-        cursor: pointer;
+    &.collapsed {
         position: relative;
 
-        &:after{
-            content: '';
+        overflow: hidden;
+
+        height: 60px;
+
+        cursor: pointer;
+        &:after {
             position: absolute;
-            bottom: 0px;
-            left: 0px;
-            height: 12px;
+            bottom: 0;
+            left: 0;
+
             width: 100%;
-            .gradient(rgba(255, 255, 255, 0.01), #fff, rgba(255, 255, 255, 0.01));
+            height: 12px;
+
+            content: '';
+
+            .gradient(rgba(255, 255, 255, .01), #fff, rgba(255, 255, 255, .01));
         }
     }
 }
@@ -137,6 +170,9 @@
     }
     &__box {
         .inline-block();
+        .filter-btn-box__dd {
+            padding: 0;
+        }
     }
 }
 
@@ -154,13 +190,16 @@
             margin-left: 5px;
         }
     }
-    &__lk{
-        .inline-block();
+    &__lk {
+        margin-top: 5px;
+
+        text-decoration: none;
+
         color: #9c9c9c;
         border-bottom: 1px dotted;
-        text-decoration: none;
-        margin-top: 5px;
-        &:hover{
+
+        .inline-block();
+        &:hover {
             text-decoration: none;
         }
     }
@@ -245,6 +284,13 @@
     &__mark {
         color: #363636;
         background: none;
+    }
+}
+
+.section-border {
+    & > div {
+        border-top: 1px solid #e6e6e6;
+        padding: 0 10px;
     }
 }
 
@@ -366,27 +412,25 @@
     }
 }
 .best-price-popup .customInput-defcheck {
-    & + .customLabel{
+    & + .customLabel {
+        padding-left: 25px;
+
         background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQCAYAAADwMZRfAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAmklEQVQ4EWO8evUq2+fPn7v+//8fx8DAIAjExIL3jIyMi3h5ectYgAZ0S0lJ5cnIyDAABYk1gAFoqeCTJ0/ynz17xsAE5MSSagDIJpCFIH0gHzAB+YKkuADZqVB9giBDKAajhmAG4WiYYA+T98CkiylDhAhU33smYNJdBMxIoDxAhDaEEpB6kD6Qfsbbt2+zv337thMoSHZRAAAF+0B8XgLClgAAAABJRU5ErkJggg==');
         background-position: 0 2px;
-        padding-left: 25px;
     }
-
-    &:checked + .customLabel{
+    &:checked + .customLabel {
         background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQCAYAAADwMZRfAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABnUlEQVQ4EZ2UMUgCURjH/++8uzRzOIkou4aKaC2QBIsaWtwDg6BobIjagqBoCaIcGgpsFKE5GlqdosWICKRBIikRIszBpNJ393rPHDw8S3twcN//vf/v+7537x1JpVJqsVg8YIwtAdD40+ooEELiHo9nQ+aAiM/nW9N1HVxsFQCeVMtms+u5XA4SDxbbBYhMIqHwiQ4kHmvtVFBfas2nCUhrgxmgmTPQ6y2wrzeLpyUIoyXQ5DaQmAN7OAVMaoHIlqhSgll6BnEPgCjunyn6AXq1CuUpBqpqkCejIK4ei81SiflyCXruh3ExBfM1WV1Ib3agZGIwTCdI8ARED1kAIrBApL5pSINhyO+3oIl53j9v4f4IBlSwQBSOoXADoAEChwsO/y6odwZq5RHsbg8y+QQbWYE8umwLaIRwhXT6IE0cosw0KF0GyloQjrHNpgBbSFXsHoccPIbpnYUSiPCN7P0VYv06dUul4QWw/hCI01un2r+KjS3wo2s7+xeg5itI/OjG+UUSd8AW1EwU64VP+Ek6ne7I5/P7XPz3r+AbH9mSP80JthkAAAAASUVORK5CYII=');
     }
-
     //ie8 fix
-    &.mChecked{
+    &.mChecked {
         background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQCAYAAADwMZRfAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABnUlEQVQ4EZ2UMUgCURjH/++8uzRzOIkou4aKaC2QBIsaWtwDg6BobIjagqBoCaIcGgpsFKE5GlqdosWICKRBIikRIszBpNJ393rPHDw8S3twcN//vf/v+7537x1JpVJqsVg8YIwtAdD40+ooEELiHo9nQ+aAiM/nW9N1HVxsFQCeVMtms+u5XA4SDxbbBYhMIqHwiQ4kHmvtVFBfas2nCUhrgxmgmTPQ6y2wrzeLpyUIoyXQ5DaQmAN7OAVMaoHIlqhSgll6BnEPgCjunyn6AXq1CuUpBqpqkCejIK4ei81SiflyCXruh3ExBfM1WV1Ib3agZGIwTCdI8ARED1kAIrBApL5pSINhyO+3oIl53j9v4f4IBlSwQBSOoXADoAEChwsO/y6odwZq5RHsbg8y+QQbWYE8umwLaIRwhXT6IE0cosw0KF0GyloQjrHNpgBbSFXsHoccPIbpnYUSiPCN7P0VYv06dUul4QWw/hCI01un2r+KjS3wo2s7+xeg5itI/OjG+UUSd8AW1EwU64VP+Ek6ne7I5/P7XPz3r+AbH9mSP80JthkAAAAASUVORK5CYII=');
     }
 }
-.jewel{
-    .best-price-popup .customInput-defcheck{
-        &:checked + .customLabel, &.mChecked{
-
+.jewel {
+    .best-price-popup .customInput-defcheck {
+        &:checked + .customLabel ,
+        &.mChecked {
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQCAAAAADVWsuDAAAAdUlEQVR4AWVQtwEFIQi1fOMwjVO4jovcBHaXpqCl/jkgXk6vBF7CKff1hp7VMWveoMyu3w/KqHd1PqLeT+p4P0w0ArWOE/3IfRqEz3wTKYhWgL/neZKAkAheNuUIEIg/2+QeAFS6dxeCP+WRJOvk2uLa9PINA4yO5jmsmDGRAAAAAElFTkSuQmCC');
-
         }
     }
 }

@@ -635,9 +635,11 @@
 
 			E.map = new ymaps.Map("yandex-map-container", {
 				center: [options.latitude, options.longitude],
-				zoom: options.zoom
+				zoom: options.zoom,
+                controls: ['zoomControl', 'fullscreenControl', 'geolocationControl', 'typeSelector']
 			},{
-				autoFitToViewport: 'always'
+				autoFitToViewport: 'always',
+                suppressMapOpenBlock: true
 			});
 
 			E.map.controls.remove('searchControl');
@@ -952,8 +954,8 @@
 				//$elem.on('click', '.selShop_tab:not(.selShop_tab-act)', chooseDelivery);
 
 				// клик по списку точек самовывоза
-				$body.on('click', '.jsChangePoint', choosePoint);
-				//$elem.on('click', '.jsChangePoint', choosePoint);
+				//$body.on('click', '.jsChangePoint', choosePoint);
+				$elem.on('click', '.jsChangePoint', choosePoint);
 			} else {
 				$elem.show();
 				//$body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);

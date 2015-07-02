@@ -1,9 +1,18 @@
 <?
+
+use Model\Product\Trustfactor;
+
 $f = function(
-    \Model\Product\Entity $product
+    \Model\Product\Entity $product,
+    $trustfactors
 ){
+    /** @var $trustfactors Trustfactor[] */
 
     if (!$product->getModel() || !$product->getModel()->getProperty()) return '';
+
+    // Таблица размеров одежды
+    $clothSizeTrust = array_filter($trustfactors, function(Trustfactor $t) { return $t->type == 'content' && strpos($t->name, 'Таблица размеров') !== false; });
+    if ($clothSizeTrust) $clothSizeTrust = reset($clothSizeTrust);
 
     ?>
 
@@ -34,6 +43,10 @@ $f = function(
         </div>
 
         <? endforeach ?>
+
+        <? if ($clothSizeTrust) : ?>
+            <a class="jsImageInLightBox" href="<?= $clothSizeTrust->getImage() ?>" data-href="<?= $clothSizeTrust->getImage() ?>">Таблица размеров</a>
+        <? endif ?>
 
     </div>
 

@@ -82,9 +82,7 @@ $buySender2 = $request->get('sender2');
 	<!--/ карточка товара -->
 
 	<!-- с этим товаром покупают -->
-	<div class="product-section product-section--inn product-section--border-top">
-        <div class="product-section__h3">С этим товаром покупают</div>
-
+	<div class="product-section section-border">
         <? if (\App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product-page/blocks/slider', [
                 'type'           => 'alsoBought',
@@ -116,7 +114,7 @@ $buySender2 = $request->get('sender2');
                 <? if ($showDescription) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
                 <? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
                 <li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li>
-                <li class="product-tabs__i jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar" title="">Похожие товары</a></li>
+                <? if ($product->isAvailable()) : ?><li class="product-tabs__i jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar" title="">Похожие товары</a></li><? endif ?>
             </ul>
         </div>
 	    <!--/ навигация по странице -->
@@ -188,7 +186,6 @@ $buySender2 = $request->get('sender2');
 
 	<!-- похожие товары -->
 	<div class="product-section product-section--inn" id="similar">
-        <div class="product-section__h3">Похожие товары</div>
         <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product-page/blocks/slider', [
                 'type'     => 'similar',

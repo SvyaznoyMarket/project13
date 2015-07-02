@@ -1,5 +1,5 @@
 .popup-left-container {
-    width: 470px;
+    width: 400px;
     float: left;
 }
 
@@ -11,8 +11,8 @@
     padding:15px 10px;
 
     .selShop_l {
-        width: 440px;
-        display: inline-block;
+        width: 100%;
+        display: block;
         position: relative;
 
         &:not(.nobefore):after {
@@ -21,7 +21,7 @@
             bottom: 0px;
             left: 0px;
             height: 40px;
-            width: 405px;
+            width: 100%;
             .gradient(rgba(255, 255, 255, 0), #fff, rgba(255, 255, 255, 0));
         }
         &:not(.nobefore):before {
@@ -30,14 +30,14 @@
             top: 0px;
             left: 0px;
             height: 27px;
-            width: 405px;
+            width: 100%;
             .gradient(#fff, rgba(255, 255, 255, 0), #fff);
             z-index: 1;
         }
     }
     .selShop_r {
-        width: 420px;
-        height: 433px;
+        width: 500px;
+        height: 450px;
     }
     .pick-point__title,
     .deliv__title {
@@ -58,6 +58,7 @@
     overflow-x: hidden;
     display: block;
     max-height: 350px;
+    min-height: 350px;
     padding: 12px 12px 0 0;
     text-align: left;
 
@@ -74,17 +75,12 @@
         margin: 0 6px 0 3px;
         width: 415px;
 
-        .selShop_l &:hover {
-            background: rgba(249,155,28,0.1);
-        }
-        .selShop_l &:hover .pick-point-item__metro-inn{
-            background: #fff5e8;
-        }
         &:hover .pick-point-item__buy{
             display: block;
         }
-        &:hover .pick-point-item__info:not(.pick-point-item__info--nobtn) .pick-point-item__date,
-        &:hover .pick-point-item__info:not(.pick-point-item__info--nobtn) .pick-point-item__price{
+
+        &:hover .pick-point-item__info:not(.pick-point-item__info--nobtn, .no-hide-info) .pick-point-item__date,
+        &:hover .pick-point-item__info:not(.pick-point-item__info--nobtn, .no-hide-info) .pick-point-item__price{
             display: none;
         }
 
@@ -255,28 +251,27 @@
         }
     }
 }
-.ymaps-2-1-26-balloon__content{
-    width: 388px;
-    padding: 10px;
-    margin:0px;
-    text-align: center;
-    .btn-type{
-        display: inline-block!important;
-    }
-}
-.ymaps-2-1-26-balloon__content ymaps{
-    height: auto!important;
-    width: 100%!important;
-    .pick-point-list{
-        padding-top: 0px;
-    }
-    .pick-point-item{
-        border: none;
-        & td{
-            padding-bottom: 5px;
+
+.pick-point{
+    .selShop_r {
+        .pick-point-list{
+            padding-top: 0px;
+            min-height: 50px;
+            line-height: 1.2;
+            .pick-point-item__metro {
+                width: 195px;
+            }
+        }
+        .btn-type--buy {
+            margin: 10px auto 0;
+        }
+        .pick-point-item{
+            border: none;
+            border-bottom: none;
+            & td{
+                padding-bottom: 5px;
+                padding-top: 0;
+            }
         }
     }
-}
-.ymaps-2-1-26-balloon__close-button{
-    display: none;
 }

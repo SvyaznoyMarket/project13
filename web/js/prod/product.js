@@ -640,6 +640,7 @@ $(function() {
         $popupPhotoThumbs = $('.jsPopupPhotoThumb'),
         $productPhotoThumbs = $('.jsProductThumbList'),
         $productPhotoThumbsBtn = $('.jsProductThumbBtn'),
+        $zoomBtn   = $('.jsProductPopupZoom'),
         productPhotoThumbsWidth = $productPhotoThumbs.width() - 2,
         productPhotoThumbsFullWidth = $productPhotoThumbs.get(0) ? $productPhotoThumbs.get(0).scrollWidth : 0,
         thumbActiveClass = 'product-card-photo-thumbs__i--act',
@@ -656,7 +657,7 @@ $(function() {
             var cssInc = direction < 0 ? '+=' : '-=',
                 hInc = direction > 0 ? '+=' : '-=',
                 dataZoom = $popupPhoto.data('zoom'),
-                multiply = 500;
+                newImage, initHeight, initWidth;
 
             if (typeof dataZoom == 'undefined') {
                 if (direction < 0) return;
@@ -667,38 +668,72 @@ $(function() {
                 $popupPhoto.data('zoom', dataZoom + direction)
             }
 
-            $popupPhoto.css('height', hInc + multiply).css('top', cssInc + multiply/2).css('left', cssInc + multiply/2);
-            if (dataZoom == 1 && direction < 0) $popupPhoto.css('top', '0px').css('left', '0px'); // fix при установке в 0
+            // Получаем реальные размеры изображения
+            newImage = new Image();
+            newImage.src = $popupPhoto.attr("src");
+
+            initWidth = newImage.width;
+            initHeight = newImage.height;
+
+            // нажали плюс и размеры картинки больше контейнера
+            if ( direction > 0 && ( initWidth > $popupPhotoHolder.width() || initHeight > $popupPhotoHolder.height() ) ) {
+                $popupPhoto
+                    .removeClass('fixed')
+                    .css({'max-height' : initHeight, 'max-width' : initWidth});
+
+                var
+                    parentOffset       = $popupPhotoHolder.offset(),
+                    parentOffsetHeight = $popupPhotoHolder.height(),
+                    parentOffsetWidth  = $popupPhotoHolder.width(),
+                    imgWidth           = $popupPhoto.width(),
+                    imgHeight          = $popupPhoto.height(),
+                    right              = parentOffset.left,
+                    bottom             = parentOffset.top,
+                    left, top;
+
+                if ( imgWidth > parentOffsetWidth ) {
+                    left = parentOffsetWidth - imgWidth + right;
+                } else {
+                    left = 0;
+                }
+
+                if ( imgHeight > parentOffsetHeight ) {
+                    top = parentOffsetHeight - imgHeight + bottom;
+                } else {
+                    top = 0;
+                }
+
+                $popupPhoto.draggable({
+                    containment: [left, top, right, bottom],
+                    scroll: false
+                });
+            }
+
+            // нажали минус
+            if ( direction < 0) {
+                setDefaultSetting();
+            }
         },
+
+        // начальные установки для блока большого изображения
+        setDefaultSetting = function() {
+            $popupPhoto.addClass('fixed');
+            $popupPhoto.css({'max-height' : '100%', 'max-width' : '100%', 'top' : 0, 'left' : 0}); // fix при установке в 0
+            $popupPhoto.data('zoom', 0);
+            $zoomBtn.removeClass('disabled');
+            $('.jsProductPopupZoomOut').addClass('disabled');
+            if ( $popupPhoto.hasClass('ui-draggable') ) {
+                $popupPhoto.draggable('destroy')
+            }
+        },
+
         setPhoto = function(index) {
             // отмечаем активным классом thumb
             $popupPhotoThumbs.removeClass(thumbActiveClass).eq(index).addClass(thumbActiveClass);
             // меняем картинку
-            $popupPhoto.css('top', '0px').css('left', '0px').css('height', $popupPhotoHolder.height()).data('zoom', 0);
-            $popupPhoto.attr('src', $popupPhotoThumbs.eq(index).data('big-img'));
+            $popupPhoto.attr('src', $popupPhotoThumbs.eq(index).data('big-img')).css({'max-height' : '100%', 'max-width' : '100%', 'top' : 0, 'left' : 0});
+            setDefaultSetting();
         };
-
-    // Перемещение увеличенной фотографии по движению мыши
-    $popupPhotoHolder.on('mousemove mouseleave wheel', function(e){
-        var parentOffset = $(this).parent().offset(),
-            relX = e.pageX - parentOffset.left,
-            relY = e.pageY - parentOffset.top,
-            hW = $(this).width(),
-            hH = $(this).height(),
-            iW = $popupPhoto.width(),
-            iH = $popupPhoto.height();
-
-        if (e.type == 'wheel') {
-            setZoom(e.originalEvent['deltaY'] < 0 ? 1 : -1);
-            e.stopPropagation(); // иначе будет скролл страницы
-        }
-
-        if (typeof $popupPhoto.data('zoom') == 'undefined' || $popupPhoto.data('zoom') == 0) return;
-
-        if (e.type == 'mousemove') $popupPhoto.css('left', relX/hW * (hW - iW)).css('top', relY/hH * (hH - iH));
-        if (e.type == 'mouseleave') $popupPhoto.css('left', (hW - iW)/2).css('top', (hH - iH)/2);
-
-    });
 
     /* Клик по фото в карточке товара */
     $body.on('click', '.jsOpenProductImgPopup', function(){
@@ -709,7 +744,23 @@ $(function() {
         $popupPhotoThumbs.removeClass(thumbActiveClass)
             .eq($activeThumb.index()).addClass(thumbActiveClass);
         // и открываем popup
-        $imgPopup.lightbox_me(popupDefaults);
+        $imgPopup.lightbox_me({
+            centered: false,
+            closeSelector: '.jsPopupCloser',
+            modalCSS: {top: '0', left: '0'},
+            closeClick: true,
+            onLoad: function() {
+                $('html').css({'overflow':'hidden'});
+            },
+            onClose: function() {
+                setDefaultSetting();
+                $('html').css({'overflow':'auto'});
+            }
+        });
+
+        $(window).on('resize', function() {
+            setDefaultSetting();
+        });
     });
 
     /* Меняем большое изображение в popup при клике на миниатюру */
@@ -720,9 +771,15 @@ $(function() {
         $body.find('.jsProductMiddlePhoto').attr('src', $this.data('middle-img'));
     });
 
-    /* Зум в попапе */
+    // /* Зум в попапе */
     $body.on('click', '.jsProductPopupZoom', function(){
-        var direction = parseInt($(this).data('dir'), 10);
+        var
+            $this     = $(this),
+            direction = parseInt($(this).data('dir'), 10);
+
+        $zoomBtn.removeClass('disabled');
+        $this.addClass('disabled');
+
         setZoom(direction);
     });
 
@@ -751,7 +808,7 @@ $(function() {
     });
 
     // Youtube и 3D
-    $body.on('click', '.jsProductMediaButton', function(e){
+    $body.on('click', '.jsProductMediaButton li', function(e){
         var $popup = $(e.target).next(),
             $iframe = $popup.find('iframe'),
             src = $iframe.data('src'),
@@ -834,7 +891,6 @@ $(function() {
         $userbar = $('.js-topbar-fixed'),
         $tabs = $('.jsProductTabs'),
         $epFishka = $('.js-pp-ep-fishka'),
-        $bestPricePopup = $('.jsBestPricePopup'),
         tabsOffset,// это не очень хорошее поведение, т.к. при добавлении сверху элементов (AJAX, например) offset не изменяется
         popupDefaults = {
             centered: true,
@@ -866,12 +922,15 @@ $(function() {
 
     // Добавление отзыва
     $body.on('click', '.jsReviewAdd', function(){
+        var $reviewForm = $('.jsReviewForm2');
         var user = ENTER.config.userInfo.user;
-        if (user.name) $('[name=review\\[author_name\\]]').val(user.name);
+        if (user.name) $('[name=review\\[author_name\\]]').val(user.name.slice(0,19));
         if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
-        $('.jsReviewForm2').lightbox_me($.extend(popupDefaults, {
+        $reviewForm.lightbox_me($.extend(popupDefaults, {
             onLoad: function() {},
-            onClose: function() {}
+            onClose: function() {
+                $reviewForm.find('.form-ctrl__textarea--err, .form-ctrl__input--err').removeClass('form-ctrl__textarea--err form-ctrl__input--err')
+            }
         }));
     });
 
@@ -927,7 +986,7 @@ $(function() {
         window.scrollTo(0, $(hash).offset().top - 105);
     });
 
-    $body.on('click', '.jsOneClickButtonOnDeliveryMap', function(){
+    $body.on('click', '.jsOneClickButton-new', function(){
         $('.jsProductPointsMap').trigger('close');
     });
 
@@ -982,9 +1041,11 @@ $(function() {
 
                     yMap = new ymaps.Map(mapDivId, {
                         center: [mapData.latitude, mapData.longitude],
-                        zoom: mapData.zoom
+                        zoom: mapData.zoom,
+                        controls: ['zoomControl', 'fullscreenControl', 'geolocationControl', 'typeSelector']
                     },{
-                        autoFitToViewport: 'always'
+                        autoFitToViewport: 'always',
+                        suppressMapOpenBlock: true
                     });
 
                     yMap.controls.remove('searchControl');
@@ -1009,7 +1070,7 @@ $(function() {
                     // добавляем видимые точки на карту
                     $.each(mapData.points, function(i, point){
                         try {
-                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButtonOnDeliveryMap jsOneClickButton-new'));
+                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButton-new'));
                         } catch (e) {
                             console.error('Ошибка добавления точки на карту', e);
                         }
@@ -1149,15 +1210,6 @@ $(function() {
             })
     });
 
-    // форма подписки на снижение цены
-    $('.jsBestPricePopupOpener').on('click', function(){
-        $bestPricePopup.toggleClass('info-popup--open');
-    });
-
-    $('.jsBestPricePopupCloser').on('click', function(){
-        $bestPricePopup.removeClass('info-popup--open');
-    });
-
     // Оферта партнера
     $('.jsProductPartnerOffer').on('click', function(e){
         e.preventDefault();
@@ -1169,8 +1221,8 @@ $(function() {
 
         if ($offer.length == 0) {
             $.get(link).done(function (doc) {
-                $('<div class="jsProductPartnerOfferDiv partner-offer-popup" style="height: 90%; background-color: #fff; overflow-y: scroll;"></div>')
-                    .append($(doc).find('.content').append('<i class="closer jsPopupCloser">×</i>'))
+                $('<div class="jsProductPartnerOfferDiv partner-offer-popup"></div>')
+                    .append($('<i class="closer jsPopupCloser">×</i>'), $('<div class="inn" />').append($(doc).find('h1'), $(doc).find('article')))
                     .lightbox_me(popupDefaults)
             });
         } else {
@@ -1186,7 +1238,8 @@ $(function() {
         $('<div />', {'style': 'background-color: #fff'}).append($('<img />', { src: imageLink})).lightbox_me({destroyOnClose: true, centered: true});
     });
 
-    $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); })
+    $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); });
+
     $('.js-description-expand').on('click', function(){
 
         $(this).removeClass('collapsed js-description-expand');
@@ -1204,9 +1257,9 @@ $(function() {
  * Обратный счетчик акции
  */
 !function() {
-    console.info('CountDown....');
     var
         countDownWrapper = $('.js-countdown'),
+        countDownOut     = $('.js-countdown-out'),
         expDate          = countDownWrapper.attr('data-expires'),
 
         getDeclension = function( days ) {
@@ -1228,9 +1281,14 @@ $(function() {
 
         tick = function( opts ) {
             var
-                str = ( ( opts.days > 0 ) ? opts.days + ' ' + getDeclension(opts.days) + ' ' : '' ) + opts.hours + ':' + opts.minutes + ':' + opts.seconds;
+                mask = ( opts.days > 0 ) ? 'D ' + getDeclension(opts.days) + ' HH:MM:SS' : 'HH:MM:SS';
 
-            console.log(str);
+            mask = mask.replace(/(D+)/, function( str, d) { return (d.length > 1 && opts.days < 10 ) ? '0' + opts.days : opts.days });
+            mask = mask.replace(/(H+)/, function( str, h) { return (h.length > 1 && opts.hours < 10 ) ? '0' + opts.hours : opts.hours });
+            mask = mask.replace(/(M+)/, function( str, m) { return (m.length > 1 && opts.minutes < 10 ) ? '0' + opts.minutes : opts.minutes });
+            mask = mask.replace(/(S+)/, function( str, s) { return (s.length > 1 && opts.seconds < 10 ) ? '0' + opts.seconds : opts.seconds });
+
+            countDownOut.html(mask);
         },
 
         countDown;
@@ -1246,7 +1304,6 @@ $(function() {
         console.warn(err);
     }
 
-    console.log('CountDown enabled');
 }();
 $(document).ready(function() {
 
