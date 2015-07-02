@@ -45,7 +45,7 @@ $(function() {
 									comparePopups[userBarType].removeClass(compareNoticeShowClass);
 								});
 
-								$('.js-topbarfixLogin, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
+								$('.js-topbarfixLogin-opener, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
 									comparePopups[userBarType].removeClass(compareNoticeShowClass);
 								});
 

@@ -345,7 +345,7 @@
 				element.removeClass(emptyCompareNoticeShowClass);
 			});
 
-			$('.js-topbarfixLogin, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
+			$('.js-topbarfixLogin-opener, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
 				element.removeClass(emptyCompareNoticeShowClass);
 			});
 
