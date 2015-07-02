@@ -16,7 +16,7 @@ $f = function(
         <div class="product-card__c">
 
             <!-- похожие товары -->
-            <div class="product-section product-section--inn" id="similar">
+            <div class="product-section product-section--inn goods-slider--4items" id="similar">
                 <? if (\App::config()->product['pullRecommendation']): ?>
                     <?= $helper->render('product-page/blocks/slider', [
                         'type'     => 'similar',
@@ -35,7 +35,7 @@ $f = function(
                 <? endif ?>
             </div>
             <!--/ похожие товары -->
-            
+
             <!-- сравнить, добавить в виш лист -->
             <ul class="product-card-tools">
                 <li class="product-card-tools__i product-card-tools__i--compare js-compareProduct"
