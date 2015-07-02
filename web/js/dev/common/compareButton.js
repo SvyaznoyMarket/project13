@@ -1,4 +1,4 @@
-$(function( ENTER ) {
+$(function() {
 	var
 		compareNoticeShowClass = 'topbarfix_cmpr_popup-show',
 		$comparePopup,
