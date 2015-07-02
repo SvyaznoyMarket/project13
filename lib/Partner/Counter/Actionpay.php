@@ -49,16 +49,16 @@ class Actionpay {
                             $rate = 0.136;
                             break;
                         case '0e80c81b-31c9-4519-bd10-e6a556fe000c':  // Сделай сам
-                            $rate = 0.0585;
+                            $rate = 0.0858;
                             break;
                         case 'feccd951-d555-42c2-b417-a161a78faf03': // Детские товары
-                            $rate = 0.091;
+                            $rate = 0.0387;
                             break;
                         case 'b8569e65-e31e-47a1-af20-5b06aff9f189': // Товары для дома
-                            $rate = 0.136;
+                            $rate = 0.0652;
                             break;
                         case 'd91b814f-0470-4fd5-a2d0-a0449e63ab6f': // Электроника
-                            $rate = 0.0055;
+                            $rate = 0.022;
                             break;
                         case 'c9c2dc8d-1ee5-4355-a0c1-898f219eb892':  // Подарки и хобби
                             $rate = 0.065;
@@ -70,13 +70,13 @@ class Actionpay {
                             $rate = 0.13;
                             break;
                         case '19b9f12c-d489-4540-9a17-23dba0641166': // Парфюмерия и косметика
-                            $rate = 0.078;
+                            $rate = 0.0429;
                             break;
                         case '846eccd2-e9f0-4ce4-b7a2-bb28a835fd7a': // Спорт и отдых
                             $rate = 0.099;
                             break;
                         case 'b933de12-5037-46db-95a4-370779bb4ee2': // Зоотовары
-                            $rate = 0.0585;
+                            $rate = 0.0349;
                             break;
                         case 'caf18e17-550a-4d3e-8285-b1c9cc99b5f4': // Товары Tchibo
                             $rate = 0.1144;
