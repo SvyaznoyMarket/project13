@@ -21,7 +21,7 @@
 	}
 
 	function checkScroll() {
-		var cartLength = ENTER.UserModel.cart().length;
+		var cartLength = ENTER.UserModel ? ENTER.UserModel.cart().length : 0;
 		if (!visible && $window.scrollTop() > offset && (!showWhenFullCartOnly || cartLength)) {
 			//появление
 			visible = true;

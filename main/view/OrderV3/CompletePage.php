@@ -136,7 +136,7 @@ class CompletePage extends Layout {
                 'TransactionReference'  => $order->getNumber(),
                 'TransactionAmount'     => (string)$order->getSum()
             ];
-            $html .= sprintf('<div id="myThingsJS" data-vars="%s"></div>', $this->json($data));
+            $html .= sprintf('<div id="MyThingsJS" class="jsanalytics" data-value="%s"></div>', $this->json($data));
         }
 
         return $html;

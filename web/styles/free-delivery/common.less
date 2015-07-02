@@ -1,13 +1,19 @@
 .header__bann {
     height: 86px;
     width: 100%;
-    background: url('@{base-url}/free-delivery/img/orange-bann-all.png') no-repeat;
+    background: url('@{base-url}/free-delivery/img/orangebann-all.png') no-repeat;
     position: relative;
     display: none;
 
-    &.voronezh {
-        background: url('@{base-url}/free-delivery/img/orange-bann.png') no-repeat;
+    .box-sizing(border-box);
+
+    line-height: 36px;
+    padding: 12px 10px 0 243px;
+    
+    &:hover{
+        text-decoration: none;
     }
+
     &.shown{
         display: block;
     }
@@ -19,6 +25,37 @@
         position: absolute;
         right: 10px;
         top: 10px;
+    }
+    &-tl{
+        color: #fff;
+        font-family: 'Enter';
+        font-size: 48px;
+        text-decoration: none;
+    }
+    &-msg{
+        color: #fff;
+        font-size: 24px;
+        text-decoration: none;
+
+    }
+    &-c{
+        color: #fff;
+        font-size: 12px;
+        text-decoration: none;
+        float: right;
+    }
+    &-btn{
+        color: #fff;
+        font-size: 18px;
+        text-align: center;
+        width: 92px;
+        height: 35px;
+        line-height: 33px;
+        border: 1px solid #fff;
+        .rounded(4px);
+        float: right;
+        margin-top: -10px;
+        margin-right: 40px;
     }
 }
 
@@ -97,6 +134,15 @@
             margin-bottom: 5px;
             &:hover{
                 text-decoration: none;
+            }
+        }
+    }
+}
+.enterprize{
+    .deliv-free{
+        &-info{
+            * {
+                color: #fff;
             }
         }
     }

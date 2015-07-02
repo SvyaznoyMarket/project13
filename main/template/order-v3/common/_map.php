@@ -27,7 +27,7 @@ return function(
     foreach ($order->possible_points as $token => $points) {
         foreach ($points as $point) {
             $p = $point['point'];
-            $dataValue['points'][$token][] = [
+            $pointData = [
                 'id' => $p->id,
                 'name' => $p->name,
                 'address' => $helper->noBreakSpaceAfterDot($p->address),
@@ -46,8 +46,28 @@ return function(
                 'listName'  => $p->listName,
                 'subway'    => $p->subway
             ];
+
             $pointsCost[] = $point['cost'];
             $nearestDays[] = $point['nearestDay'];
+
+            /* Хотфикс для разделения иконок Pickpoint */
+            /* SITE-5703 TODO remove */
+            if (strpos($p->name, 'Постамат') === 0) {
+                $tokenPostamat = $token . '_postamat';
+                $pointData['marker']['iconImageHref'] = '/images/deliv-icon/pickpoint-postamat.png';
+                $pointData['icon'] = '/images/deliv-logo/pickpoint-postamat.png';
+                $pointData['dropdownName'] = 'Постаматы PickPoint';
+                $pointData['token'] = $tokenPostamat;
+                if (!array_key_exists($tokenPostamat, $order->possible_points)) {
+                    $order->possible_points[$tokenPostamat] = [];
+                    $newPoint = new \Model\OrderDelivery\Entity\Point(['token' => $tokenPostamat]);
+                    $newPoint->dropdown_name = 'Постаматы Pickpoint';
+                    $orderDelivery->points[$tokenPostamat] = $newPoint;
+                }
+                $dataValue['points'][$tokenPostamat][] = $pointData;
+            } else {
+                $dataValue['points'][$token][] = $pointData;
+            }
         }
     }
 
@@ -79,7 +99,7 @@ return function(
                     </div>
                 </div>
 
-                <div class="deliv-sel-group fltrBtn_kit fltrBtn_kit-box js-category-v2-filter-otherGroups">
+                <div class="deliv-sel-group fltrBtn_kit fltrBtn_kit-box js-category-v2-filter-otherGroups jsDeliveryMapFilters">
 
                     <!-- Точка самовывоза -->
                     <div class="deliv-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
@@ -91,11 +111,13 @@ return function(
                         <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
                             <div class="fltrBtnBox_dd_inn">
                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
-                                    <? foreach ($order->possible_points as $token => $points) : ?>
+                                    <? /* Хотфикс для разделения иконок Pickpoint */
+                                     /* SITE-5703 TODO remove (was $order->possible_points) */ ?>
+                                    <? foreach (array_intersect_key($order->possible_points, $dataValue['points']) as $token => $points) : ?>
 
                                         <div class="fltrBtn_ln ">
                                             <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput"
-                                                   type="checkbox" id="id-delivery-point-<?= $token.$order->block_name ?>" name="" value="<?= $token ?>"
+                                                   type="checkbox" data-type="Точки" id="id-delivery-point-<?= $token.$order->block_name ?>" name="" value="<?= $token ?>"
                                                    data-bind="checked: choosenTokens" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-point-<?= $token.$order->block_name ?>">
                                                 <span class="customLabel_btx"><?= $orderDelivery->points[$token]->dropdown_name ?></span>
@@ -122,7 +144,7 @@ return function(
 
                                         <div class="fltrBtn_ln ">
                                             <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput"
-                                                   type="checkbox" id="id-delivery-price-<?= $cost.$order->block_name ?>" name="" value="<?= $cost ?>"
+                                                   type="checkbox" data-type="Стоимость" id="id-delivery-price-<?= $cost.$order->block_name ?>" name="" value="<?= $cost ?>"
                                                     data-bind="checked: $root.choosenCosts" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-price-<?= $cost.$order->block_name ?>">
                                                 <span class="customLabel_btx"><?= $cost == 0 ? 'Бесплатно' : $cost . ' <span class="rubl">p</span>' ?></span>
@@ -148,7 +170,7 @@ return function(
                                     <? foreach ($uniqueDays as $day) : ?>
                                         <div class="fltrBtn_ln ">
                                             <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput"
-                                                   type="checkbox" id="id-delivery-date-<?= $day.$order->block_name ?>" name="" value="<?= $day ?>"
+                                                   type="checkbox" data-type="Дата" id="id-delivery-date-<?= $day.$order->block_name ?>" name="" value="<?= $day ?>"
                                                    data-bind="checked: choosenDates" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-date-<?= $day.$order->block_name ?>">
                                                 <span class="customLabel_btx"><?= $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $day)) ?></span>
@@ -167,7 +189,7 @@ return function(
 
                 <span class="deliv-nomatch" data-bind="visible: points().length == 0">Поиск не дал результатов</span>
 
-                <ul class="deliv-list" data-bind="foreach: points">
+                <ul class="deliv-list jsMapDeliveryList" data-bind="foreach: points">
 
                     <li class="deliv-item jsChangePoint" data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }">
                         <div class="deliv-item__logo">

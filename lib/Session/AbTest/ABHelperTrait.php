@@ -31,11 +31,11 @@ trait ABHelperTrait {
         return false;
     }
 
-    /** Минимальная сумма заказа для Воронежа
+    /** Минимальная сумма заказа для Воронежа, Н.Новгорода, Рязани
      * @return bool
      */
     public static function isOrderMinSumRestriction(){
-        return \App::user()->getRegionId() == 18074;
+        return in_array(\App::user()->getRegionId(), [18074, 99958, 10374]);
     }
 
     public static function getColorClass(Entity $product, $location = null){

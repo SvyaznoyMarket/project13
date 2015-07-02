@@ -50,6 +50,8 @@ class Manager {
             $referer = parse_url($request->server->get('HTTP_REFERER'));
             $refererHost = $referer && !empty($referer['host']) ? $referer['host'] : null;
 
+            $this->fixReferer($refererHost, $request);
+
             // ОСНОВНАЯ ЛОГИКА
             if ($refererHost && !preg_match('/ent(er|3)\.(ru|loc)/', $refererHost)) {
 
@@ -228,6 +230,17 @@ class Manager {
 
         return array_merge_recursive($mainMeta, $mergedMeta, [$prefix => $partnerNames]);
 
+    }
+
+    /** Хардкодный фикс, когда не передается referer, например переходы из баннеров внутри приложений
+     *  Несмотря на это в список партнеров всё-равно необходимо заносить нужные правила
+     * @param $ref
+     * @param \Http\Request $request
+     */
+    private function fixReferer(&$ref, \Http\Request $request) {
+        if ($request->query->get('utm_source') == 'skype') {
+            $ref = 'skype_application';
+        }
     }
 
 }
