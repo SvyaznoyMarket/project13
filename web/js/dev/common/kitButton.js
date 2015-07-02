@@ -56,6 +56,7 @@
 		self.productId = product.id;
 		self.productPrefix = product.prefix;
 		self.productWebname = product.webname;
+		self.productName = self.productPrefix + ' ' + self.productWebname;
 		self.productImageUrl = product.imageUrl;
 		self.products = ko.observableArray([]);
 

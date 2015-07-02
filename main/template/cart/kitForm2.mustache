@@ -1,7 +1,7 @@
 <div class="popup popup--product-set jsKitPopup">
     <i class="closer jsPopupCloser">×</i>
 
-    <div class="popup__tl" itemprop="name" data-bind="html: $root.productWebname"></div>
+    <div class="popup__tl" itemprop="name" data-bind="html: $root.productName"></div>
 
     <div class="set-section-main-img"><img data-bind="attr: {src: $root.productImageUrl}" /></div>
 
@@ -56,7 +56,7 @@
                             <button class="count-group__btn-minus" data-bind="click: minusClick, css: { mDisabled : count() == 0 }">-</button>
                             <input type="text" value="" class="count-group__qnt" data-bind="value: count, valueUpdate: 'input', event: { keydown: countKeydown, keyup: countKeyUp }">
                             <button class="count-group__btn-plus" data-bind="click: plusClick, css: { mDisabled : count() == maxCount() }">+</button>
-                            <span>шт.</span>
+                            <span style="line-height: 22px;">шт.</span>
                         </div>
 
                         <div class="set-section-package-i__price rown">
@@ -74,7 +74,7 @@
                 <div class="set-section__price">Итого за <span data-bind="text: totalCount"></span> предметов: <strong data-bind="html: totalPrice"></strong> <span class="rubl">p</span></div>
 
                 <div class="set-section__buy btnBuy">
-                    <a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger jsBuyButton" href="" data-bind="css: { mDisabled: totalCount() == 0 }, attr: { href: buyLink, 'data-upsale': dataUpsale($root.productId) }">Купить</a>
+                    <a class="btn-type btn-type--buy jsBuyButton" href="" data-bind="css: { mDisabled: totalCount() == 0 }, attr: { href: buyLink, 'data-upsale': dataUpsale($root.productId) }">Купить</a>
                 </div>
             </div>
         </div>

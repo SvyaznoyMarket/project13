@@ -9721,9 +9721,9 @@
 /*------СТИЛИ КНОПКИ "КУПИТЬ"------*/
 @media all {
   .btnBuy {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     overflow: hidden;
     text-align: center;
   }
@@ -9732,9 +9732,9 @@
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffaa01), color-stop(1, #ffc000));
     background: -ms-linear-gradient(bottom, #ffaa01, #ffc000);
     background: -moz-linear-gradient(center bottom, #ffaa01 0%, #ffc000 100%);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     display: block;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
