@@ -1,4 +1,4 @@
-$(function() {
+$(function( ENTER ) {
 	var
 		compareNoticeShowClass = 'topbarfix_cmpr_popup-show',
 		$comparePopup,
@@ -74,7 +74,7 @@ $(function() {
 						$('.js-compare-addPopup-webName', $comparePopup).text(data.product.webName);
 
 						ENTER.userBar.show(true, function(){
-							$comparePopup.addClass(compareNoticeShowClass)
+							$comparePopup.addClass(compareNoticeShowClass);
 						});
 
 						(function() {

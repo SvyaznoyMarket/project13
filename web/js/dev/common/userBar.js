@@ -136,7 +136,7 @@
 		// end of function
 
 		setTimeout(function() {
-			userBarFixed.removeClass('fadeIn shadow-false');
+			userBarFixed.removeClass('shadow-false');
 		}, 100);
 
 		// только BuyInfoBlock
@@ -169,7 +169,7 @@
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		userBarFixed.addClass('fadeIn shadow-false');
+		userBarFixed.addClass('shadow-false');
 
         $('.js-topbarfixLogin').addClass('blocked');
 
