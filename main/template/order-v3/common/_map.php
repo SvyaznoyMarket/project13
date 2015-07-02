@@ -14,7 +14,9 @@
     $onmouseleave = "this.style.display='none'; $(this).parent().removeClass('opn')";
 
 
-    if ($page == 'product') array_walk($dataPoints->points, function( \Model\Point\MapPoint $point){ $point->showBuyButton = false; });
+    array_walk($dataPoints->points, function( \Model\Point\MapPoint $point) use ($page) {
+        if ($page == 'product') $point->showBaloonBuyButton = false;
+    });
 
     $mapData = [
         'latitude'  => $dataPoints->mapConfig['latitude'],
@@ -167,7 +169,7 @@
                                 </td>
 
 
-                                <td class="pick-point-item__info <?= $page == 'product' ? 'no-hide-info' : '' ?>" valign="middle">
+                                <td class="pick-point-item__info <?= $page == 'product' ? 'no-hide-info' : 'no-hide-info' ?>" valign="middle">
 
                                 <!-- ko if: !productInShowroom -->
                                     <div class="pick-point-item__date" data-bind="text: humanNearestDay"></div>

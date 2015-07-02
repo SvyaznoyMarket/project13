@@ -263,8 +263,8 @@
 
         // кнопка "Выбрать магазин"
         // показываем только на странице продукта
-        if (point.showBuyButton) balloonContent += $('<button />', {
-                'text':'Купить',
+        if (point.showBaloonBuyButton) balloonContent += $('<button />', {
+                'text':'Выбрать',
                 'class': 'btn-type btn-type--buy ' + buyButtonClass,
                 'style': 'display: block',
                 'data-id': point.id,
