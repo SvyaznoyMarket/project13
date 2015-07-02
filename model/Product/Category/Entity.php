@@ -102,6 +102,8 @@ class Entity extends BasicEntity {
                 }
             }
         }
+
+        if (isset($data['parent'])) $this->parent = new Entity($data['parent']);
     }
 
     /**
