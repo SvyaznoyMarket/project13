@@ -38,7 +38,7 @@ class Actionpay {
                 $categoriesArr = $product->getCategory();
 
                 // default category rate
-                $categoryRate = 0.005;
+                $categoryRate = 0.033;
 
                 // пройдем по категориям, начиная с самой глубокой
                 foreach (array_reverse($categoriesArr) as $category) {
