@@ -69,7 +69,7 @@ $f = function(
                 <? foreach ($product->getMedias('image') as $key => $photo) : ?>
                     <li class="product-card-photo-thumbs__i jsProductPhotoThumb <?= $key == 0 ? 'product-card-photo-thumbs__i--act' : '' ?>"
                         data-middle-img="<?= $photo->getSource('product_500')->url ?>"
-                        data-big-img="<?= $photo->getSource('product_550')->url ?>"
+                        data-big-img="<?= $photo->getSource('product_1500')->url ?>"
                         ><img src="<?= $photo->getSource('product_500')->url ?>" class="product-card-photo-thumbs__img" /></li>
                 <? endforeach ?>
             </ul>
