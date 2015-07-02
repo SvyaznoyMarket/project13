@@ -82,8 +82,7 @@ $buySender2 = $request->get('sender2');
 	<!--/ карточка товара -->
 
 	<!-- с этим товаром покупают -->
-	<div class="product-section product-section--inn product-section--border-top">
-
+	<div class="product-section section-border">
         <? if (\App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product-page/blocks/slider', [
                 'type'           => 'alsoBought',

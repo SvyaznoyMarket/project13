@@ -101,6 +101,7 @@
         .product-card-tools {
             float: right;
 
+            width: 155px;
             margin-bottom: 20px;
             &__i {
                 &:last-child {
@@ -114,6 +115,18 @@
     }
     .btnBuy.mBuySet {
         width: 100%;
+    }
+    .product-card__c {
+        .goods-slider {
+            border-top: 1px solid #e6e6e6;
+            border-bottom: 1px solid #e6e6e6;
+            .product-section__h3 {
+                margin: 5px 0 15px;
+            }
+            .goods-slider__inn {
+                margin: 0 auto 15px;
+            }
+        }
     }
 }
 
@@ -271,6 +284,13 @@
     &__mark {
         color: #363636;
         background: none;
+    }
+}
+
+.section-border {
+    & > div {
+        border-top: 1px solid #e6e6e6;
+        padding: 0 10px;
     }
 }
 
