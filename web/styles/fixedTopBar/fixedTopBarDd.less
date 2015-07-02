@@ -11,7 +11,8 @@
     color: @black;
     border: 1px solid #c7c7c7;
     background: @white;
-    
+
+    .box-sizing();
     &--account {
         left: -5px;
         &:after {
@@ -48,7 +49,7 @@
 .minicart {
     right: 0;
 
-    width: 227px;
+    width: 228px;
     &__buy {
         padding: 10px;
 
@@ -71,19 +72,18 @@
 .hintDd {
     position: absolute;
     top: 50px;
-    left: -839px;
+    left: -837px;
 
     overflow: hidden;
 
     width: 732px;
     height: 0;
 
-    border: 1px solid #ccc;
-    border-top: none;
-    border-bottom: none;
+    border-left: 1px solid #ccc;
     background: #fff;
-    /* Переход */
 
+    .box-sizing();
+    /* Переход */
     .transition(all .2s ease-out .1s);
     .bHeadSection {
         font-size: 16px;
@@ -94,19 +94,15 @@
         border-top: 1px solid #ccc;
     }
     &.mhintDdOn {
-        height: 270px;
+        height: 260px;
 
         border-bottom: 1px solid #ccc;
-
-        .drop-shadow(0px, 4px, 11px, .2);
     }
     .slideItem {
         width: 700px;
         margin: 0 auto;
     }
 }
-
-
 
 .buyInfo {
     padding: 10px 0 8px;
@@ -161,6 +157,8 @@
         &-wrap {
             width: 40px;
             padding: 5px;
+
+            text-align: center;
         }
     }
     &__name {
@@ -169,6 +167,8 @@
         width: 100%;
         max-width: 0;
         padding: 5px 5px 5px 0;
+
+        vertical-align: middle;
         &-inn {
             position: relative;
 
