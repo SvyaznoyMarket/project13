@@ -215,6 +215,11 @@
             });
         });
 
+
+        self.setMapCenter = function (point) {
+            map.setCenter([point.latitude, point.longitude], 14)
+        };
+
         /* INIT */
 
         console.log('Init DeliveryPointsModel with ', {points: points, mapParam: mapParam});
