@@ -243,7 +243,8 @@ $upper.bind('click',function(){$window.scrollTo('0px',400);return false;});$wind
 ;(function(ENTER){var
 utils=ENTER.utils,userBar=utils.extendApp('ENTER.userBar'),userBarFixed=userBar.userBarFixed=$('.js-topbar-fixed'),userbarStatic=userBar.userBarStatic=$('.js-topbar-static'),emptyCompareNoticeElements={},emptyCompareNoticeShowClass='topbarfix_cmpr_popup-show',topBtn=userBarFixed.find('.js-userbar-upLink'),userbarConfig=userBarFixed.data('value'),$body=$('body'),w=$(window),buyInfoShowing=false,overlay=$('<div>').css({position:'fixed',display:'none',width:'100%',height:'100%',top:0,left:0,zIndex:900,background:'black',opacity:0.4}),scrollTarget,filterTarget,showWhenFullCartOnly=userbarConfig&&userbarConfig.showWhenFullCartOnly;userBar.showOverlay=false;function showUserbar(){$.each(emptyCompareNoticeElements,function(){this.removeClass(emptyCompareNoticeShowClass);});userBarFixed.addClass('fadeIn');}
 function hideUserbar(){userBarFixed.removeClass('fadeIn');userbarStatic.css('visibility','visible');}
-function checkScroll(hideOnly){if(buyInfoShowing){return;}
+function checkScroll(hideOnly){if(userBar.showOverlay&&w.scrollTop()<userbarStatic.offset().top){closeBuyInfo();}
+if(buyInfoShowing){return;}
 if(scrollTarget&&scrollTarget.length&&w.scrollTop()>=scrollTarget.offset().top&&!hideOnly&&(!showWhenFullCartOnly||ENTER.UserModel.cart().length)){showUserbar();}
 else{hideUserbar();}}
 function upToFilter(){$.scrollTo(filterTarget,500);ENTER.catalog.filter.openFilter();return false;}
@@ -255,11 +256,13 @@ function removeOverlay(){if(!overlay||!userBar.showOverlay){checkScroll();return
 overlay.fadeOut(100,function(){overlay.off('click');overlay.remove();userBar.showOverlay=false;buyInfoShowing=false;checkScroll();});}
 setTimeout(function(){userBarFixed.removeClass('shadow-false');},100);if(!upsaleWrap.hasClass('mhintDdOn')){removeBuyInfoBlock();removeOverlay();return;}
 upsaleWrap.removeClass('mhintDdOn');wrapLogIn.removeClass(openClass);wrap.removeClass(openClass);$('.js-topbarfixLogin').removeClass('blocked');removeBuyInfoBlock();removeOverlay();return false;}
-function showBuyInfo(e,data,upsale){console.info('userbar::showBuyInfo');$body.trigger('showBuyInfo');$.each(emptyCompareNoticeElements,function(){this.removeClass(emptyCompareNoticeShowClass);});userBarFixed.addClass('shadow-false');$('.js-topbarfixLogin').addClass('blocked');var	buyInfo=$('.topbarfix_cartOn');if(!userBar.showOverlay&&overlay){$body.append(overlay);overlay.fadeIn(300);userBar.showOverlay=true;overlay.on('click',closeBuyInfo);}
-if(e){buyInfo.slideDown(300);}
-else{buyInfo.show();}
+function showBuyInfo(useAnimation,data,upsale){console.info('userbar::showBuyInfo');var showFixed=false;if($(window).scrollTop()>=ENTER.userBar.userBarStatic.offset().top){showFixed=true;}
+$body.trigger('showBuyInfo');$.each(emptyCompareNoticeElements,function(){this.removeClass(emptyCompareNoticeShowClass);});if(showFixed){userBarFixed.addClass('shadow-false');$('.js-topbarfixLogin').addClass('blocked');if(!userBar.showOverlay&&overlay){$body.append(overlay);overlay.fadeIn(300);userBar.showOverlay=true;overlay.on('click',closeBuyInfo);}
+if(useAnimation){$('.js-topbar-fixed .topbarfix_cartOn').slideDown(300);}
+else{$('.js-topbar-fixed .topbarfix_cartOn').show();}
 showUserbar();if(upsale){showUpsell(data,upsale);}
-buyInfoShowing=true;$(document.body).trigger('showUserCart');}
+buyInfoShowing=true;}else{}
+$(document.body).trigger('showUserCart');}
 function deleteProductHandler(){console.log('deleteProductHandler click!');var btn=$(this);$.ajax({type:'GET',url:btn.attr('href'),success:function(res,data){console.warn(res);if(!res.success){console.warn('удаление не получилось :(');return;}
 ENTER.UserModel.removeProductByID(res.product.id);$('.js-basketLineDeleteLink-'+res.product.id).click();if(ENTER.UserModel.cart().length==0){closeBuyInfo();}else{showBuyInfo();}
 $body.trigger('removeFromCart',[res.product]);}});return false;}
@@ -278,7 +281,7 @@ product=$(this).parents('.jsSliderItem').data('product');if(!product.article){co
 console.log('Трекинг при клике по товару из списка рекомендаций');_gaq&&_gaq.push(['_trackEvent','cart_recommendation','cart_rec_clicked',product.article]);}
 function showEmptyCompareNotice(e,emptyCompareNoticeName,$userbar){e.stopPropagation();if(!emptyCompareNoticeElements[emptyCompareNoticeName]){var element=$('.js-compare-popup',$userbar);$('.js-compare-popup-closer',element).click(function(){element.removeClass(emptyCompareNoticeShowClass);});$('.js-topbarfixLogin-opener, .js-topbarfixNotEmptyCart',$userbar).mouseover(function(){element.removeClass(emptyCompareNoticeShowClass);});$('html').click(function(){element.removeClass(emptyCompareNoticeShowClass);});$(element).click(function(e){e.stopPropagation();});$(document).keyup(function(e){if(e.keyCode==27){element.removeClass(emptyCompareNoticeShowClass);}});emptyCompareNoticeElements[emptyCompareNoticeName]=element;}
 if(!$('.mhintDdOn').length){emptyCompareNoticeElements[emptyCompareNoticeName].addClass(emptyCompareNoticeShowClass);}}
-console.info('Init userbar module');console.log(userbarConfig);userBar.show=showUserbar;$body.on('click','.jsUpsaleProduct',upsaleProductClick);$body.on('click','.jsCartDelete',deleteProductHandler);$('.js-noProductsForCompareLink',userBarFixed).click(function(e){showEmptyCompareNotice(e,'fixed',userBarFixed);});$('.js-noProductsForCompareLink',userbarStatic).click(function(e){showEmptyCompareNotice(e,'static',userbarStatic);});if(userBarFixed.length){if(window.location.pathname!=='/cart')$body.on('addtocart',showBuyInfo);scrollTarget=$(userbarConfig.target);if(userbarConfig.filterTarget){filterTarget=$(userbarConfig.filterTarget);}else{filterTarget=scrollTarget;}
+console.info('Init userbar module');console.log(userbarConfig);userBar.show=showUserbar;$body.on('click','.jsUpsaleProduct',upsaleProductClick);$body.on('click','.jsCartDelete',deleteProductHandler);$('.js-noProductsForCompareLink',userBarFixed).click(function(e){showEmptyCompareNotice(e,'fixed',userBarFixed);});$('.js-noProductsForCompareLink',userbarStatic).click(function(e){showEmptyCompareNotice(e,'static',userbarStatic);});if(userBarFixed.length){if(window.location.pathname!=='/cart')$body.on('addtocart',function(){showBuyInfo(true);});scrollTarget=$(userbarConfig.target);if(userbarConfig.filterTarget){filterTarget=$(userbarConfig.filterTarget);}else{filterTarget=scrollTarget;}
 if(topBtn.length){topBtn.on('click',upToFilter);}
 if(scrollTarget.length){w.on('scroll',function(){checkScroll();});}else{w.on('scroll',function(){checkScroll(true);});}
 checkScroll();}
