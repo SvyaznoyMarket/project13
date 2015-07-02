@@ -36,20 +36,12 @@
 	/**
 	 * Показ юзербара
 	 */
-	function showUserbar(disableAnimation, onOpen) {
+	function showUserbar() {
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		if (disableAnimation) {
-			userBarFixed.show(0, onOpen || function(){});
-		} else {
-			userBarFixed.addClass('fadeIn');
-		}
-
-		/*if (userBarFixed.length) {
-			userbarStatic.css('visibility','hidden');
-		}*/
+		userBarFixed.addClass('fadeIn');
 	}
 
 	/**
@@ -189,7 +181,7 @@
 			buyInfo.show();
 		}
 
-		showUserbar(true);
+		showUserbar();
 		if (upsale) {
 			showUpsell(data, upsale);
 		}
