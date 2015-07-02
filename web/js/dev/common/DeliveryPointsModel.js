@@ -280,7 +280,7 @@
             hintContent: point.name,
             enterToken: point.token // Дополняем собственными свойствами
         }, {
-            balloonMaxWidth: 350,
+            balloonMaxWidth: 390,
             iconLayout: 'default#image',
             iconImageHref: point.marker.iconImageHref,
             iconImageSize: point.marker.iconImageSize,

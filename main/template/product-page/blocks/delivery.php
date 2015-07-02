@@ -83,7 +83,7 @@ $f = function (
                }
         }
     </style>
-    <div class="jsProductPointsMap" style="width: 922px; height: 520px; display: none; background: white">
+    <div class="jsProductPointsMap" style="width: 922px; height: 520px; display: none;">
         <div class="spinner">
             <div class="rect1"></div>
             <div class="rect2"></div>
