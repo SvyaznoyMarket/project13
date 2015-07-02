@@ -24,7 +24,7 @@ $(function() {
                         widgets: response.widgets,
                         callback: $el.attr('href').indexOf('delete-product') !== -1 ? null : function() {
 							var
-								userBarType = $(window).scrollTop() > 10 ? 'fixed' : 'static',
+								userBarType = $(window).scrollTop() > ENTER.userBar.userBarStatic.offset().top + 10 ? 'fixed' : 'static',
 								$userbar = userBarType == 'fixed' ? ENTER.userBar.userBarFixed : ENTER.userBar.userBarStatic,
 								$popup = $('.js-favourite-popup', $userbar);
 

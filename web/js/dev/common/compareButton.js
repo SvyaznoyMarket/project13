@@ -34,7 +34,7 @@ $(function() {
 					$.each(data.compare, function(i,val){ ENTER.UserModel.compare.push(val) });
 
 					if (!inCompare) {
-						var userBarType = $(window).scrollTop() > 10 ? 'fixed' : 'static';
+						var userBarType = $(window).scrollTop() > ENTER.userBar.userBarStatic.offset().top + 10 ? 'fixed' : 'static';
 
 						(function() {
 							if (!comparePopups[userBarType]) {
