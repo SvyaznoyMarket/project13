@@ -81,7 +81,7 @@
 
         pageConfig = $('#page-config').data('value'),
 
-		directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
+		//directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
         adfoxUrl = 'adfox_lib_ff.min.js', // 'adfox.asyn.code.ver3.min.js',
 		yandexMapUrl, yandexMapUrlv2_1, mustacheUrl, historyUrl, kladr, knockoutUrl,
 
@@ -371,7 +371,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script('JsHttpRequest.min.js')
 					.script( getWithVersion('library.js') )
-					.script( directCreditUrl )
+					//.script( directCreditUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -392,7 +392,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
-					.script( directCreditUrl )
+					//.script( directCreditUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -436,7 +436,7 @@
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script('JsHttpRequest.min.js')
 						.script( getWithVersion('library.js') )
-						.script( directCreditUrl )
+						//.script( directCreditUrl )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
@@ -526,7 +526,7 @@
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
 						.script('JsHttpRequest.min.js')
-						.script( directCreditUrl )
+						//.script( directCreditUrl )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )

@@ -32,18 +32,19 @@
 .specialPriceItemCont {
 
 	&_imgLink {
-		.inline-block(middle);
+		.inline-block();
 
 		padding: 0 0 5px;
 		height: 280px;
 		width: 280px;
 
 		text-align: center;
+
 		&:after{
 			content: '';
-			.inline-block(middle);
 			width: 0;
 			height: 100%;
+			.inline-block(middle);
 		}
 		&:hover{
 			text-decoration: none;
@@ -53,7 +54,7 @@
 	&_img {
 		max-width: 90%;
 		max-height: 90%;
-		.inline-block(middle);
+        .inline-block(middle);
 	}
 
 	&_desc {
