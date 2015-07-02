@@ -50,6 +50,8 @@
 		});
 	});
 
+    $body.on('addtocart', function(){ $('.jsKitPopup').trigger('close')} ); // закрываем окно popup
+
 	function PopupModel(product, sender, sender2) {
 		var self = this;
 
