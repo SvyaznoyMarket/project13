@@ -220,8 +220,8 @@ namespace Model\OrderDelivery\Entity {
         public $icon;
         /** @var array */
         public $marker = [
-            'iconImageSize' => [28, 39],
-            'iconImageOffset' => [-14, -39]
+            'iconImageSize' => [23, 30],
+            'iconImageOffset' => [-12, -30]
         ];
 
         public function __construct(array $data = []) {
@@ -282,7 +282,7 @@ namespace Model\OrderDelivery\Entity {
                     case 'self_partner_hermes':
                         $this->marker['iconImageHref'] = '/images/deliv-icon/hermes.png';
                         $this->icon = '/images/deliv-logo/hermes.png';
-                        $this->dropdown_name = 'Постаматы Гермес DPD';
+                        $this->dropdown_name = 'Пункты выдачи Hermes-DPD';
                         break;
                     default:
                         $this->marker['iconImageHref'] = '/images/deliv-icon/enter.png';

@@ -9,7 +9,8 @@
         var self = this,
             pointsBounds,
             searchAutocompleteListClicked = false,
-            map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map;
+            map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map,
+            $body = $(document.body);
 
         self.searchInput = ko.observable();
         self.searchAutocompleteList = ko.observableArray();
@@ -83,10 +84,11 @@
         self.clearSearchInput = function(){
             self.searchInput('');
             self.searchAutocompleteList.removeAll();
+            map.setBounds(map.geoObjects.getBounds());
         };
 
         self.autocompleteItemClick = function(val) {
-            console.log(val);
+            $body.trigger('trackGoogleEvent', ['pickup_ux', 'search', val.name]);
             map.setCenter(val.bounds[0], 14);
             searchAutocompleteListClicked = true;
             self.searchInput(val.name);
