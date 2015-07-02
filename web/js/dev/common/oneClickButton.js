@@ -54,6 +54,9 @@
 		}
 
 		function openPopup(removeOnClose) {
+
+            $('.jsProductImgPopup').trigger('close'); // закрываем окно просмотра фото в новой карточке товара
+
 			$('.js-order-oneclick-delivery-toggle-btn').on('click', function(e) {
 				var button = $(e.currentTarget),
 					$toggleNote = $('.js-order-oneclick-delivery-toggle-btn-note'),

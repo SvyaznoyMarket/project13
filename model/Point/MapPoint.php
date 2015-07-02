@@ -31,7 +31,8 @@ class MapPoint extends BasicPoint {
     public $dropdownName;
     public $listName;
     /** @var bool Показывать кнопку Купить на карте и в списке точек */
-    public $showBuyButton = true;
+    public $showBuyButton = false;
+    public $showBaloonBuyButton = true;
     public $productInShowroom = false;
 
     public function __construct(array $data = []) {
