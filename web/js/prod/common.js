@@ -1809,7 +1809,8 @@ $(function() {
 
 				$popup.lightbox_me({
 					autofocus: true,
-					destroyOnClose: true
+					destroyOnClose: true,
+                    closeSelector: '.jsPopupCloser'
 				});
 
 				ko.applyBindings(new PopupModel(
