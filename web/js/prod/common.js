@@ -4132,7 +4132,7 @@ $(function() {
 		if (showFixed) {
 			userBarFixed.addClass('shadow-false');
 
-			$('.js-topbarfixLogin').addClass('blocked');
+
 
 			if ( !userBar.showOverlay && overlay ) {
 				$body.append(overlay);
@@ -4232,6 +4232,7 @@ $(function() {
 			console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
 
 			upsaleWrap.find('.js-slider').remove();
+            $('.js-topbarfixLogin').addClass('blocked');
 
 			slider = $(response.content)[0];
 			upsaleWrap.append(slider);
