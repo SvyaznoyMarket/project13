@@ -43,7 +43,8 @@
             $elements = $('.jsSearchAutocompleteItem'),
             $list = $('.deliv-suggest__list'),
             activeClass = 'deliv-suggest__i--active',
-            index = $elements.index($elements.filter('.'+activeClass));
+            index = $elements.index($elements.filter('.'+activeClass)),
+            extendValue = 1, extendedBounds;
 
         if (text.length == 0) {
             $searchClear.hide()
@@ -53,7 +54,9 @@
 
         if (!ymaps || typeof ymaps.geocode != 'function') return;
 
-        if ($.inArray(keycode, [13,38,40]) === -1) ymaps.geocode(text, { /*boundedBy: extendedBounds, strictBounds: true*/ }).then(
+        extendedBounds = [[map.getBounds()[0][0] - extendValue, map.getBounds()[0][1] - extendValue],[map.getBounds()[1][0] + extendValue, map.getBounds()[1][1] + extendValue]];
+
+        if ($.inArray(keycode, [13,38,40]) === -1) ymaps.geocode(text, { boundedBy: extendedBounds, strictBounds: true }).then(
             function(res){
                 var $list = $searchAutocompleteList.empty();
                 res.geoObjects.each(function(obj){
