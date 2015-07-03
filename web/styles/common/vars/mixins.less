@@ -157,6 +157,19 @@
             column-rule-style: @columnRuleStyle;
             column-rule-width: @columnRuleWidth;
 }
+
+.clearfix() {
+    &:before ,
+    &:after {
+        display: table;
+
+        content: ' ';
+    }
+    &:after {
+        clear: both;
+    }
+}
+
 .translate(@x:0, @y:0) {
     -webkit-transform: translate(@x, @y);
        -moz-transform: translate(@x, @y);
