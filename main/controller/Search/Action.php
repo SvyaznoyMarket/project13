@@ -175,7 +175,7 @@ class Action {
         $productView = $request->get('view', $selectedCategory ? $selectedCategory->getProductView() : \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT);
 
         // товары
-        $productRepository = \RepositoryManager::product();
+        $productRepository = \RepositoryManager::product()->useV3()->withoutModels();
 
         $products = $productRepository->getCollectionById($result['data']);
 
