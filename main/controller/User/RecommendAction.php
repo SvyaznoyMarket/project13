@@ -1,7 +1,7 @@
 <?php
 
 
-namespace controller\User;
+namespace Controller\User;
 
 
 class RecommendAction extends PrivateAction {
