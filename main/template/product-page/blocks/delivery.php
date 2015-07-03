@@ -11,7 +11,7 @@ $f = function (
 
 ?>
     <!-- в наличии -->
-    <div class="buy-now-inshop <? if ($deliveryPickup) : ?>jsShowDeliveryMap<? endif ?>"
+    <div class="buy-now-inshop <?= $deliveryPickup ? 'jsShowDeliveryMap' : 'buy-now-not-inshop' ?>"
          data-product-id="<?= $product->getId() ?>"
          data-product-ui="<?= $product->getUi() ?>"
          <? if (!$deliveryPickup) : ?>style="cursor: default"<? endif ?>
