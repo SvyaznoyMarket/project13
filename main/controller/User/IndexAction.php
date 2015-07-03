@@ -2,12 +2,9 @@
 
 namespace Controller\User;
 
-class IndexAction {
-    public function __construct() {
-        if (!\App::user()->getToken()) {
-            throw new \Exception\AccessDeniedException();
-        }
-    }
+class IndexAction extends PrivateAction {
+
+
 
     public function execute(\Http\Request $request) {
 

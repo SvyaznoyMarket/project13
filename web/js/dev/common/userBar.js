@@ -56,6 +56,10 @@
 	 * Проверка текущего скролла
 	 */
 	function checkScroll(hideOnly) {
+		if (userBar.showOverlay && w.scrollTop() < userbarStatic.offset().top) {
+			closeBuyInfo();
+		}
+
 		if ( buyInfoShowing ) {
 			return;
 		}
@@ -152,8 +156,14 @@
 	/**
 	 * Показ окна о совершенной покупке
 	 */
-	function showBuyInfo( e, data, upsale ) {
+	function showBuyInfo( useAnimation, data, upsale ) {
 		console.info('userbar::showBuyInfo');
+
+
+		var showFixed = false;
+		if ($(window).scrollTop() >= ENTER.userBar.userBarStatic.offset().top) {
+			showFixed = true;
+		}
 
 		$body.trigger('showBuyInfo');
 
@@ -161,32 +171,43 @@
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		userBarFixed.addClass('shadow-false');
+		if (showFixed) {
+			userBarFixed.addClass('shadow-false');
 
-        $('.js-topbarfixLogin').addClass('blocked');
 
-		var	buyInfo = $('.topbarfix_cartOn');
 
-		if ( !userBar.showOverlay && overlay ) {
-			$body.append(overlay);
-			overlay.fadeIn(300);
-			userBar.showOverlay = true;
-			overlay.on('click', closeBuyInfo);
+			if ( !userBar.showOverlay && overlay ) {
+				$body.append(overlay);
+				overlay.fadeIn(300);
+				userBar.showOverlay = true;
+				overlay.on('click', closeBuyInfo);
+			}
+
+			if ( useAnimation ) {
+				$('.js-topbar-fixed .topbarfix_cartOn').slideDown(300);
+			}
+			else {
+				$('.js-topbar-fixed .topbarfix_cartOn').show();
+			}
+
+			showUserbar();
+			if (upsale) {
+				showUpsell(data, upsale);
+			}
+
+			buyInfoShowing = true;
+		} else {
+			// TODO:
+			/*
+			if ( useAnimation ) {
+				$('.js-topbar-static .topbarfix_cartOn').slideDown(300);
+			}
+			else {
+				$('.js-topbar-static .topbarfix_cartOn').show();
+			}
+			*/
 		}
 
-		if ( e ) {
-			buyInfo.slideDown(300);
-		}
-		else {
-			buyInfo.show();
-		}
-
-		showUserbar();
-		if (upsale) {
-			showUpsell(data, upsale);
-		}
-
-		buyInfoShowing = true;
 		$(document.body).trigger('showUserCart');
 	}
 
@@ -253,6 +274,7 @@
 			console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
 
 			upsaleWrap.find('.js-slider').remove();
+            $('.js-topbarfixLogin').addClass('blocked');
 
 			slider = $(response.content)[0];
 			upsaleWrap.append(slider);
@@ -345,7 +367,7 @@
 				element.removeClass(emptyCompareNoticeShowClass);
 			});
 
-			$('.js-topbarfixLogin, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
+			$('.js-topbarfixLogin-opener, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
 				element.removeClass(emptyCompareNoticeShowClass);
 			});
 
@@ -384,7 +406,9 @@
 	$('.js-noProductsForCompareLink', userbarStatic).click(function(e) { showEmptyCompareNotice(e, 'static', userbarStatic); });
 
 	if ( userBarFixed.length ) {
-		if (window.location.pathname !== '/cart') $body.on('addtocart', showBuyInfo);
+		if (window.location.pathname !== '/cart') $body.on('addtocart', function() {
+			showBuyInfo(true);
+		});
 		scrollTarget = $(userbarConfig.target);
 
 		if (userbarConfig.filterTarget) {

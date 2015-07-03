@@ -1,14 +1,11 @@
 $(function() {
     $('body').on('updateWidgets', function(e, widgetAndCallbackObj){
 
-        $.each(widgetAndCallbackObj.widgets, function(id, value) {
-
-            var oldNode = document.querySelector(id),
-                newNode = $(value)[0];
-
-            console.info('replace ' + id +' with ' + value);
-
-            oldNode.parentNode.replaceChild(newNode, oldNode);
+        $.each(widgetAndCallbackObj.widgets, function(selector, value) {
+			$(selector).each(function(i, oldNode) {
+				console.info('replace ' + selector +' with ' + value);
+				$(oldNode).replaceWith(value);
+			});
         });
 
         if (typeof widgetAndCallbackObj.callback == 'function') {

@@ -9,7 +9,7 @@ $(function() {
 			url = e.currentTarget.href,
 			$button = $(e.currentTarget),
 			productId = $button.data('id'),
-			inCompare = $button.hasClass('btnCmpr_lk-act'),
+			inCompare = $button.hasClass('btnCmpr_lk-act') || $button.hasClass('product-card-tools__lk--active'),
 			isSlot = $button.data('is-slot'),
 			isOnlyFromPartner = $button.data('is-only-from-partner');
 
@@ -34,7 +34,7 @@ $(function() {
 					$.each(data.compare, function(i,val){ ENTER.UserModel.compare.push(val) });
 
 					if (!inCompare) {
-						var userBarType = $(window).scrollTop() > 10 ? 'fixed' : 'static';
+						var userBarType = $(window).scrollTop() > ENTER.userBar.userBarStatic.offset().top + 10 ? 'fixed' : 'static';
 
 						(function() {
 							if (!comparePopups[userBarType]) {
@@ -45,7 +45,7 @@ $(function() {
 									comparePopups[userBarType].removeClass(compareNoticeShowClass);
 								});
 
-								$('.js-topbarfixLogin, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
+								$('.js-topbarfixLogin-opener, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
 									comparePopups[userBarType].removeClass(compareNoticeShowClass);
 								});
 

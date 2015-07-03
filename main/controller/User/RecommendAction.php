@@ -1,10 +1,11 @@
 <?php
 
 
-namespace controller\User;
+namespace Controller\User;
 
 
-class RecommendAction {
+class RecommendAction extends PrivateAction {
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse

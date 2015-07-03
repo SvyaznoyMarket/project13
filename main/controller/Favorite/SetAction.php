@@ -69,7 +69,7 @@ class SetAction {
                             'favoriteProduct' => new \Model\Favorite\Product\Entity(['uid' => $product->getUi(), 'is_favorite' => true]),
                         ]
                     ),
-                    '#favourite-userbar-popup-widget'    => \App::helper()->render(
+                    '.favourite-userbar-popup-widget'    => \App::helper()->render(
                         'userbar/_favourite-widget',
                         [
                             'product'         => $product,

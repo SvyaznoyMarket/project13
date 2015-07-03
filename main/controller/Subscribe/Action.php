@@ -12,7 +12,6 @@ class Action {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
-        $responseData = ['success' => false];
         $channelId = (int)$request->get('channel', 1);
 
         $email = null;
@@ -36,7 +35,7 @@ class Action {
                 $params['token'] = $userEntity->getToken();
             }
 
-            $result = $client->query('subscribe/create', $params, []);
+            $client->query('subscribe/create', $params, []);
 
             $responseData = [
                 'success' => true,
@@ -46,7 +45,11 @@ class Action {
             \App::logger()->error($e);
             \App::exception()->remove($e);
 
-            $responseData = ['success' => false];
+            $responseData = [
+                'success'   => false,
+                'code'      => $e->getCode(),
+                'error'     => $e->getMessage()
+            ];
 
             if (910 == $e->getCode()) {
                 $responseData['data'] = trim((string)$request->get('error_msg')) ?: 'Вы уже подписаны на нашу рассылку. Мы сообщим Вам о лучших скидках в письме. Не забывайте проверять почту от Enter!';

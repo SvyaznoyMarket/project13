@@ -69,8 +69,10 @@ $f = function(
 
             <?= $helper->render('product-page/blocks/reviews.short', ['reviewsData' => $reviewsData]) ?>
 
-            <!-- краткое описание товара -->
-            <p class="product-card-desc"><?= $product->getAnnounce() ?></p>
+            <? if ($product->getTagline()) : ?>
+                <!-- краткое описание товара -->
+                <p class="product-card-desc"><?= $product->getTagline() ?></p>
+            <? endif ?>
 
             <dl class="product-card-prop">
                 <? foreach ($product->getMainProperties() as $property) : ?>

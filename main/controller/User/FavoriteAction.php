@@ -5,14 +5,8 @@ namespace Controller\User;
 
 use EnterQuery as Query;
 
-class FavoriteAction {
+class FavoriteAction extends PrivateAction {
     use \EnterApplication\CurlTrait;
-
-    public function __construct() {
-        if (!\App::user()->getToken()) {
-            throw new \Exception\AccessDeniedException();
-        }
-    }
 
     /**
      * @return \Http\JsonResponse|\Http\Response

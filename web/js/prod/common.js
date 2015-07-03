@@ -1365,7 +1365,7 @@ $(function() {
 			url = e.currentTarget.href,
 			$button = $(e.currentTarget),
 			productId = $button.data('id'),
-			inCompare = $button.hasClass('btnCmpr_lk-act'),
+			inCompare = $button.hasClass('btnCmpr_lk-act') || $button.hasClass('product-card-tools__lk--active'),
 			isSlot = $button.data('is-slot'),
 			isOnlyFromPartner = $button.data('is-only-from-partner');
 
@@ -1390,7 +1390,7 @@ $(function() {
 					$.each(data.compare, function(i,val){ ENTER.UserModel.compare.push(val) });
 
 					if (!inCompare) {
-						var userBarType = $(window).scrollTop() > 10 ? 'fixed' : 'static';
+						var userBarType = $(window).scrollTop() > ENTER.userBar.userBarStatic.offset().top + 10 ? 'fixed' : 'static';
 
 						(function() {
 							if (!comparePopups[userBarType]) {
@@ -1401,7 +1401,7 @@ $(function() {
 									comparePopups[userBarType].removeClass(compareNoticeShowClass);
 								});
 
-								$('.js-topbarfixLogin, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
+								$('.js-topbarfixLogin-opener, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
 									comparePopups[userBarType].removeClass(compareNoticeShowClass);
 								});
 
@@ -1664,6 +1664,10 @@ $(function() {
 	});
 });
 $(function() {
+	var
+		showClass = 'topbarfix_cmpr_popup-show',
+		timer;
+
     $('body').on('click', '.jsFavoriteLink', function(e){
         var
             $el = $(e.currentTarget),
@@ -1671,8 +1675,6 @@ $(function() {
         ;
 
         console.info({'.jsFavoriteLink click': $el});
-
-
 
         if ($el.data('ajax')) {
             e.stopPropagation();
@@ -1686,13 +1688,48 @@ $(function() {
                     $('body').trigger('updateWidgets', {
                         widgets: response.widgets,
                         callback: $el.attr('href').indexOf('delete-product') !== -1 ? null : function() {
-                            var $widget = $("#favourite-userbar-popup-widget"),
-                                showClass = 'topbarfix_cmpr_popup-show';
+							var
+								userBarType = $(window).scrollTop() > ENTER.userBar.userBarStatic.offset().top + 10 ? 'fixed' : 'static',
+								$userbar = userBarType == 'fixed' ? ENTER.userBar.userBarFixed : ENTER.userBar.userBarStatic,
+								$popup = $('.js-favourite-popup', $userbar);
 
-                            $widget.addClass(showClass);
-                            setTimeout(function(){ $widget.removeClass(showClass) }, 2000)
-                            }
-                        });
+							$('.js-favourite-popup-closer', $popup).click(function() {
+								$popup.removeClass(showClass);
+							});
+
+							$('.js-topbarfixLogin-opener, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
+								$popup.removeClass(showClass);
+							});
+
+							$('html').click(function() {
+								$popup.removeClass(showClass);
+							});
+
+							$popup.click(function(e) {
+								e.stopPropagation();
+							});
+
+							$(document).keyup(function(e) {
+								if (e.keyCode == 27) {
+									$popup.removeClass(showClass);
+								}
+							});
+
+							if (timer) {
+								clearTimeout(timer);
+							}
+
+							timer = setTimeout(function() {
+								$popup.removeClass(showClass);
+							}, 2000);
+
+							if (userBarType == 'fixed') {
+								ENTER.userBar.show();
+							}
+
+							$popup.addClass(showClass);
+						}
+					});
                 })
                 .always(function() {
                     $el.data('xhr', null);
@@ -1768,8 +1805,11 @@ $(function() {
 
 				var $popup = $(Mustache.render($('#tpl-cart-kitForm').html()));
 
+                $('.jsProductImgPopup').trigger('close'); // закрытие окна с изображением
+
 				$popup.lightbox_me({
 					autofocus: true,
+					closeSelector: ".jsPopupCloser",
 					destroyOnClose: true
 				});
 
@@ -3970,6 +4010,10 @@ $(function() {
 	 * Проверка текущего скролла
 	 */
 	function checkScroll(hideOnly) {
+		if (userBar.showOverlay && w.scrollTop() < userbarStatic.offset().top) {
+			closeBuyInfo();
+		}
+
 		if ( buyInfoShowing ) {
 			return;
 		}
@@ -4066,8 +4110,14 @@ $(function() {
 	/**
 	 * Показ окна о совершенной покупке
 	 */
-	function showBuyInfo( e, data, upsale ) {
+	function showBuyInfo( useAnimation, data, upsale ) {
 		console.info('userbar::showBuyInfo');
+
+
+		var showFixed = false;
+		if ($(window).scrollTop() >= ENTER.userBar.userBarStatic.offset().top) {
+			showFixed = true;
+		}
 
 		$body.trigger('showBuyInfo');
 
@@ -4075,32 +4125,43 @@ $(function() {
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		userBarFixed.addClass('shadow-false');
+		if (showFixed) {
+			userBarFixed.addClass('shadow-false');
 
-        $('.js-topbarfixLogin').addClass('blocked');
 
-		var	buyInfo = $('.topbarfix_cartOn');
 
-		if ( !userBar.showOverlay && overlay ) {
-			$body.append(overlay);
-			overlay.fadeIn(300);
-			userBar.showOverlay = true;
-			overlay.on('click', closeBuyInfo);
+			if ( !userBar.showOverlay && overlay ) {
+				$body.append(overlay);
+				overlay.fadeIn(300);
+				userBar.showOverlay = true;
+				overlay.on('click', closeBuyInfo);
+			}
+
+			if ( useAnimation ) {
+				$('.js-topbar-fixed .topbarfix_cartOn').slideDown(300);
+			}
+			else {
+				$('.js-topbar-fixed .topbarfix_cartOn').show();
+			}
+
+			showUserbar();
+			if (upsale) {
+				showUpsell(data, upsale);
+			}
+
+			buyInfoShowing = true;
+		} else {
+			// TODO:
+			/*
+			if ( useAnimation ) {
+				$('.js-topbar-static .topbarfix_cartOn').slideDown(300);
+			}
+			else {
+				$('.js-topbar-static .topbarfix_cartOn').show();
+			}
+			*/
 		}
 
-		if ( e ) {
-			buyInfo.slideDown(300);
-		}
-		else {
-			buyInfo.show();
-		}
-
-		showUserbar();
-		if (upsale) {
-			showUpsell(data, upsale);
-		}
-
-		buyInfoShowing = true;
 		$(document.body).trigger('showUserCart');
 	}
 
@@ -4167,6 +4228,7 @@ $(function() {
 			console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
 
 			upsaleWrap.find('.js-slider').remove();
+            $('.js-topbarfixLogin').addClass('blocked');
 
 			slider = $(response.content)[0];
 			upsaleWrap.append(slider);
@@ -4259,7 +4321,7 @@ $(function() {
 				element.removeClass(emptyCompareNoticeShowClass);
 			});
 
-			$('.js-topbarfixLogin, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
+			$('.js-topbarfixLogin-opener, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
 				element.removeClass(emptyCompareNoticeShowClass);
 			});
 
@@ -4298,7 +4360,9 @@ $(function() {
 	$('.js-noProductsForCompareLink', userbarStatic).click(function(e) { showEmptyCompareNotice(e, 'static', userbarStatic); });
 
 	if ( userBarFixed.length ) {
-		if (window.location.pathname !== '/cart') $body.on('addtocart', showBuyInfo);
+		if (window.location.pathname !== '/cart') $body.on('addtocart', function() {
+			showBuyInfo(true);
+		});
 		scrollTarget = $(userbarConfig.target);
 
 		if (userbarConfig.filterTarget) {
@@ -4329,14 +4393,11 @@ $(function() {
 $(function() {
     $('body').on('updateWidgets', function(e, widgetAndCallbackObj){
 
-        $.each(widgetAndCallbackObj.widgets, function(id, value) {
-
-            var oldNode = document.querySelector(id),
-                newNode = $(value)[0];
-
-            console.info('replace ' + id +' with ' + value);
-
-            oldNode.parentNode.replaceChild(newNode, oldNode);
+        $.each(widgetAndCallbackObj.widgets, function(selector, value) {
+			$(selector).each(function(i, oldNode) {
+				console.info('replace ' + selector +' with ' + value);
+				$(oldNode).replaceWith(value);
+			});
         });
 
         if (typeof widgetAndCallbackObj.callback == 'function') {

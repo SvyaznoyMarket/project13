@@ -7,16 +7,16 @@ return function(
 
 ?>
 
-<div id="favourite-userbar-popup-widget" class="topbarfix_cmpr_popup topbarfix_cmpr_popup-add js-favourite-popup">
+<div class="favourite-userbar-popup-widget topbarfix_cmpr_popup topbarfix_cmpr_popup-add js-favourite-popup">
     <div class="topbarfix_cmpr_popup_inn">
-        <div class="clsr2 js-compare-addPopup-closer"></div>
+        <div class="clsr2 js-favourite-popup-closer"></div>
         <strong>Товар добавлен в избранное</strong>
         <div class="cmprAdd">
-            <img src="<?= $product->getImageUrl() ?>" width="40" height="40" alt="" class="cmprAdd_img js-compare-addPopup-image" />
+            <img src="<?= $product->getImageUrl() ?>" width="40" height="40" alt="" class="cmprAdd_img js-favourite-popup-image" />
 
             <div class="cmprAdd_n">
-                <span class="cmprAdd_n_t js-compare-addPopup-prefix"></span><?= $product->getPrefix() ?><br/>
-                <span class="js-compare-addPopup-webName"><?= $product->getWebName() ?></span>
+                <span class="cmprAdd_n_t js-favourite-popup-prefix"></span><?= $product->getPrefix() ?><br/>
+                <span class="js-favourite-popup-webName"><?= $product->getWebName() ?></span>
             </div>
         </div>
     </div>
