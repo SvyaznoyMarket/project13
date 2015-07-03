@@ -25,6 +25,7 @@
 
 				$popup.lightbox_me({
 					autofocus: true,
+					closeSelector: ".jsPopupCloser",
 					destroyOnClose: true
 				});
 

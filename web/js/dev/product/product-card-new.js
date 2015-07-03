@@ -354,8 +354,9 @@
     $body.on('click', '.jsImageInLightBox', function(e){
         e.preventDefault();
         var imageLink = $(this).data('href');
-        $('<div><div class="close"></div> </div>').css({'background':'#fff'}).append($('<img />', { src: imageLink})).lightbox_me({
+        $('<div class="popup popup--normal"><div class="closer jsPopupCloser">×</div> </div>').append($('<img />', { src: imageLink})).lightbox_me({
             destroyOnClose: true,
+            closeSelector: ".jsPopupCloser",
             centered: true
         });
     });
