@@ -82,7 +82,7 @@ class RecommendedAction {
         $products = array_slice($products, 0, 30);
 
         /* Рендерим слайдер */
-        $slider = \App::closureTemplating()->render('product/__slider', [
+        $slider = \App::closureTemplating()->render(\App::abTest()->isNewProductPage() ? 'product-page/blocks/slider' : 'product/__slider', [
             'products'  => $products,
             'count'     => count($products),
             'class'     => 'slideItem-7item',
@@ -168,7 +168,7 @@ class RecommendedAction {
             } catch (\Exception $e) {}
 
             /* Рендерим слайдер */
-            $slider = \App::closureTemplating()->render('product/__slider', [
+            $slider = \App::closureTemplating()->render(\App::abTest()->isNewProductPage() ? 'product-page/blocks/slider' : 'product/__slider', [
                 'products'  => $products,
                 'count'     => count($products),
                 'class'     => 'slideItem-7item',
