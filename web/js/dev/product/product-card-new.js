@@ -354,7 +354,10 @@
     $body.on('click', '.jsImageInLightBox', function(e){
         e.preventDefault();
         var imageLink = $(this).data('href');
-        $('<div />', {'style': 'background-color: #fff'}).append($('<img />', { src: imageLink})).lightbox_me({destroyOnClose: true, centered: true});
+        $('<div><div class="close"></div> </div>').css({'background':'#fff'}).append($('<img />', { src: imageLink})).lightbox_me({
+            destroyOnClose: true,
+            centered: true
+        });
     });
 
     $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); });

@@ -112,12 +112,15 @@
         .product-card-prop {
             width: 280px;
         }
+        .product-card-filter {
+            margin-top: 0;
+        }
+        .product-card-desc {
+            padding-right: 175px;
+        }
     }
     .btnBuy.mBuySet {
         width: 100%;
-    }
-    .product-card-filter {
-        margin-top: 0;
     }
     .product-card__c {
         .goods-slider {
@@ -133,9 +136,6 @@
                 margin: 0 auto 15px;
             }
         }
-    }
-    .product-card-desc {
-        padding-right: 175px;
     }
 }
 
@@ -178,9 +178,17 @@
         .inline-block();
     }
     &__box {
-        .inline-block();
+        .inline-block(middle);
+        margin-right: 15px;
         .filter-btn-box__dd {
             padding: 0;
+        }
+    }
+    &__link {
+        .inline-block(middle);
+        border-bottom: 1px dotted;
+        &:hover {
+            text-decoration: none;
         }
     }
 }
