@@ -971,6 +971,7 @@ class Entity {
             $this->getState() && $this->getState()->getIsBuyable()
             && (\App::config()->product['allowBuyOnlyInshop'] ? true : !$this->isInShopStockOnly())
             && $this->getPrice() !== null
+            && $this->getStatusId() != 5
             ;
     }
 
