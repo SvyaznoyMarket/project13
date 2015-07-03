@@ -102,7 +102,7 @@ class Actionpay {
 
             }
 
-            $link = sprintf('actionpay=%s&apid=%s&price=%F&purchase=%F', $actionpayId, $order->getNumber(), $partnerCommission, $order->getSum());
+            $link = sprintf('actionpay=%s&apid=%s&price=%F&totalPrice=%F', $actionpayId, $order->getNumber(), $partnerCommission, $order->getSum());
         } catch (\Exception $e) {
             \App::logger()->error($e, ['partner', 'actionpay ' . __METHOD__]);
         }
