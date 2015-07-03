@@ -37,6 +37,7 @@
 			</div>
 
 			<div class="table-favorites__cell-right table-cell">
+                <? if ($product->getIsBuyable()) : ?>
 				<?= $helper->render('cart/__button-product', [
 					'product'  => $product,
 					'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
@@ -45,6 +46,9 @@
 					//'sender2'  => $buySender2,
 					'location' => 'user-favorites',
 				]);// Кнопка купить ?>
+                <? else : ?>
+                    Нет в наличии
+                <? endif ?>
 
 				<!--<div class="btnBuy"><a href="" class="btn-type btn-type--buy js-orderButton jsBuyButton">В корзину</a></div>-->
 				<div class="table-favorites__delete">
