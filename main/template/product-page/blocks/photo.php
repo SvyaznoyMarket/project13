@@ -17,7 +17,7 @@ $f = function(
                 <a class="product-card-photo-sticker" href=""><img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>"></a>
             <? endif ?>
 
-            <? if ($product->getBrand()): ?>
+            <? if ($product->getBrand() && $product->getBrand()->getImage()): ?>
                 <div class="product-card-photo-sticker-brand">
                     <img src="<?= $product->getBrand()->getImage() ?>" alt="<?= $product->getBrand()->getName() ?>" />
                 </div>
