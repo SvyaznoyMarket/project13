@@ -2,13 +2,7 @@
 
 namespace Controller\User;
 
-class OrderAction {
-
-    public function __construct() {
-        if (!\App::user()->getToken()) {
-            throw new \Exception\AccessDeniedException();
-        }
-    }
+class OrderAction extends PrivateAction {
 
     public function execute(\Http\Request $request, $orderId) {
         //\App::logger()->debug('Exec ' . __METHOD__);
