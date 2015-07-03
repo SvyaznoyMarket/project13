@@ -45,7 +45,7 @@ $helper = \App::helper();
             <li class="delivery-logo-lst-i jsPartnerListItem" data-value="<?= $partner['slug'] ?>">
                 <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/<?= $partner['slug'] ?>.png">
                 <!-- картинка для плоского фона - другая: <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/logo1-plain.png"> -->
-                <div class="delivery-logo-lst-i__close">×</div>
+                <div class="delivery-logo-lst-i__close"></div>
             </li>
         <? endforeach ?>
     </ul>

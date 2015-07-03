@@ -104,19 +104,24 @@
                     .rounded(50%);
                     width: 12px;
                     height: 12px;
-                    text-align: center;
-                    line-height: 12px;
                     position: absolute;
                     top: -6px;
                     right: -6px;
                     cursor: pointer;
+                    &:after{
+                        content:"×";
+                        position: absolute;
+                        top: -3px;
+                        left: 2.3px;
+                        font-size: 11px;
+                    }
                 }
                 &__img{
 
                 }
                 &.active{
                     border: 2px solid #f99b1c;
-                    padding: 3px 9px;
+                    padding: 3px 7px;
                     .delivery-logo-lst-i__close{
                         display: block;
                     }
