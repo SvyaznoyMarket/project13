@@ -1807,6 +1807,8 @@ $(function() {
 
 				var $popup = $(Mustache.render($('#tpl-cart-kitForm').html()));
 
+                $('.jsProductImgPopup').trigger('close'); // закрытие окна с изображением
+
 				$popup.lightbox_me({
 					autofocus: true,
 					closeSelector: ".jsPopupCloser",
