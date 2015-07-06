@@ -8,7 +8,7 @@ module.exports = {
             sourceMap: true
         },
         files: {
-            'public/css/global.css': ['frontend/css/global.less']
+            'web/public/css/global.css': ['frontend/css/global.less']
         }
     },
 
@@ -19,7 +19,7 @@ module.exports = {
             compress: true
         },
         files: {
-            'public/css/global.min.css': ['frontend/css/global.less']
+            'web/public/css/global.min.css': ['frontend/css/global.less']
         }
     },
 
