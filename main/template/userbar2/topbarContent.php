@@ -23,7 +23,7 @@ $helper = \App::helper();
 
     <ul class="header_i hdlk">
         <li class="hdlk_i"><a href="<?= $page->url('delivery') ?>" class="hdlk_lk undrl">Магазины и самовывоз</a></li>
-        <li class="hdlk_i"><a href="/how_get_order" class="hdlk_lk undrl">Доставка</a></li>
+        <li class="hdlk_i"><a href="/dostavka" class="hdlk_lk undrl">Доставка</a></li>
         <li class="hdlk_i"><a href="/how_pay" class="hdlk_lk undrl">Оплата</a></li>
     </ul>
 
