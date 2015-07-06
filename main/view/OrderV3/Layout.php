@@ -37,6 +37,8 @@ class Layout extends \View\DefaultLayout {
 
         $html .= '<div id="ActionPayJS" data-vars="' . $this->json($actionpayData) . '" class="jsanalytics"></div>';
 
+        $html .= $this->googleAnalyticsJS();
+
         return $html;
     }
 }
