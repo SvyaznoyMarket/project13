@@ -112,6 +112,8 @@ class ProductButtonAction {
             $data['divClass'] = 'buy-online';
         }
 
+        if ($location == 'user-favorites' && !$product->getIsBuyable()) $data['value'] = 'Нет в наличии';
+
         return $data;
     }
 

@@ -21,7 +21,7 @@
     </div>
 
     <div class="reviews__r">
-        
+
 
         <? if ($reviewsData['num_reviews'] > 0) : ?>
             <div class="btn-type btn-type--normal jsReviewAdd">+ Добавить отзыв</div>
@@ -131,7 +131,7 @@
                         <label class="customLabel customLabel-defcheck mChecked" for="subscribe">Подписаться на рассылку и получить купон со скидкой 300 <span class="rubl">p</span> на следующую покупку.</label>
                     </div>
                     <div class="form-ctrl__btn-container">
-                        <button class="btn-type btn-type--buy jsPopupCloser" type="submit">Продолжить</button>
+                        <button class="btn-type btn-type--buy jsPopupCloser jsSubscribeAfterReview" type="submit">Продолжить</button>
                     </div>
                 </form>
             </div>
@@ -139,7 +139,7 @@
         <!-- конец блока подписки -->
     </div>
 
-    <div class="jsReviewSuccessSubscribed" style="display: none">
+    <div class="popup popup--add-review jsReviewSuccessSubscribed" style="display: none">
         <!-- успешная отправка + вы уже подписаны -->
         <i class="closer jsPopupCloser">×</i>
 
@@ -153,7 +153,7 @@
         <!-- конец блока -->
     </div>
 
-    <div class="jsReviewSuccessJustSubscribed" style="display: none">
+    <div class="popup popup--add-review jsReviewSuccessJustSubscribed" style="display: none">
         <!-- успешная отправка + спасибо -->
         <i class="closer jsPopupCloser">×</i>
 

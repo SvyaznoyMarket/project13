@@ -1,10 +1,11 @@
 <?php
 
 
-namespace controller\User;
+namespace Controller\User;
 
 
-class RecommendAction {
+class RecommendAction extends PrivateAction {
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse
@@ -12,7 +13,7 @@ class RecommendAction {
     public function execute(\Http\Request $request) {
         $client = \App::coreClientV2();
         $region = \App::user()->getRegion();
-        $repository =  \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock();
+        $repository =  \RepositoryManager::product()->useV3()->withoutModels();
 
             // вы смотрели
         $viewedProductIds = [];

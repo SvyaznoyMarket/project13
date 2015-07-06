@@ -2,16 +2,14 @@
 
 namespace Controller\User;
 
-class EditAction {
+class EditAction extends PrivateAction {
 
     private $client;
     private $user;
     private $session;
 
     public function __construct() {
-        if (!\App::user()->getToken()) {
-            throw new \Exception\AccessDeniedException();
-        }
+        parent::__construct();
         $this->client = \App::coreClientV2();
         $this->user = \App::user()->getEntity();
         $this->session = \App::session();

@@ -1412,6 +1412,33 @@ $(function() {
 
 		$body.trigger('trackGoogleEvent', ['View', action, $target.is('.js-listing-item-img') ? 'image' : 'button']);
 	});
+
+    $body.on('click', '.js-listing-item, .js-jewelListing', function(e){
+
+        var index = $(this).index(),
+            href = $(e.target).find('a').attr('href') || $(e.target).closest('a').attr('href'),
+            $breadcrumbs = $('.bBreadcrumbs__eItem a'),
+            categoryTitle = $('.js-pageTitle').text(),
+            businessUnit = '',
+            hitcallback = typeof href == 'string' && href.indexOf('/product/') == 0 ? href : null;
+
+        if ($breadcrumbs.length) {
+            $.each($breadcrumbs, function(i,val){ businessUnit += $(val).text() + '_'});
+        }
+
+        businessUnit += categoryTitle;
+
+        // лишние пробелы
+        businessUnit = businessUnit.replace(/ +/g,' ');
+
+        if (businessUnit && href) $body.trigger('trackGoogleEvent', [{
+            category: 'listing_position',
+            action: businessUnit,
+            label: index + '',
+            hitCallback: hitcallback
+        }])
+
+    });
 });
 /**
  * Catalog loader

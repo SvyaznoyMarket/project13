@@ -12,21 +12,27 @@ $f = function(
 
     <!-- слайдер изображений товара -->
     <div class="product-card__l">
+        <div class="product-card-photo">
+            <? if ($product->getLabel()): ?>
+                <a class="product-card-photo-sticker" href=""><img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>"></a>
+            <? endif ?>
 
-            <div class="product-card-photo">
-                <? if ($product->getLabel()): ?>
-                    <a class="product-card-photo-sticker" href=""><img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>"></a>
-                <? endif ?>
-                <img src="<?= $product->getMainImageUrl('product_550') ?>"
-                     class="product-card-photo__img js-photo-zoomedImg jsOpenProductImgPopup jsProductMiddlePhoto"
-                     alt="<?= $helper->escape($product->getName()) ?>"
-                     data-is-slot="<?= $product->getSlotPartnerOffer() ? 'true' : 'false' ?>"
-                     style="cursor: zoom-in"
-                    />
-                <? if (!$product->isAvailable()) : ?>
-                    <div class="product-card-photo__overlay">Нет в наличии</div>
-                <? endif ?>
-            </div>
+            <? if ($product->getBrand() && $product->getBrand()->getImage() && $product->getBrand()->getName() == 'Tchibo'): ?>
+                <div class="product-card-photo-sticker-brand">
+                    <img src="<?= $product->getBrand()->getImage() ?>" alt="<?= $product->getBrand()->getName() ?>" />
+                </div>
+            <? endif ?>
+
+            <img src="<?= $product->getMainImageUrl('product_550') ?>"
+                 class="product-card-photo__img js-photo-zoomedImg jsOpenProductImgPopup jsProductMiddlePhoto"
+                 alt="<?= $helper->escape($product->getName()) ?>"
+                 data-is-slot="<?= $product->getSlotPartnerOffer() ? 'true' : 'false' ?>"
+                 style="cursor: zoom-in"
+                />
+            <? if (!$product->isAvailable()) : ?>
+                <div class="product-card-photo__overlay">Нет в наличии</div>
+            <? endif ?>
+        </div>
 
         <ul class="product-card-media jsProductMediaButton">
             <? if ($product->hasVideo()) : ?>

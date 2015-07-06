@@ -1139,6 +1139,7 @@ $(function() {
         $('#reviewFormRating').val(++rate)
     });
 
+    // отправка отзыва
     $('#reviewForm').on('submit', function(e){
         var $form = $(this),
             textareaErrClass = 'form-ctrl__textarea--err',
@@ -1245,7 +1246,11 @@ $(function() {
     $body.on('click', '.jsImageInLightBox', function(e){
         e.preventDefault();
         var imageLink = $(this).data('href');
-        $('<div />', {'style': 'background-color: #fff'}).append($('<img />', { src: imageLink})).lightbox_me({destroyOnClose: true, centered: true});
+        $('<div class="popup popup--normal"><div class="closer jsPopupCloser">×</div> </div>').append($('<img />', { src: imageLink})).lightbox_me({
+            destroyOnClose: true,
+            closeSelector: ".jsPopupCloser",
+            centered: true
+        });
     });
 
     $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); });
@@ -1259,6 +1264,25 @@ $(function() {
     $body.on('click', '.jsProductCardNewLabelInfo', function(){
         $('.jsProductCardNewLabelPopup').toggleClass('info-popup--open');
     });
+
+    //
+    $body.on('click', '.jsSubscribeAfterReview', function() {
+
+        if (!$('.js-registerForm-subscribe').is(':checked')) return;
+        $.ajax({
+            type: "POST",
+            url: '/subscribe/create',
+            data: { channel: 1, email: $('#reviewFormEmail').val() },
+            success: function(data) {
+                if (data.success) {
+                    $('.jsReviewSuccessJustSubscribed').lightbox_me(popupDefaults);
+                } else {
+                    $('.jsReviewSuccessSubscribed').lightbox_me(popupDefaults);
+                    if (data.code != 910) $('.jsReviewSuccessSubscribed .popup-form-success__txt').text(data.error)
+                }
+            }
+        });
+    })
 
 })(jQuery);
 

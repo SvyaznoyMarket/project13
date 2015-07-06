@@ -77,7 +77,7 @@ class RecommendedAction {
                         $data = explode(',', (string)$request->cookies->get('product_viewed'));
                     }
                     if (is_array($data)) {
-                        $data = array_reverse(array_filter($data));
+                        $data = array_reverse(array_filter($data, function($productId) { return (int)$productId; }));
                         $sender['items'] = array_slice(array_unique($data), 0, $productLimitInSlice);
                         $productIds = array_merge($productIds, $sender['items']);
                     }
@@ -91,7 +91,7 @@ class RecommendedAction {
 
             /** @var \Model\Product\Entity[] $productsById */
             $productsById = [];
-            \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->prepareCollectionById($productIds, $region, function($data) use (&$productsById) {
+            \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionById($productIds, $region, function($data) use (&$productsById) {
                 foreach ((array)$data as $item) {
                     if (empty($item['id'])) continue;
 
