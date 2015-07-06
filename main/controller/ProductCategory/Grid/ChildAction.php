@@ -74,7 +74,7 @@ class ChildAction {
 
         // SITE-5513
         foreach (array_chunk($productsByUi, 10, true) as $uisInChunk) {
-            \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->prepareCollectionByUi(array_values($uisInChunk), \App::user()->getRegion(), function($data) use (&$productsByUi, &$uisInChunk) {
+            \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionByUi(array_values($uisInChunk), \App::user()->getRegion(), function($data) use (&$productsByUi, &$uisInChunk) {
                 foreach ($data as $item) {
                     $key = array_search($item['ui'], $productsByUi, true);
                     if (!isset($productsByUi[$key])) {

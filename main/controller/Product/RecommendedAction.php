@@ -91,7 +91,7 @@ class RecommendedAction {
 
             /** @var \Model\Product\Entity[] $productsById */
             $productsById = [];
-            \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->prepareCollectionById($productIds, $region, function($data) use (&$productsById) {
+            \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionById($productIds, $region, function($data) use (&$productsById) {
                 foreach ((array)$data as $item) {
                     if (empty($item['id'])) continue;
 
