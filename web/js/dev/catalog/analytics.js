@@ -6,6 +6,7 @@ $(function() {
     ;
 
     if (sliderData && (true === sliderData.isSale)) {
+        // клик по ссылке на категорию
         $body.on('click', '.js-productCategory-link', function() {
             var
                 $el = $(this)
@@ -15,6 +16,19 @@ $(function() {
                 category: 'slices_sale',
                 action: 'category',
                 label: $el.find('[data-type="name"]').text()
+            });
+        });
+
+        // клик по ссылке на товар
+        $body.on('click', '.js-listing-item', function() {
+            var
+                $el = $(this)
+            ;
+
+            $body.trigger('trackGoogleEvent', {
+                category: 'slices_sale',
+                action: 'product',
+                label: ''
             });
         });
     }
