@@ -65,7 +65,8 @@
                             .data('bounds', obj.geometry.getBounds())
                             .text(obj.properties.get('name') + ', ' + obj.properties.get('description')));
                 });
-                $searchAutocompleteHolder.show();
+
+                if (res.geoObjects.getLength()) $searchAutocompleteHolder.show(); else $searchAutocompleteHolder.hide();
                 $elements = $('.jsSearchAutocompleteItem');
             },
             function(err){
@@ -128,13 +129,19 @@
         });
 
         map = window.omap = new ymaps.Map("jsDeliveryMap", {
-            center: [68, 68],
+            center: [55.76, 37.64],
             zoom: 11,
-            controls: ['geolocationControl', 'zoomControl']
+            controls: ['geolocationControl', 'zoomControl', 'searchControl']
         },{
             autoFitToViewport: 'always',
             suppressMapOpenBlock: true,
             suppressObsoleteBrowserNotifier: true
+        });
+
+        var searchControl = map.controls.get('searchControl');
+        searchControl.options.set('size', 'small');
+        searchControl.events.add('click', function(){
+            searchControl.options.set('size', 'large')
         });
 
         map.events.add('boundschange', function (event) {
