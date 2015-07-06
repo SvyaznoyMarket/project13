@@ -65,7 +65,8 @@
                             .data('bounds', obj.geometry.getBounds())
                             .text(obj.properties.get('name') + ', ' + obj.properties.get('description')));
                 });
-                $searchAutocompleteHolder.show();
+
+                if (res.geoObjects.getLength()) $searchAutocompleteHolder.show(); else $searchAutocompleteHolder.hide();
                 $elements = $('.jsSearchAutocompleteItem');
             },
             function(err){

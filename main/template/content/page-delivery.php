@@ -27,7 +27,7 @@ $helper = \App::helper();
                 <div class="deliv-search__clear jsSearchClear" style="display: none">×</div>
             </div>
             <!-- Саджест такой же как в одноклике -->
-            <div class="deliv-suggest jsSearchAutocompleteHolder" style="display:none">
+            <div class="deliv-suggest jsSearchAutocompleteHolder" style="display:none; top: 33px;">
                 <ul class="deliv-suggest__list jsSearchAutocompleteList">
                     <li class="deliv-suggest__i"></li>
                 </ul>
