@@ -7,8 +7,11 @@ $f = function(
     ?>
 
     <?= $review->isEnterReview() ? '' : '<noindex>' ?>
-
-    <div class="reviews__i jsReviewItem" style="display: <?= $hidden ? 'none' : 'block' ?>" data-review-ui="<?= $review->ui ?>">
+    <!-- если отзыв самый полезный, выводим класс reviews__i--valuable: -->
+    <div class="reviews__i jsReviewItem reviews__i--valuable" style="display: <?= $hidden ? 'none' : 'block' ?>" data-review-ui="<?= $review->ui ?>">
+        <!-- если отзыв самый полезный, выводим лейбл: -->
+        <label class="reviews__lbl">Самый полезный отзыв</label>
+        <!-- /// -->
         <div class="reviews__cpt"><div class="reviews__author"><?= $review->author ? : 'Аноним' ?></div>,
             <div class="reviews__date"><?= \Util\Date::strftimeRu('%e %B2 %G', $review->date->format('U')) ?></div></div>
 
