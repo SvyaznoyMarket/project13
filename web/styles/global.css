@@ -17901,10 +17901,10 @@ img[height='0'] {
     font-size: 16px;
   }
   .sorting-top .lstn-type-icon.bar:before {
-    content: '\e800';
+    content: '\e801';
   }
   .sorting-top .lstn-type-icon.list::before {
-    content: '\e801';
+    content: '\e800';
   }
 }
 /*---------Поставщикам----------*/

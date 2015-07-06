@@ -26,8 +26,6 @@ class ShowAction {
         $imageSourceType = 'product_160',
         array $cartButtonSender = []
     ) {
-        $user = \App::user();
-
         if ($product->isInShopOnly()) {
             $inShopOnlyLabel = ['name' => 'Только в магазинах'];
         } else {
@@ -90,8 +88,14 @@ class ShowAction {
         ];
 
         // Дополняем свойствами для каталога в виде листинга
-        if (\App::abTest()->isCatalogListing()) {
-            $productItem['properties']= $product->getPropertiesInView(3);
+        if (in_array(\App::abTest()->getTest('siteListing')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true)) {
+            $productItem['properties']= array_map(function(\Model\Product\Property\Entity $entity) {
+                return [
+                    'name' => $entity->getName(),
+                    'value' => $entity->getStringValue(),
+
+                ];
+            }, $product->getPropertiesInView(3));
         }
 
         // oldPrice and priceSale

@@ -15,4 +15,10 @@ $(function() {
 
 		$body.trigger('trackGoogleEvent', ['View', action, $target.is('.js-listing-item-img') ? 'image' : 'button']);
 	});
+
+	$('.js-slider').goodsSlider({
+		onLoad: function(goodsSlider) {
+			ko.applyBindings(ENTER.UserModel, goodsSlider);
+		}
+	});
 });

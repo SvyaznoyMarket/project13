@@ -81,7 +81,7 @@
 	 */
 	function upToFilter() {
 		$.scrollTo(filterTarget, 500);
-		ENTER.catalog.filter.openFilter();
+		ENTER.catalog.filter.open();
 
 		return false;
 	}

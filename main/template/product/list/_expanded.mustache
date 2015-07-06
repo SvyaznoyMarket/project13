@@ -1,33 +1,14 @@
-<!-- Листинг товаров -->
 {{#products}}
-    <!-- Элемент листинга/продукт -->
-    {{#isBanner}}
-        <!--li class="bListingItem mBannerItem" style="background-image: url('{{image}}'); background-repeat: no-repeat;">
-            {{#url}}
-                <a class="lstn_i-banner-link" href="{{url}}"></a>
-            {{/url}}
-            <div class="adfoxWrapper" id="adfox215"></div>
-        </li-->
-    {{/isBanner}}
     {{^isBanner}}
         <li class="listing__i js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
             {{! Картинка }}
             <div class="listing-img">
                 <div class="listing-stickers">
-                    {{#abtestKeys.sprosikupi}}
-                        <div class="sprosikupiCategoryRating">
-                            <div class="spk-good-rating" shop-id="52dbdd369928f539612151" good-id="{{id}}"></div>
-                        </div>
-                    {{/abtestKeys.sprosikupi}}
-
-                    {{#abtestKeys.shoppilot}}
-                        <div class="shoppilot-category-container" data-product-id="{{id}}"></div>
-                    {{/abtestKeys.shoppilot}}
-
                     <ul class="listing-stickers__lst clearfix">
                         {{#label}}
                             <li class="listing-stickers__i listing-stickers__i--left"><img class="listing-stickers__img" src="{{image}}" alt="{{name}}" /></li>
                         {{/label}}
+
                         {{#brandImage}}
                             <li class="listing-stickers__i listing-stickers__i--right"><img class="listing-stickers__img" src="{{brandImage}}" alt="{{name}}" /></li>
                         {{/brandImage}}
@@ -52,21 +33,18 @@
                 <a class="listing__title" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a>
 
                 <ul class="listing-props">
-                {{#properties}}
-                    <li class="listing-props__i">
-                        <span class="listing-props__name"><span class="listing-props__name-wrap">{{getName}}</span></span>
-                        <span class="listing-props__val">{{getValue}}{{getUnit}}</span>
-                    </li>
-                {{/properties}}
+                    {{#properties}}
+                        <li class="listing-props__i">
+                            <span class="listing-props__name"><span class="listing-props__name-wrap">{{name}}</span></span>
+                            <span class="listing-props__val">{{value}}</span>
+                        </li>
+                    {{/properties}}
                 </ul>
-
             </div>
             {{! END: Блок с названием и характеристиками }}
             {{! Блок с ценой, рейтингом }}
             <div class="listing__info">
-                    {{! {{#abtestKeys.default}}
-                        {{#review}}{{> product/_review-compact }}{{/review}}
-                    {{! {{/abtestKeys.default}}
+                {{#review}}{{> product/_review-compact }}{{/review}}
 
                 <div class="listing-price-block">
                     {{#oldPrice}}
@@ -80,8 +58,7 @@
                             <span class="listing-price-block__discount">-{{priceSale}}%</span>
                         {{/priceSale}}
                     {{/showPriceSale}}
-                    <span class="listing-price-block__price-current {{#priceSale}} listing-price-block__price-sale{{/priceSale}}">{{&price}} <span class="rubl">p</span>
-                    </span>
+                    <span class="listing-price-block__price-current {{#priceSale}} listing-price-block__price-sale{{/priceSale}}">{{&price}} <span class="rubl">p</span></span>
                 </div>
 
                 <div class="listing__btn-group">
@@ -100,14 +77,10 @@
                         {{name}}
                     </div>
                 {{/stateLabel}}
-                
-                
             </div>
             {{! END: Блок с ценой, рейтингом }}
     {{/isBanner}}
-    <!-- /Элемент листинга/продукт -->
 {{/products}}
 {{^products}}
     <li class="lstn_empty">Товары не найдены</li>
 {{/products}}
-<!-- /Листинг товаров -->

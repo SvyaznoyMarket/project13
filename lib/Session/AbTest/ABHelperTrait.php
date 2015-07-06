@@ -110,13 +110,6 @@ trait ABHelperTrait {
         return $test && $test->getChosenCase()->getKey() == 'hamburger' && \App::request()->attributes->get('route') == 'product';
     }
 
-    /** Новый вид каталога (список с характеристиками)
-     * @return bool
-     */
-    public static function isCatalogListing() {
-        return true;
-    }
-
     /** Новая карточка товара
      * @return bool
      */

@@ -813,7 +813,7 @@ class Entity {
 
     /** Возвращает N свойств с in_view_list = true
      * @param $count
-     * @return array
+     * @return Property\Entity[]
      */
     public function getPropertiesInView($count) {
         $propertiesInView = array_filter($this->property, function(Property\Entity $entity){ return $entity->getIsInList(); });
