@@ -36,7 +36,7 @@
         }
     }
     &__line {
-        padding: 0 20px;
+        padding-left: 20px;
 
         .clearfix();
         &--top {
@@ -44,6 +44,7 @@
 
             height: 30px;
             padding-top: 11px;
+            padding-right: 20px;
         }
         &--bottom {
             height: 60px;
@@ -110,13 +111,14 @@
     }
     &__btn {
         position: absolute;
-        top: 0;
-        right: 0;
+        top: 5px;
+        right: 5px;
     }
     &__it {
+        font-family: 'GloberSemiBold';
+
         width: 500px;
         padding-left: 38px;
-        font-family: 'GloberSemiBold';
     }
 }
 
@@ -148,17 +150,14 @@
     &__item {
         position: relative;
 
-        margin: 0 10px;
-
-        text-align: center;
+        width: 120px;
+        margin: 5px 0;
 
         .inline-block(middle);
     }
     &__icon {
-        margin: 0 0 2px;
-
         .inline-block(middle);
-        .rounded(50%);
+         margin: 0 2px 0 0;
     }
     &__text {
         font-family: 'GloberSemiBold';

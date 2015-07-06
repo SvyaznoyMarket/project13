@@ -43,7 +43,7 @@
                         <form class="search-bar">
                             <i class="search-bar__icon i-controls i-controls--search"></i>
                             <input type="text" class="search-bar__it it" placeholder="Поиск товаров">
-                            <button class="search-bar__btn">Найти</button>
+                            <button class="search-bar__btn btn-normal">Найти</button>
                         </form>
 
                         <ul class="user-controls">
