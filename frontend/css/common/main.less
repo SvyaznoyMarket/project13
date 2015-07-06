@@ -34,10 +34,14 @@ a {
     &:visited {
         color: @text-color;
     }
+}
 
-    &.underline {
-        border-bottom: 1px solid #a0a0a0;
-    }
+.underline {
+    border-bottom: 1px solid @link-border;
+}
+
+.dotted {
+    border-bottom: 1px dotted @link-border;
 }
 
 ul, ol, nav {

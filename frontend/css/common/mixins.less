@@ -239,6 +239,19 @@
     vertical-align: @vertical-align;
 }
 
+.table {
+    display: table;
+    padding: 0;
+    &-row {
+        display: table-row;
+        padding: 0;
+    }
+    &-cell {
+        display: table-cell;
+        padding: 0;
+    }
+}
+
 .flexbox() {
     display: -webkit-box;
     display:    -moz-box;
@@ -296,7 +309,7 @@
     background-repeat: no-repeat;
     background-position: @x @y;
 
-    .inline-block();
+    .inline-block(middle);
 }
 
 .noselect {
