@@ -30,7 +30,7 @@ $(function() {
         });
     });
 
-    // скролл на нижнем баннере
+    // скрол на нижнем баннере
     $body.on('click', '.jsSlidesWideButton', function(e) {
         $body.trigger('trackGoogleEvent', {
             category: 'banner_main',
@@ -44,6 +44,15 @@ $(function() {
         $body.trigger('trackGoogleEvent', {
             category: 'brand_main',
             action: $(this).attr('title'),
+            label: ''
+        });
+    });
+
+    // клик по трастфактору
+    $body.on('click', '.jsShopInfoPreview', function(){
+        $body.trigger('trackGoogleEvent', {
+            category: 'trust_main',
+            action: $(this).data('name'),
             label: ''
         });
     });
