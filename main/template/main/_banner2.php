@@ -10,7 +10,7 @@ $isArrowsVisible = count($banners) > 4
     <ul class="slidesbnnr_lst jsMainBannerHolder">
         <? foreach ($banners as $key => $banner) : ?>
         <li class="slidesbnnr_i jsMainBannerImage">
-            <a href="<?= @$banner['url'] ?>" class="slidesbnnr_lk"><img src="<?= @$banner['imgb'] ?>" alt="" class="slidesbnnr_img" /></a>
+            <a href="<?= @$banner['url'] ?>" class="jsMainBannerLink slidesbnnr_lk"><img src="<?= @$banner['imgb'] ?>" alt="" class="slidesbnnr_img" /></a>
         </li>
         <? endforeach; ?>
     </ul>
@@ -25,12 +25,12 @@ $isArrowsVisible = count($banners) > 4
                      src="<?= @$banner['imgs'] ?>"
                      alt=""
                      data-timeout="<?= (int)@$banner['t'] ?>"
-                    />
+                />
             </li>
-            <? endforeach; ?>
+            <? endforeach ?>
         </ul>
 
         <? if ($isArrowsVisible) : ?><div class="slidesbnnr_thmbs_btn slidesbnnr_thmbs_btn-bottom jsMainBannersButton jsMainBannersDownButton"></div><? endif ?>
     </div>
 </div>
-<? endif; ?>
+<? endif ?>
