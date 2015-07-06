@@ -31,5 +31,20 @@ $(function() {
                 label: ''
             });
         });
+
+        // клик по кнопке "Купить"
+        $body.on('click', '.jsBuyButton', function(e) {
+            var
+                $el = $(this)
+            ;
+
+            e.stopPropagation();
+
+            $body.trigger('trackGoogleEvent', {
+                category: 'slices_sale',
+                action: 'basket',
+                label: ''
+            });
+        });
     }
 });

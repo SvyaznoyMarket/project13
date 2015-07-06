@@ -2,7 +2,8 @@
 $(function(){var
 $body=$('body'),sliderData=$('#jsSlice').data('value');if(sliderData&&(true===sliderData.isSale)){$body.on('click','.js-productCategory-link',function(){var
 $el=$(this);$body.trigger('trackGoogleEvent',{category:'slices_sale',action:'category',label:$el.find('[data-type="name"]').text()});});$body.on('click','.js-listing-item',function(){var
-$el=$(this);$body.trigger('trackGoogleEvent',{category:'slices_sale',action:'product',label:''});});}});
+$el=$(this);$body.trigger('trackGoogleEvent',{category:'slices_sale',action:'product',label:''});});$body.on('click','.jsBuyButton',function(e){var
+$el=$(this);e.stopPropagation();$body.trigger('trackGoogleEvent',{category:'slices_sale',action:'basket',label:''});});}});
 ;(function(ENTER){console.info('Catalog init: catalog.js');var
 utils=ENTER.utils,catalog=utils.extendApp('ENTER.catalog'),lastPage=$('#bCatalog').data('lastpage');catalog.enableHistoryAPI=(typeof Mustache==='object')&&(History.enabled);catalog.listingWrap=$('.js-listing');catalog.liveScroll=false;catalog.lastPage=null;if(lastPage){catalog.lastPage=lastPage;}
 console.info('Mustache is '+typeof Mustache+' (Catalog main config)');console.info('enableHistoryAPI '+catalog.enableHistoryAPI);$('.js-slider').goodsSlider({onLoad:function(goodsSlider){ko.applyBindings(ENTER.UserModel,goodsSlider);}});}(window.ENTER));
