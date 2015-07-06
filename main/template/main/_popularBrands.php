@@ -32,7 +32,7 @@ $brands = [
     <ul class="lstitem lstitem-10i clearfix">
     <? foreach ($brands as $brand): ?>
         <li class="lstitem_i">
-            <a class="lstitem_lk" title="<?= $brand['name'] ?>" href="<?= $brand['url'] ?>">
+            <a class="lstitem_lk jsMainBrand" title="<?= $brand['name'] ?>" href="<?= $brand['url'] ?>">
                 <img src="styles/mainpage/img/logo/<?= $brand['image'] ?>" alt="<?= $brand['name'] ?>" class="lstitem_img">
             </a>
         </li>

@@ -38,4 +38,13 @@ $(function() {
             label: 'collection'
         });
     });
+
+    // клик по бренду
+    $body.on('click', '.jsMainBrand', function(e) {
+        $body.trigger('trackGoogleEvent', {
+            category: 'brand_main',
+            action: $(this).attr('title'),
+            label: ''
+        });
+    });
 });
