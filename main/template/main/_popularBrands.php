@@ -1,108 +1,41 @@
+<?php
+
+$brands = [
+    ['name' => 'Bosch', 'url' => '/slices/brands-bosch', 'image' => 'bosch.jpg'],
+    ['name' => 'LG', 'url' => '/slices/brands-lg', 'image' => 'lg.jpg'],
+    ['name' => 'Samsung', 'url' => '/slices/brands-samsung', 'image' => 'samsung.jpg'],
+    ['name' => 'Philips', 'url' => '/slices/brands-philips', 'image' => 'philips.jpg'],
+    ['name' => 'Electrolux', 'url' => '/slices/brands-electrolux', 'image' => 'electrolux.jpg'],
+    ['name' => 'Sony', 'url' => '/slices/brands-sony', 'image' => 'sony.jpg'],
+    ['name' => 'Apple', 'url' => '/slices/brands-apple', 'image' => 'apple.jpg'],
+    ['name' => 'HP', 'url' => '/slices/brands-hp', 'image' => 'HP.jpg'],
+    ['name' => 'Lenovo', 'url' => '/slices/brands-lenovo', 'image' => 'lenovo.jpg'],
+    ['name' => 'Hasbro', 'url' => '/search?q=hasbro', 'image' => 'hasHasbrobro.jpg'],
+    ['name' => 'Sylvanian Families', 'url' => '/slices/brands-sylvanian-families', 'image' => 'Sylvanian-Families.jpg'],
+    ['name' => 'LEGO', 'url' => '/slices/brands-lego', 'image' => 'lego.jpg'],
+    ['name' => 'Анзоли', 'url' => '/slices/brands-anzoli', 'image' => 'anzoli.jpg'],
+    ['name' => 'Шатура', 'url' => '/slices/brands-shatura', 'image' => 'shatura.jpg'],
+    ['name' => 'Vision Fitness', 'url' => '/slices/brands-vision', 'image' => 'visionfitnes.jpg'],
+    ['name' => 'Makita', 'url' => '/slices/brands-makita', 'image' => 'Makita.jpg'],
+    ['name' => 'Аскона', 'url' => '/slices/brands-askona', 'image' => 'askona.jpg'],
+    ['name' => 'Tefal', 'url' => '/slices/brands-tefal', 'image' => 'tefal.jpg'],
+    ['name' => 'PANDORA', 'url' => '/slices/brands-pandora', 'image' => 'pandora.jpg'],
+    ['name' => 'GUESS', 'url' => '/slices/brands-guess', 'image' => 'guess.jpg'],
+];
+
+?>
 <div class="infoBox">
     <div class="infoBox_tl">
         ПОПУЛЯРНЫЕ БРЕНДЫ
     </div>
 
     <ul class="lstitem lstitem-10i clearfix">
+    <? foreach ($brands as $brand): ?>
         <li class="lstitem_i">
-            <a class="lstitem_lk" title="Bosch" href="/slices/brands-bosch">
-                <img src="styles/mainpage/img/logo/bosch.jpg" alt="Bosch" class="lstitem_img">
+            <a class="lstitem_lk" title="<?= $brand['name'] ?>" href="<?= $brand['url'] ?>">
+                <img src="styles/mainpage/img/logo/<?= $brand['image'] ?>" alt="<?= $brand['name'] ?>" class="lstitem_img">
             </a>
         </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="LG" href="/slices/brands-lg">
-                <img src="styles/mainpage/img/logo/lg.jpg" alt="LG" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="Samsung" href="/slices/brands-samsung">
-                <img src="styles/mainpage/img/logo/samsung.jpg" alt="Samsung" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="Philips" href="/slices/brands-philips">
-                <img src="styles/mainpage/img/logo/philips.jpg" alt="Philips" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="Electrolux" href="/slices/brands-electrolux">
-                <img src="styles/mainpage/img/logo/electrolux.jpg" alt="Electrolux" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="Sony" href="/slices/brands-sony">
-                <img src="styles/mainpage/img/logo/sony.jpg" alt="Sony" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="Apple" href="/slices/brands-apple">
-                <img src="styles/mainpage/img/logo/apple.jpg" alt="Apple" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="HP" href="/slices/brands-hp">
-                <img src="styles/mainpage/img/logo/HP.jpg" alt="HP" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="Lenovo" href="/slices/brands-lenovo">
-                <img src="styles/mainpage/img/logo/lenovo.jpg" alt="Lenovo" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="Hasbro" href="/search?q=hasbro">
-                <img src="styles/mainpage/img/logo/hasHasbrobro.jpg" alt="Hasbro" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="Sylvanian Families" href="/slices/brands-sylvanian-families">
-                <img src="styles/mainpage/img/logo/Sylvanian-Families.jpg" alt="Sylvanian Families" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="LEGO" href="/slices/brands-lego">
-                <img src="styles/mainpage/img/logo/lego.jpg" alt="LEGO" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="Анзоли" href="/slices/brands-anzoli">
-                <img src="styles/mainpage/img/logo/anzoli.jpg" alt="Anzoli" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="Шатура" href="/slices/brands-shatura">
-                <img src="styles/mainpage/img/logo/shatura.jpg" alt="Шатура" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="Vision Fitness" href="/slices/brands-vision">
-                <img src="styles/mainpage/img/logo/visionfitnes.jpg" alt="Vision Fitness" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="Makita" href="/slices/brands-makita">
-                <img src="styles/mainpage/img/logo/Makita.jpg" alt="Makita" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="Аскона" href="/slices/brands-askona">
-                <img src="styles/mainpage/img/logo/askona.jpg" alt="Askona" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="Tefal" href="/slices/brands-tefal">
-                <img src="styles/mainpage/img/logo/tefal.jpg" alt="Tefal" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="PANDORA" href="/slices/brands-pandora">
-                <img src="styles/mainpage/img/logo/pandora.jpg" alt="PANDORA" class="lstitem_img">
-            </a>
-        </li>
-        <li class="lstitem_i">
-            <a class="lstitem_lk" title="GUESS" href="/slices/brands-guess">
-                <img src="styles/mainpage/img/logo/guess.jpg" alt="GUESS" class="lstitem_img">
-            </a>
-        </li>
+    <? endforeach ?>
     </ul>
 </div>
