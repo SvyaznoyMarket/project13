@@ -368,7 +368,19 @@ class Client {
                         //$this->logger->debug(microtime(true) . ': произошло прерывание по таймауту, в очереди ' . count($this->queries) . ' запроса(ов)', ['curl']);
 
                         foreach ($this->queries as $query) {
-                            if (count($query['resources']) >= $retryCount) continue;
+                            // Если не осталось больше попыток
+                            if (count($query['resources']) >= $retryCount) {
+                                // Если определена функция failCallback через $this->addQuery()
+                                if (isset($this->failCallbacks[(string)$query['resources'][0]])) {
+                                    // то вызываем её
+                                    call_user_func($this->failCallbacks[(string)$query['resources'][0]]);
+                                } else {
+                                    // иначе выбросим TimeoutException
+                                    //throw new TimeoutException();
+                                }
+
+                                continue;
+                            };
                             //$this->logger->debug(microtime(true) . ': посылаю еще один запрос в ядро: ' . $query['query']['url'], ['curl']);
                             $this->logger->info([
                                 'message' => 'Query retry',

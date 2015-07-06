@@ -3,7 +3,7 @@
 {{#links}}
     {{#name}}
     <li class="sorting_i {{#active}}act js-category-pagination-activePage{{/active}} js-category-pagination-page">
-        <a class="sorting_lk sorting_lk-page jsPagination" href="{{url}}">{{name}}</a>
+        <a class="sorting_lk sorting_lk-page js-category-pagination-page-link" href="{{url}}">{{name}}</a>
     </li>
     {{/name}}
 
@@ -12,6 +12,6 @@
     {{/name}}
 {{/links}}
 
-<li class="sorting_i hidden js-category-pagination-paging"><a class="sorting_lk sorting_lk-page jsPaginationEnable" href="#">123</a></li>
+<li class="sorting_i hidden js-category-pagination-paging"><a class="sorting_lk sorting_lk-page js-category-pagination-paging-enableLink" href="#">123</a></li>
 
-<li class="sorting_i js-category-pagination-infinity"><a class="sorting_lk sorting_lk-page jsInfinityEnable" href="#">&#8734;</a></li>
+<li class="sorting_i js-category-pagination-infinity"><a class="sorting_lk sorting_lk-page js-category-pagination-infinity-enableLink" href="#">&#8734;</a></li>

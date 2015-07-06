@@ -101,7 +101,7 @@ class RecommendedAction {
 
             $client->execute(); // 2-й пакет запросов
 
-            \RepositoryManager::product()->enrichProductsFromScms($productsById, 'media label');
+            \RepositoryManager::product()->enrichProductsFromScms($productsById, 'media label category');
             $client->execute();
 
             /**

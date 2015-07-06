@@ -576,16 +576,18 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
 						'') + (sPath ? '; path=' + sPath:
 						'') + (bSecure ? '; secure':
 						'');
-						
+
 			return true;
 		},
 
-		removeItem: function ( sKey, sPath ) {
+		removeItem: function ( sKey, sPath, sDomain ) {
 			if ( !sKey || !this.hasItem(sKey) ) {
 				return false;
 			}
 			
-			document.cookie = escape(sKey) + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT' + (sPath ? '; path=' + sPath: '');
+			document.cookie = escape(sKey) + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT' + (sDomain ? '; domain=' + sDomain:
+				'') + (sPath ? '; path=' + sPath:
+				'');
 
 			return true;
 		},
@@ -1239,7 +1241,7 @@ FormValidator.prototype.addFieldToValidate = function( field ) {
  * @param	{String}	value	Значение
  * @return	{String}			Сформированный URL
  */
-var UpdateUrlString = function(key, value) {
+String.prototype.addParameterToUrl = function(key, value) {
 	var url = this.toString();
 	var re = new RegExp('([?|&])' + key + '=.*?(&|#|$)(.*)', 'gi');
 
@@ -1266,7 +1268,6 @@ var UpdateUrlString = function(key, value) {
 		}
 	}
 };
-String.prototype.addParameterToUrl = UpdateUrlString;
 /**
  * Модуль обратного счетчика
  *
@@ -1429,12 +1430,23 @@ String.prototype.addParameterToUrl = UpdateUrlString;
 });
 
 ;(function(){
-    var clone = docCookies.setItem;
-    docCookies.setItem = function(){
-        var args = Array.prototype.slice.call(arguments); // making true array
-        if (typeof args[4] == 'undefined') args[4] = '.' + /[A-Za-z0-9]+\.[A-Za-z0-9]+$/.exec(window.location.hostname)[0]; // set domain to ".enter.ru" or ".enter.loc" or ".ent3.ru", etc
-        return clone.apply(this, args);
-    }
+	(function() {
+		var clone = docCookies.setItem;
+		docCookies.setItem = function(){
+			var args = Array.prototype.slice.call(arguments); // making true array
+			if (typeof args[4] == 'undefined') args[4] = '.' + /[A-Za-z0-9]+\.[A-Za-z0-9]+$/.exec(window.location.hostname)[0]; // set domain to ".enter.ru" or ".enter.loc" or ".ent3.ru", etc
+			return clone.apply(this, args);
+		};
+	})();
+
+	(function() {
+		var clone = docCookies.removeItem;
+		docCookies.removeItem = function(){
+			var args = Array.prototype.slice.call(arguments); // making true array
+			if (typeof args[2] == 'undefined') args[2] = '.' + /[A-Za-z0-9]+\.[A-Za-z0-9]+$/.exec(window.location.hostname)[0]; // set domain to ".enter.ru" or ".enter.loc" or ".ent3.ru", etc
+			return clone.apply(this, args);
+		};
+	})();
 }());
 // Copyright 2009-2012 by contributors, MIT License
 // vim: ts=4 sts=4 sw=4 expandtab

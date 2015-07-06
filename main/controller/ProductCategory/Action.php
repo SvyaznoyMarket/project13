@@ -692,7 +692,7 @@ class Action {
             });
         }
 
-        $repository->prepareProductsMedias($products);
+        $repository->enrichProductsFromScms($products, 'media label category' . (in_array(\App::abTest()->getTest('siteListing')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) ? ' property' : ''));
 
         \App::coreClientV2()->execute();
 

@@ -18,7 +18,7 @@
 
 	// Обновление списка категорий
 	function updateLinks(url) {
-		if (!ENTER.catalog.enableHistoryAPI) {
+		if (!History.enabled) {
 			document.location.href = url;
 			return;
 		}

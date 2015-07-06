@@ -42,4 +42,10 @@ $(function() {
         }])
 
     });
+
+	$('.js-slider').goodsSlider({
+		onLoad: function(goodsSlider) {
+			ko.applyBindings(ENTER.UserModel, goodsSlider);
+		}
+	});
 });

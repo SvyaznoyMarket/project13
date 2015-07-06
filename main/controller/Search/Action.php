@@ -179,7 +179,7 @@ class Action {
 
         $products = $productRepository->getCollectionById($result['data']);
 
-        $productRepository->prepareProductsMedias($products);
+        $productRepository->enrichProductsFromScms($products, 'media label category');
 
         $bannerPlaceholder = [];
         \App::scmsClient()->addQuery('category/get/v1', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId(), 'load_inactive' => 1], [], function($data) use (&$bannerPlaceholder) {
