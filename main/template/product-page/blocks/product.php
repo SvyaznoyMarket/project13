@@ -11,7 +11,7 @@ $f = function(
     $coupon = $product->coupons ? $product->getBestCoupon() : null;
 
     // отдельная картинка для шильдика
-    $labelImage = $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE);
+    $labelImage = $product->getLabel() ? $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) : null;
 
 $modelName = $product->getModel() && $product->getModel()->getProperty() ? $product->getModel()->getProperty()[0]->getName() : null;
     $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceChangePercentTrigger())
