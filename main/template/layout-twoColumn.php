@@ -33,28 +33,28 @@
     <?= $page->slotMetaOg() ?>
 </head>
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
-    <?= $page->slotConfig() ?>
+<?= $page->slotConfig() ?>
 
-    <?= $page->slotAdFoxBground() ?>
+<?= $page->slotAdFoxBground() ?>
 
-    <div class="wrapper">
-        <div class="header">
-            <?= $page->slotHeader() ?>
+<div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
+    <div class="header <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?> clearfix">
 
-            <!-- Topbar -->
-            <?= $page->slotTopbar() ?>
-            <!-- /Topbar -->
+        <?= $page->slotHeader() ?>
+        <!-- Topbar -->
 
-            <!-- Header -->
-            <div id="header" class="clearfix">
-                <a id="topLogo" href="/">Enter Связной</a>
-                <?= $page->slotMainMenu() ?>
-            </div>
-            <!-- /Header -->
+        <?= $page->slotTopbar() ?>
+        <!-- /Topbar -->
 
-        </div><!--/ Шапка-->
+        <?= $page->slotSearchBar() ?>
 
-        <div class="content mContentOrder clearfix">
+        <!-- Header -->
+        <?= $page->slotNavigation() ?>
+        <!-- /Header -->
+
+    </div>
+
+        <div class="content clearfix">
             <?= $page->slotContentHead() ?>
 
             <div class="float100">
@@ -71,7 +71,7 @@
         </div><!--/ Контент -->
     </div><!--/ Шаблон -->
 
-    <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
+    <?= $page->render('common/_footer-new') ?>
 
     <?= $page->slotUpper() ?>
     <?= $page->slotUserbar() ?>
