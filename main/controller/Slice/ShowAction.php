@@ -71,6 +71,14 @@ class ShowAction {
             ]));
         }
 
+        // SITE-5770
+        $cartButtonSender = [];
+        if ('all_labels' === $slice->getToken()) {
+            $cartButtonSender = [
+                'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
+            ];
+        }
+
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             return new \Http\JsonResponse([
                 'list'           => (new \View\Product\ListAction())->execute(
@@ -78,7 +86,10 @@ class ShowAction {
                     $productPager,
                     [],
                     $slice->getProductBuyMethod(),
-                    $slice->getShowProductState()
+                    $slice->getShowProductState(),
+                    4,
+                    'compact',
+                    $cartButtonSender
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -93,7 +104,7 @@ class ShowAction {
                     $productSorting
                 ),
                 'page'           => [
-                    'title'      => $slice->getName()
+                    'title' => $slice->getName()
                 ],
                 'countProducts'  => $productPager->count(),
             ]);
@@ -126,6 +137,7 @@ class ShowAction {
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productView', $request->get('view', $category->getProductView()));
         $page->setParam('hasCategoryChildren', !$this->isSeoSlice()); // SITE-3558
+        $page->setParam('cartButtonSender', $cartButtonSender);
         $page->setGlobalParam('shop', $shop);
 
         return new \Http\Response($page->show());

@@ -140,8 +140,8 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
             'product'  => $product,
             'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
             'sender'   => $buySender + [
-                    'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
-                ],
+                'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
+            ],
             'sender2' => $buySender2,
             'noUpdate'  => true,
             'location' => 'product-card',

@@ -9,6 +9,7 @@
  * @var $categories       \Model\Product\Category\Entity[]
  * @var $productView      string
  * @var $hasCategoryChildren bool
+ * @var $cartButtonSender array
  **/
 ?>
 
@@ -29,8 +30,8 @@ $helper = new \Helper\TemplateHelper();
     <? endif ?>
 
     <?= $helper->render('product-category/__filter', [
-        'baseUrl'          => $helper->url(),
-        'productFilter'    => $productFilter,
+        'baseUrl'       => $helper->url(),
+        'productFilter' => $productFilter,
         'openFilter'    => false,
         'productPager'  => $productPager,
     ]) ?>
@@ -41,10 +42,11 @@ $helper = new \Helper\TemplateHelper();
     ]) // сортировка, режим просмотра, режим листания ?>
 
     <?= $helper->render('product/__list', [
-        'pager'                  => $productPager,
-        'view'                   => $productView,
-        'buyMethod'              => $slice->getProductBuyMethod(),
-        'showState'              => $slice->getShowProductState(),
+        'pager'            => $productPager,
+        'view'             => $productView,
+        'buyMethod'        => $slice->getProductBuyMethod(),
+        'showState'        => $slice->getShowProductState(),
+        'cartButtonSender' => $cartButtonSender,
     ]) // листинг ?>
 
     <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
