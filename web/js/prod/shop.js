@@ -1,15 +1,409 @@
+/* Новая страница /delivery со всеми точками самовывоза */
++function($){
 
-+function($){var $mapContainer=$('#jsDeliveryMap'),partners=$.parseJSON($('#partnersJSON').html()),geoObjects=$.parseJSON($('#objectManagerDataJSON').html()),$partnersList=$('.jsPartnerListItem'),$pointListHolder=$('.jsPointList'),$pointList=$('.jsPointListItem'),$pointListItemPartners=$('.jsPointListItemPartner'),pointActiveClass='current',$searchInput=$('#searchInput'),$searchClear=$('.jsSearchClear'),$searchAutocompleteList=$('.jsSearchAutocompleteList'),$searchAutocompleteHolder=$('.jsSearchAutocompleteHolder'),activePartners=[],map,objectManager,uidsToShow=[];if($mapContainer.length==0)return;console.log('Список партнеров',partners);console.log('Список для geoManager',geoObjects);function filterPointsList(){$pointList.each(function(){if($.inArray(this.id.slice(4),uidsToShow)===-1){$(this).hide()}else{$(this).show()}});}
-function fireMapEvent(eventName){if(map&&typeof map.events.fire=='function'){map.events.fire(eventName);}}
-$searchInput.on('keyup',function(e){var text=$(this).val(),keycode=e.which,$elements=$('.jsSearchAutocompleteItem'),$list=$('.deliv-suggest__list'),activeClass='deliv-suggest__i--active',index=$elements.index($elements.filter('.'+activeClass)),extendValue=1,extendedBounds;if(text.length==0){$searchClear.hide()}else{$searchClear.show()}
-if(!ymaps||typeof ymaps.geocode!='function')return;extendedBounds=[[map.getBounds()[0][0]-extendValue,map.getBounds()[0][1]-extendValue],[map.getBounds()[1][0]+extendValue,map.getBounds()[1][1]+extendValue]];if($.inArray(keycode,[13,38,40])===-1)ymaps.geocode(text,{boundedBy:extendedBounds,strictBounds:true}).then(function(res){var $list=$searchAutocompleteList.empty();res.geoObjects.each(function(obj){$list.append($('<li class="deliv-suggest__i jsSearchAutocompleteItem" />').data('bounds',obj.geometry.getBounds()).text(obj.properties.get('name')+', '+obj.properties.get('description')));});if(res.geoObjects.getLength())$searchAutocompleteHolder.show();else $searchAutocompleteHolder.hide();$elements=$('.jsSearchAutocompleteItem');},function(err){console.warn('Geocode error',err)});$elements.removeClass(activeClass);switch(keycode){case 13:if(index>-1){$elements.eq(index).click();return false;}
-return false;case 38:if(index==-1)index=$elements.length;$elements.eq(index-1).addClass(activeClass);$list.scrollTo('.'+activeClass);return false;case 40:$elements.eq(index+1).addClass(activeClass);$list.scrollTo('.'+activeClass);return false;}});$searchClear.on('click',function(){$searchInput.val('');$searchClear.hide();$searchAutocompleteHolder.hide();});$(document.body).on('click','.jsSearchAutocompleteItem',function(){var bounds=$(this).data('bounds');if(bounds){map.setCenter(bounds[0],14);$searchAutocompleteHolder.hide();$searchInput.val($(this).text())}});ymaps.ready(function(){objectManager=window.om=new ymaps.ObjectManager();objectManager.objects.options.set('iconLayout','default#image');objectManager.objects.options.set('iconImageSize',[23,30]);objectManager.objects.events.add(['click'],function(e){var objId=e.get('objectId'),idSelector='#uid-'+objId;$pointList.removeClass(pointActiveClass).filter(idSelector).addClass(pointActiveClass);$pointListHolder.scrollTo(idSelector,100,{offset:{top:-100}});});map=window.omap=new ymaps.Map("jsDeliveryMap",{center:[68,68],zoom:11,controls:['geolocationControl','zoomControl','searchControl']},{autoFitToViewport:'always',suppressMapOpenBlock:true,suppressObsoleteBrowserNotifier:true});var searchControl=map.controls.get('searchControl');searchControl.options.set('size','small');searchControl.events.add('click',function(){searchControl.options.set('size','large')});map.events.add('boundschange',function(event){var bounds=event.get('newBounds')?event.get('newBounds'):map.getBounds();var uids=[];bounds=event.get('target').getBounds();objectManager.objects.each(function(object){var state=objectManager.getObjectState(object.id),geo=object.geometry.coordinates,uid=object.properties.eUid,inBounds;inBounds=bounds[0][0]<geo[0]&&bounds[0][1]<geo[1]&&bounds[1][0]>geo[0]&&bounds[1][1]>geo[1];if(!state.isFilteredOut&&inBounds){uids.push(uid)}});uidsToShow=uids;filterPointsList();});objectManager.add(geoObjects);map.geoObjects.add(objectManager);map.setBounds(map.geoObjects.getBounds());var position=map.getGlobalPixelCenter();map.setGlobalPixelCenter([position[0]+110,position[1]]);});$partnersList.on('click',function(){var activeClass='active';$(this).toggleClass(activeClass);activePartners=$.map($partnersList.filter(function(){return $(this).hasClass(activeClass)}),function(obj){return $(obj).data('value')});if(typeof objectManager!='undefined'){objectManager.setFilter(function(point){var inActivePartners=$.inArray(point.properties.ePartner,activePartners)!==-1,$listItem=$('#uid-'+point.properties.eUid);if(inActivePartners&&activePartners.length!=0){$listItem.show()}else{$listItem.hide()}
-return activePartners.length==0?true:inActivePartners;});}
-fireMapEvent('boundschange');if(activePartners.length==1&&activePartners[0]!='pickpoint'){$pointListItemPartners.hide()}else{$pointListItemPartners.show()}});$pointList.on('click',function(){var $this=$(this);if($this.hasClass(pointActiveClass)){$this.removeClass(pointActiveClass);if(typeof objectManager!='undefined'){objectManager.setFilter(function(point){return activePartners.length==0?true:$.inArray(point.properties.ePartner,activePartners)!==-1;});}}else{$pointList.removeClass(pointActiveClass);$this.addClass(pointActiveClass);if(map){map.setCenter($this.data('geo'),15);var position=map.getGlobalPixelCenter();map.setGlobalPixelCenter([position[0]+110,position[1]]);}}
-fireMapEvent('boundschange');});}(jQuery);
-;(function($){var $container=$('.bMapShops').first(),cities=$container.find('.bMapShops__eMapCityList_city'),markers=$('#map-markers').data('content'),render=tmpl,enterPlacemark={iconLayout:'default#image',iconImageHref:'/images/map/marker-shop.png',iconImageSize:[28,39],iconImageOffset:[-14,-39]},availableShops,map;if($('#region_map-container').length==1){if(!$.isArray(markers)||markers.length===0)return;availableShops=$.grep(markers,function(elem){return elem.is_reconstruction},true);cities.each(function(){var id=$(this).attr('ref');if($.grep(availableShops,function(elem){return elem.region_id==id}).length===0)$(this).remove();});$container.on('click','.bMapShops__eMapCityList_city',function(e){var $this=$(this),$shopsContainer=$this.find('ul'),id=$this.attr('ref'),shops=$.grep(availableShops,function(elem){return elem.region_id==id}),shopsHTML='';if(shops.length>0){if($this.hasClass('chosedCity')){$this.removeClass('chosedCity');$shopsContainer.hide();cities.show();$container.trigger('cityClose')}else{cities.hide().removeClass('chosedCity');$this.addClass('chosedCity').show();if($shopsContainer.find('li').length==0){$.each(shops,function(i,val){shopsHTML+=render('shopInCity',val)});$shopsContainer.html(shopsHTML)}
-$shopsContainer.show();$container.trigger('cityOpen',[id])}}
-e.stopPropagation();});$container.on('click','.shopInCity',function(e){$container.trigger('shopClick',[$(this).attr('ref')]);e.stopPropagation();});ymaps.ready(function(){var yandexClusterer=new ymaps.Clusterer({hasBaloon:false,hasHint:false,minClusterSize:3,preset:'islands#orangeClusterIcons'});$.each(availableShops,function(i,elem){var point=new ymaps.Placemark([elem.latitude,elem.longitude],{balloonContent:'<h3>'+elem.name+'</h3><span>'+elem.regtime+'</span><br><a href="'+elem.link+'" class="bGrayButton shopchoose">Перейти к магазину</a>'},enterPlacemark);yandexClusterer.add(point);});map=new ymaps.Map("region_map-container",{center:[55.76,37.64],zoom:10});map.geoObjects.add(yandexClusterer);map.setBounds(yandexClusterer.getBounds());$container.on('cityOpen',function(e,regionId){var shops=$.grep(availableShops,function(elem){return elem.region_id==regionId}),yandexGeoObjectCollection=new ymaps.GeoObjectCollection(),objects=map.geoObjects;$.each(shops,function(i,elem){var point=new ymaps.Placemark([elem.latitude,elem.longitude],{balloonContent:'<h3>'+elem.address+'</h3><span>'+elem.regtime+'</span><br><a href="'+elem.link+'" class="bGrayButton shopchoose">Перейти к магазину</a>'},enterPlacemark);yandexGeoObjectCollection.add(point);});objects.removeAll();objects.add(yandexGeoObjectCollection);if(objects.get(0).getLength()>1){map.setBounds(yandexGeoObjectCollection.getBounds())}else{console.log(objects.get(0).get(0).geometry.getCoordinates());map.setCenter(objects.get(0).get(0).geometry.getCoordinates(),14)}});$container.on('cityClose',function(){map.geoObjects.removeAll();map.geoObjects.add(yandexClusterer);map.setBounds(yandexClusterer.getBounds());});$container.on('shopClick',function(e,shopId){var shop=$.grep(availableShops,function(elem){return elem.id==shopId})[0];map.setCenter([shop.latitude,shop.longitude],16)})});}
-if($('#map-container').length==1){ymaps.ready(function(){var lat=$('input[name=shop\\[latitude\\]]').val(),lon=$('input[name=shop\\[longitude\\]]').val();map=new ymaps.Map("map-container",{center:[lat,lon],zoom:16});map.geoObjects.add(new ymaps.Placemark([lat,lon],{},enterPlacemark))});$('.bMap').on('click','.bMap__eContainer',function(){var $container=$('#map-container'),isImage=$(this).hasClass('map-image-link'),isMap=$(this).hasClass('map-google-link');if(isImage){$container.find('ymaps:first').hide();if($container.find('img').length==0){$container.append($('<img />',{"src":$(this).find('img').data('value'),'width':$container.width()}));}else{$container.find('img').attr('src',$(this).find('img').data('value')).show();}}
-if(isMap){$container.find('ymaps:first').show();$container.find('img:first').hide();}});}}(jQuery));
-//@ sourceMappingURL=shop.js.map
+    var $mapContainer = $('#jsDeliveryMap'),
+        partners = $.parseJSON($('#partnersJSON').html()),
+        geoObjects = $.parseJSON($('#objectManagerDataJSON').html()),
+        $partnersList = $('.jsPartnerListItem'),
+        $pointListHolder= $('.jsPointList'),
+        $pointList = $('.jsPointListItem'),
+        $pointListItemPartners = $('.jsPointListItemPartner'),
+        pointActiveClass = 'current',
+        $searchInput = $('#searchInput'),
+        $searchClear = $('.jsSearchClear'),
+        $searchAutocompleteList = $('.jsSearchAutocompleteList'),
+        $searchAutocompleteHolder = $('.jsSearchAutocompleteHolder'),
+        activePartners = [], map, objectManager, uidsToShow = [];
+
+    if ($mapContainer.length == 0) return ;
+
+    console.log('Список партнеров', partners);
+    console.log('Список для geoManager', geoObjects);
+
+    function filterPointsList() {
+        $pointList.each(function(){
+            if ($.inArray(this.id.slice(4), uidsToShow) === -1) {
+                $(this).hide()
+            } else {
+                $(this).show()
+            }
+        });
+    }
+
+    function fireMapEvent(eventName) {
+        if (map && typeof map.events.fire == 'function') {
+            map.events.fire(eventName);
+        }
+    }
+
+    // Поиск
+    $searchInput.on('keyup', function(e){
+        var text = $(this).val(),
+            keycode = e.which,
+            $elements = $('.jsSearchAutocompleteItem'),
+            $list = $('.deliv-suggest__list'),
+            activeClass = 'deliv-suggest__i--active',
+            index = $elements.index($elements.filter('.'+activeClass)),
+            extendValue = 1, extendedBounds;
+
+        if (text.length == 0) {
+            $searchClear.hide()
+        } else {
+            $searchClear.show()
+        }
+
+        if (!ymaps || typeof ymaps.geocode != 'function') return;
+
+        extendedBounds = [[map.getBounds()[0][0] - extendValue, map.getBounds()[0][1] - extendValue],[map.getBounds()[1][0] + extendValue, map.getBounds()[1][1] + extendValue]];
+
+        if ($.inArray(keycode, [13,38,40]) === -1) ymaps.geocode(text, { boundedBy: extendedBounds, strictBounds: true }).then(
+            function(res){
+                var $list = $searchAutocompleteList.empty();
+                res.geoObjects.each(function(obj){
+                    $list.append(
+                        $('<li class="deliv-suggest__i jsSearchAutocompleteItem" />')
+                            .data('bounds', obj.geometry.getBounds())
+                            .text(obj.properties.get('name') + ', ' + obj.properties.get('description')));
+                });
+
+                if (res.geoObjects.getLength()) $searchAutocompleteHolder.show(); else $searchAutocompleteHolder.hide();
+                $elements = $('.jsSearchAutocompleteItem');
+            },
+            function(err){
+                console.warn('Geocode error', err)
+            }
+        );
+
+        $elements.removeClass(activeClass);
+
+        switch (keycode) {
+            case 13: // Enter key
+                if (index > -1) {
+                    $elements.eq(index).click();
+                    return false;
+                }
+                return false;
+            case 38: // up key
+                if (index == -1) index = $elements.length;
+                $elements.eq(index - 1).addClass(activeClass);
+                $list.scrollTo('.' + activeClass);
+                return false;
+            case 40: // down key
+                $elements.eq(index + 1).addClass(activeClass);
+                $list.scrollTo('.' + activeClass);
+                return false;
+        }
+
+    });
+
+    // Очистка поиска
+    $searchClear.on('click', function() {
+        $searchInput.val('');
+        $searchClear.hide();
+        $searchAutocompleteHolder.hide();
+    });
+
+    $(document.body).on('click', '.jsSearchAutocompleteItem', function() {
+        var bounds = $(this).data('bounds');
+        if (bounds) {
+            map.setCenter(bounds[0], 14);
+            $searchAutocompleteHolder.hide();
+            $searchInput.val($(this).text())
+        }
+    });
+
+    // инициализация карты
+    ymaps.ready(function(){
+
+        objectManager = window.om = new ymaps.ObjectManager();
+        objectManager.objects.options.set('iconLayout', 'default#image');
+        objectManager.objects.options.set('iconImageSize', [23,30]);
+
+        objectManager.objects.events.add(['click'], function(e){
+            var objId = e.get('objectId'),
+                idSelector ='#uid-' + objId;
+
+            $pointList.removeClass(pointActiveClass).filter(idSelector).addClass(pointActiveClass);
+            $pointListHolder.scrollTo(idSelector, 100, {offset: {top: -100}});
+
+        });
+
+        map = window.omap = new ymaps.Map("jsDeliveryMap", {
+            center: [55.76, 37.64],
+            zoom: 11,
+            controls: ['geolocationControl', 'zoomControl', 'searchControl']
+        },{
+            autoFitToViewport: 'always',
+            suppressMapOpenBlock: true,
+            suppressObsoleteBrowserNotifier: true
+        });
+
+        var searchControl = map.controls.get('searchControl');
+        searchControl.options.set('size', 'small');
+        searchControl.events.add('click', function(){
+            searchControl.options.set('size', 'large')
+        });
+
+        map.events.add('boundschange', function (event) {
+            var bounds = event.get('newBounds') ? event.get('newBounds') : map.getBounds();
+            var uids = [];
+            bounds = event.get('target').getBounds();
+            objectManager.objects.each(function(object) {
+                var state = objectManager.getObjectState(object.id),
+                    geo = object.geometry.coordinates,
+                    uid = object.properties.eUid,
+                    inBounds;
+
+                inBounds = bounds[0][0] < geo[0] && bounds[0][1] < geo[1] && bounds[1][0] > geo[0] && bounds[1][1] > geo[1];
+
+                if (!state.isFilteredOut && inBounds) {
+                    uids.push(uid)
+                }
+            });
+            uidsToShow = uids;
+            filterPointsList();
+        });
+
+        objectManager.add(geoObjects);
+        map.geoObjects.add(objectManager);
+        map.setBounds(map.geoObjects.getBounds());
+
+        var position = map.getGlobalPixelCenter();
+        map.setGlobalPixelCenter([ position[0] + 110, position[1] ]);
+
+    });
+
+    // Переключение партнеров
+    $partnersList.on('click', function(){
+
+        var activeClass = 'active';
+
+        $(this).toggleClass(activeClass);
+
+        activePartners = $.map($partnersList.filter(function(){return $(this).hasClass(activeClass)}),
+            function(obj){ return $(obj).data('value')});
+
+        if (typeof objectManager != 'undefined') {
+            objectManager.setFilter(function(point) {
+                var inActivePartners =  $.inArray(point.properties.ePartner, activePartners) !== -1,
+                    $listItem = $('#uid-' + point.properties.eUid);
+
+                if (inActivePartners && activePartners.length != 0) {$listItem.show()} else {$listItem.hide()}
+
+                return activePartners.length == 0 ? true : inActivePartners;
+            });
+        }
+
+        fireMapEvent('boundschange');
+
+        if (activePartners.length == 1 && activePartners[0] != 'pickpoint') {
+            $pointListItemPartners.hide()
+        } else {
+            $pointListItemPartners.show()
+        }
+
+    });
+
+    $pointList.on('click', function(){
+
+        var $this = $(this);
+
+        if ($this.hasClass(pointActiveClass)) {
+            $this.removeClass(pointActiveClass);
+            if (typeof objectManager != 'undefined') {
+                objectManager.setFilter(function(point){
+                    return activePartners.length == 0 ? true : $.inArray(point.properties.ePartner, activePartners) !== -1;
+                });
+            }
+        } else {
+            $pointList.removeClass(pointActiveClass);
+            $this.addClass(pointActiveClass);
+            if (map) {
+                map.setCenter($this.data('geo'), 15);
+                var position = map.getGlobalPixelCenter();
+                map.setGlobalPixelCenter([ position[0] + 110, position[1] ]);
+            }
+        }
+
+        fireMapEvent('boundschange');
+    });
+
+
+}(jQuery);
+/**
+ * @requires jQuery, tmpl, ymaps
+ */
+;(function($){
+
+    var $container = $('.bMapShops').first(),
+        cities = $container.find('.bMapShops__eMapCityList_city'),
+        markers = $('#map-markers').data('content'),
+        render = tmpl,
+        enterPlacemark = {
+            iconLayout: 'default#image',
+            iconImageHref: '/images/map/marker-shop.png',
+            iconImageSize: [28, 39],
+            iconImageOffset: [-14, -39]
+        },
+        availableShops, map;
+
+    if ($('#region_map-container').length == 1) {
+
+        if (!$.isArray(markers) || markers.length === 0) return;
+
+        // Доступные магазины
+        availableShops = $.grep(markers, function(elem) { return elem.is_reconstruction }, true);
+
+        // Спрячем города без магазинов
+        cities.each(function(){
+            var id = $(this).attr('ref');
+            if ($.grep(availableShops, function(elem) { return elem.region_id == id }).length === 0) $(this).remove();
+        });
+
+        // Клик по городу
+        $container.on('click', '.bMapShops__eMapCityList_city', function(e) {
+
+            var $this = $(this),
+                $shopsContainer = $this.find('ul'),
+                id = $this.attr('ref'),
+                shops = $.grep(availableShops, function(elem) { return elem.region_id == id }),
+                shopsHTML = '';
+
+            if (shops.length > 0) {
+                if ($this.hasClass('chosedCity')) {
+                    $this.removeClass('chosedCity');
+                    $shopsContainer.hide();
+                    cities.show();
+                    $container.trigger('cityClose')
+                } else {
+                    cities.hide().removeClass('chosedCity');
+                    $this.addClass('chosedCity').show();
+                    if ($shopsContainer.find('li').length == 0)  { // если не было рендера
+                        $.each(shops, function(i, val) { shopsHTML += render('shopInCity', val)});
+                        $shopsContainer.html(shopsHTML)
+                    }
+                    $shopsContainer.show();
+                    $container.trigger('cityOpen', [id])
+                }
+            }
+
+            e.stopPropagation();
+
+        });
+
+        $container.on('click', '.shopInCity', function(e){
+            $container.trigger('shopClick', [$(this).attr('ref')]);
+            e.stopPropagation();
+        });
+
+        // Карта со всеми магазинами
+
+        ymaps.ready(function () {
+
+            var yandexClusterer = new ymaps.Clusterer({
+                    hasBaloon: false,
+                    hasHint: false,
+                    minClusterSize: 3,
+                    preset: 'islands#orangeClusterIcons'
+                });
+
+            $.each(availableShops, function (i, elem) {
+                var point = new ymaps.Placemark([elem.latitude, elem.longitude], {
+                    balloonContent: '<h3>' + elem.name + '</h3><span>' + elem.regtime + '</span><br><a href="' + elem.link + '" class="bGrayButton shopchoose">Перейти к магазину</a>'
+                }, enterPlacemark);
+                yandexClusterer.add(point);
+            });
+
+            map = new ymaps.Map("region_map-container", {
+                center: [55.76, 37.64],
+                zoom: 10
+            });
+
+            map.geoObjects.add(yandexClusterer);
+            map.setBounds(yandexClusterer.getBounds());
+
+            // событие открытия списка магазинов
+            $container.on('cityOpen', function (e, regionId) {
+                var shops = $.grep(availableShops, function (elem) {
+                        return elem.region_id == regionId
+                    }),
+                    yandexGeoObjectCollection = new ymaps.GeoObjectCollection(),
+                    objects = map.geoObjects;
+
+                $.each(shops, function (i, elem) {
+                    var point = new ymaps.Placemark([elem.latitude, elem.longitude], {
+                        balloonContent: '<h3>' + elem.address + '</h3><span>' + elem.regtime + '</span><br><a href="' + elem.link + '" class="bGrayButton shopchoose">Перейти к магазину</a>'
+                    }, enterPlacemark);
+                    yandexGeoObjectCollection.add(point);
+                });
+
+                objects.removeAll();
+                objects.add(yandexGeoObjectCollection);
+
+                if (objects.get(0).getLength() > 1) {
+                    map.setBounds(yandexGeoObjectCollection.getBounds())
+                } else {
+                    console.log(objects.get(0).get(0).geometry.getCoordinates());
+                    map.setCenter(objects.get(0).get(0).geometry.getCoordinates(), 14)
+                }
+
+            });
+
+            // событие закрытия списка магазинов
+            $container.on('cityClose', function () {
+                map.geoObjects.removeAll();
+                map.geoObjects.add(yandexClusterer);
+                map.setBounds(yandexClusterer.getBounds());
+            });
+
+            // клик по магазину в списке
+            $container.on('shopClick', function (e, shopId) {
+                var shop = $.grep(availableShops, function (elem) {
+                    return elem.id == shopId
+                })[0];
+                map.setCenter([shop.latitude, shop.longitude], 16)
+            })
+
+        });
+    }
+
+    // карта для одного магазина
+    if ($('#map-container').length == 1) {
+
+        ymaps.ready(function () {
+
+            var lat = $('input[name=shop\\[latitude\\]]').val(),
+                lon = $('input[name=shop\\[longitude\\]]').val();
+
+            map = new ymaps.Map("map-container", {
+                center: [lat, lon],
+                zoom: 16
+            });
+
+            map.geoObjects.add(new ymaps.Placemark([lat, lon], {}, enterPlacemark))
+
+        });
+
+        $('.bMap').on('click', '.bMap__eContainer', function(){
+            var $container = $('#map-container'),
+                isImage = $(this).hasClass('map-image-link'),
+                isMap = $(this).hasClass('map-google-link');
+
+            if (isImage) {
+                $container.find('ymaps:first').hide();
+                if ($container.find('img').length == 0) {
+                    $container.append($('<img />', { "src": $(this).find('img').data('value'), 'width': $container.width() }));
+                } else {
+                    $container.find('img').attr('src', $(this).find('img').data('value')).show();
+                }
+            }
+
+            if (isMap) {
+                $container.find('ymaps:first').show();
+                $container.find('img:first').hide();
+            }
+        });
+
+    }
+
+}(jQuery));

@@ -129,7 +129,7 @@
         });
 
         map = window.omap = new ymaps.Map("jsDeliveryMap", {
-            center: [68, 68],
+            center: [55.76, 37.64],
             zoom: 11,
             controls: ['geolocationControl', 'zoomControl', 'searchControl']
         },{
