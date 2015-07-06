@@ -20,34 +20,38 @@
 
                             <div class="price"><span data-bind="html: prettyItemPrice"></span>&nbsp;<span class="rubl">p</span></div>
 
-                            <div class="column dimention">
-                                <span class="dimention__name">Высота</span>
-                                <span class="dimention__val" data-bind="text: height"></span>
-                            </div>
+                            <div data-bind="visible: height && width && depth">
 
-                            <div class="column dimention">
-                                <span class="dimention__name">&nbsp;</span>
-                                <span class="dimention__val separation">x</span>
-                            </div>
+                                <div class="column dimention">
+                                    <span class="dimention__name">Высота</span>
+                                    <span class="dimention__val" data-bind="text: height"></span>
+                                </div>
 
-                            <div class="column dimention">
-                                <span class="dimention__name">Ширина</span>
-                                <span class="dimention__val" data-bind="text: width"></span>
-                            </div>
+                                <div class="column dimention">
+                                    <span class="dimention__name">&nbsp;</span>
+                                    <span class="dimention__val separation">x</span>
+                                </div>
 
-                            <div class="column dimention">
-                                <span class="dimention__name">&nbsp;</span>
-                                <span class="dimention__val separation">x</span>
-                            </div>
+                                <div class="column dimention">
+                                    <span class="dimention__name">Ширина</span>
+                                    <span class="dimention__val" data-bind="text: width"></span>
+                                </div>
 
-                            <div class="column dimention">
-                                <span class="dimention__name">Глубина</span>
-                                <span class="dimention__val" data-bind="text: depth"></span>
-                            </div>
+                                <div class="column dimention">
+                                    <span class="dimention__name">&nbsp;</span>
+                                    <span class="dimention__val separation">x</span>
+                                </div>
 
-                            <div class="column dimention">
-                                <span class="dimention__name">&nbsp;</span>
-                                <span class="dimention__val">см</span>
+                                <div class="column dimention">
+                                    <span class="dimention__name">Глубина</span>
+                                    <span class="dimention__val" data-bind="text: depth"></span>
+                                </div>
+
+                                <div class="column dimention">
+                                    <span class="dimention__name">&nbsp;</span>
+                                    <span class="dimention__val">см</span>
+                                </div>
+
                             </div>
 
                         </div>

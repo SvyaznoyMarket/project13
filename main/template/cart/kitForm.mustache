@@ -24,34 +24,38 @@
 
                     <div class="price"><span data-bind="html: prettyItemPrice"></span>&nbsp;<span class="rubl">p</span></div>
 
-                    <div class="column dimantion">
-                        <span class="dimantion_name">Высота</span>
-                        <span class="dimantion_val" data-bind="text: height"></span>
-                    </div>
+                    <div data-bind="visible: height && width && depth">
 
-                    <div class="column dimantion">
-                        <span class="dimantion_name">&nbsp;</span>
-                        <span class="dimantion_val separation">x</span>
-                    </div>
+                        <div class="column dimantion">
+                            <span class="dimantion_name">Высота</span>
+                            <span class="dimantion_val" data-bind="text: height"></span>
+                        </div>
 
-                    <div class="column dimantion">
-                        <span class="dimantion_name">Ширина</span>
-                        <span class="dimantion_val" data-bind="text: width"></span>
-                    </div>
+                        <div class="column dimantion">
+                            <span class="dimantion_name">&nbsp;</span>
+                            <span class="dimantion_val separation">x</span>
+                        </div>
 
-                    <div class="column dimantion">
-                        <span class="dimantion_name">&nbsp;</span>
-                        <span class="dimantion_val separation">x</span>
-                    </div>
+                        <div class="column dimantion">
+                            <span class="dimantion_name">Ширина</span>
+                            <span class="dimantion_val" data-bind="text: width"></span>
+                        </div>
 
-                    <div class="column dimantion">
-                        <span class="dimantion_name">Глубина</span>
-                        <span class="dimantion_val" data-bind="text: depth"></span>
-                    </div>
+                        <div class="column dimantion">
+                            <span class="dimantion_name">&nbsp;</span>
+                            <span class="dimantion_val separation">x</span>
+                        </div>
 
-                    <div class="column dimantion">
-                        <span class="dimantion_name">&nbsp;</span>
-                        <span class="dimantion_val">см</span>
+                        <div class="column dimantion">
+                            <span class="dimantion_name">Глубина</span>
+                            <span class="dimantion_val" data-bind="text: depth"></span>
+                        </div>
+
+                        <div class="column dimantion">
+                            <span class="dimantion_name">&nbsp;</span>
+                            <span class="dimantion_val">см</span>
+                        </div>
+
                     </div>
 
                     <div class="column delivery" data-bind="css: { 'delivery-nodate': deliveryDate() == '' } ">
