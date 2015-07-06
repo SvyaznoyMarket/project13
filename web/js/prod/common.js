@@ -4360,9 +4360,7 @@ $(function() {
 	$('.js-noProductsForCompareLink', userbarStatic).click(function(e) { showEmptyCompareNotice(e, 'static', userbarStatic); });
 
 	if ( userBarFixed.length ) {
-		if (window.location.pathname !== '/cart') $body.on('addtocart', function() {
-			showBuyInfo(true);
-		});
+		if (window.location.pathname !== '/cart') $body.on('addtocart', showBuyInfo);
 		scrollTarget = $(userbarConfig.target);
 
 		if (userbarConfig.filterTarget) {

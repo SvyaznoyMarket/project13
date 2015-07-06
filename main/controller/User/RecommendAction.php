@@ -13,7 +13,7 @@ class RecommendAction extends PrivateAction {
     public function execute(\Http\Request $request) {
         $client = \App::coreClientV2();
         $region = \App::user()->getRegion();
-        $repository =  \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock();
+        $repository =  \RepositoryManager::product()->useV3()->withoutModels();
 
             // вы смотрели
         $viewedProductIds = [];
