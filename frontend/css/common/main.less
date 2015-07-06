@@ -14,6 +14,7 @@ html {
     font-family: 'GloberRegular', Tahoma, Geneva, Helvetica, sans-serif;
     font-size: 100%;
     line-height: 1.4;
+
     color: @text-color;
 }
 
@@ -26,11 +27,11 @@ body {
 }
 
 a {
-    color: @text-color;
     text-decoration: none;
 
-    &:active,
-    &:hover,
+    color: @text-color;
+    &:active ,
+    &:hover ,
     &:visited {
         color: @text-color;
     }
@@ -44,11 +45,14 @@ a {
     border-bottom: 1px dotted @link-border;
 }
 
-ul, ol, nav {
+ul ,
+ol ,
+nav {
     margin: 0;
     padding: 0;
     li {
         margin-bottom: 10px;
+
         list-style-type: none;
     }
 }
@@ -61,12 +65,12 @@ ul, ol, nav {
  */
 
 ::-moz-selection {
-    background: #FFF6E5;
+    background: #fff6e5;
     text-shadow: none;
 }
 
 ::selection {
-    background: #FFF6E5;
+    background: #fff6e5;
     text-shadow: none;
 }
 
@@ -123,10 +127,14 @@ textarea {
    Helper classes
    ========================================================================== */
 .it {
-    border: 1px solid @input-border;
-    padding: 5px;
+    line-height: 37px;
+
     height: 35px;
-    line-height: 35px;
+    padding: 0 5px;
+
+    vertical-align: middle;
+
+    border: 1px solid @input-border;
 }
 
 /*
