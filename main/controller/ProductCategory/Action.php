@@ -317,7 +317,7 @@ class Action {
                     $productsIds = array_unique($productsIds);
                     if ($productsIds) {
                         $medias = [];
-                        \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
+                        \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
                             foreach ($data as $item) {
                                 if (!isset($item['id'])) continue;
                                 $products[ $item['id'] ] = new \Model\Product\Entity($item);
@@ -566,7 +566,7 @@ class Action {
             $limit = $limit - (1 === $pageNum ? 1 : 0);
         }
 
-        $repository = \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock();
+        $repository = \RepositoryManager::product()->useV3()->withoutModels();
 
         $filters = $productFilter->dump();
 
