@@ -1,17 +1,18 @@
 <!-- При пустой корзине -->
 <li class="userbtn_i topbarfix_cart mEmpty" data-bind=" visible: cart().length == 0 ">
-    <a href="/cart" class="topbarfix_cart_tl">Корзина</a>
+    <a href="/cart" class="topbarfix_cart_tl"><i class="i-header i-header--cart"></i> <span class="topbarfix-cart__tx">Корзина</span></a>
 </li>
 
 <!-- При непустой корзине -->
 <li class="userbtn_i topbarfix_cart js-topbarfixNotEmptyCart" data-bind=" visible: cart().length > 0 " style="display: none">
 
     <a href="<?= $page->url('cart') ?>" class="topbarfix_cart_tl">
-        <span class="topbarfix_cart_tx">Корзина</span>
-        <strong class="topbarfix_cart_qn topbarfix_cartQuan" data-bind="text: cart().length"></strong>
+        <i class="i-header i-header--cart"></i>
+        <span class="topbarfix-cart__tx">Корзина</span>
+        <span class="topbarfix_cart_qn topbarfix_cartQuan" data-bind="text: cart().length"></span>
     </a>
 
-    <div class="topbarfix_dd topbarfix_cartOn">
+    <div class="userbar-dd minicart topbarfix_cartOn" >
         <div class="topbarfix-cart-wrap">
             <table class="table-cart">
                 <tbody data-bind="foreach: cart">
@@ -34,7 +35,10 @@
             </table>
         </div>
         <!-- для кнопки с иконкой btnBuy-inf -->
-        <div class="btnBuy quickOrder" data-bind="css: {'btnBuy-inf': infoIconVisible() }, visible: !isMinOrderSumVisible()"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
+        <div class="btnBuy quickOrder" data-bind="css: {'btnBuy-inf': infoIconVisible() }, visible: !isMinOrderSumVisible()">
+            <a href="<?= $page->url('order') ?>"
+               class="<?= \App::abTest()->isNewProductPage() ? 'btn-type btn-type--buy' : 'btnBuy__eLink quickOrder__link' ?>">Оформить заказ</a>
+        </div>
 
         <div class="buyInfo" data-bind="visible: !infoIconVisible() && infoBlock_1Visible() ">
             До бесплатного самовывоза осталось
@@ -64,5 +68,4 @@
 
     <div class="hintDd"><!-- если похожии товары есть то добавляем класс mhintDdOn -->
     </div>
-
 </li>

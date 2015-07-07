@@ -22,7 +22,8 @@ class ProductButtonAction {
         $sender = [],
         $noUpdate = false, // Не обновлять кнопку купить
         $location = null, // местоположение кнопки купить: userbar, product-card, ...
-        $sender2 = ''
+        $sender2 = '',
+        $useNewStyles = false
     ) {
         $colorClass = AbTest::getColorClass($product, $location);
 
@@ -47,6 +48,8 @@ class ProductButtonAction {
                 ]),
                 'noUpdate'  => $noUpdate,
             ],
+            'divClass'  => 'btnBuy',
+            'surroundDiv' => true
         ];
 
         if (!$product->getIsBuyable()) {
@@ -94,7 +97,22 @@ class ProductButtonAction {
             $data['url'] = $this->getBuyUrl($helper, $product, $sender, $sender2);
             $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton' . $colorClass;
             $data['value'] = 'Купить';
+            if (\App::abTest()->isNewProductPage() && in_array($location, ['product-card', 'userbar'])) $data['value'] = 'Купить';
         }
+
+        /* Новая карточка товара */
+        if (\App::abTest()->isNewProductPage() && $location !== null && $useNewStyles) {
+            $data['class'] = str_replace('btnBuy__eLink', '', $data['class']) . ' btn-type btn-type--buy';
+            if ('product-card' === $location) $data['class'] .= ' btn-type--longer btn-type--buy--bigger';
+            if ('slider' === $location) $data['class'] .= ' btn-type--light';
+            if ('userbar' === $location) {
+                $data['class'] .= ' topbarfix_buy-btn';
+                $data['surroundDiv'] = false;
+            }
+            $data['divClass'] = 'buy-online';
+        }
+
+        if ($location == 'user-favorites' && !$product->getIsBuyable()) $data['value'] = 'Нет в наличии';
 
         return $data;
     }

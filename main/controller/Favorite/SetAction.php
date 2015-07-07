@@ -3,6 +3,7 @@
 namespace Controller\Favorite;
 
 use EnterQuery as Query;
+use \Model\Media;
 
 class SetAction {
     use \EnterApplication\CurlTrait;
@@ -27,27 +28,59 @@ class SetAction {
             throw new \Exception('Не передан productUi');
         }
 
+        // Запрашиваем продукт из ядра
+        $coreProductQuery = new Query\Product\GetByUi($productUi, \App::user()->getRegionId());
+        $coreProductQuery->prepare();
+
+        // Запрашиваем картинки из SCMS
         $productQuery = new Query\Product\GetDescriptionByUiList();
         $productQuery->uis = [$productUi];
         $productQuery->filter->media = true;
         $productQuery->prepare();
+
         $curl->execute();
 
         // проверяет, если такой товар, чтобы не пихать в избранное мусор
-        if (!count($productQuery->response->products)) {
+        if (!count($coreProductQuery->response->product)) {
             throw new \Exception(sprintf('Товар %s не найден', $productUi));
         }
-        $product = new \Model\Product\Entity(reset($productQuery->response->products));
+
+        $product = new \Model\Product\Entity($coreProductQuery->response->product);
+        $productDescription = reset($productQuery->response->products);
+        $product->medias = array_map(function($mediaData) {return new Media($mediaData);}, $productDescription['medias']);
 
         $favoriteQuery = (new Query\User\Favorite\Set($user->getEntity()->getUi(), $product->getUi()))->prepare();
+
         $curl->execute();
 
         if ($favoriteQuery->error) {
             throw new $favoriteQuery->error;
         }
 
-        return new \Http\JsonResponse([
-            'success' => true,
-        ]);
+        if ($request->isXmlHttpRequest()) {
+            $response = new \Http\JsonResponse([
+                'success' => true,
+                'widgets' => [
+                    '.id-favoriteButton-' . $product->getUi() => \App::helper()->render(
+                        'product/__favoriteButton',
+                        [
+                            'helper'          => \App::helper(),
+                            'product'         => $product,
+                            'favoriteProduct' => new \Model\Favorite\Product\Entity(['uid' => $product->getUi(), 'is_favorite' => true]),
+                        ]
+                    ),
+                    '.favourite-userbar-popup-widget'    => \App::helper()->render(
+                        'userbar/_favourite-widget',
+                        [
+                            'product'         => $product,
+                        ]
+                    ),
+                ],
+            ]);
+        } else {
+            $response =  new \Http\RedirectResponse($request->headers->get('referer') ?: '/');
+        }
+
+        return $response;
     }
 }

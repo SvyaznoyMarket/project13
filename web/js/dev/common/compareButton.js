@@ -1,7 +1,7 @@
 $(function() {
 	var
 		compareNoticeShowClass = 'topbarfix_cmpr_popup-show',
-		$comparePopup,
+		comparePopups = {fixed: null, static: null},
 		compareNoticeTimeout;
 
 	$('body').on('click', '.jsCompareLink, .jsCompareListLink', function(e){
@@ -9,7 +9,7 @@ $(function() {
 			url = e.currentTarget.href,
 			$button = $(e.currentTarget),
 			productId = $button.data('id'),
-			inCompare = $button.hasClass('btnCmprb-act'),
+			inCompare = $button.hasClass('btnCmpr_lk-act') || $button.hasClass('product-card-tools__lk--active'),
 			isSlot = $button.data('is-slot'),
 			isOnlyFromPartner = $button.data('is-only-from-partner');
 
@@ -34,48 +34,54 @@ $(function() {
 					$.each(data.compare, function(i,val){ ENTER.UserModel.compare.push(val) });
 
 					if (!inCompare) {
-						if (!$comparePopup) {
-							var $userbar = ENTER.userBar.userBarFixed;
-							$comparePopup = $('.js-compare-addPopup', $userbar);
+						var userBarType = $(window).scrollTop() > ENTER.userBar.userBarStatic.offset().top + 10 ? 'fixed' : 'static';
 
-							$('.js-compare-addPopup-closer', $comparePopup).click(function() {
-								$comparePopup.removeClass(compareNoticeShowClass);
-							});
+						(function() {
+							if (!comparePopups[userBarType]) {
+								var $userbar = userBarType == 'fixed' ? ENTER.userBar.userBarFixed : ENTER.userBar.userBarStatic;
+								comparePopups[userBarType] = $('.js-compare-addPopup', $userbar);
 
-							$('.js-topbarfixLogin, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
-								$comparePopup.removeClass(compareNoticeShowClass);
-							});
+								$('.js-compare-addPopup-closer', comparePopups[userBarType]).click(function() {
+									comparePopups[userBarType].removeClass(compareNoticeShowClass);
+								});
 
-							$('html').click(function() {
-								$comparePopup.removeClass(compareNoticeShowClass);
-							});
+								$('.js-topbarfixLogin-opener, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
+									comparePopups[userBarType].removeClass(compareNoticeShowClass);
+								});
 
-							$($comparePopup).click(function(e) {
-								e.stopPropagation();
-							});
+								$('html').click(function() {
+									comparePopups[userBarType].removeClass(compareNoticeShowClass);
+								});
 
-							$(document).keyup(function(e) {
-								if (e.keyCode == 27) {
-									$comparePopup.removeClass(compareNoticeShowClass);
-								}
-							});
-						}
+								comparePopups[userBarType].click(function(e) {
+									e.stopPropagation();
+								});
+
+								$(document).keyup(function(e) {
+									if (e.keyCode == 27) {
+										comparePopups[userBarType].removeClass(compareNoticeShowClass);
+									}
+								});
+							}
+						})();
 
 						if (compareNoticeTimeout) {
 							clearTimeout(compareNoticeTimeout);
 						}
 
 						compareNoticeTimeout = setTimeout(function() {
-							$comparePopup.removeClass(compareNoticeShowClass);
+							comparePopups[userBarType].removeClass(compareNoticeShowClass);
 						}, 2000);
 
-						$('.js-compare-addPopup-image', $comparePopup).attr('src', data.product.imageUrl);
-						$('.js-compare-addPopup-prefix', $comparePopup).text(data.product.prefix);
-						$('.js-compare-addPopup-webName', $comparePopup).text(data.product.webName);
+						$('.js-compare-addPopup-image', comparePopups[userBarType]).attr('src', data.product.imageUrl);
+						$('.js-compare-addPopup-prefix', comparePopups[userBarType]).text(data.product.prefix);
+						$('.js-compare-addPopup-webName', comparePopups[userBarType]).text(data.product.webName);
 
-						ENTER.userBar.show(true, function(){
-							$comparePopup.addClass(compareNoticeShowClass)
-						});
+						if (userBarType == 'fixed') {
+							ENTER.userBar.show();
+						}
+
+						comparePopups[userBarType].addClass(compareNoticeShowClass);
 
 						(function() {
 							var action;

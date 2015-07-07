@@ -32,19 +32,29 @@
 .specialPriceItemCont {
 
 	&_imgLink {
-		.table-cell();
-		vertical-align: middle;
+		.inline-block();
 
 		padding: 0 0 5px;
 		height: 280px;
 		width: 280px;
 
 		text-align: center;
+
+		&:after{
+			content: '';
+			width: 0;
+			height: 100%;
+			.inline-block(middle);
+		}
+		&:hover{
+			text-decoration: none;
+		}
 	}
 
 	&_img {
-		max-width: 100%;
-		max-height: 100%;
+		max-width: 90%;
+		max-height: 90%;
+        .inline-block(middle);
 	}
 
 	&_desc {

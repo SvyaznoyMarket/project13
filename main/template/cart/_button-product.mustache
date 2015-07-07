@@ -1,15 +1,15 @@
-<div class="{{#isSlot}}btn--slot--container{{/isSlot}} {{^isSlot}}btnBuy {{#isKit}}mBuySet{{/isKit}}{{/isSlot}}
-{{#isGiftery}}btn--container{{/isGiftery}}">
+{{# surroundDiv }}<div class="{{#isSlot}}btn--slot--container{{/isSlot}} {{^isSlot}}btnBuy {{#isKit}}mBuySet{{/isKit}}{{/isSlot}}
+    {{#isGiftery}}btn--container{{/isGiftery}}">{{/surroundDiv}}
     <a
         {{#id}}id="{{id}}"{{/id}}
         href="{{url}}"
-        class="{{class}} {{#disabled}}mDisabled{{/disabled}} {{#inShopOnly}}mShopsOnly{{/inShopOnly}}"
+        class="{{class}} {{#disabled}}mDisabled{{/disabled}} {{#inShopOnly}}mShopsOnly{{/inShopOnly}} {{#isKit}}btn-type--buy-kit{{/isKit}}"
         data-product-id="{{data.productId}}"
         data-product-ui="{{productUi}}"
         data-upsale="{{data.upsale}}"
-        data-sender="{{&sender}}"
-        data-sender2="{{sender2}}"
-        data-color-class="{{colorClass}}"
+        {{#sender}}data-sender="{{&sender}}"{{/sender}}
+        {{#sender2}}data-sender2="{{sender2}}"{{/sender2}}
+        {{#colorClass}}data-color-class="{{colorClass}}"{{/colorClass}}
         {{#full}}data-full="{{full}}"{{/full}}
         {{#productUrl}}data-product-url="{{productUrl}}"{{/productUrl}}
         {{#productArticle}}data-product-article="{{productArticle}}"{{/productArticle}}
@@ -21,4 +21,4 @@
         {{#onClick}}onclick="{{onClick}}"{{/onClick}}
         data-bind="buyButtonBinding: cart"
     >{{value}}</a>
-</div>
+{{# surroundDiv }}</div>{{/surroundDiv}}

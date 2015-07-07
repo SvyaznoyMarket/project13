@@ -5,7 +5,7 @@
 		$LAB.script('/maybe3dPlayer/player.min.js').wait(function() {
 			$('.js-product-3d-html5-popup').lightbox_me({
 				centered: true,
-				closeSelector: '.close',
+				closeSelector: '.jsPopupCloser',
 				onLoad: function() {
 					var $popup = $('.js-product-3d-html5-popup');
 					Maybe3D.Starter.setModelPathHTML5($popup.data('url'));
@@ -55,7 +55,7 @@
 
 				$popup.lightbox_me({
 					centered: true,
-					closeSelector: '.close',
+					closeSelector: '.jsPopupCloser',
 					onClose: function() {
 						swfobject.removeSWF(swfId);
 					}
@@ -82,7 +82,7 @@
 
 				$element.lightbox_me({
 					centered: true,
-					closeSelector: '.close'
+					closeSelector: '.jsPopupCloser'
 				});
 			}
 			catch (err) {}

@@ -24,28 +24,33 @@ ANALYTICS.RetailRocketJS = function() {
 
     // SITE-3672. Передаем email пользователя для RetailRocket
     (function() {
-        var
-            rr_data = $('#RetailRocketJS').data('value'),
-            email,
-            cookieName;
-        // end of vars
 
-        if ( 'object' != typeof(rr_data) || !rr_data.hasOwnProperty('emailCookieName') ) {
+        var rrData = $('#RetailRocketJS').data('value'),
+            userInfo = ENTER.config.userInfo.user,
+            email, cookieName;
+
+        if ( 'object' != typeof(rrData) || !rrData.hasOwnProperty('emailCookieName') ) {
             return;
         }
 
-        cookieName = rr_data.emailCookieName;
+        cookieName = rrData.emailCookieName;
 
-        email = window.docCookies.getItem(cookieName);
+        email = window.docCookies.getItem(cookieName) || userInfo.email;
         if ( !email ) {
             return;
         }
 
-        console.info('RetailRocketJS userEmailSend');
-        console.log(email);
-
         rrApiOnReady.push(function () {
-            rrApi.setEmail(email);
+            if (userInfo.mobile && typeof atob == 'function') {
+                rrApi.setEmail(email, {
+                    phone: atob(userInfo.mobile),
+                    name: userInfo.name
+                });
+                console.info('RetailRocketJS userEmailSend with phone');
+            } else {
+                rrApi.setEmail(email);
+                console.info('RetailRocketJS userEmailSend');
+            }
         });
 
         window.docCookies.removeItem(cookieName, '/');

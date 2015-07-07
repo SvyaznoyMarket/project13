@@ -2,6 +2,7 @@
 
 namespace Controller\Product;
 
+use Model\Product\Label;
 use Model\Product\Trustfactor;
 
 class IndexAction {
@@ -117,6 +118,8 @@ class IndexAction {
                 $product->medias = array_map(function($media) { return new \Model\Media($media); }, $data['medias']);
             }
 
+            if (isset($data['label']['uid'])) $product->setLabel(new Label($data['label']));
+
             if (isset($data['json3d']) && is_array($data['json3d'])) {
                 $product->json3d = $data['json3d'];
             }
@@ -198,9 +201,15 @@ class IndexAction {
         }
 
         // SITE-5035
-        // похожие товары
         $similarProducts = [];
-
+        if ($actionResponse->nextProductsQuery->response->products) {
+            call_user_func(function() use(&$actionResponse, &$similarProducts) {
+                foreach ($actionResponse->nextProductsQuery->response->products as $product) {
+                    $similarProducts[] = new \Model\Product\Entity($product);
+                }
+            });
+        }
+        
         // набор пакеты
         $kit = [];
         $kitProducts = [];
@@ -304,6 +313,21 @@ class IndexAction {
             $page = new \View\Product\IndexPage();
         }
 
+        $deliveryData = (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
+
+        // избранные товары
+        $favoriteProductsByUi = [];
+        foreach ($actionResponse->favoriteQuery->response->products as $item) {
+            if (!isset($item['is_favorite']) || !$item['is_favorite']) continue;
+
+            $ui = isset($item['uid']) ? (string)$item['uid'] : null;
+            if (!$ui) continue;
+
+            $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
+        }
+
+        $product->setCoupons($actionResponse->couponQuery->response->getCouponsForProduct($product->getUi()));
+
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('product', $product);
         $page->setParam('lifeGiftProduct', $lifeGiftProduct);
@@ -319,7 +343,9 @@ class IndexAction {
         $page->setParam('categoryClass', $categoryClass);
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactors', $trustfactors);
-        $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery));
+        $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
+        $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product));
+//        $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);
         $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);
         $page->setParam('viewParams', [

@@ -2,7 +2,7 @@
 
 namespace Controller\User;
 
-class SubscribeAction {
+class SubscribeAction extends PrivateAction {
 
     const EMPTY_PHONE_ERROR = 'Не указан мобильный телефон';
     const INVALID_PHONE_ERROR = 'Номер мобильного телефона должен содержать 11 цифр';
@@ -11,12 +11,6 @@ class SubscribeAction {
     const INVALID_EMAIL_ERROR = 'Указан некорректный email';
     const OCCUPIED_EMAIL_ERROR = 'Такой email уже занят';
     const SAVE_FAILED_ERROR = 'Не удалось сохранить данные';
-
-    public function __construct() {
-        if (!\App::user()->getToken()) {
-            throw new \Exception\AccessDeniedException();
-        }
-    }
 
     public function execute(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);

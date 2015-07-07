@@ -165,7 +165,7 @@
 </script>
 
 <script id="tplDebugAjax" type="text/html">
-    <div>
+    <div class="jsDebugPanelItem">
         <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#">{{name}}</a>
         <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
         <div class="debug-panel-item-content jsDebugPanelItemContent"></div>
@@ -188,7 +188,7 @@
     <script type="application/json"><?= json_encode($prevDebugData, JSON_UNESCAPED_UNICODE) ?></script>
     <a class="debug-panel-open jsOpenDebugPanelContent" href="#">debug</a>
     <div class="debug-panel-content jsDebugPanelContent">
-        <div>
+        <div class="jsDebugPanelItem">
             <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#">Google analytics calls</a>
             <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
             <table class="debug-panel-item-content debug-panel-item-content-googleAnalyticsCalls jsDebugPanelItemContent js-debugPanel-googleAnalyticsCalls-content">
@@ -202,12 +202,12 @@
                 </tr>
             </table>
         </div>
-        <div class="debug-panel-item-prev">
+        <div class="debug-panel-item-prev jsDebugPanelItem">
             <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#" title="Previous document debug"><?= $helper->escape($prevDebugData['server']['value']['REQUEST_URI']) ?></a>
             <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
             <table class="debug-panel-item-content jsDebugPanelItemContent jsPrevDebugPanelItemContent"></table>
         </div>
-        <div>
+        <div class="jsDebugPanelItem">
             <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#"><?= $helper->escape($debugData['server']['value']['REQUEST_URI']) ?></a>
             <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
             <table class="debug-panel-item-content jsDebugPanelItemContent jsCurrentDebugPanelItemContent"></table>
@@ -229,6 +229,11 @@
         border-top-right-radius: 4px;
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
+
+    .debug-panel .debug-panel-open-error, .debug-panel .debug-panel-open-error:hover {
+        color: #fd6666;
+    }
+
     .debug-panel-item-content {
         display: none;
         background: #0f1113;

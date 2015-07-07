@@ -46,6 +46,8 @@ class CompleteAction extends OrderV3 {
         $pointUis = [];
         $errors = [];
 
+        $this->pushEvent(['step' => 3]);
+
         try {
 
             if (!(bool)$this->sessionOrders) throw new \Exception('В сессии нет заказов');

@@ -2,7 +2,9 @@
 
 namespace Model\Shop;
 
-class Entity {
+use \Model\Point\GeoPointInterface;
+
+class Entity implements GeoPointInterface {
     use \Model\MediaHostTrait;
 
     /* @var int */

@@ -153,7 +153,25 @@ class Action {
         $client = \App::coreClientV2();
         $user = \App::user();
 
-        // подготовка 1-го пакета запросов
+        // магазин
+        /** @var $shop \Model\Shop\Entity */
+        \App::scmsClient()->addQuery('shop/get', ['slug' => [$shopToken]], [], function($data) use(&$shop) {
+            if (isset($data[0]['name'])) {
+                $shop = new \Model\Shop\Entity($data[0]);
+            }
+        });
+
+        $client->execute();
+
+        if (!$shop) {
+            throw new \Exception\NotFoundException(sprintf('Shop @%s not found', $shopToken));
+        }
+
+        \App::scmsClient()->addQuery('api/word-inflect', ['names' => [$shop->getRegion()->getName()]], [], function($data) use(&$shop, &$shopRegionNameInPrepositionalCase) {
+            if (isset($data[$shop->getRegion()->getName()]['locativus'])) {
+                $shopRegionNameInPrepositionalCase = $data[$shop->getRegion()->getName()]['locativus'];
+            }
+        });
 
         // запрашиваем текущий регион, если есть кука региона
         $regionConfig = [];
@@ -168,7 +186,6 @@ class Action {
             });
         }
 
-        // выполнение 1-го пакета запросов
         $client->execute();
 
         $regionEntity = $user->getRegion();
@@ -177,26 +194,6 @@ class Action {
                 $regionEntity->setForceDefaultBuy(false == $regionConfig['reserve_as_buy']);
             }
             $user->setRegion($regionEntity);
-        }
-
-        $region = $user->getRegion();
-
-        // подготовка 2-го пакета запросов
-
-        // магазин
-        /** @var $shop \Model\Shop\Entity */
-        $shop = null;
-        \App::scmsClient()->addQuery('shop/get', ['slug' => [$shopToken]], [], function($data) use (&$shop) {
-            if (isset($data[0]['name'])) {
-                $shop = new \Model\Shop\Entity($data[0]);
-            }
-        });
-
-        // выполнение 2-го пакета запросов
-        $client->execute();
-
-        if (!$shop) {
-            throw new \Exception\NotFoundException(sprintf('Shop @%s not found', $shopToken));
         }
 
         // hardcode
@@ -230,6 +227,7 @@ class Action {
 
         $page = new \View\Shop\ShowPage();
         $page->setParam('shop', $shop);
+        $page->setParam('shopRegionNameInPrepositionalCase', $shopRegionNameInPrepositionalCase);
 
         return new \Http\Response($page->show());
     }

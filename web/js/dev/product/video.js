@@ -24,7 +24,7 @@
 		$iframeContainer.append(iframeHtml);
 
 		var $iframe = $('iframe', $iframeContainer);
-		$iframe.attr('src', $iframe.attr('src') + '?autoplay=1');
+		$iframe.attr('src', $iframe.data('src'));
 
 		$('.js-product-video-container').lightbox_me({
 			centered: true,

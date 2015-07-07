@@ -1,10 +1,11 @@
 <?php
 
 
-namespace controller\User;
+namespace Controller\User;
 
 
-class RecommendAction {
+class RecommendAction extends PrivateAction {
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse
@@ -12,10 +13,10 @@ class RecommendAction {
     public function execute(\Http\Request $request) {
         $client = \App::coreClientV2();
         $region = \App::user()->getRegion();
+        $repository =  \RepositoryManager::product()->useV3()->withoutModels();
 
-        // вы смотрели
+            // вы смотрели
         $viewedProductIds = [];
-        //$data = $request->cookies->get('rrviewed');
         $data = $request->get('rrviewed');
         if (is_string($data)) {
             $data = explode(',', $data);
@@ -35,22 +36,17 @@ class RecommendAction {
 
         /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
-        $medias = [];
-        foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-            \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
-                foreach ((array)$data as $item) {
-                    if (empty($item['id'])) continue;
 
-                    $productsById[$item['id']] = new \Model\Product\Entity($item);
-                }
+        $repository->prepareCollectionById($productIds, $region, function($data) use (&$productsById) {
+            foreach ((array)$data as $item) {
+                $productsById[$item['id']] = new \Model\Product\Entity($item);
+            }
             });
-
-            \RepositoryManager::product()->prepareProductsMediasByIds($productsInChunk, $medias);
-        }
 
         $client->execute();
 
-        \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
+        \RepositoryManager::product()->enrichProductsFromScms($productsById, 'media label');
+        $client->execute();
 
         $recommendedProducts = [];
         foreach ($recommendedProductIds as $productId) {

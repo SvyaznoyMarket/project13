@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+    var $productDescriptionToggle = $('#productDescriptionToggle');
+
 
 	/**
 	 * Подключение нового зумера
@@ -66,12 +68,9 @@ $(document).ready(function() {
 		onChange:function( count ){
 			var spinnerFor = this.attr('data-spinner-for'),
 				bindButton = $('.'+spinnerFor),
-                bindOneClickButton = $('.' + spinnerFor + '-oneClick')
+                bindOneClickButton = $('.' + spinnerFor + '-oneClick'),
 				newHref = bindButton.attr('href') || '';
 			// end of vars
-
-			console.log('counter change');
-			console.log(bindButton);
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
             bindOneClickButton.data('quantity', count);
@@ -98,16 +97,13 @@ $(document).ready(function() {
 	 */
 	$('.bDescSelectItem').customDropDown({
 		changeHandler: function( option ) {
-			var url = option.data('url');
-
-			document.location.href = url;
+			document.location.href = option.data('url');
 		}
 	});
 
-
 	// карточка товара - характеристики товара краткие/полные
-	if ( $('#productDescriptionToggle').length ) {
-		$('#productDescriptionToggle').toggle(
+	if ( $productDescriptionToggle.length ) {
+        $productDescriptionToggle.toggle(
 			function( e ) {
 				e.preventDefault();
 				$(this).parent().parent().find('.descriptionlist:not(.short)').show();
@@ -136,4 +132,5 @@ $(document).ready(function() {
     } catch (e) {
         console.error(e);
     }
+
 });

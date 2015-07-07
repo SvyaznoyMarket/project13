@@ -92,6 +92,7 @@ $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
                         'sender'         => $sender,
                         'noUpdate'       => true,
                         'location'       => 'slider',
+                        'useNewStyles'   => false
                     ]) // Кнопка купить ?>
                     <!-- <a class="item_btn btn5" href="">Купить</a>-->
                 </div>

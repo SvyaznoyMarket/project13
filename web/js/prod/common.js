@@ -4,13 +4,32 @@
 
 ;(function($, ko){
 
-    ENTER.DeliveryPoints = function DeliveryPointsF (points) {
+    var balloonTemplate =
+        '<table class="pick-point-list"><tbody><tr class="pick-point-item clearfix" ><td class="pick-point-item__logo">'+
+        '<img src="{{ icon }}" class="pick-point-item__img" >'+
+        '<span class="pick-point-item__name">{{ listName }}</span>'+
+        '</td><td class="pick-point-item__addr">'+
+        '{{# subway }}' +
+        '<div class="pick-point-item__metro" style="background: {{ subway.line.color }};">'+
+        '<div class="pick-point-item__metro-inn">{{ subway.name }}</div></div>'+
+        '{{/ subway }}'+
+        '<div class="pick-point-item__addr-name">{{ address }}</div>'+
+        '<div class="pick-point-item__time">{{ regtime }}</div></td>'+
+        '<td class="pick-point-item__info pick-point-item__info--nobtn">'+
+        '<div class="pick-point-item__date" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
+        '<div class="pick-point-item__price"><span >{{ humanCost }}</span> {{# showRubles }}<span class="rubl">p</span></div>{{/ showRubles }}'+
+        '</td></tr></tbody></table>',
+        productUi = $('#product-info').data('ui');
+
+    ENTER.DeliveryPoints = function DeliveryPointsF (points, mapParam) {
 
         var self = this,
             pointsBounds,
             searchAutocompleteListClicked = false,
             map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map,
             $body = $(document.body);
+
+        if (mapParam) map = mapParam;
 
         self.searchInput = ko.observable();
         self.searchAutocompleteList = ko.observableArray();
@@ -187,8 +206,6 @@
          * Отображаем на карте только те точки, которые были выбраны в первом дропдауне
          */
         self.choosenTokens.subscribe(function(arr){
-            var map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map; // TODO уже можно вынести
-
             map.geoObjects.each(function(geoObject){
                 if (arr.length == 0) {
                     geoObject.options.set('visible', true)
@@ -198,19 +215,24 @@
             });
         });
 
+
+        self.setMapCenter = function (point) {
+            map.setCenter([point.latitude, point.longitude], 14)
+        };
+
         /* INIT */
 
-        $.each(points, function(token, pointsArr) {
-            $.each(pointsArr, function(index, point){
-                self.availablePoints.push(point);
-                if (typeof pointsBounds == 'undefined') pointsBounds = [[point.latitude, point.longitude], [point.latitude, point.longitude]];
-                else {
-                    if (point.latitude < pointsBounds[0][0]) pointsBounds[0][0] = point.latitude;
-                    if (point.latitude > pointsBounds[1][0]) pointsBounds[1][0] = point.latitude;
-                    if (point.longitude < pointsBounds[0][1]) pointsBounds[0][1] = point.longitude;
-                    if (point.longitude > pointsBounds[1][1]) pointsBounds[1][1] = point.longitude;
-                }
-            });
+        console.log('Init DeliveryPointsModel with ', {points: points, mapParam: mapParam});
+
+        $.each(points, function(index, point) {
+            self.availablePoints.push(point);
+            if (typeof pointsBounds == 'undefined') pointsBounds = [[point.latitude, point.longitude], [point.latitude, point.longitude]];
+            else {
+                if (point.latitude < pointsBounds[0][0]) pointsBounds[0][0] = point.latitude;
+                if (point.latitude > pointsBounds[1][0]) pointsBounds[1][0] = point.latitude;
+                if (point.longitude < pointsBounds[0][1]) pointsBounds[0][1] = point.longitude;
+                if (point.longitude > pointsBounds[1][1]) pointsBounds[1][1] = point.longitude;
+            }
         });
 
         window.map = self;
@@ -219,34 +241,46 @@
 
     };
 
-    ENTER.Placemark = function(point, visible) {
+    ENTER.Placemark = function(point, visible, buyButtonClass) {
 
         var visibility = typeof visible == 'undefined' ? true : visible,
-            balloonContent = '<b>Адрес:</b> ' + point.address,
-            placemark;
+            balloonContent, placemark;
+
+        if (!buyButtonClass) buyButtonClass = 'jsChangePoint';
+
+        // Для шаблона
+        if (point.cost == 0) {
+            point.humanCost = 'Бесплатно';
+            point.showRubles = false;
+        } else {
+            point.humanCost = point.cost;
+            point.showRubles = true;
+        }
 
         if (!point.latitude || !point.longitude) throw 'Не указаны координаты точки';
 
-        if (point.regtime) balloonContent += '<br /> <b>Время работы:</b> ' + point.regtime;
+        balloonContent = Mustache.render(balloonTemplate, point);
 
         // кнопка "Выбрать магазин"
-        balloonContent += $('<button />', {
+        // показываем только на странице продукта
+        if (point.showBaloonBuyButton) balloonContent += $('<button />', {
                 'text':'Выбрать',
-                'class': 'btnLightGrey bBtnLine btnView jsChangePoint',
+                'class': 'btn-type btn-type--buy ' + buyButtonClass,
                 'style': 'display: block',
                 'data-id': point.id,
                 'data-token': point.token,
-                'data-blockname': point.orderToken
+                'data-blockname': point.orderToken,
+                'data-product-ui': productUi
             }
         )[0].outerHTML;
 
         placemark = new ymaps.Placemark([point.latitude, point.longitude], {
-            balloonContentHeader: point.name,
+            // balloonContentHeader: point.name,
             balloonContentBody: balloonContent,
             hintContent: point.name,
             enterToken: point.token // Дополняем собственными свойствами
         }, {
-            balloonMaxWidth: 200,
+            balloonMaxWidth: 390,
             iconLayout: 'default#image',
             iconImageHref: point.marker.iconImageHref,
             iconImageSize: point.marker.iconImageSize,
@@ -255,6 +289,7 @@
             zIndex: point.token == 'shops' ? 1000 : 0
         });
 
+        // Максимальная ширина балуна
         //placemark.balloon.set('maxWidth', 100);
 
         return placemark;
@@ -277,6 +312,7 @@
 		self.advancedSearch = ko.observable(advSearchEnabled);
 		self.searchCategoryVisible = ko.observable(false);
 		self.currentCategory = ko.observable(null);
+		self.previousCategory = ko.observable(null);
 
 		self.searchResultCategories = ko.observableArray();
 		self.searchResultProducts = ko.observableArray();
@@ -352,12 +388,37 @@
 				});
 		}).extend({ throttle: 200 });
 
+		// АНАЛИТИКА
+		// Предыдущее значение category
+		self.currentCategory.subscribe(function(val){
+			self.previousCategory(val);
+		}, self, 'beforeChange');
+
+		self.currentCategory.subscribe(function(val){
+			var previous = self.previousCategory() === null ? '' : self.previousCategory().name;
+
+			if (val == null) {
+				$body.trigger('trackGoogleEvent',['search_scope', 'clear', previous])
+			} else {
+				if (self.previousCategory() == null) {
+					$body.trigger('trackGoogleEvent',['search_scope', 'change', val.name + '_' + 'Все товары'])
+				} else {
+					$body.trigger('trackGoogleEvent',['search_scope', 'change', val.name + '_' + previous])
+				}
+			}
+		});
+
 		return self;
 	}
 
 	// Биндинги на нужные элементы
 	$body.find('.jsKnockoutSearch').each(function(){
 		ko.applyBindings(new SearchModel(), this);
+	});
+
+	// Аналитика на фокусе строки поиска
+	$body.on('focus', '.jsSearchInput', function(){
+		$body.trigger('trackGoogleEvent',['search_string', 'string'])
 	});
 
 	// Клик по категории в подсказке
@@ -387,6 +448,16 @@
 		e.preventDefault();
 		$body.trigger('trackGoogleEvent', [{
 			category: 'search_enterprize',
+			action: 'click',
+			hitCallback: $(this).attr('href')
+		}])
+	});
+
+	// Клик по значку "Выбери подарки" в строке поиска
+	$body.on('click', '.jsGiftInSearchBarButton', function(e){
+		e.preventDefault();
+		$body.trigger('trackGoogleEvent', [{
+			category: 'search_present',
 			action: 'click',
 			hitCallback: $(this).attr('href')
 		}])
@@ -500,6 +571,8 @@
 				$elem = $(element),
 				productId = $elem.data('id'),
 				typeId = $elem.data('type-id'),
+                activeLinkClass = 'btnCmpr_lk-act',
+                buttonText = 'Добавить к сравнению',
 				comparableProducts;
 
 			var location = '';
@@ -508,17 +581,22 @@
 			} else if (ENTER.config.pageConfig.location.indexOf('product') != -1) {
 				location = 'product';
 			}
+
+            if (ENTER.config.pageConfig.newProductPage) {
+                activeLinkClass = 'product-card-tools__lk--active';
+                buttonText = 'Сравнить';
+            }
 			
 			if (ENTER.utils.getObjectWithElement(compare, 'id', productId)) {
 				$elem
 					.addClass('btnCmpr-act')
-					.find('a.btnCmpr_lk').addClass('btnCmpr_lk-act').attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}))
+					.find('.jsCompareLink').addClass(activeLinkClass).attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}))
 					.find('span').text('Убрать из сравнения');
 			} else {
 				$elem
 					.removeClass('btnCmpr-act')
-					.find('a.btnCmpr_lk').removeClass('btnCmpr_lk-act').attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId, location: location}))
-					.find('span').text('Добавить к сравнению');
+					.find('.jsCompareLink').removeClass(activeLinkClass).attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId, location: location}))
+					.find('span').text(buttonText);
 			}
 	
 			// массив продуктов, которые можно сравнить с данным продуктом
@@ -555,7 +633,10 @@
 }(jQuery));
 ;$(function(){
 	var $body = $(document.body),
-		authorized_cookie = '_authorized';
+		region = ENTER.config.pageConfig.user.region.name,
+		userInfoURL = ENTER.config.pageConfig.userUrl.addParameterToUrl('ts', new Date().getTime() + Math.floor(Math.random() * 1000)),
+		authorized_cookie = '_authorized',
+		startTime, endTime, spendTime;
 
 	/* Модель продукта в корзине */
 	function createCartModel(cart) {
@@ -645,7 +726,7 @@
 
 	// Биндинги на нужные элементы
 	// Топбар, кнопка Купить на странице продукта, листинги, слайдер аксессуаров
-	$('.js-topbarfix, .js-topbarfixBuy, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-lineListing, .js-slider, .jsKnockoutCart').each(function(){
+	$('.js-topbarfix, .js-topbarfixBuy, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-lineListing, .js-slider, .jsKnockoutCart, .js-compareProduct').each(function(){
 		ko.applyBindings(ENTER.UserModel, this);
 	});
 
@@ -663,6 +744,11 @@
 	*/
 	(function(){
 		ENTER.UserModel.update(ENTER.config.userInfo);
+		if (typeof ga == 'function') {
+			ga('send', 'timing', 'userInfo', 'Load User Info', spendTime);
+			console.log('[Google Analytics] Send user/info timing: %s ms', spendTime)
+		}
+
 		if (!docCookies.hasItem(authorized_cookie)) {
 			if (ENTER.config.userInfo && ENTER.config.userInfo.user && typeof ENTER.config.userInfo.user.id != 'undefined') {
 				docCookies.setItem(authorized_cookie, 1, 60*60, '/'); // on
@@ -703,8 +789,8 @@
 	$body.on('mouseover', '.btnBuy-inf', function(){
 		if (!docCookies.hasItem('enter_ab_self_delivery_view_info')) {
 			docCookies.setItem('enter_ab_self_delivery_view_info', true);
-			if (ENTER.UserModel.cartSum() < ENTER.config.pageConfig.selfDeliveryLimit) $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'увидел всплывашку платный самовывоз', 'всплывающая корзина']);
-			if (ENTER.UserModel.cartSum() >= ENTER.config.pageConfig.selfDeliveryLimit) $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'самовывоз бесплатно', 'всплывающая корзина']);
+			if (ENTER.UserModel.cartSum() < ENTER.config.pageConfig.selfDeliveryLimit) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'увидел всплывашку платный самовывоз', 'всплывающая корзина']);
+			if (ENTER.UserModel.cartSum() >= ENTER.config.pageConfig.selfDeliveryLimit) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'самовывоз бесплатно', 'всплывающая корзина']);
 		}
 		ENTER.UserModel.infoIconVisible(false);
 	});
@@ -712,8 +798,8 @@
 	$body.on('showUserCart', function(e){
 		var $target = $(e.target);
 
-		if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.UserModel.infoIconVisible()) $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'увидел подсказку', 'всплывающая корзина']);
-		else if (ENTER.config.pageConfig.selfDeliveryTest && !ENTER.UserModel.infoIconVisible()) $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'не увидел подсказку', 'всплывающая корзина']);
+		if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.UserModel.infoIconVisible()) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'увидел подсказку', 'всплывающая корзина']);
+		else if (ENTER.config.pageConfig.selfDeliveryTest && !ENTER.UserModel.infoIconVisible()) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'не увидел подсказку', 'всплывающая корзина']);
 
 		/* Если человек еще не наводил на иконку в всплывающей корзине */
 		if (ENTER.config.pageConfig.selfDeliveryTest) {
@@ -723,7 +809,7 @@
 		}
 
 		if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.UserModel.infoBlock_2Visible() && !ENTER.UserModel.infoIconVisible()) {
-			$body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'самовывоз бесплатно', 'всплывающая корзина']);
+			$body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'самовывоз бесплатно', 'всплывающая корзина']);
 		}
 	});
 
@@ -748,7 +834,7 @@
 		if (href) {
 			e.preventDefault();
 			$body.trigger('trackGoogleEvent',
-				{	category: 'Платный_самовывоз',
+				{	category: 'Платный_самовывоз_' + region,
 					action:'добрать товар',
 					label:'всплывающая корзина',
 					hitCallback: function(){
@@ -888,7 +974,6 @@
             }
             if (isUniversalAvailable()) {
                 ga('send', 'pageview', data);
-                ga('secondary.send', 'pageview', data);
             }
             if (isClassicAvailable()) {
                 _gaq.push(['_trackPageview', data.page])
@@ -941,7 +1026,7 @@
             });
 
             // Classic Tracking Code
-            if (isClassicAvailable()) {
+            if (typeof _gaq === 'object') {
                 classicEvent.push(e.category, e.action);
                 classicEvent.push(e.label ? e.label: null);
                 classicEvent.push(e.value ? e.value: null);
@@ -952,7 +1037,8 @@
             }
 
             // Universal Tracking Code
-            if (isUniversalAvailable()) {
+            // TODO refactor if statement
+            if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0) {
                 universalEvent.eventCategory = e.category;
                 universalEvent.eventAction = e.action;
                 if (e.label) universalEvent.eventLabel = e.label;
@@ -961,7 +1047,6 @@
                 else if (typeof e.hitCallback == 'string') universalEvent.hitCallback = function(){ window.location.href = e.hitCallback };
                 if (e.nonInteraction) ga('set', 'nonInteraction', true);
                 ga('send', universalEvent);
-                ga('secondary.send', universalEvent);
                 console.info('[Google Analytics] Send event:', e);
             } else {
                 console.warn('No Universal Google Analytics function found', typeof universalEvent.hitCallback, e.hitCallback);
@@ -1060,7 +1145,7 @@
                 googleProducts = $.map(eventObject.products, function(elem){ return new GoogleProduct(elem, googleTrans.id)});
 
                 // Classic Tracking Code
-                if (isClassicAvailable()) {
+                if (typeof _gaq === 'object') {
                     _gaq.push(['_addTrans'].concat(googleTrans.toArray()));
                     $.each(googleProducts, function(i, product){
                         _gaq.push(['_addItem'].concat(product.toArray()))
@@ -1071,16 +1156,13 @@
                 }
 
                 // Universal Tracking Code
-                if (isUniversalAvailable()) {
+                if (typeof ga === 'function' && ga.getAll().length != 0) {
                     ga('require', 'ecommerce', 'ecommerce.js');
                     ga('ecommerce:addTransaction', googleTrans.toObject());
-                    ga('secondary.ecommerce:addTransaction', googleTrans.toObject());
                     $.each(googleProducts, function(i, product){
-                        ga('ecommerce:addItem',product.toObject());
-                        ga('secondary.ecommerce:addItem',product.toObject());
+                        ga('ecommerce:addItem',product.toObject())
                     });
                     ga('ecommerce:send');
-                    ga('secondary.ecommerce:send');
                 } else {
                     console.warn('No Universal Google Analytics function found');
                 }
@@ -1091,10 +1173,22 @@
 
 		};
 
+    if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
+
     // common listener for triggering from another files or functions
     body.on('trackGooglePageview', trackGooglePageview);
     body.on('trackGoogleEvent', trackGoogleEvent);
     body.on('trackGoogleTransaction', trackGoogleTransaction);
+
+    // TODO вынести инициализацию трекера из ports.js
+    try {
+        if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length == 0) {
+			console.warn('Creating ga tracker');
+            ga( 'create', 'UA-25485956-5', 'enter.ru' );
+        }
+    } catch (e) {
+        console.error(e);
+    }
 
 })(jQuery);
 /**
@@ -1201,6 +1295,9 @@
 
 				ENTER.utils.sendAdd2BasketGaEvent(productData.article, productData.price, productData.isOnlyFromPartner, productData.isSlot, data.sender ? data.sender.name : '');
 
+				productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
+				productData.fromUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
+
                 try {
                     var sender = data.sender;
                     console.info({sender: sender});
@@ -1208,13 +1305,13 @@
 						var rrEventLabel = '';
 						if (ENTER.config.pageConfig.product) {
 							if (ENTER.config.pageConfig.product.isSlot) {
-								rrEventLabel = '(marketplace-slot)';
+								rrEventLabel = ' (marketplace-slot)';
 							} else if (ENTER.config.pageConfig.product.isOnlyFromPartner) {
-								rrEventLabel = '(marketplace)';
+								rrEventLabel = ' (marketplace)';
 							}
 						}
 
-                        $body.trigger('trackGoogleEvent',['RR_взаимодействие ' + rrEventLabel, 'Добавил в корзину', sender.position]);
+                        $body.trigger('trackGoogleEvent',['RR_Взаимодействие' + rrEventLabel, 'Добавил в корзину', sender.position]);
                     }
                 } catch (e) {
                     console.error(e);
@@ -1262,7 +1359,7 @@
 $(function() {
 	var
 		compareNoticeShowClass = 'topbarfix_cmpr_popup-show',
-		$comparePopup,
+		comparePopups = {fixed: null, static: null},
 		compareNoticeTimeout;
 
 	$('body').on('click', '.jsCompareLink, .jsCompareListLink', function(e){
@@ -1270,7 +1367,7 @@ $(function() {
 			url = e.currentTarget.href,
 			$button = $(e.currentTarget),
 			productId = $button.data('id'),
-			inCompare = $button.hasClass('btnCmprb-act'),
+			inCompare = $button.hasClass('btnCmpr_lk-act') || $button.hasClass('product-card-tools__lk--active'),
 			isSlot = $button.data('is-slot'),
 			isOnlyFromPartner = $button.data('is-only-from-partner');
 
@@ -1295,48 +1392,54 @@ $(function() {
 					$.each(data.compare, function(i,val){ ENTER.UserModel.compare.push(val) });
 
 					if (!inCompare) {
-						if (!$comparePopup) {
-							var $userbar = ENTER.userBar.userBarFixed;
-							$comparePopup = $('.js-compare-addPopup', $userbar);
+						var userBarType = $(window).scrollTop() > ENTER.userBar.userBarStatic.offset().top + 10 ? 'fixed' : 'static';
 
-							$('.js-compare-addPopup-closer', $comparePopup).click(function() {
-								$comparePopup.removeClass(compareNoticeShowClass);
-							});
+						(function() {
+							if (!comparePopups[userBarType]) {
+								var $userbar = userBarType == 'fixed' ? ENTER.userBar.userBarFixed : ENTER.userBar.userBarStatic;
+								comparePopups[userBarType] = $('.js-compare-addPopup', $userbar);
 
-							$('.js-topbarfixLogin, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
-								$comparePopup.removeClass(compareNoticeShowClass);
-							});
+								$('.js-compare-addPopup-closer', comparePopups[userBarType]).click(function() {
+									comparePopups[userBarType].removeClass(compareNoticeShowClass);
+								});
 
-							$('html').click(function() {
-								$comparePopup.removeClass(compareNoticeShowClass);
-							});
+								$('.js-topbarfixLogin-opener, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
+									comparePopups[userBarType].removeClass(compareNoticeShowClass);
+								});
 
-							$($comparePopup).click(function(e) {
-								e.stopPropagation();
-							});
+								$('html').click(function() {
+									comparePopups[userBarType].removeClass(compareNoticeShowClass);
+								});
 
-							$(document).keyup(function(e) {
-								if (e.keyCode == 27) {
-									$comparePopup.removeClass(compareNoticeShowClass);
-								}
-							});
-						}
+								comparePopups[userBarType].click(function(e) {
+									e.stopPropagation();
+								});
+
+								$(document).keyup(function(e) {
+									if (e.keyCode == 27) {
+										comparePopups[userBarType].removeClass(compareNoticeShowClass);
+									}
+								});
+							}
+						})();
 
 						if (compareNoticeTimeout) {
 							clearTimeout(compareNoticeTimeout);
 						}
 
 						compareNoticeTimeout = setTimeout(function() {
-							$comparePopup.removeClass(compareNoticeShowClass);
+							comparePopups[userBarType].removeClass(compareNoticeShowClass);
 						}, 2000);
 
-						$('.js-compare-addPopup-image', $comparePopup).attr('src', data.product.imageUrl);
-						$('.js-compare-addPopup-prefix', $comparePopup).text(data.product.prefix);
-						$('.js-compare-addPopup-webName', $comparePopup).text(data.product.webName);
+						$('.js-compare-addPopup-image', comparePopups[userBarType]).attr('src', data.product.imageUrl);
+						$('.js-compare-addPopup-prefix', comparePopups[userBarType]).text(data.product.prefix);
+						$('.js-compare-addPopup-webName', comparePopups[userBarType]).text(data.product.webName);
 
-						ENTER.userBar.show(true, function(){
-							$comparePopup.addClass(compareNoticeShowClass)
-						});
+						if (userBarType == 'fixed') {
+							ENTER.userBar.show();
+						}
+
+						comparePopups[userBarType].addClass(compareNoticeShowClass);
 
 						(function() {
 							var action;
@@ -1562,6 +1665,84 @@ $(function() {
 		updateInput($(input));
 	});
 });
+$(function() {
+	var
+		showClass = 'topbarfix_cmpr_popup-show',
+		timer;
+
+    $('body').on('click', '.jsFavoriteLink', function(e){
+        var
+            $el = $(e.currentTarget),
+            xhr = $el.data('xhr')
+        ;
+
+        console.info({'.jsFavoriteLink click': $el});
+
+        if ($el.data('ajax')) {
+            e.stopPropagation();
+
+            try {
+                if (xhr)  xhr.abort();
+            } catch (error) { console.error(error); }
+
+            xhr = $.post($el.attr('href'))
+                .done(function(response) {
+                    $('body').trigger('updateWidgets', {
+                        widgets: response.widgets,
+                        callback: $el.attr('href').indexOf('delete-product') !== -1 ? null : function() {
+							var
+								userBarType = $(window).scrollTop() > ENTER.userBar.userBarStatic.offset().top + 10 ? 'fixed' : 'static',
+								$userbar = userBarType == 'fixed' ? ENTER.userBar.userBarFixed : ENTER.userBar.userBarStatic,
+								$popup = $('.js-favourite-popup', $userbar);
+
+							$('.js-favourite-popup-closer', $popup).click(function() {
+								$popup.removeClass(showClass);
+							});
+
+							$('.js-topbarfixLogin-opener, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
+								$popup.removeClass(showClass);
+							});
+
+							$('html').click(function() {
+								$popup.removeClass(showClass);
+							});
+
+							$popup.click(function(e) {
+								e.stopPropagation();
+							});
+
+							$(document).keyup(function(e) {
+								if (e.keyCode == 27) {
+									$popup.removeClass(showClass);
+								}
+							});
+
+							if (timer) {
+								clearTimeout(timer);
+							}
+
+							timer = setTimeout(function() {
+								$popup.removeClass(showClass);
+							}, 2000);
+
+							if (userBarType == 'fixed') {
+								ENTER.userBar.show();
+							}
+
+							$popup.addClass(showClass);
+						}
+					});
+                })
+                .always(function() {
+                    $el.data('xhr', null);
+                })
+            ;
+            $el.data('xhr', xhr);
+
+            e.preventDefault();
+        }
+    });
+});
 /**
  * Перемотка к Id
  *
@@ -1626,8 +1807,11 @@ $(function() {
 
 				var $popup = $(Mustache.render($('#tpl-cart-kitForm').html()));
 
+                $('.jsProductImgPopup').trigger('close'); // закрытие окна с изображением
+
 				$popup.lightbox_me({
 					autofocus: true,
+					closeSelector: ".jsPopupCloser",
 					destroyOnClose: true
 				});
 
@@ -1642,6 +1826,10 @@ $(function() {
 					$popup.trigger('close.lme');
 				});
 
+				// Google Analytics
+				if (typeof _gaq !== 'undefined') {
+					_gaq.push(['_trackEvent', 'addedCollection', 'collection', result.product.article]);
+				}
 			},
 			complete: function() {
 				isOpening = false;
@@ -1649,12 +1837,15 @@ $(function() {
 		});
 	});
 
+    $body.on('addtocart', function(){ $('.jsKitPopup').trigger('close')} ); // закрываем окно popup
+
 	function PopupModel(product, sender, sender2) {
 		var self = this;
 
 		self.productId = product.id;
 		self.productPrefix = product.prefix;
 		self.productWebname = product.webname;
+		self.productName = self.productPrefix + ' ' + self.productWebname;
 		self.productImageUrl = product.imageUrl;
 		self.products = ko.observableArray([]);
 
@@ -2178,7 +2369,13 @@ $(function() {
 
 		var
 			$button = $(e.currentTarget),
-			$target = $('#jsOneClickContent');
+			$target = $('#jsOneClickContent'),
+            $productInfo = $('#product-info'),
+            productUi;
+
+        productUi = $productInfo.length > 0 ? $productInfo.data('ui') : $button.data('product-ui');
+
+        if (!productUi) throw 'Не обнаружен ui продукта';
 
 		if ($target.length) {
 			openPopup(false);
@@ -2187,11 +2384,11 @@ $(function() {
 			oneClickOpening = true;
 
 			$.ajax({
-				url: ENTER.utils.generateUrl('orderV3OneClick.form', {
-					productUid: $button.data('product-ui'),
-					sender: ENTER.utils.analytics.productPageSenders.get($button),
-					sender2: ENTER.utils.analytics.productPageSenders2.get($button)
-				}),
+                url: ENTER.utils.generateUrl('orderV3OneClick.form', {
+                    productUid: $button.data('product-ui'),
+                    sender: ENTER.utils.analytics.productPageSenders.get($button),
+                    sender2: ENTER.utils.analytics.productPageSenders2.get($button)
+                }),
 				type: 'POST',
 				dataType: 'json',
 				closeClick: false,
@@ -2215,6 +2412,9 @@ $(function() {
 		}
 
 		function openPopup(removeOnClose) {
+
+            $('.jsProductImgPopup').trigger('close'); // закрываем окно просмотра фото в новой карточке товара
+
 			$('.js-order-oneclick-delivery-toggle-btn').on('click', function(e) {
 				var button = $(e.currentTarget),
 					$toggleNote = $('.js-order-oneclick-delivery-toggle-btn-note'),
@@ -2286,20 +2486,21 @@ $(function() {
 						$('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
 					}
 				}).done(function(data) {
-					console.log("Query: %s", data.result.OrderDeliveryRequest);
-					console.log("Model:", data.result.OrderDeliveryModel);
-					$orderContent.empty().html($(data.result.page).html());
+					//console.log("Query: %s", data.result.OrderDeliveryRequest);
+					//console.log("Model:", data.result.OrderDeliveryModel);
 
                     if (data.result.warn) $('#OrderV3ErrorBlock').text(data.result.warn).show();
 
-                    $.each($('.jsNewPoints'), function(i,val) {
-                        var E = ENTER.OrderV31Click,
-                            pointData = JSON.parse($(this).find('script.jsMapData').html()),
-                            points = new ENTER.DeliveryPoints(pointData.points, E.map);
+                    var $data = $(data.result.page);
 
-                        E.koModels.push(points);
-                        ko.applyBindings(points, val);
-                    });
+                    $orderContent.empty().html($data.html());
+
+                    var E = ENTER.OrderV31Click,
+                        pointData = JSON.parse($data.find('script.jsMapData').html()),
+                        points = new ENTER.DeliveryPoints(pointData.points, E.map);
+
+                    E.koModels.push(points);
+                    ko.applyBindings(points, $orderContent[0]);
 
 					ENTER.OrderV31Click.functions.initAddress();
 					$orderContent.find('input[name=address]').focus();
@@ -2536,6 +2737,9 @@ $(function() {
 					moveSlide(slide);
 					setScrollInterval(slide);
 
+					if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
+						_gaq.push(['_trackEvent', 'slider view', 'tchibo', getSlideIndex(slide) + 1 + '']);
+					}
 				}, time);
 			},
 
@@ -2571,6 +2775,9 @@ $(function() {
 				moveSlide(slide);
 				setScrollInterval(slide);
 				
+				if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
+					_gaq.push(['_trackEvent', 'slider view', 'tchibo', getSlideIndex(slide) + 1 + '']);
+				}
 			},
 
 			/**
@@ -2605,6 +2812,9 @@ $(function() {
 
 				setScrollInterval(link);
 				
+				if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
+					_gaq.push(['_trackEvent', 'slider view', 'tchibo', link + 1 + '']);
+				}
 			},
 
 			/**
@@ -2713,7 +2923,27 @@ $(function() {
 					window.location.hash = 'slide' + ((slideId * 1) + 1);
 				}
 
-            },
+				slideData = data[slideId];
+				if ( (slideData.hasOwnProperty('title') && slideData.hasOwnProperty('time')) && tchiboAnalytics.checkRule('collection_view') ) {
+					tchiboAnalytics.collectionShow(slideData.title, (slideId*1)+1, slideData.time);
+				}
+			},
+
+			getSlideIndex = function(slide) {
+				var slideId = parseInt(slide);
+
+				if (activeCarousel) {
+					if ( slide > slider_SlideCount - 1 ) {
+						slide = slider_SlideCount - 1;
+					} else if ( slide < 0 ) {
+						slide = 0;
+					}
+
+					slideId = parseInt($(".jsPromoCatalogSliderWrap .bPromoCatalogSliderWrap_eSlide").eq(slide).attr("id").replace('slide_id_', ''));
+				}
+
+				return slideId;
+			},
 
 			tchiboAnalytics = {
 				init: function() {
@@ -2737,6 +2967,9 @@ $(function() {
 							slideId = slide.attr('id').replace('slide_id_', '');
 							slideData = data[slideId];
 
+							if ( slideData.hasOwnProperty('title') ) {
+								tchiboAnalytics.collectionClick(slideData.title, (slideId*1)+1);
+							}
 						},
 
 						productClickHandler = function() {
@@ -2762,6 +2995,9 @@ $(function() {
 								return;
 							}
 
+							if ( slideData.hasOwnProperty('title') && undefined != typeof(slideData.products[productIndex].name) ) {
+								tchiboAnalytics.productClick(slideData.title, slideData.products[productIndex].name, (productIndex*1)+1);
+							}
 						};
 					// end of functions
 
@@ -2822,6 +3058,61 @@ $(function() {
 					}
 				},
 
+				/**
+				 * @param collection_name		название коллекции
+				 * @param collection_position	позиция в слайдере
+				 * @param delay					текущая задержка на данном слайдере
+				 */
+				collectionShow: function(collection_name, collection_position, delay) {	},
+
+				/**
+				 * @param collection_name		название коллекции
+				 * @param collection_position	позиция в слайдере
+				 */
+				collectionClick: function(collection_name, collection_position) {
+					var item;
+
+					if (
+						!tchiboAnalytics.isAnalyticsEnabled ||
+						'undefined' == typeof(_gaq) ||
+						'undefined' == typeof(collection_name) ||
+						'undefined' == typeof(collection_position)
+						) {
+						return;
+					}
+
+					item = ['_trackEvent', 'collection_click', collection_name+'_'+collection_position]
+
+					console.info('TchiboSliderAnalytics collection_click');
+					console.log(item);
+					_gaq.push(item);
+				},
+
+				/**
+				 * @param collection_name	название коллекции
+				 * @param item_name			название товара
+				 * @param position			позиция товара на слайдере (1, 2, 3 слева направо)
+				 */
+				productClick: function(collection_name, item_name, position) {
+					var item;
+
+					if (
+						!tchiboAnalytics.isAnalyticsEnabled ||
+						'undefined' == typeof(_gaq) ||
+						'undefined' == typeof(collection_name) ||
+						'undefined' == typeof(item_name) ||
+						'undefined' == typeof(position)
+						) {
+						return;
+					}
+
+					item = ['_trackEvent', 'item_click', collection_name+'_'+item_name, position.toString()];
+
+					console.info('TchiboSliderAnalytics item_click');
+					console.log(item);
+					_gaq.push(item);
+				},
+
 				isAnalyticsEnabled: function() {
 					return analyticsConfig && analyticsConfig.hasOwnProperty('enabled') && true == analyticsConfig.enabled;
 				},
@@ -2859,6 +3150,10 @@ $(function() {
 
 			setScrollInterval(toSlide);
 
+			// аналитика показа первого слайда
+			if ( data.hasOwnProperty(toSlide) && data[toSlide].hasOwnProperty('title') && data[toSlide].hasOwnProperty('time') && tchiboAnalytics.checkRule('collection_view') ) {
+				tchiboAnalytics.collectionShow(data[toSlide].title, ((toSlide*1)+1), data[toSlide].time);
+			}
 		});
 	}
 })(jQuery);
@@ -3307,13 +3602,13 @@ $(function() {
 			var rrEventLabel = '';
 			if (ENTER.config.pageConfig.product) {
 				if (ENTER.config.pageConfig.product.isSlot) {
-					rrEventLabel = '(marketplace-slot)';
+					rrEventLabel = '_marketplace-slot';
 				} else if (ENTER.config.pageConfig.product.isOnlyFromPartner) {
-					rrEventLabel = '(marketplace)';
+					rrEventLabel = '_marketplace';
 				}
 			}
 
-            $body.trigger('trackGoogleEvent',['RR_взаимодействие ' + rrEventLabel, 'Пролистывание', sender.position]);
+            $body.trigger('trackGoogleEvent',['RR_Взаимодействие' + rrEventLabel, 'Пролистывание', sender.position]);
         } catch (e) { console.error(e); }
     });
 
@@ -3519,7 +3814,7 @@ $(function() {
 			$errors.empty().hide();
 
 			if (!validate($form)) {
-				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
+				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
 				return;
 			}
 
@@ -3533,7 +3828,7 @@ $(function() {
 				success: function(result){
 					if (result.error) {
 						$errors.text(result.error).show();
-						$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
+						$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
 						return;
 					}
 
@@ -3547,7 +3842,7 @@ $(function() {
 						$popup.trigger('close');
 					});
 
-					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7 Оформить успешно', catalogPath]);
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7 Оформить успешно', catalogPath]);
 
 					if (typeof ENTER.utils.sendOrderToGA == 'function' && result.orderAnalytics) {
 						ENTER.utils.sendOrderToGA(result.orderAnalytics);
@@ -3555,7 +3850,7 @@ $(function() {
 				},
 				error: function(){
 					$errors.text('Ошибка при создании заявки').show();
-					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
 				},
 				complete: function(){
 					$submitButton.removeAttr('disabled');
@@ -3565,28 +3860,28 @@ $(function() {
 
 		ENTER.utils.sendAdd2BasketGaEvent(productArticle, productPrice, true, true, ($button.data('sender') || {}).name);
 
-		$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '1 Вход', catalogPath]);
+		$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '1 Вход', catalogPath]);
 
 		$phone.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '2 Телефон', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '2 Телефон', catalogPath]);
 		});
 
 		$email.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '3 Email', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '3 Email', catalogPath]);
 		});
 
 		$name.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '4 Имя', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '4 Имя', catalogPath]);
 		});
 
 		$confirm.click(function(e) {
 			if (e.currentTarget.checked) {
-				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '5 Оферта', catalogPath]);
+				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '5 Оферта', catalogPath]);
 			}
 		});
 
 		$goToProduct.click(function(e) {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '6 Перейти в карточку', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '6 Перейти в карточку', catalogPath]);
 		});
 
 		$phone.focus();
@@ -3640,11 +3935,11 @@ $(function() {
 		if (!visible && $window.scrollTop() > offset && (!showWhenFullCartOnly || cartLength)) {
 			//появление
 			visible = true;
-			$upper.animate({marginTop: '0'}, 400);
+			$upper.fadeIn(400);
 		} else if (visible && ($window.scrollTop() < offset || showWhenFullCartOnly && !cartLength)) {
 			//исчезновение
 			visible = false;
-			$upper.animate({marginTop: '-55px'}, 400);
+			$upper.fadeOut(400);
 		}
 	}
 
@@ -3699,27 +3994,19 @@ $(function() {
 	/**
 	 * Показ юзербара
 	 */
-	function showUserbar(disableAnimation, onOpen) {
+	function showUserbar() {
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		if (disableAnimation) {
-			userBarFixed.show(0, onOpen || function(){});
-		} else {
-			userBarFixed.slideDown();
-		}
-
-		if (userBarFixed.length) {
-			userbarStatic.css('visibility','hidden');
-		}
+		userBarFixed.addClass('fadeIn');
 	}
 
 	/**
 	 * Скрытие юзербара
 	 */
 	function hideUserbar() {
-		userBarFixed.slideUp();
+		userBarFixed.removeClass('fadeIn');
 		userbarStatic.css('visibility','visible');
 	}
 
@@ -3727,6 +4014,10 @@ $(function() {
 	 * Проверка текущего скролла
 	 */
 	function checkScroll(hideOnly) {
+		if (userBar.showOverlay && w.scrollTop() < userbarStatic.offset().top) {
+			closeBuyInfo();
+		}
+
 		if ( buyInfoShowing ) {
 			return;
 		}
@@ -3798,6 +4089,10 @@ $(function() {
 		}
 		// end of function
 
+		setTimeout(function() {
+			userBarFixed.removeClass('shadow-false');
+		}, 100);
+
 		// только BuyInfoBlock
 		if ( !upsaleWrap.hasClass('mhintDdOn') ) {
 			removeBuyInfoBlock();
@@ -3809,6 +4104,8 @@ $(function() {
 		wrapLogIn.removeClass(openClass);
 		wrap.removeClass(openClass);
 
+        $('.js-topbarfixLogin').removeClass('blocked');
+
 		removeBuyInfoBlock();
 		removeOverlay();
 		return false;
@@ -3817,8 +4114,14 @@ $(function() {
 	/**
 	 * Показ окна о совершенной покупке
 	 */
-	function showBuyInfo( e, data, upsale ) {
+	function showBuyInfo( useAnimation, data, upsale ) {
 		console.info('userbar::showBuyInfo');
+
+
+		var showFixed = false;
+		if ($(window).scrollTop() >= ENTER.userBar.userBarStatic.offset().top) {
+			showFixed = true;
+		}
 
 		$body.trigger('showBuyInfo');
 
@@ -3826,28 +4129,43 @@ $(function() {
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		var	buyInfo = $('.topbarfix_cartOn');
+		if (showFixed) {
+			userBarFixed.addClass('shadow-false');
 
-		if ( !userBar.showOverlay && overlay ) {
-			$body.append(overlay);
-			overlay.fadeIn(300);
-			userBar.showOverlay = true;
-			overlay.on('click', closeBuyInfo);
+
+
+			if ( !userBar.showOverlay && overlay ) {
+				$body.append(overlay);
+				overlay.fadeIn(300);
+				userBar.showOverlay = true;
+				overlay.on('click', closeBuyInfo);
+			}
+
+			if ( useAnimation ) {
+				$('.js-topbar-fixed .topbarfix_cartOn').slideDown(300);
+			}
+			else {
+				$('.js-topbar-fixed .topbarfix_cartOn').show();
+			}
+
+			showUserbar();
+			if (upsale) {
+				showUpsell(data, upsale);
+			}
+
+			buyInfoShowing = true;
+		} else {
+			// TODO:
+			/*
+			if ( useAnimation ) {
+				$('.js-topbar-static .topbarfix_cartOn').slideDown(300);
+			}
+			else {
+				$('.js-topbar-static .topbarfix_cartOn').show();
+			}
+			*/
 		}
 
-		if ( e ) {
-			buyInfo.slideDown(300);
-		}
-		else {
-			buyInfo.show();
-		}
-
-		showUserbar(true);
-		if (upsale) {
-			showUpsell(data, upsale);
-		}
-
-		buyInfoShowing = true;
 		$(document.body).trigger('showUserCart');
 	}
 
@@ -3914,6 +4232,7 @@ $(function() {
 			console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
 
 			upsaleWrap.find('.js-slider').remove();
+            $('.js-topbarfixLogin').addClass('blocked');
 
 			slider = $(response.content)[0];
 			upsaleWrap.append(slider);
@@ -3941,6 +4260,9 @@ $(function() {
 					console.log(e);
 				}
 			}
+
+			// google analytics
+			typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
 		}
 
 		console.log(upsale);
@@ -3973,6 +4295,27 @@ $(function() {
 		});
 	}
 
+	/**
+	 * Обработчик клика по товару из списка рекомендаций
+	 */
+	function upsaleProductClick() {
+		var
+			product = $(this).parents('.jsSliderItem').data('product');
+		//end of vars
+
+		if ( !product.article ) {
+			console.warn('Не получен article продукта');
+
+			return;
+		}
+
+		console.log('Трекинг при клике по товару из списка рекомендаций');
+		// google analytics
+		_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_clicked', product.article]);
+
+		//window.docCookies.setItem('used_cart_rec', 1, 1, 4*7*24*60*60, '/');
+	}
+
 	function showEmptyCompareNotice(e, emptyCompareNoticeName, $userbar) {
 		e.stopPropagation();
 		if (!emptyCompareNoticeElements[emptyCompareNoticeName]) {
@@ -3982,7 +4325,7 @@ $(function() {
 				element.removeClass(emptyCompareNoticeShowClass);
 			});
 
-			$('.js-topbarfixLogin, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
+			$('.js-topbarfixLogin-opener, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
 				element.removeClass(emptyCompareNoticeShowClass);
 			});
 
@@ -4014,6 +4357,7 @@ $(function() {
 
 	userBar.show = showUserbar;
 
+	$body.on('click', '.jsUpsaleProduct', upsaleProductClick);
 	$body.on('click', '.jsCartDelete', deleteProductHandler);
 
 	$('.js-noProductsForCompareLink', userBarFixed).click(function(e) { showEmptyCompareNotice(e, 'fixed', userBarFixed); });
@@ -4047,3 +4391,21 @@ $(function() {
 	}
 
 }(window.ENTER));
+
+$(function() {
+    $('body').on('updateWidgets', function(e, widgetAndCallbackObj){
+
+        $.each(widgetAndCallbackObj.widgets, function(selector, value) {
+			$(selector).each(function(i, oldNode) {
+				console.info('replace ' + selector +' with ' + value);
+				$(oldNode).replaceWith(value);
+			});
+        });
+
+        if (typeof widgetAndCallbackObj.callback == 'function') {
+            console.info('call callback ' + widgetAndCallbackObj.callback);
+            widgetAndCallbackObj.callback();
+        }
+
+    });
+});

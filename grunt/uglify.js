@@ -57,6 +57,11 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'compare.min.js'
         },
 
+        favoriteJS: {
+            src: pathDev + 'favorite/*.js',
+            dest: pathProd + 'favorite.min.js'
+        },
+
         commonJS: {
             src: pathDev + 'common/*.js',
             dest: pathProd + 'common.min.js'
@@ -150,11 +155,6 @@ module.exports = function (grunt, options) {
         serviceHaJS: {
             src: pathDev + 'service_ha/*.js',
             dest: pathProd + 'service_ha.min.js'
-        },
-
-        tealeaf: {
-            src: pathDev + 'tealeaf/*.js',
-            dest: pathProd + 'tealeaf.min.js'
         },
 
         supplier: {

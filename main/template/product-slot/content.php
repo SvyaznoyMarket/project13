@@ -18,6 +18,8 @@
  * @var $breadcrumbs            array   Хлебные крошки
  * @var $trustfactors           array   Трастфакторы
  * @var $reviewsDataSummary     array   Данные отзывов
+ * @var $videoHtml              string|null
+ * @var $properties3D           []
  */
 $helper = new \Helper\TemplateHelper();
 
@@ -53,7 +55,7 @@ $buySender2 = $request->get('sender2');
         <span class="product-card__head__article">Артикул: <?= $product->getArticle() ?></span>
     </div>
 
-    <?= $helper->render('product/__photo', ['product' => $product]) ?>
+    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
 </div>
 
 <div class="product-card__section-right">

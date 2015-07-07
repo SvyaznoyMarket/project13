@@ -24,17 +24,27 @@
 @import "common/helpers.less" all;
 
 @import "btn/btn.less" all;
+@import "goods-slider/goods-slider.less" all;
 
 /*---------СТИЛИ ШАБЛОННЫХ ФОРМ----------*/
 @import "formDefault/formDefault.less";
 /*---END----СТИЛИ ШАБЛОННЫХ ФОРМ---------*/
 
 /*------СТИЛИ ШАПКИ------*/
+@import "header/icons.less" all;
 @import "header/header.less" all;
-@import "header/header-new.less" all;
+@import "header/userbtn.less" all;
 @import "header/hdsearch.less" all;
 @import "header/navsite.less" all;
+@import "header/userbar.less" all;
+@import "header/user-account.less" all;
 /*---END---СТИЛИ ШАПКИ---*/
+
+
+/*------СТИЛИ ПАРАПЛАШКИ------*/
+@import "userbar/common.less" all;
+@import "userbar/userbar-crumbs.less" all;
+/*---END---СТИЛИ ПАРАПЛАШКИ------*/
 
 
 /*------СТИЛИ ПОДВАЛА------*/
@@ -58,10 +68,25 @@
 @import "upper/upper.less" all;
 /*---END----КНОПКА НАВЕРХ---------*/
 
-
 /*---------КНОПКА НАВЕРХ----------*/
-@import "customInput/customInput.less" all;
+@import "bread-crumbs/bread-crumbs.less" all;
 /*---END----КНОПКА НАВЕРХ---------*/
+
+
+/*---------Кастомные контролы форм----------*/
+@import "customInput/customInput.less" all;
+/*---END----Кастомные контролы форм---------*/
+
+
+/*---------Кастомные контролы----------*/
+@import "custom-controls/filter-btn-box.less" all;
+@import "custom-controls/discount-swich.less" all;
+@import "custom-controls/btn.less" all;
+@import "custom-controls/form-controls.less" all;
+@import "custom-controls/i-info.less" all;
+@import "custom-controls/drop-filters.less" all;
+@import "custom-controls/search-suggest.less" all;
+/*---END----Кастомные контролы---------*/
 
 
 /*---------ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)----------*/
@@ -137,6 +162,15 @@
 
 //регистрация/авторизация
 @import "popup/popup-auth.less" all;
+
+// попап добавления отзыва
+@import "popup/popup-review.less";
+
+// попап просмотра фото
+@import "popup/popup-photo.less";
+
+// попап обтягивающий
+@import "popup/popup-skinny.less";
 /*---END----Стили попапов и их содержимого---------*/
 
 
@@ -147,6 +181,8 @@
 @import "order/orderDelivery.less" all;
 //стили списка возможных вариантов самовывоза
 @import "order/map.less" all;
+@import "order/map-new.less" all;
+
 
 //стили блоков с информацией о доставке .orderCol_delivrIn
 @import "order/orderDeliveryInfo.less" all;
@@ -179,18 +215,19 @@
 
 
 /*---------Хиты продаж/Выгодное предложение/Самым разборчивым----------*/
-@import "personal-page/personalTable.less" all;
+@import "person-page/personTable.less" all;
 /*---END----Хиты продаж/Выгодное предложение/Самым разборчивым---------*/
 
 
 /*---------Личный кабинет пользователя----------*/
-@import "personal-page/personalControl.less" all;
+@import "person-page/personControl.less" all;
 
-@import "personal-page/personalTable.less" all;
+@import "person-page/personTable.less" all;
 
-@import "personal-page/personalInfo.less" all;
+@import "person-page/personInfo.less" all;
 
-@import "personal-page/personalData.less" all;
+@import "person-page/personData.less" all;
+@import "person-page/table-favorites.less" all;
 /*---END----Личный кабинет пользователя---------*/
 
 
@@ -203,9 +240,40 @@
 
 @import "product/star.less" all;
 @import "product/trustfactors.less" all;
-/*---------Карточка товара----------*/
-@import "product-card/common.less" all;
+
+
+/*---------Новая карточка товара----------*/
+@import "product/icons.less" all;
+
+@import "product/common.less" all;
+
+/*---------Изображения товара----------*/
+@import "product/product-card-photo.less" all;
+
+/*---------Трастфакторы с гарантией----------*/
+@import "product/product-card-assure.less" all;
+
+/*---------Рейтинг товара----------*/
+@import "product/product-card-rating.less" all;
+
+/*---------Рейтинг товара----------*/
+@import "product/product-card-tools.less" all;
+
+/*---------Табы описания товара----------*/
+@import "product/product-tabs.less";
+
+/*---------Табы описания товара----------*/
+@import "product/product-section.less";
+/*--------- Категории аксессуары ----------*/
+@import "product/product-accessoires.less";
+/*--------- Наборы ----------*/
+@import "product/set.less";
+
+/*---END----Новая карточка товара---------*/
+
+
 /*---------Карточка товара: кухни ----------*/
+@import "product-card/common.less" all;
 @import "product-card/kitchen.less" all;
 /*---------Карточка товара: подарочная карта ----------*/
 @import "product-card/giftery.less" all;
@@ -244,3 +312,8 @@
 
 //стили для фикса старых правил и классов, в последствии, при полном переходе на новую верстку удалить
 @import "common/old__style__fix.less" all;
+
+
+/*---------Карточка товара: слайдер превьюшек----------*/
+@import "helpers/table.less" all;
+@import "helpers/animation.less" all;

@@ -1,60 +1,75 @@
 .popup {
-
     &-w635 {
         width: 635px;
     }
+    &--normal {
+        padding: 10px;
 
-    &-simple {
-        border: 1px solid #777777;
-        .box-shadow(none);
-        .rounded(4px);
-        width: 628px;
-        padding: 0;
-        .transition(all 0.5s ease);
+        border: none;
+        background: @white;
 
-        .close {
-            background: url("@{base-url}/popup/img/closer.gif") no-repeat 50% 50% !important;
-            height: 41px;
-            width: 41px;
-            right: 10px;
+        .rounded(0);
+        .closer {
+            font-size: 24px;
+
+            top: 5px;
+            right: 5px;
         }
     }
-    &-noradius{
+    &-simple {
+        width: 628px;
+        padding: 0;
+
+        border: 1px solid #777;
+
+        .box-shadow(none);
+        .rounded(4px);
+        .transition(all .5s ease);
+        .close {
+            right: 10px;
+
+            width: 41px;
+            height: 41px;
+
+            background: url('@{base-url}/popup/img/closer.gif') no-repeat 50% 50% !important;
+        }
+    }
+    &-noradius {
         .rounded(0px);
     }
-    &-oneclick{
+    &-oneclick {
+        overflow: visible;
+
         width: 470px;
         padding: 33px 40px;
-        overflow: visible;
     }
-
     &_inn {
-        padding: 10px 20px 30px 10px;
-        max-height: 600px;
         overflow-y: scroll;
-    }
 
+        max-height: 600px;
+        padding: 10px 20px 30px 10px;
+    }
     &_hd {
-        border-bottom: 1px solid #c7c7c7;
         padding: 0 5px;
 
+        border-bottom: 1px solid #c7c7c7;
         &_tl {
             font-size: 22px;
-
-            &:last-child{
+            &:last-child {
                 margin-bottom: 15px;
             }
         }
-
         &_tx {
             font-size: 14px;
-            color: #4f4f4f;
+
             margin: 0 0 8px;
+
+            color: #4f4f4f;
         }
     }
 }
 
 .shopsPopup {
-    padding: 10px 10px 0;
     width: 640px;
+    padding: 10px 10px 0;
 }

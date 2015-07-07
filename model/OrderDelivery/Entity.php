@@ -557,6 +557,7 @@ namespace Model\OrderDelivery\Entity {
         }
     }
 
+    /* TODO-zra вынести в отдельную сущность */
     class Subway {
         /** @var string */
         public $name;
@@ -578,6 +579,7 @@ namespace Model\OrderDelivery\Entity {
 }
 
 namespace Model\OrderDelivery\Entity\Subway {
+    /* TODO-zra вынести в отдельную сущность */
     class Line {
         /** @var string */
         public $name;
@@ -635,15 +637,8 @@ namespace Model\OrderDelivery\Entity\Point {
     }
 
     class Pickpoint extends DefaultPoint {
-        /** @var string */
-        public $number;
-        /** @var string */
-        public $house;
-
         public function __construct(array $data = []) {
             parent::__construct($data);
-            if (isset($data['number'])) $this->number = (string)$data['number'];
-            if (isset($data['house'])) $this->house = (string)$data['house'];
             $this->listName = 'PickPoint';
         }
     }

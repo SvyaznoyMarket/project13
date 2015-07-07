@@ -45,7 +45,7 @@ return function(
             <div class="jsOrderValidationErrors" data-value="<?= $helper->json($order->validationErrors) ?>"></div>
         <? endif; ?>
     <!-- блок разбиения заказа -->
-    <div class="orderRow clearfix <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>" data-block_name="<?= $order->block_name ?>">
+    <div class="orderRow clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>" data-block_name="<?= $order->block_name ?>">
         <!-- информация о заказе -->
         <div class="orderCol">
             <div class="orderCol_h">
@@ -250,10 +250,14 @@ return function(
 
             <? endif ?>
 
-            <?= $helper->render('order-v3/common/_map', [
-                'id'            => 'id-order-changePlace-content-' . $order->id,
-                'order'         => $order,
-                'orderDelivery' => $orderDelivery
+            <?
+                $dataPoints = (new \View\PointsMap\MapView());
+                $dataPoints->preparePointsWithOrder($order, $orderDelivery);
+            ?>
+
+            <?= \App::templating()->render('order-v3/common/_map', [
+                'dataPoints'    => $dataPoints,
+                'page'          => 'order'
             ]) ?>
 
             <!--/ способ доставки -->
