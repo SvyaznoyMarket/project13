@@ -75,7 +75,8 @@ class ShowAction {
         $cartButtonSender = [];
         if ('all_labels' === $slice->getToken()) {
             $cartButtonSender = [
-                'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
+                'from'     => $request->getUri(),
+                'position' => 'Listing',
             ];
         }
 
