@@ -579,7 +579,6 @@
 						.wait()
 						.script('tour.min.js')
 						.wait()
-						.script(yandexMapUrlv2_1)
 						.script( getWithVersion('order-v3-1click.js') )
                         .wait()
                         .script( getWithVersion('ports.js') )
