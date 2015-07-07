@@ -24,7 +24,8 @@ class ShowAction {
         $cartButtonAction = null,
         $reviewtAction = null,
         $imageSourceType = 'product_160',
-        array $cartButtonSender = []
+        array $cartButtonSender = [],
+        \Model\Product\Category\Entity $category = null
     ) {
         if ($product->isInShopOnly()) {
             $inShopOnlyLabel = ['name' => 'Только в магазинах'];
@@ -88,7 +89,7 @@ class ShowAction {
         ];
 
         // Дополняем свойствами для каталога в виде листинга
-        if (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true)) {
+        if (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category && $category->isInSiteListingWithViewSwitcherAbTest()) {
             $productItem['properties']= array_map(function(\Model\Product\Property\Entity $entity) {
                 return [
                     'name' => $entity->getName(),

@@ -10,7 +10,8 @@ return function(
     $showState = true,
     $columnCount = 4,
     $class = '',
-    array $cartButtonSender = []
+    array $cartButtonSender = [],
+    \Model\Product\Category\Entity $category = null
 ) {
 
     $listingClass = '';
@@ -41,7 +42,7 @@ return function(
     $expandedTemplatePath = 'product/list/_expanded';
 
     $chosenCase = \App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey();
-    if ((($chosenCase === 'compactWithSwitcher' || $chosenCase === 'expandedWithSwitcher') && \App::request()->cookies->get('categoryView') === 'expanded') || $chosenCase === 'expandedWithoutSwitcher') {
+    if (((($chosenCase === 'compactWithSwitcher' || $chosenCase === 'expandedWithSwitcher') && \App::request()->cookies->get('categoryView') === 'expanded') || $chosenCase === 'expandedWithoutSwitcher') && $category && $category->isInSiteListingWithViewSwitcherAbTest()) {
         $defaultTemplatePath = $expandedTemplatePath;
         $defaultView = 'expanded';
         $listingClass = 'listing';
@@ -52,7 +53,7 @@ return function(
 ?>
 
     <ul class="bListing <? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> <?= $listingClass ?> <?= $class ?> js-listing"><!-- mPandora если необходимо застилить листинги под пандору -->
-        <?= $helper->renderWithMustache($defaultTemplatePath, (new \View\Product\ListAction())->execute($helper, $pager, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $defaultView, $cartButtonSender)) ?>
+        <?= $helper->renderWithMustache($defaultTemplatePath, (new \View\Product\ListAction())->execute($helper, $pager, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $defaultView, $cartButtonSender, $category)) ?>
     </ul>
 
     <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
