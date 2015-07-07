@@ -1,7 +1,8 @@
 /* Новая страница /delivery со всеми точками самовывоза */
 +function($){
 
-    var $mapContainer = $('#jsDeliveryMap'),
+    var menuItems = $('.menu-item'),
+        $mapContainer = $('#jsDeliveryMap'),
         partners = $.parseJSON($('#partnersJSON').html()),
         geoObjects = $.parseJSON($('#objectManagerDataJSON').html()),
         $partnersList = $('.jsPartnerListItem'),
@@ -16,6 +17,15 @@
         activePartners = [], map, objectManager, uidsToShow = [];
 
     if ($mapContainer.length == 0) return ;
+
+    // Выделение активного пункта в боковом меню
+    $.each(menuItems, function() {
+        var $this = $(this);
+        if ($this.find('a').attr('href') == location.pathname ) {
+            $this.addClass('active');
+            return false;
+        }
+    });
 
     console.log('Список партнеров', partners);
     console.log('Список для geoManager', geoObjects);
