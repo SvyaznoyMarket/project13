@@ -55,7 +55,7 @@ $helper = \App::helper();
             <? foreach ($points as $point) : ?>
 
             <li class="points-lst-i jsPointListItem" id="uid-<?= $point->uid ?>" data-geo="<?= $helper->json([$point->latitude, $point->longitude]) ?>" data-partner="<?= $point->partner ?>">
-                <div class="points-lst-i__partner jsPointListItemPartner"><?= $point->getPartnerName() ?></div>
+                <div class="points-lst-i__partner jsPointListItemPartner"><?= $point->getPartnerName($partnersBySlug) ?></div>
 
                 <div class="deliv-item__addr">
                     <? if ($point->subway) : ?>
