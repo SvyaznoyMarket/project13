@@ -6,7 +6,7 @@ namespace View\Content;
 use Model\Point\ScmsPoint;
 
 class DeliveryMapPage extends \View\DefaultLayout {
-//    protected $layout = 'layout-oneColumn';
+    protected $layout = 'layout-twoColumn';
 
     protected function prepare() {
         /** @var $points ScmsPoint[] */
