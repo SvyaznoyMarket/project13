@@ -858,8 +858,10 @@
 		$viewLink.addClass(activeClass);
 
 		if ($viewLink.hasClass('js-category-viewLink-expanded')) {
+			$listingWrap.addClass('listing');
 			docCookies.setItem('categoryView', 'expanded', 4*7*24*60*60, '/');
 		} else {
+			$listingWrap.removeClass('listing');
 			docCookies.removeItem('categoryView', '/');
 		}
 
