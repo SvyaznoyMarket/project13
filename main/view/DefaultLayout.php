@@ -48,7 +48,7 @@ class DefaultLayout extends Layout {
         }
 
 
-        $relLink = $request->getSchemeAndHttpHost() . $path;
+        $relLink = $request->getScheme() . '://' . \App::config()->mainHost . $path;
 
         return '<link rel="canonical" href="' . $relLink . '" />';
     }
