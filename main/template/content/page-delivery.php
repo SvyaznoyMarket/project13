@@ -184,6 +184,15 @@ $helper = \App::helper();
                 <td>мебель;<br>ювелирные украшения;<br> легко бьющиеся товары (стекло, керамика и&nbsp;т.п.)</td>
                 <td><br></td>
             </tr>
+            <tr>
+                <td style="text-align: center;  border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"><img class="table-img" src="/styles/delivery/img/euroset-s.png">
+                    <span class="table-lbl">Магазины Евросеть</span></td>
+                <td>7 дней</td>
+                <td>банковская карта (возможна предоплата при оформлении заказа на сайте), наличные</td>
+                <td>макс. 58х58х68&nbsp;см;<br>4 кг; 40 л</td>
+                <td>мебель;<br>ювелирные украшения;<br> легко бьющиеся товары (стекло, керамика и&nbsp;т.п.)</td>
+                <td><br></td>
+            </tr>
             </tbody>
         </table>
     </div>
