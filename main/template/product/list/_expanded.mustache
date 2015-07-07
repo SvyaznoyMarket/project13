@@ -40,11 +40,16 @@
                         </li>
                     {{/properties}}
                 </ul>
+                <div class="listing-variations">
+                {{#hasVariations}}
+                    <span class="listing-variations__lbl">Варианты</span>
+                {{/hasVariations}}
+                </div>
             </div>
             {{! END: Блок с названием и характеристиками }}
             {{! Блок с ценой, рейтингом }}
             <div class="listing__info">
-                {{#review}}{{> product/_review-compact }}{{/review}}
+                <div class="listing__reviews">{{#review}}{{> product/_review-compact }}{{/review}}</div>
 
                 <div class="listing-price-block">
                     {{#oldPrice}}
