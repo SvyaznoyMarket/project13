@@ -276,12 +276,25 @@
 			upsaleWrap.find('.js-slider').remove();
             $('.js-topbarfixLogin').addClass('blocked');
 
-			slider = $(response.content)[0];
-			upsaleWrap.append(slider);
-			upsaleWrap.addClass('mhintDdOn');
-			$(slider).goodsSlider();
+			slider = $(response.content);
 
-			ko.applyBindings(ENTER.UserModel, slider);
+            upsaleWrap.append(slider);
+			upsaleWrap.addClass('mhintDdOn');
+
+            if (slider.hasClass('js-slider-2')) {
+                slider.eq(0).goodsSlider({
+                    leftArrowSelector: '.goods-slider__btn--prev',
+                    rightArrowSelector: '.goods-slider__btn--next',
+                    sliderWrapperSelector: '.goods-slider__inn',
+                    sliderSelector: '.goods-slider-list',
+                    itemSelector: '.goods-slider-list__i'
+
+                });
+            } else {
+                slider.eq(0).goodsSlider();
+            }
+
+			ko.applyBindings(ENTER.UserModel, slider[0]);
 
 			if ( !data.product ) return;
 

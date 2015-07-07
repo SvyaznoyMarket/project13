@@ -28,7 +28,6 @@ class UpsaleAction extends BasicRecommendedAction {
             $relatedId = null;
             /** @var \Model\Product\Entity[] $products */
             $products = [];
-            $medias = [];
 
             // получаем ids связанных товаров
             // SITE-2818 Список связанных товаров дозаполняем товарами, полученными от RR по методу CrossSellItemToItems
@@ -61,21 +60,24 @@ class UpsaleAction extends BasicRecommendedAction {
                     ];
                 }
 
-                foreach (array_chunk($relatedId, \App::config()->coreV2['chunk_size']) as $chunk) {
-                    \RepositoryManager::product()->prepareCollectionById($chunk, \App::user()->getRegion(), function($data) use(&$collection) {
-                        foreach ($data as $value) {
-                            if (!isset($value['id']) || !isset($value['link'])) continue;
-                            $entity = new \Model\Product\Entity($value);
-                            $collection[$entity->getId()] = $entity;
-                        }
-                    });
+                \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionById($relatedId, \App::user()->getRegion(), function($data) use (&$collection){
+                    if (!is_array($data)) return;
 
-                    \RepositoryManager::product()->prepareProductsMediasByIds($chunk, $medias);
-                }
+                    foreach ($data as $item) {
+                        if (empty($item['id'])) continue;
+                        $iProduct = new \Model\Product\Entity($item);
+                        // если товар недоступен для покупки - пропустить
+                        if (!$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly() || $iProduct->isInShopOnly()) continue;
+                        $collection[$iProduct->getId()] = $iProduct;
+                    }
+                });
 
-                \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+                \App::coreClientV2()->execute();
 
-                \RepositoryManager::product()->setMediasForProducts($collection, $medias);
+                \RepositoryManager::product()->enrichProductsFromScms($collection, 'media label');
+
+                \App::coreClientV2()->execute();
+
             }
 
             foreach ($relatedId as $id) {
@@ -102,7 +104,7 @@ class UpsaleAction extends BasicRecommendedAction {
 
             $responseData = [
                 'success' => true,
-                'content' => \App::closureTemplating()->render('product/__slider', [
+                'content' => \App::closureTemplating()->render(\App::abTest()->isNewProductPage() ? 'product-page/blocks/slider' : 'product/__slider', [
                     'title'    => $this->actionTitle,
                     'products' => $products,
                     'count'    => count($products),
