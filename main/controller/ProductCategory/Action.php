@@ -692,7 +692,7 @@ class Action {
             });
         }
 
-        $repository->enrichProductsFromScms($products, 'media label category' . (in_array(\App::abTest()->getTest('siteListing')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) ? ' property' : ''));
+        $repository->enrichProductsFromScms($products, 'media label category' . (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) ? ' property' : ''));
 
         \App::coreClientV2()->execute();
 
