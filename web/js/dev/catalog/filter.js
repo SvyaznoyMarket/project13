@@ -862,7 +862,7 @@
 			docCookies.setItem('categoryView', 'expanded', 4*7*24*60*60, '/');
 		} else {
 			$listingWrap.removeClass('listing');
-			docCookies.removeItem('categoryView', '/');
+			docCookies.setItem('categoryView', 'compact', 4*7*24*60*60, '/');
 		}
 
 		reloadFilter();
