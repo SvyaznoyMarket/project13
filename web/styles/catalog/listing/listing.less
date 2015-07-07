@@ -171,7 +171,7 @@
 .sorting-top{
     .lstn-type{
         &-btn{
-            padding: 3px 6px 2px;
+            padding: 3px 8px 3px 7px;
             font-size: 12px;
             color: #363636;
             .inline-block();
@@ -200,9 +200,10 @@
             font-family: "lst-type";
             font-style: normal;
             font-weight: normal;
-            isplay: inline-block;
+            .inline-block();
             text-decoration: inherit;
             width: 1em;
+
             text-align: center;
             font-variant: normal;
             text-transform: none;
@@ -210,6 +211,7 @@
             margin-right: 5px;
             font-size: 16px;
             &.bar{
+                margin-top: 1px;
                 &:before { content: '\e801'; }
             }
             &.list{
