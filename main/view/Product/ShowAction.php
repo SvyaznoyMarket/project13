@@ -88,7 +88,7 @@ class ShowAction {
         ];
 
         // Дополняем свойствами для каталога в виде листинга
-        if (in_array(\App::abTest()->getTest('siteListing')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true)) {
+        if (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true)) {
             $productItem['properties']= array_map(function(\Model\Product\Property\Entity $entity) {
                 return [
                     'name' => $entity->getName(),

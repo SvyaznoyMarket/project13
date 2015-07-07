@@ -40,7 +40,7 @@ return function(
 
     $expandedTemplatePath = 'product/list/_expanded';
 
-    $chosenCase = \App::abTest()->getTest('siteListing')->getChosenCase()->getKey();
+    $chosenCase = \App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey();
     if ((($chosenCase === 'compactWithSwitcher' || $chosenCase === 'expandedWithSwitcher') && \App::request()->cookies->get('categoryView') === 'expanded') || $chosenCase === 'expandedWithoutSwitcher') {
         $defaultTemplatePath = $expandedTemplatePath;
         $defaultView = 'expanded';
