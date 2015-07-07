@@ -280,6 +280,7 @@
         z-index: 10;
 
         background: @white;
+        height: 40px;
 
         .inline-block-middle();
         .inline-block-middle();
@@ -298,6 +299,13 @@
             .rubl {
                 margin-left: -2px;
             }
+            
+        }
+        &:before{
+            content: '';
+            .inline-block-middle();
+            width: 0;
+            height: 100%;
         }
         .btnBuy {
             margin-top: 0;
@@ -332,6 +340,20 @@
                 font-size: 12px;
 
                 width: 86px;
+                padding: 4px 0;
+            }
+        }
+    }
+    &_buy {
+        width: 205px;
+
+        .btnBuy{
+            width: 86px;
+            float: right;
+            margin: 7px 5px 0;
+            .btnBuy__eLink{
+                width: 86px;
+                font-size: 12px;
                 padding: 4px 0;
             }
         }

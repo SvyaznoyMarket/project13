@@ -8,7 +8,10 @@ $f = function(
     $trustfactors, $videoHtml, $properties3D, $reviewsData, $creditData, $isKit, $buySender, $buySender2, $request, $favoriteProductsByUi
 ){
 
-$coupon = $product->coupons ? $product->getBestCoupon() : null;
+    $coupon = $product->coupons ? $product->getBestCoupon() : null;
+
+    // отдельная картинка для шильдика
+    $labelImage = $product->getLabel() ? $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) : null;
 
 $modelName = $product->getModel() && $product->getModel()->getProperty() ? $product->getModel()->getProperty()[0]->getName() : null;
     $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceChangePercentTrigger())
@@ -78,20 +81,20 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
 
     <? if ($product->getLabel() && $product->getLabel()->expires && !$product->getLabel()->isExpired()) : ?>
         <!-- Шильдик с правой стороны -->
-        <div class="product-card-action i-info">
+        <div class="product-card-action i-info <?= !$labelImage ? 'product-card-action-no-image' : ''?>">
 
             <span class="product-card-action__tx i-info__tx js-countdown"
                   data-expires="<?= $product->getLabel()->expires->format('U') ?>">Акция действует<br>ещё <span class="js-countdown-out"><?= $product->getLabel()->getDateDiffString() ?></span>
             </span>
 
-            <? if ($product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE)) : ?>
+            <? if ($labelImage) : ?>
                 <i class="product-card-action__icon i-product i-product--info-warn i-info__icon jsProductCardNewLabelInfo"></i>
 
                 <!-- попап - подробности акции, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
                 <div class="info-popup info-popup--action jsProductCardNewLabelPopup">
                     <i class="closer jsProductCardNewLabelInfo">×</i>
                     <div class="info-popup__inn">
-                        <img src="<?= $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) ?>" alt="">
+                        <img src="<?= $labelImage ?>" alt="">
                     </div>
                 </div>
                 <!--/ попап - подробности акции -->
