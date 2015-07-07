@@ -142,7 +142,7 @@ $helper = \App::helper();
                     <span class="table-lbl">Магазины и&nbsp;пункты выдачи Enter</span>
                 </td>
                 <td style="vertical-align: top;">3 дня</td>
-                <td>банковская карта,<br>наличные,<br>Бонусы «Спасибо&nbsp;от&nbsp;Сбербанка»,<br>подарочные сертификаты Enter</td>
+                <td>наличные,<br>Бонусы «Спасибо&nbsp;от&nbsp;Сбербанка»,<br>подарочные сертификаты Enter,<br>банковская карта</td>
                 <td>макс. 2 м по&nbsp;любой из&nbsp;сторон упаковки;<br>25 кг; 100 л</td>
                 <td>мебель;<br>другие крупногабаритные товары только с&nbsp;доставкой на&nbsp;дом</td>
                 <td style="
@@ -152,7 +152,7 @@ $helper = \App::helper();
                 <td style="text-align: center; border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"><img class="table-img" src="/styles/delivery/img/PickPoint2-s.png">
                     <span class="table-lbl">Постаматы PickPoint</span></td>
                 <td>3 дня (+3&nbsp;дня по вашему запросу)</td>
-                <td>банковская карта,<br>наличные<br>(при оплате наличными сдача не&nbsp;выдается, есть&nbsp;возможность зачисления, например, на&nbsp;счет мобильного телефона)</td>
+                <td>наличные<br>(при оплате наличными сдача не&nbsp;выдается, есть&nbsp;возможность зачисления, например, на&nbsp;счет мобильного телефона),<br>банковская карта</td>
                 <td>макс. 58х58х68&nbsp;см по&nbsp;любой из&nbsp;сторон измерения;<br>15 кг</td>
                 <td> мебель;<br>легко бьющиеся товары (стекло, керамика и&nbsp;т.п.)</td>
                 <td><br></td>
@@ -181,6 +181,15 @@ $helper = \App::helper();
                 <td>5 дней</td>
                 <td>наличные</td>
                 <td>макс. 58х58х68&nbsp;см;<br>30 кг</td>
+                <td>мебель;<br>ювелирные украшения;<br> легко бьющиеся товары (стекло, керамика и&nbsp;т.п.)</td>
+                <td><br></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;  border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"><img class="table-img" src="/styles/delivery/img/euroset-s.png">
+                    <span class="table-lbl">Магазины Евросеть</span></td>
+                <td>7 дней</td>
+                <td>наличные,<br>банковская карта (возможна предоплата при оформлении заказа на сайте)</td>
+                <td>макс. 58х58х68&nbsp;см;<br>4 кг; 40 л</td>
                 <td>мебель;<br>ювелирные украшения;<br> легко бьющиеся товары (стекло, керамика и&nbsp;т.п.)</td>
                 <td><br></td>
             </tr>
