@@ -94,10 +94,6 @@
 					};
 				// end of functions
 
-				if ( !productData || typeof _gaq === 'undefined' ) {
-					return;
-				}
-
 				tchiboGA();
 
 				ENTER.utils.sendAdd2BasketGaEvent(productData.article, productData.price, productData.isOnlyFromPartner, productData.isSlot, data.sender ? data.sender.name : '');

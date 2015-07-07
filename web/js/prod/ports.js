@@ -351,11 +351,16 @@ ANALYTICS.gaJS = function(data) {
             ga('secondary.send', 'pageview', data.vars); // трекаем весь массив с полями {dimensionN: <*М*>}
         }
 
+        // analytics only for main page
+        if ( document.location.pathname === '/' ) {
+            $body.trigger('trackGoogleEvent', [{category: 'citySelector', action: 'viewed', nonInteraction: true}]);
+        }
+
         /** Событие добавления в корзину */
         $body.on('addtocart', function ga_addtocart(event, data) {
             var
                 productData = data.product;
-            // TODO-zra productData = data.products
+            console.log('productData', productData);
             if (productData) {
                 $body.trigger('trackGoogleEvent', ['<button>', productData.name, productData.article, productData.price])
             }
@@ -526,10 +531,6 @@ ANALYTICS.LiveTexJS = function () {
                 onLiveTexReady: function () {
                     var widgetHidden = $('.lt-invite').is(':hidden');
                     window.LiveTex.setName(LTData.username);
-                    LiveTex.on('chat_open', function(){
-                        $body.trigger('trackGoogleEvent', ['webchat', 'chat_started']);
-                    });
-                    $body.trigger('trackGoogleEvent', ['webchat', 'chat_visibility', widgetHidden ? 'hidden' : 'visible']);
                 },
 
                 invitationShowing: true,

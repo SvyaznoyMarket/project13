@@ -69,7 +69,7 @@
                             e[elem] = e[elem].slice(0, 500);
                             break;
                         case 'value':
-                            e[elem] = parseInt(e[elem].slice, 10);
+                            e[elem] = parseInt(e[elem] + '', 10);
                             break;
                         case 'nonInteraction':
                             e[elem] = Boolean(e[elem]);
