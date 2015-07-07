@@ -46,7 +46,7 @@ return function (
 
     if ($sender2) $urlParams['sender2'] = $sender2;
 
-    if (!$product->getKit()) {
+    if (!$product->getKit() || $product->getIsKitLocked()) {
         $data['class'] = \View\Id::cartButtonForProduct($product->getId() . '-oneClick') . ' jsOneClickButton-new ' . $class;
     }
 
