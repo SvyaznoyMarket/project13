@@ -273,7 +273,7 @@
 
 			console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
 
-			upsaleWrap.find('.js-slider').remove();
+			upsaleWrap.find('.js-slider, .js-slider-2').remove();
             $('.js-topbarfixLogin').addClass('blocked');
 
 			slider = $(response.content);
