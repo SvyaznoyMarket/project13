@@ -108,6 +108,7 @@ class UpsaleAction extends BasicRecommendedAction {
                     'title'    => $this->actionTitle,
                     'products' => $products,
                     'count'    => count($products),
+                    'class'    => 'goods-slider--top',
                     'sender'   => [
                         'name'     => 'retailrocket',
                         'position' => 'AddBasket',
