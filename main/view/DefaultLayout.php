@@ -131,6 +131,8 @@ class DefaultLayout extends Layout {
 
             \App::config()->debug ? '/js/vendor/modernizr.custom.js' : '/js/prod/modernizr.custom.min.js',
 
+            \App::config()->debug ? '/js/dev/jquery-plugins/slick.js' : '/js/prod/slick.js',
+
         ] as $javascript) {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
         }

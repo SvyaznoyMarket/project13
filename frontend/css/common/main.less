@@ -13,7 +13,6 @@
 html {
     font-family: 'GloberRegular', Tahoma, Geneva, Helvetica, sans-serif;
     font-size: 100%;
-    line-height: 1.4;
 
     color: @text-color;
 }
@@ -37,12 +36,40 @@ a {
     }
 }
 
+*:before ,
+*:after {
+    .box-sizing();
+}
+
+* {
+    outline: none;
+}
+
 .underline {
-    border-bottom: 1px solid @link-border;
+    text-decoration: underline;
+
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 .dotted {
     border-bottom: 1px dotted @link-border;
+}
+
+.line-through {
+    position: relative;
+
+    &:before {
+        content: '';
+        background: @grey-type;
+        height: 1px;
+        width: 100%;
+        left: 0;
+        top: 50%;
+        margin-top: -2px;
+        position: absolute;
+    }
 }
 
 ul ,
