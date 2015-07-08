@@ -12,6 +12,7 @@
 
         <?= $page->slotStylesheet() ?>
         <?= $page->slotHeadJavascript() ?>
+        <link href='http://fonts.googleapis.com/css?family=Roboto&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
     </head>
 
     <body>
