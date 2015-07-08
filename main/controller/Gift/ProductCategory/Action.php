@@ -523,7 +523,7 @@ class Action {
         }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $repository->enrichProductsFromScms($products, 'media label category');
+        $repository->enrichProductsFromScms($products, 'media label brand category');
 
         if ($products) {
             $productUIs = [];

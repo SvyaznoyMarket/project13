@@ -79,7 +79,7 @@ class OrderEntity {
     private $delivery_period;
     /** Магазин для самовывоза
      * Обязательный в случае delivery_type_id=3 или 4
-     * @var int|null
+     * @var string|null
      */
     private $shop_id;
     /** Точка самовывоза
@@ -244,7 +244,7 @@ class OrderEntity {
         }
 
         if (isset($arr['order']['delivery']['point']['id'])) {
-            $this->shop_id = (int)$arr['order']['delivery']['point']['id'];
+            $this->shop_id = $arr['order']['delivery']['point']['id'];
         } else {
             if ($this->delivery_type_id === self::DELIVERY_TYPE_ID_SELF) throw new \Exception('Не указан магазин для самовывоза');
         }

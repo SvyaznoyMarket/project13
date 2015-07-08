@@ -276,12 +276,12 @@ class Repository {
 
     /** Обогащает продукты данными из SCMS
      * @param \Model\Product\Entity[] $products
-     * @param string $properties Необходимые свойства товара через пробел: media property label category
+     * @param string $properties Необходимые свойства товара через пробел: media property label brand category
      * @param callable $failCallback
      */
     public function enrichProductsFromScms($products, $properties, $failCallback = null) {
         // Формируем массив необходимых свойств
-        $properties = array_fill_keys(array_intersect(explode(' ', (string)$properties), explode(' ', 'media property label category')), 1);
+        $properties = array_fill_keys(array_intersect(explode(' ', (string)$properties), explode(' ', 'media property label brand category')), 1);
 
         if ($products && $properties) {
             \App::scmsClient()->addQuery(
@@ -323,6 +323,16 @@ class Repository {
                                     'id'        => @$productData['label']['core_id'],
                                     'name'      => @$productData['label']['name'],
                                     'medias'    => @$productData['label']['medias'],
+                                ]));
+                            }
+                            
+                            if (!empty($productData['brand']) && @$productData['brand']['slug'] === 'tchibo-3569') {
+                                $product->setBrand(new \Model\Brand\Entity([
+                                    'ui'        => @$productData['brand']['uid'],
+                                    'id'        => @$productData['brand']['core_id'],
+                                    'token'     => @$productData['brand']['slug'],
+                                    'name'      => @$productData['brand']['name'],
+                                    'media_image' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png', // TODO после решения FCMS-740 заменить на URL из scms и удалить условие "@$productData['brand']['slug'] === 'tchibo-3569'"
                                 ]));
                             }
 

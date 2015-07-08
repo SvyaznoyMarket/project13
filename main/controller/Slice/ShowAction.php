@@ -286,7 +286,7 @@ class ShowAction {
             });
         }
 
-        $productRepository->enrichProductsFromScms($products, 'media label category');
+        $productRepository->enrichProductsFromScms($products, 'media label brand category');
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 

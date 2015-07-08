@@ -146,61 +146,62 @@
 
                     <span class="pick-point-nomatch" data-bind="visible: points().length == 0">Поиск не дал результатов</span>
 
-                    <table class="pick-point-list">
-                        <tbody data-bind="foreach: points">
+                    <div class="pick-point-list-wrap">
+                        <table class="pick-point-list">
+                            <tbody data-bind="foreach: points">
 
-                            <tr class="pick-point-item clearfix jsChangePoint"
-                                data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }
-                                <? if ($page == 'product') : ?>, click: $root.setMapCenter <? endif ?>">
+                                <tr class="pick-point-item clearfix jsChangePoint"
+                                    data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }
+                                    <? if ($page == 'product') : ?>, click: $root.setMapCenter <? endif ?>">
 
-                                <td class="pick-point-item__logo">
-                                    <img src="" class="pick-point-item__img" data-bind="attr: { src: icon }" />
-                                    <span class="pick-point-item__name" data-bind="text: listName"></span>
-                                </td>
+                                    <td class="pick-point-item__logo">
+                                        <img src="" class="pick-point-item__img" data-bind="attr: { src: icon }" />
+                                        <span class="pick-point-item__name" data-bind="text: listName"></span>
+                                    </td>
 
-                                <td class="pick-point-item__addr">
-                                    <!-- ko if: $.isArray(subway) -->
-                                    <div class="pick-point-item__metro" data-bind="style: { background: subway[0].line.color }">
-                                       <div class="pick-point-item__metro-inn" data-bind="text: subway[0].name"></div>
+                                    <td class="pick-point-item__addr">
+                                        <!-- ko if: $.isArray(subway) -->
+                                        <div class="pick-point-item__metro" data-bind="style: { background: subway[0].line.color }">
+                                           <div class="pick-point-item__metro-inn" data-bind="text: subway[0].name"></div>
+                                        </div>
+                                        <!-- /ko -->
+                                        <div class="pick-point-item__addr-name" data-bind="text: address"></div>
+                                        <div class="pick-point-item__time" data-bind="text: regtime"></div>
+                                    </td>
+
+
+                                    <td class="pick-point-item__info <?= $page == 'product' ? 'no-hide-info' : 'no-hide-info' ?>">
+
+                                    <!-- ko if: !productInShowroom -->
+                                        <div class="pick-point-item__date" data-bind="text: humanNearestDay"></div>
+                                        <div class="pick-point-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div></div>
+                                    <!-- /ko -->
+
+                                    <!-- ko if: showBuyButton -->
+                                    <div class="pick-point-item__buy">
+                                        <button
+                                            href=""
+                                            class="btn-type btn-type--buy <? if ($page == 'page') : ?>jsOneClickButton-new<? endif ?>"
+                                            <? if (isset($productUi)) : ?>data-product-ui="<?= $productUi ?>"<? endif ?>
+                                            data-bind="attr: { 'data-shop': id }">Купить</button>
                                     </div>
                                     <!-- /ko -->
-                                    <div class="pick-point-item__addr-name" data-bind="text: address"></div>
-                                    <div class="pick-point-item__time" data-bind="text: regtime"></div>
-                                </td>
 
+                                    <!-- ko if: productInShowroom -->
+                                        <span class="pick-point-item__ondisplay-lbl">На витрине</span>
+                                        <i class="i-product i-product--info-normal i-info__icon pick-point-item__ondisplay-icon" onclick="$(this).next().toggleClass('info-popup--open')"></i>
+                                        <?//попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open?>
+                                        <div class="pick-point-item__ondisplay-popup info-popup info-popup--ondisplay ">
+                                            <p>Чтобы купить товар с витрины,<br/>нужно приехать в магазин и обратиться к продавцу.</p>
+                                        </div>
+                                    <!-- /ko -->
 
-                                <td class="pick-point-item__info <?= $page == 'product' ? 'no-hide-info' : 'no-hide-info' ?>" valign="middle">
+                                    </td>
 
-                                <!-- ko if: !productInShowroom -->
-                                    <div class="pick-point-item__date" data-bind="text: humanNearestDay"></div>
-                                    <div class="pick-point-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div></div>
-                                <!-- /ko -->
-
-                                <!-- ko if: showBuyButton -->
-                                <div class="pick-point-item__buy">
-                                    <button
-                                        href=""
-                                        class="btn-type btn-type--buy <? if ($page == 'page') : ?>jsOneClickButton-new<? endif ?>"
-                                        <? if (isset($productUi)) : ?>data-product-ui="<?= $productUi ?>"<? endif ?>
-                                        data-bind="attr: { 'data-shop': id }">Купить</button>
-                                </div>
-                                <!-- /ko -->
-
-                                <!-- ko if: productInShowroom -->
-                                    <span class="pick-point-item__ondisplay-lbl">На витрине</span>
-                                    <i class="i-product i-product--info-normal i-info__icon pick-point-item__ondisplay-icon" onclick="$(this).next().toggleClass('info-popup--open')"></i>
-                                    <?//попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open?>
-                                    <div class="pick-point-item__ondisplay-popup info-popup info-popup--ondisplay ">
-                                        <p>Чтобы купить товар с витрины,<br/>нужно приехать в магазин и обратиться к продавцу.</p>
-                                    </div>
-                                <!-- /ko -->
-
-                                </td>
-
-                            </tr>
-                        </tbody>
-
-                    </table>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 

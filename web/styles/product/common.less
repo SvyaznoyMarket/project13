@@ -468,3 +468,47 @@
         }
     }
 }
+.showroom-only{
+    background-color: #f2f9ec;
+    border: 1px solid #80c342;
+    border-left-width: 3px;
+    font-size: 20px;
+    padding: 10px 10px 10px 15px;
+    width: 191px;
+    margin-bottom: 10px;
+    position: relative;
+    text-align: left;
+
+    .i-product--info-normal{
+        background: url('@{base-url}/product/img/i/i-info-green.png') no-repeat;
+        float: right;
+        margin-top: 6px;
+    }
+    .tooltip-content{
+        position: absolute;
+        width: 345px;
+        right: 0px;
+        top: 40px;
+        z-index: 5;
+
+        padding: 10px;
+        font-size: 14px;
+
+        cursor: default;
+
+        border: 1px solid #c7c7c7;
+        background: @white;
+        color: #616161;
+
+        .transition(all .2s ease-out);
+        .box-shadow(0 0 15px rgba(0, 0, 0, .4));
+
+        &:after {
+            right: 8px;
+
+            .pseudo-class();
+            .pseudo-corner-top(8px, #fff, -8px);
+        }
+
+    }
+}

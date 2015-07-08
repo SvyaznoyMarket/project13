@@ -213,7 +213,7 @@ class Action extends \Controller\ProductCategory\Action {
             });
         }
 
-        $repository->enrichProductsFromScms($products, 'media label category');
+        $repository->enrichProductsFromScms($products, 'media label brand category');
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
