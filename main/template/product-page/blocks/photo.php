@@ -123,8 +123,8 @@ $f = function(
                 'sender'   => ($request->get('sender') ? (array)$request->get('sender') : []) + ['name' => null, 'method' => null, 'position' => null],
                 'location' => 'userbar',
                 'sender2'  => '',
+                'inShowroomAsButton' => false
             ]) // Кнопка купить ?>
-
         </div>
         <!--/ попап просмотра большого изображения -->
     </div>

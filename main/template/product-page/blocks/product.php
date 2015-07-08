@@ -137,25 +137,20 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         <img class="product-card-discount-switch__i product-card-discount-switch__img" src="/styles/product/img/i-fishka.png">
     </div>
     <!--/ применить скидку -->
-
-
-    <? if (!$product->getIsBuyable() && $product->isInShopShowroomOnly()): ?>
-        На витрине
-        <i class="i-product i-product--info-normal i-info__icon"><span style="display: none;">Чтобы купить товар с витрины, <br />нужно приехать в магазин и обратиться к продавцу.</span></i>
-    <? else: ?>
-        <div class="buy-online">
-            <?= $helper->render('cart/__button-product', [
-                'product'  => $product,
-                'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
-                'sender'   => $buySender + [
-                        'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
-                    ],
-                'sender2' => $buySender2,
-                'noUpdate'  => true,
-                'location' => 'product-card',
-            ]) // Кнопка купить ?>
-        </div>
-    <? endif ?>
+    
+    <div class="buy-online">
+        <?= $helper->render('cart/__button-product', [
+            'product'  => $product,
+            'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
+            'sender'   => $buySender + [
+                    'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
+                ],
+            'sender2' => $buySender2,
+            'noUpdate'  => true,
+            'location' => 'product-card',
+            'inShowroomAsButton' => false,
+        ]) // Кнопка купить ?>
+    </div>
 
     <? if ($product->getPrice() >= \App::config()->product['minCreditPrice']) : ?>
         <!-- купить в кредит -->
