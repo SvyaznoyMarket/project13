@@ -17,7 +17,7 @@ switch (\App::user()->getRegionId()) {
 <a class="header__bann" href="<?= \App::helper()->url('delivery') ?>">
     <? if (\App::abTest()->isOrderMinSumRestriction()) : ?>
         <div class="header__bann-tl">БЕСПЛАТНЫЙ САМОВЫВОЗ!</div>
-        <div class="header__bann-c">* Минимальная сумма заказа — 1990 <span class="p">p</span></div>
+        <div class="header__bann-c">* Минимальная сумма заказа — <?= \App::config()->minOrderSum ?> <span class="p">p</span></div>
         <div class="header__bann-msg"><?= $text ?></div>
     <? else :?>
         <div class="header__bann-tl">САМОВЫВОЗ В ТВОЕМ ГОРОДЕ!</div>
