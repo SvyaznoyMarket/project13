@@ -79,7 +79,7 @@ class OrderEntity {
     private $delivery_period;
     /** Магазин для самовывоза
      * Обязательный в случае delivery_type_id=3 или 4
-     * @var int|null
+     * @var string|null
      */
     private $shop_id;
     /** Точка самовывоза
