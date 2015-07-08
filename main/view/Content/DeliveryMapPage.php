@@ -7,6 +7,8 @@ use Model\Point\ScmsPoint;
 
 class DeliveryMapPage extends \View\DefaultLayout {
 
+    protected $layout  = 'layout-twoColumn';
+
     protected function prepare() {
         /** @var $points ScmsPoint[] */
         $points = $this->params['points'];
