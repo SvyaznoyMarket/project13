@@ -12,7 +12,8 @@ class ProductButtonAction {
      * @param array $sender Данные поставщика, например: {name: retailrocket, position: ProductSimilar, action: Переход в карточку товара}
      * @param bool $noUpdate
      * @param string|null $location
-     * @param \Model\Product\Entity[] $kitProducts
+     * @param string $sender2
+     * @param bool $useNewStyles
      * @return array
      */
     public function execute(

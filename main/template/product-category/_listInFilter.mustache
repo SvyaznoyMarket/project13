@@ -5,14 +5,14 @@
     <!-- Место для баннера, если баннер то addClass mBannerItem -->
 
     <li class="bCatalogList__eItem{{#active}} mActive{{/active}}"{{#bCatalogList__eItemStyle}} style="{{bCatalogList__eItemStyle}}"{{/bCatalogList__eItemStyle}}>
-        <a class="bCatalogList__eLink" {{#css.link}} style="{{css.link}}" {{/css.link}} href="{{url}}">
+        <a class="js-productCategory-link bCatalogList__eLink" {{#css.link}} style="{{css.link}}" {{/css.link}} href="{{url}}">
             {{#image}}
             <span class="bCategoriesImg">
                 <img class="bCategoriesImg__eImg" src="{{image}}" alt="{{name}}" />
             </span>
             {{/image}}
 
-            <span class="bCategoriesName"{{#css.name}} style="{{css.name}}" {{/css.name}}>{{&name}}</span>
+            <span data-type="name" class="bCategoriesName"{{#css.name}} style="{{css.name}}" {{/css.name}}>{{&name}}</span>
         </a>
     </li>
     {{/links}}

@@ -1,6 +1,6 @@
 <div class="slidesBox slidesBox-bg3 slidesBox-full jsSlidesWide">
     <div class="slidesBox_h">
-        <div class="slidesBox_btn slidesBox_btn-l jsSlidesWideLeft"></div>
+        <div class="slidesBox_btn slidesBox_btn-l jsSlidesWideButton jsSlidesWideLeft"></div>
 
         <div class="slidesBox_h_c">
             <div class="slidesBox_t jsSlidesWideName">Новая коллекция Pandora</div>
@@ -13,7 +13,7 @@
             </ul>
         </div>
 
-        <div class="slidesBox_btn slidesBox_btn-r jsSlidesWideRight"></div>
+        <div class="slidesBox_btn slidesBox_btn-r jsSlidesWideButton jsSlidesWideRight"></div>
     </div>
 
     <div class="slidesBox_inn">

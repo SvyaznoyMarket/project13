@@ -199,6 +199,8 @@ return function(
 
         echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products]);
 
+        echo $helper->render('order/__saleAnalytics', ['orders' => $orders]);
+
         // Flocktory popup
         echo $helper->render('order-v3/partner-counter/_flocktory-complete',[
             'orders'    => $orders,

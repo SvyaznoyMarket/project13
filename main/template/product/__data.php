@@ -9,6 +9,7 @@ return function(
         'ui'      => $product->getUi(),
         'token'   => $product->getToken(),
         'article' => $product->getArticle(),
+        'barcode' => $product->getBarcode(),
         'name'    => $product->getName(),
         'price'   => $product->getPrice(),
         'image'   => [

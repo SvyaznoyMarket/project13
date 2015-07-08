@@ -331,23 +331,25 @@ class Action {
                         \RepositoryManager::product()->setMediasForProducts($products, $medias);
                     }
 
+                    $cartButtonAction = new \View\Cart\ProductButtonAction();
                     // перевариваем данные изображений для слайдера в $slideData
                     foreach ($promo->getImage() as $image) {
                         if (!$image instanceof \Model\Promo\Image\Entity) continue;
 
                         $itemProducts = [];
                         foreach($image->getProducts() as $productId) {
-                            if (!isset($products[$productId])) continue;
-                            $product = $products[$productId];
+                            $product = isset($products[$productId]) ? $products[$productId] : null;
+                            if (!$product) continue;
+
                             /** @var $product \Model\Product\Entity */
                             $itemProducts[] = [
-                                'image'     => $product->getMainImageUrl('product_160'),
-                                'link'      => $product->getLink(),
-                                'name'      => $product->getName(),
-                                'price'     => $product->getPrice(),
-                                'isBuyable' => ($product->getIsBuyable() || $product->isInShopOnly() || $product->isInShopStockOnly()),
-                                'statusId'      => $product->getStatusId(),
-                                'cartButton'    => (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product)
+                                'image'      => $product->getMainImageUrl('product_160'),
+                                'link'       => $product->getLink(),
+                                'name'       => $product->getName(),
+                                'price'      => $product->getPrice(),
+                                'isBuyable'  => ($product->getIsBuyable() || $product->isInShopOnly() || $product->isInShopStockOnly()),
+                                'statusId'   => $product->getStatusId(),
+                                'cartButton' => $cartButtonAction->execute(new \Helper\TemplateHelper(), $product)
                             ];
                         }
 
