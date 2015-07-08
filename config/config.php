@@ -480,7 +480,7 @@ $c->self_delivery['enabled'] = true;
 $c->self_delivery['limit'] = 500;
 $c->self_delivery['regions'] = [119623, 93746, 14974];
 
-$c->minOrderSum = 990;
+$c->minOrderSum = 1990;
 
 $c->preview = false;
 
