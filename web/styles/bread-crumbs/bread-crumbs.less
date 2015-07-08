@@ -6,16 +6,17 @@
         color: #545454;
 
         .inline-block();
-        &:after {
+        &:before {
             font-size: 10px;
 
-            padding-left: 5px;
+            padding-right: 5px;
 
             content: '>';
         }
-        &:last-child {
-            &:after {
+        &:first-child {
+            &:before {
                 content: '';
+                padding-right: 0px;
             }
         }
     }
