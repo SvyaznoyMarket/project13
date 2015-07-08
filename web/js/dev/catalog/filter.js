@@ -7,6 +7,7 @@
 		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'), // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
 
 		filterOpenClass = 'fltrSet_tggl-dn',
+		viewSwitcherActiveClass = 'active',
 
 		$filterBlock = $('.js-category-filter'),
 		$filterOtherParamsToggleButton = $filterBlock.find('.js-category-filter-otherParamsToggleButton'),
@@ -70,7 +71,11 @@
 			list: function(data) {
 				var template;
 
-				if (docCookies.getItem('categoryView') == 'expanded') {
+				// Используем проверку HTML элемента вместо проверки значение cookie categoryView, т.к. во время
+				// просмотра страницы каталога значение cookie может быть изменено (например, при просмотре страницы
+				// каталога в другом окне) и при бесконечной прокрутке или переключении страниц будут подгружаться
+				// товары в другом виде, нежели выбран в переключателе
+				if ($('.js-category-viewLink-expanded').hasClass(viewSwitcherActiveClass)) {
 					template = $('#listing_expanded_tmpl');
 				} else {
 					template = $('#listing_compact_tmpl');
@@ -844,18 +849,16 @@
 
 	// Обработчик для ссылок смены отображения каталога
 	$viewParamPanel.on('click', '.js-category-viewLink', function(e) {
-		var
-			activeClass = 'active',
-			$viewLink = $(e.currentTarget);
+		var $viewLink = $(e.currentTarget);
 
 		e.preventDefault();
 
-		if ($viewLink.hasClass(activeClass)) {
+		if ($viewLink.hasClass(viewSwitcherActiveClass)) {
 			return;
 		}
 
-		$('.js-category-viewLink').removeClass(activeClass);
-		$viewLink.addClass(activeClass);
+		$('.js-category-viewLink').removeClass(viewSwitcherActiveClass);
+		$viewLink.addClass(viewSwitcherActiveClass);
 
 		if ($viewLink.hasClass('js-category-viewLink-expanded')) {
 			$listingWrap.addClass('listing');
