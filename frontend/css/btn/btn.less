@@ -1,13 +1,37 @@
-.btn-normal {
+.btn() {
     font-size: 1.1666em;
     line-height: 27px;
 
     height: 25px;
-    padding: 0px 17px;
+    padding: 0 17px;
 
-    vertical-align: middle;
+    .inline-block(middle);
+}
 
+.btn-normal {
     color: @grey-bright;
     border: 1px solid @orange-bright;
     background: @white;
+
+    .btn();
+}
+
+.btn-buy {
+    color: @white;
+    border: 1px solid @orange-bright;
+    background: @orange-bright;
+
+    .btn();
+
+    &:hover {
+    	color: @white;
+    }
+
+    &:active {
+    	color: @white;
+    }
+
+    &:visited {
+    	color: @white;
+    }
 }

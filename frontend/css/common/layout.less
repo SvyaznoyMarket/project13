@@ -1,6 +1,67 @@
 .wrapper {
-    max-width: 1280px;
-    min-width: 1024px;
-    margin: 0 auto;
     overflow-x: hidden;
+
+    min-width: 1024px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.content {
+    padding-left: 224px;
+    border-top: 1px solid @grey-light-3;
+
+    &__inner {
+        border-left: 1px solid @grey-light-3;
+    }
+}
+
+&__inner {
+    min-width: 1024px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.left-bar {
+    float: left;
+
+    width: 224px;
+}
+
+.footer {
+    min-width: 1024px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.grid-4col {
+    .clearfix();
+    overflow: auto;
+
+    &__item {
+        float: left;
+        width: 25%;
+        padding: 10px;
+    }
+}
+
+.grid-8col {
+    .clearfix();
+    overflow: auto;
+
+    &__item {
+        float: left;
+        width: 15.5%;
+        padding: 10px;
+    }
+}
+
+.grid-10col {
+    .clearfix();
+    overflow: auto;
+
+    &__item {
+        float: left;
+        width: 10%;
+        padding: 10px;
+    }
 }

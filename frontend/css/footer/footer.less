@@ -1,0 +1,169 @@
+.i-soc-net {
+    background: url('@{base-url}/footer/i-sharing.png') no-repeat 0 0;
+    &_fb {
+        .i-sprite(-28px, 0, 28px, 28px);
+        &:hover {
+            .i-sprite(0, 0, 28px, 28px);
+        }
+    }
+    &_od {
+        .i-sprite(-84px, 0, 28px, 28px);
+        &:hover {
+            .i-sprite(-56px, 0, 28px, 28px);
+        }
+    }
+    &_tw {
+        .i-sprite(-140px, 0, 28px, 28px);
+        &:hover {
+            .i-sprite(-112px, 0, 28px, 28px);
+        }
+    }
+    &_vk {
+        .i-sprite(-196px, 0, 28px, 28px);
+        &:hover {
+            .i-sprite(-168px, 0, 28px, 28px);
+        }
+    }
+    &_yt {
+        .i-sprite(-252px, 0, 28px, 28px);
+        &:hover {
+            .i-sprite(-224px, 0, 28px, 28px);
+        }
+    }
+}
+
+.i-partner {
+    background-image: url('@{base-url}/footer/i-partner.jpg');
+    &_mnogoru {
+        .i-sprite(-74px, 0, 73px, 26px);
+        &:hover {
+            .i-sprite(0, 0, 73px, 26px);
+        }
+    }
+    &_sb {
+        .i-sprite(-207px, 0, 60px, 34px);
+        &:hover {
+            .i-sprite(-147px, 0, 60px, 34px);
+        }
+    }
+    &_svyaznoy {
+        .i-sprite(-384px, 0, 116px, 22px);
+        &:hover {
+            .i-sprite(-268px, 0, 116px, 22px);
+        }
+    }
+}
+
+
+.footer {
+    padding: 20px 20px 0;
+    &__right {
+        float: right;
+
+        width: 185px;
+    }
+    &__left {
+        padding-right: 220px;
+
+        .clearfix();
+    }
+}
+
+.footer-external {
+    margin: 0 0 5px;
+    &__item {
+        margin: 0 6px 6px 0;
+
+        .inline-block(middle);
+        &_title {
+            font-family: 'GloberBold';
+
+            display: block;
+
+            margin: 0 0 2px;
+        }
+    }
+    &_fl-r {
+        float: right;
+    }
+}
+
+.footer-list {
+    margin: 0 0 5px;
+    &__item {
+        margin: 0 0 13px;
+        padding: 0;
+    }
+}
+
+.app-box {
+    min-width: 132px;
+    padding: 6px 5px 6px 45px;
+
+    border: 1px solid @input-border;
+    background-repeat: no-repeat;
+    background-position: 5px 50%;
+
+    .inline-block();
+    .rounded(3px);
+    &_apple {
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAABiUlEQVR4AaVVg5prMRBObV/b5tbJTJpre2srz3EffQ/WybY57f9/OhiLrIcIsoeNL/RVPUY2gchiA5cgWWkjBZDDdyBtvr0rgp7F//sbZVzY4vzvuwLxji9p/tMWx6V4VAwR76AX+NhRUCnGyQbw1a+ChJGofYl4yXrwS1okiZ9YKMbhxseE9S5KL4hLX9LW25Xw16/yr2wO0mJX1PA88TXDcIO/hRlIm9jhr8/0phhiCPI4cYEDGIE8SdwtZohPEy+8B2lG1tKkFJ+ANKV41QwoibNdNWRRESeE3jUW/6GdCBDGCu5Y9lWwv2biOLE6RAfoGtpv/tC3NA5MC/gxoVfQMfRgylL6EH6YJpHe1SaR8y3LyB6C3KqRqmmQ5mQlEdR3gjH5X2XB0WdeFOAnEVSPx9iDihua3QRF80poN7SIsraR+wt6gfi0G5FdwYVBDWrNANGjGaCv1or/XHkhRBDg+PCyn/CZtY78wt33ykJVdjM+wV0c8I9W14fd+1jPM4QmawEU46r4HlTzU4DfREGBAAAAAElFTkSuQmCC');
+    }
+    &_android {
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAABx0lEQVR4AcXVA68cUQDF8e1XqTXJzU0mtW3b+tf9BOVTbdu2bdttWNv2w0luUjzenSonOz6/0c5MLJ3fSL5Y7E8CT0mNCqRyjDFcZSKXogFfmIdhjJi2DOdeFGABllKM4SwNqckKXkUByiqjuEALLJ3YzqcIgDLcEZrqx3VS/a+BA0rpl8BhWmMJqcdEbscHiFDGiGiLpZR+jVnAe7+7UOp7KjEcEYSUIlQGcIJP+ANKeZI5RmMspRSr33AexwOEIhJY5Qj9qrOWBczmcc5AQKlMRFnmqdYMQ022sEBIQD2W8tYPEKHKbBFd2c5sTYeUwmJorfnU7ICQzLFUYgq3mUYV7PelhoD1pPoBVVS+ycxMgGFTZmA2Qbb12ayiA1uYR3Usbu9t2YnqmYES2EwppdoqGlKCKu4iaqohK9xFzBsoRQJLqUeA1a+8qO+3MW/AoDqHqYPqCCAk2ZX9gFIM5yAt3N4x9Mv7rzybot/3bhmlemORgdLQ72ESgHFhEPuop/mA6t6P83fAksBZ6lAYS2+u+7+RZquiOsmoLqxtvK80AZRgFCeoQnmWxv9SnUkBhnOYxiREea2nqjqKS4zR799/2v771zkDyTxd2osaUaYAAAAASUVORK5CYII=');
+    }
+}
+
+.subscribe-form {
+    margin: 0 0 3px;
+    &__title {
+        font-family: 'GloberBold';
+
+        margin: 0 0 5px;
+    }
+    &__btn {
+        line-height: 37px;
+
+        height: 35px;
+        padding: 0 8px;
+    }
+    &__it {
+        width: 250px;
+        margin-right: 7px;
+    }
+}
+
+.footer-hint {
+    font-size: .9166em;
+
+    padding-top: 15px;
+
+    .inline-block();
+}
+
+.copy {
+    height: 25px;
+    padding-top: 7px;
+
+    color: @input-border;
+    background: @black;
+
+    .clearfix();
+    a {
+        color: @input-border;
+    }
+    &__left {
+        float: left;
+    }
+    &__right {
+        float: right;
+    }
+    &__center {
+        display: block;
+
+        text-align: center;
+    }
+    .inner {
+        padding: 0 20px;
+    }
+}
