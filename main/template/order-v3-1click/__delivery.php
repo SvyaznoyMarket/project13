@@ -17,7 +17,7 @@ return function(
     <!-- блок разбиения заказа -->
     <div class="orderRow clearfix jsOneClickOrderRow" data-block_name="<?= $order->block_name ?>">
         <!-- информация о доставке -->
-        <div class="orderCol orderCol-r">
+        <div class="orderCol orderCol-r<? if ($shopId): ?> orderCol-single<? endif ?>">
             <? if (!$shopId): ?>
             <menu class="orderCol_delivrLst clearfix">
             <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
