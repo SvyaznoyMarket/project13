@@ -1,3 +1,53 @@
+$(function() {
+    var
+        $body = $('body'),
+
+        sliderData = $('#jsSlice').data('value')
+    ;
+
+    if (sliderData && (true === sliderData.isSale)) {
+        // клик по ссылке на категорию
+        $body.on('click', '.js-productCategory-link', function() {
+            var
+                $el = $(this)
+            ;
+
+            $body.trigger('trackGoogleEvent', {
+                category: 'slices_sale',
+                action: 'category',
+                label: $el.find('[data-type="name"]').text()
+            });
+        });
+
+        // клик по ссылке на товар
+        $body.on('click', '.js-listing-item', function() {
+            var
+                $el = $(this)
+            ;
+
+            $body.trigger('trackGoogleEvent', {
+                category: 'slices_sale',
+                action: 'product',
+                label: ''
+            });
+        });
+
+        // клик по кнопке "Купить"
+        $body.on('click', '.jsBuyButton', function(e) {
+            var
+                $el = $(this)
+            ;
+
+            e.stopPropagation();
+
+            $body.trigger('trackGoogleEvent', {
+                category: 'slices_sale',
+                action: 'basket',
+                label: ''
+            });
+        });
+    }
+});
 ;(function() {
 	console.info('New catalog init: filter.js');
 
@@ -860,9 +910,21 @@
 		if ($viewLink.hasClass('js-category-viewLink-expanded')) {
 			$listingWrap.addClass('listing');
 			docCookies.setItem('categoryView', 'expanded', 4*7*24*60*60, '/');
+
+			$body.trigger('trackGoogleEvent', {
+				category: 'design_listing',
+				action: 'change',
+				label: 'список'
+			});
 		} else {
 			$listingWrap.removeClass('listing');
 			docCookies.setItem('categoryView', 'compact', 4*7*24*60*60, '/');
+			
+			$body.trigger('trackGoogleEvent', {
+				category: 'design_listing',
+				action: 'change',
+				label: 'плитка'
+			});
 		}
 
 		reloadFilter();

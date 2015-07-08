@@ -860,9 +860,21 @@
 		if ($viewLink.hasClass('js-category-viewLink-expanded')) {
 			$listingWrap.addClass('listing');
 			docCookies.setItem('categoryView', 'expanded', 4*7*24*60*60, '/');
+
+			$body.trigger('trackGoogleEvent', {
+				category: 'design_listing',
+				action: 'change',
+				label: 'список'
+			});
 		} else {
 			$listingWrap.removeClass('listing');
 			docCookies.setItem('categoryView', 'compact', 4*7*24*60*60, '/');
+			
+			$body.trigger('trackGoogleEvent', {
+				category: 'design_listing',
+				action: 'change',
+				label: 'плитка'
+			});
 		}
 
 		reloadFilter();
