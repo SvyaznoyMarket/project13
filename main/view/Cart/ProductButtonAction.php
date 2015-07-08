@@ -23,7 +23,8 @@ class ProductButtonAction {
         $noUpdate = false, // Не обновлять кнопку купить
         $location = null, // местоположение кнопки купить: userbar, product-card, ...
         $sender2 = '',
-        $useNewStyles = false
+        $useNewStyles = false,
+        $inShowroomAsButton = true
     ) {
         $colorClass = AbTest::getColorClass($product, $location);
 
@@ -40,6 +41,7 @@ class ProductButtonAction {
             'productUi'  => $product->getUi(),
             'colorClass' => $colorClass,
             'location'   => $location,
+            'inShowroomAsLabel' => false,
             'data'       => [
                 'productId' => $product->getId(),
                 'upsale'    => json_encode([
@@ -56,7 +58,15 @@ class ProductButtonAction {
             $data['disabled'] = true;
             $data['url'] = '#';
             $data['class'] .= ' btnBuy__eLink mDisabled js-orderButton jsBuyButton';
-            $data['value'] = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет';
+            if ($product->isInShopShowroomOnly()) {
+                if (!$inShowroomAsButton) {
+                    $data['inShowroomAsLabel'] = true;
+                }
+                
+                $data['value'] = 'На витрине';
+            } else {
+                $data['value'] = 'Нет';
+            }
         } else if (5 == $product->getStatusId()) { // SITE-2924
             $data['disabled'] = true;
             $data['url'] = '#';
