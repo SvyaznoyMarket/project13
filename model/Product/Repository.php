@@ -284,6 +284,7 @@ class Repository {
                 ['uids' => array_map(function(\Model\Product\Entity $product) { return $product->getUi(); }, $products),
                     'media' => 1,
                     'label' => 1,
+                    'brand' => 1,
                     'category' => 1,
                 ],
                 [],
@@ -306,6 +307,16 @@ class Repository {
                                     'id'        => @$productData['label']['core_id'],
                                     'name'      => @$productData['label']['name'],
                                     'medias'    => @$productData['label']['medias'],
+                                ]));
+                            }
+                            
+                            if (!empty($productData['brand']) && @$productData['brand']['slug'] === 'tchibo-3569') {
+                                $product->setBrand(new \Model\Brand\Entity([
+                                    'ui'        => @$productData['brand']['uid'],
+                                    'id'        => @$productData['brand']['core_id'],
+                                    'token'     => @$productData['brand']['slug'],
+                                    'name'      => @$productData['brand']['name'],
+                                    'media_image' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png', // TODO после решения FCMS-740 заменить на URL из scms и удалить условие "@$productData['brand']['slug'] === 'tchibo-3569'"
                                 ]));
                             }
 
