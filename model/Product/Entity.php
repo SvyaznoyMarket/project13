@@ -820,6 +820,11 @@ class Entity {
      */
     public function getPropertiesInView($count) {
         $propertiesInView = array_filter($this->property, function(Property\Entity $entity){ return $entity->getIsInList(); });
+        
+        if (count($propertiesInView) < $count) {
+            $propertiesInView = $this->property;
+        }
+        
         usort($propertiesInView, function(Property\Entity $a, Property\Entity $b) { return $a->getPosition() > $b->getPosition(); });
         $slicedProperties = array_slice($propertiesInView, 0, $count);
         // проставляем значения свойств
