@@ -244,7 +244,7 @@ class OrderEntity {
         }
 
         if (isset($arr['order']['delivery']['point']['id'])) {
-            $this->shop_id = (int)$arr['order']['delivery']['point']['id'];
+            $this->shop_id = $arr['order']['delivery']['point']['id'];
         } else {
             if ($this->delivery_type_id === self::DELIVERY_TYPE_ID_SELF) throw new \Exception('Не указан магазин для самовывоза');
         }
