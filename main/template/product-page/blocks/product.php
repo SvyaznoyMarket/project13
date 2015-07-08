@@ -138,10 +138,11 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     </div>
     <!--/ применить скидку -->
 
-
     <? if (!$product->getIsBuyable() && $product->isInShopShowroomOnly()): ?>
-        На витрине
-        <i class="i-product i-product--info-normal i-info__icon"><span style="display: none;">Чтобы купить товар с витрины, <br />нужно приехать в магазин и обратиться к продавцу.</span></i>
+        <div class="showroom-only">
+            На витрине
+            <i class="i-product i-product--info-normal i-info__icon"><span style="display: none;">Чтобы купить товар с витрины, <br />нужно приехать в магазин и обратиться к продавцу.</span></i>
+        </div>
     <? else: ?>
         <div class="buy-online">
             <?= $helper->render('cart/__button-product', [
