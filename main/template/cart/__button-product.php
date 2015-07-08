@@ -8,7 +8,8 @@ return function (
     $noUpdate = false,
     $location = null,
     $sender2 = '',
-    $useNewStyles = true
+    $useNewStyles = true,
+    $inShowroomAsButton = true
 ) {
 ?>
     <?= $helper->renderWithMustache('cart/_button-product', (new \View\Cart\ProductButtonAction())->execute(
@@ -19,6 +20,7 @@ return function (
             $noUpdate,
             $location,
             $sender2,
-            $useNewStyles
+            $useNewStyles,
+            $inShowroomAsButton
         )) ?>
 <? };
