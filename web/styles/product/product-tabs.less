@@ -15,7 +15,13 @@
 
         .animation(fadeIn, .3s, 0, ease);
         .drop-shadow(0, 4px, 28px, .5);
+        /* IE8 */
+        zoom: 1;
+
+        filter:
+                progid:DXImageTransform.Microsoft.Shadow(Color=#c7c7c7, Strength=15, Direction=180);
     }
+
     .product-tabs {
         width: 920px;
         margin: 0 auto;
@@ -120,20 +126,26 @@
     }
 }
 .ep{
+    &-hint__row{
+        border: 1px solid #bebebe;
+        margin-top: -1px;
+    }
     &__fishka {
         font-size: 16px;
         line-height: 1;
         padding: 8px 0;
+        .box-sizing(border-box);
 
-        width: 40px;
+        width: 42px;
+        height: 40px;
 
         text-align: center;
 
-        background: url('@{base-url}/product/img/i-product-ep-fishka.png') no-repeat 0 0;
+        background: url('@{base-url}/product/img/fishka.png') no-repeat 0 0;
 
         .inline-block-middle();
-        background-size: 100%;
         cursor: pointer;
+
         &-value {
             .inline-block(middle);
             line-height: 40px;

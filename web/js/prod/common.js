@@ -2484,12 +2484,12 @@ $(function() {
 
                     $orderContent.empty().html($data.html());
 
-                    var E = ENTER.OrderV31Click,
-                        pointData = JSON.parse($data.find('script.jsMapData').html()),
-                        points = new ENTER.DeliveryPoints(pointData.points, E.map);
-
-                    E.koModels.push(points);
-                    ko.applyBindings(points, $orderContent[0]);
+					$.each($orderContent.find('.jsNewPoints'), function(i,val) {
+						var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
+							points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV31Click.map);
+						ENTER.OrderV31Click.koModels.push(points);
+						ko.applyBindings(points, val);
+					});
 
 					ENTER.OrderV31Click.functions.initAddress();
 					$orderContent.find('input[name=address]').focus();
@@ -4220,15 +4220,28 @@ $(function() {
 
 			console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
 
-			upsaleWrap.find('.js-slider').remove();
+			upsaleWrap.find('.js-slider, .js-slider-2').remove();
             $('.js-topbarfixLogin').addClass('blocked');
 
-			slider = $(response.content)[0];
-			upsaleWrap.append(slider);
-			upsaleWrap.addClass('mhintDdOn');
-			$(slider).goodsSlider();
+			slider = $(response.content);
 
-			ko.applyBindings(ENTER.UserModel, slider);
+            upsaleWrap.append(slider);
+			upsaleWrap.addClass('mhintDdOn');
+
+            if (slider.hasClass('js-slider-2')) {
+                slider.eq(0).goodsSlider({
+                    leftArrowSelector: '.goods-slider__btn--prev',
+                    rightArrowSelector: '.goods-slider__btn--next',
+                    sliderWrapperSelector: '.goods-slider__inn',
+                    sliderSelector: '.goods-slider-list',
+                    itemSelector: '.goods-slider-list__i'
+
+                });
+            } else {
+                slider.eq(0).goodsSlider();
+            }
+
+			ko.applyBindings(ENTER.UserModel, slider[0]);
 
 			if ( !data.product ) return;
 

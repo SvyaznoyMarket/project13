@@ -46,7 +46,7 @@
 
         text-align: center;
         .product-card-photo {
-            display: table-cell;
+            display: block;
 
             width: 350px;
             max-width: 350px;
@@ -56,10 +56,19 @@
 
             text-align: center;
             vertical-align: middle;
+
             &__img {
-                max-width: 100%;
+                max-width: 90%;
                 height: auto;
                 max-height: 350px;
+                .inline-block(middle);
+            }
+
+            &:after{
+                content: '';
+                width: 0;
+                height: 100%;
+                .inline-block(middle);
             }
         }
     }

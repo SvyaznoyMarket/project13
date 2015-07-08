@@ -15,7 +15,7 @@ return function (
     $data = [
         'id'        => sprintf('quickBuyButton-%s', $product->getId()),
         'productUi' => $product->getUi(),
-        'shop'      => $shop,
+        'shop'      => $shop ? $shop->getId() : null,
         'url'       => $url,
         'text'      => $value,
         'sender'    => $helper->json($sender),

@@ -21,7 +21,7 @@
             <div class="clsr2 js-compare-addPopup-closer"></div>
             <strong>Товар добавлен к сравнению</strong>
             <div class="cmprAdd">
-                <img src="" width="40" height="40" alt="" class="cmprAdd_img js-compare-addPopup-image" />
+                <img src="" alt="" class="cmprAdd_img js-compare-addPopup-image" />
 
                 <div class="cmprAdd_n">
                     <span class="cmprAdd_n_t js-compare-addPopup-prefix"></span><br/>

@@ -978,6 +978,11 @@ return [
         'action'    => ['SwitchAction', 'execute']
     ],
 
+    'delivery' => [
+        'pattern'   => '/delivery',
+        'action'    => ['Content\DeliveryMap', 'execute']
+    ],
+
 	//content (должен быть в самом конце, иначе под паттерн попадут другие страницы)
     'content' => [
         'pattern' => '/{token}',
