@@ -373,7 +373,7 @@ class Client {
                                 // Если определена функция failCallback через $this->addQuery()
                                 if (isset($this->failCallbacks[(string)$query['resources'][0]])) {
                                     // то вызываем её
-                                    call_user_func($this->failCallbacks[(string)$query['resources'][0]]);
+                                    call_user_func($this->failCallbacks[(string)$query['resources'][0]], new TimeoutException('Превышено время ожидания ответа'));
                                 } else {
                                     // иначе выбросим TimeoutException
                                     //throw new TimeoutException();
