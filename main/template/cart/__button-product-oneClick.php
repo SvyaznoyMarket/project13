@@ -15,7 +15,7 @@ return function (
     $data = [
         'id'        => sprintf('quickBuyButton-%s', $product->getId()),
         'productUi' => $product->getUi(),
-        'shop'      => $shop,
+        'shop'      => $shop ? $shop->getId() : null,
         'url'       => $url,
         'text'      => $value,
         'sender'    => $helper->json($sender),
@@ -46,7 +46,7 @@ return function (
 
     if ($sender2) $urlParams['sender2'] = $sender2;
 
-    if (!$product->getKit()) {
+    if (!$product->getKit() || $product->getIsKitLocked()) {
         $data['class'] = \View\Id::cartButtonForProduct($product->getId() . '-oneClick') . ' jsOneClickButton-new ' . $class;
     }
 

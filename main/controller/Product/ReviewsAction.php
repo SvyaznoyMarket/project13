@@ -92,7 +92,7 @@ class ReviewsAction {
             }
             if (!$form->getAuthorEmail()) {
                 $form->setError('author_email', 'Не указан e-mail');
-            } elseif (!strpos($form->getAuthorEmail(), '@')) {
+            } elseif (false === filter_var($form->getAuthorEmail(), FILTER_VALIDATE_EMAIL)) {
                 $form->setError('author_email', 'Указан не корректный e-mail');
             }
 

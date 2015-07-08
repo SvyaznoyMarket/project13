@@ -1,8 +1,13 @@
 .leftmenu{
 	li {
-		padding: 0px 0px 5px 16px;
+		padding: 1px 0px 2px 16px;
 
-		background: url("@{base-url}/user/img/arrow.png") no-repeat 0 0;
+		background: url("@{base-url}/user/img/arrow.png") no-repeat 0 1px;
+        &.active{
+            background-color: #FFF6E5;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAM0lEQVR4AWMYADAK/i9huAHEmyg1pB5qkA+lBp2DGsRDiSGsUENuUNMl9A8TROwMDBgFAF4zKo0H6RoLAAAAAElFTkSuQmCC');
+
+        }
 	}
 	.bSubscibe{
 		display: block;

@@ -5,7 +5,8 @@
         map: {},
         mapOptions: {},
         $map: {},
-        kladrCityId: 0
+        kladrCityId: 0,
+		koModels: []
     };
 }(window));
 /**
@@ -957,7 +958,7 @@
 				//$body.on('click', '.jsChangePoint', choosePoint);
 				$elem.on('click', '.jsChangePoint', choosePoint);
 			} else {
-				$elem.show();
+				$($(this).data('content')).show();
 				//$body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
 			}
 

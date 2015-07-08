@@ -137,12 +137,12 @@
 
                     $orderContent.empty().html($data.html());
 
-                    var E = ENTER.OrderV31Click,
-                        pointData = JSON.parse($data.find('script.jsMapData').html()),
-                        points = new ENTER.DeliveryPoints(pointData.points, E.map);
-
-                    E.koModels.push(points);
-                    ko.applyBindings(points, $orderContent[0]);
+					$.each($orderContent.find('.jsNewPoints'), function(i,val) {
+						var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
+							points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV31Click.map);
+						ENTER.OrderV31Click.koModels.push(points);
+						ko.applyBindings(points, val);
+					});
 
 					ENTER.OrderV31Click.functions.initAddress();
 					$orderContent.find('input[name=address]').focus();

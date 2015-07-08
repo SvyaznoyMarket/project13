@@ -1,6 +1,16 @@
 $(document).ready(function(){
-	var
+
+    var menuItems = $('.menu-item'),
 		subscribeBtn = $('.subscribe-form__btn');
+
+    // Выделение активного пункта в боковом меню
+    $.each(menuItems, function() {
+        var $this = $(this);
+        if ($this.find('a').attr('href') == location.pathname ) {
+            $this.addClass('active');
+            return false;
+        }
+    });
 
 	if ( subscribeBtn.length ) {
 		var

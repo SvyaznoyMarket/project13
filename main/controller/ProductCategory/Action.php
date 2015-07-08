@@ -694,7 +694,7 @@ class Action {
             });
         }
 
-        $repository->prepareProductsMedias($products);
+        $repository->enrichProductsFromScms($products, 'media label category' . (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category->isInSiteListingWithViewSwitcherAbTest() ? ' property' : ''));
 
         \App::coreClientV2()->execute();
 
@@ -739,7 +739,9 @@ class Action {
                     null,
                     true,
                     $columnCount,
-                    $productView
+                    $productView,
+                    [],
+                    $category
                 ),
                 'selectedFilter' => $selectedFilter->execute(
                     \App::closureTemplating()->getParam('helper'),
