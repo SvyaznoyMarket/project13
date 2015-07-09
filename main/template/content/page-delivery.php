@@ -80,7 +80,7 @@ $helper = \App::helper();
         <ul class="delivery-list">
             <li><b>Из любого магазина Enter</b></li>
             <li>Из магазина «Связной» на всей территории присутствия</li>
-            <li>При заказе на сумму от <?= \App::config()->minOrderSum ?>&thinsp;<span class="rubl">p</span>&nbsp;в пунктах выдачи заказа PickPoint, Hermes-DPD</li>
+            <li>При заказе на сумму от 1990&thinsp;<span class="rubl">p</span>&nbsp;в пунктах выдачи заказа PickPoint, Hermes-DPD</li>
         </ul>
 
         <p>Бесплатная доставка заказов в пункты выдачи PickPoint и Hermes-DPD осуществляется в городах:</p>
