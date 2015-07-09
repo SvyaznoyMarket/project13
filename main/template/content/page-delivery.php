@@ -127,7 +127,8 @@ $helper = \App::helper();
                 <td>Ярославль</td>
             </tr>
             </tbody></table>
-        <h2 >Получение заказа</h2><table class="delivery-table">
+        <h2 >Получение заказа</h2>
+        <table class="delivery-table" width="685">
             <tbody style="vertical-align: top;">
             <tr>
                 <th style="text-align: center;border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"></th>
