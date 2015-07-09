@@ -149,6 +149,15 @@ $helper = \App::helper();
 ">в&nbsp;г.&nbsp;Чехове, ул.&nbsp;Чехова, д.&nbsp;3<br>и&nbsp;в&nbsp;г.&nbsp;Ростове-на-Дону, пр-т Коммунистический, д.&nbsp;2 можно&nbsp;получить стулья, офисные&nbsp;кресла, пуфы</td>
             </tr>
             <tr>
+                <td style="text-align: center;  border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"><img class="table-img" src="/styles/delivery/img/euroset-s.png">
+                    <span class="table-lbl">Магазины Евросеть</span></td>
+                <td>7 дней</td>
+                <td>наличные,<br>банковская карта (возможна предоплата при оформлении заказа на сайте)</td>
+                <td>макс. 58х58х68&nbsp;см;<br>4 кг; 40 л</td>
+                <td>мебель;<br>ювелирные украшения;<br> легко бьющиеся товары (стекло, керамика и&nbsp;т.п.)</td>
+                <td><br></td>
+            </tr>
+            <tr>
                 <td style="text-align: center; border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"><img class="table-img" src="/styles/delivery/img/PickPoint2-s.png">
                     <span class="table-lbl">Постаматы PickPoint</span></td>
                 <td>3 дня (+3&nbsp;дня по вашему запросу)</td>
@@ -181,15 +190,6 @@ $helper = \App::helper();
                 <td>5 дней</td>
                 <td>наличные</td>
                 <td>макс. 58х58х68&nbsp;см;<br>30 кг</td>
-                <td>мебель;<br>ювелирные украшения;<br> легко бьющиеся товары (стекло, керамика и&nbsp;т.п.)</td>
-                <td><br></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;  border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"><img class="table-img" src="/styles/delivery/img/euroset-s.png">
-                    <span class="table-lbl">Магазины Евросеть</span></td>
-                <td>7 дней</td>
-                <td>наличные,<br>банковская карта (возможна предоплата при оформлении заказа на сайте)</td>
-                <td>макс. 58х58х68&nbsp;см;<br>4 кг; 40 л</td>
                 <td>мебель;<br>ювелирные украшения;<br> легко бьющиеся товары (стекло, керамика и&nbsp;т.п.)</td>
                 <td><br></td>
             </tr>
