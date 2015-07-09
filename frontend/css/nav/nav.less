@@ -1,58 +1,44 @@
 .i-nav {
     background: url('@{base-url}/nav/i-nav.png') no-repeat 0 0;
-
     &--appliances {
         .i-sprite(-1px, -1px, 32px, 35px);
     }
-
     &--appliances2 {
         .i-sprite(-35px, -1px, 35px, 32px);
     }
-
     &--car {
         .i-sprite(-72px, -1px, 35px, 32px);
     }
-
     &--diy {
         .i-sprite(-35px, -35px, 35px, 35px);
     }
-
     &--furniture {
         .i-sprite(-72px, -35px, 35px, 32px);
     }
-
     &--garden {
         .i-sprite(-72px, -69px, 35px, 35px);
     }
-
     &--gifts {
         .i-sprite(-109px, -1px, 35px, 35px);
     }
-
     &--household {
         .i-sprite(-109px, -38px, 35px, 32px);
     }
-
     &--jewelry {
         .i-sprite(-1px, -72px, 35px, 31px);
     }
-
     &--kids {
         .i-sprite(-38px, -72px, 32px, 35px);
     }
-
     &--perfumery {
         .i-sprite(-109px, -72px, 35px, 35px);
     }
-
     &--pets {
         .i-sprite(-1px, -109px, 35px, 35px);
     }
-
     &--present {
         .i-sprite(-38px, -109px, 35px, 35px);
     }
-
     &--sport {
         .i-sprite(-75px, -109px, 35px, 35px);
     }
@@ -75,20 +61,129 @@
 
 .site-menu {
     &__item {
+        font-size: 1.1666em;
+
+        position: relative;
+
         margin: 0;
+        &:hover {
+            background: @orange-light-4;
+            & > .site-menu-sub {
+                left: 224px;
+
+                display: block;
+            }
+            &:before {
+                position: absolute;
+                z-index: 98;
+                top: 0;
+                right: -1px;
+                left: -1px;
+
+                height: 2px;
+
+                content: '';
+
+                background: @orange-bright;
+            }
+        }
     }
     &__link {
+        position: relative;
+
         display: block;
-        padding: 10px 0;
+
+        padding: 6px 0;
     }
     &__icon {
-        .inline-block(middle);
         width: 64px;
+
         text-align: center;
+
+        .inline-block(middle);
     }
     &__text {
-        font-family: 'GloberSemiBold';
-        font-size: 1.1666em;
         .inline-block(middle);
     }
 }
+
+.menu-hide {
+    position: absolute;
+    z-index: 99;
+    top: 0;
+    left: 0;
+
+    display: none;
+
+    width: 224px;
+
+    border: 1px solid @grey-light-3;
+    border-top: none;
+    background: @white;
+    &:before {
+        position: absolute;
+        z-index: 98;
+        top: 0;
+        right: -1px;
+        left: -1px;
+
+        height: 2px;
+
+        content: '';
+
+        background: @orange-bright;
+    }
+}
+
+.site-menu-sub {
+    &__item {
+        position: relative;
+
+        margin: 0;
+        padding: 0;
+        &:hover {
+            background: @orange-light-4;
+            & > .site-menu-2sub {
+                left: 222px;
+
+                display: block;
+            }
+        }
+    }
+    &__link {
+        display: block;
+
+        padding: 10px 15px 10px 20px;
+
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAALCAQAAADyruQgAAAAUklEQVQIW2NoaeyQYwCBVueW9gYWMLOlqiW4gQnIaBNtndCgBZF2bauDSFq1gBjdYq0tTaYMDSwtNR2+DIwMbQGtlQ1sID3preJghauY/zOCaAB7UxaND3hqvAAAAABJRU5ErkJggg==') 97% 50% no-repeat;
+    }
+}
+
+.site-menu-2sub {
+    &__item {
+        margin: 0;
+        padding: 0;
+        &:hover {
+            &:not(.site-menu-2sub__item_wow) {
+                background: @orange-light-4;
+            }
+        }
+        &_wow {
+            font-size: .85714em;
+
+            padding: 0 0 15px;
+
+            text-align: center;
+        }
+    }
+    &__link {
+        display: block;
+
+        padding: 10px 7px 10px 20px;
+        &:hover {
+            color: @orange-bright;
+        }
+    }
+}
+
+

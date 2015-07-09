@@ -72,6 +72,10 @@
 
             <hr class="hr-orange">
 
+            <style>
+                 $ul > li  { background: #000; }
+            </style>
+
             <script>
                 $(function(){
                      $('.js-banners-slider').slick({
@@ -167,6 +171,79 @@
                             <span class="site-menu__icon"><i class="i-nav i-nav--furniture"></i></span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
+
+                        <ul class="site-menu-sub menu-hide">
+                            <li class="site-menu-sub__item">
+                                <a href="" class="site-menu-sub__link">Плетеная мебель из ротанга</a>
+
+                                <ul class="site-menu-2sub menu-hide">
+                                    <li class="site-menu-2sub__item">
+                                        <a href="" class="site-menu-2sub__link">Дизайн в деталях</a>
+                                    </li>
+
+                                    <li class="site-menu-2sub__item">
+                                        <a href="" class="site-menu-2sub__link">Товары для ванной, бани, сауны</a>
+                                    </li>
+
+                                    <li class="site-menu-2sub__item">
+                                        <a href="" class="site-menu-2sub__link">Товары для дачи и отдыха на природе</a>
+                                    </li>
+
+                                    <li class="site-menu-2sub__item">
+                                        <a href="" class="site-menu-2sub__link">Средства по уходу за бытовой техникой</a>
+                                    </li>
+
+                                    <li class="site-menu-2sub__item">
+                                        <a href="" class="site-menu-2sub__link">Плетеная мебель из ротанга</a>
+                                    </li>
+
+                                    <li class="site-menu-2sub__item">
+                                        <a href="" class="site-menu-2sub__link">Плетеная мебель из ротанга</a>
+                                    </li>
+
+                                    <li class="site-menu-2sub__item">
+                                        <a href="" class="site-menu-2sub__link">Плетеная мебель из ротанга</a>
+                                    </li>
+
+                                    <li class="site-menu-2sub__item site-menu-2sub__item_wow">
+                                        <div class="menu-wow">
+                                            <div class="goods">
+                                                <div class="sticker">Товар дня</div>
+
+                                                <a href="" class="goods__img">
+                                                    <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
+                                                </a>
+
+                                                <div class="goods__name">
+                                                    <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                                </div>
+
+                                                <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
+                                                <div class="goods__price-now">45 990 ₽</div>
+
+                                                <a class="goods__btn btn-buy" href="">Купить</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="site-menu-sub__item">
+                                <a href="" class="site-menu-sub__link">Дизайн в деталях </a>
+                            </li>
+
+                            <li class="site-menu-sub__item">
+                                <a href="" class="site-menu-sub__link">Товары для ванной, бани, сауны   </a>
+                            </li>
+
+                            <li class="site-menu-sub__item">
+                                <a href="" class="site-menu-sub__link">Товары для дачи и отдыха на природе  </a>
+                            </li>
+
+                            <li class="site-menu-sub__item">
+                                <a href="" class="site-menu-sub__link">Средства по уходу за бытовой техникой    </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
@@ -315,7 +392,9 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
 
                                         <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
                                         <div class="goods__price-now">45 990 ₽</div>
@@ -330,7 +409,9 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
 
                                         <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
                                         <div class="goods__price-now">45 990 ₽</div>
@@ -345,7 +426,7 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
 
                                         <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
                                         <div class="goods__price-now">45 990 ₽</div>
@@ -360,7 +441,9 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
 
                                         <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
                                         <div class="goods__price-now">45 990 ₽</div>
@@ -375,7 +458,9 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
 
                                         <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
                                         <div class="goods__price-now">45 990 ₽</div>
@@ -390,7 +475,9 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
 
                                         <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
                                         <div class="goods__price-now">45 990 ₽</div>
@@ -417,7 +504,9 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
 
                                         <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
                                         <div class="goods__price-now">45 990 ₽</div>
@@ -432,7 +521,9 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
 
                                         <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
                                         <div class="goods__price-now">45 990 ₽</div>
@@ -447,7 +538,9 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
 
                                         <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
                                         <div class="goods__price-now">45 990 ₽</div>
@@ -462,7 +555,9 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
 
                                         <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
                                         <div class="goods__price-now">45 990 ₽</div>
@@ -477,7 +572,9 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
 
                                         <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
                                         <div class="goods__price-now">45 990 ₽</div>
@@ -492,7 +589,9 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
 
                                         <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
                                         <div class="goods__price-now">45 990 ₽</div>
@@ -517,7 +616,10 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
+
                                         <div class="goods__cat-count">123 товара</div>
                                     </div>
 
@@ -526,7 +628,10 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
+
                                         <div class="goods__cat-count">123 товара</div>
                                     </div>
 
@@ -535,7 +640,10 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
+
                                         <div class="goods__cat-count">123 товара</div>
                                     </div>
 
@@ -544,7 +652,10 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
+
                                         <div class="goods__cat-count">123 товара</div>
                                     </div>
 
@@ -553,7 +664,10 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
+
                                         <div class="goods__cat-count">123 товара</div>
                                     </div>
 
@@ -562,7 +676,10 @@
                                             <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
                                         </a>
 
-                                        <a class="goods__name underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name">
+                                            <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        </div>
+
                                         <div class="goods__cat-count">123 товара</div>
                                     </div>
                                 </div>
