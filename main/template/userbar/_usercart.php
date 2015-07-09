@@ -51,14 +51,22 @@
         </div>
 
         <? if (\App::abTest()->isOrderMinSumRestriction()) : ?>
-        <!-- Минимальная сумма заказа -->
-        <div class="deliv-free-info" data-bind="visible: isMinOrderSumVisible()">
-            <span class="deliv-free-info__intro">До бесплатного самовывоза и оформления заказа осталось</span>
+
+            <!-- Минимальная сумма заказа -->
+        <div class="deliv-free-info" data-bind="visible: isMinOrderSumVisible()" style="display: none;">
+            <span class="deliv-free-info__intro">До оформления заказа осталось</span>
             <span class="deliv-free-info__remain-sum"><span data-bind="text: minOrderSum - cartSum()"><?= \App::config()->minOrderSum ?></span>&thinsp;<span class="rubl">p</span></span>
             <a href="/slices/all_labels" class="deliv-free-info__sale-lnk">Выбрать товары по суперцене</a>
         </div>
 
-        <div class="deliv-free-info completed" data-bind="visible: !isMinOrderSumVisible()">
+        <!-- Минимальная сумма заказа -->
+        <div class="deliv-free-info" data-bind="visible: !isMinOrderSumVisible() && isSelfDeliverySumVisible()" style="display: none;">
+            <span class="deliv-free-info__intro">Самовывоз 200 руб., до бесплатного самовывоза осталось</span>
+            <span class="deliv-free-info__remain-sum"><span data-bind="text: selfDeliverySum - cartSum()"><?= \App::config()->selfDeliverySum ?></span>&thinsp;<span class="rubl">p</span></span>
+            <a href="/slices/all_labels" class="deliv-free-info__sale-lnk">Выбрать товары по суперцене</a>
+        </div>
+
+        <div class="deliv-free-info completed" data-bind="visible: !isMinOrderSumVisible() && !isSelfDeliverySumVisible()" style="display: none;">
             <span class="deliv-free-info__intro">Самовывоз</span>
             <span class="deliv-free-info__alert">БЕСПЛАТНО</span>
         </div>

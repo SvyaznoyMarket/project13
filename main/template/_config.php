@@ -60,6 +60,7 @@ $config = array_merge([
     'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS
     'selfDeliveryLimit'    => $appConfig->self_delivery['limit'], // стоимость платного самовывоза, удалять осторожно, поломается JS
     'minOrderSum'  => \App::abTest()->isOrderMinSumRestriction() ? $appConfig->minOrderSum : false,
+    'selfDeliverySum'   => \App::abTest()->isOrderMinSumRestriction() ? $appConfig->selfDeliverySum : false,
 ], isset($config) ? (array)$config : []);
 ?>
 

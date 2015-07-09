@@ -719,6 +719,12 @@
             return model.minOrderSum !== false && model.minOrderSum > model.cartSum()
         });
 
+		// Бесплатный самовывоз начиная с selfDeliverySum
+		model.selfDeliverySum = ENTER.config.pageConfig.selfDeliverySum;
+		model.isSelfDeliverySumVisible = ko.computed(function(){
+			return model.selfDeliverySum !== false && model.selfDeliverySum > model.cartSum()
+		});
+
 		return model;
 	}
 
