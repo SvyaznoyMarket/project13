@@ -127,7 +127,8 @@ $helper = \App::helper();
                 <td>Ярославль</td>
             </tr>
             </tbody></table>
-        <h2 >Получение заказа</h2><table class="delivery-table">
+        <h2 >Получение заказа</h2>
+        <table class="delivery-table" width="685">
             <tbody style="vertical-align: top;">
             <tr>
                 <th style="text-align: center;border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"></th>
@@ -149,13 +150,22 @@ $helper = \App::helper();
 ">в&nbsp;г.&nbsp;Чехове, ул.&nbsp;Чехова, д.&nbsp;3<br>и&nbsp;в&nbsp;г.&nbsp;Ростове-на-Дону, пр-т Коммунистический, д.&nbsp;2 можно&nbsp;получить стулья, офисные&nbsp;кресла, пуфы</td>
             </tr>
             <tr>
+                <td style="text-align: center;  border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"><img class="table-img" src="/styles/delivery/img/euroset-s.png">
+                    <span class="table-lbl">Магазины Евросеть</span></td>
+                <td>7 дней</td>
+                <td>наличные,<br>банковская карта (возможна предоплата при оформлении заказа на сайте)</td>
+                <td>макс. 58х58х68&nbsp;см;<br>4 кг; 40 л</td>
+                <td>мебель;<br>ювелирные украшения;<br> легко бьющиеся товары (стекло, керамика и&nbsp;т.п.)</td>
+                <td><br></td>
+            </tr>
+            <tr>
                 <td style="text-align: center; border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"><img class="table-img" src="/styles/delivery/img/PickPoint2-s.png">
                     <span class="table-lbl">Постаматы PickPoint</span></td>
                 <td>3 дня (+3&nbsp;дня по вашему запросу)</td>
                 <td>наличные<br>(при оплате наличными сдача не&nbsp;выдается, есть&nbsp;возможность зачисления, например, на&nbsp;счет мобильного телефона),<br>банковская карта</td>
                 <td>макс. 58х58х68&nbsp;см по&nbsp;любой из&nbsp;сторон измерения;<br>15 кг</td>
                 <td> мебель;<br>легко бьющиеся товары (стекло, керамика и&nbsp;т.п.)</td>
-                <td><br></td>
+                <td><a href="#postamat-video">как работают постаматы PickPoint</a></td>
             </tr>
             <tr>
                 <td style="text-align: center;  border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"><img class="table-img" src="/styles/delivery/img/PickPoint-s.png">
@@ -184,19 +194,10 @@ $helper = \App::helper();
                 <td>мебель;<br>ювелирные украшения;<br> легко бьющиеся товары (стекло, керамика и&nbsp;т.п.)</td>
                 <td><br></td>
             </tr>
-            <tr>
-                <td style="text-align: center;  border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"><img class="table-img" src="/styles/delivery/img/euroset-s.png">
-                    <span class="table-lbl">Магазины Евросеть</span></td>
-                <td>7 дней</td>
-                <td>наличные,<br>банковская карта (возможна предоплата при оформлении заказа на сайте)</td>
-                <td>макс. 58х58х68&nbsp;см;<br>4 кг; 40 л</td>
-                <td>мебель;<br>ювелирные украшения;<br> легко бьющиеся товары (стекло, керамика и&nbsp;т.п.)</td>
-                <td><br></td>
-            </tr>
             </tbody>
         </table>
     </div>
-    <h2>Как работают постаматы PickPoint</h2>
+    <h2 id="postamat-video">Как работают постаматы PickPoint</h2>
     <div class="delivery-video">
         <video width="100%" controls="controls" poster="http://content.enter.ru/wp-content/uploads/2015/07/685x385.jpg">
             <source src="http://content.enter.ru/wp-content/uploads/2015/07/PickPoint.mp4" type="video/mp4" />

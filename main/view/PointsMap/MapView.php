@@ -61,6 +61,10 @@ class MapView {
             case 'self_partner_hermes':
                 return 'Пункты выдачи Hermes-DPD';
                 break;
+            case 'self_partner_euroset_pred_supplier':
+            case 'self_partner_euroset':
+                return 'Магазины Евросеть';
+                break;
             default:
                 if (strpos($token, MapPoint::POSTAMAT_SUFFIX) !== false) return 'Постаматы Pickpoint';
                 return 'Магазины Enter';
