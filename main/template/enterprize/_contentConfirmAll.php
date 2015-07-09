@@ -24,7 +24,7 @@
             </form>
 
             <p style="margin: 30px 0 0 0; font-size: 12px;" class="textConfirm">
-                Если письмо затерялось или обнаружили ошибку, пожалуйста, напишите нам на <a style="text-decoration: underline;" href="mailto:feedback@enter.ru">feedback@enter.ru</a>.
+                Если письмо затерялось или обнаружили ошибку, пожалуйста, напишите нам на <a style="text-decoration: underline;" href="http://my.enter.ru/feedback/">my.enter.ru/feedback/</a>.
             </p>
         </div>
     <?php endif; ?>
@@ -58,7 +58,7 @@
                 <input style="margin-left: 0;" class="confirmCode bigbutton" type="submit" value="Отправить письмо" />
             </form>
             <p style="margin: 30px 0 0 0; font-size: 12px;" class="textConfirm">
-                Если письмо затерялось или обнаружили ошибку, пожалуйста, напишите нам на <a style="text-decoration: underline;" href="mailto:feedback@enter.ru">feedback@enter.ru</a>.
+                Если письмо затерялось или обнаружили ошибку, пожалуйста, напишите нам на <a style="text-decoration: underline;" href="http://my.enter.ru/feedback/">my.enter.ru/feedback/</a>.
             </p>
         </div>
     <?php endif; ?>
