@@ -239,6 +239,8 @@ $buySender2 = $request->get('sender2');
     </div>
     <!--/ seo информация -->
 
+    <?= $helper->render('product/__data', ['product' => $product]) ?>
+
 </section>
 
 
