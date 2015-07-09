@@ -133,47 +133,6 @@ class SetAction {
     }
 
     /**
-     * @param string        $productBarcodes
-     * @param \Http\Request $request
-     * @return \Http\JsonResponse
-     * @throws \Exception\NotFoundException
-     */
-    public function widget($productBarcodes, \Http\Request $request) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
-
-        $client = \App::coreClientV2();
-
-        $productBarcodes = explode(',', $productBarcodes);
-        if (!(bool)$productBarcodes) {
-            throw new \Exception\NotFoundException('Не передан ни один ид товара');
-        }
-
-        // подготовка 1-го запроса
-
-        /** @var $products \Model\Product\Entity */
-        $products = [];
-        \RepositoryManager::product()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products) {
-            foreach ($data as $item) {
-                $products[] = new \Model\Product\Entity($item);
-            }
-        });
-
-        // выполнение 1-го запроса
-        $client->execute();
-
-        $pager = new \Iterator\EntityPager($products, count($products));
-        $pager->setPage(1);
-        $pager->setMaxPerPage(100);
-
-
-        return new \Http\JsonResponse([
-            'success' => true,
-            'content' => (new HtmlLayout())->render('product/_pager', ['pager' => $pager]),
-        ]);
-    }
-
-
-    /**
      * @param array             $products
      * @param string            $sortName
      * @param bool              $sortAscDirection

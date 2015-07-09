@@ -85,28 +85,6 @@ $(document).ready(function(){
 	$('.infiniteCarousel').infiniteCarousel();
 
 	/**
-	 * Получение продуктов
-	 */
-	if ( $('.getProductList').length ) {
-		// console.log('yes!')
-		$('.getProductList').each(function() {
-			var wrapper = $(this),
-				productList = wrapper.data('product'),
-				url = '/products/widget/'+productList;
-			// end of vars
-
-			$.get(url, function( res ) {
-				if ( !res.success ) {
-					return false;
-				}
-
-				wrapper.html(res.content);
-			});
-		});
-	}
-
-
-	/**
 	 * form register corporate
 	 */
 	if ( $('#corp_select').length ) {
