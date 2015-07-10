@@ -19,6 +19,16 @@ npm install
 grunt all
 ```
 
+Для автоматической сборки проекта при git checkout можно записать в [хук](http://git-scm.com/docs/githooks) `.git/hooks/post-checkout` следующие строки:
+
+```
+# building project "lite"
+if [ -f frontend/Gruntfile.js ]
+then
+    cd frontend && grunt all
+fi
+```
+
 Для корректной работы source maps необходимо в конфигурацию nginx прописать следующий `location`:
 
 ```

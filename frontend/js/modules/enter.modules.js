@@ -32,7 +32,7 @@
     });
 
     modules.define('ko', [], function(provide){
-        loadScript("/public/js/vendor/knockout.3.3.1.min.js", function () {
+        loadScript("/public/vendor/js/knockout.3.3.1.min.js", function () {
             console.log('[Module] knockout');
             provide(ko);
         });
