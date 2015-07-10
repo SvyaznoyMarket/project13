@@ -311,7 +311,7 @@ return function(
         <div class="popup popup-simple deliv-free-popup jsMinOrderSumPopup" style="display: none;">
 
             <div class="popup_inn">
-                <span class="info">До бесплатного самовывоза и оформления заказа осталось</span>
+                <span class="info">До оформления заказа осталось</span>
                 <span class="remain-sum"><?= \App::config()->minOrderSum - $orderDelivery->getProductsSum() ?>&thinsp;<span class="rubl">p</span></span>
                 <a href="/cart" class="to-cart-lnk">Вернуться в корзину</a>
             </div>
