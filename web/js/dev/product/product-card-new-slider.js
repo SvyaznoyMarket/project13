@@ -19,11 +19,29 @@
             preventScroll: true,
             closeClick: true
         },
+        /* Проверка возможности увеличения изображения товара */
+        checkZoom = function(){
+            var newImage, initWidth, initHeight, result;
+
+            // Получаем реальные размеры изображения
+            newImage = new Image();
+            newImage.src = $popupPhoto.attr("src");
+
+            initWidth = newImage.width;
+            initHeight = newImage.height;
+
+            result = initWidth < $popupPhotoHolder.width() && initHeight < $popupPhotoHolder.height();
+
+            if (result) {
+                $zoomBtn.addClass('disabled');
+            }
+
+            return !result;
+
+        },
         /* Функция для зума фотографии */
         setZoom = function(direction) {
-            var cssInc = direction < 0 ? '+=' : '-=',
-                hInc = direction > 0 ? '+=' : '-=',
-                dataZoom = $popupPhoto.data('zoom'),
+            var dataZoom = $popupPhoto.data('zoom'),
                 newImage, initHeight, initWidth;
 
             if (typeof dataZoom == 'undefined') {
@@ -118,6 +136,7 @@
             closeClick: true,
             onLoad: function() {
                 $('html').css({'overflow':'hidden'});
+                checkZoom();
             },
             onClose: function() {
                 setDefaultSetting();
@@ -144,10 +163,11 @@
             $this     = $(this),
             direction = parseInt($(this).data('dir'), 10);
 
-        $zoomBtn.removeClass('disabled');
-        $this.addClass('disabled');
-
-        setZoom(direction);
+        if (checkZoom()) {
+            $zoomBtn.removeClass('disabled');
+            $this.addClass('disabled');
+            setZoom(direction);
+        }
     });
 
     /* Слайд в попапе */
