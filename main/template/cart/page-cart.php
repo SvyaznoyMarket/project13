@@ -6,6 +6,7 @@
 
 $cart = $user->getCart();
 $helper = new \Helper\TemplateHelper();
+$isNewProductPage = \App::abTest()->isNewProductPage();
 ?>
 
 <div class="jsKnockoutCart" data-bind="visible: !isUpdated()">
@@ -41,7 +42,7 @@ $helper = new \Helper\TemplateHelper();
 </div>
 
 <div class="deliv-free-alert jsKnockoutCart" data-bind="visible: isMinOrderSumVisible()" style="display: none;">
-    <span class="deliv-free-alert__info">До бесплатного самовывоза и оформления заказа осталось</span>
+    <span class="deliv-free-alert__info">До оформления заказа осталось</span>
     <span class="deliv-free-alert__remain-sum"><span data-bind="text: minOrderSum - cartSum()"><?= \App::config()->minOrderSum ?></span>&thinsp;<span class="rubl">p</span></span>
 </div>
 
@@ -51,7 +52,7 @@ $helper = new \Helper\TemplateHelper();
     <div id="js-cart-firstRecommendation" style="display: none;">
         <? $page->startEscape()?>
         <div class="basketLine">
-            <?= $helper->render('product/__slider', [
+            <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
                 'type'      => 'alsoBought',
                 'products'  => [],
                 'url'       => $page->url('cart.recommended', [
@@ -65,7 +66,7 @@ $helper = new \Helper\TemplateHelper();
     </div>
 
     <div class="basketLine">
-    <?= $helper->render('product/__slider', [
+    <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
         'type'      => 'main',
         'products'  => [],
         'url'       => $page->url('cart.recommended', [
@@ -76,7 +77,7 @@ $helper = new \Helper\TemplateHelper();
     ]) ?>
     </div>
     <div class="basketLine">
-    <?= $helper->render('product/__slider', [
+    <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
         'type'      => 'alsoBought',
         'products'  => [],
         'url'       => $page->url('cart.recommended', [
@@ -94,7 +95,7 @@ $helper = new \Helper\TemplateHelper();
 
 <? if (\App::config()->product['pullRecommendation'] && !$cart->isEmpty()): ?>
     <div class="basketLine">
-        <?= $helper->render('product/__slider', [
+        <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
             'type'      => 'alsoBought',
             'products'  => [],
             'url'       => $page->url('cart.recommended', [

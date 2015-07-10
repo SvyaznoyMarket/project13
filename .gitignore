@@ -29,5 +29,6 @@ erase_barcode.cmd
 /node_modules
 /frontend/node_modules
 /web/version.txt
+npm-debug.log
 *.map
 sftp-config.json

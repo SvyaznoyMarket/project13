@@ -40,7 +40,7 @@ class LifeGiftAction {
             if ($product === null) throw new \Exception("Товар $productId не найден");
             if ($product->getPrice() == 0) throw new \Exception('Некорректная цена продукта');
             if (!$product->getIsBuyable()) throw new \Exception('Нет остатков по продукту');
-            if (!$product->getLabel() || $product->getLabel()->getId() != \App::config()->lifeGift['labelId']) throw new \Exception(sprintf("Товар %s не участвует в акции", $product->getName()));
+//            if (!$product->getLabel() || $product->getLabel()->getId() != \App::config()->lifeGift['labelId']) throw new \Exception(sprintf("Товар %s не участвует в акции", $product->getName()));
 
         } catch (\Exception $e) {
             \App::exception()->remove($e);

@@ -36,27 +36,19 @@
 	/**
 	 * Показ юзербара
 	 */
-	function showUserbar(disableAnimation, onOpen) {
+	function showUserbar() {
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		if (disableAnimation) {
-			userBarFixed.show(0, onOpen || function(){});
-		} else {
-			userBarFixed.slideDown();
-		}
-
-		if (userBarFixed.length) {
-			userbarStatic.css('visibility','hidden');
-		}
+		userBarFixed.addClass('fadeIn');
 	}
 
 	/**
 	 * Скрытие юзербара
 	 */
 	function hideUserbar() {
-		userBarFixed.slideUp();
+		userBarFixed.removeClass('fadeIn');
 		userbarStatic.css('visibility','visible');
 	}
 
@@ -64,6 +56,10 @@
 	 * Проверка текущего скролла
 	 */
 	function checkScroll(hideOnly) {
+		if (userBar.showOverlay && w.scrollTop() < userbarStatic.offset().top) {
+			closeBuyInfo();
+		}
+
 		if ( buyInfoShowing ) {
 			return;
 		}
@@ -135,6 +131,10 @@
 		}
 		// end of function
 
+		setTimeout(function() {
+			userBarFixed.removeClass('shadow-false');
+		}, 100);
+
 		// только BuyInfoBlock
 		if ( !upsaleWrap.hasClass('mhintDdOn') ) {
 			removeBuyInfoBlock();
@@ -146,6 +146,8 @@
 		wrapLogIn.removeClass(openClass);
 		wrap.removeClass(openClass);
 
+        $('.js-topbarfixLogin').removeClass('blocked');
+
 		removeBuyInfoBlock();
 		removeOverlay();
 		return false;
@@ -154,8 +156,14 @@
 	/**
 	 * Показ окна о совершенной покупке
 	 */
-	function showBuyInfo( e, data, upsale ) {
+	function showBuyInfo( useAnimation, data, upsale ) {
 		console.info('userbar::showBuyInfo');
+
+
+		var showFixed = false;
+		if ($(window).scrollTop() >= ENTER.userBar.userBarStatic.offset().top) {
+			showFixed = true;
+		}
 
 		$body.trigger('showBuyInfo');
 
@@ -163,28 +171,43 @@
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		var	buyInfo = $('.topbarfix_cartOn');
+		if (showFixed) {
+			userBarFixed.addClass('shadow-false');
 
-		if ( !userBar.showOverlay && overlay ) {
-			$body.append(overlay);
-			overlay.fadeIn(300);
-			userBar.showOverlay = true;
-			overlay.on('click', closeBuyInfo);
+
+
+			if ( !userBar.showOverlay && overlay ) {
+				$body.append(overlay);
+				overlay.fadeIn(300);
+				userBar.showOverlay = true;
+				overlay.on('click', closeBuyInfo);
+			}
+
+			if ( useAnimation ) {
+				$('.js-topbar-fixed .topbarfix_cartOn').slideDown(300);
+			}
+			else {
+				$('.js-topbar-fixed .topbarfix_cartOn').show();
+			}
+
+			showUserbar();
+			if (upsale) {
+				showUpsell(data, upsale);
+			}
+
+			buyInfoShowing = true;
+		} else {
+			// TODO:
+			/*
+			if ( useAnimation ) {
+				$('.js-topbar-static .topbarfix_cartOn').slideDown(300);
+			}
+			else {
+				$('.js-topbar-static .topbarfix_cartOn').show();
+			}
+			*/
 		}
 
-		if ( e ) {
-			buyInfo.slideDown(300);
-		}
-		else {
-			buyInfo.show();
-		}
-
-		showUserbar(true);
-		if (upsale) {
-			showUpsell(data, upsale);
-		}
-
-		buyInfoShowing = true;
 		$(document.body).trigger('showUserCart');
 	}
 
@@ -250,14 +273,28 @@
 
 			console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
 
-			upsaleWrap.find('.js-slider').remove();
+			upsaleWrap.find('.js-slider, .js-slider-2').remove();
+            $('.js-topbarfixLogin').addClass('blocked');
 
-			slider = $(response.content)[0];
-			upsaleWrap.append(slider);
+			slider = $(response.content);
+
+            upsaleWrap.append(slider);
 			upsaleWrap.addClass('mhintDdOn');
-			$(slider).goodsSlider();
 
-			ko.applyBindings(ENTER.UserModel, slider);
+            if (slider.hasClass('js-slider-2')) {
+                slider.eq(0).goodsSlider({
+                    leftArrowSelector: '.goods-slider__btn--prev',
+                    rightArrowSelector: '.goods-slider__btn--next',
+                    sliderWrapperSelector: '.goods-slider__inn',
+                    sliderSelector: '.goods-slider-list',
+                    itemSelector: '.goods-slider-list__i'
+
+                });
+            } else {
+                slider.eq(0).goodsSlider();
+            }
+
+			ko.applyBindings(ENTER.UserModel, slider[0]);
 
 			if ( !data.product ) return;
 
@@ -343,7 +380,7 @@
 				element.removeClass(emptyCompareNoticeShowClass);
 			});
 
-			$('.js-topbarfixLogin, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
+			$('.js-topbarfixLogin-opener, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
 				element.removeClass(emptyCompareNoticeShowClass);
 			});
 

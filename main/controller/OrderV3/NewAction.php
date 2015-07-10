@@ -2,10 +2,13 @@
 
 namespace Controller\OrderV3;
 
+use EnterApplication\CurlTrait;
 use Http\RedirectResponse;
-use \Model\OrderDelivery\ValidateException;
+use Model\OrderDelivery\ValidateException;
+use EnterQuery as Query;
 
 class NewAction extends OrderV3 {
+    use CurlTrait;
 
     /**
      * @param \Http\Request $request
@@ -17,26 +20,16 @@ class NewAction extends OrderV3 {
         $post = null;
 
         try {
+            if ($request->isMethod('GET')) {
+                $this->pushEvent(['step' => 1]);
+            }
 
             if ($request->isMethod('POST')) {
                 $post = $request->request->all();
                 $shop =  null;
                 if (method_exists($this->cart, 'getShop')) $shop = $this->cart->getShop();
-                $firstDelivery = (new DeliveryAction())->getSplit(null, $shop);
-                if ($firstDelivery->errors) $this->session->flash($firstDelivery->errors);
-                $delivery = (new DeliveryAction())->getSplit($post);
-
-                // залогируем первичное время доставки
-                if ($delivery instanceof \Model\OrderDelivery\Entity && (bool)$delivery->orders) {
-                    $deliveryDates = [];
-                    $deliveryMethods = [];
-                    foreach ($delivery->orders as $order) {
-                        if ($order->delivery && $order->delivery->date instanceof \DateTime) $deliveryDates[] = $order->delivery->date->format('Y-n-d');
-                        if ($order->delivery) $deliveryMethods[] = $order->delivery->delivery_method->token;
-                    }
-                    if ((bool)$deliveryDates)  $this->logger(['delivery-dates' => $deliveryDates]);
-                    if ((bool)$deliveryMethods)  $this->logger(['delivery-tokens' => $deliveryMethods]);
-                }
+                $splitResult = (new DeliveryAction())->getSplit(null, $shop, @$post['user_info']);
+                if ($splitResult->errors) $this->session->flash($splitResult->errors);
 
                 switch ($request->attributes->get('route')) {
                     case 'orderV3.one-click': return new RedirectResponse(\App::router()->generate('orderV3.delivery.one-click'));

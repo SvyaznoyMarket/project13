@@ -140,7 +140,7 @@
 			.opacity(0);
 			overflow: hidden;
 			height: 0;
-
+			display: block;
 		}
 
 		.cmprCnt_rating,
@@ -177,6 +177,9 @@
 			padding-bottom: 0;
 			position: relative;
 			background: @white;
+		}
+		.clsr {
+		 	z-index: 5;
 		}
 	}
 
@@ -320,6 +323,13 @@
 		padding-right: 25px;
 		line-height: 1.2;
 		margin-bottom: 4px;
+        &:hover{
+            .cmprCnt{
+                &_cat,&_n{
+                    text-decoration: underline;
+                }
+            }
+        }
 	}
 
 	&_cat {
@@ -331,11 +341,17 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		padding-right: 5px;
+        &:hover{
+            text-decoration: none;
+        }
 	}
 
 	&_n {
 		font-size: 14px;
 		display: block;
+        &:hover{
+            text-decoration: none;
+        }
 	}
 
 	&_price {

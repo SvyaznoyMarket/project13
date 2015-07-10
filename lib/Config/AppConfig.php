@@ -455,10 +455,6 @@ class AppConfig {
     ];
     /** @var bool */
     public $newDeliveryCalc;
-    /** @var array */
-    public $tag = [
-        'numSidebarCategoriesShown' => null,
-    ];
 
     /** @var array */
     public $sphinx = [

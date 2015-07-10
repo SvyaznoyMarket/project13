@@ -33,6 +33,19 @@ namespace EnterQuery\AbTest
 
                     $this->response->tests = isset($result[0]) ? $result : [];
 
+                    if (isset($result[0])) {
+                        $tests = [];
+                        foreach ($result as $item) {
+                            if (empty($item['token'])) {
+                                continue;
+                            }
+
+                            $tests[$item['token']] = $item;
+                        }
+
+                        \App::config()->abTest['tests'] = $tests;
+                    }
+
                     return $result; // for cache
                 }
             );

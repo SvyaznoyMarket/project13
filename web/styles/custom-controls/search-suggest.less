@@ -1,0 +1,107 @@
+.pick-point-search {
+    position: relative;
+
+    height: 35px;
+    padding-left: 40px;
+
+    border: 1px solid #c7c7c7;
+    &:after {
+        position: absolute;
+        top: 0;
+        left: 8px;
+
+        width: 23px;
+        height: 35px;
+
+        content: '';
+
+        background: url(/styles/mainpage/img/i-header.png) no-repeat -186px 5px;
+    }
+    &-input {
+        line-height: 33px;
+
+        width: 100%;
+        height: 33px;
+
+        border: none;
+        outline: none;
+
+        .box-sizing(border-box);
+        &::-ms-clear {
+            display: none;
+        }
+    }
+    &__input-wrap {
+        position: relative;
+
+        height: 33px;
+    }
+    &__clear {
+        font-size: 14px;
+        line-height: 18px;
+
+        position: absolute;
+        top: 50%;
+        right: 5px;
+
+        width: 18px;
+        height: 18px;
+        margin-top: -9px;
+
+        cursor: pointer;
+        cursor: pointer;
+        text-align: center;
+
+        color: @white;
+        background: #7a7a7a;
+
+        .rounded(9px);
+    }
+    .pick-point-suggest {
+        position: absolute;
+        z-index: 1;
+        top: 35px;
+        left: -1px;
+
+        overflow: hidden;
+
+        width: 100%;
+        height: 155px;
+
+        border: 1px solid #c7c7c7;
+        background: @white;
+        &:after {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+
+            width: 96%;
+            height: 23px;
+
+            content: '';
+
+            .gradient(rgba(255, 255, 255, 0), #fff, rgba(255, 255, 255, 0));
+        }
+        &__list {
+            overflow-x: scroll;
+
+            height: 155px;
+            padding: 5px 10px 0;
+        }
+        &__i {
+            font-size: 14px;
+
+            padding: 2px 0 2px 5px;
+
+            cursor: pointer;
+
+            color: #686868;
+            &:hover {
+                background: rgba(249, 155, 28, .15);
+            }
+            &:last-child {
+                margin-bottom: 23px;
+            }
+        }
+    }
+}

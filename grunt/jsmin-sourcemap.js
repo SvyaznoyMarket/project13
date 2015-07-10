@@ -52,6 +52,13 @@ module.exports = function (grunt, options) {
             srcRoot: '/js',
             cwd: 'web/js'
         },
+        favorite: {
+            src: ['dev/favorite/*.js'],
+            dest: 'prod/favorite.js',
+            destMap: 'prod/favorite.js.map',
+            srcRoot: '/js',
+            cwd: 'web/js'
+        },
         common: {
             src: ['dev/common/*.js'],
             dest: 'prod/common.js',
@@ -182,14 +189,6 @@ module.exports = function (grunt, options) {
             src: ['dev/service_ha/*.js'],
                 dest: 'prod/service_ha.js',
                 destMap: 'prod/service_ha.js.map',
-                srcRoot: '/js',
-                cwd: 'web/js'
-        },
-
-        tealeaf: {
-            src: ['dev/tealeaf/*.js'],
-                dest: 'prod/tealeaf.js',
-                destMap: 'prod/tealeaf.js.map',
                 srcRoot: '/js',
                 cwd: 'web/js'
         },

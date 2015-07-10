@@ -4,6 +4,8 @@
  */
 ?>
 
-<div class="userbar userbar-fixed topbarfix topbarfix-fx js-topbar-fixed" data-value="<?= $page->json($page->slotUserbarContentData()) ?>">
-    <?= $page->render('userbar2/topbarContent') ?>
+<div class="userbar userbar--fixed js-topbar-fixed" data-value="<?= $page->json($page->slotUserbarContentData()) ?>">
+	<div class="userbar__inn">
+	    <?= $page->render('userbar2/topbarContent') ?>
+    </div>
 </div>

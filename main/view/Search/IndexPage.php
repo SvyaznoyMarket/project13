@@ -56,10 +56,6 @@ class IndexPage extends \View\DefaultLayout {
         return $this->render('_contentHead', array_merge($this->params, ['title' => null])); // TODO: осторожно, костыль
     }
 
-    public function slotSidebar() {
-        return '';
-    }
-
     public function slotUserbarContent() {
         return $this->render('product-category/_userbarContent', [
             'category'  => $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null,

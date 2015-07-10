@@ -1,0 +1,30 @@
+.bread-crumbs {
+    margin: 0 0 5px;
+    &__i {
+        margin: 0 2px 0 0;
+
+        color: #545454;
+
+        .inline-block();
+        &:before {
+            font-size: 10px;
+
+            padding-right: 5px;
+
+            content: '>';
+        }
+        &:first-child {
+            &:before {
+                content: '';
+                padding-right: 0px;
+            }
+        }
+    }
+    &__lk {
+        color: #545454;
+        border-bottom: 1px solid #9c9c9c;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}

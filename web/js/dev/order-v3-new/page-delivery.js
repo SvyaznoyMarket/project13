@@ -121,6 +121,11 @@
         },
         sendChanges = function sendChangesF (action, params) {
             console.info('Sending action "%s" with params:', action, params);
+
+            var hideContent = true;
+
+            if ($.inArray(action, ['changeDate', 'changeInterval', 'changeOrderComment']) != -1) hideContent = false;
+
             $.ajax({
                 type: 'POST',
                 data: {
@@ -128,7 +133,7 @@
                     'params' : params
                 },
                 beforeSend: function() {
-                    $orderContent.fadeOut(500);
+                    if (hideContent) $orderContent.fadeOut(500);
                     if (spinner) spinner.spin(body)
                 }
             }).fail(function(jqXHR){
@@ -183,20 +188,26 @@
                 "url": '/order/log'
             })
         },
-        showMap = function(elem) {
-            var $currentMap = elem.find('.js-order-map').first(),
+        /**
+         * Функция отображения карты
+         * @param $elem - попап
+         */
+        showMap = function($elem) {
+            var $currentMap = $elem.find('.js-order-map').first(),
+                $parent = $elem.parent(),
                 mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
                 mapOptions = ENTER.OrderV3.mapOptions,
                 map = ENTER.OrderV3.map;
 
             if (mapData && typeof map.getType == 'function') {
 
-                elem.lightbox_me({
+                $elem.lightbox_me({
                     centered: true,
-                    closeSelector: '.jsCloseFl'
+                    closeSelector: '.jsCloseFl',
+                    onClose: function(){ $parent.append($elem) } // возвращаем элемент на место
                 });
 
-                if (!elem.is(':visible')) elem.show();
+                if (!$elem.is(':visible')) $elem.show();
 
                 map.geoObjects.removeAll();
                 map.setCenter([mapOptions.latitude, mapOptions.longitude], mapOptions.zoom);
@@ -204,13 +215,11 @@
                 map.container.fitToViewport();
 
                 // добавляем точки на карту
-                $.each(mapData.points, function(token){
-                    for (var i = 0; i < mapData.points[token].length; i++) {
-                        try {
-                            map.geoObjects.add(new ENTER.Placemark(mapData.points[token][i], true));
-                        } catch (e) {
-                            console.error('Ошибка добавления точки на карту', e);
-                        }
+                $.each(mapData.points, function(i, point){
+                    try {
+                        map.geoObjects.add(new ENTER.Placemark(point, true));
+                    } catch (e) {
+                        console.error('Ошибка добавления точки на карту', e, point);
                     }
                 });
 
@@ -271,11 +280,10 @@
         $('.popupFl').hide();
 
         if ($(this).hasClass('js-order-changePlace-link')) {
-            showMap($(elemId));
+            showMap($(this).closest('.jsOrderRow').find('.jsNewPoints'));
             $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
         } else {
             $(elemId).show();
-            log({'action':'view-date'});
             $body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
         }
 
@@ -284,8 +292,8 @@
 
     // клик по способу доставки
 	$body.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
-        var token = $(this).data('token'),
-            id = $(this).closest('.popupFl').attr('id');
+        var token = $(this).data('token');
+            //map = $(this).parent().next();
         // переключение списка магазинов
         $('.selShop_l').hide();
         $('.selShop_l[data-token='+token+']').show();
@@ -293,7 +301,7 @@
         $('.selShop_tab').removeClass('selShop_tab-act');
         $('.selShop_tab[data-token='+token+']').addClass('selShop_tab-act');
         // показ карты
-        showMap($('#'+id));
+        //showMap(map);
     });
 
     // клик по "Ввести код скидки"

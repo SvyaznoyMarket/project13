@@ -5,11 +5,19 @@
  * @author		Shaposhnik Vitaly
  */
 ;(function() {
-	var authBlock;// блок авторизации
+	var authBlock, loginLink;
 
 	$.ajaxSetup({
-		error : function(jqXHR, textStatus, errorThrown) {
+		error : function(jqXHR) {
 			if ( 403 == jqXHR.status ) {
+
+                loginLink = $('.bAuthLink');
+
+                if (loginLink.length) {
+                    loginLink.trigger('click');
+                    return;
+                }
+
 				authBlock = $('#auth-block');
 
 				if ( !authBlock.length ) {

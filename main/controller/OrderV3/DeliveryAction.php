@@ -3,10 +3,9 @@
 namespace Controller\OrderV3;
 
 use Model\OrderDelivery\Error;
-use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
+use Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
 
 class DeliveryAction extends OrderV3 {
-
     /** Main function
      * @param \Http\Request $request
      * @return \Http\Response
@@ -57,6 +56,8 @@ class DeliveryAction extends OrderV3 {
             }
 
             return new \Http\JsonResponse(['result' => $result], isset($result['error']) ? 500 : 200);
+        } else {
+            $this->pushEvent(['step' => 2]);
         }
 
         try {
@@ -113,18 +114,19 @@ class DeliveryAction extends OrderV3 {
             $page = new \View\OrderV3\ErrorPage();
             $page->setParam('error', 'CORE: '.$e->getMessage());
             $page->setParam('step', 2);
+
             return new \Http\Response($page->show(), 500);
         } catch (\Exception $e) {
             \App::logger()->error($e->getMessage(), ['cart/split']);
             $page = new \View\OrderV3\ErrorPage();
             $page->setParam('error', $e->getMessage());
             $page->setParam('step', 2);
+
             return new \Http\Response($page->show(), 500);
         }
-
     }
 
-    public function getSplit(array $data = null, $shopId = null) {
+    public function getSplit(array $data = null, $shopId = null, $userData = null) {
 
         if (!$this->cart->count()) throw new \Exception('Пустая корзина');
 
@@ -134,14 +136,18 @@ class DeliveryAction extends OrderV3 {
                 'changes'        => $this->formatChanges($data, $this->session->get($this->splitSessionKey))
             ];
         } else {
-            $product_list = [];
-            foreach ($this->cart->getProductData() as $product) $product_list[$product['id']] = $product;
+            $productList = [];
+            foreach ($this->cart->getProductData() as $product) $productList[$product['id']] = $product;
 
             $splitData = [
                 'cart' => [
-                    'product_list' => $product_list
+                    'product_list' => $productList
                 ]
             ];
+
+            if ($userData) {
+                $splitData += ['user_info' => $userData];
+            }
 
             if ($shopId) $splitData['shop_id'] = (int)$shopId;
             // Проверка метода getCreditProductIds необходима, т.к. Cart/OneClickCart не имеет этого метода

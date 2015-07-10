@@ -1,24 +1,33 @@
-<div class="{{#isSlot}}btn--slot--container{{/isSlot}} {{^isSlot}}btnBuy {{#isKit}}mBuySet{{/isKit}}{{/isSlot}}
-{{#isGiftery}}btn--container{{/isGiftery}}">
-    <a
-        {{#id}}id="{{id}}"{{/id}}
-        href="{{url}}"
-        class="{{class}} {{#disabled}}mDisabled{{/disabled}} {{#inShopOnly}}mShopsOnly{{/inShopOnly}}"
-        data-product-id="{{data.productId}}"
-        data-product-ui="{{productUi}}"
-        data-upsale="{{data.upsale}}"
-        data-sender="{{&sender}}"
-        data-sender2="{{sender2}}"
-        data-color-class="{{colorClass}}"
-        {{#full}}data-full="{{full}}"{{/full}}
-        {{#productUrl}}data-product-url="{{productUrl}}"{{/productUrl}}
-        {{#productArticle}}data-product-article="{{productArticle}}"{{/productArticle}}
-        {{#productPrice}}data-product-price="{{productPrice}}"{{/productPrice}}
-        {{#partnerName}}data-partner-name="{{partnerName}}"{{/partnerName}}
-        {{#partnerOfferUrl}}data-partner-offer-url="{{partnerOfferUrl}}"{{/partnerOfferUrl}}
-        {{#location}}data-location="{{location}}"{{/location}}
-        {{#data.noUpdate}}data-no-update="{{data.noUpdate}}"{{/data.noUpdate}}
-        {{#onClick}}onclick="{{onClick}}"{{/onClick}}
-        data-bind="buyButtonBinding: cart"
-    >{{value}}</a>
-</div>
+{{#inShowroomAsLabel}}
+    <div class="showroom-only">
+        На витрине
+        <i class="i-product i-product--info-normal i-info__icon js-tooltip js-tooltip-opener"><div class="js-tooltip-content tooltip-content" style="display: none;">Чтобы купить товар с витрины, <br />нужно приехать в магазин и обратиться к продавцу.</div></i>
+    </div>
+{{/inShowroomAsLabel}}
+
+{{^inShowroomAsLabel}}
+    {{# surroundDiv }}<div class="{{#isSlot}}btn--slot--container{{/isSlot}} {{^isSlot}}btnBuy {{#isKit}}mBuySet{{/isKit}}{{/isSlot}}
+        {{#isGiftery}}btn--container{{/isGiftery}}">{{/surroundDiv}}
+        <a
+            {{#id}}id="{{id}}"{{/id}}
+            href="{{url}}"
+            class="{{class}} {{#disabled}}mDisabled{{/disabled}} {{#inShopOnly}}mShopsOnly{{/inShopOnly}} {{#isKit}}btn-type--buy-kit{{/isKit}}"
+            data-product-id="{{data.productId}}"
+            data-product-ui="{{productUi}}"
+            data-upsale="{{data.upsale}}"
+            {{#sender}}data-sender="{{&sender}}"{{/sender}}
+            {{#sender2}}data-sender2="{{sender2}}"{{/sender2}}
+            {{#colorClass}}data-color-class="{{colorClass}}"{{/colorClass}}
+            {{#full}}data-full="{{full}}"{{/full}}
+            {{#productUrl}}data-product-url="{{productUrl}}"{{/productUrl}}
+            {{#productArticle}}data-product-article="{{productArticle}}"{{/productArticle}}
+            {{#productPrice}}data-product-price="{{productPrice}}"{{/productPrice}}
+            {{#partnerName}}data-partner-name="{{partnerName}}"{{/partnerName}}
+            {{#partnerOfferUrl}}data-partner-offer-url="{{partnerOfferUrl}}"{{/partnerOfferUrl}}
+            {{#location}}data-location="{{location}}"{{/location}}
+            {{#data.noUpdate}}data-no-update="{{data.noUpdate}}"{{/data.noUpdate}}
+            {{#onClick}}onclick="{{onClick}}"{{/onClick}}
+            data-bind="buyButtonBinding: cart"
+        >{{value}}</a>
+    {{# surroundDiv }}</div>{{/surroundDiv}}
+{{/inShowroomAsLabel}}

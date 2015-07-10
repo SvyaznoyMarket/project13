@@ -77,7 +77,7 @@ class RecommendedAction {
                         $data = explode(',', (string)$request->cookies->get('product_viewed'));
                     }
                     if (is_array($data)) {
-                        $data = array_reverse(array_filter($data));
+                        $data = array_reverse(array_filter($data, function($productId) { return (int)$productId; }));
                         $sender['items'] = array_slice(array_unique($data), 0, $productLimitInSlice);
                         $productIds = array_merge($productIds, $sender['items']);
                     }
@@ -91,22 +91,18 @@ class RecommendedAction {
 
             /** @var \Model\Product\Entity[] $productsById */
             $productsById = [];
-            $medias = [];
-            foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-                \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
-                    foreach ((array)$data as $item) {
-                        if (empty($item['id'])) continue;
+            \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionById($productIds, $region, function($data) use (&$productsById) {
+                foreach ((array)$data as $item) {
+                    if (empty($item['id'])) continue;
 
-                        $productsById[$item['id']] = new \Model\Product\Entity($item);
-                    }
-                });
-
-                \RepositoryManager::product()->prepareProductsMediasByIds($productsInChunk, $medias);
-            }
+                    $productsById[$item['id']] = new \Model\Product\Entity($item);
+                }
+            });
 
             $client->execute(); // 2-й пакет запросов
 
-            \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
+            \RepositoryManager::product()->enrichProductsFromScms($productsById, 'media label');
+            $client->execute();
 
             /**
              * Главный товар
@@ -180,9 +176,12 @@ class RecommendedAction {
                     $rowsCount = 2;
                 }
 
+                $template = \App::abTest()->isNewProductPage() && 'viewed' != $sender['type'] ? 'product-page/blocks/slider' : 'product/__slider';
+//                $template = 'product/__slider';
+
                 $recommendData[$type] = [
                     'success'   => true,
-                    'content'   => $templating->render('product/__slider', [
+                    'content'   => $templating->render($template, [
                         'title'          => $this->getTitleByType($type),
                         'products'       => $products,
                         'count'          => count($products),

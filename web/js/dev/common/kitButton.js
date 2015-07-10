@@ -23,8 +23,11 @@
 
 				var $popup = $(Mustache.render($('#tpl-cart-kitForm').html()));
 
+                $('.jsProductImgPopup').trigger('close'); // закрытие окна с изображением
+
 				$popup.lightbox_me({
 					autofocus: true,
+					closeSelector: ".jsPopupCloser",
 					destroyOnClose: true
 				});
 
@@ -50,12 +53,15 @@
 		});
 	});
 
+    $body.on('addtocart', function(){ $('.jsKitPopup').trigger('close')} ); // закрываем окно popup
+
 	function PopupModel(product, sender, sender2) {
 		var self = this;
 
 		self.productId = product.id;
 		self.productPrefix = product.prefix;
 		self.productWebname = product.webname;
+		self.productName = self.productPrefix + ' ' + self.productWebname;
 		self.productImageUrl = product.imageUrl;
 		self.products = ko.observableArray([]);
 

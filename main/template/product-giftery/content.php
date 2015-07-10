@@ -18,6 +18,8 @@
  * @var $breadcrumbs            array   Хлебные крошки
  * @var $trustfactors           array   Трастфакторы
  * @var $reviewsDataSummary     array   Данные отзывов
+ * @var $videoHtml              string|null
+ * @var $properties3D           []
  */
 $helper = new \Helper\TemplateHelper();
 

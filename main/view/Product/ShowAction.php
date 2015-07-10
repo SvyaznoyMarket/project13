@@ -42,14 +42,14 @@ class ShowAction {
 
         $productItem = [
             'id'           => $product->getId(),
-            'name'         => $product->getName(),
+            'name'         => htmlspecialchars_decode($product->getName()),
             'link'         => $product->getLink(),
             'label'        =>
             $product->getLabel()
                 ? ['name' => $product->getLabel()->getName(), 'image' => $product->getLabel()->getImageUrl()]
                 : null
             ,
-            'showCartButton' => !($product->getLabel() && $product->getLabel()->getId() == \Model\Product\Entity::LABEL_ID_PODARI_ZHIZN),
+            'showCartButton' => true,
             'showCompareButton' => !$product->getKit() || $product->getIsKitLocked(),
             'cartButton'   => [],
             'image'        => $product->getMainImageUrl($imageSourceType),

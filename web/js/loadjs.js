@@ -81,7 +81,7 @@
 
         pageConfig = $('#page-config').data('value'),
 
-		directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
+		//directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
         adfoxUrl = 'adfox_lib_ff.min.js', // 'adfox.asyn.code.ver3.min.js',
 		yandexMapUrl, yandexMapUrlv2_1, mustacheUrl, historyUrl, kladr, knockoutUrl,
 
@@ -371,7 +371,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script('JsHttpRequest.min.js')
 					.script( getWithVersion('library.js') )
-					.script( directCreditUrl )
+					//.script( directCreditUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -392,7 +392,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
-					.script( directCreditUrl )
+					//.script( directCreditUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -419,6 +419,7 @@
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('lk.js') )
+					.script( getWithVersion('favorite.js') )
 					.script( getWithVersion('product.js') )
 					.wait()
 					.script(yandexMapUrlv2_1)
@@ -435,7 +436,7 @@
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script('JsHttpRequest.min.js')
 						.script( getWithVersion('library.js') )
-						.script( directCreditUrl )
+						//.script( directCreditUrl )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
@@ -525,13 +526,14 @@
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
 						.script('JsHttpRequest.min.js')
-						.script( directCreditUrl )
+						//.script( directCreditUrl )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('product.js') )
+                        .script( getWithVersion('enterprize.js') )
 						.wait()
                         .script(yandexMapUrlv2_1)
                         .script( getWithVersion('order-v3-1click.js') )
@@ -577,7 +579,6 @@
 						.wait()
 						.script('tour.min.js')
 						.wait()
-						.script(yandexMapUrlv2_1)
 						.script( getWithVersion('order-v3-1click.js') )
                         .wait()
                         .script( getWithVersion('ports.js') )

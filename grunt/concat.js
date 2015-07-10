@@ -24,6 +24,11 @@ module.exports = {
 		dest: '<%= pathProd %>compare.js'
 	},
 
+	favoriteJS : {
+		src: ['<%= pathDev %>favorite/*.js'],
+		dest: '<%= pathProd %>favorite.js'
+	},
+
     commonJS : {
         src: ['<%= pathDev %>common/*.js'],
         dest: '<%= pathProd %>common.js'
@@ -107,11 +112,6 @@ module.exports = {
     serviceHaJS : {
         src: ['<%= pathDev %>service_ha/*.js'],
         dest: '<%= pathProd %>service_ha.js'
-    },
-
-    tealeaf : {
-        src: ['<%= pathDev %>tealeaf/*.js'],
-        dest: '<%= pathProd %>tealeaf.js'
     },
 
     supplier: {

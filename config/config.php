@@ -439,8 +439,6 @@ $c->kladr = [
     'itemLimit' => 20,
 ];
 
-$c->tag['numSidebarCategoriesShown'] = 3;
-
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
@@ -483,7 +481,7 @@ $c->self_delivery['enabled'] = true;
 $c->self_delivery['limit'] = 500;
 $c->self_delivery['regions'] = [119623, 93746, 14974];
 
-$c->minOrderSum = 1990;
+$c->minOrderSum = 990;
 
 $c->preview = false;
 

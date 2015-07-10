@@ -10,6 +10,7 @@
         body = $('body'),
         mobilePhoneField = $('.jsMobile'),
         authBlock = $('#enterprize-auth-block'),
+        $slider = $('.js-slider'),
 
         /**
          * Конфигурация валидатора для формы ЛК Enterprize
@@ -79,8 +80,7 @@
      * Очистка блока сообщений
      */
         clearMsg = function clearMsg() {
-            $('ul.red').length && $('ul.red').html('');
-            $('ul.green').length && $('ul.green').html('');
+            $('ul.red, ul.green').html('');
         },
 
         /**
@@ -91,8 +91,8 @@
          */
         showMsg = function showMsg(msg, type) {
             var
-                type = type ? type : 'error',
-                msgClass = 'error' === type ? 'red' : ('notice' === type ? 'green' : null),
+                msgType = typeof type !== 'undefined' ? type : 'error',
+                msgClass = 'error' === msgType ? 'red' : ('notice' === msgType ? 'green' : null),
                 msgBlock = $('ul.' + msgClass);
             // end of vars
 
@@ -245,7 +245,6 @@
         },
 
         epHintPopup = function() {
-            console.log('hint');
 
             var
                 btnHintPopup = $('.js-ep-btn-hint-popup'),
@@ -296,6 +295,7 @@
                 // end of vars
 
                 for (j in validators) {
+                    if (!validators.hasOwnProperty(j)) continue;
                     validator = eval('ENTER.utils.' + validators[j] + 'Validator');
                     config = eval('ENTER.utils.' + validators[j] + 'ValidationConfig');
 
@@ -304,6 +304,7 @@
                     }
 
                     for (i in config.fields) {
+                        if (!config.fields.hasOwnProperty(i)) continue;
                         self = config.fields[i].fieldNode;
                         self && validator._unmarkFieldError(self);
                     }
@@ -332,8 +333,8 @@
     body.on('click', '.jsEnterprizeAuthLink', openAuth);
 
     // Подключение слайдера товаров
-    if ($('.js-slider').length) {
-        $('.js-slider').goodsSlider();
+    if ($slider.length) {
+        $slider.goodsSlider();
     }
 
     // показываем описание фишки
@@ -342,10 +343,9 @@
             template = $('#tplEnterprizeForm'),
             templateHint = template.html(),
             $hint = $('.js-enterprize-coupon-hint'),
-
+            $sliderContainer,
             selectClass = $self.data('column'),
             activeClass = 'act',
-
             html,
             dataValue = $self.data('value');
 
@@ -362,7 +362,9 @@
             $('.js-enterprize-coupon').removeClass(activeClass);
             $self.addClass(activeClass);
             $self.closest('.js-enterprize-coupon-parent').append(html);
-            $('.js-enterprize-coupon-hint').addClass(selectClass);
+            $self.siblings('.js-enterprize-coupon-hint-holder').append(html); // карточка товара
+            $hint = $('.js-enterprize-coupon-hint');
+            $hint.addClass(selectClass);
 
 			$('.js-phone-mask').each(function() {
 				var $self = $(this);
@@ -373,9 +375,9 @@
             body.trigger('trackGooglePageview', ['/enterprize/form/' + dataValue.token]);
         }
 
-        if ( dataValue.slider.url ) {
-            var $sliderContainer = $('.js-enterprize-slider-container');
+        $sliderContainer = $('.js-enterprize-slider-container');
 
+        if ( dataValue.slider.url ) {
             $sliderContainer.empty();
             if (body.data('enterprizeSliderXhr')) { // если до этого была загрузка слайдера - прибиваем
                 try {
@@ -389,26 +391,35 @@
 
             xhr.done(function(response) {
                 if (response.content) {
-                    $sliderContainer.removeClass('mLoader').html(response.content);
+                    console.log($sliderContainer);
+                    $sliderContainer.removeClass('mLoader').html(response.content)
+                        .find('.mLoader').removeClass('mLoader');
 
-                    if ( $('.js-slider').data('slider').count != 0 ) {
+                    $sliderContainer.find('.js-slider').goodsSlider();
+
+                    if ( $slider.data('slider') && $slider.data('slider').count != 0 ) {
                         $('.js-ep-slides').show(500);
                     }
                 }
             });
             xhr.always(function() {
                 body.data('enterprizeSliderXhr', null);
-                $('.js-slider').goodsSlider();
             });
 
             body.data('enterprizeSliderXhr', xhr);
+        } else {
+            $sliderContainer.remove();
         }
+
+        // Открытие фишки в новом окне (на новой карточке товара)
+        $('.product-card-new .jsEnterprizeGetCouponForm').attr('target', '_blank');
+
     });
 
     body.on('click', '.js-ep-hint-closer', function(e) {
     	e.preventDefault();
 
-    	$(this).closest('.js-enterprize-coupon-hint').remove();
+    	$(this).closest('.js-enterprize-coupon-hint').hide();
     	$('.js-enterprize-coupon').removeClass('act');
     });
 
@@ -416,7 +427,7 @@
     	e.preventDefault();
 
     	$('.js-ep-rules-list').toggle();
-    })
+    });
 
     $(document).ready(function() {
         if ( $('.epHintPopup').length ) {
@@ -424,10 +435,28 @@
         }
     });
 
-    // Открываем информационный попап
-    //	if ( infoBlock.length ) {
-    //		openInfoBlock();
-    //	}
+    // Новая карточка товара
+    body.on('click', '.jsCouponRightIcon', function(){
+        $('.js-enterprize-coupon-hint').toggle()
+    });
+
+    // Автоматическое раскрытие фишки и скролл к этому элементу
+    $('.js-enterprize-coupon').each(function(i,elem){
+
+        var dataValue = $(elem).data('value');
+
+        if (dataValue && window.location.hash == '#' + dataValue.token) {
+
+            window.onload = function(){
+                setTimeout(function(){
+                    $(elem).trigger('click');
+                    $.scrollTo(elem);
+                }, 10);
+            };
+
+            return false;
+        }
+    });
 
 }(window.ENTER));
 

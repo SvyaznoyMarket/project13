@@ -2,10 +2,15 @@
 @full-size: 100%;
 @shopInfo-item-width: 235px;
 .shopInfo{
-    margin: 15px 10px;
+    margin: 15px 0px;
+    background: @white;
+
     &_i{
         float: left;
         white-space: nowrap;
+        .bordered();
+        .rounded(4px);
+        .box-shadow(0px 0px 2px 0 rgba(50, 50, 50, 0.25));
 
         width: 205px;
         height: 35px;
@@ -14,13 +19,12 @@
 
         cursor: pointer;
 
-        border: 1px dotted @black;
         &:last-child{
             margin-right: 0;
         }
     }
     &_r{
-        .inline-block-middle();
+        .inline-block(middle);
         width: 165px;
         white-space: nowrap;
         &:hover {
@@ -48,16 +52,21 @@
 
     display: none;
 
-    margin: 20px 0;
+    margin: 20px 10px;
     padding: 15px 15px 20px;
 
     text-align: center;
 
     border: 1px solid @black;
+    background: @white;
+    .bordered();
+    .rounded(4px);
+    .box-shadow(0px 0px 2px 0 rgba(50, 50, 50, 0.25));
+
     &:before{
         left: @shopInfoTab-corner-left;
 
-        .pseudo-corner-top(12px, @black, -12px);
+        .pseudo-corner-top(12px, #F2F2F2, -12px);
     }
     &:after{
         left: @shopInfoTab-corner-left + 2;
@@ -143,6 +152,7 @@
 
 .i-shopInfo{
     background-image: url('@{base-url}/mainpage/img/i-delivery.png');
+    .inline-block(middle);
     &-delivery{
         .sprite-temp(-66px, 0, 33px, 33px);
     }

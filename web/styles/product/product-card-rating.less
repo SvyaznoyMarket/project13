@@ -1,0 +1,91 @@
+// рейтинг товара
+.product-card-rating {
+    line-height: 1;
+
+    margin: 0 0 5px;
+    &__state {
+        font-size: 0;
+
+        margin: 0 4px 0 0;
+
+        .inline-block-middle();
+    }
+    &__i {
+        .inline-block();
+
+        font-size: 12px;
+        font-family: "rate-stars";
+        font-style: normal;
+        font-weight: normal;
+        speak: none;
+
+        display: inline-block;
+        text-decoration: inherit;
+        width: 1em;
+
+        text-align: center;
+        font-variant: normal;
+        text-transform: none;
+
+        line-height: 1em;
+        color: @firmOrange;
+        margin-right: 2px;
+
+        &:before { content: '\e800'; }
+
+        &--fill{
+            &:before { content: '\e801'; }
+        }
+        &--half{
+            &:before { content: '\e802'; }
+        }
+    }
+    &__tx {
+        line-height: 1.2;
+
+        color: #9c9c9c;
+        border-bottom: 1px dotted #8c8c8c;
+
+        .inline-block-middle();
+        cursor: pointer;
+    }
+    &__val {
+        line-height: 1.2;
+
+        margin: 0 0 0 5px;
+
+        color: #9c9c9c;
+
+        .inline-block-middle();
+    }
+    &-chart {
+        position: relative;
+
+        width: 100px;
+        height: 3px;
+
+        background: #e0e0e0;
+
+        .inline-block-middle();
+        &__val {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            height: 3px;
+
+            background: #f99b1c;
+        }
+    }
+}
+
+.jewel {
+    .product-card-rating {
+        &__i {
+            color: #363636;
+        }
+        &-chart__val{
+            background-color: #363636;
+        }
+    }
+}

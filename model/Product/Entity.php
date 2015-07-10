@@ -2,7 +2,9 @@
 
 namespace Model\Product;
 
-use Model\Media\Source;
+use Model\Media;
+use Model\Product\Delivery\ProductDelivery;
+use Model\EnterprizeCoupon\Entity as Coupon;
 
 class Entity {
     use \Model\MediaHostTrait;
@@ -116,7 +118,7 @@ class Entity {
     protected $tag = [];
     /** @var \Model\Brand\Entity|null */
     protected $brand;
-    /** @var Label\Entity|null */
+    /** @var Label|null */
     protected $label;
     /** @var Type\Entity|null */
     protected $type;
@@ -134,10 +136,14 @@ class Entity {
     protected $relatedId = [];
     /** @var \Model\Region\Entity */
     protected $nearestCity = [];
+    /** @var ProductDelivery|null */
+    public $delivery;
     /** @var \Model\Media[] */
     public $medias = [];
     /** @var array */
     public $json3d = [];
+    /** @var Coupon[] */
+    public $coupons = [];
 
     public function __construct(array $data = []) {
         if (isset($data['id'])) $this->setId($data['id']);
@@ -212,13 +218,7 @@ class Entity {
         }, $data['tag']));
 
         if (array_key_exists('brand', $data) && (bool)$data['brand']) $this->setBrand(new \Model\Brand\Entity($data['brand']));
-        if (array_key_exists('label', $data)) {
-            if (isset($data['label'][0]) && (bool)$data['label'][0]) {
-                $this->setLabel(new Label\Entity($data['label'][0]));
-            } elseif ((bool)$data['label']) {
-                $this->setLabel(new Label\Entity($data['label']));
-            }
-        }
+
         if (array_key_exists('type', $data) && (bool)$data['type']) $this->setType(new Type\Entity($data['type']));
         if (array_key_exists('price_average', $data)) $this->setPriceAverage($data['price_average']);
         if (array_key_exists('price_old', $data)) $this->setPriceOld($data['price_old']);
@@ -227,6 +227,8 @@ class Entity {
         if (array_key_exists('nearest_city', $data) && is_array($data['nearest_city'])) foreach ($data['nearest_city'] as $city) {
             $this->addNearestCity(new \Model\Region\Entity($city));
         }
+
+        if (array_key_exists('medias', $data) && is_array($data['medias'])) $this->medias = array_map(function($mediaData) {return new Media($mediaData);}, $data['medias']);
 
         $indexedPropertyGroups = [];
         foreach ($this->propertyGroup as $group) {
@@ -244,7 +246,7 @@ class Entity {
         }
 
         $propertiesCount = $this->getPropertiesCount();
-        if (((!$this->getTagline() && !count($this->getModel()) && !$this->getDescription() && $propertiesCount < 16) || $propertiesCount < 8) && !$this->hasLongProperties()) {
+        if (((!$this->getTagline() && !$this->getModel() && !$this->getDescription() && $propertiesCount < 16) || $propertiesCount < 8) && !$this->hasLongProperties()) {
             foreach ($this->groupedProperties as $group) {
                 if (!(bool)$group['properties']) continue;
 
@@ -332,7 +334,7 @@ class Entity {
     /**
      * @return string
      */
-    public function getLink($withSuffix = true, $region = null) {
+    public function getLink() {
         return $this->link;
     }
 
@@ -357,7 +359,7 @@ class Entity {
         $this->announce = (string)$announce;
     }
 
-    /**
+    /** Краткое описание товара
      * @return string
      */
     public function getAnnounce() {
@@ -563,6 +565,7 @@ class Entity {
                 return $property;
             }
         }
+        return null;
     }
 
     /**
@@ -754,14 +757,14 @@ class Entity {
     }
 
     /**
-     * @param \Model\Product\Label\Entity|null $label
+     * @param Label|null $label
      */
-    public function setLabel(Label\Entity $label = null) {
+    public function setLabel(Label $label = null) {
         $this->label = $label;
     }
 
     /**
-     * @return \Model\Product\Label\Entity|null
+     * @return Label|null
      */
     public function getLabel() {
         return $this->label;
@@ -779,17 +782,6 @@ class Entity {
      */
     public function getType() {
         return $this->type;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasSaleLabel() {
-        if ($this->label) {
-            return $this->label->isSale();
-        }
-
-        return false;
     }
 
     /**
@@ -979,6 +971,7 @@ class Entity {
             $this->getState() && $this->getState()->getIsBuyable()
             && (\App::config()->product['allowBuyOnlyInshop'] ? true : !$this->isInShopStockOnly())
             && $this->getPrice() !== null
+            && $this->getStatusId() != 5
             ;
     }
 
@@ -1220,6 +1213,20 @@ class Entity {
         return $this->partnersOffer;
     }
 
+    /** Возвращает наименование первого партнера
+     * @return string|null
+     */
+    public function getPartnerName(){
+        return !empty($this->partnersOffer) && isset($this->partnersOffer[0]['name']) ? $this->partnersOffer[0]['name'] : null;
+    }
+
+    /** Возвращает оферту первого партнера
+     * @return string|null
+     */
+    public function getPartnerOfferLink() {
+        return !empty($this->partnersOffer) && isset($this->partnersOffer[0]['offer']) ? $this->partnersOffer[0]['offer'] : null;
+    }
+
     /**
      * @return boolean
      */
@@ -1349,6 +1356,10 @@ class Entity {
         return $medias;
     }
 
+    public function getImageUrl(){
+        return $this->getMainImageUrl('product_120');
+    }
+
     public function getMainImageUrl($sourceType) {
         $images = $this->getMedias('image', 'main');
         if ($images) {
@@ -1403,4 +1414,34 @@ class Entity {
     public function isGifteryCertificate() {
         return $this->getUi() == $this::GIFTERY_UID;
     }
+
+    /** Установка купонов для продукта
+     * @param $coupons
+     */
+    public function setCoupons($coupons) {
+        if (is_array($coupons)) {
+            foreach ($coupons as $coupon) {
+                if ($coupon instanceof Coupon) $this->coupons[] = $coupon;
+            }
+        }
+    }
+
+    /** Возращает купон с максимальным дискаунтом
+     * @return Coupon|null
+     */
+    public function getBestCoupon() {
+        $bestCoupon = null;
+        $maxDiscount = 0;
+        foreach ($this->coupons as $coupon) {
+            if ($bestCoupon === null) $bestCoupon = $coupon;
+            $currentDiscount = $coupon->getIsCurrency() ? $coupon->getPrice() : $coupon->getPrice() / 100 * $this->getPrice();
+            if ($currentDiscount > $maxDiscount) {
+                $maxDiscount = $currentDiscount;
+                $bestCoupon = $coupon;
+            }
+        }
+
+        return $bestCoupon;
+    }
+
 }

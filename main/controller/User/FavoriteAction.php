@@ -1,0 +1,49 @@
+<?php
+
+
+namespace Controller\User;
+
+use EnterQuery as Query;
+
+class FavoriteAction extends PrivateAction {
+    use \EnterApplication\CurlTrait;
+
+    /**
+     * @return \Http\JsonResponse|\Http\Response
+     */
+    public function get() {
+        $curl = $this->getCurl();
+
+        $favoriteQuery = (new Query\User\Favorite\Get(\App::user()->getEntity()->getUi()))->prepare();
+
+        $curl->execute();
+        
+        $favoriteProductsByUi = [];
+        foreach ($favoriteQuery->response->products as $item) {
+            $ui = isset($item['uid']) ? (string)$item['uid'] : null;
+            if (!$ui) continue;
+
+            $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
+        }
+
+        $products = [];
+        if ($favoriteProductsByUi) {
+            $productQuery = (new Query\Product\GetByUiList(array_keys($favoriteProductsByUi), \App::user()->getRegion()->getId()))->prepare();
+
+            $curl->execute();
+
+            foreach ($productQuery->response->products as $item) {
+                $products[] = new \Model\Product\Entity($item);
+            }
+        }
+
+        \RepositoryManager::product()->enrichProductsFromScms($products, 'media');
+        $curl->execute();
+
+        $page = new \View\User\FavoritesPage();
+        $page->setParam('products', $products);
+        $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
+
+        return new \Http\Response($page->show());
+    }
+}

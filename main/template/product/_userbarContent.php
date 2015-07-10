@@ -15,32 +15,36 @@ $buySender = $request->get('sender');
 $buySender2 = $request->get('sender2');
 ?>
 
-<div class="topbarfix_crumbs">
-    <div class="topbarfix_crumbsImg"><img class="crumbsImg" src="<?= $product ? $product->getMainImageUrl('product_120') : '' ?>" /></div>
+<div class="userbar-crumbs">
+    <div class="userbar-crumbs-img"><img class="userbar-crumbs-img__img" src="<?= $product ? $product->getImageUrl() : '' ?>" /></div>
 
-    <div class="wrapperCrumbsList">
+    <div class="userbar-crumbs-wrap">
         <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
     </div>
 </div>
 
+<? if (!$product->getIsBuyable()) return ?>
+
 <div class="topbarfix_buy js-topbarfixBuy none">
+
+    <div class="topbarfix_buy-price">
+        <? if ($product->getPriceOld()) : ?>
+        <div class="product-card-old-price" style="font-size: 12px;">
+            <span class="product-card-old-price__inn"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
+        </div>
+        <? endif ?>
+
+        <span class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></span><span class="rubl">p</span>
+    </div>
 
     <?= $helper->render('cart/__button-product', [
         'product'  => $product,
         'onClick'  => $addToCartJS ? $addToCartJS : null,
         'sender'   => $buySender,
         'sender2'  => $buySender2,
+        'noUpdate'  => true,
         'location' => 'userbar',
     ]) // Кнопка купить ?>
 
-    <? if (!$product->getSlotPartnerOffer() && $product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && (!$product->getKit() || $product->getIsKitLocked())): ?>
-        <?= $helper->render('__spinner', [
-            'id'        => \View\Id::cartButtonForProduct($product->getId()),
-            'productId' => $product->getId(),
-            'location'  => 'userbar',
-        ]) ?>
-    <? endif ?>
-
-    <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 
 </div>

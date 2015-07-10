@@ -3,8 +3,6 @@
 namespace View\Jewel\ProductCategory;
 
 abstract class Layout extends \View\ProductCategory\Layout {
-    protected $layout  = 'layout-oneColumn';
-
     public function slotBodyClassAttribute() {
         return parent::slotBodyClassAttribute() . ' jewel';
     }

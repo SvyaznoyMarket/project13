@@ -109,4 +109,11 @@ trait ABHelperTrait {
         $test = \App::abTest()->getTest('new_window');
         return $test && $test->getChosenCase()->getKey() == 'hamburger' && \App::request()->attributes->get('route') == 'product';
     }
+
+    /** Новая карточка товара
+     * @return bool
+     */
+    public static function isNewProductPage() {
+        return \App::abTest()->getTest('productCard') && \App::abTest()->getTest('productCard')->getChosenCase()->getKey() == 'new';
+    }
 }

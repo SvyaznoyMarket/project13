@@ -18,9 +18,9 @@ if ($category) {
     }
 } ?>
 
-<div class="topbarfix_crumbs">
-    <a class="topbarfix_crumbsImg" href=""><img class="crumbsImg" src="<?= $category ? $category->getImageUrl() : '' ?>" /></a>
-    <div class="topbarfix_wrapCrumbsList">
+<div class="userbar-crumbs">
+    <a class="userbar-crumbs-img" href=""><img class="userbar-crumbs-img__img" src="<?= $category ? $category->getImageUrl() : '' ?>" /></a>
+    <div class="userbar-crumbs-wrap">
         <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
     </div>
 </div>

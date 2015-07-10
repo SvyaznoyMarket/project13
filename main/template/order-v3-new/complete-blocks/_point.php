@@ -13,7 +13,7 @@
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
-                    <? if ($order->point->isEnterShop() || $order->point->isSvyaznoyShop()) : ?>
+                    <? if ($order->point->isEnterShop() || $order->point->isSvyaznoyShop() || $order->point->isEurosetPoint()) : ?>
                         Ждем вас <?= $order->getDeliveredAt()->format('d.m.Y') ?> в магазине
                     <? elseif ($order->point->isPickpoint()) : ?>
                         Вы можете забрать заказ из постамата <?= $order->getDeliveredAt()->format('d.m.Y') ?>

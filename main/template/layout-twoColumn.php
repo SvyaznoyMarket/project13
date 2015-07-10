@@ -15,7 +15,6 @@
 
     <?= $page->slotMeta() ?>
     <link rel="shortcut icon" href="/favicon.ico"/>
-    <link rel="apple-touch-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon.png">
@@ -31,30 +30,32 @@
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
     <?= $page->slotMetaOg() ?>
+    <?= $page->slotGifteryJS() ?>
 </head>
+
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
-    <?= $page->slotConfig() ?>
 
-    <?= $page->slotAdFoxBground() ?>
+<?= $page->slotConfig() ?>
 
-    <div class="wrapper">
-        <div class="header">
+<?= $page->slotAdFoxBground() ?>
+
+<div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
+    <div class="header <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?> clearfix">
+        <div class="header__inn">
             <?= $page->slotHeader() ?>
 
-            <!-- Topbar -->
             <?= $page->slotTopbar() ?>
-            <!-- /Topbar -->
+        </div>
 
-            <!-- Header -->
-            <div id="header" class="clearfix">
-                <a id="topLogo" href="/">Enter Связной</a>
-                <?= $page->slotMainMenu() ?>
-            </div>
-            <!-- /Header -->
+        <?= $page->slotSearchBar() ?>
 
-        </div><!--/ Шапка-->
+        <div class="header__inn">
+            <?= $page->slotNavigation() ?>
+        </div>
+    </div>
 
-        <div class="content mContentOrder clearfix">
+    <div class="content clearfix">
+        <div class="inn">
             <?= $page->slotContentHead() ?>
 
             <div class="float100">
@@ -66,27 +67,28 @@
             <div class="column215">
                 <?= $page->slotSidebar() ?>
             </div>
+        </div>
+    </div><!--/ Контент-->
 
-            <?= $page->slotSeoContent() ?>
-        </div><!--/ Контент -->
-    </div><!--/ Шаблон -->
+</div><!--/ Шаблон -->
 
-    <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
+<?= $page->render('common/_footer-new') ?>
 
-    <?= $page->slotUpper() ?>
-    <?= $page->slotUserbar() ?>
-    <?= $page->slotAuth() ?>
-    <?= $page->slotUserConfig() ?>
-    <?= $page->slotMustacheTemplates() ?>
+<?= $page->slotUpper() ?>
+<?= $page->slotUserbar() ?>
 
-    <div style="position:absolute; height: 0; z-index:-1; top: 0;">
-        <?= $page->slotBodyJavascript() ?>
-        <?= $page->slotInnerJavascript() ?>
-        <?= $page->slotYandexMetrika() ?>
-        <?= $page->slotPartnerCounter() ?>
-        <?= $page->slotEnterprizeConfirmJs() ?>
-        <?= $page->slotEnterprizeCompleteJs() ?>
-        <?= $page->slotEnterprizeRegJS() ?>
-    </div>
+<?= $page->slotAuth() ?>
+<?= $page->slotUserConfig() ?>
+<?= $page->slotMustacheTemplates() ?>
+
+<div style="position:absolute; height: 0; top:0; z-index:-1;">
+    <?= $page->slotBodyJavascript() ?>
+    <?= $page->slotInnerJavascript() ?>
+    <?= $page->slotYandexMetrika() ?>
+    <?= $page->slotPartnerCounter() ?>
+    <?= $page->slotEnterprizeConfirmJs() ?>
+    <?= $page->slotEnterprizeCompleteJs() ?>
+    <?= $page->slotEnterprizeRegJS() ?>
+</div>
 </body>
 </html>

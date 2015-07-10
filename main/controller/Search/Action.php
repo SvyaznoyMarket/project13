@@ -175,7 +175,7 @@ class Action {
         $productView = $request->get('view', $selectedCategory ? $selectedCategory->getProductView() : \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT);
 
         // товары
-        $productRepository = \RepositoryManager::product();
+        $productRepository = \RepositoryManager::product()->useV3()->withoutModels();
 
         $products = $productRepository->getCollectionById($result['data']);
 
@@ -351,7 +351,7 @@ class Action {
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
         if ($productsIds) {
-            $products = \RepositoryManager::product()->useV3()->withoutModels()->withoutPartnerStock()->getCollectionById($productsIds, null, false);
+            $products = \RepositoryManager::product()->useV3()->withoutModels()->getCollectionById($productsIds, null, false);
         }
 
         foreach ($products as $product) {
