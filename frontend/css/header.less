@@ -41,7 +41,7 @@
             line-height: 1;
 
             height: 30px;
-            padding-top: 11px;
+            padding-top: 8px;
             padding-right: 20px;
         }
         &--bottom {
@@ -94,7 +94,6 @@
         .inline-block();
     }
     &__link {
-        display: inherit;
     }
 }
 
@@ -123,14 +122,13 @@
     &-order {
         .inline-block();
         &__icon {
-            margin: -5px 3px 0 0;
+            margin: -2px 0 0 0;
         }
         &__text {
             .inline-block();
         }
     }
     &__text {
-        font-family: 'GloberBold';
         font-size: 1.1666em;
 
         margin: 0 8px 0 0;
@@ -162,23 +160,18 @@
 .i-controls {
     background: url('@{base-url}/header/i-controls.png') no-repeat 0 0;
     &--cart {
-        .i-sprite(-1px, -1px, 45px, 45px);
+        .i-sprite(0px, 0px, 45px, 45px);
     }
     &--compare {
-        .i-sprite(-48px, -1px, 25px, 25px);
+        .i-sprite(-78px, 0, 25px, 25px);
     }
     &--phone {
-        .i-sprite(-52px, -32px, 17px, 17px);
+        .i-sprite(-72px, -29px, 17px, 17px);
     }
     &--search {
-        .i-sprite(-5px, -59px, 19px, 19px);
+        .i-sprite(-49px, -27px, 19px, 19px);
     }
     &--user {
-        .i-sprite(-30px, -55px, 25px, 25px);
+        .i-sprite(-50px, 0px, 25px, 25px);
     }
 }
-
-
-// <i class="controls controls-cart"></i>
-// <i class="controls controls-compare"></i>
-// <i class="controls controls-user"></i>

@@ -5,27 +5,26 @@
 }
 
 .shop-adv {
+    display: table;
+
+    width: 100%;
     &__item {
         font-size: 1.1666em;
 
-        padding: 0;
+        display: table-cell;
 
-        background: @orange-light-4;
-        &:nth-child(even) {
-            background: @orange-light-3;
-        }
+        padding: 0;
     }
     &__link {
         position: relative;
 
         display: block;
 
-        min-height: 100px;
-        padding: 26px 15px 20px 74px;
+        padding: 6px 0 0 38px;
         &:after {
             position: absolute;
-            top: 31px;
-            left: 15px;
+            top: 3px;
+            left: 0;
 
             width: 49px;
             height: 100%;
@@ -34,37 +33,32 @@
 
             background: url('@{base-url}/main-page/i-shop-info.png') no-repeat 0 0;
 
-            .i-sprite(-1px, -1px, 49px, 49px);
+            .i-sprite(0, 0, 29px, 22px);
         }
         &_self-delivery {
             &:after {
-                top: 26px;
-                left: 22px;
+                top: 0;
 
-                .i-sprite(-52px, -1px, 34px, 49px);
+                .i-sprite(-69px, 0, 29px, 25px);
             }
         }
         &_payment {
             &:after {
-                top: 27px;
-                left: 26px;
+                top: 0;
 
-                .i-sprite(-139px, -1px, 27px, 49px);
+                .i-sprite(-101px, 0, 29px, 25px);
             }
         }
         &_wow {
             &:after {
-                top: 27px;
-                left: 15px;
+                top: 0;
 
-                .i-sprite(-88px, -1px, 49px, 49px);
+                .i-sprite(-35px, 0, 29px, 25px);
             }
         }
     }
     &__title {
         line-height: 1;
-
-        margin: 0 0 5px;
 
         .inline-block();
     }
@@ -76,7 +70,6 @@
 .section {
     padding: 0 30px 20px;
     &__title {
-        font-family: 'GloberBold';
         font-size: 1.3333em;
         line-height: 1.4375;
 
@@ -218,26 +211,7 @@
 
     width: 960px;
     height: 240px;
-    margin: 20px auto;
-    &:after ,
-    &:before {
-        position: absolute;
-        top: 0;
-
-        width: 9px;
-        height: 100%;
-
-        content: '';
-
-        background: url('@{base-url}/main-page/bg-banner-side.png') repeat-y 0 0;
-    }
-    &:before {
-        z-index: 10;
-        left: -5px;
-    }
-    &:after {
-        right: -6px;
-    }
+    margin: 0 auto 20px;
     &-list {
         &__item {
             margin: 0;

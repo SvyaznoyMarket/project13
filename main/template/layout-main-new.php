@@ -81,94 +81,17 @@
                      $('.js-banners-slider').slick({
                         slidesToShow: 1,
                         slidesToScroll: 1,
-                        arrows: false,
-                        vertical: true,
-                        infinite: false,
-                        centerMode: false,
-                        asNavFor: '.js-banners-slider-nav'
-                    });
-
-                    $('.js-banners-slider-nav').slick({
-                        slidesToShow: 4,
-                        slidesToScroll: 1,
-                        asNavFor: '.js-banners-slider',
-                        dots: false,
-                        vertical: true,
-                        centerMode: false,
-                        focusOnSelect: true,
-                        infinite: false,
-                        prevArrow: '.js-banners-slider-nav-btn-prev',
-                        nextArrow: '.js-banners-slider-nav-btn-next'
+                        infinite: true,
+                        dots: true
                     });
                 })
             </script>
-
-            <div class="banner-section">
-                <div class="banner-section-list js-banners-slider">
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="http://fs01.enter.ru/4/1/960x240/67/413291.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="http://fs01.enter.ru/4/1/960x240/a5/411502.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="http://fs01.enter.ru/4/1/960x240/48/408940.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="http://fs01.enter.ru/4/1/960x240/67/413291.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="http://fs01.enter.ru/4/1/960x240/a5/411502.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="http://fs01.enter.ru/4/1/960x240/48/408940.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="http://fs01.enter.ru/4/1/960x240/67/413291.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-                </div>
-
-                <div class="banner-section-nav">
-                    <div class="js-banners-slider-nav">
-                        <div class="banner-section-nav__item"><img class="banner-section-nav__img" src="http://fs01.enter.ru/4/1/220x50/67/413291.jpg" alt=""></div>
-                        <div class="banner-section-nav__item"><img class="banner-section-nav__img" src="http://fs01.enter.ru/4/1/220x50/a5/411502.jpg" alt=""></div>
-                        <div class="banner-section-nav__item"><img class="banner-section-nav__img" src="http://fs01.enter.ru/4/1/220x50/48/408940.jpg" alt=""></div>
-                        <div class="banner-section-nav__item"><img class="banner-section-nav__img" src="http://fs01.enter.ru/4/1/220x50/aa/411492.jpg" alt=""></div>
-                        <div class="banner-section-nav__item"><img class="banner-section-nav__img" src="http://fs01.enter.ru/4/1/220x50/a0/411495.jpg" alt=""></div>
-                        <div class="banner-section-nav__item"><img class="banner-section-nav__img" src="http://fs01.enter.ru/4/1/220x50/a5/411502.jpg" alt=""></div>
-                        <div class="banner-section-nav__item"><img class="banner-section-nav__img" src="http://fs01.enter.ru/4/1/220x50/67/413291.jpg" alt=""></div>
-                    </div>
-
-                    <button class="banner-section-nav__btn banner-section-nav__btn_prev js-banners-slider-nav-btn-prev"></button>
-                    <button class="banner-section-nav__btn banner-section-nav__btn_next js-banners-slider-nav-btn-next"></button>
-                </div>
-            </div>
 
             <aside class="left-bar">
                 <nav class="site-menu">
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
-                            <span class="site-menu__icon"><i class="i-nav i-nav--furniture"></i></span>
+                            <span class="site-menu__icon site-menu__icon_char">A</span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
 
@@ -176,150 +99,154 @@
                             <li class="site-menu-sub__item">
                                 <a href="" class="site-menu-sub__link">Плетеная мебель из ротанга</a>
 
-                                <ul class="site-menu-2sub menu-hide">
-                                    <li class="site-menu-2sub__item">
-                                        <a href="" class="site-menu-2sub__link">Дизайн в деталях</a>
-                                    </li>
+                                <div class="menu-hide">
+                                    <ul class="site-menu-2sub menu-hide">
+                                        <li class="site-menu-2sub__item">
+                                            <a href="" class="site-menu-2sub__link">Дизайн в деталях</a>
+                                        </li>
 
-                                    <li class="site-menu-2sub__item">
-                                        <a href="" class="site-menu-2sub__link">Товары для ванной, бани, сауны</a>
-                                    </li>
+                                        <li class="site-menu-2sub__item">
+                                            <a href="" class="site-menu-2sub__link">Товары для ванной, бани, сауны</a>
+                                        </li>
 
-                                    <li class="site-menu-2sub__item">
-                                        <a href="" class="site-menu-2sub__link">Товары для дачи и отдыха на природе</a>
-                                    </li>
+                                        <li class="site-menu-2sub__item">
+                                            <a href="" class="site-menu-2sub__link">Товары для дачи и отдыха на природе</a>
+                                        </li>
 
-                                    <li class="site-menu-2sub__item">
-                                        <a href="" class="site-menu-2sub__link">Средства по уходу за бытовой техникой</a>
-                                    </li>
+                                        <li class="site-menu-2sub__item">
+                                            <a href="" class="site-menu-2sub__link">Средства по уходу за бытовой техникой</a>
+                                        </li>
 
-                                    <li class="site-menu-2sub__item">
-                                        <a href="" class="site-menu-2sub__link">Плетеная мебель из ротанга</a>
-                                    </li>
+                                        <li class="site-menu-2sub__item">
+                                            <a href="" class="site-menu-2sub__link">Плетеная мебель из ротанга</a>
+                                        </li>
 
-                                    <li class="site-menu-2sub__item">
-                                        <a href="" class="site-menu-2sub__link">Плетеная мебель из ротанга</a>
-                                    </li>
+                                        <li class="site-menu-2sub__item">
+                                            <a href="" class="site-menu-2sub__link">Плетеная мебель из ротанга</a>
+                                        </li>
 
-                                    <li class="site-menu-2sub__item">
-                                        <a href="" class="site-menu-2sub__link">Плетеная мебель из ротанга</a>
-                                    </li>
+                                        <li class="site-menu-2sub__item">
+                                            <a href="" class="site-menu-2sub__link">Плетеная мебель из ротанга</a>
+                                        </li>
 
-                                    <li class="site-menu-2sub__item site-menu-2sub__item_wow">
-                                        <div class="menu-wow">
-                                            <div class="goods">
-                                                <div class="sticker">Товар дня</div>
+                                        <li class="site-menu-2sub__item site-menu-2sub__item_wow">
+                                            <div class="menu-wow">
+                                                <div class="goods">
+                                                    <div class="sticker">Товар дня</div>
 
-                                                <a href="" class="goods__img">
-                                                    <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
-                                                </a>
+                                                    <a href="" class="goods__img">
+                                                        <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
+                                                    </a>
 
-                                                <div class="goods__name">
-                                                    <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                                    <div class="goods__name">
+                                                        <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                                    </div>
+
+                                                    <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
+                                                    <div class="goods__price-now">45 990 ₽</div>
+
+                                                    <a class="goods__btn btn-buy" href="">Купить</a>
                                                 </div>
-
-                                                <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
-                                                <div class="goods__price-now">45 990 ₽</div>
-
-                                                <a class="goods__btn btn-buy" href="">Купить</a>
                                             </div>
-                                        </div>
-                                    </li>
-                                </ul>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
 
                             <li class="site-menu-sub__item">
-                                <a href="" class="site-menu-sub__link">Дизайн в деталях </a>
+                                <a href="" class="site-menu-sub__link">Дизайн в деталях</a>
                             </li>
 
                             <li class="site-menu-sub__item">
-                                <a href="" class="site-menu-sub__link">Товары для ванной, бани, сауны   </a>
+                                <a href="" class="site-menu-sub__link">Товары для ванной, бани, сауны</a>
                             </li>
 
                             <li class="site-menu-sub__item">
-                                <a href="" class="site-menu-sub__link">Товары для дачи и отдыха на природе  </a>
+                                <a href="" class="site-menu-sub__link">Товары для дачи и отдыха на природе</a>
                             </li>
 
                             <li class="site-menu-sub__item">
-                                <a href="" class="site-menu-sub__link">Средства по уходу за бытовой техникой    </a>
+                                <a href="" class="site-menu-sub__link">Средства по уходу за бытовой техникой</a>
                             </li>
                         </ul>
                     </li>
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
-                            <span class="site-menu__icon"><i class="i-nav i-nav--household"></i></span>
+                            <span class="site-menu__icon site-menu__icon_char">B</span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
                     </li>
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
-                            <span class="site-menu__icon"><i class="i-nav i-nav--appliances"></i></span>
+                            <span class="site-menu__icon site-menu__icon_char">C</span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
                     </li>
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
-                            <span class="site-menu__icon"><i class="i-nav i-nav--appliances2"></i></span>
+                            <span class="site-menu__icon site-menu__icon_char">D</span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
                     </li>
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
-                            <span class="site-menu__icon"><i class="i-nav i-nav--car"></i></span>
+                            <span class="site-menu__icon site-menu__icon_char">F</span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
                     </li>
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
-                            <span class="site-menu__icon"><i class="i-nav i-nav--diy"></i></span>
+                            <span class="site-menu__icon site-menu__icon_char">G</span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
                     </li>
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
-                            <span class="site-menu__icon"><i class="i-nav i-nav--garden"></i></span>
+                            <span class="site-menu__icon site-menu__icon_char">H</span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
                     </li>
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
-                            <span class="site-menu__icon"><i class="i-nav i-nav--gifts"></i></span>
+                            <span class="site-menu__icon site-menu__icon_char">I</span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
                     </li>
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
-                            <span class="site-menu__icon"><i class="i-nav i-nav--jewelry"></i></span>
+                            <span class="site-menu__icon site-menu__icon_char">J</span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
                     </li>
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
-                            <span class="site-menu__icon"><i class="i-nav i-nav--kids"></i></span>
+                            <span class="site-menu__icon site-menu__icon_char">K</span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
                     </li>
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
-                            <span class="site-menu__icon"><i class="i-nav i-nav--perfumery"></i></span>
+                            <span class="site-menu__icon site-menu__icon_char">L</span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
                     </li>
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
-                            <span class="site-menu__icon"><i class="i-nav i-nav--pets"></i></span>
+                            <span class="site-menu__icon site-menu__icon_char">M</span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
                     </li>
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
-                            <span class="site-menu__icon"><i class="i-nav i-nav--present"></i></span>
+                            <span class="site-menu__icon site-menu__icon_char">N</span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
                     </li>
                     <li class="site-menu__item">
                         <a href="" class="site-menu__link">
-                            <span class="site-menu__icon"><i class="i-nav i-nav--sport"></i></span>
+                            <span class="site-menu__icon site-menu__icon_img">
+                                <img src="public/images/nav/nav-img.png" alt="" class="site-menu__img">
+                            </span>
                             <span class="site-menu__text">Мебель</span>
                         </a>
                     </li>
@@ -328,35 +255,79 @@
 
             <main class="content">
                 <div class="content__inner">
-                    <ul class="shop-adv grid-4col">
-                        <li class="shop-adv__item grid-4col__item">
-                            <a href="" class="shop-adv__link">
-                                <span class="shop-adv__title underline">Доставка</span>
-                                <span class="shop-adv__text">Доставляем по всей России</span>
-                            </a>
-                        </li>
+                    <div class="banner-section">
+                        <div class="banner-section-list js-banners-slider">
+                            <div class="banner-section-list__item">
+                                <a href="" class="banner-section-list__link">
+                                    <img class="banner-section-list__item" src="http://fs01.enter.ru/4/1/960x240/67/413291.jpg" alt="" class="banner-section-list__img">
+                                </a>
+                            </div>
 
-                        <li class="shop-adv__item grid-4col__item">
-                            <a href="" class="shop-adv__link shop-adv__link_self-delivery">
-                                <span class="shop-adv__title underline">Самовывоз</span>
-                                <span class="shop-adv__text">Более 1300 точек выдачи</span>
-                            </a>
-                        </li>
+                            <div class="banner-section-list__item">
+                                <a href="" class="banner-section-list__link">
+                                    <img class="banner-section-list__item" src="http://fs01.enter.ru/4/1/960x240/a5/411502.jpg" alt="" class="banner-section-list__img">
+                                </a>
+                            </div>
 
-                        <li class="shop-adv__item grid-4col__item">
-                            <a href="" class="shop-adv__link shop-adv__link_payment">
-                                <span class="shop-adv__title underline">Удобно платить</span>
-                                <span class="shop-adv__text">Способ оплаты на твой вкус</span>
-                            </a>
-                        </li>
+                            <div class="banner-section-list__item">
+                                <a href="" class="banner-section-list__link">
+                                    <img class="banner-section-list__item" src="http://fs01.enter.ru/4/1/960x240/48/408940.jpg" alt="" class="banner-section-list__img">
+                                </a>
+                            </div>
 
-                        <li class="shop-adv__item grid-4col__item">
-                            <a href="" class="shop-adv__link shop-adv__link_wow">
-                                <span class="shop-adv__title underline">Акции</span>
-                                <span class="shop-adv__text">Выгодные предложения</span>
-                            </a>
-                        </li>
-                    </ul>
+                            <div class="banner-section-list__item">
+                                <a href="" class="banner-section-list__link">
+                                    <img class="banner-section-list__item" src="http://fs01.enter.ru/4/1/960x240/67/413291.jpg" alt="" class="banner-section-list__img">
+                                </a>
+                            </div>
+
+                            <div class="banner-section-list__item">
+                                <a href="" class="banner-section-list__link">
+                                    <img class="banner-section-list__item" src="http://fs01.enter.ru/4/1/960x240/a5/411502.jpg" alt="" class="banner-section-list__img">
+                                </a>
+                            </div>
+
+                            <div class="banner-section-list__item">
+                                <a href="" class="banner-section-list__link">
+                                    <img class="banner-section-list__item" src="http://fs01.enter.ru/4/1/960x240/48/408940.jpg" alt="" class="banner-section-list__img">
+                                </a>
+                            </div>
+
+                            <div class="banner-section-list__item">
+                                <a href="" class="banner-section-list__link">
+                                    <img class="banner-section-list__item" src="http://fs01.enter.ru/4/1/960x240/67/413291.jpg" alt="" class="banner-section-list__img">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <ul class="shop-adv">
+                            <li class="shop-adv__item">
+                                <a href="" class="shop-adv__link">
+                                    <span class="shop-adv__title underline">Доставляем по всей России</span>
+                                </a>
+                            </li>
+
+                            <li class="shop-adv__item">
+                                <a href="" class="shop-adv__link shop-adv__link_self-delivery">
+                                    <span class="shop-adv__title underline">Более 1300 точек выдачи</span>
+                                </a>
+                            </li>
+
+                            <li class="shop-adv__item">
+                                <a href="" class="shop-adv__link shop-adv__link_payment">
+                                    <span class="shop-adv__title underline">Удобно платить</span>
+                                </a>
+                            </li>
+
+                            <li class="shop-adv__item">
+                                <a href="" class="shop-adv__link shop-adv__link_wow">
+                                    <span class="shop-adv__title underline">Акции</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
 
                     <div class="section">
                         <div class="section__title">Мы рекомендуем</div>
