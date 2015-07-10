@@ -1,0 +1,13 @@
+default:
+  - 'newer:less'
+  - 'newer:uglify'
+
+all:
+  - 'less'
+  - 'uglify'
+
+css:
+  - 'less'
+
+js:
+  - 'uglify'

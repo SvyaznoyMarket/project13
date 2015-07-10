@@ -15,6 +15,9 @@ $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
 $c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
 
+// project Lite
+$c->lite['enabled'] = true;
+
 $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
 

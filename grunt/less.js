@@ -1,29 +1,6 @@
 module.exports = {
 
     // компиляция LESS
-    compileLite: {
-        options: {
-            paths: ['frontend/css/'],
-            sourceMapBasepath: 'frontend/css/',
-            sourceMap: true
-        },
-        files: {
-            'web/public/css/global.css': ['frontend/css/global.less']
-        }
-    },
-
-    // компиляция и минификация LESS
-    compressLite: {
-        options: {
-            paths: ['frontend/css/'],
-            compress: true
-        },
-        files: {
-            'web/public/css/global.min.css': ['frontend/css/global.less']
-        }
-    },
-
-    // компиляция LESS
     compile: {
         options: {
             paths: ['web/css/'],

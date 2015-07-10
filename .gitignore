@@ -27,6 +27,7 @@ erase_barcode.cmd
 /web/plan
 /web/survey
 /node_modules
+/frontend/node_modules
 /web/version.txt
 *.map
 sftp-config.json

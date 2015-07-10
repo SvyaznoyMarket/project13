@@ -100,8 +100,7 @@ module.exports = function (grunt, options) {
                 'dev/jquery-plugins/jquery.elevatezoom.js',
                 'dev/jquery-plugins/customDropDown.js',
                 'dev/jquery-plugins/goodsSlider.js',
-                'dev/jquery-plugins/jquery-ui-1.10.3.custom.js',
-                'dev/jquery-plugins/slick.js'
+                'dev/jquery-plugins/jquery-ui-1.10.3.custom.js'
             ],
                 dest: 'prod/jquery-plugins.js',
                 destMap: 'prod/jquery-plugins.js.map',

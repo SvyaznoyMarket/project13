@@ -9,6 +9,12 @@ require_once __DIR__ . '/Oauth/TwitterConfig.php';
 
 
 class AppConfig {
+    /** Проект Lite
+     * @var bool
+     */
+    public $lite = [
+        'enabled' => null
+    ];
     /**
      * @var string
      * @hidden

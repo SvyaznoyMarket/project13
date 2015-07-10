@@ -21,7 +21,7 @@ call_user_func(include realpath(__DIR__ . '/../config/degradation.php'), $config
 
 // autoload
 require_once __DIR__ . '/../lib/Autoloader.php';
-Autoloader::register($config->appDir);
+Autoloader::register($config->appDir, $config);
 
 // debug
 if (isset($_GET['APPLICATION_DEBUG'])) {

@@ -6,11 +6,6 @@ module.exports = function (grunt, options) {
 
     return {
 
-        stylesLite: {
-            files: ['frontend/css/*.less', 'frontend/css/**/*.less'],
-            tasks: ['less:compileLite', 'less:compressLite']
-        },
-
         styles: {
             files: ['web/css/*.less', 'web/css/**/*.less'],
             tasks: ['less:compile', 'less:compress']
