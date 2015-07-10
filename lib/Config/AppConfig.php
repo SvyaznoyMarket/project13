@@ -602,10 +602,15 @@ class AppConfig {
         'regions'   => []
     ];
 
-    /** Минимальная сумма заказа (для Воронежа)
+    /** Минимальная сумма заказа (для некоторых регионов)
      * @var int
      */
     public $minOrderSum = 0;
+
+    /** Сумма бесплатного самовывоза (для некоторых регионов)
+     * @var int
+     */
+    public $selfDeliverySum = 0;
 
     public function __construct() {
 
