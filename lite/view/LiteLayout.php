@@ -12,6 +12,8 @@ class LiteLayout extends \Templating\HtmlLayout
         $c->templateDir = $c->appDir . '/lite/template';
 
         parent::__construct();
+
+        $this->setGlobalParam('menu', (new \View\Menu($this))->generate_new(\App::user()->getRegion()));
     }
 
     protected function prepare()
@@ -27,6 +29,13 @@ class LiteLayout extends \Templating\HtmlLayout
     public function slotHeadJavascript()
     {
         parent::slotHeadJavascript();
+    }
+
+    /** Навигация
+     * @return string
+     */
+    public function slotNavigation() {
+        return $this->render('common/_navigation', ['menu' => $this->getGlobalParam('menu')]);
     }
 
 
