@@ -11,7 +11,7 @@
 
 **Javascript и CSS**
 
-Исходные файлы проекта располагаются в папке `frontend` и собираются в `web/public`. 
+Исходные файлы проекта располагаются в папке `frontend` и собираются в `web/public` с помощью отдельного `Gruntfile.js`.
 Для сборки сборки и работы над проектом в папке `frontend` необходимо выполнить команды
 
 ```
@@ -19,7 +19,8 @@ npm install
 grunt all
 ```
 
-Для автоматической сборки проекта при git checkout можно записать в [хук](http://git-scm.com/docs/githooks) `.git/hooks/post-checkout` следующие строки:
+Для автоматической сборки проекта при `git pull|checkout` можно записать в [хук](http://git-scm.com/docs/githooks)
+`.git/hooks/post-checkout` и `.git/hooks/post-merge`  следующие строки:
 
 ```
 # building project "lite"
