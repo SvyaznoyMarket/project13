@@ -80,7 +80,14 @@
     /* ENTER Modules */
     modules.define('enter.debug', ['jQuery', 'Mustache', 'enter.config'], function(provide){
         loadScript("/js/prod/debug-panel.js", function () {
-            console.log('[Module] Debug panel');
+            console.log('[Module] enter.debug');
+            provide();
+        });
+    });
+
+    modules.define('enter.search', ['jQuery', 'ko'], function(provide){
+        loadScript("/public/js/modules/enter.search.js", function () {
+            console.log('[Module] enter.search');
             provide();
         });
     });

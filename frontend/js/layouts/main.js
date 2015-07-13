@@ -16,6 +16,14 @@
         ['jQuery', 'jquery.slick', 'library'],
         function($) {
 
+            // TODO вынести в общую область
+            $('.jsKnockoutSearch').on('click', function(){
+                var $input = $(this).find('input');
+                modules.require('enter.search', function(){
+                    $input.focus();
+                })
+            });
+
             // Слайдер
             $('.js-banners-slider').slick({
                 lazyLoad: 'ondemand',
