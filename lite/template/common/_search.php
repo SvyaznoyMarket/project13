@@ -26,7 +26,7 @@
             <!-- ko foreach:  searchResultCategories -->
 
             <li class="search-suggest-list__item">
-                <a class="search-suggest-list__link" href="" data-bind="attr: { href: link }, text: name"><!--<span class="search-suggest-list__count"> &#8230;&#8230; 45</span>--></a>
+                <a class="search-suggest-list__link" href="" data-bind="attr: { href: link }, html: name"></a>
             </li>
 
             <!-- /ko -->

@@ -81,7 +81,15 @@
             // assuming jQuery
             $.get(searchUrl, params)
                 .done(function (data) {
-                    self.searchResultCategories(data.result.categories);
+                    self.searchResultCategories(
+                        // Вытаскиваем отдельно количество товаров
+                        $.map(data.result.categories, function(elem){
+                            var regex = /(.*?)\s\((\d+)\)/,
+                                result = elem.name.match(regex);
+                            if (result.length == 3) elem.name = result[1] + '<span class="search-suggest-list__count"> &#8230;&#8230; ' + result[2] + '</span>' || elem.name;
+                            return elem;
+                        })
+                    );
                     self.searchResultProducts(data.result.products);
                 })
                 .fail(function () {
