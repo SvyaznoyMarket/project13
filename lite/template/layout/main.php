@@ -51,6 +51,62 @@
                     <i class="search-bar__icon i-controls i-controls--search"></i>
                     <input type="text" class="search-bar__it it" placeholder="Поиск товаров">
                     <button class="search-bar__btn btn-normal">Найти</button>
+
+                    <div class="search-suggest">
+                        <ul class="search-suggest-list search-suggest-list_categories">
+                            <li class="search-suggest-list__title">
+                                <span class="search-suggest-list__title-text">Категории</span>
+                            </li>
+
+                            <li class="search-suggest-list__item">
+                                <a class="search-suggest-list__link" href="">Художественные краски <span class="search-suggest-list__count"> &#8230;&#8230; 45</span></a>
+                            </li>
+
+                            <li class="search-suggest-list__item">
+                                <a class="search-suggest-list__link" href="">Краски <span class="search-suggest-list__count"> &#8230;&#8230; 45</span></a>
+                            </li>
+
+                            <li class="search-suggest-list__item">
+                                <a class="search-suggest-list__link" href="">Художественные краски <span class="search-suggest-list__count"> &#8230;&#8230; 45</span></a>
+                            </li>
+                        </ul>
+
+                        <ul class="search-suggest-list">
+                            <li class="search-suggest-list__title">
+                                <span class="search-suggest-list__title-text">Товары</span>
+                            </li>
+
+                            <li class="search-suggest-list__item">
+                                <a class="search-suggest-list__link" href="">
+                                    <span class="search-suggest-list__img">
+                                        <img class="image" src="http://0.imgenter.ru/uploads/media/0a/09/a8/thumb_0201_product_60.jpeg" alt="">
+                                    </span>
+
+                                    <span class="search-suggest-list__text">Турник Torres Deluxe</span>
+                                </a>
+                            </li>
+
+                            <li class="search-suggest-list__item">
+                                <a class="search-suggest-list__link" href="">
+                                    <span class="search-suggest-list__img">
+                                        <img class="image" src="http://0.imgenter.ru/uploads/media/0a/09/a8/thumb_0201_product_60.jpeg" alt="">
+                                    </span>
+
+                                    <span class="search-suggest-list__text">Портативная акустическая система Promate Mulotov красная</span>
+                                </a>
+                            </li>
+
+                            <li class="search-suggest-list__item">
+                                <a class="search-suggest-list__link" href="">
+                                    <span class="search-suggest-list__img">
+                                        <img class="image" src="http://0.imgenter.ru/uploads/media/0a/09/a8/thumb_0201_product_60.jpeg" alt="">
+                                    </span>
+
+                                    <span class="search-suggest-list__text">Чехол для Apple iPhone6 XtremeMac Microshield Accent (IPP-MA6-73), красный</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </form>
 
                 <ul class="user-controls">
