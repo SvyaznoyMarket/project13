@@ -30,7 +30,7 @@
 
         <div class="header__center table-cell">
             <div class="header__line header__line--top">
-                <a href="" class="location dotted">Набережные челны</a>
+                <a href="" class="location dotted js-popup-show" data-popup="region">Набережные челны</a>
 
                 <ul class="header-shop-info">
                     <li class="header-shop-info__item"><a href="" class="header-shop-info__link underline">Магазины и самовывоз</a></li>
@@ -117,7 +117,7 @@
                         </a>
                     </li>
                     <li class="user-controls__item">
-                        <a href="" class="user-controls__link js-popup-show">
+                        <a href="" class="user-controls__link js-popup-show" data-popup="login">
                             <span class="user-controls__icon"><i class="i-controls i-controls--user"></i></span>
                             <span class="user-controls__text">Войти</span>
                         </a>
@@ -556,7 +556,7 @@
 </footer>
 
 <!-- попап авторизации/регистрации -->
-<div class="popup popup_log js-popup">
+<div class="popup popup_log js-popup-login">
     <div class="popup__close js-popup-close">&#215;</div>
 
     <div class="popup__content">
@@ -677,6 +677,17 @@
     </div>
 </div>
 <!--/ попап авторизации/регистрации -->
+
+<!-- попап выбора региона -->
+    <div class="popup popup_region js-popup-region">
+        <div class="popup__close js-popup-close">&#215;</div>
+
+        <div class="popup__content">
+            <div class="popup__title">Ваш город</div>
+        </div>
+    </div>
+
+<!--/ попап выбора региона -->
 
 <?= $page->slotBodyJavascript() ?>
 

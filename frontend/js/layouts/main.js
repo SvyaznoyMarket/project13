@@ -32,8 +32,10 @@
                 })
             });
 
-            $('.js-popup-show').on('click', function( event) {
-                $('.js-popup').lightbox_me({
+            $('.js-popup-show').on('click', function( event ) {
+                current = $(this).data('popup');
+
+                $('.js-popup-' + current ).lightbox_me({
                     closeSelector: '.js-popup-close'
                 });
                 event.preventDefault();

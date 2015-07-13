@@ -27,12 +27,12 @@ body {
 
 a {
     text-decoration: none;
+    .transition();
 
     color: @text-color;
     &:active ,
-    &:hover ,
-    &:visited {
-        color: @text-color;
+    &:hover {
+        color: @orange-bright;
     }
 }
 
@@ -166,11 +166,12 @@ textarea {
     &.error {
         border-color: @red-normal;
         & + .placeholder {
-            color: @red-normal;
             top: -17px;
+
+            color: @red-normal;
         }
     }
-    &:focus,
+    &:focus ,
     &.valid {
         & + .placeholder {
             top: -17px;
