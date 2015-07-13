@@ -49,7 +49,7 @@ $sliderToken = $blockname == 'Популярные товары' ? 'pop' : 'hit'
                     <div class="sticker">Закупочная цена</div>
 
                     <a href="<?= $productLink ?>" class="goods__img">
-                        <img src="<?= $product->getMainImageUrl('product_160') ?>" alt="" class="goods__img-image">
+                        <img data-lazy="<?= $product->getMainImageUrl('product_160') ?>" src="" alt="" class="goods__img-image">
                     </a>
 
                     <div class="goods__name">
