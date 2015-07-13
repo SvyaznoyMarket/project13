@@ -1,6 +1,7 @@
 <?
 /**
  * @var $page \View\Main\IndexPage
+ * @var $bannerData []
  */
 ?>
 
@@ -83,47 +84,17 @@
         <div class="content__inner">
             <div class="banner-section">
                 <div class="banner-section-list js-banners-slider">
+
+                <? foreach ($page->getParam('bannerData', []) as $i => $banner) : ?>
+
                     <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" data-lazy="http://fs01.enter.ru/4/1/960x240/67/413291.jpg" src="http://fs01.enter.ru/4/1/960x240/67/413291.jpg" alt="" class="banner-section-list__img">
+                        <a href="<?= @$banner['url'] ?>" class="banner-section-list__link">
+                            <img class="banner-section-list__item" data-lazy="<?= $banner['imgb'] ?>" src="<?= $i == 0 ? $banner['imgb'] : '' ?>" alt="" >
                         </a>
                     </div>
 
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="" data-lazy="http://fs01.enter.ru/4/1/960x240/a5/411502.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
+                <? endforeach ?>
 
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="" data-lazy="http://fs01.enter.ru/4/1/960x240/48/408940.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="" data-lazy="http://fs01.enter.ru/4/1/960x240/67/413291.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="" data-lazy="http://fs01.enter.ru/4/1/960x240/a5/411502.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="" data-lazy="http://fs01.enter.ru/4/1/960x240/48/408940.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="" data-lazy="http://fs01.enter.ru/4/1/960x240/67/413291.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
                 </div>
             </div>
 
