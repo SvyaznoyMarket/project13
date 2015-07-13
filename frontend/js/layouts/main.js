@@ -8,6 +8,7 @@
 
             // Слайдер
             $('.js-banners-slider').slick({
+                lazyLoad: 'ondemand',
                 slidesToShow: 1,
                 slidesToScroll: 1,
                 infinite: true,
@@ -23,6 +24,7 @@
                 var current = $(this).data('slick-slider');
 
                 $('.js-slider-goods-' + current).slick({
+                    lazyLoad: 'ondemand',
                     dots: false,
                     infinite: false,
                     prevArrow: '.js-goods-slider-btn-prev-' + current,
