@@ -4,7 +4,7 @@ namespace View\Product;
 
 class SlotPage extends \View\Product\IndexPage {
     public function slotContentHead() {
-        return $this->render('product-slot/head', $this->params);
+        return '';
     }
 
     public function slotContent() {
