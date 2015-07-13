@@ -38,6 +38,13 @@
         });
     });
 
+    modules.define('Mustache', [], function(provide){
+        loadScript("/public/vendor/js/mustache.2.1.2.min.js", function () {
+            console.log('[Module] Mustache');
+            provide();
+        });
+    });
+
     modules.define('library', [], function(provide){
         loadScript("/public/js/library.js", function () {
             console.log('[Module] library');
@@ -70,6 +77,13 @@
         });
     });
 
+    /* ENTER Modules */
+    modules.define('enter.debug', ['jQuery', 'Mustache', 'enter.config'], function(provide){
+        loadScript("/js/prod/debug-panel.js", function () {
+            console.log('[Module] Debug panel');
+            provide();
+        });
+    });
 
     // Пройдем по всем элементам
     elements = document.querySelectorAll('.js-module-require');

@@ -1,16 +1,14 @@
 module.exports = {
 
-    // TODO исключение папок, которые сжимаются в один файл
-
     compress: {
         files: [{
             expand: true,
             cwd: 'js',
-            src: ['plugins/*', 'layouts/*', 'vendor/*'],
+            src: ['plugins/*.js', 'layouts/*.js', 'enter.modules/*.js'],
             dest: '../web/public/js'
         },{
-            '../web/public/js/modules.js' : 'js/modules/*',
-            '../web/public/js/library.js' : 'js/library/*'
+            '../web/public/js/modules.js' : 'js/modules/*.js',
+            '../web/public/js/library.js' : 'js/library/*.js'
         }],
         options: {
             sourceMap: true
