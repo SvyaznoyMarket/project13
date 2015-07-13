@@ -1,0 +1,209 @@
+.popup {
+    position: relative;
+
+    display: none;
+    overflow: hidden;
+
+    padding: 20px;
+
+    border: 1px solid @grey-light-3;
+    background: @white;
+    &_log {
+        width: 320px;
+    }
+    &__title {
+        font-size: 1.8333em;
+
+        margin: 0 0 32px;
+    }
+    &__close {
+        font-size: 2em;
+        font-weight: 300;
+        cursor: pointer;
+        line-height: 1;
+
+        position: absolute;
+        top: 5px;
+        right: 5px;
+
+        padding: 0 5px;
+
+        color: @grey-bright;
+    }
+}
+
+.form {
+    &__title {
+        font-size: 1.6666em;
+        font-weight: 300;
+
+        margin: 0 0 10px;
+
+        text-align: center;
+    }
+    &__field {
+        position: relative;
+
+        margin: 0 0 24px;
+    }
+    &__it {
+        width: 100%;
+    }
+    &__it-name {
+    	font-size: 1.1666em;
+    	font-weight: 600;
+    	margin: 0 0 22px;
+    }
+    &__placeholder {
+    }
+    &__it-btn {
+        font-size: 1.1666em;
+        line-height: 33px;
+
+        position: absolute;
+        top: 1px;
+        right: 1px;
+
+        display: block;
+
+        padding: 0 8px;
+
+        color: @grey-bright;
+        background: @grey-light-5;
+    }
+    &__btn-log {
+        display: block;
+
+        width: 160px;
+        margin: auto;
+    }
+    &__success-text {
+        font-size: 1.33333em;
+        font-weight: 300;
+
+        display: none;
+
+        color: @green-normal;
+    }
+}
+
+.login {
+    .transition();
+    .form {
+        visibility: hidden;
+
+        .transition();
+        &_hint {
+            visibility: hidden;
+            overflow: hidden;
+
+            height: 0;
+
+            .opacity(0);
+        }
+    }
+    &_auth {
+        height: 315px;
+        margin-top: 0;
+        .form_auth {
+            visibility: visible;
+        }
+    }
+    &_reg {
+        height: 841px;
+        margin-top: -315px;
+        .form_reg {
+            visibility: visible;
+        }
+    }
+    &_hint {
+        .form_auth ,
+        .form_reg {
+            visibility: hidden;
+            overflow: hidden;
+
+            height: 0;
+
+            .opacity(0);
+        }
+        .form_hint {
+            visibility: visible;
+            overflow: visible;
+
+            height: auto;
+
+            .opacity(1);
+        }
+    }
+    &_success {
+        height: auto;
+        .form__content {
+            display: none;
+        }
+        .form__success-text {
+            display: block;
+        }
+    }
+}
+
+.login-external {
+    font-size: 0;
+
+    text-align: center;
+    &__item {
+        margin: 0 3px;
+
+        .inline-block();
+    }
+    &__link {
+        display: block;
+
+        width: 41px;
+        height: 41px;
+
+        background: url('@{base-url}/popup/log-socnet.png') no-repeat 0 0;
+        &_fb {
+            .i-sprite(0px, 0px, 41px, 41px);
+        }
+        &_vk {
+            .i-sprite(-86px, 0px, 41px, 41px);
+        }
+        &_od {
+            .i-sprite(-44px, 0px, 41px, 41px);
+        }
+    }
+}
+
+.login-switch {
+    font-size: 1.6666em;
+
+    margin: 20px -20px -20px;
+    padding: 12px 20px 15px;
+
+    text-align: center;
+
+    border-top: 1px solid @input-border;
+    background: @grey-light-3;
+    a {
+        color: @grey-bright;
+    }
+}
+
+.login-subscribe {
+    font-size: 1.1666em;
+
+    margin: 0 -20px 15px;
+    padding: 10px 0 10px 20px;
+
+    background: @orange-light-3;
+}
+
+
+.login-hint {
+    margin: 0 0 20px;
+
+    color: @grey-type;
+    & > a {
+        color: @grey-type;
+    }
+}

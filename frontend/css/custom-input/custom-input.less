@@ -1,0 +1,39 @@
+.custom-input {
+    font-size: 0;
+    line-height: 0;
+
+    position: absolute;
+    z-index: -1;
+
+    float: right;
+    overflow: hidden;
+    zoom: 1;
+
+    width: 0;
+    height: 0;
+    margin-top: 0;
+    padding: 0;
+
+    .opacity(0);
+    &_check {
+        & + .custom-label {
+            padding-left: 20px;
+
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAAAAAAevcqWAAAAFElEQVQIW2O4jgoYrv9HBsOAjwoA+1TXYHXMYB4AAAAASUVORK5CYII=');
+        }
+        &:checked {
+            & + .custom-label {
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAIAAAC0tAIdAAAAm0lEQVR4AWO4TgoAqf5PHBhI1X///F+U/L9SnjjVZ9b+T2f+vzwXm+rHF/6/vo9Q+uLm/wq5/+3m/7++x6Z6kuf/bvv/1/eA2J9e/u91/F+tBDQCh7sfnf/faQUy79Cs/wsS/mdz/L+0Fa8v3z7+3+/yP5//fxb7/3UV///8JhAmIFfWqv8vEv7/4ysxIfjv/7+/QARk0DsuSQEADLpouRyCMo4AAAAASUVORK5CYII=');
+            }
+        }
+    }
+}
+
+.custom-label {
+    cursor: pointer;
+
+    background-repeat: no-repeat;
+    background-position: 0 0;
+
+    .inline-block();
+}

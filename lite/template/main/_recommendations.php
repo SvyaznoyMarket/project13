@@ -46,22 +46,21 @@ $sliderToken = $blockname == 'Популярные товары' ? 'pop' : 'hit'
                     ]) ?>
 
                 <div class="goods__item grid-4col__item">
-                    <div class="sticker"></div>
+                    <div class="sticker">Закупочная цена</div>
 
                     <a href="<?= $productLink ?>" class="goods__img">
-                        <img src="<?= $product->getMainImageUrl('product_160') ?>" alt="" class="">
+                        <img src="<?= $product->getMainImageUrl('product_160') ?>" alt="" class="goods__img-image">
                     </a>
 
                     <div class="goods__name">
                         <a href="<?= $productLink ?>"><?= $product->getName() ?></a>
                     </div>
 
-                    <? if ($product->getPriceOld()) : ?>
-                        <div class="goods__price-old"><span class="line-through"><?= $helper->formatPrice($product->getPriceOld()) ?></span> ₽</div>
-                    <? endif ?>
+                    <div class="goods__price-old"><span class="line-through"><? if ($product->getPriceOld()) : ?><?= $helper->formatPrice($product->getPriceOld()) ?></span> ₽<? endif ?></div>
+
                     <div class="goods__price-now"><?= $helper->formatPrice($product->getPrice()) ?> ₽</div>
 
-                    <a class="goods__btn btn-buy" href="">Купить</a>
+                    <a class="goods__btn btn-primary" href="">Купить</a>
                 </div>
 
             <? endforeach ?>

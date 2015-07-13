@@ -36,38 +36,36 @@ $helper = new \Helper\TemplateHelper();
 
                     <? if (!empty($menu2->children)) : ?>
 
-                        <div class="menu-hide">
-                            <ul class="site-menu-2sub menu-hide">
+                        <ul class="site-menu-2sub">
 
-                            <? foreach ($menu2->children as $menu3) : ?>
-                                <li class="site-menu-2sub__item">
-                                    <a href="<?= $menu3->link ?>" class="site-menu-2sub__link"><?= $menu3->name ?></a>
-                                </li>
-                            <? endforeach ?>
-
-                            <li class="site-menu-2sub__item site-menu-2sub__item_wow">
-                                <div class="menu-wow">
-                                    <div class="goods">
-                                        <div class="sticker">Товар дня</div>
-
-                                        <a href="" class="goods__img">
-                                            <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
-                                        </a>
-
-                                        <div class="goods__name">
-                                            <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
-                                        </div>
-
-                                        <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
-                                        <div class="goods__price-now">45 990 ₽</div>
-
-                                        <a class="goods__btn btn-buy" href="">Купить</a>
-                                    </div>
-                                </div>
+                        <? foreach ($menu2->children as $menu3) : ?>
+                            <li class="site-menu-2sub__item">
+                                <a href="<?= $menu3->link ?>" class="site-menu-2sub__link"><?= $menu3->name ?></a>
                             </li>
+                        <? endforeach ?>
 
-                            </ul>
-                        </div>
+                        <!-- <li class="site-menu-2sub__item site-menu-2sub__item_wow">
+                            <div class="menu-wow">
+                                <div class="goods">
+                                    <div class="sticker">Товар дня</div>
+
+                                    <a href="" class="goods__img">
+                                        <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
+                                    </a>
+
+                                    <div class="goods__name">
+                                        <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                    </div>
+
+                                    <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
+                                    <div class="goods__price-now">45 990 ₽</div>
+
+                                    <a class="goods__btn btn-buy" href="">Купить</a>
+                                </div>
+                            </div>
+                        </li> -->
+
+                        </ul>
 
                     <? endif ?>
                 </li>

@@ -1,7 +1,7 @@
 +function(){
 
     modules.require(
-        ['jQuery', 'jquery.slick', 'library'],
+        ['jQuery', 'jquery.slick', 'library', 'jquery.lightbox_me'],
         function($) {
 
             console.log('main.js');
@@ -11,6 +11,7 @@
                 slidesToShow: 1,
                 slidesToScroll: 1,
                 infinite: true,
+                autoplay: true,
                 dots: true
             });
 
@@ -28,6 +29,13 @@
                     nextArrow: '.js-goods-slider-btn-next-' + current
                 })
             });
+
+            $('.js-popup-show').on('click', function( event) {
+                $('.js-popup').lightbox_me({
+                    closeSelector: '.js-popup-close'
+                });
+                event.preventDefault();
+            })
         }
     );
 

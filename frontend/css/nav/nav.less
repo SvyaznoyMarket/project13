@@ -60,21 +60,24 @@
 // <i class="i-nav i-nav--sport"></i>
 
 .site-menu {
+    position: relative;
     &__item {
-        font-size: 1.1666em;
-
-        position: relative;
-
         margin: 0;
         &:hover {
+            background: @orange-light-4;
             & > .site-menu-sub {
-                left: 224px;
+                visibility: visible;
 
-                display: block;
+                transition-delay: 100ms;
+                transition-property: visibility;
+
+                isplay: block;
             }
         }
     }
     &__link {
+        font-size: 1.1666em;
+
         position: relative;
 
         display: block;
@@ -98,34 +101,53 @@
     &__text {
         .inline-block(middle);
     }
+    &__img {
+        max-width: 31px;
+        max-height: 31px;
+    }
 }
 
 .menu-hide {
     position: absolute;
     z-index: 99;
     top: 0;
-    left: 0;
+    bottom: 0;
+    left: 224px;
 
-    display: none;
+    display: block;
+    visibility: hidden;
+    overflow: auto;
 
-    width: 224px;
+    width: 800px;
 
-    border-top: none;
-    background: @white;
+    transition-delay: 110ms;
+    transition-property: visibility;
 }
 
 .site-menu-sub {
+    border: 1px solid @grey-light-3;
+    background: @white;
     &__item {
-        position: relative;
+        float: left;
 
+        width: 266px;
         margin: 0;
         padding: 0;
+        padding: 0 20px 0 0;
+        &:nth-child(3n+1) {
+            clear: both;
+        }
     }
     &__link {
+        font-size: 1.1666em;
+        font-weight: 600;
+
         display: block;
 
-        padding: 10px 15px 10px 20px;
-
-        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAALCAQAAADyruQgAAAAUklEQVQIW2NoaeyQYwCBVueW9gYWMLOlqiW4gQnIaBNtndCgBZF2bauDSFq1gBjdYq0tTaYMDSwtNR2+DIwMbQGtlQ1sID3preJghauY/zOCaAB7UxaND3hqvAAAAABJRU5ErkJggg==') 97% 50% no-repeat;
+        padding: 10px 10px 10px 20px;
     }
+}
+
+.site-menu-2sub {
+    margin: 0 0 0 30px;
 }
