@@ -46,7 +46,9 @@ $sliderToken = $blockname == 'Популярные товары' ? 'pop' : 'hit'
                     ]) ?>
 
                 <div class="goods__item grid-4col__item">
-                    <div class="sticker">Закупочная цена</div>
+                    <? if ($product->getLabel()) : ?>
+                        <div class="sticker"><?= $product->getLabel()->getName() ?></div>
+                    <? endif ?>
 
                     <a href="<?= $productLink ?>" class="goods__img">
                         <img data-lazy="<?= $product->getMainImageUrl('product_160') ?>" src="" alt="" class="goods__img-image">
