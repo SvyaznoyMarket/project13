@@ -14549,7 +14549,7 @@ img[height='0'] {
   .product-card-photo-thumbs {
     position: relative;
     overflow: hidden;
-    max-width: 250px;
+    max-width: 249px;
     height: 40px;
     -webkit-user-select: none;
     -moz-user-select: none;
