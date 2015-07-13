@@ -109,6 +109,10 @@ class Action {
 
         $client->execute();
 
+        if (!empty($brandToken) && !$brand) {
+            \App::exception()->add(new \Exception('Бренд не найден', 404));
+        }
+
         $promoContent = '';
         if (!empty($catalogJson['promo_token'])) {
             \App::contentClient()->addQuery(
@@ -503,11 +507,11 @@ class Action {
 
     /**
      * @param \Model\Product\Category\Entity $category
-     * @param \Model\Product\Filter          $productFilter
-     * @param \View\Layout                   $page
-     * @param \Http\Request                  $request
+     * @param \Model\Product\Filter $productFilter
+     * @param \View\Layout $page
+     * @param \Http\Request $request
      * @return \Http\Response
-     * @throws \Exception\NotFoundException
+     * @throws \Exception
      */
     protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
