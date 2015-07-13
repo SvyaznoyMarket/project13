@@ -411,7 +411,9 @@
                 lastChar = str.slice(-1),
                 lastNum  = lastChar * 1;
 
-            if ( days > 4 && days < 21 ) {
+            if ( lastNum === 0 ) {
+                return 'дней';
+            } else if ( days > 4 && days < 21 ) {
                 return 'дней';
             } else if ( lastNum > 4 && days > 20 ) {
                 return 'дней';
