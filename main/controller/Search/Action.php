@@ -356,7 +356,7 @@ class Action {
 
         foreach ($products as $product) {
             $data['products'][] = [
-                'name'  => $product->getName(),
+                'name'  => html_entity_decode($product->getName()),
                 'link'  => $product->getLink(),
                 'image' => $product->getMainImageUrl('product_60'),
             ];
