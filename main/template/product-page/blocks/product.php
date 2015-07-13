@@ -155,7 +155,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <? if ($product->getPrice() >= \App::config()->product['minCreditPrice']) : ?>
         <!-- купить в кредит -->
         <a class="buy-on-credit btn-type btn-type--normal btn-type--longer jsProductCreditButton" href="" style="display: none"
-           data-credit='<?= $creditData['creditData'] ?>'>
+           data-credit='<?= (isset($creditData) ? $creditData['creditData'] : '') ?>'>
             <span class="buy-on-credit__tl">Купить в кредит</span>
             <span class="buy-on-credit__tx">от <mark class="buy-on-credit__mark jsProductCreditPrice">0</mark>&nbsp;&nbsp;<span class="rubl">p</span> в месяц</span>
         </a>
