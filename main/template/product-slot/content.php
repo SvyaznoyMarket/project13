@@ -87,6 +87,7 @@ $buySender2 = $request->get('sender2');
                 'sender2'  => $buySender2,
                 'location' => 'product-card',
             ]) ?>
+            <div class="js-showTopBar"></div>
         <div class="product-card__payment-types">Доступные способы оплаты:<br/>Наличные, банковский перевод</div>
         </div>
 
@@ -95,8 +96,6 @@ $buySender2 = $request->get('sender2');
         </div>
 
         <div class="clear"></div>
-
-        <div class="js-showTopBar"></div>
 
         <div class="bWidgetBuy mWidget compare--slot js-WidgetBuy">
             <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
