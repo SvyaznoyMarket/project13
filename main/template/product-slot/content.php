@@ -183,7 +183,7 @@ $buySender2 = $request->get('sender2');
             ]) ?>
         <? endif ?>
 
-        <div class="product-containter__brcr-bottom">
+        <div class="product-containter__brcr-bottom <? if (\App::abTest()->isNewProductPage()) { ?>card-new<? } ?>">
             <? if (\App::abTest()->isNewProductPage()): ?>
                 <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product-page/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
             <? else: ?>
