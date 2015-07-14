@@ -1,0 +1,119 @@
+.login {
+    .transition();
+    .form {
+        visibility: hidden;
+
+        .transition();
+        &_hint {
+            visibility: hidden;
+            overflow: hidden;
+
+            height: 0;
+
+            .opacity(0);
+        }
+    }
+    &_auth {
+        height: 315px;
+        margin-top: 0;
+        .form_auth {
+            visibility: visible;
+        }
+    }
+    &_reg {
+        height: 841px;
+        margin-top: -315px;
+        .form_reg {
+            visibility: visible;
+        }
+    }
+    &_hint {
+        .form_auth ,
+        .form_reg {
+            visibility: hidden;
+            overflow: hidden;
+
+            height: 0;
+
+            .opacity(0);
+        }
+        .form_hint {
+            visibility: visible;
+            overflow: visible;
+
+            height: auto;
+
+            .opacity(1);
+        }
+    }
+    &_success {
+        height: auto;
+        .form__content {
+            display: none;
+        }
+        .form__success-text {
+            display: block;
+        }
+    }
+}
+
+.login-external {
+    font-size: 0;
+
+    text-align: center;
+    &__item {
+        margin: 0 3px;
+
+        .inline-block();
+    }
+    &__link {
+        display: block;
+
+        width: 41px;
+        height: 41px;
+
+        background: url('@{base-url}/popup/log-socnet.png') no-repeat 0 0;
+        &_fb {
+            .i-sprite(0px, 0px, 41px, 41px);
+        }
+        &_vk {
+            .i-sprite(-86px, 0px, 41px, 41px);
+        }
+        &_od {
+            .i-sprite(-44px, 0px, 41px, 41px);
+        }
+    }
+}
+
+.login-switch {
+    font-size: 1.6666em;
+
+    margin: 20px -20px -20px;
+    padding: 12px 20px 15px;
+
+    text-align: center;
+
+    border-top: 1px solid @input-border;
+    background: @grey-light-3;
+    a {
+        color: @grey-bright;
+    }
+}
+
+.login-subscribe {
+    font-size: 1.1666em;
+
+    margin: 0 -20px 15px;
+    padding: 10px 0 10px 20px;
+
+    background: @orange-light-3;
+}
+
+.login-hint {
+    margin: 0 0 20px;
+
+    color: @grey-type;
+    & > a {
+        color: @grey-type;
+    }
+}

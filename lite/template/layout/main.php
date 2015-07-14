@@ -684,6 +684,23 @@
 
         <div class="popup__content">
             <div class="popup__title">Ваш город</div>
+
+            <div class="popup__desc">
+                Выберите город, в котором собираетесь получать товары.<br/>
+                От выбора зависит стоимость товаров и доставки.
+            </div>
+
+            <form class="form form-region search-bar">
+                <i class="search-bar__icon i-controls i-controls--search"></i>
+                <input type="text" class="search-bar__it it" placeholder="Поиск товаров">
+                <button class="btn-primary btn-primary_normal">Найти</button>
+            </form>
+
+            <ul class="region-subst">
+                <li class="region-subst__item"><a href="" class="region-subst__link dotted">Москва</a></li>
+                <li class="region-subst__item"><a href="" class="region-subst__link dotted">Санкт-Петербург</a></li>
+                <li class="region-subst__item region-subst__item_toggle"><a href="" class="region-subst__link dotted">Еще города</a></li>
+            </ul>
         </div>
     </div>
 
