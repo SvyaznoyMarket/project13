@@ -604,8 +604,18 @@
 
             <form class="form form-region search-bar">
                 <i class="search-bar__icon i-controls i-controls--search"></i>
-                <input type="text" class="search-bar__it it" placeholder="Поиск товаров">
-                <button class="btn-primary btn-primary_normal">Найти</button>
+                <input type="text" class="form-region__it search-bar__it it" placeholder="Найти свой регион">
+                <button class="form-region__btn btn-primary btn-primary_normal">Найти</button>
+
+                <!-- саджест поиска региона -->
+                <div class="region-suggest">
+                    <ul class="region-suggest-list">
+                        <li class="region-suggest-list__item"><a href="" class="region-suggest-list__link">МО город Гороховец тер (Гороховецкий) (Владимирская обл)</a></li>
+                        <li class="region-suggest-list__item"><a href="" class="region-suggest-list__link">Гороховец г (Гороховецкий) (Владимирская обл)</a></li>
+                        <li class="region-suggest-list__item"><a href="" class="region-suggest-list__link">Городище рп (Городищенский) (Волгоградская обл)</a></li>
+                    </ul>
+                </div>
+                <!--/ саджест поиска региона -->
             </form>
 
             <ul class="region-subst">
@@ -613,6 +623,99 @@
                 <li class="region-subst__item"><a href="" class="region-subst__link dotted">Санкт-Петербург</a></li>
                 <li class="region-subst__item region-subst__item_toggle"><a href="" class="region-subst__link dotted">Еще города</a></li>
             </ul>
+
+            <!-- Что бы показать слайдер регионов добавляем класс show -->
+            <div class="region-slides slider-section">
+                <button class="slider-section__btn slider-section__btn_prev js-goods-slider-btn-prev-region-list"></button>
+
+                <div class="js-slider-goods js-slider-goods-region-list" data-slick-slider="region-list" data-slick='{"slidesToShow": 4, "slidesToScroll": 2}'>
+                    <div class="region-slides__item">
+                        <ul class="region-list">
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="region-slides__item">
+                        <ul class="region-list">
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="region-slides__item">
+                        <ul class="region-list">
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Городище рп (Городищенский) (Волгоградская обл)</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="region-slides__item">
+                        <ul class="region-list">
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="region-slides__item">
+                        <ul class="region-list">
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="region-slides__item">
+                        <ul class="region-list">
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Абакан</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Архангельск г</a></li>
+                            <li class="region-list__item"><a href="" class="region-list__link">Астрахань</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button class="slider-section__btn slider-section__btn_next js-goods-slider-btn-next-region-list"></button>
+            </div>
         </div>
     </div>
 
