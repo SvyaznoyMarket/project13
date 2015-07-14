@@ -110,7 +110,7 @@ return function(
                     <li class="bPhotoViewer__eItem mVideo js-product-video">
                         <a class="bPhotoLink" href="#"></a>
                         <div class="blackPopup blackPopupVideo js-product-video-container">
-                            <div class="close"></div>
+                            <div class="close jsPopupCloser"></div>
                             <div class="productVideo_iframe js-product-video-iframeContainer"><?= $videoHtml ?></div>
                         </div>
                     </li>
@@ -120,7 +120,7 @@ return function(
                     <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-html5-opener">
                         <a class="bPhotoLink" href=""></a>
                         <div id="maybe3dModelPopup" class="popup js-product-3d-html5-popup" data-url="<?= $helper->escape($maybe3dHtml5Source->url); ?>" data-id="<?= $helper->escape($maybe3dHtml5Source->id); ?>">
-                            <i class="close" title="Закрыть">Закрыть</i>
+                            <i class="close jsPopupCloser" title="Закрыть">Закрыть</i>
                             <div class="js-product-3d-html5-popup-container" style="position: relative;">
                                 <div id="js-product-3d-html5-popup-model" class="model"></div>
                             </div>
@@ -130,7 +130,7 @@ return function(
                     <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-swf-opener">
                         <a class="bPhotoLink" href=""></a>
                         <div id="maybe3dModelPopup" class="popup js-product-3d-swf-popup" data-url="<?= $helper->escape($model3dSwfUrl); ?>">
-                            <i class="close" title="Закрыть">Закрыть</i>
+                            <i class="close jsPopupCloser" title="Закрыть">Закрыть</i>
                             <div class="js-product-3d-swf-popup-container" style="position: relative;">
                                 <div id="js-product-3d-swf-popup-model">
                                     <a href="http://www.adobe.com/go/getflashplayer">
@@ -144,7 +144,7 @@ return function(
                     <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-img-opener">
                         <a class="bPhotoLink" href=""></a>
                         <div class="popup js-product-3d-img-popup" data-value="<?= $helper->json($product->json3d); ?>">
-                            <i class="close" title="Закрыть">Закрыть</i>
+                            <i class="close jsPopupCloser" title="Закрыть">Закрыть</i>
                         </div>
                     </li>
                 <? endif ?>
