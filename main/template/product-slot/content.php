@@ -59,7 +59,6 @@ $buySender2 = $request->get('sender2');
                     <? endif ?>
                     <?= $product->getWebName() ?>
             </h1>
-            <span class="product-card__head__article">Артикул: <?= $product->getArticle() ?></span>
         </div>
 
         <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
