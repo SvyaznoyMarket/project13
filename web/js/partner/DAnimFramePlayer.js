@@ -1,4 +1,4 @@
-var DAnimFramePlayer = function (ParentItem, Host) {
+var DAnimFramePlayer = function (ParentItem) {
 
     var strBasePath;
     var MainJsonData=null;
@@ -24,15 +24,15 @@ var DAnimFramePlayer = function (ParentItem, Host) {
 
     var ButtPlay=document.createElement('DIV');
     ButtPlay.style.display='none';
-    ButtPlay.innerHTML='<img draggable="false" src="' + Host +'/images/icon_play.png" width=80 height=80 border=0>';
+    ButtPlay.innerHTML='<img draggable="false" src="/images/icon_play.png" width=80 height=80 border=0>';
     MainDiv.appendChild(ButtPlay);
     var RotateL=document.createElement('DIV');
     RotateL.style.display='none';
-    RotateL.innerHTML='<img draggable="false" src="' + Host +'/images/rotate_l.png" width=51 height=47 border=0>';
+    RotateL.innerHTML='<img draggable="false" src="/images/rotate_l.png" width=51 height=47 border=0>';
     MainDiv.appendChild(RotateL);
     var RotateR=document.createElement('DIV');
     RotateR.style.display='none';
-    RotateR.innerHTML='<img draggable="false" src="' + Host +'/images/rotate_r.png" width=55 height=47 border=0>';
+    RotateR.innerHTML='<img draggable="false" src="/images/rotate_r.png" width=55 height=47 border=0>';
     MainDiv.appendChild(RotateR);
 
 

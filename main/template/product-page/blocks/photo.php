@@ -61,7 +61,7 @@ $f = function(
                             </div>
                         </div>
                     <? elseif ($product->json3d) : ?>
-                        <div class="jsProduct3DJSON" data-value="<?= $helper->json($product->json3d); ?>" data-host="<?= $helper->json(['http://' . App::request()->getHost()]) ?>"></div>
+                        <div class="jsProduct3DJSON" data-value="<?= $helper->json($product->json3d); ?>"></div>
                     <? endif ?>
                 </div>
                 <!--/ Попап 3D -->

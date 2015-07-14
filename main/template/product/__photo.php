@@ -143,7 +143,7 @@ return function(
                 <? elseif ($product->json3d): ?>
                     <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-img-opener">
                         <a class="bPhotoLink" href=""></a>
-                        <div class="popup js-product-3d-img-popup" data-value="<?= $helper->json($product->json3d); ?>" data-host="<?= $helper->json(['http://' . App::request()->getHost()]) ?>">
+                        <div class="popup js-product-3d-img-popup" data-value="<?= $helper->json($product->json3d); ?>">
                             <i class="close" title="Закрыть">Закрыть</i>
                         </div>
                     </li>

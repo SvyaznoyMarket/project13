@@ -243,12 +243,11 @@
                 });
             } else if ($3DJSONContainer.length > 0) {
                 $LAB.script('DAnimFramePlayer.min.js').wait(function() {
-                    var data = $3DJSONContainer.data('value'),
-                        host = $3DJSONContainer.data('host');
+                    var data = $3DJSONContainer.data('value');
 
                     try {
                         if (!$('#js-product-3d-img-container').length) {
-                            (new DAnimFramePlayer($3DJSONContainer[0], host)).DoLoadModel(data);
+                            (new DAnimFramePlayer($3DJSONContainer[0])).DoLoadModel(data);
                         }
 
                         $popup.lightbox_me($.extend(popupDefaults, {
