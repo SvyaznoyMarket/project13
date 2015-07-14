@@ -9,3 +9,52 @@
     url('@{fonts}/enter-icon/enter-icon.ttf') format('truetype'),
     url('@{fonts}/enter-icon/enter-icon.svg#enter-icon') format('svg');
 }
+
+@font-face {
+    font-family: 'Fontello';
+    font-weight: normal;
+    font-style: normal;
+
+    src: url('@{fonts}/fontello/fontello.eot');
+    src: url('@{fonts}/fontello/fontello.eot?#iefix') format('embedded-opentype'),
+    url('@{fonts}/fontello/fontello.woff') format('woff'),
+    url('@{fonts}/fontello/fontello.ttf') format('truetype'),
+    url('@{fonts}/fontello/fontello.svg#enter-icon') format('svg');
+}
+
+[class^='icon-']:before ,
+[class*=' icon-']:before {
+    font-family: 'Fontello';
+    font-weight: normal;
+    font-style: normal;
+    font-variant: normal;
+
+   	.inline-block();
+
+    text-align: center;
+    text-decoration: inherit;
+    text-transform: none;
+
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-clear:before {
+    content: '\cea';
+}
+.icon-down-dir:before {
+    content: '\e800';
+}
+.icon-up-dir:before {
+    content: '\e804';
+}
+.icon-right-dir:before {
+    content: '\e805';
+}
+.icon-left-dir:before {
+    content: '\e806';
+}
+.icon-close:before {
+    content: '\e807';
+}

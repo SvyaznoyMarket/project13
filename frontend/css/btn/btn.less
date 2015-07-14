@@ -16,6 +16,19 @@
     .btn();
 }
 
+.btn-simple {
+    color: @orange-bright;
+    border: none;
+    background: @white;
+
+    .btn();
+
+    &_width {
+        width: 100%;
+        display: block;
+    }
+}
+
 .btn-primary {
     color: @white;
     border: 1px solid @orange-bright;
@@ -32,7 +45,7 @@
         color: @white;
     }
     &_bigger {
-        font-size: 1.8333em;
+        font-size: 1.6666em;
         font-weight: 300;
         line-height: 40px;
 
@@ -44,5 +57,9 @@
         height: 35px;
         font-size: 1.6666em;
         font-weight: 300;
+    }
+    &_width {
+        width: 100%;
+        display: block;
     }
 }
