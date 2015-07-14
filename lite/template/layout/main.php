@@ -429,7 +429,7 @@
                 </div>
             </div>
 
-            <div class="section">
+            <div class="section section_bordered">
                 <div class="section__title">Вы смотрели</div>
 
                 <div class="section__content">
