@@ -2589,7 +2589,7 @@ img[height='0'] {
   }
   .userbar--pp .userbar-crumbs-wrap {
     float: none;
-    width: 260px;
+    width: 250px;
     display: inline-block;
     vertical-align: middle;
     /* IE6-8 */
