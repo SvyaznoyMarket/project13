@@ -20,7 +20,7 @@
             };
         }
 
-        script.src = url;
+        script.src = url + '?' +  (new Date()).getTime();
         document.getElementsByTagName("head")[0].appendChild(script);
     }
 
@@ -35,6 +35,13 @@
         loadScript("/public/vendor/js/knockout.3.3.1.min.js", function () {
             console.log('[Module] knockout');
             provide(ko);
+        });
+    });
+
+    modules.define('Mustache', [], function(provide){
+        loadScript("/public/vendor/js/mustache.2.1.2.min.js", function () {
+            console.log('[Module] Mustache');
+            provide();
         });
     });
 
@@ -70,6 +77,20 @@
         });
     });
 
+    /* ENTER Modules */
+    modules.define('enter.debug', ['jQuery', 'Mustache', 'enter.config'], function(provide){
+        loadScript("/js/prod/debug-panel.js", function () {
+            console.log('[Module] enter.debug');
+            provide();
+        });
+    });
+
+    modules.define('enter.search', ['jQuery', 'ko'], function(provide){
+        loadScript("/public/js/modules/enter.search.js", function () {
+            console.log('[Module] enter.search');
+            provide();
+        });
+    });
 
     // Пройдем по всем элементам
     elements = document.querySelectorAll('.js-module-require');

@@ -1,10 +1,28 @@
 +function(){
 
+    // TODO вынести в отдельный файл
+    window.onload = function(){
+        var debugPanel = document.querySelector('.jsOpenDebugPanelContent');
+        if (debugPanel) {
+            debugPanel.addEventListener('click', function(){
+                if (modules.getState('enter.debug') == 'NOT_RESOLVED') {
+                    modules.require('enter.debug', function(){})
+                }
+            });
+        }
+    };
+
     modules.require(
-        ['jQuery', 'jquery.slick', 'library', 'jquery.lightbox_me'],
+        ['jQuery', 'jquery.slick', 'library'],
         function($) {
 
-            console.log('main.js');
+            // TODO вынести в общую область
+            $('.jsKnockoutSearch').on('click', function(){
+                var $input = $(this).find('input');
+                modules.require('enter.search', function(){
+                    $input.focus();
+                })
+            });
 
             // Слайдер
             $('.js-banners-slider').slick({
@@ -32,13 +50,20 @@
                 })
             });
 
+            /**
+             * lightbox не всегда нужен, поэтому запросим его только в случае необходимости
+             */
             $('.js-popup-show').on('click', function( event ) {
-                current = $(this).data('popup');
 
-                $('.js-popup-' + current ).lightbox_me({
-                    closeSelector: '.js-popup-close'
-                });
+                var current = $(this).data('popup');
                 event.preventDefault();
+
+                modules.require('jquery.lightbox_me', function(){
+                    $('.js-popup-' + current ).lightbox_me({
+                        closeSelector: '.js-popup-close'
+                    });
+                });
+
             })
         }
     );

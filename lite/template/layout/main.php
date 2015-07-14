@@ -1,6 +1,7 @@
 <?
 /**
  * @var $page \View\Main\IndexPage
+ * @var $bannerData []
  */
 ?>
 
@@ -47,67 +48,8 @@
             </div>
 
             <div class="header__line header__line--bottom">
-                <form class="search-bar">
-                    <i class="search-bar__icon i-controls i-controls--search"></i>
-                    <input type="text" class="search-bar__it it" placeholder="Поиск товаров">
-                    <button class="search-bar__btn btn-normal">Найти</button>
 
-                    <div class="search-suggest">
-                        <ul class="search-suggest-list search-suggest-list_categories">
-                            <li class="search-suggest-list__title">
-                                <span class="search-suggest-list__title-text">Категории</span>
-                            </li>
-
-                            <li class="search-suggest-list__item">
-                                <a class="search-suggest-list__link" href="">Художественные краски <span class="search-suggest-list__count"> &#8230;&#8230; 45</span></a>
-                            </li>
-
-                            <li class="search-suggest-list__item">
-                                <a class="search-suggest-list__link" href="">Краски <span class="search-suggest-list__count"> &#8230;&#8230; 45</span></a>
-                            </li>
-
-                            <li class="search-suggest-list__item">
-                                <a class="search-suggest-list__link" href="">Художественные краски <span class="search-suggest-list__count"> &#8230;&#8230; 45</span></a>
-                            </li>
-                        </ul>
-
-                        <ul class="search-suggest-list">
-                            <li class="search-suggest-list__title">
-                                <span class="search-suggest-list__title-text">Товары</span>
-                            </li>
-
-                            <li class="search-suggest-list__item">
-                                <a class="search-suggest-list__link" href="">
-                                    <span class="search-suggest-list__img">
-                                        <img class="image" src="http://0.imgenter.ru/uploads/media/0a/09/a8/thumb_0201_product_60.jpeg" alt="">
-                                    </span>
-
-                                    <span class="search-suggest-list__text">Турник Torres Deluxe</span>
-                                </a>
-                            </li>
-
-                            <li class="search-suggest-list__item">
-                                <a class="search-suggest-list__link" href="">
-                                    <span class="search-suggest-list__img">
-                                        <img class="image" src="http://0.imgenter.ru/uploads/media/0a/09/a8/thumb_0201_product_60.jpeg" alt="">
-                                    </span>
-
-                                    <span class="search-suggest-list__text">Портативная акустическая система Promate Mulotov красная</span>
-                                </a>
-                            </li>
-
-                            <li class="search-suggest-list__item">
-                                <a class="search-suggest-list__link" href="">
-                                    <span class="search-suggest-list__img">
-                                        <img class="image" src="http://0.imgenter.ru/uploads/media/0a/09/a8/thumb_0201_product_60.jpeg" alt="">
-                                    </span>
-
-                                    <span class="search-suggest-list__text">Чехол для Apple iPhone6 XtremeMac Microshield Accent (IPP-MA6-73), красный</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </form>
+                <?= $page->render('common/_search') ?>
 
                 <ul class="user-controls">
                     <li class="user-controls__item">
@@ -142,47 +84,17 @@
         <div class="content__inner">
             <div class="banner-section">
                 <div class="banner-section-list js-banners-slider">
+
+                <? foreach ($page->getParam('bannerData', []) as $i => $banner) : ?>
+
                     <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" data-lazy="http://fs01.enter.ru/4/1/960x240/67/413291.jpg" src="http://fs01.enter.ru/4/1/960x240/67/413291.jpg" alt="" class="banner-section-list__img">
+                        <a href="<?= @$banner['url'] ?>" class="banner-section-list__link">
+                            <img class="banner-section-list__item" data-lazy="<?= $banner['imgb'] ?>" src="<?= $i == 0 ? $banner['imgb'] : '' ?>" alt="" >
                         </a>
                     </div>
 
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="" data-lazy="http://fs01.enter.ru/4/1/960x240/a5/411502.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
+                <? endforeach ?>
 
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="" data-lazy="http://fs01.enter.ru/4/1/960x240/48/408940.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="" data-lazy="http://fs01.enter.ru/4/1/960x240/67/413291.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="" data-lazy="http://fs01.enter.ru/4/1/960x240/a5/411502.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="" data-lazy="http://fs01.enter.ru/4/1/960x240/48/408940.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
-
-                    <div class="banner-section-list__item">
-                        <a href="" class="banner-section-list__link">
-                            <img class="banner-section-list__item" src="" data-lazy="http://fs01.enter.ru/4/1/960x240/67/413291.jpg" alt="" class="banner-section-list__img">
-                        </a>
-                    </div>
                 </div>
             </div>
 
