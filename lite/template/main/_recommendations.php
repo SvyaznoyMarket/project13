@@ -58,9 +58,9 @@ $sliderToken = $blockname == 'Популярные товары' ? 'pop' : 'hit'
                         <a href="<?= $productLink ?>"><?= $product->getName() ?></a>
                     </div>
 
-                    <div class="goods__price-old"><span class="line-through"><? if ($product->getPriceOld()) : ?><?= $helper->formatPrice($product->getPriceOld()) ?></span> ₽<? endif ?></div>
+                    <div class="goods__price-old"><span class="line-through"><? if ($product->getPriceOld()) : ?><?= $helper->formatPrice($product->getPriceOld()) ?></span> &#8399;<? endif ?></div>
 
-                    <div class="goods__price-now"><?= $helper->formatPrice($product->getPrice()) ?> ₽</div>
+                    <div class="goods__price-now"><?= $helper->formatPrice($product->getPrice()) ?> &#8399;</div>
 
                     <a class="goods__btn btn-primary" href="">Купить</a>
                 </div>
