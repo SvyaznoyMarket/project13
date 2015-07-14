@@ -51,7 +51,7 @@ $buySender2 = $request->get('sender2');
 
     <?= $helper->render('product/__data', ['product' => $product]) ?>
 
-    <div class="product-card__section-left bProductSectionLeftCol">
+    <div class="product-card__section-left bProductSectionLeftCol <? if (\App::abTest()->isNewProductPage()) { ?>card-new<? } ?>">
         <div class="product-card__head">
             <h1 class="product-card__head__title clearfix" itemprop="name">
                     <? if ($product->getPrefix()): ?>
@@ -59,6 +59,10 @@ $buySender2 = $request->get('sender2');
                     <? endif ?>
                     <?= $product->getWebName() ?>
             </h1>
+            <? if (\App::abTest()->isNewProductPage()): ?>
+                <? else: ?>
+                <span class="product-card__head__article">Артикул: <?= $product->getArticle() ?></span>
+            <? endif ?>
         </div>
 
         <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
