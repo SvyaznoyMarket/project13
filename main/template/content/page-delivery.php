@@ -159,7 +159,7 @@ $helper = \App::helper();
                 <td><br></td>
             </tr>
             <tr>
-                <td style="text-align: center; border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"><img class="table-img" src="/styles/delivery/img/pickpoint-new.png">
+                <td style="text-align: center; border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"><img class="table-img" src="/styles/delivery/img/pickpoint.png">
                     <span class="table-lbl">Постаматы PickPoint</span></td>
                 <td>3 дня (+3&nbsp;дня по вашему запросу)</td>
                 <td>наличные<br>(при оплате наличными сдача не&nbsp;выдается, есть&nbsp;возможность зачисления, например, на&nbsp;счет мобильного телефона),<br>банковская карта</td>
