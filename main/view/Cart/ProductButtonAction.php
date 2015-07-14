@@ -75,8 +75,15 @@ class ProductButtonAction {
         } else if ($slotPartnerOffer = $product->getSlotPartnerOffer()) {
             $data['isSlot'] = true;
             $data['url'] = '#';
-            $data['class'] .= ' btn btn--slot js-orderButton js-slotButton ' . ('product-card' !== $location ? 'btn--short' : 'btn--big');
-            $data['value'] = 'product-card' === $location ? 'Отправить заявку' : 'Как купить?';
+            $data['class'] .= ' btn btn--slot js-orderButton js-slotButton';
+
+            if ($location === 'product-card') {
+                $data['class'] .= ' btn--big';
+            } else if ($location !== 'userbar') {
+                $data['class'] .= ' btn--short';
+            }
+
+            $data['value'] = in_array($location, ['product-card', 'userbar'], true) ? 'Отправить заявку' : 'Как купить?';
             $data['full'] = 'userbar' === $location || 'product-card' === $location ? '0' : '1';
             $data['productUrl'] = $product->getLink();
             $data['productArticle'] = $product->getArticle();
