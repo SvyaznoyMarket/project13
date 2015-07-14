@@ -940,19 +940,29 @@ $(function() {
         )
     }
 
-    // Добавление отзыва
-    $body.on('click', '.jsReviewAdd', function(){
-        var $reviewForm = $('.jsReviewForm2');
-        var user = ENTER.config.userInfo.user;
-        if (user.name) $('[name=review\\[author_name\\]]').val(user.name.slice(0,19));
-        if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
-        $reviewForm.lightbox_me($.extend(popupDefaults, {
-            onLoad: function() {},
-            onClose: function() {
-                $reviewForm.find('.form-ctrl__textarea--err, .form-ctrl__input--err').removeClass('form-ctrl__textarea--err form-ctrl__input--err')
-            }
-        }));
-    });
+	(function() {
+		function addReview() {
+			var $reviewForm = $('.jsReviewForm2');
+			var user = ENTER.config.userInfo.user;
+			if (user.name) $('[name=review\\[author_name\\]]').val(user.name.slice(0,19));
+			if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
+			$reviewForm.lightbox_me($.extend(popupDefaults, {
+				onLoad: function() {},
+				onClose: function() {
+					$reviewForm.find('.form-ctrl__textarea--err, .form-ctrl__input--err').removeClass('form-ctrl__textarea--err form-ctrl__input--err')
+				}
+			}));
+		}
+
+		// Добавление отзыва
+		$body.on('click', '.jsReviewAdd', function(){
+			addReview();
+		});
+
+		if ('#add-review' == location.hash) {
+			addReview();
+		}
+	})();
 
     // Отзывы
     $body.on('click', '.jsShowMoreReviews', function(){
