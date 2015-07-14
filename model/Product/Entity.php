@@ -40,6 +40,16 @@ class Entity {
     protected $kit = [];
     /** @var bool */
     protected $isKitLocked = false;
+    /**
+     * Все категории, к которым привязан товар
+     * @var Category\Entity[]
+     */
+    public $categories = [];
+    /**
+     * @deprecated
+     * @var Category\Entity[]
+     */
+    protected $category = [];
     /** @var Category\Entity */
     protected $rootCategory;
     /** @var Category\Entity */
@@ -104,8 +114,6 @@ class Entity {
     protected $rating;
     /** @var int */
     protected $ratingCount;
-    /** @var Category\Entity[] */
-    protected $category = [];
     /** @var Property\Group\Entity[] */
     protected $propertyGroup = [];
     /** @var Property\Entity[] */

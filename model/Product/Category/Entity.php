@@ -365,6 +365,18 @@ class Entity extends BasicEntity {
     /**
      * @return Entity
      */
+    public function getRootOfParents() {
+        $root = $this;
+        while ($root->parent) {
+            $root = $root->parent;
+        }
+
+        return $root;
+    }
+
+    /**
+     * @return Entity
+     */
     public function getRoot() {
         return $this->root ?: reset($this->ancestor);
     }
