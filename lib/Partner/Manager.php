@@ -31,8 +31,8 @@ class Manager {
         $this->cookieDomain = $c->session['cookie_domain'];
     }
 
-    /**
-     *
+    /** Возвращает параметры партнера
+     * @return array
      */
     public function setPartner() {
 
