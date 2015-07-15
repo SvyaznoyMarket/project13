@@ -10,7 +10,7 @@ $page = new \Templating\HtmlLayout();
 $user = \App::user();
 $currentRegion = $user->getRegion();
 ?>
-<div class="popup popup_region js-popup-region">
+<div class="popup popup_region js-popup-region" data-autocomplete-url="<?= $page->url('region.autocomplete') ?>">
     <div class="popup__close js-popup-close">&#215;</div>
 
     <div class="popup__content">
@@ -23,16 +23,11 @@ $currentRegion = $user->getRegion();
 
         <form class="form form-region search-bar">
             <i class="search-bar__icon i-controls i-controls--search"></i>
-            <input type="text" class="form-region__it search-bar__it it" placeholder="Найти свой регион">
+            <input id="jscity" type="text" class="form-region__it search-bar__it it" placeholder="Найти свой регион">
             <button class="form-region__btn btn-primary btn-primary_normal">Найти</button>
 
             <!-- саджест поиска региона -->
-            <div class="region-suggest">
-                <ul class="region-suggest-list">
-                    <!-- саджест item -->
-                    <li class="region-suggest-list__item"><a href="" class="region-suggest-list__link">МО город Гороховец тер (Гороховецкий) (Владимирская обл)</a></li>
-                </ul>
-            </div>
+            <div class="region-suggest js-region-autocomplete-results"></div>
             <!--/ саджест поиска региона -->
         </form>
 

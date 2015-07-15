@@ -77,6 +77,13 @@
         });
     });
 
+    modules.define('jquery.ui', ['jQuery'], function(provide){
+        loadScript("/public/js/plugins/jquery-ui-1.11.4.custom.js", function () {
+            console.log('[Module] jquery.ui');
+            provide();
+        });
+    });
+
     /* ENTER Modules */
     modules.define('enter.debug', ['jQuery', 'Mustache', 'enter.config'], function(provide){
         loadScript("/js/prod/debug-panel.js", function () {
