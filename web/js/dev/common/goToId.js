@@ -1,19 +1,18 @@
 /**
- * Перемотка к Id
- *
- * @author		Zaytsev Alexandr
- * @requires	jQuery
+ * Перемотка к id
  */
-(function() {
-	var goToId = function goToId() {
-		var to = $(this).data('goto');
+$(function() {
+	$('.jsGoToId').on('click', function(e) {
+		e.preventDefault();
 
-		$(document).stop().scrollTo( $('#'+to), 800 );
-		
-		return false;
-	};
-	
-	$(document).ready(function() {
-		$('.jsGoToId').bind('click',goToId);
+		var
+			$topbar = $('.js-topbar-fixed'),
+			to = $('#' + $(e.currentTarget).data('goto'));
+
+		if ($topbar.length) {
+			to = to.offset().top - $topbar.outerHeight();
+		}
+
+		$(document).stop().scrollTo(to, 800);
 	});
-}());
+});
