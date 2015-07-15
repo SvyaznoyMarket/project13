@@ -284,6 +284,7 @@ class Repository {
                 ['uids' => array_map(function(\Model\Product\Entity $product) { return $product->getUi(); }, $products),
                     'media' => 1,
                     'label' => 1,
+                    'brand' => 1,
                     'category' => 1,
                 ],
                 [],
@@ -308,6 +309,16 @@ class Repository {
                                     'medias'    => @$productData['label']['medias'],
                                 ]));
                             }
+                            
+                            if (!empty($productData['brand']) && @$productData['brand']['slug'] === 'tchibo-3569') {
+                                $product->setBrand(new \Model\Brand\Entity([
+                                    'ui'        => @$productData['brand']['uid'],
+                                    'id'        => @$productData['brand']['core_id'],
+                                    'token'     => @$productData['brand']['slug'],
+                                    'name'      => @$productData['brand']['name'],
+                                    'media_image' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png', // TODO после решения FCMS-740 заменить на URL из scms и удалить условие "@$productData['brand']['slug'] === 'tchibo-3569'"
+                                ]));
+                            }
 
                             if (isset($productData['json3d']) && is_array($productData['json3d'])) {
                                 $product->json3d = $productData['json3d'];
@@ -315,6 +326,7 @@ class Repository {
 
                             if (isset($productData['categories']) && is_array($productData['categories'])) {
                                 foreach ($productData['categories'] as $category) {
+                                    $product->categories[] = new \Model\Product\Category\Entity($category);
                                     if ($category['main']) {
                                         $product->setParentCategory(new \Model\Product\Category\Entity($category));
 
@@ -324,7 +336,6 @@ class Repository {
                                         }
 
                                         $product->setRootCategory(new \Model\Product\Category\Entity($category));
-                                        break;
                                     }
                                 }
                             }

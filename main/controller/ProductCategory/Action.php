@@ -198,10 +198,7 @@ class Action {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
         }
 
-        // TODO SITE-2403 Вернуть фильтр instore
-        if ($category->getIsFurniture()/* && 14974 === $user->getRegion()->getId()*/) {
-            $this->createInStoreFilter($filters);
-        }
+        $this->createInStoreFilter($filters, $category);
 
         $this->transformFiltersV2($filters, $category);
 
@@ -847,7 +844,12 @@ class Action {
     /**
      * @param \Model\Product\Filter\Entity[] $filters
      */
-    private function createInStoreFilter(array &$filters) {
+    private function createInStoreFilter(array &$filters, \Model\Product\Category\Entity $category) {
+        // TODO SITE-2403 Вернуть фильтр instore
+        if (!$category->getIsFurniture()) {
+            return;
+        }
+        
         $labelFilter = null;
         $labelFilterKey = null;
         foreach ($filters as $key => $filter) {

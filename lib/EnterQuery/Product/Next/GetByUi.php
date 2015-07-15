@@ -37,8 +37,8 @@ namespace EnterQuery\Product\Next {
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->beforeProductUis = $result['before'];
-                    $this->response->afterProductUis = $result['after'];
+                    $this->response->beforeProductUis = array_map(function($item) { return $item['uid']; }, $result['before']);
+                    $this->response->afterProductUis = array_map(function($item) { return $item['uid']; }, $result['after']);
 
                     return $result; // for cache
                 }

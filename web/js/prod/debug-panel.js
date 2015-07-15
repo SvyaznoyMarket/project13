@@ -1,4 +1,4 @@
-;(function ( window, document, $, ENTER, Mustache ) {
+;$(function () {
 	var
 		d = $(document),
 		debugPanel = $('.jsDebugPanel'),
@@ -367,4 +367,4 @@
 	d.ajaxSuccess(ajaxResponse);
 	d.on('googleAnalyticsCall', googleAnalyticsCall);
 
-}(window, document, jQuery, ENTER, Mustache));
+});

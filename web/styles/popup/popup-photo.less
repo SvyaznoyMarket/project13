@@ -135,12 +135,22 @@
                         .opacity(.3);
                     }
                 }
+                &.disabled{
+                    .product-card-photo-zoom__ctrl{
+                        .opacity(.3);
+                        cursor: default;
+                    }
+
+                }
             }
         }
         .showroom-only{
             position: absolute;
             bottom: 0;
             right: 10px;
+            padding-top:5px;
+            padding-bottom: 5px;
+
             .tooltip-content{
                 top: -50px;
                 right: 0;

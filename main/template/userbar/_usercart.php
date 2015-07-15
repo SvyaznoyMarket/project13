@@ -35,7 +35,7 @@
             </table>
         </div>
         <!-- для кнопки с иконкой btnBuy-inf -->
-        <div class="btnBuy quickOrder" data-bind="css: {'btnBuy-inf': infoIconVisible() }, visible: !isMinOrderSumVisible()">
+        <div class="<?= \App::abTest()->isNewProductPage() ? 'btn-container btn-container--quick-buy' : 'btnBuy quickOrder' ?>" data-bind="css: {'btnBuy-inf': infoIconVisible() }, visible: !isMinOrderSumVisible()">
             <a href="<?= $page->url('order') ?>"
                class="<?= \App::abTest()->isNewProductPage() ? 'btn-type btn-type--buy' : 'btnBuy__eLink quickOrder__link' ?>">Оформить заказ</a>
         </div>

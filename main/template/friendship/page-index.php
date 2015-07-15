@@ -14,7 +14,7 @@
 		Все самые интересные новинки рынка!
 		<div class="title title_orange">Слушаем! </div>
 		Есть вопросы по товарам или пожелания по улучшению работы? 
-		<a href="mailto:feedback@enter.ru">Напишите нам</a> и мы вам ответим!
+		<a href="http://my.enter.ru/feedback/">Напишите нам</a> и мы вам ответим!
 	</div>
 
 	<div class="content-section__form">
