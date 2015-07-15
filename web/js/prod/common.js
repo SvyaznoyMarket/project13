@@ -1748,7 +1748,7 @@ $(function() {
 			to = $('#' + $(e.currentTarget).data('goto'));
 
 		if ($topbar.length) {
-			to = to.offset().top - $topbar.outerHeight();
+			to = to.offset().top - $topbar.outerHeight() - 20;
 		}
 
 		$(document).stop().scrollTo(to, 800);
