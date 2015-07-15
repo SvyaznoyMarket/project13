@@ -279,7 +279,7 @@ var DAnimFramePlayer = function (ParentItem) {
     {
 		event = event || window.event;
 
-        if ((bOldIE?window.event.button:event.button)!=2)
+        if ((bOldIE?window.event.button:event.button)!=0)
         {
             if (playTimeInterval)
             {
@@ -305,7 +305,7 @@ var DAnimFramePlayer = function (ParentItem) {
     {
 		event = event || window.event;
 
-        if ((bOldIE?window.event.button:event.button)!=2)
+        if ((bOldIE?window.event.button:event.button)!=0)
         {
             if (playTimeInterval)
             {
@@ -378,7 +378,7 @@ var DAnimFramePlayer = function (ParentItem) {
         if (cSceneState==0)
         {
             var clientX=(bOldIE?window.event.offsetX:event.clientX)-MainDiv.offsetLeft;
-            if ((bOldIE?window.event.button:event.button)==2)
+            if ((bOldIE?window.event.button:event.button)==0)
             {
                 if (bOldIE)
                 {
@@ -427,7 +427,7 @@ var DAnimFramePlayer = function (ParentItem) {
 
     function onMainDivMouseUp( event )
     {
-        if ((bOldIE?window.event.button:event.button)==2)
+        if ((bOldIE?window.event.button:event.button)==0)
         {
             if (bOldIE)
             {
