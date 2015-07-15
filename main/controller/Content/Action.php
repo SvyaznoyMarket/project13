@@ -7,11 +7,11 @@ class Action {
     public function execute(\Http\Request $request, $token) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        $client = \App::scmsSeoClient();
+        $client = \App::scmsClient();
 
         $content = null;
         $client->addQuery(
-            'static-page.json',
+            'api/static-page.json',
             [
                 'token' => [$token],
             ],
