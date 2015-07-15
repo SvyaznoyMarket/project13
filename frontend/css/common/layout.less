@@ -6,9 +6,11 @@
 
 .content {
     padding-left: 224px;
-
     &__inner {
         border-left: 1px solid @grey-light-3;
+    }
+    &_transform {
+        padding-left: 64px;
     }
 }
 
@@ -22,6 +24,14 @@
     float: left;
 
     width: 224px;
+    &_transform {
+        width: 64px;
+        .site-menu {
+            &__text {
+                display: none;
+            }
+        }
+    }
 }
 
 .footer {
@@ -31,33 +41,36 @@
 }
 
 .grid-4col {
-    .clearfix();
-    overflow: auto;
+    overflow: hidden;
 
+    .clearfix();
     &__item {
         float: left;
+
         width: 25%;
         padding: 10px;
     }
 }
 
 .grid-8col {
-    .clearfix();
     overflow: auto;
 
+    .clearfix();
     &__item {
         float: left;
+
         width: 15.5%;
         padding: 10px;
     }
 }
 
 .grid-9col {
-    .clearfix();
     overflow: auto;
 
+    .clearfix();
     &__item {
         float: left;
+
         width: 11.1111%;
         padding: 10px;
     }

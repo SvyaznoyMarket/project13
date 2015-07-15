@@ -36,7 +36,7 @@ $helper = new \Helper\TemplateHelper();
 
                     <? if (!empty($menu2->children)) : ?>
 
-                        <ul class="site-menu-2sub">
+                        <ul class="site-menu-2sub menu-hide">
 
                         <? foreach ($menu2->children as $menu3) : ?>
                             <li class="site-menu-2sub__item">
@@ -44,7 +44,7 @@ $helper = new \Helper\TemplateHelper();
                             </li>
                         <? endforeach ?>
 
-                        <!-- <li class="site-menu-2sub__item site-menu-2sub__item_wow">
+                        <li class="site-menu-2sub__item site-menu-2sub__item_wow">
                             <div class="menu-wow">
                                 <div class="goods">
                                     <div class="sticker">Товар дня</div>
@@ -63,7 +63,7 @@ $helper = new \Helper\TemplateHelper();
                                     <a class="goods__btn btn-buy" href="">Купить</a>
                                 </div>
                             </div>
-                        </li> -->
+                        </li>
 
                         </ul>
 
