@@ -88,10 +88,11 @@
         ul {
             font-family: 'GloberRegular';
             line-height: 1.6666;
-            padding: 0 0 2em 1.25em;
 
+            padding: 0 0 2em 1.25em;
             & > li {
                 margin: 0;
+
                 list-style-type: disc;
             }
         }
@@ -190,6 +191,7 @@
     &_categories {
         .goods__img {
             height: 150px;
+
             vertical-align: 150px;
             &-image {
                 max-width: 150px;
@@ -220,8 +222,8 @@
         margin-bottom: 10px;
     }
     &__price-old {
+        font-family: 'GloberRegular';
         font-size: 1.1666em;
-        font-weight: 300;
         line-height: 1.2857142;
 
         height: 18px;
@@ -233,14 +235,14 @@
         line-height: 1.33333;
     }
     &__cat-count {
-        font-weight: 300;
+        font-family: 'GloberRegular';
 
         color: @grey-type;
     }
 }
 
 .sticker {
-    font-weight: 300;
+    font-family: 'GloberRegular';
 
     margin-bottom: 10px;
     padding: 2px 5px;
@@ -327,6 +329,623 @@
             &.slick-active {
                 background: @grey-type;
             }
+        }
+    }
+}
+
+.bread-crumbs {
+    margin: 0 0 10px;
+    &__item {
+        font-size: 1.3333em;
+
+        margin-right: 4px;
+        padding-right: 13px;
+
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAQAAABwz0azAAAASklEQVQIW2NQYTcUZYABMx/Th8ZGcK5JnNlbsyg418jY9KFpNwMTmKPNY7rJ7IwMJ0hcxfSy2SIFDiDT2Nz0lWkeVL2xpKk9TC8A5fUOgCPsNUkAAAAASUVORK5CYII=') no-repeat 100% 50%;
+
+        .inline-block();
+        &:last-child {
+            background: none;
+        }
+    }
+    &__link {
+        color: @grey-type;
+    }
+}
+
+.categories-grid {
+    &__item {
+        margin: 0;
+        padding: 0;
+    }
+    &__link {
+        display: table;
+        width: 100%;
+
+        padding: 5px;
+        &:hover {
+            background: @orange-light-4;
+        }
+    }
+    &__img {
+        display: table-cell;
+
+        width: 50px;
+        height: 50px;
+        padding-right: 10px;
+
+        text-align: center;
+        vertical-align: middle;
+        .image {
+            max-width: 50px;
+            max-height: 50px;
+        }
+    }
+    &__text {
+        font-size: 1.1666em;
+
+        display: table-cell;
+
+        vertical-align: middle;;
+    }
+}
+
+.fltrBtn{
+    position: relative;
+
+    // шапка фильтров в рутовых категориях
+    &_hd{
+        margin-bottom: 30px;
+        padding: 10px 30px 0;
+        &_r{
+            margin: 3px 0 0 30px;
+
+            color: grey;
+
+            .inline-block();
+        }
+        &_count{
+            .inline-block(middle);
+        }
+        // отчисть фильтры в рутовых категориях
+        &_clr{
+            line-height: 13px;
+
+            margin: 0 0 0 15px;
+
+            cursor: pointer;
+
+            .inline-block(middle);
+            &_tx{
+                border-bottom: 1px dotted grey;
+
+                .inline-block(middle);
+            }
+            &_btn{
+                .inline-block(middle);
+            }
+        }
+    }
+    // название фильтра
+    &_tggl{
+        font-size: 16px;
+
+        padding: 0 0 0 15px;
+
+        cursor: pointer;
+
+        color: @black;
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAKCAQAAADMDLw1AAAAQUlEQVQIW2Nw3uGiy4AKnP47/3We4y6JIgSCzl+c6t24UYTAws+ckxuYUITAwpdc3PELoWl0/uLSgGQ8hiMwnQoAAEs8bqiaIsoAAAAASUVORK5CYII=') no-repeat 0 50%;
+
+        .inline-block();
+        &_tx{
+            border-bottom: 1px dotted #515151;
+        }
+        &.opn{
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAQAAAChr3WYAAAAXElEQVQI11XKwQ0AERSE4YmrChShCSMUohAKUYg6FKECV9nN2rDre5eXPwMWc53HAqs5jjSsBsB8xIyHV+w7da/wMnEvIxYn2eauOYkPw4wBf0mwsiaBk/XWr/8G2pM8a8IWUVQAAAAASUVORK5CYII=');
+        }
+        &-ncorner{
+            padding-left: 0;
+            cursor: default;
+
+            background: none;
+            .fltrBtn_tggl_tx{
+                border: none;
+            }
+        }
+    }
+    // секция фильтра
+    &_kit{
+        padding: 0 10px;
+
+        border-bottom: 1px solid @grey-light-4;
+        .clearfix();
+        &-box{
+            padding: 10px;
+        }
+        &-nborder{
+            border-bottom: none;
+        }
+        &-ovrflw{
+            overflow: auto;
+
+            max-height: 165px;
+            padding: 7px 10px 0;
+        }
+        &_l{
+            float: left;
+
+            min-width: 80px;
+            margin: 15px 0 0 12px;
+        }
+        &_r{
+            float: right;
+            overflow-y:auto;
+            overflow-x:hidden;
+
+            width: 830px;
+            max-height: 135px;
+            padding: 10px 0 0 1px;
+        }
+        &--titled{
+            padding: 8px 10px;
+            height: 55px;
+
+            .fltrBtnBox{
+                border: 1px solid #c7c7c7;
+                .rounded(2px);
+            }
+            .fltrBtnBox.opn{
+                background: @white;
+                .drop-shadow(0px, 3px, 5px, .3);
+                border: none;
+
+                .fltrBtnBox_tggl{
+                    border-color: #c7c7c7;
+                    padding: 5px 11px 2px;
+                }
+                &.actv{
+                    margin: 5px 6px 0px 1px;
+                    .fltrBtnBox_tggl{
+                        padding: 5px 10px 2px;
+                        margin-bottom: 3px;
+                    }
+                }
+            }
+            .fltrBtnBox_tggl_tx{
+                border-color: transparent;
+                height: 16px;
+                line-height: 16px;
+            }
+            .fltrBtnBox{
+                margin-top: 5px;
+            }
+            .fltrBtn_kit_l{
+                margin-top: 27px;
+            }
+        }
+    }
+    &_range {
+        text-align: center;
+        width: 100%;
+    }
+    // ссекция кнопки фильтрации
+    &_i{
+        margin: 0 9px 9px 0;
+
+        float: left;
+    }
+    // кнопка фильтра
+    &_btn{
+        position: relative;
+
+        width: 100px;
+        height: 43px;
+        padding: 0 10px;
+        margin: 0 5px 10px 0;
+
+        cursor: pointer;
+        cursor: pointer;
+        text-align: center;
+        vertical-align: middle;
+
+        border: 1px solid green;
+        background: @white;
+
+        &:hover {
+            text-decoration: none;
+        }
+
+        display: table-cell;
+        .rounded(4px);
+        &:last-child{
+            margin-right: 0;
+        }
+        &_img{
+            vertical-align: middle;
+            width: 100%;
+            pointer-events: none;
+            //max-width: 100px;
+        }
+        &_tx{
+            font-size: 11px;
+            line-height: 1.2;
+
+            .inline-block();
+        }
+        // кнопка - ещё бренды
+        &-btn{
+            font-size: 14px;
+            line-height: 40px;
+            width: 120px;
+            padding: 0;
+
+            margin-right: 0;
+
+            color: grey;
+            border-style: dashed;
+
+            .inline-block();
+            .fltrBtn_btn_tx{
+                font-size: 14px;
+
+                vertical-align: middle;
+
+                border-bottom: 1px dotted grey;
+            }
+            &:hover{
+                text-decoration: none;
+            }
+        }
+        &-mini{
+            line-height: 31px;
+
+            width: 80px;
+            height: 33px;
+        }
+        // отметить фильтр по бренду
+        &_clsr{
+            position: absolute;
+            top: -7px;
+            right: -7px;
+
+            display: none;
+        }
+        &.act{
+            width: 98px;
+            height: 41px;
+
+            border-width: 2px;
+            border-color: orange;
+            .fltrBtn_btn_clsr{
+                display: block;
+            }
+        }
+    }
+    // строка с параметрами
+    &_ln{
+        line-height: 14px;
+
+        margin: 0 0 10px;
+    }
+    // параметры фильтрации
+    &_param{
+        margin-bottom: 8px;
+        padding-right: 10px;
+
+        border-bottom: 1px solid red;
+        &:last-child{
+            margin-bottom: 0;
+
+            border-bottom: none;
+        }
+        &_n{
+            font-size: 14px;
+
+            margin: 0 0 8px;
+        }
+        &_lbl{
+            font-size: 14px;
+
+            .inline-block(middle);
+        }
+        &_it{
+            font-size: 14px;
+            line-height: 1;
+
+            width: 45px;
+            padding: 4px 10px;
+
+            color: #8a8a8a;
+            color: @black;
+            border: 1px solid red;
+
+            .rounded(3px);
+            .inline-block(middle);
+
+            &:-ms-input-placeholder {
+                color: #8a8a8a;
+            }
+        }
+        &-2col{
+               .fltrBtn_ln{
+                   width: 100%/2 - 1%;
+
+                   .inline-block(middle);
+               }
+        }
+    }
+
+    &_anim-item {
+        position: absolute;
+        right: -8px;
+        top: 300px;
+        display: block;
+        animation: animPuls 7s ease-in-out 1s infinite;
+        -webkit-animation: animPuls 7s ease-in-out 1s infinite;
+        -moz-animation: animPuls 7s ease-in-out 1s infinite;
+        -o-animation: animPuls 7s ease-in-out 1s infinite;
+
+        &:hover {
+            -webkit-animation: none;
+            -moz-animation: none;
+            -o-animation: none;
+            animation: none;
+
+            img {
+                right: 0;
+                top: -10px;
+            }
+        }
+
+        img {
+            transition: all .2s ease;
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    }
+    &_lst {
+            float: left;
+            margin: 0 0 0 30px;
+
+            &-i {
+                float:left;
+                margin: 0 10px 0 0;
+
+                &-name {
+                    font-size: 14px;
+                }
+                &.slash-after:after{
+                    content:"/";
+                    font-size: 23px;
+                }
+
+            }
+        }
+}
+
+// анимация карты на странице с подарками /gift
+@keyframes animPuls{
+    0%,
+    5%{
+        transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+
+    3%,
+    7%{
+        transform: scale3d(1.06, 1.06, 1.06);
+        transform: scale3d(1.06, 1.06, 1.06);
+    }
+
+    9%{
+        transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+@-webkit-keyframes animPuls{
+    0%,
+    5%{
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+
+    3%,
+    7%{
+        -webkit-transform: scale3d(1.06, 1.06, 1.06);
+        transform: scale3d(1.06, 1.06, 1.06);
+    }
+
+    9%{
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+@-moz-keyframes animPuls{
+    0%,
+    5%{
+        -moz-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+
+    3%,
+    7%{
+        -moz-transform: scale3d(1.06, 1.06, 1.06);
+        transform: scale3d(1.06, 1.06, 1.06);
+    }
+
+    9%{
+        -moz-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+// блок филььтра с параметрами
+.fltrBtnBox{
+    position: relative;
+
+    margin: 0 5px 0 0;
+
+    border: 1px solid @white;
+
+    .inline-block();
+    .rounded(3px);
+
+    &.opn{
+        .fltrBtnBox_tggl{
+            z-index: 16;
+
+            padding-bottom: 4px;
+
+            border-color: #000;
+            &_corner{
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAP0lEQVQI12NgAIL/jE6T/jMywIBTgtN/pwQox4/X6TmQ+9yPF8x17gJygNC5C8RRc/4J5f50VmNw2grhgOFWABRpHkDXZMHuAAAAAElFTkSuQmCC');
+            }
+            &_tx{
+                border: none;
+            }
+        }
+        &.fltrBtnBox-mark{
+            .fltrBtnBox_tggl_corner{
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAV0lEQVQIW2NggIL///8zvnf0ngSiYWJw8N7JK+G9g9d/EI0i8d/Pj/eDg/dzkCSIBvHhkh8cfbrAuqAYxAdLfHIOVPvg6P0TVdL7J0gcqMt7K7IEkoKtAD3ERJ5C4w0pAAAAAElFTkSuQmCC');
+            }
+        }
+        .fltrBtnBox_dd{
+            display: block;
+        }
+        &.actv{
+            border-width: 1px;
+            border-color: @white;
+            .fltrBtnBox_tggl{
+                padding: 4px 10px;
+            }
+            &.fltrBtnBox-mark{
+                border-width: 1px;
+                border-color: @white;
+            }
+        }
+    }
+
+    &.actv{
+        border-width: 2px;
+        border-color: orange;
+        .fltrBtnBox_tggl{
+            padding: 3px 9px 2px;
+        }
+        .fltrBtnBox_tggl_tx{
+            border: none;
+        }
+        &.fltrBtnBox-mark{
+            border-width: 2px;
+            border-color: #ef404a;
+        }
+    }
+
+    //скидки - красная выпадашка
+    &-mark{
+        .fltrBtnBox_tggl{
+            color: #ef404a;
+            &_corner{
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAVUlEQVQI12P44Oi99b2D1390DBJn+OQcqAZk/EST+AkSZwCBD44+XaiSPl0MMPDfz4/3g4P3c7AEkAbxGZDBJwfveJAkiGZAB////2d87+g9CUTDxAB+g0Sgd+vg2AAAAABJRU5ErkJggg==');
+            }
+            &_tx{
+                border-color: #ef404a;
+            }
+        }
+    }
+
+    &_tggl{
+        font-size: 14px;
+        line-height: 1;
+
+        position: relative;
+
+        padding: 4px 10px 3px;
+
+        cursor: pointer;
+
+        border: 1px solid @white;
+        border-bottom: none;
+        background-color: @white;
+
+        .inline-block(middle);
+        .rounded(3px 3px 0 0);
+
+        &_tx{
+            padding: 0 0 3px;
+
+            border-bottom: 1px dotted #515151;
+
+            .inline-block();
+        }
+
+        &_corner{
+            width: 7px;
+            height: 6px;
+
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAQElEQVQI12Nw2ur0Hw63MjirOf+EcJx/OqsxMDA4d0G5XQwg4Mfr9BzIfe7HywABzvFAuXgGGPjP6DTpPyOIBQCDch5A9YNPpAAAAABJRU5ErkJggg==') no-repeat 0 0;
+
+            .inline-block(middle);
+        }
+
+        &-dsbld {
+            color: #828282;
+        }
+    }
+
+    // выпадашка с параметрами фильтрации
+    &_dd{
+        position: absolute;
+        z-index: 15;
+        top: 25px;
+        min-width: 100%;
+        .box-sizing();
+
+        display: none;
+
+        white-space: nowrap;
+
+        border: 1px solid #000;
+        background: @white;
+
+        .rounded(0 0 3px 3px);
+        .drop-shadow(0, 3px, 5px, .3);
+        &:after{
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 15px;
+            position: absolute;
+            content: '';
+        }
+        &:before{
+            bottom: 0;
+            left: 0;
+
+            width: 100%;
+            height: 15px;
+            position: absolute;
+            content: '';
+        }
+        &-r{
+            right: 0;
+        }
+        &-l{
+            left: 0;
+        }
+        &_inn{
+            overflow-x: hidden;
+            overflow-y: auto;
+
+            box-sizing: border-box;
+            width: 100%;
+            max-height: 250px;
+            padding: 15px 10px 5px 10px;
         }
     }
 }

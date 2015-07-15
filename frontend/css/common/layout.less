@@ -4,34 +4,48 @@
     margin: 0 auto;
 }
 
-.content {
-    padding-left: 224px;
-    &__inner {
-        border-left: 1px solid @grey-light-3;
-    }
+.middle {
+    position: relative;
+
+    width: 100%;
+
+    .clearfix();
     &_transform {
-        padding-left: 64px;
-    }
-}
-
-&__inner {
-    min-width: 1024px;
-    max-width: 1280px;
-    margin: 0 auto;
-}
-
-.left-bar {
-    float: left;
-
-    width: 224px;
-    &_transform {
-        width: 64px;
-        .site-menu {
-            &__text {
-                display: none;
+        .content {
+            padding: 0 0 0 64px;
+        }
+        .left-bar {
+            width: 64px;
+            .site-menu {
+                &__text {
+                    display: none;
+                }
             }
         }
     }
+}
+
+.container {
+    float: left;
+    overflow: hidden;
+
+    width: 100%;
+}
+
+.content {
+    padding: 0 0 0 224px;
+    &__inner {
+        border-left: 1px solid @grey-light-4;
+    }
+}
+
+.left-bar {
+    position: relative;
+
+    float: left;
+
+    width: 224px;
+    margin-left: -100%;
 }
 
 .footer {
@@ -40,9 +54,17 @@
     margin: 0 auto;
 }
 
-.grid-4col {
-    overflow: hidden;
+.grid-3col {
+    .clearfix();
+    &__item {
+        float: left;
 
+        width: 33.3333%;
+        padding: 10px;
+    }
+}
+
+.grid-4col {
     .clearfix();
     &__item {
         float: left;
@@ -53,8 +75,6 @@
 }
 
 .grid-8col {
-    overflow: auto;
-
     .clearfix();
     &__item {
         float: left;
@@ -65,8 +85,6 @@
 }
 
 .grid-9col {
-    overflow: auto;
-
     .clearfix();
     &__item {
         float: left;
