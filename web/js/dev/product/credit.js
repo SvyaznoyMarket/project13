@@ -30,18 +30,27 @@
                     }
 				});
 
-				if (typeof window.dc_getCreditForTheProduct == 'function') dc_getCreditForTheProduct(
-					4427,
-					window.docCookies.getItem('enter'),
+				if (typeof window.DCLoans == 'function') window.DCLoans(
+					'4427',
 					'getPayment',
-					{ price : creditd.price, count : 1, type : creditd.product_type },
-					function( result ) {
-                        console.info('dc_getCreditForTheProduct.result', result);
-						if( ! 'payment' in result ){
-							return;
-						}
-						if( result.payment > 0 ) {
-							priceNode.html( printPrice( Math.ceil(result.payment) ) );
+                    {
+                        products: [
+                            { price : creditd.price, count : 1, type : creditd.product_type }
+                        ]
+                    },
+					function(response) {
+                        var result = {
+                            payment: null
+                        };
+
+                        console.info('DCLoans.getPayment.response', response);
+
+                        result.payment = response.allProducts;
+
+                        console.info('DCLoans.getPayment.result', result);
+
+						if (result.payment) {
+							priceNode.html(printPrice(Math.ceil(result.payment)));
 							creditBoxNode.show();
 						}
 					}

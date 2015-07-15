@@ -81,7 +81,7 @@
 
         pageConfig = $('#page-config').data('value'),
 
-		directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
+		directCreditUrl = 'http://api.direct-credit.ru/dc.js',
         adfoxUrl = 'adfox_lib_ff.min.js', // 'adfox.asyn.code.ver3.min.js',
 		yandexMapUrl, yandexMapUrlv2_1, mustacheUrl, historyUrl, kladr, knockoutUrl,
 

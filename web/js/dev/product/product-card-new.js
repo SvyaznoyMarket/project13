@@ -24,15 +24,28 @@
 
 
     // Кредит
-    if ($creditButton.length > 0 && typeof window['dc_getCreditForTheProduct'] == 'function') {
-        window['dc_getCreditForTheProduct'](
-            4427,
-            window.docCookies.getItem('enter_auth'),
+    if ($creditButton.length > 0 && typeof window['DCLoans'] == 'function') {
+        window['DCLoans'](
+            '4427',
             'getPayment',
-            { price : $creditButton.data('credit')['price'], count : 1, type : $creditButton.data('credit')['product_type'] },
-            function( result ) {
-                if( typeof result['payment'] != 'undefined' && result['payment'] > 0 ) {
-                    $creditButton.find('.jsProductCreditPrice').text( printPrice( Math.ceil(result['payment']) ) );
+            {
+                products: [
+                    { price : $creditButton.data('credit')['price'], count : 1, type : $creditButton.data('credit')['product_type'] }
+                ]
+            },
+            function(response) {
+                var result = {
+                    payment: null
+                };
+
+                console.info('DCLoans.getPayment.response', response);
+
+                result.payment = response.allProducts;
+
+                console.info('DCLoans.getPayment.result', result);
+
+                if (result.payment) {
+                    $creditButton.find('.jsProductCreditPrice').text(printPrice(Math.ceil(result.payment)));
                     $creditButton.show();
                 }
             }
