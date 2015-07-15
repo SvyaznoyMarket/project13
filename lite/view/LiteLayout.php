@@ -3,7 +3,7 @@
 namespace view;
 
 
-class LiteLayout extends \Templating\HtmlLayout
+class LiteLayout extends \View\Layout
 {
 
     public function __construct() {
@@ -26,9 +26,23 @@ class LiteLayout extends \Templating\HtmlLayout
     /**
      * @return string
      */
-    public function slotHeadJavascript()
+    public function blockHeadJavascript()
     {
         parent::slotHeadJavascript();
+    }
+
+    /**
+     * @return string
+     */
+    public function blockStylesheet()
+    {
+        return parent::slotStylesheet();
+    }
+
+
+    public function blockHead()
+    {
+        return $this->render('common/_head');
     }
 
     /** Навигация
