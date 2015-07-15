@@ -85,10 +85,17 @@
         });
     });
 
-    modules.define('enter.search', ['jQuery', 'ko'], function(provide){
+    modules.define('enter.search', ['jQuery', 'ko', 'library'], function(provide){
         loadScript("/public/js/modules/enter.search.js", function () {
             console.log('[Module] enter.search');
             provide();
+        });
+    });
+
+    modules.define('enter.region', ['jQuery', 'jquery.slick', 'jquery.lightbox_me'], function(provide){
+        loadScript("/public/js/modules/enter.region.js", function () {
+            console.log('[Module] enter.region');
+            provide({});
         });
     });
 

@@ -7,12 +7,7 @@ class LiteLayout extends \View\Layout
 {
 
     public function __construct() {
-        // подмена пути для шаблонов
-        $c = \App::config();
-        $c->templateDir = $c->appDir . '/lite/template';
-
         parent::__construct();
-
         $this->setGlobalParam('menu', (new \View\Menu($this))->generate_new(\App::user()->getRegion()));
     }
 
