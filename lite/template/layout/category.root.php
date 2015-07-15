@@ -1,7 +1,11 @@
 <?
 /**
  * @var $page \View\Main\IndexPage
+ * @var $links array
+ * @var $category \Model\Product\Category\Entity
  */
+
+$category = $page->getParam('category');
 ?>
 
 <!doctype html>
@@ -24,6 +28,7 @@
     <!-- для внутренних страниц добавляется класс content_transform -->
     <main class="content content_transform">
         <div class="content__inner">
+
             <!-- баннер -->
             <div class="banner-section">
                 <img src="http://content.adfox.ru/150713/adfox/176461/1346077.jpg" width="940" height="240" alt="" border="0">
@@ -32,130 +37,29 @@
 
             <!-- категории товаров -->
             <div class="section">
-                <div class="section__title">Детские товары</div>
+                <div class="section__title"><?= $category->name ?></div>
 
                 <div class="section__content">
                     <div class="slider-section">
                         <div class="goods goods_categories grid-4col">
-                            <div class="goods__item grid-4col__item">
-                                <a href="" class="goods__img">
-                                    <img src="http://5.imgenter.ru/uploads/media/02/2a/5a/thumb_3c59_category_163x163.jpeg" alt="" class="goods__img-image">
-                                </a>
 
-                                <div class="goods__name">
-                                    <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                            <? foreach ($page->getParam('links', []) as $link) : ?>
+
+                                <div class="goods__item grid-4col__item">
+                                    <a href="<?= $link['url'] ?>" class="goods__img">
+                                        <img src="<?= $link['image'] ?>" alt="<?= $link['name'] ?>" class="goods__img-image">
+                                    </a>
+
+                                    <div class="goods__name">
+                                        <a class="underline" href=""><?= $link['name'] ?></a>
+                                    </div>
+
+                                    <div class="goods__cat-count"><?= $link['totalText'] ?></div>
                                 </div>
 
-                                <div class="goods__cat-count">123 товара</div>
-                            </div>
+                            <? endforeach ?>
 
-                            <div class="goods__item grid-4col__item">
-                                <a href="" class="goods__img">
-                                    <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="goods__img-image">
-                                </a>
 
-                                <div class="goods__name">
-                                    <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
-                                </div>
-
-                                <div class="goods__cat-count">123 товара</div>
-                            </div>
-
-                            <div class="goods__item grid-4col__item">
-                                <a href="" class="goods__img">
-                                    <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="goods__img-image">
-                                </a>
-
-                                <div class="goods__name">
-                                    <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
-                                </div>
-
-                                <div class="goods__cat-count">123 товара</div>
-                            </div>
-
-                            <div class="goods__item grid-4col__item">
-                                <a href="" class="goods__img">
-                                    <img src="http://6.imgenter.ru/uploads/media/8c/f9/83/thumb_410a_category_163x163.jpeg" alt="" class="goods__img-image">
-                                </a>
-
-                                <div class="goods__name">
-                                    <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
-                                </div>
-
-                                <div class="goods__cat-count">123 товара</div>
-                            </div>
-
-                            <div class="goods__item grid-4col__item">
-                                <a href="" class="goods__img">
-                                    <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="goods__img-image">
-                                </a>
-
-                                <div class="goods__name">
-                                    <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
-                                </div>
-
-                                <div class="goods__cat-count">123 товара</div>
-                            </div>
-
-                            <div class="goods__item grid-4col__item">
-                                <a href="" class="goods__img">
-                                    <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="goods__img-image">
-                                </a>
-
-                                <div class="goods__name">
-                                    <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
-                                </div>
-
-                                <div class="goods__cat-count">123 товара</div>
-                            </div>
-
-                            <div class="goods__item grid-4col__item">
-                                <a href="" class="goods__img">
-                                    <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="goods__img-image">
-                                </a>
-
-                                <div class="goods__name">
-                                    <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
-                                </div>
-
-                                <div class="goods__cat-count">123 товара</div>
-                            </div>
-
-                            <div class="goods__item grid-4col__item">
-                                <a href="" class="goods__img">
-                                    <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="goods__img-image">
-                                </a>
-
-                                <div class="goods__name">
-                                    <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
-                                </div>
-
-                                <div class="goods__cat-count">123 товара</div>
-                            </div>
-
-                            <div class="goods__item grid-4col__item">
-                                <a href="" class="goods__img">
-                                    <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="goods__img-image">
-                                </a>
-
-                                <div class="goods__name">
-                                    <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
-                                </div>
-
-                                <div class="goods__cat-count">123 товара</div>
-                            </div>
-
-                            <div class="goods__item grid-4col__item">
-                                <a href="" class="goods__img">
-                                    <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="goods__img-image">
-                                </a>
-
-                                <div class="goods__name">
-                                    <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
-                                </div>
-
-                                <div class="goods__cat-count">123 товара</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -250,21 +154,7 @@
 
             <!-- SEO информация -->
             <div class="section section_bordered section_seo">
-                <p>
-                    Мебель играет важную роль в создании любого интерьера. Ведь как порой не просто подобрать ту или иную вещь, чтобы добиться единого и гармоничного пространства. Решение купить мебель в интернет-магазине с доставкой позволяет не только справиться с этой задачей, но и совершить покупку с максимальным комфортом.
-                    Интернет-магазин мебели Enter, работающий на всей территории России, готов предоставить вашему <strong>вниманию самый</strong> разнообразный выбор в категории «Мебель».
-                    Наши товары – это прямые поставки от российских и иностранных производителей и официальных дистрибьюторов европейских и американских фабрик. Отсутствие посредников позволяет нам предлагать клиентам лучшие цены. Вся импортная продукция ввезена в Россию официально. Особенно выгодным соотношением качества и цены отличается мебель под нашей собственной торговой маркой Anzoli. Весь товар сертифицирован, на него поддерживается гарантийный срок.
-                </p>
-
-                <ul>
-                    <li>Мягкая мебель – яркие и уютные диваны, кресла, пуфики и декоративные подушки;</li>
-                    <li>Гостиная – гарнитуры, TV-тумбы, журнальные столики, шкафы, стеллажи и комоды по самым приятным ценам;</li>
-                    <li>Спальня – кровати, гарнитуры, ортопедические основания, матрасы, тумбы, комоды, платяные шкафы, туалетные столики, зеркала и банкетки;</li>
-                    <li>Столовая и кухня – уголки и обеденные зоны, стулья, табуреты и барные стулья для обустройства самых разных интерьеров;</li>
-                    <li>Шкафы-купе – множество моделей различных цветов и размеров;</li>
-                    <li>Хранение вещей – шкафы разных видов, стеллажи, навесные полки, комоды, тумбы – любые системы хранения для вашего дома;</li>
-                    <li>Офис и домашний кабинет – компьютерные столы и офисные кресла, стеллажи и навесные полки, мягкая мебель и костюмные вешалки – создавайте свой рабочий уголок по своему вкусу;</li>
-                </ul>
+                <?= $category->getSeoContent() ?>
             </div>
             <!--/ SEO информация -->
         </div>
