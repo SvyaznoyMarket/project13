@@ -336,7 +336,6 @@ class Repository {
                                         }
 
                                         $product->setRootCategory(new \Model\Product\Category\Entity($category));
-                                        break;
                                     }
                                 }
                             }
