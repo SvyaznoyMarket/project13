@@ -42,7 +42,7 @@
                     $('.js-popup-' + current ).lightbox_me({
                         closeSelector: '.js-popup-close',
                         onLoad: function() {
-                            $('.js-slider-goods').slick('reinit');
+                            //$('.js-slider-goods').slick('reinit');
                         }
                     });
                 });

@@ -77,6 +77,13 @@
         });
     });
 
+    modules.define('jquery.ui', ['jQuery'], function(provide){
+        loadScript("/public/js/plugins/jquery-ui-1.11.4.custom.js", function () {
+            console.log('[Module] jquery.ui');
+            provide();
+        });
+    });
+
     /* ENTER Modules */
     modules.define('enter.debug', ['jQuery', 'Mustache', 'enter.config'], function(provide){
         loadScript("/js/prod/debug-panel.js", function () {
@@ -85,10 +92,17 @@
         });
     });
 
-    modules.define('enter.search', ['jQuery', 'ko'], function(provide){
+    modules.define('enter.search', ['jQuery', 'ko', 'library'], function(provide){
         loadScript("/public/js/modules/enter.search.js", function () {
             console.log('[Module] enter.search');
             provide();
+        });
+    });
+
+    modules.define('enter.region', ['jQuery', 'jquery.slick', 'jquery.lightbox_me'], function(provide){
+        loadScript("/public/js/modules/enter.region.js", function () {
+            console.log('[Module] enter.region');
+            provide({});
         });
     });
 

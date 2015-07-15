@@ -1,6 +1,6 @@
 default:
-  - 'newer:less'
-  - 'newer:uglify'
+  - 'less'
+  - 'uglify'
 
 all:
   - 'less'
