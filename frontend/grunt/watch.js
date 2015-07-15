@@ -8,8 +8,13 @@ module.exports = function () {
         },
 
         uglify: {
-            files: ['js/*', 'js/**/*'],
+            files: ['js/*', 'js/**/*', '!js/plugins/*'],
             tasks: ['uglify:compress']
+        },
+
+        uglifyPlugins: {
+            files: ['js/plugins/*.js'],
+            tasks: ['uglify:compressPlugins']
         }
     }
 
