@@ -7,7 +7,7 @@
     <input
         name="q"
         type="text"
-        class="search-bar__it it"
+        class="search-bar__it it jsSearchInput"
         placeholder="Поиск товаров"
         autocomplete="off"
         data-bind="value: searchInput, valueUpdate: ['input', 'afterkeydown'], hasFocus: searchFocus, event: { keydown: searchResultNavigation }" >

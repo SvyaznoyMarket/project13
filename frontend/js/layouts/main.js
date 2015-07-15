@@ -1,28 +1,8 @@
 +function(){
 
-    // TODO вынести в отдельный файл
-    window.onload = function(){
-        var debugPanel = document.querySelector('.jsOpenDebugPanelContent');
-        if (debugPanel) {
-            debugPanel.addEventListener('click', function(){
-                if (modules.getState('enter.debug') == 'NOT_RESOLVED') {
-                    modules.require('enter.debug', function(){})
-                }
-            });
-        }
-    };
-
     modules.require(
-        ['jQuery', 'jquery.slick', 'library'],
+        ['jQuery', 'jquery.slick'],
         function($) {
-
-            // TODO вынести в общую область
-            $('.jsKnockoutSearch').on('click', function(){
-                var $input = $(this).find('input');
-                modules.require('enter.search', function(){
-                    $input.focus();
-                })
-            });
 
             // Слайдер
             $('.js-banners-slider').slick({
