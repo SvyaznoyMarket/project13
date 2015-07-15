@@ -32,10 +32,11 @@
 
 				if (typeof window.dc_getCreditForTheProduct == 'function') dc_getCreditForTheProduct(
 					4427,
-					window.docCookies.getItem('enter_auth'),
+					window.docCookies.getItem('enter'),
 					'getPayment',
 					{ price : creditd.price, count : 1, type : creditd.product_type },
 					function( result ) {
+                        console.info('dc_getCreditForTheProduct.result', result);
 						if( ! 'payment' in result ){
 							return;
 						}
