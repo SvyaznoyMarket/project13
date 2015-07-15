@@ -127,7 +127,8 @@ class Action {
             // выполнение 2-го пакета запросов
             $client->execute();
 
-            \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
+            \RepositoryManager::product()->enrichProductsFromScms($productsById, 'media label');
+            $client->execute();
         }
 
         // формируем ссылки для баннеров
