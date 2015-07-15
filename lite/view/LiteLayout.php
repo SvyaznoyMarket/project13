@@ -43,9 +43,38 @@ class LiteLayout extends \View\Layout
     /** Навигация
      * @return string
      */
-    public function slotNavigation() {
+    public function blockNavigation() {
         return $this->render('common/_navigation', ['menu' => $this->getGlobalParam('menu')]);
     }
+
+    /** Блок логина
+     * @return string
+     */
+    public function blockAuth()
+    {
+        return $this->render('common/_auth');
+    }
+
+    /** Блок логина
+     * @return string
+     */
+    public function blockHeader()
+    {
+        return $this->render('common/_header');
+    }
+
+    public function blockUserConfig()
+    {
+        // Проверяем заголовок от балансера - если страница попадает под кэширование, то можно рендерить # include virtual
+        // В остальных случаях можно обойтись без дополнительного запроса к /ssi.php
+        if (\App::request()->headers->get('SSI') == 'on') {
+            return \App::helper()->render('__ssi', ['path' => '/user-config']);
+        } else {
+            return \App::helper()->render('__userConfig');
+        }
+    }
+
+
 
 
 }
