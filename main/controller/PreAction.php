@@ -54,6 +54,7 @@ class PreAction {
 
         \App::scmsClient()->addQuery(
             'api/ab_test/get-active',
+            //('switch'  === $request->attributes->get('route')) ? [] : ['tags' => ['site-web']],
             ['tags' => ['site-web']],
             [],
             function($data) {

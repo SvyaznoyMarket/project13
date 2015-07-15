@@ -72,12 +72,11 @@
 		$LAB.script('DAnimFramePlayer.min.js').wait(function() {
 			var
 				$element = $('.js-product-3d-img-popup'),
-				data = $element.data('value'),
-				host = $element.data('host');
+				data = $element.data('value');
 
 			try {
 				if (!$('#js-product-3d-img-container').length) {
-					(new DAnimFramePlayer($element[0], host)).DoLoadModel(data);
+					(new DAnimFramePlayer($element[0])).DoLoadModel(data);
 				}
 
 				$element.lightbox_me({
@@ -662,11 +661,29 @@ $(function() {
             preventScroll: true,
             closeClick: true
         },
+        /* Проверка возможности увеличения изображения товара */
+        checkZoom = function(){
+            var newImage, initWidth, initHeight, result;
+
+            // Получаем реальные размеры изображения
+            newImage = new Image();
+            newImage.src = $popupPhoto.attr("src");
+
+            initWidth = newImage.width;
+            initHeight = newImage.height;
+
+            result = initWidth < $popupPhotoHolder.width() && initHeight < $popupPhotoHolder.height();
+
+            if (result) {
+                $zoomBtn.addClass('disabled');
+            }
+
+            return !result;
+
+        },
         /* Функция для зума фотографии */
         setZoom = function(direction) {
-            var cssInc = direction < 0 ? '+=' : '-=',
-                hInc = direction > 0 ? '+=' : '-=',
-                dataZoom = $popupPhoto.data('zoom'),
+            var dataZoom = $popupPhoto.data('zoom'),
                 newImage, initHeight, initWidth;
 
             if (typeof dataZoom == 'undefined') {
@@ -761,6 +778,7 @@ $(function() {
             closeClick: true,
             onLoad: function() {
                 $('html').css({'overflow':'hidden'});
+                checkZoom();
             },
             onClose: function() {
                 setDefaultSetting();
@@ -787,10 +805,11 @@ $(function() {
             $this     = $(this),
             direction = parseInt($(this).data('dir'), 10);
 
-        $zoomBtn.removeClass('disabled');
-        $this.addClass('disabled');
-
-        setZoom(direction);
+        if (checkZoom()) {
+            $zoomBtn.removeClass('disabled');
+            $this.addClass('disabled');
+            setZoom(direction);
+        }
     });
 
     /* Слайд в попапе */
@@ -866,12 +885,11 @@ $(function() {
                 });
             } else if ($3DJSONContainer.length > 0) {
                 $LAB.script('DAnimFramePlayer.min.js').wait(function() {
-                    var data = $3DJSONContainer.data('value'),
-                        host = $3DJSONContainer.data('host');
+                    var data = $3DJSONContainer.data('value');
 
                     try {
                         if (!$('#js-product-3d-img-container').length) {
-                            (new DAnimFramePlayer($3DJSONContainer[0], host)).DoLoadModel(data);
+                            (new DAnimFramePlayer($3DJSONContainer[0])).DoLoadModel(data);
                         }
 
                         $popup.lightbox_me($.extend(popupDefaults, {
@@ -930,19 +948,29 @@ $(function() {
         )
     }
 
-    // Добавление отзыва
-    $body.on('click', '.jsReviewAdd', function(){
-        var $reviewForm = $('.jsReviewForm2');
-        var user = ENTER.config.userInfo.user;
-        if (user.name) $('[name=review\\[author_name\\]]').val(user.name.slice(0,19));
-        if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
-        $reviewForm.lightbox_me($.extend(popupDefaults, {
-            onLoad: function() {},
-            onClose: function() {
-                $reviewForm.find('.form-ctrl__textarea--err, .form-ctrl__input--err').removeClass('form-ctrl__textarea--err form-ctrl__input--err')
-            }
-        }));
-    });
+	(function() {
+		function addReview() {
+			var $reviewForm = $('.jsReviewForm2');
+			var user = ENTER.config.userInfo.user;
+			if (user.name) $('[name=review\\[author_name\\]]').val(user.name.slice(0,19));
+			if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
+			$reviewForm.lightbox_me($.extend(popupDefaults, {
+				onLoad: function() {},
+				onClose: function() {
+					$reviewForm.find('.form-ctrl__textarea--err, .form-ctrl__input--err').removeClass('form-ctrl__textarea--err form-ctrl__input--err')
+				}
+			}));
+		}
+
+		// Добавление отзыва
+		$body.on('click', '.jsReviewAdd', function(){
+			addReview();
+		});
+
+		if ('#add-review' == location.hash) {
+			addReview();
+		}
+	})();
 
     // Отзывы
     $body.on('click', '.jsShowMoreReviews', function(){
@@ -1302,7 +1330,9 @@ $(function() {
                 lastChar = str.slice(-1),
                 lastNum  = lastChar * 1;
 
-            if ( days > 4 && days < 21 ) {
+            if ( lastNum === 0 ) {
+                return 'дней';
+            } else if ( days > 4 && days < 21 ) {
                 return 'дней';
             } else if ( lastNum > 4 && days > 20 ) {
                 return 'дней';
@@ -1899,6 +1929,7 @@ $(document).ready(function() {
 
 		$('.js-product-video-container').lightbox_me({
 			centered: true,
+			closeSelector: '.jsPopupCloser',
 			onLoad: function() {
 				videoStartTime = new Date().getTime();
 

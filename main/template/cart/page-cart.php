@@ -42,7 +42,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 </div>
 
 <div class="deliv-free-alert jsKnockoutCart" data-bind="visible: isMinOrderSumVisible()" style="display: none;">
-    <span class="deliv-free-alert__info">До бесплатного самовывоза и оформления заказа осталось</span>
+    <span class="deliv-free-alert__info">До оформления заказа осталось</span>
     <span class="deliv-free-alert__remain-sum"><span data-bind="text: minOrderSum - cartSum()"><?= \App::config()->minOrderSum ?></span>&thinsp;<span class="rubl">p</span></span>
 </div>
 

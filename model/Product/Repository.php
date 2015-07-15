@@ -338,6 +338,7 @@ class Repository {
 
                             if (isset($properties['category']) && isset($productData['categories']) && is_array($productData['categories'])) {
                                 foreach ($productData['categories'] as $category) {
+                                    $product->categories[] = new \Model\Product\Category\Entity($category);
                                     if ($category['main']) {
                                         $product->setParentCategory(new \Model\Product\Category\Entity($category));
 
@@ -347,7 +348,6 @@ class Repository {
                                         }
 
                                         $product->setRootCategory(new \Model\Product\Category\Entity($category));
-                                        break;
                                     }
                                 }
                             }

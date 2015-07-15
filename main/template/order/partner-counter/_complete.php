@@ -21,6 +21,9 @@
     }
 
     switch (\App::partner()->getName()) {
+        case \Partner\Counter\Actionpay::NAME:
+            echo $page->tryRender('order/partner-counter/_actionpay-complete', $orderParams);
+            break;
         case \Partner\Counter\CityAds::NAME:
             echo $page->tryRender('order/partner-counter/_cityads-complete-pixel', $orderParams);
             break;
@@ -31,8 +34,6 @@
             echo $page->tryRender('order/partner-counter/_advmaker', $orderParams);
             break;
     }
-
-    echo $page->tryRender('order/partner-counter/_actionpay-complete', $orderParams);
 
     echo $page->tryRender('order/partner-counter/_cityads-complete-counter', array('orders' => $orders));
 

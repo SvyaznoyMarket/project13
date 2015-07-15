@@ -35,7 +35,7 @@
             </table>
         </div>
         <!-- для кнопки с иконкой btnBuy-inf -->
-        <div class="btnBuy quickOrder" data-bind="css: {'btnBuy-inf': infoIconVisible() }, visible: !isMinOrderSumVisible()">
+        <div class="<?= \App::abTest()->isNewProductPage() ? 'btn-container btn-container--quick-buy' : 'btnBuy quickOrder' ?>" data-bind="css: {'btnBuy-inf': infoIconVisible() }, visible: !isMinOrderSumVisible()">
             <a href="<?= $page->url('order') ?>"
                class="<?= \App::abTest()->isNewProductPage() ? 'btn-type btn-type--buy' : 'btnBuy__eLink quickOrder__link' ?>">Оформить заказ</a>
         </div>
@@ -53,15 +53,11 @@
         <? if (\App::abTest()->isOrderMinSumRestriction()) : ?>
         <!-- Минимальная сумма заказа -->
         <div class="deliv-free-info" data-bind="visible: isMinOrderSumVisible()">
-            <span class="deliv-free-info__intro">До бесплатного самовывоза и оформления заказа осталось</span>
+            <span class="deliv-free-info__intro">До оформления заказа осталось</span>
             <span class="deliv-free-info__remain-sum"><span data-bind="text: minOrderSum - cartSum()"><?= \App::config()->minOrderSum ?></span>&thinsp;<span class="rubl">p</span></span>
             <a href="/slices/all_labels" class="deliv-free-info__sale-lnk">Выбрать товары по суперцене</a>
         </div>
 
-        <div class="deliv-free-info completed" data-bind="visible: !isMinOrderSumVisible()">
-            <span class="deliv-free-info__intro">Самовывоз</span>
-            <span class="deliv-free-info__alert">БЕСПЛАТНО</span>
-        </div>
         <? endif ?>
 
     </div>
