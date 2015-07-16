@@ -64,7 +64,7 @@
                             <div class="fltrSet_cnt js-category-filter-toggle-content" style="display: block;">
                                 <div class="fltrSet_inn">
                                     <div class="bFilterValuesCol bFilterValuesCol-gbox">
-                                        <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29502" name="f-prop2194-beloe_zoloto_585" value="29502">
+                                        <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29502" name="f-prop2194-beloe_zoloto_585" value="29502">
                                         <label class="bFilterCheckbox" for="id-productCategory-filter-prop2194-option-29502">
                                             <span class="customLabel_wimg"></span>
                                             <img class="customLabel_bimg" src="http://0.imgenter.ru/uploads/media/fb/ed/c8/8750e48fe26f4e02ea5776914561ea5228f5490e.png">
@@ -74,7 +74,7 @@
                                     </div>
 
                                     <div class="bFilterValuesCol bFilterValuesCol-gbox">
-                                        <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29506" name="f-prop2194-geltoe_zoloto_585" value="29506">
+                                        <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29506" name="f-prop2194-geltoe_zoloto_585" value="29506">
                                         <label class="bFilterCheckbox" for="id-productCategory-filter-prop2194-option-29506">
                                             <span class="customLabel_wimg"></span>
                                             <img class="customLabel_bimg" src="http://f.imgenter.ru/uploads/media/f1/1e/59/38c72c637f05867d9d5649e96179e8f60fa52342.png">
@@ -84,7 +84,7 @@
                                     </div>
 
                                     <div class="bFilterValuesCol bFilterValuesCol-gbox">
-                                        <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29503" name="f-prop2194-krasnoe_zoloto_375" value="29503">
+                                        <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29503" name="f-prop2194-krasnoe_zoloto_375" value="29503">
                                         <label class="bFilterCheckbox" for="id-productCategory-filter-prop2194-option-29503">
                                             <span class="customLabel_wimg"></span>
                                             <img class="customLabel_bimg" src="http://8.imgenter.ru/uploads/media/ef/dd/f3/b1bd6e14dae63f5c47b60968666fc138bef759df.png">
@@ -93,7 +93,7 @@
                                     </div>
 
                                     <div class="bFilterValuesCol bFilterValuesCol-gbox">
-                                        <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29500" name="f-prop2194-krasnoe_zoloto_585" value="29500">
+                                        <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29500" name="f-prop2194-krasnoe_zoloto_585" value="29500">
                                         <label class="bFilterCheckbox" for="id-productCategory-filter-prop2194-option-29500">
                                             <span class="customLabel_wimg"></span>
                                             <img class="customLabel_bimg" src="http://9.imgenter.ru/uploads/media/8c/df/8f/927818bd5e15c8ddcd9f17af8f7cd3b15c63635d.png">
@@ -113,7 +113,7 @@
                                 <div class="fltrSet_inn">
 
                                     <div class="bFilterValuesCol bFilterValuesCol-gbox">
-                                        <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-14381" name="f-prop7451-agat" value="14381">
+                                        <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-14381" name="f-prop7451-agat" value="14381">
                                         <label class="bFilterCheckbox" for="id-productCategory-filter-prop7451-option-14381">
                                             <span class="customLabel_wimg"></span>
                                             <img class="customLabel_bimg" src="http://2.imgenter.ru/uploads/media/be/4a/e9/b76078ce6a186de0b8e6bdd1c582f846e1831e6b.png">
@@ -123,7 +123,7 @@
                                     </div>
 
                                     <div class="bFilterValuesCol bFilterValuesCol-gbox">
-                                        <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-14382" name="f-prop7451-ametist" value="14382">
+                                        <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-14382" name="f-prop7451-ametist" value="14382">
                                         <label class="bFilterCheckbox" for="id-productCategory-filter-prop7451-option-14382">
                                             <span class="customLabel_wimg"></span>
                                             <img class="customLabel_bimg" src="http://c.imgenter.ru/uploads/media/ae/b3/2b/2cb15804f1ac6129aace4e69892f0040de7e5a9c.png">
@@ -133,7 +133,7 @@
                                     </div>
 
                                     <div class="bFilterValuesCol bFilterValuesCol-gbox">
-                                        <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-14383" name="f-prop7451-biryuza" value="14383">
+                                        <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-14383" name="f-prop7451-biryuza" value="14383">
                                         <label class="bFilterCheckbox" for="id-productCategory-filter-prop7451-option-14383">
                                             <span class="customLabel_wimg"></span>
                                             <img class="customLabel_bimg" src="http://e.imgenter.ru/uploads/media/35/6b/8e/f4a4af695b4e373c5ada1683bb9846912274206c.png">
@@ -143,7 +143,7 @@
                                     </div>
 
                                     <div class="bFilterValuesCol bFilterValuesCol-gbox">
-                                        <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-16618" name="f-prop7451-brilliant" value="16618">
+                                        <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-16618" name="f-prop7451-brilliant" value="16618">
                                         <label class="bFilterCheckbox" for="id-productCategory-filter-prop7451-option-16618">
                                             <span class="customLabel_wimg"></span>
                                             <img class="customLabel_bimg" src="http://8.imgenter.ru/uploads/media/70/e0/5e/03062588d11501d8242bc4f7784d70b042ca9312.png">
@@ -153,7 +153,7 @@
                                     </div>
 
                                     <div class="bFilterValuesCol bFilterValuesCol-gbox">
-                                        <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-14384" name="f-prop7451-granat" value="14384">
+                                        <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-14384" name="f-prop7451-granat" value="14384">
                                         <label class="bFilterCheckbox" for="id-productCategory-filter-prop7451-option-14384">
                                             <span class="customLabel_wimg"></span>
                                             <img class="customLabel_bimg" src="http://9.imgenter.ru/uploads/media/16/1f/25/94a46fb68a2aaaec3f2e52b27896b53cecb16762.png">
