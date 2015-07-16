@@ -16,8 +16,8 @@ $helper = \App::helper();
 <div class="delivery-page__info clearfix">
     <div class="delivery-region">
         <span class="delivery-region__msg">Ваш регион</span>
-        <span class="delivery-region__current"><?= \App::user()->getRegion()->getName() ?></span>
-        <a href="#" class="delivery-region__change-lnk"><span class="delivery-region__change-inn jsChangeRegion">Изменить регион</span></a>
+        <a class="delivery-region__current jsChangeRegion"><span class="delivery-region__current-inn"><?= \App::user()->getRegion()->getName() ?></span></a>
+        <a href="#deliv-free" class="delivery-free__lnk"><span class="delivery-free__inn">Бесплатный самовывоз</span></a>
     </div>
     <div class="deliv-ctrls">
     <!-- Поиск такой же как в одноклике -->
@@ -76,11 +76,12 @@ $helper = \App::helper();
         <div class="map-container" id="jsDeliveryMap"></div>
     </div>
     <div class="delivery-text">
-        <h2>Бесплатный самовывоз</h2>
+        <h2 id="deliv-free">Бесплатный самовывоз</h2>
         <ul class="delivery-list">
-            <li><b>Из любого магазина Enter</b></li>
-            <li>Из магазина «Связной» на всей территории присутствия</li>
-            <li>При заказе на сумму от 1990&thinsp;<span class="rubl">p</span>&nbsp;в пунктах выдачи заказа PickPoint, Hermes-DPD</li>
+            <li><b>Из любого магазина Enter</b>.</li>
+            <li>Из любого магазина Евросеть на всей территории присутствия.</li>
+            <li>Из любого магазина Связной на всей территории присутствия.</li>
+            <li>При заказе на сумму от 1990&thinsp;<span class="rubl">p</span>&nbsp;в пунктах выдачи заказа PickPoint, Hermes-DPD.</li>
         </ul>
 
         <p>Бесплатная доставка заказов в пункты выдачи PickPoint и Hermes-DPD осуществляется в городах:</p>
@@ -178,7 +179,7 @@ $helper = \App::helper();
             </tr>
             <tr>
                 <td style="text-align: center;border-bottom: 1px solid #FFF;   border-left: 1px solid #FFF;   border-top: 1px solid #FFF;"><img class="table-img" src="/styles/delivery/img/svz.png">
-                    <span class="table-lbl">Магазины «Связной»</span></td>
+                    <span class="table-lbl">Магазины Связной</span></td>
                 <td>7 дней</td>
                 <td>наличные<br>(предоплата&nbsp;на&nbsp;сайте невозможна)</td>
                 <td>макс. 120х120х120 см;<br>25 кг; 150 л</td>
