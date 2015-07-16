@@ -99,6 +99,299 @@
 
                     <hr class="hr-orange">
 
+                    <div class="fltr">
+                        <form id="productCatalog-filter-form" class="bFilter js-category-filter js-category-filter-v3" action="/catalog/jewel/zolotie-ukrasheniya-3299" method="GET">
+
+                            <div class="fltrSet js-category-filter-toggle-container fltrSet-metall">
+                                <div class="fltrSet_tggl  js-category-filter-toggle-button fltrSet_tggl-dn">
+                                    <span class="fltrSet_tggl_tx">Металл</span>
+                                </div>
+
+                                <div class="fltrSet_cnt js-category-filter-toggle-content" style="display: block;">
+                                    <div class="fltrSet_inn">
+                                        <div class="bFilterValuesCol bFilterValuesCol-gbox">
+                                            <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29502" name="f-prop2194-beloe_zoloto_585" value="29502">
+                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop2194-option-29502">
+                                                <span class="customLabel_wimg"></span>
+                                                <img class="customLabel_bimg" src="http://0.imgenter.ru/uploads/media/fb/ed/c8/8750e48fe26f4e02ea5776914561ea5228f5490e.png">
+
+                                                <span class="customLabel_btx">белое золото 585</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="bFilterValuesCol bFilterValuesCol-gbox">
+                                            <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29506" name="f-prop2194-geltoe_zoloto_585" value="29506">
+                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop2194-option-29506">
+                                                <span class="customLabel_wimg"></span>
+                                                <img class="customLabel_bimg" src="http://f.imgenter.ru/uploads/media/f1/1e/59/38c72c637f05867d9d5649e96179e8f60fa52342.png">
+
+                                                <span class="customLabel_btx">желтое золото 585</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="bFilterValuesCol bFilterValuesCol-gbox">
+                                            <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29503" name="f-prop2194-krasnoe_zoloto_375" value="29503">
+                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop2194-option-29503">
+                                                <span class="customLabel_wimg"></span>
+                                                <img class="customLabel_bimg" src="http://8.imgenter.ru/uploads/media/ef/dd/f3/b1bd6e14dae63f5c47b60968666fc138bef759df.png">
+                                                <span class="customLabel_btx">красное золото 375</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="bFilterValuesCol bFilterValuesCol-gbox">
+                                            <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29500" name="f-prop2194-krasnoe_zoloto_585" value="29500">
+                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop2194-option-29500">
+                                                <span class="customLabel_wimg"></span>
+                                                <img class="customLabel_bimg" src="http://9.imgenter.ru/uploads/media/8c/df/8f/927818bd5e15c8ddcd9f17af8f7cd3b15c63635d.png">
+                                                <span class="customLabel_btx">красное золото 585</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="fltrSet js-category-filter-toggle-container  fltrSet-insertion fltrSet-close">
+                                <div class="fltrSet_tggl  js-category-filter-toggle-button">
+                                    <span class="fltrSet_tggl_tx">Вставка</span>
+                                </div>
+
+                                <div class="fltrSet_cnt js-category-filter-toggle-content" style="display: block;">
+                                    <div class="fltrSet_inn">
+
+                                        <div class="bFilterValuesCol bFilterValuesCol-gbox">
+                                            <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-14381" name="f-prop7451-agat" value="14381">
+                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop7451-option-14381">
+                                                <span class="customLabel_wimg"></span>
+                                                <img class="customLabel_bimg" src="http://2.imgenter.ru/uploads/media/be/4a/e9/b76078ce6a186de0b8e6bdd1c582f846e1831e6b.png">
+
+                                                <span class="customLabel_btx">агат</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="bFilterValuesCol bFilterValuesCol-gbox">
+                                            <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-14382" name="f-prop7451-ametist" value="14382">
+                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop7451-option-14382">
+                                                <span class="customLabel_wimg"></span>
+                                                <img class="customLabel_bimg" src="http://c.imgenter.ru/uploads/media/ae/b3/2b/2cb15804f1ac6129aace4e69892f0040de7e5a9c.png">
+
+                                                <span class="customLabel_btx">аметист</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="bFilterValuesCol bFilterValuesCol-gbox">
+                                            <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-14383" name="f-prop7451-biryuza" value="14383">
+                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop7451-option-14383">
+                                                <span class="customLabel_wimg"></span>
+                                                <img class="customLabel_bimg" src="http://e.imgenter.ru/uploads/media/35/6b/8e/f4a4af695b4e373c5ada1683bb9846912274206c.png">
+
+                                                <span class="customLabel_btx">бирюза</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="bFilterValuesCol bFilterValuesCol-gbox">
+                                            <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-16618" name="f-prop7451-brilliant" value="16618">
+                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop7451-option-16618">
+                                                <span class="customLabel_wimg"></span>
+                                                <img class="customLabel_bimg" src="http://8.imgenter.ru/uploads/media/70/e0/5e/03062588d11501d8242bc4f7784d70b042ca9312.png">
+
+                                                <span class="customLabel_btx">бриллиант</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="bFilterValuesCol bFilterValuesCol-gbox">
+                                            <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-14384" name="f-prop7451-granat" value="14384">
+                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop7451-option-14384">
+                                                <span class="customLabel_wimg"></span>
+                                                <img class="customLabel_bimg" src="http://9.imgenter.ru/uploads/media/16/1f/25/94a46fb68a2aaaec3f2e52b27896b53cecb16762.png">
+
+                                                <span class="customLabel_btx">гранат</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bFilterHead bFilterHead-open">
+                                <div class="fltrSet_tggl js-category-filter-otherParamsToggleButton fltrSet_tggl-dn">
+                                    <span class="fltrSet_tggl_tx">Ещё параметры</span>
+                                </div>
+                            </div>
+
+                            <div class="fltrSet js-category-v1-filter-otherParams" style="padding-top: 0;">
+                                <!-- Фильтр по выбранным параметрам -->
+                                <div class="bFilterCont js-category-filter-otherParamsContent" style="display: block;">
+                                    <!-- Список названий параметров -->
+                                    <ul class="bFilterParams">
+                                        <li class="bFilterParams__eItem mActive js-category-filter-param" data-ref="id-productCategory-filter-5-label">
+                                            <span class="bParamName">WOW-товары</span>
+                                        </li>
+                                        <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-shop">
+                                            <span class="bParamName">Наличие в магазинах</span>
+                                        </li>
+                                        <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-prop7514">
+                                            <span class="bParamName">Коллекция</span>
+                                        </li>
+                                        <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-shop">
+                                            <span class="bParamName">Наличие в магазинах</span>
+                                        </li>
+                                        <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-prop7514">
+                                            <span class="bParamName">Коллекция</span>
+                                        </li>
+                                        <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-shop">
+                                            <span class="bParamName">Наличие в магазинах</span>
+                                        </li>
+                                        <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-prop7514">
+                                            <span class="bParamName">Коллекция</span>
+                                        </li>
+                                        <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-shop">
+                                            <span class="bParamName">Наличие в магазинах</span>
+                                        </li>
+                                        <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-prop7514">
+                                            <span class="bParamName">Коллекция</span>
+                                        </li>
+                                        <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-shop">
+                                            <span class="bParamName">Наличие в магазинах</span>
+                                        </li>
+                                        <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-prop7514">
+                                            <span class="bParamName">Коллекция</span>
+                                        </li>
+                                    </ul>
+                                    <!-- /Список названий параметров -->
+
+                                    <!-- Список значений параметров -->
+                                    <div class="bFilterValues">
+                                        <div class="bFilterValuesItem js-category-filter-element" id="id-productCategory-filter-5-label">
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-label-option-36" name="f-label-sale" value="36">
+                                                <label class="bFilterCheckbox" for="id-productCategory-filter-label-option-36">
+
+                                                    <span class="customLabel_btx">Sale</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="bFilterValuesItem hf mLineItem js-category-filter-element" id="id-productCategory-filter-5-shop">
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-2" name="shop" value="2">
+                                                <label class="bFilterCheckbox mCustomLabelRadio" for="id-productCategory-filter-shop-option-2">
+
+                                                    <span class="customLabel_btx">ул. Орджоникидзе, д. 11, стр. 10</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-13" name="shop" value="13">
+                                                <label class="bFilterCheckbox mCustomLabelRadio" for="id-productCategory-filter-shop-option-13">
+
+                                                    <span class="customLabel_btx">Волгоградский пр-т, д. 119а.</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-68" name="shop" value="68">
+                                                <label class="bFilterCheckbox mCustomLabelRadio" for="id-productCategory-filter-shop-option-68">
+
+                                                    <span class="customLabel_btx">Свободный пр-кт, д. 33</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-87" name="shop" value="87">
+                                                <label class="bFilterCheckbox mCustomLabelRadio" for="id-productCategory-filter-shop-option-87">
+
+                                                    <span class="customLabel_btx">ул. Братиславская д. 14</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-135" name="shop" value="135">
+                                                <label class="bFilterCheckbox mCustomLabelRadio" for="id-productCategory-filter-shop-option-135">
+
+                                                    <span class="customLabel_btx">ул. Профсоюзная, вл. 118, ТЦ "Тропа"</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-174" name="shop" value="174">
+                                                <label class="bFilterCheckbox mCustomLabelRadio" for="id-productCategory-filter-shop-option-174">
+
+                                                    <span class="customLabel_btx">ул. Вавилова, д. 19 (только для сотрудников Сбербанка)</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-198" name="shop" value="198">
+                                                <label class="bFilterCheckbox mCustomLabelRadio" for="id-productCategory-filter-shop-option-198">
+
+                                                    <span class="customLabel_btx">Магазин в г. Москва, ул. Грузинский вал, д. 23/25</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="bFilterValuesItem hf js-category-filter-element" id="id-productCategory-filter-5-prop7514">
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7514-option-28108" name="f-prop7514-baby_stars" value="28108">
+                                                <label class="bFilterCheckbox" for="id-productCategory-filter-prop7514-option-28108">
+
+                                                    <span class="customLabel_btx">Baby Stars</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7514-option-17052" name="f-prop7514-cinderella" value="17052">
+                                                <label class="bFilterCheckbox" for="id-productCategory-filter-prop7514-option-17052">
+
+                                                    <span class="customLabel_btx">Cinderella</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7514-option-19339" name="f-prop7514-clover" value="19339">
+                                                <label class="bFilterCheckbox" for="id-productCategory-filter-prop7514-option-19339">
+
+                                                    <span class="customLabel_btx">Clover</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7514-option-23035" name="f-prop7514-first_diamond" value="23035">
+                                                <label class="bFilterCheckbox" for="id-productCategory-filter-prop7514-option-23035">
+
+                                                    <span class="customLabel_btx">First Diamond</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7514-option-19609" name="f-prop7514-ice_line" value="19609">
+                                                <label class="bFilterCheckbox" for="id-productCategory-filter-prop7514-option-19609">
+
+                                                    <span class="customLabel_btx">Ice Line</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7514-option-28107" name="f-prop7514-ifashion" value="28107">
+                                                <label class="bFilterCheckbox" for="id-productCategory-filter-prop7514-option-28107">
+
+                                                    <span class="customLabel_btx">iFashion</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="bFilterValuesCol ">
+                                                <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7514-option-15303" name="f-prop7514-illusion" value="15303">
+                                                <label class="bFilterCheckbox" for="id-productCategory-filter-prop7514-option-15303">
+
+                                                    <span class="customLabel_btx">Illusion</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Список значений параметров -->
+                            </div>
+                        </form>
+                    </div>
+
                     <div class="fltrBtn fltrBtn-bt">
                         <form id="productCatalog-filter-form" class="js-category-filter" action="/catalog/electronics/telefoni-897" data-count-url="" method="GET">
                             <div class="fltrBtn_kit fltrBtn_kit--mark">
@@ -294,7 +587,7 @@
                             </div>
 
                             <div class="fltrBtn_kit fltrBtn_kit-nborder">
-                                <div class="js-category-filter-selected clearfix">
+                                <div class="js-category-filter-selected">
                                     <ul class="fltr_slctd">
                                         <li class="fltr_slctd_i fltr_slctd_i-n">В магазине:</li>
 
