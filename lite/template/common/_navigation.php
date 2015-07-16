@@ -47,7 +47,7 @@ $helper = new \Helper\TemplateHelper();
                         <li class="site-menu-2sub__item site-menu-2sub__item_wow">
                             <div class="menu-wow">
                                 <div class="goods">
-                                    <div class="sticker">Товар дня</div>
+                                    <div class="sticker sticker_sale">Товар дня</div>
 
                                     <a href="" class="goods__img">
                                         <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">

@@ -80,7 +80,9 @@
                                         </a>
 
                                         <div class="goods__name">
-                                            <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                            <div class="goods__name-inn">
+                                                <a href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span></a>
+                                            </div>
                                         </div>
 
                                         <div class="goods__cat-count">123 товара</div>
@@ -92,7 +94,9 @@
                                         </a>
 
                                         <div class="goods__name">
-                                            <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                            <div class="goods__name-inn">
+                                                <a href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка</span></a>
+                                            </div>
                                         </div>
 
                                         <div class="goods__cat-count">123 товара</div>
@@ -104,7 +108,9 @@
                                         </a>
 
                                         <div class="goods__name">
-                                            <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                            <div class="goods__name-inn">
+                                                <a href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span></a>
+                                            </div>
                                         </div>
 
                                         <div class="goods__cat-count">123 товара</div>
@@ -116,7 +122,9 @@
                                         </a>
 
                                         <div class="goods__name">
-                                            <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                            <div class="goods__name-inn">
+                                                <a href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span></a>
+                                            </div>
                                         </div>
 
                                         <div class="goods__cat-count">123 товара</div>
@@ -128,7 +136,9 @@
                                         </a>
 
                                         <div class="goods__name">
-                                            <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                            <div class="goods__name-inn">
+                                                <a href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка</span></a>
+                                            </div>
                                         </div>
 
                                         <div class="goods__cat-count">123 товара</div>
@@ -140,7 +150,9 @@
                                         </a>
 
                                         <div class="goods__name">
-                                            <a class="underline" href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                            <div class="goods__name-inn">
+                                                <a href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span></a>
+                                            </div>
                                         </div>
 
                                         <div class="goods__cat-count">123 товара</div>

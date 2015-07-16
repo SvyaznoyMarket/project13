@@ -47,7 +47,9 @@ $sliderToken = $blockname == 'Популярные товары' ? 'pop' : 'hit'
 
                 <div class="goods__item grid-4col__item">
                     <? if ($product->getLabel()) : ?>
-                        <div class="sticker"><?= $product->getLabel()->getName() ?></div>
+                        <div class="sticker-list">
+                            <div class="sticker sticker_sale"><?= $product->getLabel()->getName() ?></div>
+                        </div>
                     <? endif ?>
 
                     <a href="<?= $productLink ?>" class="goods__img">
@@ -55,7 +57,9 @@ $sliderToken = $blockname == 'Популярные товары' ? 'pop' : 'hit'
                     </a>
 
                     <div class="goods__name">
-                        <a href="<?= $productLink ?>"><?= $product->getName() ?></a>
+                        <div class="goods__name-inn">
+                            <a href="<?= $productLink ?>"><?= $product->getName() ?></a>
+                        </div>
                     </div>
 
                     <div class="goods__price-old"><span class="line-through"><? if ($product->getPriceOld()) : ?><?= $helper->formatPrice($product->getPriceOld()) ?></span> ₽<? endif ?></div>

@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
-<svg xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
 <metadata></metadata>
 <defs>
 <font id="globersemibold" horiz-adv-x="1138" >
@@ -28,7 +28,7 @@
 <glyph unicode="-" horiz-adv-x="733" d="M154 518q-4 10 -7 21q-6 18 -6 55t6 55q2 10 7 21h426q2 -10 6 -21q2 -10 4 -24.5t2 -30.5q0 -18 -2 -31.5t-4 -23.5q-4 -10 -6 -21h-426z" />
 <glyph unicode="." horiz-adv-x="479" d="M346 14q-10 -4 -27 -8q-29 -6 -79 -6q-57 0 -82 6q-16 4 -25 8v193q8 2 25 6q12 4 32.5 6t49.5 2q27 0 46 -2t33 -6q16 -4 27 -6v-193z" />
 <glyph unicode="/" horiz-adv-x="972" d="M727 1522q12 2 27 6q12 4 30.5 6t42.5 2q25 0 44.5 -2t31.5 -6q14 -4 27 -6l-684 -1604q-12 -4 -27 -8q-29 -6 -76 -6q-51 0 -75 6q-14 4 -25 8z" />
-<glyph unicode="0" horiz-adv-x="1265" d="M631 -532q-123 0 -217.5 39.5t-159 126.5t-98 223.5t-33.5 326.5q0 188 33.5 324.5t98 223.5t159 128t217.5 41t218 -40t160.5 -127t99.5 -223t34 -327q0 -190 -34 -326.5t-99.5 -223.5t-160.5 -126.5t-218 -39.5zM631 727q-72 0 -126 -24.5t-91 -87t-55.5 -167 t-18.5 -264.5t18.5 -264t55.5 -165.5t91 -87t126 -25.5t126 25.5t91 87t55.5 166t18.5 263.5q0 160 -18.5 264.5t-55.5 167t-91 87t-126 24.5z" />
+<glyph unicode="0" horiz-adv-x="1265" d="M631 -20q-123 0 -217.5 39.5t-159 126.5t-98 223.5t-33.5 326.5q0 188 33.5 324.5t98 223.5t159 128t217.5 41t218 -40t160.5 -127t99.5 -223t34 -327q0 -190 -34 -326.5t-99.5 -223.5t-160.5 -126.5t-218 -39.5zM631 1239q-72 0 -126 -24.5t-91 -87t-55.5 -167 t-18.5 -264.5t18.5 -264t55.5 -165.5t91 -87t126 -25.5t126 25.5t91 87t55.5 166t18.5 263.5q0 160 -18.5 264.5t-55.5 167t-91 87t-126 24.5z" />
 <glyph unicode="1" horiz-adv-x="847" d="M61 1104q129 35 223.5 100.5t168.5 173.5l24 6q12 4 30.5 6.5t45.5 2.5q25 0 44 -2t32 -7l24 -6v-1364q-10 -4 -24 -8q-25 -6 -78 -6q-51 0 -78 6q-16 4 -27 8v840q0 82 3.5 148.5t7.5 117.5q-72 -72 -163 -118t-183 -68q-31 29 -45.5 75t-4.5 95z" />
 <glyph unicode="2" horiz-adv-x="1089" d="M209 1192q-33 27 -48.5 63.5t-8.5 83.5q47 20 106 37q51 14 119.5 25.5t152.5 11.5q92 0 174 -20.5t142.5 -65.5t95.5 -116.5t35 -172.5q0 -96 -26.5 -164.5t-78 -123t-123 -102.5t-163.5 -103q-45 -29 -96.5 -57.5t-94.5 -65.5t-70.5 -83t-27.5 -110q0 -29 4 -45h639 q20 -33 21 -92q0 -51 -21 -92h-829q-4 18 -7 41q-6 37 -6 96q0 119 35 204t92.5 148.5t127 110.5t141.5 94q70 45 121 83t84.5 75t50 80t16.5 100q0 94 -63.5 152.5t-204.5 58.5q-57 0 -108.5 -8t-92.5 -18q-47 -11 -88 -25z" />
 <glyph unicode="3" horiz-adv-x="1075" d="M958 373q0 -88 -27.5 -161t-87 -124t-156.5 -79.5t-234 -28.5q-86 0 -150.5 10t-112.5 24q-53 16 -94 37q-2 41 11.5 83t39.5 69q6 -2 31 -10.5t64 -16.5t89 -14t107 -6q160 0 236 57t76 186q0 70 -20.5 117t-59.5 76t-92.5 41t-116.5 12h-152q-16 41 -16 84t16 80h152 q115 0 180.5 51t65.5 164t-67 165t-198 52q-59 0 -107 -7t-83 -15q-41 -10 -74 -23q-74 51 -63 145q39 18 92 35q45 14 109.5 25.5t144.5 11.5q215 0 333.5 -93t118.5 -269q0 -111 -39.5 -193t-142.5 -125q121 -43 174 -134t53 -226z" />
@@ -1364,6 +1364,41 @@
 <hkern u1="&#x2212;" u2="&#x32;" k="43" />
 <hkern u1="&#x2212;" u2="&#x31;" k="25" />
 <hkern g1="seven.num" u2="&#x2044;" k="43" />
+<hkern g1="A" 	g2="space" 	k="51" />
+<hkern g1="A" 	g2="V" 	k="104" />
+<hkern g1="A" 	g2="asterisk" 	k="127" />
+<hkern g1="A" 	g2="backslash" 	k="127" />
+<hkern g1="A" 	g2="braceright" 	k="45" />
+<hkern g1="A" 	g2="bracketright" 	k="51" />
+<hkern g1="A" 	g2="copyright" 	k="29" />
+<hkern g1="A" 	g2="eth" 	k="14" />
+<hkern g1="A" 	g2="one" 	k="80" />
+<hkern g1="A" 	g2="ordfeminine" 	k="39" />
+<hkern g1="A" 	g2="ordmasculine" 	k="49" />
+<hkern g1="A" 	g2="question" 	k="35" />
+<hkern g1="A" 	g2="registered" 	k="84" />
+<hkern g1="A" 	g2="seven" 	k="29" />
+<hkern g1="A" 	g2="trademark" 	k="133" />
+<hkern g1="A" 	g2="v" 	k="72" />
+<hkern g1="A" 	g2="T,Tcommaaccent,Tcaron,Tbar" 	k="123" />
+<hkern g1="A" 	g2="W,Wcircumflex,Wgrave,Wacute,Wdieresis" 	k="80" />
+<hkern g1="A" 	g2="Y,Yacute,Ycircumflex,Ydieresis,Ygrave" 	k="156" />
+<hkern g1="A" 	g2="t,tcommaaccent,tcaron,tbar" 	k="66" />
+<hkern g1="A" 	g2="w,wcircumflex,wgrave,wacute,wdieresis" 	k="59" />
+<hkern g1="A" 	g2="y,yacute,ydieresis,ycircumflex,ygrave" 	k="78" />
+<hkern g1="A" 	g2="f,longs,fi,fl" 	k="29" />
+<hkern g1="A" 	g2="g,gcircumflex,gbreve,gdotaccent,gcommaaccent" 	k="18" />
+<hkern g1="A" 	g2="u,ugrave,uacute,ucircumflex,udieresis,utilde,umacron,ubreve,uring,uhungarumlaut,uogonek" 	k="10" />
+<hkern g1="A" 	g2="C,G,Ccedilla,Cacute,Ccircumflex,Cdotaccent,Ccaron,Gcircumflex,Gbreve,Gdotaccent,Gcommaaccent" 	k="33" />
+<hkern g1="A" 	g2="O,Q,Ograve,Oacute,Ocircumflex,Otilde,Odieresis,Oslash,Omacron,Obreve,Ohungarumlaut,OE,Oslashacute" 	k="31" />
+<hkern g1="A" 	g2="c,e,o,ccedilla,egrave,eacute,ecircumflex,edieresis,ograve,oacute,ocircumflex,otilde,odieresis,oslash,cacute,ccircumflex,cdotaccent,ccaron,emacron,ebreve,edotaccent,eogonek,ecaron,omacron,obreve,ohungarumlaut,oe,oslashacute" 	k="16" />
+<hkern g1="A" 	g2="d,q,dcaron,dcroat,g.alt,gbreve.alt,gcircumflex.alt,gcommaaccent.alt,gdotaccent.alt" 	k="14" />
+<hkern g1="A" 	g2="hyphen,uni00AD,endash,emdash" 	k="39" />
+<hkern g1="A" 	g2="quotedbl,quotesingle" 	k="131" />
+<hkern g1="A" 	g2="quoteright,quotedblright" 	k="125" />
+<hkern g1="A" 	g2="quoteleft,quotedblleft" 	k="119" />
+<hkern g1="A" 	g2="guillemotleft,guilsinglleft" 	k="23" />
+<hkern g1="A" 	g2="U,Ugrave,Uacute,Ucircumflex,Udieresis,Utilde,Umacron,Ubreve,Uring,Uhungarumlaut,Uogonek" 	k="33" />
 <hkern g1="space" 	g2="A,Agrave,Aacute,Acircumflex,Atilde,Adieresis,Aring,Amacron,Abreve,Aogonek,Aringacute" 	k="51" />
 <hkern g1="space" 	g2="AE,AEacute" 	k="61" />
 <hkern g1="space" 	g2="J,Jcircumflex" 	k="49" />

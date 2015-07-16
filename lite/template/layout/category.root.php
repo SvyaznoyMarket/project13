@@ -48,7 +48,9 @@ $category = $page->getParam('category');
                                             </a>
 
                                             <div class="goods__name">
-                                                <a class="underline" href=""><?= $link['name'] ?></a>
+                                                <div class="goods__name-inn">
+                                                    <a href="<?= $link['url'] ?>"><span class="underline"><?= $link['name'] ?></span></a>
+                                                </div>
                                             </div>
 
                                             <div class="goods__cat-count"><?= $link['totalText'] ?></div>

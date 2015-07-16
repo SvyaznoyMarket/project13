@@ -27,6 +27,31 @@
             }
         }
     }
+    &_radio {
+        & + .custom-label {
+            padding-left: 20px;
+            padding-top: 1px;
+
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAQAAADY4iz3AAAAg0lEQVQY032QMQqDQBQFXxFP5V5yQCv7LLiX8Bh7AIX0mkIQXwpJgskm0w6fzxtJkkQgMrIyEgl6woU2OXv25tnZybRUh+oGnxlMJ4m69ze9qcU1F1Q2UdzuBbWYSbjEZta/V/H3r5C8f4jdyQRJNIVdzTG5Omos3ryca7waTqxM74YPln8BlcHdQ6gAAAAASUVORK5CYII=);
+        }
+        &:checked {
+            & + .custom-label {
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAA2UlEQVR42p2SPQ6CQBCFLeQWFnoOKYw3JMGK2ErCWqkH4Bg0WkliDxQYYNyPOGETCSG+5GV2Z+fB/C1cBEHgW8aWT8say/3rXyj1sLQ8GGMkyzIpikKapsH2d/y8W3quKErTVKbAO3Eq2iZJIor2fpH3eS/1cYPt7wriiEd0IgXQPm5SR6sfqpA4akT0qqoKH18eFeEHZVkiyhGJgpTGRPgBzaGrf/8pHmq6zq7JZw5d1w3dMzub0hqrAt51Xj4iGM6cU+gO13M2gtwpGju5EdDdvZwuYcd27wMKxuitMK+PAQAAAABJRU5ErkJggg==);
+            }
+        }
+    }
+    &_check2 {
+        & + .custom-label {
+            padding: 1px 0 0 20px;
+
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAQAAADY4iz3AAAAQ0lEQVQY09WQoREAIAwDq2D9JmOwCNt0Ay4IDHCA5yNf5a0kOAOax4CXZERV00pTFdwYuxiSYdAZ6AP1+uX3GvnWsAPviDOhfh4EggAAAABJRU5ErkJggg==);
+        }
+        &:checked {
+            & + .custom-label {
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAdklEQVQoz2NYtWoV28SJEydMmjTpHZD+jwtD5SeA1DMAOROPHz/+/+/fv//xAZA8SB1II0jTO0IakDWC1DOArIaBf4/3//+1zPT/z9kycAzig8RhAKQeRRO6BmSNODVh0wDDg0ATWX4iOvTIjacJ5KQIdlLTHgAgkx8Ti0sE8wAAAABJRU5ErkJggg==);
+            }
+        }
+    }
 }
 
 .custom-label {
@@ -36,4 +61,28 @@
     background-position: 0 0;
 
     .inline-block();
+}
+
+/* Check - фльтры БТ */
+.customInput-btn + .fltrBtn_btn {
+    width: 86px;
+    height: 35px;
+}
+
+.customInput-btn:checked + .fltrBtn_btn {
+    line-height: 31px;
+
+    border-width: 2px;
+    border-color: @orange-bright;
+    .fltrBtn_btn_clsr {
+        display: block;
+    }
+}
+//ie8 fix
+.fltrBtn_btn.mChecked {
+    border-width: 2px;
+    border-color: @orange-bright;
+    .btn-closer1 {
+        display: block;
+    }
 }
