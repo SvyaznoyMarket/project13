@@ -112,7 +112,7 @@
 
     if (elements) {
         for (var i in elements) {
-            if (elements.hasOwnProperty(i)){
+            if (elements.hasOwnProperty(i) && typeof elements[i] == 'object'){
                 var moduleName =  elements[i].dataset.module;
                 if (moduleName) {
                     // closure

@@ -55,12 +55,19 @@ class LiteLayout extends \View\Layout
         return $this->render('common/_auth');
     }
 
-    /** Блок логина
+    /**
      * @return string
      */
     public function blockHeader()
     {
         return $this->render('common/_header');
+    }
+
+    /**
+     * @return string
+     */
+    public function blockFooter() {
+        return $this->render('common/_footer');
     }
 
     public function blockUserConfig()
@@ -74,7 +81,11 @@ class LiteLayout extends \View\Layout
         }
     }
 
-
-
+    /** Просмотренные товары
+     * @return string
+     */
+    public function blockViewed() {
+        return $this->render('common/_products.viewed');
+    }
 
 }
