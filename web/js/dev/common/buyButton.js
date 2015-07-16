@@ -41,6 +41,10 @@
 			url = ENTER.utils.setURLParam('sender2', sender2, url);
 		}
 
+        if ('on' === $button.data('credit')) {
+            url = ENTER.utils.setURLParam('credit', 'on', url);
+        }
+
 		// Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
 		$.ajax({
 			url: url,

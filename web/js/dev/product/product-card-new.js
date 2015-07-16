@@ -49,7 +49,19 @@
                     $creditButton.show();
                 }
             }
-        )
+        );
+
+        $creditButton.on('click', function(e) {
+            var $target = $($(this).data('target')); // кнопка купить
+
+            if ($target.length) {
+                console.info('$target.first', $target.first());
+                $target.data('credit', 'on');
+                $target.first().trigger('click');
+
+                e.preventDefault();
+            }
+        });
     }
 
 	(function() {
