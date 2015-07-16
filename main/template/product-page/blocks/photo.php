@@ -68,11 +68,11 @@ $f = function(
             <? endif ?>
         </ul>
 
-        <div class="product-card-photo-thumbs__cnt">
+        <div class="product-card-photo-thumbs__cnt <?= count($images) > 5 ? 'product-card-photo-thumbs__cnt--slides' : ''?>">
         <!-- если картинок больше 5 добавляем класс product-card-photo-thumbs--slides -->
-            <div class="product-card-photo-thumbs jsProductThumbHolder <?= count($images) > 5 ? 'product-card-photo-thumbs--slides' : ''?>"
+            <div class="product-card-photo-thumbs jsProductThumbHolder"
                 <? if (count($images) < 2) : ?>style="display: none"<? endif ?>
-            >
+                >
                 <ul class="product-card-photo-thumbs-list jsProductThumbList">
                     <? foreach ($images as $key => $photo) : ?>
                         <li class="product-card-photo-thumbs__i jsProductPhotoThumb <?= $key == 0 ? 'product-card-photo-thumbs__i--act' : '' ?>"
@@ -106,7 +106,7 @@ $f = function(
                 <div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--out disabled jsProductPopupZoom jsProductPopupZoomOut" data-dir="-1">–</div>
             </div>
 
-            <div class="product-card-photo-thumbs__cnt">
+            <div class="product-card-photo-thumbs__cnt <?= count($images) > 14 ? 'product-card-photo-thumbs__cnt--slides' : ''?>">
                 <div class="product-card-photo-thumbs jsPopupThumbContainer">
                     <ul class="product-card-photo-thumbs-list jsPopupThumbList">
                         <? foreach ($images as $key => $photo) : ?>

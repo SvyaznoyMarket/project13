@@ -4,12 +4,13 @@
         $imgPopup = $body.find('.jsProductImgPopup'),
         $popupPhoto = $body.find('.jsProductPopupBigPhoto'),
         $popupPhotoHolder = $('.jsProductPopupBigPhotoHolder'),
+        $popupPhotoThumbs = $('.jsPopupPhotoThumb'),
         $productPhotoThumbs = $('.jsProductThumbList'),
         $productPhotoThumbsBtn = $('.jsProductThumbBtn'),
         $zoomBtn   = $('.jsProductPopupZoom'),
         productPhotoThumbsWidth = $productPhotoThumbs.width(),
         productPhotoThumbsFullWidth = $productPhotoThumbs.get(0) ? $productPhotoThumbs.get(0).scrollWidth : 0,
-        $popupPhotoThumbs = $('.jsPopupThumbList'),
+        $popupThumbs = $('.jsPopupThumbList'),
         popupPhotoThumbsWidth = 0,
         $popupPhotoThumbsBtn = $('.jsPopupThumbBtn'),
         popupPhotoThumbsFullWidth = 0,
@@ -141,8 +142,8 @@
                 $('html').css({'overflow':'hidden'});
                 checkZoom();
                 //запоминаем значения для слайдера миниатюр в попапе
-                popupPhotoThumbsWidth = $popupPhotoThumbs.width();
-                popupPhotoThumbsFullWidth = $popupPhotoThumbs.get(0) ? $popupPhotoThumbs.get(0).scrollWidth : 0;
+                popupPhotoThumbsWidth = $popupThumbs.width();
+                popupPhotoThumbsFullWidth = $popupThumbs.get(0) ? $popupThumbs.get(0).scrollWidth : 0;
             },
             onClose: function() {
                 setDefaultSetting();
@@ -178,10 +179,35 @@
 
     /* Слайд в попапе */
     $body.on('click', '.jsProductPopupSlide', function(){
+        console.log('slide');
         var direction = $(this).data('dir'),
             curIndex = $popupPhotoThumbs.index($imgPopup.find('.'+thumbActiveClass));
+
         if (curIndex + direction == thumbsCount) setPhoto(0);
-        else setPhoto(curIndex + direction);
+        else {
+            setPhoto(curIndex + direction);
+        }
+            //а если активное фото за пределами видимой области? надо крутить.
+            var activePhotoOffset = $imgPopup.find('.'+thumbActiveClass).position().left,
+                margin = parseInt($popupThumbs.css('margin-left')),
+                max = $imgPopup.find('.product-card-photo-thumbs__i').length -1 ;
+
+            if ( (activePhotoOffset > margin && !( (margin == 0) && ( activePhotoOffset < popupPhotoThumbsWidth)) )
+                || ( curIndex == max ) ){
+
+                //за пределами:
+                var dir = Math.sign(activePhotoOffset) == 1 ? "-=" : "+=";
+                if (!$popupThumbs.is(':animated'))
+                    $popupThumbs.animate({
+                        'margin-left': dir + popupPhotoThumbsWidth
+                    }, function(){
+                        var margin = parseInt($popupThumbs.css('margin-left'));
+                        $popupPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
+                        if (popupPhotoThumbsFullWidth + margin <= popupPhotoThumbsWidth) $popupPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
+                        if (margin >= 0) $popupPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
+                    });
+            }
+
     });
 
     $popupPhotoThumbs.on('click', function(){
@@ -204,16 +230,13 @@
 
     $popupPhotoThumbsBtn.on('click', function(){
 
-        console.log('go!',popupPhotoThumbsWidth);
-
-        if (!$popupPhotoThumbs.is(':animated'))
-            $popupPhotoThumbs.animate({
+        if (!$popupThumbs.is(':animated'))
+            $popupThumbs.animate({
                 'margin-left': $(this).data('dir') + popupPhotoThumbsWidth
             }, function(){
-                var margin = parseInt($popupPhotoThumbs.css('margin-left'));
+                var margin = parseInt($popupThumbs.css('margin-left'));
                 $popupPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
-                if (popupPhotoThumbsFullWidth + margin <= popupPhotoThumbsWidth) {$popupPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
-                    console.log('disable r',popupPhotoThumbsFullWidth + margin, popupPhotoThumbsWidth);}
+                if (popupPhotoThumbsFullWidth + margin <= popupPhotoThumbsWidth) $popupPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
                 if (margin >= 0) $popupPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
             });
     });
