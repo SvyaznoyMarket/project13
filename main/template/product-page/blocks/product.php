@@ -152,7 +152,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         ]) // Кнопка купить ?>
     </div>
 
-    <? if ($product->getPrice() >= \App::config()->product['minCreditPrice']) : ?>
+    <? if (($product->getPrice() >= \App::config()->product['minCreditPrice']) && !count($product->getPartnersOffer())) : ?>
         <!-- купить в кредит -->
         <a
             class="buy-on-credit btn-type btn-type--normal btn-type--longer jsProductCreditButton"
