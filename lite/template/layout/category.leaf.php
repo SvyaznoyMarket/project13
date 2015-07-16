@@ -102,7 +102,8 @@
                     <div class="fltrBtn fltrBtn-bt">
                         <form id="productCatalog-filter-form" class="js-category-filter" action="/catalog/electronics/telefoni-897" data-count-url="" method="GET">
                             <div class="fltrBtn_kit fltrBtn_kit--mark">
-                                <div class="fltrBtn_tggl fltrBtn_kit_l opn">
+                                <div class="fltrBtn_tggl fltrBtn_kit_l">
+                                    <i class="fltrBtn_tggl_corner icon-corner"></i>
                                     <span class="dotted">Бренд</span>
                                 </div>
 
@@ -111,7 +112,7 @@
                                         <input class="custom-input customInput-btn jsCustomRadio js-customInput js-category-filter-brand js-category-v2-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-566" name="f-brand-panasonic" value="566" data-name="Panasonic">
                                         <label class="fltrBtn_btn" for="id-productCategory-filter-brand-option-566">
                                             <img class="fltrBtn_btn_img" src="http://8.imgenter.ru/uploads/media/ae/63/2d/393d44343d06f3ab2cd8564ca76d598c067e0a8f.png">
-                                            <i class="fltrBtn_btn_clsr icon-clear"></i>
+                                            <i class="fltrBtn_btn_clsr btn-closer1"></i>
                                         </label>
                                     </div>
 
@@ -119,7 +120,7 @@
                                         <input class="custom-input customInput-btn jsCustomRadio js-customInput js-category-filter-brand js-category-v2-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-566" name="f-brand-panasonic" value="566" data-name="Panasonic">
                                         <label class="fltrBtn_btn" for="id-productCategory-filter-brand-option-566">
                                             <img class="fltrBtn_btn_img" src="http://a.imgenter.ru/uploads/media/b4/fc/a6/63bd2f7a1be1eae1c0e67343ccc063dc6572efb1.png">
-                                            <i class="fltrBtn_btn_clsr icon-clear"></i>
+                                            <i class="fltrBtn_btn_clsr btn-closer1"></i>
                                         </label>
                                     </div>
 
@@ -127,7 +128,7 @@
                                         <input class="custom-input customInput-btn jsCustomRadio js-customInput js-category-filter-brand js-category-v2-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-566" name="f-brand-panasonic" value="566" data-name="Panasonic">
                                         <label class="fltrBtn_btn" for="id-productCategory-filter-brand-option-566">
                                             <img class="fltrBtn_btn_img" src="http://8.imgenter.ru/uploads/media/ae/63/2d/393d44343d06f3ab2cd8564ca76d598c067e0a8f.png">
-                                            <i class="fltrBtn_btn_clsr icon-clear"></i>
+                                            <i class="fltrBtn_btn_clsr btn-closer1"></i>
                                         </label>
                                     </div>
 
@@ -135,7 +136,7 @@
                                         <input class="custom-input customInput-btn jsCustomRadio js-customInput js-category-filter-brand js-category-v2-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-566" name="f-brand-panasonic" value="566" data-name="Panasonic">
                                         <label class="fltrBtn_btn" for="id-productCategory-filter-brand-option-566">
                                             <img class="fltrBtn_btn_img" src="http://a.imgenter.ru/uploads/media/b4/fc/a6/63bd2f7a1be1eae1c0e67343ccc063dc6572efb1.png">
-                                            <i class="fltrBtn_btn_clsr icon-clear"></i>
+                                            <i class="fltrBtn_btn_clsr btn-closer1"></i>
                                         </label>
                                     </div>
 
@@ -143,7 +144,7 @@
                                         <input class="custom-input customInput-btn jsCustomRadio js-customInput js-category-filter-brand js-category-v2-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-566" name="f-brand-panasonic" value="566" data-name="Panasonic">
                                         <label class="fltrBtn_btn" for="id-productCategory-filter-brand-option-566">
                                             <img class="fltrBtn_btn_img" src="http://8.imgenter.ru/uploads/media/ae/63/2d/393d44343d06f3ab2cd8564ca76d598c067e0a8f.png">
-                                            <i class="fltrBtn_btn_clsr icon-clear"></i>
+                                            <i class="fltrBtn_btn_clsr btn-closer1"></i>
                                         </label>
                                     </div>
 
@@ -151,7 +152,7 @@
                                         <input class="custom-input customInput-btn jsCustomRadio js-customInput js-category-filter-brand js-category-v2-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-566" name="f-brand-panasonic" value="566" data-name="Panasonic">
                                         <label class="fltrBtn_btn" for="id-productCategory-filter-brand-option-566">
                                             <img class="fltrBtn_btn_img" src="http://a.imgenter.ru/uploads/media/b4/fc/a6/63bd2f7a1be1eae1c0e67343ccc063dc6572efb1.png">
-                                            <i class="fltrBtn_btn_clsr icon-clear"></i>
+                                            <i class="fltrBtn_btn_clsr btn-closer1"></i>
                                         </label>
                                     </div>
 
@@ -162,6 +163,7 @@
                                             <input class="custom-input customInput-btn jsCustomRadio js-customInput js-category-filter-brand js-category-v2-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-4298" name="f-brand-jinga" value="4298" data-name="Jinga">
                                             <label class="fltrBtn_btn" for="id-productCategory-filter-brand-option-4298">
                                                 <span class="fltrBtn_btn_tx">Jinga</span>
+                                                <i class="fltrBtn_btn_clsr btn-closer1"></i>
                                             </label>
                                         </div>
                                     </span>
@@ -171,8 +173,8 @@
                             <div class="fltrBtn_kit fltrBtn_kit-box ">
                                 <div class="fltrBtnBox fl-l js-category-v2-filter-dropBox js-category-v2-filter-dropBox-price">
                                     <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
-                                        <span class="dotted">Цена</span>
-                                        <i class="fltrBtnBox_tggl_corner"></i>
+                                        <span class="fltrBtnBox_tggl_tx dotted">Цена</span>
+                                        <i class="fltrBtnBox_tggl_corner icon-corder"></i>
                                     </div>
 
                                     <div class="fltrBtnBox_dd fltrBtnBox_dd-l">
@@ -201,10 +203,10 @@
                             </div>
 
                             <div class="fltrBtn_kit fltrBtn_kit-box js-category-v2-filter-otherGroups">
-                                <div class="fltrBtnBox  js-category-v2-filter-dropBox actv">
+                                <div class="fltrBtnBox  js-category-v2-filter-dropBox">
                                     <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
-                                        <span class="dotted">В магазине</span>
-                                        <i class="fltrBtnBox_tggl_corner"></i>
+                                        <span class="fltrBtnBox_tggl_tx dotted">В магазине</span>
+                                        <i class="fltrBtnBox_tggl_corner icon-corder"></i>
                                     </div>
 
                                     <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content">
@@ -237,8 +239,8 @@
 
                                 <div class="fltrBtnBox  js-category-v2-filter-dropBox">
                                     <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
-                                        <span class="dotted">Платформа</span>
-                                        <i class="fltrBtnBox_tggl_corner"></i>
+                                        <span class="fltrBtnBox_tggl_tx dotted">Платформа</span>
+                                        <i class="fltrBtnBox_tggl_corner icon-corder"></i>
                                     </div>
 
                                     <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content">
@@ -271,8 +273,8 @@
 
                                 <div class="fltrBtnBox  js-category-v2-filter-dropBox">
                                     <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
-                                        <span class="dotted">Дисплей</span>
-                                        <i class="fltrBtnBox_tggl_corner"></i>
+                                        <span class="fltrBtnBox_tggl_tx dotted">Дисплей</span>
+                                        <i class="fltrBtnBox_tggl_corner icon-corder"></i>
                                     </div>
 
                                     <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content">
@@ -298,7 +300,7 @@
 
                                         <li class="fltr_slctd_i">
                                             <span>ул. Орджоникидзе, д. 11, стр. 10</span>
-                                            <a class="icon-clear jsHistoryLink" href=""></a>
+                                            <a class="btn-closer2 jsHistoryLink" href=""></a>
                                         </li>
                                     </ul>
 
@@ -309,7 +311,7 @@
                                             Встроенная память
 
                                             <span>от 5 ГБ</span>
-                                            <a class="icon-clear jsHistoryLink" href=""></a>
+                                            <a class="btn-closer2 jsHistoryLink" href=""></a>
                                         </li>
                                     </ul>
 
@@ -318,12 +320,12 @@
 
                                         <li class="fltr_slctd_i">
                                             <span>Android 4.1 Jelly Bean</span>
-                                            <a class="icon-clear jsHistoryLink" href=""></a>
+                                            <a class="btn-closer2 jsHistoryLink" href=""></a>
                                         </li>
                                     </ul>
 
                                     <a class="fltr_clsr jsHistoryLink" href="">
-                                        <span class="icon-clear"></span>
+                                        <span class="btn-closer3"></span>
                                         <span class="dotted">Очистить все</span>
                                     </a>
                                 </div>
