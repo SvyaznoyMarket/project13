@@ -66,7 +66,7 @@ $sliderToken = $blockname == 'Популярные товары' ? 'pop' : 'hit'
 
                     <div class="goods__price-now"><?= $helper->formatPrice($product->getPrice()) ?> ₽</div>
 
-                    <a class="goods__btn btn-primary" href="">Купить</a>
+                    <?= $helper->render('product/_button.buy', ['product' => $product, 'data' => []]) ?>
                 </div>
 
             <? endforeach ?>

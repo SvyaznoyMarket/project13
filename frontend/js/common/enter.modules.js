@@ -86,6 +86,7 @@
 
     /* ENTER Modules */
     modules.define('enter.debug', ['jQuery', 'Mustache', 'enter.config'], function(provide){
+        window.ENTER = {};
         loadScript("/js/prod/debug-panel.js", function () {
             console.log('[Module] enter.debug');
             provide();
@@ -111,11 +112,18 @@
 
     if (elements) {
         for (var i in elements) {
-            var moduleName = elements.hasOwnProperty(i) ? elements[i].dataset.module : null;
-            if (moduleName) {
-                modules.require(moduleName, function(module){
-                    if (typeof module.init == 'function') module.init(elements[i]);
-                });
+            if (elements.hasOwnProperty(i)){
+                var moduleName =  elements[i].dataset.module;
+                if (moduleName) {
+                    // closure
+                    (function(name, elem){
+                        modules.require(name, function(module){
+                            if (typeof module.init == 'function') {
+                                module.init(elem);
+                            }
+                        });
+                    })(moduleName, elements[i])
+                }
             }
         }
     }
