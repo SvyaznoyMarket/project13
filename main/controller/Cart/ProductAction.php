@@ -88,6 +88,7 @@ class ProductAction {
                 'img'       => $product->getMainImageUrl('product_120'),
                 'link'      => $product->getLink(),
                 'price'     => $product->getPrice(),
+                'formattedPrice'    => \App::helper()->formatPrice($product->getPrice()),
                 'deleteUrl' => $cartProduct  ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,
                 'addUrl'    => !$cartProduct ? (new \Helper\TemplateHelper())->url('cart.product.set',    ['productId' => $product->getId()]) : null,
                 'cartButton'     => [
