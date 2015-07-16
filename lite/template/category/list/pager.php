@@ -10,7 +10,7 @@ $helper = \App::helper();
 
     <? if (!$product instanceof \Model\Product\Entity) continue; ?>
 
-<div class="goods__item grid-3col__item">
+<div class="goods__item grid-4col__item">
     <? if ($product->getLabel()) : ?>
         <div class="sticker-list">
             <div class="sticker sticker_sale"><?= $product->getLabel()->getName() ?></div>

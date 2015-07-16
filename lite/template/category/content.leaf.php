@@ -613,7 +613,7 @@
                 </div>
 
                 <div class="section">
-                    <div class="goods goods_grid goods_listing grid-3col">
+                    <div class="goods goods_grid goods_listing grid-4col">
                         <?= $page->render('category/list/pager', ['productPager'=> $productPager]) ?>
                     </div>
                 </div>
