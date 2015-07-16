@@ -8,8 +8,12 @@
         $productPhotoThumbs = $('.jsProductThumbList'),
         $productPhotoThumbsBtn = $('.jsProductThumbBtn'),
         $zoomBtn   = $('.jsProductPopupZoom'),
-        productPhotoThumbsWidth = $productPhotoThumbs.width() - 2,
+        productPhotoThumbsWidth = $productPhotoThumbs.width(),
         productPhotoThumbsFullWidth = $productPhotoThumbs.get(0) ? $productPhotoThumbs.get(0).scrollWidth : 0,
+        $popupThumbs = $('.jsPopupThumbList'),
+        popupPhotoThumbsWidth = 0,
+        $popupPhotoThumbsBtn = $('.jsPopupThumbBtn'),
+        popupPhotoThumbsFullWidth = 0,
         thumbActiveClass = 'product-card-photo-thumbs__i--act',
         thumbBtnDisabledClass = 'product-card-photo-thumbs__btn--disabled',
         thumbsCount = $popupPhotoThumbs.length,
@@ -137,6 +141,9 @@
             onLoad: function() {
                 $('html').css({'overflow':'hidden'});
                 checkZoom();
+                //запоминаем значения для слайдера миниатюр в попапе
+                popupPhotoThumbsWidth = $popupThumbs.width();
+                popupPhotoThumbsFullWidth = $popupThumbs.get(0) ? $popupThumbs.get(0).scrollWidth : 0;
             },
             onClose: function() {
                 setDefaultSetting();
@@ -172,10 +179,35 @@
 
     /* Слайд в попапе */
     $body.on('click', '.jsProductPopupSlide', function(){
+        console.log('slide');
         var direction = $(this).data('dir'),
             curIndex = $popupPhotoThumbs.index($imgPopup.find('.'+thumbActiveClass));
+
         if (curIndex + direction == thumbsCount) setPhoto(0);
-        else setPhoto(curIndex + direction);
+        else {
+            setPhoto(curIndex + direction);
+        }
+            //а если активное фото за пределами видимой области? надо крутить.
+            var activePhotoOffset = $imgPopup.find('.'+thumbActiveClass).position().left,
+                margin = parseInt($popupThumbs.css('margin-left')),
+                max = $imgPopup.find('.product-card-photo-thumbs__i').length -1 ;
+
+            if ( (activePhotoOffset > margin && !( (margin == 0) && ( activePhotoOffset < popupPhotoThumbsWidth)) )
+                || ( curIndex == max ) ){
+
+                //за пределами:
+                var dir = Math.sign(activePhotoOffset) == 1 ? "-=" : "+=";
+                if (!$popupThumbs.is(':animated'))
+                    $popupThumbs.animate({
+                        'margin-left': dir + popupPhotoThumbsWidth
+                    }, function(){
+                        var margin = parseInt($popupThumbs.css('margin-left'));
+                        $popupPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
+                        if (popupPhotoThumbsFullWidth + margin <= popupPhotoThumbsWidth) $popupPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
+                        if (margin >= 0) $popupPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
+                    });
+            }
+
     });
 
     $popupPhotoThumbs.on('click', function(){
@@ -183,15 +215,30 @@
     });
 
     $productPhotoThumbsBtn.on('click', function(){
+
         if (!$productPhotoThumbs.is(':animated'))
         $productPhotoThumbs.animate({
             'margin-left': $(this).data('dir') + productPhotoThumbsWidth
         }, function(){
             var margin = parseInt($productPhotoThumbs.css('margin-left'));
             $productPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
-            if (productPhotoThumbsFullWidth + margin < productPhotoThumbsWidth) $productPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
-            if (margin > 0) $productPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
+            if (productPhotoThumbsFullWidth + margin <= productPhotoThumbsWidth) $productPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
+            if (margin >= 0) $productPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
         });
+    });
+
+
+    $popupPhotoThumbsBtn.on('click', function(){
+
+        if (!$popupThumbs.is(':animated'))
+            $popupThumbs.animate({
+                'margin-left': $(this).data('dir') + popupPhotoThumbsWidth
+            }, function(){
+                var margin = parseInt($popupThumbs.css('margin-left'));
+                $popupPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
+                if (popupPhotoThumbsFullWidth + margin <= popupPhotoThumbsWidth) $popupPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
+                if (margin >= 0) $popupPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
+            });
     });
 
     // Youtube и 3D
