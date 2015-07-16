@@ -265,6 +265,7 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotPartnerCounter() {
+        \App::logger()->info('partner');
         $return = '';
 
         if (\App::config()->analytics['enabled']) {
@@ -280,6 +281,26 @@ class DefaultLayout extends Layout {
             ])) {
                 if (\App::config()->partners['SmartLeads']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
             }
+
+            // Реактив (adblender) SITE-5718
+            call_user_func(function() use ($routeName, &$return) {
+                if (!\App::config()->partners['Adblender']['enabled']) return;
+
+                $template = '<div id="adblenderJS" class="jsanalytics" data-value="{{dataValue}}"></div>';
+                $dataValue = [];
+                if ('orderV3.complete' === $routeName) {
+                    return;
+                    //$dataValue['type'] = 'order.complete';
+                } else if ('cart' === $routeName) {
+                    $dataValue['type'] = 'cart';
+                } else {
+                    $dataValue['type'] = 'default';
+                }
+
+                $return .= strtr($template, [
+                    '{{dataValue}}' => $this->json($dataValue),
+                ]);
+            });
 
             if ('subscribe_friends' == $routeToken) {
                 $return .= $this->tryRender('partner-counter/_actionpay_subscribe');
