@@ -6,13 +6,13 @@
 
             {{#links}}
                 <li class="bFilterCheckedParams__eItem mParams">
-                    <a class="bDelete jsHistoryLink" href="{{url}}">&#215;</a><span class="bParamsName">{{&name}} {{&unit}}</span>
+                    <a class="bDelete js-category-filter-deleteLink" href="{{url}}">&#215;</a><span class="bParamsName">{{&name}} {{&unit}}</span>
                 </li>
             {{/links}}
 
             {{#last}}
                 <li class="bFilterCheckedParams__eItem mParams mClearAll">
-                    <a class="jsHistoryLink" href="{{cleanUrl}}"><span class="bDelete">&#215;</span><strong class="bParamsName">Очистить все</strong></a>
+                    <a class="js-category-filter-deleteLink" href="{{cleanUrl}}"><span class="bDelete">&#215;</span><strong class="bParamsName">Очистить все</strong></a>
                 </li>
             {{/last}}
         </ul>

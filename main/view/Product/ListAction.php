@@ -22,7 +22,8 @@ class ListAction {
         $showState = true,
         $columnCount = 4,
         $view = 'compact',
-        array $cartButtonSender = []
+        array $cartButtonSender = [],
+        \Model\Product\Category\Entity $category = null
     ) {
         /** @var \Model\Product\Entity $product */
 
@@ -49,7 +50,8 @@ class ListAction {
                 $cartButtonAction,
                 $reviewAction,
                 (3 === $columnCount) ? 'product_350' : 'product_200',
-                $cartButtonSender
+                $cartButtonSender,
+                $category
             );
         }
 

@@ -195,8 +195,6 @@ $buySender2 = $request->get('sender2');
             <?//= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
         <? endif ?>
 
-        <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
-
-        <?= $helper->render('product/__event', ['product' => $product]) ?>
+    <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
     </div>
 </div>

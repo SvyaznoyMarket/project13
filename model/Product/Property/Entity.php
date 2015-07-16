@@ -274,7 +274,7 @@ class Entity {
         );
 
         if ($value && $this->unit) {
-            $value .= (' ' . $this->unit);
+            $value .= ' ' . $this->unit;
         }
 
         return $value;

@@ -17,7 +17,7 @@ return function(
     <!-- блок разбиения заказа -->
     <div class="orderRow clearfix jsOneClickOrderRow" data-block_name="<?= $order->block_name ?>">
         <!-- информация о доставке -->
-        <div class="orderCol orderCol-r">
+        <div class="orderCol orderCol-r<? if ($shopId): ?> orderCol-single<? endif ?>">
             <? if (!$shopId): ?>
             <menu class="orderCol_delivrLst clearfix">
             <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
@@ -36,7 +36,7 @@ return function(
             <? endif ?>
 
             <!-- дата доставки -->
-            <div class="orderCol_delivrIn clearfix" style="padding-left: 0;">
+            <div class="orderCol_delivrIn date clearfix" style="padding-left: 0;">
                 <? if (!$shopId): ?>
                     <? if ($order->delivery->date): ?>
                         <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %G, %A', $order->delivery->date->format('U'))) ?></div>

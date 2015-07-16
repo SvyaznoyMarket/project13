@@ -167,7 +167,7 @@ $(function() {
 			if (previousChecked) {
 				e.currentTarget.checked = false;
 				$(e.currentTarget).change();
-				ENTER.catalog.filter.sendFilter();
+				ENTER.catalog.filter.send();
 			} else {
 				$(e.currentTarget).data('previous-checked', true);
 			}
@@ -239,7 +239,7 @@ $(function() {
 		$from.change();
 		$to.change();
 
-		ENTER.catalog.filter.sendFilter();
+		ENTER.catalog.filter.send();
 	});
 
 	// Placeholder'ы для IE9

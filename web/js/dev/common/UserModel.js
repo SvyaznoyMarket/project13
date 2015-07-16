@@ -125,13 +125,6 @@
 		}
 	})();
 
-	$body.on('catalogLoadingComplete', function(){
-		$('.js-listing, .js-jewelListing').each(function(){
-			ko.cleanNode(this);
-			ko.applyBindings(ENTER.UserModel, this);
-		});
-	});
-
 	$body.on('addtocart', function(event, data) {
 		if ( data.redirect ) {
 			console.warn('redirect');

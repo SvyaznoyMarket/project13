@@ -311,10 +311,6 @@ return [
         'pattern' => '/products/set/{productBarcodes}',
         'action'  => ['Product\SetAction', 'execute'],
     ],
-    'product.widget' => [
-        'pattern' => '/products/widget/{productBarcodes}',
-        'action'  => ['Product\SetAction', 'widget'],
-    ],
     //reviews
     'product.review.create' => [
         'pattern' => '/product-reviews/create/{productUi}',

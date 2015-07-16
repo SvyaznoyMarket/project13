@@ -1,6 +1,4 @@
-<!-- Листинг товаров -->
 {{#products}}
-<!-- Элемент листинга/продукт -->
     {{#isBanner}}
         <li class="bListingItem mBannerItem" style="background-image: url('{{image}}'); background-repeat: no-repeat;">
             {{#url}}
@@ -21,6 +19,7 @@
                         {{#label}}
                             <li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="{{image}}" alt="{{name}}" /></li>
                         {{/label}}
+
                         {{#brandImage}}
                             <li class="bSimplyDescStikers__eItem mRightStiker"><img class="SimplyDescStikers__eImg" src="{{brandImage}}" alt="{{name}}" /></li>
                         {{/brandImage}}
@@ -57,21 +56,21 @@
                 <div class="bPriceLine clearfix">
                     <span class="bPrice{{#priceSale}} bHasSale{{/priceSale}}"><strong>{{&price}}</strong> <span class="rubl">p</span></span>
                     {{#hasVariations}}
-                    <span class="bOptions"><span class="bDecor">Варианты</span></span>
+                        <span class="bOptions"><span class="bDecor">Варианты</span></span>
                     {{/hasVariations}}
                 </div>
 
                 {{#hasVariations}}
-                <div class="bOptionsSection">
-                    <i class="bCorner"></i>
-                    <i class="bCornerDark"></i>
+                    <div class="bOptionsSection">
+                        <i class="bCorner"></i>
+                        <i class="bCornerDark"></i>
 
-                    <ul class="bOptionsList">
-                    {{#variations}}
-                        <li class="bOptionsList__eItem">{{name}}</li>
-                    {{/variations}}
-                    </ul>
-                </div>
+                        <ul class="bOptionsList">
+                            {{#variations}}
+                                <li class="bOptionsList__eItem">{{name}}</li>
+                            {{/variations}}
+                        </ul>
+                    </div>
                 {{/hasVariations}}
 
                 <div class="bBtnLine clearfix">
@@ -88,9 +87,7 @@
             </div>
         </li>
     {{/isBanner}}
-<!-- /Элемент листинга/продукт -->
 {{/products}}
 {{^products}}
     <li class="lstn_empty">Товары не найдены</li>
 {{/products}}
-<!-- /Листинг товаров -->
