@@ -5,15 +5,13 @@ return function(
     \Iterator\EntityPager $pager
 ) { ?>
 
-	<div class="bSortingList mPager js-category-pagination">
-	    <?= $helper->renderWithMustache('_pagination', (new \View\PaginationAction())->execute(
-	        $helper,
-	        $pager
-	    )) ?>
-	</div>
+    <?= $helper->renderWithMustache('pagination', (new \View\PaginationAction())->execute(
+        $helper,
+        $pager
+    )) ?>
 
     <script class="tplPagination" type="text/html" data-partial="">
-        <?= file_get_contents(\App::config()->templateDir . '/_pagination.mustache') ?>
+        <?= file_get_contents(\App::config()->templateDir . '/pagination.mustache') ?>
     </script>
 
 <? };

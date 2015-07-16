@@ -50,11 +50,11 @@
 			},
 
 			sorting: function(html) {
-				$viewParamPanel.find('.js-category-sorting').empty().html(html);
+				$viewParamPanel.find('.js-category-sorting').replaceWith(html);
 			},
 
 			pagination: function(html) {
-				$('.js-category-pagination').empty().html(html);
+				$('.js-category-pagination').replaceWith(html);
 			},
 
 			page: function(html) {
