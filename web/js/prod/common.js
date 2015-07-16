@@ -1198,7 +1198,7 @@
 	var $body = $('body');
 
 	// Обработчик для кнопок купить
-	$body.on('click', '.jsBuyButton', function(e) {
+	$body.on('click', '.jsBuyButton', function(e, credit) {
 		var $button = $(e.currentTarget);
 
         $body.trigger('TL_buyButton_clicked');
@@ -1234,7 +1234,7 @@
 			url = ENTER.utils.setURLParam('sender2', sender2, url);
 		}
 
-        if ('on' === $button.data('credit')) {
+        if ('on' === credit) {
             url = ENTER.utils.setURLParam('credit', 'on', url);
         }
 

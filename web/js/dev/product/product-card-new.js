@@ -56,8 +56,7 @@
 
             if ($target.length) {
                 console.info('$target.first', $target.first());
-                $target.data('credit', 'on');
-                $target.first().trigger('click');
+                $target.first().trigger('click', ['on']);
 
                 e.preventDefault();
             }

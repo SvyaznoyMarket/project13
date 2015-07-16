@@ -75,6 +75,8 @@ class ProductAction {
 
             if ($request->query->get('credit') == 'on') {
                 $params['credit'] = ['enabled' => true];
+            } else {
+                $params['credit'] = null;
             }
 
             // не учитываем является ли товар набором или нет - за это отвечает ядро
