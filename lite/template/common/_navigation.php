@@ -50,17 +50,19 @@ $helper = new \Helper\TemplateHelper();
                                     <div class="sticker sticker_sale">Товар дня</div>
 
                                     <a href="" class="goods__img">
-                                        <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="">
+                                        <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="goods__img-image">
                                     </a>
 
                                     <div class="goods__name">
-                                        <a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a>
+                                        <div class="goods__name-inn">
+                                            <a href="">Подгузники-трусики Goon 7 - 12 кг, 60 шт.</a>
+                                        </div>
                                     </div>
 
                                     <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
                                     <div class="goods__price-now">45 990 ₽</div>
 
-                                    <a class="goods__btn btn-buy" href="">Купить</a>
+                                    <a class="goods__btn btn-primary" href="">Купить</a>
                                 </div>
                             </div>
                         </li>
