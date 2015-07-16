@@ -16,8 +16,8 @@ return function(
 
         <? if (in_array($chosenTestCase, ['compactWithSwitcher', 'expandedWithSwitcher'], true) && $category && $category->isInSiteListingWithViewSwitcherAbTest()): ?>
             <div class="lstn-type__choose">
-                <div class="lstn-type-btn lstn-type-btn--bar js-category-viewLink <? if ($chosenTestCase === 'compactWithSwitcher' && $chosenCategoryView !== 'expanded' ||  $chosenCategoryView === 'compact'): ?>active<? endif ?>"><i class="lstn-type-icon bar"></i>Плитка</div>
-                <div class="lstn-type-btn lstn-type-btn--list js-category-viewLink js-category-viewLink-expanded <? if ($chosenTestCase === 'expandedWithSwitcher' && $chosenCategoryView !== 'compact' ||  $chosenCategoryView === 'expanded'): ?>active<? endif ?>"><i class="lstn-type-icon list"></i>Список</div>
+                <div class="lstn-type-btn lstn-type-btn--bar js-category-viewSwitcher-link <? if ($chosenTestCase === 'compactWithSwitcher' && $chosenCategoryView !== 'expanded' ||  $chosenCategoryView === 'compact'): ?>active<? endif ?>"><i class="lstn-type-icon bar"></i>Плитка</div>
+                <div class="lstn-type-btn lstn-type-btn--list js-category-viewSwitcher-link js-category-viewSwitcher-link-expanded <? if ($chosenTestCase === 'expandedWithSwitcher' && $chosenCategoryView !== 'compact' ||  $chosenCategoryView === 'expanded'): ?>active<? endif ?>"><i class="lstn-type-icon list"></i>Список</div>
             </div>
         <? endif ?>
 
