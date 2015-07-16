@@ -67,7 +67,7 @@
         </div>
     </div>
 
-    <div class="header__side header-cart table-cell">
+    <div class="header__side header-cart table-cell js-module-require" data-module="enter.cart">
 
         <div class="notice-show jsKnockoutCart">
             <a href="" title="">
