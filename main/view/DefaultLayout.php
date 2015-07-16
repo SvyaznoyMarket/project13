@@ -265,7 +265,6 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotPartnerCounter() {
-        \App::logger()->info('partner');
         $return = '';
 
         if (\App::config()->analytics['enabled']) {
