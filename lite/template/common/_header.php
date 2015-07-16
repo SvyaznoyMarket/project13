@@ -1,6 +1,6 @@
 <div class="header table">
     <div class="header__side header__logotype table-cell">
-        <a href="" class="logotype"></a>
+        <a href="/" class="logotype"></a>
     </div>
 
     <div class="header__center table-cell">
@@ -17,7 +17,9 @@
             <div class="phone">
                 <span class="phone__text">+7 495 775-00-06</span>
 
-                <a href="" title="" class="phone-order"><i class="phone-order__icon i-controls i-controls--phone"></i> <span class="phone-order__text dotted">Звонок с сайта</span></a>
+                <a href="http://zingaya.com/widget/e990d486d664dfcff5f469b52f6bdb62" title="" class="phone-order" onclick="window.open(typeof(_gat)=='undefined'?this.href+'?referrer='+escape(window.location.href):_gat._getTrackerByName()._getLinkerUrl(this.href+'?referrer='+escape(window.location.href)), '_blank', 'width=236,height=220,resizable=no,toolbar=no,menubar=no,location=no,status=no'); return false;"><i class="phone-order__icon i-controls i-controls--phone"></i>
+                    <span class="phone-order__text dotted">Звонок с сайта</span>
+                </a>
             </div>
         </div>
 
@@ -66,95 +68,36 @@
     </div>
 
     <div class="header__side header-cart table-cell">
-        <div class="notice-show">
+
+        <div class="notice-show jsKnockoutCart">
             <a href="" title="">
-                <i class="header-cart__icon i-controls i-controls--cart"><span class="header-cart__count disc-count">99+</span></i>
+                <i class="header-cart__icon i-controls i-controls--cart"><span class="header-cart__count disc-count" style="display: none" data-bind="text: getProductQuantity, visible: getProductQuantity"></span></i>
                 <span class="header-cart__text">Корзина</span>
             </a>
 
-            <div class="notice-dd notice-dd_cart">
+            <div class="notice-dd notice-dd_cart jsCartNotice">
                 <div class="notice-dd__inn">
                     <div class="notice-dd__height">
                         <ul class="notice-cart">
+
+                            <!-- ko foreach: cart -->
+
                             <li class="notice-cart__row">
-                                <a class="notice-cart__img notice-cart__cell" href="">
-                                    <img src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" alt="" class="image">
+                                <a class="notice-cart__img notice-cart__cell" data-bind="attr: { href: link }">
+                                    <img alt="" class="image" data-bind="attr: { src: img }">
                                 </a>
 
-                                <a class="notice-cart__name notice-cart__cell" href="">
-                                    Портативная акустическая система Promate Mulotov
-                                </a>
+                                <a class="notice-cart__name notice-cart__cell" href="" data-bind="text: name, attr: { href: link }"></a>
 
                                 <div class="notice-cart__desc notice-cart__cell">
-                                    <div class="notice-cart__price">1 344 590 p</div>
-                                    <span class="notice-cart__quan">1 шт.</span>
-                                    <a href="" class="notice-cart__del"><i class="notice-cart__icon icon-clear"></i></a>
+                                    <div class="notice-cart__price"><!--ko text: formattedPrice--><!--/ko--> p</div>
+                                    <span class="notice-cart__quan"><!--ko text: quantity()--><!--/ko--> шт.</span>
+                                    <a class="notice-cart__del" data-bind="attr: { href: deleteUrl }, click: $parent.deleteProduct"><i class="notice-cart__icon icon-clear"></i></a>
                                 </div>
                             </li>
 
-                            <li class="notice-cart__row">
-                                <a class="notice-cart__img notice-cart__cell" href="">
-                                    <img src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" alt="" class="image">
-                                </a>
+                            <!--/ko -->
 
-                                <a class="notice-cart__name notice-cart__cell" href="">
-                                    Портативная акустическая система Promate Mulotov
-                                </a>
-
-                                <div class="notice-cart__desc notice-cart__cell">
-                                    <div class="notice-cart__price">1 344 590 p</div>
-                                    <span class="notice-cart__quan">1 шт.</span>
-                                    <a href="" class="notice-cart__del"><i class="notice-cart__icon icon-clear"></i></a>
-                                </div>
-                            </li>
-
-                            <li class="notice-cart__row">
-                                <a class="notice-cart__img notice-cart__cell" href="">
-                                    <img src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" alt="" class="image">
-                                </a>
-
-                                <a class="notice-cart__name notice-cart__cell" href="">
-                                    Портативная акустическая система Promate Mulotov
-                                </a>
-
-                                <div class="notice-cart__desc notice-cart__cell">
-                                    <div class="notice-cart__price">44 590 p</div>
-                                    <span class="notice-cart__quan">1 шт.</span>
-                                    <a href="" class="notice-cart__del"><i class="notice-cart__icon icon-clear"></i></a>
-                                </div>
-                            </li>
-
-                            <li class="notice-cart__row">
-                                <a class="notice-cart__img notice-cart__cell" href="">
-                                    <img src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" alt="" class="image">
-                                </a>
-
-                                <a class="notice-cart__name notice-cart__cell" href="">
-                                    Портативная акустическая система Promate Mulotov
-                                </a>
-
-                                <div class="notice-cart__desc notice-cart__cell">
-                                    <div class="notice-cart__price">344 590 p</div>
-                                    <span class="notice-cart__quan">1 шт.</span>
-                                    <a href="" class="notice-cart__del"><i class="notice-cart__icon icon-clear"></i></a>
-                                </div>
-                            </li>
-
-                            <li class="notice-cart__row">
-                                <a class="notice-cart__img notice-cart__cell" href="">
-                                    <img src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" alt="" class="image">
-                                </a>
-
-                                <a class="notice-cart__name notice-cart__cell" href="">
-                                    Портативная акустическая система Promate Mulotov
-                                </a>
-
-                                <div class="notice-cart__desc notice-cart__cell">
-                                    <div class="notice-cart__price">4 590 p</div>
-                                    <span class="notice-cart__quan">1 шт.</span>
-                                    <a href="" class="notice-cart__del"><i class="notice-cart__icon icon-clear"></i></a>
-                                </div>
-                            </li>
                         </ul>
                     </div>
                 </div>
