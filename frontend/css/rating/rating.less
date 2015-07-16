@@ -1,0 +1,26 @@
+.rating {
+    &-state {
+        .inline-block(middle);
+        &__item {
+            &:before {
+                font-size: 1em;
+
+                content: '\e802';
+
+                color: @orange-bright;
+            }
+            &_fill {
+                &:before {
+                    content: '\e801';
+                }
+            }
+        }
+    }
+    &-count {
+        margin: 0 0 0 8px;
+
+        color: @grey-type;
+
+        .inline-block(middle);
+    }
+}

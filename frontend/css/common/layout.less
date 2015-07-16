@@ -54,6 +54,39 @@
     margin: 0 auto;
 }
 
+.section {
+    padding: 0 30px 20px;
+    &__title {
+        font-size: 1.3333em;
+        line-height: 1.4375;
+
+        margin: 0 0 5px;
+    }
+    &_bordered {
+        padding-top: 10px;
+
+        border-top: 1px solid @grey-light-3;
+    }
+    &_seo {
+        padding-bottom: 0;
+        p {
+            margin: 0;
+            padding: 0 0 2em;
+        }
+        ul {
+            font-family: 'GloberRegular';
+            line-height: 1.6666;
+
+            padding: 0 0 2em 1.25em;
+            & > li {
+                margin: 0;
+
+                list-style-type: disc;
+            }
+        }
+    }
+}
+
 .grid-3col {
     .clearfix();
     &__item {

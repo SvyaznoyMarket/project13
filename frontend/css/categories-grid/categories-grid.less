@@ -1,0 +1,36 @@
+.categories-grid {
+    &__item {
+        margin: 0;
+        padding: 0;
+    }
+    &__link {
+        display: table;
+
+        width: 100%;
+        padding: 5px;
+        &:hover {
+            background: @orange-light-4;
+        }
+    }
+    &__img {
+        display: table-cell;
+
+        width: 50px;
+        height: 50px;
+        padding-right: 10px;
+
+        text-align: center;
+        vertical-align: middle;
+        .image {
+            max-width: 50px;
+            max-height: 50px;
+        }
+    }
+    &__text {
+        font-size: 1.1666em;
+
+        display: table-cell;
+
+        vertical-align: middle;;
+    }
+}

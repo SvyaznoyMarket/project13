@@ -1,0 +1,178 @@
+.goods {
+    &__item {
+        position: relative;
+        z-index: 2;
+
+        margin: 0;
+
+        text-align: center;
+        &:not(:first-child) {
+            margin-left: -1px;
+        }
+        &:hover {
+            .goods__controls {
+                .opacity(1);
+            }
+        }
+        .sticker-list {
+            position: absolute;
+            z-index: 2;
+            top: 10px;
+            left: 0;
+        }
+        .sticker {
+            margin: 0 0 2px;
+            padding: 2px 20px;
+            &_sale {
+                float: left;
+                clear: both;
+            }
+            &_info {
+                position: absolute;
+                right: -15px;
+                bottom: 0;
+            }
+        }
+    }
+    // грид с бордером
+    &_grid {
+        padding: 0 1px 1px 0;
+        .goods__item {
+            margin: 0 0 -1px -1px;
+
+            border: 1px solid #f2f2f2;
+
+            .transition();
+            &:hover {
+                z-index: 3;
+
+                border-color: @orange-bright;
+            }
+        }
+        .goods__img {
+            line-height: 120px;
+        }
+        .slick-list {
+            padding-bottom: 1px;
+            padding-left: 1px;
+        }
+    }
+    // грид категорий на главной
+    &_list {
+        .goods__name {
+            margin-bottom: 3px;
+        }
+    }
+    // грид листинга
+    &_listing {
+        .goods__item {
+            height: 378px;
+            padding: 15px;
+        }
+        .goods__img {
+            line-height: 200px;
+
+            height: 200px;
+            &-image {
+                max-width: 200px;
+                max-height: 200px;
+            }
+        }
+    }
+    // грид картинок
+    &_images {
+        padding: 10px 0;
+        .goods__item {
+            padding: 0;
+        }
+        .goods__img {
+            height: auto;
+            margin: 0;
+            &-image {
+                max-width: 78px;
+                max-height: 78px;
+            }
+        }
+    }
+    // грид спискa категорий
+    &_categories {
+        .goods__name {
+            margin-bottom: 3px;
+        }
+        .goods__img {
+            height: 150px;
+
+            vertical-align: 150px;
+            &-image {
+                max-width: 150px;
+                max-height: 150px;
+
+                vertical-align: middle;
+            }
+        }
+    }
+    &__controls {
+        position: absolute;
+        z-index: 2;
+        top: 15px;
+        right: 10px;
+
+        .opacity(0);
+        .transition();
+    }
+    &__img {
+        position: relative;
+
+        display: block;
+
+        height: 120px;
+        margin: 0 0 10px;
+
+        text-align: center;
+        &-image {
+            max-width: 120px;
+            max-height: 120px;
+
+            vertical-align: middle;
+        }
+    }
+    &__name {
+        overflow: hidden;
+
+        height: 32px;
+        margin-bottom: 10px;
+        &-inn {
+            display: table;
+
+            width: 100%;
+            height: 100%;
+            & > a {
+                display: table-cell;
+
+                width: 100%;
+
+                vertical-align: middle;
+            }
+        }
+    }
+    &__price-old {
+        font-family: 'GloberRegular';
+        font-size: 1.1666em;
+
+        height: 18px;
+
+        color: @grey-type;
+    }
+    &__price-now {
+        font-size: 1.5em;
+    }
+    &__cat-count {
+        font-family: 'GloberRegular';
+
+        color: @grey-type;
+    }
+    &__rating {
+        height: 16px;
+        margin: 0 0 5px;
+    }
+}
