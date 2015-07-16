@@ -2,17 +2,6 @@
 
     var module = {};
 
-    module.init = function(){
-
-        module.cart = ko.observableArray();
-
-        module.getProductQuantity = ko.computed(function(){
-            return module.cart().reduce(function(prev, product) {
-                return prev + product.quantity();
-            }, 0)
-        });
-    };
-
     module.addProduct = function(product) {
         if (module.cart().some(function(p){ return p.id == product.id })) {
             module.setProductQuantity(product.id, product.quantity)
@@ -43,16 +32,23 @@
 
     modules.define('enter.cart', ['jQuery', 'ko', 'enter.user'], function(provide, $, ko, userModule){
 
-        // строим первоначальную модель
-        module.init();
+        module.cart = ko.observableArray();
+
+        module.getProductQuantity = ko.computed(function(){
+            return module.cart().reduce(function(prev, product) {
+                return prev + product.quantity();
+            }, 0)
+        });
 
         // добавляем товары, которые уже есть в корзине
-        if (userModule.cartProducts) $.each(userModule.cartProducts, function(i,product){
+        if (userModule.cartProducts) $.each(userModule.cartProducts, function (i, product) {
             module.addProduct(product);
         });
 
         // биндинги на все элементы
-        $('.jsKnockoutCart').each(function(){ ko.applyBindings(module, this) });
+        $('.jsKnockoutCart').each(function () {
+            ko.applyBindings(module, this)
+        });
 
         provide(module);
     })
