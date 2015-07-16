@@ -67,7 +67,7 @@
         </div>
     </div>
 
-    <div class="header__side header-cart table-cell js-module-require" data-module="enter.cart">
+    <div class="header__side header-cart table-cell js-module-require" <? if (\App::user() && \App::user()->getCart()->count()) : ?>data-module="enter.cart"<? endif ?> >
 
         <div class="notice-show jsKnockoutCart">
             <a href="" title="">
@@ -76,7 +76,7 @@
             </a>
 
             <div class="notice-dd notice-dd_cart jsCartNotice">
-                <div class="notice-dd__inn">
+                <div class="notice-dd__inn" style="display: none" data-bind="visible: getProductQuantity">
                     <div class="notice-dd__height">
                         <ul class="notice-cart">
 

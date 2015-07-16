@@ -1,5 +1,5 @@
 +function(){
-    modules.define('enter.buyButton', ['jQuery', 'enter.cart'], function(provide, $, cart) {
+    modules.define('enter.buyButton', ['jQuery'], function(provide, $, cart) {
 
         var module = {};
 
@@ -25,7 +25,9 @@
                 success: function(data) {
                     console.log('Added to cart', data);
                     if (data.product) {
-                        cart.addProduct(data.product);
+                        modules.require('enter.cart', function(cart){
+                            cart.addProduct(data.product);
+                        });
                     }
                 },
                 error: function() {
