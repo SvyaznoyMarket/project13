@@ -60,7 +60,7 @@ $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager
                 <hr class="hr-orange">
 
                 <!-- фильтр "Бренды и параметры" -->
-                <div class="filter filter-options fltr" style="display: none">
+                <div class="filter filter-options fltr" style="display: block">
                     <form id="productCatalog-filter-form" class="fltrSet js-category-filter" action="/catalog/children/disney-baby-5854" method="GET">
                         <div class="filter-price" style="padding-bottom: 10px;">
                             <div class="fltrSet_tggl js-category-filter-otherParamsToggleButton">
@@ -150,7 +150,7 @@ $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager
                 <!-- фильтр "Бренды и параметры" -->
 
                 <!-- фильтр "Ювелирный" -->
-                <div class="filter filter-components fltr" style="display: none">
+                <div class="filter filter-components fltr" style="display: block">
                     <form id="productCatalog-filter-form" class="js-category-filter js-category-filter-v3" action="/catalog/jewel/zolotie-ukrasheniya-3299" method="GET">
 
                         <!-- фильтр по компонентам -->
@@ -351,7 +351,7 @@ $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager
                 <!-- фильтр "Ювелирный" -->
 
                 <!-- фильтр по брендам -->
-                <div class="filter filter-brands fltrBtn" style="display: none">
+                <div class="filter filter-brands fltrBtn" style="display: block">
                     <form id="productCatalog-filter-form" class="js-category-filter" action="/catalog/electronics/telefoni-897" data-count-url="" method="GET">
                         <!-- бренды -->
                         <div class="fltrBtn_kit fltrBtn_kit--mark">
