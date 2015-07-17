@@ -14,6 +14,12 @@
  * @var $slideData              array
  */
 ?>
+
+<?
+
+$pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager]);
+
+?>
 <!-- для внутренних страниц добавляется класс middle_transform -->
 <div class="middle middle_transform">
     <div class="container">
@@ -657,17 +663,8 @@
                         </li>
                     </ul>
 
-                    <ul class="sorting_lst fl-r js-category-pagination">
-                        <li class="sorting_i sorting_i-tl">Страницы</li>
+                    <?= $pagerHtml ?>
 
-                        <li class="sorting_i act js-category-pagination-activePage js-category-pagination-page">
-                            <a class="sorting_lk sorting_lk-page jsPagination" href="#">1</a>
-                        </li>
-
-                        <li class="sorting_i hidden js-category-pagination-paging"><a class="sorting_lk sorting_lk-page jsPaginationEnable" href="#">123</a></li>
-
-                        <li class="sorting_i js-category-pagination-infinity"><a class="sorting_lk sorting_lk-page jsInfinityEnable" href="#">∞</a></li>
-                    </ul>
                 </div>
 
                 <div class="section">
@@ -677,17 +674,7 @@
                 </div>
 
                 <div class="sorting sorting_bottom js-category-sortingAndPagination">
-                    <ul class="sorting_lst fl-r js-category-pagination">
-                        <li class="sorting_i sorting_i-tl">Страницы</li>
-
-                        <li class="sorting_i act js-category-pagination-activePage js-category-pagination-page">
-                            <a class="sorting_lk sorting_lk-page jsPagination" href="#">1</a>
-                        </li>
-
-                        <li class="sorting_i hidden js-category-pagination-paging"><a class="sorting_lk sorting_lk-page jsPaginationEnable" href="#">123</a></li>
-
-                        <li class="sorting_i js-category-pagination-infinity"><a class="sorting_lk sorting_lk-page jsInfinityEnable" href="#">∞</a></li>
-                    </ul>
+                    <?= $pagerHtml ?>
                 </div>
 
                 <?= $page->blockViewed() ?>
