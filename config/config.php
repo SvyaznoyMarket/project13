@@ -274,6 +274,8 @@ $c->partners['LinkProfit']['cookieName'] = 'linkprofit_id';
 $c->partners['Giftery']['enabled'] = true;
 $c->partners['Giftery']['lowestPrice'] = 500;
 
+$c->partners['facebook']['enabled'] = true;
+
 $c->adFox['enabled'] = true;
 
 $c->partner['cookieName'] = 'last_partner';
