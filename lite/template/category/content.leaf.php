@@ -53,7 +53,7 @@
 
                 <hr class="hr-orange">
 
-                <div class="fltr">
+                <div class="filter filter-options fltr">
                     <form id="productCatalog-filter-form" class="fltrSet js-category-filter" action="/catalog/children/disney-baby-5854" method="GET">
                         <div class="fltrSet_tggl js-category-filter-otherParamsToggleButton">
                             <span class="fltrSet_tggl_tx">Бренды и параметры</span>
@@ -168,7 +168,7 @@
                     </form>
                 </div>
 
-                <div class="fltr">
+                <div class="filter filter-components fltr">
                     <form id="productCatalog-filter-form" class="bFilter js-category-filter js-category-filter-v3" action="/catalog/jewel/zolotie-ukrasheniya-3299" method="GET">
 
                         <div class="fltrSet js-category-filter-toggle-container fltrSet-metall">
@@ -404,7 +404,7 @@
                     </form>
                 </div>
 
-                <div class="fltrBtn fltrBtn-bt">
+                <div class="filter filter-brands fltrBtn fltrBtn-bt">
                     <form id="productCatalog-filter-form" class="js-category-filter" action="/catalog/electronics/telefoni-897" data-count-url="" method="GET">
                         <div class="fltrBtn_kit fltrBtn_kit--mark">
                             <div class="fltrBtn_tggl fltrBtn_kit_l">

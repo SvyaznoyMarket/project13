@@ -15,8 +15,6 @@
 
     <?= $page->blockHeader() ?>
 
-    <hr class="hr-orange">
-
     <div class="middle">
         <div class="container">
             <main class="content">

@@ -18,8 +18,6 @@ $category = $page->getParam('category');
 
     <?= $page->blockHeader() ?>
 
-    <hr class="hr-orange">
-
     <!-- для внутренних страниц добавляется класс middle_transform -->
     <div class="middle middle_transform">
         <div class="container">
