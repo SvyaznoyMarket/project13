@@ -743,7 +743,8 @@ class Action {
                 ),
                 'pagination'     => (new \View\PaginationAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
-                    $productPager
+                    $productPager,
+                    $category
                 ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
                     \App::closureTemplating()->getParam('helper'),

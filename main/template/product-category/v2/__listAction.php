@@ -21,7 +21,7 @@ return function(
             </div>
         <? endif ?>
 
-        <?= $helper->render('product-category/v2/__pagination', ['pager' => $pager]) // листалка ?>
+        <?= $helper->render('product-category/v2/__pagination', ['pager' => $pager, 'category' => $category]) // листалка ?>
     </div>
     <!-- /Сортировка товаров на странице -->
 

@@ -2,13 +2,15 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Iterator\EntityPager $pager
+    \Iterator\EntityPager $pager,
+    \Model\Product\Category\Entity $category = null
 ) { ?>
 
     <!--noindex-->
     <?= $helper->renderWithMustache('product-category/v2/pagination', (new \View\PaginationAction())->execute(
         $helper,
-        $pager
+        $pager,
+        $category
     )) ?>
     <!--/noindex-->
 

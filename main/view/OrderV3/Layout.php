@@ -18,6 +18,23 @@ class Layout extends \View\DefaultLayout {
             $html .= $this->tryRender('partner-counter/_cityAds_subscribe');
         }
 
+        // Реактив (adblender) SITE-5718
+        call_user_func(function() use ($routeName, &$html) {
+            if (!\App::config()->partners['Adblender']['enabled']) return;
+
+            $template = '<div id="adblenderJS" class="jsanalytics" data-value="{{dataValue}}"></div>';
+            $dataValue = [];
+            if ('orderV3.complete' === $routeName) {
+                return;
+            } else {
+                $dataValue['type'] = 'default';
+            }
+
+            $html .= strtr($template, [
+                '{{dataValue}}' => $this->json($dataValue),
+            ]);
+        });
+
         // Alexa
         if (\App::config()->partners['alexa']['enabled']) {
             $html .= '<div id="AlexaJS" class="jsanalytics"></div><noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=mPO9i1acVE000x" style="display:none" height="1" width="1" alt="" /></noscript>';

@@ -289,7 +289,6 @@ class DefaultLayout extends Layout {
                 $dataValue = [];
                 if ('orderV3.complete' === $routeName) {
                     return;
-                    //$dataValue['type'] = 'order.complete';
                 } else if ('cart' === $routeName) {
                     $dataValue['type'] = 'cart';
                 } else {
