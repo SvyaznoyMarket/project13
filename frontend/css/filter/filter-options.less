@@ -1,97 +1,99 @@
 .filter-content {
-    .clearfix();
     border: 1px solid @grey-light-4;
+
+    .clearfix();
+}
+
+.filter-price {
+
+    .clearfix();
+    .fltrSet_tggl,
+    .fltrBtnBox {
+        margin-right: 100px;
+        padding-bottom: 0;
+
+        .inline-block(middle);
+    }
 }
 
 .filter-params {
-    float: left;
-
-    width: 170px;
-
-    max-height: 231px;
-
-    overflow: auto;
-
     position: relative;
-
     z-index: 10;
 
+    float: left;
+    overflow: auto;
+
+    width: 170px;
+    max-height: 231px;
     &__item {
-        cursor: pointer;
         margin: 0 0 2px;
 
+        cursor: pointer;
         &:last-child {
             margin: 0;
         }
         &.mActive {
-            border-right: none;
             cursor: default;
 
+            border-right: none;
             .filter-params__text {
                 background: @white;
             }
         }
     }
-
     &__text {
         display: table-cell;
-        padding: 0 10px 0 9px;
 
         width: 170px;
         height: 40px;
-
-        background: @grey-light-4;
+        padding: 0 10px 0 9px;
 
         vertical-align: middle;
+
+        background: @grey-light-4;
     }
 }
 
 .filter-values {
-    padding-left: 180px;
-
     margin: 5px 5px 0 0;
-
+    padding-left: 180px;
     &__inner {
-        max-height: 225px;
         overflow: auto;
-    }
 
+        max-height: 225px;
+    }
     &__item {
         .clearfix();
-
         &.mLineItem {
-
             .filter-values__cell {
                 float: none;
-                width: auto;
 
+                width: auto;
                 .bFilterCheckbox {
                     width: auto;
-
                     &:hover {
                         width: auto;
                     }
                 }
             }
         }
-
         .bRangeSlider {
             margin-left: 105px;
         }
     }
-
     &__cell {
-
         position: relative;
+
         float: left;
-        margin: 0 2px 2px 0;
 
         width: 220px;
+        margin: 0 2px 2px 0;
     }
-
     .custom-label {
         font-size: 1.1666em;
+
         display: block;
+
         padding: 8px 10px 8px 25px;
     }
 }
@@ -102,8 +104,8 @@
     }
     &:checked {
         & + .custom-label {
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAIAAAC0tAIdAAAAIElEQVR4AWO4TgoAqf5PHKBEdRoDLjQQqkdV0zzmSQEAP/UFJAR7GyQAAAAASUVORK5CYII=');
             background-color: @orange-light-3;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAIAAAC0tAIdAAAAIElEQVR4AWO4TgoAqf5PHKBEdRoDLjQQqkdV0zzmSQEAP/UFJAR7GyQAAAAASUVORK5CYII=');
         }
     }
 }
@@ -116,6 +118,79 @@
         & + .custom-label {
             background-color: @orange-light-3;
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAMAAAAMCGV4AAAAP1BMVEUAAAD////Z2dnY2NjX19fX19fY2NjX19fg4ODx8fH6+vr+/v7Y2Nju7u7/////+vb/sn7/eyP/agb/iTn/ZgBvubV+AAAADXRSTlMAAliy5vkhzf/////qXbtKdAAAAFBJREFUeAFtz0UChUAAw9AUu/91v3ZckKx44whQyimIPobfbBzR5Gzem2pltbI3EfM3epFQJlIzpUfbuNrYj3Zm/tps823vq6YuiF3ff/2/AD58RSV7nb6dAAAAAElFTkSuQmCC');
+        }
+    }
+}
+
+.fltrRange {
+    .inline-block(middle);
+    &_it {
+        font-size: 1.1666em;
+        line-height: 26px;
+
+        width: 70px;
+        height: 26px;
+        margin: 0 2px;
+        padding: 0 0 0 5px;
+
+        vertical-align: top;
+
+        border: 1px solid @grey-light-2;
+
+        .inline-block();
+        &.mLast {
+            margin-right: 5px;
+        }
+    }
+    &_lbl {
+        font-size: 1.1666em;
+        line-height: 26px;
+
+        color: @grey-type;
+
+        .inline-block();
+    }
+    &_val {
+        &.rubl {
+            font-size: 1.1666em;
+            line-height: 26px;
+
+            color: @grey-type;
+
+            .inline-block();
+        }
+    }
+    &_sldr {
+        position: relative;
+
+        width: 430px;
+        height: 4px;
+        margin: 12px 20px 0;
+
+        background: @grey-light-3;
+
+        .rounded(3px);
+        .inline-block();
+        .ui-slider-range {
+            position: absolute;
+            z-index: 1;
+
+            height: 3px;
+
+            background: @grey-type;
+        }
+        .ui-slider-handle {
+            position: absolute;
+            z-index: 2;
+            top: 3px;
+
+            display: block;
+
+            width: 9px;
+            height: 8px;
+            margin-left: -5px;
+
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAICAQAAACBxB0+AAAAU0lEQVQIW2NggILyPhgLJhBR+r88AklgEnvZ/dL/ZfcnsSPUVJT+B8HyCqhAg1jpR4hQ6ccGMbBQ6QyoAAjOAGnSLv2DJPSnXJuhbAeSABCW7QAA6R05Rnwz+kMAAAAASUVORK5CYII=');
         }
     }
 }
