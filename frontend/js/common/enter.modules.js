@@ -55,8 +55,15 @@
     modules.define('jquery.slick', ['jQuery'], function(provide){
         loadScript("/public/js/plugins/jquery.slick.js", function () {
             var module = {};
-            module.init = function(){
-                console.log('slick init function')
+            module.init = function(elem){
+                var $elem = $(elem),
+                    config = $elem.data('slick-config'),
+                    $slider = config && config.slider ? $elem.find(config.slider) : $elem;
+                if (config) {
+                    // Предполагаем, что стрелочки находятся внутри слайдера
+                    config = $.extend({}, config, { nextArrow: $elem.find(config.nextArrow), prevArrow: $elem.find(config.prevArrow)});
+                    $slider.slick(config);
+                }
             };
             console.log('[Module] jquery.slick');
             provide(module);

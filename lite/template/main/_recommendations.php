@@ -23,18 +23,29 @@ foreach ($rrProducts as &$value) {
 /** @var $rrProducts Product[] */
 
 $helper = new \Helper\TemplateHelper();
-$sliderToken = $blockname == 'Популярные товары' ? 'pop' : 'hit';
+
+$slickConfig = [
+    'slidesToShow' => 4,
+    'slidesToScroll' => 4,
+    'lazyLoad'  => 'ondemand',
+    'dots'      => false,
+    'infinite'  => false,
+    'nextArrow' => '.js-goods-slider-btn-next',
+    'prevArrow' => '.js-goods-slider-btn-prev',
+    'slider'    => '.js-slider-goods'
+]
+
 ?>
 
-<div class="section js-module-require" data-module="jquery.slick">
+<div class="section js-module-require" data-module="jquery.slick" data-slick-config='<?= json_encode($slickConfig) ?>'">
     <div class="section__title"><?= $blockname ?></div>
 
     <div class="section__content">
         <div class="slider-section">
 
-            <button class="slider-section__btn slider-section__btn_prev js-goods-slider-btn-prev-<?= $sliderToken ?>"></button>
+            <button class="slider-section__btn slider-section__btn_prev js-goods-slider-btn-prev"></button>
 
-            <div class="goods goods_grid grid-4col js-slider-goods js-slider-goods-<?= $sliderToken ?>" data-slick-slider="<?= $sliderToken ?>" data-slick='{"slidesToShow": 4, "slidesToScroll": 4}'>
+            <div class="goods goods_grid grid-4col js-slider-goods">
 
             <? foreach ($rrProducts as $product) : ?>
 
@@ -72,7 +83,7 @@ $sliderToken = $blockname == 'Популярные товары' ? 'pop' : 'hit'
             <? endforeach ?>
 
             </div>
-            <button class="slider-section__btn slider-section__btn_next js-goods-slider-btn-next-<?= $sliderToken ?>"></button>
+            <button class="slider-section__btn slider-section__btn_next js-goods-slider-btn-next"></button>
         </div>
     </div>
 </div>
