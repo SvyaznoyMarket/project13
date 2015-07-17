@@ -82,3 +82,5 @@ $helper = new \Helper\TemplateHelper();
     <? endforeach ?>
 
 </nav>
+
+<div class="nav-fader"></div>

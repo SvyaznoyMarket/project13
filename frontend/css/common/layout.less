@@ -20,6 +20,17 @@
                 &__text {
                     display: none;
                 }
+                &__item {
+                    &:hover {
+                        width: 224px;
+                        .site-menu__text {
+                            .inline-block(middle);
+                        }
+                        .site-menu__link {
+                            color: @orange-bright;
+                        }
+                    }
+                }
             }
         }
     }

@@ -34,18 +34,16 @@ $helper = \App::helper();
         <!--<div class="sticker sticker_info">Товар со склада</div>-->
     </a>
 
-    <? if ($product->getRating()) : ?>
-
     <div class="goods__rating rating">
-        <span class="rating-state">
-        <? foreach ( range(1,5) as $i) : ?>
-            <i class="rating-state__item rating-state__item_1 icon-rating <?= round($product->getRating()) >= $i ? 'rating-state__item_fill' : '' ?>"></i>
-        <? endforeach ?>
-        </span>
-        <span class="rating-count">(<?= $product->getRatingCount() ?>)</span>
+        <? if ($product->getRating()) : ?>
+            <span class="rating-state">
+            <? foreach ( range(1,5) as $i) : ?>
+                <i class="rating-state__item rating-state__item_1 icon-rating <?= round($product->getRating()) >= $i ? 'rating-state__item_fill' : '' ?>"></i>
+            <? endforeach ?>
+            </span>
+            <span class="rating-count">(<?= $product->getRatingCount() ?>)</span>
+        <? endif ?>
     </div>
-
-    <? endif ?>
 
     <div class="goods__name">
         <div class="goods__name-inn">
@@ -53,9 +51,7 @@ $helper = \App::helper();
         </div>
     </div>
 
-    <? if ($product->getPriceOld()) : ?>
-        <div class="goods__price-old"><span class="line-through"><?= $helper->formatPrice($product->getPriceOld()) ?></span> ₽</div>
-    <? endif ?>
+    <div class="goods__price-old"><span class="line-through"><? if ($product->getPriceOld()) : ?><?= $helper->formatPrice($product->getPriceOld()) ?></span> ₽<? endif ?></div>
 
     <div class="goods__price-now"><?= $helper->formatPrice($product->getPrice()) ?> ₽</div>
 
