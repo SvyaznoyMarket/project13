@@ -27,8 +27,6 @@ class ProductButtonAction {
         $useNewStyles = false,
         $inShowroomAsButton = true
     ) {
-        $colorClass = AbTest::getColorClass($product, $location);
-
         $data = [
             'id'         => 'buyButton-' . $product->getId() . '-'. md5(json_encode([$location, isset($sender['position']) ? $sender['position'] : null])),
             'disabled'   => false,
@@ -40,7 +38,6 @@ class ProductButtonAction {
             'sender'     => $helper->json($sender),
             'sender2'    => $sender2,
             'productUi'  => $product->getUi(),
-            'colorClass' => $colorClass,
             'location'   => $location,
             'inShowroomAsLabel' => false,
             'data'       => [
@@ -94,17 +91,17 @@ class ProductButtonAction {
         } else if ($product->isGifteryCertificate()) {
             $data['isGiftery'] = true;
             $data['url'] = '#';
-            $data['class'] .= ' btnBuy__eLink giftery-show-widget' . $colorClass;
+            $data['class'] .= ' btnBuy__eLink giftery-show-widget';
             $data['value'] = 'Купить';
         } else if ($product->isInShopStockOnly() && \App::user()->getRegion()->getForceDefaultBuy()) { // Резерв товара
             $data['id'] = 'quickBuyButton-' . $product->getId();
             $data['url'] = $this->getOneClickBuyUrl($helper, $product, $sender, $sender2);
-            $data['class'] .= ' btnBuy__eLink js-orderButton jsOneClickButton-new' . $colorClass;
+            $data['class'] .= ' btnBuy__eLink js-orderButton jsOneClickButton-new';
             $data['value'] = 'Купить';
         } else if ($product->getKit() && !$product->getIsKitLocked()) {
             $data['isKit'] = $location === 'slider' ? false : true;
             $data['value'] = 'Купить';
-            $data['class'] .= ' btnBuy__eLink js-orderButton js-kitButton' . $colorClass;
+            $data['class'] .= ' btnBuy__eLink js-orderButton js-kitButton';
             $data['url'] = $this->getKitBuyUrl($helper, $product, $sender, $sender2);
 		} else if (\App::user()->getCart()->hasProduct($product->getId()) && !$noUpdate) {
             $data['url'] = $helper->url('cart');
@@ -113,7 +110,7 @@ class ProductButtonAction {
         } else {
             // Внимание!!! Генерация URL адреса для покупки также происходит в web/js/dev/common/UserCustomBindings.js
             $data['url'] = $this->getBuyUrl($helper, $product, $sender, $sender2);
-            $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton' . $colorClass;
+            $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton';
             $data['value'] = 'Купить';
             if (\App::abTest()->isNewProductPage() && in_array($location, ['product-card', 'userbar'])) $data['value'] = 'Купить';
         }

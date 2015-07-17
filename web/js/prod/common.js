@@ -477,7 +477,6 @@
 				statusId = $elem.data('status-id'),
                 noUpdate = $elem.data('noUpdate'),
 				isSlot = $elem.data('is-slot'),
-				colorClass = $elem.data('color-class') || '',
                 sender = $elem.data('sender'),
                 sender2 = $elem.data('sender2')
             ;
@@ -525,7 +524,6 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('js-orderButton jsOneClickButton-new')
-					.addClass(colorClass)
 					.removeClass('jsBuyButton')
 					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', $.extend({productId: productId}, sender, sender2)));
 			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId) && !noUpdate) {
@@ -544,7 +542,6 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('js-orderButton jsBuyButton')
-					.addClass(colorClass)
 					.attr('href', ENTER.utils.generateUrl('cart.product.set', $.extend({productId: productId}, sender, sender2)));
 			}
 		}
