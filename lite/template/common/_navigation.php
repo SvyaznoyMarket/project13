@@ -11,7 +11,7 @@ $helper = new \Helper\TemplateHelper();
 
     <? foreach ($menu as $menu1): ?>
 
-    <li class="site-menu__item">
+    <li class="site-menu__item <?= $menu1->child ? 'has-child' : '' ?>">
 
         <a href="<?= $menu1->link ?>" class="site-menu__link">
         <? if ($menu1->char) : ?>
@@ -31,7 +31,7 @@ $helper = new \Helper\TemplateHelper();
 
             <? foreach ($menu1->children as $menu2) : ?>
 
-                <li class="site-menu-sub__item">
+                <li class="site-menu-sub__item <?= $menu1->child ? 'has-child' : '' ?>">
                     <a href="<?= $menu2->link ?>" class="site-menu-sub__link"><?= $menu2->name ?></a>
 
                     <? if (!empty($menu2->children)) : ?>
