@@ -109,7 +109,7 @@ class Cart {
         $data = $this->storage->get($this->sessionName);
         $item = $data['product'][$product->getId()];
 
-        $item['name']   = $product->getName();
+        $item['name']   = (new \Helper\TemplateHelper())->unescape($product->getName());
         $item['price']  = $product->getPrice();
         $item['image']  = $product->getMainImageUrl('product_120');
         $item['url']    = $product->getLink();

@@ -18,9 +18,9 @@ return function(
         <div class="orderOneClick_hd_r">
             <div class="orderOneClick_hd_n">
                 <? if ($product->getPrefix()): ?>
-                    <?= $product->getPrefix() ?><br/>
+                    <?= $helper->escape($product->getPrefix()) ?><br/>
                 <? endif ?>
-                <?= $product->getWebName() ?>
+                <?= $helper->escape($product->getWebName()) ?>
             </div>
 
             <div class="orderOneClick_hd_pr"><strong><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
