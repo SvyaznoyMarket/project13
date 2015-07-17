@@ -54,14 +54,129 @@
                 <hr class="hr-orange">
 
                 <div class="fltr">
+                    <form id="productCatalog-filter-form" class="fltrSet js-category-filter" action="/catalog/children/disney-baby-5854" method="GET">
+                        <div class="fltrSet_tggl js-category-filter-otherParamsToggleButton">
+                            <span class="fltrSet_tggl_tx">Бренды и параметры</span>
+                        </div>
+
+                        <div class="fltrSet_cnt js-category-v1-filter-otherParams">
+                            <!-- Фильтр по выбранным параметрам -->
+                            <div class="filter-content js-category-filter-otherParamsContent">
+                                <!-- Список названий параметров -->
+                                <ul class="filter-params">
+                                    <li class="filter-params__item js-category-filter-param" data-ref="">
+                                        <span class="filter-params__text">WOW-товары</span>
+                                    </li>
+                                    <li class="filter-params__item js-category-filter-param mActive" data-ref="">
+                                        <span class="filter-params__text">Бренд</span>
+                                    </li>
+                                    <li class="filter-params__item js-category-filter-param" data-ref="">
+                                        <span class="filter-params__text">Наличие в магазинах</span>
+                                    </li>
+                                </ul>
+                                <!-- /Список названий параметров -->
+
+                                <!-- Список значений параметров -->
+                                <div class="filter-values">
+                                    <div class="filter-values__inner">
+                                        <div class="filter-values__item js-category-filter-element" id="id-productCategory-filter-5-label" style="display: none;">
+                                            <div class="filter-values__cell">
+                                                <input class="custom-input filter-check jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-label-option-36" name="f-label-sale" value="36">
+                                                <label class="custom-label" for="id-productCategory-filter-label-option-36">
+                                                    Sale
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="filter-values__item hf js-category-filter-element" id="id-productCategory-filter-5-brand" style="display: block;">
+                                            <div class="filter-values__cell">
+                                                <input class="custom-input filter-check jsCustomRadio js-customInput js-category-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-106" name="f-brand-disney" value="106" data-name="Disney">
+                                                <label class="custom-label" for="id-productCategory-filter-brand-option-106">
+                                                    Disney
+                                                </label>
+                                            </div>
+
+                                            <div class="filter-values__cell">
+                                                <input class="custom-input filter-check jsCustomRadio js-customInput js-category-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-179" name="f-brand-huggies" value="179" data-name="Huggies">
+                                                <label class="custom-label" for="id-productCategory-filter-brand-option-179">
+                                                    Huggies
+                                                </label>
+                                            </div>
+
+                                            <div class="filter-values__cell">
+                                                <input class="custom-input filter-check jsCustomRadio js-customInput js-category-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-278" name="f-brand-nuk" value="278" data-name="Nuk">
+                                                <label class="custom-label" for="id-productCategory-filter-brand-option-278">
+                                                    Nuk
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="filter-values__item hf mLineItem js-category-filter-element" id="id-productCategory-filter-5-shop" style="display: none;">
+                                            <div class="filter-values__cell">
+                                                <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-8" name="shop" value="8">
+                                                <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-8">
+                                                    г. Сергиев Посад, ул. 1-я Рыбная, д. 19/22
+                                                </label>
+                                            </div>
+
+                                            <div class="filter-values__cell">
+                                                <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-23" name="shop" value="23">
+                                                <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-23">
+                                                    г. Щелково, ул. Талсинская, д. 2
+                                                </label>
+                                            </div>
+
+                                            <div class="filter-values__cell">
+                                                <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-40" name="shop" value="40">
+                                                <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-40">
+                                                    г. Серпухов, ул. Ворошилова, д. 113
+                                                </label>
+                                            </div>
+
+                                            <div class="filter-values__cell">
+                                                <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-83" name="shop" value="83">
+                                                <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-83">
+                                                    г. Подольск, ул. Б. Серпуховская, д. 5, ТЦ "Центральный"
+                                                </label>
+                                            </div>
+
+                                            <div class="filter-values__cell">
+                                                <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-86" name="shop" value="86">
+                                                <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-86">
+                                                    г. Электросталь, пр-кт Ленина, д. 30/13
+                                                </label>
+                                            </div>
+
+                                            <div class="filter-values__cell">
+                                                <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-128" name="shop" value="128">
+                                                <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-128">
+                                                    г. Коломна, ул. Октябрьской революции, д. 368
+                                                </label>
+                                            </div>
+
+                                            <div class="filter-values__cell">
+                                                <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-149" name="shop" value="149">
+                                                <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-149">
+                                                    г. Орехово-Зуево, ул. Ленина, д. 49
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="fltr">
                     <form id="productCatalog-filter-form" class="bFilter js-category-filter js-category-filter-v3" action="/catalog/jewel/zolotie-ukrasheniya-3299" method="GET">
 
                         <div class="fltrSet js-category-filter-toggle-container fltrSet-metall">
-                            <div class="fltrSet_tggl  js-category-filter-toggle-button fltrSet_tggl-dn">
+                            <div class="fltrSet_tggl js-category-filter-toggle-button">
                                 <span class="fltrSet_tggl_tx">Металл</span>
                             </div>
 
-                            <div class="fltrSet_cnt js-category-filter-toggle-content" style="display: block;">
+                            <div class="fltrSet_cnt js-category-filter-toggle-content" style="display: none;">
                                 <div class="fltrSet_inn">
                                     <div class="bFilterValuesCol bFilterValuesCol-gbox">
                                         <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29502" name="f-prop2194-beloe_zoloto_585" value="29502">
@@ -104,12 +219,12 @@
                             </div>
                         </div>
 
-                        <div class="fltrSet js-category-filter-toggle-container  fltrSet-insertion fltrSet-close">
-                            <div class="fltrSet_tggl  js-category-filter-toggle-button">
+                        <div class="fltrSet js-category-filter-toggle-container fltrSet-insertion fltrSet-close">
+                            <div class="fltrSet_tggl js-category-filter-toggle-button">
                                 <span class="fltrSet_tggl_tx">Вставка</span>
                             </div>
 
-                            <div class="fltrSet_cnt js-category-filter-toggle-content" style="display: block;">
+                            <div class="fltrSet_cnt js-category-filter-toggle-content" style="display: none;">
                                 <div class="fltrSet_inn">
 
                                     <div class="bFilterValuesCol bFilterValuesCol-gbox">
@@ -165,183 +280,126 @@
                             </div>
                         </div>
 
-                        <div class="bFilterHead bFilterHead-open">
-                            <div class="fltrSet_tggl js-category-filter-otherParamsToggleButton fltrSet_tggl-dn">
+                        <div class="fltrSet">
+                            <div class="fltrSet_tggl js-category-filter-otherParamsToggleButton">
                                 <span class="fltrSet_tggl_tx">Ещё параметры</span>
                             </div>
-                        </div>
 
-                        <div class="fltrSet js-category-v1-filter-otherParams" style="padding-top: 0;">
-                            <!-- Фильтр по выбранным параметрам -->
-                            <div class="bFilterCont js-category-filter-otherParamsContent" style="display: block;">
-                                <!-- Список названий параметров -->
-                                <ul class="bFilterParams">
-                                    <li class="bFilterParams__eItem mActive js-category-filter-param" data-ref="id-productCategory-filter-5-label">
-                                        <span class="bParamName">WOW-товары</span>
-                                    </li>
-                                    <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-shop">
-                                        <span class="bParamName">Наличие в магазинах</span>
-                                    </li>
-                                    <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-prop7514">
-                                        <span class="bParamName">Коллекция</span>
-                                    </li>
-                                    <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-shop">
-                                        <span class="bParamName">Наличие в магазинах</span>
-                                    </li>
-                                    <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-prop7514">
-                                        <span class="bParamName">Коллекция</span>
-                                    </li>
-                                    <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-shop">
-                                        <span class="bParamName">Наличие в магазинах</span>
-                                    </li>
-                                    <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-prop7514">
-                                        <span class="bParamName">Коллекция</span>
-                                    </li>
-                                    <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-shop">
-                                        <span class="bParamName">Наличие в магазинах</span>
-                                    </li>
-                                    <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-prop7514">
-                                        <span class="bParamName">Коллекция</span>
-                                    </li>
-                                    <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-shop">
-                                        <span class="bParamName">Наличие в магазинах</span>
-                                    </li>
-                                    <li class="bFilterParams__eItem js-category-filter-param" data-ref="id-productCategory-filter-5-prop7514">
-                                        <span class="bParamName">Коллекция</span>
-                                    </li>
-                                </ul>
-                                <!-- /Список названий параметров -->
+                            <div class="fltrSet_cnt js-category-v1-filter-otherParams">
+                                <!-- Фильтр по выбранным параметрам -->
+                                <div class="filter-content js-category-filter-otherParamsContent">
+                                    <!-- Список названий параметров -->
+                                    <ul class="filter-params">
+                                        <li class="filter-params__item js-category-filter-param" data-ref="">
+                                            <span class="filter-params__text">WOW-товары</span>
+                                        </li>
+                                        <li class="filter-params__item js-category-filter-param mActive" data-ref="">
+                                            <span class="filter-params__text">Бренд</span>
+                                        </li>
+                                        <li class="filter-params__item js-category-filter-param" data-ref="">
+                                            <span class="filter-params__text">Наличие в магазинах</span>
+                                        </li>
+                                        <li class="filter-params__item js-category-filter-param" data-ref="">
+                                            <span class="filter-params__text">WOW-товары</span>
+                                        </li>
+                                        <li class="filter-params__item js-category-filter-param" data-ref="">
+                                            <span class="filter-params__text">Бренд</span>
+                                        </li>
+                                        <li class="filter-params__item js-category-filter-param" data-ref="">
+                                            <span class="filter-params__text">Наличие в магазинах</span>
+                                        </li>
+                                    </ul>
+                                    <!-- /Список названий параметров -->
 
-                                <!-- Список значений параметров -->
-                                <div class="bFilterValues">
-                                    <div class="bFilterValuesItem js-category-filter-element" id="id-productCategory-filter-5-label">
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-label-option-36" name="f-label-sale" value="36">
-                                            <label class="bFilterCheckbox" for="id-productCategory-filter-label-option-36">
+                                    <!-- Список значений параметров -->
+                                    <div class="filter-values">
+                                        <div class="filter-values__inner">
+                                            <div class="filter-values__item js-category-filter-element" id="id-productCategory-filter-5-label" style="display: none;">
+                                                <div class="filter-values__cell">
+                                                    <input class="custom-input filter-check jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-label-option-36" name="f-label-sale" value="36">
+                                                    <label class="custom-label" for="id-productCategory-filter-label-option-36">
+                                                        Sale
+                                                    </label>
+                                                </div>
+                                            </div>
 
-                                                <span class="customLabel_btx">Sale</span>
-                                            </label>
-                                        </div>
-                                    </div>
+                                            <div class="filter-values__item hf js-category-filter-element" id="id-productCategory-filter-5-brand" style="display: block;">
+                                                <div class="filter-values__cell">
+                                                    <input class="custom-input filter-check jsCustomRadio js-customInput js-category-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-106" name="f-brand-disney" value="106" data-name="Disney">
+                                                    <label class="custom-label" for="id-productCategory-filter-brand-option-106">
+                                                        Disney
+                                                    </label>
+                                                </div>
 
-                                    <div class="bFilterValuesItem hf mLineItem js-category-filter-element" id="id-productCategory-filter-5-shop">
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-2" name="shop" value="2">
-                                            <label class="bFilterCheckbox mCustomLabelRadio" for="id-productCategory-filter-shop-option-2">
+                                                <div class="filter-values__cell">
+                                                    <input class="custom-input filter-check jsCustomRadio js-customInput js-category-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-179" name="f-brand-huggies" value="179" data-name="Huggies">
+                                                    <label class="custom-label" for="id-productCategory-filter-brand-option-179">
+                                                        Huggies
+                                                    </label>
+                                                </div>
 
-                                                <span class="customLabel_btx">ул. Орджоникидзе, д. 11, стр. 10</span>
-                                            </label>
-                                        </div>
+                                                <div class="filter-values__cell">
+                                                    <input class="custom-input filter-check jsCustomRadio js-customInput js-category-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-278" name="f-brand-nuk" value="278" data-name="Nuk">
+                                                    <label class="custom-label" for="id-productCategory-filter-brand-option-278">
+                                                        Nuk
+                                                    </label>
+                                                </div>
+                                            </div>
 
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-13" name="shop" value="13">
-                                            <label class="bFilterCheckbox mCustomLabelRadio" for="id-productCategory-filter-shop-option-13">
+                                            <div class="filter-values__item hf mLineItem js-category-filter-element" id="id-productCategory-filter-5-shop" style="display: none;">
+                                                <div class="filter-values__cell">
+                                                    <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-8" name="shop" value="8">
+                                                    <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-8">
+                                                        г. Сергиев Посад, ул. 1-я Рыбная, д. 19/22
+                                                    </label>
+                                                </div>
 
-                                                <span class="customLabel_btx">Волгоградский пр-т, д. 119а.</span>
-                                            </label>
-                                        </div>
+                                                <div class="filter-values__cell">
+                                                    <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-23" name="shop" value="23">
+                                                    <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-23">
+                                                        г. Щелково, ул. Талсинская, д. 2
+                                                    </label>
+                                                </div>
 
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-68" name="shop" value="68">
-                                            <label class="bFilterCheckbox mCustomLabelRadio" for="id-productCategory-filter-shop-option-68">
+                                                <div class="filter-values__cell">
+                                                    <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-40" name="shop" value="40">
+                                                    <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-40">
+                                                        г. Серпухов, ул. Ворошилова, д. 113
+                                                    </label>
+                                                </div>
 
-                                                <span class="customLabel_btx">Свободный пр-кт, д. 33</span>
-                                            </label>
-                                        </div>
+                                                <div class="filter-values__cell">
+                                                    <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-83" name="shop" value="83">
+                                                    <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-83">
+                                                        г. Подольск, ул. Б. Серпуховская, д. 5, ТЦ "Центральный"
+                                                    </label>
+                                                </div>
 
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-87" name="shop" value="87">
-                                            <label class="bFilterCheckbox mCustomLabelRadio" for="id-productCategory-filter-shop-option-87">
+                                                <div class="filter-values__cell">
+                                                    <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-86" name="shop" value="86">
+                                                    <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-86">
+                                                        г. Электросталь, пр-кт Ленина, д. 30/13
+                                                    </label>
+                                                </div>
 
-                                                <span class="customLabel_btx">ул. Братиславская д. 14</span>
-                                            </label>
-                                        </div>
+                                                <div class="filter-values__cell">
+                                                    <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-128" name="shop" value="128">
+                                                    <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-128">
+                                                        г. Коломна, ул. Октябрьской революции, д. 368
+                                                    </label>
+                                                </div>
 
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-135" name="shop" value="135">
-                                            <label class="bFilterCheckbox mCustomLabelRadio" for="id-productCategory-filter-shop-option-135">
-
-                                                <span class="customLabel_btx">ул. Профсоюзная, вл. 118, ТЦ "Тропа"</span>
-                                            </label>
-                                        </div>
-
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-174" name="shop" value="174">
-                                            <label class="bFilterCheckbox mCustomLabelRadio" for="id-productCategory-filter-shop-option-174">
-
-                                                <span class="customLabel_btx">ул. Вавилова, д. 19 (только для сотрудников Сбербанка)</span>
-                                            </label>
-                                        </div>
-
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-198" name="shop" value="198">
-                                            <label class="bFilterCheckbox mCustomLabelRadio" for="id-productCategory-filter-shop-option-198">
-
-                                                <span class="customLabel_btx">Магазин в г. Москва, ул. Грузинский вал, д. 23/25</span>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="bFilterValuesItem hf js-category-filter-element" id="id-productCategory-filter-5-prop7514">
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7514-option-28108" name="f-prop7514-baby_stars" value="28108">
-                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop7514-option-28108">
-
-                                                <span class="customLabel_btx">Baby Stars</span>
-                                            </label>
-                                        </div>
-
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7514-option-17052" name="f-prop7514-cinderella" value="17052">
-                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop7514-option-17052">
-
-                                                <span class="customLabel_btx">Cinderella</span>
-                                            </label>
-                                        </div>
-
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7514-option-19339" name="f-prop7514-clover" value="19339">
-                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop7514-option-19339">
-
-                                                <span class="customLabel_btx">Clover</span>
-                                            </label>
-                                        </div>
-
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7514-option-23035" name="f-prop7514-first_diamond" value="23035">
-                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop7514-option-23035">
-
-                                                <span class="customLabel_btx">First Diamond</span>
-                                            </label>
-                                        </div>
-
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7514-option-19609" name="f-prop7514-ice_line" value="19609">
-                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop7514-option-19609">
-
-                                                <span class="customLabel_btx">Ice Line</span>
-                                            </label>
-                                        </div>
-
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7514-option-28107" name="f-prop7514-ifashion" value="28107">
-                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop7514-option-28107">
-
-                                                <span class="customLabel_btx">iFashion</span>
-                                            </label>
-                                        </div>
-
-                                        <div class="bFilterValuesCol ">
-                                            <input class="customInput jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7514-option-15303" name="f-prop7514-illusion" value="15303">
-                                            <label class="bFilterCheckbox" for="id-productCategory-filter-prop7514-option-15303">
-
-                                                <span class="customLabel_btx">Illusion</span>
-                                            </label>
+                                                <div class="filter-values__cell">
+                                                    <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-149" name="shop" value="149">
+                                                    <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-149">
+                                                        г. Орехово-Зуево, ул. Ленина, д. 49
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- /Список значений параметров -->
                         </div>
                     </form>
                 </div>
@@ -541,7 +599,7 @@
                         </div>
 
                         <div class="fltrBtn_kit fltrBtn_kit-nborder">
-                            <div class="js-category-filter-selected clearfix">
+                            <div class="js-category-filter-selected">
                                 <ul class="fltr_slctd">
                                     <li class="fltr_slctd_i fltr_slctd_i-n">В магазине:</li>
 

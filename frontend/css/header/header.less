@@ -1,6 +1,7 @@
 .header {
     position: relative;
     z-index: 101;
+    background: @orange-light-4;
     &__side {
         width: 90px;
         min-width: 90px;
@@ -14,9 +15,7 @@
 
         vertical-align: middle;
     }
-    &__logotype {
-        background: @orange-bright;
-    }
+
     &-cart {
         vertical-align: top;
 
@@ -49,8 +48,6 @@
         &--bottom {
             height: 60px;
             padding-top: 13px;
-
-            background: @orange-light-4;
         }
     }
 }
@@ -74,10 +71,10 @@
 .logotype {
     display: block;
 
-    width: 58px;
-    height: 39px;
+    width: 90px;
+    height: 90px;
 
-    background: url('@{base-url}/logo.png') no-repeat 0 0;
+    background: url('@{base-url}/itlogo.png') no-repeat 0 0;
 
     .inline-block();
 }
