@@ -32,11 +32,8 @@ $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager
                 <!--/ баннер -->
 
                 <div class="section">
-                    <ul class="bread-crumbs">
-                        <li class="bread-crumbs__item"><a href="" class="bread-crumbs__link underline">Мебель</a></li>
-                        <li class="bread-crumbs__item"><a href="" class="bread-crumbs__link underline">Мягкая мебель</a></li>
-                        <li class="bread-crumbs__item">Кресла</li>
-                    </ul>
+
+                    <?= $page->render('category/_breadcrumbs', ['category' => $category]) ?>
 
                     <ul class="categories-grid grid-3col">
 
