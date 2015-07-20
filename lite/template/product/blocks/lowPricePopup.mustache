@@ -1,0 +1,21 @@
+<!-- попап - узнатьо снижении цены, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
+<div class="best-price-popup info-popup info-popup--best-price info-popup--open js-lowPriceNotifier-popup">
+    <i class="closer js-lowPriceNotifier-popup-close">×</i>
+
+    <strong class="best-price-popup__tl">Узнать о снижении цены</strong>
+
+    <p class="best-price-popup__desc">Вы получите письмо,<br>когда цена станет ниже {{&price}}&nbsp;<span class="rubl">p</span></p>
+
+    <input class="best-price-popup__it textfield js-lowPriceNotifier-popup-email" placeholder="Ваш email" value="{{userEmail}}">
+    <div class="red js-lowPriceNotifier-popup-error" style="color: #cb3735"></div>
+
+    {{^isSubscribedToActionChannel}}
+        <input type="checkbox" name="subscribe" id="subscribe" value="1" autocomplete="off" class="customInput customInput-defcheck jsCustomRadio js-customInput js-lowPriceNotifier-popup-subscribe" checked="">
+        <label class="best-price-popup__check customLabel customLabel-defcheck mChecked" for="subscribe">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
+    {{/isSubscribedToActionChannel}}
+
+    <div style="text-align: center">
+        <a href="#" class="best-price-popup__btn btn-type btn-type--buy js-lowPriceNotifier-popup-submit">Сохранить</a>
+    </div>
+</div>
+<!--/ попап - узнатьо снижении цены -->
