@@ -31,6 +31,13 @@
         });
     });
 
+    modules.define('underscore', [], function(provide){
+        loadScript("/public/vendor/js/underscore.1.8.3.min.js", function () {
+            console.log('[Module] underscore');
+            provide(_);
+        });
+    });
+
     modules.define('ko', [], function(provide){
         loadScript("/public/vendor/js/knockout.3.3.1.min.js", function () {
             console.log('[Module] knockout');
@@ -111,6 +118,19 @@
         loadScript("/public/js/modules/enter.region.js", function () {
             console.log('[Module] enter.region');
             provide({});
+        });
+    });
+
+    modules.define('enter.catalog', ['jQuery'], function(provide){
+        loadScript("/public/js/modules/enter.catalog.js", function () {
+            console.log('[Module] enter.catalog');
+            provide({
+                init: function( el ) {
+                    modules.require(['enter.catalog'], function( m ) {
+                        m.init(el)
+                    });
+                }
+            });
         });
     });
 

@@ -1,12 +1,15 @@
 <?php
 
-namespace View\ProductCategory;
+namespace view\ProductCategory;
 
 
-class LeafPage extends CategoryPage
+use View\LiteLayout;
+
+class CategoryPage extends LiteLayout
 {
 
-    protected $layout = 'layout/category.leaf';
+    /** @var  \Model\Product\Category\Entity */
+    protected $category;
 
     public function prepare() {
         parent::prepare();
@@ -16,10 +19,6 @@ class LeafPage extends CategoryPage
     public function blockFixedUserbar()
     {
         return $this->render('category/_userbar.fixed', ['category' => $this->category]);
-    }
-
-    public function blockContent() {
-        return $this->render('category/content.leaf', $this->params);
     }
 
 }

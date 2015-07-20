@@ -88,4 +88,8 @@ class LiteLayout extends \View\Layout
         return $this->render('common/_products.viewed');
     }
 
+    public function blockFixedUserbar() {
+        return '';
+    }
+
 }

@@ -3,9 +3,7 @@
 namespace View\ProductCategory;
 
 
-use View\LiteLayout;
-
-class RootPage extends LiteLayout
+class RootPage extends CategoryPage
 {
 
     protected $layout = 'layout/category.root';
