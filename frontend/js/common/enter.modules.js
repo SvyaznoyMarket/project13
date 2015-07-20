@@ -98,6 +98,13 @@
         });
     });
 
+    modules.define('jquery.visible', ['jQuery'], function(provide){
+        loadScript("/public/js/plugins/jquery.visible.js", function () {
+            console.log('[Module] jquery.visible');
+            provide();
+        });
+    });
+
     /* ENTER Modules */
     modules.define('enter.debug', ['jQuery', 'Mustache', 'enter.config'], function(provide){
         window.ENTER = {};

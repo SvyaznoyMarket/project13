@@ -11,7 +11,7 @@
         </div>
 
         <div class="header__center table-cell">
-            <div class="header__line header__line--top">
+            <div class="header__line header__line_top">
                 <a href="" class="location dotted js-popup-show jsRegionSelection" data-popup="region"><?= \App::user()->getRegion()->getName() ?></a>
 
                 <ul class="header-shop-info">
@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <div class="header__line header__line--bottom">
+            <div class="header__line header__line_bottom">
 
                 <?= $page->render('common/_search') ?>
 

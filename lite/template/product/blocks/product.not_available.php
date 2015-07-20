@@ -7,7 +7,7 @@ $f = function(
 
     ?>
 
-    <div class="product-card product-card--2col product-card--not clearfix">
+    <div class="product-card product-card--2col product-card--not">
 
         <!-- блок с фото -->
         <?= $helper->render('product/blocks/photo', ['product' => $product, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D ]) ?>

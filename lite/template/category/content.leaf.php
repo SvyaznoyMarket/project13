@@ -57,6 +57,8 @@ $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager
 
                 <hr class="hr-orange">
 
+                <div class="js-show-fixed-userbar"></div>
+
                 <?= $page->render('category/_filters',[
                     'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
                     'productFilter' => $productFilter,

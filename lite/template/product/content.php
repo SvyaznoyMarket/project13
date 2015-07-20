@@ -51,14 +51,14 @@ $buySender2 = $request->get('sender2');
 
 <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
 
-<section>
+<section class="product-card">
 
 	<h1 class="product-name"><?= $product->getName() ?></h1>
 
 	<? if ($product->isOnlyFromPartner() && $product->getPartnerName()) : ?>
         <!-- Информация о партнере -->
-        <div class="vandor-offer">
-            <a href="<?= $product->getPartnerOfferLink() ?>" class="vandor-offer__lk i-info jsProductPartnerOffer" target="_blank">
+        <div class="vendor-offer">
+            <a href="<?= $product->getPartnerOfferLink() ?>" class="vendor-offer__lk i-info jsProductPartnerOffer" target="_blank">
                 <span class="i-info__tx">Продавец: <?= $product->getPartnerName() ?></span> <i class="i-info__icon i-product i-product--info-normal "></i>
             </a>
         </div>
@@ -127,16 +127,18 @@ $buySender2 = $request->get('sender2');
     <? if ($showDescription) : ?>
 
         <!-- характеристики/описание товара -->
-        <div class="product-section clearfix" id="more">
+        <div class="product-section grid-2col" id="more">
 
             <?= $helper->render('product/blocks/properties', ['product' => $product]) ?>
 
             <? if ($hasMedia || $product->getDescription()) : ?>
 
-                <div class="product-section__desc">
-                    <div class="product-section__tl">Описание</div>
-                    <?= $helper->render('product/blocks/guides', ['trustfactors' => $trustfactors]) ?>
-                    <div class="product-section__content"><?= $product->getDescription() ?></div>
+                <div class="grid-2col__item">
+                    <div class="product-section__desc">
+                        <div class="product-section__tl">Описание</div>
+                        <?= $helper->render('product/blocks/guides', ['trustfactors' => $trustfactors]) ?>
+                        <div class="product-section__content"><?= $product->getDescription() ?></div>
+                    </div>
                 </div>
 
             <? endif ?>
