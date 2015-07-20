@@ -17,6 +17,6 @@ switch (\App::user()->getRegionId()) {
 <a class="header__bann" href="<?= \App::helper()->url('delivery') ?>">
         <div class="header__bann-tl">САМОВЫВОЗ В ТВОЕМ ГОРОДЕ!</div>
         <div class="header__bann-btn">Найти</div>
-        <div class="header__bann-msg">Более 1300 точек по России.</div>
+        <div class="header__bann-msg">Более 3800 точек по России.</div>
     <div class="close-btn jsMainOrderSumBannerCloser"></div>
 </a>
