@@ -1,10 +1,110 @@
 <?
-    return null;
+    // return null;
+    use \Model\Product\Filter\Option\Entity as Option;
+
+    /**
+     * @var $productFilter  \Model\Product\Filter
+     * @var $baseUrl        string
+     */
+
+     $helper = \App::helper();
+
+    /** @var \Model\Product\Filter\Entity $priceFilter */
+    $priceFilter = null;
+    /** @var \Model\Product\Filter\Entity $labelFilter */
+    $labelFilter = null;
+    /** @var \Model\Product\Filter\Entity $widthFilter */
+    $brandFilter1 = null;
+    /** @var \Model\Product\Filter\Entity $brandFilter2 */
+    $brandFilter2 = null;
+    /** @var \Model\Product\Filter\Entity[] $tyreFilters */
+    $tyreFilters = [];
+
+    $hasSelectedOtherBrands = false;
+
+    $countInListFilters = 0;
+    foreach ($productFilter->getUngroupedPropertiesV2() as $key => $property) {
+        if (!$property->getIsInList()) {
+            continue;
+        } else if ($property->isPrice()) {
+            $priceFilter = $property;
+            $priceFilter->setStepType('price');
+        } else if ($property->isLabel()) {
+            $labelFilter = $property;
+        } else if ($property->isBrand() && $property->getIsAlwaysShow()) {
+            $brandFilter1 = clone $property;
+
+            $brandFilter2 = clone $property;
+            $brandFilter2->deleteAllOptions();
+
+            if (count($brandFilter1->getOption()) >= 10) {
+                $values = $productFilter->getValue($property);
+                while (count($brandFilter1->getOption()) >= 9) {
+                    $option = $brandFilter1->deleteLastOption();
+                    if (in_array($option->getId(), $values)) {
+                        $hasSelectedOtherBrands = true;
+                    }
+
+                    $brandFilter2->unshiftOption($option);
+                }
+            }
+        } else {
+            if ($property->isBrand()) { // Сортировка брендов по алфавиту
+                $option = $property->getOption();
+                usort($option, function(Option $a, Option $b){ return $a->getName() > $b->getName(); });
+                $property->setOption($option);
+            }
+            $tyreFilters[$key] = $property;
+        }
+
+        $countInListFilters++;
+    }
+
+    if (0 == $countInListFilters) {
+        return;
+    }
+
 ?>
 
 <!-- фильтр "Бренды и параметры" -->
 <div class="filter filter-options fltr" style="display: block">
-    <form id="productCatalog-filter-form" class="fltrSet js-category-filter" action="/catalog/children/disney-baby-5854" method="GET">
+
+    <form id="productCatalog-filter-form" class="fltrSet js-category-filter" action="<?= $baseUrl ?>" method="GET">
+
+        <? if ($brandFilter1): ?>
+            <!-- бренды -->
+            <div class="fltrBtn_kit fltrBtn_kit--mark">
+                <div class="fltrBtn_tggl fltrBtn_kit_l">
+                    <i class="fltrBtn_tggl_corner icon-corner"></i>
+                    <span class="dotted"><?= $brandFilter1->getName() ?></span>
+                </div>
+
+                <!-- список брендов -->
+                <div class="fltrBtn_kit_r">
+
+                    <?= $helper->render('category/filters/_brand', ['productFilter' => $productFilter, 'filter' => $brandFilter1]) ?>
+
+                    <? if ($brandFilter2 && count($brandFilter2->getOption())): ?>
+                        <a href="#" class="fltrBtn_btn fltrBtn_btn-btn js-category-v2-filter-otherBrandsOpener"
+                           <? if ($hasSelectedOtherBrands): ?>style="display: none;"<? endif ?>>
+                            <span class="dotted">Ещё <?= count($brandFilter2->getOption()) ?></span>
+                        </a>
+                    <? endif ?>
+
+                    <? if ($brandFilter2): ?>
+                    <!-- больше брендов -->
+                    <span class="js-category-v2-filter-otherBrands" style="display: <?= $hasSelectedOtherBrands ? 'inline' : 'none' ?>;">
+                        <?= $helper->render('category/filters/_brand', ['productFilter' => $productFilter, 'filter' => $brandFilter2]) ?>
+                    </span>
+                    <!--/ больше брендов -->
+                    <? endif ?>
+                </div>
+                <!--/ список брендов -->
+            </div>
+            <!--/ бренды -->
+        <? endif ?>
+
+
         <div class="filter-price" style="padding-bottom: 10px;">
             <div class="fltrSet_tggl js-category-filter-otherParamsToggleButton">
                 <span class="fltrSet_tggl_tx">Бренды и параметры</span>
@@ -94,7 +194,6 @@
 
 <!-- фильтр "Ювелирный" -->
 <div class="filter filter-components fltr" style="display: block">
-    <form id="productCatalog-filter-form" class="js-category-filter js-category-filter-v3" action="/catalog/jewel/zolotie-ukrasheniya-3299" method="GET">
 
         <!-- фильтр по компонентам -->
         <div class="fltrSet js-category-filter-toggle-container">
@@ -289,61 +388,11 @@
             </div>
         </div>
         <!--/ тотже фильтр "Бренды и параметры" только "Ещё параметры" -->
-    </form>
 </div>
 <!-- фильтр "Ювелирный" -->
 
 <!-- фильтр по брендам -->
 <div class="filter filter-brands fltrBtn" style="display: block">
-    <form id="productCatalog-filter-form" class="js-category-filter" action="/catalog/electronics/telefoni-897" data-count-url="" method="GET">
-        <!-- бренды -->
-        <div class="fltrBtn_kit fltrBtn_kit--mark">
-            <div class="fltrBtn_tggl fltrBtn_kit_l">
-                <i class="fltrBtn_tggl_corner icon-corner"></i>
-                <span class="dotted">Бренд</span>
-            </div>
-
-            <!-- список брендов -->
-            <div class="fltrBtn_kit_r">
-                <!-- секция -->
-                <div class="fltrBtn_i">
-                    <input class="custom-input customInput-btn jsCustomRadio js-customInput js-category-filter-brand js-category-v2-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-566" name="f-brand-panasonic" value="566" data-name="Panasonic">
-                    <label class="fltrBtn_btn" for="id-productCategory-filter-brand-option-566">
-                        <img class="fltrBtn_btn_img" src="http://8.imgenter.ru/uploads/media/ae/63/2d/393d44343d06f3ab2cd8564ca76d598c067e0a8f.png">
-                        <i class="fltrBtn_btn_clsr btn-closer1"></i>
-                    </label>
-                </div>
-                <!--/ секция -->
-
-                <!-- секция -->
-                <div class="fltrBtn_i">
-                    <input class="custom-input customInput-btn jsCustomRadio js-customInput js-category-filter-brand js-category-v2-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-566" name="f-brand-panasonic" value="566" data-name="Panasonic">
-                    <label class="fltrBtn_btn" for="id-productCategory-filter-brand-option-566">
-                        <img class="fltrBtn_btn_img" src="http://a.imgenter.ru/uploads/media/b4/fc/a6/63bd2f7a1be1eae1c0e67343ccc063dc6572efb1.png">
-                        <i class="fltrBtn_btn_clsr btn-closer1"></i>
-                    </label>
-                </div>
-                <!--/ секция -->
-
-                <a href="#" class="fltrBtn_btn fltrBtn_btn-btn js-category-v2-filter-otherBrandsOpener"><span class="dotted">Ещё 26</span></a>
-
-                <!-- больше брендов -->
-                                <span class="js-category-v2-filter-otherBrands" style="display: inline;">
-                                    <!-- секция -->
-                                    <div class="fltrBtn_i">
-                                        <input class="custom-input customInput-btn jsCustomRadio js-customInput js-category-filter-brand js-category-v2-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-4298" name="f-brand-jinga" value="4298" data-name="Jinga">
-                                        <label class="fltrBtn_btn" for="id-productCategory-filter-brand-option-4298">
-                                            <span class="fltrBtn_btn_tx">Jinga</span>
-                                            <i class="fltrBtn_btn_clsr btn-closer1"></i>
-                                        </label>
-                                    </div>
-                                    <!--/ секция -->
-                                </span>
-                <!--/ больше брендов -->
-            </div>
-            <!--/ список брендов -->
-        </div>
-        <!--/ бренды -->
 
         <div class="fltrBtn_kit fltrBtn_kit-box">
 
@@ -539,6 +588,5 @@
             </div>
         </div>
         <!--/ поселекченные фильтры -->
-    </form>
 </div>
 <!--/ фильтр по брендам -->

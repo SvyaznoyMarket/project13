@@ -17,6 +17,7 @@
 
 <?
 
+$helper = \App::helper();
 $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager]);
 
 ?>
@@ -56,7 +57,10 @@ $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager
 
                 <hr class="hr-orange">
 
-                <?= $page->render('category/_filters') ?>
+                <?= $page->render('category/_filters',[
+                    'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
+                    'productFilter' => $productFilter,
+                ]) ?>
 
                 <!-- сортировка -->
                 <div class="sorting sorting-top js-category-sortingAndPagination">
