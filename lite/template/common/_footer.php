@@ -43,7 +43,7 @@
         </ul>
 
         <form action="" class="subscribe-form">
-            <div class="subscribe-form__title">Подписаться на рассылку и получить 300₽ на следующую покупку</div>
+            <div class="subscribe-form__title">Подписаться на рассылку и получить 300 <span class="rubl-css">P</span> на следующую покупку</div>
             <input type="text" class="subscribe-form__it it" placeholder="Ваш email">
             <button class="subscribe-form__btn btn-normal">Подписаться</button>
         </form>

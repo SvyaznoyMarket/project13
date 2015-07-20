@@ -37,7 +37,7 @@ $slickConfig = [
 
 ?>
 
-<div class="section js-module-require" data-module="jquery.slick" data-slick-config='<?= json_encode($slickConfig) ?>'">
+<div class="section js-module-require" data-module="jquery.slick" data-slick-config="'<?= json_encode($slickConfig) ?>'">
     <div class="section__title"><?= $blockname ?></div>
 
     <div class="section__content">
@@ -73,9 +73,9 @@ $slickConfig = [
                         </div>
                     </div>
 
-                    <div class="goods__price-old"><span class="line-through"><? if ($product->getPriceOld()) : ?><?= $helper->formatPrice($product->getPriceOld()) ?></span> ₽<? endif ?></div>
+                    <div class="goods__price-old"><span class="line-through"><? if ($product->getPriceOld()) : ?><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl-css">P</span><? endif ?></div>
 
-                    <div class="goods__price-now"><?= $helper->formatPrice($product->getPrice()) ?> ₽</div>
+                    <div class="goods__price-now"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl-css">P</span></div>
 
                     <?= $helper->render('product/_button.buy', ['product' => $product, 'data' => []]) ?>
                 </div>
