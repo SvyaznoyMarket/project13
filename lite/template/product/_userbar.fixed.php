@@ -6,7 +6,7 @@ $helper = \App::helper();
 ?>
 
 <!-- параплашка -->
-<div class="header header_fix">
+<div class="header header_fix js-userbar-fixed js-module-require" data-module="enter.userbar" style="display: none">
     <div class="wrapper table">
         <div class="header__side header__logotype table-cell">
             <a href="/" class="logotype"></a>
