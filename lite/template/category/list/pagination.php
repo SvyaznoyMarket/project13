@@ -13,8 +13,9 @@ $diff = 2;
 $range = range($current - $diff, $current + $diff); // формируем массив от текущей страницы => [1,2,3,4,5]
 $range = array_filter($range, function($item) use ($first, $last) { return $item > $first && $item < $last; }); // отбрасываем лишние элементы => [2,3,4,5]
 if (reset($range) > $first + 1) array_unshift($range, 0); // если текущая страница больше 2, то ставим ... в начале => [2,3,4,5]
-if (end($range) < $last - 1) $range[] = 0; // если текущая страница меньше 9, то ставим ... в конце => [2,3,4,5,0]
-if (count($range) > 1) array_unshift($range, 1); $range[] = $last; // добиваем первой и последней страницей => [1,2,3,4,5,0,10]
+if (count($range) && end($range) < $last - 1) $range[] = 0; // если текущая страница меньше 9, то ставим ... в конце => [2,3,4,5,0]
+array_unshift($range, 1);
+if ($first != $last) $range[] = $last; // добиваем первой и последней страницей => [1,2,3,4,5,0,10]
 
 ?>
 
