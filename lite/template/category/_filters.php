@@ -69,7 +69,7 @@
 <!-- фильтр "Бренды и параметры" -->
 <div class="filter filter-options fltr" style="display: block">
 
-    <form id="productCatalog-filter-form" class="fltrSet js-category-filter" action="<?= $baseUrl ?>" method="GET">
+    <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" method="GET">
 
         <? if ($brandFilter1): ?>
             <!-- бренды -->
