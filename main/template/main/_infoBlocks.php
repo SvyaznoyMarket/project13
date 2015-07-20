@@ -10,7 +10,7 @@
         <i class="shopInfo_l i-shopInfo i-shopInfo-deliveryself"></i>
         <div class="shopInfo_r">
             <span class="shopInfo_tl undrl">Самовывоз</span>
-            <p class="shopInfo_tx">Более 1000 пунктов выдачи</p>
+            <p class="shopInfo_tx">Более 3800 пунктов выдачи</p>
         </div>
     </li>
     <li class="shopInfo_i jsShopInfoPreview" data-id="3">
