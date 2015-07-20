@@ -10,13 +10,14 @@
         'enter.BaseViewClass',
         [
             'jQuery',
-            'underscore'
+            'underscore',
+            'ajaxCall'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, _ ) {
+    function( provide, $, _, ajaxCall ) {
         'use strict';
 
         var
@@ -29,11 +30,22 @@
                      * == PRIVATE METHODS ==
                      * =====================
                      */
+
+                    /**
+                     * @memberOf    module:enter.BaseViewClass~BaseViewClass#
+                     * @method      _setElement
+                     * @private
+                     */
                     _setElement = function( el ) {
                         this.$el = el instanceof $ ? el : $(el);
                         this.el  = this.$el[0];
                     },
 
+                    /**
+                     * @memberOf    module:enter.BaseViewClass~BaseViewClass#
+                     * @method      setElement
+                     * @private
+                     */
                     setElement = function( element ) {
                         this.undelegateEvents();
                         _setElement.call(this, element);
@@ -42,14 +54,29 @@
                         return this;
                     },
 
+                    /**
+                     * @memberOf    module:enter.BaseViewClass~BaseViewClass#
+                     * @method      setAttributes
+                     * @private
+                     */
                     setAttributes = function( attributes ) {
                       this.$el.attr(attributes);
                     },
 
+                    /**
+                     * @memberOf    module:enter.BaseViewClass~BaseViewClass#
+                     * @method      createElement
+                     * @private
+                     */
                     createElement = function(tagName) {
                         return document.createElement(tagName);
                     },
 
+                    /**
+                     * @memberOf    module:enter.BaseViewClass~BaseViewClass#
+                     * @method      ensureElement
+                     * @private
+                     */
                     ensureElement = function() {
                         var
                             attrs;
@@ -97,90 +124,93 @@
                  * == PUBLIC METHODS ==
                  * ====================
                  */
+                _.extend(BaseViewClass.prototype, {
+                    /**
+                     * Инициализация представления
+                     *
+                     * @memberOf    module:enter.BaseViewClass~BaseViewClass#
+                     * @public
+                     */
+                    initialize: function() {},
 
-                /**
-                 * Инициализация представления
-                 *
-                 * @memberOf    module:enter.BaseViewClass~BaseViewClass#
-                 * @public
-                 */
-                BaseViewClass.prototype.initialize = function() {};
+                    /**
+                     * Уничтожение представления
+                     *
+                     * @memberOf    module:enter.BaseViewClass~BaseViewClass#
+                     * @public
+                     */
+                    destroy: function() {
+                        var
+                            subView;
 
-                /**
-                 * Уничтожение представления
-                 *
-                 * @memberOf    module:enter.BaseViewClass~BaseViewClass#
-                 * @public
-                 */
-                BaseViewClass.prototype.destroy = function() {
-                    var
-                        subView;
+                        for ( subView in this.subViews ) {
+                            if ( this.subViews.hasOwnProperty(subView) ) {
+                                if ( typeof this.subViews[subView].off === 'function' ) {
+                                    this.subViews[subView].off();
+                                }
 
-                    for ( subView in this.subViews ) {
-                        if ( this.subViews.hasOwnProperty(subView) ) {
-                            if ( typeof this.subViews[subView].off === 'function' ) {
-                                this.subViews[subView].off();
+                                if ( typeof this.subViews[subView].destroy === 'function' ) {
+                                    this.subViews[subView].destroy();
+                                } else if ( typeof this.subViews[subView].remove === 'function' ) {
+                                    this.subViews[subView].remove();
+                                }
+
+                                delete this.subViews[subView];
                             }
-
-                            if ( typeof this.subViews[subView].destroy === 'function' ) {
-                                this.subViews[subView].destroy();
-                            } else if ( typeof this.subViews[subView].remove === 'function' ) {
-                                this.subViews[subView].remove();
-                            }
-
-                            delete this.subViews[subView];
                         }
-                    }
 
-                    delete this.subViews;
+                        delete this.subViews;
 
-                    // COMPLETELY UNBIND THE VIEW
-                    this.undelegateEvents();
+                        // COMPLETELY UNBIND THE VIEW
+                        this.undelegateEvents();
 
-                    this.$el.removeData().unbind();
-                    this.$el.empty();
-                    this.$el.remove();
-                };
+                        this.$el.removeData().unbind();
+                        this.$el.empty();
+                        this.$el.remove();
+                    },
 
-                BaseViewClass.prototype.undelegateEvents = function() {
-                    if ( this.$el ) {
-                        this.$el.off('.delegateEvents' + this.cid);
-                    }
+                    undelegateEvents: function() {
+                        if ( this.$el ) {
+                            this.$el.off('.delegateEvents' + this.cid);
+                        }
 
-                    return this;
-                };
+                        return this;
+                    },
 
-                BaseViewClass.prototype.delegate = function( eventName, selector, listener ) {
-                    this.$el.on(eventName + '.delegateEvents' + this.cid, selector, listener);
-                };
+                    delegate: function( eventName, selector, listener ) {
+                        this.$el.on(eventName + '.delegateEvents' + this.cid, selector, listener);
+                    },
 
-                BaseViewClass.prototype.delegateEvents = function( events ) {
-                    var
-                        delegateEventSplitter = /^(\S+)\s*(.*)$/,
-                        key, method, match;
+                    delegateEvents: function( events ) {
+                        var
+                            delegateEventSplitter = /^(\S+)\s*(.*)$/,
+                            key, method, match;
 
-                    if ( !(events || (events = _.result(this, 'events'))) ) {
+                        if ( !(events || (events = _.result(this, 'events'))) ) {
+                            return this;
+                        }
+
+                        this.undelegateEvents();
+
+                        for ( key in events ) {
+                            method = events[key];
+                            if ( !_.isFunction(method) ) {
+                                method = this[events[key]];
+                            }
+
+                            if ( !method ) {
+                                continue;
+                            }
+
+                            match = key.match(delegateEventSplitter);
+                            this.delegate(match[1], match[2], _.bind(method, this));
+                        }
+
                         return this;
                     }
 
-                    this.undelegateEvents();
+                }, ajaxCall);
 
-                    for ( key in events ) {
-                        method = events[key];
-                        if ( !_.isFunction(method) ) {
-                            method = this[events[key]];
-                        }
-
-                        if ( !method ) {
-                            continue;
-                        }
-
-                        match = key.match(delegateEventSplitter);
-                        this.delegate(match[1], match[2], _.bind(method, this));
-                    }
-
-                    return this;
-                };
 
                 BaseViewClass.extend = function( protoProps, staticProps ) {
                     var
