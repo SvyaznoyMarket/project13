@@ -13,13 +13,16 @@
     modules.define(
         'enter.catalog.filter',
         [
-            'enter.BaseViewClass'
+            'jQuery',
+            'enter.BaseViewClass',
+            'Mustache',
+            'jquery.ui'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, BaseViewClass ) {
+    function( provide, $, BaseViewClass, mustache, jQueryUI ) {
         'use strict';
 
         var
@@ -36,11 +39,81 @@
                     console.log(this);
 
                     this.catalogView = options.catalogView;
+                    this.sliders     = this.$el.find('.js-category-filter-rangeSlider');
+
+                    this.sliders.each(this.initSlider.bind(this));
                 },
 
                 events: {
                     'click .js-category-v2-filter-dropBox-opener': 'toggleDropdown',
                     'change': 'filterChanged'
+                },
+
+                /**
+                 * Инициализация слайдера
+                 *
+                 * @method      initSlider
+                 * @memberOf    module:enter.catalog.filter~CatalogFilterView#
+                 */
+                initSlider: function( index, element ) {
+                    var
+                        tickPercentage  = [20, 40, 60, 80],
+
+                        slider          = $(element),
+                        sliderWrap      = slider.find('.js-category-filter-rangeSlider-slider'),
+                        tickWrap        = slider.find('.js-slider-tick-wrapper'),
+                        config          = sliderWrap.data('config'),
+
+                        fromVal         = slider.find('.js-category-filter-rangeSlider-from'),
+                        toVal           = slider.find('.js-category-v2-filter-element-price-to'),
+
+                        self            = this,
+
+                        percent, res, html, i;
+
+                    sliderWrap.slider({
+                        range: true,
+                        step: config.step,
+                        min: config.min,
+                        max: config.max,
+                        values: [
+                            parseFloat(fromVal.val()),
+                            parseFloat(toVal.val())
+                        ],
+
+                        slide: function( e, ui ) {
+                            fromVal.val( ui.values[ 0 ] );
+                            toVal.val( ui.values[ 1 ] );
+                        },
+
+                        change: function( e, ui ) {
+                            self.filterChanged();
+                        }
+                    });
+
+                    if ( !tickWrap.length ) {
+                        return;
+                    }
+
+                    // Создание засечек на шкале
+                    percent = (config.max - config.min) / 100;
+
+                    for ( i = 0; i < tickPercentage.length; i++ ) {
+                        res = config.min + tickPercentage[i] * percent;
+                        res = ( config.step < 1 ) ? res : Math.round(res);
+
+                        res = ( res.toFixed() != res ) ? res.toFixed(1) : res;
+
+                        html = mustache.render(
+                            '<span class="int" style="left: {{percentage}}%">{{value}}</span>',
+                            {
+                                percentage: tickPercentage[i],
+                                value: res
+                            }
+                        );
+
+                        tickWrap.append(html);
+                    }
                 },
 
                 /**
