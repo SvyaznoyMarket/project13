@@ -37,7 +37,7 @@ $slickConfig = [
 
 ?>
 
-<div class="section js-module-require" data-module="jquery.slick" data-slick-config="'<?= json_encode($slickConfig) ?>'">
+<div class="section js-module-require" data-module="jquery.slick" data-slick-config='<?= json_encode($slickConfig) ?>'>
     <div class="section__title"><?= $blockname ?></div>
 
     <div class="section__content">
