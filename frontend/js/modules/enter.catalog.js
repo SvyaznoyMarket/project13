@@ -273,11 +273,9 @@
                  * @memberOf    module:enter.catalog.filter~CatalogFilterView#
                  */
                 filterChanged: function() {
-                    var
-                        url = this.createFilterUrl();
-
                     console.info('enter.catalog.filter~CatalogFilterView#filterChanged');
-                    console.log(url);
+
+                    this.catalogView.updateListing();
 
                     return false;
                 }
@@ -306,17 +304,20 @@
         'enter.catalog',
         [
             'enter.BaseViewClass',
-            'enter.catalog.filter'
+            'enter.catalog.filter',
+            'urlHelper'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, BaseViewClass, FilterView ) {
+    function( provide, BaseViewClass, FilterView, urlHelper ) {
         'use strict';
 
         var
             CatalogView = BaseViewClass.extend({
+
+                sortingActiveClass: 'act',
 
                 /**
                  * @classdesc   Представление каталога
@@ -332,23 +333,35 @@
                         filterView: new FilterView({
                             el: this.$el.find('.js-category-filter'),
                             catalogView: this
-                        })
+                        }),
+
+                        sortings: this.$el.find('.js-category-sorting-item')
                     };
                 },
 
                 events: {
-                    'click .js-category-sorting-item': 'changeSorting',
+                    'click .js-category-sorting-item': 'toggleSorting',
                     'click .js-category-pagination-infinity': 'toggleInfinityScroll'
                 },
 
                 /**
                  * Переключение сортировок
                  *
-                 * @method      changeSorting
+                 * @method      toggleSorting
                  * @memberOf    module:enter.catalog~CatalogView#
                  */
-                changeSorting: function() {
-                    console.info('enter.catalog~CatalogView#changeSorting');
+                toggleSorting: function( event ) {
+                    var
+                        currentTarget = $(event.currentTarget),
+                        sort          = currentTarget.attr('data-sort');
+
+                    console.info('enter.catalog~CatalogView#toggleSorting');
+
+                    if ( !currentTarget.hasClass(this.sortingActiveClass) ) {
+                        this.subViews.sortings.removeClass(this.sortingActiveClass);
+                        currentTarget.addClass(this.sortingActiveClass);
+                        this.updateListing();
+                    }
 
                     return false;
                 },
@@ -361,6 +374,26 @@
                  */
                 toggleInfinityScroll: function() {
                     console.info('enter.catalog~CatalogView#toggleInfinityScroll');
+
+                    return false;
+                },
+
+                getActiveSorting: function() {
+                    var
+                        activeSort = this.subViews.sortings.filter('.' + this.sortingActiveClass);
+
+                    return activeSort.find('.jsSorting').attr('data-sort');
+                },
+
+                updateListing: function() {
+                    var
+                        filterUrl = this.subViews.filterView.createFilterUrl(),
+                        sorting   = this.getActiveSorting(),
+                        url       = window.location.pathname + urlHelper.addParams(filterUrl, {
+                            sort: sorting
+                        });
+
+                    console.log(url);
 
                     return false;
                 }
