@@ -141,8 +141,8 @@
                     </div>
 
                     <div class="header-buy__price header-buy__cell">
-                        <div class="goods__price-old"><span class="line-through">1223</span> р</div>
-                        <div class="goods__price-now">19&thinsp;819 p</div>
+                        <div class="goods__price-old"><span class="line-through">1223</span> <span class="rubl-css">P</span></div>
+                        <div class="goods__price-now">19&thinsp;819 <span class="rubl-css">P</span></div>
                     </div>
 
                     <div class="header-buy__btn header-buy__cell">
@@ -214,7 +214,7 @@
                                     <a class="notice-cart__name notice-cart__cell" href="" data-bind="text: name, attr: { href: link }"></a>
 
                                     <div class="notice-cart__desc notice-cart__cell">
-                                        <div class="notice-cart__price"><!--ko text: formattedPrice--><!--/ko--> p</div>
+                                        <div class="notice-cart__price"><!--ko text: formattedPrice--><!--/ko--> <span class="rubl-css">P</span></div>
                                         <span class="notice-cart__quan"><!--ko text: quantity()--><!--/ko--> шт.</span>
                                         <a class="notice-cart__del" data-bind="attr: { href: deleteUrl }, click: $parent.deleteProduct"><i class="notice-cart__icon icon-clear"></i></a>
                                     </div>

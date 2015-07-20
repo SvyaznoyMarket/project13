@@ -59,8 +59,8 @@ $helper = new \Helper\TemplateHelper();
                                         </div>
                                     </div>
 
-                                    <div class="goods__price-old"><span class="line-through">45 990</span> ₽</div>
-                                    <div class="goods__price-now">45 990 ₽</div>
+                                    <div class="goods__price-old"><span class="line-through">45 990</span> <span class="rubl-css">P</span></div>
+                                    <div class="goods__price-now">45 990 <span class="rubl-css">P</span></div>
 
                                     <a class="goods__btn btn-primary" href="">Купить</a>
                                 </div>
