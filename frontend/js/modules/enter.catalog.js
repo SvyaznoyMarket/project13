@@ -15,6 +15,7 @@
         [
             'jQuery',
             'enter.BaseViewClass',
+            'urlHelper',
             'Mustache',
             'jquery.ui'
         ],
@@ -22,7 +23,7 @@
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, mustache, jQueryUI ) {
+    function( provide, $, BaseViewClass, urlHelper, mustache, jQueryUI ) {
         'use strict';
 
         var
@@ -47,6 +48,129 @@
                 events: {
                     'click .js-category-v2-filter-dropBox-opener': 'toggleDropdown',
                     'change': 'filterChanged'
+                },
+
+                /**
+                 * Получение изменненых и неизменненых полей слайдеров
+                 *
+                 * @method      getSlidersInputState
+                 * @memberOf    module:enter.catalog.filter~CatalogFilterView#
+                 *
+                 * @return      {Object}    res
+                 * @return      {Array}     res.changedSliders      Массив имен измененных полей
+                 * @return      {Array}     res.unchangedSliders    Массив имен неизмененных полей
+                 */
+                getSlidersInputState: function() {
+                    var
+                        res = {
+                            changedSliders: [],
+                            unchangedSliders: []
+                        },
+
+                        sortSliders = function() {
+                            var
+                                slider          = $(this),
+                                sliderWrap      = slider.find('.js-category-filter-rangeSlider-slider'),
+                                sliderConfig    = sliderWrap.data('config'),
+
+                                sliderFromInput = slider.find('.js-category-filter-rangeSlider-from'),
+                                sliderToInput   = slider.find('.js-category-v2-filter-element-price-to'),
+
+                                sliderFromVal   = parseFloat(sliderFromInput.val()),
+                                sliderToVal     = parseFloat(sliderToInput.val()),
+
+                                // initalFromValue = parseFloat(sliderConfig.initalFromValue),
+                                // initalToValue   = parseFloat(sliderConfig.initalToValue),
+
+                                min             = sliderConfig.min,
+                                max             = sliderConfig.max;
+                            // end of vars
+
+
+                            if ( sliderFromVal === min ) {
+                                res.unchangedSliders.push(sliderFromInput.attr('name'));
+                            } else {
+                                res.changedSliders.push(sliderFromInput.attr('name'));
+                            }
+
+                            if ( sliderToVal === max ) {
+                                res.unchangedSliders.push(sliderToInput.attr('name'));
+                            } else {
+                                res.changedSliders.push(sliderToInput.attr('name'));
+                            }
+                        };
+
+                    this.sliders.each(sortSliders);
+
+                    return res;
+                },
+
+                /**
+                 * Создание URL по текущим параметрам фильтрации
+                 *
+                 * @memberOf    module:enter.catalog.filter~CatalogFilterView#
+                 * @method      createFilterUrl
+                 */
+                createFilterUrl: function() {
+                    var
+                        searchPhrase      = urlHelper.getURLParam('q'),
+                        serialized        = this.$el.serializeArray(),
+                        slidersInputState = this.getSlidersInputState(),
+                        sliderFromRe      = /^from-(.*$)/,
+                        sliderToRe        = /^to-(.*$)/,
+                        tmpObj            = {},
+                        outArray          = [],
+                        url, key, i;
+
+
+                    // Remove default value sliders
+                    for ( i = serialized.length - 1; i >= 0; i-- ) {
+                        if ( slidersInputState.unchangedSliders.indexOf(serialized[i].name) !== -1 ) {
+                            serialized.splice(i,1);
+                        }
+                    }
+
+                    for ( i = 0; i < serialized.length; i++ ) {
+
+                        // Detect slider from
+                        if ( serialized[i].name.match(sliderFromRe) ) {
+                            serialized[i].name.replace(sliderFromRe, function( str, p1, offset, s) {
+                                tmpObj[p1]      = tmpObj[p1] || {};
+                                tmpObj[p1].from = serialized[i].value;
+                            });
+
+                            continue;
+                        }
+
+                        // Detect slider to
+                        if ( serialized[i].name.match(sliderToRe) ) {
+                            serialized[i].name.replace(sliderToRe, function( str, p1, offset, s) {
+                                tmpObj[p1]    = tmpObj[p1] || {};
+                                tmpObj[p1].to = serialized[i].value;
+                            });
+
+                            continue;
+                        }
+
+                        // If property not prepared
+                        if ( !tmpObj.hasOwnProperty(serialized[i].name) ) {
+                            tmpObj[serialized[i].name] = '';
+                        }
+
+                        tmpObj[serialized[i].name] = serialized[i].value;
+                    }
+
+                    url = urlHelper.addParams('', tmpObj);
+
+                    if ( searchPhrase ) {
+                        url = urlHelper.addParams(url, {
+                            q: searchPhrase
+                        });
+                    }
+
+                    // url = this.addActiveSorting(url);
+
+                    return url;
                 },
 
                 /**
@@ -149,7 +273,11 @@
                  * @memberOf    module:enter.catalog.filter~CatalogFilterView#
                  */
                 filterChanged: function() {
+                    var
+                        url = this.createFilterUrl();
+
                     console.info('enter.catalog.filter~CatalogFilterView#filterChanged');
+                    console.log(url);
 
                     return false;
                 }
