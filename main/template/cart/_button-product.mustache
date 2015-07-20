@@ -1,8 +1,57 @@
 {{#inShowroomAsLabel}}
-    <div class="showroom-only">
-        На витрине
-        <i class="i-product i-product--info-normal i-info__icon js-tooltip js-tooltip-opener"><div class="js-tooltip-content tooltip-content" style="display: none;">Чтобы купить товар с витрины, <br />нужно приехать в магазин и обратиться к продавцу.</div></i>
-    </div>
+    {{#points.0}}
+        <div class="js-buyButton-points">
+            <div style="display: none" class="js-buyButton-points-content">
+                <a href="#" title="Закрыть" class="js-buyButton-points-content-closer">Закрыть</a>
+
+                {{productName}}
+
+                <ul>
+                    {{#points}}
+                        <li>
+                            {{#subway}}
+                                <p>
+                                    {{#line.color}}
+                                        <i style="background-color: {{line.color}}"></i>
+                                    {{/line.color}}
+
+                                    м. {{name}}
+                                </p>
+                            {{/subway}}
+
+                            <p>
+                                {{#url}}
+                                    <a href="{{url}}">{{name}}</a>
+                                {{/url}}
+
+                                {{^url}}
+                                    {{name}}
+                                {{/url}}
+                            </p>
+
+                            {{#todayWorkingTime}}
+                                <p>с {{from}} до {{to}}</p>
+                            {{/todayWorkingTime}}
+                        </li>
+                    {{/points}}
+                </ul>
+
+                <p>Чтобы купить товар с витрины, <br />нужно приехать в магазин и обратиться к продавцу.</p>
+            </div>
+
+            <div class="showroom-only js-buyButton-points-opener">
+                На витрине
+                <i class="i-product i-product--info-normal i-info__icon"></i>
+            </div>
+        </div>
+    {{/points.0}}
+
+    {{^points.0}}
+        <div class="showroom-only">
+            На витрине
+            <i class="i-product i-product--info-normal i-info__icon"></i>
+        </div>
+    {{/points.0}}
 {{/inShowroomAsLabel}}
 
 {{^inShowroomAsLabel}}
