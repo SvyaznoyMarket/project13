@@ -35,11 +35,38 @@
                     console.info('CatalogFilterView initialized');
                     console.log(this);
 
-                    this.catalogView = options.catalogView
+                    this.catalogView = options.catalogView;
                 },
 
                 events: {
+                    'click .js-category-v2-filter-dropBox-opener': 'toggleDropdown',
                     'change': 'filterChanged'
+                },
+
+                /**
+                 * Пеервключе
+                 *
+                 * @method      toggleDropdown
+                 * @memberOf    module:enter.catalog.filter~CatalogFilterView#
+                 *
+                 * @param       {jQuery.Event}      event
+                 */
+                toggleDropdown: function( event ) {
+                    console.info('enter.catalog.filter~CatalogFilterView#toggleDropdown');
+
+                    var
+                        ddClass         = 'js-category-v2-filter-dropBox',
+                        currentTarget   = $(event.currentTarget),
+                        dropdowns       = this.$el.find('.' + ddClass),
+                        currentDropdown = currentTarget.closest('.' + ddClass),
+                        ddOpenClass     = 'opn',
+                        isOpen          = currentDropdown.hasClass(ddOpenClass);
+
+                    dropdowns.removeClass(ddOpenClass);
+
+                    if ( !isOpen ) {
+                        currentDropdown.addClass(ddOpenClass);
+                    }
                 },
 
                 /**
