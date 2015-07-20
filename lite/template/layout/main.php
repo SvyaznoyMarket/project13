@@ -21,10 +21,10 @@ $bannerSlickConfig = [
 <?= $page->blockHead() ?>
 
 <body>
+
+<?= $page->blockHeader() ?>
+
 <div class="wrapper">
-
-    <?= $page->blockHeader() ?>
-
     <div class="middle">
         <div class="container">
             <main class="content">

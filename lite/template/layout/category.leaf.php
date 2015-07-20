@@ -11,11 +11,9 @@
 
 <body>
 
+	<?= $page->blockHeader() ?>
+
     <div class="wrapper">
-
-        <?= $page->blockHeader() ?>
-
-        <hr class="hr-orange">
 
         <?= $page->blockContent() ?>
 

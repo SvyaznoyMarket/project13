@@ -14,10 +14,10 @@ $category = $page->getParam('category');
 <?= $page->blockHead() ?>
 
 <body>
+
+<?= $page->blockHeader() ?>
+
 <div class="wrapper">
-
-    <?= $page->blockHeader() ?>
-
     <!-- для внутренних страниц добавляется класс middle_transform -->
     <div class="middle middle_transform">
         <div class="container">
