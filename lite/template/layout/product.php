@@ -7,29 +7,36 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-<?= $page->blockHead() ?>
+	<?= $page->blockHead() ?>
 
-<body>
+	<body>
+		<?= $page->blockHeader() ?>
 
-<div class="wrapper">
+		<div class="wrapper">
+		    <div class="middle middle_transform">
+		        <div class="container">
+		            <main class="content">
+		                <div class="content__inner">
+						    <?= $page->blockContent() ?>
+						</div>
+				   </main>
+		    	</div>
 
-    <?= $page->blockHeader() ?>
+				<aside class="left-bar">
+			        <?= $page->blockNavigation() ?>
+			    </aside>
+			</div>
+		</div>
 
-    <hr class="hr-orange">
+		<hr class="hr-orange">
 
-    <?= $page->blockContent() ?>
+		<?= $page->blockFooter() ?>
 
-</div>
+		<?= $page->blockAuth() ?>
 
-<hr class="hr-orange">
+		<?= $page->slotBodyJavascript() ?>
 
-<?= $page->blockFooter() ?>
+		<?= $page->blockUserConfig() ?>
 
-<?= $page->blockAuth() ?>
-
-<?= $page->slotBodyJavascript() ?>
-
-<?= $page->blockUserConfig() ?>
-
-</body>
+	</body>
 </html>

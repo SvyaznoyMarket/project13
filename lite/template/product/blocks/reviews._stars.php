@@ -5,6 +5,6 @@ $f = function (
 
     foreach (range(1,5) as $starIndex) : ?>
 
-    <i class="product-card-rating__i <?= $starIndex <= $stars ? 'product-card-rating__i--fill' : '' ?>"></i>
+    <i class="rating-state__item <?= $starIndex <= $stars ? 'icon-rating rating-state__item_fill' : '' ?>"></i>
 
 <? endforeach; }; return $f;

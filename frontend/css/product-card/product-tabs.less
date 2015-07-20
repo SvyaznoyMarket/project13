@@ -1,0 +1,438 @@
+.product-tabs-scroll {
+    margin: 10px 0 0;
+
+    border-bottom: 4px solid #e8e8e8;
+    &.pp-fixed {
+        position: fixed;
+        z-index: 99;
+        top: 50px;
+        left: 0;
+        /* IE8 */
+
+        zoom: 1;
+
+        width: 100%;
+        margin: 0;
+
+        background: @white;
+
+        .animation(fadeIn, .3s, 0, ease);
+        .drop-shadow(0, 4px, 28px, .5);
+        filter:
+        progid:DXImageTransform.Microsoft.Shadow(Color=#c7c7c7, Strength=15, Direction=180);
+    }
+    .product-tabs {
+        width: 920px;
+        margin: 0;
+    }
+}
+
+.product-tabs {
+    padding: 0 20px;
+    &__i {
+        font-size: 1.5em;
+        line-height: 50px;
+
+        position: relative;
+
+        height: 45px;
+        margin: 0 5px 0 0;
+        padding: 0 20px;
+
+        text-align: center;
+
+        .inline-block();
+        &.active {
+            font-weight: bold;
+            .product-tabs__lk {
+                border: none;
+            }
+            &:after {
+                position: absolute;
+                bottom: -4px;
+                left: 0;
+
+                width: 100%;
+                height: 4px;
+
+                content: '';
+
+                background: #f99b1c;
+            }
+        }
+        &:hover {
+            .product-tabs__lk {
+                color: @black;
+                border-color: @black;
+
+                .transition(all .3s ease-out);
+            }
+        }
+    }
+    &__lk {
+        text-decoration: none;
+
+        border-bottom: 1px solid;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+    &__right {
+        position: relative;
+
+        float: right;
+    }
+}
+
+.ep-fixed {
+    position: absolute;
+    z-index: 10;
+    top: 45px;
+    right: 50%;
+
+    visibility: visible;
+    overflow: hidden;
+
+    width: 210px;
+    height: 0;
+    margin-right: -540px;
+
+    .opacity(0);
+    .transition(all .3s ease-out);
+    &__fishka {
+        font-size: 16px;
+        line-height: 62px;
+
+        width: 64px;
+
+        text-align: center;
+
+        background: url('@{base-url}/product/img/i-product-ep-fishka.png') no-repeat 0 0;
+
+        .inline-block(middle);
+    }
+    &__desc {
+        width: 130px;
+        margin: 0 0 0 5px;
+
+        color: #363636;
+
+        .inline-block(middle);
+    }
+    &.fadeIn {
+        margin-right: -500px;
+    }
+}
+.ep {
+    &-hint__row {
+        margin-top: -1px;
+
+        border: 1px solid #bebebe;
+    }
+    &__fishka {
+        font-size: 16px;
+        line-height: 1;
+
+        width: 42px;
+        height: 40px;
+        padding: 8px 0;
+
+        cursor: pointer;
+        text-align: center;
+
+        background: url('@{base-url}/product/img/fishka.png') no-repeat 0 0;
+
+        .box-sizing(border-box);
+        .inline-block(middle);
+        &-value {
+            line-height: 40px;
+            line-height: 1.4;
+
+            .inline-block(middle);
+            &--text {
+                margin-left: 1px;
+            }
+        }
+        .rubl {
+            line-height: 1;
+
+            margin: 0;
+        }
+    }
+    &__desc {
+        font-size: 12px;
+        line-height: 14px;
+
+        width: 130px;
+        margin: 0 0 0 5px;
+
+        color: #363636;
+
+        .inline-block(middle);
+        .rubl {
+            margin: 0;
+        }
+    }
+}
+.props-list {
+    margin: 10px 0;
+
+    .clearfix();
+    &__name {
+        &--tl {
+            padding: 0 220px 0 0;
+
+            border-bottom: 1px dotted @grey-type;
+        }
+        &-i {
+            position: relative;
+            top: 4px;
+
+            padding-right: 2px;
+
+            background: @white;
+
+            .inline-block(middle);
+        }
+    }
+    &__val {
+        float: right;
+
+        width: 220px;
+        padding: 4px 0 0 2px;
+
+        background: @white;
+    }
+    &__hint {
+        position: relative;
+
+        margin: 0 0 0 2px;
+
+        .inline-block(middle);
+        .i-product--hint {
+            .opacity(.7);
+            .transition(all .2s ease-out);
+            &:hover {
+                .opacity(1);
+            }
+        }
+    }
+}
+
+.reviews {
+    padding: 0 0 0 10px;
+    &__l {
+        float: left;
+
+        width: 680px;
+    }
+    &__r {
+        float: right;
+
+        min-width: 200px;
+        max-width: 215px;
+        padding-left: 10px;
+    }
+    &__i {
+        margin: 0 0 20px -10px;
+        padding: 0 10px 15px 10px;
+
+        border-bottom: 1px solid #e8e8e8;
+    }
+    &__msg {
+        line-height: 26px;
+
+        margin-right: 15px;
+
+        .inline-block();
+    }
+    &-percentage {
+        &__tl {
+            font-size: 12px;
+
+            margin: 20px 0 10px;
+
+            color: green;
+
+            .inline-block();
+        }
+        &-item {
+            white-space: nowrap;
+            .product-card-rating {
+                margin: 0 0 8px;
+                &__i {
+                    margin-right: 1px;
+                }
+            }
+        }
+    }
+    &__cpt {
+        font-size: 14px;
+
+        margin: 0 0 5px;
+
+        color: #8c8c8c;
+    }
+    &__author {
+        .inline-block();
+    }
+    &__date {
+        .inline-block();
+    }
+    &__tl {
+        font-size: 12px;
+        font-weight: bold;
+
+        margin: 5px 0 5px;
+
+        color: green;
+    }
+    &__tx {
+        font-size: 14px;
+        line-height: 18px;
+
+        margin-bottom: 15px;
+
+        color: green;
+    }
+    &-voting {
+        margin: -5px 0 0;
+
+        text-align: right;
+        &__tl {
+            font-size: 14px;
+
+            color: #8c8c8c;
+
+            .inline-block(middle);
+        }
+    }
+    &-vote {
+        font-size: 14px;
+        line-height: 34px;
+
+        position: relative;
+
+        height: 34px;
+        margin-left: 5px;
+        padding-left: 30px;
+
+        cursor: pointer;
+
+        .inline-block(middle);
+        &:after {
+            .opacity(.4);
+        }
+        &:before {
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+
+            max-height: 25px;
+
+            content: '';
+
+            background-image: url('@{base-url}/product/img/i-product.png');
+
+            .opacity(0);
+        }
+        &:after {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            content: '';
+
+            background-image: url('@{base-url}/product/img/i-product.png');
+        }
+        &--positive {
+            &:after {
+                .i-sprite(-25px, 0px, 25px, 25px);
+            }
+            &:before {
+                .i-sprite(-25px, 0px, 25px, 25px);
+            }
+        }
+        &--negative {
+            &:after {
+                top: 6px;
+
+                .i-sprite(0px, 0px, 25px, 25px);
+            }
+            &:before {
+                top: 6px;
+
+                .i-sprite(0px, 0px, 25px, 25px);
+            }
+        }
+        &.active {
+            &:after {
+                .opacity(1);
+            }
+            &.voting {
+                &:after {
+                    .opacity(.4);
+                }
+                &:before {
+                    .animation(blinkRevers, 1.9s, 0, ease-in, infinite);
+                }
+            }
+        }
+        &.voting {
+            &:after {
+                .opacity(.4);
+            }
+            &:before {
+                .animation(blink, 1.9s, 0, ease-in, infinite);
+            }
+        }
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+
+.btn--more-reviews {
+    clear: both;
+}
+
+.bottom-content {
+    font-size: 11px;
+
+    color: #545454;
+    &__tl {
+        font-weight: bold;
+    }
+    &__p {
+        margin: 10px 0;
+    }
+    &__text {
+        margin-top: 20px;
+    }
+}
+
+.product-guides {
+    margin: 20px 0 0;
+    &-list {
+        &__i {
+            line-height: 25px;
+
+            height: 25px;
+            margin: 10px 0 0;
+
+            color: #363636;
+        }
+        &__lk {
+            &:hover {
+                text-decoration: none;
+            }
+            &-tl {
+                border-bottom: 1px solid #9c9c9c;
+            }
+        }
+        &__icon {
+            margin-right: 10px;
+        }
+    }
+}

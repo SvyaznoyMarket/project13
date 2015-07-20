@@ -8,7 +8,7 @@
 
     ?>
 
-<div class="reviews clearfix">
+<div class="reviews">
     <div class="reviews__l jsReviewsList">
         <? if ($reviewsData['num_reviews'] == 0) : ?>
             <span class="reviews__msg">Пока нет отзывов.</span>

@@ -58,7 +58,7 @@ $f = function (
     // слайдер товаров для слайдера с аксессуарами применяем модификатор goods-slider--5items
     ?>
 
-    <div class="goods-slider js-slider-2 clearfix <? if ((bool)$categories): ?> goods-slider--width goods-slider--5items<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?> <?= $class ?>"
+    <div class="goods-slider js-slider-2 <? if ((bool)$categories): ?> goods-slider--width goods-slider--5items<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?> <?= $class ?>"
         id="<?= $id ?>"
         data-position="<?= $sender['position'] ?>"
         data-slider="<?= $helper->json([
@@ -89,7 +89,7 @@ $f = function (
         <? endif ?>
 
         <div class="goods-slider__inn">
-            <ul class="goods-slider-list clearfix">
+            <ul class="goods-slider-list">
 
                 <? foreach ($products as $index => $product):
 
