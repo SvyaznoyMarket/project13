@@ -1,8 +1,16 @@
 .header {
     position: relative;
     z-index: 101;
-    background: @orange-light-4;
+
     border-bottom: 3px solid @orange-bright;
+    background: @orange-light-4;
+    &_fix {
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+    }
     &__side {
         width: 90px;
         min-width: 90px;
@@ -16,7 +24,12 @@
 
         vertical-align: middle;
     }
+    .fltrSet_tggl {
+        float: left;
 
+        margin: 12px 0 0;
+        padding-bottom: 0;
+    }
     &-cart {
         vertical-align: top;
 
@@ -39,14 +52,14 @@
         padding-left: 20px;
 
         .clearfix();
-        &--top {
+        &_top {
             line-height: 1;
 
             height: 30px;
             padding-top: 8px;
             padding-right: 20px;
         }
-        &--bottom {
+        &_bottom {
             height: 60px;
             padding-top: 13px;
         }
@@ -54,8 +67,6 @@
 }
 .disc-count {
     font-size: 1.1666em;
-    font-weight: normal;
-    font-style: normal;
     line-height: 27px;
 
     width: 27px;
@@ -188,8 +199,6 @@
             .inline-block(middle);
         }
         &__count {
-            font-weight: 300;
-
             color: @grey-bright;
         }
     }
@@ -207,6 +216,7 @@
         }
     }
     &__text {
+        font-family: 'GloberBold';
         font-size: 1.1666em;
 
         margin: 0 8px 0 0;
@@ -341,21 +351,25 @@
 .notice-compare {
     &__title {
         font-size: 1.3333em;
+
         margin: 0 0 15px;
     }
     &__img {
-        .inline-block(middle);
         width: 40px;
-        text-align: center;
         margin-right: 10px;
+
+        text-align: center;
+
+        .inline-block(middle);
         .image {
             max-width: 100%;
             max-height: 40px;
         }
     }
     &__desc {
-        .inline-block(middle);
         width: 235px;
+
+        .inline-block(middle);
     }
 }
 
@@ -398,8 +412,6 @@
         margin: 0 0 3px;
     }
     &__quan {
-        font-weight: 300;
-
         margin-right: 3px;
 
         color: @grey-bright;
@@ -418,6 +430,38 @@
         font-size: 1.4166em; // 17
 
         color: @grey-light-2;
+    }
+}
+
+// параплашка карточки товара
+.header-buy {
+    float: left;
+    &__cell {
+        .inline-block(middle);
+    }
+    &__product {
+        &-img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            text-align: center;
+            .image {
+                max-width: 40px;
+                max-height: 40px;
+            }
+        }
+        &-name {
+            width: 300px;
+            white-space: nowrap;
+            font-size: 1.1666em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    &__price {
+        margin: 0 20px;
+        line-height: 1;
     }
 }
 

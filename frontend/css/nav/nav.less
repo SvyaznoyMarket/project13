@@ -2,7 +2,8 @@
     position: relative;
     z-index: 100;
 
-    padding: 5px 0 0;
+    background: @orange-light-4;
+
     &__item {
         margin: 0;
 
@@ -64,19 +65,19 @@
     }
 }
 
-// .nav-fader {
-//     position: fixed;
-//     z-index: -1;
-//     top: 0;
-//     right: 0;
-//     bottom: 0;
-//     left: 0;
+.nav-fader {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 
-//     background: @white;
+    background: @white;
 
-//     .opacity(0);
-//     .transition();
-// }
+    .opacity(0);
+    .transition(all, .1s, ease-out);
+}
 
 .menu-hide {
     position: absolute;
@@ -86,6 +87,7 @@
 
     width: 260px;
     min-height: 100%;
+    padding: 7px 0 0;
 
     transition-delay: 110ms;
     transition-property: visibility;
@@ -157,7 +159,6 @@
     }
     &__link {
         font-size: 1.1666em;
-        font-weight: 600;
 
         display: block;
 
@@ -167,4 +168,5 @@
 
 .menu-wow {
     text-align: center;
+    margin-top: 15px;
 }
