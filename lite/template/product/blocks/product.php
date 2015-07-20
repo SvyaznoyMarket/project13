@@ -158,49 +158,50 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
 
     <!-- краткое описание товара -->
     <div class="product-card__c">
+        <div class="product-card__c-inn">
+            <?= $helper->render('product/blocks/reviews.short', ['reviewsData' => $reviewsData]) ?>
 
-        <?= $helper->render('product/blocks/reviews.short', ['reviewsData' => $reviewsData]) ?>
+            <?= $helper->render('product/blocks/variants', ['product' => $product, 'trustfactors' => $trustfactors]) ?>
 
-        <?= $helper->render('product/blocks/variants', ['product' => $product, 'trustfactors' => $trustfactors]) ?>
+            <? if ($product->getTagline()) : ?>
+            <p class="product-card-desc collapsed js-description-expand"><?= $product->getTagline() ?></p>
+            <? endif ?>
 
-        <? if ($product->getTagline()) : ?>
-        <p class="product-card-desc collapsed js-description-expand"><?= $product->getTagline() ?></p>
-        <? endif ?>
+            <dl class="product-card-prop">
+                <? $i = 0; foreach ($product->getMainProperties() as $property) : $i++ ?>
+                    <? if ($i == 5 && count($product->getMainProperties()) >= 5 && $product->getSecondaryGroupedProperties()) : ?>
 
-        <dl class="product-card-prop">
-            <? $i = 0; foreach ($product->getMainProperties() as $property) : $i++ ?>
-                <? if ($i == 5 && count($product->getMainProperties()) >= 5 && $product->getSecondaryGroupedProperties()) : ?>
+                            <a class="product-card-prop__lk" href="#more" onclick="$('.jsScrollSpyMoreLink').trigger('click'); return false;">Все характеристики</a>
 
-                        <a class="product-card-prop__lk" href="#more" onclick="$('.jsScrollSpyMoreLink').trigger('click'); return false;">Все характеристики</a>
+                    <? break; endif; ?>
+                    <? if ($property->getName() == $modelName) continue ?>
+                    <dt class="product-card-prop__i product-card-prop__i--name"><?= $property->getName() ?></dt>
+                    <dd class="product-card-prop__i product-card-prop__i--val"><?= $property->getStringValue() ?></dd>
+                <? endforeach ?>
+            </dl>
 
-                <? break; endif; ?>
-                <? if ($property->getName() == $modelName) continue ?>
-                <dt class="product-card-prop__i product-card-prop__i--name"><?= $property->getName() ?></dt>
-                <dd class="product-card-prop__i product-card-prop__i--val"><?= $property->getStringValue() ?></dd>
-            <? endforeach ?>
-        </dl>
+            <?= $helper->render('product/blocks/trustfactors', ['trustfactors' => $trustfactors]) ?>
 
-        <?= $helper->render('product/blocks/trustfactors', ['trustfactors' => $trustfactors]) ?>
-
-        <div class="product-card-sharing-list">
-            <!-- AddThis Button BEGIN -->
-            <div class="addthis_toolbox addthis_default_style mt15 ">
-                <a class="addthis_button_facebook"></a>
-                <a class="addthis_button_twitter"></a>
-                <a class="addthis_button_vk"></a>
-                <a class="addthis_button_compact"></a>
-                <a class="addthis_counter addthis_bubble_style"></a>
+            <div class="product-card-sharing-list">
+                <!-- AddThis Button BEGIN -->
+                <div class="addthis_toolbox addthis_default_style mt15 ">
+                    <a class="addthis_button_facebook"></a>
+                    <a class="addthis_button_twitter"></a>
+                    <a class="addthis_button_vk"></a>
+                    <a class="addthis_button_compact"></a>
+                    <a class="addthis_counter addthis_bubble_style"></a>
+                </div>
+                <script type="text/javascript">var addthis_config = { data_track_addressbar:true, ui_language: "ru" };</script>
+                <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1&domready=1" async></script>
+                <!-- AddThis Button END -->
             </div>
-            <script type="text/javascript">var addthis_config = { data_track_addressbar:true, ui_language: "ru" };</script>
-            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1&domready=1" async></script>
-            <!-- AddThis Button END -->
-        </div>
 
-        <ul class="pay-system-list">
-            <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--visa"></i></li>
-            <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--mastercard"></i></li>
-            <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--psb"></i></li>
-        </ul>
+            <ul class="pay-system-list">
+                <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--visa"></i></li>
+                <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--mastercard"></i></li>
+                <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--psb"></i></li>
+            </ul>
+        </div>
     </div>
     <!--/ краткое описание товара -->
 

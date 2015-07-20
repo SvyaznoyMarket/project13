@@ -38,6 +38,7 @@
 
 .product-card-top {
     .clearfix();
+    margin: 15px 0 0;
 }
 
 // карточка товара
@@ -78,11 +79,20 @@
         }
     }
     &__c {
+        width: 100%;
         padding-right: 245px;
         padding-left: 375px;
-        width: 100%;
+
+        text-align: center;
 
         .clearfix();
+        &-inn {
+            max-width: 300px;
+
+            text-align: left;
+
+            .inline-block();
+        }
     }
     &__r {
         float: right;
