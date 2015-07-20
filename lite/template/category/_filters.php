@@ -69,7 +69,7 @@
 <!-- фильтр "Бренды и параметры" -->
 <div class="filter filter-options fltr" style="display: block">
 
-    <form id="productCatalog-filter-form" class="fltrSet js-category-filter" action="<?= $baseUrl ?>" method="GET">
+    <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" method="GET">
 
         <? if ($brandFilter1): ?>
             <!-- бренды -->
@@ -135,7 +135,7 @@
                         <div class="fltrBtnBox fltrBtnBox-mark fl-r js-category-v2-filter-dropBox js-category-v2-filter-dropBox-labels">
                             <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
                                 <span class="fltrBtnBox_tggl_tx"><?= $labelFilter->getName() ?></span>
-                                <i class="fltrBtnBox_tggl_corner"></i>
+                                <i class="fltrBtnBox_tggl_corner icon-corder"></i>
                             </div>
 
                             <div class="fltrBtnBox_dd fltrBtnBox_dd-r js-category-v2-filter-dropBox-content">
