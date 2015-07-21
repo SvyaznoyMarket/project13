@@ -332,13 +332,15 @@
             'enter.BaseViewClass',
             'enter.catalog.filter',
             'urlHelper',
-            'history'
+            'history',
+            'jquery.replaceWithPush',
+            'jquery.update'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, mustache, BaseViewClass, FilterView, urlHelper, History ) {
+    function( provide, $, mustache, BaseViewClass, FilterView, urlHelper, History, replaceWithPush, jUpdate ) {
         'use strict';
 
         var
@@ -356,12 +358,14 @@
                 INF_SCROLL_ACTIVE: 'act',
                 SORTING_ACTIVE: 'act',
                 CATALOG_FILTER: 'js-category-filter',
+                PAGINATION_WRAPPER: 'js-category-pagination',
                 PAGINATION: 'js-category-pagination-page',
                 PAGINATION_ACTIVE: 'act'
             },
 
             TEMPLATES = {
-                LISTING_ITEM: $('#js-list-item-template').html()
+                LISTING_ITEM: $('#js-list-item-template').html(),
+                PAGINATION: $('#js-pagination-template').html()
             };
 
 
@@ -385,7 +389,8 @@
                     wrapper: this.$el.find('.' + CSS_CLASSES.CATALOG_WRAPPER),
                     sortings: this.$el.find('.' + CSS_CLASSES.SORTING),
                     pagination: this.$el.find('.' + CSS_CLASSES.PAGINATION),
-                    infScroll: this.$el.find('.' + CSS_CLASSES.INF_SCROLL)
+                    infScroll: this.$el.find('.' + CSS_CLASSES.INF_SCROLL),
+                    paginationWrapper: this.$el.find('.' + CSS_CLASSES.PAGINATION_WRAPPER)
                 };
 
                 // Init History
@@ -662,13 +667,12 @@
                     },
 
                     renderPagination = function( pagination ) {
-
+                        return mustache.render(TEMPLATES.PAGINATION, pagination);
                     },
 
-                    productsHtml;
+                    productsHtml, paginationHtml;
 
                 console.info('enter.catalog~CatalogView#render');
-                console.log(data);
 
                 // Validation
                 if ( !_.isObject(data) || !_.isObject(data.list) || !_.isArray(data.list.products) || !data.list.products.length ) {
@@ -676,10 +680,14 @@
                     return;
                 }
 
-                productsHtml = renderProducts(data.list.products);
+                productsHtml   = renderProducts(data.list.products);
+                paginationHtml = renderPagination(data.pagination);
 
                 this.subViews.wrapper.empty();
+                this.subViews.paginationWrapper.replaceWithPush(paginationHtml);
+                this.subViews.pagination.update();
                 this.subViews.wrapper.html(productsHtml);
+
                 this.delegateEvents();
             }
         }));
