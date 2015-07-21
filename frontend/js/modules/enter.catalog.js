@@ -37,7 +37,6 @@
                  */
                 initialize: function( options ) {
                     console.info('CatalogFilterView initialized');
-                    console.log(this);
 
                     this.catalogView = options.catalogView;
                     this.sliders     = this.$el.find('.js-category-filter-rangeSlider');
@@ -79,12 +78,8 @@
                                 sliderFromVal   = parseFloat(sliderFromInput.val()),
                                 sliderToVal     = parseFloat(sliderToInput.val()),
 
-                                // initalFromValue = parseFloat(sliderConfig.initalFromValue),
-                                // initalToValue   = parseFloat(sliderConfig.initalToValue),
-
                                 min             = sliderConfig.min,
                                 max             = sliderConfig.max;
-                            // end of vars
 
 
                             if ( sliderFromVal === min ) {
@@ -168,8 +163,6 @@
                         });
                     }
 
-                    // url = this.addActiveSorting(url);
-
                     return url;
                 },
 
@@ -249,8 +242,6 @@
                  * @param       {jQuery.Event}      event
                  */
                 toggleDropdown: function( event ) {
-                    console.info('enter.catalog.filter~CatalogFilterView#toggleDropdown');
-
                     var
                         ddClass         = 'js-category-v2-filter-dropBox',
                         currentTarget   = $(event.currentTarget),
@@ -273,8 +264,6 @@
                  * @memberOf    module:enter.catalog.filter~CatalogFilterView#
                  */
                 filterChanged: function() {
-                    console.info('enter.catalog.filter~CatalogFilterView#filterChanged');
-
                     this.catalogView.updateListing();
 
                     return false;
@@ -328,7 +317,6 @@
                  */
                 initialize: function( options ) {
                     console.info('CatalogView initialized');
-                    console.log(this);
 
                     this.subViews = {
                         filterView: new FilterView({
@@ -410,8 +398,6 @@
                                 }
                             };
 
-                        console.log('history.updateState');
-
                         if ( !History.enabled ) {
                             document.location.href = url;
 
@@ -434,8 +420,6 @@
                     var
                         currentTarget = $(event.currentTarget),
                         sort          = currentTarget.attr('data-sort');
-
-                    console.info('enter.catalog~CatalogView#toggleSorting');
 
                     if ( !currentTarget.hasClass(this.sortingActiveClass) ) {
                         this.subViews.sortings.removeClass(this.sortingActiveClass);
