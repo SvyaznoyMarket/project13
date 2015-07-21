@@ -24,7 +24,7 @@ if ($first != $last) $range[] = $last; // добиваем первой и по�
 
     <? foreach ($range as $i) : ?>
     <? if ($i != 0) : ?>
-    <li class="sorting_i <? if ($i == $current) : ?>act js-category-pagination-activePage<? endif ?> js-category-pagination-page">
+    <li data-page="<?= $i ?>" class="sorting_i <? if ($i == $current) : ?>act js-category-pagination-activePage<? endif ?> js-category-pagination-page">
         <a class="sorting_lk sorting_lk-page jsPagination" href="<?= $helper->replacedUrl(['page' => $i, 'ajax' => null]) ?>"><?= $i ?></a>
     </li>
     <? else : ?>
