@@ -107,9 +107,8 @@
              * @method      ajax
              *
              * @param       {Object}    ajaxSettings    jQuery настройки ajax вызова [About jQuery.ajax]{@link http://api.jquery.com/jquery.ajax/}
-             * @param       {Function}  options         Дополнительные настройки ajax вызова
              */
-            ajax: function( ajaxSettings, options ) {
+            ajax: function( ajaxSettings ) {
                 var
                     defaultSettings = {
                         dataType: 'json'
@@ -167,11 +166,11 @@
                 this.currentAjaxCalls[requestID] = true;
                 globalAjaxCalls[requestID]       = xhr;
 
-                if ( _.isObject(options) && _.isObject(options.loader) && _.isFunction(options.loader.show) ) {
-                    timeoutID = setTimeout(options.loader.show, this.timeToAjaxLoader)
+                if ( _.isObject(callSettings) && _.isObject(callSettings.loader) && _.isFunction(callSettings.loader.show) ) {
+                    timeoutID = setTimeout(callSettings.loader.show, this.timeToAjaxLoader)
                 }
 
-                xhr.always(alwaysCb.bind(this, requestID, timeoutID, options));
+                xhr.always(alwaysCb.bind(this, requestID, timeoutID, callSettings));
                 xhr.done(doneCb.bind(this, requestID, timeoutID));
                 xhr.fail(failCb.bind(this, requestID, timeoutID));
 
