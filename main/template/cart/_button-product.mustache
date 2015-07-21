@@ -5,7 +5,16 @@
                 <div class="popup__inn">
                     <a href="#" title="Закрыть" class="js-buyButton-points-content-closer closer">×</a>
 
-                    <div class="popup__head">{{productName}}</div>
+                    <div class="popup__head">
+                        На витрине в
+                        {{#points.1}}
+                            магазинах
+                        {{/points.1}}
+
+                        {{^points.1}}
+                            магазине
+                        {{/points.1}}
+                    </div>
 
                     <div class="popup__content">
                         <ul class="showroom-points-lst">

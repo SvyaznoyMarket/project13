@@ -41,7 +41,6 @@ class ProductButtonAction {
             'sender'      => $helper->json($sender),
             'sender2'     => $sender2,
             'productUi'   => $product->getUi(),
-            'productName' => $product->getName(),
             'colorClass'  => $colorClass,
             'location'    => $location,
             'inShowroomAsLabel' => false,
