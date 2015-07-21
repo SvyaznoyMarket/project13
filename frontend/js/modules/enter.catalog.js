@@ -7,6 +7,12 @@
  * @module      enter.catalog.filter
  * @version     0.1
  *
+ * @requires    jQuery
+ * @requires    enter.BaseViewClass
+ * @requires    urlHelper
+ * @requires    Mustache
+ * @requires    jquery.ui
+ *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
 !function( modules, module ) {
@@ -26,251 +32,254 @@
     function( provide, $, BaseViewClass, urlHelper, mustache, jQueryUI ) {
         'use strict';
 
-        var
-            CatalogFilterView = BaseViewClass.extend({
+        provide(BaseViewClass.extend({
 
-                /**
-                 * @classdesc   Представление каталога
-                 * @memberOf    module:enter.catalog.filter~
-                 * @augments    module:BaseViewClass
-                 * @constructs  CatalogFilterView
-                 */
-                initialize: function( options ) {
-                    console.info('CatalogFilterView initialized');
+            /**
+             * @classdesc   Представление каталога
+             * @memberOf    module:enter.catalog.filter~
+             * @augments    module:BaseViewClass
+             * @constructs  CatalogFilterView
+             */
+            initialize: function( options ) {
+                console.info('CatalogFilterView initialized');
 
-                    this.catalogView = options.catalogView;
-                    this.sliders     = this.$el.find('.js-category-filter-rangeSlider');
+                this.catalogView = options.catalogView;
+                this.sliders     = this.$el.find('.js-category-filter-rangeSlider');
 
-                    this.sliders.each(this.initSlider.bind(this));
-                },
+                this.sliders.each(this.initSlider.bind(this));
+            },
 
-                events: {
-                    'click .js-category-v2-filter-dropBox-opener': 'toggleDropdown',
-                    'change': 'filterChanged'
-                },
+            /**
+             * События привязанные к текущему экземляру View
+             *
+             * @memberOf    module:enter.catalog.filter~CatalogFilterView
+             * @type        {Object}
+             */
+            events: {
+                'click .js-category-v2-filter-dropBox-opener': 'toggleDropdown',
+                'change': 'filterChanged'
+            },
 
-                /**
-                 * Получение изменненых и неизменненых полей слайдеров
-                 *
-                 * @method      getSlidersInputState
-                 * @memberOf    module:enter.catalog.filter~CatalogFilterView#
-                 *
-                 * @return      {Object}    res
-                 * @return      {Array}     res.changedSliders      Массив имен измененных полей
-                 * @return      {Array}     res.unchangedSliders    Массив имен неизмененных полей
-                 */
-                getSlidersInputState: function() {
-                    var
-                        res = {
-                            changedSliders: [],
-                            unchangedSliders: []
-                        },
+            /**
+             * Получение изменненых и неизменненых полей слайдеров
+             *
+             * @method      getSlidersInputState
+             * @memberOf    module:enter.catalog.filter~CatalogFilterView#
+             *
+             * @return      {Object}    res
+             * @return      {Array}     res.changedSliders      Массив имен измененных полей
+             * @return      {Array}     res.unchangedSliders    Массив имен неизмененных полей
+             */
+            getSlidersInputState: function() {
+                var
+                    res = {
+                        changedSliders: [],
+                        unchangedSliders: []
+                    },
 
-                        sortSliders = function() {
-                            var
-                                slider          = $(this),
-                                sliderWrap      = slider.find('.js-category-filter-rangeSlider-slider'),
-                                sliderConfig    = sliderWrap.data('config'),
+                    sortSliders = function() {
+                        var
+                            slider          = $(this),
+                            sliderWrap      = slider.find('.js-category-filter-rangeSlider-slider'),
+                            sliderConfig    = sliderWrap.data('config'),
 
-                                sliderFromInput = slider.find('.js-category-filter-rangeSlider-from'),
-                                sliderToInput   = slider.find('.js-category-v2-filter-element-price-to'),
+                            sliderFromInput = slider.find('.js-category-filter-rangeSlider-from'),
+                            sliderToInput   = slider.find('.js-category-v2-filter-element-price-to'),
 
-                                sliderFromVal   = parseFloat(sliderFromInput.val()),
-                                sliderToVal     = parseFloat(sliderToInput.val()),
+                            sliderFromVal   = parseFloat(sliderFromInput.val()),
+                            sliderToVal     = parseFloat(sliderToInput.val()),
 
-                                min             = sliderConfig.min,
-                                max             = sliderConfig.max;
-
-
-                            if ( sliderFromVal === min ) {
-                                res.unchangedSliders.push(sliderFromInput.attr('name'));
-                            } else {
-                                res.changedSliders.push(sliderFromInput.attr('name'));
-                            }
-
-                            if ( sliderToVal === max ) {
-                                res.unchangedSliders.push(sliderToInput.attr('name'));
-                            } else {
-                                res.changedSliders.push(sliderToInput.attr('name'));
-                            }
-                        };
-
-                    this.sliders.each(sortSliders);
-
-                    return res;
-                },
-
-                /**
-                 * Создание URL по текущим параметрам фильтрации
-                 *
-                 * @memberOf    module:enter.catalog.filter~CatalogFilterView#
-                 * @method      createFilterUrl
-                 */
-                createFilterUrl: function() {
-                    var
-                        searchPhrase      = urlHelper.getURLParam('q'),
-                        serialized        = this.$el.serializeArray(),
-                        slidersInputState = this.getSlidersInputState(),
-                        sliderFromRe      = /^from-(.*$)/,
-                        sliderToRe        = /^to-(.*$)/,
-                        tmpObj            = {},
-                        outArray          = [],
-                        url, key, i;
+                            min             = sliderConfig.min,
+                            max             = sliderConfig.max;
 
 
-                    // Remove default value sliders
-                    for ( i = serialized.length - 1; i >= 0; i-- ) {
-                        if ( slidersInputState.unchangedSliders.indexOf(serialized[i].name) !== -1 ) {
-                            serialized.splice(i,1);
-                        }
-                    }
-
-                    for ( i = 0; i < serialized.length; i++ ) {
-
-                        // Detect slider from
-                        if ( serialized[i].name.match(sliderFromRe) ) {
-                            serialized[i].name.replace(sliderFromRe, function( str, p1, offset, s) {
-                                tmpObj[p1]      = tmpObj[p1] || {};
-                                tmpObj[p1].from = serialized[i].value;
-                            });
-
-                            continue;
+                        if ( sliderFromVal === min ) {
+                            res.unchangedSliders.push(sliderFromInput.attr('name'));
+                        } else {
+                            res.changedSliders.push(sliderFromInput.attr('name'));
                         }
 
-                        // Detect slider to
-                        if ( serialized[i].name.match(sliderToRe) ) {
-                            serialized[i].name.replace(sliderToRe, function( str, p1, offset, s) {
-                                tmpObj[p1]    = tmpObj[p1] || {};
-                                tmpObj[p1].to = serialized[i].value;
-                            });
-
-                            continue;
+                        if ( sliderToVal === max ) {
+                            res.unchangedSliders.push(sliderToInput.attr('name'));
+                        } else {
+                            res.changedSliders.push(sliderToInput.attr('name'));
                         }
+                    };
 
-                        // If property not prepared
-                        if ( !tmpObj.hasOwnProperty(serialized[i].name) ) {
-                            tmpObj[serialized[i].name] = '';
-                        }
+                this.sliders.each(sortSliders);
 
-                        tmpObj[serialized[i].name] = serialized[i].value;
+                return res;
+            },
+
+            /**
+             * Создание URL по текущим параметрам фильтрации
+             *
+             * @memberOf    module:enter.catalog.filter~CatalogFilterView#
+             * @method      createFilterUrl
+             */
+            createFilterUrl: function() {
+                var
+                    searchPhrase      = urlHelper.getURLParam('q'),
+                    serialized        = this.$el.serializeArray(),
+                    slidersInputState = this.getSlidersInputState(),
+                    sliderFromRe      = /^from-(.*$)/,
+                    sliderToRe        = /^to-(.*$)/,
+                    tmpObj            = {},
+                    outArray          = [],
+                    url, key, i;
+
+
+                // Remove default value sliders
+                for ( i = serialized.length - 1; i >= 0; i-- ) {
+                    if ( slidersInputState.unchangedSliders.indexOf(serialized[i].name) !== -1 ) {
+                        serialized.splice(i,1);
                     }
-
-                    url = urlHelper.addParams('', tmpObj);
-
-                    if ( searchPhrase ) {
-                        url = urlHelper.addParams(url, {
-                            q: searchPhrase
-                        });
-                    }
-
-                    return url;
-                },
-
-                /**
-                 * Инициализация слайдера
-                 *
-                 * @method      initSlider
-                 * @memberOf    module:enter.catalog.filter~CatalogFilterView#
-                 */
-                initSlider: function( index, element ) {
-                    var
-                        tickPercentage  = [20, 40, 60, 80],
-
-                        slider          = $(element),
-                        sliderWrap      = slider.find('.js-category-filter-rangeSlider-slider'),
-                        tickWrap        = slider.find('.js-slider-tick-wrapper'),
-                        config          = sliderWrap.data('config'),
-
-                        fromVal         = slider.find('.js-category-filter-rangeSlider-from'),
-                        toVal           = slider.find('.js-category-v2-filter-element-price-to'),
-
-                        self            = this,
-
-                        percent, res, html, i;
-
-                    sliderWrap.slider({
-                        range: true,
-                        step: config.step,
-                        min: config.min,
-                        max: config.max,
-                        values: [
-                            parseFloat(fromVal.val()),
-                            parseFloat(toVal.val())
-                        ],
-
-                        slide: function( e, ui ) {
-                            fromVal.val( ui.values[ 0 ] );
-                            toVal.val( ui.values[ 1 ] );
-                        },
-
-                        change: function( e, ui ) {
-                            self.filterChanged();
-                        }
-                    });
-
-                    if ( !tickWrap.length ) {
-                        return;
-                    }
-
-                    // Создание засечек на шкале
-                    percent = (config.max - config.min) / 100;
-
-                    for ( i = 0; i < tickPercentage.length; i++ ) {
-                        res = config.min + tickPercentage[i] * percent;
-                        res = ( config.step < 1 ) ? res : Math.round(res);
-
-                        res = ( res.toFixed() != res ) ? res.toFixed(1) : res;
-
-                        html = mustache.render(
-                            '<span class="int" style="left: {{percentage}}%">{{value}}</span>',
-                            {
-                                percentage: tickPercentage[i],
-                                value: res
-                            }
-                        );
-
-                        tickWrap.append(html);
-                    }
-                },
-
-                /**
-                 * Пеервключе
-                 *
-                 * @method      toggleDropdown
-                 * @memberOf    module:enter.catalog.filter~CatalogFilterView#
-                 *
-                 * @param       {jQuery.Event}      event
-                 */
-                toggleDropdown: function( event ) {
-                    var
-                        ddClass         = 'js-category-v2-filter-dropBox',
-                        currentTarget   = $(event.currentTarget),
-                        dropdowns       = this.$el.find('.' + ddClass),
-                        currentDropdown = currentTarget.closest('.' + ddClass),
-                        ddOpenClass     = 'opn',
-                        isOpen          = currentDropdown.hasClass(ddOpenClass);
-
-                    dropdowns.removeClass(ddOpenClass);
-
-                    if ( !isOpen ) {
-                        currentDropdown.addClass(ddOpenClass);
-                    }
-                },
-
-                /**
-                 * Хандлер изменения фильтра
-                 *
-                 * @method      filterChanged
-                 * @memberOf    module:enter.catalog.filter~CatalogFilterView#
-                 */
-                filterChanged: function() {
-                    this.catalogView.updateListing();
-
-                    return false;
                 }
-            });
 
-        provide(CatalogFilterView);
+                for ( i = 0; i < serialized.length; i++ ) {
+
+                    // Detect slider from
+                    if ( serialized[i].name.match(sliderFromRe) ) {
+                        serialized[i].name.replace(sliderFromRe, function( str, p1, offset, s) {
+                            tmpObj[p1]      = tmpObj[p1] || {};
+                            tmpObj[p1].from = serialized[i].value;
+                        });
+
+                        continue;
+                    }
+
+                    // Detect slider to
+                    if ( serialized[i].name.match(sliderToRe) ) {
+                        serialized[i].name.replace(sliderToRe, function( str, p1, offset, s) {
+                            tmpObj[p1]    = tmpObj[p1] || {};
+                            tmpObj[p1].to = serialized[i].value;
+                        });
+
+                        continue;
+                    }
+
+                    // If property not prepared
+                    if ( !tmpObj.hasOwnProperty(serialized[i].name) ) {
+                        tmpObj[serialized[i].name] = '';
+                    }
+
+                    tmpObj[serialized[i].name] = serialized[i].value;
+                }
+
+                url = urlHelper.addParams('', tmpObj);
+
+                if ( searchPhrase ) {
+                    url = urlHelper.addParams(url, {
+                        q: searchPhrase
+                    });
+                }
+
+                return url;
+            },
+
+            /**
+             * Инициализация слайдера
+             *
+             * @method      initSlider
+             * @memberOf    module:enter.catalog.filter~CatalogFilterView#
+             */
+            initSlider: function( index, element ) {
+                var
+                    tickPercentage  = [20, 40, 60, 80],
+
+                    slider          = $(element),
+                    sliderWrap      = slider.find('.js-category-filter-rangeSlider-slider'),
+                    tickWrap        = slider.find('.js-slider-tick-wrapper'),
+                    config          = sliderWrap.data('config'),
+
+                    fromVal         = slider.find('.js-category-filter-rangeSlider-from'),
+                    toVal           = slider.find('.js-category-v2-filter-element-price-to'),
+
+                    self            = this,
+
+                    percent, res, html, i;
+
+                sliderWrap.slider({
+                    range: true,
+                    step: config.step,
+                    min: config.min,
+                    max: config.max,
+                    values: [
+                        parseFloat(fromVal.val()),
+                        parseFloat(toVal.val())
+                    ],
+
+                    slide: function( e, ui ) {
+                        fromVal.val( ui.values[ 0 ] );
+                        toVal.val( ui.values[ 1 ] );
+                    },
+
+                    change: function( e, ui ) {
+                        self.filterChanged();
+                    }
+                });
+
+                if ( !tickWrap.length ) {
+                    return;
+                }
+
+                // Создание засечек на шкале
+                percent = (config.max - config.min) / 100;
+
+                for ( i = 0; i < tickPercentage.length; i++ ) {
+                    res = config.min + tickPercentage[i] * percent;
+                    res = ( config.step < 1 ) ? res : Math.round(res);
+
+                    res = ( res.toFixed() != res ) ? res.toFixed(1) : res;
+
+                    html = mustache.render(
+                        '<span class="int" style="left: {{percentage}}%">{{value}}</span>',
+                        {
+                            percentage: tickPercentage[i],
+                            value: res
+                        }
+                    );
+
+                    tickWrap.append(html);
+                }
+            },
+
+            /**
+             * Пеервключе
+             *
+             * @method      toggleDropdown
+             * @memberOf    module:enter.catalog.filter~CatalogFilterView#
+             *
+             * @param       {jQuery.Event}      event
+             */
+            toggleDropdown: function( event ) {
+                var
+                    ddClass         = 'js-category-v2-filter-dropBox',
+                    currentTarget   = $(event.currentTarget),
+                    dropdowns       = this.$el.find('.' + ddClass),
+                    currentDropdown = currentTarget.closest('.' + ddClass),
+                    ddOpenClass     = 'opn',
+                    isOpen          = currentDropdown.hasClass(ddOpenClass);
+
+                dropdowns.removeClass(ddOpenClass);
+
+                if ( !isOpen ) {
+                    currentDropdown.addClass(ddOpenClass);
+                }
+            },
+
+            /**
+             * Хандлер изменения фильтра
+             *
+             * @method      filterChanged
+             * @memberOf    module:enter.catalog.filter~CatalogFilterView#
+             */
+            filterChanged: function() {
+                this.catalogView.updateListing();
+
+                return false;
+            }
+        }));
     }
 );
 
@@ -283,15 +292,22 @@
  */
 
 /**
- * @module      enter.catalog
+ * @module      enter.catalog.view
  * @version     0.1
+ *
+ * @requires    jQuery
+ * @requires    enter.BaseViewClass
+ * @requires    enter.catalog.filter
+ * @requires    urlHelper
+ * @requires    history
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
 !function( modules, module ) {
     modules.define(
-        'enter.catalog',
+        'enter.catalog.view',
         [
+            'jQuery',
             'enter.BaseViewClass',
             'enter.catalog.filter',
             'urlHelper',
@@ -301,190 +317,237 @@
     );
 }(
     this.modules,
-    function( provide, BaseViewClass, FilterView, urlHelper, History ) {
+    function( provide, $, BaseViewClass, FilterView, urlHelper, History ) {
         'use strict';
 
-        var
-            CatalogView = BaseViewClass.extend({
+        provide(BaseViewClass.extend({
 
-                sortingActiveClass: 'act',
+            /**
+             * CSS класс для активного пункта сортировки
+             *
+             * @type  {String}
+             */
+            sortingActiveClass: 'act',
 
-                /**
-                 * @classdesc   Представление каталога
-                 * @memberOf    module:enter.catalog~
-                 * @augments    module:BaseViewClass
-                 * @constructs  CatalogView
-                 */
-                initialize: function( options ) {
-                    console.info('CatalogView initialized');
+            /**
+             * @classdesc   Представление каталога
+             * @memberOf    module:enter.catalog~
+             * @augments    module:BaseViewClass
+             * @constructs  CatalogView
+             */
+            initialize: function( options ) {
+                console.info('CatalogView initialized');
 
-                    this.subViews = {
-                        filterView: new FilterView({
-                            el: this.$el.find('.js-category-filter'),
-                            catalogView: this
-                        }),
+                this.subViews = {
+                    filterView: new FilterView({
+                        el: this.$el.find('.js-category-filter'),
+                        catalogView: this
+                    }),
 
-                        sortings: this.$el.find('.js-category-sorting-item')
-                    };
+                    sortings: this.$el.find('.js-category-sorting-item')
+                };
 
-                    // Init History
-                    History.Adapter.bind(window, 'statechange', this.history.stateChange.bind(this));
+                // Init History
+                History.Adapter.bind(window, 'statechange', this.history.stateChange.bind(this));
+            },
+
+            /**
+             * События привязанные к текущему экземляру View
+             *
+             * @memberOf    module:enter.catalog~CatalogView
+             * @type        {Object}
+             */
+            events: {
+                'click .js-category-sorting-item': 'toggleSorting',
+                'click .js-category-pagination-infinity': 'toggleInfinityScroll'
+            },
+
+            /**
+             * Объект загрузчика. Передается в опциях в AJAX вызовы.
+             *
+             * @memberOf    module:enter.catalog~CatalogView
+             * @type        {Object}
+             */
+            loader: {
+                show: function() {
+                    console.info('enter.catalog~CatalogView.loader#show');
                 },
 
-                /**
-                 * События привязанные к текущему экземляру View
-                 *
-                 * @memberOf    module:enter.catalog~CatalogView
-                 * @type        {Object}
-                 */
-                events: {
-                    'click .js-category-sorting-item': 'toggleSorting',
-                    'click .js-category-pagination-infinity': 'toggleInfinityScroll'
-                },
-
-                /**
-                 * Объект загрузчика. Передается в опциях в AJAX вызовы.
-                 *
-                 * @memberOf    module:enter.catalog~CatalogView
-                 * @type        {Object}
-                 */
-                loader: {
-                    show: function() {
-                        console.info('enter.catalog~CatalogView.loader#show');
-                    },
-
-                    hide: function() {
-                        console.info('enter.catalog~CatalogView.loader#hide');
-                    }
-                },
-
-                /**
-                 * Комплекс методов по работе с историей браузера
-                 *
-                 * @memberOf    module:enter.catalog~CatalogView
-                 * @type        {Object}
-                 */
-                history: {
-                    stateChange: function() {
-                        var
-                            state = History.getState(),
-                            ajaxUrl = urlHelper.addParams(state.url, {
-                                ajax: true
-                            });
-
-                        console.info('history.statechange');
-                        console.log(state);
-
-                        this.disposeAjax();
-
-                        this.ajax({
-                            type: 'GET',
-                            url: ajaxUrl,
-                            loader: this.loader,
-                            success: this.render.bind(this)
-                        });
-
-                        return;
-                    },
-
-                    updateState: function( url, callback, silent ) {
-                        var
-                            state = {
-                                title: document.title,
-                                url: url,
-                                data: {
-                                    scrollTop: $(window).scrollTop(),
-                                    _silent: !!silent
-                                }
-                            };
-
-                        if ( !History.enabled ) {
-                            document.location.href = url;
-
-                            return;
-                        }
-
-                        History.pushState(state, state.title, state.url);
-
-                        return;
-                    }
-                },
-
-                /**
-                 * Переключение сортировок
-                 *
-                 * @method      toggleSorting
-                 * @memberOf    module:enter.catalog~CatalogView#
-                 */
-                toggleSorting: function( event ) {
-                    var
-                        currentTarget = $(event.currentTarget),
-                        sort          = currentTarget.attr('data-sort');
-
-                    if ( !currentTarget.hasClass(this.sortingActiveClass) ) {
-                        this.subViews.sortings.removeClass(this.sortingActiveClass);
-                        currentTarget.addClass(this.sortingActiveClass);
-                        this.updateListing();
-                    }
-
-                    return false;
-                },
-
-                /**
-                 * Переключение бесконечного скрола
-                 *
-                 * @method      toggleInfinityScroll
-                 * @memberOf    module:enter.catalog~CatalogView#
-                 */
-                toggleInfinityScroll: function() {
-                    console.info('enter.catalog~CatalogView#toggleInfinityScroll');
-
-                    return false;
-                },
-
-                /**
-                 * Получение текущей активной сортировки
-                 *
-                 * @method      getActiveSorting
-                 * @memberOf    module:enter.catalog~CatalogView#
-                 */
-                getActiveSorting: function() {
-                    var
-                        activeSort = this.subViews.sortings.filter('.' + this.sortingActiveClass);
-
-                    return activeSort.find('.jsSorting').attr('data-sort');
-                },
-
-                /**
-                 * Вызов обновления листинга. Формирует URL и отправляет его в history.updateState
-                 *
-                 * @method      updateListing
-                 * @memberOf    module:enter.catalog~CatalogView#
-                 */
-                updateListing: function() {
-                    var
-                        filterUrl = this.subViews.filterView.createFilterUrl(),
-                        sorting   = this.getActiveSorting(),
-                        url       = window.location.pathname + urlHelper.addParams(filterUrl, {
-                            sort: sorting
-                        });
-
-                    this.history.updateState(url)
-
-                    return false;
-                },
-
-                /**
-                 * Вызов отрисовки листинга
-                 *
-                 * @method      render
-                 * @memberOf    module:enter.catalog~CatalogView#
-                 */
-                render: function( data ) {
-                    console.info('enter.catalog~CatalogView#render');
-                    console.log(data);
+                hide: function() {
+                    console.info('enter.catalog~CatalogView.loader#hide');
                 }
-            });
+            },
+
+            /**
+             * Комплекс методов по работе с историей браузера
+             *
+             * @memberOf    module:enter.catalog~CatalogView
+             * @type        {Object}
+             */
+            history: {
+
+                /**
+                 * Обработчик изменения состояния истории браузера
+                 *
+                 * @method      stateChange
+                 * @memberOf    module:enter.catalog~CatalogView.history
+                 */
+                stateChange: function() {
+                    var
+                        state = History.getState(),
+                        ajaxUrl = urlHelper.addParams(state.url, {
+                            ajax: true
+                        });
+
+                    console.info('history.statechange');
+                    console.log(state);
+
+                    this.disposeAjax();
+
+                    this.ajax({
+                        type: 'GET',
+                        url: ajaxUrl,
+                        loader: this.loader,
+                        success: this.render.bind(this)
+                    });
+
+                    return;
+                },
+
+                /**
+                 * Функция изменения состояния в истории браузера
+                 *
+                 * @method      stateChange
+                 * @memberOf    module:enter.catalog~CatalogView.history
+                 */
+                updateState: function( url, callback, silent ) {
+                    var
+                        state = {
+                            title: document.title,
+                            url: url,
+                            data: {
+                                scrollTop: $(window).scrollTop(),
+                                _silent: !!silent
+                            }
+                        };
+
+                    if ( !History.enabled ) {
+                        document.location.href = url;
+
+                        return;
+                    }
+
+                    History.pushState(state, state.title, state.url);
+
+                    return;
+                }
+            },
+
+            /**
+             * Переключение сортировок
+             *
+             * @method      toggleSorting
+             * @memberOf    module:enter.catalog~CatalogView#
+             *
+             * @param       {jQuery.Event}      event
+             */
+            toggleSorting: function( event ) {
+                var
+                    currentTarget = $(event.currentTarget),
+                    sort          = currentTarget.attr('data-sort');
+
+                if ( !currentTarget.hasClass(this.sortingActiveClass) ) {
+                    this.subViews.sortings.removeClass(this.sortingActiveClass);
+                    currentTarget.addClass(this.sortingActiveClass);
+                    this.updateListing();
+                }
+
+                return false;
+            },
+
+            /**
+             * Переключение бесконечного скрола
+             *
+             * @method      toggleInfinityScroll
+             * @memberOf    module:enter.catalog~CatalogView#
+             */
+            toggleInfinityScroll: function() {
+                console.info('enter.catalog~CatalogView#toggleInfinityScroll');
+
+                return false;
+            },
+
+            /**
+             * Получение текущей активной сортировки
+             *
+             * @method      getActiveSorting
+             * @memberOf    module:enter.catalog~CatalogView#
+             */
+            getActiveSorting: function() {
+                var
+                    activeSort = this.subViews.sortings.filter('.' + this.sortingActiveClass);
+
+                return activeSort.find('.jsSorting').attr('data-sort');
+            },
+
+            /**
+             * Вызов обновления листинга. Формирует URL и отправляет его в history.updateState
+             *
+             * @method      updateListing
+             * @memberOf    module:enter.catalog~CatalogView#
+             */
+            updateListing: function() {
+                var
+                    filterUrl = this.subViews.filterView.createFilterUrl(),
+                    sorting   = this.getActiveSorting(),
+                    url       = window.location.pathname + urlHelper.addParams(filterUrl, {
+                        sort: sorting
+                    });
+
+                this.history.updateState(url)
+
+                return false;
+            },
+
+            /**
+             * Вызов отрисовки листинга
+             *
+             * @method      render
+             * @memberOf    module:enter.catalog~CatalogView#
+             */
+            render: function( data ) {
+                console.info('enter.catalog~CatalogView#render');
+                console.log(data);
+
+                this.delegateEvents();
+            }
+        }));
+    }
+);
+
+
+/**
+ * Модуль инициализации каталога. Создает экземпляр класса CatalogView
+ *
+ * @module      enter.catalog
+ * @version     0.1
+ *
+ * @requires    enter.catalog.view
+ *
+ * [About YM Modules]{@link https://github.com/ymaps/modules}
+ */
+!function( modules, module ) {
+    modules.define(
+        'enter.catalog',
+        [
+            'enter.catalog.view'
+        ],
+        module
+    );
+}(
+    this.modules,
+    function( provide, CatalogView ) {
+        'use strict';
 
         provide({
             init: function( el ) {
