@@ -1,0 +1,17 @@
+<ul class="sorting_lst fl-r js-category-pagination">
+    <li class="sorting_i sorting_i-tl">Страницы</li>
+
+    {{#items}}
+        {{#link}}
+            <li data-page="{{text}}" class="sorting_i {{#isActive}}act{{/isActive}} js-category-pagination-page">
+                <a class="sorting_lk sorting_lk-page jsPagination" href="{{link}}">{{text}}</a>
+            </li>
+        {{/link}}
+        {{^link}}
+            <li class="sorting_i js-category-pagination-page">{{& text}}</li>
+        {{/link}}
+    {{/items}}
+
+    <li class="sorting_i hidden js-category-pagination-paging"><a class="sorting_lk sorting_lk-page jsPaginationEnable" href="#">123</a></li>
+    <li class="sorting_i js-category-pagination-infinity"><a class="sorting_lk sorting_lk-page jsInfinityEnable" href="#">∞</a></li>
+</ul>

@@ -102,3 +102,7 @@ $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager
 <script type="text/plain" id="js-list-item-template">
     <?= file_get_contents(\App::config()->templateDir . '/category/list/pager.mustache') ?>
 </script>
+
+<script type="text/plain" id="js-pagination-template">
+    <?= file_get_contents(\App::config()->templateDir . '/category/list/pagination.mustache') ?>
+</script>
