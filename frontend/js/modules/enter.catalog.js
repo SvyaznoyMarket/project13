@@ -305,13 +305,14 @@
         [
             'enter.BaseViewClass',
             'enter.catalog.filter',
-            'urlHelper'
+            'urlHelper',
+            'history'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, BaseViewClass, FilterView, urlHelper ) {
+    function( provide, BaseViewClass, FilterView, urlHelper, History ) {
         'use strict';
 
         var
@@ -337,11 +338,55 @@
 
                         sortings: this.$el.find('.js-category-sorting-item')
                     };
+
+                    // Init History
+                    History.Adapter.bind(window, 'statechange', this.history.stateChange);
                 },
 
                 events: {
                     'click .js-category-sorting-item': 'toggleSorting',
                     'click .js-category-pagination-infinity': 'toggleInfinityScroll'
+                },
+
+                /**
+                 * Комплекс методов по работе с историей браузера
+                 *
+                 * @type  {Object}
+                 */
+                history: {
+                    stateChange: function() {
+                        var
+                            state = History.getState();
+
+                        console.info('history.statechange');
+                        console.log(state);
+
+                        return;
+                    },
+
+                    updateState: function( url, callback, silent ) {
+                        var
+                            state = {
+                                title: document.title,
+                                url: url,
+                                data: {
+                                    scrollTop: $(window).scrollTop(),
+                                    _silent: !!silent
+                                }
+                            };
+
+                        console.log('history.updateState');
+
+                        if ( !History.enabled ) {
+                            document.location.href = url;
+
+                            return;
+                        }
+
+                        History.pushState(state, state.title, state.url);
+
+                        return;
+                    }
                 },
 
                 /**
@@ -393,7 +438,7 @@
                             sort: sorting
                         });
 
-                    console.log(url);
+                    this.history.updateState(url)
 
                     return false;
                 }
