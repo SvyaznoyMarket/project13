@@ -1,42 +1,44 @@
 {{#inShowroomAsLabel}}
     {{#points.0}}
         <div class="js-buyButton-points">
-            <div style="display: none" class="js-buyButton-points-content">
-                <a href="#" title="Закрыть" class="js-buyButton-points-content-closer">Закрыть</a>
+            <div style="display: none" class="js-buyButton-points-content popup popup-simple popup--showroom">
+                <div class="popup__inn">
+                    <a href="#" title="Закрыть" class="js-buyButton-points-content-closer closer">×</a>
 
-                {{productName}}
+                    <div class="popup__head">{{productName}}</div>
 
-                <ul>
-                    {{#points}}
-                        <li>
-                            {{#subway}}
-                                <p>
-                                    {{#line.color}}
-                                        <i style="background-color: {{line.color}}"></i>
-                                    {{/line.color}}
+                    <div class="popup__content">
+                        <ul class="showroom-points-lst">
+                            {{#points}}
+                                <li class="showroom-points-lst__i pick-point-item">
+                                    <div class="pick-point-item__addr">
+                                        {{#subway}}
+                                            <div class="pick-point-item__metro" {{#line.color}} style="background: {{line.color}}"{{/line.color}}>
+                                                <div class="pick-point-item__metro-inn">{{name}}</div>
+                                            </div>
+                                        {{/subway}}
 
-                                    м. {{name}}
-                                </p>
-                            {{/subway}}
+                                        <div class="pick-point-item__addr-name {{#subway}}pick-point-item__addr-with-metro{{/subway}}">
+                                            {{#url}}
+                                                <a href="{{url}}">{{name}}</a>
+                                            {{/url}}
 
-                            <p>
-                                {{#url}}
-                                    <a href="{{url}}">{{name}}</a>
-                                {{/url}}
+                                            {{^url}}
+                                                {{name}}
+                                            {{/url}}
+                                        </div>
 
-                                {{^url}}
-                                    {{name}}
-                                {{/url}}
-                            </p>
+                                        {{#todayWorkingTime}}
+                                            <div class="pick-point-item__time">с {{from}} до {{to}}</div>
+                                        {{/todayWorkingTime}}
+                                    </div>
+                                </li>
+                            {{/points}}
+                        </ul>
+                    </div>
 
-                            {{#todayWorkingTime}}
-                                <p>с {{from}} до {{to}}</p>
-                            {{/todayWorkingTime}}
-                        </li>
-                    {{/points}}
-                </ul>
-
-                <p>Чтобы купить товар с витрины, <br />нужно приехать в магазин и обратиться к продавцу.</p>
+                    <div class="popup__footer">Чтобы купить товар с витрины, <br />нужно приехать в магазин и обратиться к продавцу.</div>
+                </div>
             </div>
 
             <div class="showroom-only js-buyButton-points-opener">
