@@ -208,17 +208,17 @@
              */
             initSlider: function( index, element ) {
                 var
-                    tickPercentage  = [20, 40, 60, 80],
+                    tickPercentage = [20, 40, 60, 80],
 
-                    slider          = $(element),
-                    sliderWrap      = slider.find('.' + CSS_CLASSES.SLIDER),
-                    tickWrap        = slider.find('.' + CSS_CLASSES.SLIDER_TICK),
-                    config          = sliderWrap.data('config'),
+                    slider         = $(element),
+                    sliderWrap     = slider.find('.' + CSS_CLASSES.SLIDER),
+                    tickWrap       = slider.find('.' + CSS_CLASSES.SLIDER_TICK),
+                    config         = sliderWrap.data('config'),
 
-                    fromVal         = slider.find('.' + CSS_CLASSES.SLIDER_FROM),
-                    toVal           = slider.find('.' +  + CSS_CLASSES.SLIDER_TO),
+                    fromVal        = slider.find('.' + CSS_CLASSES.SLIDER_FROM),
+                    toVal          = slider.find('.' + CSS_CLASSES.SLIDER_TO),
 
-                    self            = this,
+                    self           = this,
 
                     percent, res, html, i;
 
@@ -555,7 +555,7 @@
              */
             disableInfScroll: function() {
                 this.subViews.infScroll.removeClass(CSS_CLASSES.INF_SCROLL_ACTIVE);
-                this.subViews.pagination.eq(0).addClass(CSS_CLASSES.PAGINATION_ACTIVE);
+                this.subViews.pagination.filter('[data-page="1"]').addClass(CSS_CLASSES.PAGINATION_ACTIVE);
             },
 
             /**
@@ -586,13 +586,13 @@
              */
             togglePage: function( event ) {
                 var
-                    currentTarget = $(event.currentTarget);
-
-                console.info('enter.catalog~CatalogView#togglePage');
+                    currentTarget = $(event.currentTarget),
+                    page          = parseInt(currentTarget.attr('data-page'), 10);
 
                 if ( !currentTarget.hasClass(CSS_CLASSES.PAGINATION_ACTIVE) ) {
                     this.subViews.pagination.removeClass(CSS_CLASSES.PAGINATION_ACTIVE);
-                    currentTarget.addClass(CSS_CLASSES.PAGINATION_ACTIVE);
+                    this.subViews.pagination.filter('[data-page="' + page + '"]').addClass(CSS_CLASSES.PAGINATION_ACTIVE);
+                    this.updateListing(page);
                 }
 
                 return false;
@@ -608,7 +608,7 @@
                 var
                     activeSort = this.subViews.sortings.filter('.' + CSS_CLASSES.SORTING_ACTIVE);
 
-                return activeSort.find('.jsSorting').attr('data-sort');
+                return activeSort.attr('data-sort');
             },
 
             /**
@@ -663,13 +663,12 @@
 
                     renderPagination = function( pagination ) {
 
-                    };
+                    },
 
                     productsHtml;
 
                 console.info('enter.catalog~CatalogView#render');
                 console.log(data);
-
 
                 // Validation
                 if ( !_.isObject(data) || !_.isObject(data.list) || !_.isArray(data.list.products) || !data.list.products.length ) {
@@ -677,12 +676,10 @@
                     return;
                 }
 
-                this.subViews.wrapper.empty();
-
                 productsHtml = renderProducts(data.list.products);
 
+                this.subViews.wrapper.empty();
                 this.subViews.wrapper.html(productsHtml);
-
                 this.delegateEvents();
             }
         }));

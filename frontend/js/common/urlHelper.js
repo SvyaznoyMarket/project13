@@ -106,7 +106,7 @@
                                 reBadSeparator = /\?&/;
                             // end of vars
 
-                            return decodedUrl.replace(reBadParam, '').replace(reBadSeparator, '?');
+                            return decodedUrl.replace(reBadParam, '').replace(reBadParam, '').replace(reBadSeparator, '?');
                         },
 
                         /**
