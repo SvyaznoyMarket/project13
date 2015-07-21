@@ -98,3 +98,7 @@ $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager
         <?= $page->blockNavigation() ?>
     </aside>
 </div>
+
+<script type="text/plain" id="js-list-item-template">
+    <?= file_get_contents(\App::config()->templateDir . '/category/list/pager.mustache') ?>
+</script>

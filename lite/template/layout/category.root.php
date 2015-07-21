@@ -36,11 +36,11 @@ $category = $page->getParam('category');
 
                         <div class="section__content">
                             <div class="slider-section">
-                                <div class="goods goods_categories grid-4col">
+                                <div class="goods goods_categories grid-3col">
 
                                     <? foreach ($page->getParam('links', []) as $link) : ?>
 
-                                        <div class="goods__item grid-4col__item">
+                                        <div class="goods__item grid-3col__item">
                                             <a href="<?= $link['url'] ?>" class="goods__img">
                                                 <img src="<?= $link['image'] ?>" alt="<?= $link['name'] ?>" class="goods__img-image">
                                             </a>
