@@ -20,16 +20,16 @@
         'enter.catalog.filter',
         [
             'jQuery',
+            'Mustache',
             'enter.BaseViewClass',
             'urlHelper',
-            'Mustache',
             'jquery.ui'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, urlHelper, mustache, jQueryUI ) {
+    function( provide, $, mustache, BaseViewClass, urlHelper, jQueryUI ) {
         'use strict';
 
         var
@@ -328,6 +328,7 @@
         'enter.catalog.view',
         [
             'jQuery',
+            'Mustache',
             'enter.BaseViewClass',
             'enter.catalog.filter',
             'urlHelper',
@@ -337,7 +338,7 @@
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, FilterView, urlHelper, History ) {
+    function( provide, $, mustache, BaseViewClass, FilterView, urlHelper, History ) {
         'use strict';
 
         var
@@ -349,6 +350,7 @@
              * @type  {Object}
              */
             CSS_CLASSES = {
+                CATALOG_WRAPPER: 'js-catalog-wrapper',
                 SORTING: 'js-category-sorting-item',
                 INF_SCROLL: 'js-category-pagination-infinity',
                 INF_SCROLL_ACTIVE: 'act',
@@ -356,6 +358,10 @@
                 CATALOG_FILTER: 'js-category-filter',
                 PAGINATION: 'js-category-pagination-page',
                 PAGINATION_ACTIVE: 'act'
+            },
+
+            TEMPLATES = {
+                LISTING_ITEM: $('#js-list-item-template').html()
             };
 
 
@@ -376,6 +382,7 @@
                         catalogView: this
                     }),
 
+                    wrapper: this.$el.find('.' + CSS_CLASSES.CATALOG_WRAPPER),
                     sortings: this.$el.find('.' + CSS_CLASSES.SORTING),
                     pagination: this.$el.find('.' + CSS_CLASSES.PAGINATION),
                     infScroll: this.$el.find('.' + CSS_CLASSES.INF_SCROLL)
@@ -642,8 +649,39 @@
              * @memberOf    module:enter.catalog~CatalogView#
              */
             render: function( data ) {
+                var
+                    renderProducts = function( products ) {
+                        var
+                            i, html = '';
+
+                        for ( i = 0; i < products.length; i++ ) {
+                            html += mustache.render(TEMPLATES.LISTING_ITEM, products[i]);
+                        }
+
+                        return html;
+                    },
+
+                    renderPagination = function( pagination ) {
+
+                    };
+
+                    productsHtml;
+
                 console.info('enter.catalog~CatalogView#render');
                 console.log(data);
+
+
+                // Validation
+                if ( !_.isObject(data) || !_.isObject(data.list) || !_.isArray(data.list.products) || !data.list.products.length ) {
+                    // render error
+                    return;
+                }
+
+                this.subViews.wrapper.empty();
+
+                productsHtml = renderProducts(data.list.products);
+
+                this.subViews.wrapper.html(productsHtml);
 
                 this.delegateEvents();
             }

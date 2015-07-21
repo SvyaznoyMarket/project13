@@ -48,7 +48,7 @@
     modules.define('Mustache', [], function(provide){
         loadScript("/public/vendor/js/mustache.2.1.2.min.js", function () {
             console.log('[Module] Mustache');
-            provide();
+            provide(Mustache);
         });
     });
 

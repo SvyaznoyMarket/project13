@@ -74,7 +74,7 @@ $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager
                 <!--/ сортировка -->
 
                 <div class="section">
-                    <div class="goods goods_grid goods_listing grid-4col">
+                    <div class="goods goods_grid goods_listing grid-4col js-catalog-wrapper">
                         <?= $page->render('category/list/pager', ['productPager'=> $productPager]) ?>
                     </div>
                 </div>
