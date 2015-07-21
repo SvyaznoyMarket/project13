@@ -340,26 +340,59 @@
                     };
 
                     // Init History
-                    History.Adapter.bind(window, 'statechange', this.history.stateChange);
+                    History.Adapter.bind(window, 'statechange', this.history.stateChange.bind(this));
                 },
 
+                /**
+                 * События привязанные к текущему экземляру View
+                 *
+                 * @memberOf    module:enter.catalog~CatalogView
+                 * @type        {Object}
+                 */
                 events: {
                     'click .js-category-sorting-item': 'toggleSorting',
                     'click .js-category-pagination-infinity': 'toggleInfinityScroll'
                 },
 
                 /**
+                 * Объект загрузчика. Передается в опциях в AJAX вызовы.
+                 *
+                 * @memberOf    module:enter.catalog~CatalogView
+                 * @type        {Object}
+                 */
+                loader: {
+                    show: function() {
+                        console.info('enter.catalog~CatalogView.loader#show');
+                    },
+
+                    hide: function() {
+                        console.info('enter.catalog~CatalogView.loader#hide');
+                    }
+                },
+
+                /**
                  * Комплекс методов по работе с историей браузера
                  *
-                 * @type  {Object}
+                 * @memberOf    module:enter.catalog~CatalogView
+                 * @type        {Object}
                  */
                 history: {
                     stateChange: function() {
                         var
-                            state = History.getState();
+                            state = History.getState(),
+                            ajaxUrl = urlHelper.addParams(state.url, {
+                                ajax: true
+                            });
 
                         console.info('history.statechange');
                         console.log(state);
+
+                        this.ajax({
+                            type: 'GET',
+                            url: ajaxUrl,
+                            loader: this.loader,
+                            success: this.render.bind(this)
+                        });
 
                         return;
                     },
@@ -423,6 +456,12 @@
                     return false;
                 },
 
+                /**
+                 * Получение текущей активной сортировки
+                 *
+                 * @method      getActiveSorting
+                 * @memberOf    module:enter.catalog~CatalogView#
+                 */
                 getActiveSorting: function() {
                     var
                         activeSort = this.subViews.sortings.filter('.' + this.sortingActiveClass);
@@ -430,6 +469,12 @@
                     return activeSort.find('.jsSorting').attr('data-sort');
                 },
 
+                /**
+                 * Вызов обновления листинга. Формирует URL и отправляет его в history.updateState
+                 *
+                 * @method      updateListing
+                 * @memberOf    module:enter.catalog~CatalogView#
+                 */
                 updateListing: function() {
                     var
                         filterUrl = this.subViews.filterView.createFilterUrl(),
@@ -441,6 +486,17 @@
                     this.history.updateState(url)
 
                     return false;
+                },
+
+                /**
+                 * Вызов отрисовки листинга
+                 *
+                 * @method      render
+                 * @memberOf    module:enter.catalog~CatalogView#
+                 */
+                render: function( data ) {
+                    console.info('enter.catalog~CatalogView#render');
+                    console.log(data);
                 }
             });
 

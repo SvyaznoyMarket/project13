@@ -2,8 +2,8 @@
  * Модуль для выполнения AJAX запросов.
  * Умеет отменять AJAX запросы как на уровне текущего экземпляра класса, так и на уровне всего приложения.
  *
- * Автоматически можно настроить время до показа лоадера. Настраивается опцией `timeToAjaxLoader`, на уровне свойства класса.
- * В опциях к запросу необходимо передать функцию `showLoaderCallback`, которая вызоветься, когда необходимо будет показать лоадер.
+ * Автоматически можно настроить время до показа лоадера. Настраивается опцией `timeToAjaxLoader`, на уровне свойства класса. По-умолчанию это свойство равно 300.
+ * В опциях к запросу необходимо передать объект loader у которого должно быть два метода show и hide.
  *
  * Отмена всех AJAX запросов текущего экземпляра класса: this.disposeAjax()
  * Отмена всех AJAX запросов приложения this.disposeAjax(this.DISPOSE_GLOBAL)
@@ -125,10 +125,15 @@
                      *
                      * @method  alwaysCb
                      *
-                     * @param   {Number}  rid Идентификатор ajax запроса
-                     * @param   {Number}  tid Идентификатор таймаута
+                     * @param   {Number}  rid       Идентификатор ajax запроса
+                     * @param   {Number}  tid       Идентификатор таймаута
+                     * @param   {Object}  options   Параметры запроса
                      */
-                    alwaysCb = function( rid, tid ) {
+                    alwaysCb = function( rid, tid, options ) {
+                        if ( _.isObject(options) && _.isObject(options.loader) && _.isFunction(options.loader.hide) ) {
+                            options.loader.hide();
+                        }
+
                         tid && clearTimeout(tid);
                         delete this.currentAjaxCalls[rid];
                     },
@@ -162,11 +167,11 @@
                 this.currentAjaxCalls[requestID] = true;
                 globalAjaxCalls[requestID]       = xhr;
 
-                if ( _.isObject(options) && options.showLoaderCallback && _.isFunction(options.showLoaderCallback) ) {
-                    timeoutID = setTimeout(options.showLoaderCallback, this.timeToAjaxLoader)
+                if ( _.isObject(options) && _.isObject(options.loader) && _.isFunction(options.loader.show) ) {
+                    timeoutID = setTimeout(options.loader.show, this.timeToAjaxLoader)
                 }
 
-                xhr.always(alwaysCb.bind(this, requestID, timeoutID));
+                xhr.always(alwaysCb.bind(this, requestID, timeoutID, options));
                 xhr.done(doneCb.bind(this, requestID, timeoutID));
                 xhr.fail(failCb.bind(this, requestID, timeoutID));
 
