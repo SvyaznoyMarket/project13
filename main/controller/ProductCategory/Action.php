@@ -559,7 +559,12 @@ class Action {
         // стиль листинга
         $listingStyle = isset($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null;
 
-        $hasBanner = 'jewel' !== $listingStyle ? true : false;
+        $hasBanner = 'jewel' !== $listingStyle;
+
+        if (\App::config()->lite['enabled']) {
+            $hasBanner = false;
+        }
+
         if ($hasBanner) {
             // уменшаем кол-во товаров на первой странице для вывода баннера
             $offset = $offset - (1 === $pageNum ? 0 : 1);
