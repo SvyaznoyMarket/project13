@@ -1275,9 +1275,9 @@
 			$pointsContent = $points.find('.js-buyButton-points-content')
 		;
 
-		$('.jsProductImgPopup').trigger('close');
+		$.enterLightboxMe.closeAll();
 
-		$pointsContent.lightbox_me({
+		$pointsContent.enterLightboxMe({
 			centered: true,
 			closeSelector: '.js-buyButton-points-content-closer',
 			closeClick: true,

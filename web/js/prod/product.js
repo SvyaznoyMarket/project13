@@ -761,7 +761,7 @@ $(function() {
         $popupPhotoThumbs.removeClass(thumbActiveClass)
             .eq($activeThumb.index()).addClass(thumbActiveClass);
         // и открываем popup
-        $imgPopup.lightbox_me({
+        $imgPopup.enterLightboxMe({
             centered: false,
             closeSelector: '.jsPopupCloser',
             modalCSS: {top: '0', left: '0'},
