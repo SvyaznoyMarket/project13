@@ -32,6 +32,24 @@
     function( provide, $, BaseViewClass, urlHelper, mustache, jQueryUI ) {
         'use strict';
 
+        var
+            /**
+             * Используемые CSS классы
+             *
+             * @private
+             * @static
+             * @type  {Object}
+             */
+            CSS_CLASSES = {
+                DROPDOWN: 'js-category-v2-filter-dropBox',
+                DROPDOWN_OPEN: 'opn',
+                RANGE_SLIDER: 'js-category-filter-rangeSlider',
+                SLIDER: 'js-category-filter-rangeSlider-slider',
+                SLIDER_FROM: 'js-category-filter-rangeSlider-from',
+                SLIDER_TO: 'js-category-filter-rangeSlider-to',
+                SLIDER_TICK: 'js-slider-tick-wrapper'
+            };
+
         provide(BaseViewClass.extend({
 
             /**
@@ -44,9 +62,15 @@
                 console.info('CatalogFilterView initialized');
 
                 this.catalogView = options.catalogView;
-                this.sliders     = this.$el.find('.js-category-filter-rangeSlider');
+                this.sliders     = this.$el.find('.' + CSS_CLASSES.RANGE_SLIDER);
 
                 this.sliders.each(this.initSlider.bind(this));
+
+                // Setup events
+                this.events['click .' + CSS_CLASSES.DROPDOWN] = 'toggleDropdown';
+
+                // Apply events
+                this.delegateEvents();
             },
 
             /**
@@ -56,7 +80,6 @@
              * @type        {Object}
              */
             events: {
-                'click .js-category-v2-filter-dropBox-opener': 'toggleDropdown',
                 'change': 'filterChanged'
             },
 
@@ -80,11 +103,11 @@
                     sortSliders = function() {
                         var
                             slider          = $(this),
-                            sliderWrap      = slider.find('.js-category-filter-rangeSlider-slider'),
+                            sliderWrap      = slider.find('.' + CSS_CLASSES.SLIDER),
                             sliderConfig    = sliderWrap.data('config'),
 
-                            sliderFromInput = slider.find('.js-category-filter-rangeSlider-from'),
-                            sliderToInput   = slider.find('.js-category-v2-filter-element-price-to'),
+                            sliderFromInput = slider.find('.' + CSS_CLASSES.SLIDER_FROM),
+                            sliderToInput   = slider.find('.' + CSS_CLASSES.SLIDER_TO),
 
                             sliderFromVal   = parseFloat(sliderFromInput.val()),
                             sliderToVal     = parseFloat(sliderToInput.val()),
@@ -188,12 +211,12 @@
                     tickPercentage  = [20, 40, 60, 80],
 
                     slider          = $(element),
-                    sliderWrap      = slider.find('.js-category-filter-rangeSlider-slider'),
-                    tickWrap        = slider.find('.js-slider-tick-wrapper'),
+                    sliderWrap      = slider.find('.' + CSS_CLASSES.SLIDER),
+                    tickWrap        = slider.find('.' + CSS_CLASSES.SLIDER_TICK),
                     config          = sliderWrap.data('config'),
 
-                    fromVal         = slider.find('.js-category-filter-rangeSlider-from'),
-                    toVal           = slider.find('.js-category-v2-filter-element-price-to'),
+                    fromVal         = slider.find('.' + CSS_CLASSES.SLIDER_FROM),
+                    toVal           = slider.find('.' +  + CSS_CLASSES.SLIDER_TO),
 
                     self            = this,
 
@@ -254,17 +277,14 @@
              */
             toggleDropdown: function( event ) {
                 var
-                    ddClass         = 'js-category-v2-filter-dropBox',
-                    currentTarget   = $(event.currentTarget),
-                    dropdowns       = this.$el.find('.' + ddClass),
-                    currentDropdown = currentTarget.closest('.' + ddClass),
-                    ddOpenClass     = 'opn',
-                    isOpen          = currentDropdown.hasClass(ddOpenClass);
+                    currentDropdown = $(event.currentTarget),
+                    dropdowns       = this.$el.find('.' + CSS_CLASSES.DROPDOWN),
+                    isOpen          = currentDropdown.hasClass(CSS_CLASSES.DROPDOWN_OPEN);
 
-                dropdowns.removeClass(ddOpenClass);
+                dropdowns.removeClass(CSS_CLASSES.DROPDOWN_OPEN);
 
                 if ( !isOpen ) {
-                    currentDropdown.addClass(ddOpenClass);
+                    currentDropdown.addClass(CSS_CLASSES.DROPDOWN_OPEN);
                 }
             },
 
@@ -320,14 +340,23 @@
     function( provide, $, BaseViewClass, FilterView, urlHelper, History ) {
         'use strict';
 
-        provide(BaseViewClass.extend({
-
+        var
             /**
-             * CSS класс для активного пункта сортировки
+             * Используемые CSS классы
              *
-             * @type  {String}
+             * @private
+             * @static
+             * @type  {Object}
              */
-            sortingActiveClass: 'act',
+            CSS_CLASSES = {
+                SORTING: 'js-category-sorting-item',
+                INF_SCROLL: 'js-category-pagination-infinity',
+                SORTING_ACTIVE: 'act',
+                CATALOG_FILTER: 'js-category-filter'
+            };
+
+
+        provide(BaseViewClass.extend({
 
             /**
              * @classdesc   Представление каталога
@@ -340,15 +369,21 @@
 
                 this.subViews = {
                     filterView: new FilterView({
-                        el: this.$el.find('.js-category-filter'),
+                        el: this.$el.find('.' + CSS_CLASSES.CATALOG_FILTER),
                         catalogView: this
                     }),
 
-                    sortings: this.$el.find('.js-category-sorting-item')
+                    sortings: this.$el.find('.' + CSS_CLASSES.SORTING)
                 };
 
                 // Init History
                 History.Adapter.bind(window, 'statechange', this.history.stateChange.bind(this));
+
+                // Setup events
+                this.events['click .' + CSS_CLASSES.SORTING]    = 'toggleSorting';
+                this.events['click .' + CSS_CLASSES.INF_SCROLL] = 'toggleInfinityScroll';
+
+                this.delegateEvents();
             },
 
             /**
@@ -357,10 +392,7 @@
              * @memberOf    module:enter.catalog~CatalogView
              * @type        {Object}
              */
-            events: {
-                'click .js-category-sorting-item': 'toggleSorting',
-                'click .js-category-pagination-infinity': 'toggleInfinityScroll'
-            },
+            events: {},
 
             /**
              * Объект загрузчика. Передается в опциях в AJAX вызовы.
@@ -456,9 +488,9 @@
                     currentTarget = $(event.currentTarget),
                     sort          = currentTarget.attr('data-sort');
 
-                if ( !currentTarget.hasClass(this.sortingActiveClass) ) {
-                    this.subViews.sortings.removeClass(this.sortingActiveClass);
-                    currentTarget.addClass(this.sortingActiveClass);
+                if ( !currentTarget.hasClass(CSS_CLASSES.SORTING_ACTIVE) ) {
+                    this.subViews.sortings.removeClass(CSS_CLASSES.SORTING_ACTIVE);
+                    currentTarget.addClass(CSS_CLASSES.SORTING_ACTIVE);
                     this.updateListing();
                 }
 
@@ -485,7 +517,7 @@
              */
             getActiveSorting: function() {
                 var
-                    activeSort = this.subViews.sortings.filter('.' + this.sortingActiveClass);
+                    activeSort = this.subViews.sortings.filter('.' + CSS_CLASSES.SORTING_ACTIVE);
 
                 return activeSort.find('.jsSorting').attr('data-sort');
             },
