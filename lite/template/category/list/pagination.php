@@ -5,7 +5,7 @@
  */
 $helper = \App::helper();
 
-echo $helper->renderWithMustache('category/list/pagination', (new \View\PaginationAction())->execute($pager))
+echo $helper->renderWithMustache('category/list/pagination', (new \View\PaginationAction())->execute($helper, $pager))
 
 ?>
 

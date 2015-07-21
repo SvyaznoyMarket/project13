@@ -7,9 +7,9 @@ class PaginationAction
 {
 
     public function execute(
+        $helper,
         \Iterator\EntityPager $pager
     ) {
-        $helper = \App::helper();
         $first = 1;
         $last = $pager->getLastPage();
         $current = $pager->getPage();
