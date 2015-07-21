@@ -12,7 +12,7 @@
     <div class="reviews__l jsReviewsList">
         <? if ($reviewsData['num_reviews'] == 0) : ?>
             <span class="reviews__msg">Пока нет отзывов.</span>
-            <div class="btn-type btn-type--normal jsReviewAdd">+ Добавить отзыв</div>
+            <a href="" class="btn-normal btn-normal_middle jsReviewAdd">+ Добавить отзыв</a>
         <? else : ?>
             <? foreach ($reviews as $key => $review) : ?>
                 <?= $helper->render('product/blocks/reviews.single', ['review' => $review, 'hidden' => $key > 1]) ?>
@@ -24,7 +24,7 @@
 
 
         <? if ($reviewsData['num_reviews'] > 0) : ?>
-            <div class="btn-type btn-type--normal jsReviewAdd">+ Добавить отзыв</div>
+            <a href="" class="btn-normal btn-normal_middle jsReviewAdd">+ Добавить отзыв</a>
             <span class="reviews-percentage__tl">Всего <?= $helper->numberChoiceWithCount($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span>
             <?= $helper->render('product/blocks/reviews.rating', ['scores' => (array)$reviewsData['num_users_by_score']]) ?>
         <? endif ?>
@@ -33,7 +33,7 @@
 </div>
 
 <? if ($reviewsData['num_reviews'] > 2) : ?>
-    <div class="btn-type btn-type--normal jsShowMoreReviews" data-ui="<?= $product->getUi() ?>" data-total-num="<?= $reviewsData['num_reviews'] ?>">Показать больше отзывов</div>
+    <a href="" class="btn-normal btn-normal_middle jsShowMoreReviews" data-ui="<?= $product->getUi() ?>" data-total-num="<?= $reviewsData['num_reviews'] ?>">Показать больше отзывов</a>
 <? endif ?>
 
 <!-- попап добавления отзыва -->

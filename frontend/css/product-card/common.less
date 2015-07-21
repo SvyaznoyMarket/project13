@@ -1,5 +1,4 @@
 .best-price-popup {
-    color: #363636;
     &__it {
         width: 100%;
         margin: 0 0 10px;
@@ -37,8 +36,9 @@
 }
 
 .product-card-top {
-    .clearfix();
     margin: 15px 0 0;
+
+    .clearfix();
 }
 
 // карточка товара
@@ -87,7 +87,7 @@
 
         .clearfix();
         &-inn {
-            max-width: 300px;
+            max-width: 400px;
 
             text-align: left;
 
@@ -194,7 +194,7 @@
 .product-card-filter {
     margin: 10px 0 20px;
     &__tl {
-        font-size: 14px;
+        font-size: 1.1666em;
 
         margin: 5px 5px 0 0;
 
@@ -277,8 +277,6 @@
         line-height: 1.2;
 
         margin: 0 5px 0 0;
-
-        color: #363636;
     }
 }
 
@@ -308,6 +306,9 @@
 
 .buy-online {
     margin: 0 0 10px;
+    .btn-primary {
+        font-size: 2em;
+    }
 }
 
 .buy-on-credit {
@@ -327,16 +328,13 @@
         color: #8c8c8c;
     }
     &__mark {
-        color: #363636;
         background: none;
     }
 }
 
 .section-border {
     & > div {
-        padding: 0 10px;
-
-        border-top: 1px solid #e6e6e6;
+        border-top: 1px solid @grey-light-3;
     }
 }
 
@@ -347,7 +345,7 @@
 
     border: 1px solid @green-light;
     &__tl {
-        font-size: 14px;
+        font-size: 1.1666em;
 
         color: @green-light;
         border-bottom: 1px solid @green-light;
@@ -382,12 +380,10 @@
 
 //блок с дисконтами
 .product-discounts {
-    margin: 0 -10px;
-
     text-align: center;
 
-    border-top: 1px solid #e8e8e8;
-    border-bottom: 1px solid #e8e8e8;
+    border-top: 1px solid @grey-light-3;
+    border-bottom: 1px solid @grey-light-3;
     &-list {
         font-size: 0;
         font-size: 0;
@@ -507,7 +503,7 @@
         background: url('@{base-url}/product/img/i/i-info-green.png') no-repeat;
     }
     .tooltip-content {
-        font-size: 14px;
+        font-size: 1.1666em;
 
         position: absolute;
         z-index: 5;
@@ -520,7 +516,7 @@
         cursor: default;
 
         color: #616161;
-        border: 1px solid #c7c7c7;
+        border: 1px solid @grey-light-3;
         background: @white;
 
         .transition(all .2s ease-out);
@@ -529,7 +525,7 @@
             right: 8px;
 
             .pseudo-class();
-            .pseudo-corner-top(8px, #fff, -8px);
+            .pseudo-corner-top(8px, @white, -8px);
         }
     }
 }
@@ -561,7 +557,7 @@
 
     cursor: default;
 
-    border: 1px solid #c7c7c7;
+    border: 1px solid @grey-light-3;
     background: @white;
 
     .opacity(0);
@@ -595,14 +591,14 @@
             bottom: -8px;
 
             .pseudo-class();
-            .pseudo-corner-bottom(8px, #fff);
+            .pseudo-corner-bottom(8px, @white);
         }
         &:before {
             right: 8px;
             bottom: -10px;
 
             .pseudo-class();
-            .pseudo-corner-bottom(10px, #c7c7c7);
+            .pseudo-corner-bottom(10px, @grey-light-3);
         }
     }
 }
@@ -622,7 +618,6 @@
     &__lk {
         cursor: pointer;
 
-        color: #363636;
         border-bottom: 1px solid;
         &:hover {
             text-decoration: none;
@@ -640,13 +635,13 @@
         right: 22px;
 
         .pseudo-class();
-        .pseudo-corner-top(6px, #fff, -6px);
+        .pseudo-corner-top(6px, @white, -6px);
     }
     &:before {
         right: 20px;
 
         .pseudo-class();
-        .pseudo-corner-top(8px, #c7c7c7, -8px);
+        .pseudo-corner-top(8px, @grey-light-3, -8px);
     }
 }
 .ep-hint.ep-hint-card {
@@ -661,7 +656,7 @@
         left: auto!important;
 
         border-right: 8px solid transparent;
-        border-bottom: 8px solid #fff;
+        border-bottom: 8px solid @white;
         border-left: 8px solid transparent;
     }
 }

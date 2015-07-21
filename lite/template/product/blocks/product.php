@@ -101,6 +101,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
                 'noUpdate'  => true,
                 'location' => 'product-card',
                 'inShowroomAsButton' => false,
+                'class' => 'btn-primary_bigger btn-primary_width'
             ]) // Кнопка купить ?>
         </div>
 
