@@ -387,6 +387,8 @@
                         console.info('history.statechange');
                         console.log(state);
 
+                        this.disposeAjax();
+
                         this.ajax({
                             type: 'GET',
                             url: ajaxUrl,
