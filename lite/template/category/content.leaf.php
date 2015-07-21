@@ -66,22 +66,8 @@ $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager
 
                 <!-- сортировка -->
                 <div class="sorting sorting-top js-category-sortingAndPagination">
-                    <ul class="sorting_lst fl-l js-category-sorting">
-                        <li class="sorting_i sorting_i-tl">Сортировать</li>
 
-                        <li class="sorting_i act js-category-sorting-activeItem js-category-sorting-defaultItem js-category-sorting-item">
-                            <a class="sorting_lk jsSorting" data-sort="default-desc" href="/catalog/electronics/kompyuteri-i-plansheti-plansheti-817?shop=87&amp;f-prop9396-from=5&amp;f-prop3826-android_4_1_jelly_bean=29928">Автоматически</a>
-                        </li>
-                        <li class="sorting_i js-category-sorting-item">
-                            <a class="sorting_lk jsSorting" data-sort="hits-desc" href="/catalog/electronics/kompyuteri-i-plansheti-plansheti-817?shop=87&amp;f-prop9396-from=5&amp;f-prop3826-android_4_1_jelly_bean=29928&amp;sort=hits-desc">Хиты продаж</a>
-                        </li>
-                        <li class="sorting_i js-category-sorting-item">
-                            <a class="sorting_lk jsSorting" data-sort="price-asc" href="/catalog/electronics/kompyuteri-i-plansheti-plansheti-817?shop=87&amp;f-prop9396-from=5&amp;f-prop3826-android_4_1_jelly_bean=29928&amp;sort=price-asc">По цене ▲</a>
-                        </li>
-                        <li class="sorting_i js-category-sorting-item">
-                            <a class="sorting_lk jsSorting" data-sort="price-desc" href="/catalog/electronics/kompyuteri-i-plansheti-plansheti-817?shop=87&amp;f-prop9396-from=5&amp;f-prop3826-android_4_1_jelly_bean=29928&amp;sort=price-desc">По цене ▼</a>
-                        </li>
-                    </ul>
+                    <?= $page->render('category/list/sorting', ['sorting' => $productSorting, 'helper' => $helper]) ?>
 
                     <?= $pagerHtml ?>
                 </div>
