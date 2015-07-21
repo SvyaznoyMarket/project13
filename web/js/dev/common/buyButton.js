@@ -89,6 +89,7 @@
 			closeSelector: '.js-buyButton-points-content-closer',
 			closeClick: true,
 			destroyOnClose: true,
+			preventScroll: true,
 			onClose: function() {
 				$points.prepend($pointsContent.hide());
 			}

@@ -134,13 +134,12 @@
             closeSelector: '.jsPopupCloser',
             modalCSS: {top: '0', left: '0'},
             closeClick: true,
+			preventScroll: true,
             onLoad: function() {
-                $('html').css({'overflow':'hidden'});
                 checkZoom();
             },
             onClose: function() {
                 setDefaultSetting();
-                $('html').css({'overflow':'auto'});
             }
         });
 
