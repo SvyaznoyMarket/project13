@@ -28,7 +28,7 @@ class PaginationAction
 
         foreach ($range as $i) {
             $data['items'][] = [
-                'isCurrent' => $i == $current,
+                'isActive' => $i == $current,
                 'link'      => $i != 0 ? $helper->replacedUrl(['page' => $i, 'ajax' => null]) : null,
                 'text'          => $i != 0 ? $i : '&#8230;'
             ];
