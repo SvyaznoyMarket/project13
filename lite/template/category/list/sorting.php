@@ -41,8 +41,8 @@ foreach ($sorting->getAll() as $item) {
     <li class="sorting_i sorting_i-tl">Сортировать</li>
 
     <? foreach ($links as $item) : ?>
-        <li class="sorting_i <? if ($item['active']): ?>act js-category-sorting-activeItem<? endif ?> <? if ($item['default']): ?> js-category-sorting-defaultItem<? endif ?> js-category-sorting-item">
-            <a class="sorting_lk jsSorting" data-sort="default-desc" href="<?= $item['url'] ?>"><?= $item['title'] ?></a>
+        <li  data-sort="<?= $item['datasort'] ?>" class="sorting_i <? if ($item['active']): ?>act js-category-sorting-activeItem<? endif ?> <? if ($item['default']): ?> js-category-sorting-defaultItem<? endif ?> js-category-sorting-item">
+            <a class="sorting_lk jsSorting" data-sort="<?= $item['datasort'] ?>" href="<?= $item['url'] ?>"><?= $item['title'] ?></a>
         </li>
     <? endforeach ?>
 
