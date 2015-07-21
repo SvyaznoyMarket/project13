@@ -3,59 +3,25 @@
  * @var $page                   \View\ProductCategory\LeafPage
  * @var $productPager           \Iterator\EntityPager
  */
+
 $helper = \App::helper();
+$html = '';
+
+foreach ($productPager as $product) {
+    if (!$product instanceof \Model\Product\Entity) continue;
+    $data = (new \View\Product\ShowAction())->execute($helper, $product, null, null, null, new \View\Product\ReviewCompactAction());
+
+    // подготовим звезды к другому темплейту
+    if (isset($data['review']) && isset($data['review']['stars'])) {
+        foreach ($data['review']['stars'] as &$item) {
+            $item['show'] = $item['image'] == '/images/reviews_star.png';
+        }
+    }
+
+    $html .= $helper->renderWithMustache('category/list/pager', $data);
+}
+
+echo $html;
+return;
+
 ?>
-
-<? foreach ($productPager as $product) : ?>
-
-    <? if (!$product instanceof \Model\Product\Entity) continue; ?>
-
-<div class="goods__item grid-4col__item">
-    <? if ($product->getLabel()) : ?>
-        <div class="sticker-list">
-            <div class="sticker sticker_sale"><?= $product->getLabel()->getName() ?></div>
-        </div>
-    <? endif ?>
-
-    <div class="goods__controls">
-        <a class="add-control add-control_wish" href="" data-status="В избранное"></a>
-        <a class="add-control add-control_compare" href="" data-status="В сравнение"></a>
-    </div>
-
-    <? if ($product->getBrand()) : ?>
-        <div class="sticker-brand">
-            <a href=""><img src="<?= $product->getBrand()->getImage() ?>" alt=""></a>
-        </div>
-    <? endif ?>
-
-    <a href="<?= $product->getLink() ?>" class="goods__img">
-        <img src="<?= $product->getMainImageUrl('product_200') ?>" alt="" class="goods__img-image" style="opacity: 1;">
-
-        <!--<div class="sticker sticker_info">Товар со склада</div>-->
-    </a>
-
-    <div class="goods__rating rating">
-        <? if ($product->getRating()) : ?>
-            <span class="rating-state">
-            <? foreach ( range(1,5) as $i) : ?>
-                <i class="rating-state__item rating-state__item_1 icon-rating <?= round($product->getRating()) >= $i ? 'rating-state__item_fill' : '' ?>"></i>
-            <? endforeach ?>
-            </span>
-            <span class="rating-count">(<?= $product->getRatingCount() ?>)</span>
-        <? endif ?>
-    </div>
-
-    <div class="goods__name">
-        <div class="goods__name-inn">
-            <a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a>
-        </div>
-    </div>
-
-    <div class="goods__price-old"><span class="line-through"><? if ($product->getPriceOld()) : ?><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl-css">P</span><? endif ?></div>
-
-    <div class="goods__price-now"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl-css">P</span></div>
-
-    <?= $helper->render('product/_button.buy', ['product' => $product, 'class' => 'btn-primary_middle' ]) ?>
-</div>
-
-<? endforeach ?>
