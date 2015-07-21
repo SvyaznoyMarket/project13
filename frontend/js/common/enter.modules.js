@@ -105,6 +105,13 @@
         });
     });
 
+    modules.define('history', [], function(provide){
+        loadScript("/public/js/plugins/history.js", function () {
+            console.log('[Module] history');
+            provide(History);
+        });
+    });
+
     /* ENTER Modules */
     modules.define('enter.debug', ['jQuery', 'Mustache', 'enter.config'], function(provide){
         window.ENTER = {};
