@@ -351,8 +351,11 @@
             CSS_CLASSES = {
                 SORTING: 'js-category-sorting-item',
                 INF_SCROLL: 'js-category-pagination-infinity',
+                INF_SCROLL_ACTIVE: 'act',
                 SORTING_ACTIVE: 'act',
-                CATALOG_FILTER: 'js-category-filter'
+                CATALOG_FILTER: 'js-category-filter',
+                PAGINATION: 'js-category-pagination-page',
+                PAGINATION_ACTIVE: 'act'
             };
 
 
@@ -373,7 +376,9 @@
                         catalogView: this
                     }),
 
-                    sortings: this.$el.find('.' + CSS_CLASSES.SORTING)
+                    sortings: this.$el.find('.' + CSS_CLASSES.SORTING),
+                    pagination: this.$el.find('.' + CSS_CLASSES.PAGINATION),
+                    infScroll: this.$el.find('.' + CSS_CLASSES.INF_SCROLL)
                 };
 
                 // Init History
@@ -382,6 +387,7 @@
                 // Setup events
                 this.events['click .' + CSS_CLASSES.SORTING]    = 'toggleSorting';
                 this.events['click .' + CSS_CLASSES.INF_SCROLL] = 'toggleInfinityScroll';
+                this.events['click .' + CSS_CLASSES.PAGINATION] = 'togglePage';
 
                 this.delegateEvents();
             },
@@ -476,6 +482,32 @@
             },
 
             /**
+             * Формирование нового URL с учетом фильтров и активной сортировки.
+             * При передачи номера страницы, так же подставит и ее.
+             *
+             * @method      createCatalogUrl
+             * @memberOf    module:enter.catalog~CatalogView#
+             *
+             * @param       {Number}      page  Номер страницы
+             *
+             * @return      {String}
+             */
+            createCatalogUrl: function( page ) {
+                var
+                    filterUrl = this.subViews.filterView.createFilterUrl(),
+                    sorting   = this.getActiveSorting();
+
+                if ( page && !_.isNumber(page) ) {
+                    page =  ''
+                }
+
+                return window.location.pathname + urlHelper.addParams(filterUrl, {
+                    sort: sorting,
+                    page: page
+                });
+            },
+
+            /**
              * Переключение сортировок
              *
              * @method      toggleSorting
@@ -498,6 +530,28 @@
             },
 
             /**
+             * Включение бесконечного скролла
+             *
+             * @method      enableInfScroll
+             * @memberOf    module:enter.catalog~CatalogView#
+             */
+            enableInfScroll: function() {
+                this.subViews.pagination.removeClass(CSS_CLASSES.PAGINATION_ACTIVE);
+                this.subViews.infScroll.addClass(CSS_CLASSES.INF_SCROLL_ACTIVE);
+            },
+
+            /**
+             * Выключение бесконечного скролла
+             *
+             * @method      disableInfScroll
+             * @memberOf    module:enter.catalog~CatalogView#
+             */
+            disableInfScroll: function() {
+                this.subViews.infScroll.removeClass(CSS_CLASSES.INF_SCROLL_ACTIVE);
+                this.subViews.pagination.eq(0).addClass(CSS_CLASSES.PAGINATION_ACTIVE);
+            },
+
+            /**
              * Переключение бесконечного скрола
              *
              * @method      toggleInfinityScroll
@@ -505,6 +559,34 @@
              */
             toggleInfinityScroll: function() {
                 console.info('enter.catalog~CatalogView#toggleInfinityScroll');
+
+                if ( !this.subViews.infScroll.hasClass(CSS_CLASSES.INF_SCROLL_ACTIVE) ) {
+                    this.enableInfScroll();
+                } else {
+                    this.disableInfScroll();
+                }
+
+                return false;
+            },
+
+            /**
+             * Переключение страницы
+             *
+             * @method      togglePage
+             * @memberOf    module:enter.catalog~CatalogView#
+             *
+             * @param       {jQuery.Event}      event
+             */
+            togglePage: function( event ) {
+                var
+                    currentTarget = $(event.currentTarget);
+
+                console.info('enter.catalog~CatalogView#togglePage');
+
+                if ( !currentTarget.hasClass(CSS_CLASSES.PAGINATION_ACTIVE) ) {
+                    this.subViews.pagination.removeClass(CSS_CLASSES.PAGINATION_ACTIVE);
+                    currentTarget.addClass(CSS_CLASSES.PAGINATION_ACTIVE);
+                }
 
                 return false;
             },
@@ -523,18 +605,30 @@
             },
 
             /**
-             * Вызов обновления листинга. Формирует URL и отправляет его в history.updateState
+             * Вызов обновления листинга.
+             * Формирование нового URL с учетом фильтров и активной сортировки.
+             * При передачи номера страницы, так же подставит и ее.
+             * Сформированный URL отправляет в history.updateState
              *
              * @method      updateListing
              * @memberOf    module:enter.catalog~CatalogView#
+             *
+             * @param       {Number}      page  Номер страницы
              */
-            updateListing: function() {
+            updateListing: function( page ) {
                 var
                     filterUrl = this.subViews.filterView.createFilterUrl(),
                     sorting   = this.getActiveSorting(),
-                    url       = window.location.pathname + urlHelper.addParams(filterUrl, {
-                        sort: sorting
-                    });
+                    url       = '';
+
+                if ( page && !_.isNumber(page) ) {
+                    page =  ''
+                }
+
+                url = window.location.pathname + urlHelper.addParams(filterUrl, {
+                    sort: sorting,
+                    page: page
+                });
 
                 this.history.updateState(url)
 
