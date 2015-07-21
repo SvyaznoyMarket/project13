@@ -107,7 +107,7 @@
 
         text-align: center;
 
-        background: url('@{base-url}/product/img/i-product-ep-fishka.png') no-repeat 0 0;
+        background: url('@{base-url}/product-card/i-product-ep-fishka.png') no-repeat 0 0;
 
         .inline-block(middle);
     }
@@ -140,7 +140,7 @@
         cursor: pointer;
         text-align: center;
 
-        background: url('@{base-url}/product/img/fishka.png') no-repeat 0 0;
+        background: url('@{base-url}/product-card/fishka.png') no-repeat 0 0;
 
         .box-sizing(border-box);
         .inline-block(middle);
@@ -220,7 +220,7 @@
 }
 
 .reviews {
-    padding: 0 0 0 10px;
+    .clearfix();
     &__l {
         float: left;
 
@@ -234,8 +234,8 @@
         padding-left: 10px;
     }
     &__i {
-        margin: 0 0 20px -10px;
-        padding: 0 10px 15px 10px;
+        margin: 0 0 20px 0;
+        padding: 0 0 15px 0;
 
         border-bottom: 1px solid #e8e8e8;
     }
@@ -248,11 +248,9 @@
     }
     &-percentage {
         &__tl {
-            font-size: 12px;
+            font-size: 1.1666em;
 
             margin: 20px 0 10px;
-
-            color: green;
 
             .inline-block();
         }
@@ -267,11 +265,12 @@
         }
     }
     &__cpt {
-        font-size: 14px;
+        font-family: 'GloberRegular';
+        font-size: 1.1666em;
 
-        margin: 0 0 5px;
+        margin: 0 0 10px;
 
-        color: #8c8c8c;
+        color: @grey-type;
     }
     &__author {
         .inline-block();
@@ -280,41 +279,37 @@
         .inline-block();
     }
     &__tl {
-        font-size: 12px;
-        font-weight: bold;
+        font-family: 'GloberBold';
 
-        margin: 5px 0 5px;
-
-        color: green;
+        margin: 15px 0 5px;
     }
     &__tx {
-        font-size: 14px;
+        font-size: 1.1666em;
         line-height: 18px;
 
-        margin-bottom: 15px;
-
-        color: green;
+        margin: 0 0 15px;
+        padding: 0;
     }
     &-voting {
-        margin: -5px 0 0;
-
         text-align: right;
         &__tl {
-            font-size: 14px;
+            font-size: 1.1666em;
+            font-family: 'GloberRegular';
 
-            color: #8c8c8c;
+            color: @grey-type;
 
             .inline-block(middle);
         }
     }
     &-vote {
-        font-size: 14px;
+        font-size: 1.1666em;
         line-height: 34px;
 
         position: relative;
 
         height: 34px;
-        margin-left: 5px;
+        margin-left: 10px;
+        font-family: 'GloberRegular';
         padding-left: 30px;
 
         cursor: pointer;
@@ -333,7 +328,7 @@
 
             content: '';
 
-            background-image: url('@{base-url}/product/img/i-product.png');
+            background-image: url('@{base-url}/product-card/i-product.png');
 
             .opacity(0);
         }
@@ -344,7 +339,7 @@
 
             content: '';
 
-            background-image: url('@{base-url}/product/img/i-product.png');
+            background-image: url('@{base-url}/product-card/i-product.png');
         }
         &--positive {
             &:after {

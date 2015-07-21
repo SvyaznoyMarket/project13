@@ -1,6 +1,7 @@
 .product-section {
     margin: 0;
     padding-top: 20px;
+    border-bottom: 1px solid @grey-light-3;
     &__props {
         padding: 0 10px 10px;
         .product-section__tl {
@@ -8,10 +9,10 @@
         }
     }
     &__tl {
-        font-size: 16px;
-        font-weight: bold;
+        font-size: 1.3333em;
+        font-family: 'GloberBold';
 
-        margin: 5px 0 15px 10px;
+        margin: 5px 0 15px 0;
     }
     &__sbtl {
         font-family: 'GloberBold';
@@ -34,19 +35,20 @@
         padding: 10px 0 0;
     }
     &__h3 {
-        font-size: 14px;
+        font-size: 1.3333em;
         font-weight: normal;
+        font-family: 'GloberBold';
 
         margin: 20px 0 15px;
 
     }
-    &--inn {
-        padding: 0 10px;
-    }
     &--border-top {
         margin-bottom: 0;
-        padding: 5px 10px 10px;
+        padding: 5px 0 10px;
 
-        border-top: 1px solid #e6e6e6;
+        border-top: 1px solid @grey-light-3;
+    }
+    &--reviews {
+        border-bottom: none;
     }
 }
