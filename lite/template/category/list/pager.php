@@ -18,8 +18,8 @@ $helper = \App::helper();
     <? endif ?>
 
     <div class="goods__controls">
-        <a class="add-control add-control_wish" href=""></a>
-        <a class="add-control add-control_compare" href=""></a>
+        <a class="add-control add-control_wish" href="" data-status="В избранное"></a>
+        <a class="add-control add-control_compare" href="" data-status="В сравнение"></a>
     </div>
 
     <? if ($product->getBrand()) : ?>
