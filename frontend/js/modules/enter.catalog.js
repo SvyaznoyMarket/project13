@@ -37,8 +37,8 @@
              * Используемые CSS классы
              *
              * @private
-             * @static
-             * @type  {Object}
+             * @constant
+             * @type        {Object}
              */
             CSS_CLASSES = {
                 DROPDOWN: 'js-category-v2-filter-dropBox',
@@ -62,8 +62,6 @@
              * @constructs  CatalogFilterView
              */
             initialize: function( options ) {
-                console.info('CatalogFilterView initialized');
-
                 this.catalogView = options.catalogView;
                 this.sliders     = this.$el.find('.' + CSS_CLASSES.RANGE_SLIDER);
                 this.brands      = this.$el.find('.' + CSS_CLASSES.BRANDS);
@@ -337,10 +335,13 @@
  * @version     0.1
  *
  * @requires    jQuery
+ * @requires    Mustache
  * @requires    enter.BaseViewClass
  * @requires    enter.catalog.filter
  * @requires    urlHelper
  * @requires    history
+ * @requires    jquery.replaceWithPush
+ * @requires    jquery.update
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
@@ -369,8 +370,8 @@
              * Используемые CSS классы
              *
              * @private
-             * @static
-             * @type  {Object}
+             * @constant
+             * @type        {Object}
              */
             CSS_CLASSES = {
                 CATALOG_WRAPPER: 'js-catalog-wrapper',
@@ -384,6 +385,13 @@
                 PAGINATION_ACTIVE: 'act'
             },
 
+            /**
+             * Используемые шаблоны
+             *
+             * @private
+             * @constant
+             * @type        {Object}
+             */
             TEMPLATES = {
                 LISTING_ITEM: $('#js-list-item-template').html(),
                 PAGINATION: $('#js-pagination-template').html()
@@ -399,8 +407,6 @@
              * @constructs  CatalogView
              */
             initialize: function( options ) {
-                console.info('CatalogView initialized');
-
                 this.subViews = {
                     filterView: new FilterView({
                         el: this.$el.find('.' + CSS_CLASSES.CATALOG_FILTER),
@@ -422,6 +428,7 @@
                 this.events['click .' + CSS_CLASSES.INF_SCROLL] = 'toggleInfinityScroll';
                 this.events['click .' + CSS_CLASSES.PAGINATION] = 'togglePage';
 
+                // Apply events
                 this.delegateEvents();
             },
 
