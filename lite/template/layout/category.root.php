@@ -32,7 +32,7 @@ $category = $page->getParam('category');
 
                     <!-- категории товаров -->
                     <div class="section">
-                        <div class="section__title"><?= $category->name ?></div>
+                        <div class="section__title section__title_h1"><?= $category->name ?></div>
 
                         <div class="section__content">
                             <div class="slider-section">

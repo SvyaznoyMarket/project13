@@ -112,7 +112,7 @@
                             <i class="fltrBtnBox_tggl_corner icon-corder"></i>
                         </div>
                         <div class="fltrBtnBox_dd fltrBtnBox_dd-l">
-                            <ul class="fltrBtnBox_dd_inn lstdotted js-category-v2-filter-dropBox-content">
+                            <ul class="fltrBtnBox_dd_inn js-category-v2-filter-dropBox-content">
                                 <? foreach ($priceFilter->getPriceRanges() as $range): ?>
                                     <li class="lstdotted_i">
                                         <a class="lstdotted_lk dotted js-category-v2-filter-price-link" href="<?= $helper->escape($range['url']) ?>">
