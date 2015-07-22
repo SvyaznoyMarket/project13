@@ -32,13 +32,13 @@ $oauthEnabled = \App::config()->oauthEnabled;
                         если поле заполнено символами, то добавлем класс valid
                         если ошибка - error
                     -->
-                    <input type="text" class="form__it it error" name="signin[username]" value="">
-                    <label class="form__placeholder placeholder">Email или телефон</label>
+                    <input type="text" class="form__it it js-auth-username-input" name="signin[username]" value="">
+                    <label class="form__placeholder placeholder js-auth-username-label">Email или телефон</label>
                 </div>
 
                 <div class="form__field">
-                    <input type="password" class="form__it it" name="signin[password]" value="">
-                    <label class="form__placeholder placeholder">Пароль</label>
+                    <input type="password" class="form__it it error js-auth-password-label" name="signin[password]" value="">
+                    <label class="form__placeholder placeholder js-auth-password-label">Пароль</label>
 
                     <a href="" class="form__it-btn js-auth-switch-state" data-state="login_hint">забыли?</a>
                 </div>

@@ -135,7 +135,7 @@
         });
     });
 
-    modules.define('enter.auth', ['jQuery'], function(provide){
+    modules.define('enter.auth', ['jQuery', 'jquery.maskedinput'], function(provide){
         loadScript("/public/js/modules/enter.auth.js", function () {
             console.log('[Module] enter.auth');
             provide({});
