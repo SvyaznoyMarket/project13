@@ -12,7 +12,7 @@ $c->libDir = $c->appDir . '/lib';
 $c->dataDir = $c->appDir . '/data';
 $c->logDir = realpath($c->appDir . '/../logs');
 $c->webDir = $c->appDir . '/web';
-$c->templateDir = $c->appDir . '/main/template';
+$c->templateDir = $c->appDir . '/lite/template';
 $c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
 
 // project Lite
