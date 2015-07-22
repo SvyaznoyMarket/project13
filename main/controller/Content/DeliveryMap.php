@@ -14,15 +14,28 @@ class DeliveryMap {
         $points = null;
         $partners = null;
 
-        // Используем страницу контактов чтобы получить меню
-        $contentClient = \App::contentClient();
         $scmsClient = \App::scmsClient();
-        $contentClient->addQuery('contacts', [], function($data) use (&$sidebar) {
-            $content = (string)@$data['content'];
-            $content = str_replace(array("\r", "\n"), '', $content);
-            preg_match('/\<!-- Menu start --\>(.*)\<!-- Menu end --\>/mu', $content, $matches);
-            $sidebar = @$matches[1];
-        });
+        $scmsClient->addQuery(
+            'api/static-page',
+            ['token' => ['menu']],
+            [],
+            function($data) use (&$sidebar) {
+                if (isset($data['pages'][0]['content'])) {
+                    $sidebar = (string)$data['pages'][0]['content'];
+                }
+            }
+        );
+
+        $scmsClient->addQuery(
+            'api/static-page',
+            ['token' => ['delivery']],
+            [],
+            function($data) use (&$content) {
+                if (isset($data['pages'][0]['content'])) {
+                    $content = (string)$data['pages'][0]['content'];
+                }
+            }
+        );
 
         $scmsClient->addQuery('api/point/get', $this->getFilters($request), [],
             function ($data) use (&$points, &$partners) {
@@ -34,6 +47,7 @@ class DeliveryMap {
         \App::curl()->execute();
 
         $page->setParam('sidebar', $sidebar);
+        $page->setParam('content', $content);
         $page->setParam('title', 'Магазины и точки самовывоза');
         $page->setParam('points', $points);
         $page->setParam('partners', $partners);

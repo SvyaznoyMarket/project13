@@ -184,15 +184,6 @@ module.exports = function (grunt, options) {
                 srcRoot: '/js',
                 cwd: 'web/js'
         },
-
-        serviceHa: {
-            src: ['dev/service_ha/*.js'],
-                dest: 'prod/service_ha.js',
-                destMap: 'prod/service_ha.js.map',
-                srcRoot: '/js',
-                cwd: 'web/js'
-        },
-
         supplier: {
             src: ['dev/supplier/*.js'],
             dest: 'prod/supplier.js',

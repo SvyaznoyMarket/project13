@@ -5,25 +5,6 @@ namespace View\Content;
 class IndexPage extends \View\DefaultLayout {
     protected $layout  = 'layout-oneColumn';
 
-    public function prepare() {
-        if ((bool)$this->getParam('token') && in_array($this->getParam('token'), ['service_ha', 'services_ha'])) {
-            $this->addJavascript('/js/prod/service_ha.js');
-        }
-
-        // breadcrumbs
-        if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = array(
-                array(
-                    'name' => 'Помощь пользователю',
-                    'url' => null,
-                    ),
-            );
-
-
-            $this->setParam('breadcrumbs', $breadcrumbs);
-        }
-    }
-
     public function slotContent() {
         return $this->render('content/page-index', $this->params);
     }

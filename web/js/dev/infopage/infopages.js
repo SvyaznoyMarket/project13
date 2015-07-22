@@ -207,20 +207,18 @@ $(document).ready(function(){
 
 	/* Credits inline */
 	if ( $('.bCreditLine').length ) {
-		document.getElementById('requirementsFullInfoHref').style.cursor = 'pointer';
-
-		$('#requirementsFullInfoHref').bind('click', function() {
-			$('.bCreditLine2').toggle();
-		});
+		document.getElementById('requirementsFullInfoHref').style.cursor = 'pointer'; // TODO перенести в css в scms
 
 		var creditOptions = $('#creditOptions').data('value');
 		var bankInfo = $('#bankInfo').data('value');
 		var relations = $('#relations').data('value');
 
-		for ( var i = 0; i < creditOptions.length; i++){
-			var creditOption = creditOptions[i];
+		if (creditOptions) {
+			for ( var i = 0; i < creditOptions.length; i++){
+				var creditOption = creditOptions[i];
 
-			$('<option>').val(creditOption.id).text(creditOption.name).appendTo('#productSelector');
+				$('<option>').val(creditOption.id).text(creditOption.name).appendTo('#productSelector');
+			}
 		}
 
 		$('#productSelector').change(function() {

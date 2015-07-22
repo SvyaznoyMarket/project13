@@ -152,11 +152,6 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'watch3d.min.js'
         },
 
-        serviceHaJS: {
-            src: pathDev + 'service_ha/*.js',
-            dest: pathProd + 'service_ha.min.js'
-        },
-
         supplier: {
             src: pathDev + 'supplier/*.js',
             dest: pathProd + 'supplier.min.js'

@@ -118,19 +118,6 @@ $c->reviewsStore['retryTimeout'] = [
     'huge'    => 2,
 ];
 
-$c->wordpress['url'] = 'http://content.enter.ru/';
-$c->wordpress['timeout'] = 2;
-$c->wordpress['throwException'] = true;
-$c->wordpress['retryCount'] = 2;
-$c->wordpress['retryTimeout'] = [
-    'default' => 0.3,
-    'tiny'    => 0.1,
-    'short'   => 0.2,
-    'medium'  => 0.3,
-    'long'    => 0.5,
-    'huge'    => 1,
-];
-
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
 $c->dataStore['timeout'] = 2;
 $c->dataStore['retryCount'] = 2;
