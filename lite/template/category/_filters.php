@@ -181,6 +181,12 @@
             </div>
         <? endif ?>
 
+        <div class="fltrBtn_kit fltrBtn_kit-nborder">
+            <div class="js-category-filter-selected">
+                <?= $helper->render('category/filters/selected.filters', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
+            </div>
+        </div>
+
     </form>
 </div>
 <!-- фильтр "Бренды и параметры" -->

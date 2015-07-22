@@ -64,6 +64,8 @@ $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager
                     'productFilter' => $productFilter,
                 ]) ?>
 
+                <?= $helper->renderWithMustache('category/filters/selected.filters') ?>
+
                 <!-- сортировка -->
                 <div class="sorting sorting-top js-category-sortingAndPagination">
 
@@ -105,4 +107,8 @@ $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager
 
 <script type="text/plain" id="js-pagination-template">
     <?= file_get_contents(\App::config()->templateDir . '/category/list/pagination.mustache') ?>
+</script>
+
+<script type="text/plain" id="js-list-selected-filter-template">
+    <?= file_get_contents(\App::config()->templateDir . '/category/filters/selected.filters.mustache') ?>
 </script>

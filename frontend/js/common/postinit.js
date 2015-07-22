@@ -63,6 +63,15 @@
         modules.require('enter.region', function(){})
     }
 
+    // Информация о пользователе
+    modules.require('enter.user', function(data){
+        if (data.user && data.user.id) {
+            d.querySelector('.js-userbar-user-link').href = '/private';
+            d.querySelector('.js-userbar-user-text').innerHTML = data.user.name;
+            d.querySelector('.js-userbar-user').classList.add('active');
+        }
+    });
+
     // Обработчик popup-ов
     modules.require(
         ['jQuery'],

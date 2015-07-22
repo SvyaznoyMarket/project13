@@ -70,7 +70,7 @@
 
     // Импортируем в глобальную область
     modules.require('library.docCookies', function(dc){
-        this.docCookies = dc;
+        window.docCookies = dc;
     });
 
 }();

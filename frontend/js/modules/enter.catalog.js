@@ -37,8 +37,8 @@
              * Используемые CSS классы
              *
              * @private
-             * @static
-             * @type  {Object}
+             * @constant
+             * @type        {Object}
              */
             CSS_CLASSES = {
                 DROPDOWN: 'js-category-v2-filter-dropBox',
@@ -62,8 +62,6 @@
              * @constructs  CatalogFilterView
              */
             initialize: function( options ) {
-                console.info('CatalogFilterView initialized');
-
                 this.catalogView = options.catalogView;
                 this.sliders     = this.$el.find('.' + CSS_CLASSES.RANGE_SLIDER);
                 this.brands      = this.$el.find('.' + CSS_CLASSES.BRANDS);
@@ -337,10 +335,14 @@
  * @version     0.1
  *
  * @requires    jQuery
+ * @requires    Mustache
+ * @requires    library
  * @requires    enter.BaseViewClass
  * @requires    enter.catalog.filter
  * @requires    urlHelper
  * @requires    history
+ * @requires    jquery.replaceWithPush
+ * @requires    jquery.update
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
@@ -350,6 +352,7 @@
         [
             'jQuery',
             'Mustache',
+            'library',
             'enter.BaseViewClass',
             'enter.catalog.filter',
             'urlHelper',
@@ -361,7 +364,7 @@
     );
 }(
     this.modules,
-    function( provide, $, mustache, BaseViewClass, FilterView, urlHelper, History, replaceWithPush, jUpdate ) {
+    function( provide, $, mustache, library, BaseViewClass, FilterView, urlHelper, History, replaceWithPush, jUpdate ) {
         'use strict';
 
         var
@@ -369,25 +372,37 @@
              * Используемые CSS классы
              *
              * @private
-             * @static
-             * @type  {Object}
+             * @constant
+             * @type        {Object}
              */
             CSS_CLASSES = {
                 CATALOG_WRAPPER: 'js-catalog-wrapper',
                 SORTING: 'js-category-sorting-item',
-                INF_SCROLL: 'js-category-pagination-infinity',
+                PAGINATION_BTN: 'js-category-pagination-paging',
+                INF_SCROLL_BTN: 'js-category-pagination-infinity',
                 INF_SCROLL_ACTIVE: 'act',
                 SORTING_ACTIVE: 'act',
                 CATALOG_FILTER: 'js-category-filter',
                 PAGINATION_WRAPPER: 'js-category-pagination',
                 PAGINATION: 'js-category-pagination-page',
-                PAGINATION_ACTIVE: 'act'
+                PAGINATION_ACTIVE: 'act',
+                SELECTED_FILTERS_WRAPPER: 'js-category-filter-selected'
             },
 
+            /**
+             * Используемые шаблоны
+             *
+             * @private
+             * @constant
+             * @type        {Object}
+             */
             TEMPLATES = {
                 LISTING_ITEM: $('#js-list-item-template').html(),
-                PAGINATION: $('#js-pagination-template').html()
-            };
+                PAGINATION: $('#js-pagination-template').html(),
+                SELECTED_FILTERS: $('#js-list-selected-filter-template').html()
+            },
+
+            INF_SCROLL_COOKIE = '1';
 
 
         provide(BaseViewClass.extend({
@@ -399,8 +414,6 @@
              * @constructs  CatalogView
              */
             initialize: function( options ) {
-                console.info('CatalogView initialized');
-
                 this.subViews = {
                     filterView: new FilterView({
                         el: this.$el.find('.' + CSS_CLASSES.CATALOG_FILTER),
@@ -410,18 +423,25 @@
                     wrapper: this.$el.find('.' + CSS_CLASSES.CATALOG_WRAPPER),
                     sortings: this.$el.find('.' + CSS_CLASSES.SORTING),
                     pagination: this.$el.find('.' + CSS_CLASSES.PAGINATION),
-                    infScroll: this.$el.find('.' + CSS_CLASSES.INF_SCROLL),
-                    paginationWrapper: this.$el.find('.' + CSS_CLASSES.PAGINATION_WRAPPER)
+                    paginationBtn: this.$el.find('.' + CSS_CLASSES.PAGINATION_BTN),
+                    infScrollBtn: this.$el.find('.' + CSS_CLASSES.INF_SCROLL),
+                    paginationWrapper: this.$el.find('.' + CSS_CLASSES.PAGINATION_WRAPPER),
+                    selectedFilters: this.$el.find('.' + CSS_CLASSES.SELECTED_FILTERS_WRAPPER)
                 };
 
                 // Init History
                 History.Adapter.bind(window, 'statechange', this.history.stateChange.bind(this));
 
-                // Setup events
-                this.events['click .' + CSS_CLASSES.SORTING]    = 'toggleSorting';
-                this.events['click .' + CSS_CLASSES.INF_SCROLL] = 'toggleInfinityScroll';
-                this.events['click .' + CSS_CLASSES.PAGINATION] = 'togglePage';
+                // Check infinity scroll
+                this.checkInfScroll();
 
+                // Setup events
+                this.events['click .' + CSS_CLASSES.SORTING]        = 'toggleSorting';
+                this.events['click .' + CSS_CLASSES.INF_SCROLL_BTN] = 'enableInfScroll';
+                this.events['click .' + CSS_CLASSES.PAGINATION_BTN] = 'disableInfScroll';
+                this.events['click .' + CSS_CLASSES.PAGINATION]     = 'togglePage';
+
+                // Apply events
                 this.delegateEvents();
             },
 
@@ -570,7 +590,11 @@
              */
             enableInfScroll: function() {
                 this.subViews.pagination.removeClass(CSS_CLASSES.PAGINATION_ACTIVE);
-                this.subViews.infScroll.addClass(CSS_CLASSES.INF_SCROLL_ACTIVE);
+                this.subViews.paginationBtn.show();
+                this.subViews.pagination.hide();
+                this.subViews.infScrollBtn.addClass(CSS_CLASSES.INF_SCROLL_ACTIVE);
+
+                window.docCookies.setItem('infScroll', INF_SCROLL_COOKIE, 4 * 7 * 24 * 60 * 60, '/' );
             },
 
             /**
@@ -580,26 +604,25 @@
              * @memberOf    module:enter.catalog~CatalogView#
              */
             disableInfScroll: function() {
-                this.subViews.infScroll.removeClass(CSS_CLASSES.INF_SCROLL_ACTIVE);
+                this.subViews.infScrollBtn.removeClass(CSS_CLASSES.INF_SCROLL_ACTIVE);
+                this.subViews.paginationBtn.hide();
+                this.subViews.pagination.show();
                 this.subViews.pagination.filter('[data-page="1"]').addClass(CSS_CLASSES.PAGINATION_ACTIVE);
+                this.updateListing(1);
+
+                window.docCookies.setItem('infScroll', 0, 4 * 7 * 24 * 60 * 60, '/' );
             },
 
             /**
-             * Переключение бесконечного скрола
+             * Проверка, включен ли бесконечный скролл
              *
-             * @method      toggleInfinityScroll
+             * @method      checkInfScroll
              * @memberOf    module:enter.catalog~CatalogView#
              */
-            toggleInfinityScroll: function() {
-                console.info('enter.catalog~CatalogView#toggleInfinityScroll');
-
-                if ( !this.subViews.infScroll.hasClass(CSS_CLASSES.INF_SCROLL_ACTIVE) ) {
+            checkInfScroll: function() {
+                if ( window.docCookies.getItem( 'infScroll' ) === INF_SCROLL_COOKIE ) {
                     this.enableInfScroll();
-                } else {
-                    this.disableInfScroll();
                 }
-
-                return false;
             },
 
             /**
@@ -638,6 +661,31 @@
             },
 
             /**
+             * Формирования урл с учетом номера страницы, выбранной сортировки и фильтров
+             *
+             * @method      createUrl
+             * @memberOf    module:enter.catalog~CatalogView#
+             *
+             * @param       {Number}      page  Номер страницы
+             *
+             * @return      {String}
+             */
+            createUrl: function( page ) {
+                var
+                    filterUrl = this.subViews.filterView.createFilterUrl(),
+                    sorting   = this.getActiveSorting();
+
+                if ( page && !_.isNumber(page) ) {
+                    page =  ''
+                }
+
+                return window.location.pathname + urlHelper.addParams(filterUrl, {
+                    sort: sorting,
+                    page: page
+                });
+            },
+
+            /**
              * Вызов обновления листинга.
              * Формирование нового URL с учетом фильтров и активной сортировки.
              * При передачи номера страницы, так же подставит и ее.
@@ -650,21 +698,30 @@
              */
             updateListing: function( page ) {
                 var
-                    filterUrl = this.subViews.filterView.createFilterUrl(),
-                    sorting   = this.getActiveSorting(),
-                    url       = '';
-
-                if ( page && !_.isNumber(page) ) {
-                    page =  ''
-                }
-
-                url = window.location.pathname + urlHelper.addParams(filterUrl, {
-                    sort: sorting,
-                    page: page
-                });
+                    url       = this.createUrl(page);
 
                 this.history.updateState(url);
                 this.subViews.wrapper.empty();
+
+                return false;
+            },
+
+            /**
+             * Загрузка следующей страницы листинга при включенном бесконечно скролле
+             *
+             * @method      loadNextPage
+             * @memberOf    module:enter.catalog~CatalogView#
+             */
+            loadNextPage: function() {
+                var
+                    url;
+
+                this.infScrollPage = (this.infScrollPage || 0) + 1;
+
+                url  = this.createUrl(this.infScrollPage)
+
+                console.info('enter.catalog~CatalogView#loadNextPage');
+                console.log(url);
 
                 return false;
             },
@@ -692,7 +749,11 @@
                         return mustache.render(TEMPLATES.PAGINATION, pagination);
                     },
 
-                    productsHtml, paginationHtml;
+                    renderSelectedFilters = function( selectedFilters ) {
+                        return mustache.render(TEMPLATES.SELECTED_FILTERS, selectedFilters);
+                    },
+
+                    productsHtml, paginationHtml, selectedFiltersHtml;
 
                 console.info('enter.catalog~CatalogView#render');
 
@@ -703,10 +764,13 @@
                     return;
                 }
 
-                productsHtml   = renderProducts(data.list.products);
-                paginationHtml = renderPagination(data.pagination);
+                productsHtml        = renderProducts(data.list.products);
+                paginationHtml      = renderPagination(data.pagination);
+                selectedFiltersHtml = renderSelectedFilters(data.selectedFilter);
 
                 this.subViews.paginationWrapper.replaceWithPush(paginationHtml);
+                this.subViews.selectedFilters.empty()
+                this.subViews.selectedFilters.html(selectedFiltersHtml);
                 this.subViews.pagination.update();
                 this.subViews.wrapper.html(productsHtml);
 
