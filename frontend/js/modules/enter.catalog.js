@@ -47,7 +47,10 @@
                 SLIDER: 'js-category-filter-rangeSlider-slider',
                 SLIDER_FROM: 'js-category-filter-rangeSlider-from',
                 SLIDER_TO: 'js-category-filter-rangeSlider-to',
-                SLIDER_TICK: 'js-slider-tick-wrapper'
+                SLIDER_TICK: 'js-slider-tick-wrapper',
+                BRANDS: 'js-category-v2-filter-otherBrands',
+                BRANDS_OPENER: 'js-category-v2-filter-otherBrandsOpener',
+                BRANDS_OPEN: 'open'
             };
 
         provide(BaseViewClass.extend({
@@ -63,11 +66,13 @@
 
                 this.catalogView = options.catalogView;
                 this.sliders     = this.$el.find('.' + CSS_CLASSES.RANGE_SLIDER);
+                this.brands      = this.$el.find('.' + CSS_CLASSES.BRANDS);
 
                 this.sliders.each(this.initSlider.bind(this));
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.DROPDOWN] = 'toggleDropdown';
+                this.events['click .' + CSS_CLASSES.DROPDOWN]      = 'toggleDropdown';
+                this.events['click .' + CSS_CLASSES.BRANDS_OPENER] = 'toggleBrands';
 
                 // Apply events
                 this.delegateEvents();
@@ -132,6 +137,22 @@
                 this.sliders.each(sortSliders);
 
                 return res;
+            },
+
+            /**
+             * Скрытие и открытие брендов
+             *
+             * @memberOf    module:enter.catalog.filter~CatalogFilterView#
+             * @method      toggleBrands
+             */
+            toggleBrands: function() {
+                if ( this.brands.hasClass(CSS_CLASSES.BRANDS_OPEN) ) {
+                    this.brands.removeClass(CSS_CLASSES.BRANDS_OPEN);
+                } else {
+                    this.brands.addClass(CSS_CLASSES.BRANDS_OPEN);
+                }
+
+                return false;
             },
 
             /**
@@ -642,7 +663,8 @@
                     page: page
                 });
 
-                this.history.updateState(url)
+                this.history.updateState(url);
+                this.subViews.wrapper.empty();
 
                 return false;
             },
@@ -676,6 +698,7 @@
 
                 // Validation
                 if ( !_.isObject(data) || !_.isObject(data.list) || !_.isArray(data.list.products) || !data.list.products.length ) {
+                    console.warn('Render empty listing');
                     // render error
                     return;
                 }
@@ -683,7 +706,6 @@
                 productsHtml   = renderProducts(data.list.products);
                 paginationHtml = renderPagination(data.pagination);
 
-                this.subViews.wrapper.empty();
                 this.subViews.paginationWrapper.replaceWithPush(paginationHtml);
                 this.subViews.pagination.update();
                 this.subViews.wrapper.html(productsHtml);
