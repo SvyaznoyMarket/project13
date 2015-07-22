@@ -14,6 +14,8 @@ class ProductButtonAction {
      * @param string|null $location
      * @param string $sender2
      * @param bool $useNewStyles
+     * @param \Model\Product\Entity[] $kitProducts
+     * @param \Model\Product\ShopState\Entity[] $shopStates
      * @return array
      */
     public function execute(
@@ -25,25 +27,26 @@ class ProductButtonAction {
         $location = null, // местоположение кнопки купить: userbar, product-card, ...
         $sender2 = '',
         $useNewStyles = false,
-        $inShowroomAsButton = true
+        $inShowroomAsButton = true,
+        array $shopStates = []
     ) {
         $colorClass = AbTest::getColorClass($product, $location);
 
         $data = [
-            'id'         => 'buyButton-' . $product->getId() . '-'. md5(json_encode([$location, isset($sender['position']) ? $sender['position'] : null])),
-            'disabled'   => false,
-            'url'        => null,
-            'value'      => null,
-            'inShopOnly' => false,
-            'class'      => \View\Id::cartButtonForProduct($product->getId()),
-            'onClick'    => $onClick,
-            'sender'     => $helper->json($sender),
-            'sender2'    => $sender2,
-            'productUi'  => $product->getUi(),
-            'colorClass' => $colorClass,
-            'location'   => $location,
+            'id'          => 'buyButton-' . $product->getId() . '-'. md5(json_encode([$location, isset($sender['position']) ? $sender['position'] : null])),
+            'disabled'    => false,
+            'url'         => null,
+            'value'       => null,
+            'inShopOnly'  => false,
+            'class'       => \View\Id::cartButtonForProduct($product->getId()),
+            'onClick'     => $onClick,
+            'sender'      => $helper->json($sender),
+            'sender2'     => $sender2,
+            'productUi'   => $product->getUi(),
+            'colorClass'  => $colorClass,
+            'location'    => $location,
             'inShowroomAsLabel' => false,
-            'data'       => [
+            'data'        => [
                 'productId' => $product->getId(),
                 'upsale'    => json_encode([
                     'url'        => $helper->url('product.upsale', ['productId' => $product->getId()]),
@@ -51,8 +54,26 @@ class ProductButtonAction {
                 ]),
                 'noUpdate'  => $noUpdate,
             ],
-            'divClass'  => 'btnBuy',
-            'surroundDiv' => true
+            'divClass'    => 'btnBuy',
+            'surroundDiv' => true,
+            'points' => array_map(function(\Model\Product\ShopState\Entity $shopState) use(&$helper) {
+                $shop = $shopState->getShop();
+                $subway = isset($shop->getSubway()[0]) ? $shop->getSubway()[0] : null;
+                return [
+                    'name' => $shop && $shop->getRegion() && $shop->getRegion()->getId() != \App::user()->getRegionId() ? $shop->getName() : $shop->getAddress(),
+                    'url' => $shop->getToken() ? $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) : null,
+                    'todayWorkingTime' => $shop->getWorkingTimeToday() ? [
+                        'from' => $shop->getWorkingTimeToday()['start_time'],
+                        'to' => $shop->getWorkingTimeToday()['end_time'],
+                    ] : null,
+                    'subway' => $subway ? [
+                        'name' => $subway->getName(),
+                        'line' => $subway->getLine() ? [
+                            'color' => $subway->getLine()->getColor(),
+                        ] : null,
+                    ] : null,
+                ];
+            }, $shopStates),
         ];
 
         if (!$product->getIsBuyable()) {

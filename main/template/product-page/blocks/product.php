@@ -5,7 +5,7 @@ use \Model\Product\Label;
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    $trustfactors, $videoHtml, $properties3D, $reviewsData, $creditData, $isKit, $buySender, $buySender2, $request, $favoriteProductsByUi
+    $trustfactors, $videoHtml, $properties3D, $reviewsData, $creditData, $isKit, $buySender, $buySender2, $request, $favoriteProductsByUi, $shopStates = []
 ){
 
     $coupon = $product->coupons ? $product->getBestCoupon() : null;
@@ -23,7 +23,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
 <div class="product-card clearfix">
 
         <!-- блок с фото -->
-        <?= $helper->render('product-page/blocks/photo', ['product' => $product, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D ]) ?>
+        <?= $helper->render('product-page/blocks/photo', ['product' => $product, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D, 'shopStates' => $shopStates]) ?>
 <!--/ блок с фото -->
 
 <!-- краткое описание товара -->
@@ -149,6 +149,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
             'noUpdate'  => true,
             'location' => 'product-card',
             'inShowroomAsButton' => false,
+            'shopStates' => $shopStates,
         ]) // Кнопка купить ?>
     </div>
 

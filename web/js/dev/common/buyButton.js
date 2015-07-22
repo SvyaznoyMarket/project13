@@ -72,6 +72,28 @@
         e.preventDefault();
 	});
 
+	$body.on('click', '.js-buyButton-points-opener', function(e){
+		e.preventDefault();
+
+		var
+			$points = $(e.currentTarget).closest('.js-buyButton-points'),
+			$pointsContent = $points.find('.js-buyButton-points-content')
+		;
+
+		$.enterLightboxMe.closeAll();
+
+		$pointsContent.enterLightboxMe({
+			centered: true,
+			closeSelector: '.js-buyButton-points-content-closer',
+			closeClick: true,
+			destroyOnClose: true,
+			preventScroll: true,
+			onClose: function() {
+				$points.prepend($pointsContent.hide());
+			}
+		});
+	});
+
 	// analytics
 	$body.on('addtocart', function(event, data){
 		var

@@ -771,18 +771,17 @@ $(function() {
         $popupPhotoThumbs.removeClass(thumbActiveClass)
             .eq($activeThumb.index()).addClass(thumbActiveClass);
         // и открываем popup
-        $imgPopup.lightbox_me({
+        $imgPopup.enterLightboxMe({
             centered: false,
             closeSelector: '.jsPopupCloser',
             modalCSS: {top: '0', left: '0'},
             closeClick: true,
+			preventScroll: true,
             onLoad: function() {
-                $('html').css({'overflow':'hidden'});
                 checkZoom();
             },
             onClose: function() {
                 setDefaultSetting();
-                $('html').css({'overflow':'auto'});
             }
         });
 
