@@ -17,8 +17,8 @@ $helper = \App::helper();
 <div class="delivery-page__info clearfix">
     <div class="delivery-region">
         <span class="delivery-region__msg">Ваш регион</span>
-        <span class="delivery-region__current"><?= \App::user()->getRegion()->getName() ?></span>
-        <a href="#" class="delivery-region__change-lnk"><span class="delivery-region__change-inn jsChangeRegion">Изменить регион</span></a>
+        <a class="delivery-region__current jsChangeRegion"><span class="delivery-region__current-inn"><?= \App::user()->getRegion()->getName() ?></span></a>
+        <a href="#deliv-free" class="delivery-free__lnk"><span class="delivery-free__inn">Бесплатный самовывоз</span></a>
     </div>
     <div class="deliv-ctrls">
     <!-- Поиск такой же как в одноклике -->
@@ -65,17 +65,11 @@ $helper = \App::helper();
                     </div>
                     <? endif ?>
                     <div class="deliv-item__addr-name"><?= $point->address ?></div>
-<!--                    <div class="deliv-item__time">--><?//= $point->workingTime ?><!--</div>-->
-
-
                 </div>
-                <!-- Ссылка Подробнее -->
-                <!--a href="" class="points-lst-i__more">Подробнее</a-->
             </li>
             <? endforeach ?>
         </ul>
         <div class="map-container" id="jsDeliveryMap"></div>
     </div>
-
     <?= $content ?>
 </div>
