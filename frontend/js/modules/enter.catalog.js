@@ -382,7 +382,8 @@
                 CATALOG_FILTER: 'js-category-filter',
                 PAGINATION_WRAPPER: 'js-category-pagination',
                 PAGINATION: 'js-category-pagination-page',
-                PAGINATION_ACTIVE: 'act'
+                PAGINATION_ACTIVE: 'act',
+                SELECTED_FILTERS_WRAPPER: 'js-category-filter-selected'
             },
 
             /**
@@ -394,7 +395,8 @@
              */
             TEMPLATES = {
                 LISTING_ITEM: $('#js-list-item-template').html(),
-                PAGINATION: $('#js-pagination-template').html()
+                PAGINATION: $('#js-pagination-template').html(),
+                SELECTED_FILTERS: $('#js-list-selected-filter-template').html()
             };
 
 
@@ -417,7 +419,8 @@
                     sortings: this.$el.find('.' + CSS_CLASSES.SORTING),
                     pagination: this.$el.find('.' + CSS_CLASSES.PAGINATION),
                     infScroll: this.$el.find('.' + CSS_CLASSES.INF_SCROLL),
-                    paginationWrapper: this.$el.find('.' + CSS_CLASSES.PAGINATION_WRAPPER)
+                    paginationWrapper: this.$el.find('.' + CSS_CLASSES.PAGINATION_WRAPPER),
+                    selectedFilters: this.$el.find('.' + CSS_CLASSES.SELECTED_FILTERS_WRAPPER)
                 };
 
                 // Init History
@@ -699,7 +702,11 @@
                         return mustache.render(TEMPLATES.PAGINATION, pagination);
                     },
 
-                    productsHtml, paginationHtml;
+                    renderSelectedFilters = function( selectedFilters ) {
+                        return mustache.render(TEMPLATES.SELECTED_FILTERS, selectedFilters);
+                    },
+
+                    productsHtml, paginationHtml, selectedFiltersHtml;
 
                 console.info('enter.catalog~CatalogView#render');
 
@@ -710,10 +717,13 @@
                     return;
                 }
 
-                productsHtml   = renderProducts(data.list.products);
-                paginationHtml = renderPagination(data.pagination);
+                productsHtml        = renderProducts(data.list.products);
+                paginationHtml      = renderPagination(data.pagination);
+                selectedFiltersHtml = renderSelectedFilters(data.selectedFilter);
 
                 this.subViews.paginationWrapper.replaceWithPush(paginationHtml);
+                this.subViews.selectedFilters.empty()
+                this.subViews.selectedFilters.html(selectedFiltersHtml);
                 this.subViews.pagination.update();
                 this.subViews.wrapper.html(productsHtml);
 
