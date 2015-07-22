@@ -23,8 +23,6 @@
 
     <?= $page->blockFooter() ?>
 
-    <?= $page->blockAuth() ?>
-
     <?= $page->slotBodyJavascript() ?>
 
     <?= $page->blockUserConfig() ?>
