@@ -500,7 +500,11 @@ class Action {
             $links[] = [
                 'name'          => isset($config['name']) ? $config['name'] : $child->getName(),
                 'url'           => $linkUrl,
-                'image'         => (!empty($config['image'])) ? $config['image'] : $child->getImageUrl('furniture' === $category_class ? 3 : 0),
+                'image'         => (!empty($config['image']))
+                    ? $config['image']
+                    : $child->getImageUrl('furniture' === $category_class || \App::config()->lite['enabled']
+                        ? 3
+                        : 0),
                 'css'           => isset($config['css']) ? $config['css'] : null,
                 'totalText'     => $totalText,
             ];
