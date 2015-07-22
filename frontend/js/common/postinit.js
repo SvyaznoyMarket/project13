@@ -4,7 +4,8 @@
 +function(d){
 
     var searchNode = d.querySelector('.jsKnockoutSearch'),
-        regionSelection = d.querySelector('.jsRegionSelection');
+        regionSelection = d.querySelector('.jsRegionSelection'),
+        moduleRequireOnClick = d.querySelectorAll('.js-module-require-onclick');
 
     // Debug-панель
     window.onload = function(){
@@ -36,6 +37,26 @@
                 }
             })
         })
+    }
+
+    // загрузка модулей по клику на элементах .js-module-require-onclick
+    if (moduleRequireOnClick) {
+        for (var i in moduleRequireOnClick) {
+            if (moduleRequireOnClick.hasOwnProperty(i) && typeof moduleRequireOnClick[i] == 'object'){
+                var moduleName =  moduleRequireOnClick[i].dataset.module;
+                if (moduleName) {
+                    (function(module, element) {
+                        moduleRequireOnClick[i].addEventListener('click', function(event){
+                            console.log('require module %s from ', module, element);
+                            event.preventDefault();
+                            modules.require(module, function(module){
+                                if (typeof module.init == 'function') module.init(element)
+                            })
+                        })
+                    })(moduleName, moduleRequireOnClick[i]);
+                }
+            }
+        }
     }
 
     if (document.cookie.match(/geoshop=(\d+)/) === null || !document.cookie.match(/geoshop=(\d+)/)[1]) {

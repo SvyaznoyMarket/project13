@@ -1,5 +1,15 @@
+<?
+/**
+ * @var $page \View\LiteLayout
+ */
+
+if (!isset($redirect)) $redirect = null;
+$oauthEnabled = \App::config()->oauthEnabled;
+?>
+
 <!-- попап авторизации/регистрации -->
 <div class="popup popup_log js-popup-login">
+
     <div class="popup__close js-popup-close">&#215;</div>
 
     <div class="popup__content">
@@ -9,9 +19,12 @@
             если нажали на "забыли?(пароль)" - меняем класс на login_hint
             если действие совершено успешно, то !добавляем! класс login_success
         -->
-        <div class="login login_auth">
+        <div class="login login_auth js-auth-state">
             <!-- авторизация -->
-            <form class="form form_auth" action="" method="">
+            <form class="form form_auth js-auth-form" action="<?= $page->url('user.login') ?>" method="post">
+
+                <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
+
                 <div class="popup__title">Вход в Enter</div>
 
                 <div class="form__field">
@@ -19,15 +32,15 @@
                         если поле заполнено символами, то добавлем класс valid
                         если ошибка - error
                     -->
-                    <input type="text" class="form__it it error" value="">
+                    <input type="text" class="form__it it error" name="signin[username]" value="">
                     <label class="form__placeholder placeholder">Email или телефон</label>
                 </div>
 
                 <div class="form__field">
-                    <input type="text" class="form__it it" value="">
+                    <input type="password" class="form__it it" name="signin[password]" value="">
                     <label class="form__placeholder placeholder">Пароль</label>
 
-                    <a href="" class="form__it-btn">забыли?</a>
+                    <a href="" class="form__it-btn js-auth-switch-state" data-state="login_hint">забыли?</a>
                 </div>
 
                 <div class="form__field">
@@ -37,9 +50,23 @@
                 <div class="form__title">Войти через</div>
 
                 <ul class="login-external">
-                    <li class="login-external__item"><a href="" class="login-external__link login-external__link_fb"></a></li>
-                    <li class="login-external__item"><a href="" class="login-external__link login-external__link_vk"></a></li>
-                    <li class="login-external__item"><a href="" class="login-external__link login-external__link_od"></a></li>
+                    <? if ($oauthEnabled['facebook']): ?>
+                        <li class="login-external__item">
+                            <a href="<?= $page->url('user.login.external', ['providerName' => 'facebook']) ?>"
+                               class="login-external__link login-external__link_fb">
+
+                            </a>
+                        </li>
+                    <? endif ?>
+                    <? if ($oauthEnabled['vkontakte']): ?>
+                        <li class="login-external__item">
+                            <a href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte']) ?>"
+                               class="login-external__link login-external__link_vk">
+
+                            </a>
+                        </li>
+                    <? endif ?>
+<!--                    <li class="login-external__item"><a href="" class="login-external__link login-external__link_od"></a></li>-->
                 </ul>
             </form>
             <!--/ авторизация -->
@@ -116,7 +143,7 @@
             <!-- восстановление пароля -->
         </div>
 
-        <div class="login-switch"><a href="" class="dotted">Регистрация</a></div>
+        <div class="login-switch js-auth-switch-state" data-state="login_reg"><a href="" class="dotted">Регистрация</a></div>
     </div>
 </div>
 <!--/ попап авторизации/регистрации -->
