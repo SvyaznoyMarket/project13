@@ -376,7 +376,8 @@
             CSS_CLASSES = {
                 CATALOG_WRAPPER: 'js-catalog-wrapper',
                 SORTING: 'js-category-sorting-item',
-                INF_SCROLL: 'js-category-pagination-infinity',
+                PAGINATION_BTN: 'js-category-pagination-paging',
+                INF_SCROLL_BTN: 'js-category-pagination-infinity',
                 INF_SCROLL_ACTIVE: 'act',
                 SORTING_ACTIVE: 'act',
                 CATALOG_FILTER: 'js-category-filter',
@@ -418,7 +419,8 @@
                     wrapper: this.$el.find('.' + CSS_CLASSES.CATALOG_WRAPPER),
                     sortings: this.$el.find('.' + CSS_CLASSES.SORTING),
                     pagination: this.$el.find('.' + CSS_CLASSES.PAGINATION),
-                    infScroll: this.$el.find('.' + CSS_CLASSES.INF_SCROLL),
+                    paginationBtn: this.$el.find('.' + CSS_CLASSES.PAGINATION_BTN),
+                    infScrollBtn: this.$el.find('.' + CSS_CLASSES.INF_SCROLL),
                     paginationWrapper: this.$el.find('.' + CSS_CLASSES.PAGINATION_WRAPPER),
                     selectedFilters: this.$el.find('.' + CSS_CLASSES.SELECTED_FILTERS_WRAPPER)
                 };
@@ -427,9 +429,10 @@
                 History.Adapter.bind(window, 'statechange', this.history.stateChange.bind(this));
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.SORTING]    = 'toggleSorting';
-                this.events['click .' + CSS_CLASSES.INF_SCROLL] = 'toggleInfinityScroll';
-                this.events['click .' + CSS_CLASSES.PAGINATION] = 'togglePage';
+                this.events['click .' + CSS_CLASSES.SORTING]        = 'toggleSorting';
+                this.events['click .' + CSS_CLASSES.INF_SCROLL_BTN] = 'enableInfScroll';
+                this.events['click .' + CSS_CLASSES.PAGINATION_BTN] = 'disableInfScroll';
+                this.events['click .' + CSS_CLASSES.PAGINATION]     = 'togglePage';
 
                 // Apply events
                 this.delegateEvents();
@@ -580,7 +583,9 @@
              */
             enableInfScroll: function() {
                 this.subViews.pagination.removeClass(CSS_CLASSES.PAGINATION_ACTIVE);
-                this.subViews.infScroll.addClass(CSS_CLASSES.INF_SCROLL_ACTIVE);
+                this.subViews.paginationBtn.show();
+                this.subViews.pagination.hide();
+                this.subViews.infScrollBtn.addClass(CSS_CLASSES.INF_SCROLL_ACTIVE);
             },
 
             /**
@@ -590,26 +595,15 @@
              * @memberOf    module:enter.catalog~CatalogView#
              */
             disableInfScroll: function() {
-                this.subViews.infScroll.removeClass(CSS_CLASSES.INF_SCROLL_ACTIVE);
+                this.subViews.infScrollBtn.removeClass(CSS_CLASSES.INF_SCROLL_ACTIVE);
+                this.subViews.paginationBtn.hide();
+                this.subViews.pagination.show();
                 this.subViews.pagination.filter('[data-page="1"]').addClass(CSS_CLASSES.PAGINATION_ACTIVE);
+                this.updateListing(1);
             },
 
-            /**
-             * Переключение бесконечного скрола
-             *
-             * @method      toggleInfinityScroll
-             * @memberOf    module:enter.catalog~CatalogView#
-             */
-            toggleInfinityScroll: function() {
-                console.info('enter.catalog~CatalogView#toggleInfinityScroll');
+            checkInfScroll: function() {
 
-                if ( !this.subViews.infScroll.hasClass(CSS_CLASSES.INF_SCROLL_ACTIVE) ) {
-                    this.enableInfScroll();
-                } else {
-                    this.disableInfScroll();
-                }
-
-                return false;
             },
 
             /**
