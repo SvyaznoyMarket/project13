@@ -1,26 +1,31 @@
+/**
+ * Compile LESS files to CSS.
+ *
+ * @see  {@link https://github.com/gruntjs/grunt-contrib-less}
+ */
 module.exports = {
 
     // компиляция LESS
     compileLite: {
         options: {
-            paths: ['css/'],
+            paths: ['<%= paths.lessRoot %>'],
             sourceMapURL: '/public/css/global.css.map',
             sourceMapRootpath: '/frontend',
             sourceMap: true
         },
         files: {
-            '../web/public/css/global.css': ['css/global.less']
+            '<%= paths.lessProd %>/global.css': ['<%= paths.lessRoot %>/global.less']
         }
     },
 
     // компиляция и минификация LESS
     compressLite: {
         options: {
-            paths: ['frontend/css/'],
+            paths: ['<%= paths.lessRoot %>'],
             compress: true
         },
         files: {
-            '../web/public/css/global.min.css': ['css/global.less']
+            '<%= paths.lessProd %>/global.min.css': ['<%= paths.lessRoot %>/global.less']
         }
     }
 

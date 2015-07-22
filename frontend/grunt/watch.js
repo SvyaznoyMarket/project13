@@ -1,21 +1,17 @@
+/**
+ * Run predefined tasks whenever watched file patterns are added, changed or deleted.
+ *
+ * @see {@link https://github.com/gruntjs/grunt-contrib-watch}
+ */
 module.exports = function () {
 
     return {
 
         stylesLite: {
-            files: ['css/*.less', 'css/**/*.less'],
+            files: ['<%= paths.lessRoot %>/*.less', '<%= paths.lessRoot %>/**/*.less'],
             tasks: ['less:compileLite', 'less:compressLite']
-        },
-
-        uglify: {
-            files: ['js/*', 'js/**/*', '!js/plugins/*'],
-            tasks: ['uglify:compress']
-        },
-
-        uglifyPlugins: {
-            files: ['js/plugins/*.js'],
-            tasks: ['uglify:compressPlugins']
         }
+
     }
 
 };
