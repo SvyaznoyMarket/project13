@@ -73,8 +73,8 @@
 
         <? if ($brandFilter1): ?>
             <!-- бренды -->
-            <div class="fltrBtn_kit fltrBtn_kit-brands fltrBtn_kit--mark <?= $hasSelectedOtherBrands ? 'open' : '' ?>">
-                <div class="fltrBtn_tggl fltrBtn_kit_l">
+            <div class="fltrBtn_kit fltrBtn_kit-brands fltrBtn_kit--mark js-category-v2-filter-otherBrands <?= $hasSelectedOtherBrands ? 'open' : '' ?>">
+                <div class="fltrBtn_tggl fltrBtn_kit_l js-category-v2-filter-otherBrandsOpener">
                     <i class="fltrBtn_tggl_corner icon-corner"></i>
                     <span class="dotted"><?= $brandFilter1->getName() ?></span>
                 </div>

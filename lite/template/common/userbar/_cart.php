@@ -1,7 +1,7 @@
 <div class="header__side header-cart table-cell js-module-require" <? if (\App::user() && \App::user()->getCart()->count()) : ?>data-module="enter.cart"<? endif ?> >
 
     <div class="notice-show jsKnockoutCart">
-        <a href="" title="">
+        <a href="<?= \App::router()->generate('cart') ?>" title="">
             <i class="header-cart__icon i-controls i-controls--cart"><span class="header-cart__count disc-count" style="display: none" data-bind="text: getProductQuantity, visible: getProductQuantity"></span></i>
             <span class="header-cart__text">Корзина</span>
         </a>
