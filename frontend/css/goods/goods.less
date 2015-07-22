@@ -68,6 +68,11 @@
         .goods__item {
             height: 378px;
             padding: 15px;
+            &:hover {
+                .btn-primary {
+                    .inline-block();
+                }
+            }
         }
         .goods__img {
             line-height: 200px;
@@ -77,6 +82,9 @@
                 max-width: 200px;
                 max-height: 200px;
             }
+        }
+        .btn-primary {
+            display: none;
         }
     }
     // грид картинок

@@ -22,16 +22,18 @@
         <!--<div class="sticker sticker_info">Товар со склада</div>-->
     </a>
 
-    {{#review}}
+
     <div class="goods__rating rating">
-        <span class="rating-state">
-        {{#stars}}
-        <i class="rating-state__item rating-state__item_1 icon-rating {{#show}}rating-state__item_fill{{/show}}"></i>
-        {{/stars}}
-        </span>
-        <span class="rating-count">({{count}})</span>
+        {{#review}}
+            <span class="rating-state">
+            {{#stars}}
+            <i class="rating-state__item rating-state__item_1 icon-rating {{#show}}rating-state__item_fill{{/show}}"></i>
+            {{/stars}}
+            </span>
+            <span class="rating-count">({{count}})</span>
+        {{/review}}
     </div>
-    {{/review}}
+
 
     <div class="goods__name">
         <div class="goods__name-inn">
