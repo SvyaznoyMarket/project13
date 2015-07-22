@@ -1,0 +1,217 @@
+.cart {
+    width: 100%;
+    &__cell {
+        padding: 10px;
+
+        vertical-align: middle;
+
+        border-bottom: 1px solid @grey-light-3;
+    }
+    &__image {
+        width: 70px;
+        height: 70px;
+        .image {
+            max-width: 70px;
+            max-height: 70px;
+        }
+    }
+    &__product-name {
+        font-size: 1.3333em;
+
+        overflow: hidden;
+
+        height: 46px;
+        margin-bottom: 10px;
+    }
+    &__product-price {
+        font-family: 'GloberRegular';
+        font-size: 1.6666em;
+
+        color: @grey-type;
+    }
+    &__summ {
+        font-family: 'GloberRegular';
+        font-size: 1.8333em;
+
+        text-align: right;
+        width: 130px;
+    }
+    &__counter {
+    	width: 160px;
+    }
+    &__delete {
+        font-family: 'GloberRegular';
+        font-size: 1.1666em;
+
+        position: relative;
+
+        margin: 10px 0 0 15px;
+
+        color: @grey-type;
+
+        .inline-block();
+        &:before {
+            width: 17px;
+            height: 17px;
+            margin-right: 5px;
+
+            content: '';
+
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAQAAABuW59YAAAAMElEQVR4AWP4f/x/IQMY/C/8fxxE/P9fCuSUAmmgBISxBSwIAWDOFhALTRZNL5rJAEsVNvMUGYjyAAAAAElFTkSuQmCC') @grey-light-2 no-repeat 50% 50%;
+
+            .rounded(50%);
+            .inline-block();
+        }
+        &:hover {
+            color: @grey-type;
+            &:before {
+                background-color: @grey-light;
+            }
+        }
+    }
+}
+
+.cart-summ {
+    padding: 15px 10px 10px;
+
+    text-align: right;
+
+    border-bottom: 1px solid @grey-light-3;
+    &__title {
+        font-size: 1.3333em;
+    }
+    &__price {
+        font-size: 2em;
+    }
+}
+
+.cart-order {
+    padding: 10px 0;
+
+    border-bottom: 1px solid @grey-light-3;
+
+    .clearfix();
+    &__back {
+        float: left;
+    }
+    &__back-link {
+        font-family: 'GloberRegular';
+        font-size: 1.1666em;
+
+        margin: 10px 0 0;
+
+        color: @grey-type;
+
+        .inline-block();
+        &:before {
+            width: 7px;
+            height: 11px;
+            margin: 3px 5px 0 0;
+
+            content: '';
+
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAALCAQAAAAZmV8jAAAAU0lEQVR4AWMAgQamFv8GNhALwpVriU1jhXJCmdv8mtURckKt9Q1ccG5bcpsfAwK09wCNQYDWJFRZwba6Pk44N5S52a9ZFUm+Q64jKo0VWT4AYhwAxPMUdQdX+9kAAAAASUVORK5CYII=');
+
+            .inline-block();
+        }
+    }
+    &__btn {
+        float: right;
+        .btn-primary {
+            padding: 0 50px;
+        }
+    }
+}
+
+.counter {
+    font-family: 'GloberRegular';
+    font-size: 1.5em;
+    line-height: 30px;
+
+    color: @grey-type;
+
+    .clearfix();
+    &__btn {
+        font-family: 'GloberRegular';
+        font-size: 1.5em;
+        line-height: 30px;
+
+        position: relative;
+
+        float: left;
+
+        width: 30px;
+        height: 30px;
+
+        color: @grey-type;
+        border: 1px solid @grey-light-2;
+        background: @white;
+        &:after {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            width: 12px;
+            height: 2px;
+            margin-top: -1px;
+            margin-left: -6px;
+
+            content: '';
+
+            background: @grey-type;
+        }
+        &_plus {
+            &:before {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+
+                width: 2px;
+                height: 12px;
+                margin-top: -6px;
+                margin-left: -1px;
+
+                content: '';
+
+                background: @grey-type;
+            }
+        }
+        &:hover:not(.disabled) {
+            background: @grey-light-4;
+        }
+        &:active:not(.disabled) {
+            background: @grey-light-3;
+        }
+        &.disabled {
+            cursor: default;
+            &:before ,
+            &:after {
+                background: @grey-light-2;
+            }
+        }
+    }
+    &__it {
+        line-height: 30px;
+
+        float: left;
+
+        width: 45px;
+        height: 30px;
+        padding: 0;
+
+        text-align: center;
+
+        color: @grey-type;
+        border: none;
+        border-top: 1px solid @grey-light-2;
+        border-bottom: 1px solid @grey-light-2;
+        background: @white;
+    }
+    &__num {
+        float: left;
+
+        margin-left: 5px;
+
+        color: @grey-type;
+    }
+}
