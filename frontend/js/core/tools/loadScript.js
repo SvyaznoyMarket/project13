@@ -8,13 +8,13 @@
     modules.define(
         'loadScript',
         [],
-        module.bind(window, document, modules)
+        module
     );
 }(
     this,
     this.document,
     this.modules,
-    function( window, document, modules, provide ) {
+    function( provide ) {
         'use strict';
 
         provide(function( url, callback ) {

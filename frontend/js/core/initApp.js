@@ -24,7 +24,7 @@
         /**
          * Расширяем стандартные функции YM Modules
          */
-        extendModules = function( loadModule ) {
+        extendModules = function( enterModules, loadModule ) {
             modules.setOptions({
                 loadModules: loadModule,
                 findDep: function( dep ) {
@@ -34,7 +34,9 @@
             });
         };
 
-    modules.require(['loadModule'], extendModules);
+    // загружаем 'enter.modules' только для того чтобы сразу объявить все модули.
+    // Не очень кошерно, на самом деле
+    modules.require(['enter.modules', 'loadModule'], extendModules);
 
     /**
      * Запрос модулей для инициализации приложения
