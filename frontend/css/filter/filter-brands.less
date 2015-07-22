@@ -193,9 +193,9 @@
         // кнопка - ещё бренды
         &-btn {
             font-size: 1.1666em;
+            line-height: 33px;
 
             margin-right: 0;
-            line-height: 33px;
 
             color: grey;
             border-style: dashed;
@@ -550,6 +550,23 @@
             width: 100%;
             max-height: 250px;
             padding: 15px 10px 5px 10px;
+        }
+    }
+}
+
+.fltrBtn_kit-brands {
+    &__more {
+        display: none;
+    }
+    &.open {
+        .fltrBtn_kit-brands__more {
+            display: inline;
+        }
+        .fltrBtn_kit-brands__btn-more {
+            display: none;
+        }
+        .fltrBtn_tggl_corner:before {
+            content: '\e800';
         }
     }
 }

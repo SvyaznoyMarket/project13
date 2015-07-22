@@ -73,7 +73,7 @@
 
         <? if ($brandFilter1): ?>
             <!-- бренды -->
-            <div class="fltrBtn_kit fltrBtn_kit--mark">
+            <div class="fltrBtn_kit fltrBtn_kit-brands fltrBtn_kit--mark <?= $hasSelectedOtherBrands ? 'open' : '' ?>">
                 <div class="fltrBtn_tggl fltrBtn_kit_l">
                     <i class="fltrBtn_tggl_corner icon-corner"></i>
                     <span class="dotted"><?= $brandFilter1->getName() ?></span>
@@ -85,15 +85,14 @@
                     <?= $helper->render('category/filters/_brand', ['productFilter' => $productFilter, 'filter' => $brandFilter1]) ?>
 
                     <? if ($brandFilter2 && count($brandFilter2->getOption())): ?>
-                        <a href="#" class="fltrBtn_btn fltrBtn_btn-btn js-category-v2-filter-otherBrandsOpener"
-                           <? if ($hasSelectedOtherBrands): ?>style="display: none;"<? endif ?>>
+                        <a href="#" class="fltrBtn_btn fltrBtn_btn-btn fltrBtn_kit-brands__btn-more js-category-v2-filter-otherBrandsOpener">
                             <span class="dotted">Ещё <?= count($brandFilter2->getOption()) ?></span>
                         </a>
                     <? endif ?>
 
                     <? if ($brandFilter2): ?>
                     <!-- больше брендов -->
-                    <span class="js-category-v2-filter-otherBrands" style="display: <?= $hasSelectedOtherBrands ? 'inline' : 'none' ?>;">
+                    <span class="fltrBtn_kit-brands__more js-category-v2-filter-otherBrands">
                         <?= $helper->render('category/filters/_brand', ['productFilter' => $productFilter, 'filter' => $brandFilter2]) ?>
                     </span>
                     <!--/ больше брендов -->
@@ -116,7 +115,7 @@
                             <ul class="fltrBtnBox_dd_inn lstdotted js-category-v2-filter-dropBox-content">
                                 <? foreach ($priceFilter->getPriceRanges() as $range): ?>
                                     <li class="lstdotted_i">
-                                        <a class="lstdotted_lk js-category-v2-filter-price-link" href="<?= $helper->escape($range['url']) ?>">
+                                        <a class="lstdotted_lk dotted js-category-v2-filter-price-link" href="<?= $helper->escape($range['url']) ?>">
                                             <? if (isset($range['from'])): ?>
                                                 <span class="txmark1">от</span> <?= $helper->formatPrice($range['from']) ?>
                                             <? endif ?>
