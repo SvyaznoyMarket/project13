@@ -109,11 +109,6 @@ module.exports = {
         dest: '<%= pathProd %>watch3d.js'
     },
 
-    serviceHaJS : {
-        src: ['<%= pathDev %>service_ha/*.js'],
-        dest: '<%= pathProd %>service_ha.js'
-    },
-
     supplier: {
         src: ['<%= pathDev %>supplier/*.js'],
         dest: '<%= pathProd %>supplier.js'

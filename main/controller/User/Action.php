@@ -688,10 +688,15 @@ class Action {
         \App::logger()->info(['action' => __METHOD__, 'request.request' => $request->request->all()], ['user']);
 
         $content = null;
-        \App::contentClient()->addQuery('reg_corp_user_cont', [],
+
+        $scmsClient = \App::scmsClient();
+        $scmsClient->addQuery(
+            'api/static-page',
+            ['token' => ['reg_corp_user_cont']],
+            [],
             function($data) use (&$content) {
-                if (!empty($data['content'])) {
-                    $content = $data['content'];
+                if (!empty($data['pages'][0]['content'])) {
+                    $content = $data['pages'][0]['content'];
                 }
             },
             function(\Exception $e) {
@@ -699,7 +704,8 @@ class Action {
                 \App::exception()->add($e);
             }
         );
-        \App::contentClient()->execute();
+
+        $scmsClient->execute();
 
         $form = new \View\User\CorporateRegistrationForm();
         if ($request->isMethod('post')) {

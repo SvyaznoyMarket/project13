@@ -115,12 +115,14 @@ class Action {
 
         $promoContent = '';
         if (!empty($catalogJson['promo_token'])) {
-            \App::contentClient()->addQuery(
-                trim((string)$catalogJson['promo_token']),
+            $scmsClient = \App::scmsClient();
+            $scmsClient->addQuery(
+                'api/static-page',
+                ['token' => [trim((string)$catalogJson['promo_token'])]],
                 [],
                 function($data) use (&$promoContent) {
-                    if (!empty($data['content'])) {
-                        $promoContent = $data['content'];
+                    if (!empty($data['pages'][0]['content'])) {
+                        $promoContent = $data['pages'][0]['content'];
                     }
                 },
                 function(\Exception $e) {
@@ -128,7 +130,8 @@ class Action {
                     \App::exception()->add($e);
                 }
             );
-            \App::contentClient()->execute();
+
+            $scmsClient->execute();
         }
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером

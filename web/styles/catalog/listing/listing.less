@@ -74,29 +74,30 @@
         margin-top: 23px;
         &__i{
             margin-bottom: 15px;
+            .clearfix();
         }
         &__name{
             font-size: 12px;
             color: #8c8c8c;
-            width: 200px;
+            width: 245px;
             padding-right: 20px;
             border-bottom: 1px dotted;
-            .inline-block();
+            float: left;
+            margin-bottom: -1px;
             &-wrap{
                 .inline-block();
                 background-color: #fff;
-                top: 3px;
+                top: 1px;
                 position: relative;
             }
         }
         &__val{
             font-size: 12px;
-            .inline-block(bottom);
+            display: block;
 
             top: 3px;
             position: relative;
             color: #363636;
-            max-width: 315px;
         }
     }
     &__info{
@@ -195,7 +196,7 @@
 .sorting-top{
     .lstn-type{
         &-btn{
-            padding: 3px 8px 3px 7px;
+            padding: 1px 8px 1px 24px;
             font-size: 12px;
             color: #363636;
             .inline-block();
@@ -204,42 +205,48 @@
             .rounded(2px);
             margin-right: 5px;
             cursor: pointer;
+            position: relative;
 
-            &.active,&:hover{
+            &.active, &:hover{
                 background-color: #363636;
                 color: #fff;
+            }
+
+            &__txt{
+                padding: 2px 0;
+                .inline-block(baseline);
             }
         }
         &__choose{
             float: left;
             margin-left: 35px;
         }
-        &--bar{
 
-        }
-        &--list{
-
-        }
         &-icon{
             font-family: "lst-type";
             font-style: normal;
             font-weight: normal;
-            .inline-block();
             text-decoration: inherit;
             width: 1em;
 
             text-align: center;
             font-variant: normal;
             text-transform: none;
-            line-height: 1em;
             margin-right: 5px;
             font-size: 16px;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            margin-top: -10px;
+
             &.bar{
-                margin-top: 1px;
+                
                 &:before { content: '\e801'; }
             }
             &.list{
-                &::before { content: '\e800'; }
+
+                &:before { content: '\e800'; }
             }
         }
     }

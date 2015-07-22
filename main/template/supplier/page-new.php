@@ -29,7 +29,7 @@
             <li class="suppliers-collab-list__i">новые возможности для вашего бизнеса;</li>
             <li class="suppliers-collab-list__i">доступ к крупным каналам продаж;</li>
             <li class="suppliers-collab-list__i">доставка по всей России;</li>
-            <li class="suppliers-collab-list__i">более 1000 точек самовывоза.</li>
+            <li class="suppliers-collab-list__i">более 3800 точек самовывоза.</li>
         </ul>
     </div>
 
