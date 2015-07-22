@@ -12,7 +12,6 @@ class IndexPage extends LiteLayout
     protected function prepare()
     {
         parent::prepare();
-        $this->addJavascript('/public/js/layouts/main.js');
     }
 
     /** Блок с рекомендациями
