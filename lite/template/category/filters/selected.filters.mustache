@@ -1,0 +1,36 @@
+{{#filters}}
+    <ul class="fltr_slctd">
+        <li class="fltr_slctd_i fltr_slctd_i-n">{{name}}:</li>
+
+        {{^isGroup}}
+            {{#links}}
+                <li class="fltr_slctd_i">
+                    <span>{{&name}}</span>
+                    <a class="btn-closer2 jsHistoryLink" href="{{url}}"></a>
+                </li>
+            {{/links}}
+        {{/isGroup}}
+
+        {{#isGroup}}
+            {{#properties}}
+                <li class="fltr_slctd_i">
+                    {{#name}}
+                        {{name}}
+                    {{/name}}
+
+                    {{#links}}
+                        <span>{{&name}}</span>
+                        <a class="btn-closer2 jsHistoryLink" href="{{url}}"></a>
+                    {{/links}}
+                </li>
+            {{/properties}}
+        {{/isGroup}}
+    </ul>
+{{/filters}}
+
+{{#filtersCount}}
+    <a class="fltr_clsr jsHistoryLink" href="{{cleanUrl}}">
+        <span class="btn-closer3"></span>
+        <span class="fltr_clr_tx">Очистить все</span>
+    </a>
+{{/filtersCount}}
