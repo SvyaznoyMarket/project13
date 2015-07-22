@@ -6,7 +6,7 @@
             $target = $('.js-show-fixed-userbar');
 
         $(window).on('scroll', function(){
-            if (!$target.visible()) {
+            if ($target.length && !$target.visible()) {
                 $userbar.fadeIn();
             } else {
                 $userbar.fadeOut();
