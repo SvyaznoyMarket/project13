@@ -336,6 +336,7 @@
  *
  * @requires    jQuery
  * @requires    Mustache
+ * @requires    library
  * @requires    enter.BaseViewClass
  * @requires    enter.catalog.filter
  * @requires    urlHelper
@@ -351,6 +352,7 @@
         [
             'jQuery',
             'Mustache',
+            'library',
             'enter.BaseViewClass',
             'enter.catalog.filter',
             'urlHelper',
@@ -362,7 +364,7 @@
     );
 }(
     this.modules,
-    function( provide, $, mustache, BaseViewClass, FilterView, urlHelper, History, replaceWithPush, jUpdate ) {
+    function( provide, $, mustache, library, BaseViewClass, FilterView, urlHelper, History, replaceWithPush, jUpdate ) {
         'use strict';
 
         var
@@ -398,7 +400,9 @@
                 LISTING_ITEM: $('#js-list-item-template').html(),
                 PAGINATION: $('#js-pagination-template').html(),
                 SELECTED_FILTERS: $('#js-list-selected-filter-template').html()
-            };
+            },
+
+            INF_SCROLL_COOKIE = '1';
 
 
         provide(BaseViewClass.extend({
@@ -427,6 +431,9 @@
 
                 // Init History
                 History.Adapter.bind(window, 'statechange', this.history.stateChange.bind(this));
+
+                // Check infinity scroll
+                this.checkInfScroll();
 
                 // Setup events
                 this.events['click .' + CSS_CLASSES.SORTING]        = 'toggleSorting';
@@ -586,6 +593,8 @@
                 this.subViews.paginationBtn.show();
                 this.subViews.pagination.hide();
                 this.subViews.infScrollBtn.addClass(CSS_CLASSES.INF_SCROLL_ACTIVE);
+
+                window.docCookies.setItem('infScroll', INF_SCROLL_COOKIE, 4 * 7 * 24 * 60 * 60, '/' );
             },
 
             /**
@@ -600,10 +609,20 @@
                 this.subViews.pagination.show();
                 this.subViews.pagination.filter('[data-page="1"]').addClass(CSS_CLASSES.PAGINATION_ACTIVE);
                 this.updateListing(1);
+
+                window.docCookies.setItem('infScroll', 0, 4 * 7 * 24 * 60 * 60, '/' );
             },
 
+            /**
+             * Проверка, включен ли бесконечный скролл
+             *
+             * @method      checkInfScroll
+             * @memberOf    module:enter.catalog~CatalogView#
+             */
             checkInfScroll: function() {
-
+                if ( window.docCookies.getItem( 'infScroll' ) === INF_SCROLL_COOKIE ) {
+                    this.enableInfScroll();
+                }
             },
 
             /**
@@ -642,6 +661,31 @@
             },
 
             /**
+             * Формирования урл с учетом номера страницы, выбранной сортировки и фильтров
+             *
+             * @method      createUrl
+             * @memberOf    module:enter.catalog~CatalogView#
+             *
+             * @param       {Number}      page  Номер страницы
+             *
+             * @return      {String}
+             */
+            createUrl: function( page ) {
+                var
+                    filterUrl = this.subViews.filterView.createFilterUrl(),
+                    sorting   = this.getActiveSorting();
+
+                if ( page && !_.isNumber(page) ) {
+                    page =  ''
+                }
+
+                return window.location.pathname + urlHelper.addParams(filterUrl, {
+                    sort: sorting,
+                    page: page
+                });
+            },
+
+            /**
              * Вызов обновления листинга.
              * Формирование нового URL с учетом фильтров и активной сортировки.
              * При передачи номера страницы, так же подставит и ее.
@@ -654,21 +698,30 @@
              */
             updateListing: function( page ) {
                 var
-                    filterUrl = this.subViews.filterView.createFilterUrl(),
-                    sorting   = this.getActiveSorting(),
-                    url       = '';
-
-                if ( page && !_.isNumber(page) ) {
-                    page =  ''
-                }
-
-                url = window.location.pathname + urlHelper.addParams(filterUrl, {
-                    sort: sorting,
-                    page: page
-                });
+                    url       = this.createUrl(page);
 
                 this.history.updateState(url);
                 this.subViews.wrapper.empty();
+
+                return false;
+            },
+
+            /**
+             * Загрузка следующей страницы листинга при включенном бесконечно скролле
+             *
+             * @method      loadNextPage
+             * @memberOf    module:enter.catalog~CatalogView#
+             */
+            loadNextPage: function() {
+                var
+                    url;
+
+                this.infScrollPage = (this.infScrollPage || 0) + 1;
+
+                url  = this.createUrl(this.infScrollPage)
+
+                console.info('enter.catalog~CatalogView#loadNextPage');
+                console.log(url);
 
                 return false;
             },
