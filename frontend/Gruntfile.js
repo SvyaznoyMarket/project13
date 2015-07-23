@@ -5,7 +5,11 @@ module.exports = function(grunt) {
         paths           = {};
 
     // Grunt tasks
-    paths.tasks       = path.resolve('grunt/tasks/');
+    paths.config      = path.resolve('./grunt/');
+    paths.tasks       = path.resolve('./grunt/tasks/');
+
+    // Temp directory
+    paths.temp        = path.resolve('./temp/');
 
     // Production root
     paths.prodRoot    = path.resolve('../web/public/');

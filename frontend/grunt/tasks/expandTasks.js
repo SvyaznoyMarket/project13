@@ -73,12 +73,10 @@ module.exports = function( grunt ) {
                 isPlugins    = !!(componentName === 'plugins'),
 
                 prodPath     = globalPaths.jsProd,
-                jsConcatFile = path.resolve(prodPath, componentName + '.js'),
                 jsMinFile    = path.resolve(prodPath, componentName + '.min.js'),
 
                 corePath     = globalPaths.core,
 
-                concat       = grunt.config.get('concat'),
                 uglify       = grunt.config.get('uglify'),
                 findModules  = grunt.config.get('findModules'),
                 watch        = grunt.config.get('watch'),
@@ -93,15 +91,12 @@ module.exports = function( grunt ) {
                 componentPath + '/*.js'
             );
 
-            /**
-             * ===============
-             * == CONCAT JS ==
-             * ===============
-             */
-            concat[componentName] = {
-                src: jsDirs,
-                dest: jsConcatFile
-            };
+            if ( isCore ) {
+                jsDirs.push(
+                    '!' + componentPath + '/vendor-to-shim/*.js',
+                    globalPaths.temp + '/*.js'
+                );
+            }
 
             /**
              * ===============
@@ -123,7 +118,7 @@ module.exports = function( grunt ) {
              * =====================
              */
             findModules[componentName] = {
-                src: jsConcatFile
+                src: jsMinFile
             };
 
             /**
@@ -133,11 +128,15 @@ module.exports = function( grunt ) {
              */
             watch[componentName + 'js'] = {
                 files: jsDirs,
-                tasks: ['concat:'+ componentName, 'uglify:'+ componentName, 'findModules:'+ componentName]
+                tasks: ['uglify:'+ componentName, 'findModules:'+ componentName]
             };
 
+            if ( isCore ) {
+                watch[componentName + 'js'].tasks.unshift('shim_modules');
+                watch[componentName + 'js'].tasks.push('clean');
+            }
+
             grunt.config.set('watch', watch);
-            grunt.config.set('concat', concat);
             grunt.config.set('uglify', uglify);
             grunt.config.set('findModules', findModules);
 

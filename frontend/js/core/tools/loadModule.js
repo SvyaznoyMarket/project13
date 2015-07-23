@@ -19,7 +19,6 @@
 
         var
             modulesDep = JSON.parse(document.getElementById('js-modules-definitions').innerHTML),
-            debug      = document.body.getAttribute('data-debug') || false,
 
             /**
              * Получение имени файла. Возвращает имя с *.min.js и версией.
@@ -34,11 +33,6 @@
              * @return  {String}
              */
             getWithVersion = function( filename ) {
-
-                if ( !debug ) {
-                    filename = filename.replace('js', 'min.js');
-                }
-
                 return filename;
             },
 
@@ -60,6 +54,7 @@
                 for ( i = 0; i < modulesNames.length; i++ ) {
                     !function( f, cb ) {
                         loadScript(getWithVersion(f), function() {
+                            console.log('load', f);
                             loadedCnt++;
 
                             if ( loadedCnt === modulesNames.length ) {
@@ -73,6 +68,6 @@
                 }
             };
 
-        provide();
+        provide(loader);
     }
 );

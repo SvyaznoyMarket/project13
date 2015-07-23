@@ -1,17 +1,21 @@
 default:
   - 'less'
-  - 'concat'
+  - 'shim_modules'
   - 'uglify'
   - 'findModules'
+  - 'clean'
 
 all:
   - 'less'
   - 'uglify'
+  - 'findModules'
+  - 'clean'
 
 css:
   - 'less'
 
 js:
-  - 'concat'
+  - 'shim_modules'
   - 'uglify'
   - 'findModules'
+  - 'clean'

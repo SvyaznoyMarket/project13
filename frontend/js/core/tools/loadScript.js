@@ -17,6 +17,9 @@
     function( provide ) {
         'use strict';
 
+        var
+            URL_PREFIX = '/public/js/';
+
         provide(function( url, callback ) {
             var
                 script = document.createElement('script');
@@ -36,7 +39,7 @@
                 };
             }
 
-            script.src = url + '?' +  (new Date()).getTime();
+            script.src = (( /^http:/.test(url) || /^https:/.test(url) ) ? url : URL_PREFIX + url ) + '?' +  (new Date()).getTime();
             document.getElementsByTagName('head')[0].appendChild(script);
         });
     }

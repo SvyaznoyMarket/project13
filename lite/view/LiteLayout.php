@@ -15,7 +15,7 @@ class LiteLayout extends \View\Layout
     {
         parent::prepare();
         $this->addStylesheet(\App::config()->debug ? '/public/css/global.css' : '/public/css/global.min.css');
-        $this->addJavascript('/public/js/core.js');
+        $this->addJavascript('/public/js/core.min.js');
     }
 
     /**

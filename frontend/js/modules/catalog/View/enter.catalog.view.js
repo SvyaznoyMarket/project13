@@ -4,7 +4,7 @@
  *
  * @requires    jQuery
  * @requires    Mustache
- * @requires    library
+ * @requires    docCookies
  * @requires    enter.BaseViewClass
  * @requires    enter.catalog.filter
  * @requires    urlHelper
@@ -20,7 +20,7 @@
         [
             'jQuery',
             'Mustache',
-            'library',
+            'docCookies',
             'enter.BaseViewClass',
             'enter.catalog.filter',
             'urlHelper',
@@ -32,7 +32,7 @@
     );
 }(
     this.modules,
-    function( provide, $, mustache, library, BaseViewClass, FilterView, urlHelper, History, replaceWithPush, jUpdate ) {
+    function( provide, $, mustache, docCookies, BaseViewClass, FilterView, urlHelper, History, replaceWithPush, jUpdate ) {
         'use strict';
 
         var
@@ -262,7 +262,7 @@
                 this.subViews.pagination.hide();
                 this.subViews.infScrollBtn.addClass(CSS_CLASSES.INF_SCROLL_ACTIVE);
 
-                window.docCookies.setItem('infScroll', INF_SCROLL_COOKIE, 4 * 7 * 24 * 60 * 60, '/' );
+                docCookies.setItem('infScroll', INF_SCROLL_COOKIE, 4 * 7 * 24 * 60 * 60, '/' );
             },
 
             /**
@@ -278,7 +278,7 @@
                 this.subViews.pagination.filter('[data-page="1"]').addClass(CSS_CLASSES.PAGINATION_ACTIVE);
                 this.updateListing(1);
 
-                window.docCookies.setItem('infScroll', 0, 4 * 7 * 24 * 60 * 60, '/' );
+                docCookies.setItem('infScroll', 0, 4 * 7 * 24 * 60 * 60, '/' );
             },
 
             /**
@@ -288,7 +288,7 @@
              * @memberOf    module:enter.catalog~CatalogView#
              */
             checkInfScroll: function() {
-                if ( window.docCookies.getItem( 'infScroll' ) === INF_SCROLL_COOKIE ) {
+                if ( docCookies.getItem( 'infScroll' ) === INF_SCROLL_COOKIE ) {
                     this.enableInfScroll();
                 }
             },

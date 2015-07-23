@@ -28,7 +28,7 @@
             modules.setOptions({
                 loadModules: loadModule,
                 findDep: function( dep ) {
-                    // console.info('Module %s find in file %s', dep, modulesDep[dep]);
+                    console.info('Module %s find in file %s', dep, modulesDep[dep]);
                     return modulesDep.hasOwnProperty(dep);
                 }
             });
