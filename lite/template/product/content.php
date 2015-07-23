@@ -51,7 +51,14 @@ $buySender2 = $request->get('sender2');
 
 <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
 
-<section class="product-card">
+<section class="product-card js-module-require" data-module="enter.product">
+
+    <script type="application/json" class="js-product-json"><?= json_encode([
+            'id'    => $product->getId(),
+            'name'  => $product->getName(),
+            'url'   => $product->getLink(),
+            'image120' => $product->getMainImageUrl('product_120')
+        ])?></script>
 
 	<h1 class="product-name"><?= $product->getName() ?></h1>
 

@@ -155,6 +155,29 @@
         });
     });
 
+    modules.define('enter.compare', ['jQuery', 'ko'], function(provide){
+        loadScript("/public/js/modules/enter.compare.js", function () {
+            console.log('[Module] enter.compare');
+            provide({});
+        });
+    });
+
+    modules.define('enter.product', ['jQuery'], function(provide){
+        loadScript("/public/js/modules/enter.product.js", function () {
+            console.log('[Module] enter.product');
+            provide({});
+        });
+    });
+
+    // Вы смотрели
+    modules.define('enter.viewed', ['jQuery'], function(provide){
+        loadScript("/public/js/modules/enter.viewed.js", function () {
+            console.log('[Module] enter.viewed');
+            provide({});
+        });
+    });
+
+
     // Пройдем по всем элементам
     elements = document.querySelectorAll('.js-module-require');
 
