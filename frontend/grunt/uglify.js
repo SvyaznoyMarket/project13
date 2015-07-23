@@ -10,7 +10,7 @@ module.exports = function( grunt, options ) {
             sourceMap: true,
             banner: options.methods.createBanner(),
             compress: {
-                drop_console: true
+                // drop_console: true
             }
         }
 
