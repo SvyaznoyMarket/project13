@@ -470,7 +470,7 @@ window.Modernizr = (function( window, document, undefined ) {
     };
 
 
-    tests['localstorage'] = function() {
+    tests['localStorage'] = function() {
         try {
             localStorage.setItem(mod, mod);
             localStorage.removeItem(mod);
