@@ -1,6 +1,6 @@
-+function(){
+!function( window, document, modules ) {
 
-    modules.define('library.docCookies', [], function(provide){
+    modules.define('docCookies', [], function(provide){
         /*\
          |*|
          |*|  :: cookies.js ::
@@ -67,10 +67,8 @@
 
         provide(docCookies);
     });
-
-    // Импортируем в глобальную область
-    modules.require('library.docCookies', function(dc){
-        window.docCookies = dc;
-    });
-
-}();
+}(
+    this,
+    this.document,
+    this.modules
+);

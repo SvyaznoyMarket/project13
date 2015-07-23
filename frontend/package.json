@@ -1,6 +1,6 @@
 {
   "name": "Enter_Lite",
-  "title": "Grunt.js for Enter.ru",
+  "title": "Enter.ru",
   "homepage": "http://www.enter.ru/",
   "author": {
     "name": "Enter Frontend Team",
@@ -21,8 +21,12 @@
     "grunt-cli": "^0.1.13",
     "grunt-contrib-less": "^1.0.1",
     "grunt-contrib-uglify": "^0.9.1",
+    "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-watch": "^0.6.1",
     "load-grunt-config": "^0.17.2",
+    "load-grunt-tasks": "~0.4.0",
+    "lodash": "^2.4.1",
+    "lodash-node": "^2.4.1",
     "time-grunt": "^1.2.1"
   },
   "keywords": []
