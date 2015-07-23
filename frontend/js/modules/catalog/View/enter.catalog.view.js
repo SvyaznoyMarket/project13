@@ -19,6 +19,7 @@
         'enter.catalog.view',
         [
             'jQuery',
+            'underscore',
             'Mustache',
             'docCookies',
             'enter.BaseViewClass',
@@ -32,7 +33,7 @@
     );
 }(
     this.modules,
-    function( provide, $, mustache, docCookies, BaseViewClass, FilterView, urlHelper, History, replaceWithPush, jUpdate ) {
+    function( provide, $, _, mustache, docCookies, BaseViewClass, FilterView, urlHelper, History, replaceWithPush, jUpdate ) {
         'use strict';
 
         var
