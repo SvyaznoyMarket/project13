@@ -412,11 +412,17 @@ $(function() {
 	});
 
 	if (data.regionName && $regions.length) {
+		var hasRegion = false;
 		$regions.find('option').each(function() {
 			var $option = $(this);
 			if ($option.text() && -1 !== $option.text().indexOf(data.regionName)) {
+				hasRegion = true;
 				$option.prop('selected', true).change();
 			}
 		});
+
+		if (!hasRegion) {
+			$regions.find('option:first').prop('selected', true).change();
+		}
 	}
 });
