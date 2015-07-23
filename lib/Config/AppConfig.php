@@ -258,6 +258,8 @@ class AppConfig {
     public $mainHost = null;
     /** @var string */
     public $mobileHost = null;
+    /** @var string */
+    public $description = null;
     /** @var array */
     /**
      * @var Oauth\VkontakteConfig

@@ -31,6 +31,7 @@ $c->session['compareKey']   = 'compare'; // ключ для массива ср�
 
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
+$c->description = 'Enter – это все товары для жизни по интернет-ценам. В Enter вы можете купить что угодно, когда угодно и любым удобным для Вас способом!';
 
 $c->redirect301['enabled'] = true;
 $c->mobileRedirect['enabled'] = false;

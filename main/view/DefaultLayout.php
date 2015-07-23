@@ -19,7 +19,7 @@ class DefaultLayout extends Layout {
         $this->addMeta('yandex-verification', '623bb356993d4993');
         $this->addMeta('viewport', 'width=900');
         //$this->addMeta('title', 'Enter - это выход!');
-        $this->addMeta('description', 'Enter - новый способ покупать. Любой из ' . \App::config()->product['totalCount'] . ' товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.');
+        $this->addMeta('description', \App::config()->description);
 
         // TODO: осторожно, говнокод
         if ('live' != \App::$env) {
