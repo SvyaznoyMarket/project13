@@ -59,6 +59,10 @@ return function(
                 <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
             <? endif; ?>
 
+            <? if ($order->specialAction) : ?>
+                <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Товары по акции «Все по…». <a href="/porubl" target="_blank">Подробнее</a></span></div>
+            <? endif; ?>
+
             <? foreach ($order->products as $product): ?>
             <div class="orderCol_cnt clearfix">
                 <a href="<?= $product->link ?>" class="orderCol_lk" target="_blank">
