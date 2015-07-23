@@ -1,0 +1,33 @@
+.notice-user {
+    &__item {
+        margin: 0;
+    }
+    &__link {
+        display: block;
+
+        padding: 10px;
+        &:hover {
+            background: @orange-light-4;
+        }
+        &:before {
+            width: 22px;
+            margin-right: 10px;
+
+            content: '';
+
+            background: url('@{base-url}/header/i-controls.png') no-repeat 0 0;
+
+            .inline-block();
+        }
+        &_lk {
+            &:before {
+                .i-sprite(-102px, -25px, 22px, 22px);
+            }
+        }
+        &_favorite {
+            &:before {
+                .i-sprite(-127px, -26px, 22px, 22px);
+            }
+        }
+    }
+}
