@@ -1,7 +1,7 @@
 !function( window, document, modules ) {
 
     var
-        modulesDep = JSON.parse(document.body.getAttribute('data-value')),
+        modulesDep = JSON.parse(document.getElementById('js-modules-definitions').innerHTML),
 
         /**
          * Первая точка входа в приложение

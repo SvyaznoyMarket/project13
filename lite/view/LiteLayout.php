@@ -92,4 +92,14 @@ class LiteLayout extends \View\Layout
         return '';
     }
 
+    /** Определения модулей
+     * @return null|string
+     */
+    public function blockModulesDefinitions(){
+        $file = \App::config()->appDir . '/frontend/modules.json';
+        return file_exists($file)
+            ? sprintf('<script type="application/json" id="js-modules-definitions">%s</script>', file_get_contents($file))
+            : null;
+    }
+
 }

@@ -18,7 +18,7 @@
         'use strict';
 
         var
-            modulesDep = JSON.parse(document.body.getAttribute('data-value')),
+            modulesDep = JSON.parse(document.getElementById('js-modules-definitions').innerHTML),
             debug      = document.body.getAttribute('data-debug') || false,
 
             /**
