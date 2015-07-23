@@ -86,6 +86,32 @@
         .btn-primary {
             display: none;
         }
+        .goods__item {
+            &:nth-child(4n+4) {
+                .add-control {
+                    &:after {
+                        right: 34px;
+                    }
+                    &:before {
+                        right: 25px;
+
+                        .pseudo-corner-left(9px, @grey-light-4, 4px);
+                    }
+                }
+            }
+            &:not(:nth-child(4n+4)) {
+                .add-control {
+                    &:after {
+                        left: 34px;
+                    }
+                    &:before {
+                        left: 25px;
+
+                        .pseudo-corner-right(9px, @grey-light-4, 4px);
+                    }
+                }
+            }
+        }
     }
     // грид картинок
     &_images {
@@ -106,12 +132,13 @@
     &_categories {
         .goods__name {
             font-size: 1.3333em;
+
             height: 43px;
         }
         .goods__img {
-            height: 250px;
-
             line-height: 250px;
+
+            height: 250px;
             &-image {
                 max-width: 250px;
                 max-height: 250px;
@@ -202,7 +229,7 @@
     .transition();
     &:hover {
         background-color: @orange-light-4;
-        &:after,
+        &:after ,
         &:before {
             visibility: visible;
 
@@ -224,7 +251,6 @@
         position: absolute;
         z-index: 99;
         top: 0;
-        left: 34px;
 
         visibility: hidden;
 
@@ -241,9 +267,7 @@
         .transition();
     }
     &:before {
-        .pseudo-corner-right(9px, @grey-light-4, 4px);
         .opacity(0);
         .transition();
-        left: 25px;
     }
 }
