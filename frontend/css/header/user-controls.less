@@ -2,11 +2,20 @@
     float: right;
     &__item {
         width: 120px;
-        margin: 5px 0;
+        margin: 5px 0 0;
+        height: 42px;
 
         .inline-block(middle);
         &_compare {
             &.active {
+                .i-controls {
+                    .i-sprite(-105px, 0px, 25px, 25px);
+                }
+            }
+            &:hover {
+                .user-controls__link {
+                    color: @orange-bright;
+                }
                 .i-controls {
                     .i-sprite(-105px, 0px, 25px, 25px);
                 }
@@ -19,7 +28,19 @@
                     .i-sprite(-131px, 0px, 25px, 25px);
                 }
             }
+            &:hover {
+                .user-controls__link {
+                    color: @orange-bright;
+                }
+                .i-controls {
+                    .i-sprite(-131px, 0px, 25px, 25px);
+                }
+            }
         }
+    }
+    &__lk {
+        .inline-block();
+        height: 100%;
     }
     &__icon {
         width: 25px;
