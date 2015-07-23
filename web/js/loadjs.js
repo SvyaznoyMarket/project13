@@ -7,14 +7,10 @@
 	var
 		i,
 		global  = this,
-		fnProto = Function.prototype,
-		fnApply = fnProto.apply,
-		fnBind  = fnProto.bind,
+		// Function.prototype.bind не работает в IE8
 		bind    = function ( context, fn ) {
-			return fnBind ?
-				fnBind.call( fn, context ) :
-				function () {
-					return fnApply.call( fn, context, arguments );
+			return function () {
+					return Function.prototype.apply.call( fn, context, arguments );
 				};
 		},
 		methods = 'assert count debug dir dirxml error group groupCollapsed groupEnd info log markTimeline profile profileEnd table time timeEnd trace warn'.split(' '),
@@ -51,7 +47,7 @@
 				return diff;
 			};
 		}
-		
+
 		for ( i = methods.length; i-- ; ) {
 			console[methods[i]] = methods[i] in console ?
 				bind(console, console[methods[i]]) : emptyFn;
