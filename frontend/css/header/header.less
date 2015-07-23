@@ -11,9 +11,10 @@
         position: fixed;
         top: 0;
         left: 0;
-        .drop-shadow(0, 0, 20px, .6);
 
         width: 100%;
+
+        .drop-shadow(0, 0, 20px, .6);
     }
     &__side {
         width: 90px;
@@ -35,6 +36,8 @@
         padding-bottom: 0;
     }
     &-cart {
+        height: 100%;
+
         vertical-align: top;
 
         background: @orange-light-3;
@@ -75,6 +78,7 @@
 
     width: 27px;
     height: 27px;
+    font-style: normal;
 
     text-align: center;
 
@@ -233,7 +237,8 @@
     float: right;
     &__item {
         width: 120px;
-        margin: 5px 0;
+        height: 42px;
+        margin: 5px 0 0;
 
         .inline-block(middle);
         &_compare {
@@ -242,14 +247,36 @@
                     .i-sprite(-105px, 0px, 25px, 25px);
                 }
             }
+            &:hover {
+                .user-controls__link {
+                    color: @orange-bright;
+                    .i-controls {
+                        .i-sprite(-105px, 0px, 25px, 25px);
+                    }
+                }
+            }
         }
         &_user {
+            position: relative;
             &.active {
                 .i-controls {
                     .i-sprite(-131px, 0px, 25px, 25px);
                 }
             }
+            &:hover {
+                .user-controls__link {
+                    color: @orange-bright;
+                    .i-controls {
+                        .i-sprite(-131px, 0px, 25px, 25px);
+                    }
+                }
+            }
         }
+    }
+    &__link {
+        display: block;
+
+        height: 100%;
     }
     &__icon {
         width: 25px;
@@ -270,7 +297,6 @@
 }
 
 .notice-show {
-    height: 100%;
     &:hover {
         .notice-dd {
             display: block;
@@ -328,6 +354,12 @@
         &:before {
             left: 0;
         }
+    }
+    &_user {
+        top: 42px;
+        left: 0;
+
+        width: 163px;
     }
     &__inn {
         position: relative;
@@ -437,6 +469,40 @@
     }
 }
 
+.notice-user {
+    &__item {
+        margin: 0;
+    }
+    &__link {
+        display: block;
+
+        padding: 10px;
+        &:hover {
+            background: @orange-light-4;
+        }
+        &:before {
+            width: 22px;
+            margin-right: 10px;
+
+            content: '';
+
+            background: url('@{base-url}/header/i-controls.png') no-repeat 0 0;
+
+            .inline-block();
+        }
+        &_lk {
+            &:before {
+                .i-sprite(-102px, -25px, 22px, 22px);
+            }
+        }
+        &_favorite {
+            &:before {
+                .i-sprite(-127px, -26px, 22px, 22px);
+            }
+        }
+    }
+}
+
 // параплашка карточки товара
 .header-buy {
     float: left;
@@ -448,6 +514,7 @@
             width: 40px;
             height: 40px;
             margin-right: 10px;
+
             text-align: center;
             .image {
                 max-width: 40px;
@@ -455,17 +522,20 @@
             }
         }
         &-name {
-            width: 300px;
-            white-space: nowrap;
             font-size: 1.1666em;
+
             overflow: hidden;
+
+            width: 300px;
+
+            white-space: nowrap;
             text-overflow: ellipsis;
         }
     }
-
     &__price {
-        margin: 0 20px;
         line-height: 1;
+
+        margin: 0 20px;
     }
 }
 
