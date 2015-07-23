@@ -350,7 +350,7 @@ $(document).ready(function(){
 $(function() {
 	var data = $('#contentPageData').data('data');
 
-	if (!ENTER.utils.objLen(data.services)) {
+	if (!data || !ENTER.utils.objLen(data.services)) {
 		return;
 	}
 
