@@ -14,6 +14,7 @@
         &_count {
             .inline-block(middle);
         }
+
         // отчисть фильтры в рутовых категориях
         &_clr {
             line-height: 13px;
@@ -33,6 +34,7 @@
             }
         }
     }
+
     // название фильтра
     &_tggl {
         font-size: 1.3333em;
@@ -42,34 +44,24 @@
         color: @black;
 
         .inline-block();
-        &-ncorner {
-            padding-left: 0;
+        &:before {
+            font-size: 1.1666em;
 
-            cursor: default;
+            margin-right: 3px;
 
-            background: none;
-            .fltrBtn_tggl_tx {
-                border: none;
-            }
-        }
-        &.opn {
-            .fltrBtn_tggl_corner {
-                &:before {
-                    content: '\e800';
-                }
-            }
-        }
-        &_corner {
-            font-size: 1.3333em;
+            content: '\e805';
+            width: 8px;
             line-height: 1;
-
-            margin-right: 2px;
 
             color: @grey-type;
 
             .inline-block();
-            &:before {
-                content: '\e805';
+        }
+        &.opn {
+            .fltrBtn_tggl {
+                &:before {
+                    content: '\e800';
+                }
             }
         }
     }
@@ -93,6 +85,10 @@
 
             max-height: 165px;
             padding: 7px 10px 0;
+        }
+        &-nborder {
+              border-top: none;
+              padding: 0 30px;
         }
         &_l {
             float: left;
@@ -410,10 +406,8 @@
 
             border-color: @grey-light-2;
             border-bottom-color: @white;
-            &_corner {
-                &:before {
-                    content: '\e804';
-                }
+            &:after {
+                content: '\e804';
             }
             .dotted {
                 border: none;
@@ -452,17 +446,16 @@
     &-mark {
         .fltrBtnBox_tggl {
             color: #ef404a;
-            &_corner {
-                &:before {
-                    color: #ef404a;
-                }
+            &:after {
+                color: #ef404a;
             }
-            &_tx {
+            .dotted {
                 border-color: #ef404a;
             }
         }
     }
     &_tggl {
+        font-family: 'GloberRegular';
         font-size: 1.1666em;
         line-height: 1;
 
@@ -476,18 +469,14 @@
         background-color: @white;
 
         .rounded(3px 3px 0 0);
-        &_tx {
-            .inline-block(baseline);
-        }
-        &_corner {
-            .inline-block(baseline);
-            &:before {
-                line-height: 1;
+        &:after {
+            margin-left: 2px;
 
-                content: '\e800';
+            content: '\e800';
 
-                color: @grey-type;
-            }
+            color: @grey-type;
+
+            .inline-block();
         }
         &-dsbld {
             color: #828282;
@@ -560,7 +549,7 @@
         .fltrBtn_kit-brands__btn-more {
             display: none;
         }
-        .fltrBtn_tggl_corner:before {
+        .fltrBtn_tggl:before {
             content: '\e800';
         }
     }

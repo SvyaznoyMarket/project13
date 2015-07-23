@@ -1,26 +1,24 @@
 {{#filters}}
-    <ul class="fltr_slctd">
-        <li class="fltr_slctd_i fltr_slctd_i-n">{{name}}:</li>
+    <ul class="filter-selected">
+        <li class="filter-selected__item filter-selected__item_name">{{name}}:</li>
 
         {{^isGroup}}
             {{#links}}
-                <li class="fltr_slctd_i">
-                    <span>{{&name}}</span>
-                    <a class="btn-closer2 jsHistoryLink" href="{{url}}"></a>
+                <li class="filter-selected__item">
+                    <a class="filter-selected__link icon-clear-after jsHistoryLink" href="{{url}}">{{&name}}</a>
                 </li>
             {{/links}}
         {{/isGroup}}
 
         {{#isGroup}}
             {{#properties}}
-                <li class="fltr_slctd_i">
+                <li class="filter-selected__item">
                     {{#name}}
                         {{name}}
                     {{/name}}
 
                     {{#links}}
-                        <span>{{&name}}</span>
-                        <a class="btn-closer2 jsHistoryLink" href="{{url}}"></a>
+                        <a class="filter-selected__link icon-clear-after jsHistoryLink" href="{{url}}">{{&name}}</a>
                     {{/links}}
                 </li>
             {{/properties}}
@@ -29,8 +27,7 @@
 {{/filters}}
 
 {{#filtersCount}}
-    <a class="fltr_clsr jsHistoryLink" href="{{cleanUrl}}">
-        <span class="btn-closer3"></span>
-        <span class="fltr_clr_tx">Очистить все</span>
+    <a class="filter-selected-clear icon-clear jsHistoryLink" href="{{cleanUrl}}">
+        <span class="dotted">Очистить все</span>
     </a>
 {{/filtersCount}}

@@ -27,15 +27,12 @@ return function(
                 <? if ($filter->isBrand()) { echo 'data-name="',$option->getName(),'"'; } ?>
                 <? if (in_array($optionId, $values) || $optionId === $categoryId) { ?> checked="checked"<? } ?>
                 />
-            <label class="fltrBtn_btn<? if (!$filter->getIsMultiple()) { ?> mCustomLabelRadio<? } ?>" for="<?= $viewId ?>">
+            <label class="fltrBtn_btn icon-clear <? if (!$filter->getIsMultiple()) { ?> mCustomLabelRadio<? } ?>" for="<?= $viewId ?>">
                 <? if ($option->getImageUrl()): ?>
                     <img class="fltrBtn_btn_img" src="<?= $helper->escape($option->getImageUrl()) ?>">
-                    <span class="fixpix"></span>
                 <? else: ?>
                     <span class="fltrBtn_btn_tx"><?= $option->getName() ?></span>
                 <? endif ?>
-
-                <i class="fltrBtn_btn_clsr btn-closer1"></i>
             </label>
         </div>
         <? $i++; endforeach ?>

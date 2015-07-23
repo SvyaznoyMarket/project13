@@ -5,9 +5,8 @@
 }
 
 .filter-price {
-
     .clearfix();
-    .fltrSet_tggl,
+    .fltrSet_tggl ,
     .fltrBtnBox {
         margin-right: 100px;
         padding-bottom: 0;
@@ -192,5 +191,67 @@
 
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAICAQAAACBxB0+AAAAU0lEQVQIW2NggILyPhgLJhBR+r88AklgEnvZ/dL/ZfcnsSPUVJT+B8HyCqhAg1jpR4hQ6ccGMbBQ6QyoAAjOAGnSLv2DJPSnXJuhbAeSABCW7QAA6R05Rnwz+kMAAAAASUVORK5CYII=');
         }
+    }
+}
+
+.filter-selected {
+    float: left;
+
+    margin: 12px 10px 0 0;
+    &__item {
+        line-height: 1;
+
+        margin: 0 10px 0 0;
+
+        color: @grey-type;
+
+        .inline-block(top);
+        &_name {
+            margin-right: 0;
+        }
+    }
+    &-last {
+        margin-bottom: 11px;
+    }
+    &__link {
+        font-family: 'GloberRegular';
+
+        color: @grey-type;
+        &:after {
+            font-size: 1.1666em;
+
+            margin: -2px 0 0 3px;
+            line-height: 1;
+
+            content: '\e80a';
+            vertical-align: top;
+
+            color: @grey-light;
+        }
+        &:hover {
+            color: @grey-type;
+        }
+    }
+}
+.filter-selected-clear {
+    line-height: 1;
+
+    float: right;
+
+    margin: 12px 0 10px;
+
+    color: @grey-bright;
+    &:hover {
+        color: @grey-bright;
+    }
+    &:before {
+        font-size: 1.1666em;
+
+        margin: -2px 3px 0 0;
+        line-height: 1;
+
+        vertical-align: top;
+
+        color: @grey-type;
     }
 }

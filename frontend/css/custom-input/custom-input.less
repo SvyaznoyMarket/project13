@@ -1,4 +1,4 @@
-.custom-input,
+.custom-input ,
 .customInput {
     font-size: 0;
     line-height: 0;
@@ -18,8 +18,9 @@
     .opacity(0);
     &_check {
         & + .custom-label {
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAAAAAAevcqWAAAAFElEQVQIW2O4jgoYrv9HBsOAjwoA+1TXYHXMYB4AAAAASUVORK5CYII=');
             padding-top: 2px;
+
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAAAAAAevcqWAAAAFElEQVQIW2O4jgoYrv9HBsOAjwoA+1TXYHXMYB4AAAAASUVORK5CYII=');
         }
         &:checked {
             & + .custom-label {
@@ -54,11 +55,12 @@
 }
 
 .custom-label {
+    padding: 0 0 0 20px;
+
     cursor: pointer;
 
     background-repeat: no-repeat;
     background-position: 0 0;
-    padding: 0 0 0 20px;
 
     .inline-block();
 }
@@ -67,22 +69,33 @@
 .customInput-btn + .fltrBtn_btn {
     width: 86px;
     height: 35px;
+    &:before {
+        font-size: 1.0833em;
+
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: @white;
+        line-height: 1;
+
+        content: '';
+
+        color: @orange-bright;
+    }
 }
 
 .customInput-btn:checked + .fltrBtn_btn {
-    line-height: 31px;
-
     border-width: 2px;
     border-color: @orange-bright;
-    .fltrBtn_btn_clsr {
-        display: block;
+    &:before {
+        content: '\e80a';
     }
 }
 //ie8 fix
 .fltrBtn_btn.mChecked {
     border-width: 2px;
     border-color: @orange-bright;
-    .btn-closer1 {
-        display: block;
+    &:before {
+        content: '\e80a';
     }
 }

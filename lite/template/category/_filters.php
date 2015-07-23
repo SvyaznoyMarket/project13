@@ -74,8 +74,7 @@
         <? if ($brandFilter1): ?>
             <!-- бренды -->
             <div class="fltrBtn_kit fltrBtn_kit-brands fltrBtn_kit--mark js-category-v2-filter-otherBrands <?= $hasSelectedOtherBrands ? 'open' : '' ?>">
-                <div class="fltrBtn_tggl fltrBtn_kit_l js-category-v2-filter-otherBrandsOpener">
-                    <i class="fltrBtn_tggl_corner icon-corner"></i>
+                <div class="fltrBtn_tggl fltrBtn_kit_l icon-corner js-category-v2-filter-otherBrandsOpener">
                     <span class="dotted"><?= $brandFilter1->getName() ?></span>
                 </div>
 
@@ -107,10 +106,10 @@
             <div class="fltrBtn_kit fltrBtn_kit-box clearfix">
                 <? if ($priceFilter): ?>
                     <div class="fltrBtnBox fl-l js-category-v2-filter-dropBox js-category-v2-filter-dropBox-price">
-                        <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
-                            <span class="fltrBtnBox_tggl_tx"><?= $priceFilter->getName() ?></span>
-                            <i class="fltrBtnBox_tggl_corner icon-corder"></i>
+                        <div class="fltrBtnBox_tggl icon-corder js-category-v2-filter-dropBox-opener">
+                            <span class="dotted"><?= $priceFilter->getName() ?></span>
                         </div>
+
                         <div class="fltrBtnBox_dd fltrBtnBox_dd-l">
                             <ul class="fltrBtnBox_dd_inn js-category-v2-filter-dropBox-content">
                                 <? foreach ($priceFilter->getPriceRanges() as $range): ?>
@@ -132,9 +131,8 @@
 
                     <? if ($labelFilter && $labelFilter->getOption()): ?>
                         <div class="fltrBtnBox fltrBtnBox-mark fl-r js-category-v2-filter-dropBox js-category-v2-filter-dropBox-labels">
-                            <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
-                                <span class="fltrBtnBox_tggl_tx"><?= $labelFilter->getName() ?></span>
-                                <i class="fltrBtnBox_tggl_corner icon-corder"></i>
+                            <div class="fltrBtnBox_tggl icon-corder js-category-v2-filter-dropBox-opener">
+                                <span class="dotted"><?= $labelFilter->getName() ?></span>
                             </div>
 
                             <div class="fltrBtnBox_dd fltrBtnBox_dd-r js-category-v2-filter-dropBox-content">
@@ -155,9 +153,8 @@
                 <? foreach ($productFilter->getGroupedPropertiesV2() as $group): ?>
                     <? if ($group->hasInListProperties()): ?>
                         <div class="fltrBtnBox <? if ($group->hasSelectedProperties): ?>actv<? endif ?> js-category-v2-filter-dropBox">
-                            <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
-                                <span class="fltrBtnBox_tggl_tx"><?= $group->name ?></span>
-                                <i class="fltrBtnBox_tggl_corner icon-corder"></i>
+                            <div class="fltrBtnBox_tggl icon-corder js-category-v2-filter-dropBox-opener">
+                                <span class="dotted"><?= $group->name ?></span>
                             </div>
 
                             <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content">
