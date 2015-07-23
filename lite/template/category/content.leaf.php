@@ -24,7 +24,7 @@ $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager
 <!-- для внутренних страниц добавляется класс middle_transform -->
 <div class="middle middle_transform js-module-require" data-module="enter.catalog">
     <div class="container">
-        <main class="content">
+        <main class="content <?= isset($jewelClass) ? $jewelClass : '' ?>">
             <div class="content__inner">
                 <!-- баннер -->
                 <div class="banner-section">
