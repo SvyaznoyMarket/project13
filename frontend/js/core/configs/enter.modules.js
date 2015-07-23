@@ -26,19 +26,6 @@
          * === DEFINE VENDOR SCRIPTS ===
          * =============================
          */
-        modules.define('jQuery', [], function(provide){
-            loadScript("https://yastatic.net/jquery/2.1.4/jquery.min.js", function () {
-                console.log('[Module] jQuery');
-                provide($);
-            });
-        });
-
-        modules.define('ko', [], function(provide){
-            loadScript("/public/vendor/js/knockout.3.3.1.min.js", function () {
-                console.log('[Module] knockout');
-                provide(ko);
-            });
-        });
 
         modules.define('jquery.slick', ['jQuery'], function(provide){
             loadScript("plugins/jquery.slick.js", function () {
