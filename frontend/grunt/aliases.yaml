@@ -1,6 +1,8 @@
 default:
   - 'less'
+  - 'concat'
   - 'uglify'
+  - 'findModules'
 
 all:
   - 'less'
@@ -10,4 +12,6 @@ css:
   - 'less'
 
 js:
+  - 'concat'
   - 'uglify'
+  - 'findModules'

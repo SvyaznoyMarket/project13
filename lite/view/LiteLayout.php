@@ -15,7 +15,7 @@ class LiteLayout extends \View\Layout
     {
         parent::prepare();
         $this->addStylesheet(\App::config()->debug ? '/public/css/global.css' : '/public/css/global.min.css');
-        $this->addJavascript('/public/js/modules.js');
+        $this->addJavascript('/public/js/core.js');
     }
 
     /**
@@ -90,6 +90,16 @@ class LiteLayout extends \View\Layout
 
     public function blockFixedUserbar() {
         return '';
+    }
+
+    /** Определения модулей
+     * @return null|string
+     */
+    public function blockModulesDefinitions(){
+        $file = \App::config()->appDir . '/frontend/modules.json';
+        return file_exists($file)
+            ? sprintf('<script type="application/json" id="js-modules-definitions">%s</script>', file_get_contents($file))
+            : null;
     }
 
 }

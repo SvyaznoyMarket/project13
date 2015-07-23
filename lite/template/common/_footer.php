@@ -1,3 +1,9 @@
+<?
+/**
+ * @var $page \View\LiteLayout
+ */
+?>
+
 <div class="footer">
     <div class="footer__right">
         <ul class="footer-external">
@@ -64,3 +70,5 @@
         <div class="copy__center"><a href="">Мобильная версия сайта</a></div>
     </div>
 </footer>
+
+<?= $page->blockModulesDefinitions() ?>
