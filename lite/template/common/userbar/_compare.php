@@ -1,6 +1,6 @@
 <!-- При наличии товаров в сравнении добавлять класс active -->
 <li class="user-controls__item user-controls__item_compare">
-    <a href="" class="user-controls__link">
+    <a href="<?= \App::router()->generate('compare') ?>" class="user-controls__link">
         <span class="user-controls__icon"><i class="i-controls i-controls--compare"></i></span>
         <span class="user-controls__text">Сравнение</span>
     </a>
