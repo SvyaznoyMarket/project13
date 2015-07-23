@@ -163,7 +163,7 @@ $f = function (
                 <div class="slideItem_i__child">
                     <? if ('top' == $namePosition): ?>
                         <div class="slideItem_n">
-                            <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>><?= $product->getName() ?></a>
+                            <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>><?= $helper->escape($product->getName()) ?></a>
                         </div>
                     <? endif ?>
 
@@ -179,7 +179,7 @@ $f = function (
 
                         <? if ('bottom' == $namePosition) : ?>
                             <div class="slideItem_n">
-                                <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>><?= $product->getName() ?></a>
+                                <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>><?= $helper->escape($product->getName()) ?></a>
                             </div>
                         <? endif ?>
 

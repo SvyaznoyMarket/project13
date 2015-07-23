@@ -33,7 +33,7 @@ return function(
 
             <div class="popupTitle">Отзыв о товаре</div>
 
-            <div class="productName"><span class="productName__inner"><?= $product->getPrefix() . ' ' . $product->getWebName() ?></span></div>
+            <div class="productName"><span class="productName__inner"><?= $helper->escape($product->getPrefix()) . ' ' . $helper->escape($product->getWebName()) ?></span></div>
 
             <form action="<?= $helper->url('product.review.create', ['productUi' => $product->getUi()]) ?>" id="" class="reviewForm clearfix jsReviewForm" method="post">
                 <ul class="error_list"></ul>

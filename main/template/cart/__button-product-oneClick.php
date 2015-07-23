@@ -50,10 +50,6 @@ return function (
         $data['class'] = \View\Id::cartButtonForProduct($product->getId() . '-oneClick') . ' jsOneClickButton-new ' . $class;
     }
 
-    if ($product->getIsBuyable() && $shop) {
-        $data['class'] .= \Session\AbTest\AbTest::getColorClass($product);
-    }
-
     if (!$product->getIsBuyable()) {
         $data['url'] = '#';
         $data['class'] .= ' mDisabled';

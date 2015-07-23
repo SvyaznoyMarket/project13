@@ -26,7 +26,7 @@ $f = function (
                     <a class="set-section-package-i__img" href="<?= $kitProduct->getLink() ?>"><img src="<?= $kitProduct->getMainImageUrl('product_120') ?>"></a><!--/ изображение товара -->
 
                     <div class="set-section-package-i__desc rown">
-                        <div class="name"><a class="" href="<?= $kitProduct->getMainImageUrl('product_120') ?>"><?= $kitProduct->getName(); ?></a></div><!--/ название товара -->
+                        <div class="name"><a class="" href="<?= $kitProduct->getMainImageUrl('product_120') ?>"><?= $helper->escape($kitProduct->getName()) ?></a></div><!--/ название товара -->
 
                     <? if ($arrItem['height']!='' || $arrItem['width']!='' || $arrItem['depth']!='') : ?>
 

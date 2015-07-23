@@ -32,7 +32,7 @@ $f = function(
             <img data-src="<?= $product->getMainImageUrl('product_500') ?>" alt="<?= $helper->escape($product->getName()) ?>" class="navitem_img menuImgLazy">
         </div>
         <noscript><img src="<?= $product->getMainImageUrl('product_500') ?>" alt="<?= $helper->escape($product->getName()) ?>" class="navitem_img"></noscript>
-        <span class="navitem_n"><?= $product->getName() ?></span>
+        <span class="navitem_n"><?= $helper->escape($product->getName()) ?></span>
     </a>
 
     <div class="navitem_pr">

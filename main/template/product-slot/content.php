@@ -55,9 +55,9 @@ $buySender2 = $request->get('sender2');
         <div class="product-card__head">
             <h1 class="product-card__head__title clearfix" itemprop="name">
                     <? if ($product->getPrefix()): ?>
-                        <?= $product->getPrefix() ?>
+                        <?= $helper->escape($product->getPrefix()) ?>
                     <? endif ?>
-                    <?= $product->getWebName() ?>
+                    <?= $helper->escape($product->getWebName()) ?>
             </h1>
             <? if (\App::abTest()->isNewProductPage()): ?>
                 <? else: ?>

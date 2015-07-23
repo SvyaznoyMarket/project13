@@ -154,11 +154,12 @@ class Entity {
     public $coupons = [];
 
     public function __construct(array $data = []) {
+        $templateHelper = new \Helper\TemplateHelper();
+
         if (isset($data['id'])) $this->setId($data['id']);
         if (isset($data['ui'])) $this->setUi($data['ui']);
         if (isset($data['uid'])) $this->setUi($data['uid']); // для scms
         if (isset($data['status_id'])) $this->setStatusId($data['status_id']);
-        if (isset($data['name'])) $this->setName($data['name']);
         if (isset($data['link'])) $this->setLink($data['link']);
         if (isset($data['url'])) $this->setLink($data['url']);
         if (isset($data['token'])) $this->setToken($data['token']);
@@ -202,8 +203,9 @@ class Entity {
         if (array_key_exists('is_primary_line', $data)) $this->setIsPrimaryLine($data['is_primary_line']);
         if (array_key_exists('model_id', $data)) $this->setModelId($data['model_id']);
         if (array_key_exists('score', $data)) $this->setScore($data['score']);
-        if (array_key_exists('name_web', $data)) $this->setWebName($data['name_web']);
-        if (array_key_exists('prefix', $data)) $this->setPrefix($data['prefix']);
+        if (isset($data['name'])) $this->setName(isset($data['ui']) ? $templateHelper->unescape($data['name']) : $data['name']); // Ядро отдаёт строку, обработанную htmlspecialchars; scms - нет; редакция в 1С не использует HTML сущности и теги в данном поле
+        if (array_key_exists('name_web', $data)) $this->setWebName(isset($data['ui']) ? $templateHelper->unescape($data['name_web']) : $data['name_web']); // Ядро отдаёт строку, обработанную htmlspecialchars; scms - нет; редакция в 1С не использует HTML сущности и теги в данном поле
+        if (array_key_exists('prefix', $data)) $this->setPrefix(isset($data['ui']) ? $templateHelper->unescape($data['prefix']) : $data['prefix']); // Ядро отдаёт строку, обработанную htmlspecialchars; scms - нет; редакция в 1С не использует HTML сущности и теги в данном поле
         if (array_key_exists('tagline', $data)) $this->setTagline($data['tagline']);
         if (array_key_exists('announce', $data)) $this->setAnnounce($data['announce']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);

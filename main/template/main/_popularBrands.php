@@ -10,7 +10,7 @@ $brands = [
     ['name' => 'Apple', 'url' => '/slices/brands-apple', 'image' => 'apple.jpg'],
     ['name' => 'HP', 'url' => '/slices/brands-hp', 'image' => 'HP.jpg'],
     ['name' => 'Lenovo', 'url' => '/slices/brands-lenovo', 'image' => 'lenovo.jpg'],
-    ['name' => 'Hasbro', 'url' => '/search?q=hasbro', 'image' => 'hasHasbrobro.jpg'],
+    ['name' => 'Hasbro', 'url' => '/slices/brands-hasbro', 'image' => 'hasHasbrobro.jpg'],
     ['name' => 'Sylvanian Families', 'url' => '/slices/brands-sylvanian-families', 'image' => 'Sylvanian-Families.jpg'],
     ['name' => 'LEGO', 'url' => '/slices/brands-lego', 'image' => 'lego.jpg'],
     ['name' => 'Анзоли', 'url' => '/slices/brands-anzoli', 'image' => 'anzoli.jpg'],

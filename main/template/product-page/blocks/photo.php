@@ -69,19 +69,20 @@ $f = function(
             <? endif ?>
         </ul>
 
+        <div class="product-card-photo-thumbs__cnt <?= count($images) > 5 ? 'product-card-photo-thumbs__cnt--slides' : ''?>">
         <!-- если картинок больше 5 добавляем класс product-card-photo-thumbs--slides -->
-        <div class="product-card-photo-thumbs jsProductThumbHolder <?= count($images) > 5 ? 'product-card-photo-thumbs--slides' : ''?>"
-            <? if (count($images) < 2) : ?>style="display: none"<? endif ?>
-        >
-            <ul class="product-card-photo-thumbs-list jsProductThumbList">
-                <? foreach ($images as $key => $photo) : ?>
-                    <li class="product-card-photo-thumbs__i jsProductPhotoThumb <?= $key == 0 ? 'product-card-photo-thumbs__i--act' : '' ?>"
-                        data-middle-img="<?= $photo->getSource('product_500')->url ?>"
-                        data-big-img="<?= $photo->getSource('product_1500')->url ?>"
-                        ><img src="<?= $photo->getSource('product_500')->url ?>" class="product-card-photo-thumbs__img" /></li>
-                <? endforeach ?>
-            </ul>
-
+            <div class="product-card-photo-thumbs jsProductThumbHolder"
+                <? if (count($images) < 2) : ?>style="display: none"<? endif ?>
+                >
+                <ul class="product-card-photo-thumbs-list jsProductThumbList">
+                    <? foreach ($images as $key => $photo) : ?>
+                        <li class="product-card-photo-thumbs__i jsProductPhotoThumb <?= $key == 0 ? 'product-card-photo-thumbs__i--act' : '' ?>"
+                            data-middle-img="<?= $photo->getSource('product_500')->url ?>"
+                            data-big-img="<?= $photo->getSource('product_1500')->url ?>"
+                            ><img src="<?= $photo->getSource('product_500')->url ?>" class="product-card-photo-thumbs__img" /></li>
+                    <? endforeach ?>
+                </ul>
+            </div>
             <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled jsProductThumbBtn" data-dir="+="></div>
             <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r jsProductThumbBtn" data-dir="-="></div>
         </div>
@@ -106,17 +107,20 @@ $f = function(
                 <div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--out disabled jsProductPopupZoom jsProductPopupZoomOut" data-dir="-1">–</div>
             </div>
 
-            <div class="product-card-photo-thumbs">
-                <ul class="product-card-photo-thumbs-list">
-                    <? foreach ($images as $key => $photo) : ?>
-                        <li class="product-card-photo-thumbs__i jsPopupPhotoThumb"
-                            data-big-img="<?= $photo->getSource('product_1500')->url ?>"
-                            ><img src="<?= $photo->getSource('product_120')->url ?>" class="product-card-photo-thumbs__img"></li>
-                    <? endforeach ?>
-                </ul>
+            <div class="product-card-photo-thumbs__cnt <?= count($images) > 14 ? 'product-card-photo-thumbs__cnt--slides' : ''?>">
+                <div class="product-card-photo-thumbs jsPopupThumbContainer">
+                    <ul class="product-card-photo-thumbs-list jsPopupThumbList">
+                        <? foreach ($images as $key => $photo) : ?>
+                            <li class="product-card-photo-thumbs__i jsPopupPhotoThumb"
+                                data-big-img="<?= $photo->getSource('product_1500')->url ?>"
+                                ><img src="<?= $photo->getSource('product_120')->url ?>" class="product-card-photo-thumbs__img"></li>
+                        <? endforeach ?>
+                    </ul>
 
-                <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled"></div>
-                <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r"></div>
+                </div>
+                <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled jsPopupThumbBtn" data-dir="+="></div>
+                <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r jsPopupThumbBtn" data-dir="-="></div>
+
             </div>
 
             <?= $helper->render('cart/__button-product', [
