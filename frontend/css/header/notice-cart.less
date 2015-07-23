@@ -1,0 +1,59 @@
+.notice-cart {
+    display: table;
+    &__row {
+        display: table-row;
+    }
+    &__cell {
+        display: table-cell;
+
+        padding: 5px;
+
+        text-align: left;
+        vertical-align: middle;
+    }
+    &__img {
+        width: 40px;
+        height: 40px;
+        padding-left: 10px;
+
+        text-align: center;
+        .image {
+            max-width: 100%;
+            max-height: 40px;
+        }
+    }
+    &__name {
+        padding-left: 10px;
+    }
+    &__desc {
+        padding-right: 20px;
+
+        text-align: right;
+        white-space: nowrap;
+    }
+    &__price {
+        font-size: 1.1666em;
+
+        margin: 0 0 3px;
+    }
+    &__quan {
+        margin-right: 3px;
+
+        color: @grey-bright;
+
+        .inline-block(middle);
+    }
+    &__del {
+        .inline-block(middle);
+    }
+    &__on-cart {
+        line-height: 35px;
+
+        height: 35px;
+    }
+    &__icon {
+        font-size: 1.4166em; // 17
+
+        color: @grey-light-2;
+    }
+}

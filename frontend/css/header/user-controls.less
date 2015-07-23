@@ -1,0 +1,58 @@
+.user-controls {
+    float: right;
+    &__item {
+        width: 120px;
+        margin: 5px 0;
+
+        .inline-block(middle);
+        &_compare {
+            &.active {
+                .i-controls {
+                    .i-sprite(-105px, 0px, 25px, 25px);
+                }
+            }
+        }
+        &_user {
+            &.active {
+                .i-controls {
+                    .i-sprite(-131px, 0px, 25px, 25px);
+                }
+            }
+        }
+    }
+    &__icon {
+        width: 25px;
+        margin: 0 2px 0 0;
+
+        .inline-block(middle);
+    }
+    &__text {
+        overflow: hidden;
+
+        width: 85px;
+
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        .inline-block(middle);
+    }
+}
+
+.i-controls {
+    background: url('@{base-url}/header/i-controls.png') no-repeat 0 0;
+    &--cart {
+        .i-sprite(0px, 0px, 45px, 45px);
+    }
+    &--compare {
+        .i-sprite(-78px, 0, 25px, 25px);
+    }
+    &--phone {
+        .i-sprite(-72px, -29px, 17px, 17px);
+    }
+    &--search {
+        .i-sprite(-49px, -27px, 19px, 19px);
+    }
+    &--user {
+        .i-sprite(-50px, 0px, 25px, 25px);
+    }
+}
