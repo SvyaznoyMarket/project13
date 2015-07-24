@@ -21,6 +21,8 @@
 
 <hr class="hr-orange">
 
+<?= $page->blockModulesDefinitions() ?>
+
 <?= $page->slotBodyJavascript() ?>
 
 <?= $page->blockUserConfig() ?>
