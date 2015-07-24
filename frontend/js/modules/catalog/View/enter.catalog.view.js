@@ -71,6 +71,8 @@
                 SELECTED_FILTERS: $('#js-list-selected-filter-template').html()
             },
 
+            $WINDOW = $(window),
+
             INF_SCROLL_COOKIE = '1';
 
 
@@ -93,10 +95,15 @@
                     sortings: this.$el.find('.' + CSS_CLASSES.SORTING),
                     pagination: this.$el.find('.' + CSS_CLASSES.PAGINATION),
                     paginationBtn: this.$el.find('.' + CSS_CLASSES.PAGINATION_BTN),
-                    infScrollBtn: this.$el.find('.' + CSS_CLASSES.INF_SCROLL),
+                    infScrollBtn: this.$el.find('.' + CSS_CLASSES.INF_SCROLL_BTN),
                     paginationWrapper: this.$el.find('.' + CSS_CLASSES.PAGINATION_WRAPPER),
                     selectedFilters: this.$el.find('.' + CSS_CLASSES.SELECTED_FILTERS_WRAPPER)
                 };
+
+                this.lastPage = 10;
+
+                // Binded loadNextPage function
+                this.loadNextPageBinded = this.loadNextPage.bind(this);
 
                 // Init History
                 History.Adapter.bind(window, 'statechange', this.history.stateChange.bind(this));
@@ -168,7 +175,7 @@
                         type: 'GET',
                         url: ajaxUrl,
                         loader: this.loader,
-                        success: this.render.bind(this)
+                        success: this.renderCatalog.bind(this)
                     });
 
                     return;
@@ -201,6 +208,33 @@
 
                     return;
                 }
+            },
+
+            /**
+             * Вызов отрисовок разных частей страницы
+             *
+             * @memberOf    module:enter.catalog~CatalogView
+             * @type        {Object}
+             */
+            render: {
+                products: function( products ) {
+                    var
+                        i, html = '';
+
+                    for ( i = 0; i < products.length; i++ ) {
+                        html += mustache.render(TEMPLATES.LISTING_ITEM, products[i]);
+                    }
+
+                    return html;
+                },
+
+                pagination: function( pagination ) {
+                    return mustache.render(TEMPLATES.PAGINATION, pagination);
+                },
+
+                selectedFilters: function( selectedFilters ) {
+                    return mustache.render(TEMPLATES.SELECTED_FILTERS, selectedFilters);
+                },
             },
 
             /**
@@ -264,6 +298,12 @@
                 this.subViews.infScrollBtn.addClass(CSS_CLASSES.INF_SCROLL_ACTIVE);
 
                 docCookies.setItem('infScroll', INF_SCROLL_COOKIE, 4 * 7 * 24 * 60 * 60, '/' );
+
+                this.infScrollPage = 1;
+
+                $WINDOW.on('scroll', this.loadNextPageBinded);
+
+                return false;
             },
 
             /**
@@ -280,6 +320,10 @@
                 this.updateListing(1);
 
                 docCookies.setItem('infScroll', 0, 4 * 7 * 24 * 60 * 60, '/' );
+
+                $WINDOW.off('scroll', this.loadNextPageBinded);
+
+                return false;
             },
 
             /**
@@ -383,48 +427,64 @@
              */
             loadNextPage: function() {
                 var
+                    lastInfBtn = this.subViews.infScrollBtn.last(),
                     url;
 
-                this.infScrollPage = (this.infScrollPage || 0) + 1;
+                if ( !this.loader.loading && lastInfBtn.visible() && this.lastPage - this.infScrollPage > 0 ) {
+                    this.infScrollPage++;
 
-                url  = this.createUrl(this.infScrollPage)
+                    url = this.createUrl(this.infScrollPage);
+                    url = urlHelper.addParams(url, {
+                        ajax: true
+                    });
 
-                console.info('enter.catalog~CatalogView#loadNextPage');
-                console.log(url);
+                    console.log('load next page...', this.infScrollPage);
+                    console.log(url);
+
+                    this.ajax({
+                        type: 'GET',
+                        url: url,
+                        loader: this.loader,
+                        success: this.addPage.bind(this)
+                    });
+                }
 
                 return false;
             },
 
             /**
-             * Вызов отрисовки листинга
+             * Вызов отрисовки и добавления одной страницы листинга.
              *
-             * @method      render
+             * @method      addPage
              * @memberOf    module:enter.catalog~CatalogView#
              */
-            render: function( data ) {
+            addPage: function( data ) {
                 var
-                    renderProducts = function( products ) {
-                        var
-                            i, html = '';
+                    productsHtml;
 
-                        for ( i = 0; i < products.length; i++ ) {
-                            html += mustache.render(TEMPLATES.LISTING_ITEM, products[i]);
-                        }
+                // Validation
+                if ( !_.isObject(data) || !_.isObject(data.list) || !_.isArray(data.list.products) || !data.list.products.length ) {
+                    console.warn('Empty listing');
+                    // render error
+                    return;
+                }
 
-                        return html;
-                    },
+                productsHtml = this.render.products(data.list.products);
 
-                    renderPagination = function( pagination ) {
-                        return mustache.render(TEMPLATES.PAGINATION, pagination);
-                    },
+                this.subViews.wrapper.append(productsHtml);
+            },
 
-                    renderSelectedFilters = function( selectedFilters ) {
-                        return mustache.render(TEMPLATES.SELECTED_FILTERS, selectedFilters);
-                    },
-
+            /**
+             * Вызов отрисовки листинга
+             *
+             * @method      renderCatalog
+             * @memberOf    module:enter.catalog~CatalogView#
+             */
+            renderCatalog: function( data ) {
+                var
                     productsHtml, paginationHtml, selectedFiltersHtml;
 
-                console.info('enter.catalog~CatalogView#render');
+                console.info('enter.catalog~CatalogView#renderCatalog');
 
                 // Validation
                 if ( !_.isObject(data) || !_.isObject(data.list) || !_.isArray(data.list.products) || !data.list.products.length ) {
@@ -433,14 +493,16 @@
                     return;
                 }
 
-                productsHtml        = renderProducts(data.list.products);
-                paginationHtml      = renderPagination(data.pagination);
-                selectedFiltersHtml = renderSelectedFilters(data.selectedFilter);
+                productsHtml        = this.render.products(data.list.products);
+                paginationHtml      = this.render.pagination(data.pagination);
+                selectedFiltersHtml = this.render.selectedFilters(data.selectedFilter);
 
                 this.subViews.paginationWrapper.replaceWithPush(paginationHtml);
                 this.subViews.selectedFilters.empty()
                 this.subViews.selectedFilters.html(selectedFiltersHtml);
                 this.subViews.pagination.update();
+                this.subViews.paginationBtn.update();
+                this.subViews.infScrollBtn.update();
                 this.subViews.wrapper.html(productsHtml);
 
                 this.delegateEvents();

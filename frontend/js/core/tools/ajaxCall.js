@@ -129,8 +129,12 @@
                      * @param   {Object}  options   Параметры запроса
                      */
                     alwaysCb = function( rid, tid, options ) {
-                        if ( _.isObject(options) && _.isObject(options.loader) && _.isFunction(options.loader.hide) ) {
-                            options.loader.hide();
+                        if ( _.isObject(callSettings) && _.isObject(callSettings.loader) ) {
+                            callSettings.loader.loading = false;
+
+                            if ( _.isFunction(options.loader.hide) ) {
+                                options.loader.hide();
+                            }
                         }
 
                         tid && clearTimeout(tid);
@@ -166,8 +170,12 @@
                 this.currentAjaxCalls[requestID] = true;
                 globalAjaxCalls[requestID]       = xhr;
 
-                if ( _.isObject(callSettings) && _.isObject(callSettings.loader) && _.isFunction(callSettings.loader.show) ) {
-                    timeoutID = setTimeout(callSettings.loader.show, this.timeToAjaxLoader)
+                if ( _.isObject(callSettings) && _.isObject(callSettings.loader) ) {
+                    callSettings.loader.loading = true;
+
+                    if ( _.isFunction(callSettings.loader.show) ) {
+                        timeoutID = setTimeout(callSettings.loader.show, this.timeToAjaxLoader);
+                    }
                 }
 
                 xhr.always(alwaysCb.bind(this, requestID, timeoutID, callSettings));
