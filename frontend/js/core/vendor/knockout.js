@@ -23,7 +23,5 @@
             console.log('[Module] knockout');
             provide(ko);
         });
-
-        provide();
     }
 );
