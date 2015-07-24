@@ -11,9 +11,10 @@
         position: fixed;
         top: 0;
         left: 0;
-        .drop-shadow(0, 0, 20px, .6);
 
         width: 100%;
+
+        .drop-shadow(0, 0, 20px, .6);
     }
     &__side {
         width: 90px;
@@ -35,8 +36,9 @@
         padding-bottom: 0;
     }
     &-cart {
-        vertical-align: top;
         height: 100%;
+
+        vertical-align: top;
 
         background: @orange-light-3;
         &__icon {
@@ -61,7 +63,7 @@
             line-height: 1;
 
             height: 30px;
-            padding-top: 8px;
+            padding-top: 10px;
             padding-right: 20px;
         }
         &_bottom {
@@ -76,6 +78,7 @@
 
     width: 27px;
     height: 27px;
+    font-style: normal;
 
     text-align: center;
 
@@ -135,11 +138,14 @@
     float: right;
     &-order {
         .inline-block();
-        &__icon {
-            margin: -2px 0 0 0;
-        }
-        &__text {
+        &:before {
+            content: '';
+
+            background: url('@{base-url}/header/i-controls.png') no-repeat 0 0;
+
+            .i-sprite(-72px, -29px, 17px, 17px);
             .inline-block();
+             margin: -3px 3px 0 0;
         }
     }
     &__text {
@@ -163,6 +169,7 @@
             width: 40px;
             height: 40px;
             margin-right: 10px;
+
             text-align: center;
             .image {
                 max-width: 40px;
@@ -170,16 +177,19 @@
             }
         }
         &-name {
-            width: 300px;
-            white-space: nowrap;
             font-size: 1.1666em;
+
             overflow: hidden;
+
+            width: 300px;
+
+            white-space: nowrap;
             text-overflow: ellipsis;
         }
     }
-
     &__price {
-        margin: 0 20px;
         line-height: 1;
+
+        margin: 0 20px;
     }
 }
