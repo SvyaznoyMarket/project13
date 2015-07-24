@@ -26,6 +26,7 @@
      * @version     0.1
      *
      * @requires    jQuery
+     * @requires    jquery.update
      */
     modules.define(
         'jquery.replaceWithPush',

@@ -1,3 +1,25 @@
+/**
+ * @module      App
+ * @version     0.1
+ *
+ * [About YM Modules]{@link https://github.com/ymaps/modules}
+ */
+!function( modules, module ) {
+    modules.define(
+        'App',
+        [],
+        module
+    );
+}(
+    this.modules,
+    function( provide ) {
+        'use strict';
+
+        provide({});
+    }
+);
+
+
 !function( window, document, modules ) {
 
     var
@@ -8,16 +30,22 @@
          *
          * @method  initApp
          */
-        initApp = function( EnterPageView, enterModules ) {
+        initApp = function( App, Backbone, _, PageView, ProductsCollection ) {
             console.info('Application initialize');
 
+            // Добавляем возможность добавлять события к объекту приложения
+            _.extend(App, Backbone.Events);
+
             /**
+             * Главное View приложения
              * @todo сюда переписать весь postinit
              * Уже с него вешать все обработчики событий
              */
-            new EnterPageView({
+            App.pageView = new PageView({
                 el: document.body
             });
+
+            App.productsCollection = new ProductsCollection();
         },
 
 
@@ -34,16 +62,20 @@
             });
         };
 
-    // загружаем 'enter.modules' только для того чтобы сразу объявить все модули.
+    // Загружаем 'enter.modules' только для того чтобы сразу объявить все модули.
     // Не очень кошерно, на самом деле
     modules.require(['enter.modules', 'loadModule'], extendModules);
 
     /**
-     * Запрос модулей для инициализации приложения
+     * Запрос модулей для инициализации приложения.
+     * Вызываем extendBackbone для того чтобы сразу расширить функционал Backbone'a
      */
     modules.require([
+        'App',
+        'extendBackbone',
+        'underscore',
         'enter.page.view',
-        'enter.modules'
+        'enter.products.collection'
     ], initApp);
 }(
     this,

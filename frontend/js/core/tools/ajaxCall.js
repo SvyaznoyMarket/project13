@@ -6,10 +6,14 @@
  * В опциях к запросу необходимо передать объект loader у которого должно быть два метода show и hide.
  *
  * Отмена всех AJAX запросов текущего экземпляра класса: this.disposeAjax()
- * Отмена всех AJAX запросов приложения this.disposeAjax(this.DISPOSE_GLOBAL)
+ * Отмена всех AJAX запросов приложения Backbone.disposeAjax()
  *
  * @module      ajaxCall
  * @version     0.1
+ *
+ * @requires    extendBackbone
+ * @requires    underscore
+ * @requires    generateUUID
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
@@ -17,7 +21,7 @@
     modules.define(
         'ajaxCall',
         [
-            'jQuery',
+            'extendBackbone',
             'underscore',
             'generateUUID'
         ],
@@ -25,64 +29,10 @@
     );
 }(
     this.modules,
-    function( provide, $, _, generateUUID ) {
+    function( provide, Backbone, _, generateUUID ) {
         'use strict';
 
-        var
-            /**
-             * Общий счетчик AJAX запросов
-             *
-             * @type  {Number}
-             */
-            requestCounter  = 0,
-
-            /**
-             * Хранилище всех текущих AJAX запросов приложения
-             *
-             * @type  {Object}
-             */
-            globalAjaxCalls = {},
-
-            /**
-             * Отмена всех текущих ajax запросов.
-             * Если указан конкретный идентификатор запроса, то отменяем только его.
-             *
-             * @method      disposeAjax
-             *
-             * @param       {Number}    id    Идентификатор запроса который нужно отменить
-             */
-            globalDisposeAjax = function( id ) {
-                var
-                    // Уникальная строка, позволяющая отделить собственный 'abort' запроса от реальной ошибки при выполнении запроса
-                    uuid = generateUUID(),
-                    key;
-
-                console.warn('Backbone.disposeAjax', id);
-
-                if ( id ) {
-                    if ( globalAjaxCalls.hasOwnProperty(id) ) {
-                        globalAjaxCalls[id].abort(uuid);
-                        delete globalAjaxCalls[key];
-                    }
-                } else {
-                    for ( key in globalAjaxCalls ) {
-                        if ( !globalAjaxCalls.hasOwnProperty(key) ) {
-                            continue;
-                        }
-
-                        globalAjaxCalls[key].abort(uuid);
-                        delete globalAjaxCalls[key];
-                    }
-                }
-            };
-
         provide({
-            /**
-             * Ключ при котором отмена всех текущих AJAX запросов будет выполнена на уровне всего приложения
-             *
-             * @type  {String}
-             */
-            DISPOSE_GLOBAL: 'hsadkfjhalksjdhfkjlasdhf',
 
             /**
              * Стандратное время до показа лоадера
@@ -115,8 +65,8 @@
                     },
 
                     callSettings = _.extend(defaultSettings, ajaxSettings),
-                    xhr          = $.ajax(callSettings),
-                    requestID    = ++requestCounter,
+                    xhr          = Backbone.ajax(callSettings),
+                    requestID    = xhr.__requestID,
                     timeoutID,
 
                     /**
@@ -166,9 +116,7 @@
                     };
 
 
-                xhr.__requestID                  = requestID;
                 this.currentAjaxCalls[requestID] = true;
-                globalAjaxCalls[requestID]       = xhr;
 
                 if ( _.isObject(callSettings) && _.isObject(callSettings.loader) ) {
                     callSettings.loader.loading = true;
@@ -190,17 +138,13 @@
              *
              * @method  disposeAjax
              */
-            disposeAjax: function( disposeGlobal ) {
+            disposeAjax: function() {
                 var
                     key;
 
-                if ( disposeGlobal === this.DISPOSE_GLOBAL ) {
-                    globalDisposeAjax();
-                } else {
-                    for ( key in this.currentAjaxCalls ) {
-                        if ( this.currentAjaxCalls.hasOwnProperty(key) ) {
-                            globalDisposeAjax(key);
-                        }
+                for ( key in this.currentAjaxCalls ) {
+                    if ( this.currentAjaxCalls.hasOwnProperty(key) ) {
+                        Backbone.disposeAjax(key);
                     }
                 }
             }

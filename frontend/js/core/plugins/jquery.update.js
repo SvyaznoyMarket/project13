@@ -2,7 +2,7 @@
  * @module      jquery.update
  * @version     0.1
  *
- * @author      Zaytsev Alexandr
+ * @requires    jQuery
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */

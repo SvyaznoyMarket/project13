@@ -9,6 +9,16 @@ module.exports = {
         importNonFirst: true
     },
 
+    Backbone: {
+        src: '<%= paths.jsCore %>/vendor-to-shim/backbone.js',
+        dest: '<%= paths.temp %>/backbone.shim.js',
+        module_name: 'Backbone',
+        desc: 'Backbone 1.1.2',
+        exports: 'this.Backbone',
+        dependencies: ['underscore', 'jQuery'],
+        importDependencies: ['_', 'jQuery']
+    },
+
     docCookies: {
         src: '<%= paths.jsCore %>/vendor-to-shim/cookies.js',
         dest: '<%= paths.temp %>/cookies.shim.js',

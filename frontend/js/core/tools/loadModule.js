@@ -2,6 +2,8 @@
  * @module      loadModule
  * @version     0.1
  *
+ * @requires    loadModule
+ *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
 !function( modules, module ) {
