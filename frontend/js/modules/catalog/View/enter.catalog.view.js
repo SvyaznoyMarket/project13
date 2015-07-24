@@ -473,7 +473,8 @@
                     return;
                 }
 
-                productsHtml = this.render.products(data.list.products);
+                productsHtml  = this.render.products(data.list.products);
+                this.lastPage = data.pagination.pagesCount;
 
                 this.subViews.wrapper.append(productsHtml);
             },
@@ -500,6 +501,8 @@
                 productsHtml        = this.render.products(data.list.products);
                 paginationHtml      = this.render.pagination(data.pagination);
                 selectedFiltersHtml = this.render.selectedFilters(data.selectedFilter);
+
+                this.lastPage       = data.pagination.pagesCount;
 
                 this.subViews.paginationWrapper.replaceWithPush(paginationHtml);
                 this.subViews.selectedFilters.empty()
