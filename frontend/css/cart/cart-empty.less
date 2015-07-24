@@ -1,0 +1,77 @@
+.cart-empty {
+    width: 470px;
+    margin: 20px auto 50px;
+    padding: 10px 0 0 136px;
+
+    color: @grey-light;
+    background: url('@{base-url}/cart/cart-empty.png') no-repeat 0 0 @white;
+    &__title {
+        font-size: 2.6666em;
+    }
+    &__desc {
+        font-size: 1.8333em;
+        line-height: 1.3;
+    }
+    &__search {
+        color: @green-normal;
+        &:hover {
+            color: @green-normal;
+        }
+        &:before {
+            width: 19px;
+            height: 19px;
+            margin: 0 5px 0 5px;
+
+            content: '';
+
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAABWUlEQVR4Aa2TA9NWURSFV7btumefbNs1qmEY1yjb1mfzvmfvL9uuX9Owf9GwO/u1+Vxrba2LJPajD5zZDqZasP0MoccQ+xZM7+HsFbBnURCtUweBqVuFfG8VgF6I0jRhCNjuAtNzCF3DPfRGVjppHJj+gu1Z5OIe+oPpHYRakQktTTMyB1EobH/DmcNIJdajYmidOhps36Bt5sgUMaqBm7UaRaItYdqLJIQ+aLOLRWauAdMdJMH0BKXgG0obhPqoFMRbBKb6dDF/3FAUifpOzMUUMXMZQrtRLEJ3wXZz6k2jzu6kAUWW+Eg9mobQSQj9KWiq3d5sCH1HyKzIlXadei4wJLLhz1wKsf/UTqFZc5ATMYfU2Y7Og2kd2LPBR4sjP/l9LU1oObppgb4XlJuvHyPg7B44cxNMLZGMzweim5J65MxCBIJ6rASVFwxKVUGm+agIbuoUOHP0P+HecWASUj0YAAAAAElFTkSuQmCC') no-repeat 0 0;
+
+            .inline-block(middle);
+        }
+        .underline {
+            border-color: @green-normal;
+        }
+    }
+    &__wow {
+        color: @red;
+        &:hover {
+            color: @red;
+        }
+        &:before {
+            width: 19px;
+            height: 19px;
+            margin: 0 5px 0 5px;
+
+            content: '';
+
+            background: no-repeat 0 0 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAACOUlEQVR4AY2UA9AcQRCF54+NYuxCbO/u9Pl2Zi62bSeFGIU4KRspxChGpdi2S7GtZbpTv//DvvPe9jfo94YVyBF8pKf4EU/yR/h5wZV85UezZy2WQ/fatq3kKz7RUTCE+YzlYeEuhLx2BV9kKwBHGKPw9zlPwtOf/fo2yATyEeRKfQHe+87vB62YK4zpOJOXv1TvhqyY9jFW3lNwAF+HsoIUvLclDzESUm/gzGayNPqZ0OvjzZ9/D4BmuUD5MPhjCejE0ov+v2tLPZEWZBrhkjcr/taWEE0HWsNYOfz/hZ2M9C4EKWN+WhDJlbADl7o/Daugw8+oYzlBpN9JaIawj67iW1917VqtEIStRtA3J2WMCgQqkKW0jgi8g8XfPQlXqbv4+uxIY3IJkNIjLIhofyyh9XQkjHFMbr6Jd6jOUG6KzysAkSepwzRrR2hjLRXqyILKUXxqAYi2wJXGBvz9yxPwEFdy1ZPww1PGsV9xo3EAEP9FIB+gCoK24O+Hlgj1ZCiaJaUDofsQeuOJ2apydhD6i4r+mnobapLVL9qZldKnrl1rU/R8GQmlsQNM+Q8SkCz0lgCMHJzMGCsFc/CeGVlBJJq+L2GJJ0MH08K6dq1IfqRUZAWRfIAKjtIG0glC5i0Do/1U+lY6abKCCvRFanUpo2iTdaVPFj8FmqfgjW+GWzIyZjYQyccim4owx3QsOSkYgEmI51vlvSv5soKgH08T9HTAvN9xozkCtnspfh07eM+VsLt4vP4BKDFykzaIEvgAAAAASUVORK5CYII=');
+
+            .inline-block(middle);
+        }
+        .underline {
+            border-color: @red;
+        }
+    }
+}
+
+.ep-banner {
+    font-family: 'GloberRegular';
+    font-size: 1.8333em;
+    padding-top: 10px;
+
+    text-align: center;
+
+    color: @grey-light;
+    &__icon {
+        width: 41px;
+        height: 41px;
+        margin-right: 10px;
+
+        background: url('@{base-url}/cart/ep.png') no-repeat 0 0 @white;
+
+        .inline-block(middle);
+    }
+    .mark {
+        color: @orange-bright;
+    }
+}
