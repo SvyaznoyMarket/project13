@@ -51,7 +51,7 @@ $buySender2 = $request->get('sender2');
 
 <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
 
-<section class="product-card js-module-require" data-module="enter.product">
+<section class="product-card js-module-require" data-module="enter.product.viewed">
 
     <script type="application/json" class="js-product-json"><?= json_encode([
             'id'    => $product->getId(),

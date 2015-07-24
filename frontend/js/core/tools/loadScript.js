@@ -18,29 +18,63 @@
         'use strict';
 
         var
-            URL_PREFIX = '/public/js/';
+            URL_PREFIX      = '/public/js/',
+            COMPLETE_FLAG   = 'finished',
+            registryScripts = {},
+
+            doCallbacks = function( url ) {
+                var
+                    cbs = registryScripts[url].callbacks,
+                    i;
+
+                registryScripts[url][COMPLETE_FLAG] = true;
+
+                for ( i = 0; i < cbs.length; i++ ) {
+                    cbs[i]();
+                }
+
+                return;
+            },
+
+            registerScript = function( url ) {
+                var
+                    script = document.createElement('script');
+
+                script.type = 'text/javascript';
+
+                if (script.readyState) { //IE
+                    script.onreadystatechange = function () {
+                        if (script.readyState == 'loaded' || script.readyState == 'complete') {
+                            script.onreadystatechange = null;
+                            doCallbacks(url);
+                        }
+                    };
+                } else { //Others
+                    script.onload = function () {
+                        doCallbacks(url);
+                    };
+                }
+
+                script.src = (( /^http:/.test(url) || /^https:/.test(url) ) ? url : URL_PREFIX + url ) + '?' +  (new Date()).getTime();
+                document.getElementsByTagName('head')[0].appendChild(script);
+            };
 
         provide(function( url, callback ) {
-            var
-                script = document.createElement('script');
+            if ( registryScripts.hasOwnProperty(url) && registryScripts[COMPLETE_FLAG] ) {
+                callback();
 
-            script.type = 'text/javascript';
+                return;
+            } else if ( registryScripts.hasOwnProperty(url) ) {
+                registryScripts[url].callbacks.push(callback);
 
-            if (script.readyState) { //IE
-                script.onreadystatechange = function () {
-                    if (script.readyState == 'loaded' || script.readyState == 'complete') {
-                        script.onreadystatechange = null;
-                        callback();
-                    }
-                };
-            } else { //Others
-                script.onload = function () {
-                    callback();
-                };
+                return;
             }
 
-            script.src = (( /^http:/.test(url) || /^https:/.test(url) ) ? url : URL_PREFIX + url ) + '?' +  (new Date()).getTime();
-            document.getElementsByTagName('head')[0].appendChild(script);
+            registryScripts[url]                = {};
+            registryScripts[url].callbacks      = [];
+            registryScripts[url].script         = registerScript(url);
+            registryScripts[url][COMPLETE_FLAG] = false;
+            registryScripts[url].callbacks.push(callback);
         });
     }
 );
