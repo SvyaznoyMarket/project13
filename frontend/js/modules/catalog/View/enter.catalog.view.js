@@ -131,11 +131,14 @@
 
             /**
              * Объект загрузчика. Передается в опциях в AJAX вызовы.
+             * Свойство loading изменяет ajax автоматически.
              *
              * @memberOf    module:enter.catalog~CatalogView
              * @type        {Object}
              */
             loader: {
+                loading: false,
+
                 show: function() {
                     console.info('enter.catalog~CatalogView.loader#show');
                 },
@@ -506,6 +509,10 @@
                 this.subViews.infScrollBtn.update();
                 this.subViews.wrapper.html(productsHtml);
 
+                // Check infinity scroll
+                this.checkInfScroll();
+
+                // Apply events
                 this.delegateEvents();
             }
         }));
