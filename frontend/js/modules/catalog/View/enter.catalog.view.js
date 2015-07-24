@@ -187,12 +187,13 @@
                  * @method      stateChange
                  * @memberOf    module:enter.catalog~CatalogView.history
                  */
-                updateState: function( url, callback, silent ) {
+                updateState: function( url, silent ) {
                     var
                         state = {
                             title: document.title,
                             url: url,
                             data: {
+                                randomData: new Date(),
                                 scrollTop: $(window).scrollTop(),
                                 _silent: !!silent
                             }
