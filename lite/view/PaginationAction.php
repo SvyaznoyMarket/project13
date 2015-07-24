@@ -24,7 +24,10 @@ class PaginationAction
         if ($first != $last) $range[] = $last; // добиваем первой и последней страницей => [1,2,3,4,5,0,10]
 
         // формируем массив для Mustache
-        $data = ['items' => []];
+        $data = [
+            'items'         => [],
+            'pagesCount'    => $pager->getLastPage()
+        ];
 
         foreach ($range as $i) {
             $data['items'][] = [
