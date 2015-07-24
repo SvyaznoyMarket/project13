@@ -100,7 +100,7 @@
                     selectedFilters: this.$el.find('.' + CSS_CLASSES.SELECTED_FILTERS_WRAPPER)
                 };
 
-                this.lastPage = 10;
+                this.lastPage = parseInt(this.$el.attr('data-page-quantity') || 1, 10);
 
                 // Binded loadNextPage function
                 this.loadNextPageBinded = this.loadNextPage.bind(this);
