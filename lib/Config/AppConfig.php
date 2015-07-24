@@ -432,7 +432,6 @@ class AppConfig {
 
     /** @var bool */
     public $mainMenu = [
-        'requestMenu'               => null, // запрос главного меню из
         'recommendationsEnabled'    => null
     ];
     /** @var bool */

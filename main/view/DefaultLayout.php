@@ -219,42 +219,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotMainMenu() {
-        $renderer = \App::closureTemplating();
-
-        if (\App::config()->mainMenu['requestMenu']) {
-            $client = \App::curl();
-
-            $isFailed = false;
-            $content = '';
-            $client->addQuery(
-                'http://' . \App::config()->mainHost
-                . (\App::user()->getRegion()
-                    ? \App::router()->generate('category.mainMenu.region', ['regionId' => \App::user()->getRegion()->getId()])
-                    : \App::router()->generate('category.mainMenu')
-                ),
-                [],
-                function($data) use (&$content, &$isFailed) {
-                    isset($data['content']) ? $content = $data['content'] : $isFailed = true;
-                },
-                function(\Exception $e) use (&$isFailed) {
-                    \App::exception()->remove($e);
-                    $isFailed = true;
-                },
-                2
-            );
-            $client->execute(1, 2);
-
-            if ($isFailed) {
-                $content = $renderer->render('__mainMenu', ['menu' => (new Menu())->generate(\App::user()->getRegion())]);
-            }
-        } else {
-            $content = $renderer->render('__mainMenu', ['menu' => (new Menu())->generate(\App::user()->getRegion())]);
-        }
-
-        return $content;
-    }
-
     public function slotBanner() {
         return '';
     }
