@@ -1,3 +1,9 @@
+<?
+/**
+ * @var $page \View\LiteLayout
+ */
+?>
+
 <!-- Авторизованным добавлять класс active -->
 <li class="user-controls__item user-controls__item_user notice-show js-userbar-user">
     <a href="<?= \App::router()->generate('user.login') ?>"
@@ -12,7 +18,7 @@
 		<ul class="notice-user">
 			<li class="notice-user__item"><a href="" class="notice-user__link notice-user__link_lk"><span class="underline">Личный кабинет</span></a></li>
 			<li class="notice-user__item"><a href="" class="notice-user__link notice-user__link_favorite"><span class="underline">Избранное</span></a></li>
-			<li class="notice-user__item"><a href="" class="notice-user__link"><span class="underline">Выйти</span></a></li>
+			<li class="notice-user__item"><a href="<?= \App::router()->generate('user.logout') ?>" class="notice-user__link"><span class="underline">Выйти</span></a></li>
 		</ul>
     </div>
 </li>
