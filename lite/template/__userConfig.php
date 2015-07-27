@@ -5,6 +5,10 @@ return function(
     $userConfig = [];
     try {
         $userConfig = (new \Controller\User\InfoAction())->getResponseData(\App::request());
+        // Переименуем корзину
+        $userConfig['products'] = isset($userConfig['cartProducts']) ? $userConfig['cartProducts'] : [];
+        unset($userConfig['cartProducts']);
+
     } catch (\Exception $e) {
         \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['user-info', 'critical']);
     }
