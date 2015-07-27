@@ -11,8 +11,7 @@ $f = function(
     ?>
 
     <a
-        class="goods__btn btn-primary js-module-require <?= $class ?>"
-        data-module="enter.buyButton"
+        class="goods__btn btn-primary js-buy-button <?= $class ?>"
         href="<?= $helper->url('cart.product.set', ['productId' => $product->getId()]) ?>"
         ><?= $buttonText ?></a>
 

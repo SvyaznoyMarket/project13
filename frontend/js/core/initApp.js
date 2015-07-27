@@ -30,7 +30,7 @@
          *
          * @method  initApp
          */
-        initApp = function( App, Backbone, _, PageView, ProductsCollection ) {
+        initApp = function( App, Backbone, _, PageView, ProductsCollection, CartCollection ) {
             console.info('Application initialize');
 
             // Добавляем возможность добавлять события к объекту приложения
@@ -46,6 +46,7 @@
             });
 
             App.productsCollection = new ProductsCollection();
+            App.cart               = new CartCollection();
         },
 
 
@@ -75,7 +76,8 @@
         'extendBackbone',
         'underscore',
         'enter.page.view',
-        'enter.products.collection'
+        'enter.products.collection',
+        'enter.cart.collection'
     ], initApp);
 }(
     this,
