@@ -166,6 +166,10 @@ class DeliveryAction {
         }
 
         $orderDelivery = new \Model\OrderDelivery\Entity($orderDeliveryData);
+
+        // TODO удалить
+        \Controller\OrderV3\DeliveryAction::modifyOrderForAction($orderDelivery);
+
         if (!(bool)$orderDelivery->orders) {
             foreach ($orderDelivery->errors as $error) {
                 if (708 == $error->code) {
