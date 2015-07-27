@@ -43,24 +43,23 @@ return function (
                                     <img src="" alt="" class="goods__img-image" data-bind="attr: {src: imageUrl}">
                                 </a>
 
-                                <!-- ko if: reviews.count -->
-                                <div class="cmprCnt_rating">
-                                    <!-- ko foreach: {data: reviews.stars.notEmpty} -->
-                                    <img src="/images/reviews_star.png" class="cmprCnt_rating_img">
+
+                                <div class="goods__rating rating">
+                                    <!-- ko if: reviews.count -->
+                                    <span class="rating-state">
+                                        <!-- ko foreach: {data: reviews.stars.notEmpty} -->
+                                        <i class="rating-state__item rating-state__item_1 icon-rating rating-state__item_fill"></i>
+                                        <!-- /ko -->
+
+                                        <!-- ko foreach: {data: reviews.stars.empty} -->
+                                        <i class="rating-state__item rating-state__item_1 icon-rating"></i>
+                                        <!-- /ko -->
+                                    </span>
+
+                                    <span class="rating-count">(<!-- ko text: reviews.count --><!-- /ko -->)</span>
                                     <!-- /ko -->
-
-                                    <!-- ko foreach: {data: reviews.stars.empty} -->
-                                    <img src="/images/reviews_star_empty.png" class="cmprCnt_rating_img">
-                                    <!-- /ko -->
-
-                                    <span class="cmprCnt_rating_count">(<!-- ko text: reviews.count --><!-- /ko -->)</span>
                                 </div>
-                                <!-- /ko -->
 
-                                <!-- ko if: !reviews.count -->
-                                <div class="cmprCnt_noRating">
-                                </div>
-                                <!-- /ko -->
 
                                 <div class="goods__name">
                                     <div class="goods__name-inn">
@@ -69,9 +68,9 @@ return function (
                                 </div>
 
                                 <!-- ko if: priceOld != '0' -->
-                                    <div class="goods__price-old"><span class="line-through" data-bind="html: priceOld"></span> <span class="rubl-css">P</span></div>
+                                <div class="goods__price-old"><span class="line-through" data-bind="html: priceOld"></span> <span class="rubl-css">P</span></div>
                                 <!-- /ko -->
-                                    <div class="goods__price-now"><span data-bind="html: price"></span> <span class="rubl-css">P</span></div>
+                                <div class="goods__price-now"><span data-bind="html: price"></span> <span class="rubl-css">P</span></div>
 
                                 <a href="" class="goods__btn btn-primary" data-bind="attr: {
                                     'data-product-id': id,
