@@ -6,27 +6,23 @@ return function (
     $activeCompareGroupIndex
 ) { ?>
     <div class="js-compare js-module-require" data-module="enter.compare" data-compare-groups="<?= $helper->json($compareGroups) ?>" data-active-compare-group-index="<?= $helper->escape($activeCompareGroupIndex) ?>">
-        <div class="cmprHd clearfix js-compare-header" data-bind="css: {'cmprHd-empty': !compareGroups().length}">
-            <div class="cmprHd_l"><a href="/"><img src="/styles/compare/img/logo_cmpr.png" alt=""></a></div>
-
-            <div class="cmprHd_r">
-                <div class="cmprHd_t">
-                    Сравнение товаров
-                </div>
-
-                <ul class="cmprHd_lst" data-bind="visible: compareGroups().length" style="display: none;">
-                    <!-- ko foreach: {data: compareGroups} -->
-                    <li class="cmprHd_lst_i" data-bind="css: {'cmprHd_lst_i-act': $parent.activeCompareGroupIndex() == $index()}"><a href="#" class="js-compare-typeLink" data-bind="attr: {'data-index': $index}"><!-- ko text: type.name --><!-- /ko --><span class="cmprHd_lst_qn"> <!-- ko text: products().length --><!-- /ko --></span></a></li>
-                    <!-- /ko -->
-                </ul>
+        <div class="cmprHd js-compare-header" data-bind="css: {'cmprHd-empty': !compareGroups().length}">
+            <div class="cmprHd_t">
+                Сравнение товаров
             </div>
+
+            <ul class="cmprHd_lst" data-bind="visible: compareGroups().length" style="display: none;">
+                <!-- ko foreach: {data: compareGroups} -->
+                <li class="cmprHd_lst_i" data-bind="css: {'cmprHd_lst_i-act': $parent.activeCompareGroupIndex() == $index()}"><a href="#" class="js-compare-typeLink" data-bind="attr: {'data-index': $index}"><!-- ko text: type.name --><!-- /ko --><span class="cmprHd_lst_qn"> <!-- ko text: products().length --><!-- /ko --></span></a></li>
+                <!-- /ko -->
+            </ul>
         </div>
 
         <div class="cmprCntW js-compare-content">
             <!-- ko if: compareGroups().length -->
             <div data-bind="visible: compareGroups().length" style="display: none;">
                 <!-- ko if: compareGroups()[activeCompareGroupIndex()] -->
-                <table class="cmprCnt clearfix js-compare-table" data-bind="css: {'cmprCnt_similarOnly': similarOnly, 'cmprCnt-scroll': scrolled}">
+                <table class="goods cmprCnt js-compare-table" data-bind="css: {'cmprCnt_similarOnly': similarOnly, 'cmprCnt-scroll': scrolled}">
                     <tr class="cmprCnt_head js-compare-tableHeadRow">
                         <th class="cmprCnt_modes">
                             <div class="cmprCnt_fixed cmprCnt_modeW js-compare-fixed cmprCnt_cell">
@@ -38,12 +34,13 @@ return function (
                         </th>
 
                         <!-- ko foreach: {data: compareGroups()[activeCompareGroupIndex()].products} -->
-                        <td class="cmprCnt_product">
-                            <div class="cmprCnt_fixed cmprCnt_modeW js-compare-fixed cmprCnt_cell">
-                                <a href="" class="clsr js-compare-deleteProductLink" data-bind="attr: {href: deleteFromCompareUrl, 'data-product-id': id}"></a>
 
-                                <a class="cmprCnt_img" href="" data-bind="attr: {href: link}">
-                                    <img src="" class="descrImg_img" data-bind="attr: {src: imageUrl}">
+                        <td class="goods__item cmprCnt_product">
+                            <div class="cmprCnt_fixed cmprCnt_modeW js-compare-fixed cmprCnt_cell">
+                                <a href="" class="goods__delete icon-clear js-compare-deleteProductLink" data-bind="attr: {href: deleteFromCompareUrl, 'data-product-id': id}"></a>
+
+                                <a class="goods__img" href="" data-bind="attr: {href: link}">
+                                    <img src="" alt="" class="goods__img-image" data-bind="attr: {src: imageUrl}">
                                 </a>
 
                                 <!-- ko if: reviews.count -->
@@ -65,38 +62,32 @@ return function (
                                 </div>
                                 <!-- /ko -->
 
-                                <div class="cmprCnt_pt">
-                                    <a href="" class="cmprCnt_cat" data-bind="attr: {href: link}"><!-- ko text: prefix --><!-- /ko --></a>
-                                    <a href="" class="cmprCnt_n" data-bind="attr: {href: link}"><!-- ko text: webName --><!-- /ko --></a>
+                                <div class="goods__name">
+                                    <div class="goods__name-inn">
+                                        <a href="" data-bind="attr: {href: link}"><!-- ko text: prefix --><!-- /ko --> <!-- ko text: webName --><!-- /ko --></a>
+                                    </div>
                                 </div>
 
                                 <!-- ko if: priceOld != '0' -->
-                                                <span class="cmprCnt_price cmprCnt_price-l">
-                                                    <span data-bind="html: priceOld"></span>
-                                                    <span class="rubl">p</span>
-                                                </span>
+                                    <div class="goods__price-old"><span class="line-through" data-bind="html: priceOld"></span> <span class="rubl-css">P</span></div>
                                 <!-- /ko -->
+                                    <div class="goods__price-now"><span data-bind="html: price"></span> <span class="rubl-css">P</span></div>
 
-                                            <span class="cmprCnt_price">
-                                                <span data-bind="html: price"></span>
-                                                <span class="rubl">p</span>
-                                            </span>
-
-                                <div class="cmprCnt_buy"><a href="" class="cmprCnt_buy_lk btnBuy__eLink mBought" data-bind="attr: {
-                                                'data-product-id': id,
-                                                'data-product-ui': ui,
-                                                'data-product-article': article,
-                                                'data-product-url': link,
-                                                'data-in-shop-stock-only': inShopStockOnly ? 'true' : 'false',
-                                                'data-in-shop-showroom-only': inShopShowroomOnly ? 'true' : 'false',
-                                                'data-is-buyable': isBuyable ? 'true' : 'false',
-                                                'data-status-id': statusId, 'data-upsale': upsale,
-                                                'data-full': 1, 'data-partner-name': partnerName,
-                                                'data-partner-offer-url': partnerOfferUrl,
-                                                'data-is-slot': isSlot,
-                                                'data-sender': typeof sender != 'undefined' ? sender : '',
-                                                'data-color-class': colorClass
-                                            }, buyButtonBinding: $root.cart">Купить</a></div>
+                                <a href="" class="goods__btn btn-primary" data-bind="attr: {
+                                    'data-product-id': id,
+                                    'data-product-ui': ui,
+                                    'data-product-article': article,
+                                    'data-product-url': link,
+                                    'data-in-shop-stock-only': inShopStockOnly ? 'true' : 'false',
+                                    'data-in-shop-showroom-only': inShopShowroomOnly ? 'true' : 'false',
+                                    'data-is-buyable': isBuyable ? 'true' : 'false',
+                                    'data-status-id': statusId, 'data-upsale': upsale,
+                                    'data-full': 1, 'data-partner-name': partnerName,
+                                    'data-partner-offer-url': partnerOfferUrl,
+                                    'data-is-slot': isSlot,
+                                    'data-sender': typeof sender != 'undefined' ? sender : '',
+                                    'data-color-class': colorClass
+                                }, buyButtonBinding: $root.cart">Купить</a>
                             </div>
                         </td>
                         <!-- /ko -->

@@ -11,15 +11,13 @@
 
 <body>
 
-<?= $page->blockHeader() ?>
+<div class="wrapper-nofixed">
+	<?= $page->blockHeader() ?>
 
-<div class="wrapper">
+	<?= $page->blockContent() ?>
 
-    <?= $page->blockContent() ?>
-
+	<hr class="hr-orange">
 </div>
-
-<hr class="hr-orange">
 
 <?= $page->blockModulesDefinitions() ?>
 
