@@ -395,7 +395,7 @@ class DeliveryAction extends OrderV3 {
     /** Модификация заказа для акции "Всё по..."
      * @param \Model\OrderDelivery\Entity $orderDelivery
      */
-    private function modifyOrderForAction(\Model\OrderDelivery\Entity $orderDelivery){
+    public static function modifyOrderForAction(\Model\OrderDelivery\Entity $orderDelivery){
 
         // Ключевые тэги у продуктов
         $tagsUids = [
