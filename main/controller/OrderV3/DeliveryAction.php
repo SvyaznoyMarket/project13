@@ -156,7 +156,7 @@ class DeliveryAction extends OrderV3 {
 
 
         $orderDeliveryData = null;
-        foreach ([1, 8] as $i) { // две попытки на расчет доставки: 1*4 и 8*4 секунды
+        foreach ([2, 8] as $i) { // две попытки на расчет доставки: 2*4 и 8*4 секунды
             try {
                 $orderDeliveryData = $this->client->query(
                     'cart/split',
