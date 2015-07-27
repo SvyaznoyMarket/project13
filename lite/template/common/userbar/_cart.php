@@ -1,4 +1,4 @@
-<div class="header__side header-cart table-cell js-module-require" <? if (\App::user() && \App::user()->getCart()->count()) : ?>data-module="enter.cart"<? endif ?> >
+<div class="header__side header-cart table-cell" <? if (\App::user() && \App::user()->getCart()->count()) : ?>data-module="enter.cart"<? endif ?> >
 
     <div class="notice-show jsKnockoutCart">
         <a href="<?= \App::router()->generate('cart') ?>" title="">
