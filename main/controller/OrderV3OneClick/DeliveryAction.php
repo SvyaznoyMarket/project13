@@ -37,12 +37,13 @@ class DeliveryAction {
         }
         if (isset($productItem)) unset($productItem);
 
+        $previousSplit = $this->session->get($this->splitSessionKey);
+        if (is_string($previousSplit)) $previousSplit = json_decode(gzuncompress($previousSplit), true);
+
         if ($request->isXmlHttpRequest()) {
 
             $splitData = [];
             try {
-
-                $previousSplit = $this->session->get($this->splitSessionKey);
 
                 if (!$previousSplit || !$request->get('update')) {
                     $result['OrderDeliveryRequest'] = json_encode($splitData, JSON_UNESCAPED_UNICODE);
@@ -90,7 +91,7 @@ class DeliveryAction {
 
             // сохраняем данные пользователя
             $data['action'] = 'changeUserInfo';
-            $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+            $data['user_info'] = $previousSplit['user_info'];
 
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
             $orderDelivery = $this->getSplit($data);
@@ -126,10 +127,14 @@ class DeliveryAction {
     public function getSplit(array $data = null, $shopId = null, $product_list) {
         if (!(bool)$product_list) throw new \Exception('Пустая корзина');
 
+        $sessionData = is_string($this->session->get($this->splitSessionKey))
+            ? json_decode(gzuncompress($this->session->get($this->splitSessionKey)), true)
+            : $this->session->get($this->splitSessionKey);
+
         if ($data) {
             $splitData = [
-                'previous_split' => $this->session->get($this->splitSessionKey),
-                'changes'        => $this->formatChanges($data, $this->session->get($this->splitSessionKey))
+                'previous_split' => $sessionData,
+                'changes'        => $this->formatChanges($data, $sessionData)
             ];
         } else {
             $splitData = [
@@ -187,7 +192,7 @@ class DeliveryAction {
         }
 
         // сохраняем в сессию расчет доставки
-        $this->session->set($this->splitSessionKey, $orderDeliveryData);
+        $this->session->set($this->splitSessionKey, gzcompress(json_encode($orderDeliveryData)));
 
         return $orderDelivery;
     }

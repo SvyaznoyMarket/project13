@@ -33,6 +33,7 @@ class CreateAction {
         $userInfo = (array)$request->get('user_info');
 
         $splitResult = $this->session->get($this->splitSessionKey);
+        if (is_string($splitResult)) $splitResult = json_decode(gzuncompress($splitResult), true);
 
         if ($this->user->getEntity() && $this->user->getEntity()->getToken()) {
             $params['token'] = $this->user->getEntity()->getToken();

@@ -23,6 +23,8 @@ class CreateAction extends OrderV3 {
         $params = [];           // параметры запроса на ядро
 
         $splitResult = $this->session->get($this->splitSessionKey);
+        if (is_string($splitResult)) $splitResult = json_decode(gzuncompress($splitResult), true);
+
         $orderDelivery = new Entity($splitResult);
 
         if ($this->user->getEntity() && $this->user->getEntity()->getToken()) {
