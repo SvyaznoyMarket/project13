@@ -466,7 +466,7 @@
                     });
 
                     $header.css({
-                        'top': $topbar.outerHeight(false) + 'px',
+                        'top': $topbar.outerHeight(false) + 'px' ,
                         'margin-top': (scrollTop >= 0 ? -scrollTop : 0) + 'px'
                     });
 
