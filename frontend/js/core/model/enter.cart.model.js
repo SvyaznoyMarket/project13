@@ -21,9 +21,7 @@
 
         provide(Backbone.Model.extend(/** @lends module:enter.cart.model~CartItemModel */{
             defaults: {
-                quantity: 1,
-                inCompare: false,
-                inCart: false
+                quantity: 1
             },
 
             /**

@@ -36,6 +36,9 @@
             // Добавляем возможность добавлять события к объекту приложения
             _.extend(App, Backbone.Events);
 
+            App.productsCollection = new ProductsCollection();
+            App.cart               = new CartCollection();
+
             /**
              * Главное View приложения
              * @todo сюда переписать весь postinit
@@ -44,9 +47,6 @@
             App.pageView = new PageView({
                 el: document.body
             });
-
-            App.productsCollection = new ProductsCollection();
-            App.cart               = new CartCollection();
         },
 
 

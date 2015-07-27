@@ -200,12 +200,12 @@
              */
             updateCart: function( newCartData ) {
                 console.info('module:enter.cart.collection~CartCollection#updateCart');
-                console.log(newCartData);
+                console.log(this);
 
                 this.total    = newCartData.cart.sum;
                 this.quantity = newCartData.cart.quantity;
 
-                this.updateModels([]);
+                this.updateModels(newCartData.cart.products || []);
 
                 this.trigger('syncEnd');
             }

@@ -41,20 +41,23 @@
                  */
                 this.subViews = {};
 
-                /**
-                 * Объект лоадера
-                 *
-                 * @member      loader
-                 * @memberOf    module:enter.BaseViewClass~BaseView
-                 * @type        {Object}
-                 */
-                this.loader   = {};
-
                 Backbone.View.apply(this, arguments);
             };
 
 
         _.extend(BaseView.prototype, {
+            /**
+             * Объект лоадера
+             *
+             * @member      loader
+             * @memberOf    module:enter.BaseViewClass~BaseView
+             * @type        {Object}
+             */
+            loader: {
+                show: function() {},
+                hide: function() {}
+            },
+
             /**
              * Удаление преставлений всегда осуществляем через destroy
              *

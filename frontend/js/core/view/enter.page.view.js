@@ -8,13 +8,14 @@
     modules.define(
         'enter.page.view',
         [
-            'enter.BaseViewClass'
+            'enter.BaseViewClass',
+            'enter.cart.view'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, BaseViewClass ) {
+    function( provide, BaseViewClass, CartView ) {
         'use strict';
 
         var
@@ -25,7 +26,9 @@
              * @constant
              * @type        {Object}
              */
-            CSS_CLASSES = {};
+            CSS_CLASSES = {
+                CART: 'js-cart'
+            };
 
         provide(BaseViewClass.extend({
             /**
@@ -36,6 +39,12 @@
              */
             initialize: function( options ) {
                 console.info('enter.page.view~EnterPageView#initialize');
+
+                this.subViews = {
+                    cart: new CartView({
+                        el: this.$el.find('.' + CSS_CLASSES.CART)
+                    })
+                };
             },
 
             events: {}

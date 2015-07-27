@@ -1,35 +1,15 @@
-<div class="header__side header-cart table-cell" <? if (\App::user() && \App::user()->getCart()->count()) : ?>data-module="enter.cart"<? endif ?> >
+<div class="header__side header-cart table-cell js-cart" <? if (\App::user() && \App::user()->getCart()->count()) : ?><? endif ?> >
 
-    <div class="notice-show jsKnockoutCart">
+    <div class="notice-show">
         <a href="<?= \App::router()->generate('cart') ?>" title="">
-            <i class="header-cart__icon i-controls i-controls--cart"><span class="header-cart__count disc-count" style="display: none" data-bind="text: getProductQuantity, visible: getProductQuantity"></span></i>
+            <i class="header-cart__icon i-controls i-controls--cart"><span class="header-cart__count disc-count js-cart-quantity"></span></i>
             <span class="header-cart__text">Корзина</span>
         </a>
 
         <div class="notice-dd notice-dd_cart jsCartNotice">
-            <div class="notice-dd__inn" style="display: none" data-bind="visible: getProductQuantity">
+            <div class="notice-dd__inn">
                 <div class="notice-dd__height">
-                    <ul class="notice-cart">
-
-                        <!-- ko foreach: cart -->
-
-                        <li class="notice-cart__row">
-                            <a class="notice-cart__img notice-cart__cell" data-bind="attr: { href: link }">
-                                <img alt="" class="image" data-bind="attr: { src: img }">
-                            </a>
-
-                            <a class="notice-cart__name notice-cart__cell" href="" data-bind="text: name, attr: { href: link }"></a>
-
-                            <div class="notice-cart__desc notice-cart__cell">
-                                <div class="notice-cart__price"><!--ko text: formattedPrice--><!--/ko--> <span class="rubl-css">P</span></div>
-                                <span class="notice-cart__quan"><!--ko text: quantity()--><!--/ko--> шт.</span>
-                                <a class="notice-cart__del" data-bind="attr: { href: deleteUrl }, click: $parent.deleteProduct"><i class="notice-cart__icon icon-clear"></i></a>
-                            </div>
-                        </li>
-
-                        <!--/ko -->
-
-                    </ul>
+                    <ul class="notice-cart js-cart-items-wrapper"></ul>
                 </div>
             </div>
 
@@ -38,3 +18,19 @@
         </div>
     </div>
 </div>
+
+<script type="text/html" id="js-cart-item-template">
+    <li class="notice-cart__row">
+        <a class="notice-cart__img notice-cart__cell" href="{{link}}">
+            <img alt="" src="{{img}}" class="image">
+        </a>
+
+        <a class="notice-cart__name notice-cart__cell" href="{{link}}">{{name}}</a>
+
+        <div class="notice-cart__desc notice-cart__cell">
+            <div class="notice-cart__price">{{formattedPrice}} <span class="rubl-css">P</span></div>
+            <span class="notice-cart__quan">{{quantity}} шт.</span>
+            <a class="notice-cart__del js-cart-item-delete" href="{{deleteUrl}}"><i class="notice-cart__icon icon-clear"></i></a>
+        </div>
+    </li>
+</script>
