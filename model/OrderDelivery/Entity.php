@@ -381,6 +381,10 @@ namespace Model\OrderDelivery\Entity {
             'pin'   => null,
             'par'   => null
         ];
+        /** TODO remove
+         * @var bool Есть товары по акции "Всё по..."
+         */
+        public $specialAction = false;
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
 
