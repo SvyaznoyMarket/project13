@@ -55,6 +55,7 @@
                 this.listenTo(this.collection, 'remove', this.removeItem);
                 this.listenTo(this.collection, 'add', this.addHandler);
                 this.listenTo(this.collection, 'silentAdd', this.silentAddItem);
+                this.listenTo(this.collection, 'silentRemove', this.removeItem);
                 this.listenTo(this.collection, 'syncEnd', this.render);
             },
 
@@ -85,19 +86,40 @@
             },
 
             /**
-             * Удаление продукта из корзины
+             * Удаление продукта из корзины. Событие срабатывет до того как отработал AJAX запрос, сразу после вызова метода `remove` у коллекции
+             *
+             * @method      removeHandler
+             * @memberOf    module:enter.cart.view~EnterCartView#
+             *
+             * @listens     module:enter.cart.collection~CartCollection#remove
+             */
+            removeHandler: function( removedItem ) {
+                console.info('module:enter.cart.view~EnterCartView#removeHandler');
+                this.loader.show();
+                this.show();
+            },
+
+            /**
+             * Удаление продукта из корзины. Событие срабатывает после завершения AJAX запроса
              *
              * @method      removeItem
              * @memberOf    module:enter.cart.view~EnterCartView#
              *
-             * @listens     module:enter.cart.collection~CartCollection#remove
+             * @listens     module:enter.cart.collection~CartCollection#silentRemove
              *
              * @param       {module:enter.cart.model}    removedItem    Модель удаляемого товара
              */
             removeItem: function( removedItem ) {
-                console.info('module:enter.cart.view~EnterCartView#removeItem');
                 var
                     id = removedItem.get('id');
+
+                console.groupCollapsed('module:enter.cart.view~EnterCartView#removeItem || product id ', id);
+                console.dir(removedItem);
+                console.groupEnd();
+
+                if ( this.subViews.hasOwnProperty(id) ) {
+                    return;
+                }
 
                 this.subViews[id].destroy();
                 delete this.subViews[id];
@@ -125,9 +147,6 @@
              * @memberOf    module:enter.cart.view~EnterCartView#
              */
             addItem: function( item ) {
-                console.info('module:enter.cart.view~EnterCartView#addItem');
-                console.log(item);
-
                 var
                     id = item.get('id'),
                     tmpCartItemNode;
@@ -135,6 +154,10 @@
                 if ( this.subViews.hasOwnProperty(id) ) {
                     return;
                 }
+
+                console.groupCollapsed('module:enter.cart.view~EnterCartView#addItem || product id ', id);
+                console.dir(item);
+                console.groupEnd();
 
                 this.subViews[id] = new CartItemView({
                     collection: this.collection,
@@ -169,17 +192,20 @@
              * @listens     module:enter.cart.collection~CartCollection#syncEnd
              */
             render: function() {
-                console.info('module:enter.cart.view~EnterCartView#render');
                 var
                     cartQ = this.collection.quantity;
+
+                console.info('module:enter.cart.view~EnterCartView#render');
 
                 // console.info(this);
                 this.loader.hide();
 
                 if ( !cartQ ) {
                     this.$el.addClass(CSS_CLASSES.EMPTY_CART);
+                    this.$el.removeClass(CSS_CLASSES.FULL_CART);
                 } else {
                     this.$el.addClass(CSS_CLASSES.FULL_CART);
+                    this.$el.removeClass(CSS_CLASSES.EMPTY_CART);
                 }
 
                 this.subViews.cartQuantity.text(this.collection.quantity);

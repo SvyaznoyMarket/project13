@@ -59,7 +59,7 @@
              * @param       {module:enter.cart.model}    addedModel     Модель добавляемого товара
              */
             addToCart: function( addedModel ) {
-                console.groupCollapsed('module:enter.cart.collection~CartCollection#addToCart');
+                console.groupCollapsed('module:enter.cart.collection~CartCollection#addToCart || product id', addedModel.get('id'));
                 console.dir(addedModel);
                 console.groupEnd();
 
@@ -85,9 +85,14 @@
                     tmpModel  = removedModel.clone(),
                     removedId = tmpModel.get('id');
 
+                console.groupCollapsed('module:enter.cart.collection~CartCollection#removeFromCart || product id', removedId);
+                console.dir(removedModel);
+                console.groupEnd();
+
                 tmpModel.set({'inCart': false, 'quantity': 0});
 
                 this.ajax({
+                    type: 'GET',
                     url: tmpModel.get('deleteUrl'),
                     success: this.updateCart.bind(this)
                 });
@@ -182,7 +187,8 @@
                             console.warn('Need remove product');
                             self.models[i].set({'quantity': 1});
                             App.productsCollection.add(self.models[i], {merge: true});
-                            self.remove(self.models[i]);
+                            self.remove(self.models[i], {silent:true});
+                            self.trigger('silentRemove', self.models[i]);
                         }
                     }
                 }
@@ -199,11 +205,12 @@
              * @param       {Array}    newCartData   Новые данные корзины
              */
             updateCart: function( newCartData ) {
-                console.info('module:enter.cart.collection~CartCollection#updateCart');
-                console.log(this);
+                console.groupCollapsed('module:enter.cart.collection~CartCollection#updateCart');
+                console.dir(newCartData);
+                console.groupEnd();
 
-                this.total    = newCartData.cart.sum;
-                this.quantity = newCartData.cart.quantity;
+                this.total    = newCartData.cart.sum || 0;
+                this.quantity = newCartData.cart.quantity || 0;
 
                 this.updateModels(newCartData.cart.products || []);
 

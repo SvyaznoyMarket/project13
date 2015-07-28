@@ -41,8 +41,6 @@
              * @constructs  ProductView
              */
             initialize: function( options ) {
-                console.info('enter.page.view~ProductView#initialize', this.model.get('id'));
-
                 this.listenTo(this.model, 'change:inCart', this.changeCartStatus);
                 this.listenTo(this.model, 'change:inCompare', this.changeCompareStatus);
 

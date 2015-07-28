@@ -56,7 +56,6 @@
                 for ( i = 0; i < modulesNames.length; i++ ) {
                     !function( f, cb ) {
                         loadScript(getWithVersion(f), function() {
-                            console.log('load', f);
                             loadedCnt++;
 
                             if ( loadedCnt === modulesNames.length ) {
