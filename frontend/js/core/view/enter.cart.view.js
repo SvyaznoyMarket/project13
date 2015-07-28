@@ -53,7 +53,7 @@
                 };
 
                 this.listenTo(this.collection, 'remove', this.removeItem);
-                this.listenTo(this.collection, 'add', this.addItem);
+                this.listenTo(this.collection, 'add', this.addHandler);
                 this.listenTo(this.collection, 'silentAdd', this.silentAddItem);
                 this.listenTo(this.collection, 'syncEnd', this.render);
             },
@@ -99,23 +99,48 @@
                     id = removedItem.get('id');
 
                 this.subViews[id].destroy();
+                delete this.subViews[id];
             },
 
             /**
              * Добавление продукта в корзину. Событие срабатывет до того как отработал AJAX запрос, но уже был послан
              *
-             * @method      addItem
+             * @method      addHandler
              * @memberOf    module:enter.cart.view~EnterCartView#
              *
              * @listens     module:enter.cart.collection~CartCollection#add
-             *
-             * @param       {module:enter.cart.model}    addedModel     Модель добавляемого товара
              */
-            addItem: function( addedItem ) {
-                console.info('module:enter.cart.view~EnterCartView#addItem');
+            addHandler: function() {
+                console.info('module:enter.cart.view~EnterCartView#addHandler');
                 this.loader.show();
                 this.show();
-                this.silentAddItem(addedItem)
+            },
+
+            /**
+             * Создание и добавление представления элемента корзины.
+             * Если такой элемент уже есть в корзине, рендер пропускается.
+             *
+             * @method      addHandler
+             * @memberOf    module:enter.cart.view~EnterCartView#
+             */
+            addItem: function( item ) {
+                console.info('module:enter.cart.view~EnterCartView#addItem');
+                console.log(item);
+
+                var
+                    id = item.get('id'),
+                    tmpCartItemNode;
+
+                if ( this.subViews.hasOwnProperty(id) ) {
+                    return;
+                }
+
+                this.subViews[id] = new CartItemView({
+                    model: item
+                });
+
+                tmpCartItemNode = this.subViews[id].render();
+                this.subViews.cartItemsWrapper.append(tmpCartItemNode);
             },
 
             /**
@@ -131,20 +156,10 @@
              */
             silentAddItem: function( addedItem ) {
                 console.info('module:enter.cart.view~EnterCartView#silentAddItem');
-                var
-                    id = addedItem.get('id'),
-                    tmpCartItemNode;
-
-                this.subViews[id] = new CartItemView({
-                    model: addedItem
-                });
-
-                tmpCartItemNode = this.subViews[id].render();
-                this.subViews.cartItemsWrapper.append(tmpCartItemNode);
             },
 
             /**
-             * Отрисовка элементов корзины. Срабатывает каждый раз после успешной синхронизации корзины с сервером
+             * Отрисовка элементов корзины. Срабатывает каждый раз после успешной синхронизации корзины с сервером.
              *
              * @method      render
              * @memberOf    module:enter.cart.view~EnterCartView#
@@ -152,10 +167,11 @@
              * @listens     module:enter.cart.collection~CartCollection#syncEnd
              */
             render: function() {
+                console.info('module:enter.cart.view~EnterCartView#render');
                 var
                     cartQ = this.collection.quantity;
 
-                console.info(this);
+                // console.info(this);
                 this.loader.hide();
 
                 if ( !cartQ ) {
@@ -165,6 +181,8 @@
                 }
 
                 this.subViews.cartQuantity.text(this.collection.quantity);
+
+                this.collection.each(this.addItem.bind(this));
             }
         }));
     }
