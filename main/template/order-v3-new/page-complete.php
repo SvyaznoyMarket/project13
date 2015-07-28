@@ -43,7 +43,6 @@ return function(
                             </div>
                         <? endif ?>
                         <div class="orderLn_row order-alert__text">
-                            <? if ($order->getMetaByKey('special_action')) : ?><div class="order-alert__msg">Требуется предоплата</div><? endif ?>
 
                             <? if (\RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)) : ?>
                                     <div class="orderLn_r"><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>
