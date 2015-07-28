@@ -1,7 +1,7 @@
-<div class="header__side header-cart table-cell js-cart" <? if (\App::user() && \App::user()->getCart()->count()) : ?><? endif ?> >
+<div class="header__side header-cart table-cell js-cart <? if (\App::user() && \App::user()->getCart()->count()) : ?><? endif ?>">
 
     <div class="notice-show">
-        <a href="<?= \App::router()->generate('cart') ?>" title="">
+        <a class="header-cart__link" href="<?= \App::router()->generate('cart') ?>" title="">
             <i class="header-cart__icon i-controls i-controls--cart"><span class="header-cart__count disc-count js-cart-quantity"></span></i>
             <span class="header-cart__text">Корзина</span>
         </a>

@@ -31,8 +31,8 @@
             CSS_CLASSES = {
                 CART_ITEMS_WRAPPER: 'js-cart-items-wrapper',
                 CART_QUANTITY: 'js-cart-quantity',
-                EMPTY_CART: '',
-                FULL_CART: ''
+                EMPTY_CART: 'header-cart_empty',
+                FULL_CART: 'header-cart_full'
             };
 
         provide(BaseViewClass.extend({
