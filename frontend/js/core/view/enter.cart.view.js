@@ -95,6 +95,7 @@
              * @param       {module:enter.cart.model}    removedItem    Модель удаляемого товара
              */
             removeItem: function( removedItem ) {
+                console.info('module:enter.cart.view~EnterCartView#removeItem');
                 var
                     id = removedItem.get('id');
 
@@ -136,6 +137,7 @@
                 }
 
                 this.subViews[id] = new CartItemView({
+                    collection: this.collection,
                     model: item
                 });
 
