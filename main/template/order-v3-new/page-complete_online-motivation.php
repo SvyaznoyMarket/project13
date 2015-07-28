@@ -77,7 +77,7 @@ return function(
         <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && !$order->isCredit() && !$motivationAction && !$order->isPaidBySvyaznoy()) : ?>
 
             <? if ($order->getMetaByKey('special_action')) : ?>
-                <div>Требуется предоплата</div>
+                <div class="order-alert order-alert--big">Требуется предоплата</div>
             <? endif ?>
 
             <!-- Блок оплата в два клика-->
@@ -86,9 +86,9 @@ return function(
                 <!-- Блок в обводке -->
                 <div class="orderPayment_block orderPayment_noOnline">
 
-                    <div class="orderPayment_msg orderPayment_noOnline_msg">
+                    <div class="orderPayment_msg orderPayment_noOnline_msg orderPayment_msg-text-center">
                         <div class="orderPayment_msg_head">
-                            Онлайн-оплата в два клика
+                            Оплатить онлайн
                         </div>
                         <div class="orderPayment_msg_shop orderPayment_pay">
                             <button class="orderPayment_btn btn3">Оплатить</button>

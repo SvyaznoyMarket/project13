@@ -318,3 +318,36 @@
 	}
 
 }
+
+.order-alert{
+    font-size: 14px;
+    color: #db4437;
+    margin-bottom: 10px;
+
+    &:before {
+        content: '\e800';
+        font-family: 'alert';
+        font-size: 17px;
+        line-height: 1.1em;
+
+        .inline-block(middle);
+        margin-right: 2px;
+    }
+
+    &--big{
+        font-size: 18px;
+        text-align: center;
+        margin: 33px auto;
+
+        &:before{
+            font-size: 21px;
+            margin-right: 5px;
+        }
+    }
+}
+.orderLn_row{
+    .order-alert{
+        .inline-block(top);
+        margin: 1px 0 0 6px;
+    }
+}

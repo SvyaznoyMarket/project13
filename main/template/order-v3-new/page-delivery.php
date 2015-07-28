@@ -306,7 +306,7 @@ return function(
                     <? endif; ?>
                 </label>
             </div><br/>
-
+            <div class="order-alert">Требуется онлайн-оплата на следующем шаге</div>
             <button class="orderCompl_btn btnsubmit">Оформить</button>
         </form>
     </div>

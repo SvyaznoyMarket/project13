@@ -39,7 +39,7 @@ return function(
                             </div>
                         <? else : ?>
                             <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <?= $order->getNumberErp()?>
-                                <? if ($order->getMetaByKey('special_action')) : ?><div>Требуется предоплата</div><? endif ?>
+                                <? if ($order->getMetaByKey('special_action')) : ?><div class="order-alert order-alert--big">Требуется предоплата</div><? endif ?>
                             </div>
                         <? endif ?>
 
