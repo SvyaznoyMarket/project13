@@ -49,6 +49,10 @@ return function(
 
             <?= $helper->render('order-v3-new/complete-blocks/_errors', ['errors' => $errors]) ?>
 
+            <? if ($order->getMetaByKey('special_action')) : ?>
+                <div class="order-alert order-alert--big">Требуется предоплата</div>
+            <? endif ?>
+
             <? if ($isOnlinePaymentChecked && !$order->isPaid()) : ?>
                 <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
             <? endif ?>
@@ -75,10 +79,6 @@ return function(
         <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
 
         <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && !$order->isCredit() && !$motivationAction && !$order->isPaidBySvyaznoy()) : ?>
-
-            <? if ($order->getMetaByKey('special_action')) : ?>
-                <div class="order-alert order-alert--big">Требуется предоплата</div>
-            <? endif ?>
 
             <!-- Блок оплата в два клика-->
             <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
