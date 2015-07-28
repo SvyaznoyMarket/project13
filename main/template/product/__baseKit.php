@@ -30,7 +30,7 @@ return function (
             <a class="packageSetBodyItem_img rown" href="<?= $product->getLink() ?>"><img src="<?= $product->getMainImageUrl('product_120') ?>" /></a><!--/ изображение товара -->
 
             <div class="packageSetBodyItem_desc rown">
-                <div class="name"><a class="" href="<?= $product->getLink() ?>"><?= $product->getName(); ?></a></div><!--/ название товара -->
+                <div class="name"><a class="" href="<?= $product->getLink() ?>"><?= $helper->escape($product->getName()) ?></a></div><!--/ название товара -->
 
                 <? if ($p['height']!='' || $p['width']!='' || $p['depth']!='') : ?>
 

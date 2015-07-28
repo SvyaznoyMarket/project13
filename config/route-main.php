@@ -17,17 +17,6 @@ return [
         'action'  => ['Ssi\UserConfigAction', 'execute'],
     ],
 
-    'category.mainMenu' => [ // TODO: переименовать в mainMenu
-        'pattern' => '/category/main_menu',
-        'action'  => ['ProductCategory\MainMenuAction', 'execute'],
-    ],
-    'category.mainMenu.region' => [ // TODO: переименовать в mainMenu.region
-        'pattern' => '/category/main_menu/{regionId}',
-        'action'  => ['ProductCategory\MainMenuAction', 'execute'],
-        'require' => [
-            'regionId' => '\d+',
-        ],
-    ],
     'mainMenu.recommendation' => [
         'pattern' => '/main_menu/recommendations/{rootCategoryId}/{childIds}',
         'action'  => ['MainMenu\RecommendedAction', 'execute'],
@@ -310,10 +299,6 @@ return [
     'product.set' => [
         'pattern' => '/products/set/{productBarcodes}',
         'action'  => ['Product\SetAction', 'execute'],
-    ],
-    'product.widget' => [
-        'pattern' => '/products/widget/{productBarcodes}',
-        'action'  => ['Product\SetAction', 'widget'],
     ],
     //reviews
     'product.review.create' => [

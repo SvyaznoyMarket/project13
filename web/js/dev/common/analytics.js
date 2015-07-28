@@ -45,6 +45,8 @@
                 classicEvent = ['_trackEvent'],
                 props = ['category', 'action', 'label', 'value', 'nonInteraction', 'hitCallback'];
 
+            console.info('eventObject', eventObject);
+
             // Формируем event
             if (arguments.length == 2 && typeof eventObject == 'object') {
                 $.each(props, function(i,elem){

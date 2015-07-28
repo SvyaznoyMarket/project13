@@ -7,14 +7,10 @@
 	var
 		i,
 		global  = this,
-		fnProto = Function.prototype,
-		fnApply = fnProto.apply,
-		fnBind  = fnProto.bind,
+		// Function.prototype.bind не работает в IE8
 		bind    = function ( context, fn ) {
-			return fnBind ?
-				fnBind.call( fn, context ) :
-				function () {
-					return fnApply.call( fn, context, arguments );
+			return function () {
+					return Function.prototype.apply.call( fn, context, arguments );
 				};
 		},
 		methods = 'assert count debug dir dirxml error group groupCollapsed groupEnd info log markTimeline profile profileEnd table time timeEnd trace warn'.split(' '),
@@ -51,7 +47,7 @@
 				return diff;
 			};
 		}
-		
+
 		for ( i = methods.length; i-- ; ) {
 			console[methods[i]] = methods[i] in console ?
 				bind(console, console[methods[i]]) : emptyFn;
@@ -156,7 +152,7 @@
 		 */
 		loadDebugPanel = function loadDebugPanel() {
 			if ( debug ) {
-				$LAB.script('debug-panel.js')
+				return 'debug-panel.js';
 			}
 		},
 
@@ -253,6 +249,7 @@
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -292,6 +289,7 @@
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -315,6 +313,7 @@
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -333,6 +332,7 @@
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -352,6 +352,7 @@
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -374,6 +375,7 @@
 					//.script( directCreditUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -395,6 +397,7 @@
 					//.script( directCreditUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -415,6 +418,7 @@
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -439,6 +443,7 @@
 						//.script( directCreditUrl )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
+						.wait()
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
@@ -457,6 +462,7 @@
 						.script( getWithVersion('library.js') )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
+						.wait()
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
@@ -472,6 +478,7 @@
 						.script( getWithVersion('library.js') )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
+						.wait()
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
@@ -487,6 +494,7 @@
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -505,6 +513,7 @@
 					.script( historyUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -529,6 +538,7 @@
 						//.script( directCreditUrl )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
+						.wait()
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
@@ -550,6 +560,7 @@
 					.script( historyUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -572,6 +583,7 @@
 						.script( getWithVersion('library.js') )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
+						.wait()
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
@@ -591,7 +603,8 @@
                     .script( getWithVersion('library.js') )
                     .script( mustacheUrl )
                     .script( knockoutUrl )
-                    .script( loadDebugPanel )
+                    .wait()
+					.script( loadDebugPanel )
                     .wait()
                     .script( getWithVersion('common.js') )
                     .script( getWithVersion('infopage.js') )
@@ -612,7 +625,8 @@
                     .script('JsHttpRequest.min.js')
                     .script( mustacheUrl )
                     .script( knockoutUrl )
-                    .script( loadDebugPanel )
+                    .wait()
+					.script( loadDebugPanel )
                     .wait()
                     .script( getWithVersion('common.js') )
                     .script( getWithVersion('product.js') )

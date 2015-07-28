@@ -24,17 +24,26 @@ class ShowAction {
         $cartButtonAction = null,
         $reviewtAction = null,
         $imageSourceType = 'product_160',
-        array $cartButtonSender = []
+        array $cartButtonSender = [],
+        \Model\Product\Category\Entity $category = null
     ) {
-        $user = \App::user();
-
         if ($product->isInShopOnly()) {
             $inShopOnlyLabel = ['name' => 'Только в магазинах'];
         } else {
             $inShopOnlyLabel = null;
         }
 
-        if (!$product->isInShopOnly() && $product->getRootCategory() && $product->getRootCategory()->getIsFurniture() && $product->getState() && $product->getState()->getIsStore() && !$product->getSlotPartnerOffer()) {
+        $isFurniture = false;
+        call_user_func(function() use(&$product, &$isFurniture) {
+            foreach ($product->categories as $category) {
+                if ($category->getRootOfParents()->getIsFurniture()) {
+                    $isFurniture = true;
+                    break;
+                }
+            }
+        });
+
+        if (!$product->isInShopOnly() && $isFurniture && $product->getState() && ($product->getState()->getIsStore() || $product->getState()->getIsSupplier()) && !$product->getSlotPartnerOffer()) {
             $inStoreLabel = ['name' => 'Товар со склада', 'inStore' => true]; // SITE-3131
         } else {
             $inStoreLabel = null;
@@ -42,7 +51,7 @@ class ShowAction {
 
         $productItem = [
             'id'           => $product->getId(),
-            'name'         => htmlspecialchars_decode($product->getName()),
+            'name'         => $product->getName(),
             'link'         => $product->getLink(),
             'label'        =>
             $product->getLabel()
@@ -88,6 +97,17 @@ class ShowAction {
             'isOnlyFromPartner' => $product->isOnlyFromPartner(),
             'isNewWindow'       => \App::abTest()->isNewWindow() // открытие товаров в новом окне
         ];
+
+        // Дополняем свойствами для каталога в виде листинга
+        if (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category && $category->isInSiteListingWithViewSwitcherAbTest()) {
+            $productItem['properties']= array_map(function(\Model\Product\Property\Entity $entity) {
+                return [
+                    'name' => $entity->getName(),
+                    'value' => $entity->getStringValue(),
+
+                ];
+            }, $product->getPropertiesInView(3));
+        }
 
         // oldPrice and priceSale
         if ( $product->getPriceOld() && $product->getLabel()) {

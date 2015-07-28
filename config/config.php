@@ -34,6 +34,7 @@ $c->session['compareKey']   = 'compare'; // ключ для массива ср�
 
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
+$c->description = 'Enter – это все товары для жизни по интернет-ценам. В Enter вы можете купить что угодно, когда угодно и любым удобным для Вас способом!';
 
 $c->redirect301['enabled'] = true;
 $c->mobileRedirect['enabled'] = false;
@@ -119,19 +120,6 @@ $c->reviewsStore['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 1,
     'huge'    => 2,
-];
-
-$c->wordpress['url'] = 'http://content.enter.ru/';
-$c->wordpress['timeout'] = 2;
-$c->wordpress['throwException'] = true;
-$c->wordpress['retryCount'] = 2;
-$c->wordpress['retryTimeout'] = [
-    'default' => 0.3,
-    'tiny'    => 0.1,
-    'short'   => 0.2,
-    'medium'  => 0.3,
-    'long'    => 0.5,
-    'huge'    => 1,
 ];
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
@@ -273,6 +261,7 @@ $c->partners['MnogoRu']['cookieName'] = 'enter_mnogo_ru';
 $c->partners['PandaPay']['cookieName'] = 'enter_panda_pay';
 $c->partners['LinkProfit']['enabled'] = true;
 $c->partners['LinkProfit']['cookieName'] = 'linkprofit_id';
+$c->partners['Adblender']['enabled'] = true;
 
 $c->partners['Giftery']['enabled'] = true;
 $c->partners['Giftery']['lowestPrice'] = 500;
@@ -409,7 +398,6 @@ $c->subscribe['cookieName'] = 'subscribed';
 $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {channelId:status}
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
 
-$c->mainMenu['requestMenu'] = true;
 $c->mainMenu['recommendationsEnabled'] = true;
 
 $c->newOrder = true;

@@ -94,8 +94,7 @@ return function (
                                                 'data-full': 1, 'data-partner-name': partnerName,
                                                 'data-partner-offer-url': partnerOfferUrl,
                                                 'data-is-slot': isSlot,
-                                                'data-sender': typeof sender != 'undefined' ? sender : '',
-                                                'data-color-class': colorClass
+                                                'data-sender': typeof sender != 'undefined' ? sender : ''
                                             }, buyButtonBinding: $root.cart">Купить</a></div>
                                         </div>
                                     </td>

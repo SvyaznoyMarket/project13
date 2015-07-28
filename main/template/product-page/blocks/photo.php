@@ -3,11 +3,13 @@ $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
     $videoHtml,
-    $properties3D
+    $properties3D,
+    $shopStates = []
 ){
 
     $request = \App::request();
-
+    /** @var \Model\Media[] $images */
+    $images = array_merge($product->getMedias('image', 'main'), $product->getMedias('image', 'additional'));
     ?>
 
     <!-- слайдер изображений товара -->
@@ -60,26 +62,27 @@ $f = function(
                             </div>
                         </div>
                     <? elseif ($product->json3d) : ?>
-                        <div class="jsProduct3DJSON" data-value="<?= $helper->json($product->json3d); ?>" data-host="<?= $helper->json(['http://' . App::request()->getHost()]) ?>"></div>
+                        <div class="jsProduct3DJSON" data-value="<?= $helper->json($product->json3d); ?>"></div>
                     <? endif ?>
                 </div>
                 <!--/ Попап 3D -->
             <? endif ?>
         </ul>
 
+        <div class="product-card-photo-thumbs__cnt <?= count($images) > 5 ? 'product-card-photo-thumbs__cnt--slides' : ''?>">
         <!-- если картинок больше 5 добавляем класс product-card-photo-thumbs--slides -->
-        <div class="product-card-photo-thumbs jsProductThumbHolder <?= count($product->getMedias('image')) > 5 ? 'product-card-photo-thumbs--slides' : ''?>"
-            <? if (count($product->getMedias('image')) < 2) : ?>style="display: none"<? endif ?>
-        >
-            <ul class="product-card-photo-thumbs-list jsProductThumbList">
-                <? foreach ($product->getMedias('image') as $key => $photo) : ?>
-                    <li class="product-card-photo-thumbs__i jsProductPhotoThumb <?= $key == 0 ? 'product-card-photo-thumbs__i--act' : '' ?>"
-                        data-middle-img="<?= $photo->getSource('product_500')->url ?>"
-                        data-big-img="<?= $photo->getSource('product_1500')->url ?>"
-                        ><img src="<?= $photo->getSource('product_500')->url ?>" class="product-card-photo-thumbs__img" /></li>
-                <? endforeach ?>
-            </ul>
-
+            <div class="product-card-photo-thumbs jsProductThumbHolder"
+                <? if (count($images) < 2) : ?>style="display: none"<? endif ?>
+                >
+                <ul class="product-card-photo-thumbs-list jsProductThumbList">
+                    <? foreach ($images as $key => $photo) : ?>
+                        <li class="product-card-photo-thumbs__i jsProductPhotoThumb <?= $key == 0 ? 'product-card-photo-thumbs__i--act' : '' ?>"
+                            data-middle-img="<?= $photo->getSource('product_500')->url ?>"
+                            data-big-img="<?= $photo->getSource('product_1500')->url ?>"
+                            ><img src="<?= $photo->getSource('product_500')->url ?>" class="product-card-photo-thumbs__img" /></li>
+                    <? endforeach ?>
+                </ul>
+            </div>
             <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled jsProductThumbBtn" data-dir="+="></div>
             <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r jsProductThumbBtn" data-dir="-="></div>
         </div>
@@ -94,7 +97,7 @@ $f = function(
                 <!-- </div> -->
             </div>
 
-            <? if (count($product->getMedias('image')) > 1) : ?>
+            <? if (count($images) > 1) : ?>
                 <div class="product-card-photo__ctrl product-card-photo__ctrl--prev jsProductPopupSlide" data-dir="-1"><span class="symb"></span></div>
                 <div class="product-card-photo__ctrl product-card-photo__ctrl--next jsProductPopupSlide" data-dir="1"><span class="symb"></span></div>
             <? endif ?>
@@ -104,17 +107,20 @@ $f = function(
                 <div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--out disabled jsProductPopupZoom jsProductPopupZoomOut" data-dir="-1">–</div>
             </div>
 
-            <div class="product-card-photo-thumbs">
-                <ul class="product-card-photo-thumbs-list">
-                    <? foreach ($product->getMedias('image') as $key => $photo) : ?>
-                        <li class="product-card-photo-thumbs__i jsPopupPhotoThumb"
-                            data-big-img="<?= $photo->getSource('product_1500')->url ?>"
-                            ><img src="<?= $photo->getSource('product_120')->url ?>" class="product-card-photo-thumbs__img"></li>
-                    <? endforeach ?>
-                </ul>
+            <div class="product-card-photo-thumbs__cnt <?= count($images) > 14 ? 'product-card-photo-thumbs__cnt--slides' : ''?>">
+                <div class="product-card-photo-thumbs jsPopupThumbContainer">
+                    <ul class="product-card-photo-thumbs-list jsPopupThumbList">
+                        <? foreach ($images as $key => $photo) : ?>
+                            <li class="product-card-photo-thumbs__i jsPopupPhotoThumb"
+                                data-big-img="<?= $photo->getSource('product_1500')->url ?>"
+                                ><img src="<?= $photo->getSource('product_120')->url ?>" class="product-card-photo-thumbs__img"></li>
+                        <? endforeach ?>
+                    </ul>
 
-                <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled"></div>
-                <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r"></div>
+                </div>
+                <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled jsPopupThumbBtn" data-dir="+="></div>
+                <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r jsPopupThumbBtn" data-dir="-="></div>
+
             </div>
 
             <?= $helper->render('cart/__button-product', [
@@ -123,7 +129,8 @@ $f = function(
                 'sender'   => ($request->get('sender') ? (array)$request->get('sender') : []) + ['name' => null, 'method' => null, 'position' => null],
                 'location' => 'userbar',
                 'sender2'  => '',
-                'inShowroomAsButton' => false
+                'inShowroomAsButton' => false,
+                'shopStates' => $shopStates,
             ]) // Кнопка купить ?>
         </div>
         <!--/ попап просмотра большого изображения -->

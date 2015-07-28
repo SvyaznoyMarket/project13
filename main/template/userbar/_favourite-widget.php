@@ -15,8 +15,8 @@ return function(
             <img src="<?= $product->getImageUrl() ?>" width="40" height="40" alt="" class="cmprAdd_img js-favourite-popup-image" />
 
             <div class="cmprAdd_n">
-                <span class="cmprAdd_n_t js-favourite-popup-prefix"></span><?= $product->getPrefix() ?><br/>
-                <span class="js-favourite-popup-webName"><?= $product->getWebName() ?></span>
+                <span class="cmprAdd_n_t js-favourite-popup-prefix"></span><?= $helper->escape($product->getPrefix()) ?><br/>
+                <span class="js-favourite-popup-webName"><?= $helper->escape($product->getWebName()) ?></span>
             </div>
         </div>
     </div>

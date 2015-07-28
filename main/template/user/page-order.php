@@ -115,7 +115,7 @@
             <div class="personalTable_cell personalTable_cell-text">
                 <? $categories = $product->getCategory(); $category = end($categories) ?>
                 <?= $category ? $category->getName() : '' ; ?><br/>
-                <?= $product->getName() ?>
+                <?= $page->escape($product->getName()) ?>
             </div>
 
             <div class="personalTable_cell l colorGrey ta-r">

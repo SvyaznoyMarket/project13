@@ -274,79 +274,14 @@ class Repository {
         return empty($response['list']) ? [] : $response['list'];
     }
 
-    /**
-     * @param \Model\Product\Entity[] $products
-     */
-    public function prepareProductsMedias($products) {
-        if ($products) {
-            \App::scmsClient()->addQuery(
-                'product/get-description/v1',
-                ['uids' => array_map(function(\Model\Product\Entity $product) { return $product->getUi(); }, $products),
-                    'media' => 1,
-                    'label' => 1,
-                    'category' => 1,
-                ],
-                [],
-                function($data) use($products) {
-                    foreach ($products as $product) {
-                        if (isset($data['products'][$product->getUi()])) {
-                            $productData = $data['products'][$product->getUi()];
-
-                            if (isset($productData['medias']) && is_array($productData['medias'])) {
-                                foreach ($productData['medias'] as $media) {
-                                    if (is_array($media)) {
-                                        $product->medias[] = new \Model\Media($media);
-                                    }
-                                }
-                            }
-
-                            // пока так, рефакторинг скоро будет
-                            if (isset($productData['label']['uid'])) {
-                                $product->setLabel(new Label([
-                                    'id'        => @$productData['label']['core_id'],
-                                    'name'      => @$productData['label']['name'],
-                                    'medias'    => @$productData['label']['medias'],
-                                ]));
-                            }
-
-                            if (isset($productData['json3d']) && is_array($productData['json3d'])) {
-                                $product->json3d = $productData['json3d'];
-                            }
-
-                            if (isset($productData['categories']) && is_array($productData['categories'])) {
-                                foreach ($productData['categories'] as $category) {
-                                    if ($category['main']) {
-                                        $product->setParentCategory(new \Model\Product\Category\Entity($category));
-
-                                        // TODO: создать метод \Model\Product\Category\Entity::getRoot, возвращающий корневую категорию, найденную через свойство \Model\Product\Category\Entity::$parent; переименовать \Model\Product\Entity::getParentCategory в getMainCategory
-                                        while (isset($category['parent']) && $category['parent']) {
-                                            $category = $category['parent'];
-                                        }
-
-                                        $product->setRootCategory(new \Model\Product\Category\Entity($category));
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                function(\Exception $e) {
-                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__]);
-                    \App::exception()->remove($e);
-                }
-            );
-        }
-    }
-
     /** Обогащает продукты данными из SCMS
      * @param \Model\Product\Entity[] $products
-     * @param string $props Необходимые свойства товара через пробел: media property tag seo label
+     * @param string $properties Необходимые свойства товара через пробел: media property label brand category
      * @param callable $failCallback
      */
-    public function enrichProductsFromScms($products, $props, $failCallback = null) {
+    public function enrichProductsFromScms($products, $properties, $failCallback = null) {
         // Формируем массив необходимых свойств
-        $properties = array_fill_keys(array_intersect(explode(' ', (string)$props), explode(' ', 'media property tag seo label')), 1);
+        $properties = array_fill_keys(array_intersect(explode(' ', (string)$properties), explode(' ', 'media property label brand category')), 1);
 
         if ($products && $properties) {
             \App::scmsClient()->addQuery(
@@ -358,40 +293,64 @@ class Repository {
                         if (isset($data['products'][$product->getUi()])) {
                             $productData = $data['products'][$product->getUi()];
 
-                            if (isset($properties['media']) && isset($productData['medias']) && is_array($productData['medias'])) {
-                                foreach ($productData['medias'] as $media) {
-                                    if (is_array($media)) {
-                                        $product->medias[] = new \Model\Media($media);
+                            if (isset($properties['media'])) {
+                                if (isset($productData['medias']) && is_array($productData['medias'])) {
+                                    foreach ($productData['medias'] as $media) {
+                                        if (is_array($media)) {
+                                            $product->medias[] = new \Model\Media($media);
+                                        }
                                     }
+                                }
+
+                                if (isset($productData['json3d']) && is_array($productData['json3d'])) {
+                                    $product->json3d = $productData['json3d'];
                                 }
                             }
 
-                            if (isset($properties['media']) && isset($productData['json3d']) && is_array($productData['json3d'])) {
-                                $product->json3d = $productData['json3d'];
+                            if (isset($properties['property'])) {
+                                if (isset($productData['properties']) && is_array($productData['properties'])) {
+                                    $product->setProperty(array_map(function($data) { return new Property($data); }, $productData['properties']));
+                                }
+
+                                if (isset($productData['property_groups']) && is_array($productData['property_groups'])) {
+                                    $product->setPropertyGroup(array_map(function($data) { return new PropertyGroup($data); }, $productData['property_groups']));
+                                }
                             }
 
-                            if (isset($properties['property']) && isset($productData['properties']) && is_array($productData['properties'])) {
-                                $product->setProperty(array_map(function($data) { return new Property($data); }, $productData['properties']));
+                            // пока так, рефакторинг скоро будет
+                            if (isset($properties['label']) && isset($productData['label']['uid'])) {
+                                $product->setLabel(new Label([
+                                    'id'        => @$productData['label']['core_id'],
+                                    'name'      => @$productData['label']['name'],
+                                    'medias'    => @$productData['label']['medias'],
+                                ]));
+                            }
+                            
+                            if (!empty($productData['brand']) && @$productData['brand']['slug'] === 'tchibo-3569') {
+                                $product->setBrand(new \Model\Brand\Entity([
+                                    'ui'        => @$productData['brand']['uid'],
+                                    'id'        => @$productData['brand']['core_id'],
+                                    'token'     => @$productData['brand']['slug'],
+                                    'name'      => @$productData['brand']['name'],
+                                    'media_image' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png', // TODO после решения FCMS-740 заменить на URL из scms и удалить условие "@$productData['brand']['slug'] === 'tchibo-3569'"
+                                ]));
                             }
 
-                            if (isset($properties['property']) && isset($productData['property_groups']) && is_array($productData['property_groups'])) {
-                                $product->setPropertyGroup(array_map(function($data) { return new PropertyGroup($data); }, $productData['property_groups']));
-                            }
+                            if (isset($properties['category']) && isset($productData['categories']) && is_array($productData['categories'])) {
+                                foreach ($productData['categories'] as $category) {
+                                    $product->categories[] = new \Model\Product\Category\Entity($category);
+                                    if ($category['main']) {
+                                        $product->setParentCategory(new \Model\Product\Category\Entity($category));
 
-                            if (isset($properties['tag']) && isset($productData['tags']) && is_array($productData['tags'])) {
-                                $product->setTag(array_map(function($data) { return new Tag($data); }, $productData['tags']));
-                            }
+                                        // TODO: создать метод \Model\Product\Category\Entity::getRoot, возвращающий корневую категорию, найденную через свойство \Model\Product\Category\Entity::$parent; переименовать \Model\Product\Entity::getParentCategory в getMainCategory
+                                        while (isset($category['parent']) && $category['parent']) {
+                                            $category = $category['parent'];
+                                        }
 
-                            if (isset($properties['seo'])) {
-                                if (isset($productData['title'])) $product->setSeoTitle($productData['title']);
-                                if (isset($productData['meta_description'])) $product->setSeoKeywords($productData['meta_description']);
-                                if (isset($productData['meta_keywords'])) $product->setSeoDescription($productData['meta_keywords']);
+                                        $product->setRootCategory(new \Model\Product\Category\Entity($category));
+                                    }
+                                }
                             }
-
-                            if (isset($properties['label'])) {
-                                if (isset($productData['label'])) $product->setLabel(new Label($productData['label']));
-                            }
-
                         }
                     }
                 },

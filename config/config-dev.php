@@ -33,6 +33,7 @@ $c->partners['SmartLeads']['enabled'] = false;
 $c->partners['Sociaplus']['enabled'] = false;
 $c->partners['ActionpayRetargeting']['enabled'] = false;
 $c->partners['MyThings']['enabled'] = false;
+$c->partners['Adblender']['enabled'] = false;
 
 $c->paymentPsb['terminal']     = '79036768';
 $c->paymentPsb['merchant']     = '790367686219999';
@@ -44,7 +45,6 @@ $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key']          = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
 
-$c->mainMenu['requestMenu'] = false;
 $c->mainMenu['recommendationsEnabled'] = false;
 
 return $c;

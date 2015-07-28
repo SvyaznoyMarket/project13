@@ -85,7 +85,7 @@ $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
                 ]) ?>
                 <div class="item">
                     <a href="<?= $productLink ?>" class="item_imgw" <?= $linkTarget ?>><img src="<?= $product->getMainImageUrl('product_160') ?>" class="item_img" alt="<?= $product->getName() ?>"/></a>
-                    <div class="item_n"><a href="<?= $productLink ?>" <?= $linkTarget ?>><?= $product->getName() ?></a></div>
+                    <div class="item_n"><a href="<?= $productLink ?>" <?= $linkTarget ?>><?= $helper->escape($product->getName()) ?></a></div>
                     <div class="item_pr"><?= $helper->formatPrice($product->getPrice()) ?>&nbsp;<span class="rubl">p</span></div>
                     <?= $helper->render('cart/__button-product', [
                         'product'        => $product,

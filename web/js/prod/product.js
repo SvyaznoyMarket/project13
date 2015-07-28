@@ -72,12 +72,11 @@
 		$LAB.script('DAnimFramePlayer.min.js').wait(function() {
 			var
 				$element = $('.js-product-3d-img-popup'),
-				data = $element.data('value'),
-				host = $element.data('host');
+				data = $element.data('value');
 
 			try {
 				if (!$('#js-product-3d-img-container').length) {
-					(new DAnimFramePlayer($element[0], host)).DoLoadModel(data);
+					(new DAnimFramePlayer($element[0])).DoLoadModel(data);
 				}
 
 				$element.lightbox_me({
@@ -302,6 +301,16 @@ $(function() {
 			$(this).one( "click", reviewsYandexClick); // переопределяем только первый клик
 		});
 	}
+
+	try {
+		if ('out of stock' === product.stockState) {
+			$('body').trigger('trackGoogleEvent', {
+				action: 'unavailable_product',
+				category: $.map(product.category, function(category) { return category.name; }).join('_'),
+				label: product.barcode + '_' + product.article
+			});
+		}
+	} catch (error) { console.error(error); }
 });
 /**
  * Кредит для карточки товара
@@ -641,8 +650,12 @@ $(function() {
         $productPhotoThumbs = $('.jsProductThumbList'),
         $productPhotoThumbsBtn = $('.jsProductThumbBtn'),
         $zoomBtn   = $('.jsProductPopupZoom'),
-        productPhotoThumbsWidth = $productPhotoThumbs.width() - 2,
+        productPhotoThumbsWidth = $productPhotoThumbs.width(),
         productPhotoThumbsFullWidth = $productPhotoThumbs.get(0) ? $productPhotoThumbs.get(0).scrollWidth : 0,
+        $popupThumbs = $('.jsPopupThumbList'),
+        popupPhotoThumbsWidth = 0,
+        $popupPhotoThumbsBtn = $('.jsPopupThumbBtn'),
+        popupPhotoThumbsFullWidth = 0,
         thumbActiveClass = 'product-card-photo-thumbs__i--act',
         thumbBtnDisabledClass = 'product-card-photo-thumbs__btn--disabled',
         thumbsCount = $popupPhotoThumbs.length,
@@ -652,11 +665,29 @@ $(function() {
             preventScroll: true,
             closeClick: true
         },
+        /* Проверка возможности увеличения изображения товара */
+        checkZoom = function(){
+            var newImage, initWidth, initHeight, result;
+
+            // Получаем реальные размеры изображения
+            newImage = new Image();
+            newImage.src = $popupPhoto.attr("src");
+
+            initWidth = newImage.width;
+            initHeight = newImage.height;
+
+            result = initWidth < $popupPhotoHolder.width() && initHeight < $popupPhotoHolder.height();
+
+            if (result) {
+                $zoomBtn.addClass('disabled');
+            }
+
+            return !result;
+
+        },
         /* Функция для зума фотографии */
         setZoom = function(direction) {
-            var cssInc = direction < 0 ? '+=' : '-=',
-                hInc = direction > 0 ? '+=' : '-=',
-                dataZoom = $popupPhoto.data('zoom'),
+            var dataZoom = $popupPhoto.data('zoom'),
                 newImage, initHeight, initWidth;
 
             if (typeof dataZoom == 'undefined') {
@@ -744,17 +775,20 @@ $(function() {
         $popupPhotoThumbs.removeClass(thumbActiveClass)
             .eq($activeThumb.index()).addClass(thumbActiveClass);
         // и открываем popup
-        $imgPopup.lightbox_me({
+        $imgPopup.enterLightboxMe({
             centered: false,
             closeSelector: '.jsPopupCloser',
             modalCSS: {top: '0', left: '0'},
             closeClick: true,
+			preventScroll: true,
             onLoad: function() {
-                $('html').css({'overflow':'hidden'});
+                checkZoom();
+                //запоминаем значения для слайдера миниатюр в попапе
+                popupPhotoThumbsWidth = $popupThumbs.width();
+                popupPhotoThumbsFullWidth = $popupThumbs.get(0) ? $popupThumbs.get(0).scrollWidth : 0;
             },
             onClose: function() {
                 setDefaultSetting();
-                $('html').css({'overflow':'auto'});
             }
         });
 
@@ -777,18 +811,44 @@ $(function() {
             $this     = $(this),
             direction = parseInt($(this).data('dir'), 10);
 
-        $zoomBtn.removeClass('disabled');
-        $this.addClass('disabled');
-
-        setZoom(direction);
+        if (checkZoom()) {
+            $zoomBtn.removeClass('disabled');
+            $this.addClass('disabled');
+            setZoom(direction);
+        }
     });
 
     /* Слайд в попапе */
     $body.on('click', '.jsProductPopupSlide', function(){
+        console.log('slide');
         var direction = $(this).data('dir'),
             curIndex = $popupPhotoThumbs.index($imgPopup.find('.'+thumbActiveClass));
+
         if (curIndex + direction == thumbsCount) setPhoto(0);
-        else setPhoto(curIndex + direction);
+        else {
+            setPhoto(curIndex + direction);
+        }
+            //а если активное фото за пределами видимой области? надо крутить.
+            var activePhotoOffset = $imgPopup.find('.'+thumbActiveClass).position().left,
+                margin = parseInt($popupThumbs.css('margin-left')),
+                max = $imgPopup.find('.product-card-photo-thumbs__i').length -1 ;
+
+            if ( (activePhotoOffset > margin && !( (margin == 0) && ( activePhotoOffset < popupPhotoThumbsWidth)) )
+                || ( curIndex == max ) ){
+
+                //за пределами:
+                var dir = Math.sign(activePhotoOffset) == 1 ? "-=" : "+=";
+                if (!$popupThumbs.is(':animated'))
+                    $popupThumbs.animate({
+                        'margin-left': dir + popupPhotoThumbsWidth
+                    }, function(){
+                        var margin = parseInt($popupThumbs.css('margin-left'));
+                        $popupPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
+                        if (popupPhotoThumbsFullWidth + margin <= popupPhotoThumbsWidth) $popupPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
+                        if (margin >= 0) $popupPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
+                    });
+            }
+
     });
 
     $popupPhotoThumbs.on('click', function(){
@@ -796,15 +856,30 @@ $(function() {
     });
 
     $productPhotoThumbsBtn.on('click', function(){
+
         if (!$productPhotoThumbs.is(':animated'))
         $productPhotoThumbs.animate({
             'margin-left': $(this).data('dir') + productPhotoThumbsWidth
         }, function(){
             var margin = parseInt($productPhotoThumbs.css('margin-left'));
             $productPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
-            if (productPhotoThumbsFullWidth + margin < productPhotoThumbsWidth) $productPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
-            if (margin > 0) $productPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
+            if (productPhotoThumbsFullWidth + margin <= productPhotoThumbsWidth) $productPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
+            if (margin >= 0) $productPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
         });
+    });
+
+
+    $popupPhotoThumbsBtn.on('click', function(){
+
+        if (!$popupThumbs.is(':animated'))
+            $popupThumbs.animate({
+                'margin-left': $(this).data('dir') + popupPhotoThumbsWidth
+            }, function(){
+                var margin = parseInt($popupThumbs.css('margin-left'));
+                $popupPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
+                if (popupPhotoThumbsFullWidth + margin <= popupPhotoThumbsWidth) $popupPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
+                if (margin >= 0) $popupPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
+            });
     });
 
     // Youtube и 3D
@@ -856,12 +931,11 @@ $(function() {
                 });
             } else if ($3DJSONContainer.length > 0) {
                 $LAB.script('DAnimFramePlayer.min.js').wait(function() {
-                    var data = $3DJSONContainer.data('value'),
-                        host = $3DJSONContainer.data('host');
+                    var data = $3DJSONContainer.data('value');
 
                     try {
                         if (!$('#js-product-3d-img-container').length) {
-                            (new DAnimFramePlayer($3DJSONContainer[0], host)).DoLoadModel(data);
+                            (new DAnimFramePlayer($3DJSONContainer[0])).DoLoadModel(data);
                         }
 
                         $popup.lightbox_me($.extend(popupDefaults, {
@@ -920,19 +994,29 @@ $(function() {
         )
     }
 
-    // Добавление отзыва
-    $body.on('click', '.jsReviewAdd', function(){
-        var $reviewForm = $('.jsReviewForm2');
-        var user = ENTER.config.userInfo.user;
-        if (user.name) $('[name=review\\[author_name\\]]').val(user.name.slice(0,19));
-        if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
-        $reviewForm.lightbox_me($.extend(popupDefaults, {
-            onLoad: function() {},
-            onClose: function() {
-                $reviewForm.find('.form-ctrl__textarea--err, .form-ctrl__input--err').removeClass('form-ctrl__textarea--err form-ctrl__input--err')
-            }
-        }));
-    });
+	(function() {
+		function addReview() {
+			var $reviewForm = $('.jsReviewForm2');
+			var user = ENTER.config.userInfo.user;
+			if (user.name) $('[name=review\\[author_name\\]]').val(user.name.slice(0,19));
+			if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
+			$reviewForm.lightbox_me($.extend(popupDefaults, {
+				onLoad: function() {},
+				onClose: function() {
+					$reviewForm.find('.form-ctrl__textarea--err, .form-ctrl__input--err').removeClass('form-ctrl__textarea--err form-ctrl__input--err')
+				}
+			}));
+		}
+
+		// Добавление отзыва
+		$body.on('click', '.jsReviewAdd', function(){
+			addReview();
+		});
+
+		if ('#add-review' == location.hash) {
+			addReview();
+		}
+	})();
 
     // Отзывы
     $body.on('click', '.jsShowMoreReviews', function(){
@@ -1292,7 +1376,9 @@ $(function() {
                 lastChar = str.slice(-1),
                 lastNum  = lastChar * 1;
 
-            if ( days > 4 && days < 21 ) {
+            if ( lastNum === 0 ) {
+                return 'дней';
+            } else if ( days > 4 && days < 21 ) {
                 return 'дней';
             } else if ( lastNum > 4 && days > 20 ) {
                 return 'дней';
@@ -1889,6 +1975,7 @@ $(document).ready(function() {
 
 		$('.js-product-video-container').lightbox_me({
 			centered: true,
+			closeSelector: '.jsPopupCloser',
 			onLoad: function() {
 				videoStartTime = new Date().getTime();
 

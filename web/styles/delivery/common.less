@@ -43,25 +43,21 @@
         &__current{
             font-size: 16px;
             margin-right: 12px;
-            width: 192px;
+            width: 154px;
             .inline-block();
+            cursor: pointer;
 
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            
-        }
-        &__change{
-            &-lnk{
-                &:hover{
-                    text-decoration: none;
-                }
+            text-decoration: none;
+            &:hover{
+                text-decoration: none;
             }
             &-inn{
-                font-size: 16px;
-                color: #686868;
                 border-bottom: 1px dotted;
             }
+            
         }
     }
     &-map{
@@ -82,7 +78,7 @@
     }
     &-logo{
         &-lst{
-            padding: 8px 0 9px 6px;
+            padding: 8px 0 9px 5px;
             background-color: #e6e6e6;
             overflow: hidden;
             &-i{
@@ -241,4 +237,19 @@
 
         }
     }
+}
+.delivery-free{
+
+        &__lnk{
+            cursor: pointer;
+            &:hover{
+                text-decoration: none;
+            }
+        }
+        &__inn{
+            font-size: 16px;
+            color: #80c133;
+            border-bottom: 1px dotted;
+        }
+
 }

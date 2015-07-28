@@ -6,16 +6,14 @@ return function(
 ) { ?>
 
     <!--noindex-->
-    <ul class="sorting_lst fl-r js-category-pagination">
-	    <?= $helper->renderWithMustache('gift/category/_paginationInner', (new \View\PaginationAction())->execute(
-	        $helper,
-	        $pager
-	    )) ?>
-	</ul>
+    <?= $helper->renderWithMustache('gift/category/pagination', (new \View\PaginationAction())->execute(
+        $helper,
+        $pager
+    )) ?>
     <!--/noindex-->
 
     <script class="tplPagination" type="text/html" data-partial="">
-        <?= file_get_contents(\App::config()->templateDir . '/gift/category/_paginationInner.mustache') ?>
+        <?= file_get_contents(\App::config()->templateDir . '/gift/category/pagination.mustache') ?>
     </script>
 
 <? };

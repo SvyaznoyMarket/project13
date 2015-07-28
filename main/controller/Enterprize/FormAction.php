@@ -143,9 +143,9 @@ class FormAction {
         try {
             $authSource = $session->get('authSource', null);
             if ($user) {
-                if ($form->getMobile() && ('phone' === $authSource) && ($user->getMobilePhone() !== $form->getMobile())) {
+                if ($form->getMobile() && $form->getMobile() && ('phone' === $authSource) && ($user->getMobilePhone() !== $form->getMobile())) {
                     throw new \Curl\Exception('Нельзя изменить мобильный телефон');
-                } elseif ('email' === $authSource && $user->getEmail() !== $form->getEmail()) {
+                } elseif ($form->getEmail() && ('email' === $authSource) && ($user->getEmail() !== $form->getEmail())) {
                     throw new \Curl\Exception('Нельзя изменить email');
                 }
             }
@@ -177,8 +177,6 @@ class FormAction {
                 $form->setError('global', $e->getMessage());
                 $needAuth = true;
             } else if (600 == $e->getCode()) {
-                $form->setError('global', $e->getMessage());
-
                 foreach ($detail as $fieldName => $errors) {
                     foreach ($errors as $errorType => $errorMess) {
                         switch ($fieldName) {
@@ -214,6 +212,7 @@ class FormAction {
                                 $message = 'Необходимо согласие';
                                 break;
                             default:
+                                $form->setError('global', $e->getMessage());
                                 $message = 'Неизвестная ошибка';
                         }
 

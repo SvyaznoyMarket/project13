@@ -8,7 +8,7 @@
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <title><?= $page->getTitle() ?></title>
+    <title><?= $page->escape($page->getTitle()) ?></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="robots" content="noyaca"/>
 
@@ -51,7 +51,6 @@
                 <!-- Header -->
                 <div id="header" class="clearfix">
                     <a id="topLogo" href="/">Enter Связной</a>
-                    <?= $page->slotMainMenu() ?>
                 </div>
                 <!-- /Header -->
 
