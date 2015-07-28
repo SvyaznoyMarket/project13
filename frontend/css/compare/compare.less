@@ -33,18 +33,21 @@
     top: 90px;
 
     padding: 15px 30px 0;
-    ;
-    &-empty {
-        .cmprHd_t {
-            line-height: 112px;
-
-            margin: 0;
-        }
-    }
     &_t {
         font-size: 2.1666em;
 
         margin: 0 0 5px;
+        &:before {
+            width: 25px;
+            height: 25px;
+            margin: 3px 0 0;
+
+            content: '';
+
+            background: url('../images/header/i-controls.png') no-repeat -105px 0;
+
+            .inline-block();
+        }
     }
     &_lst {
         &_i {
@@ -436,19 +439,29 @@
     }
 }
 
-// .topbarfix:hover > div:last-child .topbarfix_cmpr_popup {
-// 	display: none !important;
-// }
-
-.cmprEmpty {
-    font-size: 16px;
-
-    width: 345px;
+.compare-empty {
+    width: 500px;
     margin: 20px 0 40px 230px;
-    padding: 20px 30px 15px;
+    margin: 50px auto;
 
-    color: #808080;
-    border: 1px dashed #808080;
+    color: @grey-light;
+    &__title {
+        font-size: 2.6666em;
+    }
+    &__desc {
+        font-family: 'GloberRegular';
+        font-size: 1.8333em;
+        &:after {
+            width: 25px;
+            height: 25px;
+            margin: 2px 0 0 5px;
 
-    .rounded(6px);
+            content: '';
+
+            border: 1px solid #f60;
+            background: url('../images/listing/i-listing-controls.png') no-repeat 3px -17px;
+
+            .inline-block();
+        }
+    }
 }

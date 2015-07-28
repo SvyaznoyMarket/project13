@@ -131,9 +131,9 @@ return function (
             <!-- /ko -->
 
             <!-- ko if: !compareGroups().length -->
-            <div class="cmprEmpty" data-bind="visible: !compareGroups().length" style="display: none;">
-                <strong>Товаров для сравнения пока нет.</strong>
-                <p><span style="display: inline-block;">Добавляйте товары к сравнению кнопкой</span> <span class="btnCmprb"></span></p>
+            <div class="compare-empty" data-bind="visible: !compareGroups().length" style="display: none;">
+                <div class="compare-empty__title">Товаров для сравнения пока нет.</div>
+                <div class="compare-empty__desc">Добавляйте товары к сравнению кнопкой</div>
             </div>
             <!-- /ko -->
         </div>

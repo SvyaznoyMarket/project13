@@ -15,8 +15,6 @@
 	<?= $page->blockHeader() ?>
 
 	<?= $page->blockContent() ?>
-
-	<hr class="hr-orange">
 </div>
 
 <?= $page->blockModulesDefinitions() ?>
