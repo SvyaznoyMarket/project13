@@ -310,6 +310,11 @@ return function(
                 </label>
             </div><br/>
 
+            <? if (array_filter($orderDelivery->orders, function(Model\OrderDelivery\Entity\Order $order ){ return $order->specialAction; })) : ?>
+                <div class="order-alert">Требуется онлайн-оплата на следующем шаге</div>
+            <? endif ?>
+
+
             <button class="orderCompl_btn btnsubmit">Оформить</button>
         </form>
     </div>

@@ -34,11 +34,24 @@ return function(
                     <div class="orderLn_l">
 
                         <? if ($userEntity) : ?>
-                            <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
+                            <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a>
+                                <? if ($order->getMetaByKey('special_action')) : ?><div>Требуется предоплата</div><? endif ?>
+                            </div>
                         <? else : ?>
-                            <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <?= $order->getNumberErp()?></div>
+                            <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <?= $order->getNumberErp()?>
+                                <? if ($order->getMetaByKey('special_action')) : ?><div class="order-alert order-alert--big">Требуется предоплата</div><? endif ?>
+                            </div>
                         <? endif ?>
+                        <div class="orderLn_row order-alert__text">
 
+                            <? if (\RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)) : ?>
+                                    <div class="orderLn_r"><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>
+                                        <? if ($order->deliveredAt) : ?><?= strftime('%e %b %Y', $order->deliveredAt->getTimestamp()) ?><? endif ?>
+                                        <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
+                                    </div>
+                                    <!--<div>Оплата при получении: наличные, банковская карта</div>-->
+                            <? endif ?>
+                        </div>
                         <ul class="orderLn_lst">
                             <? foreach ($order->getProduct() as $key => $product): ?>
                             <? /** @var $product \Model\Order\Product\Entity */?>
@@ -57,18 +70,6 @@ return function(
                         </ul>
 
                     </div>
-
-                    <? if (\RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)) : ?>
-
-                    <div class="orderLn_c">
-                        <div><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>
-                            <? if ($order->deliveredAt) : ?><?= strftime('%e %b %Y', $order->deliveredAt->getTimestamp()) ?><? endif ?>
-                            <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
-                        </div>
-                        <!--<div>Оплата при получении: наличные, банковская карта</div>-->
-                    </div>
-
-                    <? endif ?>
 
                     <div class="orderLn_r">
                         <? if ($order->getPaySum()): ?>

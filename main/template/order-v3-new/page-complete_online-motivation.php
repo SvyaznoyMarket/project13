@@ -49,6 +49,10 @@ return function(
 
             <?= $helper->render('order-v3-new/complete-blocks/_errors', ['errors' => $errors]) ?>
 
+            <? if ($order->getMetaByKey('special_action')) : ?>
+                <div class="order-alert order-alert--big">Требуется предоплата</div>
+            <? endif ?>
+
             <? if ($isOnlinePaymentChecked && !$order->isPaid()) : ?>
                 <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
             <? endif ?>
@@ -82,9 +86,9 @@ return function(
                 <!-- Блок в обводке -->
                 <div class="orderPayment_block orderPayment_noOnline">
 
-                    <div class="orderPayment_msg orderPayment_noOnline_msg">
+                    <div class="orderPayment_msg orderPayment_noOnline_msg orderPayment_msg-text-center">
                         <div class="orderPayment_msg_head">
-                            Онлайн-оплата в два клика
+                            Оплатить онлайн
                         </div>
                         <div class="orderPayment_msg_shop orderPayment_pay">
                             <button class="orderPayment_btn btn3">Оплатить</button>
