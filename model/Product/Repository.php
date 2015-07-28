@@ -276,12 +276,12 @@ class Repository {
 
     /** Обогащает продукты данными из SCMS
      * @param \Model\Product\Entity[] $products
-     * @param string $properties Необходимые свойства товара через пробел: media property label brand category
+     * @param string $properties Необходимые свойства товара через пробел: media property label brand category tag
      * @param callable $failCallback
      */
     public function enrichProductsFromScms($products, $properties, $failCallback = null) {
         // Формируем массив необходимых свойств
-        $properties = array_fill_keys(array_intersect(explode(' ', (string)$properties), explode(' ', 'media property label brand category')), 1);
+        $properties = array_fill_keys(array_intersect(explode(' ', (string)$properties), explode(' ', 'media property label brand category tag')), 1);
 
         if ($products && $properties) {
             \App::scmsClient()->addQuery(
@@ -351,6 +351,11 @@ class Repository {
                                     }
                                 }
                             }
+
+                            if (isset($properties['tag']) && isset($productData['tags']) && is_array($productData['tags'])) {
+                                $product->setTag(array_map(function($data) { return new \Model\Tag\Entity($data); }, $productData['tags']));
+                            }
+
                         }
                     }
                 },

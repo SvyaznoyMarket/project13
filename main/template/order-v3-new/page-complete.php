@@ -34,10 +34,16 @@ return function(
                     <div class="orderLn_l">
 
                         <? if ($userEntity) : ?>
-                            <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
+                            <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a>
+                                <? if ($order->getMetaByKey('special_action')) : ?><div>Требуется предоплата</div><? endif ?>
+                            </div>
                         <? else : ?>
-                            <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <?= $order->getNumberErp()?></div>
+                            <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <?= $order->getNumberErp()?>
+                                <? if ($order->getMetaByKey('special_action')) : ?><div>Требуется предоплата</div><? endif ?>
+                            </div>
                         <? endif ?>
+
+                        <? if ($order->getMetaByKey('special_action')) : ?><div>Требуется предоплата</div><? endif ?>
 
                         <ul class="orderLn_lst">
                             <? foreach ($order->getProduct() as $key => $product): ?>

@@ -322,6 +322,14 @@ class OrderEntity {
         $cart = $user->getCart()->getProductData();
         $oneClickCart = $user->getOneClickCart()->getProductSourceData();
 
+        // Ключевые тэги у продуктов
+        // Для акции "Всё по..."
+        $tagsUids = [
+            '5dd68a0a-8704-42a3-a8a2-c8e16e7f710f',
+            '04a95447-b20a-4c54-85b8-3923b2eb4002',
+            'c3bcad89-15c9-4f87-a7fa-e8918ba9f267'
+        ];
+
         try {
             /** @var $products \Model\Product\Entity[] */
             $products = [];
@@ -330,10 +338,23 @@ class OrderEntity {
                     $products[] = new \Model\Product\Entity($item);
                 }
             }, function(\Exception $e) { \App::exception()->remove($e); });
+
+            \App::coreClientV2()->execute();
+
+            // Для акции "Всё по..."
+            \RepositoryManager::product()->enrichProductsFromScms($products, 'tag');
+
             \App::coreClientV2()->execute();
 
             foreach ($products as $product) {
+
+                // Для акции "Всё по..."
+                foreach ($product->getTag() as $tag) {
+                    if (in_array($tag->uid, $tagsUids)) $data['special_action'] = true;
+                }
+
                 $partners = [];
+
                 if ($partnerName = \App::partner()->getName()) {
                     $partners[] = \App::partner()->getName();
                 }

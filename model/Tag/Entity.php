@@ -3,6 +3,8 @@
 namespace Model\Tag;
 
 class Entity {
+    /** @var string */
+    public $uid;
     /** @var int */
     private $id;
     /** @var string */
@@ -14,6 +16,7 @@ class Entity {
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
+        if (array_key_exists('uid', $data)) $this->uid = $data['uid'];
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
         if (array_key_exists('product', $data) && !empty($data['product']['category_statistics'])) {
