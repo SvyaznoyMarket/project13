@@ -105,6 +105,7 @@ module.exports = function (grunt, options) {
                 'dev/jquery-plugins/goodsCounter.js',
                 'dev/jquery-plugins/jquery.deparam.js',
                 'dev/jquery-plugins/jquery.elevatezoom.js',
+                'dev/jquery-plugins/jquery.enterLightboxMe.js',
                 'dev/jquery-plugins/customDropDown.js',
                 'dev/jquery-plugins/goodsSlider.js',
                 'dev/jquery-plugins/jquery-ui-1.10.3.custom.js'
@@ -184,15 +185,6 @@ module.exports = function (grunt, options) {
                 srcRoot: '/js',
                 cwd: 'web/js'
         },
-
-        serviceHa: {
-            src: ['dev/service_ha/*.js'],
-                dest: 'prod/service_ha.js',
-                destMap: 'prod/service_ha.js.map',
-                srcRoot: '/js',
-                cwd: 'web/js'
-        },
-
         supplier: {
             src: ['dev/supplier/*.js'],
             dest: 'prod/supplier.js',

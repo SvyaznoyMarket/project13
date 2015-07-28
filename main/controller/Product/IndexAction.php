@@ -202,7 +202,7 @@ class IndexAction {
 
         // SITE-5035
         $similarProducts = [];
-        if ($actionResponse->nextProductsQuery->response->products) {
+        if ($actionResponse->nextProductsQuery && $actionResponse->nextProductsQuery->response && $actionResponse->nextProductsQuery->response->products) {
             call_user_func(function() use(&$actionResponse, &$similarProducts) {
                 foreach ($actionResponse->nextProductsQuery->response->products as $product) {
                     $similarProducts[] = new \Model\Product\Entity($product);
@@ -313,7 +313,7 @@ class IndexAction {
             $page = new \View\Product\IndexPage();
         }
 
-        $deliveryData = (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
+        (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
 
         // избранные товары
         $favoriteProductsByUi = [];

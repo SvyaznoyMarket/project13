@@ -340,6 +340,7 @@
     // показываем описание фишки
     body.on('click', '.js-enterprize-coupon', function() {
         var $self = $(this),
+			$parent = $self.closest('.js-enterprize-coupon-parent'),
             template = $('#tplEnterprizeForm'),
             templateHint = template.html(),
             $hint = $('.js-enterprize-coupon-hint'),
@@ -356,12 +357,14 @@
         // показываем окно с описанием фишки
         if ($self.hasClass(activeClass)) {
             $self.removeClass(activeClass);
+			$parent.removeClass(activeClass);
             $hint.remove();
 
         } else {
             $('.js-enterprize-coupon').removeClass(activeClass);
             $self.addClass(activeClass);
-            $self.closest('.js-enterprize-coupon-parent').append(html);
+			$parent.addClass(activeClass);
+            $parent.append(html);
             $self.siblings('.js-enterprize-coupon-hint-holder').append(html); // карточка товара
             $hint = $('.js-enterprize-coupon-hint');
             $hint.addClass(selectClass);
@@ -421,6 +424,7 @@
 
     	$(this).closest('.js-enterprize-coupon-hint').hide();
     	$('.js-enterprize-coupon').removeClass('act');
+    	$('.js-enterprize-coupon-parent').removeClass('act');
     });
 
     body.on('click', '.js-ep-rules-toggle', function(e) {

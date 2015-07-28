@@ -136,7 +136,7 @@
 	}
 
 	.bProductImg {
-		display: table-cell;
+		display: block;
 		padding: 45px 0 15px;
 		vertical-align: middle;
 		text-align: center;
@@ -145,9 +145,28 @@
 		height: 200px;
 
 		&__eImg {
-			max-width: 100%;
+			max-width: 95%;
 			max-height: 100%;
+            display: inline-block;
+
+            vertical-align: middle;
+            /* IE6-8 */
+
+            *display: inline;
+            *zoom: 1;
 		}
+        &:after{
+            content: '';
+            display: inline-block;
+
+            vertical-align: middle;
+            /* IE6-8 */
+
+            *display: inline;
+            *zoom: 1;
+            width: 0;
+            height: 100%;
+        }
 	}
 
 	.bPriceLine {
@@ -204,6 +223,7 @@
 
 		&__eStars {
 			display: inline-block;
+            vertical-align: middle;
 		}
 
 		&__eStarsImg {
@@ -216,6 +236,7 @@
 			display: inline-block;
 			color: #a6a6a6;
 			font-size: 11px;
+            vertical-align: middle;
 		}
 	}
 

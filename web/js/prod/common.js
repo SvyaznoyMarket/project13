@@ -477,7 +477,6 @@
 				statusId = $elem.data('status-id'),
                 noUpdate = $elem.data('noUpdate'),
 				isSlot = $elem.data('is-slot'),
-				colorClass = $elem.data('color-class') || '',
                 sender = $elem.data('sender'),
                 sender2 = $elem.data('sender2')
             ;
@@ -525,7 +524,6 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('js-orderButton jsOneClickButton-new')
-					.addClass(colorClass)
 					.removeClass('jsBuyButton')
 					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', $.extend({productId: productId}, sender, sender2)));
 			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId) && !noUpdate) {
@@ -544,7 +542,6 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('js-orderButton jsBuyButton')
-					.addClass(colorClass)
 					.attr('href', ENTER.utils.generateUrl('cart.product.set', $.extend({productId: productId}, sender, sender2)));
 			}
 		}
@@ -757,13 +754,6 @@
 			}
 		}
 	})();
-
-	$body.on('catalogLoadingComplete', function(){
-		$('.js-listing, .js-jewelListing').each(function(){
-			ko.cleanNode(this);
-			ko.applyBindings(ENTER.UserModel, this);
-		});
-	});
 
 	$body.on('addtocart', function(event, data) {
 		if ( data.redirect ) {
@@ -993,6 +983,8 @@
                 classicEvent = ['_trackEvent'],
                 props = ['category', 'action', 'label', 'value', 'nonInteraction', 'hitCallback'];
 
+            console.info('eventObject', eventObject);
+
             // Формируем event
             if (arguments.length == 2 && typeof eventObject == 'object') {
                 $.each(props, function(i,elem){
@@ -1201,8 +1193,6 @@
 	$body.on('click', '.jsBuyButton', function(e) {
 		var $button = $(e.currentTarget);
 
-        $body.trigger('TL_buyButton_clicked');
-
 		if ( $button.hasClass('mDisabled') ) {
 			//return false;
             e.preventDefault();
@@ -1265,6 +1255,28 @@
 
 		//return false;
         e.preventDefault();
+	});
+
+	$body.on('click', '.js-buyButton-points-opener', function(e){
+		e.preventDefault();
+
+		var
+			$points = $(e.currentTarget).closest('.js-buyButton-points'),
+			$pointsContent = $points.find('.js-buyButton-points-content')
+		;
+
+		$.enterLightboxMe.closeAll();
+
+		$pointsContent.enterLightboxMe({
+			centered: true,
+			closeSelector: '.js-buyButton-points-content-closer',
+			closeClick: true,
+			destroyOnClose: true,
+			preventScroll: true,
+			onClose: function() {
+				$points.prepend($pointsContent.hide());
+			}
+		});
 	});
 
 	// analytics
@@ -1744,24 +1756,23 @@ $(function() {
     });
 });
 /**
- * Перемотка к Id
- *
- * @author		Zaytsev Alexandr
- * @requires	jQuery
+ * Перемотка к id
  */
-(function() {
-	var goToId = function goToId() {
-		var to = $(this).data('goto');
+$(function() {
+	$('.jsGoToId').on('click', function(e) {
+		e.preventDefault();
 
-		$(document).stop().scrollTo( $('#'+to), 800 );
-		
-		return false;
-	};
-	
-	$(document).ready(function() {
-		$('.jsGoToId').bind('click',goToId);
+		var
+			$topbar = $('.js-topbar-fixed'),
+			to = $('#' + $(e.currentTarget).data('goto'));
+
+		if ($topbar.length) {
+			to = to.offset().top - $topbar.outerHeight() - 20;
+		}
+
+		$(document).stop().scrollTo(to, 800);
 	});
-}());
+});
 /**
  * JIRA
  */
@@ -2000,44 +2011,6 @@ $(function() {
 			return false;
 		}
 	}
-});
-;$(document).ready(function() {
-
-    var partnerData = {
-        lastPartner: '',
-        cookie: []
-    };
-
-    try {
-        partnerData = $.parseJSON($('#lastPartnerJSON').html());
-    } catch (e) {
-        console.error('Ошибка получения партнера')
-    }
-
-	// при любом клике на странице
-	$(document.body).on('click', function(){
-		// ставим куку last_partner на 30 дней
-		if (partnerData.lastPartner) {
-			docCookies.setItem(
-				'last_partner',
-                partnerData.lastPartner,
-				60 * 60 *24 *30,
-				'/'
-			);
-            console.info('[PARTNER] Установлен партнер %s', partnerData.lastPartner);
-		}
-        // и остальные куки партнеров
-        $.each(partnerData.cookie, function(i,v) {
-            docCookies.setItem(
-                v['name'],
-                v['value'],
-                typeof v['time'] != 'undefined' ? v['time'] : 60 * 60 *24 *30,
-                '/'
-            );
-            console.info('[PARTNER] Установлена кука партнера', v);
-        })
-	});
-
 });
 ;$(function( ENTER ) {
 	var
@@ -2326,8 +2299,6 @@ $(function() {
 					}
 				}
 			});
-
-			$el.trigger('TL_recommendation_clicked');
 
 		} catch (e) { console.error(e); }
 	});
@@ -4079,7 +4050,7 @@ $(function() {
 	 */
 	function upToFilter() {
 		$.scrollTo(filterTarget, 500);
-		ENTER.catalog.filter.openFilter();
+		ENTER.catalog.filter.open();
 
 		return false;
 	}

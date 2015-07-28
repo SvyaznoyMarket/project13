@@ -37,7 +37,7 @@ class FavoriteAction extends PrivateAction {
             }
         }
 
-        \RepositoryManager::product()->enrichProductsFromScms($products, 'media');
+        \RepositoryManager::product()->enrichProductsFromScms($products, 'media label category');
         $curl->execute();
 
         $page = new \View\User\FavoritesPage();

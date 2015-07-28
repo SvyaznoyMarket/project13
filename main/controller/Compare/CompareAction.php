@@ -150,7 +150,6 @@ class CompareAction {
                         'partnerName' => $slotPartnerOffer ? $slotPartnerOffer['name'] : '',
                         'partnerOfferUrl' => $slotPartnerOffer ? $slotPartnerOffer['offer'] : '',
                         'isSlot' => (bool)$slotPartnerOffer,
-                        'colorClass' => AbTest::getColorClass($product),
                         'reviews' => [
                             'stars' => [
                                 'notEmpty' => array_pad([], $starCount, null),

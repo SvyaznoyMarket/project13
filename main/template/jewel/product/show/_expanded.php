@@ -38,7 +38,7 @@ $addInfo = isset($addInfo)?$addInfo:[];
             </a>
         </div>
         <div class="info">
-            <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
+            <h3><a href="<?= $product->getLink() ?>"><?= $page->escape($product->getName()) ?></a></h3>
             <span class="gray bNGB__eArt mInlineBlock">
                 Артикул #<?= $product->getArticle() ?>
 

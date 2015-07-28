@@ -39,4 +39,14 @@ $(function() {
 			$(this).one( "click", reviewsYandexClick); // переопределяем только первый клик
 		});
 	}
+
+	try {
+		if ('out of stock' === product.stockState) {
+			$('body').trigger('trackGoogleEvent', {
+				action: 'unavailable_product',
+				category: $.map(product.category, function(category) { return category.name; }).join('_'),
+				label: product.barcode + '_' + product.article
+			});
+		}
+	} catch (error) { console.error(error); }
 });

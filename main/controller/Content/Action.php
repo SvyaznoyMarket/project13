@@ -2,78 +2,76 @@
 
 namespace Controller\Content;
 
+use Templating\Helper;
+
 class Action {
 
     public function execute(\Http\Request $request, $token) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        $client = \App::contentClient();
+        $client = \App::scmsClient();
 
-        $content = $client->query($token, [], false, \App::config()->coreV2['retryTimeout']['huge']);
+        $content = null;
+        $data = [
+            'regionName' => \App::user()->getRegion()->getName(),
+        ];
 
-        if (!(bool)$content) {
+        $client->addQuery(
+            'api/static-page',
+            [
+                'token' => [$token],
+            ],
+            [],
+            function($response) use (&$content, &$token) {
+                if (!isset($response['pages'][0]['content'])) return;
+
+                $content = $response['pages'][0];
+                $content['content'] = str_replace('<script src="https://content.enter.ru/wp-includes/js/jquery/jquery.js" type="text/javascript"></script>', '', $content['content']);
+            }
+        );
+
+        if ($token === 'service_ha')
+            \App::dataStoreClient()->addQuery('service_ha/*.json', [], function ($response) use (&$data) {
+            if (is_array($response)) {
+                $data['services'] = $response;
+
+                $toBegin = [];
+                foreach ($data['services'] as $key => $item) {
+                    if ('Москва и МО' === $key || 'Санкт-Петербург' === $key) {
+                        $toBegin[$key] = $item;
+                        unset($data['services'][$key]);
+                    }
+                }
+
+                $data['services'] = array_merge($toBegin, $data['services']);
+            }
+        });
+
+        $client->execute();
+
+        if (!$content) {
             throw new \Exception\NotFoundException();
+        }
+
+        if ($token === 'service_ha') {
+            $helper = new Helper();
+            $content['content'] = str_replace('%regions%', implode("\n", array_map(function($region) use(&$helper) { return '<option value="' . $helper->escape($region) . '">' . $helper->escape($region) . '</option>'; }, array_keys($data['services']))), $content['content']);
         }
 
         $page = new \View\Content\IndexPage();
         $page->setTitle($content['title']);
+
+        $page->setParam('data', $data);
+        $page->setParam('htmlContent', $content['content']);
+        $page->setParam('imageUrl', isset($content['image_url']) ? $content['image_url'] : '');
+        $page->setParam('description', isset($content['description']) ? $content['description'] : '');
         $page->setParam('token', $token);
-
-        switch ($token) {
-            case 'service_ha':
-            case 'services_ha':
-                $htmlContent = preg_replace('/<script.*script>/sm', '', $content['content']);
-                $htmlContent = str_replace('table class="bServicesTable"', 'table id="bServicesTable" class="bServicesTable"', $htmlContent); // TODO: осторожно, говнокод
-                $serviceJson = $this->getServiceJson();
-                $page->setParam('data', $serviceJson);
-                break;
-            default:
-                $htmlContent = $content['content'];
-                $page->setParam('data', []);
-                break;
-        }
-
-        $htmlContent = str_replace('<script src="https://content.enter.ru/wp-includes/js/jquery/jquery.js" type="text/javascript"></script>', '', $htmlContent);
-
-        $page->setParam('htmlContent', $htmlContent);
-
         //нужно для увеличения отступа от заголовкой и строки поика
         $page->setParam('extendedMargin', true);
-        if (!(bool)$content['layout'])
-        {
-            $page->setParam('title', $content['title']);
-            //нужно, чтобы после заголовка и строки поиска была линия
-            $page->setParam('hasSeparateLine', true);
-        }
-        else {
-            $page->setParam('breadcrumbs', null);
-        }
+        $page->setParam('title', $content['title']);
+        //нужно, чтобы после заголовка и строки поиска была линия
+        $page->setParam('hasSeparateLine', true);
 
         return new \Http\Response($page->show());
     }
-
-    private function getServiceJson() {
-        //\App::logger()->debug('Exec ' . __METHOD__);
-
-        $dataStore = \App::dataStoreClient();
-
-        $serviceJson = [];
-        $dataStore->addQuery('service_ha/*.json', [], function ($data) use (&$serviceJson) {
-            if (is_array($data)) $serviceJson = $data;
-        });
-        $dataStore->execute();
-
-        $firstData = [];
-        foreach ($serviceJson as $key => $item) {
-            if (('Москва и МО' == $key) || ('Санкт-Петербург' == $key)) {
-                $firstData[$key] = $item;
-                unset($serviceJson[$key]);
-            }
-        }
-
-        $serviceJson = array_reverse(array_merge($firstData, $serviceJson), true);
-
-        return $serviceJson;
-    }
-
 }

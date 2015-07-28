@@ -18,7 +18,7 @@ $activeMenuCss = 'personalControl_item-active';
         <a href="<?= $helper->url('user.orders') ?>" class="personalControl_link">Заказы</a>
     </li>
 
-    <li class="personalControl_item <?= in_array($route, ['user.order', 'user.favorites']) ? $activeMenuCss : '' ?>">
+    <li class="personalControl_item <?= in_array($route, ['user.favorites']) ? $activeMenuCss : '' ?>">
         <a href="<?= $helper->url('user.favorites') ?>" class="personalControl_link">Избранное</a>
     </li>
 

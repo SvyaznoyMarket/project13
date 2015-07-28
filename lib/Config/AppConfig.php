@@ -164,14 +164,6 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $wordpress = [
-        'url'            => null,
-        'timeout'        => null,
-        'throwException' => null,
-        'retryTimeout' => [],
-        'retryCount'   => null,
-    ];
-    /** @var array */
     public $dataStore = [
         'url'          => null,
         'timeout'      => null,
@@ -266,6 +258,8 @@ class AppConfig {
     public $mainHost = null;
     /** @var string */
     public $mobileHost = null;
+    /** @var string */
+    public $description = null;
     /** @var array */
     /**
      * @var Oauth\VkontakteConfig
@@ -438,7 +432,6 @@ class AppConfig {
 
     /** @var bool */
     public $mainMenu = [
-        'requestMenu'               => null, // запрос главного меню из
         'recommendationsEnabled'    => null
     ];
     /** @var bool */

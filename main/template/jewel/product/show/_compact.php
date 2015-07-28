@@ -35,7 +35,7 @@ if ($product->getPriceOld()) {
 <li class="lstn_i js-jewelListing js-goodsbox">
     <div class="lstn_i_inn js-goodsboxContainer" data-url="<?= $product->getLink() ?>" <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
 
-        <a class="lstn_n" href="<?= $product->getLink() ?>" <?= $linkTarget ?>><?= $product->getName() ?></a>
+        <a class="lstn_n" href="<?= $product->getLink() ?>" <?= $linkTarget ?>><?= $helper->escape($product->getName()) ?></a>
 
         <div class="lstn_imgbox">
             <a class="lstn_imglk" href="<?= $product->getLink() ?>" <?= $linkTarget ?>>

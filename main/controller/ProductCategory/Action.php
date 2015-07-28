@@ -28,26 +28,19 @@ class Action {
         // подготовка 1-го пакета запросов
 
         // запрашиваем текущий регион, если есть кука региона
-        $regionConfig = [];
         if ($user->getRegionId()) {
-            $regionConfig = (array)\App::dataStoreClient()->query("/region/{$user->getRegionId()}.json");
-
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
             });
+            
+            $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
         }
-
-        // выполнение 1-го пакета запросов
-        $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
         $regionEntity = \App::user()->getRegion();
         if ($regionEntity instanceof \Model\Region\Entity) {
-            if (array_key_exists('reserve_as_buy', $regionConfig)) {
-                $regionEntity->setForceDefaultBuy(false == $regionConfig['reserve_as_buy']);
-            }
             \App::user()->setRegion($regionEntity);
         }
 
@@ -116,14 +109,20 @@ class Action {
 
         $client->execute();
 
+        if (!empty($brandToken) && !$brand) {
+            \App::exception()->add(new \Exception('Бренд не найден', 404));
+        }
+
         $promoContent = '';
         if (!empty($catalogJson['promo_token'])) {
-            \App::contentClient()->addQuery(
-                trim((string)$catalogJson['promo_token']),
+            $scmsClient = \App::scmsClient();
+            $scmsClient->addQuery(
+                'api/static-page',
+                ['token' => [trim((string)$catalogJson['promo_token'])]],
                 [],
                 function($data) use (&$promoContent) {
-                    if (!empty($data['content'])) {
-                        $promoContent = $data['content'];
+                    if (!empty($data['pages'][0]['content'])) {
+                        $promoContent = $data['pages'][0]['content'];
                     }
                 },
                 function(\Exception $e) {
@@ -131,7 +130,8 @@ class Action {
                     \App::exception()->add($e);
                 }
             );
-            \App::contentClient()->execute();
+
+            $scmsClient->execute();
         }
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
@@ -198,10 +198,7 @@ class Action {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
         }
 
-        // TODO SITE-2403 Вернуть фильтр instore
-        if ($category->getIsFurniture()/* && 14974 === $user->getRegion()->getId()*/) {
-            $this->createInStoreFilter($filters);
-        }
+        $this->createInStoreFilter($filters, $category);
 
         $this->transformFiltersV2($filters, $category);
 
@@ -331,23 +328,25 @@ class Action {
                         \RepositoryManager::product()->setMediasForProducts($products, $medias);
                     }
 
+                    $cartButtonAction = new \View\Cart\ProductButtonAction();
                     // перевариваем данные изображений для слайдера в $slideData
                     foreach ($promo->getImage() as $image) {
                         if (!$image instanceof \Model\Promo\Image\Entity) continue;
 
                         $itemProducts = [];
                         foreach($image->getProducts() as $productId) {
-                            if (!isset($products[$productId])) continue;
-                            $product = $products[$productId];
+                            $product = isset($products[$productId]) ? $products[$productId] : null;
+                            if (!$product) continue;
+
                             /** @var $product \Model\Product\Entity */
                             $itemProducts[] = [
-                                'image'     => $product->getMainImageUrl('product_160'),
-                                'link'      => $product->getLink(),
-                                'name'      => $product->getName(),
-                                'price'     => $product->getPrice(),
-                                'isBuyable' => ($product->getIsBuyable() || $product->isInShopOnly() || $product->isInShopStockOnly()),
-                                'statusId'      => $product->getStatusId(),
-                                'cartButton'    => (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product)
+                                'image'      => $product->getMainImageUrl('product_160'),
+                                'link'       => $product->getLink(),
+                                'name'       => $product->getName(),
+                                'price'      => $product->getPrice(),
+                                'isBuyable'  => ($product->getIsBuyable() || $product->isInShopOnly() || $product->isInShopStockOnly()),
+                                'statusId'   => $product->getStatusId(),
+                                'cartButton' => $cartButtonAction->execute(new \Helper\TemplateHelper(), $product)
                             ];
                         }
 
@@ -515,11 +514,11 @@ class Action {
 
     /**
      * @param \Model\Product\Category\Entity $category
-     * @param \Model\Product\Filter          $productFilter
-     * @param \View\Layout                   $page
-     * @param \Http\Request                  $request
+     * @param \Model\Product\Filter $productFilter
+     * @param \View\Layout $page
+     * @param \Http\Request $request
      * @return \Http\Response
-     * @throws \Exception\NotFoundException
+     * @throws \Exception
      */
     protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
@@ -701,7 +700,7 @@ class Action {
             });
         }
 
-        $repository->prepareProductsMedias($products);
+        $repository->enrichProductsFromScms($products, 'media label brand category' . (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category->isInSiteListingWithViewSwitcherAbTest() ? ' property' : ''));
 
         \App::coreClientV2()->execute();
 
@@ -746,7 +745,9 @@ class Action {
                     null,
                     true,
                     $columnCount,
-                    $productView
+                    $productView,
+                    [],
+                    $category
                 ),
                 'selectedFilter' => $selectedFilter->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -754,7 +755,8 @@ class Action {
                 ),
                 'pagination'     => (new \View\PaginationAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
-                    $productPager
+                    $productPager,
+                    $category
                 ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -856,7 +858,12 @@ class Action {
     /**
      * @param \Model\Product\Filter\Entity[] $filters
      */
-    private function createInStoreFilter(array &$filters) {
+    private function createInStoreFilter(array &$filters, \Model\Product\Category\Entity $category) {
+        // TODO SITE-2403 Вернуть фильтр instore
+        if (!$category->getIsFurniture()) {
+            return;
+        }
+        
         $labelFilter = null;
         $labelFilterKey = null;
         foreach ($filters as $key => $filter) {

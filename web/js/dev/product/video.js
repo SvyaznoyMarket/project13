@@ -28,6 +28,7 @@
 
 		$('.js-product-video-container').lightbox_me({
 			centered: true,
+			closeSelector: '.jsPopupCloser',
 			onLoad: function() {
 				videoStartTime = new Date().getTime();
 

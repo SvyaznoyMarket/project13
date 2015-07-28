@@ -1,8 +1,68 @@
 {{#inShowroomAsLabel}}
-    <div class="showroom-only">
-        На витрине
-        <i class="i-product i-product--info-normal i-info__icon js-tooltip js-tooltip-opener"><div class="js-tooltip-content tooltip-content" style="display: none;">Чтобы купить товар с витрины, <br />нужно приехать в магазин и обратиться к продавцу.</div></i>
-    </div>
+    {{#points.0}}
+        <div class="js-buyButton-points">
+            <div style="display: none" class="js-buyButton-points-content popup popup-simple popup--showroom">
+                <div class="popup__inn">
+                    <a href="#" title="Закрыть" class="js-buyButton-points-content-closer closer">×</a>
+
+                    <div class="popup__head">
+                        На витрине в
+                        {{#points.1}}
+                            магазинах
+                        {{/points.1}}
+
+                        {{^points.1}}
+                            магазине
+                        {{/points.1}}
+                    </div>
+
+                    <div class="popup__content">
+                        <ul class="showroom-points-lst">
+                            {{#points}}
+                                <li class="showroom-points-lst__i pick-point-item">
+                                    <div class="pick-point-item__addr">
+                                        {{#subway}}
+                                            <div class="pick-point-item__metro" {{#line.color}} style="background: {{line.color}}"{{/line.color}}>
+                                                <div class="pick-point-item__metro-inn">{{name}}</div>
+                                            </div>
+                                        {{/subway}}
+
+                                        <div class="pick-point-item__addr-name {{#subway}}pick-point-item__addr-with-metro{{/subway}}">
+                                            {{#url}}
+                                                <a href="{{url}}">{{name}}</a>
+                                            {{/url}}
+
+                                            {{^url}}
+                                                {{name}}
+                                            {{/url}}
+                                        </div>
+
+                                        {{#todayWorkingTime}}
+                                            <div class="pick-point-item__time">с {{from}} до {{to}}</div>
+                                        {{/todayWorkingTime}}
+                                    </div>
+                                </li>
+                            {{/points}}
+                        </ul>
+                    </div>
+
+                    <div class="popup__footer">Чтобы купить товар с витрины, <br />нужно приехать в магазин и обратиться к продавцу.</div>
+                </div>
+            </div>
+
+            <div class="showroom-only js-buyButton-points-opener">
+                На витрине
+                <i class="i-product i-product--info-normal i-info__icon"></i>
+            </div>
+        </div>
+    {{/points.0}}
+
+    {{^points.0}}
+        <div class="showroom-only">
+            На витрине
+            <i class="i-product i-product--info-normal i-info__icon"></i>
+        </div>
+    {{/points.0}}
 {{/inShowroomAsLabel}}
 
 {{^inShowroomAsLabel}}
@@ -17,7 +77,6 @@
             data-upsale="{{data.upsale}}"
             {{#sender}}data-sender="{{&sender}}"{{/sender}}
             {{#sender2}}data-sender2="{{sender2}}"{{/sender2}}
-            {{#colorClass}}data-color-class="{{colorClass}}"{{/colorClass}}
             {{#full}}data-full="{{full}}"{{/full}}
             {{#productUrl}}data-product-url="{{productUrl}}"{{/productUrl}}
             {{#productArticle}}data-product-article="{{productArticle}}"{{/productArticle}}

@@ -4,7 +4,7 @@
     visibility: visible;
     overflow: hidden;
 
-    height: 0;
+    display: none;
 
     background: @white;
 
@@ -13,6 +13,7 @@
     .drop-shadow(0, 4px, 28px, .5);
 
     &.fadeIn{
+		display: block;
         zoom: 1;
         filter: progid:DXImageTransform.Microsoft.Shadow(Color=#c7c7c7, Strength=15, Direction=180);
     }
@@ -50,7 +51,7 @@
             &-wrap {
                 float: none;
 
-                width: 260px;
+                width: 250px;
 
                 .inline-block-middle();
             }

@@ -3,7 +3,6 @@
 namespace Model\Region;
 
 class Entity extends BasicRegionEntity {
-
     /** @var string|null */
     public $kladrId;
     /** @var int */
@@ -20,8 +19,6 @@ class Entity extends BasicRegionEntity {
     private $parent;
     /** @var bool */
     private $hasTransportCompany;
-    /** @var bool */
-    private $forceDefaultBuy = true;
 
     public function __construct(array $data = []) {
         parent::__construct($data);
@@ -40,32 +37,28 @@ class Entity extends BasicRegionEntity {
     /**
      * @param boolean $hasDelivery
      */
-    public function setHasDelivery($hasDelivery)
-    {
+    public function setHasDelivery($hasDelivery) {
         $this->hasDelivery = $hasDelivery;
     }
 
     /**
      * @return boolean
      */
-    public function getHasDelivery()
-    {
+    public function getHasDelivery() {
         return $this->hasDelivery;
     }
 
     /**
      * @param boolean $hasShop
      */
-    public function setHasShop($hasShop)
-    {
+    public function setHasShop($hasShop) {
         $this->hasShop = $hasShop;
     }
 
     /**
      * @return boolean
      */
-    public function getHasShop()
-    {
+    public function getHasShop() {
         return $this->hasShop;
     }
 
@@ -86,145 +79,124 @@ class Entity extends BasicRegionEntity {
     /**
      * @param int $id
      */
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
     /**
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
     /**
      * @param boolean $isMain
      */
-    public function setIsMain($isMain)
-    {
+    public function setIsMain($isMain) {
         $this->isMain = $isMain;
     }
 
     /**
      * @return boolean
      */
-    public function getIsMain()
-    {
+    public function getIsMain() {
         return $this->isMain;
     }
 
     /**
      * @param float $latitude
      */
-    public function setLatitude($latitude)
-    {
+    public function setLatitude($latitude) {
         $this->latitude = $latitude;
     }
 
     /**
      * @return float
      */
-    public function getLatitude()
-    {
+    public function getLatitude() {
         return $this->latitude;
     }
 
     /**
      * @param float $longitude
      */
-    public function setLongitude($longitude)
-    {
+    public function setLongitude($longitude) {
         $this->longitude = $longitude;
     }
 
     /**
      * @return float
      */
-    public function getLongitude()
-    {
+    public function getLongitude() {
         return $this->longitude;
     }
 
     /**
      * @param string $name
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
     }
 
     /**
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
     /**
      * @param Entity|null $parent
      */
-    public function setParent(Entity $parent = null)
-    {
+    public function setParent(Entity $parent = null) {
         $this->parent = $parent;
     }
 
     /**
      * @return Entity|null
      */
-    public function getParent()
-    {
+    public function getParent() {
         return $this->parent;
     }
 
     /**
      * @param int $parentId
      */
-    public function setParentId($parentId)
-    {
+    public function setParentId($parentId) {
         $this->parentId = $parentId;
     }
 
     /**
      * @return int
      */
-    public function getParentId()
-    {
+    public function getParentId() {
         return $this->parentId;
     }
 
     /**
      * @param string $token
      */
-    public function setToken($token)
-    {
+    public function setToken($token) {
         $this->token = $token;
     }
 
     /**
      * @return string
      */
-    public function getToken()
-    {
+    public function getToken() {
         return $this->token;
-    }
-
-    /**
-     * @param boolean $forceDefaultBuy
-     */
-    public function setForceDefaultBuy($forceDefaultBuy)
-    {
-        $this->forceDefaultBuy = $forceDefaultBuy;
     }
 
     /**
      * @return boolean
      */
-    public function getForceDefaultBuy()
-    {
-        return $this->forceDefaultBuy;
+    public function getForceDefaultBuy() {
+        if ($this->id == 93751) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**

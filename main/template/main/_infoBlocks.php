@@ -1,28 +1,28 @@
 <ul class="shopInfo clearfix">
-    <li class="shopInfo_i jsShopInfoPreview" data-id="1">
+    <li class="shopInfo_i jsShopInfoPreview" data-id="1" data-name="Доставка">
         <i class="shopInfo_l i-shopInfo i-shopInfo-delivery"></i>
         <div class="shopInfo_r">
             <span class="shopInfo_tl undrl">Доставка</span>
             <p class="shopInfo_tx">Доставляем по всей России</p>
         </div>
     </li>
-    <li class="shopInfo_i jsShopInfoPreview" data-id="2">
+    <li class="shopInfo_i jsShopInfoPreview" data-id="2" data-name="Самовывоз">
         <i class="shopInfo_l i-shopInfo i-shopInfo-deliveryself"></i>
         <div class="shopInfo_r">
             <span class="shopInfo_tl undrl">Самовывоз</span>
-            <p class="shopInfo_tx">Более 1000 пунктов выдачи</p>
+            <p class="shopInfo_tx">Более 3800 пунктов выдачи</p>
         </div>
     </li>
-    <li class="shopInfo_i jsShopInfoPreview" data-id="3">
+    <li class="shopInfo_i jsShopInfoPreview" data-id="3" data-name="Удобно платить">
         <i class="shopInfo_l i-shopInfo i-shopInfo-payment"></i>
         <div class="shopInfo_r">
             <span class="shopInfo_tl undrl">Удобно платить</span>
             <p class="shopInfo_tx">Способ оплаты на твой вкус</p>
         </div>
     </li>
-    <li class="shopInfo_i jsShopInfoPreview">
+    <li class="shopInfo_i jsShopInfoPreview" data-name="WOW Акции">
         <i class="shopInfo_l i-shopInfo i-shopInfo-wow"></i>
-        <a href="/special_offers"  target="_blank" class="shopInfo_r">
+        <a href="/special_offers" target="_blank" class="shopInfo_r jsShopInfoLink">
             <span class="shopInfo_tl undrl">WOW Акции</span>
             <p class="shopInfo_tx">Лучшие предложения</p>
         </a>

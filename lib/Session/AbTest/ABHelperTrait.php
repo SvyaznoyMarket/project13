@@ -38,31 +38,6 @@ trait ABHelperTrait {
         return in_array(\App::user()->getRegionId(), [18074, 99958, 10374]);
     }
 
-    public static function getColorClass(Entity $product, $location = null){
-        // SITE-5394 цвет кнопки купить
-        $colorClass = null;
-        switch (\App::abTest()->getTest('cart_button_color')->getChosenCase()->getKey()) {
-            case 'red':
-                $colorClass = ' btnBuy__eLink--red';
-                break;
-            case 'magenta':
-                $colorClass = ' btnBuy__eLink--magenta';
-                break;
-        }
-
-        if ($location !== 'slider') {
-            foreach ($product->getCategory() as $category) {
-                // Pandora
-                if (in_array($category->getUi(), ['3fe49466-e5cf-4042-963d-025db2142600'])) {
-                    $colorClass = null;
-                    break;
-                }
-            }
-        }
-
-        return $colorClass;
-    }
-
     public static function isShowSalePercentage() {
         return !in_array(\App::request()->attributes->get('route'), ['slice.category', 'slice.show'], true) || \App::request()->attributes->get('sliceToken') !== 'all_labels' || \App::abTest()->getTest('salePercentage')->getChosenCase()->getKey() !== 'hide';
     }

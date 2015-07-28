@@ -3,6 +3,9 @@
     var body = $(document.body),
         _gaq = window._gaq,
         region = $('.jsRegion').data('value'),
+        saleAnalyticsData = $('.jsOrderSaleAnalytics').data('value'),
+        value,
+        i,
 
         sendAnalytic = function sendAnalyticF (category, action, label, value) {
         var lbl = label || '',
@@ -31,6 +34,14 @@
     // TODO вынести инициализацию трекера из ports.js
     if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length == 0) {
         ga( 'create', 'UA-25485956-5', 'enter.ru' );
+    }
+
+    if (saleAnalyticsData) {
+        $.each(saleAnalyticsData, function(i, value) {
+            if ('object' === typeof value) {
+                $('body').trigger('trackGoogleEvent', value);
+            }
+        })
     }
 
 })(jQuery);
