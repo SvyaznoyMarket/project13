@@ -72,18 +72,6 @@ return function(
 
                     </div>
 
-                    <? if (\RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)) : ?>
-
-                    <? /*><div class="orderLn_c">
-                        <div><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>
-                            <? if ($order->deliveredAt) : ?><?= strftime('%e %b %Y', $order->deliveredAt->getTimestamp()) ?><? endif ?>
-                            <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
-                        </div>
-                        <!--<div>Оплата при получении: наличные, банковская карта</div>-->
-                    </div><*/?>
-
-                    <? endif ?>
-
                     <div class="orderLn_r">
                         <? if ($order->getPaySum()): ?>
                             <div class="orderLn_row orderLn_row-summ">
