@@ -586,7 +586,7 @@ a[href^="tel"] {
     width: 101px;
 }
 .landing_hd_top_lk.mod_enter {
-    background: url("/css/header/img/headerLogo.gif") no-repeat 0 0;
+    background: url("/css/header/img/headerLogo.png") no-repeat 0 0;
     height: 66px;
     width: 80px;
     margin-top: 15px;
