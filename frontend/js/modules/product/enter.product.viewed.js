@@ -7,7 +7,9 @@
 !function( modules, module ) {
     modules.define(
         'enter.product.viewed',
-        [],
+        [
+            'jQuery'
+        ],
         module
     );
 }(

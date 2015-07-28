@@ -15,11 +15,11 @@
     </a>
 
     <div class="notice-dd notice-dd_user jsCartNotice">
-		<ul class="notice-user">
-			<li class="notice-user__item"><a href="" class="notice-user__link notice-user__link_lk"><span class="underline">Личный кабинет</span></a></li>
-			<li class="notice-user__item"><a href="" class="notice-user__link notice-user__link_favorite"><span class="underline">Избранное</span></a></li>
-			<li class="notice-user__item"><a href="<?= \App::router()->generate('user.logout') ?>" class="notice-user__link"><span class="underline">Выйти</span></a></li>
-		</ul>
+  		<ul class="notice-user">
+  			<li class="notice-user__item"><a href="" class="notice-user__link notice-user__link_lk"><span class="underline">Личный кабинет</span></a></li>
+  			<li class="notice-user__item"><a href="" class="notice-user__link notice-user__link_favorite"><span class="underline">Избранное</span></a></li>
+  			<li class="notice-user__item"><a href="<?= \App::router()->generate('user.logout') ?>" class="notice-user__link"><span class="underline">Выйти</span></a></li>
+  		</ul>
     </div>
 </li>
 

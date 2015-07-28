@@ -99,5 +99,7 @@ $bannerSlickConfig = [
 
 <?= $page->blockUserConfig() ?>
 
+<div class="overlay js-overlay"></div>
+
 </body>
 </html>
