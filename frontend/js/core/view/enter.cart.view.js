@@ -46,6 +46,7 @@
              */
             initialize: function( options ) {
                 console.info('enter.cart.view~EnterCartView#initialize');
+                console.log(this.$el);
 
                 this.collection = App.cart;
 
@@ -54,9 +55,9 @@
                     cartQuantity: this.$el.find('.' + CSS_CLASSES.CART_QUANTITY)
                 };
 
-                this.overlay = $('.js-overlay');
+                this.overlay      = $('.js-overlay');
                 this.cartDropDown = this.$el.find('.js-cart-notice');
-                this.bindedHide = this.hide.bind(this);
+                this.bindedHide   = this.hide.bind(this);
 
                 this.listenTo(this.collection, 'remove', this.removeItem);
                 this.listenTo(this.collection, 'add', this.addHandler);
@@ -176,7 +177,6 @@
 
                 console.groupCollapsed('module:enter.cart.view~EnterCartView#addItem || product id ', id);
                 console.dir(item);
-                console.groupEnd();
 
                 this.subViews[id] = new CartItemView({
                     collection: this.collection,
@@ -185,6 +185,9 @@
 
                 tmpCartItemNode = this.subViews[id].render();
                 this.subViews.cartItemsWrapper.prepend(tmpCartItemNode);
+
+                console.log(tmpCartItemNode);
+                console.groupEnd();
             },
 
             /**
@@ -215,14 +218,17 @@
                     cartQ = this.collection.quantity;
 
                 console.info('module:enter.cart.view~EnterCartView#render');
+                console.log('cart quantity', cartQ);
 
-                // console.info(this);
                 this.loader.hide();
 
                 if ( !cartQ ) {
+                    console.warn('cart empty');
                     this.$el.addClass(CSS_CLASSES.EMPTY_CART);
                     this.$el.removeClass(CSS_CLASSES.FULL_CART);
+                    this.hideOverlay();
                 } else {
+                    console.warn('cart full');
                     this.$el.addClass(CSS_CLASSES.FULL_CART);
                     this.$el.removeClass(CSS_CLASSES.EMPTY_CART);
                 }

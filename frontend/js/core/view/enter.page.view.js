@@ -8,6 +8,7 @@
     modules.define(
         'enter.page.view',
         [
+            'jQuery',
             'enter.BaseViewClass',
             'enter.cart.view'
         ],
@@ -15,7 +16,7 @@
     );
 }(
     this.modules,
-    function( provide, BaseViewClass, CartView ) {
+    function( provide, $, BaseViewClass, CartView ) {
         'use strict';
 
         var
@@ -39,12 +40,15 @@
              */
             initialize: function( options ) {
                 console.info('enter.page.view~EnterPageView#initialize');
+                var
+                    carts = this.$el.find('.' + CSS_CLASSES.CART),
+                    self  = this;
 
-                this.subViews = {
-                    cart: new CartView({
-                        el: this.$el.find('.' + CSS_CLASSES.CART)
-                    })
-                };
+                carts.each(function( index ) {
+                    self.subViews['cart_' + index] = new CartView({
+                        el: $(this)
+                    });
+                });
             },
 
             events: {}
