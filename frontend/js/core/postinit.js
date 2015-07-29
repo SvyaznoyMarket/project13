@@ -5,7 +5,8 @@
 
     var searchNode = d.querySelector('.jsKnockoutSearch'),
         regionSelection = d.querySelector('.jsRegionSelection'),
-        moduleRequireOnClick = d.querySelectorAll('.js-module-require-onclick');
+        moduleRequireOnClick = d.querySelectorAll('.js-module-require-onclick'),
+        moduleRequireOnHover = d.querySelectorAll('.js-module-require-onhover');
 
     // Debug-панель
     window.onload = function(){
@@ -54,6 +55,25 @@
                             })
                         })
                     })(moduleName, moduleRequireOnClick[i]);
+                }
+            }
+        }
+    }
+
+    // загрузка модулей по наведению на элементах .js-module-require-onhover
+    if (moduleRequireOnHover) {
+        for (i in moduleRequireOnHover) {
+            if (moduleRequireOnHover.hasOwnProperty(i) && typeof moduleRequireOnHover[i] == 'object'){
+                moduleName =  moduleRequireOnHover[i].dataset.module;
+                if (moduleName) {
+                    (function(module, element) {
+                        moduleRequireOnHover[i].addEventListener('mouseover', function(event){
+                            event.preventDefault();
+                            modules.require(module, function(module){
+                                if (typeof module.init == 'function') module.init(element)
+                            })
+                        })
+                    })(moduleName, moduleRequireOnHover[i]);
                 }
             }
         }

@@ -80,6 +80,13 @@
             });
         });
 
+        modules.define('lscache', [], function(provide){
+            loadScript("plugins/lscache.js", function () {
+                console.log('[Module] lscache');
+                provide(lscache);
+            });
+        });
+
         /* ENTER Modules */
         modules.define('enter.debug', ['jQuery', 'Mustache', 'enter.config'], function(provide){
             window.ENTER = {};
