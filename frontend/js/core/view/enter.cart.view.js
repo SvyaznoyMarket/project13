@@ -34,7 +34,8 @@
                 EMPTY_CART: 'header-cart_empty',
                 FULL_CART: 'header-cart_full',
                 CART_SHOW: 'show',
-                LOADER: 'loader'
+                LOADER: 'loader',
+                CART_DROPDOWN: 'js-cart-notice'
             };
 
         provide(BaseViewClass.extend({
@@ -49,14 +50,15 @@
                 console.log(this.$el);
 
                 this.collection = App.cart;
+                this.timeToHide = 3 * 1000; // 3 sec
 
                 this.subViews = {
                     cartItemsWrapper: this.$el.find('.' + CSS_CLASSES.CART_ITEMS_WRAPPER),
-                    cartQuantity: this.$el.find('.' + CSS_CLASSES.CART_QUANTITY)
+                    cartQuantity: this.$el.find('.' + CSS_CLASSES.CART_QUANTITY),
+                    cartDropDown: this.$el.find('.' + CSS_CLASSES.CART_DROPDOWN)
                 };
 
                 this.overlay      = $('.js-overlay');
-                this.cartDropDown = this.$el.find('.js-cart-notice');
                 this.bindedHide   = this.hide.bind(this);
 
                 this.listenTo(this.collection, 'remove', this.removeItem);
@@ -86,12 +88,16 @@
             },
 
             show: function() {
-                this.cartDropDown.addClass(CSS_CLASSES.CART_SHOW);
+                this.subViews.cartDropDown.addClass(CSS_CLASSES.CART_SHOW);
                 this.showOverlay();
+
+                this.tid && clearTimeout(this.tid);
+                this.tid = setTimeout(this.hide.bind(this), this.timeToHide);
             },
 
             hide: function() {
-                this.cartDropDown.removeClass(CSS_CLASSES.CART_SHOW);
+                this.tid && clearTimeout(this.tid);
+                this.subViews.cartDropDown.removeClass(CSS_CLASSES.CART_SHOW);
                 this.hideOverlay();
             },
 
@@ -226,7 +232,7 @@
                     console.warn('cart empty');
                     this.$el.addClass(CSS_CLASSES.EMPTY_CART);
                     this.$el.removeClass(CSS_CLASSES.FULL_CART);
-                    this.hideOverlay();
+                    this.hide();
                 } else {
                     console.warn('cart full');
                     this.$el.addClass(CSS_CLASSES.FULL_CART);
