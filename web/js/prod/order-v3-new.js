@@ -1036,7 +1036,6 @@
 		}
 	});
 }(jQuery));
-
 ;(function($) {
 
     ENTER.OrderV3 = ENTER.OrderV3 || {};
@@ -1481,9 +1480,9 @@
 			if (window.location.host != 'www.enter.ru') href = href.replace(/^.*enter.ru/, ''); /* для работы на demo-серверах */
 			console.log('NEW href', href);
 			$.ajax({
-				url: ENTER.utils.setURLParam('ajax', 1, href),
+				url: href,
 				success: function(data) {
-					$('.orderOferta_tl:first').html(data.content || '');
+					$('.orderOferta_tl:first').html($(data).find('.entry-content').html());
 					showOfertaPopup();
 				}
 			})
@@ -1799,8 +1798,7 @@
 			$agreement = $('.jsAcceptAgreement'),
 			$form = $(this).closest('form'),
 			send15_3 = false,
-			partnerOrders = $('.jsPartnerOrder'),
-			specialActionOrders = $('.jsSpecialAction');
+			partnerOrders = $('.jsPartnerOrder');
 
         if (!$agreement.is(':checked')) {
             error.push('Необходимо согласие с информацией о продавце и его офертой');
@@ -1827,13 +1825,6 @@
 					error.push('Укажите адрес самовывоза');
 				}
 			});
-		});
-
-		specialActionOrders.each(function(){
-			if (!$(this).data('point-ui')) {
-				$(this).find('.orderCol_delivrIn-empty').addClass('orderCol_delivrIn-err').removeClass('orderCol_delivrIn-warn');
-				error.push('Укажите адрес самовывоза');
-			}
 		});
 
 		e.preventDefault();

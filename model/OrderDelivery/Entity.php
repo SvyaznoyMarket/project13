@@ -381,10 +381,6 @@ namespace Model\OrderDelivery\Entity {
             'pin'   => null,
             'par'   => null
         ];
-        /** TODO remove
-         * @var bool Есть товары по акции "Всё по..."
-         */
-        public $specialAction = false;
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
 
@@ -865,14 +861,12 @@ namespace Model\OrderDelivery\Entity\Order\Delivery {
         public $token;
         /** @var string */
         public $id;
-        /** @var string */
-        public $ui;
 
 
         public function __construct(array $data = []) {
             if (isset($data['token'])) $this->token = (string)$data['token'];
             if (isset($data['id'])) $this->id = (string)$data['id'];
-            if (isset($data['ui'])) $this->ui = (string)$data['ui'];
+
         }
 
         /** Точка Связного?
