@@ -6,8 +6,8 @@
             <span class="header-cart__text">Корзина</span>
         </a>
 
-        <div class="notice-dd notice-dd_cart jsCartNotice">
-            <div class="notice-dd__inn">
+        <div class="notice-dd notice-dd_cart js-cart-notice">
+            <div class="notice-dd__inn js-cart-notice-content">
                 <div class="notice-dd__height">
                     <ul class="notice-cart js-cart-items-wrapper"></ul>
                 </div>

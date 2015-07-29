@@ -32,7 +32,9 @@
                 CART_ITEMS_WRAPPER: 'js-cart-items-wrapper',
                 CART_QUANTITY: 'js-cart-quantity',
                 EMPTY_CART: 'header-cart_empty',
-                FULL_CART: 'header-cart_full'
+                FULL_CART: 'header-cart_full',
+                CART_SHOW: 'show',
+                LOADER: 'loader'
             };
 
         provide(BaseViewClass.extend({
@@ -52,6 +54,10 @@
                     cartQuantity: this.$el.find('.' + CSS_CLASSES.CART_QUANTITY)
                 };
 
+                this.overlay = $('.js-overlay');
+                this.cartDropDown = this.$el.find('.js-cart-notice');
+                this.bindedHide = this.hide.bind(this);
+
                 this.listenTo(this.collection, 'remove', this.removeItem);
                 this.listenTo(this.collection, 'add', this.addHandler);
                 this.listenTo(this.collection, 'silentAdd', this.silentAddItem);
@@ -65,24 +71,37 @@
              * @memberOf    module:enter.cart.view~EnterCartView
              * @type        {Object}
              */
-            events: {},
+            events: {
+            },
 
             loader: {
                 show: function() {
-                    console.info('module:enter.cart.view~EnterCartView.loader#show');
+                    $('.js-cart-notice-content').addClass(CSS_CLASSES.LOADER);
                 },
 
                 hide: function() {
-                    console.info('module:enter.cart.view~EnterCartView.loader#hide');
+                   $('.js-cart-notice-content').removeClass(CSS_CLASSES.LOADER);
                 }
             },
 
             show: function() {
-
+                this.cartDropDown.addClass(CSS_CLASSES.CART_SHOW);
+                this.showOverlay();
             },
 
             hide: function() {
+                this.cartDropDown.removeClass(CSS_CLASSES.CART_SHOW);
+                this.hideOverlay();
+            },
 
+            showOverlay: function() {
+                this.overlay.show();
+                this.overlay.on('click', this.bindedHide);
+            },
+
+            hideOverlay: function() {
+                this.overlay.hide();
+                this.overlay.off('click', this.bindedHide);
             },
 
             /**
@@ -165,7 +184,7 @@
                 });
 
                 tmpCartItemNode = this.subViews[id].render();
-                this.subViews.cartItemsWrapper.append(tmpCartItemNode);
+                this.subViews.cartItemsWrapper.prepend(tmpCartItemNode);
             },
 
             /**
