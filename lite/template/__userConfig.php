@@ -6,7 +6,7 @@ return function(
     try {
         $userConfig = (new \Controller\User\InfoAction())->getResponseData(\App::request());
         // Переименуем корзину
-        $userConfig['products'] = isset($userConfig['cartProducts']) ? $userConfig['cartProducts'] : [];
+        $userConfig['cart']['products'] = isset($userConfig['cartProducts']) ? $userConfig['cartProducts'] : [];
         unset($userConfig['cartProducts']);
 
     } catch (\Exception $e) {
