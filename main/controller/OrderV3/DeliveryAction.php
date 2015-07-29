@@ -21,6 +21,7 @@ class DeliveryAction extends OrderV3 {
             try {
 
                 $previousSplit = $this->session->get($this->splitSessionKey);
+                if (is_string($previousSplit)) $previousSplit = json_decode(gzuncompress($previousSplit), true);
 
                 if ($previousSplit === null) throw new \Exception('Истекла сессия');
 
@@ -66,16 +67,15 @@ class DeliveryAction extends OrderV3 {
 
             if (!$this->session->get($this->splitSessionKey)) return new \Http\RedirectResponse(\App::router()->generate('cart'));
 
-            // сохраняем данные пользователя
-            $data['action'] = 'changeUserInfo';
-            $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+            $sessionData = $this->session->get($this->splitSessionKey);
+            $data = is_string($sessionData) ? json_decode(gzuncompress($sessionData), true) : $sessionData;
 
-            //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
-            $orderDelivery = $this->getSplit($data);
+            $orderDelivery = new \Model\OrderDelivery\Entity($data);
 
-            foreach($orderDelivery->orders as $order) {
-                $this->logger(['delivery-self-price' => $order->delivery->price]);
-            }
+            $this->setMediaForProducts($orderDelivery);
+
+            // TODO удалить
+            $this->modifyOrderForAction($orderDelivery);
 
             $subscribeResult = false;  // ответ на подписку
             try {
@@ -130,10 +130,14 @@ class DeliveryAction extends OrderV3 {
 
         if (!$this->cart->count()) throw new \Exception('Пустая корзина');
 
+        $sessionData = is_string($this->session->get($this->splitSessionKey))
+            ? json_decode(gzuncompress($this->session->get($this->splitSessionKey)), true)
+            : $this->session->get($this->splitSessionKey);
+
         if ($data) {
             $splitData = [
-                'previous_split' => $this->session->get($this->splitSessionKey),
-                'changes'        => $this->formatChanges($data, $this->session->get($this->splitSessionKey))
+                'previous_split' => $sessionData,
+                'changes'        => $this->formatChanges($data, $sessionData)
             ];
         } else {
             $productList = [];
@@ -189,23 +193,10 @@ class DeliveryAction extends OrderV3 {
             throw new \Exception('Отстуствуют данные по заказам');
         }
 
-        $medias = [];
-        foreach($orderDelivery->orders as $order) {
-            \RepositoryManager::product()->prepareProductsMediasByIds(array_map(function(\Model\OrderDelivery\Entity\Order\Product $product) { return $product->id; }, $order->products), $medias);
-        }
-
-        \App::coreClientV2()->execute();
+        $this->setMediaForProducts($orderDelivery);
 
         // TODO удалить
         $this->modifyOrderForAction($orderDelivery);
-
-        foreach($orderDelivery->orders as $order) {
-            foreach ($order->products as $product) {
-                if (isset($medias[$product->id])) {
-                    $product->medias = $medias[$product->id];
-                }
-            }
-        }
 
         // обновляем корзину пользователя
         if (isset($data['action']) && isset($data['params']['id']) && $data['action'] == 'changeProductQuantity') {
@@ -221,7 +212,7 @@ class DeliveryAction extends OrderV3 {
         }
 
         // сохраняем в сессию расчет доставки
-        $this->session->set($this->splitSessionKey, $orderDeliveryData);
+        $this->session->set($this->splitSessionKey, gzcompress(json_encode($orderDeliveryData)));
 
         return $orderDelivery;
     }
@@ -444,6 +435,24 @@ class DeliveryAction extends OrderV3 {
         }
 
         \App::scmsClient()->execute();
+    }
+
+    private function setMediaForProducts(\Model\OrderDelivery\Entity $orderDelivery) {
+
+        $medias = [];
+        foreach($orderDelivery->orders as $order) {
+            \RepositoryManager::product()->prepareProductsMediasByIds(array_map(function(\Model\OrderDelivery\Entity\Order\Product $product) { return $product->id; }, $order->products), $medias);
+        }
+
+        \App::coreClientV2()->execute();
+
+        foreach($orderDelivery->orders as $order) {
+            foreach ($order->products as $product) {
+                if (isset($medias[$product->id])) {
+                    $product->medias = $medias[$product->id];
+                }
+            }
+        }
     }
 
 }

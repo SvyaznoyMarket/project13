@@ -158,8 +158,17 @@ class ShowAction {
         // action
         $debug->add('act', $action ?: 'undefined', 135, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
 
+        $session = \App::session()->all();
+        // Пробуем декодировать gzip-сжатые данные в сессии
+        array_walk_recursive($session, function(&$elem){
+            if (is_string($elem) && !ctype_print($elem)) {
+                $decoded = zlib_decode($elem);
+                if ($decoded  !== false) $elem = json_decode($decoded);
+            }
+        });
+
         // session
-        $debug->add('session', array_merge(\App::session()->all(), ['__prevDebug__' => null]), 133);
+        $debug->add('session', array_merge($session, ['__prevDebug__' => null]), 133);
 
         // memory
         $debug->add('memory', ['value' => round(memory_get_peak_usage() / 1048576, 2), 'unit' => 'Mb'], 132);
