@@ -196,9 +196,6 @@ class DeliveryAction extends OrderV3 {
 
         \App::coreClientV2()->execute();
 
-        // TODO удалить
-        $this->modifyOrderForAction($orderDelivery);
-
         foreach($orderDelivery->orders as $order) {
             foreach ($order->products as $product) {
                 if (isset($medias[$product->id])) {
@@ -391,59 +388,4 @@ class DeliveryAction extends OrderV3 {
             }
         }
     }
-
-    /** Модификация заказа для акции "Всё по..."
-     * @param \Model\OrderDelivery\Entity $orderDelivery
-     */
-    public static function modifyOrderForAction(\Model\OrderDelivery\Entity $orderDelivery){
-
-        // Ключевые тэги у продуктов
-        $tagsUids = [
-            '5dd68a0a-8704-42a3-a8a2-c8e16e7f710f',
-            '04a95447-b20a-4c54-85b8-3923b2eb4002',
-            'c3bcad89-15c9-4f87-a7fa-e8918ba9f267'
-        ];
-
-        foreach ($orderDelivery->orders as &$order) {
-            \App::scmsClient()->addQuery('product/get-description/v1',
-                [   'ids' => array_merge(
-                        array_map(function(\Model\OrderDelivery\Entity\Order\Product $product){ return $product->id; }, $order->products),
-                        [rand(1,20000)] /* Добавляем rand к запросу, т.к. если два заказа будут одинаковые, то второй callback не произойдет */
-                ),  'tag' => 1],
-                [],
-                function ($data) use (&$order, $tagsUids) {
-                    foreach ($data['products'] as $productDescription) {
-                        if (isset($productDescription['tags']) && is_array($productDescription['tags'])) {
-                            foreach ($productDescription['tags'] as $tag) {
-                                if (in_array($tag['uid'], $tagsUids)) {
-                                    // ставим флаг акции
-                                    $order->specialAction = true;
-                                    // Оставляем только онлайн-оплату
-                                    $order->possible_payment_methods = array_filter($order->possible_payment_methods,
-                                        function(\Model\OrderDelivery\Entity\PaymentMethod $method){
-                                            return in_array($method->id, [5,8]); }
-                                    );
-                                    // Выбираем онлайн-оплату
-                                        $order->payment_method_id = 5;
-                                    // Фильтруем точки
-                                    foreach ($order->possible_points as $token => $list) {
-                                        if (!in_array($token, ['self_partner_pickpoint', 'self_partner_euroset', 'self_partner_hermes'])) {
-                                            unset($order->possible_points[$token]);
-                                        }
-                                    }
-                                    // Фильтруем методы доставки
-                                    $order->possible_delivery_groups = array_filter($order->possible_delivery_groups,
-                                        function(\Model\OrderDelivery\Entity\DeliveryGroup $group){
-                                            return $group->id == 1; }
-                                    );
-                                }
-                            }
-                        }
-                    }
-                });
-        }
-
-        \App::scmsClient()->execute();
-    }
-
 }
