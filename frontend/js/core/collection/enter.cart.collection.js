@@ -87,7 +87,7 @@
 
                 console.groupCollapsed('module:enter.cart.collection~CartCollection#removeFromCart || product id', removedId);
                 console.dir(removedModel);
-                console.groupEnd();
+
 
                 tmpModel.set({'inCart': false, 'quantity': 0});
 
@@ -98,6 +98,8 @@
                 });
 
                 App.productsCollection.get(removedId).set({'inCart': false, 'quantity': 1});
+                console.log('finish!');
+                console.groupEnd();
             },
 
             /**
@@ -132,7 +134,7 @@
                      */
                     checkServerModels = function( modelsFromServer, collectionModel ) {
                         for ( j = 0; j < modelsFromServer.length; j++ ) {
-                            if ( collectionModel.get('id') === modelsFromServer[j].id ) {
+                            if ( collectionModel.get('id') == modelsFromServer[j].id ) {
                                 return true;
                             }
                         }
@@ -159,7 +161,7 @@
                         }
 
                         for ( j = 0; j < self.models.length; j++ ) {
-                            if ( self.models[j].get('id') === model.id ) {
+                            if ( self.models[j].get('id') == model.id ) {
                                 return true;
                             }
                         }
@@ -181,15 +183,21 @@
                 }
 
                 // Если моделей пришло меньше чем есть в коллекции, необходимо удалить лишнюю модель
-                if ( models.length < self.models.length ) {
-                    for ( i = 0; i < self.models.length; i++ ) {
-                        if ( !checkServerModels(models, self.models[i]) ) {
-                            console.warn('Need remove product');
-                            self.models[i].set({'quantity': 1});
-                            App.productsCollection.add(self.models[i], {merge: true});
-                            self.remove(self.models[i], {silent:true});
-                            self.trigger('silentRemove', self.models[i]);
-                        }
+                console.groupCollapsed('find models for removing...');
+                console.log('Models in collection:');
+                console.dir(self.models);
+                console.log('Models from server:');
+                console.dir(models);
+                console.groupEnd();
+                // console.log(models.length);
+                // console.log(self.models.length);
+                for ( i = 0; i < self.models.length; i++ ) {
+                    if ( !checkServerModels(models, self.models[i]) ) {
+                        console.warn('Need remove product');
+                        self.models[i].set({'quantity': 1});
+                        App.productsCollection.add(self.models[i], {merge: true});
+                        self.remove(self.models[i], {silent:true});
+                        self.trigger('silentRemove', self.models[i]);
                     }
                 }
             },

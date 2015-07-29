@@ -55,7 +55,7 @@
                 this.listenTo(this.collection, 'remove', this.removeItem);
                 this.listenTo(this.collection, 'add', this.addHandler);
                 this.listenTo(this.collection, 'silentAdd', this.silentAddItem);
-                this.listenTo(this.collection, 'silentRemove', this.removeItem);
+                // this.listenTo(this.collection, 'silentRemove', this.removeItem);
                 this.listenTo(this.collection, 'syncEnd', this.render);
             },
 
@@ -117,7 +117,7 @@
                 console.dir(removedItem);
                 console.groupEnd();
 
-                if ( this.subViews.hasOwnProperty(id) ) {
+                if ( !this.subViews.hasOwnProperty(id) ) {
                     return;
                 }
 
