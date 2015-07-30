@@ -79,8 +79,7 @@
              * @memberOf    module:enter.cart.view~EnterCartView
              * @type        {Object}
              */
-            events: {
-            },
+            events: {},
 
             loader: {
                 show: function() {
@@ -126,7 +125,7 @@
              */
             removeHandler: function( removedItem ) {
                 console.info('module:enter.cart.view~EnterCartView#removeHandler');
-                this.loader.show();
+                this.loader.show.call(this);
                 this.show();
             },
 
@@ -166,7 +165,7 @@
              */
             addHandler: function() {
                 console.info('module:enter.cart.view~EnterCartView#addHandler');
-                this.loader.show();
+                this.loader.show.call(this);
                 this.show();
             },
 
@@ -231,7 +230,7 @@
                 console.info('module:enter.cart.view~EnterCartView#render');
                 console.log('cart quantity', cartQ);
 
-                this.loader.hide();
+                this.loader.hide.call(this);
 
                 if ( !cartQ ) {
                     console.warn('cart empty');
