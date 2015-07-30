@@ -13,8 +13,8 @@
                 </div>
             </div>
 
-            <a href="" class="notice-cart__on-cart btn-simple btn-simple_width">Перейти в корзину</a>
-            <a href="" class="btn-primary btn-primary_bigger btn-primary_width">Оформить заказ</a>
+            <a href="<?= \App::router()->generate('cart') ?>" class="notice-cart__on-cart btn-simple btn-simple_width">Перейти в корзину</a>
+            <a href="<?= \App::router()->generate('orderV3') ?>" class="btn-primary btn-primary_bigger btn-primary_width">Оформить заказ</a>
         </div>
     </div>
 </div>
