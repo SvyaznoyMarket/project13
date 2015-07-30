@@ -9,7 +9,7 @@
         moduleRequireOnHover = d.querySelectorAll('.js-module-require-onhover');
 
     // Debug-панель
-    window.onload = function(){
+    window.addEventListener('load', function(){
         var debugPanel = d.querySelector('.jsOpenDebugPanelContent');
         if (debugPanel) {
             debugPanel.addEventListener('click', function(){
@@ -18,7 +18,7 @@
                 }
             });
         }
-    };
+        });
 
     // Строка поиска
     if (searchNode) {

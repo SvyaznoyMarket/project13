@@ -90,7 +90,7 @@
         /* ENTER Modules */
         modules.define('enter.debug', ['jQuery', 'Mustache', 'enter.config'], function(provide){
             window.ENTER = {};
-            loadScript("/js/prod/debug-panel.js", function () {
+            loadScript("enter.modules/enter.debug.js", function () {
                 console.log('[Module] enter.debug');
                 provide();
             });

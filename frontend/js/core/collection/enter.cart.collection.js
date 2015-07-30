@@ -43,9 +43,9 @@
                 this.listenTo(this, 'add', this.addToCart);
                 this.listenTo(this, 'remove', this.removeFromCart);
 
-                window.onload = function() {
+                window.addEventListener('load', function() {
                     modules.require(['enter.user'], self.updateCart.bind(self));
-                }
+                });
             },
 
             /**
