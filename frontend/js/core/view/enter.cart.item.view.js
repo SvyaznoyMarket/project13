@@ -10,13 +10,14 @@
         [
             'jQuery',
             'enter.BaseViewClass',
-            'Mustache'
+            'Mustache',
+            'jquery.replaceWithPush'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, mustache ) {
+    function( provide, $, BaseViewClass, mustache, replaceWithPush ) {
         'use strict';
 
         var
@@ -88,7 +89,9 @@
              * @listens     module:enter.cart.model~CartItemModel#change
              */
             updateCartItem: function() {
+                console.info('module:enter.cart.item.view~EnterCartItemView#updateCartItem');
 
+                this.$el.replaceWithPush(this.render());
             },
 
             /**

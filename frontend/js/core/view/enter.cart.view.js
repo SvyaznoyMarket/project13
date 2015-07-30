@@ -147,7 +147,8 @@
                 console.dir(removedItem);
                 console.groupEnd();
 
-                if ( this.subViews.hasOwnProperty(id) ) {
+                if ( !this.subViews.hasOwnProperty(id) ) {
+                    console.warn('Subview %s not found (', id);
                     return;
                 }
 

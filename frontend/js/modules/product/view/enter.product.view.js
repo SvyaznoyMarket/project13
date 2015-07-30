@@ -63,11 +63,18 @@
 
             buyButtonHandler: function( event ) {
                 var
-                    target     = Backbone.$(event.currentTarget),
-                    url        = target.attr('href');
+                    target   = Backbone.$(event.currentTarget),
+                    url      = target.attr('href'),
+                    inCart   = this.model.get('inCart'),
+                    quantity = this.model.get('quantity');
+
+                if ( inCart ) {
+                    this.model.set({'quantity': quantity++});
+                }
 
                 this.model.set({'addUrl': url, 'inCart': true});
-                App.cart.add(this.model);
+                // App.cart.add(this.model, {merge: true});
+                App.cart.trigger('add', this.model);
 
                 return false;
             }
