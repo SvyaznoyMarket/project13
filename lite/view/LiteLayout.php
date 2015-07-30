@@ -9,11 +9,6 @@ class LiteLayout extends \View\Layout
     public function __construct() {
         parent::__construct();
         $this->setGlobalParam('menu', (new \View\Menu($this))->generate_new(\App::user()->getRegion()));
-    }
-
-    protected function prepare()
-    {
-        parent::prepare();
         $this->addStylesheet(\App::config()->debug ? '/public/css/global.css' : '/public/css/global.min.css');
         $this->addJavascript('/public/js/core.min.js');
     }

@@ -9,11 +9,6 @@ class IndexPage extends LiteLayout
 
     protected $layout = 'layout/main';
 
-    protected function prepare()
-    {
-        parent::prepare();
-    }
-
     /** Блок с рекомендациями
      * @return string
      */
