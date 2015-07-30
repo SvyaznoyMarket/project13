@@ -90,7 +90,9 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         </div>
         <!--/ применить скидку -->
 
-        <div class="buy-online">
+        <div class="buy-online js-module-require"
+             data-module="enter.product"
+             data-id="<?= $product->getId() ?>">
             <?= $helper->render('product/_button.buy', [
                 'product'  => $product,
                 'onClick'  => isset($addToCartJS) ? $addToCartJS : null,

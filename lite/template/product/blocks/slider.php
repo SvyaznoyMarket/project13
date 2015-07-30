@@ -49,18 +49,23 @@ $f = function (
 
     $sliderId = 'slider-' . uniqid();
 
-    $id = 'slider-' . md5(json_encode([$url, $sender, $type]));
     $products = array_filter($products, function($product) { return $product instanceof \Model\Product\Entity; });
-
-    // открытие товаров в новом окне
-    $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
 
     // слайдер товаров для слайдера с аксессуарами применяем модификатор goods-slider--5items
     ?>
 
-    <div class="goods-slider js-slider-2 <? if ((bool)$categories): ?> goods-slider--width goods-slider--5items<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?> <?= $class ?>"
-        id="<?= $id ?>"
+    <div
+        class="goods-slider js-slider-2 js-module-require
+        <? if ((bool)$categories): ?> goods-slider--width goods-slider--5items<? endif ?>
+        <? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>
+        <?= $class ?>"
         data-position="<?= $sender['position'] ?>"
+
+        <? if ($url && !$products) : ?>
+            data-module="enter.recommendations"
+            data-url="<?= $url . '&' .http_build_query(['senders' => [$sender + ['type' => $type]]]) ?>"
+        <? endif ?>
+
         data-slider="<?= $helper->json([
             'count'  => $count,
             'limit'  => $limit,
@@ -131,8 +136,10 @@ $f = function (
                     $category = $product->getParentCategory() ? $product->getParentCategory() : null;
                     ?>
 
-                    <li class="goods-slider-list__i"
+                    <li class="goods-slider-list__i js-module-require"
+                        data-module="enter.product"
                         data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>"
+                        data-id="<?= $product->getId() ?>"
                         data-product="<?= $helper->json([
                             'article'  => $product->getArticle(),
                             'name'     => $product->getName(),
