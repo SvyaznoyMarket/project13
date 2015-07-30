@@ -13,7 +13,7 @@
     </a>
 
     <div class="userbar-dd minicart topbarfix_cartOn" >
-        <div class="topbarfix-cart-wrap"><!--сюда добавить класс "min-sum" если корзина у нас для выводит сообщение о минимальной сумме заказа-->
+        <div class="topbarfix-cart-wrap" data-bind="css: {'min-sum': isMinOrderSumVisible() }"><!--сюда добавить класс "min-sum" если корзина у нас для выводит сообщение о минимальной сумме заказа-->
             <table class="table-cart">
                 <tbody data-bind="foreach: cart">
                     <tr class="table-cart__i">
