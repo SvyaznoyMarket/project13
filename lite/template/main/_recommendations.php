@@ -41,7 +41,7 @@ $slickConfig = [
     <div class="section__title"><?= $blockname ?></div>
 
     <div class="section__content">
-        <div class="slider-section">
+        <div class="slider-section slider-section_260">
 
             <button class="slider-section__btn slider-section__btn_prev js-goods-slider-btn-prev"></button>
 

@@ -16,7 +16,7 @@ $config = [
     <div class="section__title">Ещё у нас покупают</div>
 
     <div class="section__content">
-        <div class="slider-section">
+        <div class="slider-section slider-section_200">
             <button class="slider-section__btn slider-section__btn_prev js-goods-slider-btn-prev"></button>
             <div class="goods goods_list grid-4col js-slider-goods">
                 <div class="goods__item grid-4col__item">

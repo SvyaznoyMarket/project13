@@ -79,6 +79,53 @@
 .slick-slide.slick-loading img {
     display: none;
 }
+.slick-slider {
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    background: url('@{base-url}/loader.gif') no-repeat 50% 50% @white;
+}
+
+.slider-section .slider-section__btn {
+    display: none;
+}
+
+.slider-section {
+    overflow: hidden;
+
+    &_260 {
+        max-height: 261px;
+    }
+
+    &_100 {
+        max-height: 210px;
+    }
+
+    &_200 {
+        max-height: 200px;
+    }
+
+    &.goods_images {
+        height: 80px;
+    }
+    &.goods_grid {
+        height: 261px;
+    }
+    &.goods_list {
+        height: 201px;
+    }
+    .slick-slider.slick-initialized {
+        background: none;
+        &.goods {
+            display: block;
+        }
+        .slider-section__btn {
+            display: block;
+        }
+    }
+}
+
 .slick-slide.dragging img {
     pointer-events: none;
 }

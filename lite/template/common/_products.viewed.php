@@ -17,7 +17,7 @@ $config = [
     <div class="section__title">Вы смотрели</div>
 
     <div class="section__content">
-        <div class="slider-section">
+        <div class="slider-section slider-section_100">
             <button class="slider-section__btn slider-section__btn_prev js-goods-slider-btn-prev"></button>
             <div class="goods goods_images goods_list grid-8col js-slider-goods js-viewed-products-inner">
             </div>

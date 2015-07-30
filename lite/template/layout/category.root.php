@@ -35,28 +35,26 @@ $category = $page->getParam('category');
                         <div class="section__title section__title_h1"><?= $category->name ?></div>
 
                         <div class="section__content">
-                            <div class="slider-section">
-                                <div class="goods goods_categories grid-3col">
+                            <div class="goods goods_categories grid-3col">
 
-                                    <? foreach ($page->getParam('links', []) as $link) : ?>
+                                <? foreach ($page->getParam('links', []) as $link) : ?>
 
-                                        <div class="goods__item grid-3col__item">
-                                            <a href="<?= $link['url'] ?>" class="goods__img">
-                                                <img src="<?= $link['image'] ?>" alt="<?= $link['name'] ?>" class="goods__img-image">
-                                            </a>
+                                    <div class="goods__item grid-3col__item">
+                                        <a href="<?= $link['url'] ?>" class="goods__img">
+                                            <img src="<?= $link['image'] ?>" alt="<?= $link['name'] ?>" class="goods__img-image">
+                                        </a>
 
-                                            <div class="goods__name">
-                                                <div class="goods__name-inn">
-                                                    <a href="<?= $link['url'] ?>"><span class="underline"><?= $link['name'] ?></span></a>
-                                                </div>
+                                        <div class="goods__name">
+                                            <div class="goods__name-inn">
+                                                <a href="<?= $link['url'] ?>"><span class="underline"><?= $link['name'] ?></span></a>
                                             </div>
-
-                                            <div class="goods__cat-count"><?= $link['totalText'] ?></div>
                                         </div>
 
-                                    <? endforeach ?>
+                                        <div class="goods__cat-count"><?= $link['totalText'] ?></div>
+                                    </div>
 
-                                </div>
+                                <? endforeach ?>
+
                             </div>
                         </div>
                     </div>
