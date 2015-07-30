@@ -21,6 +21,7 @@
         'use strict';
 
         var
+            overlay = $('.js-overlay'),
             /**
              * Используемые CSS классы
              *
@@ -28,11 +29,14 @@
              * @constant
              * @type        {Object}
              */
+
             CSS_CLASSES = {
                 CART_ITEMS_WRAPPER: 'js-cart-items-wrapper',
                 CART_QUANTITY: 'js-cart-quantity',
                 EMPTY_CART: 'header-cart_empty',
                 FULL_CART: 'header-cart_full',
+                CART_DROP_DOWN: 'js-cart-notice',
+                CART_DROP_DOWN_CONTENT: 'js-cart-notice-content',
                 CART_SHOW: 'show',
                 LOADER: 'loader'
             };
@@ -51,17 +55,17 @@
 
                 this.subViews = {
                     cartItemsWrapper: this.$el.find('.' + CSS_CLASSES.CART_ITEMS_WRAPPER),
-                    cartQuantity: this.$el.find('.' + CSS_CLASSES.CART_QUANTITY)
+                    cartQuantity: this.$el.find('.' + CSS_CLASSES.CART_QUANTITY),
+                    cartDropDown: this.$el.find('.' + CSS_CLASSES.CART_DROP_DOWN),
+                    cartDropDownContent: this.$el.find('.' + CSS_CLASSES.CART_DROP_DOWN_CONTENT)
                 };
 
-                this.overlay = $('.js-overlay');
-                this.cartDropDown = this.$el.find('.js-cart-notice');
                 this.bindedHide = this.hide.bind(this);
 
                 this.listenTo(this.collection, 'remove', this.removeItem);
                 this.listenTo(this.collection, 'add', this.addHandler);
                 this.listenTo(this.collection, 'silentAdd', this.silentAddItem);
-                // this.listenTo(this.collection, 'silentRemove', this.removeItem);
+                this.listenTo(this.collection, 'silentRemove', this.removeItem);
                 this.listenTo(this.collection, 'syncEnd', this.render);
             },
 
@@ -76,32 +80,32 @@
 
             loader: {
                 show: function() {
-                    $('.js-cart-notice-content').addClass(CSS_CLASSES.LOADER);
+                    this.subViews.cartDropDownContent.addClass(CSS_CLASSES.LOADER);
                 },
 
                 hide: function() {
-                   $('.js-cart-notice-content').removeClass(CSS_CLASSES.LOADER);
+                   this.subViews.cartDropDownContent.removeClass(CSS_CLASSES.LOADER);
                 }
             },
 
             show: function() {
-                this.cartDropDown.addClass(CSS_CLASSES.CART_SHOW);
+                this.subViews.cartDropDown.addClass(CSS_CLASSES.CART_SHOW);
                 this.showOverlay();
             },
 
             hide: function() {
-                this.cartDropDown.removeClass(CSS_CLASSES.CART_SHOW);
+                this.subViews.cartDropDown.removeClass(CSS_CLASSES.CART_SHOW);
                 this.hideOverlay();
             },
 
             showOverlay: function() {
-                this.overlay.show();
-                this.overlay.on('click', this.bindedHide);
+                overlay.show();
+                overlay.on('click', this.bindedHide);
             },
 
             hideOverlay: function() {
-                this.overlay.hide();
-                this.overlay.off('click', this.bindedHide);
+                overlay.hide();
+                overlay.off('click', this.bindedHide);
             },
 
             /**
@@ -136,7 +140,7 @@
                 console.dir(removedItem);
                 console.groupEnd();
 
-                if ( !this.subViews.hasOwnProperty(id) ) {
+                if ( this.subViews.hasOwnProperty(id) ) {
                     return;
                 }
 
