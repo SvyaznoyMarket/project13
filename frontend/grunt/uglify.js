@@ -12,6 +12,18 @@ module.exports = function( grunt, options ) {
             compress: {
                 // drop_console: true
             }
+        },
+
+        compressPlugins: {
+            files: [{
+                expand: true,
+                cwd: 'js',
+                src: ['plugins/*.js'],
+                dest: '../web/public/js'
+            }],
+            options: {
+                sourceMap: true
+            }
         }
 
     }

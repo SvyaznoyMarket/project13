@@ -5,13 +5,41 @@
  */
 $lastMenu1 = end($menu); // последний элемент главного меню
 $helper = new \Helper\TemplateHelper();
+
+// ссылки на получение рекомендаций для каждого элемента меню 1-го уровня
+$recommendUrlsByMenuId = [];
+foreach ($menu as $menu1) {
+    if (!\App::config()->mainMenu['recommendationsEnabled']) break;
+    if (!$menu1->id || !(bool)$menu1->children) continue;
+
+    try {
+        $childIds = [];
+        foreach ($menu1->children as $child) {
+            if (!$child->id) continue;
+
+            $childIds[] = $child->id;
+        }
+
+        $recommendUrlsByMenuId[$menu1->id] = $page->url(
+            'mainMenu.recommendation',
+            [
+                'rootCategoryId' => $menu1->id,
+                'childIds'       => implode(',', $childIds)
+            ]
+        );
+    } catch (\Exception $e) {
+        \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['main_menu', 'recommendation']);
+    }
+}
+
 ?>
 
 <nav class="site-menu">
 
     <? foreach ($menu as $menu1): ?>
 
-    <li class="site-menu__item <?= $menu1->children ? 'has-child' : '' ?>">
+    <li class="site-menu__item <?= $menu1->children ? 'has-child' : '' ?> js-main-menu-item js-module-require-onhover" data-module="enter.menu"
+        data-recommend-url="<?= $menu1->id && !empty($recommendUrlsByMenuId[$menu1->id]) ? $recommendUrlsByMenuId[$menu1->id] : null ?>">
 
         <a href="<?= $menu1->link ?>" class="site-menu__link">
         <? if ($menu1->char) : ?>
@@ -44,27 +72,8 @@ $helper = new \Helper\TemplateHelper();
                             </li>
                         <? endforeach ?>
 
-                        <li class="site-menu-2sub__item site-menu-2sub__item_wow">
-                            <div class="menu-wow">
-                                <div class="goods">
-                                    <div class="sticker sticker_sale">Товар дня</div>
-
-                                    <a href="" class="goods__img">
-                                        <img src="http://9.imgenter.ru/uploads/media/ca/9c/a7/thumb_3a5a_product_160.jpeg" alt="" class="goods__img-image">
-                                    </a>
-
-                                    <div class="goods__name">
-                                        <div class="goods__name-inn">
-                                            <a href="">Подгузники-трусики Goon 7 - 12 кг, 60 шт.</a>
-                                        </div>
-                                    </div>
-
-                                    <div class="goods__price-old"><span class="line-through">45 990</span> <span class="rubl-css">P</span></div>
-                                    <div class="goods__price-now">45 990 <span class="rubl-css">P</span></div>
-
-                                    <a class="goods__btn btn-primary" href="">Купить</a>
-                                </div>
-                            </div>
+                        <li class="site-menu-2sub__item site-menu-2sub__item_wow jsMenuRecommendation"
+                            data-parent-category-id="<?= $menu2->id ?$menu2->id : null ?>">
                         </li>
 
                         </ul>

@@ -38,7 +38,8 @@
                 CART_DROP_DOWN: 'js-cart-notice',
                 CART_DROP_DOWN_CONTENT: 'js-cart-notice-content',
                 CART_SHOW: 'show',
-                LOADER: 'loader'
+                LOADER: 'loader',
+                CART_DROPDOWN: 'js-cart-notice'
             };
 
         provide(BaseViewClass.extend({
@@ -50,12 +51,15 @@
              */
             initialize: function( options ) {
                 console.info('enter.cart.view~EnterCartView#initialize');
+                console.log(this.$el);
 
                 this.collection = App.cart;
+                this.timeToHide = 3 * 1000; // 3 sec
 
                 this.subViews = {
                     cartItemsWrapper: this.$el.find('.' + CSS_CLASSES.CART_ITEMS_WRAPPER),
                     cartQuantity: this.$el.find('.' + CSS_CLASSES.CART_QUANTITY),
+
                     cartDropDown: this.$el.find('.' + CSS_CLASSES.CART_DROP_DOWN),
                     cartDropDownContent: this.$el.find('.' + CSS_CLASSES.CART_DROP_DOWN_CONTENT)
                 };
@@ -91,9 +95,13 @@
             show: function() {
                 this.subViews.cartDropDown.addClass(CSS_CLASSES.CART_SHOW);
                 this.showOverlay();
+
+                this.tid && clearTimeout(this.tid);
+                this.tid = setTimeout(this.hide.bind(this), this.timeToHide);
             },
 
             hide: function() {
+                this.tid && clearTimeout(this.tid);
                 this.subViews.cartDropDown.removeClass(CSS_CLASSES.CART_SHOW);
                 this.hideOverlay();
             },
@@ -180,7 +188,6 @@
 
                 console.groupCollapsed('module:enter.cart.view~EnterCartView#addItem || product id ', id);
                 console.dir(item);
-                console.groupEnd();
 
                 this.subViews[id] = new CartItemView({
                     collection: this.collection,
@@ -189,6 +196,9 @@
 
                 tmpCartItemNode = this.subViews[id].render();
                 this.subViews.cartItemsWrapper.prepend(tmpCartItemNode);
+
+                console.log(tmpCartItemNode);
+                console.groupEnd();
             },
 
             /**
@@ -219,14 +229,17 @@
                     cartQ = this.collection.quantity;
 
                 console.info('module:enter.cart.view~EnterCartView#render');
+                console.log('cart quantity', cartQ);
 
-                // console.info(this);
                 this.loader.hide();
 
                 if ( !cartQ ) {
+                    console.warn('cart empty');
                     this.$el.addClass(CSS_CLASSES.EMPTY_CART);
                     this.$el.removeClass(CSS_CLASSES.FULL_CART);
+                    this.hide();
                 } else {
+                    console.warn('cart full');
                     this.$el.addClass(CSS_CLASSES.FULL_CART);
                     this.$el.removeClass(CSS_CLASSES.EMPTY_CART);
                 }
