@@ -14,13 +14,14 @@
         [
             'App',
             'enter.BaseCollectionClass',
-            'enter.cart.model'
+            'enter.cart.model',
+            'urlHelper'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, App, BaseCollectionClass, CartModel, userInfo ) {
+    function( provide, App, BaseCollectionClass, CartModel, urlHelper ) {
         'use strict';
 
         provide(BaseCollectionClass.extend(/** @lends module:enter.cart.collection~CartCollection */{
@@ -62,15 +63,24 @@
              * @param       {module:enter.cart.model}    addedModel     Модель добавляемого товара
              */
             addToCart: function( addedModel ) {
+                var
+                    id       = addedModel.get('id'),
+                    quantity = addedModel.get('quantity'),
+
+                    url = urlHelper.addParams(this.addUrl + id, {
+                        quantity: quantity
+                    });
+
                 console.groupCollapsed('module:enter.cart.collection~CartCollection#addToCart || product id', addedModel.get('id'));
-                console.dir(addedModel);
-                console.groupEnd();
 
                 this.ajax({
                     type: 'GET',
-                    url: this.addUrl + addedModel.get('id'),
+                    url: url,
                     success: this.updateCart.bind(this)
                 });
+
+                console.dir(addedModel);
+                console.groupEnd();
             },
 
             /**
@@ -89,8 +99,6 @@
                     removedId = tmpModel.get('id');
 
                 console.groupCollapsed('module:enter.cart.collection~CartCollection#removeFromCart || product id', removedId);
-                console.dir(removedModel);
-
 
                 tmpModel.set({'inCart': false, 'quantity': 0});
 
@@ -100,9 +108,10 @@
                     success: this.updateCart.bind(this)
                 });
 
-                App.productsCollection.get(removedId).set({'inCart': false, 'quantity': 1});
-                console.log('finish!');
+                console.dir(removedModel);
                 console.groupEnd();
+
+                App.productsCollection.get(removedId).set({'inCart': false, 'quantity': 1});
             },
 
             /**
