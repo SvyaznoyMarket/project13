@@ -26,6 +26,9 @@
         provide(BaseCollectionClass.extend(/** @lends module:enter.cart.collection~CartCollection */{
             model: CartModel,
 
+            addUrl: '/cart/add-product/',
+            deleteUrl: '/cart/delete-product/',
+
             /**
              * Инициализация коллекции корзины
              *
@@ -65,7 +68,7 @@
 
                 this.ajax({
                     type: 'GET',
-                    url: addedModel.get('addUrl'),
+                    url: this.addUrl + addedModel.get('id'),
                     success: this.updateCart.bind(this)
                 });
             },
@@ -93,7 +96,7 @@
 
                 this.ajax({
                     type: 'GET',
-                    url: tmpModel.get('deleteUrl'),
+                    url: this.deleteUrl + removedId,
                     success: this.updateCart.bind(this)
                 });
 
@@ -189,8 +192,7 @@
                 console.log('Models from server:');
                 console.dir(models);
                 console.groupEnd();
-                // console.log(models.length);
-                // console.log(self.models.length);
+
                 for ( i = 0; i < self.models.length; i++ ) {
                     if ( !checkServerModels(models, self.models[i]) ) {
                         console.warn('Need remove product');
@@ -217,7 +219,7 @@
                 console.dir(newCartData);
                 console.groupEnd();
 
-                this.total    = newCartData.cart.sum || 0;
+                this.total    = newCartData.cart.full_price || 0;
                 this.quantity = newCartData.cart.full_quantity || 0;
 
                 this.updateModels(newCartData.cart.products || []);

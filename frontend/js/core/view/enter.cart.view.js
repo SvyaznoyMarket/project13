@@ -31,8 +31,10 @@
              */
 
             CSS_CLASSES = {
+                CART_PAGE: 'js-cart-page',
                 CART_ITEMS_WRAPPER: 'js-cart-items-wrapper',
                 CART_QUANTITY: 'js-cart-quantity',
+                CART_SUM: 'js-cart-sum',
                 EMPTY_CART: 'header-cart_empty',
                 FULL_CART: 'header-cart_full',
                 CART_DROP_DOWN: 'js-cart-notice',
@@ -40,6 +42,18 @@
                 CART_SHOW: 'show',
                 LOADER: 'loader',
                 CART_DROPDOWN: 'js-cart-notice'
+            },
+
+            /**
+             * Используемые шаблоны
+             *
+             * @private
+             * @constant
+             * @type        {Object}
+             */
+            TEMPLATES = {
+                CART_DROPDOWN_ITEM: $('#js-cart-item-template').html(),
+                CART_PAGE_ITEM: $('#js-cart-page-item-template').html()
             };
 
         provide(BaseViewClass.extend({
@@ -54,12 +68,12 @@
                 console.log(this.$el);
 
                 this.collection = App.cart;
-                this.timeToHide = 3 * 1000; // 3 sec
+                this.timeToHide = 5 * 1000; // 3 sec
 
                 this.subViews = {
                     cartItemsWrapper: this.$el.find('.' + CSS_CLASSES.CART_ITEMS_WRAPPER),
                     cartQuantity: this.$el.find('.' + CSS_CLASSES.CART_QUANTITY),
-
+                    cartSum: this.$el.find('.' + CSS_CLASSES.CART_SUM),
                     cartDropDown: this.$el.find('.' + CSS_CLASSES.CART_DROP_DOWN),
                     cartDropDownContent: this.$el.find('.' + CSS_CLASSES.CART_DROP_DOWN_CONTENT)
                 };
@@ -188,17 +202,16 @@
 
                 console.groupCollapsed('module:enter.cart.view~EnterCartView#addItem || product id ', id);
                 console.dir(item);
+                console.groupEnd();
 
                 this.subViews[id] = new CartItemView({
                     collection: this.collection,
-                    model: item
+                    model: item,
+                    template: ( this.$el.hasClass(CSS_CLASSES.CART_PAGE) ) ? TEMPLATES.CART_PAGE_ITEM : TEMPLATES.CART_DROPDOWN_ITEM
                 });
 
                 tmpCartItemNode = this.subViews[id].render();
                 this.subViews.cartItemsWrapper.prepend(tmpCartItemNode);
-
-                console.log(tmpCartItemNode);
-                console.groupEnd();
             },
 
             /**
@@ -244,6 +257,7 @@
                     this.$el.removeClass(CSS_CLASSES.EMPTY_CART);
                 }
 
+                this.subViews.cartSum.text(this.collection.total);
                 this.subViews.cartQuantity.text(this.collection.quantity);
 
                 this.collection.each(this.addItem.bind(this));

@@ -11,13 +11,14 @@
             'jQuery',
             'enter.BaseViewClass',
             'Mustache',
+            'enter.cart.counter.view',
             'jquery.replaceWithPush'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, mustache, replaceWithPush ) {
+    function( provide, $, BaseViewClass, mustache, CartCounter, replaceWithPush ) {
         'use strict';
 
         var
@@ -29,18 +30,8 @@
              * @type        {Object}
              */
             CSS_CLASSES = {
+                COUNTER: 'js-counter',
                 DELETE: 'js-cart-item-delete'
-            },
-
-            /**
-             * Используемые шаблоны
-             *
-             * @private
-             * @constant
-             * @type        {Object}
-             */
-            TEMPLATES = {
-                CART_ITEM: $('#js-cart-item-template').html()
             };
 
         provide(BaseViewClass.extend({
@@ -54,6 +45,7 @@
                 console.info('enter.cart.item.view~EnterCartItemView#initialize');
 
                 this.listenTo(this.model, 'change', this.updateCartItem);
+                this.template = options.template;
 
                 // Setup events
                 this.events['click .' + CSS_CLASSES.DELETE] = 'removeItem';
@@ -101,10 +93,44 @@
              * @memberOf    module:enter.cart.item.view~EnterCartItemView#
              */
             render: function() {
+                console.info('module:enter.cart.item.view~EnterCartItemView#render');
                 var
-                    html = mustache.render(TEMPLATES.CART_ITEM, this.model.attributes);
+                    html = mustache.render(this.template, this.model.attributes),
+                    self = this,
+                    key,
+                    counters;
 
                 this.$el = $(html);
+                counters = this.$el.find('.' + CSS_CLASSES.COUNTER);
+
+                // Destroy prev subViews
+                for ( key in this.subViews ) {
+                    if ( !this.subViews.hasOwnProperty(key) ) {
+                        continue;
+                    }
+
+                    if ( typeof this.subViews[key].off === 'function' ) {
+                        this.subViews[key].off();
+                    }
+
+                    if ( typeof this.subViews[key].destroy === 'function' ) {
+                        this.subViews[key].destroy();
+                    } else if ( typeof this.subViews[key].remove === 'function' ) {
+                        this.subViews[key].remove();
+                    }
+
+                    delete this.subViews[key];
+                }
+
+                counters.each(function( index ) {
+                    console.log('init counter', index, $(this));
+                    self.subViews['counter_' + index] = new CartCounter({
+                        el: $(this),
+                        model: self.model,
+                        collection: self.collection
+                    });
+                });
+
                 this.delegateEvents();
 
                 return this.$el;

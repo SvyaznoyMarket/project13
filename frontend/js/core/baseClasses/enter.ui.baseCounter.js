@@ -31,7 +31,7 @@
              * @constructs  BaseCounter
              */
             BaseCounter = function( options ) {
-                this.disableClass = 'counter_btn-dsbld';
+                this.disableClass = 'disabled';
                 this.maxValue     = false;
                 this.minValue     = 1;
                 this.quantity     = 1;
@@ -49,6 +49,7 @@
              * @fires       module:enter.ui.baseCounter~BaseCounter#changeQuantity
              */
             minus: function() {
+                console.info('minus');
                 if ( this.quantity === this.minValue ) {
                     return false;
                 }
@@ -78,6 +79,7 @@
              * @fires       module:enter.ui.baseCounter~BaseCounter#changeQuantity
              */
             plus: function() {
+                console.info('plus');
                 if ( this.quantity === this.maxValue ) {
                     return false;
                 }
