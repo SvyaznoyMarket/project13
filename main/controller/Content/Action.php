@@ -58,18 +58,23 @@ class Action {
             $content['content'] = str_replace('%regions%', implode("\n", array_map(function($region) use(&$helper) { return '<option value="' . $helper->escape($region) . '">' . $helper->escape($region) . '</option>'; }, array_keys($data['services']))), $content['content']);
         }
 
-        $page = new \View\Content\IndexPage();
-        $page->setTitle($content['title']);
+        if ($request->isXmlHttpRequest() && $request->get('ajax')) {
+            return new \Http\JsonResponse([
+                'content' => $content['content'],
+            ]);
+        } else {
+            $page = new \View\Content\IndexPage();
+            $page->setTitle($content['title']);
 
-        $page->setParam('data', $data);
-        $page->setParam('htmlContent', $content['content']);
-        $page->setParam('token', $token);
-        //нужно для увеличения отступа от заголовкой и строки поика
-        $page->setParam('extendedMargin', true);
-        $page->setParam('title', $content['title']);
-        //нужно, чтобы после заголовка и строки поиска была линия
-        $page->setParam('hasSeparateLine', true);
-
-        return new \Http\Response($page->show());
+            $page->setParam('data', $data);
+            $page->setParam('htmlContent', $content['content']);
+            $page->setParam('token', $token);
+            //нужно для увеличения отступа от заголовкой и строки поика
+            $page->setParam('extendedMargin', true);
+            $page->setParam('title', $content['title']);
+            //нужно, чтобы после заголовка и строки поиска была линия
+            $page->setParam('hasSeparateLine', true);
+            return new \Http\Response($page->show());
+        }
     }
 }
