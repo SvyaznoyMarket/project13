@@ -96,28 +96,6 @@
             });
         });
 
-
-        // Пройдем по всем элементам
-        elements = document.querySelectorAll('.js-module-require');
-
-        if (elements) {
-            for (var i in elements) {
-                if (elements.hasOwnProperty(i) && typeof elements[i] == 'object'){
-                    var moduleName =  elements[i].dataset.module;
-                    if (moduleName) {
-                        // closure
-                        (function(name, elem){
-                            modules.require(name, function(module){
-                                if (typeof module.init == 'function') {
-                                    module.init(elem);
-                                }
-                            });
-                        })(moduleName, elements[i])
-                    }
-                }
-            }
-        }
-
         provide({});
     }
 );

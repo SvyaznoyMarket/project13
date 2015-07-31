@@ -33,7 +33,7 @@
              * @constructs  CartItemModel
              */
             initialize: function() {
-                console.groupCollapsed('Cart item %s initialized', this.get('id'))
+                console.groupCollapsed('Cart item %s initialized', this.get('id'));
                 console.log(this.attributes);
                 console.groupEnd();
             }

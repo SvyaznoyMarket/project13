@@ -30,7 +30,8 @@
              * @type        {Object}
              */
             CSS_CLASSES = {
-                BUY_BUTTON: 'js-buy-button'
+                BUY_BUTTON: 'js-buy-button',
+                COMPARE_BUTTON: 'js-compare-button'
             };
 
         provide(BaseViewClass.extend({
@@ -45,7 +46,8 @@
                 this.listenTo(this.model, 'change:inCompare', this.changeCompareStatus);
 
                  // Setup events
-                this.events['click .' + CSS_CLASSES.BUY_BUTTON] = 'buyButtonHandler';
+                this.events['click .' + CSS_CLASSES.BUY_BUTTON]     = 'buyButtonHandler';
+                this.events['click .' + CSS_CLASSES.COMPARE_BUTTON] = 'compareButtonHandler';
 
                 // Apply events
                 this.delegateEvents();
@@ -77,7 +79,17 @@
                 App.cart.trigger('add', this.model);
 
                 return false;
+            },
+
+            compareButtonHandler: function () {
+                var inCompare   = this.model.get('inCompare');
+
+                console.log('compareButtonClicked', this.model);
+                App.compare.add(this.model);
+
+                return false;
             }
+
         }));
     }
 );

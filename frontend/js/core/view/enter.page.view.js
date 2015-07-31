@@ -10,13 +10,14 @@
         [
             'jQuery',
             'enter.BaseViewClass',
-            'enter.cart.view'
+            'enter.cart.view',
+            'findModules'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, CartView ) {
+    function( provide, $, BaseViewClass, CartView, findModules ) {
         'use strict';
 
         var
@@ -44,6 +45,8 @@
                     carts = this.$el.find('.' + CSS_CLASSES.CART),
                     self  = this;
 
+                findModules(this.$el);
+
                 carts.each(function( index ) {
                     self.subViews['cart_' + index] = new CartView({
                         el: $(this)
@@ -51,7 +54,35 @@
                 });
             },
 
-            events: {}
+            events: {
+                'DOMNodeInserted': 'change'
+            },
+
+            /**
+             * Хандлер изменения DOM. Паттерн debounce
+             */
+            change: (function () {
+                var
+                    timeWindow = 500, // time in ms
+                    timeout,
+
+                    change = function ( args ) {
+                        console.warn('!!! DOM CHANGED !!!');
+                        findModules(this.$el);
+                    };
+
+                return function() {
+                    var
+                        context = this,
+                        args = arguments;
+
+                    clearTimeout(timeout);
+
+                    timeout = setTimeout(function(){
+                        change.apply(context, args);
+                    }, timeWindow);
+                };
+            }())
         }));
     }
 );

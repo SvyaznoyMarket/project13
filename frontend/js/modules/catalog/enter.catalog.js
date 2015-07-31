@@ -24,9 +24,19 @@
         provide({
             init: function( el ) {
                 var
-                    catalog = new CatalogView({
-                        el: el
-                    });
+                    $el       = $(el),
+                    inited    = $el.prop('inited');
+
+                if ( inited ) {
+                    // console.warn('--- element %s initialized! ---', $el);
+                    return;
+                }
+
+                $el.prop('inited', true);
+
+                new CatalogView({
+                    el: el
+                });
             }
         });
     }

@@ -35,7 +35,7 @@
              * @constructs  ProductModel
              */
             initialize: function() {
-                console.groupCollapsed('Product %s initialized', this.get('id'))
+                console.groupCollapsed('Product %s initialized', this.get('id'));
                 console.log(this.attributes);
                 console.groupEnd();
             }
