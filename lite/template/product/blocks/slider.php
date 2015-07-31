@@ -42,14 +42,23 @@ $f = function (
 
     $sender += ['name' => null, 'method' => null, 'position' => null, 'from' => null, 'items' => []];
 
-    $isRetailrocketRecommendation = ('retailrocket' == $sender['name']);
-    $retailrocketMethod = $sender['method'];
     $retailrocketIds = (array)$sender['items'];
     unset($sender['items']);
 
     $sliderId = 'slider-' . uniqid();
 
     $products = array_filter($products, function($product) { return $product instanceof \Model\Product\Entity; });
+
+    $slickConfig = [
+        'slidesToShow' => 6,
+        'slidesToScroll' => 6,
+//        'lazyLoad'  => 'ondemand',
+        'dots'      => false,
+        'infinite'  => false,
+        'nextArrow' => '.js-goods-slider-btn-next',
+        'prevArrow' => '.js-goods-slider-btn-prev',
+        'slider'    => '.js-slider-goods'
+    ]
 
     // слайдер товаров для слайдера с аксессуарами применяем модификатор goods-slider--5items
     ?>
@@ -64,6 +73,11 @@ $f = function (
         <? if ($url && !$products) : ?>
             data-module="enter.recommendations"
             data-url="<?= $url . '&' .http_build_query(['senders' => [$sender + ['type' => $type]]]) ?>"
+        <? endif ?>
+
+        <? if ($products) : ?>
+            data-module="jquery.slick"
+            data-slick-config='<?= json_encode($slickConfig) ?>'
         <? endif ?>
 
         data-slider="<?= $helper->json([
@@ -94,7 +108,7 @@ $f = function (
         <? endif ?>
 
         <div class="goods-slider__inn">
-            <ul class="goods-slider-list">
+            <ul class="js-slider-goods" style="">
 
                 <? foreach ($products as $index => $product):
 
@@ -123,16 +137,6 @@ $f = function (
 
                     // Retailrocket
                     $isRetailrocketProduct = in_array($product->getId(), $retailrocketIds);
-                    $linkClickJS = null;
-                    $addToCartJS = null;
-                    if ($isRetailrocketRecommendation && !empty($retailrocketMethod) && $isRetailrocketProduct) {
-                        // Клик по гиперссылке с товарной рекомендацией
-                        $linkClickJS = "try{rrApi.recomMouseDown({$product->getId()}, {methodName: '{$retailrocketMethod}'})}catch(e){}";
-
-                        // Добавление товара в корзину из блока с рекомендациями
-                        $addToCartJS = "try{rrApi.recomAddToCart({$product->getId()}, {methodName: '{$retailrocketMethod}'})}catch(e){}";
-                    }
-
                     $category = $product->getParentCategory() ? $product->getParentCategory() : null;
                     ?>
 
@@ -169,7 +173,6 @@ $f = function (
 
                         <?= $helper->render('product/_button.buy', [
                             'product'        => $product,
-                            'onClick'        => $addToCartJS ? $addToCartJS : null,
                             'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
                             'sender'         => $sender,
                             'noUpdate'       => true,
@@ -185,8 +188,8 @@ $f = function (
             </ul>
         </div>
 
-        <div class="goods-slider__btn goods-slider__btn--prev disabled"></div>
-        <div class="goods-slider__btn goods-slider__btn--next disabled"></div>
+        <div class="goods-slider__btn goods-slider__btn--prev js-goods-slider-btn-prev"></div>
+        <div class="goods-slider__btn goods-slider__btn--next js-goods-slider-btn-next"></div>
 
     </div>
     <!--/ слайдер товаров -->
