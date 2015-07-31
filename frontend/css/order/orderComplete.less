@@ -5,49 +5,52 @@
         orderCompl_l
         orderCompl_btn
 */
-.orderCompl{
+.orderCompl {
     clear: both;
 
-    width: 940px;
-    margin: 0 0 0 -10px;
-    padding: 10px;
+    margin: 0 -32px;
+    padding: 15px 32px;
 
-    background: #feeed5;
-    &_l{
+    border-top: 3px solid @orange-bright;
+    background: @orange-light-4;
+    &_l {
         font-size: 14px;
 
         width: 685px;
         margin: 0;
-        &-ln{
-            display: inline-block;
-
+        &-ln {
             margin: 2px 0 0;
             padding: 8px 0 0 15px;
 
-            vertical-align: top;
+            .inline-block();
         }
     }
-    &_btn{
+    &__btn {
+        padding: 0 50px;
+    }
+    &_btn {
         font-size: 20px;
         font-weight: bold;
         line-height: 32px;
+
         min-width: 220px;
         height: 40px;
         margin: 0 0 0 15px;
-
-        .orderOneClick &{
+        .orderOneClick & {
             font-size: 15px;
             font-weight: bold;
             line-height: 29px;
-            height: 30px;
-            margin: 0px;
-            border: 1px solid #f09650;
-            .rounded(2px);
-            min-width: 0px;
-        }
 
+            min-width: 0;
+            height: 30px;
+            margin: 0;
+
+            border: 1px solid #f09650;
+
+            .rounded(2px);
+        }
     }
-    &_continue_link{
+    &_continue_link {
         font-size: 18px;
 
         display: block;
@@ -56,18 +59,18 @@
 
         text-decoration: underline;
     }
-    &_final{
+    &_final {
         text-align: center;
 
         background: #fff;
     }
-    &-v2{
-        .orderCompl_btn{
+    &-v2 {
+        .orderCompl_btn {
             font-weight: normal;
 
             margin: 0;
         }
-        .orderCompl_l{
+        .orderCompl_l {
             width: auto;
             margin: 0 0 10px;
             padding: 3px 10px 3px 20px;
@@ -77,10 +80,10 @@
             background-position: 6px 7px;
 
             .rounded(4px);
-            &.accept-err{
+            &.accept-err {
                 border-color: #ed404d;
             }
-            &_lk{
+            &_lk {
                 margin: 0 0 0 10px;
 
                 color: #777;
@@ -92,48 +95,46 @@
     }
 }
 
-.orderComplSumm{
+.orderComplSumm {
     width: 925px;
     margin: 40px 0 0 -10px;
     padding: 10px 10px 10px 25px;
 
-    border-top: 1px solid @typGray;
-    border-bottom: 1px solid @lightgrey-7;
-    background: @lightgreyBg;
+    border-top: 1px solid green;
+    border-bottom: 1px solid blur;
+    background: green;
 }
 /*===========================================================================
  Оформление заказа: оплата
 ============================================================================*/
-.orderPayment{
+.orderPayment {
     width: 432px;
     margin: 15px auto 10px;
-    &_block{
+    &_block {
         width: 380px;
-        padding: 20px 25px 20px;
         margin: 15px auto 10px;
+        padding: 20px 25px 20px;
 
         border: 1px solid #ccc;
-        &--border{
-            border-color: @firmOrange;
-            .orderPaymentWeb_lst-i{
-                padding:10px;
+        &--border {
+            border-color: red;
+            .orderPaymentWeb_lst-i {
+                padding: 10px;
             }
-            .orderPayment_msg_head{
-                color: @firmOrange;
-
+            .orderPayment_msg_head {
+                color: red;
             }
-            .orderPayment_msg_head-row:first-child{
+            .orderPayment_msg_head-row:first-child {
                 margin-top: 10px;
             }
-            .orderSum-lbl{
-                padding-left:24px;
+            .orderSum-lbl {
+                padding-left: 24px;
             }
-
         }
-        &_error{
-            border-color: @red-1;
+        &_error {
+            border-color: yellow;
         }
-        .orderSum-lbl{
+        .orderSum-lbl {
             width: 200px;
             margin-right: 14px;
 
@@ -141,91 +142,90 @@
             .box-sizing();
         }
     }
-    &_head{
+    &_head {
         font-size: 30px;
 
         margin-top: 50px;
 
         text-align: center;
     }
-    &_num
-    ,
-    &_num:hover{
+    &_num ,
+    &_num:hover {
         text-decoration: none;
 
-        border-bottom: 1px solid @lightgreyBr;
+        border-bottom: 1px solid pink;
     }
-    &_msg{
-        &_head{
+    &_msg {
+        &_head {
             font-size: 20px;
         }
-        &_shop{
-            &_addr{
-                margin-left:15px;
+        &_shop {
+            &_addr {
+                margin-left: 15px;
             }
-            &_metro
-            ,
-            &_addr{
+            &_metro ,
+            &_addr {
                 display: block;
             }
-            &_metro
-            +
-            &_addr{
-                margin-left: 0px;
+            &_metro + &_addr {
+                margin-left: 0;
             }
-            &.markerLst_row > &_addr{
-                margin-top:15px;
+            &.markerLst_row > &_addr {
+                margin-top: 15px;
             }
         }
-        &_addr_link{
+        &_addr_link {
             margin-top: 5px;
 
             text-decoration: underline;
 
             .inline-block();
         }
-        &_info{
+        &_info {
             margin-top: 14px;
-            &_status{
+            &_status {
                 line-height: 25px;
             }
-            &.-short{
+            &.-short {
                 font-size: 13px;
+
                 vertical-align: middle;
             }
-            &.info-phrase{
-                padding: 0;
+            &.info-phrase {
                 margin: 10px 0;
+                padding: 0;
             }
         }
-        &_adding{
-            width: 370px;
+        &_adding {
             overflow-x: hidden;
+
+            width: 370px;
             margin-top: 20px;
         }
-        &_link{
+        &_link {
             text-decoration: underline;
-            &--mid{
+            &--mid {
                 line-height: 31px;
-                text-decoration: underline;
+
                 margin-left: 10px;
+
+                text-decoration: underline;
             }
         }
     }
-    &.orderPaymentCr &_block
-    ,
-    &.orderPaymentWeb &_block{
-        border: 1px solid @firmOrange;
+    &.orderPaymentCr &_block ,
+    &.orderPaymentWeb &_block {
+        border: 1px solid red;
     }
-    &.orderPaymentCr &_msg_info{
+    &.orderPaymentCr &_msg_info {
         padding: 15px 20px 0;
 
-        border-top: 1px solid @lightgreyBr;
+        border-top: 1px solid pink;
     }
-    .markerList_row:hover{
+    .markerList_row:hover {
         background: none;
     }
-    &_btn{
+    &_btn {
         font-size: 16px;
         line-height: 1;
 
@@ -236,20 +236,20 @@
         vertical-align: top;
 
         border-color: #f99b1c;
-        &-toggle{
+        &-toggle {
             display: none;
             float: right;
         }
-        &.btn3-shadow{
+        &.btn3-shadow {
             margin: 2px 0;
 
             .box-shadow(0px 2px 0px 0px #bf6e35);
         }
     }
-    &_pay{
+    &_pay {
         margin-top: 20px;
     }
-    .pr-dsc{
+    .pr-dsc {
         font-size: 14px;
 
         margin-left: 6px;
@@ -257,55 +257,55 @@
 
         color: @white;
         border-radius: 4px;
-        background: @firmOrange;
+        background: red;
     }
 }
-.orderPaymentCr{
-    &_lst{
+.orderPaymentCr {
+    &_lst {
         margin: 10px 0;
+        &_l {
+            line-height: 1.2;
 
-	    &_l {
-	    	.table-cell();
-	    	vertical-align: middle;
-	    	padding-left: 20px;
-	    	line-height: 1.2;
-	    }
+            padding-left: 20px;
 
-	    &_r {
-	    	.table-cell();
-	    	text-align: right;
-	    	vertical-align: middle;
-	    	padding-right: 20px;
-	    }
+            vertical-align: middle;
 
+            .table-cell();
+        }
+        &_r {
+            padding-right: 20px;
+
+            text-align: right;
+            vertical-align: middle;
+
+            .table-cell();
+        }
         &-i {
+            width: 100%;
+            height: 40px;
             margin: 5px 0;
-			.table();
-	    	width: 100%;
-	    	padding: 5px 0;
-	    	height: 40px;
-	    	cursor: pointer;
+            padding: 5px 0;
 
+            cursor: pointer;
+
+            .table();
             &:hover {
-
-                background: #feebd2;
                 text-decoration: none;
 
+                background: #feebd2;
                 & .orderPayment_btn-toggle {
-                    .inline-block-middle();
+                    .inline-block(middle);
                 }
-
                 & .orderPaymentCr_lst_bank-logo {
                     display: none;
                 }
             }
-	    }
-
-        &_bank{
+        }
+        &_bank {
             display: block;
 
             text-decoration: underline;
-            &-logo{
+            &-logo {
                 float: right;
 
                 width: 110px;
@@ -313,49 +313,46 @@
             }
         }
     }
-    &_other_link{
+    &_other_link {
         text-decoration: underline;
 
-        color: @lightgrey-5;
+        color: blue;
     }
-    .pb-small{
+    .pb-small {
         font-size: 12px;
 
-        color: @lightgrey-5;
+        color: blue;
     }
 }
-.orderPaymentWeb{
-    &_lst{
+.orderPaymentWeb {
+    &_lst {
         margin: 15px 0;
-        &-i{
+        &-i {
             line-height: 24px;
 
             overflow: hidden;
 
             height: 24px;
             padding: 10px;
-            &:hover{
+            &:hover {
                 background: #feebd2;
-                & .orderPayment_btn-toggle{
+                & .orderPayment_btn-toggle {
                     display: block;
                 }
-                & .orderPaymentWeb_lst_sys-logo{
+                & .orderPaymentWeb_lst_sys-logo {
                     display: none;
                 }
             }
-
             .orderPayment_btn {
-            	margin: -3px 0;
+                margin: -3px 0;
             }
         }
-        &_sys{
+        &_sys {
             display: block;
-
             &:hover {
-            	text-decoration: none;
+                text-decoration: none;
             }
-
-            &-logo{
+            &-logo {
                 line-height: 24px;
 
                 float: right;
@@ -364,11 +361,11 @@
                 height: 24px;
 
                 text-align: center;
-                &-img{
+                &-img {
                     max-width: 100%;
                     max-height: 100%;
                 }
-                &.noFlnoWdt{
+                &.noFlnoWdt {
                     float: none;
 
                     width: auto;
@@ -377,11 +374,11 @@
                 }
             }
         }
-        &-sm{
+        &-sm {
             margin-left: 25px;
 
             .inline-block();
-            &-i{
+            &-i {
                 line-height: 30px;
 
                 margin-right: 2px;
@@ -391,11 +388,11 @@
         }
     }
 }
-.orderPaid{
+.orderPaid {
     position: relative;
 
     padding-bottom: 70px;
-    &:before{
+    &:before {
         position: absolute;
         z-index: 1;
         bottom: 0;
@@ -409,46 +406,54 @@
         background: url('@{base-url}/order/img/paid-stamp.png') no-repeat;
     }
 }
-.orderDelivery{
-    .orderPayment_msg_shop.markerLst_row{
+.orderDelivery {
+    .orderPayment_msg_shop.markerLst_row {
         border: none;
     }
-    .orderPayment_msg_info{
+    .orderPayment_msg_info {
         margin-top: 0;
     }
 }
-.rub-c{
+.rub-c {
     font-size: 10px;
+
     position: relative;
     bottom: 3px;
+
     padding-right: 2px;
 }
-.btn-discount-orange{
-    margin-left:12px;
-    border:1px solid @firmOrange;
-    color: @firmOrange;
-    text-decoration: none;
-    display: inline-block;
-    vertical-align: middle;
-    padding: 4px 13px;
+.btn-discount-orange {
     font-size: 12px;
     font-weight: bold;
+
+    margin-left: 12px;
+    padding: 4px 13px;
+
+    text-decoration: none;
+
+    color: red;
+    border: 1px solid red;
     border-radius: 2px;
-    &:hover{
+
+    .inline-block(middle);
+    &:hover {
         text-decoration: none;
     }
 }
-.btn-discount-red{
-    border:1px solid @red-1;
-    color: @red-1;
-    text-decoration: none;
-    display: inline-block;
-    vertical-align: middle;
-    padding: 4px 13px;
+.btn-discount-red {
     font-size: 12px;
     font-weight: bold;
+
+    padding: 4px 13px;
+
+    text-decoration: none;
+
+    color: yellow;
+    border: 1px solid yellow;
     border-radius: 2px;
-    &:hover{
+
+    .inline-block(middle);
+    &:hover {
         text-decoration: none;
     }
 }

@@ -26,7 +26,7 @@
             left: 0px;
             height: 20px;
             width: 100%;
-            .gradient(rgba(255, 255, 255, 0), #fff, rgba(255, 255, 255, 0));
+            //.gradient(rgba(255, 255, 255, 0), #fff, rgba(255, 255, 255, 0));
         }
         &:not(.nobefore):before {
             content: '';
@@ -35,7 +35,7 @@
             left: 0px;
             height: 18px;
             width: 100%;
-            .gradient(#fff, rgba(255, 255, 255, 0), #fff);
+            //.gradient(#fff, rgba(255, 255, 255, 0), #fff);
             z-index: 1;
         }
     }
@@ -82,7 +82,7 @@
         }
     }
     .pick-point-item {
-        border-bottom: 1px solid @lightgrey-2;
+        border-bottom: 1px solid green;
         cursor: pointer;
         margin: 0 6px 0 3px;
         width: 415px;
@@ -270,18 +270,18 @@
             color: #424242;
             background: rgba(249,155,28,.25);
 
-            .inline-block-middle();
+            .inline-block(middle);
             .rounded(3px);
         }
         &__price {
             font-size: 14px;
 
-            .inline-block-middle();
+            .inline-block(middle);
         }
         &__buy {
             margin-left: 40px;
 
-            .inline-block-middle();
+            .inline-block(middle);
         }
         &-more-link {
             font-size: 14px;
@@ -291,7 +291,7 @@
             color: #8c8c8c;
             border-bottom: 1px solid #8c8c8c;
 
-            .inline-block-middle();
+            .inline-block(middle);
             &:hover {
                 text-decoration: none;
             }
