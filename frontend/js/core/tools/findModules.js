@@ -27,10 +27,12 @@
                 node     = el || $('body'),
                 elements = node.find(MODULES_SELECTOR);
 
-            elements.each(function( index ) {
+            elements.each(function() {
                 var
                     element    = $(this),
                     moduleName = element.attr('data-module');
+
+                if (!moduleName) return;
 
                 (function(name, elem) {
                     modules.require(name, function(module){
