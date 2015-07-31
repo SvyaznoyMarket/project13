@@ -65,9 +65,9 @@
                         <!-- Карта Много.ру -->
                         <div class="order-bonus__item" data-eq="0">
                             <img class="order-bonus__img" src="/public/images/order/mnogoru-mini.png" alt="mnogo.ru">
-                            <span class="order-bonus__tx">
+                            <span class="order-bonus__text">
                                 <span id="" class="dotted">Карта Много.ру</span> <!-- что бы убрать бордер можно удалить класс dotted -->
-                                <span id="" class="order-bonus__tx-code"><span class="dotted jsMnogoRuSpan"></span></span>
+                                <span id="" class="order-bonus__text-code"><span class="dotted jsMnogoRuSpan"></span></span>
                             </span>
                         </div>
 
