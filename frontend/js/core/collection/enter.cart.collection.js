@@ -39,17 +39,11 @@
              * @constructs  CartCollection
              */
             initialize: function() {
-                var
-                    self = this;
 
                 console.info('module:enter.cart.collection~CartCollection#initialize');
 
                 this.listenTo(this, 'add', this.addToCart);
                 this.listenTo(this, 'remove', this.removeFromCart);
-
-                window.addEventListener('load', function() {
-                    modules.require(['enter.user'], self.updateCart.bind(self));
-                });
             },
 
             /**
