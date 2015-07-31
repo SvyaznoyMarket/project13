@@ -73,17 +73,22 @@
         module.init = function(el){
 
             var	$el = $(el),
-                url = $el.data('recommendUrl'),
+                url = $el.attr('data-recommend-url'),
                 lKey = 'xhrLoading', // ключ для предотвращения дополнительного запроса на загрузку данных
                 cacheTime = 10, // время кэширования в localstorage (в минутах)
                 key, xhr;
 
-            if (typeof url == 'string' && !$el.data(lKey) === true) {
+            if (typeof url == 'string' && !$el.data(lKey) === true && url ) {
 
                 // отрезаем от url параметры для ключа в localstorage
                 key = url.indexOf('?') === -1 ? url : url.substring(0, url.indexOf('?'));
 
                 if (!module.storage.get(key, $el)) {
+
+                    console.log(url);
+                    if ( url === '' ) {
+
+                    }
 
                     xhr = $.get(url);
                     $el.data(lKey, true);
