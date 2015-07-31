@@ -12,7 +12,6 @@
 <body>
 
 <div class="wrapper">
-    <?= $page->blockHeader() ?>
     <?= $page->blockContent() ?>
 </div>
 

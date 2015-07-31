@@ -1,0 +1,129 @@
+.celedr {
+	width: 308px;
+	padding: 10px 0 0;
+
+	font-size: 16px;
+
+	&-top {
+		top: -1px;
+		right: -1px;
+	}
+
+	&-bottom {
+	    right: 70px;
+	    bottom: -120px;
+	}
+
+	&_t {
+		margin: 0 10px 10px;
+	}
+
+	&_btn {
+		margin: 0 0 10px 10px;
+	}
+
+	&_tb {
+		width: 100%;
+
+		border-top: 1px solid @lightgrey-4;
+
+		font-size: 16px;
+	}
+
+	&_row {
+		margin-bottom: -2px;
+
+		&-h {
+
+			.celedr_col {
+				height: 30px;
+				margin-bottom: 0;
+
+				color: #878787;
+				background: @lightgreyBg;
+
+				line-height: 30px;
+			}
+		}
+	}
+
+	&_col {
+		float: left;
+
+		width: 44px;
+		height: 41px;
+
+		cursor: pointer;
+		text-align: center;
+
+		color: @darkgrey-1;
+		border-bottom: 1px solid @lightgrey-4;
+
+		line-height: 41px;
+
+		&:first-child {
+			border-left: none;
+		}
+
+		&:active,
+		&:focus {
+			background: @orange-1;
+			color: @white;
+		}
+
+		&-disbl {
+			color: @lightgrey-4;
+
+			&:active,
+			&:focus {
+				background: @white;
+				color: @lightgrey-4;
+			}
+		}
+	}
+
+	&_month {
+		float: left;
+
+		width: 100%;
+		height: 25px;
+
+		text-align: center;
+
+		color: #878787;
+		border-bottom: 1px solid @lightgrey-4;
+		background: @lightgreyBg;
+
+		line-height: 25px;
+	}
+
+	&_f {
+		padding: 10px;
+
+		&_btn {
+			cursor: pointer;
+
+			background-repeat: no-repeat;
+
+			line-height: 15px;
+
+			&-l {
+				float: left;
+
+				padding-left: 15px;
+
+				background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAPCAYAAADZCo4zAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAlElEQVQYGWP8//8/Ay7AyMjYwQBSgI6BGpiAeDoQY5VkAUosBUsyMLxF0Q0U5ADizVDJx0CaH64AyOEF4v1QyRtAmgvsPqgjhYECp6CSp4E0G8xdQDaDFBBfAWKQd/YCMQtMEqqZYTdU8i+Q5kSWhCnAbwJUFW43wIwEGo/bF0iKcIcDkiLcIYmkCB4XjCBBXAAUmwBfR7ELZR/U8QAAAABJRU5ErkJggg==);
+				background-position: 0 50%;
+			}
+
+			&-r {
+				float: right;
+
+				padding-right: 15px;
+
+				background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAPCAYAAADZCo4zAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAlUlEQVQYGYWRMQqDQBBFBwmiAUlh54lzg5zAE6QMwT62Fvba5giyvi+rqHFN8RD/f+o4a2Z2d85ZCHpz8IDoSJLwBUklXPYSmd2gA0lPSNbS9G3CK7QgqYJslpbhCGOoQdIHckmLMN0wA8XbSw3XYiN4KaUYvPTaCIThN1CGZ6AM/wWl9tCDpv/dA+HfTerJ07M4Pc0R7V/U4DKRFUwAAAAASUVORK5CYII=);
+				background-position: 100% 50%;
+			}
+		}
+	}
+}

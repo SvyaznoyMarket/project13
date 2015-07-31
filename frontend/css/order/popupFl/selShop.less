@@ -1,0 +1,56 @@
+.selShop {
+	width: 875px;
+	max-height: 510px;
+	padding: 10px;
+
+	font-size: 16px;
+
+	&_l {
+		.inline-block();
+		width: 300px;
+		font-size: 14px;
+	}
+
+	&_r {
+		.inline-block();
+		float: right;
+		overflow: hidden;
+
+		width: 563px;
+		height: 441px;
+	}
+
+	&_h {
+		margin: 0 0 5px;
+
+		border-bottom: 1px solid @lightgrey-2;
+
+		font-size: 0;
+	}
+
+    &_hh {
+        margin: 0 0 5px 10px;
+        font-size: 18px;
+    }
+
+	&_tab {
+		.inline-block();
+		width: 48%;
+		padding: 5px 0 5px 10px;
+		color: #616161;
+
+		border-right: 1px solid @lightgrey-2;
+
+		font-size: 18px;
+		cursor: pointer;
+
+		&-act {
+			color: @black;
+			cursor: default;
+		}
+
+		&:last-child {
+			border-right: 0;
+		}
+	}
+}

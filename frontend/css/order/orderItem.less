@@ -1,0 +1,122 @@
+/*---------Оформление заказа 3.0 ----------*/
+
+/*
+    orderCol
+        orderCol_cnt
+        orderCol_t
+        orderCol_lk
+        orderCol_img
+        orderCol_n
+        orderCol_data		-summ | -count | -sale | -del
+*/
+
+.orderCol {
+
+	&_cnt {
+		padding: 10px 0;
+
+		border-top: 1px solid @typLightGray;
+	}
+
+	&_lk {
+		.inline-block();
+		width: 40px;
+		height: 40px;
+		margin: 0 10px;
+		text-align: center;
+		&:after{
+			content:"";
+			width: 0;
+			height: 100%;
+			.inline-block(middle);
+		}
+		&:hover{
+			text-decoration: none;
+		}
+	}
+
+	&_img {
+		.inline-block(middle);
+		max-width: 95%;
+		max-height: 95%;
+	}
+
+	&_n {
+		.inline-block();
+		width: 395px;
+
+		font-size: 14px;
+	}
+
+	&_data {
+		.inline-block();
+		float: right;
+
+		margin-left: 20px;
+		line-height: 24px;
+		margin-top: 5px;
+
+		color: @colorActiveGrey;
+
+		font-size: 16px;
+
+		&-summ {
+			width: 110px;
+			padding-right: 10px;
+
+			text-align: right;
+
+			color: @black;
+			white-space: nowrap;
+		}
+
+		&-count {
+			border-bottom: 1px dotted;
+            cursor: pointer;
+		}
+
+		&-sale {
+			color: @firmRed;
+		}
+
+		&-del {
+			color: @black;
+			border-bottom: 1px dotted;
+            cursor: pointer;
+
+			font-size: 14px;
+		}
+
+		&-edit {
+			font-size: 14px;
+			color: @black;
+			line-height: 24px;
+			margin-right: 10px;
+
+			a:hover {
+				text-decoration: none;
+			}
+
+			.bCountSection {
+				.inline-block();
+				margin-bottom: 0;
+				padding-left: 0;
+			}
+		}
+
+        &-error-quantity {
+            font-size: 14px;
+            color: @firmRed;
+        }
+	}
+
+	&_t {
+		padding-left: 10px;
+
+		border-top: 1px solid @typLightGray;
+		background: @lightgreyBg;
+
+		font-size: 12px;
+		line-height: 20px;
+	}
+}

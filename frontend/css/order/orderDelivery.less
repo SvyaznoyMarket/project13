@@ -1,0 +1,143 @@
+.orderCol {
+	
+	&_delivrLst {
+		width: 465px;
+		margin: 0 0 10px -10px;
+
+		font-size: 16px;
+
+		&_i {
+			padding: 10px 0;
+			float: left;
+			list-style-type: none;
+			width: 231px;
+			text-indent: 10px;
+			.box-sizing();
+
+			cursor: pointer;
+
+			border-bottom: 2px solid @typLightGray;
+			border-right: 1px solid @typLightGray;
+			background: @white;
+			&-act {
+				cursor: default;
+
+				border-bottom: none;
+				background: @lightgreyBg;
+
+				font-weight: bold;
+			}
+
+			&:last-child {
+				border-right: none;
+			}
+		}
+	}
+
+    .customSel_cl {
+        background: none;
+        border: none;
+        cursor: default;
+    }
+
+	&-v2 {
+
+		.orderCol_delivrIn {
+			position: relative;
+			padding: 0;
+			border: none;
+			background: none;
+
+			&-empty {
+				background: #fee6c6;
+				padding: 10px 10px 1px;
+				.rounded(4px);
+			}
+
+			&-err {
+				border-color: #ED404D;
+				border-width: 2px;
+                border-style: solid;
+			}
+
+			.textfield-err {
+				border-color: #ED404D;
+				border-width: 2px;
+			}
+
+			&-pl {
+				background: @white;
+				border: 1px solid #d3d3d3;
+				padding: 10px 10px 1px;
+				.rounded(4px);
+			}
+			&-warn{
+				border: 1px solid @firmOrange;
+				border-left-width: 5px;
+				.rounded(0px);
+			}
+		}
+
+		.orderCol_addrs {
+			margin-left: 13px;
+		}
+
+		.orderCol_tm {
+			font-size: 13px;
+			margin-bottom: 5px;
+		}
+
+		.orderCol_date,
+		.customSel {
+			background-color: @white;
+		}
+
+		.orderCheck {
+			text-align: left;
+			margin: 0 0 10px 10px;
+
+			&_img {
+				margin-left: 10px;
+				vertical-align: top;
+			}
+		}
+
+        .customSel_cl {
+          background: none;
+          border: none;
+          cursor: default;
+        }
+	}
+}
+
+.orderOferta {
+
+	&_tabs {
+
+		&_i {
+			.inline-block();
+			font-size: 20px;
+			margin-right: 15px;
+			border-bottom: 1px dotted;
+			cursor: pointer;
+
+			&-cur {
+				font-weight: bold;
+				border: none;
+			}
+		}
+	}
+
+	&_tabcnt {
+		display: none;
+
+		&-cur {
+			display: block;
+		}
+	}
+
+	&_tl {
+		font-size: 16px;
+		margin-top: 20px;
+	}
+}
