@@ -24,8 +24,8 @@ $(function() {
                         widgets: response.widgets,
                         callback: $el.attr('href').indexOf('delete-product') !== -1 ? null : function() {
 							var
-								userBarType = $(window).scrollTop() > ENTER.userBar.userBarStatic.offset().top + 10 ? 'fixed' : 'static',
-								$userbar = userBarType == 'fixed' ? ENTER.userBar.userBarFixed : ENTER.userBar.userBarStatic,
+								userBarType = $(window).scrollTop() > ENTER.userBar.$staticUserBar.offset().top + 10 ? 'fixed' : 'static',
+								$userbar = userBarType == 'fixed' ? ENTER.userBar.$fixedUserBar : ENTER.userBar.$staticUserBar,
 								$popup = $('.js-favourite-popup', $userbar);
 
 							$('.js-favourite-popup-closer', $popup).click(function() {
@@ -59,7 +59,7 @@ $(function() {
 							}, 2000);
 
 							if (userBarType == 'fixed') {
-								ENTER.userBar.show();
+								ENTER.userBar.openFixedUserBar();
 							}
 
 							$popup.addClass(showClass);

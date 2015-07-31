@@ -1,22 +1,20 @@
-<?
-$text = null;
-switch (\App::user()->getRegionId()) {
-    case 18074:
-        $text = '25 точек выдачи в Воронеже';
-        break;
-    case 99958:
-        $text = '20 точек выдачи в Нижнем Новгороде';
-        break;
-    case 10374:
-        $text = '11 точек выдачи в Рязани';
-        break;
-}
+<? if (\App::request()->getPathInfo() !== '/delivery'): ?>
+    <?
+    $helper = new \Helper\TemplateHelper();
+    
+    $region = \App::user()->getRegion();
 
-?>
+    // TODO удалить даный блок if после реализации FCMS-779
+    if ($region->name) {
+        $scmsResponse = \App::scmsClient()->query('api/word-inflect', ['names' => [$region->name]], []);
 
-<a class="header__bann" href="<?= \App::helper()->url('delivery') ?>">
-        <div class="header__bann-tl">САМОВЫВОЗ В ТВОЕМ ГОРОДЕ!</div>
-        <div class="header__bann-btn">Найти</div>
-        <div class="header__bann-msg">Более 3800 точек по России.</div>
-    <div class="close-btn jsMainOrderSumBannerCloser"></div>
-</a>
+        if (isset($scmsResponse[$region->name])) {
+            $region->names = new \Model\Inflections($scmsResponse[$region->name]);
+        }
+    }
+    ?>
+
+    <a class="header__bann" href="<?= \App::helper()->url('delivery') ?>">
+        Бесплатный самовывоз из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точка', 'точки', 'точек']) ?> в <?= $helper->escape($region->names->locativus) ?>. Для заказов от 1990 р.
+    </a>
+<? endif ?>
