@@ -101,7 +101,9 @@ class Action {
                     foreach ($item['options'] as $brandData) {
                         $brandEntity = new \Model\Brand\Entity($brandData);
                         $brands[] = $brandEntity;
-                        if (isset($brandData['token']) && $brandData['token'] == $brandToken) $brand = $brandEntity;
+                        if (isset($brandData['token']) && $brandData['token'] == $brandToken) {
+                            $brand = $brandEntity;
+                        }
                     }
                 }
             }
@@ -111,6 +113,10 @@ class Action {
 
         if (!empty($brandToken) && !$brand) {
             \App::exception()->add(new \Exception('Бренд не найден', 404));
+            $brand = new \Model\Brand\Entity([
+                'id'    => '0',
+                'token' => $brandToken,
+            ]);
         }
 
         $promoContent = '';
