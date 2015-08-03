@@ -6,7 +6,7 @@ class Entity extends BasicRegionEntity {
     /** @var string|null */
     public $kladrId;
     /** @var int */
-    private $parentId;
+    public $parentId;
     /** @var bool */
     private $hasTransportCompany;
     /** @var int */
