@@ -1449,7 +1449,7 @@
 
     // клик по "Я ознакомлен и согласен..."
     $orderContent.on('click', '.jsAcceptTerms', function(){
-        $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
+        if (!$('.jsAcceptAgreement').is(':checked')) $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
     });
 
 	/* Оферта */
@@ -1542,7 +1542,8 @@
 (function($) {
     var $body = $(document.body),
         $orderContent = $('.orderCnt'),
-        $inputs = $orderContent.find('input');
+        $inputs = $orderContent.find('input'),
+        analyticsInputs = [];
 
     // jQuery masked input
 	delete $.mask.definitions[9];
@@ -1586,15 +1587,24 @@
     // АНАЛИТИКА
 
     $body.on('focus', '.jsOrderV3PhoneField', function(){
-        $body.trigger('trackUserAction',['1 Телефон_Получатель_ОБЯЗАТЕЛЬНО'])
+        if ($.inArray(this, analyticsInputs) == -1) {
+            $body.trigger('trackUserAction',['1 Телефон_Получатель_ОБЯЗАТЕЛЬНО']);
+            analyticsInputs.push(this);
+        }
     });
 
     $body.on('focus', '.jsOrderV3EmailField', function(){
-        $body.trigger('trackUserAction',['2 Email_Получатель'])
+        if ($.inArray(this, analyticsInputs) == -1) {
+            $body.trigger('trackUserAction',['2 Email_Получатель']);
+            analyticsInputs.push(this);
+        }
     });
 
     $body.on('focus', '.jsOrderV3NameField', function(){
-        $body.trigger('trackUserAction',['3 Имя_Получатель_ОБЯЗАТЕЛЬНО'])
+        if ($.inArray(this, analyticsInputs) == -1) {
+            $body.trigger('trackUserAction', ['3 Имя_Получатель_ОБЯЗАТЕЛЬНО']);
+            analyticsInputs.push(this);
+        }
     });
 
     $body.on('focus', '.jsOrderV3BonusCardField', function(){

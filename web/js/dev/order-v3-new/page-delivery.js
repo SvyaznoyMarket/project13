@@ -429,7 +429,7 @@
 
     // клик по "Я ознакомлен и согласен..."
     $orderContent.on('click', '.jsAcceptTerms', function(){
-        $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
+        if (!$('.jsAcceptAgreement').is(':checked')) $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
     });
 
 	/* Оферта */

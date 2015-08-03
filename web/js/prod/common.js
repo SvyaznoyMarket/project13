@@ -3092,6 +3092,10 @@ $(function() {
             autofocus: true,
             onLoad: function(){
                 $popup.find('#jscity').putCursorAtEnd();
+                if (!isGeoshopCookieSet()) {
+                    $body.trigger('trackGoogleEvent', [{category: 'citySelector', action: 'viewed', nonInteraction: true}]);
+                }
+
             },
             onClose: function() {
 				if (!isGeoshopCookieSet()) {
