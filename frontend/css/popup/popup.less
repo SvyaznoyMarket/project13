@@ -9,21 +9,20 @@
     background: @white;
     // попап войти/регистрация
     &_log {
-        width: 320px;
         overflow: hidden;
+
+        width: 320px;
     }
     // выбор региона
     &_region {
         width: 760px;
     }
     &__title {
-        font-size: 1.8333em;
-
         margin: 0 0 32px;
+
+        .font-size(22);
     }
     &__close {
-        font-size: 2em;
-        font-family: 'GloberRegular';
         line-height: 1;
 
         position: absolute;
@@ -35,23 +34,27 @@
         cursor: pointer;
 
         color: @grey-bright;
+
+        .font-size(24);
+        .font-face('GloberRegular');
     }
     &__desc {
-        font-size: 1.1666em;
         line-height: 1.4;
 
         margin: 0 0 15px;
+
+        .font-size(14);
     }
 }
 
 .form {
     &__title {
-        font-size: 1.6666em;
-        font-family: 'GloberRegular';
-
         margin: 0 0 10px;
 
         text-align: center;
+
+        .font-size(20);
+        .font-face('GloberRegular');
     }
     &__field {
         position: relative;
@@ -62,13 +65,13 @@
         width: 100%;
     }
     &__it-name {
-        font-size: 1.1666em;
         font-weight: 600;
 
         margin: 0 0 22px;
+
+        .font-size(14);
     }
     &__it-btn {
-        font-size: 1.1666em;
         line-height: 33px;
 
         position: absolute;
@@ -81,6 +84,8 @@
 
         color: @grey-bright;
         background: @grey-light-5;
+
+        .font-size(14);
     }
     &__btn-log {
         display: block;
@@ -89,11 +94,11 @@
         margin: auto;
     }
     &__success-text {
-        font-size: 1.33333em;
-        font-family: 'GloberRegular';
-
         display: none;
 
         color: @green-normal;
+
+        .font-size(16);
+        .font-face('GloberRegular');
     }
 }

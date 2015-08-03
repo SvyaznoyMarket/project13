@@ -16,7 +16,7 @@
         }
     }
     &__product-name {
-        font-size: 1.3333em;
+        .font-size(16);
 
         overflow: hidden;
 
@@ -24,14 +24,14 @@
         margin-bottom: 10px;
     }
     &__product-price {
-        font-family: 'GloberRegular';
-        font-size: 1.6666em;
+        .font-face('GloberRegular');
+        .font-size(20);
 
         color: @grey-type;
     }
     &__summ {
-        font-family: 'GloberRegular';
-        font-size: 1.8333em;
+        .font-face('GloberRegular');
+        .font-size(22);
 
         text-align: right;
         width: 130px;
@@ -40,8 +40,8 @@
     	width: 160px;
     }
     &__delete {
-        font-family: 'GloberRegular';
-        font-size: 1.1666em;
+        .font-face('GloberRegular');
+        .font-size(14);
 
         position: relative;
 
@@ -78,10 +78,10 @@
 
     border-bottom: 1px solid @grey-light-3;
     &__title {
-        font-size: 1.3333em;
+        .font-size(16);
     }
     &__price {
-        font-size: 2em;
+        .font-size(2em);
     }
 }
 
@@ -107,8 +107,8 @@
         float: left;
     }
     &__back-link {
-        font-family: 'GloberRegular';
-        font-size: 1.1666em;
+        .font-face('GloberRegular');
+        .font-size(14);
 
         margin: 10px 0 0;
 
@@ -136,16 +136,16 @@
 }
 
 .counter {
-    font-family: 'GloberRegular';
-    font-size: 1.5em;
+    .font-face('GloberRegular');
+    .font-size(18);
     line-height: 30px;
 
     color: @grey-type;
 
     .clearfix();
     &__btn {
-        font-family: 'GloberRegular';
-        font-size: 1.5em;
+        .font-face('GloberRegular');
+        .font-size(18);
         line-height: 30px;
 
         position: relative;

@@ -18,12 +18,11 @@
         .inline-block(middle);
     }
     &__hint {
-        font-family: 'GloberRegular';
-
         margin-left: 25px;
 
         color: @grey-bright;
 
+        .font-face('GloberRegular');
         .inline-block(middle);
         &_check {
             margin-left: 5px;
@@ -42,17 +41,18 @@
         border-left: 1px solid @orange-bright;
     }
     &__log-title {
-        font-size: 1.3333em;
-
         margin: 0 0 10px;
 
         color: @grey-bright;
+
+        .font-size(16);
     }
     &__btn {
-        font-size: 1.3333em;
         line-height: 29px;
 
         height: 30px;
+
+        .font-size(16);
     }
 }
 
@@ -70,14 +70,13 @@
         .inline-block(middle);
     }
     &__text {
-        font-size: 1.1666em;
-
+        .font-size(14);
         .inline-block(middle);
     }
     &__text-code {
-        font-size: 1.1666em;
-
         display: block;
+
+        .font-size(14);
     }
     &__popup {
         position: absolute;
@@ -117,12 +116,13 @@
         }
     }
     &__popup-desc {
-        font-family: 'GloberRegular';
         line-height: 1.5;
 
         margin: 0 0 10px;
 
         color: @grey-bright;
+
+        .font-face('GloberRegular');
     }
     &__info {
         position: absolute;

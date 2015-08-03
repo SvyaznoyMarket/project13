@@ -61,15 +61,12 @@
     url('@{fonts}/GloberBold/GloberBold.ttf') format('truetype');
 }
 
-/*FIX FONT FOR GOOGLE CHROME ON WINDOWS*/
-@media screen and (-webkit-min-device-pixel-ratio : 0) {
-    @font-face {
-        font-family: 'GloberSemiBold';
-        font-weight: normal;
-        font-style: normal;
+.font-face( @font ) {
+    font-family: @font, Tahoma, Geneva, Helvetica, sans-serif;
+}
 
-        src: url('@{fonts}/GloberSemiBold/GloberSemiBold.svg#GloberSemiBold') format('svg');
-    }
+.font-size( @size ) {
+    font-size: @size/12em;
 }
 
 [class^='icon-']:before ,

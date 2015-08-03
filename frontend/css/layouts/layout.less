@@ -86,14 +86,14 @@
 .section {
     padding: 0 30px 20px;
     &__title {
-        font-family: 'GloberBold';
-        font-size: 1.3333em;
+        .font-face('GloberBold');
+        .font-size(16);
         line-height: 1.4375;
 
         margin: 0 0 5px;
         &_h1 {
-            font-family: 'GloberSemiBold';
-            font-size: 2.1666em;
+            .font-face('GloberSemiBold');
+            .font-size(26);
 
             padding-top: 10px;
         }
@@ -110,7 +110,7 @@
             padding: 0 0 2em;
         }
         ul {
-            font-family: 'GloberRegular';
+            .font-face('GloberRegular');
             line-height: 1.6666;
 
             padding: 0 0 2em 1.25em;

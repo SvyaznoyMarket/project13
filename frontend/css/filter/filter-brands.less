@@ -37,7 +37,7 @@
 
     // название фильтра
     &_tggl {
-        font-size: 1.3333em;
+        .font-size(16);
 
         cursor: pointer;
 
@@ -45,7 +45,7 @@
 
         .inline-block();
         &:before {
-            font-size: 1.1666em;
+            .font-size(14);
 
             margin-right: 3px;
 
@@ -184,11 +184,11 @@
             pointer-events: none;
         }
         &_tx {
-            font-size: .9166em;
+            .font-size(11);
         }
         // кнопка - ещё бренды
         &-btn {
-            font-size: 1.1666em;
+            .font-size(14);
             line-height: 33px;
 
             margin-right: 0;
@@ -206,7 +206,7 @@
         }
         // отметить фильтр по бренду
         &_clsr {
-            font-size: 1.2em;
+            .font-size(14.4);
             line-height: 1;
 
             position: absolute;
@@ -247,17 +247,17 @@
             border-bottom: none;
         }
         &_n {
-            font-size: 1.1666em;
+            .font-size(14);
 
             margin: 0 0 8px;
         }
         &_lbl {
-            font-size: 1.1666em;
+            .font-size(14);
 
             .inline-block(middle);
         }
         &_it {
-            font-size: 1.1666em;
+            .font-size(14);
             line-height: 1;
 
             width: 45px;
@@ -321,10 +321,10 @@
 
             margin: 0 10px 0 0;
             &-name {
-                font-size: 1.1666em;
+                .font-size(14);
             }
             &.slash-after:after {
-                font-size: 23px;
+                .font-size(23);
 
                 content: '/';
             }
@@ -455,8 +455,8 @@
         }
     }
     &_tggl {
-        font-family: 'GloberRegular';
-        font-size: 1.1666em;
+        .font-face('GloberRegular');
+        .font-size(14);
         line-height: 1;
 
         position: relative;
