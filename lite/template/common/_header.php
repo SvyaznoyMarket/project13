@@ -4,7 +4,7 @@
  */
 ?>
 
-<div class="header">
+<div class="header js-userbar">
     <div class="wrapper table">
         <div class="header__side header__logotype table-cell">
             <a href="/" class="logotype"></a>
