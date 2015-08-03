@@ -60,7 +60,10 @@
             },
 
             changeCompareStatus: function() {
-                console.info('Product %s in compare list', this.model.get('id'));
+                var
+                    inCompare = this.model.get('inCompare');
+
+                console.warn('Product %s in compare list %s', this.model.get('id'), inCompare);
             },
 
             buyButtonHandler: function( event ) {
@@ -82,10 +85,18 @@
             },
 
             compareButtonHandler: function () {
-                var inCompare   = this.model.get('inCompare');
+                var
+                    inCompare = this.model.get('inCompare');
 
-                console.log('compareButtonClicked', this.model);
-                App.compare.add(this.model);
+                console.groupCollapsed('module:enter.product.view~ProductView#compareButtonHandler || product id ', this.model.get('id'));
+                console.log('current compare status: ', inCompare);
+                console.groupEnd();
+
+                if ( inCompare ) {
+                    App.compare.remove(this.model);
+                } else {
+                    App.compare.add(this.model);
+                }
 
                 return false;
             }

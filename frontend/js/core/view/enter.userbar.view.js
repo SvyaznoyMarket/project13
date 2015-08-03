@@ -10,14 +10,14 @@
     modules.define(
         'enter.userbar.view',
         [
-            'jQuery',
+            'App',
             'enter.BaseViewClass'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass ) {
+    function( provide, App, BaseViewClass ) {
         'use strict';
 
         var
@@ -29,6 +29,9 @@
              * @type        {Object}
              */
             CSS_CLASSES = {
+                COMPARE: 'user-controls__item_compare',
+                COMPARE_COUNTER: 'js-userbar-compare-counter',
+                COMPARE_ACTIVE: 'active',
                 FIXED: 'js-userbar-fixed'
             },
 
@@ -52,12 +55,19 @@
                 this.target  = options.target;
                 this.isFixed = this.$el.hasClass(CSS_CLASSES.FIXED);
 
+                this.subViews = {
+                    compare: this.$el.find('.' + CSS_CLASSES.COMPARE),
+                    compareCounter: this.$el.find('.' + CSS_CLASSES.COMPARE_COUNTER)
+                };
+
                 // Setup events
                 // this.events['click .' + CSS_CLASSES.] = '';
 
                 if ( this.isFixed ) {
                     $window.on('scroll', this.scrollHandler.bind(this));
                 }
+
+                this.listenTo(App.compare, 'syncEnd', this.compareChange);
 
                 // Apply events
                 this.delegateEvents();
@@ -70,6 +80,28 @@
              * @type        {Object}
              */
             events: {},
+
+            /**
+             * Хандлер изменения сравнения. Срабатывает каждый раз при добавлении\удалении\инициализации сравнения
+             *
+             * @method      compareChange
+             * @memberOf    module:enter.userbar.view~EnterUserbarView#
+             *
+             * @listens     module:enter.compare.collection~CompareCollection#syncEnd
+             */
+            compareChange: function( event ) {
+                console.groupCollapsed('module:enter.userbar.view~EnterUserbarView#compareChange');
+                console.dir(event);
+                console.groupEnd();
+
+                if ( event.size ) {
+                    this.subViews.compare.addClass(CSS_CLASSES.COMPARE_ACTIVE);
+                    this.subViews.compareCounter.html(event.size);
+                } else {
+                    this.subViews.compare.removeClass(CSS_CLASSES.COMPARE_ACTIVE);
+                    this.subViews.compareCounter.html('');
+                }
+            },
 
             /**
              * Обработчик скролла страницы
