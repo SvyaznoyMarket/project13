@@ -317,7 +317,10 @@ class Repository {
                         }
 
                         foreach ((array)$propertyValues as $i => $value) {
-                            if (!in_array((string)$value, $optionIds, true)) {
+                            if (
+                                !in_array((string)$value, $optionIds, true)
+                                && !$property->isBrand() // SITE-5844
+                            ) {
                                 unset($values[$propertyId][$i]);
                             }
                         }
