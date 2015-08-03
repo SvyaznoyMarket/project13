@@ -17,6 +17,6 @@
 
     <a class="header__bann stripe-bann" href="<?= \App::helper()->url('delivery') ?>">
         Бесплатный самовывоз из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точка', 'точки', 'точек']) ?> <? if ($region->names->locativus): ?>в <?= $helper->escape($region->names->locativus) ?><? endif ?>.
-        <span class="stripe-bann__small">Для заказов от 1990 р.</span>
+        <span class="stripe-bann__small">Для заказов от 1990 <span class="rubl">p</span></span>
     </a>
 <? endif ?>
