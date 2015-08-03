@@ -31,7 +31,8 @@
              */
             CSS_CLASSES = {
                 BUY_BUTTON: 'js-buy-button',
-                COMPARE_BUTTON: 'js-compare-button'
+                COMPARE_BUTTON: 'js-compare-button',
+                COMPARE_ACTIVE: 'active'
             };
 
         provide(BaseViewClass.extend({
@@ -45,22 +46,35 @@
                 this.listenTo(this.model, 'change:inCart', this.changeCartStatus);
                 this.listenTo(this.model, 'change:inCompare', this.changeCompareStatus);
 
+                this.subViews = {
+                    compareBtn: this.$el.find('.' + CSS_CLASSES.COMPARE_BUTTON)
+                };
+
                  // Setup events
                 this.events['click .' + CSS_CLASSES.BUY_BUTTON]     = 'buyButtonHandler';
                 this.events['click .' + CSS_CLASSES.COMPARE_BUTTON] = 'compareButtonHandler';
 
                 // Apply events
                 this.delegateEvents();
+
+                this.changeCompareStatus();
             },
 
             events: {},
 
             changeCartStatus: function() {
-                console.info('Product %s in cart', this.model.get('id'));
+                // console.info('Product %s in cart', this.model.get('id'));
             },
 
             changeCompareStatus: function() {
-                console.info('Product %s in compare list', this.model.get('id'));
+                var
+                    inCompare = this.model.get('inCompare');
+
+                if ( inCompare ) {
+                    this.subViews.compareBtn.addClass(CSS_CLASSES.COMPARE_ACTIVE);
+                } else {
+                    this.subViews.compareBtn.removeClass(CSS_CLASSES.COMPARE_ACTIVE);
+                }
             },
 
             buyButtonHandler: function( event ) {
@@ -82,10 +96,14 @@
             },
 
             compareButtonHandler: function () {
-                var inCompare   = this.model.get('inCompare');
+                var
+                    inCompare = this.model.get('inCompare');
 
-                console.log('compareButtonClicked', this.model);
-                App.compare.add(this.model);
+                if ( inCompare ) {
+                    App.compare.remove(this.model);
+                } else {
+                    App.compare.add(this.model);
+                }
 
                 return false;
             }
