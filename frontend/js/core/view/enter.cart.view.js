@@ -68,7 +68,7 @@
                 console.log(this.$el);
 
                 this.collection = App.cart;
-                this.timeToHide = 5 * 1000; // 3 sec
+                this.timeToHide = 5 * 1000; // 5 sec
 
                 this.subViews = {
                     cartItemsWrapper: this.$el.find('.' + CSS_CLASSES.CART_ITEMS_WRAPPER),
