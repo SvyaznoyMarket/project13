@@ -717,6 +717,9 @@
 		});
 	});
 
+    if ((true === ENTER.config.pageConfig.infinityScroll) && !docCookies.hasItem('infScroll')) {
+        enableInfinityScroll();
+    }
 	enableInfinityScroll(true);
 
 	// Обработчик изменения состояния истории в браузере
