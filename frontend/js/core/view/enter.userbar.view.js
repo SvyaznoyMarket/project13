@@ -28,11 +28,16 @@
              * @constant
              * @type        {Object}
              */
-            CSS_CLASSES = {},
+            CSS_CLASSES = {
+                FIXED: 'js-userbar-fixed'
+            },
 
             $window = $(window);
 
         provide(BaseViewClass.extend({
+
+            isFixed: false,
+
             /**
              * @classdesc   Представление параплашки
              * @memberOf    module:enter.userbar.view~
@@ -40,14 +45,19 @@
              * @constructs  EnterUserbarView
              */
             initialize: function( options ) {
-                console.info('module:enter.userbar.view~EnterUserbarView#initialize');
+                console.groupCollapsed('module:enter.userbar.view~EnterUserbarView#initialize');
+                console.dir(this);
+                console.groupEnd();
 
-                this.target = options.target;
+                this.target  = options.target;
+                this.isFixed = this.$el.hasClass(CSS_CLASSES.FIXED);
 
                 // Setup events
                 // this.events['click .' + CSS_CLASSES.] = '';
 
-                $window.on('scroll', this.scrollHandler.bind(this));
+                if ( this.isFixed ) {
+                    $window.on('scroll', this.scrollHandler.bind(this));
+                }
 
                 // Apply events
                 this.delegateEvents();
@@ -68,7 +78,11 @@
              * @memberOf    module:enter.userbar.view~EnterUserbarView#
              */
             scrollHandler: function() {
-                if (this.target.length && !this.target.visible()) {
+                if ( !this.isFixed ) {
+                    return;
+                }
+
+                if ( this.target.length && !this.target.visible() ) {
                     this.$el.fadeIn();
                 } else {
                     this.$el.fadeOut();

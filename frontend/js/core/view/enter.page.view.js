@@ -12,13 +12,14 @@
             'enter.BaseViewClass',
             'enter.cart.view',
             'enter.userbar.view',
+            'jquery.visible',
             'findModules'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, CartView, UserbarView, findModules ) {
+    function( provide, $, BaseViewClass, CartView, UserbarView, jVisible, findModules ) {
         'use strict';
 
         var
@@ -31,7 +32,7 @@
              */
             CSS_CLASSES = {
                 USERBAR_TARGET: 'js-show-fixed-userbar',
-                USERBAR: 'js-userbar-fixed',
+                USERBAR: 'js-userbar',
                 CART: 'js-cart'
             };
 
