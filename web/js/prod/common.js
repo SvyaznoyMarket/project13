@@ -4153,63 +4153,6 @@ $(function() {
 			cartWrap = $fixedUserBar.find('.topbarfix_cart'),
 			upsaleWrap = cartWrap.find('.hintDd'),
 			slider;
-		// end of vars
-
-		function responseFromServer( response ) {
-			console.log(response);
-
-			if ( !response.success || !isOverlayShowed ) {
-				return;
-			}
-
-			console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
-
-			upsaleWrap.find('.js-slider, .js-slider-2').remove();
-            $('.js-topbarfixLogin').addClass('blocked');
-
-			slider = $(response.content);
-
-            upsaleWrap.append(slider);
-			upsaleWrap.addClass('mhintDdOn');
-
-            if (slider.hasClass('js-slider-2')) {
-                slider.eq(0).goodsSlider({
-                    leftArrowSelector: '.goods-slider__btn--prev',
-                    rightArrowSelector: '.goods-slider__btn--next',
-                    sliderWrapperSelector: '.goods-slider__inn',
-                    sliderSelector: '.goods-slider-list',
-                    itemSelector: '.goods-slider-list__i'
-
-                });
-            } else {
-                slider.eq(0).goodsSlider();
-            }
-
-			ko.applyBindings(ENTER.UserModel, slider[0]);
-
-			if ( !data.product ) return;
-
-			if ( !data.product.article ) {
-				console.warn('Не получен article продукта');
-
-				return;
-			}
-
-			console.log('Трекинг товара при показе блока рекомендаций');
-
-			// Retailrocket. Показ товарных рекомендаций
-			if ( response.data ) {
-				try {
-					rrApi.recomTrack(response.data.method, response.data.id, response.data.recommendations);
-				} catch( e ) {
-					console.warn('showUpsell() Retailrocket error');
-					console.log(e);
-				}
-			}
-
-			// google analytics
-			typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
-		}
 
 		console.log(upsale);
 
@@ -4237,7 +4180,61 @@ $(function() {
 		$.ajax({
 			type: 'GET',
 			url: url,
-			success: responseFromServer
+			success: function (response) {
+				console.log(response);
+
+				if ( !response.success || !isOverlayShowed ) {
+					return;
+				}
+
+				console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
+
+				upsaleWrap.find('.js-slider, .js-slider-2').remove();
+				$('.js-topbarfixLogin').addClass('blocked');
+
+				slider = $(response.content);
+
+				upsaleWrap.append(slider);
+				upsaleWrap.addClass('mhintDdOn');
+
+				if (slider.hasClass('js-slider-2')) {
+					slider.eq(0).goodsSlider({
+						leftArrowSelector: '.goods-slider__btn--prev',
+						rightArrowSelector: '.goods-slider__btn--next',
+						sliderWrapperSelector: '.goods-slider__inn',
+						sliderSelector: '.goods-slider-list',
+						itemSelector: '.goods-slider-list__i'
+
+					});
+				} else {
+					slider.eq(0).goodsSlider();
+				}
+
+				ko.applyBindings(ENTER.UserModel, slider[0]);
+
+				if ( !data.product ) return;
+
+				if ( !data.product.article ) {
+					console.warn('Не получен article продукта');
+
+					return;
+				}
+
+				console.log('Трекинг товара при показе блока рекомендаций');
+
+				// Retailrocket. Показ товарных рекомендаций
+				if ( response.data ) {
+					try {
+						rrApi.recomTrack(response.data.method, response.data.id, response.data.recommendations);
+					} catch( e ) {
+						console.warn('showUpsell() Retailrocket error');
+						console.log(e);
+					}
+				}
+
+				// google analytics
+				typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
+			}
 		});
 	}
 
@@ -4300,10 +4297,11 @@ $(function() {
 
 	$body.on('click', '.jsCartDelete', function(e) {
 		e.preventDefault();
+		var $deleteLink = $(e.currentTarget);
 
 		$.ajax({
 			type: 'GET',
-			url: $(e.currentTarget).attr('href'),
+			url: $deleteLink.attr('href'),
 			success: function( res, data ) {
 				console.warn( res );
 				if ( !res.success ) {
@@ -4320,7 +4318,7 @@ $(function() {
 				if (ENTER.UserModel.cart().length == 0) {
 					closeFullFixedUserBar();
 				} else {
-					openFullFixedUserBar();
+					openFullFixedUserBar(false, {product: {article: $deleteLink.data('product-article')}}, {url: '/ajax/upsale/' + $deleteLink.data('product-id'), fromUpsale: false});
 				}
 
 				$body.trigger('removeFromCart', [res.product]);
