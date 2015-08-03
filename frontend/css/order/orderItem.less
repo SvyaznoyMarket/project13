@@ -10,113 +10,96 @@
         orderCol_data		-summ | -count | -sale | -del
 */
 
-.orderCol {
+.order-item {
+    margin: 0 10px;
+    padding: 10px 0;
 
-	&_cnt {
-		padding: 10px 0;
+    border-bottom: 1px solid @grey-light-3;
+    &__img {
+        width: 40px;
+        height: 40px;
 
-		border-top: 1px solid green;
-	}
+        text-align: center;
 
-	&_lk {
-		.inline-block();
-		width: 40px;
-		height: 40px;
-		margin: 0 10px;
-		text-align: center;
-		&:after{
-			content:"";
-			width: 0;
-			height: 100%;
-			.inline-block(middle);
-		}
-		&:hover{
-			text-decoration: none;
-		}
-	}
+        .inline-block(middle);
+        .image {
+            max-width: 95%;
+            max-height: 95%;
+        }
+    }
+    &__name {
+        .font-size(14);
+        .inline-block(middle);
+    }
+    &__data-item {
+        margin-left: 20px;
 
-	&_img {
-		.inline-block(middle);
-		max-width: 95%;
-		max-height: 95%;
-	}
+        color: @grey-type;
 
-	&_n {
-		.inline-block();
-		width: 395px;
+        .inline-block();
+        .font-size(16);
+        &_summ {
+            width: 110px;
+            padding-right: 10px;
 
-		font-size: 14px;
-	}
+            text-align: right;
+            white-space: nowrap;
 
-	&_data {
-		.inline-block();
-		float: right;
-
-		margin-left: 20px;
-		line-height: 24px;
-		margin-top: 5px;
-
-		color: blue;
-
-		font-size: 16px;
-
-		&-summ {
-			width: 110px;
-			padding-right: 10px;
-
-			text-align: right;
-
-			color: @black;
-			white-space: nowrap;
-		}
-
-		&-count {
-			border-bottom: 1px dotted;
-            cursor: pointer;
-		}
-
-		&-sale {
-			color: red;
-		}
-
-		&-del {
-			color: @black;
-			border-bottom: 1px dotted;
+            color: @black;
+        }
+        &_count {
             cursor: pointer;
 
-			font-size: 14px;
-		}
-
-		&-edit {
-			font-size: 14px;
-			color: @black;
-			line-height: 24px;
-			margin-right: 10px;
-
-			a:hover {
-				text-decoration: none;
-			}
-
-			.bCountSection {
-				.inline-block();
-				margin-bottom: 0;
-				padding-left: 0;
-			}
-		}
-
-        &-error-quantity {
-            font-size: 14px;
+            border-bottom: 1px dotted;
+        }
+        &_sale {
             color: red;
         }
-	}
+        &_del {
+            cursor: pointer;
 
-	&_t {
-		padding-left: 10px;
+            color: @black;
+            border-bottom: 1px dotted;
 
-		border-top: 1px solid green;
-		background: yellow;
+            .font-size(14);
+        }
+    }
+    &__data {
+        line-height: 24px;
 
-		font-size: 12px;
-		line-height: 20px;
-	}
+        margin-top: 5px;
+
+        text-align: right;
+
+        &-edit {
+            line-height: 24px;
+
+            margin-right: 10px;
+
+            color: @black;
+
+            .font-size(14);
+            .bCountSection {
+                margin-bottom: 0;
+                padding-left: 0;
+
+                .inline-block();
+            }
+        }
+        &-error-quantity {
+            color: red;
+
+            .font-size(14);
+        }
+    }
+    &_t {
+        line-height: 20px;
+
+        padding-left: 10px;
+
+        border-top: 1px solid green;
+        background: yellow;
+
+        .font-size(12);
+    }
 }

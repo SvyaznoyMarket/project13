@@ -15,15 +15,16 @@
 
     .table();
     &_stps {
-        .font-face('GloberRegular');
-        .font-size(18);
-
         width: 100%;
         padding: 0 0 0 30px;
 
         vertical-align: middle;
+
+        .font-face('GloberRegular');
+        .font-size(18);
         &_i {
             position: relative;
+
             margin: 0 53px 0 0;
 
             .inline-block(middle);
@@ -61,10 +62,9 @@
         .inline-block(middle);
     }
     &_t {
-        .font-size(18);
-
         margin: 0 0 0 10px;
 
+        .font-size(18);
         .inline-block(middle);
     }
 }
@@ -76,6 +76,7 @@
     }
     &_t {
         margin: 10px 0 20px;
+
         .font-size(22);
     }
     .cuponBtn {
@@ -92,103 +93,94 @@
 
 
 .orderInf {
-    .font-size(14);
-
     margin: 0 0 20px;
     padding: 10px;
 
     border: 1px solid #fb9c00;
     border-left-width: 5px;
     background: rgba(252, 171, 41, .2);
-}
 
-.orderRow {
-    margin: 0 0 20px;
-
-    border-top: 1px solid #a6a6a6;
-}
-
-.orderCol {
     .font-size(14);
+}
 
-    width: 465px;
+.checkout-order {
+    margin: 0 0 20px;
+    padding: 0 10px;
 
-    .inline-block(middle);
-    &_h {
-        padding: 10px 0;
-    }
-    .orderNum {
+    .clearfix();
+    &__number {
+        margin-right: 20px;
+
         .font-size(20);
-
-        display: block;
+        .inline-block(middle);
     }
-    .orderDetl {
+    &__vendor {
+        color: @grey-type;
+
         .font-size(14);
-
-        color: red;
-        &_lk {
-            text-decoration: underline;
-
-            color: red;
-        }
+        .font-face('GloberRegular');
     }
-    &_f {
-        .font-size(14);
-
-        padding: 10px 10px 0;
-
-        border-top: 1px solid blue;
-        border-bottom: 1px solid blue;
-        background: green;
-        &_l {
-            float: left;
-
-            width: 240px;
-        }
-        &_r {
-            float: right;
-
-            text-align: right;
-        }
-        &_t {
-            margin: 0 0 10px;
-
-            cursor: pointer;
-        }
+    &__left {
+        padding-right: 450px;
     }
-    &_summt {
+    &__right {
+        float: right;
+
+        width: 450px;
+        padding: 0;
+    }
+}
+
+.order-head {
+    border-bottom: 4px solid @grey-light-3;
+    height: 40px;
+    line-height: 36px;
+}
+
+.order-summ {
+    padding: 10px 10px 0;
+
+    .clearfix();
+    &__left {
+        float: left;
+
+        width: 240px;
+    }
+    &__right {
+        float: right;
+
+        text-align: right;
+
+        .font-face('GloberRegular');
         .font-size(16);
+    }
+    &__t {
+        margin: 0 0 10px;
 
+        cursor: pointer;
+
+        .font-size(14);
+    }
+    &__value {
         float: right;
 
         width: 80px;
         margin: 0 0 10px;
-        &-m {
-            .font-size(14);
-        }
     }
-    &_summ {
-        .font-size(16);
-
+    &__title {
         float: right;
         clear: right;
 
         width: 120px;
 
         white-space: nowrap;
+        &_color {
+            color: @orange-bright;
+        }
     }
-    &-r {
-        position: relative;
+}
 
-        float: right;
-
-        width: 443px;
-        padding: 0 10px 0;
-
-        border: 1px solid blue;
-        border-top: none;
-        background: green;
-    }
+.orderCol {
     .cuponField {
         width: 108px;
         margin: 0 6px 5px 0;
@@ -210,7 +202,6 @@
         }
     }
     .cuponErr {
-
         margin-bottom: 5px;
 
         color: yellow;
@@ -234,7 +225,6 @@
     }
 }
 .order-warning {
-
     position: relative;
 
     padding-left: 25px;

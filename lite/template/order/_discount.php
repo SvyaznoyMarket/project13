@@ -11,12 +11,12 @@ return function(
     $couponNumber = $couponErrors ? $couponErrors[0]->details['coupon_number'] : null;
     ?>
 
-    <div class="orderCol_f_l">
-        <span class="orderCol_f_t brb-dt jsShowDiscountForm" style="display: <?= $couponNumber !== null ? 'none' : 'inline-block' ?>">Ввести код скидки</span>
+    <div class="order-summ__left">
+        <span class="order-summ_t dotted jsShowDiscountForm" style="display: <?= $couponNumber !== null ? 'none' : 'inline-block' ?>">Ввести код скидки</span>
     </div>
 
-    <div class="orderCol_f_l" style="display: <?= $couponNumber === null ? 'none' : 'block' ?>">
-        <div class="orderCol_f_t">Код скидки, подарочный сертификат</div>
+    <div class="order-summ__left" style="display: <?= $couponNumber === null ? 'none' : 'block' ?>">
+        <div class="order-summ_t">Код скидки, подарочный сертификат</div>
 
         <input class="cuponField textfieldgrey" type="text" name="" value="<?= $couponNumber ?>" />
 

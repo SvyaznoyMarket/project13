@@ -28,16 +28,14 @@ return function(
     <section id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
         <h1 class="orderCnt_t">Самовывоз и доставка</h1>
 
-        <? if ($orderCount != 1) : ?>
-            <p class="orderInf">Товары будут оформлены как <strong><?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></strong></p>
-        <? endif; ?>
-
-        <div class="orderInf clearfix">
-            <div class="fl-l">Ваш регион: <strong><?= \App::user()->getRegion()->getName() ?></strong> <br/>
-                От региона зависят доступные способы получения и оплаты заказов.</div>
-
-            <button class="btnLightGrey orderCnt_btn fl-r jsChangeRegion">Изменить регион</button>
+        <div>
+            Ваш регион: <a href="" class="dotted jsChangeRegion"><?= \App::user()->getRegion()->getName() ?></a> <br/>
+            От региона зависят доступные способы получения и оплаты заказов.
         </div>
+
+        <? if ($orderCount != 1) : ?>
+            <p class="">Товары будут оформлены как <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></p>
+        <? endif; ?>
 
         <?= $helper->render('order/_error.main', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
@@ -46,108 +44,10 @@ return function(
                 <div class="jsOrderValidationErrors" data-value="<?= $helper->json($order->validationErrors) ?>"></div>
             <? endif; ?>
             <!-- блок разбиения заказа -->
-            <div class="orderRow clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>" data-block_name="<?= $order->block_name ?>">
-                <!-- информация о заказе -->
-                <div class="orderCol">
-                    <div class="orderCol_h">
-                        <strong class="orderNum">Заказ №<?= ($i) ?></strong>
-                        <? if ($order->seller): ?>
-                            <span class="orderDetl">продавец: <?= $order->seller->name ?> <a class="orderDetl_lk js-order-oferta-popup-btn" href="<?= $order->seller->offer ?>" data-value="<?= $order->seller->offer ?>" target="_blank">Информация и оферта</a></span>
-                        <? endif ?>
-                    </div>
-
-                    <? if ($order->total_cost > 100000) : ?>
-                        <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
-                    <? endif; ?>
-
-                    <? foreach ($order->products as $product): ?>
-                        <div class="orderCol_cnt clearfix">
-                            <a href="<?= $product->link ?>" class="orderCol_lk" target="_blank">
-                                <img class="orderCol_img" src="<?= $product->getMainImageUrl('product_60') ?>" alt="<?= $helper->escape($product->name) ?>" />
-                            </a>
-
-                            <a href="<?= $product->link ?>" target="_blank" class="orderCol_n">
-                                <? if ($product->prefix): ?><?= $product->prefix ?><br/><? endif ?>
-                                <?= $product->name_web ?>
-                            </a>
-
-                            <span class="orderCol_data orderCol_data-summ" ><?= $helper->formatPrice($product->original_sum) ?> <span class="rubl">p</span></span>
-                            <span class="orderCol_data orderCol_data-count"><?= $product->quantity ?> шт.</span>
-
-                            <div class="orderCol_data orderCol_data-edit" style="display: none">
-                                <div data-spinner-for="" class="bCountSection clearfix">
-                                    <button class="bCountSection__eM">-</button>
-                                    <input name="productQuantity[]" type="text" value="<?= $product->quantity ?>" class="bCountSection__eNum" data-stock="<?= $product->stock ?>" />
-                                    <button class="bCountSection__eP">+</button>
-                                    <span>шт.</span>
-                                </div>
-
-                                <a class="brb-dt jsChangeProductQuantity" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
-                                &nbsp;|&nbsp;
-                                <a class="brb-dt jsDeleteProduct" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Удалить товар</a>
-                            </div>
-
-                            <span class="orderCol_data orderCol_data-price"><?= $helper->formatPrice($product->original_price) ?> <span class="rubl">p</span></span>
-                            <?= $helper->render('order/_error.order', [ 'orderDelivery' => $orderDelivery, 'order' => $order, 'product' => $product ]) ?>
-                        </div>
-                    <? endforeach ?>
-
-                    <? if ((bool)$order->discounts || $order->certificate['par'] !== null) : ?>
-
-                        <div class="orderCol_t">Скидки</div>
-
-                        <? foreach ($order->discounts as $discount) : ?>
-
-                            <div class="orderCol_cnt clearfix jsOrderV3Discount">
-                                <a href="" class="orderCol_lk">
-                                    <img class="orderCol_img" src="/styles/order/img/fishka.png" alt="">
-                                </a>
-
-                                <div class="orderCol_n">
-                                    <?= $discount->name; ?>
-                                </div>
-
-                                <span class="orderCol_data orderCol_data-summ orderCol_i_data-sale">-<?= $discount->discount ?> <span class="rubl">p</span></span>
-                                <? if ($discount->number !== null) : ?><span class="orderCol_data orderCol_data-del jsDeleteDiscount" data-value="<?= $discount->number ?>">удалить</span><? endif ?>
-                            </div>
-
-                        <? endforeach ; ?>
-
-                        <? if ($order->certificate['par'] !== null) : ?>
-
-                            <div class="orderCol_cnt clearfix">
-                                <a href="" class="orderCol_lk">
-                                    <img class="orderCol_img" src="/styles/order/img/enter.png" alt="">
-                                </a>
-
-                                <div class="orderCol_n">Подарочный сертификат <?= $order->certificate['par'] ?> руб</div>
-
-                                <span class="orderCol_data orderCol_data-summ orderCol_data-sale">-<?= $order->certificate['par'] ?> <span class="rubl">p</span></span>
-                                <span class="orderCol_data orderCol_data-del jsDeleteCertificate">удалить</span>
-                            </div>
-
-                        <? endif; ?>
-
-                    <? endif; ?>
-
-                    <div class="orderCol_f clearfix">
-
-                        <?= $helper->render('order/_discount', [ 'order' => $order ]) ?>
-
-                        <div class="orderCol_f_r">
-                            <span class="orderCol_summ"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price).' <span class="rubl">p</span>' ?></span>
-                            <span class="orderCol_summt orderCol_summt-m"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
-
-                            <span class="orderCol_summ"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
-                            <span class="orderCol_summt">Итого:</span>
-                        </div>
-                    </div>
-                </div>
-                <!--/ информация о заказе -->
-
+            <div class="checkout-order jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>" data-block_name="<?= $order->block_name ?>">
                 <!-- информация о доставке -->
-                <div class="orderCol orderCol-v2 orderCol-r">
-                    <menu class="orderCol_delivrLst clearfix">
+                <div class="checkout-order__right">
+                    <menu class="orderCol_delivrLst order-head">
                         <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
                             <?  // Определение первого доступного delivery_method-а для группы
                             $delivery_methods_for_group = array_filter($order->possible_deliveries, function($delivery) use ($deliveryGroup) { return $delivery->group_id == $deliveryGroup->id; } );
@@ -163,7 +63,7 @@ return function(
                     </menu>
 
                     <!-- дата доставки -->
-                    <div class="orderCol_delivrIn clearfix">
+                    <div class="">
                         <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
                         <? if ($order->delivery->date): ?>
                             <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %G, %A', $order->delivery->date->format('U'))) ?></div>
@@ -177,7 +77,6 @@ return function(
                         <? if ((bool)$order->possible_intervals) : ?>
                             <?= $helper->render('order-v3/common/_delivery-interval', ['order' => $order]) ?>
                         <? endif; ?>
-
                     </div>
                     <!--/ дата доставки -->
 
@@ -188,11 +87,11 @@ return function(
                         <div class="orderCol_delivrIn orderCol_delivrIn-warn <?= $order->delivery->point ? 'orderCol_delivrIn-pl' : 'orderCol_delivrIn-empty' ?>">
 
                             <? if (!$order->delivery->point) : ?>
-                                <span class="js-order-changePlace-link brb-dt" style="cursor: pointer;" data-content="#id-order-changePlace-content-<?= $order->id ?>">Указать место самовывоза</span>
+                                <span class="js-order-changePlace-link dotted" style="cursor: pointer;" data-content="#id-order-changePlace-content-<?= $order->id ?>">Указать место самовывоза</span>
                             <? else : ?>
-                                <div class="orderCol_delivrIn_t clearfix">
+                                <div class="orderCol_delivrIn_t">
                                     <strong><?= @$order->delivery->delivery_method->name ?></strong>
-                                    <span class="js-order-changePlace-link orderChange brb-dt" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span>
+                                    <span class="js-order-changePlace-link orderChange dotted" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span>
                                 </div>
                             <? endif; ?>
 
@@ -225,7 +124,7 @@ return function(
 
                     <? else: ?>
                         <div class="orderCol_delivrIn orderCol_delivrIn-empty jsSmartAddressBlock">
-                            <div class="orderCol_delivrIn_t clearfix">
+                            <div class="orderCol_delivrIn_t">
                                 <strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
                             </div>
 
@@ -243,7 +142,7 @@ return function(
                                 <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
                                 <input type="checkbox" class="customInput customInput-checkbox jsCreditCardPayment js-customInput" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked ' : '' ?>/>
                                 <label  class="customLabel customLabel-checkbox <?= $checked ? 'mChecked ' : '' ?>" for="creditCardsPay-<?= $order->block_name ?>">
-                                    <span class="brb-dt" style="vertical-align: top;">Оплата курьеру банковской картой</span> <img class="orderCheck_img" src="/styles/order/img/i-visa.png" alt=""><img class="orderCheck_img" src="/styles/order/img/i-mc.png" alt="">
+                                    <span class="dotted" style="vertical-align: top;">Оплата курьеру банковской картой</span> <img class="orderCheck_img" src="/styles/order/img/i-visa.png" alt=""><img class="orderCheck_img" src="/styles/order/img/i-mc.png" alt="">
                                 </label>
                             </div>
 
@@ -264,15 +163,115 @@ return function(
                     <!--/ способ доставки -->
                     <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
 
-                        <div class="orderCheck orderCheck-credit clearfix">
+                        <div class="orderCheck orderCheck-credit">
                             <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
                             <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment js-customInput" id="credit-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked' : '' ?>>
-                            <label class="customLabel customLabel-checkbox <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
+                            <label class="customLabel customLabel-checkbox <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>"><span class="dotted">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
                         </div>
 
                     <? endif; ?>
                 </div>
                 <!--/ информация о доставке -->
+
+                <!-- информация о заказе -->
+                <div class="checkout-order__left">
+                    <div class="checkout-order__head order-head">
+                        <span class="checkout-order__number">Заказ №<?= ($i) ?></span>
+                        <? if ($order->seller): ?>
+                            <span class="checkout-order__vendor">продавец: <?= $order->seller->name ?> <a class="js-order-oferta-popup-btn" href="<?= $order->seller->offer ?>" data-value="<?= $order->seller->offer ?>" target="_blank">?</a></span>
+                        <? endif ?>
+                    </div>
+
+                    <? if ($order->total_cost > 100000) : ?>
+                        <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
+                    <? endif; ?>
+
+                    <? foreach ($order->products as $product): ?>
+                        <div class="order-item">
+                            <a href="<?= $product->link ?>" class="order-item__img" target="_blank">
+                                <img class="image" src="<?= $product->getMainImageUrl('product_60') ?>" alt="<?= $helper->escape($product->name) ?>" />
+                            </a>
+
+                            <a href="<?= $product->link ?>" target="_blank" class="order-item__name">
+                                <? if ($product->prefix): ?><?= $product->prefix ?><br/><? endif ?>
+                                <?= $product->name_web ?>
+                            </a>
+
+                            <div class="order-item__data">
+                                <span class="order-item__data-item order-item__data-item_summ" ><?= $helper->formatPrice($product->original_sum) ?> <span class="rubl">p</span></span>
+                                <span class="order-item__data-item order-item__data-item_count"><?= $product->quantity ?> шт.</span>
+
+                                <div class="order-item__data-item order-item__data-item_edit" style="display: none">
+                                    <div data-spinner-for="" class="bCountSection">
+                                        <button class="bCountSection__eM">-</button>
+                                        <input name="productQuantity[]" type="text" value="<?= $product->quantity ?>" class="bCountSection__eNum" data-stock="<?= $product->stock ?>" />
+                                        <button class="bCountSection__eP">+</button>
+                                        <span>шт.</span>
+                                    </div>
+
+                                    <a class="dotted jsChangeProductQuantity" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
+                                    &nbsp;|&nbsp;
+                                    <a class="dotted jsDeleteProduct" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Удалить товар</a>
+                                </div>
+
+                                <span class="order-item__data-item order-item__data-item_price"><?= $helper->formatPrice($product->original_price) ?> <span class="rubl">p</span></span>
+                                <?= $helper->render('order/_error.order', [ 'orderDelivery' => $orderDelivery, 'order' => $order, 'product' => $product ]) ?>
+                            </div>
+                        </div>
+                    <? endforeach ?>
+
+                    <? if ((bool)$order->discounts || $order->certificate['par'] !== null) : ?>
+
+                        <div class="orderCol_t">Скидки</div>
+
+                        <? foreach ($order->discounts as $discount) : ?>
+
+                            <div class="orderCol_cnt jsOrderV3Discount">
+                                <a href="" class="orderCol_lk">
+                                    <img class="orderCol_img" src="/styles/order/img/fishka.png" alt="">
+                                </a>
+
+                                <div class="orderCol_n">
+                                    <?= $discount->name; ?>
+                                </div>
+
+                                <span class="orderCol_data orderCol_data-summ orderCol_i_data-sale">-<?= $discount->discount ?> <span class="rubl">p</span></span>
+                                <? if ($discount->number !== null) : ?><span class="orderCol_data orderCol_data-del jsDeleteDiscount" data-value="<?= $discount->number ?>">удалить</span><? endif ?>
+                            </div>
+
+                        <? endforeach ; ?>
+
+                        <? if ($order->certificate['par'] !== null) : ?>
+
+                            <div class="orderCol_cnt">
+                                <a href="" class="orderCol_lk">
+                                    <img class="orderCol_img" src="/styles/order/img/enter.png" alt="">
+                                </a>
+
+                                <div class="orderCol_n">Подарочный сертификат <?= $order->certificate['par'] ?> руб</div>
+
+                                <span class="orderCol_data orderCol_data-summ orderCol_data-sale">-<?= $order->certificate['par'] ?> <span class="rubl">p</span></span>
+                                <span class="orderCol_data orderCol_data-del jsDeleteCertificate">удалить</span>
+                            </div>
+
+                        <? endif; ?>
+
+                    <? endif; ?>
+
+                    <div class="order-summ">
+
+                        <?= $helper->render('order/_discount', [ 'order' => $order ]) ?>
+
+                        <div class="order-summ__right">
+                            <span class="order-summ__title order-summ__title_color"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price).' <span class="rubl">p</span>' ?></span>
+                            <span class="order-summ__value"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
+
+                            <span class="order-summ__title"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
+                            <span class="order-summ__value">Итого:</span>
+                        </div>
+                    </div>
+                </div>
+                <!--/ информация о заказе -->
             </div>
             <!--/ блок разбиения заказа -->
         <? endforeach ?>
@@ -287,7 +286,7 @@ return function(
             <span class="l">Итого <strong><?= $orderCount ?></strong> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <strong><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span></strong></span>
         </div>
 
-        <div class="orderCompl orderCompl-v2 clearfix">
+        <div class="orderCompl orderCompl-v2">
 
 
             <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
