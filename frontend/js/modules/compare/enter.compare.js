@@ -1,10 +1,9 @@
 /**
- * Модуль инициализации каталога. Создает экземпляр класса CatalogView
- *
- * @module      enter.catalog
+ * @module      enter.compare
  * @version     0.1
  *
- * @requires    enter.catalog.view
+ * @requires    jQuery
+ * @requires    ko
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
@@ -23,16 +22,30 @@
 
         provide({
             init: function( el ) {
-                var $window = $(window),
-                    $document = $(document),
-                    $compare = $('.js-compare'),
-                    $content = $('.js-compare-content'),
-                    $header = $('.js-compare-header'),
-                    $footer = $('.js-compare-footer'),
-                    $table = $('.js-compare-table', $compare),
-                    $topbar = $('.js-topbar'),
-                    compareModel = createCompareModel($compare.data('compare-groups'), $compare.data('active-compare-group-index')),
+                var
+                    $window         = $(window),
+                    $document       = $(document),
+                    $compare        = $('.js-compare'),
+                    $content        = $('.js-compare-content'),
+                    $header         = $('.js-compare-header'),
+                    $footer         = $('.js-compare-footer'),
+                    $table          = $('.js-compare-table', $compare),
+                    $topbar         = $('.js-topbar'),
+
+                    $el             = $(el),
+                    inited          = $el.prop('inited');
+
+                    compareModel    = null,
                     fixedTableCells = null;
+
+                if ( inited ) {
+                    // console.warn('--- element %s initialized! ---', $el);
+                    return;
+                }
+
+                $el.prop('inited', true);
+
+                compareModel = createCompareModel($compare.data('compare-groups'), $compare.data('active-compare-group-index'));
 
                 function createProductModel(product) {
                     return product;

@@ -41,8 +41,9 @@
             App.compare            = new CompareCollection();
 
             window.addEventListener('load', function() {
-                modules.require(['enter.user'], function(model){
+                modules.require(['enter.user'], function( model ) {
                     App.cart.updateCart(model);
+                    App.compare.updateCompare(model);
                 });
             });
 

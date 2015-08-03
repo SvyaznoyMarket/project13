@@ -11,13 +11,14 @@
             'jQuery',
             'enter.BaseViewClass',
             'enter.cart.view',
+            'enter.userbar.view',
             'findModules'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, CartView, findModules ) {
+    function( provide, $, BaseViewClass, CartView, UserbarView, findModules ) {
         'use strict';
 
         var
@@ -29,6 +30,8 @@
              * @type        {Object}
              */
             CSS_CLASSES = {
+                USERBAR_TARGET: 'js-show-fixed-userbar',
+                USERBAR: 'js-userbar-fixed',
                 CART: 'js-cart'
             };
 
@@ -42,14 +45,23 @@
             initialize: function( options ) {
                 console.info('enter.page.view~EnterPageView#initialize');
                 var
-                    carts = this.$el.find('.' + CSS_CLASSES.CART),
-                    self  = this;
+                    carts         = this.$el.find('.' + CSS_CLASSES.CART),
+                    userbars      = this.$el.find('.' + CSS_CLASSES.USERBAR),
+                    userbarTarget = this.$el.find('.' + CSS_CLASSES.USERBAR_TARGET),
+                    self          = this;
 
                 findModules(this.$el);
 
                 carts.each(function( index ) {
                     self.subViews['cart_' + index] = new CartView({
                         el: $(this)
+                    });
+                });
+
+                userbars.each(function( index ) {
+                    self.subViews['userbar_' + index] = new UserbarView({
+                        el: $(this),
+                        target: userbarTarget
                     });
                 });
             },
