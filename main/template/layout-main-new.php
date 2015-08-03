@@ -39,7 +39,6 @@
     <div class="wrapper">
         <!-- шапка -->
         <div class="header <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?>">
-
             <?= $page->render('main/banner.pickup') ?>
 
             <div class="header__inn">

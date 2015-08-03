@@ -271,6 +271,7 @@ class ProductAction {
                 $cartProduct = $cart->getProductById($product->getId());
                 $productInfo = [
                     'id'    => $product->getId(),
+                    'article' => $product->getArticle(),
                     'name'  =>  $product->getName(),
                     'img'   =>  $product->getMainImageUrl('product_160'),
                     'link'  =>  $product->getLink(),
