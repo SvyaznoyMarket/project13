@@ -31,7 +31,8 @@
              */
             CSS_CLASSES = {
                 BUY_BUTTON: 'js-buy-button',
-                COMPARE_BUTTON: 'js-compare-button'
+                COMPARE_BUTTON: 'js-compare-button',
+                COMPARE_ACTIVE: 'active'
             };
 
         provide(BaseViewClass.extend({
@@ -45,25 +46,35 @@
                 this.listenTo(this.model, 'change:inCart', this.changeCartStatus);
                 this.listenTo(this.model, 'change:inCompare', this.changeCompareStatus);
 
+                this.subViews = {
+                    compareBtn: this.$el.find('.' + CSS_CLASSES.COMPARE_BUTTON)
+                };
+
                  // Setup events
                 this.events['click .' + CSS_CLASSES.BUY_BUTTON]     = 'buyButtonHandler';
                 this.events['click .' + CSS_CLASSES.COMPARE_BUTTON] = 'compareButtonHandler';
 
                 // Apply events
                 this.delegateEvents();
+
+                this.changeCompareStatus();
             },
 
             events: {},
 
             changeCartStatus: function() {
-                console.info('Product %s in cart', this.model.get('id'));
+                // console.info('Product %s in cart', this.model.get('id'));
             },
 
             changeCompareStatus: function() {
                 var
                     inCompare = this.model.get('inCompare');
 
-                console.warn('Product %s in compare list %s', this.model.get('id'), inCompare);
+                if ( inCompare ) {
+                    this.subViews.compareBtn.addClass(CSS_CLASSES.COMPARE_ACTIVE);
+                } else {
+                    this.subViews.compareBtn.removeClass(CSS_CLASSES.COMPARE_ACTIVE);
+                }
             },
 
             buyButtonHandler: function( event ) {
@@ -87,10 +98,6 @@
             compareButtonHandler: function () {
                 var
                     inCompare = this.model.get('inCompare');
-
-                console.groupCollapsed('module:enter.product.view~ProductView#compareButtonHandler || product id ', this.model.get('id'));
-                console.log('current compare status: ', inCompare);
-                console.groupEnd();
 
                 if ( inCompare ) {
                     App.compare.remove(this.model);
