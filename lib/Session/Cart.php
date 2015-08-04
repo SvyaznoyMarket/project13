@@ -137,6 +137,7 @@ class Cart {
         return [
             'id'            => $product->getId(),
             'ui'            => $product->getUi(),
+            'article'       => $product->getArticle(),
             'quantity'      => (int)$quantity,
             'name'          => $product->getName(),
             'price'         => $product->getPrice(),

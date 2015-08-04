@@ -1,0 +1,91 @@
+<?php
+
+namespace EnterApplication\Action\Cart
+{
+    use EnterApplication\Action\Cart\Merge\Request;
+    use EnterApplication\Action\Cart\Merge\Response;
+    use EnterQuery as Query;
+
+    class Merge {
+        use \EnterApplication\CurlTrait;
+        use \EnterApplication\Action\ActionTrait;
+
+        /**
+         * @param Request $request
+         * @return Response
+         */
+        public function execute(Request $request)
+        {
+            $curl = $this->getCurl();
+
+            $cart = \App::user()->getCart();
+
+            // объединение корзины
+            $cartMergeQuery = new Query\Cart\Merge($request->userUi);
+            foreach ($cart->getProductData() as $item) {
+                $cartMergeQuery->cart->addProduct($item['ui'], $item['quantity']);
+            }
+            $cartMergeQuery->prepare();
+
+            $curl->execute();
+
+            // запрос корзины
+            $cartQuery = (new Query\Cart\Get($request->userUi))->prepare();
+
+            $curl->execute();
+
+            $externalCartProductsByUi = [];
+            foreach ($cartQuery->response->products as $item) {
+                if (!isset($item['uid'])) continue;
+
+                $externalCartProductsByUi[$item['uid']] = new \Model\Cart\Product\Entity($item);
+            }
+
+
+            if ($productUis = array_keys($externalCartProductsByUi)) {
+                $productListQuery = (new Query\Product\GetByUiList($productUis, $request->regionId))->prepare();
+
+                $curl->execute();
+
+                foreach ($productListQuery->response->products as $item) {
+                    /** @var \Model\Cart\Product\Entity|null $cartProduct */
+                    $cartProduct = (isset($item['ui']) && isset($externalCartProductsByUi[$item['ui']])) ? $externalCartProductsByUi[$item['ui']] : null;
+                    if (!$cartProduct) continue;
+
+                    $product = new \Model\Product\Entity($item);
+                    $cart->setProduct($product, $cartProduct->getQuantity());
+                }
+            }
+
+            // response
+            $response = new Response();
+
+            return $response;
+        }
+
+        /**
+         * @return Request
+         */
+        public function createRequest()
+        {
+            return new Request();
+        }
+    }
+}
+
+namespace EnterApplication\Action\Cart\Merge
+{
+    use EnterQuery as Query;
+
+    class Request
+    {
+        /** @var string */
+        public $userUi;
+        /** @var string */
+        public $regionId;
+    }
+
+    class Response
+    {
+    }
+}
