@@ -26,9 +26,9 @@
         provide({
             init: function( el ) {
                 var
-                    $el       = $(el),
-                    productId = $el.attr('data-id'),
-                    inited    = $el.prop('inited');
+                    $el         = $(el),
+                    productData = $el.data('product'),
+                    inited      = $el.prop('inited');
 
                 if ( inited ) {
                     // console.warn('--- element %s initialized! ---', $el);
@@ -37,11 +37,11 @@
 
                 $el.prop('inited', true);
 
-                App.productsCollection.add({ id: productId }, { merge: true });
+                App.productsCollection.add(productData, { merge: true });
 
                 new ProductView({
                     el: $el,
-                    model: App.productsCollection.get(productId)
+                    model: App.productsCollection.get(productData.id)
                 });
             }
         });

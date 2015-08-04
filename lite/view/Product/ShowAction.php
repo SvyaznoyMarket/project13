@@ -26,7 +26,6 @@ class ShowAction {
         $imageSourceType = 'product_160',
         array $cartButtonSender = []
     ) {
-        $user = \App::user();
 
         if ($product->isInShopOnly()) {
             $inShopOnlyLabel = ['name' => 'Только в магазинах'];
@@ -89,6 +88,14 @@ class ShowAction {
             'lite'              => true,
             'buyButtonHtml'     => $helper->render('product/_button.buy', ['product' => $product, 'class' => 'btn-primary_middle' ])
         ];
+
+        // JSON-информация о продукте
+        $productItem['productJSON'] = json_encode(
+            [
+                'id'    => $product->getId(),
+                'ui'    => $product->getUi()
+            ],
+            JSON_UNESCAPED_UNICODE, JSON_HEX_APOS);
 
         // oldPrice and priceSale
         if ( $product->getPriceOld() && $product->getLabel()) {
