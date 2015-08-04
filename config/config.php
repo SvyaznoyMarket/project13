@@ -28,6 +28,7 @@ $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 2592000; // 30 дней
 $c->session['cookie_domain'] = '.enter.ru';
 $c->session['compareKey']   = 'compare'; // ключ для массива сравнения
+$c->session['favouriteKey'] = 'favourite'; // ключ для масссива избранного
 
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
