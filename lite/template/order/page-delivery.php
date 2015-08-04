@@ -64,9 +64,9 @@ return function(
 
                     <!-- дата доставки -->
                     <div class="checkout-order__content">
-                        <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
+                        <!--<div class="order-delivery-info-date">15 сентября 2014, воскресенье</div>-->
                         <? if ($order->delivery->date): ?>
-                            <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %G, %A', $order->delivery->date->format('U'))) ?></div>
+                            <div class="order-delivery-info-date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %G, %A', $order->delivery->date->format('U'))) ?></div>
                         <? endif ?>
 
                         <?= $helper->render('order/_calendar', [
@@ -82,30 +82,30 @@ return function(
                         <!-- способ доставки -->
                         <? if (!$order->delivery->use_user_address): ?>
                             <? $point = $order->delivery->point ? $orderDelivery->points[$order->delivery->point->token]->list[$order->delivery->point->id] : null ?>
-                            <!--Добавляем класс orderCol_delivrIn-warn если у нас будет текст-предупреждение: -->
-                            <div class="orderCol_delivrIn orderCol_delivrIn-warn <?= $order->delivery->point ? 'orderCol_delivrIn-pl' : 'orderCol_delivrIn-empty' ?>">
+                            <!--Добавляем класс order-delivery-info-warn если у нас будет текст-предупреждение: -->
+                            <div class="order-delivery-info <?= $order->delivery->point ? 'order-delivery-info_point' : 'order-delivery-info_empty' ?>">
 
                                 <? if (!$order->delivery->point) : ?>
                                     <span class="js-order-changePlace-link dotted" style="cursor: pointer;" data-content="#id-order-changePlace-content-<?= $order->id ?>">Указать место самовывоза</span>
                                 <? else : ?>
-                                    <div class="orderCol_delivrIn_t">
-                                        <strong><?= @$order->delivery->delivery_method->name ?></strong>
-                                        <span class="js-order-changePlace-link orderChange dotted" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span>
+                                    <div class="order-delivery-info-title">
+                                        <span class="order-delivery-info-title__left"><?= @$order->delivery->delivery_method->name ?></span>
+                                        <span class="order-delivery-info-title__right dotted js-order-changePlace-link" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span>
                                     </div>
                                 <? endif; ?>
 
-                                <div class="orderCol_addrs"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
-                                <span class="orderCol_addrs_tx">
+                                <div class="order-delivery-info-address"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
+                                <span class="order-delivery-info-address__text">
                                     <? if (isset($point->subway[0])): ?><?= $point->subway[0]->name ?><br/><? endif ?>
                                     <? if (isset($point->address)): ?><span class="colorBrightGrey"><?= $point->address ?></span><? endif; ?>
                                 </span>
                                 </div>
 
-                                <div class="orderCol_tm">
-                                    <? if (isset($point->regtime)): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
+                                <div class="order-delivery-info-time">
+                                    <? if (isset($point->regtime)): ?><span class="order-delivery-info-time__text">Режим работы:</span> <?= $point->regtime ?><? endif ?>
                                     <? if (isset($point)) : ?>
                                         <br />
-                                        <span class="orderCol_tm_t">Оплата при получении: </span>
+                                        <span class="order-delivery-info-time__text">Оплата при получении: </span>
                                         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?>
                                             <!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные
                                         <? endif; ?>
@@ -122,15 +122,14 @@ return function(
                             <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order/_payment.methods', ['order' => $order]) : '' ?>
 
                         <? else: ?>
-                            <div class="orderCol_delivrIn orderCol_delivrIn-empty jsSmartAddressBlock">
-                                <div class="orderCol_delivrIn_t">
-                                    <strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
+                            <div class="order-delivery-info order-delivery-info_transparent jsSmartAddressBlock">
+                                <div class="order-delivery-info-title">
+                                    <span class="order-delivery-info-title__left">Адрес</span>
                                 </div>
 
-                                <div class="orderCol_addrs" style="margin-left: 0;">
+                                <div class="order-delivery-info-address">
                                     <?= $helper->render('order/common/smartaddress') ?>
                                 </div>
-
                             </div>
 
                             <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order/_payment.methods', ['order' => $order]) : '' ?>
@@ -184,7 +183,7 @@ return function(
 
                     <div class="checkout-order__content">
                         <? if ($order->total_cost > 100000) : ?>
-                            <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
+                            <div class="orderCol order-delivery-info-warn"><span class="order-delivery-info-warn__left">Требуется предоплата.</span> <span class="order-delivery-info-warn__right">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
                         <? endif; ?>
 
                         <? foreach ($order->products as $product): ?>
