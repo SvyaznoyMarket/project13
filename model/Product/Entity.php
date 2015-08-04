@@ -157,6 +157,7 @@ class Entity {
         $templateHelper = new \Helper\TemplateHelper();
 
         if (isset($data['id'])) $this->setId($data['id']);
+        else if (isset($data['core_id'])) $this->setId($data['core_id']);
         if (isset($data['ui'])) $this->setUi($data['ui']);
         if (isset($data['uid'])) $this->setUi($data['uid']); // для scms
         if (isset($data['status_id'])) $this->setStatusId($data['status_id']);
