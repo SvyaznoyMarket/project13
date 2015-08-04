@@ -102,7 +102,7 @@
                 console.dir(model);
                 console.groupEnd();
 
-                App.productsCollection.get(ui).set({'inFavorite': false});
+                App.productsCollection.get(id).set({'inFavorite': false});
             },
 
             /**
@@ -210,22 +210,21 @@
              * @param       {Object}    data   Новые данные сравнения
              */
             updateFavorite: function( data ) {
-                // var
-                //     compare     = data.compare || {},
-                //     product     = data.product,
-                //     compareSize = _.size(compare),
-                //     key;
+                var
+                    favourite = data.favourite || {},
+                    product   = data.product,
+                    size      = _.size(favourite);
 
                 console.groupCollapsed('module:enter.favorite.collection~FavoriteCollection#updateFavorite');
                 console.dir(data);
                 console.groupEnd();
 
-                // this.updateModels(_.toArray(compare));
+                this.updateModels(_.toArray(favourite));
 
-                // this.trigger('syncEnd', {
-                //     size: compareSize,
-                //     product: product
-                // });
+                this.trigger('syncEnd', {
+                    size: size,
+                    product: product
+                });
             }
 
         }));
