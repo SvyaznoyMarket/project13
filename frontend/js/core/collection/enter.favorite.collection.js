@@ -1,5 +1,5 @@
 /**
- * @module      enter.compare.collection
+ * @module      enter.favorite.collection
  * @version     0.1
  *
  * @requires    App
@@ -12,7 +12,7 @@
  */
 !function( modules, module ) {
     modules.define(
-        'enter.compare.collection',
+        'enter.favorite.collection',
         [
             'App',
             'Backbone',
@@ -31,87 +31,88 @@
 
             model: ProductModel,
 
-            addUrl: '/compare/add-product/',
-            deleteUrl: '/compare/delete-product/',
+            addUrl: '/favorite/add-product/',
+            deleteUrl: '/favorite/delete-product/',
 
             /**
-             * Инициализация коллекции сравнения
+             * Инициализация коллекции избранного
              *
-             * @classdesc   Коллекция сравнения
-             * @memberOf    module:enter.compare.collection~
+             * @classdesc   Коллекция избранного
+             * @memberOf    module:enter.favorite.collection~
              * @augments    module:Backbone.Collection
-             * @constructs  CompareCollection
+             * @constructs  FavoriteCollection
              */
             initialize: function() {
-                console.info(' module:enter.compare.collection~CompareCollection#initialize');
-                this.listenTo(this, 'add', this.addToCompare);
-                this.listenTo(this, 'remove', this.removeFromCompare);
+                console.info(' module:enter.favorite.collection~FavoriteCollection#initialize');
+                this.listenTo(this, 'add', this.addToFavorite);
+                this.listenTo(this, 'remove', this.removeFromfavorite);
             },
 
             /**
-             * Добавление товара в коллекцию сравнения
+             * Добавление товара в коллекцию избранного
              *
-             * @method      addToCompare
-             * @memberOf    module:enter.compare.collection~CompareCollection#
+             * @method      addToFavorite
+             * @memberOf    module:enter.favorite.collection~FavoriteCollection#
              *
-             * @listens     module:enter.compare.collection~CompareCollection#add
+             * @listens     module:enter.favorite.collection~FavoriteCollection#add
              *
-             * @param       {module:enter.product.model}    addedModel     Модель добавляемого товара
+             * @param       {module:enter.product.model}    model     Модель добавляемого товара
              */
-            addToCompare: function( addedModel ) {
+            addToFavorite: function( model ) {
                 var
-                    id  = addedModel.get('id'),
-                    url = this.addUrl + id;
+                    ui  = model.get('ui'),
+                    url = this.addUrl + ui;
 
-                console.groupCollapsed('module:enter.compare.collection~CompareCollection#addToCompare || product id', addedModel.get('id'));
+                console.groupCollapsed('module:enter.favorite.collection~FavoriteCollection#addToFavorite || product id', model.get('id'));
 
                 this.ajax({
                     type: 'GET',
                     url: url,
-                    success: this.updateCompare.bind(this)
+                    success: this.updateFavorite.bind(this)
                 });
 
-                console.dir(addedModel);
+                console.dir(model);
                 console.groupEnd();
             },
 
             /**
-             * Удаление товара из коллекции сравнения
+             * Удаление товара из коллекции избранного
              *
-             * @method      removeFromCompare
-             * @memberOf    module:enter.compare.collection~CompareCollection#
+             * @method      removeFromfavorite
+             * @memberOf    module:enter.favorite.collection~FavoriteCollection#
              *
-             * @listens     module:enter.compare.collection~CompareCollection#remove
+             * @listens     module:enter.favorite.collection~FavoriteCollection#remove
              *
              * @param       {module:enter.product.model}    model     Модель удаляемого товара
              */
-            removeFromCompare: function ( model ) {
-                console.groupCollapsed('module:enter.compare.collection~CompareCollection#removeFromCompare || product id', model.get('id'));
+            removeFromfavorite: function ( model ) {
+                console.groupCollapsed('module:enter.favorite.collection~FavoriteCollection#removeFromfavorite || product id', model.get('id'));
 
                 var
                     id  = model.get('id'),
-                    url = this.deleteUrl + id;
+                    ui  = model.get('ui'),
+                    url = this.deleteUrl + ui;
 
                 this.ajax({
                     type: 'GET',
                     url: url,
-                    success: this.updateCompare.bind(this)
+                    success: this.updateFavorite.bind(this)
                 });
 
                 console.dir(model);
                 console.groupEnd();
 
-                App.productsCollection.get(id).set({'inCompare': false});
+                App.productsCollection.get(ui).set({'inFavorite': false});
             },
 
             /**
-             * Обновление моделей в колекции сравнения. Удаляет лишние модели из коллекции, запускает обновление для измененных моделей и добавляет в коллекцию новые
+             * Обновление моделей в колекции избранного. Удаляет лишние модели из коллекции, запускает обновление для измененных моделей и добавляет в коллекцию новые
              *
              * @method      updateModels
-             * @memberOf    module:enter.compare.collection~CompareCollection#
+             * @memberOf    module:enter.favorite.collection~FavoriteCollection#
              *
-             * @fires       module:enter.compare.collection~CompareCollection#add
-             * @fires       module:enter.compare.collection~CompareCollection#remove
+             * @fires       module:enter.favorite.collection~FavoriteCollection#add
+             * @fires       module:enter.favorite.collection~FavoriteCollection#remove
              *
              * @param       {Array}    models   Модели товаров в корзине на сервере
              */
@@ -125,11 +126,11 @@
                      * Выявление лишней модели в коллекции
                      *
                      * @method      checkServerModels
-                     * @memberOf    module:enter.compare.collection~CompareCollection#
+                     * @memberOf    module:enter.favorite.collection~FavoriteCollection#
                      * @private
                      *
                      * @param       {Array}                         modelsFromServer    Модели пришедшие с сервера
-                     * @param       {module:eenter.product.model}   collectionModel     Проверяемая модель из коллекции
+                     * @param       {module:enter.product.model}    collectionModel     Проверяемая модель из коллекции
                      *
                      * @return      {Boolean}                       Возвращает true если модель из коллекции присутствует в массиве пришедшем с сервера
                      */
@@ -149,7 +150,7 @@
                      * Если с одной из моделей совпадает линк, но не совпадает тип, такую модель следует удалить из коллекции(чтобы удалить ее view), а затем добавить заного.
                      *
                      * @method      checkModelExits
-                     * @memberOf    module:enter.compare.collection~CompareCollection#
+                     * @memberOf    module:enter.favorite.collection~FavoriteCollection#
                      * @private
                      *
                      * @param       {Object}    model     Проверяемая модель пришедшая с сервера
@@ -172,7 +173,7 @@
 
 
                 for ( i = 0; i < reverseModel.length; i++ ) {
-                    reverseModel[i].inCompare = true;
+                    reverseModel[i].inFavorite = true;
                     App.productsCollection.add(reverseModel[i], {merge: true});
 
                     if ( checkModelExits(reverseModel[i]) ) {
@@ -201,30 +202,30 @@
             /**
              * Хандлер срабатывающий при получении новых моделей с сервера
              *
-             * @method      updateCompare
-             * @memberOf    module:enter.compare.collection~CompareCollection#
+             * @method      updateFavorite
+             * @memberOf    module:enter.favorite.collection~FavoriteCollection#
              *
-             * @fires       module:enter.compare.collection~CompareCollection#syncEnd
+             * @fires       module:enter.favorite.collection~FavoriteCollection#syncEnd
              *
              * @param       {Object}    data   Новые данные сравнения
              */
-            updateCompare: function( data ) {
-                var
-                    compare     = data.compare || {},
-                    product     = data.product,
-                    compareSize = _.size(compare),
-                    key;
+            updateFavorite: function( data ) {
+                // var
+                //     compare     = data.compare || {},
+                //     product     = data.product,
+                //     compareSize = _.size(compare),
+                //     key;
 
-                console.groupCollapsed('module:enter.compare.collection~CompareCollection#updateCompare');
+                console.groupCollapsed('module:enter.favorite.collection~FavoriteCollection#updateFavorite');
                 console.dir(data);
                 console.groupEnd();
 
-                this.updateModels(_.toArray(compare));
+                // this.updateModels(_.toArray(compare));
 
-                this.trigger('syncEnd', {
-                    size: compareSize,
-                    product: product
-                });
+                // this.trigger('syncEnd', {
+                //     size: compareSize,
+                //     product: product
+                // });
             }
 
         }));

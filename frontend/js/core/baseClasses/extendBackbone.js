@@ -65,7 +65,11 @@
                  *
                  * @method  alwaysCb
                  */
-                alwaysCb = function( rid ) {
+                alwaysCb = function( rid, data, textStatus, jqXHR ) {
+                    if ( data.status === 403 ) {
+                        console.warn('Status 403');
+                    }
+
                     delete currentAjaxCalls[rid];
                 };
 

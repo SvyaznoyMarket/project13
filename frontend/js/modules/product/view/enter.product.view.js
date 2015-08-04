@@ -32,7 +32,9 @@
             CSS_CLASSES = {
                 BUY_BUTTON: 'js-buy-button',
                 COMPARE_BUTTON: 'js-compare-button',
-                COMPARE_ACTIVE: 'active'
+                FAVORITE_BUTTON: 'js-favorite-button',
+                COMPARE_ACTIVE: 'active',
+                FAVORITE_ACTIVE: 'active'
             };
 
         provide(BaseViewClass.extend({
@@ -45,27 +47,47 @@
             initialize: function( options ) {
                 this.listenTo(this.model, 'change:inCart', this.changeCartStatus);
                 this.listenTo(this.model, 'change:inCompare', this.changeCompareStatus);
+                this.listenTo(this.model, 'change:inFavorite', this.changeFavoriteStatus);
 
                 this.subViews = {
-                    compareBtn: this.$el.find('.' + CSS_CLASSES.COMPARE_BUTTON)
+                    compareBtn: this.$el.find('.' + CSS_CLASSES.COMPARE_BUTTON),
+                    favoriteBtn: this.$el.find('.' + CSS_CLASSES.FAVORITE_BUTTON)
                 };
 
                  // Setup events
                 this.events['click .' + CSS_CLASSES.BUY_BUTTON]     = 'buyButtonHandler';
                 this.events['click .' + CSS_CLASSES.COMPARE_BUTTON] = 'compareButtonHandler';
+                this.events['click .' + CSS_CLASSES.FAVORITE_BUTTON] = 'favoriteButtonHandler';
 
                 // Apply events
                 this.delegateEvents();
 
                 this.changeCompareStatus();
+                this.changeFavoriteStatus();
             },
 
             events: {},
 
+            /**
+             * Хандлер изменения статуса `в корзине` у товара. Срабатывает каждый раз при добавлении\удалении\инициализации корзины
+             *
+             * @method      compareChange
+             * @memberOf    module:enter.userbar.view~EnterUserbarView#
+             *
+             * @listens    module:enter.product.model~ProductModel#change:inFavorite
+             */
             changeCartStatus: function() {
                 // console.info('Product %s in cart', this.model.get('id'));
             },
 
+            /**
+             * Хандлер изменения статуса `в сравнении` у товара. Срабатывает каждый раз при добавлении\удалении\инициализации сравнения
+             *
+             * @method      compareChange
+             * @memberOf    module:enter.userbar.view~EnterUserbarView#
+             *
+             * @listens    module:enter.product.model~ProductModel#change:inCompare
+             */
             changeCompareStatus: function() {
                 var
                     inCompare = this.model.get('inCompare');
@@ -74,6 +96,25 @@
                     this.subViews.compareBtn.addClass(CSS_CLASSES.COMPARE_ACTIVE);
                 } else {
                     this.subViews.compareBtn.removeClass(CSS_CLASSES.COMPARE_ACTIVE);
+                }
+            },
+
+            /**
+             * Хандлер изменения статуса `в избранном` у товара. Срабатывает каждый раз при добавлении\удалении\инициализации избранного
+             *
+             * @method      compareChange
+             * @memberOf    module:enter.userbar.view~EnterUserbarView#
+             *
+             * @listens    module:enter.product.model~ProductModel#change:inFavorite
+             */
+            changeFavoriteStatus: function() {
+                var
+                    inFavorite = this.model.get('inFavorite');
+
+                if ( inFavorite ) {
+                    this.subViews.favoriteBtn.addClass(CSS_CLASSES.FAVORITE_ACTIVE);
+                } else {
+                    this.subViews.favoriteBtn.removeClass(CSS_CLASSES.FAVORITE_ACTIVE);
                 }
             },
 
@@ -103,6 +144,19 @@
                     App.compare.remove(this.model);
                 } else {
                     App.compare.add(this.model);
+                }
+
+                return false;
+            },
+
+            favoriteButtonHandler: function() {
+                var
+                    inFavorite = this.model.get('inFavorite');
+
+                if ( inFavorite ) {
+                    App.favorite.remove(this.model);
+                } else {
+                    App.favorite.add(this.model);
                 }
 
                 return false;
