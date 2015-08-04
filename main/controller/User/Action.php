@@ -125,12 +125,30 @@ class Action {
 
                     \App::user()->getCart()->pushStateEvent([]);
 
+                    // объединение корзины
                     try {
-                        \App::coreClientV2()->query('user/update', ['token' => \App::user()->getToken()], [
-                            'geo_id' => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
-                        ]);
+                        call_user_func(function() use (&$userEntity) {
+                            $mergeCartAction = new \EnterApplication\Action\Cart\Merge();
+                            $request = $mergeCartAction->createRequest();
+                            $request->userUi = $userEntity->getUi();
+                            $request->regionId = \App::user()->getRegion()->getId();
+
+                            $mergeCartAction->execute($request);
+                        });
                     } catch (\Exception $e) {
-                        \App::logger()->error(sprintf('Не удалось обновить регион у пользователя token=%s', \App::user()->getToken()), ['user']);
+                        \App::logger()->error(['message' => 'Не удалось объединить корзину пользователя', 'token' => \App::user()->getToken()], ['user']);
+                    }
+
+                    try {
+                        \App::coreClientV2()->query(
+                            'user/update',
+                            ['token' => \App::user()->getToken()],
+                            [
+                                'geo_id' => \App::user()->getRegion()->getId(),
+                            ]
+                        );
+                    } catch (\Exception $e) {
+                        \App::logger()->error(['message' => 'Не удалось обновить регион у пользователя', 'token' => \App::user()->getToken()], ['user']);
                     }
 
                     return $response;
