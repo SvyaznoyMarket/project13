@@ -93,16 +93,12 @@ class CompletePage extends Layout {
             $this->setParam('ordersPayment', $methods);
         }
 
-        // сортируем заказы по номеру
-        usort($this->orders, function(\Model\Order\Entity $orderA, \Model\Order\Entity $orderB){ return $orderA->id > $orderB->id; });
-        $this->setParam('orders', $this->orders);
-
     }
 
     public function slotContent() {
         $template = 'page-complete';
         $orders = $this->getParam('orders');
-        if (count($orders) == 1) {
+        if (\App::abTest()->isOnlineMotivation(count($orders))) {
             /* @var $order \Model\Order\Entity */
             $order = reset($orders);
             /* Если выбран самовывоз из определенной точки или выбрана доставка с адресом */
