@@ -12,30 +12,16 @@
     padding: 15px 32px;
 
     border-top: 3px solid @orange-bright;
-    background: @orange-light-4;
     &_l {
-        .font-size(14);
-
-        width: 685px;
-        margin: 0;
-        &-ln {
-            margin: 2px 0 0;
-            padding: 8px 0 0 15px;
-
-            .inline-block();
-        }
-    }
-    &__btn {
-        padding: 0 50px;
+        .font-size(16);
+        margin: 0 0 10px -15px;
     }
     &_btn {
         .font-size(20);
         font-weight: bold;
         line-height: 32px;
-
-        min-width: 220px;
+        padding: 0 50px;
         height: 40px;
-        margin: 0 0 0 15px;
         .orderOneClick & {
             .font-size(15);
             font-weight: bold;
@@ -64,45 +50,12 @@
 
         background: #fff;
     }
-    &-v2 {
-        .orderCompl_btn {
-            font-weight: normal;
-
-            margin: 0;
-        }
-        .orderCompl_l {
-            width: auto;
-            margin: 0 0 10px;
-            padding: 3px 10px 3px 20px;
-
-            border: 2px solid #fff;
-            background-color: #fff;
-            background-position: 6px 7px;
-
-            .rounded(4px);
-            &.accept-err {
-                border-color: #ed404d;
-            }
-            &_lk {
-                margin: 0 0 0 10px;
-
-                color: #777;
-                border-bottom: 1px solid #c2c2c2;
-
-                .inline-block();
-            }
-        }
-    }
 }
 
 .orderComplSumm {
-    width: 925px;
-    margin: 40px 0 0 -10px;
-    padding: 10px 10px 10px 25px;
-
-    border-top: 1px solid green;
-    border-bottom: 1px solid blur;
-    background: green;
+    padding: 10px 0 5px;
+    .font-size(18);
+    .font-face('GloberRegular');
 }
 /*===========================================================================
  Оформление заказа: оплата
@@ -377,9 +330,8 @@
 
             .inline-block();
             &-i {
-                line-height: 30px;
-
                 margin-right: 2px;
+                margin-bottom: 0;
 
                 .inline-block();
             }

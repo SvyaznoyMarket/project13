@@ -70,7 +70,7 @@
             </div>
 
 
-            <div class="orderCompl orderCompl-v2 clearfix">
+            <div class="orderCompl">
                 <button class="orderCompl__btn btn-primary btn-primary_bigger" type="submit">Далее</button>
             </div>
 

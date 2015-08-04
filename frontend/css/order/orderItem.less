@@ -11,8 +11,7 @@
 */
 
 .order-item {
-    margin: 0 10px;
-    padding: 10px 0;
+    padding: 10px;
 
     border-bottom: 1px solid @grey-light-3;
     &__img {
@@ -20,6 +19,7 @@
         height: 40px;
 
         text-align: center;
+        margin-right: 5px;
 
         .inline-block(middle);
         .image {
@@ -28,8 +28,9 @@
         }
     }
     &__name {
-        .font-size(14);
         .inline-block(middle);
+        .font-face('GloberRegular');
+        line-height: 1.2;
     }
     &__data-item {
         margin-left: 20px;
@@ -37,7 +38,7 @@
         color: @grey-type;
 
         .inline-block();
-        .font-size(16);
+        .font-size14(16);
         &_summ {
             width: 110px;
             padding-right: 10px;
@@ -60,15 +61,9 @@
 
             color: @black;
             border-bottom: 1px dotted;
-
-            .font-size(14);
         }
     }
     &__data {
-        line-height: 24px;
-
-        margin-top: 5px;
-
         text-align: right;
 
         &-edit {
@@ -77,8 +72,6 @@
             margin-right: 10px;
 
             color: @black;
-
-            .font-size(14);
             .bCountSection {
                 margin-bottom: 0;
                 padding-left: 0;
@@ -88,8 +81,6 @@
         }
         &-error-quantity {
             color: red;
-
-            .font-size(14);
         }
     }
     &_t {
@@ -100,6 +91,6 @@
         border-top: 1px solid green;
         background: yellow;
 
-        .font-size(12);
+        .font-size14(12);
     }
 }

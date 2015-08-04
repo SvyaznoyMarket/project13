@@ -7,13 +7,13 @@ $f = function (
     \Model\OrderDelivery\Entity\Order $order
 ) { ?>
 
-    <div class="paymentMethods">
-        <strong>Способы оплаты</strong>
+    <div class="order-payments">
+        <div class="order-payments__title">Способы оплаты</div>
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH]) || isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
             <div class="paymentRow">
                 <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CASH || $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
-                <input id="payment-cash" type="radio" name="payment-type[]" value="by_cash" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?> />
-                <label for="payment-cash" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">При получении</label>
+                <input id="payment-cash" type="radio" name="payment-type[]" value="by_cash" class="custom-input custom-input_radio jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?> />
+                <label for="payment-cash" class="custom-label customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">При получении</label>
 
                 <? if ($order->delivery_group_id != 1) : /* Скрываем выбор наличные/банковская карта при самовывозе */?>
                     <div class="customSel">
@@ -34,8 +34,8 @@ $f = function (
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ONLINE])) : ?>
             <div class="paymentRow jsDeliveryChooseOnline">
                 <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ONLINE; ?>
-                <input id="payment-online" type="radio" name="payment-type[]" value="by_online" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?>>
-                <label for="payment-online" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">Онлайн-оплата:
+                <input id="payment-online" type="radio" name="payment-type[]" value="by_online" class="custom-input custom-input_radio jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?>>
+                <label for="payment-online" class="custom-label customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">Онлайн-оплата:
                     <ul class="orderPaymentWeb_lst-sm">
                         <? if (array_key_exists(PaymentMethod::PAYMENT_CARD_ONLINE, $order->possible_payment_methods)) : ?>
                             <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/visa-logo-sm.jpg"></a></li>
