@@ -75,7 +75,7 @@ return function(
                         ]) ?>
 
                         <? if ((bool)$order->possible_intervals) : ?>
-                            <?= $helper->render('order-v3/common/_delivery-interval', ['order' => $order]) ?>
+                            <?= $helper->render('order/common/delivery.interval', ['order' => $order]) ?>
                         <? endif; ?>
                         <!--/ дата доставки -->
 
@@ -128,7 +128,7 @@ return function(
                                 </div>
 
                                 <div class="orderCol_addrs" style="margin-left: 0;">
-                                    <?= $helper->render('order-v3/common/_smartaddress') ?>
+                                    <?= $helper->render('order/common/smartaddress') ?>
                                 </div>
 
                             </div>
