@@ -54,7 +54,9 @@ namespace EnterQuery\Cart
                     $this->response->products = isset($result['products'][0]) ? $result['products'] : [];
 
                     return $result; // for cache
-                }
+                },
+                1, // timeout ratio
+                [0] // delay ratio
             );
 
             return $this;
