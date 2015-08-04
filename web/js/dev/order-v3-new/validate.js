@@ -155,8 +155,7 @@
 			$agreement = $('.jsAcceptAgreement'),
 			$form = $(this).closest('form'),
 			send15_3 = false,
-			partnerOrders = $('.jsPartnerOrder'),
-			specialActionOrders = $('.jsSpecialAction');
+			partnerOrders = $('.jsPartnerOrder');
 
         if (!$agreement.is(':checked')) {
             error.push('Необходимо согласие с информацией о продавце и его офертой');
@@ -183,13 +182,6 @@
 					error.push('Укажите адрес самовывоза');
 				}
 			});
-		});
-
-		specialActionOrders.each(function(){
-			if (!$(this).data('point-ui')) {
-				$(this).find('.orderCol_delivrIn-empty').addClass('orderCol_delivrIn-err').removeClass('orderCol_delivrIn-warn');
-				error.push('Укажите адрес самовывоза');
-			}
 		});
 
 		e.preventDefault();

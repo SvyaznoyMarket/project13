@@ -84,7 +84,6 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isOnlineMotivation($ordersCount = 0){
-        return true;
         return (int)$ordersCount == 1
             && \App::abTest()->getTest('online_motivation')
             && in_array(\App::abTest()->getTest('online_motivation')->getChosenCase()->getKey(), ['on', 'online_motivation_coupon', 'online_motivation_discount']);
