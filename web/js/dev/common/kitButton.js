@@ -42,10 +42,6 @@
 					$popup.trigger('close.lme');
 				});
 
-				// Google Analytics
-				if (typeof _gaq !== 'undefined') {
-					_gaq.push(['_trackEvent', 'addedCollection', 'collection', result.product.article]);
-				}
 			},
 			complete: function() {
 				isOpening = false;

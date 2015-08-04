@@ -49,6 +49,8 @@ class Layout extends \View\DefaultLayout {
         // Передаем в Actionpay все данные по заказам
         $html .= '<div id="ActionPayJS" data-vars="' . $this->json((new \View\Partners\ActionPay($routeName, $this->params))->execute()) . '" class="jsanalytics"></div>';
 
+        $html .= $this->googleAnalyticsJS();
+
         return $html;
     }
 }

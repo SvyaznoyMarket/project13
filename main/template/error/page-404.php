@@ -73,49 +73,7 @@ $helper = new \Helper\TemplateHelper();
 <?= $page->slotInnerJavascript() ?>
 
 <script type="text/javascript">
-    var _gaq = _gaq || [];
-    var nowURL = document.URL;
-    _gaq.push(['_setAccount', 'UA-25485956-1']);
-    _gaq.push(['_setDomainName', 'enter.ru']);
-    _gaq.push(['_addOrganic', 'nova.rambler.ru', 'query']);
-    _gaq.push(['_addOrganic', 'go.mail.ru', 'q']);
-    _gaq.push(['_addOrganic', 'nigma.ru', 's']);
-    _gaq.push(['_addOrganic', 'webalta.ru', 'q']);
-    _gaq.push(['_addOrganic', 'aport.ru', 'r']);
-    _gaq.push(['_addOrganic', 'poisk.ru', 'text']);
-    _gaq.push(['_addOrganic', 'km.ru', 'sq']);
-    _gaq.push(['_addOrganic', 'liveinternet.ru', 'ask']);
-    _gaq.push(['_addOrganic', 'quintura.ru', 'request']);
-    _gaq.push(['_addOrganic', 'search.qip.ru', 'query']);
-    _gaq.push(['_addOrganic', 'gde.ru', 'keywords']);
-    _gaq.push(['_addOrganic', 'gogo.ru', 'q']);
-    _gaq.push(['_addOrganic', 'ru.yahoo.com', 'p']);
-    _gaq.push(['_addOrganic', 'images.yandex.ru', 'q', true]);
-    _gaq.push(['_addOrganic', 'blogsearch.google.ru', 'q', true]);
-    _gaq.push(['_addOrganic', 'blogs.yandex.ru', 'text', true]);
-    _gaq.push(['_addOrganic', 'ru.search.yahoo.com', 'p']);
-    _gaq.push(['_addOrganic', 'ya.ru', 'q']);
-    _gaq.push(['_addOrganic', 'm.yandex.ru', 'query']);
-    _gaq.push(['_trackPageview', '/page404' + location.pathname]);
-    _gaq.push(['_trackEvent', 'Errors', '404', nowURL]);
-    (function () {
-        var ga = document.createElement('script');
-        ga.type = 'text/javascript';
-        ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(ga, s);
-    })();
-
-
-    <?php /* Universal Google Analytics  */ ?>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    if ( 'function' === typeof(ga) ) {
-        ga('create', 'UA-25485956-5', 'enter.ru');
+    if ( typeof ga == 'function' ) {
         ga('send', 'pageview', '/404' + document.location.pathname, {
             'dimension5': '404'
         });

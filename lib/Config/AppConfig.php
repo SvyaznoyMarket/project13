@@ -497,19 +497,7 @@ class AppConfig {
     public $tchiboSlider = [
         'analytics' => [
             'enabled' => null,
-            'use_page_visibility' => null,
-            'collection_view' => [
-                'enabled' => null,
-                'tchiboOnly' => null
-            ],
-            'collection_click' => [
-                'enabled' => null,
-                'tchiboOnly' => null
-            ],
-            'product_click' => [
-                'enabled' => null,
-                'tchiboOnly' => null
-            ],
+            'use_page_visibility' => null
         ],
     ];
 

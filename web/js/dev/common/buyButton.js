@@ -114,16 +114,9 @@
 					};
 				// end of functions
 
-				if ( !productData || typeof _gaq === 'undefined' ) {
-					return;
-				}
-
 				tchiboGA();
 
 				ENTER.utils.sendAdd2BasketGaEvent(productData.article, productData.price, productData.isOnlyFromPartner, productData.isSlot, data.sender ? data.sender.name : '');
-
-				productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
-				productData.fromUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
 
                 try {
                     var sender = data.sender;
@@ -132,13 +125,13 @@
 						var rrEventLabel = '';
 						if (ENTER.config.pageConfig.product) {
 							if (ENTER.config.pageConfig.product.isSlot) {
-								rrEventLabel = ' (marketplace-slot)';
+								rrEventLabel = '(marketplace-slot)';
 							} else if (ENTER.config.pageConfig.product.isOnlyFromPartner) {
-								rrEventLabel = ' (marketplace)';
+								rrEventLabel = '(marketplace)';
 							}
 						}
 
-                        $body.trigger('trackGoogleEvent',['RR_Взаимодействие' + rrEventLabel, 'Добавил в корзину', sender.position]);
+                        $body.trigger('trackGoogleEvent',['RR_взаимодействие ' + rrEventLabel, 'Добавил в корзину', sender.position]);
                     }
                 } catch (e) {
                     console.error(e);
