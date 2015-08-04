@@ -1,0 +1,40 @@
+.order-summ {
+    padding: 10px 10px 0;
+
+    .clearfix();
+    &__left {
+        float: left;
+
+        width: 255px;
+    }
+    &__right {
+        float: right;
+
+        text-align: right;
+
+        .font-face('GloberRegular');
+        .font-size14(16);
+    }
+    &__t {
+        margin: 0 0 10px;
+
+        cursor: pointer;
+    }
+    &__value {
+        float: right;
+
+        width: 80px;
+        margin: 0 0 10px;
+    }
+    &__title {
+        float: right;
+        clear: right;
+
+        width: 120px;
+
+        white-space: nowrap;
+        &_color {
+            color: @orange-bright;
+        }
+    }
+}

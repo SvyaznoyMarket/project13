@@ -273,10 +273,10 @@ return function(
             <!--/ блок разбиения заказа -->
         <? endforeach ?>
 
-        <div class="order-comment">
-            <div class="order-comment__title dotted jsOrderV3Comment">Дополнительные пожелания</div>
+        <div class="checkout-comment">
+            <div class="checkout-comment__title dotted jsOrderV3Comment">Дополнительные пожелания</div>
 
-            <textarea class="order-comment__field textarea" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
+            <textarea class="checkout-comment__field textarea" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
         </div>
 
         <div class="orderComplSumm">
