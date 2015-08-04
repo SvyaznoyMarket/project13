@@ -45,10 +45,7 @@ return function(
             <div class="jsOrderValidationErrors" data-value="<?= $helper->json($order->validationErrors) ?>"></div>
         <? endif; ?>
     <!-- блок разбиения заказа -->
-    <div class="orderRow clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?> <?= $order->specialAction ? 'jsSpecialAction' : ''?>"
-         data-block_name="<?= $order->block_name ?>"
-         data-point-ui="<?= $order->delivery && $order->delivery->point ? $order->delivery->point->ui : null ?>"
-        >
+    <div class="orderRow clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>" data-block_name="<?= $order->block_name ?>">
         <!-- информация о заказе -->
         <div class="orderCol">
             <div class="orderCol_h">
@@ -60,10 +57,6 @@ return function(
 
             <? if ($order->total_cost > 100000) : ?>
                 <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
-            <? endif; ?>
-
-            <? if ($order->specialAction) : ?>
-                <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Товары по акции «Все по…». <a href="/porubl" target="_blank">Подробнее</a></span></div>
             <? endif; ?>
 
             <? foreach ($order->products as $product): ?>
