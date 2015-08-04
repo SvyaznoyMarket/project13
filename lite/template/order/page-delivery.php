@@ -28,13 +28,13 @@ return function(
     <section id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
         <h1 class="orderCnt_t">Самовывоз и доставка</h1>
 
-        <div>
-            Ваш регион: <a href="" class="dotted jsChangeRegion"><?= \App::user()->getRegion()->getName() ?></a> <br/>
+        <div class="checkout-order-location">
+            Ваш регион: <span class="checkout-order-location__city"><?= \App::user()->getRegion()->getName() ?></span> <a href="" class="checkout-order-location__change dotted jsChangeRegion">Изменить</a> <br/>
             От региона зависят доступные способы получения и оплаты заказов.
         </div>
 
         <? if ($orderCount != 1) : ?>
-            <p class="">Товары будут оформлены как <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></p>
+            <p class="checkout-order-split-info">Товары будут оформлены как <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></p>
         <? endif; ?>
 
         <?= $helper->render('order/_error.main', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
@@ -96,8 +96,8 @@ return function(
 
                                 <div class="order-delivery-info-address"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
                                 <span class="order-delivery-info-address__text">
-                                    <? if (isset($point->subway[0])): ?><?= $point->subway[0]->name ?><br/><? endif ?>
-                                    <? if (isset($point->address)): ?><span class="colorBrightGrey"><?= $point->address ?></span><? endif; ?>
+                                    <? if (isset($point->subway[0])): ?><?= $point->subway[0]->name ?><? endif ?>
+                                    <? if (isset($point->address)): ?><div class="order-delivery-info-address__text-mark"><?= $point->address ?></div><? endif; ?>
                                 </span>
                                 </div>
 
@@ -135,15 +135,11 @@ return function(
                             <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order/_payment.methods', ['order' => $order]) : '' ?>
 
                             <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
-
-                                <div class="orderCheck" style="margin-bottom: 0;">
-                                    <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
-                                    <input type="checkbox" class="custom-input custom-input_check jsCreditCardPayment js-customInput" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked ' : '' ?>/>
-                                    <label  class="custom-label custom-label-checkbox <?= $checked ? 'mChecked ' : '' ?>" for="creditCardsPay-<?= $order->block_name ?>">
-                                        <span class="dotted" style="vertical-align: top;">Оплата курьеру банковской картой</span> <img class="orderCheck_img" src="/styles/order/img/i-visa.png" alt=""><img class="orderCheck_img" src="/styles/order/img/i-mc.png" alt="">
-                                    </label>
-                                </div>
-
+                                <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
+                                <input type="checkbox" class="custom-input custom-input_check jsCreditCardPayment" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked ' : '' ?>/>
+                                <label class="order-check custom-label <?= $checked ? 'mChecked ' : '' ?>" for="creditCardsPay-<?= $order->block_name ?>">
+                                    Оплата курьеру банковской картой <img class="order-check__img" src="/styles/order/img/i-visa.png" alt=""><img class="order-check__img" src="/styles/order/img/i-mc.png" alt="">
+                                </label>
                             <? endif; ?>
 
                         <? endif ?>
@@ -160,13 +156,9 @@ return function(
 
                         <!--/ способ доставки -->
                         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
-
-                            <div class="orderCheck orderCheck-credit">
-                                <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
-                                <input type="checkbox" class="custom-input custom-input_checkbox jsCreditPayment js-customInput" id="credit-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked' : '' ?>>
-                                <label class="custom-label custom-label-checkbox <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>"><span class="dotted">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
-                            </div>
-
+                            <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
+                            <input type="checkbox" class="custom-input custom-input_checkbox jsCreditPayment" id="credit-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked' : '' ?>>
+                            <label class="order-check custom-label <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>"><span class="dotted">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
                         <? endif; ?>
                     </div>
                 </div>
@@ -177,7 +169,7 @@ return function(
                     <div class="checkout-order__head order-head">
                         <span class="checkout-order__number">Заказ №<?= ($i) ?></span>
                         <? if ($order->seller): ?>
-                            <span class="checkout-order__vendor">продавец: <?= $order->seller->name ?> <a class="js-order-oferta-popup-btn" href="<?= $order->seller->offer ?>" data-value="<?= $order->seller->offer ?>" target="_blank">?</a></span>
+                            <span class="checkout-order__vendor">продавец: <?= $order->seller->name ?> <a class="checkout-order__vendor-offer js-order-oferta-popup-btn" href="<?= $order->seller->offer ?>" data-value="<?= $order->seller->offer ?>" target="_blank"></a></span>
                         <? endif ?>
                     </div>
 
@@ -277,10 +269,10 @@ return function(
             <!--/ блок разбиения заказа -->
         <? endforeach ?>
 
-        <div class="orderComment">
-            <div class="orderComment_t jsOrderV3Comment">Дополнительные пожелания</div>
+        <div class="order-comment">
+            <div class="order-comment__title dotted jsOrderV3Comment">Дополнительные пожелания</div>
 
-            <textarea class="orderComment_fld textarea" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
+            <textarea class="order-comment__field textarea" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
         </div>
 
         <div class="orderComplSumm">
@@ -291,7 +283,7 @@ return function(
             <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
 
                 <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
-                    <input type="checkbox" class="custom-input custom-input_check3 js-customInput jsAcceptAgreement" id="accept" name="" value="" />
+                    <input type="checkbox" class="custom-input custom-input_check3 jsAcceptAgreement" id="accept" name="" value="" />
 
                     <label  class="custom-label jsAcceptTerms" for="accept">
                         Я ознакомлен и согласен с информацией о продавце и его офертой

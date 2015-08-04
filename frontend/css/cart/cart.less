@@ -10,45 +10,47 @@
     &__image {
         width: 70px;
         height: 70px;
+
+        text-align: center;
         .image {
             max-width: 70px;
             max-height: 70px;
         }
     }
     &__product-name {
-        .font-size(16);
-
         overflow: hidden;
 
         height: 46px;
         margin-bottom: 10px;
+
+        .font-size(16);
     }
     &__product-price {
+        color: @grey-type;
+
         .font-face('GloberRegular');
         .font-size(20);
-
-        color: @grey-type;
     }
     &__summ {
-        .font-face('GloberRegular');
-        .font-size(22);
+        width: 130px;
 
         text-align: right;
-        width: 130px;
+
+        .font-face('GloberRegular');
+        .font-size(22);
     }
     &__counter {
-    	width: 160px;
+        width: 160px;
     }
     &__delete {
-        .font-face('GloberRegular');
-        .font-size(14);
-
         position: relative;
 
         margin: 10px 0 0 15px;
 
         color: @grey-type;
 
+        .font-face('GloberRegular');
+        .font-size(14);
         .inline-block();
         &:before {
             width: 17px;
@@ -81,7 +83,7 @@
         .font-size(16);
     }
     &__price {
-        .font-size(2em);
+        .font-size(24);
     }
 }
 
@@ -92,7 +94,8 @@
 }
 
 .header-cart_empty {
-    .cart-order__btn, .cart-summ {
+    .cart-order__btn ,
+    .cart-summ {
         display: none;
     }
 }
@@ -107,13 +110,12 @@
         float: left;
     }
     &__back-link {
-        .font-face('GloberRegular');
-        .font-size(14);
-
         margin: 10px 0 0;
 
         color: @grey-type;
 
+        .font-face('GloberRegular');
+        .font-size(14);
         .inline-block();
         &:before {
             width: 7px;
@@ -136,16 +138,14 @@
 }
 
 .counter {
-    .font-face('GloberRegular');
-    .font-size(18);
     line-height: 30px;
 
     color: @grey-type;
 
+    .font-face('GloberRegular');
+    .font-size(18);
     .clearfix();
     &__btn {
-        .font-face('GloberRegular');
-        .font-size(18);
         line-height: 30px;
 
         position: relative;
@@ -158,6 +158,9 @@
         color: @grey-type;
         border: 1px solid @grey-light-2;
         background: @white;
+
+        .font-face('GloberRegular');
+        .font-size(18);
         &:after {
             position: absolute;
             top: 50%;
