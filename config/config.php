@@ -443,19 +443,7 @@ $c->tchibo['rowHeight'] = 78;
 $c->tchibo['rowPadding'] = 0;
 $c->tchiboSlider['analytics'] = [
     'enabled' => true,
-    'use_page_visibility' => true,
-    'collection_view' => [
-        'enabled' => false,
-        'tchiboOnly' => true
-    ],
-    'collection_click' => [
-        'enabled' => true,
-        'tchiboOnly' => false
-    ],
-    'product_click' => [
-        'enabled' => true,
-        'tchiboOnly' => false
-    ],
+    'use_page_visibility' => true
 ];
 
 $c->abTest = [

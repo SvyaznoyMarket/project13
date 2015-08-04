@@ -36,10 +36,6 @@ ANALYTICS.LiveTexJS = function () {
                 onLiveTexReady: function () {
                     var widgetHidden = $('.lt-invite').is(':hidden');
                     window.LiveTex.setName(LTData.username);
-                    LiveTex.on('chat_open', function(){
-                        $body.trigger('trackGoogleEvent', ['webchat', 'chat_started']);
-                    });
-                    $body.trigger('trackGoogleEvent', ['webchat', 'chat_visibility', widgetHidden ? 'hidden' : 'visible']);
                 },
 
                 invitationShowing: true,

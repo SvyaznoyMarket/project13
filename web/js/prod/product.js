@@ -511,22 +511,9 @@ $(function() {
 		var hintLnk = $('.bHint_eLink');
 		var hintCloseLnk = $('.bHint_ePopup .close');
 
-		var hintAnalytics = function(data){
-			if (typeof(_gaq) !== 'undefined') {
-				_gaq.push(['_trackEvent', 'Hints', data.hintTitle, data.url]);
-			}
-		};
-
 		var hintShow = function(){
 			hintPopup.hide();
 			$(this).parent().find('.bHint_ePopup').fadeIn(150);
-
-			var analyticsData = {
-				hintTitle: $(this).html(),
-				url: window.location.href
-			};
-			hintAnalytics(analyticsData);
-
 			return false;
 		};
 
@@ -1978,19 +1965,11 @@ $(document).ready(function() {
 			closeSelector: '.jsPopupCloser',
 			onLoad: function() {
 				videoStartTime = new Date().getTime();
-
-				if (typeof(_gaq) !== 'undefined') {
-					_gaq.push(['_trackEvent', 'Video', 'Play', productUrl]);
-				}
 			},
 			onClose: function() {
 				$('.js-product-video-iframeContainer').empty();
 				videoEndTime = new Date().getTime();
 				var videoSpent = videoEndTime - videoStartTime;
-
-				if (typeof _gaq !== 'undefined') {
-					_gaq.push(['_trackEvent', 'Video', 'Stop', productUrl, videoSpent]);
-				}
 			}
 		});
 
