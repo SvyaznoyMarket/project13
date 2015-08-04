@@ -2,6 +2,13 @@
  * @module      enter.page.view
  * @version     0.1
  *
+ * @requires    jQuery
+ * @requires    enter.BaseViewClass
+ * @requires    enter.cart.view
+ * @requires    enter.userbar.view
+ * @requires    jquery.visible
+ * @requires    findModules
+ *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
 !function( modules, module ) {
@@ -31,6 +38,8 @@
              * @type        {Object}
              */
             CSS_CLASSES = {
+                LOGIN_POPUP_BTN: 'js-userbar-user-link',
+                LOGIN_POPUP: 'js-popup-login',
                 USERBAR_TARGET: 'js-show-fixed-userbar',
                 USERBAR: 'js-userbar',
                 CART: 'js-cart'
@@ -53,6 +62,10 @@
 
                 findModules(this.$el);
 
+                this.subViews = {
+                    loginPopup: false
+                };
+
                 carts.each(function( index ) {
                     self.subViews['cart_' + index] = new CartView({
                         el: $(this)
@@ -65,10 +78,38 @@
                         target: userbarTarget
                     });
                 });
+
+                // Setup events
+                this.events['click .' + CSS_CLASSES.LOGIN_POPUP_BTN] = 'showLoginPopup';
+
+                // Apply events
+                this.delegateEvents();
             },
 
             events: {
                 'DOMNodeInserted': 'change'
+            },
+
+            showLoginPopup: function() {
+                console.warn('showLoginPopup');
+
+                var
+                    self = this;
+
+                if ( this.subViews.loginPopup ) {
+                    this.subViews.loginPopup.show();
+                    return false;
+                }
+
+                modules.require('enter.auth', function( AuthPopupView) {
+                    self.subViews.loginPopup = new AuthPopupView({
+                        el: self.$el.find('.' + CSS_CLASSES.LOGIN_POPUP)
+                    });
+
+                    self.subViews.loginPopup.show();
+                });
+
+                return false;
             },
 
             /**

@@ -7,51 +7,112 @@
 !function( modules, module ) {
     modules.define(
         'enter.auth',
-        [],
+        [
+            'jQuery',
+            'enter.ui.BasePopup',
+            'jquery.maskedinput'
+        ],
         module
     );
 }(
     this.modules,
-    function( provide ) {
+    function( provide, $, BasePopup, jMaskedinput ) {
         'use strict';
 
-        var $form = $('.js-auth-form');
+        var
+            CSS_CLASSES = {
+                FORM: 'js-auth-form',
+                AUTH_STATE: 'js-auth-state',
+                SWITCH_STATE: 'js-auth-switch-state',
+                USERNAME_INPUT: 'js-auth-username-input',
+                USERNAME_LABEL: 'js-auth-username-label',
+                PASSWORD_INPUT: 'js-auth-password-input',
+                PASSWORD_LABEL: 'js-auth-password-label'
+            };
 
-        $.mask.definitions['n'] = '[0-9]';
-        $('.js-registerForm .js-phoneField').mask('+7 (nnn) nnn-nn-nn');
+        provide(BasePopup.extend({
+            /**
+             * @classdesc   Представление окна авторизации
+             * @memberOf    module:enter.auth~
+             * @augments    module:BaseViewClass
+             * @constructs  AuthPopupView
+             */
+            initialize: function( options ) {
+                console.info('module:enter.auth~AuthPopupView#initialize');
 
-        $('.js-auth-switch-state').on('click', function(e){
-            e.preventDefault();
+                $.mask.definitions['n'] = '[0-9]';
 
-            $('.js-auth-state')
-                .removeClass('login_auth login_reg login_hint login_success')
-                .addClass($(this).data('state'))
-        });
+                this.form          = this.$el.find('.' + CSS_CLASSES.FORM);
+                this.authState     = this.$el.find('.' + CSS_CLASSES.AUTH_STATE);
+                this.usernameInput = this.$el.find('.' + CSS_CLASSES.USERNAME_INPUT);
+                this.usernameLable = this.$el.find('.' + CSS_CLASSES.USERNAME_LABEL);
+                this.passwordInput = this.$el.find('.' + CSS_CLASSES.PASSWORD_INPUT);
+                this.passwordLable = this.$el.find('.' + CSS_CLASSES.PASSWORD_LABEL);
 
-        // Отправка формы
-        $form.on('submit', function(e){
-            e.preventDefault();
+                $('.js-registerForm .js-phoneField').mask('+7 (nnn) nnn-nn-nn');
 
-            $.post($form.attr('action'), $form.serialize()).done(function(data){
+                // Setup events
+                this.events['submit .' + CSS_CLASSES.FORM]        = 'formSubmit';
+                this.events['click .' + CSS_CLASSES.SWITCH_STATE] = 'switchState';
+
+                // Apply events
+                this.delegateEvents();
+            },
+
+            /**
+             * События привязанные к текущему экземляру View
+             *
+             * @memberOf    module:enter.auth~AuthPopupView
+             * @type        {Object}
+             */
+            events: {},
+
+            switchState: function( event ) {
+                var
+                    target = $(event.currentTarget);
+
+                this.authState
+                    .removeClass('login_auth login_reg login_hint login_success')
+                    .addClass(target.data('state'));
+
+                return false;
+            },
+
+            authProcessing: function( data ) {
                 if (data.form && data.form.error) {
-                    data.form.error.forEach(function(val){
-                        if (val.message) {
-                            switch (val.field) {
+                    data.form.error.forEach(function( val ) {
+                        if ( val.message ) {
+                            switch ( val.field ) {
                                 case 'username':
-                                    $('.js-auth-username-input').addClass('error');
-                                    $('.js-auth-username-label').text(val.message);
+                                    this.usernameInput.addClass('error');
+                                    this.usernameLable.text(val.message);
                                     break;
                                 case 'password':
-                                    $('.js-auth-password-input').addClass('error');
-                                    $('.js-auth-password-label').text(val.message);
+                                    this.passwordInput.addClass('error');
+                                    this.passwordLable.text(val.message);
                                     break;
                             }
                         }
-                    })
+                    });
                 }
-            });
-        });
+            },
 
-        provide({});
+            formSubmit: function() {
+                var
+                    data = this.form.serialize(),
+                    url  = this.from.attr('action');
+
+                this.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: data,
+                    success: this.authProcessing.bind(this)
+                });
+
+                return false;
+            }
+        }));
     }
 );
+
+
