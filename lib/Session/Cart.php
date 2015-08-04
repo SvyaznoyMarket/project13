@@ -247,6 +247,7 @@ class Cart {
                 'name'              => $cartProduct['name'],
                 'price'             => $cartProduct['price'],
                 'formattedPrice'    => $helper->formatPrice($cartProduct['price']),
+                'formattedFullPrice'=> $helper->formatPrice($cartProduct['price'] * $cartProduct['quantity']),
                 'quantity'          => $cartProduct['quantity'],
                 'deleteUrl'         => $helper->url('cart.product.delete', ['productId' => $cartProduct['id']]),
                 'link'              => $cartProduct['url'],
