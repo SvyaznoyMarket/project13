@@ -4,7 +4,7 @@ namespace Controller\Favorite;
 
 use EnterQuery as Query;
 use \Model\Media;
-use model\Session\FavouriteProduct;
+use \Model\Session\FavouriteProduct;
 
 class SetAction {
     use \EnterApplication\CurlTrait;
