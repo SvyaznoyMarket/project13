@@ -25,8 +25,8 @@ return function(
 
     <?= $page->render('order/common/order-head', ['step' => 2]) ?>
 
-    <section id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
-        <h1 class="orderCnt_t">Самовывоз и доставка</h1>
+    <section id="js-order-content" class="checkout jsOrderV3PageDelivery">
+        <h1 class="checkout__title">Самовывоз и доставка</h1>
 
         <div class="checkout-order-location">
             Ваш регион: <span class="checkout-order-location__city"><?= \App::user()->getRegion()->getName() ?></span> <a href="" class="checkout-order-location__change dotted jsChangeRegion">Изменить</a> <br/>
@@ -175,7 +175,11 @@ return function(
 
                     <div class="checkout-order__content">
                         <? if ($order->total_cost > 100000) : ?>
-                            <div class="orderCol order-delivery-info-warn"><span class="order-delivery-info-warn__left">Требуется предоплата.</span> <span class="order-delivery-info-warn__right">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
+                            <div class="order-delivery-info-warn">
+                                Требуется предоплата.<br/>
+                                Сумма заказа превышает 100&nbsp;000&nbsp;руб.
+                                <a href="/how_pay" target="_blank">Подробнее</a>
+                            </div>
                         <? endif; ?>
 
                         <? foreach ($order->products as $product): ?>
@@ -276,13 +280,13 @@ return function(
         </div>
 
         <div class="orderComplSumm">
-            <span class="l">Итого <strong><?= $orderCount ?></strong> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <strong><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span></strong></span>
+            <span class="l">Итого <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span></span>
         </div>
 
         <div class="orderCompl">
             <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
 
-                <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
+                <div class="orderCompl_l orderCompl_l-ln">
                     <input type="checkbox" class="custom-input custom-input_check3 jsAcceptAgreement" id="accept" name="" value="" />
 
                     <label  class="custom-label jsAcceptTerms" for="accept">

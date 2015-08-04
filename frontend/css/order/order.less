@@ -94,9 +94,11 @@
     .font-size(14);
 }
 
-.orderCnt {
+.checkout {
     padding: 0 32px 30px;
-    &_t {
+    &__title {
+        font-weight: normal;
+
         margin: 10px 0 20px;
 
         .font-size(22);
@@ -114,6 +116,8 @@
         .inline-block(middle);
     }
     &__vendor {
+        vertical-align: middle;
+
         color: @grey-type;
 
         .font-size(14);
@@ -213,6 +217,7 @@
 .order-disount {
     &__title {
         margin: 0 0 8px;
+
         cursor: pointer;
     }
     &__it {
