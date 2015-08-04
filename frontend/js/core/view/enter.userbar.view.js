@@ -2,7 +2,9 @@
  * @module      enter.userbar.view
  * @version     0.1
  *
+ * @requires    App
  * @requires    enter.BaseViewClass
+ * @requires    Mustache
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
@@ -48,7 +50,7 @@
                 COMPARING_ITEM: $('#js-userbar-comparing-item').html(),
             },
 
-            $window = $(window);
+            $WINDOW = $(window);
 
         provide(BaseViewClass.extend({
 
@@ -79,7 +81,7 @@
                 // this.events['click .' + CSS_CLASSES.] = '';
 
                 if ( this.isFixed ) {
-                    $window.on('scroll', this.scrollHandler.bind(this));
+                    $WINDOW.on('scroll', this.scrollHandler.bind(this));
                 }
 
                 this.listenTo(App.compare, 'syncEnd', this.compareChange);

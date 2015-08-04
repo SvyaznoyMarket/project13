@@ -2,6 +2,7 @@
  * @module      extendBackbone
  * @version     0.1
  *
+ * @requires    App
  * @requires    Backbone
  * @requires    underscore
  * @requires    generateUUID
@@ -12,6 +13,7 @@
     modules.define(
         'extendBackbone',
         [
+            'App',
             'Backbone',
             'underscore',
             'generateUUID'
@@ -20,7 +22,7 @@
     );
 }(
     this.modules,
-    function( provide, Backbone, _, generateUUID ) {
+    function( provide, App, Backbone, _, generateUUID ) {
         'use strict';
 
         var
@@ -65,7 +67,12 @@
                  *
                  * @method  alwaysCb
                  */
-                alwaysCb = function( rid ) {
+                alwaysCb = function( rid, data, textStatus, jqXHR ) {
+                    if ( data.status === 403 ) {
+                        App.pageView.showLoginPopup();
+                        // console.warn('Status 403');
+                    }
+
                     delete currentAjaxCalls[rid];
                 };
 

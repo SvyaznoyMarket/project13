@@ -30,7 +30,7 @@
          *
          * @method  initApp
          */
-        initApp = function( App, Backbone, _, PageView, ProductsCollection, CartCollection, CompareCollection ) {
+        initApp = function( App, Backbone, _, PageView, ProductsCollection, CartCollection, CompareCollection, FavoriteCollection ) {
             console.info('Application initialize');
 
             // Добавляем возможность добавлять события к объекту приложения
@@ -39,11 +39,13 @@
             App.productsCollection = new ProductsCollection();
             App.cart               = new CartCollection();
             App.compare            = new CompareCollection();
+            App.favorite           = new FavoriteCollection();
 
             window.addEventListener('load', function() {
                 modules.require(['enter.user'], function( model ) {
                     App.cart.updateCart(model);
                     App.compare.updateCompare(model);
+                    App.favorite.updateFavorite(model);
                 });
             });
 
@@ -86,7 +88,8 @@
         'enter.page.view',
         'enter.products.collection',
         'enter.cart.collection',
-        'enter.compare.collection'
+        'enter.compare.collection',
+        'enter.favorite.collection'
     ], initApp);
 }(
     this,
