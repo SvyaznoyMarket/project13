@@ -85,7 +85,6 @@ return function (
                                     'data-partner-offer-url': partnerOfferUrl,
                                     'data-is-slot': isSlot,
                                     'data-sender': typeof sender != 'undefined' ? sender : '',
-                                    'data-color-class': colorClass
                                 }, buyButtonBinding: $root.cart">Купить</a>
                             </div>
                         </td>

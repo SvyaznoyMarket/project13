@@ -33,7 +33,7 @@
                     $topbar         = $('.js-topbar'),
 
                     $el             = $(el),
-                    inited          = $el.prop('inited');
+                    inited          = $el.prop('inited'),
 
                     compareModel    = null,
                     fixedTableCells = null;
