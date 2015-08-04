@@ -68,7 +68,7 @@ class ShowAction {
                     $queryData[$index] = [
                         'url'         => $url,
                         'encodedUrl'  => urlencode($url),
-                        'data'        => (bool)$data ? json_encode($data, JSON_UNESCAPED_UNICODE) : null,
+                        'data'        => (bool)$data ? json_encode($data, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT) : null,
                         'encodedData' => (bool)$data ? urlencode(json_encode($data, JSON_UNESCAPED_UNICODE)) : null,
                         'timeout'     => isset($message['timeout']) ? $message['timeout'] : null,
                         'startAt'     => $startAt,
@@ -80,6 +80,7 @@ class ShowAction {
                 } else if ((('Fail curl' == $message['message']) || ('End curl' == $message['message'])) && isset($queryData[$index])) {
                     if (isset($message['error'])) {
                         $queryData[$index]['error'] = $message['error'];
+                        $queryData[$index]['error']['substrMessage'] = isset($message['error']['message']) ? mb_substr($message['error']['message'], 0, 10) . '&#8230' : '';
                     }
                     if (isset($message['response'])) {
                         $queryData[$index]['response'] = $message['response'];

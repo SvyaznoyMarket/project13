@@ -148,6 +148,11 @@
             suppressObsoleteBrowserNotifier: true
         });
 
+        if (location.hash == '#full') {
+            map.controls.add('fullscreenControl');
+            $pointListHolder.hide();
+        }
+
         var searchControl = map.controls.get('searchControl');
         searchControl.options.set('size', 'small');
         searchControl.events.add('click', function(){
@@ -179,7 +184,7 @@
         map.setBounds(map.geoObjects.getBounds());
 
         var position = map.getGlobalPixelCenter();
-        map.setGlobalPixelCenter([ position[0] + 110, position[1] ]);
+        if (location.hash != '#full') map.setGlobalPixelCenter([ position[0] + 110, position[1] ]);
 
     });
 

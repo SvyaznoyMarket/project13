@@ -13,7 +13,7 @@
     </a>
 
     <div class="userbar-dd minicart topbarfix_cartOn" >
-        <div class="topbarfix-cart-wrap">
+        <div class="topbarfix-cart-wrap" data-bind="css: {'min-sum': isMinOrderSumVisible() }"><!--сюда добавить класс "min-sum" если корзина у нас для выводит сообщение о минимальной сумме заказа-->
             <table class="table-cart">
                 <tbody data-bind="foreach: cart">
                     <tr class="table-cart__i">
@@ -28,7 +28,7 @@
                         <td class="table-cart__inf">
                             <span class="price"><span data-bind="html: window.printPrice(price)"></span> &nbsp;<span class="rubl">p</span></span>
                             <span class="quan"><!--ko text: quantity--><!--/ko--> шт.</span>
-                            <a class="del jsCartDelete" data-bind="attr: { href: deleteUrl }">удалить</a>
+                            <a class="del jsCartDelete" data-bind="attr: { href: deleteUrl, 'data-product-id': id, 'data-product-article': article }">удалить</a>
                         </td>
                     </tr>
                 </tbody>
