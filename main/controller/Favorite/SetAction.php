@@ -60,8 +60,8 @@ class SetAction {
             throw new $favoriteQuery->error;
         } else {
             $sessionFavourite = $session->get($sessionKey, []);
-            if (!isset($sessionFavourite[$product->getUi()])) {
-                $session->set($sessionKey, $sessionFavourite + [ $product->getId() => (array) (new FavouriteProduct($product)) ] );
+            if (!isset($sessionFavourite[$product->getId()])) {
+                $session->set($sessionKey, $sessionFavourite += [ $product->getId() => (array) (new FavouriteProduct($product)) ] );
             }
         }
 

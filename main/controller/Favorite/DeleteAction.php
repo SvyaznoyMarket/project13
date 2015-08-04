@@ -47,8 +47,8 @@ class DeleteAction {
         } else {
             // удаление продукта из сессии
             $sessionFavourite = $session->get($sessionKey, []);
-            if (isset($sessionFavourite[$product->getUi()])) {
-                unset($sessionFavourite[$product->getUi()]);
+            if (isset($sessionFavourite[$product->getId()])) {
+                unset($sessionFavourite[$product->getId()]);
                 $session->set($sessionKey, $sessionFavourite);
             }
         }
