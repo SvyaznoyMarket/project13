@@ -1,8 +1,5 @@
 <?php
-
-
 namespace View\Compare;
-
 
 class CompareLayout extends \View\DefaultLayout {
     protected $layout = 'layout-compare';
@@ -24,6 +21,4 @@ class CompareLayout extends \View\DefaultLayout {
         if (empty($products)) return '';
         return parent::slotHubrusJS() . \View\Partners\Hubrus::addHubrusData('compared_items', $products);
     }
-
-
 }

@@ -17,6 +17,8 @@ class DeleteAction {
 
         $curl = $this->getCurl();
         $user = \App::user();
+        $session = \App::session();
+        $sessionKey = \App::config()->session['favouriteKey'];
 
         if (!$user->getEntity()) {
             throw new \Exception\AccessDeniedException('Пользователь не авторизован');
@@ -42,6 +44,13 @@ class DeleteAction {
 
         if ($favoriteQuery->error) {
             throw new $favoriteQuery->error;
+        } else {
+            // удаление продукта из сессии
+            $sessionFavourite = $session->get($sessionKey, []);
+            if (isset($sessionFavourite[$product->getUi()])) {
+                unset($sessionFavourite[$product->getUi()]);
+                $session->set($sessionKey, $sessionFavourite);
+            }
         }
 
         if ($request->isXmlHttpRequest()) {
@@ -57,6 +66,12 @@ class DeleteAction {
                         ]
                     ),
                 ],
+                'favourite' => $sessionFavourite,
+                'product'   => [
+                    'imageUrl'  => $product->getMainImageUrl('product_60'),
+                    'prefix'    => $product->getPrefix(),
+                    'webName'   => $product->getWebName()
+                ]
             ]);
         } else {
             $response =  new \Http\RedirectResponse($request->headers->get('referer') ?: '/');

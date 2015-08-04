@@ -217,7 +217,9 @@
 
 
         self.setMapCenter = function (point) {
-            map.setCenter([point.latitude, point.longitude], 14)
+            console.log(point);
+            var bounds = $.isArray(point.bounds) && point.bounds.length == 2 ? point.bounds[0] : [point.latitude, point.longitude];
+            map.setCenter(bounds, 14)
         };
 
         /* INIT */

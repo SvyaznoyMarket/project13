@@ -79,9 +79,11 @@ class AppConfig {
     ];
     /** @var array */
     public $session = [
-        'name'            => null,
-        'cookie_lifetime' => null,
-        'cookie_domain'   => null,
+        'name'              => null,
+        'cookie_lifetime'   => null,
+        'cookie_domain'     => null,
+        'compareKey'        => null,
+        'favouriteKey'      => null,
     ];
     /** @var array */
     public $redirect301 = [

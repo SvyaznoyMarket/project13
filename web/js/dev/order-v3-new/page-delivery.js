@@ -442,9 +442,9 @@
 			if (window.location.host != 'www.enter.ru') href = href.replace(/^.*enter.ru/, ''); /* для работы на demo-серверах */
 			console.log('NEW href', href);
 			$.ajax({
-				url: href,
+				url: ENTER.utils.setURLParam('ajax', 1, href),
 				success: function(data) {
-					$('.orderOferta_tl:first').html($(data).find('.entry-content').html());
+					$('.orderOferta_tl:first').html(data.content || '');
 					showOfertaPopup();
 				}
 			})
