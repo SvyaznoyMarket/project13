@@ -8,6 +8,8 @@ return function(
         // Переименуем корзину
         $userConfig['cart']['products'] = isset($userConfig['cartProducts']) ? $userConfig['cartProducts'] : [];
         unset($userConfig['cartProducts']);
+        // Добавим избранное
+        $userConfig['favourite'] = \App::session()->get(\App::config()->session['favouriteKey'], []);
 
     } catch (\Exception $e) {
         \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['user-info', 'critical']);
