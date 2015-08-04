@@ -427,7 +427,11 @@
 				footerTop = footerFixedTop + (documentHeight - windowHeight - scrollTop);
 
 			$content.css({
-				'padding-top': $header2.outerHeight(false)
+				'padding-top': $header1.outerHeight(false) + $header2.outerHeight(false)
+			});
+
+			$header1.css({
+				'margin-top': (scrollTop >= 0 ? -scrollTop : 0) + 'px'
 			});
 
 			$header2.css({
