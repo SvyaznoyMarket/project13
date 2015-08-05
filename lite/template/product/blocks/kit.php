@@ -10,7 +10,7 @@ $f = function (
     <!-- набор-пакет -->
     <div class="product-section set-section" id="kit">
         <? if (!$product->getIsKitLocked() && !$product->isInShopStockOnly() && $product->getIsBuyable() && $product->getStatusId() != 5) : ?>
-            <span class="set-section-change"><span class="set-section-change__txt js-kitButton" data-product-ui="<?= $helper->escape($product->getUi()) ?>" data-sender="<?= $helper->json($sender) ?>" data-sender2="<?= $helper->escape($sender2) ?>">Изменить комплектацию</span></span>
+            <span class="set-section-change js-kitButton" data-product-ui="<?= $helper->escape($product->getUi()) ?>" data-sender="<?= $helper->json($sender) ?>" data-sender2="<?= $helper->escape($sender2) ?>"><span class="dotted">Изменить комплектацию</span></span>
         <? endif ?>
         <div class="product-section__tl">Базовая комплектация набора</div>
 

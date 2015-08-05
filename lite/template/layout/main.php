@@ -30,6 +30,8 @@ $bannerSlickConfig = [
             <main class="content">
                 <div class="content__inner">
                     <div class="banner-section js-module-require" data-module="jquery.slick" data-slick-config='<?= json_encode($bannerSlickConfig) ?>'>
+                        <button class="slider-section__btn slider-section__btn_prev js-banners-slider-btn-prev"></button>
+
                         <div class="banner-section-list js-banners-slider">
 
                         <? foreach ($page->getParam('bannerData', []) as $i => $banner) : ?>
@@ -43,6 +45,8 @@ $bannerSlickConfig = [
                         <? endforeach ?>
 
                         </div>
+
+                        <button class="slider-section__btn slider-section__btn_next js-banners-slider-btn-next" style="display: inline-block;"></button>
                     </div>
 
                     <div class="section">
