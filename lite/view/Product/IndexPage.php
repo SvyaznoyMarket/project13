@@ -14,6 +14,7 @@ class IndexPage extends LiteLayout
     public function prepare() {
         parent::prepare();
         $this->product = $this->getParam('product');
+        $this->prepareBreadcrumbs();
     }
 
 
@@ -23,6 +24,31 @@ class IndexPage extends LiteLayout
 
     public function blockFixedUserbar() {
         return $this->render('product/_userbar.fixed', ['product' => $this->product]);
+    }
+
+    /**
+     * Подготовка хлебных крошек
+     */
+    private function prepareBreadcrumbs() {
+        if (!$this->hasParam('breadcrumbs')) {
+            $breadcrumbs = [];
+
+            // Категории
+            foreach ($this->product->getCategory() as $category) {
+                $breadcrumbs[] = [
+                    'name' => $category->getName(),
+                    'url'  => $category->getLink(),
+                ];
+            }
+
+            // Последний элемент
+            $breadcrumbs[] = [
+                'name' => 'Артикул ' . $this->product->getArticle(),
+                'url'  => null
+            ];
+
+            $this->setParam('breadcrumbs', $breadcrumbs);
+        }
     }
 
 }
