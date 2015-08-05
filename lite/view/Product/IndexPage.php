@@ -15,6 +15,7 @@ class IndexPage extends LiteLayout
         parent::prepare();
         $this->product = $this->getParam('product');
         $this->prepareBreadcrumbs();
+        if (!$this->hasParam('isKit')) $this->setParam('isKit', (bool)$this->product->getKit());
     }
 
 
