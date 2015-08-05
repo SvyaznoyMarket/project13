@@ -92,7 +92,12 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
 
         <div class="buy-online js-module-require"
              data-module="enter.product"
-             data-id="<?= $product->getId() ?>">
+             data-id="<?= $product->getId() ?>"
+             data-product='<?= json_encode([
+                 'id'   => $product->getId(),
+                 'ui'   => $product->getUi()
+             ], JSON_HEX_APOS) ?>'
+            >
             <?= $helper->render('product/_button.buy', [
                 'product'  => $product,
                 'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
