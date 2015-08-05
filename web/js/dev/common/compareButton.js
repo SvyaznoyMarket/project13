@@ -34,11 +34,11 @@ $(function() {
 					$.each(data.compare, function(i,val){ ENTER.UserModel.compare.push(val) });
 
 					if (!inCompare) {
-						var userBarType = $(window).scrollTop() > ENTER.userBar.userBarStatic.offset().top + 10 ? 'fixed' : 'static';
+						var userBarType = $(window).scrollTop() > ENTER.userBar.$staticUserBar.offset().top + 10 ? 'fixed' : 'static';
 
 						(function() {
 							if (!comparePopups[userBarType]) {
-								var $userbar = userBarType == 'fixed' ? ENTER.userBar.userBarFixed : ENTER.userBar.userBarStatic;
+								var $userbar = userBarType == 'fixed' ? ENTER.userBar.$fixedUserBar : ENTER.userBar.$staticUserBar;
 								comparePopups[userBarType] = $('.js-compare-addPopup', $userbar);
 
 								$('.js-compare-addPopup-closer', comparePopups[userBarType]).click(function() {
@@ -78,7 +78,7 @@ $(function() {
 						$('.js-compare-addPopup-webName', comparePopups[userBarType]).text(data.product.webName);
 
 						if (userBarType == 'fixed') {
-							ENTER.userBar.show();
+							ENTER.userBar.openFixedUserBar();
 						}
 
 						comparePopups[userBarType].addClass(compareNoticeShowClass);
