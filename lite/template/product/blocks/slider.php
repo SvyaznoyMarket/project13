@@ -73,6 +73,7 @@ $f = function (
         <? if ($url && !$products) : ?>
             data-module="enter.recommendations"
             data-url="<?= $url . '&' .http_build_query(['senders' => [$sender + ['type' => $type]]]) ?>"
+            style="display: none"
         <? endif ?>
 
         <? if ($products) : ?>
