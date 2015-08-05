@@ -88,15 +88,6 @@
             });
         });
 
-        /* ENTER Modules */
-        modules.define('enter.debug', ['jQuery', 'Mustache', 'enter.config'], function(provide){
-            window.ENTER = {};
-            loadScript("enter.modules/enter.debug.js", function () {
-                console.log('[Module] enter.debug');
-                provide();
-            });
-        });
-
         provide({});
     }
 );
