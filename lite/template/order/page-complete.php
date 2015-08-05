@@ -139,10 +139,11 @@ return function(
 
                                                 <? else : ?>
 
-                                                    <div class="checkout-complete-payment__title">Можно <span class="payBtn btn4 jsOnlinePaymentSpan"><span class="brb-dt">оплатить онлайн</span></span></div>
+                                                    <div class="checkout-complete-payment__title">Оплатить онлайн</div>
 
+                                                    <button class="checkout-complete-payment__btn btn-primary jsOnlinePaymentSpan">Оплатить</button>
                                                     <? foreach ($paymentMethods as $method) : ?>
-                                                        <img src="<?= $method->icon ?>" alt="" />
+                                                        <img class="checkout-complete-payment__img" src="<?= $method->icon ?>" alt="" />
                                                     <? endforeach ?>
 
                                                     <ul style="display: none;" class="customSel_lst popupFl jsOnlinePaymentList">

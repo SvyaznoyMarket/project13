@@ -40,6 +40,7 @@
         &__right {
             width: 232px;
             padding-right: 10px;
+
             vertical-align: top;
         }
         &__left {
@@ -50,6 +51,7 @@
         }
         &__center {
             padding: 0 10px;
+
             vertical-align: middle;
 
             .font-size(14);
@@ -69,12 +71,20 @@
 }
 
 .checkout-complete-payment {
-    border: 1px solid @orange-bright;
     padding: 10px;
+
     text-align: center;
 
+    border: 1px solid @orange-bright;
     &__title {
-    	.font-size(16);
+        .font-size(16);
+        margin: 0 0 3px;
+    }
+    &__btn {
+    	margin-right: 5px;
+    }
+    &__img {
+    	.inline-block(middle);
     }
 }
 
