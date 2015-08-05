@@ -85,6 +85,7 @@
                 }
 
                 this.listenTo(App.compare, 'syncEnd', this.compareChange);
+                this.listenTo(App, 'showuserbar', this.showFixedUserbar)
 
                 // Apply events
                 this.delegateEvents();
@@ -105,6 +106,7 @@
              * @memberOf    module:enter.userbar.view~EnterUserbarView#
              *
              * @listens     module:enter.compare.collection~CompareCollection#syncEnd
+             * @fires       module:App#showuserbar
              */
             compareChange: function( event ) {
                 var
@@ -129,7 +131,25 @@
                     this.subViews.comparingDD.fadeIn();
                     this.tid && clearTimeout(this.tid);
                     this.tid = setTimeout(self.subViews.comparingDD.fadeOut.bind(self.subViews.comparingDD, 300), this.timeToHide);
+
+                    App.trigger('showuserbar');
                 }
+            },
+
+            /**
+             * Принудительный показ юзербара
+             *
+             * @method      showFixedUserbar
+             * @memberOf    module:enter.userbar.view~EnterUserbarView#
+             *
+             * @listens     module:App#showuserbar
+             */
+            showFixedUserbar: function() {
+                if ( !this.isFixed ) {
+                    return;
+                }
+
+                this.$el.fadeIn();
             },
 
             /**
