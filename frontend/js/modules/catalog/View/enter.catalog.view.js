@@ -55,7 +55,10 @@
                 PAGINATION_WRAPPER: 'js-category-pagination',
                 PAGINATION: 'js-category-pagination-page',
                 PAGINATION_ACTIVE: 'act',
-                SELECTED_FILTERS_WRAPPER: 'js-category-filter-selected'
+                SELECTED_FILTERS_WRAPPER: 'js-category-filter-selected',
+                FILTER_TOGGLE_WRAPPER: 'js-category-filter-toggle-container',
+                FILTER_TOGGLE_BTN: 'js-category-filter-toggle-button',
+                FILTER_TOGGLE_ACTIVE: 'open'
             },
 
             /**
@@ -112,10 +115,11 @@
                 this.checkInfScroll();
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.SORTING]        = 'toggleSorting';
-                this.events['click .' + CSS_CLASSES.INF_SCROLL_BTN] = 'enableInfScroll';
-                this.events['click .' + CSS_CLASSES.PAGINATION_BTN] = 'disableInfScroll';
-                this.events['click .' + CSS_CLASSES.PAGINATION]     = 'togglePage';
+                this.events['click .' + CSS_CLASSES.SORTING]           = 'toggleSorting';
+                this.events['click .' + CSS_CLASSES.INF_SCROLL_BTN]    = 'enableInfScroll';
+                this.events['click .' + CSS_CLASSES.PAGINATION_BTN]    = 'disableInfScroll';
+                this.events['click .' + CSS_CLASSES.PAGINATION]        = 'togglePage';
+                this.events['click .' + CSS_CLASSES.FILTER_TOGGLE_BTN] = 'toggleFilter';
 
                 // Apply events
                 this.delegateEvents();
@@ -290,6 +294,28 @@
             },
 
             /**
+             * Скрытие\раскрытие фильтров
+             *
+             * @method      toggleFilter
+             * @memberOf    module:enter.catalog~CatalogView#
+             *
+             * @param       {jQuery.Event}      event
+             */
+            toggleFilter: function( event ) {
+                var
+                    currentTarget = $(event.currentTarget),
+                    wrapper       = currentTarget.parent('.' + CSS_CLASSES.FILTER_TOGGLE_WRAPPER);
+
+                if ( wrapper.hasClass(CSS_CLASSES.FILTER_TOGGLE_ACTIVE) ) {
+                    wrapper.removeClass(CSS_CLASSES.FILTER_TOGGLE_ACTIVE);
+                } else {
+                    wrapper.addClass(CSS_CLASSES.FILTER_TOGGLE_ACTIVE);
+                }
+
+                return false;
+            },
+
+            /**
              * Включение бесконечного скролла
              *
              * @method      enableInfScroll
@@ -415,7 +441,7 @@
              */
             updateListing: function( page ) {
                 var
-                    url       = this.createUrl(page);
+                    url = this.createUrl(page);
 
                 this.history.updateState(url);
                 this.subViews.wrapper.empty();
