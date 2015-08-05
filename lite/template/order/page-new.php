@@ -2,8 +2,8 @@
 
 	<?= $page->render('order/common/order-head') ?>
 
-    <section class="orderCnt jsOrderV3PageNew">
-        <h1 class="orderCnt_t">Получатель</h1>
+    <section class="checkout jsOrderV3PageNew">
+        <h1 class="checkout__title">Получатель</h1>
 
 
     	<div id="OrderV3ErrorBlock" class="errtx" style="display: none"></div>
