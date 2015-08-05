@@ -49,9 +49,8 @@ $buySender2 = $request->get('sender2');
      data-ui="<?= $product->getUi() ?>"
     ></div>
 
-<?= !empty($breadcrumbs) ? $helper->renderWithMustache('product/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
-
 <section class="product-card js-module-require" data-module="enter.product.viewed">
+    <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
 
     <script type="application/json" class="js-product-json"><?= json_encode([
             'id'    => $product->getId(),
