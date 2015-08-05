@@ -105,9 +105,19 @@
                 }
             },
 
+            /**
+             * Показ корзины
+             *
+             * @method      show
+             * @memberOf    module:enter.cart.view~EnterCartView#
+             *
+             * @fires       module:App#showuserbar
+             */
             show: function() {
                 this.subViews.cartDropDown.addClass(CSS_CLASSES.CART_SHOW);
                 this.showOverlay();
+
+                App.trigger('showuserbar');
 
                 this.tid && clearTimeout(this.tid);
                 this.tid = setTimeout(this.hide.bind(this), this.timeToHide);
