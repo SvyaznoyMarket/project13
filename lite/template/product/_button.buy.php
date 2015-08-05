@@ -8,6 +8,9 @@ $f = function(
 
     $buttonText = 'Купить';
 
+    // класс для набор-пакетов
+    if ($product->getKit() && !$product->getIsKitLocked()) $class .= ' btn-kit ';
+
     ?>
 
     <a
