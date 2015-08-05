@@ -56,7 +56,13 @@ $slickConfig = [
                         'sender[from]'      => 'MainPage'
                     ]) ?>
 
-                <div class="goods__item grid-4col__item js-module-require" data-module="enter.product" data-id="<?= $product->getId() ?>">
+                <div class="goods__item grid-4col__item js-module-require"
+                     data-module="enter.product"
+                     data-product='<?= json_encode([
+                         'id'   => $product->getId(),
+                         'ui'   => $product->getUi()
+                     ], JSON_HEX_APOS) ?>'
+                     data-id="<?= $product->getId() ?>">
                     <? if ($product->getLabel()) : ?>
                         <div class="sticker-list">
                             <div class="sticker sticker_sale"><?= $product->getLabel()->getName() ?></div>

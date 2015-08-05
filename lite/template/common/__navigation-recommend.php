@@ -22,7 +22,14 @@ $f = function(
     ?>
 
     <div class="menu-wow">
-        <div class="goods js-module-require" data-module="enter.product" data-id="<?= $product->getId() ?>">
+        <div class="goods js-module-require"
+             data-module="enter.product"
+             data-id="<?= $product->getId() ?>"
+             data-product='<?= json_encode([
+                 'id'   => $product->getId(),
+                 'ui'   => $product->getUi()
+             ], JSON_HEX_APOS) ?>'
+            >
             <div class="sticker sticker_sale">Товар дня</div>
 
             <a href="<?= $link ?>" class="goods__img">
