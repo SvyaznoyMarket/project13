@@ -145,6 +145,8 @@ $f = function (
                         data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>"
                         data-id="<?= $product->getId() ?>"
                         data-product="<?= $helper->json([
+                            'id'       => $product->getId(),
+                            'ui'       => $product->getUi(),
                             'article'  => $product->getArticle(),
                             'name'     => $product->getName(),
                             'isUpsale' => $product->getIsUpsale(),

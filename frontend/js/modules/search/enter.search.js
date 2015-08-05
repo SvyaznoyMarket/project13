@@ -8,13 +8,13 @@
     modules.define(
         'enter.search',
         [
-            'jQuery', 'ko'
+            'jQuery', 'ko', 'docCookies'
         ],
         module
     );
 }(
     this.modules,
-    function( provide ) {
+    function( provide, $, ko, docCookies ) {
         'use strict';
 
 
