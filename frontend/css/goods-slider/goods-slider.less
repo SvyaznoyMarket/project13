@@ -3,9 +3,9 @@
     .clearfix();
     &__inn {
         overflow: hidden;
-
-        width: 900px;
         margin: 0 auto 30px;
+        padding: 0 30px;
+        height: 170px;
     }
     &-list {
         position: relative;
@@ -18,7 +18,7 @@
             float: left;
 
             width: 120px;
-            margin-right: 36px;
+            margin: 0 18px;
 
             text-align: center;
             &:hover {
@@ -146,20 +146,19 @@
 
         border: 1px solid @grey-light-3;
         .goods-slider__inn {
-            float: right;
-
-            width: 675px;
             margin-top: 46px;
+            width: auto;
             .goods-slider-list__i {
-                margin-right: 15px;
+                margin: 0 8px;
             }
         }
+        .slider-section {
+        }
         .goods-slider__btn.goods-slider__btn--prev {
-            right: 670px;
-            left: auto;
+            left: 0;
         }
         .goods-slider__btn.goods-slider__btn--next {
-            right: -10px;
+            right: 0;
         }
     }
 }
