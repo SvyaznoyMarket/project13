@@ -18,154 +18,154 @@ return function(
 
     <?= $page->render('order/common/order-head', ['step' => 2]) ?>
 
-    <section class="orderCnt jsOrderV3PageComplete">
-        <h1 class="orderCnt_t">Ваши заказы</h1>
+    <section class="checkout jsOrderV3PageComplete">
+        <h1 class="checkout__title">Ваши заказы</h1>
 
-        <div class="orderLnSet">
+        <div class="checkout-complete">
 
             <? foreach ($orders as $order): ?>
                 <? /** @var $order \Model\Order\Entity */?>
 
-                <div class="orderLn clearfix" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
-                    <div class="orderLn_l">
-
+                <div class="checkout-complete-box" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
+                    <div class="checkout-complete-box__head">
                         <? if ($userEntity) : ?>
-                            <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
+                            <div class="checkout-complete-box__title">Заказ <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
                         <? else : ?>
-                            <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <?= $order->getNumberErp()?></div>
+                            <div class="checkout-complete-box__title">Заказ <?= $order->getNumberErp()?></div>
                         <? endif ?>
 
-                        <ul class="orderLn_lst">
-                            <? foreach ($order->getProduct() as $key => $product): ?>
-                                <? /** @var $product \Model\Order\Product\Entity */?>
-                                <? if (isset($products[$product->getId()])) : ?>
-                                    <li class="orderLn_lst_i"><?= $products[$product->getId()]->getPrefix() == '' ? mb_strimwidth($products[$product->getId()]->getName(), 0, 40, '…') :  mb_strimwidth($products[$product->getId()]->getPrefix(), 0, 40, '…') ?> <?= $product->getQuantity() ?> шт.</li>
-                                <? endif ?>
-                                <? if ($key == 2 && count($order->getProduct()) > 3) : ?>
-                                    <? $orderProductsString = $helper->numberChoiceWithCount(count($order->getProduct()) - 3, ['товар', 'товара', 'товаров']) ?>
-                                    <? if ($userEntity) : ?>
-                                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>">и ещё <?= $orderProductsString ?></a></li>
-                                    <? else : ?>
-                                        <li class="orderLn_lst_i">и ещё <?= $orderProductsString ?></li>
-                                    <? endif ?>
-                                    <? break; endif ?>
-                            <? endforeach ?>
-                        </ul>
-
+                        <? if ($order->getPaySum()): ?>
+                            <div class="checkout-complete-box__summ">
+                                <span class="checkout-complete-box__summ-title">Сумма заказа:</span>
+                                <span class="checkout-complete-box__summ-value"><?= $helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></span>
+                            </div>
+                        <? endif ?>
                     </div>
 
-                    <? if (\RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)) : ?>
+                    <div class="checkout-complete-box__content table">
+                        <div class="checkout-complete-box__left table-cell">
+                            <ul class="checkout-complete-orders">
+                                <? foreach ($order->getProduct() as $key => $product): ?>
+                                    <? /** @var $product \Model\Order\Product\Entity */?>
+                                    <? if (isset($products[$product->getId()])) : ?>
+                                        <li class="checkout-complete-orders__item"><?= $products[$product->getId()]->getPrefix() == '' ? mb_strimwidth($products[$product->getId()]->getName(), 0, 40, '…') :  mb_strimwidth($products[$product->getId()]->getPrefix(), 0, 40, '…') ?> <?= $product->getQuantity() ?> шт.</li>
+                                    <? endif ?>
+                                    <? if ($key == 2 && count($order->getProduct()) > 3) : ?>
+                                        <? $orderProductsString = $helper->numberChoiceWithCount(count($order->getProduct()) - 3, ['товар', 'товара', 'товаров']) ?>
+                                        <? if ($userEntity) : ?>
+                                            <li class="checkout-complete-orders__item"><a class="" href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>">и ещё <?= $orderProductsString ?></a></li>
+                                        <? else : ?>
+                                            <li class="checkout-complete-orders__item">и ещё <?= $orderProductsString ?></li>
+                                        <? endif ?>
+                                        <? break; endif ?>
+                                <? endforeach ?>
+                            </ul>
 
-                        <div class="orderLn_c">
-                            <div><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>
-                                <? if ($order->deliveredAt) : ?><?= strftime('%e %b %Y', $order->deliveredAt->getTimestamp()) ?><? endif ?>
-                                <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
-                            </div>
-                            <!--<div>Оплата при получении: наличные, банковская карта</div>-->
                         </div>
 
-                    <? endif ?>
+                        <? if (\RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)) : ?>
 
-                    <div class="orderLn_r">
-                        <? if ($order->getPaySum()): ?>
-                            <div class="orderLn_row orderLn_row-summ">
-                                <span class="summT">Сумма заказа:</span>
-                                <span class="summP"><?= $helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></span>
+                            <div class="checkout-complete-box__center table-cell">
+                                <div><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>
+                                    <? if ($order->deliveredAt) : ?><?= strftime('%e %b %Y', $order->deliveredAt->getTimestamp()) ?><? endif ?>
+                                    <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
+                                </div>
+                                <!--<div>Оплата при получении: наличные, банковская карта</div>-->
                             </div>
+
                         <? endif ?>
 
-                        <? if ($order->isPaid()) : ?>
+                        <div class="checkout-complete-box__right table-cell">
+                            <? if ($order->isPaid()) : ?>
 
-                            <!-- Оплачено -->
-                            <div class="orderLn_row orderLn_row-bg orderLn_row-bg-grey jsOrderPaid">
-                                <img class="orderLn_row_imgpay" src="/styles/order/img/payment.png" alt="">
-                            </div>
+                                <!-- Оплачено -->
+                                <div class="checkout-complete-box__row jsOrderPaid">
+                                    <img class="" src="/styles/order/img/payment.png" alt="">
+                                </div>
 
-                        <? else : ?>
+                            <? else : ?>
 
-                            <? if (isset($ordersPayment[$order->getNumber()])) : ?>
-                                <? $paymentEntity = $ordersPayment[$order->getNumber()]; /** @var $paymentEntity \Model\PaymentMethod\PaymentEntity */?>
+                                <? if (isset($ordersPayment[$order->getNumber()])) : ?>
+                                    <? $paymentEntity = $ordersPayment[$order->getNumber()]; /** @var $paymentEntity \Model\PaymentMethod\PaymentEntity */?>
 
-                                <? if (isset($paymentEntity->groups[2])) : ?>
+                                    <? if (isset($paymentEntity->groups[2])) : ?>
 
-                                    <div class="orderLn_row orderLn_row-bg jsOnlinePaymentBlock">
+                                        <div class="checkout-complete-payment jsOnboxPaymentBlock">
 
-                                        <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])
-                                            && $order->isCredit() ) : ?>
+                                            <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])
+                                                && $order->isCredit() ) : ?>
 
-                                            <!-- Кредит -->
+                                                <!-- Кредит -->
 
-                                            <div class="payT">Покупка в кредит</div>
-                                            <a href="" class="btnLightGrey jsCreditButton"><strong>Заполнить заявку</strong></a>
+                                                <div class="checkout-complete-payment__title">Покупка в кредит</div>
+                                                <a href="" class="jsCreditButton">Заполнить заявку</a>
 
-                                            <ul style="display: none;" class="customSel_lst popupFl customSel_lst-pay jsCreditList">
-                                                <? foreach ($banks as $bank) : ?>
-                                                    <? /** @var $bank \Model\CreditBank\Entity */?>
-                                                    <li class="customSel_i jsPaymentMethod" data-value="<?= $bank->getId() ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>">
-                                                        <img src="<?= $bank->getImage() ?>" />
-                                                        <!--                                                <strong>--><?//= $bank->getName() ?><!--</strong><br/>-->
-                                                        <!--                                                --><?//= $bank->getDescription() ?><!--<br/>-->
-                                                        <a href="<?= $bank->getLink() ?>" target="_blank" style="float: right">Условия кредитования</a>
-                                                    </li>
-                                                <? endforeach ?>
-                                            </ul>
+                                                <ul style="display: none;" class="customSel_lst popupFl customSel_lst-pay jsCreditList">
+                                                    <? foreach ($banks as $bank) : ?>
+                                                        <li class="customSel_i jsPaymentMethod" data-value="<?= $bank->getId() ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>">
+                                                            <img src="<?= $bank->getImage() ?>" />
+                                                            <a href="<?= $bank->getLink() ?>" target="_blank" style="float: right">Условия кредитования</a>
+                                                        </li>
+                                                    <? endforeach ?>
+                                                </ul>
 
-                                            <? if (isset($creditData[$order->getNumber()])) : ?>
-                                                <div class="credit-widget" data-value="<?= $helper->json($creditData[$order->getNumber()]) ?>"></div>
-                                            <? endif ?>
+                                                <? if (isset($creditData[$order->getNumber()])) : ?>
+                                                    <div class="credit-widget" data-value="<?= $helper->json($creditData[$order->getNumber()]) ?>"></div>
+                                                <? endif ?>
 
-                                        <? elseif (isset($paymentEntity->groups[\Model\PaymentMethod\PaymentGroup\PaymentGroupEntity::PAYMENT_NOW])) : ?>
-                                            <? $paymentMethods = array_filter($paymentEntity->methods, function (\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $method) use ($paymentEntity) {return $method->paymentGroup === $paymentEntity->groups[\Model\PaymentMethod\PaymentGroup\PaymentGroupEntity::PAYMENT_NOW]; }) ?>
+                                            <? elseif (isset($paymentEntity->groups[\Model\PaymentMethod\PaymentGroup\PaymentGroupEntity::PAYMENT_NOW])) : ?>
+                                                <? $paymentMethods = array_filter($paymentEntity->methods, function (\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $method) use ($paymentEntity) {return $method->paymentGroup === $paymentEntity->groups[\Model\PaymentMethod\PaymentGroup\PaymentGroupEntity::PAYMENT_NOW]; }) ?>
 
-                                            <!-- Онлайн-оплата -->
+                                                <!-- Онлайн-оплата -->
 
-                                            <? if ($order->sum > \App::config()->order['prepayment']['priceLimit']) : ?>
+                                                <? if ($order->sum > \App::config()->order['prepayment']['priceLimit']) : ?>
 
-                                                <div class="payT">Требуется <span class="payBtn btn4 jsOnlinePaymentSpan"><span class="brb-dt">предоплата</span></span></div>
-                                                <div class="orderLn_box jsOnlinePaymentBlock">
-                                                    <a href="" class="orderLn_btn btnLightGrey">
+                                                    <div class="checkout-complete-payment__title">Требуется <span class="payBtn btn4 jsOnboxPaymentSpan"><span class="brb-dt">предоплата</span></span></div>
+                                                    <div class="orderLn_box jsOnboxPaymentBlock">
+                                                        <a href="" class="orderLn_btn btnLightGrey">
+                                                            <? foreach ($paymentMethods as $method) : ?>
+                                                                <img src="<?= $method->icon ?>" alt="" />
+                                                            <? endforeach ?>
+                                                        </a>
+                                                    </div>
+                                                    <ul style="display: none;" class="customSel_lst popupFl jsOnlinePaymentList">
                                                         <? foreach ($paymentMethods as $method) : ?>
-                                                            <img src="<?= $method->icon ?>" alt="" />
+                                                            <li class="customSel_i jsPaymentMethod" data-value="<?= $method->id ?>">
+                                                                <?= $method->name ?><br/>
+                                                                <?= $method->description ?>
+                                                            </li>
                                                         <? endforeach ?>
-                                                    </a>
-                                                </div>
-                                                <ul style="display: none;" class="customSel_lst popupFl jsOnlinePaymentList">
+                                                    </ul>
+
+                                                <? else : ?>
+
+                                                    <div class="checkout-complete-payment__title">Можно <span class="payBtn btn4 jsOnlinePaymentSpan"><span class="brb-dt">оплатить онлайн</span></span></div>
+
                                                     <? foreach ($paymentMethods as $method) : ?>
-                                                        <li class="customSel_i jsPaymentMethod" data-value="<?= $method->id ?>">
-                                                            <strong><?= $method->name ?></strong><br/>
-                                                            <?= $method->description ?>
-                                                        </li>
+                                                        <img src="<?= $method->icon ?>" alt="" />
                                                     <? endforeach ?>
-                                                </ul>
 
-                                            <? else : ?>
+                                                    <ul style="display: none;" class="customSel_lst popupFl jsOnlinePaymentList">
+                                                        <? foreach ($paymentMethods as $method) : ?>
+                                                            <li class="customSel_i jsPaymentMethod" data-value="<?= $method->id ?>">
+                                                                <?= $method->name ?><br/>
+                                                                <?= $method->description ?>
+                                                            </li>
+                                                        <? endforeach ?>
+                                                    </ul>
 
-                                                <div class="payT">Можно <span class="payBtn btn4 jsOnlinePaymentSpan"><span class="brb-dt">оплатить онлайн</span></span></div>
-
-                                                <? foreach ($paymentMethods as $method) : ?>
-                                                    <img src="<?= $method->icon ?>" alt="" />
-                                                <? endforeach ?>
-
-                                                <ul style="display: none;" class="customSel_lst popupFl jsOnlinePaymentList">
-                                                    <? foreach ($paymentMethods as $method) : ?>
-                                                        <li class="customSel_i jsPaymentMethod" data-value="<?= $method->id ?>">
-                                                            <strong><?= $method->name ?></strong><br/>
-                                                            <?= $method->description ?>
-                                                        </li>
-                                                    <? endforeach ?>
-                                                </ul>
+                                                <? endif ?>
 
                                             <? endif ?>
 
-                                        <? endif ?>
+                                        </div>
 
-                                    </div>
+                                    <? endif ?>
 
                                 <? endif ?>
 
                             <? endif ?>
-
-                        <? endif ?>
+                        </div>
                     </div>
                 </div>
 
@@ -173,8 +173,8 @@ return function(
 
         </div>
 
-        <div class="orderCompl orderCompl_final clearfix">
-            <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
+        <div class="checkout-continue">
+            <a class="checkout-continue__link underline" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
         </div>
     </section>
 
