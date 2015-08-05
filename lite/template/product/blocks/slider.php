@@ -107,7 +107,7 @@ $f = function (
             </div>
         <? endif ?>
 
-        <div class="goods-slider__inn">
+        <div class="goods-slider__inn slider-section">
             <ul class="js-slider-goods" style="">
 
                 <? foreach ($products as $index => $product):
