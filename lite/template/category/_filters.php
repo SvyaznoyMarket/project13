@@ -1,14 +1,19 @@
 <?
-    // return null;
+
     use \Model\Product\Filter\Option\Entity as Option;
 
     /**
      * @var $productFilter  \Model\Product\Filter
      * @var $baseUrl        string
+     * @var $openFilter     bool
+     * @var $promoStyle     []
      */
 
-     $helper = \App::helper();
+    $helper = \App::helper();
+    $categories = [];
 
+    /** @var \Model\Product\Filter\Entity[] $alwaysShowFilters */
+    $alwaysShowFilters = [];
     /** @var \Model\Product\Filter\Entity $priceFilter */
     $priceFilter = null;
     /** @var \Model\Product\Filter\Entity $labelFilter */
@@ -23,6 +28,26 @@
     $hasSelectedOtherBrands = false;
 
     $countInListFilters = 0;
+
+    // Ювелирка
+    foreach ($productFilter->getFilterCollection() as $filter) {
+        if (!$filter->getIsInList()) {
+            continue;
+        } else if ($filter->isPrice()) {
+//            $priceFilter = $filter;
+//            $priceFilter->setStepType('price');
+        } else if ($filter->getIsAlwaysShow() && !$filter->isBrand()) {
+            $alwaysShowFilters[] = $filter;
+        } else {
+//            $otherFilters[] = $filter;
+//            $i++;
+        }
+
+        if ($filter->getIsInList()){
+//            $countInListFilters++;
+        }
+    }
+
     foreach ($productFilter->getUngroupedPropertiesV2() as $key => $property) {
         if (!$property->getIsInList()) {
             continue;
@@ -67,9 +92,23 @@
 ?>
 
 <!-- фильтр "Бренды и параметры" -->
-<div class="filter filter-options fltr" style="display: block">
+<div class="filter filter-options fltr filter-components" style="display: block">
 
     <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" method="GET">
+
+        <? foreach ($alwaysShowFilters as $filter): ?>
+            <div class="fltrSet <? if (!$filter->isOpenByDefault): ?>fltrSet-close<? endif ?> js-category-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>">
+                <div class="fltrSet_tggl <? if ($filter->isOpenByDefault): ?>fltrSet_tggl-dn<? endif ?> js-category-filter-toggle-button">
+                    <span class="fltrSet_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>
+                </div>
+
+                <div class="fltrSet_cnt js-category-filter-toggle-content" <? if (!$filter->isOpenByDefault): ?>style="display: none;"<? endif ?>>
+                    <div class="fltrSet_inn clearfix">
+                        <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
+                    </div>
+                </div>
+            </div>
+        <? endforeach ?>
 
         <? if ($brandFilter1): ?>
             <!-- бренды -->

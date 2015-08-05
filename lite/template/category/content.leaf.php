@@ -19,6 +19,7 @@
 
 $helper = \App::helper();
 $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager]);
+$promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? $catalogJson['promo_style'] : [];
 
 ?>
 <!-- для внутренних страниц добавляется класс middle_transform -->
@@ -62,6 +63,8 @@ $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager
                 <?= $page->render('category/_filters',[
                     'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
                     'productFilter' => $productFilter,
+                    'openFilter'    => false,
+                    'promoStyle'    => $promoStyle,
                 ]) ?>
 
                 <?= $helper->renderWithMustache('category/filters/selected.filters') ?>
