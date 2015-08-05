@@ -85,7 +85,7 @@
 
     // Информация о пользователе
     modules.require('enter.user', function(data){
-        if (data.user && data.user.id) {
+        if (data.user && data.user.id && d.querySelector('.js-userbar-user')) {
             d.querySelector('.js-userbar-user-link').href = '/private';
             d.querySelector('.js-userbar-user-text').innerHTML = data.user.name;
             d.querySelector('.js-userbar-user').classList.add('active');
