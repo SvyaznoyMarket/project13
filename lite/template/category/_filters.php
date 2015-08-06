@@ -102,7 +102,7 @@
                     <span class="fltrSet_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>
                 </div>
 
-                <div class="fltrSet_cnt js-category-filter-toggle-content" <? if (!$filter->isOpenByDefault): ?>style="display: none;"<? endif ?>>
+                <div class="fltrSet_cnt js-category-filter-toggle-content">
                     <div class="fltrSet_inn clearfix">
                         <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
                     </div>

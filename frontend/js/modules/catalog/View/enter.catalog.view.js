@@ -58,7 +58,8 @@
                 SELECTED_FILTERS_WRAPPER: 'js-category-filter-selected',
                 FILTER_TOGGLE_WRAPPER: 'js-category-filter-toggle-container',
                 FILTER_TOGGLE_BTN: 'js-category-filter-toggle-button',
-                FILTER_TOGGLE_ACTIVE: 'open'
+                FILTER_TOGGLE_ACTIVE: 'open',
+                LOADER: 'loader'
             },
 
             /**
@@ -121,6 +122,9 @@
                 this.events['click .' + CSS_CLASSES.PAGINATION]        = 'togglePage';
                 this.events['click .' + CSS_CLASSES.FILTER_TOGGLE_BTN] = 'toggleFilter';
 
+                this.loader.hide = this.loader.hide.bind(this);
+                this.loader.show = this.loader.show.bind(this);
+
                 // Apply events
                 this.delegateEvents();
             },
@@ -145,10 +149,12 @@
 
                 show: function() {
                     console.info('enter.catalog~CatalogView.loader#show');
+                    this.subViews.wrapper.addClass(CSS_CLASSES.LOADER);
                 },
 
                 hide: function() {
                     console.info('enter.catalog~CatalogView.loader#hide');
+                    this.subViews.wrapper.removeClass(CSS_CLASSES.LOADER);
                 }
             },
 

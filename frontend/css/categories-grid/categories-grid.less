@@ -1,6 +1,6 @@
 .categories-grid {
     &__item {
-        margin: 0;
+        margin: 0 0 5px;
         padding: 0;
     }
     &__link {
@@ -15,22 +15,23 @@
     &__img {
         display: table-cell;
 
-        width: 50px;
-        height: 50px;
-        padding-right: 10px;
+        width: 70px;
+        height: 70px;
 
         text-align: center;
         vertical-align: middle;
         .image {
-            max-width: 50px;
-            max-height: 50px;
+            max-width: 70px;
+            max-height: 70px;
         }
     }
     &__text {
-        .font-size(14);
-
         display: table-cell;
 
-        vertical-align: middle;;
+        padding-left: 10px;
+
+        vertical-align: middle;
+
+        .font-size(14);;
     }
 }
