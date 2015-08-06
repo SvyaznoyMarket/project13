@@ -114,8 +114,13 @@
         &:last-child {
             border: none;
         }
-        &.mDisabled {
-
+        &.disable {
+            .set-list__img,
+            .set-list__price,
+            .set-list__desc,
+            .set-list__name {
+                .opacity(.6);
+            }
         }
     }
     &__img {
