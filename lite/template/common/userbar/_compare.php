@@ -2,8 +2,8 @@
 <li class="user-controls__item user-controls__item_compare">
     <a href="<?= \App::router()->generate('compare') ?>" class="user-controls__link">
         <span class="user-controls__icon"><i class="i-controls i-controls--compare"></i></span>
-        <span class="js-userbar-compare-counter"></span>
         <span class="user-controls__text">Сравнение</span>
+        <span class="user-controls__count js-userbar-compare-counter"></span>
     </a>
 
     <div class="notice-dd notice-dd_compare js-userbar-compare-dd" style="display: none"></div>
