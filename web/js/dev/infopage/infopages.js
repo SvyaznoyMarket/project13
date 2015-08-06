@@ -306,17 +306,20 @@ $(document).ready(function(){
         var popup = $('.js-tarifs-popup').clone();
         $('.js-tarifs-popup').remove();
         $('body').append('<div class="js-tarifs-overlay"></div>');
-        $('body').append(popup);
+        $('body').append(popup).addClass('body-fixed');
+
         $('.js-tarifs-popup').show();
 
     });
     $('body').on('click', '.js-tarifs-popup .popup-closer', function(){
         $('.js-tarifs-popup').hide();
         $('.js-tarifs-overlay').remove();
+        $('body').removeClass('body-fixed');
     });
     $('body').on('click', '.js-tarifs-overlay', function(){
         $('.js-tarifs-popup').hide();
         $(this).remove();
+        $('body').removeClass('body-fixed');
     });
     $('body').on('keyup', '.js-tarifs-search', function(){
        var $this = $(this),
