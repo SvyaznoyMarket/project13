@@ -333,6 +333,19 @@
             }
         }
         &__content{
+            position: relative;
+            &:before{
+                content: '';
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                height: 10px;
+                width: 95%;
+                .gradient(#fff, rgba(255, 255, 255, 0), #fff);
+                z-index: 2;
+            }
+        }
+        &__lst{
             padding: 0px 36px 0px 26px;
             height: 342px;
             overflow: auto;
