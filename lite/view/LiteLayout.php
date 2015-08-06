@@ -97,4 +97,11 @@ class LiteLayout extends \View\Layout
             : null;
     }
 
+    /** Основной контент страницы
+     * @return string
+     */
+    public function blockContent() {
+        return '';
+    }
+
 }
