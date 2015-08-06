@@ -362,7 +362,7 @@ class CompleteAction extends OrderV3 {
             $delivery = $iOrder->getDelivery();
             if (!$delivery || !$delivery->getDeliveredAt() || $delivery->isShipping) continue;
 
-            if ((new \DateTime())->format('d.m.Y') === $delivery->getDeliveredAt()->format('d.m.Y')) { // сегодня
+            if (!$delivery->pointUi && ((new \DateTime())->format('d.m.Y') === $delivery->getDeliveredAt()->format('d.m.Y'))) { // сегодня
                 return null;
             }
         }
