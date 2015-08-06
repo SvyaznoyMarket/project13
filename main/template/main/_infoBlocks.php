@@ -49,7 +49,7 @@
         </li>
     </ul>
 
-    <a href="/dostavka" target="_blank" class="shopInfoTab_btn">Подробнее об условиях, стоимости, сроках и интервалах доставки</a>
+    <a href="/dostavka" target="_blank" class="shopInfoTab_btn">Подробнее об условиях самовывоза</a>
 </div>
 
 <div class="shopInfoTab shopInfoTab-v2 jsShopInfoBlock" data-id="2">
