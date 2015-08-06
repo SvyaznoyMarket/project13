@@ -36,7 +36,7 @@
                 FAVORITE_BUTTON: 'js-favorite-button',
                 COMPARE_ACTIVE: 'active',
                 FAVORITE_ACTIVE: 'active',
-                KIT_POPUP: 'NEED_CLASS_HERE',
+                KIT_POPUP: 'js-productkit-popup',
                 SHOW_KIT_BTN: 'js-buy-kit-button'
             };
 
@@ -111,7 +111,7 @@
              */
             showKitPopup: function() {
                 this.subViews.kitPopup = new KitPopupView({
-                    el: this.$el.find('.' + CSS_CLASSES.KIT_POPUP),
+                    el: Backbone.$('.' + CSS_CLASSES.KIT_POPUP),
                     model: this.model
                 });
 

@@ -5,6 +5,7 @@
  * @requires    App
  * @requires    enter.BaseViewClass
  * @requires    enter.productkit.collection
+ * @requires    enter.productkit.item.view
  * @requires    printPrice
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
@@ -16,13 +17,14 @@
             'App',
             'enter.BaseViewClass',
             'enter.productkit.collection',
+            'enter.productkit.item.view',
             'printPrice'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, App, BaseViewClass, ProductKitCollection, printPrice ) {
+    function( provide, App, BaseViewClass, ProductKitCollection, ProductKitItemView, printPrice ) {
         'use strict';
 
         var
@@ -173,9 +175,24 @@
              * @listens     module:enter.productkit.collection~ProductKitCollection#syncEnd
              */
             render: function() {
+                var
+                    self = this;
+
                 console.groupCollapsed('module:enter.productkit.view~ProductKitView#render');
                 console.dir(this.collection.models);
                 console.groupEnd();
+
+                this.collection.each(function( model ) {
+                    var
+                        id          = model.get('id'),
+                        subViewName = 'kititem_' + id;
+
+                    self.subViews[subViewName] = new ProductKitItemView({
+                        model: model
+                    });
+
+                    self.$el.append(self.subViews[subViewName].render());
+                });
             }
         }));
     }
