@@ -6,7 +6,9 @@ return function(
     $hasProductsOnlyFromPartner,
     array $bonusCards,
     $error = null,
-    $previousPost = null
+    $previousPost = null,
+    $phone = '',
+    $email = ''
 ) {
     /** @var $bonusCards \Model\Order\BonusCard\Entity[] */
     $userEntity = $user->getEntity();
@@ -17,8 +19,8 @@ return function(
     $isEmailRequired = \App::config()->order['emailRequired'];
     $config = \App::config();
 
-    $userPhone = isset($previousPost['user_info']['phone']) ? $previousPost['user_info']['phone'] : '';
-    $userMail = isset($previousPost['user_info']['email']) ? $previousPost['user_info']['email'] : '';
+    $userPhone = isset($previousPost['user_info']['phone']) ? $previousPost['user_info']['phone'] : $phone;
+    $userMail = isset($previousPost['user_info']['email']) ? $previousPost['user_info']['email'] : $email;
 ?>
 
 <?= $helper->render('order-v3-new/__head', ['step' => 1]) ?>
