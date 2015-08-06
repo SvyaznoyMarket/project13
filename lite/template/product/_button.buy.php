@@ -7,15 +7,25 @@ $f = function(
 ) {
 
     $buttonText = 'Купить';
+    $jsClass = 'js-buy-button';
+    $link = $helper->url('cart.product.set', ['productId' => $product->getId()]);
 
-    // класс для набор-пакетов
-    if ($product->getKit() && !$product->getIsKitLocked()) $class .= ' btn-kit ';
+    // классы для набор-пакетов
+    if ($product->getKit() && !$product->getIsKitLocked()) {
+        $kitParams = [];
+        $class .= ' btn-kit ';
+        $jsClass = 'js-buy-kit-button';
+        foreach ($product->getKit() as $kitItem) {
+            $kitParams['product'][] = ['id' => $kitItem->getId(), 'quantity' => $kitItem->getCount()];
+        }
+        $link = $helper->url('cart.product.setList', $kitParams);
+    }
 
     ?>
 
     <a
-        class="goods__btn btn-primary js-buy-button <?= $class ?>"
-        href="<?= $helper->url('cart.product.set', ['productId' => $product->getId()]) ?>"
+        class="goods__btn btn-primary <?= $jsClass ?> <?= $class ?>"
+        href="<?= $link ?>"
         ><?= $buttonText ?></a>
 
 <? }; return $f;
