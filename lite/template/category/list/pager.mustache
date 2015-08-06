@@ -19,7 +19,9 @@
 
     <a href="{{link}}" class="goods__img">
         <img src="{{image}}" alt="" class="goods__img-image" style="opacity: 1;">
-        <!--<div class="sticker sticker_info">Товар со склада</div>-->
+        {{#inStoreLabel}}
+            <div class="sticker sticker_info">Товар со склада</div>
+        {{/inStoreLabel}}
     </a>
 
 
