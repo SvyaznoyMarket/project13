@@ -15,62 +15,65 @@ $f = function (
         <div class="product-section__tl">Базовая комплектация набора</div>
 
         <!--список комплектующих-->
-        <ul class="set-section-package">
+        <ul class="set-list">
             <? foreach ($products as $arrItem) :
                 /** @var \Model\Product\Entity $kitProduct */
                 $kitProduct = $arrItem['product'];
                 ?>
 
                 <!-- элемент комплекта -->
-                <li class="set-section-package-i">
-                    <a class="set-section-package-i__img" href="<?= $kitProduct->getLink() ?>"><img src="<?= $kitProduct->getMainImageUrl('product_120') ?>"></a><!--/ изображение товара -->
+                <li class="set-list__item">
+                    <a class="set-list__left set-list__img" href="<?= $kitProduct->getLink() ?>"><img src="<?= $kitProduct->getMainImageUrl('product_120') ?>"></a><!--/ изображение товара -->
 
-                    <div class="set-section-package-i__desc rown">
-                        <div class="name"><a class="" href="<?= $kitProduct->getMainImageUrl('product_120') ?>"><?= $kitProduct->getName(); ?></a></div><!--/ название товара -->
+                    <div class="set-list__right">
+                        <div class="set-list__name"><a class="" href="<?= $kitProduct->getMainImageUrl('product_120') ?>"><?= $kitProduct->getName(); ?></a></div><!--/ название товара -->
 
-                    <? if ($arrItem['height']!='' || $arrItem['width']!='' || $arrItem['depth']!='') : ?>
+                        <div class="set-list__desc table">
+                            <div class="table-cell">
+                            <? if ($arrItem['height']!='' || $arrItem['width']!='' || $arrItem['depth']!='') : ?>
 
-                        <!-- размеры товара -->
-                        <div class="column dimention">
-                            <span class="dimention__name">Высота</span>
-                            <span class="dimention__val"><?= $arrItem['height'] ?></span>
+                                <!-- размеры товара -->
+                                <div class="set-list__dimention">
+                                    <span class="set-list__dimention-name">Высота</span>
+                                    <span class="set-list__dimention-val"><?= $arrItem['height'] ?></span>
+                                </div>
+
+                                <div class="set-list__dimention">
+                                    <span class="set-list__dimention-name">&nbsp;</span>
+                                    <span class="set-list__dimention-val set-list__dimention-val_separation">x</span>
+                                </div>
+
+                                <div class="set-list__dimention">
+                                    <span class="set-list__dimention-name">Ширина</span>
+                                    <span class="set-list__dimention-val"><?= $arrItem['width'] ?></span>
+                                </div>
+
+                                <div class="set-list__dimention">
+                                    <span class="set-list__dimention-name">&nbsp;</span>
+                                    <span class="set-list__dimention-val set-list__dimention-val_separation">x</span>
+                                </div>
+
+                                <div class="set-list__dimention">
+                                    <span class="set-list__dimention-name">Глубина</span>
+                                    <span class="set-list__dimention-val"><?= $arrItem['depth'] ?></span>
+                                </div>
+
+                                <div class="set-list__dimention">
+                                    <span class="set-list__dimention-name">&nbsp;</span>
+                                    <span class="set-list__dimention-val">см</span>
+                                </div>
+                                <!--/ размеры товара -->
+
+                            <? endif ?>
+                            </div>
+
+                            <div class="set-list__price table-cell">
+                                <?= $helper->formatPrice($kitProduct->getPrice()) ?>&nbsp;<span class="rubl">p</span>
+                            </div><!--/ цена -->
+
+                            <div class="set-list__count table-cell"><?= $arrItem['count'] ?> шт.</div><!--/ количество в наборе -->
                         </div>
-
-                        <div class="column dimention">
-                            <span class="dimention__name">&nbsp;</span>
-                            <span class="dimention__val separation">x</span>
-                        </div>
-
-                        <div class="column dimention">
-                            <span class="dimention__name">Ширина</span>
-                            <span class="dimention__val"><?= $arrItem['width'] ?></span>
-                        </div>
-
-                        <div class="column dimention">
-                            <span class="dimention__name">&nbsp;</span>
-                            <span class="dimention__val separation">x</span>
-                        </div>
-
-                        <div class="column dimention">
-                            <span class="dimention__name">Глубина</span>
-                            <span class="dimention__val"><?= $arrItem['depth'] ?></span>
-                        </div>
-
-                        <div class="column dimention">
-                            <span class="dimention__name">&nbsp;</span>
-                            <span class="dimention__val">см</span>
-                        </div>
-                        <!--/ размеры товара -->
-
-                    <? endif ?>
-
                     </div>
-
-                    <div class="set-section-package-i__price rown">
-                        <?= $helper->formatPrice($kitProduct->getPrice()) ?>&nbsp;<span class="rubl">p</span>
-                    </div><!--/ цена -->
-
-                    <div class="set-section-package-i__qnt rown"><?= $arrItem['count'] ?> шт.</div><!--/ количество в наборе -->
                 </li>
                 <!-- элемент комплекта END -->
             <? endforeach ?>

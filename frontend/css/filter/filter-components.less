@@ -29,15 +29,23 @@
     }
     &_cnt {
         padding-bottom: 10px;
-
+        display: none;
         .clearfix();
+    }
+    &.open {
+        .fltrSet_tggl {
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAQAAAChr3WYAAAAXUlEQVR4AV3INxEAIQAF0T+0KEAEOhCCECrSRQMIQQciUEB5OYe33cJEM/+KcNyMnzU6DsCEzwzY9MyWa9nSMxysuqfCpaYm7zPXFA8vt+kl3mZik00zwZcTTuC0APGCTFFAHL6pAAAAAElFTkSuQmCC);
+        }
+        .fltrSet_cnt {
+            display: block;
+        }
     }
 }
 
 .filter-components {
-    .custom-label {
-        padding-left: 31px;
-    }
+    // .custom-label {
+    //     padding-left: 31px;
+    // }
     .filter-check {
         & + .custom-label {
             background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAAAAACMfPpKAAAAF0lEQVQY02O4jg0wXP+PCUZFB5UoNgAAMe6q120qOJ0AAAAASUVORK5CYII=') no-repeat 5px 50%;

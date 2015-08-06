@@ -11,7 +11,7 @@
             <div class="fltrSet_inn">
                 <!-- секция -->
                 <div class="filter-values__cell">
-                    <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29502" name="f-prop2194-beloe_zoloto_585" value="29502">
+                    <input class="custom-input" type="checkbox" id="id-productCategory-filter-prop2194-option-29502" name="f-prop2194-beloe_zoloto_585" value="29502">
                     <label class="custom-label filter-img-box" for="id-productCategory-filter-prop2194-option-29502">
                         <span class="customLabel_wimg"></span>
                         <img class="customLabel_bimg" src="http://0.imgenter.ru/uploads/media/fb/ed/c8/8750e48fe26f4e02ea5776914561ea5228f5490e.png">
@@ -23,7 +23,7 @@
 
                 <!-- секция -->
                 <div class="filter-values__cell">
-                    <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop2194-option-29506" name="f-prop2194-geltoe_zoloto_585" value="29506">
+                    <input class="custom-input" type="checkbox" id="id-productCategory-filter-prop2194-option-29506" name="f-prop2194-geltoe_zoloto_585" value="29506">
                     <label class="custom-label filter-img-box" for="id-productCategory-filter-prop2194-option-29506">
                         <span class="customLabel_wimg"></span>
                         <img class="customLabel_bimg" src="http://f.imgenter.ru/uploads/media/f1/1e/59/38c72c637f05867d9d5649e96179e8f60fa52342.png">
@@ -47,7 +47,7 @@
             <div class="fltrSet_inn">
                 <!-- секция -->
                 <div class="filter-values__cell">
-                    <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-14381" name="f-prop7451-agat" value="14381">
+                    <input class="custom-input" type="checkbox" id="id-productCategory-filter-prop7451-option-14381" name="f-prop7451-agat" value="14381">
                     <label class="custom-label filter-img-box" for="id-productCategory-filter-prop7451-option-14381">
                         <span class="customLabel_wimg"></span>
                         <img class="customLabel_bimg" src="http://2.imgenter.ru/uploads/media/be/4a/e9/b76078ce6a186de0b8e6bdd1c582f846e1831e6b.png">
@@ -59,7 +59,7 @@
 
                 <!-- секция -->
                 <div class="filter-values__cell">
-                    <input class="custom-input jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-prop7451-option-14382" name="f-prop7451-ametist" value="14382">
+                    <input class="custom-input" type="checkbox" id="id-productCategory-filter-prop7451-option-14382" name="f-prop7451-ametist" value="14382">
                     <label class="custom-label filter-img-box" for="id-productCategory-filter-prop7451-option-14382">
                         <span class="customLabel_wimg"></span>
                         <img class="customLabel_bimg" src="http://c.imgenter.ru/uploads/media/ae/b3/2b/2cb15804f1ac6129aace4e69892f0040de7e5a9c.png">
@@ -151,14 +151,14 @@
                         <!-- секция -->
                         <div class="filter-values__item js-category-filter-element" id="id-productCategory-filter-5-label" style="display: none;">
                             <div class="filter-values__cell">
-                                <input class="custom-input filter-check jsCustomRadio js-customInput " type="checkbox" id="id-productCategory-filter-label-option-36" name="f-label-sale" value="36">
+                                <input class="custom-input filter-check" type="checkbox" id="id-productCategory-filter-label-option-36" name="f-label-sale" value="36">
                                 <label class="custom-label" for="id-productCategory-filter-label-option-36">
                                     Sale
                                 </label>
                             </div>
 
                             <div class="filter-values__cell">
-                                <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-label-option-36" name="f-label-sale" value="36">
+                                <input class="custom-input filter-radio" type="radio" id="id-productCategory-filter-label-option-36" name="f-label-sale" value="36">
                                 <label class="custom-label" for="id-productCategory-filter-label-option-36">
                                     г. Сергиев Посад, ул. 1-я Рыбная, д. 19/22
                                 </label>
@@ -169,7 +169,7 @@
                         <!-- секция -->
                         <div class="filter-values__item hf js-category-filter-element" id="id-productCategory-filter-5-brand" style="display: block;">
                             <div class="filter-values__cell">
-                                <input class="custom-input filter-check jsCustomRadio js-customInput js-category-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-106" name="f-brand-disney" value="106" data-name="Disney">
+                                <input class="custom-input filter-checkjs-category-filter-brand" type="checkbox" id="id-productCategory-filter-brand-option-106" name="f-brand-disney" value="106" data-name="Disney">
                                 <label class="custom-label" for="id-productCategory-filter-brand-option-106">
                                     Disney
                                 </label>
@@ -180,7 +180,7 @@
                         <!-- секция -->
                         <div class="filter-values__item hf mLineItem js-category-filter-element" id="id-productCategory-filter-5-shop" style="display: none;">
                             <div class="filter-values__cell">
-                                <input class="custom-input filter-radio jsCustomRadio js-customInput " type="radio" id="id-productCategory-filter-shop-option-8" name="shop" value="8">
+                                <input class="custom-input filter-radio" type="radio" id="id-productCategory-filter-shop-option-8" name="shop" value="8">
                                 <label class="custom-label mCustomLabelRadio" for="id-productCategory-filter-shop-option-8">
                                     г. Сергиев Посад, ул. 1-я Рыбная, д. 19/22
                                 </label>
@@ -264,21 +264,21 @@
                 <div class="fltrBtnBox_dd_inn">
                     <div class="fltrBtn_param">
                         <div class="fltrBtn_ln ">
-                            <input class="custom-input custom-input_radio js-category-v2-filter-element-list-radio jsCustomRadio js-customInput  js-category-v2-filter-element-shop-input" type="radio" id="id-productCategory-filter-shop-option-2" name="shop" value="2">
+                            <input class="custom-input custom-input_radio js-category-v2-filter-element-list-radio js-category-v2-filter-element-shop-input" type="radio" id="id-productCategory-filter-shop-option-2" name="shop" value="2">
                             <label class="custom-label" for="id-productCategory-filter-shop-option-2">
                                 ул. Орджоникидзе, д. 11, стр. 10
                             </label>
                         </div>
 
                         <div class="fltrBtn_ln ">
-                            <input class="custom-input custom-input_radio js-category-v2-filter-element-list-radio jsCustomRadio js-customInput  js-category-v2-filter-element-shop-input" type="radio" id="id-productCategory-filter-shop-option-13" name="shop" value="13">
+                            <input class="custom-input custom-input_radio js-category-v2-filter-element-list-radio js-category-v2-filter-element-shop-input" type="radio" id="id-productCategory-filter-shop-option-13" name="shop" value="13">
                             <label class="custom-label" for="id-productCategory-filter-shop-option-13">
                                 Волгоградский пр-т, д. 119а.
                             </label>
                         </div>
 
                         <div class="fltrBtn_ln ">
-                            <input class="custom-input custom-input_radio js-category-v2-filter-element-list-radio jsCustomRadio js-customInput  js-category-v2-filter-element-shop-input" type="radio" id="id-productCategory-filter-shop-option-68" name="shop" value="68">
+                            <input class="custom-input custom-input_radio js-category-v2-filter-element-list-radio js-category-v2-filter-element-shop-input" type="radio" id="id-productCategory-filter-shop-option-68" name="shop" value="68">
                             <label class="custom-label" for="id-productCategory-filter-shop-option-68">
                                 Свободный пр-кт, д. 33
                             </label>
@@ -303,21 +303,21 @@
                 <div class="fltrBtnBox_dd_inn">
                     <div class="fltrBtn_param">
                         <div class="fltrBtn_ln ">
-                            <input class="custom-input custom-input_check2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput  " type="checkbox" id="id-productCategory-filter-prop3826-option-5337" name="f-prop3826-android" value="5337">
+                            <input class="custom-input custom-input_check2 js-category-v2-filter-element-list-checkbox " type="checkbox" id="id-productCategory-filter-prop3826-option-5337" name="f-prop3826-android" value="5337">
                             <label class="custom-label" for="id-productCategory-filter-prop3826-option-5337">
                                 Android
                             </label>
                         </div>
 
                         <div class="fltrBtn_ln ">
-                            <input class="custom-input custom-input_check2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput  " type="checkbox" id="id-productCategory-filter-prop3826-option-29929" name="f-prop3826-android_4_0_ics" value="29929">
+                            <input class="custom-input custom-input_check2 js-category-v2-filter-element-list-checkbox " type="checkbox" id="id-productCategory-filter-prop3826-option-29929" name="f-prop3826-android_4_0_ics" value="29929">
                             <label class="custom-label" for="id-productCategory-filter-prop3826-option-29929">
                                 Android 4.0 ICS
                             </label>
                         </div>
 
                         <div class="fltrBtn_ln ">
-                            <input class="custom-input custom-input_check2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput  " type="checkbox" id="id-productCategory-filter-prop3826-option-29928" name="f-prop3826-android_4_1_jelly_bean" value="29928">
+                            <input class="custom-input custom-input_check2 js-category-v2-filter-element-list-checkbox " type="checkbox" id="id-productCategory-filter-prop3826-option-29928" name="f-prop3826-android_4_1_jelly_bean" value="29928">
                             <label class="custom-label" for="id-productCategory-filter-prop3826-option-29928">
                                 Android 4.1 Jelly Bean
                             </label>

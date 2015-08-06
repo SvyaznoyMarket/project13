@@ -73,11 +73,11 @@
                         </div>
                     </div>
 
-                    <div class="section section_bordered">
+                    <!-- <div class="section section_bordered">
                         <div class="ep-banner">
                             <i class="ep-banner__icon"></i>Скидки для постоянных клиентов в <a class="underline" href="" title=""><span class="mark">Enter</span> Prize</a>
                         </div>
-                    </div>
+                    </div> -->
 
                     <?= $page->blockViewed() ?>
                 </div>

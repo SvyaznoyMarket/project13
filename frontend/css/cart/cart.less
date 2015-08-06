@@ -77,8 +77,6 @@
     padding: 15px 10px 10px;
 
     text-align: right;
-
-    border-bottom: 1px solid @grey-light-3;
     &__title {
         .font-size(16);
     }
@@ -102,8 +100,6 @@
 
 .cart-order {
     padding: 10px 0;
-
-    border-bottom: 1px solid @grey-light-3;
 
     .clearfix();
     &__back {
@@ -145,6 +141,23 @@
     .font-face('GloberRegular');
     .font-size(18);
     .clearfix();
+    &_mini {
+        .font-size(16);
+        .counter__btn {
+            width: 23px;
+            line-height: 23px;
+            height: 23px;
+        }
+        .counter__it {
+            line-height: 23px;
+            height: 23px;
+            width: 35px;
+        }
+        .counter__num {
+            font-style: 14px;
+            line-height: 23px;
+        }
+    }
     &__btn {
         line-height: 30px;
 
