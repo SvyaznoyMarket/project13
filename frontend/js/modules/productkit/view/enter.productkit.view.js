@@ -39,7 +39,8 @@
                 BUY_BUTTON: 'js-buy-button',
                 BASESET_CHECKBOX: 'js-base-set',
                 TOTAL_SUM: 'js-kit-total-sum',
-                TOTAL_QUANTITY: 'js-kit-total-sum'
+                TOTAL_QUANTITY: 'js-kit-total-quantity',
+                WRAPPER: 'js-kit-wrapper'
             };
 
         provide(BaseViewClass.extend({
@@ -59,7 +60,7 @@
                 this.listenTo(this.collection, 'changeBaseSet', this.changeBaseSet);
                 this.listenTo(this.collection, 'syncEnd', this.render);
 
-
+                this.wrapper        = this.$el.find('.' + CSS_CLASSES.WRAPPER);
                 this.totalQuantity  = this.$el.find('.' + CSS_CLASSES.TOTAL_QUANTITY);
                 this.totalSum       = this.$el.find('.' + CSS_CLASSES.TOTAL_SUM);
                 this.baseSetChekbox = this.$el.find('.' + CSS_CLASSES.BASESET_CHECKBOX);
@@ -68,6 +69,8 @@
                  // Setup events
                 this.events['click .' + CSS_CLASSES.BASESET_CHECKBOX] = 'checkBaseSet';
                 this.events['click .' + CSS_CLASSES.BUY_BUTTON]       = 'buyButtonHandler';
+
+                this.checkBaseSet();
 
                 // Apply events
                 this.delegateEvents();
@@ -159,7 +162,7 @@
              *
              * @listens     module:enter.productkit.collection~ProductKitCollection#changeBaseSet
              */
-            changeBaseSet: function() {
+            changeBaseSet: function( event ) {
                 var
                     isBaseSet = event.isBaseSet;
 
@@ -191,7 +194,7 @@
                         model: model
                     });
 
-                    self.$el.append(self.subViews[subViewName].render());
+                    self.wrapper.append(self.subViews[subViewName].render());
                 });
             }
         }));

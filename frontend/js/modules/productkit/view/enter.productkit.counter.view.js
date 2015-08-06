@@ -45,10 +45,12 @@
 
                 this.quantity = this.model.get('quantity');
                 this.input    = this.$el.find('.' + CSS_CLASSES.VALUE);
+                this.minValue = 0;
 
-                this.listenTo(this.model, 'change', this.render.bind(this));
+                this.listenTo(this.model, 'change', this.updateCounter);
+                this.listenTo(this, 'changeQuantity', this.render);
 
-                this.render();
+                this.updateCounter();
 
                 // Setup events
                 this.events['click .' + CSS_CLASSES.PLUS]  = 'plus';
@@ -61,19 +63,39 @@
             events: {},
 
             /**
+             * Обновление каунтера из модели
+             *
+             * @method      updateCounter
+             * @memberOf    module:enter.productkit.counter.view~ProductKitItemCounterView#
+             *
+             * @listens     module:enter.productkit.model~ProductKitModel#change
+             */
+            updateCounter: function() {
+                this.quantity = this.model.get('quantity');
+                this.input.val(this.quantity);
+            },
+
+            /**
              * Вызов отрисовки модели
              *
              * @method      render
              * @memberOf    module:enter.productkit.counter.view~ProductKitItemCounterView#
              *
-             * @listens     module:enter.productkit.model~ProductKitModel#change
+             * @listens     module:enter.productkit.counter.view~ProductKitItemCounterView#changeQuantity
              *
              * @param       {module:enter.ui.baseCounter~BaseCounter#changeQuantity}    event
              */
             render: function( event ) {
-                console.info('module:enter.productkit.counter.view~ProductKitItemCounterView#render');
+                var
+                    self = this;
 
-                this.input.val(this.model.get('quantity'));
+                this.timeout_id && clearTimeout(this.timeout_id);
+
+                self.timeout_id = setTimeout(function() {
+                    self.model.set({'quantity': event.quantity});
+                }, 400);
+
+                this.input.val(event.quantity);
             }
         }));
     }
