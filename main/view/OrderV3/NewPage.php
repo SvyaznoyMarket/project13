@@ -5,6 +5,13 @@ namespace View\OrderV3;
 class NewPage extends Layout {
     public function prepare() {
         $this->setTitle('Оформление заказа - Enter');
+        $errors = \App::session()->flash();
+        if ($errors) {
+            $this->setParam('error', $errors['errors']);
+            $this->setParam('email', $errors['email']);
+            $this->setParam('phone', $errors['phone']);
+        }
+
     }
 
     public function slotGoogleRemarketingJS($tagParams = []) {

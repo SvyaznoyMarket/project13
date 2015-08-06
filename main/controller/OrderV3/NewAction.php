@@ -25,6 +25,13 @@ class NewAction extends OrderV3 {
             }
 
             if ($request->isMethod('POST')) {
+
+                $errors = $this->validateInput($request);
+                if ($errors['errors']) {
+                    \App::session()->flash($errors);
+                    return new RedirectResponse(\App::router()->generate('orderV3'));
+                }
+
                 $post = $request->request->all();
                 $shop =  null;
                 if (method_exists($this->cart, 'getShop')) $shop = $this->cart->getShop();
@@ -109,5 +116,30 @@ class NewAction extends OrderV3 {
         $productsFromPartner = array_filter($products, function (\Model\Product\Entity $p) { return $p->isOnlyFromPartner() ; });
 
         return (bool)$productsFromPartner;
+    }
+
+    private function validateInput(\Http\Request $request){
+
+        $result = ['errors' => [], 'phone' => '', 'email' => ''];
+
+        $post = $request->request->all();
+        if (isset($post['user_info']['phone'])) {
+            $result['phone'] = $post['user_info']['phone'];
+            $phone = preg_replace('/^\+7/', '8', $post['user_info']['phone']);
+            $phone = preg_replace('/[\s\(\)-]/', '', $phone);
+            if (strlen($phone) != 11) $result['errors'][] = 'Некорректный номер телефона';
+        } else {
+            $result['errors'][] = 'Не указан номер телефона';
+        }
+        if (isset($post['user_info']['email'])) {
+            $result['email'] = $post['user_info']['email'];
+            if (!filter_var($post['user_info']['email'], FILTER_VALIDATE_EMAIL)) {
+                $result['errors'][] = 'Некорректный email';
+            }
+        } else {
+            $result['errors'][] = 'Не указан email';
+        }
+
+        return $result;
     }
 }

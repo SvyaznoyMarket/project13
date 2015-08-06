@@ -345,6 +345,54 @@ $(document).ready(function(){
 			return false;
 		});
 	}
+    //Попап стоимости доставки
+    $('.js-tarifs-popup-show').on('click',function(){
+        var popup = $('.js-tarifs-popup').clone();
+        $('.js-tarifs-popup').remove();
+        $('body').append('<div class="js-tarifs-overlay"></div>');
+        $('body').append(popup).addClass('body-fixed');
+
+        $('.js-tarifs-popup').show();
+
+    });
+    $('body').on('click', '.js-tarifs-popup .popup-closer', function(){
+        $('.js-tarifs-popup').hide();
+        $('.js-tarifs-overlay').remove();
+        $('body').removeClass('body-fixed');
+    });
+    $('body').on('click', '.js-tarifs-overlay', function(){
+        $('.js-tarifs-popup').hide();
+        $(this).remove();
+        $('body').removeClass('body-fixed');
+    });
+    $('body').on('keyup', '.js-tarifs-search', function(){
+       var $this = $(this),
+           value = $this.val().toLowerCase(),
+           noResult = true;
+
+        $('.tarifs-search__i').each(function(){//Пробегаем по списку букв
+            var $letter = $(this).find('.tarifs-search__letter'),
+                $cityList = $(this).find('.tarifs-search-city__i'),
+                isLetterShown = false;
+
+            $($cityList).each(function(){//Пробегаем по списку городов
+                var name = $(this).find('.tarifs-search-city__name').text().toLowerCase();
+
+                if (name.indexOf(value) == 0){
+                    $(this).show();
+                    isLetterShown = true;//Если хотя бы один город на эту букву найден - будем отображать и букву
+                    noResult = false;//Если хотя бы один город найден, не будем выводить сообщение о том, что ничего не найдено
+                } else {
+                    $(this).hide();
+                }
+            });
+
+            isLetterShown ? $letter.show() : $letter.hide();
+
+        });
+
+        noResult ? $('.tarifs-search__no-result').show() : $('.tarifs-search__no-result').hide();
+    });
 });
 
 $(function() {
