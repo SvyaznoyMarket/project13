@@ -1258,9 +1258,9 @@ $(function() {
         link = link.replace(/^http:\/\/.*?\//, '/');
 
         if ($offer.length == 0) {
-            $.get(link).done(function (doc) {
+            $.get(ENTER.utils.setURLParam('ajax', 1, link)).done(function (data) {
                 $('<div class="jsProductPartnerOfferDiv partner-offer-popup"></div>')
-                    .append($('<i class="closer jsPopupCloser">×</i>'), $('<div class="inn" />').append($(doc).find('h1'), $(doc).find('article')))
+                    .append($('<i class="closer jsPopupCloser">×</i>'), $('<div class="inn" />').append($('<h1 />').text(data.title || ''), $('<article />').html(data.content || '')))
                     .lightbox_me(popupDefaults)
             });
         } else {
