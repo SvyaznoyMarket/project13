@@ -1,7 +1,5 @@
 ;(function($) {
 
-	return;
-
     var $body = $(document.body),
         $orderContent = $('.orderCnt'),
         $errorBlock = $orderContent.find('#OrderV3ErrorBlock'),
