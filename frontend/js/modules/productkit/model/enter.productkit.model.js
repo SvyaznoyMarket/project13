@@ -10,13 +10,14 @@
     modules.define(
         'enter.productkit.model',
         [
-            'enter.BaseModelClass'
+            'enter.BaseModelClass',
+            'printPrice'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, BaseModelClass ) {
+    function( provide, BaseModelClass, printPrice ) {
         'use strict';
 
         provide(BaseModelClass.extend(/** @lends module:enter.productkit.model~ProductKitModel */{
@@ -36,8 +37,12 @@
 
                 console.info('module:enter.productkit.model~ProductKitModel#initialize');
 
-                this.set({'quantity': nowQuantity});
-                this.set({'sum': newSum});
+                this.set({
+                    'sum': newSum,
+                    'sum_format': printPrice(newSum),
+                    'price_format': printPrice(price),
+                    'quantity': nowQuantity
+                });
                 this.listenTo(this, 'change:quantity', this.changeQuantity);
             },
 
@@ -65,7 +70,11 @@
                 }
 
                 newSum = price * newQuantity;
-                this.set({'sum': newSum});
+
+                this.set({
+                    'sum': newSum,
+                    'sum_format': printPrice(newSum)
+                });
             }
         }));
     }

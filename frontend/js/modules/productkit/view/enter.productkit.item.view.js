@@ -34,7 +34,7 @@
             CSS_CLASSES = {
                 DISABLED: 'disable',
                 COUNTER: 'js-productkit-item-counter',
-                SUM: 'js-productkit-item-counter-sum'
+                SUM: 'js-productkit-item-sum'
             },
 
             /**
@@ -113,9 +113,9 @@
              */
             render: function() {
                 var
-                    // EXAMPLE
-                    html = mustache.render('{{tmp}}', { tmp: 'TEMP DATA ' + this.model.get('id')}),
-                    self = this,
+                    template = this.model.get('template'),
+                    html     = mustache.render(template, this.model.attributes),
+                    self     = this,
                     counters;
 
                 this.$el     = $(html);
@@ -123,13 +123,14 @@
                 counters     = this.$el.find('.' + CSS_CLASSES.COUNTER);
 
                 console.groupCollapsed('module:enter.productkit.item.view~ProductKitItemView#render');
-                console.dir(html);
+                console.dir(this.model.attributes);
                 console.groupEnd();
 
                 // Init counters
                 counters.each(function( index ) {
                     self.subViews['counter_' + index] = new ProductKitItemCounterView({
-                        el: $(this)
+                        el: $(this),
+                        model: self.model
                     });
                 });
 

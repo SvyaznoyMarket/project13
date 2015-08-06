@@ -166,6 +166,7 @@
             addProductkitElements: function( data ) {
                 var
                     kitProducts = data.product.kitProducts || {},
+                    template    = data.template,
                     key;
 
                 console.groupCollapsed('module:enter.productkit.collection~ProductKitCollection#addProductkitElements');
@@ -174,6 +175,7 @@
 
                 for ( key in kitProducts ) {
                     if ( kitProducts.hasOwnProperty(key) ) {
+                        kitProducts[key].template = template;
                         this.add(kitProducts[key]);
                     }
                 }

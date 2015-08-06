@@ -110,6 +110,11 @@
              * @memberOf    module:enter.userbar.view~EnterUserbarView#
              */
             showKitPopup: function() {
+                if ( this.subViews.kitPopup ) {
+                    this.subViews.kitPopup.show();
+                    return false;
+                }
+
                 this.subViews.kitPopup = new KitPopupView({
                     el: Backbone.$('.' + CSS_CLASSES.KIT_POPUP),
                     model: this.model

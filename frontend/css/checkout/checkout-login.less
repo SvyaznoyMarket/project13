@@ -79,6 +79,7 @@
         .font-size(14);
     }
     &__popup {
+        display: none;
         position: absolute;
         bottom: 0;
         left: 308px;
@@ -137,5 +138,9 @@
         cursor: pointer;
 
         background: no-repeat 0 0 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAA5klEQVQoz41SQQ6CMBDsjR9445+8gW9xYNKDkegFUaIHuWk4aEIVHDcIpYCJTNJk225mZ3ZXKQvtI0CEAkZOhED7aorMQ6irnCUNGzklc+oKYeY5SckKcSqfYximRJysBqb4zN84S2LHiDB1Pho++HLuwhi2wnU1lLtwK6p2PPFtS+tKzCDIbdKVxy46SNwjJwKFqLQPN9676Chxj5KIFAozE/5gIhoHxygUTDNrxEYSXVMwP9j2TsGBzdH2xdq6dLU5Tnu/Y7ROx30ja+lZPSrZ9m06BcOYz/kUFs904YYs3rf/2/sB+Dc7oEscnqEAAAAASUVORK5CYII=);
+
+        &:hover + div {
+            display: block;
+        }
     }
 }
