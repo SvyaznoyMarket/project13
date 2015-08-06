@@ -72,6 +72,9 @@ class KitAction {
                 'imageUrl' => $product->getMainImageUrl('product_500'),
                 'kitProducts' => \RepositoryManager::product()->getKitProducts($product),
             ],
+            'template' => file_exists( $templatePath = \App::config()->appDir . '/lite/template/product/blocks/kit.mustache' )
+                ? file_get_contents( $templatePath )
+                : ''
         ]);
     }
 }
