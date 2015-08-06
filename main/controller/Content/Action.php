@@ -60,6 +60,7 @@ class Action {
 
         if ($request->isXmlHttpRequest() && $request->get('ajax')) {
             return new \Http\JsonResponse([
+                'title' => $content['title'],
                 'content' => $content['content'],
             ]);
         } else {
