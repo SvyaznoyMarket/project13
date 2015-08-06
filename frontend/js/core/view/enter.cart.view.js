@@ -2,6 +2,11 @@
  * @module      enter.cart.view
  * @version     0.1
  *
+ * @requires    App
+ * @requires    jQuery
+ * @requires    enter.BaseViewClass
+ * @requires    enter.cart.item.view
+ *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
 !function( modules, module ) {

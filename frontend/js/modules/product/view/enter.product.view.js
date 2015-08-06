@@ -12,13 +12,14 @@
         [
             'App',
             'Backbone',
-            'enter.BaseViewClass'
+            'enter.BaseViewClass',
+            'enter.kit.popup.view'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, App, Backbone, BaseViewClass ) {
+    function( provide, App, Backbone, BaseViewClass, KitPopupView ) {
         'use strict';
 
         var
@@ -34,12 +35,14 @@
                 COMPARE_BUTTON: 'js-compare-button',
                 FAVORITE_BUTTON: 'js-favorite-button',
                 COMPARE_ACTIVE: 'active',
-                FAVORITE_ACTIVE: 'active'
+                FAVORITE_ACTIVE: 'active',
+                KIT_POPUP: 'NEED_CLASS_HERE',
+                SHOW_KIT_BTN: 'js-buy-kit-button'
             };
 
         provide(BaseViewClass.extend({
             /**
-             * @classdesc   Представление страницы сайта
+             * @classdesc   Представление карточки товара
              * @memberOf    module:enter.product.view~
              * @augments    module:BaseViewClass
              * @constructs  ProductView
@@ -55,9 +58,10 @@
                 };
 
                  // Setup events
-                this.events['click .' + CSS_CLASSES.BUY_BUTTON]     = 'buyButtonHandler';
-                this.events['click .' + CSS_CLASSES.COMPARE_BUTTON] = 'compareButtonHandler';
+                this.events['click .' + CSS_CLASSES.BUY_BUTTON]      = 'buyButtonHandler';
+                this.events['click .' + CSS_CLASSES.COMPARE_BUTTON]  = 'compareButtonHandler';
                 this.events['click .' + CSS_CLASSES.FAVORITE_BUTTON] = 'favoriteButtonHandler';
+                this.events['click .' + CSS_CLASSES.SHOW_KIT_BTN]    = 'showKitPopup';
 
                 // Apply events
                 this.delegateEvents();
@@ -97,6 +101,23 @@
                 } else {
                     this.subViews.compareBtn.removeClass(CSS_CLASSES.COMPARE_ACTIVE);
                 }
+            },
+
+            /**
+             * Показ окна с набором
+             *
+             * @method      showKitPopup
+             * @memberOf    module:enter.userbar.view~EnterUserbarView#
+             */
+            showKitPopup: function() {
+                this.subViews.kitPopup = new KitPopupView({
+                    el: this.$el.find('.' + CSS_CLASSES.KIT_POPUP),
+                    model: this.model
+                });
+
+                this.subViews.kitPopup.show();
+
+                return false;
             },
 
             /**

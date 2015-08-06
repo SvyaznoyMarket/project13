@@ -90,11 +90,12 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
 
                 <?= $page->blockViewed() ?>
 
-                <!-- SEO информация -->
-                <div class="section section_bordered section_seo">
-                    <p>Тут какой-то SEO-текст</p>
-                </div>
-                <!--/ SEO информация -->
+                <? if(!empty($seoContent)): ?>
+                    <div class="section section_bordered section_seo">
+                        <?= $seoContent ?>
+                    </div>
+                <? endif ?>
+
             </div>
         </main>
     </div>

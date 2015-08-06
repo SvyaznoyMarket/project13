@@ -2,6 +2,7 @@
 $config = [
     'slidesToShow' => 8,
     'slidesToScroll' => 8,
+    'lazyLoad'  => 'ondemand',
     'dots'      => false,
     'infinite'  => false,
     'nextArrow' => '.js-goods-slider-btn-next',
@@ -30,7 +31,7 @@ $config = [
 {{#products}}
     <div class="goods__item grid-8col__item">
         <a href="{{productUrl}}" class="goods__img" title="{{name}}">
-            <img src="{{imageUrl}}" alt="{{name}}" class="goods__img-image">
+            <img data-lazy="{{imageUrl}}" alt="{{name}}" class="goods__img-image">
         </a>
     </div>
 {{/products}}
