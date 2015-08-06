@@ -21,5 +21,7 @@
 
 <?= $page->blockUserConfig() ?>
 
+<?= $page->blockAuth() ?>
+
 </body>
 </html>
