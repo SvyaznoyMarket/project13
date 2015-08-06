@@ -2,8 +2,8 @@
     float: right;
     &__item {
         width: 120px;
-        margin: 5px 0 0;
         height: 42px;
+        margin: 5px 0 0;
 
         .inline-block(middle);
         &_compare {
@@ -38,9 +38,10 @@
             }
         }
     }
-    &__lk {
-        .inline-block();
+    &__link {
         height: 100%;
+
+        .inline-block();
     }
     &__icon {
         width: 25px;
@@ -48,10 +49,18 @@
 
         .inline-block(middle);
     }
+    &__count {
+        line-height: 1.3333;
+
+        padding: 2px 6px;
+
+        color: @white;
+        background: @orange-bright;
+
+        .inline-block(middle);
+    }
     &__text {
         overflow: hidden;
-
-        width: 85px;
 
         white-space: nowrap;
         text-overflow: ellipsis;
