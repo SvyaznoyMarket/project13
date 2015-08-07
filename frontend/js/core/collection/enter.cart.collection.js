@@ -265,7 +265,7 @@
                 console.dir(newCartData);
                 console.groupEnd();
 
-                this.total    = newCartData.cart.full_price || 0;
+                this.total    = newCartData.cart.sum || 0;
                 this.quantity = newCartData.cart.full_quantity || 0;
 
                 this.updateModels(newCartData.cart.products || []);
