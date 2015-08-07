@@ -27,7 +27,7 @@
 <!--/ попап одноклика -->
 
 <!-- Заявка на кухни -->
-<div class="popup popup-application popup_440" style="display: block;">
+<div class="popup popup-application popup_440" style="display: none;">
     <div class="popup__close js-popup-close">×</div>
     <div class="popup__title">Отправить заявку</div>
 
