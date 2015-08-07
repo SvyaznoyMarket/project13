@@ -21,6 +21,11 @@ $f = function(
         $link = $helper->url('cart.product.setList', $kitParams);
     }
 
+    if ($product->getSlotPartnerOffer()) {
+        $class = 'btn-set';
+        $buttonText = 'Отправить заявку';
+    }
+
     ?>
 
     <a
