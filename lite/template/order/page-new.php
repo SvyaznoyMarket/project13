@@ -21,7 +21,7 @@
                                data-mask="+7 (999) 999-99-99"
                                required
                             >
-                        <label class="form-order-login__label form-order-login__label_str placeholder" for="">Телефон</label>
+                        <label class="form-order-login__label placeholder placeholder_str" for="">Телефон</label>
                         <span class="form-order-login__hint">Для смс о состоянии заказа</span>
                     </div>
 
@@ -32,7 +32,7 @@
                                value=""
                                required
                             >
-                        <label class="form-order-login__label form-order-login__label_str placeholder" for="">E-mail</label>
+                        <label class="form-order-login__label placeholder placeholder_str" for="">E-mail</label>
 
                         <span class="form-order-login__hint form-order-login__hint_check">
                            <input class="custom-input custom-input_check jsCustomRadio js-customInput jsOrderV3SubscribeCheckbox"

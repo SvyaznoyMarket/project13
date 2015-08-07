@@ -11,10 +11,11 @@
    ========================================================================== */
 
 html {
-    .font-face('GloberSemiBold');
     font-size: 100%;
 
     color: @text-color;
+
+    .font-face('GloberSemiBold');
 }
 
 body {
@@ -86,8 +87,9 @@ nav {
 }
 
 p {
-    .font-face('GloberRegular');
     line-height: 1.6666;
+
+    .font-face('GloberRegular');
 }
 
 .fl-l {
@@ -215,17 +217,24 @@ textarea {
 }
 
 .placeholder {
-    .font-face('GloberRegular');
-
     position: absolute;
     top: 11px;
     left: 10px;
 
     color: @grey-type;
 
+    .font-face('GloberRegular');
     .transition();
+    &_str {
+        padding-left: 10px;
+
+        background: no-repeat 0 0 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAfUlEQVQI12NgQAL/UxkmAbEPQoCBgel/KAMbVPLo/zSGdDA7gYEDJGAPFPgApBcC8T0g3gjEB4Bitxj+OzCw/E9m8AAKrAMK/Afij/9TGEqBtDKyfZuBAqeB+AeQHYyQSGEIAgq++Z/EIAWkc4D4JRBzwRzFCDRaBa4YygYAl4k+pDkf0IQAAAAASUVORK5CYII=');
+    }
 }
 
+.align-center {
+    text-align: center;
+}
 /*
  * Hide visually and from screen readers:
  */
