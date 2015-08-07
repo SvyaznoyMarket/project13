@@ -63,6 +63,8 @@ class KitAction {
             throw new \Exception\NotFoundException(sprintf('Товар @%s не является набором.', $productUi));
         }
 
+        $kitProducts = \RepositoryManager::product()->getKitProducts($product);
+
         return new \Http\JsonResponse([
             'product' => [
                 'id' => $product->getId(),
@@ -70,7 +72,7 @@ class KitAction {
                 'prefix' => $product->getPrefix(),
                 'webname' => $product->getWebname(),
                 'imageUrl' => $product->getMainImageUrl('product_500'),
-                'kitProducts' => \RepositoryManager::product()->getKitProducts($product),
+                'kitProducts' => \App::config()->lite['enabled'] ? array_values($kitProducts) : $kitProducts,
             ],
             'template' => file_exists( $templatePath = \App::config()->appDir . '/lite/template/product/blocks/kit.mustache' )
                 ? file_get_contents( $templatePath )
