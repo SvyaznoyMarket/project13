@@ -2,6 +2,8 @@
  * @module      enter.productkit.counter.view
  * @version     0.1
  *
+ * @requires    enter.ui.baseCounter
+ *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
 !function( modules, module ) {

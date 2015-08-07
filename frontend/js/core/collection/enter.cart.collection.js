@@ -13,6 +13,7 @@
         'enter.cart.collection',
         [
             'App',
+            'underscore',
             'enter.BaseCollectionClass',
             'enter.cart.model',
             'urlHelper'
@@ -21,14 +22,18 @@
     );
 }(
     this.modules,
-    function( provide, App, BaseCollectionClass, CartModel, urlHelper ) {
+    function( provide, App, _, BaseCollectionClass, CartModel, urlHelper ) {
         'use strict';
 
         provide(BaseCollectionClass.extend(/** @lends module:enter.cart.collection~CartCollection */{
+            timeToSend: 100,
+            total: 0,
+            quantity: 0,
             model: CartModel,
 
             addUrl: '/cart/add-product/',
             deleteUrl: '/cart/delete-product/',
+            _addUrl: ' /cart/set-products',
 
             /**
              * Инициализация коллекции корзины
@@ -39,11 +44,18 @@
              * @constructs  CartCollection
              */
             initialize: function() {
+                var
+                    self = this,
+                    SaveToServerCollection = BaseCollectionClass.extend({
+                        model: self.model
+                    });
 
                 console.info('module:enter.cart.collection~CartCollection#initialize');
 
                 this.listenTo(this, 'add', this.addToCart);
                 this.listenTo(this, 'remove', this.removeFromCart);
+
+                this.saveToServerCollection = new SaveToServerCollection();
             },
 
             /**
@@ -67,11 +79,11 @@
 
                 console.groupCollapsed('module:enter.cart.collection~CartCollection#addToCart || product id', addedModel.get('id'));
 
-                this.ajax({
-                    type: 'GET',
-                    url: url,
-                    success: this.updateCart.bind(this)
-                });
+                this.saveToServerCollection.add(addedModel);
+
+                this.request && this.request.abort();
+                clearTimeout(this.timeout_ID);
+                this.timeout_ID = setTimeout(this.sendCartToServer.bind(this), this.timeToSend);
 
                 console.dir(addedModel);
                 console.groupEnd();
@@ -106,6 +118,37 @@
                 console.groupEnd();
 
                 App.productsCollection.get(removedId).set({'inCart': false, 'quantity': 1});
+            },
+
+            /**
+             * Отправка корзины на сервер
+             *
+             * @method      sendCartToServer
+             * @memberOf    module:enter.cart.collection~CartCollection#
+             */
+            sendCartToServer: function() {
+                var
+                    products = _.map(this.saveToServerCollection.toJSON(), function( obj ) {
+                        return {
+                            id: obj.id,
+                            quantity: obj.quantity,
+                        }
+                    }),
+                    url = urlHelper.addParams(this._addUrl, {
+                        product: products
+                    });
+
+                console.groupCollapsed('module:enter.cart.collection~CartCollection#sendCartToServer');
+                console.log(url);
+                console.dir(products);
+                console.dir(this.saveToServerCollection.toJSON());
+                console.groupEnd();
+
+                this.request = this.ajax({
+                    type: 'GET',
+                    url: url,
+                    success: this.updateCart.bind(this)
+                });
             },
 
             /**
@@ -226,6 +269,7 @@
                 this.quantity = newCartData.cart.full_quantity || 0;
 
                 this.updateModels(newCartData.cart.products || []);
+                this.saveToServerCollection.reset();
 
                 this.trigger('syncEnd');
             }
