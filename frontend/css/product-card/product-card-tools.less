@@ -8,8 +8,8 @@
             .product-card-tools__tx {
                 margin-left: 1px;
 
-                color: #363636;
-                border-color: #363636;
+                color: @grey-bright;
+                border-color: @grey-bright;
             }
         }
     }
@@ -18,15 +18,17 @@
 
         .inline-block();
 
-        &--active {
+        &.active {
             text-decoration: none;
 
             .i-tools-icon {
-                background-image: url('@{base-url}/product/img/i-tools-icons-hover.png');
-            }
-            .product-card-tools__tx {
-                color: #363636;
-                border-color: #363636;
+                &--wish {
+                    background-position: -51px 0;
+                }
+
+                &--product-compare {
+                    background-position: -75px 0;
+                }
             }
         }
 
@@ -35,8 +37,8 @@
         }
     }
     &__tx {
-        color: #9c9c9c;
-        border-bottom: 1px dotted #8c8c8c;
+        color: @grey-bright;
+        border-bottom: 1px dotted @grey-bright;
 
         .inline-block(middle);
     }
