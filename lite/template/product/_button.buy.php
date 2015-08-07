@@ -21,9 +21,11 @@ $f = function(
         $link = $helper->url('cart.product.setList', $kitParams);
     }
 
+    // заявка (слот)
     if ($product->getSlotPartnerOffer()) {
         $class .= ' btn-set ';
         $buttonText = 'Отправить заявку';
+        $jsClass = 'js-buy-slot-button';
     }
 
     ?>
