@@ -27,7 +27,9 @@
                 USERNAME_INPUT: 'js-auth-username-input',
                 USERNAME_LABEL: 'js-auth-username-label',
                 PASSWORD_INPUT: 'js-auth-password-input',
-                PASSWORD_LABEL: 'js-auth-password-label'
+                PASSWORD_LABEL: 'js-auth-password-label',
+                INPUT_VALID: 'valid',
+                INPUT_ERROR: 'error'
             };
 
         provide(BasePopup.extend({
@@ -54,6 +56,11 @@
                 // Setup events
                 this.events['submit .' + CSS_CLASSES.FORM]        = 'formSubmit';
                 this.events['click .' + CSS_CLASSES.SWITCH_STATE] = 'switchState';
+                this.events['keyup .' + CSS_CLASSES.USERNAME_INPUT + ', .' + CSS_CLASSES.PASSWORD_INPUT] = 'inputChange';
+
+                // Init
+                if (this.usernameInput.val().length > 0) this.usernameInput.addClass(CSS_CLASSES.INPUT_VALID);
+                if (this.passwordInput.val().length > 0) this.passwordInput.addClass(CSS_CLASSES.INPUT_VALID);
 
                 // Apply events
                 this.delegateEvents();
@@ -66,6 +73,19 @@
              * @type        {Object}
              */
             events: {},
+
+            /**
+             * Keyup на поле ввода логина и пароля
+             * @param event
+             */
+            inputChange: function( event ) {
+                var $target = $(event.target);
+                if ($target.val().length > 0) {
+                    $target.addClass(CSS_CLASSES.INPUT_VALID).removeClass(CSS_CLASSES.INPUT_ERROR)
+                } else {
+                    $target.addClass(CSS_CLASSES.INPUT_ERROR).removeClass(CSS_CLASSES.INPUT_VALID)
+                }
+            },
 
             switchState: function( event ) {
                 var
