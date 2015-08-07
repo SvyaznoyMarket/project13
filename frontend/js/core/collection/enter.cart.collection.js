@@ -3,8 +3,10 @@
  * @version     0.1
  *
  * @requires    App
+ * @requires    underscore
  * @requires    enter.BaseCollectionClass
  * @requires    enter.cart.model
+ * @requires    urlHelper
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
@@ -261,15 +263,34 @@
              * @param       {Array}    newCartData   Новые данные корзины
              */
             updateCart: function( newCartData ) {
+                var
+                    self = this;
+
                 console.groupCollapsed('module:enter.cart.collection~CartCollection#updateCart');
                 console.dir(newCartData);
-                console.groupEnd();
 
-                this.total    = newCartData.cart.sum || 0;
-                this.quantity = newCartData.cart.full_quantity || 0;
 
                 this.updateModels(newCartData.cart.products || []);
                 this.saveToServerCollection.reset();
+
+                this.quantity = newCartData.cart.full_quantity || 0;
+                this.total    = 0;
+
+                /**
+                 * Расчет общей стоимости коризны. Это вообще полная шляпа, но пока backend нихера сам не считает
+                 */
+                this.each(function( model ) {
+                    var
+                        q = model.get('quantity'),
+                        p = model.get('price');
+
+                    self.total += q * p;
+                });
+
+                console.log('Общая стоимость корзины', this.total);
+                console.log('Количество наименований в корзине', this.quantity);
+
+                console.groupEnd();
 
                 this.trigger('syncEnd');
             }
