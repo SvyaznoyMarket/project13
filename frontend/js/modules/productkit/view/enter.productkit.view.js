@@ -44,7 +44,7 @@
              * @type        {Object}
              */
             CSS_CLASSES = {
-                BUY_BUTTON: 'js-buy-button',
+                BUY_BUTTON: 'js-kitproduct-buy-button',
                 BASESET_CHECKBOX: 'js-base-set',
                 TOTAL_SUM: 'js-kit-total-sum',
                 TOTAL_QUANTITY: 'js-kit-total-quantity',
@@ -121,6 +121,8 @@
                         App.cart.trigger('add', clone);
                     }
                 });
+
+                return false;
             },
 
             /**
