@@ -73,7 +73,6 @@
              */
             initialize: function( options ) {
                 console.info('enter.cart.view~EnterCartView#initialize');
-                console.log(this.$el);
 
                 this.collection = App.cart;
                 this.timeToHide = 5 * 1000; // 5 sec
@@ -259,8 +258,9 @@
                 var
                     cartQ = this.collection.quantity;
 
-                console.info('module:enter.cart.view~EnterCartView#render');
+                console.groupCollapsed('module:enter.cart.view~EnterCartView#render');
                 console.log('cart quantity', cartQ);
+                console.log('cart sum', this.collection.total);
 
                 this.loader.hide.call(this);
 
@@ -276,7 +276,9 @@
                 }
 
                 this.subViews.cartSum.text(printPrice(this.collection.total));
-                this.subViews.cartQuantity.text(this.collection.quantity);
+                this.subViews.cartQuantity.text(cartQ);
+
+                console.groupEnd();
 
                 this.collection.each(this.addItem.bind(this));
             }

@@ -27,7 +27,7 @@
 <!--/ попап одноклика -->
 
 <!-- Заявка на кухни -->
-<div class="popup popup-application popup_440" style="display: none;">
+<div class="popup popup-application popup_440 js-popup-application" style="display: none;">
     <div class="popup__close js-popup-close">×</div>
     <div class="popup__title">Отправить заявку</div>
 
@@ -42,27 +42,27 @@
 
     <form class="form" action="">
         <div class="form__field">
-            <input type="text" class="form__it it" name="" value="">
+            <input type="text" class="form__it it js-application-phone" name="" value="">
             <label class="form__placeholder placeholder placeholder_str">Телефон</label>
         </div>
 
         <div class="form__field">
-            <input type="text" class="form__it it" name="" value="">
+            <input type="text" class="form__it it js-application-email" name="" value="">
             <label class="form__placeholder placeholder placeholder_str">Email</label>
         </div>
 
         <div class="form__field">
-            <input type="text" class="form__it it" name="" value="">
+            <input type="text" class="form__it it js-application-name" name="" value="">
             <label class="form__placeholder placeholder">Имя</label>
         </div>
 
         <div class="form__check-big">
-            <input type="checkbox" class="custom-input custom-input_check3" id="accept" name="" value="">
+            <input type="checkbox" class="custom-input custom-input_check3 js-application-agree" id="accept" name="" value="">
 
             <label class="custom-label" for="accept">Я ознакомлен и согласен с информацией <a class="dotted">о продавце и его офертой</a><br>Продавец-партнер: ООО МЕГАЭЛАТОН</label>
         </div>
 
-        <button class="product-card-set__btn-app btn-primary btn-primary_bigger btn-primary_centred btn-set" >Отправить заявку</button>
+        <button class="product-card-set__btn-app btn-primary btn-primary_bigger btn-primary_centred btn-set js-application-submit" >Отправить заявку</button>
 
         <div class="align-center"><a href="" class="dotted">Подробнее о кухонном гарнитуре</a></div>
     </form>

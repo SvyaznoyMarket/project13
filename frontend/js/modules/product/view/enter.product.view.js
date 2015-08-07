@@ -2,7 +2,12 @@
  * @module      enter.product.view
  * @version     0.1
  *
+ * @requires    App
+ * @requires    Backbone
+ * @requires    jQuery
  * @requires    enter.BaseViewClass
+ * @requires    enter.kit.popup.view
+ * @requires    enter.application.popup
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
@@ -12,14 +17,16 @@
         [
             'App',
             'Backbone',
+            'jQuery',
             'enter.BaseViewClass',
-            'enter.kit.popup.view'
+            'enter.kit.popup.view',
+            'enter.application.popup'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, App, Backbone, BaseViewClass, KitPopupView ) {
+    function( provide, App, Backbone, $, BaseViewClass, KitPopupView, ApplicationPopupView ) {
         'use strict';
 
         var
@@ -37,7 +44,9 @@
                 COMPARE_ACTIVE: 'active',
                 FAVORITE_ACTIVE: 'active',
                 KIT_POPUP: 'js-productkit-popup',
-                SHOW_KIT_BTN: 'js-buy-kit-button'
+                SHOW_KIT_BTN: 'js-buy-kit-button',
+                APPLICATION_BTN: 'js-buy-slot-button',
+                APPLICATION_POPUP: 'js-popup-application'
             };
 
         provide(BaseViewClass.extend({
@@ -57,11 +66,12 @@
                     favoriteBtn: this.$el.find('.' + CSS_CLASSES.FAVORITE_BUTTON)
                 };
 
-                 // Setup events
+                // Setup events
                 this.events['click .' + CSS_CLASSES.BUY_BUTTON]      = 'buyButtonHandler';
                 this.events['click .' + CSS_CLASSES.COMPARE_BUTTON]  = 'compareButtonHandler';
                 this.events['click .' + CSS_CLASSES.FAVORITE_BUTTON] = 'favoriteButtonHandler';
                 this.events['click .' + CSS_CLASSES.SHOW_KIT_BTN]    = 'showKitPopup';
+                this.events['click .' + CSS_CLASSES.APPLICATION_BTN] = 'showApplicationPopup';
 
                 // Apply events
                 this.delegateEvents();
@@ -121,6 +131,31 @@
                 });
 
                 this.subViews.kitPopup.show();
+
+                return false;
+            },
+
+            /**
+             * Показ окна оставлением заявки на покупку.
+             * [Пример карточки товара]{@link /product/furniture/kuhonniy-garnitur-dekor-220-h-130-sm-cherniy-metallik-krasniy-metallik-sahara-2050301025231}
+             *
+             * @method      showApplicationPopup
+             * @memberOf    module:enter.userbar.view~EnterUserbarView#
+             */
+            showApplicationPopup: function() {
+                console.info('module:enter.userbar.view~EnterUserbarView#showApplicationPopup');
+
+                if ( this.subViews.applicationPopup ) {
+                    this.subViews.applicationPopup.show();
+                    return false;
+                }
+
+                this.subViews.applicationPopup = new ApplicationPopupView({
+                    model: this.model,
+                    el: $('.' + CSS_CLASSES.APPLICATION_POPUP)
+                });
+
+                this.subViews.applicationPopup.show();
 
                 return false;
             },
