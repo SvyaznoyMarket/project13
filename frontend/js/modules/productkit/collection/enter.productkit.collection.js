@@ -175,12 +175,11 @@
 
                 for ( key in kitProducts ) {
                     if ( kitProducts.hasOwnProperty(key) ) {
-                        kitProducts[key].template = template;
                         this.add(kitProducts[key]);
                     }
                 }
 
-                this.trigger('syncEnd');
+                this.trigger('syncEnd', data);
             }
         }));
     }

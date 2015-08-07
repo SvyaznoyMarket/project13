@@ -2,32 +2,7 @@
 <div class="popup popup_set js-productkit-popup" style="display: none;">
     <div class="popup__close js-popup-close">×</div>
 
-    <div class="popup__title"></div>
-
-    <div class="set-section-main-img"><img src=""></div>
-
-    <div class="set-section__r">
-        <div class="set-list__tl clearfix">
-            Уточните комплектацию
-        </div>
-
-        <div class="set-section__inn">
-            <ul class="set-list js-kit-wrapper"></ul>
-        </div>
-
-        <div class="set-section__footer">
-            <div class="set-section__default packageSetDefault">
-                <input type="checkbox" id="defaultSet" class="custom-input custom-input_check js-base-set">
-                <label for="defaultSet" class="custom-label">Базовый комплект</label>
-            </div>
-
-            <div class="set-section__price">Итого за <span class="js-kit-total-quantity"></span> предметов: <strong class="js-kit-total-sum"></strong> <span class="rubl">p</span></div>
-
-            <div class="set-section__buy">
-                <a class="btn-primary btn-primary_bigger" href="">Купить</a>
-            </div>
-        </div>
-    </div>
+    <div class="js-kit-wrapper"></div>
 </div>
 <!--/ Попап набор-пакета -->
 

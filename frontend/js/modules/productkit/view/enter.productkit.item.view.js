@@ -2,8 +2,6 @@
  * @module      enter.productkit.item.view
  * @version     0.1
  *
- * @author      Zaytsev Alexandr
- *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
 !function( modules, module ) {
@@ -13,14 +11,13 @@
             'jQuery',
             'enter.BaseViewClass',
             'enter.productkit.counter.view',
-            'Mustache',
             'printPrice'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, jQuery, BaseViewClass, ProductKitItemCounterView, mustache, printPrice ) {
+    function( provide, jQuery, BaseViewClass, ProductKitItemCounterView, printPrice ) {
         'use strict';
 
         var
@@ -54,16 +51,32 @@
              * @constructs  ProductKitItemView
              */
             initialize: function( options ) {
-                console.info('module:enter.productkit.item.view~ProductKitItemView#initialize');
+                var
+                    self = this;
 
-                // Setup events
-                // this.events['click .' + CSS_CLASSES.] = '';
+                console.info('module:enter.productkit.item.view~ProductKitItemView#initialize');
 
                 this.listenTo(this.model, 'change:removedItem', this.checkRemovedStatus);
                 this.listenTo(this.model, 'change:sum', this.changeSum);
 
+                this.sumWrap  = this.$el.find('.' + CSS_CLASSES.SUM);
+                this.counters = this.$el.find('.' + CSS_CLASSES.COUNTER);
+
+                // Init counters
+                this.counters.each(function( index ) {
+                    self.subViews['counter_' + index] = new ProductKitItemCounterView({
+                        el: $(this),
+                        model: self.model
+                    });
+                });
+
+                // Setup events
+                // this.events['click .' + CSS_CLASSES.] = '';
+
                 // Apply events
                 this.delegateEvents();
+
+                this.checkRemovedStatus();
             },
 
             events: {},
@@ -103,41 +116,6 @@
                     textSum = ( newSum ) ? newSum : this.model.get('price');
 
                 this.sumWrap.text(printPrice(textSum));
-            },
-
-            /**
-             * Отрисовка представления элемента набора
-             *
-             * @method      render
-             * @memberOf    module:enter.productkit.item.view~ProductKitItemView#
-             */
-            render: function() {
-                var
-                    template = this.model.get('template'),
-                    html     = mustache.render(template, this.model.attributes),
-                    self     = this,
-                    counters;
-
-                this.$el     = $(html);
-                this.sumWrap = this.$el.find('.' + CSS_CLASSES.SUM);
-                counters     = this.$el.find('.' + CSS_CLASSES.COUNTER);
-
-                console.groupCollapsed('module:enter.productkit.item.view~ProductKitItemView#render');
-                console.dir(this.model.attributes);
-                console.groupEnd();
-
-                // Init counters
-                counters.each(function( index ) {
-                    self.subViews['counter_' + index] = new ProductKitItemCounterView({
-                        el: $(this),
-                        model: self.model
-                    });
-                });
-
-                this.checkRemovedStatus();
-                this.delegateEvents();
-
-                return this.$el;
             }
         }));
     }
