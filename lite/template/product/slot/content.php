@@ -45,202 +45,306 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
 $buySender2 = $request->get('sender2');
 ?>
 
-<div id="product-info"
-     data-ui="<?= $product->getUi() ?>"
-    ></div>
-
-<?= !empty($breadcrumbs) ? $helper->renderWithMustache('product/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
-
-<section>
-
-    <h1 class="product-name"><?= $helper->escape($product->getName()) ?></h1>
-
-    <? if ($product->isOnlyFromPartner() && $product->getPartnerName()) : ?>
-        <!-- Информация о партнере -->
-        <div class="vandor-offer">
-            <a href="<?= $product->getPartnerOfferLink() ?>" class="vandor-offer__lk i-info jsProductPartnerOffer" target="_blank">
-                <span class="i-info__tx">Продавец: <?= $product->getPartnerName() ?></span> <i class="i-info__icon i-product i-product--info-normal "></i>
-            </a>
-        </div>
-        <!-- /Информация о партнере -->
-    <? endif ?>
-
-    <!-- карточка товара -->
-    <?= $helper->render( $product->isAvailable() ? 'product/blocks/product' : 'product/blocks/product.not_available', [
-        'product' => $product,
-        'trustfactors' => $trustfactors,
-        'videoHtml' => $videoHtml,
-        'properties3D' => $properties3D,
-        'reviewsData' => $reviewsData,
-        'creditData' => $creditData,
-        'isKit' => $isKit,
-        'buySender' => $buySender,
-        'buySender2' => $buySender2,
-        'request' => \App::request(),
-        'favoriteProductsByUi' => $favoriteProductsByUi,
-        'shopStates' => $shopStates,
-    ]) ?>
-    <!--/ карточка товара -->
-
-    <!-- с этим товаром покупают -->
-    <div class="product-section section-border">
-        <? if (\App::config()->product['pullRecommendation']): ?>
-            <?= $helper->render('product/blocks/slider', [
-                'type'           => 'alsoBought',
-                'title'          => 'С этим товаром покупают',
-                'products'       => [],
-                'count'          => null,
-                'limit'          => \App::config()->product['itemsInSlider'],
-                'page'           => 1,
-//                'additionalData' => $additionalData,
-                'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
-                'sender'         => [
-                    'name'     => 'retailrocket',
-                    'position' => $isProductAvailable ? 'ProductAccessories' : 'ProductMissing', // все правильно - так и надо!
-                ],
-                'sender2' => $buySender2,
-            ]) ?>
-        <? endif ?>
-    </div>
-    <!--/ с этим товаром покупают -->
-
-    <? /* Трастфакторы партнеров */ ?>
-    <?= $helper->render('product/blocks/trustfactors.partner', ['trustfactors' => $trustfactors]) ?>
-
-    <div style="height: 50px">
-        <!-- навигация по странице -->
-        <div id="jsScrollSpy" class="product-tabs-scroll jsProductTabs">
-            <ul class="nav product-tabs">
-                <? if ($product->getKit()) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit" title="">Состав</a></li><? endif ?>
-                <? if ($showDescription) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
-                <? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
-                <li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li>
-                <? if ($product->isAvailable()) : ?><li class="product-tabs__i jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar" title="">Похожие товары</a></li><? endif ?>
-            </ul>
-        </div>
-        <!--/ навигация по странице -->
-    </div>
-
-    <? if ($isKit) : ?>
-        <?= $helper->render('product/blocks/kit', ['product' => $product, 'products' => $kitProducts, 'sender' => $buySender, 'sender2' => $buySender2]) ?>
-    <? endif ?>
-
-    <? if ($showDescription) : ?>
-
-        <!-- характеристики/описание товара -->
-        <div class="product-section clearfix" id="more">
-
-            <?= $helper->render('product/blocks/properties', ['product' => $product]) ?>
-
-            <? if ($hasMedia || $product->getDescription()) : ?>
-
-                <div class="product-section__desc">
-                    <div class="product-section__tl">Описание</div>
-                    <?= $helper->render('product/blocks/guides', ['trustfactors' => $trustfactors]) ?>
-                    <div class="product-section__content"><?= $product->getDescription() ?></div>
-                </div>
-
-            <? endif ?>
-        </div>
-        <!--/ характеристики/описание товара -->
-
-    <? endif ?>
-
-    <? if ($showAccessories): ?>
-        <!-- аксессуары -->
-        <div class="product-section">
-            <div class="product-section__tl" id="accessorize">Аксессуары</div>
-
-            <?= $helper->render('product/blocks/slider', [
-                'type'           => 'accessorize',
-                'title'          => null,
-                'products'       => array_values($accessories),
-                'categories'     => $accessoryCategory,
-                'count'          => count($product->getAccessoryId()),
-                'limit'          => (bool)$accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
-                'page'           => 1,
-                //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
-                'gaEvent'        => 'Accessorize',
-                'additionalData' => $additionalData,
-                'class'          => (bool)$accessoryCategory ? 'slideItem-3item' : 'slideItem-5item',
-                'sender'         => [
-                    'name'     => 'enter',
-                    'position' => $isProductAvailable ? 'ProductAccessoriesManual' : 'ProductMissing',
-                ],
-                'sender2' => $buySender2,
-            ]) ?>
-        </div>
-        <!--/ аксессуары -->
-    <? endif ?>
-
-    <? if ($reviewsData) : ?>
-        <!-- отзывы -->
-        <div class="product-section product-section--reviews" id="reviews">
-            <div class="product-section__tl">Отзывы</div>
-
-            <?= $helper->render('product/blocks/reviews', ['reviewsData' => $reviewsData, 'product' => $product ]) ?>
-
-
-        </div>
-        <!--/ отзывы -->
-    <? endif ?>
-
-    <!-- похожие товары -->
-    <div class="product-section product-section--inn" id="similar">
-        <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
-            <?= $helper->render('product/blocks/slider', [
-                'type'     => 'similar',
-                'title'    => 'Похожие товары',
-                'products' => [],
-                'count'    => null,
-                'limit'    => \App::config()->product['itemsInSlider'],
-                'page'     => 1,
-                'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-                'sender'   => [
-                    'name'     => 'retailrocket',
-                    'position' => 'ProductSimilar',
-                ],
-                'sender2' => $buySender2,
-            ]) ?>
-        <? endif ?>
-    </div>
-    <!--/ похожие товары -->
-
-    <!-- вы смотрели -->
-    <div class="product-section product-section--inn" style="margin-top: 40px;">
-        <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
-            <?= $helper->render('product/blocks/slider', [
-                'type'      => 'viewed',
-                'title'     => 'Вы смотрели',
-                'products'  => [],
-                'count'     => null,
-                'limit'     => \App::config()->product['itemsInSlider'],
-                'page'      => 1,
-                'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
-                'sender'    => [
-                    'name'     => 'enter',
-                    'from'     => 'productPage',
-                    'position' => $isProductAvailable ? 'Viewed' : 'ProductMissing',
-                ],
-                'sender2' => $buySender2,
-            ]) ?>
-        <? endif ?>
-    </div>
-    <!--/ вы смотрели -->
-
+<div class="product-card">
     <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
 
-    <!-- seo информация -->
-    <div class="bottom-content">
-        <?= $page->tryRender('product/_tag', ['product' => $product, 'newVersion' => true]) ?>
-        <?= $page->tryRender('product/_similarProducts', ['products' => $similarProducts, 'newVersion' => true]) ?>
-        <?php /*<p class="bottom-content__p bottom-content__text">
+    <section>
+        <h1 class="product-name"><?= $helper->escape($product->getName()) ?></h1>
 
-        </p>*/ ?>
-    </div>
-    <!--/ seo информация -->
+        <div class="product-card-set">
+            <div class="product-card-set-info product-card-set__right">
+                <div class="product-card-set-buying">
+                    <? if ($product->isOnlyFromPartner() && $product->getPartnerName()) : ?>
+                        <!-- Информация о партнере -->
+                        <div class="vendor-offer">
+                            <a href="<?= $product->getPartnerOfferLink() ?>" class="vendor-offer__lk i-info" target="_blank">
+                                <span class="i-info__tx">Продавец: <?= $product->getPartnerName() ?></span>
+                            </a>
+                        </div>
+                        <!-- /Информация о партнере -->
+                    <? endif ?>
 
-</section>
+                    <div class="product-card-set-buying__old-price">
+                        <span class="line-through">31 060</span> <span class="rubl">p</span>
+                    </div>
+
+                    <div class="product-card-set-buying__price">
+                        31 060 <span class="rubl">p</span>
+                    </div>
+
+                    <div class="product-card-set-buying__kit">Цена базового комплекта</div>
+                    <div class="product-card-set-buying__delivery-time">Срок доставки базового комплекта 3 дня</div>
+                </div>
+
+                <div class="product-card-set-recall">
+                    <div class="product-card-set-recall__title">Вам перезвонит специалист<br> и поможет выбрать:</div class="product-card-set-info-title">
+
+                    <ul class="product-card-set-recall-list">
+                        <li class="product-card-set-recall-list__item">Состав комплекта и его изменения;</li>
+                        <li class="product-card-set-recall-list__item">Условия доставки и сборки.</li>
+                    </ul>
+
+                    <a id="" href="#" class="product-card-set__btn-app btn-primary btn-primary_bigger btn-primary_centred btn-set" >Отправить заявку</a>
+
+                    <div class="product-card-set-recall__payment-types">Доступные способы оплаты:<br>Наличные, банковский перевод</div>
+                </div>
+
+                <dl class="set-specify-list">
+                    <dd class="set-specify-list__name">
+                        Материал фасада
+                    </dd>
+                    <dt class="set-specify-list__value">
+                        МДФ
+                    </dt>
+                    <dd class="set-specify-list__name">
+                        Покрытие фасада
+                    </dd>
+                    <dt class="set-specify-list__value">
+                        пленка ПВХ
+                    </dt>
+                    <dd class="set-specify-list__name">
+                        Цвет фасада
+                    </dd>
+                    <dt class="set-specify-list__value">
+                        черный металлик, красный металлик
+                    </dt>
+                    <dd class="set-specify-list__name">
+                        Материал каркаса
+                    </dd>
+                    <dt class="set-specify-list__value">
+                        ДСП
+                        <div class="props-list__hint">
+                            <a class="i-product i-product--hint" href=""></a>
+                            <!-- попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
+                            <div class="prop-hint info-popup">
+                                <i class="closer">×</i>
+                                <div class="info-popup__inn"><p><strong>ДСП</strong> – древесно-стружечная плита – современный мебельный материал, являющий основой для многих мебельных изделий. Сегодня мебель из ДСП в чистом виде не производят.&nbsp; Обычно каркас и фасад готового изделия покрывают различными материалами (пластик, пленка, ламинат и т.д.), которые как защищают ДСП от внешних воздействий, так и позволяют создавать любой декор и фактуру.</p></div>
+                            </div>
+                            <!--/ попап с подсказкой -->
+                        </div>
+                    </dt>
+                    <dd class="set-specify-list__name">
+                        Общая ширина
+                    </dd>
+                    <dt class="set-specify-list__value">
+                        240 см
+                    </dt>
+                    <dd class="set-specify-list__name">
+                        Общая высота
+                    </dd>
+                    <dt class="set-specify-list__value">
+                        217 см
+                    </dt>
+                    <dd class="set-specify-list__name">
+                        Общая глубина
+                    </dd>
+                    <dt class="set-specify-list__value">
+                        60 см
+                    </dt>
+                    <dd class="set-specify-list__name">
+                        <a class="dotted" href="" title="">Все характеристики</a>
+                    </dd>
+                    <dt class="set-specify-list__value">
+                    </dt>
+                </dl>
+
+                <ul class="product-card-tools">
+                    <li class="product-card-tools__i product-card-tools__i--compare js-compareProduct" data-bind="" data-id="" data-type-id="">
+                        <a id="" href="" class="product-card-tools__lk jsCompareLink" data-is-slot="" data-is-only-from-partner="">
+                            <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
+                            <span class="product-card-tools__tx">Сравнить</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="product-gallery product-card-set__left">
+                <div class="product-gallery-image">
+                    <img class="image" src="http://2.imgenter.ru/uploads/media/96/c8/ef/thumb_cf06_product_500.jpeg">
+                </div>
+
+                <div class="product-gallery-thumbs">
+                    <div class="product-gallery-thumbs__wrap">
+                        <ul class="product-gallery-thumbs__list">
+                            <li class="product-gallery-thumbs__item active">
+                                <a class="product-gallery-thumbs__link" href="#">
+                                    <img class="product-gallery-thumbs__img" src="http://9.imgenter.ru/uploads/media/96/c8/ef/thumb_cf06_product_60.jpeg" alt="">
+                                </a>
+                            </li>
+
+                             <li class="product-gallery-thumbs__item">
+                                <a class="product-gallery-thumbs__link" href="#">
+                                    <img class="product-gallery-thumbs__img" src="http://d.imgenter.ru/uploads/media/30/2b/6e/thumb_26e9_product_60.jpeg" alt="">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="product-gallery-thumbs__btn product-gallery-thumbs__btn_prev"></div>
+                    <div class="product-gallery-thumbs__btn product-gallery-thumbs__btn_next"></div>
+                </div><!--/slider mini product images -->
+            </div><!--/product images section -->
+        </div>
+
+        <div id="product-info" data-ui="<?= $product->getUi() ?>"></div>
+
+        <!-- с этим товаром покупают -->
+        <div class="product-section section-border">
+            <? if (\App::config()->product['pullRecommendation']): ?>
+                <?= $helper->render('product/blocks/slider', [
+                    'type'           => 'alsoBought',
+                    'title'          => 'С этим товаром покупают',
+                    'products'       => [],
+                    'count'          => null,
+                    'limit'          => \App::config()->product['itemsInSlider'],
+                    'page'           => 1,
+    //                'additionalData' => $additionalData,
+                    'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
+                    'sender'         => [
+                        'name'     => 'retailrocket',
+                        'position' => $isProductAvailable ? 'ProductAccessories' : 'ProductMissing', // все правильно - так и надо!
+                    ],
+                    'sender2' => $buySender2,
+                ]) ?>
+            <? endif ?>
+        </div>
+        <!--/ с этим товаром покупают -->
+
+        <? /* Трастфакторы партнеров */ ?>
+        <?= $helper->render('product/blocks/trustfactors.partner', ['trustfactors' => $trustfactors]) ?>
+
+        <div style="height: 50px">
+            <!-- навигация по странице -->
+            <div id="jsScrollSpy" class="product-tabs-scroll jsProductTabs">
+                <ul class="nav product-tabs">
+                    <? if ($product->getKit()) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit" title="">Состав</a></li><? endif ?>
+                    <? if ($showDescription) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
+                    <? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
+                    <li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li>
+                    <? if ($product->isAvailable()) : ?><li class="product-tabs__i jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar" title="">Похожие товары</a></li><? endif ?>
+                </ul>
+            </div>
+            <!--/ навигация по странице -->
+        </div>
+
+        <? if ($isKit) : ?>
+            <?= $helper->render('product/blocks/kit', ['product' => $product, 'products' => $kitProducts, 'sender' => $buySender, 'sender2' => $buySender2]) ?>
+        <? endif ?>
+
+        <? if ($showDescription) : ?>
+
+            <!-- характеристики/описание товара -->
+            <div class="product-section" id="more">
+
+                <?= $helper->render('product/blocks/properties', ['product' => $product]) ?>
+
+                <? if ($hasMedia || $product->getDescription()) : ?>
+
+                    <div class="product-section__desc">
+                        <div class="product-section__tl">Описание</div>
+                        <?= $helper->render('product/blocks/guides', ['trustfactors' => $trustfactors]) ?>
+                        <div class="product-section__content"><?= $product->getDescription() ?></div>
+                    </div>
+
+                <? endif ?>
+            </div>
+            <!--/ характеристики/описание товара -->
+
+        <? endif ?>
+
+        <? if ($showAccessories): ?>
+            <!-- аксессуары -->
+            <div class="product-section">
+                <div class="product-section__tl" id="accessorize">Аксессуары</div>
+
+                <?= $helper->render('product/blocks/slider', [
+                    'type'           => 'accessorize',
+                    'title'          => null,
+                    'products'       => array_values($accessories),
+                    'categories'     => $accessoryCategory,
+                    'count'          => count($product->getAccessoryId()),
+                    'limit'          => (bool)$accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
+                    'page'           => 1,
+                    //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
+                    'gaEvent'        => 'Accessorize',
+                    'additionalData' => $additionalData,
+                    'class'          => (bool)$accessoryCategory ? 'slideItem-3item' : 'slideItem-5item',
+                    'sender'         => [
+                        'name'     => 'enter',
+                        'position' => $isProductAvailable ? 'ProductAccessoriesManual' : 'ProductMissing',
+                    ],
+                    'sender2' => $buySender2,
+                ]) ?>
+            </div>
+            <!--/ аксессуары -->
+        <? endif ?>
+
+        <? if ($reviewsData) : ?>
+            <!-- отзывы -->
+            <div class="product-section product-section--reviews" id="reviews">
+                <div class="product-section__tl">Отзывы</div>
+
+                <?= $helper->render('product/blocks/reviews', ['reviewsData' => $reviewsData, 'product' => $product ]) ?>
 
 
+            </div>
+            <!--/ отзывы -->
+        <? endif ?>
+
+        <!-- похожие товары -->
+        <div class="product-section product-section--inn" id="similar">
+            <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
+                <?= $helper->render('product/blocks/slider', [
+                    'type'     => 'similar',
+                    'title'    => 'Похожие товары',
+                    'products' => [],
+                    'count'    => null,
+                    'limit'    => \App::config()->product['itemsInSlider'],
+                    'page'     => 1,
+                    'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+                    'sender'   => [
+                        'name'     => 'retailrocket',
+                        'position' => 'ProductSimilar',
+                    ],
+                    'sender2' => $buySender2,
+                ]) ?>
+            <? endif ?>
+        </div>
+        <!--/ похожие товары -->
+
+        <!-- вы смотрели -->
+        <div class="product-section product-section--inn" style="margin-top: 40px;">
+            <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
+                <?= $helper->render('product/blocks/slider', [
+                    'type'      => 'viewed',
+                    'title'     => 'Вы смотрели',
+                    'products'  => [],
+                    'count'     => null,
+                    'limit'     => \App::config()->product['itemsInSlider'],
+                    'page'      => 1,
+                    'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
+                    'sender'    => [
+                        'name'     => 'enter',
+                        'from'     => 'productPage',
+                        'position' => $isProductAvailable ? 'Viewed' : 'ProductMissing',
+                    ],
+                    'sender2' => $buySender2,
+                ]) ?>
+            <? endif ?>
+        </div>
+        <!--/ вы смотрели -->
+
+        <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
+
+        <!-- seo информация -->
+        <div class="bottom-content">
+            <?= $page->tryRender('product/_tag', ['product' => $product, 'newVersion' => true]) ?>
+            <?= $page->tryRender('product/_similarProducts', ['products' => $similarProducts, 'newVersion' => true]) ?>
+            <?php /*<p class="bottom-content__p bottom-content__text">
+
+            </p>*/ ?>
+        </div>
+        <!--/ seo информация -->
+    </section>
+</div>
 <!--/ карточка товара -->
