@@ -6,6 +6,8 @@
  * @requires    jQuery
  * @requires    enter.BaseViewClass
  * @requires    enter.cart.item.view
+ * @requires    printPrice
+ *
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
@@ -16,13 +18,14 @@
             'App',
             'jQuery',
             'enter.BaseViewClass',
-            'enter.cart.item.view'
+            'enter.cart.item.view',
+            'printPrice'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, App, $, BaseViewClass, CartItemView ) {
+    function( provide, App, $, BaseViewClass, CartItemView, printPrice ) {
         'use strict';
 
         var
@@ -272,7 +275,7 @@
                     this.$el.removeClass(CSS_CLASSES.EMPTY_CART);
                 }
 
-                this.subViews.cartSum.text(this.collection.total);
+                this.subViews.cartSum.text(printPrice(this.collection.total));
                 this.subViews.cartQuantity.text(this.collection.quantity);
 
                 this.collection.each(this.addItem.bind(this));

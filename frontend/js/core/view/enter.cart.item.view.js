@@ -123,7 +123,6 @@
                 }
 
                 counters.each(function( index ) {
-                    console.log('init counter', index, $(this));
                     self.subViews['counter_' + index] = new CartCounter({
                         el: $(this),
                         model: self.model,
