@@ -22,7 +22,7 @@ $f = function(
     }
 
     if ($product->getSlotPartnerOffer()) {
-        $class = 'btn-set';
+        $class .= ' btn-set ';
         $buttonText = 'Отправить заявку';
     }
 

@@ -43,6 +43,13 @@ $showDescription = $product->getDescription()
 
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
 $buySender2 = $request->get('sender2');
+
+
+/* Главные характеристики */
+$mainProperties = $product->getMainProperties();
+uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Product\Property\Entity $b) {
+    return $a->getPosition() - $b->getPosition();
+});
 ?>
 
 <div class="product-card">
@@ -64,12 +71,14 @@ $buySender2 = $request->get('sender2');
                         <!-- /Информация о партнере -->
                     <? endif ?>
 
+                    <? if ($product->getPriceOld()) : ?>
                     <div class="product-card-set-buying__old-price">
-                        <span class="line-through">31 060</span> <span class="rubl">p</span>
+                        <span class="line-through"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
                     </div>
+                    <? endif ?>
 
                     <div class="product-card-set-buying__price">
-                        31 060 <span class="rubl">p</span>
+                        <?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span>
                     </div>
 
                     <div class="product-card-set-buying__kit">Цена базового комплекта</div>
@@ -84,63 +93,34 @@ $buySender2 = $request->get('sender2');
                         <li class="product-card-set-recall-list__item">Условия доставки и сборки.</li>
                     </ul>
 
-                    <a id="" href="#" class="product-card-set__btn-app btn-primary btn-primary_bigger btn-primary_centred btn-set" >Отправить заявку</a>
+                    <?= $helper->render('product/_button.buy', [
+                        'product'   => $product,
+                        'class'     => 'product-card-set__btn-app btn-primary_bigger btn-primary_centred'
+                    ]) ?>
 
                     <div class="product-card-set-recall__payment-types">Доступные способы оплаты:<br>Наличные, банковский перевод</div>
                 </div>
 
                 <dl class="set-specify-list">
-                    <dd class="set-specify-list__name">
-                        Материал фасада
-                    </dd>
-                    <dt class="set-specify-list__value">
-                        МДФ
-                    </dt>
-                    <dd class="set-specify-list__name">
-                        Покрытие фасада
-                    </dd>
-                    <dt class="set-specify-list__value">
-                        пленка ПВХ
-                    </dt>
-                    <dd class="set-specify-list__name">
-                        Цвет фасада
-                    </dd>
-                    <dt class="set-specify-list__value">
-                        черный металлик, красный металлик
-                    </dt>
-                    <dd class="set-specify-list__name">
-                        Материал каркаса
-                    </dd>
-                    <dt class="set-specify-list__value">
-                        ДСП
-                        <div class="props-list__hint">
-                            <a class="i-product i-product--hint" href=""></a>
-                            <!-- попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
-                            <div class="prop-hint info-popup">
-                                <i class="closer">×</i>
-                                <div class="info-popup__inn"><p><strong>ДСП</strong> – древесно-стружечная плита – современный мебельный материал, являющий основой для многих мебельных изделий. Сегодня мебель из ДСП в чистом виде не производят.&nbsp; Обычно каркас и фасад готового изделия покрывают различными материалами (пластик, пленка, ламинат и т.д.), которые как защищают ДСП от внешних воздействий, так и позволяют создавать любой декор и фактуру.</p></div>
+
+                    <? foreach ($mainProperties as $prop) : ?>
+                        <dd class="set-specify-list__name"><?= $prop->getName() ?></dd>
+                        <dt class="set-specify-list__value">
+                            <?= $prop->getStringValue() ?>
+                            <? if ($prop->getValueHint()) : ?>
+                            <div class="props-list__hint">
+                                <a class="i-product i-product--hint" href=""></a>
+                                <!-- попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
+                                <div class="prop-hint info-popup">
+                                    <i class="closer">×</i>
+                                    <div class="info-popup__inn"><?= $prop->getValueHint() ?></div>
+                                </div>
+                                <!--/ попап с подсказкой -->
                             </div>
-                            <!--/ попап с подсказкой -->
-                        </div>
-                    </dt>
-                    <dd class="set-specify-list__name">
-                        Общая ширина
-                    </dd>
-                    <dt class="set-specify-list__value">
-                        240 см
-                    </dt>
-                    <dd class="set-specify-list__name">
-                        Общая высота
-                    </dd>
-                    <dt class="set-specify-list__value">
-                        217 см
-                    </dt>
-                    <dd class="set-specify-list__name">
-                        Общая глубина
-                    </dd>
-                    <dt class="set-specify-list__value">
-                        60 см
-                    </dt>
+                            <? endif ?>
+                        </dt>
+                    <? endforeach ?>
+
                     <dd class="set-specify-list__name">
                         <a class="dotted" href="" title="">Все характеристики</a>
                     </dd>
