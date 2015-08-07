@@ -101,7 +101,9 @@ class Action {
                     foreach ($item['options'] as $brandData) {
                         $brandEntity = new \Model\Brand\Entity($brandData);
                         $brands[] = $brandEntity;
-                        if (isset($brandData['token']) && $brandData['token'] == $brandToken) $brand = $brandEntity;
+                        if (isset($brandData['token']) && $brandData['token'] == $brandToken) {
+                            $brand = $brandEntity;
+                        }
                     }
                 }
             }
@@ -109,14 +111,24 @@ class Action {
 
         $client->execute();
 
+        if (!empty($brandToken) && !$brand) {
+            //\App::exception()->add(new \Exception('Бренд не найден', 404));
+            $brand = new \Model\Brand\Entity([
+                'id'    => '0',
+                'token' => $brandToken,
+            ]);
+        }
+
         $promoContent = '';
         if (!empty($catalogJson['promo_token'])) {
-            \App::contentClient()->addQuery(
-                trim((string)$catalogJson['promo_token']),
+            $scmsClient = \App::scmsClient();
+            $scmsClient->addQuery(
+                'api/static-page',
+                ['token' => [trim((string)$catalogJson['promo_token'])]],
                 [],
                 function($data) use (&$promoContent) {
-                    if (!empty($data['content'])) {
-                        $promoContent = $data['content'];
+                    if (!empty($data['pages'][0]['content'])) {
+                        $promoContent = $data['pages'][0]['content'];
                     }
                 },
                 function(\Exception $e) {
@@ -124,7 +136,8 @@ class Action {
                     \App::exception()->add($e);
                 }
             );
-            \App::contentClient()->execute();
+
+            $scmsClient->execute();
         }
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
@@ -492,7 +505,11 @@ class Action {
             $links[] = [
                 'name'          => isset($config['name']) ? $config['name'] : $child->getName(),
                 'url'           => $linkUrl,
-                'image'         => (!empty($config['image'])) ? $config['image'] : $child->getImageUrl('furniture' === $category_class ? 3 : 0),
+                'image'         => (!empty($config['image']))
+                    ? $config['image']
+                    : $child->getImageUrl('furniture' === $category_class || \App::config()->lite['enabled']
+                        ? 3
+                        : 0),
                 'css'           => isset($config['css']) ? $config['css'] : null,
                 'totalText'     => $totalText,
             ];
@@ -503,11 +520,11 @@ class Action {
 
     /**
      * @param \Model\Product\Category\Entity $category
-     * @param \Model\Product\Filter          $productFilter
-     * @param \View\Layout                   $page
-     * @param \Http\Request                  $request
+     * @param \Model\Product\Filter $productFilter
+     * @param \View\Layout $page
+     * @param \Http\Request $request
      * @return \Http\Response
-     * @throws \Exception\NotFoundException
+     * @throws \Exception
      */
     protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
@@ -551,7 +568,12 @@ class Action {
         // стиль листинга
         $listingStyle = isset($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null;
 
-        $hasBanner = 'jewel' !== $listingStyle ? true : false;
+        $hasBanner = 'jewel' !== $listingStyle;
+
+        if (\App::config()->lite['enabled']) {
+            $hasBanner = false;
+        }
+
         if ($hasBanner) {
             // уменшаем кол-во товаров на первой странице для вывода баннера
             $offset = $offset - (1 === $pageNum ? 0 : 1);
@@ -739,7 +761,8 @@ class Action {
                 ),
                 'pagination'     => (new \View\PaginationAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
-                    $productPager
+                    $productPager,
+                    $category
                 ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
                     \App::closureTemplating()->getParam('helper'),

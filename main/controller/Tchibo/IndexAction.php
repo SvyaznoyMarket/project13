@@ -8,7 +8,7 @@ class IndexAction {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
-        $contentClient = \App::contentClient();
+        $scmsClient = \App::scmsClient();
         $user = \App::user();
         $promoRepository = \RepositoryManager::promo();
         $region = $user->getRegion();
@@ -137,12 +137,13 @@ class IndexAction {
         }
 
         if (!empty($catalogJson['promo_token'])) {
-            $contentClient->addQuery(
-                $catalogJson['promo_token'],
+            $scmsClient->addQuery(
+                'api/static-page',
+                ['token' => [$catalogJson['promo_token']]],
                 [],
                 function($data) use (&$bannerBottom) {
-                    if (!empty($data['content'])) {
-                        $bannerBottom = $data['content'];
+                    if (!empty($data['pages'][0]['content'])) {
+                        $bannerBottom = $data['pages'][0]['content'];
                     }
                 },
                 function(\Exception $e) {
@@ -152,15 +153,15 @@ class IndexAction {
             );
         }
 
-        // Получаем контентный блок с вордпресса
         $promoContent = null;
         $promoToken = 'tchibo_promo';
-        $contentClient->addQuery(
-            $promoToken,
+        $scmsClient->addQuery(
+            'api/static-page',
+            ['token' => [$promoToken]],
             [],
             function($data) use (&$promoContent) {
-                if (!empty($data['content'])) {
-                    $promoContent = $data['content'];
+                if (!empty($data['pages'][0]['content'])) {
+                    $promoContent = $data['pages'][0]['content'];
                 }
             },
             function(\Exception $e) use (&$promoToken) {
@@ -169,8 +170,7 @@ class IndexAction {
             }
         );
 
-        // выполнение пакета запросов к вордпрессу
-        $contentClient->execute();
+        $scmsClient->execute();
 
         // SITE-3970
         // Стили для названий категорий в меню tchibo

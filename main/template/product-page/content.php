@@ -53,7 +53,7 @@ $buySender2 = $request->get('sender2');
 
 <section>
 
-	<h1 class="product-name"><?= $product->getName() ?></h1>
+	<h1 class="product-name"><?= $helper->escape($product->getName()) ?></h1>
 
 	<? if ($product->isOnlyFromPartner() && $product->getPartnerName()) : ?>
         <!-- Информация о партнере -->
@@ -77,7 +77,8 @@ $buySender2 = $request->get('sender2');
         'buySender' => $buySender,
         'buySender2' => $buySender2,
         'request' => \App::request(),
-        'favoriteProductsByUi' => $favoriteProductsByUi
+        'favoriteProductsByUi' => $favoriteProductsByUi,
+        'shopStates' => $shopStates,
     ]) ?>
 	<!--/ карточка товара -->
 

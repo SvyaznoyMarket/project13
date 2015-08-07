@@ -2,7 +2,11 @@
 
 namespace Controller\Cart;
 
+use EnterApplication\CurlTrait;
+use EnterQuery as Query;
+
 class ProductAction {
+    use CurlTrait;
 
     /**
      * @param int           $productId
@@ -88,6 +92,7 @@ class ProductAction {
                 'img'       => $product->getMainImageUrl('product_120'),
                 'link'      => $product->getLink(),
                 'price'     => $product->getPrice(),
+                'formattedPrice'    => \App::helper()->formatPrice($product->getPrice()),
                 'deleteUrl' => $cartProduct  ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,
                 'addUrl'    => !$cartProduct ? (new \Helper\TemplateHelper())->url('cart.product.set',    ['productId' => $product->getId()]) : null,
                 'cartButton'     => [
@@ -125,6 +130,17 @@ class ProductAction {
             }
 
             $cart->pushStateEvent([]);
+
+            // обновление серверной корзины
+            if ($userEntity = \App::user()->getEntity()) {
+                if ($quantity > 0) {
+                    (new Query\Cart\SetProduct($userEntity->getUi(), $product->getUi(), $quantity))->prepare();
+                } else {
+                    (new Query\Cart\RemoveProduct($userEntity->getUi(), $product->getUi(), 1000000))->prepare();
+                }
+
+                $this->getCurl()->execute();
+            }
 
             return $response;
 
@@ -270,6 +286,7 @@ class ProductAction {
                 $cartProduct = $cart->getProductById($product->getId());
                 $productInfo = [
                     'id'    => $product->getId(),
+                    'article' => $product->getArticle(),
                     'name'  =>  $product->getName(),
                     'img'   =>  $product->getMainImageUrl('product_160'),
                     'link'  =>  $product->getLink(),
@@ -300,6 +317,24 @@ class ProductAction {
 
             $cart->pushStateEvent([]);
 
+            // обновление серверной корзины
+            call_user_func(function() use (&$productsById, &$productQuantitiesById) {
+                if ($userEntity = \App::user()->getEntity()) {
+                    foreach ($productsById as $productId => $product) {
+                        $quantity = isset($productQuantitiesById[$productId]) ? $productQuantitiesById[$productId] : null;
+                        if (null === $quantity) continue;
+
+                        if ($quantity > 0) {
+                            (new Query\Cart\SetProduct($userEntity->getUi(), $product->getUi(), $quantity))->prepare();
+                        } else {
+                            (new Query\Cart\RemoveProduct($userEntity->getUi(), $product->getUi(), 1000000))->prepare();
+                        }
+                    }
+
+                    $this->getCurl()->execute();
+                }
+            });
+
             $response = new \Http\JsonResponse($responseData);
 
         } catch(\Exception $e) {
@@ -325,6 +360,7 @@ class ProductAction {
     public function delete(\Http\Request $request, $productId) {
         //\App::logger()->debug('Exec ' . __METHOD__);
         $request->query->set('quantity', 0);
+
         return $this->set($productId, $request);
     }
 

@@ -14,6 +14,8 @@ class ProductButtonAction {
      * @param string|null $location
      * @param string $sender2
      * @param bool $useNewStyles
+     * @param \Model\Product\Entity[] $kitProducts
+     * @param \Model\Product\ShopState\Entity[] $shopStates
      * @return array
      */
     public function execute(
@@ -25,10 +27,9 @@ class ProductButtonAction {
         $location = null, // местоположение кнопки купить: userbar, product-card, ...
         $sender2 = '',
         $useNewStyles = false,
-        $inShowroomAsButton = true
+        $inShowroomAsButton = true,
+        array $shopStates = []
     ) {
-        $colorClass = AbTest::getColorClass($product, $location);
-
         $data = [
             'id'         => 'buyButton-' . $product->getId() . '-'. md5(json_encode([$location, isset($sender['position']) ? $sender['position'] : null])),
             'disabled'   => false,
@@ -40,10 +41,9 @@ class ProductButtonAction {
             'sender'     => $helper->json($sender),
             'sender2'    => $sender2,
             'productUi'  => $product->getUi(),
-            'colorClass' => $colorClass,
             'location'   => $location,
             'inShowroomAsLabel' => false,
-            'data'       => [
+            'data'        => [
                 'productId' => $product->getId(),
                 'upsale'    => json_encode([
                     'url'        => $helper->url('product.upsale', ['productId' => $product->getId()]),
@@ -51,8 +51,26 @@ class ProductButtonAction {
                 ]),
                 'noUpdate'  => $noUpdate,
             ],
-            'divClass'  => 'btnBuy',
-            'surroundDiv' => true
+            'divClass'    => 'btnBuy',
+            'surroundDiv' => true,
+            'points' => array_map(function(\Model\Product\ShopState\Entity $shopState) use(&$helper) {
+                $shop = $shopState->getShop();
+                $subway = isset($shop->getSubway()[0]) ? $shop->getSubway()[0] : null;
+                return [
+                    'name' => $shop && $shop->getRegion() && $shop->getRegion()->getId() != \App::user()->getRegionId() ? $shop->getName() : $shop->getAddress(),
+                    'url' => $shop->getToken() ? $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) : null,
+                    'todayWorkingTime' => $shop->getWorkingTimeToday() ? [
+                        'from' => $shop->getWorkingTimeToday()['start_time'],
+                        'to' => $shop->getWorkingTimeToday()['end_time'],
+                    ] : null,
+                    'subway' => $subway ? [
+                        'name' => $subway->getName(),
+                        'line' => $subway->getLine() ? [
+                            'color' => $subway->getLine()->getColor(),
+                        ] : null,
+                    ] : null,
+                ];
+            }, $shopStates),
         ];
 
         if (!$product->getIsBuyable()) {
@@ -76,8 +94,15 @@ class ProductButtonAction {
         } else if ($slotPartnerOffer = $product->getSlotPartnerOffer()) {
             $data['isSlot'] = true;
             $data['url'] = '#';
-            $data['class'] .= ' btn btn--slot js-orderButton js-slotButton ' . ('product-card' !== $location ? 'btn--short' : 'btn--big');
-            $data['value'] = 'product-card' === $location ? 'Отправить заявку' : 'Как купить?';
+            $data['class'] .= ' btn btn--slot js-orderButton js-slotButton';
+
+            if ($location === 'product-card') {
+                $data['class'] .= ' btn--big';
+            } else if ($location !== 'userbar') {
+                $data['class'] .= ' btn--short';
+            }
+
+            $data['value'] = in_array($location, ['product-card', 'userbar'], true) ? 'Отправить заявку' : 'Как купить?';
             $data['full'] = 'userbar' === $location || 'product-card' === $location ? '0' : '1';
             $data['productUrl'] = $product->getLink();
             $data['productArticle'] = $product->getArticle();
@@ -87,17 +112,17 @@ class ProductButtonAction {
         } else if ($product->isGifteryCertificate()) {
             $data['isGiftery'] = true;
             $data['url'] = '#';
-            $data['class'] .= ' btnBuy__eLink giftery-show-widget' . $colorClass;
+            $data['class'] .= ' btnBuy__eLink giftery-show-widget';
             $data['value'] = 'Купить';
         } else if ($product->isInShopStockOnly() && \App::user()->getRegion()->getForceDefaultBuy()) { // Резерв товара
             $data['id'] = 'quickBuyButton-' . $product->getId();
             $data['url'] = $this->getOneClickBuyUrl($helper, $product, $sender, $sender2);
-            $data['class'] .= ' btnBuy__eLink js-orderButton jsOneClickButton-new' . $colorClass;
+            $data['class'] .= ' btnBuy__eLink js-orderButton jsOneClickButton-new';
             $data['value'] = 'Купить';
         } else if ($product->getKit() && !$product->getIsKitLocked()) {
             $data['isKit'] = $location === 'slider' ? false : true;
             $data['value'] = 'Купить';
-            $data['class'] .= ' btnBuy__eLink js-orderButton js-kitButton' . $colorClass;
+            $data['class'] .= ' btnBuy__eLink js-orderButton js-kitButton';
             $data['url'] = $this->getKitBuyUrl($helper, $product, $sender, $sender2);
 		} else if (\App::user()->getCart()->hasProduct($product->getId()) && !$noUpdate) {
             $data['url'] = $helper->url('cart');
@@ -106,7 +131,7 @@ class ProductButtonAction {
         } else {
             // Внимание!!! Генерация URL адреса для покупки также происходит в web/js/dev/common/UserCustomBindings.js
             $data['url'] = $this->getBuyUrl($helper, $product, $sender, $sender2);
-            $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton' . $colorClass;
+            $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton';
             $data['value'] = 'Купить';
             if (\App::abTest()->isNewProductPage() && in_array($location, ['product-card', 'userbar'])) $data['value'] = 'Купить';
         }

@@ -225,11 +225,12 @@ class Repository {
     }
 
     public function prepareIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null, $done, $fail = null) {
+        $client = \App::searchClient();
 
-        $this->client->addQuery('listing/list',
+        $client->addQuery('v2/listing/list',
             [
                 'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-                'filter' => [
+                'filter'    => [
                     'filters' => $filter,
                     'sort'    => $sort,
                     'offset'  => $offset,
@@ -252,10 +253,10 @@ class Repository {
      */
     public function getIdsByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
 
-        $client = clone $this->client;
+        $client = \App::searchClient();
 
         $response = [];
-        $client->addQuery('listing/list',
+        $client->addQuery('v2/listing/list',
             [
                 'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
                 'filter' => [
@@ -338,6 +339,7 @@ class Repository {
 
                             if (isset($properties['category']) && isset($productData['categories']) && is_array($productData['categories'])) {
                                 foreach ($productData['categories'] as $category) {
+                                    $product->categories[] = new \Model\Product\Category\Entity($category);
                                     if ($category['main']) {
                                         $product->setParentCategory(new \Model\Product\Category\Entity($category));
 
@@ -347,7 +349,6 @@ class Repository {
                                         }
 
                                         $product->setRootCategory(new \Model\Product\Category\Entity($category));
-                                        break;
                                     }
                                 }
                             }

@@ -33,7 +33,17 @@ class ShowAction {
             $inShopOnlyLabel = null;
         }
 
-        if (!$product->isInShopOnly() && $product->getRootCategory() && $product->getRootCategory()->getIsFurniture() && $product->getState() && ($product->getState()->getIsStore() || $product->getState()->getIsSupplier()) && !$product->getSlotPartnerOffer()) {
+        $isFurniture = false;
+        call_user_func(function() use(&$product, &$isFurniture) {
+            foreach ($product->categories as $category) {
+                if ($category->getRootOfParents()->getIsFurniture()) {
+                    $isFurniture = true;
+                    break;
+                }
+            }
+        });
+
+        if (!$product->isInShopOnly() && $isFurniture && $product->getState() && ($product->getState()->getIsStore() || $product->getState()->getIsSupplier()) && !$product->getSlotPartnerOffer()) {
             $inStoreLabel = ['name' => 'Товар со склада', 'inStore' => true]; // SITE-3131
         } else {
             $inStoreLabel = null;
@@ -41,7 +51,7 @@ class ShowAction {
 
         $productItem = [
             'id'           => $product->getId(),
-            'name'         => htmlspecialchars_decode($product->getName()),
+            'name'         => $product->getName(),
             'link'         => $product->getLink(),
             'label'        =>
             $product->getLabel()

@@ -19,7 +19,7 @@ class DefaultLayout extends Layout {
         $this->addMeta('yandex-verification', '623bb356993d4993');
         $this->addMeta('viewport', 'width=900');
         //$this->addMeta('title', 'Enter - это выход!');
-        $this->addMeta('description', 'Enter - новый способ покупать. Любой из ' . \App::config()->product['totalCount'] . ' товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.');
+        $this->addMeta('description', \App::config()->description);
 
         // TODO: осторожно, говнокод
         if ('live' != \App::$env) {
@@ -219,42 +219,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotMainMenu() {
-        $renderer = \App::closureTemplating();
-
-        if (\App::config()->mainMenu['requestMenu']) {
-            $client = \App::curl();
-
-            $isFailed = false;
-            $content = '';
-            $client->addQuery(
-                'http://' . \App::config()->mainHost
-                . (\App::user()->getRegion()
-                    ? \App::router()->generate('category.mainMenu.region', ['regionId' => \App::user()->getRegion()->getId()])
-                    : \App::router()->generate('category.mainMenu')
-                ),
-                [],
-                function($data) use (&$content, &$isFailed) {
-                    isset($data['content']) ? $content = $data['content'] : $isFailed = true;
-                },
-                function(\Exception $e) use (&$isFailed) {
-                    \App::exception()->remove($e);
-                    $isFailed = true;
-                },
-                2
-            );
-            $client->execute(1, 2);
-
-            if ($isFailed) {
-                $content = $renderer->render('__mainMenu', ['menu' => (new Menu())->generate(\App::user()->getRegion())]);
-            }
-        } else {
-            $content = $renderer->render('__mainMenu', ['menu' => (new Menu())->generate(\App::user()->getRegion())]);
-        }
-
-        return $content;
-    }
-
     public function slotBanner() {
         return '';
     }
@@ -281,6 +245,25 @@ class DefaultLayout extends Layout {
                 if (\App::config()->partners['SmartLeads']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
             }
 
+            // Реактив (adblender) SITE-5718
+            call_user_func(function() use ($routeName, &$return) {
+                if (!\App::config()->partners['Adblender']['enabled']) return;
+
+                $template = '<div id="adblenderJS" class="jsanalytics" data-value="{{dataValue}}"></div>';
+                $dataValue = [];
+                if ('orderV3.complete' === $routeName) {
+                    return;
+                } else if ('cart' === $routeName) {
+                    $dataValue['type'] = 'cart';
+                } else {
+                    $dataValue['type'] = 'default';
+                }
+
+                $return .= strtr($template, [
+                    '{{dataValue}}' => $this->json($dataValue),
+                ]);
+            });
+
             if ('subscribe_friends' == $routeToken) {
                 $return .= $this->tryRender('partner-counter/_actionpay_subscribe');
                 $return .= $this->tryRender('partner-counter/_cityAds_subscribe');
@@ -295,19 +278,7 @@ class DefaultLayout extends Layout {
                 $return .= '<div id="AlexaJS" class="jsanalytics"></div><noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=mPO9i1acVE000x" style="display:none" height="1" width="1" alt="" /></noscript>';
             }
 
-            // new Google Analytics Code
-            $useTchiboAnalytics = false;
-            if (\App::config()->googleAnalyticsTchibo['enabled']) {
-                $useTchiboAnalytics = $this->useTchiboAnalytics;
-                if (!$useTchiboAnalytics && $this->getGlobalParam('isTchibo')) {
-                    $useTchiboAnalytics = $this->getGlobalParam('isTchibo', false);
-                }
-            }
-
-            $return .= '<div id="gaJS" class="jsanalytics"
-                    data-vars="' . $this->json((new \View\Partners\GoogleAnalytics($routeName, $this->params))->execute()) . '"
-                    data-use-tchibo-analytics="' . $useTchiboAnalytics . '">
-                </div>';
+            $return .= $this->googleAnalyticsJS();
 
             if (\App::config()->partners['TagMan']['enabled']) {
                 $return .= '<div id="TagManJS" class="jsanalytics"></div>';
@@ -320,6 +291,25 @@ class DefaultLayout extends Layout {
         $return .= $this->slotSociaPlus();
 
         return $return;
+    }
+
+    public function googleAnalyticsJS(){
+
+        $routeName = \App::request()->attributes->get('route');
+
+        // new Google Analytics Code
+        $useTchiboAnalytics = false;
+        if (\App::config()->googleAnalyticsTchibo['enabled']) {
+            $useTchiboAnalytics = $this->useTchiboAnalytics;
+            if (!$useTchiboAnalytics && $this->getGlobalParam('isTchibo')) {
+                $useTchiboAnalytics = $this->getGlobalParam('isTchibo', false);
+            }
+        }
+
+        return '<div id="gaJS" class="jsanalytics"
+                    data-vars="' . $this->json((new \View\Partners\GoogleAnalytics($routeName, $this->params))->execute()) . '"
+                    data-use-tchibo-analytics="' . $useTchiboAnalytics . '">
+                </div>';
     }
 
     public function slotConfig() {

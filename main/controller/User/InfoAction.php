@@ -118,7 +118,7 @@ class InfoAction {
                 $productsNC = $cart->getProductData();
 
                 $responseData['cart']['sum'] = $cart->getSum();
-                $responseData['cart']['quantity'] = $cart->getProductsQuantity();
+                $responseData['cart']['full_quantity'] = $responseData['cart']['quantity'] = $cart->getProductsQuantity();
 
                 foreach ($productsNC as $id => $value) {
                     foreach (['name', 'price', 'url', 'image', 'category', 'rootCategory'] as $prop) {

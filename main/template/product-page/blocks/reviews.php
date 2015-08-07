@@ -51,7 +51,7 @@
             </div>
 
             <div class="popup__product-line-tl">
-                <span><?= $product->getName() ?></span>
+                <span><?= $helper->escape($product->getName()) ?></span>
             </div>
         </div>
 
@@ -119,7 +119,7 @@
             </div>
 
             <div class="popup__product-line-tl">
-                <?= $product->getName() ?>
+                <?= $helper->escape($product->getName()) ?>
             </div>
         </div>
         <div class="popup-form-success">

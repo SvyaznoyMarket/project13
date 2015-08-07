@@ -51,18 +51,61 @@
 
         overflow: hidden;
 
-        max-width: 250px;
+        max-width: 235px;
+
         height: 40px;
 
         .noselect();
         .inline-block-middle();
+
+
+        &__cnt{
+            .noselect();
+            .inline-block-middle();
+            padding: 0 5px 0 12px;
+            position: relative;
+
+            /*.product-card-photo-thumbs__btn {
+                visibility: visible;
+                overflow: visible;
+
+                .opacity(.5);
+                &--disabled {
+                    visibility: hidden;
+                    overflow: hidden;
+
+                    .opacity(0);
+                }
+                &:hover {
+                    .opacity(.9);
+                }
+            }*/
+            &--slides {
+                .product-card-photo-thumbs__btn {
+                    visibility: visible;
+                    overflow: visible;
+
+                    .opacity(.5);
+                    &--disabled {
+                        visibility: hidden;
+                        overflow: hidden;
+
+                        .opacity(0);
+                    }
+                    &:hover {
+                        .opacity(.9);
+                    }
+                }
+            }
+        }
         &-list {
             font-size: 0;
 
-            margin: 0 0 0 12px;
+            margin: 0;
 
             text-align: center;
             white-space: nowrap;
+            overflow: hidden;
         }
         &__i {
             width: 38px;
@@ -131,23 +174,6 @@
                 overflow: hidden;
 
                 .opacity(0);
-            }
-        }
-        &--slides {
-            .product-card-photo-thumbs__btn {
-                visibility: visible;
-                overflow: visible;
-
-                .opacity(.5);
-                &--disabled {
-                    visibility: hidden;
-                    overflow: hidden;
-
-                    .opacity(0);
-                }
-                &:hover {
-                    .opacity(.9);
-                }
             }
         }
     }

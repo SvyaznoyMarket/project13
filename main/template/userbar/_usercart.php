@@ -13,7 +13,7 @@
     </a>
 
     <div class="userbar-dd minicart topbarfix_cartOn" >
-        <div class="topbarfix-cart-wrap">
+        <div class="topbarfix-cart-wrap" data-bind="css: {'min-sum': isMinOrderSumVisible() }"><!--сюда добавить класс "min-sum" если корзина у нас для выводит сообщение о минимальной сумме заказа-->
             <table class="table-cart">
                 <tbody data-bind="foreach: cart">
                     <tr class="table-cart__i">
@@ -28,14 +28,14 @@
                         <td class="table-cart__inf">
                             <span class="price"><span data-bind="html: window.printPrice(price)"></span> &nbsp;<span class="rubl">p</span></span>
                             <span class="quan"><!--ko text: quantity--><!--/ko--> шт.</span>
-                            <a class="del jsCartDelete" data-bind="attr: { href: deleteUrl }">удалить</a>
+                            <a class="del jsCartDelete" data-bind="attr: { href: deleteUrl, 'data-product-id': id, 'data-product-article': article }">удалить</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <!-- для кнопки с иконкой btnBuy-inf -->
-        <div class="btnBuy quickOrder" data-bind="css: {'btnBuy-inf': infoIconVisible() }, visible: !isMinOrderSumVisible()">
+        <div class="<?= \App::abTest()->isNewProductPage() ? 'btn-container btn-container--quick-buy' : 'btnBuy quickOrder' ?>" data-bind="css: {'btnBuy-inf': infoIconVisible() }, visible: !isMinOrderSumVisible()">
             <a href="<?= $page->url('order') ?>"
                class="<?= \App::abTest()->isNewProductPage() ? 'btn-type btn-type--buy' : 'btnBuy__eLink quickOrder__link' ?>">Оформить заказ</a>
         </div>
@@ -53,15 +53,11 @@
         <? if (\App::abTest()->isOrderMinSumRestriction()) : ?>
         <!-- Минимальная сумма заказа -->
         <div class="deliv-free-info" data-bind="visible: isMinOrderSumVisible()">
-            <span class="deliv-free-info__intro">До бесплатного самовывоза и оформления заказа осталось</span>
+            <span class="deliv-free-info__intro">До оформления заказа осталось</span>
             <span class="deliv-free-info__remain-sum"><span data-bind="text: minOrderSum - cartSum()"><?= \App::config()->minOrderSum ?></span>&thinsp;<span class="rubl">p</span></span>
             <a href="/slices/all_labels" class="deliv-free-info__sale-lnk">Выбрать товары по суперцене</a>
         </div>
 
-        <div class="deliv-free-info completed" data-bind="visible: !isMinOrderSumVisible()">
-            <span class="deliv-free-info__intro">Самовывоз</span>
-            <span class="deliv-free-info__alert">БЕСПЛАТНО</span>
-        </div>
         <? endif ?>
 
     </div>

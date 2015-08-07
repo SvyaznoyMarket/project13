@@ -217,7 +217,9 @@
 
 
         self.setMapCenter = function (point) {
-            map.setCenter([point.latitude, point.longitude], 14)
+            console.log(point);
+            var bounds = $.isArray(point.bounds) && point.bounds.length == 2 ? point.bounds[0] : [point.latitude, point.longitude];
+            map.setCenter(bounds, 14)
         };
 
         /* INIT */
@@ -312,7 +314,6 @@
 		self.advancedSearch = ko.observable(advSearchEnabled);
 		self.searchCategoryVisible = ko.observable(false);
 		self.currentCategory = ko.observable(null);
-		self.previousCategory = ko.observable(null);
 
 		self.searchResultCategories = ko.observableArray();
 		self.searchResultProducts = ko.observableArray();
@@ -388,37 +389,12 @@
 				});
 		}).extend({ throttle: 200 });
 
-		// АНАЛИТИКА
-		// Предыдущее значение category
-		self.currentCategory.subscribe(function(val){
-			self.previousCategory(val);
-		}, self, 'beforeChange');
-
-		self.currentCategory.subscribe(function(val){
-			var previous = self.previousCategory() === null ? '' : self.previousCategory().name;
-
-			if (val == null) {
-				$body.trigger('trackGoogleEvent',['search_scope', 'clear', previous])
-			} else {
-				if (self.previousCategory() == null) {
-					$body.trigger('trackGoogleEvent',['search_scope', 'change', val.name + '_' + 'Все товары'])
-				} else {
-					$body.trigger('trackGoogleEvent',['search_scope', 'change', val.name + '_' + previous])
-				}
-			}
-		});
-
 		return self;
 	}
 
 	// Биндинги на нужные элементы
 	$body.find('.jsKnockoutSearch').each(function(){
 		ko.applyBindings(new SearchModel(), this);
-	});
-
-	// Аналитика на фокусе строки поиска
-	$body.on('focus', '.jsSearchInput', function(){
-		$body.trigger('trackGoogleEvent',['search_string', 'string'])
 	});
 
 	// Клик по категории в подсказке
@@ -453,16 +429,6 @@
 		}])
 	});
 
-	// Клик по значку "Выбери подарки" в строке поиска
-	$body.on('click', '.jsGiftInSearchBarButton', function(e){
-		e.preventDefault();
-		$body.trigger('trackGoogleEvent', [{
-			category: 'search_present',
-			action: 'click',
-			hitCallback: $(this).attr('href')
-		}])
-	});
-
 }(jQuery));
 
 ;(function($) {
@@ -477,7 +443,6 @@
 				statusId = $elem.data('status-id'),
                 noUpdate = $elem.data('noUpdate'),
 				isSlot = $elem.data('is-slot'),
-				colorClass = $elem.data('color-class') || '',
                 sender = $elem.data('sender'),
                 sender2 = $elem.data('sender2')
             ;
@@ -525,7 +490,6 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('js-orderButton jsOneClickButton-new')
-					.addClass(colorClass)
 					.removeClass('jsBuyButton')
 					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', $.extend({productId: productId}, sender, sender2)));
 			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId) && !noUpdate) {
@@ -544,7 +508,6 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('js-orderButton jsBuyButton')
-					.addClass(colorClass)
 					.attr('href', ENTER.utils.generateUrl('cart.product.set', $.extend({productId: productId}, sender, sender2)));
 			}
 		}
@@ -633,10 +596,7 @@
 }(jQuery));
 ;$(function(){
 	var $body = $(document.body),
-		region = ENTER.config.pageConfig.user.region.name,
-		userInfoURL = ENTER.config.pageConfig.userUrl.addParameterToUrl('ts', new Date().getTime() + Math.floor(Math.random() * 1000)),
-		authorized_cookie = '_authorized',
-		startTime, endTime, spendTime;
+		authorized_cookie = '_authorized';
 
 	/* Модель продукта в корзине */
 	function createCartModel(cart) {
@@ -744,11 +704,6 @@
 	*/
 	(function(){
 		ENTER.UserModel.update(ENTER.config.userInfo);
-		if (typeof ga == 'function') {
-			ga('send', 'timing', 'userInfo', 'Load User Info', spendTime);
-			console.log('[Google Analytics] Send user/info timing: %s ms', spendTime)
-		}
-
 		if (!docCookies.hasItem(authorized_cookie)) {
 			if (ENTER.config.userInfo && ENTER.config.userInfo.user && typeof ENTER.config.userInfo.user.id != 'undefined') {
 				docCookies.setItem(authorized_cookie, 1, 60*60, '/'); // on
@@ -782,8 +737,8 @@
 	$body.on('mouseover', '.btnBuy-inf', function(){
 		if (!docCookies.hasItem('enter_ab_self_delivery_view_info')) {
 			docCookies.setItem('enter_ab_self_delivery_view_info', true);
-			if (ENTER.UserModel.cartSum() < ENTER.config.pageConfig.selfDeliveryLimit) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'увидел всплывашку платный самовывоз', 'всплывающая корзина']);
-			if (ENTER.UserModel.cartSum() >= ENTER.config.pageConfig.selfDeliveryLimit) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'самовывоз бесплатно', 'всплывающая корзина']);
+			if (ENTER.UserModel.cartSum() < ENTER.config.pageConfig.selfDeliveryLimit) $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'увидел всплывашку платный самовывоз', 'всплывающая корзина']);
+			if (ENTER.UserModel.cartSum() >= ENTER.config.pageConfig.selfDeliveryLimit) $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'самовывоз бесплатно', 'всплывающая корзина']);
 		}
 		ENTER.UserModel.infoIconVisible(false);
 	});
@@ -791,8 +746,8 @@
 	$body.on('showUserCart', function(e){
 		var $target = $(e.target);
 
-		if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.UserModel.infoIconVisible()) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'увидел подсказку', 'всплывающая корзина']);
-		else if (ENTER.config.pageConfig.selfDeliveryTest && !ENTER.UserModel.infoIconVisible()) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'не увидел подсказку', 'всплывающая корзина']);
+		if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.UserModel.infoIconVisible()) $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'увидел подсказку', 'всплывающая корзина']);
+		else if (ENTER.config.pageConfig.selfDeliveryTest && !ENTER.UserModel.infoIconVisible()) $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'не увидел подсказку', 'всплывающая корзина']);
 
 		/* Если человек еще не наводил на иконку в всплывающей корзине */
 		if (ENTER.config.pageConfig.selfDeliveryTest) {
@@ -802,7 +757,7 @@
 		}
 
 		if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.UserModel.infoBlock_2Visible() && !ENTER.UserModel.infoIconVisible()) {
-			$body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'самовывоз бесплатно', 'всплывающая корзина']);
+			$body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'самовывоз бесплатно', 'всплывающая корзина']);
 		}
 	});
 
@@ -827,7 +782,7 @@
 		if (href) {
 			e.preventDefault();
 			$body.trigger('trackGoogleEvent',
-				{	category: 'Платный_самовывоз_' + region,
+				{	category: 'Платный_самовывоз',
 					action:'добрать товар',
 					label:'всплывающая корзина',
 					hitCallback: function(){
@@ -967,6 +922,7 @@
             }
             if (isUniversalAvailable()) {
                 ga('send', 'pageview', data);
+                ga('secondary.send', 'pageview', data);
             }
             if (isClassicAvailable()) {
                 _gaq.push(['_trackPageview', data.page])
@@ -1011,7 +967,7 @@
                             e[elem] = e[elem].slice(0, 500);
                             break;
                         case 'value':
-                            e[elem] = parseInt(e[elem].slice, 10);
+                            e[elem] = parseInt(e[elem] + '', 10);
                             break;
                         case 'nonInteraction':
                             e[elem] = Boolean(e[elem]);
@@ -1021,7 +977,7 @@
             });
 
             // Classic Tracking Code
-            if (typeof _gaq === 'object') {
+            if (isClassicAvailable()) {
                 classicEvent.push(e.category, e.action);
                 classicEvent.push(e.label ? e.label: null);
                 classicEvent.push(e.value ? e.value: null);
@@ -1032,8 +988,7 @@
             }
 
             // Universal Tracking Code
-            // TODO refactor if statement
-            if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0) {
+            if (isUniversalAvailable()) {
                 universalEvent.eventCategory = e.category;
                 universalEvent.eventAction = e.action;
                 if (e.label) universalEvent.eventLabel = e.label;
@@ -1042,6 +997,7 @@
                 else if (typeof e.hitCallback == 'string') universalEvent.hitCallback = function(){ window.location.href = e.hitCallback };
                 if (e.nonInteraction) ga('set', 'nonInteraction', true);
                 ga('send', universalEvent);
+                ga('secondary.send', universalEvent);
                 console.info('[Google Analytics] Send event:', e);
             } else {
                 console.warn('No Universal Google Analytics function found', typeof universalEvent.hitCallback, e.hitCallback);
@@ -1140,7 +1096,7 @@
                 googleProducts = $.map(eventObject.products, function(elem){ return new GoogleProduct(elem, googleTrans.id)});
 
                 // Classic Tracking Code
-                if (typeof _gaq === 'object') {
+                if (isClassicAvailable()) {
                     _gaq.push(['_addTrans'].concat(googleTrans.toArray()));
                     $.each(googleProducts, function(i, product){
                         _gaq.push(['_addItem'].concat(product.toArray()))
@@ -1151,13 +1107,16 @@
                 }
 
                 // Universal Tracking Code
-                if (typeof ga === 'function' && ga.getAll().length != 0) {
+                if (isUniversalAvailable()) {
                     ga('require', 'ecommerce', 'ecommerce.js');
                     ga('ecommerce:addTransaction', googleTrans.toObject());
+                    ga('secondary.ecommerce:addTransaction', googleTrans.toObject());
                     $.each(googleProducts, function(i, product){
-                        ga('ecommerce:addItem',product.toObject())
+                        ga('ecommerce:addItem',product.toObject());
+                        ga('secondary.ecommerce:addItem',product.toObject());
                     });
                     ga('ecommerce:send');
+                    ga('secondary.ecommerce:send');
                 } else {
                     console.warn('No Universal Google Analytics function found');
                 }
@@ -1168,22 +1127,10 @@
 
 		};
 
-    if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
-
     // common listener for triggering from another files or functions
     body.on('trackGooglePageview', trackGooglePageview);
     body.on('trackGoogleEvent', trackGoogleEvent);
     body.on('trackGoogleTransaction', trackGoogleTransaction);
-
-    // TODO вынести инициализацию трекера из ports.js
-    try {
-        if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length == 0) {
-			console.warn('Creating ga tracker');
-            ga( 'create', 'UA-25485956-5', 'enter.ru' );
-        }
-    } catch (e) {
-        console.error(e);
-    }
 
 })(jQuery);
 /**
@@ -1260,6 +1207,28 @@
         e.preventDefault();
 	});
 
+	$body.on('click', '.js-buyButton-points-opener', function(e){
+		e.preventDefault();
+
+		var
+			$points = $(e.currentTarget).closest('.js-buyButton-points'),
+			$pointsContent = $points.find('.js-buyButton-points-content')
+		;
+
+		$.enterLightboxMe.closeAll();
+
+		$pointsContent.enterLightboxMe({
+			centered: true,
+			closeSelector: '.js-buyButton-points-content-closer',
+			closeClick: true,
+			destroyOnClose: true,
+			preventScroll: true,
+			onClose: function() {
+				$points.prepend($pointsContent.hide());
+			}
+		});
+	});
+
 	// analytics
 	$body.on('addtocart', function(event, data){
 		var
@@ -1280,16 +1249,9 @@
 					};
 				// end of functions
 
-				if ( !productData || typeof _gaq === 'undefined' ) {
-					return;
-				}
-
 				tchiboGA();
 
 				ENTER.utils.sendAdd2BasketGaEvent(productData.article, productData.price, productData.isOnlyFromPartner, productData.isSlot, data.sender ? data.sender.name : '');
-
-				productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
-				productData.fromUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
 
                 try {
                     var sender = data.sender;
@@ -1298,13 +1260,13 @@
 						var rrEventLabel = '';
 						if (ENTER.config.pageConfig.product) {
 							if (ENTER.config.pageConfig.product.isSlot) {
-								rrEventLabel = ' (marketplace-slot)';
+								rrEventLabel = '(marketplace-slot)';
 							} else if (ENTER.config.pageConfig.product.isOnlyFromPartner) {
-								rrEventLabel = ' (marketplace)';
+								rrEventLabel = '(marketplace)';
 							}
 						}
 
-                        $body.trigger('trackGoogleEvent',['RR_Взаимодействие' + rrEventLabel, 'Добавил в корзину', sender.position]);
+                        $body.trigger('trackGoogleEvent',['RR_взаимодействие ' + rrEventLabel, 'Добавил в корзину', sender.position]);
                     }
                 } catch (e) {
                     console.error(e);
@@ -1385,11 +1347,11 @@ $(function() {
 					$.each(data.compare, function(i,val){ ENTER.UserModel.compare.push(val) });
 
 					if (!inCompare) {
-						var userBarType = $(window).scrollTop() > ENTER.userBar.userBarStatic.offset().top + 10 ? 'fixed' : 'static';
+						var userBarType = $(window).scrollTop() > ENTER.userBar.$staticUserBar.offset().top + 10 ? 'fixed' : 'static';
 
 						(function() {
 							if (!comparePopups[userBarType]) {
-								var $userbar = userBarType == 'fixed' ? ENTER.userBar.userBarFixed : ENTER.userBar.userBarStatic;
+								var $userbar = userBarType == 'fixed' ? ENTER.userBar.$fixedUserBar : ENTER.userBar.$staticUserBar;
 								comparePopups[userBarType] = $('.js-compare-addPopup', $userbar);
 
 								$('.js-compare-addPopup-closer', comparePopups[userBarType]).click(function() {
@@ -1429,7 +1391,7 @@ $(function() {
 						$('.js-compare-addPopup-webName', comparePopups[userBarType]).text(data.product.webName);
 
 						if (userBarType == 'fixed') {
-							ENTER.userBar.show();
+							ENTER.userBar.openFixedUserBar();
 						}
 
 						comparePopups[userBarType].addClass(compareNoticeShowClass);
@@ -1684,8 +1646,8 @@ $(function() {
                         widgets: response.widgets,
                         callback: $el.attr('href').indexOf('delete-product') !== -1 ? null : function() {
 							var
-								userBarType = $(window).scrollTop() > ENTER.userBar.userBarStatic.offset().top + 10 ? 'fixed' : 'static',
-								$userbar = userBarType == 'fixed' ? ENTER.userBar.userBarFixed : ENTER.userBar.userBarStatic,
+								userBarType = $(window).scrollTop() > ENTER.userBar.$staticUserBar.offset().top + 10 ? 'fixed' : 'static',
+								$userbar = userBarType == 'fixed' ? ENTER.userBar.$fixedUserBar : ENTER.userBar.$staticUserBar,
 								$popup = $('.js-favourite-popup', $userbar);
 
 							$('.js-favourite-popup-closer', $popup).click(function() {
@@ -1719,7 +1681,7 @@ $(function() {
 							}, 2000);
 
 							if (userBarType == 'fixed') {
-								ENTER.userBar.show();
+								ENTER.userBar.openFixedUserBar();
 							}
 
 							$popup.addClass(showClass);
@@ -1737,24 +1699,23 @@ $(function() {
     });
 });
 /**
- * Перемотка к Id
- *
- * @author		Zaytsev Alexandr
- * @requires	jQuery
+ * Перемотка к id
  */
-(function() {
-	var goToId = function goToId() {
-		var to = $(this).data('goto');
+$(function() {
+	$('.jsGoToId').on('click', function(e) {
+		e.preventDefault();
 
-		$(document).stop().scrollTo( $('#'+to), 800 );
-		
-		return false;
-	};
-	
-	$(document).ready(function() {
-		$('.jsGoToId').bind('click',goToId);
+		var
+			$topbar = $('.js-topbar-fixed'),
+			to = $('#' + $(e.currentTarget).data('goto'));
+
+		if ($topbar.length) {
+			to = to.offset().top - $topbar.outerHeight() - 20;
+		}
+
+		$(document).stop().scrollTo(to, 800);
 	});
-}());
+});
 /**
  * JIRA
  */
@@ -1819,10 +1780,6 @@ $(function() {
 					$popup.trigger('close.lme');
 				});
 
-				// Google Analytics
-				if (typeof _gaq !== 'undefined') {
-					_gaq.push(['_trackEvent', 'addedCollection', 'collection', result.product.article]);
-				}
 			},
 			complete: function() {
 				isOpening = false;
@@ -1993,44 +1950,6 @@ $(function() {
 			return false;
 		}
 	}
-});
-;$(document).ready(function() {
-
-    var partnerData = {
-        lastPartner: '',
-        cookie: []
-    };
-
-    try {
-        partnerData = $.parseJSON($('#lastPartnerJSON').html());
-    } catch (e) {
-        console.error('Ошибка получения партнера')
-    }
-
-	// при любом клике на странице
-	$(document.body).on('click', function(){
-		// ставим куку last_partner на 30 дней
-		if (partnerData.lastPartner) {
-			docCookies.setItem(
-				'last_partner',
-                partnerData.lastPartner,
-				60 * 60 *24 *30,
-				'/'
-			);
-            console.info('[PARTNER] Установлен партнер %s', partnerData.lastPartner);
-		}
-        // и остальные куки партнеров
-        $.each(partnerData.cookie, function(i,v) {
-            docCookies.setItem(
-                v['name'],
-                v['value'],
-                typeof v['time'] != 'undefined' ? v['time'] : 60 * 60 *24 *30,
-                '/'
-            );
-            console.info('[PARTNER] Установлена кука партнера', v);
-        })
-	});
-
 });
 ;$(function( ENTER ) {
 	var
@@ -2467,7 +2386,6 @@ $(function() {
 					dataType: 'json',
 					beforeSend: function() {
 						$orderContent.fadeOut(500);
-						//if (spinner) spinner.spin(body)
 					},
 					closeClick: false
 				}).fail(function(jqXHR){
@@ -2497,8 +2415,6 @@ $(function() {
 					$orderContent.find('input[name=address]').focus();
 				}).always(function(){
 					$orderContent.stop(true, true).fadeIn(200);
-					//if (spinner) spinner.stop();
-
 					$('body').trigger('trackUserAction', ['0 Вход']);
 				});
 			}
@@ -2728,9 +2644,6 @@ $(function() {
 					moveSlide(slide);
 					setScrollInterval(slide);
 
-					if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
-						_gaq.push(['_trackEvent', 'slider view', 'tchibo', getSlideIndex(slide) + 1 + '']);
-					}
 				}, time);
 			},
 
@@ -2766,9 +2679,6 @@ $(function() {
 				moveSlide(slide);
 				setScrollInterval(slide);
 				
-				if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
-					_gaq.push(['_trackEvent', 'slider view', 'tchibo', getSlideIndex(slide) + 1 + '']);
-				}
 			},
 
 			/**
@@ -2803,9 +2713,6 @@ $(function() {
 
 				setScrollInterval(link);
 				
-				if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
-					_gaq.push(['_trackEvent', 'slider view', 'tchibo', link + 1 + '']);
-				}
 			},
 
 			/**
@@ -2914,27 +2821,7 @@ $(function() {
 					window.location.hash = 'slide' + ((slideId * 1) + 1);
 				}
 
-				slideData = data[slideId];
-				if ( (slideData.hasOwnProperty('title') && slideData.hasOwnProperty('time')) && tchiboAnalytics.checkRule('collection_view') ) {
-					tchiboAnalytics.collectionShow(slideData.title, (slideId*1)+1, slideData.time);
-				}
-			},
-
-			getSlideIndex = function(slide) {
-				var slideId = parseInt(slide);
-
-				if (activeCarousel) {
-					if ( slide > slider_SlideCount - 1 ) {
-						slide = slider_SlideCount - 1;
-					} else if ( slide < 0 ) {
-						slide = 0;
-					}
-
-					slideId = parseInt($(".jsPromoCatalogSliderWrap .bPromoCatalogSliderWrap_eSlide").eq(slide).attr("id").replace('slide_id_', ''));
-				}
-
-				return slideId;
-			},
+            },
 
 			tchiboAnalytics = {
 				init: function() {
@@ -2958,9 +2845,6 @@ $(function() {
 							slideId = slide.attr('id').replace('slide_id_', '');
 							slideData = data[slideId];
 
-							if ( slideData.hasOwnProperty('title') ) {
-								tchiboAnalytics.collectionClick(slideData.title, (slideId*1)+1);
-							}
 						},
 
 						productClickHandler = function() {
@@ -2986,9 +2870,6 @@ $(function() {
 								return;
 							}
 
-							if ( slideData.hasOwnProperty('title') && undefined != typeof(slideData.products[productIndex].name) ) {
-								tchiboAnalytics.productClick(slideData.title, slideData.products[productIndex].name, (productIndex*1)+1);
-							}
 						};
 					// end of functions
 
@@ -3049,61 +2930,6 @@ $(function() {
 					}
 				},
 
-				/**
-				 * @param collection_name		название коллекции
-				 * @param collection_position	позиция в слайдере
-				 * @param delay					текущая задержка на данном слайдере
-				 */
-				collectionShow: function(collection_name, collection_position, delay) {	},
-
-				/**
-				 * @param collection_name		название коллекции
-				 * @param collection_position	позиция в слайдере
-				 */
-				collectionClick: function(collection_name, collection_position) {
-					var item;
-
-					if (
-						!tchiboAnalytics.isAnalyticsEnabled ||
-						'undefined' == typeof(_gaq) ||
-						'undefined' == typeof(collection_name) ||
-						'undefined' == typeof(collection_position)
-						) {
-						return;
-					}
-
-					item = ['_trackEvent', 'collection_click', collection_name+'_'+collection_position]
-
-					console.info('TchiboSliderAnalytics collection_click');
-					console.log(item);
-					_gaq.push(item);
-				},
-
-				/**
-				 * @param collection_name	название коллекции
-				 * @param item_name			название товара
-				 * @param position			позиция товара на слайдере (1, 2, 3 слева направо)
-				 */
-				productClick: function(collection_name, item_name, position) {
-					var item;
-
-					if (
-						!tchiboAnalytics.isAnalyticsEnabled ||
-						'undefined' == typeof(_gaq) ||
-						'undefined' == typeof(collection_name) ||
-						'undefined' == typeof(item_name) ||
-						'undefined' == typeof(position)
-						) {
-						return;
-					}
-
-					item = ['_trackEvent', 'item_click', collection_name+'_'+item_name, position.toString()];
-
-					console.info('TchiboSliderAnalytics item_click');
-					console.log(item);
-					_gaq.push(item);
-				},
-
 				isAnalyticsEnabled: function() {
 					return analyticsConfig && analyticsConfig.hasOwnProperty('enabled') && true == analyticsConfig.enabled;
 				},
@@ -3141,10 +2967,6 @@ $(function() {
 
 			setScrollInterval(toSlide);
 
-			// аналитика показа первого слайда
-			if ( data.hasOwnProperty(toSlide) && data[toSlide].hasOwnProperty('title') && data[toSlide].hasOwnProperty('time') && tchiboAnalytics.checkRule('collection_view') ) {
-				tchiboAnalytics.collectionShow(data[toSlide].title, ((toSlide*1)+1), data[toSlide].time);
-			}
 		});
 	}
 })(jQuery);
@@ -3169,11 +2991,6 @@ $(function() {
                 });
         } else {
             showPopup();
-        }
-
-        // analytics only for main page
-        if ( document.location.pathname === '/' ) {
-            $body.trigger('trackGoogleEvent', [{category: 'citySelector', action: 'viewed', nonInteraction: true}]);
         }
 
     };
@@ -3245,6 +3062,10 @@ $(function() {
             autofocus: true,
             onLoad: function(){
                 $popup.find('#jscity').putCursorAtEnd();
+                if (!isGeoshopCookieSet()) {
+                    $body.trigger('trackGoogleEvent', [{category: 'citySelector', action: 'viewed', nonInteraction: true}]);
+                }
+
             },
             onClose: function() {
 				if (!isGeoshopCookieSet()) {
@@ -3601,13 +3422,13 @@ $(function() {
 			var rrEventLabel = '';
 			if (ENTER.config.pageConfig.product) {
 				if (ENTER.config.pageConfig.product.isSlot) {
-					rrEventLabel = '_marketplace-slot';
+					rrEventLabel = '(marketplace-slot)';
 				} else if (ENTER.config.pageConfig.product.isOnlyFromPartner) {
-					rrEventLabel = '_marketplace';
+					rrEventLabel = '(marketplace)';
 				}
 			}
 
-            $body.trigger('trackGoogleEvent',['RR_Взаимодействие' + rrEventLabel, 'Пролистывание', sender.position]);
+            $body.trigger('trackGoogleEvent',['RR_взаимодействие ' + rrEventLabel, 'Пролистывание', sender.position]);
         } catch (e) { console.error(e); }
     });
 
@@ -3813,7 +3634,7 @@ $(function() {
 			$errors.empty().hide();
 
 			if (!validate($form)) {
-				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
+				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
 				return;
 			}
 
@@ -3827,7 +3648,7 @@ $(function() {
 				success: function(result){
 					if (result.error) {
 						$errors.text(result.error).show();
-						$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
+						$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
 						return;
 					}
 
@@ -3841,7 +3662,7 @@ $(function() {
 						$popup.trigger('close');
 					});
 
-					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7 Оформить успешно', catalogPath]);
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7 Оформить успешно', catalogPath]);
 
 					if (typeof ENTER.utils.sendOrderToGA == 'function' && result.orderAnalytics) {
 						ENTER.utils.sendOrderToGA(result.orderAnalytics);
@@ -3849,7 +3670,7 @@ $(function() {
 				},
 				error: function(){
 					$errors.text('Ошибка при создании заявки').show();
-					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
 				},
 				complete: function(){
 					$submitButton.removeAttr('disabled');
@@ -3859,28 +3680,28 @@ $(function() {
 
 		ENTER.utils.sendAdd2BasketGaEvent(productArticle, productPrice, true, true, ($button.data('sender') || {}).name);
 
-		$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '1 Вход', catalogPath]);
+		$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '1 Вход', catalogPath]);
 
 		$phone.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '2 Телефон', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '2 Телефон', catalogPath]);
 		});
 
 		$email.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '3 Email', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '3 Email', catalogPath]);
 		});
 
 		$name.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '4 Имя', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '4 Имя', catalogPath]);
 		});
 
 		$confirm.click(function(e) {
 			if (e.currentTarget.checked) {
-				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '5 Оферта', catalogPath]);
+				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '5 Оферта', catalogPath]);
 			}
 		});
 
 		$goToProduct.click(function(e) {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '6 Перейти в карточку', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '6 Перейти в карточку', catalogPath]);
 		});
 
 		$phone.focus();
@@ -3985,261 +3806,174 @@ $(function() {
 
 	$window.scroll(checkScroll);
 
-	$body.on('closeBuyInfo showBuyInfo', function(){
+	$body.on('closeFullFixedUserBar openFullFixedUserBar', function(){
 		checkScroll();
 	});
 
 	checkScroll();
 }());
-/**
- * White floating user bar
- *
- *
- * @requires jQuery, ENTER.utils, ENTER.config
- * @author	Zaytsev Alexandr
- *
- * @param	{Object}	ENTER	Enter namespace
- */
-;(function( ENTER ) {
+;$(function() {
 	var
-		utils = ENTER.utils,
+		userBar = ENTER.utils.extendApp('ENTER.userBar'),
 
-		userBar = utils.extendApp('ENTER.userBar'),
+		$fixedUserBar = $('.js-topbar-fixed'),
+		$staticUserBar = $('.js-topbar-static'),
 
-		userBarFixed = userBar.userBarFixed = $('.js-topbar-fixed'),
-		userbarStatic = userBar.userBarStatic = $('.js-topbar-static'),
+		$upLink = $fixedUserBar.find('.js-userbar-upLink'),
+		$body = $('body'),
+		$window = $(window),
+		$overlay = $('<div>').css({position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4}),
+		$scrollTarget,
+		$filterTarget,
 
+		userBarConfig = $fixedUserBar.data('value') || {},
 		emptyCompareNoticeElements = {},
 		emptyCompareNoticeShowClass = 'topbarfix_cmpr_popup-show',
 
-		topBtn = userBarFixed.find('.js-userbar-upLink'),
-		userbarConfig = userBarFixed.data('value'),
-		$body = $('body'),
-		w = $(window),
-		buyInfoShowing = false,
-		overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
+		isFullFixedUserBarOpened = false,
+		isOverlayShowed = false
+	;
 
-		scrollTarget,
-		filterTarget,
-		showWhenFullCartOnly = userbarConfig && userbarConfig.showWhenFullCartOnly;
-	// end of vars
+	userBar.$fixedUserBar = $fixedUserBar;
+	userBar.$staticUserBar = $staticUserBar;
+	userBar.openFixedUserBar = openFixedUserBar;
 
-	userBar.showOverlay = false;
-
-	/**
-	 * Показ юзербара
-	 */
-	function showUserbar() {
+	function openFixedUserBar() {
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		userBarFixed.addClass('fadeIn');
+		$fixedUserBar.addClass('fadeIn');
 	}
 
-	/**
-	 * Скрытие юзербара
-	 */
-	function hideUserbar() {
-		userBarFixed.removeClass('fadeIn');
-		userbarStatic.css('visibility','visible');
+	function closeFixedUserBar() {
+		$fixedUserBar.removeClass('fadeIn');
+		$staticUserBar.css('visibility','visible');
 	}
 
-	/**
-	 * Проверка текущего скролла
-	 */
 	function checkScroll(hideOnly) {
-		if (userBar.showOverlay && w.scrollTop() < userbarStatic.offset().top) {
-			closeBuyInfo();
-		}
+		// https://jira.enter.ru/browse/UX-3053?focusedCommentId=165671&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-165671
+		var top = $staticUserBar.offset().top - $window.scrollTop();
+		top = top > 0 ? top + 'px' : 0;
+		$fixedUserBar.css('top', top);
+		$overlay.css('top', top);
 
-		if ( buyInfoShowing ) {
+		if (isFullFixedUserBarOpened) {
 			return;
 		}
 
-		if (scrollTarget && scrollTarget.length && w.scrollTop() >= scrollTarget.offset().top && !hideOnly && (!showWhenFullCartOnly || ENTER.UserModel.cart().length)) {
-			showUserbar();
+		if ($scrollTarget && $scrollTarget.length && $window.scrollTop() >= $scrollTarget.offset().top && !hideOnly && (!userBarConfig.showWhenFullCartOnly || ENTER.UserModel.cart().length)) {
+			openFixedUserBar();
+		} else {
+			closeFixedUserBar();
+		}
+	}
+
+	function openFullFixedUserBar(useAnimation, data, upsale) {
+		$body.trigger('openFullFixedUserBar');
+
+		$.each(emptyCompareNoticeElements, function(){
+			this.removeClass(emptyCompareNoticeShowClass);
+		});
+
+		$fixedUserBar.addClass('shadow-false');
+
+		if (!isOverlayShowed && $overlay) {
+			$body.append($overlay);
+			$overlay.fadeIn(300);
+			isOverlayShowed = true;
+			$overlay.on('click', function(e) {
+				e.preventDefault();
+				closeFullFixedUserBar();
+			});
+		}
+
+		if (useAnimation) {
+			$('.js-topbar-fixed .topbarfix_cartOn').slideDown(300);
+		} else {
+			$('.js-topbar-fixed .topbarfix_cartOn').show();
+		}
+
+		openFixedUserBar();
+
+		if (upsale) {
+			showUpsell(data, upsale);
+		}
+
+		isFullFixedUserBarOpened = true;
+
+		// TODO:
+		/*
+		if ( useAnimation ) {
+			$('.js-topbar-static .topbarfix_cartOn').slideDown(300);
 		}
 		else {
-			hideUserbar();
+			$('.js-topbar-static .topbarfix_cartOn').show();
 		}
+		*/
+
+		$(document.body).trigger('showUserCart');
 	}
 
-	/**
-	 * Прокрутка до фильтра и раскрытие фильтров
-	 */
-	function upToFilter() {
-		$.scrollTo(filterTarget, 500);
-		ENTER.catalog.filter.open();
-
-		return false;
-	}
-
-	/**
-	 * Закрытие окна о совершенной покупке
-	 */
-	function closeBuyInfo() {
+	function closeFullFixedUserBar() {
 		var
-			wrap = userBarFixed.find('.topbarfix_cart'),
-			wrapLogIn = userBarFixed.find('.topbarfix_log'),
-			openClass = 'mOpenedPopup',
-			upsaleWrap = wrap.find('.hintDd');
-		// end of vars
+			$wrap = $fixedUserBar.find('.topbarfix_cart'),
+			$wrapLogIn = $fixedUserBar.find('.topbarfix_log'),
+			$upsaleWrap = $wrap.find('.hintDd'),
+			openClass = 'mOpenedPopup'
+		;
 
-		$body.trigger('closeBuyInfo');
+		$body.trigger('closeFullFixedUserBar');
 
 		/**
 		 * Удаление выпадающей плашки для корзины
 		 */
 		function removeBuyInfoBlock() {
-			var
-				buyInfo = $('.topbarfix_cartOn');
-			// end of vars
+			var $buyInfo = $('.topbarfix_cartOn');
 
-			if ( !buyInfo.length ) {
+			if (!$buyInfo.length) {
 				return;
 			}
 
-			buyInfo.slideUp(300, function() {
-				buyInfo.removeAttr('style');
+			$buyInfo.slideUp(300, function() {
+				$buyInfo.removeAttr('style');
 			});
 		}
 
-		/**
-		 * Удаление Overlay блока
-		 */
 		function removeOverlay() {
-			if (!overlay || !userBar.showOverlay) {
+			if (!$overlay || !isOverlayShowed) {
 				checkScroll();
 				return;
 			}
 
-			overlay.fadeOut(100, function() {
-				overlay.off('click');
-				overlay.remove();
-				userBar.showOverlay = false;
-				buyInfoShowing = false;
+			$overlay.fadeOut(100, function() {
+				$overlay.off('click');
+				$overlay.remove();
+				isOverlayShowed = false;
+				isFullFixedUserBarOpened = false;
 				checkScroll();
 			});
 		}
-		// end of function
 
 		setTimeout(function() {
-			userBarFixed.removeClass('shadow-false');
+			$fixedUserBar.removeClass('shadow-false');
 		}, 100);
 
 		// только BuyInfoBlock
-		if ( !upsaleWrap.hasClass('mhintDdOn') ) {
+		if (!$upsaleWrap.hasClass('mhintDdOn')) {
 			removeBuyInfoBlock();
 			removeOverlay();
 			return;
 		}
 
-		upsaleWrap.removeClass('mhintDdOn');
-		wrapLogIn.removeClass(openClass);
-		wrap.removeClass(openClass);
+		$upsaleWrap.removeClass('mhintDdOn');
+		$wrapLogIn.removeClass(openClass);
+		$wrap.removeClass(openClass);
 
-        $('.js-topbarfixLogin').removeClass('blocked');
+		$('.js-topbarfixLogin').removeClass('blocked');
 
 		removeBuyInfoBlock();
 		removeOverlay();
-		return false;
-	}
-
-	/**
-	 * Показ окна о совершенной покупке
-	 */
-	function showBuyInfo( useAnimation, data, upsale ) {
-		console.info('userbar::showBuyInfo');
-
-
-		var showFixed = false;
-		if ($(window).scrollTop() >= ENTER.userBar.userBarStatic.offset().top) {
-			showFixed = true;
-		}
-
-		$body.trigger('showBuyInfo');
-
-		$.each(emptyCompareNoticeElements, function(){
-			this.removeClass(emptyCompareNoticeShowClass);
-		});
-
-		if (showFixed) {
-			userBarFixed.addClass('shadow-false');
-
-
-
-			if ( !userBar.showOverlay && overlay ) {
-				$body.append(overlay);
-				overlay.fadeIn(300);
-				userBar.showOverlay = true;
-				overlay.on('click', closeBuyInfo);
-			}
-
-			if ( useAnimation ) {
-				$('.js-topbar-fixed .topbarfix_cartOn').slideDown(300);
-			}
-			else {
-				$('.js-topbar-fixed .topbarfix_cartOn').show();
-			}
-
-			showUserbar();
-			if (upsale) {
-				showUpsell(data, upsale);
-			}
-
-			buyInfoShowing = true;
-		} else {
-			// TODO:
-			/*
-			if ( useAnimation ) {
-				$('.js-topbar-static .topbarfix_cartOn').slideDown(300);
-			}
-			else {
-				$('.js-topbar-static .topbarfix_cartOn').show();
-			}
-			*/
-		}
-
-		$(document.body).trigger('showUserCart');
-	}
-
-	/**
-	 * Удаление товара из корзины
-	 */
-	function deleteProductHandler() {
-		console.log('deleteProductHandler click!');
-
-		var btn = $(this);
-		// end of vars
-
-		$.ajax({
-			type: 'GET',
-			url: btn.attr('href'),
-			success: function( res, data ) {
-				console.warn( res );
-				if ( !res.success ) {
-					console.warn('удаление не получилось :(');
-
-					return;
-				}
-
-				ENTER.UserModel.removeProductByID(res.product.id);
-
-				// Удаляем товар на странице корзины
-				$('.js-basketLineDeleteLink-' + res.product.id).click();
-
-				if (ENTER.UserModel.cart().length == 0) {
-					closeBuyInfo();
-				} else {
-					showBuyInfo();
-				}
-
-				$body.trigger('removeFromCart', [res.product]);
-			}
-		});
-
-		return false;
 	}
 
 	/**
@@ -4252,66 +3986,9 @@ $(function() {
 		console.info('userbar::showUpsell');
 
 		var
-			cartWrap = userBarFixed.find('.topbarfix_cart'),
+			cartWrap = $fixedUserBar.find('.topbarfix_cart'),
 			upsaleWrap = cartWrap.find('.hintDd'),
 			slider;
-		// end of vars
-
-		function responseFromServer( response ) {
-			console.log(response);
-
-			if ( !response.success || !userBar.showOverlay ) {
-				return;
-			}
-
-			console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
-
-			upsaleWrap.find('.js-slider, .js-slider-2').remove();
-            $('.js-topbarfixLogin').addClass('blocked');
-
-			slider = $(response.content);
-
-            upsaleWrap.append(slider);
-			upsaleWrap.addClass('mhintDdOn');
-
-            if (slider.hasClass('js-slider-2')) {
-                slider.eq(0).goodsSlider({
-                    leftArrowSelector: '.goods-slider__btn--prev',
-                    rightArrowSelector: '.goods-slider__btn--next',
-                    sliderWrapperSelector: '.goods-slider__inn',
-                    sliderSelector: '.goods-slider-list',
-                    itemSelector: '.goods-slider-list__i'
-
-                });
-            } else {
-                slider.eq(0).goodsSlider();
-            }
-
-			ko.applyBindings(ENTER.UserModel, slider[0]);
-
-			if ( !data.product ) return;
-
-			if ( !data.product.article ) {
-				console.warn('Не получен article продукта');
-
-				return;
-			}
-
-			console.log('Трекинг товара при показе блока рекомендаций');
-
-			// Retailrocket. Показ товарных рекомендаций
-			if ( response.data ) {
-				try {
-					rrApi.recomTrack(response.data.method, response.data.id, response.data.recommendations);
-				} catch( e ) {
-					console.warn('showUpsell() Retailrocket error');
-					console.log(e);
-				}
-			}
-
-			// google analytics
-			typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
-		}
 
 		console.log(upsale);
 
@@ -4339,29 +4016,62 @@ $(function() {
 		$.ajax({
 			type: 'GET',
 			url: url,
-			success: responseFromServer
+			success: function (response) {
+				console.log(response);
+
+				if ( !response.success || !isOverlayShowed ) {
+					return;
+				}
+
+				console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
+
+				upsaleWrap.find('.js-slider, .js-slider-2').remove();
+				$('.js-topbarfixLogin').addClass('blocked');
+
+				slider = $(response.content);
+
+				upsaleWrap.append(slider);
+				upsaleWrap.addClass('mhintDdOn');
+
+				if (slider.hasClass('js-slider-2')) {
+					slider.eq(0).goodsSlider({
+						leftArrowSelector: '.goods-slider__btn--prev',
+						rightArrowSelector: '.goods-slider__btn--next',
+						sliderWrapperSelector: '.goods-slider__inn',
+						sliderSelector: '.goods-slider-list',
+						itemSelector: '.goods-slider-list__i'
+
+					});
+				} else {
+					slider.eq(0).goodsSlider();
+				}
+
+				ko.applyBindings(ENTER.UserModel, slider[0]);
+
+				if ( !data.product ) return;
+
+				if ( !data.product.article ) {
+					console.warn('Не получен article продукта');
+
+					return;
+				}
+
+				console.log('Трекинг товара при показе блока рекомендаций');
+
+				// Retailrocket. Показ товарных рекомендаций
+				if ( response.data ) {
+					try {
+						rrApi.recomTrack(response.data.method, response.data.id, response.data.recommendations);
+					} catch( e ) {
+						console.warn('showUpsell() Retailrocket error');
+						console.log(e);
+					}
+				}
+
+				// google analytics
+				typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
+			}
 		});
-	}
-
-	/**
-	 * Обработчик клика по товару из списка рекомендаций
-	 */
-	function upsaleProductClick() {
-		var
-			product = $(this).parents('.jsSliderItem').data('product');
-		//end of vars
-
-		if ( !product.article ) {
-			console.warn('Не получен article продукта');
-
-			return;
-		}
-
-		console.log('Трекинг при клике по товару из списка рекомендаций');
-		// google analytics
-		_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_clicked', product.article]);
-
-		//window.docCookies.setItem('used_cart_rec', 1, 1, 4*7*24*60*60, '/');
 	}
 
 	function showEmptyCompareNotice(e, emptyCompareNoticeName, $userbar) {
@@ -4401,44 +4111,91 @@ $(function() {
 	}
 
 	console.info('Init userbar module');
-	console.log(userbarConfig);
+	console.log(userBarConfig);
 
-	userBar.show = showUserbar;
+	// Клик по товару из рекомендаций
+	$body.on('click', '.jsUpsaleProduct', function() {
+		var
+			product = $(this).parents('.jsSliderItem').data('product');
+		//end of vars
 
-	$body.on('click', '.jsUpsaleProduct', upsaleProductClick);
-	$body.on('click', '.jsCartDelete', deleteProductHandler);
+		if ( !product.article ) {
+			console.warn('Не получен article продукта');
 
-	$('.js-noProductsForCompareLink', userBarFixed).click(function(e) { showEmptyCompareNotice(e, 'fixed', userBarFixed); });
-	$('.js-noProductsForCompareLink', userbarStatic).click(function(e) { showEmptyCompareNotice(e, 'static', userbarStatic); });
-
-	if ( userBarFixed.length ) {
-		if (window.location.pathname !== '/cart') $body.on('addtocart', showBuyInfo);
-		scrollTarget = $(userbarConfig.target);
-
-		if (userbarConfig.filterTarget) {
-			filterTarget = $(userbarConfig.filterTarget);
-		} else {
-			filterTarget = scrollTarget;
+			return;
 		}
 
-		if ( topBtn.length ) {
-			topBtn.on('click', upToFilter);
+		console.log('Трекинг при клике по товару из списка рекомендаций');
+		_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_clicked', product.article]);
+
+		//window.docCookies.setItem('used_cart_rec', 1, 1, 4*7*24*60*60, '/');
+	});
+
+	$body.on('click', '.jsCartDelete', function(e) {
+		e.preventDefault();
+		var $deleteLink = $(e.currentTarget);
+
+		$.ajax({
+			type: 'GET',
+			url: $deleteLink.attr('href'),
+			success: function( res, data ) {
+				console.warn( res );
+				if ( !res.success ) {
+					console.warn('удаление не получилось :(');
+
+					return;
+				}
+
+				ENTER.UserModel.removeProductByID(res.product.id);
+
+				// Удаляем товар на странице корзины
+				$('.js-basketLineDeleteLink-' + res.product.id).click();
+
+				if (ENTER.UserModel.cart().length == 0) {
+					closeFullFixedUserBar();
+				} else {
+					openFullFixedUserBar(false, {product: {article: $deleteLink.data('product-article')}}, {url: '/ajax/upsale/' + $deleteLink.data('product-id'), fromUpsale: false});
+				}
+
+				$body.trigger('removeFromCart', [res.product]);
+			}
+		});
+	});
+
+	$('.js-noProductsForCompareLink', $fixedUserBar).click(function(e) { showEmptyCompareNotice(e, 'fixed', $fixedUserBar); });
+	$('.js-noProductsForCompareLink', $staticUserBar).click(function(e) { showEmptyCompareNotice(e, 'static', $staticUserBar); });
+
+	if ($fixedUserBar.length) {
+		if (window.location.pathname !== '/cart') {
+			$body.on('addtocart', openFullFixedUserBar);
 		}
 
-		if ( scrollTarget.length ) {
-			w.on('scroll', function(){ checkScroll(); });
+		$scrollTarget = $(userBarConfig.target);
+
+		if (userBarConfig.filterTarget) {
+			$filterTarget = $(userBarConfig.filterTarget);
 		} else {
-			w.on('scroll', function(){ checkScroll(true); });
+			$filterTarget = $scrollTarget;
+		}
+
+		$upLink.on('click', function(e) {
+			e.preventDefault();
+			$.scrollTo($filterTarget, 500);
+			ENTER.catalog.filter.open();
+		});
+
+		if ( $scrollTarget.length ) {
+			$window.on('scroll', function(){ checkScroll(); });
+		} else {
+			$window.on('scroll', function(){ checkScroll(true); });
 		}
 
 		checkScroll();
+	} else {
+		$overlay.remove();
+		$overlay = false;
 	}
-	else {
-		overlay.remove();
-		overlay = false;
-	}
-
-}(window.ENTER));
+});
 
 $(function() {
     $('body').on('updateWidgets', function(e, widgetAndCallbackObj){

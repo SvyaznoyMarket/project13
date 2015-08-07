@@ -30,7 +30,7 @@
             {{! END: Картинка }}
             {{! Блок с названием и характеристиками }}
             <div class="listing__desc">
-                <a class="listing__title" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{&name}}</a>
+                <a class="listing__title" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a>
 
                 <ul class="listing-props">
                     {{#properties}}
@@ -49,7 +49,22 @@
             {{! END: Блок с названием и характеристиками }}
             {{! Блок с ценой, рейтингом }}
             <div class="listing__info">
-                <div class="listing__reviews">{{#review}}{{> product/_review-compact }}{{/review}}</div>
+                <div class="listing__reviews">
+                    {{#review}}
+                        <!-- Блок отзыввов -->
+                        <div class="bSimplyDescReviews">
+                            <div class="bSimplyDescReviews__eStars">
+                                {{#stars}}
+                                    <img class="bSimplyDescReviews__eStarsImg" src="{{image}}">
+                                {{/stars}}
+                            </div>
+
+                            <div class="bSimplyDescReviews__eLink"><span class="review-count">{{count}}</span></div>
+                        </div>
+                        <!--/ Блок отзыввов -->
+
+                    {{/review}}
+                </div>
 
                 <div class="listing-price-block">
                     {{#oldPrice}}

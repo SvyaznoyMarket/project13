@@ -72,12 +72,11 @@
 		$LAB.script('DAnimFramePlayer.min.js').wait(function() {
 			var
 				$element = $('.js-product-3d-img-popup'),
-				data = $element.data('value'),
-				host = $element.data('host');
+				data = $element.data('value');
 
 			try {
 				if (!$('#js-product-3d-img-container').length) {
-					(new DAnimFramePlayer($element[0], host)).DoLoadModel(data);
+					(new DAnimFramePlayer($element[0])).DoLoadModel(data);
 				}
 
 				$element.lightbox_me({

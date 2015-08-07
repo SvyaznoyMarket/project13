@@ -39,19 +39,29 @@
         )
     }
 
-    // Добавление отзыва
-    $body.on('click', '.jsReviewAdd', function(){
-        var $reviewForm = $('.jsReviewForm2');
-        var user = ENTER.config.userInfo.user;
-        if (user.name) $('[name=review\\[author_name\\]]').val(user.name.slice(0,19));
-        if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
-        $reviewForm.lightbox_me($.extend(popupDefaults, {
-            onLoad: function() {},
-            onClose: function() {
-                $reviewForm.find('.form-ctrl__textarea--err, .form-ctrl__input--err').removeClass('form-ctrl__textarea--err form-ctrl__input--err')
-            }
-        }));
-    });
+	(function() {
+		function addReview() {
+			var $reviewForm = $('.jsReviewForm2');
+			var user = ENTER.config.userInfo.user;
+			if (user.name) $('[name=review\\[author_name\\]]').val(user.name.slice(0,19));
+			if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
+			$reviewForm.lightbox_me($.extend(popupDefaults, {
+				onLoad: function() {},
+				onClose: function() {
+					$reviewForm.find('.form-ctrl__textarea--err, .form-ctrl__input--err').removeClass('form-ctrl__textarea--err form-ctrl__input--err')
+				}
+			}));
+		}
+
+		// Добавление отзыва
+		$body.on('click', '.jsReviewAdd', function(){
+			addReview();
+		});
+
+		if ('#add-review' == location.hash) {
+			addReview();
+		}
+	})();
 
     // Отзывы
     $body.on('click', '.jsShowMoreReviews', function(){
@@ -340,9 +350,9 @@
         link = link.replace(/^http:\/\/.*?\//, '/');
 
         if ($offer.length == 0) {
-            $.get(link).done(function (doc) {
+            $.get(ENTER.utils.setURLParam('ajax', 1, link)).done(function (data) {
                 $('<div class="jsProductPartnerOfferDiv partner-offer-popup"></div>')
-                    .append($('<i class="closer jsPopupCloser">×</i>'), $('<div class="inn" />').append($(doc).find('h1'), $(doc).find('article')))
+                    .append($('<i class="closer jsPopupCloser">×</i>'), $('<div class="inn" />').append($('<h1 />').text(data.title || ''), $('<article />').html(data.content || '')))
                     .lightbox_me(popupDefaults)
             });
         } else {
@@ -411,7 +421,9 @@
                 lastChar = str.slice(-1),
                 lastNum  = lastChar * 1;
 
-            if ( days > 4 && days < 21 ) {
+            if ( lastNum === 0 ) {
+                return 'дней';
+            } else if ( days > 4 && days < 21 ) {
                 return 'дней';
             } else if ( lastNum > 4 && days > 20 ) {
                 return 'дней';

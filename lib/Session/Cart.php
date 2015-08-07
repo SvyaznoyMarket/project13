@@ -137,6 +137,7 @@ class Cart {
         return [
             'id'            => $product->getId(),
             'ui'            => $product->getUi(),
+            'article'       => $product->getArticle(),
             'quantity'      => (int)$quantity,
             'name'          => $product->getName(),
             'price'         => $product->getPrice(),
@@ -243,9 +244,11 @@ class Cart {
 
             $products[] = [
                 'id'                => $cartProduct['id'],
+                'article'           => $cartProduct['article'],
                 'name'              => $cartProduct['name'],
                 'price'             => $cartProduct['price'],
                 'formattedPrice'    => $helper->formatPrice($cartProduct['price']),
+                'formattedFullPrice'=> $helper->formatPrice($cartProduct['price'] * $cartProduct['quantity']),
                 'quantity'          => $cartProduct['quantity'],
                 'deleteUrl'         => $helper->url('cart.product.delete', ['productId' => $cartProduct['id']]),
                 'link'              => $cartProduct['url'],

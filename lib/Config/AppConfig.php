@@ -9,6 +9,12 @@ require_once __DIR__ . '/Oauth/TwitterConfig.php';
 
 
 class AppConfig {
+    /** Проект Lite
+     * @var bool
+     */
+    public $lite = [
+        'enabled' => null
+    ];
     /**
      * @var string
      * @hidden
@@ -73,9 +79,11 @@ class AppConfig {
     ];
     /** @var array */
     public $session = [
-        'name'            => null,
-        'cookie_lifetime' => null,
-        'cookie_domain'   => null,
+        'name'              => null,
+        'cookie_lifetime'   => null,
+        'cookie_domain'     => null,
+        'compareKey'        => null,
+        'favouriteKey'      => null,
     ];
     /** @var array */
     public $redirect301 = [
@@ -157,14 +165,6 @@ class AppConfig {
         'chunk_size'   => null,
     ];
 
-    /** @var array */
-    public $wordpress = [
-        'url'            => null,
-        'timeout'        => null,
-        'throwException' => null,
-        'retryTimeout' => [],
-        'retryCount'   => null,
-    ];
     /** @var array */
     public $dataStore = [
         'url'          => null,
@@ -260,6 +260,8 @@ class AppConfig {
     public $mainHost = null;
     /** @var string */
     public $mobileHost = null;
+    /** @var string */
+    public $description = null;
     /** @var array */
     /**
      * @var Oauth\VkontakteConfig
@@ -432,7 +434,6 @@ class AppConfig {
 
     /** @var bool */
     public $mainMenu = [
-        'requestMenu'               => null, // запрос главного меню из
         'recommendationsEnabled'    => null
     ];
     /** @var bool */
@@ -496,19 +497,7 @@ class AppConfig {
     public $tchiboSlider = [
         'analytics' => [
             'enabled' => null,
-            'use_page_visibility' => null,
-            'collection_view' => [
-                'enabled' => null,
-                'tchiboOnly' => null
-            ],
-            'collection_click' => [
-                'enabled' => null,
-                'tchiboOnly' => null
-            ],
-            'product_click' => [
-                'enabled' => null,
-                'tchiboOnly' => null
-            ],
+            'use_page_visibility' => null
         ],
     ];
 

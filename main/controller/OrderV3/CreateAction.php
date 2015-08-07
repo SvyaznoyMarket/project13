@@ -56,9 +56,9 @@ class CreateAction extends OrderV3 {
             \App::exception()->remove($e);
 
             $page = new \View\OrderV3\ErrorPage();
-            $page->setParam('error', (708 == $e->getCode()) ? 'Товара нет в наличии' : ('CORE: ' . $e->getMessage()));
+            $page->setParam('error', 708 == $e->getCode() ? 'Товара нет в наличии' : $e->getMessage());
             $page->setParam('step', 3);
-            return new Response($page->show(), 500);
+            return new Response($page->show());
         } catch (\Exception $e) {
             if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                 \App::logger('order')->error([

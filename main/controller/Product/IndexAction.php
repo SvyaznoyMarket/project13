@@ -313,7 +313,7 @@ class IndexAction {
             $page = new \View\Product\IndexPage();
         }
 
-        $deliveryData = (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
+        (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
 
         // избранные товары
         $favoriteProductsByUi = [];

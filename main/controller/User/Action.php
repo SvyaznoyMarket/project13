@@ -3,8 +3,14 @@
 namespace Controller\User;
 
 use Controller\Enterprize\ConfirmAction;
+use EnterQuery as Query;
+use \Model\Product\Entity as Product;
+use \Model\Session\FavouriteProduct as FavouriteProduct;
 
 class Action {
+
+    use \EnterApplication\CurlTrait;
+
     private $redirect;
     private $requestRedirect;
     /** @var bool Флаг позволяющий управлять возможностью редактирования пользовательских данных */
@@ -124,13 +130,32 @@ class Action {
                     //\Session\User::enableInfoCookie($response); // — делаем внутри signIn()
 
                     \App::user()->getCart()->pushStateEvent([]);
+                    $this->setFavourites();
+
+                    // объединение корзины
+                    try {
+                        call_user_func(function() use (&$userEntity) {
+                            $mergeCartAction = new \EnterApplication\Action\Cart\Merge();
+                            $request = $mergeCartAction->createRequest();
+                            $request->userUi = $userEntity->getUi();
+                            $request->regionId = \App::user()->getRegion()->getId();
+
+                            $mergeCartAction->execute($request);
+                        });
+                    } catch (\Exception $e) {
+                        \App::logger()->error(['message' => 'Не удалось объединить корзину пользователя', 'token' => \App::user()->getToken()], ['user']);
+                    }
 
                     try {
-                        \App::coreClientV2()->query('user/update', ['token' => \App::user()->getToken()], [
-                            'geo_id' => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
-                        ]);
+                        \App::coreClientV2()->query(
+                            'user/update',
+                            ['token' => \App::user()->getToken()],
+                            [
+                                'geo_id' => \App::user()->getRegion()->getId(),
+                            ]
+                        );
                     } catch (\Exception $e) {
-                        \App::logger()->error(sprintf('Не удалось обновить регион у пользователя token=%s', \App::user()->getToken()), ['user']);
+                        \App::logger()->error(['message' => 'Не удалось обновить регион у пользователя', 'token' => \App::user()->getToken()], ['user']);
                     }
 
                     return $response;
@@ -220,6 +245,8 @@ class Action {
 
         // SITE-1763
         $user->getCart()->clear();
+
+        $this->removeFavourites();
 
         \App::user()->getCart()->pushStateEvent([]);
 
@@ -688,10 +715,15 @@ class Action {
         \App::logger()->info(['action' => __METHOD__, 'request.request' => $request->request->all()], ['user']);
 
         $content = null;
-        \App::contentClient()->addQuery('reg_corp_user_cont', [],
+
+        $scmsClient = \App::scmsClient();
+        $scmsClient->addQuery(
+            'api/static-page',
+            ['token' => ['reg_corp_user_cont']],
+            [],
             function($data) use (&$content) {
-                if (!empty($data['content'])) {
-                    $content = $data['content'];
+                if (!empty($data['pages'][0]['content'])) {
+                    $content = $data['pages'][0]['content'];
                 }
             },
             function(\Exception $e) {
@@ -699,7 +731,8 @@ class Action {
                 \App::exception()->add($e);
             }
         );
-        \App::contentClient()->execute();
+
+        $scmsClient->execute();
 
         $form = new \View\User\CorporateRegistrationForm();
         if ($request->isMethod('post')) {
@@ -951,7 +984,57 @@ class Action {
         ]);
     }
 
-    public function reset(\Http\Request $request) {
+    /**
+     * Сохранение избранных товаров в сессии
+     */
+    private function setFavourites() {
+        $curl = $this->getCurl();
 
+        $favoriteQuery = (new Query\User\Favorite\Get(\App::user()->getEntity()->getUi()))->prepare();
+
+        $curl->execute();
+
+        $favoriteProductsByUi = [];
+        foreach ($favoriteQuery->response->products as $item) {
+            $ui = isset($item['uid']) ? (string)$item['uid'] : null;
+            if (!$ui) continue;
+
+            $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
+        }
+
+        $products = [];
+        if ($favoriteProductsByUi) {
+            $productQuery = (new Query\Product\GetByUiList(array_keys($favoriteProductsByUi), \App::user()->getRegion()->getId()))->prepare();
+
+            $curl->execute();
+
+            foreach ($productQuery->response->products as $item) {
+                $products[] = new \Model\Product\Entity($item);
+            }
+        }
+
+        \RepositoryManager::product()->enrichProductsFromScms($products, 'media');
+        $curl->execute();
+
+        // сохраняем продукты в сессию
+        if ($products) {
+            \App::session()->set(\App::config()->session['favouriteKey'],
+                array_combine(
+                    array_map(function (Product $product) {
+                        return $product->getId();
+                    }, $products),
+                    array_map(function (Product $product) {
+                        return (array)(new FavouriteProduct($product));
+                    }, $products)
+                )
+            );
+        }
+    }
+
+    /**
+     * Удаление выбранных товаров из сессии
+     */
+    private function removeFavourites(){
+        \App::session()->remove(\App::config()->session['favouriteKey']);
     }
 }

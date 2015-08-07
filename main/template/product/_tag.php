@@ -7,6 +7,7 @@
 ?>
 
 <?
+if (!isset($newVersion)) $newVersion = null;
 $tags = $product->getTag();
 $brand = $product->getBrand();
 $category = $product->getParentCategory();

@@ -125,21 +125,32 @@
             border-top: 1px solid #272727;
         }
     }
-    .slideItem_imgw {
-        background-color: @white;
 
-        .rounded(4px);
-    }
-    .slideItem_n {
-        a {
+    .goods-slider--top{
+        border-top-color: transparent;
+
+        .slideItem_imgw, .goods-slider-list__action {
+            background-color: @white;
+
+            .rounded(4px);
+        }
+        .slideItem_n {
+            a {
+                color: @white;
+            }
+        }
+        .goods-slider-list__name{
             color: @white;
         }
+        .slideItem_btn-nxt, .goods-slider__btn--next{
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAhklEQVQY023RMQ4BARAF0E1I0BItInEAh1A4xhaOQeECFI6h4ABaiVriBqJHRzz1zs6UL5nMz59C18m0qI6hj5tO5BV2ERvOmEcee3noRy5xKOLYYxGx5+5tEnnm56IZeYt1xLarr1EVWxluauvJId0kUhJeiWMs5BkKSauzrJVskLwje9wfIqh4mM7deOUAAAAASUVORK5CYII=') no-repeat 50% 50%;
+        }
+        .slideItem_btn-prv, .goods-slider__btn--prev {
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAjklEQVR4AW3RtXUCQBzHceJJGSvjyQDZIbpFsC3wAfAt8AEosRabAEiNVNgXl997d+Xn7v5q0cM7ea6ULmgy4l4xDriVfoEiR/t0yz89nvVdDrAqOYGk0hsD2lIKx1SY8qnvAkBI6ZExNc5MeC64/h4WMiSSkq4FpXjhrLa5G0hfBmIYnQzZo7ZZx4NxcTOw+niYjE+q7wAAAABJRU5ErkJggg==') no-repeat 50% 50%;
+        }
     }
-    .slideItem_btn-nxt {
-        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAhklEQVQY023RMQ4BARAF0E1I0BItInEAh1A4xhaOQeECFI6h4ABaiVriBqJHRzz1zs6UL5nMz59C18m0qI6hj5tO5BV2ERvOmEcee3noRy5xKOLYYxGx5+5tEnnm56IZeYt1xLarr1EVWxluauvJId0kUhJeiWMs5BkKSauzrJVskLwje9wfIqh4mM7deOUAAAAASUVORK5CYII=') no-repeat 50% 50%;
-    }
-    .slideItem_btn-prv {
-        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAjklEQVR4AW3RtXUCQBzHceJJGSvjyQDZIbpFsC3wAfAt8AEosRabAEiNVNgXl997d+Xn7v5q0cM7ea6ULmgy4l4xDriVfoEiR/t0yz89nvVdDrAqOYGk0hsD2lIKx1SY8qnvAkBI6ZExNc5MeC64/h4WMiSSkq4FpXjhrLa5G0hfBmIYnQzZo7ZZx4NxcTOw+niYjE+q7wAAAABJRU5ErkJggg==') no-repeat 50% 50%;
+    .btn-container.btn-container--quick-buy{
+        border-color: transparent;
     }
 }
 

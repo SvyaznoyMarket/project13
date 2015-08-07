@@ -2,13 +2,13 @@
 
 namespace Controller\Region;
 
-use Templating\Helper;
+use View\Layout;
 
 class Action {
 
     public function init() {
         $regions = \RepositoryManager::region()->getShownInMenuCollection();
-        $html = \App::templating()->render('_regionSelection', [ 'regions' => $regions ]);
+        $html = (new Layout())->render('_regionSelection', [ 'regions' => $regions ]);
         return new \Http\JsonResponse(['result' => $html]);
     }
 
