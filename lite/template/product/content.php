@@ -253,3 +253,151 @@ $buySender2 = $request->get('sender2');
     </div>
 </div>
 <!--/ попап - узнатьо снижении цены -->
+
+
+<div class="delivery-points popup popup_920" style="display: none">
+    <div class="popup__close js-popup-close">×</div>
+    <div class="popup__title">Точки самовывоза</div>
+
+    <!-- Новая верстка -->
+    <div class="delivery-points__left">
+        <div class="point-search">
+            <input class="point-search__it it" type="text" placeholder="Искать по улице, метро">
+            <div class="point-search" style="display: none;">×</div>
+
+            <div class="pick-point-suggest" style="display: none">
+                <ul class="pick-point-suggest__list"></ul>
+            </div>
+        </div>
+
+        <div class="drop-filter-kit drop-filter-kit-box">
+            <!-- Точка самовывоза -->
+            <div class="drop-filter-box">
+                <div class="drop-filter-box__tggl">
+                    <span class="drop-filter-box__tggl-tx">Все точки</span>
+                    <i class="drop-filter-box__tggl-corner"></i>
+                </div>
+
+                <div class="drop-filter-box__dd">
+                    <div class="drop-filter-box__dd-inn">
+                        <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
+                            <div class="fltrBtn_ln ">
+                                <input class="custom-input custom-input_check" type="checkbox" id="" name="" value="shops">
+                                <label class="custom-label" for="">
+                                    <span class="customLabel_btx">Магазины Enter</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cтоимость -->
+            <div class="drop-filter-box">
+                <div class="drop-filter-box__tggl">
+                    <span class="drop-filter-box__tggl-tx">Стоимость</span>
+                    <i class="drop-filter-box__tggl-corner"></i>
+                </div>
+
+                <div class="drop-filter-box__dd">
+                    <div class="drop-filter-box__dd-inn">
+                        <div class="fltrBtn_param">
+                            <div class="fltrBtn_ln ">
+                                <input class="custom-input custom-input_check" type="checkbox" id="" name="" value="0" data-bind="checked: $root.choosenCosts">
+                                <label class="custom-label" for="">
+                                    <span class="customLabel_btx">Бесплатно</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Дата самовывоза -->
+            <div class="drop-filter-box">
+                <div class="drop-filter-box__tggl">
+                    <span class="drop-filter-box__tggl-tx">Дата</span>
+                    <i class="drop-filter-box__tggl-corner"></i>
+                </div>
+
+                <div class="drop-filter-box__dd">
+                    <div class="drop-filter-box__dd-inn">
+                        <div class="fltrBtn_param">
+                            <div class="fltrBtn_ln ">
+                                <input class="custom-input custom-input_check" type="checkbox" id="" name="" value="2015-08-11">
+                                <label class="custom-label" for="">
+                                    <span class="customLabel_btx">11.08.2015</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="selShop_l">
+            <span class="pick-point-nomatch">Поиск не дал результатов</span>
+
+            <div class="pick-point-list-wrap">
+                <table class="pick-point-list">
+                    <tbody>
+                        <tr class="pick-point-item">
+                            <td class="pick-point-item__logo">
+                                <img src="/images/deliv-logo/enter.png" class="pick-point-item__img">
+                                <span class="pick-point-item__name">Магазин Enter</span>
+                            </td>
+
+                            <td class="pick-point-item__addr">
+                                <div class="pick-point-item__addr-name">г.&nbsp;Электросталь, пр-кт Ленина, д.&nbsp;30/13</div>
+                                <div class="pick-point-item__time">с 10.00 до 21.00</div>
+                            </td>
+
+
+                            <td class="pick-point-item__info no-hide-info">
+                                <div class="pick-point-item__date">11.08.2015</div>
+                                <div class="pick-point-item__price"><span>Бесплатно</span> <span class="rubl" style="display: none;">p</span></div>
+                            </td>
+                        </tr>
+
+                        <tr class="pick-point-item">
+                            <td class="pick-point-item__logo">
+                                <img src="/images/deliv-logo/enter.png" class="pick-point-item__img">
+                                <span class="pick-point-item__name">Магазин Enter</span>
+                            </td>
+
+                            <td class="pick-point-item__addr">
+                                <div class="pick-point-item__addr-name">ул.&nbsp;Орджоникидзе, д.&nbsp;11, стр.&nbsp;10</div>
+                                <div class="pick-point-item__time">с 10.00 до 20.00</div>
+                            </td>
+
+                            <td class="pick-point-item__info no-hide-info">
+                                <div class="pick-point-item__date">11.08.2015</div>
+                                <div class="pick-point-item__price"><span>Бесплатно</span> <span class="rubl" style="display: none;">p</span></div>
+                            </td>
+                        </tr>
+
+
+                        <tr class="pick-point-item">
+                            <td class="pick-point-item__logo">
+                                <img src="/images/deliv-logo/enter.png" class="pick-point-item__img">
+                                <span class="pick-point-item__name">Магазин Enter</span>
+                            </td>
+
+                            <td class="pick-point-item__addr">
+                                <div class="pick-point-item__addr-name">г.&nbsp;Сергиев Посад, ул.&nbsp;1-я Рыбная, д.&nbsp;19/22</div>
+                                <div class="pick-point-item__time">с 10.30 до 20.30</div>
+                            </td>
+
+                            <td class="pick-point-item__info no-hide-info">
+                                <div class="pick-point-item__date">11.08.2015</div>
+                                <div class="pick-point-item__price"><span>Бесплатно</span></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="delivery-points__left"></div>
+</div>
