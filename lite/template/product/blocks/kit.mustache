@@ -1,57 +1,86 @@
-<li class="set-list__item">
-    <a class="set-list__left set-list__img" href="{{url}}"><img src="{{image}}"></a>
+<div class="popup__title">{{prefix}} {{webname}}</div>
 
-    <div class="set-list__right">
-        <div class="set-list__name"><a class="" href="{{url}}">{{name}}</a></div>
+<div class="set-section-main-img"><img src="{{imageUrl}}"></div>
 
-        <div class="set-list__desc table">
+<div class="set-section__r">
+    <div class="set-list__tl clearfix">
+        Уточните комплектацию
+    </div>
 
-            <div class="table-cell">
-                <div class="set-list__nominal"><span>{{price_format}}</span>&nbsp;<span class="rubl">p</span></div>
+    <div class="set-section__inn">
+        <ul class="set-list">
+            {{#kitProducts}}
+            <li class="set-list__item js-productkit-item" data-id="{{id}}">
+                <a class="set-list__left set-list__img" href="{{url}}"><img src="{{image}}"></a>
 
-                <div class="set-list__dimention">
-                    <span class="set-list__dimention-name">Высота</span>
-                    <span class="set-list__dimention-val">{{height}}</span>
+                <div class="set-list__right">
+                    <div class="set-list__name"><a class="" href="{{url}}">{{name}}</a></div>
+
+                    <div class="set-list__desc table">
+
+                        <div class="table-cell">
+                            <div class="set-list__nominal"><span>{{price_format}}</span>&nbsp;<span class="rubl">p</span></div>
+
+                            <div class="set-list__dimention">
+                                <span class="set-list__dimention-name">Высота</span>
+                                <span class="set-list__dimention-val">{{height}}</span>
+                            </div>
+
+                            <div class="set-list__dimention">
+                                <span class="set-list__dimention-name">&nbsp;</span>
+                                <span class="set-list__dimention-val set-list__dimention-val_separation">x</span>
+                            </div>
+
+                            <div class="set-list__dimention">
+                                <span class="set-list__dimention-name">Ширина</span>
+                                <span class="set-list__dimention-val">{{width}}</span>
+                            </div>
+
+                            <div class="set-list__dimention">
+                                <span class="set-list__dimention-name">&nbsp;</span>
+                                <span class="set-list__dimention-val set-list__dimention-val_separation">x</span>
+                            </div>
+
+                            <div class="set-list__dimention">
+                                <span class="set-list__dimention-name">Глубина</span>
+                                <span class="set-list__dimention-val">{{depth}}</span>
+                            </div>
+
+                            <div class="set-list__dimention">
+                                <span class="set-list__dimention-name">&nbsp;</span>
+                                <span class="set-list__dimention-val">см</span>
+                            </div>
+                        </div>
+
+                        <div class="set-list__counter table-cell">
+                            <div class="counter counter_mini js-productkit-item-counter">
+                                <button class="counter__btn counter__btn_minus disabled js-counter-minus"></button>
+                                <input type="text" class="counter__it js-counter-value" value="1">
+                                <button class="counter__btn counter__btn_plus js-counter-plus"></button>
+                                <span class="counter__num">шт.</span>
+                            </div>
+                        </div>
+
+                        <div class="set-list__price table-cell js-productkit-item-sum">
+                            <span>{{sum_format}}</span>&nbsp;<span class="rubl">p</span>
+                        </div>
+                    </div>
                 </div>
+            </li>
+            {{/kitProducts}}
+        </ul>
+    </div>
 
-                <div class="set-list__dimention">
-                    <span class="set-list__dimention-name">&nbsp;</span>
-                    <span class="set-list__dimention-val set-list__dimention-val_separation">x</span>
-                </div>
+    <div class="set-section__footer">
+        <div class="set-section__default packageSetDefault">
+            <input type="checkbox" id="defaultSet" class="custom-input custom-input_check js-base-set">
+            <label for="defaultSet" class="custom-label">Базовый комплект</label>
+        </div>
 
-                <div class="set-list__dimention">
-                    <span class="set-list__dimention-name">Ширина</span>
-                    <span class="set-list__dimention-val">{{width}}</span>
-                </div>
+        <div class="set-section__price">Итого за <span class="js-kit-total-quantity"></span> предметов: <strong class="js-kit-total-sum"></strong> <span class="rubl">p</span></div>
 
-                <div class="set-list__dimention">
-                    <span class="set-list__dimention-name">&nbsp;</span>
-                    <span class="set-list__dimention-val set-list__dimention-val_separation">x</span>
-                </div>
-
-                <div class="set-list__dimention">
-                    <span class="set-list__dimention-name">Глубина</span>
-                    <span class="set-list__dimention-val">{{depth}}</span>
-                </div>
-
-                <div class="set-list__dimention">
-                    <span class="set-list__dimention-name">&nbsp;</span>
-                    <span class="set-list__dimention-val">см</span>
-                </div>
-            </div>
-
-            <div class="set-list__counter table-cell">
-                <div class="counter counter_mini js-productkit-item-counter">
-                    <button class="counter__btn counter__btn_minus disabled js-counter-minus"></button>
-                    <input type="text" class="counter__it js-counter-value" value="1">
-                    <button class="counter__btn counter__btn_plus js-counter-plus"></button>
-                    <span class="counter__num">шт.</span>
-                </div>
-            </div>
-
-            <div class="set-list__price table-cell js-productkit-item-sum">
-                <span>{{sum_format}}</span>&nbsp;<span class="rubl">p</span>
-            </div>
+        <div class="set-section__buy">
+            <a class="btn-primary btn-primary_bigger" href="">Купить</a>
         </div>
     </div>
-</li>
+</div>

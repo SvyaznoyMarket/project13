@@ -3,9 +3,11 @@
  * @version     0.1
  *
  * @requires    App
+ * @requires    jQuery
  * @requires    enter.BaseViewClass
  * @requires    enter.productkit.collection
  * @requires    enter.productkit.item.view
+ * @requires    Mustache
  * @requires    printPrice
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
@@ -15,16 +17,18 @@
         'enter.productkit.view',
         [
             'App',
+            'jQuery',
             'enter.BaseViewClass',
             'enter.productkit.collection',
             'enter.productkit.item.view',
+            'Mustache',
             'printPrice'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, App, BaseViewClass, ProductKitCollection, ProductKitItemView, printPrice ) {
+    function( provide, App, $, BaseViewClass, ProductKitCollection, ProductKitItemView, mustache, printPrice ) {
         'use strict';
 
         var
@@ -40,7 +44,8 @@
                 BASESET_CHECKBOX: 'js-base-set',
                 TOTAL_SUM: 'js-kit-total-sum',
                 TOTAL_QUANTITY: 'js-kit-total-quantity',
-                WRAPPER: 'js-kit-wrapper'
+                WRAPPER: 'js-kit-wrapper',
+                KIT_ITEM: 'js-productkit-item'
             };
 
         provide(BaseViewClass.extend({
@@ -175,25 +180,51 @@
              *
              * @listens     module:enter.productkit.collection~ProductKitCollection#syncEnd
              */
-            render: function() {
+            render: function( data ) {
                 var
-                    self = this;
+                    html   = mustache.render(data.template, data.product),
+                    $html  = $(html),
+                    $items = $html.find('.' + CSS_CLASSES.KIT_ITEM),
+                    self   = this;
 
                 console.groupCollapsed('module:enter.productkit.view~ProductKitView#render');
                 console.dir(this.collection.models);
-                console.groupEnd();
+                console.dir(data);
 
-                this.collection.each(function( model ) {
+                this.wrapper.append($html);
+
+                $items.each(function() {
                     var
-                        id          = model.get('id'),
+                        $el         = $(this),
+                        id          = $el.attr('data-id'),
+                        model       = self.collection.get(id),
                         subViewName = 'kititem_' + id;
 
+                    console.groupCollapsed('module:enter.productkit.view~ProductKitView#finditem');
+                    console.log($el);
+                    console.log(id);
+                    console.dir(model);
+                    console.groupEnd();
+
                     self.subViews[subViewName] = new ProductKitItemView({
+                        el: $el,
                         model: model
                     });
-
-                    self.wrapper.append(self.subViews[subViewName].render());
                 });
+
+                console.groupEnd();
+
+                // this.collection.each(function( model ) {
+                //     var
+                //         id          = model.get('id'),
+                //         subViewName = 'kititem_' + id;
+
+                //     self.subViews[subViewName] = new ProductKitItemView({
+                //         model: model
+                //     });
+
+                //     self.wrapper.append(self.subViews[subViewName].render());
+                // });
             }
         }));
     }
