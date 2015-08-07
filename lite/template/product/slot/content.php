@@ -312,27 +312,7 @@ $buySender2 = $request->get('sender2');
         </div>
         <!--/ похожие товары -->
 
-        <!-- вы смотрели -->
-        <div class="product-section product-section--inn" style="margin-top: 40px;">
-            <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
-                <?= $helper->render('product/blocks/slider', [
-                    'type'      => 'viewed',
-                    'title'     => 'Вы смотрели',
-                    'products'  => [],
-                    'count'     => null,
-                    'limit'     => \App::config()->product['itemsInSlider'],
-                    'page'      => 1,
-                    'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
-                    'sender'    => [
-                        'name'     => 'enter',
-                        'from'     => 'productPage',
-                        'position' => $isProductAvailable ? 'Viewed' : 'ProductMissing',
-                    ],
-                    'sender2' => $buySender2,
-                ]) ?>
-            <? endif ?>
-        </div>
-        <!--/ вы смотрели -->
+        <?= $page->blockViewed() ?>
 
         <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
 
@@ -349,43 +329,3 @@ $buySender2 = $request->get('sender2');
 </div>
 <!--/ карточка товара -->
 
-<div class="popup popup-application popup_440" style="display: block;">
-    <div class="popup__close js-popup-close">×</div>
-    <div class="popup__title">Отправить заявку</div>
-
-    <div class="product-card-set-recall">
-        <div class="product-card-set-recall__title">Вам перезвонит специалист и поможет выбрать:</div>
-
-        <ul class="product-card-set-recall-list">
-            <li class="product-card-set-recall-list__item">Состав комплекта и его изменения;</li>
-            <li class="product-card-set-recall-list__item">Условия доставки и сборки.</li>
-        </ul>
-    </div>
-
-    <form class="form" action="">
-        <div class="form__field">
-            <input type="text" class="form__it it" name="" value="">
-            <label class="form__placeholder placeholder placeholder_str">Телефон</label>
-        </div>
-
-        <div class="form__field">
-            <input type="text" class="form__it it" name="" value="">
-            <label class="form__placeholder placeholder placeholder_str">Email</label>
-        </div>
-
-        <div class="form__field">
-            <input type="text" class="form__it it" name="" value="">
-            <label class="form__placeholder placeholder">Имя</label>
-        </div>
-
-        <div class="form__check-big">
-            <input type="checkbox" class="custom-input custom-input_check3" id="accept" name="" value="">
-
-            <label class="custom-label" for="accept">Я ознакомлен и согласен с информацией <a class="dotted">о продавце и его офертой</a><br>Продавец-партнер: ООО МЕГАЭЛАТОН</label>
-        </div>
-
-        <button class="product-card-set__btn-app btn-primary btn-primary_bigger btn-primary_centred btn-set" >Отправить заявку</button>
-
-        <div class="align-center"><a href="" class="dotted">Подробнее о кухонном гарнитуре</a></div>
-    </form>
-</div>
