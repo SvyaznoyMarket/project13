@@ -85,5 +85,7 @@ $category = $page->getParam('category');
 
 <?= $page->blockUserConfig() ?>
 
+<?= $page->blockPopupTemplates() ?>
+
 </body>
 </html>

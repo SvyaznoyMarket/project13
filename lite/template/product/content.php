@@ -214,25 +214,7 @@ $buySender2 = $request->get('sender2');
 	<!--/ похожие товары -->
 
 	<!-- вы смотрели -->
-	<div class="product-section product-section--inn" style="margin-top: 40px;">
-        <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
-            <?/*= $helper->render('product/__slider', [
-                'type'      => 'viewed',
-                'title'     => 'Вы смотрели',
-                'products'  => [],
-                'count'     => null,
-                'limit'     => \App::config()->product['itemsInSlider'],
-                'page'      => 1,
-                'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
-                'sender'    => [
-                    'name'     => 'enter',
-                    'from'     => 'productPage',
-                    'position' => $isProductAvailable ? 'Viewed' : 'ProductMissing',
-                ],
-                'sender2' => $buySender2,
-            ]) */?>
-        <? endif ?>
-	</div>
+    <?= $page->blockViewed() ?>
 	<!--/ вы смотрели -->
 
     <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
@@ -250,53 +232,3 @@ $buySender2 = $request->get('sender2');
 </section>
 <!--/ карточка товара -->
 
-<div class="popup popup_set js-productkit-popup" style="display: block;">
-    <div class="popup__close js-popup-close">×</div>
-
-    <div class="popup__title">Набор мебели для гостиной «Ксено»</div>
-
-    <div class="set-section-main-img"><img src="http://8.imgenter.ru/uploads/media/07/e3/fa/thumb_9c7d_product_500.jpeg"></div>
-
-    <div class="set-section__r">
-        <div class="set-list__tl clearfix">
-            Уточните комплектацию
-        </div>
-
-        <div class="set-section__inn">
-            <ul class="set-list js-kit-wrapper"></ul>
-        </div>
-
-        <div class="set-section__footer">
-            <div class="set-section__default packageSetDefault">
-                <input type="checkbox" id="defaultSet" class="custom-input custom-input_check js-base-set">
-                <label for="defaultSet" class="custom-label">Базовый комплект</label>
-            </div>
-
-            <div class="set-section__price">Итого за <span class="js-kit-total-quantity"></span> предметов: <strong class="js-kit-total-sum"></strong> <span class="rubl">p</span></div>
-
-            <div class="set-section__buy">
-                <a class="btn-primary btn-primary_bigger" href="">Купить</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- попап одноклика -->
-<div class="popup popup_540">
-    <div class="popup__close js-popup-close">×</div>
-
-    <div class="popup__title">Оформить заказ</div>
-
-    <form class="one-click">
-        <div class="one-click-product table">
-            <div class="one-click-product__img table-cell"><img src="http://5.imgenter.ru/uploads/media/d3/4a/6e/thumb_c1de_product_550.jpeg" alt="" class="image"></div>
-
-            <div class="one-click-product__desc table-cell">
-                <div class="one-click-product__name">Купольная вытяжка Hotpoint-Ariston 7HHP 6 R (OW)/HA</div>
-                <div class="one-click-product__price">649 р</div>
-            </div>
-        </div>
-        <button class="btn-primary btn-primary_bigger btn-primary_width btn-primary_centred">Оформить заказ</button>
-    </form>
-</div>
-<!--/ попап одноклика -->

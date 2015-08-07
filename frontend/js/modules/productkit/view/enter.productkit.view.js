@@ -90,8 +90,6 @@
                 if ( !this.collection.isBaseSet ) {
                     this.collection.toBaseSet();
                 }
-
-                return false;
             },
 
             /**
