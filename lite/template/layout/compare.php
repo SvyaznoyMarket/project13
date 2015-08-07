@@ -23,5 +23,7 @@
 
 <?= $page->blockUserConfig() ?>
 
+<?= $page->blockPopupTemplates() ?>
+
 </body>
 </html>

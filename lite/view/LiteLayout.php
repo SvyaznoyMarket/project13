@@ -104,4 +104,11 @@ class LiteLayout extends \View\Layout
         return '';
     }
 
+    /** Шаблоны popup-ов
+     * @return string
+     */
+    public function blockPopupTemplates() {
+        return $this->render('common/popup.templates');
+    }
+
 }
