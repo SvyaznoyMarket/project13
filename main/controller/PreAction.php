@@ -23,6 +23,7 @@ class PreAction {
         }
 
 
+        $routeName = $request->attributes->get('route');
         $uri = $request->getPathInfo();
         $redirectUrl = null;
 
@@ -32,6 +33,10 @@ class PreAction {
             && !\App::config()->preview // ...если не preview.enter.ru
             && !$request->isXmlHttpRequest() // ...если не ajax-запрос
             && ('POST' != $request->getMethod()) // ... если не POST-запрос
+            && (0 !== strpos($routeName, 'user'))
+            && (0 !== strpos($routeName, 'cart'))
+            && (0 !== strpos($routeName, 'order'))
+            && (0 !== strpos($routeName, 'compare'))
         ) {
             \App::scmsSeoClient()->addQuery(
                 'redirect',
