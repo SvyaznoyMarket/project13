@@ -1,10 +1,15 @@
-<!-- попап - узнатьо снижении цены, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
-<div class="best-price-popup info-popup info-popup--best-price info-popup--open js-lowPriceNotifier-popup">
-    <i class="closer js-lowPriceNotifier-popup-close">×</i>
+<!-- попап - узнатьо снижении цены, чтобы показать/скрыть окно необходимо добавить/удалить класс show -->
+<div class="best-price-popup popup show js-lowPriceNotifier-popup">
+    <div class="popup__close js-popup-close">×</div>
 
-    <strong class="best-price-popup__tl">Узнать о снижении цены</strong>
+    <div class="popup__title">Узнать о снижении цены</div>
 
     <p class="best-price-popup__desc">Вы получите письмо,<br>когда цена станет ниже {{&price}}&nbsp;<span class="rubl">p</span></p>
+
+    <div class="form__field">
+        <input type="text" class="form__it it js-lowPriceNotifier-popup-email" name="" value="">
+        <label class="form__placeholder placeholder js-auth-username-label">Ваш email</label>
+    </div>
 
     <input class="best-price-popup__it textfield js-lowPriceNotifier-popup-email" placeholder="Ваш email" value="{{userEmail}}">
     <div class="red js-lowPriceNotifier-popup-error" style="color: #cb3735"></div>
