@@ -59,7 +59,13 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
         <h1 class="product-name"><?= $helper->escape($product->getName()) ?></h1>
 
         <div class="product-card-set">
-            <div class="product-card-set-info product-card-set__right">
+            <div class="product-card-set-info product-card-set__right js-module-require"
+                 data-module="enter.product"
+                 data-product='<?= json_encode([
+                     'id'   => $product->getId(),
+                     'ui'   => $product->getUi()
+                 ], JSON_HEX_APOS) ?>'>
+
                 <div class="product-card-set-buying">
                     <? if ($product->isOnlyFromPartner() && $product->getPartnerName()) : ?>
                         <!-- Информация о партнере -->
@@ -130,7 +136,9 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
 
                 <ul class="product-card-tools">
                     <li class="product-card-tools__i product-card-tools__i--compare js-compareProduct" data-bind="" data-id="" data-type-id="">
-                        <a id="" href="" class="product-card-tools__lk jsCompareLink" data-is-slot="" data-is-only-from-partner="">
+                        <a href="<?= $page->url('compare.add', ['productId' => $product->getId()]) ?>"
+                           class="product-card-tools__lk js-compare-button"
+                           data-id="<?= $product->getId()?>">
                             <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
                             <span class="product-card-tools__tx">Сравнить</span>
                         </a>
