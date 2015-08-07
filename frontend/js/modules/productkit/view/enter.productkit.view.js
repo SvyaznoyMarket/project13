@@ -4,10 +4,12 @@
  *
  * @requires    App
  * @requires    jQuery
+ * @requires    underscore
  * @requires    enter.BaseViewClass
  * @requires    enter.productkit.collection
  * @requires    enter.productkit.item.view
  * @requires    Mustache
+ * @requires    jquery.update
  * @requires    printPrice
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
@@ -18,17 +20,19 @@
         [
             'App',
             'jQuery',
+            'underscore',
             'enter.BaseViewClass',
             'enter.productkit.collection',
             'enter.productkit.item.view',
             'Mustache',
+            'jquery.update',
             'printPrice'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, App, $, BaseViewClass, ProductKitCollection, ProductKitItemView, mustache, printPrice ) {
+    function( provide, App, $, _, BaseViewClass, ProductKitCollection, ProductKitItemView, mustache, jUpdate, printPrice ) {
         'use strict';
 
         var
@@ -74,8 +78,6 @@
                  // Setup events
                 this.events['click .' + CSS_CLASSES.BASESET_CHECKBOX] = 'checkBaseSet';
                 this.events['click .' + CSS_CLASSES.BUY_BUTTON]       = 'buyButtonHandler';
-
-                this.checkBaseSet();
 
                 // Apply events
                 this.delegateEvents();
@@ -152,7 +154,7 @@
              */
             changeSum: function( event ) {
                 var
-                    newSum = event.totalSum;
+                    newSum = this.collection.totalSum;
 
                 this.totalSum.text(printPrice(newSum));
             },
@@ -182,7 +184,9 @@
              */
             render: function( data ) {
                 var
-                    html   = mustache.render(data.template, data.product),
+                    html   = mustache.render(data.template, _.extend(data.product, {
+                        kitProducts: this.collection.toJSON()
+                    })),
                     $html  = $(html),
                     $items = $html.find('.' + CSS_CLASSES.KIT_ITEM),
                     self   = this;
@@ -191,8 +195,6 @@
                 console.dir(this.collection.models);
                 console.dir(data);
 
-                this.wrapper.append($html);
-
                 $items.each(function() {
                     var
                         $el         = $(this),
@@ -200,31 +202,23 @@
                         model       = self.collection.get(id),
                         subViewName = 'kititem_' + id;
 
-                    console.groupCollapsed('module:enter.productkit.view~ProductKitView#finditem');
-                    console.log($el);
-                    console.log(id);
-                    console.dir(model);
-                    console.groupEnd();
-
                     self.subViews[subViewName] = new ProductKitItemView({
                         el: $el,
                         model: model
                     });
                 });
 
+                this.wrapper.append($html);
+
+                this.totalQuantity.update();
+                this.totalSum.update();
+                this.baseSetChekbox.update();
+                this.buyButton.update();
+
+                this.checkBaseSet();
+                this.changeSum();
+
                 console.groupEnd();
-
-                // this.collection.each(function( model ) {
-                //     var
-                //         id          = model.get('id'),
-                //         subViewName = 'kititem_' + id;
-
-                //     self.subViews[subViewName] = new ProductKitItemView({
-                //         model: model
-                //     });
-
-                //     self.wrapper.append(self.subViews[subViewName].render());
-                // });
             }
         }));
     }

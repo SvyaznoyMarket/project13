@@ -2,6 +2,11 @@
  * @module      enter.productkit.item.view
  * @version     0.1
  *
+ * @requires    jQuery
+ * @requires    enter.BaseViewClass
+ * @requires    enter.productkit.counter.view
+ * @requires    printPrice
+ *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
 !function( modules, module ) {
