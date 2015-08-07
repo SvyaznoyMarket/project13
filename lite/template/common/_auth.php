@@ -37,7 +37,7 @@ $oauthEnabled = \App::config()->oauthEnabled;
                 </div>
 
                 <div class="form__field">
-                    <input type="password" class="form__it it error js-auth-password-label" name="signin[password]" value="">
+                    <input type="password" class="form__it it js-auth-password-input" name="signin[password]" value="">
                     <label class="form__placeholder placeholder js-auth-password-label">Пароль</label>
 
                     <a href="" class="form__it-btn js-auth-switch-state" data-state="login_hint">забыли?</a>
