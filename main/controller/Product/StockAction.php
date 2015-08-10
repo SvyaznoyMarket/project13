@@ -8,7 +8,6 @@ class StockAction {
 
         $client = \App::coreClientV2();
         $user = \App::user();
-        $repository = \RepositoryManager::product();
 
         $productToken = explode('/', $productPath);
         $productToken = end($productToken);
@@ -16,26 +15,19 @@ class StockAction {
         // подготовка 1-го пакета запросов
 
         // запрашиваем текущий регион, если есть кука региона
-        $regionConfig = [];
         if ($user->getRegionId()) {
-            $regionConfig = (array)\App::dataStoreClient()->query("/region/{$user->getRegionId()}.json");
-
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
             });
+            
+            $client->execute();
         }
-
-        // выполнение 1-го пакета запросов
-        $client->execute();
 
         $regionEntity = $user->getRegion();
         if ($regionEntity instanceof \Model\Region\Entity) {
-            if (array_key_exists('reserve_as_buy', $regionConfig)) {
-                $regionEntity->setForceDefaultBuy(false == $regionConfig['reserve_as_buy']);
-            }
             $user->setRegion($regionEntity);
         }
 

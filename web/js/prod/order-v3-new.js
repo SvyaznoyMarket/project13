@@ -363,6 +363,9 @@
     var body = $(document.body),
         _gaq = window._gaq,
         region = $('.jsRegion').data('value'),
+        saleAnalyticsData = $('.jsOrderSaleAnalytics').data('value'),
+        value,
+        i,
 
         sendAnalytic = function sendAnalyticF (category, action, label, value) {
         var lbl = label || '',
@@ -391,6 +394,14 @@
     // TODO вынести инициализацию трекера из ports.js
     if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length == 0) {
         ga( 'create', 'UA-25485956-5', 'enter.ru' );
+    }
+
+    if (saleAnalyticsData) {
+        $.each(saleAnalyticsData, function(i, value) {
+            if ('object' === typeof value) {
+                $('body').trigger('trackGoogleEvent', value);
+            }
+        })
     }
 
 })(jQuery);
@@ -1469,9 +1480,9 @@
 			if (window.location.host != 'www.enter.ru') href = href.replace(/^.*enter.ru/, ''); /* для работы на demo-серверах */
 			console.log('NEW href', href);
 			$.ajax({
-				url: href,
+				url: ENTER.utils.setURLParam('ajax', 1, href),
 				success: function(data) {
-					$('.orderOferta_tl:first').html($(data).find('.entry-content').html());
+					$('.orderOferta_tl:first').html(data.content || '');
 					showOfertaPopup();
 				}
 			})

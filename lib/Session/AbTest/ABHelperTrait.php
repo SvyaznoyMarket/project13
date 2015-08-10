@@ -35,7 +35,19 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isOrderMinSumRestriction(){
-        return in_array(\App::user()->getRegionId(), [18074, 99958, 10374]);
+        // SITE-5921
+        $notAvailableParentRegions = [
+            82, // Москва
+            14974, // Москва
+            83, // Московская область
+        ];
+
+        $notAvailableRegions = [
+            108136, // Санкт-Петербург
+        ];
+
+        $region = \App::user()->getRegion();
+        return (!in_array($region->parentId, $notAvailableParentRegions) && !in_array($region->id, $notAvailableRegions));
     }
 
     public static function getColorClass(Entity $product, $location = null){

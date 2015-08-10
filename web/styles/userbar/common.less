@@ -4,15 +4,16 @@
     visibility: visible;
     overflow: hidden;
 
-    height: 0;
+    display: none;
 
     background: @white;
 
     .opacity(0);
-    .transition(all .3s ease-out);
+    .transition(display .3s ease-out);
     .drop-shadow(0, 4px, 28px, .5);
 
     &.fadeIn{
+		display: block;
         zoom: 1;
         filter: progid:DXImageTransform.Microsoft.Shadow(Color=#c7c7c7, Strength=15, Direction=180);
     }

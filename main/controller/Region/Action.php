@@ -2,13 +2,13 @@
 
 namespace Controller\Region;
 
-use Templating\Helper;
+use View\Layout;
 
 class Action {
 
     public function init() {
         $regions = \RepositoryManager::region()->getShownInMenuCollection();
-        $html = \App::templating()->render('_regionSelection', [ 'regions' => $regions ]);
+        $html = (new Layout())->render('_regionSelection', [ 'regions' => $regions ]);
         return new \Http\JsonResponse(['result' => $html]);
     }
 
@@ -51,8 +51,6 @@ class Action {
 
         $response = new \Http\RedirectResponse($link);
 
-        $regionConfig = (array)\App::dataStoreClient()->query("/region/{$regionId}.json");
-
         $region = null;
         \RepositoryManager::region()->prepareEntityById($regionId, function($data) use (&$region) {
             $data = reset($data);
@@ -65,12 +63,6 @@ class Action {
             $region = \RepositoryManager::region()->getDefaultEntity();
             if (!$region) {
                 throw new \Exception\NotFoundException(sprintf('Регион #%s не найден', $regionId));
-            }
-        }
-
-        if ($region instanceof \Model\Region\Entity) {
-            if (array_key_exists('reserve_as_buy', $regionConfig)) {
-                $region->setForceDefaultBuy(false == $regionConfig['reserve_as_buy']);
             }
         }
 

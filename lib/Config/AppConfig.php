@@ -158,14 +158,6 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $wordpress = [
-        'url'            => null,
-        'timeout'        => null,
-        'throwException' => null,
-        'retryTimeout' => [],
-        'retryCount'   => null,
-    ];
-    /** @var array */
     public $dataStore = [
         'url'          => null,
         'timeout'      => null,

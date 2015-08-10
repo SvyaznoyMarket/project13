@@ -40,6 +40,8 @@
 
         <div class="wrapper wrapper--ep<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
             <div class="header header--ep">
+                <?= $page->render('main/banner.pickup') ?>
+
                 <div class="header__inn">
                     <?= $page->slotHeader() ?>
                     <?= $page->slotTopbar() ?>

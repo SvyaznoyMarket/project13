@@ -77,7 +77,8 @@ $buySender2 = $request->get('sender2');
         'buySender' => $buySender,
         'buySender2' => $buySender2,
         'request' => \App::request(),
-        'favoriteProductsByUi' => $favoriteProductsByUi
+        'favoriteProductsByUi' => $favoriteProductsByUi,
+        'shopStates' => $shopStates,
     ]) ?>
 	<!--/ карточка товара -->
 
@@ -238,6 +239,8 @@ $buySender2 = $request->get('sender2');
         </p>*/ ?>
     </div>
     <!--/ seo информация -->
+
+    <?= $helper->render('product/__data', ['product' => $product]) ?>
 
 </section>
 

@@ -8,8 +8,6 @@
 	$body.on('click', '.jsBuyButton', function(e, credit) {
 		var $button = $(e.currentTarget);
 
-        $body.trigger('TL_buyButton_clicked');
-
 		if ( $button.hasClass('mDisabled') ) {
 			//return false;
             e.preventDefault();
@@ -76,6 +74,28 @@
 
 		//return false;
         e.preventDefault();
+	});
+
+	$body.on('click', '.js-buyButton-points-opener', function(e){
+		e.preventDefault();
+
+		var
+			$points = $(e.currentTarget).closest('.js-buyButton-points'),
+			$pointsContent = $points.find('.js-buyButton-points-content')
+		;
+
+		$.enterLightboxMe.closeAll();
+
+		$pointsContent.enterLightboxMe({
+			centered: true,
+			closeSelector: '.js-buyButton-points-content-closer',
+			closeClick: true,
+			destroyOnClose: true,
+			preventScroll: true,
+			onClose: function() {
+				$points.prepend($pointsContent.hide());
+			}
+		});
 	});
 
 	// analytics

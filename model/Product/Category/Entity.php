@@ -462,6 +462,14 @@ class Entity extends BasicEntity {
         ], true);
     }
 
+    public function isInSiteListingWithViewSwitcherAbTest() {
+        return (bool)$this->getClosest([
+            '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
+            'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электроника
+            '0e80c81b-31c9-4519-bd10-e6a556fe000c', // Сделай сам
+        ]);
+    }
+
     private function getClosest(array $expectedUis) {
         /** @var Entity[] $ancestors */
         $ancestors = $this->ancestor;

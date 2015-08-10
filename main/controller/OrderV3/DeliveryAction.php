@@ -112,10 +112,10 @@ class DeliveryAction extends OrderV3 {
             \App::exception()->remove($e);
             \App::logger()->error($e->getMessage(), ['curl', 'cart/split']);
             $page = new \View\OrderV3\ErrorPage();
-            $page->setParam('error', 'CORE: '.$e->getMessage());
+            $page->setParam('error', $e->getMessage());
             $page->setParam('step', 2);
 
-            return new \Http\Response($page->show(), 500);
+            return new \Http\Response($page->show());
         } catch (\Exception $e) {
             \App::logger()->error($e->getMessage(), ['cart/split']);
             $page = new \View\OrderV3\ErrorPage();
@@ -156,7 +156,7 @@ class DeliveryAction extends OrderV3 {
 
 
         $orderDeliveryData = null;
-        foreach ([1, 8] as $i) { // две попытки на расчет доставки: 1*4 и 8*4 секунды
+        foreach ([2, 8] as $i) { // две попытки на расчет доставки: 2*4 и 8*4 секунды
             try {
                 $orderDeliveryData = $this->client->query(
                     'cart/split',

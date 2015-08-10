@@ -19,8 +19,38 @@
 }
 
 .compare-userbar {
-	position: relative;
+	position: fixed;
 	z-index: 1000;
+	top: 0;
+	right: 0;
+	left: 0;
+
+	.userbar-static {
+		position: fixed;
+		top: 0;
+		right: 0;
+		left: 0;
+		width: auto;
+		margin-left: 0;
+		padding-left: 0;
+		margin-right: -2px;
+		border-width: 0;
+
+		.topbar_l {
+			padding-left: 10px;
+		}
+	}
+
+	.userbar-fixed {
+		right: -3px;
+		left: 0;
+		width: auto;
+		margin-left: 0;
+
+		.topbar_l {
+			padding-left: 10px;
+		}
+	}
 }
 
 .cmprHd {
@@ -430,37 +460,6 @@
 		margin: 0 auto;
 		padding: 0 10px;
 		width: 940px;
-	}
-}
-
-.compare-userbar {
-	min-width: 960px;
-
-	.userbar-static {
-		position: fixed;
-		top: 0;
-		right: 0;
-		left: 0;
-		width: auto;
-		margin-left: 0;
-		padding-left: 0;
-		margin-right: -2px;
-		border-width: 0;
-
-		.topbar_l {
-			padding-left: 10px;
-		}
-	}
-
-	.userbar-fixed {
-		right: -3px;
-		left: 0;
-		width: auto;
-		margin-left: 0;
-
-		.topbar_l {
-			padding-left: 10px;
-		}
 	}
 }
 

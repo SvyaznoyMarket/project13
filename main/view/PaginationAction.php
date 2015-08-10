@@ -10,17 +10,23 @@ class PaginationAction {
      */
     public function execute(
         \Helper\TemplateHelper $helper,
-        \Iterator\EntityPager $pager
+        \Iterator\EntityPager $pager,
+        \Model\Product\Category\Entity $category = null
     ) {
         $first = 1;
         $last = $pager->getLastPage();
         $current = $pager->getPage();
+        if (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher'], true) && $category && $category->isInSiteListingWithViewSwitcherAbTest()) {
+            $onSides = 1;
+        } else {
+            $onSides = 2;
+        }
 
         $pageData = [];
 
-        if ($current > ($first + 2)) {
+        if ($current > ($first + $onSides)) {
             $pageData[] = ['name' => $first, 'url'  => $helper->replacedUrl(['page' => $first, 'ajax' => null])];
-            if ($current > ($first + 3)) {
+            if ($current > ($first + $onSides + 1)) {
                 $pageData[] = ['name' => null];
             }
         }
@@ -28,13 +34,13 @@ class PaginationAction {
         foreach (range($first, $last) as $num) {
             if ($num == $current) {
                 $pageData[] = ['name' => $num, 'url' => '#', 'active' => true];
-            } else if ($num >= $current - 2 && $num <= $current + 2) {
+            } else if ($num >= $current - $onSides && $num <= $current + $onSides) {
                 $pageData[] = ['name' => $num, 'url'  => $helper->replacedUrl(['page' => $num, 'ajax' => null])];
             }
         }
 
-        if ($current < ($last - 2)) {
-            if ($current < ($last - 3)) {
+        if ($current < ($last - $onSides)) {
+            if ($current < ($last - $onSides - 1)) {
                 $pageData[] = ['name' => null];
             }
 

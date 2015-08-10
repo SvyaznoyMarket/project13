@@ -967,6 +967,10 @@ class Entity {
             : $default;
     }
 
+    public function getMeta() {
+        return $this->meta_data;
+    }
+
     /** Оплата с помощью баллов Связного клуба
      * @return bool
      */

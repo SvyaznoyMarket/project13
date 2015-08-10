@@ -1,3 +1,62 @@
+$(function() {
+    var
+        $body = $('body')
+    ;
+
+    // клик на главном баннере
+    $body.on('click', '.jsMainBannerLink', function() {
+        $body.trigger('trackGoogleEvent', {
+            category: 'banner_main',
+            action: 'click',
+            label: 'banner'
+        });
+    });
+
+    // скролл на главном баннере
+    $body.on('click', '.jsMainBannerThumb, .jsMainBannersButton', function(e) {
+        $body.trigger('trackGoogleEvent', {
+            category: 'banner_main',
+            action: 'scroll',
+            label: 'banner'
+        });
+    });
+
+    // клик на нижнем баннере
+    $body.on('click', '.jsSlidesWideItem', function() {
+        $body.trigger('trackGoogleEvent', {
+            category: 'banner_main',
+            action: 'click',
+            label: 'collection'
+        });
+    });
+
+    // скрол на нижнем баннере
+    $body.on('click', '.jsSlidesWideButton', function(e) {
+        $body.trigger('trackGoogleEvent', {
+            category: 'banner_main',
+            action: 'scroll',
+            label: 'collection'
+        });
+    });
+
+    // клик по бренду
+    $body.on('click', '.jsMainBrand', function(e) {
+        $body.trigger('trackGoogleEvent', {
+            category: 'brand_main',
+            action: $(this).attr('title'),
+            label: ''
+        });
+    });
+
+    // клик по трастфактору
+    $body.on('click', '.jsShopInfoPreview', function(){
+        $body.trigger('trackGoogleEvent', {
+            category: 'trust_main',
+            action: $(this).data('name'),
+            label: ''
+        });
+    });
+});
 ;(function($){
 	var $body = $(document.body),
 		timeoutId,      // id таймаута для пролистывания баннеров
@@ -13,8 +72,6 @@
         thumbsHeightWithMargin = 58,    // количество пикселов для промотки превьюшек
         $bannersButtons = $('.jsMainBannersButton'),    // кнопки вверх-вниз у превьюшек
         bannersUpClass = 'jsMainBannersUpButton',
-
-        $minOrderSumBanner = $('.jsMainOrderSumBannerCloser'),
 
 		slidesWidth = 473,
 		slidesDotClass = 'slidesBox_dott_i',
@@ -281,18 +338,5 @@
 			hitCallback: aTarget == '_blank' ? null : link
 		})
 	});
-
-    // Баннер про минимальную стоимость заказа
-    $minOrderSumBanner.on('click', function(e){
-        e.preventDefault();
-        $minOrderSumBanner.parent().hide();
-        sessionStorage && sessionStorage.setItem('minOrderSumBanner', 'hidden')
-    });
-
-    if ($minOrderSumBanner.length > 0 && sessionStorage && sessionStorage.getItem('minOrderSumBanner') != 'hidden') {
-        setTimeout(function(){
-            $minOrderSumBanner.parent().addClass('shown');
-        }, 1000)
-    }
 
 }(jQuery));

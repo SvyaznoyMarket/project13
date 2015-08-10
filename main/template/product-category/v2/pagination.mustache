@@ -1,0 +1,19 @@
+<ul class="sorting_lst fl-r js-category-pagination">
+    <li class="sorting_i sorting_i-tl">Страницы</li>
+
+    {{#links}}
+        {{#name}}
+        <li class="sorting_i {{#active}}act js-category-pagination-activePage{{/active}} js-category-pagination-page">
+            <a class="sorting_lk sorting_lk-page js-category-pagination-page-link" href="{{url}}">{{name}}</a>
+        </li>
+        {{/name}}
+
+        {{^name}}
+            <li class="sorting_i js-category-pagination-page">&#8230;</li>
+        {{/name}}
+    {{/links}}
+
+    <li class="sorting_i hidden js-category-pagination-paging"><a class="sorting_lk sorting_lk-page js-category-pagination-paging-enableLink" href="#">123</a></li>
+
+    <li class="sorting_i js-category-pagination-infinity"><a class="sorting_lk sorting_lk-page js-category-pagination-infinity-enableLink" href="#">&#8734;</a></li>
+</ul>

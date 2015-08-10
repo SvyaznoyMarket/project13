@@ -129,28 +129,6 @@ $(document).ready(function(){
 	$('.infiniteCarousel').infiniteCarousel();
 
 	/**
-	 * Получение продуктов
-	 */
-	if ( $('.getProductList').length ) {
-		// console.log('yes!')
-		$('.getProductList').each(function() {
-			var wrapper = $(this),
-				productList = wrapper.data('product'),
-				url = '/products/widget/'+productList;
-			// end of vars
-
-			$.get(url, function( res ) {
-				if ( !res.success ) {
-					return false;
-				}
-
-				wrapper.html(res.content);
-			});
-		});
-	}
-
-
-	/**
 	 * form register corporate
 	 */
 	if ( $('#corp_select').length ) {
@@ -273,20 +251,18 @@ $(document).ready(function(){
 
 	/* Credits inline */
 	if ( $('.bCreditLine').length ) {
-		document.getElementById('requirementsFullInfoHref').style.cursor = 'pointer';
-
-		$('#requirementsFullInfoHref').bind('click', function() {
-			$('.bCreditLine2').toggle();
-		});
+		document.getElementById('requirementsFullInfoHref').style.cursor = 'pointer'; // TODO перенести в css в scms
 
 		var creditOptions = $('#creditOptions').data('value');
 		var bankInfo = $('#bankInfo').data('value');
 		var relations = $('#relations').data('value');
 
-		for ( var i = 0; i < creditOptions.length; i++){
-			var creditOption = creditOptions[i];
+		if (creditOptions) {
+			for ( var i = 0; i < creditOptions.length; i++){
+				var creditOption = creditOptions[i];
 
-			$('<option>').val(creditOption.id).text(creditOption.name).appendTo('#productSelector');
+				$('<option>').val(creditOption.id).text(creditOption.name).appendTo('#productSelector');
+			}
 		}
 
 		$('#productSelector').change(function() {
@@ -369,113 +345,132 @@ $(document).ready(function(){
 			return false;
 		});
 	}
+    //Попап стоимости доставки
+    $('.js-tarifs-popup-show').on('click',function(){
+        var popup = $('.js-tarifs-popup').clone();
+        $('.js-tarifs-popup').remove();
+        $('body').append('<div class="js-tarifs-overlay"></div>');
+        $('body').append(popup).addClass('body-fixed');
+
+        $('.js-tarifs-popup').show();
+
+    });
+    $('body').on('click', '.js-tarifs-popup .popup-closer', function(){
+        $('.js-tarifs-popup').hide();
+        $('.js-tarifs-overlay').remove();
+        $('body').removeClass('body-fixed');
+    });
+    $('body').on('click', '.js-tarifs-overlay', function(){
+        $('.js-tarifs-popup').hide();
+        $(this).remove();
+        $('body').removeClass('body-fixed');
+    });
+    $('body').on('keyup', '.js-tarifs-search', function(){
+       var $this = $(this),
+           value = $this.val().toLowerCase(),
+           noResult = true;
+
+        $('.tarifs-search__i').each(function(){//Пробегаем по списку букв
+            var $letter = $(this).find('.tarifs-search__letter'),
+                $cityList = $(this).find('.tarifs-search-city__i'),
+                isLetterShown = false;
+
+            $($cityList).each(function(){//Пробегаем по списку городов
+                var name = $(this).find('.tarifs-search-city__name').text().toLowerCase();
+
+                if (name.indexOf(value) == 0){
+                    $(this).show();
+                    isLetterShown = true;//Если хотя бы один город на эту букву найден - будем отображать и букву
+                    noResult = false;//Если хотя бы один город найден, не будем выводить сообщение о том, что ничего не найдено
+                } else {
+                    $(this).hide();
+                }
+            });
+
+            isLetterShown ? $letter.show() : $letter.hide();
+
+        });
+
+        noResult ? $('.tarifs-search__no-result').show() : $('.tarifs-search__no-result').hide();
+    });
 });
 
-/**
- * Обработчик страницы со стоимостью услуг
- *
- * @requires  jQuery
- */
-;(function(global) {
-	var serviceData = $('#contentPageData').data('data'),
-		selectRegion = $('#region_list'),
-		serviceTableContent = $('#bServicesTable tbody');
-	// end of vars
+$(function() {
+	var data = $('#contentPageData').data('data');
 
+	if (!data || !ENTER.utils.objLen(data.services)) {
+		return;
+	}
 
-	var createTable = function createTable( chosenRegion ) {
-			var tableData = serviceData[chosenRegion],
-				i,
-				key,
-				tmpTr;
-			// end of vars
+	var
+		$regions = $('.js-content-services-regions'),
+		$tableBody = $('.js-content-services-tableBody')
+	;
 
-			serviceTableContent.empty();
+	function createTable( chosenRegionName ) {
+		var tableData = data.services[chosenRegionName],
+			i,
+			key,
+			tmpTr;
 
-			if ( tableData instanceof Array ) {
-				// просто выводим элементы
+		$tableBody.empty();
 
-				for ( i = 0; i < tableData.length; i++ ) {
+		if ( tableData instanceof Array ) {
+			// просто выводим элементы
+
+			for ( i = 0; i < tableData.length; i++ ) {
+				tmpTr = '<tr>'+
+							//'<td>'+ (i + 1) +'</td>'+
+							'<td>'+ tableData[i]['Услуга'] +'</td>'+
+							'<td>'+ tableData[i]['Стоимость'] +'</td>'+
+						'</tr>';
+
+				$tableBody.append(tmpTr);
+			}
+		}
+		else if ( tableData instanceof Object ) {
+			// элементы разбиты на категории
+
+			for ( key in tableData ) {
+				if ( tableData.hasOwnProperty(key) ) {
 					tmpTr = '<tr>'+
-								//'<td>'+ (i + 1) +'</td>'+
-								'<td>'+ tableData[i]['Услуга'] +'</td>'+
-								'<td>'+ tableData[i]['Стоимость'] +'</td>'+
+								//'<th></th>'+
+								'<th><strong>'+ key +'</strong></th>'+
+								'<th></th>'+
 							'</tr>';
 
-					serviceTableContent.append(tmpTr);
-				}
-			}
-			else if ( tableData instanceof Object ) {
-				// элементы разбиты на категории
+					$tableBody.append(tmpTr);
 
-				for ( key in tableData ) {
-					if ( tableData.hasOwnProperty(key) ) {
+					for ( i = 0; i < tableData[key].length; i++ ) {
 						tmpTr = '<tr>'+
-									//'<th></th>'+
-									'<th><strong>'+ key +'</strong></th>'+
-									'<th></th>'+
+									//'<td>'+ (i + 1) +'</td>'+
+									'<td>'+ tableData[key][i]['Услуга'] +'</td>'+
+									'<td>'+ tableData[key][i]['Стоимость'] +'</td>'+
 								'</tr>';
 
-						serviceTableContent.append(tmpTr);
-
-						for ( i = 0; i < tableData[key].length; i++ ) {
-							tmpTr = '<tr>'+
-										//'<td>'+ (i + 1) +'</td>'+
-										'<td>'+ tableData[key][i]['Услуга'] +'</td>'+
-										'<td>'+ tableData[key][i]['Стоимость'] +'</td>'+
-									'</tr>';
-
-							serviceTableContent.append(tmpTr);
-						}
+						$tableBody.append(tmpTr);
 					}
 				}
 			}
-		},
-
-		/**
-		 * Обработка полченных данных
-		 */
-		prepareData = function prepareData( data ) {
-			var i,
-				key,
-				tmpOpt,
-				initVal;
-			// end of vars
-
-			console.info('prepareData');
-
-			selectRegion.empty();
-
-			for ( key in data ) {
-				if ( data.hasOwnProperty(key) ) {
-					tmpOpt = $('<option>').val(key).html(key);
-					selectRegion.prepend(tmpOpt);
-				}
-			}
-
-			initVal = selectRegion.find('option:first').val();
-
-			selectRegion.val(initVal);
-			createTable(initVal);
-		},
-
-		/**
-		 * Хандлер смены региона
-		 */
-		changeRegion = function changeRegion() {
-			var self = $(this),
-				selectedRegion = self.val();
-			// end of vars
-
-			createTable(selectedRegion);
-		};
-	// end of function
-
-	$('#bServicesTable tr th:first').remove();
-
-	if ( global.ENTER.utils.objLen(serviceData) ) {
-		prepareData(serviceData);
-		selectRegion.on('change', changeRegion);
+		}
 	}
 
-}(this));
+	$regions.on('change', function() {
+		createTable($(this).val());
+	});
+
+	if (data.regionName && $regions.length) {
+		var hasRegion = false;
+		$regions.find('option').each(function() {
+			var $option = $(this);
+			if ($option.text() && -1 !== $option.text().indexOf(data.regionName)) {
+				hasRegion = true;
+				$option.prop('selected', true).change();
+			}
+		});
+
+		if (!hasRegion) {
+			$regions.find('option:first').prop('selected', true).change();
+		}
+	}
+});

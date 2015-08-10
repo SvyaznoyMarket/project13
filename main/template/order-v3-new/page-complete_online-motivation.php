@@ -144,6 +144,8 @@ return function(
 
         echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products]);
 
+        echo $helper->render('order/__saleAnalytics', ['orders' => $orders]);
+
         /* Показываем флоктори без нарушения конверсии онлайн-оплаты (т.е. не выбран онлайновый метод оплаты) */
         if (!$isOnlinePaymentChecked) {
             echo $helper->render('order-v3/partner-counter/_flocktory-complete',[

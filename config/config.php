@@ -118,19 +118,6 @@ $c->reviewsStore['retryTimeout'] = [
     'huge'    => 2,
 ];
 
-$c->wordpress['url'] = 'http://content.enter.ru/';
-$c->wordpress['timeout'] = 2;
-$c->wordpress['throwException'] = true;
-$c->wordpress['retryCount'] = 2;
-$c->wordpress['retryTimeout'] = [
-    'default' => 0.3,
-    'tiny'    => 0.1,
-    'short'   => 0.2,
-    'medium'  => 0.3,
-    'long'    => 0.5,
-    'huge'    => 1,
-];
-
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
 $c->dataStore['timeout'] = 2;
 $c->dataStore['retryCount'] = 2;
@@ -270,6 +257,7 @@ $c->partners['MnogoRu']['cookieName'] = 'enter_mnogo_ru';
 $c->partners['PandaPay']['cookieName'] = 'enter_panda_pay';
 $c->partners['LinkProfit']['enabled'] = true;
 $c->partners['LinkProfit']['cookieName'] = 'linkprofit_id';
+$c->partners['Adblender']['enabled'] = true;
 
 $c->partners['Giftery']['enabled'] = true;
 $c->partners['Giftery']['lowestPrice'] = 500;

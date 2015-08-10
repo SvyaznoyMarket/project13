@@ -37,4 +37,6 @@
 
     echo $page->tryRender('order/partner-counter/_cityads-complete-counter', array('orders' => $orders));
 
+    echo $page->tryRender('order/partner-counter/_adblender-complete', array('orders' => $orders));
+
  endif ?>

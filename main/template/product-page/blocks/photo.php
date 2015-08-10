@@ -3,7 +3,8 @@ $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
     $videoHtml,
-    $properties3D
+    $properties3D,
+    $shopStates = []
 ){
 
     $request = \App::request();
@@ -124,7 +125,8 @@ $f = function(
                 'sender'   => ($request->get('sender') ? (array)$request->get('sender') : []) + ['name' => null, 'method' => null, 'position' => null],
                 'location' => 'userbar',
                 'sender2'  => '',
-                'inShowroomAsButton' => false
+                'inShowroomAsButton' => false,
+                'shopStates' => $shopStates,
             ]) // Кнопка купить ?>
         </div>
         <!--/ попап просмотра большого изображения -->

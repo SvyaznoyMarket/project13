@@ -85,28 +85,6 @@ $(document).ready(function(){
 	$('.infiniteCarousel').infiniteCarousel();
 
 	/**
-	 * Получение продуктов
-	 */
-	if ( $('.getProductList').length ) {
-		// console.log('yes!')
-		$('.getProductList').each(function() {
-			var wrapper = $(this),
-				productList = wrapper.data('product'),
-				url = '/products/widget/'+productList;
-			// end of vars
-
-			$.get(url, function( res ) {
-				if ( !res.success ) {
-					return false;
-				}
-
-				wrapper.html(res.content);
-			});
-		});
-	}
-
-
-	/**
 	 * form register corporate
 	 */
 	if ( $('#corp_select').length ) {
@@ -229,20 +207,18 @@ $(document).ready(function(){
 
 	/* Credits inline */
 	if ( $('.bCreditLine').length ) {
-		document.getElementById('requirementsFullInfoHref').style.cursor = 'pointer';
-
-		$('#requirementsFullInfoHref').bind('click', function() {
-			$('.bCreditLine2').toggle();
-		});
+		document.getElementById('requirementsFullInfoHref').style.cursor = 'pointer'; // TODO перенести в css в scms
 
 		var creditOptions = $('#creditOptions').data('value');
 		var bankInfo = $('#bankInfo').data('value');
 		var relations = $('#relations').data('value');
 
-		for ( var i = 0; i < creditOptions.length; i++){
-			var creditOption = creditOptions[i];
+		if (creditOptions) {
+			for ( var i = 0; i < creditOptions.length; i++){
+				var creditOption = creditOptions[i];
 
-			$('<option>').val(creditOption.id).text(creditOption.name).appendTo('#productSelector');
+				$('<option>').val(creditOption.id).text(creditOption.name).appendTo('#productSelector');
+			}
 		}
 
 		$('#productSelector').change(function() {
@@ -325,4 +301,52 @@ $(document).ready(function(){
 			return false;
 		});
 	}
+    //Попап стоимости доставки
+    $('.js-tarifs-popup-show').on('click',function(){
+        var popup = $('.js-tarifs-popup').clone();
+        $('.js-tarifs-popup').remove();
+        $('body').append('<div class="js-tarifs-overlay"></div>');
+        $('body').append(popup).addClass('body-fixed');
+
+        $('.js-tarifs-popup').show();
+
+    });
+    $('body').on('click', '.js-tarifs-popup .popup-closer', function(){
+        $('.js-tarifs-popup').hide();
+        $('.js-tarifs-overlay').remove();
+        $('body').removeClass('body-fixed');
+    });
+    $('body').on('click', '.js-tarifs-overlay', function(){
+        $('.js-tarifs-popup').hide();
+        $(this).remove();
+        $('body').removeClass('body-fixed');
+    });
+    $('body').on('keyup', '.js-tarifs-search', function(){
+       var $this = $(this),
+           value = $this.val().toLowerCase(),
+           noResult = true;
+
+        $('.tarifs-search__i').each(function(){//Пробегаем по списку букв
+            var $letter = $(this).find('.tarifs-search__letter'),
+                $cityList = $(this).find('.tarifs-search-city__i'),
+                isLetterShown = false;
+
+            $($cityList).each(function(){//Пробегаем по списку городов
+                var name = $(this).find('.tarifs-search-city__name').text().toLowerCase();
+
+                if (name.indexOf(value) == 0){
+                    $(this).show();
+                    isLetterShown = true;//Если хотя бы один город на эту букву найден - будем отображать и букву
+                    noResult = false;//Если хотя бы один город найден, не будем выводить сообщение о том, что ничего не найдено
+                } else {
+                    $(this).hide();
+                }
+            });
+
+            isLetterShown ? $letter.show() : $letter.hide();
+
+        });
+
+        noResult ? $('.tarifs-search__no-result').show() : $('.tarifs-search__no-result').hide();
+    });
 });

@@ -4,10 +4,10 @@
 			$document = $(document),
 			$compare = $('.js-compare'),
 			$content = $('.js-compare-content'),
-			$header = $('.js-compare-header'),
+			$header1 = $('.js-compare-header1'),
+			$header2 = $('.js-compare-header2'),
 			$footer = $('.js-compare-footer'),
 			$table = $('.js-compare-table', $compare),
-			$topbar = $('.js-topbar'),
 			compareModel = createCompareModel($compare.data('compare-groups'), $compare.data('active-compare-group-index')),
 			fixedTableCells = null;
 
@@ -427,15 +427,15 @@
 				footerTop = footerFixedTop + (documentHeight - windowHeight - scrollTop);
 
 			$content.css({
-				'padding-top': $topbar.outerHeight(false) + $header.outerHeight(false)
+				'padding-top': $header1.outerHeight(false) + $header2.outerHeight(false)
 			});
 
-			$topbar.css({
+			$header1.css({
 				'margin-top': (scrollTop >= 0 ? -scrollTop : 0) + 'px'
 			});
 
-			$header.css({
-				'top': $topbar.outerHeight(false) + 'px',
+			$header2.css({
+				'top': $header1.outerHeight(false) + 'px',
 				'margin-top': (scrollTop >= 0 ? -scrollTop : 0) + 'px'
 			});
 

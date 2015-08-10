@@ -592,6 +592,7 @@
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('shop.js') )
+                        .script( getWithVersion('infopage.js') )
 						.wait()
 						.script('tour.min.js')
 						.wait()

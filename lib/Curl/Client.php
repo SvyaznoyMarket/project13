@@ -368,7 +368,10 @@ class Client {
                         //$this->logger->debug(microtime(true) . ': произошло прерывание по таймауту, в очереди ' . count($this->queries) . ' запроса(ов)', ['curl']);
 
                         foreach ($this->queries as $query) {
-                            if (count($query['resources']) >= $retryCount) continue;
+                            // Если не осталось больше попыток
+                            if (count($query['resources']) >= $retryCount) {
+                                continue;
+                            }
                             //$this->logger->debug(microtime(true) . ': посылаю еще один запрос в ядро: ' . $query['query']['url'], ['curl']);
                             $this->logger->info([
                                 'message' => 'Query retry',

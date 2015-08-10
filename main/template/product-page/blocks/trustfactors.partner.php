@@ -18,7 +18,7 @@ $f = function(
             <? foreach ($trustfactors as $trust) : ?>
 
                 <li class="product-discounts-list__i">
-                    <a class="product-discounts-list__lk" href="<?= $trust->link ?>">
+                    <a class="product-discounts-list__lk" href="<?= $trust->link ?>" target="_blank">
                         <img src="<?= $trust->getImage() ?>">
                     </a>
                 </li>

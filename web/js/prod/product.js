@@ -301,6 +301,16 @@ $(function() {
 			$(this).one( "click", reviewsYandexClick); // переопределяем только первый клик
 		});
 	}
+
+	try {
+		if ('out of stock' === product.stockState) {
+			$('body').trigger('trackGoogleEvent', {
+				action: 'unavailable_product',
+				category: $.map(product.category, function(category) { return category.name; }).join('_'),
+				label: product.barcode + '_' + product.article
+			});
+		}
+	} catch (error) { console.error(error); }
 });
 /**
  * Кредит для карточки товара
@@ -771,18 +781,17 @@ $(function() {
         $popupPhotoThumbs.removeClass(thumbActiveClass)
             .eq($activeThumb.index()).addClass(thumbActiveClass);
         // и открываем popup
-        $imgPopup.lightbox_me({
+        $imgPopup.enterLightboxMe({
             centered: false,
             closeSelector: '.jsPopupCloser',
             modalCSS: {top: '0', left: '0'},
             closeClick: true,
+			preventScroll: true,
             onLoad: function() {
-                $('html').css({'overflow':'hidden'});
                 checkZoom();
             },
             onClose: function() {
                 setDefaultSetting();
-                $('html').css({'overflow':'auto'});
             }
         });
 
@@ -1283,9 +1292,9 @@ $(function() {
         link = link.replace(/^http:\/\/.*?\//, '/');
 
         if ($offer.length == 0) {
-            $.get(link).done(function (doc) {
+            $.get(ENTER.utils.setURLParam('ajax', 1, link)).done(function (data) {
                 $('<div class="jsProductPartnerOfferDiv partner-offer-popup"></div>')
-                    .append($('<i class="closer jsPopupCloser">×</i>'), $('<div class="inn" />').append($(doc).find('h1'), $(doc).find('article')))
+                    .append($('<i class="closer jsPopupCloser">×</i>'), $('<div class="inn" />').append($('<h1 />').text(data.title || ''), $('<article />').html(data.content || '')))
                     .lightbox_me(popupDefaults)
             });
         } else {

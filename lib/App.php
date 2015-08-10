@@ -292,21 +292,6 @@ class App {
 
         return $instance;
     }
-
-    /**
-     * @static
-     * @return \Content\Client
-     */
-    public static function contentClient() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \Content\Client(self::config()->wordpress, self::curl());
-        }
-
-        return $instance;
-    }
-	
 	
 	/**
      * @static

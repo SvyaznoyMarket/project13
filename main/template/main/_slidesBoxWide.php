@@ -1,6 +1,6 @@
 <div class="slidesBox slidesBox-bg3 slidesBox-full jsSlidesWide">
     <div class="slidesBox_h">
-        <div class="slidesBox_btn slidesBox_btn-l jsSlidesWideLeft"></div>
+        <div class="slidesBox_btn slidesBox_btn-l jsSlidesWideButton jsSlidesWideLeft"></div>
 
         <div class="slidesBox_h_c">
             <div class="slidesBox_t jsSlidesWideName">Новая коллекция Pandora</div>
@@ -13,7 +13,7 @@
             </ul>
         </div>
 
-        <div class="slidesBox_btn slidesBox_btn-r jsSlidesWideRight"></div>
+        <div class="slidesBox_btn slidesBox_btn-r jsSlidesWideButton jsSlidesWideRight"></div>
     </div>
 
     <div class="slidesBox_inn">
@@ -21,48 +21,48 @@
 
             <li class="slidesBox_i jsSlidesWideItem">
                 <a href="/catalog/jewel/pandora-1320">
-                    <img src="styles/mainpage/img/pandora/pandora-main-b.jpg" alt="" class="slidesBox_img">
+                    <img src="styles/mainpage/img/pandora/pandora-autumn15.jpg" alt="" class="slidesBox_img">
                 </a>
 
                 <ul class="slidesBox_items">
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Сверкающая пальма Pandora 791540CZ</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Открытка из Парижа Pandora 791711ENMX</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-sverkayushchaya-palma-pandora-791540cz-2034000005701" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand1.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-otkritka-iz-pariga-pandora-791711enmx-2034001000101" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand1.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Pandora 791499SBQ</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Мороженое Pandora 791710CZR</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-pandora-791499sbq-2034000005657" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand2.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-morogenoe-pandora-791710czr-2034001000095" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand2.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Все краски океана Pandora 791261MCZMX</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Вокруг света Pandora 791718CZ</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-vse-kraski-okeana-pandora-791261mczmx-2034000005633" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand3.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-vokrug-sveta-pandora-791718cz-2034001000163" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand3.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Pandora 791499SGQ</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Фотоаппарат Pandora 791709CZ</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-pandora-791499sgq-2034000005664" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand4.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-fotoapparat-pandora-791709cz-2034001000088" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand4.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Дружелюбный дельфин Pandora 791541CZ</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Увидеть весь мир с тобой Pandora 791717CZ</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-drugelyubniy-delfin-pandora-791541cz-2034000005718" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand5.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-uvidet-ves-mir-s-toboy-pandora-791717cz-2034001000156" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand5.png" alt="" class="slidesBox_items_img"></a>
                     </li>
                 </ul>
 
