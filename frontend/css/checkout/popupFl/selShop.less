@@ -5,8 +5,6 @@
     &_l {
         font-size: 14px;
 
-        width: 300px;
-
         .inline-block();
     }
     &_r {
@@ -23,7 +21,7 @@
 
         margin: 0 0 5px;
 
-        border-bottom: 1px solid green;
+        border-bottom: 1px solid @grey-light-3;
     }
     &_hh {
         font-size: 18px;
@@ -39,7 +37,7 @@
         cursor: pointer;
 
         color: #616161;
-        border-right: 1px solid green;
+        border-right: 1px solid @grey-light-3;
 
         .inline-block();
         &-act {
@@ -54,27 +52,35 @@
 }
 
 .delivery-points {
+    width: 932px;
     &__left {
         float: left;
+
         width: 420px;
     }
     &__right {
         float: right;
+
         width: 470px;
+        height: 455px;
+
+        background: grey;
     }
 }
 
 .point-search {
-    margin-right: 20px;
     position: relative;
+
+    margin-right: 20px;
     &__it {
         width: 100%;
-            padding-left: 35px;
+        padding-left: 35px;
     }
     &__icon {
         position: absolute;
-    top: 50%;
-    margin-top: -9.5px;
-    left: 9.5px;
+        top: 50%;
+        left: 9.5px;
+
+        margin-top: -9.5px;
     }
 }

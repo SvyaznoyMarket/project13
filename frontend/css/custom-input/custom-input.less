@@ -166,11 +166,10 @@
         position: relative;
 
         border: 1px solid transparent;
-        border-bottom: none;
 
         .inline-block();
 
-        &.opn{
+        &.open{
             border-color: @grey-light-2;
             
             .drop-filter-box__tggl{
@@ -183,7 +182,6 @@
             }
             .drop-filter-box__dd{
                 display: block;
-                top: 26px;
             }
             &.picked {
                 border-color: red;
@@ -197,7 +195,6 @@
         &__tggl{
             .font-size(14);
             line-height: 1;
-            height: 16px;
             position: relative;
 
             padding: 5px 10px 4px;
@@ -208,11 +205,12 @@
 
             &:after {
                 width: 7px;
+                margin-top: 4px;
                 height: 6px;
 
                 background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAQElEQVQI12Nw2ur0Hw63MjirOf+EcJx/OqsxMDA4d0G5XQwg4Mfr9BzIfe7HywABzvFAuXgGGPjP6DTpPyOIBQCDch5A9YNPpAAAAABJRU5ErkJggg==') no-repeat 0 0;
 
-                .inline-block(middle);
+                .inline-block(top);
                 content: '';
             }
 
@@ -228,20 +226,18 @@
             }
         }
         &.picked {
-                border-color: green;
-                .fltrBtnBox__tggl{
-                    padding: 3px 9px 2px;
-                }
-                .fltrBtnBox__tggl-tx{
-                    border: none;
-                }
+            border-color: @orange-bright;
+            border-width: 2px;
+            .drop-filter-box__tggl{
+                padding: 4px 9px 3px;
+            }
         }
 
         // выпадашка с параметрами фильтрации
         &__dd{
             position: absolute;
             z-index: 15;
-                left: -1px;
+            left: -1px;
             top: 23px;
             min-width: 100%;
 

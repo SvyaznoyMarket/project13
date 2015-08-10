@@ -255,7 +255,7 @@ $buySender2 = $request->get('sender2');
 <!--/ попап - узнатьо снижении цены -->
 
 
-<div class="delivery-points popup popup_920" style="display: none">
+<div class="delivery-points popup" style="display: block">
     <div class="popup__close js-popup-close">×</div>
     <div class="popup__title">Точки самовывоза</div>
 
@@ -335,69 +335,117 @@ $buySender2 = $request->get('sender2');
             </div>
         </div>
 
-        <div class="selShop_l">
-            <span class="pick-point-nomatch">Поиск не дал результатов</span>
+        <span class="delivery-points-nomatch" style="display: none;">Поиск не дал результатов</span>
 
-            <div class="pick-point-list-wrap">
-                <table class="pick-point-list">
-                    <tbody>
-                        <tr class="pick-point-item">
-                            <td class="pick-point-item__logo">
-                                <img src="/images/deliv-logo/enter.png" class="pick-point-item__img">
-                                <span class="pick-point-item__name">Магазин Enter</span>
-                            </td>
+        <div class="delivery-points-lwrap">
+            <div class="delivery-points-list table">
+                <div class="delivery-points-list__row table-row">
+                    <div class="delivery-points-list__logo table-cell">
+                        <img src="/images/deliv-logo/enter.png" class="delivery-points-list__img">
+                        <span class="delivery-points-list__name">Магазин Enter</span>
+                    </div>
 
-                            <td class="pick-point-item__addr">
-                                <div class="pick-point-item__addr-name">г.&nbsp;Электросталь, пр-кт Ленина, д.&nbsp;30/13</div>
-                                <div class="pick-point-item__time">с 10.00 до 21.00</div>
-                            </td>
+                    <div class="delivery-points-list__address table-cell">
+                        <div class="delivery-points-list__address-name">г.&nbsp;Электросталь, пр-кт Ленина, д.&nbsp;30/13</div>
+                        <div class="delivery-points-list__address-time">с 10.00 до 21.00</div>
+                    </div>
 
+                    <div class="delivery-points-list__info no-hide-info table-cell">
+                        <div class="delivery-points-list__info-date">11.08.2015</div>
+                        <div class="delivery-points-list__info-price"><span>Бесплатно</span> <span class="rubl" style="display: none;">p</span></div>
+                    </div>
+                </div>
 
-                            <td class="pick-point-item__info no-hide-info">
-                                <div class="pick-point-item__date">11.08.2015</div>
-                                <div class="pick-point-item__price"><span>Бесплатно</span> <span class="rubl" style="display: none;">p</span></div>
-                            </td>
-                        </tr>
+                <div class="delivery-points-list__row table-row">
+                    <div class="delivery-points-list__logo table-cell">
+                        <img src="/images/deliv-logo/enter.png" class="delivery-points-list__img">
+                        <span class="delivery-points-list__name">Магазин Enter</span>
+                    </div>
 
-                        <tr class="pick-point-item">
-                            <td class="pick-point-item__logo">
-                                <img src="/images/deliv-logo/enter.png" class="pick-point-item__img">
-                                <span class="pick-point-item__name">Магазин Enter</span>
-                            </td>
+                    <div class="delivery-points-list__address table-cell">
+                        <div class="delivery-points-list__address-name">г.&nbsp;Электросталь, пр-кт Ленина, д.&nbsp;30/13</div>
+                        <div class="delivery-points-list__address-time">с 10.00 до 21.00</div>
+                    </div>
 
-                            <td class="pick-point-item__addr">
-                                <div class="pick-point-item__addr-name">ул.&nbsp;Орджоникидзе, д.&nbsp;11, стр.&nbsp;10</div>
-                                <div class="pick-point-item__time">с 10.00 до 20.00</div>
-                            </td>
+                    <div class="delivery-points-list__info no-hide-info table-cell">
+                        <div class="delivery-points-list__info-date">Послезавтра</div>
+                        <div class="delivery-points-list__info-price">49 <span class="rubl">p</span></div>
+                    </div>
+                </div>
 
-                            <td class="pick-point-item__info no-hide-info">
-                                <div class="pick-point-item__date">11.08.2015</div>
-                                <div class="pick-point-item__price"><span>Бесплатно</span> <span class="rubl" style="display: none;">p</span></div>
-                            </td>
-                        </tr>
+                <div class="delivery-points-list__row table-row">
+                    <div class="delivery-points-list__logo table-cell">
+                        <img src="/images/deliv-logo/enter.png" class="delivery-points-list__img">
+                        <span class="delivery-points-list__name">Магазин Enter</span>
+                    </div>
 
+                    <div class="delivery-points-list__address table-cell">
+                        <div class="delivery-points-list__address-name">г.&nbsp;Электросталь, пр-кт Ленина, д.&nbsp;30/13</div>
+                        <div class="delivery-points-list__address-time">с 10.00 до 21.00</div>
+                    </div>
 
-                        <tr class="pick-point-item">
-                            <td class="pick-point-item__logo">
-                                <img src="/images/deliv-logo/enter.png" class="pick-point-item__img">
-                                <span class="pick-point-item__name">Магазин Enter</span>
-                            </td>
+                    <div class="delivery-points-list__info no-hide-info table-cell">
+                        <span class="delivery-points-list__info-price">На витрине</span>
+                        <i class="i-product i-product--info-normal i-info__icon pick-point-item__ondisplay-icon"></i>
+                        <div class="delivery-points-list__info-popup info-popup">
+                            Чтобы купить товар с витрины,<br>нужно приехать в магазин и обратиться к продавцу.
+                        </div>
+                    </div>
+                </div>
 
-                            <td class="pick-point-item__addr">
-                                <div class="pick-point-item__addr-name">г.&nbsp;Сергиев Посад, ул.&nbsp;1-я Рыбная, д.&nbsp;19/22</div>
-                                <div class="pick-point-item__time">с 10.30 до 20.30</div>
-                            </td>
+                <div class="delivery-points-list__row table-row">
+                    <div class="delivery-points-list__logo table-cell">
+                        <img src="/images/deliv-logo/enter.png" class="delivery-points-list__img">
+                        <span class="delivery-points-list__name">Магазин Enter</span>
+                    </div>
 
-                            <td class="pick-point-item__info no-hide-info">
-                                <div class="pick-point-item__date">11.08.2015</div>
-                                <div class="pick-point-item__price"><span>Бесплатно</span></div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <div class="delivery-points-list__address table-cell">
+                        <div class="delivery-points-list__address-name">г.&nbsp;Электросталь, пр-кт Ленина, д.&nbsp;30/13</div>
+                        <div class="delivery-points-list__address-time">с 10.00 до 21.00</div>
+                    </div>
+
+                    <div class="delivery-points-list__info no-hide-info table-cell">
+                        <div class="delivery-points-list__info-date">11.08.2015</div>
+                        <div class="delivery-points-list__info-price"><span>Бесплатно</span> <span class="rubl" style="display: none;">p</span></div>
+                    </div>
+                </div>
+
+                <div class="delivery-points-list__row table-row">
+                    <div class="delivery-points-list__logo table-cell">
+                        <img src="/images/deliv-logo/enter.png" class="delivery-points-list__img">
+                        <span class="delivery-points-list__name">Магазин Enter</span>
+                    </div>
+
+                    <div class="delivery-points-list__address table-cell">
+                        <div class="delivery-points-list__address-name">г.&nbsp;Электросталь, пр-кт Ленина, д.&nbsp;30/13</div>
+                        <div class="delivery-points-list__address-time">с 10.00 до 21.00</div>
+                    </div>
+
+                    <div class="delivery-points-list__info no-hide-info table-cell">
+                        <div class="delivery-points-list__info-date">11.08.2015</div>
+                        <div class="delivery-points-list__info-price"><span>Бесплатно</span> <span class="rubl" style="display: none;">p</span></div>
+                    </div>
+                </div>
+
+                <div class="delivery-points-list__row table-row">
+                    <div class="delivery-points-list__logo table-cell">
+                        <img src="/images/deliv-logo/enter.png" class="delivery-points-list__img">
+                        <span class="delivery-points-list__name">Магазин Enter</span>
+                    </div>
+
+                    <div class="delivery-points-list__address table-cell">
+                        <div class="delivery-points-list__address-name">г.&nbsp;Электросталь, пр-кт Ленина, д.&nbsp;30/13</div>
+                        <div class="delivery-points-list__address-time">с 10.00 до 21.00</div>
+                    </div>
+
+                    <div class="delivery-points-list__info no-hide-info table-cell">
+                        <div class="delivery-points-list__info-date">11.08.2015</div>
+                        <div class="delivery-points-list__info-price"><span>Бесплатно</span> <span class="rubl" style="display: none;">p</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="delivery-points__left"></div>
+    <div class="delivery-points__right"></div>
 </div>
