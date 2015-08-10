@@ -1162,6 +1162,11 @@
 							});
 						})();
 
+						// actionpay
+						if (response.result.actionpay) {
+							APRT_SEND(response.result.actionpay);
+						}
+
 						// Счётчик RetailRocket
 						(function() {
 							$.each(response.result.orders, function(index, order) {
