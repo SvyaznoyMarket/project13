@@ -262,6 +262,7 @@ $buySender2 = $request->get('sender2');
     <!-- Новая верстка -->
     <div class="delivery-points__left">
         <div class="point-search">
+            <i class="point-search__icon i-controls i-controls--search"></i>
             <input class="point-search__it it" type="text" placeholder="Искать по улице, метро">
             <div class="point-search" style="display: none;">×</div>
 
@@ -275,7 +276,7 @@ $buySender2 = $request->get('sender2');
             <div class="drop-filter-box">
                 <div class="drop-filter-box__tggl">
                     <span class="drop-filter-box__tggl-tx">Все точки</span>
-                    <i class="drop-filter-box__tggl-corner"></i>
+                    
                 </div>
 
                 <div class="drop-filter-box__dd">
@@ -296,7 +297,7 @@ $buySender2 = $request->get('sender2');
             <div class="drop-filter-box">
                 <div class="drop-filter-box__tggl">
                     <span class="drop-filter-box__tggl-tx">Стоимость</span>
-                    <i class="drop-filter-box__tggl-corner"></i>
+                    
                 </div>
 
                 <div class="drop-filter-box__dd">
@@ -317,7 +318,6 @@ $buySender2 = $request->get('sender2');
             <div class="drop-filter-box">
                 <div class="drop-filter-box__tggl">
                     <span class="drop-filter-box__tggl-tx">Дата</span>
-                    <i class="drop-filter-box__tggl-corner"></i>
                 </div>
 
                 <div class="drop-filter-box__dd">
