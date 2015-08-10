@@ -100,6 +100,13 @@
                     } else {
                         $phoneField.addClass(CSS_CLASSES.valid).removeClass(CSS_CLASSES.error)
                     }
+
+                    if (!validateEmail($emailField.val())) {
+                        valid = false;
+                        $emailField.addClass(CSS_CLASSES.error).removeClass(CSS_CLASSES.valid)
+                    } else {
+                        $emailField.addClass(CSS_CLASSES.valid).removeClass(CSS_CLASSES.error)
+                    }
                 }
 
                 return valid;
