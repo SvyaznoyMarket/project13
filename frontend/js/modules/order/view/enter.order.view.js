@@ -46,33 +46,73 @@
              * @constructs  OrderView
              */
             initialize: function( options ) {
-                for (var i in CSS_CLASSES) {
-                    var $elem = $('.'+CSS_CLASSES[i]);
-                    if ($elem.data('mask')) $elem.mask($elem.data('mask'));
-                }
-                /*this.listenTo(this.model, 'change:inCart', this.changeCartStatus);
-                this.listenTo(this.model, 'change:inCompare', this.changeCompareStatus);
-                this.listenTo(this.model, 'change:inFavorite', this.changeFavoriteStatus);
 
-                this.subViews = {
-                    compareBtn: this.$el.find('.' + CSS_CLASSES.COMPARE_BUTTON),
-                    favoriteBtn: this.$el.find('.' + CSS_CLASSES.FAVORITE_BUTTON)
-                };
+                // маски для полей ввода
+                $.mask.autoclear = false;
+                this.$el.find('input').each(function(i,elem){
+                    if ($(elem).data('mask')) $(elem).mask($(elem).data('mask'));
+                    if ($(elem).val().length > 0) $(elem).addClass(CSS_CLASSES.valid);
+                });
 
-                // Setup events
-                this.events['click .' + CSS_CLASSES.BUY_BUTTON]      = 'buyButtonHandler';
-                this.events['click .' + CSS_CLASSES.COMPARE_BUTTON]  = 'compareButtonHandler';
-                this.events['click .' + CSS_CLASSES.FAVORITE_BUTTON] = 'favoriteButtonHandler';
-                this.events['click .' + CSS_CLASSES.SHOW_KIT_BTN]    = 'showKitPopup';
+                this.events['keyup input']  = 'validateForm';
+                this.events['submit form']  = 'formSubmit';
 
-                // Apply events
-                this.delegateEvents();
-
-                this.changeCompareStatus();
-                this.changeFavoriteStatus();*/
             },
 
-            events: {}
+            events: {},
+
+            validateForm: function(event){
+
+                var $phoneField = $('.' + CSS_CLASSES.phoneField),
+                    $emailField = $('.' + CSS_CLASSES.emailField),
+                    elements = event ? [ $(event.target) ] : [$emailField, $phoneField],
+                    valid = true, phone;
+
+                function validateEmail(email) {
+                    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+                    return re.test(email);
+                }
+
+                // Проверка длины поля
+                $.each(elements,function (i,v){
+                    if (v.val().length > 0) {
+                        v.addClass(CSS_CLASSES.valid).removeClass(CSS_CLASSES.error)
+                    } else {
+                        valid = false;
+                        v.addClass(CSS_CLASSES.error).removeClass(CSS_CLASSES.valid)
+                    }
+                });
+
+                if (event && $(event.target).hasClass(CSS_CLASSES.emailField)) {
+                    if (!validateEmail($emailField.val())) {
+                        valid = false;
+                        $emailField.addClass(CSS_CLASSES.error).removeClass(CSS_CLASSES.valid)
+                    } else {
+                        $emailField.addClass(CSS_CLASSES.valid).removeClass(CSS_CLASSES.error)
+                    }
+                }
+
+                if (!event) {
+                    phone = $phoneField.val().replace(/[^0-9]/g, '');
+                    if (phone.length !== 11) {
+                        valid = false;
+                        $phoneField.addClass(CSS_CLASSES.error).removeClass(CSS_CLASSES.valid)
+                    } else {
+                        $phoneField.addClass(CSS_CLASSES.valid).removeClass(CSS_CLASSES.error)
+                    }
+                }
+
+                return valid;
+            },
+
+            formSubmit: function(event) {
+                if (!this.validateForm()) {
+                    event.preventDefault();
+                    return false;
+                } else {
+                    return true;
+                }
+            }
 
         }));
     }

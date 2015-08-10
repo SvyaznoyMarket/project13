@@ -19,6 +19,7 @@
                                name="user_info[phone]"
                                value=""
                                data-mask="+7 (999) 999-99-99"
+                               title="Введите номер телефона"
                                required
                             >
                         <label class="form-order-login__label placeholder placeholder_str" for="">Телефон</label>
@@ -30,6 +31,7 @@
                                type="text"
                                name="user_info[email]"
                                value=""
+                               title="Введите email"
                                required
                             >
                         <label class="form-order-login__label placeholder placeholder_str" for="">E-mail</label>
@@ -56,6 +58,7 @@
                     </div>
                 </div>
 
+                <? if (false) : /* Карта Много.ру */ ?>
                 <div>
                     <div class="order-bonus">
                         <!-- Карта Много.ру -->
@@ -86,6 +89,7 @@
                         <!-- Карта Много.ру -->
                     </div>
                 </div>
+                <? endif ?>
             </fieldset>
 
             <div class="form-order-login__right">
