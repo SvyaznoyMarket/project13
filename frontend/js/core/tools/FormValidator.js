@@ -39,7 +39,8 @@
              * @memberOf    module:FormValidator~FormValidator
              */
             FormValidator.prototype._defaultsConfig = {
-                errorClass: 'txfld-err'
+                errorClass: 'error',
+                validClass: 'valid'
             };
 
             /**
@@ -335,17 +336,18 @@
             };
 
             /**
-             * Снятие маркировки ошибки с поля
+             * Снятие маркировок поля
              *
-             * @method      _unmarkFieldError
+             * @method      _unmarkField
              * @memberOf    module:FormValidator~FormValidator#
              *
              * @param       {jQuery}    fieldNode   Поле
              */
-            FormValidator.prototype._unmarkFieldError = function( fieldNode ) {
+            FormValidator.prototype._unmarkField = function( fieldNode ) {
                 console.info('Снимаем маркировку');
 
                 fieldNode.removeClass(this.config.errorClass);
+                fieldNode.removeClass(this.config.validClass);
                 fieldNode.parent().find('.errtx').remove();
 
                 console.log(fieldNode);
@@ -366,7 +368,7 @@
                     self = this,
 
                     clearError = function clearError() {
-                        self._unmarkFieldError($(this));
+                        self._unmarkField($(this));
                     };
                 // end of vars
 
@@ -376,6 +378,23 @@
                 fieldNode.addClass(this.config.errorClass);
                 fieldNode.before('<div class="errtx">'+errorMsg+'</div>');
                 fieldNode.bind('focus', clearError);
+            };
+
+            /**
+             * Маркировка валидного поля
+             *
+             * @method      _markFieldValid
+             * @memberOf    module:FormValidator~FormValidator#
+             *
+             * @param       {jQuery}    fieldNode   Поле
+             */
+            FormValidator.prototype._markFieldValid = function( fieldNode ) {
+                this._unmarkField(fieldNode);
+
+                if ( fieldNode.val().length ) {
+                    fieldNode.addClass(this.config.validClass);
+                }
+
             };
 
             /**
@@ -396,15 +415,16 @@
 
                     validateOnBlur = function validateOnBlur( that ) {
                         var
-                            result = {},
+                            result      = {},
                             findedField = self._findFieldByNode( that );
-                        // end of vars
 
                         if ( findedField.finded ) {
                             result = self._validateField(findedField.field);
 
                             if ( result.hasError ) {
                                 self._markFieldError(that, result.errorMsg);
+                            } else {
+                                self._markFieldValid(that);
                             }
                         } else {
                             //console.log('поле не найдено или тип валидации не существует, хандлер нужно убрать');
@@ -468,7 +488,6 @@
                 var
                     fields = this.config.fields,
                     i;
-                // end of vars
 
                 for ( i = fields.length - 1; i >= 0; i-- ) {
                     if ( fields[i].fieldNode.get(0) === nodeToFind.get(0) ) {
@@ -505,15 +524,14 @@
              */
             FormValidator.prototype.validate = function( callbacks ) {
                 var
-                    self = this,
+                    self   = this,
                     fields = this.config.fields,
-                    i = 0,
+                    i      = 0,
                     errors = [],
                     result = {};
-                // end of vars
 
                 for ( i = fields.length - 1; i >= 0; i-- ) { // перебираем поля из конфига
-                    self._unmarkFieldError(fields[i].fieldNode);
+                    self._unmarkField(fields[i].fieldNode);
                     result = self._validateField(fields[i]);
 
                     console.log(result);
@@ -526,6 +544,7 @@
                         });
                     } else {
                         console.log('нет ошибки в поле ');
+                        self._markFieldValid(fields[i].fieldNode);
                         console.log(fields[i].fieldNode);
                     }
                 }
@@ -551,7 +570,6 @@
             FormValidator.prototype.getValidate = function( fieldToFind ) {
                 var
                     findedField = this._findFieldByNode(fieldToFind);
-                // end of vars
 
                 if ( findedField.finded ) {
                     return findedField.field;
@@ -578,7 +596,6 @@
                 var
                     findedField = this._findFieldByNode(fieldNodeToCange),
                     addindField = null;
-                // end of vars
 
                 if ( findedField.finded ) {
                     addindField = $.extend(
@@ -609,7 +626,6 @@
             FormValidator.prototype.removeFieldToValidate = function( fieldNodeToRemove ) {
                 var
                     findedField = this._findFieldByNode(fieldNodeToRemove);
-                // end of vars
 
                 if ( findedField.finded ) {
                     this.config.fields.splice(findedField.index, 1);
