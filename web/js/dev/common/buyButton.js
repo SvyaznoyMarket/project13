@@ -5,7 +5,7 @@
 	var $body = $('body');
 
 	// Обработчик для кнопок купить
-	$body.on('click', '.jsBuyButton', function(e) {
+	$body.on('click', '.jsBuyButton', function(e, credit) {
 		var $button = $(e.currentTarget);
 
 		if ( $button.hasClass('mDisabled') ) {
@@ -38,6 +38,10 @@
 		if (sender2 && sender2 != $button.data('sender2')) {
 			url = ENTER.utils.setURLParam('sender2', sender2, url);
 		}
+
+        if ('on' === credit) {
+            url = ENTER.utils.setURLParam('credit', 'on', url);
+        }
 
 		// Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
 		$.ajax({

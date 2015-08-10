@@ -54,7 +54,7 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
 
             <? if (count($product->getPartnersOffer()) == 0) : ?>
                 <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
-            <? endif; ?>
+            <? endif ?>
 
             <? if ($product->getTagline()): // new Card Properties Begin { ?>
                 <div itemprop="description" class="bProductDescText">
