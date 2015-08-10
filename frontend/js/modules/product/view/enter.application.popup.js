@@ -77,13 +77,20 @@
                             fieldNode: this.subViews.email,
                             validBy: 'isEmail',
                             require: !!this.subViews.email.attr('data-required'),
-                            customErr: 'Некорректно введен e-mail'
+                            customErr: 'Некорректно введен e-mail',
+                            validateOnChange: true
                         },
                         {
                             fieldNode: this.subViews.phone,
                             validBy: 'isPhone',
                             require: !!this.subViews.phone.attr('data-required'),
-                            customErr: 'Некорректно введен телефон'
+                            customErr: 'Некорректно введен телефон',
+                            validateOnChange: true
+                        },
+                        {
+                            fieldNode: this.subViews.name,
+                            require: !!this.subViews.phone.attr('data-required'),
+                            validateOnChange: true
                         },
                         {
                             fieldNode: this.subViews.acceptCheckbox,

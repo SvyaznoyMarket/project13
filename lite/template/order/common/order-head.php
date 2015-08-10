@@ -6,15 +6,16 @@
     </div>
 
     <ul class="checkout-header-steps table-cell">
-        <li class="checkout-header-steps__item active">
+
+        <li class="checkout-header-steps__item <?= isset($step) && $step == 1 ? 'active' : null ?>">
             Получатель
         </li>
 
-        <li class="checkout-header-steps__item">
+        <li class="checkout-header-steps__item <?= isset($step) && $step == 2 ? 'active' : null ?>">
             Самовывоз и доставка
         </li>
 
-        <li class="checkout-header-steps__item">
+        <li class="checkout-header-steps__item <?= isset($step) && $step == 3 ? 'active' : null ?>">
             Способы оплаты
         </li>
     </ul>

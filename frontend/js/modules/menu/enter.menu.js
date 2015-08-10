@@ -56,13 +56,6 @@
                     if (!block.categoryId) return;
                     var $container = $containers.filter('[data-parent-category-id="' + block.categoryId + '"]');
 
-                    /* TODO переписать запрос модуля */
-                    $(block.content).find('.js-module-require').each(function(i, el){
-                        modules.require($(this).data('module'), function(module){
-                            if (typeof module.init == 'function') module.init(el);
-                        })
-                    });
-
                     $container.html(block.content);
                 } catch (e) {
                     console.error(e);
@@ -71,12 +64,20 @@
         };
 
         module.init = function(el){
-
-            var	$el = $(el),
-                url = $el.attr('data-recommend-url'),
-                lKey = 'xhrLoading', // ключ для предотвращения дополнительного запроса на загрузку данных
+            var
+                $el       = $(el),
+                inited    = $el.prop('inited'),
+                url       = $el.attr('data-recommend-url'),
+                lKey      = 'xhrLoading', // ключ для предотвращения дополнительного запроса на загрузку данных
                 cacheTime = 10, // время кэширования в localstorage (в минутах)
                 key, xhr;
+
+            if ( inited ) {
+                // console.warn('--- module:enter.menu || element %s initialized! ---', $el);
+                return;
+            }
+
+            $el.prop('inited', true);
 
             if (typeof url == 'string' && !$el.data(lKey) === true && url ) {
 

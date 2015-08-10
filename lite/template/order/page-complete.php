@@ -16,7 +16,7 @@ return function(
     array_map(function(\Model\PaymentMethod\PaymentEntity &$entity) {$entity->unsetSvyaznoyClub();}, $ordersPayment); // fix for SITE-5229 (see comments)
     ?>
 
-    <?= $page->render('order/common/order-head', ['step' => 2]) ?>
+    <?= $page->render('order/common/order-head', ['step' => 3]) ?>
 
     <section class="checkout jsOrderV3PageComplete">
         <h1 class="checkout__title">Ваши заказы</h1>
@@ -179,7 +179,7 @@ return function(
         </div>
     </section>
 
-    <? if (!$sessionIsReaded): ?>
+    <? if (false && !$sessionIsReaded): ?>
         <span class="js-orderV3New-complete-subscribe" data-value="<?=$helper->json(['subscribe' => $subscribe, 'email' => isset($orders[0]->email) ? $orders[0]->email : null])?>"></span>
 
         <?
