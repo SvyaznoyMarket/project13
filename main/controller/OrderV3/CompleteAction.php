@@ -176,6 +176,7 @@ class CompleteAction extends OrderV3 {
         $page->setParam('ordersPayment', $ordersPayment);
         $page->setParam('motivationAction', $this->getMotivationAction($orders, $ordersPayment));
         $page->setParam('products', $products);
+        $page->setParam('productsById', $products);
         $page->setParam('userEntity', $this->user->getEntity());
         $page->setParam('paymentProviders', $paymentProviders);
         $page->setParam('banks', $banks);
