@@ -3,14 +3,14 @@ $(function() {
         $body = $('body'),
 
         sliderData = $('#jsSlice').data('value')
-        ;
+    ;
 
     if (sliderData && (true === sliderData.isSale)) {
         // клик по ссылке на категорию
         $body.on('click', '.js-productCategory-link', function() {
             var
                 $el = $(this)
-                ;
+            ;
 
             $body.trigger('trackGoogleEvent', {
                 category: 'slices_sale',
@@ -52,7 +52,7 @@ $(function() {
         $body.on('mousedown', '.js-category-v1-filter-element-price', function(e) {
             $body.trigger('trackGoogleEvent', {
                 category: 'filter',
-                action: 'cost_range\00',
+                action: 'cost_range',
                 label: ('string' === typeof sliderData.category) ? sliderData.category.name : ''
             });
         });
@@ -63,7 +63,7 @@ $(function() {
 
             $body.trigger('trackGoogleEvent', {
                 category: 'filter',
-                action: 'other_\00' + $el.find('span').text(),
+                action: 'other_' + $el.find('span').text(),
                 label: ('string' === typeof sliderData.category) ? sliderData.category.name : ''
             });
         });
