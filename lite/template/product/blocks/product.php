@@ -90,74 +90,70 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         </div>
         <!--/ применить скидку -->
 
-        <div class="buy-online js-module-require"
+        <div class="js-module-require"
              data-module="enter.product"
              data-id="<?= $product->getId() ?>"
              data-product='<?= json_encode([
                  'id'   => $product->getId(),
                  'ui'   => $product->getUi()
-             ], JSON_HEX_APOS) ?>'
-            >
-            <?= $helper->render('product/_button.buy', [
-                'product'  => $product,
-                'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
-                'sender'   => $buySender + [
-                        'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
-                    ],
-                'sender2' => $buySender2,
-                'noUpdate'  => true,
-                'location' => 'product-card',
-                'inShowroomAsButton' => false,
-                'class' => 'btn-primary_bigger btn-primary_width'
-            ]) // Кнопка купить ?>
-        </div>
+             ], JSON_HEX_APOS) ?>'>
 
-        <? if ($product->getPrice() >= \App::config()->product['minCreditPrice']) : ?>
-            <!-- купить в кредит -->
-            <a class="buy-on-credit btn-type btn-type--normal btn-type--longer jsProductCreditButton" href="" style="display: none"
-               data-credit='<?= $creditData['creditData'] ?>'>
-                <span class="buy-on-credit__tl">Купить в кредит</span>
-                <span class="buy-on-credit__tx">от <mark class="buy-on-credit__mark jsProductCreditPrice">0</mark>&nbsp;&nbsp;<span class="rubl">p</span> в месяц</span>
-            </a>
-            <!--/ купить в кредит -->
-        <? endif ?>
+            <div class="buy-online">
+                <?= $helper->render('product/_button.buy', [
+                    'product'  => $product,
+                    'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
+                    'sender'   => $buySender + [
+                            'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
+                        ],
+                    'sender2' => $buySender2,
+                    'noUpdate'  => true,
+                    'location' => 'product-card',
+                    'inShowroomAsButton' => false,
+                    'class' => 'btn-primary_bigger btn-primary_width'
+                ]) // Кнопка купить ?>
+            </div>
 
-        <div class="js-showTopBar"></div>
-
-        <!-- сравнить, добавить в виш лист -->
-        <ul class="product-card-tools">
-            <li class="product-card-tools__i product-card-tools__i--onclick">
-
-                <? if (!count($product->getPartnersOffer()) && (!$isKit || $product->getIsKitLocked())): ?>
-                    <?/*= $helper->render('product/_button.buy-oneClick', [
-                        'product' => $product,
-                        'sender'  => $buySender,
-                        'sender2' => $buySender2,
-                        'value' => 'Купить в 1 клик'
-                    ]) // Покупка в один клик */?>
-                <? endif ?>
-            </li>
-
-            <li class="product-card-tools__i product-card-tools__i--compare js-compareProduct"
-                data-bind="compareButtonBinding: compare"
-                data-id="<?= $product->getId() ?>"
-                data-type-id="<?= $product->getType() ? $product->getType()->getId() : null ?>">
-                <a id="<?= 'compareButton-' . $product->getId() ?>"
-                   href="<?= \App::router()->generate('compare.add', ['productId' => $product->getId(), 'location' => 'product']) ?>"
-                   class="product-card-tools__lk jsCompareLink"
-                   data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>"
-                   data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>"
-                    >
-                    <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
-                    <span class="product-card-tools__tx">Сравнить</span>
+            <? if ($product->getPrice() >= \App::config()->product['minCreditPrice']) : ?>
+                <!-- купить в кредит -->
+                <a class="buy-on-credit btn-type btn-type--normal btn-type--longer jsProductCreditButton" href="" style="display: none"
+                   data-credit='<?= $creditData['creditData'] ?>'>
+                    <span class="buy-on-credit__tl">Купить в кредит</span>
+                    <span class="buy-on-credit__tx">от <mark class="buy-on-credit__mark jsProductCreditPrice">0</mark>&nbsp;&nbsp;<span class="rubl">p</span> в месяц</span>
                 </a>
-            </li>
+                <!--/ купить в кредит -->
+            <? endif ?>
 
-            <li class="product-card-tools__i product-card-tools__i--wish">
-                <?= $helper->render('product/__favoriteButton', ['product' => $product, 'favoriteProduct' => isset($favoriteProductsByUi[$product->getUi()]) ? $favoriteProductsByUi[$product->getUi()] : null]) ?>
-            </li>
-        </ul>
-        <!--/ сравнить, добавить в виш лист -->
+            <div class="js-showTopBar"></div>
+
+            <!-- сравнить, добавить в виш лист -->
+            <ul class="product-card-tools">
+                <li class="product-card-tools__i product-card-tools__i--onclick">
+
+                    <? if (!count($product->getPartnersOffer()) && (!$isKit || $product->getIsKitLocked())): ?>
+                        <?/*= $helper->render('product/_button.buy-oneClick', [
+                            'product' => $product,
+                            'sender'  => $buySender,
+                            'sender2' => $buySender2,
+                            'value' => 'Купить в 1 клик'
+                        ]) // Покупка в один клик */?>
+                    <? endif ?>
+                </li>
+
+                <li class="product-card-tools__i product-card-tools__i--compare">
+                    <a href="<?= \App::router()->generate('compare.add', ['productId' => $product->getId(), 'location' => 'product']) ?>"
+                       class="product-card-tools__lk js-compare-button">
+                        <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
+                        <span class="product-card-tools__tx">Сравнить</span>
+                    </a>
+                </li>
+
+                <li class="product-card-tools__i product-card-tools__i--wish">
+                    <?= $helper->render('product/__favoriteButton', ['product' => $product, 'favoriteProduct' => isset($favoriteProductsByUi[$product->getUi()]) ? $favoriteProductsByUi[$product->getUi()] : null]) ?>
+                </li>
+            </ul>
+            <!--/ сравнить, добавить в виш лист -->
+
+        </div>
 
         <?= $helper->render('product/blocks/delivery', ['product' => $product]) ?>
 

@@ -18,10 +18,8 @@ return function(
 ?>
 
 <span class="id-favoriteButton-<?= $product->getUi() ?>">
-    <a
-        data-ajax="true"
-        href="<?= $url ?>"
-        class="jsFavoriteLink product-card-tools__lk <? if ($isInFavorite): ?> product-card-tools__lk--active<? endif ?>"
+    <a  href="<?= $url ?>"
+        class="product-card-tools__lk <? if ($isInFavorite): ?> product-card-tools__lk--active<? endif ?> js-favorite-button"
     >
         <i class="product-card-tools__icon i-tools-icon i-tools-icon--wish"></i>
         <span class="product-card-tools__tx"><?= $text ?></span>
