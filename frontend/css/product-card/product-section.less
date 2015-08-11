@@ -1,7 +1,10 @@
 .product-section {
-    margin: 0;
-    border-bottom: 1px solid @grey-light-3;
+    margin: 0 0 30px;
+
     .clearfix();
+    &_border {
+        border-bottom: 1px solid @grey-light-3;
+    }
     &__props {
         padding: 0 10px 10px;
         .product-section__tl {
@@ -10,14 +13,15 @@
     }
     &__tl {
         font-size: 1.3333em;
-        .font-face('GloberBold');
 
         margin: 5px 0 15px 0;
+
+        .font-face('GloberBold');
     }
     &__sbtl {
-        .font-face('GloberBold');
-
         margin: 15px 0 5px;
+
+        .font-face('GloberBold');
     }
     &__desc {
         margin-top: 10px;
@@ -29,16 +33,17 @@
         }
     }
     &__content {
-        .font-size(14);
         line-height: 24px;
+
+        .font-size(14);
     }
     &__h3 {
         font-size: 1.3333em;
         font-weight: normal;
-        .font-face('GloberBold');
 
         margin: 20px 0 15px;
 
+        .font-face('GloberBold');
     }
     &--border-top {
         margin-bottom: 0;

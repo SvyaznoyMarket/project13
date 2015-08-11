@@ -88,7 +88,7 @@ $buySender2 = $request->get('sender2');
 	<!--/ карточка товара -->
 
 	<!-- с этим товаром покупают -->
-	<div class="product-section section-border">
+	<div class="product-section section_border">
         <? if (\App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product/blocks/slider', [
                 'type'           => 'alsoBought',
@@ -186,8 +186,6 @@ $buySender2 = $request->get('sender2');
             <div class="product-section__tl">Отзывы</div>
 
             <?= $helper->render('product/blocks/reviews', ['reviewsData' => $reviewsData, 'product' => $product ]) ?>
-
-
         </div>
         <!--/ отзывы -->
     <? endif ?>
