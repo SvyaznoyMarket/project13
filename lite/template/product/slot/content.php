@@ -233,24 +233,24 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
                 <?= $helper->render('product/slot/properties', ['groupedProperties' => $secondaryGroupedProperties]) ?>
 
                 <? if ($hasMedia || $product->getDescription() || $equipment) : ?>
+                    <div class="grid-2col__item">
+                        <div class="product-section__desc">
+                            <div class="product-section__tl">Базовый комплект</div>
 
-                    <div class="product-section__desc">
-                        <div class="product-section__tl">Базовый комплект</div>
+                            <div class="product-section__content"><?= $product->getDescription() ?></div>
 
-                        <div class="product-section__content"><?= $product->getDescription() ?></div>
+                            <? if ($equipment): ?>
+                                <div class="product-card__base-set">
+                                    <ul class="product-card__base-set-list">
+                                        <? foreach ($equipment as $equipmentItem): ?>
+                                            <li class="product-card__base-set-item"><?= $equipmentItem ?>.</li>
+                                        <? endforeach ?>
+                                    </ul>
+                                </div>
+                            <? endif ?>
 
-                        <? if ($equipment): ?>
-                            <div class="product-card__base-set">
-                                <ul class="product-card__base-set-list">
-                                    <? foreach ($equipment as $equipmentItem): ?>
-                                        <li class="product-card__base-set-item"><?= $equipmentItem ?>.</li>
-                                    <? endforeach ?>
-                                </ul>
-                            </div>
-                        <? endif ?>
-
+                        </div>
                     </div>
-
                 <? endif ?>
             </div>
             <!--/ характеристики/описание товара -->

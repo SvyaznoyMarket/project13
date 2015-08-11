@@ -1,6 +1,7 @@
 .product-card-set {
-    .clearfix();
     margin: 20px 0 0;
+
+    .clearfix();
     &__left {
         padding: 20px 320px 5px 20px;
     }
@@ -8,24 +9,27 @@
         float: right;
 
         width: 300px;
+        padding: 0 0 10px;
 
         border-left: 1px solid @grey-light-3;
-        padding: 0 0 10px;
     }
     .product-card-tools {
         margin: 0 0 10px 15px;
     }
     &__btn-app {
         display: block;
-        margin-bottom: 15px;
+
         width: 200px;
+        margin-bottom: 15px;
     }
 }
 
 .product-card-set-buying {
-    text-align: center;
-    .font-size(14);
     margin: 0 0 10px;
+
+    text-align: center;
+
+    .font-size(14);
     .vendor-offer {
         margin: 0 0 10px;
     }
@@ -33,32 +37,35 @@
         .font-size14(40);
     }
     &__old-price {
+        line-height: 1;
+
         color: @grey-type;
+
         .font-size14(20);
         .font-face('GloberRegular');
-            line-height: 1;
-
     }
     &__delivery-time {
+        margin: 0 0 10px;
+
         color: @grey-type;
 
         .font-face('GloberRegular');
-        margin: 0 0 10px;
     }
 }
 
 .product-card-set-recall {
+    margin: 0 0 15px;
     padding: 15px;
-        margin: 0 0 15px;
 
-        background: @grey-light-4;
-
+    background: @grey-light-4;
     &__title {
         margin: 0 0 5px;
+
         .font-size(14);
     }
     &-list {
         margin-bottom: 15px;
+
         .font-size(14);
         &__item {
             margin-bottom: 0;
@@ -68,26 +75,31 @@
         }
     }
     &__payment-types {
+        line-height: 1.5;
+
+        text-align: center;
+
         .font-face('GloberRegular');
         .font-size(14);
-        text-align: center;
-        line-height: 1.5;
     }
 }
 
 .set-specify-list {
-    color: @grey-bright;
-    .font-face('GloberRegular');
     margin: 0 15px 15px;
 
+    color: @grey-bright;
+
+    .font-face('GloberRegular');
     &__name {
-        .inline-block();
-        margin: 0 0 8px;
         width: 120px;
+        margin: 0 0 8px;
+
+        .inline-block();
     }
     &__value {
-        .inline-block();
-        margin: 0 0 8px;
         width: 130px;
+        margin: 0 0 8px;
+
+        .inline-block();
     }
 }

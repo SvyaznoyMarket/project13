@@ -157,6 +157,17 @@
             }
         }
     }
+    &__base-set-list {
+        margin: 0;
+    }
+    &__base-set-item {
+        margin: 0;
+        margin: 0 0 3px 15px;
+
+        list-style-type: square;
+
+        .font-size(14);
+    }
 }
 
 // описание товара
@@ -547,7 +558,6 @@
     }
     &__inn {
         overflow: hidden;
-
         p {
             margin: 0;
         }
@@ -584,15 +594,19 @@
 }
 
 .closer {
+    font-style: normal;
+    line-height: 1;
+
     position: absolute;
-    cursor: pointer;
     top: 0;
     right: 10px;
-    .font-size(24);
-    font-style: normal;
-    .font-face('GloberRegular');
+
+    cursor: pointer;
+
     color: @grey-type;
-    line-height: 1;
+
+    .font-size(24);
+    .font-face('GloberRegular');
 }
 
 .action-hint {
