@@ -18,10 +18,6 @@ $config = [
     <div class="section__title">Вы смотрели</div>
 
     <div class="section__content" style="position: relative">
-        <div class="viewed-goods-name grid-8col__item">
-            <span class="viewed-goods-name__value">Женская спортивная футболка Tchibo, цвет серебристый</span>
-        </div>
-
         <div class="slider-section slider-section_100">
             <button class="slider-section__btn slider-section__btn_prev js-goods-slider-btn-prev"></button>
             <div class="viewed-goods goods goods_images goods_list grid-8col js-slider-goods js-viewed-products-inner">
@@ -37,6 +33,10 @@ $config = [
         <a href="{{productUrl}}" class="goods__img" title="{{name}}">
             <img data-lazy="{{imageUrl}}" alt="{{name}}" class="goods__img-image">
         </a>
+
+        <div class="viewed-goods-name">
+            <span class="viewed-goods-name__value">{{name}}</span>
+        </div>
     </div>
 {{/products}}
 </script>

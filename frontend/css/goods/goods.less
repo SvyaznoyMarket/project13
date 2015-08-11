@@ -287,40 +287,32 @@
 }
 
 .viewed-goods {
+    height: 135px;
+    .goods__item {
+        &:hover {
+            .goods__img {
+                border-color: @orange-bright;
+            }
+            .viewed-goods-name {
+                display: block;
+            }
+        }
+    }
     .goods__img {
         border-bottom: 3px solid transparent;
-        &:hover {
-            border-color: @orange-bright;
-        }
+        padding: 0 0 5px;
     }
 }
 
 .viewed-goods-name {
-    position: absolute;
-    bottom: 100px;
-
     padding: 7px 5px;
 
     text-align: center;
     display: none;
-
-    color: @grey-type;
-    background: @grey-light-4;
-    &:before {
-        bottom: -6px;
-        left: 50%;
-
-        margin-left: -6px;
-
-        .pseudo-corner-bottom(6px, @grey-light-4);
-    }
-    &.show {
-        display: block;
-    }
     &__value {
         overflow: hidden;
 
-        max-height: 31px;
+        max-height: 33px;
 
         .inline-block();
     }

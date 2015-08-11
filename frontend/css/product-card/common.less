@@ -98,6 +98,10 @@
             cursor: pointer;
         }
     }
+    .section {
+        padding-right: 0;
+        padding-left: 0;
+    }
     // карточка товара в два столбца
     &--2col {
         .product-card__c {
@@ -213,7 +217,8 @@
     margin: 0 0 15px;
 
     color: @grey-bright;
-    .font-face("GloberRegular");
+
+    .font-face('GloberRegular');
     &__i {
         margin: 0 0 6px;
         &--name {
@@ -466,8 +471,7 @@
 }
 .jewel {
     .best-price-popup .customInput-defcheck {
-        &:checked + .customLabel ,
-        &.mChecked {
+        &:checked + .customLabel,&.mChecked {
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQCAAAAADVWsuDAAAAdUlEQVR4AWVQtwEFIQi1fOMwjVO4jovcBHaXpqCl/jkgXk6vBF7CKff1hp7VMWveoMyu3w/KqHd1PqLeT+p4P0w0ArWOE/3IfRqEz3wTKYhWgL/neZKAkAheNuUIEIg/2+QeAFS6dxeCP+WRJOvk2uLa9PINA4yO5jmsmDGRAAAAAElFTkSuQmCC');
         }
     }
@@ -739,8 +743,7 @@
             display: block;
 
             padding: 3px 0 3px 10px;
-            &:hover ,
-            &.active {
+            &:hover,&.active {
                 text-decoration: none;
 
                 background-color: rgba(247, 171, 47, .2);

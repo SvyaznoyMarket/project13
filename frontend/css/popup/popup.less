@@ -29,6 +29,9 @@
     &_360 {
         width: 360px;
     }
+    &_640 {
+        width: 640px;
+    }
     &_920 {
         width: 920px;
     }
@@ -73,11 +76,12 @@
         width: 250px;
     }
     .product-card-set-recall {
+        display: none;
+
         margin: 0 0 30px;
         padding: 0;
 
         background: none;
-        display: none;
         &-list {
             margin-left: 80px;
         }
@@ -87,8 +91,7 @@
             .font-size(16);
         }
     }
-    &__success,
-    &__more {
+    &__success,&__more {
         display: none;
     }
     &.success {
@@ -100,8 +103,7 @@
         }
     }
     &.listing {
-        .product-card-set-recall,
-        .popup-application__more {
+        .product-card-set-recall,.popup-application__more {
             display: block;
         }
         .popup__title {
@@ -110,17 +112,85 @@
     }
 }
 
+.add-review-product {
+    margin: 0 0 20px;
+
+    .clearfix();
+    &__img {
+        width: 60px;
+        height: 60px;
+        margin-right: 15px;
+
+        .inline-block(middle);
+        .image {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    }
+    &__name {
+        .inline-block(middle);
+        .font-size(18);
+    }
+}
+
+.add-review-rating {
+    margin: 0 0 25px;
+    &__title {
+        margin-right: 5px;
+
+        .font-size(16);
+        .inline-block(middle);
+    }
+    &__value {
+        .inline-block(middle);
+    }
+}
+
+.add-review-success {
+    &__text {
+        margin: 0 0 5px;
+
+        .font-size(18);
+        &_small {
+            margin-bottom: 2px;
+
+            .font-size(14);
+        }
+        &_mark {
+            color: @orange-bright;
+
+            .font-size(22);
+            margin-bottom: 10px;
+        }
+    }
+    &__form {
+        .custom-label {
+            .font-size(14);
+        }
+    }
+    .form__btn-container {
+        margin-top: 25px;
+    }
+    .link {
+        color: @blue-bright;
+    }
+}
+
 // попап о снижении цены
 .popup-best-price {
     &__desc {
         margin-bottom: 24px;
+
         color: @grey-bright;
+
         .font-face('GlobarRegular');
     }
     &__check {
-        color: @grey-bright;
-        .font-face('GlobarRegular');
         margin: 0 0 20px;
+
+        color: @grey-bright;
+
+        .font-face('GlobarRegular');
     }
     &__btn {
         text-align: center;
@@ -146,6 +216,21 @@
         position: relative;
 
         margin: 0 0 24px;
+        &_no-placeholder {
+            margin-bottom: 14px;
+        }
+    }
+    &__field-2col {
+        .clearfix();
+        .form__field {
+            float: left;
+
+            width: 50%;
+            padding-right: 20px;
+            &:nth-child(2n) {
+                padding-right: 0;
+            }
+        }
     }
     &__it {
         width: 100%;
@@ -186,5 +271,8 @@
 
         .font-size(16);
         .font-face('GloberRegular');
+    }
+    &__btn-container {
+        text-align: center;
     }
 }
