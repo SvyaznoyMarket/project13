@@ -11,7 +11,9 @@ $bannerSlickConfig = [
     'infinite'=> true,
     'autoplay'=> true,
     'dots'=> true,
-    'slider' => '.js-banners-slider'
+    'slider' => '.js-banners-slider',
+    'nextArrow' => '.js-banners-slider-btn-next',
+    'prevArrow' => '.js-banners-slider-btn-prev',
 ];
 ?>
 
