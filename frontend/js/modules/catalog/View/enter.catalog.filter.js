@@ -46,7 +46,8 @@
                 SLIDER_TICK: 'js-slider-tick-wrapper',
                 BRANDS: 'js-category-v2-filter-otherBrands',
                 BRANDS_OPENER: 'js-category-v2-filter-otherBrandsOpener',
-                BRANDS_OPEN: 'open'
+                BRANDS_OPEN: 'open',
+                CLEAR_FILTER: 'filter-selected-clear'
             };
 
         provide(BaseViewClass.extend({
@@ -67,6 +68,7 @@
                 // Setup events
                 this.events['click .' + CSS_CLASSES.DROPDOWN_OPENER] = 'toggleDropdown';
                 this.events['click .' + CSS_CLASSES.BRANDS_OPENER]   = 'toggleBrands';
+                this.events['click .' + CSS_CLASSES.CLEAR_FILTER]    = 'clearFilter';
 
                 // Apply events
                 this.delegateEvents();
@@ -301,7 +303,7 @@
             },
 
             /**
-             * Пеервключе
+             * Скрытие и раскрытие дропдаунов
              *
              * @method      toggleDropdown
              * @memberOf    module:enter.catalog.filter~CatalogFilterView#
@@ -320,6 +322,21 @@
                 if ( !isOpen ) {
                     currentDropdown.addClass(CSS_CLASSES.DROPDOWN_OPEN);
                 }
+            },
+
+            /**
+             * Очистка фильтров
+             *
+             * @method      toggleDropdown
+             * @memberOf    module:enter.catalog.filter~CatalogFilterView#
+             *
+             * @param       {jQuery.Event}      event
+             */
+            clearFilter: function( event ) {
+                /**
+                 * @todo тут надо что-то сделать)
+                 */
+                return false;
             },
 
             /**
