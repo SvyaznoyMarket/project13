@@ -49,7 +49,8 @@
                 CART_DROP_DOWN_CONTENT: 'js-cart-notice-content',
                 CART_SHOW: 'show',
                 LOADER: 'loader',
-                CART_DROPDOWN: 'js-cart-notice'
+                CART_WRAPPER: 'notice-show',
+                CART_WRAPPER_FULL: 'active'
             },
 
             /**
@@ -82,7 +83,8 @@
                     cartQuantity: this.$el.find('.' + CSS_CLASSES.CART_QUANTITY),
                     cartSum: this.$el.find('.' + CSS_CLASSES.CART_SUM),
                     cartDropDown: this.$el.find('.' + CSS_CLASSES.CART_DROP_DOWN),
-                    cartDropDownContent: this.$el.find('.' + CSS_CLASSES.CART_DROP_DOWN_CONTENT)
+                    cartDropDownContent: this.$el.find('.' + CSS_CLASSES.CART_DROP_DOWN_CONTENT),
+                    cartWrapper: this.$el.find('.' + CSS_CLASSES.CART_WRAPPER)
                 };
 
                 this.bindedHide = this.hide.bind(this);
@@ -268,11 +270,13 @@
                     console.warn('cart empty');
                     this.$el.addClass(CSS_CLASSES.EMPTY_CART);
                     this.$el.removeClass(CSS_CLASSES.FULL_CART);
+                    this.subViews.cartWrapper.removeClass(CSS_CLASSES.CART_WRAPPER_FULL);
                     this.hide();
                 } else {
                     console.warn('cart full');
                     this.$el.addClass(CSS_CLASSES.FULL_CART);
                     this.$el.removeClass(CSS_CLASSES.EMPTY_CART);
+                    this.subViews.cartWrapper.addClass(CSS_CLASSES.CART_WRAPPER_FULL);
                 }
 
                 this.subViews.cartSum.text(printPrice(this.collection.total));
