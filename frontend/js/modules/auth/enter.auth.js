@@ -2,6 +2,11 @@
  * @module      enter.auth
  * @version     0.1
  *
+ * @requires    jQuery
+ * @requires    enter.ui.BasePopup
+ * @requires    FormValidator
+ * @requires    jquery.maskedinput
+ *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
 !function( modules, module ) {
@@ -10,26 +15,37 @@
         [
             'jQuery',
             'enter.ui.BasePopup',
+            'FormValidator',
             'jquery.maskedinput'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BasePopup, jMaskedinput ) {
+    function( provide, $, BasePopup, FormValidator, jMaskedinput ) {
         'use strict';
 
         var
             CSS_CLASSES = {
-                FORM: 'js-auth-form',
                 STATE_WRAPPER: 'js-state-wrapper',
                 SWITCH_STATE: 'js-auth-switch-state',
-                USERNAME_INPUT: 'js-auth-username-input',
-                USERNAME_LABEL: 'js-auth-username-label',
-                PASSWORD_INPUT: 'js-auth-password-input',
-                PASSWORD_LABEL: 'js-auth-password-label',
+
+                LOGIN_USERNAME_INPUT: 'js-auth-username-input',
+                LOGIN_USERNAME_LABEL: 'js-auth-username-label',
+                LOGIN_PASSWORD_INPUT: 'js-auth-password-input',
+                LOGIN_PASSWORD_LABEL: 'js-auth-password-label',
+
+                REG_USERNAME_INPUT: 'js-reg-username-input',
+                REG_EMAIL_INPUT: 'js-reg-email-input',
+                REG_PHONE_INPUT: 'js-reg-phone-input',
+
                 INPUT_VALID: 'valid',
                 INPUT_ERROR: 'error',
+                FORMS: {
+                    LOGIN: 'js-auth-form',
+                    REG: 'js-reg-form',
+                    HINT: 'js-hint-form'
+                },
                 STATES: {
                     REG: 'login_reg',
                     LOGIN: 'login_auth',
@@ -46,27 +62,90 @@
              * @constructs  AuthPopupView
              */
             initialize: function( options ) {
+                var
+                    validationConfig;
+
                 console.info('module:enter.auth~AuthPopupView#initialize');
 
                 $.mask.definitions['n'] = '[0-9]';
 
-                this.form          = this.$el.find('.' + CSS_CLASSES.FORM);
+                // Login
+                this.loginFrom = {
+                    form: this.$el.find('.' + CSS_CLASSES.FORMS.LOGIN),
+                    usernameInput: this.$el.find('.' + CSS_CLASSES.LOGIN_USERNAME_INPUT),
+                    usernameLable: this.$el.find('.' + CSS_CLASSES.LOGIN_USERNAME_LABEL),
+                    passwordInput: this.$el.find('.' + CSS_CLASSES.LOGIN_PASSWORD_INPUT),
+                    passwordLable: this.$el.find('.' + CSS_CLASSES.LOGIN_PASSWORD_LABEL)
+                };
+
+                // Registration
+                this.regForm = {
+                    form: this.$el.find('.' + CSS_CLASSES.FORMS.REG),
+                    usernameInput: this.$el.find('.' + CSS_CLASSES.REG_USERNAME_INPUT),
+                    emailInput: this.$el.find('.' + CSS_CLASSES.REG_EMAIL_INPUT),
+                    phoneInput: this.$el.find('.' + CSS_CLASSES.REG_PHONE_INPUT)
+                };
+
+                this.regForm.phoneInput.mask('+7 (nnn) nnn-nn-nn');
+
+                // Hint
+                this.hintFrom      = {
+                    form: this.$el.find('.' + CSS_CLASSES.FORMS.HINT)
+                };
+
+                // Common
                 this.stateWrapper  = this.$el.find('.' + CSS_CLASSES.STATE_WRAPPER);
                 this.usernameInput = this.$el.find('.' + CSS_CLASSES.USERNAME_INPUT);
                 this.usernameLable = this.$el.find('.' + CSS_CLASSES.USERNAME_LABEL);
                 this.passwordInput = this.$el.find('.' + CSS_CLASSES.PASSWORD_INPUT);
                 this.passwordLable = this.$el.find('.' + CSS_CLASSES.PASSWORD_LABEL);
 
-                $('.js-registerForm .js-phoneField').mask('+7 (nnn) nnn-nn-nn');
-
                 // Setup events
-                this.events['submit .' + CSS_CLASSES.FORM]                                               = 'formSubmit';
-                this.events['click .' + CSS_CLASSES.SWITCH_STATE]                                        = 'switchState';
-                this.events['keyup .' + CSS_CLASSES.USERNAME_INPUT + ', .' + CSS_CLASSES.PASSWORD_INPUT] = 'inputChange';
+                this.events['submit .' + CSS_CLASSES.FORMS.LOGIN] = 'formLoginSubmit';
+                this.events['submit .' + CSS_CLASSES.FORMS.REG]   = 'formRegSubmit';
+                this.events['submit .' + CSS_CLASSES.FORMS.HINT]  = 'formHintSubmit';
+                this.events['click .' + CSS_CLASSES.SWITCH_STATE] = 'switchState';
+
+                // this.events['keyup .' + CSS_CLASSES.USERNAME_INPUT + ', .' + CSS_CLASSES.PASSWORD_INPUT] = 'inputChange';
 
                 // Init
-                if (this.usernameInput.val().length > 0) this.usernameInput.addClass(CSS_CLASSES.INPUT_VALID);
-                if (this.passwordInput.val().length > 0) this.passwordInput.addClass(CSS_CLASSES.INPUT_VALID);
+                // if (this.usernameInput.val().length > 0) this.usernameInput.addClass(CSS_CLASSES.INPUT_VALID);
+                // if (this.passwordInput.val().length > 0) this.passwordInput.addClass(CSS_CLASSES.INPUT_VALID);
+
+                // Validator
+                validationConfig = {
+                    fields: [
+                        {
+                            fieldNode: this.loginFrom.usernameInput,
+                            require: !!this.loginFrom.usernameInput.attr('data-required'),
+                            validateOnChange: true
+                        },
+                        {
+                            fieldNode: this.loginFrom.passwordInput,
+                            require: !!this.loginFrom.passwordInput.attr('data-required'),
+                            validateOnChange: true
+                        },
+                        {
+                            fieldNode: this.regForm.usernameInput,
+                            require: !!this.regForm.usernameInput.attr('data-required'),
+                            validateOnChange: true
+                        },
+                        {
+                            fieldNode: this.regForm.emailInput,
+                            validBy: 'isEmail',
+                            require: !!this.regForm.emailInput.attr('data-required'),
+                            validateOnChange: true
+                        },
+                        {
+                            fieldNode: this.regForm.phoneInput,
+                            validBy: 'isPhone',
+                            require: !!this.regForm.phoneInput.attr('data-required'),
+                            validateOnChange: true
+                        }
+                    ]
+                };
+
+                this.validator = new FormValidator(validationConfig);
 
                 // Apply events
                 this.delegateEvents();
@@ -85,8 +164,10 @@
              * @param event
              */
             inputChange: function( event ) {
-                var $target = $(event.target);
-                if ($target.val().length > 0) {
+                var
+                    $target = $(event.target);
+
+                if ( $target.val().length > 0 ) {
                     $target.addClass(CSS_CLASSES.INPUT_VALID).removeClass(CSS_CLASSES.INPUT_ERROR)
                 } else {
                     $target.addClass(CSS_CLASSES.INPUT_ERROR).removeClass(CSS_CLASSES.INPUT_VALID)
@@ -123,18 +204,26 @@
                 return false;
             },
 
+            /**
+             * Обработка авторизации
+             *
+             * @method      authProcessing
+             * @memberOf    module:enter.auth~AuthPopupView#
+             *
+             * @param       {Object}        data
+             */
             authProcessing: function( data ) {
-                if (data.form && data.form.error) {
+                if ( data.form && data.form.error ) {
                     data.form.error.forEach(function( val ) {
                         if ( val.message ) {
                             switch ( val.field ) {
                                 case 'username':
-                                    this.usernameInput.addClass('error');
-                                    this.usernameLable.text(val.message);
+                                    this.loginFrom.usernameInput.addClass('error');
+                                    this.loginFrom.usernameLable.text(val.message);
                                     break;
                                 case 'password':
-                                    this.passwordInput.addClass('error');
-                                    this.passwordLable.text(val.message);
+                                    this.loginFrom.passwordInput.addClass('error');
+                                    this.loginFrom.passwordLable.text(val.message);
                                     break;
                             }
                         }
@@ -142,9 +231,15 @@
                 }
             },
 
-            formSubmit: function() {
+            /**
+             * Авторизация
+             *
+             * @method      formLoginSubmit
+             * @memberOf    module:enter.auth~AuthPopupView#
+             */
+            formLoginSubmit: function() {
                 var
-                    data = this.form.serialize(),
+                    data = this.loginFrom.form.serialize(),
                     url  = this.from.attr('action');
 
                 this.ajax({
@@ -155,7 +250,42 @@
                 });
 
                 return false;
+            },
+
+            /**
+             * Регистрация
+             *
+             * @method      formRegSubmit
+             * @memberOf    module:enter.auth~AuthPopupView#
+             */
+            formRegSubmit: function() {
+                var
+                    data = this.regForm.form.serialize();
+
+                console.groupCollapsed('module:enter.auth~AuthPopupView#formRegSubmit');
+                console.dir(data);
+                console.groupEnd();
+
+                return false;
+            },
+
+            /**
+             * Восстановление пароля
+             *
+             * @method      formHintSubmit
+             * @memberOf    module:enter.auth~AuthPopupView#
+             */
+            formHintSubmit: function() {
+                var
+                    data = this.hintFrom.form.serialize();
+
+                console.groupCollapsed('module:enter.auth~AuthPopupView#formHintSubmit');
+                console.dir(data);
+                console.groupEnd();
+
+                return false;
             }
+
         }));
     }
 );
