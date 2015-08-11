@@ -68,3 +68,12 @@
     </form>
 </div>
 <!--/ Заявка на кухни -->
+
+<!-- Успешная заявка на кухни -->
+<div class="popup popup-application popup_440 js-popup-application" style="display: none;">
+    <div class="popup__close js-popup-close">×</div>
+    <div class="popup__title">Ваша заявка № 122323 отправлена</div>
+
+    <button class="product-card-set__btn-app btn-primary btn-primary_bigger btn-primary_centred btn-set">ОК</button>
+</div>
+<!--/ Успешная заявка на кухни -->
