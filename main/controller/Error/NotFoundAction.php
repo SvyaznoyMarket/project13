@@ -21,7 +21,7 @@ class NotFoundAction {
         }
 
         $content = \App::templating()->render('error/page-404', [
-            'page'      => new \View\Layout(),
+            'page'      => new \View\DefaultLayout(),
             'exception' => $e,
         ]);
 
