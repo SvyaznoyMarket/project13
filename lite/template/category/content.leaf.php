@@ -28,8 +28,8 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
         <main class="content <?= isset($jewelClass) ? $jewelClass : '' ?>">
             <div class="content__inner">
                 <!-- баннер -->
-                <div class="banner-section">
-                    <img src="http://content.adfox.ru/150713/adfox/176461/1346077.jpg" width="940" height="240" alt="" border="0">
+                <div class="banner-section" style="display: none">
+                    <img src="" width="940" height="240" alt="" border="0">
                 </div>
                 <!--/ баннер -->
 
