@@ -15,6 +15,7 @@
                 <div>
                     <div class="form__field">
                         <input class="js-order-phone form-order-login__it it"
+                               id="order-phone-input"
                                type="text"
                                name="user_info[phone]"
                                value=""
@@ -22,19 +23,20 @@
                                title="Введите номер телефона"
                                required
                             >
-                        <label class="form-order-login__label placeholder placeholder_str" for="">Телефон</label>
+                        <label class="form-order-login__label placeholder placeholder_str" for="order-phone-input">Телефон</label>
                         <span class="form-order-login__hint">Для смс о состоянии заказа</span>
                     </div>
 
                     <div class="form__field">
                         <input class="js-order-email form-order-login__it it"
+                               id="order-email-input"
                                type="text"
                                name="user_info[email]"
                                value=""
                                title="Введите email"
                                required
                             >
-                        <label class="form-order-login__label placeholder placeholder_str" for="">E-mail</label>
+                        <label class="form-order-login__label placeholder placeholder_str" for="order-email-input">E-mail</label>
 
                         <span class="form-order-login__hint form-order-login__hint_check">
                            <input class="custom-input custom-input_check jsCustomRadio js-customInput jsOrderV3SubscribeCheckbox"
@@ -49,11 +51,12 @@
 
                     <div class="form__field">
                         <input class="js-order-name form-order-login__it it"
+                               id="order-name-input"
                                type="text"
                                name="user_info[first_name]"
                                value=""
                             >
-                        <label class="form-order-login__label placeholder" for="">Имя</label>
+                        <label class="form-order-login__label placeholder" for="order-name-input">Имя</label>
                         <span class="form-order-login__hint">Как к вам обращаться?</span>
                     </div>
                 </div>
