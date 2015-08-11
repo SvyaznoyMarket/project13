@@ -11,16 +11,20 @@ $config = [
 ];
 ?>
 
-<div class="section section_bordered js-module-require js-viewed-products"
+<div class="section js-module-require js-viewed-products"
      data-module="enter.viewed"
      style="display: none"
      data-slick-config='<?= json_encode($config) ?>'>
     <div class="section__title">Вы смотрели</div>
 
-    <div class="section__content">
+    <div class="section__content" style="position: relative">
+        <div class="viewed-goods-name grid-8col__item">
+            <span class="viewed-goods-name__value">Женская спортивная футболка Tchibo, цвет серебристый</span>
+        </div>
+
         <div class="slider-section slider-section_100">
             <button class="slider-section__btn slider-section__btn_prev js-goods-slider-btn-prev"></button>
-            <div class="goods goods_images goods_list grid-8col js-slider-goods js-viewed-products-inner">
+            <div class="viewed-goods goods goods_images goods_list grid-8col js-slider-goods js-viewed-products-inner">
             </div>
             <button class="slider-section__btn slider-section__btn_next js-goods-slider-btn-next"></button>
         </div>
