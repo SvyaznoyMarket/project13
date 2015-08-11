@@ -74,6 +74,7 @@
         padding: 0;
 
         background: none;
+        display: none;
         &-list {
             margin-left: 80px;
         }
@@ -81,6 +82,27 @@
             text-align: center;
 
             .font-size(16);
+        }
+    }
+    &__success,
+    &__more {
+        display: none;
+    }
+    &.success {
+        .popup-application__order {
+            display: none;
+        }
+        .popup-application__success {
+            display: block;
+        }
+    }
+    &.listing {
+        .product-card-set-recall,
+        .popup-application__more {
+            display: block;
+        }
+        .popup__title {
+            display: none;
         }
     }
 }

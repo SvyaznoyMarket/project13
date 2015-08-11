@@ -66,12 +66,12 @@
 
             <button class="product-card-set__btn-app btn-primary btn-primary_bigger btn-primary_centred btn-set js-application-submit" >Отправить заявку</button>
 
-            <div class="align-center"><a href="" class="dotted">Подробнее о кухонном гарнитуре</a></div>
+            <div class="popup-application__more align-center"><a href="" class="dotted">Подробнее о кухонном гарнитуре</a></div>
         </form>
     </div>
 
     <!-- Успешная заявка на кухни -->
-    <div class="popup-application__success" style="display: none;">
+    <div class="popup-application__success">
         <div class="popup__title">Ваша заявка № 122323 отправлена</div>
 
         <button class="product-card-set__btn-app btn-primary btn-primary_bigger btn-primary_centred btn-set">ОК</button>
