@@ -72,24 +72,24 @@ $oauthEnabled = \App::config()->oauthEnabled;
             <!--/ авторизация -->
 
             <!-- регистрация -->
-            <form class="form form_reg" action="" method="">
+            <form class="form form_reg js-reg-form" action="" method="">
                 <div class="popup__title">Регистрация</div>
 
                 <fieldset class="form__content">
                     <div class="form__it-name">Как к вам обращаться?</div>
 
                     <div class="form__field">
-                        <input id="register-name-input" type="text" class="form__it it" value="">
+                        <input id="register-name-input" type="text" class="form__it it js-reg-username-input" value="">
                         <label for="register-name-input" class="form__placeholder placeholder">Имя</label>
                     </div>
 
                     <div class="form__field">
-                        <input id="register-email-input" type="text" class="form__it it" value="">
+                        <input id="register-email-input" type="text" class="form__it it js-reg-email-input" value="">
                         <label for="register-email-input" class="form__placeholder placeholder">Email</label>
                     </div>
 
                     <div class="form__field">
-                        <input id="register-phone-input" type="text" class="form__it it" value="">
+                        <input id="register-phone-input" type="text" class="form__it it js-reg-phone-input" value="">
                         <label for="register-phone-input" class="form__placeholder placeholder">Телефон</label>
                     </div>
 
@@ -122,7 +122,7 @@ $oauthEnabled = \App::config()->oauthEnabled;
             <!--/ регистрация -->
 
             <!-- восстановление пароля -->
-            <form class="form form_hint" action="" method="">
+            <form class="form form_hint js-hint-form" action="" method="">
                 <div class="popup__title">Восстановление пароля</div>
 
                 <fieldset class="form__content">
