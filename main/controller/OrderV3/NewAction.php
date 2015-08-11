@@ -40,10 +40,6 @@ class NewAction extends OrderV3 {
             $this->getLastOrderData();
 
             $this->session->remove($this->splitSessionKey);
-
-            // testing purpose only
-            if (\App::config()->debug) (new DeliveryAction())->getSplit();
-
         } catch (ValidateException $e) {
             $page->setParam('error', $e->getMessage());
         } catch (\Curl\Exception $e) {
