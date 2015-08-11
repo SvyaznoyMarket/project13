@@ -45,6 +45,12 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
 $buySender2 = $request->get('sender2');
 
 
+$secondaryGroupedProperties = $product->getSecondaryGroupedProperties(['Комплектация']);
+$equipment = $product->getEquipmentProperty() ? preg_split('/(\r?\n)+/', trim($product->getEquipmentProperty()->getStringValue())) : null;
+foreach ($equipment as $key => $value) {
+    $equipment[$key] = preg_replace('/\s*<br \/>$/', '', trim(mb_strtoupper(mb_substr($value, 0, 1)) . mb_substr($value, 1)));
+}
+
 /* Главные характеристики */
 $mainProperties = $product->getMainProperties();
 uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Product\Property\Entity $b) {
@@ -219,19 +225,30 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
             <?= $helper->render('product/blocks/kit', ['product' => $product, 'products' => $kitProducts, 'sender' => $buySender, 'sender2' => $buySender2]) ?>
         <? endif ?>
 
-        <? if ($showDescription) : ?>
+        <? if ($equipment || $showDescription) : ?>
 
             <!-- характеристики/описание товара -->
             <div class="product-section" id="more">
 
-                <?= $helper->render('product/blocks/properties', ['product' => $product]) ?>
+                <?= $helper->render('product/slot/properties', ['groupedProperties' => $secondaryGroupedProperties]) ?>
 
-                <? if ($hasMedia || $product->getDescription()) : ?>
+                <? if ($hasMedia || $product->getDescription() || $equipment) : ?>
 
                     <div class="product-section__desc">
-                        <div class="product-section__tl">Описание</div>
-                        <?= $helper->render('product/blocks/guides', ['trustfactors' => $trustfactors]) ?>
+                        <div class="product-section__tl">Базовый комплект</div>
+
                         <div class="product-section__content"><?= $product->getDescription() ?></div>
+
+                        <? if ($equipment): ?>
+                            <div class="product-card__base-set">
+                                <ul class="product-card__base-set-list">
+                                    <? foreach ($equipment as $equipmentItem): ?>
+                                        <li class="product-card__base-set-item"><?= $equipmentItem ?>.</li>
+                                    <? endforeach ?>
+                                </ul>
+                            </div>
+                        <? endif ?>
+
                     </div>
 
                 <? endif ?>

@@ -244,8 +244,9 @@ class ProductAction {
                 $productQuantity = isset($productQuantitiesById[$productId]) ? $productQuantitiesById[$productId] : null;
                 if (!$productQuantity) continue;
 
+                $newQuantity = \App::config()->lite['enabled'] ? $productQuantity : $productQuantity + $cart->getQuantityByProduct($productId);
 
-                $cart->setProduct($product, $productQuantity + $cart->getQuantityByProduct($productId), $params, true);
+                $cart->setProduct($product, $newQuantity, $params, true);
 
                 $quantity += $cart->getQuantityByProduct($productId);
             }
