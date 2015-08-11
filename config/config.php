@@ -210,10 +210,10 @@ $c->company['icq'] = '648198963';
 
 $c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
-$c->googleAnalytics['enabled'] = true;
-$c->googleAnalyticsTchibo['enabled'] = true;
-$c->yandexMetrika['enabled'] = true;
-$c->googleTagManager['enabled'] = true;
+$c->googleAnalytics['enabled'] = false;
+$c->googleAnalyticsTchibo['enabled'] = false;
+$c->yandexMetrika['enabled'] = false;
+$c->googleTagManager['enabled'] = false;
 $c->googleTagManager['containerId'] = 'GTM-P65PBR';
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
@@ -436,7 +436,7 @@ $c->lifeGift['regionId'] = 151021;
 $c->lifeGift['labelId'] = 17;
 $c->lifeGift['deliveryTypeId'] = 1077;
 
-$c->enterprize['enabled'] = true;
+$c->enterprize['enabled'] = false;
 $c->enterprize['formDataSessionKey'] = 'enterprizeForm';
 $c->enterprize['itemsInSlider'] = 7;
 $c->enterprize['showSlider'] = true;
@@ -466,8 +466,8 @@ $c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
 $c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 $c->svyaznoyClub['cardNumber']['cookieName'] = 'scid';
 
-$c->flocktoryExchange['enabled'] = true;
-$c->flocktoryPostCheckout['enabled'] = true;
+$c->flocktoryExchange['enabled'] = false;
+$c->flocktoryPostCheckout['enabled'] = false;
 
 
 $c->photoContest = [
