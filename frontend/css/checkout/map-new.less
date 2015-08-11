@@ -7,42 +7,84 @@
 }
 
 .delivery-points-lwrap {
-    overflow-x: hidden;
-    overflow-y: auto;
+    position: relative;
 
-    min-height: 374px;
-    max-height: 374px;
-    border-bottom: 1px solid @grey-light-3;
     border-top: 1px solid @grey-light-3;
+    border-bottom: 1px solid @grey-light-3;
+    &__inn {
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        min-height: 374px;
+        max-height: 374px;
+    }
+    &:before {
+        position: absolute;
+        z-index: 12;
+        top: 0;
+        right: 0;
+        left: 0;
+
+        width: 100%;
+        height: 10px;
+
+        content: '';
+
+        .gradient__top-white__bottom-transparent();
+    }
+    &:after {
+        position: absolute;
+        z-index: 12;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        width: 100%;
+        height: 10px;
+
+        content: '';
+
+        .gradient__top-transparent__bottom-white();
+    }
 }
 
 .delivery-points-list {
     text-align: left;
     &__row {
-        width: 415px;
-        margin: 0 6px 0 3px;
-
         cursor: pointer;
-
+        .table-cell {
+            min-height: 85px;
+        }
         &:not(:last-child) {
             .table-cell {
                 border-bottom: 1px solid @grey-light-3;
             }
         }
-
         &:hover {
             .table-cell {
                 background: @orange-light-4;
             }
+            .delivery-points-list__address-metro__inn {
+                background: @orange-light-4;
+            }
         }
-        
-        &:hover .pick-point-item__buy{
-            display: block;
-        }
+        &:not(.no-hidden):hover {
+            .delivery-points-list__info {
+                padding-top: 0;
 
-        &:hover .pick-point-item__info:not(.pick-point-item__info--nobtn, .no-hide-info) .pick-point-item__date,
-        &:hover .pick-point-item__info:not(.pick-point-item__info--nobtn, .no-hide-info) .pick-point-item__price{
-            display: none;
+                vertical-align: middle;
+                &-btn {
+                    display: block;
+                }
+                &-hidden {
+                    display: none;
+                }
+            }
+        }
+        &.no-hidden {
+            .delivery-points-list__info {
+                vertical-align: middle;
+            }
         }
     }
     &__name {
@@ -68,16 +110,39 @@
 
             margin: 0 0 2px;
 
-            color: @grey-type;
+            color: @grey-bright;
 
             .font-size(14);
         }
         &-time {
             clear: both;
 
-            color: @grey-type;
+            color: @grey-bright;
 
             .font-face('GloberRegular');
+        }
+        &-metro {
+            position: relative;
+
+            .font-size(14);
+            .inline-block();
+            &:after {
+                position: absolute;
+                top: 5px;
+                left: -10px;
+
+                width: 6px;
+                height: 6px;
+
+                content: '';
+
+                background: inherit;
+
+                .rounded(50%);
+            }
+            &__inn {
+                background: @white;
+            }
         }
     }
     &__logo {
@@ -93,34 +158,10 @@
         max-width: 100%;
         margin: 0 0 5px;
     }
-    &__metro {
-        position: relative;
-
-        width: 175px;
-
-        .inline-block();
-        &:after {
-            position: absolute;
-            top: 7px;
-            left: -14px;
-
-            width: 7px;
-            height: 7px;
-
-            content: '';
-
-            background: inherit;
-
-            .rounded(50%);
-        }
-        &-inn {
-            background: @white;
-        }
-    }
     &__info {
         position: relative;
 
-        padding: 10px 10px 0 0;
+        padding: 0 10px 0 0;
 
         text-align: right;
         vertical-align: top;
@@ -132,7 +173,7 @@
             line-height: 1;
 
             width: 96px;
-            margin: 0 0 5px;
+            margin: 10px 0 5px;
             padding: 4px 5px 1px;
 
             text-align: right;
@@ -146,22 +187,12 @@
 
             text-align: right;
 
-            color: @grey-type;
+            color: @grey-bright;
 
             .font-size(14);
         }
-        &-popup {
-            right: 5px;
-            margin-top: 5px;
-            background: @grey-light-4;
-            .box-shadow(none);
-            border: none;
-            text-align: left;
-            .font-size(14);
-            &:before {
-                right: 7px;
-                .pseudo-corner-top(6px, @grey-light-4, -6px);
-            }
+        &-btn {
+            display: none;
         }
     }
     &__buy {
@@ -170,47 +201,95 @@
 
         margin: 0 2px 0;
     }
-    &__ondisplay {
-        &-lbl {
-            vertical-align: middle;
+}
 
-            color: @grey-type;
+// попап-подсказка с описание пункта самовывоза
+.drop-filter-box {
+    &__dd {
+        &-line {
+            &:first-child {
+                .delivery-points-info__popup_top {
+                    top: 18px;
+                }
+            }
+        }
+    }
+}
+
+.delivery-points-info {
+    &_absolute {
+        position: absolute;
+        top: 8px;
+        right: 5px;
+    }
+    &_inline {
+        margin: 0 2px;
+
+        .inline-block();
+    }
+    &:hover {
+        .info-popup {
+            visibility: visible;
+            overflow: visible;
+
+            .opacity(1);
+        }
+    }
+    &__icon {
+        display: block;
+
+        width: 15px;
+        height: 15px;
+
+        cursor: pointer;
+
+        background: no-repeat 0 0 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAQAAACR313BAAAA3UlEQVQY04VRuw3CMBC1gpSaEkLFAkyC6JC8AEhkBiQQ5E40bMAMFB6BNAgp6XLnLBDECKmMcQIODVx11rv3ubMQrkxQSq244porrUppAuFLjzmjlGQeFWEekaSUMz3+gHSnWHwVxXR3AyawTAvCEC74wBts5r1mgDNrUVqphoFrWIJCg4tWIS2l0IqkF4UJGji0sA0ruMojD+MRzX7a9HnEleC6CD/gynJ371cRcv3Fxmty8kqO3fXez5JRZ7mXt0++7cMZOjFd8vfeFh5ADVt/GLf3n6v9vfmvH3sCOmOZHe79JcUAAAAASUVORK5CYII=');
+    }
+    &__link {
+        color: @grey-type;
+    }
+    &__popup {
+        z-index: 20;
+
+        text-align: left;
+
+        border: none;
+        background: @grey-light-4;
+
+        .box-shadow(none);
+        &_right {
+            right: 6px;
+
+            margin-top: 6px;
 
             .font-size(14);
-        }
-        &-icon {
-            margin-right: 5px;
-
-            vertical-align: middle;
-        }
-        &-popup {
-            position: absolute;
-            top: 38px;
-            right: 8px;
-
-            width: 348px;
-            padding: 10px;
-
-            text-align: left;
-
-            color: @grey-type;
-
-            .font-size(14);
-            p {
-                margin: 0;
-            }
-            &:after {
-                right: 8px;
-
-                .pseudo-class();
-                .pseudo-corner-top(6px, #fff, -6px);
-            }
             &:before {
-                right: 6px;
+                right: 7px;
 
-                .pseudo-class();
-                .pseudo-corner-top(8px, #c7c7c7, -8px);
+                .pseudo-corner-top(6px, @grey-light-4, -6px);
             }
+        }
+        &_left {
+            top: -6px;
+            left: 25px;
+
+            padding: 7px 10px 5px;
+
+            white-space: nowrap;
+            &:before {
+                left: -6px;
+
+                .pseudo-corner-right(6px, @grey-light-4, 8px);
+            }
+        }
+        &_top {
+            top: -30px;
+            right: 0;
+            left: 0;
+
+            padding: 2px 0 0 10px;
+
+            white-space: nowrap;
         }
     }
 }

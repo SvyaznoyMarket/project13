@@ -1,76 +1,78 @@
 .shopLst {
-	overflow: auto;
+    display: block;
+    overflow: auto;
 
-	max-height: 448px;
-	display: block;
+    max-height: 448px;
+    &_i {
+        padding: 5px;
 
-	&_i {
-		padding: 5px;
+        border-bottom: 1px solid green;
+        &:last-child {
+            margin-bottom: 10px;
 
-		border-bottom: 1px solid green;
+            border-bottom: none;
+        }
+    }
+    &_addrs {
+        position: relative;
 
-		&:last-child {
-			border-bottom: none;
-			margin-bottom: 10px;
-		}
-	}
+        margin: 0 0 5px 15px;
+    }
+    &_metro {
+        position: relative;
 
-	&_addrs {
-    	position: relative;
+        width: 175px;
 
-		margin: 0 0 5px 15px;
-	}
+        .inline-block();
+        &:after {
+            position: absolute;
+            top: 6px;
+            left: -15px;
 
-	&_metro {
-		position: relative;
-		.inline-block();
-		width: 175px;
+            width: 8px;
+            height: 8px;
 
-		&:after {
-			.rounded(50%);
-			position: absolute;
-			top: 6px;
-			left: -15px;
+            content: '';
 
-			width: 8px;
-			height: 8px;
+            background: inherit;
 
-			content: '';
+            .rounded(50%);
+        }
+        &_inn {
+            background: @white;
+        }
+    }
+    &_ln {
+        clear: both;
 
-			background: inherit;
-		}
+        color: #616161;
+    }
+    &_stick {
+        font-size: 12px;
+        line-height: 1;
 
-		&_inn {
-			background: @white;
-		}
-	}
+        float: right;
 
-	&_ln {
-		color: #616161;
-		clear: both;
-	}
+        width: 75px;
+        margin: 4px 0 0;
+        padding: 1px 0 2px;
 
-	&_stick {
-		.inline-block();
-		width: 75px;
-		float: right;
-		text-align: center;
-		font-size: 12px;
-		background: #feeed5;
-		.rounded(3px);
-		line-height: 1;
-		padding: 1px 0 2px;
-		margin: 4px 0 0;
-		color: #424242;
-	}
+        text-align: center;
 
-	&:after {
-		.pseudo-class();
-		//.whiteBottomTranspGrad();
-		bottom: 0;
-		left: 0;
+        color: #424242;
+        background: #feeed5;
 
-		width: 100%;
-		height: 25px;
-	}
+        .inline-block();
+        .rounded(3px);
+    }
+    &:after {
+        //.whiteBottomTranspGrad();
+        bottom: 0;
+        left: 0;
+
+        width: 100%;
+        height: 25px;
+
+        .pseudo-class();
+    }
 }
