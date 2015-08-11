@@ -22,14 +22,20 @@
         var
             CSS_CLASSES = {
                 FORM: 'js-auth-form',
-                AUTH_STATE: 'js-auth-state',
+                STATE_WRAPPER: 'js-state-wrapper',
                 SWITCH_STATE: 'js-auth-switch-state',
                 USERNAME_INPUT: 'js-auth-username-input',
                 USERNAME_LABEL: 'js-auth-username-label',
                 PASSWORD_INPUT: 'js-auth-password-input',
                 PASSWORD_LABEL: 'js-auth-password-label',
                 INPUT_VALID: 'valid',
-                INPUT_ERROR: 'error'
+                INPUT_ERROR: 'error',
+                STATES: {
+                    REG: 'login_reg',
+                    LOGIN: 'login_auth',
+                    HINT: 'login_hint',
+                    SUCCESS: 'login_success'
+                }
             };
 
         provide(BasePopup.extend({
@@ -45,7 +51,7 @@
                 $.mask.definitions['n'] = '[0-9]';
 
                 this.form          = this.$el.find('.' + CSS_CLASSES.FORM);
-                this.authState     = this.$el.find('.' + CSS_CLASSES.AUTH_STATE);
+                this.stateWrapper  = this.$el.find('.' + CSS_CLASSES.STATE_WRAPPER);
                 this.usernameInput = this.$el.find('.' + CSS_CLASSES.USERNAME_INPUT);
                 this.usernameLable = this.$el.find('.' + CSS_CLASSES.USERNAME_LABEL);
                 this.passwordInput = this.$el.find('.' + CSS_CLASSES.PASSWORD_INPUT);
@@ -87,22 +93,30 @@
                 }
             },
 
+            resetState: function() {
+                var
+                    key;
+
+                for ( key in CSS_CLASSES.STATES ) {
+                    if ( CSS_CLASSES.STATES.hasOwnProperty(key) ) {
+                        this.stateWrapper.removeClass(CSS_CLASSES.STATES[key])
+                    }
+                }
+            },
+
             switchState: function( event ) {
                 var
-                    target        = $(event.currentTarget),
-                    link          = target.find('a'),
-                    removeClasses = 'login_auth login_reg login_hint login_success',
-                    regClass      = 'login_reg',
-                    authClass     = 'login_auth',
-                    isReg         = this.authState.hasClass(regClass);
+                    target    = $(event.currentTarget),
+                    link      = target.find('a'),
+                    isReg     = this.stateWrapper.hasClass(CSS_CLASSES.STATES.REG);
 
-                this.authState.removeClass(removeClasses);
+                this.resetState();
 
                 if ( isReg ) {
                     link.text('Регистрация');
-                    this.authState.addClass(authClass);
+                    this.stateWrapper.addClass(CSS_CLASSES.STATES.LOGIN);
                 } else {
-                    this.authState.addClass(regClass);
+                    this.stateWrapper.addClass(CSS_CLASSES.STATES.REG);
                     link.text('Авторизация');
                 }
 

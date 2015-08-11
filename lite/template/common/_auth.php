@@ -19,7 +19,7 @@ $oauthEnabled = \App::config()->oauthEnabled;
             если нажали на "забыли?(пароль)" - меняем класс на login_hint
             если действие совершено успешно, то !добавляем! класс login_success
         -->
-        <div class="login login_auth js-auth-state">
+        <div class="login login_auth js-state-wrapper">
             <!-- авторизация -->
             <form class="form form_auth js-auth-form" action="<?= $page->url('user.login') ?>" method="post">
 
