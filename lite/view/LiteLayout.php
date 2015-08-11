@@ -47,7 +47,7 @@ class LiteLayout extends \View\Layout
      */
     public function blockAuth()
     {
-        return $this->render('common/_auth');
+        return $this->render('common/_auth', ['redirect' => $this->url('homepage')]);
     }
 
     /**
