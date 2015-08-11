@@ -102,7 +102,16 @@ namespace Model\OrderDelivery {
             $this->validate();
             $this->validateOrders();
 
-
+            // проверка на 100000 SITE-5958
+            foreach ($this->orders as $order) {
+                if ($order->total_cost > 100000) {
+                    foreach ($order->possible_payment_methods as $i => $possiblePaymentMethod) {
+                        if (in_array($possiblePaymentMethod->id, ['1', '2']) && (count($order->possible_payment_methods) > 1)) {
+                            unset($order->possible_payment_methods[$i]);
+                        }
+                    }
+                }
+            }
         }
 
         /**
