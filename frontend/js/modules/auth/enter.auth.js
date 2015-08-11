@@ -54,8 +54,8 @@
                 $('.js-registerForm .js-phoneField').mask('+7 (nnn) nnn-nn-nn');
 
                 // Setup events
-                this.events['submit .' + CSS_CLASSES.FORM]        = 'formSubmit';
-                this.events['click .' + CSS_CLASSES.SWITCH_STATE] = 'switchState';
+                this.events['submit .' + CSS_CLASSES.FORM]                                               = 'formSubmit';
+                this.events['click .' + CSS_CLASSES.SWITCH_STATE]                                        = 'switchState';
                 this.events['keyup .' + CSS_CLASSES.USERNAME_INPUT + ', .' + CSS_CLASSES.PASSWORD_INPUT] = 'inputChange';
 
                 // Init
@@ -89,11 +89,22 @@
 
             switchState: function( event ) {
                 var
-                    target = $(event.currentTarget);
+                    target        = $(event.currentTarget),
+                    link          = target.find('a'),
+                    removeClasses = 'login_auth login_reg login_hint login_success',
+                    regClass      = 'login_reg',
+                    authClass     = 'login_auth',
+                    isReg         = this.authState.hasClass(regClass);
 
-                this.authState
-                    .removeClass('login_auth login_reg login_hint login_success')
-                    .addClass(target.data('state'));
+                this.authState.removeClass(removeClasses);
+
+                if ( isReg ) {
+                    link.text('Регистрация');
+                    this.authState.addClass(authClass);
+                } else {
+                    this.authState.addClass(regClass);
+                    link.text('Авторизация');
+                }
 
                 return false;
             },

@@ -32,13 +32,13 @@ $oauthEnabled = \App::config()->oauthEnabled;
                         если поле заполнено символами, то добавлем класс valid
                         если ошибка - error
                     -->
-                    <input type="text" class="form__it it js-auth-username-input" name="signin[username]" value="">
-                    <label class="form__placeholder placeholder js-auth-username-label">Email или телефон</label>
+                    <input id="auth-username-input" type="text" class="form__it it js-auth-username-input" name="signin[username]" value="">
+                    <label for="auth-username-input" class="form__placeholder placeholder js-auth-username-label">Email или телефон</label>
                 </div>
 
                 <div class="form__field">
-                    <input type="password" class="form__it it js-auth-password-input" name="signin[password]" value="">
-                    <label class="form__placeholder placeholder js-auth-password-label">Пароль</label>
+                    <input id="auth-password-input" type="password" class="form__it it js-auth-password-input" name="signin[password]" value="">
+                    <label for="auth-password-input" class="form__placeholder placeholder js-auth-password-label">Пароль</label>
 
                     <a href="" class="form__it-btn js-auth-switch-state" data-state="login_hint">забыли?</a>
                 </div>
@@ -79,18 +79,18 @@ $oauthEnabled = \App::config()->oauthEnabled;
                     <div class="form__it-name">Как к вам обращаться?</div>
 
                     <div class="form__field">
-                        <input type="text" class="form__it it" value="">
-                        <label class="form__placeholder placeholder">Имя</label>
+                        <input id="register-name-input" type="text" class="form__it it" value="">
+                        <label for="register-name-input" class="form__placeholder placeholder">Имя</label>
                     </div>
 
                     <div class="form__field">
-                        <input type="text" class="form__it it" value="">
-                        <label class="form__placeholder placeholder">Email</label>
+                        <input id="register-email-input" type="text" class="form__it it" value="">
+                        <label for="register-email-input" class="form__placeholder placeholder">Email</label>
                     </div>
 
                     <div class="form__field">
-                        <input type="text" class="form__it it" value="">
-                        <label class="form__placeholder placeholder">Телефон</label>
+                        <input id="register-phone-input" type="text" class="form__it it" value="">
+                        <label for="register-phone-input" class="form__placeholder placeholder">Телефон</label>
                     </div>
 
                     <div class="login-subscribe">
@@ -127,8 +127,8 @@ $oauthEnabled = \App::config()->oauthEnabled;
 
                 <fieldset class="form__content">
                     <div class="form__field">
-                        <input type="text" class="form__it it" value="">
-                        <label class="form__placeholder placeholder">Email или телефон</label>
+                        <input id="forget-email-input" type="text" class="form__it it" value="">
+                        <label for="forget-email-input" class="form__placeholder placeholder">Email или телефон</label>
                     </div>
 
                     <div class="form__field">

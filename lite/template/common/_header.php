@@ -40,6 +40,7 @@
 
                     <?= $page->render('common/userbar/_compare') ?>
                     <?= $page->render('common/userbar/_user') ?>
+                    <?= $page->blockAuth() ?>
 
                 </ul>
             </div>

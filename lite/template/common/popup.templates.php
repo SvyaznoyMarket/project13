@@ -44,18 +44,18 @@
 
         <form class="form" action="">
             <div class="form__field">
-                <input type="text" class="form__it it js-application-phone" name="" value="">
-                <label class="form__placeholder placeholder placeholder_str">Телефон</label>
+                <input id="slot-phone-input" type="text" class="form__it it js-application-phone" name="" value="">
+                <label for="slot-phone-input" class="form__placeholder placeholder placeholder_str">Телефон</label>
             </div>
 
             <div class="form__field">
-                <input type="text" class="form__it it js-application-email" name="" value="">
-                <label class="form__placeholder placeholder placeholder_str">Email</label>
+                <input id="slot-email-input" type="text" class="form__it it js-application-email" name="" value="">
+                <label for="slot-email-input" class="form__placeholder placeholder placeholder_str">Email</label>
             </div>
 
             <div class="form__field">
-                <input type="text" class="form__it it js-application-name" name="" value="">
-                <label class="form__placeholder placeholder">Имя</label>
+                <input id="slot-name-input" type="text" class="form__it it js-application-name" name="" value="">
+                <label for="slot-name-input" class="form__placeholder placeholder">Имя</label>
             </div>
 
             <div class="form__check-big">
