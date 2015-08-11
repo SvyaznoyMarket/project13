@@ -66,28 +66,20 @@
         &__i {
             width: 38px;
             height: 38px;
+            line-height: 38px;
             margin: 0 7px 0 0;
 
             cursor: pointer;
             text-align: center;
 
-            border: 1px solid transparent;
+            border-bottom: 3px solid transparent;
             background-color: #fff;
 
             .inline-block(middle);
             .transition(all .1s ease-out);
-            .rounded(3px);
-            &--act ,
+            &.active,
             &:hover {
-                border-color: #f99b1c;
-            }
-            &:after {
-                width: 0;
-                height: 100%;
-
-                content: '';
-
-                .inline-block(middle);
+                border-color: @orange-bright;
             }
         }
         &__img {
@@ -95,7 +87,6 @@
             max-height: 95%;
 
             .inline-block(middle);
-            .rounded(3px);
         }
         &__btn {
             position: absolute;

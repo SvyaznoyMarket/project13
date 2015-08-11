@@ -120,6 +120,8 @@
             padding: 0;
         }
         .goods__img {
+            line-height: 80px;
+
             height: auto;
             margin: 0;
             &-image {
@@ -131,9 +133,9 @@
     // грид спискa категорий
     &_categories {
         .goods__name {
-            .font-size(16);
-
             height: 43px;
+
+            .font-size(16);
         }
         .goods__img {
             line-height: 250px;
@@ -157,8 +159,6 @@
         .transition();
     }
     &__delete {
-        .font-size(18);
-
         position: absolute;
         z-index: 2;
         top: 0;
@@ -167,6 +167,8 @@
         display: block;
 
         color: @grey-light-2;
+
+        .font-size(18);
     }
     &__img {
         position: relative;
@@ -204,20 +206,20 @@
         }
     }
     &__price-old {
-        .font-face('GloberRegular');
-        .font-size(14);
-
         height: 16px;
 
         color: @grey-type;
+
+        .font-face('GloberRegular');
+        .font-size(14);
     }
     &__price-now {
         .font-size(18);
     }
     &__cat-count {
-        .font-face('GloberRegular');
-
         color: @grey-type;
+
+        .font-face('GloberRegular');
     }
     &__rating {
         height: 16px;
