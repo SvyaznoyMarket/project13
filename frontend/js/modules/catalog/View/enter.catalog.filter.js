@@ -37,6 +37,7 @@
              */
             CSS_CLASSES = {
                 DROPDOWN: 'js-category-v2-filter-dropBox',
+                DROPDOWN_OPENER: 'js-category-v2-filter-dropBox-opener',
                 DROPDOWN_OPEN: 'opn',
                 RANGE_SLIDER: 'js-category-filter-rangeSlider',
                 SLIDER: 'js-category-filter-rangeSlider-slider',
@@ -64,8 +65,8 @@
                 this.sliders.each(this.initSlider.bind(this));
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.DROPDOWN]      = 'toggleDropdown';
-                this.events['click .' + CSS_CLASSES.BRANDS_OPENER] = 'toggleBrands';
+                this.events['click .' + CSS_CLASSES.DROPDOWN_OPENER] = 'toggleDropdown';
+                this.events['click .' + CSS_CLASSES.BRANDS_OPENER]   = 'toggleBrands';
 
                 // Apply events
                 this.delegateEvents();
@@ -234,7 +235,22 @@
 
                     self           = this,
 
-                    percent, res, html, i;
+                    percent, res, html, i,
+
+                    setSliderValues = function() {
+                        var
+                            from = parseFloat(fromVal.val()),
+                            to   = parseFloat(toVal.val());
+
+                        from = ( from < config.min ) ? config.min : from;
+                        to   = ( to > config.max ) ? config.max : to;
+
+                        fromVal.val(from);
+                        toVal.val(to);
+
+                        sliderWrap.slider('values', 0, from);
+                        sliderWrap.slider('values', 1, to);
+                    };
 
                 sliderWrap.slider({
                     range: true,
@@ -255,6 +271,9 @@
                         self.filterChanged();
                     }
                 });
+
+                fromVal.change(setSliderValues);
+                toVal.change(setSliderValues);
 
                 if ( !tickWrap.length ) {
                     return;
@@ -291,7 +310,8 @@
              */
             toggleDropdown: function( event ) {
                 var
-                    currentDropdown = $(event.currentTarget),
+                    currentOpener   = $(event.currentTarget),
+                    currentDropdown = currentOpener.parents('.' + CSS_CLASSES.DROPDOWN),
                     dropdowns       = this.$el.find('.' + CSS_CLASSES.DROPDOWN),
                     isOpen          = currentDropdown.hasClass(CSS_CLASSES.DROPDOWN_OPEN);
 
