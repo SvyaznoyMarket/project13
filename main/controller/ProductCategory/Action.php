@@ -142,6 +142,7 @@ class Action {
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
+        if (\App::config()->lite['enabled']) $categoryClass = null;
 
         if ($categoryClass && ('default' !== $categoryClass)) {
             if ('jewel' == $categoryClass) {
