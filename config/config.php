@@ -334,7 +334,7 @@ $c->product['lowerPriceNotification'] = true;
 // jewel
 $c->product['itemsPerPageJewel']      = 24;
 $c->product['itemsPerRowJewel']       = 4;
-$c->product['pullRecommendation']     = true;
+$c->product['pullRecommendation']     = false;
 $c->product['pushRecommendation']     = true;
 $c->product['viewedEnabled']          = true;
 
@@ -399,7 +399,7 @@ $c->subscribe['cookieName'] = 'subscribed';
 $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {channelId:status}
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
 
-$c->mainMenu['recommendationsEnabled'] = true;
+$c->mainMenu['recommendationsEnabled'] = false;
 
 $c->newOrder = true;
 $c->order['cookieName'] = 'last_order';
