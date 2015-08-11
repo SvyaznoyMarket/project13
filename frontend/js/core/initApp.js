@@ -41,13 +41,15 @@
             App.compare            = new CompareCollection();
             App.favorite           = new FavoriteCollection();
 
-            window.addEventListener('load', function() {
+            function initEnterUser() {
                 modules.require(['enter.user'], function( model ) {
                     App.cart.updateCart(model);
                     App.compare.updateCompare(model);
                     App.favorite.updateFavorite(model);
                 });
-            });
+            }
+
+            document.readyState == 'complete' ? initEnterUser() : window.addEventListener('load', initEnterUser);
 
             /**
              * Главное View приложения
