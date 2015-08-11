@@ -235,7 +235,22 @@
 
                     self           = this,
 
-                    percent, res, html, i;
+                    percent, res, html, i,
+
+                    setSliderValues = function() {
+                        var
+                            from = parseFloat(fromVal.val()),
+                            to   = parseFloat(toVal.val());
+
+                        from = ( from < config.min ) ? config.min : from;
+                        to   = ( to > config.max ) ? config.max : to;
+
+                        fromVal.val(from);
+                        toVal.val(to);
+
+                        sliderWrap.slider('values', 0, from);
+                        sliderWrap.slider('values', 1, to);
+                    };
 
                 sliderWrap.slider({
                     range: true,
@@ -256,6 +271,9 @@
                         self.filterChanged();
                     }
                 });
+
+                fromVal.change(setSliderValues);
+                toVal.change(setSliderValues);
 
                 if ( !tickWrap.length ) {
                     return;
