@@ -183,7 +183,8 @@ return function(
                         <? endif; ?>
 
                         <? foreach ($order->products as $product): ?>
-                            <div class="order-item js-order-item">
+                            <div class="order-item js-order-item"
+                                 data-product="<?= json_encode(['id' => $product->id]) ?>">
                                 <a href="<?= $product->link ?>" class="order-item__img" target="_blank">
                                     <img class="image" src="<?= $product->getMainImageUrl('product_60') ?>" alt="<?= $helper->escape($product->name) ?>" />
                                 </a>
