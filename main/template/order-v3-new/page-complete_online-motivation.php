@@ -27,8 +27,6 @@ return function(
     $isOnlinePaymentChecked = in_array($order->getPaymentId(), [PaymentMethodEntity::PAYMENT_CARD_ONLINE, PaymentMethodEntity::PAYMENT_PAYPAL, PaymentMethodEntity::PAYMENT_PSB]);
     ?>
 
-    <?= $helper->render('order-v3-new/__head', ['step' => 3]) ?>
-
     <section class="orderCnt jsNewOnlineCompletePage"
              data-order-id="<?= $order->getId() ?>"
              data-order-number="<?= $order->getNumber() ?>"

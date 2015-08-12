@@ -21,9 +21,6 @@ return function(
     ];
 
 ?>
-
-<?= $helper->render('order-v3-new/__head', ['step' => 2]) ?>
-
 <section id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
     <h1 class="orderCnt_t">Самовывоз и доставка</h1>
 

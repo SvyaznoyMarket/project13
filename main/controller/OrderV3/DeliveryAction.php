@@ -40,7 +40,7 @@ class DeliveryAction extends OrderV3 {
 
                 $page = new \View\OrderV3\DeliveryPage();
                 $page->setParam('orderDelivery', $orderDeliveryModel);
-                $result['page'] = $page->show();
+                $result['page'] = $page->slotContent();
 
             } catch (\Curl\Exception $e) {
                 \App::exception()->remove($e);

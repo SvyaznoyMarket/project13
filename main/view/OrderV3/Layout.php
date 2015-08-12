@@ -5,6 +5,10 @@ namespace View\OrderV3;
 class Layout extends \View\DefaultLayout {
     protected $layout  = 'layout-orderV3';
 
+    public function slotOrderHead() {
+        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 1]);
+    }
+
     public function slotPartnerCounter()
     {
         if (!\App::config()->analytics['enabled']) return '';
