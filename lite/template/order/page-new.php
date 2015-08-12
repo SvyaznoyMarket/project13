@@ -1,7 +1,4 @@
 <div class="">
-
-	<?= $page->render('order/common/order-head', ['step' => 1]) ?>
-
     <section class="checkout jsOrderV3PageNew js-module-require" data-module="enter.order">
 
         <h1 class="checkout__title">Получатель</h1>

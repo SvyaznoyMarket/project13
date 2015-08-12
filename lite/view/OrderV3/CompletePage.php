@@ -78,6 +78,10 @@ class CompletePage extends \View\OrderV3\Layout
 
     }
 
+    public function blockOrderHead() {
+        return $this->render('order/common/order-head', ['step' => 3]);
+    }
+
     public function blockContent() {
         return \App::closureTemplating()->render('order/page-complete', $this->params + ['page' => $this]);
     }

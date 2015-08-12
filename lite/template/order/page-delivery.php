@@ -22,10 +22,7 @@ return function(
     ];
 
     ?>
-
-    <?= $page->render('order/common/order-head', ['step' => 2]) ?>
-
-    <section id="js-order-content" class="checkout jsOrderV3PageDelivery js-module-require" data-module="enter.order.step2">
+<section id="js-order-content" class="checkout jsOrderV3PageDelivery js-module-require" data-module="enter.order.step2">
         <h1 class="checkout__title">Самовывоз и доставка</h1>
 
         <div class="checkout-order-location">
