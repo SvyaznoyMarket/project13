@@ -185,9 +185,9 @@ class Entity {
         if (isset($data['num_reviews'])) $this->setNumReviews($data['num_reviews']);
         if (isset($data['is_upsale'])) $this->setIsUpsale($data['is_upsale']);
         if (isset($data['model']) && $data['model']) $this->setModel(new Model\Entity($data['model']));
-        if (isset($data['title'])) $this->setSeoTitle($data['title']);
-        if (isset($data['meta_keywords'])) $this->setSeoKeywords($data['meta_keywords']);
-        if (isset($data['meta_description'])) $this->setSeoDescription($data['meta_description']);
+        if (isset($data['title'])) $this->setSeoTitle($templateHelper->unescape($data['title']));
+        if (isset($data['meta_keywords'])) $this->setSeoKeywords($templateHelper->unescape($data['meta_keywords']));
+        if (isset($data['meta_description'])) $this->setSeoDescription($templateHelper->unescape($data['meta_description']));
 
         if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
             return new Kit\Entity($data);
