@@ -35,23 +35,24 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
 
             <?= $page->render('category/_breadcrumbs', ['category' => $category]) ?>
 
-            <ul class="categories-grid grid-3col">
+            <? if (count($category->getChild()) > 1) : ?>
+                <ul class="categories-grid grid-3col">
 
-                <? foreach ($category->getChild() as $childCategory) : ?>
+                    <? foreach ($category->getChild() as $childCategory) : ?>
+                        <li class="categories-grid__item grid-3col__item">
+                            <a href="<?= $childCategory->getLink() ?>" class="categories-grid__link">
+                                <span class="categories-grid__img">
+                                    <img src="<?= $childCategory->getImageUrl() ?>" alt="" class="image">
+                                </span>
 
-                    <li class="categories-grid__item grid-3col__item">
-                        <a href="<?= $childCategory->getLink() ?>" class="categories-grid__link">
-                            <span class="categories-grid__img">
-                                <img src="<?= $childCategory->getImageUrl() ?>" alt="" class="image">
-                            </span>
+                                <span class="categories-grid__text"><?= $childCategory->getName() ?></span>
+                            </a>
+                        </li>
+                    <? endforeach ?>
 
-                            <span class="categories-grid__text"><?= $childCategory->getName() ?></span>
-                        </a>
-                    </li>
+                </ul>
+            <? endif ?>
 
-                <? endforeach ?>
-
-            </ul>
         </div>
 
         <hr class="hr-orange">
