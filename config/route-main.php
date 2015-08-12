@@ -286,11 +286,6 @@ return [
         'action'  => ['Product\DeliveryAction', 'execute'],
         'method'  => ['POST'],
     ],
-    'product.stock' => [
-        'pattern' => '/product/{productPath}/stock',
-        'action'  => ['Product\StockAction', 'execute'],
-        'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
-    ],
     'product.comment' => [
         'pattern' => '/product/{productPath}/comments',
         'action'  => ['Product\CommentAction', 'execute'],
