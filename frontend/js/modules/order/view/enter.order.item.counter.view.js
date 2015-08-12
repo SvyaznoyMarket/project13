@@ -64,20 +64,44 @@
                 this.delegateEvents();
             },
 
+            /**
+             * События привязанные к текущему экземляру View
+             *
+             * @memberOf    module:enter.order.item.counter.view~OrderItemCounterView
+             * @type        {Object}
+             */
             events: {},
 
+            /**
+             * Показать каунтер
+             *
+             * @method      show
+             * @memberOf    module:enter.order.item.counter.view~OrderItemCounterView#
+             */
             show: function() {
                 this.$el.show();
 
                 return false;
             },
 
+            /**
+             * Скрыть каунтер
+             *
+             * @method      hide
+             * @memberOf    module:enter.order.item.counter.view~OrderItemCounterView#
+             */
             hide: function() {
                 this.$el.hide();
 
                 return false;
             },
 
+            /**
+             * Обработчик изменения в поле ввода
+             *
+             * @method      changeInput
+             * @memberOf    module:enter.order.item.counter.view~OrderItemCounterView#
+             */
             changeInput: function( ) {
                 var
                     val = parseInt(this.input.val(), 10);
@@ -86,6 +110,12 @@
                 this.input.val(this.quantity);
             },
 
+            /**
+             * Применить каунтер
+             *
+             * @method      changeInput
+             * @memberOf    module:enter.order.item.counter.view~OrderItemCounterView#
+             */
             applyCounter: function() {
                 console.info('module:enter.order.item.counter.view~OrderItemCounterView#applyCounter');
 
@@ -101,11 +131,27 @@
                 return false;
             },
 
+            /**
+             * Обработчик удаления продукта
+             *
+             * @method      render
+             * @memberOf    module:enter.order.item.counter.view~OrderItemCounterView#
+             *
+             * @todo        написать обработчик
+             */
             deleteProduct: function() {
                 console.info('module:enter.order.item.counter.view~OrderItemCounterView#deleteProduct');
                 return false;
             },
 
+            /**
+             * Отрисовка каунтера
+             *
+             * @method      render
+             * @memberOf    module:enter.order.item.counter.view~OrderItemCounterView#
+             *
+             * @listens     module:enter.ui.baseCounterr~BaseCounter#changeQuantity
+             */
             render: function( event ) {
                 console.info('module:enter.order.item.counter.view~OrderItemCounterView#render');
 

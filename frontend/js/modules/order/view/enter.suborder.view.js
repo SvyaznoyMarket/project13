@@ -41,7 +41,7 @@
             /**
              * @classdesc   Представление подзаказа
              * @memberOf    module:enter.suborder.view~
-             * @augments    module:BaseViewClass
+             * @augments    module:enter.BaseViewClass
              * @constructs  SubOrderView
              */
             initialize: function( options ) {
@@ -69,6 +69,12 @@
                 this.delegateEvents();
             },
 
+            /**
+             * События привязанные к текущему экземляру View
+             *
+             * @memberOf    module:enter.suborder.view~SubOrderView
+             * @type        {Object}
+             */
             events: {},
 
             /**
@@ -84,6 +90,14 @@
                 return false;
             },
 
+            /**
+             * Показывать форму для вводка купонов
+             *
+             * @method      showDiscount
+             * @memberOf    module:enter.suborder.view~SubOrderView#
+             *
+             * @todo        написать обработчик
+             */
             showDiscount: function() {
                 console.info('module:enter.suborder.view~SubOrderView#showDiscount');
                 return false;

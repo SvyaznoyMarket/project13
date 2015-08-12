@@ -14,13 +14,14 @@
         [
             'jQuery',
             'enter.BaseViewClass',
-            'enter.suborder.view'
+            'enter.suborder.view',
+            'jquery.replaceWithPush'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, SubOrderView ) {
+    function( provide, $, BaseViewClass, SubOrderView, jReplaceWithPush ) {
         'use strict';
 
         var
@@ -42,7 +43,7 @@
             /**
              * @classdesc   Представление второго шага оформления заказа
              * @memberOf    module:enter.order.step2.view~
-             * @augments    module:BaseViewClass
+             * @augments    module:enter.BaseViewClass
              * @constructs  OrderStep2View
              */
             initialize: function( options ) {
@@ -70,13 +71,19 @@
                 this.delegateEvents();
             },
 
+            /**
+             * События привязанные к текущему экземляру View
+             *
+             * @memberOf    module:enter.order.step2.view~OrderStep2View
+             * @type        {Object}
+             */
             events: {},
 
             /**
              * Объект загрузчика. Передается в опциях в AJAX вызовы.
              * Свойство loading изменяет ajax автоматически.
              *
-             * @memberOf    module:enter.order.step2.view~OrderStep2View#
+             * @memberOf    module:enter.order.step2.view~OrderStep2View
              * @type        {Object}
              */
             loader: {
@@ -146,11 +153,34 @@
              *
              * @method      render
              * @memberOf    module:enter.order.step2.view~OrderStep2View#
-             *
-             * @todo        написать обработчик
              */
             render: function( data ) {
+                var
+                    html = data.result.page,
+                    subView;
+
                 console.info('module:enter.order.step2.view~OrderStep2View#render');
+
+                // Destroy all subviews
+                for ( subView in this.subViews ) {
+                    if ( this.subViews.hasOwnProperty(subView) ) {
+                        if ( typeof this.subViews[subView].off === 'function' ) {
+                            this.subViews[subView].off();
+                        }
+
+                        if ( typeof this.subViews[subView].destroy === 'function' ) {
+                            this.subViews[subView].destroy();
+                        } else if ( typeof this.subViews[subView].remove === 'function' ) {
+                            this.subViews[subView].remove();
+                        }
+
+                        delete this.subViews[subView];
+                    }
+                }
+
+                this.$el.replaceWithPush(html);
+
+                this.initialize();
             }
         }));
     }
