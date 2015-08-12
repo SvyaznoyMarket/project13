@@ -12,7 +12,7 @@ return function(
     ?>
 
     <div class="order-summ__left">
-        <div class="order-disount__title jsShowDiscountForm" style="display: <?= $couponNumber !== null ? 'none' : 'block' ?>"><span class="dotted">Ввести код скидки</span></div>
+        <div class="order-disount__title js-show-discount" style="display: <?= $couponNumber !== null ? 'none' : 'block' ?>"><span class="dotted">Ввести код скидки</span></div>
     </div>
 
     <div class="order-summ__left order-disount" style="display: <?= $couponNumber === null ? 'none' : 'block' ?>">

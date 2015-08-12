@@ -2,7 +2,10 @@
  * @module      enter.order.view
  * @version     0.1
  *
+ * @requires    App
+ * @requires    Backbone
  * @requires    enter.BaseViewClass
+ * @requires    jquery.maskedinput
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
@@ -57,6 +60,8 @@
                 this.events['keyup input']  = 'validateForm';
                 this.events['submit form']  = 'formSubmit';
 
+                // Apply events
+                this.delegateEvents();
             },
 
             events: {},
