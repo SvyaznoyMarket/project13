@@ -78,7 +78,7 @@ class ShowAction {
             ,
             'hasVideo' => $product->hasVideo(),
             'has360'   => $product->has3d(),
-            'review'   => $reviewtAction ? $reviewtAction->execute($helper, $product) : null,
+//            'review'   => $reviewtAction ? $reviewtAction->execute($helper, $product) : null,
             'isBanner' => false,
             'hasKit'       => (bool)$product->getKit(),
             'isKitLocked'   => (bool)$product->getIsKitLocked(),
