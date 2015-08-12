@@ -51,18 +51,39 @@
 
                 suborders.each(function( index ) {
                     self.subViews['suborder_' + index] = new SubOrderView({
-                        el: $(this)
+                        el: $(this),
+                        orderView: self
                     });
                 });
 
                 // Setup events
                 this.events['click .' + CSS_CLASSES.CHANGE_REGION_BTN] = 'changeRegion';
 
+                this.listenTo(this, 'sendChanges', this.sendChanges);
+
                 // Apply events
                 this.delegateEvents();
             },
 
             events: {},
+
+            /**
+             * Отправка изменений на сервер
+             *
+             * @method      sendChanges
+             * @memberOf    module:enter.order.step2.view~OrderStep2View#
+             *
+             * @todo        написать обработчик
+             */
+            sendChanges: function( event ) {
+                var
+                    action = event.action,
+                    datat  = event.data;
+
+                console.groupCollapsed('module:enter.order.step2.view~OrderStep2View#sendChanges');
+                console.dir(event);
+                console.groupEnd();
+            },
 
             /**
              * Обработчик смены региона

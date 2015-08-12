@@ -45,8 +45,11 @@
             initialize: function( options ) {
                 console.info('module:enter.order.item.counter.view~OrderItemCounterView#initialize');
 
-                this.input    = this.$el.find('.' + CSS_CLASSES.VALUE);
-                this.quantity = parseInt(this.input.val(), 10);
+                this.input       = this.$el.find('.' + CSS_CLASSES.VALUE);
+                this.quantity    = parseInt(this.input.val(), 10);
+                this.orderView   = options.orderView;
+                this.blockName   = options.blockName;
+                this.productData = options.productData;
 
                 this.listenTo(this, 'changeQuantity', this.render.bind(this));
 
@@ -76,6 +79,16 @@
 
             applyCounter: function() {
                 console.info('module:enter.order.item.counter.view~OrderItemCounterView#applyCounter');
+
+                this.orderView.trigger('sendChanges', {
+                    action: 'changeProductQuantity',
+                    data: {
+                        block_name: this.blockName,
+                        id: productData.id,
+                        quantity: this.quantity
+                    }
+                });
+
                 return false;
             },
 

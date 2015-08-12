@@ -50,9 +50,14 @@
                     self  = this,
                     items = this.$el.find('.' + CSS_CLASSES.ITEM);
 
+                this.orderView = options.orderView;
+                this.blockName = this.$el.attr('data-block_name');
+
                 items.each(function( index ) {
                     self.subViews['suborder_' + index] = new OrderItemView({
-                        el: $(this)
+                        el: $(this),
+                        orderView: self.orderView,
+                        blockName: self.blockName
                     });
                 });
 
