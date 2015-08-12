@@ -37,6 +37,8 @@
             };
 
         provide(BaseViewClass.extend({
+            url: '/order/delivery',
+
             /**
              * @classdesc   Представление второго шага оформления заказа
              * @memberOf    module:enter.order.step2.view~
@@ -61,11 +63,33 @@
 
                 this.listenTo(this, 'sendChanges', this.sendChanges);
 
+                this.loader.hide = this.loader.hide.bind(this);
+                this.loader.show = this.loader.show.bind(this);
+
                 // Apply events
                 this.delegateEvents();
             },
 
             events: {},
+
+            /**
+             * Объект загрузчика. Передается в опциях в AJAX вызовы.
+             * Свойство loading изменяет ajax автоматически.
+             *
+             * @memberOf    module:enter.order.step2.view~OrderStep2View#
+             * @type        {Object}
+             */
+            loader: {
+                loading: false,
+
+                show: function() {
+                    console.info('module:enter.order.step2.view~OrderStep2View#show');
+                },
+
+                hide: function() {
+                    console.info('module:enter.order.step2.view~OrderStep2View#hide');
+                }
+            },
 
             /**
              * Отправка изменений на сервер
@@ -78,11 +102,29 @@
             sendChanges: function( event ) {
                 var
                     action = event.action,
-                    datat  = event.data;
+                    data   = event.data;
 
                 console.groupCollapsed('module:enter.order.step2.view~OrderStep2View#sendChanges');
                 console.dir(event);
                 console.groupEnd();
+
+                this.ajax({
+                    type: 'POST',
+                    data: {
+                        action: action,
+                        params: data
+                    },
+                    url: this.url,
+                    loader: this.loader,
+                    success: this.render.bind(this),
+                    error: function( jqXHR, textStatus, errorThrown ) {
+                        console.groupCollapsed('module:enter.order.step2.view~OrderStep2View#sendChanges: error');
+                        console.log(jqXHR);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                        console.groupEnd();
+                    }
+                });
             },
 
             /**
@@ -97,6 +139,18 @@
                 console.info('module:enter.order.step2.view~OrderStep2View#changeRegion');
 
                 return false;
+            },
+
+            /**
+             * Отрисовка оформления заказа
+             *
+             * @method      render
+             * @memberOf    module:enter.order.step2.view~OrderStep2View#
+             *
+             * @todo        написать обработчик
+             */
+            render: function( data ) {
+                console.info('module:enter.order.step2.view~OrderStep2View#render');
             }
         }));
     }
