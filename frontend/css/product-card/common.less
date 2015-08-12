@@ -219,26 +219,30 @@
     color: @grey-bright;
 
     .font-face('GloberRegular');
+    .clearfix();
     &__i {
         margin: 0 0 6px;
         &--name {
             float: left;
+            clear: both;
 
             width: 135px;
+            margin-right: 10px;
         }
         &--val {
-            padding-left: 140px;
+            float: left;
+
+            width: 165px;
         }
     }
     &__lk {
+        float: left;
+        clear: both;
+        .inline-block();
         margin-top: 5px;
-
-        text-decoration: none;
 
         color: @grey-bright;
         border-bottom: 1px dotted;
-
-        .inline-block();
         &:hover {
             text-decoration: none;
         }
@@ -471,7 +475,8 @@
 }
 .jewel {
     .best-price-popup .customInput-defcheck {
-        &:checked + .customLabel,&.mChecked {
+        &:checked + .customLabel ,
+        &.mChecked {
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQCAAAAADVWsuDAAAAdUlEQVR4AWVQtwEFIQi1fOMwjVO4jovcBHaXpqCl/jkgXk6vBF7CKff1hp7VMWveoMyu3w/KqHd1PqLeT+p4P0w0ArWOE/3IfRqEz3wTKYhWgL/neZKAkAheNuUIEIg/2+QeAFS6dxeCP+WRJOvk2uLa9PINA4yO5jmsmDGRAAAAAElFTkSuQmCC');
         }
     }
@@ -743,7 +748,8 @@
             display: block;
 
             padding: 3px 0 3px 10px;
-            &:hover,&.active {
+            &:hover ,
+            &.active {
                 text-decoration: none;
 
                 background-color: rgba(247, 171, 47, .2);
