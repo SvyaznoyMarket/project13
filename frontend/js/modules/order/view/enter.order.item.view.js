@@ -49,9 +49,16 @@
                 var
                     self = this;
 
+                this.orderView   = options.orderView;
+                this.blockName   = options.blockName;
+                this.productData = this.$el.data('product');
+
                 this.subViews = {
                     counter: new OrderItemCounterView({
-                        el: this.$el.find('.' + CSS_CLASSES.COUNTER)
+                        el: this.$el.find('.' + CSS_CLASSES.COUNTER),
+                        orderView: self.orderView,
+                        blockName: self.blockName,
+                        productData: this.productData
                     }),
 
                     showCounterBtn: this.$el.find('.' + CSS_CLASSES.SHOW_COUNTER_BTN)
