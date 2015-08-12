@@ -35,8 +35,9 @@
             </div>
 
             <div class="header__line header__line_bottom">
-                <div class="nav-section header__line-left" onclick="this.classList && this.classList.toggle('show'); return false">
-                    <a href="" class="nav-section__btn btn-primary">Каталог товаров</a>
+                <div class="nav-section header__line-left" >
+                    <a href="" class="nav-section__btn btn-primary"
+                       onclick="this.parentNode.classList && this.parentNode.classList.toggle('show'); return false">Каталог товаров</a>
                     <?= $page->blockNavigation() ?>
                 </div>
 
