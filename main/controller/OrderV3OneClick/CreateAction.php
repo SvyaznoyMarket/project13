@@ -128,6 +128,7 @@ class CreateAction {
             }
         }
 
+        $productsById = [];
         if ((bool)$createdOrders) {
             $this->session->set(\App::config()->order['sessionName'] ? : 'lastOrder', array_map(function(\Model\Order\Entity $createdOrder) use ($splitResult) {
                 return [
@@ -156,6 +157,12 @@ class CreateAction {
                         \App::exception()->remove($e);
                     }
                 );
+
+                \RepositoryManager::product()->prepareCollectionById(array_map(function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $order->getProduct()), null, function ($data) use (&$productsById) {
+                    foreach ($data as $productData) {
+                        $productsById[$productData['id']] = new \Model\Product\Entity($productData);
+                    }
+                });
             }
 
             $this->client->execute();
@@ -170,8 +177,10 @@ class CreateAction {
         $result = [
             'page' => \App::closureTemplating()->render('order-v3-1click/__complete', [
                 'orders'        => $createdOrders,
-                'ordersPayment' => $ordersPayment
+                'ordersPayment' => $ordersPayment,
+                'productsById'  => $productsById,
             ]),
+            'actionpay' => \App::partner()->getName() === \Partner\Counter\Actionpay::NAME ? (new \View\Partners\ActionPay('orderV3.complete', ['orders' => $createdOrders, 'products' => $productsById], false))->execute() : null,
             'orders' => [
                 [
                     'id' => $createdOrders[0]->getNumber(),

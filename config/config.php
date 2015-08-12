@@ -13,7 +13,6 @@ $c->dataDir = $c->appDir . '/data';
 $c->logDir = realpath($c->appDir . '/../logs');
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/lite/template';
-$c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
 
 // project Lite
 $c->lite['enabled'] = true;
@@ -266,6 +265,8 @@ $c->partners['Adblender']['enabled'] = true;
 
 $c->partners['Giftery']['enabled'] = true;
 $c->partners['Giftery']['lowestPrice'] = 500;
+
+$c->partners['facebook']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 

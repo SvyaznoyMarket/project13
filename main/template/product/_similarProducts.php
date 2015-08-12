@@ -6,6 +6,10 @@
  */
 ?>
 
+<?
+if (!isset($newVersion)) $newVersion = false;
+?>
+
 
 <? if ($products && is_array($products)): ?>
     <p class="<? if ($newVersion): ?>bottom-content__p<? else: ?>bTags<? endif ?>">

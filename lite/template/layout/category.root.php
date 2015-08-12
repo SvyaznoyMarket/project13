@@ -21,9 +21,9 @@ $category = $page->getParam('category');
     <!-- для внутренних страниц добавляется класс middle_transform -->
     <main class="content">
             <!-- баннер -->
-            <div class="banner-section">
-                <img src="http://content.adfox.ru/150713/adfox/176461/1346077.jpg" width="940" height="240" alt="" border="0">
-            </div>
+            <!--<div class="banner-section">
+                <img src="" width="940" height="240" alt="" border="0">
+            </div>-->
             <!--/ баннер -->
 
             <!-- категории товаров -->

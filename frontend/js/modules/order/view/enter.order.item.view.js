@@ -40,7 +40,7 @@
             /**
              * @classdesc   Представление товара в подзаказе
              * @memberOf    module:enter.order.item.view~
-             * @augments    module:BaseViewClass
+             * @augments    module:enter.BaseViewClass
              * @constructs  OrderItemView
              */
             initialize: function( options ) {
@@ -70,8 +70,20 @@
                 this.delegateEvents();
             },
 
+            /**
+             * События привязанные к текущему экземляру View
+             *
+             * @memberOf    module:enter.order.item.view~OrderItemView
+             * @type        {Object}
+             */
             events: {},
 
+            /**
+             * Показать каунтер
+             *
+             * @method      showCounter
+             * @memberOf    module:enter.order.item.view~OrderItemView#
+             */
             showCounter: function() {
                 this.subViews.showCounterBtn.hide();
                 this.subViews.counter.show();

@@ -46,11 +46,6 @@ return [
         'action'  => ['Search\RecommendedAction', 'execute'],
     ],
 
-    // инфо пользователя
-    'user.info' => [
-        'pattern' => '/ajax/user/info',
-        'action'  => ['User\InfoAction', 'execute'],
-    ],
     /*// Статус подписки пользователя, получить
     'user.subscribe.getStatus' => [
         'pattern' => '/ajax/subscribe/status/get',
@@ -285,11 +280,6 @@ return [
         'pattern' => '/ajax/product/delivery',
         'action'  => ['Product\DeliveryAction', 'execute'],
         'method'  => ['POST'],
-    ],
-    'product.stock' => [
-        'pattern' => '/product/{productPath}/stock',
-        'action'  => ['Product\StockAction', 'execute'],
-        'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
     ],
     'product.comment' => [
         'pattern' => '/product/{productPath}/comments',
@@ -679,20 +669,6 @@ return [
     'debug.session' => [
         'pattern' => '/debug/session',
         'action'  => ['DebugAction', 'session'],
-    ],
-
-    //cron
-    'cron-index' => [
-        'pattern' => '/cron',
-        'action'  => ['Cron\IndexAction', 'execute'],
-    ],
-    'cron-task' => [
-        'pattern' => '/cron/{task}',
-        'action'  => ['Cron\Action', 'execute'],
-    ],
-    'cron-task-links' => [
-        'pattern' => '/cron/{task}/links',
-        'action'  => ['Cron\LinksAction', 'execute'],
     ],
 
     // enterprize

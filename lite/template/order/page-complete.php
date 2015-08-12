@@ -15,10 +15,7 @@ return function(
     $page = new \View\OrderV3\CompletePage();
     array_map(function(\Model\PaymentMethod\PaymentEntity &$entity) {$entity->unsetSvyaznoyClub();}, $ordersPayment); // fix for SITE-5229 (see comments)
     ?>
-
-    <?= $page->render('order/common/order-head', ['step' => 3]) ?>
-
-    <section class="checkout jsOrderV3PageComplete">
+<section class="checkout jsOrderV3PageComplete">
         <h1 class="checkout__title">Ваши заказы</h1>
 
         <div class="checkout-complete">

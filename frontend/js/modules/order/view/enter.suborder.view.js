@@ -34,14 +34,15 @@
             CSS_CLASSES = {
                 ITEM: 'js-order-item',
                 CHANGE_DELIVERY: 'js-order-changePlace-link',
-                SHOW_DISCOUNT: 'js-show-discount'
+                SHOW_DISCOUNT: 'js-show-discount',
+                CHANGE_PAYMENT_METHOD: 'js-payment-method'
             };
 
         provide(BaseViewClass.extend({
             /**
              * @classdesc   Представление подзаказа
              * @memberOf    module:enter.suborder.view~
-             * @augments    module:BaseViewClass
+             * @augments    module:enter.BaseViewClass
              * @constructs  SubOrderView
              */
             initialize: function( options ) {
@@ -62,14 +63,50 @@
                 });
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.CHANGE_DELIVERY] = 'changeDeliveryPoint';
-                this.events['click .' + CSS_CLASSES.SHOW_DISCOUNT]   = 'showDiscount';
+                this.events['click .' + CSS_CLASSES.CHANGE_DELIVERY]       = 'changeDeliveryPoint';
+                this.events['click .' + CSS_CLASSES.SHOW_DISCOUNT]         = 'showDiscount';
+                this.events['click .' + CSS_CLASSES.CHANGE_PAYMENT_METHOD] = 'changePaymentMethod';
 
                 // Apply events
                 this.delegateEvents();
             },
 
+            /**
+             * События привязанные к текущему экземляру View
+             *
+             * @memberOf    module:enter.suborder.view~SubOrderView
+             * @type        {Object}
+             */
             events: {},
+
+            /**
+             * Обработчик смены метода оплаты
+             *
+             * @method      changePaymentMethod
+             * @memberOf    module:enter.suborder.view~SubOrderView#
+             *
+             * @todo        написать обработчик
+             */
+            changePaymentMethod: function( event ) {
+                var
+                    target = $(event.currentTarget),
+                    method = target.val(),
+
+                    data = {
+                        block_name: this.blockName
+                    };
+
+                console.info('module:enter.suborder.view~SubOrderView#changePaymentMethod');
+
+                data[method] = true;
+
+                this.orderView.trigger('sendChanges', {
+                    action: 'changeProductQuantity',
+                    data: data
+                });
+
+                return false;
+            },
 
             /**
              * Обработчик смены доставки
@@ -84,6 +121,14 @@
                 return false;
             },
 
+            /**
+             * Показывать форму для вводка купонов
+             *
+             * @method      showDiscount
+             * @memberOf    module:enter.suborder.view~SubOrderView#
+             *
+             * @todo        написать обработчик
+             */
             showDiscount: function() {
                 console.info('module:enter.suborder.view~SubOrderView#showDiscount');
                 return false;

@@ -225,11 +225,12 @@ class Repository {
     }
 
     public function prepareIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null, $done, $fail = null) {
+        $client = \App::searchClient();
 
-        $this->client->addQuery('listing/list',
+        $client->addQuery('v2/listing/list',
             [
                 'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-                'filter' => [
+                'filter'    => [
                     'filters' => $filter,
                     'sort'    => $sort,
                     'offset'  => $offset,
@@ -252,10 +253,10 @@ class Repository {
      */
     public function getIdsByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
 
-        $client = clone $this->client;
+        $client = \App::searchClient();
 
         $response = [];
-        $client->addQuery('listing/list',
+        $client->addQuery('v2/listing/list',
             [
                 'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
                 'filter' => [

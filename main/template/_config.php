@@ -28,7 +28,6 @@ $routerRules = \App::router()->getRules();
 $config = array_merge([
     'adfoxEnabled'     => $appConfig->adFox['enabled'],
     'jsonLog'               => $appConfig->jsonLog['enabled'],
-    'userUrl'               => $router->generate('user.info'),
     'routeUrl'              => $router->generate('route'),
     'f1Certificate'         => $appConfig->f1Certificate['enabled'],
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],

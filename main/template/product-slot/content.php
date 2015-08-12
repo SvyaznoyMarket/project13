@@ -65,7 +65,7 @@ $buySender2 = $request->get('sender2');
             <? endif ?>
         </div>
 
-        <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
+        <?= $helper->render('product/__photo', ['product' => $product, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
     </div>
 
     <div class="product-card__section-right">

@@ -12,6 +12,7 @@
  * @var $relatedCategories      array
  * @var $categoryConfigById     array
  * @var $slideData              array
+ * @var $slice                  \Model\Slice\Entity
  */
 ?>
 
@@ -35,23 +36,29 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
 
             <?= $page->render('category/_breadcrumbs', ['category' => $category]) ?>
 
-            <ul class="categories-grid grid-3col">
+            <!-- Breadcrumbs -->
+            <? if (isset($slice)) : ?>
+                <ul class="bread-crumbs"><li class="bread-crumbs__item"><?= $slice->getName() ?></li></ul>
+            <? endif ?>
 
-                <? foreach ($category->getChild() as $childCategory) : ?>
+            <? if (count($category->getChild()) > 1) : ?>
+                <ul class="categories-grid grid-3col">
 
-                    <li class="categories-grid__item grid-3col__item">
-                        <a href="<?= $childCategory->getLink() ?>" class="categories-grid__link">
-                            <span class="categories-grid__img">
-                                <img src="<?= $childCategory->getImageUrl() ?>" alt="" class="image">
-                            </span>
+                    <? foreach ($category->getChild() as $childCategory) : ?>
+                        <li class="categories-grid__item grid-3col__item">
+                            <a href="<?= $childCategory->getLink() ?>" class="categories-grid__link">
+                                <span class="categories-grid__img">
+                                    <img src="<?= $childCategory->getImageUrl() ?>" alt="" class="image">
+                                </span>
 
-                            <span class="categories-grid__text"><?= $childCategory->getName() ?></span>
-                        </a>
-                    </li>
+                                <span class="categories-grid__text"><?= $childCategory->getName() ?></span>
+                            </a>
+                        </li>
+                    <? endforeach ?>
 
-                <? endforeach ?>
+                </ul>
+            <? endif ?>
 
-            </ul>
         </div>
 
         <hr class="hr-orange">

@@ -14,13 +14,14 @@
         [
             'jQuery',
             'enter.BaseViewClass',
-            'enter.suborder.view'
+            'enter.suborder.view',
+            'jquery.replaceWithPush'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, SubOrderView ) {
+    function( provide, $, BaseViewClass, SubOrderView, jReplaceWithPush ) {
         'use strict';
 
         var
@@ -37,10 +38,12 @@
             };
 
         provide(BaseViewClass.extend({
+            url: '/order/delivery',
+
             /**
              * @classdesc   Представление второго шага оформления заказа
              * @memberOf    module:enter.order.step2.view~
-             * @augments    module:BaseViewClass
+             * @augments    module:enter.BaseViewClass
              * @constructs  OrderStep2View
              */
             initialize: function( options ) {
@@ -61,11 +64,39 @@
 
                 this.listenTo(this, 'sendChanges', this.sendChanges);
 
+                this.loader.hide = this.loader.hide.bind(this);
+                this.loader.show = this.loader.show.bind(this);
+
                 // Apply events
                 this.delegateEvents();
             },
 
+            /**
+             * События привязанные к текущему экземляру View
+             *
+             * @memberOf    module:enter.order.step2.view~OrderStep2View
+             * @type        {Object}
+             */
             events: {},
+
+            /**
+             * Объект загрузчика. Передается в опциях в AJAX вызовы.
+             * Свойство loading изменяет ajax автоматически.
+             *
+             * @memberOf    module:enter.order.step2.view~OrderStep2View
+             * @type        {Object}
+             */
+            loader: {
+                loading: false,
+
+                show: function() {
+                    console.info('module:enter.order.step2.view~OrderStep2View#show');
+                },
+
+                hide: function() {
+                    console.info('module:enter.order.step2.view~OrderStep2View#hide');
+                }
+            },
 
             /**
              * Отправка изменений на сервер
@@ -78,11 +109,29 @@
             sendChanges: function( event ) {
                 var
                     action = event.action,
-                    datat  = event.data;
+                    data   = event.data;
 
                 console.groupCollapsed('module:enter.order.step2.view~OrderStep2View#sendChanges');
                 console.dir(event);
                 console.groupEnd();
+
+                this.ajax({
+                    type: 'POST',
+                    data: {
+                        action: action,
+                        params: data
+                    },
+                    url: this.url,
+                    loader: this.loader,
+                    success: this.render.bind(this),
+                    error: function( jqXHR, textStatus, errorThrown ) {
+                        console.groupCollapsed('module:enter.order.step2.view~OrderStep2View#sendChanges: error');
+                        console.log(jqXHR);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                        console.groupEnd();
+                    }
+                });
             },
 
             /**
@@ -97,6 +146,41 @@
                 console.info('module:enter.order.step2.view~OrderStep2View#changeRegion');
 
                 return false;
+            },
+
+            /**
+             * Отрисовка оформления заказа
+             *
+             * @method      render
+             * @memberOf    module:enter.order.step2.view~OrderStep2View#
+             */
+            render: function( data ) {
+                var
+                    html = data.result.page,
+                    subView;
+
+                console.info('module:enter.order.step2.view~OrderStep2View#render');
+
+                // Destroy all subviews
+                for ( subView in this.subViews ) {
+                    if ( this.subViews.hasOwnProperty(subView) ) {
+                        if ( typeof this.subViews[subView].off === 'function' ) {
+                            this.subViews[subView].off();
+                        }
+
+                        if ( typeof this.subViews[subView].destroy === 'function' ) {
+                            this.subViews[subView].destroy();
+                        } else if ( typeof this.subViews[subView].remove === 'function' ) {
+                            this.subViews[subView].remove();
+                        }
+
+                        delete this.subViews[subView];
+                    }
+                }
+
+                this.$el.replaceWithPush(html);
+
+                this.initialize();
             }
         }));
     }

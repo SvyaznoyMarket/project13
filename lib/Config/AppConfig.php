@@ -63,8 +63,6 @@ class AppConfig {
      * @hidden
      */
     public $templateDir;
-    /** @var string */
-    public $cmsDir;
     /**
      * @var string
      * @hidden

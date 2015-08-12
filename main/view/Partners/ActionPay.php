@@ -15,6 +15,7 @@ class ActionPay {
     private $params;
     private $user;
     private $cart;
+    private $returnBasketProducts;
 
     private $sendData = [];
 
@@ -22,12 +23,13 @@ class ActionPay {
      * @param   string    $rName
      * @param   array     $params
      */
-    public function __construct($rName, $params)
+    public function __construct($rName, $params, $returnBasketProducts = true)
     {
         $this->routeName = $rName;
         $this->params = $params;
         $this->user = \App::user();
         $this->cart = $this->user->getCart();
+        $this->returnBasketProducts = $returnBasketProducts;
 
         $this->sendData['pageType'] = 0;
     }
@@ -93,6 +95,10 @@ class ActionPay {
      * @return bool
      */
     private function basketInfo() {
+        if (!$this->returnBasketProducts) {
+            return;
+        }
+
         $this->sendData['basketProducts'] = [];
         foreach ((array)$this->cart->getProductData() as $product) {
             $this->sendData['basketProducts'][] = array(

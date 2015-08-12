@@ -85,7 +85,7 @@ class Cart {
         } else {
             $item = array_merge($data['product'][$product->getId()], $item);
         }
-        $item += $params;
+        $item = array_merge($item, $params);
 
         // SITE-5022
         if ($moveProductToUp) {

@@ -12,6 +12,7 @@
 <body>
 
 <div class="wrapper">
+    <?= $page->blockOrderHead() ?>
     <?= $page->blockContent() ?>
 </div>
 
