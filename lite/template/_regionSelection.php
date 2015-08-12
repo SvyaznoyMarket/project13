@@ -27,7 +27,8 @@ $currentRegion = $user->getRegion();
 
         <form class="form form-region search-bar js-region-change-form" action="/region/change/" method="get">
             <i class="search-bar__icon i-controls i-controls--search"></i>
-            <input id="jscity" type="text" class="form-region__it search-bar__it it" placeholder="Найти свой регион">
+            <i class="search-bar__icon-clear icon-clear js-region-change-form-clear"></i>
+            <input id="jscity" type="text" class="form-region__it search-bar__it it js-region-change-form-input" placeholder="Найти свой регион">
             <button class="form-region__btn btn-primary btn-primary_normal">Сохранить</button>
 
             <!-- саджест поиска региона -->

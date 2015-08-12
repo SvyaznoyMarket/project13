@@ -2,9 +2,10 @@
     position: relative;
     z-index: 110;
 
+    margin: 0 0 10px;
+
     border-bottom: 3px solid @orange-bright;
     background: @white;
-    margin: 0 0 10px;
     .wrapper {
         position: relative;
     }
@@ -21,11 +22,12 @@
         }
     }
     &__side {
+        position: relative;
+
         width: 95px;
         min-width: 95px;
         height: 85px;
         padding: 0 10px;
-        position: relative;
 
         text-align: center;
         vertical-align: middle;
@@ -153,13 +155,13 @@
 .logotype {
     position: absolute;
     top: 27px;
+    right: 0;
+    left: 0;
 
     display: block;
 
     width: 75px;
     height: 90px;
-    left: 0;
-    right: 0;
     margin: auto;
 
     background: url('@{base-url}/logo.png') no-repeat 0 0;
@@ -200,6 +202,17 @@
     &__it {
         width: 380px;
         padding-left: 40px;
+    }
+    &__icon-clear {
+        position: absolute;
+        top: 6px;
+        left: 495px;
+
+        cursor: pointer;
+
+        color: @grey-light;
+
+        .font-size(18);
     }
 }
 

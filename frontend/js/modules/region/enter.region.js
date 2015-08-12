@@ -60,6 +60,10 @@
                 $slider.slick('reinit'); // потому что слайдер изначально не может выставить правильные css-значения для скрытого div-а
             });
 
+            $('.js-region-change-form-clear').on('click', function(){
+                $('.js-region-change-form-input').val('');
+            });
+
             // Автокомплит
             $popup.find('#jscity').on('focus', function(){
                 var $input = $(this),

@@ -30,7 +30,8 @@
     visibility: hidden;
 
     height: 0;
-    margin: 0 15px;
+    margin: 0 -10px;
+    padding: 0 25px;
 
     .opacity(0);
     .transition();
@@ -42,17 +43,15 @@
         .opacity(1);
     }
     .slider-section__btn_prev {
-        //left: -36px;
+        left: -10px;
     }
     .slider-section__btn_next {
-        //right: -36px;
+        right: -10px;
     }
 }
 
 .region-list {
-    line-height: 1.4;
-
-    padding: 20px 0;
+    padding: 20px 0 0;
 }
 
 .region-suggest {
@@ -84,11 +83,12 @@
         &__link {
             font-size: 1.3333em;
             font-weight: 300;
-            cursor: pointer;
 
             display: block;
 
             padding: 9px 40px;
+
+            cursor: pointer;
             &:hover {
                 background: @orange-light-4;
             }
