@@ -2089,7 +2089,7 @@ $(function() {
 					var
 						$el = $(e.target),
 						data = $el.serializeArray()
-						;
+                    ;
 
 					$.post($el.attr('action'), data).done(function(response) {
 						function getFieldValue(fieldName) {
