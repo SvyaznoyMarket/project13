@@ -204,9 +204,9 @@ class Entity {
         if (array_key_exists('is_primary_line', $data)) $this->setIsPrimaryLine($data['is_primary_line']);
         if (array_key_exists('model_id', $data)) $this->setModelId($data['model_id']);
         if (array_key_exists('score', $data)) $this->setScore($data['score']);
-        if (isset($data['name'])) $this->setName(isset($data['ui']) ? $templateHelper->unescape($data['name']) : $data['name']); // Ядро отдаёт строку, обработанную htmlspecialchars; scms - нет; редакция в 1С не использует HTML сущности и теги в данном поле
-        if (array_key_exists('name_web', $data)) $this->setWebName(isset($data['ui']) ? $templateHelper->unescape($data['name_web']) : $data['name_web']); // Ядро отдаёт строку, обработанную htmlspecialchars; scms - нет; редакция в 1С не использует HTML сущности и теги в данном поле
-        if (array_key_exists('prefix', $data)) $this->setPrefix(isset($data['ui']) ? $templateHelper->unescape($data['prefix']) : $data['prefix']); // Ядро отдаёт строку, обработанную htmlspecialchars; scms - нет; редакция в 1С не использует HTML сущности и теги в данном поле
+        if (isset($data['name'])) $this->setName($templateHelper->unescape($data['name'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
+        if (array_key_exists('name_web', $data)) $this->setWebName($templateHelper->unescape($data['name_web'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
+        if (array_key_exists('prefix', $data)) $this->setPrefix($templateHelper->unescape($data['prefix'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
         if (array_key_exists('tagline', $data)) $this->setTagline($data['tagline']);
         if (array_key_exists('announce', $data)) $this->setAnnounce($data['announce']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
