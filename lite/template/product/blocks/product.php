@@ -147,9 +147,11 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
                     </a>
                 </li>
 
-                <li class="product-card-tools__i product-card-tools__i--wish">
-                    <?= $helper->render('product/__favoriteButton', ['product' => $product, 'favoriteProduct' => isset($favoriteProductsByUi[$product->getUi()]) ? $favoriteProductsByUi[$product->getUi()] : null]) ?>
-                </li>
+                <? if (false) : ?>
+                    <li class="product-card-tools__i product-card-tools__i--wish">
+                        <?= $helper->render('product/__favoriteButton', ['product' => $product, 'favoriteProduct' => isset($favoriteProductsByUi[$product->getUi()]) ? $favoriteProductsByUi[$product->getUi()] : null]) ?>
+                    </li>
+                <? endif ?>
             </ul>
             <!--/ сравнить, добавить в виш лист -->
 
