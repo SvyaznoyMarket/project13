@@ -45,6 +45,8 @@ class Entity extends BasicEntity {
     protected $child = [];
 
     public function __construct(array $data = []) {
+        $templateHelper = new \Helper\TemplateHelper();
+        
         $data['price_change_trigger_enabled'] = true;
         $data['price_change_percent_trigger'] = 90;
 
@@ -79,9 +81,9 @@ class Entity extends BasicEntity {
         if (isset($data['product_view_id'])) $this->setProductView($data['product_view_id']);
         if (isset($data['level'])) $this->setLevel($data['level']);
 
-        if (isset($data['title'])) $this->setSeoTitle($data['title']);
-        if (isset($data['meta_keywords'])) $this->setSeoKeywords($data['meta_keywords']);
-        if (isset($data['meta_description'])) $this->setSeoDescription($data['meta_description']);
+        if (isset($data['title'])) $this->setSeoTitle($templateHelper->unescape($data['title']));
+        if (isset($data['meta_keywords'])) $this->setSeoKeywords($templateHelper->unescape($data['meta_keywords']));
+        if (isset($data['meta_description'])) $this->setSeoDescription($templateHelper->unescape($data['meta_description']));
         if (isset($data['content'])) $this->setSeoContent($data['content']);
 
         if (isset($data['property']['seo']['hotlinks'])) {
