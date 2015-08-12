@@ -202,8 +202,8 @@
                         });
                     });
 
-                    rowContainers.css('z-index', '110');
-                    columnContainers.css('z-index', '120');
+                    rowContainers.css('z-index', '');
+                    columnContainers.css('z-index', '');
                     sameContainers.css('z-index', '130');
 
                     function updateSize(containers) {
