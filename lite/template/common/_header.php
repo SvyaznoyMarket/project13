@@ -35,7 +35,7 @@
             </div>
 
             <div class="header__line header__line_bottom">
-                <div class="nav-section header__line-left">
+                <div class="nav-section header__line-left" onclick="this.classList && this.classList.toggle('show'); return false">
                     <a href="" class="nav-section__btn btn-primary">Каталог товаров</a>
                     <?= $page->blockNavigation() ?>
                 </div>
@@ -56,4 +56,3 @@
 </div>
 
 <?= $page->blockFixedUserbar() ?>
-
