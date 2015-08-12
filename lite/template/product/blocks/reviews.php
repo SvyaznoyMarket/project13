@@ -11,8 +11,14 @@
 <div class="reviews">
     <div class="reviews__l jsReviewsList">
         <? if ($reviewsData['num_reviews'] == 0) : ?>
-            <span class="reviews__msg">Пока нет отзывов.</span>
-            <a href="" class="btn-normal jsReviewAdd">+ Добавить отзыв</a>
+            <div class="reviews-empty">
+                <div class="reviews-empty__left">
+                    <div class="reviews-empty__title">Пока нет отзывов</div>
+                    <div class="reviews-empty__text">Оставьте отзыв первым</div>
+                </div>
+
+                <a href="" class="reviews-empty__btn btn-normal btn-normal_normal jsReviewAdd">Оставить отзыв</a>
+            </div>
         <? else : ?>
             <? foreach ($reviews as $key => $review) : ?>
                 <?= $helper->render('product/blocks/reviews.single', ['review' => $review, 'hidden' => $key > 1]) ?>
