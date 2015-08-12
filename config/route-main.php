@@ -46,11 +46,6 @@ return [
         'action'  => ['Search\RecommendedAction', 'execute'],
     ],
 
-    // инфо пользователя
-    'user.info' => [
-        'pattern' => '/ajax/user/info',
-        'action'  => ['User\InfoAction', 'execute'],
-    ],
     /*// Статус подписки пользователя, получить
     'user.subscribe.getStatus' => [
         'pattern' => '/ajax/subscribe/status/get',
