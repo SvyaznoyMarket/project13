@@ -13,19 +13,9 @@
 		<?= $page->blockHeader() ?>
 
 		<div class="wrapper">
-		    <div class="middle middle_transform">
-		        <div class="container">
-		            <main class="content">
-		                <div class="content__inner">
-						    <?= $page->blockContent() ?>
-						</div>
-				   </main>
-		    	</div>
-
-				<aside class="left-bar">
-			        <?= $page->blockNavigation() ?>
-			    </aside>
-			</div>
+            <main class="content">
+				    <?= $page->blockContent() ?>
+		   </main>
 		</div>
 
 		<hr class="hr-orange">
