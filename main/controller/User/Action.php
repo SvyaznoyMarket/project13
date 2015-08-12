@@ -4,6 +4,7 @@ namespace Controller\User;
 
 use EnterApplication\CurlTrait;
 use Session\AbTest\ABHelperTrait;
+use \Model\Session\FavouriteProduct;
 use Controller\Enterprize\ConfirmAction;
 use EnterQuery as Query;
 use \Model\Product\Entity as Product;
