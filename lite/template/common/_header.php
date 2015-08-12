@@ -12,7 +12,9 @@
 
         <div class="header__center table-cell">
             <div class="header__line header__line_top">
-                <a href="" class="location dotted js-popup-show jsRegionSelection" data-popup="region"><?= \App::user()->getRegion()->getName() ?></a>
+                <div class="header__line-left">
+                    <a href="" class="location dotted js-popup-show jsRegionSelection" data-popup="region"><?= \App::user()->getRegion()->getName() ?></a>
+                </div>
 
                 <ul class="header-shop-info">
                     <li class="header-shop-info__item"><a href="" class="header-shop-info__link underline">Магазины и самовывоз</a></li>
@@ -33,15 +35,17 @@
             </div>
 
             <div class="header__line header__line_bottom">
+                <div class="nav-section header__line-left" onclick="this.classList && this.classList.toggle('show'); return false">
+                    <a href="" class="nav-section__btn btn-primary">Каталог товаров</a>
+                    <?= $page->blockNavigation() ?>
+                </div>
 
                 <?= $page->render('common/_search') ?>
 
                 <ul class="user-controls">
-
                     <?= $page->render('common/userbar/_compare') ?>
                     <?= $page->render('common/userbar/_user') ?>
                     <?= $page->blockAuth() ?>
-
                 </ul>
             </div>
         </div>
@@ -52,4 +56,3 @@
 </div>
 
 <?= $page->blockFixedUserbar() ?>
-

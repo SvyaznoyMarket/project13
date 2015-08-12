@@ -1,13 +1,20 @@
 .site-menu {
-    position: relative;
+    position: absolute;
     z-index: 100;
+    top: 48px;
 
-    background: @orange-light-4;
+    display: none;
 
+    min-width: 200px;
+    min-height: 100%;
+    padding: 10px 15px;
+
+    border: 3px solid @orange-bright;
+    border-top: 0;
+    border-bottom: 0;
+    background: @white;
     &__item {
         margin: 0;
-
-        border-left: 3px solid transparent;
         &.has-child {
             &:hover {
                 .site-menu-sub {
@@ -19,21 +26,20 @@
             }
         }
         &:hover {
-            border-color: @orange-bright;
-            background: @orange-light-4;
             .site-menu__link {
                 color: @orange-bright;
             }
         }
     }
     &__link {
-        .font-size(14);
-
         position: relative;
+        z-index: 100;
 
         display: block;
 
         padding: 6px 0;
+
+        .font-size(14);
     }
     &__icon {
         width: 61px;
@@ -43,10 +49,11 @@
         .inline-block(middle);
         &_char {
             font-family: 'EnterIcon';
-            .font-size(45.6);
             line-height: .35;
 
             height: 31px;
+
+            .font-size(45.6);
         }
     }
     &__text {
@@ -56,38 +63,30 @@
         max-width: 31px;
         max-height: 31px;
     }
-    &:hover {
-        & + .nav-fader {
-            z-index: 99;
+    &:after {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
 
-            .opacity(.75);
-        }
+        height: 3px;
+
+        content: '';
+
+        background: @orange-bright;
     }
-}
-
-.nav-fader {
-    position: fixed;
-    z-index: -1;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    background: @white;
-
-    .opacity(0);
-    .transition(all, .1s, ease-out);
 }
 
 .menu-hide {
     position: absolute;
     top: 0;
+    left: -3px;
 
     visibility: hidden;
 
     width: 260px;
     min-height: 100%;
-    padding: 7px 0 0;
+    padding: 10px 0 10px;
 
     transition-delay: 110ms;
     transition-property: visibility;
@@ -95,16 +94,22 @@
 
 .site-menu-sub {
     z-index: 99;
-    left: 224px;
+    left: -3px;
 
-    border-right: 1px solid @grey-light-3;
-    border-left: 1px solid @grey-light-3;
+    width: 454px;
+    padding-left: 194px;
+
+    border: 3px solid @orange-bright;
+    border-top: 0;
+    border-bottom: 0;
     background: @white;
     &__item {
         margin: 0;
         padding: 0;
         &.has-child {
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAALCAQAAADyruQgAAAAUklEQVQIW2NoaeyQYwCBVueW9gYWMLOlqiW4gQnIaBNtndCgBZF2bauDSFq1gBjdYq0tTaYMDSwtNR2+DIwMbQGtlQ1sID3preJghauY/zOCaAB7UxaND3hqvAAAAABJRU5ErkJggg==') no-repeat 96% 50%;
+            .site-menu-sub__link {
+                background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAALCAQAAADyruQgAAAAUklEQVQIW2NoaeyQYwCBVueW9gYWMLOlqiW4gQnIaBNtndCgBZF2bauDSFq1gBjdYq0tTaYMDSwtNR2+DIwMbQGtlQ1sID3preJghauY/zOCaAB7UxaND3hqvAAAAABJRU5ErkJggg==') no-repeat 96% 50%;
+            }
         }
         &:hover {
             background-color: @orange-light-4;
@@ -132,18 +137,50 @@
         }
     }
     &__link {
-        .font-size(14);
+        position: relative;
+        z-index: 100;
 
         display: block;
 
         padding: 5px 20px 5px 20px;
+
+        .font-size(14);
+    }
+    &:after {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        height: 3px;
+
+        content: '';
+
+        background: @orange-bright;
+    }
+    &:before {
+        position: absolute;
+        top: 0;
+        bottom: 3px;
+        left: 194px;
+
+        width: 1px;
+
+        content: '';
+
+        background: @grey-light-3;
+        z-index: 100;
     }
 }
 
 .site-menu-2sub {
-    left: 258px;
+    z-index: 98;
+    left: -3px;
 
-    border: 1px solid @grey-light-3;
+    width: 711px;
+    padding-left: 448px;
+
+    border: 3px solid @orange-bright;
     border-top: none;
     background: @white;
     &__item {
@@ -157,15 +194,29 @@
         }
     }
     &__link {
-        .font-size(14);
-
         display: block;
 
         padding: 5px 10px 5px 20px;
+
+        .font-size(14);
+    }
+    &:before {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 448px;
+
+        width: 1px;
+
+        content: '';
+
+        background: @grey-light-3;
+        z-index: 103;
     }
 }
 
 .menu-wow {
-    text-align: center;
     margin-top: 15px;
+
+    text-align: center;
 }

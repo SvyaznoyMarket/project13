@@ -12,29 +12,26 @@
     <div class="reviews__l jsReviewsList">
         <? if ($reviewsData['num_reviews'] == 0) : ?>
             <span class="reviews__msg">Пока нет отзывов.</span>
-            <a href="" class="btn-normal btn-normal_middle jsReviewAdd">+ Добавить отзыв</a>
+            <a href="" class="btn-normal jsReviewAdd">+ Добавить отзыв</a>
         <? else : ?>
             <? foreach ($reviews as $key => $review) : ?>
                 <?= $helper->render('product/blocks/reviews.single', ['review' => $review, 'hidden' => $key > 1]) ?>
             <? endforeach ?>
         <? endif ?>
+
+        <? if ($reviewsData['num_reviews'] > 2) : ?>
+            <a href="" class="reviews-more jsShowMoreReviews" data-ui="<?= $product->getUi() ?>" data-total-num="<?= $reviewsData['num_reviews'] ?>"><span class="reviews-more__inn">Показать больше отзывов</span></a>
+        <? endif ?>
     </div>
 
     <div class="reviews__r">
-
-
         <? if ($reviewsData['num_reviews'] > 0) : ?>
-            <a href="" class="btn-normal btn-normal_middle jsReviewAdd">+ Добавить отзыв</a>
+            <a href="" class="btn-normal jsReviewAdd">+ Добавить отзыв</a>
             <span class="reviews-percentage__tl">Всего <?= $helper->numberChoiceWithCount($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span>
             <?= $helper->render('product/blocks/reviews.rating', ['scores' => (array)$reviewsData['num_users_by_score']]) ?>
         <? endif ?>
-
     </div>
 </div>
-
-<? if ($reviewsData['num_reviews'] > 2) : ?>
-    <a href="" class="btn-normal btn-normal_middle jsShowMoreReviews" data-ui="<?= $product->getUi() ?>" data-total-num="<?= $reviewsData['num_reviews'] ?>">Показать больше отзывов</a>
-<? endif ?>
 
 <!-- попап добавления отзыва -->
 <div class="popup popup--add-review jsReviewForm2" style="display: none">

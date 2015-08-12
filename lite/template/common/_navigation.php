@@ -42,15 +42,7 @@ foreach ($menu as $menu1) {
         data-recommend-url="<?= $menu1->id && !empty($recommendUrlsByMenuId[$menu1->id]) ? $recommendUrlsByMenuId[$menu1->id] : null ?>">
 
         <a href="<?= $menu1->link ?>" class="site-menu__link">
-        <? if ($menu1->char) : ?>
-            <span class="site-menu__icon site-menu__icon_char"><?= $menu1->char ?></span>
             <span class="site-menu__text"><?= $menu1->name ?></span>
-        <? else : ?>
-            <span class="site-menu__icon site-menu__icon_img">
-                <img src="<?= $menu1->image ?>" alt="<?= $menu1->name ?>" class="site-menu__img">
-            </span>
-            <span class="site-menu__text"><?= $menu1->name ?></span>
-        <? endif ?>
         </a>
 
         <? if (!empty($menu1->children)) : ?>

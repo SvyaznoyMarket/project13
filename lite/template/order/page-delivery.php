@@ -256,7 +256,7 @@ return function(
 
                         <div class="order-summ">
 
-                            <?= $helper->render('order/_discount', [ 'order' => $order ]) ?>
+                            <? $helper->render('order/_discount', [ 'order' => $order ]) ?>
 
                             <div class="order-summ__right">
                                 <span class="order-summ__title"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price).' <span class="rubl">p</span>' ?></span>
