@@ -72,7 +72,8 @@ return function (
                                 <!-- /ko -->
                                 <div class="goods__price-now"><span data-bind="html: price"></span> <span class="rubl-css">P</span></div>
 
-                                <a href="" class="goods__btn btn-primary" data-bind="attr: {
+                                <a href="" class="goods__btn btn-primary js-buy-button js-module-require"
+                                   data-bind="attr: {
                                     'data-product-id': id,
                                     'data-product-ui': ui,
                                     'data-product-article': article,
@@ -85,14 +86,19 @@ return function (
                                     'data-partner-offer-url': partnerOfferUrl,
                                     'data-is-slot': isSlot,
                                     'data-sender': typeof sender != 'undefined' ? sender : '',
-                                }, buyButtonBinding: $root.cart">Купить</a>
+                                    'data-product': JSON.stringify({ id: id, ui: ui }),
+                                    'data-module': 'enter.product'
+                                   }">Купить</a>
                             </div>
                         </td>
                         <!-- /ko -->
                     </tr>
 
                     <!-- ko foreach: {data: compareGroups()[activeCompareGroupIndex()].propertyGroups, as: 'propertyGroup'} -->
-                    <tr class="cmprCnt_property cmprCnt_property_group" data-bind="attr: {'data-property-group-index': $index}, css: {'cmprCnt_property_similar': isSimilar, 'cmprCnt_property_group-act': propertyGroup.opened}">
+                    <tr class="cmprCnt_property cmprCnt_property_group"
+                        data-bind="attr: {'data-property-group-index': $index},
+                                    css: {'cmprCnt_property_similar': isSimilar, 'cmprCnt_property_group-act': propertyGroup.opened},
+                                    visible: !isSimilar()">
                         <th>
                             <div class="cmprCnt_fixed js-compare-fixed cmprCnt_cell">
                                 <a href="#" class="js-compare-propertyGroupLink"><span><!-- ko text: name --><!-- /ko --></span></a>
@@ -107,7 +113,9 @@ return function (
                     </tr>
 
                     <!-- ko foreach: {data: propertyGroup.properties} -->
-                    <tr class="cmprCnt_property cmprCnt_property_item" data-bind="css: {'cmprCnt_property_similar': isSimilar, 'cmprCnt_property_group-hide': !propertyGroup.opened()}">
+                    <tr class="cmprCnt_property cmprCnt_property_item"
+                        data-bind="css: {'cmprCnt_property_similar': isSimilar, 'cmprCnt_property_group-hide': !propertyGroup.opened()},
+                                visible: !isSimilar()">
                         <th>
                             <div class="cmprCnt_fixed js-compare-fixed cmprCnt_cell">
                                 <span class="cmprCnt_property_item_name"><!-- ko text: name --><!-- /ko --></span>
