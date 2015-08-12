@@ -29,7 +29,11 @@ $oauthEnabled = \App::config()->oauthEnabled;
 
                 <div class="authForm_sbscr">
                     <input class="customInput customInput-defcheck jsCustomRadio js-customInput js-registerForm-subscribe" type="checkbox" name="subscribe" id="subscribe" />
-                    <label class="customLabel customLabel-defcheck" for="subscribe">Подписаться на email-рассылку,<br/> получить скидку 300 рублей </label>
+                    <label class="customLabel customLabel-defcheck" for="subscribe">Стать участником Enter Prize,<br/> получить скидку 300 рублей </label>
+                </div>
+                <div class="oferta-agreement">
+                    <input class="customInput customInput-defcheck jsCustomRadio js-customInput" type="checkbox" name="oferta" id="oferta" />
+                    <label class="customLabel customLabel-defcheck" for="oferta">Согласен <a href="#">с условиями оферты</a></label>
                 </div>
 
                 <input type="submit" class="authForm_is btnsubmit" name="" value="Регистрация" />
