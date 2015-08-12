@@ -24,6 +24,10 @@
 ?>
 
 <?
+if (!isset($useLens)) {
+    $useLens = false;
+}
+
 $region = \App::user()->getRegion();
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
 
