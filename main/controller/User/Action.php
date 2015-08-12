@@ -251,11 +251,7 @@ class Action {
                 $form->setError('first_name', 'Не указано имя');
             }
 
-            if (!$form->getPhone() && !$form->getEmail()) {
-                $form->setError('email', 'Не указаны email или телефон');
-            }
-
-            if ($isSubscribe && !$form->getEmail()) {
+            if (!$form->getEmail()) {
                 $form->setError('email', 'Не указан email');
             }
 
