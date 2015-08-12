@@ -24,6 +24,10 @@
 ?>
 
 <?
+if (!isset($useLens)) {
+    $useLens = false;
+}
+
 $region = \App::user()->getRegion();
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
 
@@ -40,7 +44,7 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
 <?= $helper->render('product/__data', ['product' => $product]) ?>
 
 <div class="bProductSectionLeftCol">
-    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
+    <?= $helper->render('product/__photo', ['product' => $product, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
 
     <div class="bProductDesc<? if (!$creditData['creditIsAllowed'] || $user->getRegion()->getHasTransportCompany()): ?> mNoCredit<? endif ?>" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 
@@ -54,7 +58,7 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
 
             <? if (count($product->getPartnersOffer()) == 0) : ?>
                 <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
-            <? endif; ?>
+            <? endif ?>
 
             <? if ($product->getTagline()): // new Card Properties Begin { ?>
                 <div itemprop="description" class="bProductDescText">

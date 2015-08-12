@@ -103,4 +103,12 @@ trait ABHelperTrait {
     public static function isNewProductPage() {
         return \App::abTest()->getTest('productCard') && \App::abTest()->getTest('productCard')->getChosenCase()->getKey() == 'new';
     }
+
+    /**
+     * Ядерная корзина
+     * @return bool
+     */
+    public static function isCoreCart() {
+        return 'enabled' === \App::abTest()->getTest('core_cart')->getChosenCase()->getKey();
+    }
 }

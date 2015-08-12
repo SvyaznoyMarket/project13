@@ -863,7 +863,7 @@
             var productArr = [];
 
             $LAB.script( '//api.direct-credit.ru/JsHttpRequest.js' )
-                .script( '//api.direct-credit.ru/dc.js' )
+                .script({ src: '//api.direct-credit.ru/dc.js', type: 'text/javascript', charset: 'windows-1251' } )
                 .wait( function() {
                     console.info('скрипты загружены для кредитного виджета. начинаем обработку');
 
@@ -1182,7 +1182,7 @@
 
                 $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
 
-                $orderContent.empty().html($(data.result.page).find('#js-order-content').html());
+                $orderContent.empty().html(data.result.page);
 				if ($orderContent.find('.jsAddressRootNode').length > 0) {
 					$.each($orderContent.find('.jsAddressRootNode'), function(i,val){
 						ko.applyBindings(ENTER.OrderV3.address, val);

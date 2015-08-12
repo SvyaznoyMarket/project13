@@ -23,8 +23,6 @@ return function(
     $userMail = isset($previousPost['user_info']['email']) ? $previousPost['user_info']['email'] : $email;
 ?>
 
-<?= $helper->render('order-v3-new/__head', ['step' => 1]) ?>
-
     <section class="orderCnt jsOrderV3PageNew">
         <h1 class="orderCnt_t">Получатель</h1>
 

@@ -341,7 +341,7 @@ class Action {
             \App::logger()->error($e);
         });
 
-        \App::coreClientV2()->addQuery('listing/list', $params2, [], function ($result) use(&$productsIds){
+        \App::searchClient()->addQuery('v2/listing/list', $params2, [], function ($result) use(&$productsIds){
             $productsIds = (array)@$result['list'];
         }, function ($e) {
             \App::exception()->remove($e);

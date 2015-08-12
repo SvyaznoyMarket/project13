@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page \View\DefaultLayout
+ * @var $page \View\OrderV3\DeliveryPage
  */
 ?><!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -36,6 +36,7 @@
 
 <div class="wrapper">
     <div class="content mContentOrder clearfix">
+        <?= $page->slotOrderHead() ?>
         <?= $page->slotContent() ?>
     </div><!--/ Контент -->
 </div><!--/ Шаблон -->

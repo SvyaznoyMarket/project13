@@ -2,14 +2,16 @@
 
 namespace Controller\User;
 
+use EnterApplication\CurlTrait;
+use Session\AbTest\ABHelperTrait;
+use \Model\Session\FavouriteProduct;
 use Controller\Enterprize\ConfirmAction;
 use EnterQuery as Query;
 use \Model\Product\Entity as Product;
-use \Model\Session\FavouriteProduct as FavouriteProduct;
 
 class Action {
 
-    use \EnterApplication\CurlTrait;
+    use CurlTrait, ABHelperTrait;
 
     private $redirect;
     private $requestRedirect;
@@ -135,6 +137,8 @@ class Action {
                     // объединение корзины
                     try {
                         call_user_func(function() use (&$userEntity) {
+                            if (!$this->isCoreCart() || !$userEntity) return;
+
                             $mergeCartAction = new \EnterApplication\Action\Cart\Merge();
                             $request = $mergeCartAction->createRequest();
                             $request->userUi = $userEntity->getUi();

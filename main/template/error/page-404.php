@@ -71,6 +71,7 @@ $helper = new \Helper\TemplateHelper();
 
 <?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
+<?= $page->slotPartnerCounter() ?>
 
 <script type="text/javascript">
     if ( typeof ga == 'function' ) {

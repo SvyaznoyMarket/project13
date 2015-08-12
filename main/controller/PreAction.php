@@ -2,7 +2,11 @@
 
 namespace Controller;
 
+use Session\AbTest\ABHelperTrait;
+
 class PreAction {
+    use ABHelperTrait;
+
     /**
      * Запрашивает редирект и АБ-тесты
      *
@@ -22,7 +26,7 @@ class PreAction {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['curl-cache', 'controller', 'critical']);
         }
 
-
+        $routeName = $request->attributes->get('route');
         $uri = $request->getPathInfo();
         $redirectUrl = null;
 
@@ -32,6 +36,10 @@ class PreAction {
             && !\App::config()->preview // ...если не preview.enter.ru
             && !$request->isXmlHttpRequest() // ...если не ajax-запрос
             && ('POST' != $request->getMethod()) // ... если не POST-запрос
+            && (0 !== strpos($routeName, 'user'))
+            && (0 !== strpos($routeName, 'cart'))
+            && (0 !== strpos($routeName, 'order'))
+            && (0 !== strpos($routeName, 'compare'))
         ) {
             \App::scmsSeoClient()->addQuery(
                 'redirect',
@@ -80,6 +88,24 @@ class PreAction {
         \App::scmsSeoClient()->execute(\App::config()->scmsSeo['retryTimeout']['tiny']);
 
         if (!$redirectUrl) {
+            try {
+                // если пользователь авторизован, то подгружает серверную корзину
+                if ($this->isCoreCart()) {
+                    $userEntity = \App::user()->getEntity();
+
+                    $controller = new \EnterApplication\Action\Cart\Update();
+                    $controllerRequest = $controller->createRequest();
+                    $controllerRequest->regionId = \App::user()->getRegionId();
+                    $controllerRequest->userUi = $userEntity ? $userEntity->getUi() : null;
+
+                    if ($controllerRequest->userUi && $controllerRequest->regionId) {
+                        $controller->execute($controllerRequest);
+                    }
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);
+            }
+
             return null;
         }
 
