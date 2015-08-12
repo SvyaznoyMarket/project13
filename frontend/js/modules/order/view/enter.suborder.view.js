@@ -34,7 +34,8 @@
             CSS_CLASSES = {
                 ITEM: 'js-order-item',
                 CHANGE_DELIVERY: 'js-order-changePlace-link',
-                SHOW_DISCOUNT: 'js-show-discount'
+                SHOW_DISCOUNT: 'js-show-discount',
+                CHANGE_PAYMENT_METHOD: 'js-payment-method'
             };
 
         provide(BaseViewClass.extend({
@@ -62,8 +63,9 @@
                 });
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.CHANGE_DELIVERY] = 'changeDeliveryPoint';
-                this.events['click .' + CSS_CLASSES.SHOW_DISCOUNT]   = 'showDiscount';
+                this.events['click .' + CSS_CLASSES.CHANGE_DELIVERY]       = 'changeDeliveryPoint';
+                this.events['click .' + CSS_CLASSES.SHOW_DISCOUNT]         = 'showDiscount';
+                this.events['click .' + CSS_CLASSES.CHANGE_PAYMENT_METHOD] = 'changePaymentMethod';
 
                 // Apply events
                 this.delegateEvents();
@@ -76,6 +78,35 @@
              * @type        {Object}
              */
             events: {},
+
+            /**
+             * Обработчик смены метода оплаты
+             *
+             * @method      changePaymentMethod
+             * @memberOf    module:enter.suborder.view~SubOrderView#
+             *
+             * @todo        написать обработчик
+             */
+            changePaymentMethod: function( event ) {
+                var
+                    target = $(event.currentTarget),
+                    method = target.val(),
+
+                    data = {
+                        block_name: this.blockName
+                    };
+
+                console.info('module:enter.suborder.view~SubOrderView#changePaymentMethod');
+
+                data[method] = true;
+
+                this.orderView.trigger('sendChanges', {
+                    action: 'changeProductQuantity',
+                    data: data
+                });
+
+                return false;
+            },
 
             /**
              * Обработчик смены доставки
