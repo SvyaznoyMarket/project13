@@ -25,11 +25,11 @@ return function(
 
     <?= $page->render('order/common/order-head', ['step' => 2]) ?>
 
-    <section id="js-order-content" class="checkout jsOrderV3PageDelivery">
+    <section id="js-order-content" class="checkout jsOrderV3PageDelivery js-module-require" data-module="enter.order.step2">
         <h1 class="checkout__title">Самовывоз и доставка</h1>
 
         <div class="checkout-order-location">
-            Ваш регион: <span class="checkout-order-location__city"><?= \App::user()->getRegion()->getName() ?></span> <a href="" class="checkout-order-location__change dotted jsChangeRegion">Изменить</a> <br/>
+            Ваш регион: <span class="checkout-order-location__city"><?= \App::user()->getRegion()->getName() ?></span> <a href="" class="checkout-order-location__change dotted js-change-region">Изменить</a> <br/>
             От региона зависят доступные способы получения и оплаты заказов.
         </div>
 
@@ -44,7 +44,7 @@ return function(
                 <div class="jsOrderValidationErrors" data-value="<?= $helper->json($order->validationErrors) ?>"></div>
             <? endif; ?>
             <!-- блок разбиения заказа -->
-            <div class="checkout-order jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>" data-block_name="<?= $order->block_name ?>">
+            <div class="checkout-order js-order-block <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>" data-block_name="<?= $order->block_name ?>">
                 <!-- информация о доставке -->
                 <div class="checkout-order__right">
                     <menu class="orderCol_delivrLst order-head">
@@ -183,7 +183,7 @@ return function(
                         <? endif; ?>
 
                         <? foreach ($order->products as $product): ?>
-                            <div class="order-item">
+                            <div class="order-item js-order-item">
                                 <a href="<?= $product->link ?>" class="order-item__img" target="_blank">
                                     <img class="image" src="<?= $product->getMainImageUrl('product_60') ?>" alt="<?= $helper->escape($product->name) ?>" />
                                 </a>
@@ -195,19 +195,19 @@ return function(
 
                                 <div class="order-item__data">
                                     <span class="order-item__data-item order-item__data-item_summ" ><?= $helper->formatPrice($product->original_sum) ?> <span class="rubl">p</span></span>
-                                    <span class="order-item__data-item order-item__data-item_count"><?= $product->quantity ?> шт.</span>
+                                    <span class="order-item__data-item order-item__data-item_count js-show-counter"><?= $product->quantity ?> шт.</span>
 
-                                    <div class="order-item__data-item order-item__data-item_edit" style="display: none">
+                                    <div class="order-item__data-item order-item__data-item_edit js-order-item-counter" style="display: none">
                                         <div data-spinner-for="" class="bCountSection">
-                                            <button class="bCountSection__eM">-</button>
-                                            <input name="productQuantity[]" type="text" value="<?= $product->quantity ?>" class="bCountSection__eNum" data-stock="<?= $product->stock ?>" />
-                                            <button class="bCountSection__eP">+</button>
+                                            <button class="js-counter-minus">-</button>
+                                            <input name="productQuantity[]" type="text" value="<?= $product->quantity ?>" class="js-counter-value" data-stock="<?= $product->stock ?>" />
+                                            <button class="js-counter-plus">+</button>
                                             <span>шт.</span>
                                         </div>
 
-                                        <a class="dotted jsChangeProductQuantity" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
+                                        <a class="dotted js-order-item-counter-apply" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
                                         &nbsp;|&nbsp;
-                                        <a class="dotted jsDeleteProduct" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Удалить товар</a>
+                                        <a class="dotted js-order-item-counter-delete" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Удалить товар</a>
                                     </div>
 
                                     <span class="order-item__data-item order-item__data-item_price"><?= $helper->formatPrice($product->original_price) ?> <span class="rubl">p</span></span>

@@ -1,0 +1,88 @@
+/**
+ * @module      enter.suborder.view
+ * @version     0.1
+ *
+ * @requires    jQuery
+ * @requires    enter.BaseViewClass
+ * @requires    enter.order.item.view
+ *
+ * [About YM Modules]{@link https://github.com/ymaps/modules}
+ */
+!function( modules, module ) {
+    modules.define(
+        'enter.suborder.view',
+        [
+            'jQuery',
+            'enter.BaseViewClass',
+            'enter.order.item.view'
+        ],
+        module
+    );
+}(
+    this.modules,
+    function( provide, $, BaseViewClass, OrderItemView ) {
+        'use strict';
+
+        var
+            /**
+             * Используемые CSS классы
+             *
+             * @private
+             * @constant
+             * @type        {Object}
+             */
+            CSS_CLASSES = {
+                ITEM: 'js-order-item',
+                CHANGE_DELIVERY: 'js-order-changePlace-link',
+                SHOW_DISCOUNT: 'js-show-discount'
+            };
+
+        provide(BaseViewClass.extend({
+            /**
+             * @classdesc   Представление подзаказа
+             * @memberOf    module:enter.suborder.view~
+             * @augments    module:BaseViewClass
+             * @constructs  SubOrderView
+             */
+            initialize: function( options ) {
+                console.info('module:enter.suborder.view~SubOrderView#initialize');
+                var
+                    self  = this,
+                    items = this.$el.find('.' + CSS_CLASSES.ITEM);
+
+                items.each(function( index ) {
+                    self.subViews['suborder_' + index] = new OrderItemView({
+                        el: $(this)
+                    });
+                });
+
+                // Setup events
+                this.events['click .' + CSS_CLASSES.CHANGE_DELIVERY] = 'changeDeliveryPoint';
+                this.events['click .' + CSS_CLASSES.SHOW_DISCOUNT]   = 'showDiscount';
+
+                // Apply events
+                this.delegateEvents();
+            },
+
+            events: {},
+
+            /**
+             * Обработчик смены доставки
+             *
+             * @method      changeDeliveryPoint
+             * @memberOf    module:enter.suborder.view~SubOrderView#
+             *
+             * @todo        написать обработчик
+             */
+            changeDeliveryPoint: function() {
+                console.info('module:enter.suborder.view~SubOrderView#changeDeliveryPoint');
+                return false;
+            },
+
+            showDiscount: function() {
+                console.info('module:enter.suborder.view~SubOrderView#showDiscount');
+                return false;
+            }
+        }));
+    }
+);
