@@ -25,7 +25,7 @@
             <img alt="" src="{{img}}" class="image">
         </a>
 
-        <a class="notice-cart__name notice-cart__cell" href="{{link}}">{{name}}</a>
+        <a class="notice-cart__name notice-cart__cell" href="{{link}}"><span class="notice-cart__name-inn">{{name}}</span></a>
 
         <div class="notice-cart__desc notice-cart__cell">
             <div class="notice-cart__price">{{formattedPrice}} <span class="rubl-css">P</span></div>
