@@ -24,6 +24,7 @@
                 <div class="cart-empty__desc">
                     Попробуйте <a href="" class="cart-empty__search"><span class="underline">поиск</span></a>
                 </div>
+
                 <div class="cart-empty__desc">
                     или посмотрите наши <a href="" class="cart-empty__wow"><span class="underline">акции</span></a>
                 </div>
@@ -40,7 +41,7 @@
             <!--/ общая сумма заказа -->
 
             <div class="cart-order">
-               <div class="cart-order__back"><a class="cart-order__back-link" href="" title=""><span class="underline">Вернуться к покупкам</span></a></div>
+               <div class="cart-order__back"><a class="cart-order__back-link" href="<?= \App::router()->generate('homepage') ?>" title=""><span class="underline">Вернуться к покупкам</span></a></div>
                <div class="cart-order__btn"><a href="<?= \App::router()->generate('orderV3') ?>" class="btn-primary btn-primary_bigger btn-primary_width">Оформить заказ</a></div>
             </div>
         </div>

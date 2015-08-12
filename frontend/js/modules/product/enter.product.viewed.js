@@ -30,7 +30,6 @@
 
         if (localStorage) {
             viewedItems = JSON.parse(localStorage.getItem('enter.viewed'));
-            console.log(viewedItems);
             if (!viewedItems) {
                 localStorage.setItem('enter.viewed', JSON.stringify([new Product(product)]))
             } else if (!viewedItems.some(function(el){return el.id == product.id})) {

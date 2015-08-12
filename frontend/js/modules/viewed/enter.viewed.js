@@ -31,8 +31,8 @@
             modules.require('Mustache', function(M){
                 $holder.append(M.render(template, {products: products}));
             });
-            modules.require('jquery.slick', function(){
-                $block.find('.js-slider-goods').slick($block.data('slick-config'));
+            modules.require('jquery.slick', function(module) {
+                module.init($block);
             });
         }
 

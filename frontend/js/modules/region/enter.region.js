@@ -86,7 +86,9 @@
                         },
                         minLength: 2,
                         select: function( event, ui ) {
-
+                            if (ui.item) {
+                                $popup.find('.js-region-change-form').attr('action', ui.item.url);
+                            }
                         },
                         open: function() {
                             $autocompleteResults.show()
@@ -104,11 +106,20 @@
             })
         };
 
+        module.fillInput = false;
+
         $.get('/region/init')
             .done(function (res) {
                 if (res.result) {
-                    $body.append($(res.result));
+                    var $result = $(res.result),
+                        region = $result.data('region'),
+                        $form =  $result.find('.js-region-change-form');
+                    $body.append($result);
                     module.init();
+                    if (module.fillInput) {
+                        $result.find('#jscity').val(region.name);
+                        $form.attr('action', $form.attr('action') + region.id);
+                    }
                     module.show();
                 }
             });

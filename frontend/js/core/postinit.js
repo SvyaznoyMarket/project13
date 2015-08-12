@@ -80,7 +80,9 @@
     }
 
     if (document.cookie.match(/geoshop=(\d+)/) === null || !document.cookie.match(/geoshop=(\d+)/)[1]) {
-        modules.require('enter.region', function(){})
+        modules.require('enter.region', function(module){
+            module.fillInput = true;
+        })
     }
 
     // Информация о пользователе
