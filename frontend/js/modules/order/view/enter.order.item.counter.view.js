@@ -84,7 +84,7 @@
                     action: 'changeProductQuantity',
                     data: {
                         block_name: this.blockName,
-                        id: productData.id,
+                        id: this.productData.id,
                         quantity: this.quantity
                     }
                 });
