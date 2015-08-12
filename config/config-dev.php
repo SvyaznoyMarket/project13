@@ -34,6 +34,7 @@ $c->partners['Sociaplus']['enabled'] = false;
 $c->partners['ActionpayRetargeting']['enabled'] = false;
 $c->partners['MyThings']['enabled'] = false;
 $c->partners['Adblender']['enabled'] = false;
+$c->partners['facebook']['enabled'] = false;
 
 $c->paymentPsb['terminal']     = '79036768';
 $c->paymentPsb['merchant']     = '790367686219999';
