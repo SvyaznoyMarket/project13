@@ -12,6 +12,7 @@
  * @var $relatedCategories      array
  * @var $categoryConfigById     array
  * @var $slideData              array
+ * @var $slice                  \Model\Slice\Entity
  */
 ?>
 
@@ -34,6 +35,11 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
         <div class="section">
 
             <?= $page->render('category/_breadcrumbs', ['category' => $category]) ?>
+
+            <!-- Breadcrumbs -->
+            <? if (isset($slice)) : ?>
+                <ul class="bread-crumbs"><li class="bread-crumbs__item"><?= $slice->getName() ?></li></ul>
+            <? endif ?>
 
             <? if (count($category->getChild()) > 1) : ?>
                 <ul class="categories-grid grid-3col">
