@@ -110,7 +110,7 @@ $buySender2 = $request->get('sender2');
     <!--/ с этим товаром покупают -->
 
     <? /* Трастфакторы партнеров */ ?>
-    <?= $helper->render('product/blocks/trustfactors.partner', ['trustfactors' => $trustfactors]) ?>
+    <?/* = $helper->render('product/blocks/trustfactors.partner', ['trustfactors' => $trustfactors]) */?>
 
     <div style="height: 50px">
         <!-- навигация по странице -->

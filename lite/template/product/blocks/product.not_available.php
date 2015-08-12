@@ -36,38 +36,40 @@ $f = function(
             </div>
             <!--/ похожие товары -->
 
-            <!-- сравнить, добавить в виш лист -->
-            <ul class="product-card-tools">
-                <li class="product-card-tools__i product-card-tools__i--compare js-compareProduct"
-                    data-bind="compareButtonBinding: compare"
-                    data-id="<?= $product->getId() ?>"
-                    data-type-id="<?= $product->getType() ? $product->getType()->getId() : null ?>">
-                    <a id="<?= 'compareButton-' . $product->getId() ?>"
-                       href="<?= \App::router()->generate('compare.add', ['productId' => $product->getId(), 'location' => 'product']) ?>"
-                       class="product-card-tools__lk jsCompareLink"
-                       data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>"
-                       data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>"
-                        >
-                        <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
-                        <span class="product-card-tools__tx">Сравнить</span>
-                    </a>
-                </li>
+            <div class="product-not-desc">
+                <!-- сравнить, добавить в виш лист -->
+                <ul class="product-card-tools">
+                    <li class="product-card-tools__i product-card-tools__i--compare js-compareProduct"
+                        data-bind="compareButtonBinding: compare"
+                        data-id="<?= $product->getId() ?>"
+                        data-type-id="<?= $product->getType() ? $product->getType()->getId() : null ?>">
+                        <a id="<?= 'compareButton-' . $product->getId() ?>"
+                           href="<?= \App::router()->generate('compare.add', ['productId' => $product->getId(), 'location' => 'product']) ?>"
+                           class="product-card-tools__lk jsCompareLink"
+                           data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>"
+                           data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>"
+                            >
+                            <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
+                            <span class="product-card-tools__tx">Сравнить</span>
+                        </a>
+                    </li>
 
-                <li class="product-card-tools__i product-card-tools__i--wish">
-                    <?= $helper->render('product/__favoriteButton', ['product' => $product, 'favoriteProduct' => isset($favoriteProductsByUi[$product->getUi()]) ? $favoriteProductsByUi[$product->getUi()] : null]) ?>
-                </li>
-            </ul>
-            <!--/ сравнить, добавить в виш лист -->
+                    <li class="product-card-tools__i product-card-tools__i--wish">
+                        <?= $helper->render('product/__favoriteButton', ['product' => $product, 'favoriteProduct' => isset($favoriteProductsByUi[$product->getUi()]) ? $favoriteProductsByUi[$product->getUi()] : null]) ?>
+                    </li>
+                </ul>
+                <!--/ сравнить, добавить в виш лист -->
 
-            <? if (false) : ?>
-                <div class="buy-online">
-                    <a class="btn-type btn-type--olive js-orderButton jsBuyButton" href="#">Сообщить о наличии</a>
-                </div>
-            <? endif ?>
+                <? if (false) : ?>
+                    <div class="buy-online">
+                        <a class="btn-type btn-type--olive js-orderButton jsBuyButton" href="#">Сообщить о наличии</a>
+                    </div>
+                <? endif ?>
 
-            <?= $helper->render('product/blocks/variants', ['product' => $product, 'trustfactors' => $trustfactors]) ?>
+                <?= $helper->render('product/blocks/variants', ['product' => $product, 'trustfactors' => $trustfactors]) ?>
 
-            <?= $helper->render('product/blocks/reviews.short', ['reviewsData' => $reviewsData]) ?>
+                <?= $helper->render('product/blocks/reviews.short', ['reviewsData' => $reviewsData]) ?>
+            </div>
 
             <? if ($product->getTagline()) : ?>
                 <!-- краткое описание товара -->
