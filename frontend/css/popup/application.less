@@ -1,0 +1,46 @@
+.popup-application {
+    .popup__title {
+        text-align: center;
+    }
+    .form__check-big {
+        margin: 0 0 20px;
+    }
+    .product-card-set__btn-app {
+        width: 250px;
+    }
+    .product-card-set-recall {
+        display: none;
+
+        margin: 0 0 30px;
+        padding: 0;
+
+        background: none;
+        &-list {
+            margin-left: 80px;
+        }
+        &__title {
+            text-align: center;
+
+            .font-size(16);
+        }
+    }
+    &__success,&__more {
+        display: none;
+    }
+    &.success {
+        .popup-application__order {
+            display: none;
+        }
+        .popup-application__success {
+            display: block;
+        }
+    }
+    &.listing {
+        .product-card-set-recall,.popup-application__more {
+            display: block;
+        }
+        .popup__title {
+            display: none;
+        }
+    }
+}

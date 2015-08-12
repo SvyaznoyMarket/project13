@@ -1,0 +1,73 @@
+.form {
+    &__title {
+        margin: 0 0 10px;
+
+        text-align: center;
+
+        .font-size(20);
+        .font-face('GloberRegular');
+    }
+    &__field {
+        position: relative;
+
+        margin: 0 0 24px;
+        &_no-placeholder {
+            margin-bottom: 14px;
+        }
+    }
+    &__field-2col {
+        .clearfix();
+        .form__field {
+            float: left;
+
+            width: 50%;
+            padding-right: 20px;
+            &:nth-child(2n) {
+                padding-right: 0;
+            }
+        }
+    }
+    &__it {
+        width: 100%;
+    }
+    &__it-name {
+        font-weight: 600;
+
+        margin: 0 0 22px;
+
+        .font-size(14);
+    }
+    &__it-btn {
+        line-height: 33px;
+
+        position: absolute;
+        top: 1px;
+        right: 1px;
+
+        display: block;
+
+        padding: 0 8px;
+
+        color: @grey-bright;
+        background: @grey-light-5;
+
+        .font-size(14);
+    }
+    &__btn-log {
+        display: block;
+
+        width: 160px;
+        margin: auto;
+    }
+    &__success-text {
+        display: none;
+
+        color: @green-normal;
+
+        .font-size(16);
+        .font-face('GloberRegular');
+    }
+    &__btn-container {
+        text-align: center;
+    }
+}

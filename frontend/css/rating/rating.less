@@ -30,4 +30,15 @@
             }
         }
     }
+
+    &_add {
+        .rating-state__item {
+            cursor: pointer;
+            &:hover ~ .rating-state__item {
+                &:before {
+                    content: '\e802';
+                }
+            }
+        }
+    }
 }

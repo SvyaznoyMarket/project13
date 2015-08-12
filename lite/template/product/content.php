@@ -543,15 +543,15 @@ $buySender2 = $request->get('sender2');
         <div class="add-review-rating">
             <span class="add-review-rating__title">Оценка:</span>
 
-            <div class="add-review-rating__value rating rating_bigger">
-                <span class="rating-state"> 
+            <div class="add-review-rating__value rating rating_bigger rating_add">
+                <span class="rating-state">
                     <i class="rating-state__item icon-rating rating-state__item_fill"></i>
                     <i class="rating-state__item icon-rating rating-state__item_fill"></i>
                     <i class="rating-state__item icon-rating rating-state__item_fill"></i>
                     <i class="rating-state__item icon-rating rating-state__item_fill"></i>
                     <i class="rating-state__item icon-rating rating-state__item_fill"></i>
-                </span>  
-            </div> 
+                </span>
+            </div>
         </div>
 
         <form id="" class="form" method="" action="">
@@ -581,13 +581,13 @@ $buySender2 = $request->get('sender2');
                 <label class="label" for="reviewFormExtract">Комментарий:</label>
                 <textarea id="reviewFormExtract" class="form__textarea textarea" name=""></textarea>
             </div>
-            
+
             <div class="form__btn-container">
                 <button class="btn-primary btn-primary_bigger" type="submit">Отправить</button>
             </div>
         </form>
     </div>
-    
+
     <!-- успешная отправка + подписка на рассылку -->
     <div style="display: none">
         <div class="popup__title">Отзыв о товаре</div>
@@ -604,7 +604,7 @@ $buySender2 = $request->get('sender2');
 
         <div class="add-review-success">
             <div class="add-review-success__text">Спасибо! Ваш отзыв появится на сайте после проверки модератором.</div>
-            
+
             <form class="add-review-success__form form">
                 <input class="custom-input custom-input_check3" type="checkbox" name="subscribe" id="subscribe2">
                 <label class="custom-label" for="subscribe2">Подписаться на рассылку и получить купон со скидкой 300 <span class="rubl">p</span> на следующую покупку.</label>
@@ -616,14 +616,14 @@ $buySender2 = $request->get('sender2');
         </div>
     </div>
     <!--/ успешная отправка + подписка на рассылку -->
-    
+
     <!-- успешная отправка + вы уже подписаны -->
     <div class="" style="display: none">
         <div class="add-review-success">
             <div class="add-review-success__text">Вы уже подписаны на нашу рассылку.</div>
             <div class="add-review-success__text">Не забывайте проверять письма от Enter!</div>
             <div class="add-review-success__text add-review-success__text_small">Чтобы не пропускать наши новости и акции, добавьте <a class="link" href="mailto:info@enter.ru">info@enter.ru</a> в свою адресную книгу.</div>
-            
+
             <div class="form__btn-container">
                 <button class="btn-normal btn-normal_middle" type="submit">Продолжить</button>
             </div>
@@ -638,7 +638,7 @@ $buySender2 = $request->get('sender2');
             <div class="add-review-success__text">Письмо с подтверждением подписки отправлено на mail@mail.ru.</div>
             <div class="add-review-success__text add-review-success__text_small">Проверьте папку «Спам», возможно, письмо попало туда.</div>
             <div class="add-review-success__text add-review-success__text_small">Чтобы не пропускать наши новости и акции, добавьте <a class="link" href="mailto:info@enter.ru">info@enter.ru</a> в свою адресную книгу.</div>
-            
+
             <div class="form__btn-container">
                 <button class="btn-normal btn-normal_middle" type="submit">Продолжить</button>
             </div>
