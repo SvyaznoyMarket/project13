@@ -58,6 +58,7 @@
                 this.events['click .' + CSS_CLASSES.MINUS]  = 'minus';
                 this.events['click .' + CSS_CLASSES.APPLY]  = 'applyCounter';
                 this.events['click .' + CSS_CLASSES.DELETE] = 'deleteProduct';
+                this.events['change .' + CSS_CLASSES.VALUE] = 'changeInput';
 
                 // Apply events
                 this.delegateEvents();
@@ -75,6 +76,14 @@
                 this.$el.hide();
 
                 return false;
+            },
+
+            changeInput: function( ) {
+                var
+                    val = parseInt(this.input.val(), 10);
+
+                this.quantity = isNaN(val) ? this.quantity : val;
+                this.input.val(this.quantity);
             },
 
             applyCounter: function() {
