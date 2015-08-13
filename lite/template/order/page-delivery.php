@@ -26,7 +26,7 @@ return function(
         <h1 class="checkout__title">Самовывоз и доставка</h1>
 
         <div class="checkout-order-location">
-            Ваш регион: <span class="checkout-order-location__city"><?= \App::user()->getRegion()->getName() ?></span> <a href="" class="checkout-order-location__change dotted js-change-region">Изменить</a> <br/>
+            Ваш регион: <span class="checkout-order-location__city"><?= \App::user()->getRegion()->getName() ?></span> <a href="" class="checkout-order-location__change dotted js-change-region jsRegionSelection">Изменить</a> <br/>
             От региона зависят доступные способы получения и оплаты заказов.
         </div>
 
