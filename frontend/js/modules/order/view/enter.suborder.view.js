@@ -34,10 +34,13 @@
              */
             CSS_CLASSES = {
                 ITEM: 'js-order-item',
-                CHANGE_DELIVERY: 'js-order-changePlace-link',
+                CHANGE_DELIVERY_POINT: 'js-order-changePlace-link',
                 SHOW_DISCOUNT: 'js-show-discount',
-                CHANGE_PAYMENT_METHOD: 'js-payment-method',
-                CALENDAR_OPENER: 'js-order-open-calendar'
+                CHANGE_PAYMENT_METHOD_RADIO: 'js-payment-method-radio',
+                CHANGE_PAYMENT_METHOD_SELECT: 'js-payment-method-select',
+                CALENDAR_OPENER: 'js-order-open-calendar',
+                CHANGE_DELIVERY_METHOD: 'js-order-change-delivery-method',
+                CHANGE_DELIVERY_METHOD_ACITVE: 'orderCol_delivrLst_i-act'
             };
 
         provide(BaseViewClass.extend({
@@ -65,10 +68,12 @@
                 });
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.CHANGE_DELIVERY]       = 'changeDeliveryPoint';
-                this.events['click .' + CSS_CLASSES.SHOW_DISCOUNT]         = 'showDiscount';
-                this.events['click .' + CSS_CLASSES.CHANGE_PAYMENT_METHOD] = 'changePaymentMethod';
-                this.events['click .' + CSS_CLASSES.CALENDAR_OPENER]       = 'openCalendar';
+                this.events['click .' + CSS_CLASSES.CHANGE_DELIVERY_POINT]         = 'changeDeliveryPoint';
+                this.events['click .' + CSS_CLASSES.SHOW_DISCOUNT]                 = 'showDiscount';
+                this.events['click .' + CSS_CLASSES.CHANGE_PAYMENT_METHOD_RADIO]   = 'changePaymentMethod';
+                this.events['change .' + CSS_CLASSES.CHANGE_PAYMENT_METHOD_SELECT] = 'changePaymentMethodSelect';
+                this.events['click .' + CSS_CLASSES.CALENDAR_OPENER]               = 'openCalendar';
+                this.events['click .' + CSS_CLASSES.CHANGE_DELIVERY_METHOD]        = 'changeDeliveryMethod';
 
 
                 // Apply events
@@ -82,6 +87,33 @@
              * @type        {Object}
              */
             events: {},
+
+            /**
+             * Смена метода доставки
+             *
+             * @method      changeDeliveryMethod
+             * @memberOf    module:enter.suborder.view~SubOrderView#
+             */
+            changeDeliveryMethod: function( event ) {
+                var
+                    target        = $(event.currentTarget),
+                    deliveryToken = target.attr('data-delivery_method_token'),
+                    deliveryId    = target.attr('data-delivery_group_id');
+
+                if ( target.hasClass(CSS_CLASSES.CHANGE_DELIVERY_METHOD_ACITVE) ) {
+                    return false;
+                }
+
+                this.orderView.trigger('sendChanges', {
+                    action: 'changeDelivery',
+                    data: {
+                        block_name: this.blockName,
+                        delivery_method_token: deliveryToken
+                    }
+                });
+
+                return false;
+            },
 
             /**
              * Открытие календаря
@@ -134,6 +166,33 @@
                 });
 
                 return false;
+            },
+
+            /**
+             * Обработчик смены метода оплаты в селекте
+             *
+             * @method      changePaymentMethodSelect
+             * @memberOf    module:enter.suborder.view~SubOrderView#
+             *
+             * @param       {jQuery.Event}  event
+             */
+            changePaymentMethodSelect: function( event ) {
+                var
+                    target = $(event.currentTarget),
+                    method = target.find(':selected').val(),
+
+                    data = {
+                        block_name: this.blockName
+                    };
+
+                console.info('module:enter.suborder.view~SubOrderView#changePaymentMethodSelect');
+
+                data[method] = true;
+
+                this.orderView.trigger('sendChanges', {
+                    action: 'changeProductQuantity',
+                    data: data
+                });
             },
 
             /**
