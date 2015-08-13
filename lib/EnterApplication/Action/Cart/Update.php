@@ -17,19 +17,31 @@ namespace EnterApplication\Action\Cart
         public function execute(Request $request)
         {
             $curl = $this->getCurl();
-
             $cart = \App::user()->getCart();
+
+            // response
+            $response = new Response();
 
             // запрос корзины
             $cartQuery = (new Query\Cart\Get($request->userUi))->prepare();
 
             $curl->execute();
 
+            if ($cartQuery->error) {
+                return $response;
+            }
+
             $externalCartProductsByUi = [];
             foreach ($cartQuery->response->products as $item) {
-                if (!isset($item['uid'])) continue;
+                if (
+                    !isset($item['uid'])
+                    || !isset($item['quantity'])
+                ) continue;
 
                 $externalCartProductsByUi[$item['uid']] = new \Model\Cart\Product\Entity($item);
+
+                // обновление количества товаров
+                $cart->setProductQuantityByUi($item['uid'], $item['quantity']);
             }
 
             $cartProductDataByUi = [];
@@ -55,9 +67,6 @@ namespace EnterApplication\Action\Cart
                     $cart->setProduct($product, $cartProduct->getQuantity());
                 }
             }
-
-            // response
-            $response = new Response();
 
             return $response;
         }
