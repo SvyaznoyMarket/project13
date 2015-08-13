@@ -51,7 +51,7 @@ return function(
                             $first_delivery_method = reset($delivery_methods_for_group);
                             $first_delivery_method_token = $first_delivery_method->token;
                             ?>
-                            <li class="orderCol_delivrLst_i js-order-change-delivery-method <? if ($deliveryGroup->id == $order->delivery_group_id): ?>orderCol_delivrLst_i-act<? endif ?>"
+                            <li class="orderCol_delivrLst_i <? if ($deliveryGroup->id == $order->delivery_group_id): ?>orderCol_delivrLst_i-act<? endif ?>"
                                 data-delivery_group_id="<?= $deliveryGroup->id ?>"
                                 data-delivery_method_token="<?= (string)$first_delivery_method_token ?>">
                                 <span class="<? if ($deliveryGroup->id != $order->delivery_group_id): ?>orderCol_delivrLst_i_span_inactive<? endif ?>"><?= $deliveryGroup->name ?></span>
@@ -170,7 +170,7 @@ return function(
                         <? endif ?>
                     </div>
 
-                    <div class="checkout-order__content">ta.burlakova@gmail.com
+                    <div class="checkout-order__content">
                         <? if ($order->total_cost > 100000) : ?>
                             <div class="order-delivery-info-warn">
                                 Требуется предоплата.<br/>
