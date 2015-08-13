@@ -69,6 +69,7 @@ return function(
                         <?= $helper->render('order/_calendar', [
                             'id'                => 'id-order-changeDate-content-' . $order->id,
                             'possible_days'     => $order->possible_days,
+                            'choosenDay'        => $order->delivery->date
                         ]) ?>
 
                         <? if ((bool)$order->possible_intervals) : ?>
