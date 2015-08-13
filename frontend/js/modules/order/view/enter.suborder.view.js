@@ -161,7 +161,7 @@
                 data[method] = true;
 
                 this.orderView.trigger('sendChanges', {
-                    action: 'changeProductQuantity',
+                    action: 'changePaymentMethod',
                     data: data
                 });
 
@@ -190,7 +190,7 @@
                 data[method] = true;
 
                 this.orderView.trigger('sendChanges', {
-                    action: 'changeProductQuantity',
+                    action: 'changePaymentMethod',
                     data: data
                 });
             },
@@ -209,7 +209,7 @@
             },
 
             /**
-             * Показывать форму для вводка купонов
+             * Показывать форму для ввода купонов
              *
              * @method      showDiscount
              * @memberOf    module:enter.suborder.view~SubOrderView#

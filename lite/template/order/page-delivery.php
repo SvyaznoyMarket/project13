@@ -129,7 +129,7 @@ return function(
                                 </div>
                             </div>
 
-                            <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order/_payment.methods', ['order' => $order]) : '' ?>
+                            <?= $helper->render('order/_payment.methods', ['order' => $order]) ?>
 
                             <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
                                 <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
