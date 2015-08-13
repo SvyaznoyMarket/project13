@@ -333,4 +333,3 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
     </section>
 </div>
 <!--/ карточка товара -->
-

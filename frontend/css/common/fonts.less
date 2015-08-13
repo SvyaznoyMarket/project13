@@ -73,20 +73,31 @@
     font-size: @size/14em;
 }
 
+.rubl {
+    line-height: 3px;
+
+    width: 8px;
+
+    border-bottom: 2px solid;
+
+    .inline-block(baseline);
+}
+
 [class^='icon-']:before ,
-[class*=' icon-']:before,
+[class*=' icon-']:before ,
 [class^='icon-']:after ,
-[class*=' icon-']:after  {
+[class*=' icon-']:after {
     font-family: 'Fontello';
     font-weight: normal;
     font-style: normal;
     font-variant: normal;
 
+    display: inline-block;
+
     text-align: center;
     text-decoration: inherit;
     text-transform: none;
 
-    display: inline-block;
     speak: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
