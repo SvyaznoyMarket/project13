@@ -17209,9 +17209,9 @@ img[height='0'] {
     float: right;
   }
   .adfoxWrapper {
-    -webkit-transition: 1s all ease;
-    -moz-transition: 1s all ease;
-    transition: 1s all ease;
+    -webkit-transition: 2s all ease;
+    -moz-transition: 2s all ease;
+    transition: 2s all ease;
   }
 }
 @media all {
