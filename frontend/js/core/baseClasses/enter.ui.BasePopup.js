@@ -37,6 +37,11 @@
             };
 
         _.extend(BasePopup.prototype, {
+
+            onClose: function() {},
+
+            onLoad: function() {},
+
             /**
              * Показ окна
              *
@@ -51,7 +56,9 @@
 
                 modules.require('jquery.lightbox_me', function(){
                     self.$el.lightbox_me({
-                        closeSelector: self.closeSelector
+                        closeSelector: self.closeSelector,
+                        onLoad: self.onLoad.bind(self),
+                        onClose: self.onClose.bind(self)
                     });
                 });
 

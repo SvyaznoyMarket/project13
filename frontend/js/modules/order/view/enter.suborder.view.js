@@ -15,13 +15,15 @@
             'jQuery',
             'enter.BaseViewClass',
             'enter.order.item.view',
-            'enter.order.calendar.view'
+            'enter.order.calendar.view',
+            'enter.order.points.popup.view',
+            'enter.points.popup.collection'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, OrderItemView, OrderCalendarView ) {
+    function( provide, $, BaseViewClass, OrderItemView, OrderCalendarView, OrderPointMapPopupView, OrderPointsCollection ) {
         'use strict';
 
         var
@@ -34,7 +36,7 @@
              */
             CSS_CLASSES = {
                 ITEM: 'js-order-item',
-                CHANGE_DELIVERY_POINT: 'js-order-changePlace-link',
+                SHOW_POINS_POPUP: 'js-order-changePlace-link',
                 SHOW_DISCOUNT: 'js-show-discount',
                 CHANGE_PAYMENT_METHOD_RADIO: 'js-payment-method-radio',
                 CHANGE_PAYMENT_METHOD_SELECT: 'js-payment-method-select',
@@ -43,7 +45,8 @@
                 CHANGE_DELIVERY_METHOD_ACITVE: 'orderCol_delivrLst_i-act',
                 SHOW_INTERVALS_BTN: 'js-order-show-intervals',
                 INTERVALS_POPUP: 'js-order-intervals',
-                PICK_INTERVAL: 'js-order-pick-interval'
+                PICK_INTERVAL: 'js-order-pick-interval',
+                POINTS_DATA: 'js-points-data'
             };
 
         provide(BaseViewClass.extend({
@@ -55,12 +58,15 @@
              */
             initialize: function( options ) {
                 console.info('module:enter.suborder.view~SubOrderView#initialize');
-                var
-                    self  = this,
-                    items = this.$el.find('.' + CSS_CLASSES.ITEM);
 
-                this.orderView = options.orderView;
-                this.blockName = this.$el.attr('data-block_name');
+                var
+                    self        = this,
+                    items       = this.$el.find('.' + CSS_CLASSES.ITEM),
+                    orderPoints = JSON.parse(this.$el.find('.' + CSS_CLASSES.POINTS_DATA).html());
+
+                this.orderView        = options.orderView;
+                this.blockName        = this.$el.attr('data-block_name');
+                this.pointsCollection = new OrderPointsCollection(orderPoints.points);
 
                 items.each(function( index ) {
                     self.subViews['suborder_' + index] = new OrderItemView({
@@ -73,7 +79,7 @@
                 this.subViews.intervalsPopup = this.$el.find('.' + CSS_CLASSES.INTERVALS_POPUP);
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.CHANGE_DELIVERY_POINT]         = 'changeDeliveryPoint';
+                this.events['click .' + CSS_CLASSES.SHOW_POINS_POPUP]              = 'showPointsPopup';
                 this.events['click .' + CSS_CLASSES.SHOW_DISCOUNT]                 = 'showDiscount';
                 this.events['click .' + CSS_CLASSES.CHANGE_PAYMENT_METHOD_RADIO]   = 'changePaymentMethod';
                 this.events['change .' + CSS_CLASSES.CHANGE_PAYMENT_METHOD_SELECT] = 'changePaymentMethodSelect';
@@ -235,15 +241,22 @@
             },
 
             /**
-             * Обработчик смены доставки
+             * Показать окно с выбором точки самовывоза
              *
-             * @method      changeDeliveryPoint
+             * @method      showPointsPopup
              * @memberOf    module:enter.suborder.view~SubOrderView#
              *
              * @todo        написать обработчик
              */
-            changeDeliveryPoint: function() {
-                console.info('module:enter.suborder.view~SubOrderView#changeDeliveryPoint');
+            showPointsPopup: function() {
+                console.info('module:enter.suborder.view~SubOrderView#showPointsPopup');
+
+                new OrderPointMapPopupView({
+                    orderView: this.orderView,
+                    blockName: this.blockName,
+                    collection: this.pointsCollection
+                });
+
                 return false;
             },
 
