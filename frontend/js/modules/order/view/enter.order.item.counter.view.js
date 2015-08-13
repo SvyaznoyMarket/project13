@@ -124,7 +124,7 @@
                     data: {
                         block_name: this.blockName,
                         id: this.productData.id,
-                        quantity: this.quantity
+                        quantity: 0
                     }
                 });
 
@@ -141,6 +141,16 @@
              */
             deleteProduct: function() {
                 console.info('module:enter.order.item.counter.view~OrderItemCounterView#deleteProduct');
+
+                this.orderView.trigger('sendChanges', {
+                    action: 'changeProductQuantity',
+                    data: {
+                        block_name: this.blockName,
+                        id: this.productData.id,
+                        quantity: this.quantity
+                    }
+                });
+
                 return false;
             },
 
