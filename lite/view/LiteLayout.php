@@ -113,4 +113,8 @@ class LiteLayout extends \View\Layout
             . $this->tryRender('common/popups/slot');
     }
 
+    public function blockSearch() {
+        return '';
+    }
+
 }
