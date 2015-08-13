@@ -33,7 +33,8 @@
              */
             CSS_CLASSES = {
                 COUNTER: 'js-order-item-counter',
-                SHOW_COUNTER_BTN: 'js-show-counter'
+                SHOW_COUNTER_BTN: 'js-show-counter',
+                COUNTER_ACTIVE: 'edit'
             };
 
         provide(BaseViewClass.extend({
@@ -64,6 +65,8 @@
                     showCounterBtn: this.$el.find('.' + CSS_CLASSES.SHOW_COUNTER_BTN)
                 };
 
+                this.subViews.wrapper = this.subViews.showCounterBtn.parent();
+
                 this.events['click .' + CSS_CLASSES.SHOW_COUNTER_BTN]  = 'showCounter';
 
                 // Apply events
@@ -85,8 +88,9 @@
              * @memberOf    module:enter.order.item.view~OrderItemView#
              */
             showCounter: function() {
-                this.subViews.showCounterBtn.hide();
-                this.subViews.counter.show();
+                this.subViews.wrapper.addClass(CSS_CLASSES.COUNTER_ACTIVE);
+                // this.subViews.showCounterBtn.hide();
+                // this.subViews.counter.show();
             }
         }));
     }

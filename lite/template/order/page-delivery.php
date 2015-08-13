@@ -191,7 +191,7 @@ return function(
                                     <?= $product->name_web ?>
                                 </a>
 
-                                <div class="order-item__data edit">
+                                <div class="order-item__data">
                                     <span class="order-item__data-item order-item__data-item_summ" ><?= $helper->formatPrice($product->original_sum) ?> <span class="rubl">p</span></span>
                                     <span class="order-item__data-item order-item__data-item_count js-show-counter"><?= $product->quantity ?> шт.</span>
 
