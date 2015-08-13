@@ -40,7 +40,10 @@
                 CHANGE_PAYMENT_METHOD_SELECT: 'js-payment-method-select',
                 CALENDAR_OPENER: 'js-order-open-calendar',
                 CHANGE_DELIVERY_METHOD: 'js-order-change-delivery-method',
-                CHANGE_DELIVERY_METHOD_ACITVE: 'orderCol_delivrLst_i-act'
+                CHANGE_DELIVERY_METHOD_ACITVE: 'orderCol_delivrLst_i-act',
+                SHOW_INTERVALS_BTN: 'js-order-show-intervals',
+                INTERVALS_POPUP: 'js-order-intervals',
+                PICK_INTERVAL: 'js-order-pick-interval'
             };
 
         provide(BaseViewClass.extend({
@@ -67,6 +70,8 @@
                     });
                 });
 
+                this.subViews.intervalsPopup = this.$el.find('.' + CSS_CLASSES.INTERVALS_POPUP);
+
                 // Setup events
                 this.events['click .' + CSS_CLASSES.CHANGE_DELIVERY_POINT]         = 'changeDeliveryPoint';
                 this.events['click .' + CSS_CLASSES.SHOW_DISCOUNT]                 = 'showDiscount';
@@ -74,6 +79,8 @@
                 this.events['change .' + CSS_CLASSES.CHANGE_PAYMENT_METHOD_SELECT] = 'changePaymentMethodSelect';
                 this.events['click .' + CSS_CLASSES.CALENDAR_OPENER]               = 'openCalendar';
                 this.events['click .' + CSS_CLASSES.CHANGE_DELIVERY_METHOD]        = 'changeDeliveryMethod';
+                this.events['click .' + CSS_CLASSES.SHOW_INTERVALS_BTN]            = 'showIntervals';
+                this.events['click .' + CSS_CLASSES.PICK_INTERVAL]                 = 'pickInterval';
 
 
                 // Apply events
@@ -87,6 +94,38 @@
              * @type        {Object}
              */
             events: {},
+
+            /**
+             * Обработчик выбора интервала
+             *
+             * @method      changeDeliveryMethod
+             * @memberOf    module:enter.suborder.view~SubOrderView#
+             */
+            pickInterval: function( event ) {
+                var
+                    target   = $(event.currentTarget),
+                    interval = target.data('value');
+
+                this.orderView.trigger('sendChanges', {
+                    action: 'changeInterval',
+                    data: {
+                        block_name: this.blockName,
+                        interval: interval
+                    }
+                });
+
+                return false;
+            },
+
+            /**
+             * Показать окно с выбором интервала
+             *
+             * @method      changeDeliveryMethod
+             * @memberOf    module:enter.suborder.view~SubOrderView#
+             */
+            showIntervals: function() {
+                this.subViews.intervalsPopup.show();
+            },
 
             /**
              * Смена метода доставки

@@ -8,19 +8,18 @@
 
     ?>
 
-    <div class="customSel <?= $isOneInterval ? 'customSel_cl' : 'jsShowDeliveryIntervals' ?>">
+    <div class="customSel <?= $isOneInterval ? 'customSel_cl' : 'js-order-show-intervals' ?>">
         <? if ($order->delivery->interval) : ?>
             <span class="customSel_def"><?= $order->delivery->interval['from'] ?>…<?= $order->delivery->interval['to'] ?></span>
         <? else : ?>
             <span class="customSel_def">Время доставки</span>
         <? endif ?>
 
-        <ul class="customSel_lst popupFl" style="display: none;">
+        <ul class="customSel_lst popupFl js-order-intervals" style="display: none;">
             <? foreach ($order->possible_intervals as $interval) : ?>
-                <li class="customSel_i" data-value="<?= $helper->json($interval) ?>"><?= isset ($interval['from']) ? $interval['from'] : '' ?>…<?= isset ($interval['to']) ? $interval['to'] : '' ?></li>
+                <li class="customSel_i js-order-pick-interval" data-value="<?= $helper->json($interval) ?>"><?= isset ($interval['from']) ? $interval['from'] : '' ?>…<?= isset ($interval['to']) ? $interval['to'] : '' ?></li>
             <? endforeach; ?>
         </ul>
     </div>
 
 <? } ?>
- 
