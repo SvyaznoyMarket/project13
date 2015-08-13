@@ -19,7 +19,7 @@ return function(
     ?>
 
     <div class="celedr popupFl" style="display: none" id="<?= $id ?>">
-        <div class="popupFl_clsr jsCloseFl">×</div>
+        <div class="popupFl_clsr js-order-calendar-close">×</div>
 
         <div class="celedr_t"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2, %A', time()))?></div>
 
@@ -70,7 +70,7 @@ return function(
                     <? endif; ?>
 
                     <? $isDayAvailable = in_array((int)$day->format('U'), $possible_days) ?>
-                    <div class="celedr_col <?= $isDayAvailable ? '' : 'celedr_col-disbl' ?>" data-value="<?= $isDayAvailable ? $day->format('U') : '' ?>"><?= $day->format('d')?></div>
+                    <div class="celedr_col <?= $isDayAvailable ? 'js-order-calendar-pickdate' : 'celedr_col-disbl' ?>" data-value="<?= $isDayAvailable ? $day->format('U') : '' ?>"><?= $day->format('d')?></div>
 
                 <? endforeach; ?>
 

@@ -14,13 +14,14 @@
         [
             'jQuery',
             'enter.BaseViewClass',
-            'enter.order.item.view'
+            'enter.order.item.view',
+            'enter.order.calendar.view'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, OrderItemView ) {
+    function( provide, $, BaseViewClass, OrderItemView, OrderCalendarView ) {
         'use strict';
 
         var
@@ -35,7 +36,8 @@
                 ITEM: 'js-order-item',
                 CHANGE_DELIVERY: 'js-order-changePlace-link',
                 SHOW_DISCOUNT: 'js-show-discount',
-                CHANGE_PAYMENT_METHOD: 'js-payment-method'
+                CHANGE_PAYMENT_METHOD: 'js-payment-method',
+                CALENDAR_OPENER: 'js-order-open-calendar'
             };
 
         provide(BaseViewClass.extend({
@@ -66,6 +68,8 @@
                 this.events['click .' + CSS_CLASSES.CHANGE_DELIVERY]       = 'changeDeliveryPoint';
                 this.events['click .' + CSS_CLASSES.SHOW_DISCOUNT]         = 'showDiscount';
                 this.events['click .' + CSS_CLASSES.CHANGE_PAYMENT_METHOD] = 'changePaymentMethod';
+                this.events['click .' + CSS_CLASSES.CALENDAR_OPENER]       = 'openCalendar';
+
 
                 // Apply events
                 this.delegateEvents();
@@ -80,12 +84,34 @@
             events: {},
 
             /**
+             * Открытие календаря
+             *
+             * @method      changePaymentMethod
+             * @memberOf    module:enter.suborder.view~SubOrderView#
+             */
+            openCalendar: function( event ) {
+                var
+                    target   = $(event.currentTarget),
+                    calendar = this.$el.find(target.attr('data-content'));
+
+                this.subViews.calendar && this.subViews.calendar.destroy();
+
+                this.subViews.calendar = new OrderCalendarView({
+                    el: calendar,
+                    orderView: this.orderView,
+                    blockName: this.blockName
+                });
+
+                return false;
+            },
+
+            /**
              * Обработчик смены метода оплаты
              *
              * @method      changePaymentMethod
              * @memberOf    module:enter.suborder.view~SubOrderView#
              *
-             * @todo        написать обработчик
+             * @param       {jQuery.Event}  event
              */
             changePaymentMethod: function( event ) {
                 var
