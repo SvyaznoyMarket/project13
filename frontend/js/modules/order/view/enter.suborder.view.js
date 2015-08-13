@@ -94,13 +94,15 @@
                     target   = $(event.currentTarget),
                     calendar = this.$el.find(target.attr('data-content'));
 
-                this.subViews.calendar && this.subViews.calendar.destroy();
-
-                this.subViews.calendar = new OrderCalendarView({
-                    el: calendar,
-                    orderView: this.orderView,
-                    blockName: this.blockName
-                });
+                if ( this.subViews.calendar ) {
+                    this.subViews.calendar.show();
+                } else {
+                    this.subViews.calendar = new OrderCalendarView({
+                        el: calendar,
+                        orderView: this.orderView,
+                        blockName: this.blockName
+                    });
+                }
 
                 return false;
             },
