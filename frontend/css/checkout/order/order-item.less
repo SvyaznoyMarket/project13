@@ -5,9 +5,9 @@
     &__img {
         width: 40px;
         height: 40px;
+        margin-right: 5px;
 
         text-align: center;
-        margin-right: 5px;
 
         .inline-block(middle);
         .image {
@@ -16,9 +16,10 @@
         }
     }
     &__name {
+        line-height: 1.2;
+
         .inline-block(middle);
         .font-face('GloberRegular');
-        line-height: 1.2;
     }
     &__data-item {
         margin-left: 20px;
@@ -50,25 +51,46 @@
             color: @black;
             border-bottom: 1px dotted;
         }
+        &-control {
+            color: @grey-type;
+
+            .font-size14(12);
+            .font-face('GloberRegular');
+            .inline-block(middle);
+        }
+        &-separate {
+            color: @grey-type;
+
+            .font-size14(12);
+            .font-face('GloberRegular');
+            .inline-block(middle);
+        }
+        &_edit {
+            display: none;
+            .counter {
+                line-height: 24px;
+
+                width: 110px;
+                margin-right: 10px;
+
+                .inline-block(middle);
+                .font-size14(12);
+            }
+        }
     }
     &__data {
         text-align: right;
 
-        &-edit {
-            line-height: 24px;
-
-            margin-right: 10px;
-
-            color: @black;
-            .bCountSection {
-                margin-bottom: 0;
-                padding-left: 0;
-
-                .inline-block();
-            }
-        }
         &-error-quantity {
             color: red;
+        }
+        &.edit {
+            .order-item__data-item {
+                display: none;
+                &_edit {
+                    display: block;
+                }
+            }
         }
     }
     &_t {

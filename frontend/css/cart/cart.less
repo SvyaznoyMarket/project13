@@ -144,14 +144,26 @@
     &_mini {
         .font-size(16);
         .counter__btn {
-            width: 23px;
             line-height: 23px;
+
+            width: 23px;
             height: 23px;
+            &:after {
+                width: 10px;
+                margin-left: -5px;
+            }
+            &_plus {
+                &:before {
+                    height: 10px;
+                    margin-top: -5px;
+                }
+            }
         }
         .counter__it {
             line-height: 23px;
-            height: 23px;
+
             width: 35px;
+            height: 23px;
         }
         .counter__num {
             font-style: 14px;

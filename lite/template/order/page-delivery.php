@@ -63,7 +63,7 @@ return function(
                     <div class="checkout-order__content">
                         <!--<div class="order-delivery-info-date">15 сентября 2014, воскресенье</div>-->
                         <? if ($order->delivery->date): ?>
-                            <div class="order-delivery-info-date js-order-open-calendar" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %G, %A', $order->delivery->date->format('U'))) ?></div>
+                            <div class="order-delivery-info-date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %G, %A', $order->delivery->date->format('U'))) ?></div>
                         <? endif ?>
 
                         <?= $helper->render('order/_calendar', [
@@ -170,7 +170,7 @@ return function(
                         <? endif ?>
                     </div>
 
-                    <div class="checkout-order__content">
+                    <div class="checkout-order__content">ta.burlakova@gmail.com
                         <? if ($order->total_cost > 100000) : ?>
                             <div class="order-delivery-info-warn">
                                 Требуется предоплата.<br/>
@@ -191,21 +191,21 @@ return function(
                                     <?= $product->name_web ?>
                                 </a>
 
-                                <div class="order-item__data">
+                                <div class="order-item__data edit">
                                     <span class="order-item__data-item order-item__data-item_summ" ><?= $helper->formatPrice($product->original_sum) ?> <span class="rubl">p</span></span>
                                     <span class="order-item__data-item order-item__data-item_count js-show-counter"><?= $product->quantity ?> шт.</span>
 
-                                    <div class="order-item__data-item order-item__data-item_edit js-order-item-counter" style="display: none">
-                                        <div data-spinner-for="" class="bCountSection">
-                                            <button class="js-counter-minus">-</button>
-                                            <input name="productQuantity[]" type="text" value="<?= $product->quantity ?>" class="js-counter-value" data-stock="<?= $product->stock ?>" />
-                                            <button class="js-counter-plus">+</button>
+                                    <div class="order-item__data-item order-item__data-item_edit js-order-item-counter">
+                                        <div data-spinner-for="" class="counter counter_mini">
+                                            <button class="counter__btn counter__btn_minus disabled js-counter-minus"></button>
+                                            <input name="productQuantity[]" type="text" value="<?= $product->quantity ?>" class="counter__it js-counter-value" data-stock="<?= $product->stock ?>" />
+                                            <button class="counter__btn counter__btn_plus js-counter-plus"></button>
                                             <span>шт.</span>
                                         </div>
 
-                                        <a class="dotted js-order-item-counter-apply" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
-                                        &nbsp;|&nbsp;
-                                        <a class="dotted js-order-item-counter-delete" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Удалить товар</a>
+                                        <a class="order-item__data-item-control js-order-item-counter-apply" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>"><span class="dotted">Применить</span></a>
+                                        <span class="order-item__data-item-separate">|</span>
+                                        <a class="order-item__data-item-control js-order-item-counter-delete" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>"><span class="dotted">Удалить товар</span></a>
                                     </div>
 
                                     <span class="order-item__data-item order-item__data-item_price"><?= $helper->formatPrice($product->original_price) ?> <span class="rubl">p</span></span>
