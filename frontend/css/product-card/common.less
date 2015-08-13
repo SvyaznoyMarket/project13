@@ -136,8 +136,8 @@
         .product-card-filter {
             margin-top: 0;
         }
-        .product-not-desc {
-            .clearfix();
+        .product-card-not-left {
+            padding-right: 165px;
         }
     }
     .btnBuy.mBuySet {
@@ -211,6 +211,8 @@
 
 // краткие характеристики
 .product-card-prop {
+    overflow: hidden;
+
     margin: 0 0 15px;
 
     color: @grey-bright;
@@ -235,11 +237,13 @@
     &__lk {
         float: left;
         clear: both;
-        .inline-block();
+
         margin-top: 5px;
 
         color: @grey-bright;
         border-bottom: 1px dotted;
+
+        .inline-block();
         &:hover {
             text-decoration: none;
         }

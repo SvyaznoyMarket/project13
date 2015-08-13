@@ -34,6 +34,26 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
 
         <div class="section">
 
+            <div class="search-result-status">
+                <div class="search-result-status__title">
+                    Вы искали <span class="link-color">poiakufjhskfglIE7F</span>
+                </div>
+
+                <div class="search-result-status-notfound">
+                    <div class="search-result-status-notfound__title">Товары не найдены</div>
+                    <div class="search-result-status-notfound__text mb-15">Попробуйте изменить поисковый запрос</div>
+                    <div class="search-result-status-notfound__text">Или позвоните нам по телефону <span class="search-result-status-notfound__phone">+7 495 775-00-06</span></div>
+                    <div class="search-result-status-notfound__text">мы поможем подобрать товар</div>
+                </div>
+
+                <div class="search-result-status__title">
+                    Показаны результаты поиска по запросу <span class="link-color">смартфон</span>
+                </div>
+
+                <div class="search-result-status__text">По запросу <span class="link-color">ываыаыа</span> товары не найдены</div>
+                <div class="search-result-status__text">Попробуйте изменить поисковый запрос</div>
+            </div>
+
             <?= $page->render('category/_breadcrumbs', ['category' => $category]) ?>
 
             <!-- Breadcrumbs -->

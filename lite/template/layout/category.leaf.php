@@ -6,28 +6,23 @@
 
 <!doctype html>
 <html class="no-js" lang="">
+	<?= $page->blockHead() ?>
 
-<?= $page->blockHead() ?>
+	<body>
+		<?= $page->blockHeader() ?>
 
-<body>
+	    <div class="wrapper">
+	        <?= $page->blockContent() ?>
+	    </div>
 
-	<?= $page->blockHeader() ?>
+	    <hr class="hr-orange">
 
-    <div class="wrapper">
+	    <?= $page->blockFooter() ?>
 
-        <?= $page->blockContent() ?>
+	    <?= $page->slotBodyJavascript() ?>
 
-    </div>
+	    <?= $page->blockUserConfig() ?>
 
-    <hr class="hr-orange">
-
-    <?= $page->blockFooter() ?>
-
-    <?= $page->slotBodyJavascript() ?>
-
-    <?= $page->blockUserConfig() ?>
-
-    <?= $page->blockPopupTemplates() ?>
-
-</body>
+	    <?= $page->blockPopupTemplates() ?>
+	</body>
 </html>

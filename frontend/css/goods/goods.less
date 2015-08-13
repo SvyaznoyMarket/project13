@@ -317,3 +317,34 @@
         .inline-block();
     }
 }
+
+.search-result-status {
+    margin: 40px 0 20px;
+    color: @grey-light;
+    .font-face('GloberRegular');
+
+    &__title {
+        .font-size(20);
+        margin: 0 0 5px;
+    }
+    &__text {
+        .font-size(16);
+    }
+}
+
+.search-result-status-notfound {
+    width: 410px;
+    margin: 0 auto 50px;
+    &__title {
+        .font-size(32);
+        text-align: center;
+        margin: 0 0 10px;
+    }
+
+    &__text {
+        .font-size(18);
+    }
+    &__phone {
+        color: @grey-type;
+    }
+}
