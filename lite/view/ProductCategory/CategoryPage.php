@@ -41,4 +41,11 @@ class CategoryPage extends LiteLayout
             ;
     }
 
+    /** Категории в листингах
+     * @return string
+     */
+    public function blockCategories() {
+        return $this->render('category/_categories', ['category' => $this->getParam('category')]);
+    }
+
 }

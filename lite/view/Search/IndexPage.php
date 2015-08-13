@@ -33,4 +33,21 @@ class IndexPage extends CategoryPage
             ;
     }
 
+    public function blockCategories() {
+
+        $links = [];
+
+        foreach ($this->getParam('categories', []) as $category) {
+            /** @var $category \Model\Product\Category\Entity */
+            $links[] = [
+                'name'   => $category->getName(),
+                'url'    => $this->url('search', ['q' => $this->getParam('searchQuery'), 'category' => $category->getId()]),
+                'image'  => $category->getImageUrl(),
+                'active' => $category->getId() == \App::request()->query->get('category'),
+            ];
+        }
+
+        return $this->render('search/_categories', ['links' => $links ]);
+    }
+
 }
