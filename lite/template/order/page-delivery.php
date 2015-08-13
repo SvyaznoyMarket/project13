@@ -63,7 +63,7 @@ return function(
                     <div class="checkout-order__content">
                         <!--<div class="order-delivery-info-date">15 сентября 2014, воскресенье</div>-->
                         <? if ($order->delivery->date): ?>
-                            <div class="order-delivery-info-date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %G, %A', $order->delivery->date->format('U'))) ?></div>
+                            <div class="order-delivery-info-date js-order-open-calendar" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %G, %A', $order->delivery->date->format('U'))) ?></div>
                         <? endif ?>
 
                         <?= $helper->render('order/_calendar', [
