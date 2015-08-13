@@ -145,7 +145,7 @@ return function(
                         <?
                         $dataPoints = (new \View\PointsMap\MapView());
                         $dataPoints->preparePointsWithOrder($order, $orderDelivery);
-                        echo \App::helper()->jsonInScriptTag($dataPoints, 'js-points-data');
+                        echo \App::helper()->jsonInScriptTag($dataPoints, '', 'js-points-data');
                         ?>
 
                         <?= \App::templating()->render('order/common/map', [
