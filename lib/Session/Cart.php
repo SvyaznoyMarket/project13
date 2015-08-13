@@ -77,7 +77,6 @@ class Cart {
     public function setProduct(\Model\Product\Entity $product, $quantity = 1, array $params = [], $moveProductToUp = false) {
         if ($quantity < 0) $quantity = 0;
 
-         // новый формат
         $data = $this->storage->get($this->sessionName);
         $item = $this->formatProduct($product, $quantity);
         if (!isset($data['product'][$product->getId()]['added'])) {
@@ -99,6 +98,30 @@ class Cart {
         $this->update(true);
 
         $this->storage->set($this->sessionName, $data);
+    }
+
+    /**
+     * Устанавливает количество товара по его ui
+     *
+     * @param $ui
+     * @param $quantity
+     */
+    public function setProductQuantityByUi($ui, $quantity) {
+        $data = $this->storage->get($this->sessionName);
+
+        foreach ($data['product'] as $i => $item) {
+            if (
+                isset($item['ui'])
+                && ($ui === $item['ui'])
+            ) {
+                if ($data['product'][$i]['quantity'] !== $quantity) {
+                    $data['product'][$i]['quantity'] = $quantity;
+                    $this->storage->set($this->sessionName, $data);
+                }
+
+                break;
+            }
+        }
     }
 
     /**
