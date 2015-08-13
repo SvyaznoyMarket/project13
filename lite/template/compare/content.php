@@ -36,7 +36,9 @@ return function (
                         <!-- ko foreach: {data: compareGroups()[activeCompareGroupIndex()].products} -->
 
                         <td class="goods__item cmprCnt_product">
-                            <div class="cmprCnt_fixed cmprCnt_modeW js-compare-fixed cmprCnt_cell">
+                            <div class="cmprCnt_fixed cmprCnt_modeW js-compare-fixed cmprCnt_cell js-module-require"
+                                 data-bind="
+                                 attr: { 'data-product': JSON.stringify({ id: id, ui: ui }), 'data-module': 'enter.product' }">
                                 <a href="" class="goods__delete icon-clear js-compare-deleteProductLink" data-bind="attr: {href: deleteFromCompareUrl, 'data-product-id': id}"></a>
 
                                 <a class="goods__img" href="" data-bind="attr: {href: link}">
@@ -72,7 +74,7 @@ return function (
                                 <!-- /ko -->
                                 <div class="goods__price-now"><span data-bind="html: price"></span> <span class="rubl-css">P</span></div>
 
-                                <a href="" class="goods__btn btn-primary js-buy-button js-module-require"
+                                <a href="" class="goods__btn btn-primary js-buy-button "
                                    data-bind="attr: {
                                     'data-product-id': id,
                                     'data-product-ui': ui,
@@ -86,8 +88,6 @@ return function (
                                     'data-partner-offer-url': partnerOfferUrl,
                                     'data-is-slot': isSlot,
                                     'data-sender': typeof sender != 'undefined' ? sender : '',
-                                    'data-product': JSON.stringify({ id: id, ui: ui }),
-                                    'data-module': 'enter.product'
                                    }">Купить</a>
                             </div>
                         </td>
