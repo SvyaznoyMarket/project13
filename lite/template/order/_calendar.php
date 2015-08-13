@@ -3,7 +3,8 @@
 return function(
     \Helper\TemplateHelper $helper,
     $id,
-    array $possible_days
+    array $possible_days,
+    \DateTime $choosenDay
 ) {
 
     $lastAvailableDay = DateTime::createFromFormat('U', (string)end($possible_days));
@@ -23,21 +24,15 @@ return function(
 
         <div class="celedr_t"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2, %A', time()))?></div>
 
-        <? if (\App::request()->cookies->get('enter_order_v3_wanna') != '1') : ?>
-
-            <!--        <button class="celedr_btn btn2 jsWanna">Хочу быстрее!</button>-->
-
-        <? endif; ?>
-
         <div class="celedr_tb">
             <div class="celedr_row celedr_row-h clearfix">
-                <div class="celedr_col">Пн</div>
-                <div class="celedr_col">Вт</div>
-                <div class="celedr_col">Ср</div>
-                <div class="celedr_col">Чт</div>
-                <div class="celedr_col">Пт</div>
-                <div class="celedr_col">Сб</div>
-                <div class="celedr_col">Вс</div>
+                <div class="celedr_col celedr_col-disbl">Пн</div>
+                <div class="celedr_col celedr_col-disbl">Вт</div>
+                <div class="celedr_col celedr_col-disbl">Ср</div>
+                <div class="celedr_col celedr_col-disbl">Чт</div>
+                <div class="celedr_col celedr_col-disbl">Пт</div>
+                <div class="celedr_col celedr_col-disbl">Сб</div>
+                <div class="celedr_col celedr_col-disbl">Вс</div>
             </div>
 
             <div class="celedr_row clearfix">
@@ -70,7 +65,8 @@ return function(
                     <? endif; ?>
 
                     <? $isDayAvailable = in_array((int)$day->format('U'), $possible_days) ?>
-                    <div class="celedr_col <?= $isDayAvailable ? 'js-order-calendar-pickdate' : 'celedr_col-disbl' ?>" data-value="<?= $isDayAvailable ? $day->format('U') : '' ?>"><?= $day->format('d')?></div>
+                    <div class="celedr_col <?= $isDayAvailable ? 'js-order-calendar-pickdate' : 'celedr_col-disbl' ?> <?= $day == $choosenDay ? 'active' : '' ?>"
+                         data-value="<?= $isDayAvailable ? $day->format('U') : '' ?>"><?= $day->format('d')?></div>
 
                 <? endforeach; ?>
 

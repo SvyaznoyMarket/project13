@@ -5,8 +5,10 @@
 
     var searchNode = d.querySelector('.jsKnockoutSearch'),
         regionSelection = d.querySelector('.jsRegionSelection'),
+        menu = d.querySelector('.js-navigation-menu-holder'),
         moduleRequireOnClick = d.querySelectorAll('.js-module-require-onclick'),
-        moduleRequireOnHover = d.querySelectorAll('.js-module-require-onhover');
+        moduleRequireOnHover = d.querySelectorAll('.js-module-require-onhover'),
+        menuHideTimeout;
 
     // Debug-панель
     window.addEventListener('load', function(){
@@ -79,9 +81,25 @@
         }
     }
 
+    // Если не стоит куки региона
     if (document.cookie.match(/geoshop=(\d+)/) === null || !document.cookie.match(/geoshop=(\d+)/)[1]) {
+        // Показываем меню
+        if (menu && menu.classList) menu.classList.add('show');
+        // Показываем выбор региона
         modules.require('enter.region', function(module){
             module.fillInput = true;
+        })
+    }
+
+    // Поведение меню
+    if (menu) {
+        // скрываем после одной секунды
+        menu.addEventListener('mouseleave', function(){
+            menuHideTimeout = setTimeout(function(){menu.classList && menu.classList.remove('show')}, 1000);
+        });
+        // не скрываем, если вернулись на меню в течении секунды
+        menu.addEventListener('mouseenter', function(){
+            clearTimeout(menuHideTimeout);
         })
     }
 
