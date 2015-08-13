@@ -2,29 +2,23 @@
 
 namespace EnterQuery\Cart
 {
-    use EnterQuery\Cart\RemoveProduct\Response;
+    use EnterQuery\Cart\Clear\Response;
 
-    class RemoveProduct
+    class Clear
     {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\CrmQueryTrait;
 
         /** @var string */
         public $userUi;
-        /** @var string */
-        public $ui;
-        /** @var string */
-        public $quantity;
         /** @var Response */
         public $response;
 
-        public function __construct($userUi = null, $ui = null, $quantity = 1000000)
+        public function __construct($userUi = null)
         {
             $this->response = new Response();
 
             $this->userUi = $userUi;
-            $this->ui = $ui;
-            $this->quantity = $quantity;
         }
 
         /**
@@ -34,18 +28,14 @@ namespace EnterQuery\Cart
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'api/cart/remove',
-                    []
+                    'api/cart/flush',
+                    [
+                        'user_uid' => $this->userUi,
+                    ]
                 ),
-                [
-                    'user_uid' => $this->userUi,
-                    'uid'      => $this->ui,
-                    'quantity' => $this->quantity,
-                ], // data
+                [], // data
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
-
-                    $this->response->quantity = isset($result['quantity']) ? $result['quantity'] : null;
 
                     return $result; // for cache
                 },
@@ -58,11 +48,9 @@ namespace EnterQuery\Cart
     }
 }
 
-namespace EnterQuery\Cart\RemoveProduct
+namespace EnterQuery\Cart\Clear
 {
     class Response
     {
-        /** @var int */
-        public $quantity;
     }
 }

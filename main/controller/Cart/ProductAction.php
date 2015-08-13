@@ -140,7 +140,7 @@ class ProductAction {
                 if ($quantity > 0) {
                     (new Query\Cart\SetProduct($userEntity->getUi(), $product->getUi(), $quantity))->prepare();
                 } else {
-                    (new Query\Cart\RemoveProduct($userEntity->getUi(), $product->getUi(), 1000000))->prepare();
+                    (new Query\Cart\RemoveProduct($userEntity->getUi(), $product->getUi()))->prepare();
                 }
 
                 $this->getCurl()->execute();
@@ -334,7 +334,7 @@ class ProductAction {
                         if ($quantity > 0) {
                             (new Query\Cart\SetProduct($userEntity->getUi(), $product->getUi(), $quantity))->prepare();
                         } else {
-                            (new Query\Cart\RemoveProduct($userEntity->getUi(), $product->getUi(), 1000000))->prepare();
+                            (new Query\Cart\RemoveProduct($userEntity->getUi(), $product->getUi()))->prepare();
                         }
                     }
 
