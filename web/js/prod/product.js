@@ -853,16 +853,39 @@ $(function() {
     });
 
     $productPhotoThumbsBtn.on('click', function(){
+        var fullwidth = $popupPhotoThumbs.length * 47;
 
-        if (!$productPhotoThumbs.is(':animated'))
-        $productPhotoThumbs.animate({
-            'margin-left': $(this).data('dir') + productPhotoThumbsWidth
-        }, function(){
-            var margin = parseInt($productPhotoThumbs.css('margin-left'));
-            $productPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
-            if (productPhotoThumbsFullWidth + margin <= productPhotoThumbsWidth) $productPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
-            if (margin >= 0) $productPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
-        });
+        if (!$productPhotoThumbs.is(':animated')) {
+            var marginLeft = $(this).data('dir') + productPhotoThumbsWidth;
+            var m = marginLeft.split('=');
+            var mar = parseInt($productPhotoThumbs.css('margin-left')) + parseInt(m[0] + m[1]);
+            console.log(fullwidth-productPhotoThumbsWidth, mar);
+
+            $productPhotoThumbsBtn.addClass(thumbBtnDisabledClass);
+
+            if ( -mar >= (fullwidth - productPhotoThumbsWidth) ){
+                console.log('too left');
+
+                $productPhotoThumbsBtn.eq(0).removeClass(thumbBtnDisabledClass);
+
+            } else if ( mar >= 0 ){
+                console.log('too right');
+
+                $productPhotoThumbsBtn.eq(1).removeClass(thumbBtnDisabledClass);
+
+
+            } else {
+                console.log(mar);
+
+                $productPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
+            }
+            $productPhotoThumbs.animate({
+                'margin-left': marginLeft
+            });
+
+
+
+        }
     });
 
 
