@@ -35,7 +35,7 @@
             </div>
 
             <div class="header__line header__line_bottom">
-                <div class="nav-section header__line-left" >
+                <div class="nav-section header__line-left js-navigation-menu-holder" >
                     <a href="" class="nav-section__btn btn-primary"
                        onclick="this.parentNode.classList && this.parentNode.classList.toggle('show'); return false">Каталог товаров</a>
                     <?= $page->blockNavigation() ?>
