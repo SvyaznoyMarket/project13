@@ -56,6 +56,7 @@
             // Показываем остальные города
             $('.js-region-show-more-cities').on('click', function(e){
                 e.preventDefault();
+                $(this).parent().toggleClass('active');
                 $('.js-region-more-cities-wrapper').toggleClass('show');
                 $slider.slick('reinit'); // потому что слайдер изначально не может выставить правильные css-значения для скрытого div-а
             });
