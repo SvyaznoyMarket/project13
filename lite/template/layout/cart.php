@@ -52,10 +52,10 @@
 
 <script type="text/html" id="js-cart-page-item-template">
     <div class="cart__row table-row">
-       <div class="cart__image cart__cell table-cell"><a href=""><img src="{{img}}" alt="" class="image"></a></div>
+       <div class="cart__image cart__cell table-cell"><a href="{{link}}"><img src="{{img}}" alt="" class="image"></a></div>
 
        <div class="cart__desc cart__cell table-cell">
-            <div class="cart__product-name"><a href="">{{name}}</a></div>
+            <div class="cart__product-name"><a href="{{link}}">{{name}}</a></div>
             <div class="cart__product-price">{{formattedPrice}}&thinsp;<span class="rubl">B</span></div>
        </div>
 
