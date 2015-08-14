@@ -542,7 +542,7 @@
                 if ( !_.isObject(data) || !_.isObject(data.list) || !_.isArray(data.list.products) || !data.list.products.length ) {
                     console.warn('Render empty listing');
                     // render error
-                    return;
+                    // return;
                 }
 
                 productsHtml        = this.render.products(data.list.products);
