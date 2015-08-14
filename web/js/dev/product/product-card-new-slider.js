@@ -180,12 +180,16 @@
     $body.on('click', '.jsProductPopupSlide', function(){
         console.log('slide');
         var direction = $(this).data('dir'),
-            curIndex = $popupPhotoThumbs.index($imgPopup.find('.'+thumbActiveClass));
+            curIndex = $popupPhotoThumbs.index($imgPopup.find('.'+thumbActiveClass)),
+            needScroll = $imgPopup.find('.product-card-photo-thumbs__cnt--slides').length;
 
         if (curIndex + direction == thumbsCount) setPhoto(0);
         else {
             setPhoto(curIndex + direction);
         }
+
+        if (needScroll){
+            
             //а если активное фото за пределами видимой области? надо крутить.
             var activePhotoOffset = $imgPopup.find('.'+thumbActiveClass).position().left,
                 margin = parseInt($popupThumbs.css('margin-left')),
@@ -206,6 +210,7 @@
                         if (margin >= 0) $popupPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
                     });
             }
+        }
 
     });
 
@@ -217,26 +222,23 @@
         var fullwidth = $popupPhotoThumbs.length * 47;
 
         if (!$productPhotoThumbs.is(':animated')) {
-            var marginLeft = $(this).data('dir') + productPhotoThumbsWidth;
-            var m = marginLeft.split('=');
-            var mar = parseInt($productPhotoThumbs.css('margin-left')) + parseInt(m[0] + m[1]);
-            console.log(fullwidth-productPhotoThumbsWidth, mar);
+            var marginLeft = $(this).data('dir') + productPhotoThumbsWidth,
+                m = marginLeft.split('='),
+                marginInt = parseInt($productPhotoThumbs.css('margin-left')) + parseInt(m[0] + m[1]);
+
 
             $productPhotoThumbsBtn.addClass(thumbBtnDisabledClass);
 
-            if ( -mar >= (fullwidth - productPhotoThumbsWidth) ){
-                console.log('too left');
+            if ( -marginInt  >= (fullwidth - productPhotoThumbsWidth) ){
 
                 $productPhotoThumbsBtn.eq(0).removeClass(thumbBtnDisabledClass);
 
-            } else if ( mar >= 0 ){
-                console.log('too right');
+            } else if ( marginInt  >= 0 ){
 
                 $productPhotoThumbsBtn.eq(1).removeClass(thumbBtnDisabledClass);
 
 
             } else {
-                console.log(mar);
 
                 $productPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
             }
