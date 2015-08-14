@@ -48,8 +48,10 @@
             self.searchResultNavigation = function(data, e) {
                 var keycode = e.which,
                     $links = $('.jsSearchbarResults a'),
-                    activeClass = 'searchdd_lk_iact',
+                    activeClass = 'active',
                     index = $links.index($links.filter('.'+activeClass));
+
+                console.log(e);
 
                 if (!self.isNoSearchResult()) {
                     $links.removeClass(activeClass);
