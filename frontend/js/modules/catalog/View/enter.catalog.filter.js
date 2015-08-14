@@ -47,7 +47,7 @@
                 BRANDS: 'js-category-v2-filter-otherBrands',
                 BRANDS_OPENER: 'js-category-v2-filter-otherBrandsOpener',
                 BRANDS_OPEN: 'open',
-                CLEAR_FILTER: 'filter-selected-clear'
+                CLEAR_FILTER: 'js-filter-clear'
             };
 
         provide(BaseViewClass.extend({
@@ -333,9 +333,12 @@
              * @param       {jQuery.Event}      event
              */
             clearFilter: function( event ) {
-                /**
-                 * @todo тут надо что-то сделать)
-                 */
+                var
+                    target = $(event.currentTarget),
+                    url    = target.attr('href');
+
+                this.catalogView.clearListingAndLoadNew(url);
+
                 return false;
             },
 

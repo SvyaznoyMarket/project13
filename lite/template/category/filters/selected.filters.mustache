@@ -5,7 +5,7 @@
         {{^isGroup}}
             {{#links}}
                 <li class="filter-selected__item">
-                    <a class="filter-selected__link icon-clear-after jsHistoryLink" href="{{url}}">{{&name}}</a>
+                    <a class="filter-selected__link js-filter-clear icon-clear-after" href="{{url}}">{{&name}}</a>
                 </li>
             {{/links}}
         {{/isGroup}}
@@ -18,7 +18,7 @@
                     {{/name}}
 
                     {{#links}}
-                        <a class="filter-selected__link icon-clear-after jsHistoryLink" href="{{url}}">{{&name}}</a>
+                        <a class="filter-selected__link js-filter-clear icon-clear-after" href="{{url}}">{{&name}}</a>
                     {{/links}}
                 </li>
             {{/properties}}
@@ -27,7 +27,7 @@
 {{/filters}}
 
 {{#filtersCount}}
-    <a class="filter-selected-clear icon-clear jsHistoryLink" href="{{cleanUrl}}">
+    <a class="filter-selected-clear icon-clear js-filter-clear" href="{{cleanUrl}}">
         <span class="dotted">Очистить все</span>
     </a>
 {{/filtersCount}}
