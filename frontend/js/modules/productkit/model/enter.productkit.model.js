@@ -31,9 +31,13 @@
              */
             initialize: function() {
                 var
-                    price       = this.get('price'),
-                    nowQuantity = this.get('count'),
-                    newSum      = price * nowQuantity;
+                    price          = this.get('price'),
+                    nowQuantity    = this.get('count'),
+                    height         = this.get('height'),
+                    width          = this.get('width'),
+                    depth          = this.get('depth'),
+                    showDemensions = !!( height !== '' && width !== '' && depth !== '' ),
+                    newSum         = price * nowQuantity;
 
                 console.info('module:enter.productkit.model~ProductKitModel#initialize');
 
@@ -41,7 +45,8 @@
                     'sum': newSum,
                     'sum_format': printPrice(newSum),
                     'price_format': printPrice(price),
-                    'quantity': nowQuantity
+                    'quantity': nowQuantity,
+                    'showDemensions': showDemensions
                 });
                 this.listenTo(this, 'change:quantity', this.changeQuantity);
             },
