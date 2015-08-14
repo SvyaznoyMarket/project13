@@ -55,7 +55,7 @@
        <div class="cart__image cart__cell table-cell"><a href=""><img src="{{img}}" alt="" class="image"></a></div>
 
        <div class="cart__desc cart__cell table-cell">
-            <div class="cart__product-name"><a href="">{{name}}</a></div>
+            <div class="cart__product-name"><a href="{{link}}">{{name}}</a></div>
             <div class="cart__product-price">{{formattedPrice}} <span class="rubl-css">P</span></div>
        </div>
 
