@@ -112,7 +112,7 @@ class Action {
         $client->execute();
 
         if (!empty($brandToken) && !$brand) {
-            //\App::exception()->add(new \Exception('Бренд не найден', 404));
+//            throw new \Exception\NotFoundException('Бренд не найден');
             $brand = new \Model\Brand\Entity([
                 'id'    => '0',
                 'token' => $brandToken,
