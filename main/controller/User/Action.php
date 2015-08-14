@@ -276,7 +276,7 @@ class Action {
         $form = new \View\User\RegistrationForm();
         if ($request->isMethod('post')) {
             $form->fromArray((array)$request->request->get('register'));
-            $isSubscribe = (bool)$request->get('subscribe', false);
+            $isSubscribe = true; //(bool)$request->get('subscribe', false);
 
             if (!$request->get('agreed')) {
                 $form->setError('agreed', 'Не указано согласие');
