@@ -74,7 +74,7 @@
              * @fires       module:enter.ui.BasePopup~BasePopup#changeQuantity
              */
             hide: function() {
-
+                this.$el.trigger('close');
                 return false;
             }
         }, BaseView.prototype);

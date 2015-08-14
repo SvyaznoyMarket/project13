@@ -38,6 +38,8 @@
                         el: self.$el,
                         productUi: self.model.get('ui')
                     });
+
+                    self.listenTo(self.productKitView, 'buyHandler', self.hide);
                 });
             }
         }));
