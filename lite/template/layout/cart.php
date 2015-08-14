@@ -15,7 +15,7 @@
 
 <div class="wrapper">
     <main class="content">
-        <div class="section js-cart js-cart-page">
+        <div class="section-cart section js-cart js-cart-page">
             <div class="section__title section__title_h1">Корзина</div>
 
             <!-- пустая корзина -->

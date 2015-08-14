@@ -75,8 +75,18 @@
     }
 }
 
+.section-cart {
+    &.header-cart_full {
+        .cart-summ,
+        .cart-order {
+            display: block;
+        }
+    }
+}
+
 .cart-summ {
     padding: 15px 10px 10px;
+    display: none;
 
     text-align: right;
     &__title {
@@ -93,15 +103,9 @@
     }
 }
 
-.header-cart_empty {
-    .cart-order__btn ,
-    .cart-summ {
-        display: none;
-    }
-}
-
 .cart-order {
     padding: 10px 0;
+    display: none;
 
     .clearfix();
     &__back {
