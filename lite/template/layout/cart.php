@@ -22,12 +22,12 @@
             <div class="cart-empty">
                 <div class="cart-empty__title">В корзине нет товаров</div>
                 <div class="cart-empty__desc">
-                    Попробуйте <a href="" class="cart-empty__search"><span class="underline">поиск</span></a>
+                    Попробуйте <a href="" onclick="document.querySelector('.jsSearchInput').focus(); return false;" class="cart-empty__search"><span class="underline">поиск</span></a>
                 </div>
 
-                <div class="cart-empty__desc">
+                <!--<div class="cart-empty__desc">
                     или посмотрите наши <a href="" class="cart-empty__wow"><span class="underline">акции</span></a>
-                </div>
+                </div>-->
             </div>
             <!--/ пустая корзина -->
 
