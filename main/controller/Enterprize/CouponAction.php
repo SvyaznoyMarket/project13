@@ -25,7 +25,7 @@ class CouponAction {
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         if (!$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize', $request->query->all()));
         }
 
         $user = \App::user()->getEntity();
@@ -204,7 +204,7 @@ class CouponAction {
             throw new \Exception\NotFoundException();
         }
 
-        return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+        return new \Http\RedirectResponse(\App::router()->generate('enterprize', $request->query->all()));
 
         // TODO - deprecated, по причине таска SITE-3934
 //        $session = \App::session();

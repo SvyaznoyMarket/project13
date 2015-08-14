@@ -230,7 +230,7 @@ class ConfirmEmailAction {
 
             $userToken = !empty($data['token']) ? $data['token'] : \App::user()->getToken();
             if ($userToken == null) {
-                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.warn'));
+                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.warn', $request->query->all()));
             } else {
                 $response = (new \Controller\Enterprize\CouponAction())->create($request, $data);
 
