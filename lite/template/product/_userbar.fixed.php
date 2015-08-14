@@ -30,8 +30,8 @@ $helper = \App::helper();
                     </div>
 
                     <div class="header-buy__price header-buy__cell">
-                        <? if ($product->getPriceOld()) : ?><div class="goods__price-old"><span class="line-through"><?= $helper->formatPrice($product->getPriceOld()) ?></span>&thinsp;<span class="rubl">С</span></div><? endif ?>
-                        <div class="goods__price-now"><?= $helper->formatPrice($product->getPrice()) ?>&thinsp;<span class="rubl">С</span></div>
+                        <? if ($product->getPriceOld()) : ?><div class="goods__price-old"><span class="line-through"><?= $helper->formatPrice($product->getPriceOld()) ?></span>&thinsp;<span class="rubl">C</span></div><? endif ?>
+                        <div class="goods__price-now"><?= $helper->formatPrice($product->getPrice()) ?>&thinsp;<span class="rubl">C</span></div>
                     </div>
 
                     <div class="header-buy__btn header-buy__cell">

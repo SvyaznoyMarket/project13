@@ -30,45 +30,46 @@ $f = function (
 
                         <div class="set-list__desc table">
                             <div class="table-cell">
-                            <? if ($arrItem['height']!='' || $arrItem['width']!='' || $arrItem['depth']!='') : ?>
+                                <? if ($arrItem['height']!='' || $arrItem['width']!='' || $arrItem['depth']!='') : ?>
 
-                                <!-- размеры товара -->
-                                <div class="set-list__dimention">
-                                    <span class="set-list__dimention-name">Высота</span>
-                                    <span class="set-list__dimention-val"><?= $arrItem['height'] ?></span>
-                                </div>
+                                    <!-- размеры товара -->
+                                    <div class="set-list__dimention">
+                                        <span class="set-list__dimention-name">Высота</span>
+                                        <span class="set-list__dimention-val"><?= $arrItem['height'] ?></span>
+                                    </div>
 
-                                <div class="set-list__dimention">
-                                    <span class="set-list__dimention-name">&nbsp;</span>
-                                    <span class="set-list__dimention-val set-list__dimention-val_separation">x</span>
-                                </div>
+                                    <div class="set-list__dimention">
+                                        <span class="set-list__dimention-name">&nbsp;</span>
+                                        <span class="set-list__dimention-val set-list__dimention-val_separation">x</span>
+                                    </div>
 
-                                <div class="set-list__dimention">
-                                    <span class="set-list__dimention-name">Ширина</span>
-                                    <span class="set-list__dimention-val"><?= $arrItem['width'] ?></span>
-                                </div>
+                                    <div class="set-list__dimention">
+                                        <span class="set-list__dimention-name">Ширина</span>
+                                        <span class="set-list__dimention-val"><?= $arrItem['width'] ?></span>
+                                    </div>
 
-                                <div class="set-list__dimention">
-                                    <span class="set-list__dimention-name">&nbsp;</span>
-                                    <span class="set-list__dimention-val set-list__dimention-val_separation">x</span>
-                                </div>
+                                    <div class="set-list__dimention">
+                                        <span class="set-list__dimention-name">&nbsp;</span>
+                                        <span class="set-list__dimention-val set-list__dimention-val_separation">x</span>
+                                    </div>
 
-                                <div class="set-list__dimention">
-                                    <span class="set-list__dimention-name">Глубина</span>
-                                    <span class="set-list__dimention-val"><?= $arrItem['depth'] ?></span>
-                                </div>
+                                    <div class="set-list__dimention">
+                                        <span class="set-list__dimention-name">Глубина</span>
+                                        <span class="set-list__dimention-val"><?= $arrItem['depth'] ?></span>
+                                    </div>
 
-                                <div class="set-list__dimention">
-                                    <span class="set-list__dimention-name">&nbsp;</span>
-                                    <span class="set-list__dimention-val">см</span>
-                                </div>
-                                <!--/ размеры товара -->
+                                    <div class="set-list__dimention">
+                                        <span class="set-list__dimention-name">&nbsp;</span>
+                                        <span class="set-list__dimention-val">см</span>
+                                    </div>
+                                    <!--/ размеры товара -->
 
-                            <? endif ?>
+                                <? endif ?>
+                                &nbsp;
                             </div>
 
                             <div class="set-list__price table-cell">
-                                <?= $helper->formatPrice($kitProduct->getPrice()) ?>&thinsp;<span class="rubl">С</span>
+                                <?= $helper->formatPrice($kitProduct->getPrice()) ?>&thinsp;<span class="rubl">C</span>
                             </div><!--/ цена -->
 
                             <div class="set-list__count table-cell"><?= $arrItem['count'] ?> шт.</div><!--/ количество в наборе -->

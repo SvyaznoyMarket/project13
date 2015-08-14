@@ -85,12 +85,12 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
 
                     <? if ($product->getPriceOld()) : ?>
                     <div class="product-card-set-buying__old-price">
-                        <span class="line-through"><?= $helper->formatPrice($product->getPriceOld()) ?></span>&thinsp;<span class="rubl">С</span>
+                        <span class="line-through"><?= $helper->formatPrice($product->getPriceOld()) ?></span>&thinsp;<span class="rubl">C</span>
                     </div>
                     <? endif ?>
 
                     <div class="product-card-set-buying__price">
-                        <?= $helper->formatPrice($product->getPrice()) ?>&thinsp;<span class="rubl">С</span>
+                        <?= $helper->formatPrice($product->getPrice()) ?>&thinsp;<span class="rubl">C</span>
                     </div>
 
                     <div class="product-card-set-buying__kit">Цена базового комплекта</div>

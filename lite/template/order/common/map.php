@@ -104,7 +104,7 @@ if (!isset($class)) $class = 'jsNewPoints';
                                                    type="checkbox" id="id-delivery-price-<?= $cost.$uniqId ?>" name="" value="<?= $cost ?>"
                                                    data-bind="checked: $root.choosenCosts" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-price-<?= $cost.$uniqId ?>">
-                                                <span class="customLabel_btx"><?= $cost == 0 ? 'Бесплатно' : $cost . '&thinsp;<span class="rubl">С</span>' ?></span>
+                                                <span class="customLabel_btx"><?= $cost == 0 ? 'Бесплатно' : $cost . '&thinsp;<span class="rubl">C</span>' ?></span>
                                             </label>
                                         </div>
 
@@ -213,7 +213,7 @@ if (!isset($class)) $class = 'jsNewPoints';
             <div class="deliv__title">Доставка</div>
             <div class="deliv-info">
                 <span class="deliv-info__date"><?= $helper->humanizeDate($product->delivery->getDeliveryWithMinDate()->getMinDate()->date) ?></span>
-                <span class="deliv-info__price"><?= $helper->formatPrice($product->delivery->getDeliveryWithMinDate()->price) ?>&thinsp;<span class="rubl">С</span></span>
+                <span class="deliv-info__price"><?= $helper->formatPrice($product->delivery->getDeliveryWithMinDate()->price) ?>&thinsp;<span class="rubl">C</span></span>
                 <div class="deliv-info__buy">
                     <a href="" class="btn-type btn-type--buy">Купить с доставкой</a>
                 </div>

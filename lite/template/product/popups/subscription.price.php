@@ -4,7 +4,7 @@
 
     <div class="popup__title">Узнать о снижении цены</div>
 
-    <div class="popup-best-price__desc">Вы получите письмо, когда цена станет ниже 12 333&thinsp;<span class="rubl">С</span></div>
+    <div class="popup-best-price__desc">Вы получите письмо, когда цена станет ниже 12 333&thinsp;<span class="rubl">C</span></div>
 
     <div class="form__field">
         <input type="text" class="form__it it js-lowPriceNotifier-popup-email" name="" value="">

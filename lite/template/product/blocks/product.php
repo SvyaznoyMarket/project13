@@ -56,7 +56,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
 
         <? if ($product->getPriceOld()) : ?>
             <div class="product-card-old-price">
-                <span class="product-card-old-price__inn"><?= $helper->formatPrice($product->getPriceOld()) ?></span>&thinsp;<span class="rubl">С</span>
+                <span class="product-card-old-price__inn"><?= $helper->formatPrice($product->getPriceOld()) ?></span>&thinsp;<span class="rubl">C</span>
             </div>
         <? endif ?>
 

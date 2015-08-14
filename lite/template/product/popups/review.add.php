@@ -82,7 +82,7 @@
 
             <form class="add-review-success__form form">
                 <input class="custom-input custom-input_check3" type="checkbox" name="subscribe" id="subscribe2">
-                <label class="custom-label" for="subscribe2">Подписаться на рассылку и получить купон со скидкой 300&thinsp;<span class="rubl">С</span> на следующую покупку.</label>
+                <label class="custom-label" for="subscribe2">Подписаться на рассылку и получить купон со скидкой 300&thinsp;<span class="rubl">C</span> на следующую покупку.</label>
 
                 <div class="form__btn-container">
                     <button class="btn-normal btn-normal_middle" type="submit">Продолжить</button>

@@ -265,7 +265,7 @@ $reviewsData = null;
         <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r"></div>
     </div>
 
-    <div class="popup-photo__price">121 649&thinsp;<span class="rubl">С</span></div>
+    <div class="popup-photo__price">121 649&thinsp;<span class="rubl">C</span></div>
     <a class="btn-primary btn-primary_normal" href="">Купить</a>
 </div>
 <!--/ просмотр большого изображения товара -->
