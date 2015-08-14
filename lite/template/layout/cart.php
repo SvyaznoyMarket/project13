@@ -36,7 +36,7 @@
             <!-- общая сумма заказа -->
             <div class="cart-summ">
                <div class="cart-summ__title">Сумма заказа:</div>
-               <div class="cart-summ__price"><span class="js-cart-sum"></span> <span class="rubl-css">P</span></div>
+               <div class="cart-summ__price"><span class="js-cart-sum"></span>&thinsp;<span class="rubl">C</span></div>
             </div>
             <!--/ общая сумма заказа -->
 
@@ -56,7 +56,7 @@
 
        <div class="cart__desc cart__cell table-cell">
             <div class="cart__product-name"><a href="">{{name}}</a></div>
-            <div class="cart__product-price">{{formattedPrice}} <span class="rubl-css">P</span></div>
+            <div class="cart__product-price">{{formattedPrice}}&thinsp;<span class="rubl">B</span></div>
        </div>
 
        <div class="cart__counter cart__cell table-cell">
@@ -70,7 +70,7 @@
             <a class="cart__delete js-cart-item-delete" href="{{deleteUrl}}"><span class="dotted">Удалить</span></a>
        </div>
 
-       <div class="cart__summ cart__cell table-cell">{{formattedFullPrice}} <span class="rubl-css">P</span></div>
+       <div class="cart__summ cart__cell table-cell">{{formattedFullPrice}}&thinsp;<span class="rubl">B</span></div>
     </div>
 </script>
 

@@ -23,7 +23,7 @@ return function(
         <input class="fltrRange_it mLast mToRange js-category-filter-rangeSlider-to <? if ($filter->isPrice()): ?>js-category-v2-filter-element-price-to<? endif ?>" name="<?= \View\Name::productCategoryFilter($filter, 'to') ?>" value="<?= $helper->clearZeroValue($productFilter->getValueMax($filter)) ?>" type="text" data-max="<?= $filter->getMax() ?>" />
 
         <? if ($filter->isPrice()): ?>
-            <span class="fltrRange_val rubl"><span class="rubl-css">P</span></span>
+            <span class="fltrRange_val rubl">C</span>
         <? else: ?>
             <span class="fltrRange_val"><?= $filter->getUnit() ?></span>
         <? endif ?>

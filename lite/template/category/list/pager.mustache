@@ -24,7 +24,6 @@
         {{/inStoreLabel}}
     </a>
 
-
     <div class="goods__rating rating">
         {{#review}}
             <span class="rating-state">
@@ -36,15 +35,14 @@
         {{/review}}
     </div>
 
-
     <div class="goods__name">
         <div class="goods__name-inn">
             <a href="{{link}}">{{name}}</a>
         </div>
     </div>
 
-    <div class="goods__price-old"><span class="line-through">{{#odlPrice}}{{oldPrice}}</span> <span class="rubl-css">P</span>{{/odlPrice}}</div>
-    <div class="goods__price-now">{{price}} <span class="rubl-css">P</span></div>
+    <div class="goods__price-old"><span class="line-through">{{#odlPrice}}{{oldPrice}}</span>&thinsp;<span class="rubl">C</span>{{/odlPrice}}</div>
+    <div class="goods__price-now">{{price}}&thinsp;<span class="rubl">C</span></div>
 
     {{& buyButtonHtml}}
 

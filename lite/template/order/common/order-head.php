@@ -1,7 +1,7 @@
 <!-- шапка оформления заказа -->
 <header class="checkout-header table">
     <div class="checkout-header__left table-cell">
-        <img class="checkout-header__logo" src="/public/images/itlogo.png">
+        <img class="checkout-header__logo" src="/public/images/logo.png">
         <div class="checkout-header__title">Оформление заказа</div>
     </div>
 

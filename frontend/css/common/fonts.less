@@ -61,6 +61,23 @@
     url('@{fonts}/GloberBold/GloberBold.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'Ruble';
+    font-weight: normal;
+    font-style: normal;
+
+    src: url('@{fonts}/ruble/glober-rubl.eot');
+    src: url('@{fonts}/ruble/glober-rubl.eot?#iefix') format('embedded-opentype'),
+    url('@{fonts}/ruble/glober-rubl.svg#glober-rubl') format('svg'),
+    url('@{fonts}/ruble/glober-rubl.woff') format('woff'),
+    url('@{fonts}/ruble/glober-rubl.woff2') format('woff2'),
+    url('@{fonts}/ruble/glober-rubl.ttf') format('truetype');
+}
+
+.rubl {
+    font-family: 'Ruble';
+}
+
 .font-face( @font ) {
     font-family: @font, Tahoma, Geneva, Helvetica, sans-serif;
 }

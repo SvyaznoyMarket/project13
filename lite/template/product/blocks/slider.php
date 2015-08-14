@@ -168,11 +168,11 @@ $f = function (
 
                         <div class="goods-slider-list__price-old">
                             <? if ($product->getPriceOld() && $product->getLabel() && $product->getLabel()->affectPrice) : ?>
-                                <span class="line-through"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
+                                <span class="line-through"><?= $helper->formatPrice($product->getPriceOld()) ?></span>&thinsp;<span class="rubl">C</span>
                             <? endif ?>
                         </div>
 
-                        <div class="goods-slider-list__price-now"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></div>
+                        <div class="goods-slider-list__price-now"><?= $helper->formatPrice($product->getPrice()) ?>&thinsp;<span class="rubl">C</span></div>
 
                         <?= $helper->render('product/_button.buy', [
                             'product'        => $product,

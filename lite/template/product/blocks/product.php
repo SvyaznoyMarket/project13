@@ -56,13 +56,13 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
 
         <? if ($product->getPriceOld()) : ?>
             <div class="product-card-old-price">
-                <span class="product-card-old-price__inn"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
+                <span class="product-card-old-price__inn"><?= $helper->formatPrice($product->getPriceOld()) ?></span>&thinsp;<span class="rubl">С</span>
             </div>
         <? endif ?>
 
         <!-- цена товара -->
         <div class="product-card-price i-info">
-            <span class="product-card-price__val i-info__tx"><?= $helper->formatPrice($product->getPrice()) ?><span class="rubl">p</span></span>
+            <span class="product-card-price__val i-info__tx"><?= $helper->formatPrice($product->getPrice()) ?>&thinsp;<span class="rubl">C</span></span>
 
             <i class="i-product i-product--info-normal i-info__icon js-lowPriceNotifier-opener js-lowPriceNotifier" data-values="<?= $helper->json([
                 'price' => $price && $price < $product->getPrice() ? $helper->formatPrice($price) : null,

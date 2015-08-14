@@ -117,7 +117,7 @@
                 <span class="fltrRange_lbl">до</span>
                 <input class="fltrRange_it mLast mToRange js-category-filter-rangeSlider-to js-category-v2-filter-element-price-to" name="f-price-to" value="61990" type="text" data-max="61990">
 
-                <span class="fltrRange_val rubl"><span class="rubl-css">P</span></span>
+                <span class="fltrRange_val rubl">P</span>
             </div>
         </div>
     </div>
@@ -244,7 +244,7 @@
                 <span class="fltrRange_lbl">до</span>
                 <input class="fltrRange_it mLast mToRange js-category-filter-rangeSlider-to js-category-v2-filter-element-price-to" name="f-price-to" value="61990" type="text" data-max="61990">
 
-                <span class="fltrRange_val rubl"><span class="rubl-css">P</span></span>
+                <span class="fltrRange_val rubl"><span class="rubl">P</span></span>
             </div>
         </div>
     </div>

@@ -131,7 +131,7 @@
                 <form class="form-ctrl">
                     <div class="form-ctrl__group">
                         <input class="customInput customInput-defcheck jsCustomRadio js-customInput js-registerForm-subscribe" type="checkbox" name="subscribe" id="subscribe">
-                        <label class="customLabel customLabel-defcheck mChecked" for="subscribe">Подписаться на рассылку и получить купон со скидкой 300 <span class="rubl">p</span> на следующую покупку.</label>
+                        <label class="customLabel customLabel-defcheck mChecked" for="subscribe">Подписаться на рассылку и получить купон со скидкой 300&thinsp;<span class="rubl">С</span> на следующую покупку.</label>
                     </div>
                     <div class="form-ctrl__btn-container">
                         <button class="btn-type btn-type--buy jsPopupCloser jsSubscribeAfterReview" type="submit">Продолжить</button>

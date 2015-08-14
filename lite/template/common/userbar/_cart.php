@@ -28,7 +28,7 @@
         <a class="notice-cart__name notice-cart__cell" href="{{link}}"><span class="notice-cart__name-inn">{{name}}</span></a>
 
         <div class="notice-cart__desc notice-cart__cell">
-            <div class="notice-cart__price">{{formattedPrice}} <span class="rubl-css">P</span></div>
+            <div class="notice-cart__price">{{formattedPrice}}&thinsp;<span class="rubl">C</span></div>
             <span class="notice-cart__quan">{{quantity}} шт.</span>
             <a class="notice-cart__del js-cart-item-delete" href="{{deleteUrl}}"><i class="notice-cart__icon icon-clear"></i></a>
         </div>

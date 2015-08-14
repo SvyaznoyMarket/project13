@@ -34,7 +34,7 @@ return function(
                         <? if ($order->getPaySum()): ?>
                             <div class="checkout-complete-box__summ">
                                 <span class="checkout-complete-box__summ-title">Сумма заказа:</span>
-                                <span class="checkout-complete-box__summ-value"><?= $helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></span>
+                                <span class="checkout-complete-box__summ-value"><?= $helper->formatPrice($order->getPaySum()) ?>&thinsp;<span class="rubl">C</span></span>
                             </div>
                         <? endif ?>
                     </div>

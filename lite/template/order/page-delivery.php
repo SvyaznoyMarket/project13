@@ -157,7 +157,7 @@ return function(
                         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
                             <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
                             <input type="checkbox" class="custom-input custom-input_checkbox jsCreditPayment" id="credit-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked' : '' ?>>
-                            <label class="order-check custom-label <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>"><span class="dotted">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
+                            <label class="order-check custom-label <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>"><span class="dotted">Купить в кредит</span><!--, от 2 223 &thinsp;<span class="rubl">C</span> в месяц--></label>
                         <? endif; ?>
                     </div>
                 </div>
@@ -194,7 +194,7 @@ return function(
                                 </a>
 
                                 <div class="order-item__data">
-                                    <span class="order-item__data-item order-item__data-item_summ" ><?= $helper->formatPrice($product->original_sum) ?> <span class="rubl">p</span></span>
+                                    <span class="order-item__data-item order-item__data-item_summ" ><?= $helper->formatPrice($product->original_sum) ?>&thinsp;<span class="rubl">C</span></span>
                                     <span class="order-item__data-item order-item__data-item_count js-show-counter"><?= $product->quantity ?> шт.</span>
 
                                     <div class="order-item__data-item order-item__data-item_edit js-order-item-counter">
@@ -210,7 +210,7 @@ return function(
                                         <a class="order-item__data-item-control js-order-item-counter-delete" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>"><span class="dotted">Удалить товар</span></a>
                                     </div>
 
-                                    <span class="order-item__data-item order-item__data-item_price"><?= $helper->formatPrice($product->original_price) ?> <span class="rubl">p</span></span>
+                                    <span class="order-item__data-item order-item__data-item_price"><?= $helper->formatPrice($product->original_price) ?>&thinsp;<span class="rubl">C</span></span>
                                     <?= $helper->render('order/_error.order', [ 'orderDelivery' => $orderDelivery, 'order' => $order, 'product' => $product ]) ?>
                                 </div>
                             </div>
@@ -231,7 +231,7 @@ return function(
                                         <?= $discount->name; ?>
                                     </div>
 
-                                    <span class="orderCol_data orderCol_data-summ orderCol_i_data-sale">-<?= $discount->discount ?> <span class="rubl">p</span></span>
+                                    <span class="orderCol_data orderCol_data-summ orderCol_i_data-sale">-<?= $discount->discount ?>&thinsp;<span class="rubl">C</span></span>
                                     <? if ($discount->number !== null) : ?><span class="orderCol_data orderCol_data-del jsDeleteDiscount" data-value="<?= $discount->number ?>">удалить</span><? endif ?>
                                 </div>
 
@@ -246,7 +246,7 @@ return function(
 
                                     <div class="orderCol_n">Подарочный сертификат <?= $order->certificate['par'] ?> руб</div>
 
-                                    <span class="orderCol_data orderCol_data-summ orderCol_data-sale">-<?= $order->certificate['par'] ?> <span class="rubl">p</span></span>
+                                    <span class="orderCol_data orderCol_data-summ orderCol_data-sale">-<?= $order->certificate['par'] ?>&thinsp;<span class="rubl">C</span></span>
                                     <span class="orderCol_data orderCol_data-del jsDeleteCertificate">удалить</span>
                                 </div>
 
@@ -259,10 +259,10 @@ return function(
                             <? $helper->render('order/_discount', [ 'order' => $order ]) ?>
 
                             <div class="order-summ__right">
-                                <span class="order-summ__title"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price).' <span class="rubl">p</span>' ?></span>
+                                <span class="order-summ__title"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price).'&thinsp;<span class="rubl">B</span>' ?></span>
                                 <span class="order-summ__value"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
 
-                                <span class="order-summ__title order-summ__color"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
+                                <span class="order-summ__title order-summ__color"><?= $helper->formatPrice($order->total_cost) ?>&thinsp;<span class="rubl">B</span></span>
                                 <span class="order-summ__value order-summ__color">Итого:</span>
                             </div>
                         </div>
@@ -280,7 +280,7 @@ return function(
         </div>
 
         <div class="orderComplSumm">
-            <span class="l">Итого <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span></span>
+            <span class="l">Итого <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <?= $helper->formatPrice($orderDelivery->total_cost) ?>&thinsp;<span class="rubl">B</span></span>
         </div>
 
         <div class="orderCompl">
@@ -306,7 +306,7 @@ return function(
 
                 <div class="popup_inn">
                     <span class="info">До оформления заказа осталось</span>
-                    <span class="remain-sum"><?= \App::config()->minOrderSum - $orderDelivery->getProductsSum() ?>&thinsp;<span class="rubl">p</span></span>
+                    <span class="remain-sum"><?= \App::config()->minOrderSum - $orderDelivery->getProductsSum() ?>&thinsp;<span class="rubl">C</span></span>
                     <a href="/cart" class="to-cart-lnk">Вернуться в корзину</a>
                 </div>
             </div>

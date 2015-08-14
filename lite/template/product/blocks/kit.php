@@ -68,7 +68,7 @@ $f = function (
                             </div>
 
                             <div class="set-list__price table-cell">
-                                <?= $helper->formatPrice($kitProduct->getPrice()) ?>&nbsp;<span class="rubl">p</span>
+                                <?= $helper->formatPrice($kitProduct->getPrice()) ?>&thinsp;<span class="rubl">С</span>
                             </div><!--/ цена -->
 
                             <div class="set-list__count table-cell"><?= $arrItem['count'] ?> шт.</div><!--/ количество в наборе -->

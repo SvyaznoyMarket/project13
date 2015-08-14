@@ -46,11 +46,11 @@ $f = function(
 
             <? if ($product->getPriceOld()) : ?>
                 <div class="goods__price-old">
-                    <span class="line-through"><?= $helper->formatPrice($product->getPriceOld())?></span> <span class="rubl-css">P</span>
+                    <span class="line-through"><?= $helper->formatPrice($product->getPriceOld())?></span>&thinsp;<span class="rubl">C</span>
                 </div>
             <? endif ?>
 
-            <div class="goods__price-now"><?= $helper->formatPrice($product->getPrice())?> <span class="rubl-css">P</span></div>
+            <div class="goods__price-now"><?= $helper->formatPrice($product->getPrice())?>&thinsp;<span class="rubl">C</span></div>
 
             <?= $helper->render('product/_button.buy', [
                 'product' => $product,
