@@ -42,7 +42,7 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
             <? endif ?>
 
             <? if (isset($slice)) : ?>
-                <div class="section_title section_title_h1"><?= $slice->getName() ?></div>
+                <div class="section__title section__title_h1"><?= $slice->getName() ?></div>
             <? endif ?>
 
             <?= $page->blockCategories() ?>
