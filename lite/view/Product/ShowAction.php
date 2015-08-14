@@ -46,8 +46,7 @@ class ShowAction {
             'label'        =>
                 $product->getLabel()
                     ? ['name' => $product->getLabel()->getName(), 'image' => $product->getLabel()->getImageUrl()]
-                    : null
-            ,
+                    : [],
             'showCartButton' => true,
             'showCompareButton' => !$product->getKit() || $product->getIsKitLocked(),
             'cartButton'   => [],
@@ -76,7 +75,7 @@ class ShowAction {
                     ? true
                     : null
             ,
-            'hasVideo' => $product->hasVideo(),
+//            'hasVideo' => $product->hasVideo(),
             'has360'   => $product->has3d(),
 //            'review'   => $reviewtAction ? $reviewtAction->execute($helper, $product) : null,
             'isBanner' => false,
@@ -88,6 +87,13 @@ class ShowAction {
             'lite'              => true,
             'buyButtonHtml'     => $helper->render('product/_button.buy', ['product' => $product, 'class' => 'btn-primary_middle' ])
         ];
+
+        if ($product->hasVideo()) {
+            $productItem['label'][] = [
+                'name'  => 'Видео',
+                'class' => 'video'
+            ];
+        }
 
         // JSON-информация о продукте
         $productItem['productJSON'] = json_encode(
