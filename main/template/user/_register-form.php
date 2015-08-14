@@ -33,12 +33,12 @@ $oauthEnabled = \App::config()->oauthEnabled;
                 </div>
                 <div class="oferta-agreement">
                     <input class="customInput customInput-defcheck jsCustomRadio js-customInput" type="checkbox" name="agreed" id="registerForm-agreed" />
-                    <label class="customLabel customLabel-defcheck" for="registerForm-agreed">Согласен <a href="/reklamnaya-akcia-enterprize">с условиями оферты</a></label>
+                    <label class="customLabel customLabel-defcheck" for="registerForm-agreed">Согласен <a href="/reklamnaya-akcia-enterprize" target="_blank">с условиями оферты</a></label>
                 </div>
 
                 <input type="submit" class="authForm_is btnsubmit" name="" value="Регистрация" />
 
-                <p class="authForm_accept">Нажимая кнопку «Регистрация», я подтверждаю<br/> свое согласие с <a href="/terms">Условиями продажи...</a></p>
+                <p class="authForm_accept">Нажимая кнопку «Регистрация», я подтверждаю<br/> свое согласие с <a href="/terms" target="_blank">Условиями продажи...</a></p>
 
                 <div class="authForm_socn">
                     Войти через
