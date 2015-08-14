@@ -14,7 +14,7 @@
         data-bind="value: searchInput, valueUpdate: ['input', 'afterkeydown'], hasFocus: searchFocus, event: { keydown: searchResultNavigation }" >
     <button class="search-bar__btn btn-normal">Найти</button>
 
-    <div class="search-suggest"
+    <div class="search-suggest jsSearchbarResults"
          style="display: none"
          data-bind="visible: searchResultsVisibility() && searchInput().length > 2 && !isNoSearchResult()">
 
