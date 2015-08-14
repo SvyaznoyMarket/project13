@@ -187,7 +187,7 @@
                     quantity = this.model.get('quantity');
 
                 if ( inCart ) {
-                    this.model.set({'quantity': quantity++});
+                    this.model.set({'quantity': ++quantity});
                 }
 
                 this.model.set({'addUrl': url, 'inCart': true});
