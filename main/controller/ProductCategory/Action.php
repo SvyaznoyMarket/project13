@@ -775,6 +775,13 @@ class Action {
                 'countProducts'  => ($hasBanner) ? ( $productPager->count() - 1 ) : $productPager->count(),
             ];
 
+            if (\App::config()->lite['enabled']) {
+                $data['renderedFilter'] = \App::templating()->render('category/_filters', [
+                    'productFilter' => $productFilter,
+                    'baseUrl'       => \App::helper()->url('product.category', ['categoryPath' => $category->getPath()])
+                ]);
+            }
+
             // если установлена настройка что бы показывать фасеты, то в ответ добавляем "disabledFilter"
             if (true === \App::config()->sphinx['showFacets']) {
                 $data['disabledFilter'] = (new \View\ProductCategory\DisabledFilterAction())->execute(
