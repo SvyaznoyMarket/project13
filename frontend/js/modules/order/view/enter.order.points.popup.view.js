@@ -51,6 +51,9 @@
 
             index = 0;
 
+        // Lazy load Yandex Maps
+        modules.require(['ymaps'], function( ymaps ) {});
+
         provide(BasePopup.extend(/** @lends module:enter.ui.BasePopup~OrderPointsPopup */{
 
              /**

@@ -192,12 +192,12 @@
                     }),
 
                     // оформление метки на карте
-                    {
+                    _.extend({}, {
                         iconLayout: 'default#image',
                         iconImageHref: currPoint.icon || '/images/application/marker.png',
                         iconImageSize: [28, 39],
                         iconImageOffset: [-14, -39]
-                    }
+                    }, currPoint.marker || {})
                 );
 
                 if ( currPoint.shown === false ) {
