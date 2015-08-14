@@ -122,6 +122,8 @@
                     }
                 });
 
+                this.trigger('buyHandler');
+
                 return false;
             },
 

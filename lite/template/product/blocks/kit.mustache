@@ -21,6 +21,7 @@
                         <div class="table-cell">
                             <div class="set-list__nominal"><span>{{price_format}}</span>&thinsp;<span class="rubl">С</span></div>
 
+                            {{#showDemensions}}
                             <div class="set-list__dimention">
                                 <span class="set-list__dimention-name">Высота</span>
                                 <span class="set-list__dimention-val">{{height}}</span>
@@ -50,6 +51,7 @@
                                 <span class="set-list__dimention-name">&nbsp;</span>
                                 <span class="set-list__dimention-val">см</span>
                             </div>
+                            {{/showDemensions}}
                         </div>
 
                         <div class="set-list__counter table-cell">

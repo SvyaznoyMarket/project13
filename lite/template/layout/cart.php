@@ -24,6 +24,10 @@
                 <div class="cart-empty__desc">
                     Попробуйте <label for="search-field" class="cart-empty__search"><span class="underline">поиск</span></label>
                 </div>
+
+                <!--<div class="cart-empty__desc">
+                    или посмотрите наши <a href="" class="cart-empty__wow"><span class="underline">акции</span></a>
+                </div>-->
             </div>
             <!--/ пустая корзина -->
 
