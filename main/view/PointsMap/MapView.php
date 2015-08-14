@@ -17,6 +17,8 @@ class MapView {
     /** @var array */
     public $uniqueCosts = [];
     /** @var array */
+    public $uniqueTokens = [];
+    /** @var array */
     public $mapConfig = [];
 
     public function __construct() {

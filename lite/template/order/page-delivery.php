@@ -145,13 +145,11 @@ return function(
                         <?
                         $dataPoints = (new \View\PointsMap\MapView());
                         $dataPoints->preparePointsWithOrder($order, $orderDelivery);
+                        $dataPoints->uniqueCosts = $dataPoints->getUniquePointCosts();
+                        $dataPoints->uniqueDays = $dataPoints->getUniquePointDays();
+                        $dataPoints->uniqueTokens = $dataPoints->getUniquePointTokens();
                         echo \App::helper()->jsonInScriptTag($dataPoints, '', 'js-points-data');
                         ?>
-
-                        <?= \App::templating()->render('order/common/map', [
-                            'dataPoints'    => $dataPoints,
-                            'page'          => 'order'
-                        ]) ?>
 
                         <!--/ способ доставки -->
                         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
