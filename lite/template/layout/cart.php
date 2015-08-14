@@ -20,13 +20,9 @@
 
             <!-- пустая корзина -->
             <div class="cart-empty">
-                <div class="cart-empty__title">В корзине нет товаров</div>
+                <div class="cart-empty__title">Нет товаров</div>
                 <div class="cart-empty__desc">
-                    Попробуйте <a href="" class="cart-empty__search"><span class="underline">поиск</span></a>
-                </div>
-
-                <div class="cart-empty__desc">
-                    или посмотрите наши <a href="" class="cart-empty__wow"><span class="underline">акции</span></a>
+                    Попробуйте <label for="search-field" class="cart-empty__search"><span class="underline">поиск</span></label>
                 </div>
             </div>
             <!--/ пустая корзина -->
@@ -56,7 +52,7 @@
 
        <div class="cart__desc cart__cell table-cell">
             <div class="cart__product-name"><a href="{{link}}">{{name}}</a></div>
-            <div class="cart__product-price">{{formattedPrice}}&thinsp;<span class="rubl">B</span></div>
+            <div class="cart__product-price">{{formattedPrice}}&thinsp;<span class="rubl">A</span></div>
        </div>
 
        <div class="cart__counter cart__cell table-cell">
@@ -70,7 +66,7 @@
             <a class="cart__delete js-cart-item-delete" href="{{deleteUrl}}"><span class="dotted">Удалить</span></a>
        </div>
 
-       <div class="cart__summ cart__cell table-cell">{{formattedFullPrice}}&thinsp;<span class="rubl">B</span></div>
+       <div class="cart__summ cart__cell table-cell">{{formattedFullPrice}}&thinsp;<span class="rubl">A</span></div>
     </div>
 </script>
 

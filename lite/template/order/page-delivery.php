@@ -257,10 +257,10 @@ return function(
                             <? $helper->render('order/_discount', [ 'order' => $order ]) ?>
 
                             <div class="order-summ__right">
-                                <span class="order-summ__title"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price).'&thinsp;<span class="rubl">B</span>' ?></span>
+                                <span class="order-summ__title"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price).'&thinsp;<span class="rubl">A</span>' ?></span>
                                 <span class="order-summ__value"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
 
-                                <span class="order-summ__title order-summ__color"><?= $helper->formatPrice($order->total_cost) ?>&thinsp;<span class="rubl">B</span></span>
+                                <span class="order-summ__title order-summ__color"><?= $helper->formatPrice($order->total_cost) ?>&thinsp;<span class="rubl">A</span></span>
                                 <span class="order-summ__value order-summ__color">Итого:</span>
                             </div>
                         </div>
@@ -278,13 +278,13 @@ return function(
         </div>
 
         <div class="orderComplSumm">
-            <span class="l">Итого <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <?= $helper->formatPrice($orderDelivery->total_cost) ?>&thinsp;<span class="rubl">B</span></span>
+            <span class="l">Итого <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <?= $helper->formatPrice($orderDelivery->total_cost) ?>&thinsp;<span class="rubl">A</span></span>
         </div>
 
         <div class="orderCompl">
             <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
 
-                <div class="orderCompl_l orderCompl_l-ln">
+                <div class="label-strict orderCompl_l orderCompl_l-ln">
                     <input type="checkbox" class="custom-input custom-input_check3 jsAcceptAgreement" id="accept" name="" value="" />
 
                     <label  class="custom-label jsAcceptTerms" for="accept">

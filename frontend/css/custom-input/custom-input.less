@@ -91,6 +91,13 @@
     .inline-block();
 }
 
+.label-strict {
+    padding-left: 15px;
+    margin-left: -15px;
+
+    background: no-repeat 0 1px url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAn0lEQVR4AWNABv9TGUyB+NT/ZAZnBlwAJPk/jeE/EIeiSAAFHIG6I/6HMvAgKwLyOYHigUDsCbJiA1TiGxCfhrLPAfFnEBsov5sBZALIJKDAeiD+BZX4CaRXQE3kQbbWHIh/A/FfME5hcEB2Fsy020D8HoitgIreAOmnQFoE2etFIGuAusOhvvSFWtuMUMTAwAgUcEE2HajBCSjOBGIDADYeaaJRzZQgAAAAAElFTkSuQmCC');
+}
+
 /* Check - фльтры БТ */
 .customInput-btn + .fltrBtn_btn {
     width: 86px;
@@ -142,14 +149,15 @@
 
     .inline-block();
     &_lst {
-        top: -1px;
-        right: -1px;
+        top: 0;
+        right: 0;
         //display: none;
 
         width: 100%;
     }
     &_i {
-        padding: 4px 5px;
+        margin: 0;
+        padding: 8px 20px 6px 10px;
 
         cursor: pointer;
 
@@ -252,9 +260,9 @@
             display: none;
 
             min-width: 100%;
+            min-width: 200px;
 
             white-space: nowrap;
-            min-width: 200px;
 
             border: 1px solid @grey-light-2;
             background: @white;

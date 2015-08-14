@@ -27,28 +27,27 @@
         border: 1px solid @grey-light-2;
         background: @white;
     }
-
     &_empty {
-		.order-delivery-info-time,
-		.order-delivery-info-address {
-			display: none;
-		}
+        .order-delivery-info-time ,
+        .order-delivery-info-address {
+            display: none;
+        }
     }
-
     &_transparent {
-    	border: none;
-    	padding: 0;
+        padding: 0;
+
+        border: none;
         background: @white;
     }
-
     &-time {
-    	border-top: 1px solid @grey-light-2;
-    	margin: 0 -10px;
-    	padding: 10px 10px 0;
+        margin: 0 -10px;
+        padding: 10px 10px 0;
+
+        border-top: 1px solid @grey-light-2;
         &__text {
             color: @grey-bright;
-            .font-face('GloberRegular');
 
+            .font-face('GloberRegular');
             .inline-block(baseline);
             &:first-child {
                 padding: 0;
@@ -62,12 +61,13 @@
     }
     &-address {
         position: relative;
+
         margin-bottom: 10px;
         &__text {
-        	padding-left: 13px;
-        	&-mark {
-        		color: @grey-bright;
-        	}
+            padding-left: 13px;
+            &-mark {
+                color: @grey-bright;
+            }
         }
         &:after {
             position: absolute;
@@ -153,11 +153,12 @@
         &__field {
             width: 100%;
             min-height: 32px;
-            margin: 10px 0 5px;
+            margin: 10px 0;
             padding: 5px 0 0 15px;
-            .clearfix();
 
             background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAfUlEQVQI12NgQAL/UxkmAbEPQoCBgel/KAMbVPLo/zSGdDA7gYEDJGAPFPgApBcC8T0g3gjEB4Bitxj+OzCw/E9m8AAKrAMK/Afij/9TGEqBtDKyfZuBAqeB+AeQHYyQSGEIAgq++Z/EIAWkc4D4JRBzwRzFCDRaBa4YygYAl4k+pDkf0IQAAAAASUVORK5CYII=') no-repeat 5px 5px @white;
+
+            .clearfix();
             &-item {
                 line-height: 24px;
 
@@ -200,23 +201,26 @@
 
         .inline-block();
     }
-
     &-warn {
-        padding: 5px 10px;
-		color: @red-normal;
-		margin-right: -10px;
-        background: @red-light-4;
         position: relative;
 
+        margin-right: -10px;
+        padding: 5px 10px;
+
+        color: @red-normal;
+        background: @red-light-4;
         &__icon {
-            .inline-block();
             position: absolute;
             top: 50%;
             right: 10px;
-            margin-top: -19px/2;
+
             width: 19px;
             height: 19px;
+            margin-top: -19px/2;
+
             background: no-repeat 0 0 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAMAAABFjsb+AAAAkFBMVEUAAADcRj7dRDfcRDjcRTfbRTf/SUncRDfcTEHqk4v1zcn77Ov++vrcRjrbRTfng3r77uz////snJX++fnzwLzsoZrsnZb1zcr88vHbSDvbRDfvraf1z8z66ejzwb3gX1TeV0vcTED54uDjcmj88fDfWk/cST320M3rnJXbSTzle3LmfnX+/f3hZFnnhn7kdGpKH9CGAAAAD3RSTlMAHXjD5vkHivj/////Fse0VdjAAAAAi0lEQVR4AW2QhRHDMBAE9xRmqiD9d5XhDIcZTmZYk7zzoJcwMl8DEID+oKDvCJg5iIgjj46ar1cF63mfLtIXgmMfjpToJnk9v8eXpF3q7hPp1SV3mDMssn0Fu8jqETBFHBtN8zhv3XS72qd7zF0IVlW3E4VL5TZkqnAn5a5l3rZzsaOvyDfygLZz/gF3oUGtB44FHAAAAABJRU5ErkJggg==');
+
+            .inline-block();
         }
     }
 }
@@ -225,7 +229,6 @@
     margin: 0 0 10px;
     &__title {
         .font-size14(16);
-        margin: 0 0 5px;
     }
     .paymentRow {
         position: relative;
@@ -233,11 +236,12 @@
         padding: 5px 0;
 
         .font-face('GloberRegular');
-        &:last-child {
-        	padding-bottom: 0;
+        &__label {
+            vertical-align: middle;
+            margin-right: 8px;
         }
-        .custom-input_radio + .custom-label {
-            background-position: 0 1px;
+        &:last-child {
+            padding-bottom: 0;
         }
         .orderPaymentWeb_lst-sm {
             margin-left: 5px;
@@ -247,12 +251,14 @@
 
             overflow: hidden;
 
-            width: 130px;
-            height: 20px;
-            margin-top: 4px;
+            width: 155px;
+            height: 27px;
+
+            vertical-align: middle;
             &-inner {
                 position: absolute;
-                top: 0;
+                top: 1px;
+                left: 0;
 
                 width: 170px;
                 height: 100%;

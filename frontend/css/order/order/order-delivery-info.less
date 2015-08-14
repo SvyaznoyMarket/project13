@@ -27,28 +27,27 @@
         border: 1px solid @grey-light-2;
         background: @white;
     }
-
     &_empty {
-		.order-delivery-info-time,
-		.order-delivery-info-address {
-			display: none;
-		}
+        .order-delivery-info-time ,
+        .order-delivery-info-address {
+            display: none;
+        }
     }
-
     &_transparent {
-    	border: none;
-    	padding: 0;
+        padding: 0;
+
+        border: none;
         background: @white;
     }
-
     &-time {
-    	border-top: 1px solid @grey-light-2;
-    	margin: 0 -10px;
-    	padding: 10px 10px 0;
+        margin: 0 -10px;
+        padding: 10px 10px 0;
+
+        border-top: 1px solid @grey-light-2;
         &__text {
             color: @grey-bright;
-            .font-face('GloberRegular');
 
+            .font-face('GloberRegular');
             .inline-block(baseline);
             &:first-child {
                 padding: 0;
@@ -62,12 +61,13 @@
     }
     &-address {
         position: relative;
+
         margin-bottom: 10px;
         &__text {
-        	padding-left: 13px;
-        	&-mark {
-        		color: @grey-bright;
-        	}
+            padding-left: 13px;
+            &-mark {
+                color: @grey-bright;
+            }
         }
         &:after {
             position: absolute;
@@ -155,9 +155,10 @@
             min-height: 32px;
             margin: 10px 0 5px;
             padding: 5px 0 0 15px;
-            .clearfix();
 
             background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAfUlEQVQI12NgQAL/UxkmAbEPQoCBgel/KAMbVPLo/zSGdDA7gYEDJGAPFPgApBcC8T0g3gjEB4Bitxj+OzCw/E9m8AAKrAMK/Afij/9TGEqBtDKyfZuBAqeB+AeQHYyQSGEIAgq++Z/EIAWkc4D4JRBzwRzFCDRaBa4YygYAl4k+pDkf0IQAAAAASUVORK5CYII=') no-repeat 5px 5px @white;
+
+            .clearfix();
             &-item {
                 line-height: 24px;
 
@@ -200,11 +201,11 @@
 
         .inline-block();
     }
-
     &-warn {
+        margin-right: -10px;
         padding: 5px 10px;
-		color: @red-normal;
-		margin-right: -10px;
+
+        color: @red-normal;
         background: @red-light-4;
     }
 }
@@ -212,8 +213,9 @@
 .order-payments {
     margin: 0 0 10px;
     &__title {
-        .font-size14(16);
         margin: 0 0 5px;
+
+        .font-size14(16);
     }
     .paymentRow {
         position: relative;
@@ -221,11 +223,11 @@
         padding: 5px 0;
 
         .font-face('GloberRegular');
-        &:last-child {
-        	padding-bottom: 0;
+        &__label {
+            vertical-align: middle;
         }
-        .custom-input_radio + .custom-label {
-            background-position: 0 1px;
+        &:last-child {
+            padding-bottom: 0;
         }
         .orderPaymentWeb_lst-sm {
             margin-left: 5px;

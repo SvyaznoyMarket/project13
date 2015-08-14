@@ -7,6 +7,7 @@
     <input
         name="q"
         type="text"
+        id="search-field"
         class="search-bar__it it jsSearchInput"
         placeholder="Поиск товаров"
         autocomplete="off"

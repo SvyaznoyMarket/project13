@@ -12,8 +12,8 @@ $f = function (
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH]) || isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
             <div class="paymentRow">
                 <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CASH || $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
-                <input id="payment-cash" type="radio" name="payment-type[]" value="by_cash" class="custom-input custom-input_radio js-payment-method-radio js-customInput" <?= $checked ? 'checked' : '' ?> />
-                <label for="payment-cash" class="custom-label customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">При получении</label>
+                <input id="payment-cash" type="radio" name="payment-type[]" value="by_cash" class="paymentRow__it custom-input custom-input_radio js-payment-method-radio" checked />
+                <label for="payment-cash" class="paymentRow__label custom-label">При получении</label>
 
                 <? if ($order->delivery_group_id != 1) : /* Скрываем выбор наличные/банковская карта при самовывозе */?>
                     <div class="customSel">

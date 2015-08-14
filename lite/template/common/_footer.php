@@ -15,7 +15,7 @@
             <li class="footer-external__item"><a href="" class="footer-external__link"><i class="i-soc-net i-soc-net_yt"></i></a></li>
         </ul>
 
-        <ul class="footer-external">
+        <!-- <ul class="footer-external">
             <li class="footer-external__item footer-external__item_title">Мобильные приложения</li>
 
             <li class="footer-external__item">
@@ -29,7 +29,7 @@
                     <span class="app-box app-box_android">Загрузите<br/> на Google Play</span>
                 </a>
             </li>
-        </ul>
+        </ul> -->
     </div>
 
     <div class="footer__left">
@@ -39,35 +39,35 @@
             <li class="footer-list__item grid-4col__item"><a href="" class="footer-list__link underline">Правовая информация</a></li>
             <li class="footer-list__item grid-4col__item"><a href="" class="footer-list__link underline">Уцененные товары оптом</a></li>
             <li class="footer-list__item grid-4col__item"><a href="" class="footer-list__link underline">Способы оплаты</a></li>
-            <li class="footer-list__item grid-4col__item"><a href="" class="footer-list__link underline">Обратная связь</a></li>
+            <li class="footer-list__item grid-4col__item"><a href="" class="footer-list__link underline">Обратная связь</a></li><!--
             <li class="footer-list__item grid-4col__item"><a href="" class="footer-list__link underline">Условия продажи</a></li>
             <li class="footer-list__item grid-4col__item"><a href="" class="footer-list__link underline">Рекламные возможности</a></li>
             <li class="footer-list__item grid-4col__item"><a href="" class="footer-list__link underline">Покупка в кредит</a></li>
             <li class="footer-list__item grid-4col__item"><a href="" class="footer-list__link underline">ЦСИ</a></li>
             <li class="footer-list__item grid-4col__item"><a href="" class="footer-list__link underline">Информация о СМИ</a></li>
-            <li class="footer-list__item grid-4col__item"><a href="" class="footer-list__link underline">Партнерам</a></li>
+            <li class="footer-list__item grid-4col__item"><a href="" class="footer-list__link underline">Партнерам</a></li> -->
         </ul>
 
-        <form action="" class="subscribe-form">
+        <!-- <form action="" class="subscribe-form">
             <div class="subscribe-form__title">Подписаться на рассылку и получить 300&thinsp;<span class="rubl">C</span> на следующую покупку</div>
             <input type="text" class="subscribe-form__it it" placeholder="Ваш email">
             <button class="subscribe-form__btn btn-normal">Подписаться</button>
-        </form>
+        </form> -->
 
         <div class="footer-hint">Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.</div>
 
-        <ul class="footer-external footer-external_fl-r">
+        <!-- <ul class="footer-external footer-external_fl-r">
             <li class="footer-external__item"><a href="" class="footer-external__link"><i class="i-partner i-partner_mnogoru"></i></a></li>
             <li class="footer-external__item"><a href="" class="footer-external__link"><i class="i-partner i-partner_sb"></i></a></li>
-        </ul>
+        </ul> -->
     </div>
 </div>
 
 <footer class="copy">
     <div class="inner">
         <div class="copy__left">&copy; ООО «Энтер» 2011–2014. ENTER® ЕНТЕР® Enter®. Все права защищены.</div>
-        <div class="copy__right"><a href="">Сообщить об ошибке</a></div>
-        <div class="copy__center"><a href="">Мобильная версия сайта</a></div>
+        <!-- <div class="copy__right"><a href="">Сообщить об ошибке</a></div>
+        <div class="copy__center"><a href="">Мобильная версия сайта</a></div> -->
     </div>
 </footer>
 
