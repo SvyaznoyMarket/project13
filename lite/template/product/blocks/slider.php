@@ -96,7 +96,7 @@ $f = function (
 
         <? if ((bool)$categories): ?>
             <div class="product-accessoires">
-                <ul class="product-accessoires-list">
+                <ul class="product-accessoires-list js-module-require" data-module="enter.recommendation.view">
                     <? $i = 0; foreach ($categories as $category): ?>
                         <li id="<?= $sliderId . '-category-' . $category->getId() ?>"
                             class="product-accessoires-list-item js-product-accessoires-category <? if (0 == $i): ?> mActive<? endif ?>"
@@ -141,9 +141,10 @@ $f = function (
                     $category = $product->getParentCategory() ? $product->getParentCategory() : null;
                     ?>
 
-                    <li class="goods-slider-list__i js-module-require"
+                    <li class="goods-slider-list__i js-module-require
+                                <?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>
+                                <?= $sliderId . '-category-0'?> "
                         data-module="enter.product"
-                        data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>"
                         data-id="<?= $product->getId() ?>"
                         data-product="<?= $helper->json([
                             'id'       => $product->getId(),
