@@ -35,7 +35,15 @@
                         config = $elem.data('slick-config'),
                         $slider = config && config.slider ? $elem.find(config.slider) : $elem,
                         initClass = 'js-slick-inited';
+
                     if (config && !$slider.hasClass(initClass)) {
+
+                        // Переключение табов аксессуаров
+                        $elem.on('click', '.js-product-accessoires-category', function(){
+                            $(this).addClass('mActive').siblings().removeClass('mActive');
+                            $slider.slick('slickFilter','.' + $(this).attr('id'));
+                        });
+
                         // Предполагаем, что стрелочки находятся внутри слайдера
                         config = $.extend({}, config, { nextArrow: $elem.find(config.nextArrow), prevArrow: $elem.find(config.prevArrow)});
                         $slider.slick(config).addClass(initClass);
