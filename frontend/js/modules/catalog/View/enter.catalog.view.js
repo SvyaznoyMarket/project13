@@ -52,6 +52,7 @@
                 INF_SCROLL_ACTIVE: 'act',
                 SORTING_ACTIVE: 'act',
                 CATALOG_FILTER: 'js-category-filter',
+                CATALOG_FILTER_WRAPPER: 'js-category-filter-wrapper',
                 PAGINATION_WRAPPER: 'js-category-pagination',
                 PAGINATION: 'js-category-pagination-page',
                 PAGINATION_ACTIVE: 'act',
@@ -94,7 +95,7 @@
                         el: this.$el.find('.' + CSS_CLASSES.CATALOG_FILTER),
                         catalogView: this
                     }),
-
+                    filterWrapper: this.$el.find('.' + CSS_CLASSES.CATALOG_FILTER_WRAPPER),
                     wrapper: this.$el.find('.' + CSS_CLASSES.CATALOG_WRAPPER),
                     sortings: this.$el.find('.' + CSS_CLASSES.SORTING),
                     pagination: this.$el.find('.' + CSS_CLASSES.PAGINATION),
@@ -449,6 +450,20 @@
                 var
                     url = this.createUrl(page);
 
+                this.clearListingAndLoadNew(url);
+
+                return false;
+            },
+
+            /**
+             * Очистка содержимого листинга и вызов загрузки нового по url
+             *
+             * @method      clearListingAndLoadNew
+             * @memberOf    module:enter.catalog~CatalogView#
+             *
+             * @param       {Number}      page  Номер страницы
+             */
+            clearListingAndLoadNew: function( url ) {
                 this.history.updateState(url);
                 this.subViews.wrapper.empty();
 
@@ -535,6 +550,14 @@
                 selectedFiltersHtml = this.render.selectedFilters(data.selectedFilter);
 
                 this.lastPage       = data.pagination.pagesCount;
+
+                // Update filter
+                this.subViews.filterView.destroy();
+                this.subViews.filterWrapper.empty().append(data.renderedFilter);
+                this.subViews.filterView = new FilterView({
+                    el: this.$el.find('.' + CSS_CLASSES.CATALOG_FILTER),
+                    catalogView: this
+                });
 
                 this.subViews.paginationWrapper.replaceWithPush(paginationHtml);
                 this.subViews.selectedFilters.empty()

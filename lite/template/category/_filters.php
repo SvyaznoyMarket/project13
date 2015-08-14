@@ -92,7 +92,7 @@
 ?>
 
 <!-- фильтр "Бренды и параметры" -->
-<div class="filter filter-options fltr filter-components" style="display: block">
+<div class="filter filter-options fltr filter-components js-category-filter-wrapper" style="display: block">
 
     <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" method="GET">
 
