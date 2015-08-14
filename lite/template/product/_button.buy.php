@@ -28,6 +28,14 @@ $f = function(
         $jsClass = 'js-buy-slot-button';
     }
 
+    // на витрине
+    if (!$product->getIsBuyable() && $product->isInShopShowroomOnly()) {
+        $jsClass = null;
+        $link = '#';
+        $buttonText = 'На витрине';
+        $class .= ' btn-in-showroom ';
+    }
+
     ?>
 
     <a
