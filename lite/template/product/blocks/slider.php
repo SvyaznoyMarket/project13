@@ -52,7 +52,7 @@ $f = function (
     $slickConfig = [
         'slidesToShow' => 6,
         'slidesToScroll' => 6,
-//        'lazyLoad'  => 'ondemand',
+        'lazyLoad'  => 'ondemand',
         'dots'      => false,
         'infinite'  => false,
         'nextArrow' => '.js-goods-slider-btn-next',
@@ -191,8 +191,11 @@ $f = function (
 
             </ul>
 
-            <div class="goods-slider__btn goods-slider__btn--prev js-goods-slider-btn-prev"></div>
-            <div class="goods-slider__btn goods-slider__btn--next js-goods-slider-btn-next"></div>
+            <? if ($products && count($products) > $slickConfig['slidesToShow']) : ?>
+                <div class="goods-slider__btn goods-slider__btn--prev js-goods-slider-btn-prev"></div>
+                <div class="goods-slider__btn goods-slider__btn--next js-goods-slider-btn-next"></div>
+            <? endif ?>
+
         </div>
     </div>
     <!--/ слайдер товаров -->
