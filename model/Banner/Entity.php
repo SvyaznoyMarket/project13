@@ -25,9 +25,6 @@ class Entity {
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
         if (array_key_exists('url', $data)) $this->setUrl($data['url']);
-        if (array_key_exists('item_list', $data) && is_array($data['item_list'])) foreach ($data['item_list'] as $item) {
-            $this->addItem(new Item\Entity($item));
-        }
     }
 
     /**
@@ -56,23 +53,6 @@ class Entity {
      */
     public function getImage() {
         return $this->image;
-    }
-
-    /**
-     * @param Item\Entity[] $items
-     */
-    public function setItem(array $items) {
-        $this->item = [];
-        foreach ($items as $item) {
-            $this->addItem($item);
-        }
-    }
-
-    /**
-     * @param Item\Entity $item
-     */
-    public function addItem(Item\Entity $item) {
-        $this->item[] = $item;
     }
 
     public function getItem() {

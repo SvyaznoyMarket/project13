@@ -40,17 +40,15 @@ class Repository {
     }
 
     /**
-     * @param \Model\Region\Entity $region
-     * @param                      $callback
+     * @param $callback
      */
-    public function prepareCollection(\Model\Region\Entity $region = null, $callback) {
+    public function prepareCollection($callback) {
         //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $params = [];
-        if ($region) {
-            $params['geo_id'] = $region->getId();
-        }
-        $this->client->addQuery('promo/get', $params, [], $callback);
+        $params = [
+            'tags' => ['site-web'],
+        ];
+        \App::scmsClient()->addQuery('api/promo/get', $params, [], $callback);
     }
 
     /**
@@ -74,33 +72,7 @@ class Repository {
                 return;
             }
 
-            if ($item->getProductId()) {
-                $products = [];
-                foreach ($items as $item) {
-                    $product = isset($productsById[$item->getProductId()])
-                        ? $productsById[$item->getProductId()]
-                        : null;
-                    if (!$product) {
-                        throw new \Exception(sprintf('Товар #%s для баннера #%s не получен', $item->getProductId(), $entity->getId()));
-                    }
-
-                    $products[] = $product;
-                }
-                if (!(bool)$products) {
-                    throw new \Exception(sprintf('Товары для баннера #%s не получены', $entity->getId()));
-                }
-
-                if (1 == count($products)) {
-                    /** @var $product \Model\Product\Entity */
-                    $product = reset($products);
-                    $url = $router->generate('product', array('productPath' => $product->getPath()));
-                } else {
-                    $barcodes = array_map(function ($product) { /** @var $product \Model\Product\Entity */ return $product->getBarcode(); }, $products);
-                    $url = $router->generate('product.set', array(
-                        'productBarcodes' => implode(',', $barcodes),
-                    ));
-                }
-            } else if ($item->getProductCategoryId()) {
+            if ($item->getProductCategoryId()) {
                 /** @var $product \Model\Product\Category\Entity */
                 $category = ($item->getProductCategoryId() && isset($categoriesById[$item->getProductCategoryId()]))
                     ? $categoriesById[$item->getProductCategoryId()]
