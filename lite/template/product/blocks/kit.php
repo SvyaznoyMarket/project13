@@ -8,9 +8,9 @@ $f = function (
 ) { ?>
 
     <!-- набор-пакет -->
-    <div class="product-section set-section" id="kit">
+    <div class="product-section set-section js-module-require" id="kit" data-module="enter.product" data-product='<?= json_encode(['ui'=>$product->getUi(), 'id'=>$product->getId()]) ?>'>
         <? if (!$product->getIsKitLocked() && !$product->isInShopStockOnly() && $product->getIsBuyable() && $product->getStatusId() != 5) : ?>
-            <span class="set-section-change js-kitButton" data-product-ui="<?= $helper->escape($product->getUi()) ?>" data-sender="<?= $helper->json($sender) ?>" data-sender2="<?= $helper->escape($sender2) ?>"><span class="dotted">Изменить комплектацию</span></span>
+            <span class="set-section-change js-buy-kit-button" data-product-ui="<?= $helper->escape($product->getUi()) ?>" data-sender="<?= $helper->json($sender) ?>" data-sender2="<?= $helper->escape($sender2) ?>"><span class="dotted">Изменить комплектацию</span></span>
         <? endif ?>
         <div class="product-section__tl">Базовая комплектация набора</div>
 
