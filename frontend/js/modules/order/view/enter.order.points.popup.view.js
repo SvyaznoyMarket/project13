@@ -31,7 +31,16 @@
              */
             CSS_CLASSES = {
                 MAP_CONTAINER: 'js-pointpopup-map-container',
-                POINTS_WRAPPER: 'js-pointpopup-points-wrapper'
+                POINTS_WRAPPER: 'js-pointpopup-points-wrapper',
+                PICK_POINT: 'js-pointpopup-pick-point',
+                SEARCH: 'js-pointpopup-search',
+                AUTOCOMPLETE: 'js-pointpopup-autocomplete',
+                AUTOCOMPLETE_WRAPPER: 'js-pointpopup-autocomplete-wrapper',
+                AUTOCOMPLETE_ITEM: 'js-pointpopup-autocomplete-item',
+                FILTER_OVERLAY: 'need_class_here', /** @todo НУЖЕН ОВЕРЛЭЙ! */
+                POINT_FILTER: 'js-point-filter',
+                POINT_OPENER: 'js-point-filter-opener',
+                POINT_FILTER_ACTIVE: 'open'
             },
 
             /**
@@ -44,7 +53,8 @@
             TEMPLATES = {
                 POINT: $('#js-point-template').html(),
                 POPUP: $('#js-points-popup-template').html(),
-                BALOON: $('').html()
+                BALOON: $('').html(),
+                AUTOCOMPLETE: $('#js-pointpopup-autocomplete-template').html(),
             },
 
             $BODY = $('body'),
@@ -78,11 +88,19 @@
                 this.mapContainer.attr('id', uniqIndex);
 
                 this.subViews = {
-                    pointsWrapper: this.$el.find('.' + CSS_CLASSES.POINTS_WRAPPER)
+                    pointsWrapper: this.$el.find('.' + CSS_CLASSES.POINTS_WRAPPER),
+                    autocomplete: this.$el.find('.' + CSS_CLASSES.AUTOCOMPLETE),
+                    autocompleteWrapper: this.$el.find('.' + CSS_CLASSES.AUTOCOMPLETE_WRAPPER),
+                    filterOverlay: this.$el.find('.' + CSS_CLASSES.FILTER_OVERLAY),
+                    pointFilters: this.$el.find('.' + CSS_CLASSES.POINT_FILTER),
+                    searchInput: this.$el.find('.' + CSS_CLASSES.SEARCH)
                 };
 
                 // Setup events
-                // this.events['click .' + CSS_CLASSES.] = '';
+                this.events['click .' + CSS_CLASSES.PICK_POINT]        = 'pickPoint';
+                this.events['keyup .' + CSS_CLASSES.SEARCH]            = 'searchAddress';
+                this.events['click .' + CSS_CLASSES.POINT_OPENER]      = 'openPointsFilter';
+                this.events['click .' + CSS_CLASSES.AUTOCOMPLETE_ITEM] = 'selectAutocompleteItem';
 
                 this.listenTo(this.collection, 'change:shown', this.changePoints);
                 this.changePoints();
@@ -93,6 +111,65 @@
             },
 
             events: {},
+
+            /**
+             * Выбор адреса из автокомлита
+             *
+             * @method      selectAutocompleteItem
+             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             *
+             * @param       {Object}    event
+             */
+            selectAutocompleteItem: function( event ) {
+                var
+                    target = $(event.currentTarget),
+                    bounds = target.data('bounds');
+
+                this.subViews.searchInput.val(target.text()),
+                this.map.setCenterAndZoom(bounds);
+                this.subViews.autocomplete.hide();
+                this.subViews.autocompleteWrapper.empty();
+            },
+
+            /**
+             * Показать фильтр пунктов выдачи
+             *
+             * @method      openPointsFilter
+             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             *
+             * @param       {Object}    event
+             */
+            openPointsFilter: function( event ) {
+                var
+                    target   = $(event.currentTarget),
+                    filter   = target.parent('.' + CSS_CLASSES.POINT_FILTER),
+                    isActive = filter.hasClass(CSS_CLASSES.POINT_FILTER_ACTIVE);
+
+                this.subViews.pointFilters.removeClass(CSS_CLASSES.POINT_FILTER_ACTIVE);
+
+                if ( !isActive ) {
+                    filter.addClass(CSS_CLASSES.POINT_FILTER_ACTIVE);
+                    this.subViews.filterOverlay.show();
+                } else {
+                    filter.removeClass(CSS_CLASSES.POINT_FILTER_ACTIVE);
+                    this.subViews.filterOverlay.hide();
+                }
+
+                return false;
+            },
+
+            /**
+             * Закрыть фильтр пунктов выдачи
+             *
+             * @method      closePointsFilter
+             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             */
+            closePointsFilter: function() {
+                this.subViews.pointFilters.removeClass(CSS_CLASSES.POINT_FILTER_ACTIVE);
+                this.subViews.autocomplete.hide();
+                this.subViews.autocompleteWrapper.empty();
+                this.subViews.filterOverlay.hide();
+            },
 
             /**
              * Показать выбранные точки доставки
@@ -144,6 +221,109 @@
                     }, timeWindow);
                 };
             }()),
+
+            /**
+             * Поиск точек, соответствующих введенному адресу, формирование автокомплита поиска
+             *
+             * @method      searchAddress
+             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             */
+            searchAddress: (function () {
+                var
+                    timeWindow = 500, // time in ms
+                    timeout,
+
+                    searchAddress = function ( args ) {
+                        var
+                            self       = this,
+                            address    = this.subViews.searchInput.val(),
+                            myGeocoder = this.map.getGeoCoder(address);
+
+                        if ( address === '' ) {
+                            this.resetPoints();
+                        }
+
+                        myGeocoder.then(
+                            function ( res ) {
+                                var
+                                    searchAutocompleteList = [],
+                                    html;
+
+                                res.geoObjects.each(function( obj ) {
+                                    searchAutocompleteList.push({
+                                        'name': obj.properties.get('name') + ', ' + obj.properties.get('description'),
+                                        'bounds': JSON.stringify(obj.geometry.getBounds())
+                                    });
+                                });
+
+                                html = mustache.render(TEMPLATES.AUTOCOMPLETE, {bounds: searchAutocompleteList});
+
+                                if ( res.geoObjects.getLength() > 0 ) {
+                                    self.subViews.filterOverlay.show();
+                                    self.subViews.autocomplete.show();
+                                    self.subViews.autocompleteWrapper.html(html);
+                                }
+
+                                self.delegateEvents();
+                            },
+                            function ( err ) {
+                                console.log(err);
+                            }
+                        );
+                    };
+
+                return function() {
+                    var
+                        context = this,
+                        args    = arguments;
+
+                    clearTimeout(timeout);
+
+                    timeout = setTimeout(function() {
+                        searchAddress.apply(context, args);
+                    }, timeWindow);
+                };
+            }()),
+
+            /**
+             * Сброс выбранных по адресу точек
+             *
+             * @method      changePoints
+             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             */
+            resetPoints: function() {
+                this.subViews.searchInput.val(''),
+                this.subViews.autocomplete.hide();
+                this.subViews.autocompleteWrapper.empty();
+                this.subViews.filterOverlay.hide();
+                this.changePoints();
+            },
+
+            /**
+             * Выбор точки
+             *
+             * @method      onClose
+             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             */
+            pickPoint: function( event ) {
+                var
+                    target = $(event.currentTarget),
+                    id     = target.attr('data-id'),
+                    token  = target.attr('data-token');
+
+                this.orderView.trigger('sendChanges', {
+                    action: 'changePoint',
+                    data: {
+                        block_name: this.blockName,
+                        id: id,
+                        token: token
+                    }
+                });
+
+                this.hide();
+
+                return false;
+            },
 
             /**
              * Обработчик закрытия окна

@@ -7,18 +7,18 @@
         <div class="delivery-points__left">
             <div class="point-search">
                 <i class="point-search__icon i-controls i-controls--search"></i>
-                <input class="point-search__it it" type="text" placeholder="Искать по улице, метро">
+                <input class="point-search__it it js-pointpopup-search" type="text" placeholder="Искать по улице, метро">
                 <div class="point-search" style="display: none;">×</div>
 
-                <div class="pick-point-suggest" style="display: none">
-                    <ul class="pick-point-suggest__list"></ul>
+                <div class="pick-point-suggest js-pointpopup-autocomplete" style="display: none">
+                    <ul class="pick-point-suggest__list js-pointpopup-autocomplete-wrapper"></ul>
                 </div>
             </div>
 
             <div class="drop-filter-kit drop-filter-kit-box">
                 <!-- Точки самовывоза - для поселекченного фильтра добавляем класс active-->
-                <div class="drop-filter-box open">
-                    <div class="drop-filter-box__tggl">
+                <div class="drop-filter-box js-point-filter">
+                    <div class="drop-filter-box__tggl js-point-filter-opener">
                         <span class="drop-filter-box__tggl-tx">Все точки</span>
                     </div>
 
@@ -60,8 +60,8 @@
                 <!--/ Точки самовывоза -->
 
                 <!-- Cтоимость -->
-                <div class="drop-filter-box">
-                    <div class="drop-filter-box__tggl">
+                <div class="drop-filter-box js-point-filter">
+                    <div class="drop-filter-box__tggl js-point-filter-opener">
                         <span class="drop-filter-box__tggl-tx">Стоимость</span>
                     </div>
 
@@ -81,8 +81,8 @@
                 <!-- Cтоимость -->
 
                 <!-- Дата самовывоза -->
-                <div class="drop-filter-box">
-                    <div class="drop-filter-box__tggl">
+                <div class="drop-filter-box js-point-filter">
+                    <div class="drop-filter-box__tggl js-point-filter-opener">
                         <span class="drop-filter-box__tggl-tx">Дата</span>
                     </div>
 
@@ -119,7 +119,10 @@
 {{#point}}
     {{#shown}}
         <!-- точка доставки в которой товар есть на витрине - добавляем класс no-hidden -->
-        <div class="delivery-points-list__row table-row {{#productInShowroom}}no-hidden{{/productInShowroom}}">
+        <div class="js-pointpopup-pick-point delivery-points-list__row table-row {{#productInShowroom}}no-hidden{{/productInShowroom}}"
+            data-id="{{id}}"
+            data-token="{{token}}"
+        >
             <div class="delivery-points-list__logo table-cell">
                 <img src="{{icon}}" class="delivery-points-list__img">
 
@@ -170,4 +173,11 @@
         </div>
     {{/shown}}
 {{/point}}
+</script>
+
+
+<script id="js-pointpopup-autocomplete-template" type="text/template" class="hidden">
+    {{#bounds}}
+        <li class="js-pointpopup-autocomplete-item" data-bounds="{{bounds}}">{{name}}</li>
+    {{/bounds}}
 </script>
