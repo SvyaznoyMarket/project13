@@ -107,9 +107,9 @@
                     inCompare = this.model.get('inCompare');
 
                 if ( inCompare ) {
-                    this.subViews.compareBtn.addClass(CSS_CLASSES.COMPARE_ACTIVE).data('status', 'Убрать из сравнения');
+                    this.subViews.compareBtn.addClass(CSS_CLASSES.COMPARE_ACTIVE).attr('data-status', 'Убрать из сравнения');
                 } else {
-                    this.subViews.compareBtn.removeClass(CSS_CLASSES.COMPARE_ACTIVE);
+                    this.subViews.compareBtn.removeClass(CSS_CLASSES.COMPARE_ACTIVE).attr('data-status', 'В сравнение');
                 }
             },
 
