@@ -14,13 +14,9 @@ class Action {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
-        $user = \App::user();
-        $region = $user->getRegion();
 
         // подготовка 1-го пакета запросов
-
         // запрашиваем баннеры
-        $itemsByBanner = [];
         $banners = [];
         \RepositoryManager::banner()->prepareCollection(function ($data) use (&$banners, &$itemsByBanner) {
 
@@ -35,8 +31,6 @@ class Action {
         // товары, услуги, категории
         /** @var $productsById \Model\Product\Entity[] */
         $productsById = [];
-        $medias = [];
-        /** @var $categoriesById \Model\Product\Category\Entity[] */
 
         $productsIdsFromRR = $this->getProductIdsFromRR($request);
         foreach ($productsIdsFromRR as $arr) {
@@ -50,33 +44,7 @@ class Action {
 
         \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($productsById, 'media label');
 
-            \RepositoryManager::product()->prepareProductsMediasByIds(array_keys($productsById), $medias);
-        }
-
-        // запрашиваем категории товаров
-        if ((bool)$categoriesById) {
-            \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), $region, function($data) use (&$categoriesById) {
-                if (is_array($data)) {
-                    foreach ($data as $item) {
-                        if ($item && is_array($item)) {
-                            $category = new \Model\Product\Category\Entity($item);
-                            $categoriesById[$category->getId()] = $category;
-                        }
-                    }
-                }
-            }, function(\Exception $e) {
-                \App::exception()->remove($e);
-                \App::logger()->error('Не удалось получить категории товаров для баннеров');
-            });
-        }
-
-        if ((bool)$productsById || (bool)$categoriesById) {
-            // выполнение 2-го пакета запросов
-            $client->execute();
-
-            \RepositoryManager::product()->enrichProductsFromScms($productsById, 'media label');
-            $client->execute();
-        }
+        $client->execute();
 
         $page = new \View\Main\IndexPage();
         $page->setParam('banners', $banners);
@@ -117,7 +85,7 @@ class Action {
      * @param float $timeout Таймаут для запроса к RR
      * @return array
      */
-    public function getProductIdsFromRR(\Http\Request $request, $timeout = 0.15) {
+    public function getProductIdsFromRR(\Http\Request $request, $timeout = 1.15) {
         $rrClient = \App::rrClient();
         $rrUserId = $request->cookies->get('rrpusid');
         $ids = [
