@@ -36,7 +36,10 @@ namespace EnterApplication\Action\Cart
 
             $externalCartProductsByUi = [];
             foreach ($cartQuery->response->products as $item) {
-                if (!isset($item['uid'])) continue;
+                if (
+                    !isset($item['uid'])
+                    || !isset($item['quantity'])
+                ) continue;
 
                 $externalCartProductsByUi[$item['uid']] = new \Model\Cart\Product\Entity($item);
             }

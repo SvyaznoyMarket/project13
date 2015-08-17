@@ -102,9 +102,11 @@ class Cart {
 
     /**
      * Устанавливает количество товара по его ui
+     * Возвращает флаг - обновить корзину?
      *
      * @param $ui
      * @param $quantity
+     * @return bool
      */
     public function setProductQuantityByUi($ui, $quantity) {
         $data = $this->storage->get($this->sessionName);
@@ -117,9 +119,11 @@ class Cart {
                 if ($data['product'][$i]['quantity'] !== $quantity) {
                     $data['product'][$i]['quantity'] = $quantity;
                     $this->storage->set($this->sessionName, $data);
+
+                    return true;
                 }
 
-                break;
+                return false;
             }
         }
     }
