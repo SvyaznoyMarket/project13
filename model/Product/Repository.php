@@ -117,8 +117,9 @@ class Repository {
      * Подготавливает запросы к ядру и scms для получения данных товаров. После выполнения запросов те товары, для
      * которых ядро или scms не вернули данных будут удалены, а остальные товары будут заполнены данными из ядра и scms.
      * @param \Model\Product\Entity[] $products
-     * @param string $scmsOptions
+     * @param string $scmsOptions Необходимые свойства товара через пробел: media property label brand category
      * @param \Closure $finalCallback Вызывается один раз после выполнения последнего из запросов
+     * @throws
      */
     public function prepareProductQueries(array &$products, $scmsOptions = '', \Model\Region\Entity $region = null, $finalCallback = null) {
         $scmsOptions = trim($scmsOptions) ? explode(' ', (string)$scmsOptions) : [];
