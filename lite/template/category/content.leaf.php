@@ -71,15 +71,6 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
         </div>
         <!--/ сортировка -->
 
-        <div class="section" style="display: none;">
-            <div class="erro-page">
-                <div class="erro-page__code">404</div>
-                <div class="erro-page__text">Страница не найдена</div>
-
-                <a href="/" class="erro-page__continue btn-primary btn-primary_bigger">Вернуться на главную</a>
-            </div>
-        </div>
-
         <div class="section">
             <div class="goods goods_grid goods_listing grid-4col js-catalog-wrapper">
                 <?= $productPager->count() > 0
