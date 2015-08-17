@@ -143,8 +143,7 @@ return function(
                         <? endif ?>
 
                         <?
-                        $dataPoints = (new \View\PointsMap\MapView());
-                        $dataPoints->preparePointsWithOrder($order, $orderDelivery);
+                        $dataPoints = (new \View\PointsMap\MapView())->preparePointsWithOrder($order, $orderDelivery);
                         $dataPoints->uniqueCosts = $dataPoints->getUniquePointCosts();
                         $dataPoints->uniqueDays = $dataPoints->getUniquePointDays();
                         $dataPoints->uniqueTokens = $dataPoints->getUniquePointTokens();
