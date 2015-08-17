@@ -46,8 +46,6 @@ class IndexAction {
         $region = $user->getRegion();
 
         // подготовка 2-го пакета запросов
-
-        // TODO: запрашиваем меню
         $cartProductsById = array_reverse($cart->getProducts(), true);
 
         $productIds = array_keys($cartProductsById);

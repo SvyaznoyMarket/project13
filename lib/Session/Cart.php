@@ -351,7 +351,7 @@ class Cart {
     public function getProducts() {
         $this->update();
 
-        return $this->products;
+        return is_array($this->products) ? $this->products : [];
     }
 
     /**
