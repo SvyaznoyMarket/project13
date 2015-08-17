@@ -31,6 +31,8 @@ namespace EnterApplication\Action\Cart
                 return $response;
             }
 
+            $updateCart = false;
+
             $externalCartProductsByUi = [];
             foreach ($cartQuery->response->products as $item) {
                 if (
@@ -41,7 +43,7 @@ namespace EnterApplication\Action\Cart
                 $externalCartProductsByUi[$item['uid']] = new \Model\Cart\Product\Entity($item);
 
                 // обновление количества товаров
-                $cart->setProductQuantityByUi($item['uid'], $item['quantity']);
+                $updateCart = $updateCart || $cart->setProductQuantityByUi($item['uid'], $item['quantity']);
             }
 
             $cartProductDataByUi = [];
@@ -66,6 +68,10 @@ namespace EnterApplication\Action\Cart
                     $product = new \Model\Product\Entity($item);
                     $cart->setProduct($product, $cartProduct->getQuantity());
                 }
+            }
+
+            if ($productUis || $updateCart) {
+                $cart->update(true);
             }
 
             return $response;
