@@ -15,7 +15,7 @@ class RecommendAction extends PrivateAction {
         $region = \App::user()->getRegion();
         $repository =  \RepositoryManager::product()->useV3()->withoutModels();
 
-            // вы смотрели
+        // вы смотрели
         $viewedProductIds = [];
         $data = $request->get('rrviewed');
         if (is_string($data)) {

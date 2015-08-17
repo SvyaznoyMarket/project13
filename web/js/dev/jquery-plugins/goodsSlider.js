@@ -72,7 +72,7 @@
 							var
 								i, type, callbF, data;
 
-							try{
+							try {
 								for ( i in recommendArray ) {
 									type = recommendArray[i].type;
 									callbF = recommendArray[i].callback;
@@ -360,6 +360,7 @@
 
                             getSlidersData(sliderParams.url, sliderParams.type, function(res) {
                                 res.recommend && res.recommend.viewed && authFromServer(res.recommend.viewed);
+                                $('body').trigger('sliderLoaded', {type: 'viewed'});
                             });
                         } else {
                             getSlidersData(sliderParams.url, sliderParams.type, authFromServer);

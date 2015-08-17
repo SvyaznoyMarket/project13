@@ -3421,7 +3421,7 @@ $(function() {
                 $el = $(this),
                 $slider = $el.parents('.js-slider'),
                 sender = $slider.length ? $slider.data('slider').sender : null
-                ;
+            ;
 
 			var rrEventLabel = '';
 			if (ENTER.config.pageConfig.product) {
