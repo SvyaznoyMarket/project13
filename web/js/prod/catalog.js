@@ -268,6 +268,8 @@ $(function() {
 			loading = false;
 			$listingWrap.append(templateRenderers['list'](res['list'])); // TODO Вызывать renderCatalogPage вместо templateRenderers['list']?
 		});
+
+        $body.trigger('infinityScroll', {'state': 'enabled', 'page': nowPage, 'lastPage': lastPage});
 	}
 
 	function enableInfinityScroll(onlyIfAlreadyEnabled) {
@@ -304,6 +306,8 @@ $(function() {
 		if ($bottomInfButton.visible() && lastPage > 1) {
 			loadInfinityPage();
 		}
+
+        $body.trigger('infinityScroll', {'state': 'enabled', 'page': nowPage, 'lastPage': lastPage});
 	}
 
 	function disableInfinityScroll() {
@@ -315,6 +319,8 @@ $(function() {
 		docCookies.setItem('infScroll', 0, 4*7*24*60*60, '/');
 		$(window).off('scroll', checkInfinityScroll);
 		getDataFromServer(url, renderCatalogPage);
+
+        $body.trigger('infinityScroll', {'state': 'disabled', 'page': nowPage, 'lastPage': lastPage});
 	}
 
 	function setManualDefinedPriceFrom(from, min) {
@@ -1640,3 +1646,43 @@ $(function() {
 		}
 	});
 });
+;(function() {
+    // SITE-5928
+    var
+        $body = $('body'),
+
+        getSlider = function() {
+            return $('.js-slider').filter('[data-position="Viewed"]').last()
+        },
+
+        init = function() {
+            if (('1' == docCookies.getItem('infScroll')) || !docCookies.hasItem('infScroll')) {
+                getSlider().hide();
+            } else {
+                getSlider().show();
+            }
+        }
+    ;
+
+    $body.on('infinityScroll', function(e, data) {
+        console.info('infinityScroll', data, ('enabled' === data.state) && (data.page < data.lastPage));
+        if (
+            ('enabled' === data.state)
+            && (data.page < data.lastPage)
+        ) {
+            getSlider().hide();
+            console.info('slider.hide');
+        } else {
+            getSlider().show();
+            console.info('slider.show');
+        }
+    });
+
+    $body.on('sliderLoaded', function(data) {
+        if ('viewed' === data.type) {
+            init();
+        }
+    });
+
+    init();
+}());
