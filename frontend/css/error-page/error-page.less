@@ -1,0 +1,30 @@
+.erro-page {
+    width: 559px;
+    min-height: 666px;
+    margin: 50px auto 30px;
+    position: relative;
+    padding: 215px 20px 0;
+
+    background: url('@{base-url}/404/img-error.png') no-repeat 50% 0 @white;
+    &__code {
+        line-height: 1;
+
+        color: @white;
+
+        .font-size(170);
+    }
+    &__text {
+        line-height: 1;
+        margin-top: -25px;
+
+        color: @white;
+
+        .font-size(52);
+        .font-face('GloberRegular');
+    }
+    &__continue {
+    	position: absolute;
+    	bottom: 25px;
+    	right: 0;
+    }
+}
