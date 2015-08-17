@@ -58,6 +58,7 @@ $config = array_merge([
     'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS
     'selfDeliveryLimit'    => $appConfig->self_delivery['limit'], // стоимость платного самовывоза, удалять осторожно, поломается JS
     'minOrderSum'  => \App::abTest()->isOrderMinSumRestriction() ? $appConfig->minOrderSum : false,
+    'infinityScroll' => \App::abTest()->getTest('infinity_scroll') && ('on' === \App::abTest()->getTest('infinity_scroll')->getChosenCase()->getKey()),
 ], isset($config) ? (array)$config : []);
 ?>
 
