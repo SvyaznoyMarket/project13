@@ -40,7 +40,7 @@
 
 	$window.scroll(checkScroll);
 
-	$body.on('closeBuyInfo showBuyInfo', function(){
+	$body.on('closeFullFixedUserBar openFullFixedUserBar', function(){
 		checkScroll();
 	});
 

@@ -319,7 +319,7 @@ class GoogleAnalytics {
                 $RR_buy_viewed = false;
                 $RR_buy_added = false;
                 $RR_buy_block = null;
-                if (isset($order->meta_data[sprintf('product.%s.sender', $product->getUi())][0])) {
+                if ($product && isset($order->meta_data[sprintf('product.%s.sender', $product->getUi())][0])) {
                     if ($order->meta_data[sprintf('product.%s.sender', $product->getUi())][0] == 'retailrocket') {
                         $productName .= sprintf(' (RR_%s)', @$order->meta_data[sprintf('product.%s.position', $product->getUi())][0]);
                         $RR_buy_block = @$order->meta_data[sprintf('product.%s.position', $product->getUi())][0];

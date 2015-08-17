@@ -118,7 +118,6 @@
 					dataType: 'json',
 					beforeSend: function() {
 						$orderContent.fadeOut(500);
-						//if (spinner) spinner.spin(body)
 					},
 					closeClick: false
 				}).fail(function(jqXHR){
@@ -148,8 +147,6 @@
 					$orderContent.find('input[name=address]').focus();
 				}).always(function(){
 					$orderContent.stop(true, true).fadeIn(200);
-					//if (spinner) spinner.stop();
-
 					$('body').trigger('trackUserAction', ['0 Вход']);
 				});
 			}

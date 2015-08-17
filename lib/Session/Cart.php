@@ -77,7 +77,6 @@ class Cart {
     public function setProduct(\Model\Product\Entity $product, $quantity = 1, array $params = [], $moveProductToUp = false) {
         if ($quantity < 0) $quantity = 0;
 
-         // новый формат
         $data = $this->storage->get($this->sessionName);
         $item = $this->formatProduct($product, $quantity);
         if (!isset($data['product'][$product->getId()]['added'])) {
@@ -85,7 +84,7 @@ class Cart {
         } else {
             $item = array_merge($data['product'][$product->getId()], $item);
         }
-        $item += $params;
+        $item = array_merge($item, $params);
 
         // SITE-5022
         if ($moveProductToUp) {
@@ -99,6 +98,30 @@ class Cart {
         $this->update(true);
 
         $this->storage->set($this->sessionName, $data);
+    }
+
+    /**
+     * Устанавливает количество товара по его ui
+     *
+     * @param $ui
+     * @param $quantity
+     */
+    public function setProductQuantityByUi($ui, $quantity) {
+        $data = $this->storage->get($this->sessionName);
+
+        foreach ($data['product'] as $i => $item) {
+            if (
+                isset($item['ui'])
+                && ($ui === $item['ui'])
+            ) {
+                if ($data['product'][$i]['quantity'] !== $quantity) {
+                    $data['product'][$i]['quantity'] = $quantity;
+                    $this->storage->set($this->sessionName, $data);
+                }
+
+                break;
+            }
+        }
     }
 
     /**
@@ -137,6 +160,7 @@ class Cart {
         return [
             'id'            => $product->getId(),
             'ui'            => $product->getUi(),
+            'article'       => $product->getArticle(),
             'quantity'      => (int)$quantity,
             'name'          => $product->getName(),
             'price'         => $product->getPrice(),
@@ -243,9 +267,11 @@ class Cart {
 
             $products[] = [
                 'id'                => $cartProduct['id'],
+                'article'           => $cartProduct['article'],
                 'name'              => $cartProduct['name'],
                 'price'             => $cartProduct['price'],
                 'formattedPrice'    => $helper->formatPrice($cartProduct['price']),
+                'formattedFullPrice'=> $helper->formatPrice($cartProduct['price'] * $cartProduct['quantity']),
                 'quantity'          => $cartProduct['quantity'],
                 'deleteUrl'         => $helper->url('cart.product.delete', ['productId' => $cartProduct['id']]),
                 'link'              => $cartProduct['url'],

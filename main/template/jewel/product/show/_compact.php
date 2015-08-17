@@ -53,7 +53,7 @@ if ($product->getPriceOld()) {
             <? endif ?>
 
             <? if ($product->hasVideo()): ?>
-                <li class="stickLst_i"><img class="stickLst_img" src="/css/bCatalog/img/video.png" /></li>
+                <li class="stickLst_i"><a href="<?= $product->getLink() ?>"><img class="stickLst_img" src="/css/bCatalog/img/video.png" /></a></li>
             <? endif ?>
 
             <? if ($product->has3d()): ?>

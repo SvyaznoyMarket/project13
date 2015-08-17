@@ -77,7 +77,7 @@
 
         pageConfig = $('#page-config').data('value'),
 
-		//directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
+		directCreditUrl = 'http://api.direct-credit.ru/dc.js',
         adfoxUrl = 'adfox_lib_ff.min.js', // 'adfox.asyn.code.ver3.min.js',
 		yandexMapUrl, yandexMapUrlv2_1, mustacheUrl, historyUrl, kladr, knockoutUrl,
 
@@ -372,7 +372,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script('JsHttpRequest.min.js')
 					.script( getWithVersion('library.js') )
-					//.script( directCreditUrl )
+					.script( { src: directCreditUrl, type: 'text/javascript', charset: 'windows-1251' } )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.wait()
@@ -394,7 +394,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
-					//.script( directCreditUrl )
+					.script( { src: directCreditUrl, type: 'text/javascript', charset: 'windows-1251' } )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.wait()
@@ -440,7 +440,7 @@
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script('JsHttpRequest.min.js')
 						.script( getWithVersion('library.js') )
-						//.script( directCreditUrl )
+						.script( { src: directCreditUrl, type: 'text/javascript', charset: 'windows-1251' } )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.wait()
@@ -535,7 +535,7 @@
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
 						.script('JsHttpRequest.min.js')
-						//.script( directCreditUrl )
+						.script( { src: directCreditUrl, type: 'text/javascript', charset: 'windows-1251' } )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.wait()
@@ -588,6 +588,7 @@
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('shop.js') )
+                        .script( getWithVersion('infopage.js') )
 						.wait()
 						.script('tour.min.js')
 						.wait()

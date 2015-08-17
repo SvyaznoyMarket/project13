@@ -28,6 +28,7 @@ $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 2592000; // 30 дней
 $c->session['cookie_domain'] = '.enter.ru';
 $c->session['compareKey']   = 'compare'; // ключ для массива сравнения
+$c->session['favouriteKey'] = 'favourite'; // ключ для масссива избранного
 
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
@@ -263,6 +264,8 @@ $c->partners['Adblender']['enabled'] = true;
 $c->partners['Giftery']['enabled'] = true;
 $c->partners['Giftery']['lowestPrice'] = 500;
 
+$c->partners['facebook']['enabled'] = true;
+
 $c->adFox['enabled'] = true;
 
 $c->partner['cookieName'] = 'last_partner';
@@ -442,19 +445,7 @@ $c->tchibo['rowHeight'] = 78;
 $c->tchibo['rowPadding'] = 0;
 $c->tchiboSlider['analytics'] = [
     'enabled' => true,
-    'use_page_visibility' => true,
-    'collection_view' => [
-        'enabled' => false,
-        'tchiboOnly' => true
-    ],
-    'collection_click' => [
-        'enabled' => true,
-        'tchiboOnly' => false
-    ],
-    'product_click' => [
-        'enabled' => true,
-        'tchiboOnly' => false
-    ],
+    'use_page_visibility' => true
 ];
 
 $c->abTest = [

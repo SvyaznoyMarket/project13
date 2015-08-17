@@ -40,6 +40,12 @@ class Layout extends \View\DefaultLayout {
             $html .= '<div id="AlexaJS" class="jsanalytics"></div><noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=mPO9i1acVE000x" style="display:none" height="1" width="1" alt="" /></noscript>';
         }
 
+        if (\App::config()->partners['facebook']['enabled']) {
+            $html .= strtr('<div id="facebookJs" class="jsanalytics" data-value="{{dataValue}}"></div>', [
+                '{{dataValue}}' => $this->json(['id' => \App::config()->facebookOauth->clientId]),
+            ]);
+        }
+
         // Livetex chat
         $html .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
 
@@ -48,6 +54,8 @@ class Layout extends \View\DefaultLayout {
 
         // Передаем в Actionpay все данные по заказам
         $html .= '<div id="ActionPayJS" data-vars="' . $this->json((new \View\Partners\ActionPay($routeName, $this->params))->execute()) . '" class="jsanalytics"></div>';
+
+        $html .= $this->googleAnalyticsJS();
 
         return $html;
     }

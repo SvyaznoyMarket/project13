@@ -344,17 +344,27 @@ $(function() {
                     }
 				});
 
-				if (typeof window.dc_getCreditForTheProduct == 'function') dc_getCreditForTheProduct(
-					4427,
-					window.docCookies.getItem('enter_auth'),
+				if (typeof window.DCLoans == 'function') window.DCLoans(
+					'4427',
 					'getPayment',
-					{ price : creditd.price, count : 1, type : creditd.product_type },
-					function( result ) {
-						if( ! 'payment' in result ){
-							return;
-						}
-						if( result.payment > 0 ) {
-							priceNode.html( printPrice( Math.ceil(result.payment) ) );
+                    {
+                        products: [
+                            { price : creditd.price, count : 1, type : creditd.product_type }
+                        ]
+                    },
+					function(response) {
+                        var result = {
+                            payment: null
+                        };
+
+                        console.info('DCLoans.getPayment.response', response);
+
+                        result.payment = response.allProducts;
+
+                        console.info('DCLoans.getPayment.result', result);
+
+						if (result.payment) {
+							priceNode.html(printPrice(Math.ceil(result.payment)));
 							creditBoxNode.show();
 						}
 					}
@@ -511,22 +521,9 @@ $(function() {
 		var hintLnk = $('.bHint_eLink');
 		var hintCloseLnk = $('.bHint_ePopup .close');
 
-		var hintAnalytics = function(data){
-			if (typeof(_gaq) !== 'undefined') {
-				_gaq.push(['_trackEvent', 'Hints', data.hintTitle, data.url]);
-			}
-		};
-
 		var hintShow = function(){
 			hintPopup.hide();
 			$(this).parent().find('.bHint_ePopup').fadeIn(150);
-
-			var analyticsData = {
-				hintTitle: $(this).html(),
-				url: window.location.href
-			};
-			hintAnalytics(analyticsData);
-
 			return false;
 		};
 
@@ -822,12 +819,16 @@ $(function() {
     $body.on('click', '.jsProductPopupSlide', function(){
         console.log('slide');
         var direction = $(this).data('dir'),
-            curIndex = $popupPhotoThumbs.index($imgPopup.find('.'+thumbActiveClass));
+            curIndex = $popupPhotoThumbs.index($imgPopup.find('.'+thumbActiveClass)),
+            needScroll = $imgPopup.find('.product-card-photo-thumbs__cnt--slides').length;
 
         if (curIndex + direction == thumbsCount) setPhoto(0);
         else {
             setPhoto(curIndex + direction);
         }
+
+        if (needScroll){
+            
             //а если активное фото за пределами видимой области? надо крутить.
             var activePhotoOffset = $imgPopup.find('.'+thumbActiveClass).position().left,
                 margin = parseInt($popupThumbs.css('margin-left')),
@@ -848,6 +849,7 @@ $(function() {
                         if (margin >= 0) $popupPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
                     });
             }
+        }
 
     });
 
@@ -856,16 +858,36 @@ $(function() {
     });
 
     $productPhotoThumbsBtn.on('click', function(){
+        var fullwidth = $popupPhotoThumbs.length * 47;
 
-        if (!$productPhotoThumbs.is(':animated'))
-        $productPhotoThumbs.animate({
-            'margin-left': $(this).data('dir') + productPhotoThumbsWidth
-        }, function(){
-            var margin = parseInt($productPhotoThumbs.css('margin-left'));
-            $productPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
-            if (productPhotoThumbsFullWidth + margin <= productPhotoThumbsWidth) $productPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
-            if (margin >= 0) $productPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
-        });
+        if (!$productPhotoThumbs.is(':animated')) {
+            var marginLeft = $(this).data('dir') + productPhotoThumbsWidth,
+                m = marginLeft.split('='),
+                marginInt = parseInt($productPhotoThumbs.css('margin-left')) + parseInt(m[0] + m[1]);
+
+
+            $productPhotoThumbsBtn.addClass(thumbBtnDisabledClass);
+
+            if ( -marginInt  >= (fullwidth - productPhotoThumbsWidth) ){
+
+                $productPhotoThumbsBtn.eq(0).removeClass(thumbBtnDisabledClass);
+
+            } else if ( marginInt  >= 0 ){
+
+                $productPhotoThumbsBtn.eq(1).removeClass(thumbBtnDisabledClass);
+
+
+            } else {
+
+                $productPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
+            }
+            $productPhotoThumbs.animate({
+                'margin-left': marginLeft
+            });
+
+
+
+        }
     });
 
 
@@ -979,19 +1001,43 @@ $(function() {
 
 
     // Кредит
-    if ($creditButton.length > 0 && typeof window['dc_getCreditForTheProduct'] == 'function') {
-        window['dc_getCreditForTheProduct'](
-            4427,
-            window.docCookies.getItem('enter_auth'),
+    if ($creditButton.length > 0 && typeof window['DCLoans'] == 'function') {
+        window['DCLoans'](
+            '4427',
             'getPayment',
-            { price : $creditButton.data('credit')['price'], count : 1, type : $creditButton.data('credit')['product_type'] },
-            function( result ) {
-                if( typeof result['payment'] != 'undefined' && result['payment'] > 0 ) {
-                    $creditButton.find('.jsProductCreditPrice').text( printPrice( Math.ceil(result['payment']) ) );
+            {
+                products: [
+                    { price : $creditButton.data('credit')['price'], count : 1, type : $creditButton.data('credit')['product_type'] }
+                ]
+            },
+            function(response) {
+                var result = {
+                    payment: null
+                };
+
+                console.info('DCLoans.getPayment.response', response);
+
+                result.payment = response.allProducts;
+
+                console.info('DCLoans.getPayment.result', result);
+
+                if (result.payment) {
+                    $creditButton.find('.jsProductCreditPrice').text(printPrice(Math.ceil(result.payment)));
                     $creditButton.show();
                 }
             }
-        )
+        );
+
+        $creditButton.on('click', function(e) {
+            var $target = $($(this).data('target')); // кнопка купить
+
+            if ($target.length) {
+                console.info('$target.first', $target.first());
+                $target.first().trigger('click', ['on']);
+
+                e.preventDefault();
+            }
+        });
     }
 
 	(function() {
@@ -1305,9 +1351,9 @@ $(function() {
         link = link.replace(/^http:\/\/.*?\//, '/');
 
         if ($offer.length == 0) {
-            $.get(link).done(function (doc) {
+            $.get(ENTER.utils.setURLParam('ajax', 1, link)).done(function (data) {
                 $('<div class="jsProductPartnerOfferDiv partner-offer-popup"></div>')
-                    .append($('<i class="closer jsPopupCloser">×</i>'), $('<div class="inn" />').append($(doc).find('h1'), $(doc).find('article')))
+                    .append($('<i class="closer jsPopupCloser">×</i>'), $('<div class="inn" />').append($('<h1 />').text(data.title || ''), $('<article />').html(data.content || '')))
                     .lightbox_me(popupDefaults)
             });
         } else {
@@ -1978,19 +2024,11 @@ $(document).ready(function() {
 			closeSelector: '.jsPopupCloser',
 			onLoad: function() {
 				videoStartTime = new Date().getTime();
-
-				if (typeof(_gaq) !== 'undefined') {
-					_gaq.push(['_trackEvent', 'Video', 'Play', productUrl]);
-				}
 			},
 			onClose: function() {
 				$('.js-product-video-iframeContainer').empty();
 				videoEndTime = new Date().getTime();
 				var videoSpent = videoEndTime - videoStartTime;
-
-				if (typeof _gaq !== 'undefined') {
-					_gaq.push(['_trackEvent', 'Video', 'Stop', productUrl, videoSpent]);
-				}
 			}
 		});
 

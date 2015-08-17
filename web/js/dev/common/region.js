@@ -21,11 +21,6 @@
             showPopup();
         }
 
-        // analytics only for main page
-        if ( document.location.pathname === '/' ) {
-            $body.trigger('trackGoogleEvent', [{category: 'citySelector', action: 'viewed', nonInteraction: true}]);
-        }
-
     };
 
     // Основная функция, которая сначала отправляет аналитику, а потом меняет регион
@@ -95,6 +90,10 @@
             autofocus: true,
             onLoad: function(){
                 $popup.find('#jscity').putCursorAtEnd();
+                if (!isGeoshopCookieSet()) {
+                    $body.trigger('trackGoogleEvent', [{category: 'citySelector', action: 'viewed', nonInteraction: true}]);
+                }
+
             },
             onClose: function() {
 				if (!isGeoshopCookieSet()) {

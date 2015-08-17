@@ -157,6 +157,7 @@ class Entity {
         $templateHelper = new \Helper\TemplateHelper();
 
         if (isset($data['id'])) $this->setId($data['id']);
+        else if (isset($data['core_id'])) $this->setId($data['core_id']);
         if (isset($data['ui'])) $this->setUi($data['ui']);
         if (isset($data['uid'])) $this->setUi($data['uid']); // для scms
         if (isset($data['status_id'])) $this->setStatusId($data['status_id']);
@@ -184,9 +185,9 @@ class Entity {
         if (isset($data['num_reviews'])) $this->setNumReviews($data['num_reviews']);
         if (isset($data['is_upsale'])) $this->setIsUpsale($data['is_upsale']);
         if (isset($data['model']) && $data['model']) $this->setModel(new Model\Entity($data['model']));
-        if (isset($data['title'])) $this->setSeoTitle($data['title']);
-        if (isset($data['meta_keywords'])) $this->setSeoKeywords($data['meta_keywords']);
-        if (isset($data['meta_description'])) $this->setSeoDescription($data['meta_description']);
+        if (isset($data['title'])) $this->setSeoTitle($templateHelper->unescape($data['title']));
+        if (isset($data['meta_keywords'])) $this->setSeoKeywords($templateHelper->unescape($data['meta_keywords']));
+        if (isset($data['meta_description'])) $this->setSeoDescription($templateHelper->unescape($data['meta_description']));
 
         if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
             return new Kit\Entity($data);
@@ -203,9 +204,9 @@ class Entity {
         if (array_key_exists('is_primary_line', $data)) $this->setIsPrimaryLine($data['is_primary_line']);
         if (array_key_exists('model_id', $data)) $this->setModelId($data['model_id']);
         if (array_key_exists('score', $data)) $this->setScore($data['score']);
-        if (isset($data['name'])) $this->setName(isset($data['ui']) ? $templateHelper->unescape($data['name']) : $data['name']); // Ядро отдаёт строку, обработанную htmlspecialchars; scms - нет; редакция в 1С не использует HTML сущности и теги в данном поле
-        if (array_key_exists('name_web', $data)) $this->setWebName(isset($data['ui']) ? $templateHelper->unescape($data['name_web']) : $data['name_web']); // Ядро отдаёт строку, обработанную htmlspecialchars; scms - нет; редакция в 1С не использует HTML сущности и теги в данном поле
-        if (array_key_exists('prefix', $data)) $this->setPrefix(isset($data['ui']) ? $templateHelper->unescape($data['prefix']) : $data['prefix']); // Ядро отдаёт строку, обработанную htmlspecialchars; scms - нет; редакция в 1С не использует HTML сущности и теги в данном поле
+        if (isset($data['name'])) $this->setName($templateHelper->unescape($data['name'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
+        if (array_key_exists('name_web', $data)) $this->setWebName($templateHelper->unescape($data['name_web'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
+        if (array_key_exists('prefix', $data)) $this->setPrefix($templateHelper->unescape($data['prefix'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
         if (array_key_exists('tagline', $data)) $this->setTagline($data['tagline']);
         if (array_key_exists('announce', $data)) $this->setAnnounce($data['announce']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);

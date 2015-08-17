@@ -34,17 +34,7 @@
 <body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
     <?= $page->slotConfig() ?>
 
-    <div class="wrapw">
-        <div class="compare-userbar">
-            <?= $page->render('userbar2/topbar') ?>
-        </div>
-
-        <?= $page->slotContent() ?>
-    </div>
-
-    <footer class="footerw js-compare-footer">
-        <p class="footerw_tx clearfix">&copy; ООО «Энтер» 2011&ndash;<?= date('Y') ?>. ENTER&reg; ЕНТЕР&reg; Enter&reg;. Все права защищены. <a href="javascript:void(0)" class="footer__copy__link" id="jira">Сообщить об ошибке</a></p>
-    </footer>
+    <?= $page->slotContent() ?>
 
     <?= $page->slotAuth() ?>
     <?= $page->slotUserConfig() ?>

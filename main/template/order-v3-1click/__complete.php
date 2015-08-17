@@ -6,12 +6,14 @@ use \Model\PaymentMethod\PaymentGroup\PaymentGroupEntity;
  * @param \Helper\TemplateHelper $helper
  * @param \Model\Order\Entity[] $orders
  * @param \Model\PaymentMethod\PaymentEntity[] $ordersPayment
+ * @param \Model\Product\Entity[] $productsById
  * @return string
  */
 $f = function(
     \Helper\TemplateHelper $helper,
     $orders,
-    $ordersPayment
+    $ordersPayment,
+    $productsById
 ) {
 
     $order = reset($orders) ?: null;
@@ -59,5 +61,9 @@ $f = function(
         <? endif ?>
     </div>
 <? endforeach ?>
+
+<? if (\App::partner()->getName() === \Partner\Counter\Actionpay::NAME): ?>
+    <?= (new \Templating\HtmlLayout())->tryRender('order/partner-counter/_actionpay-complete', ['orders' => $orders, 'productsById' => $productsById]) ?>
+<? endif ?>
 
 <? }; return $f;
