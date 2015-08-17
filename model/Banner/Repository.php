@@ -15,10 +15,9 @@ class Repository {
 
     /**
      * @param \Model\Region\Entity|null $region
-     * @return Entity[]
+     * @return BannerEntity[]
      */
     public function getCollection(\Model\Region\Entity $region = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $client = clone $this->client;
 
@@ -30,7 +29,7 @@ class Repository {
         $collection = [];
         $client->addQuery('promo/get', [], [], function ($data) use (&$collection) {
             foreach ($data as $item) {
-                $collection[] = new Entity($item);
+                $collection[] = new BannerEntity($item);
             }
         });
 
@@ -43,7 +42,6 @@ class Repository {
      * @param $callback
      */
     public function prepareCollection($callback) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [
             'tags' => ['site-web'],
@@ -51,42 +49,5 @@ class Repository {
         \App::scmsClient()->addQuery('api/promo/get', $params, [], $callback);
     }
 
-    /**
-     * @param Entity $entity
-     * @param \Routing\Router $router
-     * @param \Model\Product\Entity[] $productsById
-     * @param \Model\Product\Category\Entity[] $categoriesById
-     * @throws \Exception
-     */
-    public function setEntityUrl(Entity $entity, \Routing\Router $router, $productsById = [], $categoriesById = []) {
-        $url = $entity->getUrl();
-        if (!empty($url)) {
-            return;
-        }
 
-        try {
-            $items = $entity->getItem();
-            /** @var $item \Model\Banner\Item\Entity */
-            $item = reset($items);
-            if (!$item) {
-                return;
-            }
-
-            if ($item->getProductCategoryId()) {
-                /** @var $product \Model\Product\Category\Entity */
-                $category = ($item->getProductCategoryId() && isset($categoriesById[$item->getProductCategoryId()]))
-                    ? $categoriesById[$item->getProductCategoryId()]
-                    : null;
-                if (!$category) {
-                    throw new \Exception(sprintf('Категория #%s не найдена', $item->getProductCategoryId()));
-                }
-
-                $url = $router->generate('product.category', array('categoryPath' => $category->getPath()));
-            }
-        } catch (\Exception $e) {
-            \App::logger()->error($e);
-        }
-
-        $entity->setUrl($url);
-    }
 }

@@ -2,6 +2,8 @@
 
 namespace Controller\Main;
 
+use Model\Banner\BannerEntity;
+
 class Action {
 
     /**
@@ -11,7 +13,6 @@ class Action {
     public function index(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        $router = \App::router();
         $client = \App::coreClientV2();
         $user = \App::user();
         $region = $user->getRegion();
@@ -20,22 +21,11 @@ class Action {
 
         // запрашиваем баннеры
         $itemsByBanner = [];
-        $bannerData = [];
-        \RepositoryManager::banner()->prepareCollection(function ($data) use (&$bannerData, &$itemsByBanner) {
-            $timeout = \App::config()->banner['timeout'];
+        $banners = [];
+        \RepositoryManager::banner()->prepareCollection(function ($data) use (&$banners, &$itemsByBanner) {
 
-            foreach ($data as $i => $item) {
-                $bannerId = isset($item['uid']) ? (int)$item['uid'] : null;
-                $bannerData[] = [
-                    'id'    => $bannerId,
-                    'alt'   => $item['name'],
-                    'imgs'  => null,
-                    'imgb'  => null,
-                    'url'   => null,
-                    't'     => $timeout,
-                    'ga'    => $bannerId . ' - ' . $item['name'],
-                    'pos'   => $i,
-                ];
+            foreach ($data as $item) {
+                $banners[] = new BannerEntity($item);
             }
         });
 
@@ -82,7 +72,7 @@ class Action {
         }
 
         $page = new \View\Main\IndexPage();
-        $page->setParam('bannerData', $bannerData);
+        $page->setParam('banners', $banners);
         $page->setParam('productList', $productsById);
         $page->setParam('rrProducts', isset($productsIdsFromRR) ? $productsIdsFromRR : []);
 
