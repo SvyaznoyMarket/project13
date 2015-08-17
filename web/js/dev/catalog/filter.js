@@ -174,7 +174,7 @@
 	 * @param	{String}	url
 	 * @param	{Function}	callback
 	 */
-	function getDataFromServer(url, callback) {
+	function getDataFromServer(url, callback, fail) {
 		loader.start();
 
 		$.ajax({
@@ -186,6 +186,8 @@
 				} else {
 					console.warn('res isn\'t object');
 					console.log(typeof res);
+
+                    try { if (fail) fail(); } catch (error) { console.error(error); }
 				}
 
 				loader.stop();
@@ -198,6 +200,8 @@
 			error: function() {
 				loading = false;
 				loader.stop();
+
+                try { if (fail) fail(); } catch (error) { console.error(error); }
 			}
 		});
 	}
@@ -214,10 +218,46 @@
 		liveScroll = true;
 		loading = true;
 
-		getDataFromServer(getFilterUrl().addParameterToUrl('page', nowPage).addParameterToUrl('ajax', 'true'), function(res) {
-			loading = false;
-			$listingWrap.append(templateRenderers['list'](res['list'])); // TODO Вызывать renderCatalogPage вместо templateRenderers['list']?
-		});
+		getDataFromServer(
+            getFilterUrl().addParameterToUrl('page', nowPage).addParameterToUrl('ajax', 'true'),
+            function(res) {
+                loading = false;
+                $listingWrap.append(templateRenderers['list'](res['list'])); // TODO Вызывать renderCatalogPage вместо templateRenderers['list']?
+
+                try {
+                    var categoryName, data;
+
+                    if (data = $('#jsProductCategory').data('value')) {
+                        categoryName = data.name;
+                    } else if (data = $('#jsSlice').data('value')) {
+                        categoryName = data.category ? data.category.name : '';
+                    }
+
+                    $('body').trigger('trackGoogleEvent', {
+                        action: 'upload',
+                        category: 'listing_upload',
+                        label: ('string' === typeof categoryName) ? categoryName : ''
+                    });
+                } catch (error) { console.info(error); }
+    		},
+            function() {
+                try {
+                    var categoryName, data;
+
+                    if (data = $('#jsProductCategory').data('value')) {
+                        categoryName = data.name;
+                    } else if (data = $('#jsSlider').data('value')) {
+                        categoryName = data.category ? data.category.name : '';
+                    }
+
+                    $('body').trigger('trackGoogleEvent', {
+                        action: 'not_upload',
+                        category: 'listing_upload',
+                        label: ('string' === typeof categoryName) ? categoryName : ''
+                    });
+                } catch (error) { console.info(error); }
+            }
+        );
 	}
 
 	function enableInfinityScroll(onlyIfAlreadyEnabled) {
