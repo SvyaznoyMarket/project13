@@ -234,11 +234,9 @@
             render: {
                 products: function( products ) {
                     var
-                        i, html = '';
-
-                    for ( i = 0; i < products.length; i++ ) {
-                        html += mustache.render(TEMPLATES.LISTING_ITEM, products[i]);
-                    }
+                        html = mustache.render(TEMPLATES.LISTING_ITEM, {
+                            products: (products.length) ? products : false
+                        });
 
                     return html;
                 },
@@ -545,7 +543,7 @@
                     // return;
                 }
 
-                productsHtml        = this.render.products(data.list.products);
+                productsHtml        = this.render.products(data.list.products || []);
                 paginationHtml      = this.render.pagination(data.pagination);
                 selectedFiltersHtml = this.render.selectedFilters(data.selectedFilter);
 
