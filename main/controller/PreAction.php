@@ -2,7 +2,11 @@
 
 namespace Controller;
 
+use Session\AbTest\ABHelperTrait;
+
 class PreAction {
+    use ABHelperTrait;
+
     /**
      * Запрашивает редирект и АБ-тесты
      *
@@ -21,7 +25,6 @@ class PreAction {
         } catch (\Exception $e) {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['curl-cache', 'controller', 'critical']);
         }
-
 
         $routeName = $request->attributes->get('route');
         $uri = $request->getPathInfo();
@@ -85,6 +88,24 @@ class PreAction {
         \App::scmsSeoClient()->execute(\App::config()->scmsSeo['retryTimeout']['tiny']);
 
         if (!$redirectUrl) {
+            try {
+                // если пользователь авторизован, то подгружает серверную корзину
+                if ($this->isCoreCart()) {
+                    $userEntity = \App::user()->getEntity();
+
+                    $controller = new \EnterApplication\Action\Cart\Update();
+                    $controllerRequest = $controller->createRequest();
+                    $controllerRequest->regionId = \App::user()->getRegionId();
+                    $controllerRequest->userUi = $userEntity ? $userEntity->getUi() : null;
+
+                    if ($controllerRequest->userUi && $controllerRequest->regionId) {
+                        $controller->execute($controllerRequest);
+                    }
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);
+            }
+
             return null;
         }
 

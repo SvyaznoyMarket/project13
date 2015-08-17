@@ -15,6 +15,10 @@ class DeliveryPage extends Layout {
         return parent::slotGoogleRemarketingJS($tagParams);
     }
 
+    public function slotOrderHead() {
+        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 2]);
+    }
+
     public function slotContent() {
         return \App::closureTemplating()->render('order-v3-new/page-delivery', $this->params);
     }

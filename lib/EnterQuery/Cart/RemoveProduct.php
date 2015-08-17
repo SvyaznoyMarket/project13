@@ -18,7 +18,7 @@ namespace EnterQuery\Cart
         /** @var Response */
         public $response;
 
-        public function __construct($userUi = null, $ui = null, $quantity = null)
+        public function __construct($userUi = null, $ui = null, $quantity = 1000000)
         {
             $this->response = new Response();
 

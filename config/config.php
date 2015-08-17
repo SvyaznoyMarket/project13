@@ -13,7 +13,6 @@ $c->dataDir = $c->appDir . '/data';
 $c->logDir = realpath($c->appDir . '/../logs');
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
-$c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
 
 $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
@@ -263,6 +262,8 @@ $c->partners['Adblender']['enabled'] = true;
 
 $c->partners['Giftery']['enabled'] = true;
 $c->partners['Giftery']['lowestPrice'] = 500;
+
+$c->partners['facebook']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 

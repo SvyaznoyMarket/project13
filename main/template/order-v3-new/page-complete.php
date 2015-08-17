@@ -20,7 +20,6 @@ return function(
         display: none;
     }
 </style>
-<?= $helper->render('order-v3-new/__head', ['step' => 3]) ?>
 
     <section class="orderCnt jsOrderV3PageComplete">
         <h1 class="orderCnt_t">Ваши заказы</h1>

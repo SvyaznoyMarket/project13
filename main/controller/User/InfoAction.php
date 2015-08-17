@@ -7,43 +7,6 @@ class InfoAction {
 
     /**
      * @param \Http\Request $request
-     * @return \Http\JsonResponse
-     * @throws \Exception\NotFoundException
-     */
-    public function execute(\Http\Request $request) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
-
-        if (!$request->isXmlHttpRequest()) {
-            throw new \Exception\NotFoundException('Request is not xml http');
-        }
-
-        /** @var $cookies \Http\Cookie[] */
-        $cookies = [];
-        $responseData = [];
-        try {
-            if (!$request->cookies->has('infScroll')) {
-                $cookies[] = new \Http\Cookie('infScroll', 1, time() + (4 * 7 * 24 * 60 * 60), '/',
-                    \App::config()->session['cookie_domain'], false,
-                    false // важно httpOnly=false, чтобы js мог получить куку
-                );
-            }
-
-            $responseData = $this->getResponseData($request);
-        } catch (\Exception $e) {
-        }
-
-
-        $response = new \Http\JsonResponse($responseData);
-
-        foreach ($cookies as $cookie) {
-            $response->headers->setCookie($cookie);
-        }
-
-        return $response;
-    }
-
-    /**
-     * @param \Http\Request $request
      * @return array
      */
     public function getResponseData(\Http\Request $request) {

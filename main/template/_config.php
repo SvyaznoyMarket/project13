@@ -28,7 +28,6 @@ $routerRules = \App::router()->getRules();
 $config = array_merge([
     'adfoxEnabled'     => $appConfig->adFox['enabled'],
     'jsonLog'               => $appConfig->jsonLog['enabled'],
-    'userUrl'               => $router->generate('user.info'),
     'routeUrl'              => $router->generate('route'),
     'f1Certificate'         => $appConfig->f1Certificate['enabled'],
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
@@ -60,6 +59,7 @@ $config = array_merge([
     'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS
     'selfDeliveryLimit'    => $appConfig->self_delivery['limit'], // стоимость платного самовывоза, удалять осторожно, поломается JS
     'minOrderSum'  => \App::abTest()->isOrderMinSumRestriction() ? $appConfig->minOrderSum : false,
+    'infinityScroll' => \App::abTest()->getTest('infinity_scroll') && ('on' === \App::abTest()->getTest('infinity_scroll')->getChosenCase()->getKey()),
 ], isset($config) ? (array)$config : []);
 ?>
 

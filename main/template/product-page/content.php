@@ -17,7 +17,6 @@
  * @var $isUserSubscribedToEmailActions boolean
  * @var $actionChannelName string
  * @var $kitProducts            array   Продукты кита
- * @var $useLens                bool    Показывать лупу
  * @var $reviewsData            array   Данные отзывов
  * @var $breadcrumbs            array   Хлебные крошки
  * @var $trustfactors           array   Трастфакторы

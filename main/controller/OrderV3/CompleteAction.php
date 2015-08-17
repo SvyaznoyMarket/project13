@@ -2,13 +2,17 @@
 
 namespace Controller\OrderV3;
 
+use EnterApplication\CurlTrait;
+use Session\AbTest\ABHelperTrait;
 use Model\Order\Entity;
 use Model\PaymentMethod\PaymentEntity;
 use Model\Point\PointEntity;
 use Session\ProductPageSenders;
 use Session\ProductPageSenders2;
+use EnterQuery as Query;
 
 class CompleteAction extends OrderV3 {
+    use CurlTrait, ABHelperTrait;
 
     private $sessionOrders;
     private $sessionIsReaded;
@@ -36,6 +40,7 @@ class CompleteAction extends OrderV3 {
         $orders = [];
         /** @var \Model\PaymentMethod\PaymentEntity[] $ordersPayment */
         $ordersPayment = [];
+        /** @var \Model\Product\Entity[] $products */
         $products = [];
         $paymentProviders = [];
         $privateClient = \App::coreClientPrivate();
@@ -45,6 +50,7 @@ class CompleteAction extends OrderV3 {
         $shopIds = [];
         $pointUis = [];
         $errors = [];
+        $userEntity = \App::user()->getEntity();
 
         $this->pushEvent(['step' => 3]);
 
@@ -144,6 +150,18 @@ class CompleteAction extends OrderV3 {
             }
             unset($product);
 
+            if ($userEntity && $this->isCoreCart()) {
+                try {
+                    foreach ($products as $product) {
+                        if (!$product instanceof \Model\Product\Entity) continue;
+                        (new Query\Cart\RemoveProduct($userEntity->getUi(), $product->getUi()))->prepare();
+                    }
+                    $this->getCurl()->execute();
+                } catch (\Exception $e) {
+                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['order']);
+                }
+            }
+
             // логируем этот шит
             foreach ($orders as $order) {
                 $productIds = array_map(function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $order->getProduct());
@@ -176,6 +194,7 @@ class CompleteAction extends OrderV3 {
         $page->setParam('ordersPayment', $ordersPayment);
         $page->setParam('motivationAction', $this->getMotivationAction($orders, $ordersPayment));
         $page->setParam('products', $products);
+        $page->setParam('productsById', $products);
         $page->setParam('userEntity', $this->user->getEntity());
         $page->setParam('paymentProviders', $paymentProviders);
         $page->setParam('banks', $banks);

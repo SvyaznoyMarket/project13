@@ -3,10 +3,11 @@
 namespace Controller\Cart;
 
 use EnterApplication\CurlTrait;
+use Session\AbTest\ABHelperTrait;
 use EnterQuery as Query;
 
 class ProductAction {
-    use CurlTrait;
+    use CurlTrait, ABHelperTrait;
 
     /**
      * @param int           $productId
@@ -79,6 +80,8 @@ class ProductAction {
 
             if ($request->query->get('credit') == 'on') {
                 $params['credit'] = ['enabled' => true];
+            } else {
+                $params['credit'] = null;
             }
 
             // не учитываем является ли товар набором или нет - за это отвечает ядро
@@ -132,11 +135,12 @@ class ProductAction {
             $cart->pushStateEvent([]);
 
             // обновление серверной корзины
-            if ($userEntity = \App::user()->getEntity()) {
+            $userEntity = \App::user()->getEntity();
+            if ($this->isCoreCart() && $userEntity) {
                 if ($quantity > 0) {
                     (new Query\Cart\SetProduct($userEntity->getUi(), $product->getUi(), $quantity))->prepare();
                 } else {
-                    (new Query\Cart\RemoveProduct($userEntity->getUi(), $product->getUi(), 1000000))->prepare();
+                    (new Query\Cart\RemoveProduct($userEntity->getUi(), $product->getUi()))->prepare();
                 }
 
                 $this->getCurl()->execute();
@@ -244,8 +248,9 @@ class ProductAction {
                 $productQuantity = isset($productQuantitiesById[$productId]) ? $productQuantitiesById[$productId] : null;
                 if (!$productQuantity) continue;
 
+                $newQuantity = \App::config()->lite['enabled'] ? $productQuantity : $productQuantity + $cart->getQuantityByProduct($productId);
 
-                $cart->setProduct($product, $productQuantity + $cart->getQuantityByProduct($productId), $params, true);
+                $cart->setProduct($product, $newQuantity, $params, true);
 
                 $quantity += $cart->getQuantityByProduct($productId);
             }
@@ -319,6 +324,9 @@ class ProductAction {
 
             // обновление серверной корзины
             call_user_func(function() use (&$productsById, &$productQuantitiesById) {
+                $userEntity = \App::user()->getEntity();
+                if (!$this->isCoreCart() || !$userEntity) return;
+
                 if ($userEntity = \App::user()->getEntity()) {
                     foreach ($productsById as $productId => $product) {
                         $quantity = isset($productQuantitiesById[$productId]) ? $productQuantitiesById[$productId] : null;
@@ -327,7 +335,7 @@ class ProductAction {
                         if ($quantity > 0) {
                             (new Query\Cart\SetProduct($userEntity->getUi(), $product->getUi(), $quantity))->prepare();
                         } else {
-                            (new Query\Cart\RemoveProduct($userEntity->getUi(), $product->getUi(), 1000000))->prepare();
+                            (new Query\Cart\RemoveProduct($userEntity->getUi(), $product->getUi()))->prepare();
                         }
                     }
 

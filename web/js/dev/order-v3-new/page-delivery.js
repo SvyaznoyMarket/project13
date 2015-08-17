@@ -150,7 +150,7 @@
 
                 $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
 
-                $orderContent.empty().html($(data.result.page).find('#js-order-content').html());
+                $orderContent.empty().html(data.result.page);
 				if ($orderContent.find('.jsAddressRootNode').length > 0) {
 					$.each($orderContent.find('.jsAddressRootNode'), function(i,val){
 						ko.applyBindings(ENTER.OrderV3.address, val);

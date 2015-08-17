@@ -77,7 +77,6 @@ class Cart {
     public function setProduct(\Model\Product\Entity $product, $quantity = 1, array $params = [], $moveProductToUp = false) {
         if ($quantity < 0) $quantity = 0;
 
-         // новый формат
         $data = $this->storage->get($this->sessionName);
         $item = $this->formatProduct($product, $quantity);
         if (!isset($data['product'][$product->getId()]['added'])) {
@@ -85,7 +84,7 @@ class Cart {
         } else {
             $item = array_merge($data['product'][$product->getId()], $item);
         }
-        $item += $params;
+        $item = array_merge($item, $params);
 
         // SITE-5022
         if ($moveProductToUp) {
@@ -99,6 +98,34 @@ class Cart {
         $this->update(true);
 
         $this->storage->set($this->sessionName, $data);
+    }
+
+    /**
+     * Устанавливает количество товара по его ui
+     * Возвращает флаг - обновить корзину?
+     *
+     * @param $ui
+     * @param $quantity
+     * @return bool
+     */
+    public function setProductQuantityByUi($ui, $quantity) {
+        $data = $this->storage->get($this->sessionName);
+
+        foreach ($data['product'] as $i => $item) {
+            if (
+                isset($item['ui'])
+                && ($ui === $item['ui'])
+            ) {
+                if ($data['product'][$i]['quantity'] !== $quantity) {
+                    $data['product'][$i]['quantity'] = $quantity;
+                    $this->storage->set($this->sessionName, $data);
+
+                    return true;
+                }
+
+                return false;
+            }
+        }
     }
 
     /**

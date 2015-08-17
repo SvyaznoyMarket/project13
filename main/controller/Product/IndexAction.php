@@ -102,16 +102,18 @@ class IndexAction {
                 }
             }
 
+            $templateHelper = new \Helper\TemplateHelper();
+
             if (isset($data['title'])) {
-                $product->setSeoTitle($data['title']);
+                $product->setSeoTitle($templateHelper->unescape($data['title']));
             }
 
             if (isset($data['meta_keywords'])) {
-                $product->setSeoKeywords($data['meta_keywords']);
+                $product->setSeoKeywords($templateHelper->unescape($data['meta_keywords']));
             }
 
             if (isset($data['meta_description'])) {
-                $product->setSeoDescription($data['meta_description']);
+                $product->setSeoDescription($templateHelper->unescape($data['meta_description']));
             }
 
             if (isset($data['medias']) && is_array($data['medias'])) {
