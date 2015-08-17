@@ -60,13 +60,15 @@
                 console.info('module:enter.suborder.view~SubOrderView#initialize');
 
                 var
-                    self        = this,
-                    items       = this.$el.find('.' + CSS_CLASSES.ITEM),
-                    orderPoints = JSON.parse(this.$el.find('.' + CSS_CLASSES.POINTS_DATA).html());
+                    self            = this,
+                    items           = this.$el.find('.' + CSS_CLASSES.ITEM),
+                    orderPointsData = JSON.parse(this.$el.find('.' + CSS_CLASSES.POINTS_DATA).html());
 
                 this.orderView        = options.orderView;
                 this.blockName        = this.$el.attr('data-block_name');
-                this.pointsCollection = new OrderPointsCollection(orderPoints.points);
+                this.pointsCollection = new OrderPointsCollection(orderPointsData.points, {
+                    popupData: orderPointsData
+                });
 
                 items.each(function( index ) {
                     self.subViews['suborder_' + index] = new OrderItemView({

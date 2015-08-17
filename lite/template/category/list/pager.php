@@ -5,7 +5,6 @@
  */
 
 $helper = \App::helper();
-$html = '';
 
 foreach ($productPager as $product) {
     if (!$product instanceof \Model\Product\Entity) continue;
@@ -18,10 +17,7 @@ foreach ($productPager as $product) {
         }
     }
 
-    $html .= $helper->renderWithMustache('category/list/pager', $data);
+    echo $helper->renderWithMustache('category/list/pager', $data);
 }
-
-echo $html;
-return;
 
 ?>

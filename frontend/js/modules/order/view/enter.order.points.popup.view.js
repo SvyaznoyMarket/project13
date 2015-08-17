@@ -39,6 +39,7 @@
                 AUTOCOMPLETE_ITEM: 'js-pointpopup-autocomplete-item',
                 FILTER_OVERLAY: 'need_class_here', /** @todo НУЖЕН ОВЕРЛЭЙ! */
                 POINT_FILTER: 'js-point-filter',
+                POINT_FILTER_PARAM: 'js-point-filter-param',
                 POINT_OPENER: 'js-point-filter-opener',
                 POINT_FILTER_ACTIVE: 'open'
             },
@@ -93,14 +94,16 @@
                     autocompleteWrapper: this.$el.find('.' + CSS_CLASSES.AUTOCOMPLETE_WRAPPER),
                     filterOverlay: this.$el.find('.' + CSS_CLASSES.FILTER_OVERLAY),
                     pointFilters: this.$el.find('.' + CSS_CLASSES.POINT_FILTER),
-                    searchInput: this.$el.find('.' + CSS_CLASSES.SEARCH)
+                    searchInput: this.$el.find('.' + CSS_CLASSES.SEARCH),
+                    pointFilterParams: this.$el.find('.' + CSS_CLASSES.POINT_FILTER_PARAM)
                 };
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.PICK_POINT]        = 'pickPoint';
-                this.events['keyup .' + CSS_CLASSES.SEARCH]            = 'searchAddress';
-                this.events['click .' + CSS_CLASSES.POINT_OPENER]      = 'openPointsFilter';
-                this.events['click .' + CSS_CLASSES.AUTOCOMPLETE_ITEM] = 'selectAutocompleteItem';
+                this.events['click .' + CSS_CLASSES.PICK_POINT]          = 'pickPoint';
+                this.events['keyup .' + CSS_CLASSES.SEARCH]              = 'searchAddress';
+                this.events['click .' + CSS_CLASSES.POINT_OPENER]        = 'openPointsFilter';
+                this.events['click .' + CSS_CLASSES.AUTOCOMPLETE_ITEM]   = 'selectAutocompleteItem';
+                this.events['change .' + CSS_CLASSES.POINT_FILTER_PARAM] = 'applyFilter';
 
                 this.listenTo(this.collection, 'change:shown', this.changePoints);
                 this.changePoints();
@@ -169,6 +172,37 @@
                 this.subViews.autocomplete.hide();
                 this.subViews.autocompleteWrapper.empty();
                 this.subViews.filterOverlay.hide();
+            },
+
+            /**
+             * Обработчик изменения фильтра. Применение фильтрации точек
+             *
+             * @method      applyFilter
+             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             */
+            applyFilter: function() {
+                var
+                    inputs = this.subViews.pointFilterParams,
+                    params = {};
+
+                inputs.each(function( key ) {
+                    var
+                        $self = $(this),
+                        value = $self.val();
+                        key   = $self.attr('name');
+
+                    if ( typeof params[key] === 'undefined' ) {
+                        params[key] = [];
+                    }
+
+                    if ( $self.prop('checked') == true ) {
+                        params[key].push(value);
+                    }
+                });
+
+                console.log(params);
+
+                this.collection.filterMyPoints(params);
             },
 
             /**
@@ -364,8 +398,10 @@
             },
 
             render: function() {
+                console.info('module:module:enter.ui.BasePopup~OrderPointsPopup#render');
+                console.log(this.collection.popupData);
                 var
-                    html = mustache.render(TEMPLATES.POPUP);
+                    html = mustache.render(TEMPLATES.POPUP, this.collection.popupData);
 
                 this.$el = $(html);
                 $BODY.append(this.$el);
