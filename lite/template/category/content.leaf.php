@@ -24,7 +24,14 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
 
 ?>
 <!-- для внутренних страниц добавляется класс middle_transform -->
-<div class="middle js-module-require" data-module="enter.catalog" data-page-quantity='<?= $productPager->getLastPage() ?>'>
+<div class="middle js-module-require"
+     data-module="enter.catalog"
+     data-category ='<?= json_encode([
+        'lastPage'  => $productPager->getLastPage(),
+        'name'      => $category->getName(),
+        'url'       => $category->getLink()
+     ], JSON_UNESCAPED_UNICODE) ?>'
+    >
     <main class="content <?= isset($jewelClass) ? $jewelClass : '' ?>">
         <!-- баннер -->
         <div class="banner-section" style="display: none">
@@ -75,7 +82,15 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
 
         <div class="section">
             <div class="goods goods_grid goods_listing grid-4col js-catalog-wrapper">
-                <?= $page->render('category/list/pager', ['productPager'=> $productPager]) ?>
+                <?= $productPager->count() > 0
+                    ? $page->render('category/list/pager', ['productPager'=> $productPager])
+                    : $helper->renderWithMustache('category/list/empty.listing', [
+                        'category' => [
+                            'url' => $category->getLink(),
+                            'name' => $category->getName()
+                        ]
+                    ]);
+                ?>
             </div>
         </div>
 
@@ -98,10 +113,7 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
     <?= file_get_contents(\App::config()->templateDir . '/category/list/pager.mustache') ?>
     {{/products}}
     {{^products}}
-        <div class="no-goods table">
-            <div class="no-goods__title table-cell">Товары<br/>не найдены</div>
-            <div class="no-goods__text table-cell">Попробуйте расширить критерии поиска или посмотреть все товары в категории <a class="no-goods__link dotted" href="">Кресла</a></div>
-        </div>
+    <?= file_get_contents(\App::config()->templateDir . '/category/list/empty.listing.mustache') ?>
     {{/products}}
 </script>
 

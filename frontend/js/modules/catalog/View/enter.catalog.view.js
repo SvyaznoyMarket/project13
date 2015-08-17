@@ -90,6 +90,9 @@
              * @constructs  CatalogView
              */
             initialize: function( options ) {
+
+                this.categoryData = this.$el.data('category');
+
                 this.subViews = {
                     filterView: new FilterView({
                         el: this.$el.find('.' + CSS_CLASSES.CATALOG_FILTER),
@@ -105,7 +108,7 @@
                     selectedFilters: this.$el.find('.' + CSS_CLASSES.SELECTED_FILTERS_WRAPPER)
                 };
 
-                this.lastPage = parseInt(this.$el.attr('data-page-quantity') || 1, 10);
+                this.lastPage = parseInt(this.categoryData.lastPage || 1, 10);
 
                 // Binded loadNextPage function
                 this.loadNextPageBinded = this.loadNextPage.bind(this);
@@ -235,7 +238,8 @@
                 products: function( products ) {
                     var
                         html = mustache.render(TEMPLATES.LISTING_ITEM, {
-                            products: (products.length) ? products : false
+                            products: (products.length) ? products : false,
+                            category: this.categoryData
                         });
 
                     return html;
@@ -247,7 +251,7 @@
 
                 selectedFilters: function( selectedFilters ) {
                     return mustache.render(TEMPLATES.SELECTED_FILTERS, selectedFilters);
-                },
+                }
             },
 
             /**
@@ -543,7 +547,7 @@
                     // return;
                 }
 
-                productsHtml        = this.render.products(data.list.products || []);
+                productsHtml        = this.render.products.bind(this, data.list.products || []);
                 paginationHtml      = this.render.pagination(data.pagination);
                 selectedFiltersHtml = this.render.selectedFilters(data.selectedFilter);
 
@@ -558,7 +562,7 @@
                 });
 
                 this.subViews.paginationWrapper.replaceWithPush(paginationHtml);
-                this.subViews.selectedFilters.empty()
+                this.subViews.selectedFilters.empty();
                 this.subViews.selectedFilters.html(selectedFiltersHtml);
                 this.subViews.pagination.update();
                 this.subViews.paginationBtn.update();
