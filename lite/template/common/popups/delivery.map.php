@@ -16,6 +16,7 @@
             </div>
 
             <div class="drop-filter-kit drop-filter-kit-box">
+
                 <!-- Точки самовывоза - для поселекченного фильтра добавляем класс active-->
                 <div class="drop-filter-box js-point-filter">
                     <div class="drop-filter-box__tggl js-point-filter-opener">
@@ -24,9 +25,12 @@
 
                     <div class="drop-filter-box__dd">
                         <div class="drop-filter-box__dd-inn">
+                            {{#uniqueTokens}}
                             <div class="drop-filter-box__dd-line">
-                                <input class="custom-input custom-input_check-fill" type="checkbox" id="shops" name="" value="">
-                                <label class="custom-label" for="shops">Магазины Enter</label>
+                                <input class="custom-input js-point-filter-param custom-input_check-fill" type="checkbox" id="point_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
+                                <label class="custom-label" for="point_{{key}}_{{value}}">{{displayValue}}</label>
+
+                                {{#isPickPoint}}
                                 <!-- попап-подсказка с описание пункта самовывоза -->
                                 <div class="delivery-points-info delivery-points-info_inline">
                                     <a class="delivery-points-info__icon"></a>
@@ -35,29 +39,15 @@
                                     </div>
                                 </div>
                                 <!--/ попап-подсказка с описание пункта самовывоза -->
+                                {{/isPickPoint}}
                             </div>
+                            {{/uniqueTokens}}
 
-                            <div class="drop-filter-box__dd-line">
-                                <input class="custom-input custom-input_check-fill" type="checkbox" id="pick" name="" value="">
-                                <label class="custom-label" for="pick">Постаматы PickPoint</label>
-                                <!-- попап-подсказка с описание пункта самовывоза -->
-                                <div class="delivery-points-info delivery-points-info_inline">
-                                    <a class="delivery-points-info__icon"></a>
-                                    <div class="delivery-points-info__popup delivery-points-info__popup_top info-popup">
-                                        <a class="delivery-points-info__link" href="" title="Как пользоваться постаматом">Как пользоваться постаматом</a>
-                                    </div>
-                                </div>
-                                <!--/ попап-подсказка с описание пункта самовывоза -->
-                            </div>
-
-                            <div class="drop-filter-box__dd-line">
-                                <input class="custom-input custom-input_check-fill" type="checkbox" id="shops1" name="" value="">
-                                <label class="custom-label" for="shops1">Магазины Enter</label>
-                            </div>
                         </div>
                     </div>
                 </div>
                 <!--/ Точки самовывоза -->
+
 
                 <!-- Cтоимость -->
                 <div class="drop-filter-box js-point-filter">
@@ -67,18 +57,22 @@
 
                     <div class="drop-filter-box__dd">
                         <div class="drop-filter-box__dd-inn">
+                            {{#uniqueCosts}}
                             <div class="fltrBtn_param">
                                 <div class="fltrBtn_ln ">
-                                    <input class="custom-input custom-input_check" type="checkbox" id="" name="" value="0" data-bind="checked: $root.choosenCosts">
-                                    <label class="custom-label" for="">
-                                        <span class="customLabel_btx">Бесплатно</span>
+                                    <input class="custom-input js-point-filter-param custom-input_check" type="checkbox" id="cost_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
+                                    <label class="custom-label" for="cost_{{key}}_{{value}}">
+                                        <span class="customLabel_btx">{{displayValue}}</span>
                                     </label>
                                 </div>
                             </div>
+                             {{/uniqueCosts}}
                         </div>
                     </div>
                 </div>
                 <!-- Cтоимость -->
+
+
 
                 <!-- Дата самовывоза -->
                 <div class="drop-filter-box js-point-filter">
@@ -89,12 +83,14 @@
                     <div class="drop-filter-box__dd">
                         <div class="drop-filter-box__dd-inn">
                             <div class="fltrBtn_param">
+                                {{#uniqueDays}}
                                 <div class="fltrBtn_ln ">
-                                    <input class="custom-input custom-input_check" type="checkbox" id="" name="" value="2015-08-11">
-                                    <label class="custom-label" for="">
-                                        <span class="customLabel_btx">11.08.2015</span>
+                                    <input class="custom-input js-point-filter-param custom-input_check" type="checkbox" id="date_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
+                                    <label class="custom-label" for="date_{{key}}_{{value}}">
+                                        <span class="customLabel_btx">{{displayValue}}</span>
                                     </label>
                                 </div>
+                                {{/uniqueDays}}
                             </div>
                         </div>
                     </div>

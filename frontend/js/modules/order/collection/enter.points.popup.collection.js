@@ -31,8 +31,37 @@
              * @augments    module:enter.BaseCollectionClass
              * @constructs  PointsPopupCollection
              */
-            initialize: function() {
+            initialize: function( models, options ) {
                 console.info('module:enter.points.popup.collection~PointsPopupCollection#initialize');
+
+                this.popupData = options.popupData;
+            },
+
+            filterMyPoints: function( params ) {
+                var
+                    selectedPoints = [],
+                    key;
+
+                selectedPoints = this.filter(function( models ) {
+                    for ( key in models.attributes ) {
+
+                        if ( params[key] && params[key].length && models.attributes.hasOwnProperty(key) ) {
+                            var
+                                index = params[key].indexOf(models.attributes[key].toString());
+
+                            if ( index === -1 ) {
+                                models.set({'shown': false});
+
+                                return false;
+                            }
+                        }
+                    }
+
+                    models.set({'shown': true});
+                    return true;
+                });
+
+                return selectedPoints;
             }
         }));
     }
