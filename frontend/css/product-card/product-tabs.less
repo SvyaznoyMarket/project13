@@ -192,7 +192,7 @@
 
             background: @white;
 
-            .inline-block(middle);
+            .inline-block(top);
         }
     }
     &__val {
@@ -206,9 +206,10 @@
     &__hint {
         position: relative;
 
-        margin: 0 0 0 2px;
+        height: 10px;
+        margin: 2px 0 0 2px;
 
-        .inline-block(middle);
+        .inline-block(top);
         .i-product--hint {
             vertical-align: top;
 
@@ -438,18 +439,22 @@
 .reviews-empty {
     padding: 50px 0;
     &__title {
-        color: @grey-light;
-        .font-size(20);
         margin: 0 0 5px;
+
+        color: @grey-light;
+
+        .font-size(20);
     }
     &__text {
         color: @grey-light;
+
         .font-size(16);
         .font-face('GloberRegular');
     }
     &__left {
-        .inline-block(middle);
         width: 250px;
+
+        .inline-block(middle);
     }
     &__btn {
         .font-size(16);
