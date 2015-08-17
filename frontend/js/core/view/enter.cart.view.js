@@ -106,11 +106,11 @@
 
             loader: {
                 show: function() {
-                    this.subViews.cartDropDownContent.addClass(CSS_CLASSES.LOADER);
+                    this.subViews.cartDropDown.addClass(CSS_CLASSES.LOADER);
                 },
 
                 hide: function() {
-                   this.subViews.cartDropDownContent.removeClass(CSS_CLASSES.LOADER);
+                   this.subViews.cartDropDown.removeClass(CSS_CLASSES.LOADER);
                 }
             },
 
