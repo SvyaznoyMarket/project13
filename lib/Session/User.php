@@ -18,8 +18,6 @@ class User {
     private $region;
     /** @var Cart */
     private $cart;
-    /** @var Cart\OneClick */
-    private $oneClickCart;
 
     public function __construct() {
         $this->authTokenName = \App::config()->authToken['name'];
@@ -236,17 +234,6 @@ class User {
         }
 
         return $this->cart;
-    }
-
-    /**
-     * @return Cart\OneClick
-     */
-    public function getOneClickCart() {
-        if (!$this->oneClickCart) {
-            $this->oneClickCart = new Cart\OneClick();
-        }
-
-        return $this->oneClickCart;
     }
 
     /** Подписан пользователь на канал?

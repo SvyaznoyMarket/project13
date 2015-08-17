@@ -695,6 +695,8 @@ namespace Model\OrderDelivery\Entity\Order {
         /** @var int */
         public $id;
         /** @var string */
+        public $ui;
+        /** @var string */
         public $name;
         /** @var string */
         public $link;
@@ -725,6 +727,7 @@ namespace Model\OrderDelivery\Entity\Order {
                 throw new \Exception('Не указан id продукта');
             }
 
+            if (isset($data['ui'])) $this->ui = (string)$data['ui'];
             if (isset($data['name'])) $this->name = (string)$data['name'];
             if (isset($data['url'])) $this->link = (string)$data['url'];
             if (isset($data['name_web'])) $this->name_web = (string)$data['name_web'];

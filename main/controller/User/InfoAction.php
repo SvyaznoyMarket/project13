@@ -11,7 +11,6 @@ class InfoAction {
      */
     public function getResponseData(\Http\Request $request) {
         $user = \App::user();
-        $cart = $user->getCart();
 
         $responseData = [];
         try {
@@ -29,10 +28,7 @@ class InfoAction {
                     'mobile'       => '',
                     'isSubscribedToActionChannel' => false,
                 ],
-                'cart'    => [
-                    'sum'      => 0,
-                    'quantity' => 0,
-                ],
+                'cart'    => $user->getCart()->getDump(),
                 'compare' => \App::session()->get(\App::config()->session['compareKey']),
                 'order'   => [
                     'hasCredit' => 1 == $request->cookies->get('credit_on'),
@@ -73,32 +69,6 @@ class InfoAction {
                     }
                 }
             }
-
-            if (!$cart->isEmpty()) {
-
-                // заполнение недостающих данных для продуктов
-                $productsToUpdate = [];
-                $productsNC = $cart->getProductData();
-
-                $responseData['cart']['sum'] = $cart->getSum();
-                $responseData['cart']['full_quantity'] = $responseData['cart']['quantity'] = $cart->getProductsQuantity();
-
-                foreach ($productsNC as $id => $value) {
-                    foreach (['name', 'price', 'url', 'image', 'category', 'rootCategory'] as $prop) {
-                        if (!isset($value[$prop]) || empty($value[$prop])) {
-                            $productsToUpdate[] = $id;
-                            break;
-                        }
-                    }
-                }
-
-                foreach (\RepositoryManager::product()->getCollectionById($productsToUpdate) as $product) {
-                    $cart->updateProduct($product);
-                }
-
-                $responseData['cartProducts'] = $cart->getProductDump();
-            }
-
         } catch (\Exception $e) {
             $responseData['success'] = false;
         }

@@ -39,11 +39,6 @@ class Action {
             $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
         }
 
-        $regionEntity = \App::user()->getRegion();
-        if ($regionEntity instanceof \Model\Region\Entity) {
-            \App::user()->setRegion($regionEntity);
-        }
-
         /** @var $region \Model\Region\Entity */
         $region = \App::user()->getRegion();
 
@@ -311,28 +306,20 @@ class Action {
                     }
 
                     $products = [];
-                    $productsIds = [];
+                    $productIds = [];
                     // перевариваем данные изображений
                     // используя айдишники товаров из секции image.products, получим мини-карточки товаров
                     foreach ($promo->getImage() as $image) {
-                        $productsIds = array_merge($productsIds, $image->getProducts());
+                        $productIds = array_merge($productIds, $image->getProducts());
                     }
-                    $productsIds = array_unique($productsIds);
-                    if ($productsIds) {
-                        $medias = [];
-                        \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
-                            foreach ($data as $item) {
-                                if (!isset($item['id'])) continue;
-                                $products[ $item['id'] ] = new \Model\Product\Entity($item);
-                            }
-                        });
-
-                        \RepositoryManager::product()->prepareProductsMediasByIds($productsIds, $medias);
-
-                        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
-
-                        \RepositoryManager::product()->setMediasForProducts($products, $medias);
+                    $productIds = array_unique($productIds);
+                    
+                    foreach ($productIds as $productId) {
+                        $products[$productId] = new \Model\Product\Entity(['id' => $productId]);
                     }
+
+                    \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($products, 'media');
+                    $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
                     $cartButtonAction = new \View\Cart\ProductButtonAction();
                     // перевариваем данные изображений для слайдера в $slideData
@@ -584,52 +571,36 @@ class Action {
 
         $filters = $productFilter->dump();
 
-        $smartChoiceEnabled = isset($catalogJson['smartchoice']) ? $catalogJson['smartchoice'] : false;
         $smartChoiceData = [];
-        $medias = [];
+        $smartChoiceProductsById = [];
+        call_user_func(function() use(&$smartChoiceData, &$smartChoiceProductsById, $filters, $catalogJson, $repository) {
+            if (!isset($catalogJson['smartchoice']) || !$catalogJson['smartchoice']) {
+                return;
+            }
 
-        if ($smartChoiceEnabled) {
             try {
                 $smartChoiceFilters = $filters;
                 if (!in_array('is_store', array_map(function($var){return $var[0];}, $smartChoiceFilters))) {
                     $smartChoiceFilters[] = ["is_store",1,1];
                 }
 
-                $smartChoiceData = \App::coreClientV2()->query('listing/smart-choice', ['region_id' => $region->getId(), 'client_id' => 'site', 'filter' => ['filters' => $smartChoiceFilters]]);
+                $smartChoiceData = \App::coreClientV2()->query('listing/smart-choice', ['region_id' => \App::user()->getRegion()->getId(), 'client_id' => 'site', 'filter' => ['filters' => $smartChoiceFilters]]);
 
                 // SITE-4715
                 $smartChoiceData = array_filter($smartChoiceData, function($a) {
                     return isset($a['products']);
                 });
 
-                $smartChoiceProductsIds = array_map(function ($a) {
-                    return $a['products'][0]['id'];
-                }, $smartChoiceData);
+                foreach ($smartChoiceData as $smartChoiceItem) {
+                    $smartChoiceProductsById[$smartChoiceItem['products'][0]['id']] = new \Model\Product\Entity(['id' => $smartChoiceItem['products'][0]['id']]);
+                }
 
-                $repository->prepareCollectionById($smartChoiceProductsIds, $region, function ($data) use (&$smartChoiceProducts, &$smartChoiceData) {
-                    try {
-                        if (count($data) === 3) {
-                            foreach ($data as $item) {
-                                $smartChoiceProduct = new \Model\Product\Entity($item);
-                                array_walk($smartChoiceData, function (&$item, $key, $smartChoiceProduct) {
-                                    if ($item['products'][0]['id'] == $smartChoiceProduct->getId()) $item['product'] = $smartChoiceProduct;
-                                }, $smartChoiceProduct);
-                            }
-                        } else {
-                            throw new \Exception('[Smartchoice] Не получены товары из базы');
-                        }
-                    } catch (\Exception $e) {
-                        $smartChoiceData = [];
-                    }
-                });
-
-                \RepositoryManager::product()->prepareProductsMediasByIds($smartChoiceProductsIds, $medias);
+                $repository->prepareProductQueries($smartChoiceProductsById, 'media');
             } catch (\Exception $e) {
                 $smartChoiceData = [];
             }
-        }
+        });
 
-        $productError = null;
         $productPager = null;
 
         $productIds = [];
@@ -640,25 +611,26 @@ class Action {
             $offset,
             $limit,
             $region,
-            function($data) use (&$productIds, &$productCount, &$productError) {
+            function($data) use (&$productIds, &$productCount) {
                 if (is_array($data)) {
                     if (isset($data['list'][0])) $productIds = $data['list'];
                     if (isset($data['count'])) $productCount = (int)$data['count'];
-                } else {
-                    $productError = new \Exception('Товары не получены');
                 }
-            },
-            function(\Exception $e) use (&$productError) {
-                $productError = $e;
             }
         );
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        foreach ($smartChoiceData as $smartChoiceDataItem) {
-            if (isset($smartChoiceDataItem['product'])) {
-                \RepositoryManager::product()->setMediasForProducts([$smartChoiceDataItem['product']], $medias);
+        call_user_func(function() use(&$smartChoiceData, &$smartChoiceProductsById) {
+            if (count($smartChoiceProductsById) == 3) {
+                foreach ($smartChoiceData as &$smartChoiceItem) {
+                    if (isset($smartChoiceProductsById[$smartChoiceItem['products'][0]['id']])) {
+                        $smartChoiceItem['product'] = $smartChoiceProductsById[$smartChoiceItem['products'][0]['id']];
+                    }
+                }
+            } else {
+                $smartChoiceData = [];
             }
-        }
+        });
 
         // HINT Можно добавлять ID неопубликованных продуктов для показа в листингах
         // array_unshift($productIds, 201540);
@@ -666,47 +638,22 @@ class Action {
         // TODO удалить (электронный сертификат в листинг сертификатов)
         if ($category->ui === 'b2885b1b-06bc-4c6f-b40d-9a0af22ff61c') array_unshift($productIds, 201540);
 
-        $products = [];
-        if ((bool)$productIds) {
-            $repository->prepareCollectionById(
-                $productIds,
-                $region,
-                function($data) use (&$products, &$productError) {
-                    if (is_array($data)) {
-                        foreach ($data as $item) {
-                            $products[] = new \Model\Product\Entity($item);
-                        }
-                    } else {
-                        $productError = new \Exception('Товары не получены');
-                        \App::logger()->error(['error' => $productError, 'core.response' => $data, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
-                    }
-                },
-                function(\Exception $e) use (&$productError) {
-                    $productError = $e;
-                }
-            );
-        }
+        /** @var \Model\Product\Entity[] $products */
+        $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $productIds);
+
+        $repository->prepareProductQueries($products, 'media label brand category' . (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category->isInSiteListingWithViewSwitcherAbTest() ? ' property' : ''));
+
         \App::coreClientV2()->execute();
 
-        if ($productError && !$products && ('true' == $request->get('ajax'))) {
+        if (!$products && 'true' == $request->get('ajax')) {
             throw new \Exception('Товары не найдены');
         }
 
-        if ((bool)$products) {
-            $productUIs = [];
-            foreach ($products as $product) {
-                if (!$product instanceof \Model\Product\Entity) continue;
-                $productUIs[] = $product->getUi();
+        \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
+            if (isset($data['product_scores'][0])) {
+                \RepositoryManager::review()->addScores($products, $data);
             }
-
-            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use(&$products) {
-                if (isset($data['product_scores'][0])) {
-                    \RepositoryManager::review()->addScores($products, $data);
-                }
-            });
-        }
-
-        $repository->enrichProductsFromScms($products, 'media label brand category' . (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category->isInSiteListingWithViewSwitcherAbTest() ? ' property' : ''));
+        });
 
         \App::coreClientV2()->execute();
 

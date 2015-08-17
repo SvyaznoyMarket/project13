@@ -181,7 +181,7 @@
                                     <div class="pick-point-item__buy">
                                         <button
                                             href=""
-                                            class="btn-type btn-type--buy <? if ($page == 'page') : ?>jsOneClickButton-new<? endif ?>"
+                                            class="btn-type btn-type--buy <? if ($page == 'page') : ?>jsOneClickButton<? endif ?>"
                                             <? if (isset($productUi)) : ?>data-product-ui="<?= $productUi ?>"<? endif ?>
                                             data-bind="attr: { 'data-shop': id }">Купить</button>
                                     </div>

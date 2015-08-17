@@ -101,21 +101,6 @@ class Entity extends \Model\Order\Entity {
     }
 
     /**
-     * Возвращает ссылку на добавление массива товаров
-     * @return string
-     */
-    public function addProductsToCartLink() {
-        $products = [];
-        foreach ($this->getProduct() as $product) {
-            $products['product'][] = [
-                'id' => $product->getId(),
-                'quantity' => $product->getQuantity()
-            ];
-        }
-        return \App::router()->generate('cart.product.setList', $products );
-    }
-
-    /**
      * Возвращает массив id продуктов
      * @return array
      */

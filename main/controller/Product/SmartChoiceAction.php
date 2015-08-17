@@ -39,7 +39,7 @@ class SmartChoiceAction {
                 $queryUrl = "{$rrConfig['apiUrl']}Recomendation/UpSellItemToItems/{$rrConfig['account']}/$id";
 
                 \App::curl()->addQuery($queryUrl, [], function ($data) use (&$recommendedProducts, $id) {
-                    if ((bool)$data) {
+                    if ($data) {
                         $recommendedProducts[$id] = $data;
                     }
                 }, function(\Exception $e) {
@@ -50,43 +50,27 @@ class SmartChoiceAction {
             \App::curl()->execute(null, 1);
 
             // Если для продуктов есть рекомендации
-            if ($recommendedProducts) {
-                $medias = [];
-
-                foreach ($recommendedProducts as &$value) {
-                    \RepositoryManager::product()->prepareCollectionById($value, $region, function ($data) use (&$value) {
-                        if (!is_array($data)) return;
-
-                        foreach ($data as $key => &$product) {
-                            $product = new \Model\Product\Entity($product);
-                            if (!$product->getIsBuyable()) {
-                                unset($data[$key]);
-                            }
-                        }
-
-                        $value = $data;
-                    });
-
-                    \RepositoryManager::product()->prepareProductsMediasByIds($value, $medias);
+            call_user_func(function() use (&$recommendedProducts) {
+                if (!$recommendedProducts) {
+                    return;
                 }
 
-                // Запрашиваем продукты
+                foreach ($recommendedProducts as &$products) {
+                    foreach ($products as &$product) {
+                        $product = new \Model\Product\Entity(['id' => $product]);
+                    }
+
+                    \RepositoryManager::product()->prepareProductQueries($products, 'media');
+                }
+
                 \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-                call_user_func(function() use (&$recommendedProducts) {
-                    foreach ($recommendedProducts as &$products) {
-                        foreach ($products as $i => $product) {
-                            if (!$product instanceof \Model\Product\Entity) {
-                                unset($products[$i]);
-                            }
-                        }
-                    }
-                });
-
-                foreach ($recommendedProducts as $value) {
-                    \RepositoryManager::product()->setMediasForProducts($value, $medias);
+                foreach ($recommendedProducts as &$products) {
+                    $products = array_filter($products, function(\Model\Product\Entity $product) {
+                        return $product->getIsBuyable();
+                    });
                 }
-            }
+            });
 
             $recommend = [];
 

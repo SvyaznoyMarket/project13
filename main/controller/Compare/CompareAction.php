@@ -20,6 +20,7 @@ class CompareAction {
     }
 
     public function execute(\Http\Request $request) {
+        /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
         $compareProducts = $this->session->get($this->compareSessionKey);
         $lastProduct = null;
@@ -28,51 +29,16 @@ class CompareAction {
             $productIds = array_keys($compareProducts);
             $lastProduct = end($compareProducts);
 
-            $productDataByUi = [];
-            $medias = [];
-
-            $client = \App::coreClientV2();
-            \RepositoryManager::product()->prepareCollectionById($productIds, null, function($data) use(&$productDataByUi) {
-                foreach ($data as $item) {
-                    if (!isset($item['ui'])) continue;
-                    $productDataByUi[$item['ui']] = $item;
-                }
-            });
-
-            \RepositoryManager::product()->prepareProductsMediasByIds($productIds, $medias);
-
-            \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use(&$reviewsData){
-                $reviewsData = $data;
-            });
-
-            $client->execute();
-
-            // описание товара из scms
-            $productDescriptionQuery = new Query\Product\GetDescriptionByUiList();
-            $productDescriptionQuery->uis = array_keys($productDataByUi);
-            $productDescriptionQuery->filter->media = true;
-            $productDescriptionQuery->filter->property = true;
-            $productDescriptionQuery->prepare();
-            $this->getCurl()->execute();
-
-            foreach ($productDescriptionQuery->response->products as $ui => $descriptionItem) {
-                $item = isset($productDataByUi[$ui]) ? $productDataByUi[$ui] : null;
-                if (!$item) continue;
-
-                $propertyData = isset($descriptionItem['properties'][0]) ? $descriptionItem['properties'] : [];
-                if ($propertyData) {
-                    $item['property'] = $propertyData;
-                }
-
-                $propertyGroupData = isset($descriptionItem['property_groups'][0]) ? $descriptionItem['property_groups'] : [];
-                if ($propertyGroupData) {
-                    $item['property_group'] = $propertyGroupData;
-                }
-
-                $productsById[$item['id']] = new \Model\Product\Entity($item);
+            foreach ($productIds as $productId) {
+                $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
             }
 
-            \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
+            $client = \App::coreClientV2();
+            \RepositoryManager::product()->prepareProductQueries($productsById, 'media property');
+            \RepositoryManager::review()->prepareScoreCollection($productsById, function($data) use(&$reviewsData){
+                $reviewsData = $data;
+            });
+            $client->execute();
 
             $compareGroups = $this->getCompareGroups($compareProducts, $productsById, $reviewsData);
         } else {

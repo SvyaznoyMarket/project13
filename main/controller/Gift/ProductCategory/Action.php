@@ -34,11 +34,6 @@ class Action {
             $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
         }
 
-        $regionEntity = \App::user()->getRegion();
-        if ($regionEntity instanceof \Model\Region\Entity) {
-            \App::user()->setRegion($regionEntity);
-        }
-
         // подготовка 2-го пакета запросов
 
         // запрашиваем фильтры
@@ -489,7 +484,8 @@ class Action {
 
         $repository = \RepositoryManager::product()->useV3()->withoutModels();
 
-        $productIds = [];
+        /** @var \Model\Product\Entity[] $products */
+        $products = [];
         $productCount = 0;
         $repository->prepareIteratorByFilter(
             $this->getProductFilterDump($productFilter),
@@ -497,9 +493,9 @@ class Action {
             $offset,
             $limit,
             $region,
-            function($data) use (&$productIds, &$productCount) {
+            function($data) use (&$products, &$productCount) {
                 if (isset($data['list'][0])) {
-                    $productIds = $data['list'];
+                    $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $data['list']);
                 }
 
                 if (isset($data['count'])) {
@@ -509,35 +505,20 @@ class Action {
         );
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $products = [];
-        if ($productIds) {
-            $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                if (is_array($data)) {
-                    foreach ($data as $item) {
-                        $product = new \Model\Product\Entity($item);
-                        $product->setLink($product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&') . http_build_query(['sender' => ['name' => 'gift']]));
-                        $products[] = $product;
-                    }
-                }
-            });
-        }
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        $repository->enrichProductsFromScms($products, 'media label brand category');
-
         if ($products) {
-            $productUIs = [];
-            foreach ($products as $product) {
-                if (!$product instanceof \Model\Product\Entity) continue;
-                $productUIs[] = $product->getUi();
-            }
-
-            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use(&$products) {
-                if (isset($data['product_scores'][0])) {
-                    \RepositoryManager::review()->addScores($products, $data);
-                }
-            });
+            $repository->prepareProductQueries($products, 'media label brand category');
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
         }
+
+        foreach ($products as $product) {
+            $product->setLink($product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&') . http_build_query(['sender' => ['name' => 'gift']]));
+        }
+
+        \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
+            if (isset($data['product_scores'][0])) {
+                \RepositoryManager::review()->addScores($products, $data);
+            }
+        });
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 

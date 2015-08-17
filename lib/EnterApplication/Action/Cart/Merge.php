@@ -22,8 +22,8 @@ namespace EnterApplication\Action\Cart
 
             // объединение корзины
             $cartMergeQuery = new Query\Cart\Merge($request->userUi);
-            foreach ($cart->getProductData() as $item) {
-                $cartMergeQuery->cart->addProduct($item['ui'], $item['quantity']);
+            foreach ($cart->getProductsById() as $item) {
+                $cartMergeQuery->cart->addProduct($item->ui, $item->quantity);
             }
             $cartMergeQuery->prepare();
 
@@ -34,27 +34,17 @@ namespace EnterApplication\Action\Cart
 
             $curl->execute();
 
-            $externalCartProductsByUi = [];
+            $productsToUpdate = [];
             foreach ($cartQuery->response->products as $item) {
-                if (!isset($item['uid'])) continue;
-
-                $externalCartProductsByUi[$item['uid']] = new \Model\Cart\Product\Entity($item);
-            }
-
-
-            if ($productUis = array_keys($externalCartProductsByUi)) {
-                $productListQuery = (new Query\Product\GetByUiList($productUis, $request->regionId))->prepare();
-
-                $curl->execute();
-
-                foreach ($productListQuery->response->products as $item) {
-                    /** @var \Model\Cart\Product\Entity|null $cartProduct */
-                    $cartProduct = (isset($item['ui']) && isset($externalCartProductsByUi[$item['ui']])) ? $externalCartProductsByUi[$item['ui']] : null;
-                    if (!$cartProduct) continue;
-
-                    $product = new \Model\Product\Entity($item);
-                    $cart->setProduct($product, $cartProduct->getQuantity());
+                if (isset($item['uid'])) {
+                    $productsToUpdate[] = ['ui' => $item['uid'], 'quantity' => isset($item['quantity']) ? $item['quantity'] : 0];
                 }
+            }
+        
+            try {
+                $cart->update($productsToUpdate);
+            } catch(\Exception $e) {
+                \App::logger()->error(['message' => 'Не удалось синхронизировать сессионную корзину с серверной корзиной', 'error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['cart/update']);
             }
 
             // response

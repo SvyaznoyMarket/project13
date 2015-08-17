@@ -2,8 +2,6 @@
 
 namespace View\Cart;
 
-use Session\AbTest\AbTest;
-
 class ProductButtonAction {
     /**
      * @param \Helper\TemplateHelper $helper
@@ -31,7 +29,6 @@ class ProductButtonAction {
         array $shopStates = []
     ) {
         $data = [
-            'id'         => 'buyButton-' . $product->getId() . '-'. md5(json_encode([$location, isset($sender['position']) ? $sender['position'] : null])),
             'disabled'   => false,
             'url'        => null,
             'value'      => null,
@@ -115,12 +112,11 @@ class ProductButtonAction {
             $data['class'] .= ' btnBuy__eLink giftery-show-widget';
             $data['value'] = 'Купить';
         } else if ($product->isInShopStockOnly() && \App::user()->getRegion()->getForceDefaultBuy()) { // Резерв товара
-            $data['id'] = 'quickBuyButton-' . $product->getId();
-            $data['url'] = $this->getOneClickBuyUrl($helper, $product, $sender, $sender2);
-            $data['class'] .= ' btnBuy__eLink js-orderButton jsOneClickButton-new';
+            $data['url'] = $product->getLink() . '#one-click';
+            $data['class'] .= ' btnBuy__eLink js-orderButton jsOneClickButton';
             $data['value'] = 'Купить';
         } else if ($product->getKit() && !$product->getIsKitLocked()) {
-            $data['isKit'] = $location === 'slider' ? false : true;
+            $data['isKit'] = $location === 'slider' ? false : true; // SITE-5040
             $data['value'] = 'Купить';
             $data['class'] .= ' btnBuy__eLink js-orderButton js-kitButton';
             $data['url'] = $this->getKitBuyUrl($helper, $product, $sender, $sender2);
@@ -155,20 +151,10 @@ class ProductButtonAction {
 
     private function getBuyUrl(\Helper\TemplateHelper $helper, \Model\Product\Entity $product, $sender, $sender2) {
         return $helper->url(
-            'cart.product.set',
+            'cart.product.setList',
             array_merge(
                 $this->getSenderUrlParams($sender, $sender2),
-                ['productId' => $product->getId()]
-            )
-        );
-    }
-
-    private function getOneClickBuyUrl(\Helper\TemplateHelper $helper, \Model\Product\Entity $product, $sender, $sender2) {
-        return $helper->url(
-            'cart.oneClick.product.set',
-            array_merge(
-                $this->getSenderUrlParams($sender, $sender2),
-                ['productId' => $product->getId()]
+                ['products' => [['ui' => $product->ui, 'quantity' => '+1', 'up' => '1']]]
             )
         );
     }
@@ -176,8 +162,10 @@ class ProductButtonAction {
     private function getKitBuyUrl(\Helper\TemplateHelper $helper, \Model\Product\Entity $product, $sender, $sender2) {
         $urlParams = $this->getSenderUrlParams($sender, $sender2);
 
+        $urlParams['kitProduct'] = ['ui' => $product->ui];
+        $urlParams['products'] = [];
         foreach ($product->getKit() as $kitItem) {
-            $urlParams['product'][] = ['id' => $kitItem->getId(), 'quantity' => $kitItem->getCount()];
+            $urlParams['products'][] = ['id' => $kitItem->getId(), 'quantity' => '+' . $kitItem->getCount(), 'up' => '1'];
         }
 
         return $helper->url('cart.product.setList', $urlParams);

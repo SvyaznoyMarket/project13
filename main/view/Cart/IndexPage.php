@@ -14,10 +14,11 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         $backlink = null;
-        $productData = \App::user()->getCart()->getProductData();
-        $productData = is_array($productData) ? end($productData) : [];
-        if (!empty($productData['referer'])) {
-            $backlink = $productData['referer'];
+        $cartProducts = \App::user()->getCart()->getProductsById();
+        /** @var \Model\Cart\Product\Entity $cartProduct */
+        $cartProduct = end($cartProducts);
+        if (!empty($cartProduct->referer)) {
+            $backlink = $cartProduct->referer;
         }
         if (!$backlink && $this->hasParam('products')) {
             $this->products = $this->getParam('products');
@@ -48,7 +49,7 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotGoogleRemarketingJS($tagParams = []) {
         /** @var $products \Model\Product\Entity[] */
-        $products = $this->getParam('productEntities');
+        $products = $this->getParam('products');
 
         $cart = \App::user()->getCart();
         $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'cartvalue' => $cart->getSum(), 'pagetype' => 'cart'];
@@ -86,9 +87,9 @@ class IndexPage extends \View\DefaultLayout {
         $data = ['Action' => '1013'];
         if (\App::user()->getCart()->count()) {
             /** @var $product \Model\Cart\Product\Entity */
-            $products = \App::user()->getCart()->getProducts();
-            $product = end($products); // Последний продукт
-            $data['ProductId'] = (string)$product->getId();
+            $products = \App::user()->getCart()->getProductsById();
+            $product = end($products);
+            $data['ProductId'] = (string)$product->id;
         }
         return parent::slotMyThings($data);
     }
