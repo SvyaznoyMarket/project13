@@ -249,7 +249,7 @@ $(function() {
 	 * @param	{String}	url
 	 * @param	{Function}	callback
 	 */
-	function getDataFromServer(url, callback, fail) {
+	function getDataFromServer(url, callback) {
 		loader.start();
 
 		$.ajax({
@@ -261,8 +261,6 @@ $(function() {
 				} else {
 					console.warn('res isn\'t object');
 					console.log(typeof res);
-
-                    try { if (fail) fail(); } catch (error) { console.error(error); }
 				}
 
 				loader.stop();
@@ -275,13 +273,12 @@ $(function() {
 			error: function() {
 				loading = false;
 				loader.stop();
-
-                try { if (fail) fail(); } catch (error) { console.error(error); }
 			}
 		});
 	}
 
 	function checkInfinityScroll() {
+        console.info('check...', {lastPage: lastPage});
 		if (!loading && $bottomInfButton.visible() && (lastPage - nowPage > 0 || null == lastPage)) {
 			loadInfinityPage();
 			$body.trigger('loadInfinityPage', [nowPage]);
@@ -298,40 +295,7 @@ $(function() {
             function(res) {
                 loading = false;
                 $listingWrap.append(templateRenderers['list'](res['list'])); // TODO Вызывать renderCatalogPage вместо templateRenderers['list']?
-
-                try {
-                    var categoryName, data;
-
-                    if (data = $('#jsProductCategory').data('value')) {
-                        categoryName = data.name;
-                    } else if (data = $('#jsSlice').data('value')) {
-                        categoryName = data.category ? data.category.name : '';
-                    }
-
-                    $('body').trigger('trackGoogleEvent', {
-                        action: 'upload',
-                        category: 'listing_upload',
-                        label: ('string' === typeof categoryName) ? categoryName : ''
-                    });
-                } catch (error) { console.info(error); }
-    		},
-            function() {
-                try {
-                    var categoryName, data;
-
-                    if (data = $('#jsProductCategory').data('value')) {
-                        categoryName = data.name;
-                    } else if (data = $('#jsSlider').data('value')) {
-                        categoryName = data.category ? data.category.name : '';
-                    }
-
-                    $('body').trigger('trackGoogleEvent', {
-                        action: 'not_upload',
-                        category: 'listing_upload',
-                        label: ('string' === typeof categoryName) ? categoryName : ''
-                    });
-                } catch (error) { console.info(error); }
-            }
+    		}
         );
 	}
 
@@ -1129,6 +1093,28 @@ $(function() {
 			return sendFilter(1);
 		}
 	};
+
+    // analytics
+    $(window).on('scroll', function() {
+        try {
+            if (!loading && $('.js-category-pagination').last().visible()) {
+                var categoryName, data;
+
+                if (data = $('#jsProductCategory').data('value')) {
+                    categoryName = data.name;
+                } else if (data = $('#jsSlice').data('value')) {
+                    categoryName = data.category ? data.category.name : '';
+                }
+
+                $('body').trigger('trackGoogleEvent', {
+                    action: (docCookies.getItem('infScroll') != '1') ? 'not_upload' : 'upload',
+                    category: 'listing_upload',
+                    label: ('string' === typeof categoryName) ? categoryName : ''
+                });
+            }
+        } catch (error) { console.info(error); }
+    });
+
 }());
 $(function() {
 	var $body = $('body');
