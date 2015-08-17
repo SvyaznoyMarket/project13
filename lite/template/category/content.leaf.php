@@ -65,6 +65,11 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
         <!--/ сортировка -->
 
         <div class="section">
+            <div class="no-goods table">
+                <div class="no-goods__title table-cell">Товары<br/>не найдены</div>
+                <div class="no-goods__text table-cell">Попробуйте расширить критерии поиска или посмотреть все товары в категории <a class="no-goods__link dotted" href="">Кресла</a></div>
+            </div>
+
             <div class="goods goods_grid goods_listing grid-4col js-catalog-wrapper">
                 <?= $page->render('category/list/pager', ['productPager'=> $productPager]) ?>
             </div>
