@@ -2,8 +2,6 @@
 
 namespace Controller\Product;
 
-use Model\Product\Entity;
-
 class UpsaleAction extends BasicRecommendedAction {
     protected $retailrocketMethodName = 'CrossSellItemToItems';
     protected $actionTitle = 'С этим товаром покупают';
@@ -25,7 +23,6 @@ class UpsaleAction extends BasicRecommendedAction {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
-            $relatedId = null;
             /** @var \Model\Product\Entity[] $products */
             $products = [];
 
@@ -33,72 +30,30 @@ class UpsaleAction extends BasicRecommendedAction {
             // SITE-2818 Список связанных товаров дозаполняем товарами, полученными от RR по методу CrossSellItemToItems
             $recommendationRR = $this->getProductsIdsFromRetailrocket($product, $request, $this->retailrocketMethodName);
             if (is_array($recommendationRR)) {
-                $relatedId = array_unique(array_merge($product->getRelatedId(), $recommendationRR));
+                $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, array_filter(array_unique(array_merge($product->getRelatedId(), $recommendationRR))));
             }
 
-            $collection = [];
-            if (empty($relatedId)) {
+            if (!$products) {
                 throw new \Exception('Not fount related IDs for this product.');
-            } else {
-                /**
-                 * Для всех продуктов расставим и запомним источники (движок, Engine) рекомендаций
-                 */
-                foreach($relatedId as $id) {
-                    $recommEngine[$id] = [
-                        'id'        => $id,
-                        'engine'    => $this->getEngine() ?: $this->getName(),
-                        'name'      => $this->getName(),
-                        'method'    => $this->getRetailrocketMethodName(),
-                    ];
-                }
-                foreach ($product->getRelatedId() as $id) {
-                    $recommEngine[$id] = [
-                        'id'        => $id,
-                        'engine'    => 'enter',
-                        'name'      => 'enter',
-                        'method'    => null,
-                    ];
-                }
-
-                \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionById($relatedId, \App::user()->getRegion(), function($data) use (&$collection){
-                    if (!is_array($data)) return;
-
-                    foreach ($data as $item) {
-                        if (empty($item['id'])) continue;
-                        $iProduct = new \Model\Product\Entity($item);
-                        // если товар недоступен для покупки - пропустить
-                        if (!$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly() || $iProduct->isInShopOnly()) continue;
-                        $collection[$iProduct->getId()] = $iProduct;
-                    }
-                });
-
-                \App::coreClientV2()->execute();
-
-                \RepositoryManager::product()->enrichProductsFromScms($collection, 'media label');
-
-                \App::coreClientV2()->execute();
-
             }
 
-            foreach ($relatedId as $id) {
-                if (!isset($collection[$id])) continue;
-                $products[] = $collection[$id];
-            }
+            $this->getRetailrocketMethodName();
+
+            \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($products, 'media label');
+
+            \App::coreClientV2()->execute();
 
             // SITE-2818 Из блока "С этим товаром покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
-            foreach ($products as $key => $item) {
-                /** @var Entity $item */
-                if ($item->isInShopOnly() || $item->isInShopStockOnly() || !$item->getIsBuyable() || (5 == $item->getStatusId())) {
-                    unset($products[$key]);
-                }
-            }
+            $products = array_filter($products, function(\Model\Product\Entity $product) {
+                return ($product->isAvailable() && $product->getIsBuyable() && !$product->isInShopShowroomOnly() && !$product->isInShopOnly() && !$product->isInShopStockOnly() && 5 != $product->getStatusId());
+            });
 
             // SITE-4710 Рекомендации выдают несколько размеров одного и того же товара
             $products = $this->filterByModelId($products);
 
             $products = array_slice($products, 0, \App::config()->product['itemsInSlider'] * 2);
 
-            if ( !(bool)$products ) {
+            if (!$products) {
                 throw new \Exception(sprintf('Not found products data in response. ActionType: %s', $this->actionType));
             }
 
@@ -107,7 +62,6 @@ class UpsaleAction extends BasicRecommendedAction {
                 'content' => \App::closureTemplating()->render(\App::abTest()->isNewProductPage() ? 'product-page/blocks/slider' : 'product/__slider', [
                     'title'    => $this->actionTitle,
                     'products' => $products,
-                    'count'    => count($products),
                     'class'    => 'goods-slider--top',
                     'sender'   => [
                         'name'     => 'retailrocket',

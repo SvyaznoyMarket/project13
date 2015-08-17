@@ -14,17 +14,15 @@ class Analytics {
 
             foreach ($orders as $order) {
                 foreach ($order->getProduct() as $orderProduct) {
-                    $productsById[$orderProduct->getId()] = null;
+                    $productsById[$orderProduct->getId()] = new \Model\Product\Entity(['id' => $orderProduct->getId()]);
                 }
             }
 
             if ($productsById) {
-                foreach (\RepositoryManager::product()->getCollectionById(array_keys($productsById)) as $product) {
-                    $productsById[$product->getId()] = $product;
-                }
+                \RepositoryManager::product()->prepareProductQueries($productsById, 'media');
+                \App::coreClientV2()->execute();
+                \RepositoryManager::review()->addScores($productsById);
             }
-
-            $productsById = array_filter($productsById);
         }
 
         $recommendationProductIds = [];

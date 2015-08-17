@@ -1,29 +1,28 @@
 ANALYTICS.ActionPayJS = function (data) {
+    function basketEvents(pageType, setProducts) {
+        if (typeof(window.APRT_SEND) === 'undefined' || typeof(setProducts) === 'undefined') {
+            return false;
+        }
+        
+        $.each(setProducts, function(key, setProduct) {
+            window.APRT_SEND({
+                pageType: pageType,
+                currentProduct: {
+                    id: setProduct.id,
+                    name: setProduct.name,
+                    price: setProduct.price
+                }
+            });
+        });
+    }
 
-    var basketEvents = function ( pageType, product ) {
+    $body.on('addtocart', function(event, data) {
+        basketEvents(8, data.setProducts);
+    });
 
-            var aprData = {pageType: pageType};
-
-            if ( typeof(window.APRT_SEND) === 'undefined' || typeof(product) === 'undefined' ) {
-                return false;
-            }
-
-            aprData.currentProduct = {
-                id: product.id,
-                name: product.name,
-                price: product.price
-            };
-            window.APRT_SEND(aprData);
-        },
-        addToBasket = function (event, data) {
-            basketEvents(8, data.product);
-        },
-        remFromBasket = function (event, product) {
-            basketEvents(9, product);
-        };
-
-    $body.on('addtocart', addToBasket);
-    $body.on('removeFromCart', remFromBasket);
+    $body.on('removeFromCart', function(event, setProducts) {
+        basketEvents(9, setProducts);
+    });
 
     if ( typeof(data) === 'undefined' ) data = {pageType : 0};
 

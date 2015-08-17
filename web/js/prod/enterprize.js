@@ -400,7 +400,7 @@
 
                     $sliderContainer.find('.js-slider').goodsSlider();
 
-                    if ( $slider.data('slider') && $slider.data('slider').count != 0 ) {
+                    if (response.productCount) {
                         $('.js-ep-slides').show(500);
                     }
                 }

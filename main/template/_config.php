@@ -44,8 +44,7 @@ $config = array_merge([
     ],
     'routes' => [
         'cart'                      => ['pattern' => $routerRules['cart']['pattern']],
-        'cart.product.set'          => ['pattern' => $routerRules['cart.product.set']['pattern']],
-        'cart.oneClick.product.set' => ['pattern' => $routerRules['cart.oneClick.product.set']['pattern']],
+        'cart.product.setList'      => ['pattern' => $routerRules['cart.product.setList']['pattern']],
         'compare.add'               => ['pattern' => $routerRules['compare.add']['pattern']],
         'compare.delete'            => ['pattern' => $routerRules['compare.delete']['pattern']],
         'orderV3OneClick.delivery'  => ['pattern' => $routerRules['orderV3OneClick.delivery']['pattern']],
@@ -59,6 +58,7 @@ $config = array_merge([
     'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS
     'selfDeliveryLimit'    => $appConfig->self_delivery['limit'], // стоимость платного самовывоза, удалять осторожно, поломается JS
     'minOrderSum'  => \App::abTest()->isOrderMinSumRestriction() ? $appConfig->minOrderSum : false,
+    'infinityScroll' => \App::abTest()->getTest('infinity_scroll') && ('on' === \App::abTest()->getTest('infinity_scroll')->getChosenCase()->getKey()),
 ], isset($config) ? (array)$config : []);
 ?>
 

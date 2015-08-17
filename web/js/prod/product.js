@@ -374,9 +374,9 @@ $(function() {
 		};
 
 		if (ENTER.config.userInfo) {
-			if ($.isArray(ENTER.config.userInfo.cartProducts)) {
+			if ($.isArray(ENTER.config.userInfo.cart.products)) {
 				var product_id = $('#jsProductCard').data('value')['id'];
-				$.each(ENTER.config.userInfo.cartProducts, function(i, val) {
+				$.each(ENTER.config.userInfo.cart.products, function(i, val) {
 					if (val['isCredit'] && val['id'] == product_id) {
 						$('#creditinput').attr('checked', true).trigger('change')
 					}
@@ -1116,7 +1116,7 @@ $(function() {
         window.scrollTo(0, $(hash).offset().top - 105);
     });
 
-    $body.on('click', '.jsOneClickButton-new', function(){
+    $body.on('click', '.jsOneClickButton', function(){
         $('.jsProductPointsMap').trigger('close');
     });
 
@@ -1200,7 +1200,7 @@ $(function() {
                     // добавляем видимые точки на карту
                     $.each(mapData.points, function(i, point){
                         try {
-                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButton-new'));
+                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButton'));
                         } catch (e) {
                             console.error('Ошибка добавления точки на карту', e);
                         }
@@ -1531,12 +1531,9 @@ $(document).ready(function() {
 		onChange:function( count ){
 			var spinnerFor = this.attr('data-spinner-for'),
 				bindButton = $('.'+spinnerFor),
-                bindOneClickButton = $('.' + spinnerFor + '-oneClick'),
 				newHref = bindButton.attr('href') || '';
-			// end of vars
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
-            bindOneClickButton.data('quantity', count);
 
 			// добавление в корзину после обновления спиннера
 			// if (bindButton.hasClass('mBought')){

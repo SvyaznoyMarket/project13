@@ -41,29 +41,36 @@ class Action {
         $productsIdsFromRR = $this->getProductIdsFromRR($request);
         foreach ($productsIdsFromRR as $arr) {
             foreach ($arr as $key => $val) {
-                $productsById[(int)$val] = null;
+                $productsById[(int)$val] = new \Model\Product\Entity(['id' => (int)$val]);
             }
         }
         unset($val, $key, $arr);
 
-        // подготовка 2-го пакета запросов
-        // запрашиваем товары
-        if ((bool)$productsById) {
-            \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionById(array_keys($productsById), $region, function($data) use (&$productsById) {
-                if (!is_array($data)) return;
+        $productsById = array_filter($productsById);
 
-                foreach ($data as $item) {
-                    $productsById[(int)$item['id']] = new \Model\Product\Entity($item);
-                }
-            }, function(\Exception $e) {
-                \App::exception()->remove($e);
-                \App::logger()->error('Не удалось получить товары');
-            });
+        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($productsById, 'media label');
 
             \RepositoryManager::product()->prepareProductsMediasByIds(array_keys($productsById), $medias);
         }
 
-        if ((bool)$productsById) {
+        // запрашиваем категории товаров
+        if ((bool)$categoriesById) {
+            \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), $region, function($data) use (&$categoriesById) {
+                if (is_array($data)) {
+                    foreach ($data as $item) {
+                        if ($item && is_array($item)) {
+                            $category = new \Model\Product\Category\Entity($item);
+                            $categoriesById[$category->getId()] = $category;
+                        }
+                    }
+                }
+            }, function(\Exception $e) {
+                \App::exception()->remove($e);
+                \App::logger()->error('Не удалось получить категории товаров для баннеров');
+            });
+        }
+
+        if ((bool)$productsById || (bool)$categoriesById) {
             // выполнение 2-го пакета запросов
             $client->execute();
 
@@ -84,21 +91,20 @@ class Action {
      * @return \Http\JsonResponse
      */
     public function recommendations(\Http\Request $request) {
-        $rrProductsById = [];
+        $rrProductIds = [];
         $productsById = [];
 
         // получаем продукты из RR
         $rrProducts = $this->getProductIdsFromRR($request, 1);
         foreach ($rrProducts as $collection) {
-            $rrProductsById = array_merge($rrProductsById, $collection);
+            $rrProductIds = array_merge($rrProductIds, $collection);
         }
 
-
-        // получаем продукты из ядра
-        $products = \RepositoryManager::product()->useV3()->withoutModels()->getCollectionById(array_unique($rrProductsById), null, false);
-        foreach ($products as $product) {
-            $productsById[$product->getId()] = $product;
+        foreach (array_unique($rrProductIds) as $productId) {
+            $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
+
+        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($productsById, 'media');
 
         $page = new \View\Main\IndexPage();
         $page->setParam('productList', $productsById);

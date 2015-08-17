@@ -15,12 +15,18 @@ class NewAction extends OrderV3 {
      * @return \Http\Response
      */
     public function execute(\Http\Request $request) {
+        $response = parent::execute($request);
+        if ($response) {
+            return $response;
+        }
 
         $page = new \View\OrderV3\NewPage();
         $post = null;
 
         try {
             if ($request->isMethod('GET')) {
+                $this->cart->update([], true);
+                $this->cart->markProductsAsInOrder();
                 $this->pushEvent(['step' => 1]);
             }
 
@@ -33,15 +39,10 @@ class NewAction extends OrderV3 {
                 }
 
                 $post = $request->request->all();
-                $shop =  null;
-                if (method_exists($this->cart, 'getShop')) $shop = $this->cart->getShop();
-                $splitResult = (new DeliveryAction())->getSplit(null, $shop, @$post['user_info']);
+                $splitResult = (new DeliveryAction())->getSplit(null, @$post['user_info']);
                 if ($splitResult->errors) $this->session->flash($splitResult->errors);
 
-                switch ($request->attributes->get('route')) {
-                    case 'orderV3.one-click': return new RedirectResponse(\App::router()->generate('orderV3.delivery.one-click'));
-                    default: return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
-                }
+                return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
             }
 
             $this->getLastOrderData();
@@ -69,13 +70,12 @@ class NewAction extends OrderV3 {
             return new \Http\Response($page->show(), 500);
         }
 
-        $cart = \App::user()->getCart();
-        $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection(['product_list' => array_map(function(\Model\Cart\Product\Entity $v) { return ['id' => $v->getId(), 'quantity' => $v->getQuantity()]; }, $cart->getProducts())]);
+        $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection(['product_list' => array_map(function(\Model\Cart\Product\Entity $cartProduct) { return ['id' => $cartProduct->id, 'quantity' => $cartProduct->quantity]; }, $this->cart->getInOrderProductsById())]);
 
         $page->setParam('user', $this->user);
         $page->setParam('previousPost', $post);
         $page->setParam('bonusCards', $bonusCards);
-        $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner($cart));
+        $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner());
 
         return new \Http\Response($page->show());
     }
@@ -103,15 +103,16 @@ class NewAction extends OrderV3 {
     }
 
     /** Есть ли товары не от Enter?
-     * @param \Session\Cart $cart
      * @return bool
      */
-    private function hasProductsOnlyFromPartner(\Session\Cart $cart) {
-        $ids = array_keys($cart->getProductData());
-        $products = (bool)$ids ? \RepositoryManager::product()->getCollectionById($ids, \App::user()->getRegion(), false) : [];
-        $productsFromPartner = array_filter($products, function (\Model\Product\Entity $p) { return $p->isOnlyFromPartner() ; });
+    private function hasProductsOnlyFromPartner() {
+        foreach ($this->cart->getInOrderProductsById() as $cartProduct) {
+            if ($cartProduct->isOnlyFromPartner) {
+                return true;
+            }
+        }
 
-        return (bool)$productsFromPartner;
+        return false;
     }
 
     private function validateInput(\Http\Request $request){

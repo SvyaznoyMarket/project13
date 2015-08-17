@@ -17,11 +17,11 @@ class Entity {
     const DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE = 1;
 
     /** @var string|null */
-    protected $ui;
+    public $ui;
     /** @var int|null */
-    protected $id;
+    public $id;
     /** @var string|null */
-    protected $barcode;
+    public $barcode;
     /** @var string|null */
     protected $article;
     /** @var string|null */
@@ -153,7 +153,11 @@ class Entity {
     /** @var Coupon[] */
     public $coupons = [];
 
-    public function __construct(array $data = []) {
+    public function __construct($data = []) {
+        $this->importFromCore($data);
+    }
+
+    public function importFromCore($data = []) {
         $templateHelper = new \Helper\TemplateHelper();
 
         if (isset($data['id'])) $this->setId($data['id']);
@@ -285,6 +289,63 @@ class Entity {
 
         // TODO удалить
         if ($this->isGifteryCertificate()) $this->state->setIsBuyable(true);
+    }
+
+    public function importFromScms($data = []) {
+        if (!empty($data['medias']) && is_array($data['medias'])) {
+            foreach ($data['medias'] as $media) {
+                if (is_array($media)) {
+                    $this->medias[] = new \Model\Media($media);
+                }
+            }
+        }
+
+        if (!empty($data['json3d']) && is_array($data['json3d'])) {
+            $this->json3d = $data['json3d'];
+        }
+
+        if (!empty($data['properties']) && is_array($data['properties'])) {
+            $this->setProperty(array_map(function($data) { return new \Model\Product\Property\Entity($data); }, $data['properties']));
+        }
+
+        if (!empty($data['property_groups']) && is_array($data['property_groups'])) {
+            $this->setPropertyGroup(array_map(function($data) { return new \Model\Product\Property\Group\Entity($data); }, $data['property_groups']));
+        }
+
+        // пока так, рефакторинг скоро будет
+        if (!empty($data['label'])) {
+            $this->setLabel(new Label([
+                'id'        => @$data['label']['core_id'],
+                'name'      => @$data['label']['name'],
+                'medias'    => @$data['label']['medias'],
+            ]));
+        }
+
+        if (!empty($data['brand']) && @$data['brand']['slug'] === 'tchibo-3569') {
+            $this->setBrand(new \Model\Brand\Entity([
+                'ui'        => @$data['brand']['uid'],
+                'id'        => @$data['brand']['core_id'],
+                'token'     => @$data['brand']['slug'],
+                'name'      => @$data['brand']['name'],
+                'media_image' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png', // TODO после решения FCMS-740 заменить на URL из scms и удалить условие "@$thisData['brand']['slug'] === 'tchibo-3569'"
+            ]));
+        }
+
+        if (!empty($data['categories']) && is_array($data['categories'])) {
+            foreach ($data['categories'] as $category) {
+                $this->categories[] = new \Model\Product\Category\Entity($category);
+                if ($category['main']) {
+                    $this->setParentCategory(new \Model\Product\Category\Entity($category));
+
+                    // TODO: создать метод \Model\Product\Category\Entity::getRoot, возвращающий корневую категорию, найденную через свойство \Model\Product\Category\Entity::$parent; переименовать \Model\Product\Entity::getParentCategory в getMainCategory
+                    while (isset($category['parent']) && $category['parent']) {
+                        $category = $category['parent'];
+                    }
+
+                    $this->setRootCategory(new \Model\Product\Category\Entity($category));
+                }
+            }
+        }
     }
 
     /**
@@ -536,6 +597,9 @@ class Entity {
         $this->property[$property->getId()] = $property;
     }
 
+    /**
+     * @return Property\Entity[]
+     */
     public function getProperty() {
         return array_values($this->property);
     }

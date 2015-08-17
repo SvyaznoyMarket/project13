@@ -11,11 +11,7 @@ class RecommendAction extends PrivateAction {
      * @return \Http\JsonResponse
      */
     public function execute(\Http\Request $request) {
-        $client = \App::coreClientV2();
-        $region = \App::user()->getRegion();
-        $repository =  \RepositoryManager::product()->useV3()->withoutModels();
-
-            // вы смотрели
+        // вы смотрели
         $viewedProductIds = [];
         $data = $request->get('rrviewed');
         if (is_string($data)) {
@@ -32,21 +28,14 @@ class RecommendAction extends PrivateAction {
         $productIdsByType = (new \Controller\Main\Action())->getProductIdsFromRR($request, \App::config()->coreV2['timeout']);
         $recommendedProductIds = $productIdsByType['personal'] ?: $productIdsByType['popular'];
 
-        $productIds = array_merge($viewedProductIds, $recommendedProductIds);
-
         /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
+        foreach (array_merge($viewedProductIds, $recommendedProductIds) as $productId) {
+            $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
+        }
 
-        $repository->prepareCollectionById($productIds, $region, function($data) use (&$productsById) {
-            foreach ((array)$data as $item) {
-                $productsById[$item['id']] = new \Model\Product\Entity($item);
-            }
-            });
-
-        $client->execute();
-
-        \RepositoryManager::product()->enrichProductsFromScms($productsById, 'media label');
-        $client->execute();
+        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($productsById, 'media label');
+        \App::coreClientV2()->execute();
 
         $recommendedProducts = [];
         foreach ($recommendedProductIds as $productId) {

@@ -29,7 +29,7 @@ class IndexAction {
         foreach ($promo->getImage() as $promoImage) {
             switch ($promoImage->getAction()) {
                 case \Model\Promo\Image\Entity::ACTION_PRODUCT:
-                    foreach ($promoImage->getItem() as $id) $productsById[$id] = null;
+                    foreach ($promoImage->getItem() as $id) $productsById[$id] = new \Model\Product\Entity(['id' => $id]);
                     break;
                 case \Model\Promo\Image\Entity::ACTION_PRODUCT_CATEGORY:
                     foreach ($promoImage->getItem() as $id) $categoriesById[$id] = null;
@@ -39,18 +39,7 @@ class IndexAction {
 
         // подготовка 2-го пакета запросов
         // запрашиваем товары
-        if ((bool)$productsById) {
-            foreach (array_chunk(array_keys($productsById), \App::config()->coreV2['chunk_size']) as $ids) {
-                \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionById($ids, $region, function($data) use (&$productsById) {
-                    foreach ($data as $item) {
-                        $productsById[(int)$item['id']] = new \Model\Product\Entity($item);
-                    }
-                }, function(\Exception $e) {
-                    \App::exception()->remove($e);
-                    \App::logger()->error('Не удалось получить товары для промо-каталога');
-                });
-            }
-        }
+        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($productsById, '', $region);
 
         // запрашиваем категории товаров
         if ((bool)$categoriesById) {

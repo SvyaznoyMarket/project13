@@ -4,6 +4,8 @@
 			var cart = ko.unwrap(valueAccessor()),
 				$elem = $(element),
 				productId = $elem.data('product-id'),
+				productUi = $elem.data('product-ui'),
+				productUrl = $elem.data('data-product-url'),
 				inShopStockOnly = $elem.data('in-shop-stock-only'),
 				inShopShowroomOnly = $elem.data('in-shop-showroom-only'),
 				isBuyable = $elem.data('is-buyable'),
@@ -56,9 +58,9 @@
 					.removeClass('mDisabled')
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
-					.addClass('js-orderButton jsOneClickButton-new')
+					.addClass('js-orderButton jsOneClickButton')
 					.removeClass('jsBuyButton')
-					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', $.extend({productId: productId}, sender, sender2)));
+					.attr('href', productUrl + '#one-click');
 			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId) && !noUpdate) {
 				$elem
 					.text('В корзине')
@@ -75,7 +77,7 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('js-orderButton jsBuyButton')
-					.attr('href', ENTER.utils.generateUrl('cart.product.set', $.extend({productId: productId}, sender, sender2)));
+					.attr('href', ENTER.utils.generateUrl('cart.product.setList', $.extend({products: [{ui: productUi, quantity: '+1', up: '1'}]}, sender, sender2)));
 			}
 		}
 	};
@@ -86,10 +88,10 @@
 				$elem = $(element);
 			
 			$elem.removeClass('mDisabled').find('input').attr('disabled', false);
-			$.each(cart, function(key, value){
+			$.each(cart.products(), function(key, product){
 				if (this.id == $elem.data('product-id')) {
 					$elem.addClass('mDisabled');
-					$elem.find('input').val(value.quantity()).attr('disabled', true);
+					$elem.find('input').val(product.quantity()).attr('disabled', true);
 				}
 			})
 		}

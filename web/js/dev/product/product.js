@@ -68,12 +68,9 @@ $(document).ready(function() {
 		onChange:function( count ){
 			var spinnerFor = this.attr('data-spinner-for'),
 				bindButton = $('.'+spinnerFor),
-                bindOneClickButton = $('.' + spinnerFor + '-oneClick'),
 				newHref = bindButton.attr('href') || '';
-			// end of vars
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
-            bindOneClickButton.data('quantity', count);
 
 			// добавление в корзину после обновления спиннера
 			// if (bindButton.hasClass('mBought')){

@@ -52,7 +52,6 @@ $helper = new \Helper\TemplateHelper();
                     'type'           => 'main',
                     'title'          => 'Мы рекомендуем',
                     'products'       => [],
-                    'count'          => null,
                     'limit'          => \App::config()->product['itemsInSlider'],
                     'page'           => 1,
                     'url'            => $page->url('main.recommended', [

@@ -19,13 +19,15 @@ ANALYTICS.insiderJS = function(){
         window.spApiPaidProducts = products;
     };
 
-    if (ENTER.UserModel && ENTER.UserModel.cart()) fillProducts(ENTER.UserModel.cart());
+    if (ENTER.UserModel && ENTER.UserModel.cart().products()) fillProducts(ENTER.UserModel.cart().products());
 
     $body.on('addtocart', function(e,data){
-        if (data.product) {
+        if (data.setProducts) {
             window.spApiPaidProducts = window.spApiPaidProducts || [];
-            data.product.category = null; // TODO временно, пока не отдаются категории в едином виде
-            window.spApiPaidProducts.push(new InsiderProduct(data.product));
+            $.each(data.setProducts, function(key, setProduct) {
+                setProduct.category = null; // TODO временно, пока не отдаются категории в едином виде
+                window.spApiPaidProducts.push(new InsiderProduct(setProduct));
+            });
         }
     })
 };
