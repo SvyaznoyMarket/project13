@@ -243,6 +243,17 @@ textarea {
     border: 1px solid @input-border;
     &.error {
         border-color: @red-normal;
+        & + .placeholder {
+            top: -17px;
+
+            color: @red-normal;
+        }
+    }
+    &:focus ,
+    &.valid {
+        & + .placeholder {
+            top: -17px;
+        }
     }
 }
 
