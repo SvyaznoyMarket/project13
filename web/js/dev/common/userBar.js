@@ -48,7 +48,7 @@
 			return;
 		}
 
-		if ($scrollTarget && $scrollTarget.length && $window.scrollTop() >= $scrollTarget.offset().top && !hideOnly && (!userBarConfig.showWhenFullCartOnly || ENTER.UserModel.cart().length)) {
+		if ($scrollTarget && $scrollTarget.length && $window.scrollTop() >= $scrollTarget.offset().top && !hideOnly && (!userBarConfig.showWhenFullCartOnly || ENTER.UserModel.cart().products().length)) {
 			openFixedUserBar();
 		} else {
 			closeFixedUserBar();
@@ -234,9 +234,9 @@
 
 				ko.applyBindings(ENTER.UserModel, slider[0]);
 
-				if ( !data.product ) return;
+				if ( !data.setProducts || !data.setProducts.length ) return;
 
-				if ( !data.product.article ) {
+				if ( !data.setProducts[0].article ) {
 					console.warn('Не получен article продукта');
 
 					return;
@@ -255,7 +255,7 @@
 				}
 
 				// google analytics
-				typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
+				typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.setProducts[0].article]);
 			}
 		});
 	}
@@ -319,31 +319,28 @@
 
 	$body.on('click', '.jsCartDelete', function(e) {
 		e.preventDefault();
-		var $deleteLink = $(e.currentTarget);
+		var $this = $(e.currentTarget);
 
 		$.ajax({
 			type: 'GET',
-			url: $deleteLink.attr('href'),
-			success: function( res, data ) {
-				console.warn( res );
-				if ( !res.success ) {
+			url: $this.attr('href'),
+			success: function(data) {
+				console.warn( data );
+				if ( !data.success ) {
 					console.warn('удаление не получилось :(');
 
 					return;
 				}
 
-				ENTER.UserModel.removeProductByID(res.product.id);
+				ENTER.UserModel.cart().update(data.cart);
 
-				// Удаляем товар на странице корзины
-				$('.js-basketLineDeleteLink-' + res.product.id).click();
-
-				if (ENTER.UserModel.cart().length == 0) {
+				if (ENTER.UserModel.cart().products().length == 0) {
 					closeFullFixedUserBar();
 				} else {
-					openFullFixedUserBar(false, {product: {article: $deleteLink.data('product-article')}}, {url: '/ajax/upsale/' + $deleteLink.data('product-id'), fromUpsale: false});
+					openFullFixedUserBar(false, {setProducts: [{article: $this.data('product-article')}]}, {url: '/ajax/upsale/' + $this.data('product-id'), fromUpsale: false});
 				}
 
-				$body.trigger('removeFromCart', [res.product]);
+				$body.trigger('removeFromCart', [data.setProducts]);
 			}
 		});
 	});

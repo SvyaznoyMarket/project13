@@ -2,7 +2,7 @@
 
     var address;
 
-	ENTER.OrderV31Click.functions.initAddress = function(){
+	ENTER.OrderV31Click.functions.initAddress = function(buyProducts){
         var kladrConfig = $('#kladr-config').data('value'),
             region = $('#page-config').data('value').user.region;
     
@@ -80,7 +80,7 @@
         function saveAddress(address) {
             $.ajax({
                 type: 'POST',
-                url: '/order-1click/delivery',
+                url: ENTER.utils.generateUrl('orderV3OneClick.delivery'),
                 data: {
                     'action' : 'changeAddress',
                     'params' : {
@@ -90,7 +90,7 @@
                         apartment: address.apartmentName(),
                         kladr_id: address.buildingId() != 0 ? address.buildingId() : address.streetId() != 0 ? address.streetId() : address.cityId() != 0 ? address.cityId() : ''
                     },
-                    products: JSON.parse($('#js-order-content').data('param')).products,
+                    products: buyProducts,
                     update: 1
                 }
             }).fail(function(jqXHR){

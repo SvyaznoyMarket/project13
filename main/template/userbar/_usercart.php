@@ -1,21 +1,21 @@
 <!-- При пустой корзине -->
-<li class="userbtn_i topbarfix_cart mEmpty" data-bind=" visible: cart().length == 0 ">
+<li class="userbtn_i topbarfix_cart mEmpty" data-bind=" visible: cart().products().length == 0 ">
     <a href="/cart" class="topbarfix_cart_tl"><i class="i-header i-header--cart"></i> <span class="topbarfix-cart__tx">Корзина</span></a>
 </li>
 
 <!-- При непустой корзине -->
-<li class="userbtn_i topbarfix_cart js-topbarfixNotEmptyCart" data-bind=" visible: cart().length > 0 " style="display: none">
+<li class="userbtn_i topbarfix_cart js-topbarfixNotEmptyCart" data-bind=" visible: cart().products().length > 0 " style="display: none">
 
     <a href="<?= $page->url('cart') ?>" class="topbarfix_cart_tl">
         <i class="i-header i-header--cart"></i>
         <span class="topbarfix-cart__tx">Корзина</span>
-        <span class="topbarfix_cart_qn topbarfix_cartQuan" data-bind="text: cart().length"></span>
+        <span class="topbarfix_cart_qn topbarfix_cartQuan" data-bind="text: cart().products().length"></span>
     </a>
 
     <div class="userbar-dd minicart topbarfix_cartOn" >
         <div class="topbarfix-cart-wrap" data-bind="css: {'min-sum': isMinOrderSumVisible() }"><!--сюда добавить класс "min-sum" если корзина у нас для выводит сообщение о минимальной сумме заказа-->
             <table class="table-cart">
-                <tbody data-bind="foreach: cart">
+                <tbody data-bind="foreach: cart().products()">
                     <tr class="table-cart__i">
                         <td class="table-cart__img-wrap" valign="middle">
                             <a data-bind="attr: { href: link }">
@@ -42,7 +42,7 @@
 
         <div class="buyInfo" data-bind="visible: !infoIconVisible() && infoBlock_1Visible() ">
             До бесплатного самовывоза осталось
-            <div class="buyInfo_pr"><span data-bind="text: ENTER.config.pageConfig.selfDeliveryLimit - cartSum()">175</span> <span class="rubl">p</span></div>
+            <div class="buyInfo_pr"><span data-bind="text: ENTER.config.pageConfig.selfDeliveryLimit - cart().sum()">175</span> <span class="rubl">p</span></div>
             <a class="buyInfo_lk jsAbSelfDeliveryLink" href="/slices/all_labels">Выбрать товары по суперценам</a> >
         </div>
 
@@ -54,7 +54,7 @@
         <!-- Минимальная сумма заказа -->
         <div class="deliv-free-info" data-bind="visible: isMinOrderSumVisible()">
             <span class="deliv-free-info__intro">До оформления заказа осталось</span>
-            <span class="deliv-free-info__remain-sum"><span data-bind="text: minOrderSum - cartSum()"><?= \App::config()->minOrderSum ?></span>&thinsp;<span class="rubl">p</span></span>
+            <span class="deliv-free-info__remain-sum"><span data-bind="text: minOrderSum - cart().sum()"><?= \App::config()->minOrderSum ?></span>&thinsp;<span class="rubl">p</span></span>
             <a href="/slices/all_labels" class="deliv-free-info__sale-lnk">Выбрать товары по суперцене</a>
         </div>
 

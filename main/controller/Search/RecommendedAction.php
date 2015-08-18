@@ -54,26 +54,17 @@ class RecommendedAction {
 
         /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
-        $medias = [];
-        foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-            \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
-                foreach ((array)$data as $item) {
-                    if (empty($item['id'])) continue;
-
-                    $product = new \Model\Product\Entity($item);
-                    // если товар недоступен для покупки - пропустить
-                    if (!$product->isAvailable() || $product->isInShopShowroomOnly()) continue;
-
-                    $productsById[$item['id']] = $product;
-                }
-            });
-
-            \RepositoryManager::product()->prepareProductsMediasByIds($productsInChunk, $medias);
+        foreach ($productIds as $productId) {
+            $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
+
+        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($productsById, 'media');
 
         $client->execute(); // 2-й пакет запросов
 
-        \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
+        $productsById = array_filter($productsById, function(\Model\Product\Entity $product) {
+            return ($product->isAvailable() && !$product->isInShopShowroomOnly());
+        });
 
         // ответ
         $responseData = [
@@ -120,7 +111,6 @@ class RecommendedAction {
                 'content' => $templating->render('product/__slider', [
                     'title'                        => $recommendController->getTitleByType($type),
                     'products'                     => $products,
-                    'count'                        => count($products),
                     'class'                        => 'slideItem-7item',
                     'sender'                       => $sender,
                 ]),

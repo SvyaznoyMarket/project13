@@ -19,6 +19,7 @@ class RegistrationForm {
         'first_name' => null,
         'email'      => null,
         'phone'      => null,
+        'agreed'     => null,
     );
 
     public function __construct(array $data = []) {

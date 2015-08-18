@@ -83,7 +83,7 @@
 			model.activeCompareGroupIndex = ko.observable(activeCompareGroupIndex);
 			model.similarOnly = ko.observable(true);
 			model.scrolled = ko.observable(false);
-			model.cart = ENTER.UserModel.cart;
+			model.cart = ENTER.UserModel.cart().products;
 			model.compare = ENTER.UserModel.compare;
 			return model;
 		}

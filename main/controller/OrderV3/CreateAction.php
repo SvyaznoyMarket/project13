@@ -43,8 +43,7 @@ class CreateAction extends OrderV3 {
             }
 
             foreach ($splitResult['orders'] as &$splitOrder) {
-                $orderEntity = new OrderEntity(array_merge($splitResult, ['order' => $splitOrder]));
-                $ordersData[] = $orderEntity->getOrderData();
+                $ordersData[] = (new OrderEntity(array_merge($splitResult, ['order' => $splitOrder]), null, '', $this->cart->getInOrderProductsById()))->getOrderData();
             }
             if (isset($splitOrder)) unset($splitOrder);
 

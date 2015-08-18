@@ -8,15 +8,12 @@
 	$body.on('click', '.jsBuyButton', function(e, credit) {
 		var $button = $(e.currentTarget);
 
-		if ( $button.hasClass('mDisabled') ) {
-			//return false;
+		if ($button.hasClass('mDisabled')) {
             e.preventDefault();
 		}
 
-		if ( $button.hasClass('mBought') ) {
-			document.location.href($button.attr('href'));
-			//return false;
-            e.preventDefault();
+		if ($button.hasClass('mBought')) {
+            return;
 		}
 
 		$button.addClass('mLoading');
@@ -58,13 +55,9 @@
 
 				$button.removeClass('mLoading');
 
-				if (data.product) {
-					data.product.isUpsale = product && product.isUpsale ? true : false;
-					data.product.fromUpsale = upsale && upsale.fromUpsale ? true : false;
-				}
-
 				data.location = $button.data('location');
 
+				ENTER.UserModel.cart().update(data.cart);
 				$body.trigger('addtocart', [data, upsale]);
 			},
 			error: function() {
@@ -104,9 +97,7 @@
 			/**
 			 * Google Analytics аналитика добавления в корзину
 			 */
-				googleAnalytics = function googleAnalytics( event, data ) {
-				var productData = data.product;
-
+			googleAnalytics = function( event, productData, sender ) {
 				var
 					tchiboGA = function() {
 						if (typeof window.ga === "undefined" || !productData.hasOwnProperty("isTchiboProduct") || !productData.isTchiboProduct) {
@@ -120,10 +111,9 @@
 
 				tchiboGA();
 
-				ENTER.utils.sendAdd2BasketGaEvent(productData.article, productData.price, productData.isOnlyFromPartner, productData.isSlot, data.sender ? data.sender.name : '');
+				ENTER.utils.sendAdd2BasketGaEvent(productData.article, productData.price, productData.isOnlyFromPartner, productData.isSlot, sender ? sender.name : '');
 
                 try {
-                    var sender = data.sender;
                     console.info({sender: sender});
                     if (sender && ('retailrocket' == sender.name)) {
 						var rrEventLabel = '';
@@ -145,13 +135,10 @@
 			/**
 			 * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
 			 */
-				addToRetailRocket = function addToRetailRocket( event, data ) {
-				var product = data.product;
-
-
+			addToRetailRocket = function( event, productId ) {
 				if ( typeof rcApi === 'object' ) {
 					try {
-						rcApi.addToBasket(product.id);
+						rcApi.addToBasket(productId);
 					}
 					catch ( err ) {}
 				}
@@ -159,17 +146,12 @@
 		//end of functions
 
 		try{
-			if (data.product) {
-				googleAnalytics(event, data);
-				addToRetailRocket(event, data);
-			}
-
-			if (data.products) {
+			if (data.setProducts) {
 				console.groupCollapsed('Аналитика для набора продуктов');
-				for (var i in data.products) {
-					/* Google Analytics */
-					googleAnalytics(event, $.extend({}, data, {product: data.products[i]}));
-				}
+				$.each(data.setProducts, function(key, setProduct) {
+					googleAnalytics(event, setProduct, data.sender);
+					addToRetailRocket(event, setProduct.id);
+				});
 				console.groupEnd();
 			}
 		}

@@ -56,17 +56,7 @@ return function(
             <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения<span class="orderU_lgnd_tgglnote js-order-oneclick-delivery-toggle-btn-note">скрыть</span></legend>
 
             <div class="js-order-oneclick-delivery-toggle" style="display: none;">
-                <div
-                    id="js-order-content"
-                    class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery"
-                    data-url="<?= $helper->url('orderV3OneClick.delivery') ?>"
-                    data-param="<?= $helper->json([
-                        'products' => [
-                            ['id' => $product->getId(), 'quantity' => 1],
-                        ],
-                        'shopId'   => null, // устанавливается на стороне javascript
-                    ]) ?>
-                "></div>
+                <div id="js-order-content" class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery"></div>
             </div>
         </fieldset>
 

@@ -26,8 +26,7 @@ class Repository {
             ],
             [],
             $done,
-            function(\Exception $e) use (&$exception) {
-                $exception = $e;
+            function(\Exception $e) {
                 \App::exception()->remove($e);
             }
         );
@@ -50,49 +49,43 @@ class Repository {
                 'product_ui' => $productIdList,
             ], [], function($data) use(&$result) {
                 $result = $data;
-            },  function(\Exception $e) use (&$exception) {
-                $exception = $e;
+            },  function(\Exception $e) {
                 \App::exception()->remove($e);
-        });
+            }
+        );
         $client->execute(\App::config()->reviewsStore['retryTimeout']['medium']);
 
         return is_array($result) ? $result : [];
     }
 
-    public function prepareScoreCollection($productIds, $done) {
-        if(!(bool)$productIds) return [];
-
-        $this->client->addQuery(
-            'scores-list',
-            [
-                'product_list' => implode(',', $productIds),
-            ],
-            [],
-            $done,
-            function(\Exception $e) use (&$exception) {
-                $exception = $e;
-            \App::exception()->remove($e);
-            }
-        );
-    }
-
     /**
-     * @param array $productUIs
-     * @param $done
-     * @return array
+     * @param \Model\Product\Entity[] $products
+     * @param \Closure $done
      */
-    public function prepareScoreCollectionByUi(array $productUIs = [], $done) {
-        if(!(bool)$productUIs) return [];
+    public function prepareScoreCollection(array $products, $done) {
+        if (!$products) {
+            return;
+        }
+
+        /** @var \Model\Product\Entity $firstProduct */
+        $firstProduct = reset($products);
+
+        if ($firstProduct->id) {
+            $params = [
+                'product_list' => implode(',', array_map(function(\Model\Product\Entity $product) { return $product->id; }, $products)),
+            ];
+        } else {
+            $params = [
+                'product_ui' => implode(',', array_map(function(\Model\Product\Entity $product) { return $product->ui; }, $products)),
+            ];
+        }
 
         $this->client->addQuery(
             'scores-list',
-            [
-                'product_ui' => implode(',', $productUIs),
-            ],
+            $params,
             [],
             $done,
-            function(\Exception $e) use (&$exception) {
-                $exception = $e;
+            function(\Exception $e) {
                 \App::exception()->remove($e);
             }
         );
@@ -109,7 +102,9 @@ class Repository {
             $scoreData = \App::config()->product['reviewEnabled'] ? $this->getScores(implode(',', array_map(function($product){ return $product->getUi(); }, $products))) : [];
         }
 
-        if(empty($scoreData['product_scores'])) return $products;
+        if (empty($scoreData['product_scores'])) {
+            return;
+        }
 
         $scoredUis = array_map(function($score){ return $score['product_ui']; }, $scoreData['product_scores']);
 
@@ -128,8 +123,6 @@ class Repository {
                 if(!empty($productScore['num_reviews'])) $product->setNumReviews($productScore['num_reviews']);
             }
         }
-
-        return $products;
     }
 
 

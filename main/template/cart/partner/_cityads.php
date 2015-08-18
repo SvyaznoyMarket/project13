@@ -8,9 +8,9 @@
 
 $productIds = [];
 $productQuantities = [];
-foreach ($user->getCart()->getProducts() as $cartProduct) {
-    $productIds[] = $cartProduct->getId();
-    $productQuantities[] = $cartProduct->getQuantity();
+foreach ($user->getCart()->getProductsById() as $cartProduct) {
+    $productIds[] = $cartProduct->id;
+    $productQuantities[] = $cartProduct->quantity;
 }
 
 $data = [

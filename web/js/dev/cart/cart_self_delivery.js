@@ -1,7 +1,7 @@
 ;(function($){
 	var $body = $(document.body),
 		config = ENTER.config.pageConfig,
-		user = ENTER.UserModel,
+		UserModel = ENTER.UserModel,
 		cookieKey1 = 'enter_ab_self_delivery_products_1', //cookie, где содержатся артикулы товаров, добавленных в корзину из блока рекомендаций
 		cookieKey2 = 'enter_ab_self_delivery_products_2'; //cookie, где содержатся артикулы товаров, на которые перешли из блока рекомендаций
 
@@ -9,7 +9,7 @@
 
 //	if (cartInfoBlock.length > 0) ko.applyBindings(ENTER.UserModel, cartInfoBlock[0]);
 
-	if (user.cartSum() < config.selfDeliveryLimit && user.cartSum() != 0) {
+	if (UserModel.cart().sum() < config.selfDeliveryLimit && UserModel.cart().sum() != 0) {
 		if (config.selfDeliveryTest) $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'увидел', 'статичная корзина']);
 		else $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'не увидел', 'статичная корзина']);
 	}

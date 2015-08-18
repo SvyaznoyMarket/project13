@@ -2162,7 +2162,7 @@ if ( typeof Object.create !== 'function' ) {
 							var
 								i, type, callbF, data;
 
-							try{
+							try {
 								for ( i in recommendArray ) {
 									type = recommendArray[i].type;
 									callbF = recommendArray[i].callback;
@@ -2297,8 +2297,6 @@ if ( typeof Object.create !== 'function' ) {
 
 					slider.animate({'left': -nowLeft });
 
-                    updatePageTitle(wrap.width(), nowLeft);
-
                     e.preventDefault();
                     //return false;
 				},
@@ -2328,22 +2326,9 @@ if ( typeof Object.create !== 'function' ) {
 
 					slider.animate({'left': -nowLeft });
 
-                    updatePageTitle(wrap.width(), nowLeft);
-
                     e.preventDefault();
 					//return false;
 				},
-
-                updatePageTitle = function updatePageTitle(width, left) {
-                    var
-						pageNum = Math.floor(left / width) + 1,
-						itemW = calculateItemWidth(),
-						elementOnSlide = calculateElementOnSlideCount(itemW);
-
-                    if (!sliderParams.count || !elementOnSlide || !pageNum) return;
-
-                    //pageTitle.text('Страница ' + pageNum +  ' goodsSliderиз ' + Math.ceil(sliderParams.count / elementOnSlide));
-                },
 
 				/**
 				 * Вычисление ширины слайдера
@@ -2427,15 +2412,7 @@ if ( typeof Object.create !== 'function' ) {
 					$self.remove();
 				};
 			// end of function
-
-// SITE-4612
-//            if (sliderParams.count) {
-//				var
-//					itemW = calculateItemWidth(),
-//					elementOnSlide = calculateElementOnSlideCount(itemW);
-//
-//                pageTitle.text('Страница ' + '1' +  ' из ' + Math.ceil(sliderParams.count / elementOnSlide));
-//            }
+			
 
 			if ( sliderParams.url !== null ) {
 				if ( typeof window.ENTER.utils.packageReq === 'function' ) {
@@ -2450,6 +2427,7 @@ if ( typeof Object.create !== 'function' ) {
 
                             getSlidersData(sliderParams.url, sliderParams.type, function(res) {
                                 res.recommend && res.recommend.viewed && authFromServer(res.recommend.viewed);
+                                $('body').trigger('sliderLoaded', {type: 'viewed'});
                             });
                         } else {
                             getSlidersData(sliderParams.url, sliderParams.type, authFromServer);

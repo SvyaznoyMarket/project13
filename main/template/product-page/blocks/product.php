@@ -157,7 +157,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         <!-- купить в кредит -->
         <a
             class="buy-on-credit btn-type btn-type--normal btn-type--longer jsProductCreditButton"
-            href="<?= $helper->url('cart.product.set', ['productId' => $product->getId()]) ?>"
+            href="<?= $helper->url('cart.product.setList', ['products' => [['ui' => $product->ui, 'quantity' => '+1', 'up' => '1']]]) ?>"
             style="display: none"
             data-credit='<?= (isset($creditData['creditData']) ? $creditData['creditData'] : '') ?>'
             data-target=".<?= \View\Id::cartButtonForProduct($product->getId()) ?>"
@@ -173,15 +173,12 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <!-- сравнить, добавить в виш лист -->
     <ul class="product-card-tools">
         <li class="product-card-tools__i product-card-tools__i--onclick">
-
-            <? if (!count($product->getPartnersOffer()) && (!$isKit || $product->getIsKitLocked())): ?>
-                <?= $helper->render('cart/__button-product-oneClick', [
-                    'product' => $product,
-                    'sender'  => $buySender,
-                    'sender2' => $buySender2,
-                    'value' => 'Купить в 1 клик'
-                ]) // Покупка в один клик ?>
-            <? endif ?>
+            <?= $helper->render('cart/__button-product-oneClick', [
+                'product' => $product,
+                'sender'  => $buySender,
+                'sender2' => $buySender2,
+                'value' => 'Купить в 1 клик'
+            ]) ?>
         </li>
 
         <li class="product-card-tools__i product-card-tools__i--compare js-compareProduct"

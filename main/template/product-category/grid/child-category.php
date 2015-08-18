@@ -61,7 +61,6 @@ foreach ($gridCells as $cell) {
             'type'      => 'viewed',
             'title'     => 'Вы смотрели',
             'products'  => [],
-            'count'     => null,
             'limit'     => \App::config()->product['itemsInSlider'],
             'page'      => 1,
             'url'       => $page->url('product.recommended'),

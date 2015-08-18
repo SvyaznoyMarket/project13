@@ -14,6 +14,11 @@ class DeliveryAction extends OrderV3 {
     public function execute(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
+        $response = parent::execute($request);
+        if ($response) {
+            return $response;
+        }
+
         if ($request->isXmlHttpRequest()) {
 
             $splitData = [];
@@ -126,7 +131,7 @@ class DeliveryAction extends OrderV3 {
         }
     }
 
-    public function getSplit(array $data = null, $shopId = null, $userData = null) {
+    public function getSplit(array $data = null, $userData = null) {
 
         if (!$this->cart->count()) throw new \Exception('Пустая корзина');
 
@@ -136,12 +141,14 @@ class DeliveryAction extends OrderV3 {
                 'changes'        => $this->formatChanges($data, $this->session->get($this->splitSessionKey))
             ];
         } else {
-            $productList = [];
-            foreach ($this->cart->getProductData() as $product) $productList[$product['id']] = $product;
-
             $splitData = [
                 'cart' => [
-                    'product_list' => $productList
+                    'product_list' => array_map(function(\Model\Cart\Product\Entity $cartProduct) {
+                        return [
+                            'id' => $cartProduct->id,
+                            'quantity' => $cartProduct->quantity,
+                        ];
+                    }, $this->cart->getInOrderProductsById()),
                 ]
             ];
 
@@ -149,16 +156,14 @@ class DeliveryAction extends OrderV3 {
                 $splitData += ['user_info' => $userData];
             }
 
-            if ($shopId) $splitData['shop_id'] = (int)$shopId;
-            // Проверка метода getCreditProductIds необходима, т.к. Cart/OneClickCart не имеет этого метода
-            if (method_exists($this->cart, 'getCreditProductIds') && !empty($this->cart->getCreditProductIds())) $splitData['payment_method_id'] = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT;
+            if (!empty($this->cart->getCreditProductIds())) $splitData['payment_method_id'] = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT;
         }
 
 
-        $orderDeliveryData = null;
+        $splitResponse = null;
         foreach ([2, 8] as $i) { // две попытки на расчет доставки: 2*4 и 8*4 секунды
             try {
-                $orderDeliveryData = $this->client->query(
+                $splitResponse = $this->client->query(
                     'cart/split',
                     [
                         'geo_id'     => $this->user->getRegion()->getId(),
@@ -172,13 +177,13 @@ class DeliveryAction extends OrderV3 {
                 if (in_array($e->getCode(), [600, 759])) throw $e; // когда удалили последний товар, некорректный email
             }
 
-            if ($orderDeliveryData) break; // если получен ответ прекращаем попытки
+            if ($splitResponse) break; // если получен ответ прекращаем попытки
         }
-        if (!$orderDeliveryData) {
+        if (!$splitResponse) {
             throw new \Exception('Не удалось расчитать доставку. Повторите попытку позже.');
         }
 
-        $orderDelivery = new \Model\OrderDelivery\Entity($orderDeliveryData);
+        $orderDelivery = new \Model\OrderDelivery\Entity($splitResponse);
         if (!$orderDelivery->orders) {
             foreach ($orderDelivery->errors as $error) {
                 if (708 == $error->code) {
@@ -206,19 +211,16 @@ class DeliveryAction extends OrderV3 {
 
         // обновляем корзину пользователя
         if (isset($data['action']) && isset($data['params']['id']) && $data['action'] == 'changeProductQuantity') {
-            $product = (new \Model\Product\Repository($this->client))->getEntityById($data['params']['id']);
-            if ($product !== null) {
-                if (isset($orderDelivery->getProductsById()[$data['params']['id']])) {
-                    $this->cart->setProduct($product, $orderDelivery->getProductsById()[$data['params']['id']]->quantity);
-                } else {
-                    $this->cart->setProduct($product, 0);
-                }
-
+            // SITE-5442
+            if (isset($orderDelivery->getProductsById()[$data['params']['id']])) {
+                $this->cart->update([['ui' => $data['params']['ui'], 'quantity' => $orderDelivery->getProductsById()[$data['params']['id']]->quantity]]);
+            } else {
+                $this->cart->update([['ui' => $data['params']['ui'], 'quantity' => 0]]);
             }
         }
 
         // сохраняем в сессию расчет доставки
-        $this->session->set($this->splitSessionKey, $orderDeliveryData);
+        $this->session->set($this->splitSessionKey, $splitResponse);
 
         return $orderDelivery;
     }

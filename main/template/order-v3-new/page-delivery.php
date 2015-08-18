@@ -78,9 +78,9 @@ return function(
                         <span>шт.</span>
                     </div>
 
-                    <a class="brb-dt jsChangeProductQuantity" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
+                    <a class="brb-dt jsChangeProductQuantity" href="" data-id="<?= $product->id; ?>" data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
                     &nbsp;|&nbsp;
-                    <a class="brb-dt jsDeleteProduct" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Удалить товар</a>
+                    <a class="brb-dt jsDeleteProduct" href="" data-id="<?= $product->id; ?>" data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Удалить товар</a>
                 </div>
 
                 <span class="orderCol_data orderCol_data-price"><?= $helper->formatPrice($product->original_price) ?> <span class="rubl">p</span></span>

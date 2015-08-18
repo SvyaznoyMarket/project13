@@ -27,13 +27,9 @@ class DeliveryAction {
                 $shopId = $params['shopId'];
             }
         }
-        $quantity = is_scalar($request->get('quantity')) ? (int)$request->get('quantity') : 1;
-        if ($quantity <= 1) {
-            $quantity = 1;
-        }
 
         foreach ($product_list as &$productItem) {
-            $productItem['quantity'] = $quantity;
+            $productItem['quantity'] = 1;
         }
         if (isset($productItem)) unset($productItem);
 
@@ -74,7 +70,6 @@ class DeliveryAction {
                 $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $e->getMessage()]);
                 $result['data']     = ['data' => $splitData];
                 if ($e->getCode() == 600) {
-                    //$this->cart->clear();
                     //$result['redirect'] = \App::router()->generate('cart');
                 }
             } catch (\Exception $e) {
@@ -174,12 +169,6 @@ class DeliveryAction {
             }
 
             throw new \Exception('Отстуствуют данные по заказам');
-        }
-
-        // обновляем корзину пользователя
-        if (isset($data['action']) && isset($data['params']['id']) && $data['action'] == 'changeProductQuantity') {
-            $product = (new \Model\Product\Repository($this->client))->getEntityById($data['params']['id']);
-            //if ($product !== null) $this->cart->setProduct($product, $data['params']['quantity']);
         }
 
         // сохраняем в сессию расчет доставки

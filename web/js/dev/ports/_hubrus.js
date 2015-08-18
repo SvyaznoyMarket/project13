@@ -28,17 +28,19 @@ ANALYTICS.hubrusJS = function() {
         if (!smpix || typeof smpix['trackState'] !== 'function') return;
 
         smpix.trackState(type == 'addtocart' ? 'add_to_cart' : 'remove_from_cart',
-            { cart_items: $.map(ENTER.UserModel.cart(), function(e){
-                return {
-                    id: e.id,
-                    price: e.price,
-                    category: e.rootCategory ? e.rootCategory.id : 0
-                }
-            })
-            });
+            {
+                cart_items: $.map(ENTER.UserModel.cart().products(), function(product){
+                    return {
+                        id: product.id,
+                        price: product.price,
+                        category: product.rootCategory ? product.rootCategory.id : 0
+                    }
+                })
+            }
+        );
     });
 
-    $body.on('click', '.jsOneClickButton-new', function(){
+    $body.on('click', '.jsOneClickButton', function(){
         var smpix = window.smartPixel1,
             product = $('#jsProductCard').data('value'),
             categoryId = 0;

@@ -52,7 +52,7 @@ class MapView {
         switch ($token) {
             case 'self_partner_pickpoint_pred_supplier':
             case 'self_partner_pickpoint':
-                return 'Пункты выдачи Pickpoint';
+                return 'Пункты выдачи PickPoint';
                 break;
             case 'self_partner_svyaznoy_pred_supplier':
             case 'self_partner_svyaznoy':
@@ -68,7 +68,7 @@ class MapView {
                 return 'Магазины Евросеть';
                 break;
             default:
-                if (strpos($token, MapPoint::POSTAMAT_SUFFIX) !== false) return 'Постаматы Pickpoint';
+                if (strpos($token, MapPoint::POSTAMAT_SUFFIX) !== false) return 'Постаматы PickPoint';
                 return 'Магазины Enter';
         }
     }

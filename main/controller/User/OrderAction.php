@@ -72,20 +72,10 @@ class OrderAction extends PrivateAction {
         if (!$order) throw new \Exception('Не найден заказ #'.$orderId);
 
         // подготовка 2-го пакета запросов (продукты)
-        $products =  [];
-        $productIds = $order->getAllProductsIds();
-        $medias = [];
-        \RepositoryManager::product()->prepareCollectionById(
-            $productIds,
-            $user->getRegion(),
-            function ($data) use (&$products) {
-                foreach ($data as $item) {
-                    $products[] = new \Model\Product\Entity($item);
-                }
-            }
-        );
+        /** @var \Model\Product\Entity[] $products */
+        $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $order->getAllProductsIds());
 
-        \RepositoryManager::product()->prepareProductsMediasByIds($productIds, $medias);
+        \RepositoryManager::product()->prepareProductQueries($products, 'media');
 
         $delivery = $order->getDelivery() ? \RepositoryManager::deliveryType()->getEntityById($order->getDelivery()->getTypeId()) : null;
 
@@ -106,8 +96,6 @@ class OrderAction extends PrivateAction {
 
         // выполнение 2-го пакета запросов
         $client->execute();
-
-        \RepositoryManager::product()->setMediasForProducts($products, $medias);
 
         return ['order' => $order, 'products' => $products, 'delivery' => $delivery, 'shop' => $shop, 'current_orders_count' => $currentOrdersCount];
 

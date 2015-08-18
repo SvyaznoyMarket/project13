@@ -339,7 +339,6 @@ class AppConfig {
     /** @var array */
     public $banner = [
         'timeout' => null,
-        'url'     => [],
     ];
     /** @var array */
     public $payment = [

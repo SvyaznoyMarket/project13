@@ -62,7 +62,6 @@ $f = function (
         id="<?= $id ?>"
         data-position="<?= $sender['position'] ?>"
         data-slider="<?= $helper->json([
-            'count'  => $count,
             'limit'  => $limit,
             'url'    => $url,
             'type'   => $type,

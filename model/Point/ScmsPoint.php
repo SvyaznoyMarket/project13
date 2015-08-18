@@ -71,7 +71,7 @@ class ScmsPoint {
      */
     public function getPartnerName($partnersBySlug = []) {
         switch ($this->partner) {
-            case self::PARTNER_SLUG_PICKPOINT   : return strpos($this->name, 'Постамат') === false ? 'Пункт выдачи Pickpoint' : 'Постамат Pickpoint';
+            case self::PARTNER_SLUG_PICKPOINT   : return strpos($this->name, 'Постамат') === false ? 'Пункт выдачи PickPoint' : 'Постамат PickPoint';
             default                             : return isset($partnersBySlug[$this->partner]) ? @$partnersBySlug[$this->partner]['name'] : '' ;
         }
     }
