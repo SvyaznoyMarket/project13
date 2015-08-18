@@ -189,6 +189,11 @@ class ProductAction {
                 $response['products'] = $response['setProducts'];
                 unset($response['setProducts']);
             }
+
+            // Немного отформатируем
+            if (\App::config()->lite['enabled']) {
+                $response['cart']['fullQuantity'] = count($cart->getProductsById());
+            }
             
             $response = new \Http\JsonResponse($response);
         } catch(\Exception $e) {
