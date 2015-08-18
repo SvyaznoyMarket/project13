@@ -97,7 +97,9 @@
              * @memberOf    module:enter.userbar.view~EnterUserbarView
              * @type        {Object}
              */
-            events: {},
+            events: {
+                'click .js-userbar-comparing-closer': 'closeCompareDd'
+            },
 
             /**
              * Хандлер изменения сравнения. Срабатывает каждый раз при добавлении\удалении\инициализации сравнения
@@ -134,6 +136,13 @@
 
                     App.trigger('showuserbar');
                 }
+            },
+
+            /**
+             * Закрыть попап сравнения
+             */
+            closeCompareDd: function() {
+                this.subViews.comparingDD.fadeOut();
             },
 
             /**

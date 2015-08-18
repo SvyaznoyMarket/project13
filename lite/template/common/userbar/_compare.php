@@ -12,6 +12,7 @@
 
 <script type="text/plain" id="js-userbar-comparing-item">
     <div class="notice-compare">
+        <div class="btn-close js-userbar-comparing-closer">×</div>
         <div class="notice-compare__title">Товар добавлен к сравнению</div>
 
         <div class="notice-compare__img"><img src="{{imageUrl}}" alt="" class="image"></div>
