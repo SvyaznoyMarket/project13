@@ -63,7 +63,7 @@ namespace Session {
          */
         public function update(array $setProducts = [], $forceUpdate = false) {
             // ВНИМАНИЕ! Перед редактирование кода данного метода ознакомьтесь с комментариями к методу self::setSessionCart
-    
+
             $resultProducts = [];
             $sessionCart = $this->getSessionCart();
             /** @var \Model\Product\Entity[] $backendProductsByUi */
@@ -151,16 +151,10 @@ namespace Session {
                     }
     
                     $backendProduct = null;
-                    // Вложенность if в if используется для соответствия коду заполнения массивов
-                    // $backendProductsByUi/$backendProductsById
-                    if (!empty($setProduct['ui'])) {
-                        if (isset($backendProductsByUi[$setProduct['ui']])) {
-                            $backendProduct = $backendProductsByUi[$setProduct['ui']];
-                        }
-                    } else if (!empty($setProduct['id'])) {
-                        if (isset($backendProductsById[$setProduct['id']])) {
-                            $backendProduct = $backendProductsById[$setProduct['id']];
-                        }
+                    if (!empty($setProduct['ui']) && isset($backendProductsByUi[$setProduct['ui']])) {
+                        $backendProduct = $backendProductsByUi[$setProduct['ui']];
+                    } else if (!empty($setProduct['id']) && isset($backendProductsById[$setProduct['id']])) {
+                        $backendProduct = $backendProductsById[$setProduct['id']];
                     }
                     
                     // Если бэкэнд не вернул товар и не было ошибок запроса, то это означает, что товары были
@@ -237,16 +231,10 @@ namespace Session {
             call_user_func(function() use(&$sessionCart, &$resultProducts, $setProductResultActionsById, $backendProductsByUi, $backendProductsById) {
                 foreach ($sessionCart['product'] as $key => $sessionProduct) {
                     $backendProduct = null;
-                    // Вложенность if в if используется для соответствия коду заполнения массивов
-                    // $backendProductsByUi/$backendProductsById
-                    if (!empty($sessionProduct['ui'])) {
-                        if (isset($backendProductsByUi[$sessionProduct['ui']])) {
-                            $backendProduct = $backendProductsByUi[$sessionProduct['ui']];
-                        }
-                    } else if (!empty($sessionProduct['id'])) {
-                        if (isset($backendProductsById[$sessionProduct['id']])) {
-                            $backendProduct = $backendProductsById[$sessionProduct['id']];
-                        }
+                    if (!empty($sessionProduct['ui']) && isset($backendProductsByUi[$sessionProduct['ui']])) {
+                        $backendProduct = $backendProductsByUi[$sessionProduct['ui']];
+                    } else if (!empty($sessionProduct['id']) && isset($backendProductsById[$sessionProduct['id']])) {
+                        $backendProduct = $backendProductsById[$sessionProduct['id']];
                     }
                     
                     // Удаление товара. Должно происходить вне зависимости то того, вернул ли бэкэнд товар или нет
@@ -265,6 +253,7 @@ namespace Session {
                     
                     if ($backendProduct) {
                         $sessionCart['product'][$key] = array_merge($sessionProduct, $this->createSessionProductFromBackendProduct($backendProduct));
+                        $sessionCart['product'][$key]['gone'] = false;
                     } else {
                         // Если бэкэнд не вернул товар и не было ошибок запроса, то это означает, что товары были
                         // удалены (из ядра или scms) или заблокированы (в scms)
@@ -342,12 +331,12 @@ namespace Session {
                     throw new \Exception('Не удалось получить цены для товаров');
                 }
             });
-    
+
             $sessionCart['updated'] = (new \DateTime('now'))->format('c');
             $this->setSessionCart($sessionCart);
             
             // TODO может перенести синхронизацию серверной корзины сюда (выполняя её на основе данных из $resultProducts)?
-            
+
             return $resultProducts;
         }
     
