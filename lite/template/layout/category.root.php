@@ -58,11 +58,13 @@ $category = $page->getParam('category');
 
             <?= $page->blockViewed() ?>
 
-            <!-- SEO информация -->
-            <div class="section section_bordered section_seo">
-                <?= $category->getSeoContent() ?>
-            </div>
-            <!--/ SEO информация -->
+            <? if (false) : ?>
+                <!-- SEO информация -->
+                <div class="section section_bordered section_seo">
+                    <?= $category->getSeoContent() ?>
+                </div>
+                <!--/ SEO информация -->
+            <? endif ?>
     </main>
 </div>
 

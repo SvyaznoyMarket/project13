@@ -91,7 +91,7 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
 
         <?= $page->blockViewed() ?>
 
-        <? if(!empty($seoContent)): ?>
+        <? if(false && !empty($seoContent)): ?>
             <div class="section section_bordered section_seo">
                 <?= $seoContent ?>
             </div>
