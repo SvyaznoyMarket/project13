@@ -24,7 +24,7 @@
                 </ul>
 
                 <div class="phone">
-                    <span class="phone__text">+7 495 775-00-06</span>
+                    <span class="phone__text"><?= \App::config()->company['phone'] ?></span>
 
                     <? if (false) : ?>
                     <a href="http://zingaya.com/widget/e990d486d664dfcff5f469b52f6bdb62" title="" class="phone-order" onclick="window.open(typeof(_gat)=='undefined'?this.href+'?referrer='+escape(window.location.href):_gat._getTrackerByName()._getLinkerUrl(this.href+'?referrer='+escape(window.location.href)), '_blank', 'width=236,height=220,resizable=no,toolbar=no,menubar=no,location=no,status=no'); return false;">

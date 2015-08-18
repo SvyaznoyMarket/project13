@@ -202,7 +202,7 @@ $c->fileStorage = [
 
 $c->connectTerminal = true;
 
-$c->company['phone'] = '+7 (800) 700-00-09';
+$c->company['phone'] = '+7 (495) 135-10-70';
 $c->company['moscowPhone'] = '+7 (495) 775-00-06';
 $c->company['spbPhone'] = '+7 (812) 703-77-30';
 $c->company['icq'] = '648198963';
