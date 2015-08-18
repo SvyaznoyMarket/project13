@@ -89,10 +89,17 @@
             });
         });
 
+        modules.define('jquery.elevatezoom', [], function(provide){
+            loadScript("plugins/jquery.elevatezoom.js", function ( $ ) {
+                console.log('[Module] jquery.elevatezoom');
+                provide($);
+            });
+        });
+
         modules.define('jquery.scrollTo', [], function(provide){
-            loadScript("plugins/jquery.scrollTo.js", function () {
+            loadScript("plugins/jquery.scrollTo.js", function ( $ ) {
                 console.log('[Module] jquery.scrollTo');
-                provide(History);
+                provide($);
             });
         });
 

@@ -11,8 +11,8 @@ $f = function(
     ?>
 
     <!-- слайдер изображений товара -->
-    <div class="product-card__l">
-        <div class="product-card-photo">
+    <div class="product-card__l js-module-require" data-module="enter.product.photoSlider">
+        <div class="product-card-photo js-photo-container">
             <? if ($product->getLabel()): ?>
                 <a class="product-card-photo-sticker" href=""><img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>"></a>
             <? endif ?>
@@ -27,6 +27,7 @@ $f = function(
                  class="product-card-photo__img js-photo-zoomedImg jsOpenProductImgPopup jsProductMiddlePhoto"
                  alt="<?= $helper->escape($product->getName()) ?>"
                  data-is-slot="<?= $product->getSlotPartnerOffer() ? 'true' : 'false' ?>"
+                 data-zoom-image="<?= $product->getMainImageUrl('product_1500') ?>"
                  style="cursor: zoom-in"
                 />
             <? if (!$product->isAvailable()) : ?>

@@ -13,14 +13,19 @@
 }
 
 .section {
+    margin: 30px 0 0;
+
     .clearfix();
     &__left {
         float: left;
-        width: 195px;
-    }
 
-    &__content {
-        padding-left: 210px;
+        width: 190px;
+    }
+    &__right {
+        overflow: hidden;
+        &-inner {
+            padding-left: 25px;
+        }
     }
 }
 
@@ -30,13 +35,30 @@
         margin: 0;
     }
     &__link {
-        .font-size(14);
+        position: relative;
+
         display: block;
+
         padding: 8px 5px 6px;
-        &.active,
-        &:hover {
+
+        .font-size(14);
+        &.active {
             color: @white;
             background: @orange-bright;
+            &:after {
+                position: absolute;
+                top: 0;
+                right: -8px;
+
+                width: 0;
+                height: 0;
+
+                content: '';
+
+                border-top: 16px solid transparent;
+                border-bottom: 17px solid transparent;
+                border-left: 8px solid #f60;
+            }
         }
     }
 }
@@ -233,9 +255,10 @@
 }
 
 .main-banner {
-    background: #ffe8d8;
     height: 300px;
     margin: -10px 0 15px;
+
+    background: #ffe8d8;
 }
 
 .grid-transform-4col {
@@ -308,401 +331,12 @@
     }
     &__sub-name {
         display: block;
+
         .font-face('GloberRegular');
     }
     &__img {
-        .inline-block();
         margin: 15px 0 0;
+
+        .inline-block();
     }
-}
-
-.delivery{
-    &-page {
-        &__info{
-            width: 100%;
-
-            .deliv-ctrls{
-                width: 219px;
-                float: right;
-                font-size: 14px;
-                margin-right: 10px;
-
-                .deliv-search__input-wrap{
-                    height: 33px;
-                }
-            }
-            .deliv-search{
-                height: 35px;
-                padding-left: 33px;
-                .deliv-suggest{
-                    z-index: 2;
-                }
-                &__input-wrap{
-                    padding-right: 18px;
-                    &:after{
-                        right: 12px;
-                    }
-                }
-            }
-
-        }
-    }
-    &-region{
-        width: 440px;
-        float: left;
-        margin: 5px 0 18px;
-
-        &__msg{
-            font-size: 16px;
-            color: #686868;
-            .inline-block();
-            margin-left: 7px;
-        }
-        &__current{
-            font-size: 16px;
-            margin-right: 12px;
-            width: 154px;
-            .inline-block();
-            cursor: pointer;
-
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            text-decoration: none;
-            &:hover{
-                text-decoration: none;
-            }
-            &-inn{
-                border-bottom: 1px dotted;
-            }
-            
-        }
-    }
-    &-map{
-        position: relative;
-        margin-bottom: 30px;
-        overflow-x: hidden;
-
-        .deliv-list .deliv-item__addr{
-            margin-left: -8px;
-        }
-        .map-container{
-            width: 100%;
-            height: 430px;
-            background: @grey-light-4;
-        }
-    }
-    &-logo{
-        &-lst{
-            padding: 10px;
-            background-color: @grey-light-4;
-            overflow: hidden;
-            &-i{
-                float: left;
-                width: 130px;
-                padding: 4px;
-                border: 2px solid @white;
-                position: relative;
-                background-color: @white;
-                cursor: pointer;
-                margin: 0 10px 0 0;
-                text-align: center;
-
-                &__close{
-                    display: none;
-                    background-color: #f99b1c;
-                    color: @white;
-                    .rounded(50%);
-                    width: 12px;
-                    height: 12px;
-                    position: absolute;
-                    top: -6px;
-                    right: -6px;
-                    cursor: pointer;
-                    &:after{
-                        content:"×";
-                        position: absolute;
-                        top: -3px;
-                        left: 2.3px;
-                        font-size: 11px;
-                    }
-                }
-                &__img{
-                    max-height: 40px;
-                }
-                &.active{
-                    border-color: @orange-bright;
-                    .delivery-logo-lst-i__close{
-                        display: block;
-                    }
-                }
-                &:last-child{
-                    margin-right: 0;
-                }
-            }
-        }
-    }
-    &-text{
-        margin-bottom: 30px;
-        color: #616161;
-        h2{
-            font-size: 18px;
-            margin: 15px 0 10px;
-        }
-        p{
-            margin:  0 0 5px;
-        }
-        a {
-            color: #404040;
-            text-decoration: underline;
-        }
-    }
-    &-list{
-        list-style: disc;
-        li{
-
-        }
-    }
-    &-table{
-        td, th{
-            padding: 10px 5px 5px 10px;
-            text-align: left;
-        }
-        td,tr,th{
-            border: 1px solid #e6e6e6;
-        }
-        th{
-            padding: 5px;
-            font-weight: bold;
-            text-align: center;
-        }
-        td{
-            &:first-child{
-                text-align: center;
-                padding-left: 0px;
-            }
-        }
-        .table-lbl{
-            font-size: 10px;
-            width: 110px;
-            display: block;
-        }
-        .measures{
-            display: block;
-            width: 100px;
-        }
-    }
-    &-city-table{
-
-      td{
-          padding: 0 10px;
-      }
-
-    }
-}
-.points{
-    &-lst{
-        width: 300px;
-        padding-left: 20px;
-        
-        max-height: 100%;
-        min-height: 100%;
-        overflow-x: visible;
-        overflow-y: scroll;
-        position: absolute;
-        top: 0px;
-        right: -18px;
-        z-index: 1;
-        padding-top: 0;
-        padding-right: 23px;
-        background: rgba(255, 255, 255, 0.5);
-
-        &.deliv-list:after{
-            content: none;
-        }
-        &-i{
-            width: 100%;
-            padding: 10px;
-            background-color: @white;
-            overflow: hidden;
-            margin: 10px 0;
-
-            &__more{
-                font-size: 12px;
-                color: #616161;
-                text-decoration: underline;
-                float: right;
-            }
-            &.current{
-                margin-left: -20px;
-                margin-right: 20px;
-            }
-            &__partner{
-                font-size: 12px;
-                color: #363636;
-                margin-left: 12px;
-            }
-
-        }
-    }
-}
-.delivery-free{
-
-        &__lnk{
-            cursor: pointer;
-            &:hover{
-                text-decoration: none;
-            }
-        }
-        &__inn{
-            font-size: 16px;
-            color: #80c133;
-            border-bottom: 1px dotted;
-        }
-
-}
-.tarifs {
-    &-popup{
-        z-index: 10005;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        margin-left: -215px;
-        margin-top: -230px;
-        border: 1px solid #c4c4c4;
-        width: 410px;
-        height: 444px;
-        padding: 8px 14px 10px;
-
-        .popup-inn{
-            position: relative;
-            &:after{
-                content: '';
-                position: absolute;
-                bottom: 0px;
-                left: 0px;
-                height: 10px;
-                width: 95%;
-                //.gradient(rgba(255, 255, 255, 0), @white, rgba(255, 255, 255, 0));
-                z-index: 2;
-            }
-        }
-        .popup-closer{
-            display: block;
-            width: 18px;
-            height: 18px;
-            background: url('@{base-url}/delivery/img/tarifs-closer.png') no-repeat;
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            cursor: pointer;
-            z-index: 10;
-        }
-        &__head{
-            font-size: 14px;
-            color: #363636;
-        }
-    }
-    &-search{
-        padding: 22px 5px 18px 26px;
-        &__input{
-            border: 1px solid #000;
-            .rounded(2px);
-            height: 20px;
-            line-height: 20px;
-            width: 225px;
-            padding: 0 10px;
-            color: #363636;
-        }
-        &__btn{
-            border: 0;
-            background-color: #000;
-            color: @white;
-            .rounded(3px);
-            font-size: 14px;
-            width: 90px;
-            height: 22px;
-            margin-left: 10px;
-            .inline-block(middle);
-        }
-        &__letter{
-            font-size: 18px;
-            line-height: 19px;
-            margin-bottom: 3px;
-            color: #363636;
-        }
-        &__i{
-            margin-top: 12px;
-            color: #363636;
-            &:last-child{
-                padding-bottom: 10px;
-            }
-        }
-        &__content{
-            position: relative;
-            &:before{
-                content: '';
-                position: absolute;
-                top: 0px;
-                left: 0px;
-                height: 10px;
-                width: 95%;
-                //.gradient(@white, rgba(255, 255, 255, 0), @white);
-                z-index: 2;
-            }
-        }
-        &__lst{
-            padding: 0px 36px 0px 26px;
-            height: 342px;
-            overflow: auto;
-            position: relative;
-        }
-        &-city{
-            &__lst{
-
-            }
-            &__i{
-
-            }
-            &__name{
-                float: left;
-                background-color: @white;
-                position: relative;
-                z-index: 1;
-            }
-            &__val{
-                display: block;
-                text-align: right;
-                position: relative;
-
-                &:before{
-                    content: '';
-                    position: absolute;
-                    height: 0;
-                    width: 100%;
-                    left:0;
-                    bottom:3px;
-                    border-bottom: 1px dotted;
-                    z-index: 0;
-                }
-                &-inn{
-                    background-color: @white;
-                    position: relative;
-                }
-            }
-        }
-
-    }
-}
-.js-tarifs-overlay{
-    background-color: rgba(0,0,0,0.5);
-    z-index: 2000;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-}
-.body-fixed{
-    overflow: hidden;
 }
