@@ -85,7 +85,7 @@ return function(
                                 <? if (isset($ordersPayment[$order->getNumber()])) : ?>
                                     <? $paymentEntity = $ordersPayment[$order->getNumber()]; /** @var $paymentEntity \Model\PaymentMethod\PaymentEntity */?>
 
-                                    <? if (isset($paymentEntity->groups[2])) : ?>
+                                    <? if (false && isset($paymentEntity->groups[2])) : ?>
 
                                         <div class="checkout-complete-payment jsOnboxPaymentBlock">
 
