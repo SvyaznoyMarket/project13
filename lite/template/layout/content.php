@@ -29,7 +29,7 @@
 		    		</aside>
 
 		    		<section class="section__content">
-		        		<?= $page->render('delivery/content.delivery', $page->getParams()) ?>
+		        		<?= $page->blockContent() ?>
 		        	</section>
 		        </div>
 		    </main>
