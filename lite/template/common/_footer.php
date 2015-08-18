@@ -26,7 +26,7 @@
 
     <div class="footer__left">
         <div class="footer-hint">Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.</div>
-        <div class="footer-copy">&copy; ООО «Энтер» 2011–2014. ENTER® ЕНТЕР® Enter®. Все права защищены.</div>
+        <div class="footer-copy">&copy; ООО «Сордекс» 2013–<?= date("Y"); ?>. Все права защищены.</div>
     </div>
 
 </footer>
