@@ -13,6 +13,10 @@ class LiteLayout extends \View\Layout
         $this->addJavascript('/public/js/core.min.js');
     }
 
+    public function getParams() {
+        return $this->params;
+    }
+
     /**
      * @return string
      */

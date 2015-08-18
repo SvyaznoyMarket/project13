@@ -15,7 +15,7 @@
 
 <div class="wrapper">
     <main class="content">
-        <?= $page->render('delivery/content.delivery') ?>
+        <?= $page->render('delivery/content.delivery', $page->getParams()) ?>
     </main>
 </div>
 
