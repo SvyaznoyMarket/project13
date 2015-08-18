@@ -23,11 +23,18 @@
 
     <?= $page->slotStylesheet() ?>
     <?= $page->slotHeadJavascript() ?>
+    <?= $page->slotGoogleAnalytics() ?>
 </head>
 
-<body>
-    <?= $page->slotContent() ?>
+<body
+    class="<?= $page->slotBodyDataAttribute() ?>"
+    data-template="<?= $page->slotBodyDataAttribute()?>"
+    data-id="<?= \App::$id ?>"
+    <? if (\App::config()->debug): ?>data-debug=true<? endif ?>
+    >
+    <?= $page->slotConfig() ?>
     <?= $page->slotUserConfig() ?>
+    <?= $page->slotContent() ?>
     <?= $page->slotMustacheTemplates() ?>
 </body>
 </html>

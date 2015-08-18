@@ -22,7 +22,7 @@
             <div class="header__line header__line_bottom">
 
 
-                <div class="fltrSet_tggl fltrSet_tggl-up">
+                <div class="fltrSet_tggl fltrSet_tggl-up js-userbar-goto-id" data-goto="productCatalog-filter-form">
                     <span class="fltrSet_tggl_tx">Бренды и параметры</span>
                 </div>
 

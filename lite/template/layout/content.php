@@ -30,7 +30,7 @@
 
 		    		<section class="section__right">
 		    			<div class="section__right-inner">
-		        			<?= $page->render('delivery/content.delivery', $page->getParams()) ?>
+		        			<?= $page->blockContent() ?>
 		        		</div>
 		        	</section>
 		        </div>

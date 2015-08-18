@@ -54,6 +54,7 @@ class Repository {
         /** @var \Model\Product\Entity[] $products */
         $products = [new \Model\Product\Entity(['id' => $id])];
         \RepositoryManager::product()->prepareProductQueries($products, 'media', $region);
+        \App::coreClientV2()->execute();
         
         if ($products) {
             return $products[0];

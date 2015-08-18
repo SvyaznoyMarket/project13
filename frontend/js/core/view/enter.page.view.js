@@ -6,6 +6,7 @@
  * @requires    enter.BaseViewClass
  * @requires    enter.cart.view
  * @requires    enter.userbar.view
+ * @requires    enter.feedback.popup.view
  * @requires    jquery.visible
  * @requires    findModules
  *
@@ -19,6 +20,7 @@
             'enter.BaseViewClass',
             'enter.cart.view',
             'enter.userbar.view',
+            'enter.feedback.popup.view',
             'jquery.visible',
             'findModules'
         ],
@@ -26,7 +28,7 @@
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, CartView, UserbarView, jVisible, findModules ) {
+    function( provide, $, BaseViewClass, CartView, UserbarView, FeedbackPopupView, jVisible, findModules ) {
         'use strict';
 
         var
@@ -42,7 +44,9 @@
                 LOGIN_POPUP: 'js-popup-login',
                 USERBAR_TARGET: 'js-show-fixed-userbar',
                 USERBAR: 'js-userbar',
-                CART: 'js-cart'
+                CART: 'js-cart',
+                FEEDBACK_POPUP: 'js-feedback-popup',
+                FEEDBACK_BTN: 'js-feedback-from-btn'
             };
 
         provide(BaseViewClass.extend({
@@ -58,6 +62,7 @@
                     carts         = this.$el.find('.' + CSS_CLASSES.CART),
                     userbars      = this.$el.find('.' + CSS_CLASSES.USERBAR),
                     userbarTarget = this.$el.find('.' + CSS_CLASSES.USERBAR_TARGET),
+                    feedbackPopup = this.$el.find('.' + CSS_CLASSES.FEEDBACK_POPUP),
                     self          = this;
 
                 findModules(this.$el);
@@ -79,15 +84,36 @@
                     });
                 });
 
+                this.subViews.feedbackPopup = new FeedbackPopupView({
+                    el: feedbackPopup
+                });
+
+                console.log(this.subViews.feedbackPopup);
+
                 // Setup events
                 this.events['click .' + CSS_CLASSES.LOGIN_POPUP_BTN] = 'showLoginPopup';
+                this.events['click .' + CSS_CLASSES.FEEDBACK_BTN]    = 'showFeedbackPopup';
 
                 // Apply events
                 this.delegateEvents();
             },
 
+            /**
+             * События привязанные к текущему экземляру View
+             *
+             * @memberOf    module:enter.page.view~EnterPageView
+             * @type        {Object}
+             */
             events: {
                 'DOMNodeInserted': 'change'
+            },
+
+            showFeedbackPopup: function() {
+                console.info('showFeedbackPopup');
+                console.log(this.subViews);
+                this.subViews.feedbackPopup.show();
+
+                return false;
             },
 
             showLoginPopup: function() {
@@ -114,6 +140,8 @@
 
             /**
              * Хандлер изменения DOM. Паттерн debounce
+             *
+             * @memberOf    module:enter.page.view~EnterPageView
              */
             change: (function () {
                 var

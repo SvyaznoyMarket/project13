@@ -114,7 +114,8 @@ class LiteLayout extends \View\Layout
     public function blockPopupTemplates() {
         return $this->tryRender('common/popups/kit')
             . $this->tryRender('common/popups/one.click')
-            . $this->tryRender('common/popups/slot');
+            . $this->tryRender('common/popups/slot')
+            . $this->tryRender('common/popups/feedback');
     }
 
     public function blockSearch() {

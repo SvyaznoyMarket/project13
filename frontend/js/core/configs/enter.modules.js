@@ -89,6 +89,13 @@
             });
         });
 
+        modules.define('jquery.scrollTo', [], function(provide){
+            loadScript("plugins/jquery.scrollTo.js", function () {
+                console.log('[Module] jquery.scrollTo');
+                provide(History);
+            });
+        });
+
         modules.define('lscache', [], function(provide){
             loadScript("plugins/lscache.js", function () {
                 console.log('[Module] lscache');

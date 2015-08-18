@@ -1,9 +1,9 @@
 <main class="content">
     <div class="main-banner">
-        
+
     </div>
 
-    <div class="section">   
+    <div class="section">
         <div class="main-categories grid-transform-4col">
             <div class="grid-transform-4col__row">
                 <div class="grid-transform-4col__col col1">
@@ -111,39 +111,9 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
     <?= $page->render('main/_brands.popular') ?>
 
     <?= $page->blockViewed() ?>
 </main>
-
-<div class="popup-feedback popup popup_440" style="display: none;">
-    <div class="popup__close js-popup-close">×</div>
-    <div class="popup__title">Обратная связь</div>
-    
-    <form action="" class="form">
-        <div class="form__field">
-            <input id="" type="text" class="form__it it" name="" value="">
-            <label for="" class="form__placeholder placeholder">Ваш email</label>
-        </div>
-
-        <div class="form__field">
-            <input id="" type="text" class="form__it it" name="" value="">
-            <label for="" class="form__placeholder placeholder">Тема письма</label>
-        </div>
-
-        <div class="form__field">
-            <textarea name="" id="" class="textarea"></textarea>
-            <label for="" class="form__placeholder placeholder">Текст письма</label>
-        </div>
-        
-        <div class="form__field">
-            <input type="file">
-        </div>
-
-        <div class="btn-container">
-            <button class="btn-primary btn-primary_bigger">Отправить</button>
-        </div>
-    </form>
-</div>

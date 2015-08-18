@@ -5,6 +5,7 @@
  * @requires    App
  * @requires    enter.BaseViewClass
  * @requires    Mustache
+ * @requires    jquery.scrollTo
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
@@ -14,13 +15,14 @@
         [
             'App',
             'enter.BaseViewClass',
-            'Mustache'
+            'Mustache',
+            'jquery.scrollTo'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, App, BaseViewClass, mustache ) {
+    function( provide, App, BaseViewClass, mustache, jqueryScrollTo ) {
         'use strict';
 
         var
@@ -36,7 +38,8 @@
                 COMPARE_COUNTER: 'js-userbar-compare-counter',
                 COMPARE_ACTIVE: 'active',
                 COMPARE_DD: 'js-userbar-compare-dd',
-                FIXED: 'js-userbar-fixed'
+                FIXED: 'js-userbar-fixed',
+                GO_TO_ID: 'js-userbar-goto-id'
             },
 
             /**
@@ -50,7 +53,8 @@
                 COMPARING_ITEM: $('#js-userbar-comparing-item').html(),
             },
 
-            $WINDOW = $(window);
+            $WINDOW   = $(window),
+            $DOCUMENT = $(document);
 
         provide(BaseViewClass.extend({
 
@@ -78,7 +82,7 @@
                 };
 
                 // Setup events
-                // this.events['click .' + CSS_CLASSES.] = '';
+                this.events['click .' + CSS_CLASSES.GO_TO_ID] = 'goToId';
 
                 if ( this.isFixed ) {
                     $WINDOW.on('scroll', this.scrollHandler.bind(this));
@@ -99,6 +103,20 @@
              */
             events: {
                 'click .js-userbar-comparing-closer': 'closeCompareDd'
+            },
+
+            /**
+             * Перелистывание страницы до идентификатора
+             *
+             * @method  goToId
+             */
+            goToId: function( event ) {
+                var
+                    target = $(event.currentTarget),
+                    toEl   = $('#' + target.attr('data-goto')),
+                    to     = toEl.offset().top - this.$el.outerHeight() - 20;
+
+                $DOCUMENT.stop().scrollTo(to, 800);
             },
 
             /**
