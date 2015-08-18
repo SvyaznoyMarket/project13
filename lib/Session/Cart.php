@@ -265,6 +265,7 @@ namespace Session {
                     
                     if ($backendProduct) {
                         $sessionCart['product'][$key] = array_merge($sessionProduct, $this->createSessionProductFromBackendProduct($backendProduct));
+                        $sessionCart['product'][$key]['gone'] = false;
                     } else {
                         // Если бэкэнд не вернул товар и не было ошибок запроса, то это означает, что товары были
                         // удалены (из ядра или scms) или заблокированы (в scms)
