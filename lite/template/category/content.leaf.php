@@ -58,9 +58,9 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
 
         <hr class="hr-orange">
 
-        <div class="js-show-fixed-userbar"></div>
-
         <?= $page->blockFilters() ?>
+
+        <div class="js-show-fixed-userbar"></div>
 
         <!-- сортировка -->
         <div class="sorting sorting-top js-category-sortingAndPagination">

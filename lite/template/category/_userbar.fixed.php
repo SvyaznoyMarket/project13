@@ -23,7 +23,7 @@
 
 
                 <div class="fltrSet_tggl fltrSet_tggl-up js-userbar-goto-id" data-goto="productCatalog-filter-form">
-                    <span class="fltrSet_tggl_tx">Бренды и параметры</span>
+                    <span class="fltrSet_tggl_tx"><a href="#productCatalog-filter-form">Бренды и параметры</a></span>
                 </div>
 
                 <ul class="user-controls">
