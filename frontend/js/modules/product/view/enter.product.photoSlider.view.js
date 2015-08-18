@@ -87,7 +87,7 @@
                     zoomWindowOffetx: productContentPaddingLeft - photoContainerW + (photoContainerW - photoW)/2,
                     zoomWindowWidth: $PRODUCT_CONTENT.width(),
                     borderSize: 1,
-                    borderColour: '#C7C7C7'
+                    borderColour: '#EBEBEB'
                 };
 
                 if ( this.subViews.photo.attr('data-zoom-image') ) {
