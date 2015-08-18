@@ -6,28 +6,44 @@
 
 <!doctype html>
 <html class="no-js" lang="">
+	<?= $page->blockHead() ?>
 
-<?= $page->blockHead() ?>
+	<body>
 
-<body>
+		<?= $page->blockHeader() ?>
 
-<?= $page->blockHeader() ?>
+		<div class="wrapper">
+		    <main class="content">
+		    	<div class="section section_aside">
+		    		<aside class="section__left">
+		    			<ul class="section-nav">
+		    				<li class="section-nav__item"><a href="" class="section-nav__link">Доставка</a></li>
+		    				<li class="section-nav__item"><a href="" class="section-nav__link">Самовывоз</a></li>
+		    				<li class="section-nav__item"><a href="" class="section-nav__link">Оплата</a></li>
+		    			</ul>
+		    			<ul class="section-nav">
+		    				<li class="section-nav__item"><a href="" class="section-nav__link">О компании</a></li>
+		    				<li class="section-nav__item"><a href="" class="section-nav__link">Правовая информация</a></li>
+		    				<li class="section-nav__item"><a href="" class="section-nav__link">Оферта</a></li>
+		    			</ul>
+		    		</aside>
 
-<div class="wrapper">
-    <main class="content">
-        <?= $page->render('delivery/content.delivery', $page->getParams()) ?>
-    </main>
-</div>
+		    		<section class="section__content">
+		        		<?= $page->render('delivery/content.delivery', $page->getParams()) ?>
+		        	</section>
+		        </div>
+		    </main>
+		</div>
 
-<hr class="hr-orange">
+		<hr class="hr-orange">
 
-<?= $page->blockFooter() ?>
+		<?= $page->blockFooter() ?>
 
-<?= $page->slotBodyJavascript() ?>
+		<?= $page->slotBodyJavascript() ?>
 
-<?= $page->blockUserConfig() ?>
+		<?= $page->blockUserConfig() ?>
 
-<?= $page->blockPopupTemplates() ?>
+		<?= $page->blockPopupTemplates() ?>
 
-</body>
+	</body>
 </html>
