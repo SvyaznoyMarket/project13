@@ -276,17 +276,17 @@ class Action {
         $form = new \View\User\RegistrationForm();
         if ($request->isMethod('post')) {
             $form->fromArray((array)$request->request->get('register'));
-            $isSubscribe = (bool)$request->get('subscribe', false);
+            $isSubscribe = true; //(bool)$request->get('subscribe', false);
+
+            if (!$request->get('agreed')) {
+                $form->setError('agreed', 'Не указано согласие');
+            }
 
             if (!$form->getFirstName()) {
                 $form->setError('first_name', 'Не указано имя');
             }
 
-            if (!$form->getPhone() && !$form->getEmail()) {
-                $form->setError('email', 'Не указаны email или телефон');
-            }
-
-            if ($isSubscribe && !$form->getEmail()) {
+            if (!$form->getEmail()) {
                 $form->setError('email', 'Не указан email');
             }
 
@@ -998,26 +998,15 @@ class Action {
 
         $curl->execute();
 
-        $favoriteProductsByUi = [];
+        $products = [];
         foreach ($favoriteQuery->response->products as $item) {
             $ui = isset($item['uid']) ? (string)$item['uid'] : null;
             if (!$ui) continue;
 
-            $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
+            $products[] = new \Model\Product\Entity(['ui' => $ui]);
         }
 
-        $products = [];
-        if ($favoriteProductsByUi) {
-            $productQuery = (new Query\Product\GetByUiList(array_keys($favoriteProductsByUi), \App::user()->getRegion()->getId()))->prepare();
-
-            $curl->execute();
-
-            foreach ($productQuery->response->products as $item) {
-                $products[] = new \Model\Product\Entity($item);
-            }
-        }
-
-        \RepositoryManager::product()->enrichProductsFromScms($products, 'media');
+        \RepositoryManager::product()->prepareProductQueries($products);
         $curl->execute();
 
         // сохраняем продукты в сессию

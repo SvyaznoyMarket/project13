@@ -3,161 +3,214 @@
 namespace Controller\Cart;
 
 use EnterApplication\CurlTrait;
-use Session\AbTest\ABHelperTrait;
 use EnterQuery as Query;
+use Session\AbTest\ABHelperTrait;
 
 class ProductAction {
     use CurlTrait, ABHelperTrait;
 
     /**
+     * @deprecated Используйте setList
      * @param int           $productId
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse
      * @throws \Exception
      */
     public function set($productId, \Http\Request $request) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
-
-        $cart = \App::user()->getCart();
-
         $productId = (int)$productId;
         $quantity = $request->get('quantity');
-        $sender = $request->query->get('sender');
-        $sender2 = (string)$request->query->get('sender2');
-        $params = [];
-        $moveProductToUp = false;
 
-        $referer = $request->headers->get('referer') ?: '/';
-        if (false === strpos($referer, \App::config()->mainHost)) {
-            $referer = '/';
-        }
-        $params['referer'] = $referer;
-
-        if (is_string($sender) && !empty($sender)) {
-            $sender = ['name' => $sender];
+        $product = ['id' => $productId];
+        if ($quantity === null) {
+            $product['quantity'] = '+1';
+            $product['up'] = '1';
+        } else {
+            $product['quantity'] = (int)$quantity;
         }
 
-        if (!is_array($sender)) {
-            $sender = null;
+        $request->query->set('products', [$product]);
+        $request->query->remove('quantity');
+        $response = $this->setList($request);
+
+        if ($response instanceof \Http\JsonResponse) {
+            $data = $response->getData();
+            $data['product'] = isset($data['setProducts'][0]) ? $data['setProducts'][0] : [];
+            unset($data['setProducts']);
+            $response->setData($data);
         }
 
-        if ($sender) {
-            $params['sender'] = $sender;
-        }
-
-        if ($sender2) {
-            $params['sender2'] = $sender2;
-        }
-
-        try {
-            if (!$productId) {
-                throw new \Exception('Не получен ид товара');
-            }
-
-            if ($quantity === null) {
-                // SITE-5022
-                $quantity = $cart->getQuantityByProduct($productId) + 1;
-                $moveProductToUp = true;
-            } else {
-                $quantity = (int)$quantity;
-            }
-
-            if ($quantity < 0) {
-                $quantity = 0;
-                \App::logger()->warn(['message' => 'Указано неверное количество товаров', 'request' => $request->request->all()]);
-            }
-
-            $product = \RepositoryManager::product()->getEntityById($productId);
-            if (!$product) {
-                throw new \Exception(sprintf('Товар #%s не найден', $productId));
-            }
-
-            if (\App::config()->cart['checkStock'] && !empty($product->getStock())) {
-                if ($quantity > $product->getStockWithMaxQuantity()->getQuantity()) {
-                    throw new \Exception('Нет запрошенного количества товара');
-                }
-            }
-
-            if ($request->query->get('credit') == 'on') {
-                $params['credit'] = ['enabled' => true];
-            } else {
-                $params['credit'] = null;
-            }
-
-            // не учитываем является ли товар набором или нет - за это отвечает ядро
-            $cart->setProduct($product, $quantity, $params, $moveProductToUp);
-            $cartProduct = $cart->getProductById($product->getId());
-
-            $productInfo = [
-                'id'        => $product->getId(),
-                'article'   => $product->getArticle(),
-                'name'      => $product->getName(),
-                'img'       => $product->getMainImageUrl('product_120'),
-                'link'      => $product->getLink(),
-                'price'     => $product->getPrice(),
-                'formattedPrice'    => \App::helper()->formatPrice($product->getPrice()),
-                'deleteUrl' => $cartProduct  ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,
-                'addUrl'    => !$cartProduct ? (new \Helper\TemplateHelper())->url('cart.product.set',    ['productId' => $product->getId()]) : null,
-                'cartButton'     => [
-                    'id' => \View\Id::cartButtonForProduct($product->getId()),
-                ],
-                'isTchiboProduct' => $product->getRootCategory() && 'Tchibo' === $product->getRootCategory()->getName(),
-                'category'        => $this->getCategories($product),
-                'quantity'        => $cartProduct ? $cartProduct->getQuantity() : 0,
-                'isSlot' => (bool)$product->getSlotPartnerOffer(),
-                'isOnlyFromPartner' => $product->isOnlyFromPartner(),
-                'isNewWindow'       => \App::abTest()->isNewWindow() // открытие товаров в новом окне
-            ];
-
-            $parentCategoryId = $product->getParentCategory() ? $product->getParentCategory()->getId() : null;
-
-            if ($request->isXmlHttpRequest()) {
-                $response = new \Http\JsonResponse([
-                    'success'    => true,
-                    'cart'       => [
-                        'sum'           => $cartProduct ? $cartProduct->getSum() : 0,
-                        'quantity'      => $quantity,
-                        'full_quantity' => $cart->getProductsQuantity(),
-                        'full_price'    => $cart->getSum(),
-                        'old_price'     => $cart->getOriginalSum(),
-                        'link'          => \App::router()->generate('order'),
-                        'products'      => $cart->getProductDump(),
-                    ],
-                    'product'     => $productInfo,
-                    'category_id' => $parentCategoryId,
-                    'regionId'    => \App::user()->getRegionId(),
-                    'sender'      => $sender,
-                ]);
-            } else {
-                $response = new \Http\RedirectResponse($request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage')));
-            }
-
-            $cart->pushStateEvent([]);
-
-            // обновление серверной корзины
-            $userEntity = \App::user()->getEntity();
-            if ($this->isCoreCart() && $userEntity) {
-                if ($quantity > 0) {
-                    (new Query\Cart\SetProduct($userEntity->getUi(), $product->getUi(), $quantity))->prepare();
-                } else {
-                    (new Query\Cart\RemoveProduct($userEntity->getUi(), $product->getUi(), 1000000))->prepare();
-                }
-
-                $this->getCurl()->execute();
-            }
-
-            return $response;
-
-        } catch (\Exception $e) {
-            return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse([
-                    'success' => false,
-                    'cart'    => ['error' => 'Не удалось добавить товар или услугу в корзину', 'debug' => $e->getMessage()],
-                ])
-                : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
-        }
+        return $response;
     }
 
+    /**
+     * @deprecated Используйте setList
+     * @param $productId
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse|\Http\RedirectResponse
+     */
+    public function delete(\Http\Request $request, $productId) {
+        $request->query->set('quantity', 0);
+        return $this->set($productId, $request);
+    }
+
+    /**
+     * Принимает get параметры:
+     * products[]['id'] Cм. параметр $setProducts[]['id'] метода \Session\Cart::update
+     * products[]['ui'] Cм. параметр $setProducts[]['ui'] метода \Session\Cart::update
+     * products[]['quantity'] Cм. параметр $setProducts[]['quantity'] метода \Session\Cart::update
+     * products[]['up'] Cм. параметр $setProducts[]['up'] метода \Session\Cart::update
+     * sender
+     * sender2
+     * credit
+     * referer
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse|\Http\RedirectResponse
+     */
+    public function setList(\Http\Request $request) {
+        $cart = \App::user()->getCart();
+
+        try {
+            call_user_func(function() use(&$params, &$sender, &$request) {
+                $sender = $request->query->get('sender');
+                $sender2 = (string)$request->query->get('sender2');
+                $params = [];
+
+                $referer = $request->headers->get('referer') ?: '/';
+                if (false === strpos($referer, \App::config()->mainHost)) {
+                    $referer = '/';
+                }
+                // TODO ограничить допустимый размер
+                $params['referer'] = $referer;
+
+                if (is_string($sender) && !empty($sender)) {
+                    $sender = ['name' => $sender];
+                }
+
+                if (!is_array($sender)) {
+                    $sender = null;
+                }
+
+                if ($sender) {
+                    // TODO ограничить допустимый размер
+                    $params['sender'] = $sender;
+                }
+
+                if ($sender2) {
+                    // TODO ограничить допустимый размер
+                    $params['sender2'] = $sender2;
+                }
+
+                if ($request->query->get('credit') == 'on') {
+                    $params['credit'] = ['enabled' => true];
+                } else {
+                    $params['credit'] = null;
+                }
+            });
+
+            $setProducts = [];
+            // TODO удалить $request->get('product') когда не останется таких запросов
+            foreach ((array)$request->get('products', $request->get('product')) as $setProduct) {
+                $setProducts[] = array_intersect_key($setProduct, ['id' => null, 'ui' => null, 'quantity' => null, 'up' => null]) + $params;
+            }
+
+            if (!$setProducts) {
+                throw new \Exception('Не получен список товаров');
+            }
+
+            $updateResultProducts = $cart->update($setProducts);
+
+            $cart->pushStateEvent([]);
+            
+            // обновление серверной корзины
+            call_user_func(function() use (&$updateResultProducts) {
+                $userEntity = \App::user()->getEntity();
+                if (!$this->isCoreCart() || !$userEntity) return;
+
+                if ($userEntity = \App::user()->getEntity()) {
+                    foreach ($updateResultProducts as $updateResultProduct) {
+                        if ($updateResultProduct->setAction === 'delete') {
+                            (new Query\Cart\RemoveProduct($userEntity->getUi(), $updateResultProduct->cartProduct->ui))->prepare();
+                        } else {
+                            (new Query\Cart\SetProduct($userEntity->getUi(), $updateResultProduct->cartProduct->ui, $updateResultProduct->cartProduct->quantity))->prepare();
+                        }
+                    }
+
+                    $this->getCurl()->execute();
+                }
+            });
+
+            $kitProduct = null;
+            if (!empty($request->query->get('kitProduct')['ui'])) {
+                /** @var \Model\Product\Entity[] $kitProducts */
+                $kitProducts = [new \Model\Product\Entity(['ui' => $request->query->get('kitProduct')['ui']])];
+                \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($kitProducts);
+                \App::coreClientV2()->execute();
+                if ($kitProducts) {
+                    $kitProduct = [
+                        'name' =>  $kitProducts[0]->getName(),
+                        'article' => $kitProducts[0]->getArticle(),
+                        'price' => $kitProducts[0]->getPrice(),
+                    ];
+                }
+            }
+
+            $response = [
+                'success' => true,
+                'cart'    => $cart->getDump(),
+                // Содержит товары из корзины и удалённые товары
+                'setProducts'  => array_values(array_filter(array_map(function(\Session\Cart\Update\Result\Product $updateResultProduct) {
+                    if (!$updateResultProduct->setAction) {
+                        return;
+                    }
+                    
+                    return [
+                        'id'        => $updateResultProduct->cartProduct->id,
+                        'article'   => $updateResultProduct->cartProduct->article,
+                        'name'      => $updateResultProduct->cartProduct->name,
+                        'img'       => $updateResultProduct->cartProduct->image,
+                        'link'      => $updateResultProduct->cartProduct->url,
+                        'price'     => $updateResultProduct->cartProduct->price,
+                        'cartButton'     => [
+                            'id' => \View\Id::cartButtonForProduct($updateResultProduct->cartProduct->id),
+                        ],
+                        'isTchiboProduct' => $updateResultProduct->cartProduct->rootCategory && 'Tchibo' === $updateResultProduct->cartProduct->rootCategory->name,
+                        // На данный момент есть лишь одно заглушённое использование category в https://github.com/SvyaznoyMarket/project13/blob/a61ce6c8a90be2a3b65af544983628892607b18c/web/js/dev/ports/_insider.js#L27
+                        // 'category'        => $this->getCategories($product),
+                        'isSlot' => $updateResultProduct->cartProduct->isSlot,
+                        'isOnlyFromPartner' => $updateResultProduct->cartProduct->isOnlyFromPartner,
+                    ];
+                }, $updateResultProducts))),
+                'kitProduct' => $kitProduct,
+                'sender' => $sender,
+            ];
+            
+            // TODO удалить, когда не останется запросов с $request->get('product')
+            if ($request->get('product')) {
+                $response['products'] = $response['setProducts'];
+                unset($response['setProducts']);
+            }
+
+            // Немного отформатируем
+            if (\App::config()->lite['enabled']) {
+                $response['cart']['fullQuantity'] = count($cart->getProductsById());
+            }
+            
+            $response = new \Http\JsonResponse($response);
+        } catch(\Exception $e) {
+            $response = new \Http\JsonResponse([
+                'success' => false,
+                'data'    => ['error' => 'Не удалось добавить товар или услугу в корзину', 'debug' => $e->getMessage()],
+            ]);
+        }
+
+        if (!$request->isXmlHttpRequest()) {
+            return new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('order'));
+        }
+
+        return $response;
+    }
+
+    /*
     private function getCategories(\Model\Product\Entity $product) {
         $categories = [];
         foreach ($product->getCategory() as $category) {
@@ -169,207 +222,5 @@ class ProductAction {
 
         return $categories;
     }
-
-
-    public function setList(\Http\Request $request) {
-        $region = \App::user()->getRegion();
-        $cart = \App::user()->getCart();
-        $client = \App::coreClientV2();
-        $sender = $request->query->get('sender');
-        $sender2 = (string)$request->query->get('sender2');
-        $params = [];
-
-        if (is_string($sender) && !empty($sender)) {
-            $sender = ['name' => $sender];
-        }
-
-        if (!is_array($sender)) {
-            $sender = null;
-        }
-
-        if ($sender) {
-            $params['sender'] = $sender;
-        }
-
-        if ($sender2) {
-            $params['sender2'] = $sender2;
-        }
-
-        try {
-            $productData = (array)$request->get('product');
-            if (!(bool)$productData) {
-                throw new \Exception('Не получены данные о товарах');
-            }
-
-            /** @var $productsById \Model\Product\Entity[] */
-            $productsById = [];
-            /** @var $productQuantitiesById array */
-            $productQuantitiesById = [];
-            foreach ($productData as $productItem) {
-                $productId = (int)$productItem['id'];
-                if (!$productId) {
-                    \App::logger()->error('Не указан ид товара');
-                    continue;
-                }
-                $productQuantity = (int)$productItem['quantity'];
-                if (!$productQuantity) {
-                    \App::logger()->error('Не указано количество товара');
-                    continue;
-                }
-
-                $productsById[$productId] = null;
-                $productQuantitiesById[$productId] = $productQuantity;
-            }
-
-            if (!(bool)$productsById) {
-                throw new \Exception('Не собраны ид товаров');
-            }
-
-            $medias = [];
-            foreach (array_chunk(array_keys($productsById), \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-                \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
-                    foreach ($data as $item) {
-                        $productsById[$item['id']] = new \Model\Product\Entity($item);
-                    }
-                });
-
-                \RepositoryManager::product()->prepareProductsMediasByIds($productsInChunk, $medias);
-            }
-            \App::coreClientV2()->execute();
-
-            \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
-
-            $quantity = 0;
-            foreach ($productsById as $productId => $product) {
-                if (!$product) {
-                    \App::logger()->error(sprintf('Не получен товар #%s', $productId), ['cart']);
-                    continue;
-                }
-                $productQuantity = isset($productQuantitiesById[$productId]) ? $productQuantitiesById[$productId] : null;
-                if (!$productQuantity) continue;
-
-                $newQuantity = \App::config()->lite['enabled'] ? $productQuantity : $productQuantity + $cart->getQuantityByProduct($productId);
-
-                $cart->setProduct($product, $newQuantity, $params, true);
-
-                $quantity += $cart->getQuantityByProduct($productId);
-            }
-            $cart->update();
-
-            $result = [];
-            $client->addQuery(
-                'cart/get-price',
-                ['geo_id' => \App::user()->getRegion()->getId()],
-                [
-                    'product_list'  => array_map(function($item) {
-                        return [
-                            'id'       => $item['id'],
-                            'quantity' => $item['quantity'],
-                        ];
-                    }, $cart->getProductData()),
-                ],
-                function ($data) use (&$result) {
-                    $result = $data;
-                },
-                function(\Exception $e) use (&$result) {
-                    \App::exception()->remove($e);
-                    $result = $e;
-                }
-            );
-            $client->execute();
-
-            if ($result instanceof \Exception) {
-                throw $result;
-            }
-
-            $result = array_merge([
-                'sum' => 0,
-            ], (array)$result);
-
-            $productsInfo = [];
-            foreach ($productsById as $product) {
-                $cartProduct = $cart->getProductById($product->getId());
-                $productInfo = [
-                    'id'    => $product->getId(),
-                    'article' => $product->getArticle(),
-                    'name'  =>  $product->getName(),
-                    'img'   =>  $product->getMainImageUrl('product_160'),
-                    'link'  =>  $product->getLink(),
-                    'price' =>  $product->getPrice(),
-                    'deleteUrl' => $cartProduct  ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,
-                    'cartButton'     => [
-                        'id' => \View\Id::cartButtonForProduct($product->getId()),
-                    ],
-                ];
-
-                $productsInfo[] = $productInfo;
-            }
-
-            $responseData = [
-                'success' => true,
-                'cart'    => [
-                    'sum'           => $result['sum'],
-                    'quantity'      => $quantity,
-                    'full_quantity' => $cart->getProductsQuantity(),
-                    'full_price'    => $cart->getSum(),
-                    'old_price'     => $cart->getOriginalSum(),
-                    'link'          => \App::router()->generate('order'),
-                    'products'      => $cart->getProductDump(),
-                ],
-                'products'  => $productsInfo,
-                'sender'    => $sender,
-            ];
-
-            $cart->pushStateEvent([]);
-
-            // обновление серверной корзины
-            call_user_func(function() use (&$productsById, &$productQuantitiesById) {
-                $userEntity = \App::user()->getEntity();
-                if (!$this->isCoreCart() || !$userEntity) return;
-
-                if ($userEntity = \App::user()->getEntity()) {
-                    foreach ($productsById as $productId => $product) {
-                        $quantity = isset($productQuantitiesById[$productId]) ? $productQuantitiesById[$productId] : null;
-                        if (null === $quantity) continue;
-
-                        if ($quantity > 0) {
-                            (new Query\Cart\SetProduct($userEntity->getUi(), $product->getUi(), $quantity))->prepare();
-                        } else {
-                            (new Query\Cart\RemoveProduct($userEntity->getUi(), $product->getUi(), 1000000))->prepare();
-                        }
-                    }
-
-                    $this->getCurl()->execute();
-                }
-            });
-
-            $response = new \Http\JsonResponse($responseData);
-
-        } catch(\Exception $e) {
-            $responseData = [
-                'success' => false,
-                'data'    => ['error' => 'Не удалось добавить товар или услугу в корзину', 'debug' => $e->getMessage()],
-            ];
-            return new \Http\JsonResponse($responseData);
-        }
-
-        if (!$request->isXmlHttpRequest()) {
-            return new \Http\RedirectResponse(\App::router()->generate('order'));
-        }
-
-        return $response;
-    }
-
-    /**
-     * @param $productId
-     * @param \Http\Request $request
-     * @return \Http\JsonResponse|\Http\RedirectResponse
-     */
-    public function delete(\Http\Request $request, $productId) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
-        $request->query->set('quantity', 0);
-
-        return $this->set($productId, $request);
-    }
-
+    */
 }

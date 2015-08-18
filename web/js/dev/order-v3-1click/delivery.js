@@ -4,7 +4,7 @@
 		$body = $(body);
 
 	//console.log('Model', $('#initialOrderModel').data('value'));
-	ENTER.OrderV31Click.functions.initDelivery = function() {
+	ENTER.OrderV31Click.functions.initDelivery = function(buyProducts, shopId) {
 		var $orderContent = $('#js-order-content'),
 			$popup = $('#jsOneClickContent'),
 			spinnerClass = 'spinner-new',
@@ -69,17 +69,17 @@
 			sendChanges = function sendChangesF (action, params) {
 				console.info('Sending action "%s" with params:', action, params);
 
-				if ($orderContent.data('shop')) {
-					params.shopId = $orderContent.data('shop')
+				if (shopId) {
+					params.shopId = shopId
 				}
 
 				$.ajax({
-					url: '/order-1click/delivery',
+					url: ENTER.utils.generateUrl('orderV3OneClick.delivery'),
 					type: 'POST',
 					data: {
 						action : action,
 						params : params,
-						products: JSON.parse($orderContent.data('param')).products,
+						products: buyProducts,
 						update: 1
 					},
 					beforeSend: function() {

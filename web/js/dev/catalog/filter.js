@@ -218,6 +218,8 @@
 			loading = false;
 			$listingWrap.append(templateRenderers['list'](res['list'])); // TODO Вызывать renderCatalogPage вместо templateRenderers['list']?
 		});
+
+        $body.trigger('infinityScroll', {'state': 'enabled', 'page': nowPage, 'lastPage': lastPage});
 	}
 
 	function enableInfinityScroll(onlyIfAlreadyEnabled) {
@@ -254,6 +256,8 @@
 		if ($bottomInfButton.visible() && lastPage > 1) {
 			loadInfinityPage();
 		}
+
+        $body.trigger('infinityScroll', {'state': 'enabled', 'page': nowPage, 'lastPage': lastPage});
 	}
 
 	function disableInfinityScroll() {
@@ -265,6 +269,8 @@
 		docCookies.setItem('infScroll', 0, 4*7*24*60*60, '/');
 		$(window).off('scroll', checkInfinityScroll);
 		getDataFromServer(url, renderCatalogPage);
+
+        $body.trigger('infinityScroll', {'state': 'disabled', 'page': nowPage, 'lastPage': lastPage});
 	}
 
 	function setManualDefinedPriceFrom(from, min) {
@@ -717,6 +723,9 @@
 		});
 	});
 
+    if ((true === ENTER.config.pageConfig.infinityScroll) && !docCookies.hasItem('infScroll')) {
+        enableInfinityScroll();
+    }
 	enableInfinityScroll(true);
 
 	// Обработчик изменения состояния истории в браузере

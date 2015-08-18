@@ -68,11 +68,10 @@ $f = function (
 
                     <!--  Кнопка "Резерв" или "На витрине"  -->
                     <span class="markerList_col markerList_col-right">
-                        <? if ( $shopState->getQuantity() > 0 ) : ?>
+                        <? if ($shopState->getQuantity() > 0): ?>
                             <?= $helper->render('cart/__button-product-oneClick', [
                                 'product' => $product,
                                 'shop'    => $shop,
-                                'url'     => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId(), 'sender' => $sender, 'sender2' => $sender2]),
                                 //'class'   => 'btnBuy__eLink mShopsOnly',
                                 'class'   => 'btnBuy__eLink',
                                 'value'   => 'Купить',

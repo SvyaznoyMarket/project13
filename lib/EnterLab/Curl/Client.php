@@ -113,6 +113,10 @@ class Client
      */
     public function execute()
     {
+        if (!$this->queries) {
+            return;
+        }
+
         $selectTimeout = $this->config->selectTimeout / 1000;
         $multiSelectTimeout = $this->config->multiSelectTimeout;
 

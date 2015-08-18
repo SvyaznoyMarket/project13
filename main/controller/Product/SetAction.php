@@ -18,7 +18,7 @@ class SetAction {
         $pageNum = (int)$request->get('page', 1);
         $productBarcodes = explode(',', $productBarcodes);
 
-        if (!(bool)$productBarcodes) {
+        if (!$productBarcodes) {
             throw new \Exception\NotFoundException('Не передано ни одного баркода товара');
         }
 
@@ -26,40 +26,13 @@ class SetAction {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s"', $pageNum));
         }
 
-        $productView = \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT; // вид товаров
-        $client = \App::coreClientV2();
+        /** @var \Model\Product\Entity[] $products */
+        $products = array_map(function($productBarcode) { return new \Model\Product\Entity(['bar_code' => $productBarcode]); }, $productBarcodes);
 
+        \RepositoryManager::product()->prepareProductQueries($products, 'media label brand category');
+        \App::coreClientV2()->execute();
 
-        // подготовка 1-го запроса
-
-        /** @var $categoriesById \Model\Product\Category\Entity[] */
-        $categoriesById = [];
-        /** @var $products \Model\Product\Entity[] */
-        $products = [];
-
-        \RepositoryManager::product()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products, &$categoriesById) {
-            foreach ($data as $item) {
-                $product = new \Model\Product\Entity($item);
-                if (!$product->isAvailable()) continue;
-
-                $products[] = $product;
-                //$productsForRetargeting[] = new \Model\Product\Entity($item);
-
-                /* // SITE-2886 — В подборках не выводить список категорий товаров
-                if (isset($item['category']) && is_array($item['category'])) {
-                    $categoryItem = array_pop($item['category']);
-                    if (is_array($categoryItem)) {
-                        $categoriesById[$categoryItem['id']] = new \Model\Product\Category\Entity($categoryItem);
-                    }
-                }*/
-            }
-        });
-
-        // выполнение 1-го запроса
-        $client->execute();
-
-        \RepositoryManager::product()->enrichProductsFromScms($products, 'media label brand category');
-        $client->execute();
+        $products = array_filter($products, function(\Model\Product\Entity $product) { return $product->isAvailable(); });
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();
@@ -124,8 +97,8 @@ class SetAction {
         $page = new \View\Product\SetPage();
         $page->setParam('productPager', $productPager);
         $page->setParam('products', $products);
-        $page->setParam('categoriesById', $categoriesById);
-        $page->setParam('productView', $productView);
+        $page->setParam('categoriesById', []);
+        $page->setParam('productView', \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('pageTitle', (string)$setTitle);
 

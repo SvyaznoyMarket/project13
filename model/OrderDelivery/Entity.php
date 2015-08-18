@@ -272,7 +272,7 @@ namespace Model\OrderDelivery\Entity {
                     case 'self_partner_pickpoint':
                         $this->marker['iconImageHref'] = '/images/deliv-icon/pickpoint.png';
                         $this->icon = '/images/deliv-logo/pickpoint.png';
-                        $this->dropdown_name = 'Пункты выдачи Pickpoint';
+                        $this->dropdown_name = 'Пункты выдачи PickPoint';
                         break;
                     case 'self_partner_svyaznoy_pred_supplier':
                     case 'self_partner_svyaznoy':
@@ -695,6 +695,8 @@ namespace Model\OrderDelivery\Entity\Order {
         /** @var int */
         public $id;
         /** @var string */
+        public $ui;
+        /** @var string */
         public $name;
         /** @var string */
         public $link;
@@ -725,6 +727,7 @@ namespace Model\OrderDelivery\Entity\Order {
                 throw new \Exception('Не указан id продукта');
             }
 
+            if (isset($data['ui'])) $this->ui = (string)$data['ui'];
             if (isset($data['name'])) $this->name = (string)$data['name'];
             if (isset($data['url'])) $this->link = (string)$data['url'];
             if (isset($data['name_web'])) $this->name_web = (string)$data['name_web'];

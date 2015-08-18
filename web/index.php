@@ -114,9 +114,7 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
     if ($response instanceof \Http\Response) {
         $exceptions = \App::exception()->all();
         if ($exceptions) {
-            /** @var \Exception|null $exception */
-            $exception = reset($exceptions) ?: null;
-            $response->setStatusCode(($exception && in_array($exception->getCode(), [404])) ? $exception->getCode() : 500);
+            $response->setStatusCode(500);
             if (\App::config()->debug) {
                 $action = new \Debug\ErrorAction();
                 $response = $action->execute();

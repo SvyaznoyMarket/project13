@@ -24,7 +24,7 @@ class ConfirmEmailAction {
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         if (!$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize', $request->query->all())); // $request->query->all() нужен для SITE-5969
         }
 
         if ($this->isEmailConfirmed()) {
@@ -230,7 +230,7 @@ class ConfirmEmailAction {
 
             $userToken = !empty($data['token']) ? $data['token'] : \App::user()->getToken();
             if ($userToken == null) {
-                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.warn'));
+                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.warn', $request->query->all()));
             } else {
                 $response = (new \Controller\Enterprize\CouponAction())->create($request, $data);
 
@@ -253,7 +253,7 @@ class ConfirmEmailAction {
             \App::exception()->remove($e);
             \App::session()->set('flash', ['error' => $e->getMessage()]);
 
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.show'));
+            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.show', $request->query->all())); // $request->query->all() нужен для SITE-5969
         }
 
         return $response;

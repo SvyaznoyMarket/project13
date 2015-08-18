@@ -60,9 +60,9 @@
 		};
 
 		if (ENTER.config.userInfo) {
-			if ($.isArray(ENTER.config.userInfo.cartProducts)) {
+			if ($.isArray(ENTER.config.userInfo.cart.products)) {
 				var product_id = $('#jsProductCard').data('value')['id'];
-				$.each(ENTER.config.userInfo.cartProducts, function(i, val) {
+				$.each(ENTER.config.userInfo.cart.products, function(i, val) {
 					if (val['isCredit'] && val['id'] == product_id) {
 						$('#creditinput').attr('checked', true).trigger('change')
 					}

@@ -171,7 +171,8 @@ class Action extends \Controller\ProductCategory\Action {
         $limit = \App::config()->product['itemsPerPageJewel'];
         $repository = \RepositoryManager::product()->useV3()->withoutModels();
 
-        $productIds = [];
+        /** @var \Model\Product\Entity[] $products */
+        $products = [];
         $productCount = 0;
         $repository->prepareIteratorByFilter(
             $productFilter->dump(),
@@ -179,45 +180,21 @@ class Action extends \Controller\ProductCategory\Action {
             ($pageNum - 1) * $limit,
             $limit,
             $region,
-            function($data) use (&$productIds, &$productCount) {
-                if (isset($data['list'][0])) $productIds = $data['list'];
+            function($data) use (&$products, &$productCount) {
+                if (isset($data['list'][0])) $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $data['list']);
                 if (isset($data['count'])) $productCount = (int)$data['count'];
             }
         );
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $products = [];
-        if ((bool)$productIds) {
-            $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                foreach ((array)$data as $item) {
-                    if (!isset($item['id'])) continue;
-
-                    $products[] = new \Model\Product\Entity($item);
-                }
-            });
-        }
+        $repository->prepareProductQueries($products, 'media label brand category');
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $scoreData = [];
-        if ((bool)$products) {
-            $productUIs = [];
-            foreach ($products as $product) {
-                if (!$product instanceof \Model\Product\Entity) continue;
-                $productUIs[] = $product->getUi();
+        \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
+            if (isset($data['product_scores'][0])) {
+                \RepositoryManager::review()->addScores($products, $data);
             }
-
-            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
-                if (isset($data['product_scores'][0])) {
-                    $scoreData = $data;
-                }
-            });
-        }
-
-        $repository->enrichProductsFromScms($products, 'media label brand category');
-
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        \RepositoryManager::review()->addScores($products, $scoreData);
+        });
 
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);

@@ -17,47 +17,33 @@ namespace EnterApplication\Action\Cart
         public function execute(Request $request)
         {
             $curl = $this->getCurl();
-
             $cart = \App::user()->getCart();
+
+            // response
+            $response = new Response();
 
             // запрос корзины
             $cartQuery = (new Query\Cart\Get($request->userUi))->prepare();
 
             $curl->execute();
 
-            $externalCartProductsByUi = [];
+            if ($cartQuery->error) {
+                return $response;
+            }
+
+            $cartProductsByUi = $cart->getProductsByUi();
+            $productsToUpdate = [];
             foreach ($cartQuery->response->products as $item) {
-                if (!isset($item['uid'])) continue;
-
-                $externalCartProductsByUi[$item['uid']] = new \Model\Cart\Product\Entity($item);
-            }
-
-            $cartProductDataByUi = [];
-            foreach ($cart->getProductData() as $item) {
-                if (empty($item['ui'])) continue;
-
-                $cartProductDataByUi[$item['ui']] = $item;
-            }
-
-            $productUis = $externalCartProductsByUi ? array_diff(array_keys($externalCartProductsByUi), array_keys($cartProductDataByUi)) : [];
-
-            if ($productUis) {
-                $productListQuery = (new Query\Product\GetByUiList($productUis, $request->regionId))->prepare();
-
-                $curl->execute();
-
-                foreach ($productListQuery->response->products as $item) {
-                    /** @var \Model\Cart\Product\Entity|null $cartProduct */
-                    $cartProduct = (isset($item['ui']) && isset($externalCartProductsByUi[$item['ui']])) ? $externalCartProductsByUi[$item['ui']] : null;
-                    if (!$cartProduct) continue;
-
-                    $product = new \Model\Product\Entity($item);
-                    $cart->setProduct($product, $cartProduct->getQuantity());
+                if (isset($item['uid']) && isset($item['quantity']) && (!isset($cartProductsByUi[$item['uid']]) || $cartProductsByUi[$item['uid']]->quantity != $item['quantity'])) {
+                    $productsToUpdate[] = ['ui' => $item['uid'], 'quantity' => $item['quantity']];
                 }
             }
 
-            // response
-            $response = new Response();
+            try {
+                $cart->update($productsToUpdate);
+            } catch(\Exception $e) {
+                \App::logger()->error(['message' => 'Не удалось синхронизировать сессионную корзину с серверной корзиной', 'error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['cart/update']);
+            }
 
             return $response;
         }

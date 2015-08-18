@@ -43,8 +43,8 @@ class SetAction {
 
         $curl->execute();
 
-        // проверяет, если такой товар, чтобы не пихать в избранное мусор
-        if (!count($coreProductQuery->response->product)) {
+        // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
+        if (!count($coreProductQuery->response->product) || !$productQuery->response->products) {
             throw new \Exception(sprintf('Товар %s не найден', $productUi));
         }
 
