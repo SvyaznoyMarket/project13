@@ -41,4 +41,5 @@
 	$('.js-lk-mobilePhone, .js-lk-homePhone').mask('+7 (xxx) xxx-xx-xx', {
 		autoclear: 0
 	});
+
 }());

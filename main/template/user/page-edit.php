@@ -7,15 +7,117 @@
  */
 ?>
 
-<div class="personalPage">
-
-    <?= $page->render('user/_menu', ['page' => $page]) ?>
-
-    <div class="personalTitle">Изменить мои данные</div>
+<div class="personal">
 
     <? if ($flash !== null) : ?>
         <p class="<?= $flash['type'] == 'success' ? 'green' : 'red' ?>"><?= $flash['message'] ?></p>
     <? endif; ?>
+
+    <?= $page->render('user/_menu', ['page' => $page]) ?>
+
+    <div class="personal__password">
+        <div class="personal__sub-head">Изменить пароль</div>
+        <p>Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные буквы, цифры или символы, но не должен включать широко распространенные слова и имена.</p>
+        <form>
+            <div class="form-group">
+                <label class="label-control">Старый пароль</label>
+                <input class="input-control" type="password">
+            </div>
+            <div class="form-group">
+                <label class="label-control">Новый пароль</label>
+                <input class="input-control" type="password">
+            </div>
+            <div class="form-group">
+                <label class="label-control">Повторите пароль</label>
+                <input class="input-control" type="password">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn-type btn-type--buy">Сохранить</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="personal__info">
+        <form>
+            <div class="form-group">
+                <label class="label-control">Имя</label>
+                <input class="input-control" type="text">
+            </div>
+            <div class="form-group">
+                <label class="label-control">Отчество</label>
+                <input class="input-control" type="text">
+            </div>
+            <div class="form-group">
+                <label class="label-control">Фамилия</label>
+                <input class="input-control" type="text">
+            </div>
+            <div class="form-group inline">
+                <label class="label-control">Дата рождения</label>
+                <div class="custom-select custom-select--day">
+                    <select class="custom-select__inn">
+                        <option class="custom-select__i">1</option>
+                        <option class="custom-select__i">2</option>
+                        <option class="custom-select__i">3</option>
+                        <option class="custom-select__i">4</option>
+                    </select>
+                </div>
+                <div class="custom-select custom-select--month">
+                    <select class="custom-select__inn">
+                        <option class="custom-select__i">1</option>
+                        <option class="custom-select__i">2</option>
+                        <option class="custom-select__i">3</option>
+                        <option class="custom-select__i">4</option>
+                        <option class="custom-select__i">5</option>
+                        <option class="custom-select__i">6</option>
+                        <option class="custom-select__i">7</option>
+                        <option class="custom-select__i">8</option>
+                        <option class="custom-select__i">9</option>
+                        <option class="custom-select__i">10</option>
+                        <option class="custom-select__i">11</option>
+                        <option class="custom-select__i">12</option>
+                    </select>
+                </div>
+                <div class="custom-select custom-select--year">
+                    <select class="custom-select__inn">
+                        <option class="custom-select__i">1999</option>
+                        <option class="custom-select__i">2000</option>
+                        <option class="custom-select__i">2001</option>
+                        <option class="custom-select__i">2002</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group inline right">
+                <label class="label-control">Пол</label>
+                <div class="custom-select custom-select--sex">
+                    <select class="custom-select__inn">
+                        <option class="custom-select__i">Мужской</option>
+                        <option class="custom-select__i">Женский</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="label-control">email не редактируется</label>
+                <input class="input-control disabled" type="text" disabled value="email@email.com">
+            </div>
+            <div class="form-group">
+                <label class="label-control">Мобильный телефон</label>
+                <input class="input-control" type="text">
+            </div>
+            <div class="form-group">
+                <label class="label-control">Домашний телефон</label>
+                <input class="input-control" type="text">
+            </div>
+            <div class="form-group">
+                <label class="label-control">Род деятельности</label>
+                <input class="input-control" type="text">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn-type btn-type--buy">Сохранить изменения</button>
+            </div>
+        </form>
+
+        <!-- Ниже старая верстка -->
+
 
     <form action="<?= $page->url('user.edit') ?>" method="post" class="personalData">
         <fieldset class="personalData_left">
