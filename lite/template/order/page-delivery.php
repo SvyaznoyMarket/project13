@@ -271,9 +271,9 @@ return function(
         <? endforeach ?>
 
         <div class="checkout-comment">
-            <div class="checkout-comment__title dotted jsOrderV3Comment">Дополнительные пожелания</div>
+            <div class="checkout-comment__title dotted js-order-comment">Дополнительные пожелания</div>
 
-            <textarea class="checkout-comment__field textarea" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
+            <textarea class="checkout-comment__field textarea js-order-comment-text" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
         </div>
 
         <div class="orderComplSumm">

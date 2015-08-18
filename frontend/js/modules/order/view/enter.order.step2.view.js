@@ -34,7 +34,9 @@
              */
             CSS_CLASSES = {
                 SUB_ORDER: 'js-order-block',
-                CHANGE_REGION_BTN: 'js-change-region'
+                CHANGE_REGION_BTN: 'js-change-region',
+                COMMENT_BTN: 'js-order-comment',
+                COMMENT_AREA: 'js-order-comment-text'
             };
 
         provide(BaseViewClass.extend({
@@ -59,8 +61,11 @@
                     });
                 });
 
+                this.subViews.commentArea = this.$el.find('.' + CSS_CLASSES.COMMENT_AREA);
+
                 // Setup events
                 this.events['click .' + CSS_CLASSES.CHANGE_REGION_BTN] = 'changeRegion';
+                this.events['click .' + CSS_CLASSES.COMMENT_BTN]       = 'toggleCommentArea';
 
                 this.listenTo(this, 'sendChanges', this.sendChanges);
 
@@ -95,6 +100,20 @@
 
                 hide: function() {
                     console.info('module:enter.order.step2.view~OrderStep2View#hide');
+                }
+            },
+
+            /**
+             * Скрытие\раскрытие блока дополнительных пожеланий
+             *
+             * @method      toggleCommentArea
+             * @memberOf    module:enter.order.step2.view~OrderStep2View#
+             */
+            toggleCommentArea: function() {
+                if ( this.subViews.commentArea.is(':visible') ) {
+                    this.subViews.commentArea.hide();
+                } else {
+                    this.subViews.commentArea.show();
                 }
             },
 
