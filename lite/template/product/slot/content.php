@@ -121,10 +121,10 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
                             <?= $prop->getStringValue() ?>
                             <? if ($prop->getValueHint()) : ?>
                             <div class="props-list__hint">
-                                <a class="i-product i-product--hint" href=""></a>
+                                <a class="i-product i-product--hint" href="" onclick="$('.show').removeClass('show'); $(this).next().addClass('show'); return false;">></a>
                                 <!-- попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
                                 <div class="prop-hint info-popup">
-                                    <i class="closer">×</i>
+                                    <i class="closer" onclick="$(this).parent().removeClass('show')">×</i>
                                     <div class="info-popup__inn"><?= $prop->getValueHint() ?></div>
                                 </div>
                                 <!--/ попап с подсказкой -->
