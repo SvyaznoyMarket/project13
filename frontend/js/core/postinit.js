@@ -91,6 +91,17 @@
         })
     }
 
+    // Показываем раскрытое меню в каждой новой сессии
+    if (window.sessionStorage && !window.sessionStorage.getItem('menuShowed') && menu && menu.classList) {
+        menu.classList.add('show');
+        window.addEventListener('mousemove', function(){
+            setTimeout(function(){
+                menu.classList.remove('show');
+                window.sessionStorage.setItem('menuShowed', '1');
+            }, 500)
+        })
+    }
+
     // Поведение меню
     if (menu) {
         // скрываем после одной секунды
