@@ -30,6 +30,7 @@
 
         var
             overlay = $('.js-overlay'),
+            loaderTmpl = '<div class="loader-box"></div>',
             /**
              * Используемые CSS классы
              *
@@ -107,10 +108,12 @@
             loader: {
                 show: function() {
                     this.subViews.cartDropDown.addClass(CSS_CLASSES.LOADER);
+                    this.subViews.cartDropDown.append(loaderTmpl);
                 },
 
                 hide: function() {
                    this.subViews.cartDropDown.removeClass(CSS_CLASSES.LOADER);
+                   this.subViews.cartDropDown.find('.loader-box').remove();
                 }
             },
 

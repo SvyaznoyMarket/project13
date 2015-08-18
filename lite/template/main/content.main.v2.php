@@ -91,7 +91,7 @@
                 </div>
 
                 <div class="grid-transform-4col__col col1">
-                    <div class="main-categories__item">
+                    <div class="main-categories__item grey">
                         <a href="/catalog/do_it_yourself/aksessuari-dlya-avtomobiley-225" class="main-categories__link">
                             <span class="main-categories__name">Для авто</span>
                             <span class="main-categories__sub-name"></span>
