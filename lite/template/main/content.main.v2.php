@@ -1,5 +1,5 @@
 <main class="content">
-    <div class="main-banner">
+    <div class="main-banner" style="display: none">
 
     </div>
 
