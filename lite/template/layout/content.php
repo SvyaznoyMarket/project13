@@ -18,7 +18,7 @@
 		    		<aside class="section__left">
 		    			<ul class="section-nav">
 		    				<li class="section-nav__item"><a href="" class="section-nav__link">Доставка</a></li>
-		    				<li class="section-nav__item"><a href="" class="section-nav__link">Самовывоз</a></li>
+		    				<li class="section-nav__item"><a href="" class="section-nav__link active">Самовывоз</a></li>
 		    				<li class="section-nav__item"><a href="" class="section-nav__link">Оплата</a></li>
 		    			</ul>
 		    			<ul class="section-nav">
@@ -28,8 +28,10 @@
 		    			</ul>
 		    		</aside>
 
-		    		<section class="section__content">
-		        		<?= $page->render('delivery/content.delivery', $page->getParams()) ?>
+		    		<section class="section__right">
+		    			<div class="section__right-inner">
+		        			<?= $page->render('delivery/content.delivery', $page->getParams()) ?>
+		        		</div>
 		        	</section>
 		        </div>
 		    </main>
