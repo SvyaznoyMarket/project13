@@ -163,7 +163,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <!--/ купить -->
 
     <!-- краткое описание товара -->
-    <div class="product-card__c">
+    <div class="product-card__c" id="product_card_content">
         <div class="product-card__c-inn">
             <?= $helper->render('product/blocks/reviews.short', ['reviewsData' => $reviewsData]) ?>
 

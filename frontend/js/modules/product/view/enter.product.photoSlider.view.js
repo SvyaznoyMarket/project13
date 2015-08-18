@@ -44,7 +44,9 @@
              * @constant
              * @type        {Object}
              */
-            TEMPLATES = {};
+            TEMPLATES = {},
+
+            $PRODUCT_CONTENT = $('#product_card_content');
 
         provide(BaseViewClass.extend(/** @lends module:enter.BaseViewClass~ProductPhotoSliser */{
              /**
@@ -54,10 +56,9 @@
              * @constructs  ProductPhotoSliser
              */
             initialize: function( options ) {
-                console.info('module:enter.product.photoSlider.view~ProductPhotoSliser#initialize');
-
                 var
-                    zoomConfig;
+                    zoomConfig, productContentPaddingLeft, photoContainerW,
+                    photoContainerH, photoW, photoH;
 
                 this.subViews = {
                     photoContainer: this.$el.find('.' + CSS_CLASSES.PHOTO_CONTAINER),
@@ -65,11 +66,26 @@
                     thumbs: this.$el.find('.' + CSS_CLASSES.PHOTO_THUMB)
                 };
 
+                productContentPaddingLeft = parseInt($PRODUCT_CONTENT.css('paddingLeft'), 10);
+                photoContainerW           = parseInt(this.subViews.photoContainer.width(), 10);
+                photoContainerH           = parseInt(this.subViews.photoContainer.height(), 10);
+                photoW                    = parseInt(this.subViews.photo.width(), 10);
+                photoH                    = parseInt(this.subViews.photo.height(), 10);
+
+                console.groupCollapsed('module:enter.product.photoSlider.view~ProductPhotoSliser#initialize');
+                console.log('productContentPaddingLeft', productContentPaddingLeft);
+                console.log('photoContainerW', photoContainerW);
+                console.log('photoContainerH', photoContainerH);
+                console.log('---------------------');
+                console.log('photoW', photoW);
+                console.log('photoH', photoH);
+                console.groupEnd();
+
                 zoomConfig = {
                     $imageContainer: this.subViews.photoContainer,
-                    zoomWindowOffety: 0,
-                    zoomWindowOffetx: 19,
-                    zoomWindowWidth: 519,
+                    zoomWindowOffety: (photoH - photoContainerH)/3,
+                    zoomWindowOffetx: productContentPaddingLeft - photoContainerW + (photoContainerW - photoW)/2,
+                    zoomWindowWidth: $PRODUCT_CONTENT.width(),
                     borderSize: 1,
                     borderColour: '#C7C7C7'
                 };
