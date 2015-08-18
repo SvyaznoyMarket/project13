@@ -273,7 +273,7 @@
                 this.updateModels(newCartData.cart.products || []);
                 this.saveToServerCollection.reset();
 
-                this.quantity = newCartData.cart.full_quantity || 0;
+                this.quantity = newCartData.cart.fullQuantity || 0;
                 this.total    = 0;
 
                 /**

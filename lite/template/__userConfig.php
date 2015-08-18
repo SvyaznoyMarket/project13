@@ -6,7 +6,7 @@ return function(
     try {
         $userConfig = (new \Controller\User\InfoAction())->getResponseData(\App::request());
         // Переименуем корзину
-        $userConfig['cart']['products'] = isset($userConfig['cartProducts']) ? $userConfig['cartProducts'] : [];
+        $userConfig['cart']['fullQuantity'] = count(\App::user()->getCart()->getProductsById());
         unset($userConfig['cartProducts']);
         // Добавим избранное
         $userConfig['favourite'] = \App::session()->get(\App::config()->session['favouriteKey'], []);
