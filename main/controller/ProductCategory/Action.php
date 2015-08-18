@@ -645,7 +645,7 @@ class Action {
 
         \App::coreClientV2()->execute();
 
-        if (!$products && 'true' == $request->get('ajax')) {
+        if (!$products && 'true' == $request->get('ajax') && !\App::config()->lite['enabled']) {
             throw new \Exception('Товары не найдены');
         }
 
