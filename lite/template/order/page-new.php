@@ -18,7 +18,7 @@
                                value=""
                                data-mask="+7 (999) 999-99-99"
                                title="Введите номер телефона"
-                               required
+                               data-required="true"
                             >
                         <label class="form-order-login__label placeholder placeholder_str" for="order-phone-input">Телефон</label>
                         <span class="form-order-login__hint">Для смс о состоянии заказа</span>
@@ -31,7 +31,7 @@
                                name="user_info[email]"
                                value=""
                                title="Введите email"
-                               required
+                               data-required="true"
                             >
                         <label class="form-order-login__label placeholder placeholder_str" for="order-email-input">E-mail</label>
 
