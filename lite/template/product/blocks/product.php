@@ -27,7 +27,13 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <!--/ блок с фото -->
 
     <!-- купить -->
-    <div class="product-card__r">
+    <div class="product-card__r js-module-require"
+         data-module="enter.product"
+         data-id="<?= $product->getId() ?>"
+         data-product='<?= json_encode([
+             'id'   => $product->getId(),
+             'ui'   => $product->getUi()
+         ], JSON_HEX_APOS) ?>'>
 
         <?php /* <?= $helper->render('product/blocks/coupon', ['coupon' => $coupon]) */?>
 
@@ -91,13 +97,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         </div>
         <!--/ применить скидку -->
 
-        <div class="js-module-require"
-             data-module="enter.product"
-             data-id="<?= $product->getId() ?>"
-             data-product='<?= json_encode([
-                 'id'   => $product->getId(),
-                 'ui'   => $product->getUi()
-             ], JSON_HEX_APOS) ?>'>
+        <div >
 
             <div class="buy-online">
                 <?= $helper->render('product/_button.buy', [
