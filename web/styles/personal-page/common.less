@@ -83,7 +83,7 @@
     }
     .personal-popup{
         width: 340px;
-        padding: 10px 20px;
+        padding: 10px 20px 20px;
         background-color: @white;
         .box-shadow(0 0 20px 2px rgba(0, 0, 0, 0.20));
         border: 1px solid #afafaf;
@@ -114,7 +114,7 @@
                 margin-top: 10px;
                 height: 30px;
                 padding-top:0;
-                padding-bottom: 0;
+                padding-bottom: 0px;
                 line-height: 30px;
                 width: 100%;
 
@@ -146,12 +146,54 @@
             }
         }
         &__list-name{
-            font-size: 14px;
-            color: @textGrey;
+            font-size: 16px;
+            color: #5e5e5e;
             margin: 15px 0 10px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
     }
+    &__sharings{
+        font-size: 0;
+        margin-top: 20px;
+        text-align: center;
+    }
+    &-share{
+        margin: 0 6px;
+        .inline-block(middle);
+        &__icon{
+            width: 36px;
+            height: 35px;
+            display: block;
+            background: url("@{base-url}/personal-page/img/social-sprite.png") no-repeat;
+
+            &.twitter{
+                background-position: 0 0;
+            }
+            &.fb{
+                background-position: -37px 0;
+            }
+            &.vk{
+                background-position: -75px 0;
+            }
+            &.gplus{
+                background-position: -112px 0;
+            }
+            &.ok{
+                background-position: -150px 0;
+            }
+            &.mailru{
+                background-position: -188px 0;
+            }
+            &.mail{
+                background-position: -225px 0;
+            }
+        }
+    }
+
 
 }
 .overlay{

@@ -87,8 +87,8 @@
         <div class="personal__favorits favorit-list expanded">
             <div class="favorit-list__header">
                 <ul class="personal-favorit__acts">
-                    <li class="personal-favorit__act">Поделиться</li>
-                    <li class="personal-favorit__act">Создать список</li>
+                    <li class="personal-favorit__act js-fav-popup-show" data-popup="js-share-goods-popup">Поделиться</li>
+                    <li class="personal-favorit__act js-fav-popup-show" data-popup="js-create-popup">Создать список</li>
                 </ul>
                 <div class="favorit-list__name">Список: на ДР</div>
             </div>
@@ -160,8 +160,8 @@
         <div class="personal__favorits favorit-list">
             <div class="favorit-list__header">
                 <ul class="personal-favorit__acts">
-                    <li class="personal-favorit__act">Поделиться</li>
-                    <li class="personal-favorit__act">Создать список</li>
+                    <li class="personal-favorit__act js-fav-popup-show" data-popup="js-share-goods-popup">Поделиться</li>
+                    <li class="personal-favorit__act js-fav-popup-show" data-popup="js-create-popup">Создать список</li>
                 </ul>
                 <div class="favorit-list__name">Список: на ДР</div>
             </div>
@@ -277,13 +277,30 @@
         <div class="personal-popup__list-name">На ДР</div>
         <div class="personal-popup__content">
             <ul class="personal__sharings">
-                <li class="personal__share"><i class="personal-share__i twitter"></i></li>
-                <li class="personal__share"><i class="personal-share__i fb"></i></li>
-                <li class="personal__share"><i class="personal-share__i vk"></i></li>
-                <li class="personal__share"><i class="personal-share__i gplus"></i></li>
-                <li class="personal__share"><i class="personal-share__i ok"></i></li>
-                <li class="personal__share"><i class="personal-share__i mailru"></i></li>
-                <li class="personal__share"><i class="personal-share__i mail"></i></li>
+                <li class="personal-share"><i class="personal-share__icon twitter"></i></li>
+                <li class="personal-share"><i class="personal-share__icon fb"></i></li>
+                <li class="personal-share"><i class="personal-share__icon vk"></i></li>
+                <li class="personal-share"><i class="personal-share__icon gplus"></i></li>
+                <li class="personal-share"><i class="personal-share__icon ok"></i></li>
+                <li class="personal-share"><i class="personal-share__icon mailru"></i></li>
+                <li class="personal-share"><i class="personal-share__icon mail"></i></li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="personal-popup js-share-goods-popup">
+        <div class="popup-closer"></div>
+        <div class="personal-popup__head">Поделиться 4 товарами</div>
+        <div class="personal-popup__list-name">Самокат, Планшетный компьютер, Бумажный конструктор Jazwares Minecraft Papercraft «Дружелюбные мобы»</div>
+        <div class="personal-popup__content">
+            <ul class="personal__sharings">
+                <li class="personal-share"><i class="personal-share__icon twitter"></i></li>
+                <li class="personal-share"><i class="personal-share__icon fb"></i></li>
+                <li class="personal-share"><i class="personal-share__icon vk"></i></li>
+                <li class="personal-share"><i class="personal-share__icon gplus"></i></li>
+                <li class="personal-share"><i class="personal-share__icon ok"></i></li>
+                <li class="personal-share"><i class="personal-share__icon mailru"></i></li>
+                <li class="personal-share"><i class="personal-share__icon mail"></i></li>
 
             </ul>
         </div>
