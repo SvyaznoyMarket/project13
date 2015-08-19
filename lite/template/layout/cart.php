@@ -13,7 +13,7 @@
 
 <?= $page->blockHeader() ?>
 
-<div class="wrapper">
+<div class="wrapper wrapper-content">
     <main class="content">
         <div class="section-cart section js-cart js-cart-page">
             <div class="section__title section__title_h1">Корзина</div>

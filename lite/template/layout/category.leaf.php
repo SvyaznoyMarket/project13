@@ -11,7 +11,7 @@
 	<body>
 		<?= $page->blockHeader() ?>
 
-	    <div class="wrapper">
+	    <div class="wrapper wrapper-content">
 	        <?= $page->blockContent() ?>
 	    </div>
 

@@ -29,7 +29,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <!-- купить -->
     <div class="product-card__r">
 
-        <?= $helper->render('product/blocks/coupon', ['coupon' => $coupon]) ?>
+        <?php /* <?= $helper->render('product/blocks/coupon', ['coupon' => $coupon]) */?>
 
         <? if ($product->getLabel() && $product->getLabel()->expires && !$product->getLabel()->isExpired()) : ?>
             <!-- Шильдик с правой стороны -->
@@ -64,6 +64,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         <div class="product-card-price i-info">
             <span class="product-card-price__val i-info__tx"><?= $helper->formatPrice($product->getPrice()) ?>&thinsp;<span class="rubl">C</span></span>
 
+            <?php /*
             <i class="i-product i-product--info-normal i-info__icon js-lowPriceNotifier-opener js-lowPriceNotifier" data-values="<?= $helper->json([
                 'price' => $price && $price < $product->getPrice() ? $helper->formatPrice($price) : null,
                 'actionChannelName' => '',
@@ -74,7 +75,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
             <script id="tpl-lowPriceNotifier-popup" type="text/html" data-partial="<?= $helper->json([]) ?>">
                 <?= file_get_contents(\App::config()->templateDir . '/product/blocks/lowPricePopup.mustache') ?>
             </script>
-
+            */?>
         </div>
         <!--/ цена товара -->
 
@@ -176,10 +177,9 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
             <dl class="product-card-prop">
                 <? $i = 0; foreach ($product->getMainProperties() as $property) : $i++ ?>
                     <? if ($i == 5 && count($product->getMainProperties()) >= 5 && $product->getSecondaryGroupedProperties()) : ?>
-
-                            <a class="product-card-prop__lk" href="#more" onclick="$('.jsScrollSpyMoreLink').trigger('click'); return false;">Все характеристики</a>
-
+                        <a class="product-card-prop__lk" href="#more">Все характеристики</a>
                     <? break; endif; ?>
+
                     <? if ($property->getName() == $modelName) continue ?>
                     <dt class="product-card-prop__i product-card-prop__i--name"><?= $property->getName() ?></dt>
                     <dd class="product-card-prop__i product-card-prop__i--val"><?= $property->getStringValue() ?></dd>
