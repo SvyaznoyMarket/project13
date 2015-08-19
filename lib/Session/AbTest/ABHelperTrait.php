@@ -128,4 +128,12 @@ trait ABHelperTrait {
     public static function isNewProductPage() {
         return \App::abTest()->getTest('productCard') && \App::abTest()->getTest('productCard')->getChosenCase()->getKey() == 'new';
     }
+
+    /**
+     * Старый личный кабинет
+     * @return bool
+     */
+    public static function isOldPrivate() {
+        return 'off' === \App::abTest()->getTest('new_private')->getChosenCase()->getKey();
+    }
 }
