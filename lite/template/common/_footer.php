@@ -5,17 +5,17 @@
 ?>
 
 <footer class="footer">
-    <ul class="footer-list grid-7col">
-        <li class="footer-list__item grid-7col__item"><a href="" class="footer-list__link">Доставка</a></li>
-        <li class="footer-list__item grid-7col__item"><a href="" class="footer-list__link">Самовывоз</a></li>
-        <li class="footer-list__item grid-7col__item"><a href="" class="footer-list__link">Оплата</a></li>
-        <li class="footer-list__item grid-7col__item"><a href="" class="footer-list__link">О компании</a></li>
-        <li class="footer-list__item grid-7col__item"><a href="" class="footer-list__link">Правовая информация</a></li>
-        <li class="footer-list__item grid-7col__item"><a href="" class="footer-list__link">Оферта</a></li>
-        <li class="footer-list__item grid-7col__item"><a href="" class="footer-list__link js-feedback-from-btn">Обратная связь</a></li>
+    <ul class="footer-list">
+        <li class="footer-list__item"><a href="" class="footer-list__link underline">Доставка</a></li>
+        <li class="footer-list__item"><a href="" class="footer-list__link underline">Самовывоз</a></li>
+        <li class="footer-list__item"><a href="" class="footer-list__link underline">Оплата</a></li>
+        <li class="footer-list__item"><a href="" class="footer-list__link underline">О компании</a></li>
+        <li class="footer-list__item"><a href="" class="footer-list__link underline">Правовая информация</a></li>
+        <li class="footer-list__item"><a href="" class="footer-list__link underline">Оферта</a></li>
+        <li class="footer-list__item footer-list__item_feedback"><a href="" class="btn-normal js-feedback-from-btn">Обратная связь</a></li>
     </ul>
 
-    <ul class="footer__right footer-external">
+    <ul class="footer__right footer-external" style="display: none">
         <li class="footer-external__item footer-external__item_title">Мы в социальных сетях</li>
         <li class="footer-external__item"><a href="" class="footer-external__link"><i class="i-soc-net i-soc-net_fb"></i></a></li>
         <li class="footer-external__item"><a href="" class="footer-external__link"><i class="i-soc-net i-soc-net_od"></i></a></li>
