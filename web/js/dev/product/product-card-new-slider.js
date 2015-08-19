@@ -5,6 +5,7 @@
         $popupPhoto = $body.find('.jsProductPopupBigPhoto'),
         $popupPhotoHolder = $('.jsProductPopupBigPhotoHolder'),
         $popupPhotoThumbs = $('.jsPopupPhotoThumb'),
+        $productPhotoThumb = $('.jsProductPhotoThumb'),
         $productPhotoThumbs = $('.jsProductThumbList'),
         $zoomBtn   = $('.jsProductPopupZoom'),
         $popupThumbs = $('.jsPopupThumbList'),
@@ -267,15 +268,17 @@
         }
     });
     //slick.js
+    if ($productPhotoThumb.length > 5){
+        $productPhotoThumbs.slick(
+            {
+                prevArrow: '.product-card-photo-thumbs__btn--l.jsProductThumbBtn',
+                nextArrow: '.product-card-photo-thumbs__btn--r.jsProductThumbBtn',
+                infinite: false,
+                slidesToShow: 5,
+                slidesToScroll: 5
+            }
+        );
+    }
 
-    $productPhotoThumbs.slick(
-        {
-            prevArrow: '.product-card-photo-thumbs__btn--l.jsProductThumbBtn',
-            nextArrow: '.product-card-photo-thumbs__btn--r.jsProductThumbBtn',
-            infinite: false,
-            slidesToShow: 5,
-            slidesToScroll: 5
-        }
-    );
 
 }(jQuery);
