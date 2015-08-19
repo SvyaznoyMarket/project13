@@ -294,7 +294,7 @@ return function(
                     </label>
                 </div>
 
-                <button class="orderCompl_btn btn-primary btn-primary_bigger">Оформить</button>
+                <button class="orderCompl_btn btn-primary btn-primary_bigger js-order-submit">Оформить</button>
             </form>
         </div>
 

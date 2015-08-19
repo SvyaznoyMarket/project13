@@ -124,7 +124,7 @@
                     data: {
                         block_name: this.blockName,
                         id: this.productData.id,
-                        quantity: 0
+                        quantity: this.quantity
                     }
                 });
 
@@ -147,7 +147,7 @@
                     data: {
                         block_name: this.blockName,
                         id: this.productData.id,
-                        quantity: this.quantity
+                        quantity: 0
                     }
                 });
 

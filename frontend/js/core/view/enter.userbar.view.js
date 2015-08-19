@@ -14,6 +14,7 @@
         'enter.userbar.view',
         [
             'App',
+            'jQuery',
             'enter.BaseViewClass',
             'Mustache',
             'jquery.scrollTo'
@@ -22,7 +23,7 @@
     );
 }(
     this.modules,
-    function( provide, App, BaseViewClass, mustache, jqueryScrollTo ) {
+    function( provide, App, $, BaseViewClass, mustache, jqueryScrollTo ) {
         'use strict';
 
         var

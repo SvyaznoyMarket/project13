@@ -15,13 +15,14 @@
             'jQuery',
             'enter.BaseViewClass',
             'enter.suborder.view',
-            'jquery.replaceWithPush'
+            'jquery.replaceWithPush',
+            'FormValidator'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, SubOrderView, jReplaceWithPush ) {
+    function( provide, $, BaseViewClass, SubOrderView, jReplaceWithPush, FormValidator ) {
         'use strict';
 
         var
@@ -36,7 +37,9 @@
                 SUB_ORDER: 'js-order-block',
                 CHANGE_REGION_BTN: 'js-change-region',
                 COMMENT_BTN: 'js-order-comment',
-                COMMENT_AREA: 'js-order-comment-text'
+                COMMENT_AREA: 'js-order-comment-text',
+                SUBMIT_ORDER: 'js-order-submit',
+                ACCEPT_CHECKBOX: 'jsAcceptAgreement'
             };
 
         provide(BaseViewClass.extend({
@@ -54,6 +57,11 @@
                     self      = this,
                     suborders = this.$el.find('.' + CSS_CLASSES.SUB_ORDER);
 
+                this.subViews = {
+                    commentArea: this.$el.find('.' + CSS_CLASSES.COMMENT_AREA),
+                    acceptCheckbox: this.$el.find('.' + CSS_CLASSES.ACCEPT_CHECKBOX)
+                };
+
                 suborders.each(function( index ) {
                     self.subViews['suborder_' + index] = new SubOrderView({
                         el: $(this),
@@ -61,11 +69,10 @@
                     });
                 });
 
-                this.subViews.commentArea = this.$el.find('.' + CSS_CLASSES.COMMENT_AREA);
-
                 // Setup events
                 this.events['click .' + CSS_CLASSES.CHANGE_REGION_BTN] = 'changeRegion';
                 this.events['click .' + CSS_CLASSES.COMMENT_BTN]       = 'toggleCommentArea';
+                this.events['click .' + CSS_CLASSES.SUBMIT_ORDER]      = 'submitOrder';
 
                 this.listenTo(this, 'sendChanges', this.sendChanges);
 
@@ -151,6 +158,22 @@
                         console.groupEnd();
                     }
                 });
+            },
+
+            /**
+             * Обработчик отправки заказа
+             *
+             * @method      submitOrder
+             * @memberOf    module:enter.order.step2.view~OrderStep2View#
+             *
+             * @todo        Дописать обработчик. Валидировать подзаказы
+             */
+            submitOrder: function() {
+                if ( !this.subViews.acceptCheckbox.is(':checked') ) {
+                    // mark error
+                    return false;
+                }
+
             },
 
             /**
