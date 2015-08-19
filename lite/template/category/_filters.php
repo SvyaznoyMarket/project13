@@ -11,6 +11,7 @@
 
     $helper = \App::helper();
     $categories = [];
+    $visibleBrandsCount = 12;
 
     /** @var \Model\Product\Filter\Entity[] $alwaysShowFilters */
     $alwaysShowFilters = [];
@@ -62,9 +63,9 @@
             $brandFilter2 = clone $property;
             $brandFilter2->deleteAllOptions();
 
-            if (count($brandFilter1->getOption()) >= 10) {
+            if (count($brandFilter1->getOption()) >= $visibleBrandsCount) {
                 $values = $productFilter->getValue($property);
-                while (count($brandFilter1->getOption()) >= 9) {
+                while (count($brandFilter1->getOption()) >= $visibleBrandsCount - 1 ) {
                     $option = $brandFilter1->deleteLastOption();
                     if (in_array($option->getId(), $values)) {
                         $hasSelectedOtherBrands = true;
