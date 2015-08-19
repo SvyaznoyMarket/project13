@@ -1,7 +1,7 @@
 <div class="popup-feedback popup popup_440 js-feedback-popup" style="display: none;">
     <div class="popup__close js-popup-close">×</div>
 
-    <form action="<?= $page->url('feedback.send') ?>" class="feedback-form form" method="post">
+    <form action="<?= $page->url('feedback.send') ?>" enctype="multipart/form-data" class="feedback-form form js-feedback-form" method="post">
         <div class="popup__title">Обратная связь</div>
 
         <div class="form__field">

@@ -32,6 +32,7 @@
              * @type        {Object}
              */
             CSS_CLASSES = {
+                FORM: 'js-feedback-form',
                 EMAIL: 'js-feedback-email',
                 TOPIC: 'js-feedback-topic',
                 TEXT: 'js-feedback-text',
@@ -65,7 +66,8 @@
                     email: this.$el.find('.' + CSS_CLASSES.EMAIL),
                     subject: this.$el.find('.' + CSS_CLASSES.TOPIC),
                     message: this.$el.find('.' + CSS_CLASSES.TEXT),
-                    submit: this.$el.find('.' + CSS_CLASSES.SUBMIT_BTN)
+                    submit: this.$el.find('.' + CSS_CLASSES.SUBMIT_BTN),
+                    form: this.$el.find('.' + CSS_CLASSES.FORM)
                 };
 
                 validationConfig = {
@@ -152,13 +154,22 @@
              * @memberOf    module:enter.feedback.popup.view~FeedbackPopupView#
              */
             sendForm: function() {
-                var $form = this.$el.find('form');
-                $.ajax($form.attr('action'), {
+                var
+                    form     = this.subViews.form,
+                    formData = new FormData(form[0]),
+                    url      = form.attr('action');
+
+                this.ajax({
+                    url: url,
                     method: 'POST',
-                    data: $form.serialize(),
+                    data: formData,
                     loader: this.loader,
-                    success: this.prepareData.bind(this)
+                    success: this.prepareData.bind(this),
+                    cache: false,
+                    contentType: false,
+                    processData: false
                 });
+
                 return false;
             }
         }));
