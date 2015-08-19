@@ -8,6 +8,7 @@
         menu = d.querySelector('.js-navigation-menu-holder'),
         moduleRequireOnClick = d.querySelectorAll('.js-module-require-onclick'),
         moduleRequireOnHover = d.querySelectorAll('.js-module-require-onhover'),
+        isGeoCookieEmpty = document.cookie.match(/geoshop=(\d+)/) === null || !document.cookie.match(/geoshop=(\d+)/)[1],
         menuHideTimeout;
 
     // Debug-панель
@@ -82,7 +83,7 @@
     }
 
     // Если не стоит куки региона
-    if (document.cookie.match(/geoshop=(\d+)/) === null || !document.cookie.match(/geoshop=(\d+)/)[1]) {
+    if (isGeoCookieEmpty) {
         // Показываем меню
         if (menu && menu.classList) menu.classList.add('show');
         // Показываем выбор региона
@@ -94,7 +95,7 @@
     // Показываем раскрытое меню в каждой новой сессии
     if (window.sessionStorage && !window.sessionStorage.getItem('menuShowed') && menu && menu.classList) {
         menu.classList.add('show');
-        window.addEventListener('mousemove', function(){
+        isGeoCookieEmpty && window.addEventListener('mousemove', function(){
             setTimeout(function(){
                 menu.classList.remove('show');
                 window.sessionStorage.setItem('menuShowed', '1');
