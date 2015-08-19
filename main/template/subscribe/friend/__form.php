@@ -2,15 +2,14 @@
 
 /**
  * @param \Helper\TemplateHelper $helper
+ * @param string $channelId
  */
 $f = function(
-    \Helper\TemplateHelper $helper
-) {
+    \Helper\TemplateHelper $helper,
+    $channelId = '1'
+) { ?>
 
-    $channelId = 1;
-?>
-
-<form class="subscribe-form" action="<?= $helper->url('subscribe.create') ?>">
+<form class="subscribe-form" action="<?= $helper->url('subscribe.friend.create') ?>" method="post">
     <input type="hidden" name="channel" value="<?= $channelId ?>">
 
     <div class="subscribe-form-group">

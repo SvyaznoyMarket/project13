@@ -1,6 +1,8 @@
 <?php
 /**
- * @var $page \View\DefaultLayout
+ * @var $page                   \View\DefaultLayout
+ * @var $alreadySubscribed      bool Уже подписан
+ * @var $successfullySubscribed bool Успешно подписан
  */
 ?>
 
@@ -188,40 +190,32 @@ $helper = new \Helper\TemplateHelper();
         padding-left: 50px;
     }
 </style>
-<div class="subscribe-page">
-    <div class="subscribe-block1">
+<? if ($alreadySubscribed): ?>
+    <div class="subscribe-block2">
         <div class="subscribe-content">
-            <div class="subscribe-text">
-                <span class="subscribe-text__big">Подпишитесь и получите<span class="absolute">в подарок</span></span>
-                <div class="subscribe-text__img"><img src="http://content.enter.ru/wp-content/uploads/2015/04/300rub.png"></div>
-            </div>
-            <?= $helper->render('subscribe/friend/__form') ?>
+            <?= $helper->render('subscribe/friend/__alreadySubscribed') ?>
         </div>
     </div>
-</div>
-<div class="subscribe-block2">
-    <div class="subscribe-content">
-        <div class="subscribe-text">
-            <div class="subscribe-text__medium">Вы уже подписаны на нашу рассылку.</div>
-            <div class="subscribe-text__medium">Не забывайте проверять <br/>письма от Enter!</div>
-            <div class="subscribe-text__small">
-                Чтобы не пропускать наши новости и акции,<br/> добавьте <a href="mailto:info@enter.ru">info@enter.ru</a> в свою адресную книгу.
-            </div>
+<? elseif ($successfullySubscribed): ?>
+    <div class="subscribe-block3">
+        <div class="subscribe-content">
+            <?= $helper->render('subscribe/friend/__successfullySubscribed') ?>
         </div>
     </div>
-</div>
-<div class="subscribe-block3">
-    <div class="subscribe-content">
-        <div class="subscribe-text">
-            <div class="subscribe-text__title">Спасибо!</div>
-            <div class="subscribe-text__medium">Вы уже подписаны на нашу рассылку.</div>
-            <div class="subscribe-text__medium">Не забывайте проверять <br/>письма от Enter!</div>
-            <div class="subscribe-text__small">
-                Чтобы не пропускать наши новости и акции,<br/> добавьте <a href="mailto:info@enter.ru">info@enter.ru</a> в свою адресную книгу.
+<? else: ?>
+    <div class="subscribe-page">
+        <div class="subscribe-block1">
+            <div class="subscribe-content">
+                <div class="subscribe-text">
+                    <span class="subscribe-text__big">Подпишитесь и получите<span class="absolute">в подарок</span></span>
+                    <div class="subscribe-text__img"><img src="http://content.enter.ru/wp-content/uploads/2015/04/300rub.png"></div>
+                </div>
+                <?= $helper->render('subscribe/friend/__form') ?>
             </div>
         </div>
     </div>
-</div>
+<? endif ?>
+
 <div class="subscribe-block4">
     <div class="subscribe-content">
         <div class="subscribe-letter">
@@ -273,9 +267,15 @@ $helper = new \Helper\TemplateHelper();
 </div>
 <div class="subscribe-block6">
     <div class="subscribe-content">
-        <div class="subscribe-content__wrap">
-            <?= $helper->render('subscribe/friend/__form') ?>
-        </div>
+        <? if ($alreadySubscribed): ?>
+            <?= $helper->render('subscribe/friend/__alreadySubscribed') ?>
+        <? elseif ($successfullySubscribed): ?>
+            <?= $helper->render('subscribe/friend/__successfullySubscribed') ?>
+        <? else: ?>
+            <div class="subscribe-content__wrap">
+                <?= $helper->render('subscribe/friend/__form') ?>
+            </div>
+        <? endif ?>
     </div>
 </div>
 </div>
