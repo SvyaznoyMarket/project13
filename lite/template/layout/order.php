@@ -11,10 +11,11 @@
 
 <body>
 
-<div class="wrapper">
     <?= $page->blockOrderHead() ?>
-    <?= $page->blockContent() ?>
-</div>
+
+	<div class="wrapper wrapper-order">
+	    <?= $page->blockContent() ?>
+	</div>
 
 <?= $page->blockModulesDefinitions() ?>
 
