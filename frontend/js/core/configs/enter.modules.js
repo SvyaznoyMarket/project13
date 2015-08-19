@@ -96,7 +96,7 @@
             });
         });
 
-        modules.define('jquery.scrollTo', [], function(provide){
+        modules.define('jquery.scrollTo', ['jQuery'], function(provide){
             loadScript("plugins/jquery.scrollTo.js", function ( $ ) {
                 console.log('[Module] jquery.scrollTo');
                 provide($);
