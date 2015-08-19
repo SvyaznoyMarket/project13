@@ -4,7 +4,7 @@
 namespace View;
 
 
-class SwitchView extends Layout {
+class SwitchView extends DefaultLayout {
 
     protected $layout = 'layout-clear';
 
