@@ -15,7 +15,7 @@
         <li class="footer-list__item grid-7col__item"><a href="" class="footer-list__link js-feedback-from-btn">Обратная связь</a></li>
     </ul>
 
-    <ul class="footer__right footer-external" style="display: none">
+    <ul class="footer__right footer-external">
         <li class="footer-external__item footer-external__item_title">Мы в социальных сетях</li>
         <li class="footer-external__item"><a href="" class="footer-external__link"><i class="i-soc-net i-soc-net_fb"></i></a></li>
         <li class="footer-external__item"><a href="" class="footer-external__link"><i class="i-soc-net i-soc-net_od"></i></a></li>
