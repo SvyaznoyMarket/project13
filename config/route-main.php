@@ -896,6 +896,13 @@ return [
         'action'  => ['Compare\CompareAction', 'clear'],
     ],
 
+    // Форма обратной связи
+    'feedback.send' => [
+        'pattern'   => '/feedback/send',
+        'action'    => ['User\FeedbackAction', 'execute'],
+        'method'    => ['POST']
+    ],
+
     // Переключение АБ-тестов
     'switch' => [
         'pattern'   => '/switch',
