@@ -802,6 +802,11 @@ return [
         'action'  => ['Enterprize\SliderAction', 'execute'],
     ],
 
+    'subscribe.friend.show' => [
+        'pattern' => '/enter-friends',
+        'action'  => ['Subscribe\FriendAction', 'show'],
+    ],
+
     'mobidengi' => [
         'pattern' => '/tele2',
         'action'  => ['Mobidengi\IndexAction', 'execute'],
