@@ -1,18 +1,19 @@
 .site-menu {
     position: absolute;
     z-index: 100;
-    top: 48px;
+    top: 45px;
 
-    display: none;
+    overflow: hidden;
 
     min-width: 200px;
-    min-height: 100%;
-    padding: 5px 10px;
+    max-height: 0;
+    padding: 0 10px;
 
     border: 3px solid @orange-bright;
-    border-top: 0;
     border-bottom: 0;
     background: @white;
+
+    .transition(max-height, .25s, linear);
     &__item {
         margin: 0;
         &.has-child {
@@ -29,6 +30,12 @@
             .site-menu__link {
                 color: @orange-bright;
             }
+        }
+        &:last-child {
+            margin-bottom: 5px;
+        }
+        &:first-child {
+            margin-top: 5px;
         }
     }
     &__link {
@@ -159,6 +166,7 @@
     }
     &:before {
         position: absolute;
+        z-index: 100;
         top: 0;
         bottom: 3px;
         left: 194px;
@@ -168,7 +176,6 @@
         content: '';
 
         background: @grey-light-3;
-        z-index: 100;
     }
 }
 
@@ -195,6 +202,7 @@
     }
     &:before {
         position: absolute;
+        z-index: 103;
         top: 0;
         bottom: 0;
         left: 448px;
@@ -204,7 +212,6 @@
         content: '';
 
         background: @grey-light-3;
-        z-index: 103;
     }
 }
 

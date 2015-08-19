@@ -83,5 +83,3 @@ foreach ($menu as $menu1) {
     <? endforeach ?>
 
 </nav>
-
-<div class="nav-fader"></div>

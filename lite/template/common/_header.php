@@ -17,7 +17,7 @@
                 </div>
 
                 <ul class="header-shop-info">
-                    <li class="header-shop-info__item"><a href="" class="header-shop-info__link underline">Магазины и самовывоз</a></li>
+                    <li class="header-shop-info__item"><a href="/delivery" class="header-shop-info__link underline">Самовывоз</a></li>
                     <li class="header-shop-info__item"><a href="" class="header-shop-info__link underline">Доставка</a></li>
                     <li class="header-shop-info__item"><a href="" class="header-shop-info__link underline">Оплата</a></li>
                     <li class="header-shop-info__item"><a href="" class="header-shop-info__link underline">Партнерам</a></li>
@@ -37,7 +37,7 @@
             <div class="header__line header__line_bottom">
                 <div class="nav-section header__line-left js-navigation-menu-holder" >
                     <a href="" class="nav-section__btn btn-primary"
-                       onclick="this.parentNode.classList && this.parentNode.classList.toggle('show'); return false">Каталог товаров</a>
+                       onclick="return false">Каталог товаров</a>
                     <?= $page->blockNavigation() ?>
                 </div>
 
