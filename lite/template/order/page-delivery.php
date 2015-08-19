@@ -125,9 +125,28 @@ return function(
                                     <span class="order-delivery-info-title__left">Адрес</span>
                                 </div>
 
+                                <div class="form-address form">
+                                    <div class="form-address__field form-address__field_street form__field">
+                                        <input id="" type="text" class="form__it it" data-required="true" name="" value="">
+                                        <label for="" class="form__placeholder placeholder placeholder_str">Улица</label>
+                                    </div>
+
+                                    <div class="form-address__field form-address__field_detail form__field">
+                                        <input id="" type="text" class="form__it it" data-required="true" name="" value="">
+                                        <label for="" class="form__placeholder placeholder placeholder_str">Дом</label>
+                                    </div>
+
+                                    <div class="form-address__field form-address__field_detail form__field">
+                                        <input id="" type="text" class="form__it it" data-required="true" name="" value="">
+                                        <label for="" class="form__placeholder placeholder placeholder_str">Квартира</label>
+                                    </div>
+                                </div>
+
+                                <?php /*
                                 <div class="order-delivery-info-address">
                                     <?= $helper->render('order/common/smartaddress') ?>
                                 </div>
+                                */ ?>
                             </div>
 
                             <?= $helper->render('order/_payment.methods', ['order' => $order]) ?>
