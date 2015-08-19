@@ -28,7 +28,12 @@
         }
     }
     &__it {
+        position: relative;
+        z-index: 2;
+
         width: 100%;
+
+        background-color: transparent;
     }
     &__it-name {
         font-weight: 600;
@@ -69,5 +74,21 @@
     }
     &__btn-container {
         text-align: center;
+    }
+}
+
+.form-address {
+    .clearfix();
+    &__field {
+        float: left;
+
+        margin: 10px 0 10px 10px;
+        &_street {
+            width: 238px;
+            margin-left: 0;
+        }
+        &_detail {
+            width: 85px;
+        }
     }
 }
