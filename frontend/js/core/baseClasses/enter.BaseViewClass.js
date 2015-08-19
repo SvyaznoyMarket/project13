@@ -41,6 +41,9 @@
                  */
                 this.subViews = {};
 
+                this.loader.hide = this.loader.hide.bind(this);
+                this.loader.show = this.loader.show.bind(this);
+
                 Backbone.View.apply(this, arguments);
             };
 

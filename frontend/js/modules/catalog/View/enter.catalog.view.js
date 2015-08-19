@@ -126,9 +126,6 @@
                 this.events['click .' + CSS_CLASSES.PAGINATION]        = 'togglePage';
                 this.events['click .' + CSS_CLASSES.FILTER_TOGGLE_BTN] = 'toggleFilter';
 
-                this.loader.hide = this.loader.hide.bind(this);
-                this.loader.show = this.loader.show.bind(this);
-
                 // Apply events
                 this.delegateEvents();
             },
