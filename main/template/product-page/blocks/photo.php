@@ -83,7 +83,7 @@ $f = function(
                     <? endforeach ?>
                 </ul>
             </div>
-            <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled jsProductThumbBtn" data-dir="+="></div>
+            <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l jsProductThumbBtn" data-dir="+="></div>
             <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r jsProductThumbBtn" data-dir="-="></div>
         </div>
 
@@ -118,7 +118,7 @@ $f = function(
                     </ul>
 
                 </div>
-                <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled jsPopupThumbBtn" data-dir="+="></div>
+                <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l jsPopupThumbBtn" data-dir="+="></div>
                 <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r jsPopupThumbBtn" data-dir="-="></div>
 
             </div>
