@@ -281,16 +281,26 @@ class DeliveryAction {
                 }
             }
 
-            $result = [
-                'success'   => true,
-                'html'      => \App::templating()->render('order-v3/common/_map',
-                    ['dataPoints' => $map,
-                        'visible' => true,
-                        'class'   => 'jsDeliveryMapPoints',
-                        'productUi' => $productUi,
-                        'page'      => 'product'
-                    ])
-            ];
+            // TODO нужен рефакторинг (отдавать через View)
+            if (!\App::config()->lite['enabled']) {
+                $result = [
+                    'html'      => \App::templating()->render('order-v3/common/_map',
+                        ['dataPoints' => $map,
+                            'visible' => true,
+                            'class'   => 'jsDeliveryMapPoints',
+                            'productUi' => $productUi,
+                            'page'      => 'product'
+                        ])
+                ];
+            } else {
+                $map->uniqueCosts = $map->getUniquePointCosts();
+                $map->uniqueDays = $map->getUniquePointDays();
+                $map->uniqueTokens = $map->getUniquePointTokens();
+                $result['result'] = $map;
+            }
+
+            $result['success'] = true;
+
         } else {
             $result['error'] = 'Ошибка разбиения';
         }
