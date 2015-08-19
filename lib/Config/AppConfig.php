@@ -593,6 +593,14 @@ class AppConfig {
      */
     public $minOrderSum = 0;
 
+    /** Форма обратной связи
+     * @var array
+     */
+    public $feedback = [
+        'enabled'   => false,   // вкл/откл
+        'email'     => null     // email (куда слать письма)
+    ];
+
     public function __construct() {
 
         $this->vkontakteOauth = new OAuth\VkontakteConfig();

@@ -70,7 +70,7 @@ namespace Session {
             $backendProductsByUi = [];
             /** @var \Model\Product\Entity[] $backendProductsById */
             $backendProductsById = [];
-    
+
             // Фильтруем и форматируем $setProducts
             call_user_func(function() use(&$setProducts) {
                 foreach ($setProducts as $key => $setProduct) {
@@ -90,7 +90,7 @@ namespace Session {
             if (!$setProducts && !$this->hasSessionProductWithoutData() && !($sessionCart['product'] && ($forceUpdate || $this->isExpired()))) {
                 return $resultProducts;
             }
-    
+
             // Получение данные от бэкэнда для $setProducts товаров и сессионных товаров
             call_user_func(function() use(&$backendProductsByUi, &$backendProductsById, $setProducts, $sessionCart) {
                 foreach ($setProducts as $setProduct) {
@@ -535,7 +535,7 @@ namespace Session {
                 $sessionCart = $this->getSessionCart();
                 if ($sessionCart['updated']) {
                     $updatedTime = new \DateTime($sessionCart['updated']);
-                    return !$updatedTime || $updatedTime->diff(new \DateTime('now'), true)->i > \App::config()->cart['updateTime'] ?: 1; // больше n-минут
+                    return !$updatedTime || $updatedTime->diff(new \DateTime('now'), true)->i > (\App::config()->cart['updateTime'] ?: 1); // больше n-минут
                 }
             } catch (\Exception $e) {}
     
