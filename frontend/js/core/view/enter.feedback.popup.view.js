@@ -13,13 +13,14 @@
         'enter.feedback.popup.view',
         [
             'enter.ui.BasePopup',
-            'FormValidator'
+            'FormValidator',
+            'jQuery'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, BasePopup, FormValidator ) {
+    function( provide, BasePopup, FormValidator, $ ) {
         'use strict';
 
         var
@@ -134,6 +135,14 @@
              * @memberOf    module:enter.feedback.popup.view~FeedbackPopupView#
              */
             sendForm: function() {
+                var $form = this.$el.find('form');
+                $.ajax($form.attr('action'), {
+                    method: 'POST',
+                    data: $form.serialize(),
+                    success: function(data){
+                        console.log('SEND', data)
+                    }
+                });
                 return false;
             }
         }));
