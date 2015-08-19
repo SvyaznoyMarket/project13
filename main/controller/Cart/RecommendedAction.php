@@ -11,7 +11,7 @@ class RecommendedAction {
      */
     public function execute(\Http\Request $request) {
         // Если корзина не пустая
-        if (!\App::user()->getCart()->isEmpty()) {
+        if (\App::user()->getCart()->count()) {
             return $this->getForNonEmptyCart($request);
         } else { // ... иначе, если пустая корзина
             return $this->getForEmptyCart($request);
@@ -24,43 +24,33 @@ class RecommendedAction {
      * @throws \Exception
      */
     public function getForNonEmptyCart(\Http\Request $request) {
-        $region = \App::user()->getRegion();
-
         $cart = \App::user()->getCart();
         $cartProductIds = [];
-        $productIds = [];
+        /** @var \Model\Product\Entity[] $productsById */
+        $productsById = [];
         $recommendController = new \Controller\Product\BasicRecommendedAction();
 
         /* Для всех продуктов корзины получим рекомендации */
         /* Неплохо распараллелить запросы, ну да ладно */
-        foreach ($cart->getProducts() as $product) {
-            $cartProductIds[] = $product->getId();
-            $productIds = array_merge($productIds, (array)$recommendController->getProductsIdsFromRetailrocket($product, $request, 'CrossSellItemToItems'));
+        foreach ($cart->getProductsById() as $product) {
+            $cartProductIds[] = $product->id;
+
+            foreach ((array)$recommendController->getProductsIdsFromRetailrocket($product, $request, 'CrossSellItemToItems') as $productId) {
+                $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
+            }
         }
 
-        /* Получаем продукты из ядра */
-        $products = [];
-        foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-            \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$products, &$cartProductIds) {
-                if (!is_array($data)) return;
-
-                foreach ($data as $item) {
-                    if (empty($item['id'])) continue;
-                    if (in_array($item['id'], $cartProductIds)) continue;
-
-                    $iProduct = new \Model\Product\Entity($item);
-                    // если товар недоступен для покупки - пропустить
-                    if (!$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly() || $iProduct->isInShopOnly()) continue;
-                    $products[] = $iProduct;
-                }
-            });
-        }
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label');
 
         \App::coreClientV2()->execute();
 
+        $productsById = array_filter($productsById, function(\Model\Product\Entity $product) use(&$cartProductIds) {
+            return (!in_array($product->id, $cartProductIds) && $product->isAvailable() && !$product->isInShopShowroomOnly() && !$product->isInShopOnly());
+        });
+
         try {
             // TODO: вынести в репозиторий
-            usort($products, function(\Model\Product\Entity $a, \Model\Product\Entity $b) {
+            usort($productsById, function(\Model\Product\Entity $a, \Model\Product\Entity $b) {
                 if ($b->getIsBuyable() != $a->getIsBuyable()) {
                     return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
                 } else if ($b->isInShopOnly() != $a->isInShopOnly()) {
@@ -73,14 +63,13 @@ class RecommendedAction {
             });
         } catch (\Exception $e) {}
 
-        $products = array_slice($products, 0, 30);
+        $productsById = array_slice($productsById, 0, 30);
 
         /* Рендерим слайдер */
-        $slider = \App::closureTemplating()->render('product/__slider', [
-            'products'  => $products,
-            'count'     => count($products),
+        $slider = \App::closureTemplating()->render(\App::abTest()->isNewProductPage() ? 'product-page/blocks/slider' : 'product/__slider', [
+            'products'  => $productsById,
             'class'     => 'slideItem-7item',
-            'title'     => count($cart->getProducts()) > 1 ? 'С этими товарами покупают' : 'С этим товаром покупают',
+            'title'     => $cart->count() > 1 ? 'С этими товарами покупают' : 'С этим товаром покупают',
             'sender'    => [
                 'name'     => 'retailrocket',
                 'method'   => 'CrossSellItemToItems',
@@ -103,32 +92,22 @@ class RecommendedAction {
      * @throws \Exception
      */
     public function getForEmptyCart(\Http\Request $request) {
-        $region = \App::user()->getRegion();
-
         $productIdsByType = (new \Controller\Main\Action())->getProductIdsFromRR($request, \App::config()->coreV2['timeout']);
-        $productIds = [];
+        /** @var \Model\Product\Entity[] $productsById */
+        $productsById = [];
         foreach ($productIdsByType as $ids) {
             if (!$ids) continue;
-            $productIds = array_merge($productIds, $ids);
+            foreach ($ids as $productId) {
+                $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
+            }
         }
 
-        /* Получаем продукты из ядра */
-        $productsById = [];
-        foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-            \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById, &$cartProductIds) {
-                foreach ($data as $item) {
-                    if (empty($item['id'])) continue;
-
-                    $iProduct = new \Model\Product\Entity($item);
-                    // если товар недоступен для покупки - пропустить
-                    if (!$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly() || $iProduct->isInShopOnly()) continue;
-
-                    $productsById[$iProduct->getId()] = $iProduct;
-                }
-            });
-        }
-
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label');
         \App::coreClientV2()->execute();
+
+        $productsById = array_filter($productsById, function(\Model\Product\Entity $product) use(&$cartProductIds) {
+            return ($product->isAvailable() && !$product->isInShopShowroomOnly() && !$product->isInShopOnly());
+        });
 
         $responseData = ['success'=> true, 'recommend' => []];
         foreach ($productIdsByType as $type => $productIds) {
@@ -156,9 +135,8 @@ class RecommendedAction {
             } catch (\Exception $e) {}
 
             /* Рендерим слайдер */
-            $slider = \App::closureTemplating()->render('product/__slider', [
+            $slider = \App::closureTemplating()->render(\App::abTest()->isNewProductPage() ? 'product-page/blocks/slider' : 'product/__slider', [
                 'products'  => $products,
-                'count'     => count($products),
                 'class'     => 'slideItem-7item',
                 'title'     => ('popular' === $type) ? 'Популярные товары' : 'Мы рекомендуем',
                 'sender'    => [

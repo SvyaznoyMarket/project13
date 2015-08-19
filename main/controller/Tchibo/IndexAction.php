@@ -8,7 +8,7 @@ class IndexAction {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
-        $contentClient = \App::contentClient();
+        $scmsClient = \App::scmsClient();
         $user = \App::user();
         $promoRepository = \RepositoryManager::promo();
         $region = $user->getRegion();
@@ -76,27 +76,24 @@ class IndexAction {
             }
         });
 
-        $products = [];
-        $productsIds = [];
+        $productIds = [];
         // перевариваем данные изображений
         // используя айдишники товаров из секции image.products, получим мини-карточки товаров для баннере
         foreach ($promo->getImage() as $image) {
-            $productsIds = array_merge($productsIds, $image->getProducts());
+            $productIds = array_merge($productIds, $image->getProducts());
         }
-        $productsIds = array_unique($productsIds);
-        if (count($productsIds) > 0) {
-            \RepositoryManager::product()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
-                foreach ($data as $item) {
-                    if (!isset($item['id'])) continue;
-                    $products[ $item['id'] ] = new \Model\Product\Entity($item);
-                }
-            });
+        $productIds = array_unique($productIds);
+
+        /** @var \Model\Product\Entity[] $products */
+        $products = [];
+        foreach ($productIds as $productId) {
+            $products[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
+
+        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($products, 'media');
 
         // выполнение 2-го пакета запросов в ядро
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
-
-
 
         // перевариваем данные изображений для слайдера в $slideData
         foreach ($promo->getImage() as $image) {
@@ -107,7 +104,7 @@ class IndexAction {
                 $product = $products[$productId];
                 /** @var $product \Model\Product\Entity */
                 $itemProducts[] = [
-                    'image'         => $product->getImageUrl(2), // 163х163 seize
+                    'image'         => $product->getMainImageUrl('product_160'),
                     'link'          => $product->getLink(),
                     'name'          => $product->getName(),
                     'price'         => $product->getPrice(),
@@ -133,12 +130,13 @@ class IndexAction {
         }
 
         if (!empty($catalogJson['promo_token'])) {
-            $contentClient->addQuery(
-                $catalogJson['promo_token'],
+            $scmsClient->addQuery(
+                'api/static-page',
+                ['token' => [$catalogJson['promo_token']]],
                 [],
                 function($data) use (&$bannerBottom) {
-                    if (!empty($data['content'])) {
-                        $bannerBottom = $data['content'];
+                    if (!empty($data['pages'][0]['content'])) {
+                        $bannerBottom = $data['pages'][0]['content'];
                     }
                 },
                 function(\Exception $e) {
@@ -148,15 +146,15 @@ class IndexAction {
             );
         }
 
-        // Получаем контентный блок с вордпресса
         $promoContent = null;
         $promoToken = 'tchibo_promo';
-        $contentClient->addQuery(
-            $promoToken,
+        $scmsClient->addQuery(
+            'api/static-page',
+            ['token' => [$promoToken]],
             [],
             function($data) use (&$promoContent) {
-                if (!empty($data['content'])) {
-                    $promoContent = $data['content'];
+                if (!empty($data['pages'][0]['content'])) {
+                    $promoContent = $data['pages'][0]['content'];
                 }
             },
             function(\Exception $e) use (&$promoToken) {
@@ -165,8 +163,7 @@ class IndexAction {
             }
         );
 
-        // выполнение пакета запросов к вордпрессу
-        $contentClient->execute();
+        $scmsClient->execute();
 
         // SITE-3970
         // Стили для названий категорий в меню tchibo

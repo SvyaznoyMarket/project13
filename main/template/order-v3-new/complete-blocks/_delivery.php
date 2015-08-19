@@ -16,16 +16,20 @@
                     <? endif ?>
                 </div>
                 <div class="orderPayment_msg_shop markerLst_row">
-                    <span class="markerList_col">
-                        <? if ($order->getAddress()) : ?>
+                    <? if ($order->getAddress()) : ?>
+                        <span class="markerList_col">
                             <span class="orderPayment_msg_shop_addr"><?= $order->getAddress() ?></span>
-                        <? else : ?>
-                            Адрес и дату доставки вашего заказа уточнит по&nbsp;телефону наш менеджер.
-                        <? endif ?>
-                        <? if ($order->comment) : ?>
+                        </span>
+                    <? else : ?>
+                        <div class="orderPayment_msg_info info-phrase">
+                        Адрес и дату доставки вашего заказа уточнит по&nbsp;телефону наш менеджер.
+                        </div>
+                    <? endif ?>
+                    <? if ($order->comment) : ?>
+                        <span class="markerList_col">
                             <div class="orderPayment_msg_adding">Дополнительные пожелания:<br/> «<?= $order->comment ?>»</div>
-                        <? endif ?>
-                    </span>
+                        </span>
+                    <? endif ?>
                 </div>
 
                 <div class="orderPayment_msg_info">

@@ -21,15 +21,15 @@
 	}
 
 	function checkScroll() {
-		var cartLength = ENTER.UserModel.cart().length;
+		var cartLength = ENTER.UserModel ? ENTER.UserModel.cart().products().length : 0;
 		if (!visible && $window.scrollTop() > offset && (!showWhenFullCartOnly || cartLength)) {
 			//появление
 			visible = true;
-			$upper.animate({marginTop: '0'}, 400);
+			$upper.fadeIn(400);
 		} else if (visible && ($window.scrollTop() < offset || showWhenFullCartOnly && !cartLength)) {
 			//исчезновение
 			visible = false;
-			$upper.animate({marginTop: '-55px'}, 400);
+			$upper.fadeOut(400);
 		}
 	}
 
@@ -40,8 +40,9 @@
 
 	$window.scroll(checkScroll);
 
-	// Если showWhenFullCartOnly = true, то проверку надо выполнять лишь после того, как станут доступны данные корзины (которые становятся доступны после userLogged)
-	$body.on('userLogged closeBuyInfo showBuyInfo', function(){
+	$body.on('closeFullFixedUserBar openFullFixedUserBar', function(){
 		checkScroll();
 	});
+
+	checkScroll();
 }());

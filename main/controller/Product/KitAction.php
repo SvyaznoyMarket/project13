@@ -17,14 +17,8 @@ class KitAction {
 
         // подготовка 1-го пакета запросов
 
-        /** @var \Model\Product\Entity|null $product */
-        $product = null;
-
         // запрашиваем текущий регион, если есть кука региона
-        $regionConfig = [];
         if ($user->getRegionId()) {
-            $regionConfig = (array)\App::dataStoreClient()->query("/region/{$user->getRegionId()}.json");
-
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
@@ -33,44 +27,36 @@ class KitAction {
             });
         }
 
-        \RepositoryManager::product()->prepareEntityByUid($productUi, function($data) use (&$product) {
-            if (!is_array($data)) return;
-
-            if ($data = reset($data)) {
-                if (is_array($data)) {
-                    $product = new \Model\Product\Entity($data);
-                }
-            }
-        });
+        /** @var \Model\Product\Entity[] $products */
+        $products = [new \Model\Product\Entity(['ui' => $productUi])];
+        \RepositoryManager::product()->prepareProductQueries($products, 'media');
 
         // выполнение 1-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
-        $regionEntity = $user->getRegion();
-        if ($regionEntity instanceof \Model\Region\Entity) {
-            if (array_key_exists('reserve_as_buy', $regionConfig)) {
-                $regionEntity->setForceDefaultBuy(false == $regionConfig['reserve_as_buy']);
-            }
-            $user->setRegion($regionEntity);
-        }
-
-        if (!$product) {
+        if (!$products) {
             throw new \Exception\NotFoundException(sprintf('Товар @%s не найден.', $productUi));
         }
 
-        if (!$product->getKit()) {
+        if (!$products[0]->getKit()) {
             throw new \Exception\NotFoundException(sprintf('Товар @%s не является набором.', $productUi));
         }
 
+        $kitProducts = \RepositoryManager::product()->getKitProducts($products[0]);
+
         return new \Http\JsonResponse([
             'product' => [
-                'id' => $product->getId(),
-                'article' => $product->getArticle(),
-                'prefix' => $product->getPrefix(),
-                'webname' => $product->getWebname(),
-                'imageUrl' => $product->getImageUrl(3),
-                'kitProducts' => \RepositoryManager::product()->getKitProducts($product),
+                'id' => $products[0]->id,
+                'ui' => $products[0]->ui,
+                'article' => $products[0]->getArticle(),
+                'prefix' => $products[0]->getPrefix(),
+                'webname' => $products[0]->getWebname(),
+                'imageUrl' => $products[0]->getMainImageUrl('product_500'),
+                'kitProducts' => \App::config()->lite['enabled'] ? array_values($kitProducts) : $kitProducts,
             ],
+            'template' => file_exists( $templatePath = \App::config()->appDir . '/lite/template/product/blocks/kit.mustache' )
+                ? file_get_contents( $templatePath )
+                : ''
         ]);
     }
 }

@@ -21,13 +21,8 @@ return function(
     ];
 
 ?>
-
-<?= $helper->render('order-v3-new/__head', ['step' => 2]) ?>
-
 <section id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
     <h1 class="orderCnt_t">Самовывоз и доставка</h1>
-
-    <?= $helper->render('order-v3-new/__error', ['error' => $error]) ?>
 
     <? if ($orderCount != 1) : ?>
         <p class="orderInf">Товары будут оформлены как <strong><?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></strong></p>
@@ -40,12 +35,14 @@ return function(
         <button class="btnLightGrey orderCnt_btn fl-r jsChangeRegion">Изменить регион</button>
     </div>
 
+    <?= $helper->render('order-v3-new/__error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
+
     <? foreach ($orderDelivery->orders as $order): $i++;?>
         <? if ((bool)$order->validationErrors) : ?>
             <div class="jsOrderValidationErrors" data-value="<?= $helper->json($order->validationErrors) ?>"></div>
         <? endif; ?>
     <!-- блок разбиения заказа -->
-    <div class="orderRow clearfix <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>" data-block_name="<?= $order->block_name ?>">
+    <div class="orderRow clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>" data-block_name="<?= $order->block_name ?>">
         <!-- информация о заказе -->
         <div class="orderCol">
             <div class="orderCol_h">
@@ -55,14 +52,14 @@ return function(
                 <? endif ?>
             </div>
 
-            <? if ($order->total_cost > 100000) : ?>
+            <? if (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_cost > \App::config()->order['prepayment']['priceLimit'])) : ?>
                 <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
             <? endif; ?>
 
             <? foreach ($order->products as $product): ?>
             <div class="orderCol_cnt clearfix">
                 <a href="<?= $product->link ?>" class="orderCol_lk" target="_blank">
-                    <img class="orderCol_img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->name) ?>" />
+                    <img class="orderCol_img" src="<?= $product->getMainImageUrl('product_60') ?>" alt="<?= $helper->escape($product->name) ?>" />
                 </a>
 
                 <a href="<?= $product->link ?>" target="_blank" class="orderCol_n">
@@ -81,9 +78,9 @@ return function(
                         <span>шт.</span>
                     </div>
 
-                    <a class="brb-dt jsChangeProductQuantity" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
+                    <a class="brb-dt jsChangeProductQuantity" href="" data-id="<?= $product->id; ?>" data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
                     &nbsp;|&nbsp;
-                    <a class="brb-dt jsDeleteProduct" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Удалить товар</a>
+                    <a class="brb-dt jsDeleteProduct" href="" data-id="<?= $product->id; ?>" data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Удалить товар</a>
                 </div>
 
                 <span class="orderCol_data orderCol_data-price"><?= $helper->formatPrice($product->original_price) ?> <span class="rubl">p</span></span>
@@ -165,7 +162,7 @@ return function(
             <div class="orderCol_delivrIn clearfix">
                 <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
                 <? if ($order->delivery->date): ?>
-                    <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %G, %A', $order->delivery->date->format('U'))) ?></div>
+                    <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y, %A', $order->delivery->date->format('U'))) ?></div>
                 <? endif ?>
 
                 <?= $helper->render('order-v3-new/__calendar', [
@@ -183,8 +180,8 @@ return function(
             <!-- способ доставки -->
             <? if (!$order->delivery->use_user_address): ?>
                 <? $point = $order->delivery->point ? $orderDelivery->points[$order->delivery->point->token]->list[$order->delivery->point->id] : null ?>
-
-                <div class="orderCol_delivrIn <?= $order->delivery->point ? 'orderCol_delivrIn-pl' : 'orderCol_delivrIn-empty' ?>">
+                <!--Добавляем класс orderCol_delivrIn-warn если у нас будет текст-предупреждение: -->
+                <div class="orderCol_delivrIn orderCol_delivrIn-warn <?= $order->delivery->point ? 'orderCol_delivrIn-pl' : 'orderCol_delivrIn-empty' ?>">
 
                     <? if (!$order->delivery->point) : ?>
                         <span class="js-order-changePlace-link brb-dt" style="cursor: pointer;" data-content="#id-order-changePlace-content-<?= $order->id ?>">Указать место самовывоза</span>
@@ -204,13 +201,20 @@ return function(
 
                         <div class="orderCol_tm">
                             <? if (isset($point->regtime)): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
-                            <? if (isset($point)) : ?>
+                            <? if (isset($point) && (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_cost < \App::config()->order['prepayment']['priceLimit']))) : ?>
                                 <br />
                                 <span class="orderCol_tm_t">Оплата при получении: </span>
-                                <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные<? endif; ?><? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта<? endif; ?>
+                                <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?>
+                                    <!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные
+                                <? endif; ?>
+                                <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
+                                    <!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта
+                                <? endif; ?>
                             <? endif; ?>
                         </div>
-
+                    <? if ($order->delivery->point && $order->delivery->point->isSvyaznoy()) : ?>
+                        <span class="order-warning">В магазинах «Связной» не принимаются бонусы «Спасибо от Сбербанка»</span>
+                    <? endif ?>
                 </div>
 
                 <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order-v3-new/__payment-methods', ['order' => $order]) : '' ?>
@@ -243,10 +247,14 @@ return function(
 
             <? endif ?>
 
-            <?= $helper->render('order-v3/common/_map', [
-                'id'            => 'id-order-changePlace-content-' . $order->id,
-                'order'         => $order,
-                'orderDelivery' => $orderDelivery
+            <?
+                $dataPoints = (new \View\PointsMap\MapView());
+                $dataPoints->preparePointsWithOrder($order, $orderDelivery);
+            ?>
+
+            <?= \App::templating()->render('order-v3/common/_map', [
+                'dataPoints'    => $dataPoints,
+                'page'          => 'order'
             ]) ?>
 
             <!--/ способ доставки -->
@@ -296,6 +304,17 @@ return function(
         </form>
     </div>
 
+    <? if (\App::abTest()->isOrderMinSumRestriction() && \App::config()->minOrderSum > $orderDelivery->getProductsSum()) : ?>
+        <div class="popup popup-simple deliv-free-popup jsMinOrderSumPopup" style="display: none;">
+
+            <div class="popup_inn">
+                <span class="info">До оформления заказа осталось</span>
+                <span class="remain-sum"><?= \App::config()->minOrderSum - $orderDelivery->getProductsSum() ?>&thinsp;<span class="rubl">p</span></span>
+                <a href="/cart" class="to-cart-lnk">Вернуться в корзину</a>
+            </div>
+        </div>
+    <? endif ?>
+
 </section>
 
 <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json($initialMapCords)?>"></div>
@@ -341,4 +360,5 @@ return function(
         </div>
     </div>
 </div>
+
 <? };

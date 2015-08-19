@@ -292,21 +292,6 @@ class App {
 
         return $instance;
     }
-
-    /**
-     * @static
-     * @return \Content\Client
-     */
-    public static function contentClient() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \Content\Client(self::config()->wordpress, self::curl());
-        }
-
-        return $instance;
-    }
-	
 	
 	/**
      * @static
@@ -326,6 +311,22 @@ class App {
 
         return $instance;
     }
+
+    /** File storage client
+     * @static
+     * @return \Core\ClientV2
+     */
+    public static function fileStorageClient() {
+        static $instance;
+        $curl = clone self::curl();
+
+        if (!$instance) {
+            $curl->setNativePost();
+            $instance = new \Core\ClientV2(self::config()->fileStorage, $curl);
+        }
+
+        return $instance;
+    }
 	
 	
 	/**
@@ -341,7 +342,6 @@ class App {
 
         return $instance;
     }
-	
 
     /**
      * @static

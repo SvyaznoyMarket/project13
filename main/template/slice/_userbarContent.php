@@ -38,11 +38,11 @@ if (0 == $i && $slice) {
 </div>
 <? } ?>
 
-<div class="topbarfix_crumbs">
+<div class="userbar-crumbs">
     <? if (!empty($categoryImg)): ?>
-        <a class="topbarfix_crumbsImg" href="#">
-            <img class="crumbsImg" src="<?= $categoryImg ?>" alt="" />
+        <a class="userbar-crumbs-img" href="#">
+            <img class="userbar-crumbs-img__img" src="<?= $categoryImg ?>" alt="" />
         </a>
     <? endif; ?>
-    <div class="topbarfix_wrapCrumbsList"><?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?></div>
+    <div class="userbar-crumbs-wrap"><?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?></div>
 </div>

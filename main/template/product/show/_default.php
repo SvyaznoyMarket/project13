@@ -7,44 +7,44 @@
  * @var $accessories            \Model\Product\Entity[]
  * @var $accessoryCategory      \Model\Product\Category\Entity[]
  * @var $kit                    \Model\Product\Entity[]
- * @var $additionalData         array
  * @var $shopStates             \Model\Product\ShopState\Entity[]
  * @var $creditData             array
  * @var $deliveryData           array
  * @var $isTchibo               boolean
  * @var $addToCartJS     string
- * @var $isUserSubscribedToEmailActions boolean
  * @var $actionChannelName string
  * @var $kitProducts            array   Продукты кита
- * @var $useLens                bool    Показывать лупу
  * @var $reviewsData            array   Данные отзывов
  * @var $breadcrumbs            array   Хлебные крошки
  * @var $trustfactors           array   Трастфакторы
  * @var $reviewsDataSummary     array   Данные отзывов
- * @var $sprosikupiReviews      array   Данные отзывов
- * @var $shoppilotReviews       array   Данные отзывов
+ * @var $videoHtml              string|null
+ * @var $properties3D           []
  */
 ?>
 
 <?
+if (!isset($useLens)) {
+    $useLens = false;
+}
+
 $region = \App::user()->getRegion();
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
-$isKit = (bool)$product->getKit();
 
 $isProductAvailable = $product->isAvailable();
 if (\App::config()->preview) {
     $isProductAvailable = true;
 }
 
-$buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
-$buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
-$sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '';
+$buySender = $request->get('sender');
+$buySender2 = $request->get('sender2');
+$recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '';
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
 
 <div class="bProductSectionLeftCol">
-    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens]) ?>
+    <?= $helper->render('product/__photo', ['product' => $product, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
 
     <div class="bProductDesc<? if (!$creditData['creditIsAllowed'] || $user->getRegion()->getHasTransportCompany()): ?> mNoCredit<? endif ?>" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 
@@ -54,11 +54,11 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
 
             <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
 
-            <?= $helper->render('product/__notification-lowerPrice', ['product' => $product, 'isUserSubscribedToEmailActions' => $isUserSubscribedToEmailActions, 'actionChannelName' => $actionChannelName]) // Узнать о снижении цены ?>
+            <?= $helper->render('product/__lowPriceNotifier', ['product' => $product, 'actionChannelName' => $actionChannelName]) // Узнать о снижении цены ?>
 
             <? if (count($product->getPartnersOffer()) == 0) : ?>
                 <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
-            <? endif; ?>
+            <? endif ?>
 
             <? if ($product->getTagline()): // new Card Properties Begin { ?>
                 <div itemprop="description" class="bProductDescText">
@@ -75,7 +75,6 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
                     'type'     => 'similar',
                     'title'    => 'Похожие товары',
                     'products' => [],
-                    'count'    => null,
                     'limit'    => \App::config()->product['itemsInSlider'],
                     'page'     => 1,
                     'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -83,7 +82,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
                         'name'     => 'retailrocket',
                         'position' => 'ProductMissing',
                     ],
-                    'sender2' => $sender2,
+                    'sender2' => $recommendationSender2,
                 ]) ?>
             <? endif ?>
         <? endif ?>
@@ -119,18 +118,15 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             'title'          => 'Аксессуары',
             'products'       => array_values($accessories),
             'categories'     => $accessoryCategory,
-            'count'          => count($product->getAccessoryId()),
             'limit'          => (bool)$accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
             'page'           => 1,
-            //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
             'gaEvent'        => 'Accessorize',
-            'additionalData' => $additionalData,
             'class'          => (bool)$accessoryCategory ? 'slideItem-3item' : 'slideItem-5item',
             'sender'         => [
                 'name'     => 'enter',
                 'position' => $isProductAvailable ? 'ProductAccessoriesManual' : 'ProductMissing',
             ],
-            'sender2' => $sender2,
+            'sender2' => $recommendationSender2,
         ]) ?>
     <? endif ?>
 
@@ -139,16 +135,14 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             'type'           => 'alsoBought',
             'title'          => 'С этим товаром покупают',
             'products'       => [],
-            'count'          => null,
             'limit'          => \App::config()->product['itemsInSlider'],
             'page'           => 1,
-            'additionalData' => $additionalData,
             'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
             'sender'         => [
                 'name'     => 'retailrocket',
                 'position' => $isProductAvailable ? 'ProductAccessories' : 'ProductMissing', // все правильно - так и надо!
             ],
-            'sender2' => $sender2,
+            'sender2' => $recommendationSender2,
         ]) ?>
     <? endif ?>
 
@@ -162,14 +156,13 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
         <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]) // Характеристики ?>
     <? endif ?>
 
-    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
+    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent]) ?>
 
     <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'     => 'similar',
             'title'    => 'Похожие товары',
             'products' => [],
-            'count'    => null,
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
             'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -177,7 +170,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
                 'name'     => 'retailrocket',
                 'position' => 'ProductSimilar',
             ],
-            'sender2' => $sender2,
+            'sender2' => $recommendationSender2,
         ]) ?>
     <? endif ?>
 
@@ -186,68 +179,57 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
 <div class="bProductSectionRightCol">
 
     <? if ($isProductAvailable): ?>
+        <? if (5 !== $product->getStatusId() && $shopStates): // SITE-3109 ?>
+            <div class="bWidgetBuy bWidgetBuy-shops mWidget js-WidgetBuy">
+                <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product, 'sender'  => $buySender, 'sender2'  => $buySender2, 'location'  => 'product-card']) ?>
+            </div>
+        <? endif ?>
 
-    <? if (5 !== $product->getStatusId() && (bool)$shopStates): // SITE-3109 ?>
-        <div class="bWidgetBuy bWidgetBuy-shops mWidget js-WidgetBuy">
-            <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product, 'sender'  => $buySender, 'sender2'  => $buySender2]) // Доставка ?>
-        </div>
-    <? endif ?>
+        <? if (!$product->isInShopStockOnly() && $product->getIsBuyable() && 5 != $product->getStatusId()): ?>
+            <div class="bWidgetBuy mWidget js-WidgetBuy">
+                <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && 0 == count($kitProducts)): ?>
+                    <?= $helper->render('__spinner', [
+                        'id'        => \View\Id::cartButtonForProduct($product->getId()),
+                        'productId' => $product->getId(),
+                        'location'  => 'product-card',
+                    ]) ?>
+                <? endif ?>
 
-    <? if (!$product->isInShopStockOnly() && $product->getIsBuyable() && 5 != $product->getStatusId()): ?>
-        <div class="bWidgetBuy mWidget js-WidgetBuy">
-            <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && 0 == count($kitProducts)): ?>
-                <?= $helper->render('__spinner', [
-                    'id'        => \View\Id::cartButtonForProduct($product->getId()),
-                    'productId' => $product->getId(),
-                    'location'  => 'product-card',
-                ]) ?>
-            <? endif ?>
+                <?= $helper->render('cart/__button-product', [
+                    'product'  => $product,
+                    'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
+                    'sender'   => (is_array($buySender) ? $buySender : []) + [
+                        'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
+                    ],
+                    'sender2' => $buySender2,
+                    'location' => 'product-card',
+                ]) // Кнопка купить ?>
 
-            <?= $helper->render('cart/__button-product', [
-                'product'  => $product,
-                'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
-                'sender'   => $buySender + [
-                    'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
-                ],
-                'sender2' => $buySender2,
-                'location' => 'product-card',
-            ]) // Кнопка купить ?>
+                <div class="js-showTopBar"></div>
 
-            <div class="js-showTopBar"></div>
+                <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender, 'sender2' => $buySender2, 'location'  => 'product-card']) ?>
 
-            <? if (!count($product->getPartnersOffer()) && (!$isKit || $product->getIsKitLocked())): ?>
-                <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender, 'sender2' => $buySender2]) // Покупка в один клик ?>
-            <? endif ?>
+                <? if (!$product->getKit() || $product->getIsKitLocked()) : ?>
+                    <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
+                <? endif ?>
 
-            <? if (!$isKit || $product->getIsKitLocked()) : ?>
+                <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
+                    <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
+                <? endif ?>
+
+                <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
+            </div>
+        <? elseif (!$isKit || $product->getIsKitLocked()): ?>
+            <div class="bWidgetBuy mWidget js-WidgetBuy">
+                <div class="js-showTopBar"></div>
                 <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
-            <? endif ?>
-
-            <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
-                <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
-            <? endif ?>
-
-            <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
-        </div>
-    <? elseif (!$isKit || $product->getIsKitLocked()): ?>
-        <div class="bWidgetBuy mWidget js-WidgetBuy">
+            </div>
+        <? else: ?>
             <div class="js-showTopBar"></div>
-            <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
-        </div>
+        <? endif ?>
     <? else: ?>
         <div class="js-showTopBar"></div>
     <? endif ?>
-
-    <? else: ?>
-    <div class="js-showTopBar"></div>
-    <? endif ?>
-
-    <?/*= $helper->render('cart/__form-oneClick', [
-        'product' => $product,
-        'region'  => $region,
-        'sender'  => $buySender,
-        'sender2' => $buySender2,
-    ])*/ // Форма покупки в один клик ?>
 
     <? if ($lifeGiftProduct): ?>
         <?= $helper->render('cart/__button-product-lifeGift', ['product' => $lifeGiftProduct]) // Кнопка "Подари жизнь" ?>
@@ -267,7 +249,6 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
         'type'     => 'alsoViewed',
         'title'    => 'С этим товаром также смотрят',
         'products' => [],
-        'count'    => null,
         'limit'    => \App::config()->product['itemsInSlider'],
         'page'     => 1,
         'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -275,7 +256,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             'name'     => 'retailrocket',
             'position' => 'ProductUpSale',
         ],
-        'sender2' => $sender2,
+        'sender2' => $recommendationSender2,
     ]) ?>
 <? endif ?>
 
@@ -284,7 +265,6 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
         'type'      => 'viewed',
         'title'     => 'Вы смотрели',
         'products'  => [],
-        'count'     => null,
         'limit'     => \App::config()->product['itemsInSlider'],
         'page'      => 1,
         'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -293,7 +273,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             'from'     => 'productPage',
             'position' => $isProductAvailable ? 'Viewed' : 'ProductMissing',
         ],
-        'sender2' => $sender2,
+        'sender2' => $recommendationSender2,
     ]) ?>
 <? endif ?>
 

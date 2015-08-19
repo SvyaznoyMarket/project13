@@ -71,6 +71,15 @@ class ShowAction {
             ]));
         }
 
+        // SITE-5770
+        $cartButtonSender = [];
+        if ('all_labels' === $slice->getToken()) {
+            $cartButtonSender = [
+                'from'     => $request->getUri(),
+                'position' => 'Listing',
+            ];
+        }
+
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             return new \Http\JsonResponse([
                 'list'           => (new \View\Product\ListAction())->execute(
@@ -78,7 +87,10 @@ class ShowAction {
                     $productPager,
                     [],
                     $slice->getProductBuyMethod(),
-                    $slice->getShowProductState()
+                    $slice->getShowProductState(),
+                    4,
+                    'compact',
+                    $cartButtonSender
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -93,7 +105,7 @@ class ShowAction {
                     $productSorting
                 ),
                 'page'           => [
-                    'title'      => $slice->getName()
+                    'title' => $slice->getName()
                 ],
                 'countProducts'  => $productPager->count(),
             ]);
@@ -126,6 +138,7 @@ class ShowAction {
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productView', $request->get('view', $category->getProductView()));
         $page->setParam('hasCategoryChildren', !$this->isSeoSlice()); // SITE-3558
+        $page->setParam('cartButtonSender', $cartButtonSender);
         $page->setGlobalParam('shop', $shop);
 
         return new \Http\Response($page->show());
@@ -228,16 +241,15 @@ class ShowAction {
      * @return \Iterator\EntityPager
      */
     private function getProductPager(\Model\Product\Filter $productFilter, array $sliceFiltersForSearchClientRequest, \Model\Product\Sorting $productSorting, $pageNum, \Model\Region\Entity $region = null) {
-        $productIds = [];
         $productCount = 0;
         /** @var \Model\Product\Entity[] $products */
         $products = [];
-        $productRepository = \RepositoryManager::product();
+        $productRepository = \RepositoryManager::product()->useV3()->withoutModels();
         $limit = \App::config()->product['itemsPerPage'];
 
-        $productRepository->prepareIteratorByFilter(array_merge($productFilter->dump(), $sliceFiltersForSearchClientRequest), $productSorting->dump(), ($pageNum - 1) * $limit, $limit, $region, function ($data) use (&$productIds, &$productCount) {
+        $productRepository->prepareIteratorByFilter(array_merge($productFilter->dump(), $sliceFiltersForSearchClientRequest), $productSorting->dump(), ($pageNum - 1) * $limit, $limit, $region, function ($data) use (&$products, &$productCount) {
             if (isset($data['list'][0])) {
-                $productIds = $data['list'];
+                $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $data['list']);
             }
 
             if (isset($data['count'])) {
@@ -248,32 +260,14 @@ class ShowAction {
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        if ($productIds) {
-            $productRepository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                if (is_array($data)) {
-                    foreach ($data as $item) {
-                        $products[] = new \Model\Product\Entity($item);
-                    }
-                }
-            });
-        }
-
+        $productRepository->prepareProductQueries($products, 'media label brand category');
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        if ($products) {
-            $productUis = [];
-            foreach ($products as $product) {
-                $productUis[] = $product->getUi();
+        \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
+            if (isset($data['product_scores'][0])) {
+                \RepositoryManager::review()->addScores($products, $data);
             }
-
-            \RepositoryManager::review()->prepareScoreCollectionByUi($productUis, function($data) use(&$products) {
-                if (isset($data['product_scores'][0])) {
-                    \RepositoryManager::review()->addScores($products, $data);
-                }
-            });
-        }
-
-        $productRepository->prepareProductsMedias($products);
+        });
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 

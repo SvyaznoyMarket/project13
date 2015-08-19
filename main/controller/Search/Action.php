@@ -174,13 +174,10 @@ class Action {
         // вид товаров
         $productView = $request->get('view', $selectedCategory ? $selectedCategory->getProductView() : \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT);
 
-        // товары
-        $productRepository = \RepositoryManager::product();
-        $productRepository->setEntityClass('\\Model\\Product\\Entity');
+        /** @var \Model\Product\Entity[] $products */
+        $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $result['data']);
 
-        $products = $productRepository->getCollectionById($result['data']);
-
-        $productRepository->prepareProductsMedias($products);
+        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($products, 'media label brand category');
 
         $bannerPlaceholder = [];
         \App::scmsClient()->addQuery('category/get/v1', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId(), 'load_inactive' => 1], [], function($data) use (&$bannerPlaceholder) {
@@ -193,6 +190,8 @@ class Action {
         });
 
         \App::scmsClient()->execute();
+
+        \RepositoryManager::review()->addScores($products);
 
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);
@@ -280,63 +279,8 @@ class Action {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        if ($request->get('sender') == 'knockout') return $this->autocompleteForKnockout($request);
-
-        $limit = 5;
-        $keyword = trim(mb_strtolower($request->get('q')));
-        $data = [
-            'product'  => null,
-            'category' => null,
-        ];
-        $mapData = [1 => 'product', 3 => 'category'];
-        $responseData = [];
-
-        if (mb_strlen($keyword) >= 3) {
-            // параметры ядерного запроса
-            $params = ['letters' => $keyword];
-            if (\App::user()->getRegion()) {
-                $params['region_id'] = \App::user()->getRegion()->getId();
-            }
-            \App::coreClientV2()->addQuery('search/autocomplete', $params, [], function($result) use(&$data, $limit, $mapData){
-                foreach ($mapData as $key => $value) {
-                    if (!is_array($result[$key])) continue;
-
-                    $i = 0;
-                    $entity = '\\Model\\Search\\'.ucfirst($value).'\\Entity';
-
-                    foreach ($result[$key] as $item) {
-                        if ($i >= $limit) break;
-
-                        $data[$value][] = new $entity($item);
-                        $i++;
-                    }
-                }
-            }, function ($e) use (&$data, $mapData) {
-                \App::exception()->remove($e);
-                \App::logger()->error($e);
-            });
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
-        }
-
-        if (!(bool)$data['product'] && !(bool)$data['category'] && preg_match('/^enter разработка$/iu', $keyword)) {
-            $responseData = [
-                'success' => true,
-                'content' => \App::templating()->render('search/_autocomplete_easter_egg'),
-            ];
-        } else {
-            $responseData = [
-                'success' => true,
-                'content' => (bool)$data['product'] || (bool)$data['category']
-                    ? \App::templating()->render(
-                        'search/_autocomplete',
-                        ['products' => $data['product'],
-                        'categories' => $data['category'],
-                        'searchQuery' => $keyword]
-                    )
-                    : '',
-            ];
-        }
-        
+        $searchTerm = trim(mb_strtolower($request->query->get('q')));
+        $responseData['result'] = $this->coreRequest($searchTerm, $request->query->get('catId'));
         return new \Http\JsonResponse($responseData);
     }
 
@@ -357,15 +301,6 @@ class Action {
         return $searchQuery;
     }
 
-    private function autocompleteForKnockout(\Http\Request $request) {
-
-        $searchTerm = trim(mb_strtolower($request->query->get('q')));
-
-        $responseData['result'] = $this->coreRequest($searchTerm, $request->query->get('catId'));
-
-        return new \Http\JsonResponse($responseData);
-    }
-
     private function coreRequest($searchQuery, $category = null) {
 
         // Структура выходных данных
@@ -374,8 +309,7 @@ class Action {
             'products' => []
         ];
 
-        // Локальные переменные
-        $productsIds = [];
+        /** @var \Model\Product\Entity[] $products */
         $products = [];
 
         // Параметры для автокомплита (забираем категории)
@@ -406,8 +340,12 @@ class Action {
             \App::logger()->error($e);
         });
 
-        \App::coreClientV2()->addQuery('listing/list', $params2, [], function ($result) use(&$productsIds){
-            $productsIds = (array)@$result['list'];
+        \App::searchClient()->addQuery('v2/listing/list', $params2, [], function ($result) use(&$products){
+            if (isset($result['list']) && is_array($result['list'])) {
+                $products = array_map(function($productId) {
+                    return new \Model\Product\Entity(['id' => $productId]);
+                }, $result['list']);
+            }
         }, function ($e) {
             \App::exception()->remove($e);
             \App::logger()->error($e);
@@ -415,13 +353,13 @@ class Action {
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
-        if (!empty($productsIds)) $products = \RepositoryManager::product()->getCollectionById($productsIds, null, false);
+        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($products, 'media');
 
         foreach ($products as $product) {
             $data['products'][] = [
-                'name'  => $product->getName(),
+                'name'  => html_entity_decode($product->getName()),
                 'link'  => $product->getLink(),
-                'image'   => $product->getImageUrl(0)
+                'image' => $product->getMainImageUrl('product_60'),
             ];
         }
 

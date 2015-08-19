@@ -1,6 +1,6 @@
 <?
 /**
- * @var $product       \Model\Product\ExpandedEntity
+ * @var $product       \Model\Product\Entity
  *
  */
 

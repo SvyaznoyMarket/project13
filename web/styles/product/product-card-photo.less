@@ -1,0 +1,223 @@
+// изображения товара, варианта просмотра товара
+.product-card-photo {
+    position: relative;
+
+    text-align: center;
+    &__img {
+        .inline-block(middle);
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    }
+    &__overlay {
+        font-size: 26px;
+        font-weight: bold;
+
+        position: absolute;
+        z-index: 99;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+        padding-top: 47%;
+
+        text-align: center;
+        text-transform: uppercase;
+
+        color: #8c8c8c;
+
+        .text-shadow(0 0 5px #fff);
+        .box-sizing(border-box);
+        &:after {
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            content: '';
+
+            background: #fff;
+
+            .opacity(.75);
+        }
+    }
+    &-thumbs {
+        position: relative;
+
+        overflow: hidden;
+
+        max-width: 235px;
+
+        height: 40px;
+
+        .noselect();
+        .inline-block-middle();
+
+
+        &__cnt{
+            .noselect();
+            .inline-block-middle();
+            padding: 0 5px 0 12px;
+            position: relative;
+
+            /*.product-card-photo-thumbs__btn {
+                visibility: visible;
+                overflow: visible;
+
+                .opacity(.5);
+                &--disabled {
+                    visibility: hidden;
+                    overflow: hidden;
+
+                    .opacity(0);
+                }
+                &:hover {
+                    .opacity(.9);
+                }
+            }*/
+            &--slides {
+                .product-card-photo-thumbs__btn {
+                    visibility: visible;
+                    overflow: visible;
+
+                    .opacity(.5);
+                    &--disabled {
+                        visibility: hidden;
+                        overflow: hidden;
+
+                        .opacity(0);
+                    }
+                    &:hover {
+                        .opacity(.9);
+                    }
+                }
+            }
+        }
+        &-list {
+            font-size: 0;
+
+            margin: 0;
+
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        &__i {
+            width: 38px;
+            height: 38px;
+            margin: 0 7px 0 0;
+
+            cursor: pointer;
+            text-align: center;
+
+            border: 1px solid transparent;
+            background-color: #fff;
+
+            .inline-block(middle);
+            .transition(all .1s ease-out);
+            .rounded(3px);
+            &--act ,
+            &:hover {
+                border-color: #f99b1c;
+            }
+            &:after {
+                width: 0;
+                height: 100%;
+
+                content: '';
+
+                .inline-block(middle);
+            }
+        }
+        &__img {
+            max-width: 95%;
+            max-height: 95%;
+
+            .inline-block(middle);
+            .rounded(3px);
+        }
+        &__btn {
+            position: absolute;
+            top: 0;
+
+            visibility: hidden;
+            overflow: hidden;
+
+            width: 10px;
+            height: 40px;
+
+            cursor: pointer;
+
+            background-color: @white;
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+
+            .opacity(0);
+            .transition(all .2s ease-out);
+            &--l {
+                left: 0;
+
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAQCAYAAADagWXwAAAA0UlEQVQYGW3BoUrGYBQG4Hf8roj+RRSzDoYsyPed877HLQkWy4LVCxDBbPZWRCy2XYHNC9AgCEaLxWjW+DH2PMACA2os6bpuS+6fyvkCJTOr5f4g8gXABgqVzC6D/DnJ+QglMzsU+S2za5SaplmH9CzyEUCFwkrudyI/hmHYQ6nv+ybIX+Z8jjmSZ2H2pZSOsWAl8incJ0k7mCN5EO7v7n5rZjXmJPXh/sacr7Cg8pxvwv2V/zDXtu22yPuQpohYYy6ltBvuk7sLS07J/XEcN/8ArJswAJhcyRwAAAAASUVORK5CYII=');
+            }
+            &--r {
+                right: 0;
+
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAQCAYAAADagWXwAAAA1UlEQVR42m2QvQ4BQRSFR9AI2whRs8lGtpD5uXfsVhKNZgutBxCJWutZRDQ6T6DzABQSiVKhUqqdKcfs6SbfOffcO8JJC1EXZWKl5mzMM03TZhmvMdEFhr3WOpwwVmpoiT6s9QLPSmAAWCH9RnoQQJfA+INlPsdxHAU0z/MuDA9UbPGsBgZSagb4zbIsDrulHFmtX0Q09QFz2xpzwuijN9bdaIzZAN6R6v93LQFuSGc+gACuRqm19wnW2gi3uZ5dkiQtL4UedktIKTvB6kVRNCZEPVGiH+yGL//EYhxNAAAAAElFTkSuQmCC');
+            }
+            &--disabled {
+                visibility: hidden;
+                overflow: hidden;
+
+                .opacity(0);
+            }
+        }
+    }
+}
+
+.product-card-media {
+    font-size: 0;
+
+    position: relative;
+
+    text-align: center;
+
+    .inline-block(middle);
+    &__i {
+        width: 38px;
+        height: 38px;
+        margin: 0 5px;
+
+        cursor: pointer;
+
+        border-color: #3d3d3d;
+        background: #3d3d3d;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+
+        .inline-block();
+        .rounded(3px);
+        &--video {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAPCAQAAABHeoekAAAAX0lEQVQY02P4f+S/z39GBtzgPwhc+h/znwWfAhC4/z/nPyc+BSDw6n/Nf0F8CkDg0/+e/1L4FIDAz/9z/qvhUwACf/+v+W+CTwEElJNpAl434PUF3nDAG5J444JAbAIAfdgFEncDVMcAAAAASUVORK5CYII=');
+        }
+        &--3d {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAhCAQAAACVHojcAAACDklEQVQ4y8XTTWgOcBwH8N+zPY/HmBnjsKTh4DAHrzkhk5XIDjKHpYY0byeTl1JyICIHMpLiJMpJMprX8RDRmDFvYwfmoCQKGfo42OZ5Fme/6//T/+X7//0iskq+Ko3Gxb/KAFU++KHFtL+DArU67fbAWhfNl+gPUtZ7oUKFjBIbNFsmLxukbdFuSoQKGUOkLHPJTMleMNAuz4yPkFSjzawI+Za4aU7PTg5qMyZCWrVXMj0oYZMbyuWF49qURii0yUtzFFjkimr58mzVaXS46blh0vZoNTEiQtJqzdZIqvNRWTjiqmsOuW1s3/XzLNFkp3t+/iY13nhrdE4ICcu9t8273+SSVs1OKMgiU512zV3dysJDT5Uo0eickT1grgv2KbLDF2WhQbvSCCMd02KClBlu2KJYvr2eGBURGtwyNEKhjV7LeGyxlIStLhsrEREGO+W8QRFSarWbGxFhnut96UYodtYZxX1/lLBQkwUGZD+yyElXlKqQUaTGZfVS/dthuMNarHHHQs3qpP/WVIU2++ybR6pyeiUHJVU7b3r8t5IwxVK1yiMiVKo024ScCTDPJ/d1YWUEvunwRYfK7ETSESZhfwTaIozQ4UfOXDqhS4sxvSTCdtRkk6NadVuVReqxtn9s3z3NIo2Y3Lu4wQHVdqIpAl3WOY1zf1phha/gkfII0K1Lg8LcQ0YZ8a/cfgGmddnPeYHX9QAAAABJRU5ErkJggg==');
+        }
+    }
+}
+
+.product-card-photo-sticker {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.product-card-photo-sticker-brand {
+    position: absolute;
+    top: 0;
+    right: 0;
+}

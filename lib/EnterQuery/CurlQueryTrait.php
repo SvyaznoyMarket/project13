@@ -120,6 +120,7 @@ trait CurlQueryTrait
                         'data' => $data,
                         'info' => $query->response->info,
                         'header' => null,
+                        'responseBodyLength' => is_string($query->response->body) ? strlen($query->response->body) : 0,
                         'response' => $query->response->body,
                         'retryTimeout' => null,
                         'retryCount' => null,
@@ -172,6 +173,7 @@ trait CurlQueryTrait
                             'data' => $data,
                             'info' => $query->response->info,
                             'header' => $headers,
+                            'responseBodyLength' => is_string($query->response->body) ? strlen($query->response->body) : 0,
                             'timeout' => $query->request->options[CURLOPT_TIMEOUT_MS],
                             'startAt' => $startedAt,
                             'endAt' => $endAt,
@@ -250,6 +252,7 @@ trait CurlQueryTrait
             },
             CURLOPT_NOSIGNAL => true,
             CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_0, // для решения проблемы {"code":56,"message":"Problem (2) in the Chunked-Encoded data"}
             CURLOPT_ENCODING => 'gzip,deflate',
 
             CURLOPT_URL => $url,

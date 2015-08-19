@@ -1,26 +1,20 @@
 /*
- * Copyright (C) 1999-2009 Jive Software. All rights reserved.
+ * $ lightbox_me
+ * By: Buck Wilson
+ * Version : 2.4
  *
- * This software is the proprietary information of Jive Software. Use is subject to license terms.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
-/*
-* $ lightbox_me
-* By: Buck Wilson
-* Version : 2.2 + fix by ivn
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
 
 
 (function($) {
@@ -31,228 +25,189 @@
 
             var
                 opts = $.extend({}, $.fn.lightbox_me.defaults, options),
-                $overlay = $('div.' + opts.classPrefix + '_overlay'),
+                $overlay = $(),
                 $self = $(this),
-                $iframe = $('iframe#lb_iframe'),
-                ie6 = ($.browser.msie && $.browser.version < 7);
+                $iframe = $('<iframe id="foo" style="z-index: ' + (opts.zIndex + 1) + ';border: none; margin: 0; padding: 0; position: absolute; width: 100%; height: 100%; top: 0; left: 0; filter: mask();"/>');
 
-            if (($overlay.length > 0) && opts.removeOtherOnCreate) {
-                $overlay[0].removeModal(); // if the overlay exists, then a modal probably exists. Ditch it!
-            } else {
-                $overlay =  $('<div class="' + opts.classPrefix + '_overlay" style="display:none;"/>'); // otherwise just create an all new overlay.
-            }
-
-            $iframe = ($iframe.length > 0) ? $iframe : $iframe = $('<iframe id="lb_iframe" style="z-index: ' + (opts.zIndex + 1) + '; display: none; border: none; margin: 0; padding: 0; position: absolute; width: 100%; height: 100%; top: 0; left: 0;"/>');
-
-            /*----------------------------------------------------
-               DOM Building
-            ---------------------------------------------------- */
-            if (ie6) {
-                var src = /^https/i.test(window.location.href || '') ? 'javascript:false' : 'about:blank';
-                $iframe.attr('src', src);
-                $('body').append($iframe);
-            } // iframe shim for ie6, to hide select elements
-            if( opts.reallyBig ) {
-            	$('body').append( $('<div>').addClass('bPopupWrap').append($self) ).append($overlay)
-            } else {
-            	$('body').append($self).append($overlay)
-            }
-
-            /*----------------------------------------------------
-               CSS stuffs
-            ---------------------------------------------------- */
-			function setHeight( jnode ) {
-				var jHeight = ($(window).height() - 80);
-				if( jHeight < 500 ) 
-					jHeight = 500
-				jnode.css('height', jHeight)
-			}
-            // set css of the modal'd window
-            
-			if( opts.reallyBig ) { // fix for mediaLibrary by IVN
-				$self.css({marginLeft: '50px', marginRight:  '50px' });
-				setWrapPosition( $self.parent() );
-				setHeight( $self );
-			} else {
-				$self.css({position: 'fixed'}) //IVN fixed on repeated opening
-            	setSelfPosition();
-            	$self.css({left: '50%', marginLeft: ($self.outerWidth() / 2) * -1,  zIndex: (opts.zIndex + 3) });
-			}
-            // set css of the overlay
-
-            setOverlayHeight(); // pulled this into a function because it is called on window resize.
-            //IVN $overlay.css({ position: 'absolute', width: '100%', top: 0, left: 0, right: 0, bottom: 0, zIndex: (opts.zIndex + 2) })
-            $overlay.css({ position: 'fixed', width: '100%', height:'100%', top: 0, left: 0, zIndex: (opts.zIndex + 2) })
-                    .css(opts.overlayCSS);
-
-            /*----------------------------------------------------
-               Animate it in.
-            ---------------------------------------------------- */
-            if( opts.autofocus ) {
-                var cusLoad = opts.onLoad
-                opts.onLoad = function() {
-                    cusLoad()
-                    $self.find('input:text').first().focus()
+            if (opts.showOverlay) {
+                //check if there's an existing overlay, if so, make subequent ones clear
+                var $currentOverlays = $(".js_lb_overlay:visible");
+                if ($currentOverlays.length > 0){
+                    $overlay = $('<div class="lb_overlay_clear js_lb_overlay"/>');
+                } else {
+                    $overlay = $('<div class="' + opts.classPrefix + '_overlay js_lb_overlay"/>');
                 }
             }
-            if ($overlay.is(":hidden")) {
+
+            /*----------------------------------------------------
+             DOM Building
+             ---------------------------------------------------- */
+            $('body').append($self.hide()).append($overlay);
+
+
+            /*----------------------------------------------------
+             Overlay CSS stuffs
+             ---------------------------------------------------- */
+
+            // set css of the overlay
+            if (opts.showOverlay) {
+                setOverlayHeight(); // pulled this into a function because it is called on window resize.
+                $overlay.css({ position: 'absolute', width: '100%', top: 0, left: 0, right: 0, bottom: 0, zIndex: (opts.zIndex + 2), display: 'none' });
+                if (!$overlay.hasClass('lb_overlay_clear')){
+                    $overlay.css(opts.overlayCSS);
+                }
+            }
+
+            /*----------------------------------------------------
+             Animate it in.
+             ---------------------------------------------------- */
+            //
+            if (opts.showOverlay) {
                 $overlay.fadeIn(opts.overlaySpeed, function() {
-                    $self[opts.appearEffect](opts.lightboxSpeed, function() { setOverlayHeight(); opts.onLoad()});
+                    setSelfPosition();
+                    $self[opts.appearEffect](opts.lightboxSpeed, function() { setOverlayHeight(); setSelfPosition(); opts.onLoad()});
                 });
             } else {
-                $self[opts.appearEffect](opts.lightboxSpeed, function() { setOverlayHeight(); opts.onLoad()});
+                setSelfPosition();
+                $self[opts.appearEffect](opts.lightboxSpeed, function() { opts.onLoad()});
             }
 
             /*----------------------------------------------------
-               Bind Events
-            ---------------------------------------------------- */
+             Hide parent if parent specified (parentLightbox should be jquery reference to any parent lightbox)
+             ---------------------------------------------------- */
+            if (opts.parentLightbox) {
+                opts.parentLightbox.fadeOut(200);
+            }
+
+
+            /*----------------------------------------------------
+             Bind Events
+             ---------------------------------------------------- */
+
             $(window).resize(setOverlayHeight)
-                     .resize( function(){ ( opts.reallyBig ) ? setWrapPosition( $self.parent() ) : setSelfPosition() })//IVN
-                     .resize( function(){ if( opts.reallyBig ) setHeight( $self ) } )
-                     .scroll( function(){ if ( !opts.reallyBig ) setSelfPosition() })//IVN
-                     .keydown(observeEscapePress);
-			$('body').addClass('showModal');
-            $self.find(opts.closeSelector).click(function() { removeModal(true); return false; });
-            $overlay.click( function(e) { 
-            	e.preventDefault();
-            	return false;
-            });
-            function overlayclick () {
-            	$overlay.click( function() { 
-            		if(opts.closeClick){ removeModal(true); return false;} 
-            	})
+                .resize(setSelfPosition)
+                .scroll(setSelfPosition);
+
+            $(window).bind('keyup.lightbox_me', observeKeyPress);
+
+            if (opts.closeClick) {
+                $overlay.click(function(e) { closeLightbox(); e.preventDefault; });
             }
-            setTimeout( overlayclick,500 );
+            $self.delegate(opts.closeSelector, "click", function(e) {
+                closeLightbox(); e.preventDefault();
+            });
+            $self.bind('close', closeLightbox);
+            $self.bind('reposition', setSelfPosition);
 
 
-            $self.bind('close.lme', function() { removeModal(true) });
-            $self.bind('resize.lme', function(){ ( opts.reallyBig ) ? setWrapPosition( $self.parent() ) : setSelfPosition() });//IVN
-            $overlay[0].removeModal = removeModal;
 
-            /*----------------------------------------------------------------------------------------------------------------------------------------
-              ---------------------------------------------------------------------------------------------------------------------------------------- */
+            /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+             -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
 
             /*----------------------------------------------------
-               Private Functions
-            ---------------------------------------------------- */
+             Private Functions
+             ---------------------------------------------------- */
 
+            /* Remove or hide all elements */
+            function closeLightbox() {
+                var s = $self[0].style;
+                if (opts.destroyOnClose) {
+                    $self.add($overlay).remove();
+                } else {
+                    $self.add($overlay).hide();
+                }
 
-            function removeModal(removeO) {
-                // fades & removes modal, then unbinds events
-                $self[opts.disappearEffect](opts.lightboxDisappearSpeed, function() {
+                //show the hidden parent lightbox
+                if (opts.parentLightbox) {
+                    opts.parentLightbox.fadeIn(200);
+                }
+                if (opts.preventScroll) {
+                    $('body').css('overflow', '');
+                }
+                $iframe.remove();
 
-                    if (removeO) {
-                      removeOverlay();
-                    }
+                // clean up events.
+                $self.undelegate(opts.closeSelector, "click");
+                $self.unbind('close', closeLightbox);
+                $self.unbind('repositon', setSelfPosition);
 
-                    opts.destroyOnClose ? $self.remove() : $self.hide()
-                    if( opts.reallyBig ) { $('.bPopupWrap').remove() }
-
-                    $self.find(opts.closeSelector).unbind('click');
-                    $self.unbind('.lme');//IVN
-                    //$self.unbind('close');
-                    //$self.unbind('resize');
-                    $(window).unbind('scroll', setSelfPosition);
-                    $(window).unbind('resize', setSelfPosition);
-
-					$('body').removeClass('showModal');
-                });
+                $(window).unbind('resize', setOverlayHeight);
+                $(window).unbind('resize', setSelfPosition);
+                $(window).unbind('scroll', setSelfPosition);
+                $(window).unbind('keyup.lightbox_me');
+                opts.onClose();
             }
 
 
-            function removeOverlay() {
-                // fades & removes overlay, then unbinds events
-                $overlay.fadeOut(opts.overlayDisappearSpeed, function() {
-                    $(window).unbind('resize', setOverlayHeight);
-
-                    $overlay.remove();
-                    $overlay.unbind('click');
-
-
-                    opts.onClose();
-
-                })
+            /* Function to bind to the window to observe the escape/enter key press */
+            function observeKeyPress(e) {
+                if((e.keyCode == 27 || (e.DOM_VK_ESCAPE == 27 && e.which==0)) && opts.closeEsc) closeLightbox();
             }
 
-
-
-            /* Function to bind to the window to observe the escape key press */
-            function observeEscapePress(e) {
-                if((e.keyCode == 27 || (e.DOM_VK_ESCAPE == 27 && e.which==0)) && opts.closeEsc) removeModal(true);
-            }
 
             /* Set the height of the overlay
-                    : if the document height is taller than the window, then set the overlay height to the document height.
-                    : otherwise, just set overlay height: 100%
-            */
+             : if the document height is taller than the window, then set the overlay height to the document height.
+             : otherwise, just set overlay height: 100%
+             */
             function setOverlayHeight() {
                 if ($(window).height() < $(document).height()) {
                     $overlay.css({height: $(document).height() + 'px'});
+                    $iframe.css({height: $(document).height() + 'px'});
                 } else {
                     $overlay.css({height: '100%'});
-                    if (ie6) {$('html,body').css('height','100%'); } // ie6 hack for height: 100%; TODO: handle this in IE7
                 }
             }
 
-            /* Set the position of the modal'd window ($self)
-                    : if $self is taller than the window, then make it absolutely positioned
-                    : otherwise fixed
-            */
-            function setWrapPosition( $node ) {//IVN
-            	var s = $node[0].style;
-            	//var topOffset = $(document).scrollTop() + 40;
-            	var topOffset = window.pageYOffset;
-            	if (! topOffset ) 
-            		topOffset = document.documentElement.scrollTop ;
-				$node.css({position: 'absolute', top: (topOffset + 40)*1 + 'px', marginTop: 0})
-				if (ie6) {
-					s.removeExpression('top');
-				}
-            }
 
+            /* Set the position of the modal'd window ($self)
+             : if $self is taller than the window, then make it absolutely positioned
+             : otherwise fixed
+             */
             function setSelfPosition() {
                 var s = $self[0].style;
 
-                if (($self.height() + 80  >= $(window).height() || !opts.sticky) && ($self.css('position') != 'absolute' || ie6)) {
+                // reset CSS so width is re-calculated for margin-left CSS
+                $self.css({left: '50%', marginLeft: ($self.outerWidth() / 2) * -1,  zIndex: (opts.zIndex + 3) });
+
+
+                /* we have to get a little fancy when dealing with height, because lightbox_me
+                 is just so fancy.
+                 */
+
+                // if the height of $self is bigger than the window and self isn't already position absolute
+                if (($self.height() + 80  >= $(window).height()) && ($self.css('position') != 'absolute')) {
+
+                    // we are going to make it positioned where the user can see it, but they can still scroll
+                    // so the top offset is based on the user's scroll position.
                     var topOffset = $(document).scrollTop() + 40;
                     $self.css({position: 'absolute', top: topOffset + 'px', marginTop: 0})
-                    if (ie6) {
-                        s.removeExpression('top');
-                    }
-                } else if ($self.height()+ 80  < $(window).height() && opts.sticky) {
-                    if (ie6) {
-                        s.position = 'absolute';
-                        if (opts.centered) {
-                            s.setExpression('top', '(document.documentElement.clientHeight || document.body.clientHeight) / 2 - (this.offsetHeight / 2) + (blah = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop) + "px"')
-                            s.marginTop = 0;
-                        } else {
-                            var top = (opts.modalCSS && opts.modalCSS.top) ? parseInt(opts.modalCSS.top) : 0;
-                            s.setExpression('top', '((blah = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop) + '+top+') + "px"')
-                        }
+                } else if ($self.height()+ 80  < $(window).height()) {
+                    //if the height is less than the window height, then we're gonna make this thing position: fixed.
+                    if (opts.centered) {
+                        $self.css({ position: 'fixed', top: '50%', marginTop: ($self.outerHeight() / 2) * -1})
                     } else {
-                        if (opts.centered) {
-                            $self.css({ position: 'fixed', top: '50%', marginTop: ($self.outerHeight() / 2) * -1})
-                        } else {
-                            $self.css({ position: 'fixed'}).css(opts.modalCSS);
-                        }
+                        $self.css({ position: 'fixed'}).css(opts.modalCSS);
+                    }
+                    if (opts.preventScroll) {
+                        $('body').css('overflow', 'hidden');
                     }
                 }
             }
-        });
-    };
 
+        });
+
+
+
+    };
 
     $.fn.lightbox_me.defaults = {
 
-        // animation when appears
+        // animation
         appearEffect: "fadeIn",
-        overlaySpeed: 300,
-        lightboxSpeed: "fast",
-
-        // animation when dissapears
-        disappearEffect: "fadeOut",
-        overlayDisappearSpeed: 300,
-        lightboxDisappearSpeed: "fast",
+        appearEase: "",
+        overlaySpeed: 250,
+        lightboxSpeed: 300,
 
         // close
         closeSelector: ".close",
@@ -261,23 +216,21 @@
 
         // behavior
         destroyOnClose: false,
+        showOverlay: true,
+        parentLightbox: false,
+        preventScroll: false,
 
         // callbacks
         onLoad: function() {},
         onClose: function() {},
-        removeOtherOnCreate: true, // удалять другие окна при создании
-        autofocus: false, 
 
         // style
         classPrefix: 'lb',
         zIndex: 999,
         centered: false,
-		sticky: true,
-        modalCSS: {top: '40px'},
-        overlayCSS: {background: 'black', opacity: .4}
+        modalCSS: {top: '70px'},
+        overlayCSS: {background: 'black', opacity: .3}
     }
-
-
 })(jQuery);
 /**
  * Copyright (c) 2007-2013 Ariel Flesler - aflesler<a>gmail<d>com | http://flesler.blogspot.com
@@ -538,45 +491,6 @@ $.fn.infiniteCarousel = function () {
     };
 
 })(jQuery);
-/*
-* jQuery.fn.typewriter( speed, callback );
-*
-* Typewriter, writes your text in a flow
-*
-* USAGE:
-* $('.element').typewriter( speed, callback );
-*
-*
-* Version 1.0.1
-* www.labs.skengdon.com/typewriter/
-* www.labs.skengdon.com/typewriter/js/typewriter.min.js
-*/
-;(function($){
-	$.fn.typewriter = function( speed, callback ) {
-		if ( typeof callback !== 'function' ) callback = function(){};
-		var write = function( e, text, time ) {
-			var next = $(e).text().length + 1;
-			if ( next <= text.length ) {
-				$(e).text( text.substr( 0, next ) );
-				setTimeout( function( ) {
-					write( e, text, time );
-				}, time);
-			} else {
-				e.callback();
-			}
-		};
-		return this.each(function() {
-			this.callback = callback;
-			var text = $(this).text();
-			var time = speed/text.length;
-			
-			$(this).text('');
-			
-			write( this, text, time )
-		});
-	}
-}(jQuery));
-
 /*
  jQuery Masked Input Plugin
  Copyright (c) 2007 - 2014 Josh Bush (digitalbush.com)
@@ -983,10 +897,113 @@ $.fn.infiniteCarousel = function () {
 
 })(jQuery);
 /*
+ jQuery deparam is an extraction of the deparam method from Ben Alman's jQuery BBQ
+ http://benalman.com/projects/jquery-bbq-plugin/
+ */
+;(function ($) {
+    $.deparam = function (params, coerce) {
+        var obj = {},
+            coerce_types = { 'true': !0, 'false': !1, 'null': null };
+
+        // Iterate over all name=value pairs.
+        $.each(params.replace(/\+/g, ' ').split('&'), function (j,v) {
+            var param = v.split('='),
+                key = decodeURIComponent(param[0]),
+                val,
+                cur = obj,
+                i = 0,
+
+            // If key is more complex than 'foo', like 'a[]' or 'a[b][c]', split it
+            // into its component parts.
+                keys = key.split(']['),
+                keys_last = keys.length - 1;
+
+            // If the first keys part contains [ and the last ends with ], then []
+            // are correctly balanced.
+            if (/\[/.test(keys[0]) && /\]$/.test(keys[keys_last])) {
+                // Remove the trailing ] from the last keys part.
+                keys[keys_last] = keys[keys_last].replace(/\]$/, '');
+
+                // Split first keys part into two parts on the [ and add them back onto
+                // the beginning of the keys array.
+                keys = keys.shift().split('[').concat(keys);
+
+                keys_last = keys.length - 1;
+            } else {
+                // Basic 'foo' style key.
+                keys_last = 0;
+            }
+
+            // Are we dealing with a name=value pair, or just a name?
+            if (param.length === 2) {
+                val = decodeURIComponent(param[1]);
+
+                // Coerce values.
+                if (coerce) {
+                    val = val && !isNaN(val)              ? +val              // number
+                        : val === 'undefined'             ? undefined         // undefined
+                        : coerce_types[val] !== undefined ? coerce_types[val] // true, false, null
+                        : val;                                                // string
+                }
+
+                if ( keys_last ) {
+                    // Complex key, build deep object structure based on a few rules:
+                    // * The 'cur' pointer starts at the object top-level.
+                    // * [] = array push (n is set to array length), [n] = array if n is
+                    //   numeric, otherwise object.
+                    // * If at the last keys part, set the value.
+                    // * For each keys part, if the current level is undefined create an
+                    //   object or array based on the type of the next keys part.
+                    // * Move the 'cur' pointer to the next level.
+                    // * Rinse & repeat.
+                    for (; i <= keys_last; i++) {
+                        key = keys[i] === '' ? cur.length : keys[i];
+                        cur = cur[key] = i < keys_last
+                            ? cur[key] || (keys[i+1] && isNaN(keys[i+1]) ? {} : [])
+                            : val;
+                    }
+
+                } else {
+                    // Simple key, even simpler rules, since only scalars and shallow
+                    // arrays are allowed.
+
+                    if ($.isArray(obj[key])) {
+                        // val is already an array, so push on the next value.
+                        obj[key].push( val );
+
+                    } else if (obj[key] !== undefined) {
+                        // val isn't an array, but since a second value has been specified,
+                        // convert val into an array.
+                        obj[key] = [obj[key], val];
+
+                    } else {
+                        // val is a scalar.
+                        obj[key] = val;
+                    }
+                }
+
+            } else if (key) {
+                // No value was defined, so set something meaningful.
+                obj[key] = coerce
+                    ? undefined
+                    : '';
+            }
+        });
+
+        return obj;
+    };
+})(jQuery);
+
+/*
  *	jQuery elevateZoom 2.5.6
  *	+ fix by Alexandr Zaytcev:
- * 				- mLoading, when swap image
- * 				- disableZoom option
+ * 				- add disableZoom option
+ * 	+ fix by Mihail Haritonov:
+ *              - add imageContainer option
+ *              - remove gallery option (because it works with errors, see SITE-4463 for details)
+ *              - remove galleryActiveClass option
+ *              - remove onImageSwap option
+ *              - remove onImageSwapComplete option
  *
  *	Demo's and documentation:
  *	www.elevateweb.co.uk/image-zoom
@@ -1011,1058 +1028,944 @@ if ( typeof Object.create !== 'function' ) {
 
 (function( $, window, document, undefined ) {
 	var ElevateZoom = {
-			init: function( options, elem ) {
-				var self = this;
+		init: function( options, elem ) {
+			var self = this;
 
-				self.elem = elem;
-				self.$elem = $( elem );
+			self.elem = elem;
+			self.$elem = $( elem );
 
-				self.imageSrc = self.$elem.data("zoom-image") ? self.$elem.data("zoom-image") : self.$elem.attr("src");
+			self.imageSrc = self.$elem.data("zoom-image") ? self.$elem.data("zoom-image") : self.$elem.attr("src");
 
-				self.options = $.extend( {}, $.fn.elevateZoom.options, options );
+			self.options = $.extend( {}, $.fn.elevateZoom.options, options );
 
-				//TINT OVERRIDE SETTINGS
-				if(self.options.tint) {
-					self.options.lensColour = "none", //colour of the lens background
-					self.options.lensOpacity =  "1" //opacity of the lens
-				}
-				//INNER OVERRIDE SETTINGS
-				if(self.options.zoomType == "inner") {self.options.showLens = false;}
-
-
-				//Remove alt on hover
-
-				self.$elem.parent().removeAttr('title').removeAttr('alt');
-
-				self.zoomImage = self.imageSrc;
-
-				self.refresh( 1 );
+			//TINT OVERRIDE SETTINGS
+			if(self.options.tint) {
+				self.options.lensColour = "none", //colour of the lens background
+				self.options.lensOpacity =  "1" //opacity of the lens
+			}
+			//INNER OVERRIDE SETTINGS
+			if(self.options.zoomType == "inner") {self.options.showLens = false;}
 
 
+			//Remove alt on hover
 
-				//Create the image swap from the gallery
-				$('#'+self.options.gallery + ' a').click( function(e) {
+			self.$elem.parent().removeAttr('title').removeAttr('alt');
 
-					self.$elem.addClass('mLoader');
-					self.$elem.attr("src","");
-					//Set a class on the currently active gallery image
-					if ( self.options.galleryActiveClass ) {
-						$('#'+self.options.gallery + ' a').removeClass(self.options.galleryActiveClass);
-						$(this).addClass(self.options.galleryActiveClass);
-					}
-					//stop any link on the a tag from working
-					e.preventDefault();
+			self.zoomImage = self.imageSrc;
 
-					//call the swap image function
-					if ( $(this).data("zoom-image") ) {
-						self.zoomImagePre = $(this).data("zoom-image");
-					}
-					else {
-						self.zoomImagePre = $(this).data("image");
-					}
+			//get dimensions of the non zoomed image
+			self.nzWidth = (self.options.$imageContainer || self.$elem).width();
+			self.nzHeight = (self.options.$imageContainer || self.$elem).height();
 
-					self.swaptheimage($(this).data("image"), self.zoomImagePre);
-					return false;
-				});
+			self.imageWidth = self.$elem.width();
+			self.imageHeight = self.$elem.height();
 
-			},
+			//get offset of the non zoomed image
+			self.nzOffset = (self.options.$imageContainer || self.$elem).offset();
 
-			refresh: function( length ) {
-				var self = this;
+			self.loadLargeImageAndStartZoom();
+		},
 
-				setTimeout(function() {
-					self.fetch(self.imageSrc);
-
-				}, length || self.options.refresh );
-			},
-
-			fetch: function(imgsrc) {
+		loadLargeImageAndStartZoom: function() {
+			var self = this;
+			setTimeout(function() {
 				//get the image
-				var self = this;
 				var newImg = new Image();
 				newImg.onload = function() {
 					//set the large image dimensions - used to calculte ratio's
-					self.largeWidth = newImg.width;
-					self.largeHeight = newImg.height;
+					self.largeImageWidth = newImg.width;
+					self.largeImageHeight = newImg.height;
+					self.largeContainerWidth = newImg.width + (self.nzWidth - self.imageWidth) * (newImg.width / self.imageWidth);
+					self.largeContainerHeight = newImg.height + (self.nzHeight - self.imageHeight) * (newImg.height / self.imageHeight);
 					//once image is loaded start the calls
 					self.startZoom();
-					self.currentImage = self.imageSrc;
 					//let caller know image has been loaded
 					self.options.onZoomedImageLoaded(self.$elem);
-				}
-				newImg.src = imgsrc; // this must be done AFTER setting onload
+				};
+				newImg.src = self.imageSrc; // this must be done AFTER setting onload
+			}, 1);
+		},
 
-				return;
+		startZoom: function( ) {
+			var self = this;
 
-			},
+			//calculate the width ratio of the large/small image
+			self.widthRatio = (self.largeContainerWidth/self.options.zoomLevel) / self.nzWidth;
+			self.heightRatio = (self.largeContainerHeight/self.options.zoomLevel) / self.nzHeight;
 
-			startZoom: function( ) {
-				var self = this;
-				//get dimensions of the non zoomed image
-				self.nzWidth = self.$elem.width();
-				self.nzHeight = self.$elem.height();
-
-				//get offset of the non zoomed image
-				self.nzOffset = self.$elem.offset();
-				//calculate the width ratio of the large/small image
-				self.widthRatio = (self.largeWidth/self.options.zoomLevel) / self.nzWidth;
-				self.heightRatio = (self.largeHeight/self.options.zoomLevel) / self.nzHeight;
-
-				//if window zoom
-				if(self.options.zoomType == "window") {
-					self.zoomWindowStyle = "overflow: hidden;"
-						+ "background-position: 0px 0px;text-align:center;"
-						+ "background-color: " + String(self.options.zoomWindowBgColour)
-						+ ";width: " + String(self.options.zoomWindowWidth) + "px;"
-						+ "height: " + String(self.options.zoomWindowHeight)
-						+ "px;float: left;"
-						+ "background-size: "+ self.largeWidth/self.options.zoomLevel+ "px " +self.largeHeight/self.options.zoomLevel + "px;"
-						+ "display: none;z-index:100"
-						+ "px;border: " + String(self.options.borderSize)
-						+ "px solid " + self.options.borderColour
-						+ ";background-repeat: no-repeat;"
-						+ "position: absolute;";
-				}
-				//if inner  zoom
-				if(self.options.zoomType == "inner") {
-					self.zoomWindowStyle = "overflow: hidden;"
-						+ "background-position: 0px 0px;"
-						+ "width: " + String(self.nzWidth) + "px;"
-						+ "height: " + String(self.nzHeight)
-						+ "px;float: left;"
-						+ "display: none;"
-						+ "cursor:"+(self.options.cursor)+";"
-						+ "px solid " + self.options.borderColour
-						+ ";background-repeat: no-repeat;"
-						+ "position: absolute;";
-				}
-
-
-
-				//lens style for window zoom
-				if(self.options.zoomType == "window") {
-
-
-					// adjust images less than the window height
-
-					if(self.nzHeight < self.options.zoomWindowWidth/self.widthRatio){
-						lensHeight = self.nzHeight;
-					}
-					else{
-						lensHeight = String((self.options.zoomWindowHeight/self.heightRatio))
-					}
-					if(self.largeWidth < self.options.zoomWindowWidth){
-						lensWidth = self.nzWidth;
-					}
-					else{
-						lensWidth =  (self.options.zoomWindowWidth/self.widthRatio);
-					}
-
-
-					self.lensStyle = "background-position: 0px 0px;width: " + String((self.options.zoomWindowWidth)/self.widthRatio) + "px;height: " + String((self.options.zoomWindowHeight)/self.heightRatio)
-					+ "px;float: right;display: none;"
-					+ "overflow: hidden;"
-					+ "z-index: 999;"
-					+ "-webkit-transform: translateZ(0);"
-					+ "opacity:"+(self.options.lensOpacity)+";filter: alpha(opacity = "+(self.options.lensOpacity*100)+"); zoom:1;"
-					+ "width:"+lensWidth+"px;"
-					+ "height:"+lensHeight+"px;"
-					+ "background-color:"+(self.options.lensColour)+";"
+			//if window zoom
+			if(self.options.zoomType == "window") {
+				self.zoomWindowStyle = "overflow: hidden;"
+					+ "background-position: 0px 0px;text-align:center;"
+					+ "background-color: " + String(self.options.zoomWindowBgColour)
+					+ ";width: " + String(self.options.zoomWindowWidth) + "px;"
+					+ "height: " + String(self.options.zoomWindowHeight)
+					+ "px;float: left;"
+					+ "background-size: "+ self.largeImageWidth/self.options.zoomLevel+ "px " +self.largeImageHeight/self.options.zoomLevel + "px;"
+					+ "display: none;z-index:100"
+					+ "px;border: " + String(self.options.borderSize)
+					+ "px solid " + self.options.borderColour
+					+ ";background-repeat: no-repeat;"
+					+ "position: absolute;";
+			}
+			//if inner  zoom
+			if(self.options.zoomType == "inner") {
+				self.zoomWindowStyle = "overflow: hidden;"
+					+ "background-position: 0px 0px;"
+					+ "width: " + String(self.nzWidth) + "px;"
+					+ "height: " + String(self.nzHeight)
+					+ "px;float: left;"
+					+ "display: none;"
 					+ "cursor:"+(self.options.cursor)+";"
-					+ "border: "+(self.options.lensBorderSize)+"px" +
-					" solid "+(self.options.lensBorderColour)+";background-repeat: no-repeat;position: absolute;";
-				}
+					+ "px solid " + self.options.borderColour
+					+ ";background-repeat: no-repeat;"
+					+ "position: absolute;";
+			}
 
 
-				//tint style
-				self.tintStyle = "display: block;"
-					+ "position: absolute;"
-					+ "background-color: "+self.options.tintColour+";"
-					+ "filter:alpha(opacity=0);"
-					+ "opacity: 0;"
-					+ "width: " + self.nzWidth + "px;"
-					+ "height: " + self.nzHeight + "px;"
 
-					;
+			//lens style for window zoom
+			if(self.options.zoomType == "window") {
 
-				//lens style for lens zoom with optional round for modern browsers
-				self.lensRound = '';
-				if(self.options.zoomType == "lens") {
-					self.lensStyle = "background-position: 0px 0px;"
-						+ "float: left;display: none;"
-						+ "border: " + String(self.options.borderSize) + "px solid " + self.options.borderColour+";"
-						+ "width:"+ String(self.options.lensSize) +"px;"
-						+ "height:"+ String(self.options.lensSize)+"px;"
-						+ "background-repeat: no-repeat;position: absolute;";
 
-
-				}
-
-
-				//does not round in all browsers
-				if(self.options.lensShape == "round") {
-					self.lensRound = "border-top-left-radius: " + String(self.options.lensSize / 2 + self.options.borderSize) + "px;"
-					+ "border-top-right-radius: " + String(self.options.lensSize / 2 + self.options.borderSize) + "px;"
-					+ "border-bottom-left-radius: " + String(self.options.lensSize / 2 + self.options.borderSize) + "px;"
-					+ "border-bottom-right-radius: " + String(self.options.lensSize / 2 + self.options.borderSize) + "px;";
-
-				}
-
-				//create the div's                                                + ""
-				//self.zoomContainer = $('<div/>').addClass('zoomContainer').css({"position":"relative", "height":self.nzHeight, "width":self.nzWidth});
-
-				if ( !self.options.disableZoom ) {
-					self.zoomContainer = $('<div class="zoomContainer" style="z-index: 19;-webkit-transform: translateZ(0);position:absolute;left:'+self.nzOffset.left+'px;top:'+self.nzOffset.top+'px;height:'+self.nzHeight+'px;width:'+self.nzWidth+'px;"></div>');
-					$('body').append(self.zoomContainer);
-
-
-					//this will add overflow hidden and contrain the lens on lens mode
-					if ( self.options.containLensZoom && self.options.zoomType == "lens" ) {
-						self.zoomContainer.css("overflow", "hidden");
-					}
-					if ( self.options.zoomType != "inner" ) {
-						self.zoomLens = $("<div class='zoomLens' style='" + self.lensStyle + self.lensRound +"'>&nbsp;</div>")
-						.appendTo(self.zoomContainer)
-						.click(function () {
-							self.$elem.trigger('click');
-						});
-					}
-
-
-
-					if ( self.options.tint ) {
-						self.tintContainer = $('<div/>').addClass('tintContainer');
-						self.zoomTint = $("<div class='zoomTint' style='"+self.tintStyle+"'></div>");
-
-
-						self.zoomLens.wrap(self.tintContainer);
-
-
-						self.zoomTintcss = self.zoomLens.after(self.zoomTint);
-
-						//if tint enabled - set an image to show over the tint
-
-						self.zoomTintImage = $('<img style="position: absolute; left: 0px; top: 0px; max-width: none; width: '+self.nzWidth+'px; height: '+self.nzHeight+'px;" src="'+self.imageSrc+'">')
-						.appendTo(self.zoomLens)
-						.click(function () {
-
-							self.$elem.trigger('click');
-						});
-
-					}
-				}
-
-				//create zoom window
-				if(isNaN(self.options.zoomWindowPosition)){
-					self.zoomWindow = $("<div style='z-index:999;left:"+(self.windowOffsetLeft)+"px;top:"+(self.windowOffsetTop)+"px;" + self.zoomWindowStyle + "' class='zoomWindow'>&nbsp;</div>")
-					.appendTo('body')
-					.click(function () {
-						self.$elem.trigger('click');
-					});
-				}else{
-					self.zoomWindow = $("<div style='z-index:999;left:"+(self.windowOffsetLeft)+"px;top:"+(self.windowOffsetTop)+"px;" + self.zoomWindowStyle + "' class='zoomWindow'>&nbsp;</div>")
-					.appendTo(self.zoomContainer)
-					.click(function () {
-						self.$elem.trigger('click');
-					});
-				}
-				self.zoomWindowContainer = $('<div/>').addClass('zoomWindowContainer').css("width",self.options.zoomWindowWidth);
-				self.zoomWindow.wrap(self.zoomWindowContainer);
-
-
-				//  self.captionStyle = "text-align: left;background-color: black;color: white;font-weight: bold;padding: 10px;font-family: sans-serif;font-size: 11px";
-				// self.zoomCaption = $('<div class="elevatezoom-caption" style="'+self.captionStyle+'display: block; width: 280px;">INSERT ALT TAG</div>').appendTo(self.zoomWindow.parent());
-
-				if(self.options.zoomType == "lens") {
-					self.zoomLens.css({ backgroundImage: "url('" + self.imageSrc + "')" });
-				}
-				if(self.options.zoomType == "window") {
-					self.zoomWindow.css({ backgroundImage: "url('" + self.imageSrc + "')" });
-				}
-				if(self.options.zoomType == "inner") {
-					self.zoomWindow.css({ backgroundImage: "url('" + self.imageSrc + "')" });
-				}
-				/*-------------------END THE ZOOM WINDOW AND LENS----------------------------------*/
-				//touch events
-
-				if ( self.options.disableZoom ) {
-					console.log('disableZoom');
-					return false;
-				}
-
-				self.$elem.bind('touchmove', function( e ) {
-					e.preventDefault();
-					var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-					self.setPosition(touch);
-				});
-
-				self.zoomContainer.bind('touchmove', function( e ) {
-					if(self.options.zoomType == "inner") {
-						if(self.options.zoomWindowFadeIn){
-							self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
-						}
-						else{self.zoomWindow.show();}
-
-					}
-					e.preventDefault();
-					var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-					self.setPosition(touch);
-
-				});
-
-				self.zoomContainer.bind('touchend', function( e ) {
-					self.zoomWindow.hide();
-					if(self.options.showLens) {self.zoomLens.hide();}
-					if(self.options.tint) {self.zoomTint.hide();}
-				});
-
-				self.$elem.bind('touchend', function( e ) {
-					self.zoomWindow.hide();
-					if(self.options.showLens) {self.zoomLens.hide();}
-					if(self.options.tint) {self.zoomTint.hide();}
-				});
-
-				if(self.options.showLens) {
-					self.zoomLens.bind('touchmove', function( e ) {
-						e.preventDefault();
-						var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-						self.setPosition(touch);
-					});
-
-
-					self.zoomLens.bind('touchend', function( e ) {
-						self.zoomWindow.hide();
-						if(self.options.showLens) {self.zoomLens.hide();}
-						if(self.options.tint) {self.zoomTint.hide();}
-					});
-				}
-				//Needed to work in IE
-				self.$elem.bind('mousemove', function( e ) {
-					//make sure on orientation change the setposition is not fired
-					if(self.lastX !== e.clientX || self.lastY !== e.clientY){
-						self.setPosition(e);
-					}
-					self.lastX = e.clientX;
-					self.lastY = e.clientY;
-
-				});
-
-				self.zoomContainer.bind('mousemove', function( e ) {
-					//make sure on orientation change the setposition is not fired
-					if(self.lastX !== e.clientX || self.lastY !== e.clientY){
-						self.setPosition(e);
-					}
-					self.lastX = e.clientX;
-					self.lastY = e.clientY;
-				});
-
-				if(self.options.zoomType != "inner") {
-					self.zoomLens.bind('mousemove', function(e){
-						//make sure on orientation change the setposition is not fired
-						if(self.lastX !== e.clientX || self.lastY !== e.clientY){
-							self.setPosition(e);
-						}
-						self.lastX = e.clientX;
-						self.lastY = e.clientY;
-					});
-				}
-
-				if(self.options.tint) {
-					self.zoomTint.bind('mousemove', function( e ) {
-						//make sure on orientation change the setposition is not fired
-						if(self.lastX !== e.clientX || self.lastY !== e.clientY){
-							self.setPosition(e);
-						}
-						self.lastX = e.clientX;
-						self.lastY = e.clientY;
-					});
-
-				}
-
-				if(self.options.zoomType == "inner") {
-					self.zoomWindow.bind('mousemove', function( e ) {
-						//make sure on orientation change the setposition is not fired
-						if(self.lastX !== e.clientX || self.lastY !== e.clientY){
-							self.setPosition(e);
-						}
-						self.lastX = e.clientX;
-						self.lastY = e.clientY;
-					});
-
-				}
-
-
-				//  lensFadeOut: 500,  zoomTintFadeIn
-				self.zoomContainer.mouseenter(function() {
-					if(self.options.zoomType == "inner") {
-						if(self.options.zoomWindowFadeIn){
-							self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
-						}
-						else{self.zoomWindow.show();}
-
-					}
-					if(self.options.zoomType == "window") {
-
-						if(self.options.zoomWindowFadeIn){
-							self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
-						}
-						else{self.zoomWindow.show();}
-
-					}
-					if(self.options.showLens) {
-
-						if(self.options.lensFadeIn){
-							self.zoomLens.stop(true, true).fadeIn(self.options.lensFadeIn);
-						}
-						else{self.zoomLens.show();}
-
-					}
-					if(self.options.tint) {
-
-						if(self.options.zoomTintFadeIn){
-							self.zoomTint.stop(true, true).fadeIn(self.options.zoomTintFadeIn);
-						}
-						else{self.zoomTint.show();}
-
-						//  self.zoomTint.show();
-
-
-					}
-				}).mouseleave(function() {
-					self.zoomWindow.hide();
-					if(self.options.showLens) {self.zoomLens.hide();}
-
-					if(self.options.tint) {
-						self.zoomTint.hide();
-					}
-				});
-				//end ove image
-
-				self.$elem.mouseenter(function(){
-					if(self.options.zoomType == "inner") {
-						if(self.options.zoomWindowFadeIn){
-							self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
-						}
-						else{self.zoomWindow.show();}
-
-					}
-					if(self.options.zoomType == "window") {
-
-						if(self.options.zoomWindowFadeIn){
-							self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
-						}
-						else{self.zoomWindow.show();}
-
-					}
-					if(self.options.showLens) {
-
-						if(self.options.lensFadeIn){
-							self.zoomLens.stop(true, true).fadeIn(self.options.lensFadeIn);
-						}
-						else{self.zoomLens.show();}
-
-					}
-					if(self.options.tint) {
-
-						if(self.options.zoomTintFadeIn){
-							self.zoomTint.stop(true, true).fadeIn(self.options.zoomTintFadeIn);
-						}
-						else{self.zoomTint.show();}
-
-						//  self.zoomTint.show();
-
-
-					}
-				}).mouseleave(function() {
-					self.zoomWindow.hide();
-					if(self.options.showLens) {self.zoomLens.hide();}
-
-					if(self.options.tint) {
-						self.zoomTint.hide();
-					}
-				});
-				//end ove image
-
-				if(self.options.zoomType != "inner") {
-
-					self.zoomLens.mouseenter(function(){
-						if(self.options.zoomType == "inner") {
-							if(self.options.zoomWindowFadeIn){
-
-								self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
-							}
-							else{
-
-								self.zoomWindow.show();
-							}
-						}
-						if(self.options.zoomType == "window") {self.zoomWindow.show();}
-						if(self.options.showLens) {self.zoomLens.show();}
-						if(self.options.tint) {self.zoomTint.show(); }
-					}).mouseleave(function(){
-
-
-						if(self.options.zoomWindowFadeOut){
-							self.zoomWindow.stop(true, true).fadeOut(self.options.zoomWindowFadeOut);
-						}
-						else{self.zoomWindow.hide();}
-
-
-						if(self.options.zoomType != "inner") {
-							self.zoomLens.hide();
-						}
-						if(self.options.tint) {self.zoomTint.hide(); }
-					});
-				}
-
-
-				if(self.options.tint) {
-					self.zoomTint.mouseenter(function(){
-						if(self.options.zoomType == "inner") {self.zoomWindow.show();}
-						if(self.options.zoomType == "window") {self.zoomWindow.show();}
-						if(self.options.showLens) {self.zoomLens.show();}
-						self.zoomTint.show();
-
-					}).mouseleave(function(){
-
-						self.zoomWindow.hide();
-						if(self.options.zoomType != "inner") {
-							self.zoomLens.hide();
-						}
-						self.zoomTint.hide();
-
-					});
-				}
-
-				if(self.options.zoomType == "inner") {
-					self.zoomWindow.mouseenter(function(){
-						if(self.options.zoomType == "inner") {self.zoomWindow.show();}
-						if(self.options.zoomType == "window") {self.zoomWindow.show();}
-						if(self.options.showLens) {self.zoomLens.show();}
-
-
-					}).mouseleave(function(){
-
-						if(self.options.zoomWindowFadeOut){
-							self.zoomWindow.stop(true, true).fadeOut(self.options.zoomWindowFadeOut);
-						}
-						else{self.zoomWindow.hide();}
-						if(self.options.zoomType != "inner") {
-							self.zoomLens.hide();
-						}
-
-
-					});
-				}
-			},
-
-			setPosition: function(e) {
-
-				var self = this;
-
-
-				//recaclc offset each time in case the image moves
-				//this can be caused by other on page elements
-				self.nzHeight = self.$elem.height();
-				self.nzWidth = self.$elem.width();
-				self.nzOffset = self.$elem.offset();
-
-				if(self.options.tint) {
-					self.zoomTint.css({ top: 0});
-					self.zoomTint.css({ left: 0});
-				}
-				//set responsive
-				//will checking if the image needs changing before running this code work faster?
-				if(self.options.responsive){
-					if(self.nzHeight < self.options.zoomWindowWidth/self.widthRatio){
-						lensHeight = self.nzHeight;
-					}
-					else{
-						lensHeight = String((self.options.zoomWindowHeight/self.heightRatio))
-					}
-					if(self.largeWidth < self.options.zoomWindowWidth){
-						lensWidth = self.nzHWidth;
-					}
-					else{
-						lensWidth =  (self.options.zoomWindowWidth/self.widthRatio);
-					}
-					self.widthRatio = self.largeWidth / self.nzWidth;
-					self.heightRatio = self.largeHeight / self.nzHeight;
-					self.zoomLens.css({ width: String((self.options.zoomWindowWidth)/self.widthRatio) + 'px', height: String((self.options.zoomWindowHeight)/self.heightRatio) + 'px' })
-					//end responsive image change
-				}
-
-				//container fix
-				self.zoomContainer.css({ top: self.nzOffset.top});
-				self.zoomContainer.css({ left: self.nzOffset.left});
-				self.mouseLeft = parseInt(e.pageX - self.nzOffset.left);
-				self.mouseTop = parseInt(e.pageY - self.nzOffset.top);
-				//calculate the Location of the Lens
-
-				//calculate the bound regions - but only if zoom window
-				if(self.options.zoomType == "window") {
-					self.Etoppos = (self.mouseTop < (self.zoomLens.height()/2));
-					self.Eboppos = (self.mouseTop > self.nzHeight - (self.zoomLens.height()/2)-(self.options.lensBorderSize*2));
-					self.Eloppos = (self.mouseLeft < 0+((self.zoomLens.width()/2)));
-					self.Eroppos = (self.mouseLeft > (self.nzWidth - (self.zoomLens.width()/2)-(self.options.lensBorderSize*2)));
-				}
-
-				//calculate the bound regions - but only for inner zoom
-				if(self.options.zoomType == "inner"){
-					self.Etoppos = (self.mouseTop < (self.nzHeight/2)/self.heightRatio );
-					self.Eboppos = (self.mouseTop > self.nzHeight - ((self.nzHeight/2)/self.heightRatio));
-					self.Eloppos = (self.mouseLeft < 0+((self.nzWidth/2)/self.widthRatio));
-					self.Eroppos = (self.mouseLeft > (self.nzWidth - (self.nzWidth/2)/self.widthRatio-(self.options.lensBorderSize*2)));
-				}
-
-				// if the mouse position of the slider is one of the outerbounds, then hide  window and lens
-				if (self.mouseLeft < 0 || self.mouseTop <= 0 || self.mouseLeft > self.nzWidth || self.mouseTop > self.nzHeight ) {
-					self.zoomWindow.hide();
-					if(self.options.showLens) {self.zoomLens.hide();}
-					if(self.options.tint) {self.zoomTint.hide();}
-					return;
-				}
-				//else continue with operations
-				else {
-
-					//should already be visible - but make sure
-					if(self.options.zoomType == "window") {self.zoomWindow.show();}
-					if(self.options.tint) {self.zoomTint.show();}
-
-					//lens options
-					if(self.options.showLens) {
-						self.zoomLens.show();
-						//set background position of lens
-						self.lensLeftPos = String(self.mouseLeft - self.zoomLens.width() / 2);
-						self.lensTopPos = String(self.mouseTop - self.zoomLens.height() / 2);
-					}
-					//adjust the background position if the mouse is in one of the outer regions
-
-					//Top region
-					if(self.Etoppos){
-						self.lensTopPos = 0;
-					}
-					//Left Region
-					if(self.Eloppos){
-						self.windowLeftPos = 0;
-						self.lensLeftPos = 0;
-						self.tintpos=0;
-					}
-					//Set bottom and right region for window mode
-					if(self.options.zoomType == "window") {
-						if(self.Eboppos){
-							self.lensTopPos = Math.max( (self.nzHeight)-self.zoomLens.height()-(self.options.lensBorderSize*2), 0 );
-						}
-						if(self.Eroppos){
-							self.lensLeftPos = (self.nzWidth-(self.zoomLens.width())-(self.options.lensBorderSize*2));
-						}
-					}
-					//Set bottom and right region for inner mode
-					if(self.options.zoomType == "inner") {
-						if(self.Eboppos){
-							self.lensTopPos = Math.max( (self.nzHeight)-(self.options.lensBorderSize*2), 0 );
-						}
-						if(self.Eroppos){
-							self.lensLeftPos = (self.nzWidth-(self.nzWidth)-(self.options.lensBorderSize*2));
-						}
-					}
-					//if lens zoom
-					if(self.options.zoomType == "lens") {
-						self.windowLeftPos = String(((e.pageX - self.nzOffset.left) * self.widthRatio - self.zoomLens.width() / 2) * (-1));
-						self.windowTopPos = String(((e.pageY - self.nzOffset.top) * self.heightRatio - self.zoomLens.height() / 2) * (-1));
-						self.zoomLens.css({ backgroundPosition: self.windowLeftPos + 'px ' + self.windowTopPos + 'px' });
-						self.setWindowPostition(e);
-					}
-					//if tint zoom
-					if(self.options.tint) {
-						self.setTintPosition(e);
-
-					}
-					//set the css background position
-					if(self.options.zoomType == "window") {
-						self.setWindowPostition(e);
-					}
-					if(self.options.zoomType == "inner") {
-						self.setWindowPostition(e);
-					}
-					if(self.options.showLens) {
-						self.zoomLens.css({ left: self.lensLeftPos + 'px', top: self.lensTopPos + 'px' })
-					}
-
-				} //end else
-
-
-
-			},
-			setLensPostition: function( e ) {
-
-
-			},
-			setWindowPostition: function( e ) {
-				//return obj.slice( 0, count );
-				var self = this;
-
-				if(!isNaN(self.options.zoomWindowPosition)){
-
-					switch (self.options.zoomWindowPosition) {
-					case 1: //done
-						self.windowOffsetTop = (self.options.zoomWindowOffety);//DONE - 1
-						self.windowOffsetLeft =(+self.nzWidth); //DONE 1, 2, 3, 4, 16
-						break;
-					case 2:
-						if(self.options.zoomWindowHeight > self.nzHeight){ //positive margin
-
-							self.windowOffsetTop = ((self.options.zoomWindowHeight/2)-(self.nzHeight/2))*(-1);
-							self.windowOffsetLeft =(self.nzWidth); //DONE 1, 2, 3, 4, 16
-						}
-						else{ //negative margin
-
-						}
-						break;
-					case 3: //done
-						self.windowOffsetTop = (self.nzHeight - self.zoomWindow.height() - (self.options.borderSize*2)); //DONE 3,9
-						self.windowOffsetLeft =(self.nzWidth); //DONE 1, 2, 3, 4, 16
-						break;
-					case 4: //done
-						self.windowOffsetTop = (self.nzHeight); //DONE - 4,5,6,7,8
-						self.windowOffsetLeft =(self.nzWidth); //DONE 1, 2, 3, 4, 16
-						break;
-					case 5: //done
-						self.windowOffsetTop = (self.nzHeight); //DONE - 4,5,6,7,8
-						self.windowOffsetLeft =(self.nzWidth-self.zoomWindow.width()-(self.options.borderSize*2)); //DONE - 5,15
-						break;
-					case 6:
-						if(self.options.zoomWindowHeight > self.nzHeight){ //positive margin
-							self.windowOffsetTop = (self.nzHeight);  //DONE - 4,5,6,7,8
-
-							self.windowOffsetLeft =((self.options.zoomWindowWidth/2)-(self.nzWidth/2)+(self.options.borderSize*2))*(-1);
-						}
-						else{ //negative margin
-
-						}
-
-
-						break;
-					case 7: //done
-						self.windowOffsetTop = (self.nzHeight);  //DONE - 4,5,6,7,8
-						self.windowOffsetLeft = 0; //DONE 7, 13
-						break;
-					case 8: //done
-						self.windowOffsetTop = (self.nzHeight); //DONE - 4,5,6,7,8
-						self.windowOffsetLeft =(self.zoomWindow.width()+(self.options.borderSize*2) )* (-1);  //DONE 8,9,10,11,12
-						break;
-					case 9:  //done
-						self.windowOffsetTop = (self.nzHeight - self.zoomWindow.height() - (self.options.borderSize*2)); //DONE 3,9
-						self.windowOffsetLeft =(self.zoomWindow.width()+(self.options.borderSize*2) )* (-1);  //DONE 8,9,10,11,12
-						break;
-					case 10:
-						if(self.options.zoomWindowHeight > self.nzHeight){ //positive margin
-
-							self.windowOffsetTop = ((self.options.zoomWindowHeight/2)-(self.nzHeight/2))*(-1);
-							self.windowOffsetLeft =(self.zoomWindow.width()+(self.options.borderSize*2) )* (-1);  //DONE 8,9,10,11,12
-						}
-						else{ //negative margin
-
-						}
-						break;
-					case 11:
-						self.windowOffsetTop = (self.options.zoomWindowOffety);
-						self.windowOffsetLeft =(self.zoomWindow.width()+(self.options.borderSize*2) )* (-1);  //DONE 8,9,10,11,12
-						break;
-					case 12: //done
-						self.windowOffsetTop = (self.zoomWindow.height()+(self.options.borderSize*2))*(-1); //DONE 12,13,14,15,16
-						self.windowOffsetLeft =(self.zoomWindow.width()+(self.options.borderSize*2) )* (-1);  //DONE 8,9,10,11,12
-						break;
-					case 13: //done
-						self.windowOffsetTop = (self.zoomWindow.height()+(self.options.borderSize*2))*(-1); //DONE 12,13,14,15,16
-						self.windowOffsetLeft =(0); //DONE 7, 13
-						break;
-					case 14:
-						if(self.options.zoomWindowHeight > self.nzHeight){ //positive margin
-							self.windowOffsetTop = (self.zoomWindow.height()+(self.options.borderSize*2))*(-1); //DONE 12,13,14,15,16
-
-							self.windowOffsetLeft =((self.options.zoomWindowWidth/2)-(self.nzWidth/2)+(self.options.borderSize*2))*(-1);
-						}
-						else{ //negative margin
-
-						}
-
-						break;
-					case 15://done
-						self.windowOffsetTop = (self.zoomWindow.height()+(self.options.borderSize*2))*(-1); //DONE 12,13,14,15,16
-						self.windowOffsetLeft =(self.nzWidth-self.zoomWindow.width()-(self.options.borderSize*2)); //DONE - 5,15
-						break;
-					case 16:  //done
-						self.windowOffsetTop = (self.zoomWindow.height()+(self.options.borderSize*2))*(-1); //DONE 12,13,14,15,16
-						self.windowOffsetLeft =(self.nzWidth); //DONE 1, 2, 3, 4, 16
-						break;
-					default: //done
-						self.windowOffsetTop = (self.options.zoomWindowOffety);//DONE - 1
-					self.windowOffsetLeft =(self.nzWidth); //DONE 1, 2, 3, 4, 16
-					}
-				} //end isNAN
-				else{
-					//WE CAN POSITION IN A CLASS - ASSUME THAT ANY STRING PASSED IS
-					self.externalContainer = $('#'+self.options.zoomWindowPosition);
-					self.externalContainerWidth = self.externalContainer.width();
-					self.externalContainerHeight = self.externalContainer.height();
-					self.externalContainerOffset = self.externalContainer.offset();
-
-					self.windowOffsetTop = self.externalContainerOffset.top;//DONE - 1
-					self.windowOffsetLeft =self.externalContainerOffset.left; //DONE 1, 2, 3, 4, 16
-
-				}
-				self.windowOffsetTop = self.windowOffsetTop + self.options.zoomWindowOffety;
-				self.windowOffsetLeft = self.windowOffsetLeft + self.options.zoomWindowOffetx;
-
-				self.zoomWindow.css({ top: self.windowOffsetTop});
-				self.zoomWindow.css({ left: self.windowOffsetLeft});
-
-				if(self.options.zoomType == "inner") {
-					self.zoomWindow.css({ top: 0});
-					self.zoomWindow.css({ left: 0});
-
-				}
-
-
-				self.windowLeftPos = String(((e.pageX - self.nzOffset.left) * self.widthRatio - self.zoomWindow.width() / 2) * (-1));
-				self.windowTopPos = String(((e.pageY - self.nzOffset.top) * self.heightRatio - self.zoomWindow.height() / 2) * (-1));
-				if(self.Etoppos){self.windowTopPos = 0;}
-				if(self.Eloppos){self.windowLeftPos = 0;}
-				if(self.Eboppos){self.windowTopPos = (self.largeHeight/self.options.zoomLevel-self.zoomWindow.height())*(-1);}
-				if(self.Eroppos){self.windowLeftPos = ((self.largeWidth/self.options.zoomLevel-self.zoomWindow.width())*(-1));}
-
-				//set the css background position
-
-
-				if(self.options.zoomType == "window" || self.options.zoomType == "inner") {
-
-					//overrides for images not zoomable
-					if(self.widthRatio <= 1){
-						self.windowLeftPos = 0;
-					}
-
-					if(self.heightRatio <= 1){
-						self.windowTopPos = 0;
-					}
-
-					// adjust images less than the window height
-
-					if(self.largeHeight < self.options.zoomWindowHeight){
-						self.windowTopPos = 0;
-					}
-					if(self.largeWidth < self.options.zoomWindowWidth){
-						self.windowLeftPos = 0;
-					}
-
-					//set the zoomwindow background position
-					if (self.options.easing){
-						//set the pos to 0 if not set
-						if(!self.xp){self.xp = 0;}
-						if(!self.yp){self.yp = 0;}
-						//if loop not already started, then run it
-						if (!self.loop){
-							self.loop = setInterval(function(){
-								//using zeno's paradox
-								self.xp += (self.windowLeftPos  - self.xp) / self.options.easingAmount;
-								self.yp += (self.windowTopPos  - self.yp) / self.options.easingAmount;
-								self.zoomWindow.css({ backgroundPosition: self.xp + 'px ' + self.yp + 'px' });
-							}, 16);
-						}
-					}
-					else{
-						self.zoomWindow.css({ backgroundPosition: self.windowLeftPos + 'px ' + self.windowTopPos + 'px' });
-					}
-				}
-			},
-			setTintPosition: function(e){
-				var self = this;
-				self.nzOffset = self.$elem.offset();
-				self.tintpos = String(((e.pageX - self.nzOffset.left)-(self.zoomLens.width() / 2)) * (-1));
-				self.tintposy = String(((e.pageY - self.nzOffset.top) - self.zoomLens.height() / 2) * (-1));
-				if(self.Etoppos){
-					self.tintposy = 0;
-				}
-				if(self.Eloppos){
-					self.tintpos=0;
-				}
-				if(self.Eboppos){
-					self.tintposy = (self.nzHeight-self.zoomLens.height()-(self.options.lensBorderSize*2))*(-1);
-				}
-				if(self.Eroppos){
-					self.tintpos = ((self.nzWidth-self.zoomLens.width()-(self.options.lensBorderSize*2))*(-1));
-				}
-				if(self.options.tint) {
-					self.zoomTint.css({opacity:self.options.tintOpacity}).animate().fadeIn("slow");
-					self.zoomTintImage.css({'left': self.tintpos-self.options.lensBorderSize+'px'});
-					self.zoomTintImage.css({'top': self.tintposy-self.options.lensBorderSize+'px'});
-				}
-			},
-
-			swaptheimage: function(smallimage, largeimage){
-				var self = this;
-				var newImg = new Image();
-
-				self.options.onImageSwap(self.$elem);
-
-				newImg.onload = function() {
-					self.largeWidth = newImg.width;
-					self.largeHeight = newImg.height;
-					self.zoomImage = largeimage;
-          			self.zoomWindow.css({ "background-size": self.largeWidth + 'px ' + self.largeHeight + 'px' });
-					self.swapAction(smallimage, largeimage);
-					return;
-				}
-				newImg.src = largeimage; // this must be done AFTER setting onload
-
-			},
-			swapAction: function(smallimage, largeimage){
-
-
-				var self = this;
-
-				var newImg2 = new Image();
-				newImg2.onload = function() {
-					//re-calculate values
-					self.nzHeight = newImg2.height;
-					self.nzWidth = newImg2.width;
-					self.options.onImageSwapComplete(self.$elem);
-
-					self.doneCallback();
-					return;
-				}
-				newImg2.src = smallimage;
-
-				//swaps the main image
-				//self.$elem.attr("src",smallimage);
-				//swaps the zoom image
-         		if(self.options.zoomType == "lens") {
-					self.zoomLens.css({ backgroundImage: "url('" + largeimage + "')" });
-			  	}
-
-				if(self.options.zoomType == "window") {
-					self.zoomWindow.css({ backgroundImage: "url('" + largeimage + "')" });
-				}
-
-				if(self.options.zoomType == "inner") {
-					self.zoomWindow.css({ backgroundImage: "url('" + largeimage + "')" });
-				}
-
-				self.currentImage = largeimage;
-
-				self.$elem.remove('mLoader');
-				self.$elem.attr("src",smallimage);
-			},
-			doneCallback: function(){
-
-				var self = this;
-
-				if ( self.options.tint ) {
-					self.zoomTintImage.attr("src",largeimage);
-					//self.zoomTintImage.attr("width",elem.data("image"));
-					self.zoomTintImage.attr("height",self.$elem.height());
-					//self.zoomTintImage.attr('src') = elem.data("image");
-					self.zoomTintImage.css({ height: self.$elem.height()});
-					self.zoomTint.css({ height: self.$elem.height()});
-
-				}
-				self.nzOffset = self.$elem.offset();
-				self.nzWidth = self.$elem.width();
-				self.nzHeight = self.$elem.height();
-				//   alert("THIS");
-				//ratio of the large to small image
-				self.widthRatio = self.largeWidth / self.nzWidth;
-				self.heightRatio = self.largeHeight / self.nzHeight;
-
-				//NEED TO ADD THE LENS SIZE FOR ROUND
 				// adjust images less than the window height
-        if(self.options.zoomType == "window") {
+
 				if(self.nzHeight < self.options.zoomWindowWidth/self.widthRatio){
 					lensHeight = self.nzHeight;
 				}
 				else{
 					lensHeight = String((self.options.zoomWindowHeight/self.heightRatio))
 				}
-				if(self.largeWidth < self.options.zoomWindowWidth){
+				if(self.largeContainerWidth < self.options.zoomWindowWidth){
+					lensWidth = self.nzWidth;
+				}
+				else{
+					lensWidth =  (self.options.zoomWindowWidth/self.widthRatio);
+				}
+
+
+				self.lensStyle = "background-position: 0px 0px;width: " + String((self.options.zoomWindowWidth)/self.widthRatio) + "px;height: " + String((self.options.zoomWindowHeight)/self.heightRatio)
+				+ "px;float: right;display: none;"
+				+ "overflow: hidden;"
+				+ "z-index: 999;"
+				+ "-webkit-transform: translateZ(0);"
+				+ "opacity:"+(self.options.lensOpacity)+";filter: alpha(opacity = "+(self.options.lensOpacity*100)+"); zoom:1;"
+				+ "width:"+lensWidth+"px;"
+				+ "height:"+lensHeight+"px;"
+				+ "background-color:"+(self.options.lensColour)+";"
+				+ "cursor:"+(self.options.cursor)+";"
+				+ "border: "+(self.options.lensBorderSize)+"px" +
+				" solid "+(self.options.lensBorderColour)+";background-repeat: no-repeat;position: absolute;";
+			}
+
+
+			//tint style
+			self.tintStyle = "display: block;"
+				+ "position: absolute;"
+				+ "background-color: "+self.options.tintColour+";"
+				+ "filter:alpha(opacity=0);"
+				+ "opacity: 0;"
+				+ "width: " + self.nzWidth + "px;"
+				+ "height: " + self.nzHeight + "px;"
+
+				;
+
+			//lens style for lens zoom with optional round for modern browsers
+			self.lensRound = '';
+			if(self.options.zoomType == "lens") {
+				self.lensStyle = "background-position: 0px 0px;"
+					+ "float: left;display: none;"
+					+ "border: " + String(self.options.borderSize) + "px solid " + self.options.borderColour+";"
+					+ "width:"+ String(self.options.lensSize) +"px;"
+					+ "height:"+ String(self.options.lensSize)+"px;"
+					+ "background-repeat: no-repeat;position: absolute;";
+
+
+			}
+
+
+			//does not round in all browsers
+			if(self.options.lensShape == "round") {
+				self.lensRound = "border-top-left-radius: " + String(self.options.lensSize / 2 + self.options.borderSize) + "px;"
+				+ "border-top-right-radius: " + String(self.options.lensSize / 2 + self.options.borderSize) + "px;"
+				+ "border-bottom-left-radius: " + String(self.options.lensSize / 2 + self.options.borderSize) + "px;"
+				+ "border-bottom-right-radius: " + String(self.options.lensSize / 2 + self.options.borderSize) + "px;";
+
+			}
+
+			//create the div's                                                + ""
+			//self.zoomContainer = $('<div/>').addClass('zoomContainer').css({"position":"relative", "height":self.nzHeight, "width":self.nzWidth});
+
+			if ( !self.options.disableZoom ) {
+				self.zoomContainer = $('<div class="zoomContainer" style="z-index: 19;-webkit-transform: translateZ(0);position:absolute;left:'+self.nzOffset.left+'px;top:'+self.nzOffset.top+'px;height:'+self.nzHeight+'px;width:'+self.nzWidth+'px;"></div>');
+				$('body').append(self.zoomContainer);
+
+
+				//this will add overflow hidden and contrain the lens on lens mode
+				if ( self.options.containLensZoom && self.options.zoomType == "lens" ) {
+					self.zoomContainer.css("overflow", "hidden");
+				}
+				if ( self.options.zoomType != "inner" ) {
+					self.zoomLens = $("<div class='zoomLens' style='" + self.lensStyle + self.lensRound +"'>&nbsp;</div>")
+					.appendTo(self.zoomContainer)
+					.click(function () {
+						self.$elem.trigger('click');
+					});
+				}
+
+
+
+				if ( self.options.tint ) {
+					self.tintContainer = $('<div/>').addClass('tintContainer');
+					self.zoomTint = $("<div class='zoomTint' style='"+self.tintStyle+"'></div>");
+
+
+					self.zoomLens.wrap(self.tintContainer);
+
+
+					self.zoomTintcss = self.zoomLens.after(self.zoomTint);
+
+					//if tint enabled - set an image to show over the tint
+
+					self.zoomTintImage = $('<img style="position: absolute; left: 0px; top: 0px; max-width: none; width: '+self.nzWidth+'px; height: '+self.nzHeight+'px;" src="'+self.imageSrc+'">')
+					.appendTo(self.zoomLens)
+					.click(function () {
+
+						self.$elem.trigger('click');
+					});
+
+				}
+			}
+
+			//create zoom window
+			if(isNaN(self.options.zoomWindowPosition)){
+				self.zoomWindow = $("<div style='z-index:999;left:"+(self.windowOffsetLeft)+"px;top:"+(self.windowOffsetTop)+"px;" + self.zoomWindowStyle + "' class='zoomWindow'>&nbsp;</div>")
+				.appendTo('body')
+				.click(function () {
+					self.$elem.trigger('click');
+				});
+			}else{
+				self.zoomWindow = $("<div style='z-index:999;left:"+(self.windowOffsetLeft)+"px;top:"+(self.windowOffsetTop)+"px;" + self.zoomWindowStyle + "' class='zoomWindow'>&nbsp;</div>")
+				.appendTo(self.zoomContainer)
+				.click(function () {
+					self.$elem.trigger('click');
+				});
+			}
+			self.zoomWindowContainer = $('<div/>').addClass('zoomWindowContainer').css("width",self.options.zoomWindowWidth);
+			self.zoomWindow.wrap(self.zoomWindowContainer);
+
+
+			//  self.captionStyle = "text-align: left;background-color: black;color: white;font-weight: bold;padding: 10px;font-family: sans-serif;font-size: 11px";
+			// self.zoomCaption = $('<div class="elevatezoom-caption" style="'+self.captionStyle+'display: block; width: 280px;">INSERT ALT TAG</div>').appendTo(self.zoomWindow.parent());
+
+			if(self.options.zoomType == "lens") {
+				self.zoomLens.css({ backgroundImage: "url('" + self.imageSrc + "')" });
+			}
+			if(self.options.zoomType == "window") {
+				self.zoomWindow.css({ backgroundImage: "url('" + self.imageSrc + "')" });
+			}
+			if(self.options.zoomType == "inner") {
+				self.zoomWindow.css({ backgroundImage: "url('" + self.imageSrc + "')" });
+			}
+			/*-------------------END THE ZOOM WINDOW AND LENS----------------------------------*/
+			//touch events
+
+			if ( self.options.disableZoom ) {
+				console.log('disableZoom');
+				return false;
+			}
+
+			(self.options.$imageContainer || self.$elem).bind('touchmove', function( e ) {
+				e.preventDefault();
+				var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+				self.setPosition(touch);
+			});
+
+			self.zoomContainer.bind('touchmove', function( e ) {
+				if(self.options.zoomType == "inner") {
+					if(self.options.zoomWindowFadeIn){
+						self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
+					}
+					else{self.zoomWindow.show();}
+
+				}
+				e.preventDefault();
+				var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+				self.setPosition(touch);
+
+			});
+
+			self.zoomContainer.bind('touchend', function( e ) {
+				self.zoomWindow.hide();
+				if(self.options.showLens) {self.zoomLens.hide();}
+				if(self.options.tint) {self.zoomTint.hide();}
+			});
+
+			(self.options.$imageContainer || self.$elem).bind('touchend', function( e ) {
+				self.zoomWindow.hide();
+				if(self.options.showLens) {self.zoomLens.hide();}
+				if(self.options.tint) {self.zoomTint.hide();}
+			});
+
+			if(self.options.showLens) {
+				self.zoomLens.bind('touchmove', function( e ) {
+					e.preventDefault();
+					var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+					self.setPosition(touch);
+				});
+
+
+				self.zoomLens.bind('touchend', function( e ) {
+					self.zoomWindow.hide();
+					if(self.options.showLens) {self.zoomLens.hide();}
+					if(self.options.tint) {self.zoomTint.hide();}
+				});
+			}
+			//Needed to work in IE
+			(self.options.$imageContainer || self.$elem).bind('mousemove', function( e ) {
+				//make sure on orientation change the setposition is not fired
+				if(self.lastX !== e.clientX || self.lastY !== e.clientY){
+					self.setPosition(e);
+				}
+				self.lastX = e.clientX;
+				self.lastY = e.clientY;
+
+			});
+
+			self.zoomContainer.bind('mousemove', function( e ) {
+				//make sure on orientation change the setposition is not fired
+				if(self.lastX !== e.clientX || self.lastY !== e.clientY){
+					self.setPosition(e);
+				}
+				self.lastX = e.clientX;
+				self.lastY = e.clientY;
+			});
+
+			if(self.options.zoomType != "inner") {
+				self.zoomLens.bind('mousemove', function(e){
+					//make sure on orientation change the setposition is not fired
+					if(self.lastX !== e.clientX || self.lastY !== e.clientY){
+						self.setPosition(e);
+					}
+					self.lastX = e.clientX;
+					self.lastY = e.clientY;
+				});
+			}
+
+			if(self.options.tint) {
+				self.zoomTint.bind('mousemove', function( e ) {
+					//make sure on orientation change the setposition is not fired
+					if(self.lastX !== e.clientX || self.lastY !== e.clientY){
+						self.setPosition(e);
+					}
+					self.lastX = e.clientX;
+					self.lastY = e.clientY;
+				});
+
+			}
+
+			if(self.options.zoomType == "inner") {
+				self.zoomWindow.bind('mousemove', function( e ) {
+					//make sure on orientation change the setposition is not fired
+					if(self.lastX !== e.clientX || self.lastY !== e.clientY){
+						self.setPosition(e);
+					}
+					self.lastX = e.clientX;
+					self.lastY = e.clientY;
+				});
+
+			}
+
+
+			//  lensFadeOut: 500,  zoomTintFadeIn
+			self.zoomContainer.mouseenter(function() {
+				if(self.options.zoomType == "inner") {
+					if(self.options.zoomWindowFadeIn){
+						self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
+					}
+					else{self.zoomWindow.show();}
+
+				}
+				if(self.options.zoomType == "window") {
+
+					if(self.options.zoomWindowFadeIn){
+						self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
+					}
+					else{self.zoomWindow.show();}
+
+				}
+				if(self.options.showLens) {
+
+					if(self.options.lensFadeIn){
+						self.zoomLens.stop(true, true).fadeIn(self.options.lensFadeIn);
+					}
+					else{self.zoomLens.show();}
+
+				}
+				if(self.options.tint) {
+
+					if(self.options.zoomTintFadeIn){
+						self.zoomTint.stop(true, true).fadeIn(self.options.zoomTintFadeIn);
+					}
+					else{self.zoomTint.show();}
+
+					//  self.zoomTint.show();
+
+
+				}
+			}).mouseleave(function() {
+				self.zoomWindow.hide();
+				if(self.options.showLens) {self.zoomLens.hide();}
+
+				if(self.options.tint) {
+					self.zoomTint.hide();
+				}
+			});
+			//end ove image
+
+			(self.options.$imageContainer || self.$elem).mouseenter(function(){
+				if(self.options.zoomType == "inner") {
+					if(self.options.zoomWindowFadeIn){
+						self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
+					}
+					else{self.zoomWindow.show();}
+
+				}
+				if(self.options.zoomType == "window") {
+
+					if(self.options.zoomWindowFadeIn){
+						self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
+					}
+					else{self.zoomWindow.show();}
+
+				}
+				if(self.options.showLens) {
+
+					if(self.options.lensFadeIn){
+						self.zoomLens.stop(true, true).fadeIn(self.options.lensFadeIn);
+					}
+					else{self.zoomLens.show();}
+
+				}
+				if(self.options.tint) {
+
+					if(self.options.zoomTintFadeIn){
+						self.zoomTint.stop(true, true).fadeIn(self.options.zoomTintFadeIn);
+					}
+					else{self.zoomTint.show();}
+
+					//  self.zoomTint.show();
+
+
+				}
+			}).mouseleave(function() {
+				self.zoomWindow.hide();
+				if(self.options.showLens) {self.zoomLens.hide();}
+
+				if(self.options.tint) {
+					self.zoomTint.hide();
+				}
+			});
+			//end ove image
+
+			if(self.options.zoomType != "inner") {
+
+				self.zoomLens.mouseenter(function(){
+					if(self.options.zoomType == "inner") {
+						if(self.options.zoomWindowFadeIn){
+
+							self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
+						}
+						else{
+
+							self.zoomWindow.show();
+						}
+					}
+					if(self.options.zoomType == "window") {self.zoomWindow.show();}
+					if(self.options.showLens) {self.zoomLens.show();}
+					if(self.options.tint) {self.zoomTint.show(); }
+				}).mouseleave(function(){
+
+
+					if(self.options.zoomWindowFadeOut){
+						self.zoomWindow.stop(true, true).fadeOut(self.options.zoomWindowFadeOut);
+					}
+					else{self.zoomWindow.hide();}
+
+
+					if(self.options.zoomType != "inner") {
+						self.zoomLens.hide();
+					}
+					if(self.options.tint) {self.zoomTint.hide(); }
+				});
+			}
+
+
+			if(self.options.tint) {
+				self.zoomTint.mouseenter(function(){
+					if(self.options.zoomType == "inner") {self.zoomWindow.show();}
+					if(self.options.zoomType == "window") {self.zoomWindow.show();}
+					if(self.options.showLens) {self.zoomLens.show();}
+					self.zoomTint.show();
+
+				}).mouseleave(function(){
+
+					self.zoomWindow.hide();
+					if(self.options.zoomType != "inner") {
+						self.zoomLens.hide();
+					}
+					self.zoomTint.hide();
+
+				});
+			}
+
+			if(self.options.zoomType == "inner") {
+				self.zoomWindow.mouseenter(function(){
+					if(self.options.zoomType == "inner") {self.zoomWindow.show();}
+					if(self.options.zoomType == "window") {self.zoomWindow.show();}
+					if(self.options.showLens) {self.zoomLens.show();}
+
+
+				}).mouseleave(function(){
+
+					if(self.options.zoomWindowFadeOut){
+						self.zoomWindow.stop(true, true).fadeOut(self.options.zoomWindowFadeOut);
+					}
+					else{self.zoomWindow.hide();}
+					if(self.options.zoomType != "inner") {
+						self.zoomLens.hide();
+					}
+
+
+				});
+			}
+		},
+
+		setPosition: function(e) {
+
+			var self = this;
+
+
+			//recaclc offset each time in case the image moves
+			//this can be caused by other on page elements
+			self.nzHeight = (self.options.$imageContainer || self.$elem).height();
+			self.nzWidth = (self.options.$imageContainer || self.$elem).width();
+			self.nzOffset = (self.options.$imageContainer || self.$elem).offset();
+
+			self.imageWidth = self.$elem.width();
+			self.imageHeight = self.$elem.height();
+
+			if(self.options.tint) {
+				self.zoomTint.css({ top: 0});
+				self.zoomTint.css({ left: 0});
+			}
+			//set responsive
+			//will checking if the image needs changing before running this code work faster?
+			if(self.options.responsive){
+				if(self.nzHeight < self.options.zoomWindowWidth/self.widthRatio){
+					lensHeight = self.nzHeight;
+				}
+				else{
+					lensHeight = String((self.options.zoomWindowHeight/self.heightRatio))
+				}
+				if(self.largeContainerWidth < self.options.zoomWindowWidth){
+					lensWidth = self.nzHWidth;
+				}
+				else{
+					lensWidth =  (self.options.zoomWindowWidth/self.widthRatio);
+				}
+				self.widthRatio = self.largeContainerWidth / self.nzWidth;
+				self.heightRatio = self.largeContainerHeight / self.nzHeight;
+				self.zoomLens.css({ width: String((self.options.zoomWindowWidth)/self.widthRatio) + 'px', height: String((self.options.zoomWindowHeight)/self.heightRatio) + 'px' })
+				//end responsive image change
+			}
+
+			//container fix
+			self.zoomContainer.css({ top: self.nzOffset.top});
+			self.zoomContainer.css({ left: self.nzOffset.left});
+			self.mouseLeft = parseInt(e.pageX - self.nzOffset.left);
+			self.mouseTop = parseInt(e.pageY - self.nzOffset.top);
+			//calculate the Location of the Lens
+
+			//calculate the bound regions - but only if zoom window
+			if(self.options.zoomType == "window") {
+				self.Etoppos = (self.mouseTop < (self.zoomLens.height()/2));
+				self.Eboppos = (self.mouseTop > self.nzHeight - (self.zoomLens.height()/2)-(self.options.lensBorderSize*2));
+				self.Eloppos = (self.mouseLeft < 0+((self.zoomLens.width()/2)));
+				self.Eroppos = (self.mouseLeft > (self.nzWidth - (self.zoomLens.width()/2)-(self.options.lensBorderSize*2)));
+			}
+
+			//calculate the bound regions - but only for inner zoom
+			if(self.options.zoomType == "inner"){
+				self.Etoppos = (self.mouseTop < (self.nzHeight/2)/self.heightRatio );
+				self.Eboppos = (self.mouseTop > self.nzHeight - ((self.nzHeight/2)/self.heightRatio));
+				self.Eloppos = (self.mouseLeft < 0+((self.nzWidth/2)/self.widthRatio));
+				self.Eroppos = (self.mouseLeft > (self.nzWidth - (self.nzWidth/2)/self.widthRatio-(self.options.lensBorderSize*2)));
+			}
+
+			// if the mouse position of the slider is one of the outerbounds, then hide  window and lens
+			if (self.mouseLeft < 0 || self.mouseTop <= 0 || self.mouseLeft > self.nzWidth || self.mouseTop > self.nzHeight ) {
+				self.zoomWindow.hide();
+				if(self.options.showLens) {self.zoomLens.hide();}
+				if(self.options.tint) {self.zoomTint.hide();}
+				return;
+			}
+			//else continue with operations
+			else {
+
+				//should already be visible - but make sure
+				if(self.options.zoomType == "window") {self.zoomWindow.show();}
+				if(self.options.tint) {self.zoomTint.show();}
+
+				//lens options
+				if(self.options.showLens) {
+					self.zoomLens.show();
+					//set background position of lens
+					self.lensLeftPos = String(self.mouseLeft - self.zoomLens.width() / 2);
+					self.lensTopPos = String(self.mouseTop - self.zoomLens.height() / 2);
+				}
+				//adjust the background position if the mouse is in one of the outer regions
+
+				//Top region
+				if(self.Etoppos){
+					self.lensTopPos = 0;
+				}
+				//Left Region
+				if(self.Eloppos){
+					self.windowLeftPos = 0;
+					self.lensLeftPos = 0;
+					self.tintpos=0;
+				}
+				//Set bottom and right region for window mode
+				if(self.options.zoomType == "window") {
+					if(self.Eboppos){
+						self.lensTopPos = Math.max( (self.nzHeight)-self.zoomLens.height()-(self.options.lensBorderSize*2), 0 );
+					}
+					if(self.Eroppos){
+						self.lensLeftPos = (self.nzWidth-(self.zoomLens.width())-(self.options.lensBorderSize*2));
+					}
+				}
+				//Set bottom and right region for inner mode
+				if(self.options.zoomType == "inner") {
+					if(self.Eboppos){
+						self.lensTopPos = Math.max( (self.nzHeight)-(self.options.lensBorderSize*2), 0 );
+					}
+					if(self.Eroppos){
+						self.lensLeftPos = (self.nzWidth-(self.nzWidth)-(self.options.lensBorderSize*2));
+					}
+				}
+				//if lens zoom
+				if(self.options.zoomType == "lens") {
+					self.windowLeftPos = String(((e.pageX - self.nzOffset.left) * self.widthRatio - self.zoomLens.width() / 2) * (-1));
+					self.windowTopPos = String(((e.pageY - self.nzOffset.top) * self.heightRatio - self.zoomLens.height() / 2) * (-1));
+					self.zoomLens.css({ backgroundPosition: self.windowLeftPos + 'px ' + self.windowTopPos + 'px' });
+					self.setWindowPostition(e);
+				}
+				//if tint zoom
+				if(self.options.tint) {
+					self.setTintPosition(e);
+
+				}
+				//set the css background position
+				if(self.options.zoomType == "window") {
+					self.setWindowPostition(e);
+				}
+				if(self.options.zoomType == "inner") {
+					self.setWindowPostition(e);
+				}
+				if(self.options.showLens) {
+					self.zoomLens.css({ left: self.lensLeftPos + 'px', top: self.lensTopPos + 'px' })
+				}
+
+			} //end else
+
+
+
+		},
+		setLensPostition: function( e ) {
+
+
+		},
+		setWindowPostition: function( e ) {
+			//return obj.slice( 0, count );
+			var self = this;
+
+			if(!isNaN(self.options.zoomWindowPosition)){
+
+				switch (self.options.zoomWindowPosition) {
+				case 1: //done
+					self.windowOffsetTop = (self.options.zoomWindowOffety);//DONE - 1
+					self.windowOffsetLeft =(+self.nzWidth); //DONE 1, 2, 3, 4, 16
+					break;
+				case 2:
+					if(self.options.zoomWindowHeight > self.nzHeight){ //positive margin
+
+						self.windowOffsetTop = ((self.options.zoomWindowHeight/2)-(self.nzHeight/2))*(-1);
+						self.windowOffsetLeft =(self.nzWidth); //DONE 1, 2, 3, 4, 16
+					}
+					else{ //negative margin
+
+					}
+					break;
+				case 3: //done
+					self.windowOffsetTop = (self.nzHeight - self.zoomWindow.height() - (self.options.borderSize*2)); //DONE 3,9
+					self.windowOffsetLeft =(self.nzWidth); //DONE 1, 2, 3, 4, 16
+					break;
+				case 4: //done
+					self.windowOffsetTop = (self.nzHeight); //DONE - 4,5,6,7,8
+					self.windowOffsetLeft =(self.nzWidth); //DONE 1, 2, 3, 4, 16
+					break;
+				case 5: //done
+					self.windowOffsetTop = (self.nzHeight); //DONE - 4,5,6,7,8
+					self.windowOffsetLeft =(self.nzWidth-self.zoomWindow.width()-(self.options.borderSize*2)); //DONE - 5,15
+					break;
+				case 6:
+					if(self.options.zoomWindowHeight > self.nzHeight){ //positive margin
+						self.windowOffsetTop = (self.nzHeight);  //DONE - 4,5,6,7,8
+
+						self.windowOffsetLeft =((self.options.zoomWindowWidth/2)-(self.nzWidth/2)+(self.options.borderSize*2))*(-1);
+					}
+					else{ //negative margin
+
+					}
+
+
+					break;
+				case 7: //done
+					self.windowOffsetTop = (self.nzHeight);  //DONE - 4,5,6,7,8
+					self.windowOffsetLeft = 0; //DONE 7, 13
+					break;
+				case 8: //done
+					self.windowOffsetTop = (self.nzHeight); //DONE - 4,5,6,7,8
+					self.windowOffsetLeft =(self.zoomWindow.width()+(self.options.borderSize*2) )* (-1);  //DONE 8,9,10,11,12
+					break;
+				case 9:  //done
+					self.windowOffsetTop = (self.nzHeight - self.zoomWindow.height() - (self.options.borderSize*2)); //DONE 3,9
+					self.windowOffsetLeft =(self.zoomWindow.width()+(self.options.borderSize*2) )* (-1);  //DONE 8,9,10,11,12
+					break;
+				case 10:
+					if(self.options.zoomWindowHeight > self.nzHeight){ //positive margin
+
+						self.windowOffsetTop = ((self.options.zoomWindowHeight/2)-(self.nzHeight/2))*(-1);
+						self.windowOffsetLeft =(self.zoomWindow.width()+(self.options.borderSize*2) )* (-1);  //DONE 8,9,10,11,12
+					}
+					else{ //negative margin
+
+					}
+					break;
+				case 11:
+					self.windowOffsetTop = (self.options.zoomWindowOffety);
+					self.windowOffsetLeft =(self.zoomWindow.width()+(self.options.borderSize*2) )* (-1);  //DONE 8,9,10,11,12
+					break;
+				case 12: //done
+					self.windowOffsetTop = (self.zoomWindow.height()+(self.options.borderSize*2))*(-1); //DONE 12,13,14,15,16
+					self.windowOffsetLeft =(self.zoomWindow.width()+(self.options.borderSize*2) )* (-1);  //DONE 8,9,10,11,12
+					break;
+				case 13: //done
+					self.windowOffsetTop = (self.zoomWindow.height()+(self.options.borderSize*2))*(-1); //DONE 12,13,14,15,16
+					self.windowOffsetLeft =(0); //DONE 7, 13
+					break;
+				case 14:
+					if(self.options.zoomWindowHeight > self.nzHeight){ //positive margin
+						self.windowOffsetTop = (self.zoomWindow.height()+(self.options.borderSize*2))*(-1); //DONE 12,13,14,15,16
+
+						self.windowOffsetLeft =((self.options.zoomWindowWidth/2)-(self.nzWidth/2)+(self.options.borderSize*2))*(-1);
+					}
+					else{ //negative margin
+
+					}
+
+					break;
+				case 15://done
+					self.windowOffsetTop = (self.zoomWindow.height()+(self.options.borderSize*2))*(-1); //DONE 12,13,14,15,16
+					self.windowOffsetLeft =(self.nzWidth-self.zoomWindow.width()-(self.options.borderSize*2)); //DONE - 5,15
+					break;
+				case 16:  //done
+					self.windowOffsetTop = (self.zoomWindow.height()+(self.options.borderSize*2))*(-1); //DONE 12,13,14,15,16
+					self.windowOffsetLeft =(self.nzWidth); //DONE 1, 2, 3, 4, 16
+					break;
+				default: //done
+					self.windowOffsetTop = (self.options.zoomWindowOffety);//DONE - 1
+				self.windowOffsetLeft =(self.nzWidth); //DONE 1, 2, 3, 4, 16
+				}
+			} //end isNAN
+			else{
+				//WE CAN POSITION IN A CLASS - ASSUME THAT ANY STRING PASSED IS
+				self.externalContainer = $('#'+self.options.zoomWindowPosition);
+				self.externalContainerWidth = self.externalContainer.width();
+				self.externalContainerHeight = self.externalContainer.height();
+				self.externalContainerOffset = self.externalContainer.offset();
+
+				self.windowOffsetTop = self.externalContainerOffset.top;//DONE - 1
+				self.windowOffsetLeft =self.externalContainerOffset.left; //DONE 1, 2, 3, 4, 16
+
+			}
+			self.windowOffsetTop = self.windowOffsetTop + self.options.zoomWindowOffety;
+			self.windowOffsetLeft = self.windowOffsetLeft + self.options.zoomWindowOffetx;
+
+			self.zoomWindow.css({ top: self.windowOffsetTop});
+			self.zoomWindow.css({ left: self.windowOffsetLeft});
+
+			if(self.options.zoomType == "inner") {
+				self.zoomWindow.css({ top: 0});
+				self.zoomWindow.css({ left: 0});
+
+			}
+
+
+			self.windowLeftPos = String(((e.pageX - self.nzOffset.left) * self.widthRatio - self.zoomWindow.width() / 2) * (-1));
+			self.windowTopPos = String(((e.pageY - self.nzOffset.top) * self.heightRatio - self.zoomWindow.height() / 2) * (-1));
+			if(self.Etoppos){self.windowTopPos = 0;}
+			if(self.Eloppos){self.windowLeftPos = 0;}
+			if(self.Eboppos){self.windowTopPos = (self.largeContainerHeight/self.options.zoomLevel-self.zoomWindow.height())*(-1);}
+			if(self.Eroppos){self.windowLeftPos = ((self.largeContainerWidth/self.options.zoomLevel-self.zoomWindow.width())*(-1));}
+
+			//set the css background position
+
+
+			if(self.options.zoomType == "window" || self.options.zoomType == "inner") {
+
+				//overrides for images not zoomable
+				if(self.widthRatio <= 1){
+					self.windowLeftPos = 0;
+				}
+
+				if(self.heightRatio <= 1){
+					self.windowTopPos = 0;
+				}
+
+				// adjust images less than the window height
+
+				if(self.largeContainerHeight < self.options.zoomWindowHeight){
+					self.windowTopPos = 0;
+				}
+				if(self.largeContainerWidth < self.options.zoomWindowWidth){
+					self.windowLeftPos = 0;
+				}
+
+				//set the zoomwindow background position
+				if (self.options.easing){
+					//set the pos to 0 if not set
+					if(!self.xp){self.xp = 0;}
+					if(!self.yp){self.yp = 0;}
+					//if loop not already started, then run it
+					if (!self.loop){
+						self.loop = setInterval(function(){
+							//using zeno's paradox
+							self.xp += (self.windowLeftPos - self.xp) / self.options.easingAmount;
+							self.yp += (self.windowTopPos - self.yp) / self.options.easingAmount;
+							self.zoomWindow.css('backgroundPosition', (Math.floor(parseFloat(self.xp) + (self.largeContainerWidth - self.largeImageWidth) / 2) + 'px') + ' ' + (Math.floor(parseFloat(self.yp) + (self.largeContainerHeight - self.largeImageHeight) / 2) + 'px'));
+						}, 16);
+					}
+				}
+				else{
+					self.zoomWindow.css('backgroundPosition', (Math.floor(parseFloat(self.windowLeftPos) + (self.largeContainerWidth - self.largeImageWidth) / 2) + 'px') + ' ' + (Math.floor(parseFloat(self.windowTopPos) + (self.largeContainerHeight - self.largeImageHeight) / 2) + 'px'));
+				}
+			}
+		},
+		setTintPosition: function(e){
+			var self = this;
+			self.nzOffset = (self.options.$imageContainer || self.$elem).offset();
+			self.tintpos = String(((e.pageX - self.nzOffset.left)-(self.zoomLens.width() / 2)) * (-1));
+			self.tintposy = String(((e.pageY - self.nzOffset.top) - self.zoomLens.height() / 2) * (-1));
+			if(self.Etoppos){
+				self.tintposy = 0;
+			}
+			if(self.Eloppos){
+				self.tintpos=0;
+			}
+			if(self.Eboppos){
+				self.tintposy = (self.nzHeight-self.zoomLens.height()-(self.options.lensBorderSize*2))*(-1);
+			}
+			if(self.Eroppos){
+				self.tintpos = ((self.nzWidth-self.zoomLens.width()-(self.options.lensBorderSize*2))*(-1));
+			}
+			if(self.options.tint) {
+				self.zoomTint.css({opacity:self.options.tintOpacity}).animate().fadeIn("slow");
+				self.zoomTintImage.css({'left': self.tintpos-self.options.lensBorderSize+'px'});
+				self.zoomTintImage.css({'top': self.tintposy-self.options.lensBorderSize+'px'});
+			}
+		},
+		doneCallback: function(){
+
+			var self = this;
+
+			if ( self.options.tint ) {
+				self.zoomTintImage.attr("src",largeimage);
+				//self.zoomTintImage.attr("width",elem.data("image"));
+				self.zoomTintImage.attr("height",self.$elem.height());
+				//self.zoomTintImage.attr('src') = elem.data("image");
+				self.zoomTintImage.css({ height: self.$elem.height()});
+				self.zoomTint.css({ height: self.$elem.height()});
+
+			}
+			self.nzOffset = (self.options.$imageContainer || self.$elem).offset();
+			self.nzWidth = (self.options.$imageContainer || self.$elem).width();
+			self.nzHeight = (self.options.$imageContainer || self.$elem).height();
+
+			self.imageWidth = self.$elem.width();
+			self.imageHeight = self.$elem.height();
+
+			//   alert("THIS");
+			//ratio of the large to small image
+			self.widthRatio = self.largeContainerWidth / self.nzWidth;
+			self.heightRatio = self.largeContainerHeight / self.nzHeight;
+
+			//NEED TO ADD THE LENS SIZE FOR ROUND
+			// adjust images less than the window height
+			if(self.options.zoomType == "window") {
+				if(self.nzHeight < self.options.zoomWindowWidth/self.widthRatio){
+					lensHeight = self.nzHeight;
+				}
+				else{
+					lensHeight = String((self.options.zoomWindowHeight/self.heightRatio))
+				}
+				if(self.largeContainerWidth < self.options.zoomWindowWidth){
 					lensWidth = self.nzHWidth;
 				}
 				else{
 					lensWidth =  (self.options.zoomWindowWidth/self.widthRatio);
 				}
 
-        if(self.zoomLens){
-				  self.zoomLens.css('width', lensWidth);
-				  self.zoomLens.css('height', lensHeight);
-        }
-         }
-			},
-			getCurrentImage: function(){
-				var self = this;
-				return self.zoomImage;
-			},
-			getGalleryList: function(){
-				var self = this;
-				//loop through the gallery options and set them in list for fancybox
-				self.gallerylist = [];
-				if (self.options.gallery){
-
-
-					$('#'+self.options.gallery + ' a').each(function() {
-
-						var img_src = '';
-						if($(this).data("zoom-image")){
-							img_src = $(this).data("zoom-image");
-						}
-						else if($(this).data("image")){
-							img_src = $(this).data("image");
-						}
-						//put the current image at the start
-						if(img_src == self.zoomImage){
-							self.gallerylist.unshift({
-								href: ''+img_src+'',
-								title: $(this).find('img').attr("title")
-							});
-						}
-						else{
-							self.gallerylist.push({
-								href: ''+img_src+'',
-								title: $(this).find('img').attr("title")
-							});
-						}
-
-
-					});
+				if(self.zoomLens){
+					self.zoomLens.css('width', lensWidth);
+					self.zoomLens.css('height', lensHeight);
 				}
-				//if no gallery - return current image
-				else{
-					self.gallerylist.push({
-						href: ''+self.zoomImage+'',
-						title: $(this).find('img').attr("title")
-					});
-				}
-				return self.gallerylist;
+			}
+		},
+		getCurrentImage: function(){
+			var self = this;
+			return self.zoomImage;
+		},
+		changeZoomLevel: function(value){
+			var self = this;
+			self.widthRatio = (self.largeContainerWidth/value) / self.nzWidth;
+			self.heightRatio = (self.largeContainerHeight/value) / self.nzHeight;
+			self.zoomWindow.css({ "background-size": self.largeImageWidth/value + 'px ' + self.largeImageHeight/value + 'px' });
+			self.zoomLens.css({ width: String((self.options.zoomWindowWidth)/self.widthRatio) + 'px', height: String((self.options.zoomWindowHeight)/self.heightRatio) + 'px' })
+			//sets the boundry change, called in setWindowPos
+			self.options.zoomLevel = value;
 
-			},
-			changeZoomLevel: function(value){
-				var self = this;
-				self.widthRatio = (self.largeWidth/value) / self.nzWidth;
-				self.heightRatio = (self.largeHeight/value) / self.nzHeight;
-				self.zoomWindow.css({ "background-size": self.largeWidth/value + 'px ' + self.largeHeight/value + 'px' });
-				self.zoomLens.css({ width: String((self.options.zoomWindowWidth)/self.widthRatio) + 'px', height: String((self.options.zoomWindowHeight)/self.heightRatio) + 'px' })
-				//sets the boundry change, called in setWindowPos
-				self.options.zoomLevel = value;
+		},
+		closeAll: function(){
+			if(self.zoomWindow){self.zoomWindow.hide();}
+			if(self.zoomLens){self.zoomLens.hide();}
+			if(self.zoomTint){self.zoomTint.hide();}
+		},
+		destroy: function(){
+			var self = this;
 
-			},
-			closeAll: function(){
-				if(self.zoomWindow){self.zoomWindow.hide();};
-				if(self.zoomLens){self.zoomLens.hide();}
-				if(self.zoomTint){self.zoomTint.hide();}
+			if (self.zoomContainer) {
+				self.zoomContainer.remove();
 			}
 
+			if (self.zoomWindow) {
+				self.zoomWindow.remove();
+			}
+
+			self.$elem.removeData('elevateZoom');
+		}
 	};
-
-
-
 
 	$.fn.elevateZoom = function( options ) {
 		return this.each(function() {
@@ -2076,281 +1979,77 @@ if ( typeof Object.create !== 'function' ) {
 	};
 
 	$.fn.elevateZoom.options = {
-			disableZoom: false,
-			zoomLevel: 1,
-			easing: false,
-			easingAmount: 12,
-			lensSize: 200,
-			zoomWindowWidth: 400,
-			zoomWindowHeight: 400,
-			zoomWindowOffetx: 0,
-			zoomWindowOffety: 0,
-			zoomWindowPosition: 1,
-			zoomWindowBgColour: "#fff",
-			lensFadeIn: false,
-			lensFadeOut: false,
-			debug: false,
-			zoomWindowFadeIn: false,
-			zoomWindowFadeOut: false,
-			zoomWindowAlwaysShow: false,
-			zoomTintFadeIn: false,
-			zoomTintFadeOut: false,
-			borderSize: 4,
-			showLens: true,
-			borderColour: "#888",
-			lensBorderSize: 1,
-			lensBorderColour: "#000",
-			lensShape: "square", //can be "round"
-			zoomType: "window", //window is default,  also "lens" available -
-			containLensZoom: false,
-			lensColour: "white", //colour of the lens background
-			lensOpacity: 0.4, //opacity of the lens
-			lenszoom: false,
-			tint: false, //enable the tinting
-			tintColour: "#333", //default tint color, can be anything, red, #ccc, rgb(0,0,0)
-			tintOpacity: 0.4, //opacity of the tint
-			gallery: false,
-			galleryActiveClass: "zoomGalleryActive",
-			cursor:"default", // user should set to what they want the cursor as, if they have set a click function
-			responsive:false,
-			onComplete: $.noop,
-			onZoomedImageLoaded: function() {},
-			onImageSwap: $.noop,
-			onImageSwapComplete: $.noop
+		imageContainer: null,
+		disableZoom: false,
+		zoomLevel: 1,
+		easing: false,
+		easingAmount: 12,
+		lensSize: 200,
+		zoomWindowWidth: 400,
+		zoomWindowHeight: 400,
+		zoomWindowOffetx: 0,
+		zoomWindowOffety: 0,
+		zoomWindowPosition: 1,
+		zoomWindowBgColour: "#fff",
+		lensFadeIn: false,
+		lensFadeOut: false,
+		debug: false,
+		zoomWindowFadeIn: false,
+		zoomWindowFadeOut: false,
+		zoomWindowAlwaysShow: false,
+		zoomTintFadeIn: false,
+		zoomTintFadeOut: false,
+		borderSize: 4,
+		showLens: true,
+		borderColour: "#888",
+		lensBorderSize: 1,
+		lensBorderColour: "#000",
+		lensShape: "square", //can be "round"
+		zoomType: "window", //window is default,  also "lens" available -
+		containLensZoom: false,
+		lensColour: "white", //colour of the lens background
+		lensOpacity: 0.4, //opacity of the lens
+		lenszoom: false,
+		tint: false, //enable the tinting
+		tintColour: "#333", //default tint color, can be anything, red, #ccc, rgb(0,0,0)
+		tintOpacity: 0.4, //opacity of the tint
+		cursor:"default", // user should set to what they want the cursor as, if they have set a click function
+		responsive:false,
+		onComplete: $.noop,
+		onZoomedImageLoaded: function() {}
 	};
 
 })( jQuery, window, document );
-/**!
- * @preserve Shadow animation 1.11
- * http://www.bitstorm.org/jquery/shadow-animation/
- * Copyright 2011, 2013 Edwin Martin <edwin@bitstorm.org>
- * Contributors: Mark Carver, Xavier Lepretre and Jason Redding
- * Released under the MIT and GPL licenses.
- */
+(function($) {
+	var popups = [];
 
-jQuery(function($, undefined) {
-	/**
-	 * Check whether the browser supports RGBA color mode.
-	 *
-	 * Author Mehdi Kabab <http://pioupioum.fr>
-	 * @return {boolean} True if the browser support RGBA. False otherwise.
-	 */
-	function isRGBACapable() {
-		var $script = $('script:first'),
-		color = $script.css('color'),
-		result = false;
-		if (/^rgba/.test(color)) {
-			result = true;
-		} else {
-			try {
-				result = (color !== $script.css('color', 'rgba(0, 0, 0, 0.5)').css('color'));
-				$script.css('color', color);
-			} catch (e) {
-			}
+    $.fn.enterLightboxMe = function(options) {
+		// Значения по умолчанию
+		options = $.extend(true, {
+
+		}, options);
+
+		// Чтобы прокрутка отключалась и тогда, когда попап уменьшается в размере
+		if (options.preventScroll) {
+			$('body').css('overflow', 'hidden');
 		}
-		$script.removeAttr('style');
 
-		return result;
-	}
-
-	$.extend(true, $, {
-		support: {
-			'rgba': isRGBACapable()
-		}
-	});
-
-	/*************************************/
-
-	// First define which property to use
-	var styles = $('html').prop('style');
-	var boxShadowProperty;
-	$.each(['boxShadow', 'MozBoxShadow', 'WebkitBoxShadow'], function(i, property) {
-		var val = styles[property];
-		if (typeof val !== 'undefined') {
-			boxShadowProperty = property;
-			return false;
-		}
-	});
-
-	// Extend the animate-function
-	if (boxShadowProperty) {
-		$['Tween']['propHooks']['boxShadow'] = {
-			get: function(tween) {
-				return $(tween.elem).css(boxShadowProperty);
-			},
-			set: function(tween) {
-				var style = tween.elem.style;
-				var p_begin = parseShadows($(tween.elem)[0].style[boxShadowProperty] || $(tween.elem).css(boxShadowProperty));
-				var p_end = parseShadows(tween.end);
-				var maxShadowCount = Math.max(p_begin.length, p_end.length);
-				var i;
-				for(i = 0; i < maxShadowCount; i++) {
-					p_end[i] = $.extend({}, p_begin[i], p_end[i]);
-					if (p_begin[i]) {
-						if (!('color' in p_begin[i]) || $.isArray(p_begin[i].color) === false) {
-							p_begin[i].color = p_end[i].color || [0, 0, 0, 0];
-						}
-					} else {
-						p_begin[i] = parseShadows('0 0 0 0 rgba(0,0,0,0)')[0];
-					}
-				}
-				tween['run'] = function(progress) {
-					var rs = calculateShadows(p_begin, p_end, progress);
-					style[boxShadowProperty] = rs;
-				};
-			}
-		};
-	}
-
-	// Calculate an in-between shadow.
-	function calculateShadows(beginList, endList, pos) {
-		var shadows = [];
-		$.each(beginList, function(i) {
-			var parts = [], begin = beginList[i], end = endList[i];
-
-			if (begin.inset) {
-				parts.push('inset');
-			}
-			if (typeof end.left !== 'undefined') {
-				parts.push(parseFloat(begin.left + pos * (end.left - begin.left)) + 'px '
-				+ parseFloat(begin.top + pos * (end.top - begin.top)) + 'px');
-			}
-			if (typeof end.blur !== 'undefined') {
-				parts.push(parseFloat(begin.blur + pos * (end.blur - begin.blur)) + 'px');
-			}
-			if (typeof end.spread !== 'undefined') {
-				parts.push(parseFloat(begin.spread + pos * (end.spread - begin.spread)) + 'px');
-			}
-			if (typeof end.color !== 'undefined') {
-				var color = 'rgb' + ($.support['rgba'] ? 'a' : '') + '('
-				+ parseInt((begin.color[0] + pos * (end.color[0] - begin.color[0])), 10) + ','
-				+ parseInt((begin.color[1] + pos * (end.color[1] - begin.color[1])), 10) + ','
-				+ parseInt((begin.color[2] + pos * (end.color[2] - begin.color[2])), 10);
-				if ($.support['rgba']) {
-					color += ',' + parseFloat(begin.color[3] + pos * (end.color[3] - begin.color[3]));
-				}
-				color += ')';
-				parts.push(color);
-			}
-			shadows.push(parts.join(' '));
+		this.each(function() {
+			popups.push(this);
 		});
-		return shadows.join(', ');
-	}
 
-	// Parse the shadow value and extract the values.
-	function parseShadows(shadow) {
-		var parsedShadows = [];
-		var parsePosition = 0;
-		var parseLength = shadow.length;
+		return this.lightbox_me(options);
+    };
 
-		function findInset() {
-			var m = /^inset\b/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsedShadow.inset = true;
-				parsePosition += m[0].length;
-				return true;
-			}
-			return false;
+	$.enterLightboxMe = {};
+	$.enterLightboxMe.closeAll = function() {
+		for (var i = 0; i < popups.length; i++) {
+			$(popups[i]).trigger('close');
 		}
-		function findOffsets() {
-			var m = /^(-?[0-9\.]+)(?:px)?\s+(-?[0-9\.]+)(?:px)?(?:\s+(-?[0-9\.]+)(?:px)?)?(?:\s+(-?[0-9\.]+)(?:px)?)?/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsedShadow.left = parseInt(m[1], 10);
-				parsedShadow.top = parseInt(m[2], 10);
-				parsedShadow.blur = (m[3] ? parseInt(m[3], 10) : 0);
-				parsedShadow.spread = (m[4] ? parseInt(m[4], 10) : 0);
-				parsePosition += m[0].length;
-				return true;
-			}
-			return false;
-		}
-		function findColor() {
-			var m = /^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsedShadow.color = [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16), 1];
-				parsePosition += m[0].length;
-				return true;
-			}
-			m = /^#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsedShadow.color = [parseInt(m[1], 16) * 17, parseInt(m[2], 16) * 17, parseInt(m[3], 16) * 17, 1];
-				parsePosition += m[0].length;
-				return true;
-			}
-			m = /^rgb\(\s*([0-9\.]+)\s*,\s*([0-9\.]+)\s*,\s*([0-9\.]+)\s*\)/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsedShadow.color = [parseInt(m[1], 10), parseInt(m[2], 10), parseInt(m[3], 10), 1];
-				parsePosition += m[0].length;
-				return true;
-			}
-			m = /^rgba\(\s*([0-9\.]+)\s*,\s*([0-9\.]+)\s*,\s*([0-9\.]+)\s*,\s*([0-9\.]+)\s*\)/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsedShadow.color = [parseInt(m[1], 10), parseInt(m[2], 10), parseInt(m[3], 10), parseFloat(m[4])];
-				parsePosition += m[0].length;
-				return true;
-			}
-			return false;
-		}
-		function findWhiteSpace() {
-			var m = /^\s+/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsePosition += m[0].length;
-				return true;
-			}
-			return false;
-		}
-		function findComma() {
-			var m = /^\s*,\s*/.exec(shadow.substring(parsePosition));
-			if (m !== null && m.length > 0) {
-				parsePosition += m[0].length;
-				return true;
-			}
-			return false;
-		}
-		function normalizeShadow(shadow) {
-			if ($.isPlainObject(shadow)) {
-				var i, sColor, cLength = 0, color = [];
-				if ($.isArray(shadow.color)) {
-					sColor = shadow.color;
-					cLength = sColor.length;
-				}
-				for(i = 0; i < 4; i++) {
-					if (i < cLength) {
-						color.push(sColor[i]);
-					} else if (i === 3) {
-						color.push(1);
-					} else {
-						color.push(0);
-					}
-				}
-			}
-			return $.extend({
-				'left': 0,
-				'top': 0,
-				'blur': 0,
-				'spread': 0
-			}, shadow);
-		}
-		var parsedShadow = normalizeShadow();
 
-		while (parsePosition < parseLength) {
-			if (findInset()) {
-				findWhiteSpace();
-			} else if (findOffsets()) {
-				findWhiteSpace();
-			} else if (findColor()) {
-				findWhiteSpace();
-			} else if (findComma()) {
-				parsedShadows.push(normalizeShadow(parsedShadow));
-				parsedShadow = {};
-			} else {
-				break;
-			}
-		}
-		parsedShadows.push(normalizeShadow(parsedShadow));
-		return parsedShadows;
-	}
-});
+		popups = [];
+	};
+})(jQuery);
 ;(function($){
 	/**
 	 * Плагин кастомных элементов select для карточки товара
@@ -2463,7 +2162,7 @@ jQuery(function($, undefined) {
 							var
 								i, type, callbF, data;
 
-							try{
+							try {
 								for ( i in recommendArray ) {
 									type = recommendArray[i].type;
 									callbF = recommendArray[i].callback;
@@ -2572,7 +2271,7 @@ jQuery(function($, undefined) {
 				 * Переключение на следующий слайд. Проверка состояния кнопок.
 				 */
 				nextSlide = function nextSlide(e) {
-					if ( $(this).hasClass('mDisabled') ) {
+					if ( $(this).hasClass('mDisabled disabled') ) {
 						return false;
 					}
 
@@ -2580,15 +2279,15 @@ jQuery(function($, undefined) {
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					leftBtn.removeClass('mDisabled');
+					leftBtn.removeClass('mDisabled disabled');
 
 					if ( nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW ) {
 						nowLeft = slider.width() - elementOnSlide * itemW;
-						rightBtn.addClass('mDisabled');
+						rightBtn.addClass('mDisabled disabled');
 					}
 					else {
 						nowLeft = nowLeft + elementOnSlide * itemW;
-						rightBtn.removeClass('mDisabled');
+						rightBtn.removeClass('mDisabled disabled');
 					}
 
 					console.info(itemW);
@@ -2598,8 +2297,6 @@ jQuery(function($, undefined) {
 
 					slider.animate({'left': -nowLeft });
 
-                    updatePageTitle(wrap.width(), nowLeft);
-
                     e.preventDefault();
                     //return false;
 				},
@@ -2608,7 +2305,7 @@ jQuery(function($, undefined) {
 				 * Переключение на предыдущий слайд. Проверка состояния кнопок.
 				 */
 				prevSlide = function prevSlide(e) {
-					if ( $(this).hasClass('mDisabled') ) {
+					if ( $(this).hasClass('mDisabled disabled') ) {
 						return false;
 					}
 
@@ -2616,35 +2313,22 @@ jQuery(function($, undefined) {
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					rightBtn.removeClass('mDisabled');
+					rightBtn.removeClass('mDisabled disabled');
 
 					if ( nowLeft - elementOnSlide * itemW <= 0 ) {
 						nowLeft = 0;
-						leftBtn.addClass('mDisabled');
+						leftBtn.addClass('mDisabled disabled');
 					}
 					else {
 						nowLeft = nowLeft - elementOnSlide * itemW;
-						leftBtn.removeClass('mDisabled');
+						leftBtn.removeClass('mDisabled disabled');
 					}
 
 					slider.animate({'left': -nowLeft });
 
-                    updatePageTitle(wrap.width(), nowLeft);
-
                     e.preventDefault();
 					//return false;
 				},
-
-                updatePageTitle = function updatePageTitle(width, left) {
-                    var
-						pageNum = Math.floor(left / width) + 1,
-						itemW = calculateItemWidth(),
-						elementOnSlide = calculateElementOnSlideCount(itemW);
-
-                    if (!sliderParams.count || !elementOnSlide || !pageNum) return;
-
-                    //pageTitle.text('Страница ' + pageNum +  ' goodsSliderиз ' + Math.ceil(sliderParams.count / elementOnSlide));
-                },
 
 				/**
 				 * Вычисление ширины слайдера
@@ -2656,16 +2340,16 @@ jQuery(function($, undefined) {
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					leftBtn.addClass('mDisabled');
-					rightBtn.addClass('mDisabled');
+					leftBtn.addClass('mDisabled disabled');
+					rightBtn.addClass('mDisabled disabled');
 
 					if ( nowItems.length > elementOnSlide ) {
-						rightBtn.removeClass('mDisabled');
+						rightBtn.removeClass('mDisabled disabled');
 					}
 
 					slider.width(nowItems.length * itemW);
 					nowLeft = 0;
-					leftBtn.addClass('mDisabled');
+					leftBtn.addClass('mDisabled disabled');
 					slider.css({'left':nowLeft});
 					wrap.removeClass('mLoader');
 					nowItems.show();
@@ -2710,7 +2394,7 @@ jQuery(function($, undefined) {
 					newSlider = $(res.content)[0];
 					$self.before(newSlider);
 					$self.remove();
-					$(newSlider).goodsSlider();
+					$(newSlider).goodsSlider(options);
 
 					if (params.onLoad) {
 						params.onLoad(newSlider);
@@ -2728,24 +2412,22 @@ jQuery(function($, undefined) {
 					$self.remove();
 				};
 			// end of function
-
-// SITE-4612
-//            if (sliderParams.count) {
-//				var
-//					itemW = calculateItemWidth(),
-//					elementOnSlide = calculateElementOnSlideCount(itemW);
-//
-//                pageTitle.text('Страница ' + '1' +  ' из ' + Math.ceil(sliderParams.count / elementOnSlide));
-//            }
+			
 
 			if ( sliderParams.url !== null ) {
 				if ( typeof window.ENTER.utils.packageReq === 'function' ) {
                     try {
                         if ('viewed' == sliderParams.type) {
-                            sliderParams.url += ((-1 != sliderParams.url.indexOf('?')) ? '&' : '?') + 'rrviewed=' + sliderParams.rrviewed + '&' + $.param({senders: [sliderParams.sender]}) + (sliderParams.sender2 ? '&' + $.param({sender2: sliderParams.sender2}) : '');
+                            sliderParams.url += ((-1 != sliderParams.url.indexOf('?')) ? '&' : '?') +
+								(sliderParams.rrviewed ? 'rrviewed=' + sliderParams.rrviewed + '&' : '') +
+								$.param({senders: [sliderParams.sender]}) +
+								(sliderParams.sender2 ? '&' +
+								$.param({sender2: sliderParams.sender2}) : '')
+							;
 
                             getSlidersData(sliderParams.url, sliderParams.type, function(res) {
                                 res.recommend && res.recommend.viewed && authFromServer(res.recommend.viewed);
+                                $('body').trigger('sliderLoaded', {type: 'viewed'});
                             });
                         } else {
                             getSlidersData(sliderParams.url, sliderParams.type, authFromServer);
@@ -2798,10 +2480,10 @@ jQuery(function($, undefined) {
 	};
 
 })(jQuery);
-/*! jQuery UI - v1.10.3 - 2013-07-09
+/*! jQuery UI - v1.10.4 - 2015-07-01
 * http://jqueryui.com
-* Includes: jquery.ui.core.js, jquery.ui.widget.js, jquery.ui.mouse.js, jquery.ui.position.js, jquery.ui.autocomplete.js, jquery.ui.menu.js, jquery.ui.slider.js
-* Copyright 2013 jQuery Foundation and other contributors Licensed MIT */
+* Includes: jquery.ui.core.js, jquery.ui.widget.js, jquery.ui.mouse.js, jquery.ui.position.js, jquery.ui.draggable.js, jquery.ui.resizable.js, jquery.ui.autocomplete.js, jquery.ui.button.js, jquery.ui.dialog.js, jquery.ui.menu.js, jquery.ui.slider.js
+* Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
 
 (function( $, undefined ) {
 
@@ -2812,7 +2494,7 @@ var uuid = 0,
 $.ui = $.ui || {};
 
 $.extend( $.ui, {
-	version: "1.10.3",
+	version: "1.10.4",
 
 	keyCode: {
 		BACKSPACE: 8,
@@ -3211,7 +2893,7 @@ $.widget = function( name, base, prototype ) {
 		// TODO: remove support for widgetEventPrefix
 		// always use the name + a colon as the prefix, e.g., draggable:start
 		// don't prefix for widgets that aren't DOM-based
-		widgetEventPrefix: existingConstructor ? basePrototype.widgetEventPrefix : name
+		widgetEventPrefix: existingConstructor ? (basePrototype.widgetEventPrefix || name) : name
 	}, proxiedPrototype, {
 		constructor: constructor,
 		namespace: namespace,
@@ -3420,12 +3102,12 @@ $.Widget.prototype = {
 					curOption = curOption[ parts[ i ] ];
 				}
 				key = parts.pop();
-				if ( value === undefined ) {
+				if ( arguments.length === 1 ) {
 					return curOption[ key ] === undefined ? null : curOption[ key ];
 				}
 				curOption[ key ] = value;
 			} else {
-				if ( value === undefined ) {
+				if ( arguments.length === 1 ) {
 					return this.options[ key ] === undefined ? null : this.options[ key ];
 				}
 				options[ key ] = value;
@@ -3632,7 +3314,7 @@ $( document ).mouseup( function() {
 });
 
 $.widget("ui.mouse", {
-	version: "1.10.3",
+	version: "1.10.4",
 	options: {
 		cancel: "input,textarea,button,select,option",
 		distance: 1,
@@ -3842,7 +3524,7 @@ $.position = {
 			return cachedScrollbarWidth;
 		}
 		var w1, w2,
-			div = $( "<div style='display:block;width:50px;height:50px;overflow:hidden;'><div style='height:100px;width:auto;'></div></div>" ),
+			div = $( "<div style='display:block;position:absolute;width:50px;height:50px;overflow:hidden;'><div style='height:100px;width:auto;'></div></div>" ),
 			innerDiv = div.children()[0];
 
 		$( "body" ).append( div );
@@ -3860,8 +3542,10 @@ $.position = {
 		return (cachedScrollbarWidth = w1 - w2);
 	},
 	getScrollInfo: function( within ) {
-		var overflowX = within.isWindow ? "" : within.element.css( "overflow-x" ),
-			overflowY = within.isWindow ? "" : within.element.css( "overflow-y" ),
+		var overflowX = within.isWindow || within.isDocument ? "" :
+				within.element.css( "overflow-x" ),
+			overflowY = within.isWindow || within.isDocument ? "" :
+				within.element.css( "overflow-y" ),
 			hasOverflowX = overflowX === "scroll" ||
 				( overflowX === "auto" && within.width < within.element[0].scrollWidth ),
 			hasOverflowY = overflowY === "scroll" ||
@@ -3873,10 +3557,12 @@ $.position = {
 	},
 	getWithinInfo: function( element ) {
 		var withinElement = $( element || window ),
-			isWindow = $.isWindow( withinElement[0] );
+			isWindow = $.isWindow( withinElement[0] ),
+			isDocument = !!withinElement[ 0 ] && withinElement[ 0 ].nodeType === 9;
 		return {
 			element: withinElement,
 			isWindow: isWindow,
+			isDocument: isDocument,
 			offset: withinElement.offset() || { left: 0, top: 0 },
 			scrollLeft: withinElement.scrollLeft(),
 			scrollTop: withinElement.scrollTop(),
@@ -4208,7 +3894,7 @@ $.ui.position = {
 				}
 			}
 			else if ( overBottom > 0 ) {
-				newOverTop = position.top -  data.collisionPosition.marginTop + myOffset + atOffset + offset - offsetTop;
+				newOverTop = position.top - data.collisionPosition.marginTop + myOffset + atOffset + offset - offsetTop;
 				if ( ( position.top + myOffset + atOffset + offset) > overBottom && ( newOverTop > 0 || abs( newOverTop ) < overBottom ) ) {
 					position.top += myOffset + atOffset + offset;
 				}
@@ -4269,11 +3955,1914 @@ $.ui.position = {
 }( jQuery ) );
 (function( $, undefined ) {
 
-// used to prevent race conditions with remote data sources
-var requestIndex = 0;
+$.widget("ui.draggable", $.ui.mouse, {
+	version: "1.10.4",
+	widgetEventPrefix: "drag",
+	options: {
+		addClasses: true,
+		appendTo: "parent",
+		axis: false,
+		connectToSortable: false,
+		containment: false,
+		cursor: "auto",
+		cursorAt: false,
+		grid: false,
+		handle: false,
+		helper: "original",
+		iframeFix: false,
+		opacity: false,
+		refreshPositions: false,
+		revert: false,
+		revertDuration: 500,
+		scope: "default",
+		scroll: true,
+		scrollSensitivity: 20,
+		scrollSpeed: 20,
+		snap: false,
+		snapMode: "both",
+		snapTolerance: 20,
+		stack: false,
+		zIndex: false,
+
+		// callbacks
+		drag: null,
+		start: null,
+		stop: null
+	},
+	_create: function() {
+
+		if (this.options.helper === "original" && !(/^(?:r|a|f)/).test(this.element.css("position"))) {
+			this.element[0].style.position = "relative";
+		}
+		if (this.options.addClasses){
+			this.element.addClass("ui-draggable");
+		}
+		if (this.options.disabled){
+			this.element.addClass("ui-draggable-disabled");
+		}
+
+		this._mouseInit();
+
+	},
+
+	_destroy: function() {
+		this.element.removeClass( "ui-draggable ui-draggable-dragging ui-draggable-disabled" );
+		this._mouseDestroy();
+	},
+
+	_mouseCapture: function(event) {
+
+		var o = this.options;
+
+		// among others, prevent a drag on a resizable-handle
+		if (this.helper || o.disabled || $(event.target).closest(".ui-resizable-handle").length > 0) {
+			return false;
+		}
+
+		//Quit if we're not on a valid handle
+		this.handle = this._getHandle(event);
+		if (!this.handle) {
+			return false;
+		}
+
+		$(o.iframeFix === true ? "iframe" : o.iframeFix).each(function() {
+			$("<div class='ui-draggable-iframeFix' style='background: #fff;'></div>")
+			.css({
+				width: this.offsetWidth+"px", height: this.offsetHeight+"px",
+				position: "absolute", opacity: "0.001", zIndex: 1000
+			})
+			.css($(this).offset())
+			.appendTo("body");
+		});
+
+		return true;
+
+	},
+
+	_mouseStart: function(event) {
+
+		var o = this.options;
+
+		//Create and append the visible helper
+		this.helper = this._createHelper(event);
+
+		this.helper.addClass("ui-draggable-dragging");
+
+		//Cache the helper size
+		this._cacheHelperProportions();
+
+		//If ddmanager is used for droppables, set the global draggable
+		if($.ui.ddmanager) {
+			$.ui.ddmanager.current = this;
+		}
+
+		/*
+		 * - Position generation -
+		 * This block generates everything position related - it's the core of draggables.
+		 */
+
+		//Cache the margins of the original element
+		this._cacheMargins();
+
+		//Store the helper's css position
+		this.cssPosition = this.helper.css( "position" );
+		this.scrollParent = this.helper.scrollParent();
+		this.offsetParent = this.helper.offsetParent();
+		this.offsetParentCssPosition = this.offsetParent.css( "position" );
+
+		//The element's absolute position on the page minus margins
+		this.offset = this.positionAbs = this.element.offset();
+		this.offset = {
+			top: this.offset.top - this.margins.top,
+			left: this.offset.left - this.margins.left
+		};
+
+		//Reset scroll cache
+		this.offset.scroll = false;
+
+		$.extend(this.offset, {
+			click: { //Where the click happened, relative to the element
+				left: event.pageX - this.offset.left,
+				top: event.pageY - this.offset.top
+			},
+			parent: this._getParentOffset(),
+			relative: this._getRelativeOffset() //This is a relative to absolute position minus the actual position calculation - only used for relative positioned helper
+		});
+
+		//Generate the original position
+		this.originalPosition = this.position = this._generatePosition(event);
+		this.originalPageX = event.pageX;
+		this.originalPageY = event.pageY;
+
+		//Adjust the mouse offset relative to the helper if "cursorAt" is supplied
+		(o.cursorAt && this._adjustOffsetFromHelper(o.cursorAt));
+
+		//Set a containment if given in the options
+		this._setContainment();
+
+		//Trigger event + callbacks
+		if(this._trigger("start", event) === false) {
+			this._clear();
+			return false;
+		}
+
+		//Recache the helper size
+		this._cacheHelperProportions();
+
+		//Prepare the droppable offsets
+		if ($.ui.ddmanager && !o.dropBehaviour) {
+			$.ui.ddmanager.prepareOffsets(this, event);
+		}
+
+
+		this._mouseDrag(event, true); //Execute the drag once - this causes the helper not to be visible before getting its correct position
+
+		//If the ddmanager is used for droppables, inform the manager that dragging has started (see #5003)
+		if ( $.ui.ddmanager ) {
+			$.ui.ddmanager.dragStart(this, event);
+		}
+
+		return true;
+	},
+
+	_mouseDrag: function(event, noPropagation) {
+		// reset any necessary cached properties (see #5009)
+		if ( this.offsetParentCssPosition === "fixed" ) {
+			this.offset.parent = this._getParentOffset();
+		}
+
+		//Compute the helpers position
+		this.position = this._generatePosition(event);
+		this.positionAbs = this._convertPositionTo("absolute");
+
+		//Call plugins and callbacks and use the resulting position if something is returned
+		if (!noPropagation) {
+			var ui = this._uiHash();
+			if(this._trigger("drag", event, ui) === false) {
+				this._mouseUp({});
+				return false;
+			}
+			this.position = ui.position;
+		}
+
+		if(!this.options.axis || this.options.axis !== "y") {
+			this.helper[0].style.left = this.position.left+"px";
+		}
+		if(!this.options.axis || this.options.axis !== "x") {
+			this.helper[0].style.top = this.position.top+"px";
+		}
+		if($.ui.ddmanager) {
+			$.ui.ddmanager.drag(this, event);
+		}
+
+		return false;
+	},
+
+	_mouseStop: function(event) {
+
+		//If we are using droppables, inform the manager about the drop
+		var that = this,
+			dropped = false;
+		if ($.ui.ddmanager && !this.options.dropBehaviour) {
+			dropped = $.ui.ddmanager.drop(this, event);
+		}
+
+		//if a drop comes from outside (a sortable)
+		if(this.dropped) {
+			dropped = this.dropped;
+			this.dropped = false;
+		}
+
+		//if the original element is no longer in the DOM don't bother to continue (see #8269)
+		if ( this.options.helper === "original" && !$.contains( this.element[ 0 ].ownerDocument, this.element[ 0 ] ) ) {
+			return false;
+		}
+
+		if((this.options.revert === "invalid" && !dropped) || (this.options.revert === "valid" && dropped) || this.options.revert === true || ($.isFunction(this.options.revert) && this.options.revert.call(this.element, dropped))) {
+			$(this.helper).animate(this.originalPosition, parseInt(this.options.revertDuration, 10), function() {
+				if(that._trigger("stop", event) !== false) {
+					that._clear();
+				}
+			});
+		} else {
+			if(this._trigger("stop", event) !== false) {
+				this._clear();
+			}
+		}
+
+		return false;
+	},
+
+	_mouseUp: function(event) {
+		//Remove frame helpers
+		$("div.ui-draggable-iframeFix").each(function() {
+			this.parentNode.removeChild(this);
+		});
+
+		//If the ddmanager is used for droppables, inform the manager that dragging has stopped (see #5003)
+		if( $.ui.ddmanager ) {
+			$.ui.ddmanager.dragStop(this, event);
+		}
+
+		return $.ui.mouse.prototype._mouseUp.call(this, event);
+	},
+
+	cancel: function() {
+
+		if(this.helper.is(".ui-draggable-dragging")) {
+			this._mouseUp({});
+		} else {
+			this._clear();
+		}
+
+		return this;
+
+	},
+
+	_getHandle: function(event) {
+		return this.options.handle ?
+			!!$( event.target ).closest( this.element.find( this.options.handle ) ).length :
+			true;
+	},
+
+	_createHelper: function(event) {
+
+		var o = this.options,
+			helper = $.isFunction(o.helper) ? $(o.helper.apply(this.element[0], [event])) : (o.helper === "clone" ? this.element.clone().removeAttr("id") : this.element);
+
+		if(!helper.parents("body").length) {
+			helper.appendTo((o.appendTo === "parent" ? this.element[0].parentNode : o.appendTo));
+		}
+
+		if(helper[0] !== this.element[0] && !(/(fixed|absolute)/).test(helper.css("position"))) {
+			helper.css("position", "absolute");
+		}
+
+		return helper;
+
+	},
+
+	_adjustOffsetFromHelper: function(obj) {
+		if (typeof obj === "string") {
+			obj = obj.split(" ");
+		}
+		if ($.isArray(obj)) {
+			obj = {left: +obj[0], top: +obj[1] || 0};
+		}
+		if ("left" in obj) {
+			this.offset.click.left = obj.left + this.margins.left;
+		}
+		if ("right" in obj) {
+			this.offset.click.left = this.helperProportions.width - obj.right + this.margins.left;
+		}
+		if ("top" in obj) {
+			this.offset.click.top = obj.top + this.margins.top;
+		}
+		if ("bottom" in obj) {
+			this.offset.click.top = this.helperProportions.height - obj.bottom + this.margins.top;
+		}
+	},
+
+	_getParentOffset: function() {
+
+		//Get the offsetParent and cache its position
+		var po = this.offsetParent.offset();
+
+		// This is a special case where we need to modify a offset calculated on start, since the following happened:
+		// 1. The position of the helper is absolute, so it's position is calculated based on the next positioned parent
+		// 2. The actual offset parent is a child of the scroll parent, and the scroll parent isn't the document, which means that
+		//    the scroll is included in the initial calculation of the offset of the parent, and never recalculated upon drag
+		if(this.cssPosition === "absolute" && this.scrollParent[0] !== document && $.contains(this.scrollParent[0], this.offsetParent[0])) {
+			po.left += this.scrollParent.scrollLeft();
+			po.top += this.scrollParent.scrollTop();
+		}
+
+		//This needs to be actually done for all browsers, since pageX/pageY includes this information
+		//Ugly IE fix
+		if((this.offsetParent[0] === document.body) ||
+			(this.offsetParent[0].tagName && this.offsetParent[0].tagName.toLowerCase() === "html" && $.ui.ie)) {
+			po = { top: 0, left: 0 };
+		}
+
+		return {
+			top: po.top + (parseInt(this.offsetParent.css("borderTopWidth"),10) || 0),
+			left: po.left + (parseInt(this.offsetParent.css("borderLeftWidth"),10) || 0)
+		};
+
+	},
+
+	_getRelativeOffset: function() {
+
+		if(this.cssPosition === "relative") {
+			var p = this.element.position();
+			return {
+				top: p.top - (parseInt(this.helper.css("top"),10) || 0) + this.scrollParent.scrollTop(),
+				left: p.left - (parseInt(this.helper.css("left"),10) || 0) + this.scrollParent.scrollLeft()
+			};
+		} else {
+			return { top: 0, left: 0 };
+		}
+
+	},
+
+	_cacheMargins: function() {
+		this.margins = {
+			left: (parseInt(this.element.css("marginLeft"),10) || 0),
+			top: (parseInt(this.element.css("marginTop"),10) || 0),
+			right: (parseInt(this.element.css("marginRight"),10) || 0),
+			bottom: (parseInt(this.element.css("marginBottom"),10) || 0)
+		};
+	},
+
+	_cacheHelperProportions: function() {
+		this.helperProportions = {
+			width: this.helper.outerWidth(),
+			height: this.helper.outerHeight()
+		};
+	},
+
+	_setContainment: function() {
+
+		var over, c, ce,
+			o = this.options;
+
+		if ( !o.containment ) {
+			this.containment = null;
+			return;
+		}
+
+		if ( o.containment === "window" ) {
+			this.containment = [
+				$( window ).scrollLeft() - this.offset.relative.left - this.offset.parent.left,
+				$( window ).scrollTop() - this.offset.relative.top - this.offset.parent.top,
+				$( window ).scrollLeft() + $( window ).width() - this.helperProportions.width - this.margins.left,
+				$( window ).scrollTop() + ( $( window ).height() || document.body.parentNode.scrollHeight ) - this.helperProportions.height - this.margins.top
+			];
+			return;
+		}
+
+		if ( o.containment === "document") {
+			this.containment = [
+				0,
+				0,
+				$( document ).width() - this.helperProportions.width - this.margins.left,
+				( $( document ).height() || document.body.parentNode.scrollHeight ) - this.helperProportions.height - this.margins.top
+			];
+			return;
+		}
+
+		if ( o.containment.constructor === Array ) {
+			this.containment = o.containment;
+			return;
+		}
+
+		if ( o.containment === "parent" ) {
+			o.containment = this.helper[ 0 ].parentNode;
+		}
+
+		c = $( o.containment );
+		ce = c[ 0 ];
+
+		if( !ce ) {
+			return;
+		}
+
+		over = c.css( "overflow" ) !== "hidden";
+
+		this.containment = [
+			( parseInt( c.css( "borderLeftWidth" ), 10 ) || 0 ) + ( parseInt( c.css( "paddingLeft" ), 10 ) || 0 ),
+			( parseInt( c.css( "borderTopWidth" ), 10 ) || 0 ) + ( parseInt( c.css( "paddingTop" ), 10 ) || 0 ) ,
+			( over ? Math.max( ce.scrollWidth, ce.offsetWidth ) : ce.offsetWidth ) - ( parseInt( c.css( "borderRightWidth" ), 10 ) || 0 ) - ( parseInt( c.css( "paddingRight" ), 10 ) || 0 ) - this.helperProportions.width - this.margins.left - this.margins.right,
+			( over ? Math.max( ce.scrollHeight, ce.offsetHeight ) : ce.offsetHeight ) - ( parseInt( c.css( "borderBottomWidth" ), 10 ) || 0 ) - ( parseInt( c.css( "paddingBottom" ), 10 ) || 0 ) - this.helperProportions.height - this.margins.top  - this.margins.bottom
+		];
+		this.relative_container = c;
+	},
+
+	_convertPositionTo: function(d, pos) {
+
+		if(!pos) {
+			pos = this.position;
+		}
+
+		var mod = d === "absolute" ? 1 : -1,
+			scroll = this.cssPosition === "absolute" && !( this.scrollParent[ 0 ] !== document && $.contains( this.scrollParent[ 0 ], this.offsetParent[ 0 ] ) ) ? this.offsetParent : this.scrollParent;
+
+		//Cache the scroll
+		if (!this.offset.scroll) {
+			this.offset.scroll = {top : scroll.scrollTop(), left : scroll.scrollLeft()};
+		}
+
+		return {
+			top: (
+				pos.top	+																// The absolute mouse position
+				this.offset.relative.top * mod +										// Only for relative positioned nodes: Relative offset from element to offset parent
+				this.offset.parent.top * mod -										// The offsetParent's offset without borders (offset + border)
+				( ( this.cssPosition === "fixed" ? -this.scrollParent.scrollTop() : this.offset.scroll.top ) * mod )
+			),
+			left: (
+				pos.left +																// The absolute mouse position
+				this.offset.relative.left * mod +										// Only for relative positioned nodes: Relative offset from element to offset parent
+				this.offset.parent.left * mod	-										// The offsetParent's offset without borders (offset + border)
+				( ( this.cssPosition === "fixed" ? -this.scrollParent.scrollLeft() : this.offset.scroll.left ) * mod )
+			)
+		};
+
+	},
+
+	_generatePosition: function(event) {
+
+		var containment, co, top, left,
+			o = this.options,
+			scroll = this.cssPosition === "absolute" && !( this.scrollParent[ 0 ] !== document && $.contains( this.scrollParent[ 0 ], this.offsetParent[ 0 ] ) ) ? this.offsetParent : this.scrollParent,
+			pageX = event.pageX,
+			pageY = event.pageY;
+
+		//Cache the scroll
+		if (!this.offset.scroll) {
+			this.offset.scroll = {top : scroll.scrollTop(), left : scroll.scrollLeft()};
+		}
+
+		/*
+		 * - Position constraining -
+		 * Constrain the position to a mix of grid, containment.
+		 */
+
+		// If we are not dragging yet, we won't check for options
+		if ( this.originalPosition ) {
+			if ( this.containment ) {
+				if ( this.relative_container ){
+					co = this.relative_container.offset();
+					containment = [
+						this.containment[ 0 ] + co.left,
+						this.containment[ 1 ] + co.top,
+						this.containment[ 2 ] + co.left,
+						this.containment[ 3 ] + co.top
+					];
+				}
+				else {
+					containment = this.containment;
+				}
+
+				if(event.pageX - this.offset.click.left < containment[0]) {
+					pageX = containment[0] + this.offset.click.left;
+				}
+				if(event.pageY - this.offset.click.top < containment[1]) {
+					pageY = containment[1] + this.offset.click.top;
+				}
+				if(event.pageX - this.offset.click.left > containment[2]) {
+					pageX = containment[2] + this.offset.click.left;
+				}
+				if(event.pageY - this.offset.click.top > containment[3]) {
+					pageY = containment[3] + this.offset.click.top;
+				}
+			}
+
+			if(o.grid) {
+				//Check for grid elements set to 0 to prevent divide by 0 error causing invalid argument errors in IE (see ticket #6950)
+				top = o.grid[1] ? this.originalPageY + Math.round((pageY - this.originalPageY) / o.grid[1]) * o.grid[1] : this.originalPageY;
+				pageY = containment ? ((top - this.offset.click.top >= containment[1] || top - this.offset.click.top > containment[3]) ? top : ((top - this.offset.click.top >= containment[1]) ? top - o.grid[1] : top + o.grid[1])) : top;
+
+				left = o.grid[0] ? this.originalPageX + Math.round((pageX - this.originalPageX) / o.grid[0]) * o.grid[0] : this.originalPageX;
+				pageX = containment ? ((left - this.offset.click.left >= containment[0] || left - this.offset.click.left > containment[2]) ? left : ((left - this.offset.click.left >= containment[0]) ? left - o.grid[0] : left + o.grid[0])) : left;
+			}
+
+		}
+
+		return {
+			top: (
+				pageY -																	// The absolute mouse position
+				this.offset.click.top	-												// Click offset (relative to the element)
+				this.offset.relative.top -												// Only for relative positioned nodes: Relative offset from element to offset parent
+				this.offset.parent.top +												// The offsetParent's offset without borders (offset + border)
+				( this.cssPosition === "fixed" ? -this.scrollParent.scrollTop() : this.offset.scroll.top )
+			),
+			left: (
+				pageX -																	// The absolute mouse position
+				this.offset.click.left -												// Click offset (relative to the element)
+				this.offset.relative.left -												// Only for relative positioned nodes: Relative offset from element to offset parent
+				this.offset.parent.left +												// The offsetParent's offset without borders (offset + border)
+				( this.cssPosition === "fixed" ? -this.scrollParent.scrollLeft() : this.offset.scroll.left )
+			)
+		};
+
+	},
+
+	_clear: function() {
+		this.helper.removeClass("ui-draggable-dragging");
+		if(this.helper[0] !== this.element[0] && !this.cancelHelperRemoval) {
+			this.helper.remove();
+		}
+		this.helper = null;
+		this.cancelHelperRemoval = false;
+	},
+
+	// From now on bulk stuff - mainly helpers
+
+	_trigger: function(type, event, ui) {
+		ui = ui || this._uiHash();
+		$.ui.plugin.call(this, type, [event, ui]);
+		//The absolute position has to be recalculated after plugins
+		if(type === "drag") {
+			this.positionAbs = this._convertPositionTo("absolute");
+		}
+		return $.Widget.prototype._trigger.call(this, type, event, ui);
+	},
+
+	plugins: {},
+
+	_uiHash: function() {
+		return {
+			helper: this.helper,
+			position: this.position,
+			originalPosition: this.originalPosition,
+			offset: this.positionAbs
+		};
+	}
+
+});
+
+$.ui.plugin.add("draggable", "connectToSortable", {
+	start: function(event, ui) {
+
+		var inst = $(this).data("ui-draggable"), o = inst.options,
+			uiSortable = $.extend({}, ui, { item: inst.element });
+		inst.sortables = [];
+		$(o.connectToSortable).each(function() {
+			var sortable = $.data(this, "ui-sortable");
+			if (sortable && !sortable.options.disabled) {
+				inst.sortables.push({
+					instance: sortable,
+					shouldRevert: sortable.options.revert
+				});
+				sortable.refreshPositions();	// Call the sortable's refreshPositions at drag start to refresh the containerCache since the sortable container cache is used in drag and needs to be up to date (this will ensure it's initialised as well as being kept in step with any changes that might have happened on the page).
+				sortable._trigger("activate", event, uiSortable);
+			}
+		});
+
+	},
+	stop: function(event, ui) {
+
+		//If we are still over the sortable, we fake the stop event of the sortable, but also remove helper
+		var inst = $(this).data("ui-draggable"),
+			uiSortable = $.extend({}, ui, { item: inst.element });
+
+		$.each(inst.sortables, function() {
+			if(this.instance.isOver) {
+
+				this.instance.isOver = 0;
+
+				inst.cancelHelperRemoval = true; //Don't remove the helper in the draggable instance
+				this.instance.cancelHelperRemoval = false; //Remove it in the sortable instance (so sortable plugins like revert still work)
+
+				//The sortable revert is supported, and we have to set a temporary dropped variable on the draggable to support revert: "valid/invalid"
+				if(this.shouldRevert) {
+					this.instance.options.revert = this.shouldRevert;
+				}
+
+				//Trigger the stop of the sortable
+				this.instance._mouseStop(event);
+
+				this.instance.options.helper = this.instance.options._helper;
+
+				//If the helper has been the original item, restore properties in the sortable
+				if(inst.options.helper === "original") {
+					this.instance.currentItem.css({ top: "auto", left: "auto" });
+				}
+
+			} else {
+				this.instance.cancelHelperRemoval = false; //Remove the helper in the sortable instance
+				this.instance._trigger("deactivate", event, uiSortable);
+			}
+
+		});
+
+	},
+	drag: function(event, ui) {
+
+		var inst = $(this).data("ui-draggable"), that = this;
+
+		$.each(inst.sortables, function() {
+
+			var innermostIntersecting = false,
+				thisSortable = this;
+
+			//Copy over some variables to allow calling the sortable's native _intersectsWith
+			this.instance.positionAbs = inst.positionAbs;
+			this.instance.helperProportions = inst.helperProportions;
+			this.instance.offset.click = inst.offset.click;
+
+			if(this.instance._intersectsWith(this.instance.containerCache)) {
+				innermostIntersecting = true;
+				$.each(inst.sortables, function () {
+					this.instance.positionAbs = inst.positionAbs;
+					this.instance.helperProportions = inst.helperProportions;
+					this.instance.offset.click = inst.offset.click;
+					if (this !== thisSortable &&
+						this.instance._intersectsWith(this.instance.containerCache) &&
+						$.contains(thisSortable.instance.element[0], this.instance.element[0])
+					) {
+						innermostIntersecting = false;
+					}
+					return innermostIntersecting;
+				});
+			}
+
+
+			if(innermostIntersecting) {
+				//If it intersects, we use a little isOver variable and set it once, so our move-in stuff gets fired only once
+				if(!this.instance.isOver) {
+
+					this.instance.isOver = 1;
+					//Now we fake the start of dragging for the sortable instance,
+					//by cloning the list group item, appending it to the sortable and using it as inst.currentItem
+					//We can then fire the start event of the sortable with our passed browser event, and our own helper (so it doesn't create a new one)
+					this.instance.currentItem = $(that).clone().removeAttr("id").appendTo(this.instance.element).data("ui-sortable-item", true);
+					this.instance.options._helper = this.instance.options.helper; //Store helper option to later restore it
+					this.instance.options.helper = function() { return ui.helper[0]; };
+
+					event.target = this.instance.currentItem[0];
+					this.instance._mouseCapture(event, true);
+					this.instance._mouseStart(event, true, true);
+
+					//Because the browser event is way off the new appended portlet, we modify a couple of variables to reflect the changes
+					this.instance.offset.click.top = inst.offset.click.top;
+					this.instance.offset.click.left = inst.offset.click.left;
+					this.instance.offset.parent.left -= inst.offset.parent.left - this.instance.offset.parent.left;
+					this.instance.offset.parent.top -= inst.offset.parent.top - this.instance.offset.parent.top;
+
+					inst._trigger("toSortable", event);
+					inst.dropped = this.instance.element; //draggable revert needs that
+					//hack so receive/update callbacks work (mostly)
+					inst.currentItem = inst.element;
+					this.instance.fromOutside = inst;
+
+				}
+
+				//Provided we did all the previous steps, we can fire the drag event of the sortable on every draggable drag, when it intersects with the sortable
+				if(this.instance.currentItem) {
+					this.instance._mouseDrag(event);
+				}
+
+			} else {
+
+				//If it doesn't intersect with the sortable, and it intersected before,
+				//we fake the drag stop of the sortable, but make sure it doesn't remove the helper by using cancelHelperRemoval
+				if(this.instance.isOver) {
+
+					this.instance.isOver = 0;
+					this.instance.cancelHelperRemoval = true;
+
+					//Prevent reverting on this forced stop
+					this.instance.options.revert = false;
+
+					// The out event needs to be triggered independently
+					this.instance._trigger("out", event, this.instance._uiHash(this.instance));
+
+					this.instance._mouseStop(event, true);
+					this.instance.options.helper = this.instance.options._helper;
+
+					//Now we remove our currentItem, the list group clone again, and the placeholder, and animate the helper back to it's original size
+					this.instance.currentItem.remove();
+					if(this.instance.placeholder) {
+						this.instance.placeholder.remove();
+					}
+
+					inst._trigger("fromSortable", event);
+					inst.dropped = false; //draggable revert needs that
+				}
+
+			}
+
+		});
+
+	}
+});
+
+$.ui.plugin.add("draggable", "cursor", {
+	start: function() {
+		var t = $("body"), o = $(this).data("ui-draggable").options;
+		if (t.css("cursor")) {
+			o._cursor = t.css("cursor");
+		}
+		t.css("cursor", o.cursor);
+	},
+	stop: function() {
+		var o = $(this).data("ui-draggable").options;
+		if (o._cursor) {
+			$("body").css("cursor", o._cursor);
+		}
+	}
+});
+
+$.ui.plugin.add("draggable", "opacity", {
+	start: function(event, ui) {
+		var t = $(ui.helper), o = $(this).data("ui-draggable").options;
+		if(t.css("opacity")) {
+			o._opacity = t.css("opacity");
+		}
+		t.css("opacity", o.opacity);
+	},
+	stop: function(event, ui) {
+		var o = $(this).data("ui-draggable").options;
+		if(o._opacity) {
+			$(ui.helper).css("opacity", o._opacity);
+		}
+	}
+});
+
+$.ui.plugin.add("draggable", "scroll", {
+	start: function() {
+		var i = $(this).data("ui-draggable");
+		if(i.scrollParent[0] !== document && i.scrollParent[0].tagName !== "HTML") {
+			i.overflowOffset = i.scrollParent.offset();
+		}
+	},
+	drag: function( event ) {
+
+		var i = $(this).data("ui-draggable"), o = i.options, scrolled = false;
+
+		if(i.scrollParent[0] !== document && i.scrollParent[0].tagName !== "HTML") {
+
+			if(!o.axis || o.axis !== "x") {
+				if((i.overflowOffset.top + i.scrollParent[0].offsetHeight) - event.pageY < o.scrollSensitivity) {
+					i.scrollParent[0].scrollTop = scrolled = i.scrollParent[0].scrollTop + o.scrollSpeed;
+				} else if(event.pageY - i.overflowOffset.top < o.scrollSensitivity) {
+					i.scrollParent[0].scrollTop = scrolled = i.scrollParent[0].scrollTop - o.scrollSpeed;
+				}
+			}
+
+			if(!o.axis || o.axis !== "y") {
+				if((i.overflowOffset.left + i.scrollParent[0].offsetWidth) - event.pageX < o.scrollSensitivity) {
+					i.scrollParent[0].scrollLeft = scrolled = i.scrollParent[0].scrollLeft + o.scrollSpeed;
+				} else if(event.pageX - i.overflowOffset.left < o.scrollSensitivity) {
+					i.scrollParent[0].scrollLeft = scrolled = i.scrollParent[0].scrollLeft - o.scrollSpeed;
+				}
+			}
+
+		} else {
+
+			if(!o.axis || o.axis !== "x") {
+				if(event.pageY - $(document).scrollTop() < o.scrollSensitivity) {
+					scrolled = $(document).scrollTop($(document).scrollTop() - o.scrollSpeed);
+				} else if($(window).height() - (event.pageY - $(document).scrollTop()) < o.scrollSensitivity) {
+					scrolled = $(document).scrollTop($(document).scrollTop() + o.scrollSpeed);
+				}
+			}
+
+			if(!o.axis || o.axis !== "y") {
+				if(event.pageX - $(document).scrollLeft() < o.scrollSensitivity) {
+					scrolled = $(document).scrollLeft($(document).scrollLeft() - o.scrollSpeed);
+				} else if($(window).width() - (event.pageX - $(document).scrollLeft()) < o.scrollSensitivity) {
+					scrolled = $(document).scrollLeft($(document).scrollLeft() + o.scrollSpeed);
+				}
+			}
+
+		}
+
+		if(scrolled !== false && $.ui.ddmanager && !o.dropBehaviour) {
+			$.ui.ddmanager.prepareOffsets(i, event);
+		}
+
+	}
+});
+
+$.ui.plugin.add("draggable", "snap", {
+	start: function() {
+
+		var i = $(this).data("ui-draggable"),
+			o = i.options;
+
+		i.snapElements = [];
+
+		$(o.snap.constructor !== String ? ( o.snap.items || ":data(ui-draggable)" ) : o.snap).each(function() {
+			var $t = $(this),
+				$o = $t.offset();
+			if(this !== i.element[0]) {
+				i.snapElements.push({
+					item: this,
+					width: $t.outerWidth(), height: $t.outerHeight(),
+					top: $o.top, left: $o.left
+				});
+			}
+		});
+
+	},
+	drag: function(event, ui) {
+
+		var ts, bs, ls, rs, l, r, t, b, i, first,
+			inst = $(this).data("ui-draggable"),
+			o = inst.options,
+			d = o.snapTolerance,
+			x1 = ui.offset.left, x2 = x1 + inst.helperProportions.width,
+			y1 = ui.offset.top, y2 = y1 + inst.helperProportions.height;
+
+		for (i = inst.snapElements.length - 1; i >= 0; i--){
+
+			l = inst.snapElements[i].left;
+			r = l + inst.snapElements[i].width;
+			t = inst.snapElements[i].top;
+			b = t + inst.snapElements[i].height;
+
+			if ( x2 < l - d || x1 > r + d || y2 < t - d || y1 > b + d || !$.contains( inst.snapElements[ i ].item.ownerDocument, inst.snapElements[ i ].item ) ) {
+				if(inst.snapElements[i].snapping) {
+					(inst.options.snap.release && inst.options.snap.release.call(inst.element, event, $.extend(inst._uiHash(), { snapItem: inst.snapElements[i].item })));
+				}
+				inst.snapElements[i].snapping = false;
+				continue;
+			}
+
+			if(o.snapMode !== "inner") {
+				ts = Math.abs(t - y2) <= d;
+				bs = Math.abs(b - y1) <= d;
+				ls = Math.abs(l - x2) <= d;
+				rs = Math.abs(r - x1) <= d;
+				if(ts) {
+					ui.position.top = inst._convertPositionTo("relative", { top: t - inst.helperProportions.height, left: 0 }).top - inst.margins.top;
+				}
+				if(bs) {
+					ui.position.top = inst._convertPositionTo("relative", { top: b, left: 0 }).top - inst.margins.top;
+				}
+				if(ls) {
+					ui.position.left = inst._convertPositionTo("relative", { top: 0, left: l - inst.helperProportions.width }).left - inst.margins.left;
+				}
+				if(rs) {
+					ui.position.left = inst._convertPositionTo("relative", { top: 0, left: r }).left - inst.margins.left;
+				}
+			}
+
+			first = (ts || bs || ls || rs);
+
+			if(o.snapMode !== "outer") {
+				ts = Math.abs(t - y1) <= d;
+				bs = Math.abs(b - y2) <= d;
+				ls = Math.abs(l - x1) <= d;
+				rs = Math.abs(r - x2) <= d;
+				if(ts) {
+					ui.position.top = inst._convertPositionTo("relative", { top: t, left: 0 }).top - inst.margins.top;
+				}
+				if(bs) {
+					ui.position.top = inst._convertPositionTo("relative", { top: b - inst.helperProportions.height, left: 0 }).top - inst.margins.top;
+				}
+				if(ls) {
+					ui.position.left = inst._convertPositionTo("relative", { top: 0, left: l }).left - inst.margins.left;
+				}
+				if(rs) {
+					ui.position.left = inst._convertPositionTo("relative", { top: 0, left: r - inst.helperProportions.width }).left - inst.margins.left;
+				}
+			}
+
+			if(!inst.snapElements[i].snapping && (ts || bs || ls || rs || first)) {
+				(inst.options.snap.snap && inst.options.snap.snap.call(inst.element, event, $.extend(inst._uiHash(), { snapItem: inst.snapElements[i].item })));
+			}
+			inst.snapElements[i].snapping = (ts || bs || ls || rs || first);
+
+		}
+
+	}
+});
+
+$.ui.plugin.add("draggable", "stack", {
+	start: function() {
+		var min,
+			o = this.data("ui-draggable").options,
+			group = $.makeArray($(o.stack)).sort(function(a,b) {
+				return (parseInt($(a).css("zIndex"),10) || 0) - (parseInt($(b).css("zIndex"),10) || 0);
+			});
+
+		if (!group.length) { return; }
+
+		min = parseInt($(group[0]).css("zIndex"), 10) || 0;
+		$(group).each(function(i) {
+			$(this).css("zIndex", min + i);
+		});
+		this.css("zIndex", (min + group.length));
+	}
+});
+
+$.ui.plugin.add("draggable", "zIndex", {
+	start: function(event, ui) {
+		var t = $(ui.helper), o = $(this).data("ui-draggable").options;
+		if(t.css("zIndex")) {
+			o._zIndex = t.css("zIndex");
+		}
+		t.css("zIndex", o.zIndex);
+	},
+	stop: function(event, ui) {
+		var o = $(this).data("ui-draggable").options;
+		if(o._zIndex) {
+			$(ui.helper).css("zIndex", o._zIndex);
+		}
+	}
+});
+
+})(jQuery);
+(function( $, undefined ) {
+
+function num(v) {
+	return parseInt(v, 10) || 0;
+}
+
+function isNumber(value) {
+	return !isNaN(parseInt(value, 10));
+}
+
+$.widget("ui.resizable", $.ui.mouse, {
+	version: "1.10.4",
+	widgetEventPrefix: "resize",
+	options: {
+		alsoResize: false,
+		animate: false,
+		animateDuration: "slow",
+		animateEasing: "swing",
+		aspectRatio: false,
+		autoHide: false,
+		containment: false,
+		ghost: false,
+		grid: false,
+		handles: "e,s,se",
+		helper: false,
+		maxHeight: null,
+		maxWidth: null,
+		minHeight: 10,
+		minWidth: 10,
+		// See #7960
+		zIndex: 90,
+
+		// callbacks
+		resize: null,
+		start: null,
+		stop: null
+	},
+	_create: function() {
+
+		var n, i, handle, axis, hname,
+			that = this,
+			o = this.options;
+		this.element.addClass("ui-resizable");
+
+		$.extend(this, {
+			_aspectRatio: !!(o.aspectRatio),
+			aspectRatio: o.aspectRatio,
+			originalElement: this.element,
+			_proportionallyResizeElements: [],
+			_helper: o.helper || o.ghost || o.animate ? o.helper || "ui-resizable-helper" : null
+		});
+
+		//Wrap the element if it cannot hold child nodes
+		if(this.element[0].nodeName.match(/canvas|textarea|input|select|button|img/i)) {
+
+			//Create a wrapper element and set the wrapper to the new current internal element
+			this.element.wrap(
+				$("<div class='ui-wrapper' style='overflow: hidden;'></div>").css({
+					position: this.element.css("position"),
+					width: this.element.outerWidth(),
+					height: this.element.outerHeight(),
+					top: this.element.css("top"),
+					left: this.element.css("left")
+				})
+			);
+
+			//Overwrite the original this.element
+			this.element = this.element.parent().data(
+				"ui-resizable", this.element.data("ui-resizable")
+			);
+
+			this.elementIsWrapper = true;
+
+			//Move margins to the wrapper
+			this.element.css({ marginLeft: this.originalElement.css("marginLeft"), marginTop: this.originalElement.css("marginTop"), marginRight: this.originalElement.css("marginRight"), marginBottom: this.originalElement.css("marginBottom") });
+			this.originalElement.css({ marginLeft: 0, marginTop: 0, marginRight: 0, marginBottom: 0});
+
+			//Prevent Safari textarea resize
+			this.originalResizeStyle = this.originalElement.css("resize");
+			this.originalElement.css("resize", "none");
+
+			//Push the actual element to our proportionallyResize internal array
+			this._proportionallyResizeElements.push(this.originalElement.css({ position: "static", zoom: 1, display: "block" }));
+
+			// avoid IE jump (hard set the margin)
+			this.originalElement.css({ margin: this.originalElement.css("margin") });
+
+			// fix handlers offset
+			this._proportionallyResize();
+
+		}
+
+		this.handles = o.handles || (!$(".ui-resizable-handle", this.element).length ? "e,s,se" : { n: ".ui-resizable-n", e: ".ui-resizable-e", s: ".ui-resizable-s", w: ".ui-resizable-w", se: ".ui-resizable-se", sw: ".ui-resizable-sw", ne: ".ui-resizable-ne", nw: ".ui-resizable-nw" });
+		if(this.handles.constructor === String) {
+
+			if ( this.handles === "all") {
+				this.handles = "n,e,s,w,se,sw,ne,nw";
+			}
+
+			n = this.handles.split(",");
+			this.handles = {};
+
+			for(i = 0; i < n.length; i++) {
+
+				handle = $.trim(n[i]);
+				hname = "ui-resizable-"+handle;
+				axis = $("<div class='ui-resizable-handle " + hname + "'></div>");
+
+				// Apply zIndex to all handles - see #7960
+				axis.css({ zIndex: o.zIndex });
+
+				//TODO : What's going on here?
+				if ("se" === handle) {
+					axis.addClass("ui-icon ui-icon-gripsmall-diagonal-se");
+				}
+
+				//Insert into internal handles object and append to element
+				this.handles[handle] = ".ui-resizable-"+handle;
+				this.element.append(axis);
+			}
+
+		}
+
+		this._renderAxis = function(target) {
+
+			var i, axis, padPos, padWrapper;
+
+			target = target || this.element;
+
+			for(i in this.handles) {
+
+				if(this.handles[i].constructor === String) {
+					this.handles[i] = $(this.handles[i], this.element).show();
+				}
+
+				//Apply pad to wrapper element, needed to fix axis position (textarea, inputs, scrolls)
+				if (this.elementIsWrapper && this.originalElement[0].nodeName.match(/textarea|input|select|button/i)) {
+
+					axis = $(this.handles[i], this.element);
+
+					//Checking the correct pad and border
+					padWrapper = /sw|ne|nw|se|n|s/.test(i) ? axis.outerHeight() : axis.outerWidth();
+
+					//The padding type i have to apply...
+					padPos = [ "padding",
+						/ne|nw|n/.test(i) ? "Top" :
+						/se|sw|s/.test(i) ? "Bottom" :
+						/^e$/.test(i) ? "Right" : "Left" ].join("");
+
+					target.css(padPos, padWrapper);
+
+					this._proportionallyResize();
+
+				}
+
+				//TODO: What's that good for? There's not anything to be executed left
+				if(!$(this.handles[i]).length) {
+					continue;
+				}
+			}
+		};
+
+		//TODO: make renderAxis a prototype function
+		this._renderAxis(this.element);
+
+		this._handles = $(".ui-resizable-handle", this.element)
+			.disableSelection();
+
+		//Matching axis name
+		this._handles.mouseover(function() {
+			if (!that.resizing) {
+				if (this.className) {
+					axis = this.className.match(/ui-resizable-(se|sw|ne|nw|n|e|s|w)/i);
+				}
+				//Axis, default = se
+				that.axis = axis && axis[1] ? axis[1] : "se";
+			}
+		});
+
+		//If we want to auto hide the elements
+		if (o.autoHide) {
+			this._handles.hide();
+			$(this.element)
+				.addClass("ui-resizable-autohide")
+				.mouseenter(function() {
+					if (o.disabled) {
+						return;
+					}
+					$(this).removeClass("ui-resizable-autohide");
+					that._handles.show();
+				})
+				.mouseleave(function(){
+					if (o.disabled) {
+						return;
+					}
+					if (!that.resizing) {
+						$(this).addClass("ui-resizable-autohide");
+						that._handles.hide();
+					}
+				});
+		}
+
+		//Initialize the mouse interaction
+		this._mouseInit();
+
+	},
+
+	_destroy: function() {
+
+		this._mouseDestroy();
+
+		var wrapper,
+			_destroy = function(exp) {
+				$(exp).removeClass("ui-resizable ui-resizable-disabled ui-resizable-resizing")
+					.removeData("resizable").removeData("ui-resizable").unbind(".resizable").find(".ui-resizable-handle").remove();
+			};
+
+		//TODO: Unwrap at same DOM position
+		if (this.elementIsWrapper) {
+			_destroy(this.element);
+			wrapper = this.element;
+			this.originalElement.css({
+				position: wrapper.css("position"),
+				width: wrapper.outerWidth(),
+				height: wrapper.outerHeight(),
+				top: wrapper.css("top"),
+				left: wrapper.css("left")
+			}).insertAfter( wrapper );
+			wrapper.remove();
+		}
+
+		this.originalElement.css("resize", this.originalResizeStyle);
+		_destroy(this.originalElement);
+
+		return this;
+	},
+
+	_mouseCapture: function(event) {
+		var i, handle,
+			capture = false;
+
+		for (i in this.handles) {
+			handle = $(this.handles[i])[0];
+			if (handle === event.target || $.contains(handle, event.target)) {
+				capture = true;
+			}
+		}
+
+		return !this.options.disabled && capture;
+	},
+
+	_mouseStart: function(event) {
+
+		var curleft, curtop, cursor,
+			o = this.options,
+			iniPos = this.element.position(),
+			el = this.element;
+
+		this.resizing = true;
+
+		// bugfix for http://dev.jquery.com/ticket/1749
+		if ( (/absolute/).test( el.css("position") ) ) {
+			el.css({ position: "absolute", top: el.css("top"), left: el.css("left") });
+		} else if (el.is(".ui-draggable")) {
+			el.css({ position: "absolute", top: iniPos.top, left: iniPos.left });
+		}
+
+		this._renderProxy();
+
+		curleft = num(this.helper.css("left"));
+		curtop = num(this.helper.css("top"));
+
+		if (o.containment) {
+			curleft += $(o.containment).scrollLeft() || 0;
+			curtop += $(o.containment).scrollTop() || 0;
+		}
+
+		//Store needed variables
+		this.offset = this.helper.offset();
+		this.position = { left: curleft, top: curtop };
+		this.size = this._helper ? { width: this.helper.width(), height: this.helper.height() } : { width: el.width(), height: el.height() };
+		this.originalSize = this._helper ? { width: el.outerWidth(), height: el.outerHeight() } : { width: el.width(), height: el.height() };
+		this.originalPosition = { left: curleft, top: curtop };
+		this.sizeDiff = { width: el.outerWidth() - el.width(), height: el.outerHeight() - el.height() };
+		this.originalMousePosition = { left: event.pageX, top: event.pageY };
+
+		//Aspect Ratio
+		this.aspectRatio = (typeof o.aspectRatio === "number") ? o.aspectRatio : ((this.originalSize.width / this.originalSize.height) || 1);
+
+		cursor = $(".ui-resizable-" + this.axis).css("cursor");
+		$("body").css("cursor", cursor === "auto" ? this.axis + "-resize" : cursor);
+
+		el.addClass("ui-resizable-resizing");
+		this._propagate("start", event);
+		return true;
+	},
+
+	_mouseDrag: function(event) {
+
+		//Increase performance, avoid regex
+		var data,
+			el = this.helper, props = {},
+			smp = this.originalMousePosition,
+			a = this.axis,
+			prevTop = this.position.top,
+			prevLeft = this.position.left,
+			prevWidth = this.size.width,
+			prevHeight = this.size.height,
+			dx = (event.pageX-smp.left)||0,
+			dy = (event.pageY-smp.top)||0,
+			trigger = this._change[a];
+
+		if (!trigger) {
+			return false;
+		}
+
+		// Calculate the attrs that will be change
+		data = trigger.apply(this, [event, dx, dy]);
+
+		// Put this in the mouseDrag handler since the user can start pressing shift while resizing
+		this._updateVirtualBoundaries(event.shiftKey);
+		if (this._aspectRatio || event.shiftKey) {
+			data = this._updateRatio(data, event);
+		}
+
+		data = this._respectSize(data, event);
+
+		this._updateCache(data);
+
+		// plugins callbacks need to be called first
+		this._propagate("resize", event);
+
+		if (this.position.top !== prevTop) {
+			props.top = this.position.top + "px";
+		}
+		if (this.position.left !== prevLeft) {
+			props.left = this.position.left + "px";
+		}
+		if (this.size.width !== prevWidth) {
+			props.width = this.size.width + "px";
+		}
+		if (this.size.height !== prevHeight) {
+			props.height = this.size.height + "px";
+		}
+		el.css(props);
+
+		if (!this._helper && this._proportionallyResizeElements.length) {
+			this._proportionallyResize();
+		}
+
+		// Call the user callback if the element was resized
+		if ( ! $.isEmptyObject(props) ) {
+			this._trigger("resize", event, this.ui());
+		}
+
+		return false;
+	},
+
+	_mouseStop: function(event) {
+
+		this.resizing = false;
+		var pr, ista, soffseth, soffsetw, s, left, top,
+			o = this.options, that = this;
+
+		if(this._helper) {
+
+			pr = this._proportionallyResizeElements;
+			ista = pr.length && (/textarea/i).test(pr[0].nodeName);
+			soffseth = ista && $.ui.hasScroll(pr[0], "left") /* TODO - jump height */ ? 0 : that.sizeDiff.height;
+			soffsetw = ista ? 0 : that.sizeDiff.width;
+
+			s = { width: (that.helper.width()  - soffsetw), height: (that.helper.height() - soffseth) };
+			left = (parseInt(that.element.css("left"), 10) + (that.position.left - that.originalPosition.left)) || null;
+			top = (parseInt(that.element.css("top"), 10) + (that.position.top - that.originalPosition.top)) || null;
+
+			if (!o.animate) {
+				this.element.css($.extend(s, { top: top, left: left }));
+			}
+
+			that.helper.height(that.size.height);
+			that.helper.width(that.size.width);
+
+			if (this._helper && !o.animate) {
+				this._proportionallyResize();
+			}
+		}
+
+		$("body").css("cursor", "auto");
+
+		this.element.removeClass("ui-resizable-resizing");
+
+		this._propagate("stop", event);
+
+		if (this._helper) {
+			this.helper.remove();
+		}
+
+		return false;
+
+	},
+
+	_updateVirtualBoundaries: function(forceAspectRatio) {
+		var pMinWidth, pMaxWidth, pMinHeight, pMaxHeight, b,
+			o = this.options;
+
+		b = {
+			minWidth: isNumber(o.minWidth) ? o.minWidth : 0,
+			maxWidth: isNumber(o.maxWidth) ? o.maxWidth : Infinity,
+			minHeight: isNumber(o.minHeight) ? o.minHeight : 0,
+			maxHeight: isNumber(o.maxHeight) ? o.maxHeight : Infinity
+		};
+
+		if(this._aspectRatio || forceAspectRatio) {
+			// We want to create an enclosing box whose aspect ration is the requested one
+			// First, compute the "projected" size for each dimension based on the aspect ratio and other dimension
+			pMinWidth = b.minHeight * this.aspectRatio;
+			pMinHeight = b.minWidth / this.aspectRatio;
+			pMaxWidth = b.maxHeight * this.aspectRatio;
+			pMaxHeight = b.maxWidth / this.aspectRatio;
+
+			if(pMinWidth > b.minWidth) {
+				b.minWidth = pMinWidth;
+			}
+			if(pMinHeight > b.minHeight) {
+				b.minHeight = pMinHeight;
+			}
+			if(pMaxWidth < b.maxWidth) {
+				b.maxWidth = pMaxWidth;
+			}
+			if(pMaxHeight < b.maxHeight) {
+				b.maxHeight = pMaxHeight;
+			}
+		}
+		this._vBoundaries = b;
+	},
+
+	_updateCache: function(data) {
+		this.offset = this.helper.offset();
+		if (isNumber(data.left)) {
+			this.position.left = data.left;
+		}
+		if (isNumber(data.top)) {
+			this.position.top = data.top;
+		}
+		if (isNumber(data.height)) {
+			this.size.height = data.height;
+		}
+		if (isNumber(data.width)) {
+			this.size.width = data.width;
+		}
+	},
+
+	_updateRatio: function( data ) {
+
+		var cpos = this.position,
+			csize = this.size,
+			a = this.axis;
+
+		if (isNumber(data.height)) {
+			data.width = (data.height * this.aspectRatio);
+		} else if (isNumber(data.width)) {
+			data.height = (data.width / this.aspectRatio);
+		}
+
+		if (a === "sw") {
+			data.left = cpos.left + (csize.width - data.width);
+			data.top = null;
+		}
+		if (a === "nw") {
+			data.top = cpos.top + (csize.height - data.height);
+			data.left = cpos.left + (csize.width - data.width);
+		}
+
+		return data;
+	},
+
+	_respectSize: function( data ) {
+
+		var o = this._vBoundaries,
+			a = this.axis,
+			ismaxw = isNumber(data.width) && o.maxWidth && (o.maxWidth < data.width), ismaxh = isNumber(data.height) && o.maxHeight && (o.maxHeight < data.height),
+			isminw = isNumber(data.width) && o.minWidth && (o.minWidth > data.width), isminh = isNumber(data.height) && o.minHeight && (o.minHeight > data.height),
+			dw = this.originalPosition.left + this.originalSize.width,
+			dh = this.position.top + this.size.height,
+			cw = /sw|nw|w/.test(a), ch = /nw|ne|n/.test(a);
+		if (isminw) {
+			data.width = o.minWidth;
+		}
+		if (isminh) {
+			data.height = o.minHeight;
+		}
+		if (ismaxw) {
+			data.width = o.maxWidth;
+		}
+		if (ismaxh) {
+			data.height = o.maxHeight;
+		}
+
+		if (isminw && cw) {
+			data.left = dw - o.minWidth;
+		}
+		if (ismaxw && cw) {
+			data.left = dw - o.maxWidth;
+		}
+		if (isminh && ch) {
+			data.top = dh - o.minHeight;
+		}
+		if (ismaxh && ch) {
+			data.top = dh - o.maxHeight;
+		}
+
+		// fixing jump error on top/left - bug #2330
+		if (!data.width && !data.height && !data.left && data.top) {
+			data.top = null;
+		} else if (!data.width && !data.height && !data.top && data.left) {
+			data.left = null;
+		}
+
+		return data;
+	},
+
+	_proportionallyResize: function() {
+
+		if (!this._proportionallyResizeElements.length) {
+			return;
+		}
+
+		var i, j, borders, paddings, prel,
+			element = this.helper || this.element;
+
+		for ( i=0; i < this._proportionallyResizeElements.length; i++) {
+
+			prel = this._proportionallyResizeElements[i];
+
+			if (!this.borderDif) {
+				this.borderDif = [];
+				borders = [prel.css("borderTopWidth"), prel.css("borderRightWidth"), prel.css("borderBottomWidth"), prel.css("borderLeftWidth")];
+				paddings = [prel.css("paddingTop"), prel.css("paddingRight"), prel.css("paddingBottom"), prel.css("paddingLeft")];
+
+				for ( j = 0; j < borders.length; j++ ) {
+					this.borderDif[ j ] = ( parseInt( borders[ j ], 10 ) || 0 ) + ( parseInt( paddings[ j ], 10 ) || 0 );
+				}
+			}
+
+			prel.css({
+				height: (element.height() - this.borderDif[0] - this.borderDif[2]) || 0,
+				width: (element.width() - this.borderDif[1] - this.borderDif[3]) || 0
+			});
+
+		}
+
+	},
+
+	_renderProxy: function() {
+
+		var el = this.element, o = this.options;
+		this.elementOffset = el.offset();
+
+		if(this._helper) {
+
+			this.helper = this.helper || $("<div style='overflow:hidden;'></div>");
+
+			this.helper.addClass(this._helper).css({
+				width: this.element.outerWidth() - 1,
+				height: this.element.outerHeight() - 1,
+				position: "absolute",
+				left: this.elementOffset.left +"px",
+				top: this.elementOffset.top +"px",
+				zIndex: ++o.zIndex //TODO: Don't modify option
+			});
+
+			this.helper
+				.appendTo("body")
+				.disableSelection();
+
+		} else {
+			this.helper = this.element;
+		}
+
+	},
+
+	_change: {
+		e: function(event, dx) {
+			return { width: this.originalSize.width + dx };
+		},
+		w: function(event, dx) {
+			var cs = this.originalSize, sp = this.originalPosition;
+			return { left: sp.left + dx, width: cs.width - dx };
+		},
+		n: function(event, dx, dy) {
+			var cs = this.originalSize, sp = this.originalPosition;
+			return { top: sp.top + dy, height: cs.height - dy };
+		},
+		s: function(event, dx, dy) {
+			return { height: this.originalSize.height + dy };
+		},
+		se: function(event, dx, dy) {
+			return $.extend(this._change.s.apply(this, arguments), this._change.e.apply(this, [event, dx, dy]));
+		},
+		sw: function(event, dx, dy) {
+			return $.extend(this._change.s.apply(this, arguments), this._change.w.apply(this, [event, dx, dy]));
+		},
+		ne: function(event, dx, dy) {
+			return $.extend(this._change.n.apply(this, arguments), this._change.e.apply(this, [event, dx, dy]));
+		},
+		nw: function(event, dx, dy) {
+			return $.extend(this._change.n.apply(this, arguments), this._change.w.apply(this, [event, dx, dy]));
+		}
+	},
+
+	_propagate: function(n, event) {
+		$.ui.plugin.call(this, n, [event, this.ui()]);
+		(n !== "resize" && this._trigger(n, event, this.ui()));
+	},
+
+	plugins: {},
+
+	ui: function() {
+		return {
+			originalElement: this.originalElement,
+			element: this.element,
+			helper: this.helper,
+			position: this.position,
+			size: this.size,
+			originalSize: this.originalSize,
+			originalPosition: this.originalPosition
+		};
+	}
+
+});
+
+/*
+ * Resizable Extensions
+ */
+
+$.ui.plugin.add("resizable", "animate", {
+
+	stop: function( event ) {
+		var that = $(this).data("ui-resizable"),
+			o = that.options,
+			pr = that._proportionallyResizeElements,
+			ista = pr.length && (/textarea/i).test(pr[0].nodeName),
+			soffseth = ista && $.ui.hasScroll(pr[0], "left") /* TODO - jump height */ ? 0 : that.sizeDiff.height,
+			soffsetw = ista ? 0 : that.sizeDiff.width,
+			style = { width: (that.size.width - soffsetw), height: (that.size.height - soffseth) },
+			left = (parseInt(that.element.css("left"), 10) + (that.position.left - that.originalPosition.left)) || null,
+			top = (parseInt(that.element.css("top"), 10) + (that.position.top - that.originalPosition.top)) || null;
+
+		that.element.animate(
+			$.extend(style, top && left ? { top: top, left: left } : {}), {
+				duration: o.animateDuration,
+				easing: o.animateEasing,
+				step: function() {
+
+					var data = {
+						width: parseInt(that.element.css("width"), 10),
+						height: parseInt(that.element.css("height"), 10),
+						top: parseInt(that.element.css("top"), 10),
+						left: parseInt(that.element.css("left"), 10)
+					};
+
+					if (pr && pr.length) {
+						$(pr[0]).css({ width: data.width, height: data.height });
+					}
+
+					// propagating resize, and updating values for each animation step
+					that._updateCache(data);
+					that._propagate("resize", event);
+
+				}
+			}
+		);
+	}
+
+});
+
+$.ui.plugin.add("resizable", "containment", {
+
+	start: function() {
+		var element, p, co, ch, cw, width, height,
+			that = $(this).data("ui-resizable"),
+			o = that.options,
+			el = that.element,
+			oc = o.containment,
+			ce = (oc instanceof $) ? oc.get(0) : (/parent/.test(oc)) ? el.parent().get(0) : oc;
+
+		if (!ce) {
+			return;
+		}
+
+		that.containerElement = $(ce);
+
+		if (/document/.test(oc) || oc === document) {
+			that.containerOffset = { left: 0, top: 0 };
+			that.containerPosition = { left: 0, top: 0 };
+
+			that.parentData = {
+				element: $(document), left: 0, top: 0,
+				width: $(document).width(), height: $(document).height() || document.body.parentNode.scrollHeight
+			};
+		}
+
+		// i'm a node, so compute top, left, right, bottom
+		else {
+			element = $(ce);
+			p = [];
+			$([ "Top", "Right", "Left", "Bottom" ]).each(function(i, name) { p[i] = num(element.css("padding" + name)); });
+
+			that.containerOffset = element.offset();
+			that.containerPosition = element.position();
+			that.containerSize = { height: (element.innerHeight() - p[3]), width: (element.innerWidth() - p[1]) };
+
+			co = that.containerOffset;
+			ch = that.containerSize.height;
+			cw = that.containerSize.width;
+			width = ($.ui.hasScroll(ce, "left") ? ce.scrollWidth : cw );
+			height = ($.ui.hasScroll(ce) ? ce.scrollHeight : ch);
+
+			that.parentData = {
+				element: ce, left: co.left, top: co.top, width: width, height: height
+			};
+		}
+	},
+
+	resize: function( event ) {
+		var woset, hoset, isParent, isOffsetRelative,
+			that = $(this).data("ui-resizable"),
+			o = that.options,
+			co = that.containerOffset, cp = that.position,
+			pRatio = that._aspectRatio || event.shiftKey,
+			cop = { top:0, left:0 }, ce = that.containerElement;
+
+		if (ce[0] !== document && (/static/).test(ce.css("position"))) {
+			cop = co;
+		}
+
+		if (cp.left < (that._helper ? co.left : 0)) {
+			that.size.width = that.size.width + (that._helper ? (that.position.left - co.left) : (that.position.left - cop.left));
+			if (pRatio) {
+				that.size.height = that.size.width / that.aspectRatio;
+			}
+			that.position.left = o.helper ? co.left : 0;
+		}
+
+		if (cp.top < (that._helper ? co.top : 0)) {
+			that.size.height = that.size.height + (that._helper ? (that.position.top - co.top) : that.position.top);
+			if (pRatio) {
+				that.size.width = that.size.height * that.aspectRatio;
+			}
+			that.position.top = that._helper ? co.top : 0;
+		}
+
+		that.offset.left = that.parentData.left+that.position.left;
+		that.offset.top = that.parentData.top+that.position.top;
+
+		woset = Math.abs( (that._helper ? that.offset.left - cop.left : (that.offset.left - cop.left)) + that.sizeDiff.width );
+		hoset = Math.abs( (that._helper ? that.offset.top - cop.top : (that.offset.top - co.top)) + that.sizeDiff.height );
+
+		isParent = that.containerElement.get(0) === that.element.parent().get(0);
+		isOffsetRelative = /relative|absolute/.test(that.containerElement.css("position"));
+
+		if ( isParent && isOffsetRelative ) {
+			woset -= Math.abs( that.parentData.left );
+		}
+
+		if (woset + that.size.width >= that.parentData.width) {
+			that.size.width = that.parentData.width - woset;
+			if (pRatio) {
+				that.size.height = that.size.width / that.aspectRatio;
+			}
+		}
+
+		if (hoset + that.size.height >= that.parentData.height) {
+			that.size.height = that.parentData.height - hoset;
+			if (pRatio) {
+				that.size.width = that.size.height * that.aspectRatio;
+			}
+		}
+	},
+
+	stop: function(){
+		var that = $(this).data("ui-resizable"),
+			o = that.options,
+			co = that.containerOffset,
+			cop = that.containerPosition,
+			ce = that.containerElement,
+			helper = $(that.helper),
+			ho = helper.offset(),
+			w = helper.outerWidth() - that.sizeDiff.width,
+			h = helper.outerHeight() - that.sizeDiff.height;
+
+		if (that._helper && !o.animate && (/relative/).test(ce.css("position"))) {
+			$(this).css({ left: ho.left - cop.left - co.left, width: w, height: h });
+		}
+
+		if (that._helper && !o.animate && (/static/).test(ce.css("position"))) {
+			$(this).css({ left: ho.left - cop.left - co.left, width: w, height: h });
+		}
+
+	}
+});
+
+$.ui.plugin.add("resizable", "alsoResize", {
+
+	start: function () {
+		var that = $(this).data("ui-resizable"),
+			o = that.options,
+			_store = function (exp) {
+				$(exp).each(function() {
+					var el = $(this);
+					el.data("ui-resizable-alsoresize", {
+						width: parseInt(el.width(), 10), height: parseInt(el.height(), 10),
+						left: parseInt(el.css("left"), 10), top: parseInt(el.css("top"), 10)
+					});
+				});
+			};
+
+		if (typeof(o.alsoResize) === "object" && !o.alsoResize.parentNode) {
+			if (o.alsoResize.length) { o.alsoResize = o.alsoResize[0]; _store(o.alsoResize); }
+			else { $.each(o.alsoResize, function (exp) { _store(exp); }); }
+		}else{
+			_store(o.alsoResize);
+		}
+	},
+
+	resize: function (event, ui) {
+		var that = $(this).data("ui-resizable"),
+			o = that.options,
+			os = that.originalSize,
+			op = that.originalPosition,
+			delta = {
+				height: (that.size.height - os.height) || 0, width: (that.size.width - os.width) || 0,
+				top: (that.position.top - op.top) || 0, left: (that.position.left - op.left) || 0
+			},
+
+			_alsoResize = function (exp, c) {
+				$(exp).each(function() {
+					var el = $(this), start = $(this).data("ui-resizable-alsoresize"), style = {},
+						css = c && c.length ? c : el.parents(ui.originalElement[0]).length ? ["width", "height"] : ["width", "height", "top", "left"];
+
+					$.each(css, function (i, prop) {
+						var sum = (start[prop]||0) + (delta[prop]||0);
+						if (sum && sum >= 0) {
+							style[prop] = sum || null;
+						}
+					});
+
+					el.css(style);
+				});
+			};
+
+		if (typeof(o.alsoResize) === "object" && !o.alsoResize.nodeType) {
+			$.each(o.alsoResize, function (exp, c) { _alsoResize(exp, c); });
+		}else{
+			_alsoResize(o.alsoResize);
+		}
+	},
+
+	stop: function () {
+		$(this).removeData("resizable-alsoresize");
+	}
+});
+
+$.ui.plugin.add("resizable", "ghost", {
+
+	start: function() {
+
+		var that = $(this).data("ui-resizable"), o = that.options, cs = that.size;
+
+		that.ghost = that.originalElement.clone();
+		that.ghost
+			.css({ opacity: 0.25, display: "block", position: "relative", height: cs.height, width: cs.width, margin: 0, left: 0, top: 0 })
+			.addClass("ui-resizable-ghost")
+			.addClass(typeof o.ghost === "string" ? o.ghost : "");
+
+		that.ghost.appendTo(that.helper);
+
+	},
+
+	resize: function(){
+		var that = $(this).data("ui-resizable");
+		if (that.ghost) {
+			that.ghost.css({ position: "relative", height: that.size.height, width: that.size.width });
+		}
+	},
+
+	stop: function() {
+		var that = $(this).data("ui-resizable");
+		if (that.ghost && that.helper) {
+			that.helper.get(0).removeChild(that.ghost.get(0));
+		}
+	}
+
+});
+
+$.ui.plugin.add("resizable", "grid", {
+
+	resize: function() {
+		var that = $(this).data("ui-resizable"),
+			o = that.options,
+			cs = that.size,
+			os = that.originalSize,
+			op = that.originalPosition,
+			a = that.axis,
+			grid = typeof o.grid === "number" ? [o.grid, o.grid] : o.grid,
+			gridX = (grid[0]||1),
+			gridY = (grid[1]||1),
+			ox = Math.round((cs.width - os.width) / gridX) * gridX,
+			oy = Math.round((cs.height - os.height) / gridY) * gridY,
+			newWidth = os.width + ox,
+			newHeight = os.height + oy,
+			isMaxWidth = o.maxWidth && (o.maxWidth < newWidth),
+			isMaxHeight = o.maxHeight && (o.maxHeight < newHeight),
+			isMinWidth = o.minWidth && (o.minWidth > newWidth),
+			isMinHeight = o.minHeight && (o.minHeight > newHeight);
+
+		o.grid = grid;
+
+		if (isMinWidth) {
+			newWidth = newWidth + gridX;
+		}
+		if (isMinHeight) {
+			newHeight = newHeight + gridY;
+		}
+		if (isMaxWidth) {
+			newWidth = newWidth - gridX;
+		}
+		if (isMaxHeight) {
+			newHeight = newHeight - gridY;
+		}
+
+		if (/^(se|s|e)$/.test(a)) {
+			that.size.width = newWidth;
+			that.size.height = newHeight;
+		} else if (/^(ne)$/.test(a)) {
+			that.size.width = newWidth;
+			that.size.height = newHeight;
+			that.position.top = op.top - oy;
+		} else if (/^(sw)$/.test(a)) {
+			that.size.width = newWidth;
+			that.size.height = newHeight;
+			that.position.left = op.left - ox;
+		} else {
+			if ( newHeight - gridY > 0 ) {
+				that.size.height = newHeight;
+				that.position.top = op.top - oy;
+			} else {
+				that.size.height = gridY;
+				that.position.top = op.top + os.height - gridY;
+			}
+			if ( newWidth - gridX > 0 ) {
+				that.size.width = newWidth;
+				that.position.left = op.left - ox;
+			} else {
+				that.size.width = gridX;
+				that.position.left = op.left + os.width - gridX;
+			}
+		}
+	}
+
+});
+
+})(jQuery);
+(function( $, undefined ) {
 
 $.widget( "ui.autocomplete", {
-	version: "1.10.3",
+	version: "1.10.4",
 	defaultElement: "<input>",
 	options: {
 		appendTo: null,
@@ -4297,6 +5886,7 @@ $.widget( "ui.autocomplete", {
 		select: null
 	},
 
+	requestIndex: 0,
 	pending: 0,
 
 	_create: function() {
@@ -4330,7 +5920,6 @@ $.widget( "ui.autocomplete", {
 
 		this._on( this.element, {
 			keydown: function( event ) {
-				/*jshint maxcomplexity:15*/
 				if ( this.element.prop( "readOnly" ) ) {
 					suppressKeyPress = true;
 					suppressInput = true;
@@ -4673,19 +6262,18 @@ $.widget( "ui.autocomplete", {
 	},
 
 	_response: function() {
-		var that = this,
-			index = ++requestIndex;
+		var index = ++this.requestIndex;
 
-		return function( content ) {
-			if ( index === requestIndex ) {
-				that.__response( content );
+		return $.proxy(function( content ) {
+			if ( index === this.requestIndex ) {
+				this.__response( content );
 			}
 
-			that.pending--;
-			if ( !that.pending ) {
-				that.element.removeClass( "ui-autocomplete-loading" );
+			this.pending--;
+			if ( !this.pending ) {
+				this.element.removeClass( "ui-autocomplete-loading" );
 			}
-		};
+		}, this );
 	},
 
 	__response: function( content ) {
@@ -4863,8 +6451,1193 @@ $.widget( "ui.autocomplete", $.ui.autocomplete, {
 }( jQuery ));
 (function( $, undefined ) {
 
+var lastActive,
+	baseClasses = "ui-button ui-widget ui-state-default ui-corner-all",
+	typeClasses = "ui-button-icons-only ui-button-icon-only ui-button-text-icons ui-button-text-icon-primary ui-button-text-icon-secondary ui-button-text-only",
+	formResetHandler = function() {
+		var form = $( this );
+		setTimeout(function() {
+			form.find( ":ui-button" ).button( "refresh" );
+		}, 1 );
+	},
+	radioGroup = function( radio ) {
+		var name = radio.name,
+			form = radio.form,
+			radios = $( [] );
+		if ( name ) {
+			name = name.replace( /'/g, "\\'" );
+			if ( form ) {
+				radios = $( form ).find( "[name='" + name + "']" );
+			} else {
+				radios = $( "[name='" + name + "']", radio.ownerDocument )
+					.filter(function() {
+						return !this.form;
+					});
+			}
+		}
+		return radios;
+	};
+
+$.widget( "ui.button", {
+	version: "1.10.4",
+	defaultElement: "<button>",
+	options: {
+		disabled: null,
+		text: true,
+		label: null,
+		icons: {
+			primary: null,
+			secondary: null
+		}
+	},
+	_create: function() {
+		this.element.closest( "form" )
+			.unbind( "reset" + this.eventNamespace )
+			.bind( "reset" + this.eventNamespace, formResetHandler );
+
+		if ( typeof this.options.disabled !== "boolean" ) {
+			this.options.disabled = !!this.element.prop( "disabled" );
+		} else {
+			this.element.prop( "disabled", this.options.disabled );
+		}
+
+		this._determineButtonType();
+		this.hasTitle = !!this.buttonElement.attr( "title" );
+
+		var that = this,
+			options = this.options,
+			toggleButton = this.type === "checkbox" || this.type === "radio",
+			activeClass = !toggleButton ? "ui-state-active" : "";
+
+		if ( options.label === null ) {
+			options.label = (this.type === "input" ? this.buttonElement.val() : this.buttonElement.html());
+		}
+
+		this._hoverable( this.buttonElement );
+
+		this.buttonElement
+			.addClass( baseClasses )
+			.attr( "role", "button" )
+			.bind( "mouseenter" + this.eventNamespace, function() {
+				if ( options.disabled ) {
+					return;
+				}
+				if ( this === lastActive ) {
+					$( this ).addClass( "ui-state-active" );
+				}
+			})
+			.bind( "mouseleave" + this.eventNamespace, function() {
+				if ( options.disabled ) {
+					return;
+				}
+				$( this ).removeClass( activeClass );
+			})
+			.bind( "click" + this.eventNamespace, function( event ) {
+				if ( options.disabled ) {
+					event.preventDefault();
+					event.stopImmediatePropagation();
+				}
+			});
+
+		// Can't use _focusable() because the element that receives focus
+		// and the element that gets the ui-state-focus class are different
+		this._on({
+			focus: function() {
+				this.buttonElement.addClass( "ui-state-focus" );
+			},
+			blur: function() {
+				this.buttonElement.removeClass( "ui-state-focus" );
+			}
+		});
+
+		if ( toggleButton ) {
+			this.element.bind( "change" + this.eventNamespace, function() {
+				that.refresh();
+			});
+		}
+
+		if ( this.type === "checkbox" ) {
+			this.buttonElement.bind( "click" + this.eventNamespace, function() {
+				if ( options.disabled ) {
+					return false;
+				}
+			});
+		} else if ( this.type === "radio" ) {
+			this.buttonElement.bind( "click" + this.eventNamespace, function() {
+				if ( options.disabled ) {
+					return false;
+				}
+				$( this ).addClass( "ui-state-active" );
+				that.buttonElement.attr( "aria-pressed", "true" );
+
+				var radio = that.element[ 0 ];
+				radioGroup( radio )
+					.not( radio )
+					.map(function() {
+						return $( this ).button( "widget" )[ 0 ];
+					})
+					.removeClass( "ui-state-active" )
+					.attr( "aria-pressed", "false" );
+			});
+		} else {
+			this.buttonElement
+				.bind( "mousedown" + this.eventNamespace, function() {
+					if ( options.disabled ) {
+						return false;
+					}
+					$( this ).addClass( "ui-state-active" );
+					lastActive = this;
+					that.document.one( "mouseup", function() {
+						lastActive = null;
+					});
+				})
+				.bind( "mouseup" + this.eventNamespace, function() {
+					if ( options.disabled ) {
+						return false;
+					}
+					$( this ).removeClass( "ui-state-active" );
+				})
+				.bind( "keydown" + this.eventNamespace, function(event) {
+					if ( options.disabled ) {
+						return false;
+					}
+					if ( event.keyCode === $.ui.keyCode.SPACE || event.keyCode === $.ui.keyCode.ENTER ) {
+						$( this ).addClass( "ui-state-active" );
+					}
+				})
+				// see #8559, we bind to blur here in case the button element loses
+				// focus between keydown and keyup, it would be left in an "active" state
+				.bind( "keyup" + this.eventNamespace + " blur" + this.eventNamespace, function() {
+					$( this ).removeClass( "ui-state-active" );
+				});
+
+			if ( this.buttonElement.is("a") ) {
+				this.buttonElement.keyup(function(event) {
+					if ( event.keyCode === $.ui.keyCode.SPACE ) {
+						// TODO pass through original event correctly (just as 2nd argument doesn't work)
+						$( this ).click();
+					}
+				});
+			}
+		}
+
+		// TODO: pull out $.Widget's handling for the disabled option into
+		// $.Widget.prototype._setOptionDisabled so it's easy to proxy and can
+		// be overridden by individual plugins
+		this._setOption( "disabled", options.disabled );
+		this._resetButton();
+	},
+
+	_determineButtonType: function() {
+		var ancestor, labelSelector, checked;
+
+		if ( this.element.is("[type=checkbox]") ) {
+			this.type = "checkbox";
+		} else if ( this.element.is("[type=radio]") ) {
+			this.type = "radio";
+		} else if ( this.element.is("input") ) {
+			this.type = "input";
+		} else {
+			this.type = "button";
+		}
+
+		if ( this.type === "checkbox" || this.type === "radio" ) {
+			// we don't search against the document in case the element
+			// is disconnected from the DOM
+			ancestor = this.element.parents().last();
+			labelSelector = "label[for='" + this.element.attr("id") + "']";
+			this.buttonElement = ancestor.find( labelSelector );
+			if ( !this.buttonElement.length ) {
+				ancestor = ancestor.length ? ancestor.siblings() : this.element.siblings();
+				this.buttonElement = ancestor.filter( labelSelector );
+				if ( !this.buttonElement.length ) {
+					this.buttonElement = ancestor.find( labelSelector );
+				}
+			}
+			this.element.addClass( "ui-helper-hidden-accessible" );
+
+			checked = this.element.is( ":checked" );
+			if ( checked ) {
+				this.buttonElement.addClass( "ui-state-active" );
+			}
+			this.buttonElement.prop( "aria-pressed", checked );
+		} else {
+			this.buttonElement = this.element;
+		}
+	},
+
+	widget: function() {
+		return this.buttonElement;
+	},
+
+	_destroy: function() {
+		this.element
+			.removeClass( "ui-helper-hidden-accessible" );
+		this.buttonElement
+			.removeClass( baseClasses + " ui-state-active " + typeClasses )
+			.removeAttr( "role" )
+			.removeAttr( "aria-pressed" )
+			.html( this.buttonElement.find(".ui-button-text").html() );
+
+		if ( !this.hasTitle ) {
+			this.buttonElement.removeAttr( "title" );
+		}
+	},
+
+	_setOption: function( key, value ) {
+		this._super( key, value );
+		if ( key === "disabled" ) {
+			this.element.prop( "disabled", !!value );
+			if ( value ) {
+				this.buttonElement.removeClass( "ui-state-focus" );
+			}
+			return;
+		}
+		this._resetButton();
+	},
+
+	refresh: function() {
+		//See #8237 & #8828
+		var isDisabled = this.element.is( "input, button" ) ? this.element.is( ":disabled" ) : this.element.hasClass( "ui-button-disabled" );
+
+		if ( isDisabled !== this.options.disabled ) {
+			this._setOption( "disabled", isDisabled );
+		}
+		if ( this.type === "radio" ) {
+			radioGroup( this.element[0] ).each(function() {
+				if ( $( this ).is( ":checked" ) ) {
+					$( this ).button( "widget" )
+						.addClass( "ui-state-active" )
+						.attr( "aria-pressed", "true" );
+				} else {
+					$( this ).button( "widget" )
+						.removeClass( "ui-state-active" )
+						.attr( "aria-pressed", "false" );
+				}
+			});
+		} else if ( this.type === "checkbox" ) {
+			if ( this.element.is( ":checked" ) ) {
+				this.buttonElement
+					.addClass( "ui-state-active" )
+					.attr( "aria-pressed", "true" );
+			} else {
+				this.buttonElement
+					.removeClass( "ui-state-active" )
+					.attr( "aria-pressed", "false" );
+			}
+		}
+	},
+
+	_resetButton: function() {
+		if ( this.type === "input" ) {
+			if ( this.options.label ) {
+				this.element.val( this.options.label );
+			}
+			return;
+		}
+		var buttonElement = this.buttonElement.removeClass( typeClasses ),
+			buttonText = $( "<span></span>", this.document[0] )
+				.addClass( "ui-button-text" )
+				.html( this.options.label )
+				.appendTo( buttonElement.empty() )
+				.text(),
+			icons = this.options.icons,
+			multipleIcons = icons.primary && icons.secondary,
+			buttonClasses = [];
+
+		if ( icons.primary || icons.secondary ) {
+			if ( this.options.text ) {
+				buttonClasses.push( "ui-button-text-icon" + ( multipleIcons ? "s" : ( icons.primary ? "-primary" : "-secondary" ) ) );
+			}
+
+			if ( icons.primary ) {
+				buttonElement.prepend( "<span class='ui-button-icon-primary ui-icon " + icons.primary + "'></span>" );
+			}
+
+			if ( icons.secondary ) {
+				buttonElement.append( "<span class='ui-button-icon-secondary ui-icon " + icons.secondary + "'></span>" );
+			}
+
+			if ( !this.options.text ) {
+				buttonClasses.push( multipleIcons ? "ui-button-icons-only" : "ui-button-icon-only" );
+
+				if ( !this.hasTitle ) {
+					buttonElement.attr( "title", $.trim( buttonText ) );
+				}
+			}
+		} else {
+			buttonClasses.push( "ui-button-text-only" );
+		}
+		buttonElement.addClass( buttonClasses.join( " " ) );
+	}
+});
+
+$.widget( "ui.buttonset", {
+	version: "1.10.4",
+	options: {
+		items: "button, input[type=button], input[type=submit], input[type=reset], input[type=checkbox], input[type=radio], a, :data(ui-button)"
+	},
+
+	_create: function() {
+		this.element.addClass( "ui-buttonset" );
+	},
+
+	_init: function() {
+		this.refresh();
+	},
+
+	_setOption: function( key, value ) {
+		if ( key === "disabled" ) {
+			this.buttons.button( "option", key, value );
+		}
+
+		this._super( key, value );
+	},
+
+	refresh: function() {
+		var rtl = this.element.css( "direction" ) === "rtl";
+
+		this.buttons = this.element.find( this.options.items )
+			.filter( ":ui-button" )
+				.button( "refresh" )
+			.end()
+			.not( ":ui-button" )
+				.button()
+			.end()
+			.map(function() {
+				return $( this ).button( "widget" )[ 0 ];
+			})
+				.removeClass( "ui-corner-all ui-corner-left ui-corner-right" )
+				.filter( ":first" )
+					.addClass( rtl ? "ui-corner-right" : "ui-corner-left" )
+				.end()
+				.filter( ":last" )
+					.addClass( rtl ? "ui-corner-left" : "ui-corner-right" )
+				.end()
+			.end();
+	},
+
+	_destroy: function() {
+		this.element.removeClass( "ui-buttonset" );
+		this.buttons
+			.map(function() {
+				return $( this ).button( "widget" )[ 0 ];
+			})
+				.removeClass( "ui-corner-left ui-corner-right" )
+			.end()
+			.button( "destroy" );
+	}
+});
+
+}( jQuery ) );
+(function( $, undefined ) {
+
+var sizeRelatedOptions = {
+		buttons: true,
+		height: true,
+		maxHeight: true,
+		maxWidth: true,
+		minHeight: true,
+		minWidth: true,
+		width: true
+	},
+	resizableRelatedOptions = {
+		maxHeight: true,
+		maxWidth: true,
+		minHeight: true,
+		minWidth: true
+	};
+
+$.widget( "ui.dialog", {
+	version: "1.10.4",
+	options: {
+		appendTo: "body",
+		autoOpen: true,
+		buttons: [],
+		closeOnEscape: true,
+		closeText: "close",
+		dialogClass: "",
+		draggable: true,
+		hide: null,
+		height: "auto",
+		maxHeight: null,
+		maxWidth: null,
+		minHeight: 150,
+		minWidth: 150,
+		modal: false,
+		position: {
+			my: "center",
+			at: "center",
+			of: window,
+			collision: "fit",
+			// Ensure the titlebar is always visible
+			using: function( pos ) {
+				var topOffset = $( this ).css( pos ).offset().top;
+				if ( topOffset < 0 ) {
+					$( this ).css( "top", pos.top - topOffset );
+				}
+			}
+		},
+		resizable: true,
+		show: null,
+		title: null,
+		width: 300,
+
+		// callbacks
+		beforeClose: null,
+		close: null,
+		drag: null,
+		dragStart: null,
+		dragStop: null,
+		focus: null,
+		open: null,
+		resize: null,
+		resizeStart: null,
+		resizeStop: null
+	},
+
+	_create: function() {
+		this.originalCss = {
+			display: this.element[0].style.display,
+			width: this.element[0].style.width,
+			minHeight: this.element[0].style.minHeight,
+			maxHeight: this.element[0].style.maxHeight,
+			height: this.element[0].style.height
+		};
+		this.originalPosition = {
+			parent: this.element.parent(),
+			index: this.element.parent().children().index( this.element )
+		};
+		this.originalTitle = this.element.attr("title");
+		this.options.title = this.options.title || this.originalTitle;
+
+		this._createWrapper();
+
+		this.element
+			.show()
+			.removeAttr("title")
+			.addClass("ui-dialog-content ui-widget-content")
+			.appendTo( this.uiDialog );
+
+		this._createTitlebar();
+		this._createButtonPane();
+
+		if ( this.options.draggable && $.fn.draggable ) {
+			this._makeDraggable();
+		}
+		if ( this.options.resizable && $.fn.resizable ) {
+			this._makeResizable();
+		}
+
+		this._isOpen = false;
+	},
+
+	_init: function() {
+		if ( this.options.autoOpen ) {
+			this.open();
+		}
+	},
+
+	_appendTo: function() {
+		var element = this.options.appendTo;
+		if ( element && (element.jquery || element.nodeType) ) {
+			return $( element );
+		}
+		return this.document.find( element || "body" ).eq( 0 );
+	},
+
+	_destroy: function() {
+		var next,
+			originalPosition = this.originalPosition;
+
+		this._destroyOverlay();
+
+		this.element
+			.removeUniqueId()
+			.removeClass("ui-dialog-content ui-widget-content")
+			.css( this.originalCss )
+			// Without detaching first, the following becomes really slow
+			.detach();
+
+		this.uiDialog.stop( true, true ).remove();
+
+		if ( this.originalTitle ) {
+			this.element.attr( "title", this.originalTitle );
+		}
+
+		next = originalPosition.parent.children().eq( originalPosition.index );
+		// Don't try to place the dialog next to itself (#8613)
+		if ( next.length && next[0] !== this.element[0] ) {
+			next.before( this.element );
+		} else {
+			originalPosition.parent.append( this.element );
+		}
+	},
+
+	widget: function() {
+		return this.uiDialog;
+	},
+
+	disable: $.noop,
+	enable: $.noop,
+
+	close: function( event ) {
+		var activeElement,
+			that = this;
+
+		if ( !this._isOpen || this._trigger( "beforeClose", event ) === false ) {
+			return;
+		}
+
+		this._isOpen = false;
+		this._destroyOverlay();
+
+		if ( !this.opener.filter(":focusable").focus().length ) {
+
+			// support: IE9
+			// IE9 throws an "Unspecified error" accessing document.activeElement from an <iframe>
+			try {
+				activeElement = this.document[ 0 ].activeElement;
+
+				// Support: IE9, IE10
+				// If the <body> is blurred, IE will switch windows, see #4520
+				if ( activeElement && activeElement.nodeName.toLowerCase() !== "body" ) {
+
+					// Hiding a focused element doesn't trigger blur in WebKit
+					// so in case we have nothing to focus on, explicitly blur the active element
+					// https://bugs.webkit.org/show_bug.cgi?id=47182
+					$( activeElement ).blur();
+				}
+			} catch ( error ) {}
+		}
+
+		this._hide( this.uiDialog, this.options.hide, function() {
+			that._trigger( "close", event );
+		});
+	},
+
+	isOpen: function() {
+		return this._isOpen;
+	},
+
+	moveToTop: function() {
+		this._moveToTop();
+	},
+
+	_moveToTop: function( event, silent ) {
+		var moved = !!this.uiDialog.nextAll(":visible").insertBefore( this.uiDialog ).length;
+		if ( moved && !silent ) {
+			this._trigger( "focus", event );
+		}
+		return moved;
+	},
+
+	open: function() {
+		var that = this;
+		if ( this._isOpen ) {
+			if ( this._moveToTop() ) {
+				this._focusTabbable();
+			}
+			return;
+		}
+
+		this._isOpen = true;
+		this.opener = $( this.document[0].activeElement );
+
+		this._size();
+		this._position();
+		this._createOverlay();
+		this._moveToTop( null, true );
+		this._show( this.uiDialog, this.options.show, function() {
+			that._focusTabbable();
+			that._trigger("focus");
+		});
+
+		this._trigger("open");
+	},
+
+	_focusTabbable: function() {
+		// Set focus to the first match:
+		// 1. First element inside the dialog matching [autofocus]
+		// 2. Tabbable element inside the content element
+		// 3. Tabbable element inside the buttonpane
+		// 4. The close button
+		// 5. The dialog itself
+		var hasFocus = this.element.find("[autofocus]");
+		if ( !hasFocus.length ) {
+			hasFocus = this.element.find(":tabbable");
+		}
+		if ( !hasFocus.length ) {
+			hasFocus = this.uiDialogButtonPane.find(":tabbable");
+		}
+		if ( !hasFocus.length ) {
+			hasFocus = this.uiDialogTitlebarClose.filter(":tabbable");
+		}
+		if ( !hasFocus.length ) {
+			hasFocus = this.uiDialog;
+		}
+		hasFocus.eq( 0 ).focus();
+	},
+
+	_keepFocus: function( event ) {
+		function checkFocus() {
+			var activeElement = this.document[0].activeElement,
+				isActive = this.uiDialog[0] === activeElement ||
+					$.contains( this.uiDialog[0], activeElement );
+			if ( !isActive ) {
+				this._focusTabbable();
+			}
+		}
+		event.preventDefault();
+		checkFocus.call( this );
+		// support: IE
+		// IE <= 8 doesn't prevent moving focus even with event.preventDefault()
+		// so we check again later
+		this._delay( checkFocus );
+	},
+
+	_createWrapper: function() {
+		this.uiDialog = $("<div>")
+			.addClass( "ui-dialog ui-widget ui-widget-content ui-corner-all ui-front " +
+				this.options.dialogClass )
+			.hide()
+			.attr({
+				// Setting tabIndex makes the div focusable
+				tabIndex: -1,
+				role: "dialog"
+			})
+			.appendTo( this._appendTo() );
+
+		this._on( this.uiDialog, {
+			keydown: function( event ) {
+				if ( this.options.closeOnEscape && !event.isDefaultPrevented() && event.keyCode &&
+						event.keyCode === $.ui.keyCode.ESCAPE ) {
+					event.preventDefault();
+					this.close( event );
+					return;
+				}
+
+				// prevent tabbing out of dialogs
+				if ( event.keyCode !== $.ui.keyCode.TAB ) {
+					return;
+				}
+				var tabbables = this.uiDialog.find(":tabbable"),
+					first = tabbables.filter(":first"),
+					last  = tabbables.filter(":last");
+
+				if ( ( event.target === last[0] || event.target === this.uiDialog[0] ) && !event.shiftKey ) {
+					first.focus( 1 );
+					event.preventDefault();
+				} else if ( ( event.target === first[0] || event.target === this.uiDialog[0] ) && event.shiftKey ) {
+					last.focus( 1 );
+					event.preventDefault();
+				}
+			},
+			mousedown: function( event ) {
+				if ( this._moveToTop( event ) ) {
+					this._focusTabbable();
+				}
+			}
+		});
+
+		// We assume that any existing aria-describedby attribute means
+		// that the dialog content is marked up properly
+		// otherwise we brute force the content as the description
+		if ( !this.element.find("[aria-describedby]").length ) {
+			this.uiDialog.attr({
+				"aria-describedby": this.element.uniqueId().attr("id")
+			});
+		}
+	},
+
+	_createTitlebar: function() {
+		var uiDialogTitle;
+
+		this.uiDialogTitlebar = $("<div>")
+			.addClass("ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix")
+			.prependTo( this.uiDialog );
+		this._on( this.uiDialogTitlebar, {
+			mousedown: function( event ) {
+				// Don't prevent click on close button (#8838)
+				// Focusing a dialog that is partially scrolled out of view
+				// causes the browser to scroll it into view, preventing the click event
+				if ( !$( event.target ).closest(".ui-dialog-titlebar-close") ) {
+					// Dialog isn't getting focus when dragging (#8063)
+					this.uiDialog.focus();
+				}
+			}
+		});
+
+		// support: IE
+		// Use type="button" to prevent enter keypresses in textboxes from closing the
+		// dialog in IE (#9312)
+		this.uiDialogTitlebarClose = $( "<button type='button'></button>" )
+			.button({
+				label: this.options.closeText,
+				icons: {
+					primary: "ui-icon-closethick"
+				},
+				text: false
+			})
+			.addClass("ui-dialog-titlebar-close")
+			.appendTo( this.uiDialogTitlebar );
+		this._on( this.uiDialogTitlebarClose, {
+			click: function( event ) {
+				event.preventDefault();
+				this.close( event );
+			}
+		});
+
+		uiDialogTitle = $("<span>")
+			.uniqueId()
+			.addClass("ui-dialog-title")
+			.prependTo( this.uiDialogTitlebar );
+		this._title( uiDialogTitle );
+
+		this.uiDialog.attr({
+			"aria-labelledby": uiDialogTitle.attr("id")
+		});
+	},
+
+	_title: function( title ) {
+		if ( !this.options.title ) {
+			title.html("&#160;");
+		}
+		title.text( this.options.title );
+	},
+
+	_createButtonPane: function() {
+		this.uiDialogButtonPane = $("<div>")
+			.addClass("ui-dialog-buttonpane ui-widget-content ui-helper-clearfix");
+
+		this.uiButtonSet = $("<div>")
+			.addClass("ui-dialog-buttonset")
+			.appendTo( this.uiDialogButtonPane );
+
+		this._createButtons();
+	},
+
+	_createButtons: function() {
+		var that = this,
+			buttons = this.options.buttons;
+
+		// if we already have a button pane, remove it
+		this.uiDialogButtonPane.remove();
+		this.uiButtonSet.empty();
+
+		if ( $.isEmptyObject( buttons ) || ($.isArray( buttons ) && !buttons.length) ) {
+			this.uiDialog.removeClass("ui-dialog-buttons");
+			return;
+		}
+
+		$.each( buttons, function( name, props ) {
+			var click, buttonOptions;
+			props = $.isFunction( props ) ?
+				{ click: props, text: name } :
+				props;
+			// Default to a non-submitting button
+			props = $.extend( { type: "button" }, props );
+			// Change the context for the click callback to be the main element
+			click = props.click;
+			props.click = function() {
+				click.apply( that.element[0], arguments );
+			};
+			buttonOptions = {
+				icons: props.icons,
+				text: props.showText
+			};
+			delete props.icons;
+			delete props.showText;
+			$( "<button></button>", props )
+				.button( buttonOptions )
+				.appendTo( that.uiButtonSet );
+		});
+		this.uiDialog.addClass("ui-dialog-buttons");
+		this.uiDialogButtonPane.appendTo( this.uiDialog );
+	},
+
+	_makeDraggable: function() {
+		var that = this,
+			options = this.options;
+
+		function filteredUi( ui ) {
+			return {
+				position: ui.position,
+				offset: ui.offset
+			};
+		}
+
+		this.uiDialog.draggable({
+			cancel: ".ui-dialog-content, .ui-dialog-titlebar-close",
+			handle: ".ui-dialog-titlebar",
+			containment: "document",
+			start: function( event, ui ) {
+				$( this ).addClass("ui-dialog-dragging");
+				that._blockFrames();
+				that._trigger( "dragStart", event, filteredUi( ui ) );
+			},
+			drag: function( event, ui ) {
+				that._trigger( "drag", event, filteredUi( ui ) );
+			},
+			stop: function( event, ui ) {
+				options.position = [
+					ui.position.left - that.document.scrollLeft(),
+					ui.position.top - that.document.scrollTop()
+				];
+				$( this ).removeClass("ui-dialog-dragging");
+				that._unblockFrames();
+				that._trigger( "dragStop", event, filteredUi( ui ) );
+			}
+		});
+	},
+
+	_makeResizable: function() {
+		var that = this,
+			options = this.options,
+			handles = options.resizable,
+			// .ui-resizable has position: relative defined in the stylesheet
+			// but dialogs have to use absolute or fixed positioning
+			position = this.uiDialog.css("position"),
+			resizeHandles = typeof handles === "string" ?
+				handles	:
+				"n,e,s,w,se,sw,ne,nw";
+
+		function filteredUi( ui ) {
+			return {
+				originalPosition: ui.originalPosition,
+				originalSize: ui.originalSize,
+				position: ui.position,
+				size: ui.size
+			};
+		}
+
+		this.uiDialog.resizable({
+			cancel: ".ui-dialog-content",
+			containment: "document",
+			alsoResize: this.element,
+			maxWidth: options.maxWidth,
+			maxHeight: options.maxHeight,
+			minWidth: options.minWidth,
+			minHeight: this._minHeight(),
+			handles: resizeHandles,
+			start: function( event, ui ) {
+				$( this ).addClass("ui-dialog-resizing");
+				that._blockFrames();
+				that._trigger( "resizeStart", event, filteredUi( ui ) );
+			},
+			resize: function( event, ui ) {
+				that._trigger( "resize", event, filteredUi( ui ) );
+			},
+			stop: function( event, ui ) {
+				options.height = $( this ).height();
+				options.width = $( this ).width();
+				$( this ).removeClass("ui-dialog-resizing");
+				that._unblockFrames();
+				that._trigger( "resizeStop", event, filteredUi( ui ) );
+			}
+		})
+		.css( "position", position );
+	},
+
+	_minHeight: function() {
+		var options = this.options;
+
+		return options.height === "auto" ?
+			options.minHeight :
+			Math.min( options.minHeight, options.height );
+	},
+
+	_position: function() {
+		// Need to show the dialog to get the actual offset in the position plugin
+		var isVisible = this.uiDialog.is(":visible");
+		if ( !isVisible ) {
+			this.uiDialog.show();
+		}
+		this.uiDialog.position( this.options.position );
+		if ( !isVisible ) {
+			this.uiDialog.hide();
+		}
+	},
+
+	_setOptions: function( options ) {
+		var that = this,
+			resize = false,
+			resizableOptions = {};
+
+		$.each( options, function( key, value ) {
+			that._setOption( key, value );
+
+			if ( key in sizeRelatedOptions ) {
+				resize = true;
+			}
+			if ( key in resizableRelatedOptions ) {
+				resizableOptions[ key ] = value;
+			}
+		});
+
+		if ( resize ) {
+			this._size();
+			this._position();
+		}
+		if ( this.uiDialog.is(":data(ui-resizable)") ) {
+			this.uiDialog.resizable( "option", resizableOptions );
+		}
+	},
+
+	_setOption: function( key, value ) {
+		var isDraggable, isResizable,
+			uiDialog = this.uiDialog;
+
+		if ( key === "dialogClass" ) {
+			uiDialog
+				.removeClass( this.options.dialogClass )
+				.addClass( value );
+		}
+
+		if ( key === "disabled" ) {
+			return;
+		}
+
+		this._super( key, value );
+
+		if ( key === "appendTo" ) {
+			this.uiDialog.appendTo( this._appendTo() );
+		}
+
+		if ( key === "buttons" ) {
+			this._createButtons();
+		}
+
+		if ( key === "closeText" ) {
+			this.uiDialogTitlebarClose.button({
+				// Ensure that we always pass a string
+				label: "" + value
+			});
+		}
+
+		if ( key === "draggable" ) {
+			isDraggable = uiDialog.is(":data(ui-draggable)");
+			if ( isDraggable && !value ) {
+				uiDialog.draggable("destroy");
+			}
+
+			if ( !isDraggable && value ) {
+				this._makeDraggable();
+			}
+		}
+
+		if ( key === "position" ) {
+			this._position();
+		}
+
+		if ( key === "resizable" ) {
+			// currently resizable, becoming non-resizable
+			isResizable = uiDialog.is(":data(ui-resizable)");
+			if ( isResizable && !value ) {
+				uiDialog.resizable("destroy");
+			}
+
+			// currently resizable, changing handles
+			if ( isResizable && typeof value === "string" ) {
+				uiDialog.resizable( "option", "handles", value );
+			}
+
+			// currently non-resizable, becoming resizable
+			if ( !isResizable && value !== false ) {
+				this._makeResizable();
+			}
+		}
+
+		if ( key === "title" ) {
+			this._title( this.uiDialogTitlebar.find(".ui-dialog-title") );
+		}
+	},
+
+	_size: function() {
+		// If the user has resized the dialog, the .ui-dialog and .ui-dialog-content
+		// divs will both have width and height set, so we need to reset them
+		var nonContentHeight, minContentHeight, maxContentHeight,
+			options = this.options;
+
+		// Reset content sizing
+		this.element.show().css({
+			width: "auto",
+			minHeight: 0,
+			maxHeight: "none",
+			height: 0
+		});
+
+		if ( options.minWidth > options.width ) {
+			options.width = options.minWidth;
+		}
+
+		// reset wrapper sizing
+		// determine the height of all the non-content elements
+		nonContentHeight = this.uiDialog.css({
+				height: "auto",
+				width: options.width
+			})
+			.outerHeight();
+		minContentHeight = Math.max( 0, options.minHeight - nonContentHeight );
+		maxContentHeight = typeof options.maxHeight === "number" ?
+			Math.max( 0, options.maxHeight - nonContentHeight ) :
+			"none";
+
+		if ( options.height === "auto" ) {
+			this.element.css({
+				minHeight: minContentHeight,
+				maxHeight: maxContentHeight,
+				height: "auto"
+			});
+		} else {
+			this.element.height( Math.max( 0, options.height - nonContentHeight ) );
+		}
+
+		if (this.uiDialog.is(":data(ui-resizable)") ) {
+			this.uiDialog.resizable( "option", "minHeight", this._minHeight() );
+		}
+	},
+
+	_blockFrames: function() {
+		this.iframeBlocks = this.document.find( "iframe" ).map(function() {
+			var iframe = $( this );
+
+			return $( "<div>" )
+				.css({
+					position: "absolute",
+					width: iframe.outerWidth(),
+					height: iframe.outerHeight()
+				})
+				.appendTo( iframe.parent() )
+				.offset( iframe.offset() )[0];
+		});
+	},
+
+	_unblockFrames: function() {
+		if ( this.iframeBlocks ) {
+			this.iframeBlocks.remove();
+			delete this.iframeBlocks;
+		}
+	},
+
+	_allowInteraction: function( event ) {
+		if ( $( event.target ).closest(".ui-dialog").length ) {
+			return true;
+		}
+
+		// TODO: Remove hack when datepicker implements
+		// the .ui-front logic (#8989)
+		return !!$( event.target ).closest(".ui-datepicker").length;
+	},
+
+	_createOverlay: function() {
+		if ( !this.options.modal ) {
+			return;
+		}
+
+		var that = this,
+			widgetFullName = this.widgetFullName;
+		if ( !$.ui.dialog.overlayInstances ) {
+			// Prevent use of anchors and inputs.
+			// We use a delay in case the overlay is created from an
+			// event that we're going to be cancelling. (#2804)
+			this._delay(function() {
+				// Handle .dialog().dialog("close") (#4065)
+				if ( $.ui.dialog.overlayInstances ) {
+					this.document.bind( "focusin.dialog", function( event ) {
+						if ( !that._allowInteraction( event ) ) {
+							event.preventDefault();
+							$(".ui-dialog:visible:last .ui-dialog-content")
+								.data( widgetFullName )._focusTabbable();
+						}
+					});
+				}
+			});
+		}
+
+		this.overlay = $("<div>")
+			.addClass("ui-widget-overlay ui-front")
+			.appendTo( this._appendTo() );
+		this._on( this.overlay, {
+			mousedown: "_keepFocus"
+		});
+		$.ui.dialog.overlayInstances++;
+	},
+
+	_destroyOverlay: function() {
+		if ( !this.options.modal ) {
+			return;
+		}
+
+		if ( this.overlay ) {
+			$.ui.dialog.overlayInstances--;
+
+			if ( !$.ui.dialog.overlayInstances ) {
+				this.document.unbind( "focusin.dialog" );
+			}
+			this.overlay.remove();
+			this.overlay = null;
+		}
+	}
+});
+
+$.ui.dialog.overlayInstances = 0;
+
+// DEPRECATED
+if ( $.uiBackCompat !== false ) {
+	// position option with array notation
+	// just override with old implementation
+	$.widget( "ui.dialog", $.ui.dialog, {
+		_position: function() {
+			var position = this.options.position,
+				myAt = [],
+				offset = [ 0, 0 ],
+				isVisible;
+
+			if ( position ) {
+				if ( typeof position === "string" || (typeof position === "object" && "0" in position ) ) {
+					myAt = position.split ? position.split(" ") : [ position[0], position[1] ];
+					if ( myAt.length === 1 ) {
+						myAt[1] = myAt[0];
+					}
+
+					$.each( [ "left", "top" ], function( i, offsetPosition ) {
+						if ( +myAt[ i ] === myAt[ i ] ) {
+							offset[ i ] = myAt[ i ];
+							myAt[ i ] = offsetPosition;
+						}
+					});
+
+					position = {
+						my: myAt[0] + (offset[0] < 0 ? offset[0] : "+" + offset[0]) + " " +
+							myAt[1] + (offset[1] < 0 ? offset[1] : "+" + offset[1]),
+						at: myAt.join(" ")
+					};
+				}
+
+				position = $.extend( {}, $.ui.dialog.prototype.options.position, position );
+			} else {
+				position = $.ui.dialog.prototype.options.position;
+			}
+
+			// need to show the dialog to get the actual offset in the position plugin
+			isVisible = this.uiDialog.is(":visible");
+			if ( !isVisible ) {
+				this.uiDialog.show();
+			}
+			this.uiDialog.position( position );
+			if ( !isVisible ) {
+				this.uiDialog.hide();
+			}
+		}
+	});
+}
+
+}( jQuery ) );
+(function( $, undefined ) {
+
 $.widget( "ui.menu", {
-	version: "1.10.3",
+	version: "1.10.4",
 	defaultElement: "<ul>",
 	delay: 300,
 	options: {
@@ -4923,13 +7696,18 @@ $.widget( "ui.menu", {
 			"click .ui-menu-item:has(a)": function( event ) {
 				var target = $( event.target ).closest( ".ui-menu-item" );
 				if ( !this.mouseHandled && target.not( ".ui-state-disabled" ).length ) {
-					this.mouseHandled = true;
-
 					this.select( event );
+
+					// Only set the mouseHandled flag if the event will bubble, see #9469.
+					if ( !event.isPropagationStopped() ) {
+						this.mouseHandled = true;
+					}
+
 					// Open submenu on click
 					if ( target.has( ".ui-menu" ).length ) {
 						this.expand( event );
-					} else if ( !this.element.is( ":focus" ) ) {
+					} else if ( !this.element.is( ":focus" ) && $( this.document[ 0 ].activeElement ).closest( ".ui-menu" ).length ) {
+
 						// Redirect focus to the menu
 						this.element.trigger( "focus", [ true ] );
 
@@ -5022,7 +7800,6 @@ $.widget( "ui.menu", {
 	},
 
 	_keydown: function( event ) {
-		/*jshint maxcomplexity:20*/
 		var match, prev, character, skip, regex,
 			preventDefault = true;
 
@@ -5131,6 +7908,8 @@ $.widget( "ui.menu", {
 			icon = this.options.icons.submenu,
 			submenus = this.element.find( this.options.menus );
 
+		this.element.toggleClass( "ui-menu-icons", !!this.element.find( ".ui-icon" ).length );
+
 		// Initialize nested menus
 		submenus.filter( ":not(.ui-menu)" )
 			.addClass( "ui-menu ui-widget ui-widget-content ui-corner-all" )
@@ -5231,7 +8010,7 @@ $.widget( "ui.menu", {
 		}
 
 		nested = item.children( ".ui-menu" );
-		if ( nested.length && ( /^mouse/.test( event.type ) ) ) {
+		if ( nested.length && event && ( /^mouse/.test( event.type ) ) ) {
 			this._startOpening(nested);
 		}
 		this.activeMenu = item.parent();
@@ -5474,7 +8253,7 @@ $.widget( "ui.menu", {
 var numPages = 5;
 
 $.widget( "ui.slider", $.ui.mouse, {
-	version: "1.10.3",
+	version: "1.10.4",
 	widgetEventPrefix: "slide",
 
 	options: {
@@ -5585,7 +8364,10 @@ $.widget( "ui.slider", $.ui.mouse, {
 			this.range.addClass( classes +
 				( ( options.range === "min" || options.range === "max" ) ? " ui-slider-range-" + options.range : "" ) );
 		} else {
-			this.range = $([]);
+			if ( this.range ) {
+				this.range.remove();
+			}
+			this.range = null;
 		}
 	},
 
@@ -5599,7 +8381,9 @@ $.widget( "ui.slider", $.ui.mouse, {
 
 	_destroy: function() {
 		this.handles.remove();
-		this.range.remove();
+		if ( this.range ) {
+			this.range.remove();
+		}
 
 		this.element
 			.removeClass( "ui-slider" +
@@ -5771,7 +8555,7 @@ $.widget( "ui.slider", $.ui.mouse, {
 				} );
 				otherVal = this.values( index ? 0 : 1 );
 				if ( allowed !== false ) {
-					this.values( index, newVal, true );
+					this.values( index, newVal );
 				}
 			}
 		} else {
@@ -6043,7 +8827,6 @@ $.widget( "ui.slider", $.ui.mouse, {
 
 	_handleEvents: {
 		keydown: function( event ) {
-			/*jshint maxcomplexity:25*/
 			var allowed, curVal, newVal, step,
 				index = $( event.target ).data( "ui-slider-handle-index" );
 
@@ -6125,131 +8908,6 @@ $.widget( "ui.slider", $.ui.mouse, {
 
 }(jQuery));
 
-(function($) {
-
-  $.rimages = {
-    $els: $('[data-rimage]'),
-    breakpoints: {},
-
-    init: function() {
-      $.rimages.$body = $('body');
-      $.rimages.scrollbarWidth = $.rimages.getScrollbarWidth();
-
-      if (!$.rimages.$els[0]) {
-        return;
-      }
-      $.rimages.pixelRatio = window.devicePixelRatio;
-      $.rimages.$els.each(function() {
-        var elData = $(this).data();
-        for (var key in elData) {
-          var isSrc = /^src/.test(key);
-          var is2x = /at2x$/.test(key);
-          var baseKey = key.replace('at2x', '');
-          var has2x = $(this).data(key + 'at2x');
-          var width = /\d+/.exec(baseKey);
-          width = width ? parseInt(width[0]) : null;
-          var shouldAdd = false;
-          var add2x = false;
-          var isNotApplicable = !isSrc || ($.rimages.pixelRatio !== 2 && is2x) || ($.rimages.pixelRatio === 2 && !is2x && has2x);
-
-          if (!isNotApplicable) {
-            $.rimages.addToBreakpoint(baseKey, width, elData[key], this);
-          }
-        }
-      });
-
-      $(window).on('resize', $.rimages.setPerWindowWidth);
-      $.rimages.setPerWindowWidth();
-    },
-
-    getScrollbarWidth: function() {
-      $.rimages.$body = $('body');
-      var overflow = $.rimages.$body.css('overflow');
-      $.rimages.$body.css({
-        'overflow': 'hidden'
-      });
-      var widthWithoutScrollbar = $.rimages.$body.outerWidth();
-      $.rimages.$body.css({
-        'overflow': 'scroll',
-        'height': '10000px'
-      });
-      var widthWithScrollbar = $.rimages.$body.outerWidth();
-      $.rimages.$body.removeAttr('style');
-      return widthWithoutScrollbar - widthWithScrollbar;
-    },
-
-    addToBreakpoint: function(breakpointId, width, src, el) {
-      if (!$.rimages.breakpoints[breakpointId]) {
-        $.rimages.breakpoints[breakpointId] = {
-          max: /^srcmax/.test(breakpointId),
-          width: width,
-          els: []
-        };
-      }
-      $.rimages.breakpoints[breakpointId].els.push({$el: $(el), src: src});
-    },
-
-    set: function(breakpointId) {
-      if (typeof($.rimages.breakpoints[breakpointId]) !== "undefined") return;
-
-      var images = $.rimages.breakpoints[breakpointId]['els'];
-      for (var i = 0; i < images.length; i++) {
-        var image = images[i];
-        var $image = images[i].$el;
-        if ($image.data('currentBreakpointId') !== breakpointId) {
-          $image.attr('src', image['src']);
-        }
-        $image.data('currentBreakpointId', breakpointId);
-      }
-    },
-
-    setPerWindowWidth: function() {
-      var windowWidth = $(window).width();
-      var windowHeight = $(window).height();
-      var bodyHeight = $.rimages.$body.height();
-      var breakpointsToApply = [];
-      var maxBreakpointToApply;
-      var minBreakpointToApply;
-      var maxBreakpointWidth = Infinity;
-      var minBreakpointWidth = -Infinity;
-
-      if (bodyHeight > windowHeight) {
-        windowWidth += $.rimages.scrollbarWidth;
-      }
-
-      for (var breakpointId in $.rimages.breakpoints) {
-        var breakpoint = $.rimages.breakpoints[breakpointId];
-
-        // check max
-        if (breakpoint['max'] && breakpoint['width'] >= windowWidth && breakpoint['width'] < maxBreakpointWidth) {
-          maxBreakpointToApply = breakpointId;
-          maxBreakpointWidth = breakpoint['width'];
-        }
-
-        // check min
-        if (!breakpoint['max'] && breakpoint['width'] >= windowWidth && breakpoint['width'] < minBreakpointWidth) {
-          minBreakpointToApply = breakpointId;
-          minBreakpointWidth = breakpoint['width'];
-        }
-      }
-
-      if (!maxBreakpointToApply && !minBreakpointToApply) {
-        $.rimages.set('src');
-      }
-
-      if (maxBreakpointToApply) {
-        $.rimages.set(maxBreakpointToApply);
-      }
-
-      if (minBreakpointToApply) {
-        $.rimages.set(minBreakpointToApply);
-      }
-    }
-  };
-
-  $.rimages.init();
-
-})(jQuery);
 (function($) {
     $.kladr = {};
     

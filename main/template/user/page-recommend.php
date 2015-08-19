@@ -9,20 +9,20 @@
 
 <?
 $helper = new \Helper\TemplateHelper();
+$isNewProductPage = \App::abTest()->isNewProductPage();
 ?>
 
 <div class="personalPage">
 
     <?= $page->render('user/_menu', ['page' => $page]) ?>
 
-    <?= $helper->render('product/__slider', [
+    <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
         'type'           => 'main',
         'title'          => 'Мы рекомендуем',
         'products'       => $recommendedProducts,
-        'count'          => count($recommendedProducts),
         'limit'          => \App::config()->product['itemsInSlider'],
         'page'           => 1,
-        'class'          => 'slideItem-7item',
+        'class'          => $isNewProductPage ? '' : 'slideItem-7item',
         'sender'   => [
             'name'     => 'retailrocket',
             'position' => 'UserRecommended',
@@ -34,7 +34,6 @@ $helper = new \Helper\TemplateHelper();
         'type'      => 'viewed',
         'title'     => 'Вы смотрели',
         'products'  => $viewedProducts,
-        'count'     => count($viewedProducts),
         'limit'     => \App::config()->product['itemsInSlider'],
         'page'      => 1,
         'class'     => 'slideItem-viewed',

@@ -1,28 +1,28 @@
 <ul class="shopInfo clearfix">
-    <li class="shopInfo_i jsShopInfoPreview" data-id="1">
+    <li class="shopInfo_i jsShopInfoPreview" data-id="1" data-name="Доставка">
         <i class="shopInfo_l i-shopInfo i-shopInfo-delivery"></i>
         <div class="shopInfo_r">
             <span class="shopInfo_tl undrl">Доставка</span>
             <p class="shopInfo_tx">Доставляем по всей России</p>
         </div>
     </li>
-    <li class="shopInfo_i jsShopInfoPreview" data-id="2">
+    <li class="shopInfo_i jsShopInfoPreview" data-id="2" data-name="Самовывоз">
         <i class="shopInfo_l i-shopInfo i-shopInfo-deliveryself"></i>
         <div class="shopInfo_r">
             <span class="shopInfo_tl undrl">Самовывоз</span>
             <p class="shopInfo_tx">Более 1000 пунктов выдачи</p>
         </div>
     </li>
-    <li class="shopInfo_i jsShopInfoPreview" data-id="3">
+    <li class="shopInfo_i jsShopInfoPreview" data-id="3" data-name="Удобно платить">
         <i class="shopInfo_l i-shopInfo i-shopInfo-payment"></i>
         <div class="shopInfo_r">
             <span class="shopInfo_tl undrl">Удобно платить</span>
-            <p class="shopInfo_tx">Способ оплаты на твой вкус</p>
+            <p class="shopInfo_tx">Онлайн, кредит, карты, нал</p>
         </div>
     </li>
-    <li class="shopInfo_i jsShopInfoPreview">
+    <li class="shopInfo_i jsShopInfoPreview" data-name="WOW Акции">
         <i class="shopInfo_l i-shopInfo i-shopInfo-wow"></i>
-        <a href="/special_offers"  target="_blank" class="shopInfo_r">
+        <a href="/special_offers" target="_blank" class="shopInfo_r jsShopInfoLink">
             <span class="shopInfo_tl undrl">WOW Акции</span>
             <p class="shopInfo_tx">Лучшие предложения</p>
         </a>
@@ -49,7 +49,7 @@
         </li>
     </ul>
 
-    <a href="/delivery_types#delivr_buy" target="_blank" class="shopInfoTab_btn">Подробнее об условиях, стоимости, сроках и интервалах доставки</a>
+    <a href="/dostavka" target="_blank" class="shopInfoTab_btn">Подробнее об условиях, стоимости, сроках и интервалах доставки</a>
 </div>
 
 <div class="shopInfoTab shopInfoTab-v2 jsShopInfoBlock" data-id="2">
@@ -60,7 +60,7 @@
         </li>
         <li class="shopInfoTab_i">
             <div class="shopInfoTab_iconw"><div class="shopInfoTab_icon"><i class="i-shopinfo i-shopinfo-selfdelivery2"></i></div></div>
-            <div class="shopInfoTab_tx">РЕЗЕРВ ТОВАРА НА 2 ДНЯ</div>
+            <div class="shopInfoTab_tx">РЕЗЕРВ ТОВАРА НА 3 ДНЯ</div>
         </li>
         <li class="shopInfoTab_i">
             <div class="shopInfoTab_iconw"><div class="shopInfoTab_icon"><i class="i-shopinfo i-shopinfo-selfdelivery3"></i></div></div>
@@ -68,10 +68,10 @@
         </li>
         <li class="shopInfoTab_i">
             <div class="shopInfoTab_iconw"><div class="shopInfoTab_icon"><i class="i-shopinfo i-shopinfo-selfdelivery4"></i></div></div>
-            <div class="shopInfoTab_tx">ПОЛУЧЕНИЕ ТОВАРА<br/>В ПОСТАМАТАХ PICKPOINT</div>
+            <div class="shopInfoTab_tx">ПОЛУЧЕНИЕ ТОВАРА<br/>В ПУНКТАХ ВЫДАЧИ ПАРТНЕРОВ</div>
         </li>
     </ul>
-    <a href="/delivery_types#delivr_self" target="_blank" class="shopInfoTab_btn">Подробнее об условиях, стоимости, сроках и интервалах доставки</a>
+    <a href="/delivery" target="_blank" class="shopInfoTab_btn">Подробнее об условиях самовывоза</a>
 </div>
 
 <div class="shopInfoTab shopInfoTab-v3 jsShopInfoBlock" data-id="3">
@@ -84,10 +84,12 @@
             <div class="shopInfoTab_iconw"><div class="shopInfoTab_icon"><i class="i-shopinfo i-shopinfo-payment2"></i></div></div>
             <div class="shopInfoTab_tx">БАНКОВСКАЯ КАРТА</div>
         </li>
+        <? if (\App::config()->payment['creditEnabled']) : ?>
         <li class="shopInfoTab_i">
             <div class="shopInfoTab_iconw"><div class="shopInfoTab_icon"><i class="i-shopinfo i-shopinfo-payment3"></i></div></div>
             <div class="shopInfoTab_tx">КРЕДИТ</div>
         </li>
+        <? endif ?>
         <? if (false): ?>
         <li class="shopInfoTab_i">
             <div class="shopInfoTab_iconw"><div class="shopInfoTab_icon"><i class="i-shopinfo i-shopinfo-payment4"></i></div></div>

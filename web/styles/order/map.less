@@ -1,15 +1,11 @@
-.popup-left-container {
-    width: 415px;
-    float: left;
-}
-
-.selShop.deliv-wrap {
+//TODO: удалить файл после перехода на новую карточку товара.
+.selShop.deliv-wrap{
     width: 900px;
     .rounded(0px);
 
     .selShop_l {
-        width: 410px;
-        display: inline-block;
+        width: auto;
+        display: block;
         position: relative;
         border-top: 1px solid #d3d3d3;
 
@@ -33,11 +29,15 @@
         }
     }
     .selShop_r {
-        width: 480px;
+        width: 420px;
         height: 433px;
     }
     .selShop_hh {
         margin-bottom: 10px;
+    }
+    .selShop_r {
+        width: 420px;
+        height: 433px;
     }
 }
 .deliv-nomatch {
@@ -151,7 +151,7 @@
         margin-right: 0px;
         line-height: 24px;
         color: #515151;
-        padding: 0 10px 0 0;
+        padding: 0;
 
         &:not(.opn) .fltrBtnBox_tggl {
             margin: 2px 0;
@@ -182,11 +182,13 @@
         }
     }
     .deliv-search {
-        height: 35px;
+        height: 37px;
         border: 1px solid #c7c7c7;
         padding-left: 40px;
-        width: 355px;
+        
         position: relative;
+        .box-sizing(border-box);
+        width: 100%;
 
         &:after {
             content: '';
@@ -202,12 +204,21 @@
             line-height: 33px;
             border: none;
             outline: none;
-            width: 350px;
+            width: 100%;
+            .box-sizing(border-box);
         }
         &__input-wrap{
         	position: relative;
-        	width: 350px;
-        	height: 33px;
+        	height: 35px;
+            &:after{
+                content:"";
+                width:30px;
+                height: 100%;
+                position: absolute;
+                right:0;
+                top:0;
+                .smoke-lrgradient(@start:rgba(255,255,255,0), @stop:#fff);
+            }
         }
         &__clear{
         	cursor: pointer;
@@ -224,6 +235,7 @@
         	text-align: center;
         	cursor: pointer;
         	.rounded(9px);
+            z-index: 1;
         }
         .deliv-suggest {
             width: 100%;
@@ -256,7 +268,7 @@
                 color: #686868;
                 cursor: pointer;
 
-                &:hover {
+                &:hover, &--active {
                     background: rgba(249, 155, 28, 0.15);
                 }
                 &:last-child{

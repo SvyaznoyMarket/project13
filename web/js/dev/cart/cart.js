@@ -5,7 +5,7 @@
 		updateTimeoutId = false;
 
 	/* Увеличение и уменьшение товара AJAX */
-	$body.on('click', '.numerbox a', function(e){
+	$body.on('click', '.jsCartNumerBox a', function(e){
 		var $elem = $(this),
 			href = $elem.attr('href');
 
@@ -14,12 +14,8 @@
 			$.ajax({
 				url: href,
 				success: function(data){
-					if (data.success && data.product) {
-						if (typeof data.product.quantity != 'undefined' && data.product.quantity > 0) {
-							UserModel.productQuantityUpdate(data.product.id, data.product.quantity);
-						} else {
-							UserModel.removeProductByID(data.product.id);
-						}
+					if (data.success) {
+						UserModel.cart().update(data.cart);
 					}
 				}
 			})
@@ -36,9 +32,11 @@
 			$.ajax({
 				url: href,
 				success: function(data){
-					if (data.success && data.product) {
-						UserModel.removeProductByID(data.product.id);
-						$body.trigger('removeFromCart', [data.product]);
+					if (data.success) {
+						UserModel.cart().update(data.cart);
+						if (data.setProducts) {
+							$body.trigger('removeFromCart', [data.setProducts]);
+						}
 
 						try {
 							if (0 === data.cart.products.length) {
@@ -53,7 +51,7 @@
 	});
 
 	// Событие добавления в корзину SITE-5289
-	$body.on('addtocart', function ga_addtocart(event, data) {
+	$body.on('addtocart', function(event, data) {
 		try {
 			if (1 == data.cart.products.length) {
 				console.info('#js-cart-firstRecommendation');
@@ -70,7 +68,7 @@
 	});
 
 	// Ручное обновление количества продукта
-	$body.on('keydown', '.ajaquant', function(e){
+	$body.on('keydown', '.jsCartNumerBox input[type="text"]', function(e){
 		var $input = $(e.target),
 			keyCode = e.which,
 			$initialQuantity = $input.val();
@@ -88,16 +86,15 @@
 				}
 
 				$.ajax({
-					url: $input.data('url'),
-					data: {
-						quantity: $input.val()
-					},
+					url: ENTER.utils.generateUrl('cart.product.setList', {
+						products: [{ui: $input.data('product-ui'), quantity: $input.val()}]
+					}),
 					beforeSend: function() {
 						$input.attr('disabled', true)
 					}
-				}).done(function(resp){
-					if (resp.success && resp.product) {
-						UserModel.productQuantityUpdate(resp.product.id, resp.product.quantity)
+				}).done(function(data){
+					if (data.success) {
+						UserModel.cart().update(data.cart);
 					} else {
 						$input.val($initialQuantity);
 					}
@@ -110,5 +107,14 @@
 			return false
 		}
 	});
+
+    $('.js-slider-2').goodsSlider({
+        leftArrowSelector: '.goods-slider__btn--prev',
+        rightArrowSelector: '.goods-slider__btn--next',
+        sliderWrapperSelector: '.goods-slider__inn',
+        sliderSelector: '.goods-slider-list',
+        itemSelector: '.goods-slider-list__i'
+
+    });
 
 }(jQuery));

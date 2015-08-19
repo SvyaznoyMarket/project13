@@ -6,13 +6,15 @@ return function(
 ) {
     $data = [
         'id'      => $product->getId(),
+        'ui'      => $product->getUi(),
         'token'   => $product->getToken(),
         'article' => $product->getArticle(),
+        'barcode' => $product->getBarcode(),
         'name'    => $product->getName(),
         'price'   => $product->getPrice(),
         'image'   => [
-            'default' => $product->getImageUrl(3),
-            'big'     => $product->getImageUrl(2),
+            'default' => $product->getMainImageUrl('product_500'),
+            'big'     => $product->getMainImageUrl('product_160'),
         ],
         'category'  => $product->getCategory(),
         'isSupplied'  => $product->getState() ? $product->getState()->getIsSupplier() : false, // @deprecated ?
@@ -25,6 +27,8 @@ return function(
                 : 'out of stock'
             )
         ,
+        'oldProductPageSender' => \Session\ProductPageSenders::get($product->getUi()),
+        'oldProductPageSender2' => \Session\ProductPageSenders2::get($product->getUi()),
     ];
 ?>
     <div id="jsProductCard" data-value="<?= $helper->json($data) ?>"></div>

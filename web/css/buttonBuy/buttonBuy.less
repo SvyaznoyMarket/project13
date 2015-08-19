@@ -1,12 +1,12 @@
 // button buy
 .btnBuy {
-    .rounded(5px);
+    .rounded(3px);
     overflow: hidden;
     text-align: center;
 
     &__eLink {
         .gradient(#ffc000, #ffaa01, #ffc000);
-        .rounded(5px);
+        .rounded(3px);
         display: block;
         .box-sizing();
         .inline-block();
@@ -49,41 +49,11 @@
             text-decoration: none;
         }
 
-        &--magenta {
-            .gradient(#d063a5, #c960a0, #bf5b98);
-            border-color: #a64f83;
-
-            &:hover {
-                background: #bf5b98;
-            }
-
-            &:active {
-                background: #bf5b98;
-            }
-        }
-
-        &--red {
-            .gradient(#d63942, #d63942, #e63d47);
-            border-color: #bd333a;
-
-            &:hover {
-                background: #d63942;
-            }
-
-            &:active {
-                background: #d63942;
-            }
-        }
-
         &.mBought {
             .box-shadow(none);
             color: @black;
             border: 1px solid lighten(@black, 70);
             background: @white;
-
-            &:hover {
-                background: @white;
-            }
         }
 
         &.mDisabled {
@@ -100,6 +70,11 @@
                 background: #f1f0f0;
             }
         }
+    }
+    &.quickOrder{
+        .rounded(0px);
+        padding: 10px;
+        border-top: 1px solid #ccc;
     }
 }
 

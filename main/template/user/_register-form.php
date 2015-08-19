@@ -28,13 +28,17 @@ $oauthEnabled = \App::config()->oauthEnabled;
                 <input type="text" class="authForm_it textfield js-phoneField" name="register[phone]" value="" placeholder="Телефон" />
 
                 <div class="authForm_sbscr">
-                    <input class="customInput customInput-defcheck jsCustomRadio js-customInput js-registerForm-subscribe" type="checkbox" name="subscribe" id="subscribe" <? if (!App::user()->isSubscribed()) : ?> checked="checked" <? endif ?> />
-                    <label class="customLabel customLabel-defcheck" for="subscribe">Подписаться на email-рассылку,<br/> получить скидку 300 рублей </label>
+                    <input class="customInput customInput-defcheck jsCustomRadio js-customInput js-registerForm-subscribe" type="checkbox" name="subscribe" id="subscribe" checked disabled/>
+                    <label class="customLabel customLabel-defcheck" for="subscribe">Стать участником Enter Prize,<br/> получить скидку 300 рублей </label>
+                </div>
+                <div class="oferta-agreement">
+                    <input class="customInput customInput-defcheck jsCustomRadio js-customInput" type="checkbox" name="agreed" id="registerForm-agreed" />
+                    <label class="customLabel customLabel-defcheck" for="registerForm-agreed">Согласен <a href="/reklamnaya-akcia-enterprize" target="_blank">с условиями оферты</a></label>
                 </div>
 
                 <input type="submit" class="authForm_is btnsubmit" name="" value="Регистрация" />
 
-                <p class="authForm_accept">Нажимая кнопку «Регистрация», я подтверждаю<br/> свое согласие с <a href="/terms">Условиями продажи...</a></p>
+                <p class="authForm_accept">Нажимая кнопку «Регистрация», я подтверждаю<br/> свое согласие с <a href="/terms" target="_blank">Условиями продажи...</a></p>
 
                 <div class="authForm_socn">
                     Войти через

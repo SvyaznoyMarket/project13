@@ -2,8 +2,10 @@
 
 namespace Controller\OrderV3;
 
+use Http\RedirectResponse;
 use Http\Response;
 use Model\Order\OrderEntity;
+use Model\OrderDelivery\Entity;
 
 class CreateAction extends OrderV3 {
 
@@ -21,6 +23,7 @@ class CreateAction extends OrderV3 {
         $params = [];           // параметры запроса на ядро
 
         $splitResult = $this->session->get($this->splitSessionKey);
+        $orderDelivery = new Entity($splitResult);
 
         if ($this->user->getEntity() && $this->user->getEntity()->getToken()) {
             $params['token'] = $this->user->getEntity()->getToken();
@@ -34,8 +37,13 @@ class CreateAction extends OrderV3 {
                 throw new \Exception('Ошибка создания заказа: невозможно получить предыдущее разбиение');
             }
 
+            // Минимальная сумма заказа для Воронежа
+            if (\App::abTest()->isOrderMinSumRestriction() && \App::config()->minOrderSum > $orderDelivery->getProductsSum()) {
+                return new RedirectResponse(\App::router()->generate('cart'));
+            }
+
             foreach ($splitResult['orders'] as &$splitOrder) {
-                $ordersData[] = (new OrderEntity(array_merge($splitResult, ['order' => $splitOrder])))->getOrderData();
+                $ordersData[] = (new OrderEntity(array_merge($splitResult, ['order' => $splitOrder]), null, '', $this->cart->getInOrderProductsById()))->getOrderData();
             }
             if (isset($splitOrder)) unset($splitOrder);
 
@@ -48,9 +56,9 @@ class CreateAction extends OrderV3 {
             \App::exception()->remove($e);
 
             $page = new \View\OrderV3\ErrorPage();
-            $page->setParam('error', (708 == $e->getCode()) ? 'Товара нет в наличии' : ('CORE: ' . $e->getMessage()));
+            $page->setParam('error', 708 == $e->getCode() ? 'Товара нет в наличии' : $e->getMessage());
             $page->setParam('step', 3);
-            return new Response($page->show(), 500);
+            return new Response($page->show());
         } catch (\Exception $e) {
             if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                 \App::logger('order')->error([

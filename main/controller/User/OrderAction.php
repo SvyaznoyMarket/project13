@@ -2,13 +2,7 @@
 
 namespace Controller\User;
 
-class OrderAction {
-
-    public function __construct() {
-        if (!\App::user()->getToken()) {
-            throw new \Exception\AccessDeniedException();
-        }
-    }
+class OrderAction extends PrivateAction {
 
     public function execute(\Http\Request $request, $orderId) {
         //\App::logger()->debug('Exec ' . __METHOD__);
@@ -78,16 +72,10 @@ class OrderAction {
         if (!$order) throw new \Exception('Не найден заказ #'.$orderId);
 
         // подготовка 2-го пакета запросов (продукты)
-        $products =  [];
-        \RepositoryManager::product()->prepareCollectionById(
-            $order->getAllProductsIds(),
-            $user->getRegion(),
-            function ($data) use (&$products) {
-                foreach ($data as $item) {
-                    $products[] = new \Model\Product\Entity($item);
-                }
-            }
-        );
+        /** @var \Model\Product\Entity[] $products */
+        $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $order->getAllProductsIds());
+
+        \RepositoryManager::product()->prepareProductQueries($products, 'media');
 
         $delivery = $order->getDelivery() ? \RepositoryManager::deliveryType()->getEntityById($order->getDelivery()->getTypeId()) : null;
 

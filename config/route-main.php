@@ -12,17 +12,11 @@ return [
         'action'  => ['Main\Action', 'recommendations'],
     ],
 
-    'category.mainMenu' => [ // TODO: переименовать в mainMenu
-        'pattern' => '/category/main_menu',
-        'action'  => ['ProductCategory\MainMenuAction', 'execute'],
+    'ssi.userConfig' => [
+        'pattern' => '/ssi/user-config',
+        'action'  => ['Ssi\UserConfigAction', 'execute'],
     ],
-    'category.mainMenu.region' => [ // TODO: переименовать в mainMenu.region
-        'pattern' => '/category/main_menu/{regionId}',
-        'action'  => ['ProductCategory\MainMenuAction', 'execute'],
-        'require' => [
-            'regionId' => '\d+',
-        ],
-    ],
+
     'mainMenu.recommendation' => [
         'pattern' => '/main_menu/recommendations/{rootCategoryId}/{childIds}',
         'action'  => ['MainMenu\RecommendedAction', 'execute'],
@@ -52,11 +46,6 @@ return [
         'action'  => ['Search\RecommendedAction', 'execute'],
     ],
 
-    // инфо пользователя
-    'user.info' => [
-        'pattern' => '/ajax/user/info',
-        'action'  => ['User\InfoAction', 'execute'],
-    ],
     /*// Статус подписки пользователя, получить
     'user.subscribe.getStatus' => [
         'pattern' => '/ajax/subscribe/status/get',
@@ -127,6 +116,38 @@ return [
     'user.login.external.response' => [
         'pattern' => '/login-{providerName}/response',
         'action'  => ['User\ExternalLoginResponseAction', 'execute'],
+    ],
+
+    // Регистрация поставщика
+    'supplier.new' => [
+        'pattern'   => '/supplier/new',
+        'action'    => ['Supplier\NewAction', 'execute']
+    ],
+
+    // Кабинет поставщика
+    'supplier.cabinet' => [
+        'pattern'   => '/supplier/cabinet',
+        'action'    => ['Supplier\CabinetAction', 'index']
+    ],
+
+    // Загрузка прайс-листа
+    'supplier.load' => [
+        'pattern'   => '/supplier/load',
+        'action'    => ['Supplier\CabinetAction', 'load'],
+        'method'  => ['POST']
+    ],
+
+    // Обновление данных о поставщике
+    'supplier.update' => [
+        'pattern'   => '/supplier/update',
+        'action'    => ['Supplier\CabinetAction', 'update'],
+        'method'  => ['POST']
+    ],
+
+    // Тестирование curl-client
+    'supplier.test' => [
+        'pattern'   => '/supplier/load-test',
+        'action'    => ['Supplier\CabinetAction', 'loadTest']
     ],
 
     // регион
@@ -260,49 +281,19 @@ return [
         'action'  => ['Product\DeliveryAction', 'execute'],
         'method'  => ['POST'],
     ],
-    'product.stock' => [
-        'pattern' => '/product/{productPath}/stock',
-        'action'  => ['Product\StockAction', 'execute'],
-        'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
-    ],
-    'product.accessory' => [
-        'pattern' => '/products/accessories/{productToken}',
-        'action'  => ['Product\AccessoryAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
-    'product.accessory.jewel' => [
-        'pattern' => '/jewel/products/accessories/{productToken}',
-        'action'  => ['Jewel\Product\AccessoryAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
-    'product.related' => [
-        'pattern' => '/products/related/{productToken}',
-        'action'  => ['Product\RelatedAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
-    'product.related.jewel' => [
-        'pattern' => '/jewel/products/related/{productToken}',
-        'action'  => ['Jewel\Product\RelatedAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
-    'product.comment' => [
-        'pattern' => '/product/{productPath}/comments',
-        'action'  => ['Product\CommentAction', 'execute'],
-        'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
-    ],
     'product.set' => [
         'pattern' => '/products/set/{productBarcodes}',
         'action'  => ['Product\SetAction', 'execute'],
-    ],
-    'product.widget' => [
-        'pattern' => '/products/widget/{productBarcodes}',
-        'action'  => ['Product\SetAction', 'widget'],
     ],
     //reviews
     'product.review.create' => [
         'pattern' => '/product-reviews/create/{productUi}',
         'require' => ['productUi' => '[\w\d-_]+\/?[\w\d-_]+'],
         'action'  => ['Product\ReviewsAction', 'create'],
+    ],
+    'product.review.vote' => [
+        'pattern' => '/product-reviews/vote',
+        'action'  => ['Product\ReviewsAction', 'vote'],
     ],
     'product.reviews' => [
         'pattern' => '/product-reviews/{productUi}',
@@ -317,6 +308,11 @@ return [
     'product.kit' => [
         'pattern' => '/ajax/product/kit/{productUi}',
         'action'  => ['Product\KitAction', 'execute'],
+    ],
+    // Карта со всеми точками самовывоза
+    'product.map' => [
+        'pattern' => '/ajax/product/map/{productId}/{productUi}',
+        'action'  => ['Product\DeliveryAction', 'map']
     ],
 
     // теги
@@ -354,21 +350,19 @@ return [
         'pattern' => '/cart',
         'action'  => ['Cart\IndexAction', 'execute'],
     ],
-    'cart.info' => [
-        'pattern' => '/cart/info',
-        'action'  => ['Cart\InfoAction', 'execute'],
-    ],
     // очистка корзины
     'cart.clear' => [
         'pattern' => '/cart/clear',
         'action'  => ['Cart\ClearAction', 'execute'],
     ],
     // добавление товара в корзину
-    'cart.product.set' => [ // TODO cart.product.set изменмить Url
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
+    'cart.product.set' => [
         'pattern' => '/cart/add-product/{productId}',
         'action'  => ['Cart\ProductAction', 'set'],
     ],
     // удаление товара из корзины
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'cart.product.delete' => [
         'pattern' => '/cart/delete-product/{productId}',
         'action'  => ['Cart\ProductAction', 'delete'],
@@ -379,37 +373,10 @@ return [
         'action'  => ['Cart\ProductAction', 'setList'],
     ],
     // добавление товара в корзину
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'cart.oneClick.product.set' => [
         'pattern' => '/cart/one-click/add-product/{productId}',
         'action'  => ['Cart\OneClick\ProductAction', 'set'],
-    ],
-    // удаление товара из корзины
-    'cart.oneClick.product.delete' => [
-        'pattern' => '/cart/one-click/delete-product/{productId}',
-        'action'  => ['Cart\OneClick\ProductAction', 'delete'],
-    ],
-    // изменение товара в корзине
-    'cart.oneClick.product.change' => [
-        'pattern' => '/cart/one-click/change-product/{productId}',
-        'action'  => ['Cart\OneClick\ProductAction', 'change'],
-    ],
-    // добавление списка товаров в корзину
-    'cart.oneClick.product.setList' => [
-        'pattern' => '/cart/one-click/set-products',
-        'action'  => ['Cart\OneClick\ProductAction', 'setList'],
-    ],
-
-    'cart.certificate.apply' => [
-        'pattern' => '/cart/f1-certificate',
-        'action'  => ['Cart\CertificateAction', 'apply'],
-    ],
-    'cart.certificate.delete' => [
-        'pattern' => '/cart/f1-certificate/delete',
-        'action'  => ['Cart\CertificateAction', 'delete'],
-    ],
-    'cart.sum' => [
-        'pattern' => '/cart/sum',
-        'action'  => ['Cart\SumAction', 'execute'],
     ],
     'cart.recommended' => [
         'pattern' => '/cart/recommended',
@@ -422,6 +389,7 @@ return [
         'action'  => ['OrderV3\NewAction', 'execute'],
     ],
     // оформление заказа: 1-й шаг - один клик
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'orderV3.one-click' => [
         'pattern' => '/order/new/one-click',
         'action'  => ['OrderV3\NewAction', 'execute'],
@@ -432,6 +400,7 @@ return [
         'action'  => ['OrderV3\DeliveryAction', 'execute'],
     ],
     // оформление заказа: 2-й шаг - выбор доставки
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'orderV3.delivery.one-click' => [
         'pattern' => '/order/delivery/one-click',
         'action'  => ['OrderV3\DeliveryAction', 'execute'],
@@ -492,23 +461,20 @@ return [
         'pattern' => '/order-1click/create',
         'action'  => ['OrderV3OneClick\CreateAction', 'execute'],
     ],
-    'orderV3OneClick.get' => [
-        'pattern' => '/order-1click/get/{accessToken}',
-        'action'  => ['OrderV3OneClick\GetAction', 'execute'],
-    ],
     'orderV3OneClick.form' => [
         'pattern' => '/order-1click/form/{productUid}',
         'action'  => ['OrderV3OneClick\FormAction', 'execute'],
     ],
 
     // заказ
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'order.oneClick.new' => [
         'pattern' => '/orders/one-click/new',
-        'action'  => ['Order\OneClick\NewAction', 'execute'],
+        'action'  => ['OrderV3\NewAction', 'execute'],
     ],
     'order' => [
         'pattern' => '/orders/new',
-        'action'  => ['Order\NewAction', 'execute'],
+        'action'  => ['OrderV3\NewAction', 'execute'],
     ],
     'order.complete' => [
         'pattern' => '/orders/complete',
@@ -576,6 +542,11 @@ return [
         'pattern' => '/private/orders',
         'action'  => ['User\OrdersAction', 'execute'],
     ],
+    // редактирование данных пользователя
+    'user.favorites' => [
+        'pattern' => '/private/favorites',
+        'action'  => ['User\FavoriteAction', 'get'],
+    ],
     // данные о заказе пользователя
     'user.order' => [
         'pattern'   => '/private/order/{orderId}',
@@ -590,12 +561,6 @@ return [
     'user.subscriptions' => [
         'pattern' => '/private/subscriptions',
         'action'  => ['User\SubscriptionsAction', 'execute'],
-    ],
-    // адвокат клиента
-    // @deprecated
-    'user.consultation' => [
-        'pattern' => '/private/consultation',
-        'action'  => ['User\ConsultationAction', 'execute'],
     ],
 
     // маршрутизатор нескольких запросов
@@ -638,6 +603,12 @@ return [
         'action'  => ['Subscribe\Action', 'confirm'],
     ],
 
+    'event.push' => [
+        'pattern' => '/event/push',
+        'action'  => ['EventAction', 'push'],
+        'method'  => ['POST'],
+    ],
+
     // qrcode
     'qrcode' => [
         'pattern' => '/qr/{qrcode}',
@@ -667,20 +638,6 @@ return [
     'debug.session' => [
         'pattern' => '/debug/session',
         'action'  => ['DebugAction', 'session'],
-    ],
-
-    //cron
-    'cron-index' => [
-        'pattern' => '/cron',
-        'action'  => ['Cron\IndexAction', 'execute'],
-    ],
-    'cron-task' => [
-        'pattern' => '/cron/{task}',
-        'action'  => ['Cron\Action', 'execute'],
-    ],
-    'cron-task-links' => [
-        'pattern' => '/cron/{task}/links',
-        'action'  => ['Cron\LinksAction', 'execute'],
     ],
 
     // enterprize
@@ -911,8 +868,18 @@ return [
     ],
 
     'favorite.add' => [
-        'pattern' => '/favorite/add-product',
+        'pattern' => '/favorite/add-product/{productUi}',
         'action'  => ['Favorite\SetAction', 'execute'],
+        'require' => [
+            'productUi' => '[\w\d-_]+',
+        ],
+    ],
+    'favorite.delete' => [
+        'pattern' => '/favorite/delete-product/{productUi}',
+        'action'  => ['Favorite\DeleteAction', 'execute'],
+        'require' => [
+            'productUi' => '[\w\d-_]+',
+        ],
     ],
 
     'compare' => [
@@ -934,16 +901,22 @@ return [
         'action'  => ['Compare\CompareAction', 'clear'],
     ],
 
-    // Внешние ссылки на карточку товара
-    'product.internal' => [
-        'pattern'   => '/internal/product',
-        'action'    => ['Product\ShowInternalAction', 'execute'],
+    // Форма обратной связи
+    'feedback.send' => [
+        'pattern'   => '/feedback/send',
+        'action'    => ['User\FeedbackAction', 'execute'],
+        'method'    => ['POST']
     ],
 
     // Переключение АБ-тестов
     'switch' => [
         'pattern'   => '/switch',
         'action'    => ['SwitchAction', 'execute']
+    ],
+
+    'delivery' => [
+        'pattern'   => '/delivery',
+        'action'    => ['Content\DeliveryMap', 'execute']
     ],
 
 	//content (должен быть в самом конце, иначе под паттерн попадут другие страницы)

@@ -3,6 +3,7 @@
 namespace Controller\ProductCategory;
 
 use Model\Product\Filter\Entity;
+use View\Partial\ProductCategory\RootPage\Brands;
 use View\Product\FilterForm;
 
 class Action {
@@ -27,45 +28,21 @@ class Action {
         // подготовка 1-го пакета запросов
 
         // запрашиваем текущий регион, если есть кука региона
-        $regionConfig = [];
         if ($user->getRegionId()) {
-            $regionConfig = (array)\App::dataStoreClient()->query("/region/{$user->getRegionId()}.json");
-
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
             });
-        }
-
-        // выполнение 1-го пакета запросов
-        $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
-
-        $regionEntity = \App::user()->getRegion();
-        if ($regionEntity instanceof \Model\Region\Entity) {
-            if (array_key_exists('reserve_as_buy', $regionConfig)) {
-                $regionEntity->setForceDefaultBuy(false == $regionConfig['reserve_as_buy']);
-            }
-            \App::user()->setRegion($regionEntity);
+            
+            $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
         }
 
         /** @var $region \Model\Region\Entity */
         $region = \App::user()->getRegion();
 
         // подготовка 2-го пакета запросов
-
-        // запрашиваем бренд по токену
-        /** @var $brand \Model\Brand\Entity */
-        $brand = null;
-        if ($brandToken) {
-            \RepositoryManager::brand()->prepareEntityByToken($brandToken, $region, function($data) use (&$brand) {
-                $data = reset($data);
-                if ((bool)$data) {
-                    $brand = new \Model\Brand\Entity($data);
-                }
-            });
-        }
 
         /** @var $category \Model\Product\Category\Entity|null */
         $category = null;
@@ -104,25 +81,49 @@ class Action {
             \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region);
         }
 
-        // запрашиваем фильтры
+        // запрашиваем фильтры и извлекаем из них бренды
         /** @var $filters \Model\Product\Filter\Entity[] */
+        /** @var $brand \Model\Brand\Entity */
+        /** @var $brands \Model\Brand\Entity[] */
+        $brand = null;
         $filters = [];
-        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, [], function($data) use (&$filters) {
+        $brands = [];
+        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, [], function($data) use (&$filters, &$brands, &$brand, $brandToken) {
             foreach ($data as $item) {
                 $filters[] = new \Model\Product\Filter\Entity($item);
+                // бренды
+                if (isset($item['filter_id']) && $item['filter_id'] == 'brand' && is_array($item['options'])) {
+                    foreach ($item['options'] as $brandData) {
+                        $brandEntity = new \Model\Brand\Entity($brandData);
+                        $brands[] = $brandEntity;
+                        if (isset($brandData['token']) && $brandData['token'] == $brandToken) {
+                            $brand = $brandEntity;
+                        }
+                    }
+                }
             }
         });
 
         $client->execute();
 
+        if (!empty($brandToken) && !$brand) {
+//            throw new \Exception\NotFoundException('Бренд не найден');
+            $brand = new \Model\Brand\Entity([
+                'id'    => '0',
+                'token' => $brandToken,
+            ]);
+        }
+
         $promoContent = '';
         if (!empty($catalogJson['promo_token'])) {
-            \App::contentClient()->addQuery(
-                trim((string)$catalogJson['promo_token']),
+            $scmsClient = \App::scmsClient();
+            $scmsClient->addQuery(
+                'api/static-page',
+                ['token' => [trim((string)$catalogJson['promo_token'])]],
                 [],
                 function($data) use (&$promoContent) {
-                    if (!empty($data['content'])) {
-                        $promoContent = $data['content'];
+                    if (!empty($data['pages'][0]['content'])) {
+                        $promoContent = $data['pages'][0]['content'];
                     }
                 },
                 function(\Exception $e) {
@@ -130,7 +131,8 @@ class Action {
                     \App::exception()->add($e);
                 }
             );
-            \App::contentClient()->execute();
+
+            $scmsClient->execute();
         }
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
@@ -197,10 +199,7 @@ class Action {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
         }
 
-        // TODO SITE-2403 Вернуть фильтр instore
-        if ($category->getIsFurniture()/* && 14974 === $user->getRegion()->getId()*/) {
-            $this->createInStoreFilter($filters);
-        }
+        $this->createInStoreFilter($filters, $category);
 
         $this->transformFiltersV2($filters, $category);
 
@@ -248,38 +247,18 @@ class Action {
                 }
                 // сортировка брендов по наибольшему количеству товаров
                 usort($brandOptions, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) { return $b->getQuantity() - $a->getQuantity(); });
-                $brandOptions = array_slice($brandOptions, 0, 60);
-                /** @var \Model\Brand\Entity[] $brands */
-                $brands = [];
-                if ((bool)$brandOptions) {
-                    \RepositoryManager::brand()->prepareByIds(
-                        array_map(function(\Model\Product\Filter\Option\Entity $option) { return $option->getId(); }, $brandOptions),
-                        null,
-                        function($data) use (&$brands) {
-                            if (isset($data[0])) {
-                                foreach ($data as $item) {
-                                    if (empty($item['token'])) continue;
 
-                                    $brands[] = new \Model\Brand\Entity($item);
-                                }
-                            }
-                        },
-                        function(\Exception $e) { \App::exception()->remove($e); }
-                    );
-
-                    \App::coreClientV2()->execute();
-
-                    foreach ($brands as $iBrand) {
-                        $hotlinks[] = new \Model\Seo\Hotlink\Entity([
-                            'group' => '',
-                            'name' => $iBrand->getName(),
-                            'url' => \App::router()->generate('product.category.brand', [
-                                'categoryPath' => $categoryPath,
-                                'brandToken'   => $iBrand->getToken(),
-                            ]),
-                        ]);
-                    }
+                foreach ($brands as $iBrand) {
+                    $hotlinks[] = new \Model\Seo\Hotlink\Entity([
+                        'group' => '',
+                        'name' => $iBrand->getName(),
+                        'url' => \App::router()->generate('product.category.brand', [
+                            'categoryPath' => $categoryPath,
+                            'brandToken'   => $iBrand->getToken(),
+                        ]),
+                    ]);
                 }
+
             }
         } catch (\Exception $e) {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['hotlinks']);
@@ -327,40 +306,40 @@ class Action {
                     }
 
                     $products = [];
-                    $productsIds = [];
+                    $productIds = [];
                     // перевариваем данные изображений
                     // используя айдишники товаров из секции image.products, получим мини-карточки товаров
                     foreach ($promo->getImage() as $image) {
-                        $productsIds = array_merge($productsIds, $image->getProducts());
+                        $productIds = array_merge($productIds, $image->getProducts());
                     }
-                    $productsIds = array_unique($productsIds);
-                    if (count($productsIds) > 0) {
-                        \RepositoryManager::product()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
-                            foreach ($data as $item) {
-                                if (!isset($item['id'])) continue;
-                                $products[ $item['id'] ] = new \Model\Product\Entity($item);
-                            }
-                        });
-                        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+                    $productIds = array_unique($productIds);
+                    
+                    foreach ($productIds as $productId) {
+                        $products[$productId] = new \Model\Product\Entity(['id' => $productId]);
                     }
 
+                    \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($products, 'media');
+                    $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+
+                    $cartButtonAction = new \View\Cart\ProductButtonAction();
                     // перевариваем данные изображений для слайдера в $slideData
                     foreach ($promo->getImage() as $image) {
                         if (!$image instanceof \Model\Promo\Image\Entity) continue;
 
                         $itemProducts = [];
                         foreach($image->getProducts() as $productId) {
-                            if (!isset($products[$productId])) continue;
-                            $product = $products[$productId];
+                            $product = isset($products[$productId]) ? $products[$productId] : null;
+                            if (!$product) continue;
+
                             /** @var $product \Model\Product\Entity */
                             $itemProducts[] = [
-                                'image'     => $product->getImageUrl(2), // 163х163 seize
-                                'link'      => $product->getLink(),
-                                'name'      => $product->getName(),
-                                'price'     => $product->getPrice(),
-                                'isBuyable' => ($product->getIsBuyable() || $product->isInShopOnly() || $product->isInShopStockOnly()),
-                                'statusId'      => $product->getStatusId(),
-                                'cartButton'    => (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product)
+                                'image'      => $product->getMainImageUrl('product_160'),
+                                'link'       => $product->getLink(),
+                                'name'       => $product->getName(),
+                                'price'      => $product->getPrice(),
+                                'isBuyable'  => ($product->getIsBuyable() || $product->isInShopOnly() || $product->isInShopStockOnly()),
+                                'statusId'   => $product->getStatusId(),
+                                'cartButton' => $cartButtonAction->execute(new \Helper\TemplateHelper(), $product)
                             ];
                         }
 
@@ -513,7 +492,11 @@ class Action {
             $links[] = [
                 'name'          => isset($config['name']) ? $config['name'] : $child->getName(),
                 'url'           => $linkUrl,
-                'image'         => (!empty($config['image'])) ? $config['image'] : $child->getImageUrl('furniture' === $category_class ? 3 : 0),
+                'image'         => (!empty($config['image']))
+                    ? $config['image']
+                    : $child->getImageUrl('furniture' === $category_class || \App::config()->lite['enabled']
+                        ? 3
+                        : 0),
                 'css'           => isset($config['css']) ? $config['css'] : null,
                 'totalText'     => $totalText,
             ];
@@ -524,11 +507,11 @@ class Action {
 
     /**
      * @param \Model\Product\Category\Entity $category
-     * @param \Model\Product\Filter          $productFilter
-     * @param \View\Layout                   $page
-     * @param \Http\Request                  $request
+     * @param \Model\Product\Filter $productFilter
+     * @param \View\Layout $page
+     * @param \Http\Request $request
      * @return \Http\Response
-     * @throws \Exception\NotFoundException
+     * @throws \Exception
      */
     protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
@@ -572,190 +555,109 @@ class Action {
         // стиль листинга
         $listingStyle = isset($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null;
 
-        $hasBanner = 'jewel' !== $listingStyle ? true : false;
+        $hasBanner = 'jewel' !== $listingStyle;
+
+        if (\App::config()->lite['enabled']) {
+            $hasBanner = false;
+        }
+
         if ($hasBanner) {
             // уменшаем кол-во товаров на первой странице для вывода баннера
             $offset = $offset - (1 === $pageNum ? 0 : 1);
             $limit = $limit - (1 === $pageNum ? 1 : 0);
         }
 
-        $repository = \RepositoryManager::product();
-        $repository->setEntityClass('\\Model\\Product\\Entity');
-
-        if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
-            $productIds = [];
-            $productCount = 0;
-            $repository->prepareIteratorByFilter(
-                $productFilter->dump(),
-                $sort,
-                $offset,
-                $limit,
-                $region,
-                function($data) use (&$productIds, &$productCount) {
-                    if (isset($data['list'][0])) $productIds = $data['list'];
-                    if (isset($data['count'])) $productCount = (int)$data['count'];
-                }
-            );
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-            $products = [];
-            if ((bool)$productIds) {
-                $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                    foreach ($data as $item) {
-                        $products[] = new \Model\Product\Entity($item);
-                    }
-                });
-            }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-            $scoreData = [];
-            if ((bool)$products) {
-                $productUIs = [];
-                foreach ($products as $product) {
-                    if (!$product instanceof \Model\Product\BasicEntity) continue;
-                    $productUIs[] = $product->getUi();
-                }
-
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
-                    if (isset($data['product_scores'][0])) {
-                        $scoreData = $data;
-                    }
-                });
-            }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-            \RepositoryManager::review()->addScores($products, $scoreData);
-
-            $pagerAll = new \Iterator\EntityPager($products, $productCount);
-        }
+        $repository = \RepositoryManager::product()->useV3()->withoutModels();
 
         $filters = $productFilter->dump();
 
-        $smartChoiceEnabled = isset($catalogJson['smartchoice']) ? $catalogJson['smartchoice'] : false;
         $smartChoiceData = [];
+        $smartChoiceProductsById = [];
+        call_user_func(function() use(&$smartChoiceData, &$smartChoiceProductsById, $filters, $catalogJson, $repository) {
+            if (!isset($catalogJson['smartchoice']) || !$catalogJson['smartchoice']) {
+                return;
+            }
 
-        if ($smartChoiceEnabled) {
             try {
                 $smartChoiceFilters = $filters;
                 if (!in_array('is_store', array_map(function($var){return $var[0];}, $smartChoiceFilters))) {
                     $smartChoiceFilters[] = ["is_store",1,1];
                 }
 
-                $smartChoiceData = \App::coreClientV2()->query('listing/smart-choice', ['region_id' => $region->getId(), 'client_id' => 'site', 'filter' => ['filters' => $smartChoiceFilters]]);
+                $smartChoiceData = \App::coreClientV2()->query('listing/smart-choice', ['region_id' => \App::user()->getRegion()->getId(), 'client_id' => 'site', 'filter' => ['filters' => $smartChoiceFilters]]);
 
                 // SITE-4715
                 $smartChoiceData = array_filter($smartChoiceData, function($a) {
                     return isset($a['products']);
                 });
 
-                $smartChoiceProductsIds = array_map(function ($a) {
-                    return $a['products'][0]['id'];
-                }, $smartChoiceData);
-                $repository->prepareCollectionById($smartChoiceProductsIds, $region, function ($data) use (&$smartChoiceProducts, &$smartChoiceData) {
-                    try {
-                        if (count($data) === 3) {
-                            foreach ($data as $item) {
-                                $smartChoiceProduct = new \Model\Product\Entity($item);
-                                array_walk($smartChoiceData, function (&$item, $key, $smartChoiceProduct) {
-                                    if ($item['products'][0]['id'] == $smartChoiceProduct->getId()) $item['product'] = $smartChoiceProduct;
-                                }, $smartChoiceProduct);
-                            }
-                        } else {
-                            throw new \Exception('[Smartchoice] Не получены товары из базы');
-                        }
-                    } catch (\Exception $e) {
-                        $smartChoiceData = [];
-                    }
-                });
+                foreach ($smartChoiceData as $smartChoiceItem) {
+                    $smartChoiceProductsById[$smartChoiceItem['products'][0]['id']] = new \Model\Product\Entity(['id' => $smartChoiceItem['products'][0]['id']]);
+                }
+
+                $repository->prepareProductQueries($smartChoiceProductsById, 'media');
             } catch (\Exception $e) {
                 $smartChoiceData = [];
             }
+        });
+
+        $productPager = null;
+
+        $productIds = [];
+        $productCount = 0;
+        $repository->prepareIteratorByFilter(
+            $filters,
+            $sort,
+            $offset,
+            $limit,
+            $region,
+            function($data) use (&$productIds, &$productCount) {
+                if (is_array($data)) {
+                    if (isset($data['list'][0])) $productIds = $data['list'];
+                    if (isset($data['count'])) $productCount = (int)$data['count'];
+                }
+            }
+        );
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+        call_user_func(function() use(&$smartChoiceData, &$smartChoiceProductsById) {
+            if (count($smartChoiceProductsById) == 3) {
+                foreach ($smartChoiceData as &$smartChoiceItem) {
+                    if (isset($smartChoiceProductsById[$smartChoiceItem['products'][0]['id']])) {
+                        $smartChoiceItem['product'] = $smartChoiceProductsById[$smartChoiceItem['products'][0]['id']];
+                    }
+                }
+            } else {
+                $smartChoiceData = [];
+            }
+        });
+
+        // HINT Можно добавлять ID неопубликованных продуктов для показа в листингах
+        // array_unshift($productIds, 201540);
+
+        // TODO удалить (электронный сертификат в листинг сертификатов)
+        if ($category->ui === 'b2885b1b-06bc-4c6f-b40d-9a0af22ff61c') array_unshift($productIds, 201540);
+
+        /** @var \Model\Product\Entity[] $products */
+        $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $productIds);
+
+        $repository->prepareProductQueries($products, 'media label brand category' . (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category->isInSiteListingWithViewSwitcherAbTest() ? ' property' : ''));
+
+        \App::coreClientV2()->execute();
+
+        if (!$products && 'true' == $request->get('ajax') && !\App::config()->lite['enabled']) {
+            throw new \Exception('Товары не найдены');
         }
 
-        if (!empty($pagerAll)) {
-            $productPager = $pagerAll;
-        } else {
-            $productError = null;
-
-            $productPager = null;
-
-            $productIds = [];
-            $productCount = 0;
-            $repository->prepareIteratorByFilter(
-                $filters,
-                $sort,
-                $offset,
-                $limit,
-                $region,
-                function($data) use (&$productIds, &$productCount, &$productError) {
-                    if (is_array($data)) {
-                        if (isset($data['list'][0])) $productIds = $data['list'];
-                        if (isset($data['count'])) $productCount = (int)$data['count'];
-                    } else {
-                        $productError = new \Exception('Товары не получены');
-                    }
-                },
-                function(\Exception $e) use (&$productError) {
-                    $productError = $e;
-                }
-            );
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-            // HINT Можно добавлять ID неопубликованных продуктов для показа в листингах
-            // array_unshift($productIds, 201540);
-
-            // TODO удалить (электронный сертификат в листинг сертификатов)
-            if ($category->ui === 'b2885b1b-06bc-4c6f-b40d-9a0af22ff61c') array_unshift($productIds, 201540);
-
-            $products = [];
-            if ((bool)$productIds) {
-                $repository->prepareCollectionById(
-                    $productIds,
-                    $region,
-                    function($data) use (&$products, &$productError) {
-                        if (is_array($data)) {
-                            foreach ($data as $item) {
-                                $products[] = new \Model\Product\Entity($item);
-                            }
-                        } else {
-                            $productError = new \Exception('Товары не получены');
-                            \App::logger()->error(['error' => $productError, 'core.response' => $data, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
-                        }
-                    },
-                    function(\Exception $e) use (&$productError) {
-                        $productError = $e;
-                    }
-                );
+        \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
+            if (isset($data['product_scores'][0])) {
+                \RepositoryManager::review()->addScores($products, $data);
             }
-            \App::coreClientV2()->execute();
+        });
 
-            if ($productError && !$products && ('true' == $request->get('ajax'))) {
-                throw new \Exception('Товары не найдены');
-            }
+        \App::coreClientV2()->execute();
 
-            $scoreData = [];
-            if ((bool)$products) {
-                $productUIs = [];
-                foreach ($products as $product) {
-                    if (!$product instanceof \Model\Product\BasicEntity) continue;
-                    $productUIs[] = $product->getUi();
-                }
-
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
-                    if (isset($data['product_scores'][0])) {
-                        $scoreData = $data;
-                    }
-                });
-            }
-
-            $repository->prepareProductsMedias($products);
-
-            \App::coreClientV2()->execute();
-
-            \RepositoryManager::review()->addScores($products, $scoreData);
-
-            $productPager = new \Iterator\EntityPager($products, $productCount);
-        }
+        $productPager = new \Iterator\EntityPager($products, $productCount);
 
         // Если товаров слишком мало (меньше 3 строк в листинге), то не показываем SmartChoice
         if ($productPager->count() < 7) $smartChoiceData = [];
@@ -796,7 +698,9 @@ class Action {
                     null,
                     true,
                     $columnCount,
-                    $productView
+                    $productView,
+                    [],
+                    $category
                 ),
                 'selectedFilter' => $selectedFilter->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -804,7 +708,8 @@ class Action {
                 ),
                 'pagination'     => (new \View\PaginationAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
-                    $productPager
+                    $productPager,
+                    $category
                 ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -906,7 +811,12 @@ class Action {
     /**
      * @param \Model\Product\Filter\Entity[] $filters
      */
-    private function createInStoreFilter(array &$filters) {
+    private function createInStoreFilter(array &$filters, \Model\Product\Category\Entity $category) {
+        // TODO SITE-2403 Вернуть фильтр instore
+        if (!$category->getIsFurniture()) {
+            return;
+        }
+        
         $labelFilter = null;
         $labelFilterKey = null;
         foreach ($filters as $key => $filter) {

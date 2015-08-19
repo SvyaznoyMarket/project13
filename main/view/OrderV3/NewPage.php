@@ -5,6 +5,13 @@ namespace View\OrderV3;
 class NewPage extends Layout {
     public function prepare() {
         $this->setTitle('Оформление заказа - Enter');
+        $errors = \App::session()->flash();
+        if ($errors) {
+            $this->setParam('error', $errors['errors']);
+            $this->setParam('email', $errors['email']);
+            $this->setParam('phone', $errors['phone']);
+        }
+
     }
 
     public function slotGoogleRemarketingJS($tagParams = []) {
@@ -16,45 +23,18 @@ class NewPage extends Layout {
     }
 
     public function slotContent() {
-        $path = 'order-v3';
-
-        $region = \App::user()->getRegion();
-        if ($region && \App::config()->newOrder) {
-            $ordersNewTest = \App::abTest()->getTest('orders_new');
-            $ordersNewSomeRegionsTest = \App::abTest()->getTest('orders_new_some_regions');
-            if (
-                (!in_array($region->getId(), [93746, 119623]) && $ordersNewTest && in_array($ordersNewTest->getChosenCase()->getKey(), ['new_2'], true)) // АБ-тест для остальных регионов
-                || (in_array($region->getId(), [93746, 119623]) && $ordersNewSomeRegionsTest && in_array($ordersNewSomeRegionsTest->getChosenCase()->getKey(), ['new_2'], true)) // АБ-тест для Ярославля и Ростова-на-дону
-            ) {
-                $path = 'order-v3-new';
-            }
-        }
-
-        return \App::closureTemplating()->render($path . '/page-new', $this->params);
+        return \App::closureTemplating()->render('order-v3-new/page-new', $this->params);
     }
 
     public function slotBodyDataAttribute() {
-        $region = \App::user()->getRegion();
-        if ($region && \App::config()->newOrder) {
-            $ordersNewTest = \App::abTest()->getTest('orders_new');
-            $ordersNewSomeRegionsTest = \App::abTest()->getTest('orders_new_some_regions');
-            if (
-                (!in_array($region->getId(), [93746, 119623]) && $ordersNewTest && in_array($ordersNewTest->getChosenCase()->getKey(), ['new_2'], true)) // АБ-тест для остальных регионов
-                || (in_array($region->getId(), [93746, 119623]) && $ordersNewSomeRegionsTest && in_array($ordersNewSomeRegionsTest->getChosenCase()->getKey(), ['new_2'], true)) // АБ-тест для Ярославля и Ростова-на-дону
-            ) {
-                return 'order-v3-new';
-            }
-        }
-
-        return 'order-v3';
+        return 'order-v3-new';
     }
 
     public function slotHubrusJS()
     {
         $html = parent::slotHubrusJS();
         if (!empty($html)) {
-            $products = \App::user()->getCart()->getProductData();
-            return $html . \View\Partners\Hubrus::addHubrusData('cart_items', $products);
+            return $html . \View\Partners\Hubrus::addHubrusData('cart_items', \App::user()->getCart()->getInOrderProductsById());
         } else {
             return '';
         }

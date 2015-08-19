@@ -1,83 +1,327 @@
-/**
- * Catalog main config
- *
- * @requires jQuery, Mustache, ENTER.utils, ENTER.config
- * 
- * @author	Zaytsev Alexandr
- *
- * @param	{Object}	ENTER	Enter namespace
- */
-;(function( ENTER ) {
-	console.info('Catalog init: catalog.js');
+$(function() {
+    var
+        $body = $('body'),
 
-	var //pageConfig = ENTER.config.pageConfig,
-		utils = ENTER.utils,
-		catalog = utils.extendApp('ENTER.catalog'),
-		lastPage = $('#bCatalog').data('lastpage');
-	// end of vars
+        sliderData = $('#jsSlice').data('value')
+    ;
 
+    if (sliderData && (true === sliderData.isSale)) {
+        // клик по ссылке на категорию
+        $body.on('click', '.js-productCategory-link', function() {
+            var
+                $el = $(this)
+            ;
 
-	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
-	catalog.listingWrap = $('.js-listing');
-	catalog.liveScroll = false;
-	catalog.lastPage = null;
+            $body.trigger('trackGoogleEvent', {
+                category: 'slices_sale',
+                action: 'category',
+                label: $el.find('[data-type="name"]').text()
+            });
+        });
 
-	if ( lastPage ) {
-		catalog.lastPage = lastPage;
-	}
+        // клик по ссылке на товар
+        $body.on('click', '.js-listing-item', function() {
+            var
+                $el = $(this)
+            ;
 
-	console.info('Mustache is '+ typeof Mustache + ' (Catalog main config)');
-	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
+            $body.trigger('trackGoogleEvent', {
+                category: 'slices_sale',
+                action: 'product',
+                label: ''
+            });
+        });
 
-    /**
-     * Подключение слайдера товаров
-     */
-    $('.js-slider').goodsSlider({
-        onLoad: function(goodsSlider) {
-            ko.applyBindings(ENTER.UserModel, goodsSlider);
-        }
-    });
+        // клик по кнопке "Купить"
+        $body.on('click', '.jsBuyButton', function(e) {
+            var
+                $el = $(this)
+            ;
 
-}(window.ENTER));
-/**
- * Filters
- *
- * @requires jQuery, Mustache, ENTER.utils, ENTER.config, ENTER.catalog.history
- *
- * @author	Zaytsev Alexandr
- *
- * @param	{Object}	ENTER	Enter namespace
- */
-;(function( ENTER ) {
+            e.stopPropagation();
+
+            $body.trigger('trackGoogleEvent', {
+                category: 'slices_sale',
+                action: 'basket',
+                label: ''
+            });
+        });
+    }
+});
+;(function() {
 	console.info('New catalog init: filter.js');
 
 	var
-		body = $('body'),
-		utils = ENTER.utils,
+		$body = $('body'),
+		catalog = ENTER.utils.extendApp('ENTER.catalog'),
 		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'), // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
-		catalog = utils.extendApp('ENTER.catalog'),
 
-		filterBlock = $('.js-category-filter'),
-		isV3 = filterBlock.hasClass('js-category-filter-v3'),
+		filterOpenClass = 'fltrSet_tggl-dn',
+		viewSwitcherActiveClass = 'active',
 
-		filterOtherParamsToggleButton = filterBlock.find('.js-category-filter-otherParamsToggleButton'),
-		filterOtherParamsContent = filterBlock.find('.js-category-filter-otherParamsContent'),
-		filterSliders = filterBlock.find('.js-category-filter-rangeSlider'),
-		filterNumbers = filterBlock.find('.js-category-v2-filter-element-number input'),
-		filterMenuItem = filterBlock.find('.js-category-filter-param'),
-		filterCategoryBlocks = filterBlock.find('.js-category-filter-element'),
+		$filterBlock = $('.js-category-filter'),
+		$filterOtherParamsToggleButton = $filterBlock.find('.js-category-filter-otherParamsToggleButton'),
+		$filterOtherParamsContent = $filterBlock.find('.js-category-filter-otherParamsContent'),
+		$filterSliders = $filterBlock.find('.js-category-filter-rangeSlider'),
+		$filterNumbers = $filterBlock.find('.js-category-v2-filter-element-number input'),
+		$filterMenuItem = $filterBlock.find('.js-category-filter-param'),
+		$filterCategoryBlocks = $filterBlock.find('.js-category-filter-element'),
 		$priceFilter = $('.js-category-v1-filter-element-price'),
 		$priceForFacetSearch = $('.js-gift-category-filter-element-price'),
 		$otherParams = $('.js-category-v1-filter-otherParams'),
+		$viewParamPanel = $('.js-category-sortingAndPagination'),
+		$bottomInfButton = $('.js-category-pagination-infinity-enableLink').last(),
+		$filterSubmitBtn = $('.js-category-filter-submit', '.js-category-filter'),
+		$listingWrap = $('.js-listing'),
 
-		viewParamPanel = $('.js-category-sortingAndPagination'),
-		filterOpenClass = 'fltrSet_tggl-dn',
+		isV3 = $filterBlock.hasClass('js-category-filter-v3'),
 
-		manualDefinedPriceFrom = utils.getURLParam('f-price-from', document.location.href),
-		manualDefinedPriceTo = utils.getURLParam('f-price-to', document.location.href),
+		manualDefinedPriceFrom = ENTER.utils.getURLParam('f-price-from', document.location.href),
+		manualDefinedPriceTo = ENTER.utils.getURLParam('f-price-to', document.location.href),
 
-		tID;
-	// end of vars
+		backClick = true,
+		updateOnChange = true,
+		nowPage = 1,
+		lastPage = $('#bCatalog').data('lastpage'),
+		lastResult = null,
+		loading = false, // SITE-5008 "Товары не найдены" в листингах
+		liveScroll = false,
+		loader = createLoader(),
+		timer,
+
+		templateAppliers = {
+			list: function(html) {
+				$listingWrap.empty();
+				$listingWrap.html(html);
+			},
+
+			selectedFilter: function(html) {
+				$filterBlock.find('.js-category-filter-selected').empty().html(html);
+			},
+
+			sorting: function(html) {
+				$viewParamPanel.find('.js-category-sorting').replaceWith(html);
+			},
+
+			pagination: function(html) {
+				$('.js-category-pagination').replaceWith(html);
+			},
+
+			page: function(html) {
+				$('.js-pageTitle').empty().html(html);
+			},
+
+			countProducts: function (html) {
+				if (html && parseInt(html) >= 0) {
+					$('.js-category-filter-submit', '.js-category-filter').text('Подобрать (' +  html + ')');
+				}
+			}
+		},
+		templateRenderers = {
+			list: function(data) {
+				var
+					template,
+					$expandedViewSwitcher = $('.js-category-viewSwitcher-link-expanded');
+
+				// Используем проверку HTML элемента вместо проверки значение cookie categoryView, т.к. во время
+				// просмотра страницы каталога значение cookie может быть изменено (например, при просмотре страницы
+				// каталога в другом окне) и при бесконечной прокрутке или переключении страниц будут подгружаться
+				// товары в другом виде, нежели выбран в переключателе
+				if ($expandedViewSwitcher.hasClass(viewSwitcherActiveClass) || !$expandedViewSwitcher.length && $listingWrap.data('category-view') == 'expanded') {
+					template = $('#listing_expanded_tmpl');
+				} else {
+					template = $('#listing_compact_tmpl');
+				}
+
+				return Mustache.render(template.html(), data, template.data('partial'));
+			},
+
+			selectedFilter: function(data) {
+				if (!data) {
+					return;
+				}
+
+				var template = $('#tplSelectedFilter');
+				return Mustache.render(template.html(), data, template.data('partial'));
+			},
+
+			sorting: function(data) {
+				var template = $('script.tplSorting:first');
+				return Mustache.render(template.html(), data, template.data('partial'));
+			},
+
+			pagination: function(data) {
+				var template = $('script.tplPagination:first');
+				return Mustache.render(template.html(), data, template.data('partial'));
+			},
+
+			page: function(data) {
+				return data.title;
+			},
+
+			countProducts: function (data) {
+				return data;
+			}
+		}
+	;
+
+	function createLoader() {
+		var $loader = null;
+		return {
+			start: function() {
+				if ($loader) {
+					return;
+				}
+
+				$loader = $('<li>').addClass('mLoader');
+				$filterSubmitBtn.addClass('mButLoader').text('Подобрать');
+
+				if (!liveScroll) {
+					$listingWrap.empty();
+				}
+
+				$listingWrap.append($loader);
+			},
+
+			stop: function() {
+				if ($loader) {
+					$loader.remove();
+					$loader = null;
+				}
+
+				$filterSubmitBtn.removeClass('mButLoader');
+			}
+		}
+	}
+
+	/**
+	 * Обработка перехода на URL
+	 * Если браузер не поддерживает History API происходит обычный переход по ссылке
+	 *
+	 * @param	{String}	url			Адрес на который необходимо выполнить переход
+	 */
+	function goToUrl(url) {
+		if (!History.enabled) {
+			document.location.href = url;
+			return;
+		}
+
+		var state = {
+			title: document.title,
+			url: url,
+			data: {
+				scrollTop: $(window).scrollTop()
+			}
+		};
+
+		backClick = false;
+		History.pushState(state, state.title, state.url);
+	}
+
+	/**
+	 * Запросить новые данные с сервера по url
+	 *
+	 * @param	{String}	url
+	 * @param	{Function}	callback
+	 */
+	function getDataFromServer(url, callback) {
+		loader.start();
+
+		$.ajax({
+			type: 'GET',
+			url: url,
+			success: function(res) {
+				if (typeof res === 'object') {
+					callback(res);
+				} else {
+					console.warn('res isn\'t object');
+					console.log(typeof res);
+				}
+
+				loader.stop();
+
+				$('.js-listing, .js-jewelListing').each(function() {
+					ko.cleanNode(this);
+					ko.applyBindings(ENTER.UserModel, this);
+				});
+			},
+			error: function() {
+				loading = false;
+				loader.stop();
+			}
+		});
+	}
+
+	function checkInfinityScroll() {
+		if (!loading && $bottomInfButton.visible() && (lastPage - nowPage > 0 || null == lastPage)) {
+			loadInfinityPage();
+			$body.trigger('loadInfinityPage', [nowPage]);
+		}
+	}
+
+	function loadInfinityPage() {
+		nowPage += 1;
+		liveScroll = true;
+		loading = true;
+
+		getDataFromServer(getFilterUrl().addParameterToUrl('page', nowPage).addParameterToUrl('ajax', 'true'), function(res) {
+			loading = false;
+			$listingWrap.append(templateRenderers['list'](res['list'])); // TODO Вызывать renderCatalogPage вместо templateRenderers['list']?
+		});
+
+        $body.trigger('infinityScroll', {'state': 'enabled', 'page': nowPage, 'lastPage': lastPage});
+	}
+
+	function enableInfinityScroll(onlyIfAlreadyEnabled) {
+		if (onlyIfAlreadyEnabled && docCookies.getItem('infScroll') != '1') {
+			return;
+		}
+
+		var
+			activeClass = 'mActive act',
+			infBtn = $viewParamPanel.find('.js-category-pagination-infinity'),
+			pagingBtn = $viewParamPanel.find('.js-category-pagination-paging'),
+			pageBtn = $viewParamPanel.find('.js-category-pagination-page'),
+			url = getFilterUrl(),
+			hasPaging = document.location.search.match('page=');
+
+		pagingBtn.css({'display':'inline-block'});
+		pageBtn.hide();
+		infBtn.addClass(activeClass);
+
+		nowPage = 1;
+		loading = false;
+
+		docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/');
+
+		checkInfinityScroll();
+		$(window).on('scroll', checkInfinityScroll);
+
+		if (History.enabled && hasPaging) {
+			goToUrl(url);
+		}
+
+		$bottomInfButton = $('.js-category-pagination-infinity-enableLink').last();
+
+		if ($bottomInfButton.visible() && lastPage > 1) {
+			loadInfinityPage();
+		}
+
+        $body.trigger('infinityScroll', {'state': 'enabled', 'page': nowPage, 'lastPage': lastPage});
+	}
+
+	function disableInfinityScroll() {
+		var url = getFilterUrl();
+
+		liveScroll = false;
+		url = url.addParameterToUrl('ajax', 'true');
+
+		docCookies.setItem('infScroll', 0, 4*7*24*60*60, '/');
+		$(window).off('scroll', checkInfinityScroll);
+		getDataFromServer(url, renderCatalogPage);
+
+        $body.trigger('infinityScroll', {'state': 'disabled', 'page': nowPage, 'lastPage': lastPage});
+	}
 
 	function setManualDefinedPriceFrom(from, min) {
 		if (manualDefinedPriceFrom != from) {
@@ -99,420 +343,305 @@
 		}
 	}
 
-	catalog.filter = {
-		/**
-		 * Выполнять ли обновление фильтров при изменении свойства
-		 *
-		 * @type	{boolean}
-		 */
-		updateOnChange: true,
+	/**
+	 * Отрисовка шаблона продуктов
+	 *
+	 * @param	{Object}	res		Данные для шаблона
+	 */
+	function renderCatalogPage(res) {
+		var
+			dataToRender = res ? res : lastResult,
+			key,
+			template,
+			newLastPage = res['pagination'] ? res['pagination']['lastPage'] : false;
 
-		/**
-		 * Последние загруженные данные
-		 *
-		 * @type	{Object}
-		 */
-		lastRes: null,
-
-		/**
-		 * Получение текущего режима просмотра
-		 *
-		 * @return	{String}	Текущий режим просмотра
-		 */
-		getViewType: function() {
-			var changeViewItemsBtns = viewParamPanel.find('.js-category-viewer .js-category-viewer-item');
-
-			return changeViewItemsBtns.filter('.js-category-viewer-activeItem').data('type');
-		},
-
-		applyTemplate: {
-			list: function( html ) {
-				console.info('applyTemplate list');
-				catalog.listingWrap.empty();
-				catalog.listingWrap.html(html);
-			},
-
-			selectedFilter: function( html ) {
-				var filterFooterWrap = filterBlock.find('.js-category-filter-selected'); // TODO
-
-				filterFooterWrap.empty();
-				filterFooterWrap.html(html);
-			},
-
-			sorting: function( html ) {
-				var sortingWrap = viewParamPanel.find('.js-category-sorting');
-
-				sortingWrap.empty();
-				sortingWrap.html(html);
-			},
-
-			pagination: function( html ) {
-				var paginationWrap = $('.js-category-pagination');
-
-				paginationWrap.empty();
-				paginationWrap.html(html);
-			},
-
-			page: function( html ) {
-				var title = $('.js-pageTitle');
-
-				title.empty();
-				title.html(html);
-			},
-
-			countProducts: function ( html ) {
+		(function() {
+			if (res.filters && res.filters.price && $priceForFacetSearch.length) {
 				var
-					subminBtn = $('.js-category-filter-submit', '.js-category-filter'),
-					count = html ? parseInt(html) : -1;
+					$slider = $('.js-category-filter-rangeSlider-slider', $priceForFacetSearch),
+					$from = $('.js-category-filter-rangeSlider-from', $priceForFacetSearch),
+					$to = $('.js-category-filter-rangeSlider-to', $priceForFacetSearch),
+					from = parseFloat('0' + $from.val()),
+					to = parseFloat('0' + $to.val());
 
-				if ( count >= 0 && subminBtn.length ) {
-					subminBtn.text('Подобрать (' +  html + ')');
-				}
-			}
-		},
+				if ((!manualDefinedPriceFrom || manualDefinedPriceFrom <= res.filters.price.max) && res.filters.price.max) {
+					$slider.slider('option', 'max', res.filters.price.max);
 
-
-		render: {
-
-			list: function( data ) {
-				console.info('render list');
-				console.log(( typeof catalog.filter.getViewType() !== 'undefined' ) ? catalog.filter.getViewType() : 'default');
-
-				var templateType = ( typeof catalog.filter.getViewType() !== 'undefined' ) ? catalog.filter.getViewType() : 'default',
-					template = {
-						'compact': $('#listing_compact_tmpl'),
-						'expanded': $('#listing_compact_tmpl'), // Заменить когда будет шаблон расширенного вида
-						'default': $('#listing_compact_tmpl')
-					},
-					listingTemplate = template[templateType].html(),
-					partials = template[templateType].data('partial'),
-					html;
-				// end of vars
-
-				html = Mustache.render(listingTemplate, data, partials);
-
-				console.log('end of render list');
-
-				return html;
-			},
-
-			selectedFilter: function( data ) {
-				console.info('render selectedFilter');
-
-				if ( !data ) {
-					console.warn('nothing to render');
-
-					return;
-				}
-
-				var template = $('#tplSelectedFilter'),
-					filterTemplate = template.html(),
-					partials = template.data('partial'),
-					html;
-				// end of vars
-
-				html = Mustache.render(filterTemplate, data, partials);
-
-				if ( data.hasOwnProperty('values') ) {
-					console.info('run update filter!');
-
-					// SITE-4825
-//					catalog.filter.updateFilter( data['values'] );
-				}
-
-				console.log('end of render selectedFilter');
-
-				return html;
-			},
-
-			sorting: function( data ) {
-				console.info('render sorting');
-
-				var
-					template = $('script.tplSorting:first'),
-					sortingTemplate = template.html(),
-					partials = template.data('partial'),
-					html;
-				// end of vars
-
-				html = Mustache.render(sortingTemplate, data, partials);
-
-				console.log('end of render sorting');
-
-				return html;
-			},
-
-			pagination: function( data ) {
-				console.info('render pagination');
-
-				var
-					template = $('script.tplPagination:first'),
-					paginationTemplate = template.html(),
-					partials = template.data('partial'),
-					html;
-				// end of vars
-
-				html = Mustache.render(paginationTemplate, data, partials);
-
-				console.log('end of render paginaton');
-
-				return html;
-			},
-
-			page: function( data ) {
-				var title = data.title;
-
-				return title;
-			},
-
-			countProducts: function ( data ) {
-				console.info('render countProducts');
-				return data;
-			}
-		},
-
-		/**
-		 * Отрисовка шаблона продуктов
-		 *
-		 * @param	{Object}	res		Данные для шаблона
-		 */
-		renderCatalogPage: function( res ) {
-			console.info('renderCatalogPage');
-
-			var dataToRender = ( res ) ? res : catalog.filter.lastRes,
-				key,
-				template,
-				lastPage = res['pagination'] ? res['pagination']['lastPage'] : false;
-			// end of vars
-
-			// SITE-4825
-//			catalog.filter.resetForm();
-
-			(function() {
-				if (res.filters && res.filters.price && $priceForFacetSearch.length) {
-					var
-						$slider = $('.js-category-filter-rangeSlider-slider', $priceForFacetSearch),
-						$from = $('.js-category-filter-rangeSlider-from', $priceForFacetSearch),
-						$to = $('.js-category-filter-rangeSlider-to', $priceForFacetSearch),
-						from = parseFloat('0' + $from.val()),
-						to = parseFloat('0' + $to.val());
-
-					if ((!manualDefinedPriceFrom || manualDefinedPriceFrom <= res.filters.price.max) && res.filters.price.max) {
-						$slider.slider('option', 'max', res.filters.price.max);
-
-						// Внимание: изменение данных значений не выполняет поиск заново, поэтому важно, чтобы данные изменения не влияли на возможный результат поиска
-						if (to > res.filters.price.max) {
-							$to.val(res.filters.price.max);
-							$slider.slider('values', 1, res.filters.price.max);
-						} else {
-							var newTo = manualDefinedPriceTo || res.filters.price.max;  // Если значение "до" не задавалось вручную, то значение "до" будет установлено в новое максимальное значение
-							$to.val(newTo);
-							$slider.slider('values', 1, newTo);
-						}
-					}
-
-					if (!manualDefinedPriceTo || manualDefinedPriceTo >= res.filters.price.min) {
-						$slider.slider('option', 'min', res.filters.price.min);
-
-						// Внимание: изменение данных значений не выполняет поиск заново, поэтому важно, чтобы данные изменения не влияли на возможный результат поиска
-						if (from < res.filters.price.min) {
-							$from.val(res.filters.price.min);
-							$slider.slider('values', 0, res.filters.price.min);
-						} else {
-							var newFrom = manualDefinedPriceFrom || res.filters.price.min; // Если значение "от" не задавалось вручную, то значение "от" будет установлено в новое минимальное значение
-							$from.val(newFrom);
-							$slider.slider('values', 0, newFrom);
-						}
+					// Внимание: изменение данных значений не выполняет поиск заново, поэтому важно, чтобы данные изменения не влияли на возможный результат поиска
+					if (to > res.filters.price.max) {
+						$to.val(res.filters.price.max);
+						$slider.slider('values', 1, res.filters.price.max);
+					} else {
+						var newTo = manualDefinedPriceTo || res.filters.price.max;  // Если значение "до" не задавалось вручную, то значение "до" будет установлено в новое максимальное значение
+						$to.val(newTo);
+						$slider.slider('values', 1, newTo);
 					}
 				}
-			})();
 
-			for ( key in dataToRender ) {
-				if ( catalog.filter.render.hasOwnProperty(key) ) {
-					template = catalog.filter.render[key]( dataToRender[key] );
-				}
+				if (!manualDefinedPriceTo || manualDefinedPriceTo >= res.filters.price.min) {
+					$slider.slider('option', 'min', res.filters.price.min);
 
-				if ( catalog.filter.applyTemplate.hasOwnProperty(key) ) {
-					catalog.filter.applyTemplate[key](template);
+					// Внимание: изменение данных значений не выполняет поиск заново, поэтому важно, чтобы данные изменения не влияли на возможный результат поиска
+					if (from < res.filters.price.min) {
+						$from.val(res.filters.price.min);
+						$slider.slider('values', 0, res.filters.price.min);
+					} else {
+						var newFrom = manualDefinedPriceFrom || res.filters.price.min; // Если значение "от" не задавалось вручную, то значение "от" будет установлено в новое минимальное значение
+						$from.val(newFrom);
+						$slider.slider('values', 0, newFrom);
+					}
 				}
 			}
+		})();
 
-			if ( lastPage ) {
-				catalog.lastPage = lastPage;
+		for (key in dataToRender) {
+			if (!dataToRender.hasOwnProperty(key)) {
+				continue;
 			}
 
-			catalog.filter.lastRes = dataToRender;
+			if (templateRenderers.hasOwnProperty(key)) {
+				template = templateRenderers[key](dataToRender[key]);
+			}
 
-			catalog.infScroll.checkInfinity();
-		},
+			if (templateAppliers.hasOwnProperty(key)) {
+				templateAppliers[key](template);
+			}
+		}
 
-		/**
-		 * Получение изменненых и неизменненых полей слайдеров
-		 *
-		 * @return	{Object}	res
-		 * @return	{Array}		res.changedSliders		Массив имен измененных полей
-		 * @return	{Array}		res.unchangedSliders	Массив имен неизмененных полей
-		 */
-		getSlidersInputState: function() {
-			console.info('getSlidersInputState');
+		if (newLastPage) {
+			lastPage = newLastPage;
+		}
 
-			var res = {
-					changedSliders: [],
-					unchangedSliders: []
-				};
-			// end of vars
+		lastResult = dataToRender;
+		enableInfinityScroll(true);
+	}
 
-			var sortSliders = function sortSliders() {
+	/**
+	 * Получение изменненых и неизменненых полей слайдеров
+	 * @return {Object} {changedSliders: массив имен измененных полей, unchangedSliders: массив имен неизмененных полей}
+	 */
+	function getSlidersInputState() {
+		var result = {
+			changedSliders: [],
+			unchangedSliders: []
+		};
+
+		$filterSliders.each(function() {
+			var
+				sliderWrap = $(this),
+				slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
+				sliderFromInput = sliderWrap.find('.js-category-filter-rangeSlider-from'),
+				sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to');
+
+			if (sliderFromInput.val() * 1 == slider.slider('option', 'min')) {
+				result.unchangedSliders.push(sliderFromInput.attr('name'));
+			} else {
+				result.changedSliders.push(sliderFromInput.attr('name'));
+			}
+
+			if (sliderToInput.val() * 1 == slider.slider('option', 'max')) {
+				result.unchangedSliders.push(sliderToInput.attr('name'));
+			} else {
+				result.changedSliders.push(sliderToInput.attr('name'));
+			}
+		});
+
+		return result;
+	}
+
+	function getUnchangedNumberFieldNames() {
+		var unchangedNumbers = [];
+		$filterNumbers.each(function(index, input) {
+			var $input = $(input);
+			// В IE <= 9 класс placeholder добавляется к полям, в которых введено значение, которое не надо передавать на сервер
+			if ($input.hasClass('placeholder')) {
+				unchangedNumbers.push(input.name);
+			}
+		});
+
+		return unchangedNumbers;
+	}
+
+	/**
+	 * Формирование URL для получения результатов фильтра
+	 *
+	 * @return	{String}	url
+	 */
+	function getFilterUrl(page) {
+		var formData = $filterBlock.serializeArray(),
+			url = $filterBlock.attr('action') || '',
+			slidersInputState = getSlidersInputState(),
+			unchangedNumberFieldNames = getUnchangedNumberFieldNames(),
+			activeSort = $viewParamPanel.find('.js-category-sorting-activeItem:not(.js-category-sorting-defaultItem)').find('.js-category-sorting-link'),
+			sortUrl = activeSort.length ? activeSort.data('sort') : null,
+			formSerizalizeData,
+			urlParams = getUrlParams(),
+			hasCategory = false;
+
+		for (var i = formData.length - 1; i >= 0; i--) {
+			if (slidersInputState.unchangedSliders.indexOf(formData[i].name) !== -1 || unchangedNumberFieldNames.indexOf(formData[i].name) != -1 || formData[i].value == '') {
+				formData.splice(i,1);
+			}
+		}
+
+		// передаем категрию, если она была задана
+		if (urlParams && urlParams['category']) {
+			$.each(formData, function() {
+				if (this.name == 'category') {
+					hasCategory = true;
+				}
+			});
+
+			// добавляем категорию в параметры, если она не добавлена
+			if (!hasCategory) {
+				formData.unshift({name: 'category', value: urlParams['category']});
+			}
+		}
+
+		formSerizalizeData = $.param(formData);
+
+		if (formSerizalizeData.length !== 0) {
+			url += (url.indexOf('?') === -1) ? '?' + formSerizalizeData : '&' + formSerizalizeData;
+		}
+
+		if (sortUrl) {
+			url = url.addParameterToUrl('sort', sortUrl);
+		}
+
+		if (!page) {
+			page = $.deparam(location.search).page;
+		}
+
+		if (page && page > 1 && (!lastPage || page <= lastPage)) {
+			url = url.addParameterToUrl('page', page);
+		}
+
+		return url;
+	}
+
+	/**
+	 * Получение get параметров текущей страницы
+	 */
+	function getUrlParams() {
+		var
+			$_GET = {},
+			__GET = location.search.substring(1).split('&'),
+			getVar,
+			i;
+
+		for (i = 0; i < __GET.length; i++) {
+			getVar = __GET[i].split('=');
+			$_GET[getVar[0]] = typeof(getVar[1]) == 'undefined' ? '' : getVar[1];
+		}
+
+		return $_GET;
+	}
+
+	/**
+	 * Обновление значений формы
+	 */
+	function updateFilterForm(values) {
+		var
+			input,
+			val,
+			type,
+			fieldName;
+
+		var updateInput = {
+			'text': function(input, val) {
+				input.val(val).trigger('change');
+			},
+
+			'radio': function(input, val) {
+				var
+					self = input.filter('[value="'+val+'"]'),
+					id = self.attr('id'),
+					label = $filterBlock.find('label[for="'+id+'"]');
+
+				self.attr('checked', 'checked');
+				label.addClass('mChecked');
+				self.trigger('change');
+			},
+
+			'checkbox': function(input, val) {
+				input.filter('[value="'+val+'"]').attr('checked', 'checked').trigger('change');
+			}
+		};
+
+		for (fieldName in values) {
+			if (!values.hasOwnProperty(fieldName)) {
+				return;
+			}
+
+			input = $filterBlock.find('input[name="'+fieldName+'"]');
+			val = values[fieldName];
+			type = input.attr('type');
+
+			if (updateInput.hasOwnProperty(type)) {
+				updateInput[type](input, val);
+			}
+		}
+	}
+
+	/**
+	 * Обнуление значений формы
+	 */
+	function resetFilterForm() {
+		var
+			resetRadio = function resetRadio(nf, input) {
+				var
+					self = $(input),
+					id = self.attr('id'),
+					label = $filterBlock.find('label[for="'+id+'"]');
+
+				self.removeAttr('checked');
+				label.removeClass('mChecked');
+				self.trigger('change');
+			},
+
+			resetCheckbox = function resetCheckbox(nf, input) {
+				$(input).removeAttr('checked').trigger('change');
+			},
+
+			resetSliders = function resetSliders() {
 				var sliderWrap = $(this),
 					slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
 					sliderFromInput = sliderWrap.find('.js-category-filter-rangeSlider-from'),
 					sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to');
 
-
-				if ( sliderFromInput.val() * 1 == slider.slider('option', 'min') ) {
-					res.unchangedSliders.push(sliderFromInput.attr('name'));
-				}
-				else {
-					res.changedSliders.push(sliderFromInput.attr('name'));
-				}
-
-				if ( sliderToInput.val() * 1 == slider.slider('option', 'max') ) {
-					res.unchangedSliders.push(sliderToInput.attr('name'));
-				}
-				else {
-					res.changedSliders.push(sliderToInput.attr('name'));
-				}
+				sliderFromInput.val(slider.slider('option', 'min')).trigger('change');
+				sliderToInput.val(slider.slider('option', 'max')).trigger('change');
+			},
+			resetText = function(nf, input) {
+				$(input).val('').trigger('change');
 			};
 
-			filterSliders.each(sortSliders);
+		$filterBlock.find(':input:radio:checked').each(resetRadio);
+		$filterBlock.find(':input:checkbox:checked').each(resetCheckbox);
+		$filterBlock.find(':input:text:not(.js-category-filter-rangeSlider-from):not(.js-category-filter-rangeSlider-to)').each(resetText);
+		$filterSliders.each(resetSliders);
+	}
 
-			return res;
-		},
+	function sendFilter(page) {
+		// SITE-4894 Не изменяются выбранные фильтры при переходе назад
+		if (!updateOnChange) {
+			return;
+		}
 
-		getUnchangedNumberFieldNames: function() {
-			var unchangedNumbers = [];
-			filterNumbers.each(function(index, input) {
-				var $input = $(input);
-				// В IE <= 9 класс placeholder добавляется к полям, в которых введено значение, которое не надо передавать на сервер
-				if ($input.hasClass('placeholder')) {
-					unchangedNumbers.push(input.name);
-				}
-			});
+		clearTimeout(timer);
 
-			return unchangedNumbers;
-		},
+		timer = setTimeout(function() {
+			var url = getFilterUrl(page);
 
-		/**
-		 * Формирование URL для получения результатов фильтра
-		 *
-		 * @return	{String}	url
-		 */
-		getFilterUrl: function(page) {
-			console.info('getFilterUrl');
+			// SITE-5063 Дублирование товаров в листинге
+			$(window).off('scroll', checkInfinityScroll);
 
-			var formData = filterBlock.serializeArray(),
-				url = filterBlock.attr('action') || '',
-				slidersInputState = catalog.filter.getSlidersInputState(),
-				unchangedNumberFieldNames = catalog.filter.getUnchangedNumberFieldNames(),
-				activeSort = viewParamPanel.find('.js-category-sorting-activeItem:not(.js-category-sorting-defaultItem)').find('.jsSorting'),
-				sortUrl = activeSort.length ? activeSort.data('sort') : null,
-				formSerizalizeData,
-				urlParams = catalog.filter.getUrlParams(),
-				hasCategory = false;
-			// end of vars
-
-			for ( var i = formData.length - 1; i >= 0; i-- ) {
-				if ( slidersInputState.unchangedSliders.indexOf(formData[i].name) !== -1 || unchangedNumberFieldNames.indexOf(formData[i].name) != -1 || formData[i].value == '') {
-					console.log('slider input '+formData[i].name+' unchanged');
-
-					formData.splice(i,1);
-				}
-			}
-
-			// передаем категрию, если она была задана
-			if ( urlParams && urlParams['category'] ) {
-				$.each(formData, function () {
-					if ( this.name == 'category' ) {
-						hasCategory = true;
-					}
-				});
-
-				// добавляем категорию в параметры, если она не добавлена
-				if ( !hasCategory ) {
-					formData.unshift({name: 'category', value: urlParams['category']});
-				}
-			}
-
-			formSerizalizeData = $.param( formData );
-
-			if ( formSerizalizeData.length !== 0 ) {
-				url += ( url.indexOf('?') === -1 ) ? '?' + formSerizalizeData : '&' + formSerizalizeData;
-			}
-
-			console.log(url);
-
-			if (sortUrl) {
-				url = url.addParameterToUrl('sort', sortUrl);
-			}
-
-			if (page && page > 1 && (!catalog.lastPage || page <= catalog.lastPage)) {
-				url = url.addParameterToUrl('page', page);
-			}
-
-			return url;
-		},
-
-		/**
-		 * Получение get параметров текущей страницы
-		 */
-		getUrlParams: function () {
-			var $_GET = {},
-				__GET = window.location.search.substring(1).split('&'),
-				getVar,
-				i;
-			// end of vars
-
-			for ( i = 0; i < __GET.length; i++ ) {
-				getVar = __GET[i].split('=');
-				$_GET[getVar[0]] = typeof(getVar[1]) == 'undefined' ? '' : getVar[1];
-			}
-
-			return $_GET;
-		},
-
-		/**
-		 * Изменение параметров фильтра
-		 */
-		changeFilterHandler: function(page) {
-			// SITE-4894 Не изменяются выбранные фильтры при переходе назад
-			if (!catalog.filter.updateOnChange) {
-				return;
-			}
-
-			clearTimeout(tID);
-
-			tID = setTimeout(function() {
-				catalog.filter.sendFilter(page);
-			}, 300);
-		},
-
-		/**
-		 * Отправка результатов фильтров
-		 * Получение ответа от сервера
-		 */
-		sendFilter: function(page) {
-			var url = catalog.filter.getFilterUrl(page);
-
-			if ( url !== (document.location.pathname + document.location.search) ) {
-				console.info('goto url '+url);
-
-				if ( !catalog.enableHistoryAPI ) {
+			if (url != document.location.pathname + document.location.search) {
+				if (!History.enabled) {
 					url = url.replace(/\#.*$|$/, '#productCatalog-filter-form');
 				}
 
-				// SITE-5063 Дублирование товаров в листинге
-				$(window).off('scroll', catalog.infScroll.checkScroll);
-				catalog.history.gotoUrl(url);
+				goToUrl(url);
 
 				// Устанавливаем фильтры в ссылки списка дочерних категорий
 				$('.js-category-children-link').each(function(index, link) {
@@ -528,375 +657,341 @@
 					$link.attr('href', hrefWithoutQueryString + filterQueryString);
 				});
 			}
-		},
+		}, 300);
+	}
 
-		/**
-		 * Обнуление значений формы
-		 */
-		resetForm: function() {
-			console.info('resetForm');
-			// return;
+	function reloadFilter() {
+		clearTimeout(timer);
 
-			var resetRadio = function resetRadio( nf, input ) {
-					var self = $(input),
-						id = self.attr('id'),
-						label = filterBlock.find('label[for="'+id+'"]');
-					// end of vars
+		// SITE-5063 Дублирование товаров в листинге
+		$(window).off('scroll', checkInfinityScroll);
 
-					console.info(id);
-					console.info(label);
+		getDataFromServer(getFilterUrl().addParameterToUrl('ajax', 'true'), renderCatalogPage);
+	}
 
-					self.removeAttr('checked');
-					label.removeClass('mChecked');
-					self.trigger('change');
-				},
+	function toggleAdvancedFilters(openAnyway) {
+		var open = $filterOtherParamsToggleButton.hasClass(filterOpenClass);
 
-				resetCheckbox = function resetCheckbox( nf, input ) {
-					$(input).removeAttr('checked').trigger('change');
-				},
+		if (open && !openAnyway) {
+			$filterOtherParamsToggleButton.removeClass(filterOpenClass);
+			$filterOtherParamsToggleButton.parent().removeClass('bFilterHead-open');
+			$filterOtherParamsContent.slideUp(400);
+		} else {
+			$filterOtherParamsToggleButton.addClass(filterOpenClass);
+			$filterOtherParamsToggleButton.parent().addClass('bFilterHead-open');
+			$filterOtherParamsContent.slideDown(400);
+		}
+	}
 
-				resetSliders = function resetSliders() {
-					var sliderWrap = $(this),
-						slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
-						sliderFromInput = sliderWrap.find('.js-category-filter-rangeSlider-from'),
-						sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to');
+	// Иницилизация слайдеров в фильтрах
+	$filterSliders.each(function() {
+		var sliderWrap = $(this),
+			slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
+			sliderConfig = slider.data('config'),
+			sliderFromInput = sliderWrap.find('.js-category-filter-rangeSlider-from'),
+			sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to');
 
-					sliderFromInput.val(slider.slider('option', 'min')).trigger('change');
-					sliderToInput.val(slider.slider('option', 'max')).trigger('change');
-				},
-				resetText = function( nf, input ) {
-					$(input).val('').trigger('change');
-				};
-			// end of functions
+		slider.slider({
+			range: true,
+			step: sliderConfig.step,
+			min: sliderConfig.min,
+			max: sliderConfig.max,
+			values: [
+				sliderFromInput.val(),
+				sliderToInput.val()
+			],
 
-			filterBlock.find(':input:radio:checked').each(resetRadio);
-			filterBlock.find(':input:checkbox:checked').each(resetCheckbox);
-			filterBlock.find(':input:text:not(.js-category-filter-rangeSlider-from):not(.js-category-filter-rangeSlider-to)').each(resetText);
-			filterSliders.each(resetSliders);
-		},
+			slide: function(e, ui) {
+				sliderFromInput.val(ui.values[0]);
+				sliderToInput.val(ui.values[1]);
 
-		/**
-		 * Обновление значений фильтра
-		 */
-		updateFilter: function( values ) {
-			console.info('update filter');
-
-			var input,
-				val,
-				type,
-				fieldName;
-			// end of vars
-
-			console.info(values);
-
-			var updateInput = {
-				'text': function( input, val ) {
-					input.val(val).trigger('change');
-				},
-
-				'radio': function( input, val ) {
-					var self = input.filter('[value="'+val+'"]'),
-						id = self.attr('id'),
-						label = filterBlock.find('label[for="'+id+'"]');
-					// end of vars
-
-					self.attr('checked', 'checked');
-					label.addClass('mChecked');
-					self.trigger('change');
-				},
-
-				'checkbox': function( input, val ) {
-					input.filter('[value="'+val+'"]').attr('checked', 'checked').trigger('change');
-				}
-			};
-
-			for ( fieldName in values ) {
-				if ( !values.hasOwnProperty(fieldName) ) {
-					return;
-				}
-
-				input = filterBlock.find('input[name="'+fieldName+'"]');
-				val = values[fieldName];
-				type = input.attr('type');
-
-				console.log(input);
-				console.log(val);
-				console.log(type);
-
-				if ( updateInput.hasOwnProperty(type) ) {
-					updateInput[type](input, val);
-				}
+				sliderFromInput.trigger('change', [true]);
+				sliderToInput.trigger('change', [true]);
 			}
-		},
+		});
 
-		openFilter: function() {
-			toggleFilterViewHandler( true );
+		sliderFromInput.on('change', function(e, fromSliderChange) {
+			var
+				from = '0' + sliderFromInput.val(),
+				to = '0' + sliderToInput.val(),
+				min = slider.slider('option', 'min'),
+				max = slider.slider('option', 'max');
 
-			$('.js-category-filter-toggle-container', filterBlock).each(function() {
-				$('.js-category-filter-toggle-button', this).addClass(filterOpenClass);
-				$('.js-category-filter-toggle-content', this).slideDown(400);
+			from = parseFloat(from);
+			to = parseFloat(to);
+
+			if (from < min) {
+				from = min;
+			} else if (from > max) {
+				from = max;
+			}
+
+			if (from > to) {
+				from = to;
+			}
+
+			sliderFromInput.val(from);
+
+			if (!fromSliderChange) {
+				slider.slider('values', 0, from);
+			}
+
+			if ((e.originalEvent || fromSliderChange) && sliderWrap.is($priceForFacetSearch)) {
+				setManualDefinedPriceFrom(from, min);
+			}
+		});
+
+		sliderToInput.on('change', function(e, fromSliderChange) {
+			var
+				from = '0' + sliderFromInput.val(),
+				to = '0' + sliderToInput.val(),
+				min = slider.slider('option', 'min'),
+				max = slider.slider('option', 'max');
+
+			from = parseFloat(from);
+			to = parseFloat(to);
+
+			if (to < min) {
+				to = min;
+			} else if (to > max) {
+				to = max;
+			}
+
+			if (from > to) {
+				to = from;
+			}
+
+			sliderToInput.val(to);
+
+			if (!fromSliderChange) {
+				slider.slider('values', 1, to);
+			}
+
+			if ((e.originalEvent || fromSliderChange) && sliderWrap.is($priceForFacetSearch)) {
+				setManualDefinedPriceTo(to, max);
+			}
+		});
+	});
+
+    if ((true === ENTER.config.pageConfig.infinityScroll) && !docCookies.hasItem('infScroll')) {
+        enableInfinityScroll();
+    }
+	enableInfinityScroll(true);
+
+	// Обработчик изменения состояния истории в браузере
+	$(window).on('statechange', function() {
+		var
+			state = History.getState(),
+			url = state.url,
+			data = state.data.data
+		;
+
+		// SITE-4941 Происходит редирект в начало страницы при нажатии на кнопку "назад" в браузере с примененными фильтрами
+		setTimeout(function() {
+			if (data.scrollTop) {
+				$(window).scrollTop(data.scrollTop);
+			}
+		}, 0);
+
+		// SITE-4894 Не изменяются выбранные фильтры при переходе назад
+		if (backClick) {
+			updateOnChange = false;
+			resetFilterForm();
+			updateFilterForm(ENTER.utils.parseUrlParams(url));
+			updateOnChange = true;
+		}
+
+		getDataFromServer(url.addParameterToUrl('ajax', 'true'), renderCatalogPage);
+		backClick = true;
+	});
+
+	// Обработчик кнопки "Бренды и параметры"
+	$filterOtherParamsToggleButton.on('click', function(e) {
+		e.preventDefault();
+		toggleAdvancedFilters();
+	});
+
+	// Изменение значений фильтров
+	$filterBlock.on('change', 'input, select, textarea', function() {
+		sendFilter(1);
+	});
+
+	// Отправка формы
+	$filterBlock.on('submit', function(e) {
+		e.preventDefault();
+		sendFilter(1);
+	});
+
+	// Обработчик кнопк сворачивания/разворачивания блоков
+	$filterBlock.on('click', '.js-category-filter-toggle-button', function(e) {
+		var
+			$self = $(this),
+			$button = $(e.currentTarget),
+			$content = $('.js-category-filter-toggle-content', $button.closest('.js-category-filter-toggle-container'));
+
+		if ($button.hasClass(filterOpenClass)) {
+			$button.removeClass(filterOpenClass);
+			$content.slideUp(400);
+			$self.parent('.js-category-filter-toggle-container').addClass('fltrSet-close');
+		} else {
+			$button.addClass(filterOpenClass);
+			$content.slideDown(400);
+			$self.parent('.js-category-filter-toggle-container').removeClass('fltrSet-close');
+		}
+
+		return false;
+	});
+
+	// Обработчик выбора категории фильтра
+	$filterMenuItem.on('click', function() {
+		var
+			$self = $(this),
+			activeClass = 'mActive',
+			categoryId = $self.data('ref');
+
+		if ($self.hasClass(activeClass)) {
+			return false;
+		}
+
+		$filterMenuItem.removeClass(activeClass);
+		$self.addClass(activeClass);
+
+		$filterCategoryBlocks.fadeOut(300);
+		$filterCategoryBlocks.promise().done(function() {
+			$('#'+categoryId).fadeIn(300);
+		});
+
+		if (!isV3) {
+			$.scrollTo($filterBlock, 500);
+		}
+
+		return false;
+	});
+
+	// Обработка нажатий на ссылки удаления фильтров
+	$body.on('click', '.js-category-filter-deleteLink', function(e) {
+		var url = $(this).attr('href');
+
+		e.preventDefault();
+
+		resetFilterForm();
+		updateFilterForm(ENTER.utils.parseUrlParams(url));
+		goToUrl(url);
+	});
+
+	// Нажатие на кнопку "Подобрать"
+	$('.js-category-v1-filter-submit').click(function() {
+		$.scrollTo($filterBlock.find('.js-category-filter-selected'), 500);
+
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_old',
+			action: 'find',
+			label: catalogPath
+		});
+	});
+
+	// Сортировка элементов
+	$viewParamPanel.on('click', '.js-category-sorting-link', function(e) {
+		var
+			$self = $(this),
+			activeClass = 'mActive',
+			$parentItem = $self.parent();
+
+		e.preventDefault();
+
+		if ($parentItem.hasClass(activeClass) || $parentItem.hasClass('js-category-sorting-activeItem')) {
+			return;
+		}
+
+		$viewParamPanel.find('.js-category-sorting-item').removeClass(activeClass).removeClass('act').removeClass('js-category-sorting-activeItem');
+		$parentItem.addClass(activeClass).addClass('act').addClass('js-category-sorting-activeItem');
+		sendFilter(1);
+	});
+
+	// Обработчик для ссылок смены отображения каталога
+	$viewParamPanel.on('click', '.js-category-viewSwitcher-link', function(e) {
+		var $viewLink = $(e.currentTarget);
+
+		e.preventDefault();
+
+		if ($viewLink.hasClass(viewSwitcherActiveClass)) {
+			return;
+		}
+
+		$('.js-category-viewSwitcher-link').removeClass(viewSwitcherActiveClass);
+		$viewLink.addClass(viewSwitcherActiveClass);
+
+		if ($viewLink.hasClass('js-category-viewSwitcher-link-expanded')) {
+			$listingWrap.addClass('listing');
+			docCookies.setItem('categoryView', 'expanded', 4*7*24*60*60, '/');
+
+			$body.trigger('trackGoogleEvent', {
+				category: 'design_listing',
+				action: 'change',
+				label: 'список'
+			});
+		} else {
+			$listingWrap.removeClass('listing');
+			docCookies.setItem('categoryView', 'compact', 4*7*24*60*60, '/');
+			
+			$body.trigger('trackGoogleEvent', {
+				category: 'design_listing',
+				action: 'change',
+				label: 'плитка'
 			});
 		}
-	};
 
-	/**
-	 * Слайдеры в фильтре
-	 */
-	var initSliderRange = function() {
-			var sliderWrap = $(this),
-				slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
-				sliderConfig = slider.data('config'),
-				sliderFromInput = sliderWrap.find('.js-category-filter-rangeSlider-from'),
-				sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to');
+		reloadFilter();
+	});
 
-			slider.slider({
-				range: true,
-				step: sliderConfig.step,
-				min: sliderConfig.min,
-				max: sliderConfig.max,
-				values: [
-					sliderFromInput.val(),
-					sliderToInput.val()
-				],
+	// Обработчик для ссылок переключения страниц
+	$viewParamPanel.on('click', '.js-category-pagination-page-link', function(e) {
+		var
+			$self = $(this),
+			$parentItem = $self.parent();
 
-				slide: function( e, ui ) {
-					sliderFromInput.val( ui.values[ 0 ] );
-					sliderToInput.val( ui.values[ 1 ] );
+		e.preventDefault();
 
-					sliderFromInput.trigger('change', [true]);
-					sliderToInput.trigger('change', [true]);
-				}
-			});
+		if ($parentItem.hasClass('mActive') || $parentItem.hasClass('js-category-pagination-activePage')) {
+			return;
+		}
 
-			sliderFromInput.on('change', function(e, fromSliderChange) {
-				var
-					from = '0' + sliderFromInput.val(),
-					to = '0' + sliderToInput.val(),
-					min = slider.slider('option', 'min'),
-					max = slider.slider('option', 'max');
+		sendFilter(ENTER.utils.getURLParam('page', $self.attr('href')) || 1);
 
-				from = parseFloat(from);
-				to = parseFloat(to);
+		if ($filterBlock.length) {
+			$.scrollTo($filterBlock, 500);
+		}
+	});
 
-				if (from < min) {
-					from = min;
-				} else if (from > max) {
-					from = max;
-				}
+	// Обработчик для ссылки переключения на постраничную навигацию
+	$viewParamPanel.on('click', '.js-category-pagination-paging-enableLink', function(e) {
+		var
+			infBtn = $viewParamPanel.find('.js-category-pagination-infinity'),
+			isActiveTab = infBtn.hasClass('mActive');
 
-				if (from > to) {
-					from = to;
-				}
+		e.preventDefault();
 
-				sliderFromInput.val(from);
+		if (isActiveTab) {
+			disableInfinityScroll();
+		}
+	});
 
-				if (!fromSliderChange) {
-					slider.slider('values', 0, from);
-				}
+	// Обработчик для ссылки переключения на бесконечную прокрутку
+	$viewParamPanel.on('click', '.js-category-pagination-infinity-enableLink', function(e) {
+		var
+			infBtn = $viewParamPanel.find('.js-category-pagination-infinity'),
+			isActiveTab = infBtn.hasClass('mActive');
 
-				if ((e.originalEvent || fromSliderChange) && sliderWrap.is($priceForFacetSearch)) {
-					setManualDefinedPriceFrom(from, min);
-				}
-			});
+		e.preventDefault();
 
-			sliderToInput.on('change', function(e, fromSliderChange) {
-				var
-					from = '0' + sliderFromInput.val(),
-					to = '0' + sliderToInput.val(),
-					min = slider.slider('option', 'min'),
-					max = slider.slider('option', 'max');
-
-				from = parseFloat(from);
-				to = parseFloat(to);
-
-				if (to < min) {
-					to = min;
-				} else if (to > max) {
-					to = max;
-				}
-
-				if (from > to) {
-					to = from;
-				}
-
-				sliderToInput.val(to);
-
-				if (!fromSliderChange) {
-					slider.slider('values', 1, to);
-				}
-
-				if ((e.originalEvent || fromSliderChange) && sliderWrap.is($priceForFacetSearch)) {
-					setManualDefinedPriceTo(to, max);
-				}
-			});
-		},
-
-		/**
-		 * Обработка нажатий на ссылки удаления фильтров
-		 */
-		jsHistoryLinkHandler = function(e) {
-			var self = $(this),
-				url = self.attr('href');
-			// end of vars
-
-			e.preventDefault();
-
-			catalog.filter.resetForm();
-			catalog.filter.updateFilter(utils.parseUrlParams(url));
-			catalog.history.gotoUrl(url);
-		},
-
-		/**
-		 * Обработчик кнопки для отображения расширенных фильтров
-		 */
-		toggleFilterViewHandler = function( openAnyway ) {
-			var open = filterOtherParamsToggleButton.hasClass(filterOpenClass);
-			// end of vars
-
-			if ( open && typeof openAnyway !== 'boolean' ) {
-				filterOtherParamsToggleButton.removeClass(filterOpenClass);
-				filterOtherParamsToggleButton.parent().removeClass('bFilterHead-open');
-				filterOtherParamsContent.slideUp(400);
-			}
-			else {
-				filterOtherParamsToggleButton.addClass(filterOpenClass);
-				filterOtherParamsToggleButton.parent().addClass('bFilterHead-open');
-				filterOtherParamsContent.slideDown(400);
-			}
-
-			return false;
-		},
-
-		/**
-		 * Обработчик кнопк сворачивания/разворачивания блоков
-		 */
-		toggleHandler = function(e) {
-			var $self = $(this),
-				$button = $(e.currentTarget),
-				$container = $('.js-category-filter-toggle-container'),
-				$content = $('.js-category-filter-toggle-content', $button.closest('.js-category-filter-toggle-container'));
-			// end of vars
-
-			if ($button.hasClass(filterOpenClass)) {
-				$button.removeClass(filterOpenClass);
-				$content.slideUp(400);
-				$self.parent('.js-category-filter-toggle-container').addClass('fltrSet-close');
-			} else {
-				$button.addClass(filterOpenClass);
-				$content.slideDown(400);
-				$self.parent('.js-category-filter-toggle-container').removeClass('fltrSet-close');
-			}
-
-			return false;
-		},
-
-		/**
-		 * Обработка пагинации
-		 */
-		jsPaginationLinkHandler = function(e) {
-			var self = $(this),
-				page = utils.getURLParam('page', self.attr('href')),
-				activeClass = 'mActive',
-				parentItem = self.parent();
-			// end of vars
-
-			e.preventDefault();
-
-			if (parentItem.hasClass(activeClass) || parentItem.hasClass('js-category-pagination-activePage')) {
-				return;
-			}
-
-			catalog.filter.changeFilterHandler(page);
-
-			if ( filterBlock.length ) {
-				$.scrollTo(filterBlock, 500);
-			}
-		},
-
-		/**
-		 * Обработчик выбора категории фильтра
-		 */
-		selectFilterCategoryHandler = function() {
-			var self = $(this),
-				activeClass = 'mActive',
-				categoryId = self.data('ref');
-			// end of vars
-
-			if ( self.hasClass(activeClass) ) {
-				return false;
-			}
-
-			filterMenuItem.removeClass(activeClass);
-			self.addClass(activeClass);
-
-			filterCategoryBlocks.fadeOut(300);
-			filterCategoryBlocks.promise().done(function() {
-				$('#'+categoryId).fadeIn(300);
-			});
-
-			if (!isV3) {
-				$.scrollTo(filterBlock, 500);
-			}
-
-			return false;
-		},
-
-
-		/**
-		 * Смена отображения каталога
-		 */
-		changeViewItemsHandler = function(e) {
-			var self = $(this),
-				url = self.attr('href'),
-				activeClass = 'mActive',
-				parentItem = self.parent(),
-				changeViewItemsBtns = viewParamPanel.find('.js-category-viewer .js-category-viewer-item'),
-				isActiveTab = parentItem.hasClass(activeClass);
-			// end of vars
-
-			e.preventDefault();
-
-			if ( isActiveTab ) {
-				return;
-			}
-
-			changeViewItemsBtns.removeClass(activeClass);
-			parentItem.addClass(activeClass);
-
-			if ( catalog.filter.lastRes ) {
-				catalog.history.updateUrl(url);
-			}
-			else {
-				catalog.history.gotoUrl(url);
-			}
-		},
-
-
-		/**
-		 * Сортировка элементов
-		 */
-		sortingItemsHandler = function(e) {
-			var self = $(this),
-				activeClass = 'mActive',
-				parentItem = self.parent();
-			// end of vars
-
-			e.preventDefault();
-
-			if (parentItem.hasClass(activeClass) || parentItem.hasClass('js-category-sorting-activeItem')) {
-				return;
-			}
-
-			viewParamPanel.find('.js-category-sorting-item').removeClass(activeClass).removeClass('act').removeClass('js-category-sorting-activeItem');
-			parentItem.addClass(activeClass).addClass('act').addClass('js-category-sorting-activeItem');
-			catalog.filter.changeFilterHandler();
-		};
-	// end of functions
-
+		if (!isActiveTab) {
+			enableInfinityScroll();
+		}
+	});
 
 	// Фокус ввода на поля цены
 	$('input', $priceFilter).focus(function() {
-		body.trigger('trackGoogleEvent', {
+		$body.trigger('trackGoogleEvent', {
 			category: 'filter_old',
 			action: 'cost',
 			label: catalogPath
@@ -905,7 +1000,7 @@
 
 	// Нажатие на слайдер цены
 	$('.js-category-filter-rangeSlider-slider', $priceFilter).mousedown(function() {
-		body.trigger('trackGoogleEvent', {
+		$body.trigger('trackGoogleEvent', {
 			category: 'filter_old',
 			action: 'cost',
 			label: catalogPath
@@ -914,7 +1009,7 @@
 
 	// Нажатие на кнопку "Бренды и параметры"
 	$('.js-category-v1-filter-otherParamsToggleButton').click(function() {
-		body.trigger('trackGoogleEvent', {
+		$body.trigger('trackGoogleEvent', {
 			category: 'filter_old',
 			action: 'brand_parameters',
 			label: catalogPath
@@ -923,7 +1018,7 @@
 
 	// Нажатие на ссылки разделов фильтра
 	$('.js-category-filter-param', $otherParams).click(function() {
-		body.trigger('trackGoogleEvent', {
+		$body.trigger('trackGoogleEvent', {
 			category: 'filter_old',
 			action: 'using_brand_parameters',
 			label: catalogPath
@@ -933,7 +1028,7 @@
 	// Использование элементов фильтра
 	(function() {
 		$('input[type="checkbox"], input[type="radio"]', $otherParams).click(function() {
-			body.trigger('trackGoogleEvent', {
+			$body.trigger('trackGoogleEvent', {
 				category: 'filter_old',
 				action: 'using_brand_parameters',
 				label: catalogPath
@@ -941,7 +1036,7 @@
 		});
 
 		$('input[type="text"]', $otherParams).focus(function() {
-			body.trigger('trackGoogleEvent', {
+			$body.trigger('trackGoogleEvent', {
 				category: 'filter_old',
 				action: 'using_brand_parameters',
 				label: catalogPath
@@ -949,7 +1044,7 @@
 		});
 
 		$('.js-category-filter-rangeSlider-slider', $otherParams).mousedown(function() {
-			body.trigger('trackGoogleEvent', {
+			$body.trigger('trackGoogleEvent', {
 				category: 'filter_old',
 				action: 'using_brand_parameters',
 				label: catalogPath
@@ -957,394 +1052,25 @@
 		});
 	})();
 
-	// Нажатие на кнопку "Подобрать"
-	$('.js-category-v1-filter-submit').click(function() {
-		$.scrollTo(filterBlock.find('.js-category-filter-selected'), 500);
+	catalog.filter = {
+		open: function() {
+			toggleAdvancedFilters(true);
 
-		body.trigger('trackGoogleEvent', {
-			category: 'filter_old',
-			action: 'find',
-			label: catalogPath
-		});
-	});
-
-	// Handlers
-	filterBlock.on('click', '.js-category-filter-toggle-button', toggleHandler);
-	filterOtherParamsToggleButton.on('click', toggleFilterViewHandler);
-	filterMenuItem.on('click', selectFilterCategoryHandler);
-	filterBlock.on('change', 'input, select, textarea', catalog.filter.changeFilterHandler);
-	filterBlock.on('submit', function(e) {
-		e.preventDefault();
-		catalog.filter.sendFilter();
-	});
-
-	// Sorting items
-	viewParamPanel.on('click', '.jsSorting', sortingItemsHandler);
-
-	// Change view mode
-	viewParamPanel.on('click', '.jsChangeView', changeViewItemsHandler);
-
-	// Pagination
-	viewParamPanel.on('click', '.jsPagination', jsPaginationLinkHandler);
-
-	// Other HistoryAPI link
-	body.on('click', '.jsHistoryLink', jsHistoryLinkHandler);
-
-	// Init sliders
-	filterSliders.each(initSliderRange);
-
-}(window.ENTER));
-/**
- * Работа с HISTORY API
- *
- * @requires	jQuery, History.js, ENTER.utils, ENTER.config, ENTER.catalog
- *
- * @author		Zaytsev Alexandr
- *
- * @param		{Object}	global	Enter namespace
- */
-;(function( ENTER ) {
-	var
-		utils = ENTER.utils,
-		catalog = utils.extendApp('ENTER.catalog'),
-		updateState = true;
-	// end of vars
-
-	console.info('New catalog history module');
-
-	catalog.history = {
-		/**
-		 * Ссылка на функцию обратного вызова по-умолчанию после получения данных с сервера при изменении history state
-		 * 
-		 * @type	{Function}
-		 */
-		_defaultCallback: catalog.filter.renderCatalogPage,
-
-		/**
-		 * Кастомная функция обратного вызова после получения данных с сервера
-		 * 
-		 * @type	{Function}
-		 */
-		_customCallback: null,
-
-		/**
-		 * Обработка перехода на URL
-		 * Если браузер не поддерживает History API происходит обычный переход по ссылке
-		 * 
-		 * @param	{String}	url			Адрес на который необходимо выполнить переход
-		 * @param	{Function}	callback	Функция которая будет вызвана после получения данных от сервера
-		 * @param	{Boolean}	onlychange	Показывает что необходимо только изменить URL и не запрашивать данные
-		 */
-		gotoUrl: function gotoUrl( url, customCallback, onlychange ) {
-			console.info('gotoUrl');
-			var state = {
-					title: document.title,
-					url: url,
-					data: {
-						scrollTop: $(window).scrollTop(),
-						_onlychange: (onlychange) ? true : false
-					}
-				};
-			// end of vars
-
-			if ( !catalog.enableHistoryAPI ) {
-				document.location.href = url;
-
-				return;
-			}
-
-			catalog.history._customCallback = (customCallback) ? customCallback : null;
-
-			console.info('link handler. push state new url: ' + state.url);
-			updateState = false;
-			History.pushState(state, state.title, state.url);
-
-			return;
-		},
-
-		updateUrl: function updateUrl( url, customCallback ) {
-			var callback = (customCallback) ? customCallback : null;
-
-			catalog.history.gotoUrl( url, callback, true );
-
-			return;
-		},
-
-		/**
-		 * Запросить новые данные с сервера по url
-		 * 
-		 * @param	{String}	url
-		 */
-		getDataFromServer: function getDataFromServer( url, callback ) {
-			console.info('getDataFromServer ' + url);
-			
-			if ( catalog.loader ) {
-				catalog.loader.loading();
-			}
-
-			console.log('getDataFromServer::loading');
-
-			// utils.blockScreen.block('Загрузка товаров');
-
-				/**
-				 * Обработка ошибки загрузки данных
-				 */
-			var errorHandler = function errorHandler() {
-					// utils.blockScreen.unblock();
-					if ( catalog.loader ) {
-						catalog.infScroll.loading = false;
-						catalog.loader.error();
-					}
-				},
-
-				/**
-				 * Получение данных от сервера
-				 * Перенаправление данных в функцию обратного вызова
-				 * 
-				 * @param	{Object}	res	Полученные данные
-				 */
-				resHandler = function resHandler( res ) {
-					console.info('resHandler');
-
-					if ( typeof res === 'object') {
-						callback(res);
-					}
-					else {
-						console.warn('res isn\'t object');
-						console.log(typeof res);
-					}
-
-					// utils.blockScreen.unblock();
-					if ( catalog.loader ) {
-						catalog.loader.complete();
-					}
-				};
-			// end of functions
-
-			$.ajax({
-				type: 'GET',
-				url: url,
-				success: resHandler,
-				statusCode: {
-					500: errorHandler,
-					503: errorHandler
-				},
-				error: errorHandler
+			$('.js-category-filter-toggle-container', $filterBlock).each(function() {
+				$('.js-category-filter-toggle-button', this).addClass(filterOpenClass);
+				$('.js-category-filter-toggle-content', this).slideDown(400);
 			});
-		}
-	};
+		},
 
 		/**
-		 * Обработчик изменения состояния истории в браузере
+		 * Отправка результатов фильтров
+		 * Получение ответа от сервера
 		 */
-	var stateChangeHandler = function stateChangeHandler() {
-			var state = History.getState(),
-				url = state.url,
-				data = state.data.data,
-				callback = ( typeof catalog.history._customCallback === 'function' ) ? catalog.history._customCallback : catalog.history._defaultCallback;
-			// end of vars
-
-			console.info('statechange');
-			console.log(state);
-
-			// SITE-4941
-			setTimeout(function() {
-				if (data.scrollTop) {
-					$(window).scrollTop(data.scrollTop);
-				}
-			}, 0);
-
-			// SITE-4894 Не изменяются выбранные фильтры при переходе назад
-			if (updateState) {
-				ENTER.catalog.filter.updateOnChange = false;
-				catalog.filter.resetForm();
-				catalog.filter.updateFilter(utils.parseUrlParams(url));
-				ENTER.catalog.filter.updateOnChange = true;
-			}
-
-			updateState = true;
-
-			if ( data && data._onlychange ) {
-				console.info('only update url ' + url);
-
-				callback();
-			}
-			else {
-				url = url.addParameterToUrl('ajax', 'true');
-				catalog.history.getDataFromServer(url, callback);
-			}
-
-			catalog.history._customCallback = null;
-		};
-	// end of functions
-
-	History.Adapter.bind(window, 'statechange', stateChangeHandler);
-	
-}(window.ENTER));	
-/**
- * Catalog infinity scroll
- *
- * @requires jQuery, jquery.visible, Mustache, docCookies, ENTER.utils, ENTER.config, ENTER.catalog.history
- *
- * @author	Zaytsev Alexandr
- *
- * @param	{Object}	ENTER	Enter namespace
- */
-;(function( ENTER ) {
-	console.info('[Catalog] Init catalog_infinityScroll.js');
-
-	var
-		$body = $('body'),
-		utils = ENTER.utils,
-		catalog = utils.extendApp('ENTER.catalog'),
-		viewParamPanel = $('.js-category-sortingAndPagination'),
-        bottomInfButton = $('.jsInfinityEnable').last();
-	// end of vars
-
-
-	catalog.infScroll = {
-		loading: false,
-
-		nowPage: 1,
-
-		checkInfinity: function() {
-			console.info('Infinity scroll cookie = '+ window.docCookies.getItem( 'infScroll' ));
-			if ( window.docCookies.getItem( 'infScroll' ) === '1' ) {
-				catalog.infScroll.enable();
-			}
-		},
-
-		checkScroll: function() {
-
-			var w = $(window),
-				d = $(document);
-			// end of vars
-
-			if ( !catalog.infScroll.loading && bottomInfButton.visible() &&
-				( catalog.lastPage - catalog.infScroll.nowPage > 0 || null === catalog.lastPage ) ) {
-				console.warn('checkscroll true. load');
-				catalog.infScroll.nowPage += 1;
-				catalog.infScroll.load();
-				$body.trigger('loadInfinityPage', [catalog.infScroll.nowPage]);
-			}
-		},
-
-		load: function() {
-			console.info('load page');
-
-			var url = catalog.filter.getFilterUrl();
-
-			var resHandler = function resHandler( res ) {
-				var html;
-
-				html = catalog.filter.render['list']( res['list'] );
-				catalog.infScroll.loading = false;
-
-				catalog.listingWrap.append(html);
-			};
-
-			catalog.liveScroll = true;
-			catalog.infScroll.loading = true;
-			url = url.addParameterToUrl('page', catalog.infScroll.nowPage);
-			url = url.addParameterToUrl('ajax', 'true');
-
-			catalog.history.getDataFromServer(url, resHandler);
-		},
-
-		enable: function() {
-
-			var activeClass = 'mActive act',
-				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
-				pagingBtn = viewParamPanel.find('.js-category-pagination-paging'),
-				pageBtn = viewParamPanel.find('.js-category-pagination-page'),
-				url = catalog.filter.getFilterUrl(),
-				hasPaging = document.location.search.match('page=');
-			// end of vars
-
-			pagingBtn.css({'display':'inline-block'});
-			pageBtn.hide();
-			infBtn.addClass(activeClass);
-
-			catalog.infScroll.nowPage = 1;
-			catalog.infScroll.loading = false;
-
-			window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
-
-			catalog.infScroll.checkScroll();
-			$(window).on('scroll', catalog.infScroll.checkScroll);
-
-			console.info(hasPaging);
-
-			if ( catalog.enableHistoryAPI && hasPaging ) {
-				catalog.history.gotoUrl(url);
-			}
-
-			bottomInfButton = $('.jsInfinityEnable').last();
-
-			if (bottomInfButton.visible() && catalog.lastPage > 1) {
-				catalog.infScroll.nowPage += 1;
-				this.load();
-			}
-
-			console.log('Infinity scroll enabled');
-		},
-
-		disable: function() {
-			console.info('Infinity scroll disabling');
-
-			var url = catalog.filter.getFilterUrl();
-			// end of vars
-
-			catalog.liveScroll = false;
-			url = url.addParameterToUrl('ajax', 'true');
-
-			window.docCookies.setItem('infScroll', 0, 4*7*24*60*60, '/' );
-			$(window).off('scroll', catalog.infScroll.checkScroll);
-			catalog.history.getDataFromServer(url, catalog.filter.renderCatalogPage);
-
-			console.log('infinity scroll disable '+window.docCookies.getItem( 'infScroll' ));
+		send: function() {
+			return sendFilter(1);
 		}
 	};
-
-	var
-		infBtnHandler = function(e) {
-			var activeClass = 'mActive',
-				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
-				isActiveTab = infBtn.hasClass(activeClass);
-			// end of vars
-
-			e.preventDefault();
-
-			if (isActiveTab) {
-				return;
-			}
-
-			catalog.infScroll.enable();
-		},
-
-		paginationBtnHandler = function(e) {
-			console.info('paginationBtnHandler');
-			var activeClass = 'mActive',
-				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
-				isActiveTab = infBtn.hasClass(activeClass);
-			// end of vars
-
-			e.preventDefault();
-
-			if (!isActiveTab) {
-				return;
-			}
-
-			catalog.infScroll.disable();
-		};
-	// end of functions
-
-	catalog.infScroll.checkInfinity();
-
-	viewParamPanel.on('click', '.jsPaginationEnable', paginationBtnHandler);
-	viewParamPanel.on('click', '.jsInfinityEnable', infBtnHandler);
-
-}(window.ENTER));
+}());
 $(function() {
 	var $body = $('body');
 
@@ -1362,120 +1088,40 @@ $(function() {
 
 		$body.trigger('trackGoogleEvent', ['View', action, $target.is('.js-listing-item-img') ? 'image' : 'button']);
 	});
-});
-/**
- * Catalog loader
- *
- * @requires jQuery, Mustache, ENTER.utils, ENTER.config, ENTER.catalog.history
- * 
- * @author	Zaytsev Alexandr
- *
- * @param	{Object}	ENTER	Enter namespace
- */
-;(function( ENTER ) {
-	console.info('New catalog init: loader.js');
 
-	var
-		pageConfig = ENTER.config.pageConfig,
-		utils = ENTER.utils,
-		catalog = utils.extendApp('ENTER.catalog'),
-		filterSubminBtn = $('.js-category-filter-submit', '.js-category-filter');
-	// end of vars
+    $body.on('click', '.js-listing-item, .js-jewelListing', function(e){
 
-	console.info('Mustache is '+ typeof Mustache);
-	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
+        var index = $(this).index(),
+            href = $(e.target).find('a').attr('href') || $(e.target).closest('a').attr('href'),
+            $breadcrumbs = $('.bBreadcrumbs__eItem a'),
+            categoryTitle = $('.js-pageTitle').text(),
+            businessUnit = '',
+            hitcallback = typeof href == 'string' && href.indexOf('/product/') == 0 ? href : null;
 
-	catalog.loader = {
-		_loader: null,
-		loading: function() {
-			if ( catalog.loader._loader ) {
-				return;
-			}
+        if ($breadcrumbs.length) {
+            $.each($breadcrumbs, function(i,val){ businessUnit += $(val).text() + '_'});
+        }
 
-			catalog.loader._loader = $('<li>').addClass('mLoader');
-			filterSubminBtn.addClass('mButLoader').text('Подобрать');
+        businessUnit += categoryTitle;
 
-			if ( catalog.liveScroll ) {
-				catalog.listingWrap.append(catalog.loader._loader);
-			}
-			else {
-				catalog.listingWrap.empty();
-				catalog.listingWrap.append(catalog.loader._loader);
-			}
-		},
+        // лишние пробелы
+        businessUnit = businessUnit.replace(/ +/g,' ');
 
-		complete: function() {
-			if ( catalog.loader._loader ) {
-				catalog.loader._loader.remove();
-				catalog.loader._loader = null;
-			}
-			filterSubminBtn.removeClass('mButLoader');
-			$('body').trigger('catalogLoadingComplete');
-		},
+        if (businessUnit && href) $body.trigger('trackGoogleEvent', [{
+            category: 'listing_position',
+            action: businessUnit,
+            label: index + '',
+            hitCallback: hitcallback
+        }])
 
-		error: function() {
-			console.warn('error');
+    });
 
-			if ( catalog.loader._loader ) {
-				catalog.loader._loader.remove();
-				catalog.loader._loader = null;
-			}
+	$('.js-slider').goodsSlider({
+		onLoad: function(goodsSlider) {
+			ko.applyBindings(ENTER.UserModel, goodsSlider);
 		}
-	};
-
-}(window.ENTER));
-/**
- * Обработчик для SprosiKupi
- */
-$(function() {
-	if (!$('.spk-good-rating').length) {
-		return;
-	}
-
-	$.getScript("//static.sprosikupi.ru/js/widget/sprosikupi.bootstrap.js");
-	$('body').on('catalogLoadingComplete', function(){
-        spkLoadRatings();
 	});
 });
-
-/**
- * Обработчик для ShopPilot
- */
-$(function() {
-	if (!$('.shoppilot-category-container').length) {
-		return;
-	}
-
-	_shoppilot = window._shoppilot || [];
-	_shoppilot.push(['_setStoreId', '535a852cec8d830a890000a6']);
-	_shoppilot.push(['_setOnReady', function (Shoppilot) {
-		function initWidgets() {
-			$('.shoppilot-category-container').each(function() {
-				var ratingContainer = $(this);
-				(new Shoppilot.ProductWidget({
-					name: 'category-product-rating',
-					styles: 'product-reviews',
-					product_id: ratingContainer.data('productId')
-				})).appendTo(ratingContainer[0]);
-			});
-		}
-
-		initWidgets();
-		$('body').on('catalogLoadingComplete', initWidgets);
-	}]);
-
-	(function() {
-		var script = document.createElement('script');
-		script.type = 'text/javascript';
-		script.async = true;
-		script.src = '//ugc.shoppilot.ru/javascripts/require.js';
-		script.setAttribute('data-main',
-			'//ugc.shoppilot.ru/javascripts/social-apps.js');
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(script, s);
-	})();
-});
-
 ;(function($) {
 	var seoList = $('.js-seo-list');
 
@@ -1741,7 +1387,7 @@ $(function() {
 			if (previousChecked) {
 				e.currentTarget.checked = false;
 				$(e.currentTarget).change();
-				ENTER.catalog.filter.sendFilter();
+				ENTER.catalog.filter.send();
 			} else {
 				$(e.currentTarget).data('previous-checked', true);
 			}
@@ -1813,7 +1459,7 @@ $(function() {
 		$from.change();
 		$to.change();
 
-		ENTER.catalog.filter.sendFilter();
+		ENTER.catalog.filter.send();
 	});
 
 	// Placeholder'ы для IE9
@@ -1909,7 +1555,7 @@ $(function() {
 
 	// Обновление списка категорий
 	function updateLinks(url) {
-		if (!ENTER.catalog.enableHistoryAPI) {
+		if (!History.enabled) {
 			document.location.href = url;
 			return;
 		}
@@ -2000,3 +1646,43 @@ $(function() {
 		}
 	});
 });
+;(function() {
+    // SITE-5928
+    var
+        $body = $('body'),
+
+        getSlider = function() {
+            return $('.js-slider').filter('[data-position="Viewed"]').last()
+        },
+
+        init = function() {
+            if (('1' == docCookies.getItem('infScroll')) || !docCookies.hasItem('infScroll')) {
+                getSlider().hide();
+            } else {
+                getSlider().show();
+            }
+        }
+    ;
+
+    $body.on('infinityScroll', function(e, data) {
+        console.info('infinityScroll', data, ('enabled' === data.state) && (data.page < data.lastPage));
+        if (
+            ('enabled' === data.state)
+            && (data.page < data.lastPage)
+        ) {
+            getSlider().hide();
+            console.info('slider.hide');
+        } else {
+            getSlider().show();
+            console.info('slider.show');
+        }
+    });
+
+    $body.on('sliderLoaded', function(data) {
+        if ('viewed' === data.type) {
+            init();
+        }
+    });
+
+    init();
+}());

@@ -16,56 +16,17 @@ class Repository {
         $this->client = $client;
     }
 
-    /**
-     * Получает информацию по отзывам для товара
-     *
-     * @param $productId
-     * @param string $reviewsType
-     * @param int $currentPage
-     * @param int $perPage
-     * @internal param $product
-     * @return array
-     */
-    public function getReviews($productId, $reviewsType = '', $currentPage = 0, $perPage = self::NUM_REVIEWS_ON_PAGE) {
-
-        $client = clone $this->client;
-
-        $result = [];
-
-        $client->addQuery(
-            'list',
-            [
-                'product_id'   => $productId,
-                'current_page' => $currentPage,
-                'page_size'    => $perPage,
-                'type'         => $reviewsType,
-            ],
-            [],
-            function($data) use(&$result) {
-                $result = $data;
-            },  function(\Exception $e) use (&$exception) {
-                $exception = $e;
-                \App::exception()->remove($e);
-            }
-        );
-        $client->execute(\App::config()->reviewsStore['retryTimeout']['medium']);
-
-        return $result;
-    }
-
-    public function prepareData($productUi, $reviewsType = '', $currentPage = 0, $perPage = self::NUM_REVIEWS_ON_PAGE, $done) {
+    public function prepareData($productUi, $currentPage = 0, $perPage = self::NUM_REVIEWS_ON_PAGE, $done) {
         $this->client->addQuery(
             'list',
             [
                 'product_ui'   => $productUi,
                 'current_page' => $currentPage,
                 'page_size'    => $perPage,
-                'type'         => $reviewsType,
             ],
             [],
             $done,
-            function(\Exception $e) use (&$exception) {
-                $exception = $e;
+            function(\Exception $e) {
                 \App::exception()->remove($e);
             }
         );
@@ -88,49 +49,43 @@ class Repository {
                 'product_ui' => $productIdList,
             ], [], function($data) use(&$result) {
                 $result = $data;
-            },  function(\Exception $e) use (&$exception) {
-                $exception = $e;
+            },  function(\Exception $e) {
                 \App::exception()->remove($e);
-        });
+            }
+        );
         $client->execute(\App::config()->reviewsStore['retryTimeout']['medium']);
 
         return is_array($result) ? $result : [];
     }
 
-    public function prepareScoreCollection($productIds, $done) {
-        if(!(bool)$productIds) return [];
-
-        $this->client->addQuery(
-            'scores-list',
-            [
-                'product_list' => implode(',', $productIds),
-            ],
-            [],
-            $done,
-            function(\Exception $e) use (&$exception) {
-                $exception = $e;
-            \App::exception()->remove($e);
-            }
-        );
-    }
-
     /**
-     * @param array $productUIs
-     * @param $done
-     * @return array
+     * @param \Model\Product\Entity[] $products
+     * @param \Closure $done
      */
-    public function prepareScoreCollectionByUi(array $productUIs = [], $done) {
-        if(!(bool)$productUIs) return [];
+    public function prepareScoreCollection(array $products, $done) {
+        if (!$products) {
+            return;
+        }
+
+        /** @var \Model\Product\Entity $firstProduct */
+        $firstProduct = reset($products);
+
+        if ($firstProduct->id) {
+            $params = [
+                'product_list' => implode(',', array_map(function(\Model\Product\Entity $product) { return $product->id; }, $products)),
+            ];
+        } else {
+            $params = [
+                'product_ui' => implode(',', array_map(function(\Model\Product\Entity $product) { return $product->ui; }, $products)),
+            ];
+        }
 
         $this->client->addQuery(
             'scores-list',
-            [
-                'product_ui' => implode(',', $productUIs),
-            ],
+            $params,
             [],
             $done,
-            function(\Exception $e) use (&$exception) {
-                $exception = $e;
+            function(\Exception $e) {
                 \App::exception()->remove($e);
             }
         );
@@ -139,15 +94,17 @@ class Repository {
     /**
      * Устанавливает рейтинги для коллекции товаров
      *
-     * @param \Model\Product\BasicEntity[] $products
-     * @return \Model\Product\BasicEntity[] $products
+     * @param \Model\Product\Entity[] $products
+     * @return \Model\Product\Entity[] $products
      */
     public function addScores(&$products, &$scoreData = null) {
         if (null === $scoreData) {
             $scoreData = \App::config()->product['reviewEnabled'] ? $this->getScores(implode(',', array_map(function($product){ return $product->getUi(); }, $products))) : [];
         }
 
-        if(empty($scoreData['product_scores'])) return $products;
+        if (empty($scoreData['product_scores'])) {
+            return;
+        }
 
         $scoredUis = array_map(function($score){ return $score['product_ui']; }, $scoreData['product_scores']);
 
@@ -166,8 +123,6 @@ class Repository {
                 if(!empty($productScore['num_reviews'])) $product->setNumReviews($productScore['num_reviews']);
             }
         }
-
-        return $products;
     }
 
 
@@ -221,24 +176,21 @@ class Repository {
      * @return array
      */
     public function getReviewsDataSummary($userData) {
-        $summaryData = [
-            'user' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0],
-        ];
+        $summaryData = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
 
-        $type = 'user';
         if(!empty($userData['num_users_by_score'])) {
             foreach ($userData['num_users_by_score'] as $grade) {
                 $score = (float)($grade['score']);
                 if($score <= 2.0) {
-                    $summaryData[$type][1] += $grade['count'];
+                    $summaryData[1] += $grade['count'];
                 } elseif($score > 2.0 && $score <= 4.0) {
-                    $summaryData[$type][2] += $grade['count'];
+                    $summaryData[2] += $grade['count'];
                 } elseif($score > 4.0 && $score <= 6.0) {
-                    $summaryData[$type][3] += $grade['count'];
+                    $summaryData[3] += $grade['count'];
                 } elseif($score > 6.0 && $score <= 8.0) {
-                    $summaryData[$type][4] += $grade['count'];
+                    $summaryData[4] += $grade['count'];
                 } elseif($score > 8.0) {
-                    $summaryData[$type][5] += $grade['count'];
+                    $summaryData[5] += $grade['count'];
                 }
             }
         }

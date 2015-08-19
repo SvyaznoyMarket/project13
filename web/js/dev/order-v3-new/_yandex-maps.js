@@ -9,9 +9,11 @@
 
         E.map = new ymaps.Map("yandex-map-container", {
             center: [options.latitude, options.longitude],
-            zoom: options.zoom
+            zoom: options.zoom,
+            controls: ['zoomControl', 'fullscreenControl', 'geolocationControl', 'typeSelector']
         },{
-            autoFitToViewport: 'always'
+            autoFitToViewport: 'always',
+            suppressMapOpenBlock: true
         });
 
         E.map.controls.remove('searchControl');
@@ -33,6 +35,18 @@
                     val.longitudeMax(bounds[1][1]);
                 });
             }
+        });
+
+        E.map.geoObjects.events.add('click', function () {
+            $body.trigger('trackGoogleEvent', ['pickup_ux', 'map_point', 'клик'])
+        });
+
+        E.map.geoObjects.events.add('hintopen', function () {
+            $body.trigger('trackGoogleEvent', ['pickup_ux', 'map_point', 'наведение'])
+        });
+
+        $body.on('click', '.js-order-map .jsChangePoint', function(){
+            $body.trigger('trackGoogleEvent', ['pickup_ux', 'map_point', 'выбор'])
         });
 
         $.each($('.jsNewPoints'), function(i,val) {

@@ -8,7 +8,7 @@
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <title><?= $page->getTitle() ?></title>
+    <title><?= $page->escape($page->getTitle()) ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="robots" content="noyaca"/>
@@ -41,25 +41,27 @@
 
     <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
         <div class="header <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?> clearfix">
+            <?= $page->render('main/banner.pickup') ?>
 
-            <?= $page->slotHeader() ?>
-            <!-- Topbar -->
+            <div class="header__inn">
+                <?= $page->slotHeader() ?>
 
-            <?= $page->slotTopbar() ?>
-            <!-- /Topbar -->
+                <?= $page->slotTopbar() ?>
+            </div>
 
             <?= $page->slotSearchBar() ?>
 
-            <!-- Header -->
-            <?= $page->slotNavigation() ?>
-            <!-- /Header -->
-
+            <div class="header__inn">
+                <?= $page->slotNavigation() ?>
+            </div>
         </div>
 
         <div class="content clearfix">
-            <?= $page->slotContentHead() ?>
+            <div class="inn">
+                <?= $page->slotContentHead() ?>
 
-            <?= $page->slotContent() ?>
+                <?= $page->slotContent() ?>
+            </div>
         </div><!--/ Контент-->
 
     </div><!--/ Шаблон -->
@@ -70,6 +72,7 @@
     <?= $page->slotUserbar() ?>
 
     <?= $page->slotAuth() ?>
+    <?= $page->slotUserConfig() ?>
     <?= $page->slotMustacheTemplates() ?>
 
     <div style="position:absolute; height: 0; top:0; z-index:-1;">

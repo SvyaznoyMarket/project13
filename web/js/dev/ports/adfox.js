@@ -99,7 +99,9 @@
     $('.adfoxWrapper').each(function() {
         var id = this['id'] + '';
         if ( id in ADFOX ) {
-            ADFOX[id](this);
+            try {
+                ADFOX[id](this);
+            } catch (error) { console.error(error); }
         }
     });
 

@@ -79,9 +79,14 @@ class OrderEntity {
     private $delivery_period;
     /** Магазин для самовывоза
      * Обязательный в случае delivery_type_id=3 или 4
-     * @var int|null
+     * @var string|null
      */
     private $shop_id;
+    /** Точка самовывоза
+     * Обязательный параметр в случае самовывоза
+     * @var string|null
+     */
+    private $point_ui;
     /** ID авторизированного пользователя
      * @var int
      */
@@ -192,17 +197,16 @@ class OrderEntity {
      */
     private $box_ui;
 
-    /**
+    /** TODO принимать \Model\OrderDelivery\Entity\Order и \Model\OrderDelivery\Entity\UserInfo
      * @param array $arr
      * @param array|null $sender
      * @param string $sender2
+     * @param \Model\Cart\Product\Entity[] $cartProducts
      * @throws \Exception
      */
-    public function __construct($arr, $sender = null, $sender2 = '') {
+    public function __construct($arr, $sender = null, $sender2 = '', $cartProducts = []) {
 
         $request = \App::request();
-        $region = \App::user()->getRegion();
-        $regionName = $region ? $region->getName() : null;
         $user = \App::user()->getEntity();
 
         /*
@@ -241,9 +245,13 @@ class OrderEntity {
         }
 
         if (isset($arr['order']['delivery']['point']['id'])) {
-            $this->shop_id = (int)$arr['order']['delivery']['point']['id'];
+            $this->shop_id = $arr['order']['delivery']['point']['id'];
         } else {
             if ($this->delivery_type_id === self::DELIVERY_TYPE_ID_SELF) throw new \Exception('Не указан магазин для самовывоза');
+        }
+
+        if (isset($arr['order']['delivery']['point']['ui'])) {
+            $this->point_ui = $arr['order']['delivery']['point']['ui'];
         }
 
         if (isset($arr['order']['products']) && is_array($arr['order']['products']) && count($arr['order']['products']) > 0) {
@@ -300,29 +308,26 @@ class OrderEntity {
 
         if (isset($arr['order']['delivery']['box_ui'])) $this->box_ui = $arr['order']['delivery']['box_ui'];
 
-        if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2);
+        if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2, $cartProducts);
 
 
     }
 
     /** Возвращает мета-данные для партнеров
+     * @param \Model\Cart\Product\Entity[] $cartProducts
      * @return array|null
      */
-    private function getMetaData($sender, $sender2) {
+    private function getMetaData($sender, $sender2, $cartProducts) {
         $request = \App::request();
-        $user = \App::user();
         $data = [];
-        $cart = $user->getCart()->getProductData();
-        $oneClickCart = $user->getOneClickCart()->getProductSourceData();
 
         try {
             /** @var $products \Model\Product\Entity[] */
-            $products = [];
-            \RepositoryManager::product()->prepareCollectionById(array_map(function($product){return $product['id']; }, $this->product), $user->getRegion(), function($data) use(&$products) {
-                foreach ($data as $item) {
-                    $products[] = new \Model\Product\Entity($item);
-                }
-            }, function(\Exception $e) { \App::exception()->remove($e); });
+            $products = array_map(function($product){
+                return new \Model\Product\Entity(['id' => $product['id']]);
+            }, $this->product);
+            
+            \RepositoryManager::product()->prepareProductQueries($products);
             \App::coreClientV2()->execute();
 
             foreach ($products as $product) {
@@ -334,33 +339,24 @@ class OrderEntity {
                 try {
 
                     // добавляем информацию о блоке рекомендаций, откуда был добавлен товар (используется корзина, которая очищается только на /order/complete)
-                    if (isset($cart[$product->getId()]['sender'])) {
-                        $senderData = $cart[$product->getId()]['sender'];
-                        if (isset($senderData['name']))     $data[sprintf('product.%s.sender', $product->getUi())] = $senderData['name'];       // система рекомендаций
-                        if (isset($senderData['position'])) $data[sprintf('product.%s.position', $product->getUi())] = $senderData['position']; // позиция блока на сайте
-                        if (isset($senderData['method']))   $data[sprintf('product.%s.method', $product->getUi())] = $senderData['method'];     // метод рекомендаций
-                        if (isset($senderData['from']) && !empty($senderData['from']))     $data[sprintf('product.%s.from', $product->getUi())] = $senderData['from'];         // откуда перешели на карточку товара
-                        unset($senderData);
-                    } else if ($sender) {
+                    if ($sender) {
                         if (isset($sender['name']))     $data[sprintf('product.%s.sender', $product->getUi())] = $sender['name'];       // система рекомендаций
                         if (isset($sender['position'])) $data[sprintf('product.%s.position', $product->getUi())] = $sender['position']; // позиция блока на сайте
                         if (isset($sender['method']))   $data[sprintf('product.%s.method', $product->getUi())] = $sender['method'];     // метод рекомендаций
                         if (isset($sender['from']) && !empty($sender['from']))     $data[sprintf('product.%s.from', $product->getUi())] = $sender['from'];         // откуда перешели на карточку товара
-                    } else if (isset($oneClickCart['product'][$product->getId()]['sender'])) {
-                        $senderData = $oneClickCart['product'][$product->getId()]['sender'];
-                        if (isset($senderData['name']))     $data[sprintf('product.%s.sender', $product->getUi())] = $senderData['name'];       // система рекомендаций
-                        if (isset($senderData['position'])) $data[sprintf('product.%s.position', $product->getUi())] = $senderData['position']; // позиция блока на сайте
-                        if (isset($senderData['method']))   $data[sprintf('product.%s.method', $product->getUi())] = $senderData['method'];     // метод рекомендаций
-                        if (isset($senderData['from']) && !empty($senderData['from']))     $data[sprintf('product.%s.from', $product->getUi())] = $senderData['from'];         // откуда перешели на карточку товара
-                        unset($senderData);
+                    } else if (isset($cartProducts[$product->getId()]) && $cartProducts[$product->getId()]->sender) {
+                        $cartProductSender = $cartProducts[$product->getId()]->sender;
+                        if (isset($cartProductSender['name']))     $data[sprintf('product.%s.sender', $product->getUi())] = $cartProductSender['name'];       // система рекомендаций
+                        if (isset($cartProductSender['position'])) $data[sprintf('product.%s.position', $product->getUi())] = $cartProductSender['position']; // позиция блока на сайте
+                        if (isset($cartProductSender['method']))   $data[sprintf('product.%s.method', $product->getUi())] = $cartProductSender['method'];     // метод рекомендаций
+                        if (isset($cartProductSender['from']) && !empty($cartProductSender['from']))     $data[sprintf('product.%s.from', $product->getUi())] = $cartProductSender['from'];         // откуда перешели на карточку товара
+                        unset($cartProductSender);
                     }
 
-                    if (isset($cart[$product->getId()]['sender2']) && $cart[$product->getId()]['sender2']) {
-                        $data[sprintf('product.%s.sender2', $product->getUi())] = $cart[$product->getId()]['sender2'];
-                    } else if ($sender2) {
+                    if ($sender2) {
                         $data[sprintf('product.%s.sender2', $product->getUi())] = $sender2;
-                    } else if (isset($oneClickCart['product'][$product->getId()]['sender2']) && $oneClickCart['product'][$product->getId()]['sender2']) {
-                        $data[sprintf('product.%s.sender2', $product->getUi())] = $oneClickCart['product'][$product->getId()]['sender2'];
+                    } else if (isset($cartProducts[$product->getId()]) && $cartProducts[$product->getId()]->sender2) {
+                        $data[sprintf('product.%s.sender2', $product->getUi())] = $cartProducts[$product->getId()]->sender2;
                     }
                 } catch (\Exception $e) {
                     \App::logger()->error(['error' => $e], ['order', 'partner']);
@@ -374,9 +370,13 @@ class OrderEntity {
                 $data['last_partner'] = $request->cookies->get('last_partner');
 
                 // Много.ру
-                if (\App::config()->partners['MnogoRu']['enabled'] && !empty($request->cookies->get(\App::config()->partners['MnogoRu']['cookieName']))) {
-                    $data['mnogo_ru_card'] = $request->cookies->get(\App::config()->partners['MnogoRu']['cookieName']);
+                if (\App::config()->partners['MnogoRu']['enabled']) {
+                    $mnogoruCookieValue = $request->cookies->get(\App::config()->partners['MnogoRu']['cookieName']);
+                    if (!empty($mnogoruCookieValue) && $mnogoruCookieValue != 'undefined') {
+                        $data['mnogo_ru_card'] = $mnogoruCookieValue;
+                    }
                 }
+
 
                 // Присваиваем заказ actionpay, если активировали промокод через PandaPay
                 if (!empty($request->cookies->get(\App::config()->partners['PandaPay']['cookieName']))) {

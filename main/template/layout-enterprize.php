@@ -8,7 +8,7 @@
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-        <title><?= $page->getTitle() ?></title>
+        <title><?= $page->escape($page->getTitle()) ?></title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="robots" content="noyaca"/>
@@ -40,21 +40,21 @@
 
         <div class="wrapper wrapper--ep<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
             <div class="header header--ep">
+                <?= $page->render('main/banner.pickup') ?>
 
-                <?= $page->slotHeader() ?>
-                <!-- Topbar -->
-
-                <?= $page->slotTopbar() ?>
-                <!-- /Topbar -->
+                <div class="header__inn">
+                    <?= $page->slotHeader() ?>
+                    <?= $page->slotTopbar() ?>
+                </div>
 
                 <?= $page->slotSearchBar() ?>
-
             </div>
 
             <div class="content content--ep clearfix">
-                <?= $page->slotContent() ?>
+                <div class="inn">
+                    <?= $page->slotContent() ?>
+                </div>
             </div><!--/ Контент-->
-
         </div><!--/ Шаблон -->
 
         <?= $page->render('common/_footer-ep') ?>
@@ -63,6 +63,7 @@
         <?= $page->slotUserbar() ?>
 
         <?= $page->slotAuth() ?>
+        <?= $page->slotUserConfig() ?>
         <?= $page->slotMustacheTemplates() ?>
 
         <div style="position:absolute; height: 0; top:0; z-index:-1;">

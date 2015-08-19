@@ -72,7 +72,7 @@
 							var
 								i, type, callbF, data;
 
-							try{
+							try {
 								for ( i in recommendArray ) {
 									type = recommendArray[i].type;
 									callbF = recommendArray[i].callback;
@@ -181,7 +181,7 @@
 				 * Переключение на следующий слайд. Проверка состояния кнопок.
 				 */
 				nextSlide = function nextSlide(e) {
-					if ( $(this).hasClass('mDisabled') ) {
+					if ( $(this).hasClass('mDisabled disabled') ) {
 						return false;
 					}
 
@@ -189,15 +189,15 @@
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					leftBtn.removeClass('mDisabled');
+					leftBtn.removeClass('mDisabled disabled');
 
 					if ( nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW ) {
 						nowLeft = slider.width() - elementOnSlide * itemW;
-						rightBtn.addClass('mDisabled');
+						rightBtn.addClass('mDisabled disabled');
 					}
 					else {
 						nowLeft = nowLeft + elementOnSlide * itemW;
-						rightBtn.removeClass('mDisabled');
+						rightBtn.removeClass('mDisabled disabled');
 					}
 
 					console.info(itemW);
@@ -207,8 +207,6 @@
 
 					slider.animate({'left': -nowLeft });
 
-                    updatePageTitle(wrap.width(), nowLeft);
-
                     e.preventDefault();
                     //return false;
 				},
@@ -217,7 +215,7 @@
 				 * Переключение на предыдущий слайд. Проверка состояния кнопок.
 				 */
 				prevSlide = function prevSlide(e) {
-					if ( $(this).hasClass('mDisabled') ) {
+					if ( $(this).hasClass('mDisabled disabled') ) {
 						return false;
 					}
 
@@ -225,35 +223,22 @@
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					rightBtn.removeClass('mDisabled');
+					rightBtn.removeClass('mDisabled disabled');
 
 					if ( nowLeft - elementOnSlide * itemW <= 0 ) {
 						nowLeft = 0;
-						leftBtn.addClass('mDisabled');
+						leftBtn.addClass('mDisabled disabled');
 					}
 					else {
 						nowLeft = nowLeft - elementOnSlide * itemW;
-						leftBtn.removeClass('mDisabled');
+						leftBtn.removeClass('mDisabled disabled');
 					}
 
 					slider.animate({'left': -nowLeft });
 
-                    updatePageTitle(wrap.width(), nowLeft);
-
                     e.preventDefault();
 					//return false;
 				},
-
-                updatePageTitle = function updatePageTitle(width, left) {
-                    var
-						pageNum = Math.floor(left / width) + 1,
-						itemW = calculateItemWidth(),
-						elementOnSlide = calculateElementOnSlideCount(itemW);
-
-                    if (!sliderParams.count || !elementOnSlide || !pageNum) return;
-
-                    //pageTitle.text('Страница ' + pageNum +  ' goodsSliderиз ' + Math.ceil(sliderParams.count / elementOnSlide));
-                },
 
 				/**
 				 * Вычисление ширины слайдера
@@ -265,16 +250,16 @@
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					leftBtn.addClass('mDisabled');
-					rightBtn.addClass('mDisabled');
+					leftBtn.addClass('mDisabled disabled');
+					rightBtn.addClass('mDisabled disabled');
 
 					if ( nowItems.length > elementOnSlide ) {
-						rightBtn.removeClass('mDisabled');
+						rightBtn.removeClass('mDisabled disabled');
 					}
 
 					slider.width(nowItems.length * itemW);
 					nowLeft = 0;
-					leftBtn.addClass('mDisabled');
+					leftBtn.addClass('mDisabled disabled');
 					slider.css({'left':nowLeft});
 					wrap.removeClass('mLoader');
 					nowItems.show();
@@ -319,7 +304,7 @@
 					newSlider = $(res.content)[0];
 					$self.before(newSlider);
 					$self.remove();
-					$(newSlider).goodsSlider();
+					$(newSlider).goodsSlider(options);
 
 					if (params.onLoad) {
 						params.onLoad(newSlider);
@@ -337,24 +322,22 @@
 					$self.remove();
 				};
 			// end of function
-
-// SITE-4612
-//            if (sliderParams.count) {
-//				var
-//					itemW = calculateItemWidth(),
-//					elementOnSlide = calculateElementOnSlideCount(itemW);
-//
-//                pageTitle.text('Страница ' + '1' +  ' из ' + Math.ceil(sliderParams.count / elementOnSlide));
-//            }
+			
 
 			if ( sliderParams.url !== null ) {
 				if ( typeof window.ENTER.utils.packageReq === 'function' ) {
                     try {
                         if ('viewed' == sliderParams.type) {
-                            sliderParams.url += ((-1 != sliderParams.url.indexOf('?')) ? '&' : '?') + 'rrviewed=' + sliderParams.rrviewed + '&' + $.param({senders: [sliderParams.sender]}) + (sliderParams.sender2 ? '&' + $.param({sender2: sliderParams.sender2}) : '');
+                            sliderParams.url += ((-1 != sliderParams.url.indexOf('?')) ? '&' : '?') +
+								(sliderParams.rrviewed ? 'rrviewed=' + sliderParams.rrviewed + '&' : '') +
+								$.param({senders: [sliderParams.sender]}) +
+								(sliderParams.sender2 ? '&' +
+								$.param({sender2: sliderParams.sender2}) : '')
+							;
 
                             getSlidersData(sliderParams.url, sliderParams.type, function(res) {
                                 res.recommend && res.recommend.viewed && authFromServer(res.recommend.viewed);
+                                $('body').trigger('sliderLoaded', {type: 'viewed'});
                             });
                         } else {
                             getSlidersData(sliderParams.url, sliderParams.type, authFromServer);

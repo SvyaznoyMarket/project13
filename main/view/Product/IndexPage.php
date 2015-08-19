@@ -7,32 +7,22 @@ class IndexPage extends \View\DefaultLayout {
     protected $layout  = 'layout-oneColumn';
     /** @var \Model\Product\Entity|null */
     protected $product;
+    /** Карточка товара 2015
+     * @var bool
+     */
+    protected $isNewProductPage = false;
 
     public function prepare() {
         /** @var $product \Model\Product\Entity */
         $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-        if (!$product) {
-            return;
-        }
+        if (!$product) return;
         $this->product = $product;
+        $this->isNewProductPage = \App::abTest()->isNewProductPage();
 
-        // breadcrumbs
-        if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = [];
-
-            foreach ($product->getCategory() as $category) {
-                $breadcrumbs[] = array(
-                    'name' => $category->getName(),
-                    'url'  => $category->getLink(),
-                );
-            }
-            $breadcrumbs[] = array(
-                'name' => $product->getName(),
-                'url'  => $product->getLink(),
-            );
-
-            $this->setParam('breadcrumbs', $breadcrumbs);
-        }
+        // Хлебные крошки
+        $this->prepareBreadcrumbs();
+        // Видео и 3D
+        $this->prepareMedia();
 
         $page = new \Model\Page\Entity();
 
@@ -64,32 +54,31 @@ class IndexPage extends \View\DefaultLayout {
             $page->setKeywords(sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $product->getName()));
         }
 
+        if (!$this->hasParam('sender2')) $this->setParam('sender2', $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '');
+        if (!$this->hasParam('isKit')) $this->setParam('isKit', (bool)$product->getKit());
+
         $this->setTitle($page->getTitle());
         $this->addMeta('description', $page->getDescription());
         $this->addMeta('keywords', $page->getKeywords());
     }
 
     private function applySeoPattern(\Model\Page\Entity $page) {
-        $product = $this->getParam('product');
-        if (!($product instanceof \Model\Product\Entity)) {
-            return;
-        }
 
         $replacer = new \Util\InflectReplacer([
-            'цена' => $product->getPrice() . ' руб',
+            'цена' => $this->product->getPrice() . ' руб',
         ]);
 
-        $page->setTitle($replacer->get($product->getSeoTitle()));
-        $page->setDescription($replacer->get($product->getSeoDescription()));
-        $page->setKeywords($replacer->get($product->getSeoKeywords()));
+        $page->setTitle($replacer->get($this->product->getSeoTitle()));
+        $page->setDescription($replacer->get($this->product->getSeoDescription()));
+        $page->setKeywords($replacer->get($this->product->getSeoKeywords()));
     }
 
     public function slotContentHead() {
-        return $this->render('product/_contentHead', $this->params);
+        return $this->isNewProductPage ? null : $this->render('product/_contentHead', $this->params);
     }
 
     public function slotContent() {
-        return $this->render('product/page-index', $this->params);
+        return $this->render($this->isNewProductPage ? 'product-page/content' : 'product/page-index', $this->params);
     }
 
     public function slotBodyDataAttribute() {
@@ -97,23 +86,22 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotBodyClassAttribute() {
-        return parent::slotBodyClassAttribute() . $this->hasParam('categoryClass') ? ' ' . $this->getParam('categoryClass') : '';
+        return parent::slotBodyClassAttribute()
+        . ($this->hasParam('categoryClass') ? ' ' . $this->getParam('categoryClass') : '')
+        . ($this->isNewProductPage && (!$this->getParam('product') || !$this->getParam('product')->getSlotPartnerOffer()) ? ' product-card-new ' : '');
     }
 
     public function slotGoogleRemarketingJS($tagParams = []) {
-        /** @var $product \Model\Product\Entity */
-        $product =  $this->getParam('product');
-        if (!$product instanceof \Model\Product\Entity) return null;
-        $categories = $product->getCategory();
+        $categories = $this->product->getCategory();
         $category = array_pop($categories);
 
         $tag_params = [
-            'prodid' => $product->getId(),
+            'prodid' => $this->product->getId(),
             'pagetype' => 'product',
-            'pname' => $product->getName(),
+            'pname' => $this->product->getName(),
             'pcat' => ($category) ? $category->getToken() : '',
-            'pcat_upper' => $product->getMainCategory() ? $product->getMainCategory()->getToken() : '',
-            'pvalue' => $product->getPrice()
+            'pcat_upper' => $this->product->getRootCategory() ? $this->product->getRootCategory()->getToken() : '',
+            'pvalue' => $this->product->getPrice(),
         ];
 
         return parent::slotGoogleRemarketingJS($tag_params);
@@ -121,61 +109,46 @@ class IndexPage extends \View\DefaultLayout {
 
 
     public function slotMetaOg() {
-        /** @var \Model\Product\Entity $product  */
-        $product = $this->getParam('product');
 
-        if (!$product) {
-            return '';
-        }
-
-        if ($product->getDescription()) {
-            $description = $product->getDescription();
-        } elseif ($product->getTagline()) {
-            $description = $product->getTagline();
+        if ($this->product->getDescription()) {
+            $description = $this->product->getDescription();
+        } elseif ($this->product->getTagline()) {
+            $description = $this->product->getTagline();
         } else {
-            $description = 'Enter - новый способ покупать. Любой из ' . number_format(\App::config()->product['totalCount'], 0, ',', ' ') . ' товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.';
+            $description = \App::config()->description;
         }
 
-        return "<meta property=\"og:title\" content=\"" . $this->escape($product->getName()) . "\"/>\r\n" .
+        return "<meta property=\"og:title\" content=\"" . $this->escape($this->product->getName()) . "\"/>\r\n" .
             "<meta property=\"og:description\" content=\"" . $this->escape($description) . "\"/>\r\n" .
-            "<meta property=\"og:image\" content=\"" . $this->escape($product->getImageUrl(3).'?'.time()) . "\"/>\r\n".
+            "<meta property=\"og:image\" content=\"" . $this->escape($this->product->getMainImageUrl('product_120').'?'.time()) . "\"/>\r\n".
             "<meta property=\"og:site_name\" content=\"ENTER\"/>\r\n".
             "<meta property=\"og:type\" content=\"website\"/>\r\n".
-            "<link rel=\"image_src\" href=\"". $this->escape($product->getImageUrl(3)). "\" />\r\n";
+            "<link rel=\"image_src\" href=\"". $this->escape($this->product->getMainImageUrl('product_120')). "\" />\r\n";
     }
 
     public function slotConfig() {
-        $config = ['location' => ['product']];
-
-        /** @var \Model\Product\Entity|null $product */
-        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-        if ($product) {
-            $config['product'] = [
-                'id' => $product->getId(),
-                'isSlot' => (bool)$product->getSlotPartnerOffer(),
-                'isOnlyFromPartner' => $product->isOnlyFromPartner(),
-            ];
-        }
+        $config = [
+            'location'  => ['product'],
+            'product'   => [
+                'id' => $this->product->getId(),
+                'isSlot' => (bool)$this->product->getSlotPartnerOffer(),
+                'isOnlyFromPartner' => $this->product->isOnlyFromPartner(),
+            ]
+        ];
 
         return $this->tryRender('_config', ['config' => $config]);
     }
 
     public function slotUserbarContent() {
         return $this->render('product/_userbarContent', [
-            'product'   => $this->getParam('product') ? $this->getParam('product') : null,
+            'product'   => $this->product,
         ]);
     }
 
     public function slotUserbarContentData() {
-        /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-        if (!$product) {
-            return;
-        }
-
         return [
             'target' => '.js-showTopBar',
-            'productId' => $product->getId(),
+            'productId' => $this->product->getId(),
         ];
     }
 
@@ -186,7 +159,7 @@ class IndexPage extends \View\DefaultLayout {
             'vendor'    => $this->product->getBrand(),
             'price'     => $this->product->getPrice(),
             'url'       => \App::router()->generate('product', ['productPath' => $this->product->getToken()], true),
-            'picture'   => $this->product->getImageUrl(),
+            'picture'   => $this->product->getMainImageUrl('product_120'),
             'name'      => $this->product->getName(),
             'category'  => $this->product->getLastCategory() ? $this->product->getLastCategory()->getId() : null
         ];
@@ -209,9 +182,9 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotHubrusJS() {
         $html = parent::slotHubrusJS();
-        if (!empty($html)) {
-            return $html . \View\Partners\Hubrus::addProductData($this->product);
-        }
+        return !empty($html)
+            ? $html . \View\Partners\Hubrus::addProductData($this->product)
+            : '';
     }
 
     public function slotGoogleAnalytics()
@@ -224,18 +197,106 @@ class IndexPage extends \View\DefaultLayout {
             return '';
         }
 
-        /** @var \Model\Product\Entity|null $product */
-        $product = $this->getParam('product');
-        if (!($product instanceof \Model\Product\Entity)) {
-            $product = null;
-        }
-
         $data = [
-            'productId' => $product ? (string)$product->getId() : '',
-            'productPrice' => $product ? (string)$product->getPrice() : '',
-            'categoryId' => $product && $product->getLastCategory() ? (string)$product->getLastCategory()->getId() : '',
+            'productId' => $this->product ? (string)$this->product->getId() : '',
+            'productPrice' => $this->product ? (string)$this->product->getPrice() : '',
+            'categoryId' => $this->product && $this->product->getLastCategory() ? (string)$this->product->getLastCategory()->getId() : '',
         ];
 
         return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
+
+    /**
+     * Подготовка хлебных крошек
+     */
+    private function prepareBreadcrumbs() {
+        if (!$this->hasParam('breadcrumbs')) {
+            $breadcrumbs = [];
+
+            // Категории
+            foreach ($this->product->getCategory() as $category) {
+                $breadcrumbs[] = [
+                    'name' => $category->getName(),
+                    'url'  => $category->getLink(),
+                ];
+            }
+
+            // Последний элемент
+            $breadcrumbs[] = [
+                'name' => $this->isNewProductPage ? 'Артикул ' . $this->product->getArticle() : $this->product->getName(),
+                'url'  => $this->isNewProductPage ? null : $this->product->getLink(),
+            ];
+
+            $this->setParam('breadcrumbs', $breadcrumbs);
+        }
+    }
+
+    /**
+     * Подготовка видео и 3D
+     */
+    private function prepareMedia(){
+
+        $helper = \App::helper();
+        $videoHtml = null;
+        $properties3D = ['type' => null, 'url' => null];
+
+        foreach ($this->product->medias as $media) {
+            $source = $media->getSource('reference');
+            switch ($media->provider) {
+                case 'vimeo':
+                    if ($source) {
+                        $width = 700;
+                        $height = ceil($width / ($source->width / $source->height));
+                        $videoHtml = sprintf(
+                            '<iframe data-src="%s?autoplay=1" width="%s" height="%s" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>',
+                            $helper->escape($source->url), $width, $height);
+                    }
+                    break;
+                case 'youtube':
+                    if ($source) {
+                        $width = 700;
+                        $height = ceil($width / ($source->width / $source->height));
+                        $videoHtml = sprintf(
+                            '<iframe data-src="//www.youtube.com/embed/%s?autoplay=1" width="%s" height="%s" frameborder="0" allowfullscreen></iframe>',
+                            $helper->escape($source->id), $width, $height);
+                    }
+                    break;
+                case 'megavisor':
+                    if ($source) {
+                        $properties3D['type'] = 'swf';
+                        $properties3D['url'] = 'http://media.megavisor.com/player/player.swf?uuid=' . urlencode($source->id);
+                    }
+                    break;
+                case 'swf':
+                    if ($source){
+                        $properties3D['type'] = 'swf';
+                        $properties3D['url'] = $source->url;
+                    }
+
+                    break;
+                case 'maybe3d':
+                    /*if ($source = $media->getSource('html5')) {
+                        $properties3D['type'] = 'html5';
+                        $properties3D['url'] = $source->url;
+                        $properties3D['id'] = $source->id;
+                    } else*/ if ($source = $media->getSource('swf')) {
+                        $properties3D['type'] = 'swf';
+                        $properties3D['url'] = $source->url;
+                    }
+                    break;
+            }
+        }
+
+        $this->setParam('videoHtml', $videoHtml);
+        $this->setParam('properties3D', $properties3D);
+    }
+
+    public function slotMyThings($data) {
+        return parent::slotMyThings([
+            'Action'    => '1010',
+            'ProductId' => (string)$this->product->getId()
+        ]);
+    }
+
+
 }

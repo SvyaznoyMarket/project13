@@ -2,6 +2,8 @@
 
 namespace Controller\Error;
 
+use View\Error\NotFoundPage;
+
 class NotFoundAction {
     /**
      * @param \Exception $e
@@ -20,11 +22,8 @@ class NotFoundAction {
             return new \Http\Response('', 404);
         }
 
-        $content = \App::templating()->render('error/page-404', [
-            'page'      => new \View\Layout(),
-            'exception' => $e,
-        ]);
+        $page = new NotFoundPage();
 
-        return new \Http\Response($content, 404);
+        return new \Http\Response($page->show(), 404);
     }
 }

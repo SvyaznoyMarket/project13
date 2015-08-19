@@ -3,20 +3,19 @@
  */
 
 //отчистка потока
-.clearfix:before
-,
-.clearfix:after{
+.clearfix:before ,
+.clearfix:after {
     display: table;
 
     content: ' ';
 }
 
-.clearfix:after{
+.clearfix:after {
     clear: both;
 }
 
 /* IE6/7 support */
-.clearfix{
+.clearfix {
     *zoom: 1;
 }
 
@@ -25,10 +24,9 @@
  */
 
 //темно-серая кнопка в фильтрах и в фиксированной плашке
-.btnGrey{
+.btnGrey {
     font-weight: bold;
     line-height: 30px;
-
 
     padding: 0 25px;
 
@@ -40,7 +38,7 @@
     .blackGrad();
     .rounded(4px);
     .inline-block();
-    &:hover{
+    &:hover {
         text-decoration: none;
 
         color: @white;
@@ -48,7 +46,7 @@
     }
 }
 
-.btnLightGrey{
+.btnLightGrey {
     padding: 0 10px;
 
     text-align: center;
@@ -60,150 +58,154 @@
     .grayGradDark();
     .rounded(4px);
     .inline-block();
-    &:hover{
+    &:hover {
         text-decoration: none;
     }
 }
 
 .clsr-light {
-    background: url("/styles/popup/img/closer.gif") no-repeat 50% 50%;
-    height: 41px;
-    width: 41px;
-    cursor: pointer;
-    display: block;
     position: absolute;
-    right: 0;
     top: 0;
+    right: 0;
+
+    display: block;
+
+    width: 41px;
+    height: 41px;
+
+    cursor: pointer;
+
+    background: url('/styles/popup/img/closer.gif') no-repeat 50% 50%;
 }
 
 // плавающие блоки
-.fl-l{
+.fl-l {
     float: left;
 }
 
-.fl-r{
+.fl-r {
     float: right;
 }
 
 // размеры шрифта
-.xs{
+.xs {
     font-size: 11px;
 }
 
-.s{
+.s {
     font-size: 12px;
 }
 
-.m{
+.m {
     font-size: 14px;
 }
 
-.l{
+.l {
     font-size: 16px;
 }
 
-.dblock{
+.dblock {
     display: block;
 }
 
 // выравнивание текста
-.ta-c{
+.ta-c {
     text-align: center;
 }
 
-.ta-r{
+.ta-r {
     text-align: right;
 }
 
-.ta-l{
+.ta-l {
     text-align: left;
 }
 
-.va-t{
+.va-t {
     vertical-align: top;
 }
 
-.va-m{
+.va-m {
     vertical-align: middle;
 }
 
-.va-b{
+.va-b {
     vertical-align: bottom;
 }
 
 // text-decoration
-.td-lineth{
+.td-lineth {
     text-decoration: line-through;
 }
 
-.td-underl{
+.td-underl {
     text-decoration: underline;
 }
 
 // отступы
-.mb5{
+.mb5 {
     margin-bottom: 5px;
 }
 
-.mb20{
+.mb20 {
     margin-bottom: 20px;
 }
 
-.mb10{
+.mb10 {
     margin-bottom: 10px;
 }
 
-.nomargin{
+.nomargin {
     margin: 0;
 }
 
-.m-auto{
+.m-auto {
     display: block;
 
     margin: 0 auto;
 }
 
 // цвета тестов
-.colorGrey{
+.colorGrey {
     color: @typGray;
-    a{
+    a {
         color: @typGray;
     }
 }
 
-.colorBrightGrey{
+.colorBrightGrey {
     color: @colorActiveGrey;
-    a{
+    a {
         color: @colorActiveGrey;
     }
 }
 
-.colorBlack{
+.colorBlack {
     color: @black;
-    a{
+    a {
         color: @black;
     }
 }
 
-.colorRed{
+.colorRed {
     color: @firmRed;
-    a{
+    a {
         color: @firmRed;
     }
 }
 
 // фоны блоков
-.bgGrey{
+.bgGrey {
     background: @lightgreyBg;
 }
 
 // бордеры
-.brb-dt{
+.brb-dt {
     border-bottom: 1px dotted;
 }
 
 // основные стили элементов форм
-.textfield{
+.textfield {
     line-height: 35px;
 
     display: block;
@@ -217,12 +219,12 @@
 
     .rounded(4px);
     .box-sizing();
-    &-err{
+    &-err {
         border-color: #ec434f;
     }
 }
 
-.textfieldgrey{
+.textfieldgrey {
     line-height: 26px;
 
     height: 26px;
@@ -235,7 +237,7 @@
     .box-sizing();
 }
 
-.errtx{
+.errtx {
     font-size: 16px;
 
     margin: 0 0 10px;
@@ -266,7 +268,7 @@
     .rounded(4px);
 }
 
-.labeltext{
+.labeltext {
     font-size: 12px;
     line-height: 1.5;
 
@@ -275,7 +277,7 @@
     margin: 0 0 5px;
 }
 
-.textarea{
+.textarea {
     display: block;
 
     margin: 0 0 15px;
@@ -289,14 +291,14 @@
     .box-sizing();
 }
 
-.legend{
+.legend {
     font-size: 18px;
 
     margin: 10px 0 15px;
 }
 
 // кастомный селект
-.customSel{
+.customSel {
     font-size: 14px;
 
     position: relative;
@@ -312,38 +314,115 @@
 
     .inline-block();
     .rounded(4px);
-    &_def{
+    &_def {
         line-height: 26px;
     }
-    &_lst{
+    &_lst {
         top: -1px;
         right: -1px;
         //display: none;
 
         width: 100%;
     }
-    &_i{
+    &_i {
         padding: 4px 5px;
 
         cursor: pointer;
 
         border-bottom: 1px solid @lightgrey-2;
-        &:last-child{
+        &:last-child {
             border-bottom: none;
         }
     }
-    &_btn{
+    &_btn {
         font-size: 14px;
     }
 }
 
 .fixpix {
-    display: block;
-    width: @full-size;
-    height: @full-size;
     position: absolute;
+    z-index: 5;
     top: 0;
     left: 0;
-    z-index: 5;
-    background: url("@{base-url}/common/img/fixpix.png");
+
+    display: block;
+
+    width: @full-size;
+    height: @full-size;
+
+    background: url('@{base-url}/common/img/fixpix.png');
+}
+
+.spinner-new{
+    position: relative;
+
+    &:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        content: '';
+
+        background: rgba(255, 255, 255, 0.6);
+        z-index: 99;
+    }
+    &:after{
+        position: absolute;
+        .animation(rotated, 3.5s, 0, linear, infinite);
+        top: 50%;
+        margin-top: -30px;
+        left: 50%;
+        margin-left: -30px;
+
+        width: 60px;
+        height: 60px;
+        z-index: 99;
+
+        content: '\e800';
+        font-family: 'spinner';
+        font-size: 60px;
+        font-style: normal;
+        font-weight: normal;
+        color: #5d6164;
+        speak: none;
+
+        display: inline-block;
+        text-decoration: inherit;
+
+
+        text-align: center;
+
+        font-variant: normal;
+        text-transform: none;
+
+        /* fix buttons height, for twitter bootstrap */
+        line-height: 1em;
+
+        /* Font smoothing. That was taken from TWBS */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+@keyframes rotated {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+        /* transform-origin: 50% 50%; */}
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+        /* transform-origin: 50% 50%; */}
+}
+@-webkit-keyframes rotated {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+        /* transform-origin: 50% 50%; */}
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+        /* transform-origin: 50% 50%; */}
 }

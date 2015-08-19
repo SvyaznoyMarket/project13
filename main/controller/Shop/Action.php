@@ -123,7 +123,6 @@ class Action {
 
         $page = new \View\Shop\RegionPage();
         $page->setParam('shopAvailableRegions', $shopAvailableRegions);
-        $page->setParam('currentRegion', null);
         $page->setParam('regions', $regions);
         $page->setParam('shops', $shops);
         $page->setParam('markers', $markers);
@@ -154,13 +153,28 @@ class Action {
         $client = \App::coreClientV2();
         $user = \App::user();
 
-        // подготовка 1-го пакета запросов
+        // магазин
+        /** @var $shop \Model\Shop\Entity */
+        \App::scmsClient()->addQuery('shop/get', ['slug' => [$shopToken]], [], function($data) use(&$shop) {
+            if (isset($data[0]['name'])) {
+                $shop = new \Model\Shop\Entity($data[0]);
+            }
+        });
+
+        $client->execute();
+
+        if (!$shop) {
+            throw new \Exception\NotFoundException(sprintf('Shop @%s not found', $shopToken));
+        }
+
+        \App::scmsClient()->addQuery('api/word-inflect', ['names' => [$shop->getRegion()->getName()]], [], function($data) use(&$shop, &$shopRegionNameInPrepositionalCase) {
+            if (isset($data[$shop->getRegion()->getName()]['locativus'])) {
+                $shopRegionNameInPrepositionalCase = $data[$shop->getRegion()->getName()]['locativus'];
+            }
+        });
 
         // запрашиваем текущий регион, если есть кука региона
-        $regionConfig = [];
         if ($user->getRegionId()) {
-            $regionConfig = (array)\App::dataStoreClient()->query("/region/{$user->getRegionId()}.json");
-
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
@@ -169,38 +183,7 @@ class Action {
             });
         }
 
-        // выполнение 1-го пакета запросов
         $client->execute();
-
-        $regionEntity = $user->getRegion();
-        if ($regionEntity instanceof \Model\Region\Entity) {
-            if (array_key_exists('reserve_as_buy', $regionConfig)) {
-                $regionEntity->setForceDefaultBuy(false == $regionConfig['reserve_as_buy']);
-            }
-            $user->setRegion($regionEntity);
-        }
-
-        $region = $user->getRegion();
-
-        // подготовка 2-го пакета запросов
-
-        // магазин
-        /** @var $shop \Model\Shop\Entity */
-        $shop = null;
-        \App::scmsClient()->addQuery('shop/get', ['slug' => [$shopToken]], [], function($data) use (&$shop) {
-            if (isset($data[0]['name'])) {
-                $shop = new \Model\Shop\Entity($data[0]);
-            }
-        });
-
-        // выполнение 2-го пакета запросов
-        $client->execute();
-
-        if (!$shop) {
-            throw new \Exception\NotFoundException(sprintf('Shop @%s not found', $shopToken));
-        }
-
-        $currentRegion = $shop->getRegion();
 
         // hardcode
         if (in_array($shop->getId(), [1])) {
@@ -219,7 +202,7 @@ class Action {
                 [],
                 null,
                 null,
-                $currentRegion,
+                $shop->getRegion(),
                 function($data) use (&$shop) {
                     $shop->setProductCount(isset($data['count']) ? $data['count'] : null);
                 },
@@ -232,8 +215,8 @@ class Action {
         \App::curl()->execute();
 
         $page = new \View\Shop\ShowPage();
-        $page->setParam('currentRegion', $currentRegion);
         $page->setParam('shop', $shop);
+        $page->setParam('shopRegionNameInPrepositionalCase', $shopRegionNameInPrepositionalCase);
 
         return new \Http\Response($page->show());
     }

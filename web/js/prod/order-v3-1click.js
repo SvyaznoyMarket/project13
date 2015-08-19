@@ -5,364 +5,14 @@
         map: {},
         mapOptions: {},
         $map: {},
-        kladrCityId: 0
+        kladrCityId: 0,
+		koModels: []
     };
 }(window));
-/**
- * Copyright (c) 2011-2014 Felix Gnass
- * Licensed under the MIT license
- */
-(function(root, factory) {
-
-  /* CommonJS */
-  if (typeof exports == 'object')  module.exports = factory()
-
-  /* AMD module */
-  else if (typeof define == 'function' && define.amd) define(factory)
-
-  /* Browser global */
-  else root.Spinner = factory()
-}
-(this, function() {
-  "use strict";
-
-  var prefixes = ['webkit', 'Moz', 'ms', 'O'] /* Vendor prefixes */
-    , animations = {} /* Animation rules keyed by their name */
-    , useCssAnimations /* Whether to use CSS animations or setTimeout */
-
-  /**
-   * Utility function to create elements. If no tag name is given,
-   * a DIV is created. Optionally properties can be passed.
-   */
-  function createEl(tag, prop) {
-    var el = document.createElement(tag || 'div')
-      , n
-
-    for(n in prop) el[n] = prop[n]
-    return el
-  }
-
-  /**
-   * Appends children and returns the parent.
-   */
-  function ins(parent /* child1, child2, ...*/) {
-    for (var i=1, n=arguments.length; i<n; i++)
-      parent.appendChild(arguments[i])
-
-    return parent
-  }
-
-  /**
-   * Insert a new stylesheet to hold the @keyframe or VML rules.
-   */
-  var sheet = (function() {
-    var el = createEl('style', {type : 'text/css'})
-    ins(document.getElementsByTagName('head')[0], el)
-    return el.sheet || el.styleSheet
-  }())
-
-  /**
-   * Creates an opacity keyframe animation rule and returns its name.
-   * Since most mobile Webkits have timing issues with animation-delay,
-   * we create separate rules for each line/segment.
-   */
-  function addAnimation(alpha, trail, i, lines) {
-    var name = ['opacity', trail, ~~(alpha*100), i, lines].join('-')
-      , start = 0.01 + i/lines * 100
-      , z = Math.max(1 - (1-alpha) / trail * (100-start), alpha)
-      , prefix = useCssAnimations.substring(0, useCssAnimations.indexOf('Animation')).toLowerCase()
-      , pre = prefix && '-' + prefix + '-' || ''
-
-    if (!animations[name]) {
-      sheet.insertRule(
-        '@' + pre + 'keyframes ' + name + '{' +
-        '0%{opacity:' + z + '}' +
-        start + '%{opacity:' + alpha + '}' +
-        (start+0.01) + '%{opacity:1}' +
-        (start+trail) % 100 + '%{opacity:' + alpha + '}' +
-        '100%{opacity:' + z + '}' +
-        '}', sheet.cssRules.length)
-
-      animations[name] = 1
-    }
-
-    return name
-  }
-
-  /**
-   * Tries various vendor prefixes and returns the first supported property.
-   */
-  function vendor(el, prop) {
-    var s = el.style
-      , pp
-      , i
-
-    prop = prop.charAt(0).toUpperCase() + prop.slice(1)
-    for(i=0; i<prefixes.length; i++) {
-      pp = prefixes[i]+prop
-      if(s[pp] !== undefined) return pp
-    }
-    if(s[prop] !== undefined) return prop
-  }
-
-  /**
-   * Sets multiple style properties at once.
-   */
-  function css(el, prop) {
-    for (var n in prop)
-      el.style[vendor(el, n)||n] = prop[n]
-
-    return el
-  }
-
-  /**
-   * Fills in default values.
-   */
-  function merge(obj) {
-    for (var i=1; i < arguments.length; i++) {
-      var def = arguments[i]
-      for (var n in def)
-        if (obj[n] === undefined) obj[n] = def[n]
-    }
-    return obj
-  }
-
-  /**
-   * Returns the absolute page-offset of the given element.
-   */
-  function pos(el) {
-    var o = { x:el.offsetLeft, y:el.offsetTop }
-    while((el = el.offsetParent))
-      o.x+=el.offsetLeft, o.y+=el.offsetTop
-
-    return o
-  }
-
-  /**
-   * Returns the line color from the given string or array.
-   */
-  function getColor(color, idx) {
-    return typeof color == 'string' ? color : color[idx % color.length]
-  }
-
-  // Built-in defaults
-
-  var defaults = {
-    lines: 12,            // The number of lines to draw
-    length: 7,            // The length of each line
-    width: 5,             // The line thickness
-    radius: 10,           // The radius of the inner circle
-    rotate: 0,            // Rotation offset
-    corners: 1,           // Roundness (0..1)
-    color: '#000',        // #rgb or #rrggbb
-    direction: 1,         // 1: clockwise, -1: counterclockwise
-    speed: 1,             // Rounds per second
-    trail: 100,           // Afterglow percentage
-    opacity: 1/4,         // Opacity of the lines
-    fps: 20,              // Frames per second when using setTimeout()
-    zIndex: 2e9,          // Use a high z-index by default
-    className: 'spinner', // CSS class to assign to the element
-    top: '50%',           // center vertically
-    left: '50%',          // center horizontally
-    position: 'absolute'  // element position
-  }
-
-  /** The constructor */
-  function Spinner(o) {
-    this.opts = merge(o || {}, Spinner.defaults, defaults)
-  }
-
-  // Global defaults that override the built-ins:
-  Spinner.defaults = {}
-
-  merge(Spinner.prototype, {
-
-    /**
-     * Adds the spinner to the given target element. If this instance is already
-     * spinning, it is automatically removed from its previous target b calling
-     * stop() internally.
-     */
-    spin: function(target) {
-      this.stop()
-
-      var self = this
-        , o = self.opts
-        , el = self.el = css(createEl(0, {className: o.className}), {position: o.position, width: 0, zIndex: o.zIndex})
-        , mid = o.radius+o.length+o.width
-
-      css(el, {
-        left: o.left,
-        top: o.top
-      })
-        
-      if (target) {
-        target.insertBefore(el, target.firstChild||null)
-      }
-
-      el.setAttribute('role', 'progressbar')
-      self.lines(el, self.opts)
-
-      if (!useCssAnimations) {
-        // No CSS animation support, use setTimeout() instead
-        var i = 0
-          , start = (o.lines - 1) * (1 - o.direction) / 2
-          , alpha
-          , fps = o.fps
-          , f = fps/o.speed
-          , ostep = (1-o.opacity) / (f*o.trail / 100)
-          , astep = f/o.lines
-
-        ;(function anim() {
-          i++;
-          for (var j = 0; j < o.lines; j++) {
-            alpha = Math.max(1 - (i + (o.lines - j) * astep) % f * ostep, o.opacity)
-
-            self.opacity(el, j * o.direction + start, alpha, o)
-          }
-          self.timeout = self.el && setTimeout(anim, ~~(1000/fps))
-        })()
-      }
-      return self
-    },
-
-    /**
-     * Stops and removes the Spinner.
-     */
-    stop: function() {
-      var el = this.el
-      if (el) {
-        clearTimeout(this.timeout)
-        if (el.parentNode) el.parentNode.removeChild(el)
-        this.el = undefined
-      }
-      return this
-    },
-
-    /**
-     * Internal method that draws the individual lines. Will be overwritten
-     * in VML fallback mode below.
-     */
-    lines: function(el, o) {
-      var i = 0
-        , start = (o.lines - 1) * (1 - o.direction) / 2
-        , seg
-
-      function fill(color, shadow) {
-        return css(createEl(), {
-          position: 'absolute',
-          width: (o.length+o.width) + 'px',
-          height: o.width + 'px',
-          background: color,
-          boxShadow: shadow,
-          transformOrigin: 'left',
-          transform: 'rotate(' + ~~(360/o.lines*i+o.rotate) + 'deg) translate(' + o.radius+'px' +',0)',
-          borderRadius: (o.corners * o.width>>1) + 'px'
-        })
-      }
-
-      for (; i < o.lines; i++) {
-        seg = css(createEl(), {
-          position: 'absolute',
-          top: 1+~(o.width/2) + 'px',
-          transform: o.hwaccel ? 'translate3d(0,0,0)' : '',
-          opacity: o.opacity,
-          animation: useCssAnimations && addAnimation(o.opacity, o.trail, start + i * o.direction, o.lines) + ' ' + 1/o.speed + 's linear infinite'
-        })
-
-        if (o.shadow) ins(seg, css(fill('#000', '0 0 4px ' + '#000'), {top: 2+'px'}))
-        ins(el, ins(seg, fill(getColor(o.color, i), '0 0 1px rgba(0,0,0,.1)')))
-      }
-      return el
-    },
-
-    /**
-     * Internal method that adjusts the opacity of a single line.
-     * Will be overwritten in VML fallback mode below.
-     */
-    opacity: function(el, i, val) {
-      if (i < el.childNodes.length) el.childNodes[i].style.opacity = val
-    }
-
-  })
-
-
-  function initVML() {
-
-    /* Utility function to create a VML tag */
-    function vml(tag, attr) {
-      return createEl('<' + tag + ' xmlns="urn:schemas-microsoft.com:vml" class="spin-vml">', attr)
-    }
-
-    // No CSS transforms but VML support, add a CSS rule for VML elements:
-    sheet.addRule('.spin-vml', 'behavior:url(#default#VML)')
-
-    Spinner.prototype.lines = function(el, o) {
-      var r = o.length+o.width
-        , s = 2*r
-
-      function grp() {
-        return css(
-          vml('group', {
-            coordsize: s + ' ' + s,
-            coordorigin: -r + ' ' + -r
-          }),
-          { width: s, height: s }
-        )
-      }
-
-      var margin = -(o.width+o.length)*2 + 'px'
-        , g = css(grp(), {position: 'absolute', top: margin, left: margin})
-        , i
-
-      function seg(i, dx, filter) {
-        ins(g,
-          ins(css(grp(), {rotation: 360 / o.lines * i + 'deg', left: ~~dx}),
-            ins(css(vml('roundrect', {arcsize: o.corners}), {
-                width: r,
-                height: o.width,
-                left: o.radius,
-                top: -o.width>>1,
-                filter: filter
-              }),
-              vml('fill', {color: getColor(o.color, i), opacity: o.opacity}),
-              vml('stroke', {opacity: 0}) // transparent stroke to fix color bleeding upon opacity change
-            )
-          )
-        )
-      }
-
-      if (o.shadow)
-        for (i = 1; i <= o.lines; i++)
-          seg(i, -2, 'progid:DXImageTransform.Microsoft.Blur(pixelradius=2,makeshadow=1,shadowopacity=.3)')
-
-      for (i = 1; i <= o.lines; i++) seg(i)
-      return ins(el, g)
-    }
-
-    Spinner.prototype.opacity = function(el, i, val, o) {
-      var c = el.firstChild
-      o = o.shadow && o.lines || 0
-      if (c && i+o < c.childNodes.length) {
-        c = c.childNodes[i+o]; c = c && c.firstChild; c = c && c.firstChild
-        if (c) c.opacity = val
-      }
-    }
-  }
-
-  var probe = css(createEl('group'), {behavior: 'url(#default#VML)'})
-
-  if (!vendor(probe, 'transform') && probe.adj) initVML()
-  else useCssAnimations = vendor(probe, 'animation')
-
-  return Spinner
-
-}));
-
 ;(function($) {
 
     var body = $(document.body),
         _gaq = window._gaq,
-        region = $('.jsChangeRegion').text().trim(),
 
         sendAnalytic = function sendAnalyticF (category, action, label, value) {
 			var lbl = label || '',
@@ -376,8 +26,8 @@
 			if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
 
 			// sending
-			if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'Воронка_1 клик_' + region, act, lbl]);
-			if (typeof ga === 'function') ga('send', 'event', 'Воронка_1 клик_' + region, act, lbl);
+			if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'Воронка_1 клик', act, lbl]);
+			if (typeof ga === 'function') ga('send', 'event', 'Воронка_1 клик', act, lbl);
 
 		};
 
@@ -387,9 +37,10 @@
 })(jQuery);
 ;(function(w,ko,$) {
 
-	ENTER.OrderV31Click.functions.initAddress = function(){
-        var address,
-            kladrConfig = $('#kladr-config').data('value'),
+    var address;
+
+	ENTER.OrderV31Click.functions.initAddress = function(buyProducts){
+        var kladrConfig = $('#kladr-config').data('value'),
             region = $('#page-config').data('value').user.region;
     
         function AddressModel () {
@@ -466,7 +117,7 @@
         function saveAddress(address) {
             $.ajax({
                 type: 'POST',
-                url: '/order-1click/delivery',
+                url: ENTER.utils.generateUrl('orderV3OneClick.delivery'),
                 data: {
                     'action' : 'changeAddress',
                     'params' : {
@@ -476,7 +127,7 @@
                         apartment: address.apartmentName(),
                         kladr_id: address.buildingId() != 0 ? address.buildingId() : address.streetId() != 0 ? address.streetId() : address.cityId() != 0 ? address.cityId() : ''
                     },
-                    products: JSON.parse($('#js-order-content').data('param')).products,
+                    products: buyProducts,
                     update: 1
                 }
             }).fail(function(jqXHR){
@@ -614,11 +265,12 @@
     
         // начинаем отсюдова
     
-        address = new AddressModel();
+        if (typeof address == 'undefined') address = new AddressModel();
     
         ENTER.OrderV31Click.address = address;
         ENTER.OrderV31Click.functions.smartAddressInit();
 	};
+
 }(window, ko, jQuery));
 (function($) {
 	ENTER.OrderV31Click.functions.initYandexMaps = function(){
@@ -633,9 +285,11 @@
 
 			E.map = new ymaps.Map("yandex-map-container", {
 				center: [options.latitude, options.longitude],
-				zoom: options.zoom
+				zoom: options.zoom,
+                controls: ['zoomControl', 'fullscreenControl', 'geolocationControl', 'typeSelector']
 			},{
-				autoFitToViewport: 'always'
+				autoFitToViewport: 'always',
+                suppressMapOpenBlock: true
 			});
 
 			E.map.controls.remove('searchControl');
@@ -718,27 +372,10 @@
 		$body = $(body);
 
 	//console.log('Model', $('#initialOrderModel').data('value'));
-	ENTER.OrderV31Click.functions.initDelivery = function() {
+	ENTER.OrderV31Click.functions.initDelivery = function(buyProducts, shopId) {
 		var $orderContent = $('#js-order-content'),
 			$popup = $('#jsOneClickContent'),
-			spinner = typeof Spinner == 'function' ? new Spinner({
-				lines: 11, // The number of lines to draw
-				length: 5, // The length of each line
-				width: 8, // The line thickness
-				radius: 23, // The radius of the inner circle
-				corners: 1, // Corner roundness (0..1)
-				rotate: 0, // The rotation offset
-				direction: 1, // 1: clockwise, -1: counterclockwise
-				color: '#666', // #rgb or #rrggbb or array of colors
-				speed: 1, // Rounds per second
-				trail: 62, // Afterglow percentage
-				shadow: false, // Whether to render a shadow
-				hwaccel: true, // Whether to use hardware acceleration
-				className: 'spinner', // The CSS class to assign to the spinner
-				zIndex: 2e9, // The z-index (defaults to 2000000000)
-				top: '50%', // Top position relative to parent
-				left: '50%' // Left position relative to parent
-			}) : null,
+			spinnerClass = 'spinner-new',
 			changeDelivery = function changeDeliveryF (block_name, delivery_method_token) {
 				sendChanges('changeDelivery', {'block_name': block_name, 'delivery_method_token': delivery_method_token});
 			},
@@ -800,22 +437,21 @@
 			sendChanges = function sendChangesF (action, params) {
 				console.info('Sending action "%s" with params:', action, params);
 
-				if ($orderContent.data('shop')) {
-					params.shopId = $orderContent.data('shop')
+				if (shopId) {
+					params.shopId = shopId
 				}
 
 				$.ajax({
-					url: '/order-1click/delivery',
+					url: ENTER.utils.generateUrl('orderV3OneClick.delivery'),
 					type: 'POST',
 					data: {
 						action : action,
 						params : params,
-						products: JSON.parse($orderContent.data('param')).products,
+						products: buyProducts,
 						update: 1
 					},
 					beforeSend: function() {
-						$orderContent.fadeOut(500);
-						if (spinner) spinner.spin(body)
+						$popup.addClass(spinnerClass);
 					}
 				}).fail(function(jqXHR){
 						var response = $.parseJSON(jqXHR.responseText);
@@ -841,8 +477,7 @@
                         })
 
 					}).always(function(){
-						$orderContent.stop(true, true).fadeIn(200);
-						if (spinner) spinner.stop();
+						$popup.removeClass(spinnerClass);
 					});
 
 			},
@@ -853,17 +488,11 @@
 					"url": '/order/log'
 				})
 			},
-			showMap = function(elem, token) {
+			showMap = function(elem) {
 				var $currentMap = elem.find('.js-order-map').first(),
                     mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
 					mapOptions = ENTER.OrderV31Click.mapOptions,
 					map = ENTER.OrderV31Click.map;
-
-				if (!token) {
-					token = Object.keys(mapData.points)[0];
-					$currentMap.siblings('.selShop_l').hide();
-					$currentMap.siblings('.selShop_l[data-token='+token+']').show();
-				}
 
 				if (mapData && typeof map.getType == 'function') {
 
@@ -874,14 +503,12 @@
 					$currentMap.append(ENTER.OrderV31Click.$map.show());
 					map.container.fitToViewport();
 
-                    // добавляем невидимые точки на карту
-                    $.each(mapData.points, function(token){
-                        for (var i = 0; i < mapData.points[token].length; i++) {
-                            try {
-                                map.geoObjects.add(new ENTER.Placemark(mapData.points[token][i], false));
-                            } catch (e) {
-                                console.error('Ошибка добавления точки на карту', e);
-                            }
+                    // добавляем точки на карту
+                    $.each(mapData.points, function(i, point){
+                        try {
+                            map.geoObjects.add(new ENTER.Placemark(point, true));
+                        } catch (e) {
+                            console.error('Ошибка добавления точки на карту', e, point);
                         }
                     });
 
@@ -891,21 +518,19 @@
                     } else {
                         map.setBounds(map.geoObjects.getBounds());
                         // точки становятся видимыми только при увеличения зума
-                        map.events.once('boundschange', function(event){
+                        /*map.events.once('boundschange', function(event){
                             if (event.get('oldZoom') < event.get('newZoom')) {
                                 map.geoObjects.each(function(point) { point.options.set('visible', true)})
                             }
-                        })
+                        })*/
                     }
 
-				} else {
-					console.error('No map data for token = "%s"', token,  elem);
 				}
 
 			},
 			chooseDelivery = function(){
 				var token = $(this).data('token'),
-					id = $(this).closest('.popupFl').attr('id');
+					$map = $(this).closest('.jsNewPoints').first();
 				// переключение списка магазинов
 				$('.selShop_l').hide();
 				$('.selShop_l[data-token='+token+']').show();
@@ -913,7 +538,7 @@
 				$('.selShop_tab').removeClass('selShop_tab-act');
 				$('.selShop_tab[data-token='+token+']').addClass('selShop_tab-act');
 				// показ карты
-				showMap($('#'+id), token);
+				//showMap($map);
 			},
 			choosePoint = function() {
 				var id = $(this).data('id'),
@@ -921,8 +546,8 @@
 				if (id && token) {
 					$body.trigger('trackUserAction', ['2_2 Ввод_данных_Самовывоза|Доставки']);
 					$body.children('.selShop').remove();
-					$body.children('.lb_overlay').last().remove();
-					changePoint($(this).closest('.selShop').data('block_name'), id, token);
+					//$body.children('.lb_overlay')[1].remove();
+					changePoint($('.jsOneClickOrderRow').data('block_name'), id, token);
 				}
 			};
 
@@ -942,34 +567,28 @@
 
 		// клик по "изменить дату" и "изменить место"
 		$orderContent.on('click', '.orderCol_date, .js-order-changePlace-link', function(e) {
-			var $elem = $($(this).data('content'));
+			var $elem = $(this).parent().parent().next();
 			e.stopPropagation();
 			$('.popupFl').hide();
 
 			if ($(this).hasClass('js-order-changePlace-link')) {
-				var token = $elem.find('.selShop_l:first').data('token');
-				// скрываем все списки точек и показываем первую
-				$elem.find('.selShop_l').hide().first().show();
-				// первая вкладка активная
-				$elem.find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
 				$elem.lightbox_me({
 					centered: true,
 					closeSelector: '.jsCloseFl',
 					removeOtherOnCreate: false
 				});
-				showMap($elem, token);
+				showMap($elem);
 				$body.trigger('trackUserAction', ['2_1 Место_самовывоза|Адрес_доставки']);
 
 				// клик по способу доставки
-				$elem.off('click', '.selShop_tab:not(.selShop_tab-act)', chooseDelivery);
-				$elem.on('click', '.selShop_tab:not(.selShop_tab-act)', chooseDelivery);
+				//$elem.off('click', '.selShop_tab:not(.selShop_tab-act)', chooseDelivery);
+				//$elem.on('click', '.selShop_tab:not(.selShop_tab-act)', chooseDelivery);
 
 				// клик по списку точек самовывоза
-				$elem.off('click', '.jsChangePoint', choosePoint);
+				//$body.on('click', '.jsChangePoint', choosePoint);
 				$elem.on('click', '.jsChangePoint', choosePoint);
 			} else {
-				$elem.show();
-				log({'action':'view-date'});
+				$($(this).data('content')).show();
 				//$body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
 			}
 
@@ -1173,6 +792,11 @@
 							});
 						})();
 
+						// actionpay
+						if (response.result.actionpay) {
+							APRT_SEND(response.result.actionpay);
+						}
+
 						// Счётчик RetailRocket
 						(function() {
 							$.each(response.result.orders, function(index, order) {
@@ -1191,16 +815,10 @@
 								});
 							});
 						})();
-					}
 
-					var $orderContainer = $('#jsOrderV3OneClickOrder');
-					if ($orderContainer.length) {
-						$.get($orderContainer.data('url')).done(function(response) {
-							$orderContainer.html(response.result.page);
-
-							if (typeof ENTER.utils.sendOrderToGA == 'function') ENTER.utils.sendOrderToGA($('#jsOrder').data('value'));
-
-						});
+						if (response.result.orderAnalytics) {
+							ENTER.utils.sendOrderToGA(response.result.orderAnalytics);
+						}
 					}
 				})
 				.fail(function(jqXHR){

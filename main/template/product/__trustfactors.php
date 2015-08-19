@@ -1,8 +1,8 @@
 <?php
-
+use Model\Product\Trustfactor;
 /**
  * @param \Helper\TemplateHelper $helper
- * @param \Model\Product\Trustfactor[] $trustfactors
+ * @param Trustfactor[] $trustfactors
  * @param $type
  * @param null $reviewsData
  */
@@ -20,6 +20,12 @@ $f = function (
 ?>
 
     <? foreach ($trustfactors as $trustfactor): ?>
+
+        <? /** @var $trustfactor Trustfactor */
+            if ($trustfactor->hasTag(Trustfactor::TAG_NEW_PRODUCT_CARD) ||
+                $trustfactor->hasTag(Trustfactor::TAG_NEW_PRODUCT_CARD_PARTNER)) continue;
+        ?>
+
         <? if ($trustfactor->media && ($trustfactor->type === $type)): ?>
             <div class="trustfactor-<?= $type ?>" <?= 'top' === $type && (int)@$reviewsData['num_reviews'] ? 'itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating"' : '' ?>>
                 <? if ('top' === $type && (int)@$reviewsData['num_reviews']) : ?>
@@ -31,7 +37,7 @@ $f = function (
 
                 <? if ('image' === $trustfactor->media->provider): ?>
                     <? if (isset($trustfactor->link)): ?>
-                        <a id="trustfactor-<?= $type ?>-<?= md5(json_encode([$trustfactor])) ?>" href="<?= $helper->escape($trustfactor->link) ?>">
+                        <a id="trustfactor-<?= $type ?>-<?= md5(json_encode([$trustfactor])) ?>" href="<?= $helper->escape($trustfactor->link) ?>" target="_blank">
                     <? endif ?>
 
                     <? foreach ($trustfactor->media->sources as $source): ?>

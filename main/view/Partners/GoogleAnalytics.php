@@ -144,11 +144,6 @@ class GoogleAnalytics {
         $categories = $product->getCategory();
         $categoryUpper = reset($categories);
         $categoryDown = end($categories);
-        /*
-        $categoryMain = $product->getMainCategory();
-        if ( !$categoryMain ) {
-            $categoryMain = end( $categories );
-        }*/
 
         if (!empty($_SERVER['HTTP_REFERER'])) {
             if (strpos($_SERVER['HTTP_REFERER'], 'search?q=') > 0) {
@@ -239,15 +234,13 @@ class GoogleAnalytics {
         $SKUs = '';
         $userEntity = $this->user->getEntity();
         $cartProductsById = $this->getParam('cartProductsById');
+        /** @var $products \Model\Product\Entity[] */
         $products = $this->getParam('products');
 
         if (!$cartProductsById) return false;
 
         foreach ($products as $product) {
             if (!isset($cartProductsById[$product->getId()])) continue;
-            //$cartProduct = $cartProductsById[$product->getId()];
-            /** @var $cartProduct \Model\Cart\Product\Entity */
-            /** @var $product \Model\Product\CartEntity */
             $SKUs .= $product->getArticle() . ',';
             $total += $product->getPrice();
         }
@@ -319,14 +312,14 @@ class GoogleAnalytics {
                 $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : false;
 
                 $categoryName = null;
-                $mainCategory = $product ? $product->getMainCategory() : null;
+                $mainCategory = $product ? $product->getRootCategory() : null;
                 $parentCategory = $product ? $product->getParentCategory() : null;
 
                 $productName = $product ? $product->getName() : '';
                 $RR_buy_viewed = false;
                 $RR_buy_added = false;
                 $RR_buy_block = null;
-                if (isset($order->meta_data[sprintf('product.%s.sender', $product->getUi())][0])) {
+                if ($product && isset($order->meta_data[sprintf('product.%s.sender', $product->getUi())][0])) {
                     if ($order->meta_data[sprintf('product.%s.sender', $product->getUi())][0] == 'retailrocket') {
                         $productName .= sprintf(' (RR_%s)', @$order->meta_data[sprintf('product.%s.position', $product->getUi())][0]);
                         $RR_buy_block = @$order->meta_data[sprintf('product.%s.position', $product->getUi())][0];

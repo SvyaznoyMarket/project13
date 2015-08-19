@@ -131,7 +131,7 @@
 
 		return url;
 	};
-	
+
 	utils.getObjectWithElement = function(array, elementKey, expectedElementValue) {
 		var object = null;
 		if (array) {
@@ -142,7 +142,7 @@
 				}
 			});
 		}
-		
+
 		return object;
 	};
 
@@ -227,6 +227,8 @@
         var	oData = orderData || { orders: [] };
 
 		console.log('[Google Analytics] Start processing orders', oData.orders);
+
+		var productUis = [];
 		$.each(oData.orders, function(i,o) {
 			var googleOrderTrackingData = {};
 			googleOrderTrackingData.transaction = {
@@ -269,7 +271,7 @@
 				// Отправляем RR_покупка не только для retailrocket товаров
 				if (p.sender) {
 					var rrEventLabel = '';
-					// Если товар был куплен из рекомендаций с карточки товаров маркетплейс
+					// Если товар был куплен из рекомендаций с карточки товара маркетплейс
 					if (p.sender2 == 'slot') {
 						rrEventLabel = '_marketplace-slot';
 					} else if (p.sender2 == 'marketplace') {
@@ -295,6 +297,8 @@
 					})();
 				}
 
+				productUis.push(p.ui);
+
 				return {
 					'id': p.id,
 					'name': productName,
@@ -316,6 +320,31 @@
 			console.log('[Google Analytics] Order', googleOrderTrackingData);
 			$body.trigger('trackGoogleTransaction', [googleOrderTrackingData]);
 		});
+
+		// SITE-5466
+		(function() {
+			var
+				action = '',
+				label = '';
+
+			var reviewProducts = ENTER.utils.analytics.reviews.get(productUis);
+            console.log('localstorage', localStorage.getItem('enter.analytics.reviews'));
+            console.log('products ui', productUis);
+            console.log('reviewProducts', reviewProducts);
+
+			if (reviewProducts.length) {
+				for (var i = 0; i < reviewProducts.length; i++) {
+					action += (i > 0 ? '_' : '') + (i + 1) + '_All_' + reviewProducts[i].avgScore + '_Top_' + reviewProducts[i].firstPageAvgScore;
+					label += (i > 0 ? '_' : '') + (i + 1) + '_' + reviewProducts[i].categoryName;
+				}
+
+				$body.trigger('trackGoogleEvent', {
+					category: 'Items_review_transaction',
+					action: action,
+					label: label
+				});
+			}
+		})();
 	};
 
 	utils.sendAdd2BasketGaEvent = function(productArticle, productPrice, isOnlyFromPartner, isSlot, senderName) {
@@ -353,6 +382,175 @@
 
 	utils.getCategoryPath = function() {
 		return document.location.pathname.replace(/^\/(?:catalog|product)\/([^\/]*).*$/i, '$1');
+	};
+
+	var abstractAnalytics = {
+		add: function(storageName, itemData, storageMaxLength) {
+			if (!window.localStorage) {
+				return;
+			}
+
+			try {
+				var data = JSON.parse(localStorage.getItem(storageName)) || [];
+			} catch(e) {
+				data = [];
+			}
+
+			// Поскольку при переполнении переменной удаляются первые товары, важно, чтобы повторное добавление
+			// товара перемещало его в конец массива
+			for (var i = 0; i < data.length; i++) {
+				if (data[i][0] == itemData[0]) {
+					data.splice(i, 1);
+					break;
+				}
+			}
+
+			data.push(itemData);
+
+			while (JSON.stringify(data).length > storageMaxLength) {
+				data.shift();
+			}
+
+			localStorage.setItem(storageName, JSON.stringify(data));
+		},
+		get: function(storageName, itemsIdentifiers) {
+			if (!window.localStorage) {
+				return;
+			}
+
+			try {
+				var data = JSON.parse(localStorage.getItem(storageName)) || [];
+			} catch(e) {
+				data = [];
+			}
+
+			var result = [];
+			for (var i = 0; i < data.length; i++) {
+				if (itemsIdentifiers.indexOf(data[i][0]) != -1) {
+					result.push(data[i]);
+				}
+			}
+
+			return result;
+		},
+		clean: function(storageName) {
+			if (!window.localStorage) {
+				return;
+			}
+
+			localStorage.removeItem(storageName);
+		}
+	};
+
+	utils.analytics = {
+		// SITE-5466
+		reviews: {
+			add: function(productUi, avgScore, firstPageAvgScore, categoryName) {
+				// Размер хранилища выбран на основе исследования из задачи ADM-457 За эталон одной записи была взята
+				// запись "["00203e03-68ce-4a85-8862-8e7cd1542756",8.78,8.78,"Мобильные телефоны"]".
+				return abstractAnalytics.add('enter.analytics.reviews', [productUi, avgScore, firstPageAvgScore, categoryName], 3000);
+			},
+			get: function(productUis) {
+				var result = abstractAnalytics.get('enter.analytics.reviews', productUis);
+				for (var i = 0; i < result.length; i++) {
+					result[i] = {
+						avgScore: result[i][1],
+						firstPageAvgScore: result[i][2],
+						categoryName: result[i][3]
+					};
+				}
+
+				return result;
+			},
+			// Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа
+			// через обычное оформление заказа (не через одноклик или слоты).
+			clean: function() {
+				return abstractAnalytics.clean('enter.analytics.reviews');
+			}
+		},
+		// SITE-5062
+		productPageSenders: {
+			add: function(productUi, sender) {
+				// Размер хранилища выбран на основе исследования из задачи ADM-457 За эталон одной записи была взята
+				// запись "["00203e03-68ce-4a85-8862-8e7cd1542756",{"name":"retailrocket","position":"ProductAccessories","type":"alsoBought","method":"CrossSellItemToItems","from":"cart_rec"}],".
+				if (sender) {
+					return abstractAnalytics.add('enter.analytics.productPageSenders', [productUi, sender], 2500);
+				}
+			},
+			get: function($button) {
+				var sender = $button.data('sender') || {};
+
+				if ($('body').data('template') == 'product_card' && ($button.data('location') == 'product-card' || $button.data('location') == 'userbar')) {
+					var
+						product = $('#jsProductCard').data('value') || {},
+						productPageSender = abstractAnalytics.get('enter.analytics.productPageSenders', [product.ui])
+					;
+
+					productPageSender = (productPageSender[0] ? productPageSender[0][1] : null) || product.oldProductPageSender; // TODO: удалить oldProductPageSender через неделю после релиза SITE-5543
+
+					if (productPageSender && typeof productPageSender == 'object') {
+						function isSenderPresent(sender) {
+							if (sender && typeof sender == 'object') {
+								for (var key in sender) {
+									if (sender.hasOwnProperty(key) && key != 'from' && sender[key]) {
+										return true;
+									}
+								}
+							}
+
+							return false;
+						}
+
+						if (!isSenderPresent(sender)) {
+							sender = productPageSender;
+						}
+					}
+				}
+
+				return sender;
+			},
+			// Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа
+			// через обычное оформление заказа (не через одноклик или слоты).
+			clean: function() {
+				return abstractAnalytics.clean('enter.analytics.productPageSenders');
+			}
+		},
+		// SITE-5072
+		// Используется для сохранения источников переходов, осуществлённых из рекомендаций с карточек товаров
+		// маркетплейс. Используется отдельное хранилище (а не хранилище productPageSenders), т.к. данные источники
+		// не должны перезатирать источники из productPageSenders.
+		productPageSenders2: {
+			add: function(productUi, sender2) {
+				// Размер хранилища выбран на основе исследования из задачи ADM-457. За эталон одной записи была взята
+				// запись "["00203e03-68ce-4a85-8862-8e7cd1542756","marketplace"],".
+				if (sender2) {
+					return abstractAnalytics.add('enter.analytics.productPageSenders2', [productUi, sender2], 1000);
+				}
+			},
+			get: function($button) {
+				var sender2 = $button.data('sender2') || '';
+
+				if ($('body').data('template') == 'product_card' && ($button.data('location') == 'product-card' || $button.data('location') == 'userbar')) {
+					var
+						product = $('#jsProductCard').data('value') || {},
+						productPageSender2 = abstractAnalytics.get('enter.analytics.productPageSenders2', [product.ui])
+					;
+
+					productPageSender2 = (productPageSender2[0] ? productPageSender2[0][1] : null) || product.oldProductPageSender2; // TODO: удалить oldProductPageSender2 через неделю после релиза SITE-5543
+
+					if (productPageSender2 && !sender2) {
+						sender2 = productPageSender2;
+					}
+				}
+
+				return sender2;
+			},
+			// Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа
+			// через обычное оформление заказа (не через одноклик или слоты).
+			clean: function() {
+				return abstractAnalytics.clean('enter.analytics.productPageSenders2');
+			}
+		}
 	};
 
 }(window.ENTER));

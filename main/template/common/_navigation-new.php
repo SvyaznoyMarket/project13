@@ -63,6 +63,7 @@ $hamburgerJsClass = \App::abTest()->isMenuHamburger() ? ' jsHamburgerIcon ' : ''
 
                         <? if (!empty($menu1->children)) : ?>
 
+                            <!--noindex-->
                             <ul class="navsite2 navsite2-new js-mainmenu-level2">
 
                                 <? foreach ((array)$menu1->children as $menu2) : ?>
@@ -89,6 +90,7 @@ $hamburgerJsClass = \App::abTest()->isMenuHamburger() ? ' jsHamburgerIcon ' : ''
                                 <? endforeach ?>
 
                             </ul>
+                            <!--/noindex-->
 
                         <? endif ?>
 

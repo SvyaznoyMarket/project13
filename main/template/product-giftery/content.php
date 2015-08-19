@@ -7,22 +7,19 @@
  * @var $accessories            \Model\Product\Entity[]
  * @var $accessoryCategory      \Model\Product\Category\Entity[]
  * @var $kit                    \Model\Product\Entity[]
- * @var $additionalData         array
  * @var $shopStates             \Model\Product\ShopState\Entity[]
  * @var $creditData             array
  * @var $deliveryData           array
  * @var $isTchibo               boolean
  * @var $addToCartJS     string
- * @var $isUserSubscribedToEmailActions boolean
  * @var $actionChannelName string
  * @var $kitProducts            array   Продукты кита
- * @var $useLens                bool    Показывать лупу
  * @var $reviewsData            array   Данные отзывов
  * @var $breadcrumbs            array   Хлебные крошки
  * @var $trustfactors           array   Трастфакторы
  * @var $reviewsDataSummary     array   Данные отзывов
- * @var $sprosikupiReviews      array   Данные отзывов
- * @var $shoppilotReviews       array   Данные отзывов
+ * @var $videoHtml              string|null
+ * @var $properties3D           []
  */
 $helper = new \Helper\TemplateHelper();
 
@@ -35,8 +32,8 @@ $isKitPage = (bool)$product->getKit();
 
 $isProductAvailable = $product->isAvailable();
 
-$buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
-$buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
+$buySender = $request->get('sender');
+$buySender2 = $request->get('sender2');
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -45,14 +42,14 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
         <div class="product-card__head">
             <h1 class="product-card__head__title clearfix" itemprop="name">
                     <? if ($product->getPrefix()): ?>
-                        <?= $product->getPrefix() ?>
+                        <?= $helper->escape($product->getPrefix()) ?>
                     <? endif ?>
-                    <?= $product->getWebName() ?>
+                    <?= $helper->escape($product->getWebName()) ?>
             </h1>
             <span class="product-card__head__article">Артикул: <?= $product->getArticle() ?></span>
         </div>
 
-        <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens]) ?>
+        <?= $helper->render('product/__photo', ['product' => $product]) ?>
     </div>
 
     <div class="product-card__section-right">
@@ -64,6 +61,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
             <?= $helper->render('cart/__button-product', [
                 'product'  => $product,
                 'sender'   => $buySender,
+                'sender2'  => $buySender2,
                 'location' => 'product-card',
             ]) ?>
         </div>
@@ -87,7 +85,6 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
             'type'     => 'similar',
             'title'    => 'Похожие товары',
             'products' => [],
-            'count'    => null,
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
             'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -104,6 +101,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
     
     <? if ($product->getDescription()):?>
         <div class="product-card__desc">
+            <h3 class="bHeadSection">Описание</h3>
             <?= $product->getDescription() ?>
         </div>
     <? endif ?>
@@ -121,10 +119,8 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
             'type'           => 'alsoBought',
             'title'          => 'С этим товаром покупают',
             'products'       => [],
-            'count'          => null,
             'limit'          => \App::config()->product['itemsInSlider'],
             'page'           => 1,
-            'additionalData' => $additionalData,
             'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
             'sender'         => [
                 'name'     => 'retailrocket',
@@ -139,7 +135,6 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
             'type'      => 'viewed',
             'title'     => 'Вы смотрели',
             'products'  => [],
-            'count'     => null,
             'limit'     => \App::config()->product['itemsInSlider'],
             'page'      => 1,
             'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -158,7 +153,5 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
     <? endif ?>
 
     <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
-
-    <?= $helper->render('product/__event', ['product' => $product]) ?>
     </div>
 </div>

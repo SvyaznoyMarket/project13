@@ -5,7 +5,7 @@
 		updateTimeoutId = false;
 
 	/* Увеличение и уменьшение товара AJAX */
-	$body.on('click', '.numerbox a', function(e){
+	$body.on('click', '.jsCartNumerBox a', function(e){
 		var $elem = $(this),
 			href = $elem.attr('href');
 
@@ -14,12 +14,8 @@
 			$.ajax({
 				url: href,
 				success: function(data){
-					if (data.success && data.product) {
-						if (typeof data.product.quantity != 'undefined' && data.product.quantity > 0) {
-							UserModel.productQuantityUpdate(data.product.id, data.product.quantity);
-						} else {
-							UserModel.removeProductByID(data.product.id);
-						}
+					if (data.success) {
+						UserModel.cart().update(data.cart);
 					}
 				}
 			})
@@ -36,9 +32,11 @@
 			$.ajax({
 				url: href,
 				success: function(data){
-					if (data.success && data.product) {
-						UserModel.removeProductByID(data.product.id);
-						$body.trigger('removeFromCart', [data.product]);
+					if (data.success) {
+						UserModel.cart().update(data.cart);
+						if (data.setProducts) {
+							$body.trigger('removeFromCart', [data.setProducts]);
+						}
 
 						try {
 							if (0 === data.cart.products.length) {
@@ -53,7 +51,7 @@
 	});
 
 	// Событие добавления в корзину SITE-5289
-	$body.on('addtocart', function ga_addtocart(event, data) {
+	$body.on('addtocart', function(event, data) {
 		try {
 			if (1 == data.cart.products.length) {
 				console.info('#js-cart-firstRecommendation');
@@ -70,7 +68,7 @@
 	});
 
 	// Ручное обновление количества продукта
-	$body.on('keydown', '.ajaquant', function(e){
+	$body.on('keydown', '.jsCartNumerBox input[type="text"]', function(e){
 		var $input = $(e.target),
 			keyCode = e.which,
 			$initialQuantity = $input.val();
@@ -88,16 +86,15 @@
 				}
 
 				$.ajax({
-					url: $input.data('url'),
-					data: {
-						quantity: $input.val()
-					},
+					url: ENTER.utils.generateUrl('cart.product.setList', {
+						products: [{ui: $input.data('product-ui'), quantity: $input.val()}]
+					}),
 					beforeSend: function() {
 						$input.attr('disabled', true)
 					}
-				}).done(function(resp){
-					if (resp.success && resp.product) {
-						UserModel.productQuantityUpdate(resp.product.id, resp.product.quantity)
+				}).done(function(data){
+					if (data.success) {
+						UserModel.cart().update(data.cart);
 					} else {
 						$input.val($initialQuantity);
 					}
@@ -111,12 +108,20 @@
 		}
 	});
 
+    $('.js-slider-2').goodsSlider({
+        leftArrowSelector: '.goods-slider__btn--prev',
+        rightArrowSelector: '.goods-slider__btn--next',
+        sliderWrapperSelector: '.goods-slider__inn',
+        sliderSelector: '.goods-slider-list',
+        itemSelector: '.goods-slider-list__i'
+
+    });
+
 }(jQuery));
 ;(function($){
 	var $body = $(document.body),
-		cartInfoBlock = $('.cartInfo'),
 		config = ENTER.config.pageConfig,
-		user = ENTER.UserModel,
+		UserModel = ENTER.UserModel,
 		cookieKey1 = 'enter_ab_self_delivery_products_1', //cookie, где содержатся артикулы товаров, добавленных в корзину из блока рекомендаций
 		cookieKey2 = 'enter_ab_self_delivery_products_2'; //cookie, где содержатся артикулы товаров, на которые перешли из блока рекомендаций
 
@@ -124,12 +129,10 @@
 
 //	if (cartInfoBlock.length > 0) ko.applyBindings(ENTER.UserModel, cartInfoBlock[0]);
 
-	$body.on('userLogged', function(){
-		if (user.cartSum() < config.selfDeliveryLimit && user.cartSum() != 0) {
-			if (config.selfDeliveryTest) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + config.user.region.name, 'увидел', 'статичная корзина']);
-			else $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + config.user.region.name, 'не увидел', 'статичная корзина']);
-		}
-	});
+	if (UserModel.cart().sum() < config.selfDeliveryLimit && UserModel.cart().sum() != 0) {
+		if (config.selfDeliveryTest) $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'увидел', 'статичная корзина']);
+		else $body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'не увидел', 'статичная корзина']);
+	}
 
 	/* Трекинг добавления в корзину из блока рекомендаций */
 	$body.on('click', '.basketLine .jsBuyButton', function(e){
@@ -139,7 +142,7 @@
 		} else {
 			docCookies.setItem(cookieKey1, docCookies.getItem(cookieKey1) + ',' + product.article)
 		}
-		$body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + config.user.region.name, 'добавил из рекомендации', 'статичная корзина'])
+		$body.trigger('trackGoogleEvent', ['Платный_самовывоз', 'добавил из рекомендации', 'статичная корзина'])
 	});
 
 	/* Трекинг перехода в карточку товара из блока рекомендаций */
@@ -165,7 +168,7 @@
 		if (href.length != '') {
 			e.preventDefault();
 			$body.trigger('trackGoogleEvent',
-				{	category: 'Платный_самовывоз_' + config.user.region.name,
+				{	category: 'Платный_самовывоз',
 					action:'перешел на карточку из рекомендации',
 					label:'статичная корзина',
 					hitCallback: isNewWindow ? null : href

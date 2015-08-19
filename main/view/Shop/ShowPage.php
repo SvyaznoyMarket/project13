@@ -6,23 +6,23 @@ class ShowPage extends \View\DefaultLayout {
     protected $layout = 'layout-oneColumn';
 
     public function prepare() {
-        /** @var $region \Model\Region\Entity */
-        $region = $this->getParam('currentRegion') instanceof \Model\Region\Entity ? $this->getParam('currentRegion') : null;
-        if (!$region) {
+        /** @var $shop \Model\Shop\Entity */
+        $shop = $this->getParam('shop');
+        if (!$shop) {
             return;
         }
 
-        /** @var $shop \Model\Shop\Entity */
-        $shop = $this->getParam('shop') instanceof \Model\Shop\Entity ? $this->getParam('shop') : null;
-        if (!$shop) {
+        $region = $shop->getRegion();
+        if (!$region) {
             return;
         }
 
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = [];
+            $shopRegionNameInPrepositionalCase = $this->getParam('shopRegionNameInPrepositionalCase');
             $breadcrumbs[] = array(
-                'name' => 'Магазины Enter в  ' . $region->getInflectedName(5),
+                'name' => 'Магазины Enter в ' . ($shopRegionNameInPrepositionalCase ? $shopRegionNameInPrepositionalCase : 'городе ' . $region->getName()),
                 'url'  => \App::router()->generate('shop.region', array('regionId' => $region->getId())),
             );
             $breadcrumbs[] = array(

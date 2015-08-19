@@ -11,7 +11,6 @@
         $body = $(body),
         $orderContent = $('#js-order-content'),
         comment = '',
-        region = $('.jsRegion').data('value'),
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -42,8 +41,8 @@
         changeInterval = function changeIntervalF(block_name, interval) {
             sendChanges('changeInterval', {'block_name': block_name, 'interval': interval})
         },
-        changeProductQuantity = function changeProductQuantityF(block_name, id, quantity) {
-            sendChanges('changeProductQuantity', {'block_name': block_name, 'id': id, 'quantity': quantity})
+        changeProductQuantity = function changeProductQuantityF(block_name, id, ui, quantity) {
+            sendChanges('changeProductQuantity', {'block_name': block_name, 'id': id, 'ui': ui, 'quantity': quantity})
         },
         changePaymentMethod = function changePaymentMethodF(block_name, method, isActive) {
             var params = {'block_name': block_name};
@@ -121,6 +120,11 @@
         },
         sendChanges = function sendChangesF (action, params) {
             console.info('Sending action "%s" with params:', action, params);
+
+            var hideContent = true;
+
+            if ($.inArray(action, ['changeDate', 'changeInterval', 'changeOrderComment']) != -1) hideContent = false;
+
             $.ajax({
                 type: 'POST',
                 data: {
@@ -128,7 +132,7 @@
                     'params' : params
                 },
                 beforeSend: function() {
-                    $orderContent.fadeOut(500);
+                    if (hideContent) $orderContent.fadeOut(500);
                     if (spinner) spinner.spin(body)
                 }
             }).fail(function(jqXHR){
@@ -146,7 +150,7 @@
 
                 $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
 
-                $orderContent.empty().html($(data.result.page).find('#js-order-content').html());
+                $orderContent.empty().html(data.result.page);
 				if ($orderContent.find('.jsAddressRootNode').length > 0) {
 					$.each($orderContent.find('.jsAddressRootNode'), function(i,val){
 						ko.applyBindings(ENTER.OrderV3.address, val);
@@ -161,6 +165,13 @@
                         points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map);
                     ENTER.OrderV3.koModels.push(points);
                     ko.applyBindings(points, val);
+                });
+
+                // Попап с сообщением о минимальной сумма заказа
+                $orderContent.find('.jsMinOrderSumPopup').lightbox_me({
+                    closeClick: false,
+                    closeEsc: false,
+                    centered: true
                 })
 
             }).always(function(){
@@ -176,34 +187,38 @@
                 "url": '/order/log'
             })
         },
-        showMap = function(elem) {
-            var $currentMap = elem.find('.js-order-map').first(),
+        /**
+         * Функция отображения карты
+         * @param $elem - попап
+         */
+        showMap = function($elem) {
+            var $currentMap = $elem.find('.js-order-map').first(),
+                $parent = $elem.parent(),
                 mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
                 mapOptions = ENTER.OrderV3.mapOptions,
                 map = ENTER.OrderV3.map;
 
             if (mapData && typeof map.getType == 'function') {
 
-                elem.lightbox_me({
+                $elem.lightbox_me({
                     centered: true,
-                    closeSelector: '.jsCloseFl'
+                    closeSelector: '.jsCloseFl',
+                    onClose: function(){ $parent.append($elem) } // возвращаем элемент на место
                 });
 
-                if (!elem.is(':visible')) elem.show();
+                if (!$elem.is(':visible')) $elem.show();
 
                 map.geoObjects.removeAll();
                 map.setCenter([mapOptions.latitude, mapOptions.longitude], mapOptions.zoom);
                 $currentMap.append(ENTER.OrderV3.$map.show());
                 map.container.fitToViewport();
 
-                // добавляем невидимые точки на карту
-                $.each(mapData.points, function(token){
-                    for (var i = 0; i < mapData.points[token].length; i++) {
-                        try {
-                            map.geoObjects.add(new ENTER.Placemark(mapData.points[token][i], false));
-                        } catch (e) {
-                            console.error('Ошибка добавления точки на карту', e);
-                        }
+                // добавляем точки на карту
+                $.each(mapData.points, function(i, point){
+                    try {
+                        map.geoObjects.add(new ENTER.Placemark(point, true));
+                    } catch (e) {
+                        console.error('Ошибка добавления точки на карту', e, point);
                     }
                 });
 
@@ -213,11 +228,11 @@
                 } else {
                     map.setBounds(map.geoObjects.getBounds());
                     // точки становятся видимыми только при увеличения зума
-                    map.events.once('boundschange', function(event){
+                    /*map.events.once('boundschange', function(event){
                         if (event.get('oldZoom') < event.get('newZoom')) {
                             map.geoObjects.each(function(point) { point.options.set('visible', true)})
                         }
-                    })
+                    })*/
                 }
 
             }
@@ -264,11 +279,10 @@
         $('.popupFl').hide();
 
         if ($(this).hasClass('js-order-changePlace-link')) {
-            showMap($(elemId));
+            showMap($(this).closest('.jsOrderRow').find('.jsNewPoints'));
             $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
         } else {
             $(elemId).show();
-            log({'action':'view-date'});
             $body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
         }
 
@@ -277,8 +291,8 @@
 
     // клик по способу доставки
 	$body.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
-        var token = $(this).data('token'),
-            id = $(this).closest('.popupFl').attr('id');
+        var token = $(this).data('token');
+            //map = $(this).parent().next();
         // переключение списка магазинов
         $('.selShop_l').hide();
         $('.selShop_l[data-token='+token+']').show();
@@ -286,7 +300,7 @@
         $('.selShop_tab').removeClass('selShop_tab-act');
         $('.selShop_tab[data-token='+token+']').addClass('selShop_tab-act');
         // показ карты
-        showMap($('#'+id));
+        //showMap(map);
     });
 
     // клик по "Ввести код скидки"
@@ -344,14 +358,14 @@
     $orderContent.on('click', '.jsChangeProductQuantity', function(e){
         var $this = $(this),
             quantity = $this.parent().find('input').val();
-        changeProductQuantity($this.data('block_name'), $this.data('id'), quantity);
+        changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), quantity);
         e.preventDefault();
     });
 
     // клик по ссылке "Удалить" у каунтера
     $orderContent.on('click', '.jsDeleteProduct', function(e){
         var $this = $(this);
-        changeProductQuantity($this.data('block_name'), $this.data('id'), 0);
+        changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), 0);
         e.preventDefault();
     });
 
@@ -415,7 +429,7 @@
 
     // клик по "Я ознакомлен и согласен..."
     $orderContent.on('click', '.jsAcceptTerms', function(){
-        $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
+        if (!$('.jsAcceptAgreement').is(':checked')) $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
     });
 
 	/* Оферта */
@@ -427,9 +441,9 @@
 			if (window.location.host != 'www.enter.ru') href = href.replace(/^.*enter.ru/, ''); /* для работы на demo-серверах */
 			console.log('NEW href', href);
 			$.ajax({
-				url: href,
+				url: ENTER.utils.setURLParam('ajax', 1, href),
 				success: function(data) {
-					$('.orderOferta_tl:first').html($(data).find('.entry-content').html());
+					$('.orderOferta_tl:first').html(data.content || '');
 					showOfertaPopup();
 				}
 			})
@@ -440,16 +454,23 @@
 		tabsOfertaAction(this)
 	});
 
+    // Попап с сообщением о минимальной сумма заказа
+    $('.jsMinOrderSumPopup').lightbox_me({
+        closeClick: false,
+        closeEsc: false,
+        centered: true
+    });
+
 	// ДЛЯ АБ-ТЕСТА ПО МОТИВАЦИИ ОНЛАЙН-ОПЛАТЫ
 	$body.on('click', '.jsPaymentMethodRadio', function(){
 		var $this = $(this),
 			block_name = $this.closest('.orderRow').data('block_name'),
 			method = $this.val();
         if (method == 'by_online_credit') {
-            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Кредит']);
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Кредит']);
             $body.trigger('trackGoogleEvent', ['Credit', 'Выбор опции', 'Оформление заказа']);
         }
-        if (method == 'by_online') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Онлайн-оплата']);
+        if (method == 'by_online') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Онлайн-оплата']);
 		changePaymentMethod(block_name, method, 'true')
 	});
 
@@ -459,7 +480,7 @@
 			selectedMethod = $this.find(':selected').val();
 		changePaymentMethod(block_name, selectedMethod, 'true');
         console.log('[G changed', e);
-        if (selectedMethod == 'by_credit_card') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
+        if (selectedMethod == 'by_credit_card') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
 		e.preventDefault();
 	});
 
@@ -485,6 +506,16 @@
             'hitCallback': link
         }]);
 
+    });
+
+    $body.on('change', '.jsDeliveryMapFilters input', function(){
+        var type = $(this).data('type'),
+            val = $(this).next().find('span').text();
+        $body.trigger('trackGoogleEvent', ['pickup_ux', 'filter', type + '_' + val]);
+    });
+
+    $body.on('click', '.jsMapDeliveryList .jsChangePoint', function(){
+        $body.trigger('trackGoogleEvent', ['pickup_ux', 'list_point', 'выбор'])
     })
 
 })(jQuery);

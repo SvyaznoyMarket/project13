@@ -1,300 +1,282 @@
 .epTextLogo {
-	color: @firmOrange;
+    font-family: 'Enter';
+    font-size: 20px;
 
-	font-family: "Enter";
-	font-size: 20px;
-
-	&_colors {
-		color: @white;
-	}
+    color: @firmOrange;
+    &_colors {
+        color: @white;
+    }
 }
 
 .ep-logo {
-	.inline-block();
     width: 273px;
-	height: 70px;
-	margin: 10px 20px 0 0;
+    height: 70px;
+    margin: 10px 20px 0 0;
 
-	vertical-align: top;
     text-indent: -9999px;
 
-	background: url("@{base-url}/enterPrize/img/logo_3D.png") no-repeat 0 0;
+    background: url('@{base-url}/enterPrize/img/logo_3D.png') no-repeat 0 0;
+
+    .inline-block();
 }
 
 .ep-head {
-	padding: 0 10px;
-	position: relative;
-	margin: 0 0 30px;
+    position: relative;
 
-	&__desc {
-		.inline-block();
+    margin: 0 0 45px;
+    padding: 0 10px;
+    &__desc {
+        font-size: 14px;
 
-		color: @white;
-		width: 390px;
+        width: 390px;
+        margin-right: 39px;
 
-		font-size: 14px;
+        color: @white;
 
-		margin-right: 39px;
+        .inline-block();
+        &__i {
+            margin: 0 0 5px;
+        }
+    }
+    &__control {
+        font-size: 14px;
 
-		&__i {
-			margin: 0 0 5px;
-		}
-	}
+        float: right;
 
-	&__control {
-		float: right;
-		width: 210px;
-		text-align: right;
+        width: 210px;
 
-		color: @white;
+        text-align: right;
 
-		font-size: 14px;
+        color: @white;
+        &__i {
+            line-height: 1.4;
 
-		&__i {
-			line-height: 1.4;
-    		margin: 0 0 28px;
+            margin: 0 0 28px;
+            &__lk {
+                color: @white;
+                border-bottom-color: #a0a0a0;
+            }
+            &__log {
+                font-size: 18px;
 
-			&__lk {
-				color: @white;
-				border-bottom-color: #a0a0a0;
-			}
+                color: @firmOrange;
+                border-color: @firmOrange;
+            }
+            &__hint {
+                cursor: pointer;
 
-			&__log {
-				border-color: @firmOrange;
-
-				color: @firmOrange;
-
-				font-size: 18px;
-			}
-
-			&__hint {
-				cursor: pointer;
-
-				border-bottom: 1px dotted @white;
-			}
-		}
-	}
+                border-bottom: 1px dotted @white;
+            }
+        }
+    }
 }
 
 .ep-tl {
-	margin: 5px 0 25px 15px;
-
-	color: @white;
-
-    font-family: "Enter";
+    font-family: 'Enter';
     font-size: 30px;
+
+    margin: 5px 0 25px 15px;
+
+    color: @white;
 }
 
 .ep-box {
-	.rounded(4px);
-	margin: 40px 0 20px;
-	padding: 10px;
-	position: relative;
+    position: relative;
 
-	background: #eaeaea;
+    margin: 40px 0 20px;
+    padding: 10px;
 
-	&--hidden {
+    background: #eaeaea;
 
-		.ep-box__tx,
-		.ep-list {
-			.opacity(0.5);
-		}
-	}
+    .rounded(4px);
+    &--hidden {
+        .ep-box__tx ,
+        .ep-list {
+            .opacity(.5);
+        }
+    }
+    .ep-list {
+        position: absolute;
+        top: -45px;
+        right: 0;
+    }
+    .ep-logo {
+        margin: -40px 0 0;
+    }
+    .ep-rules {
+        font-size: 16px;
+        line-height: 1.6;
 
-	.ep-list {
-	    position: absolute;
-	    top: -45px;
-	    right: 0;
-	}
+        float: none;
 
-	.ep-logo{
-		margin: -40px 0 0;
-	}
+        width: 600px;
+        height: auto;
+        margin: 13px 0;
+        padding: 15px;
 
-	.ep-rules {
-		float: none;
+        border-bottom: 1px solid #bbb;
+        background: @white;
+        strong {
+            font-size: 18px;
+        }
+    }
+    &__login {
+        font-size: 14px;
 
-		width: 600px;
-		height: auto;
-		margin: 13px 0;
-		padding: 15px;
-
-		border-bottom: 1px solid #bbbbbb;
-		background: @white;
-
-		font-size: 16px;
-		line-height: 1.6;
-
-		strong {
-			font-size: 18px;
-		}
-	}
-
-	&__login {
-		margin: 0 0 0 15px;
-
-		font-size: 14px;
-
-		a {
-			text-decoration: underline;
-		}
-	}
+        margin: 0 0 0 15px;
+        a {
+            text-decoration: underline;
+        }
+    }
 }
 
 .ep-rules {
-	margin-top: -64px;
-	padding: 65px 0 10px 15px;
+    margin-top: -64px;
+    padding: 65px 0 10px 15px;
 
-	border-radius: 4px;
+    border-radius: 4px;
+    &__img {
+        float: left;
 
-	&__img {
-		float: left;
+        width: 95px;
+        height: 82px;
+        margin-top: 10px;
+        margin-right: 15px;
 
-	   	width: 95px;
-		height: 82px;
-	    margin-top: 10px;
-	    margin-right: 15px;
-
-	    vertical-align: middle;
-
-		img {
-			width: 100%;
-			height: auto;
-		}
-	}
+        vertical-align: middle;
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
 }
 
 .epHintPopup {
-	.rounded(4px);
-	position: absolute;
+    position: absolute;
     top: 78px;
-	right: 0;
+    right: 0;
 
-	display: none;
+    display: none;
 
-	padding: 15px 10px;
+    padding: 15px 10px;
 
-	background: rgb(255,255,255);
-	background: rgba(255,255,255,0.95);
+    background: rgb(255,255,255);
+    background: rgba(255,255,255,.95);
 
-	&_list {
-		font-size: 14px;
+    .rounded(4px);
+    &_list {
+        font-size: 14px;
+        &_item {
+            margin: 0 0 5px;
 
-		&_item {
-		    margin: 0 0 5px;
+            list-style-position: inside;
+            list-style-type: decimal;
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+    &_close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
 
-			list-style-position: inside;
-		    list-style-type: decimal;
+        width: 15px;
+        height: 15px;
 
-			&:last-child {
-				margin-bottom: 0;
-			}
-		}
-	}
+        cursor: pointer;
 
-	&_close {
-		position: absolute;
-		top: 8px;
-		right: 8px;
-
-		width: 15px;
-		height: 15px;
-
-		cursor: pointer;
-
-		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCODc1OEQ3REYzQzcxMUUzQjQ3MzhCMUU5ODIzNjA5NiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCODc1OEQ3RUYzQzcxMUUzQjQ3MzhCMUU5ODIzNjA5NiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkI4NzU4RDdCRjNDNzExRTNCNDczOEIxRTk4MjM2MDk2IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkI4NzU4RDdDRjNDNzExRTNCNDczOEIxRTk4MjM2MDk2Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+91edowAAAGNJREFUeNpiYGBgcALik0AsykAcEIWqB+kDM/4D8WUiDBCFqvsP1YcigM8AnOoIGUDQAlwKiHUZhkINYjViM+A7KRphQANJ43con+h4JMtmsv1MdmiTHc8UpTCK0jbZuQogwAD7+kj0e+2PzQAAAABJRU5ErkJggg==) no-repeat 0 0;
-	}
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCODc1OEQ3REYzQzcxMUUzQjQ3MzhCMUU5ODIzNjA5NiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCODc1OEQ3RUYzQzcxMUUzQjQ3MzhCMUU5ODIzNjA5NiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkI4NzU4RDdCRjNDNzExRTNCNDczOEIxRTk4MjM2MDk2IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkI4NzU4RDdDRjNDNzExRTNCNDczOEIxRTk4MjM2MDk2Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+91edowAAAGNJREFUeNpiYGBgcALik0AsykAcEIWqB+kDM/4D8WUiDBCFqvsP1YcigM8AnOoIGUDQAlwKiHUZhkINYjViM+A7KRphQANJ43con+h4JMtmsv1MdmiTHc8UpTCK0jbZuQogwAD7+kj0e+2PzQAAAABJRU5ErkJggg==) no-repeat 0 0;
+    }
 }
 
 .epListTitle {
+    font-family: 'Enter';
+    font-size: 28px;
+
     margin-top: 25px;
 
-	color: @white;
-
-    font-family: "Enter";
-    font-size: 28px;
+    color: @white;
     .orange {
-    	color: #ffa901;
+        color: #ffa901;
     }
 }
 
 .ep-selected-coupon {
-	margin: 0 0 30px;
-	padding: 10px 10px 10px 0;
+    margin: 0 0 30px;
+    padding: 10px 10px 10px 0;
 
-	background: #272727;
+    background: #272727;
+    &__l {
+        float: left;
 
-	&__l {
-		float: left;
+        margin: 0;
+        .enterPrize__list__item {
+            margin-right: 0;
+        }
+    }
+    &__r {
+        float: right;
 
-		margin: 0;
+        width: 680px;
+    }
+    &__desc {
+        font-size: 14px;
+        line-height: 1.5;
 
-		.enterPrize__list__item {
-		    margin-right: 0;
-		}
-	}
+        margin: 0 0 10px;
 
-	&__r {
-		float: right;
+        color: @white;
+    }
+    &__slider {
+        padding: 10px;
 
-		width: 680px;
-	}
+        background: @white;
 
-	&__desc {
-    	margin: 0 0 10px;
+        .rounded(4px);
+        &__lk {
+            font-size: 14px;
+            font-weight: bold;
 
-		color: @white;
+            text-decoration: underline;
 
-		font-size: 14px;
-		line-height: 1.5;
-	}
+            color: #3f3f3f;
+        }
+        .slideItem {
+            &_btn-prv {
+                left: -10px;
+            }
+            &_btn-nxt {
+                right: -10px;
+            }
+        }
+    }
+}
 
-	&__slider {
-		.rounded(4px);
-		padding: 10px;
+.ep-rules-lst {
+    display: none;
 
-		background: @white;
+    margin: 0 0 20px;
 
-		&__lk {
-			text-decoration: underline;
+    text-align: left;
+    &__i {
+        font-size: 12px;
 
-			color: #3f3f3f;
+        margin: 0 0 15px 0;
+        padding-left: 10px;
 
-			font-size: 14px;
-			font-weight: bold;
-		}
-		.slideItem{
-			&_btn-prv{
-				left:-10px;
-			}
-			&_btn-nxt{
-				right:-10px;
-			}
-		}
-	}
- }
-
- .ep-rules-lst {
-	display: none;
-	margin: 0 0 20px;
-	text-align: left;
-
-	&__i {
-		margin: 0 0 15px 0;
-		border-left: 3px solid;
-		padding-left: 10px;
-		font-size: 12px;
-
-		&.mBlue {
-			border-color: @firmBlue;
-		}
-
-		&.mOrange {
-			border-color: @firmOrange;
-		}
-
-		&.mGreen {
-			border-color: @firmGreen;
-		}
-	}
+        border-left: 3px solid;
+        &.mBlue {
+            border-color: @firmBlue;
+        }
+        &.mOrange {
+            border-color: @firmOrange;
+        }
+        &.mGreen {
+            border-color: @firmGreen;
+        }
+    }
+}
+.ep {
+    position: relative;
 }

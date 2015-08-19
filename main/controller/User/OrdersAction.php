@@ -4,13 +4,7 @@
 namespace Controller\User;
 
 
-class OrdersAction {
-
-    public function __construct() {
-        if (!\App::user()->getToken()) {
-            throw new \Exception\AccessDeniedException();
-        }
-    }
+class OrdersAction extends PrivateAction {
 
     /**
      * @param \Http\Request $request
@@ -79,8 +73,10 @@ class OrdersAction {
         // выполнение 1-го пакета запросов
         $client->execute();
 
+        /** @var \Model\Product\Entity[] $products */
         $products = [];
-        $products_by_id = [];
+        /** @var \Model\Product\Entity[] $productsById */
+        $productsById = [];
         $currentOrders = [];
 
         if ($orders) {
@@ -97,15 +93,28 @@ class OrdersAction {
                 }
             });
 
-            $products = \RepositoryManager::product()->getCollectionById(
-                array_map(function(\Model\User\Order\Entity $order) { return $order->getAllProductsIds(); }, $orders)
-            );
+            call_user_func(function() use (&$orders, &$products) {
+                $ids = [];
+                foreach ($orders as $order) {
+                    $ids = array_merge($ids, $order->getAllProductsIds());
+                }
+
+                foreach ($ids as $productId) {
+                    $products[] = new \Model\Product\Entity(['id' => $productId]);
+                }
+
+                \RepositoryManager::product()->prepareProductQueries($products, 'media');
+                \App::coreClientV2()->execute();
+
+                \RepositoryManager::review()->addScores($products);
+            });
+
             foreach ($products as $product) {
-                $products_by_id[$product->getId()] = $product;
+                $productsById[$product->getId()] = $product;
             }
         }
 
-        return ['orders' => $orders, 'products' => $products, 'orders_by_year' => $orders_by_year, 'current_orders' => $currentOrders, 'products_by_id' => $products_by_id];
+        return ['orders' => $orders, 'products' => $products, 'orders_by_year' => $orders_by_year, 'current_orders' => $currentOrders, 'products_by_id' => $productsById];
 
     }
 

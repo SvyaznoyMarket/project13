@@ -5,8 +5,7 @@ namespace View;
 use Session\AbTest\AbTest;
 
 class DefaultLayout extends Layout {
-
-    protected $layout  = 'layout-twoColumn';
+    protected $layout  = 'layout-oneColumn';
     protected $breadcrumbsPath = null;
     protected $useTchiboAnalytics = false;
 
@@ -20,7 +19,7 @@ class DefaultLayout extends Layout {
         $this->addMeta('yandex-verification', '623bb356993d4993');
         $this->addMeta('viewport', 'width=900');
         //$this->addMeta('title', 'Enter - это выход!');
-        $this->addMeta('description', 'Enter - новый способ покупать. Любой из ' . \App::config()->product['totalCount'] . ' товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.');
+        $this->addMeta('description', \App::config()->description);
 
         // TODO: осторожно, говнокод
         if ('live' != \App::$env) {
@@ -48,7 +47,7 @@ class DefaultLayout extends Layout {
         }
 
 
-        $relLink = $request->getSchemeAndHttpHost() . $path;
+        $relLink = $request->getScheme() . '://' . \App::config()->mainHost . $path;
 
         return '<link rel="canonical" href="' . $relLink . '" />';
     }
@@ -57,6 +56,9 @@ class DefaultLayout extends Layout {
         return $this->tryRender('_googleAnalytics');
     }
 
+    /** Наименования шаблона для load.js
+     * @return string
+     */
     public function slotBodyDataAttribute() {
         return 'default';
     }
@@ -217,42 +219,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotMainMenu() {
-        $renderer = \App::closureTemplating();
-
-        if (\App::config()->mainMenu['requestMenu']) {
-            $client = \App::curl();
-
-            $isFailed = false;
-            $content = '';
-            $client->addQuery(
-                'http://' . \App::config()->mainHost
-                . (\App::user()->getRegion()
-                    ? \App::router()->generate('category.mainMenu.region', ['regionId' => \App::user()->getRegion()->getId()])
-                    : \App::router()->generate('category.mainMenu')
-                ),
-                [],
-                function($data) use (&$content, &$isFailed) {
-                    isset($data['content']) ? $content = $data['content'] : $isFailed = true;
-                },
-                function(\Exception $e) use (&$isFailed) {
-                    \App::exception()->remove($e);
-                    $isFailed = true;
-                },
-                2
-            );
-            $client->execute(1, 2);
-
-            if ($isFailed) {
-                $content = $renderer->render('__mainMenu', ['menu' => (new Menu())->generate(\App::user()->getRegion())]);
-            }
-        } else {
-            $content = $renderer->render('__mainMenu', ['menu' => (new Menu())->generate(\App::user()->getRegion())]);
-        }
-
-        return $content;
-    }
-
     public function slotBanner() {
         return '';
     }
@@ -279,6 +245,25 @@ class DefaultLayout extends Layout {
                 if (\App::config()->partners['SmartLeads']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
             }
 
+            // Реактив (adblender) SITE-5718
+            call_user_func(function() use ($routeName, &$return) {
+                if (!\App::config()->partners['Adblender']['enabled']) return;
+
+                $template = '<div id="adblenderJS" class="jsanalytics" data-value="{{dataValue}}"></div>';
+                $dataValue = [];
+                if ('orderV3.complete' === $routeName) {
+                    return;
+                } else if ('cart' === $routeName) {
+                    $dataValue['type'] = 'cart';
+                } else {
+                    $dataValue['type'] = 'default';
+                }
+
+                $return .= strtr($template, [
+                    '{{dataValue}}' => $this->json($dataValue),
+                ]);
+            });
+
             if ('subscribe_friends' == $routeToken) {
                 $return .= $this->tryRender('partner-counter/_actionpay_subscribe');
                 $return .= $this->tryRender('partner-counter/_cityAds_subscribe');
@@ -293,23 +278,19 @@ class DefaultLayout extends Layout {
                 $return .= '<div id="AlexaJS" class="jsanalytics"></div><noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=mPO9i1acVE000x" style="display:none" height="1" width="1" alt="" /></noscript>';
             }
 
-            // new Google Analytics Code
-            $useTchiboAnalytics = false;
-            if (\App::config()->googleAnalyticsTchibo['enabled']) {
-                $useTchiboAnalytics = $this->useTchiboAnalytics;
-                if (!$useTchiboAnalytics && $this->getGlobalParam('isTchibo')) {
-                    $useTchiboAnalytics = $this->getGlobalParam('isTchibo', false);
-                }
+            if (\App::config()->partners['facebook']['enabled']) {
+                $return .= strtr('<div id="facebookJs" class="jsanalytics" data-value="{{dataValue}}"></div>', [
+                    '{{dataValue}}' => $this->json(['id' => \App::config()->facebookOauth->clientId]),
+                ]);
             }
 
-            $return .= '<div id="gaJS" class="jsanalytics"
-                    data-vars="' . $this->json((new \View\Partners\GoogleAnalytics($routeName, $this->params))->execute()) . '"
-                    data-use-tchibo-analytics="' . $useTchiboAnalytics . '">
-                </div>';
+            $return .= $this->googleAnalyticsJS();
 
             if (\App::config()->partners['TagMan']['enabled']) {
                 $return .= '<div id="TagManJS" class="jsanalytics"></div>';
             }
+
+            $return .= $this->slotMyThings(['route' => $routeName]);
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
@@ -318,10 +299,36 @@ class DefaultLayout extends Layout {
         return $return;
     }
 
+    public function googleAnalyticsJS(){
+
+        $routeName = \App::request()->attributes->get('route');
+
+        // new Google Analytics Code
+        $useTchiboAnalytics = false;
+        if (\App::config()->googleAnalyticsTchibo['enabled']) {
+            $useTchiboAnalytics = $this->useTchiboAnalytics;
+            if (!$useTchiboAnalytics && $this->getGlobalParam('isTchibo')) {
+                $useTchiboAnalytics = $this->getGlobalParam('isTchibo', false);
+            }
+        }
+
+        return '<div id="gaJS" class="jsanalytics"
+                    data-vars="' . $this->json((new \View\Partners\GoogleAnalytics($routeName, $this->params))->execute()) . '"
+                    data-use-tchibo-analytics="' . $useTchiboAnalytics . '">
+                </div>';
+    }
+
     public function slotConfig() {
         return $this->tryRender('_config');
     }
 
+    public function slotMyThings($data) {
+        if (\App::config()->partners['MyThings']['enabled']) {
+            $data = array_merge(['EventType' => 'Visit'], $data);
+            return sprintf('<div id="MyThingsJS" class="jsanalytics" data-value="%s"></div>', $this->json($data));
+        }
+        return '';
+    }
 
     public function slotSociomantic() {
         if (!\App::config()->partners['sociomantic']['enabled']) return '';
@@ -355,8 +362,8 @@ class DefaultLayout extends Layout {
 
             $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
             if ( $product ) {
-                /** @var @var $product \Model\Product\Entity */
-                $category = $product->getMainCategory();
+                /** @var $product \Model\Product\Entity */
+                $category = $product->getRootCategory();
                 $categories = $product->getCategory();
                 if (!$category) $category = reset($categories);
                 $prod_cats = array_map(function($a){ return $a->getName(); }, $categories);

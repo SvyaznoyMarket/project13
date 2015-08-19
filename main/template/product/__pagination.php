@@ -2,18 +2,18 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Iterator\EntityPager $pager
+    \Iterator\EntityPager $pager,
+    \Model\Product\Category\Entity $category = null
 ) { ?>
 
-	<div class="bSortingList mPager js-category-pagination">
-	    <?= $helper->renderWithMustache('_pagination', (new \View\PaginationAction())->execute(
-	        $helper,
-	        $pager
-	    )) ?>
-	</div>
+    <?= $helper->renderWithMustache('pagination', (new \View\PaginationAction())->execute(
+        $helper,
+        $pager,
+        $category
+    )) ?>
 
     <script class="tplPagination" type="text/html" data-partial="">
-        <?= file_get_contents(\App::config()->templateDir . '/_pagination.mustache') ?>
+        <?= file_get_contents(\App::config()->templateDir . '/pagination.mustache') ?>
     </script>
 
 <? };

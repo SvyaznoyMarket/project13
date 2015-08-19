@@ -85,7 +85,8 @@
 
 		var
 			$button = $(this),
-			sender = $button.data('sender') || {},
+			sender = ENTER.utils.analytics.productPageSenders.get($button),
+			sender2 = ENTER.utils.analytics.productPageSenders2.get($button),
 			productArticle = $button.data('product-article'),
 			productPrice = $button.data('product-price'),
 			$popup = $(Mustache.render($('#tpl-cart-slot-form').html(), {
@@ -95,8 +96,8 @@
 				partnerOfferUrl: $button.data('partner-offer-url'),
 				productUrl: $button.data('product-url'),
 				productId: $button.data('product-id'),
-				sender: $button.attr('data-sender'),
-				sender2: $button.data('sender2') || '',
+				sender: JSON.stringify(sender),
+				sender2: sender2,
 				userPhone: String(ENTER.utils.Base64.decode(ENTER.config.userInfo.user.mobile || '')).replace(/^8/, '+7'),
 				userEmail: ENTER.config.userInfo.user.email || '',
 				userName: ENTER.config.userInfo.user.firstName || ''
@@ -154,7 +155,7 @@
 			$errors.empty().hide();
 
 			if (!validate($form)) {
-				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
+				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
 				return;
 			}
 
@@ -168,7 +169,7 @@
 				success: function(result){
 					if (result.error) {
 						$errors.text(result.error).show();
-						$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
+						$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
 						return;
 					}
 
@@ -182,7 +183,7 @@
 						$popup.trigger('close');
 					});
 
-					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7 Оформить успешно', catalogPath]);
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7 Оформить успешно', catalogPath]);
 
 					if (typeof ENTER.utils.sendOrderToGA == 'function' && result.orderAnalytics) {
 						ENTER.utils.sendOrderToGA(result.orderAnalytics);
@@ -190,7 +191,7 @@
 				},
 				error: function(){
 					$errors.text('Ошибка при создании заявки').show();
-					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
 				},
 				complete: function(){
 					$submitButton.removeAttr('disabled');
@@ -198,30 +199,30 @@
 			})
 		});
 
-		ENTER.utils.sendAdd2BasketGaEvent(productArticle, productPrice, true, true, sender.name);
+		ENTER.utils.sendAdd2BasketGaEvent(productArticle, productPrice, true, true, ($button.data('sender') || {}).name);
 
-		$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '1 Вход', catalogPath]);
+		$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '1 Вход', catalogPath]);
 
 		$phone.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '2 Телефон', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '2 Телефон', catalogPath]);
 		});
 
 		$email.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '3 Email', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '3 Email', catalogPath]);
 		});
 
 		$name.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '4 Имя', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '4 Имя', catalogPath]);
 		});
 
 		$confirm.click(function(e) {
 			if (e.currentTarget.checked) {
-				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '5 Оферта', catalogPath]);
+				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '5 Оферта', catalogPath]);
 			}
 		});
 
 		$goToProduct.click(function(e) {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '6 Перейти в карточку', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '6 Перейти в карточку', catalogPath]);
 		});
 
 		$phone.focus();

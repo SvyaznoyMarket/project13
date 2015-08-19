@@ -1,4 +1,8 @@
-<div class="ep-hint {{^user.isMember}}ep-hint--2col{{/user.isMember}} {{#isUserOwner}}ep-hint--position{{/isUserOwner}} js-enterprize-coupon-hint">
+<div class="ep-hint
+            {{#isProductCard}} ep-hint-card {{/isProductCard}}
+            {{^user.isMember}} ep-hint--2col {{/user.isMember}}
+            {{#isUserOwner}} ep-hint--position {{/isUserOwner}}
+            js-enterprize-coupon-hint">
     <div class="ep-hint__closer clsr-light js-ep-hint-closer"></div>
 
     <div class="ep-hint__row clearfix js-ep-reg-form">
@@ -29,7 +33,7 @@
 
             {{^isUserOwner}}
                 {{#user.isMember}}
-                    <form action="{{form.action}}">
+                    <form class="jsEnterprizeGetCouponForm" action="{{form.action}}">
                         <button class="btn-def">Получить код фишки</button>
                     </form>
                 {{/user.isMember}}

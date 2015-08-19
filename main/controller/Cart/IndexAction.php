@@ -27,90 +27,29 @@ class IndexAction {
         }*/
 
         // запрашиваем текущий регион, если есть кука региона
-        $regionConfig = [];
         if ($user->getRegionId()) {
-            $regionConfig = (array)\App::dataStoreClient()->query("/region/{$user->getRegionId()}.json");
-
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
-                if ((bool)$data) {
+                if ($data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
             });
-        }
-
-        // выполнение 1-го пакета запросов
-        $client->execute();
-
-        $regionEntity = $user->getRegion();
-        if ($regionEntity instanceof \Model\Region\Entity) {
-            if (array_key_exists('reserve_as_buy', $regionConfig)) {
-                $regionEntity->setForceDefaultBuy(false == $regionConfig['reserve_as_buy']);
-            }
-            $user->setRegion($regionEntity);
-        }
-
-        $region = $user->getRegion();
-
-        // подготовка 2-го пакета запросов
-
-        // TODO: запрашиваем меню
-        $cartProductsById = array_reverse($cart->getProducts(), true);
-
-        $productIds = array_keys($cartProductsById);
-
-        /** @var $products \Model\Product\CartEntity[] */
-        $products = [];
-        /** @var $products \Model\Product\Entity[] */
-        $productEntities = [];
-
-        // запрашиваем список товаров
-        if ((bool)$productIds) {
-            \RepositoryManager::product()->prepareCollectionById($productIds, $region, function($data) use(&$products, $cartProductsById, &$productEntities) {
-                foreach ($data as $item) {
-                    $products[] = new \Model\Product\Entity($item);
-                    $productEntities[] = new \Model\Product\Entity($item);
-                }
-            });
-        }
-
-        // выполнение 2-го пакета запросов
-        $client->execute();
-
-        $categoryIdByProductId = [];
-        foreach ($productEntities as $key => $productEntity) {
-            if($productEntity->getParentCategory()) {
-                $categoryIdByProductId[$productEntity->getId()] = $productEntity->getParentCategory()->getId();
-            }
-        }
-
-        // подготовка 3-го пакета запросов
-        $hasAnyoneKit = false;
-        $productKitsById = [];
-        foreach ($products as $product) {
-            $kitIds = array_map(function($kit) { /** @var $kit \Model\Product\Kit\Entity */ return $kit->getId(); }, $product->getKit());
-            if ((bool)$kitIds) {
-                $hasAnyoneKit = true;
-                \RepositoryManager::product()->prepareCollectionById($kitIds, $region, function($data) use(&$productKitsById) {
-                    foreach ($data as $item) {
-                        $productKitsById[$item['id']] = new \Model\Product\CartEntity($item);
-                    }
-                });
-            }
-        }
-
-        // выполнение 3-го пакета запросов
-        if ($hasAnyoneKit) {
+            
             $client->execute();
         }
 
+        $updateResultProducts = $cart->update([], true);
+
         $page = new \View\Cart\IndexPage();
         $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
-        $page->setParam('productEntities', $productEntities);
-        $page->setParam('products', $products);
-        $page->setParam('cartProductsById', $cartProductsById);
-        $page->setParam('productKitsById', $productKitsById);
-        $page->setParam('categoryIdByProductId', $categoryIdByProductId);
+        $page->setParam('cartProductsById', array_reverse($cart->getProductsById(), true));
+        $page->setParam('products', array_values(array_filter(array_map(function(\Session\Cart\Update\Result\Product $updateResultProduct) {
+            if ($updateResultProduct->setAction === 'delete') {
+                return;
+            } else {
+                return $updateResultProduct->fullProduct;
+            }
+        }, $updateResultProducts))));
 
         return new \Http\Response($page->show());
     }

@@ -1,7 +1,7 @@
 <footer class="footer">
     <div class="footer__inner clearfix">
         <ul class="aboutList clearfix">
-            <li class="aboutList__item"><a class="aboutList__link" href="/about_company">О компании</a></li>
+            <li class="aboutList__item"><a class="aboutList__link nowrap" href="/about_company">О компании</a></li>
             <li class="aboutList__item"><a class="aboutList__link" href="/shops">Магазины Enter</a></li>
             <li class="aboutList__item"><a class="aboutList__link" href="http://feedback.enter.ru/">Напишите нам</a></li>
             <li class="aboutList__item"><a class="aboutList__link" href="/how_get_order">Условия доставки</a></li>

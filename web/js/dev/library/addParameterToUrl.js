@@ -5,7 +5,7 @@
  * @param	{String}	value	Значение
  * @return	{String}			Сформированный URL
  */
-var UpdateUrlString = function(key, value) {
+String.prototype.addParameterToUrl = function(key, value) {
 	var url = this.toString();
 	var re = new RegExp('([?|&])' + key + '=.*?(&|#|$)(.*)', 'gi');
 
@@ -32,4 +32,3 @@ var UpdateUrlString = function(key, value) {
 		}
 	}
 };
-String.prototype.addParameterToUrl = UpdateUrlString;

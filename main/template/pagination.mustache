@@ -1,0 +1,21 @@
+<!--noindex-->
+<div class="bSortingList mPager js-category-pagination">
+    <ul class="bSortingList">
+        <li class="bSortingList__eItem mTitle">Страницы</li>
+
+        {{#links}}
+            {{#name}}
+            <li class="bSortingList__eItem mPage {{#active}}mActive{{/active}} js-category-pagination-page">
+                <a class="bSortingList__eLink js-category-pagination-page-link" href="{{url}}">{{name}}</a>
+            </li>
+            {{/name}}
+
+            {{^name}}
+                <li class="bSortingList__eItem mPage mDotted js-category-pagination-page">&#8230;</li>
+            {{/name}}
+        {{/links}}
+        <li class="bSortingList__eItem mPaging hidden js-category-pagination-paging"><a class="bSortingList__eLink mMore js-category-pagination-paging-enableLink" href="#">123</a></li>
+        <li class="bSortingList__eItem mInfinity js-category-pagination-infinity"><a class="bSortingList__eLink mMore js-category-pagination-infinity-enableLink" href="#">&#8734;</a></li>
+    </ul>
+</div>
+<!--/noindex-->

@@ -2,25 +2,29 @@
 @full-size: 100%;
 @shopInfo-item-width: 235px;
 .shopInfo{
-    margin: 15px 10px;
+    margin: 15px -10px;
+    background: @white;
+
     &_i{
         float: left;
         white-space: nowrap;
+        .bordered();
+        .rounded(4px);
+        .box-shadow(0px 0px 2px 0 rgba(50, 50, 50, 0.25));
 
         width: 205px;
         height: 35px;
-        margin: 0 8px;
+        margin: 0 10px;
         padding: 4px 6px;
 
         cursor: pointer;
 
-        border: 1px dotted @black;
         &:last-child{
             margin-right: 0;
         }
     }
     &_r{
-        .inline-block-middle();
+        .inline-block(middle);
         width: 165px;
         white-space: nowrap;
         &:hover {
@@ -48,16 +52,21 @@
 
     display: none;
 
-    margin: 20px 0;
+    margin: 20px -10px;
     padding: 15px 15px 20px;
 
     text-align: center;
 
     border: 1px solid @black;
+    background: @white;
+    .bordered();
+    .rounded(4px);
+    .box-shadow(0px 0px 2px 0 rgba(50, 50, 50, 0.25));
+
     &:before{
         left: @shopInfoTab-corner-left;
 
-        .pseudo-corner-top(12px, @black, -12px);
+        .pseudo-corner-top(12px, #F2F2F2, -12px);
     }
     &:after{
         left: @shopInfoTab-corner-left + 2;
@@ -100,22 +109,19 @@
         .table-cell();
     }
     &_iconw{
-        width: 120px;
+        width: 145px;
         margin: 0 auto;
     }
     &_icon{
         overflow: hidden;
         position: relative;
 
-        width: 120px;
-        height: 120px;
+        width: 145px;
+        height: 100px;
 
         text-align: center;
         vertical-align: middle;
 
-        border: 1px solid @black;
-
-        .rounded(50%);
         .table-cell();
     }
     &_tx{
@@ -143,59 +149,55 @@
 
 .i-shopInfo{
     background-image: url('@{base-url}/mainpage/img/i-delivery.png');
+    .inline-block(middle);
     &-delivery{
-        .sprite-temp(0, 0, 33px, 33px);
+        .sprite-temp(-66px, 0, 33px, 33px);
     }
     &-deliveryself{
         .sprite-temp(-33px, 0, 33px, 33px);
     }
     &-payment{
-        .sprite-temp(0, -33px, 33px, 33px);
+        .sprite-temp(-99px, 0, 33px, 33px);
     }
     &-wow{
-        .sprite-temp(-33px, -33px, 33px, 33px);
+        .sprite-temp(0, 0, 33px, 33px);
     }
 }
 
 .i-shopinfo{
-    background-image: url('@{base-url}/mainpage/img/i-shopinfo.png');
+    background-image: url('@{base-url}/mainpage/img/i-trustfactors.png');
     &-delivery1{
-        .sprite-temp(-10px, -10px, 101px, 87px);
+        .sprite-temp(-5px, -5px, 101px, 87px);
     }
     &-delivery2{
-        .sprite-temp(-131px, -10px, 100px, 64px);
+        .sprite-temp(-116px, -4px, 100px, 64px);
     }
     &-delivery3{
-        .sprite-temp(-160px, -106px, 120px, 113px);
+        .sprite-temp(-116px, -79px, 145px, 87px);
     }
     &-delivery4{
-        .sprite-temp(-10px, -227px, 87px, 88px);
+        .sprite-temp(-5px, -175px, 87px, 88px);
     }
     &-payment1{
-        .sprite-temp(-117px, -227px, 88px, 72px);
+        .sprite-temp(-271px, -78px, 88px, 72px);
     }
     &-payment2{
-        .sprite-temp(-251px, -10px, 92px, 64px);
+        .sprite-temp(-284px, -170px, 92px, 64px);
     }
-    &-payment3{
-        .sprite-temp(-225px, -227px, 62px, 78px);
-    }
-    &-payment4{
-        .sprite-temp(-363px, -10px, 67px, 77px);
-    }
+
     &-payment5{
-        .sprite-temp(-339px, -107px, 60px, 77px);
+        .sprite-temp(-284px, -250px, 60px, 77px);
     }
     &-selfdelivery1{
-        .sprite-temp(-339px, -204px, 86px, 72px);
+        .sprite-temp(-102px, -176px, 86px, 72px);
     }
     &-selfdelivery2{
-        .sprite-temp(-307px, -296px, 76px, 68px);
+        .sprite-temp(-198px, -176px, 76px, 68px);
     }
     &-selfdelivery3{
-        .sprite-temp(-10px, -384px, 85px, 54px);
+        .sprite-temp(-226px, -5px, 85px, 54px);
     }
     &-selfdelivery4{
-        .sprite-temp(-115px, -384px, 60px, 60px);
+        .sprite-temp(-321px, -5px, 60px, 60px);
     }
 }

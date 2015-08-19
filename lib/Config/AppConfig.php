@@ -9,6 +9,12 @@ require_once __DIR__ . '/Oauth/TwitterConfig.php';
 
 
 class AppConfig {
+    /** Проект Lite
+     * @var bool
+     */
+    public $lite = [
+        'enabled' => null
+    ];
     /**
      * @var string
      * @hidden
@@ -57,8 +63,6 @@ class AppConfig {
      * @hidden
      */
     public $templateDir;
-    /** @var string */
-    public $cmsDir;
     /**
      * @var string
      * @hidden
@@ -73,9 +77,11 @@ class AppConfig {
     ];
     /** @var array */
     public $session = [
-        'name'            => null,
-        'cookie_lifetime' => null,
-        'cookie_domain'   => null,
+        'name'              => null,
+        'cookie_lifetime'   => null,
+        'cookie_domain'     => null,
+        'compareKey'        => null,
+        'favouriteKey'      => null,
     ];
     /** @var array */
     public $redirect301 = [
@@ -104,7 +110,17 @@ class AppConfig {
         'debug'        => null,
         'chunk_size'   => null,
     ];
-	
+
+    /**
+     * @var array
+     */
+    public $eventService = [
+        'enabled'   => null,
+        'url'       => null,
+        'client_id' => null,
+        'timeout'   => null,
+    ];
+
     /**
      * @var array
      */
@@ -147,14 +163,6 @@ class AppConfig {
         'chunk_size'   => null,
     ];
 
-    /** @var array */
-    public $wordpress = [
-        'url'            => null,
-        'timeout'        => null,
-        'throwException' => null,
-        'retryTimeout' => [],
-        'retryCount'   => null,
-    ];
     /** @var array */
     public $dataStore = [
         'url'          => null,
@@ -235,16 +243,6 @@ class AppConfig {
         'TagMan' => [
             'enabled' => null,
         ],
-        'SprosiKupi' => [
-            'timeout' => 1000,
-            'logEnabled' => false,
-            'logDataEnabled' => false,
-        ],
-        'ShopPilot' => [
-            'timeout' => 1000,
-            'logEnabled' => false,
-            'logDataEnabled' => false,
-        ],
     ];
 
     /** @var array */
@@ -260,6 +258,8 @@ class AppConfig {
     public $mainHost = null;
     /** @var string */
     public $mobileHost = null;
+    /** @var string */
+    public $description = null;
     /** @var array */
     /**
      * @var Oauth\VkontakteConfig
@@ -325,14 +325,6 @@ class AppConfig {
         'recommendationPush'     => null, // отправлять данные для расчета рекоммендованных товаров
     ];
     /** @var array */
-    public $productPhoto = [
-        'url' => [],
-    ];
-    /** @var array */
-    public $productPhoto3d = [
-        'url' => [],
-    ];
-    /** @var array */
     public $productLabel = [
         'url' => [],
     ];
@@ -347,7 +339,6 @@ class AppConfig {
     /** @var array */
     public $banner = [
         'timeout' => null,
-        'url'     => [],
     ];
     /** @var array */
     public $payment = [
@@ -440,7 +431,6 @@ class AppConfig {
 
     /** @var bool */
     public $mainMenu = [
-        'requestMenu'               => null, // запрос главного меню из
         'recommendationsEnabled'    => null
     ];
     /** @var bool */
@@ -457,25 +447,6 @@ class AppConfig {
     ];
     /** @var bool */
     public $newDeliveryCalc;
-    /**
-     * @var array
-     * @hidden
-     */
-    public $maybe3d = [
-        'xmlUrl' => null,
-        'customerId' => null,
-        'swfUrl' => null,
-        'cmsFolder' => null,
-        'timeout' => null,
-    ];
-    /** @var array */
-    public $img3d = [
-        'cmsFolder' => null,
-    ];
-    /** @var array */
-    public $tag = [
-        'numSidebarCategoriesShown' => null,
-    ];
 
     /** @var array */
     public $sphinx = [
@@ -523,19 +494,7 @@ class AppConfig {
     public $tchiboSlider = [
         'analytics' => [
             'enabled' => null,
-            'use_page_visibility' => null,
-            'collection_view' => [
-                'enabled' => null,
-                'tchiboOnly' => null
-            ],
-            'collection_click' => [
-                'enabled' => null,
-                'tchiboOnly' => null
-            ],
-            'product_click' => [
-                'enabled' => null,
-                'tchiboOnly' => null
-            ],
+            'use_page_visibility' => null
         ],
     ];
 
@@ -559,6 +518,14 @@ class AppConfig {
 	public $photoContest = [
 		'client'	=> []
 	];
+
+    /** @var array */
+    public $fileStorage = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
 
     /** @var array */
     public $flocktoryExchange = [
@@ -621,8 +588,17 @@ class AppConfig {
         'regions'   => []
     ];
 
-    public $tealeaf = [
-        'enabled' => null,
+    /** Минимальная сумма заказа (для Воронежа)
+     * @var int
+     */
+    public $minOrderSum = 0;
+
+    /** Форма обратной связи
+     * @var array
+     */
+    public $feedback = [
+        'enabled'   => false,   // вкл/откл
+        'email'     => null     // email (куда слать письма)
     ];
 
     public function __construct() {

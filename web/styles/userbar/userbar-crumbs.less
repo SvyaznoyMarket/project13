@@ -1,0 +1,88 @@
+.userbar-crumbs {
+    .inline-block(middle);
+    height: 50px;
+    width: 310px;
+    overflow: hidden;
+
+    &:after{
+        content: '';
+        .inline-block(middle);
+        height: 100%;
+        width: 0px;
+    }
+    &-wrap {
+        position: relative;
+
+        overflow: hidden;
+
+        width: 250px;
+
+        .inline-block(middle);
+
+        
+        &:after {
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            width: 20px;
+            height: 50px;
+
+            content: '';
+
+            background:    -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 49%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(49%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 49%); /* Chrome10+,Safari5.1+ */
+            background:      -o-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 49%); /* Opera 11.10+ */
+            background:     -ms-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 49%); /* IE10+ */
+            background:         linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 49%); /* W3C */
+
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+        }
+    }
+    &-list {
+        white-space: nowrap;
+        max-width: 95%;
+
+        .inline-block(middle);
+
+        &__i {
+            line-height: 1.5;
+			background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAAAAAAUmmrnAAAANklEQVR4AWOY9Pv///8MNm4fgeRLC+0H/xn+fw8Wf8nw/4GO5WeGk+Lh3/8z6Ff9A8ru/w8EALASHTT5A2ZBAAAAAElFTkSuQmCC') no-repeat 100% 6px;
+			padding-right: 10px;
+			.inline-block(middle);
+
+            &--last {
+                font-size: 14px;
+                display: block;
+                background: none;
+            }
+        }
+        &__lk {
+            color: #545454;
+            border-bottom: 1px solid;
+            &:hover {
+                text-decoration: none;
+
+                border-bottom: none;
+            }
+        }
+
+    }
+    &-img {
+        line-height: 47px;
+
+        height: 50px;
+        margin-right: 5px;
+
+        text-align: center;
+
+        .inline-block-middle();
+        &__img {
+            max-height: 40px;
+            max-width: 50px;
+
+            .inline-block-middle();
+        }
+    }
+}

@@ -1,67 +1,4 @@
 /**
- * Обработчик страницы оффлайновых заданий
- *
- * @author    Trushkevich Anton
- * @requires  jQuery
- */
-(function(){
-	var handleLinksToggle = function() {
-		var toggle = $(this),
-			linksContainer = toggle.siblings('.links_response'),
-			task = $(this).data('task');
-		// end of vars
-
-		if ( toggle.hasClass('expanded') ) {
-			linksContainer.html('');
-			toggle.html('Ссылки');
-			toggle.removeClass('expanded');
-		}
-		else {
-			$.get('/cron/'+task+'/links', {}, function(data){
-				if (data.success === true) {
-					toggle.html('Скрыть ссылки');
-					linksContainer.html(data.data);
-				}
-			});
-
-			toggle.addClass('expanded');
-		}
-
-		return false;
-	};
-
-	var handleCronReportStart = function() {
-		var toggle = $(this);
-
-		if ( toggle.hasClass('expanded') ) {
-			$('#report_start_response').html('');
-			toggle.html('Сгенерировать');
-			toggle.removeClass('expanded');
-		}
-		else {
-			$.get('/cron/report', {}, function(data){
-				if (data.success === true) {
-					toggle.html('Скрыть информацию');
-					$('#report_start_response').html(data.data);
-				}
-			});
-
-			toggle.addClass('expanded');
-		}
-
-		return false;
-	};
-
-
-	$(document).ready(function() {
-		$('.cron_report_start').bind('click', handleCronReportStart);
-		$('.cronLinks').bind('click', handleLinksToggle);
-	});
-}());
-
-
-
-/**
  * Форма подписки на уцененные товары
  * Cтраница /refurbished-sale
  *
@@ -106,8 +43,18 @@
 	});
 }());
 $(document).ready(function(){
-	var
+
+    var menuItems = $('.menu-item'),
 		subscribeBtn = $('.subscribe-form__btn');
+
+    // Выделение активного пункта в боковом меню
+    $.each(menuItems, function() {
+        var $this = $(this);
+        if ($this.find('a').attr('href') == location.pathname ) {
+            $this.addClass('active');
+            return false;
+        }
+    });
 
 	if ( subscribeBtn.length ) {
 		var
@@ -180,28 +127,6 @@ $(document).ready(function(){
 	 * Бесконечный скролл
 	 */
 	$('.infiniteCarousel').infiniteCarousel();
-
-	/**
-	 * Получение продуктов
-	 */
-	if ( $('.getProductList').length ) {
-		// console.log('yes!')
-		$('.getProductList').each(function() {
-			var wrapper = $(this),
-				productList = wrapper.data('product'),
-				url = '/products/widget/'+productList;
-			// end of vars
-
-			$.get(url, function( res ) {
-				if ( !res.success ) {
-					return false;
-				}
-
-				wrapper.html(res.content);
-			});
-		});
-	}
-
 
 	/**
 	 * form register corporate
@@ -326,20 +251,18 @@ $(document).ready(function(){
 
 	/* Credits inline */
 	if ( $('.bCreditLine').length ) {
-		document.getElementById('requirementsFullInfoHref').style.cursor = 'pointer';
-
-		$('#requirementsFullInfoHref').bind('click', function() {
-			$('.bCreditLine2').toggle();
-		});
+		document.getElementById('requirementsFullInfoHref').style.cursor = 'pointer'; // TODO перенести в css в scms
 
 		var creditOptions = $('#creditOptions').data('value');
 		var bankInfo = $('#bankInfo').data('value');
 		var relations = $('#relations').data('value');
 
-		for ( var i = 0; i < creditOptions.length; i++){
-			var creditOption = creditOptions[i];
+		if (creditOptions) {
+			for ( var i = 0; i < creditOptions.length; i++){
+				var creditOption = creditOptions[i];
 
-			$('<option>').val(creditOption.id).text(creditOption.name).appendTo('#productSelector');
+				$('<option>').val(creditOption.id).text(creditOption.name).appendTo('#productSelector');
+			}
 		}
 
 		$('#productSelector').change(function() {
@@ -422,164 +345,132 @@ $(document).ready(function(){
 			return false;
 		});
 	}
+    //Попап стоимости доставки
+    $('.js-tarifs-popup-show').on('click',function(){
+        var popup = $('.js-tarifs-popup').clone();
+        $('.js-tarifs-popup').remove();
+        $('body').append('<div class="js-tarifs-overlay"></div>');
+        $('body').append(popup).addClass('body-fixed');
+
+        $('.js-tarifs-popup').show();
+
+    });
+    $('body').on('click', '.js-tarifs-popup .popup-closer', function(){
+        $('.js-tarifs-popup').hide();
+        $('.js-tarifs-overlay').remove();
+        $('body').removeClass('body-fixed');
+    });
+    $('body').on('click', '.js-tarifs-overlay', function(){
+        $('.js-tarifs-popup').hide();
+        $(this).remove();
+        $('body').removeClass('body-fixed');
+    });
+    $('body').on('keyup', '.js-tarifs-search', function(){
+       var $this = $(this),
+           value = $this.val().toLowerCase(),
+           noResult = true;
+
+        $('.tarifs-search__i').each(function(){//Пробегаем по списку букв
+            var $letter = $(this).find('.tarifs-search__letter'),
+                $cityList = $(this).find('.tarifs-search-city__i'),
+                isLetterShown = false;
+
+            $($cityList).each(function(){//Пробегаем по списку городов
+                var name = $(this).find('.tarifs-search-city__name').text().toLowerCase();
+
+                if (name.indexOf(value) == 0){
+                    $(this).show();
+                    isLetterShown = true;//Если хотя бы один город на эту букву найден - будем отображать и букву
+                    noResult = false;//Если хотя бы один город найден, не будем выводить сообщение о том, что ничего не найдено
+                } else {
+                    $(this).hide();
+                }
+            });
+
+            isLetterShown ? $letter.show() : $letter.hide();
+
+        });
+
+        noResult ? $('.tarifs-search__no-result').show() : $('.tarifs-search__no-result').hide();
+    });
 });
 
-;(function($) {
-    var $phoneInput = $('.jsMobiDengiPhoneInput:first'),
-        $form = $('.jsMobiDengiForm:first'),
-        mask;
+$(function() {
+	var data = $('#contentPageData').data('data');
 
-    if ($phoneInput.length == 0) return;
+	if (!data || !ENTER.utils.objLen(data.services)) {
+		return;
+	}
 
-    $.mask.definitions['0'] = '[0-9]';
-    $phoneInput.mask('+7 (000) 000-00-00');
+	var
+		$regions = $('.js-content-services-regions'),
+		$tableBody = $('.js-content-services-tableBody')
+	;
 
-    $.fn.center = function () {
-        this.css("position","fixed");
-        this.css("top", ($(window).height() / 2) - (this.outerHeight() / 2));
-        this.css("left", ($(window).width() / 2) - (this.outerWidth() / 2));
-        return this;
-    };
+	function createTable( chosenRegionName ) {
+		var tableData = data.services[chosenRegionName],
+			i,
+			key,
+			tmpTr;
 
-    $form.on('submit', function(e){
-        e.preventDefault();
-        if (!/\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}/.test($phoneInput.val())) {
-            console.error('Form validation error');
-            return;
-        }
-        $.ajax({
-            type: 'POST',
-            data: {
-                phone: $phoneInput.val()
-            }
-        }).done(function(data){
-            console.log('Response', data);
-/*            if (data.result && data.result.code) {
-                switch (data.result.code) {
-                    case 200: break;
-                    case 201: break;
-                }
-            }*/
-            $(document.body).append(data.result);
-            $('.js-wrapper').center();
-        }).fail(function(jqXHR) {
-            var error = JSON.parse(jqXHR.responseText);
-            console.log('Error data', error, jqXHR)
-        })
-    });
+		$tableBody.empty();
 
-    $(document.body).on('click', '.jsCloseModal', function(e){
-        e.preventDefault();
-        $('.jsModal').remove()
-    })
+		if ( tableData instanceof Array ) {
+			// просто выводим элементы
 
-}(jQuery));
+			for ( i = 0; i < tableData.length; i++ ) {
+				tmpTr = '<tr>'+
+							//'<td>'+ (i + 1) +'</td>'+
+							'<td>'+ tableData[i]['Услуга'] +'</td>'+
+							'<td>'+ tableData[i]['Стоимость'] +'</td>'+
+						'</tr>';
 
-/**
- * Обработчик страницы со стоимостью услуг
- *
- * @requires  jQuery
- */
-;(function(global) {
-	var serviceData = $('#contentPageData').data('data'),
-		selectRegion = $('#region_list'),
-		serviceTableContent = $('#bServicesTable tbody');
-	// end of vars
+				$tableBody.append(tmpTr);
+			}
+		}
+		else if ( tableData instanceof Object ) {
+			// элементы разбиты на категории
 
-
-	var createTable = function createTable( chosenRegion ) {
-			var tableData = serviceData[chosenRegion],
-				i,
-				key,
-				tmpTr;
-			// end of vars
-
-			serviceTableContent.empty();
-
-			if ( tableData instanceof Array ) {
-				// просто выводим элементы
-
-				for ( i = 0; i < tableData.length; i++ ) {
+			for ( key in tableData ) {
+				if ( tableData.hasOwnProperty(key) ) {
 					tmpTr = '<tr>'+
-								//'<td>'+ (i + 1) +'</td>'+
-								'<td>'+ tableData[i]['Услуга'] +'</td>'+
-								'<td>'+ tableData[i]['Стоимость'] +'</td>'+
+								//'<th></th>'+
+								'<th><strong>'+ key +'</strong></th>'+
+								'<th></th>'+
 							'</tr>';
 
-					serviceTableContent.append(tmpTr);
-				}
-			}
-			else if ( tableData instanceof Object ) {
-				// элементы разбиты на категории
+					$tableBody.append(tmpTr);
 
-				for ( key in tableData ) {
-					if ( tableData.hasOwnProperty(key) ) {
+					for ( i = 0; i < tableData[key].length; i++ ) {
 						tmpTr = '<tr>'+
-									//'<th></th>'+
-									'<th><strong>'+ key +'</strong></th>'+
-									'<th></th>'+
+									//'<td>'+ (i + 1) +'</td>'+
+									'<td>'+ tableData[key][i]['Услуга'] +'</td>'+
+									'<td>'+ tableData[key][i]['Стоимость'] +'</td>'+
 								'</tr>';
 
-						serviceTableContent.append(tmpTr);
-
-						for ( i = 0; i < tableData[key].length; i++ ) {
-							tmpTr = '<tr>'+
-										//'<td>'+ (i + 1) +'</td>'+
-										'<td>'+ tableData[key][i]['Услуга'] +'</td>'+
-										'<td>'+ tableData[key][i]['Стоимость'] +'</td>'+
-									'</tr>';
-
-							serviceTableContent.append(tmpTr);
-						}
+						$tableBody.append(tmpTr);
 					}
 				}
 			}
-		},
-
-		/**
-		 * Обработка полченных данных
-		 */
-		prepareData = function prepareData( data ) {
-			var i,
-				key,
-				tmpOpt,
-				initVal;
-			// end of vars
-
-			console.info('prepareData');
-
-			selectRegion.empty();
-
-			for ( key in data ) {
-				if ( data.hasOwnProperty(key) ) {
-					tmpOpt = $('<option>').val(key).html(key);
-					selectRegion.prepend(tmpOpt);
-				}
-			}
-
-			initVal = selectRegion.find('option:first').val();
-
-			selectRegion.val(initVal);
-			createTable(initVal);
-		},
-
-		/**
-		 * Хандлер смены региона
-		 */
-		changeRegion = function changeRegion() {
-			var self = $(this),
-				selectedRegion = self.val();
-			// end of vars
-
-			createTable(selectedRegion);
-		};
-	// end of function
-
-	$('#bServicesTable tr th:first').remove();
-
-	if ( global.ENTER.utils.objLen(serviceData) ) {
-		prepareData(serviceData);
-		selectRegion.on('change', changeRegion);
+		}
 	}
 
-}(this));
+	$regions.on('change', function() {
+		createTable($(this).val());
+	});
+
+	if (data.regionName && $regions.length) {
+		var hasRegion = false;
+		$regions.find('option').each(function() {
+			var $option = $(this);
+			if ($option.text() && -1 !== $option.text().indexOf(data.regionName)) {
+				hasRegion = true;
+				$option.prop('selected', true).change();
+			}
+		});
+
+		if (!hasRegion) {
+			$regions.find('option:first').prop('selected', true).change();
+		}
+	}
+});

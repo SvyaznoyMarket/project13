@@ -20,6 +20,7 @@ class CompareAction {
     }
 
     public function execute(\Http\Request $request) {
+        /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
         $compareProducts = $this->session->get($this->compareSessionKey);
         $lastProduct = null;
@@ -28,52 +29,16 @@ class CompareAction {
             $productIds = array_keys($compareProducts);
             $lastProduct = end($compareProducts);
 
-            $productDataByUi = [];
-
-            $client = \App::coreClientV2();
-            $client->addQuery(
-                'product/get',
-                [
-                    'select_type' => 'id',
-                    'id'          => $productIds,
-                    'geo_id'      => \App::user()->getRegion()->getId(),
-                ],
-                [],
-                function($data) use(&$productDataByUi) {
-                    foreach ($data as $item) {
-                        if (!isset($item['ui'])) continue;
-                        $productDataByUi[$item['ui']] = $item;
-                    }
-                }
-            );
-
-            \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use(&$reviewsData){
-                $reviewsData = $data;
-            });
-
-            $client->execute();
-
-            // описание товара из scms
-            $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList(array_keys($productDataByUi)))->prepare();
-            $this->getCurl()->execute();
-
-            foreach ($productDescriptionQuery->response->products as $ui => $descriptionItem) {
-                $item = isset($productDataByUi[$ui]) ? $productDataByUi[$ui] : null;
-                if (!$item) continue;
-
-                $propertyData = isset($descriptionItem['properties'][0]) ? $descriptionItem['properties'] : [];
-                if ($propertyData) {
-                    $item['property'] = $propertyData;
-                }
-
-                $propertyGroupData = isset($descriptionItem['property_groups'][0]) ? $descriptionItem['property_groups'] : [];
-                if ($propertyGroupData) {
-                    $item['property_group'] = $propertyGroupData;
-                }
-
-                $productsById[$item['id']] = new \Model\Product\Entity($item);
+            foreach ($productIds as $productId) {
+                $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
             }
 
+            $client = \App::coreClientV2();
+            \RepositoryManager::product()->prepareProductQueries($productsById, 'media property');
+            \RepositoryManager::review()->prepareScoreCollection($productsById, function($data) use(&$reviewsData){
+                $reviewsData = $data;
+            });
+            $client->execute();
 
             $compareGroups = $this->getCompareGroups($compareProducts, $productsById, $reviewsData);
         } else {
@@ -101,7 +66,7 @@ class CompareAction {
 
             foreach ($compareProducts as $compareProduct) {
                 /** @var \Model\Product\Entity $product */
-                $product = $products[$compareProduct['id']];
+                $product = isset($products[$compareProduct['id']]) ? $products[$compareProduct['id']] : null;
                 if (!$product) continue;
 
                 $typeId = $product->getType() ? $product->getType()->getId() : null;
@@ -147,11 +112,10 @@ class CompareAction {
                         'inShopShowroomOnly' => $product->isInShopShowroomOnly(),
                         'isBuyable' => $product->getIsBuyable(),
                         'statusId' => $product->getStatusId(),
-                        'imageUrl' => $product->getImageUrl(1),
+                        'imageUrl' => $product->getMainImageUrl('product_120'),
                         'partnerName' => $slotPartnerOffer ? $slotPartnerOffer['name'] : '',
                         'partnerOfferUrl' => $slotPartnerOffer ? $slotPartnerOffer['offer'] : '',
                         'isSlot' => (bool)$slotPartnerOffer,
-                        'colorClass' => AbTest::getColorClass($product),
                         'reviews' => [
                             'stars' => [
                                 'notEmpty' => array_pad([], $starCount, null),
@@ -285,7 +249,7 @@ class CompareAction {
                 'product' => [
                     'prefix' => $product->getPrefix(),
                     'webName' => $product->getWebName(),
-                    'imageUrl' => $product->getImageUrl(0),
+                    'imageUrl' => $product->getMainImageUrl('product_60'),
                 ],
             ]);
         }

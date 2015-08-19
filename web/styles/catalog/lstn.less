@@ -163,21 +163,34 @@
     .notBuying {
         display: none;
     }
+    &_imgbox {
+        width: 100%;
+    }
     &_imglk {
         display: block;
+        text-align: center;
 
-        width: 200px;
+        width: 100%;
         height: 200px;
-        margin: 0 auto 8px;
+        padding: 0 0 8px;
+
         &-hover {
             display: none;
         }
+        &:hover{
+            text-decoration: none;
+        }
+        &:after{
+            content:"";
+            .inline-block-middle();
+            width: 0;
+            height: 100%;
+        }
     }
     &_img {
-        display: block;
-
-        width: 200px;
-        height: 200px;
+        max-width: 90%;
+        max-height: 90%;
+        .inline-block-middle();
     }
     &_pr {
         display: table-cell;
@@ -225,32 +238,6 @@
                     border: 1px solid #b3b3b3;
                     background: none repeat scroll 0 0 #fff;
                     box-shadow: none;
-                }
-                &--magenta {
-                    border-color: #a64f83;
-
-                    .gradient(#d063a5, #c960a0, #bf5b98);
-                    &:hover {
-                        background: #bf5b98;
-                    }
-                    &:active {
-                        background: #bf5b98;
-                    }
-                    &.mBought {
-                        border-color: @black;
-                        background: @white;
-                    }
-                }
-                &--red {
-                    border-color: #bd333a;
-
-                    .gradient(#d63942, #d63942, #e63d47);
-                    &:hover {
-                        background: #d63942;
-                    }
-                    &:active {
-                        background: #d63942;
-                    }
                 }
 
                 &.mBought {
@@ -316,28 +303,6 @@
         .btnBuy__eLink {
             border-color: @orange-2;
             background: @orange-2;
-            &--magenta {
-                border-color: #a64f83;
-
-                .gradient(#d063a5, #c960a0, #bf5b98);
-                &:hover {
-                    background: #bf5b98;
-                }
-                &:active {
-                    background: #bf5b98;
-                }
-            }
-            &--red {
-                border-color: #bd333a;
-
-                .gradient(#d63942, #d63942, #e63d47);
-                &:hover {
-                    background: #d63942;
-                }
-                &:active {
-                    background: #d63942;
-                }
-            }
             &.mShopsOnly {
                 border: 1px solid @black;
                 background: #404040;
@@ -378,12 +343,7 @@
                     border-color: #f9f9f9;
                 }
             }
-            &_img {
-                width: 160px;
-                height: 160px;
-            }
             &_imglk {
-                width: 160px;
                 height: 160px;
             }
             &_pr {
@@ -412,9 +372,7 @@
                         height: 328px;
                     }
                 }
-                &_img ,
                 &_imglk {
-                    width: 260px;
                     height: 260px;
                 }
                 &_pr {
@@ -444,4 +402,10 @@
             float: right;
         }
     }
+}
+.adfoxWrapper{
+    .transition(2s all ease);
+}
+body{
+    .transition(2s all ease);
 }

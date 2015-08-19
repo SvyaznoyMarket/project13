@@ -6,7 +6,9 @@ return function(
     $hasProductsOnlyFromPartner,
     array $bonusCards,
     $error = null,
-    $previousPost = null
+    $previousPost = null,
+    $phone = '',
+    $email = ''
 ) {
     /** @var $bonusCards \Model\Order\BonusCard\Entity[] */
     $userEntity = $user->getEntity();
@@ -17,16 +19,14 @@ return function(
     $isEmailRequired = \App::config()->order['emailRequired'];
     $config = \App::config();
 
-    $userPhone = isset($previousPost['user_info']['phone']) ? $previousPost['user_info']['phone'] : '';
-    $userMail = isset($previousPost['user_info']['email']) ? $previousPost['user_info']['email'] : '';
+    $userPhone = isset($previousPost['user_info']['phone']) ? $previousPost['user_info']['phone'] : $phone;
+    $userMail = isset($previousPost['user_info']['email']) ? $previousPost['user_info']['email'] : $email;
 ?>
-
-<?= $helper->render('order-v3-new/__head', ['step' => 1]) ?>
 
     <section class="orderCnt jsOrderV3PageNew">
         <h1 class="orderCnt_t">Получатель</h1>
 
-        <?= $helper->render('order-v3-new/__error', ['error' => $error]) ?>
+        <?= $helper->render('order-v3-new/__error', ['error' => $error, 'orderDelivery' => null]) ?>
 
         <form class="orderU orderU-v2 clearfix" action="" method="POST" accept-charset="utf-8">
             <input type="hidden" value="changeUserInfo" name="action" />
@@ -34,7 +34,7 @@ return function(
             <fieldset class="orderU_flds">
                 <div>
                     <div class="orderU_fld">
-                        <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : $userPhone ?>" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx">
+                        <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : $userPhone ?>" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx" <? if (!$userEntity): ?> data-event="true"<? endif ?> />
                         <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
                         <span class="errTx" style="display: none">Неверный формат телефона</span>
                         <span class="orderU_hint">Для смс о состоянии заказа</span>

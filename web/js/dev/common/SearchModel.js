@@ -13,7 +13,6 @@
 		self.advancedSearch = ko.observable(advSearchEnabled);
 		self.searchCategoryVisible = ko.observable(false);
 		self.currentCategory = ko.observable(null);
-		self.previousCategory = ko.observable(null);
 
 		self.searchResultCategories = ko.observableArray();
 		self.searchResultProducts = ko.observableArray();
@@ -31,8 +30,6 @@
 				$links = $('.jsSearchbarResults a'),
 				activeClass = 'searchdd_lk_iact',
 				index = $links.index($links.filter('.'+activeClass));
-
-            console.log(keycode, index);
 
 			if (!self.isNoSearchResult()) {
 				$links.removeClass(activeClass);
@@ -74,7 +71,7 @@
 		// Throttled ajax query
 		ko.computed(function(){
 			var val = self.searchInput();
-			var params = {q: val, sender: 'knockout'};
+			var params = {q: val};
 
 			if (self.currentCategory() != null) params.catId = self.currentCategory().id;
 
@@ -91,37 +88,12 @@
 				});
 		}).extend({ throttle: 200 });
 
-		// АНАЛИТИКА
-		// Предыдущее значение category
-		self.currentCategory.subscribe(function(val){
-			self.previousCategory(val);
-		}, self, 'beforeChange');
-
-		self.currentCategory.subscribe(function(val){
-			var previous = self.previousCategory() === null ? '' : self.previousCategory().name;
-
-			if (val == null) {
-				$body.trigger('trackGoogleEvent',['search_scope', 'clear', previous])
-			} else {
-				if (self.previousCategory() == null) {
-					$body.trigger('trackGoogleEvent',['search_scope', 'change', val.name + '_' + 'Все товары'])
-				} else {
-					$body.trigger('trackGoogleEvent',['search_scope', 'change', val.name + '_' + previous])
-				}
-			}
-		});
-
 		return self;
 	}
 
 	// Биндинги на нужные элементы
 	$body.find('.jsKnockoutSearch').each(function(){
 		ko.applyBindings(new SearchModel(), this);
-	});
-
-	// Аналитика на фокусе строки поиска
-	$body.on('focus', '.jsSearchInput', function(){
-		$body.trigger('trackGoogleEvent',['search_string', 'string'])
 	});
 
 	// Клик по категории в подсказке
@@ -151,16 +123,6 @@
 		e.preventDefault();
 		$body.trigger('trackGoogleEvent', [{
 			category: 'search_enterprize',
-			action: 'click',
-			hitCallback: $(this).attr('href')
-		}])
-	});
-
-	// Клик по значку "Выбери подарки" в строке поиска
-	$body.on('click', '.jsGiftInSearchBarButton', function(e){
-		e.preventDefault();
-		$body.trigger('trackGoogleEvent', [{
-			category: 'search_present',
 			action: 'click',
 			hitCallback: $(this).attr('href')
 		}])

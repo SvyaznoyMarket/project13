@@ -4,18 +4,41 @@
 
 ;(function($, ko){
 
-    ENTER.DeliveryPoints = function DeliveryPointsF (points) {
+    var balloonTemplate =
+        '<table class="pick-point-list"><tbody><tr class="pick-point-item clearfix" ><td class="pick-point-item__logo">'+
+        '<img src="{{ icon }}" class="pick-point-item__img" >'+
+        '<span class="pick-point-item__name">{{ listName }}</span>'+
+        '</td><td class="pick-point-item__addr">'+
+        '{{# subway }}' +
+        '<div class="pick-point-item__metro" style="background: {{ subway.line.color }};">'+
+        '<div class="pick-point-item__metro-inn">{{ subway.name }}</div></div>'+
+        '{{/ subway }}'+
+        '<div class="pick-point-item__addr-name">{{ address }}</div>'+
+        '<div class="pick-point-item__time">{{ regtime }}</div></td>'+
+        '<td class="pick-point-item__info pick-point-item__info--nobtn">'+
+        '<div class="pick-point-item__date" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
+        '<div class="pick-point-item__price"><span >{{ humanCost }}</span> {{# showRubles }}<span class="rubl">p</span></div>{{/ showRubles }}'+
+        '</td></tr></tbody></table>',
+        productUi = $('#product-info').data('ui');
+
+    ENTER.DeliveryPoints = function DeliveryPointsF (points, mapParam) {
 
         var self = this,
             pointsBounds,
-            map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map;
+            searchAutocompleteListClicked = false,
+            map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map,
+            $body = $(document.body);
+
+        if (mapParam) map = mapParam;
 
         self.searchInput = ko.observable();
         self.searchAutocompleteList = ko.observableArray();
         self.searchAutocompleteListVisible = ko.observable(false);
+        self.searchAutocompleteListClicked = false; //
         self.enableAutocompleteListVisible = function(){self.searchAutocompleteListVisible(true)};
         self.disableAutocompleteListVisible = function(){self.searchAutocompleteListVisible(false)};
         self.limitedSearchInput = ko.computed(self.searchInput).extend({throttle: 500});
+
         self.limitedSearchInput.subscribe(function(text) {
 
             var extendValue = 0.5,
@@ -25,6 +48,11 @@
 
             self.searchAutocompleteList.removeAll();
             self.searchAutocompleteListVisible(false);
+
+            if (searchAutocompleteListClicked) {
+                searchAutocompleteListClicked = false;
+                return;
+            }
 
             ymaps.geocode(text, { boundedBy: extendedBounds, strictBounds: true }).then(
                 function(res){
@@ -41,12 +69,48 @@
                 }
             )
         });
+
+        self.autocompleteNavigation = function(data, e){
+            var keycode = e.which,
+                $elements = $('.jsDeliverySuggestLi'),
+                $list = $('.deliv-suggest__list'),
+                activeClass = 'deliv-suggest__i--active',
+                index = $elements.index($elements.filter('.'+activeClass));
+
+            $elements.removeClass(activeClass);
+
+            switch (keycode) {
+                case 13: // Enter key
+                    if (index > -1) {
+                        self.autocompleteItemClick($elements.eq(index).data('element'));
+                        return false;
+                    }
+                    break;
+                case 38: // up key
+                    if (index == -1) index = self.searchAutocompleteList.length;
+                    $elements.eq(index - 1).addClass(activeClass);
+                    $list.scrollTo('.' + activeClass);
+                    break;
+                case 40: // down key
+                    $elements.eq(index + 1).addClass(activeClass);
+                    $list.scrollTo('.' + activeClass);
+                    break
+            }
+
+            return true;
+        };
+
         self.clearSearchInput = function(){
             self.searchInput('');
             self.searchAutocompleteList.removeAll();
+            map.setBounds(map.geoObjects.getBounds());
         };
-        self.setMapCenter = function(val) {
+
+        self.autocompleteItemClick = function(val) {
+            $body.trigger('trackGoogleEvent', ['pickup_ux', 'search', val.name]);
             map.setCenter(val.bounds[0], 14);
+            searchAutocompleteListClicked = true;
+            self.searchInput(val.name);
             self.searchAutocompleteListVisible(false);
         };
 
@@ -142,8 +206,6 @@
          * Отображаем на карте только те точки, которые были выбраны в первом дропдауне
          */
         self.choosenTokens.subscribe(function(arr){
-            var map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map; // TODO уже можно вынести
-
             map.geoObjects.each(function(geoObject){
                 if (arr.length == 0) {
                     geoObject.options.set('visible', true)
@@ -153,19 +215,26 @@
             });
         });
 
+
+        self.setMapCenter = function (point) {
+            console.log(point);
+            var bounds = $.isArray(point.bounds) && point.bounds.length == 2 ? point.bounds[0] : [point.latitude, point.longitude];
+            map.setCenter(bounds, 14)
+        };
+
         /* INIT */
 
-        $.each(points, function(token, pointsArr) {
-            $.each(pointsArr, function(index, point){
-                self.availablePoints.push(point);
-                if (typeof pointsBounds == 'undefined') pointsBounds = [[point.latitude, point.longitude], [point.latitude, point.longitude]];
-                else {
-                    if (point.latitude < pointsBounds[0][0]) pointsBounds[0][0] = point.latitude;
-                    if (point.latitude > pointsBounds[1][0]) pointsBounds[1][0] = point.latitude;
-                    if (point.longitude < pointsBounds[0][1]) pointsBounds[0][1] = point.longitude;
-                    if (point.longitude > pointsBounds[1][1]) pointsBounds[1][1] = point.longitude;
-                }
-            });
+        console.log('Init DeliveryPointsModel with ', {points: points, mapParam: mapParam});
+
+        $.each(points, function(index, point) {
+            self.availablePoints.push(point);
+            if (typeof pointsBounds == 'undefined') pointsBounds = [[point.latitude, point.longitude], [point.latitude, point.longitude]];
+            else {
+                if (point.latitude < pointsBounds[0][0]) pointsBounds[0][0] = point.latitude;
+                if (point.latitude > pointsBounds[1][0]) pointsBounds[1][0] = point.latitude;
+                if (point.longitude < pointsBounds[0][1]) pointsBounds[0][1] = point.longitude;
+                if (point.longitude > pointsBounds[1][1]) pointsBounds[1][1] = point.longitude;
+            }
         });
 
         window.map = self;
@@ -174,41 +243,55 @@
 
     };
 
-    ENTER.Placemark = function(point, visible) {
+    ENTER.Placemark = function(point, visible, buyButtonClass) {
 
         var visibility = typeof visible == 'undefined' ? true : visible,
-            balloonContent = '<b>Адрес:</b> ' + point.address,
-            placemark;
+            balloonContent, placemark;
+
+        if (!buyButtonClass) buyButtonClass = 'jsChangePoint';
+
+        // Для шаблона
+        if (point.cost == 0) {
+            point.humanCost = 'Бесплатно';
+            point.showRubles = false;
+        } else {
+            point.humanCost = point.cost;
+            point.showRubles = true;
+        }
 
         if (!point.latitude || !point.longitude) throw 'Не указаны координаты точки';
 
-        if (point.regtime) balloonContent += '<br /> <b>Время работы:</b> ' + point.regtime;
+        balloonContent = Mustache.render(balloonTemplate, point);
 
         // кнопка "Выбрать магазин"
-        balloonContent += $('<button />', {
+        // показываем только на странице продукта
+        if (point.showBaloonBuyButton) balloonContent += $('<button />', {
                 'text':'Выбрать',
-                'class': 'btnLightGrey bBtnLine btnView jsChangePoint',
+                'class': 'btn-type btn-type--buy ' + buyButtonClass,
                 'style': 'display: block',
                 'data-id': point.id,
                 'data-token': point.token,
-                'data-blockname': point.orderToken
+                'data-blockname': point.orderToken,
+                'data-product-ui': productUi
             }
         )[0].outerHTML;
 
         placemark = new ymaps.Placemark([point.latitude, point.longitude], {
-            balloonContentHeader: point.name,
+            // balloonContentHeader: point.name,
             balloonContentBody: balloonContent,
             hintContent: point.name,
             enterToken: point.token // Дополняем собственными свойствами
         }, {
-            balloonMaxWidth: 200,
+            balloonMaxWidth: 390,
             iconLayout: 'default#image',
             iconImageHref: point.marker.iconImageHref,
             iconImageSize: point.marker.iconImageSize,
             iconImageOffset: point.marker.iconImageOffset,
-            visible: visibility
+            visible: visibility,
+            zIndex: point.token == 'shops' ? 1000 : 0
         });
 
+        // Максимальная ширина балуна
         //placemark.balloon.set('maxWidth', 100);
 
         return placemark;

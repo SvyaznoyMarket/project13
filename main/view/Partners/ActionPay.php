@@ -13,8 +13,7 @@ class ActionPay {
 
     private $routeName;
     private $params;
-    private $user;
-    private $cart;
+    private $returnBasketProducts;
 
     private $sendData = [];
 
@@ -22,13 +21,11 @@ class ActionPay {
      * @param   string    $rName
      * @param   array     $params
      */
-    public function __construct($rName, $params)
+    public function __construct($rName, $params, $returnBasketProducts = true)
     {
         $this->routeName = $rName;
         $this->params = $params;
-        $this->user = \App::user();
-        $this->cart = $this->user->getCart();
-
+        $this->returnBasketProducts = $returnBasketProducts;
         $this->sendData['pageType'] = 0;
     }
 
@@ -93,12 +90,17 @@ class ActionPay {
      * @return bool
      */
     private function basketInfo() {
+        if (!$this->returnBasketProducts) {
+            return;
+        }
+
         $this->sendData['basketProducts'] = [];
-        foreach ((array)$this->cart->getProductData() as $product) {
+        foreach (\App::user()->getCart()->getProductsById() as $cartProduct) {
             $this->sendData['basketProducts'][] = array(
-                'id' => @$product['id'],
-                'price' => @$product['price'],
-                'quantity' => @$product['quantity'],
+                'id' => $cartProduct->id,
+                'price' => $cartProduct->price,
+                'quantity' => $cartProduct->quantity,
+                'name' => $cartProduct->name,
             );
         }
     }
@@ -147,7 +149,7 @@ class ActionPay {
         $product = $this->getParam('product');
 
         /* @var $category \Model\Product\Category\Entity */
-        $category = $product->getMainCategory();
+        $category = $product->getRootCategory();
 
         if ( !$category ) {
             $categories = $product->getCategory();

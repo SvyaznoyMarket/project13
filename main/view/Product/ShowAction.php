@@ -12,7 +12,7 @@ class ShowAction {
      * @param bool $showState
      * @param \View\Cart\ProductButtonAction $cartButtonAction
      * @param \View\Product\ReviewCompactAction $reviewtAction
-     * @param int $imageSize
+     * @param string $imageSourceType
      * @param array $cartButtonSender
      * @return array
      */
@@ -23,18 +23,27 @@ class ShowAction {
         $showState = true,
         $cartButtonAction = null,
         $reviewtAction = null,
-        $imageSize = 2,
-        array $cartButtonSender = []
+        $imageSourceType = 'product_160',
+        array $cartButtonSender = [],
+        \Model\Product\Category\Entity $category = null
     ) {
-        $user = \App::user();
-
         if ($product->isInShopOnly()) {
             $inShopOnlyLabel = ['name' => 'Только в магазинах'];
         } else {
             $inShopOnlyLabel = null;
         }
 
-        if (!$product->isInShopOnly() && $product->getMainCategory() && $product->getMainCategory()->getIsFurniture() && $product->getState() && $product->getState()->getIsStore() && !$product->getSlotPartnerOffer()) {
+        $isFurniture = false;
+        call_user_func(function() use(&$product, &$isFurniture) {
+            foreach ($product->categories as $category) {
+                if ($category->getRootOfParents()->getIsFurniture()) {
+                    $isFurniture = true;
+                    break;
+                }
+            }
+        });
+
+        if (!$product->isInShopOnly() && $isFurniture && $product->getState() && ($product->getState()->getIsStore() || $product->getState()->getIsSupplier()) && !$product->getSlotPartnerOffer()) {
             $inStoreLabel = ['name' => 'Товар со склада', 'inStore' => true]; // SITE-3131
         } else {
             $inStoreLabel = null;
@@ -49,11 +58,11 @@ class ShowAction {
                 ? ['name' => $product->getLabel()->getName(), 'image' => $product->getLabel()->getImageUrl()]
                 : null
             ,
-            'showCartButton' => !($product->getLabel() && $product->getLabel()->getId() == \Model\Product\BasicEntity::LABEL_ID_PODARI_ZHIZN),
+            'showCartButton' => true,
             'showCompareButton' => !$product->getKit() || $product->getIsKitLocked(),
             'cartButton'   => [],
-            'image'        => $product->getImageUrl($imageSize),
-            'hoverImage'   => $this->getHoverImageUrl($product, $imageSize),
+            'image'        => $product->getMainImageUrl($imageSourceType),
+            'hoverImage'   => $product->getHoverImageUrl($imageSourceType),
             'price'        => $helper->formatPrice($product->getPrice()),
             'oldPrice'     => null,
             'isBuyable'    => $product->getIsBuyable(),
@@ -89,8 +98,19 @@ class ShowAction {
             'isNewWindow'       => \App::abTest()->isNewWindow() // открытие товаров в новом окне
         ];
 
+        // Дополняем свойствами для каталога в виде листинга
+        if (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category && $category->isInSiteListingWithViewSwitcherAbTest()) {
+            $productItem['properties']= array_map(function(\Model\Product\Property\Entity $entity) {
+                return [
+                    'name' => $entity->getName(),
+                    'value' => $entity->getStringValue(),
+
+                ];
+            }, $product->getPropertiesInView(3));
+        }
+
         // oldPrice and priceSale
-        if ( $product->getPriceOld() ) {
+        if ( $product->getPriceOld() && $product->getLabel()) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
             $productItem['priceSale'] = round( ( 1 - ($product->getPrice() / $product->getPriceOld() ) ) *100, 0 );
             $productItem['showPriceSale'] = AbTest::isShowSalePercentage();
@@ -100,21 +120,11 @@ class ShowAction {
         if ($buyMethod && in_array(strtolower($buyMethod), ['none', 'false'])) {
             $productItem['cartButton'] = null;
         } else {
-            $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product, null, false, $cartButtonSender, false) : null;
+            $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product, null, $cartButtonSender, false) : null;
         }
 
         if ($product->isGifteryCertificate()) $productItem['price'] = 'от ' . \App::config()->partners['Giftery']['lowestPrice'];
 
         return $productItem;
-    }
-
-    private function getHoverImageUrl(\Model\Product\Entity $product, $imageSize) {
-        foreach ($product->getPhoto() as $photo) {
-            if (40 == $photo->getPosition()) {
-                return $photo->getUrl($imageSize);
-            }
-        }
-
-        return null;
     }
 }

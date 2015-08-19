@@ -5,6 +5,8 @@ namespace View\ProductCategory;
 abstract class Layout extends \View\DefaultLayout {
     use LayoutTrait;
 
+    protected $layout  = 'layout-oneColumn';
+
     public function prepare() {
         $category = $this->getParam('category');
         if (!($category instanceof \Model\Product\Category\Entity)) {

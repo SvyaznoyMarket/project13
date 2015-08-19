@@ -5,7 +5,7 @@
  * @var $category           \Model\Product\Category\Entity
  * @var $catalogConfig      array
  * @var $rootCategoryInMenu \Model\Product\Category\TreeEntity|null
- * @var $productsById       \Model\Product\CompactEntity[]
+ * @var $productsByUi       \Model\Product\Entity[]
  */
 ?>
 
@@ -61,7 +61,6 @@ foreach ($gridCells as $cell) {
             'type'      => 'viewed',
             'title'     => 'Вы смотрели',
             'products'  => [],
-            'count'     => null,
             'limit'     => \App::config()->product['itemsInSlider'],
             'page'      => 1,
             'url'       => $page->url('product.recommended'),

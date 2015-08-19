@@ -1,27 +1,21 @@
 @full-size: 100%;
-.main{
-    background: @white;
-    .wrapper{
-        width: 960px;
-        padding: 0;
-    }
-}
-
-.content{
-    padding: 0 0 214px;
-}
-
 // блок товара
 .item{
     margin: 0 0 10px;
-    &_imgw{
-        display: block;
+    &_imgw {
+        width: 207px;
+        height: 150px;
+        padding-bottom: 10px;
 
         text-align: center;
+        vertical-align: middle;
+
+        .table-cell();
     }
+
     &_img {
-        width: 160px;
-        height: 160px;
+        max-width: 100%;
+        max-height: 100%;
     }
     &_n{
         overflow: hidden;
@@ -64,32 +58,6 @@
             font-size: 14px;
             width: auto;
 
-            &--magenta {
-                .gradient(#d063a5, #c960a0, #bf5b98);
-                border-color: #a64f83;
-
-                &:hover {
-                    background: #bf5b98;
-                }
-
-                &:active {
-                    background: #bf5b98;
-                }
-            }
-
-            &--red {
-                .gradient(#d63942, #d63942, #e63d47);
-                border-color: #bd333a;
-
-                &:hover {
-                    background: #d63942;
-                }
-
-                &:active {
-                    background: #d63942;
-                }
-            }
-
             &.mBought {
                 background: none repeat scroll 0 0 #fff;
                 border: 1px solid #b3b3b3;
@@ -111,7 +79,7 @@
 
 // блок главной страницы
 .infoBox{
-    margin: 15px 20px;
+    margin: 15px 10px;
     &_tl{
         font-size: 18px;
 
@@ -182,51 +150,4 @@
     &:hover {
         .scale(1.05);
     }
-}
-// новая главная страница
-.main-new{
-    background: @white url('@{base-url}/mainpage/img/spring-bg.jpg') no-repeat 50% 0;
-    background-size: cover;
-
-    background-attachment: fixed;
-    .wrapper{
-        background:rgb(255,255,255);
-        background: transparent\9;
-        background:rgba(255,255,255,0.6);
-        .box-shadow(0px 0px 26px 0px rgba(50, 50, 50, 0.25));
-        &:nth-child(n) {
-            filter: none;
-        }
-    }
-    .shopInfoTab, .shopInfo_i, .slidesBox-items .slidesBox_i{
-        background: @white;
-    }
-    .shopInfoTab, .shopInfo_i,{
-        .bordered();
-        .rounded(4px);
-        .box-shadow(0px 0px 2px 0 rgba(50, 50, 50, 0.25));
-    }
-    .shopInfoTab:before{
-        border-bottom-color: #F2F2F2;
-    }
-    .shopInfoTab{
-        margin: 20px 10px;
-    }
-
-    .slidesBox-items{
-                width: 464px;
-            &-l{
-                float: left;
-                margin-left:10px;
-            }
-            &-r{
-                float: right;
-                margin-right:10px;
-            }
-
-        .slidesBox_inn {
-                width: 464px;
-                height: 483px;
-        }
-     }
 }

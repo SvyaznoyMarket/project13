@@ -5,7 +5,8 @@ Disallow: /private/*
 Disallow: /cart
 Disallow: /login
 Disallow: /search
-Disallow: /?
+Disallow: /*?
+Allow:/*?page=
 Disallow: /*?f-brand
 Disallow: /*?f-price
 Disallow: /*utm_

@@ -87,8 +87,8 @@
                         <div class="shopsInfo_time">
                             <span class="colorBrightGrey">Режим работы:</span> с <?= $shop->getWorkingTimeToday()['start_time'] /* TODO день работы на день вывоза */?> до <?= $shop->getWorkingTimeToday()['end_time'] /* TODO день работы на день вывоза */?> &nbsp;
                             <span class="colorBrightGrey">Оплата при получении: </span>
-                            <img src="/styles/personal-page/img/nal.png" alt=""/>
-                            <img src="/styles/personal-page/img/card.png" alt=""/>
+                            <img src="/styles/person-page/img/nal.png" alt=""/>
+                            <img src="/styles/person-page/img/card.png" alt=""/>
                         </div>
                     </div>
                 </div>
@@ -109,13 +109,13 @@
 
         <div class="personalTable_row">
             <div class="personalTable_cell personalTable_cell-mini">
-                <img class="imgProd" src="<?= $product->getImageUrl(0) ?>" alt="" />
+                <img class="imgProd" src="<?= $product->getMainImageUrl('product_60') ?>" alt="" />
             </div>
 
             <div class="personalTable_cell personalTable_cell-text">
                 <? $categories = $product->getCategory(); $category = end($categories) ?>
                 <?= $category ? $category->getName() : '' ; ?><br/>
-                <?= $product->getName() ?>
+                <?= $page->escape($product->getName()) ?>
             </div>
 
             <div class="personalTable_cell l colorGrey ta-r">
@@ -144,7 +144,7 @@
 
             <div class="personalTable_row">
                 <div class="personalTable_cell personalTable_cell-mini">
-                    <img class="imgProd" src="/styles/personal-page/img/enterLogo.png" alt="" />
+                    <img class="imgProd" src="/styles/person-page/img/enterLogo.png" alt="" />
                 </div>
 
                 <div class="personalTable_cell">
@@ -229,9 +229,9 @@
                         <button class="btnPay btnLightGrey">Заполнить заявку</button>
 
                         <span class="descPay">
-                            <img src="/styles/personal-page/img/cards/renesans.png" alt="" class="descPay_img" />
-                            <img src="/styles/personal-page/img/cards/tinkoff.png" alt="" class="descPay_img" />
-                            <img src="/styles/personal-page/img/cards/otpBank.png" alt="" class="descPay_img" />
+                            <img src="/styles/person-page/img/cards/renesans.png" alt="" class="descPay_img" />
+                            <img src="/styles/person-page/img/cards/tinkoff.png" alt="" class="descPay_img" />
+                            <img src="/styles/person-page/img/cards/otpBank.png" alt="" class="descPay_img" />
                         </span>
                     </li>
                 </ul>
@@ -245,8 +245,8 @@
                         <button class="btnPay btnLightGrey">Оплатить баллами</button>
 
                         <span class="descPay">
-                            <img src="/styles/personal-page/img/cards/sclub.png" alt="" class="descPay_img" />
-                            <img src="/styles/personal-page/img/cards/sber.png" alt="" class="descPay_img" />
+                            <img src="/styles/person-page/img/cards/sclub.png" alt="" class="descPay_img" />
+                            <img src="/styles/person-page/img/cards/sber.png" alt="" class="descPay_img" />
                         </span>
                     </li>
 
@@ -254,11 +254,11 @@
                         <button class="btnPay btnLightGrey">Оплатить онлайн</button>
 
                         <span class="descPay">
-                            <img src="/styles/personal-page/img/cards/MasterCard.png" alt="" class="descPay_img" />
-                            <img src="/styles/personal-page/img/cards/Visa.png" alt="" class="descPay_img" />
-                            <img src="/styles/personal-page/img/cards/Maestro.png" alt="" class="descPay_img" />
-                            <img src="/styles/personal-page/img/cards/paypal.png" alt="" class="descPay_img" />
-                            <img src="/styles/personal-page/img/cards/psb.png" alt="" class="descPay_img" />
+                            <img src="/styles/person-page/img/cards/MasterCard.png" alt="" class="descPay_img" />
+                            <img src="/styles/person-page/img/cards/Visa.png" alt="" class="descPay_img" />
+                            <img src="/styles/person-page/img/cards/Maestro.png" alt="" class="descPay_img" />
+                            <img src="/styles/person-page/img/cards/paypal.png" alt="" class="descPay_img" />
+                            <img src="/styles/person-page/img/cards/psb.png" alt="" class="descPay_img" />
                         </span>
                     </li>
                 </ul>

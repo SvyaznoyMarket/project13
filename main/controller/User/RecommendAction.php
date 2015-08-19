@@ -1,21 +1,18 @@
 <?php
 
 
-namespace controller\User;
+namespace Controller\User;
 
 
-class RecommendAction {
+class RecommendAction extends PrivateAction {
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse
      */
     public function execute(\Http\Request $request) {
-        $client = \App::coreClientV2();
-        $region = \App::user()->getRegion();
-
         // вы смотрели
         $viewedProductIds = [];
-        //$data = $request->cookies->get('rrviewed');
         $data = $request->get('rrviewed');
         if (is_string($data)) {
             $data = explode(',', $data);
@@ -31,20 +28,14 @@ class RecommendAction {
         $productIdsByType = (new \Controller\Main\Action())->getProductIdsFromRR($request, \App::config()->coreV2['timeout']);
         $recommendedProductIds = $productIdsByType['personal'] ?: $productIdsByType['popular'];
 
-        $productIds = array_merge($viewedProductIds, $recommendedProductIds);
-
+        /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
-        foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-            \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
-                foreach ((array)$data as $item) {
-                    if (empty($item['id'])) continue;
-
-                    $productsById[$item['id']] = new \Model\Product\Entity($item);
-                }
-            });
+        foreach (array_merge($viewedProductIds, $recommendedProductIds) as $productId) {
+            $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
 
-        $client->execute();
+        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($productsById, 'media label');
+        \App::coreClientV2()->execute();
 
         $recommendedProducts = [];
         foreach ($recommendedProductIds as $productId) {

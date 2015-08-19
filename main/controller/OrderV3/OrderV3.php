@@ -3,8 +3,11 @@
 
 namespace Controller\OrderV3;
 
+use EnterApplication\CurlTrait;
+use EnterQuery as Query;
 
 class OrderV3 {
+    use CurlTrait;
 
     /** Флаг первичного просмотра страницы */
     const SESSION_IS_READED_KEY = 'orderV3_is_readed';
@@ -13,7 +16,7 @@ class OrderV3 {
     protected $client;
     /** @var \Session\User */
     protected $user;
-    /** @var \Session\Cart|\Session\Cart\OneClick */
+    /** @var \Session\Cart */
     protected $cart;
     /** @var \Http\Session */
     protected $session;
@@ -25,16 +28,47 @@ class OrderV3 {
         $this->splitSessionKey = \App::config()->order['splitSessionKey'];
         $this->client = \App::coreClientV2();
         $this->user = \App::user();
-        $this->cart = in_array(\App::request()->attributes->get('route'), ['orderV3.one-click', 'orderV3.delivery.one-click']) ? $this->cart = $this->user->getOneClickCart() : $this->user->getCart();
+        $this->cart = $this->user->getCart();
     }
 
     public function execute(\Http\Request $request) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
+        if (in_array(\App::request()->attributes->get('route'), ['order.oneClick.new', 'orderV3.one-click', 'orderV3.delivery.one-click'], true)) {
+            $sessionData = \App::session()->get('user/cart/one-click');
+            \App::session()->remove('user/cart/one-click');
+            if (!isset($sessionData['product']) || !is_array($sessionData['product']) || count($sessionData['product']) != 1) {
+                throw new \Exception\NotFoundException('Для наборов одноклик не работает');
+            }
 
-        if (\App::config()->debug) return null; // чтобы можно было смотреть разбиение на тестовых площадках
+            $productId = (int)key($sessionData['product']);
 
-        if (!in_array($this->user->getRegion()->getId(), [119623, 93746, 14974])) {
-            return new \Http\RedirectResponse(\App::router()->generate('order'));
+            if (!$productId) {
+                throw new \Exception\NotFoundException('Товар не найден');
+            }
+
+            /** @var \Model\Product\Entity[] $products */
+            $products = [new \Model\Product\Entity(['id' => $productId])];
+            \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($products);
+            \App::coreClientV2()->execute();
+
+            if (!$products) {
+                throw new \Exception\NotFoundException('Товар не найден');
+            }
+
+            $params = [
+                'productPath' => $products[0]->getPath(),
+            ];
+
+            $sessionProduct = reset($sessionData['product']);
+
+            if ($sessionProduct['sender']) {
+                $params['sender'] = $sessionProduct['sender'];
+            }
+
+            if ($sessionProduct['sender2']) {
+                $params['sender2'] = $sessionProduct['sender2'];
+            }
+
+            return new \Http\RedirectResponse(\App::router()->generate('product', $params) . '#one-click' . (isset($sessionData['shop']) && $sessionData['shop'] ? '-' . $sessionData['shop'] : ''));
         }
 
         return null;
@@ -66,4 +100,53 @@ class OrderV3 {
         return new \Http\JsonResponse();
     }
 
+    /**
+     * @param array $data
+     */
+    protected function pushEvent(array $data) {
+        try {
+            $sessionData = (array)$this->session->get($this->splitSessionKey) + [
+                    'orders'    => [],
+                    'user_info' => [],
+                ];
+
+            $userInfo = (array)$sessionData['user_info'] + [
+                    'email'      => null,
+                    'phone'      => null,
+                    'first_name' => null,
+                ];
+
+            $userEntity = \App::user()->getEntity();
+            $cart = \App::user()->getCart();
+
+            $data = array_replace_recursive([
+                'step'        => null,
+                'user'        => [
+                    'uid'   => $userEntity ? $userEntity->getUi() : null,
+                    'email' => $userInfo['email'],
+                    'phone' => $userInfo['phone'],
+                    'name'  => $userInfo['first_name'],
+                ],
+                'session_id'  => \App::session()->getId(),
+                'cart'        => [
+                    'products' => array_map(
+                        function (\Model\Cart\Product\Entity $cartProduct) {
+                            return [
+                                'uid'      => $cartProduct->ui,
+                                'quantity' => $cartProduct->quantity,
+                            ];
+                        },
+                        $cart->getInOrderProductsById()
+                    ),
+                    'sum'      => $cart->getSum(),
+                ],
+                'order_count' => isset($sessionData['orders']) ? count($sessionData['orders']) : null,
+            ], $data);
+            (new Query\Event\PushOrderStep($data))->prepare();
+
+            $this->getCurl()->execute();
+        } catch (\Exception $e) {
+            \App::logger()->error(['error' => $e]);
+        }
+    }
 } 

@@ -1,0 +1,35 @@
+.popup {
+    &--skinny {
+        font-size: 0;
+
+        .inline-block();
+        overflow: visible;
+
+        width: auto;
+        padding: 0;
+
+        white-space: nowrap;
+
+        border: 1px solid #c7c7c7;
+
+        .box-shadow(none);
+        .rounded(0px);
+        .closer {
+            font-size: 19px;
+            line-height: 24px;
+
+            top: 0;
+            right: -30px;
+
+            width: 25px;
+            height: 25px;
+
+            text-align: center;
+
+            color: @black;
+            background: #e6e6e6;
+
+            .rounded(25px);
+        }
+    }
+}

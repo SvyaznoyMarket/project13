@@ -1,5 +1,7 @@
 <?php
 
+use Controller\Enterprize\CouponTrait;
+
 /**
  * @param \Helper\TemplateHelper $helper
  * @param \Model\EnterprizeCoupon\Entity[] $enterpizeCoupons
@@ -32,18 +34,6 @@ $f = function(
                 $itemClass .= ' ep-list__i--noico';
             }
 
-            /*
-            $couponLink = $helper->url('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()]);
-            if ($isEnterprizeMember) {
-                $couponLink = $helper->url('enterprize.show', ['enterprizeToken' => $coupon->getToken()]);
-            }
-            if ($coupon->isInformationOnly()) {
-                $couponLink = $coupon->getDescriptionToken()
-                    ? $helper->url('content', ['token' => $coupon->getDescriptionToken()])
-                    : null;
-            }
-            */
-
             $isNotMember = !$coupon->isForNotMember() && !$isEnterprizeMember;
 
             $expiredDays = null;
@@ -59,62 +49,13 @@ $f = function(
                 } catch (\Exception $e) {}
             }
 
-            $dataValue = [
-                'name'        => $coupon->getName(),
-                'token'       => $coupon->getToken(),
-                'number'      => $coupon->getDiscount() ? $coupon->getDiscount()->getNumber() : null,
-                'discount'    => $helper->formatPrice($coupon->getPrice()) . ($coupon->getIsCurrency() ? ' <span class="rubl">p</span>' : '%'),
-                'start'       =>
-                    (false && $coupon->getDiscount())
-                    ? ($coupon->getDiscount()->getStartDate() instanceof \DateTime ? $coupon->getDiscount()->getStartDate()->format('d.m.Y') : null)
-                    : ($coupon->getStartDate() instanceof \DateTime ? $coupon->getStartDate()->format('d.m.Y') : null)
-                ,
-                'end'         =>
-                    (false && $coupon->getDiscount())
-                    ? ($coupon->getDiscount()->getEndDate() instanceof \DateTime ? $coupon->getDiscount()->getEndDate()->format('d.m.Y') : null)
-                    : ($coupon->getEndDate() instanceof \DateTime ? $coupon->getEndDate()->format('d.m.Y') : null)
-                ,
-                'description' => $coupon->getSegmentDescription(),
-                'minOrderSum' => $helper->formatPrice($coupon->getMinOrderSum()),
-                'isUserOwner' => (bool)$coupon->getDiscount(),
-                'link'        =>
-                    $coupon->getName()
-                    ? [
-                        'name' => $coupon->getName(),
-                        'url'  => $coupon->getLink(),
-                    ]
-                    : null
-                ,
-                'slider'      => [
-                    'url' => \App::router()->generate('enterprize.slider', ['enterprizeToken' => $coupon->getToken()]),
-                ],
-                'user'        =>
-                    [
-                        'isAuthorized' => (bool)$userEntity,
-                        'isMember'     => $userEntity && $userEntity->isEnterprizeMember(),
-                    ]
-                    + (
-                        $userEntity
-                        ? [
-                            'mobile' => preg_replace('/^8/', '+7', $userEntity->getMobilePhone()),
-                            'name'   => $userEntity->getFirstName(),
-                            'email'  => $userEntity->getEmail(),
-                        ]
-                        :
-                        []
-                    )
-                ,
-                'form'        => [
-                    'action' =>
-                        ($user->getEntity() && $user->getEntity()->isEnterprizeMember())
-                        ? \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()])
-                        : \App::router()->generate('enterprize.form.update', ['enterprizeToken' => $coupon->getToken()])
-                    ,
-                ],
-            ];
+            $dataValue = CouponTrait::getCouponData($coupon);
             ?>
 
-            <div class="<?= $itemClass . ($isNotMember ? ' mMembers' : '') ?>" data-value="<?= $helper->json($dataValue) ?>" data-column="col-<?= $columnNum + 1 ?>" title="<?= ((null !== $expiredDays) ? sprintf('Может быть применена в течении %s %s', $expiredDays, $helper->numberChoice($expiredDays, ['дня', 'дней', 'дней'])) : '') ?>">
+            <div class="<?= $itemClass . ($isNotMember ? ' mMembers' : '') ?>"
+                 data-value="<?= $helper->json($dataValue) ?>"
+                 data-column="col-<?= $columnNum + 1 ?>"
+                 title="<?= ((null !== $expiredDays) ? sprintf('Может быть применена в течение %s %s', $expiredDays, $helper->numberChoice($expiredDays, ['дня', 'дней', 'дней'])) : '') ?>">
                 <div class="ep-list__lk">
                     <span class="ep-coupon"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
                         <span class="ep-coupon__inner">

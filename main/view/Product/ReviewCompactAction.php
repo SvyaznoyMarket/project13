@@ -5,7 +5,7 @@ namespace View\Product;
 class ReviewCompactAction {
     public function execute(
         \Helper\TemplateHelper $helper,
-        \Model\Product\BasicEntity $product
+        \Model\Product\Entity $product
     ) {
         $score = $avgStarScore = $product->getAvgStarScore();
 

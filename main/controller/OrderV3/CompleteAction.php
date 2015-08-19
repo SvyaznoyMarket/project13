@@ -2,13 +2,17 @@
 
 namespace Controller\OrderV3;
 
+use EnterApplication\CurlTrait;
+use Session\AbTest\ABHelperTrait;
 use Model\Order\Entity;
 use Model\PaymentMethod\PaymentEntity;
 use Model\Point\PointEntity;
 use Session\ProductPageSenders;
-use Session\ProductPageSendersForMarketplace;
+use Session\ProductPageSenders2;
+use EnterQuery as Query;
 
 class CompleteAction extends OrderV3 {
+    use CurlTrait, ABHelperTrait;
 
     private $sessionOrders;
     private $sessionIsReaded;
@@ -30,12 +34,13 @@ class CompleteAction extends OrderV3 {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         ProductPageSenders::clean();
-        ProductPageSendersForMarketplace::clean();
+        ProductPageSenders2::clean();
 
         /** @var \Model\Order\Entity[] $orders */
         $orders = [];
         /** @var \Model\PaymentMethod\PaymentEntity[] $ordersPayment */
         $ordersPayment = [];
+        /** @var \Model\Product\Entity[] $products */
         $products = [];
         $paymentProviders = [];
         $privateClient = \App::coreClientPrivate();
@@ -45,6 +50,9 @@ class CompleteAction extends OrderV3 {
         $shopIds = [];
         $pointUis = [];
         $errors = [];
+        $userEntity = \App::user()->getEntity();
+
+        $this->pushEvent(['step' => 3]);
 
         try {
 
@@ -95,11 +103,12 @@ class CompleteAction extends OrderV3 {
 
             // получаем продукты для заказов
             foreach ($orders as $order) {
-                \RepositoryManager::product()->prepareCollectionById(array_map(function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $order->getProduct()), null, function ($data) use ($order, &$products) {
-                    foreach ($data as $productData) {
-                        $products[$productData['id']] = new \Model\Product\Entity($productData);
-                    }
-                });
+                // TODO все данные заказываемых товаров необходимо сохранять в сессии на первом шаге оформления заказа, т.к. на последнем шаге товара уже может не быть в бэкэнде или он будет заблокирован 
+                foreach ($order->getProduct() as $product) {
+                    $products[$product->getId()] = new \Model\Product\Entity(['id' => $product->getId()]);
+                }
+                
+                \RepositoryManager::product()->prepareProductQueries($products);
 
                 // Нужны ли нам кредитные банки?
                 if ($order->isCredit()) $needCreditBanksData = true;
@@ -137,10 +146,25 @@ class CompleteAction extends OrderV3 {
             unset($order, $methodId, $onlineMethodsId, $privateClient, $needCreditBanksData);
 
             // очищаем корзину от заказанных продуктов
-            foreach ($products as $product) {
-                if ($product instanceof \Model\Product\Entity) $this->cart->setProduct($product, 0);
+            $updateResultProducts = [];
+            try {
+                $updateResultProducts = $this->cart->update(array_map(function(\Model\Product\Entity $product){ return ['ui' => $product->ui, 'quantity' => 0]; }, $products));
+            } catch(\Exception $e) {
+                \App::logger()->error(['message' => 'Не удалось очистить корзину после оформления заказа', 'error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['order', 'cart/update']);
             }
-            unset($product);
+
+            if ($userEntity && $this->isCoreCart()) {
+                try {
+                    foreach ($updateResultProducts as $updateResultProduct) {
+                        if ($updateResultProduct->setAction === 'delete') {
+                            (new Query\Cart\RemoveProduct($userEntity->getUi(), $updateResultProduct->cartProduct->ui))->prepare();
+                        }
+                    }
+                    $this->getCurl()->execute();
+                } catch (\Exception $e) {
+                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['order']);
+                }
+            }
 
             // логируем этот шит
             foreach ($orders as $order) {
@@ -150,7 +174,7 @@ class CompleteAction extends OrderV3 {
                 $data['order-number'] = $order->numberErp;
                 $data['order-products'] = $productIds;
                 $data['order-names'] = array_map(function(\Model\Product\Entity $product) { return $product->getName(); }, $productsForOrder);
-                $data['order-product-category'] = array_map(function(\Model\Product\Entity $product) { $category = $product->getMainCategory(); return $category ? $category->getName() : null; }, $productsForOrder);
+                $data['order-product-category'] = array_map(function(\Model\Product\Entity $product) { $category = $product->getRootCategory(); return $category ? $category->getName() : null; }, $productsForOrder);
                 $data['order-product-price'] = array_map(function(\Model\Product\Entity $product) { return $product->getPrice(); }, $productsForOrder);
                 $data['order-sum'] = $order->getSum();
                 $data['order-delivery-price'] = $order->getDelivery() ? $order->getDelivery()->getPrice() : '';
@@ -174,6 +198,7 @@ class CompleteAction extends OrderV3 {
         $page->setParam('ordersPayment', $ordersPayment);
         $page->setParam('motivationAction', $this->getMotivationAction($orders, $ordersPayment));
         $page->setParam('products', $products);
+        $page->setParam('productsById', $products);
         $page->setParam('userEntity', $this->user->getEntity());
         $page->setParam('paymentProviders', $paymentProviders);
         $page->setParam('banks', $banks);
@@ -360,7 +385,7 @@ class CompleteAction extends OrderV3 {
             $delivery = $iOrder->getDelivery();
             if (!$delivery || !$delivery->getDeliveredAt() || $delivery->isShipping) continue;
 
-            if ((new \DateTime())->format('d.m.Y') === $delivery->getDeliveredAt()->format('d.m.Y')) { // сегодня
+            if ($delivery->pointUi && ((new \DateTime())->format('d.m.Y') === $delivery->getDeliveredAt()->format('d.m.Y'))) { // сегодня
                 return null;
             }
         }

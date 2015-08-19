@@ -2,36 +2,42 @@
 * Стили кнопки наверх≠
 */
 
-.upper{
-  .border-radius(0, 4px, 4px, 0);
-  .drop-shadow(0, 0, 15px, 0.4);
-  .transition(all 0.2s ease-in-out);
-  position:fixed;
-  top:0;
-  left: 50%;
-  z-index: 2000;
-  margin-top:-55px;
-  margin-left: -560px;
-  padding: 25px 0 10px;
-  width: 60px;
-  background: rgba(255,255,255,0.7);
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAKCAYAAABWiWWfAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAm0lEQVQoFaXMMQ6CQBCF4SGEhIKChsr7cgAOYG9PKbWlpcdZ/7dxDCi7gBYvk91581kIwXIxsxO5auZ62m1BHciD0Iyzy4FJjOOW3F+QMEXvNgWuYhw05EYcmU/9N2vgF0axJlMCclT7+hNcYBQqMm5ADqpXzcE3xqIkl52Qg+qXDkaMj4KcD0IO6q4Q6NjwI+TgEDGQ/k/Iwf4J2XI70aG1nIMAAAAASUVORK5CYII=);
-  background-position: 50% 8px;
-  background-repeat: no-repeat;
-  color: @black;
-  text-align: center;
-  font-size:14px;
-  line-height: 1;
-  outline: none;
-  
-  &:hover{
-    .drop-shadow(0, 0, 10px, 0.4);
-    background-color: rgba(255,255,255,0.9);
-    text-decoration: none;
-    outline: none;
-  }
+.upper {
+    font-size: 14px;
+    line-height: 1;
 
-  &:active, &:focus {
+    position: fixed;
+    z-index: 100;
+    bottom: 60px;
+    left: 50%;
+    display: none;
+
+    width: 60px;
+    margin-top: -55px;
+    margin-left: -560px;
+    padding: 25px 0 10px;
+
+    text-align: center;
+
+    color: @black;
+    border: 1px solid #e8e8e8;
     outline: none;
-  }
+    background: rgba(255,255,255,.7);
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAKCAYAAABWiWWfAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAm0lEQVQoFaXMMQ6CQBCF4SGEhIKChsr7cgAOYG9PKbWlpcdZ/7dxDCi7gBYvk91581kIwXIxsxO5auZ62m1BHciD0Iyzy4FJjOOW3F+QMEXvNgWuYhw05EYcmU/9N2vgF0axJlMCclT7+hNcYBQqMm5ADqpXzcE3xqIkl52Qg+qXDkaMj4KcD0IO6q4Q6NjwI+TgEDGQ/k/Iwf4J2XI70aG1nIMAAAAASUVORK5CYII=);
+    background-repeat: no-repeat;
+    background-position: 50% 8px;
+
+    .rounded(4px);
+    .transition(all .2s ease-in-out);
+    &:hover {
+        text-decoration: none;
+
+        outline: none;
+        background-color: rgba(255,255,255,.9);
+
+    }
+    &:active ,
+    &:focus {
+        outline: none;
+    }
 }

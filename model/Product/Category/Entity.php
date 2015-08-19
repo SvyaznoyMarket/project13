@@ -45,6 +45,8 @@ class Entity extends BasicEntity {
     protected $child = [];
 
     public function __construct(array $data = []) {
+        $templateHelper = new \Helper\TemplateHelper();
+        
         $data['price_change_trigger_enabled'] = true;
         $data['price_change_percent_trigger'] = 90;
 
@@ -79,9 +81,9 @@ class Entity extends BasicEntity {
         if (isset($data['product_view_id'])) $this->setProductView($data['product_view_id']);
         if (isset($data['level'])) $this->setLevel($data['level']);
 
-        if (isset($data['title'])) $this->setSeoTitle($data['title']);
-        if (isset($data['meta_keywords'])) $this->setSeoKeywords($data['meta_keywords']);
-        if (isset($data['meta_description'])) $this->setSeoDescription($data['meta_description']);
+        if (isset($data['title'])) $this->setSeoTitle($templateHelper->unescape($data['title']));
+        if (isset($data['meta_keywords'])) $this->setSeoKeywords($templateHelper->unescape($data['meta_keywords']));
+        if (isset($data['meta_description'])) $this->setSeoDescription($templateHelper->unescape($data['meta_description']));
         if (isset($data['content'])) $this->setSeoContent($data['content']);
 
         if (isset($data['property']['seo']['hotlinks'])) {
@@ -102,6 +104,8 @@ class Entity extends BasicEntity {
                 }
             }
         }
+
+        if (isset($data['parent'])) $this->parent = new Entity($data['parent']);
     }
 
     /**
@@ -363,6 +367,18 @@ class Entity extends BasicEntity {
     /**
      * @return Entity
      */
+    public function getRootOfParents() {
+        $root = $this;
+        while ($root->parent) {
+            $root = $root->parent;
+        }
+
+        return $root;
+    }
+
+    /**
+     * @return Entity
+     */
     public function getRoot() {
         return $this->root ?: reset($this->ancestor);
     }
@@ -397,7 +413,7 @@ class Entity extends BasicEntity {
         return in_array($this->getRootOrSelf()->getUi(), [
             '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
             'f7a2f781-c776-4342-81e8-ab2ebe24c51a', // Мебель
-//                'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электронника
+            'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электронника
         ], true) || $this->isTyre();
     }
 
@@ -434,7 +450,7 @@ class Entity extends BasicEntity {
         if ($this->isV2()) {
             return (bool)$this->getClosest([
                 '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
-//                'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электронника
+                'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электронника
             ]);
         }
 
@@ -446,6 +462,14 @@ class Entity extends BasicEntity {
             '94fe0c01-665b-4f66-bb9d-c20e62aa9b7a', // Шины и принадлежности
             '018638bb-b54b-473f-8cb0-fa3953cd3695', // Шины и принадлежности -> Шины
         ], true);
+    }
+
+    public function isInSiteListingWithViewSwitcherAbTest() {
+        return (bool)$this->getClosest([
+            '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
+            'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электроника
+            '0e80c81b-31c9-4519-bd10-e6a556fe000c', // Сделай сам
+        ]);
     }
 
     private function getClosest(array $expectedUis) {
@@ -552,10 +576,6 @@ class Entity extends BasicEntity {
 
             if (isset($data['property']['appearance']['logo_path'])) {
                 $result['logo_path'] = $data['property']['appearance']['logo_path'];
-            }
-
-            if (isset($data['property']['appearance']['use_lens'])) {
-                $result['use_lens'] = $data['property']['appearance']['use_lens'];
             }
 
             if (isset($data['property']['appearance']['is_new'])) {

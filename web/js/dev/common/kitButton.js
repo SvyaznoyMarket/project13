@@ -23,22 +23,25 @@
 
 				var $popup = $(Mustache.render($('#tpl-cart-kitForm').html()));
 
+                $('.jsProductImgPopup').trigger('close'); // закрытие окна с изображением
+
 				$popup.lightbox_me({
 					autofocus: true,
+					closeSelector: ".jsPopupCloser",
 					destroyOnClose: true
 				});
 
-				ko.applyBindings(new PopupModel(result.product, $button.data('sender'), $button.data('sender2') || ''), $popup[0]);
+				ko.applyBindings(new PopupModel(
+					result.product,
+					ENTER.utils.analytics.productPageSenders.get($button),
+					ENTER.utils.analytics.productPageSenders2.get($button)
+				), $popup[0]);
 
 				// Закрытие окна
 				$body.one('addtocart', function(){
 					$popup.trigger('close.lme');
 				});
 
-				// Google Analytics
-				if (typeof _gaq !== 'undefined') {
-					_gaq.push(['_trackEvent', 'addedCollection', 'collection', result.product.article]);
-				}
 			},
 			complete: function() {
 				isOpening = false;
@@ -46,12 +49,16 @@
 		});
 	});
 
+    $body.on('addtocart', function(){ $('.jsKitPopup').trigger('close')} ); // закрываем окно popup
+
 	function PopupModel(product, sender, sender2) {
 		var self = this;
 
 		self.productId = product.id;
+		self.productUi = product.ui;
 		self.productPrefix = product.prefix;
 		self.productWebname = product.webname;
+		self.productName = self.productPrefix + ' ' + self.productWebname;
 		self.productImageUrl = product.imageUrl;
 		self.products = ko.observableArray([]);
 
@@ -80,23 +87,30 @@
 		});
 
 		self.buyLink = ko.computed(function(){
-			var link = '/cart/set-products?',
-				id = 0;
+			var params = {
+				kitProduct: {ui: self.productUi},
+				products: []
+			};
 
 			ko.utils.arrayForEach(self.products(), function(item){
-				if (item.count() > 0 ) {
-					link += 'product['+id+'][id]=' + item.id + '&product['+id+'][quantity]=' + item.count() + '&';
-					id += 1;
+				if (item.count() > 0) {
+					params.products.push({
+						ui: item.ui,
+						quantity: '+' + item.count(),
+						up: '1'
+					});
 				}
 			});
 
-			link += $.param({sender: sender});
-
-			if (sender2) {
-				link += '&' + $.param({sender2: sender2});
+			if (sender) {
+				params.sender = sender;
 			}
 
-			return link;
+			if (sender2) {
+				params.sender2 = sender2;
+			}
+
+			return ENTER.utils.generateUrl('cart.product.setList', params);
 		});
 
 		self.dataUpsale = function(mainId){
@@ -131,9 +145,9 @@
 		var self = this;
 
 		self.id = product.id;
+		self.ui = product.ui;
 		self.url = product.url;
 		self.name = product.name;
-		self.line = product.lineName;
 		self.price = product.price;
 		self.image = product.image;
 		self.height = product.height;

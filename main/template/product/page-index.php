@@ -6,7 +6,6 @@
  * @var $accessories        \Model\Product\Entity[]
  * @var $accessoryCategory  \Model\Product\Category\Entity[]
  * @var $kit                \Model\Product\Entity[]
- * @var $additionalData     array
  * @var $shopStates         \Model\Product\ShopState\Entity[]
  * @var $creditData         array
  * @var $deliveryDataResponse   array
@@ -34,5 +33,3 @@ $reviewsPresent = !(empty($reviewsData['review_list']));
 <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
 
 <?= $page->tryRender('product/_similarProducts', ['products' => $similarProducts]) ?>
-
-<?= $helper->render('product/__event', ['product' => $product]) ?>

@@ -31,29 +31,23 @@ trait ABHelperTrait {
         return false;
     }
 
-    public static function getColorClass(Entity $product, $location = null){
-        // SITE-5394 цвет кнопки купить
-        $colorClass = null;
-        switch (\App::abTest()->getTest('cart_button_color')->getChosenCase()->getKey()) {
-            case 'red':
-                $colorClass = ' btnBuy__eLink--red';
-                break;
-            case 'magenta':
-                $colorClass = ' btnBuy__eLink--magenta';
-                break;
-        }
+    /** Минимальная сумма заказа для Воронежа, Н.Новгорода, Рязани
+     * @return bool
+     */
+    public static function isOrderMinSumRestriction(){
+        // SITE-5921
+        $notAvailableParentRegions = [
+            82, // Москва
+            14974, // Москва
+            83, // Московская область
+        ];
 
-        if ($location !== 'slider') {
-            foreach ($product->getCategory() as $category) {
-                // Pandora
-                if (in_array($category->getUi(), ['3fe49466-e5cf-4042-963d-025db2142600'])) {
-                    $colorClass = null;
-                    break;
-                }
-            }
-        }
+        $notAvailableRegions = [
+            108136, // Санкт-Петербург
+        ];
 
-        return $colorClass;
+        $region = \App::user()->getRegion();
+        return (!in_array($region->parentId, $notAvailableParentRegions) && !in_array($region->id, $notAvailableRegions));
     }
 
     public static function isShowSalePercentage() {
@@ -101,5 +95,20 @@ trait ABHelperTrait {
     public static function isMenuHamburger(){
         $test = \App::abTest()->getTest('new_window');
         return $test && $test->getChosenCase()->getKey() == 'hamburger' && \App::request()->attributes->get('route') == 'product';
+    }
+
+    /** Новая карточка товара
+     * @return bool
+     */
+    public static function isNewProductPage() {
+        return \App::abTest()->getTest('productCard') && \App::abTest()->getTest('productCard')->getChosenCase()->getKey() == 'new';
+    }
+
+    /**
+     * Ядерная корзина
+     * @return bool
+     */
+    public static function isCoreCart() {
+        return 'enabled' === \App::abTest()->getTest('core_cart')->getChosenCase()->getKey();
     }
 }

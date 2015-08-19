@@ -33,7 +33,7 @@ $f = function (
 
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ONLINE])) : ?>
             <div class="paymentRow jsDeliveryChooseOnline">
-                <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ONLINE; ?>
+                <? $checked = ($order->payment_method_id == PaymentMethod::PAYMENT_CARD_ONLINE); ?>
                 <input id="payment-online" type="radio" name="payment-type[]" value="by_online" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?>>
                 <label for="payment-online" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">Онлайн-оплата:
                     <ul class="orderPaymentWeb_lst-sm">

@@ -6,22 +6,25 @@
 
 $cart = $user->getCart();
 $helper = new \Helper\TemplateHelper();
+$isNewProductPage = \App::abTest()->isNewProductPage();
 ?>
 
-<div class="jsKnockoutCart" data-bind="visible: !isUpdated()">
+<? /*
+<div class="jsKnockoutCart">
     <?= $page->render('cart/_spinner') ?>
 </div>
+*/ ?>
 
-<div class="jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() == 0" style="display: none">
+<div class="jsKnockoutCart" data-bind="visible: cart().sum() == 0" style="display: none">
     <?= $page->render('cart/_cart-empty') ?>
 </div>
 
-<div class="jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">
+<div class="jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">
 
     <?= $page->render('cart/partner/_adfox') ?>
 
-    <!-- ko foreach: cart -->
-    <?= $page->render('cart/_cart-item') ?>
+    <!-- ko foreach: cart().products() -->
+        <?= $page->render('cart/_cart-item') ?>
     <!-- /ko -->
 
     <div class="basketLine clearfix">
@@ -34,19 +37,24 @@ $helper = new \Helper\TemplateHelper();
 
 </div>
 
-<div class="backShop fl mNoPrint jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">&lt; <a class="underline" href="<?= $backlink ?>">Вернуться к покупкам</a></div>
+<div class="backShop fl mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">&lt; <a class="underline" href="<?= $backlink ?>">Вернуться к покупкам</a></div>
 
-<div class="basketBuy mNoPrint jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">
-    <a href="<?= $page->url('order') ?>" class="bBigOrangeButton">Оформить заказ</a>
+<div class="basketBuy mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">
+    <a href="<?= $page->url('order') ?>" class="bBigOrangeButton" data-bind="visible: !isMinOrderSumVisible()">Оформить заказ</a>
+</div>
+
+<div class="cart-alert jsKnockoutCart" data-bind="visible: isMinOrderSumVisible()" style="display: none;">
+    <span class="cart-alert__info">До оформления заказа осталось</span>
+    <span class="cart-alert__remain-sum"><span data-bind="text: minOrderSum - cart().sum()"><?= \App::config()->minOrderSum ?></span>&thinsp;<span class="rubl">p</span></span>
 </div>
 
 <div class="clear"></div>
 
-<? if ($cart->isEmpty()): // жуткий костыль SITE-5289 ?>
+<? if (!$cart->count()): // жуткий костыль SITE-5289 ?>
     <div id="js-cart-firstRecommendation" style="display: none;">
         <? $page->startEscape()?>
         <div class="basketLine">
-            <?= $helper->render('product/__slider', [
+            <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
                 'type'      => 'alsoBought',
                 'products'  => [],
                 'url'       => $page->url('cart.recommended', [
@@ -60,7 +68,7 @@ $helper = new \Helper\TemplateHelper();
     </div>
 
     <div class="basketLine">
-    <?= $helper->render('product/__slider', [
+    <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
         'type'      => 'main',
         'products'  => [],
         'url'       => $page->url('cart.recommended', [
@@ -71,7 +79,7 @@ $helper = new \Helper\TemplateHelper();
     ]) ?>
     </div>
     <div class="basketLine">
-    <?= $helper->render('product/__slider', [
+    <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
         'type'      => 'alsoBought',
         'products'  => [],
         'url'       => $page->url('cart.recommended', [
@@ -87,9 +95,9 @@ $helper = new \Helper\TemplateHelper();
     <div class="clear"></div>
 
 
-<? if (\App::config()->product['pullRecommendation'] && !$cart->isEmpty()): ?>
+<? if (\App::config()->product['pullRecommendation'] && $cart->count()): ?>
     <div class="basketLine">
-        <?= $helper->render('product/__slider', [
+        <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
             'type'      => 'alsoBought',
             'products'  => [],
             'url'       => $page->url('cart.recommended', [

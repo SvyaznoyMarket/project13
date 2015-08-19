@@ -7,6 +7,10 @@ class CompletePage extends Layout {
     /** @var \Model\Order\Entity[] */
     private $orders;
 
+    public function slotOrderHead() {
+        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 3]);
+    }
+
     public function slotGoogleRemarketingJS($tagParams = []) {
 
         $ordersSum = 0;
@@ -73,7 +77,7 @@ class CompletePage extends Layout {
                         'quantity' => (int)$orderProduct->getQuantity(),
                         'price'    => (int)$orderProduct->getPrice(),
                         'articul'  => $product->getArticle(),
-                        'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null)
+                        'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getRootCategory() ? $product->getRootCategory()->getToken() : null)
                     ];
                 }
             }
@@ -109,19 +113,7 @@ class CompletePage extends Layout {
     }
 
     public function slotBodyDataAttribute() {
-        $region = \App::user()->getRegion();
-        if ($region && \App::config()->newOrder) {
-            $ordersNewTest = \App::abTest()->getTest('orders_new');
-            $ordersNewSomeRegionsTest = \App::abTest()->getTest('orders_new_some_regions');
-            if (
-                (!in_array($region->getId(), [93746, 119623]) && $ordersNewTest && in_array($ordersNewTest->getChosenCase()->getKey(), ['new_2'], true)) // АБ-тест для остальных регионов
-                || (in_array($region->getId(), [93746, 119623]) && $ordersNewSomeRegionsTest && in_array($ordersNewSomeRegionsTest->getChosenCase()->getKey(), ['new_2'], true)) // АБ-тест для Ярославля и Ростова-на-дону
-            ) {
-                return 'order-v3-new';
-            }
-        }
-
-        return 'order-v3';
+        return 'order-v3-new';
     }
 
     public function slotPartnerCounter()
@@ -135,6 +127,21 @@ class CompletePage extends Layout {
         // Flocktory
         if ($config->flocktoryExchange['enabled'] || $config->flocktoryPostCheckout['enabled'])
             $html .= '<div id="flocktoryScriptJS" class="jsanalytics" ></div>';
+
+        if (\App::config()->partners['MyThings']['enabled'] && \App::partner()->getName() == 'mythings') {
+            /** @var $order \Model\Order\Entity */
+            $order = reset($this->orders);
+            $data = [
+                'EventType' => 'Conversion',
+                'Action'    => '9902',
+                'Products'  => array_map(function(\Model\Order\Product\Entity $p) {
+                    return ['id' => (string)$p->getId(), 'price' => (string)$p->getPrice(), 'qty' => $p->getQuantity()];
+                }, $order->getProduct()),
+                'TransactionReference'  => $order->getNumber(),
+                'TransactionAmount'     => (string)$order->getSum()
+            ];
+            $html .= sprintf('<div id="MyThingsJS" class="jsanalytics" data-value="%s"></div>', $this->json($data));
+        }
 
         return $html;
     }
@@ -194,6 +201,8 @@ class CompletePage extends Layout {
                 'orderNumber' => $order->getNumber(),
                 'orderSum' => $order->getSum(),
             ];
+
+            if (\App::partner()->getName()) $orderData['partner'] = \App::partner()->getName();
 
             /* Дополнительные данные для LinkProfit */
             if (\App::config()->partners['LinkProfit']['enabled'] && \App::partner()->getName() == 'linkprofit') {

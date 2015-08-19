@@ -2,38 +2,32 @@
 
 namespace Model\Point;
 
-use Model\Shop\Subway\Entity as Subway;
 use Model\Region\BasicRegionEntity as Region;
 
-class PointEntity {
+/** Используется на последнем шаге ОЗ
+ * Class PointEntity
+ * @package Model\Point
+ */
+class PointEntity extends BasicPoint {
 
     const TYPE_SHOP = 'shop';
     const TYPE_PICKPOINT = 'pickpoint';
     const TYPE_SVYAZNOY = 'svyaznoy';
+    const TYPE_HERMES = 'hermes';
+    const TYPE_EUROSET = 'euroset';
 
-    /** @var int */
-    public $id;
     /** @var string */
     public $ui;
-    /** @var string */
-    public $name;
-    /** @var string */
-    public $address;
     /** @var Region */
     public $region;
-    /** @var Subway */
-    public $subway;
     /** @var string */
     public $type;
 
     function __construct(array $data = []) {
-        if (isset($data['id'])) $this->id = $data['id'];
+        parent::__construct($data);
         if (isset($data['ui'])) $this->ui = $data['ui'];
-        if (isset($data['name'])) $this->name = $data['name'];
-        if (isset($data['address'])) $this->address = $data['address'];
         if (isset($data['geo'])) $this->region = new Region($data['geo']);
         if (isset($data['type'])) $this->type = $data['type'];
-        if (isset($data['subway']) && is_array($data['subway'])) $this->subway = new Subway($data['subway']);
     }
 
     /** Магазин Enter?
@@ -55,6 +49,20 @@ class PointEntity {
      */
     public function isSvyaznoyShop(){
         return $this->type == self::TYPE_SVYAZNOY;
+    }
+
+    /** Пункт выдачи Hermes-DPD?
+     * @return bool
+     */
+    public function isHermesPoint(){
+        return $this->type == self::TYPE_HERMES;
+    }
+
+    /** Магазин Евросеть?
+     * @return bool
+     */
+    public function isEurosetPoint(){
+        return $this->type == self::TYPE_EUROSET;
     }
 
 }

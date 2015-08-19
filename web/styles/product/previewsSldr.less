@@ -25,46 +25,56 @@
 
 		&__link {
 			.rounded(4px);
-			.inline-block();
+			.inline-block-middle();
 			overflow: hidden;
+			background-color: @white;
 
 			width: 50px;
 			height: 50px;
 
 			text-align: center;
-			vertical-align: middle;
+			line-height: 42px;
 
 			.box-sizing();
 
 			border: 1px solid @typLightGray;
-
-			*display: block;
+			padding: 1px;
 
 			&--active {
 
 				border: 2px solid @firmOrange;
+				padding: 0px;
 
 				&:hover{
 					border-color: @firmOrange;
+					text-decoration: none;
 				}
 
 			}
 
 			&:hover {
 				border: 2px solid;
+				padding: 0px;
 				border-color: lighten(@firmOrange, 20%);
+				text-decoration: none;
+			}
+			&:after{
+				content: "";
+				.inline-block-middle();
+				height: 100%;
+				width: 0;
 			}
 		}
 
 		&__img {
-			.rounded(4px);
-			max-width: 45px;
-			max-height: 45px;
-			margin:2px;
+			max-width: 46px;
+			max-height: 46px;
+			.inline-block-middle();
 		}
-		&__link--active &__img, &__link:hover &__img{
-			margin:1px;
-		}
+		// &__link--active &__img, &__link:hover &__img{
+		// 	margin:1px;
+		// }
+
 	}
 
 	&__btn {

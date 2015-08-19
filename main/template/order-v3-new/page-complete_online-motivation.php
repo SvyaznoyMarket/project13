@@ -27,8 +27,6 @@ return function(
     $isOnlinePaymentChecked = in_array($order->getPaymentId(), [PaymentMethodEntity::PAYMENT_CARD_ONLINE, PaymentMethodEntity::PAYMENT_PAYPAL, PaymentMethodEntity::PAYMENT_PSB]);
     ?>
 
-    <?= $helper->render('order-v3-new/__head', ['step' => 3]) ?>
-
     <section class="orderCnt jsNewOnlineCompletePage"
              data-order-id="<?= $order->getId() ?>"
              data-order-number="<?= $order->getNumber() ?>"
@@ -143,6 +141,8 @@ return function(
         ]);
 
         echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products]);
+
+        echo $helper->render('order/__saleAnalytics', ['orders' => $orders]);
 
         /* Показываем флоктори без нарушения конверсии онлайн-оплаты (т.е. не выбран онлайновый метод оплаты) */
         if (!$isOnlinePaymentChecked) {

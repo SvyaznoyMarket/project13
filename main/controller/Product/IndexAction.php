@@ -2,6 +2,7 @@
 
 namespace Controller\Product;
 
+use Model\Product\Label;
 use Model\Product\Trustfactor;
 
 class IndexAction {
@@ -16,10 +17,6 @@ class IndexAction {
     public function execute($productPath, \Http\Request $request) {
         $actionResponse = self::$actionResponse;
 
-        if (!$actionResponse) {
-            return (new \Controller\Product\OldIndexAction())->execute($productPath, $request);
-        }
-
         // регион
         $region =
             $actionResponse->regionQuery->response->region
@@ -27,185 +24,64 @@ class IndexAction {
             : null
         ;
 
-        // товар
-        /** @var $product \Model\Product\Entity */
-        $productItem = [];
-        if ($actionResponse->productQuery->response->product) {
-            $productItem = array_merge($productItem, $actionResponse->productQuery->response->product);
-        }
-        call_user_func(function() use (&$actionResponse, &$productItem) {
-            if ($actionResponse->productDescriptionQuery->response->products) {
-                $productDescriptionItem = reset($actionResponse->productDescriptionQuery->response->products);
-                // проверка на корректность данных от scms
-                if (empty($productDescriptionItem['uid'])) {
-                    return;
-                }
-
-                // осторожно! Если ядро не вернуло товар...
-                if (empty($productItem['id'])) {
-                    \App::exception()->add(new \Exception(sprintf('Товар @%s не получен от ядра', $productDescriptionItem['slug'])));
-                    $productItem = $productDescriptionItem;
-                }
-
-                $propertyData = isset($productDescriptionItem['properties'][0]) ? $productDescriptionItem['properties'] : [];
-                if ($propertyData) {
-                    $productItem['property'] = $propertyData;
-                }
-
-                $propertyGroupData = isset($productDescriptionItem['property_groups'][0]) ? $productDescriptionItem['property_groups'] : [];
-                if ($propertyGroupData) {
-                    $productItem['property_group'] = $propertyGroupData;
+        $productDescriptionsByUi = [];
+        call_user_func(function() use (&$actionResponse, &$productDescriptionsByUi) {
+            foreach ($actionResponse->productDescriptionQueries as $productDescriptionQuery) {
+                if (is_array($productDescriptionQuery->response->products)) {
+                    foreach ($productDescriptionQuery->response->products as $product) {
+                        $productDescriptionsByUi[$product['uid']] = $product;
+                    }
                 }
             }
         });
 
-        $product =
-            (bool)$productItem
-            ? new \Model\Product\Entity($productItem)
-            : null
-        ;
+        // товар
+        /** @var $product \Model\Product\Entity */
+        call_user_func(function() use (&$actionResponse, &$productDescriptionsByUi, &$product) {
+            $productItem = [];
+            if ($actionResponse->productQuery->response->product) {
+                $productItem = $actionResponse->productQuery->response->product;
+            }
+
+            // осторожно! Если ядро не вернуло товар...
+            if (empty($productItem['id'])) {
+                throw new \Exception\NotFoundException(sprintf('Товар @%s не получен от ядра', $productItem['token']));
+            }
+
+            if (!isset($productDescriptionsByUi[$productItem['ui']])) {
+                // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
+                throw new \Exception\NotFoundException(sprintf('Товар @%s не получен от scms', $productItem['token']));
+            }
+
+            $productDescriptionItem = $productDescriptionsByUi[$productItem['ui']];
+            // проверка на корректность данных от scms
+            if (empty($productDescriptionItem['uid'])) {
+                return;
+            }
+
+            $propertyData = isset($productDescriptionItem['properties'][0]) ? $productDescriptionItem['properties'] : [];
+            if ($propertyData) {
+                $productItem['property'] = $propertyData;
+            }
+
+            $propertyGroupData = isset($productDescriptionItem['property_groups'][0]) ? $productDescriptionItem['property_groups'] : [];
+            if ($propertyGroupData) {
+                $productItem['property_group'] = $propertyGroupData;
+            }
+
+            $product = $productItem ? new \Model\Product\Entity($productItem) : null;
+        });
+
         if (!$product) {
             throw new \Exception\NotFoundException(sprintf('Товар не найден'));
         }
 
-        \Session\ProductPageSenders::add($product->getUi(), $request->query->get('sender'));
-        \Session\ProductPageSendersForMarketplace::add($product->getUi(), $request->query->get('sender2'));
-
-        // товар для Подари Жизнь
-        $lifeGiftProduct =
-            ($actionResponse->lifeGiftProductQuery && $actionResponse->lifeGiftProductQuery->response->product)
-            ? new \Model\Product\Entity($actionResponse->lifeGiftProductQuery->response->product)
-            : null
-        ;
-
-        $catalogJson =
-            ($actionResponse->categoryQuery && $actionResponse->categoryQuery->response->category)
-            ? (new \Model\Product\Category\Entity($actionResponse->categoryQuery->response->category))->catalogJson
-            : []
-        ;
-
-        $reviewsData =
-            $actionResponse->reviewQuery
-            ? [
-                'review_list'        => $actionResponse->reviewQuery->response->reviews,
-                'num_reviews'        => $actionResponse->reviewQuery->response->reviewCount,
-                'avg_score'          => $actionResponse->reviewQuery->response->score,
-                'avg_star_score'     => $actionResponse->reviewQuery->response->starScore,
-                'num_users_by_score' => $actionResponse->reviewQuery->response->groupedScoreCount,
-                'page_count'         => $actionResponse->reviewQuery->response->pageCount,
-            ]
-            : []
-        ;
-
-        // получаем рейтинги
-        $reviewsDataSummary = [];
-        if (\App::config()->product['reviewEnabled']) {
-            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData);
-        }
-
-        // связанные товары: аксессуары, состав набора, ...
-        /** @var \Model\Product\Entity[] $relatedProductsById */
-        $relatedProductsById = [];
-        foreach ($actionResponse->relatedProductQueries as $relatedProductQuery) {
-            foreach ($relatedProductQuery->response->products as $item) {
-                $relatedProduct = new \Model\Product\Entity($item);
-
-                $relatedProductsById[$relatedProduct->getId()] = $relatedProduct;
-            }
-        }
-
-        // аксессуары
-        $accessories = [];
-        foreach ($product->getAccessoryId() as $accessoryId) {
-            $relatedProduct = isset($relatedProductsById[$accessoryId]) ? $relatedProductsById[$accessoryId] : null;
-            if (!$relatedProduct) continue;
-
-            $accessories[$relatedProduct->getId()] = $relatedProduct;
-        }
-
-        $accessoryItems = [];
-        $accessoryCategory = array_map(function($accessoryGrouped){
-            return $accessoryGrouped['category'];
-        }, \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, null, \App::config()->product['itemsInAccessorySlider'] * 36, $catalogJson, $accessories));
-        if ((bool)$accessoryCategory) {
-            $firstAccessoryCategory = new \Model\Product\Category\Entity();
-            $firstAccessoryCategory->setId(0);
-            $firstAccessoryCategory->setName('Популярные аксессуары');
-            array_unshift($accessoryCategory, $firstAccessoryCategory);
-        }
-
-        // SITE-5035
-        // похожие товары
-        $similarProducts = [];
-
-        // набор пакеты
-        $kit = [];
-        $kitProducts = [];
-        if ((bool)$product->getKit()) {
-            // получим основные товары набора
-            $kit = [];
-            foreach ($product->getKit() as $part) {
-                $part = isset($relatedProductsById[$part->getId()]) ? $relatedProductsById[$part->getId()] : null;
-                if (!$part) continue;
-
-                $kit[] = $part;
-            }
-
-            $kitProducts = \RepositoryManager::product()->getKitProducts($product, $kit, $actionResponse->deliveryQuery);
-        }
-
-        // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
-        $categoryClass = !empty($catalogJson['category_class']) ? $catalogJson['category_class'] : null;
-        // карточку показываем в обычном лэйауте, если включена соответствующая настройка
-        if(!empty($catalogJson['regular_product_page'])) $categoryClass = null;
-
-        $useLens = false;
-        if ( isset($catalogJson['use_lens']) ) {
-            if ( $catalogJson['use_lens'] ) $useLens = true;
-        }
-        else {
-            $photos = $product->getPhoto();
-            if ( isset($photos[0]) ) {
-                if ( $photos[0]->getHeight() > 750 || $photos[0]->getWidth() > 750 ) {
-                    $useLens = true;
-                }
-            }
-        }
-
-        // подписка
-        $isUserSubscribedToEmailActions = false;
-        if ($actionResponse->subscribeQuery) {
-            foreach ($actionResponse->subscribeQuery->response->subscribes as $item) {
-                $entity = new \Model\Subscribe\Entity($item);
-                if (1 == $entity->getChannelId() && 'email' === $entity->getType() && $entity->getIsConfirmed()) {
-                    $isUserSubscribedToEmailActions = true;
-                    break;
-                }
-            }
-        }
-
-        $actionChannelName = '';
-        if ($actionResponse->subscribeChannelQuery) {
-            foreach ($actionResponse->subscribeChannelQuery->response->channels as $item) {
-                $channel = new \Model\Subscribe\Channel\Entity($item);
-                if (1 == $channel->getId()) {
-                    $actionChannelName = $channel->getName();
-                    break;
-                }
-            }
-        }
-
-        // трастфакторы
         /** @var Trustfactor[] $trustfactors */
         $trustfactors = [];
-        call_user_func(function() use ($actionResponse, $product, &$trustfactors) {
-            if (!$actionResponse->productDescriptionQuery) return;
+        call_user_func(function() use ($actionResponse, $product, &$productDescriptionsByUi, &$trustfactors) {
+            if (!$actionResponse->productDescriptionQueries) return;
 
-            $data =
-                isset($actionResponse->productDescriptionQuery->response->products[$product->getUi()])
-                ? $actionResponse->productDescriptionQuery->response->products[$product->getUi()]
-                : []
-            ;
+            $data = isset($productDescriptionsByUi[$product->getUi()]) ? $productDescriptionsByUi[$product->getUi()] : [];
             if (!$data) return;
 
             if (isset($data['trustfactors']) && is_array($data['trustfactors'])) {
@@ -221,45 +97,187 @@ class IndexAction {
                 foreach ($trustfactors as $key => $trustfactor) {
                     if ('right' === $trustfactor->type
                         && in_array($trustfactor->uid, [
-                            '10259a2e-ce37-49a7-8971-8366de3337d3', // много.ру
-                            'ab3ca73c-6cc4-4820-b303-8165317420d5'  // сбербанк
+                            Trustfactor::UID_MNOGO_RU,
+                            Trustfactor::UID_SBERBANK_SPASIBO
                         ])) {
                         unset($trustfactors[$key]);
                     }
                 }
             }
 
+            $templateHelper = new \Helper\TemplateHelper();
+
             if (isset($data['title'])) {
-                $product->setSeoTitle($data['title']);
+                $product->setSeoTitle($templateHelper->unescape($data['title']));
             }
 
             if (isset($data['meta_keywords'])) {
-                $product->setSeoKeywords($data['meta_keywords']);
+                $product->setSeoKeywords($templateHelper->unescape($data['meta_keywords']));
             }
 
             if (isset($data['meta_description'])) {
-                $product->setSeoDescription($data['meta_description']);
+                $product->setSeoDescription($templateHelper->unescape($data['meta_description']));
             }
 
             if (isset($data['medias']) && is_array($data['medias'])) {
-                foreach ($data['medias'] as $media) {
-                    if (is_array($media)) {
-                        $product->medias[] = new \Model\Media($media);
-                    }
-                }
+                $product->medias = array_map(function($media) { return new \Model\Media($media); }, $data['medias']);
             }
+
+            if (isset($data['label']['uid'])) $product->setLabel(new Label($data['label']));
 
             if (isset($data['json3d']) && is_array($data['json3d'])) {
                 $product->json3d = $data['json3d'];
             }
         });
 
-        // какая-то хрень
-        $additionalData = [];
-        $accessoriesCount = 1;
-        foreach ($relatedProductsById as $item) {
-            if (isset($accessories[$item->getId()])) {
-                $accessoriesCount++;
+        // товар для Подари Жизнь
+        $lifeGiftProduct =
+            ($actionResponse->lifeGiftProductQuery && $actionResponse->lifeGiftProductQuery->response->product)
+            ? new \Model\Product\Entity($actionResponse->lifeGiftProductQuery->response->product)
+            : null
+        ;
+
+        // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
+        if ($lifeGiftProduct && !isset($productDescriptionsByUi[$lifeGiftProduct->getUi()])) {
+            $lifeGiftProduct = null;
+        }
+
+        if ($lifeGiftProduct && isset($productDescriptionsByUi[$lifeGiftProduct->getUi()]['medias']) && is_array($productDescriptionsByUi[$lifeGiftProduct->getUi()]['medias'])) {
+            $lifeGiftProduct->medias = array_map(function($media) { return new \Model\Media($media); }, $productDescriptionsByUi[$lifeGiftProduct->getUi()]['medias']);
+        }
+
+        $catalogJson =
+            ($actionResponse->categoryQuery && $actionResponse->categoryQuery->response->category)
+            ? (new \Model\Product\Category\Entity($actionResponse->categoryQuery->response->category))->catalogJson
+            : []
+        ;
+
+        $reviewsData =
+            $actionResponse->reviewQuery
+            ? [
+                'review_list'            => $actionResponse->reviewQuery->response->reviews,
+                'num_reviews'            => $actionResponse->reviewQuery->response->reviewCount,
+                'avg_score'              => $actionResponse->reviewQuery->response->score,
+                'avg_star_score'         => $actionResponse->reviewQuery->response->starScore,
+                'current_page_avg_score' => $actionResponse->reviewQuery->response->currentPageAvgScore,
+                'num_users_by_score'     => $actionResponse->reviewQuery->response->groupedScoreCount,
+                'page_count'             => $actionResponse->reviewQuery->response->pageCount,
+            ]
+            : []
+        ;
+
+        // получаем рейтинги
+        $reviewsDataSummary = [];
+        if (\App::config()->product['reviewEnabled']) {
+            if(!empty($reviewsData['avg_score'])) $product->setAvgScore($reviewsData['avg_score']);
+            if(!empty($reviewsData['avg_star_score'])) $product->setAvgStarScore($reviewsData['avg_star_score']);
+            if(!empty($reviewsData['num_reviews'])) $product->setNumReviews($reviewsData['num_reviews']);
+
+            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData);
+        }
+
+        // связанные товары: аксессуары, состав набора, ...
+        /** @var \Model\Product\Entity[] $relatedProductsById */
+        $relatedProductsById = [];
+        foreach ($actionResponse->relatedProductQueries as $relatedProductQuery) {
+            foreach ($relatedProductQuery->response->products as $item) {
+                $relatedProduct = new \Model\Product\Entity($item);
+
+                // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
+                if (!isset($productDescriptionsByUi[$relatedProduct->getUi()])) {
+                    continue;
+                }
+
+                if (isset($productDescriptionsByUi[$relatedProduct->getUi()]['medias']) && is_array($productDescriptionsByUi[$relatedProduct->getUi()]['medias'])) {
+                    $relatedProduct->medias = array_map(function($media) { return new \Model\Media($media); }, $productDescriptionsByUi[$relatedProduct->getUi()]['medias']);
+                }
+
+                $relatedProductsById[$relatedProduct->getId()] = $relatedProduct;
+            }
+        }
+
+        // аксессуары
+        /** @var \Model\Product\Entity[] $accessories */
+        $accessories = [];
+        foreach ($product->getAccessoryId() as $accessoryId) {
+            $relatedProduct = isset($relatedProductsById[$accessoryId]) ? $relatedProductsById[$accessoryId] : null;
+            if (!$relatedProduct) continue;
+
+            $accessories[$relatedProduct->getId()] = $relatedProduct;
+        }
+
+        $accessoryCategories = [];
+        call_user_func(function() use(&$accessoryCategories, $accessories, $catalogJson) {
+            $jsonCategoryToken = isset($catalogJson['accessory_category_token']) ? $catalogJson['accessory_category_token'] : null;
+
+            if (empty($jsonCategoryToken)) {
+                return [];
+            }
+
+            // отсеиваем среди текущих аксессуаров те аксессуары, которые не относятся к разрешенным категориям
+            $accessories = array_filter($accessories, function(\Model\Product\Entity $accessory) use(&$jsonCategoryToken) {
+                // есть ли общие категории между категориями аксессуара и разрешенными в json
+                return array_intersect($jsonCategoryToken, array_map(function(\Model\Product\Category\Entity $accessoryCategory) {
+                    return $accessoryCategory->getToken();
+                }, $accessory->getCategory()));
+            });
+
+            foreach ($accessories as $product) {
+                /** @var \Model\Product\Entity $product */
+                $lastCategory = $product->getLastCategory();
+                if ($lastCategory && !isset($accessoryCategories[$lastCategory->getToken()])) {
+                    $accessoryCategories[$lastCategory->getToken()] = $lastCategory;
+                }
+            }
+
+            $accessoryCategories = array_values($accessoryCategories);
+
+            if ($accessoryCategories) {
+                $popularAccessoryCategory = new \Model\Product\Category\Entity();
+                $popularAccessoryCategory->setId(0);
+                $popularAccessoryCategory->setName('Популярные аксессуары');
+                array_unshift($accessoryCategories, $popularAccessoryCategory);
+            }
+        });
+
+        // SITE-5035
+        $similarProducts = [];
+        if ($actionResponse->nextProductsQuery && $actionResponse->nextProductsQuery->response && $actionResponse->nextProductsQuery->response->products) {
+            call_user_func(function() use(&$actionResponse, &$similarProducts) {
+                foreach ($actionResponse->nextProductsQuery->response->products as $product) {
+                    $similarProducts[] = new \Model\Product\Entity($product);
+                }
+            });
+        }
+        
+        // набор пакеты
+        $kit = [];
+        $kitProducts = [];
+        if ((bool)$product->getKit()) {
+            // получим основные товары набора
+            $kit = [];
+            foreach ($product->getKit() as $part) {
+                if (isset($relatedProductsById[$part->getId()])) {
+                    $kit[] = $relatedProductsById[$part->getId()];
+                }
+            }
+
+            $kitProducts = \RepositoryManager::product()->getKitProducts($product, $kit, $actionResponse->deliveryQuery);
+        }
+
+        // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
+        $categoryClass = !empty($catalogJson['category_class']) ? $catalogJson['category_class'] : null;
+        // карточку показываем в обычном лэйауте, если включена соответствующая настройка
+        if(!empty($catalogJson['regular_product_page'])) $categoryClass = null;
+
+        $actionChannelName = '';
+        if ($actionResponse->subscribeChannelQuery) {
+            foreach ($actionResponse->subscribeChannelQuery->response->channels as $item) {
+                $channel = new \Model\Subscribe\Channel\Entity($item);
+                if (1 == $channel->getId()) {
+                    $actionChannelName = $channel->getName();
+                    break;
+                }
             }
         }
 
@@ -334,46 +352,47 @@ class IndexAction {
             $page = new \View\Product\IndexPage();
         }
 
+        (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
+
+        // избранные товары
+        $favoriteProductsByUi = [];
+        foreach ($actionResponse->favoriteQuery->response->products as $item) {
+            if (!isset($item['is_favorite']) || !$item['is_favorite']) continue;
+
+            $ui = isset($item['uid']) ? (string)$item['uid'] : null;
+            if (!$ui) continue;
+
+            $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
+        }
+
+        $product->setCoupons($actionResponse->couponQuery->response->getCouponsForProduct($product->getUi()));
+
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('product', $product);
         $page->setParam('lifeGiftProduct', $lifeGiftProduct);
         $page->setParam('title', $product->getName());
         $page->setParam('accessories', $accessories);
-        $page->setParam('accessoryCategory', $accessoryCategory);
+        $page->setParam('accessoryCategory', $accessoryCategories);
         $page->setParam('kit', $kit);
         $page->setParam('kitProducts', $kitProducts);
-        $page->setParam('additionalData', $additionalData);
         $page->setParam('creditData', $creditData);
         $page->setParam('shopStates', $shopStates);
         $page->setParam('reviewsData', $reviewsData);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
         $page->setParam('categoryClass', $categoryClass);
-        $page->setParam('useLens', $useLens);
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactors', $trustfactors);
-        $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery));
-        $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
+        $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
+        $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product));
+//        $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);
         $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);
         $page->setParam('viewParams', [
             'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
         ]);
-        $page->setGlobalParam('isTchibo', ($product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName()));
+        $page->setGlobalParam('isTchibo', ($product->getRootCategory() && 'Tchibo' === $product->getRootCategory()->getName()));
         $page->setGlobalParam('addToCartJS', $addToCartJS);
         $page->setGlobalParam('similarProducts', $similarProducts);
-
-        $page->setParam('sprosikupiReviews', null);
-        $page->setParam('shoppilotReviews', null);
-        switch (\App::abTest()->getTest('reviews')->getChosenCase()->getKey()) {
-            case 'sprosikupi':
-                $client = new \SprosiKupi\Client(\App::config()->partners['SprosiKupi'], \App::logger());
-                $page->setParam('sprosikupiReviews', $client->query($product->getId()));
-                break;
-            case 'shoppilot':
-                $client = new \ShopPilot\Client(\App::config()->partners['ShopPilot'], \App::logger());
-                $page->setParam('shoppilotReviews', $client->query($product->getId()));
-                break;
-        }
 
         return new \Http\Response($page->show());
     }
@@ -385,12 +404,15 @@ class IndexAction {
      * @return array
      */
     public function getDataForCredit(\Model\Product\Entity $product, \EnterQuery\PaymentGroup\GetByCart $paymentGroupQuery = null) {
+
+        if (!\App::config()->payment['creditEnabled']) return ['creditIsAllowed' => false];
+
         $user = \App::user();
         $region = $user->getRegion();
 
         $result = [];
 
-        $category = $product->getMainCategory();
+        $category = $product->getRootCategory();
         $cart = \App::user()->getCart();
         try {
             $productType = $category ? \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($category->getToken()) : '';
@@ -403,7 +425,7 @@ class IndexAction {
 
         // SITE-4076 Учитывать возможность кредита из API
         $hasCreditPaymentMethod = false;
-        $is_credit = (bool)(($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
+        $is_credit = (bool)(($product->getPrice() * (($cart->getProductQuantity($product->getId()) > 0) ? $cart->getProductQuantity($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
 
         $successCallback = function($data) use (&$hasCreditPaymentMethod) {
             if (!isset($data['detail']) || !is_array($data['detail'])) {
@@ -451,7 +473,7 @@ class IndexAction {
                     'is_credit'      => $is_credit,
                 ],
                 [
-                    'product_list'   => [['id' => $product->getId(), 'quantity' => (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)]],
+                    'product_list'   => [['id' => $product->getId(), 'quantity' => (($cart->getProductQuantity($product->getId()) > 0) ? $cart->getProductQuantity($product->getId()) : 1)]],
                 ],
                 $successCallback,
                 function($e){
@@ -466,13 +488,13 @@ class IndexAction {
             'price'        => $product->getPrice(),
             //'articul'      => $product->getArticle(),
             'name'         => $product->getName(),
-            'count'        => 1, //$cart->getQuantityByProduct($product->getId()),
+            'count'        => 1, //$cart->getProductQuantity($product->getId()),
             'product_type' => $productType,
             'session_id'   => session_id()
         );
 
         $result['creditIsAllowed'] = $hasCreditPaymentMethod;
-//        $result['creditIsAllowed'] = (bool)(($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
+//        $result['creditIsAllowed'] = (bool)(($product->getPrice() * (($cart->getProductQuantity($product->getId()) > 0) ? $cart->getProductQuantity($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
         $result['creditData'] = json_encode($dataForCredit);
 
         return $result;

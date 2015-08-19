@@ -67,12 +67,15 @@
 
         width: 120px;
         height: 110px;
+        text-align: center;
 
         vertical-align: middle;
     }
     &_img {
-        width: 110px;
-        height: 110px;
+        max-width: 94%;
+        max-height: 99%;
+        .inline-block();
+        vertical-align: middle;
     }
     &_n {
         font-size: 11px;
@@ -104,28 +107,6 @@
             background: #f99b1c;
 
             .rounded(3px);
-            &--magenta {
-                border-color: #a64f83;
-
-                .gradient(#d063a5, #c960a0, #bf5b98);
-                &:hover {
-                    background: #bf5b98;
-                }
-                &:active {
-                    background: #bf5b98;
-                }
-            }
-            &--red {
-                border-color: #bd333a;
-
-                .gradient(#d63942, #d63942, #e63d47);
-                &:hover {
-                    background: #d63942;
-                }
-                &:active {
-                    background: #d63942;
-                }
-            }
 
             &.mBought {
                 .box-shadow(none);
@@ -463,18 +444,29 @@
             height: 74px;
             padding: 2px;
 
+            display: block;
+            text-align: center;
+            
             border: 1px solid @white;
             background: @white;
 
+            font-size: 0;
+            white-space: nowrap;
+
             .rounded(4px);
             .transition(all .3s ease);
+
             &:hover {
                 border-color: #a0a0a0;
+                text-decoration: none;
             }
-        }
-        .slideItem_img {
-            width: 74px;
-            height: 74px;
+            &:after{
+                content: "";
+                .inline-block();
+                vertical-align: middle;
+                height: 100%;
+                width: 0;
+            }
         }
     }
     // если в слайдере для прокрутке нет товаров

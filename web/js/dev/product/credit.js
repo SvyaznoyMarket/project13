@@ -30,17 +30,27 @@
                     }
 				});
 
-				if (typeof window.dc_getCreditForTheProduct == 'function') dc_getCreditForTheProduct(
-					4427,
-					window.docCookies.getItem('enter_auth'),
+				if (typeof window.DCLoans == 'function') window.DCLoans(
+					'4427',
 					'getPayment',
-					{ price : creditd.price, count : 1, type : creditd.product_type },
-					function( result ) {
-						if( ! 'payment' in result ){
-							return;
-						}
-						if( result.payment > 0 ) {
-							priceNode.html( printPrice( Math.ceil(result.payment) ) );
+                    {
+                        products: [
+                            { price : creditd.price, count : 1, type : creditd.product_type }
+                        ]
+                    },
+					function(response) {
+                        var result = {
+                            payment: null
+                        };
+
+                        console.info('DCLoans.getPayment.response', response);
+
+                        result.payment = response.allProducts;
+
+                        console.info('DCLoans.getPayment.result', result);
+
+						if (result.payment) {
+							priceNode.html(printPrice(Math.ceil(result.payment)));
 							creditBoxNode.show();
 						}
 					}
@@ -49,16 +59,16 @@
 
 		};
 
-		$body.on('userLogged', function(e, data) {
-			if ($.isArray(data.cartProducts)) {
+		if (ENTER.config.userInfo) {
+			if ($.isArray(ENTER.config.userInfo.cart.products)) {
 				var product_id = $('#jsProductCard').data('value')['id'];
-				$.each(data.cartProducts, function(i, val) {
+				$.each(ENTER.config.userInfo.cart.products, function(i, val) {
 					if (val['isCredit'] && val['id'] == product_id) {
 						$('#creditinput').attr('checked', true).trigger('change')
 					}
 				})
 			}
-		});
+		}
 
         $body.on('click', '.jsProductCreditRadio', function(){
             $body.trigger('trackGoogleEvent', ['Credit', 'Выбор опции', 'Карточка товара']);
