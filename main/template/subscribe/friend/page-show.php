@@ -4,6 +4,10 @@
  */
 ?>
 
+<?
+$helper = new \Helper\TemplateHelper();
+?>
+
 <style>
     .subscribe-page>div{
         width: 100%;
@@ -191,13 +195,7 @@
                 <span class="subscribe-text__big">Подпишитесь и получите<span class="absolute">в подарок</span></span>
                 <div class="subscribe-text__img"><img src="http://content.enter.ru/wp-content/uploads/2015/04/300rub.png"></div>
             </div>
-            <form class="subscribe-form">
-                <div class="subscribe-form-group">
-                    <label>Ваш e-mail</label>
-                    <input class="subscribe-email" type="email">
-                    <button class="subscribe-form-btn" type="submit">Подписаться</button>
-                </div>
-            </form>
+            <?= $helper->render('subscribe/friend/__form') ?>
         </div>
     </div>
 </div>
@@ -206,8 +204,9 @@
         <div class="subscribe-text">
             <div class="subscribe-text__medium">Вы уже подписаны на нашу рассылку.</div>
             <div class="subscribe-text__medium">Не забывайте проверять <br/>письма от Enter!</div>
-            <div class="subscribe-text__small">Чтобы не пропускать наши новости и акции,<br/>
-                добавьте <a href="mailto:info@enter.ru">info@enter.ru</a> в свою адресную книгу.</div>
+            <div class="subscribe-text__small">
+                Чтобы не пропускать наши новости и акции,<br/> добавьте <a href="mailto:info@enter.ru">info@enter.ru</a> в свою адресную книгу.
+            </div>
         </div>
     </div>
 </div>
@@ -217,8 +216,9 @@
             <div class="subscribe-text__title">Спасибо!</div>
             <div class="subscribe-text__medium">Вы уже подписаны на нашу рассылку.</div>
             <div class="subscribe-text__medium">Не забывайте проверять <br/>письма от Enter!</div>
-            <div class="subscribe-text__small">Чтобы не пропускать наши новости и акции,<br/>
-                добавьте <a href="mailto:info@enter.ru">info@enter.ru</a> в свою адресную книгу.</div>
+            <div class="subscribe-text__small">
+                Чтобы не пропускать наши новости и акции,<br/> добавьте <a href="mailto:info@enter.ru">info@enter.ru</a> в свою адресную книгу.
+            </div>
         </div>
     </div>
 </div>
@@ -229,23 +229,19 @@
             <ul class="subscribe-letter-list">
                 <li class="subscribe-letter-list-item">
                     <img src="http://content.enter.ru/wp-content/uploads/2015/04/percent.png">
-                        <span class="subscribe-letter-list-item__text">Получайте специальные купоны<br/>
-и скидки только для подписчиков</span>
+                    <span class="subscribe-letter-list-item__text">Получайте специальные купоны<br/> и скидки только для подписчиков</span>
                 </li>
                 <li class="subscribe-letter-list-item">
                     <img src="http://content.enter.ru/wp-content/uploads/2015/04/gift.png">
-                        <span class="subscribe-letter-list-item__text">Будьте в курсе актуальных<br/>
-акций и предложений</span>
+                    <span class="subscribe-letter-list-item__text">Будьте в курсе актуальных<br/> акций и предложений</span>
                 </li>
                 <li class="subscribe-letter-list-item">
                     <img src="http://content.enter.ru/wp-content/uploads/2015/04/man.png">
-                        <span class="subscribe-letter-list-item__text">Узнайте первым, когда начнется<br/>
-следующая распродажа</span>
+                    <span class="subscribe-letter-list-item__text">Узнайте первым, когда начнется<br/> следующая распродажа</span>
                 </li>
                 <li class="subscribe-letter-list-item">
                     <img src="http://content.enter.ru/wp-content/uploads/2015/04/fishka.png">
-                        <span class="subscribe-letter-list-item__text">Не пропустите специальную<br/>
-фишку Enter Prize 24 часа</span>
+                    <span class="subscribe-letter-list-item__text">Не пропустите специальную<br/> фишку Enter Prize 24 часа</span>
                 </li>
             </ul>
         </div>
@@ -257,24 +253,19 @@
             <ul class="subscribe-advantages-list">
                 <li class="subscribe-advantages-list-item">
                     <img src="http://content.enter.ru/wp-content/uploads/2015/04/clock.png">
-                        <span class="subscribe-advantages-list-item__text">На связи 24/7<br/>
-Звонок бесплатный<br/><b>+7 (495) 775-00-06</b></span>
+                    <span class="subscribe-advantages-list-item__text">На связи 24/7<br/> Звонок бесплатный<br/><b>+7 (495) 775-00-06</b></span>
                 </li>
                 <li class="subscribe-advantages-list-item">
                     <img src="http://content.enter.ru/wp-content/uploads/2015/04/phone.png">
-                        <span class="subscribe-advantages-list-item__text">Широкий выбор<br/>
-товаров на сайте<br/>
-и в приложении</span>
+                    <span class="subscribe-advantages-list-item__text">Широкий выбор<br/> товаров на сайте<br/> и в приложении</span>
                 </li>
                 <li class="subscribe-advantages-list-item">
                     <img src="http://content.enter.ru/wp-content/uploads/2015/04/car.png">
-                        <span class="subscribe-advantages-list-item__text">Бесплатная доставка<br/>
-в магазины Enter</span>
+                    <span class="subscribe-advantages-list-item__text">Бесплатная доставка<br/> в магазины Enter</span>
                 </li>
                 <li class="subscribe-advantages-list-item">
                     <img src="http://content.enter.ru/wp-content/uploads/2015/04/shield.png">
-                        <span class="subscribe-advantages-list-item__text">Безопасные покупки<br/>
-на сайте</span>
+                    <span class="subscribe-advantages-list-item__text">Безопасные покупки<br/> на сайте</span>
                 </li>
             </ul>
         </div>
@@ -283,13 +274,7 @@
 <div class="subscribe-block6">
     <div class="subscribe-content">
         <div class="subscribe-content__wrap">
-            <form class="subscribe-form">
-                <div class="subscribe-form-group">
-                    <label>Ваш e-mail</label>
-                    <input class="subscribe-email" type="email">
-                    <button class="subscribe-form-btn" type="submit">Подписаться</button>
-                </div>
-            </form>
+            <?= $helper->render('subscribe/friend/__form') ?>
         </div>
     </div>
 </div>
