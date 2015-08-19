@@ -35,7 +35,8 @@
                 EMAIL: 'js-feedback-email',
                 TOPIC: 'js-feedback-topic',
                 TEXT: 'js-feedback-text',
-                SUBMIT_BTN: 'js-feedback-submit'
+                SUBMIT_BTN: 'js-feedback-submit',
+                SUCCESS: 'complete'
             },
 
             /**
@@ -133,6 +134,7 @@
                     i;
 
                 if ( data.success ) {
+                    this.$el.addClass(CSS_CLASSES.SUCCESS);
                     // Success
                 } else {
                     for ( i = 0; i < data.errors.length; i++ ) {
