@@ -12,7 +12,7 @@
 
 		<?= $page->blockHeader() ?>
 
-		<div class="wrapper">
+		<div class="wrapper wrapper-content">
 		    <main class="content">
 		    	<div class="section section_aside">
 		    		<aside class="section__left">

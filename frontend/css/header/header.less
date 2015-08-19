@@ -1,8 +1,10 @@
 .header {
-    position: relative;
+    position: fixed;
     z-index: 110;
+    top: 0;
+    left: 0;
 
-    margin: 0 0 10px;
+    width: 100%;
 
     border-bottom: 3px solid @orange-bright;
     background: @white;
@@ -50,7 +52,6 @@
 
             height: 30px;
             padding-top: 13px;
-            padding-right: 20px;
         }
         &_bottom {
             height: 55px;
@@ -217,9 +218,9 @@
         cursor: pointer;
 
         color: @grey-light;
+        background: @white;
 
         .font-size(18);
-        background: @white;
     }
 }
 

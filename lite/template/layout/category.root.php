@@ -17,7 +17,7 @@ $category = $page->getParam('category');
 
 <?= $page->blockHeader() ?>
 
-<div class="wrapper">
+<div class="wrapper wrapper-content">
     <!-- для внутренних страниц добавляется класс middle_transform -->
     <main class="content">
             <!-- баннер -->

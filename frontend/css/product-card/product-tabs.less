@@ -1,34 +1,36 @@
-.product-tabs-scroll {
-    margin: 10px 0 0;
+// .product-tabs-scroll {
+//     margin: 10px 0 0;
+//     border-bottom: 4px solid @grey-light-3;
 
-    border-bottom: 4px solid @grey-light-3;
-    &.pp-fixed {
-        position: fixed;
-        z-index: 99;
-        top: 50px;
-        left: 0;
-        /* IE8 */
+//     &.pp-fixed {
+//         position: fixed;
+//         z-index: 99;
+//         top: 50px;
+//         left: 0;
+//         /* IE8 */
 
-        zoom: 1;
+//         zoom: 1;
 
-        width: 100%;
-        margin: 0;
+//         width: 100%;
+//         margin: 0;
 
-        background: @white;
+//         background: @white;
 
-        .animation(fadeIn, .3s, 0, ease);
-        .drop-shadow(0, 4px, 28px, .5);
-        filter:
-        progid:DXImageTransform.Microsoft.Shadow(Color=#c7c7c7, Strength=15, Direction=180);
-    }
-    .product-tabs {
-        width: 920px;
-        margin: 0;
-    }
-}
+//         .animation(fadeIn, .3s, 0, ease);
+//         .drop-shadow(0, 4px, 28px, .5);
+//         filter:
+//         progid:DXImageTransform.Microsoft.Shadow(Color=#c7c7c7, Strength=15, Direction=180);
+//     }
+//     .product-tabs {
+//         width: 920px;
+//         margin: 0;
+//     }
+// }
 
 .product-tabs {
-    padding: 0 20px;
+    padding: 0;
+    margin: 0 -10px;
+    border-bottom: 4px solid @grey-light-3;
     &__i {
         font-size: 1.5em;
         line-height: 50px;
@@ -37,16 +39,13 @@
 
         height: 45px;
         margin: 0 5px 0 0;
-        padding: 0 20px;
+        padding: 0 10px;
 
         text-align: center;
 
         .inline-block();
         &.active {
             font-weight: bold;
-            .product-tabs__lk {
-                border: none;
-            }
             &:after {
                 position: absolute;
                 bottom: -4px;
@@ -57,24 +56,15 @@
 
                 content: '';
 
-                background: #f99b1c;
+                background: @orange-bright;
             }
         }
         &:hover {
             .product-tabs__lk {
                 color: @black;
-                border-color: @black;
 
                 .transition(all .3s ease-out);
             }
-        }
-    }
-    &__lk {
-        text-decoration: none;
-
-        border-bottom: 1px solid;
-        &:hover {
-            text-decoration: none;
         }
     }
     &__right {
@@ -175,14 +165,14 @@
     }
 }
 .props-list {
-    margin: 10px 0;
+    margin: 8px 0;
 
     .clearfix();
     &__name {
         &--tl {
             padding: 0 220px 0 0;
 
-            border-bottom: 1px dotted @grey-type;
+            border-bottom: 1px dotted @grey-light-2;
         }
         &-i {
             position: relative;

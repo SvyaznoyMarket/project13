@@ -12,7 +12,7 @@
 	<body>
 		<?= $page->blockHeader() ?>
 
-		<div class="wrapper">
+		<div class="wrapper wrapper-content">
             <main class="content">
 				    <?= $page->blockContent() ?>
 		   </main>

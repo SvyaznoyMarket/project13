@@ -10,27 +10,27 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-<?= $page->blockHead() ?>
+	<?= $page->blockHead() ?>
 
-<body>
+	<body>
 
-<?= $page->blockHeader() ?>
+		<?= $page->blockHeader() ?>
 
-<div class="wrapper">
-    <?= $page->render('main/content.main.v2') ?>
-</div>
+		<div class="wrapper wrapper-content">
+		    <?= $page->render('main/content.main.v2') ?>
+		</div>
 
-<hr class="hr-orange">
+		<hr class="hr-orange">
 
-<?= $page->blockFooter() ?>
+		<?= $page->blockFooter() ?>
 
-<?= $page->slotBodyJavascript() ?>
+		<?= $page->slotBodyJavascript() ?>
 
-<?= $page->blockUserConfig() ?>
+		<?= $page->blockUserConfig() ?>
 
-<?= $page->blockPopupTemplates() ?>
+		<?= $page->blockPopupTemplates() ?>
 
-<div class="overlay js-overlay"></div>
+		<div class="overlay js-overlay"></div>
 
-</body>
+	</body>
 </html>

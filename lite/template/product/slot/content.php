@@ -207,19 +207,15 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
         <? /* Трастфакторы партнеров */ ?>
         <?= $helper->render('product/blocks/trustfactors.partner', ['trustfactors' => $trustfactors]) ?>
 
-        <div style="height: 50px">
-            <!-- навигация по странице -->
-            <div id="jsScrollSpy" class="product-tabs-scroll jsProductTabs">
-                <ul class="nav product-tabs">
-                    <? if ($product->getKit()) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit" title="">Состав</a></li><? endif ?>
-                    <? if ($showDescription) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
-                    <? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
-                    <li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li>
-                    <? if ($product->isAvailable()) : ?><li class="product-tabs__i jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar" title="">Похожие товары</a></li><? endif ?>
-                </ul>
-            </div>
-            <!--/ навигация по странице -->
-        </div>
+        <!-- навигация по странице -->
+        <ul class="nav product-tabs">
+            <? if ($product->getKit()) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit" title="">Состав</a></li><? endif ?>
+            <? if ($showDescription) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
+            <? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
+            <li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li>
+            <? if ($product->isAvailable()) : ?><li class="product-tabs__i jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar" title="">Похожие товары</a></li><? endif ?>
+        </ul>
+        <!--/ навигация по странице -->
 
         <? if ($isKit) : ?>
             <?= $helper->render('product/blocks/kit', ['product' => $product, 'products' => $kitProducts, 'sender' => $buySender, 'sender2' => $buySender2]) ?>
@@ -319,7 +315,9 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
 
         <?= $page->blockViewed() ?>
 
-        <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
+        <div class="breadcrumbs-bottom">
+            <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
+        </div>
 
         <!-- seo информация -->
         <div class="bottom-content">
