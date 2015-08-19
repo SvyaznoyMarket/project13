@@ -1,8 +1,8 @@
 <div class="popup-feedback popup popup_440 js-feedback-popup" style="display: none;">
     <div class="popup__close js-popup-close">×</div>
-    <div class="popup__title">Обратная связь</div>
+        <div class="popup__title">Обратная связь</div>
 
-    <form action="<?= $page->url('feedback.send') ?>" class="feedback-form form" method="post">
+    <form action="<?= $page->url('feedback.send') ?>" enctype="multipart/form-data" class="feedback-form form js-feedback-form" method="post">
         <div class="form__field">
             <input id="" type="text" class="form__it it js-feedback-email" data-required="true" name="email" value="">
             <label for="" class="form__placeholder placeholder placeholder_str">Ваш email</label>

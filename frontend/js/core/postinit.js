@@ -95,10 +95,10 @@
     // Показываем раскрытое меню в каждой новой сессии
     if (window.sessionStorage && !window.sessionStorage.getItem('menuShowed') && menu && menu.classList) {
         menu.classList.add('show');
-        isGeoCookieEmpty && window.addEventListener('mousemove', function(){
+        window.sessionStorage.setItem('menuShowed', '1');
+        window.addEventListener('mousemove', function(){
             setTimeout(function(){
                 menu.classList.remove('show');
-                window.sessionStorage.setItem('menuShowed', '1');
             }, 500)
         })
     }

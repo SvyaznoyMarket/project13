@@ -6,6 +6,7 @@
  * @requires    Backbone
  * @requires    enter.BaseViewClass
  * @requires    jquery.maskedinput
+ * @requires    FormValidator
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
@@ -16,13 +17,14 @@
             'App',
             'Backbone',
             'enter.BaseViewClass',
-            'jquery.maskedinput'
+            'jquery.maskedinput',
+            'FormValidator'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, App, Backbone, BaseViewClass ) {
+    function( provide, App, Backbone, BaseViewClass, jMaskedInput, FormValidator ) {
         'use strict';
 
         var
@@ -49,15 +51,48 @@
              * @constructs  OrderView
              */
             initialize: function( options ) {
+                var
+                    validationConfig;
 
                 // маски для полей ввода
                 $.mask.autoclear = false;
-                this.$el.find('input').each(function(i,elem){
+
+                this.$el.find('input').each(function( i,elem ) {
                     if ($(elem).data('mask')) $(elem).mask($(elem).data('mask'));
                     if ($(elem).val().length > 0) $(elem).addClass(CSS_CLASSES.valid);
                 });
 
-                this.events['keyup input']  = 'validateForm';
+                this.subViews = {
+                    email: this.$el.find('.' + CSS_CLASSES.emailField),
+                    phone: this.$el.find('.' + CSS_CLASSES.phoneField),
+                    name: this.$el.find('.' + CSS_CLASSES.nameField)
+                };
+
+                validationConfig = {
+                    fields: [
+                        {
+                            fieldNode: this.subViews.email,
+                            require: !!this.subViews.email.attr('data-required'),
+                            validBy: 'isEmail',
+                            validateOnChange: true
+                        },
+                        {
+                            fieldNode: this.subViews.phone,
+                            validBy: 'isPhone',
+                            require: !!this.subViews.phone.attr('data-required'),
+                            validateOnChange: true
+                        },
+                        {
+                            fieldNode: this.subViews.name,
+                            require: !!this.subViews.name.attr('data-required'),
+                            validateOnChange: true
+                        }
+                    ]
+                };
+
+                this.validator = new FormValidator(validationConfig);
+
+                // this.events['keyup input']  = 'validateForm';
                 this.events['submit form']  = 'formSubmit';
 
                 // Apply events
@@ -66,64 +101,20 @@
 
             events: {},
 
-            validateForm: function(event){
+            formSubmit: function(event) {
+                var
+                    valid = false;
 
-                var $phoneField = $('.' + CSS_CLASSES.phoneField),
-                    $emailField = $('.' + CSS_CLASSES.emailField),
-                    elements = event ? [ $(event.target) ] : [$emailField, $phoneField],
-                    valid = true, phone;
-
-                function validateEmail(email) {
-                    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-                    return re.test(email);
-                }
-
-                // Проверка длины поля
-                $.each(elements,function (i,v){
-                    if (v.val().length > 0) {
-                        v.addClass(CSS_CLASSES.valid).removeClass(CSS_CLASSES.error)
-                    } else {
+                this.validator.validate({
+                    onInvalid: function( err ) {
                         valid = false;
-                        v.addClass(CSS_CLASSES.error).removeClass(CSS_CLASSES.valid)
+                    },
+                    onValid: function() {
+                        valid = true;
                     }
                 });
 
-                if (event && $(event.target).hasClass(CSS_CLASSES.emailField)) {
-                    if (!validateEmail($emailField.val())) {
-                        valid = false;
-                        $emailField.addClass(CSS_CLASSES.error).removeClass(CSS_CLASSES.valid)
-                    } else {
-                        $emailField.addClass(CSS_CLASSES.valid).removeClass(CSS_CLASSES.error)
-                    }
-                }
-
-                if (!event) {
-                    phone = $phoneField.val().replace(/[^0-9]/g, '');
-                    if (phone.length !== 11) {
-                        valid = false;
-                        $phoneField.addClass(CSS_CLASSES.error).removeClass(CSS_CLASSES.valid)
-                    } else {
-                        $phoneField.addClass(CSS_CLASSES.valid).removeClass(CSS_CLASSES.error)
-                    }
-
-                    if (!validateEmail($emailField.val())) {
-                        valid = false;
-                        $emailField.addClass(CSS_CLASSES.error).removeClass(CSS_CLASSES.valid)
-                    } else {
-                        $emailField.addClass(CSS_CLASSES.valid).removeClass(CSS_CLASSES.error)
-                    }
-                }
-
                 return valid;
-            },
-
-            formSubmit: function(event) {
-                if (!this.validateForm()) {
-                    event.preventDefault();
-                    return false;
-                } else {
-                    return true;
-                }
             }
 
         }));

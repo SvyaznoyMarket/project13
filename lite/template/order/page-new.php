@@ -18,7 +18,7 @@
                                value=""
                                data-mask="+7 (999) 999-99-99"
                                title="Введите номер телефона"
-                               required
+                               data-required="true"
                             >
                         <label class="form-order-login__label placeholder placeholder_str" for="order-phone-input">Телефон</label>
                         <span class="form-order-login__hint">Для смс о состоянии заказа</span>
@@ -31,11 +31,11 @@
                                name="user_info[email]"
                                value=""
                                title="Введите email"
-                               required
+                               data-required="true"
                             >
                         <label class="form-order-login__label placeholder placeholder_str" for="order-email-input">E-mail</label>
 
-                        <span class="form-order-login__hint form-order-login__hint_check">
+                        <!--<span class="form-order-login__hint form-order-login__hint_check">
                            <input class="custom-input custom-input_check jsCustomRadio js-customInput jsOrderV3SubscribeCheckbox"
                                   type="checkbox"
                                   name="subscribe"
@@ -43,7 +43,7 @@
                                   checked=""
                                >
                            <label class="custom-label jsOrderV3SubscribeLabel" for="orderV3Subscribe">Подписаться на рассылку,<br/>получить скидку 300 рублей</label>
-                        </span>
+                        </span>-->
                     </div>
 
                     <div class="form__field">
@@ -92,10 +92,12 @@
                 <? endif ?>
             </fieldset>
 
+            <? if (\App::config()->user['enabled']) : ?>
             <div class="form-order-login__right">
                 <div class="form-order-login__log-title">Уже заказывали у нас?</div>
                 <a class="form-order-login__btn btn-normal js-userbar-user-link" href="/login">Войти с паролем</a>
             </div>
+            <? endif ?>
 
 
             <div class="orderCompl">
