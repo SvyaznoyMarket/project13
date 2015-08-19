@@ -214,7 +214,7 @@ $c->googleTagManager['containerId'] = 'GTM-P65PBR';
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
 $c->pickpoint['timeout'] = 60;
-$c->pickpoint['retryCount'] = 3;
+$c->pickpoint['retryCount'] = 2;
 $c->pickpoint['retryTimeout'] = [
     'default' => 0.04,
     'tiny'    => 0.04,
