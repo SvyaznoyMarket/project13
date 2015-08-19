@@ -46,7 +46,8 @@
                 KIT_POPUP: 'js-productkit-popup',
                 SHOW_KIT_BTN: 'js-buy-kit-button',
                 APPLICATION_BTN: 'js-buy-slot-button',
-                APPLICATION_POPUP: 'js-popup-application'
+                APPLICATION_POPUP: 'js-popup-application',
+                SHOW_POINTS: 'jsShowDeliveryMap'
             };
 
         provide(BaseViewClass.extend({
@@ -63,8 +64,14 @@
 
                 this.subViews = {
                     compareBtn: this.$el.find('.' + CSS_CLASSES.COMPARE_BUTTON),
-                    favoriteBtn: this.$el.find('.' + CSS_CLASSES.FAVORITE_BUTTON)
+                    favoriteBtn: this.$el.find('.' + CSS_CLASSES.FAVORITE_BUTTON),
+                    showPointsBtn: this.$el.find('.' + CSS_CLASSES.SHOW_POINTS)
                 };
+
+                // Lazy load
+                if ( this.subViews.showPointsBtn.length ) {
+                    modules.require(['enter.points.popup.view', 'enter.points.popup.collection'], function() {});
+                }
 
                 // Setup events
                 this.events['click .' + CSS_CLASSES.BUY_BUTTON]      = 'buyButtonHandler';
@@ -72,6 +79,7 @@
                 this.events['click .' + CSS_CLASSES.FAVORITE_BUTTON] = 'favoriteButtonHandler';
                 this.events['click .' + CSS_CLASSES.SHOW_KIT_BTN]    = 'showKitPopup';
                 this.events['click .' + CSS_CLASSES.APPLICATION_BTN] = 'showApplicationPopup';
+                this.events['click .' + CSS_CLASSES.SHOW_POINTS]     = 'showPointsPopup';
 
                 // Apply events
                 this.delegateEvents();
@@ -81,6 +89,48 @@
             },
 
             events: {},
+
+            showPointsPopup: function() {
+                modules.require(['enter.points.popup.view', 'enter.points.popup.collection'], (function( PointsPopup, PointsPopupCollection ) {
+                    var
+                        createPopup = function( pointsData ) {
+                            this.pointsData = pointsData;
+
+                            this.pointsCollection = new PointsPopupCollection(pointsData.points, {
+                                popupData: pointsData
+                            });
+
+                            if ( this.subViews.pointsPopup && this.subViews.pointsPopup.destroy ) {
+                                this.subViews.pointsPopup.destroy();
+                            }
+
+                            this.subViews.pointsPopup = new PointsPopup({
+                                collection: this.pointsCollection
+                            });
+
+                            this.subViews.pointsPopup.on('changePoint', this.changePoint.bind(this));
+                        };
+
+                    if ( this.pointsData ) {
+                        createPopup.call(this, this.pointsData);
+                    } else {
+                        this.ajax({
+                            type: 'GET',
+                            url: '/ajax/product/map/' + this.model.get('id') + '/' + this.model.get('ui'),
+                            success: (function( data ) {
+                                createPopup.call(this, data.result);
+                            }).bind(this)
+                        });
+                    }
+                }).bind(this));
+
+                return false;
+            },
+
+            changePoint: function() {
+                // this.subViews.pointsPopup.hide();
+                return false;
+            },
 
             /**
              * Хандлер изменения статуса `в корзине` у товара. Срабатывает каждый раз при добавлении\удалении\инициализации корзины

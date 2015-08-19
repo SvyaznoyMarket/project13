@@ -13,7 +13,7 @@
         [
             'underscore',
             'enter.BaseCollectionClass',
-            'enter.order.point.model'
+            'enter.point.model'
         ],
         module
     );

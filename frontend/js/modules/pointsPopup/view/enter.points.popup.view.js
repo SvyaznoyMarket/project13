@@ -1,5 +1,5 @@
 /**
- * @module      enter.order.points.popup.view
+ * @module      enter.points.popup.view
  * @version     0.1
  *
  * @requires    enter.ui.BasePopup
@@ -8,7 +8,7 @@
  */
 !function( modules, module ) {
     modules.define(
-        'enter.order.points.popup.view',
+        'enter.points.popup.view',
         [
             'jQuery',
             'enter.ui.BasePopup',
@@ -65,26 +65,24 @@
         // Lazy load Yandex Maps
         modules.require(['ymaps'], function( ymaps ) {});
 
-        provide(BasePopup.extend(/** @lends module:enter.ui.BasePopup~OrderPointsPopup */{
+        provide(BasePopup.extend(/** @lends module:enter.ui.BasePopup~PointsPopup */{
 
              /**
              * @classdesc   Представление окна c выбором точки самовывоза
-             * @memberOf    module:enter.order.points.popup.view~
+             * @memberOf    module:enter.points.popup.view~
              * @augments    module:enter.ui.BasePopup
-             * @constructs  OrderPointsPopup
+             * @constructs  PointsPopup
              */
             initialize: function( options ) {
                 var
                     uniqIndex = 'ORDER_POPUP_' + (index++);
 
-                console.info('module:enter.order.points.popup.view~OrderPointsPopup#initialize');
+                console.info('module:enter.points.popup.view~PointsPopup#initialize');
 
                 this.render();
 
                 this.mapContainer = this.$el.find('.' + CSS_CLASSES.MAP_CONTAINER);
                 this.mapId        = uniqIndex;
-                this.orderView    = options.orderView;
-                this.blockName    = options.blockName;
 
                 this.mapContainer.attr('id', uniqIndex);
 
@@ -119,7 +117,7 @@
              * Выбор адреса из автокомлита
              *
              * @method      selectAutocompleteItem
-             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
              *
              * @param       {Object}    event
              */
@@ -138,7 +136,7 @@
              * Показать фильтр пунктов выдачи
              *
              * @method      openPointsFilter
-             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
              *
              * @param       {Object}    event
              */
@@ -165,7 +163,7 @@
              * Закрыть фильтр пунктов выдачи
              *
              * @method      closePointsFilter
-             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
              */
             closePointsFilter: function() {
                 this.subViews.pointFilters.removeClass(CSS_CLASSES.POINT_FILTER_ACTIVE);
@@ -178,7 +176,7 @@
              * Обработчик изменения фильтра. Применение фильтрации точек
              *
              * @method      applyFilter
-             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
              */
             applyFilter: function() {
                 var
@@ -209,7 +207,7 @@
              * Показать выбранные точки доставки
              *
              * @method      changePoints
-             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
              */
             changePoints: (function () {
                 var
@@ -260,7 +258,7 @@
              * Поиск точек, соответствующих введенному адресу, формирование автокомплита поиска
              *
              * @method      searchAddress
-             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
              */
             searchAddress: (function () {
                 var
@@ -323,7 +321,7 @@
              * Сброс выбранных по адресу точек
              *
              * @method      changePoints
-             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
              */
             resetPoints: function() {
                 this.subViews.searchInput.val(''),
@@ -337,24 +335,16 @@
              * Выбор точки
              *
              * @method      onClose
-             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
              */
             pickPoint: function( event ) {
                 var
-                    target = $(event.currentTarget),
-                    id     = target.attr('data-id'),
-                    token  = target.attr('data-token');
+                    target = $(event.currentTarget);
 
-                this.orderView.trigger('sendChanges', {
-                    action: 'changePoint',
-                    data: {
-                        block_name: this.blockName,
-                        id: id,
-                        token: token
-                    }
+                this.trigger('changePoint', {
+                    id: target.attr('data-id'),
+                    token: target.attr('data-token')
                 });
-
-                this.hide();
 
                 return false;
             },
@@ -363,7 +353,7 @@
              * Обработчик закрытия окна
              *
              * @method      onClose
-             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
              */
             onClose: function() {
                 this.destroy();
@@ -373,7 +363,7 @@
              * Отрисовка точек самовывоза
              *
              * @method      renderPoints
-             * @memberOf    module:module:enter.ui.BasePopup~OrderPointsPopup#
+             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
              */
             renderPoints: function() {
                 var
@@ -398,7 +388,7 @@
             },
 
             render: function() {
-                console.info('module:module:enter.ui.BasePopup~OrderPointsPopup#render');
+                console.info('module:module:enter.ui.BasePopup~PointsPopup#render');
                 console.log(this.collection.popupData);
                 var
                     html = mustache.render(TEMPLATES.POPUP, this.collection.popupData);

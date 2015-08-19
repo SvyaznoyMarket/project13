@@ -16,14 +16,14 @@
             'enter.BaseViewClass',
             'enter.order.item.view',
             'enter.order.calendar.view',
-            'enter.order.points.popup.view',
+            'enter.points.popup.view',
             'enter.points.popup.collection'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, OrderItemView, OrderCalendarView, OrderPointMapPopupView, OrderPointsCollection ) {
+    function( provide, $, BaseViewClass, OrderItemView, OrderCalendarView, OrderPointMapPopupView, PointsCollection ) {
         'use strict';
 
         var
@@ -66,7 +66,7 @@
 
                 this.orderView        = options.orderView;
                 this.blockName        = this.$el.attr('data-block_name');
-                this.pointsCollection = new OrderPointsCollection(orderPointsData.points, {
+                this.pointsCollection = new PointsCollection(orderPointsData.points, {
                     popupData: orderPointsData
                 });
 
@@ -253,11 +253,30 @@
             showPointsPopup: function() {
                 console.info('module:enter.suborder.view~SubOrderView#showPointsPopup');
 
-                new OrderPointMapPopupView({
-                    orderView: this.orderView,
-                    blockName: this.blockName,
+                if ( this.subViews.pointsPopup && this.subViews.pointsPopup.destroy ) {
+                    this.subViews.pointsPopup.destroy();
+                }
+
+                this.subViews.pointsPopup = new OrderPointMapPopupView({
                     collection: this.pointsCollection
                 });
+
+                this.subViews.pointsPopup.on('changePoint', this.changePoint.bind(this));
+
+                return false;
+            },
+
+            changePoint: function( pointInfo ) {
+                this.orderView.trigger('sendChanges', {
+                    action: 'changePoint',
+                    data: {
+                        block_name: this.blockName,
+                        id: pointInfo.id,
+                        token: pointInfo.token
+                    }
+                });
+
+                this.subViews.pointsPopup.hide();
 
                 return false;
             },
