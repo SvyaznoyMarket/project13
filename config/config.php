@@ -373,6 +373,7 @@ $c->payment['blockedIds'] = [];
 
 $c->f1Certificate['enabled'] = true;
 
+$c->user['enabled'] = false;
 $c->user['corporateRegister'] = true;
 $c->user['defaultRoute'] = 'user.recommend';
 

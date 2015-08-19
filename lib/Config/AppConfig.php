@@ -390,6 +390,7 @@ class AppConfig {
     ];
     /** @var array */
     public $user = [
+        'enabled'           => true,
         'corporateRegister' => null,
         'defaultRoute'  => null
     ];

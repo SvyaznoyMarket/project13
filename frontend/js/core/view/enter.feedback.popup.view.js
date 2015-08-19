@@ -62,8 +62,8 @@
 
                 this.subViews = {
                     email: this.$el.find('.' + CSS_CLASSES.EMAIL),
-                    topic: this.$el.find('.' + CSS_CLASSES.TOPIC),
-                    text: this.$el.find('.' + CSS_CLASSES.TEXT),
+                    subject: this.$el.find('.' + CSS_CLASSES.TOPIC),
+                    message: this.$el.find('.' + CSS_CLASSES.TEXT),
                     submit: this.$el.find('.' + CSS_CLASSES.SUBMIT_BTN)
                 };
 
@@ -75,13 +75,13 @@
                             validateOnChange: true
                         },
                         {
-                            fieldNode: this.subViews.topic,
-                            require: !!this.subViews.topic.attr('data-required'),
+                            fieldNode: this.subViews.subject,
+                            require: !!this.subViews.subject.attr('data-required'),
                             validateOnChange: true
                         },
                         {
-                            fieldNode: this.subViews.text,
-                            require: !!this.subViews.text.attr('data-required'),
+                            fieldNode: this.subViews.message,
+                            require: !!this.subViews.message.attr('data-required'),
                             validateOnChange: true
                         }
                     ]
@@ -128,6 +128,21 @@
                 return false;
             },
 
+            prepareData: function( data ) {
+                var
+                    i;
+
+                if ( data.success ) {
+                    // Success
+                } else {
+                    for ( i = 0; i < data.errors.length; i++ ) {
+                        if ( this.subViews.hasOwnProperty(data.errors[i].field) ) {
+                            this.validator._markFieldError(this.subViews[data.errors[i].field], data.errors[i].message)
+                        }
+                    }
+                }
+            },
+
             /**
              * Отправка формы
              *
@@ -139,9 +154,8 @@
                 $.ajax($form.attr('action'), {
                     method: 'POST',
                     data: $form.serialize(),
-                    success: function(data){
-                        console.log('SEND', data)
-                    }
+                    loader: this.loader,
+                    success: this.prepareData.bind(this)
                 });
                 return false;
             }

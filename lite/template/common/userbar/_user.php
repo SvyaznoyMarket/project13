@@ -2,9 +2,11 @@
 /**
  * @var $page \View\LiteLayout
  */
+
+if (!\App::config()->user['enabled']) return
+
 ?>
 
-<?php /*
 <!-- Авторизованным добавлять класс active -->
 <li class="user-controls__item user-controls__item_user notice-show js-userbar-user">
 
@@ -22,4 +24,3 @@
   		</ul>
     </div>
 </li>
-*/?>
