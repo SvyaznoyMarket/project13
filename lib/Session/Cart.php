@@ -86,8 +86,8 @@ namespace Session {
                     $setProducts[$key]['up'] = isset($setProduct['up']) ? (bool)$setProduct['up'] : false;
                 }
             });
-            
-            if (!$setProducts && !$this->hasSessionProductWithoutData() && !($sessionCart['product'] && ($forceUpdate || $this->isExpired()))) {
+
+            if (!$setProducts && !$this->hasSessionProductWithoutExpectedData() && !($sessionCart['product'] && ($forceUpdate || $this->isExpired()))) {
                 return $resultProducts;
             }
 
@@ -514,20 +514,35 @@ namespace Session {
                 \App::logger()->error(['error' => $e], ['cart/event']);
             }
         }
-    
-        private function hasSessionProductWithoutData() {
+
+        private function hasSessionProductWithoutExpectedData() {
             $sessionCart = $this->getSessionCart();
-            $sessionProductStub = $this->createSessionProductFromBackendProduct(new \Model\Product\Entity());
-            // Есть ли товары, у которых в сессии отсутствуют некоторые данные
+            $expectedSessionProductStub = $this->createSessionProductFromBackendProduct(new \Model\Product\Entity());
             foreach ($sessionCart['product'] as $sessionProduct) {
-                foreach ($sessionProductStub as $key => $value) {
-                    if (!isset($sessionProduct[$key]) || $sessionProduct[$key] === '') {
-                        return true;
-                    }
+                if (!$this->isActualLikeExpectedArray($sessionProduct, $expectedSessionProductStub)) {
+                    return true;
                 }
             }
-    
+
             return false;
+        }
+
+        private function isActualLikeExpectedArray($actual, array $expected) {
+            if (!is_array($actual)) {
+                return false;
+            }
+
+            foreach ($expected as $expectedKey => $expectedValue) {
+                if (!isset($actual[$expectedKey]) || $actual[$expectedKey] === '') {
+                    return false;
+                }
+
+                if (is_array($expectedValue) && !$this->isActualLikeExpectedArray($actual[$expectedKey], $expectedValue)) {
+                    return false;
+                }
+            }
+
+            return true;
         }
     
         private function isExpired() {
