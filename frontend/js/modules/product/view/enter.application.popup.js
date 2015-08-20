@@ -89,7 +89,7 @@
                         },
                         {
                             fieldNode: this.subViews.name,
-                            require: !!this.subViews.phone.attr('data-required'),
+                            require: !!this.subViews.name.attr('data-required'),
                             validateOnChange: true
                         },
                         {

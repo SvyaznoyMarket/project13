@@ -135,17 +135,17 @@ return function(
 
                                 <div class="form-address form">
                                     <div class="form-address__field form-address__field_street form__field">
-                                        <input id="" type="text" class="form__it it" data-required="true" name="" value="">
-                                        <label for="" class="form__placeholder placeholder placeholder_str">Улица</label>
+                                        <input id="" type="text" class="form__it it js-smartadress-street" data-required="true" name="" value="">
+                                        <label for="" class="form__placeholder placeholder placeholder_str js-smartadress-street-label">Улица</label>
                                     </div>
 
                                     <div class="form-address__field form-address__field_detail form__field">
-                                        <input id="" type="text" class="form__it it" data-required="true" name="" value="">
+                                        <input id="" type="text" class="form__it it js-smartadress-build" data-required="true" name="" value="">
                                         <label for="" class="form__placeholder placeholder placeholder_str">Дом</label>
                                     </div>
 
                                     <div class="form-address__field form-address__field_detail form__field">
-                                        <input id="" type="text" class="form__it it" data-required="true" name="" value="">
+                                        <input id="" type="text" class="form__it it js-smartadress-house" data-required="true" name="" value="">
                                         <label for="" class="form__placeholder placeholder placeholder_str">Квартира</label>
                                     </div>
                                 </div>

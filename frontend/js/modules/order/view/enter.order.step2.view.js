@@ -14,15 +14,13 @@
         [
             'jQuery',
             'enter.BaseViewClass',
-            'enter.suborder.view',
-            'jquery.replaceWithPush',
-            'FormValidator'
+            'enter.suborder.view'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, SubOrderView, jReplaceWithPush, FormValidator ) {
+    function( provide, $, BaseViewClass, SubOrderView ) {
         'use strict';
 
         var
@@ -39,7 +37,7 @@
                 COMMENT_AREA: 'js-order-comment-text',
                 SUBMIT_ORDER: 'js-order-submit',
                 ACCEPT_CHECKBOX: 'jsAcceptAgreement',
-                LOADER: 'loader-elem',
+                LOADER: 'loader-elem'
             };
 
         provide(BaseViewClass.extend({
@@ -56,8 +54,8 @@
             initialize: function( options ) {
                 console.info('module:enter.order.step2.view~OrderStep2View#initialize');
                 var
-                    self      = this,
-                    suborders = this.$el.find('.' + CSS_CLASSES.SUB_ORDER);
+                    self        = this,
+                    suborders   = this.$el.find('.' + CSS_CLASSES.SUB_ORDER);
 
                 console.info(this.$el);
 
@@ -74,8 +72,8 @@
                 });
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.COMMENT_BTN]       = 'toggleCommentArea';
-                this.events['click .' + CSS_CLASSES.SUBMIT_ORDER]      = 'submitOrder';
+                this.events['click .' + CSS_CLASSES.COMMENT_BTN]  = 'toggleCommentArea';
+                this.events['click .' + CSS_CLASSES.SUBMIT_ORDER] = 'submitOrder';
 
                 this.listenTo(this, 'sendChanges', this.sendChanges);
 
