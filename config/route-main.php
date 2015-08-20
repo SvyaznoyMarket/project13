@@ -117,6 +117,16 @@ return [
         'pattern' => '/login-{providerName}/response',
         'action'  => ['User\ExternalLoginResponseAction', 'execute'],
     ],
+    'user.update' => [
+        'pattern' => '/private/update',
+        'action'  => ['User\UpdateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+    'user.update.password' => [
+        'pattern' => '/private/update-password',
+        'action'  => ['User\UpdatePasswordAction', 'execute'],
+        'method'  => ['POST'],
+    ],
 
     // Регистрация поставщика
     'supplier.new' => [
@@ -134,14 +144,14 @@ return [
     'supplier.load' => [
         'pattern'   => '/supplier/load',
         'action'    => ['Supplier\CabinetAction', 'load'],
-        'method'  => ['POST']
+        'method'  => ['POST'],
     ],
 
     // Обновление данных о поставщике
     'supplier.update' => [
         'pattern'   => '/supplier/update',
         'action'    => ['Supplier\CabinetAction', 'update'],
-        'method'  => ['POST']
+        'method'  => ['POST'],
     ],
 
     // Тестирование curl-client

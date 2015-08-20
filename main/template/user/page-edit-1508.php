@@ -1,6 +1,7 @@
 <?php
 /**
  * @var $page       \View\User\EditPage
+ * @var $helper     \Helper\TemplateHelper
  * @var $form       \View\User\EditForm
  * @var $flash      array|null
  * @var $bonusCards array
@@ -8,6 +9,17 @@
 ?>
 
 <?
+$helper = new \Helper\TemplateHelper();
+
+$passwordFormResult = [];
+$formResult = [];
+if (isset($flash['form'])) {
+    if ('user.password' === $flash['form']) {
+        $passwordFormResult = $flash;
+    } else if ('user' === $flash['form']) {
+        $formResult = $flash;
+    }
+}
 
 $selectedDay = $form->getBirthday() ? $form->getBirthday()->format('j') : '';
 $selectedMonth = $form->getBirthday() ? $form->getBirthday()->format('n') : '';
@@ -25,20 +37,20 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
     <div class="personal__password">
         <div class="personal__sub-head">Изменить пароль</div>
         <p>Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные буквы, цифры или символы, но не должен включать широко распространенные слова и имена.</p>
-        <form action="<?= $page->url('user.edit') ?>" method="post">
+        <form class="js-form" action="<?= $page->url('user.update.password') ?>" method="post" data-result="<?= $helper->json($passwordFormResult) ?>">
             <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
 
             <div class="form-group">
                 <label class="label-control">Старый пароль</label>
-                <input class="input-control" type="password">
+                <input class="input-control" type="password" name="password_old" autocomplete="off">
             </div>
             <div class="form-group">
                 <label class="label-control">Новый пароль</label>
-                <input class="input-control" type="password">
+                <input class="input-control" type="password" name="password_new" autocomplete="off">
             </div>
             <div class="form-group">
                 <label class="label-control">Повторите пароль</label>
-                <input class="input-control" type="password">
+                <input class="input-control" type="password" name="password_repeat" autocomplete="off">
             </div>
             <div class="form-group">
                 <button type="submit" class="btn-type btn-type--buy">Сохранить</button>
@@ -47,7 +59,7 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
     </div>
 
     <div class="personal__info">
-        <form action="<?= $page->url('user.edit') ?>" method="post">
+        <form action="<?= $page->url('user.update') ?>" method="post" data-result="<?= $helper->json($formResult) ?>">
             <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
 
             <div class="form-group">
