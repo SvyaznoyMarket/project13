@@ -253,11 +253,11 @@ namespace Session {
                     
                     if ($backendProduct) {
                         $sessionCart['product'][$key] = array_merge($sessionProduct, $this->createSessionProductFromBackendProduct($backendProduct));
-                        $sessionCart['product'][$key]['gone'] = false;
+                        $sessionCart['product'][$key]['isGone'] = false;
                     } else {
                         // Если бэкэнд не вернул товар и не было ошибок запроса, то это означает, что товары были
                         // удалены (из ядра или scms) или заблокированы (в scms)
-                        $sessionCart['product'][$key]['gone'] = true;
+                        $sessionCart['product'][$key]['isGone'] = true;
                     }
                     
                     $resultProduct = new \Session\Cart\Update\Result\Product();
@@ -374,7 +374,7 @@ namespace Session {
         public function markProductsAsInOrder() {
             $sessionCart = $this->getSessionCart();
             foreach ($sessionCart['product'] as $key => $sessionProduct) {
-                if ($sessionProduct['gone']) {
+                if ($sessionProduct['isGone']) {
                     $sessionCart['product'][$key]['inOrder'] = false;
                 } else {
                     $sessionCart['product'][$key]['inOrder'] = true;
@@ -604,7 +604,7 @@ namespace Session {
                         'credit' => null,
                         'referer' => null,
                         'quantity' => 0,
-                        'gone' => false,
+                        'isGone' => false,
                         'inOrder' => false,
                         'added' => null,
                     ];

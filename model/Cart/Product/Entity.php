@@ -35,10 +35,10 @@ namespace Model\Cart\Product {
         /** @var int|null */
         public $quantity;
         /**
-         * Если при последнем обновлении корзины бэкэнд ответил успешно, но не вернул товар
+         * Содержит true, если при последнем обновлении корзины бэкэнд ответил успешно, но не вернул товар
          * @var bool
          */
-        public $gone = false;
+        public $isGone = false;
         /**
          * Если данный товар попал на оформление заказа
          * @var bool
@@ -64,7 +64,7 @@ namespace Model\Cart\Product {
             if (isset($data['credit'])) $this->credit = $data['credit'];
             if (isset($data['referer'])) $this->referer = $data['referer'];
             if (isset($data['quantity'])) $this->quantity = (int)$data['quantity'];
-            if (isset($data['gone'])) $this->gone = (bool)$data['gone'];
+            if (isset($data['isGone'])) $this->isGone = (bool)$data['isGone'];
             if (isset($data['inOrder'])) $this->inOrder = (bool)$data['inOrder'];
             if (isset($data['added'])) $this->added = $data['added'];
 
