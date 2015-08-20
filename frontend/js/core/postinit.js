@@ -4,7 +4,6 @@
 +function(d){
 
     var searchNode = d.querySelector('.jsKnockoutSearch'),
-        regionSelection = d.querySelector('.jsRegionSelection'),
         menu = d.querySelector('.js-navigation-menu-holder'),
         moduleRequireOnClick = d.querySelectorAll('.js-module-require-onclick'),
         moduleRequireOnHover = d.querySelectorAll('.js-module-require-onhover'),
@@ -28,17 +27,6 @@
         searchNode.addEventListener('click', function(){
             modules.require('enter.search', function(){
                 d.querySelector('.jsSearchInput').focus();
-            })
-        })
-    }
-
-    if (regionSelection) {
-        regionSelection.addEventListener('click', function(e){
-            e.preventDefault();
-            modules.require('enter.region', function(module){
-                if (typeof module.show == 'function') {
-                    module.show()
-                }
             })
         })
     }
