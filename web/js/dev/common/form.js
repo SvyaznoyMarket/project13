@@ -58,7 +58,7 @@
             $body.on(eventName, formSelector, function(event, result) {
                 var
                     $form = $(this)
-                    ;
+                ;
 
                 console.info('event/form.result', {'event': event, '$form': $form, 'result': result});
 

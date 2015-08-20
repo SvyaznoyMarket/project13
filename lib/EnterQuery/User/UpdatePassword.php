@@ -49,7 +49,7 @@ namespace EnterQuery\User
 
                     return $result; // for cache
                 },
-                2,
+                3,
                 [0]
             );
 

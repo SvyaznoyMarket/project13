@@ -59,7 +59,7 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
     </div>
 
     <div class="personal__info">
-        <form action="<?= $page->url('user.update') ?>" method="post" data-result="<?= $helper->json($formResult) ?>">
+        <form class="js-form" action="<?= $page->url('user.update') ?>" method="post" data-result="<?= $helper->json($formResult) ?>">
             <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
 
             <div class="form-group">

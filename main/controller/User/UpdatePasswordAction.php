@@ -8,6 +8,11 @@ use EnterQuery as Query;
 class UpdatePasswordAction extends PrivateAction {
     use CurlTrait;
 
+    /**
+     * @param \Http\Request $request
+     * @return \Http\RedirectResponse
+     * @throws \Exception
+     */
     public function execute(\Http\Request $request) {
         $userEntity = \App::user()->getEntity();
 
@@ -39,16 +44,16 @@ class UpdatePasswordAction extends PrivateAction {
                 throw new \Exception('Форма заполнена неверно');
             }
 
-            $setQuery = new Query\User\UpdatePassword();
-            $setQuery->token = $userEntity->getToken();
-            $setQuery->password = $password;
-            $setQuery->newPassword = $newPassword;
-            $setQuery->prepare();
+            $updateQuery = new Query\User\UpdatePassword();
+            $updateQuery->token = $userEntity->getToken();
+            $updateQuery->password = $password;
+            $updateQuery->newPassword = $newPassword;
+            $updateQuery->prepare();
 
             $this->getCurl()->execute();
 
             // проверка ошибки
-            if ($error = $setQuery->error) {
+            if ($error = $updateQuery->error) {
                 throw $error;
             }
 
