@@ -202,12 +202,12 @@
             </table>
         </div>
         <div class="debug-panel-item-prev jsDebugPanelItem">
-            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#" title="Previous document debug"><?= $helper->escape($prevDebugData['server']['value']['REQUEST_URI']) ?></a>
+            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#" title="Previous document debug"><?= (isset($prevDebugData['server']['value']['REQUEST_URI']) ? $helper->escape($prevDebugData['server']['value']['REQUEST_URI']) : '') ?></a>
             <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
             <table class="debug-panel-item-content jsDebugPanelItemContent jsPrevDebugPanelItemContent"></table>
         </div>
         <div class="jsDebugPanelItem">
-            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#"><?= $helper->escape($debugData['server']['value']['REQUEST_URI']) ?></a>
+            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#"><?= (isset($debugData['server']['value']['REQUEST_URI']) ? $helper->escape($debugData['server']['value']['REQUEST_URI']) : '') ?></a>
             <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
             <table class="debug-panel-item-content jsDebugPanelItemContent jsCurrentDebugPanelItemContent"></table>
         </div>

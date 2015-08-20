@@ -4,6 +4,7 @@ namespace Controller\User;
 
 
 use Exception\AccessDeniedException;
+use Http\File\UploadedFile;
 use Http\Request;
 use Http\JsonResponse;
 
@@ -30,7 +31,6 @@ class FeedbackAction
     }
 
     /** Отправка сообщения на email
-     * TODO отправка вложенного файла
      * @param Request $request
      *
      * @return JsonResponse
@@ -46,6 +46,7 @@ class FeedbackAction
         $errors = [];
 
         $query = $request->request->all();
+        $files = $request->files->all();
         $fieldEmail = 'email';
         $fieldSubject = 'subject';
         $fieldMessage = 'message';
@@ -72,7 +73,16 @@ class FeedbackAction
         }
 
         if (!$errors) {
-            if (!mail($this->email, $query[$fieldSubject], $query[$fieldMessage])) {
+            $mailer = new \PHPMailer();
+            $mailer->addAddress($this->email);
+            $mailer->From = $query[$fieldEmail];
+            $mailer->Subject = $query[$fieldSubject];
+            $mailer->Body = $query[$fieldMessage];
+            foreach ($files as $file) {
+                /** @var $file UploadedFile */
+                $mailer->addAttachment($file->getPathname(), $file->getClientOriginalName());
+            }
+            if (!$mailer->send()) {
                 $errors[] = [
                     'field' => null,
                     'message'   => 'Ошибка при отправке сообщения'
