@@ -271,7 +271,7 @@ class Cart {
 
             $products[] = [
                 'id'                => $cartProduct['id'],
-                'article'           => $cartProduct['article'],
+                'article'           => isset($cartProduct['article']) ? $cartProduct['article'] : null,
                 'name'              => $cartProduct['name'],
                 'price'             => $cartProduct['price'],
                 'formattedPrice'    => $helper->formatPrice($cartProduct['price']),
