@@ -2,8 +2,10 @@
 
 namespace View\User;
 
+use Session\AbTest\ABHelperTrait;
 
 class OrdersPage extends \View\DefaultLayout {
+    use ABHelperTrait;
 
     /** @var string */
     protected $layout  = 'layout-oneColumn';
@@ -37,7 +39,10 @@ class OrdersPage extends \View\DefaultLayout {
             $this->setParam('orderCount', $orderCount);
         }
 
-        return $this->render('user/page-orders', $this->params);
+        return $this->render(
+            $this->isOldPrivate() ? 'user/page-orders' : 'user/page-orders-1508',
+            $this->params
+        );
     }
 
     public function slotBodyDataAttribute() {
