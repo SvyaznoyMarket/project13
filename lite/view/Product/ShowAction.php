@@ -91,7 +91,8 @@ class ShowAction {
         if ($product->hasVideo()) {
             $productItem['label'][] = [
                 'name'  => 'Видео',
-                'class' => 'video'
+                'class' => 'video',
+                'link'  => $product->getLink()
             ];
         }
 
