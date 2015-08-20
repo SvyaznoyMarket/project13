@@ -39,11 +39,14 @@
                 COMMENT_BTN: 'js-order-comment',
                 COMMENT_AREA: 'js-order-comment-text',
                 SUBMIT_ORDER: 'js-order-submit',
-                ACCEPT_CHECKBOX: 'jsAcceptAgreement'
+                ACCEPT_CHECKBOX: 'jsAcceptAgreement',
+                LOADER: 'loader-elem',
             };
 
         provide(BaseViewClass.extend({
             url: '/order/delivery',
+
+            timeToAjaxLoader: 0,
 
             /**
              * @classdesc   Представление второго шага оформления заказа
@@ -56,6 +59,8 @@
                 var
                     self      = this,
                     suborders = this.$el.find('.' + CSS_CLASSES.SUB_ORDER);
+
+                console.info(this.$el);
 
                 this.subViews = {
                     commentArea: this.$el.find('.' + CSS_CLASSES.COMMENT_AREA),
@@ -75,9 +80,6 @@
                 this.events['click .' + CSS_CLASSES.SUBMIT_ORDER]      = 'submitOrder';
 
                 this.listenTo(this, 'sendChanges', this.sendChanges);
-
-                this.loader.hide = this.loader.hide.bind(this);
-                this.loader.show = this.loader.show.bind(this);
 
                 // Apply events
                 this.delegateEvents();
@@ -102,11 +104,13 @@
                 loading: false,
 
                 show: function() {
-                    console.info('module:enter.order.step2.view~OrderStep2View#show');
+                    console.info('module:enter.order.step2.view~OrderStep2View#show', this.$el, this.$el.length);
+                    this.$el.addClass(CSS_CLASSES.LOADER);
                 },
 
                 hide: function() {
-                    console.info('module:enter.order.step2.view~OrderStep2View#hide');
+                    console.info('module:enter.order.step2.view~OrderStep2View#hide', this.$el, this.$el.length);
+                    this.$el.removeClass(CSS_CLASSES.LOADER);
                 }
             },
 
@@ -220,7 +224,7 @@
                     }
                 }
 
-                this.$el.replaceWithPush(html);
+                this.$el.append(html);
 
                 this.initialize();
             }

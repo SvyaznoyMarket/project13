@@ -27,6 +27,6 @@
 		<?= $page->blockUserConfig() ?>
 
 		<?= $page->blockPopupTemplates() ?>
-
+		<div class="overlay js-overlay"></div>
 	</body>
 </html>

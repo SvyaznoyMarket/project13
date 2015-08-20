@@ -34,7 +34,7 @@
                 PHOTO_CONTAINER: 'js-photo-container',
                 PHOTO: 'js-photo-zoomedImg',
                 PHOTO_THUMB: 'jsProductPhotoThumb',
-                PHOTO_THUMB_ACTIVE: 'product-card-photo-thumbs__i--act'
+                PHOTO_THUMB_ACTIVE: 'active'
             },
 
             /**

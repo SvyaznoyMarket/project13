@@ -60,6 +60,7 @@
              */
             ajax: function( ajaxSettings ) {
                 var
+                    self = this,
                     defaultSettings = {
                         dataType: 'json'
                     },
@@ -83,7 +84,7 @@
                             callSettings.loader.loading = false;
 
                             if ( _.isFunction(options.loader.hide) ) {
-                                options.loader.hide();
+                                options.loader.hide.call(self);
                             }
                         }
 
@@ -122,7 +123,7 @@
                     callSettings.loader.loading = true;
 
                     if ( _.isFunction(callSettings.loader.show) ) {
-                        timeoutID = setTimeout(callSettings.loader.show, this.timeToAjaxLoader);
+                        timeoutID = setTimeout(callSettings.loader.show.bind(self), this.timeToAjaxLoader);
                     }
                 }
 
