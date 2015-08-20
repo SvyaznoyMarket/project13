@@ -45,10 +45,13 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
 
             <!-- Breadcrumbs -->
             <? if ($category) : ?>
-                <?= $page->render('category/_breadcrumbs', ['category' => $category]) ?>
+                <?= $page->render('category/_breadcrumbs', [
+                    'category'  => $category,
+                    'slice'     => isset($slice) ? $slice : null
+                ]) ?>
             <? endif ?>
 
-            <? if (isset($slice)) : ?>
+            <? if (isset($slice) && !$category->getUi()) : ?>
                 <div class="section__title section__title_h1"><?= $slice->getName() ?></div>
             <? endif ?>
 
