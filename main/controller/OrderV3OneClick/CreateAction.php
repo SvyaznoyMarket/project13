@@ -162,7 +162,7 @@ class CreateAction {
                     $productsById[$product->getId()] = new \Model\Product\Entity(['id' => $product->getId()]);
                 }
                 
-                \RepositoryManager::product()->prepareProductQueries($productsById);
+                \RepositoryManager::product()->prepareProductQueries($productsById, 'category');
             }
 
             $this->client->execute();

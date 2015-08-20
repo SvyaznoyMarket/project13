@@ -34,7 +34,7 @@ class CompareAction {
             }
 
             $client = \App::coreClientV2();
-            \RepositoryManager::product()->prepareProductQueries($productsById, 'media property');
+            \RepositoryManager::product()->prepareProductQueries($productsById, 'media property category');
             \RepositoryManager::review()->prepareScoreCollection($productsById, function($data) use(&$reviewsData){
                 $reviewsData = $data;
             });
@@ -230,28 +230,34 @@ class CompareAction {
     }
 
     public function add(\Http\Request $request, $productId) {
+        /** @var \Model\Product\Entity[] $products */
+        $products = [new \Model\Product\Entity(['id' => $productId])];
+        \RepositoryManager::product()->prepareProductQueries($products, 'media');
+        \App::coreClientV2()->execute();
 
-        $product = \RepositoryManager::product()->getEntityById($productId);
+        if ($products) {
+            $product = $products[0];
 
-        if (!array_key_exists($product->getId(), $this->data)) {
-            $this->data[$product->getId()] = [
-                'id'     => $product->getId(),
-                'ui'     => $product->getUi(),
-                'typeId' => $product->getType() ? $product->getType()->getId() : null,
-                'location' => $request->query->get('location'),
-            ];
-            $this->session->set($this->compareSessionKey, $this->data);
-        }
+            if (!array_key_exists($product->getId(), $this->data)) {
+                $this->data[$product->getId()] = [
+                    'id'     => $product->getId(),
+                    'ui'     => $product->getUi(),
+                    'typeId' => $product->getType() ? $product->getType()->getId() : null,
+                    'location' => $request->query->get('location'),
+                ];
+                $this->session->set($this->compareSessionKey, $this->data);
+            }
 
-        if ($request->isXmlHttpRequest()) {
-            return new \Http\JsonResponse([
-                'compare' => $this->session->get($this->compareSessionKey),
-                'product' => [
-                    'prefix' => $product->getPrefix(),
-                    'webName' => $product->getWebName(),
-                    'imageUrl' => $product->getMainImageUrl('product_60'),
-                ],
-            ]);
+            if ($request->isXmlHttpRequest()) {
+                return new \Http\JsonResponse([
+                    'compare' => $this->session->get($this->compareSessionKey),
+                    'product' => [
+                        'prefix' => $product->getPrefix(),
+                        'webName' => $product->getWebName(),
+                        'imageUrl' => $product->getMainImageUrl('product_60'),
+                    ],
+                ]);
+            }
         }
 
         $returnUrl = $request->server->get('HTTP_REFERER');

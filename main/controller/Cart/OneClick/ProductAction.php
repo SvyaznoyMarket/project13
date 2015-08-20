@@ -18,7 +18,7 @@ class ProductAction {
 
         /** @var \Model\Product\Entity[] $products */
         $products = [new \Model\Product\Entity(['id' => $productId])];
-        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($products);
+        \RepositoryManager::product()->prepareProductQueries($products);
         \App::coreClientV2()->execute();
 
         if (!$products) {

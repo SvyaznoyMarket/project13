@@ -70,7 +70,7 @@ class RecommendedAction {
 
         /** @var \Model\Product\Entity[] $productsById */
         $productsById = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $productIdsByCategoryId);
-        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($productsById, 'media');
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'media');
         \App::coreClientV2()->execute();
 
         $productsById = array_filter($productsById, function(\Model\Product\Entity $product) {

@@ -8,12 +8,6 @@ class OrderAction extends PrivateAction {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         try {
-            if ($request->isXmlHttpRequest()) {
-                return new \Http\JsonResponse([
-                    'data' => $this->getData($request, $orderId)
-                ]);
-            }
-
             $data = $this->getData($request, $orderId);
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
@@ -37,7 +31,7 @@ class OrderAction extends PrivateAction {
         return new \Http\Response($page->show());
     }
 
-    public function getData(\Http\Request $request, $orderId) {
+    private function getData(\Http\Request $request, $orderId) {
 
         //\App::logger()->debug('Exec ' . __METHOD__);
 
@@ -75,7 +69,7 @@ class OrderAction extends PrivateAction {
         /** @var \Model\Product\Entity[] $products */
         $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $order->getAllProductsIds());
 
-        \RepositoryManager::product()->prepareProductQueries($products, 'media');
+        \RepositoryManager::product()->prepareProductQueries($products, 'media category');
 
         $delivery = $order->getDelivery() ? \RepositoryManager::deliveryType()->getEntityById($order->getDelivery()->getTypeId()) : null;
 

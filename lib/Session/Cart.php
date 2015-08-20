@@ -110,8 +110,8 @@ namespace Session {
                 }
     
                 $exceptionCount = count(\App::exception()->all());
-                \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($backendProductsByUi, 'media category');
-                \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($backendProductsById, 'media category');
+                \RepositoryManager::product()->prepareProductQueries($backendProductsByUi, 'media category');
+                \RepositoryManager::product()->prepareProductQueries($backendProductsById, 'media category');
                 \App::coreClientV2()->execute();
                 
                 if (count(\App::exception()->all()) > $exceptionCount && \App::exception()->last()) {
@@ -558,8 +558,8 @@ namespace Session {
                     'name'  => $backendProduct->getRootCategory() ? $backendProduct->getRootCategory()->getName() : null
                 ],
                 'category'     => [
-                    'id'    => $backendProduct->getLastCategory() ? $backendProduct->getLastCategory()->getId() : null,
-                    'name'  => $backendProduct->getLastCategory() ? $backendProduct->getLastCategory()->getName() : null
+                    'id'    => $backendProduct->getParentCategory() ? $backendProduct->getParentCategory()->getId() : null,
+                    'name'  => $backendProduct->getParentCategory() ? $backendProduct->getParentCategory()->getName() : null
                 ],
             ];
         }

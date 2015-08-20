@@ -16,17 +16,14 @@ $f = function (
 
         <!--список комплектующих-->
         <ul class="set-section-package">
-            <? foreach ($products as $arrItem) :
-                /** @var \Model\Product\Entity $kitProduct */
-                $kitProduct = $arrItem['product'];
-                ?>
+            <? foreach ($products as $arrItem) : ?>
 
                 <!-- элемент комплекта -->
                 <li class="set-section-package-i">
-                    <a class="set-section-package-i__img" href="<?= $kitProduct->getLink() ?>"><img src="<?= $kitProduct->getMainImageUrl('product_120') ?>"></a><!--/ изображение товара -->
+                    <a class="set-section-package-i__img" href="<?= $arrItem['url'] ?>"><img src="<?= $arrItem['image'] ?>"></a><!--/ изображение товара -->
 
                     <div class="set-section-package-i__desc rown">
-                        <div class="name"><a class="" href="<?= $kitProduct->getMainImageUrl('product_120') ?>"><?= $helper->escape($kitProduct->getName()) ?></a></div><!--/ название товара -->
+                        <div class="name"><a class="" href="<?= $arrItem['image'] ?>"><?= $helper->escape($arrItem['name']) ?></a></div><!--/ название товара -->
 
                     <? if ($arrItem['height']!='' || $arrItem['width']!='' || $arrItem['depth']!='') : ?>
 
@@ -67,7 +64,7 @@ $f = function (
                     </div>
 
                     <div class="set-section-package-i__price rown">
-                        <?= $helper->formatPrice($kitProduct->getPrice()) ?>&nbsp;<span class="rubl">p</span>
+                        <?= $helper->formatPrice($arrItem['price']) ?>&nbsp;<span class="rubl">p</span>
                     </div><!--/ цена -->
 
                     <div class="set-section-package-i__qnt rown"><?= $arrItem['count'] ?> шт.</div><!--/ количество в наборе -->

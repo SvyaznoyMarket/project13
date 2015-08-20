@@ -161,7 +161,7 @@ class IndexPage extends \View\DefaultLayout {
             'url'       => \App::router()->generate('product', ['productPath' => $this->product->getToken()], true),
             'picture'   => $this->product->getMainImageUrl('product_120'),
             'name'      => $this->product->getName(),
-            'category'  => $this->product->getLastCategory() ? $this->product->getLastCategory()->getId() : null
+            'category'  => $this->product->getParentCategory() ? $this->product->getParentCategory()->getId() : null
         ];
         return '<!-- AdvMaker -->
             <script type="text/javascript" defer="defer">
@@ -200,7 +200,7 @@ class IndexPage extends \View\DefaultLayout {
         $data = [
             'productId' => $this->product ? (string)$this->product->getId() : '',
             'productPrice' => $this->product ? (string)$this->product->getPrice() : '',
-            'categoryId' => $this->product && $this->product->getLastCategory() ? (string)$this->product->getLastCategory()->getId() : '',
+            'categoryId' => $this->product && $this->product->getParentCategory() ? (string)$this->product->getParentCategory()->getId() : '',
         ];
 
         return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';

@@ -164,7 +164,7 @@ class Action {
 
         // листалка
         $limit = \App::config()->product['itemsPerPage'];
-        $repository = \RepositoryManager::product()->useV3()->withoutModels();
+        $repository = \RepositoryManager::product();
 
         /** @var \Model\Product\Entity[] $products */
         $products = [];

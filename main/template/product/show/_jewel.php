@@ -197,7 +197,7 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
         <div class="js-showTopBar"></div>
     <? endif ?>
 
-    <? if ($lifeGiftProduct): ?>
+    <? if (!empty($lifeGiftProduct)): ?>
         <?= $helper->render('cart/__button-product-lifeGift', ['product' => $lifeGiftProduct]) // Кнопка "Подари жизнь" ?>
     <? endif ?>
 
