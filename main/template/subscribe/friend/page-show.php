@@ -78,7 +78,7 @@ $helper = new \Helper\TemplateHelper();
                 </li>
                 <li class="subscribe-advantages-list-item">
                     <img src="/styles/subscribe/img/self.png">
-                    <span class="subscribe-advantages-list-item__text">Бесплатная доставка<br/> в магазины Enter</span>
+                    <span class="subscribe-advantages-list-item__text">Более 3800 точек самовывоза</span>
                 </li>
                 <li class="subscribe-advantages-list-item">
                     <img src="http://content.enter.ru/wp-content/uploads/2015/04/shield.png">
@@ -88,7 +88,7 @@ $helper = new \Helper\TemplateHelper();
         </div>
     </div>
 </div>
-<div class="subscribe-block subscribe-block6" data-type="background" data-speed="30">
+<div class="subscribe-block subscribe-block6" data-type="background" data-speed="10">
     <div class="scrolled-bg"></div>
     <div class="subscribe-content">
         <? if ($alreadySubscribed): ?>
@@ -103,3 +103,39 @@ $helper = new \Helper\TemplateHelper();
     </div>
 </div>
 </div>
+<div class="subscribe-footer">
+    <div class="subscribe-footer__inn">
+        <div class="subscribe-footer__top">
+            <ul class="footer_socnet clearfix">
+                <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="https://www.facebook.com/enter.ru"><i class="i-share i-share-fb"></i></a></li>
+                <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="https://twitter.com/enter_ru"><i class="i-share i-share-tw"></i></a></li>
+                <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="https://vk.com/public31456119"><i class="i-share i-share-vk"></i></a></li>
+                <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="https://www.youtube.com/user/EnterLLC"><i class="i-share i-share-yt"></i></a></li>
+                <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="http://ok.ru/enterllc"><i class="i-share i-share-od"></i></a></li>
+            </ul>
+            <ul class="footer_app">
+                <li class="footer_app_i"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img class="footer_app_img" src="/styles/footer/img/apple.png"></a></li>
+
+                <li class="footer_app_i">
+                    <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">
+                        <img class="footer_app_img" alt="Get it on Google Play" src="/styles/footer/img/google.png">
+                    </a>
+                </li>
+            </ul>
+            <div class="sitelogo"></div>
+        </div>
+        <div class="subscribe-footer__text">
+            Нажимая на кнопку «Подписаться», Вы соглашаетесь на получение информационно-рекламной рассылки от Enter.<br>
+            Сроки проведения акции — 01.01.2015 — 30.06.2015.<br>
+            Купон действителен до 30.06.2015.<br>
+            Минимальная сумма заказа 2000 рублей.<br>
+            Купон не распространяется на прием платежей, продажу брендированных карт, подарочных сертификатов и услуг.<br>
+            Купон действует на покупку любых товаров в магазине Enter, кроме электроники, бытовой техники, Pandora, Tchibo.<br>
+            Купон не действует на товары, отмеченные шильдиками «Суперцена»,«SALE» и «Финальная распродажа».
+        </div>
+        <div class="footer_cpy clearfix">
+            <div class="footer_cpy_l">© ООО «Энтер» 2011–2015. ENTER® ЕНТЕР® Enter®. Все права защищены.</div>
+        </div>
+    </div>
+</div>
+

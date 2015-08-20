@@ -224,5 +224,46 @@
     width: 100%;
     height: 100%;
     position: absolute;
-    background: url('@{base-url}/subscribe/img/picts.png') no-repeat center;
+    background: url('@{base-url}/subscribe/img/picts.png') no-repeat 50% 0;
+}
+.subscribe-footer{
+    width: 100%;
+    background-color: @black;
+    &__inn{
+        max-width: 650px;
+        margin: 0 auto;
+        padding-bottom: 1px;
+    }
+    &__text{
+        color: #a6a6a6;
+        clear: both;
+        margin-top: 30px;
+    }
+    .footer_app{
+        clear: both;
+        &_i{
+            border: 1px solid #363636;
+            .rounded(2px);
+            overflow: hidden;
+        }
+    }
+    .footer_socnet{
+        margin: 0 92px;
+    }
+    &__top{
+        max-width: 480px;
+        margin: 0px auto;
+        padding: 40px 0 10px;
+        overflow: hidden;
+    }
+    .footer_cpy{
+        color: #a6a6a6;
+        margin: 20px 0 10px;
+    }
+    .sitelogo{
+        width: 110px;
+        height: 50px;
+        background: url('@{base-url}/delivery/img/enter.png');
+        margin-top: 15px;
+    }
 }
