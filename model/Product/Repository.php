@@ -327,7 +327,7 @@ class Repository {
                                 ]));
                             }
                             
-                            if (!empty($productData['brand']) && @$productData['brand']['slug'] === 'tchibo-3569') {
+                            if (isset($productData['brand']['slug']) && ('tchibo-3569' === $productData['brand']['slug'])) {
                                 $product->setBrand(new \Model\Brand\Entity([
                                     'ui'        => @$productData['brand']['uid'],
                                     'id'        => @$productData['brand']['core_id'],

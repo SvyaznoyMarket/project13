@@ -61,8 +61,8 @@ class App {
                 case E_USER_DEPRECATED:
                 case E_USER_WARNING:
                 case E_USER_NOTICE:
-                    if ($logger = \App::logger()) {
-                        $logger->error(['message' => $message, 'sender' => $file . ' ' . $line], ['critical', 'error_handler']);
+                    if ((0 !== error_reporting()) && \App::logger()) {
+                        \App::logger()->error(['message' => $message, 'sender' => $file . ' ' . $line, 'level' => isset($levels[$level]) ? $levels[$level] : null], ['critical', 'error_handler']);
                     }
 
                     return true;
