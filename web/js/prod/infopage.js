@@ -393,6 +393,28 @@ $(document).ready(function(){
 
         noResult ? $('.tarifs-search__no-result').show() : $('.tarifs-search__no-result').hide();
     });
+
+    $(document).ready(function(){
+        $('.subscribe-block[data-type="background"]').each(function(){
+            var $this = $(this),
+                $scrolled = $this.find('.scrolled-bg'),
+                $window = $(window);
+
+
+                $window.scroll(function() {
+                    if ( $window.scrollTop() + $window.height() >= $this.offset().top + 50){
+
+                        var yPos = -($window.scrollTop() / $this.data('speed')); // вычисляем коэффициент
+                        // Присваиваем значение background-position
+                        var coords = 'center '+ yPos + 'px';
+
+                        $scrolled.css({ 'background-position': coords });
+                    }
+
+                });
+
+        });
+    });
 });
 
 $(function() {
