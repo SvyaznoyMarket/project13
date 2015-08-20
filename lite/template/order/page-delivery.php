@@ -12,6 +12,7 @@ return function(
     $region = \App::user()->getRegion();
     $firstOrder = reset($orderDelivery->orders);
     $i = 0;
+    $isAjaxRequest = \App::request()->isXmlHttpRequest();
 
     $isCoordsValid = $region && $region->getLatitude() != null && $region->getLongitude() != null;
 
@@ -22,8 +23,12 @@ return function(
     ];
 
     ?>
-<section id="js-order-content" class="checkout jsOrderV3PageDelivery js-module-require" data-module="enter.order.step2">
-        <h1 class="checkout__title">Самовывоз и доставка</h1>
+
+    <? if (!$isAjaxRequest) : ?>
+        <section id="js-order-content" class="checkout jsOrderV3PageDelivery js-module-require" data-module="enter.order.step2">
+    <? endif ?>
+
+    <h1 class="checkout__title">Самовывоз и доставка</h1>
 
         <div class="checkout-order-location">
             Ваш регион: <span class="checkout-order-location__city"><?= \App::user()->getRegion()->getName() ?></span> <a href="" class="checkout-order-location__change dotted js-change-region jsRegionSelection">Изменить</a> <br/>
@@ -328,7 +333,9 @@ return function(
             </div>
         <? endif ?>
 
-    </section>
+    <? if (!$isAjaxRequest) : ?>
+        </section>
+    <? endif ?>
 
     <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json($initialMapCords)?>"></div>
     <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>

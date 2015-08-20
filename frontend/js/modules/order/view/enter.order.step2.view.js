@@ -35,7 +35,6 @@
              */
             CSS_CLASSES = {
                 SUB_ORDER: 'js-order-block',
-                CHANGE_REGION_BTN: 'js-change-region',
                 COMMENT_BTN: 'js-order-comment',
                 COMMENT_AREA: 'js-order-comment-text',
                 SUBMIT_ORDER: 'js-order-submit',
@@ -75,7 +74,6 @@
                 });
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.CHANGE_REGION_BTN] = 'changeRegion';
                 this.events['click .' + CSS_CLASSES.COMMENT_BTN]       = 'toggleCommentArea';
                 this.events['click .' + CSS_CLASSES.SUBMIT_ORDER]      = 'submitOrder';
 
@@ -178,20 +176,6 @@
                     return false;
                 }
 
-            },
-
-            /**
-             * Обработчик смены региона
-             *
-             * @method      changeRegion
-             * @memberOf    module:enter.order.step2.view~OrderStep2View#
-             *
-             * @todo        написать обработчик
-             */
-            changeRegion: function() {
-                console.info('module:enter.order.step2.view~OrderStep2View#changeRegion');
-
-                return false;
             },
 
             /**

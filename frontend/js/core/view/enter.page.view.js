@@ -46,7 +46,8 @@
                 USERBAR: 'js-userbar',
                 CART: 'js-cart',
                 FEEDBACK_POPUP: 'js-feedback-popup',
-                FEEDBACK_BTN: 'js-feedback-from-btn'
+                FEEDBACK_BTN: 'js-feedback-from-btn',
+                CHANGE_REGION_LNK: 'js-change-region'
             };
 
         provide(BaseViewClass.extend({
@@ -93,6 +94,7 @@
                 // Setup events
                 this.events['click .' + CSS_CLASSES.LOGIN_POPUP_BTN] = 'showLoginPopup';
                 this.events['click .' + CSS_CLASSES.FEEDBACK_BTN]    = 'showFeedbackPopup';
+                this.events['click .' + CSS_CLASSES.CHANGE_REGION_LNK] = 'showRegionPopup';
 
                 // Apply events
                 this.delegateEvents();
@@ -113,6 +115,16 @@
                 console.log(this.subViews);
                 this.subViews.feedbackPopup.show();
 
+                return false;
+            },
+
+            showRegionPopup: function() {
+                console.info('showRegionPopup');
+                modules.require('enter.region', function(module){
+                    if (typeof module.show == 'function') {
+                        module.show()
+                    }
+                });
                 return false;
             },
 
