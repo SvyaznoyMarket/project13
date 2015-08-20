@@ -63,7 +63,9 @@ namespace EnterApplication\Action\ProductCard
             
             // выполнение запросов
             $curl->execute();
-            
+
+            /** @var Query\Product\Next\GetByUi|null $productNextQuery */
+            $productNextQuery = null;
             call_user_func(function() use (&$productQuery, &$regionQuery, &$productNextQuery) {
                 $productUi = $productQuery->response->product['ui'];
                 if (!$productUi) return;
@@ -227,6 +229,8 @@ namespace EnterApplication\Action\ProductCard
             $curl->execute();
 
             call_user_func(function() use (&$productNextQuery, &$regionQuery, &$nextProductsQuery) {
+                if (!$productNextQuery) return;
+
                 $productUis = array_merge($productNextQuery->response->beforeProductUis, $productNextQuery->response->afterProductUis);
                 if (!$productUis) return;
 
