@@ -18,8 +18,8 @@
 
                 <ul class="header-shop-info">
                     <li class="header-shop-info__item"><a href="/delivery" class="header-shop-info__link underline">Самовывоз</a></li>
-                    <li class="header-shop-info__item"><a href="" class="header-shop-info__link underline">Доставка</a></li>
-                    <li class="header-shop-info__item"><a href="" class="header-shop-info__link underline">Оплата</a></li>
+                    <li class="header-shop-info__item"><a href="/delivery-types" class="header-shop-info__link underline">Доставка</a></li>
+                    <li class="header-shop-info__item"><a href="/payment" class="header-shop-info__link underline">Оплата</a></li>
                 </ul>
 
                 <div class="phone">

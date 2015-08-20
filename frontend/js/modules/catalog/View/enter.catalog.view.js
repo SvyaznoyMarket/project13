@@ -37,6 +37,7 @@
         'use strict';
 
         var
+            loaderTmpl = '<div class="loader-box"></div>',
             /**
              * Используемые CSS классы
              *
@@ -151,11 +152,13 @@
                 show: function() {
                     console.info('enter.catalog~CatalogView.loader#show');
                     this.subViews.wrapper.addClass(CSS_CLASSES.LOADER);
+                    this.subViews.wrapper.append(loaderTmpl);
                 },
 
                 hide: function() {
                     console.info('enter.catalog~CatalogView.loader#hide');
                     this.subViews.wrapper.removeClass(CSS_CLASSES.LOADER);
+                    this.subViews.wrapper.find('.loader-box').remove();
                 }
             },
 
