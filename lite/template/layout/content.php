@@ -29,7 +29,7 @@
 		    		</aside>
 
 		    		<section class="section__right">
-		    			<div class="section__right-inner">
+		    			<div class="static-content section__right-inner">
 		        			<?= $page->blockContent() ?>
 		        		</div>
 		        	</section>
