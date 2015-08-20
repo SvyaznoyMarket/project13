@@ -19,7 +19,7 @@
         </div>
 
         <div class="form__field">
-            <input type="file">
+            <input type="file" name="file">
         </div>
 
         <div class="btn-container">
