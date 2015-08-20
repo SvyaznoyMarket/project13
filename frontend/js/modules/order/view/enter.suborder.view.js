@@ -5,6 +5,9 @@
  * @requires    jQuery
  * @requires    enter.BaseViewClass
  * @requires    enter.order.item.view
+ * @requires    enter.order.calendar.view
+ * @requires    enter.points.popup.view
+ * @requires    enter.points.popup.collection
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
@@ -46,7 +49,8 @@
                 SHOW_INTERVALS_BTN: 'js-order-show-intervals',
                 INTERVALS_POPUP: 'js-order-intervals',
                 PICK_INTERVAL: 'js-order-pick-interval',
-                POINTS_DATA: 'js-points-data'
+                POINTS_DATA: 'js-points-data',
+                SMART_ADRRESS: 'jsSmartAddressBlock'
             };
 
         provide(BaseViewClass.extend({
@@ -62,7 +66,8 @@
                 var
                     self            = this,
                     items           = this.$el.find('.' + CSS_CLASSES.ITEM),
-                    orderPointsData = JSON.parse(this.$el.find('.' + CSS_CLASSES.POINTS_DATA).html());
+                    orderPointsData = JSON.parse(this.$el.find('.' + CSS_CLASSES.POINTS_DATA).html()),
+                    smartAdress     = this.$el.find('.' + CSS_CLASSES.SMART_ADRRESS);
 
                 this.orderView        = options.orderView;
                 this.blockName        = this.$el.attr('data-block_name');
@@ -79,6 +84,17 @@
                 });
 
                 this.subViews.intervalsPopup = this.$el.find('.' + CSS_CLASSES.INTERVALS_POPUP);
+
+                if ( smartAdress.length ) {
+                    modules.require('enter.order.smartadress.view', function( OrderSmartAdress ) {
+                        self.subViews.smartAdress = new OrderSmartAdress({
+                            el: smartAdress,
+                            orderView: self.orderView,
+                            blockName: self.blockName
+                        });
+                    });
+                }
+
 
                 // Setup events
                 this.events['click .' + CSS_CLASSES.SHOW_POINS_POPUP]              = 'showPointsPopup';
