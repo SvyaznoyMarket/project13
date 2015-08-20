@@ -644,17 +644,11 @@ $(function() {
         $popupPhoto = $body.find('.jsProductPopupBigPhoto'),
         $popupPhotoHolder = $('.jsProductPopupBigPhotoHolder'),
         $popupPhotoThumbs = $('.jsPopupPhotoThumb'),
+        $productPhotoThumb = $('.jsProductPhotoThumb'),
         $productPhotoThumbs = $('.jsProductThumbList'),
-        $productPhotoThumbsBtn = $('.jsProductThumbBtn'),
         $zoomBtn   = $('.jsProductPopupZoom'),
-        productPhotoThumbsWidth = $productPhotoThumbs.width(),
-        productPhotoThumbsFullWidth = $productPhotoThumbs.get(0) ? $productPhotoThumbs.get(0).scrollWidth : 0,
         $popupThumbs = $('.jsPopupThumbList'),
-        popupPhotoThumbsWidth = 0,
-        $popupPhotoThumbsBtn = $('.jsPopupThumbBtn'),
-        popupPhotoThumbsFullWidth = 0,
         thumbActiveClass = 'product-card-photo-thumbs__i--act',
-        thumbBtnDisabledClass = 'product-card-photo-thumbs__btn--disabled',
         thumbsCount = $popupPhotoThumbs.length,
         popupDefaults = {
             centered: true,
@@ -780,9 +774,17 @@ $(function() {
 			preventScroll: true,
             onLoad: function() {
                 checkZoom();
-                //запоминаем значения для слайдера миниатюр в попапе
-                popupPhotoThumbsWidth = $popupThumbs.width();
-                popupPhotoThumbsFullWidth = $popupThumbs.get(0) ? $popupThumbs.get(0).scrollWidth : 0;
+                if ($popupPhotoThumbs.length > 11) {
+                    $popupThumbs.slick(
+                        {
+                            prevArrow: '.product-card-photo-thumbs__btn--l.jsPopupThumbBtn',
+                            nextArrow: '.product-card-photo-thumbs__btn--r.jsPopupThumbBtn',
+                            infinite: false,
+                            slidesToShow: 11,
+                            slidesToScroll: 11
+                        }
+                    );
+                }
             },
             onClose: function() {
                 setDefaultSetting();
@@ -817,92 +819,23 @@ $(function() {
 
     /* Слайд в попапе */
     $body.on('click', '.jsProductPopupSlide', function(){
-        console.log('slide');
+
         var direction = $(this).data('dir'),
             curIndex = $popupPhotoThumbs.index($imgPopup.find('.'+thumbActiveClass)),
-            needScroll = $imgPopup.find('.product-card-photo-thumbs__cnt--slides').length;
+            max = $popupPhotoThumbs.length - 1 ,
+            photoIndex = (curIndex + direction == thumbsCount) ? 0 : curIndex + direction;
 
-        if (curIndex + direction == thumbsCount) setPhoto(0);
-        else {
-            setPhoto(curIndex + direction);
-        }
+        (photoIndex == -1) && (photoIndex = max);
 
-        if (needScroll){
-            
-            //а если активное фото за пределами видимой области? надо крутить.
-            var activePhotoOffset = $imgPopup.find('.'+thumbActiveClass).position().left,
-                margin = parseInt($popupThumbs.css('margin-left')),
-                max = $imgPopup.find('.product-card-photo-thumbs__i').length -1 ;
+        setPhoto(photoIndex);
 
-            if ( (activePhotoOffset > margin && !( (margin == 0) && ( activePhotoOffset < popupPhotoThumbsWidth)) )
-                || ( curIndex == max ) ){
-
-                //за пределами:
-                var dir = Math.sign(activePhotoOffset) == 1 ? "-=" : "+=";
-                if (!$popupThumbs.is(':animated'))
-                    $popupThumbs.animate({
-                        'margin-left': dir + popupPhotoThumbsWidth
-                    }, function(){
-                        var margin = parseInt($popupThumbs.css('margin-left'));
-                        $popupPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
-                        if (popupPhotoThumbsFullWidth + margin <= popupPhotoThumbsWidth) $popupPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
-                        if (margin >= 0) $popupPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
-                    });
-            }
-        }
-
+        if ($popupPhotoThumbs.length > 11) { $popupThumbs.slick('slickGoTo', photoIndex); }
     });
 
     $popupPhotoThumbs.on('click', function(){
         setPhoto($popupPhotoThumbs.index($(this)));
     });
 
-    $productPhotoThumbsBtn.on('click', function(){
-        var fullwidth = $popupPhotoThumbs.length * 47;
-
-        if (!$productPhotoThumbs.is(':animated')) {
-            var marginLeft = $(this).data('dir') + productPhotoThumbsWidth,
-                m = marginLeft.split('='),
-                marginInt = parseInt($productPhotoThumbs.css('margin-left')) + parseInt(m[0] + m[1]);
-
-
-            $productPhotoThumbsBtn.addClass(thumbBtnDisabledClass);
-
-            if ( -marginInt  >= (fullwidth - productPhotoThumbsWidth) ){
-
-                $productPhotoThumbsBtn.eq(0).removeClass(thumbBtnDisabledClass);
-
-            } else if ( marginInt  >= 0 ){
-
-                $productPhotoThumbsBtn.eq(1).removeClass(thumbBtnDisabledClass);
-
-
-            } else {
-
-                $productPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
-            }
-            $productPhotoThumbs.animate({
-                'margin-left': marginLeft
-            });
-
-
-
-        }
-    });
-
-
-    $popupPhotoThumbsBtn.on('click', function(){
-
-        if (!$popupThumbs.is(':animated'))
-            $popupThumbs.animate({
-                'margin-left': $(this).data('dir') + popupPhotoThumbsWidth
-            }, function(){
-                var margin = parseInt($popupThumbs.css('margin-left'));
-                $popupPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
-                if (popupPhotoThumbsFullWidth + margin <= popupPhotoThumbsWidth) $popupPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
-                if (margin >= 0) $popupPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
-            });
-    });
 
     // Youtube и 3D
     $body.on('click', '.jsProductMediaButton li', function(e){
@@ -973,6 +906,19 @@ $(function() {
             }
         }
     });
+    //slick.js
+    if ($productPhotoThumb.length > 5){
+        $productPhotoThumbs.slick(
+            {
+                prevArrow: '.product-card-photo-thumbs__btn--l.jsProductThumbBtn',
+                nextArrow: '.product-card-photo-thumbs__btn--r.jsProductThumbBtn',
+                infinite: false,
+                slidesToShow: 5,
+                slidesToScroll: 5
+            }
+        );
+    }
+
 
 }(jQuery);
 /*

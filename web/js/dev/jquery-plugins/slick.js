@@ -1,17 +1,17 @@
 /*
- _ _      _       _
+     _ _      _       _
  ___| (_) ___| | __  (_)___
- / __| | |/ __| |/ /  | / __|
- \__ \ | | (__|   < _ | \__ \
- |___/_|_|\___|_|\_(_)/ |___/
- |__/
+/ __| | |/ __| |/ /  | / __|
+\__ \ | | (__|   < _ | \__ \
+|___/_|_|\___|_|\_(_)/ |___/
+                   |__/
 
- Version: 1.5.8
- Author: Ken Wheeler
+ Version: 1.5.7
+  Author: Ken Wheeler
  Website: http://kenwheeler.github.io
- Docs: http://kenwheeler.github.io/slick
- Repo: http://github.com/kenwheeler/slick
- Issues: http://github.com/kenwheeler/slick/issues
+    Docs: http://kenwheeler.github.io/slick
+    Repo: http://github.com/kenwheeler/slick
+  Issues: http://github.com/kenwheeler/slick/issues
 
  */
 /* global window, document, define, jQuery, setInterval, clearInterval */
@@ -700,7 +700,7 @@
 
             case 'index':
                 var index = event.data.index === 0 ? 0 :
-                event.data.index || $target.index() * _.options.slidesToScroll;
+                    event.data.index || $target.index() * _.options.slidesToScroll;
 
                 _.slideHandler(_.checkNavigable(index), false, dontAnimate);
                 $target.children().trigger('focus');
@@ -827,32 +827,33 @@
             _.$dots.remove();
         }
 
+        if ( _.options.arrows === true ) {
 
-        if ( _.$prevArrow && _.$prevArrow.length ) {
+            if ( _.$prevArrow && _.$prevArrow.length ) {
 
-            _.$prevArrow
-                .removeClass('slick-disabled slick-arrow slick-hidden')
-                .removeAttr('aria-hidden aria-disabled tabindex')
-                .css("display","");
+                _.$prevArrow
+                    .removeClass('slick-disabled slick-arrow slick-hidden')
+                    .removeAttr('aria-hidden aria-disabled tabindex')
+                    .css("display","");
 
-            if ( _.htmlExpr.test( _.options.prevArrow )) {
-                _.$prevArrow.remove();
-            }
-        }
-
-        if ( _.$nextArrow && _.$nextArrow.length ) {
-
-            _.$nextArrow
-                .removeClass('slick-disabled slick-arrow slick-hidden')
-                .removeAttr('aria-hidden aria-disabled tabindex')
-                .css("display","");
-
-            if ( _.htmlExpr.test( _.options.nextArrow )) {
-                _.$nextArrow.remove();
+                if ( _.htmlExpr.test( _.options.prevArrow )) {
+                    _.$prevArrow.remove();
+                }
             }
 
-        }
+            if ( _.$nextArrow && _.$nextArrow.length ) {
 
+                _.$nextArrow
+                    .removeClass('slick-disabled slick-arrow slick-hidden')
+                    .removeAttr('aria-hidden aria-disabled tabindex')
+                    .css("display","");
+
+                if ( _.htmlExpr.test( _.options.nextArrow )) {
+                    _.$nextArrow.remove();
+                }
+            }
+
+        }
 
         if (_.$slides) {
 
@@ -1306,7 +1307,7 @@
     Slick.prototype.keyHandler = function(event) {
 
         var _ = this;
-        //Dont slide if the cursor is inside the form fields and arrow keys are pressed
+         //Dont slide if the cursor is inside the form fields and arrow keys are pressed
         if(!event.target.tagName.match('TEXTAREA|INPUT|SELECT')) {
             if (event.keyCode === 37 && _.options.accessibility === true) {
                 _.changeSlide({
@@ -1481,8 +1482,8 @@
 
     };
 
-    Slick.prototype.preventDefault = function(event) {
-        event.preventDefault();
+    Slick.prototype.preventDefault = function(e) {
+        e.preventDefault();
     };
 
     Slick.prototype.progressiveLazyLoad = function() {
@@ -1495,13 +1496,13 @@
         if (imgCount > 0) {
             targetImage = $('img[data-lazy]', _.$slider).first();
             targetImage.attr('src', targetImage.attr('data-lazy')).removeClass('slick-loading').load(function() {
-                targetImage.removeAttr('data-lazy');
-                _.progressiveLazyLoad();
+                    targetImage.removeAttr('data-lazy');
+                    _.progressiveLazyLoad();
 
-                if (_.options.adaptiveHeight === true) {
-                    _.setPosition();
-                }
-            })
+                    if (_.options.adaptiveHeight === true) {
+                        _.setPosition();
+                    }
+                })
                 .error(function() {
                     targetImage.removeAttr('data-lazy');
                     _.progressiveLazyLoad();
@@ -2022,7 +2023,7 @@
                 }
 
                 for (i = _.slideCount; i > (_.slideCount -
-                infiniteCount); i -= 1) {
+                        infiniteCount); i -= 1) {
                     slideIndex = i - 1;
                     $(_.$slides[slideIndex]).clone(true).attr('id', '')
                         .attr('data-slick-index', slideIndex - _.slideCount)
@@ -2310,11 +2311,11 @@
             event.originalEvent.touches.length : 1;
 
         _.touchObject.minSwipe = _.listWidth / _.options
-                .touchThreshold;
+            .touchThreshold;
 
         if (_.options.verticalSwiping === true) {
             _.touchObject.minSwipe = _.listHeight / _.options
-                    .touchThreshold;
+                .touchThreshold;
         }
 
         switch (event.data.action) {
@@ -2589,7 +2590,7 @@
 
     Slick.prototype.activateADA = function() {
         var _ = this,
-            _isSlideOnFocus =_.$slider.find('*').is(':focus');
+        _isSlideOnFocus =_.$slider.find('*').is(':focus');
         // _isSlideOnFocus = _.$slides.is(':focus') || _.$slides.find('*').is(':focus');
 
         _.$slideTrack.find('.slick-active').attr({
