@@ -14,15 +14,17 @@
         'enter.order.smartadress.view',
         [
             'jQuery',
+            'underscore',
             'enter.BaseViewClass',
             'kladr',
-            'FormValidator'
+            'FormValidator',
+            'lscache'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, jKladr, FormValidator ) {
+    function( provide, $, _, BaseViewClass, jKladr, FormValidator, lscache ) {
         'use strict';
 
         var
@@ -37,7 +39,7 @@
                 STREET_INPUT: 'js-smartadress-street',
                 STREET_LABEL: 'js-smartadress-street-label',
                 BUILD_INPUT: 'js-smartadress-build',
-                HOUSE_INPUT: 'js-smartadress-house'
+                APARTMENT_INPUT: 'js-smartadress-apartment'
             };
 
         provide(BaseViewClass.extend({
@@ -54,39 +56,42 @@
                     self = this,
                     validationConfig;
 
-                console.info('module:enter.order.smartadress.view~OrderSmartAdress#initialize');
-                console.info(this.$el);
+                this.regionData   = $('#region-data').data('value');
+                $.kladr.url       = this.url;
+                this.orderView    = options.orderView;
+                this.blockName    = options.blockName;
+                this.buildingData = lscache.get('smartadress_buildingData') || {};
+                this.streetData   = lscache.get('smartadress_streetData') || {};
+                this.apartment    = lscache.get('smartadress_apartment') || '';
 
-                this.regionData = $('#region-data').data('value');
-                $.kladr.url     = this.url;
-                this.orderView  = options.orderView;
-                this.blockName  = options.blockName;
+                console.groupCollapsed('module:enter.order.smartadress.view~OrderSmartAdress#initialize');
+                console.log('buildingData', this.buildingData);
+                console.log('streetData', this.streetData);
+                console.log('apartment', this.apartment);
+                console.groupEnd();
 
                 this.subViews = {
                     street: this.$el.find('.' + CSS_CLASSES.STREET_INPUT),
                     streetLabel: this.$el.find('.' + CSS_CLASSES.STREET_LABEL),
                     building: this.$el.find('.' + CSS_CLASSES.BUILD_INPUT),
-                    house: this.$el.find('.' + CSS_CLASSES.HOUSE_INPUT)
+                    apartment: this.$el.find('.' + CSS_CLASSES.APARTMENT_INPUT)
                 };
+
+                if ( !_.isEmpty(this.streetData) ) {
+                    this.setStreet(this.streetData);
+                }
+
+                if ( !_.isEmpty(this.buildingData) ) {
+                    this.setBuiling(this.buildingData);
+                }
+
+                this.subViews.apartment.val(this.apartment);
 
                 this.subViews.street.kladr({
                     type: $.kladr.type.street,
                     parentType: $.kladr.type.city,
                     parentId: this.regionData.kladrId,
-                    select: function( obj ) {
-                        self.streetData = obj;
-                        self.subViews.streetLabel.text(obj.type);
-
-                        self.subViews.building.kladr({
-                            type: $.kladr.type.building,
-                            parentType: $.kladr.type.street,
-                            parentId: self.streetData.id,
-                            select: function( obj ) {
-                                self.buildingData = obj;
-                                self.sendChanges.call(self)
-                            }
-                        });
-                    }
+                    select: this.setStreet.bind(this)
                 });
 
                 validationConfig = {
@@ -102,8 +107,8 @@
                             validateOnChange: true
                         },
                         {
-                            fieldNode: this.subViews.house,
-                            require: !!this.subViews.house.attr('data-required'),
+                            fieldNode: this.subViews.apartment,
+                            require: !!this.subViews.apartment.attr('data-required'),
                             validateOnChange: true
                         }
                     ]
@@ -112,7 +117,7 @@
                 this.validator = new FormValidator(validationConfig);
 
                 // Setup events
-                // this.events['click .' + CSS_CLASSES.]       = 'toggleCommentArea';
+                this.events['blur .' + CSS_CLASSES.APARTMENT_INPUT] = 'setApartment';
 
                 this.listenTo(this, 'sendChanges', this.sendChanges);
 
@@ -128,11 +133,63 @@
              */
             events: {},
 
+            setStreet: function( streetData ) {
+                lscache.set('smartadress_streetData', streetData);
+                this.subViews.streetLabel.text(streetData.type);
+                this.subViews.street.val(streetData.name);
+
+                this.streetData = streetData;
+
+                console.groupCollapsed('module:enter.order.smartadress.view~OrderSmartAdress#setStreet');
+                console.dir(streetData);
+                console.dir(lscache.get('smartadress_streetData'));
+                console.groupEnd();
+
+                this.subViews.building.kladr({
+                    type: $.kladr.type.building,
+                    parentType: $.kladr.type.street,
+                    parentId: this.streetData.id,
+                    select: this.setBuiling.bind(this)
+                });
+            },
+
+            setBuiling: function( buildingData ) {
+                this.subViews.building.val(buildingData.name);
+                lscache.set('smartadress_buildingData', buildingData);
+
+                console.groupCollapsed('module:enter.order.smartadress.view~OrderSmartAdress#setBuiling');
+                console.dir(buildingData);
+                console.dir(lscache.get('smartadress_buildingData'));
+                console.groupEnd();
+
+                if ( !_.isEqual(this.buildingData, buildingData) ) {
+                    console.warn('module:enter.order.smartadress.view~OrderSmartAdress#setBuiling = buildings data isnt equal');
+                    this.buildingData = buildingData;
+                    this.sendChanges.call(this);
+                }
+            },
+
+            setApartment: function( event ) {
+                var
+                    target = $(event.currentTarget),
+                    val    = target.val();
+
+                console.groupCollapsed('module:enter.order.smartadress.view~OrderSmartAdress#setApartment');
+                console.log(val);
+                console.groupEnd();
+
+                if ( this.apartment !== val ) {
+                    this.apartment = val;
+                    lscache.set('smartadress_apartment', val);
+                    this.sendChanges();
+                }
+            },
+
             sendChanges: function() {
                 var
                     street    = this.streetData,
                     building  = this.buildingData,
-                    apartment = this.subViews.house.val();
+                    apartment = this.subViews.apartment.val();
 
                 console.log(this.streetData);
                 console.log(this.buildingData);
@@ -142,7 +199,7 @@
                     data: {
                         street: street.name + ' ' + (street.typeShort == '' ? street.type : street.typeShort),
                         building: building.name,
-                        apartment: apartment,
+                        apartment: this.apartment,
                         kladr_id: this.regionData.kladrId
                     }
                 });

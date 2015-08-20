@@ -154,7 +154,7 @@ return function(
 
                                     <div class="form-address__field form-address__field_detail form__field">
                                         <input type="text"
-                                               class="form__it it js-smartadress-house <?= $orderDelivery->user_info->address['apartment'] ? 'valid' : '' ?>"
+                                               class="form__it it js-smartadress-apartment <?= $orderDelivery->user_info->address['apartment'] ? 'valid' : '' ?>"
                                                data-required="true"
                                                name=""
                                                value="<?= $orderDelivery->user_info->address['apartment'] ?>">

@@ -462,6 +462,7 @@
                         }
 
                         currentField.fieldNode.bind('blur', blurHandler);
+                        validateOnBlur(currentField.fieldNode);
                         self._validateOnChangeFields[ currentField.fieldNode.get(0).outerHTML ] = true;
                     }
                 }
