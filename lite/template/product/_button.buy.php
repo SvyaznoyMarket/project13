@@ -9,6 +9,7 @@ $f = function(
     $buttonText = 'Купить';
     $jsClass = 'js-buy-button';
     $link = $helper->url('cart.product.set', ['productId' => $product->getId()]);
+    $onclick = null;
 
     // классы для набор-пакетов
     if ($product->getKit() && !$product->getIsKitLocked()) {
@@ -31,9 +32,10 @@ $f = function(
     // на витрине
     if (!$product->getIsBuyable() && $product->isInShopShowroomOnly()) {
         $jsClass = null;
-        $link = '#';
+        $link = '';
         $buttonText = 'На витрине';
         $class .= ' btn-in-showroom ';
+        $onclick = 'return false;';
     }
 
     ?>
@@ -41,6 +43,7 @@ $f = function(
     <a
         class="goods__btn btn-primary <?= $jsClass ?> <?= $class ?>"
         href="<?= $link ?>"
+        <? if ($onclick) : ?>onclick="<?= $onclick ?>"<? endif ?>
         ><?= $buttonText ?></a>
 
 <? }; return $f;
