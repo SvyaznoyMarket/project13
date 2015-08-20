@@ -5,7 +5,6 @@ use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
 return function(
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity $orderDelivery,
-    $page,
     $error = null
 ) {
     $orderCount = count($orderDelivery->orders);
@@ -25,15 +24,19 @@ return function(
     ?>
 
     <? if (!$isAjaxRequest) : ?>
+
         <section id="js-order-content" class="checkout jsOrderV3PageDelivery js-module-require" data-module="enter.order.step2">
+
     <? endif ?>
 
-    <h1 class="checkout__title">Самовывоз и доставка</h1>
+            <h1 class="checkout__title">Самовывоз и доставка</h1>
 
-        <div class="checkout-order-location">
-            Ваш регион: <span class="checkout-order-location__city"><?= \App::user()->getRegion()->getName() ?></span> <a href="" class="checkout-order-location__change dotted js-change-region jsRegionSelection">Изменить</a> <br/>
-            От региона зависят доступные способы получения и оплаты заказов.
-        </div>
+            <div class="checkout-order-location">
+                Ваш регион: <span class="checkout-order-location__city"><?= \App::user()->getRegion()->getName() ?></span> <a href="" class="checkout-order-location__change dotted js-change-region jsRegionSelection">Изменить</a> <br/>
+                От региона зависят доступные способы получения и оплаты заказов.
+            </div>
+
+
 
         <? if ($orderCount != 1) : ?>
             <p class="checkout-order-split-info">Товары будут оформлены как <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></p>
@@ -339,7 +342,7 @@ return function(
 
     <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json($initialMapCords)?>"></div>
     <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>
-    <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE); ?>></div>
+    <div id="region-data" data-value=<?= json_encode(['name' => $region->getName(), 'kladrId' => $region->kladrId], JSON_UNESCAPED_UNICODE); ?>></div>
     <?= App::config()->debug ? $helper->jsonInScriptTag($orderDelivery, 'initialOrderModel') : '' ?>
     <div id="jsUserAddress" data-value="<?= $helper->json($orderDelivery->user_info->address) ?>"></div>
 
