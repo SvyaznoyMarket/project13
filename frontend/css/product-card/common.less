@@ -676,8 +676,6 @@
         border: 1px solid transparent;
         border-bottom: none;
         background: @white;
-
-        .rounded(3px 3px 0 0);
     }
     &__tx {
         line-height: 1;
@@ -715,7 +713,6 @@
         border: 1px solid #ccc;
         background: @white;
 
-        .rounded(0 0 3px 3px);
         .filter-btn-box__inn {
             overflow-x: hidden;
             overflow-y: auto;
@@ -747,7 +744,7 @@
         &__lk {
             display: block;
 
-            padding: 3px 0 3px 10px;
+            padding: 5px 0 5px 10px;
             &:hover ,
             &.active {
                 text-decoration: none;
@@ -759,13 +756,9 @@
     &.filter-btn-box--bordered {
         .filter-btn-box__toggle {
             padding-bottom: 4px;
-
-            .rounded(2px);
         }
         &.filter-btn-box--open .filter-btn-box__toggle {
             margin-bottom: 1px;
-
-            .rounded(2px 2px 0 0);
         }
         &:not(.filter-btn-box--open) .filter-btn-box__toggle {
             border: 1px solid #ccc;
