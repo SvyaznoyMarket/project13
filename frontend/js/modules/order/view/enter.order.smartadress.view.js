@@ -77,23 +77,6 @@
                     apartment: this.$el.find('.' + CSS_CLASSES.APARTMENT_INPUT)
                 };
 
-                if ( !_.isEmpty(this.streetData) ) {
-                    this.setStreet(this.streetData);
-                }
-
-                if ( !_.isEmpty(this.buildingData) ) {
-                    this.setBuiling(this.buildingData);
-                }
-
-                this.subViews.apartment.val(this.apartment);
-
-                this.subViews.street.kladr({
-                    type: $.kladr.type.street,
-                    parentType: $.kladr.type.city,
-                    parentId: this.regionData.kladrId,
-                    select: this.setStreet.bind(this)
-                });
-
                 validationConfig = {
                     fields: [
                         {
@@ -115,6 +98,28 @@
                 };
 
                 this.validator = new FormValidator(validationConfig);
+
+                if ( !_.isEmpty(this.streetData) ) {
+                    this.setStreet(this.streetData);
+                    this.validator._markFieldValid(this.subViews.street);
+                }
+
+                if ( !_.isEmpty(this.buildingData) ) {
+                    this.setBuiling(this.buildingData);
+                    this.validator._markFieldValid(this.subViews.building);
+                }
+
+                if ( this.apartment ) {
+                    this.subViews.apartment.val(this.apartment);
+                    this.validator._markFieldValid(this.subViews.apartment);
+                }
+
+                this.subViews.street.kladr({
+                    type: $.kladr.type.street,
+                    parentType: $.kladr.type.city,
+                    parentId: this.regionData.kladrId,
+                    select: this.setStreet.bind(this)
+                });
 
                 // Setup events
                 this.events['blur .' + CSS_CLASSES.APARTMENT_INPUT] = 'setApartment';
