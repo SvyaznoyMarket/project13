@@ -16,8 +16,6 @@ namespace EnterApplication\Action\ProductCard
          */
         public function execute(Request $request)
         {
-            \Debug\Timer::start('curl');
-
             $curl = $this->getCurl();
 
             // регион
@@ -92,9 +90,9 @@ namespace EnterApplication\Action\ProductCard
 
                 $deliveryQuery = new Query\Delivery\GetByCart();
                 // корзина
-                $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($productId, 1);
+                $deliveryQuery->cart->addProduct($productId, 1);
                 foreach(array_column($productQuery->response->product['kit'], 'id') as $kitId) {
-                    $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($kitId, 1);
+                    $deliveryQuery->cart->addProduct($kitId, 1);
                 }
 
                 // регион
@@ -136,12 +134,12 @@ namespace EnterApplication\Action\ProductCard
 
                 $paymentGroupQuery = new Query\PaymentGroup\GetByCart();
                 // корзина
-                $paymentGroupQuery->cart->products[] = $paymentGroupQuery->cart->createProduct($productId, 1);
+                $paymentGroupQuery->cart->addProduct($productId, 1);
                 // регион
                 $paymentGroupQuery->regionId = $productQuery->regionId;
                 // фильтер
                 $paymentGroupQuery->filter->isCorporative = false;
-                $paymentGroupQuery->filter->isCredit = (bool)(($price * (($cart->getQuantityByProduct($productId) > 0) ? $cart->getQuantityByProduct($productId) : 1)) >= \App::config()->product['minCreditPrice']);
+                $paymentGroupQuery->filter->isCredit = (bool)(($price * (($cart->getProductQuantity($productId) > 0) ? $cart->getProductQuantity($productId) : 1)) >= \App::config()->product['minCreditPrice']);
 
                 $paymentGroupQuery->prepare();
             });
@@ -309,8 +307,6 @@ namespace EnterApplication\Action\ProductCard
             $response->lifeGiftProductQuery = $lifeGiftProductQuery;
             $response->nextProductsQuery = $nextProductsQuery;
             $response->couponQuery = $couponQuery;
-
-            \Debug\Timer::stop('curl');
 
             return $response;
         }

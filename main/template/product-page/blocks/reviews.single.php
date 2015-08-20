@@ -10,7 +10,7 @@ $f = function(
 
     <div class="reviews__i jsReviewItem" style="display: <?= $hidden ? 'none' : 'block' ?>" data-review-ui="<?= $review->ui ?>">
         <div class="reviews__cpt"><div class="reviews__author"><?= $review->author ? : 'Аноним' ?></div>,
-            <div class="reviews__date"><?= \Util\Date::strftimeRu('%e %B2 %G', $review->date->format('U')) ?></div></div>
+            <div class="reviews__date"><?= \Util\Date::strftimeRu('%e %B2 %Y', $review->date->format('U')) ?></div></div>
 
         <div class="product-card-rating">
         <span class="product-card-rating__state">

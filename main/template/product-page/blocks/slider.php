@@ -62,7 +62,6 @@ $f = function (
         id="<?= $id ?>"
         data-position="<?= $sender['position'] ?>"
         data-slider="<?= $helper->json([
-            'count'  => $count,
             'limit'  => $limit,
             'url'    => $url,
             'type'   => $type,
@@ -149,7 +148,7 @@ $f = function (
                         <img class="goods-slider-list__img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>">
                     </span>
 
-                            <span class="goods-slider-list__name"><?= $product->getName() ?></span>
+                            <span class="goods-slider-list__name"><?= $helper->escape($product->getName()) ?></span>
                         </a>
 
                         <div class="goods-slider-list__price-old">

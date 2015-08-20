@@ -199,7 +199,7 @@
     &-lst{
         width: 285px;
         padding-left: 20px;
-        height: 100%;
+        
         max-height: 100%;
         overflow-x: visible;
         overflow-y: scroll;
@@ -210,6 +210,10 @@
         padding-top: 0;
         padding-right: 23px;
 
+        &.deliv-list:after{
+            content: none;
+            display: none;
+        }
         &-i{
             width: 100%;
             padding: 10px 5px 10px 7px;

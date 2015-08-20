@@ -61,7 +61,6 @@ $f = function (
     data-position="<?= $sender['position'] ?>"
     class="bGoodsSlider js-slider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>"
     data-slider="<?= $helper->json([
-        'count'  => $count,
         'limit'  => $limit,
         'url'    => $url,
         'type'   => $type,
@@ -163,7 +162,7 @@ $f = function (
                 <div class="slideItem_i__child">
                     <? if ('top' == $namePosition): ?>
                         <div class="slideItem_n">
-                            <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>><?= $product->getName() ?></a>
+                            <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>><?= $helper->escape($product->getName()) ?></a>
                         </div>
                     <? endif ?>
 
@@ -179,7 +178,7 @@ $f = function (
 
                         <? if ('bottom' == $namePosition) : ?>
                             <div class="slideItem_n">
-                                <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>><?= $product->getName() ?></a>
+                                <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>><?= $helper->escape($product->getName()) ?></a>
                             </div>
                         <? endif ?>
 

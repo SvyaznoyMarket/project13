@@ -26,6 +26,7 @@
             }
             if (isUniversalAvailable()) {
                 ga('send', 'pageview', data);
+                ga('secondary.send', 'pageview', data);
             }
             if (isClassicAvailable()) {
                 _gaq.push(['_trackPageview', data.page])
@@ -70,7 +71,7 @@
                             e[elem] = e[elem].slice(0, 500);
                             break;
                         case 'value':
-                            e[elem] = parseInt(e[elem].slice, 10);
+                            e[elem] = parseInt(e[elem] + '', 10);
                             break;
                         case 'nonInteraction':
                             e[elem] = Boolean(e[elem]);
@@ -80,7 +81,7 @@
             });
 
             // Classic Tracking Code
-            if (typeof _gaq === 'object') {
+            if (isClassicAvailable()) {
                 classicEvent.push(e.category, e.action);
                 classicEvent.push(e.label ? e.label: null);
                 classicEvent.push(e.value ? e.value: null);
@@ -91,8 +92,7 @@
             }
 
             // Universal Tracking Code
-            // TODO refactor if statement
-            if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0) {
+            if (isUniversalAvailable()) {
                 universalEvent.eventCategory = e.category;
                 universalEvent.eventAction = e.action;
                 if (e.label) universalEvent.eventLabel = e.label;
@@ -101,6 +101,7 @@
                 else if (typeof e.hitCallback == 'string') universalEvent.hitCallback = function(){ window.location.href = e.hitCallback };
                 if (e.nonInteraction) ga('set', 'nonInteraction', true);
                 ga('send', universalEvent);
+                ga('secondary.send', universalEvent);
                 console.info('[Google Analytics] Send event:', e);
             } else {
                 console.warn('No Universal Google Analytics function found', typeof universalEvent.hitCallback, e.hitCallback);
@@ -199,7 +200,7 @@
                 googleProducts = $.map(eventObject.products, function(elem){ return new GoogleProduct(elem, googleTrans.id)});
 
                 // Classic Tracking Code
-                if (typeof _gaq === 'object') {
+                if (isClassicAvailable()) {
                     _gaq.push(['_addTrans'].concat(googleTrans.toArray()));
                     $.each(googleProducts, function(i, product){
                         _gaq.push(['_addItem'].concat(product.toArray()))
@@ -210,13 +211,16 @@
                 }
 
                 // Universal Tracking Code
-                if (typeof ga === 'function' && ga.getAll().length != 0) {
+                if (isUniversalAvailable()) {
                     ga('require', 'ecommerce', 'ecommerce.js');
                     ga('ecommerce:addTransaction', googleTrans.toObject());
+                    ga('secondary.ecommerce:addTransaction', googleTrans.toObject());
                     $.each(googleProducts, function(i, product){
-                        ga('ecommerce:addItem',product.toObject())
+                        ga('ecommerce:addItem',product.toObject());
+                        ga('secondary.ecommerce:addItem',product.toObject());
                     });
                     ga('ecommerce:send');
+                    ga('secondary.ecommerce:send');
                 } else {
                     console.warn('No Universal Google Analytics function found');
                 }
@@ -227,21 +231,9 @@
 
 		};
 
-    if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
-
     // common listener for triggering from another files or functions
     body.on('trackGooglePageview', trackGooglePageview);
     body.on('trackGoogleEvent', trackGoogleEvent);
     body.on('trackGoogleTransaction', trackGoogleTransaction);
-
-    // TODO вынести инициализацию трекера из ports.js
-    try {
-        if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length == 0) {
-			console.warn('Creating ga tracker');
-            ga( 'create', 'UA-25485956-5', 'enter.ru' );
-        }
-    } catch (e) {
-        console.error(e);
-    }
 
 })(jQuery);

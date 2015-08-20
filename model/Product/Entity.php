@@ -17,11 +17,11 @@ class Entity {
     const DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE = 1;
 
     /** @var string|null */
-    protected $ui;
+    public $ui;
     /** @var int|null */
-    protected $id;
+    public $id;
     /** @var string|null */
-    protected $barcode;
+    public $barcode;
     /** @var string|null */
     protected $article;
     /** @var string|null */
@@ -153,12 +153,18 @@ class Entity {
     /** @var Coupon[] */
     public $coupons = [];
 
-    public function __construct(array $data = []) {
+    public function __construct($data = []) {
+        $this->importFromCore($data);
+    }
+
+    public function importFromCore($data = []) {
+        $templateHelper = new \Helper\TemplateHelper();
+
         if (isset($data['id'])) $this->setId($data['id']);
+        else if (isset($data['core_id'])) $this->setId($data['core_id']);
         if (isset($data['ui'])) $this->setUi($data['ui']);
         if (isset($data['uid'])) $this->setUi($data['uid']); // для scms
         if (isset($data['status_id'])) $this->setStatusId($data['status_id']);
-        if (isset($data['name'])) $this->setName($data['name']);
         if (isset($data['link'])) $this->setLink($data['link']);
         if (isset($data['url'])) $this->setLink($data['url']);
         if (isset($data['token'])) $this->setToken($data['token']);
@@ -183,9 +189,9 @@ class Entity {
         if (isset($data['num_reviews'])) $this->setNumReviews($data['num_reviews']);
         if (isset($data['is_upsale'])) $this->setIsUpsale($data['is_upsale']);
         if (isset($data['model']) && $data['model']) $this->setModel(new Model\Entity($data['model']));
-        if (isset($data['title'])) $this->setSeoTitle($data['title']);
-        if (isset($data['meta_keywords'])) $this->setSeoKeywords($data['meta_keywords']);
-        if (isset($data['meta_description'])) $this->setSeoDescription($data['meta_description']);
+        if (isset($data['title'])) $this->setSeoTitle($templateHelper->unescape($data['title']));
+        if (isset($data['meta_keywords'])) $this->setSeoKeywords($templateHelper->unescape($data['meta_keywords']));
+        if (isset($data['meta_description'])) $this->setSeoDescription($templateHelper->unescape($data['meta_description']));
 
         if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
             return new Kit\Entity($data);
@@ -202,8 +208,9 @@ class Entity {
         if (array_key_exists('is_primary_line', $data)) $this->setIsPrimaryLine($data['is_primary_line']);
         if (array_key_exists('model_id', $data)) $this->setModelId($data['model_id']);
         if (array_key_exists('score', $data)) $this->setScore($data['score']);
-        if (array_key_exists('name_web', $data)) $this->setWebName($data['name_web']);
-        if (array_key_exists('prefix', $data)) $this->setPrefix($data['prefix']);
+        if (isset($data['name'])) $this->setName($templateHelper->unescape($data['name'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
+        if (array_key_exists('name_web', $data)) $this->setWebName($templateHelper->unescape($data['name_web'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
+        if (array_key_exists('prefix', $data)) $this->setPrefix($templateHelper->unescape($data['prefix'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
         if (array_key_exists('tagline', $data)) $this->setTagline($data['tagline']);
         if (array_key_exists('announce', $data)) $this->setAnnounce($data['announce']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
@@ -282,6 +289,63 @@ class Entity {
 
         // TODO удалить
         if ($this->isGifteryCertificate()) $this->state->setIsBuyable(true);
+    }
+
+    public function importFromScms($data = []) {
+        if (!empty($data['medias']) && is_array($data['medias'])) {
+            foreach ($data['medias'] as $media) {
+                if (is_array($media)) {
+                    $this->medias[] = new \Model\Media($media);
+                }
+            }
+        }
+
+        if (!empty($data['json3d']) && is_array($data['json3d'])) {
+            $this->json3d = $data['json3d'];
+        }
+
+        if (!empty($data['properties']) && is_array($data['properties'])) {
+            $this->setProperty(array_map(function($data) { return new \Model\Product\Property\Entity($data); }, $data['properties']));
+        }
+
+        if (!empty($data['property_groups']) && is_array($data['property_groups'])) {
+            $this->setPropertyGroup(array_map(function($data) { return new \Model\Product\Property\Group\Entity($data); }, $data['property_groups']));
+        }
+
+        // пока так, рефакторинг скоро будет
+        if (!empty($data['label'])) {
+            $this->setLabel(new Label([
+                'id'        => @$data['label']['core_id'],
+                'name'      => @$data['label']['name'],
+                'medias'    => @$data['label']['medias'],
+            ]));
+        }
+
+        if (!empty($data['brand']) && @$data['brand']['slug'] === 'tchibo-3569') {
+            $this->setBrand(new \Model\Brand\Entity([
+                'ui'        => @$data['brand']['uid'],
+                'id'        => @$data['brand']['core_id'],
+                'token'     => @$data['brand']['slug'],
+                'name'      => @$data['brand']['name'],
+                'media_image' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png', // TODO после решения FCMS-740 заменить на URL из scms и удалить условие "@$thisData['brand']['slug'] === 'tchibo-3569'"
+            ]));
+        }
+
+        if (!empty($data['categories']) && is_array($data['categories'])) {
+            foreach ($data['categories'] as $category) {
+                $this->categories[] = new \Model\Product\Category\Entity($category);
+                if ($category['main']) {
+                    $this->setParentCategory(new \Model\Product\Category\Entity($category));
+
+                    // TODO: создать метод \Model\Product\Category\Entity::getRoot, возвращающий корневую категорию, найденную через свойство \Model\Product\Category\Entity::$parent; переименовать \Model\Product\Entity::getParentCategory в getMainCategory
+                    while (isset($category['parent']) && $category['parent']) {
+                        $category = $category['parent'];
+                    }
+
+                    $this->setRootCategory(new \Model\Product\Category\Entity($category));
+                }
+            }
+        }
     }
 
     /**
@@ -533,6 +597,9 @@ class Entity {
         $this->property[$property->getId()] = $property;
     }
 
+    /**
+     * @return Property\Entity[]
+     */
     public function getProperty() {
         return array_values($this->property);
     }

@@ -51,7 +51,7 @@ class ShowAction {
 
         $productItem = [
             'id'           => $product->getId(),
-            'name'         => htmlspecialchars_decode($product->getName()),
+            'name'         => $product->getName(),
             'link'         => $product->getLink(),
             'label'        =>
             $product->getLabel()

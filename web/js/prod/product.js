@@ -344,17 +344,27 @@ $(function() {
                     }
 				});
 
-				if (typeof window.dc_getCreditForTheProduct == 'function') dc_getCreditForTheProduct(
-					4427,
-					window.docCookies.getItem('enter_auth'),
+				if (typeof window.DCLoans == 'function') window.DCLoans(
+					'4427',
 					'getPayment',
-					{ price : creditd.price, count : 1, type : creditd.product_type },
-					function( result ) {
-						if( ! 'payment' in result ){
-							return;
-						}
-						if( result.payment > 0 ) {
-							priceNode.html( printPrice( Math.ceil(result.payment) ) );
+                    {
+                        products: [
+                            { price : creditd.price, count : 1, type : creditd.product_type }
+                        ]
+                    },
+					function(response) {
+                        var result = {
+                            payment: null
+                        };
+
+                        console.info('DCLoans.getPayment.response', response);
+
+                        result.payment = response.allProducts;
+
+                        console.info('DCLoans.getPayment.result', result);
+
+						if (result.payment) {
+							priceNode.html(printPrice(Math.ceil(result.payment)));
 							creditBoxNode.show();
 						}
 					}
@@ -364,9 +374,9 @@ $(function() {
 		};
 
 		if (ENTER.config.userInfo) {
-			if ($.isArray(ENTER.config.userInfo.cartProducts)) {
+			if ($.isArray(ENTER.config.userInfo.cart.products)) {
 				var product_id = $('#jsProductCard').data('value')['id'];
-				$.each(ENTER.config.userInfo.cartProducts, function(i, val) {
+				$.each(ENTER.config.userInfo.cart.products, function(i, val) {
 					if (val['isCredit'] && val['id'] == product_id) {
 						$('#creditinput').attr('checked', true).trigger('change')
 					}
@@ -511,22 +521,9 @@ $(function() {
 		var hintLnk = $('.bHint_eLink');
 		var hintCloseLnk = $('.bHint_ePopup .close');
 
-		var hintAnalytics = function(data){
-			if (typeof(_gaq) !== 'undefined') {
-				_gaq.push(['_trackEvent', 'Hints', data.hintTitle, data.url]);
-			}
-		};
-
 		var hintShow = function(){
 			hintPopup.hide();
 			$(this).parent().find('.bHint_ePopup').fadeIn(150);
-
-			var analyticsData = {
-				hintTitle: $(this).html(),
-				url: window.location.href
-			};
-			hintAnalytics(analyticsData);
-
 			return false;
 		};
 
@@ -647,13 +644,11 @@ $(function() {
         $popupPhoto = $body.find('.jsProductPopupBigPhoto'),
         $popupPhotoHolder = $('.jsProductPopupBigPhotoHolder'),
         $popupPhotoThumbs = $('.jsPopupPhotoThumb'),
+        $productPhotoThumb = $('.jsProductPhotoThumb'),
         $productPhotoThumbs = $('.jsProductThumbList'),
-        $productPhotoThumbsBtn = $('.jsProductThumbBtn'),
         $zoomBtn   = $('.jsProductPopupZoom'),
-        productPhotoThumbsWidth = $productPhotoThumbs.width() - 2,
-        productPhotoThumbsFullWidth = $productPhotoThumbs.get(0) ? $productPhotoThumbs.get(0).scrollWidth : 0,
+        $popupThumbs = $('.jsPopupThumbList'),
         thumbActiveClass = 'product-card-photo-thumbs__i--act',
-        thumbBtnDisabledClass = 'product-card-photo-thumbs__btn--disabled',
         thumbsCount = $popupPhotoThumbs.length,
         popupDefaults = {
             centered: true,
@@ -779,6 +774,17 @@ $(function() {
 			preventScroll: true,
             onLoad: function() {
                 checkZoom();
+                if ($popupPhotoThumbs.length > 11) {
+                    $popupThumbs.slick(
+                        {
+                            prevArrow: '.product-card-photo-thumbs__btn--l.jsPopupThumbBtn',
+                            nextArrow: '.product-card-photo-thumbs__btn--r.jsPopupThumbBtn',
+                            infinite: false,
+                            slidesToShow: 11,
+                            slidesToScroll: 11
+                        }
+                    );
+                }
             },
             onClose: function() {
                 setDefaultSetting();
@@ -813,27 +819,23 @@ $(function() {
 
     /* Слайд в попапе */
     $body.on('click', '.jsProductPopupSlide', function(){
+
         var direction = $(this).data('dir'),
-            curIndex = $popupPhotoThumbs.index($imgPopup.find('.'+thumbActiveClass));
-        if (curIndex + direction == thumbsCount) setPhoto(0);
-        else setPhoto(curIndex + direction);
+            curIndex = $popupPhotoThumbs.index($imgPopup.find('.'+thumbActiveClass)),
+            max = $popupPhotoThumbs.length - 1 ,
+            photoIndex = (curIndex + direction == thumbsCount) ? 0 : curIndex + direction;
+
+        (photoIndex == -1) && (photoIndex = max);
+
+        setPhoto(photoIndex);
+
+        if ($popupPhotoThumbs.length > 11) { $popupThumbs.slick('slickGoTo', photoIndex); }
     });
 
     $popupPhotoThumbs.on('click', function(){
         setPhoto($popupPhotoThumbs.index($(this)));
     });
 
-    $productPhotoThumbsBtn.on('click', function(){
-        if (!$productPhotoThumbs.is(':animated'))
-        $productPhotoThumbs.animate({
-            'margin-left': $(this).data('dir') + productPhotoThumbsWidth
-        }, function(){
-            var margin = parseInt($productPhotoThumbs.css('margin-left'));
-            $productPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
-            if (productPhotoThumbsFullWidth + margin < productPhotoThumbsWidth) $productPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
-            if (margin > 0) $productPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
-        });
-    });
 
     // Youtube и 3D
     $body.on('click', '.jsProductMediaButton li', function(e){
@@ -904,6 +906,19 @@ $(function() {
             }
         }
     });
+    //slick.js
+    if ($productPhotoThumb.length > 5){
+        $productPhotoThumbs.slick(
+            {
+                prevArrow: '.product-card-photo-thumbs__btn--l.jsProductThumbBtn',
+                nextArrow: '.product-card-photo-thumbs__btn--r.jsProductThumbBtn',
+                infinite: false,
+                slidesToShow: 5,
+                slidesToScroll: 5
+            }
+        );
+    }
+
 
 }(jQuery);
 /*
@@ -932,19 +947,43 @@ $(function() {
 
 
     // Кредит
-    if ($creditButton.length > 0 && typeof window['dc_getCreditForTheProduct'] == 'function') {
-        window['dc_getCreditForTheProduct'](
-            4427,
-            window.docCookies.getItem('enter_auth'),
+    if ($creditButton.length > 0 && typeof window['DCLoans'] == 'function') {
+        window['DCLoans'](
+            '4427',
             'getPayment',
-            { price : $creditButton.data('credit')['price'], count : 1, type : $creditButton.data('credit')['product_type'] },
-            function( result ) {
-                if( typeof result['payment'] != 'undefined' && result['payment'] > 0 ) {
-                    $creditButton.find('.jsProductCreditPrice').text( printPrice( Math.ceil(result['payment']) ) );
+            {
+                products: [
+                    { price : $creditButton.data('credit')['price'], count : 1, type : $creditButton.data('credit')['product_type'] }
+                ]
+            },
+            function(response) {
+                var result = {
+                    payment: null
+                };
+
+                console.info('DCLoans.getPayment.response', response);
+
+                result.payment = response.allProducts;
+
+                console.info('DCLoans.getPayment.result', result);
+
+                if (result.payment) {
+                    $creditButton.find('.jsProductCreditPrice').text(printPrice(Math.ceil(result.payment)));
                     $creditButton.show();
                 }
             }
-        )
+        );
+
+        $creditButton.on('click', function(e) {
+            var $target = $($(this).data('target')); // кнопка купить
+
+            if ($target.length) {
+                console.info('$target.first', $target.first());
+                $target.first().trigger('click', ['on']);
+
+                e.preventDefault();
+            }
+        });
     }
 
 	(function() {
@@ -1023,7 +1062,7 @@ $(function() {
         window.scrollTo(0, $(hash).offset().top - 105);
     });
 
-    $body.on('click', '.jsOneClickButton-new', function(){
+    $body.on('click', '.jsOneClickButton', function(){
         $('.jsProductPointsMap').trigger('close');
     });
 
@@ -1107,7 +1146,7 @@ $(function() {
                     // добавляем видимые точки на карту
                     $.each(mapData.points, function(i, point){
                         try {
-                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButton-new'));
+                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButton'));
                         } catch (e) {
                             console.error('Ошибка добавления точки на карту', e);
                         }
@@ -1438,12 +1477,9 @@ $(document).ready(function() {
 		onChange:function( count ){
 			var spinnerFor = this.attr('data-spinner-for'),
 				bindButton = $('.'+spinnerFor),
-                bindOneClickButton = $('.' + spinnerFor + '-oneClick'),
 				newHref = bindButton.attr('href') || '';
-			// end of vars
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
-            bindOneClickButton.data('quantity', count);
 
 			// добавление в корзину после обновления спиннера
 			// if (bindButton.hasClass('mBought')){
@@ -1931,19 +1967,11 @@ $(document).ready(function() {
 			closeSelector: '.jsPopupCloser',
 			onLoad: function() {
 				videoStartTime = new Date().getTime();
-
-				if (typeof(_gaq) !== 'undefined') {
-					_gaq.push(['_trackEvent', 'Video', 'Play', productUrl]);
-				}
 			},
 			onClose: function() {
 				$('.js-product-video-iframeContainer').empty();
 				videoEndTime = new Date().getTime();
 				var videoSpent = videoEndTime - videoStartTime;
-
-				if (typeof _gaq !== 'undefined') {
-					_gaq.push(['_trackEvent', 'Video', 'Stop', productUrl, videoSpent]);
-				}
 			}
 		});
 

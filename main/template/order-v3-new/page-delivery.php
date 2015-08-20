@@ -21,9 +21,6 @@ return function(
     ];
 
 ?>
-
-<?= $helper->render('order-v3-new/__head', ['step' => 2]) ?>
-
 <section id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
     <h1 class="orderCnt_t">Самовывоз и доставка</h1>
 
@@ -81,9 +78,9 @@ return function(
                         <span>шт.</span>
                     </div>
 
-                    <a class="brb-dt jsChangeProductQuantity" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
+                    <a class="brb-dt jsChangeProductQuantity" href="" data-id="<?= $product->id; ?>" data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
                     &nbsp;|&nbsp;
-                    <a class="brb-dt jsDeleteProduct" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>">Удалить товар</a>
+                    <a class="brb-dt jsDeleteProduct" href="" data-id="<?= $product->id; ?>" data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Удалить товар</a>
                 </div>
 
                 <span class="orderCol_data orderCol_data-price"><?= $helper->formatPrice($product->original_price) ?> <span class="rubl">p</span></span>
@@ -165,7 +162,7 @@ return function(
             <div class="orderCol_delivrIn clearfix">
                 <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
                 <? if ($order->delivery->date): ?>
-                    <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %G, %A', $order->delivery->date->format('U'))) ?></div>
+                    <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y, %A', $order->delivery->date->format('U'))) ?></div>
                 <? endif ?>
 
                 <?= $helper->render('order-v3-new/__calendar', [

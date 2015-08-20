@@ -5,13 +5,11 @@
         $popupPhoto = $body.find('.jsProductPopupBigPhoto'),
         $popupPhotoHolder = $('.jsProductPopupBigPhotoHolder'),
         $popupPhotoThumbs = $('.jsPopupPhotoThumb'),
+        $productPhotoThumb = $('.jsProductPhotoThumb'),
         $productPhotoThumbs = $('.jsProductThumbList'),
-        $productPhotoThumbsBtn = $('.jsProductThumbBtn'),
         $zoomBtn   = $('.jsProductPopupZoom'),
-        productPhotoThumbsWidth = $productPhotoThumbs.width() - 2,
-        productPhotoThumbsFullWidth = $productPhotoThumbs.get(0) ? $productPhotoThumbs.get(0).scrollWidth : 0,
+        $popupThumbs = $('.jsPopupThumbList'),
         thumbActiveClass = 'product-card-photo-thumbs__i--act',
-        thumbBtnDisabledClass = 'product-card-photo-thumbs__btn--disabled',
         thumbsCount = $popupPhotoThumbs.length,
         popupDefaults = {
             centered: true,
@@ -137,6 +135,17 @@
 			preventScroll: true,
             onLoad: function() {
                 checkZoom();
+                if ($popupPhotoThumbs.length > 11) {
+                    $popupThumbs.slick(
+                        {
+                            prevArrow: '.product-card-photo-thumbs__btn--l.jsPopupThumbBtn',
+                            nextArrow: '.product-card-photo-thumbs__btn--r.jsPopupThumbBtn',
+                            infinite: false,
+                            slidesToShow: 11,
+                            slidesToScroll: 11
+                        }
+                    );
+                }
             },
             onClose: function() {
                 setDefaultSetting();
@@ -171,27 +180,23 @@
 
     /* Слайд в попапе */
     $body.on('click', '.jsProductPopupSlide', function(){
+
         var direction = $(this).data('dir'),
-            curIndex = $popupPhotoThumbs.index($imgPopup.find('.'+thumbActiveClass));
-        if (curIndex + direction == thumbsCount) setPhoto(0);
-        else setPhoto(curIndex + direction);
+            curIndex = $popupPhotoThumbs.index($imgPopup.find('.'+thumbActiveClass)),
+            max = $popupPhotoThumbs.length - 1 ,
+            photoIndex = (curIndex + direction == thumbsCount) ? 0 : curIndex + direction;
+
+        (photoIndex == -1) && (photoIndex = max);
+
+        setPhoto(photoIndex);
+
+        if ($popupPhotoThumbs.length > 11) { $popupThumbs.slick('slickGoTo', photoIndex); }
     });
 
     $popupPhotoThumbs.on('click', function(){
         setPhoto($popupPhotoThumbs.index($(this)));
     });
 
-    $productPhotoThumbsBtn.on('click', function(){
-        if (!$productPhotoThumbs.is(':animated'))
-        $productPhotoThumbs.animate({
-            'margin-left': $(this).data('dir') + productPhotoThumbsWidth
-        }, function(){
-            var margin = parseInt($productPhotoThumbs.css('margin-left'));
-            $productPhotoThumbsBtn.removeClass(thumbBtnDisabledClass);
-            if (productPhotoThumbsFullWidth + margin < productPhotoThumbsWidth) $productPhotoThumbsBtn.eq(1).addClass(thumbBtnDisabledClass);
-            if (margin > 0) $productPhotoThumbsBtn.eq(0).addClass(thumbBtnDisabledClass);
-        });
-    });
 
     // Youtube и 3D
     $body.on('click', '.jsProductMediaButton li', function(e){
@@ -262,5 +267,18 @@
             }
         }
     });
+    //slick.js
+    if ($productPhotoThumb.length > 5){
+        $productPhotoThumbs.slick(
+            {
+                prevArrow: '.product-card-photo-thumbs__btn--l.jsProductThumbBtn',
+                nextArrow: '.product-card-photo-thumbs__btn--r.jsProductThumbBtn',
+                infinite: false,
+                slidesToShow: 5,
+                slidesToScroll: 5
+            }
+        );
+    }
+
 
 }(jQuery);

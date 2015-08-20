@@ -103,7 +103,6 @@ $helper = new \Helper\TemplateHelper();
                         'type'     => 'enterprize',
                         'title'    => '',
                         'products' => $products,
-                        'count'    => null,
                         'limit'    => \App::config()->enterprize['itemsInSlider'],
                     ]) ?>
                 </div>

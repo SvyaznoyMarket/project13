@@ -45,7 +45,7 @@ $f = function(
         <? endforeach ?>
 
         <? if ($clothSizeTrust) : ?>
-            <a class="product-card-filter__link jsImageInLightBox" href="<?= $clothSizeTrust->getImage() ?>" data-href="<?= $clothSizeTrust->getImage() ?>">Таблица размеров</a>
+            <a class="product-card-filter__link i-product i-product--variant jsImageInLightBox" href="<?= $clothSizeTrust->getImage() ?>" data-href="<?= $clothSizeTrust->getImage() ?>">Таблица размеров</a>
         <? endif ?>
 
     </div>

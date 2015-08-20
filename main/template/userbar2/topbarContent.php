@@ -15,8 +15,8 @@ $helper = \App::helper();
     </div>
 
     <? if (\App::config()->onlineCall['enabled']): ?>
-        <a class="header_i hdcall" href="http://zingaya.com/widget/e990d486d664dfcff5f469b52f6bdb62" onclick="typeof(_gaq)=='undefined'?'':_gaq.push(['_trackEvent', 'Zingaya', 'ButtonClick']);typeof(_gat)=='undefined'?'':_gat._getTrackerByName()._setAllowLinker(true); window.open(typeof(_gat)=='undefined'?this.href+'?referrer='+escape(window.location.href):_gat._getTrackerByName()._getLinkerUrl(this.href+'?referrer='+escape(window.location.href)), '_blank', 'width=236,height=220,resizable=no,toolbar=no,menubar=no,location=no,status=no'); return false">
-            <i class="i-header i-header--phone"></i>
+        <a class="header_i hdcall" href="http://zingaya.com/widget/e990d486d664dfcff5f469b52f6bdb62" onclick="window.open(this.href+'?referrer='+escape(window.location.href), '_blank', 'width=236,height=220,resizable=no,toolbar=no,menubar=no,location=no,status=no'); return false">
+            <i class="i-header i-header-phone"></i>
             <span class="hdcall_tx">Звонок<br/>с сайта</span>
         </a>
     <? endif ?>

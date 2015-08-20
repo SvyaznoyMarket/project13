@@ -12,24 +12,24 @@
             <div class="bListingItem__eInner">
                 <!-- Блок с именем продукта и иконками доп. просмотра товара -->
                 <div class="bSimplyDesc">
-                    <p class="bSimplyDesc__eText"><a href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{&name}}</a></p>
+                    <p class="bSimplyDesc__eText"><a href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a></p>
                     {{#review}}{{> product/_review-compact }}{{/review}}
 
                     <ul class="bSimplyDescStikers clearfix">
                         {{#label}}
-                            <li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="{{image}}" alt="{{name}}" /></li>
+                            <li class="bSimplyDescStikers__eItem mLeftStiker"><a href="{{link}}"><img class="SimplyDescStikers__eImg" src="{{image}}" alt="{{name}}" /></a></li>
                         {{/label}}
 
                         {{#brandImage}}
-                            <li class="bSimplyDescStikers__eItem mRightStiker"><img class="SimplyDescStikers__eImg" src="{{brandImage}}" alt="{{name}}" /></li>
+                            <li class="bSimplyDescStikers__eItem mRightStiker"><a href="{{link}}"><img class="SimplyDescStikers__eImg" src="{{brandImage}}" alt="{{name}}" /></a></li>
                         {{/brandImage}}
 
                         {{#hasVideo}}
-                            <li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></li>
+                            <li class="bSimplyDescStikers__eItem"><a href="{{link}}"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></a></li>
                         {{/hasVideo}}
 
                         {{#has360}}
-                            <li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
+                            <li class="bSimplyDescStikers__eItem"><a href="{{link}}"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></a></li>
                         {{/has360}}
                     </ul>
                 </div>

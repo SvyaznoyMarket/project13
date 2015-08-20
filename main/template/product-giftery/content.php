@@ -42,9 +42,9 @@ $buySender2 = $request->get('sender2');
         <div class="product-card__head">
             <h1 class="product-card__head__title clearfix" itemprop="name">
                     <? if ($product->getPrefix()): ?>
-                        <?= $product->getPrefix() ?>
+                        <?= $helper->escape($product->getPrefix()) ?>
                     <? endif ?>
-                    <?= $product->getWebName() ?>
+                    <?= $helper->escape($product->getWebName()) ?>
             </h1>
             <span class="product-card__head__article">Артикул: <?= $product->getArticle() ?></span>
         </div>
@@ -85,7 +85,6 @@ $buySender2 = $request->get('sender2');
             'type'     => 'similar',
             'title'    => 'Похожие товары',
             'products' => [],
-            'count'    => null,
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
             'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -120,7 +119,6 @@ $buySender2 = $request->get('sender2');
             'type'           => 'alsoBought',
             'title'          => 'С этим товаром покупают',
             'products'       => [],
-            'count'          => null,
             'limit'          => \App::config()->product['itemsInSlider'],
             'page'           => 1,
             'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -137,7 +135,6 @@ $buySender2 = $request->get('sender2');
             'type'      => 'viewed',
             'title'     => 'Вы смотрели',
             'products'  => [],
-            'count'     => null,
             'limit'     => \App::config()->product['itemsInSlider'],
             'page'      => 1,
             'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),

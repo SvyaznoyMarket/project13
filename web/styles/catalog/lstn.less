@@ -239,32 +239,6 @@
                     background: none repeat scroll 0 0 #fff;
                     box-shadow: none;
                 }
-                &--magenta {
-                    border-color: #a64f83;
-
-                    .gradient(#d063a5, #c960a0, #bf5b98);
-                    &:hover {
-                        background: #bf5b98;
-                    }
-                    &:active {
-                        background: #bf5b98;
-                    }
-                    &.mBought {
-                        border-color: @black;
-                        background: @white;
-                    }
-                }
-                &--red {
-                    border-color: #bd333a;
-
-                    .gradient(#d63942, #d63942, #e63d47);
-                    &:hover {
-                        background: #d63942;
-                    }
-                    &:active {
-                        background: #d63942;
-                    }
-                }
 
                 &.mBought {
 		            .box-shadow(none);
@@ -329,28 +303,6 @@
         .btnBuy__eLink {
             border-color: @orange-2;
             background: @orange-2;
-            &--magenta {
-                border-color: #a64f83;
-
-                .gradient(#d063a5, #c960a0, #bf5b98);
-                &:hover {
-                    background: #bf5b98;
-                }
-                &:active {
-                    background: #bf5b98;
-                }
-            }
-            &--red {
-                border-color: #bd333a;
-
-                .gradient(#d63942, #d63942, #e63d47);
-                &:hover {
-                    background: #d63942;
-                }
-                &:active {
-                    background: #d63942;
-                }
-            }
             &.mShopsOnly {
                 border: 1px solid @black;
                 background: #404040;
@@ -450,4 +402,10 @@
             float: right;
         }
     }
+}
+.adfoxWrapper{
+    .transition(2s all ease);
+}
+body{
+    .transition(2s all ease);
 }

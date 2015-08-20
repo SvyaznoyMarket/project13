@@ -69,6 +69,8 @@ class Action {
 
             $page->setParam('data', $data);
             $page->setParam('htmlContent', $content['content']);
+            $page->setParam('imageUrl', isset($content['image_url']) ? $content['image_url'] : '');
+            $page->setParam('description', isset($content['description']) ? $content['description'] : '');
             $page->setParam('token', $token);
             //нужно для увеличения отступа от заголовкой и строки поика
             $page->setParam('extendedMargin', true);

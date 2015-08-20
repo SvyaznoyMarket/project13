@@ -326,7 +326,7 @@
 			</div>
 
 			<div class="table-favorites__cell-center table-cell">
-				<a href="<?= $product->getLink() ?>" class="table-favorites__name"><?= $product->getName() ?></a>
+				<a href="<?= $product->getLink() ?>" class="table-favorites__name"><?= $helper->escape($product->getName()) ?></a>
 				<? if ($product->getPrice()): ?>
 					<div class="table-favorites__price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></div>
 				<? endif ?>

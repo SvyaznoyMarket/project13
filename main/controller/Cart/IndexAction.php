@@ -30,7 +30,7 @@ class IndexAction {
         if ($user->getRegionId()) {
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
-                if ((bool)$data) {
+                if ($data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
             });
@@ -38,45 +38,18 @@ class IndexAction {
             $client->execute();
         }
 
-        $regionEntity = $user->getRegion();
-        if ($regionEntity instanceof \Model\Region\Entity) {
-            $user->setRegion($regionEntity);
-        }
-
-        $region = $user->getRegion();
-
-        // подготовка 2-го пакета запросов
-
-        // TODO: запрашиваем меню
-        $cartProductsById = array_reverse($cart->getProducts(), true);
-
-        $productIds = array_keys($cartProductsById);
-
-        /** @var \Model\Product\Entity[] $products */
-        $products = [];
-        $medias = [];
-
-        // запрашиваем список товаров
-        if ((bool)$productIds) {
-            \RepositoryManager::product()->prepareCollectionById($productIds, $region, function($data) use(&$products, $cartProductsById) {
-                foreach ($data as $item) {
-                    $products[] = new \Model\Product\Entity($item);
-                }
-            });
-
-            \RepositoryManager::product()->prepareProductsMediasByIds($productIds, $medias);
-        }
-
-        // выполнение 2-го пакета запросов
-        $client->execute();
-
-        \RepositoryManager::product()->setMediasForProducts($products, $medias);
+        $updateResultProducts = $cart->update([], true);
 
         $page = new \View\Cart\IndexPage();
         $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
-        $page->setParam('productEntities', $products);
-        $page->setParam('products', $products);
-        $page->setParam('cartProductsById', $cartProductsById);
+        $page->setParam('cartProductsById', array_reverse($cart->getProductsById(), true));
+        $page->setParam('products', array_values(array_filter(array_map(function(\Session\Cart\Update\Result\Product $updateResultProduct) {
+            if ($updateResultProduct->setAction === 'delete') {
+                return;
+            } else {
+                return $updateResultProduct->fullProduct;
+            }
+        }, $updateResultProducts))));
 
         return new \Http\Response($page->show());
     }

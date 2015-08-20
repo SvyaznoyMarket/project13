@@ -42,10 +42,6 @@
 					$popup.trigger('close.lme');
 				});
 
-				// Google Analytics
-				if (typeof _gaq !== 'undefined') {
-					_gaq.push(['_trackEvent', 'addedCollection', 'collection', result.product.article]);
-				}
 			},
 			complete: function() {
 				isOpening = false;
@@ -59,6 +55,7 @@
 		var self = this;
 
 		self.productId = product.id;
+		self.productUi = product.ui;
 		self.productPrefix = product.prefix;
 		self.productWebname = product.webname;
 		self.productName = self.productPrefix + ' ' + self.productWebname;
@@ -90,27 +87,30 @@
 		});
 
 		self.buyLink = ko.computed(function(){
-			var link = '/cart/set-products?',
-				id = 0;
+			var params = {
+				kitProduct: {ui: self.productUi},
+				products: []
+			};
 
 			ko.utils.arrayForEach(self.products(), function(item){
 				if (item.count() > 0) {
-					link += 'product['+id+'][id]=' + item.id + '&product['+id+'][quantity]=' + item.count() + '&';
-					id += 1;
+					params.products.push({
+						ui: item.ui,
+						quantity: '+' + item.count(),
+						up: '1'
+					});
 				}
 			});
 
 			if (sender) {
-				link += $.param({sender: sender}) + '&';
+				params.sender = sender;
 			}
 
 			if (sender2) {
-				link += $.param({sender2: sender2}) + '&';
+				params.sender2 = sender2;
 			}
 
-			link = link.slice(0, -1);
-
-			return link;
+			return ENTER.utils.generateUrl('cart.product.setList', params);
 		});
 
 		self.dataUpsale = function(mainId){
@@ -145,6 +145,7 @@
 		var self = this;
 
 		self.id = product.id;
+		self.ui = product.ui;
 		self.url = product.url;
 		self.name = product.name;
 		self.price = product.price;

@@ -115,7 +115,7 @@ class IndexPage extends \View\DefaultLayout {
         } elseif ($this->product->getTagline()) {
             $description = $this->product->getTagline();
         } else {
-            $description = 'Enter - новый способ покупать. Любой из ' . number_format(\App::config()->product['totalCount'], 0, ',', ' ') . ' товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.';
+            $description = \App::config()->description;
         }
 
         return "<meta property=\"og:title\" content=\"" . $this->escape($this->product->getName()) . "\"/>\r\n" .

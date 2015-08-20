@@ -189,8 +189,9 @@ class Client {
      */
     public function execute($retryTimeout = null, $retryCount = 0) {
         $startedAt = \Debug\Timer::start('curl');
+
+        // Если не было добавлено запросов для выполнения
         if (!$this->multiHandler) {
-            $this->logger->warn(['message' => 'No query to execute'], ['curl']);
             return;
         }
 

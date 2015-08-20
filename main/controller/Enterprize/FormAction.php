@@ -480,8 +480,8 @@ class FormAction {
             $limit = \App::config()->enterprize['itemsInSlider'] * 3;
         }
 
+        /** @var \Model\Product\Entity[] $products */
         $products = [];
-        $productIds = [];
         $productCount = 0;
         if ($coupon && $coupon->getLink()) {
             $linkParts = explode('/', $coupon->getLink());
@@ -503,28 +503,18 @@ class FormAction {
                 }, $productCategoryRepository->getRootCollection());
 
                 $filters[] = ['category', 1, $rootCategoriesIds, false];
-                $productIds = $productRepository->getIdsByFilter($filters, ['rating' => 'desc'], 0, $limit*4, $region);
-                $medias = [];
 
-                // получаем товары по productIds
-                if (!empty($productIds)) {
-                    $productRepository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                        foreach ($data as $item) {
-                            $entity = new \Model\Product\Entity($item);
-                            if ($entity->isInShopOnly() || $entity->isInShopStockOnly() || !$entity->getIsBuyable()) {
-                                continue;
-                            }
+                $products = array_map(
+                    function($productId) { return new \Model\Product\Entity(['id' => $productId]); },
+                    $productRepository->getIdsByFilter($filters, ['rating' => 'desc'], 0, $limit * 4, $region)
+                );
 
-                            $products[] = $entity;
-                        }
-                    });
+                \RepositoryManager::product()->prepareProductQueries($products, 'media');
+                $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-                    \RepositoryManager::product()->prepareProductsMediasByIds($productIds, $medias);
-
-                    $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-                    \RepositoryManager::product()->setMediasForProducts($products, $medias);
-                }
+                $products = array_filter($products, function(\Model\Product\Entity $product) {
+                    return (!$product->isInShopOnly() && !$product->isInShopStockOnly() && $product->getIsBuyable());
+                });
             } else {
                 /** @var $slice \Model\Slice\Entity|null */
                 $slice = null;
@@ -570,35 +560,20 @@ class FormAction {
                             if ($categoryUid = $slice->categoryUid) {
                                 $category = $categoryUid ? $productCategoryRepository->getEntityByUid($categoryUid) : null;
                             } else { // id категории нету, пытаемся получить листинг по фильтрам среза
-                                $productRepository->prepareIteratorByFilter($sliceFilters, [], null, $limit*3, $region,
-                                    function($data) use (&$productIds, &$productCount) {
-                                        if (isset($data['list'][0])) $productIds = $data['list'];
+                                $productRepository->prepareIteratorByFilter($sliceFilters, [], null, $limit * 3, $region,
+                                    function($data) use (&$products, &$productCount) {
+                                        if (isset($data['list'][0])) $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $data['list']);
                                         if (isset($data['count'])) $productCount = (int)$data['count'];
                                     }
                                 );
                                 $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-                                if (!empty($productIds)) {
-                                    $medias = [];
-                                    $productRepository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                                        if (!isset($data[0])) return;
+                                \RepositoryManager::product()->prepareProductQueries($products, 'media');
+                                $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-                                        foreach ($data as $item) {
-                                            $entity = new \Model\Product\Entity($item);
-                                            if ($entity->isInShopOnly() || $entity->isInShopStockOnly() || !$entity->getIsBuyable()) {
-                                                continue;
-                                            }
-
-                                            $products[] = $entity;
-                                        }
-                                    });
-
-                                    \RepositoryManager::product()->prepareProductsMediasByIds($productIds, $medias);
-
-                                    $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-                                    \RepositoryManager::product()->setMediasForProducts($products, $medias);
-                                }
+                                $products = array_filter($products, function(\Model\Product\Entity $product) {
+                                    return (!$product->isInShopOnly() && !$product->isInShopStockOnly() && $product->getIsBuyable());
+                                });
                             }
                         }
                         break;
@@ -609,29 +584,13 @@ class FormAction {
                             break;
                         }
 
-                        $chunckedBarcodes = array_chunk($barcodes, \App::config()->coreV2['chunk_size']);
-
-                        // запрашиваем товаровы
-                        foreach ($chunckedBarcodes as $chunk) {
-                            if ($limit <= count($products)) continue;
-
-                            $productRepository->prepareCollectionByBarcode($chunk, $region, function($data) use (&$products, $limit) {
-                                if (!empty($data) && is_array($data)) {
-                                    foreach ($data as $item) {
-                                        $entity = new \Model\Product\Entity($item);
-                                        if ($entity->isInShopOnly() || $entity->isInShopStockOnly() || !$entity->getIsBuyable()) {
-                                            continue;
-                                        }
-
-                                        $products[$entity->getId()] = $entity;
-                                    }
-                                }
-                            });
-                        }
+                        $products = array_map(function($productBarcode) { return new \Model\Product\Entity(['bar_code' => $productBarcode]); }, $barcodes);
+                        \RepositoryManager::product()->prepareProductQueries($products, 'media');
                         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-                        \RepositoryManager::product()->prepareProductsMediasByIds(array_map(function(\Model\Product\Entity $product) { return $product->getId(); }, $products), $medias);
-                        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-                        \RepositoryManager::product()->setMediasForProducts($products, $medias);
+
+                        $products = array_filter($products, function(\Model\Product\Entity $product) {
+                            return (!$product->isInShopOnly() && !$product->isInShopStockOnly() && $product->getIsBuyable());
+                        });
                         break;
                 }
             }
@@ -640,32 +599,19 @@ class FormAction {
                 $filters[] = ['category', 1, [$category->getId()]];
 
                 $productRepository->prepareIteratorByFilter($filters, [], null, $limit*3, $region,
-                    function($data) use (&$productIds, &$productCount) {
-                        if (isset($data['list'][0])) $productIds = $data['list'];
+                    function($data) use (&$products, &$productCount) {
+                        if (isset($data['list'][0])) $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $data['list']);
                         if (isset($data['count'])) $productCount = (int)$data['count'];
                     }
                 );
                 $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-                if (!empty($productIds)) {
-                    $medias = [];
-                    $productRepository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                        foreach ($data as $item) {
-                            $entity = new \Model\Product\Entity($item);
-                            if ($entity->isInShopOnly() || $entity->isInShopStockOnly() || !$entity->getIsBuyable()) {
-                                continue;
-                            }
+                \RepositoryManager::product()->prepareProductQueries($products, 'media');
+                $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-                            $products[] = $entity;
-                        }
-                    });
-
-                    \RepositoryManager::product()->prepareProductsMediasByIds($productIds, $medias);
-
-                    $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-                    \RepositoryManager::product()->setMediasForProducts($products, $medias);
-                }
+                $products = array_filter($products, function(\Model\Product\Entity $product) {
+                    return (!$product->isInShopOnly() && !$product->isInShopStockOnly() && $product->getIsBuyable());
+                });
             }
         }
 

@@ -13,15 +13,6 @@ if (!isset($addInfo)) {
     $addInfo = [];
 }
 
-$disabled = !$product->getIsBuyable();
-$gaEvent = !empty($gaEvent) ? $gaEvent : null;
-$gaTitle = !empty($gaTitle) ? $gaTitle : null;
-if ($disabled) {
-    $url = '#';
-} else {
-    $url = $page->url('cart.product.set', array('productId' => $product->getId()));
-}
-
 // открытие товаров в новом окне
 $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
 
@@ -35,7 +26,7 @@ if ($product->getPriceOld()) {
 <li class="lstn_i js-jewelListing js-goodsbox">
     <div class="lstn_i_inn js-goodsboxContainer" data-url="<?= $product->getLink() ?>" <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
 
-        <a class="lstn_n" href="<?= $product->getLink() ?>" <?= $linkTarget ?>><?= $product->getName() ?></a>
+        <a class="lstn_n" href="<?= $product->getLink() ?>" <?= $linkTarget ?>><?= $helper->escape($product->getName()) ?></a>
 
         <div class="lstn_imgbox">
             <a class="lstn_imglk" href="<?= $product->getLink() ?>" <?= $linkTarget ?>>
@@ -53,7 +44,7 @@ if ($product->getPriceOld()) {
             <? endif ?>
 
             <? if ($product->hasVideo()): ?>
-                <li class="stickLst_i"><img class="stickLst_img" src="/css/bCatalog/img/video.png" /></li>
+                <li class="stickLst_i"><a href="<?= $product->getLink() ?>"><img class="stickLst_img" src="/css/bCatalog/img/video.png" /></a></li>
             <? endif ?>
 
             <? if ($product->has3d()): ?>

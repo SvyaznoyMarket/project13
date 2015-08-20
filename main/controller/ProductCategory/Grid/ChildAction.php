@@ -72,25 +72,10 @@ class ChildAction {
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        // SITE-5513
-        foreach (array_chunk($productsByUi, 10, true) as $uisInChunk) {
-            \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionByUi(array_values($uisInChunk), \App::user()->getRegion(), function($data) use (&$productsByUi, &$uisInChunk) {
-                foreach ($data as $item) {
-                    $key = array_search($item['ui'], $productsByUi, true);
-                    if (!isset($productsByUi[$key])) {
-                        continue;
-                    }
-                    $productsByUi[$key] = new \Model\Product\Entity($item);
-                }
-            });
-        }
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $productsByUi = array_map(function($productUi) { return new \Model\Product\Entity(['ui' => $productUi]); }, $productsByUi);
 
-        $productsByUi = array_filter($productsByUi, function($product) {
-            return $product instanceof \Model\Product\Entity;
-        });
+        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($productsByUi, 'media label brand category');
 
-        \RepositoryManager::product()->enrichProductsFromScms($productsByUi, 'media label brand category');
         \App::coreClientV2()->execute();
 
         if (

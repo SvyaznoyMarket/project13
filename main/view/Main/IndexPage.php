@@ -2,6 +2,8 @@
 
 namespace View\Main;
 
+use Model\Banner\BannerEntity;
+
 class IndexPage extends \View\DefaultLayout {
 
     protected $layout  = 'layout-main-new';
@@ -50,10 +52,6 @@ class IndexPage extends \View\DefaultLayout {
         return (new \Helper\TemplateHelper())->render('common/__upper', ['offset' => '.js-showTopBar', 'showWhenFullCartOnly' => true]);
     }
 
-    public function slotBanner() {
-        return $this->render('main/_banner', $this->params);
-    }
-
     public function slotGoogleRemarketingJS($tagParams = []) {
         return parent::slotGoogleRemarketingJS(['pagetype' => 'homepage']);
     }
@@ -69,12 +67,16 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotMetaOg()
     {
+        /** @var $banners BannerEntity[] */
+        $banners = $this->params['banners'];
         $result = '';
 
-        if (isset($this->params['bannerData'][0]['imgb'])) {
-            $image_url = $this->params['bannerData'][0]['imgb'];
-            $result .=  "<meta property=\"og:image\" content=\"" . $image_url . "\" />\r\n".
-                        "<link rel=\"image_src\" href=\"". $image_url . "\" />\r\n";
+        if (isset($banners[0])) {
+            $imageUrl = $banners[0]->getImageBig();
+            $result .=  sprintf('
+    <meta property="og:image" content="%s" />
+    <link rel="image_src" href="%s" />',
+                $imageUrl, $imageUrl);
         }
 
         return $result;

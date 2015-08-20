@@ -24,19 +24,43 @@
 
 
     // Кредит
-    if ($creditButton.length > 0 && typeof window['dc_getCreditForTheProduct'] == 'function') {
-        window['dc_getCreditForTheProduct'](
-            4427,
-            window.docCookies.getItem('enter_auth'),
+    if ($creditButton.length > 0 && typeof window['DCLoans'] == 'function') {
+        window['DCLoans'](
+            '4427',
             'getPayment',
-            { price : $creditButton.data('credit')['price'], count : 1, type : $creditButton.data('credit')['product_type'] },
-            function( result ) {
-                if( typeof result['payment'] != 'undefined' && result['payment'] > 0 ) {
-                    $creditButton.find('.jsProductCreditPrice').text( printPrice( Math.ceil(result['payment']) ) );
+            {
+                products: [
+                    { price : $creditButton.data('credit')['price'], count : 1, type : $creditButton.data('credit')['product_type'] }
+                ]
+            },
+            function(response) {
+                var result = {
+                    payment: null
+                };
+
+                console.info('DCLoans.getPayment.response', response);
+
+                result.payment = response.allProducts;
+
+                console.info('DCLoans.getPayment.result', result);
+
+                if (result.payment) {
+                    $creditButton.find('.jsProductCreditPrice').text(printPrice(Math.ceil(result.payment)));
                     $creditButton.show();
                 }
             }
-        )
+        );
+
+        $creditButton.on('click', function(e) {
+            var $target = $($(this).data('target')); // кнопка купить
+
+            if ($target.length) {
+                console.info('$target.first', $target.first());
+                $target.first().trigger('click', ['on']);
+
+                e.preventDefault();
+            }
+        });
     }
 
 	(function() {
@@ -115,7 +139,7 @@
         window.scrollTo(0, $(hash).offset().top - 105);
     });
 
-    $body.on('click', '.jsOneClickButton-new', function(){
+    $body.on('click', '.jsOneClickButton', function(){
         $('.jsProductPointsMap').trigger('close');
     });
 
@@ -199,7 +223,7 @@
                     // добавляем видимые точки на карту
                     $.each(mapData.points, function(i, point){
                         try {
-                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButton-new'));
+                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButton'));
                         } catch (e) {
                             console.error('Ошибка добавления точки на карту', e);
                         }

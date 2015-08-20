@@ -21,7 +21,6 @@ $helper = new \Helper\TemplateHelper();
             'type'     => 'enterprize',
             'title'    => $sliderTitle,
             'products' => $products,
-            'count'    => null,
             'limit'    => \App::config()->enterprize['itemsInSlider'],
         ]) ?>
     <? endif ?>

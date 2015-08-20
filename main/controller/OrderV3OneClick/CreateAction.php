@@ -158,11 +158,11 @@ class CreateAction {
                     }
                 );
 
-                \RepositoryManager::product()->prepareCollectionById(array_map(function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $order->getProduct()), null, function ($data) use (&$productsById) {
-                    foreach ($data as $productData) {
-                        $productsById[$productData['id']] = new \Model\Product\Entity($productData);
-                    }
-                });
+                foreach ($order->getProduct() as $product) {
+                    $productsById[$product->getId()] = new \Model\Product\Entity(['id' => $product->getId()]);
+                }
+                
+                \RepositoryManager::product()->prepareProductQueries($productsById);
             }
 
             $this->client->execute();

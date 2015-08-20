@@ -302,7 +302,7 @@ $showStatus = \App::user()->getEntity() && in_array(\App::user()->getEntity()->g
 
                         <div class="personalTable_cell personalTable_cell-last ta-r">
                             <? if (!$order->isSlot()): ?>
-                                <a href="<?= $order->addProductsToCartLink() ?>" class="jsBuyButton"><button class="tableBtn btnLightGrey">Добавить в корзину</button></a>
+                                <a href="<?= \App::router()->generate('cart.product.setList', ['products' => array_map(function(\Model\Order\Product\Entity $product) { return ['id' => $product->getId(), 'quantity' => '+' . $product->getQuantity(), 'up' => '1']; }, $order->getProduct())]) ?>" class="jsBuyButton"><button class="tableBtn btnLightGrey">Добавить в корзину</button></a>
                             <? endif ?>
                         </div>
                     </div>

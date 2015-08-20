@@ -7,14 +7,10 @@
 	var
 		i,
 		global  = this,
-		fnProto = Function.prototype,
-		fnApply = fnProto.apply,
-		fnBind  = fnProto.bind,
+		// Function.prototype.bind не работает в IE8
 		bind    = function ( context, fn ) {
-			return fnBind ?
-				fnBind.call( fn, context ) :
-				function () {
-					return fnApply.call( fn, context, arguments );
+			return function () {
+					return Function.prototype.apply.call( fn, context, arguments );
 				};
 		},
 		methods = 'assert count debug dir dirxml error group groupCollapsed groupEnd info log markTimeline profile profileEnd table time timeEnd trace warn'.split(' '),
@@ -51,7 +47,7 @@
 				return diff;
 			};
 		}
-		
+
 		for ( i = methods.length; i-- ; ) {
 			console[methods[i]] = methods[i] in console ?
 				bind(console, console[methods[i]]) : emptyFn;
@@ -81,7 +77,7 @@
 
         pageConfig = $('#page-config').data('value'),
 
-		//directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
+		directCreditUrl = 'http://api.direct-credit.ru/dc.js',
         adfoxUrl = 'adfox_lib_ff.min.js', // 'adfox.asyn.code.ver3.min.js',
 		yandexMapUrl, yandexMapUrlv2_1, mustacheUrl, historyUrl, kladr, knockoutUrl,
 
@@ -376,7 +372,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script('JsHttpRequest.min.js')
 					.script( getWithVersion('library.js') )
-					//.script( directCreditUrl )
+					.script( { src: directCreditUrl, type: 'text/javascript', charset: 'windows-1251' } )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.wait()
@@ -398,7 +394,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
-					//.script( directCreditUrl )
+					.script( { src: directCreditUrl, type: 'text/javascript', charset: 'windows-1251' } )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.wait()
@@ -444,7 +440,7 @@
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script('JsHttpRequest.min.js')
 						.script( getWithVersion('library.js') )
-						//.script( directCreditUrl )
+						.script( { src: directCreditUrl, type: 'text/javascript', charset: 'windows-1251' } )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.wait()
@@ -539,7 +535,7 @@
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
 						.script('JsHttpRequest.min.js')
-						//.script( directCreditUrl )
+						.script( { src: directCreditUrl, type: 'text/javascript', charset: 'windows-1251' } )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.wait()

@@ -100,11 +100,12 @@ namespace EnterQuery\Delivery\GetByCart
          * @param int|null $quantity
          * @return Cart\Product
          */
-        public function createProduct($id = null, $quantity = null)
+        public function addProduct($id = null, $quantity = null)
         {
             $product = new Cart\Product();
             $product->id = $id;
             $product->quantity = $quantity;
+            $this->products[] = $product;
 
             return $product;
         }

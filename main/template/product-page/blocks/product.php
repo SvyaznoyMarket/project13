@@ -31,8 +31,6 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
 
     <?= $helper->render('product-page/blocks/reviews.short', ['reviewsData' => $reviewsData]) ?>
 
-    <?= $helper->render('product-page/blocks/variants', ['product' => $product, 'trustfactors' => $trustfactors]) ?>
-
     <? if ($product->getTagline()) : ?>
     <p class="product-card-desc collapsed js-description-expand"><?= $product->getTagline() ?></p>
     <? endif ?>
@@ -49,6 +47,8 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
             <dd class="product-card-prop__i product-card-prop__i--val"><?= $property->getStringValue() ?></dd>
         <? endforeach ?>
     </dl>
+
+    <?= $helper->render('product-page/blocks/variants', ['product' => $product, 'trustfactors' => $trustfactors]) ?>
 
     <?= $helper->render('product-page/blocks/trustfactors', ['trustfactors' => $trustfactors]) ?>
 
@@ -143,8 +143,8 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
             'product'  => $product,
             'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
             'sender'   => $buySender + [
-                    'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
-                ],
+                'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
+            ],
             'sender2' => $buySender2,
             'noUpdate'  => true,
             'location' => 'product-card',
@@ -153,10 +153,15 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         ]) // Кнопка купить ?>
     </div>
 
-    <? if ($product->getPrice() >= \App::config()->product['minCreditPrice']) : ?>
+    <? if (\App::config()->payment['creditEnabled'] && ($product->getPrice() >= \App::config()->product['minCreditPrice']) && !count($product->getPartnersOffer())) : ?>
         <!-- купить в кредит -->
-        <a class="buy-on-credit btn-type btn-type--normal btn-type--longer jsProductCreditButton" href="" style="display: none"
-           data-credit='<?= (isset($creditData) ? $creditData['creditData'] : '') ?>'>
+        <a
+            class="buy-on-credit btn-type btn-type--normal btn-type--longer jsProductCreditButton"
+            href="<?= $helper->url('cart.product.setList', ['products' => [['ui' => $product->ui, 'quantity' => '+1', 'up' => '1']]]) ?>"
+            style="display: none"
+            data-credit='<?= (isset($creditData['creditData']) ? $creditData['creditData'] : '') ?>'
+            data-target=".<?= \View\Id::cartButtonForProduct($product->getId()) ?>"
+        >
             <span class="buy-on-credit__tl">Купить в кредит</span>
             <span class="buy-on-credit__tx">от <mark class="buy-on-credit__mark jsProductCreditPrice">0</mark>&nbsp;&nbsp;<span class="rubl">p</span> в месяц</span>
         </a>
@@ -168,15 +173,12 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <!-- сравнить, добавить в виш лист -->
     <ul class="product-card-tools">
         <li class="product-card-tools__i product-card-tools__i--onclick">
-
-            <? if (!count($product->getPartnersOffer()) && (!$isKit || $product->getIsKitLocked())): ?>
-                <?= $helper->render('cart/__button-product-oneClick', [
-                    'product' => $product,
-                    'sender'  => $buySender,
-                    'sender2' => $buySender2,
-                    'value' => 'Купить в 1 клик'
-                ]) // Покупка в один клик ?>
-            <? endif ?>
+            <?= $helper->render('cart/__button-product-oneClick', [
+                'product' => $product,
+                'sender'  => $buySender,
+                'sender2' => $buySender2,
+                'value' => 'Купить в 1 клик'
+            ]) ?>
         </li>
 
         <li class="product-card-tools__i product-card-tools__i--compare js-compareProduct"

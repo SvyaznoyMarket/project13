@@ -14,6 +14,10 @@ class BanditAction {
     protected $isAvailable = true;
 
     public function index() {
+        if (!\App::config()->bandit['enabled']) {
+            throw new \Exception\NotFoundException();
+        }
+
         $banditJson = \RepositoryManager::gameBandit()->getBanditJson();
 
         $page = new \View\Game\BanditPage();
@@ -25,6 +29,10 @@ class BanditAction {
 
 
 	public function init() {
+        if (!\App::config()->bandit['enabled']) {
+            throw new \Exception\NotFoundException();
+        }
+
 		$crm	= \App::crmClient();
         $user   = \App::user()->getEntity();
 
@@ -66,6 +74,10 @@ class BanditAction {
      * @return \Http\JsonResponse
      */
     public function play(){
+        if (!\App::config()->bandit['enabled']) {
+            throw new \Exception\NotFoundException();
+        }
+
         $crm	= \App::crmClient();
         $user   = \App::user()->getEntity();
 

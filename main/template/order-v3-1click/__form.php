@@ -18,9 +18,9 @@ return function(
         <div class="orderOneClick_hd_r">
             <div class="orderOneClick_hd_n">
                 <? if ($product->getPrefix()): ?>
-                    <?= $product->getPrefix() ?><br/>
+                    <?= $helper->escape($product->getPrefix()) ?><br/>
                 <? endif ?>
-                <?= $product->getWebName() ?>
+                <?= $helper->escape($product->getWebName()) ?>
             </div>
 
             <div class="orderOneClick_hd_pr"><strong><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
@@ -56,17 +56,7 @@ return function(
             <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения<span class="orderU_lgnd_tgglnote js-order-oneclick-delivery-toggle-btn-note">скрыть</span></legend>
 
             <div class="js-order-oneclick-delivery-toggle" style="display: none;">
-                <div
-                    id="js-order-content"
-                    class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery"
-                    data-url="<?= $helper->url('orderV3OneClick.delivery') ?>"
-                    data-param="<?= $helper->json([
-                        'products' => [
-                            ['id' => $product->getId(), 'quantity' => 1],
-                        ],
-                        'shopId'   => null, // устанавливается на стороне javascript
-                    ]) ?>
-                "></div>
+                <div id="js-order-content" class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery"></div>
             </div>
         </fieldset>
 

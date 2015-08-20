@@ -185,11 +185,6 @@ class Action {
 
         $client->execute();
 
-        $regionEntity = $user->getRegion();
-        if ($regionEntity instanceof \Model\Region\Entity) {
-            $user->setRegion($regionEntity);
-        }
-
         // hardcode
         if (in_array($shop->getId(), [1])) {
             $shop->setPanorama(new \Model\Shop\Panorama\Entity([

@@ -55,9 +55,9 @@ $buySender2 = $request->get('sender2');
         <div class="product-card__head">
             <h1 class="product-card__head__title clearfix" itemprop="name">
                     <? if ($product->getPrefix()): ?>
-                        <?= $product->getPrefix() ?>
+                        <?= $helper->escape($product->getPrefix()) ?>
                     <? endif ?>
-                    <?= $product->getWebName() ?>
+                    <?= $helper->escape($product->getWebName()) ?>
             </h1>
             <? if (\App::abTest()->isNewProductPage()): ?>
                 <? else: ?>
@@ -65,7 +65,7 @@ $buySender2 = $request->get('sender2');
             <? endif ?>
         </div>
 
-        <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
+        <?= $helper->render('product/__photo', ['product' => $product, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
     </div>
 
     <div class="product-card__section-right">
@@ -111,7 +111,6 @@ $buySender2 = $request->get('sender2');
                 'type'     => 'similar',
                 'title'    => 'Похожие товары',
                 'products' => [],
-                'count'    => null,
                 'limit'    => \App::config()->product['itemsInSlider'],
                 'page'     => 1,
                 'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -152,7 +151,6 @@ $buySender2 = $request->get('sender2');
                 'type'           => 'alsoBought',
                 'title'          => 'С этим товаром покупают',
                 'products'       => [],
-                'count'          => null,
                 'limit'          => \App::config()->product['itemsInSlider'],
                 'page'           => 1,
                 'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -169,7 +167,6 @@ $buySender2 = $request->get('sender2');
                 'type'      => 'viewed',
                 'title'     => 'Вы смотрели',
                 'products'  => [],
-                'count'     => null,
                 'limit'     => \App::config()->product['itemsInSlider'],
                 'page'      => 1,
                 'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
