@@ -44,9 +44,9 @@ namespace Session {
          *                                                      добавлено к существующему)
          *                                              '-10' - если товар уже существует в корзине, то существующее
          *                                                      кол-во будет уменьшено на указанное (притом, если в
-         *                                                      результате уменьшения кол-во станет <= 0, то товар будет
-         *                                                      удалён; если товара не существует в корзине, то товар
-         *                                                      добавлен не будет 
+         *                                                      результате уменьшения кол-во станет <= 0, то оно будет
+         *                                                      установлено в 1; если товара не существует в корзине, то
+         *                                                      товар добавлен не будет
          * @param bool|string|int $setProducts[]['up'] Если true и товар уже существует в корзине, то он будет перемещён в начало
          * @param mixed           $setProducts[]['sender']
          * @param mixed           $setProducts[]['sender2']
@@ -193,13 +193,18 @@ namespace Session {
                             $newSessionProduct['quantity'] += $matches[2];
                         } else if ($matches[1] === '-') {
                             $newSessionProduct['quantity'] -= $matches[2];
+
+                            // SITE-5957 В расширенной корзине при уменьшении кол-ва до нуля товар не должен удаляться
+                            if ($newSessionProduct['quantity'] <= 0) {
+                                $newSessionProduct['quantity'] = 1;
+                            }
                         } else {
                             $newSessionProduct['quantity'] = (int)$matches[2];
                         }
                     } else {
                         $newSessionProduct['quantity'] += 1;
                     }
-    
+
                     if ($newSessionProduct['quantity'] <= 0) {
                         // Обратите внимание, что $setProduct из следующей итерации может изменить action для
                         // данного товара на совершенно другой
