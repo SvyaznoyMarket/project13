@@ -35,7 +35,7 @@ class Action {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
             });
-            
+
             $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
         }
 
@@ -314,7 +314,7 @@ class Action {
                         $productIds = array_merge($productIds, $image->getProducts());
                     }
                     $productIds = array_unique($productIds);
-                    
+
                     foreach ($productIds as $productId) {
                         $products[$productId] = new \Model\Product\Entity(['id' => $productId]);
                     }
@@ -722,12 +722,12 @@ class Action {
                 'countProducts'  => ($hasBanner) ? ( $productPager->count() - 1 ) : $productPager->count(),
             ];
 
-            if (\App::config()->lite['enabled']) {
-                $data['renderedFilter'] = \App::templating()->render('category/_filters', [
-                    'productFilter' => $productFilter,
-                    'baseUrl'       => \App::helper()->url('product.category', ['categoryPath' => $category->getPath()])
-                ]);
-            }
+            // if (\App::config()->lite['enabled']) {
+            //     $data['renderedFilter'] = \App::templating()->render('category/_filters', [
+            //         'productFilter' => $productFilter,
+            //         'baseUrl'       => \App::helper()->url('product.category', ['categoryPath' => $category->getPath()])
+            //     ]);
+            // }
 
             // если установлена настройка что бы показывать фасеты, то в ответ добавляем "disabledFilter"
             if (true === \App::config()->sphinx['showFacets']) {
@@ -824,7 +824,7 @@ class Action {
         if (!$category->getIsFurniture()) {
             return;
         }
-        
+
         $labelFilter = null;
         $labelFilterKey = null;
         foreach ($filters as $key => $filter) {
