@@ -32,6 +32,22 @@
             <div class="listing__desc">
                 <a class="listing__title" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a>
 
+                {{#review}}
+                <div class="listing__reviews">
+                    <!-- Блок отзыввов -->
+                    <div class="bSimplyDescReviews">
+                        <div class="bSimplyDescReviews__eStars">
+                            {{#stars}}
+                                <img class="bSimplyDescReviews__eStarsImg" src="{{image}}">
+                            {{/stars}}
+                        </div>
+
+                        <div class="bSimplyDescReviews__eLink"><span class="review-count">{{count}}</span></div>
+                    </div>
+                    <!--/ Блок отзыввов -->
+                </div>
+                {{/review}}
+
                 <ul class="listing-props">
                     {{#properties}}
                         <li class="listing-props__i">
@@ -39,6 +55,14 @@
                             <span class="listing-props__val">{{value}}</span>
                         </li>
                     {{/properties}}
+                    <li class="listing-props__i">
+                        <span class="listing-props__name"><span class="listing-props__name-wrap">Вес</span></span>
+                        <span class="listing-props__val">100 гр</span>
+                    </li>
+                    <li class="listing-props__i">
+                        <span class="listing-props__name"><span class="listing-props__name-wrap">Размер</span></span>
+                        <span class="listing-props__val">100 х 100</span>
+                    </li>
                 </ul>
                 <div class="listing-variations">
                 {{#hasVariations}}
@@ -49,23 +73,6 @@
             {{! END: Блок с названием и характеристиками }}
             {{! Блок с ценой, рейтингом }}
             <div class="listing__info">
-                <div class="listing__reviews">
-                    {{#review}}
-                        <!-- Блок отзыввов -->
-                        <div class="bSimplyDescReviews">
-                            <div class="bSimplyDescReviews__eStars">
-                                {{#stars}}
-                                    <img class="bSimplyDescReviews__eStarsImg" src="{{image}}">
-                                {{/stars}}
-                            </div>
-
-                            <div class="bSimplyDescReviews__eLink"><span class="review-count">{{count}}</span></div>
-                        </div>
-                        <!--/ Блок отзыввов -->
-
-                    {{/review}}
-                </div>
-
                 <div class="listing-price-block">
                     {{#oldPrice}}
                         <span class="listing-price-block__price-old">
@@ -75,9 +82,17 @@
                     
                     {{#showPriceSale}}
                         {{#priceSale}}
-                            <span class="listing-price-block__discount">-{{priceSale}}%</span>
+                            <span class="listing-price-block__discount">-{{priceSale}} <span class="rubl">p</span></span>
                         {{/priceSale}}
                     {{/showPriceSale}}
+
+                        <span class="listing-price-block__price-old">
+                            <span class="stroke-out">123456</span> <span class="rubl">p</span>
+                        </span>
+
+
+                            <span class="listing-price-block__discount">-5000 <span class="rubl">p</span></span>
+
                     <span class="listing-price-block__price-current {{#priceSale}} listing-price-block__price-sale{{/priceSale}}">{{&price}} <span class="rubl">p</span></span>
                 </div>
 
