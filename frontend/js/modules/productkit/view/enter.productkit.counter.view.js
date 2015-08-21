@@ -30,7 +30,8 @@
             CSS_CLASSES = {
                 VALUE: 'js-counter-value',
                 PLUS: 'js-counter-plus',
-                MINUS: 'js-counter-minus'
+                MINUS: 'js-counter-minus',
+                DISABLED: 'disabled'
             };
 
         provide(BaseCounter.extend({
@@ -46,11 +47,17 @@
                 this.quantity = this.model.get('quantity');
                 this.input    = this.$el.find('.' + CSS_CLASSES.VALUE);
                 this.minValue = 0;
+                this.maxValue = parseInt(this.$el.attr('data-max'), 10);
+
+                this.subViews = {
+                    minus: this.$el.find('.' + CSS_CLASSES.MINUS),
+                    plus: this.$el.find('.' + CSS_CLASSES.PLUS)
+                };
 
                 this.listenTo(this.model, 'change', this.updateCounter);
                 this.listenTo(this, 'changeQuantity', this.render);
-
                 this.updateCounter();
+                this.checkButtons();
 
                 // Setup events
                 this.events['click .' + CSS_CLASSES.PLUS]  = 'plus';
@@ -61,6 +68,20 @@
             },
 
             events: {},
+
+            checkButtons: function() {
+                if ( this.quantity === this.minValue ) {
+                    this.subViews.minus.addClass(CSS_CLASSES.DISABLED);
+                } else {
+                    this.subViews.minus.removeClass(CSS_CLASSES.DISABLED);
+                }
+
+                if ( this.quantity === this.maxValue ) {
+                    this.subViews.plus.addClass(CSS_CLASSES.DISABLED);
+                } else {
+                    this.subViews.plus.removeClass(CSS_CLASSES.DISABLED);
+                }
+            },
 
             /**
              * Обновление каунтера из модели
@@ -96,6 +117,7 @@
                 }, 400);
 
                 this.input.val(event.quantity);
+                this.checkButtons();
             }
         }));
     }

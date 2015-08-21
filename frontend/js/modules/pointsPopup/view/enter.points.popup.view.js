@@ -41,7 +41,8 @@
                 POINT_FILTER: 'js-point-filter',
                 POINT_FILTER_PARAM: 'js-point-filter-param',
                 POINT_OPENER: 'js-point-filter-opener',
-                POINT_FILTER_ACTIVE: 'open'
+                POINT_FILTER_OPEN: 'open',
+                POINT_FILTER_ACITVE: 'active'
             },
 
             /**
@@ -65,7 +66,7 @@
         // Lazy load Yandex Maps
         modules.require(['ymaps'], function( ymaps ) {});
 
-        provide(BasePopup.extend(/** @lends module:enter.ui.BasePopup~PointsPopup */{
+        provide(BasePopup.extend(/** @lends module:enter.points.popup.view~PointsPopup */{
 
              /**
              * @classdesc   Представление окна c выбором точки самовывоза
@@ -93,7 +94,8 @@
                     filterOverlay: this.$el.find('.' + CSS_CLASSES.FILTER_OVERLAY),
                     pointFilters: this.$el.find('.' + CSS_CLASSES.POINT_FILTER),
                     searchInput: this.$el.find('.' + CSS_CLASSES.SEARCH),
-                    pointFilterParams: this.$el.find('.' + CSS_CLASSES.POINT_FILTER_PARAM)
+                    pointFilterParams: this.$el.find('.' + CSS_CLASSES.POINT_FILTER_PARAM),
+                    dropdowns: this.$el.find('.' + CSS_CLASSES.POINT_OPENER)
                 };
 
                 // Setup events
@@ -117,7 +119,7 @@
              * Выбор адреса из автокомлита
              *
              * @method      selectAutocompleteItem
-             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
+             * @memberOf    module:module:enter.points.popup.view~PointsPopup#
              *
              * @param       {Object}    event
              */
@@ -136,7 +138,7 @@
              * Показать фильтр пунктов выдачи
              *
              * @method      openPointsFilter
-             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
+             * @memberOf    module:module:enter.points.popup.view~PointsPopup#
              *
              * @param       {Object}    event
              */
@@ -144,15 +146,15 @@
                 var
                     target   = $(event.currentTarget),
                     filter   = target.parent('.' + CSS_CLASSES.POINT_FILTER),
-                    isActive = filter.hasClass(CSS_CLASSES.POINT_FILTER_ACTIVE);
+                    isActive = filter.hasClass(CSS_CLASSES.POINT_FILTER_OPEN);
 
-                this.subViews.pointFilters.removeClass(CSS_CLASSES.POINT_FILTER_ACTIVE);
+                this.subViews.pointFilters.removeClass(CSS_CLASSES.POINT_FILTER_OPEN);
 
                 if ( !isActive ) {
-                    filter.addClass(CSS_CLASSES.POINT_FILTER_ACTIVE);
+                    filter.addClass(CSS_CLASSES.POINT_FILTER_OPEN);
                     this.subViews.filterOverlay.show();
                 } else {
-                    filter.removeClass(CSS_CLASSES.POINT_FILTER_ACTIVE);
+                    filter.removeClass(CSS_CLASSES.POINT_FILTER_OPEN);
                     this.subViews.filterOverlay.hide();
                 }
 
@@ -163,10 +165,10 @@
              * Закрыть фильтр пунктов выдачи
              *
              * @method      closePointsFilter
-             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
+             * @memberOf    module:module:enter.points.popup.view~PointsPopup#
              */
             closePointsFilter: function() {
-                this.subViews.pointFilters.removeClass(CSS_CLASSES.POINT_FILTER_ACTIVE);
+                this.subViews.pointFilters.removeClass(CSS_CLASSES.POINT_FILTER_OPEN);
                 this.subViews.autocomplete.hide();
                 this.subViews.autocompleteWrapper.empty();
                 this.subViews.filterOverlay.hide();
@@ -176,12 +178,15 @@
              * Обработчик изменения фильтра. Применение фильтрации точек
              *
              * @method      applyFilter
-             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
+             * @memberOf    module:module:enter.points.popup.view~PointsPopup#
              */
             applyFilter: function() {
                 var
-                    inputs = this.subViews.pointFilterParams,
-                    params = {};
+                    inputs       = this.subViews.pointFilterParams,
+                    pointFilters = this.subViews.pointFilters,
+                    params       = {};
+
+                pointFilters.removeClass(CSS_CLASSES.POINT_FILTER_ACITVE);
 
                 inputs.each(function( key ) {
                     var
@@ -194,11 +199,18 @@
                     }
 
                     if ( $self.prop('checked') == true ) {
+                        $self.parents('.' + CSS_CLASSES.POINT_FILTER).addClass(CSS_CLASSES.POINT_FILTER_ACITVE);
                         params[key].push(value);
                     }
                 });
 
-                console.log(params);
+                // dropdowns.each( function() {
+                //     var
+                //         $self = $(this);
+
+
+                //     console.log('module:module:enter.points.popup.view~PointsPopup#applyFilter', $self.find('.' + CSS_CLASSES.POINT_FILTER_PARAM + ':checked').length);
+                // });
 
                 this.collection.filterMyPoints(params);
             },
@@ -207,7 +219,7 @@
              * Показать выбранные точки доставки
              *
              * @method      changePoints
-             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
+             * @memberOf    module:module:enter.points.popup.view~PointsPopup#
              */
             changePoints: (function () {
                 var
@@ -258,7 +270,7 @@
              * Поиск точек, соответствующих введенному адресу, формирование автокомплита поиска
              *
              * @method      searchAddress
-             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
+             * @memberOf    module:module:enter.points.popup.view~PointsPopup#
              */
             searchAddress: (function () {
                 var
@@ -321,7 +333,7 @@
              * Сброс выбранных по адресу точек
              *
              * @method      changePoints
-             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
+             * @memberOf    module:module:enter.points.popup.view~PointsPopup#
              */
             resetPoints: function() {
                 this.subViews.searchInput.val(''),
@@ -335,7 +347,7 @@
              * Выбор точки
              *
              * @method      onClose
-             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
+             * @memberOf    module:module:enter.points.popup.view~PointsPopup#
              */
             pickPoint: function( event ) {
                 var
@@ -353,7 +365,7 @@
              * Обработчик закрытия окна
              *
              * @method      onClose
-             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
+             * @memberOf    module:module:enter.points.popup.view~PointsPopup#
              */
             onClose: function() {
                 this.destroy();
@@ -363,7 +375,7 @@
              * Отрисовка точек самовывоза
              *
              * @method      renderPoints
-             * @memberOf    module:module:enter.ui.BasePopup~PointsPopup#
+             * @memberOf    module:module:enter.points.popup.view~PointsPopup#
              */
             renderPoints: function() {
                 var
@@ -388,7 +400,7 @@
             },
 
             render: function() {
-                console.info('module:module:enter.ui.BasePopup~PointsPopup#render');
+                console.info('module:module:enter.points.popup.view~PointsPopup#render');
                 console.log(this.collection.popupData);
                 var
                     html = mustache.render(TEMPLATES.POPUP, this.collection.popupData);

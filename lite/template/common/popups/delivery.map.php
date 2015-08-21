@@ -142,7 +142,7 @@
             <div class="delivery-points-list__info table-cell">
                 <div class="delivery-points-list__info-hidden">
                     <div class="delivery-points-list__info-date">{{humanNearestDay}}</div>
-                    <div class="delivery-points-list__info-price"><span>{{cost}}</span></div>
+                    <div class="delivery-points-list__info-price"><span>{{humanCost}}</span></div>
                 </div>
 
                 {{#showBuyButton}}
