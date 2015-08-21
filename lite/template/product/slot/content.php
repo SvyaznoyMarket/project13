@@ -146,7 +146,7 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
                            class="product-card-tools__lk js-compare-button"
                            data-id="<?= $product->getId()?>">
                             <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
-                            <span class="product-card-tools__tx">Сравнить</span>
+                            <span class="product-card-tools__tx js-compare-button-status">Сравнить</span>
                         </a>
                     </li>
                 </ul>

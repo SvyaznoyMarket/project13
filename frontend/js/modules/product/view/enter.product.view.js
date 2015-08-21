@@ -40,6 +40,7 @@
             CSS_CLASSES = {
                 BUY_BUTTON: 'js-buy-button',
                 COMPARE_BUTTON: 'js-compare-button',
+                COMPARE_STATUS: 'js-compare-button-status',
                 FAVORITE_BUTTON: 'js-favorite-button',
                 COMPARE_ACTIVE: 'active',
                 FAVORITE_ACTIVE: 'active',
@@ -65,7 +66,8 @@
                 this.subViews = {
                     compareBtn: this.$el.find('.' + CSS_CLASSES.COMPARE_BUTTON),
                     favoriteBtn: this.$el.find('.' + CSS_CLASSES.FAVORITE_BUTTON),
-                    showPointsBtn: this.$el.find('.' + CSS_CLASSES.SHOW_POINTS)
+                    showPointsBtn: this.$el.find('.' + CSS_CLASSES.SHOW_POINTS),
+                    compareStatus: this.$el.find('.' + CSS_CLASSES.COMPARE_STATUS)
                 };
 
                 // Lazy load
@@ -157,11 +159,11 @@
                     inCompare = this.model.get('inCompare');
 
                 if ( inCompare ) {
-                    this.subViews.compareBtn.addClass(CSS_CLASSES.COMPARE_ACTIVE).attr('data-status', 'Убрать из сравнения') // listing
-                        .find('span').text('Убрать из сравнения'); // product page
+                    this.subViews.compareBtn.addClass(CSS_CLASSES.COMPARE_ACTIVE).attr('data-status', 'Убрать из сравнения');
+                    this.subViews.compareStatus.text('Убрать из сравнения');
                 } else {
-                    this.subViews.compareBtn.removeClass(CSS_CLASSES.COMPARE_ACTIVE).attr('data-status', 'В сравнение')  // listing
-                        .find('span').text('В сравнение'); // product page
+                    this.subViews.compareBtn.removeClass(CSS_CLASSES.COMPARE_ACTIVE).attr('data-status', 'В сравнение');
+                    this.subViews.compareStatus.text('Сравнить');
                 }
             },
 

@@ -45,7 +45,7 @@ $f = function(
                         <a href="<?= \App::router()->generate('compare.add', ['productId' => $product->getId(), 'location' => 'product']) ?>"
                            class="product-card-tools__lk js-compare-button">
                             <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
-                            <span class="product-card-tools__tx">Сравнить</span>
+                            <span class="product-card-tools__tx js-compare-button-status">Сравнить</span>
                         </a>
                     </li>
 
