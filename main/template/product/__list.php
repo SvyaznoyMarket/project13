@@ -17,8 +17,8 @@ return function(
     $listingClass = '';
 
     $partials = [
-        'cart/_button-product' => file_get_contents(\App::config()->templateDir . '/cart/_button-product.mustache'),
-        'product/_review-compact' => file_get_contents(\App::config()->templateDir . '/product/_review-compact.mustache')
+        'cart/_button-product-lstn' => file_get_contents(\App::config()->templateDir . '/cart/_button-product-lstn.mustache'),
+        'product/_review-compact'   => file_get_contents(\App::config()->templateDir . '/product/_review-compact.mustache')
     ];
 
     switch ($view) {
