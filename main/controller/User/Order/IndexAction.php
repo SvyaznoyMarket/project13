@@ -31,9 +31,18 @@ class IndexAction extends \Controller\User\PrivateAction {
 
         /** @var \Model\User\Order\Entity[] $orders */
         $orders = [];
+        $pointUis = [];
         foreach ($orderQuery->response->orders as $item) {
-            $orders[] = new \Model\User\Order\Entity($item);
+            $order = new \Model\User\Order\Entity($item);
+            if (!$order->numberErp) continue;
+
+            $orders[] = $order;
+
+            if ($order->pointUi) {
+                $pointUis[$order->pointUi] = null;
+            }
         }
+        $pointUis = array_keys($pointUis);
 
         /** @var \Model\User\Order\Entity[] $ordersByYear */
         $ordersByYear = [];
@@ -42,8 +51,6 @@ class IndexAction extends \Controller\User\PrivateAction {
             $ordersByYear[$year][] = $order;
         }
 
-        /** @var \Model\Product\Entity[] $productsById */
-        $productsById = [];
         $productIds = call_user_func(function() use (&$orders) {
             $ids = [];
             foreach ($orders as $order) {
@@ -65,8 +72,19 @@ class IndexAction extends \Controller\User\PrivateAction {
             $productQueries[] = $productQuery;
         }
 
+        /** @var Query\Point\GetByUiList[] $pointQueries */
+        $pointQueries = [];
+        foreach (array_chunk($pointUis, \App::config()->coreV2['chunk_size']) as $uisInChunk) {
+            $pointQuery = new Query\Point\GetByUiList();
+            $pointQuery->uis = $uisInChunk;
+            $pointQuery->prepare();
+            $pointQueries[] = $pointQuery;
+        }
+
         $curl->execute();
 
+        /** @var \Model\Product\Entity[] $productsById */
+        $productsById = [];
         foreach ($productQueries as $productQuery) {
             foreach ($productQuery->response->products as $item) {
                 if (!@$item['id']) continue;
@@ -75,10 +93,21 @@ class IndexAction extends \Controller\User\PrivateAction {
             }
         }
 
+        /** @var \Model\Point\PointEntity[] $pointsByUi */
+        $pointsByUi = [];
+        foreach ($pointQueries as $pointQuery) {
+            foreach ($pointQuery->response->points as $item) {
+                if (!@$item['ui']) continue;
+                $point = new \Model\Point\PointEntity($item);
+                $pointsByUi[$point->ui] = $point;
+            }
+        }
+
         $page = new \View\User\Order\IndexPage();
         $page->setParam('ordersByYear', $ordersByYear);
         $page->setParam('productsById', $productsById);
         $page->setParam('orderCount', $orderCount);
+        $page->setParam('pointsByUi', $pointsByUi);
 
         return new \Http\Response($page->show());
     }

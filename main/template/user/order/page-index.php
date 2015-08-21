@@ -9,6 +9,8 @@
  * @var $orderProduct \Model\Order\Product\Entity|null
  * @var $product      \Model\Product\Entity|null
  * @var $productsById \Model\Product\Entity[]
+ * @var $point        \Model\Point\PointEntity
+ * @var $pointsByUi   \Model\Point\PointEntity[]
  */
 ?>
 
@@ -58,7 +60,11 @@ $currentYear = (int)(new \DateTime())->format('Y');
                                     <?= $deliveredAt->format('d.m.Y') ?>
                                 <? endif ?>
                             </span>
-                            <div class="personal-order__deliv-info ellipsis">Постамат PickPoint<br>ул. Братиславская д. 14 sdlfkjahfasldkjahsdalskjhljksag lkgasdl lajdg sldjg</div>
+                            <div class="personal-order__deliv-info ellipsis">
+                                <? if ($order->pointUi && ($point = $pointsByUi[$order->pointUi])): ?>
+                                    <?= $point->getTypeName() ?><br><?= $point->address ?>
+                                <? endif ?>
+                            </div>
                         </div>
                         <div class="personal-order__cell personal-order__price">
                             <?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span>

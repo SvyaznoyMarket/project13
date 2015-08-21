@@ -65,4 +65,24 @@ class PointEntity extends BasicPoint {
         return $this->type == self::TYPE_EUROSET;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getTypeName() {
+        $name = null;
+
+        if ($this->isPickpoint()) {
+            $name = 'Постамат PickPoint';
+        } else if ($this->isHermesPoint()) {
+            $name = 'Постамат Hermes-DPD';
+        } else if ($this->isEurosetPoint()) {
+            $name = 'Евросеть';
+        } else if ($this->isSvyaznoyShop()) {
+            $name = 'Связной';
+        } else if ($this->isEnterShop()) {
+            $name = 'Магазин Enter';
+        }
+
+        return $name;
+    }
 }
