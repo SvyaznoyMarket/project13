@@ -163,6 +163,43 @@
                         },
 
                         /**
+                         * Получение всех параметров из запроса
+                         *
+                         * @method      getURLParams
+                         * @memberOf    module:urlHelper#
+                         * @public
+                         *
+                         * @param       {String}    url    Адрес из которого необходимо извлечь параметры
+                         *
+                         * @return      {String}    Значение параметра URL
+                         */
+                        getURLParams = function( url ) {
+                            var
+                                result = {},
+                                params = url.replace(/^[^?]*\?|\#.*$/g, '').split('&'),
+                                i, param;
+
+                            for ( i = 0; i < params.length; i++ ) {
+                                param = params[i].split('=');
+
+                                if ( !param[0] ) {
+                                    param[0] = '';
+                                }
+
+                                if ( !param[1] ) {
+                                    param[1] = '';
+                                }
+
+                                param[0] = decodeURIComponent(param[0]);
+                                param[1] = decodeURIComponent(param[1]);
+
+                                result[param[0]] = param[1];
+                            }
+
+                            return result;
+                        },
+
+                        /**
                          * Удаление параметра из строки запроса URL
                          *
                          * @method      removeURLParam
@@ -250,6 +287,7 @@
                     return {
                         addParams: addParams,
                         getURLParam: getURLParam,
+                        getURLParams: getURLParams,
                         removeURLParams: removeURLParams,
                         getHash: getHash
                     };

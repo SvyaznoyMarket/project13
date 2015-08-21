@@ -554,12 +554,13 @@
                 this.lastPage       = data.pagination.pagesCount;
 
                 // Update filter
-                this.subViews.filterView.destroy();
-                this.subViews.filterWrapper.empty().append(data.renderedFilter);
-                this.subViews.filterView = new FilterView({
-                    el: this.$el.find('.' + CSS_CLASSES.CATALOG_FILTER),
-                    catalogView: this
-                });
+                // this.subViews.filterView.destroy();
+                // this.subViews.filterWrapper.empty().append(data.renderedFilter);
+                // this.subViews.filterView = new FilterView({
+                //     el: this.$el.find('.' + CSS_CLASSES.CATALOG_FILTER),
+                //     catalogView: this
+                // });
+                this.subViews.filterView.update();
 
                 this.subViews.paginationWrapper.replaceWithPush(paginationHtml);
                 this.subViews.selectedFilters.empty();

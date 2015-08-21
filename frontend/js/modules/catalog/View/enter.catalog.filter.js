@@ -343,6 +343,98 @@
             },
 
             /**
+             * Очистка формы
+             *
+             * @method      resetForm
+             * @memberOf    module:enter.catalog.filter~CatalogFilterView#
+             */
+            resetForm: function() {
+                var
+                    resetRadio = function resetRadio( nf, input ) {
+                        var
+                            self  = $(input),
+                            id    = self.attr('id'),
+                            label = this.$el.find('label[for="'+id+'"]');
+
+                        self.prop('checked', false);
+                        // self;
+                    },
+
+                    resetCheckbox = function resetCheckbox( nf, input ) {
+                        $(input).prop('checked', false);
+                    },
+
+                    resetSliders = function resetSliders() {
+                        var
+                            sliderWrap      = $(this),
+                            slider          = sliderWrap.find('.' + CSS_CLASSES.SLIDER),
+                            sliderFromInput = sliderWrap.find('.' + CSS_CLASSES.SLIDER_FROM),
+                            sliderToInput   = sliderWrap.find('.' + CSS_CLASSES.SLIDER_TO);
+
+                        sliderFromInput.val(slider.slider('option', 'min'));
+                        sliderToInput.val(slider.slider('option', 'max'));
+                    },
+
+                    resetText = function( nf, input ) {
+                        $(input).val('');
+                    };
+
+                this.$el.find(':input:radio:checked').each(resetRadio.bind(this));
+                this.$el.find(':input:checkbox:checked').each(resetCheckbox.bind(this));
+                this.$el.find(':input:text:not(.js-category-filter-rangeSlider-from):not(.js-category-filter-rangeSlider-to)').each(resetText.bind(this));
+                this.sliders.each(resetSliders);
+            },
+
+            /**
+             * Обновление значений выбранных фильтров
+             *
+             * @method      update
+             * @memberOf    module:enter.catalog.filter~CatalogFilterView#
+             */
+            update: function() {
+                var
+                    values = urlHelper.getURLParams(window.location.href),
+                    self   = this,
+
+                    input, val, type, fieldName,
+
+                    updateInput = {
+                        'text': function( input, val ) {
+                            input.val(val);
+                        },
+
+                        'radio': function( input, val ) {
+                            var
+                                target = input.filter('[value="'+val+'"]'),
+                                id     = target.attr('id'),
+                                label  = self.$el.find('label[for="'+id+'"]');
+
+                            target.prop('checked', true);
+                        },
+
+                        'checkbox': function( input, val ) {
+                            input.filter('[value="'+val+'"]').prop('checked', true);
+                        }
+                    };
+
+                this.resetForm();
+
+                for ( fieldName in values ) {
+                    if ( !values.hasOwnProperty(fieldName) ) {
+                        return;
+                    }
+
+                    input = this.$el.find('input[name="' + fieldName + '"]');
+                    val   = values[fieldName];
+                    type  = input.attr('type');
+
+                    if ( updateInput.hasOwnProperty(type) ) {
+                        updateInput[type](input, val);
+                    }
+                }
+            },
+
+            /**
              * Хандлер изменения фильтра
              *
              * @method      filterChanged
