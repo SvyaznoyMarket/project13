@@ -32,7 +32,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <?= $helper->render('product-page/blocks/reviews.short', ['reviewsData' => $reviewsData]) ?>
 
     <? if ($product->getTagline()) : ?>
-    <p class="product-card-desc js-description-expand"><?= $product->getTagline() ?></p>
+    <p class="product-card-desc collapsed js-description-expand"><?= $product->getTagline() ?></p>
     <? endif ?>
 
     <dl class="product-card-prop">

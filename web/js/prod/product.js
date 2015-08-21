@@ -1321,7 +1321,6 @@ $(function() {
 
     $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); });
 
-	($('.js-description-expand').outerHeight() > 85) && $('.js-description-expand').addClass('collapsed');
 
 	$('.js-description-expand.collapsed').on('click', function(){
 
