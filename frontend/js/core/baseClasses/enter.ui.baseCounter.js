@@ -40,6 +40,7 @@
             };
 
         _.extend(BaseCounter.prototype, {
+
             /**
              * Уменьшение каунтера
              *
