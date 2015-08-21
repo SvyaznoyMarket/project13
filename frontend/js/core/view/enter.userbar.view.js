@@ -179,6 +179,10 @@
                     return;
                 }
 
+                if ( this.$el.offset().top < 10 ) {
+                    return;
+                }
+
                 this.$el.fadeIn();
             },
 
