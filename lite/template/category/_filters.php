@@ -110,7 +110,7 @@
 
                 <div class="fltrSet_cnt js-category-filter-toggle-content">
                     <div class="fltrSet_inn">
-                        <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
+                        <?= $helper->render('category/filters/_images', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
                     </div>
                 </div>
             </div>

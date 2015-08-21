@@ -18,27 +18,24 @@ return function(
         $optionId = $option->getId();
         $viewId = \View\Id::productCategoryFilter($filter->getId()) . '-option-' . $optionId;
         ?>
-
-        <!-- секция -->
-        <div class="filter-values__cell">
-            <input class="custom-input <?= $filter->getIsMultiple()
-                    ? 'custom-input_check js-category-v2-filter-element-list-checkbox'
-                    : 'custom-input_radio js-category-v2-filter-element-list-radio' ?>"
-                   type="<?= $filter->getIsMultiple() ? 'checkbox' : 'radio' ?>"
-                   id="<?= $viewId ?>"
-                   name="<?= \View\Name::productCategoryFilter($filter, $option) ?>"
-                   value="<?= $optionId ?>"
-                >
-            <label class="custom-label filter-img-box"
-                   for="<?= $viewId ?>">
-                <span class="customLabel_wimg"></span>
+        <div class="fltrBtn_ln <? if ($option->getImageUrl()): ?>bFilterValuesCol-gbox<? endif ?>">
+            <input
+                class="custom-input <?= $filter->getIsMultiple() ? 'custom-input_check js-category-v2-filter-element-list-checkbox' : 'custom-input_radio js-category-v2-filter-element-list-radio' ?> <?= $filter->isBrand() ? 'js-category-filter-brand' : '' ?> <?= $filter->isShop() ? 'js-category-v2-filter-element-shop-input' : '' ?>"
+                type="<?= $filter->getIsMultiple() ? 'checkbox' : 'radio' ?>"
+                id="<?= $viewId ?>"
+                name="<?= \View\Name::productCategoryFilter($filter, $option) ?>"
+                value="<?= $optionId ?>"
+                <? if ($filter->isBrand()) { echo 'data-name="',$option->getName(),'"'; } ?>
+                <? if (in_array($optionId, $values) || $optionId === $categoryId) { ?> checked="checked"<? } ?>
+                />
+            <label class="custom-label" for="<?= $viewId ?>">
                 <? if ($option->getImageUrl()): ?>
+                    <span class="customLabel_wimg"></span>
                     <img class="customLabel_bimg" src="<?= $helper->escape($option->getImageUrl()) ?>">
                 <? endif ?>
 
-                <span class="customLabel_btx"><?= $option->getName() ?></span>
+                <span class="customLabel_btx"><?= $option->getName() ?><?= ($showFasets && $option->getQuantity()) ? " ({$option->getQuantity()})" : '' ?></span>
             </label>
         </div>
-        <!--/ секция -->
         <? $i++; endforeach ?>
 <? };
