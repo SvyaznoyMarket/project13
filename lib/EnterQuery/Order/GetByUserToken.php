@@ -4,13 +4,13 @@ namespace EnterQuery\Order
 {
     use EnterQuery\Order\GetByUserToken\Response;
 
-    class GetByOrderToken
+    class GetByUserToken
     {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\CoreQueryTrait;
 
         /** @var string */
-        public $token;
+        public $userToken;
         /** @var int */
         public $offset;
         /** @var int */
@@ -18,11 +18,11 @@ namespace EnterQuery\Order
         /** @var Response */
         public $response;
 
-        public function __construct($token = null, $offset = null, $limit = null)
+        public function __construct($userToken = null, $offset = null, $limit = null)
         {
             $this->response = new Response();
 
-            $this->token = $token;
+            $this->userToken = $userToken;
             $this->offset = $offset;
             $this->limit = $limit;
         }
@@ -36,7 +36,7 @@ namespace EnterQuery\Order
                 $this->buildUrl(
                     'v2/order/get-limited',
                     [
-                        'token'  => $this->token,
+                        'token'  => $this->userToken,
                         'offset' => $this->offset,
                         'limit'  => $this->limit,
                     ]
@@ -46,6 +46,7 @@ namespace EnterQuery\Order
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
                     $this->response->orders = isset($result['orders'][0]) ? $result['orders'] : null;
+                    $this->response->count = isset($result['total']) ? $result['total'] : null;
 
                     return $result; // for cache
                 },
@@ -63,5 +64,7 @@ namespace EnterQuery\Order\GetByUserToken
     {
         /** @var array */
         public $orders = [];
+        /** @var int|null */
+        public $count;
     }
 }

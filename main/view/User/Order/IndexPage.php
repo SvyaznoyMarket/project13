@@ -1,8 +1,9 @@
 <?php
 
-namespace View\User;
+namespace View\User\Order;
 
-class OrdersPage extends \View\DefaultLayout {
+class IndexPage extends \View\DefaultLayout {
+
     /** @var string */
     protected $layout  = 'layout-oneColumn';
 
@@ -24,18 +25,7 @@ class OrdersPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-
-        if (!$this->hasParam('orderCount')) {
-            $orderCount = 0;
-            \RepositoryManager::order()->prepareCollectionByUserToken(\App::user()->getToken(), function($data) use(&$orderCount) {
-                $orderCount = isset($data['total']) ? $data['total'] : 0;
-            });
-            \App::coreClientV2()->execute();
-
-            $this->setParam('orderCount', $orderCount);
-        }
-
-        return $this->render('user/page-orders', $this->params);
+        return $this->render('user/order/page-index', $this->params);
     }
 
     public function slotBodyDataAttribute() {

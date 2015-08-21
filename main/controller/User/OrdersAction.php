@@ -20,7 +20,7 @@ class OrdersAction extends PrivateAction {
         }
 
         if (!$this->isOldPrivate()) {
-            return (new \Controller\User\Order\Action())->execute($request);
+            return (new \Controller\User\Order\IndexAction())->execute($request);
         }
 
         $data = $this->getData();
