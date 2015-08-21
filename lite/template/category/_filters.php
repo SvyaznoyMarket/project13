@@ -32,6 +32,13 @@
 
     // Ювелирка
     foreach ($productFilter->getFilterCollection() as $filter) {
+
+        foreach ($productFilter->getValues() as $valKey => $value) {
+            if ($valKey == $filter->getId()) {
+                $filter->isOpenByDefault = true;
+            }
+        }
+
         if (!$filter->getIsInList()) {
             continue;
         } else if ($filter->isPrice()) {
@@ -102,7 +109,7 @@
         <? foreach ($alwaysShowFilters as $filter): ?>
 
             <!-- фильтр по компонентам -->
-            <div class="fltrSet js-category-filter-toggle-container">
+            <div class="fltrSet js-category-filter-toggle-container <?= $filter->isOpenByDefault ? 'open' : '' ?>">
 
                 <div class="fltrSet_tggl js-category-filter-toggle-button">
                     <span class="fltrSet_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>

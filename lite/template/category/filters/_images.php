@@ -28,6 +28,7 @@ return function(
                    id="<?= $viewId ?>"
                    name="<?= \View\Name::productCategoryFilter($filter, $option) ?>"
                    value="<?= $optionId ?>"
+                   <?= in_array($optionId, $values) ? 'checked' : '' ?>
                 >
             <label class="custom-label filter-img-box"
                    for="<?= $viewId ?>">
