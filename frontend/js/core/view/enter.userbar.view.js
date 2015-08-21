@@ -52,7 +52,7 @@
              * @type        {Object}
              */
             TEMPLATES = {
-                COMPARING_ITEM: $('#js-userbar-comparing-item').html(),
+                COMPARING_ITEM: $('#js-userbar-comparing-item').html()
             },
 
             $WINDOW   = $(window),

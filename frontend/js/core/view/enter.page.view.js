@@ -22,13 +22,14 @@
             'enter.userbar.view',
             'enter.feedback.popup.view',
             'jquery.visible',
+            'jquery.scrollTo',
             'findModules'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, CartView, UserbarView, FeedbackPopupView, jVisible, findModules ) {
+    function( provide, $, BaseViewClass, CartView, UserbarView, FeedbackPopupView, jVisible, jqueryScrollTo, findModules ) {
         'use strict';
 
         var
@@ -47,7 +48,8 @@
                 CART: 'js-cart',
                 FEEDBACK_POPUP: 'js-feedback-popup',
                 FEEDBACK_BTN: 'js-feedback-from-btn',
-                CHANGE_REGION_LNK: 'js-change-region'
+                CHANGE_REGION_LNK: 'js-change-region',
+                GO_TO_LNK: 'js-go-to'
             };
 
         provide(BaseViewClass.extend({
@@ -95,6 +97,7 @@
                 this.events['click .' + CSS_CLASSES.LOGIN_POPUP_BTN] = 'showLoginPopup';
                 this.events['click .' + CSS_CLASSES.FEEDBACK_BTN]    = 'showFeedbackPopup';
                 this.events['click .' + CSS_CLASSES.CHANGE_REGION_LNK] = 'showRegionPopup';
+                this.events['click .' + CSS_CLASSES.GO_TO_LNK]  = 'goToTarget';
 
                 // Apply events
                 this.delegateEvents();
@@ -115,6 +118,16 @@
                 console.log(this.subViews);
                 this.subViews.feedbackPopup.show();
 
+                return false;
+            },
+
+            goToTarget: function(e) {
+                this.$el.scrollTo(
+                    $($(e.target).attr('href')), // target
+                    300, // duration
+                    {
+                        offset: this.subViews.userbar_0 ? - this.subViews.userbar_0.staticHeight : 0
+                    });
                 return false;
             },
 

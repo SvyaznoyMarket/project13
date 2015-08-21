@@ -157,9 +157,11 @@
                     inCompare = this.model.get('inCompare');
 
                 if ( inCompare ) {
-                    this.subViews.compareBtn.addClass(CSS_CLASSES.COMPARE_ACTIVE).attr('data-status', 'Убрать из сравнения');
+                    this.subViews.compareBtn.addClass(CSS_CLASSES.COMPARE_ACTIVE).attr('data-status', 'Убрать из сравнения') // listing
+                        .find('span').text('Убрать из сравнения'); // product page
                 } else {
-                    this.subViews.compareBtn.removeClass(CSS_CLASSES.COMPARE_ACTIVE).attr('data-status', 'В сравнение');
+                    this.subViews.compareBtn.removeClass(CSS_CLASSES.COMPARE_ACTIVE).attr('data-status', 'В сравнение')  // listing
+                        .find('span').text('В сравнение'); // product page
                 }
             },
 
