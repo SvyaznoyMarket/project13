@@ -111,7 +111,7 @@
 {{#point}}
     {{#shown}}
         <!-- точка доставки в которой товар есть на витрине - добавляем класс no-hidden -->
-        <div class="js-pointpopup-pick-point delivery-points-list__row table-row {{#productInShowroom}}no-hidden{{/productInShowroom}}"
+        <div class="js-pointpopup-pick-point delivery-points-list__row table-row no-hidden {{#productInShowroom}}no-hidden{{/productInShowroom}}"
             data-id="{{id}}"
             data-token="{{token}}"
         >
