@@ -23,7 +23,9 @@ $helper = \App::helper();
             <div class="header__line header__line_bottom">
 
                 <!-- карточка товара -->
-                <div class="header-buy">
+                <div class="header-buy js-module-require"
+                    data-module="enter.product"
+                    data-product='<?= json_encode(['id'=>$product->id, 'ui'=>$product->ui]) ?>'>
                     <div class="header-buy__product header-buy__cell">
                         <div class="header-buy__product-img header-buy__cell"><img src="<?= $product->getMainImageUrl('product_120') ?>" alt="" class="image"></div>
                         <div class="header-buy__product-name header-buy__cell"><?= $product->getName() ?></div>

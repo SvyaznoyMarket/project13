@@ -114,6 +114,8 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
                 ]) // Кнопка купить ?>
             </div>
 
+            <div class="js-show-fixed-userbar"></div>
+
             <? if ($product->getPrice() >= \App::config()->product['minCreditPrice']) : ?>
                 <!-- купить в кредит -->
                 <a class="buy-on-credit btn-type btn-type--normal btn-type--longer jsProductCreditButton" href="" style="display: none"
@@ -123,8 +125,6 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
                 </a>
                 <!--/ купить в кредит -->
             <? endif ?>
-
-            <div class="js-showTopBar"></div>
 
             <!-- сравнить, добавить в виш лист -->
             <ul class="product-card-tools">

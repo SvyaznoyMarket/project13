@@ -39,6 +39,7 @@
                 COMPARE_COUNTER: 'js-userbar-compare-counter',
                 COMPARE_ACTIVE: 'active',
                 COMPARE_DD: 'js-userbar-compare-dd',
+                STATIC: 'js-userbar',
                 FIXED: 'js-userbar-fixed',
                 GO_TO_ID: 'js-userbar-goto-id'
             },
@@ -75,6 +76,7 @@
                 this.target     = options.target;
                 this.isFixed    = this.$el.hasClass(CSS_CLASSES.FIXED);
                 this.timeToHide = 5 * 1000; // 5 sec
+                this.staticHeight = $(document.body).find('.' + CSS_CLASSES.STATIC).height();
 
                 this.subViews = {
                     compare: this.$el.find('.' + CSS_CLASSES.COMPARE),
@@ -90,7 +92,7 @@
                 }
 
                 this.listenTo(App.compare, 'syncEnd', this.compareChange);
-                this.listenTo(App, 'showuserbar', this.showFixedUserbar)
+                this.listenTo(App, 'showuserbar', this.showFixedUserbar);
 
                 // Apply events
                 this.delegateEvents();
@@ -191,7 +193,9 @@
                     return;
                 }
 
-                if ( this.target.length && !this.target.visible() ) {
+                if ( this.target.length &&
+                    ( !this.target.visible() || this.target.offset().top < window.pageYOffset + this.staticHeight )
+                    ) {
                     this.$el.fadeIn();
                 } else {
                     this.$el.fadeOut();
