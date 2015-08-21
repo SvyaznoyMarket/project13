@@ -473,7 +473,7 @@ class FormAction {
 
         $productCategoryRepository = \RepositoryManager::productCategory();
 
-        $productRepository = \RepositoryManager::product()->useV3()->withoutModels();
+        $productRepository = \RepositoryManager::product();
 
         $limit = null;
         if (!empty(\App::config()->enterprize['itemsInSlider'])) {
@@ -509,7 +509,7 @@ class FormAction {
                     $productRepository->getIdsByFilter($filters, ['rating' => 'desc'], 0, $limit * 4, $region)
                 );
 
-                \RepositoryManager::product()->prepareProductQueries($products, 'media');
+                \RepositoryManager::product()->prepareProductQueries($products, 'media category label media');
                 $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
                 $products = array_filter($products, function(\Model\Product\Entity $product) {
@@ -568,7 +568,7 @@ class FormAction {
                                 );
                                 $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-                                \RepositoryManager::product()->prepareProductQueries($products, 'media');
+                                \RepositoryManager::product()->prepareProductQueries($products, 'media category label media');
                                 $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
                                 $products = array_filter($products, function(\Model\Product\Entity $product) {
@@ -585,7 +585,7 @@ class FormAction {
                         }
 
                         $products = array_map(function($productBarcode) { return new \Model\Product\Entity(['bar_code' => $productBarcode]); }, $barcodes);
-                        \RepositoryManager::product()->prepareProductQueries($products, 'media');
+                        \RepositoryManager::product()->prepareProductQueries($products, 'media category label media');
                         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
                         $products = array_filter($products, function(\Model\Product\Entity $product) {
@@ -606,7 +606,7 @@ class FormAction {
                 );
                 $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-                \RepositoryManager::product()->prepareProductQueries($products, 'media');
+                \RepositoryManager::product()->prepareProductQueries($products, 'media category label media');
                 $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
                 $products = array_filter($products, function(\Model\Product\Entity $product) {

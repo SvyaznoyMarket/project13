@@ -318,7 +318,7 @@ class Action {
                         $products[$productId] = new \Model\Product\Entity(['id' => $productId]);
                     }
 
-                    \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($products, 'media');
+                    \RepositoryManager::product()->prepareProductQueries($products, 'media');
                     $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
                     $cartButtonAction = new \View\Cart\ProductButtonAction();
@@ -567,7 +567,7 @@ class Action {
             $limit = $limit - (1 === $pageNum ? 1 : 0);
         }
 
-        $repository = \RepositoryManager::product()->useV3()->withoutModels();
+        $repository = \RepositoryManager::product();
 
         $filters = $productFilter->dump();
 

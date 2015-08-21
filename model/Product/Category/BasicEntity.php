@@ -25,10 +25,6 @@ abstract class BasicEntity {
     protected $link;
     /** @var string|null */
     protected $token;
-    /** @var string|null */
-    protected $image;
-    /** @var string|null */
-    protected $image480x480;
     /** @var int|null */
     protected $level;
 
@@ -100,13 +96,6 @@ abstract class BasicEntity {
      */
     public function getToken() {
         return $this->token;
-    }
-
-    /**
-     * @param string $image
-     */
-    public function setImage($image) {
-        $this->image = (string)$image;
     }
 
     /**

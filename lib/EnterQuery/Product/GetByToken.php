@@ -31,7 +31,7 @@ namespace EnterQuery\Product
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'v2/product/get',
+                    'v2/product/get-v3',
                     [
                         'select_type' => 'slug',
                         'slug'        => $this->token,

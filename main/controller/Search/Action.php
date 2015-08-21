@@ -177,7 +177,7 @@ class Action {
         /** @var \Model\Product\Entity[] $products */
         $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $result['data']);
 
-        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($products, 'media label brand category');
+        \RepositoryManager::product()->prepareProductQueries($products, 'media label brand category');
 
         $bannerPlaceholder = [];
         \App::scmsClient()->addQuery('category/get/v1', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId(), 'load_inactive' => 1], [], function($data) use (&$bannerPlaceholder) {
@@ -353,7 +353,7 @@ class Action {
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
-        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($products, 'media');
+        \RepositoryManager::product()->prepareProductQueries($products, 'media');
 
         foreach ($products as $product) {
             $data['products'][] = [

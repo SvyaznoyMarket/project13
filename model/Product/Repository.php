@@ -3,64 +3,14 @@
 namespace Model\Product;
 
 class Repository {
-
-    const URL_V2 = 'product/get';
-    const URL_V3 = 'product/get-v3';
-
     /** @var \Core\ClientInterface */
     private $client;
-    /** @var string URL для product-get */
-    private $productGetUrl = self::URL_V2;
-
-    private $options = [];
 
     /**
      * @param \Core\ClientInterface $client
      */
     public function __construct(\Core\ClientInterface $client) {
         $this->client = $client;
-    }
-
-    /** Использовать product/get V2 (обычный метод)
-     * @return $this
-     */
-    public function useV2() {
-        $this->productGetUrl = self::URL_V2;
-        return $this;
-    }
-
-    /** Использовать product/get V3 (облегченный)
-     * @return $this
-     */
-    public function useV3() {
-        $this->productGetUrl = self::URL_V3;
-        return $this;
-    }
-
-    /** Не запрашивать модели внутри товара
-     * @return $this
-     */
-    public function withoutModels() {
-        $this->options['withModels'] = 0;
-        return $this;
-    }
-
-    /**
-     * @param $id
-     * @param \Model\Region\Entity $region
-     * @return Entity|null
-     */
-    public function getEntityById($id, \Model\Region\Entity $region = null) {
-        /** @var \Model\Product\Entity[] $products */
-        $products = [new \Model\Product\Entity(['id' => $id])];
-        \RepositoryManager::product()->prepareProductQueries($products, 'media', $region);
-        \App::coreClientV2()->execute();
-        
-        if ($products) {
-            return $products[0];
-        }
-        
-        return null;
     }
 
     public function prepareIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null, $done, $fail = null) {
@@ -116,17 +66,24 @@ class Repository {
 
     /**
      * Подготавливает запросы к ядру и scms для получения данных товаров. После выполнения запросов те товары, для
-     * которых ядро или scms не вернули данных будут удалены, а остальные товары будут заполнены данными из ядра и scms.
-     * @param \Model\Product\Entity[] $products
-     * @param string $scmsOptions Необходимые свойства товара через пробел: media property label brand category
-     * @param \Closure $finalCallback Вызывается один раз после выполнения последнего из запросов
+     * которых ядро или scms не вернули данных будут удалены из массива $products (ключи массива изменены не будут), а
+     * остальные товары будут заполнены данными из ядра и scms.
+     * 
+     * @param \Model\Product\Entity[] $products У всех товаров должны быть заданы id или ui или barcode (притом, если у
+     *                                          первого товара задан id, то и у всех товаров должен быть задан именно
+     *                                          id; аналогично для ui и barcode)
+     * @param string $options Необходимые свойства товаров, через пробел: model media property label brand category
+     * @param \Closure $finalCallback($firstException) Вызывается один раз после выполнения последнего из запросов
+     *                                                 (успешного или неудачного). Функции будет передано первое из
+     *                                                 возникших при выполнении HTTP запросов исключений или null, если
+     *                                                 ошибок HTTP запросов не было
      * @throws
      */
-    public function prepareProductQueries(array &$products, $scmsOptions = '', \Model\Region\Entity $region = null, $finalCallback = null) {
-        $scmsOptions = trim($scmsOptions) ? explode(' ', (string)$scmsOptions) : [];
-        $unavailableScmsOptions = array_diff($scmsOptions, ['media', 'property', 'label', 'brand', 'category']);
-        if ($unavailableScmsOptions) {
-            throw new \Exception('Параметр $returnDataOptions содержит неподдерживаемые значения: "' . implode('", "', $unavailableScmsOptions) . '"');
+    public function prepareProductQueries(array &$products, $options = '', \Model\Region\Entity $region = null, $finalCallback = null) {
+        $options = trim($options) ? explode(' ', (string)$options) : [];
+        $unavailableOptions = array_diff($options, ['model', 'media', 'property', 'label', 'brand', 'category']);
+        if ($unavailableOptions) {
+            throw new \Exception('Параметр $options содержит неподдерживаемые значения: "' . implode('", "', $unavailableOptions) . '"');
         }
 
         if (!$products) {
@@ -169,12 +126,12 @@ class Repository {
 
         foreach ($productIdentifierChunks as $productIdentifierChunk) {
             \App::coreClientV2()->addQuery(
-                $this->productGetUrl,
+                'product/get-v3',
                 [
                     'geo_id' => $region->getId(),
                     'select_type' => $coreProductIdentifierName,
                     $coreProductIdentifierName => $productIdentifierChunk,
-                ] + $this->options,
+                ] + (!in_array('model', $options, true) ? ['withModels' => 0] : []),
                 [],
                 function($response) use(&$products, &$modelProductIdentifierName, &$coreProductIdentifierName, &$productIdentifierChunk, &$callCount, &$expectedCallCount, &$firstException, &$finalCallback) {
                     $callCount++;
@@ -237,7 +194,7 @@ class Repository {
         foreach ($productIdentifierChunks as $productIdentifierChunk) {
             \App::scmsClient()->addQuery(
                 'product/get-description/v1',
-                [$scmsProductRequestIdentifierName => $productIdentifierChunk] + array_fill_keys($scmsOptions, 1),
+                [$scmsProductRequestIdentifierName => $productIdentifierChunk] + array_fill_keys(array_intersect($options, ['media', 'property', 'label', 'brand', 'category']), 1),
                 [],
                 function($response) use(&$products, &$modelProductIdentifierName, &$scmsProductResponseIdentifierName, &$productIdentifierChunk, &$callCount, &$expectedCallCount, &$firstException, &$finalCallback) {
                     $callCount++;
@@ -313,7 +270,7 @@ class Repository {
                     $partProducts[] = new \Model\Product\Entity(['id' => $part->getId()]);
                 }
 
-                $this->prepareProductQueries($partProducts, 'media');
+                $this->prepareProductQueries($partProducts, \App::config()->lite['enabled'] ? 'media property label brand category' : 'media property');
                 \App::coreClientV2()->execute();
             }
         } catch (\Exception $e) {
@@ -338,13 +295,16 @@ class Repository {
             $result[$id]['token'] = $product->getToken();
             $result[$id]['url'] = $product->getLink();
             $result[$id]['image'] = $product->getMainImageUrl('product_120');
-            $result[$id]['product'] = $product;
             $result[$id]['price'] = $product->getPrice();
             $result[$id]['height'] = '';
             $result[$id]['width'] = '';
             $result[$id]['depth'] = '';
             $result[$id]['deliveryDate'] = '';
             $result[$id]['count'] = isset($kitCountById[$id]) ? $kitCountById[$id] : 0;
+
+            if (\App::config()->lite['enabled']) {
+                $result[$id]['product'] = $product;
+            }
 
             // добавляем размеры
             $dimensionsTranslate = [

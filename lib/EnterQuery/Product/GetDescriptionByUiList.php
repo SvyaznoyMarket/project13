@@ -36,17 +36,20 @@ namespace EnterQuery\Product
                     [
                         'uids'        => $this->uis,
                         'trustfactor' => $this->filter->trustfactor,
+                        'category'    => $this->filter->category,
                         'seo'         => $this->filter->seo,
                         'media'       => $this->filter->media,
                         'property'    => $this->filter->property,
                         'label'       => $this->filter->label,
+                        'brand'       => $this->filter->brand,
+                        'tag'         => $this->filter->tag,
                     ]
                 ),
                 [], // data
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode);
 
-                    $this->response->products = (isset($result['products']) && is_array($result['products'])) ? $result['products'] : [];
+                    $this->response->products = (isset($result['products']) && is_array($result['products'])) ? array_values($result['products']) : [];
 
                     return $result; // for cache
                 }
@@ -70,6 +73,8 @@ namespace EnterQuery\Product\GetDescriptionByUiList
         /** @var bool */
         public $trustfactor = false;
         /** @var bool */
+        public $category = false;
+        /** @var bool */
         public $seo = false;
         /** @var bool */
         public $media = false;
@@ -77,5 +82,9 @@ namespace EnterQuery\Product\GetDescriptionByUiList
         public $property = false;
         /** @var bool */
         public $label = false;
+        /** @var bool */
+        public $brand = false;
+        /** @var bool */
+        public $tag = false;
     }
 }

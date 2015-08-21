@@ -8,7 +8,12 @@
     <div class="basketLine__desc">
         <div class="basketLine__desc__name">
             <a href="" data-bind="text: name, attr: {href: link}"></a>
-            <noindex><div class="basketLine__desc__available">Есть в наличии</div></noindex>
+            <!-- ko if: isAvailable -->
+                <noindex><div class="basketLine__desc__available">Есть в наличии</div></noindex>
+            <!-- /ko -->
+            <!-- ko if: !isAvailable -->
+                <noindex><div class="basketLine__desc__notAvailable">Нет в наличии</div></noindex>
+            <!-- /ko -->
         </div>
 
         <div class="basketLine__desc__info basketinfo">
@@ -18,10 +23,10 @@
                     <span class="rubl">p</span>
                 </div>
                 <div class="descCount">
-                    <div class="numerbox jsCartNumerBox">
-                        <a href="" data-bind="attr: { href: decreaseUrl }" class="ajaxLess"><b class="ajaless" title="Уменьшить"></b></a>
-                        <input type="text" maxlength="2" class="ajaquant" value="" data-bind="value: quantity(), attr: {'data-product-ui': ui}">
-                        <a href="" data-bind="attr: { href: increaseUrl }" class="ajaxMore"><b class="ajamore" title="Увеличить"></b></a>
+                    <div class="numerbox jsCartNumber">
+                        <a href="" data-bind="attr: { href: decreaseUrl }" class="ajaxLess jsCartNumberBoxLess"><b class="ajaless" title="Уменьшить"></b></a>
+                        <input type="text" maxlength="2" class="ajaquant jsCartNumberBoxInput" value="" data-bind="value: quantity(), attr: {'data-product-ui': ui}">
+                        <a href="" data-bind="attr: { href: increaseUrl }" class="ajaxMore jsCartNumberBoxMore"><b class="ajamore" title="Увеличить"></b></a>
                     </div>
                 </div>
             </div>

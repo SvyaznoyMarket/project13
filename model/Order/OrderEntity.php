@@ -327,7 +327,7 @@ class OrderEntity {
                 return new \Model\Product\Entity(['id' => $product['id']]);
             }, $this->product);
             
-            \RepositoryManager::product()->prepareProductQueries($products);
+            \RepositoryManager::product()->prepareProductQueries($products, 'category');
             \App::coreClientV2()->execute();
 
             foreach ($products as $product) {

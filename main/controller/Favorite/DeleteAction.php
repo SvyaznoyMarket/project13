@@ -33,10 +33,10 @@ class DeleteAction {
         $curl->execute();
 
         // проверяет, если такой товар, чтобы не пихать в избранное мусор
-        if (!count($productQuery->response->products)) {
+        if (empty($productQuery->response->products[0])) {
             throw new \Exception(sprintf('Товар %s не найден', $productUi));
         }
-        $product = new \Model\Product\Entity(reset($productQuery->response->products));
+        $product = new \Model\Product\Entity($productQuery->response->products[0]);
 
         $favoriteQuery = (new Query\User\Favorite\Delete($user->getEntity()->getUi(), $product->getUi()))->prepare();
 

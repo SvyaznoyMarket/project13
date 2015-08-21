@@ -90,7 +90,9 @@ class IndexAction {
             $products[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
 
-        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($products, 'media');
+        // Необходимо запрашивать модели товаров, т.к. option моделей используется в методе
+        // \Model\Product\Entity::hasAvailableModels, который вызывается ниже
+        \RepositoryManager::product()->prepareProductQueries($products, 'model media');
 
         // выполнение 2-го пакета запросов в ядро
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);

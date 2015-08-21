@@ -40,7 +40,7 @@ class RecommendedAction {
             }
         }
 
-        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label');
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label category');
 
         \App::coreClientV2()->execute();
 
@@ -102,7 +102,7 @@ class RecommendedAction {
             }
         }
 
-        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label');
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label category');
         \App::coreClientV2()->execute();
 
         $productsById = array_filter($productsById, function(\Model\Product\Entity $product) use(&$cartProductIds) {

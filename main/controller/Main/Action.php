@@ -42,7 +42,7 @@ class Action {
 
         $productsById = array_filter($productsById);
 
-        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($productsById, 'media label');
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label');
 
         $client->execute();
 
@@ -72,7 +72,7 @@ class Action {
             $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
 
-        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($productsById, 'media');
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'media');
 
         $page = new \View\Main\IndexPage();
         $page->setParam('productList', $productsById);

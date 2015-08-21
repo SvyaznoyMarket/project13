@@ -4,13 +4,19 @@
 		UserModel = ENTER.UserModel,
 		updateTimeoutId = false;
 
-	/* Увеличение и уменьшение товара AJAX */
-	$body.on('click', '.jsCartNumerBox a', function(e){
+	/* Уменьшение товара AJAX */
+	$body.on('click', '.jsCartNumberBoxLess', function(e){
+		e.preventDefault();
+
+		// SITE-5957 В расширенной корзине при уменьшении кол-ва до нуля товар не должен удаляться
+		if (parseInt($(e.currentTarget).closest('.jsCartNumber').find('.jsCartNumberBoxInput').val(), 10) <= 1) {
+			return;
+		}
+
 		var $elem = $(this),
 			href = $elem.attr('href');
 
 		if (href != '') {
-			e.preventDefault();
 			$.ajax({
 				url: href,
 				success: function(data){
@@ -20,7 +26,25 @@
 				}
 			})
 		}
+	});
 
+	/* Увеличение товара AJAX */
+	$body.on('click', '.jsCartNumberBoxMore', function(e){
+		e.preventDefault();
+
+		var $elem = $(this),
+			href = $elem.attr('href');
+
+		if (href != '') {
+			$.ajax({
+				url: href,
+				success: function(data){
+					if (data.success) {
+						UserModel.cart().update(data.cart);
+					}
+				}
+			})
+		}
 	});
 
 	/* Удаление продукта AJAX */
@@ -68,7 +92,7 @@
 	});
 
 	// Ручное обновление количества продукта
-	$body.on('keydown', '.jsCartNumerBox input[type="text"]', function(e){
+	$body.on('keydown', '.jsCartNumberBoxInput', function(e){
 		var $input = $(e.target),
 			keyCode = e.which,
 			$initialQuantity = $input.val();

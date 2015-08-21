@@ -27,7 +27,6 @@ if (!isset($categoryClass)) $categoryClass = null;
 
 
 $region = \App::user()->getRegion();
-if (!$lifeGiftProduct) $lifeGiftProduct = null;
 $isKitPage = (bool)$product->getKit();
 
 $isProductAvailable = $product->isAvailable();
