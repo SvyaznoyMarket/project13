@@ -12,7 +12,7 @@ class ProductButtonAction {
      * @param string|null $location
      * @param string $sender2
      * @param bool $useNewStyles
-     * @param \Model\Product\Entity[] $kitProducts
+     * @param bool $inShowroomAsButton
      * @param \Model\Product\ShopState\Entity[] $shopStates
      * @return array
      */

@@ -74,7 +74,10 @@ class ChildAction {
 
         $productsByUi = array_map(function($productUi) { return new \Model\Product\Entity(['ui' => $productUi]); }, $productsByUi);
 
-        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($productsByUi, 'media label brand category');
+        // Необходимо запрашивать модели товаров, т.к. option моделей используются в методе
+        // \Model\Product\Entity::hasAvailableModels, который вызывается в \Model\Product\Entity::isSoldOut, который
+        // вызывается в main/template/grid/__show.php
+        \RepositoryManager::product()->prepareProductQueries($productsByUi, 'model media label brand category');
 
         \App::coreClientV2()->execute();
 

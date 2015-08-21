@@ -32,10 +32,8 @@ class BasicRecommendedAction {
             return new \Model\Product\Entity(['id' => $productId]);
         }, $ids);
 
-        \RepositoryManager::product()->prepareProductQueries($products, 'media');
+        \RepositoryManager::product()->prepareProductQueries($products);
         \App::coreClientV2()->execute();
-
-        \RepositoryManager::review()->addScores($products);
 
         foreach ($products as $i => $product) {
             if (!$product->getIsBuyable())  {

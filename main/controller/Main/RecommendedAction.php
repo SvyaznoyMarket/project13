@@ -49,7 +49,7 @@ class RecommendedAction {
         $sender['name'] = 'retailrocket';
         $sender['method'] = 'Popular';
 
-        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($products, 'media');
+        \RepositoryManager::product()->prepareProductQueries($products, 'media');
         $products = array_filter($products, function(\Model\Product\Entity $product) {
             return ($product->isAvailable() && !$product->isInShopShowroomOnly());
         });

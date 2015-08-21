@@ -44,9 +44,9 @@ namespace Session {
          *                                                      добавлено к существующему)
          *                                              '-10' - если товар уже существует в корзине, то существующее
          *                                                      кол-во будет уменьшено на указанное (притом, если в
-         *                                                      результате уменьшения кол-во станет <= 0, то товар будет
-         *                                                      удалён; если товара не существует в корзине, то товар
-         *                                                      добавлен не будет 
+         *                                                      результате уменьшения кол-во станет <= 0, то оно будет
+         *                                                      установлено в 1; если товара не существует в корзине, то
+         *                                                      товар добавлен не будет
          * @param bool|string|int $setProducts[]['up'] Если true и товар уже существует в корзине, то он будет перемещён в начало
          * @param mixed           $setProducts[]['sender']
          * @param mixed           $setProducts[]['sender2']
@@ -86,8 +86,8 @@ namespace Session {
                     $setProducts[$key]['up'] = isset($setProduct['up']) ? (bool)$setProduct['up'] : false;
                 }
             });
-            
-            if (!$setProducts && !$this->hasSessionProductWithoutData() && !($sessionCart['product'] && ($forceUpdate || $this->isExpired()))) {
+
+            if (!$setProducts && !$this->hasSessionProductWithoutExpectedData() && !($sessionCart['product'] && ($forceUpdate || $this->isExpired()))) {
                 return $resultProducts;
             }
 
@@ -110,8 +110,8 @@ namespace Session {
                 }
     
                 $exceptionCount = count(\App::exception()->all());
-                \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($backendProductsByUi, 'media category');
-                \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($backendProductsById, 'media category');
+                \RepositoryManager::product()->prepareProductQueries($backendProductsByUi, 'media category');
+                \RepositoryManager::product()->prepareProductQueries($backendProductsById, 'media category');
                 \App::coreClientV2()->execute();
                 
                 if (count(\App::exception()->all()) > $exceptionCount && \App::exception()->last()) {
@@ -193,13 +193,18 @@ namespace Session {
                             $newSessionProduct['quantity'] += $matches[2];
                         } else if ($matches[1] === '-') {
                             $newSessionProduct['quantity'] -= $matches[2];
+
+                            // SITE-5957 В расширенной корзине при уменьшении кол-ва до нуля товар не должен удаляться
+                            if ($newSessionProduct['quantity'] <= 0) {
+                                $newSessionProduct['quantity'] = 1;
+                            }
                         } else {
                             $newSessionProduct['quantity'] = (int)$matches[2];
                         }
                     } else {
                         $newSessionProduct['quantity'] += 1;
                     }
-    
+
                     if ($newSessionProduct['quantity'] <= 0) {
                         // Обратите внимание, что $setProduct из следующей итерации может изменить action для
                         // данного товара на совершенно другой
@@ -253,11 +258,12 @@ namespace Session {
                     
                     if ($backendProduct) {
                         $sessionCart['product'][$key] = array_merge($sessionProduct, $this->createSessionProductFromBackendProduct($backendProduct));
-                        $sessionCart['product'][$key]['gone'] = false;
+                        $sessionCart['product'][$key]['isGone'] = false;
+                        $sessionCart['product'][$key]['isAvailable'] = (bool)$backendProduct->isAvailable();
                     } else {
                         // Если бэкэнд не вернул товар и не было ошибок запроса, то это означает, что товары были
                         // удалены (из ядра или scms) или заблокированы (в scms)
-                        $sessionCart['product'][$key]['gone'] = true;
+                        $sessionCart['product'][$key]['isGone'] = true;
                     }
                     
                     $resultProduct = new \Session\Cart\Update\Result\Product();
@@ -374,7 +380,7 @@ namespace Session {
         public function markProductsAsInOrder() {
             $sessionCart = $this->getSessionCart();
             foreach ($sessionCart['product'] as $key => $sessionProduct) {
-                if ($sessionProduct['gone']) {
+                if ($sessionProduct['isGone']) {
                     $sessionCart['product'][$key]['inOrder'] = false;
                 } else {
                     $sessionCart['product'][$key]['inOrder'] = true;
@@ -469,6 +475,7 @@ namespace Session {
                         'category'           => $cartProduct['category'],
                         'rootCategory'       => $cartProduct['rootCategory'],
                         'isCredit'           => isset($cartProduct['credit']['enabled']) && ($cartProduct['credit']['enabled'] === true),
+                        'isAvailable'        => $cartProduct['isAvailable'],
                         'deleteUrl'          => $helper->url('cart.product.setList', ['products' => [['ui' => $cartProduct['ui'], 'quantity' => '0']]]),
                         'decreaseUrl'        => $helper->url('cart.product.setList', ['products' => [['ui' => $cartProduct['ui'], 'quantity' => '-1']]]),
                         'increaseUrl'        => $helper->url('cart.product.setList', ['products' => [['ui' => $cartProduct['ui'], 'quantity' => '+1']]]),
@@ -514,20 +521,35 @@ namespace Session {
                 \App::logger()->error(['error' => $e], ['cart/event']);
             }
         }
-    
-        private function hasSessionProductWithoutData() {
+
+        private function hasSessionProductWithoutExpectedData() {
             $sessionCart = $this->getSessionCart();
-            $sessionProductStub = $this->createSessionProductFromBackendProduct(new \Model\Product\Entity());
-            // Есть ли товары, у которых в сессии отсутствуют некоторые данные
+            $expectedSessionProductStub = $this->createSessionProductFromBackendProduct(new \Model\Product\Entity());
             foreach ($sessionCart['product'] as $sessionProduct) {
-                foreach ($sessionProductStub as $key => $value) {
-                    if (!isset($sessionProduct[$key]) || $sessionProduct[$key] === '') {
-                        return true;
-                    }
+                if (!$this->isActualLikeExpectedArray($sessionProduct, $expectedSessionProductStub)) {
+                    return true;
                 }
             }
-    
+
             return false;
+        }
+
+        private function isActualLikeExpectedArray($actual, array $expected) {
+            if (!is_array($actual)) {
+                return false;
+            }
+
+            foreach ($expected as $expectedKey => $expectedValue) {
+                if (!isset($actual[$expectedKey]) || $actual[$expectedKey] === '') {
+                    return false;
+                }
+
+                if (is_array($expectedValue) && !$this->isActualLikeExpectedArray($actual[$expectedKey], $expectedValue)) {
+                    return false;
+                }
+            }
+
+            return true;
         }
     
         private function isExpired() {
@@ -558,8 +580,8 @@ namespace Session {
                     'name'  => $backendProduct->getRootCategory() ? $backendProduct->getRootCategory()->getName() : null
                 ],
                 'category'     => [
-                    'id'    => $backendProduct->getLastCategory() ? $backendProduct->getLastCategory()->getId() : null,
-                    'name'  => $backendProduct->getLastCategory() ? $backendProduct->getLastCategory()->getName() : null
+                    'id'    => $backendProduct->getParentCategory() ? $backendProduct->getParentCategory()->getId() : null,
+                    'name'  => $backendProduct->getParentCategory() ? $backendProduct->getParentCategory()->getName() : null
                 ],
             ];
         }
@@ -589,13 +611,14 @@ namespace Session {
                         'credit' => null,
                         'referer' => null,
                         'quantity' => 0,
-                        'gone' => false,
+                        'isGone' => false,
+                        'isAvailable' => true,
                         'inOrder' => false,
                         'added' => null,
                     ];
                 }
             }
-    
+
             if (!isset($sessionCart['sum']) || !$sessionCart['product']) {
                 $sessionCart['sum'] = 0;
             }

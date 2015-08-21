@@ -18,10 +18,19 @@ class UpsaleAction extends BasicRecommendedAction {
     public function execute($productId, \Http\Request $request) {
 
         try {
-            $product = \RepositoryManager::product()->getEntityById($productId);
-            if (!$product) {
-                throw new \Exception(sprintf('Товар #%s не найден', $productId));
-            }
+            /** @var \Model\Product\Entity $product */
+            call_user_func(function() use(&$product, $productId) {
+                /** @var \Model\Product\Entity[] $products */
+                $products = [new \Model\Product\Entity(['id' => $productId])];
+                \RepositoryManager::product()->prepareProductQueries($products);
+                \App::coreClientV2()->execute();
+
+                if (!$products) {
+                    throw new \Exception(sprintf('Товар #%s не найден', $productId));
+                }
+
+                $product = $products[0];
+            });
 
             /** @var \Model\Product\Entity[] $products */
             $products = [];
@@ -39,7 +48,7 @@ class UpsaleAction extends BasicRecommendedAction {
 
             $this->getRetailrocketMethodName();
 
-            \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($products, 'media label');
+            \RepositoryManager::product()->prepareProductQueries($products, 'media label');
 
             \App::coreClientV2()->execute();
 

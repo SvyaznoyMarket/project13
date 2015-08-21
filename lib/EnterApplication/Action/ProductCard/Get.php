@@ -37,15 +37,28 @@ namespace EnterApplication\Action\ProductCard
             $this->checkRegionQuery($regionQuery);
 
             // товар
-            $productQuery = null;
-            if ($request->productCriteria['token']) {
-                $productQuery = new Query\Product\GetByToken($request->productCriteria['token'], $regionQuery->response->region['id']);
-            }
-            if (!$productQuery) {
-                throw new \InvalidArgumentException('Неверный критерий получения товара');
-            }
-            // подготовка запроса на получение товара
-            $productQuery->prepare();
+            /** @var Query\Product\GetByToken $productQuery */
+            /** @var Query\Product\GetDescriptionByTokenList $productDescriptionQuery */
+            call_user_func(function() use (&$productQuery, &$productDescriptionQuery, $regionQuery, $request) {
+                if ($request->productCriteria['token']) {
+                    $productQuery = new Query\Product\GetByToken($request->productCriteria['token'], $regionQuery->response->region['id']);
+                    $productQuery->prepare();
+
+                    $productDescriptionQuery = new Query\Product\GetDescriptionByTokenList();
+                    $productDescriptionQuery->tokens = [$request->productCriteria['token']];
+                    $productDescriptionQuery->filter->trustfactor = true;
+                    $productDescriptionQuery->filter->category = true;
+                    $productDescriptionQuery->filter->media = true;
+                    $productDescriptionQuery->filter->seo = true;
+                    $productDescriptionQuery->filter->property = true;
+                    $productDescriptionQuery->filter->label = true;
+                    $productDescriptionQuery->filter->brand = true;
+                    $productDescriptionQuery->filter->tag = true;
+                    $productDescriptionQuery->prepare();
+                } else {
+                    throw new \InvalidArgumentException('Неверный критерий получения товара');
+                }
+            });
 
             // дерево категорий для меню
             $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($regionQuery->response->region['id'], 3))->prepare();
@@ -63,12 +76,104 @@ namespace EnterApplication\Action\ProductCard
             
             // выполнение запросов
             $curl->execute();
-            
-            call_user_func(function() use (&$productQuery, &$regionQuery, &$productNextQuery) {
+
+            // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
+            if (empty($productQuery->response->product['ui']) || empty($productDescriptionQuery->response->products[0]['uid'])) {
+                $response = new Response();
+                $response->regionQuery = $regionQuery;
+                $response->redirectQuery = $redirectQuery;
+                $response->abTestQuery = $abTestQuery;
+                $response->menuQuery = $menuQuery;
+                $response->productQuery = $productQuery;
+                $response->productDescriptionQuery = $productDescriptionQuery;
+                $response->categoryRootTreeQuery = $categoryRootTreeQuery;
+                $response->userQuery = $userQuery;
+                $response->subscribeChannelQuery = $subscribeChannelQuery;
+                return $response;
+            }
+
+            // аксессуары
+            /** @var Query\Product\GetByIdList[] $accessoryProductQueries */
+            $accessoryProductQueries = [];
+            /** @var Query\Product\GetByIdList[] $accessoryProductDescriptionQueries */
+            $accessoryProductDescriptionQueries = [];
+            call_user_func(function() use (&$accessoryProductQueries, &$accessoryProductDescriptionQueries, $productQuery) {
+                if (empty($productQuery->response->product['accessories']) || !is_array($productQuery->response->product['accessories'])) {
+                    return;
+                }
+
+                $accessoryIds = array_slice($productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage']);
+                foreach (array_chunk($accessoryIds, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
+                    $accessoryProductQuery = new Query\Product\GetByIdList($idsInChunk, $productQuery->regionId);
+                    $accessoryProductQuery->filter->model = false;
+                    $accessoryProductQuery->prepare();
+                    $accessoryProductQueries[] = $accessoryProductQuery;
+
+                    $accessoryProductDescriptionQuery = new Query\Product\GetDescriptionByIdList();
+                    $accessoryProductDescriptionQuery->ids = $idsInChunk;
+                    $accessoryProductDescriptionQuery->filter->category = true;
+                    $accessoryProductDescriptionQuery->filter->media = true;
+                    $accessoryProductDescriptionQuery->filter->label = true;
+                    $accessoryProductDescriptionQuery->prepare();
+                    $accessoryProductDescriptionQueries[] = $accessoryProductDescriptionQuery;
+                }
+            });
+
+            // наборы
+            /** @var Query\Product\GetByIdList[] $kitProductQueries */
+            $kitProductQueries = [];
+            /** @var Query\Product\GetByIdList[] $kitProductDescriptionQueries */
+            $kitProductDescriptionQueries = [];
+            call_user_func(function() use (&$kitProductQueries, &$kitProductDescriptionQueries, $productQuery) {
+                if (empty($productQuery->response->product['kit']) || !is_array($productQuery->response->product['kit'])) {
+                    return;
+                }
+
+                $kitIds = array_column($productQuery->response->product['kit'], 'id');
+                foreach (array_chunk($kitIds, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
+                    $kitProductQuery = new Query\Product\GetByIdList($idsInChunk, $productQuery->regionId);
+                    $kitProductQuery->filter->model = false;
+                    $kitProductQuery->prepare();
+                    $kitProductQueries[] = $kitProductQuery;
+
+                    $kitProductDescriptionQuery = new Query\Product\GetDescriptionByIdList();
+                    $kitProductDescriptionQuery->ids = $idsInChunk;
+                    $kitProductDescriptionQuery->filter->media = true;
+                    $kitProductDescriptionQuery->filter->property = true;
+                    if (\App::config()->lite['enabled']) {
+                        $kitProductDescriptionQuery->filter->label = true;
+                        $kitProductDescriptionQuery->filter->brand = true;
+                        $kitProductDescriptionQuery->filter->category = true;
+                    }
+
+                    $kitProductDescriptionQuery->prepare();
+                    $kitProductDescriptionQueries[] = $kitProductDescriptionQuery;
+                }
+            });
+
+            /** @var \EnterQuery\Product\Similar\GetUiListByProductUi|null $similarProductUiListQuery */
+            $similarProductUiListQuery = null;
+            call_user_func(function() use (&$productQuery, &$regionQuery, &$similarProductUiListQuery) {
                 $productUi = $productQuery->response->product['ui'];
                 if (!$productUi) return;
 
-                $productNextQuery = (new Query\Product\Next\GetByUi($productUi, $regionQuery->response->region['id']))->prepare();
+                $similarProductUiListQuery = (new Query\Product\Similar\GetUiListByProductUi($productUi, $regionQuery->response->region['id']))->prepare();
+            });
+
+            $curl->execute();
+
+            call_user_func(function() use (&$similarProductQuery, &$similarProductDescriptionQuery, $similarProductUiListQuery, $regionQuery) {
+                if (!$similarProductUiListQuery) return;
+                $productUis = array_merge($similarProductUiListQuery->response->beforeProductUis, $similarProductUiListQuery->response->afterProductUis);
+                if (!$productUis) return;
+
+                $similarProductQuery = new Query\Product\GetByUiList($productUis, $regionQuery->response->region['id']);
+                $similarProductQuery->filter->model = false;
+                $similarProductQuery->prepare();
+
+                $similarProductDescriptionQuery = new Query\Product\GetDescriptionByUiList();
+                $similarProductDescriptionQuery->uis = $productUis;
+                $similarProductDescriptionQuery->prepare();
             });
 
             call_user_func(function() use (&$productQuery, &$userQuery, &$productViewEventQuery) {
@@ -80,18 +185,43 @@ namespace EnterApplication\Action\ProductCard
             });
 
             call_user_func(function() use (&$productQuery, &$couponQuery) {
+                if (empty($productQuery->response->product['ui'])) {
+                    return;
+                }
+
                 $couponQuery = new Query\Product\Coupon\GetCouponByProductsUi($productQuery->response->product['ui']);
             });
 
             // доставка
-            call_user_func(function() use (&$productQuery, &$deliveryQuery) {
+            call_user_func(function() use (&$productQuery, &$deliveryQuery, $kitProductQueries, $kitProductDescriptionQueries) {
                 $productId = $productQuery->response->product['id'];
                 if (!$productId) return;
 
                 $deliveryQuery = new Query\Delivery\GetByCart();
                 // корзина
                 $deliveryQuery->cart->addProduct($productId, 1);
-                foreach(array_column($productQuery->response->product['kit'], 'id') as $kitId) {
+
+                $commonKitIds = [];
+                // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
+                call_user_func(function() use(&$commonKitIds, $kitProductQueries, $kitProductDescriptionQueries) {
+                    if (!$kitProductQueries || !$kitProductDescriptionQueries) {
+                        return;
+                    }
+
+                    $kitProductIds = [];
+                    $kitProductDescriptionIds = [];
+                    foreach ($kitProductQueries as $kitProductQuery) {
+                        $kitProductIds = array_merge($kitProductIds, array_column($kitProductQuery->response->products, 'id'));
+                    }
+
+                    foreach ($kitProductDescriptionQueries as $kitProductDescriptionQuery) {
+                        $kitProductDescriptionIds = array_merge($kitProductDescriptionIds, array_column($kitProductDescriptionQuery->response->products, 'core_id'));
+                    }
+
+                    $commonKitIds = array_intersect($kitProductIds, $kitProductDescriptionIds);
+                });
+
+                foreach($commonKitIds as $kitId) {
                     $deliveryQuery->cart->addProduct($kitId, 1);
                 }
 
@@ -161,27 +291,6 @@ namespace EnterApplication\Action\ProductCard
                 }
             });
 
-            // связанные товары: аксессуары, наборы, ...
-            /** @var Query\Product\GetByIdList[] $relatedProductQueries */
-            $relatedProductQueries = [];
-            call_user_func(function() use (&$productQuery, &$relatedProductQueries) {
-                $ids = []; // идентификаторы товаров
-                if ($accessoryIds = array_slice((array)$productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage'])) {
-                    $ids = array_merge($ids, $accessoryIds);
-                }
-
-                if ($kitIds = array_column($productQuery->response->product['kit'], 'id')) {
-                    $ids = array_merge($ids, $kitIds);
-                }
-
-                if ($ids) {
-                    $relatedProductQueries = [];
-                    foreach (array_chunk($ids, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
-                        $relatedProductQueries[] = (new Query\Product\GetByIdList($idsInChunk, $productQuery->regionId))->prepare();
-                    }
-                }
-            });
-
             // отзывы товара
             call_user_func(function() use (&$productQuery, &$reviewQuery) {
                 $productUi = $productQuery->response->product['ui'];
@@ -208,8 +317,9 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // товар для Подари Жизнь
-            /** @var Query\Product\GetByUi $lifeGiftProductQuery */
-            call_user_func(function() use (&$productQuery, &$lifeGiftProductQuery) {
+            /** @var Query\Product\GetByUi $lifeGiftProductQuery|null */
+            /** @var Query\Product\GetDescriptionByUiList $lifeGiftProductDescriptionQuery|null */
+            call_user_func(function() use (&$productQuery, &$lifeGiftProductQuery, &$lifeGiftProductDescriptionQuery) {
                 $product = $productQuery->response->product;
                 if (!$product['ui']) return;
 
@@ -220,59 +330,15 @@ namespace EnterApplication\Action\ProductCard
                     && (\App::config()->lifeGift['labelId'] === $labelId)
                 ) {
                     $lifeGiftProductQuery = new Query\Product\GetByUi($product['ui'], \App::config()->lifeGift['regionId']);
+
+                    $lifeGiftProductDescriptionQuery = new Query\Product\GetDescriptionByUiList();
+                    $lifeGiftProductDescriptionQuery->uis = [$product['ui']];
+                    $lifeGiftProductDescriptionQuery->filter->label = true;
+                    $lifeGiftProductDescriptionQuery->prepare();
                 }
             });
 
             // выполнение запросов
-            $curl->execute();
-
-            call_user_func(function() use (&$productNextQuery, &$regionQuery, &$nextProductsQuery) {
-                $productUis = array_merge($productNextQuery->response->beforeProductUis, $productNextQuery->response->afterProductUis);
-                if (!$productUis) return;
-
-                $nextProductsQuery = (new Query\Product\GetByUiListV3($productUis, $regionQuery->response->region['id']))->prepare();
-            });
-            
-            // описание товара из scms
-            call_user_func(function() use (&$productQuery, &$productDescriptionQueries, &$relatedProductQueries, &$lifeGiftProductQuery) {
-                $uis = [];
-                if (isset($productQuery->response->product['ui'])) {
-                    $query = new Query\Product\GetDescriptionByUiList();
-                    $query->uis = [$productQuery->response->product['ui']];
-                    $query->filter->trustfactor = true;
-                    $query->filter->media = true;
-                    $query->filter->seo = true;
-                    $query->filter->property = true;
-                    $query->filter->label = true;
-                    $query->prepare();
-
-                    $productDescriptionQueries[] = $query;
-                }
-
-                foreach ($relatedProductQueries as $relatedProductQuery) {
-                    if (is_array($relatedProductQuery->response->products)) {
-                        foreach ($relatedProductQuery->response->products as $product) {
-                            if (isset($product['ui'])) {
-                                $uis[] = $product['ui'];
-                            }
-                        }
-                    }
-                }
-
-                if (isset($lifeGiftProductQuery->response->product['ui'])) {
-                    $uis[] = $lifeGiftProductQuery->response->product['ui'];
-                }
-
-                foreach (array_chunk($uis, \App::config()->coreV2['chunk_size']) as $uisChunk) {
-                    $query = new Query\Product\GetDescriptionByUiList();
-                    $query->uis = $uisChunk;
-                    $query->filter->media = true;
-                    $query->prepare();
-
-                    $productDescriptionQueries[] = $query;
-                }
-            });
-
             $curl->execute();
 
             $this->removeCurl();
@@ -287,7 +353,7 @@ namespace EnterApplication\Action\ProductCard
             // response
             $response = new Response();
             $response->productQuery = $productQuery;
-            $response->productDescriptionQueries = $productDescriptionQueries;
+            $response->productDescriptionQuery = $productDescriptionQuery;
             $response->userQuery = $userQuery;
             $response->favoriteQuery = $favoriteQuery;
 //            $response->subscribeQuery = $subscribeQuery;
@@ -301,11 +367,16 @@ namespace EnterApplication\Action\ProductCard
             $response->shopQuery = $shopQuery;
             $response->paymentGroupQuery = $paymentGroupQuery;
             $response->ratingQuery = $ratingQuery;
-            $response->relatedProductQueries = $relatedProductQueries;
+            $response->accessoryProductQueries = $accessoryProductQueries;
+            $response->accessoryProductDescriptionQueries = $accessoryProductDescriptionQueries;
+            $response->kitProductQueries = $kitProductQueries;
+            $response->kitProductDescriptionQueries = $kitProductDescriptionQueries;
             $response->reviewQuery = $reviewQuery;
             $response->categoryQuery = $categoryQuery;
             $response->lifeGiftProductQuery = $lifeGiftProductQuery;
-            $response->nextProductsQuery = $nextProductsQuery;
+            $response->lifeGiftProductDescriptionQuery = $lifeGiftProductDescriptionQuery;
+            $response->similarProductQuery = $similarProductQuery;
+            $response->similarProductDescriptionQuery = $similarProductDescriptionQuery;
             $response->couponQuery = $couponQuery;
 
             return $response;
@@ -341,8 +412,8 @@ namespace EnterApplication\Action\ProductCard\Get
     {
         /** @var Query\Product\GetByToken */
         public $productQuery;
-        /** @var Query\Product\GetDescriptionByUiList[] */
-        public $productDescriptionQueries = [];
+        /** @var Query\Product\GetDescriptionByTokenList */
+        public $productDescriptionQuery;
         /** @var Query\User\GetByToken|null */
         public $userQuery;
         /** @var Query\Redirect\GetByUrl */
@@ -366,18 +437,28 @@ namespace EnterApplication\Action\ProductCard\Get
         /** @var Query\Product\Review\GetScoreByProductIdList|null */
         public $ratingQuery;
         /** @var Query\Product\GetByIdList[] */
-        public $relatedProductQueries = [];
+        public $accessoryProductQueries = [];
+        /** @var Query\Product\GetByIdList[] */
+        public $accessoryProductDescriptionQueries = [];
+        /** @var Query\Product\GetByIdList[] */
+        public $kitProductQueries = [];
+        /** @var Query\Product\GetByIdList[] */
+        public $kitProductDescriptionQueries = [];
         /** @var Query\Product\Review\GetByProductUi|null */
         public $reviewQuery;
         /** @var Query\Product\Category\GetByUi|null */
         public $categoryQuery;
         /** @var Query\User\Favorite\Check|null */
         public $favoriteQuery;
-        /** @var Query\Product\GetByToken */
+        /** @var Query\Product\GetByToken|null */
         public $lifeGiftProductQuery;
-        /** @var Query\Product\Coupon\GetCouponByProductsUi */
+        /** @var Query\Product\GetDescriptionByUiList|null */
+        public $lifeGiftProductDescriptionQuery;
+        /** @var Query\Product\Coupon\GetCouponByProductsUi|null */
         public $couponQuery;
-        /** @var Query\Product\GetByUiListV3|null */
-        public $nextProductsQuery;
+        /** @var Query\Product\GetByUiList|null */
+        public $similarProductQuery;
+        /** @var Query\Product\GetDescriptionByUiList|null */
+        public $similarProductDescriptionQuery;
     }
 }

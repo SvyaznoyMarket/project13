@@ -305,8 +305,8 @@ $(function() {
 	try {
 		if ('out of stock' === product.stockState) {
 			$('body').trigger('trackGoogleEvent', {
-				action: 'unavailable_product',
-				category: $.map(product.category, function(category) { return category.name; }).join('_'),
+				category: 'unavailable_product',
+				action: $.map(product.category, function(category) { return category.name; }).join('_'),
 				label: product.barcode + '_' + product.article
 			});
 		}
@@ -1321,7 +1321,8 @@ $(function() {
 
     $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); });
 
-    $('.js-description-expand').on('click', function(){
+
+	$('.js-description-expand.collapsed').on('click', function(){
 
         $(this).removeClass('collapsed js-description-expand');
 
