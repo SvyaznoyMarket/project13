@@ -26,11 +26,15 @@ class SmartChoiceAction {
             $productIds = [];
             // Проверяем существование продуктов
             foreach ($products as $id) {
-                $product = \RepositoryManager::product()->getEntityById($id);
-                if (!$product) {
+                /** @var \Model\Product\Entity[] $backendProducts */
+                $backendProducts = [new \Model\Product\Entity(['id' => $id])];
+                \RepositoryManager::product()->prepareProductQueries($backendProducts);
+                \App::coreClientV2()->execute();
+
+                if (!$backendProducts) {
                     \App::logger()->error(sprintf('Товар #%s не найден', $id), ['SmartChoice']);
                 } else {
-                    $productIds[] = $product->getId();
+                    $productIds[] = $backendProducts[0]->getId();
                 }
             }
 
@@ -60,7 +64,7 @@ class SmartChoiceAction {
                         $product = new \Model\Product\Entity(['id' => $product]);
                     }
 
-                    \RepositoryManager::product()->prepareProductQueries($products, 'media');
+                    \RepositoryManager::product()->prepareProductQueries($products, 'category label media');
                 }
 
                 \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);

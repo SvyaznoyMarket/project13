@@ -14,6 +14,8 @@ class Label {
     const MEDIA_TAG_IMAGE_TOP = '66x23';
     const MEDIA_TAG_RIGHT_SIDE = 'label-preview';
 
+    /** @var string|int */
+    public $id;
     /** @var string */
     public $uid;
     /** @var string|null */
@@ -26,6 +28,7 @@ class Label {
     public $medias = [];
 
     public function __construct($data) {
+        if (isset($data['core_id'])) $this->id = $data['core_id'];
         if (isset($data['uid'])) $this->uid = $data['uid'];
         if (isset($data['name'])) $this->name = $data['name'];
         if (isset($data['affects_price'])) $this->affectPrice = $data['affects_price'];

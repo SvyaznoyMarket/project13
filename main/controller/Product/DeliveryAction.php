@@ -247,9 +247,12 @@ class DeliveryAction {
             'success' => false
         ];
 
-        $product = \RepositoryManager::product()->getEntityById($productId);
+        /** @var \Model\Product\Entity[] $products */
+        $products = [new \Model\Product\Entity(['id' => $productId])];
+        \RepositoryManager::product()->prepareProductQueries($products);
 
-        $splitResult = \App::coreClientV2()->query('cart/split',
+        $splitResult = null;
+        \App::coreClientV2()->addQuery('cart/split',
             [
                 'geo_id'     => \App::user()->getRegionId(),
                 'request_id' => \App::$id,
@@ -262,7 +265,17 @@ class DeliveryAction {
                         ]
                     ]
                 ]
-            ]);
+            ],
+            function($data) use(&$splitResult) {
+                $splitResult = $data;
+            }
+        );
+
+        \App::coreClientV2()->execute();
+
+        if (!$products) {
+            return new \Http\JsonResponse(['error' => 'Товар не найден']);
+        }
 
         $order = new \Model\OrderDelivery\Entity($splitResult);
 
@@ -270,7 +283,8 @@ class DeliveryAction {
             $map = new \View\PointsMap\MapView();
             $map->preparePointsWithOrder(reset($order->orders), $order);
 
-            foreach ($product->getStock() as $stock) {
+
+            foreach ($products[0]->getStock() as $stock) {
                 if ($stock->getQuantityShowroom() && $stock->getShopId()) {
                     foreach ($map->points as $point) {
                         if ($point->id == $stock->getShopId()) {

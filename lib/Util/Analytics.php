@@ -19,7 +19,7 @@ class Analytics {
             }
 
             if ($productsById) {
-                \RepositoryManager::product()->prepareProductQueries($productsById, 'media');
+                \RepositoryManager::product()->prepareProductQueries($productsById, 'media category brand');
                 \App::coreClientV2()->execute();
                 \RepositoryManager::review()->addScores($productsById);
             }

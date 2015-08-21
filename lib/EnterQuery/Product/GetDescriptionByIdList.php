@@ -2,26 +2,26 @@
 
 namespace EnterQuery\Product
 {
-    use EnterQuery\Product\GetDescriptionByTokenList\Filter;
-    use EnterQuery\Product\GetDescriptionByTokenList\Response;
+    use EnterQuery\Product\GetDescriptionByIdList\Filter;
+    use EnterQuery\Product\GetDescriptionByIdList\Response;
 
-    class GetDescriptionByTokenList
+    class GetDescriptionByIdList
     {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\ScmsQueryTrait;
 
         /** @var string[] */
-        public $tokens = [];
+        public $ids = [];
         /** @var Filter */
         public $filter;
         /** @var Response */
         public $response;
 
-        public function __construct(array $tokens = [], $filter = null)
+        public function __construct(array $ids = [], $filter = null)
         {
             $this->response = new Response();
 
-            $this->tokens = $tokens;
+            $this->ids = $ids;
             $this->filter = $filter ?: new Filter();
         }
 
@@ -34,7 +34,7 @@ namespace EnterQuery\Product
                 $this->buildUrl(
                     'product/get-description/v1',
                     [
-                        'slugs'       => $this->tokens,
+                        'ids'         => $this->ids,
                         'trustfactor' => $this->filter->trustfactor,
                         'category'    => $this->filter->category,
                         'seo'         => $this->filter->seo,
@@ -60,7 +60,7 @@ namespace EnterQuery\Product
     }
 }
 
-namespace EnterQuery\Product\GetDescriptionByTokenList
+namespace EnterQuery\Product\GetDescriptionByIdList
 {
     class Response
     {

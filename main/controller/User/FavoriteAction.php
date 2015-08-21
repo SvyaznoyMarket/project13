@@ -30,7 +30,7 @@ class FavoriteAction extends PrivateAction {
         $products = [];
         if ($favoriteProductsByUi) {
             $products = array_map(function($productUi) { return new \Model\Product\Entity(['ui' => $productUi]); }, array_keys($favoriteProductsByUi));
-            \RepositoryManager::product()->prepareProductQueries($products, 'media label category');
+            \RepositoryManager::product()->prepareProductQueries($products, 'media');
             \App::coreClientV2()->execute();
         }
 

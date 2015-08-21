@@ -29,7 +29,6 @@ if (!isset($useLens)) {
 }
 
 $region = \App::user()->getRegion();
-if (!$lifeGiftProduct) $lifeGiftProduct = null;
 
 $isProductAvailable = $product->isAvailable();
 if (\App::config()->preview) {
@@ -231,7 +230,7 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
         <div class="js-showTopBar"></div>
     <? endif ?>
 
-    <? if ($lifeGiftProduct): ?>
+    <? if (!empty($lifeGiftProduct)): ?>
         <?= $helper->render('cart/__button-product-lifeGift', ['product' => $lifeGiftProduct]) // Кнопка "Подари жизнь" ?>
     <? endif ?>
 

@@ -34,7 +34,7 @@ class RecommendAction extends PrivateAction {
             $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
 
-        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($productsById, 'media label');
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label category');
         \App::coreClientV2()->execute();
 
         $recommendedProducts = [];

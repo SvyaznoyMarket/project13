@@ -143,7 +143,7 @@ class ProductAction {
             if (!empty($request->query->get('kitProduct')['ui'])) {
                 /** @var \Model\Product\Entity[] $kitProducts */
                 $kitProducts = [new \Model\Product\Entity(['ui' => $request->query->get('kitProduct')['ui']])];
-                \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($kitProducts);
+                \RepositoryManager::product()->prepareProductQueries($kitProducts);
                 \App::coreClientV2()->execute();
                 if ($kitProducts) {
                     $kitProduct = [

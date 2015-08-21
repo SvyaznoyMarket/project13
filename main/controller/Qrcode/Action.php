@@ -48,11 +48,8 @@ class Action {
             $productsById[$item['id']] = new \Model\Product\Entity(['id' => $item['id']]);
         }
 
-        \RepositoryManager::product()->prepareProductQueries($productsById, 'media');
+        \RepositoryManager::product()->prepareProductQueries($productsById);
         \App::coreClientV2()->execute();
-
-        \RepositoryManager::review()->addScores($productsById);
-
 
         if (1 == count($productsById)) {
             /** @var $product \Model\Product\Entity */

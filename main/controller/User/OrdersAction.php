@@ -11,13 +11,6 @@ class OrdersAction extends PrivateAction {
      * @return \Http\JsonResponse|\Http\Response
      */
     public function execute(\Http\Request $request) {
-
-        if ($request->isXmlHttpRequest()) {
-            return new \Http\JsonResponse([
-                'data' => $this->getData()
-            ]);
-        }
-
         $data = $this->getData();
 
         $page = new \View\User\OrdersPage();
@@ -34,7 +27,7 @@ class OrdersAction extends PrivateAction {
      * Возвращает массив заказов и продуктов
      * @return array
      */
-    public function getData() {
+    private function getData() {
 
         //\App::logger()->debug('Exec ' . __METHOD__);
 
@@ -103,7 +96,7 @@ class OrdersAction extends PrivateAction {
                     $products[] = new \Model\Product\Entity(['id' => $productId]);
                 }
 
-                \RepositoryManager::product()->prepareProductQueries($products, 'media');
+                \RepositoryManager::product()->prepareProductQueries($products);
                 \App::coreClientV2()->execute();
 
                 \RepositoryManager::review()->addScores($products);

@@ -39,7 +39,7 @@ class IndexAction {
 
         // подготовка 2-го пакета запросов
         // запрашиваем товары
-        \RepositoryManager::product()->useV3()->withoutModels()->prepareProductQueries($productsById, '', $region);
+        \RepositoryManager::product()->prepareProductQueries($productsById, '', $region);
 
         // запрашиваем категории товаров
         if ((bool)$categoriesById) {

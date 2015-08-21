@@ -13,8 +13,6 @@ class Entity {
     const PARTNER_OFFER_TYPE_SLOT = 2;
     /** Электронный подарочный сертификат giftery.ru */
     const GIFTERY_UID = '684fb825-ebf5-4e4f-be2b-96a81e938cb2';
-    /** Дефолтное отображение связанных товаров - аксессуары сверху, смежные товары в футере */
-    const DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE = 1;
 
     /** @var string|null */
     public $ui;
@@ -90,8 +88,6 @@ class Entity {
     protected $typeId;
     /** @var int */
     protected $setId;
-    /** @var int */
-    protected $labelId;
     /** @var bool */
     protected $isModel;
     /** @var bool */
@@ -136,8 +132,6 @@ class Entity {
     protected $priceOld;
     /** @var [] */
     protected $groupedProperties = [];
-    /** @var int */
-    protected $connectedProductsViewMode;
     /** @var array */
     protected $accessoryId = [];
     /** @var array */
@@ -170,13 +164,6 @@ class Entity {
         if (isset($data['token'])) $this->setToken($data['token']);
         if (isset($data['article'])) $this->setArticle($data['article']);
         if (isset($data['bar_code'])) $this->setBarcode($data['bar_code']);
-        if (isset($data['category']) && (bool)$data['category']) {
-            $categoryData = reset($data['category']);
-            if ((bool)$categoryData) $this->setRootCategory(new Category\Entity($categoryData));
-
-            $categoryData = end($data['category']);
-            if ((bool)$categoryData) $this->setParentCategory(new Category\Entity($categoryData));
-        };
         if (isset($data['price'])) $this->setPrice($data['price']);
         if (isset($data['state']) && (bool)$data['state']) $this->setState(new State\Entity($data['state']));
         if (isset($data['stock']) && is_array($data['stock'])) $this->setStock(array_map(function($data) {
@@ -189,9 +176,6 @@ class Entity {
         if (isset($data['num_reviews'])) $this->setNumReviews($data['num_reviews']);
         if (isset($data['is_upsale'])) $this->setIsUpsale($data['is_upsale']);
         if (isset($data['model']) && $data['model']) $this->setModel(new Model\Entity($data['model']));
-        if (isset($data['title'])) $this->setSeoTitle($templateHelper->unescape($data['title']));
-        if (isset($data['meta_keywords'])) $this->setSeoKeywords($templateHelper->unescape($data['meta_keywords']));
-        if (isset($data['meta_description'])) $this->setSeoDescription($templateHelper->unescape($data['meta_description']));
 
         if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
             return new Kit\Entity($data);
@@ -203,7 +187,6 @@ class Entity {
         if (array_key_exists('view_id', $data)) $this->setViewId($data['view_id']);
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('set_id', $data)) $this->setSetId($data['set_id']);
-        if (array_key_exists('label_id', $data)) $this->setLabelId($data['label_id']);
         if (array_key_exists('is_model', $data)) $this->setIsModel($data['is_model']);
         if (array_key_exists('is_primary_line', $data)) $this->setIsPrimaryLine($data['is_primary_line']);
         if (array_key_exists('model_id', $data)) $this->setModelId($data['model_id']);
@@ -216,24 +199,6 @@ class Entity {
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('rating', $data)) $this->setRating($data['rating']);
         if (array_key_exists('rating_count', $data)) $this->setRatingCount($data['rating_count']);
-        if (array_key_exists('category', $data) && is_array($data['category'])) {
-            foreach ($data['category'] as $categoryData) {
-                $this->addCategory(new Category\Entity($categoryData));
-            }
-        }
-        if (array_key_exists('connected_products_view_mode', $data)) $this->setConnectedProductsViewMode($data['connected_products_view_mode']);
-        if (array_key_exists('property_group', $data) && is_array($data['property_group'])) $this->setPropertyGroup(array_map(function($data) {
-            return new Property\Group\Entity($data);
-        }, $data['property_group']));
-        if (array_key_exists('property', $data) && is_array($data['property'])) foreach ($data['property'] as $property) {
-            $this->addProperty(new Property\Entity($property));
-        }
-        if (array_key_exists('tag', $data) && is_array($data['tag'])) $this->setTag(array_map(function($data) {
-            return new \Model\Tag\Entity($data);
-        }, $data['tag']));
-
-        if (array_key_exists('brand', $data) && (bool)$data['brand']) $this->setBrand(new \Model\Brand\Entity($data['brand']));
-
         if (array_key_exists('type', $data) && (bool)$data['type']) $this->setType(new Type\Entity($data['type']));
         if (array_key_exists('price_average', $data)) $this->setPriceAverage($data['price_average']);
         if (array_key_exists('price_old', $data)) $this->setPriceOld($data['price_old']);
@@ -244,6 +209,90 @@ class Entity {
         }
 
         if (array_key_exists('medias', $data) && is_array($data['medias'])) $this->medias = array_map(function($mediaData) {return new Media($mediaData);}, $data['medias']);
+
+        // TODO удалить
+        if ($this->isGifteryCertificate()) $this->state->setIsBuyable(true);
+    }
+
+    public function importFromScms($data = []) {
+        if (!empty($data['medias']) && is_array($data['medias'])) {
+            foreach ($data['medias'] as $media) {
+                if (is_array($media)) {
+                    $this->medias[] = new \Model\Media($media);
+                }
+            }
+        }
+
+        if (!empty($data['json3d']) && is_array($data['json3d'])) {
+            $this->json3d = $data['json3d'];
+        }
+
+        if (!empty($data['label']['uid'])) {
+            $this->setLabel(new Label($data['label']));
+        }
+
+        if (!empty($data['brand']) && @$data['brand']['slug'] === 'tchibo-3569') {
+            $this->setBrand(new \Model\Brand\Entity([
+                'ui'        => @$data['brand']['uid'],
+                'id'        => @$data['brand']['core_id'],
+                'token'     => @$data['brand']['slug'],
+                'name'      => @$data['brand']['name'],
+                'media_image' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png', // TODO после решения FCMS-740 заменить на URL из scms и удалить условие "@$thisData['brand']['slug'] === 'tchibo-3569'"
+            ]));
+        }
+
+        if (!empty($data['tags'])) {
+            $this->setTag(array_map(function($data) { return new \Model\Tag\Entity($data); }, $data['tags']));
+        }
+
+        // TODO отрефакторить, перенеся часть методов в модель категории
+        if (!empty($data['categories']) && is_array($data['categories'])) {
+            foreach ($data['categories'] as $category) {
+                $this->categories[] = new \Model\Product\Category\Entity($category);
+                if ($category['main']) {
+                    $this->parentCategory = new \Model\Product\Category\Entity($category);
+                    $this->category[] = new \Model\Product\Category\Entity($category);
+
+                    while (!empty($category['parent'])) {
+                        $category = $category['parent'];
+                        $this->category[] = new \Model\Product\Category\Entity($category);
+                    }
+
+                    $this->category = array_reverse($this->category);
+                    $this->rootCategory = new \Model\Product\Category\Entity($category);
+                }
+            }
+        }
+
+        if (isset($data['category']) && is_array($data['category'])) {
+            foreach ($data['category'] as $categoryData) {
+                // в ядре: 0 - root, last - parent
+                $this->category[] = new Category\Entity($categoryData);
+            }
+        };
+
+
+        $templateHelper = new \Helper\TemplateHelper();
+
+        if (isset($data['title'])) {
+            $this->setSeoTitle($templateHelper->unescape($data['title']));
+        }
+
+        if (isset($data['meta_keywords'])) {
+            $this->setSeoKeywords($templateHelper->unescape($data['meta_keywords']));
+        }
+
+        if (isset($data['meta_description'])) {
+            $this->setSeoDescription($templateHelper->unescape($data['meta_description']));
+        }
+
+        if (!empty($data['properties']) && is_array($data['properties'])) {
+            $this->setProperty(array_map(function($data) { return new \Model\Product\Property\Entity($data); }, $data['properties']));
+        }
+
+        if (!empty($data['property_groups']) && is_array($data['property_groups'])) {
+            $this->setPropertyGroup(array_map(function($data) { return new \Model\Product\Property\Group\Entity($data); }, $data['property_groups']));
+        }
 
         $indexedPropertyGroups = [];
         foreach ($this->propertyGroup as $group) {
@@ -286,66 +335,6 @@ class Entity {
 
             $this->secondaryGroupedProperties = $this->groupedProperties;
         }
-
-        // TODO удалить
-        if ($this->isGifteryCertificate()) $this->state->setIsBuyable(true);
-    }
-
-    public function importFromScms($data = []) {
-        if (!empty($data['medias']) && is_array($data['medias'])) {
-            foreach ($data['medias'] as $media) {
-                if (is_array($media)) {
-                    $this->medias[] = new \Model\Media($media);
-                }
-            }
-        }
-
-        if (!empty($data['json3d']) && is_array($data['json3d'])) {
-            $this->json3d = $data['json3d'];
-        }
-
-        if (!empty($data['properties']) && is_array($data['properties'])) {
-            $this->setProperty(array_map(function($data) { return new \Model\Product\Property\Entity($data); }, $data['properties']));
-        }
-
-        if (!empty($data['property_groups']) && is_array($data['property_groups'])) {
-            $this->setPropertyGroup(array_map(function($data) { return new \Model\Product\Property\Group\Entity($data); }, $data['property_groups']));
-        }
-
-        // пока так, рефакторинг скоро будет
-        if (!empty($data['label'])) {
-            $this->setLabel(new Label([
-                'id'        => @$data['label']['core_id'],
-                'name'      => @$data['label']['name'],
-                'medias'    => @$data['label']['medias'],
-            ]));
-        }
-
-        if (!empty($data['brand']) && @$data['brand']['slug'] === 'tchibo-3569') {
-            $this->setBrand(new \Model\Brand\Entity([
-                'ui'        => @$data['brand']['uid'],
-                'id'        => @$data['brand']['core_id'],
-                'token'     => @$data['brand']['slug'],
-                'name'      => @$data['brand']['name'],
-                'media_image' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png', // TODO после решения FCMS-740 заменить на URL из scms и удалить условие "@$thisData['brand']['slug'] === 'tchibo-3569'"
-            ]));
-        }
-
-        if (!empty($data['categories']) && is_array($data['categories'])) {
-            foreach ($data['categories'] as $category) {
-                $this->categories[] = new \Model\Product\Category\Entity($category);
-                if ($category['main']) {
-                    $this->setParentCategory(new \Model\Product\Category\Entity($category));
-
-                    // TODO: создать метод \Model\Product\Category\Entity::getRoot, возвращающий корневую категорию, найденную через свойство \Model\Product\Category\Entity::$parent; переименовать \Model\Product\Entity::getParentCategory в getMainCategory
-                    while (isset($category['parent']) && $category['parent']) {
-                        $category = $category['parent'];
-                    }
-
-                    $this->setRootCategory(new \Model\Product\Category\Entity($category));
-                }
-            }
-        }
     }
 
     /**
@@ -363,37 +352,10 @@ class Entity {
     }
 
     /**
-     * @param Category\Entity[] $categories
-     * @return void
-     */
-    public function setCategory(array $categories) {
-        $this->category = [];
-        foreach ($categories as $category) {
-            $this->addCategory($category);
-        }
-    }
-
-    /**
-     * @param Category\Entity $category
-     */
-    public function addCategory(Category\Entity $category) {
-        $this->category[] = $category;
-    }
-
-    /**
      * @return Category\Entity[]
      */
     public function getCategory() {
         return $this->category;
-    }
-
-    /**
-     * @return Category\Entity|null
-     */
-    public function getLastCategory() {
-        $lastCategory = end($this->category);
-        reset($this->category);
-        return $lastCategory;
     }
 
     /**
@@ -514,20 +476,6 @@ class Entity {
      */
     public function getIsPrimaryLine() {
         return $this->isPrimaryLine;
-    }
-
-    /**
-     * @param int|null $labelId
-     */
-    public function setLabelId($labelId = null) {
-        $this->labelId = $labelId ? (int)$labelId : null;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLabelId() {
-        return $this->labelId;
     }
 
     /**
@@ -911,20 +859,6 @@ class Entity {
     }
 
     /**
-     * @param int $connectedProductsViewMode
-     */
-    public function setConnectedProductsViewMode($connectedProductsViewMode = null) {
-        $this->connectedProductsViewMode = $connectedProductsViewMode ? (int)$connectedProductsViewMode : null;
-    }
-
-    /**
-     * @return int
-     */
-    public function getConnectedProductsViewMode() {
-        return $this->connectedProductsViewMode;
-    }
-
-    /**
      * @param array $accessoryId
      */
     public function setAccessoryId($accessoryId) {
@@ -1046,13 +980,6 @@ class Entity {
     }
 
     /**
-     * @param \Model\Product\Category\Entity $rootCategory
-     */
-    public function setRootCategory(Category\Entity $rootCategory = null) {
-        $this->rootCategory = $rootCategory;
-    }
-
-    /**
      * @return \Model\Product\Category\Entity
      */
     public function getRootCategory() {
@@ -1129,13 +1056,6 @@ class Entity {
         }
 
         return $maxStock;
-    }
-
-    /**
-     * @param \Model\Product\Category\Entity $parentCategory
-     */
-    public function setParentCategory(\Model\Product\Category\Entity $parentCategory) {
-        $this->parentCategory = $parentCategory;
     }
 
     /**
