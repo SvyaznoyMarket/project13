@@ -22,6 +22,8 @@ $helper = \App::helper();
 $pagerHtml = $page->render('category/list/pagination', ['pager' => $productPager]);
 $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? $catalogJson['promo_style'] : [];
 
+if (!isset($category)) $category = new Model\Product\Category\Entity([]);
+
 ?>
 <!-- для внутренних страниц добавляется класс middle_transform -->
 <div class="middle js-module-require"
