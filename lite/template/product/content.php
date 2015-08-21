@@ -237,4 +237,4 @@ $reviewsData = null;
 </div>
 <!--/ просмотр видео и 3D -->
 
-<?= $page->tryRender('common/popups/delivery.map') ?>
+<?= $page->tryRender('common/popups/delivery.map', ['title' => 'Точки самовывоза']) ?>

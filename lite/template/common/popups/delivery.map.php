@@ -1,7 +1,7 @@
 <script id="js-points-popup-template" type="text/template" class="hidden">
     <div class="delivery-points popup">
         <div class="popup__close js-popup-close">×</div>
-        <div class="popup__title">Выберите точку самовывоза</div>
+        <div class="popup__title"><?= (isset($title)) ? $title : 'Выберите точку самовывоза' ?></div>
 
         <!-- Новая верстка -->
         <div class="delivery-points__left">
