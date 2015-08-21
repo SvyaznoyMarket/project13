@@ -1065,6 +1065,7 @@
                 // Universal Tracking Code
                 if (isUniversalAvailable()) {
                     ga('require', 'ecommerce', 'ecommerce.js');
+                    ga('secondary.require', 'ecommerce', 'ecommerce.js');
                     ga('ecommerce:addTransaction', googleTrans.toObject());
                     ga('secondary.ecommerce:addTransaction', googleTrans.toObject());
                     $.each(googleProducts, function(i, product){
