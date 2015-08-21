@@ -62,6 +62,7 @@
                 // Setup events
                 this.events['click .' + CSS_CLASSES.PLUS]  = 'plus';
                 this.events['click .' + CSS_CLASSES.MINUS] = 'minus';
+                this.events['blur .' + CSS_CLASSES.VALUE] = 'updateByHand';
 
                 // Apply events
                 this.delegateEvents();
@@ -81,6 +82,31 @@
                 } else {
                     this.subViews.plus.removeClass(CSS_CLASSES.DISABLED);
                 }
+            },
+
+            /**
+             * Обновление каунтера из поля ввода
+             *
+             * @method      updateByHand
+             * @memberOf    module:enter.productkit.counter.view~ProductKitItemCounterView#
+             *
+             * @fires       module:enter.ui.baseCounter~BaseCounter#changeQuantity
+             */
+            updateByHand: function() {
+                var
+                    val = parseInt(this.input.val(), 10);
+
+                if ( val < this.minValue ) {
+                    val = this.minValue;
+                } else if ( val > this.maxValue ) {
+                    val = this.maxValue;
+                }
+
+                this.quantity = val
+
+                this.trigger('changeQuantity', {
+                    quantity: this.quantity
+                });
             },
 
             /**
