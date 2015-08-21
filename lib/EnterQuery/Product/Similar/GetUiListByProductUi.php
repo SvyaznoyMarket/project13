@@ -37,8 +37,13 @@ namespace EnterQuery\Product\Similar {
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->beforeProductUis = array_map(function($item) { return $item['uid']; }, $result['before']);
-                    $this->response->afterProductUis = array_map(function($item) { return $item['uid']; }, $result['after']);
+                    if (!empty($result['before']) && is_array($result['before'])) {
+                        $this->response->beforeProductUis = array_column($result['before'], 'uid');
+                    }
+
+                    if (!empty($result['after']) && is_array($result['after'])) {
+                        $this->response->afterProductUis = array_column($result['after'], 'uid');
+                    }
 
                     return $result; // for cache
                 }
