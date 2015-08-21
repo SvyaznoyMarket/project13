@@ -83,7 +83,8 @@
 
                 zoomConfig = {
                     $imageContainer: this.subViews.photoContainer,
-                    zoomWindowOffety: (photoH - photoContainerH)/3,
+                    zoomWindowOffety: 30,
+                    zoomWindowPosition: 2,
                     zoomWindowOffetx: productContentPaddingLeft - photoContainerW + (photoContainerW - photoW)/2,
                     zoomWindowWidth: $PRODUCT_CONTENT.width(),
                     borderSize: 1,

@@ -122,6 +122,7 @@
             <div class="delivery-points-list__logo table-cell">
                 <img src="{{icon}}" class="delivery-points-list__img">
 
+                {{#isPickPoint}}
                 <!-- попап-подсказка с описание пункта самовывоза -->
                 <div class="delivery-points-info delivery-points-info_absolute">
                     <a class="delivery-points-info__icon"></a>
@@ -130,6 +131,7 @@
                     </div>
                 </div>
                 <!--/ попап-подсказка с описание пункта самовывоза -->
+                {{/isPickPoint}}
 
                 <span class="delivery-points-list__name">{{listName}}</span>
             </div>
