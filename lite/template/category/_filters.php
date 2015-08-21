@@ -92,23 +92,29 @@
 
 ?>
 
+
+
 <!-- фильтр "Бренды и параметры" -->
 <div class="filter filter-options fltr filter-components js-category-filter-wrapper" style="display: block">
 
     <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" method="GET">
 
         <? foreach ($alwaysShowFilters as $filter): ?>
-            <div class="fltrSet <? if (!$filter->isOpenByDefault): ?>fltrSet-close<? endif ?> js-category-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>">
-                <div class="fltrSet_tggl <? if ($filter->isOpenByDefault): ?>fltrSet_tggl-dn<? endif ?> js-category-filter-toggle-button">
+
+            <!-- фильтр по компонентам -->
+            <div class="fltrSet js-category-filter-toggle-container">
+
+                <div class="fltrSet_tggl js-category-filter-toggle-button">
                     <span class="fltrSet_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>
                 </div>
 
                 <div class="fltrSet_cnt js-category-filter-toggle-content">
-                    <div class="fltrSet_inn clearfix">
+                    <div class="fltrSet_inn">
                         <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
                     </div>
                 </div>
             </div>
+            <!--/ фильтр по компонентам -->
         <? endforeach ?>
 
         <? if ($brandFilter1): ?>
