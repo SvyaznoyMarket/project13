@@ -3,19 +3,24 @@
 
 namespace Controller\User;
 
+use Session\AbTest\ABHelperTrait;
 
 class OrdersAction extends PrivateAction {
+    use ABHelperTrait;
 
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\Response
      */
     public function execute(\Http\Request $request) {
-
         if ($request->isXmlHttpRequest()) {
             return new \Http\JsonResponse([
                 'data' => $this->getData()
             ]);
+        }
+
+        if (!$this->isOldPrivate()) {
+            return (new \Controller\User\Order\Action())->execute($request);
         }
 
         $data = $this->getData();
