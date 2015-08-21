@@ -167,7 +167,7 @@
              */
             updateModels: function( models ) {
                 var
-                    reverseModel = models.reverse(),
+                    reverseModel = models,
                     self         = this,
                     i, j,
 
