@@ -135,7 +135,7 @@
         }
     }
     &__btn-group{
-        margin: 0px 0 10px;
+        margin: 5px 0 10px;
         text-align: right;
 
         .btnBuy{
@@ -199,7 +199,8 @@
 .sorting-top{
     .lstn-type{
         &-btn{
-            padding: 1px 8px 1px 24px;
+            width: 24px;
+            height: 24px;
             font-size: 12px;
             color: #363636;
             .inline-block();
@@ -209,6 +210,8 @@
             margin-right: 5px;
             cursor: pointer;
             position: relative;
+            .box-sizing(border-box);
+            text-align: center;
 
             &.active, &:hover{
                 background-color: #363636;
@@ -221,8 +224,8 @@
             }
         }
         &__choose{
-            float: left;
-            margin-left: 35px;
+            float: right;
+            margin-left: 30px;
         }
 
         &-icon{
@@ -235,13 +238,8 @@
             text-align: center;
             font-variant: normal;
             text-transform: none;
-            margin-right: 5px;
             font-size: 16px;
-            display: block;
-            position: absolute;
-            top: 50%;
-            left: 5px;
-            margin-top: -10px;
+            display: inline-block;
 
             &.bar{
                 
