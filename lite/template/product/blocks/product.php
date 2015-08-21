@@ -177,7 +177,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
             <dl class="product-card-prop">
                 <? $i = 0; foreach ($product->getMainProperties() as $property) : $i++ ?>
                     <? if ($i == 5 && count($product->getMainProperties()) >= 5 && $product->getSecondaryGroupedProperties()) : ?>
-                        <a class="product-card-prop__lk" href="#more">Все характеристики</a>
+                        <a class="product-card-prop__lk js-go-to" href="#more">Все характеристики</a>
                     <? break; endif; ?>
 
                     <? if ($property->getName() == $modelName) continue ?>
