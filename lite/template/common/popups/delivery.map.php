@@ -58,13 +58,11 @@
                     <div class="drop-filter-box__dd">
                         <div class="drop-filter-box__dd-inn">
                             {{#uniqueCosts}}
-                            <div class="fltrBtn_param">
-                                <div class="fltrBtn_ln ">
-                                    <input class="custom-input js-point-filter-param custom-input_check" type="checkbox" id="cost_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
-                                    <label class="custom-label" for="cost_{{key}}_{{value}}">
-                                        <span class="customLabel_btx">{{displayValue}}</span>
-                                    </label>
-                                </div>
+                            <div class="drop-filter-box__dd-line">
+                                <input class="custom-input js-point-filter-param custom-input_check" type="checkbox" id="cost_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
+                                <label class="custom-label" for="cost_{{key}}_{{value}}">
+                                    <span class="customLabel_btx">{{displayValue}}</span>
+                                </label>
                             </div>
                              {{/uniqueCosts}}
                         </div>
@@ -82,16 +80,14 @@
 
                     <div class="drop-filter-box__dd">
                         <div class="drop-filter-box__dd-inn">
-                            <div class="fltrBtn_param">
-                                {{#uniqueDays}}
-                                <div class="fltrBtn_ln ">
-                                    <input class="custom-input js-point-filter-param custom-input_check" type="checkbox" id="date_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
-                                    <label class="custom-label" for="date_{{key}}_{{value}}">
-                                        <span class="customLabel_btx">{{displayValue}}</span>
-                                    </label>
-                                </div>
-                                {{/uniqueDays}}
+                            {{#uniqueDays}}
+                            <div class="drop-filter-box__dd-line">
+                                <input class="custom-input js-point-filter-param custom-input_check" type="checkbox" id="date_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
+                                <label class="custom-label" for="date_{{key}}_{{value}}">
+                                    <span class="customLabel_btx">{{displayValue}}</span>
+                                </label>
                             </div>
+                            {{/uniqueDays}}
                         </div>
                     </div>
                 </div>
@@ -144,7 +140,7 @@
             <div class="delivery-points-list__info table-cell">
                 <div class="delivery-points-list__info-hidden">
                     <div class="delivery-points-list__info-date">{{humanNearestDay}}</div>
-                    <div class="delivery-points-list__info-price"><span>{{humanCost}}</span></div>
+                    <div class="delivery-points-list__info-price"><span>{{humanCost}}</span>&thinsp;<span class="rubl">C</span></div>
                 </div>
 
                 {{#showBuyButton}}
