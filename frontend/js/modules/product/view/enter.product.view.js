@@ -174,15 +174,24 @@
              * @memberOf    module:enter.userbar.view~EnterUserbarView#
              */
             showKitPopup: function() {
+                var
+                    ui = this.model.get('ui');
+
                 if ( this.subViews.kitPopup ) {
                     this.subViews.kitPopup.show();
                     return false;
                 }
 
-                this.subViews.kitPopup = new KitPopupView({
-                    el: Backbone.$('.' + CSS_CLASSES.KIT_POPUP),
-                    model: this.model
-                });
+                App.kitPopup = App.kitPopup || {};
+
+                if ( App.kitPopup[ui] ) {
+                    this.subViews.kitPopup = App.kitPopup[ui];
+                } else {
+                    this.subViews.kitPopup = App.kitPopup[ui] = new KitPopupView({
+                        el: Backbone.$('.' + CSS_CLASSES.KIT_POPUP),
+                        model: this.model
+                    });
+                }
 
                 this.subViews.kitPopup.show();
 

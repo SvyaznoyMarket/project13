@@ -132,8 +132,8 @@
                 var
                     products = _.map(this.saveToServerCollection.toJSON(), function( obj ) {
                         return {
-                            id: obj.id,
-                            quantity: obj.quantity,
+                            id: obj.attributes.id,
+                            quantity: obj.attributes.quantity,
                         }
                     }),
                     url = urlHelper.addParams(this._addUrl, {

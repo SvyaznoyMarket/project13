@@ -212,7 +212,7 @@
                     });
                 });
 
-                this.wrapper.empty();
+                // this.wrapper.empty();
                 this.wrapper.append($html);
 
                 this.totalQuantity.update();
