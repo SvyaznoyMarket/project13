@@ -166,11 +166,11 @@ ANALYTICS.gaJS = function(data) {
         }
 
         /** Событие добавления в корзину */
-        $body.on('addtocart', function ga_addtocart(event, data) {
-            var
-                productData = data.product;
-            if (productData) {
-                $body.trigger('trackGoogleEvent', ['<button>', productData.name, productData.article, productData.price])
+        $body.on('addtocart', function(event, data) {
+            if (data.kitProduct) {
+                $body.trigger('trackGoogleEvent', ['<button>', data.kitProduct.name, data.kitProduct.article, data.kitProduct.price])
+            } else if (data.setProducts && data.setProducts.length) {
+                $body.trigger('trackGoogleEvent', ['<button>', data.setProducts[0].name, data.setProducts[0].article, data.setProducts[0].price])
             }
         });
 

@@ -11,13 +11,6 @@ class OrdersAction extends PrivateAction {
      * @return \Http\JsonResponse|\Http\Response
      */
     public function execute(\Http\Request $request) {
-
-        if ($request->isXmlHttpRequest()) {
-            return new \Http\JsonResponse([
-                'data' => $this->getData()
-            ]);
-        }
-
         $data = $this->getData();
 
         $page = new \View\User\OrdersPage();
@@ -34,7 +27,7 @@ class OrdersAction extends PrivateAction {
      * Возвращает массив заказов и продуктов
      * @return array
      */
-    public function getData() {
+    private function getData() {
 
         //\App::logger()->debug('Exec ' . __METHOD__);
 
@@ -73,8 +66,10 @@ class OrdersAction extends PrivateAction {
         // выполнение 1-го пакета запросов
         $client->execute();
 
+        /** @var \Model\Product\Entity[] $products */
         $products = [];
-        $products_by_id = [];
+        /** @var \Model\Product\Entity[] $productsById */
+        $productsById = [];
         $currentOrders = [];
 
         if ($orders) {
@@ -91,20 +86,28 @@ class OrdersAction extends PrivateAction {
                 }
             });
 
-            $products = call_user_func(function() use (&$orders) {
+            call_user_func(function() use (&$orders, &$products) {
                 $ids = [];
                 foreach ($orders as $order) {
                     $ids = array_merge($ids, $order->getAllProductsIds());
                 }
 
-                return $ids ? \RepositoryManager::product()->getCollectionById($ids) : [];
+                foreach ($ids as $productId) {
+                    $products[] = new \Model\Product\Entity(['id' => $productId]);
+                }
+
+                \RepositoryManager::product()->prepareProductQueries($products);
+                \App::coreClientV2()->execute();
+
+                \RepositoryManager::review()->addScores($products);
             });
+
             foreach ($products as $product) {
-                $products_by_id[$product->getId()] = $product;
+                $productsById[$product->getId()] = $product;
             }
         }
 
-        return ['orders' => $orders, 'products' => $products, 'orders_by_year' => $orders_by_year, 'current_orders' => $currentOrders, 'products_by_id' => $products_by_id];
+        return ['orders' => $orders, 'products' => $products, 'orders_by_year' => $orders_by_year, 'current_orders' => $currentOrders, 'products_by_id' => $productsById];
 
     }
 

@@ -69,7 +69,6 @@
     {{# surroundDiv }}<div class="{{#isSlot}}btn--slot--container{{/isSlot}} {{^isSlot}}btnBuy {{#isKit}}mBuySet{{/isKit}}{{/isSlot}}
         {{#isGiftery}}btn--container{{/isGiftery}}">{{/surroundDiv}}
         <a
-            {{#id}}id="{{id}}"{{/id}}
             href="{{url}}"
             class="{{class}} {{#disabled}}mDisabled{{/disabled}} {{#inShopOnly}}mShopsOnly{{/inShopOnly}} {{#isKit}}btn-type--buy-kit{{/isKit}}"
             data-product-id="{{data.productId}}"

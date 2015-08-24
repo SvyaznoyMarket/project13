@@ -26,19 +26,13 @@ class FavoriteAction extends PrivateAction {
             $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
         }
 
+        /** @var \Model\Product\Entity[] $products */
         $products = [];
         if ($favoriteProductsByUi) {
-            $productQuery = (new Query\Product\GetByUiList(array_keys($favoriteProductsByUi), \App::user()->getRegion()->getId()))->prepare();
-
-            $curl->execute();
-
-            foreach ($productQuery->response->products as $item) {
-                $products[] = new \Model\Product\Entity($item);
-            }
+            $products = array_map(function($productUi) { return new \Model\Product\Entity(['ui' => $productUi]); }, array_keys($favoriteProductsByUi));
+            \RepositoryManager::product()->prepareProductQueries($products, 'media');
+            \App::coreClientV2()->execute();
         }
-
-        \RepositoryManager::product()->enrichProductsFromScms($products, 'media label category');
-        $curl->execute();
 
         $page = new \View\User\FavoritesPage();
         $page->setParam('products', $products);

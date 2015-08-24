@@ -43,14 +43,13 @@ class SetAction {
 
         $curl->execute();
 
-        // проверяет, если такой товар, чтобы не пихать в избранное мусор
-        if (!count($coreProductQuery->response->product)) {
+        // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
+        if (empty($coreProductQuery->response->product) || empty($productQuery->response->products[0])) {
             throw new \Exception(sprintf('Товар %s не найден', $productUi));
         }
 
         $product = new \Model\Product\Entity($coreProductQuery->response->product);
-        $productDescription = reset($productQuery->response->products);
-        $product->medias = array_map(function($mediaData) {return new Media($mediaData);}, $productDescription['medias']);
+        $product->importFromScms($productQuery->response->products[0]);
 
         $favoriteQuery = (new Query\User\Favorite\Set($user->getEntity()->getUi(), $product->getUi()))->prepare();
 

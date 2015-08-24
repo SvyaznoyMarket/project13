@@ -51,9 +51,9 @@ class Sociomantic
 
                 $one_prod['identifier'] = $this->resetProductId($product);
 
-                $one_prod['quantity'] = $cartProduct->getQuantity();
+                $one_prod['quantity'] = $cartProduct->quantity;
                 //$one_prod['amount'] = $this->helper->formatPrice( $cartProduct->getPrice() * $one_prod['quantity'] );
-                $one_prod['amount'] = $cartProduct->getPrice() * $one_prod['quantity'];
+                $one_prod['amount'] = $cartProduct->price * $one_prod['quantity'];
                 $one_prod['currency'] = 'RUB';
 
                 $cart_prods[] = $one_prod;

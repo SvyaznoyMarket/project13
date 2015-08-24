@@ -103,11 +103,12 @@ class CompleteAction extends OrderV3 {
 
             // получаем продукты для заказов
             foreach ($orders as $order) {
-                \RepositoryManager::product()->prepareCollectionById(array_map(function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $order->getProduct()), null, function ($data) use ($order, &$products) {
-                    foreach ($data as $productData) {
-                        $products[$productData['id']] = new \Model\Product\Entity($productData);
-                    }
-                });
+                // TODO все данные заказываемых товаров необходимо сохранять в сессии на первом шаге оформления заказа, т.к. на последнем шаге товара уже может не быть в бэкэнде или он будет заблокирован 
+                foreach ($order->getProduct() as $product) {
+                    $products[$product->getId()] = new \Model\Product\Entity(['id' => $product->getId()]);
+                }
+                
+                \RepositoryManager::product()->prepareProductQueries($products, 'media category');
 
                 // Нужны ли нам кредитные банки?
                 if ($order->isCredit()) $needCreditBanksData = true;
@@ -145,16 +146,19 @@ class CompleteAction extends OrderV3 {
             unset($order, $methodId, $onlineMethodsId, $privateClient, $needCreditBanksData);
 
             // очищаем корзину от заказанных продуктов
-            foreach ($products as $product) {
-                if ($product instanceof \Model\Product\Entity) $this->cart->setProduct($product, 0);
+            $updateResultProducts = [];
+            try {
+                $updateResultProducts = $this->cart->update(array_map(function(\Model\Product\Entity $product){ return ['ui' => $product->ui, 'quantity' => 0]; }, $products));
+            } catch(\Exception $e) {
+                \App::logger()->error(['message' => 'Не удалось очистить корзину после оформления заказа', 'error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['order', 'cart/update']);
             }
-            unset($product);
 
             if ($userEntity && $this->isCoreCart()) {
                 try {
-                    foreach ($products as $product) {
-                        if (!$product instanceof \Model\Product\Entity) continue;
-                        (new Query\Cart\RemoveProduct($userEntity->getUi(), $product->getUi()))->prepare();
+                    foreach ($updateResultProducts as $updateResultProduct) {
+                        if ($updateResultProduct->setAction === 'delete') {
+                            (new Query\Cart\RemoveProduct($userEntity->getUi(), $updateResultProduct->cartProduct->ui))->prepare();
+                        }
                     }
                     $this->getCurl()->execute();
                 } catch (\Exception $e) {

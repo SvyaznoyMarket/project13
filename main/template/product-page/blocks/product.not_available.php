@@ -22,7 +22,6 @@ $f = function(
                         'type'     => 'similar',
                         'title'    => 'Похожие товары',
                         'products' => [],
-                        'count'    => null,
                         'limit'    => \App::config()->product['itemsInSlider'],
                         'page'     => 1,
                         'url'      => $helper->url('product.recommended', ['productId' => $product->getId()]),

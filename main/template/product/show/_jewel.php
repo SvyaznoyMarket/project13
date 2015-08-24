@@ -17,7 +17,7 @@
  */
 
 $showSimilarOnTop = !$product->isAvailable();
-
+$isKit = (bool)$product->getKit();
 $buySender = $request->get('sender');
 $buySender2 = $request->get('sender2');
 $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '';
@@ -60,7 +60,6 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
                     'type'     => 'similar',
                     'title'    => 'Похожие товары',
                     'products' => [],
-                    'count'    => null,
                     'limit'    => \App::config()->product['itemsInSlider'],
                     'page'     => 1,
                     'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -91,7 +90,6 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
             'title'          => 'Аксессуары',
             'products'       => array_values($accessories),
             'categories'     => $accessoryCategory,
-            'count'          => count($product->getAccessoryId()),
             'limit'          => (bool)$accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
             'page'           => 1,
             'gaEvent'        => 'Accessorize',
@@ -107,7 +105,6 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
             'type'           => 'alsoBought',
             'title'          => 'С этим товаром покупают',
             'products'       => [],
-            'count'          => null,
             'limit'          => \App::config()->product['itemsInSlider'],
             'page'           => 1,
             'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -137,7 +134,6 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
                 'type'     => 'similar',
                 'title'    => 'Похожие товары',
                 'products' => [],
-                'count'    => null,
                 'limit'    => \App::config()->product['itemsInSlider'],
                 'page'     => 1,
                 'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -180,11 +176,9 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
 
             <div class="js-showTopBar"></div>
 
-            <? if (!$isKitPage || $product->getIsKitLocked()): ?>
-                <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender, 'sender2' => $buySender2, 'location'  => 'product-card']) // Покупка в один клик ?>
-            <? endif ?>
+            <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender, 'sender2' => $buySender2, 'location'  => 'product-card']) ?>
 
-            <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
+            <? if (!$isKit || $product->getIsKitLocked()) : ?>
                 <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
             <? endif ?>
 
@@ -194,7 +188,7 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
 
             <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
         </div>
-    <? elseif (!$isKitPage || $product->getIsKitLocked()): ?>
+    <? elseif (!$isKit || $product->getIsKitLocked()): ?>
         <div class="bWidgetBuy mWidget js-WidgetBuy">
             <div class="js-showTopBar"></div>
             <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
@@ -203,16 +197,9 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
         <div class="js-showTopBar"></div>
     <? endif ?>
 
-    <? if ($lifeGiftProduct): ?>
+    <? if (!empty($lifeGiftProduct)): ?>
         <?= $helper->render('cart/__button-product-lifeGift', ['product' => $lifeGiftProduct]) // Кнопка "Подари жизнь" ?>
     <? endif ?>
-
-    <?/*= $helper->render('cart/__form-oneClick', [
-        'product' => $product,
-        'region'  => \App::user()->getRegion(),
-        'sender'  => $buySender,
-        'sender2' => $buySender2,
-    ])*/ // Форма покупки в один клик ?>
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 
@@ -228,7 +215,6 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
         'type'     => 'alsoViewed',
         'title'    => 'С этим товаром также смотрят',
         'products' => [],
-        'count'    => null,
         'limit'    => \App::config()->product['itemsInSlider'],
         'page'     => 1,
         'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -245,7 +231,6 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
         'type'      => 'viewed',
         'title'     => 'Вы смотрели',
         'products'  => [],
-        'count'     => null,
         'limit'     => \App::config()->product['itemsInSlider'],
         'page'      => 1,
         'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),

@@ -13,15 +13,6 @@ if (!isset($addInfo)) {
     $addInfo = [];
 }
 
-$disabled = !$product->getIsBuyable();
-$gaEvent = !empty($gaEvent) ? $gaEvent : null;
-$gaTitle = !empty($gaTitle) ? $gaTitle : null;
-if ($disabled) {
-    $url = '#';
-} else {
-    $url = $page->url('cart.product.set', array('productId' => $product->getId()));
-}
-
 // открытие товаров в новом окне
 $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
 

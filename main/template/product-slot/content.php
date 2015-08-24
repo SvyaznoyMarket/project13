@@ -27,7 +27,6 @@ if (!isset($categoryClass)) $categoryClass = null;
 
 
 $region = \App::user()->getRegion();
-if (!$lifeGiftProduct) $lifeGiftProduct = null;
 $isKitPage = (bool)$product->getKit();
 
 $isProductAvailable = $product->isAvailable();
@@ -111,7 +110,6 @@ $buySender2 = $request->get('sender2');
                 'type'     => 'similar',
                 'title'    => 'Похожие товары',
                 'products' => [],
-                'count'    => null,
                 'limit'    => \App::config()->product['itemsInSlider'],
                 'page'     => 1,
                 'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -152,7 +150,6 @@ $buySender2 = $request->get('sender2');
                 'type'           => 'alsoBought',
                 'title'          => 'С этим товаром покупают',
                 'products'       => [],
-                'count'          => null,
                 'limit'          => \App::config()->product['itemsInSlider'],
                 'page'           => 1,
                 'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -169,7 +166,6 @@ $buySender2 = $request->get('sender2');
                 'type'      => 'viewed',
                 'title'     => 'Вы смотрели',
                 'products'  => [],
-                'count'     => null,
                 'limit'     => \App::config()->product['itemsInSlider'],
                 'page'      => 1,
                 'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),

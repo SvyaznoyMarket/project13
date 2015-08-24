@@ -214,7 +214,7 @@ $c->googleTagManager['containerId'] = 'GTM-P65PBR';
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
 $c->pickpoint['timeout'] = 60;
-$c->pickpoint['retryCount'] = 3;
+$c->pickpoint['retryCount'] = 2;
 $c->pickpoint['retryTimeout'] = [
     'default' => 0.04,
     'tiny'    => 0.04,
@@ -357,13 +357,6 @@ $c->shopPhoto['url'] = [
 ];
 
 $c->banner['timeout'] = 5000;
-$c->banner['url'] = [
-    0 => '/4/1/230x302/',
-    1 => '/4/1/768x302/',
-    2 => '/4/1/920x320/',
-    3 => '/4/1/960x240/', // баннеры для новой главной (большой)
-    4 => '/4/1/220x50/', // баннеры для новой главной (маленький)
-];
 
 $c->cart['productLimit'] = 30;
 $c->cart['sessionName'] = 'cart';

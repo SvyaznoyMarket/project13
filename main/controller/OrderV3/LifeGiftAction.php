@@ -35,9 +35,15 @@ class LifeGiftAction {
 
             $lifegiftRegion = \RepositoryManager::region()->getEntityById(\App::config()->lifeGift['regionId']);
 
-            $product = \RepositoryManager::product()->getEntityById($productId, $lifegiftRegion);
+            /** @var \Model\Product\Entity[] $products */
+            $products = [new \Model\Product\Entity(['id' => $productId])];
+            \RepositoryManager::product()->prepareProductQueries($products, '', $lifegiftRegion);
+            \App::coreClientV2()->execute();
 
-            if ($product === null) throw new \Exception("Товар $productId не найден");
+            if (!$products) throw new \Exception("Товар $productId не найден");
+
+            $product = $products[0];
+
             if ($product->getPrice() == 0) throw new \Exception('Некорректная цена продукта');
             if (!$product->getIsBuyable()) throw new \Exception('Нет остатков по продукту');
 //            if (!$product->getLabel() || $product->getLabel()->getId() != \App::config()->lifeGift['labelId']) throw new \Exception(sprintf("Товар %s не участвует в акции", $product->getName()));

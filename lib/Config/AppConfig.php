@@ -339,7 +339,6 @@ class AppConfig {
     /** @var array */
     public $banner = [
         'timeout' => null,
-        'url'     => [],
     ];
     /** @var array */
     public $payment = [
@@ -391,6 +390,7 @@ class AppConfig {
     ];
     /** @var array */
     public $user = [
+        'enabled'           => true,
         'corporateRegister' => null,
         'defaultRoute'  => null
     ];
@@ -593,6 +593,14 @@ class AppConfig {
      * @var int
      */
     public $minOrderSum = 0;
+
+    /** Форма обратной связи
+     * @var array
+     */
+    public $feedback = [
+        'enabled'   => false,   // вкл/откл
+        'email'     => null     // email (куда слать письма)
+    ];
 
     public function __construct() {
 

@@ -27,7 +27,7 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Не получен список элеметов для qrcode %s', $qrcode));
         }
 
-        /** @var $productsById \Model\Product\Entity[] */
+        /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
         // получаем ид товаров
         foreach ($list as $item) {
@@ -45,13 +45,11 @@ class Action {
                 continue;
             }
 
-            $productsById[$item['id']] = null;
+            $productsById[$item['id']] = new \Model\Product\Entity(['id' => $item['id']]);
         }
 
-        // товары
-        foreach (\RepositoryManager::product()->getCollectionById(array_keys($productsById)) as $product) {
-            $productsById[$product->getId()] = $product;
-        }
+        \RepositoryManager::product()->prepareProductQueries($productsById);
+        \App::coreClientV2()->execute();
 
         if (1 == count($productsById)) {
             /** @var $product \Model\Product\Entity */

@@ -139,7 +139,7 @@
         window.scrollTo(0, $(hash).offset().top - 105);
     });
 
-    $body.on('click', '.jsOneClickButton-new', function(){
+    $body.on('click', '.jsOneClickButton', function(){
         $('.jsProductPointsMap').trigger('close');
     });
 
@@ -223,7 +223,7 @@
                     // добавляем видимые точки на карту
                     $.each(mapData.points, function(i, point){
                         try {
-                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButton-new'));
+                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButton'));
                         } catch (e) {
                             console.error('Ошибка добавления точки на карту', e);
                         }
@@ -398,7 +398,8 @@
 
     $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); });
 
-    $('.js-description-expand').on('click', function(){
+
+	$('.js-description-expand.collapsed').on('click', function(){
 
         $(this).removeClass('collapsed js-description-expand');
 

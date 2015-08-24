@@ -17,9 +17,6 @@ class Entity {
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('id', $data)) {
             switch ($this->typeId) {
-                case self::TYPE_PRODUCT:
-                    $this->setProductId($data['id']);
-                    break;
                 case self::TYPE_PRODUCT_CATEGORY:
                     $this->setProductCategoryId($data['id']);
                     break;
@@ -39,20 +36,6 @@ class Entity {
      */
     public function getProductCategoryId() {
         return $this->productCategoryId;
-    }
-
-    /**
-     * @param int $productId
-     */
-    public function setProductId($productId) {
-        $this->productId = (int)$productId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getProductId() {
-        return $this->productId;
     }
 
     /**

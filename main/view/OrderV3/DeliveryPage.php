@@ -30,8 +30,7 @@ class DeliveryPage extends Layout {
     public function slotHubrusJS() {
         $html = parent::slotHubrusJS();
         if (!empty($html)) {
-            $products = \App::user()->getCart()->getProductData();
-            return $html . \View\Partners\Hubrus::addHubrusData('cart_items', $products);
+            return $html . \View\Partners\Hubrus::addHubrusData('cart_items', \App::user()->getCart()->getInOrderProductsById());
         } else {
             return '';
         }

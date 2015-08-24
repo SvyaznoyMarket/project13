@@ -41,8 +41,8 @@
         changeInterval = function changeIntervalF(block_name, interval) {
             sendChanges('changeInterval', {'block_name': block_name, 'interval': interval})
         },
-        changeProductQuantity = function changeProductQuantityF(block_name, id, quantity) {
-            sendChanges('changeProductQuantity', {'block_name': block_name, 'id': id, 'quantity': quantity})
+        changeProductQuantity = function changeProductQuantityF(block_name, id, ui, quantity) {
+            sendChanges('changeProductQuantity', {'block_name': block_name, 'id': id, 'ui': ui, 'quantity': quantity})
         },
         changePaymentMethod = function changePaymentMethodF(block_name, method, isActive) {
             var params = {'block_name': block_name};
@@ -358,14 +358,14 @@
     $orderContent.on('click', '.jsChangeProductQuantity', function(e){
         var $this = $(this),
             quantity = $this.parent().find('input').val();
-        changeProductQuantity($this.data('block_name'), $this.data('id'), quantity);
+        changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), quantity);
         e.preventDefault();
     });
 
     // клик по ссылке "Удалить" у каунтера
     $orderContent.on('click', '.jsDeleteProduct', function(e){
         var $this = $(this);
-        changeProductQuantity($this.data('block_name'), $this.data('id'), 0);
+        changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), 0);
         e.preventDefault();
     });
 

@@ -58,7 +58,7 @@
 
             <div class="inn">
 
-            <?= $page->render('main/_banner2', ['banners' => (array)$page->getParam('bannerData')]) ?>
+            <?= $page->render('main/_banner2', ['banners' => $page->getParam('banners'), []]) ?>
 
             <?= $page->render('main/_infoBlocks') ?>
 
