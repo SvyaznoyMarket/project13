@@ -230,7 +230,7 @@ return function(
 
                                 <div class="order-item__data">
                                     <span class="order-item__data-item order-item__data-item_summ" ><?= $helper->formatPrice($product->original_sum) ?>&thinsp;<span class="rubl">C</span></span>
-                                    <span class="order-item__data-item order-item__data-item_count js-show-counter"><?= $product->quantity ?> шт.</span>
+                                    <span class="order-item__data-item order-item__data-item_count js-show-counter"><span class="dotted"><?= $product->quantity ?> шт.</span></span>
 
                                     <div class="order-item__data-item order-item__data-item_edit js-order-item-counter">
                                         <div data-spinner-for="" class="counter counter_mini">
