@@ -26,10 +26,7 @@
         'use strict';
 
         var
-
-            PARTNERS_DATA       = JSON.parse($('#partnersJSON').html()),
-            OBJECT_MANAGER_DATA = JSON.parse($('#objectManagerDataJSON').html()),
-            POINTS              = JSON.parse($('#points').html()),
+            POINTS = JSON.parse($('#points').html()),
 
             /**
              * Используемые CSS классы

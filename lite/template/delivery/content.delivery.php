@@ -10,8 +10,6 @@
 $helper = \App::helper();
 ?>
 
-<?= $helper->jsonInScriptTag($partnersBySlug, 'partnersJSON') ?>
-<?= $helper->jsonInScriptTag($objectManagerData, 'objectManagerDataJSON') ?>
 <?= $helper->jsonInScriptTag($points, 'points') ?>
 
 <div class="js-module-require" data-module="deliveryPage">
