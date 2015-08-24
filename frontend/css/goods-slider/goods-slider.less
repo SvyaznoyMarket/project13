@@ -99,12 +99,13 @@
 
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAYAAAD5Jg1dAAAAxElEQVQoz2PQ1tYWMjM13WtiYmLIgA8YGhrKm5ua/jY3MbkmIyPDiVcxUGEdEP83NTGZwkAAMAOtPwZSDHSCJ16VpqamSkDrPwM1PAc6R5SQ4kSQqUANGwk5gQGoaA3YvUZGqXgVmmloCAMVPzUzMfliYGCgilcx0EOuQIX/gBpOArks+N1rYtIPdq+paRNehQoKChxAUy8DFf4BOkGBcoXmxsYTCFpNlGeIDh6iAhwWhUDTNlCcKIhLZkQlXKKzArGZCwBWk1bwkL7ALQAAAABJRU5ErkJggg==');
         }
-        &.disabled {
-            overflow: hidden;
+        &.slick-disabled {
+            cursor: default;
 
-            width: 0;
-
-            .opacity(0);
+            .opacity(.2);
+            &:hover {
+                .opacity(.2);
+            }
         }
         &:hover {
             .opacity(1);
