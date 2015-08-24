@@ -19,6 +19,10 @@
             var
                 str = num.toString();
 
+            if ( str.length < 5 ) {
+                return str;
+            }
+
             return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
         });
     }

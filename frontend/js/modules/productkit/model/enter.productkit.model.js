@@ -36,7 +36,8 @@
                     height         = this.get('height'),
                     width          = this.get('width'),
                     depth          = this.get('depth'),
-                    showDemensions = !!( height !== '' && width !== '' && depth !== '' ),
+                    stockCount     = this.get('stockCount'),
+                    showDemensions = !!( height && width && depth ),
                     newSum         = price * nowQuantity;
 
                 console.info('module:enter.productkit.model~ProductKitModel#initialize');
@@ -46,7 +47,8 @@
                     'sum_format': printPrice(newSum),
                     'price_format': printPrice(price),
                     'quantity': nowQuantity,
-                    'showDemensions': showDemensions
+                    'showDemensions': showDemensions,
+                    'stockCount': ( stockCount > 99 ) ? 99 : stockCount // Max counter value
                 });
                 this.listenTo(this, 'change:quantity', this.changeQuantity);
             },
