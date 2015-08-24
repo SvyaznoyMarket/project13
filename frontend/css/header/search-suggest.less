@@ -11,9 +11,6 @@
     background: @white;
     &-list {
         &_categories {
-            .search-suggest-list__item {
-                padding: 4px 0;
-            }
         }
         &__title {
             position: relative;
@@ -47,12 +44,14 @@
         }
         &__link {
             display: block;
+            padding: 5px 10px;
+            &:hover,
             &.active {
-                background: @grey-light-4;
+                background: @orange-light-4;
             }
         }
         &__item {
-            margin: 5px 10px;
+            margin: 0;
         }
         &__img {
             line-height: 40px;
