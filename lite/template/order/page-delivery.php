@@ -234,7 +234,7 @@ return function(
 
                                     <div class="order-item__data-item order-item__data-item_edit js-order-item-counter">
                                         <div data-spinner-for="" class="counter counter_mini">
-                                            <button class="counter__btn counter__btn_minus disabled js-counter-minus"></button>
+                                            <button class="counter__btn counter__btn_minus js-counter-minus"></button>
                                             <input name="productQuantity[]" type="text" value="<?= $product->quantity ?>" class="counter__it js-counter-value" data-stock="<?= $product->stock ?>" />
                                             <button class="counter__btn counter__btn_plus js-counter-plus"></button>
                                             <span>шт.</span>

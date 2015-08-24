@@ -32,7 +32,8 @@
                 PLUS: 'js-counter-plus',
                 MINUS: 'js-counter-minus',
                 APPLY: 'js-order-item-counter-apply',
-                DELETE: 'js-order-item-counter-delete'
+                DELETE: 'js-order-item-counter-delete',
+                DISABLED: 'disabled'
             };
 
         provide(BaseCounter.extend({
@@ -51,6 +52,11 @@
                 this.blockName   = options.blockName;
                 this.productData = options.productData;
 
+                this.subViews = {
+                    minus: this.$el.find('.' + CSS_CLASSES.MINUS),
+                    plus: this.$el.find('.' + CSS_CLASSES.PLUS)
+                };
+
                 this.listenTo(this, 'changeQuantity', this.render.bind(this));
 
                 // Setup events
@@ -59,6 +65,8 @@
                 this.events['click .' + CSS_CLASSES.APPLY]  = 'applyCounter';
                 this.events['click .' + CSS_CLASSES.DELETE] = 'deleteProduct';
                 this.events['change .' + CSS_CLASSES.VALUE] = 'changeInput';
+
+                this.checkButtons();
 
                 // Apply events
                 this.delegateEvents();
@@ -71,6 +79,20 @@
              * @type        {Object}
              */
             events: {},
+
+            checkButtons: function() {
+                if ( this.quantity === this.minValue ) {
+                    this.subViews.minus.addClass(CSS_CLASSES.DISABLED);
+                } else {
+                    this.subViews.minus.removeClass(CSS_CLASSES.DISABLED);
+                }
+
+                if ( this.quantity === this.maxValue ) {
+                    this.subViews.plus.addClass(CSS_CLASSES.DISABLED);
+                } else {
+                    this.subViews.plus.removeClass(CSS_CLASSES.DISABLED);
+                }
+            },
 
             /**
              * Показать каунтер
@@ -166,6 +188,7 @@
                 console.info('module:enter.order.item.counter.view~OrderItemCounterView#render');
 
                 this.input.val(event.quantity);
+                this.checkButtons();
             }
         }));
     }
