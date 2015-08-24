@@ -82,17 +82,20 @@
                         {
                             fieldNode: this.subViews.street,
                             require: !!this.subViews.street.attr('data-required'),
-                            validateOnChange: true
+                            validateOnChange: true,
+                            errorMsg: 'Введите улицу'
                         },
                         {
                             fieldNode: this.subViews.building,
                             require: !!this.subViews.building.attr('data-required'),
-                            validateOnChange: true
+                            validateOnChange: true,
+                            errorMsg: 'Заполните поле'
                         },
                         {
                             fieldNode: this.subViews.apartment,
                             require: !!this.subViews.apartment.attr('data-required'),
-                            validateOnChange: true
+                            validateOnChange: true,
+                            errorMsg: 'Заполните поле'
                         }
                     ]
                 };
