@@ -315,7 +315,9 @@ class IndexAction {
             $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
         }
 
-        $product->setCoupons($actionResponse->couponQuery->response->getCouponsForProduct($product->getUi()));
+        if ($actionResponse->couponQuery) {
+            $product->setCoupons($actionResponse->couponQuery->response->getCouponsForProduct($product->getUi()));
+        }
 
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('product', $product);

@@ -185,6 +185,10 @@ namespace EnterApplication\Action\ProductCard
             });
 
             call_user_func(function() use (&$productQuery, &$couponQuery) {
+                if (empty($productQuery->response->product['ui'])) {
+                    return;
+                }
+
                 $couponQuery = new Query\Product\Coupon\GetCouponByProductsUi($productQuery->response->product['ui']);
             });
 
@@ -450,7 +454,7 @@ namespace EnterApplication\Action\ProductCard\Get
         public $lifeGiftProductQuery;
         /** @var Query\Product\GetDescriptionByUiList|null */
         public $lifeGiftProductDescriptionQuery;
-        /** @var Query\Product\Coupon\GetCouponByProductsUi */
+        /** @var Query\Product\Coupon\GetCouponByProductsUi|null */
         public $couponQuery;
         /** @var Query\Product\GetByUiList|null */
         public $similarProductQuery;

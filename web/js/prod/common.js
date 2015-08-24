@@ -2305,7 +2305,9 @@ $(function() {
 						$('.jsOneClickForm').remove();
 						$('.jsNewPoints').remove();            // удалить ранее созданные карты
 						ENTER.OrderV31Click.koModels = [];
-						ENTER.OrderV31Click.map.destroy();
+						if (ENTER.OrderV31Click.map && ENTER.OrderV31Click.map.destroy) {
+							ENTER.OrderV31Click.map.destroy();
+						}
 
 						if (location.hash.indexOf('#one-click') == 0) {
 							location.hash = '#.';

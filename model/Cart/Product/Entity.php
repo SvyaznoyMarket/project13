@@ -39,6 +39,8 @@ namespace Model\Cart\Product {
          * @var bool
          */
         public $isGone = false;
+        /** @var bool */
+        public $isAvailable = true;
         /**
          * Если данный товар попал на оформление заказа
          * @var bool
@@ -66,6 +68,7 @@ namespace Model\Cart\Product {
             if (isset($data['quantity'])) $this->quantity = (int)$data['quantity'];
             if (isset($data['isGone'])) $this->isGone = (bool)$data['isGone'];
             if (isset($data['inOrder'])) $this->inOrder = (bool)$data['inOrder'];
+            if (isset($data['isAvailable'])) $this->isAvailable = (bool)$data['isAvailable'];
             if (isset($data['added'])) $this->added = $data['added'];
 
             // TODO это ещё актуально? Может в сессии старых пользователей может содержаться error?

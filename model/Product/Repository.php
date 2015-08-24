@@ -303,6 +303,7 @@ class Repository {
             $result[$id]['count'] = isset($kitCountById[$id]) ? $kitCountById[$id] : 0;
 
             if (\App::config()->lite['enabled']) {
+                $result[$id]['stockCount'] = $product->getStockWithMaxQuantity() ? $product->getStockWithMaxQuantity()->getQuantity() : 0;
                 $result[$id]['product'] = $product;
             }
 
