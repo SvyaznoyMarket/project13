@@ -8,6 +8,7 @@
  * @requires    FormValidator
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
+ * [About kladr]{@link https://github.com/garakh/kladrapi-jsclient}
  */
 !function( modules, module ) {
     modules.define(
@@ -102,9 +103,18 @@
 
                 this.validator = new FormValidator(validationConfig);
 
+                this.subViews.street.kladr({
+                    type: $.kladr.type.street,
+                    parentType: $.kladr.type.city,
+                    parentId: this.regionData.kladrId,
+                    select: this.setStreet.bind(this)
+                });
+
                 if ( !_.isEmpty(this.streetData) ) {
                     this.setStreet(this.streetData);
                     this.validator._markFieldValid(this.subViews.street);
+
+                    this.subViews.street.kladr('controller').setValueByObject(this.streetData);
                 }
 
                 if ( !_.isEmpty(this.buildingData) ) {
@@ -116,13 +126,6 @@
                     this.subViews.apartment.val(this.apartment);
                     this.validator._markFieldValid(this.subViews.apartment);
                 }
-
-                this.subViews.street.kladr({
-                    type: $.kladr.type.street,
-                    parentType: $.kladr.type.city,
-                    parentId: this.regionData.kladrId,
-                    select: this.setStreet.bind(this)
-                });
 
                 // Setup events
                 this.events['blur .' + CSS_CLASSES.APARTMENT_INPUT] = 'setApartment';
@@ -142,6 +145,10 @@
             events: {},
 
             setStreet: function( streetData ) {
+                if ( _.isEmpty(streetData) ) {
+                    return;
+                }
+
                 lscache.set('smartadress_streetData', streetData);
                 this.subViews.streetLabel.text(streetData.type);
                 this.subViews.street.val(streetData.name);
@@ -159,9 +166,17 @@
                     parentId: this.streetData.id,
                     select: this.setBuiling.bind(this)
                 });
+
+                if ( !_.isEmpty(this.buildingData) ) {
+                    this.subViews.building.kladr('controller').setValueByObject(this.buildingData)
+                }
             },
 
             setBuiling: function( buildingData ) {
+                if ( _.isEmpty(buildingData) ) {
+                    return;
+                }
+
                 this.subViews.building.val(buildingData.name);
                 lscache.set('smartadress_buildingData', buildingData);
 
