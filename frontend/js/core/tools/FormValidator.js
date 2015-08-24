@@ -249,7 +249,7 @@
              * @param       {Object}    field.fieldNode Ссылка на jQuery объект поля
              * @param       {String}    field.validBy   Тип валидации поля
              * @param       {Boolean}   field.require   Является ли поле обязательным к заполению
-             * @param       {String}    field.customErr Сообщение об ошибке, если поле не прошло валидацию
+             * @param       {String}    field.errorMsg  Сообщение об ошибке, если поле не прошло валидацию
              *
              * @return      {Object}    error           Объект с ошибкой
              * @return      {Boolean}   error.hasError  Есть ли ошибка
@@ -273,7 +273,7 @@
                 fieldNode = field.fieldNode;
                 require   = ( fieldNode.attr('required') === 'required' ) ? true : field.require; // если у элемента формы есть required то поле обязательное, иначе брать из конфига
                 validBy   = field.validBy;
-                customErr = field.customErr;
+                customErr = field.errorMsg;
 
                 if ( !fieldNode.length ) {
                     console.warn('нет поля, не валидируем');
