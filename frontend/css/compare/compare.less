@@ -32,7 +32,15 @@
     z-index: 3;
     top: 90px;
 
-    padding: 15px 30px 0;
+    padding: 30px 30px 0;
+
+    right: 0;
+    left: 0;
+    background: @white;
+    width: 100%;
+    min-height: 120px;
+    z-index: 3;
+
     &_t {
         .font-size(26);
 
@@ -99,7 +107,7 @@
     position: relative;
     z-index: 2;
 
-    margin: 1px 0 0;
+    margin: 90px 0 0;
     padding-bottom: 20px;
 }
 
@@ -137,12 +145,12 @@
             .opacity(0);
         }
         .cmprCnt_mode {
-            margin: 15px 0 0 0;
+            margin: 26px 0 0 0;
         }
     }
     &_head {
         .cmprCnt_cell {
-            height: 265px;
+            height: 281px;
         }
         td ,
         th {
@@ -268,7 +276,7 @@
         }
     }
     &_mode {
-        margin: 60px 0 0 0;
+        margin: 90px 0 0 0;
         padding: 0;
 
         text-align: center;
@@ -387,56 +395,6 @@
         margin-top: 2px;
 
         .transition(all .3s ease);
-    }
-}
-
-.footerw {
-    position: fixed;
-    right: 0;
-    left: 0;
-
-    height: 20px;
-
-    background: @black;
-    &_tx {
-        line-height: 20px;
-
-        width: 940px;
-        height: 20px;
-        margin: 0 auto;
-        padding: 0 10px;
-
-        color: @white;
-    }
-}
-
-.compare-userbar {
-    min-width: 960px;
-    .userbar-static {
-        position: fixed;
-        top: 0;
-        right: 0;
-        left: 0;
-
-        width: auto;
-        margin-right: -2px;
-        margin-left: 0;
-        padding-left: 0;
-
-        border-width: 0;
-        .topbar_l {
-            padding-left: 10px;
-        }
-    }
-    .userbar-fixed {
-        right: -3px;
-        left: 0;
-
-        width: auto;
-        margin-left: 0;
-        .topbar_l {
-            padding-left: 10px;
-        }
     }
 }
 

@@ -291,13 +291,13 @@
 
                                     rowContainers.css({
                                         'position': 'fixed',
-                                        'top': '0',
+                                        'top': '88px',
                                         'margin-left': -shift.left + 'px'
                                     });
 
                                     sameContainers.css({
                                         'position': 'fixed',
-                                        'top': '0',
+                                        'top': '88px',
                                         'margin-top': '0'
                                     });
                                 }, 0);

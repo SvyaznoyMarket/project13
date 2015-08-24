@@ -45,7 +45,6 @@ return function (
                                     <img src="" alt="" class="goods__img-image" data-bind="attr: {src: imageUrl}">
                                 </a>
 
-
                                 <div class="goods__rating rating">
                                     <!-- ko if: reviews.count -->
                                     <span class="rating-state">
@@ -62,16 +61,14 @@ return function (
                                     <!-- /ko -->
                                 </div>
 
-
                                 <div class="goods__name">
                                     <div class="goods__name-inn">
                                         <a href="" data-bind="attr: {href: link}"><!-- ko text: prefix --><!-- /ko --> <!-- ko text: webName --><!-- /ko --></a>
                                     </div>
                                 </div>
 
-                                <!-- ko if: priceOld != '0' -->
-                                <div class="goods__price-old"><span class="line-through" data-bind="html: priceOld"></span>&thinsp;<span class="rubl">C</span></div>
-                                <!-- /ko -->
+                                <div class="goods__price-old"><!-- ko if: priceOld != '0' --><span class="line-through" data-bind="html: priceOld"></span>&thinsp;<span class="rubl">C</span><!-- /ko --></div>
+                                
                                 <div class="goods__price-now"><span data-bind="html: price"></span>&thinsp;<span class="rubl">C</span></div>
 
                                 <a href="" class="goods__btn btn-primary js-buy-button "
