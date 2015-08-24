@@ -26,6 +26,8 @@ class MapPoint extends BasicPoint {
     /** @var string */
     public $nearestDay;
     /** @var string */
+    public $dateInterval;
+    /** @var string */
     public $humanNearestDay;
 
 //    public $blockName;
@@ -47,6 +49,7 @@ class MapPoint extends BasicPoint {
         if (isset($data['icon'])) $this->icon = $data['icon'];
         if (isset($data['cost'])) $this->cost = $data['cost'];
         if (isset($data['nearestDay'])) $this->nearestDay = $data['nearestDay'];
+        if (isset($data['dateInterval'])) $this->dateInterval = $data['dateInterval'];
 
         /* Это уже лишнее но пусть будет пока тут */
         if (isset($data['blockName'])) $this->blockName = $data['blockName'];
@@ -62,8 +65,26 @@ class MapPoint extends BasicPoint {
 
     }
 
+    /**
+     * @return string|null
+     */
     public function humanizeDate() {
-        return $this->nearestDay ? \App::helper()->humanizeDate(\DateTime::createFromFormat('Y-m-d', $this->nearestDay)) : null;
+        $return = null;
+
+        if ($this->dateInterval) {
+            $from = !empty($this->dateInterval['from']) ? \DateTime::createFromFormat('Y-m-d', $this->dateInterval['from']) : null;
+            $to = !empty($this->dateInterval['to']) ? \DateTime::createFromFormat('Y-m-d', $this->dateInterval['to']) : null;
+
+            $return = sprintf(
+                '%s %s',
+                $from ? ('с ' . $from->format('d.m')) : '',
+                $to ? (' по ' . $to->format('d.m')) : ''
+            );
+        } else if ($this->nearestDay) {
+            $return = \App::helper()->humanizeDate(\DateTime::createFromFormat('Y-m-d', $this->nearestDay));
+        }
+
+        return $return;
     }
 
     /**

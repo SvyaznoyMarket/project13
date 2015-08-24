@@ -459,6 +459,11 @@ namespace Model\OrderDelivery\Entity {
                             $point = [
                                 'point'         => &$orderDelivery->points[$pointType]->list[$pointItem['id']],
                                 'nearestDay'    => $pointItem['nearest_day'],
+                                'dateInterval'  => (
+                                    (isset($pointItem['date_interval']) && is_array($pointItem['date_interval']))
+                                    ? ($pointItem['date_interval'] + ['from' => null, 'to' => null])
+                                    : null
+                                ),
                                 'cost'          => (int)$pointItem['cost']
                             ];
 

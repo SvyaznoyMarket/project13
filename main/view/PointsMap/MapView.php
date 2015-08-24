@@ -140,6 +140,7 @@ class MapView {
                     'icon'  => $orderDelivery->points[$token]->icon,
                     'cost'  => (string)$point['cost'],
                     'nearestDay'  => $point['nearestDay'],
+                    'dateInterval' => $point['dateInterval'],
                     'blockName'    => $orderDelivery->points[$token]->block_name, // blockName == orderToken ??
                     'orderToken' => $order->block_name,
                     'dropdownName'  => $orderDelivery->points[$token]->dropdown_name,
