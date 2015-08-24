@@ -178,18 +178,19 @@
     }
     &-variations{
         height: 16px;
-        margin: 10px 0px 7px;
+        margin: 10px 0px 0px;
         display: block;
         width: 100%;
-        position: absolute;
-        bottom: 0px;
+
         &__lbl{
             font-size: 12px;
             color: #8c8c8c;
-            padding-left: 34px;
-            background-image: url('/css/bCatalog/img/bOptions.png');
-            background-position: 2px 0px;
-            background-repeat: no-repeat;
+        }
+        &__val{
+            font-size: 12px;
+            .inline-block();
+            position: relative;
+            color: #363636;
         }
     }
 }

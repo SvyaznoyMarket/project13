@@ -56,7 +56,7 @@
                 {{/review}}
 
                 <ul class="listing-props">
-                    {{#properties}}
+                    {{#properties}}<!-- TODO: вывести здесь 5 строчек, а не 3 как сейчас -->
                         <li class="listing-props__i">
                             <span class="listing-props__name"><span
                                     class="listing-props__name-wrap">{{name}}</span></span>
@@ -73,9 +73,9 @@
                     </li>
                 </ul>
                 <div class="listing-variations">
-                    {{#hasVariations}}
-                        <span class="listing-variations__lbl">Варианты</span>
-                    {{/hasVariations}}
+                    <!--{{!#hasVariations}}-->
+                        <span class="listing-variations__lbl">Можно выбрать:</span><span class="listing-variations__val">Стандарт комплекта</span>
+                    <!--{{!/hasVariations}}-->
                 </div>
             </div>
         {{! END: Блок с названием и характеристиками }}
