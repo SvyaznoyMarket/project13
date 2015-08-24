@@ -63,7 +63,7 @@ return function (
 
                                 <div class="goods__name">
                                     <div class="goods__name-inn">
-                                        <a href="" data-bind="attr: {href: link}"><!-- ko text: prefix --><!-- /ko --> <!-- ko text: webName --><!-- /ko --></a>
+                                        <a class="link" href="" data-bind="attr: {href: link}"><!-- ko text: prefix --><!-- /ko --> <!-- ko text: webName --><!-- /ko --></a>
                                     </div>
                                 </div>
 

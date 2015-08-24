@@ -40,7 +40,7 @@ $f = function(
 
             <div class="goods__name">
                 <div class="goods__name-inn">
-                    <a href="<?= $link ?>"><?= $helper->escape($product->getName()) ?></a>
+                    <a class="link"> href="<?= $link ?>"><?= $helper->escape($product->getName()) ?></a>
                 </div>
             </div>
 

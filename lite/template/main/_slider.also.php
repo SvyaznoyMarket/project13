@@ -26,7 +26,7 @@ $config = [
 
                     <div class="goods__name">
                         <div class="goods__name-inn">
-                            <a href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span></a>
+                            <a class="link"> href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span></a>
                         </div>
                     </div>
 
@@ -40,7 +40,7 @@ $config = [
 
                     <div class="goods__name">
                         <div class="goods__name-inn">
-                            <a href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка</span></a>
+                            <a class="link"> href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка</span></a>
                         </div>
                     </div>
 
@@ -54,7 +54,7 @@ $config = [
 
                     <div class="goods__name">
                         <div class="goods__name-inn">
-                            <a href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span></a>
+                            <a class="link"> href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span></a>
                         </div>
                     </div>
 
@@ -68,7 +68,7 @@ $config = [
 
                     <div class="goods__name">
                         <div class="goods__name-inn">
-                            <a href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span></a>
+                            <a class="link"> href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span></a>
                         </div>
                     </div>
 
@@ -82,7 +82,7 @@ $config = [
 
                     <div class="goods__name">
                         <div class="goods__name-inn">
-                            <a href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка</span></a>
+                            <a class="link"> href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка</span></a>
                         </div>
                     </div>
 
@@ -96,7 +96,7 @@ $config = [
 
                     <div class="goods__name">
                         <div class="goods__name-inn">
-                            <a href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span></a>
+                            <a class="link"> href="<?= $link['url'] ?>"><span class="underline">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span></a>
                         </div>
                     </div>
 

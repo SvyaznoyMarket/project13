@@ -42,7 +42,7 @@ $category = $page->getParam('category');
 
                                 <div class="goods__name">
                                     <div class="goods__name-inn">
-                                        <a href="<?= $link['url'] ?>"><span class="underline"><?= $link['name'] ?></span></a>
+                                        <a class="link"> href="<?= $link['url'] ?>"><span class="underline"><?= $link['name'] ?></span></a>
                                     </div>
                                 </div>
 

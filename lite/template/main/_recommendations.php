@@ -75,7 +75,7 @@ $slickConfig = [
 
                     <div class="goods__name">
                         <div class="goods__name-inn">
-                            <a href="<?= $productLink ?>"><?= $product->getName() ?></a>
+                            <a class="link"> href="<?= $productLink ?>"><?= $product->getName() ?></a>
                         </div>
                     </div>
 

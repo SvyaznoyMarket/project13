@@ -71,7 +71,7 @@
 
             cursor: pointer;
 
-            border: 1px solid @grey-light-2;
+            border: 1px solid @grey-light-4;
             background: @white;
 
             .inline-block();
@@ -125,17 +125,16 @@
     &-scroll {
         .cmprCnt_head {
             .cmprCnt_cell {
-                height: 135px;
+                height: 187px;
                 padding-top: 2px;
             }
         }
         .goods__img {
-            display: block;
-            overflow: hidden;
-
-            height: 0;
-
-            .opacity(0);
+            height: 50px;
+            padding-top: 10px;
+            &-image {
+                max-height: 50px;
+            }
         }
         .rating {
             overflow: hidden;
@@ -145,7 +144,7 @@
             .opacity(0);
         }
         .cmprCnt_mode {
-            margin: 26px 0 0 0;
+            margin: 52px 0 0 0;
         }
     }
     &_head {
@@ -190,7 +189,7 @@
         text-align: left;
 
         color: #515151;
-        border-bottom: 1px dotted @grey-light-2;
+        border-bottom: 1px dotted @grey-light-4;
         .cmprCnt_cell {
             width: 210px;
         }
@@ -198,21 +197,21 @@
             width: 224px;
             padding-left: 30px;
 
-            border-bottom: 1px dotted @grey-light-2;
+            border-bottom: 1px dotted @grey-light-4;
         }
         &.cmprCnt_modes {
             border: none;
             .cmprCnt_modeW {
-                border-right: 1px dotted @grey-light-2;
+                border-right: 1px dotted @grey-light-4;
             }
         }
     }
     td {
         position: relative;
 
-        border-bottom: 1px dotted @grey-light-2;
+        border-bottom: 1px dotted @grey-light-4;
         .cmprCnt_modeW {
-            border-bottom: 1px dotted @grey-light-2;
+            border-bottom: 1px dotted @grey-light-4;
         }
         &.cmprCnt_product {
             border: none;
@@ -258,7 +257,7 @@
         }
         &_item {
             .cmprCnt_fixed {
-                border-right: 1px dotted @grey-light-2;
+                border-right: 1px dotted @grey-light-4;
                 background: @white;
             }
             .cmprCnt_property_item_name {
@@ -286,12 +285,12 @@
             .font-size(14);
 
             width: 175px;
-            margin: 0 auto 20px;
+            margin: 0 auto 15px;
             padding: 5px 10px 3px 30px;
 
             text-align: left;
 
-            border: 1px solid @grey-light-2;
+            border: 1px solid @grey-light-3;
             background: transparent;
 
             .inline-block();
