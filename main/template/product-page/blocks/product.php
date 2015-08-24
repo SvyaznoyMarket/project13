@@ -190,7 +190,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
                class="product-card-tools__lk jsCompareLink"
                data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>"
                data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>"
-                >
+            >
                 <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
                 <span class="product-card-tools__tx">Сравнить</span>
             </a>

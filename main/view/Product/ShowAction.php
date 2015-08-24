@@ -27,6 +27,8 @@ class ShowAction {
         array $cartButtonSender = [],
         \Model\Product\Category\Entity $category = null
     ) {
+        $router = \App::router();
+
         if ($product->isInShopOnly()) {
             $inShopOnlyLabel = ['name' => 'Только в магазинах'];
         } else {
@@ -95,7 +97,14 @@ class ShowAction {
             'brandImage'    => $product->getBrand() && $product->getBrand()->getImage() ? $product->getBrand()->getImage() : null,
             'isSlot' => (bool)$product->getSlotPartnerOffer(),
             'isOnlyFromPartner' => $product->isOnlyFromPartner(),
-            'isNewWindow'       => \App::abTest()->isNewWindow() // открытие товаров в новом окне
+            'isNewWindow'       => \App::abTest()->isNewWindow(), // открытие товаров в новом окне
+            'compareButton'     => [
+                'id'                => $product->id,
+                'typeId'            => $product->getType() ? $product->getType()->getId() : null,
+                'addUrl'            => $router->generate('compare.add', ['productId' => $product->getId(), 'location' => 'product']),
+                'isSlot'            => (bool)$product->getSlotPartnerOffer(),
+                'isOnlyFromPartner' => $product->isOnlyFromPartner(),
+            ],
         ];
 
         // Дополняем свойствами для каталога в виде листинга
