@@ -63,7 +63,7 @@ class MapPoint extends BasicPoint {
     }
 
     public function humanizeDate() {
-        return \App::helper()->humanizeDate(\DateTime::createFromFormat('Y-m-d', $this->nearestDay));
+        return $this->nearestDay ? \App::helper()->humanizeDate(\DateTime::createFromFormat('Y-m-d', $this->nearestDay)) : null;
     }
 
     /**
