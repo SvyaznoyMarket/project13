@@ -106,7 +106,7 @@ class ShowAction {
                     'value' => $entity->getStringValue(),
 
                 ];
-            }, $product->getPropertiesInView(3));
+            }, $product->getPropertiesInView(5));
         }
 
         // oldPrice and priceSale
