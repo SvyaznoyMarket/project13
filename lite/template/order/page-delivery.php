@@ -155,10 +155,9 @@ return function(
                                     <div class="form-address__field form-address__field_detail form__field">
                                         <input type="text"
                                                class="form__it it js-smartadress-apartment <?= $orderDelivery->user_info->address['apartment'] ? 'valid' : '' ?>"
-                                               data-required="true"
                                                name=""
                                                value="<?= $orderDelivery->user_info->address['apartment'] ?>">
-                                        <label for="" class="form__placeholder placeholder placeholder_str">Квартира</label>
+                                        <label for="" class="form__placeholder placeholder">Квартира</label>
                                     </div>
                                 </div>
 
@@ -235,7 +234,7 @@ return function(
 
                                     <div class="order-item__data-item order-item__data-item_edit js-order-item-counter">
                                         <div data-spinner-for="" class="counter counter_mini">
-                                            <button class="counter__btn counter__btn_minus disabled js-counter-minus"></button>
+                                            <button class="counter__btn counter__btn_minus js-counter-minus"></button>
                                             <input name="productQuantity[]" type="text" value="<?= $product->quantity ?>" class="counter__it js-counter-value" data-stock="<?= $product->stock ?>" />
                                             <button class="counter__btn counter__btn_plus js-counter-plus"></button>
                                             <span>шт.</span>

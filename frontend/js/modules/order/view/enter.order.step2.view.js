@@ -207,7 +207,16 @@
                     }
                 }
 
-                this.$el.empty().prepend(html);
+                delete this.subViews;
+
+                // COMPLETELY UNBIND THE VIEW
+                this.undelegateEvents();
+                this.stopListening();
+
+                this.$el.removeData().unbind();
+                this.$el.empty();
+
+                this.$el.prepend(html);
 
                 this.initialize();
             }
