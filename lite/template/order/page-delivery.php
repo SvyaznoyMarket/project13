@@ -155,10 +155,9 @@ return function(
                                     <div class="form-address__field form-address__field_detail form__field">
                                         <input type="text"
                                                class="form__it it js-smartadress-apartment <?= $orderDelivery->user_info->address['apartment'] ? 'valid' : '' ?>"
-                                               data-required="true"
                                                name=""
                                                value="<?= $orderDelivery->user_info->address['apartment'] ?>">
-                                        <label for="" class="form__placeholder placeholder placeholder_str">Квартира</label>
+                                        <label for="" class="form__placeholder placeholder">Квартира</label>
                                     </div>
                                 </div>
 
