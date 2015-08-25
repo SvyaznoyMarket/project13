@@ -177,7 +177,8 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
                 'product' => $product,
                 'sender'  => $buySender,
                 'sender2' => $buySender2,
-                'value' => 'Купить в 1 клик'
+                'value' => 'Купить в 1 клик',
+                'location'  => 'product-card',
             ]) ?>
         </li>
 
