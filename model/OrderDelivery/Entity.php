@@ -878,12 +878,13 @@ namespace Model\OrderDelivery\Entity\Order\Delivery {
         public $token;
         /** @var string */
         public $id;
+        /** @var array|null */
+        public $dateInterval;
 
 
         public function __construct(array $data = []) {
             if (isset($data['token'])) $this->token = (string)$data['token'];
             if (isset($data['id'])) $this->id = (string)$data['id'];
-
         }
 
         /** Точка Связного?

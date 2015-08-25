@@ -37,7 +37,12 @@ return function(
 
     <?= $helper->render('order-v3-new/__error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
-    <? foreach ($orderDelivery->orders as $order): $i++;?>
+    <? foreach ($orderDelivery->orders as $order): $i++ ?>
+    <?
+        $dataPoints = (new \View\PointsMap\MapView());
+        $dataPoints->preparePointsWithOrder($order, $orderDelivery);
+    ?>
+
         <? if ((bool)$order->validationErrors) : ?>
             <div class="jsOrderValidationErrors" data-value="<?= $helper->json($order->validationErrors) ?>"></div>
         <? endif; ?>
@@ -190,20 +195,32 @@ return function(
                             <strong><?= @$order->delivery->delivery_method->name ?></strong>
                             <span class="js-order-changePlace-link orderChange brb-dt" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span>
                         </div>
-                    <? endif; ?>
-                    <div class="order__addr">
-                        <div class="order__img"><img src="/images/deliv-logo/enter.png">
-                            <span class="order__point-name">Магазин Enter</span></div>
-                        <div class="order__point">
-                        <div class="order__point-addr"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
+
+                        <div class="order__addr">
+                            <div class="order__img"><img src="<?= @$orderDelivery->points[$order->delivery->point->token]->icon ?>">
+                                <span class="order__point-name"><?= $point->listName ?></span></div>
+                            <div class="order__point">
+                                <div class="order__point-addr"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
                             <span class="order__addr-tx">
                                 <? if (isset($point->subway[0])): ?><?= $point->subway[0]->name ?><br/><? endif ?>
                                 <? if (isset($point->address)): ?><span class="colorBrightGrey"><?= $point->address ?></span><? endif; ?>
                             </span>
+                                </div>
+                            </div>
+                            <? if ($dateInterval = $order->delivery->point->dateInterval): ?>
+                            <?
+                                $from = null;
+                                $to = null;
+                                try {
+                                    $from = !empty($dateInterval['from']) ? \DateTime::createFromFormat('Y-m-d', $dateInterval['from']) : null;
+                                    $to = !empty($dateInterval['to']) ? \DateTime::createFromFormat('Y-m-d', $dateInterval['to']) : null;
+                                } catch (\Exception $e) {}
+                            ?>
+                            <div class="order__reserv">
+                                <span class="order__reserv-inn"><?= sprintf('%s %s', $from ? ('с ' . $from->format('d.m')) : '', $to ? (' по ' . $to->format('d.m')) : '') ?></span>
+                            </div>
+                            <? endif ?>
                         </div>
-                        </div>
-                        <div class="order__reserv"><span class="order__reserv-inn">1-3 дня</span></div>
-                    </div>
                         <div class="orderCol_tm">
                             <? if (isset($point->regtime)): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
                             <? if (isset($point) && (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_cost < \App::config()->order['prepayment']['priceLimit']))) : ?>
@@ -211,14 +228,15 @@ return function(
                                 <span class="orderCol_tm_t">Оплата при получении: </span>
                                 <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?>
                                     <!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные
-                                <? endif; ?>
+                                <? endif ?>
                                 <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
                                     <!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта
-                                <? endif; ?>
-                            <? endif; ?>
+                                <? endif ?>
+                            <? endif ?>
                         </div>
-                    <? if ($order->delivery->point && $order->delivery->point->isSvyaznoy()) : ?>
-                        <span class="order-warning">В магазинах «Связной» не принимаются бонусы «Спасибо от Сбербанка»</span>
+                        <? if ($order->delivery->point && $order->delivery->point->isSvyaznoy()) : ?>
+                            <span class="order-warning">В магазинах «Связной» не принимаются бонусы «Спасибо от Сбербанка»</span>
+                        <? endif ?>
                     <? endif ?>
                 </div>
 
@@ -248,14 +266,9 @@ return function(
                         </label>
                     </div>
 
-                <? endif; ?>
+                <? endif ?>
 
             <? endif ?>
-
-            <?
-                $dataPoints = (new \View\PointsMap\MapView());
-                $dataPoints->preparePointsWithOrder($order, $orderDelivery);
-            ?>
 
             <?= \App::templating()->render('order-v3/common/_map', [
                 'dataPoints'    => $dataPoints,
@@ -271,7 +284,7 @@ return function(
                     <label class="customLabel customLabel-checkbox <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
                 </div>
 
-            <? endif; ?>
+            <? endif ?>
         </div>
         <!--/ информация о доставке -->
     </div>

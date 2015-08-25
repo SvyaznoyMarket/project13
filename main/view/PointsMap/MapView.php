@@ -127,6 +127,7 @@ class MapView {
                 $data = [
                     /* BasicPoint */
                     'id' => $p->id,
+                    'token' => $token,
                     'name' => $p->name,
                     'address' => \App::helper()->noBreakSpaceAfterDot($p->address),
                     'subway'    => is_array($p->subway) ? reset($p->subway) : null,
@@ -136,7 +137,6 @@ class MapView {
                     'latitude' => $p->latitude,
                     'longitude' => $p->longitude,
                     'marker'    => $orderDelivery->points[$token]->marker,
-                    'token'  => $token,
                     'icon'  => $orderDelivery->points[$token]->icon,
                     'cost'  => (string)$point['cost'],
                     'nearestDay'  => $point['nearestDay'],
@@ -148,6 +148,10 @@ class MapView {
 
                 ];
                 $this->points[] = new Point($data);
+
+                if ($order->delivery && $order->delivery->point && ($order->delivery->point->id === $p->id)) {
+                    $order->delivery->point->dateInterval = $point['dateInterval'];
+                }
             }
         }
 
