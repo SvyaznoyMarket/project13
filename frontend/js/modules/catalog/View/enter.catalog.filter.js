@@ -39,6 +39,7 @@
                 DROPDOWN: 'js-category-v2-filter-dropBox',
                 DROPDOWN_OPENER: 'js-category-v2-filter-dropBox-opener',
                 DROPDOWN_OPEN: 'opn',
+                DROPDOWN_ACTIVE: 'actv',
                 RANGE_SLIDER: 'js-category-filter-rangeSlider',
                 SLIDER: 'js-category-filter-rangeSlider-slider',
                 SLIDER_FROM: 'js-category-filter-rangeSlider-from',
@@ -440,7 +441,31 @@
              * @method      filterChanged
              * @memberOf    module:enter.catalog.filter~CatalogFilterView#
              */
-            filterChanged: function() {
+            filterChanged: function( event ) {
+                var
+                    target   = $(event.target),
+                    dropdown = target.parents('.' + CSS_CLASSES.DROPDOWN),
+                    inputs   = $('input, select, textarea', dropdown),
+                    isSelected;
+
+                inputs.each(function(index, element) {
+                    var $element = $(element);
+                    if (
+                        ($element.is('input[type="text"], textarea') && ('' != $element.val() || (null != $element.data('min') && $element.val() != $element.data('min')) || (null != $element.data('max') && $element.val() != $element.data('max'))))
+                        || ($element.is('input[type="checkbox"], input[type="radio"]') && $element[0].checked)
+                        || ($element.is('select') && null != $element.val())
+                    ) {
+                        isSelected = true;
+                        return false;
+                    }
+                });
+
+                if ( isSelected ) {
+                    dropdown.addClass(CSS_CLASSES.DROPDOWN_ACTIVE);
+                } else {
+                    dropdown.removeClass(CSS_CLASSES.DROPDOWN_ACTIVE);
+                }
+
                 this.catalogView.updateListing();
 
                 return false;
