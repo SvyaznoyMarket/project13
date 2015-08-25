@@ -37,7 +37,8 @@
                 COMMENT_AREA: 'js-order-comment-text',
                 SUBMIT_ORDER: 'js-order-submit',
                 ACCEPT_CHECKBOX: 'jsAcceptAgreement',
-                LOADER: 'loader-elem'
+                LOADER: 'loader-elem',
+                ACTIVE: 'active'
             };
 
         provide(BaseViewClass.extend({
@@ -60,6 +61,7 @@
                 console.info(this.$el);
 
                 this.subViews = {
+                    commentBtn: this.$el.find('.' + CSS_CLASSES.COMMENT_BTN),
                     commentArea: this.$el.find('.' + CSS_CLASSES.COMMENT_AREA),
                     acceptCheckbox: this.$el.find('.' + CSS_CLASSES.ACCEPT_CHECKBOX)
                 };
@@ -118,9 +120,11 @@
              */
             toggleCommentArea: function() {
                 if ( this.subViews.commentArea.is(':visible') ) {
+                    this.subViews.commentBtn.removeClass(CSS_CLASSES.ACTIVE);
                     this.subViews.commentArea.hide();
                 } else {
                     this.subViews.commentArea.show();
+                    this.subViews.commentBtn.addClass(CSS_CLASSES.ACTIVE);
                 }
             },
 
