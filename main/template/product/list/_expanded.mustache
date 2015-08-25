@@ -107,18 +107,16 @@
                     <!-- сравнить, добавить в виш лист -->
                     <ul class="product-card-tools">
 
-                        <li
-                            class="product-card-tools__i product-card-tools__i--compare js-compareProduct"
-                            data-bind="compareButtonBinding: compare"
-                            data-id="{{id}}"
-                            data-type-id="{{typeId}}"
-                        >
+                        <li class="product-card-tools__i product-card-tools__i--compare">
                             <a
-                                class="product-card-tools__lk jsCompareLink"
                                 href="{{addUrl}}"
+                                class="product-card-tools__lk jsCompareListLink"
+                                data-id="{{id}}"
+                                data-bind="compareListBinding: compare"
                                 data-is-slot="{{isSlot}}"
                                 data-is-only-from-partner="{{isOnlyFromPartner}}"
-                            ><!-- по клику сюда цепляется класс product-card-tools__lk--active-->
+                            >
+                                <!-- по клику сюда цепляется класс product-card-tools__lk--active-->
                                 <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
                                 <span class="product-card-tools__tx">Сравнить</span>
                             </a>

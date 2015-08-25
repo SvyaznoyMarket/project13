@@ -25,7 +25,8 @@ class ShowAction {
         $reviewtAction = null,
         $imageSourceType = 'product_160',
         array $cartButtonSender = [],
-        \Model\Product\Category\Entity $category = null
+        \Model\Product\Category\Entity $category = null,
+        \Model\Favorite\Product\Entity $favoriteProduct = null
     ) {
         $router = \App::router();
 
@@ -105,6 +106,24 @@ class ShowAction {
                 'isSlot'            => (bool)$product->getSlotPartnerOffer(),
                 'isOnlyFromPartner' => $product->isOnlyFromPartner(),
             ],
+            'favoriteButton'     =>
+                [
+                    'ui' => $product->ui,
+                ]
+                + (
+                    $favoriteProduct && $favoriteProduct->isFavourite
+                    ? [
+                        'isInFavorite' => true,
+                        'url' => '',
+                        'text' => 'Убрать из избранного',
+                    ]
+                    : [
+                        'isInFavorite' => false,
+                        'url' => '',
+                        'text' => 'В избранное',
+                    ]
+                )
+            ,
         ];
 
         // Дополняем свойствами для каталога в виде листинга
