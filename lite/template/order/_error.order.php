@@ -15,7 +15,7 @@ return function(
         if ((bool)$errors) $error = reset($errors);
         ?>
         <? if (isset($error) && $error->details['product_id'] == $product->id) : ?>
-        <div class="order-item__data-item order-item__data-error-quantity">Вы хотели <?= $error->details['requested_amount'] ?> шт. Есть только <?= $error->details['max_available_quantity'] ?> шт.</div>
+        <div class="order-item__data-error-quantity">Вы хотели <?= $error->details['requested_amount'] ?> шт. Есть только <?= $error->details['max_available_quantity'] ?> шт.</div>
     <? endif; ?>
     <? endif; ?>
 
