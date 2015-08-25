@@ -318,7 +318,7 @@ return function(
         </div>
 
         <div class="orderComplSumm">
-            <span class="l">Итого <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <?= $helper->formatPrice($orderDelivery->total_cost) ?>&thinsp;<span class="rubl">A</span></span>
+            Итого <span class="bold"><?= $orderCount ?></span> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <span class="orderComplSumm__total"><?= $helper->formatPrice($orderDelivery->total_cost) ?>&thinsp;<span class="rubl">A</span></span>
         </div>
 
         <div class="orderCompl">
