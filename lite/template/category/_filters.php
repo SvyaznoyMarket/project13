@@ -127,7 +127,7 @@
         <? if ($brandFilter1): ?>
             <!-- бренды -->
             <div class="fltrBtn_kit fltrBtn_kit-brands fltrBtn_kit--mark js-category-v2-filter-otherBrands <?= $hasSelectedOtherBrands ? 'open' : '' ?>">
-                <div class="fltrBtn_tggl fltrBtn_kit_l icon-corner js-category-v2-filter-otherBrandsOpener <?= $brandFilter2->getOption() ? '' : 'without-opener' ?>">
+                <div class="fltrBtn_tggl fltrBtn_kit_l js-category-v2-filter-otherBrandsOpener <?= $brandFilter2->getOption() ? 'icon-corner' : 'without-opener' ?>">
                     <span class="dotted"><?= $brandFilter1->getName() ?></span>
                 </div>
 
