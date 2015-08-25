@@ -114,13 +114,13 @@ class ShowAction {
                     $favoriteProduct && $favoriteProduct->isFavourite
                     ? [
                         'isInFavorite' => true,
-                        'url' => '',
-                        'text' => 'Убрать из избранного',
+                        'url'          => $helper->url('favorite.delete', ['productUi' => $product->getUi()]),
+                        'text'         => 'Убрать из избранного',
                     ]
                     : [
                         'isInFavorite' => false,
-                        'url' => '',
-                        'text' => 'В избранное',
+                        'url'          => $helper->url('favorite.add', ['productUi' => $product->getUi()]),
+                        'text'         => 'В избранное',
                     ]
                 )
             ,
