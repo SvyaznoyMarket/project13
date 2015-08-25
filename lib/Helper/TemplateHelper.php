@@ -175,7 +175,8 @@ class TemplateHelper {
      * @return string
      */
     public function unescape($value) {
-        return htmlspecialchars_decode($value, ENT_QUOTES);
+        // Без ENT_HTML5 не преобразуется сущность &apos; (и, возможно, другие)
+        return htmlspecialchars_decode($value, ENT_QUOTES | ENT_HTML5);
     }
 
     /**
