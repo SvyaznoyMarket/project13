@@ -34,7 +34,13 @@
              * @augments    module:Backbone.Model
              * @constructs  PointModel
              */
-            initialize: function() {}
+            initialize: function() {
+                var
+                    cost = this.get('cost'),
+                    showCurrency = !!(cost > 0);
+
+                this.set({showCurrency: showCurrency});
+            }
         }));
     }
 );
