@@ -324,13 +324,13 @@ return function(
         <div class="orderCompl">
             <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
 
-                <div class="label-strict orderCompl_l orderCompl_l-ln">
+                <div class="label-strict">
                     <input type="checkbox" class="custom-input custom-input_check3 jsAcceptAgreement" id="accept" name="" value="" />
 
-                    <label  class="custom-label jsAcceptTerms" for="accept">
-                        Я ознакомлен и согласен с информацией о продавце и его офертой
+                    <label class="accept-rules custom-label jsAcceptTerms" for="accept">
+                        <span class="accept-rules__text">Я ознакомлен и согласен с информацией о продавце и его офертой</span>
                         <? if ($orderCount == 1) : ?>
-                            <span class="orderCompl_l_lk js-order-oferta-popup-btn" data-value="<?= $order->seller->offer ?>">Ознакомиться</span>
+                            <span class="accept-rules__link underline js-order-oferta-popup-bt" data-value="<?= $order->seller->offer ?>">Ознакомиться</span>
                         <? endif; ?>
                     </label>
                 </div>

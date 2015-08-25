@@ -108,13 +108,26 @@
     padding: 15px 32px;
 
     border-top: 3px solid @orange-bright;
-    &_l {
-        .font-size(16);
+    .label-strict {
         margin-bottom: 10px;
+    }
+    .accept-rules {
+        &__text {
+            line-height: 20px;
+
+            margin-right: 10px;
+
+            .font-size(16);
+            .inline-block(middle);
+        }
+        &__link {
+            .font-size(14);
+            .font-face("GloberRegular");
+            color: @grey-bright;
+        }
     }
     &_btn {
         .font-size(20);
-        font-weight: bold;
         line-height: 32px;
         padding: 0 50px;
         height: 40px;
