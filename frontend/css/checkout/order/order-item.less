@@ -5,11 +5,12 @@
     &__img {
         width: 40px;
         height: 40px;
-        margin-right: 5px;
+        max-width: 45px;
+        padding-right: 5px;
 
         text-align: center;
 
-        .inline-block(middle);
+        vertical-align: middle;
         .image {
             max-width: 95%;
             max-height: 95%;
@@ -18,8 +19,13 @@
     &__name {
         line-height: 1.2;
 
-        .inline-block(middle);
+        vertical-align: middle;
         .font-face('GloberRegular');
+        &-inn {
+            max-height: 30px;
+            overflow: hidden;
+            .inline-block(middle);
+        }
     }
     &__data-item {
         margin-left: 20px;
@@ -35,7 +41,7 @@
             text-align: right;
             white-space: nowrap;
 
-            color: @black;
+            color: @text-color;
         }
         &_count {
             cursor: pointer;
@@ -79,6 +85,7 @@
     }
     &__data {
         text-align: right;
+        margin: 3px 0 0;
 
         &-error-quantity {
             color: @red-normal;

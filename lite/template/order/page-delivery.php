@@ -219,14 +219,17 @@ return function(
                         <? foreach ($order->products as $product): ?>
                             <div class="order-item js-order-item"
                                  data-product='<?= json_encode(['id' => $product->id]) ?>'>
-                                <a href="<?= $product->link ?>" class="order-item__img" target="_blank">
-                                    <img class="image" src="<?= $product->getMainImageUrl('product_60') ?>" alt="<?= $helper->escape($product->name) ?>" />
-                                </a>
 
-                                <a href="<?= $product->link ?>" target="_blank" class="order-item__name">
-                                    <? if ($product->prefix): ?><?= $product->prefix ?><br/><? endif ?>
-                                    <?= $product->name_web ?>
-                                </a>
+                                <div class="table">
+                                    <a href="<?= $product->link ?>" class="order-item__img table-cell" target="_blank">
+                                        <img class="image" src="<?= $product->getMainImageUrl('product_60') ?>" alt="<?= $helper->escape($product->name) ?>" />
+                                    </a>
+
+                                    <a href="<?= $product->link ?>" target="_blank" class="order-item__name table-cell">
+                                        <span class="order-item__name-inn"><? if ($product->prefix): ?><?= $product->prefix ?><? endif ?>
+                                        <?= $product->name_web ?></span>
+                                    </a>
+                                </div>
 
                                 <div class="order-item__data">
                                     <span class="order-item__data-item order-item__data-item_price" ><?= $helper->formatPrice($product->original_price) ?>&thinsp;<span class="rubl">C</span></span>
