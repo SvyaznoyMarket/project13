@@ -14,7 +14,7 @@ $f = function(
 
     <div class="subscribe-form-group">
         <label>Ваш e-mail</label>
-        <input class="subscribe-email" type="email" name="email">
+        <input class="subscribe-email" type="email" name="email" required>
         <button class="subscribe-form-btn" type="submit">Подписаться</button>
     </div>
 </form>
