@@ -133,7 +133,7 @@ class Repository {
                     $coreProductIdentifierName => $productIdentifierChunk,
                 ] + (!in_array('model', $options, true) ? ['withModels' => 0] : []),
                 [],
-                function($response) use(&$products, &$modelProductIdentifierName, &$coreProductIdentifierName, &$productIdentifierChunk, &$callCount, &$expectedCallCount, &$firstException, &$finalCallback) {
+                function($response) use(&$products, &$modelProductIdentifierName, &$coreProductIdentifierName, $productIdentifierChunk, &$callCount, &$expectedCallCount, &$firstException, &$finalCallback) {
                     $callCount++;
 
                     $coreProductsByIdentifier = [];
@@ -157,7 +157,7 @@ class Repository {
                         $finalCallback($firstException);
                     }
                 },
-                function(\Exception $e) use(&$products, &$modelProductIdentifierName, &$productIdentifierChunk, &$callCount, &$expectedCallCount, &$firstException, &$finalCallback) {
+                function(\Exception $e) use(&$products, &$modelProductIdentifierName, $productIdentifierChunk, &$callCount, &$expectedCallCount, &$firstException, &$finalCallback) {
                     $callCount++;
                     
                     if (!$firstException) {
@@ -196,7 +196,7 @@ class Repository {
                 'product/get-description/v1',
                 [$scmsProductRequestIdentifierName => $productIdentifierChunk] + array_fill_keys(array_intersect($options, ['media', 'property', 'label', 'brand', 'category']), 1),
                 [],
-                function($response) use(&$products, &$modelProductIdentifierName, &$scmsProductResponseIdentifierName, &$productIdentifierChunk, &$callCount, &$expectedCallCount, &$firstException, &$finalCallback) {
+                function($response) use(&$products, &$modelProductIdentifierName, &$scmsProductResponseIdentifierName, $productIdentifierChunk, &$callCount, &$expectedCallCount, &$firstException, &$finalCallback) {
                     $callCount++;
 
                     $scmsProductsByIdentifier = [];
@@ -220,7 +220,7 @@ class Repository {
                         $finalCallback($firstException);
                     }
                 },
-                function(\Exception $e) use(&$products, &$modelProductIdentifierName, &$productIdentifierChunk, &$callCount, &$expectedCallCount, &$firstException, &$finalCallback) {
+                function(\Exception $e) use(&$products, &$modelProductIdentifierName, $productIdentifierChunk, &$callCount, &$expectedCallCount, &$firstException, &$finalCallback) {
                     $callCount++;
                     
                     if (!$firstException) {

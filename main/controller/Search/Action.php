@@ -354,6 +354,7 @@ class Action {
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
         \RepositoryManager::product()->prepareProductQueries($products, 'media');
+        \App::coreClientV2()->execute();
 
         foreach ($products as $product) {
             $data['products'][] = [
