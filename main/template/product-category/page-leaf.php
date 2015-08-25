@@ -5,6 +5,7 @@
  * @var $brand                  \Model\Brand\Entity|null
  * @var $productFilter          \Model\Product\Filter
  * @var $productPager           \Iterator\EntityPager
+ * @var $favoriteProductsByUi   \Model\Favorite\Product\Entity[]
  * @var $productSorting         \Model\Product\Sorting
  * @var $productView            string
  * @var $hotlinks               array
@@ -111,6 +112,7 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         'columnCount'            => isset($columnCount) ? $columnCount : 4,
         'class'                  => $category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing() ? 'lstn-btn2' : '',
         'category'               => $category,
+        'favoriteProductsByUi'   => $favoriteProductsByUi,
     ]) // листинг ?>
 
     <? if ($category->isV2()): ?>

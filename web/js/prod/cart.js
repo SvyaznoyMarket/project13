@@ -94,8 +94,7 @@
 	// Ручное обновление количества продукта
 	$body.on('keydown', '.jsCartNumberBoxInput', function(e){
 		var $input = $(e.target),
-			keyCode = e.which,
-			$initialQuantity = $input.val();
+			keyCode = e.which;
 
 		/* http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes */
 		if (keyCode > 36 && keyCode < 41) return true;
@@ -109,6 +108,8 @@
 					return;
 				}
 
+				var productUi = $input.data('product-ui');
+
 				$.ajax({
 					url: ENTER.utils.generateUrl('cart.product.setList', {
 						products: [{ui: $input.data('product-ui'), quantity: $input.val()}]
@@ -119,9 +120,13 @@
 				}).done(function(data){
 					if (data.success) {
 						UserModel.cart().update(data.cart);
+						// Используется далее в always
+						$input = $('.jsCartNumberBoxInput[data-product-ui="' + productUi + '"]');
 					} else {
-						$input.val($initialQuantity);
+						$input.val($input.prop('defaultValue'));
 					}
+
+					updateTimeoutId = false;
 				}).always(function(){
 					updateTimeoutId = false;
 					$input.attr('disabled', false).focus();
@@ -129,6 +134,16 @@
 			}, 500)
 		} else {
 			return false
+		}
+	});
+
+	// Если кол-во > 0 не было введено, то сбрасываем значение на изначальное
+	$body.on('blur', '.jsCartNumberBoxInput', function(e){
+		var $input = $(e.target);
+
+		if ($input.val() == '' || parseInt($input.val(), 10) == 0) {
+			updateTimeoutId = false;
+			$input.val($input.prop('defaultValue'));
 		}
 	});
 

@@ -1,56 +1,44 @@
 {{#products}}
     {{^isBanner}}
-        <li class="listing__i js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
-            {{! Картинка }}
+        <li class="listing__i js-listing-item"
+            {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
+        {{! Картинка }}
             <div class="listing-img">
                 <div class="listing-stickers">
                     <ul class="listing-stickers__lst clearfix">
                         {{#label}}
-                            <li class="listing-stickers__i listing-stickers__i--left"><img class="listing-stickers__img" src="{{image}}" alt="{{name}}" /></li>
+                            <li class="listing-stickers__i listing-stickers__i--left"><img class="listing-stickers__img"
+                                                                                           src="{{image}}"
+                                                                                           alt="{{name}}"/></li>
                         {{/label}}
 
                         {{#brandImage}}
-                            <li class="listing-stickers__i listing-stickers__i--right"><img class="listing-stickers__img" src="{{brandImage}}" alt="{{name}}" /></li>
+                            <li class="listing-stickers__i listing-stickers__i--right"><img
+                                    class="listing-stickers__img" src="{{brandImage}}" alt="{{name}}"/></li>
                         {{/brandImage}}
 
                         {{#hasVideo}}
-                            <li class="listing-stickers__i"><img class="listing-stickers__img" src="/css/bCatalog/img/video.png" /></li>
+                            <li class="listing-stickers__i"><img class="listing-stickers__img" src="/css/bCatalog/img/video.png"/></li>
                         {{/hasVideo}}
 
                         {{#has360}}
-                            <li class="listing-stickers__i"><img class="listing-stickers__img" src="/css/bCatalog/img/grad360.png" /></li>
+                            <li class="listing-stickers__i"><img class="listing-stickers__img" src="/css/bCatalog/img/grad360.png"/></li>
                         {{/has360}}
                     </ul>
                 </div>
 
-                <a class="listing-img__lnk js-listing-item-img" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>
-                    <img class="listing-img__src" src="{{image}}" alt="" />
+                <a class="listing-img__lnk js-listing-item-img" href="{{link}}"
+                   {{#isNewWindow}}target="_blank"{{/isNewWindow}}>
+                    <img class="listing-img__src" src="{{image}}" alt=""/>
                 </a>
             </div>
-            {{! END: Картинка }}
-            {{! Блок с названием и характеристиками }}
+        {{! END: Картинка }}
+        {{! Блок с названием и характеристиками }}
             <div class="listing__desc">
                 <a class="listing__title" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a>
 
-                <ul class="listing-props">
-                    {{#properties}}
-                        <li class="listing-props__i">
-                            <span class="listing-props__name"><span class="listing-props__name-wrap">{{name}}</span></span>
-                            <span class="listing-props__val">{{value}}</span>
-                        </li>
-                    {{/properties}}
-                </ul>
-                <div class="listing-variations">
-                {{#hasVariations}}
-                    <span class="listing-variations__lbl">Варианты</span>
-                {{/hasVariations}}
-                </div>
-            </div>
-            {{! END: Блок с названием и характеристиками }}
-            {{! Блок с ценой, рейтингом }}
-            <div class="listing__info">
-                <div class="listing__reviews">
-                    {{#review}}
+                {{#review}}
+                    <div class="listing__reviews">
                         <!-- Блок отзыввов -->
                         <div class="bSimplyDescReviews">
                             <div class="bSimplyDescReviews__eStars">
@@ -62,32 +50,48 @@
                             <div class="bSimplyDescReviews__eLink"><span class="review-count">{{count}}</span></div>
                         </div>
                         <!--/ Блок отзыввов -->
+                    </div>
+                {{/review}}
 
-                    {{/review}}
+                <ul class="listing-props">
+                    {{#properties}}<!-- TODO: вывести здесь 5 строчек, а не 3 как сейчас -->
+                        <li class="listing-props__i">
+                            <span class="listing-props__name"><span
+                                    class="listing-props__name-wrap">{{name}}</span></span>
+                            <span class="listing-props__val">{{value}}</span>
+                        </li>
+                    {{/properties}}
+                </ul>
+                <div class="listing-variations">
+                    <!--{{!#hasVariations}}-->
+                        <span class="listing-variations__lbl">Можно выбрать:</span><span class="listing-variations__val">Стандарт комплекта</span>
+                    <!--{{!/hasVariations}}-->
                 </div>
-
+            </div>
+        {{! END: Блок с названием и характеристиками }}
+        {{! Блок с ценой, рейтингом }}
+            <div class="listing__info">
                 <div class="listing-price-block">
                     {{#oldPrice}}
                         <span class="listing-price-block__price-old">
                             <span class="stroke-out">{{&oldPrice}}</span> <span class="rubl">p</span>
                         </span>
                     {{/oldPrice}}
-                    
+
                     {{#showPriceSale}}
                         {{#priceSale}}
-                            <span class="listing-price-block__discount">-{{priceSale}}%</span>
+                            <span class="listing-price-block__discount">{{priceSale}} <span class="rubl">p</span></span>
                         {{/priceSale}}
                     {{/showPriceSale}}
-                    <span class="listing-price-block__price-current {{#priceSale}} listing-price-block__price-sale{{/priceSale}}">{{&price}} <span class="rubl">p</span></span>
+
+                    <span class="listing-price-block__price-current {{#priceSale}} listing-price-block__price-sale{{/priceSale}}">{{&price}}<span class="rubl">p</span></span>
                 </div>
 
                 <div class="listing__btn-group">
-                    {{#showCompareButton}}
-                        <a href="" class="btn-compare jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
-                    {{/showCompareButton}}
+
 
                     {{#showCartButton}}
-                        {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
+                        {{#cartButton}}{{> cart/_button-product-lstn }}{{/cartButton}}
                     {{/showCartButton}}
 
                 </div>
@@ -97,8 +101,35 @@
                         {{name}}
                     </div>
                 {{/stateLabel}}
+
+                <div class="listing__btns">
+
+                    <!-- сравнить, добавить в виш лист -->
+                    <ul class="product-card-tools">
+                    {{#compareButton}}
+                        <li class="product-card-tools__i product-card-tools__i--compare">
+                            <a
+                                href="{{addUrl}}"
+                                class="product-card-tools__lk jsCompareListLink"
+                                data-id="{{id}}"
+                                data-bind="compareListBinding: compare"
+                                data-is-slot="{{isSlot}}"
+                                data-is-only-from-partner="{{isOnlyFromPartner}}"
+                            >
+                                <!-- по клику сюда цепляется класс product-card-tools__lk--active-->
+                                <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
+                                <span class="product-card-tools__tx">Сравнить</span>
+                            </a>
+                        </li>
+                    {{/compareButton}}
+                    {{#favoriteButton}}
+                        {{>product/_favoriteButton}}
+                    {{/favoriteButton}}
+                    </ul>
+                    <!--/ сравнить, добавить в виш лист -->
+                </div>
             </div>
-            {{! END: Блок с ценой, рейтингом }}
+    {{! END: Блок с ценой, рейтингом }}
     {{/isBanner}}
 {{/products}}
 {{^products}}

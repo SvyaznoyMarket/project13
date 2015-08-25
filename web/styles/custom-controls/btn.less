@@ -106,6 +106,23 @@
             border-bottom-width: 1px;
         }
     }
+    //кнопка для листинга - без нижнего бордера
+    &--lstn{
+        border: none;
+        font-size: 18px;
+        padding: 10px;
+        width: 130px;
+        text-align: center;
+    }
+    &--default{
+        background-color: @white;
+        border: 1px solid #a0a0a0;
+        color: #a0a0a0;
+        cursor: default;
+        &:hover, &:active{
+            background-color: @white;
+        }
+    }
 }
 
 .closer {
