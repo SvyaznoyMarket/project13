@@ -8,7 +8,12 @@
     <div class="basketLine__desc">
         <div class="basketLine__desc__name">
             <a href="" data-bind="text: name, attr: {href: link}"></a>
-            <noindex><div class="basketLine__desc__available">Есть в наличии</div></noindex>
+            <!-- ko if: isAvailable -->
+                <noindex><div class="basketLine__desc__available">Есть в наличии</div></noindex>
+            <!-- /ko -->
+            <!-- ko if: !isAvailable -->
+                <noindex><div class="basketLine__desc__notAvailable">Нет в наличии</div></noindex>
+            <!-- /ko -->
         </div>
 
         <div class="basketLine__desc__info basketinfo">

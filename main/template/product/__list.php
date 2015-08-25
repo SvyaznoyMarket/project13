@@ -1,6 +1,20 @@
 <?php
 
-return function(
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Iterator\EntityPager $pager
+ * @param array $bannerPlaceholder
+ * @param null $listingStyle
+ * @param $view
+ * @param null $buyMethod
+ * @param bool|true $showState
+ * @param int $columnCount
+ * @param string $class
+ * @param array $cartButtonSender
+ * @param \Model\Product\Category\Entity|null $category
+ * @param \Model\Favorite\Product\Entity[] $favoriteProductsByUi
+ */
+$f = function(
     \Helper\TemplateHelper $helper,
     \Iterator\EntityPager $pager,
     array $bannerPlaceholder = [],
@@ -11,7 +25,8 @@ return function(
     $columnCount = 4,
     $class = '',
     array $cartButtonSender = [],
-    \Model\Product\Category\Entity $category = null
+    \Model\Product\Category\Entity $category = null,
+    $favoriteProductsByUi = []
 ) {
 
     $listingClass = '';
@@ -54,7 +69,7 @@ return function(
 ?>
 
     <ul class="bListing <? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> <?= $listingClass ?> <?= $class ?> js-listing" <? if ($defaultView === 'expanded'): ?>data-category-view="<?= $defaultView ?>"<? endif ?>><!-- mPandora если необходимо застилить листинги под пандору -->
-        <?= $helper->renderWithMustache($defaultTemplatePath, (new \View\Product\ListAction())->execute($helper, $pager, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $defaultView, $cartButtonSender, $category)) ?>
+        <?= $helper->renderWithMustache($defaultTemplatePath, (new \View\Product\ListAction())->execute($helper, $pager, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $defaultView, $cartButtonSender, $category, $favoriteProductsByUi)) ?>
     </ul>
 
     <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
@@ -66,4 +81,4 @@ return function(
             <?= file_get_contents(\App::config()->templateDir . '/' . $expandedTemplatePath . '.mustache') ?>
         </script>
     <? endif ?>
-<? };
+<? }; return $f;

@@ -18,13 +18,11 @@
                         {{/brandImage}}
 
                         {{#hasVideo}}
-                            <li class="listing-stickers__i"><img class="listing-stickers__img"
-                                                                 src="/css/bCatalog/img/video.png"/></li>
+                            <li class="listing-stickers__i"><img class="listing-stickers__img" src="/css/bCatalog/img/video.png"/></li>
                         {{/hasVideo}}
 
                         {{#has360}}
-                            <li class="listing-stickers__i"><img class="listing-stickers__img"
-                                                                 src="/css/bCatalog/img/grad360.png"/></li>
+                            <li class="listing-stickers__i"><img class="listing-stickers__img" src="/css/bCatalog/img/grad360.png"/></li>
                         {{/has360}}
                     </ul>
                 </div>
@@ -63,14 +61,6 @@
                             <span class="listing-props__val">{{value}}</span>
                         </li>
                     {{/properties}}
-                    <li class="listing-props__i">
-                        <span class="listing-props__name"><span class="listing-props__name-wrap">Вес</span></span>
-                        <span class="listing-props__val">100 гр</span>
-                    </li>
-                    <li class="listing-props__i">
-                        <span class="listing-props__name"><span class="listing-props__name-wrap">Размер</span></span>
-                        <span class="listing-props__val">100 х 100</span>
-                    </li>
                 </ul>
                 <div class="listing-variations">
                     <!--{{!#hasVariations}}-->
@@ -90,20 +80,11 @@
 
                     {{#showPriceSale}}
                         {{#priceSale}}
-                            <span class="listing-price-block__discount">-{{priceSale}} <span
-                                    class="rubl">p</span></span>
+                            <span class="listing-price-block__discount">{{priceSale}} <span class="rubl">p</span></span>
                         {{/priceSale}}
                     {{/showPriceSale}}
 
-                    <span class="listing-price-block__price-old">
-                            <span class="stroke-out">123456</span> <span class="rubl">p</span>
-                        </span>
-
-
-                    <span class="listing-price-block__discount">-5000 <span class="rubl">p</span></span>
-
-                    <span class="listing-price-block__price-current {{#priceSale}} listing-price-block__price-sale{{/priceSale}}">{{&price}}
-                        <span class="rubl">p</span></span>
+                    <span class="listing-price-block__price-current {{#priceSale}} listing-price-block__price-sale{{/priceSale}}">{{&price}}<span class="rubl">p</span></span>
                 </div>
 
                 <div class="listing__btn-group">
@@ -125,19 +106,25 @@
 
                     <!-- сравнить, добавить в виш лист -->
                     <ul class="product-card-tools">
-
+                    {{#compareButton}}
                         <li class="product-card-tools__i product-card-tools__i--compare">
-                            <a class="product-card-tools__lk"><!-- по клику сюда цепляется класс product-card-tools__lk--active-->
+                            <a
+                                href="{{addUrl}}"
+                                class="product-card-tools__lk jsCompareListLink"
+                                data-id="{{id}}"
+                                data-bind="compareListBinding: compare"
+                                data-is-slot="{{isSlot}}"
+                                data-is-only-from-partner="{{isOnlyFromPartner}}"
+                            >
+                                <!-- по клику сюда цепляется класс product-card-tools__lk--active-->
                                 <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
                                 <span class="product-card-tools__tx">Сравнить</span>
                             </a>
                         </li>
-                        <li class="product-card-tools__i product-card-tools__i--wish">
-                            <a class="jsFavoriteLink product-card-tools__lk "><!-- по клику сюда цепляется класс product-card-tools__lk--active-->
-                                <i class="product-card-tools__icon i-tools-icon i-tools-icon--wish"></i>
-                                <span class="product-card-tools__tx">В избранное</span>
-                            </a>
-                        </li>
+                    {{/compareButton}}
+                    {{#favoriteButton}}
+                        {{>product/_favoriteButton}}
+                    {{/favoriteButton}}
                     </ul>
                     <!--/ сравнить, добавить в виш лист -->
                 </div>
