@@ -229,7 +229,7 @@ return function(
                                 </a>
 
                                 <div class="order-item__data">
-                                    <span class="order-item__data-item order-item__data-item_summ" ><?= $helper->formatPrice($product->original_price) ?>&thinsp;<span class="rubl">C</span></span>
+                                    <span class="order-item__data-item order-item__data-item_price" ><?= $helper->formatPrice($product->original_price) ?>&thinsp;<span class="rubl">C</span></span>
                                     <span class="order-item__data-item order-item__data-item_count js-show-counter"><span class="dotted"><?= $product->quantity ?> шт.</span></span>
 
                                     <div class="order-item__data-item order-item__data-item_edit js-order-item-counter">
@@ -245,7 +245,7 @@ return function(
                                         <a class="order-item__data-item-control js-order-item-counter-delete" href="" data-id="<?= $product->id; ?>" data-block_name="<?= $order->block_name ?>"><span class="dotted">Удалить товар</span></a>
                                     </div>
 
-                                    <span class="order-item__data-item order-item__data-item_price"><?= $helper->formatPrice($product->original_sum) ?>&thinsp;<span class="rubl">C</span></span>
+                                    <span class="order-item__data-item order-item__data-item_summ"><?= $helper->formatPrice($product->original_sum) ?>&thinsp;<span class="rubl">C</span></span>
                                     <?= $helper->render('order/_error.order', [ 'orderDelivery' => $orderDelivery, 'order' => $order, 'product' => $product ]) ?>
                                 </div>
                             </div>
