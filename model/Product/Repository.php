@@ -68,6 +68,8 @@ class Repository {
      * Подготавливает запросы к ядру и scms для получения данных товаров. После выполнения запросов те товары, для
      * которых ядро или scms не вернули данных будут удалены из массива $products (ключи массива изменены не будут), а
      * остальные товары будут заполнены данными из ядра и scms.
+     *
+     * TODO разбить на несколько функций: prepareProductQueriesById, prepareProductQueriesByUi, prepareProductQueriesByBarcode
      * 
      * @param \Model\Product\Entity[] $products У всех товаров должны быть заданы id или ui или barcode (притом, если у
      *                                          первого товара задан id, то и у всех товаров должен быть задан именно
@@ -151,19 +153,6 @@ class Repository {
                 }
             );
         }
-
-        // TODO: удалить данный блок после реализации FCMS-778
-        call_user_func(function() use(&$products, &$productIdentifiers, &$modelProductIdentifierName, &$scmsProductRequestIdentifierName, &$scmsProductResponseIdentifierName) {
-            if ($modelProductIdentifierName === 'barcode') {
-                \App::coreClientV2()->execute();
-
-                $modelProductIdentifierName = 'id';
-                $scmsProductRequestIdentifierName = 'ids';
-                $scmsProductResponseIdentifierName = 'core_id';
-
-                $productIdentifiers = array_filter(array_map(function(\Model\Product\Entity $product) use(&$modelProductIdentifierName) { return $product->$modelProductIdentifierName; }, $products));
-            }
-        });
 
         // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
         foreach (array_chunk($productIdentifiers, \App::config()->coreV2['chunk_size']) as $productIdentifierChunk) {
