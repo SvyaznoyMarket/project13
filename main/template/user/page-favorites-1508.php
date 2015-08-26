@@ -25,22 +25,44 @@
                 <li class="personal-favorit__act js-fav-popup-show" data-popup="js-del-popup">Удалить</li>
             </ul>
         </div>
-        <div class="personal-favorit__item">
+        <? foreach ($products as $product): ?>
+        <?
+            $rowId = 'id-favoriteRow-' . $product->getUi() ?: uniqid();
+        ?>
+        <div class="personal-favorit__item <?= $rowId ?>">
             <div class="personal-favorit__cell personal-favorit__choose">
                 <input class="personal-favorit__checkbox" type="checkbox" id="cb2">
                 <label for="cb2" class="personal-favorit__checkbox-icon"></label>
             </div>
             <div class="personal-favorit__cell personal-favorit__pic">
-                <img src="http://2.imgenter.ru/uploads/media/c9/2b/5f/thumb_85b6_product_60.jpeg">
+                <img src="<?= $product->getImageUrl(1) ?>">
             </div>
             <div class="personal-favorit__cell">
-                <div class="personal-favorit__name">Бумажный конструктор Jazwares Minecraft Papercraft «Дружелюбные мобы»</div>
-                <div class="personal-favorit__status">В наличии</div>
+                <div class="personal-favorit__name"><?= $helper->escape($product->getName()) ?></div>
+                <? if ($product->getIsBuyable()): ?>
+                    <div class="personal-favorit__status">В наличии</div>
+                <? else: ?>
+                    <div class="personal-favorit__status unavailable">Нет в наличии</div>
+                <? endif ?>
             </div>
             <div class="personal-favorit__cell">
-                <div class="personal-favorit__price"><span class="old-price"><span class="old-price__stroke">1000</span> <span class="rubl">p</span></span>750 <span class="rubl">p</span></div>
+                <div class="personal-favorit__price">
+                    <? if ($product->getPriceOld()): ?>
+                        <span class="old-price"><span class="old-price__stroke"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></span>
+                    <? endif ?>
+                    <? if ($product->getPrice()): ?>
+                        <?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span>
+                    <? endif ?>
+                </div>
                 <div class="personal-favorit__buy">
-                    <button type="submit" class="btn-type btn-type--buy">Купить</button>
+                    <? if ($product->getIsBuyable()): ?>
+                        <?= $helper->render('cart/__button-product', [
+                            'product'  => $product,
+                            'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
+                            'noUpdate'  => true,
+                            'location' => 'user-favorites',
+                        ]) // кнопка купить ?>
+                    <? endif ?>
                 </div>
                 <div class="personal-favorit__reminds">
                     <span class="remind-text">Сообщить</span>
@@ -53,34 +75,7 @@
                 </div>
             </div>
         </div>
-        <div class="personal-favorit__item">
-            <div class="personal-favorit__cell personal-favorit__choose">
-                <input class="personal-favorit__checkbox" type="checkbox" id="cb3">
-                <label for="cb3" class="personal-favorit__checkbox-icon"></label>
-            </div>
-            <div class="personal-favorit__cell personal-favorit__pic">
-                <img src="http://0.imgenter.ru/uploads/media/7f/fb/28/thumb_dd20_product_120.jpeg">
-            </div>
-            <div class="personal-favorit__cell">
-                <div class="personal-favorit__name">Бумажный конструктор Jazwares Minecraft Papercraft «Дружелюбные мобы»</div>
-                <div class="personal-favorit__status unavailable">Нет в наличии</div>
-            </div>
-            <div class="personal-favorit__cell">
-                <div class="personal-favorit__price">700 <span class="rubl">p</span></div>
-                <div class="personal-favorit__buy">
-                    <button type="submit" class="btn-type btn-type--buy">Купить</button>
-                </div>
-                <div class="personal-favorit__reminds">
-                    <span class="remind-text">Сообщить</span>
-                    <div class="personal-favorit__price-change">
-                        <div class="personal__hint">о снижении цены</div>
-                    </div>
-                    <div class="personal-favorit__stock">
-                        <div class="personal__hint">о наличии</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <? endforeach ?>
     </div>
 
     <div class="personal__favorits favorit-list expanded">
