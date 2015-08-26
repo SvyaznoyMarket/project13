@@ -76,9 +76,9 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
                     <? if ($product->isOnlyFromPartner() && $product->getPartnerName()) : ?>
                         <!-- Информация о партнере -->
                         <div class="vendor-offer">
-                            <a href="<?= $product->getPartnerOfferLink() ?>" class="vendor-offer__lk i-info" target="_blank">
+                            <p class="vendor-offer__lk i-info" target="_blank">
                                 <span class="i-info__tx">Продавец: <?= $product->getPartnerName() ?></span>
-                            </a>
+                            </p>
                         </div>
                         <!-- /Информация о партнере -->
                     <? endif ?>
