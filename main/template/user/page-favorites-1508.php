@@ -31,8 +31,8 @@
         ?>
         <div class="personal-favorit__item <?= $rowId ?>">
             <div class="personal-favorit__cell personal-favorit__choose">
-                <input class="personal-favorit__checkbox" type="checkbox" id="cb2">
-                <label for="cb2" class="personal-favorit__checkbox-icon"></label>
+                <input class="personal-favorit__checkbox" type="checkbox" id="<?= $rowId . '-input' ?>">
+                <label for="<?= $rowId . '-input' ?>" class="personal-favorit__checkbox-icon"></label>
             </div>
             <div class="personal-favorit__cell personal-favorit__pic">
                 <img src="<?= $product->getImageUrl(1) ?>">
