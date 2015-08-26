@@ -16,13 +16,14 @@
             'underscore',
             'enter.BaseViewClass',
             'deliveryPage.points.collection',
-            'Mustache'
+            'Mustache',
+            'jquery.scrollTo'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, _, BaseViewClass, PointsCollection, mustache ) {
+    function( provide, $, _, BaseViewClass, PointsCollection, mustache, jqueryScrollTo ) {
         'use strict';
 
         var
@@ -44,7 +45,9 @@
                 POINTS_ITEM: 'jsPointListItem',
                 AUTOCOMPLETE: 'js-pointpopup-autocomplete',
                 AUTOCOMPLETE_WRAPPER: 'js-pointpopup-autocomplete-wrapper',
-                AUTOCOMPLETE_ITEM: 'js-pointpopup-autocomplete-item'
+                AUTOCOMPLETE_ITEM: 'js-pointpopup-autocomplete-item',
+                PICK_POINT: 'js-pointpopup-pick-point',
+                PICK_POINT_ACTIVE: 'current'
             },
 
             /**
@@ -76,13 +79,15 @@
                     autocompleteWrapper: this.$el.find('.' + CSS_CLASSES.AUTOCOMPLETE_WRAPPER),
                     searchInput: this.$el.find('.' + CSS_CLASSES.SEARCH),
                     pointsItems: this.$el.find('.' + CSS_CLASSES.POINTS_ITEM),
-                    partnerFilter: this.$el.find('.' + CSS_CLASSES.PARTNERS_FILTER)
+                    partnerFilter: this.$el.find('.' + CSS_CLASSES.PARTNERS_FILTER),
+                    pickPointItems: this.$el.find('.' + CSS_CLASSES.PICK_POINT)
                 };
 
                 // Setup events
                 this.events['click .' + CSS_CLASSES.PARTNERS_FILTER]   = 'filterByPartner';
                 this.events['keyup .' + CSS_CLASSES.SEARCH]            = 'searchAddress';
                 this.events['click .' + CSS_CLASSES.AUTOCOMPLETE_ITEM] = 'selectAutocompleteItem';
+                this.events['click .' + CSS_CLASSES.PICK_POINT]        = 'pointClick';
 
                 this.collection = new PointsCollection();
                 _.each(POINTS, this.collection.add.bind(this.collection));
@@ -191,6 +196,7 @@
 
                                 self.map.showMarkers(points);
                                 self.map.mapWS.events.add('boundschange', self.renderPoints.bind(self));
+                                self.map.mapWS.geoObjects.events.add(['click'], self.mapPointClick.bind(self));
                                 self.renderPoints();
                             });
 
@@ -214,6 +220,45 @@
                     }, timeWindow);
                 };
             }()),
+
+            /**
+             * Клик по балуну на карте
+             *
+             * @method      mapPointClick
+             * @memberOf    module:deliveryPageView~DeliveryPageView#
+             *
+             * @param       {Ymaps.Event}       event
+             */
+            mapPointClick: function( event ) {
+                var
+                    pointProp = event.get('target').properties.getAll(),
+                    uid       = pointProp.uid,
+                    listItem = $('#point_uid_' + uid);
+
+                this.subViews.pickPointItems.removeClass(CSS_CLASSES.PICK_POINT_ACTIVE);
+                listItem.addClass(CSS_CLASSES.PICK_POINT_ACTIVE);
+
+                this.subViews.pointsWrapper.scrollTo(listItem, 100, {offset: {top: -100}});
+            },
+
+            /**
+             * Клик по точке из списка
+             *
+             * @method      pointClick
+             * @memberOf    module:deliveryPageView~DeliveryPageView#
+             *
+             * @param       {jQuery.Event}       event
+             */
+            pointClick: function( event ) {
+                var
+                    target = $(event.currentTarget),
+                    uid    = target.attr('data-uid'),
+                    model  = this.collection.get(uid);
+
+                this.map.mapWS.setCenter([model.get('latitude'), model.get('longitude')], 15);
+
+                return false;
+            },
 
             /**
              * Поиск точек, соответствующих введенному адресу, формирование автокомплита поиска

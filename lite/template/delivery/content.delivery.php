@@ -55,12 +55,12 @@ $helper = \App::helper();
     <script id="js-point-template" type="text/template" class="hidden">
     {{#point}}
         {{#shown}}
-            <li class="points-lst-i js-pointpopup-pick-point">
+            <li class="points-lst-i js-pointpopup-pick-point" id="point_uid_{{uid}}" data-uid="{{uid}}">
                 <div class="points-lst-i__partner jsPointListItemPartner">{{partner}}</div>
 
                 <div class="deliv-item__addr">
                     {{#subway}}
-                        <div class="deliv-item__metro" style="background: {{color}}">
+                        <div class="deliv-item__metro" style="background: {{line.color}}">
                             <div class="deliv-item__metro-inn">{{name}}</div>
                         </div>
                     {{/subway}}

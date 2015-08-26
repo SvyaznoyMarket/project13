@@ -10,16 +10,19 @@
     modules.define(
         'deliveryPage.point.model',
         [
+            'underscore',
             'Backbone'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, Backbone ) {
+    function( provide, _, Backbone ) {
         'use strict';
 
         provide(Backbone.Model.extend(/** @lends module:deliveryPage.point.model~PointModel */{
+            idAttribute: 'uid',
+
             /**
              * @member      defaults
              * @memberOf    module:deliveryPage.point.model~PointModel
