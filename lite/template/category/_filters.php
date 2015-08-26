@@ -109,7 +109,12 @@
         <? foreach ($alwaysShowFilters as $filter): ?>
 
             <!-- фильтр по компонентам -->
-            <div class="fltrSet js-category-filter-toggle-container <?= $filter->isOpenByDefault ? 'open' : '' ?>">
+            <div class="
+                fltrSet js-category-filter-toggle-container
+                <?= $filter->isOpenByDefault ? 'open' : '' ?>
+                <? if ($filter->isMetall()): ?>fltrSet-metall<? endif ?>
+                <? if ($filter->isInsertion()): ?>fltrSet-insertion<? endif ?>
+            ">
 
                 <div class="fltrSet_tggl js-category-filter-toggle-button">
                     <span class="fltrSet_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>

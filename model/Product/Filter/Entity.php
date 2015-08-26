@@ -364,6 +364,14 @@ class Entity {
         return 'shop' === $this->getId();
     }
 
+    public function isMetall() {
+        return 'Металл' === $this->getName();
+    }
+
+    public function isInsertion() {
+        return 'Вставка' === $this->getName();
+    }
+
     /**
      * Возвращает диапазоны цен для нового фильтра
      * @return array
