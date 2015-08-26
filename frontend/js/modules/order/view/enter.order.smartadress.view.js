@@ -188,7 +188,7 @@
                 if ( !_.isEqual(this.buildingData, buildingData) ) {
                     console.warn('module:enter.order.smartadress.view~OrderSmartAdress#setBuiling = buildings data isnt equal');
                     this.buildingData = buildingData;
-                    this.sendChanges.call(this);
+                    // this.sendChanges.call(this);
                 }
             },
 
@@ -204,7 +204,7 @@
                 if ( this.apartment !== val ) {
                     this.apartment = val;
                     lscache.set('smartadress_apartment', val);
-                    this.sendChanges();
+                    // this.sendChanges();
                 }
             },
 
