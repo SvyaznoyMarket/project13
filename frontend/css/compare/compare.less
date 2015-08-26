@@ -122,6 +122,9 @@
             display: none;
         }
     }
+    .goods__img {
+        line-height: 120px;
+    }
     &-scroll {
         .cmprCnt_head {
             .cmprCnt_cell {
@@ -133,6 +136,7 @@
         .goods__img {
             height: 50px;
             padding-top: 10px;
+            line-height: 50px;
             &-image {
                 max-height: 50px;
             }
@@ -258,7 +262,7 @@
         }
         &_item {
             .cmprCnt_fixed {
-                border-right: 1px dotted @grey-light-4;
+                border-right: 1px solid @grey-light-4;
                 background: @white;
             }
             .cmprCnt_property_item_name {
@@ -303,20 +307,9 @@
             }
         }
     }
-    &_img {
-        width: 210px;
-        height: 100px;
-
-        text-align: center;
-        vertical-align: middle;
-
-        .table-cell();
-        .transition(all .3s ease);
-        img {
-            max-width: 96%;
-            max-height: 96%;
-            .transition(all .3s ease);
-        }
+    .goods__img,
+    .goods__img-image {
+        .transition(all, .3s, ease);
     }
     &_pt {
         line-height: 1.2;

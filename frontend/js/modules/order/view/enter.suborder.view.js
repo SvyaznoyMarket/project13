@@ -50,7 +50,8 @@
                 INTERVALS_POPUP: 'js-order-intervals',
                 PICK_INTERVAL: 'js-order-pick-interval',
                 POINTS_DATA: 'js-points-data',
-                SMART_ADRRESS: 'jsSmartAddressBlock'
+                SMART_ADRRESS: 'jsSmartAddressBlock',
+                ACTIVE: 'active'
             };
 
         provide(BaseViewClass.extend({
@@ -84,6 +85,7 @@
                 });
 
                 this.subViews.intervalsPopup = this.$el.find('.' + CSS_CLASSES.INTERVALS_POPUP);
+                this.subViews.intervalsBtn = this.$el.find('.' + CSS_CLASSES.SHOW_INTERVALS_BTN);
 
                 if ( smartAdress.length ) {
                     modules.require('enter.order.smartadress.view', function( OrderSmartAdress ) {
@@ -148,7 +150,13 @@
              * @memberOf    module:enter.suborder.view~SubOrderView#
              */
             showIntervals: function() {
-                this.subViews.intervalsPopup.show();
+                if ( this.subViews.intervalsPopup.is(':visible') ) {
+                    this.subViews.intervalsBtn.removeClass(CSS_CLASSES.ACTIVE);
+                    this.subViews.intervalsPopup.hide();
+                } else {
+                    this.subViews.intervalsPopup.show();
+                    this.subViews.intervalsBtn.addClass(CSS_CLASSES.ACTIVE);
+                }
             },
 
             /**
