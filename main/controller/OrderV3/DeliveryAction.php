@@ -148,7 +148,7 @@ class DeliveryAction extends OrderV3 {
                             'id' => $cartProduct->id,
                             'quantity' => $cartProduct->quantity,
                         ];
-                    }, $this->cart->getInOrderProductsById()),
+                    }, $this->cart->getProductsById()),
                 ]
             ];
 

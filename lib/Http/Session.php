@@ -81,15 +81,6 @@ class Session implements \Http\SessionInterface {
         return array_key_exists($name, $_SESSION) ? $_SESSION[$name] : $default;
     }
 
-    public function getWithChecking($name, $default = null) {
-        if (!array_key_exists($name, $_SESSION)) {
-            return $default;
-        }
-        $_SESSION[$name]['_is_readed'] = (bool) isset($_SESSION[$name]['_is_readed']);
-
-        return $_SESSION[$name];
-    }
-
     public function has($name) {
         return array_key_exists($name, $_SESSION);
     }
