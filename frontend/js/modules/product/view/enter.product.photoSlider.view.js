@@ -91,9 +91,14 @@
                     borderColour: '#EBEBEB'
                 };
 
-                if ( this.subViews.photo.attr('data-zoom-image') ) {
-                    this.subViews.photo.elevateZoom(zoomConfig);
+                if ( !this.subViews.photo.attr('data-zoom-image') ) {
+                    zoomConfig.zoomType = 'Lens';
+                    zoomConfig.lensBorder = 0;
+                    zoomConfig.lensSize = 0;
+                    zoomConfig.lensOpacity = 0;
                 }
+
+                this.subViews.photo.elevateZoom(zoomConfig);
 
                 // Setup events
                 this.events['click .' + CSS_CLASSES.PHOTO_THUMB] = 'changePhoto';
