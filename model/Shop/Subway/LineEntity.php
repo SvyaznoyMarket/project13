@@ -12,9 +12,9 @@ namespace Model\Shop\Subway;
 class LineEntity {
 
     /** @var string */
-    private $name;
+    public $name;
     /** @var string */
-    private $color;
+    public $color;
 
     public function __construct($data = []) {
         if (is_array($data)) {

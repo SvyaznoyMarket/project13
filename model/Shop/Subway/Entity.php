@@ -6,11 +6,11 @@ namespace Model\Shop\Subway;
 class Entity {
 
     /** @var string */
-    private $ui;
+    public $ui;
     /** @var string */
-    private $name;
+    public $name;
     /** @var \Model\Shop\Subway\LineEntity */
-    private $line;
+    public $line;
 
     public function __construct(array $data = []) {
         if (array_key_exists('ui', $data)) $this->setUi($data['ui']);
