@@ -23,7 +23,7 @@ class FavoritesPage extends \View\DefaultLayout {
         }
 
         $this->setTitle('Личный кабинет -> Избранное - Enter');
-        $this->setParam('title', 'Избранное');
+        $this->setParam('title', 'Личный кабинет');
         $this->setParam('helper', new \Helper\TemplateHelper());
     }
 

@@ -497,11 +497,6 @@
 			    height: 279px;
     			width: 279px;
 			}
-			.lstn_img {
-			    display: block;
-			   	height: 279px;
-    			width: 279px;
-			}
 			.lstn_desc {
 			    width: 300px;
 			}
@@ -538,6 +533,11 @@
 			font-size: 12px;
 			padding: 5px 0 6px;
 
+            border: 0px;
+            background: #f99b1c;
+
+            .transition(background-color .2s ease);
+
 			&.mBought {
 	            .box-shadow(none);
 	            border: 1px solid @typLightGray;
@@ -551,6 +551,12 @@
 	                color: @typGray;
 	            }
 	        }
+            &:hover {
+                background-color: #ff9f1d;
+            }
+            &:active {
+                background-color: #f99b1c;
+            }
 		}
 	}
 

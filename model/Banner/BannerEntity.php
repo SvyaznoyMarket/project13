@@ -9,6 +9,7 @@ class BannerEntity {
     const TYPE_PAGE = 'static-page';
     const TYPE_SLICE = 'slice';
     const TYPE_CATEGORY = 'category';
+    const TYPE_LINK = 'url';
 
     const TAG_IMAGE_BIG = 'site_960x240';
     const TAG_IMAGE_SMALL = 'site_220x50';
@@ -42,6 +43,8 @@ class BannerEntity {
             $this->url = $data['category']['url'];
         } else if ($this->isSlice() && isset($data['slice']['url'])) {
             $this->url = $data['slice']['url'];
+        } else if ($this->isLink() && !empty($data['url'])) {
+            $this->url = $data['url'];
         }
     }
 
@@ -55,6 +58,10 @@ class BannerEntity {
 
     public function isSlice() {
         return $this->type == self::TYPE_SLICE;
+    }
+
+    public function isLink() {
+        return $this->type == self::TYPE_LINK;
     }
 
     /** URL большого изображения

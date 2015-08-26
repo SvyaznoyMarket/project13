@@ -177,7 +177,8 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
                 'product' => $product,
                 'sender'  => $buySender,
                 'sender2' => $buySender2,
-                'value' => 'Купить в 1 клик'
+                'value' => 'Купить в 1 клик',
+                'location'  => 'product-card',
             ]) ?>
         </li>
 
@@ -185,12 +186,13 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
             data-bind="compareButtonBinding: compare"
             data-id="<?= $product->getId() ?>"
             data-type-id="<?= $product->getType() ? $product->getType()->getId() : null ?>">
-            <a id="<?= 'compareButton-' . $product->getId() ?>"
-               href="<?= \App::router()->generate('compare.add', ['productId' => $product->getId(), 'location' => 'product']) ?>"
-               class="product-card-tools__lk jsCompareLink"
-               data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>"
-               data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>"
-                >
+            <a
+                id="<?= ('compareButton-' . $product->getId()) ?>"
+                href="<?= \App::router()->generate('compare.add', ['productId' => $product->getId(), 'location' => 'product']) ?>"
+                class="product-card-tools__lk jsCompareLink"
+                data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>"
+                data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>"
+            >
                 <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
                 <span class="product-card-tools__tx">Сравнить</span>
             </a>
