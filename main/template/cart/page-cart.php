@@ -15,16 +15,18 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 </div>
 */ ?>
 
-<div class="jsKnockoutCart" data-bind="visible: cart().sum() == 0" style="display: none">
+<div class="jsKnockoutCart order-cart" data-bind="visible: cart().sum() == 0" style="display: none">
     <?= $page->render('cart/_cart-empty') ?>
 </div>
 
-<div class="jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">
+<div class="jsKnockoutCart order-cart" data-bind="visible: cart().sum() > 0" style="display: none">
 
-    <?= $page->render('cart/partner/_adfox') ?>
+    <?//= $page->render('cart/partner/_adfox') ?>
 
     <!-- ko foreach: cart().products() -->
-        <?= $page->render('cart/_cart-item') ?>
+        <?= //$page->render('cart/_cart-item')
+            $page->render('cart/_cart-item-new')
+        ?>
     <!-- /ko -->
 
     <div class="basketLine clearfix">
