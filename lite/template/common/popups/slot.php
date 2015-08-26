@@ -16,12 +16,12 @@
 
         <form class="form" action="">
             <div class="form__field">
-                <input id="slot-phone-input" type="text" class="form__it it js-application-phone" name="" value="">
+                <input id="slot-phone-input" type="text" class="form__it it js-application-phone" data-required="true" name="" value="">
                 <label for="slot-phone-input" class="form__placeholder placeholder placeholder_str">Телефон</label>
             </div>
 
             <div class="form__field">
-                <input id="slot-email-input" type="text" class="form__it it js-application-email" name="" value="">
+                <input id="slot-email-input" type="text" class="form__it it js-application-email" data-required="true" name="" value="">
                 <label for="slot-email-input" class="form__placeholder placeholder placeholder_str">Email</label>
             </div>
 
@@ -30,8 +30,8 @@
                 <label for="slot-name-input" class="form__placeholder placeholder">Имя</label>
             </div>
 
-            <div class="form__check-big">
-                <input type="checkbox" class="custom-input custom-input_check3 js-application-agree" id="accept" name="" value="">
+            <div class="form__check-big label-strict">
+                <input type="checkbox" class="custom-input custom-input_check3 js-application-agree" data-required="true" id="accept" name="" value="">
 
                 <label class="custom-label" for="accept">Я ознакомлен и согласен с информацией <a class="dotted">о продавце и его офертой</a><br>Продавец-партнер: ООО МЕГАЭЛАТОН</label>
             </div>
