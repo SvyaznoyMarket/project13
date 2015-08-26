@@ -377,32 +377,6 @@ namespace Session {
             return $cartProducts;
         }
     
-        public function markProductsAsInOrder() {
-            $sessionCart = $this->getSessionCart();
-            foreach ($sessionCart['product'] as $key => $sessionProduct) {
-                if ($sessionProduct['isGone']) {
-                    $sessionCart['product'][$key]['inOrder'] = false;
-                } else {
-                    $sessionCart['product'][$key]['inOrder'] = true;
-                }
-            }
-            $this->setSessionCart($sessionCart);
-        }
-    
-        /**
-         * @return \Model\Cart\Product\Entity[]
-         */
-        public function getInOrderProductsById() {
-            $cartProducts = [];
-            foreach ($this->getSessionCart()['product'] as $sessionProduct) {
-                if ($sessionProduct['inOrder']) {
-                    $cartProducts[$sessionProduct['id']] = new \Model\Cart\Product\Entity($sessionProduct);
-                }
-            }
-    
-            return $cartProducts;
-        }
-    
         /**
          * @param $productId
          * @return bool
@@ -613,7 +587,6 @@ namespace Session {
                         'quantity' => 0,
                         'isGone' => false,
                         'isAvailable' => true,
-                        'inOrder' => false,
                         'added' => null,
                     ];
                 }
