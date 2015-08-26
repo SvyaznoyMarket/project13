@@ -152,25 +152,26 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
                 </ul>
             </div>
 
-            <div class="product-gallery product-card-set__left">
-                <div class="product-gallery-image">
-                    <img class="image" src="http://2.imgenter.ru/uploads/media/96/c8/ef/thumb_cf06_product_500.jpeg">
+            <div class="product-gallery product-card-set__left js-module-require" data-module="enter.product.photoSlider">
+                <div class="product-gallery-image js-photo-container">
+                    <img class="image js-photo-zoomedImg" src="<?= $product->getMainImageUrl('product_550') ?>">
                 </div>
 
                 <div class="product-gallery-thumbs">
                     <div class="product-gallery-thumbs__wrap">
                         <ul class="product-gallery-thumbs__list">
-                            <li class="product-gallery-thumbs__item active">
-                                <a class="product-gallery-thumbs__link" href="#">
-                                    <img class="product-gallery-thumbs__img" src="http://9.imgenter.ru/uploads/media/96/c8/ef/thumb_cf06_product_60.jpeg" alt="">
-                                </a>
-                            </li>
+                            <? foreach ($product->getMedias('image') as $key => $photo) : ?>
+                                <li class="product-gallery-thumbs__item jsProductPhotoThumb <?= $key == 0 ? 'active' : '' ?>"
+                                    data-middle-img="<?= $photo->getSource('product_500')->url ?>"
+                                    data-big-img="<?= $photo->getSource('product_1500')->url ?>"
+                                >
+                                    <a class="product-gallery-thumbs__link" href="#">
+                                        <img class="product-gallery-thumbs__img"
+                                            src="<?= $photo->getSource('product_60')->url ?>" alt="">
+                                    </a>
+                                </li>
+                             <? endforeach ?>
 
-                             <li class="product-gallery-thumbs__item">
-                                <a class="product-gallery-thumbs__link" href="#">
-                                    <img class="product-gallery-thumbs__img" src="http://d.imgenter.ru/uploads/media/30/2b/6e/thumb_26e9_product_60.jpeg" alt="">
-                                </a>
-                            </li>
                         </ul>
                     </div>
 
