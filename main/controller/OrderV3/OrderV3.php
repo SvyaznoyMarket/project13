@@ -136,7 +136,7 @@ class OrderV3 {
                                 'quantity' => $cartProduct->quantity,
                             ];
                         },
-                        $cart->getInOrderProductsById()
+                        $cart->getProductsById()
                     ),
                     'sum'      => $cart->getSum(),
                 ],
