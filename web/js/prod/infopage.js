@@ -393,6 +393,37 @@ $(document).ready(function(){
 
         noResult ? $('.tarifs-search__no-result').show() : $('.tarifs-search__no-result').hide();
     });
+
+    $(document).ready(function(){
+        $('.subscribe-block[data-type="background"]').each(function(){
+            var $this = $(this),
+                $scrolled = $this.find('.scrolled-bg'),
+                $window = $(window),
+                lastScrollTop = $(window).scrollTop(),
+                delta = 0;
+
+
+                $window.scroll(function() {
+
+                    var st = $(window).scrollTop();
+                    delta = lastScrollTop - st;
+
+                    lastScrollTop = st;
+
+                    if ( ($window.scrollTop() + $window.height()) >= $this.offset().top ){
+
+
+                        var prevCoords = $scrolled.css('backgroundPosition').split(' '),
+                            prevY = parseInt( prevCoords[1] ),
+                            coords = 'center '+ (prevY + (delta / $this.data('speed')) ) + 'px';
+
+                        $scrolled.css({ 'background-position': coords });
+                    }
+
+                });
+
+        });
+    });
 });
 
 $(function() {
