@@ -79,6 +79,10 @@ class FeedbackAction
             $mailer->Subject = $query[$fieldSubject];
             $mailer->Body = $query[$fieldMessage];
             foreach ($files as $file) {
+                if (empty($file)) {
+                    continue;
+                }
+
                 /** @var $file UploadedFile */
                 $mailer->addAttachment($file->getPathname(), $file->getClientOriginalName());
             }
