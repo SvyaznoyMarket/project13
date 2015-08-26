@@ -51,7 +51,7 @@
 
     <? if (('/dostavka' !== $pathInfo) && in_array($region->parentId, [76/* Воронежская обл */, 90/* Ярославская обл */])): ?>
         <span class="header__bann stripe-bann">
-            Бесплатная <a href="/dostavka">доставка</a> и <a href="<?= $helper->url('delivery') ?>">самовывоз</a> домой и в офис из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?> <? if ($region->names->locativus): ?> в <?= $helper->escape($region->names->locativus) ?><? endif ?>
+            Бесплатные <a href="/dostavka">доставка</a> домой и в офис и <a href="<?= $helper->url('delivery') ?>">самовывоз</a> из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?> <? if ($region->names->locativus): ?> в <?= $helper->escape($region->names->locativus) ?><? endif ?>
             <span class="stripe-bann__small">Для заказов от 1990 <span class="rubl">p</span></span>
         </span>
     <? else: ?>
