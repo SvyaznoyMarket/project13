@@ -769,6 +769,17 @@ return [
         'action'  => ['Enterprize\SliderAction', 'execute'],
     ],
 
+    'subscribe.friend.show' => [
+        'pattern' => '/enter-friends',
+        'action'  => ['Subscribe\FriendAction', 'show'],
+    ],
+
+    'subscribe.friend.create' => [
+        'pattern' => '/enter-friends/create',
+        'action'  => ['Subscribe\FriendAction', 'create'],
+        'method'  => ['POST'],
+    ],
+
     'mobidengi' => [
         'pattern' => '/tele2',
         'action'  => ['Mobidengi\IndexAction', 'execute'],
