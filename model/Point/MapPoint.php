@@ -2,7 +2,6 @@
 
 namespace Model\Point;
 
-
 class MapPoint extends BasicPoint {
 
     const POSTAMAT_SUFFIX = '_postamat';
@@ -29,6 +28,8 @@ class MapPoint extends BasicPoint {
     public $humanNearestDay;
     /** @var bool Является ли точка пикпоинтом */
     public $isPickpoint;
+    /** @var \Model\Point\Help|null */
+    public $help;
 
 //    public $blockName;
     public $orderToken;
@@ -61,6 +62,7 @@ class MapPoint extends BasicPoint {
         $this->humanNearestDay = $this->humanizeDate();
         $this->humanCost = $this->cost == 0 ? 'Бесплатно' : \App::helper()->formatPrice($this->cost);
         $this->isPickpoint = strpos($this->token, 'pickpoint') !== false;
+        $this->help = \Model\Point\Help::createByPointGroupToken($this->token);
         $this->postamatFix();
 
     }
@@ -80,5 +82,4 @@ class MapPoint extends BasicPoint {
             $this->token .= self::POSTAMAT_SUFFIX;
         }
     }
-
 }

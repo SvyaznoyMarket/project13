@@ -353,6 +353,10 @@
                 var
                     target = $(event.currentTarget);
 
+                if ($(event.target).hasClass('js-pointpopup-pick-point-help')) {
+                    return;
+                }
+
                 this.trigger('changePoint', {
                     id: target.attr('data-id'),
                     token: target.attr('data-token')

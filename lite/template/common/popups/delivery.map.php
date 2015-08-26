@@ -30,16 +30,16 @@
                                 <input class="custom-input js-point-filter-param custom-input_check-fill" type="checkbox" id="point_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
                                 <label class="custom-label" for="point_{{key}}_{{value}}">{{displayValue}}</label>
 
-                                {{#isPickPoint}}
+                                {{#help}}
                                 <!-- попап-подсказка с описание пункта самовывоза -->
                                 <div class="delivery-points-info delivery-points-info_inline">
                                     <a class="delivery-points-info__icon"></a>
                                     <div class="delivery-points-info__popup delivery-points-info__popup_top info-popup">
-                                        <a class="delivery-points-info__link" href="" title="Как пользоваться постаматом">Как пользоваться постаматом</a>
+                                        <a class="delivery-points-info__link" href="{{help.url}}" title="{{help.name}}">{{help.name}}</a>
                                     </div>
                                 </div>
                                 <!--/ попап-подсказка с описание пункта самовывоза -->
-                                {{/isPickPoint}}
+                                {{/help}}
                             </div>
                             {{/uniqueTokens}}
 
@@ -118,16 +118,16 @@
             <div class="delivery-points-list__logo table-cell">
                 <img src="{{icon}}" class="delivery-points-list__img">
 
-                {{#isPickPoint}}
+                {{#help}}
                 <!-- попап-подсказка с описание пункта самовывоза -->
                 <div class="delivery-points-info delivery-points-info_absolute">
                     <a class="delivery-points-info__icon"></a>
                     <div class="delivery-points-info__popup delivery-points-info__popup_left info-popup">
-                        <a class="delivery-points-info__link" href="" title="Как пользоваться постаматом">Как пользоваться постаматом</a>
+                        <a class="delivery-points-info__link js-pointpopup-pick-point-help" href="{{help.url}}" title="{{help.name}}">{{help.name}}</a>
                     </div>
                 </div>
                 <!--/ попап-подсказка с описание пункта самовывоза -->
-                {{/isPickPoint}}
+                {{/help}}
 
                 <span class="delivery-points-list__name">{{listName}}</span>
             </div>

@@ -6,6 +6,7 @@ namespace View\Content;
 use Model\Point\ScmsPoint;
 
 class DeliveryMapPage extends IndexPage {
+    protected $layout  = 'layout/content.withMenu';
 
     protected function prepare() {
         /** @var $points ScmsPoint[] */

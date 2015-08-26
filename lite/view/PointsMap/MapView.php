@@ -66,7 +66,8 @@ class MapView {
             $result[] = [
                 'key' => 'token',
                 'value' => $token,
-                'displayValue'  => $this->getDropdownName($token)
+                'displayValue'  => $this->getDropdownName($token),
+                'help'  => \Model\Point\Help::createByPointGroupToken($token),
             ];
         }
         return $result;
