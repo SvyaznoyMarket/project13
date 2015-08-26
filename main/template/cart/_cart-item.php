@@ -25,7 +25,7 @@
                 <div class="descCount">
                     <div class="numerbox jsCartNumber">
                         <a href="" data-bind="attr: { href: decreaseUrl }" class="ajaxLess jsCartNumberBoxLess"><b class="ajaless" title="Уменьшить"></b></a>
-                        <input type="text" maxlength="2" class="ajaquant jsCartNumberBoxInput" value="" data-bind="value: quantity(), attr: {'data-product-ui': ui}">
+                        <input type="text" maxlength="2" class="ajaquant jsCartNumberBoxInput" value="" data-bind="value: quantity(), attr: {'data-product-ui': ui, value: quantity()}">
                         <a href="" data-bind="attr: { href: increaseUrl }" class="ajaxMore jsCartNumberBoxMore"><b class="ajamore" title="Увеличить"></b></a>
                     </div>
                 </div>

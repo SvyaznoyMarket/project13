@@ -771,9 +771,6 @@ class Action {
 
     private function setPageTitle(\Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null) {
         $this->pageTitle = $category->getName();
-        if ($brand) {
-            $this->pageTitle .= ' ' . $brand->getName();
-        }
     }
 
 
