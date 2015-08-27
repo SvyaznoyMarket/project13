@@ -99,7 +99,7 @@
         white-space: nowrap;
     }
     &__total-sum {
-
+        .inline-block(middle);
     }
     &__units{
         margin-left: 5px;
@@ -107,7 +107,52 @@
         font-size: 16px;
         .inline-block(middle);
     }
+    &__common-total{
+        border-bottom: 1px solid #bababa;
+        text-align: right;
+        padding: 35px 15px 35px 0;
+
+        .order-cart__total{
+            width: auto;
+        }
+    }
+    &__sum-txt{
+        color: #5e5e5e;
+        .inline-block(middle);
+        margin-right: 5px;
+        font-size: 17px;
+    }
+    &__btn{
+        margin: 20px 0 10px;
+    }
+    &__back{
+        text-align: center;
+
+        a {
+            color: #363636;
+            font-size: 18px;
+            &:before{
+                content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAATCAQAAAD2HN/VAAAAjklEQVR4AWPADViR2No8pnfMAqEcY1azRWZHGVggPEazKLN3FpowOWXTl2YZUI4Kn9k+0yUMjBAes1m96U0rMaicpYrZN1MPuAWmzmZPzPQRFjKbrjTbYCaMkFcyuWZSaoxwk5ml6SXTNIQGRpNss4umpnC+Oq/ZArMN5nxwAUNRsw0mZkh+cpDw5WLACwCynx0N07qtHAAAAABJRU5ErkJggg==');
+                width: 7px;
+                height: 19px;
+                .inline-block(middle);
+                margin-right: 8px;
+            }
+            text-decoration: none;
+
+            &:hover{
+                text-decoration: none;
+            }
+        }
+        &-txt{
+            padding-bottom: 1px;
+            border-bottom: 1px solid;
+        }
+    }
 }
+
+
+// счетчик количества товара
 .count{
     overflow: hidden;
     .rounded(3px);

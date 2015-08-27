@@ -29,26 +29,27 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
         ?>
     <!-- /ko -->
 
-    <div class="basketLine clearfix">
+    <!--<div class="basketLine clearfix">-->
 
         <?= $page->render('cart/ab-self-delivery/_infoblock', ['cart' => $cart]) ?>
 
-        <?= $page->render('cart/_cart-total') ?>
+        <?= $page->render('cart/_cart-total-new') ?>
 
+    <!--</div>-->
+
+</div>
+
+<!--<div class="backShop fl mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">&lt; <a class="underline" href="<?/*= $backlink */?>">Вернуться к покупкам</a></div>-->
+
+
+    <div class="order-cart__btn mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">
+        <a href="<?= $page->url('order') ?>" class="btn-type btn-type--buy btn-type--cart" data-bind="visible: !isMinOrderSumVisible()">Оформить заказ</a>
     </div>
-
-</div>
-
-<div class="backShop fl mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">&lt; <a class="underline" href="<?= $backlink ?>">Вернуться к покупкам</a></div>
-
-<div class="basketBuy mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">
-    <a href="<?= $page->url('order') ?>" class="bBigOrangeButton" data-bind="visible: !isMinOrderSumVisible()">Оформить заказ</a>
-</div>
-
-<div class="cart-alert jsKnockoutCart" data-bind="visible: isMinOrderSumVisible()" style="display: none;">
-    <span class="cart-alert__info">До оформления заказа осталось</span>
-    <span class="cart-alert__remain-sum"><span data-bind="text: minOrderSum - cart().sum()"><?= \App::config()->minOrderSum ?></span>&thinsp;<span class="rubl">p</span></span>
-</div>
+    <div class="order-cart__back mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none"><a href="<?= $backlink ?>"><span class="order-cart__back-txt">Вернуться к покупкам</span></a></div>
+    <div class="cart-alert jsKnockoutCart" data-bind="visible: isMinOrderSumVisible()" style="display: none;">
+        <span class="cart-alert__info">До оформления заказа осталось</span>
+        <span class="cart-alert__remain-sum"><span data-bind="text: minOrderSum - cart().sum()"><?= \App::config()->minOrderSum ?></span>&thinsp;<span class="rubl">p</span></span>
+    </div>
 
 <div class="clear"></div>
 
