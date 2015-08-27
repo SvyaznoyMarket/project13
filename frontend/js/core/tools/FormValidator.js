@@ -413,39 +413,35 @@
                     currentField = null,
                     i,
 
-                    validateOnBlur = function validateOnBlur( that ) {
+                    validateOnBlur = function validateOnBlur( fieldNode ) {
                         var
                             result      = {},
-                            findedField = self._findFieldByNode( that );
+                            findedField = self._findFieldByNode( fieldNode );
 
                         if ( findedField.finded ) {
                             result = self._validateField(findedField.field);
 
                             if ( result.hasError ) {
-                                self._markFieldError(that, result.errorMsg);
+                                self._markFieldError(fieldNode, result.errorMsg);
                             } else {
-                                self._markFieldValid(that);
+                                self._markFieldValid(fieldNode);
                             }
                         } else {
                             //console.log('поле не найдено или тип валидации не существует, хандлер нужно убрать');
-                            that.unbind('blur', validateOnBlur);
+                            fieldNode.off('blur', validateOnBlur);
                         }
 
                         return false;
                     },
 
-                    blurHandler = function blurHandler( ) {
+                    blurHandler = function( fieldNode ) {
                         var
-                            that = $(this),
                             timeout_id = null;
-                        // end of vars
 
                         clearTimeout(timeout_id);
-                        timeout_id = window.setTimeout(function(){
-                            validateOnBlur(that);
-                        }, 5);
+                        timeout_id = window.setTimeout(validateOnBlur.bind(this, fieldNode), 5);
                     };
-                // end of vars
+
 
                 for ( i = fields.length - 1; i >= 0; i-- ) {
                     currentField = fields[i];
@@ -461,7 +457,7 @@
                             continue;
                         }
 
-                        currentField.fieldNode.bind('blur', blurHandler);
+                        currentField.fieldNode.on('blur', blurHandler.bind(self, currentField.fieldNode));
                         self._validateOnChangeFields[ currentField.fieldNode.get(0).outerHTML ] = true;
                     }
                 }

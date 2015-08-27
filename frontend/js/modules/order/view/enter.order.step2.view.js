@@ -38,7 +38,8 @@
                 SUBMIT_ORDER: 'js-order-submit',
                 ACCEPT_CHECKBOX: 'jsAcceptAgreement',
                 LOADER: 'loader-elem',
-                ACTIVE: 'active'
+                ACTIVE: 'active',
+                SMART_ADRRESS: 'jsSmartAddressBlock'
             };
 
         provide(BaseViewClass.extend({
@@ -56,7 +57,8 @@
                 console.info('module:enter.order.step2.view~OrderStep2View#initialize');
                 var
                     self        = this,
-                    suborders   = this.$el.find('.' + CSS_CLASSES.SUB_ORDER);
+                    suborders   = this.$el.find('.' + CSS_CLASSES.SUB_ORDER),
+                    smartAdress = this.$el.find('.' + CSS_CLASSES.SMART_ADRRESS);
 
                 console.info(this.$el);
 
@@ -72,6 +74,15 @@
                         orderView: self
                     });
                 });
+
+                if ( smartAdress.length ) {
+                    modules.require('enter.order.smartadress.view', function( OrderSmartAdress ) {
+                        self.subViews.smartAdress = new OrderSmartAdress({
+                            el: smartAdress,
+                            orderView: self
+                        });
+                    });
+                }
 
                 // Setup events
                 this.events['click .' + CSS_CLASSES.COMMENT_BTN]  = 'toggleCommentArea';

@@ -50,7 +50,6 @@
                 INTERVALS_POPUP: 'js-order-intervals',
                 PICK_INTERVAL: 'js-order-pick-interval',
                 POINTS_DATA: 'js-points-data',
-                SMART_ADRRESS: 'jsSmartAddressBlock',
                 ACTIVE: 'active'
             };
 
@@ -67,8 +66,7 @@
                 var
                     self            = this,
                     items           = this.$el.find('.' + CSS_CLASSES.ITEM),
-                    orderPointsData = JSON.parse(this.$el.find('.' + CSS_CLASSES.POINTS_DATA).html()),
-                    smartAdress     = this.$el.find('.' + CSS_CLASSES.SMART_ADRRESS);
+                    orderPointsData = JSON.parse(this.$el.find('.' + CSS_CLASSES.POINTS_DATA).html());
 
                 this.orderView        = options.orderView;
                 this.blockName        = this.$el.attr('data-block_name');
@@ -86,16 +84,6 @@
 
                 this.subViews.intervalsPopup = this.$el.find('.' + CSS_CLASSES.INTERVALS_POPUP);
                 this.subViews.intervalsBtn = this.$el.find('.' + CSS_CLASSES.SHOW_INTERVALS_BTN);
-
-                if ( smartAdress.length ) {
-                    modules.require('enter.order.smartadress.view', function( OrderSmartAdress ) {
-                        self.subViews.smartAdress = new OrderSmartAdress({
-                            el: smartAdress,
-                            orderView: self.orderView,
-                            blockName: self.blockName
-                        });
-                    });
-                }
 
 
                 // Setup events

@@ -54,28 +54,28 @@
              */
             initialize: function( options ) {
                 var
-                    self = this,
+                    self         = this,
+                    buildingData = lscache.get('smartadress_buildingData') || '',
+                    streetData   = lscache.get('smartadress_streetData') || '',
+                    apartment    = lscache.get('smartadress_apartment') || '',
                     validationConfig;
 
-                this.regionData   = $('#region-data').data('value');
-                $.kladr.url       = this.url;
-                this.orderView    = options.orderView;
-                this.blockName    = options.blockName;
-                this.buildingData = lscache.get('smartadress_buildingData') || {};
-                this.streetData   = lscache.get('smartadress_streetData') || {};
-                this.apartment    = lscache.get('smartadress_apartment') || '';
+                this.regionData = $('#region-data').data('value');
+                $.kladr.url     = this.url;
+                this.orderView  = options.orderView;
 
                 console.groupCollapsed('module:enter.order.smartadress.view~OrderSmartAdress#initialize');
-                console.log('buildingData', this.buildingData);
-                console.log('streetData', this.streetData);
-                console.log('apartment', this.apartment);
+                console.log(this.$el);
+                console.log('buildingData', buildingData);
+                console.log('streetData', streetData);
+                console.log('apartment', apartment);
                 console.groupEnd();
 
                 this.subViews = {
-                    street: this.$el.find('.' + CSS_CLASSES.STREET_INPUT),
-                    streetLabel: this.$el.find('.' + CSS_CLASSES.STREET_LABEL),
-                    building: this.$el.find('.' + CSS_CLASSES.BUILD_INPUT),
-                    apartment: this.$el.find('.' + CSS_CLASSES.APARTMENT_INPUT)
+                    street: this.orderView.$el.find('.' + CSS_CLASSES.STREET_INPUT),
+                    streetLabel: this.orderView.$el.find('.' + CSS_CLASSES.STREET_LABEL),
+                    building: this.orderView.$el.find('.' + CSS_CLASSES.BUILD_INPUT),
+                    apartment: this.orderView.$el.find('.' + CSS_CLASSES.APARTMENT_INPUT)
                 };
 
                 validationConfig = {
@@ -110,27 +110,25 @@
                     select: this.setStreet.bind(this)
                 });
 
-                if ( !_.isEmpty(this.streetData) ) {
-                    this.setStreet(this.streetData);
+                if ( !_.isEmpty(streetData) ) {
+                    this.setStreetValue(streetData);
                     this.validator._markFieldValid(this.subViews.street);
-
-                    this.subViews.street.kladr('controller').setValueByObject(this.streetData);
                 }
 
-                if ( !_.isEmpty(this.buildingData) ) {
-                    this.setBuiling(this.buildingData);
+                if ( !_.isEmpty(buildingData) ) {
+                    this.setBuilingValue(buildingData);
                     this.validator._markFieldValid(this.subViews.building);
                 }
 
-                if ( this.apartment ) {
-                    this.subViews.apartment.val(this.apartment);
+                if ( apartment ) {
+                    this.setApartmentValue(apartment);
                     this.validator._markFieldValid(this.subViews.apartment);
                 }
 
                 // Setup events
-                this.events['blur .' + CSS_CLASSES.APARTMENT_INPUT] = 'setApartment';
-
-                this.listenTo(this, 'sendChanges', this.sendChanges);
+                this.subViews.street.on('blur', this.setStreet.bind(this));
+                this.subViews.building.on('blur', this.setBuiling.bind(this));
+                this.subViews.apartment.on('blur', this.setApartment.bind(this));
 
                 // Apply events
                 this.delegateEvents();
@@ -149,27 +147,27 @@
                     return;
                 }
 
-                lscache.set('smartadress_streetData', streetData);
-                this.subViews.streetLabel.text(streetData.type);
-                this.subViews.street.val(streetData.name);
-
-                this.streetData = streetData;
-
                 console.groupCollapsed('module:enter.order.smartadress.view~OrderSmartAdress#setStreet');
-                console.dir(streetData);
-                console.dir(lscache.get('smartadress_streetData'));
-                console.groupEnd();
 
-                this.subViews.building.kladr({
-                    type: $.kladr.type.building,
-                    parentType: $.kladr.type.street,
-                    parentId: this.streetData.id,
-                    select: this.setBuiling.bind(this)
-                });
-
-                if ( !_.isEmpty(this.buildingData) ) {
-                    this.subViews.building.kladr('controller').setValueByObject(this.buildingData)
+                if ( streetData instanceof $.Event ) {
+                    console.warn('is $.Event');
+                    console.log(this.subViews.street);
+                    this.setStreetValue($(streetData.currentTarget).val());
+                    return;
+                } else {
+                    this.setStreetValue(streetData.name);
+                    this.subViews.building.kladr({
+                        type: $.kladr.type.building,
+                        parentType: $.kladr.type.street,
+                        parentId: streetData.id,
+                        select: this.setBuiling.bind(this)
+                    });
                 }
+
+                // this.subViews.streetLabel.text(streetData.type);
+
+                console.log(streetData);
+                console.groupEnd();
             },
 
             setBuiling: function( buildingData ) {
@@ -177,19 +175,19 @@
                     return;
                 }
 
-                this.subViews.building.val(buildingData.name);
-                lscache.set('smartadress_buildingData', buildingData);
-
                 console.groupCollapsed('module:enter.order.smartadress.view~OrderSmartAdress#setBuiling');
-                console.dir(buildingData);
-                console.dir(lscache.get('smartadress_buildingData'));
+
+                if ( buildingData instanceof jQuery.Event ) {
+                    console.warn('is $.Event');
+                    this.setBuilingValue($(buildingData.currentTarget).val());
+                } else {
+                    console.log(buildingData);
+                    this.setBuilingValue(buildingData.name);
+                }
+
                 console.groupEnd();
 
-                if ( !_.isEqual(this.buildingData, buildingData) ) {
-                    console.warn('module:enter.order.smartadress.view~OrderSmartAdress#setBuiling = buildings data isnt equal');
-                    this.buildingData = buildingData;
-                    // this.sendChanges.call(this);
-                }
+                return false;
             },
 
             setApartment: function( event ) {
@@ -201,11 +199,25 @@
                 console.log(val);
                 console.groupEnd();
 
-                if ( this.apartment !== val ) {
-                    this.apartment = val;
-                    lscache.set('smartadress_apartment', val);
-                    // this.sendChanges();
-                }
+                this.setApartmentValue(val);
+            },
+
+            setStreetValue: function( val ) {
+                console.info('setStreetValue', val);
+                lscache.set('smartadress_streetData', val);
+                this.subViews.street.val(val);
+                // this.subViews.street.kladr('controller').setValueByName(val);
+            },
+
+            setBuilingValue: function( val ) {
+                lscache.set('smartadress_buildingData', val);
+                this.subViews.building.val(val);
+                // this.subViews.building.kladr && this.subViews.building.kladr('controller').setValueByName(val);
+            },
+
+            setApartmentValue: function( val ) {
+                this.subViews.apartment.val(val);
+                lscache.set('smartadress_apartment', val);
             },
 
             sendChanges: function() {
