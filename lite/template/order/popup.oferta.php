@@ -8,7 +8,7 @@
                 <div class="orderOferta_tabs_i js-oferta-tab" data-tab="tab-2">Правовая информация</div>
             </div>
 
-            <div class="orderOferta_tabcnt orderOferta_tabcnt-cur js-tab-oferta-content" id="tab-1">
+            <div class="orderOferta_tabcnt orderOferta_tabcnt-cur " id="tab-1">
                 <div class="orderOferta_tl">Условия продажи</div>
             </div>
 

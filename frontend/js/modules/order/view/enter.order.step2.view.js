@@ -14,13 +14,14 @@
         [
             'jQuery',
             'enter.BaseViewClass',
-            'enter.suborder.view'
+            'enter.suborder.view',
+            'urlHelper'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, SubOrderView ) {
+    function( provide, $, BaseViewClass, SubOrderView, urlHelper ) {
         'use strict';
 
         var
@@ -39,7 +40,10 @@
                 ACCEPT_CHECKBOX: 'jsAcceptAgreement',
                 LOADER: 'loader-elem',
                 ACTIVE: 'active',
-                SMART_ADRRESS: 'jsSmartAddressBlock'
+                SMART_ADRRESS: 'jsSmartAddressBlock',
+                OFFER_POPUP: 'js-order-oferta-popup',
+                OFFER_POPUP_CONTENT: 'js-tab-oferta-content',
+                OFFER_POPUP_BTN: 'js-order-oferta-popup-bt'
             };
 
         provide(BaseViewClass.extend({
@@ -65,7 +69,9 @@
                 this.subViews = {
                     commentBtn: this.$el.find('.' + CSS_CLASSES.COMMENT_BTN),
                     commentArea: this.$el.find('.' + CSS_CLASSES.COMMENT_AREA),
-                    acceptCheckbox: this.$el.find('.' + CSS_CLASSES.ACCEPT_CHECKBOX)
+                    acceptCheckbox: this.$el.find('.' + CSS_CLASSES.ACCEPT_CHECKBOX),
+                    offerPopup: $('.' + CSS_CLASSES.OFFER_POPUP),
+                    offerPopupContent: $('.' + CSS_CLASSES.OFFER_POPUP_CONTENT)
                 };
 
                 suborders.each(function( index ) {
@@ -85,8 +91,9 @@
                 }
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.COMMENT_BTN]  = 'toggleCommentArea';
-                this.events['click .' + CSS_CLASSES.SUBMIT_ORDER] = 'submitOrder';
+                this.events['click .' + CSS_CLASSES.COMMENT_BTN]     = 'toggleCommentArea';
+                this.events['click .' + CSS_CLASSES.SUBMIT_ORDER]    = 'submitOrder';
+                this.events['click .' + CSS_CLASSES.OFFER_POPUP_BTN] = 'showOfferPopup';
 
                 this.listenTo(this, 'sendChanges', this.sendChanges);
 
@@ -188,7 +195,36 @@
                     // mark error
                     return false;
                 }
+            },
 
+            showOfferPopup: function( event ) {
+                var
+                    target   = $(event.currentTarget),
+                    termsUrl = target.attr('data-value'),
+                    self     = this;
+
+                if ( termsUrl === '' ) {
+                    return false;
+                }
+
+                console.log('OLD termsUrl', termsUrl);
+                termsUrl = ( window.location.host !== 'www.enter.ru' ) ? termsUrl.replace(/^.*enter.ru/, '') : termsUrl; /* для работы на demo-серверах */
+                console.log('NEW termsUrl', termsUrl);
+
+                this.ajax({
+                    url: urlHelper.addParams(termsUrl, {
+                        ajax: 1
+                    }),
+                    success: function(data) {
+                        modules.require('jquery.lightbox_me', function() {
+                            console.log(self.subViews.offerPopupContent);
+                            self.subViews.offerPopupContent.html(data.content || '');
+                            self.subViews.offerPopup.lightbox_me({});
+                        });
+                    }
+                });
+
+                return false;
             },
 
 
