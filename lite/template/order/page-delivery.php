@@ -95,7 +95,7 @@ return function(
                                     <span class="js-order-changePlace-link dotted" style="cursor: pointer;" data-content="#id-order-changePlace-content-<?= $order->id ?>">Указать место самовывоза</span>
                                 <? else : ?>
                                     <div class="order-delivery-info-title">
-                                        <span class="order-delivery-info-title__left"><?= @$order->delivery->delivery_method->name ?></span>
+                                        <span class="order-delivery-info-title__left"><?= !empty($point->group) ? $helper->escape($point->group->name) : '' ?></span>
                                         <span class="order-delivery-info-title__right dotted js-order-changePlace-link" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span>
                                     </div>
                                 <? endif; ?>

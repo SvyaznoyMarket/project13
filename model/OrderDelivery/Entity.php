@@ -608,6 +608,8 @@ namespace Model\OrderDelivery\Entity\Point {
         /** @var string */
         public $id;
         /** @var string */
+        public $ui;
+        /** @var string */
         public $name;
         /** @var string */
         public $address;
@@ -621,9 +623,12 @@ namespace Model\OrderDelivery\Entity\Point {
         public $listName;
         /** @var \Model\OrderDelivery\Entity\Subway[]|null */
         public $subway;
+        /** @var \Model\Point\Group|null */
+        public $group;
 
         public function __construct(array $data = []) {
             if (isset($data['id'])) $this->id = (string)$data['id'];
+            if (isset($data['ui'])) $this->ui = (string)$data['ui'];
             if (isset($data['name'])) $this->name = (string)$data['name'];
             if (isset($data['address'])) $this->address = (string)$data['address'];
             if (isset($data['regtime'])) $this->regtime = (string)$data['regtime'];

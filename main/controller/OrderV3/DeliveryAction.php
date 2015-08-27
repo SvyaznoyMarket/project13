@@ -195,8 +195,42 @@ class DeliveryAction extends OrderV3 {
         }
 
         $medias = [];
+        $pointUiToObject = [];
         foreach($orderDelivery->orders as $order) {
+            $point = $order->delivery->point ? $orderDelivery->points[$order->delivery->point->token]->list[$order->delivery->point->id] : null;
+            if (!empty($point->ui)) {
+                $pointUiToObject[$point->ui] = $point;
+            }
+
             \RepositoryManager::product()->prepareProductsMediasByIds(array_map(function(\Model\OrderDelivery\Entity\Order\Product $product) { return $product->id; }, $order->products), $medias);
+        }
+
+        if ($pointUiToObject) {
+            \App::scmsClient()->addQuery('api/point/get', [
+                'geo_id' => $this->user->getRegion()->getId(),
+                'uids' => array_keys($pointUiToObject),
+            ], [],
+                function ($data) use($pointUiToObject) {
+                    $partners = [];
+                    if (isset($data['partners'])) {
+                        foreach ($data['partners'] as $partner) {
+                            $partners[$partner['slug']] = $partner;
+                        }
+                    }
+
+                    if (isset($data['points']) && is_array($data['points'])) {
+                        foreach ($data['points'] as $pointData) {
+                            if (!empty($pointUiToObject[$pointData['uid']])) {
+                                /** @var \Model\OrderDelivery\Entity\Point\DefaultPoint $point */
+                                $point = $pointUiToObject[$pointData['uid']];
+                                if (!empty($pointData['partner']) && !empty($partners[$pointData['partner']])) {
+                                    $point->group = new \Model\Point\Group($partners[$pointData['partner']]);
+                                }
+                            }
+                        }
+                    }
+                }
+            );
         }
 
         \App::coreClientV2()->execute();
