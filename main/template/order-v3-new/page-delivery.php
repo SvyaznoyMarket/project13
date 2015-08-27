@@ -364,4 +364,6 @@ return function(
     </div>
 </div>
 
+<?= $helper->render('order-v3-new/__delivery-analytics', ['orderDelivery' => $orderDelivery]) ?>
+
 <? };
