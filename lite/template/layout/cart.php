@@ -70,7 +70,7 @@
             <a class="cart__delete js-cart-item-delete" href="{{deleteUrl}}"><span class="dotted">Удалить</span></a>
        </div>
 
-       <div class="cart__summ cart__cell table-cell">{{formattedFullPrice}}&thinsp;<span class="rubl">A</span></div>
+       <div class="cart__summ cart__cell table-cell"><span>{{formattedFullPrice}}&thinsp;<span class="rubl">A</span></span></div>
     </div>
 </script>
 
