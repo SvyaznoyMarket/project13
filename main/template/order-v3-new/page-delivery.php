@@ -38,7 +38,7 @@ return function(
         <?= $helper->render('order-v3-new/__error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
 
-            <?= $helper->render('order-v3-new/partial/order-list', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
+            <?= $helper->render('order-v3-new/partial/orders-list',['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
 
         <div class="orderComment">

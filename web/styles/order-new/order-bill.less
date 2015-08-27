@@ -1,29 +1,150 @@
+@txtColor: #363636;
+@txtLightColor: #868686;
+@textGrey: #616161;
+
 .order-bill{
     &__item{
-
+        margin-top: 10px;
     }
     &__head{
-
+        color: @txtColor;
+        font-size: 20px;
+        margin-bottom: 10px;
+        padding-left: 10px;
     }
     &__goods{
-
+        padding-left: 10px;
+        width: 470px;
+        float: left;
     }
     &__seller{
-
+        color: @textGrey;
+        font-size: 14px;
+        position: relative;
+        margin-bottom: 20px;
     }
     &__oferta{
-
+        width: 15px;
+        height: 15px;
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat -45px -53px;
+        .inline-block(middle);
+        margin: -2px 0 0 3px;
+        font-size: 0;
+        cursor: pointer;
+    }
+    &__delivery-details{
+        width: 470px;
+        margin-left: 490px;
     }
 }
 .order-good{
     &__item{
-
+        width: 100%;
+        border-top: 1px solid #e6e6e6;
+        .box-sizing(border-box);
+        padding: 10px 10px 15px 0;
     }
     &__item-lk{
+        float: left;
+        width: 70px;
+        height: 70px;
+        display: block;
+        text-align: center;
 
+        &:after{
+            content: '';
+            width: 0;
+            height: 100%;
+            .inline-block(middle);
+        }
     }
     &__img{
-        
+        max-width: 65px;
+        max-height: 65px;
+        .inline-block(middle);
+    }
+    &__name{
+        display: block;
+        margin-left: 80px;
+        margin-bottom: 15px;
+        color: @txtColor;
+        font-size: 14px;
+    }
+    &__price{
+        font-size: 16px;
+        color: @txtColor;
+        margin-right: 30px;
+    }
+    &__total-price{
+        font-size: 16px;
+        color: @txtColor;
+        float: right;
+        margin-right: 20px;
+    }
+    &__quantity{
+        font-size: 16px;
+        color: @txtColor;
+        border-bottom: 1px dotted;
+        cursor: pointer;
+    }
+    &__count{
+        width: 105px;
+        .inline-block(middle);
+        .count{
+            &__ctrl{
+                font-size: 16px;
+            }
+            &__num{
+                font-size: 16px;
+            }
+        }
+    }
+}
+.order-discount{
+    &__head{
+        font-size: 18px;
+        color: @txtColor;
+        margin: 20px 0 0px;
+    }
+    &__item{
+        display: table;
+        position: relative;
+        width: 100%;
+        border-top: 1px solid #e6e6e6;
+    }
+    &__lk{
+        display: table-cell;
+        padding: 10px 0;
     }
 
+    &__name{
+        display: table-cell;
+        padding: 10px;
+        width: 100%;
+        max-width: 0;
+        font-size: 14px;
+        color: @txtColor;
+    }
+    &__val{
+        display: table-cell;
+        padding: 10px 20px 10px 0;
+        text-align: right;
+        white-space: nowrap;
+        font-size: 16px;
+        color: @txtColor;
+    }
+    &__cell{
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        padding: 10px;
+    }
+    &__del{
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat  -27px -53px;
+        width: 10px;
+        height: 10px;
+        cursor: pointer;
+        .inline-block(middle);
+        font-size: 0;
+    }
 }
