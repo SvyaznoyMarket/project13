@@ -1,5 +1,5 @@
 <!-- Заявка на кухни -->
-<div class="popup popup-application popup_440 js-popup-application" style="display: none;">
+<div class="popup popup-application popup_460 js-popup-application" style="display: none;">
     <div class="popup__close js-popup-close">×</div>
 
     <div class="popup-application__order">
