@@ -170,6 +170,8 @@ return function(
 
                             <?= $helper->render('order/_payment.methods', ['order' => $order]) ?>
 
+                            <? /* LITE-134 ОЗ Шаг 2 - убрать задублированный способ оплаты */ ?>
+                            <? /*
                             <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
                                 <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
                                 <input type="checkbox" class="custom-input custom-input_check jsCreditCardPayment" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked ' : '' ?>/>
@@ -177,6 +179,7 @@ return function(
                                     Оплата курьеру банковской картой <img class="order-check__img" src="/styles/order/img/i-visa.png" alt=""><img class="order-check__img" src="/styles/order/img/i-mc.png" alt="">
                                 </label>
                             <? endif; ?>
+                            */ ?>
 
                         <? endif ?>
 
