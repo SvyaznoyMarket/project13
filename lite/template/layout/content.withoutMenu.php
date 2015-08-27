@@ -14,13 +14,9 @@
 
 		<div class="wrapper wrapper-content">
 		    <main class="content">
-		    	<div class="section section_aside">
-		    		<section class="section__right">
-		    			<div class="static-content section__right-inner">
-		        			<?= $page->blockContent() ?>
-		        		</div>
-		        	</section>
-		        </div>
+		    	<section class="section">
+		        	<?= $page->blockContent() ?>
+		        </section>
 		    </main>
 		</div>
 
