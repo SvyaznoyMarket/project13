@@ -14,16 +14,33 @@
         [
             'ymaps',
             'jQuery',
-            'underscore'
+            'underscore',
+            'Mustache'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, ymaps, $, _ ) {
+    function( provide, ymaps, $, _, Mustache ) {
         'use strict';
 
         var
+            BALLOON_TEMPLATE =
+                '<table class="pick-point-list"><tbody><tr class="pick-point-item clearfix" ><td class="pick-point-item__logo">'+
+                '<img src="{{ icon }}" class="pick-point-item__img" >'+
+                '<span class="pick-point-item__name">{{ listName }}</span>'+
+                '</td><td class="pick-point-item__addr">'+
+                '{{# subway }}' +
+                '<div class="pick-point-item__metro" style="background: {{ subway.line.color }};">'+
+                '<div class="pick-point-item__metro-inn">{{ subway.name }}</div></div>'+
+                '{{/ subway }}'+
+                '<div class="pick-point-item__addr-name">{{ address }}</div>'+
+                '<div class="pick-point-item__time">{{ regtime }}</div></td>'+
+                '<td class="pick-point-item__info pick-point-item__info--nobtn">'+
+                '<div class="pick-point-item__date" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
+                '<div class="pick-point-item__price"><span >{{ humanCost }}</span> {{# showRubles }}<span class="rubl">p</span></div>{{/ showRubles }}'+
+                '</td></tr></tbody></table>',
+
             /**
              * @classdesc   Конструктор карты с точками
              * @memberOf    module:createMap~
@@ -32,7 +49,7 @@
              * @param       {Object}    options
              * @param       {String}    options.nodeId          Идентификатор DOM элемента в котором необходимо отобразить карту
              * @param       {Array}     options.points          Массив точек которые необходимо отобразить на карте
-             * @param       {String}    options.baloonTemplate  Шаблон всплывашки отображаемой при клике на точку на карте
+             * @param       {String}    options.baloonTemplate  Mustache шаблон всплывашки отображаемой при клике на точку на карте
              * @param       {String}    options.clusterer       Необходима кластеризация
              */
             CreateMap = function CreateMap( options ) {
@@ -45,7 +62,7 @@
                 console.info('CreateMap');
 
                 this.points   = options.points;
-                this.template = options.baloonTemplate;
+                this.template = options.baloonTemplate || BALLOON_TEMPLATE;
                 this.center   = this.calcCenter();
                 this.$nodeId  = $('#'+options.nodeId);
 
@@ -161,6 +178,7 @@
                 currPoint          = null,
                 tmpPlacemark       = null,
                 self               = this,
+                balloonContent     = null,
                 i;
 
             if ( points ) {
@@ -179,6 +197,8 @@
                     continue;
                 }
 
+                balloonContent = Mustache.render(this.template, currPoint);
+
                 tmpPlacemark = new ymaps.Placemark(
                     // координаты точки
                     [
@@ -188,7 +208,9 @@
 
                     // данные для шаблона
                     _.extend({}, currPoint, {
-
+                        balloonContentBody: balloonContent,
+                        hintContent: currPoint.name,
+                        enterToken: currPoint.token
                     }),
 
                     // оформление метки на карте
