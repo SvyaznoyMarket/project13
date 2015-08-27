@@ -16,7 +16,10 @@ class ScmsPoint {
     public $uid;
     /** @var string */
     public $vendorId;
-    /** @var string */
+    /**
+     * @deprecated Используйте self::$group::$id
+     * @var string
+     */
     public $partner;
     /** @var string */
     public $slug;
@@ -34,11 +37,18 @@ class ScmsPoint {
     public $subway;
     /** @var string */
     public $icon;
+    /** @var \Model\Point\Group|null */
+    public $group;
 
     function __construct(array $data = []) {
         if (isset($data['uid'])) $this->uid = $data['uid'];
         if (isset($data['vendor_id'])) $this->vendorId = $data['vendor_id'];
-        if (isset($data['partner'])) $this->partner = $data['partner'];
+        if (isset($data['partner'])) {
+            $this->partner = $data['partner'];
+            $this->group = new \Model\Point\Group();
+            $this->group->id = $data['partner'];
+        }
+
         if (isset($data['slug'])) $this->slug = $data['slug'];
         if (isset($data['working_time'])) $this->workingTime = $data['working_time'];
 

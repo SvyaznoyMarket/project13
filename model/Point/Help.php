@@ -12,7 +12,7 @@ class Help {
      * @return Help|null
      */
     static public function createByPointGroupToken($token) {
-        if (strpos($token, 'pickpoint') !== false) {
+        if (strpos($token, 'pickpoint_postamat') !== false) {
             $help = new Help();
             $help->url = '/pickpoint-help';
             $help->name = 'Как пользоваться постаматом';

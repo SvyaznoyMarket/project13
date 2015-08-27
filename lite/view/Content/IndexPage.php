@@ -10,7 +10,7 @@ class IndexPage extends LiteLayout
     protected $layout  = 'layout/content.withMenu';
 
     protected function prepare() {
-        if ($this->getParam('token') === 'pickpoint-working') {
+        if ($this->getParam('token') === 'pickpoint-help') {
             $this->layout = 'layout/content.withoutMenu';
         }
 

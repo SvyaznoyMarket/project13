@@ -56,7 +56,7 @@ $helper = \App::helper();
     {{#point}}
         {{#shown}}
             <li class="points-lst-i js-pointpopup-pick-point" id="point_uid_{{uid}}" data-uid="{{uid}}">
-                <div class="points-lst-i__partner jsPointListItemPartner">{{partner}}</div>
+                <div class="points-lst-i__partner jsPointListItemPartner">{{group.name}}</div>
 
                 <div class="deliv-item__addr">
                     {{#subway}}
