@@ -21,7 +21,7 @@
 
             <li class="slidesBox_i jsSlidesWideItem">
                 <a href="/catalog/jewel/pandora-1320">
-                    <img src="styles/mainpage/img/pandora/b-er-pandora.jpg" alt="" class="slidesBox_img">
+                    <img src="styles/mainpage/img/pandora/banner-pandora.jpg" alt="" class="slidesBox_img">
                 </a>
 
                 <ul class="slidesBox_items">
