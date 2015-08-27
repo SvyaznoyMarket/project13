@@ -36,7 +36,7 @@
                                     <div class="delivery-points-info delivery-points-info_inline">
                                         <a class="delivery-points-info__icon"></a>
                                         <div class="delivery-points-info__popup delivery-points-info__popup_top info-popup">
-                                            <a class="delivery-points-info__link" href="{{help.url}}" title="{{help.name}}">{{help.name}}</a>
+                                            <a class="delivery-points-info__link" href="{{help.url}}" title="{{help.name}}" target="_blank">{{help.name}}</a>
                                         </div>
                                     </div>
                                     <!--/ попап-подсказка с описание пункта самовывоза -->
@@ -123,7 +123,7 @@
                 <div class="delivery-points-info delivery-points-info_absolute">
                     <a class="delivery-points-info__icon"></a>
                     <div class="delivery-points-info__popup delivery-points-info__popup_left info-popup">
-                        <a class="delivery-points-info__link js-pointpopup-pick-point-help" href="{{help.url}}" title="{{help.name}}">{{help.name}}</a>
+                        <a class="delivery-points-info__link js-pointpopup-pick-point-help" href="{{help.url}}" title="{{help.name}}" target="_blank">{{help.name}}</a>
                     </div>
                 </div>
                 <!--/ попап-подсказка с описание пункта самовывоза -->
