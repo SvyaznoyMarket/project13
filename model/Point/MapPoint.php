@@ -61,9 +61,9 @@ class MapPoint extends BasicPoint {
 
         $this->humanNearestDay = $this->humanizeDate();
         $this->humanCost = $this->cost == 0 ? 'Бесплатно' : \App::helper()->formatPrice($this->cost);
+        $this->postamatFix();
         $this->isPickpoint = strpos($this->token, 'pickpoint') !== false;
         $this->help = \Model\Point\Help::createByPointGroupToken($this->token);
-        $this->postamatFix();
 
     }
 
