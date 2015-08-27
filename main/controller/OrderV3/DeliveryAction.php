@@ -160,7 +160,7 @@ class DeliveryAction extends OrderV3 {
                             $splitData += ['delivery_type' => 'self'];
                             break;
                         case 'delivery':
-                            $splitData += ['delivery_type' => 'delivery'];
+                            $splitData += ['delivery_type' => 'standart'];
                             break;
                     }
                 }
