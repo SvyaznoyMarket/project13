@@ -101,8 +101,8 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
                     <div class="product-card-set-recall__title">Вам перезвонит специалист<br> и поможет выбрать:</div class="product-card-set-info-title">
 
                     <ul class="product-card-set-recall-list">
-                        <li class="product-card-set-recall-list__item">Состав комплекта и его изменения;</li>
-                        <li class="product-card-set-recall-list__item">Условия доставки и сборки.</li>
+                        <li class="product-card-set-recall-list__item">состав комплекта и его изменения;</li>
+                        <li class="product-card-set-recall-list__item">условия доставки и сборки.</li>
                     </ul>
 
                     <?= $helper->render('product/_button.buy', [

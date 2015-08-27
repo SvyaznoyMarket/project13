@@ -126,7 +126,7 @@
                     $($(e.target).attr('href')), // target
                     300, // duration
                     {
-                        offset: this.subViews.userbar_0 ? - this.subViews.userbar_0.staticHeight : 0
+                        offset: this.subViews.userbar_0 ? - this.subViews.userbar_0.staticHeight - 20 : 0
                     });
                 return false;
             },
