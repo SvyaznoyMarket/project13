@@ -11,8 +11,8 @@ class DeliveryMap {
     public function execute(\Http\Request $request) {
 
         $page = new DeliveryMapPage();
-        $points = null;
-        $partners = null;
+        $points = [];
+        $partners = [];
 
         $scmsClient = \App::scmsClient();
         $scmsClient->addQuery(
@@ -39,8 +39,22 @@ class DeliveryMap {
 
         $scmsClient->addQuery('api/point/get', $this->getFilters($request), [],
             function ($data) use (&$points, &$partners) {
-                if (isset($data['points']) && is_array($data['points'])) $points = array_map(function(array $pointData) { return new ScmsPoint($pointData); }, $data['points']);
-                if (isset($data['partners'])) foreach ($data['partners'] as $partner) { $partners[$partner['slug']] = $partner; }
+                if (isset($data['partners'])) {
+                    foreach ($data['partners'] as $partner) {
+                        $partners[$partner['slug']] = $partner;
+                    }
+                }
+
+                if (isset($data['points']) && is_array($data['points'])) {
+                    $points = array_map(function(array $pointData) use($partners) {
+                        $point = new ScmsPoint($pointData);
+                        if (!empty($point->group) && !empty($partners[$point->group->id])) {
+                            $point->group = new \Model\Point\Group($partners[$point->group->id]);
+                        }
+
+                        return $point;
+                    }, $data['points']);
+                }
             }
         );
 
