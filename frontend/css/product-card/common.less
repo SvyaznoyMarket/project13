@@ -351,15 +351,23 @@
     &__tl {
         color: @green-light;
         border-bottom: 1px solid @green-light;
+        margin: 0 0 5px;
 
         .font-size(14);
         .inline-block();
     }
     &__line {
         margin: 3px 0 0;
+        .font-face("GloberRegular");
+        &-title {
+            .inline-block();
+            width: 70px;
+        }
     }
     &__mark {
-        color: #9c9c9c;
+        color: @grey-bright;
+        .inline-block();
+        width: 125px;
     }
     &--text {
         .buy-now-inshop__tl {

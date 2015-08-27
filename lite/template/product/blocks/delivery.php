@@ -19,11 +19,11 @@ $f = function (
         <span class="buy-now-inshop__tl">В наличии</span>
 
         <? if ($deliveryPickup) : ?>
-            <div class="buy-now-inshop__line jsDeliveryPickupAvailable">Самовывоз <span class="buy-now-inshop__mark"><?= mb_strtolower($helper->humanizeDate($deliveryPickup->getMinDate()->date)) ?>, <?= $deliveryPickup->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryPickup->price) . '&thinsp;<span class="rubl">C</span>' ?></span></div>
+            <div class="buy-now-inshop__line jsDeliveryPickupAvailable"><span class="buy-now-inshop__line-title">Самовывоз</span><span class="buy-now-inshop__mark"><?= mb_strtolower($helper->humanizeDate($deliveryPickup->getMinDate()->date)) ?>, <?= $deliveryPickup->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryPickup->price) . '&thinsp;<span class="rubl">C</span>' ?></span></div>
         <? endif ?>
 
         <? if ($deliveryDelivery) : ?>
-            <div class="buy-now-inshop__line jsDeliveryStandardAvailable">Доставка <span class="buy-now-inshop__mark"><?= mb_strtolower($helper->humanizeDate($deliveryDelivery->getMinDate()->date)) ?>, <?= $deliveryDelivery->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryDelivery->price) . '&thinsp;<span class="rubl">C</span>' ?></span></div>
+            <div class="buy-now-inshop__line jsDeliveryStandardAvailable"><span class="buy-now-inshop__line-title">Доставка</span><span class="buy-now-inshop__mark"><?= mb_strtolower($helper->humanizeDate($deliveryDelivery->getMinDate()->date)) ?>, <?= $deliveryDelivery->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryDelivery->price) . '&thinsp;<span class="rubl">C</span>' ?></span></div>
         <? endif ?>
 
     </div>
