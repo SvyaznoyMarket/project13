@@ -178,7 +178,8 @@
             border-bottom: none;
         }
         &:hover {
-            background: @orange-light-3;
+            background: @orange-light-4;
+            color: @orange-bright;
         }
     }
     &_btn {
@@ -198,7 +199,7 @@
             padding: 0 5px;
             padding: 10px 0;
 
-            color: #515151;
+            color: @grey-bright;
         }
     }
     &-box {
@@ -256,7 +257,7 @@
                 .inline-block();
             }
             &-dsbld {
-                color: #828282;
+                color: @grey-type;
             }
         }
         &.active {
@@ -301,10 +302,21 @@
 
                 width: 100%;
                 max-height: 250px;
-                padding: 10px 10px 0 10px;
+                padding: 5px 0 5px;
             }
             &-line {
                 position: relative;
+                
+                .custom-label {
+                    padding: 6px 10px 6px 30px;
+                    background-position: 10px 50%;
+                    position: relative;
+                    display: block;
+                    &:hover {
+                        color: @orange-bright;
+                        background-color: @orange-light-4;
+                    }
+                }
             }
         }
     }

@@ -753,11 +753,9 @@
             display: block;
 
             padding: 5px 10px;
-            &:hover ,
+            &:hover,
             &.active {
-                text-decoration: none;
-
-                background-color: rgba(247, 171, 47, .2);
+                background-color: @orange-light-4;
             }
         }
     }
@@ -778,4 +776,8 @@
             top: 27px;
         }
     }
+}
+
+.zoomContainer {
+    z-index: 9;
 }

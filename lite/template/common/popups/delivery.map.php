@@ -28,18 +28,20 @@
                             {{#uniqueTokens}}
                             <div class="drop-filter-box__dd-line">
                                 <input class="custom-input js-point-filter-param custom-input_check-fill" type="checkbox" id="point_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
-                                <label class="custom-label" for="point_{{key}}_{{value}}">{{displayValue}}</label>
+                                <label class="custom-label" for="point_{{key}}_{{value}}">
+                                    {{displayValue}}
 
-                                {{#help}}
-                                <!-- попап-подсказка с описание пункта самовывоза -->
-                                <div class="delivery-points-info delivery-points-info_inline">
-                                    <a class="delivery-points-info__icon"></a>
-                                    <div class="delivery-points-info__popup delivery-points-info__popup_top info-popup">
-                                        <a class="delivery-points-info__link" href="{{help.url}}" title="{{help.name}}">{{help.name}}</a>
+                                    {{#help}}
+                                    <!-- попап-подсказка с описание пункта самовывоза -->
+                                    <div class="delivery-points-info delivery-points-info_inline">
+                                        <a class="delivery-points-info__icon"></a>
+                                        <div class="delivery-points-info__popup delivery-points-info__popup_top info-popup">
+                                            <a class="delivery-points-info__link" href="{{help.url}}" title="{{help.name}}">{{help.name}}</a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!--/ попап-подсказка с описание пункта самовывоза -->
-                                {{/help}}
+                                    <!--/ попап-подсказка с описание пункта самовывоза -->
+                                    {{/help}}
+                                </label>
                             </div>
                             {{/uniqueTokens}}
 
@@ -69,8 +71,6 @@
                     </div>
                 </div>
                 <!-- Cтоимость -->
-
-
 
                 <!-- Дата самовывоза -->
                 <div class="drop-filter-box js-point-filter">
