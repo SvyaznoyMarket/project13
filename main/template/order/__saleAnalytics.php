@@ -34,6 +34,23 @@ foreach ($orders as $order) {
             'label'    => $isListing ? 'basket' : 'product',
         ];
     }
+
+    try {
+        // SITE-6016
+        $testKey = \App::abTest()->getTest('order_delivery_type')->getChosenCase()->getKey();
+        if (
+            in_array(\App::user()->getRegion()->parentId, [76, 90])  // Воронеж, Ярославль
+            && in_array($testKey, ['self', 'delivery'])
+        ) {
+            $data[] = [
+                'category' => 'delivery_option',
+                'action'   => ('self' === $testKey) ? 'buy_pickup' : 'buy_delivery',
+                'label'    => '',
+            ];
+        }
+    } catch (\Exception $e) {
+        \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['template']);
+    }
 }
 ?>
 
