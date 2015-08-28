@@ -898,6 +898,26 @@ return [
         ],
     ],
 
+    'wishlist.create' => [
+        'pattern' => '/wishlist/create',
+        'action'  => ['Wishlist\CreateAction', 'execute'],
+        'method'    => ['POST'],
+    ],
+    'wishlist.addProduct' => [
+        'pattern' => '/wishlist/add-product/{productUi}',
+        'action'  => ['Wishlist\SetAction', 'execute'],
+        'require' => [
+            'productUi' => '[\w\d-_]+',
+        ],
+    ],
+    'wishlist.deleteProduct' => [
+        'pattern' => '/wishlist/delete-product/{productUi}',
+        'action'  => ['Wishlist\DeleteAction', 'execute'],
+        'require' => [
+            'productUi' => '[\w\d-_]+',
+        ],
+    ],
+
     'compare' => [
         'pattern' => '/compare',
         'action'  => ['Compare\CompareAction', 'execute'],

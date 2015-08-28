@@ -246,9 +246,9 @@
         <div class="popup-closer"></div>
         <div class="personal-popup__head">Создать список</div>
         <div class="personal-popup__content">
-            <form>
+            <form action="<?= $helper->url('wishlist.create') ?>" method="post">
                 <div class="form-group">
-                    <input class="input-control" type="text" placeholder="Название списка">
+                    <input class="input-control" type="text" name="wishlist[title]" placeholder="Название списка">
                 </div>
                 <button type="submit" class="btn btn--default">Сохранить</button>
             </form>

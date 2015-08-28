@@ -1,8 +1,8 @@
 <?php
 
-namespace EnterQuery\User\Favorite
+namespace EnterQuery\User\Wishlist
 {
-    use EnterQuery\User\Favorite\Create\Response;
+    use EnterQuery\User\Wishlist\Create\Response;
 
     class Create
     {
@@ -11,7 +11,7 @@ namespace EnterQuery\User\Favorite
 
         /** @var string */
         public $userUi;
-        /** @var string */
+        /** @var array */
         public $data;
         /** @var Response */
         public $response;
@@ -60,7 +60,7 @@ namespace EnterQuery\User\Favorite
     }
 }
 
-namespace EnterQuery\User\Favorite\Create
+namespace EnterQuery\User\Wishlist\Create
 {
     class Response
     {
