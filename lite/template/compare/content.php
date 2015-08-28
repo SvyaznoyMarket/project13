@@ -68,7 +68,7 @@ return function (
                                 </div>
 
                                 <div class="goods__price-old"><!-- ko if: priceOld != '0' --><span class="line-through" data-bind="html: priceOld"></span>&thinsp;<span class="rubl">C</span><!-- /ko --></div>
-                                
+
                                 <div class="goods__price-now"><span data-bind="html: price"></span>&thinsp;<span class="rubl">C</span></div>
 
                                 <a href="" class="goods__btn btn-primary js-buy-button "

@@ -362,6 +362,7 @@ $c->shopPhoto['url'] = [
 ];
 
 $c->banner['timeout'] = 5000;
+$c->banner['checkStatus'] = true;
 
 $c->cart['productLimit'] = 30;
 $c->cart['sessionName'] = 'cart';
