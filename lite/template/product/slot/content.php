@@ -213,7 +213,7 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
             <? if ($product->getKit()) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit" title="">Состав</a></li><? endif ?>
             <? if ($showDescription) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
             <? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
-            <li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li>
+            <? /* <li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li> */ ?>
             <? if ($product->isAvailable()) : ?><li class="product-tabs__i jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar" title="">Похожие товары</a></li><? endif ?>
         </ul>
         <!--/ навигация по странице -->
@@ -281,7 +281,7 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
             <!--/ аксессуары -->
         <? endif ?>
 
-        <? if ($reviewsData) : ?>
+        <? /* if ($reviewsData) : ?>
             <!-- отзывы -->
             <div class="product-section product-section--reviews" id="reviews">
                 <div class="product-section__tl">Отзывы</div>
@@ -291,7 +291,7 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
 
             </div>
             <!--/ отзывы -->
-        <? endif ?>
+        <? endif */ ?>
 
         <!-- похожие товары -->
         <div class="product-section product-section--inn" id="similar">
