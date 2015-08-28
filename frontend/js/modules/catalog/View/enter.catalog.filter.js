@@ -36,8 +36,8 @@
              * @type        {Object}
              */
             CSS_CLASSES = {
-                DROPDOWN: 'js-category-v2-filter-dropBox',
-                DROPDOWN_OPENER: 'js-category-v2-filter-dropBox-opener',
+                DROPDOWN: 'js-category-filter-dropBox',
+                DROPDOWN_OPENER: 'js-category-filter-dropBox-opener',
                 DROPDOWN_OPEN: 'opn',
                 DROPDOWN_ACTIVE: 'actv',
                 RANGE_SLIDER: 'js-category-filter-rangeSlider',
@@ -45,8 +45,8 @@
                 SLIDER_FROM: 'js-category-filter-rangeSlider-from',
                 SLIDER_TO: 'js-category-filter-rangeSlider-to',
                 SLIDER_TICK: 'js-slider-tick-wrapper',
-                BRANDS: 'js-category-v2-filter-otherBrands',
-                BRANDS_OPENER: 'js-category-v2-filter-otherBrandsOpener',
+                BRANDS: 'js-category-filter-otherBrands',
+                BRANDS_OPENER: 'js-category-filter-otherBrandsOpener',
                 BRANDS_OPEN: 'open',
                 CLEAR_FILTER: 'js-filter-clear'
             };
