@@ -15,6 +15,7 @@ class IndexPage extends LiteLayout
         parent::prepare();
         $this->product = $this->getParam('product');
         $this->prepareBreadcrumbs();
+        $this->prepareMedia();
         if (!$this->hasParam('isKit')) $this->setParam('isKit', (bool)$this->product->getKit());
     }
 
@@ -52,4 +53,12 @@ class IndexPage extends LiteLayout
         }
     }
 
+    /**
+     * Подготовка видео и 3D
+     */
+    private function prepareMedia(){
+        $videoAnd3d = (new \Model\Product\Repository())->getVideoAnd3d($this->product);
+        $this->setParam('videoHtml', $videoAnd3d['videoHtml']);
+        $this->setParam('properties3D', $videoAnd3d['properties3D']);
+    }
 }

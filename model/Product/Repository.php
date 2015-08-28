@@ -9,7 +9,7 @@ class Repository {
     /**
      * @param \Core\ClientInterface $client
      */
-    public function __construct(\Core\ClientInterface $client) {
+    public function __construct(\Core\ClientInterface $client = null) {
         $this->client = $client;
     }
 
@@ -70,7 +70,7 @@ class Repository {
      * остальные товары будут заполнены данными из ядра и scms.
      *
      * TODO разбить на несколько функций: prepareProductQueriesById, prepareProductQueriesByUi, prepareProductQueriesByBarcode
-     * 
+     *
      * @param \Model\Product\Entity[] $products У всех товаров должны быть заданы id или ui или barcode (притом, если у
      *                                          первого товара задан id, то и у всех товаров должен быть задан именно
      *                                          id; аналогично для ui и barcode)
@@ -87,7 +87,7 @@ class Repository {
         if (!$products) {
             return;
         }
-        
+
         if (!$region) {
             $region = \App::user()->getRegion();
         }
@@ -188,7 +188,7 @@ class Repository {
             );
         }
     }
-    
+
     public function prepareProductsMediasByIds($productIds, &$medias) {
         \App::scmsClient()->addQuery(
             'product/get-description/v1',
@@ -230,7 +230,7 @@ class Repository {
         foreach ($kitProduct->getKit() as $kitPart) {
             $kitCountById[$kitPart->getId()] = $kitPart->getCount();
         }
-        
+
         $result = [];
         $deliveryItems = [];
         foreach ($partProducts as $product) {
@@ -261,7 +261,7 @@ class Repository {
                 'Ширина' => 'width',
                 'Глубина' => 'depth'
             ];
-            
+
             if ($product->getProperty()) {
                 foreach ($product->getProperty() as $property) {
                     if (in_array($property->getName(), array('Высота', 'Ширина', 'Глубина'))) {
@@ -269,7 +269,7 @@ class Repository {
                     }
                 }
             }
-            
+
             $deliveryItems[] = array(
                 'id' => $id,
                 'quantity' => $result[$id]['count'],
@@ -288,5 +288,66 @@ class Repository {
         }
 
         return $result;
+    }
+
+    /**
+     * @return array Массив вида: ['videoHtml' => '', 'properties3D' => ['type' => 'swf|html5', 'url' => '']]
+     */
+    public function getVideoAnd3d(\Model\Product\Entity $product) {
+        $helper = \App::helper();
+        $videoHtml = null;
+        $properties3D = ['type' => null, 'url' => null];
+
+        foreach ($product->medias as $media) {
+            $source = $media->getSource('reference');
+            switch ($media->provider) {
+                case 'vimeo':
+                    if ($source) {
+                        $width = 700;
+                        $height = ceil($width / ($source->width / $source->height));
+                        $videoHtml = sprintf(
+                            '<iframe data-src="%s?autoplay=1" width="%s" height="%s" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>',
+                            $helper->escape($source->url), $width, $height);
+                    }
+                    break;
+                case 'youtube':
+                    if ($source) {
+                        $width = 700;
+                        $height = ceil($width / ($source->width / $source->height));
+                        $videoHtml = sprintf(
+                            '<iframe data-src="//www.youtube.com/embed/%s?autoplay=1" width="%s" height="%s" frameborder="0" allowfullscreen></iframe>',
+                            $helper->escape($source->id), $width, $height);
+                    }
+                    break;
+                case 'megavisor':
+                    if ($source) {
+                        $properties3D['type'] = 'swf';
+                        $properties3D['url'] = 'http://media.megavisor.com/player/player.swf?uuid=' . urlencode($source->id);
+                    }
+                    break;
+                case 'swf':
+                    if ($source){
+                        $properties3D['type'] = 'swf';
+                        $properties3D['url'] = $source->url;
+                    }
+
+                    break;
+                case 'maybe3d':
+                    /*if ($source = $media->getSource('html5')) {
+                        $properties3D['type'] = 'html5';
+                        $properties3D['url'] = $source->url;
+                        $properties3D['id'] = $source->id;
+                    } else*/ if ($source = $media->getSource('swf')) {
+                    $properties3D['type'] = 'swf';
+                    $properties3D['url'] = $source->url;
+                }
+                    break;
+            }
+        }
+
+        return [
+            'videoHtml' => $videoHtml,
+            'properties3D' => $properties3D,
+        ];
     }
 }
