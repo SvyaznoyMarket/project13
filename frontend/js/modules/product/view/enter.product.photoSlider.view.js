@@ -34,7 +34,10 @@
                 PHOTO_CONTAINER: 'js-photo-container',
                 PHOTO: 'js-photo-zoomedImg',
                 PHOTO_THUMB: 'jsProductPhotoThumb',
-                PHOTO_THUMB_ACTIVE: 'active'
+                PHOTO_THUMB_ACTIVE: 'active',
+                SLIDE_WRAPPER: 'jsProductThumbList',
+                SLIDE_CTRL: 'jsProductThumbBtn',
+                SLIDE_CTRL_DISABLIED: 'product-card-photo-thumbs__btn--disabled'
             },
 
             /**
@@ -48,12 +51,12 @@
 
             $PRODUCT_CONTENT = $('#product_card_content');
 
-        provide(BaseViewClass.extend(/** @lends module:enter.BaseViewClass~ProductPhotoSliser */{
+        provide(BaseViewClass.extend(/** @lends module:enter.BaseViewClass~ProductPhotoSlider */{
              /**
              * @classdesc   Представление окна с набором
              * @memberOf    module:enter.product.photoSlider.view~
              * @augments    module:enter.BaseViewClass
-             * @constructs  ProductPhotoSliser
+             * @constructs  ProductPhotoSlider
              */
             initialize: function( options ) {
                 var
@@ -63,7 +66,10 @@
                 this.subViews = {
                     photoContainer: this.$el.find('.' + CSS_CLASSES.PHOTO_CONTAINER),
                     photo: this.$el.find('.' + CSS_CLASSES.PHOTO),
-                    thumbs: this.$el.find('.' + CSS_CLASSES.PHOTO_THUMB)
+                    thumbs: this.$el.find('.' + CSS_CLASSES.PHOTO_THUMB),
+                    f_thumb: this.$el.find('.' + CSS_CLASSES.PHOTO_THUMB).eq(0),
+                    slideControl: this.$el.find('.' + CSS_CLASSES.SLIDE_CTRL),
+                    slideWrapper: this.$el.find('.' + CSS_CLASSES.SLIDE_WRAPPER)
                 };
 
                 productContentPaddingLeft = parseInt($PRODUCT_CONTENT.css('paddingLeft'), 10);
@@ -72,7 +78,7 @@
                 photoW                    = parseInt(this.subViews.photo.width(), 10);
                 photoH                    = parseInt(this.subViews.photo.height(), 10);
 
-                console.groupCollapsed('module:enter.product.photoSlider.view~ProductPhotoSliser#initialize');
+                console.groupCollapsed('module:enter.product.photoSlider.view~ProductPhotoSlider#initialize');
                 console.log('productContentPaddingLeft', productContentPaddingLeft);
                 console.log('photoContainerW', photoContainerW);
                 console.log('photoContainerH', photoContainerH);
@@ -98,10 +104,17 @@
                     zoomConfig.lensOpacity = 0;
                 }
 
+                this.slideW   = parseInt(this.subViews.slideWrapper.width(), 10);
+                this.slideMin = 0;
+                this.slideMax = -(((parseInt(this.subViews.f_thumb.width(), 10) + parseInt(this.subViews.f_thumb.css('margin-right'), 10)) * this.subViews.thumbs.length) - this.slideW);
+
+                this.checkSlider();
+
                 this.subViews.photo.elevateZoom(zoomConfig);
 
                 // Setup events
                 this.events['click .' + CSS_CLASSES.PHOTO_THUMB] = 'changePhoto';
+                this.events['click .' + CSS_CLASSES.SLIDE_CTRL]  = 'slide';
 
                 // Apply events
                 this.delegateEvents();
@@ -123,6 +136,51 @@
                 if ( this.subViews.photo.data('elevateZoom') ) {
                     this.subViews.photo.data('elevateZoom').swaptheimage(target.attr('data-middle-img'), target.attr('data-big-img'));
                 }
+
+                return false;
+            },
+
+            checkSlider: function() {
+                var
+                    currentOffset = parseInt(this.subViews.f_thumb.css('margin-left') , 10);
+
+                console.groupCollapsed('module:enter.product.photoSlider.view~ProductPhotoSlider#checkSlider');
+                console.log('min', this.slideMin);
+                console.log('max', this.slideMax);
+                console.log('currentOffset', currentOffset);
+                console.groupEnd();
+
+
+                if ( currentOffset === this.slideMin ) {
+                    this.subViews.slideControl.eq(0).addClass(CSS_CLASSES.SLIDE_CTRL_DISABLIED);
+                } else {
+                    this.subViews.slideControl.eq(0).removeClass(CSS_CLASSES.SLIDE_CTRL_DISABLIED);
+                }
+
+                if ( currentOffset <= this.slideMax ) {
+                    this.subViews.slideControl.eq(1).addClass(CSS_CLASSES.SLIDE_CTRL_DISABLIED);
+                } else {
+                    this.subViews.slideControl.eq(1).removeClass(CSS_CLASSES.SLIDE_CTRL_DISABLIED);
+                }
+            },
+
+            slide: function( event ) {
+                var
+                    target        = $(event.currentTarget),
+                    direction     = target.attr('data-dir'),
+                    thumb         = this.subViews.thumbs.eq(0),
+                    currentOffset = parseInt(this.subViews.f_thumb.css('margin-left'), 10),
+                    newOffset     = 0;
+
+                if ( direction === '-=' ) { // right
+                    newOffset = ( currentOffset - this.slideW < this.slideMax ) ? this.slideMax : currentOffset - this.slideW;
+                } else if ( direction === '+=' ) { // left
+                    newOffset = ( currentOffset + this.slideW > this.slideMin ) ? this.slideMin : currentOffset + this.slideW;
+                }
+
+                this.subViews.f_thumb.stop(true, true).animate({
+                    'margin-left': newOffset
+                }, 300, this.checkSlider.bind(this));
 
                 return false;
             }
