@@ -5,6 +5,7 @@
  * @requires    jQuery
  * @requires    enter.BaseViewClass
  * @requires    enter.suborder.view
+ * @requires    enter.order.offer.popup
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
@@ -15,13 +16,13 @@
             'jQuery',
             'enter.BaseViewClass',
             'enter.suborder.view',
-            'urlHelper'
+            'enter.order.offer.popup'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, SubOrderView, urlHelper ) {
+    function( provide, $, BaseViewClass, SubOrderView, OfferPopupView ) {
         'use strict';
 
         var
@@ -42,9 +43,10 @@
                 ACTIVE: 'active',
                 SMART_ADRRESS: 'jsSmartAddressBlock',
                 OFFER_POPUP: 'js-order-oferta-popup',
-                OFFER_POPUP_CONTENT: 'js-tab-oferta-content',
                 OFFER_POPUP_BTN: 'js-order-oferta-popup-bt'
-            };
+            },
+
+            $BODY = $('body');
 
         provide(BaseViewClass.extend({
             url: '/order/delivery',
@@ -200,28 +202,20 @@
             showOfferPopup: function( event ) {
                 var
                     target   = $(event.currentTarget),
-                    termsUrl = target.attr('data-value'),
-                    self     = this;
+                    termsUrl = target.attr('data-value');
 
                 if ( termsUrl === '' ) {
                     return false;
                 }
 
-                console.log('OLD termsUrl', termsUrl);
-                termsUrl = ( window.location.host !== 'www.enter.ru' ) ? termsUrl.replace(/^.*enter.ru/, '') : termsUrl; /* для работы на demo-серверах */
-                console.log('NEW termsUrl', termsUrl);
+                if ( this.subViews.offerPopupView ) {
+                    this.subViews.offerPopupView.show();
+                    return false;
+                }
 
-                this.ajax({
-                    url: urlHelper.addParams(termsUrl, {
-                        ajax: 1
-                    }),
-                    success: function(data) {
-                        modules.require('jquery.lightbox_me', function() {
-                            console.log(self.subViews.offerPopupContent);
-                            self.subViews.offerPopupContent.html(data.content || '');
-                            self.subViews.offerPopup.lightbox_me({});
-                        });
-                    }
+                this.subViews.offerPopupView = new OfferPopupView({
+                    el: this.subViews.offerPopup,
+                    url: termsUrl
                 });
 
                 return false;
