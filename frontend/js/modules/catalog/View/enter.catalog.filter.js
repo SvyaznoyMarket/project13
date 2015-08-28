@@ -270,9 +270,7 @@
                         toVal.val( ui.values[ 1 ] );
                     },
 
-                    change: function( e, ui ) {
-                        self.filterChanged();
-                    }
+                    change: self.filterChanged.bind(self)
                 });
 
                 fromVal.change(setSliderValues);
