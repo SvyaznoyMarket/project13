@@ -2,9 +2,12 @@
 
 namespace Controller\Main;
 
+use EnterApplication\CurlTrait;
 use Model\Banner\BannerEntity;
+use EnterQuery as Query;
 
 class Action {
+    use CurlTrait;
 
     /**
      * @param \Http\Request $request
@@ -15,18 +18,62 @@ class Action {
 
         $client = \App::coreClientV2();
 
-        // подготовка 1-го пакета запросов
-        // запрашиваем баннеры
-        $banners = [];
-        \RepositoryManager::banner()->prepareCollection(function ($data) use (&$banners, &$itemsByBanner) {
+        $region = \App::user()->getRegion();
 
+        // запрашиваем баннеры
+        /** @var \Model\Banner\BannerEntity[] $bannersByUi */
+        $bannersByUi = [];
+        \RepositoryManager::banner()->prepareCollection(function ($data) use (&$bannersByUi, &$itemsByBanner) {
             foreach ($data as $item) {
-                $banners[] = new BannerEntity($item);
+                if (!@$item['uid']) continue;
+                $banner = new BannerEntity($item);
+                $bannersByUi[$banner->uid] = $banner;
             }
         });
 
         // выполнение 1-го пакета запросов
         $client->execute();
+
+        // проверка доступности баннеров в регионе
+        try {
+            if (\App::config()->region['defaultId'] !== $region->getId()) {
+                /** @var Query\Product\GetUiPager[] $productUiPagerQueriesByBannerUi */
+                $productUiPagerQueriesByBannerUi = [];
+                foreach ($bannersByUi as $banner) {
+                    if (!$slice = $banner->slice) {
+                        continue;
+                    }
+
+                    $sliceRequestFilters = [];
+                    parse_str($slice->getFilterQuery(), $sliceRequestFilters);
+                    if ((1 === count($sliceRequestFilters)) && !empty($sliceRequestFilters['barcode'])) {
+                        continue; // not implemented yet, i'm so sorry...
+                    }
+                    $productUiPagerQuery = new Query\Product\GetUiPager();
+                    $productUiPagerQuery->regionId = $region->getId();
+                    $productUiPagerQuery->filter->data = \RepositoryManager::slice()->getSliceFiltersForSearchClientRequest($slice);
+                    $productUiPagerQuery->offset = 0;
+                    $productUiPagerQuery->limit = 1;
+                    $productUiPagerQuery->prepare();
+                    $productUiPagerQueriesByBannerUi[$banner->uid] = $productUiPagerQuery;
+                }
+
+                $this->getCurl()->execute();
+
+                foreach ($productUiPagerQueriesByBannerUi as $bannerUi => $productUiPagerQuery) {
+                    if (
+                        !$productUiPagerQuery->error
+                        && ($banner = $bannersByUi[$bannerUi])
+                        && !count($productUiPagerQuery->response->uids)
+                    ) {
+                        unset($bannersByUi[$bannerUi]);
+                        \App::logger()->info(['message' => 'Баннер уничтожен', 'banner.ui' => $bannerUi, 'region.id' => $region->getId(), 'sender' => __FILE__ . ' ' . __LINE__]);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['main', 'banner']);
+        }
 
         // товары, услуги, категории
         /** @var $productsById \Model\Product\Entity[] */
@@ -47,7 +94,7 @@ class Action {
         $client->execute();
 
         $page = new \View\Main\IndexPage();
-        $page->setParam('banners', $banners);
+        $page->setParam('banners', array_values($bannersByUi));
         $page->setParam('productList', $productsById);
         $page->setParam('rrProducts', isset($productsIdsFromRR) ? $productsIdsFromRR : []);
 

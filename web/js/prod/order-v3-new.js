@@ -364,6 +364,7 @@
         _gaq = window._gaq,
         region = $('.jsRegion').data('value'),
         saleAnalyticsData = $('.jsOrderSaleAnalytics').data('value'),
+        deliveryAnalyticsData = $('.jsOrderDeliveryAnalytics').data('value'),
         value,
         i,
 
@@ -393,6 +394,14 @@
 
     if (saleAnalyticsData) {
         $.each(saleAnalyticsData, function(i, value) {
+            if ('object' === typeof value) {
+                $('body').trigger('trackGoogleEvent', value);
+            }
+        })
+    }
+
+    if (deliveryAnalyticsData) {
+        $.each(deliveryAnalyticsData, function(i, value) {
             if ('object' === typeof value) {
                 $('body').trigger('trackGoogleEvent', value);
             }
