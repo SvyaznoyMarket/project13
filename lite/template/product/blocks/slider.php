@@ -50,8 +50,8 @@ $f = function (
     $products = array_filter($products, function($product) { return $product instanceof \Model\Product\Entity; });
 
     $slickConfig = [
-        'slidesToShow' => 6,
-        'slidesToScroll' => 6,
+        'slidesToShow' => 4,
+        'slidesToScroll' => 4,
         'lazyLoad'  => 'ondemand',
         'dots'      => false,
         'infinite'  => false,
@@ -108,8 +108,8 @@ $f = function (
             </div>
         <? endif ?>
 
-        <div class="slider-section slider-section_170 goods-slider__inn">
-            <ul class="js-slider-goods" style="">
+        <div class="slider-section goods-slider__inn">
+            <ul class="js-slider-goods">
 
                 <? foreach ($products as $index => $product):
 
@@ -141,7 +141,7 @@ $f = function (
                     $category = $product->getParentCategory() ? $product->getParentCategory() : null;
                     ?>
 
-                    <li class="goods-slider-list__i js-module-require
+                    <li class="goods-slider-list__i goods__item js-module-require
                                 <?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>
                                 <?= $sliderId . '-category-0'?> "
                         data-module="enter.product"
@@ -155,14 +155,17 @@ $f = function (
                         ]) ?>" >
 
                         <? if ($product->getLabel()) : ?>
-                            <img class="sticker-img" src="<?= $product->getLabel()->getImageUrl() ?>" alt="<?= $product->getLabel()->getName() ?>">
+                            <? /* img class="sticker-img" src="<?= $product->getLabel()->getImageUrl() ?>" alt="<?= $product->getLabel()->getName() ?>"*/ ?>
+                            <div class="sticker-list">
+                                 <a href="<?= $product->getLabel()->getImageUrl() ?>" class="sticker"><?= $product->getLabel()->getName() ?></a>
+                            </div>
                         <? endif ?>
 
                         <a id="<?= $elementId ?>" class="goods-slider-list__link" href="<?= $link ?>" target="_blank">
 
-                    <span class="goods-slider-list__action">
-                        <img class="goods-slider-list__img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>">
-                    </span>
+                            <span class="goods-slider-list__action">
+                                <img class="goods-slider-list__img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>">
+                            </span>
 
                             <span class="goods-slider-list__name"><?= $product->getName() ?></span>
                         </a>
@@ -181,6 +184,7 @@ $f = function (
                             'sender'         => $sender,
                             'noUpdate'       => true,
                             'location'       => 'slider',
+                            'class'          => 'btn-normal',
                             'sender2'       => $sender2,
                         ]) // Кнопка купить ?>
 
