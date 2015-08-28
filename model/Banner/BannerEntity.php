@@ -24,6 +24,8 @@ class BannerEntity {
     public $medias = [];
     /** @var string */
     public $url;
+    /** @var \Model\Slice\Entity|null */
+    public $slice;
 
     /**
      * @param array $data
@@ -32,6 +34,7 @@ class BannerEntity {
         if (array_key_exists('uid', $data)) $this->uid = $data['uid'];
         if (array_key_exists('type', $data)) $this->type = $data['type'];
         if (array_key_exists('name', $data)) $this->name = $data['name'];
+        if (isset($data['slice']['uid'])) $this->slice = new \Model\Slice\Entity($data['slice']);
         if (array_key_exists('medias', $data) && is_array($data['medias'])) {
             $this->medias = array_map(function($mediaData) { return new Media($mediaData); }, $data['medias']);
         }
