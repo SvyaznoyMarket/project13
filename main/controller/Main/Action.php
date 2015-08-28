@@ -37,8 +37,8 @@ class Action {
         // проверка доступности баннеров в регионе
         try {
             if (\App::config()->region['defaultId'] !== $region->getId()) {
-                /** @var Query\Product\GetUiPager[] $productUiPagerQueriesByBannerUi */
-                $productUiPagerQueriesByBannerUi = [];
+                /** @var Query\Product\GetUiPager[]|Query\Product\GetByUiList[] $productCheckQueriesByBannerUi */
+                $productCheckQueriesByBannerUi = [];
                 foreach ($bannersByUi as $banner) {
                     if (!$slice = $banner->slice) {
                         continue;
@@ -47,24 +47,39 @@ class Action {
                     $sliceRequestFilters = [];
                     parse_str($slice->getFilterQuery(), $sliceRequestFilters);
                     if ((1 === count($sliceRequestFilters)) && !empty($sliceRequestFilters['barcode'])) {
-                        continue; // not implemented yet, i'm so sorry...
+                        $sliceRequestFilters['barcode'] = '2200602000363';
+                        if (is_string($sliceRequestFilters['barcode'])) {
+                            $sliceRequestFilters['barcode'] = explode(',', $sliceRequestFilters['barcode']);
+                        }
+                        $sliceRequestFilters['barcode'] = array_slice($sliceRequestFilters['barcode'], 0, \App::config()->coreV2['chunk_size']);
+
+                        $productListQuery = new Query\Product\GetByUiList();
+                        $productListQuery->uis = $sliceRequestFilters['barcode'];
+                        $productListQuery->regionId = $region->getId();
+                        $productListQuery->filter->model = false;
+                        $productListQuery->prepare();
+                        $productCheckQueriesByBannerUi[$banner->uid] = $productListQuery;
+                    } else {
+                        $productUiPagerQuery = new Query\Product\GetUiPager();
+                        $productUiPagerQuery->regionId = $region->getId();
+                        $productUiPagerQuery->filter->data = \RepositoryManager::slice()->getSliceFiltersForSearchClientRequest($slice);
+                        $productUiPagerQuery->offset = 0;
+                        $productUiPagerQuery->limit = 1;
+                        $productUiPagerQuery->prepare();
+                        $productCheckQueriesByBannerUi[$banner->uid] = $productUiPagerQuery;
                     }
-                    $productUiPagerQuery = new Query\Product\GetUiPager();
-                    $productUiPagerQuery->regionId = $region->getId();
-                    $productUiPagerQuery->filter->data = \RepositoryManager::slice()->getSliceFiltersForSearchClientRequest($slice);
-                    $productUiPagerQuery->offset = 0;
-                    $productUiPagerQuery->limit = 1;
-                    $productUiPagerQuery->prepare();
-                    $productUiPagerQueriesByBannerUi[$banner->uid] = $productUiPagerQuery;
                 }
 
                 $this->getCurl()->execute();
 
-                foreach ($productUiPagerQueriesByBannerUi as $bannerUi => $productUiPagerQuery) {
+                foreach ($productCheckQueriesByBannerUi as $bannerUi => $productCheckQuery) {
                     if (
-                        !$productUiPagerQuery->error
+                        !$productCheckQuery->error
                         && ($banner = $bannersByUi[$bannerUi])
-                        && !count($productUiPagerQuery->response->uids)
+                        && (
+                            (($productCheckQuery instanceof Query\Product\GetUiPager) && !count($productCheckQuery->response->uids))
+                            || (($productCheckQuery instanceof Query\Product\GetByUiList) && !count($productCheckQuery->response->products))
+                        )
                     ) {
                         unset($bannersByUi[$bannerUi]);
                         \App::logger()->info(['message' => 'Баннер уничтожен', 'banner.ui' => $bannerUi, 'region.id' => $region->getId(), 'sender' => __FILE__ . ' ' . __LINE__]);
