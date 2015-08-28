@@ -523,6 +523,18 @@
 
     $body.on('click', '.jsMapDeliveryList .jsChangePoint', function(){
         $body.trigger('trackGoogleEvent', ['pickup_ux', 'list_point', 'выбор'])
-    })
+    });
+
+    $body.on('keyup', '.order-ctrl__input', function(){
+        var $this = $(this),
+            $label = $this.parent().find('.order-ctrl__lbl');
+        console.log($this.val());
+
+        if ( $this.val() !== '' ) {
+            $label.show();
+        } else {
+            $label.hide();
+        }
+    });
 
 })(jQuery);
