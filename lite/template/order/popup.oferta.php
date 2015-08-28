@@ -1,5 +1,5 @@
-<div class="popup popup-simple js-order-oferta-popup">
-    <a href="" class="close"></a>
+<div class="popup js-order-oferta-popup">
+    <div class="popup__close js-popup-close">×</div>
 
     <div class="popup_inn">
         <div class="orderOferta">
