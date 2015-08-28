@@ -52,7 +52,7 @@ if (!isset($category)) $category = new Model\Product\Category\Entity([]);
                 ]) ?>
             <? endif ?>
 
-            <? if (isset($slice) && !$category->getUi()) : ?>
+            <? if (isset($slice)) : ?>
                 <div class="section__title section__title_h1"><?= $slice->getName() ?></div>
             <? endif ?>
 
