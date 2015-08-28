@@ -9,7 +9,7 @@
 		<div class="wrapper wrapper-content">
             <main class="content">
 				<div class="section">
-				    <div class="erro-page">
+				    <div class="erro-page" style="background-image: url('/public/images/404/bg/<?= mt_rand(1, 4) ?>.png');">
 				        <div class="erro-page__code">404</div>
 				        <div class="erro-page__text">Страница не найдена</div>
 
