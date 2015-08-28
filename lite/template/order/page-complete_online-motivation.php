@@ -39,9 +39,9 @@ return function(
             <!-- Заголовок-->
             <div class="orderPayment_head">
                 <? if ($userEntity) : ?>
-                    Оформлен заказ № <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>" class="orderPayment_num"><?= $order->getNumberErp() ?></a>
+                    Оформлен заказ №<a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>" class="orderPayment_num"><?= $order->getNumberErp() ?></a>
                 <? else : ?>
-                    Оформлен заказ № <?= $order->getNumberErp() ?>
+                    Оформлен заказ №<?= $order->getNumberErp() ?>
                 <? endif ?>
             </div>
 
