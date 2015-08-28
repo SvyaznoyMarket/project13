@@ -83,7 +83,7 @@ class CompletePage extends \View\OrderV3\Layout
     }
 
     public function blockContent() {
-        return \App::closureTemplating()->render('order/page-complete', $this->params + ['page' => $this]);
+        return \App::closureTemplating()->render('order/page-complete_online-motivation', $this->params + ['page' => $this]);
     }
 
 }
