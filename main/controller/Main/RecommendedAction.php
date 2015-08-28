@@ -13,6 +13,8 @@ class RecommendedAction {
     public function execute(\Http\Request $request) {
         $client = \App::retailrocketClient();
 
+        $region = \App::user()->getRegion();
+
         $cssClass = $request->query->get('class') ?: 'slideItem-main';
         $namePosition = $request->query->get('namePosition') ?: 'bottom';
         $sender = (array)$request->query->get('sender') + ['name' => null, 'position' => null, 'action' => null];
@@ -49,12 +51,12 @@ class RecommendedAction {
         $sender['name'] = 'retailrocket';
         $sender['method'] = 'Popular';
 
-        \RepositoryManager::product()->prepareProductQueries($products, 'media');
+        \RepositoryManager::product()->prepareProductQueries($products, 'media', $region);
+        \App::coreClientV2()->execute();
+
         $products = array_filter($products, function(\Model\Product\Entity $product) {
             return ($product->isAvailable() && !$product->isInShopShowroomOnly());
         });
-
-        \App::coreClientV2()->execute();
 
         try {
             // TODO: вынести в репозиторий
