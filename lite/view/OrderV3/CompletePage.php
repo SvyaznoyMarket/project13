@@ -83,7 +83,15 @@ class CompletePage extends \View\OrderV3\Layout
     }
 
     public function blockContent() {
-        return \App::closureTemplating()->render('order/page-complete_online-motivation', $this->params + ['page' => $this]);
+        $template = 'order/page-complete';
+        $orders = $this->getParam('orders');
+        if (\App::abTest()->isOnlineMotivation(count($orders))) {
+            /* @var $order \Model\Order\Entity */
+            $order = reset($orders);
+            /* Если выбран самовывоз из определенной точки или выбрана доставка с адресом */
+            /* Пикпоинт (6) пока исключим, т.к. для него не отдаётся адрес: CORE-2558 */
+            if (in_array($order->getDeliveryTypeId(), [3,4]) || $order->getDeliveryTypeId() == 1 || $order->point) $template = 'order/page-complete_online-motivation';
+        }
+        return \App::closureTemplating()->render($template, $this->params + ['page' => $this]);
     }
-
 }
