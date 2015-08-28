@@ -186,20 +186,24 @@ return function(
             'productsById' => $products,
         ));
 
+        /*
         echo $page->render('order/partner-counter/_complete', [
             'orders'       => $orders,
             'productsById' => $products,
         ]);
+        */
 
         echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products]);
 
         echo $helper->render('order/__saleAnalytics', ['orders' => $orders]);
 
         // Flocktory popup
+        /*
         echo $helper->render('order-v3/partner-counter/_flocktory-complete',[
             'orders'    => $orders,
             'products'  => $products,
         ]);
+        */
         ?>
     <? endif ?>
 

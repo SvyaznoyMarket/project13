@@ -124,7 +124,7 @@ return function(
         /* Показываем флоктори без нарушения конверсии онлайн-оплаты (т.е. не выбран онлайновый метод оплаты) */
         /*
         if (!$isOnlinePaymentChecked) {
-            echo $helper->render('order/partner-counter/_flocktory-complete',[
+            echo $helper->render('order-v3/partner-counter/_flocktory-complete',[
                 'orders'    => $orders,
                 'products'  => $products,
             ]);
