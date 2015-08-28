@@ -136,6 +136,7 @@ class Action {
         }
 
         \RepositoryManager::product()->prepareProductQueries($productsById, 'media');
+        \App::coreClientV2()->execute();
 
         $page = new \View\Main\IndexPage();
         $page->setParam('productList', $productsById);
