@@ -72,40 +72,15 @@ return function(
 
         <?= $helper->render('order/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
 
-        <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && !$order->isCredit() && !$motivationAction && !$order->isPaidBySvyaznoy()) : ?>
-
-            <!-- Блок оплата в два клика-->
-            <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
-                <!-- Заголовок-->
-                <!-- Блок в обводке -->
-                <div class="orderPayment_block orderPayment_noOnline">
-
-                    <div class="orderPayment_msg orderPayment_noOnline_msg">
-                        <div class="orderPayment_msg_head">
-                            Онлайн-оплата в два клика
-                        </div>
-                        <div class="orderPayment_msg_shop orderPayment_pay">
-                            <button class="orderPayment_btn btn3">Оплатить</button>
-                            <ul class="orderPaymentWeb_lst-sm">
-                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/visa-logo-sm.jpg"></a></li>
-                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/psb.png" /></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        <? endif ?>
-
         <?= $motivationAction && !$order->isPaidBySvyaznoy() ? $helper->render('order/complete-blocks/_online_motivation_action', ['order' => $order, 'orderPayment' => $orderPayment, 'action' => $motivationAction]) : '' ?>
 
         <?= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order/complete-blocks/_svyaznoy-club') : '' ?>
 
-        <? if (\App::config()->flocktoryExchange['enabled'] && !$order->isCredit()) : ?>
+        <? /* if (\App::config()->flocktoryExchange['enabled'] && !$order->isCredit()) : ?>
 <!--            <div>-->
                 <div class="i-flocktory orderPayment" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-username="<?= $order->getFirstName() ?>" data-fl-user-email="<?= $order->email ?>"></div>
 <!--            </div>-->
-        <? endif ?>
+        <? endif */ ?>
 
         <div class="orderCompl orderCompl_final clearfix">
             <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
@@ -118,12 +93,12 @@ return function(
     <? endif ?>
 
     <? // Показываем флоктори, если покупатель вернулся после оплаты заказа ?>
-    <? if ($order->isPaid()) : ?>
-        <?= $helper->render('order-v3/partner-counter/_flocktory-complete',[
+    <? /* if ($order->isPaid()) : ?>
+        <?= $helper->render('order/partner-counter/_flocktory-complete',[
             'orders'    => $orders,
             'products'  => $products,
         ]); ?>
-    <? endif; ?>
+    <? endif; */ ?>
 
     <? if (!$sessionIsReaded): ?>
         <span class="js-orderV3New-complete-subscribe" data-value="<?=$helper->json(['subscribe' => $subscribe, 'email' => isset($orders[0]->email) ? $orders[0]->email : null])?>"></span>
@@ -135,22 +110,26 @@ return function(
             'productsById' => $products,
         ));
 
+        /*
         echo $page->render('order/partner-counter/_complete', [
             'orders'       => $orders,
             'productsById' => $products,
         ]);
+        */
 
         echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products]);
 
         echo $helper->render('order/__saleAnalytics', ['orders' => $orders]);
 
         /* Показываем флоктори без нарушения конверсии онлайн-оплаты (т.е. не выбран онлайновый метод оплаты) */
+        /*
         if (!$isOnlinePaymentChecked) {
-            echo $helper->render('order-v3/partner-counter/_flocktory-complete',[
+            echo $helper->render('order/partner-counter/_flocktory-complete',[
                 'orders'    => $orders,
                 'products'  => $products,
             ]);
         }
+        */
 
         ?>
     <? endif ?>
