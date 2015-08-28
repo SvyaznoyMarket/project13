@@ -137,7 +137,7 @@
              */
             changeQuantity: function( event ) {
                 var
-                    newQuantity = event.totalQuantity;
+                    newQuantity = this.collection.totalQuantity;
 
                 this.totalQuantity.text(newQuantity);
 
@@ -222,6 +222,7 @@
 
                 this.checkBaseSet();
                 this.changeSum();
+                this.changeQuantity();
 
                 console.groupEnd();
             }
