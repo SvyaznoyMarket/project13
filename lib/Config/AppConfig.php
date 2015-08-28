@@ -339,6 +339,7 @@ class AppConfig {
     /** @var array */
     public $banner = [
         'timeout' => null,
+        'checkStatus' => null, // проверять доступность баннеров SITE-5458
     ];
     /** @var array */
     public $payment = [

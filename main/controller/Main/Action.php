@@ -18,6 +18,7 @@ class Action {
 
         $client = \App::coreClientV2();
 
+        $config = \App::config();
         $region = \App::user()->getRegion();
 
         // запрашиваем баннеры
@@ -36,7 +37,7 @@ class Action {
 
         // проверка доступности баннеров в регионе
         try {
-            if (\App::config()->region['defaultId'] !== $region->getId()) {
+            if (($config->banner['checkStatus']) && ($config->region['defaultId'] !== $region->getId())) {
                 /** @var Query\Product\GetUiPager[]|Query\Product\GetByUiList[] $productCheckQueriesByBannerUi */
                 $productCheckQueriesByBannerUi = [];
                 foreach ($bannersByUi as $banner) {
@@ -51,7 +52,7 @@ class Action {
                         if (is_string($sliceRequestFilters['barcode'])) {
                             $sliceRequestFilters['barcode'] = explode(',', $sliceRequestFilters['barcode']);
                         }
-                        $sliceRequestFilters['barcode'] = array_slice($sliceRequestFilters['barcode'], 0, \App::config()->coreV2['chunk_size']);
+                        $sliceRequestFilters['barcode'] = array_slice($sliceRequestFilters['barcode'], 0, $config->coreV2['chunk_size']);
 
                         $productListQuery = new Query\Product\GetByUiList();
                         $productListQuery->uis = $sliceRequestFilters['barcode'];
