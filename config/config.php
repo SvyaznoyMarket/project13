@@ -46,7 +46,7 @@ $c->curlCache['delayRatio'] = [0, 0.025]; // количество и время 
 
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
-$c->coreV2['timeout']      = 4;
+$c->coreV2['timeout']      = 4 * 2;
 $c->coreV2['hugeTimeout']  = 90;
 $c->coreV2['retryCount']   = 2;
 $c->coreV2['retryTimeout'] = [
@@ -62,13 +62,13 @@ $c->coreV2['debug']        = false;
 
 $c->eventService['url'] = 'http://event.enter.ru/';
 $c->eventService['enabled'] = true; // FIXME
-$c->eventService['timeout'] = 0.2;
+$c->eventService['timeout'] = 0.2 * 2;
 $c->eventService['client_id'] = 'site';
 
 $c->corePrivate['url']          = 'http://api.enter.ru/private/';
 $c->corePrivate['user']         = 'Developer';
 $c->corePrivate['password']     = 'dEl23sTOas';
-$c->corePrivate['timeout']      = 4;
+$c->corePrivate['timeout']      = 4 * 2;
 $c->corePrivate['retryCount']   = 2;
 $c->corePrivate['retryTimeout'] = [
     'default' => 1.5,
@@ -81,7 +81,7 @@ $c->corePrivate['retryTimeout'] = [
 
 $c->searchClient['url']          = 'http://search.enter.ru/';
 $c->searchClient['client_id']    = 'site';
-$c->searchClient['timeout']      = 4;
+$c->searchClient['timeout']      = 4 * 2;
 $c->searchClient['hugeTimeout']  = 90;
 $c->searchClient['retryCount']   = 2;
 $c->searchClient['retryTimeout'] = [
@@ -114,7 +114,7 @@ $c->odnoklassnikiOauth->publicKey    = 'CBAQGMICEBABABABA';
 
 $c->reviewsStore['url']          = 'http://scms.enter.ru/reviews/';
 $c->reviewsStore['retryCount']   = 2;
-$c->reviewsStore['timeout']      = 0.6;
+$c->reviewsStore['timeout']      = 0.6 * 4;
 $c->reviewsStore['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -125,7 +125,7 @@ $c->reviewsStore['retryTimeout'] = [
 ];
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
-$c->dataStore['timeout'] = 2;
+$c->dataStore['timeout'] = 2 * 2;
 $c->dataStore['retryCount'] = 2;
 $c->dataStore['retryTimeout'] = [
     'default' => 0.04,
@@ -138,7 +138,7 @@ $c->dataStore['retryTimeout'] = [
 
 $c->scms['url']          = 'http://scms.enter.ru/';
 $c->scms['retryCount']   = 2;
-$c->scms['timeout']      = 3;
+$c->scms['timeout']      = 3 * 2;
 $c->scms['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -150,7 +150,7 @@ $c->scms['retryTimeout'] = [
 
 $c->scmsV2['url']          = 'http://scms.enter.ru/v2/';
 $c->scmsV2['retryCount']   = 2;
-$c->scmsV2['timeout']      = 3;
+$c->scmsV2['timeout']      = 3 * 2;
 $c->scmsV2['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -162,7 +162,7 @@ $c->scmsV2['retryTimeout'] = [
 
 $c->scmsSeo['url']          = 'http://scms.enter.ru/seo/';
 $c->scmsSeo['retryCount']   = 2;
-$c->scmsSeo['timeout']      = 3;
+$c->scmsSeo['timeout']      = 3 * 2;
 $c->scmsSeo['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -174,7 +174,7 @@ $c->scmsSeo['retryTimeout'] = [
 
 $c->crm['url'] = 'http://crm.enter.ru/';
 $c->crm['client_id'] = 'site';
-$c->crm['timeout'] = 3;
+$c->crm['timeout'] = 3 * 2;
 $c->crm['hugeTimeout'] = 4;
 $c->crm['retryCount'] = 2;
 $c->crm['retryTimeout'] = [
@@ -190,7 +190,7 @@ $c->crm['debug'] = false;
 $c->fileStorage = [
     'url'          => 'http://api.enter.ru/v2/',
     'client_id'    => 'site',
-    'timeout'      => 5,
+    'timeout'      => 5 * 2,
     'retryTimeout' => [
         'default' => 0.18,
         'tiny'    => 0.18,
@@ -240,7 +240,7 @@ $c->partners['alexa']['enabled'] = true;
 // RetailRocket
 $c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
 $c->partners['RetailRocket']['apiUrl'] = 'http://api.retailrocket.ru/api/';
-$c->partners['RetailRocket']['timeout'] = 0.33; //в секундах;
+$c->partners['RetailRocket']['timeout'] = 0.33 * 4; //в секундах;
 $c->partners['RetailRocket']['cookieLifetime'] = 2592000; // 30 дней
 $c->partners['RetailRocket']['userEmail']['cookieName'] = 'user_email';
 
