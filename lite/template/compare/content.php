@@ -45,7 +45,7 @@ return function (
                                     <img src="" alt="" class="goods__img-image" data-bind="attr: {src: imageUrl}">
                                 </a>
 
-                                <div class="goods__rating rating">
+                                <div class="goods__rating rating" style="display: none">
                                     <!-- ko if: reviews.count -->
                                     <span class="rating-state">
                                         <!-- ko foreach: {data: reviews.stars.notEmpty} -->
