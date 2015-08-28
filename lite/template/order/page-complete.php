@@ -176,7 +176,7 @@ return function(
         </div>
     </section>
 
-    <? if (false && !$sessionIsReaded): ?>
+    <? /* if (!$sessionIsReaded): ?>
         <span class="js-orderV3New-complete-subscribe" data-value="<?=$helper->json(['subscribe' => $subscribe, 'email' => isset($orders[0]->email) ? $orders[0]->email : null])?>"></span>
 
         <?
@@ -186,25 +186,21 @@ return function(
             'productsById' => $products,
         ));
 
-        /*
         echo $page->render('order/partner-counter/_complete', [
             'orders'       => $orders,
             'productsById' => $products,
         ]);
-        */
 
         echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products]);
 
         echo $helper->render('order/__saleAnalytics', ['orders' => $orders]);
 
         // Flocktory popup
-        /*
         echo $helper->render('order-v3/partner-counter/_flocktory-complete',[
             'orders'    => $orders,
             'products'  => $products,
         ]);
-        */
         ?>
-    <? endif ?>
+    <? endif */ ?>
 
 <? };
