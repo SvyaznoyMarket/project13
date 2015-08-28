@@ -64,7 +64,7 @@ return function(
 
                             <div class="checkout-complete-box__center table-cell">
                                 <div><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>
-                                    <? if ($order->deliveredAt) : ?><?= strftime('%e %b %Y', $order->deliveredAt->getTimestamp()) ?><? endif ?>
+                                    <? if ($order->deliveredAt) : ?><?= date('d.m.Y', $order->deliveredAt->getTimestamp()) ?><? endif ?>
                                     <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
                                 </div>
                                 <!--<div>Оплата при получении: наличные, банковская карта</div>-->
