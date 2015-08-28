@@ -26,9 +26,9 @@ return function(
                 <div class="checkout-complete-box" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
                     <div class="checkout-complete-box__head">
                         <? if ($userEntity) : ?>
-                            <div class="checkout-complete-box__title">Заказ <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
+                            <div class="checkout-complete-box__title">Заказ №<a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
                         <? else : ?>
-                            <div class="checkout-complete-box__title">Заказ <?= $order->getNumberErp()?></div>
+                            <div class="checkout-complete-box__title">Заказ №<?= $order->getNumberErp()?></div>
                         <? endif ?>
 
                         <? if ($order->getPaySum()): ?>
