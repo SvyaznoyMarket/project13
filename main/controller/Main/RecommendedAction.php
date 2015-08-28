@@ -52,11 +52,11 @@ class RecommendedAction {
         $sender['method'] = 'Popular';
 
         \RepositoryManager::product()->prepareProductQueries($products, 'media', $region);
+        \App::coreClientV2()->execute();
+
         $products = array_filter($products, function(\Model\Product\Entity $product) {
             return ($product->isAvailable() && !$product->isInShopShowroomOnly());
         });
-
-        \App::coreClientV2()->execute();
 
         try {
             // TODO: вынести в репозиторий
