@@ -43,7 +43,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 
 
     <div class="order-cart__btn mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">
-        <a href="<?= $page->url('order') ?>" class="btn-type btn-type--buy btn-type--cart" data-bind="visible: !isMinOrderSumVisible()">Оформить заказ</a>
+        <a href="<?= $page->url('order') ?>" class="btn-type btn-type--buy btn-type--order" data-bind="visible: !isMinOrderSumVisible()">Оформить заказ</a>
     </div>
     <div class="order-cart__back mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none"><a href="<?= $backlink ?>"><span class="order-cart__back-txt">Вернуться к покупкам</span></a></div>
     <div class="cart-alert jsKnockoutCart" data-bind="visible: isMinOrderSumVisible()" style="display: none;">

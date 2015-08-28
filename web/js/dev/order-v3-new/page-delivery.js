@@ -317,6 +317,13 @@
         }
     });
 
+    // клик по способу доставки
+    $orderContent.on('click', '.jsDeliveryChange:not(.active)', function() {
+        var $elem = $(this);
+            changeDelivery($elem.closest('.jsOrderRow').data('block_name'), $elem.data('delivery_method_token'));
+
+    });
+
     // клик по дате в календаре
     $orderContent.on('click', '.celedr_col', function(){
         var timestamp = $(this).data('value');

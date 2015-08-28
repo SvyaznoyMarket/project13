@@ -21,6 +21,7 @@ return function(
     ];
 
 ?>
+    <!-- TODO: добавить класс на блок .content вложенный во wrapper(да и на wrapper тоже бы надо) - потому что у нас другая ширина и вообще другой хедер-->
     <section id="js-order-content" class="order-page orderCnt jsOrderV3PageDelivery">
         <div class="pagehead"><h1 class="orderCnt_t">Самовывоз и доставка</h1></div>
 
@@ -38,37 +39,139 @@ return function(
         <?= $helper->render('order-v3-new/__error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
 
-            <?= $helper->render('order-v3-new/partial/orders-list',['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
+        <?= $helper->render('order-v3-new/partial/orders-list',['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
+        <div class="pagehead"><h1 class="orderCnt_t">Получатель</h1></div>
+        <div class="order-receiver">
+            <div class="order-receiver__login">
+                <div class="order-ctrl required">
+                    <label class="order-ctrl__lbl">*Телефон</label>
+                    <input class="order-ctrl__input" placeholder="*Телефон">
+                </div>
+                <div class="order-receiver__hint">Для смс о состоянии заказа</div>
+                <div class="order-ctrl required">
+                    <label class="order-ctrl__lbl">*E-mail</label>
+                    <input class="order-ctrl__input" placeholder="*E-mail">
+                </div>
+                <div class="order-receiver__subscribe">
+                    <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="" value="">
+                    <label class="customLabel customLabel-checkbox" for="sale">
+                        <img class="order-receiver__chip" src="/styles/order-new/img/chip-s.png" alt="">
+                        <span class="order-receiver__subscribe-txt">Подпишись на рассылку и получить скидку<br>на следующую покупку</span>
+                    </label></div>
+                <div class="order-ctrl">
+                    <label class="order-ctrl__lbl">Имя</label>
+                    <input class="order-ctrl__input" placeholder="Имя">
+                </div>
+            </div>
+            <div class="order-receiver__social social">
+                <div class="social__head">Войти через</div>
+                <ul class="social__list">
+                    <li class="social__item"><a href=""><img src="/styles/order-new/img/social1.png"></a></li>
+                    <li class="social__item"><a href=""><img src="/styles/order-new/img/social2.png"></a></li>
+                    <li class="social__item"><a href=""><img src="/styles/order-new/img/social3.png"></a></li>
+                </ul>
+                <div class="social__register"><span>Регистрация</span></div>
 
-        <div class="orderComment">
-            <div class="orderComment_t jsOrderV3Comment">Дополнительные пожелания</div>
+                <!-- Берем из старой верстки - бонусные карты -->
+                <div class="bonusCnt bonusCnt-v2">
 
-            <textarea class="orderComment_fld textarea" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
+                    <? if ($bonusCards) : // Бонусные карты от ядра ?>
+
+                        <div class="bonusCnt_lst">
+                            <? foreach ($bonusCards as $key => $card) : ?>
+
+                                <div class="bonusCnt_i" data-eq="<?= $key ?>">
+                                    <img class="bonusCnt_img" src="/styles/order/img/sClub.jpg" alt="" />
+                                        <span class="bonusCnt_tx">
+                                            <span id="bonusCardLink-<?= md5(json_encode([$card->getName()])) ?>" class="brb-dt">Карта <?= $card->getName() ?></span><!-- что бы убрать бордер можно удалить класс brb-dt -->
+                                            <span id="bonusCardCode-<?= md5(json_encode([$card->getName()])) ?>" class="bonusCnt_tx_code"><span class="brb-dt"></span></span>
+                                        </span>
+                                </div>
+
+                            <? endforeach ?>
+                        </div>
+
+                        <? foreach ($bonusCards as $card) : ?>
+                            <? if ($userBonusCards) $userBonusCard = array_filter($userBonusCards, function($arr) use (&$card) {
+                                /** @var $card \Model\Order\BonusCard\Entity */
+                                return $card->getId() == $arr['bonus_card_id']; })
+                            ?>
+                            <div class="bonusCnt_it clearfix" style="display: <?= (bool)$userBonusCard ? 'none' : 'none' ?>">
+                                <div class="orderU_fld">
+                                    <input class="orderU_tx textfield jsOrderV3BonusCardField" type="text" name="user_info[bonus_card_number]" value="<?= (bool)$userBonusCard ? $userBonusCard[0]['number'] : '' ?>" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
+                                    <label class="orderU_lbl" for="">Номер</label>
+                                    <span class="errTx" style="display: none">Неверный код карты лояльности</span>
+                                    <span class="orderU_inf jsShowBonusCardHint"></span>
+                                </div>
+
+                                <div class="bonusCnt_popup" style="display: none">
+                                    <div class="bonusCnt_descr"><?= $card->getDescription() ?></div>
+                                    <img src="<?= $card->getImage() ?>" alt="" />
+                                </div>
+                            </div>
+                        <? endforeach ; ?>
+
+                    <? endif ?>
+
+                    <? if ($config->partners['MnogoRu']['enabled'] && !$hasProductsOnlyFromPartner) : ?>
+                        <!-- Карта Много.ру -->
+                        <div class="bonusCnt_i" data-eq="<?= count($bonusCards) ?>">
+                            <img class="bonusCnt_img" src="/styles/order/img/mnogoru-mini.png" alt="mnogo.ru" />
+                                <span class="bonusCnt_tx">
+                                    <span id="bonusCardLink-<?= md5(json_encode(['mnogoru'])) ?>" class="brb-dt">Карта Много.ру</span> <!-- что бы убрать бордер можно удалить класс brb-dt -->
+                                    <span id="bonusCardCode-<?= md5(json_encode(['mnogoru'])) ?>" class="bonusCnt_tx_code"><span class="brb-dt jsMnogoRuSpan"></span></span>
+                                </span>
+                        </div>
+
+                        <div class="bonusCnt_it clearfix" style="display: none">
+                            <div class="orderU_fld">
+                                <input class="orderU_tx textfield jsOrderV3MnogoRuCardField" type="text" name="user_info[mnogo_ru_number]" value="" placeholder="xxxx xxxx" data-mask="xxxx xxxx">
+                                <label class="orderU_lbl" for="">Номер</label>
+                                <span class="errTx" style="display: none">Неверный код карты Много.ру</span>
+                                <span class="orderU_inf jsShowBonusCardHint"></span>
+                            </div>
+
+                            <div class="bonusCnt_popup bonusCnt_popup--mnogoru" style="display: none">
+                                <div class="bonusCnt_descr">Получайте бонусы Много.ру за покупки в Enter (1 бонус за 33 руб.).<br/>
+                                    Для этого введите восьмизначный номер, указанный на лицевой стороне карты и в письмах от Клуба Много.ру.</div>
+                                <img src="/css/skin/img/mnogo_ru.png" alt="mnogo.ru" />
+                            </div>
+                        </div>
+                        <!-- Карта Много.ру -->
+                    <? endif ?>
+
+                </div>
+                <!-- END Берем из старой верстки - бонусные карты -->
+            </div>
+
         </div>
 
-        <div class="orderComplSumm">
-            <span class="l">Итого <strong><?= $orderCount ?></strong> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <strong><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span></strong></span>
+        <div class="order-wishes">
+            <span class="order-wishes__lk jsOrderV3Comment">Дополнительные пожелания</span>
+
+            <textarea class="orderComment_fld order-wishes__field" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
+        </div>
+        <div class="order-total">
+                <span class="order-total__txt">Итого <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму</span> <span class="order-total__sum"><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span>
         </div>
 
-        <div class="orderCompl orderCompl-v2 clearfix">
+
+        <div class="order-agreement">
 
             <?= \App::templating()->render('order-v3/common/_blackfriday', ['version' => 2]) ?>
 
             <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
 
-                <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
+                <div class="order-agreement__check">
                     <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" value="" />
 
                     <label  class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">
-                        Я ознакомлен и согласен с информацией о продавце и его офертой
-                        <? if ($orderCount == 1) : ?>
-                            <span class="orderCompl_l_lk js-order-oferta-popup-btn" data-value="<?= $order->seller->offer ?>">Ознакомиться</span>
-                        <? endif; ?>
+                        Я ознакомлен и согласен<br><span class="<? if ($orderCount == 1) { ?>order-agreement__oferta<? } ?> js-order-oferta-popup-btn" data-value="<?= $order->seller->offer ?>" >с информацией о продавце и его офертой</span>
                     </label>
                 </div><br/>
 
-                <button class="orderCompl_btn btnsubmit">Оформить</button>
+                <button class="btn-type btn-type--buy btn-type--order">Оформить</button>
             </form>
         </div>
 
@@ -128,6 +231,7 @@ return function(
         </div>
     </div>
 </div>
+
 
 
     <!-- старая верстка -->
