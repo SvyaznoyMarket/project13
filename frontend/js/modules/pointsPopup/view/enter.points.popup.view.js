@@ -42,7 +42,8 @@
                 POINT_FILTER_PARAM: 'js-point-filter-param',
                 POINT_OPENER: 'js-point-filter-opener',
                 POINT_FILTER_OPEN: 'open',
-                POINT_FILTER_ACITVE: 'active'
+                POINT_FILTER_ACITVE: 'active',
+                POINTS_BALOON_CHOOSE_BTN: 'js-map-point-choose'
             },
 
             /**
@@ -99,11 +100,12 @@
                 };
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.PICK_POINT]          = 'pickPoint';
-                this.events['keyup .' + CSS_CLASSES.SEARCH]              = 'searchAddress';
-                this.events['click .' + CSS_CLASSES.POINT_OPENER]        = 'openPointsFilter';
-                this.events['click .' + CSS_CLASSES.AUTOCOMPLETE_ITEM]   = 'selectAutocompleteItem';
-                this.events['change .' + CSS_CLASSES.POINT_FILTER_PARAM] = 'applyFilter';
+                this.events['click .' + CSS_CLASSES.PICK_POINT]               = 'pickPoint';
+                this.events['keyup .' + CSS_CLASSES.SEARCH]                   = 'searchAddress';
+                this.events['click .' + CSS_CLASSES.POINT_OPENER]             = 'openPointsFilter';
+                this.events['click .' + CSS_CLASSES.AUTOCOMPLETE_ITEM]        = 'selectAutocompleteItem';
+                this.events['change .' + CSS_CLASSES.POINT_FILTER_PARAM]      = 'applyFilter';
+                this.events['click .' + CSS_CLASSES.POINTS_BALOON_CHOOSE_BTN] = 'pickPoint';
 
                 this.listenTo(this.collection, 'change:shown', this.changePoints);
                 this.changePoints();
@@ -401,6 +403,8 @@
                 // Оставшиеся объекты будем удалять с карты.
                 this.map.pointsGeoQuery.remove(visibleObjects).removeFromMap(this.map.mapWS);
                 this.subViews.pointsWrapper.empty().html(html);
+
+                this.delegateEvents();
             },
 
             render: function() {

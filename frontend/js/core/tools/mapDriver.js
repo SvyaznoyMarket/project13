@@ -40,7 +40,7 @@
                 '<div class="delivery-points-list__info-date" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
                 '<div class="delivery-points-list__info-price"><span >{{ humanCost }}</span>{{# showRubles }}&thinsp;<span class="rubl">C</span>{{/ showRubles }}'+
                 '</div></td></tr></tbody></table>'+
-                '<div class="btn-container"><button class="btn-primary btn-primary_middle">Выбрать</button></div></div>',
+                '<div class="btn-container"><button data-id="{{id}}" data-token={{token}} class="btn-primary btn-primary_middle js-map-point-choose">Выбрать</button></div></div>',
 
             /**
              * @classdesc   Конструктор карты с точками
