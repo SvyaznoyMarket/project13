@@ -11,7 +11,7 @@
         <li class="footer-list__item"><a href="/payment" class="footer-list__link underline">Оплата</a></li>
         <li class="footer-list__item"><a href="/about-company" class="footer-list__link underline">О компании</a></li>
         <li class="footer-list__item"><a href="/privacy-policy" class="footer-list__link underline">Правовая информация</a></li>
-        <li class="footer-list__item"><a href="" class="footer-list__link underline">Оферта</a></li>
+        <li class="footer-list__item"><a href="/offer" class="footer-list__link underline">Оферта</a></li>
         <li class="footer-list__item footer-list__item_feedback"><a href="" class="btn-normal js-feedback-from-btn">Обратная связь</a></li>
     </ul>
 

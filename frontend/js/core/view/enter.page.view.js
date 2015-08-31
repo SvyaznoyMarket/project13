@@ -49,7 +49,8 @@
                 FEEDBACK_POPUP: 'js-feedback-popup',
                 FEEDBACK_BTN: 'js-feedback-from-btn',
                 CHANGE_REGION_LNK: 'js-change-region',
-                GO_TO_LNK: 'js-go-to'
+                GO_TO_LNK: 'js-go-to',
+                LOADER: 'loading'
             };
 
         provide(BaseViewClass.extend({
@@ -98,6 +99,11 @@
                 this.events['click .' + CSS_CLASSES.FEEDBACK_BTN]    = 'showFeedbackPopup';
                 this.events['click .' + CSS_CLASSES.CHANGE_REGION_LNK] = 'showRegionPopup';
                 this.events['click .' + CSS_CLASSES.GO_TO_LNK]  = 'goToTarget';
+
+                window.onbeforeunload = function() {
+                    this.$el.addClass(CSS_CLASSES.LOADER);
+                    console.warn('window.onbeforeunload');
+                };
 
                 // Apply events
                 this.delegateEvents();

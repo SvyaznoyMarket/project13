@@ -60,7 +60,14 @@ class MapPoint extends BasicPoint {
         if (isset($data['listName'])) $this->listName = $data['listName'];
 
         $this->humanNearestDay = $this->humanizeDate();
-        $this->humanCost = $this->cost == 0 ? 'Бесплатно' : \App::helper()->formatPrice($this->cost);
+        if ($this->cost == 0) {
+            $this->humanCost = 'Бесплатно';
+            $this->showRubles = false;
+        } else {
+            $this->humanCost = \App::helper()->formatPrice($this->cost);
+            $this->showRubles = true;
+        }
+
         $this->postamatFix();
         $this->isPickpoint = strpos($this->token, 'pickpoint') !== false;
         $this->help = \Model\Point\Help::createByPointGroupToken($this->token);

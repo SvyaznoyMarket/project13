@@ -75,9 +75,9 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl, $ca
                     <span class="fltrRange_lbl">Цена</span> <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
                 <? endif ?>
             </div>
-            
+
             <div class="fltrSet_cnt js-category-filter-otherParams">
-                <div class="filter-content js-category-filter-otherParamsContent" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
+                <div class="filter-content js-category-filter-otherParamsContent">
                     <ul class="filter-params">
                         <? foreach ($otherFilters as $i => $filter): ?>
                             <li class="filter-params__item <? if (0 == $i): ?>mActive<? endif ?> js-category-filter-param">
@@ -88,7 +88,7 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl, $ca
 
                     <div class="filter-values">
                         <? foreach ($otherFilters as $i => $filter): ?>
-                            <div class="filter-values__inner <? if ($i > 0): ?>hf<? endif ?> <? if (in_array($filter->getId(), ['shop', 'category'])): ?>mLineItem<? endif ?>">
+                            <div class="filter-values__inner js-category-filter-group <? if ($i > 0): ?>hf<? endif ?> <? if (in_array($filter->getId(), ['shop', 'category'])): ?>mLineItem<? endif ?>">
                                 <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $filter]) ?>
                             </div>
                         <? endforeach ?>
