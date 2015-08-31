@@ -88,7 +88,7 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl, $ca
 
                     <div class="filter-values">
                         <? foreach ($otherFilters as $i => $filter): ?>
-                            <div class="filter-values__inner <? if ($i > 0): ?>hf<? endif ?> <? if (in_array($filter->getId(), ['shop', 'category'])): ?>mLineItem<? endif ?>">
+                            <div class="filter-values__inner js-category-filter-group <? if ($i > 0): ?>hf<? endif ?> <? if (in_array($filter->getId(), ['shop', 'category'])): ?>mLineItem<? endif ?>">
                                 <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $filter]) ?>
                             </div>
                         <? endforeach ?>
