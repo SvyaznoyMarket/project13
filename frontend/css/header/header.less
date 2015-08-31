@@ -9,14 +9,13 @@
 
     border-bottom: 3px solid @orange-bright;
     background: @white;
+    .clearfix();
     .wrapper {
         position: relative;
     }
     &__left {
-        width: 210px;
-        max-width: 210px;
-        min-width: 210px;
-        padding: 13px 10px 0;
+        float: left;
+        margin: 0 0 0 5px;
     }
     &_fix {
         position: fixed;
@@ -29,22 +28,20 @@
         .bread-crumbs {
             margin: 0;
         }
-    }
-    &__side {
-        position: relative;
-
-        width: 95px;
-        min-width: 95px;
-        height: 85px;
-        padding: 0 10px;
-
-        text-align: center;
-        vertical-align: middle;
+        .header__left {
+            margin-top: 40px;
+        }
     }
     &__center {
-        width: 100%;
+        overflow: hidden;
 
-        vertical-align: middle;
+        &-inn {
+            min-width: 380px;
+            .inline-block();
+            width: 100%;
+            max-width: 600px;
+            padding: 0 30px 0 15px;
+        } 
     }
     .fltrSet_tggl {
         float: left;
@@ -66,7 +63,6 @@
         }
         &-left {
             width: 165px;
-            margin-right: 10px;
 
             .inline-block(middle);
         }
@@ -147,27 +143,28 @@
             }
         }
     }
-    &_full {
-        .i-controls--cart {
-            .i-sprite(-157px, 0px, 46px, 56px);
-        }
-    }
 }
 
 .disc-count {
     font-style: normal;
-    line-height: 29px;
+    line-height: 23px;
+    width: 23px;
+    height: 23px;
+    .inline-block();
+    position: absolute;
+    top: -5px;
+    right: -2px;
 
     text-align: center;
 
     color: @white;
-
-    .font-size(22);
+    background: @orange-bright;
+    .rounded(50%);
 }
 
 .logotype {
     display: block;
-    margin: 0 0 0 5px;
+    margin: 6px 6px 0 5px;
 
     width: 185px;
     height: 24px;
@@ -191,7 +188,7 @@
 }
 
 .header-shop-info {
-    .inline-block();
+    float: left;
     &__item {
         margin: 0 17px 0 0;
 
@@ -203,7 +200,7 @@
 .search-bar {
     position: relative;
 
-    .inline-block();
+    width: 100%;
     &__icon {
         position: absolute;
         top: 9px;
@@ -215,7 +212,7 @@
         right: 5px;
     }
     &__it {
-        width: 380px;
+        width: 100%;
         padding-left: 40px;
     }
     &__icon-clear {
@@ -248,7 +245,7 @@
         }
     }
     &__text {
-        margin: 0 8px 0 0;
+        margin: 0;
 
         .font-face('GloberBold');
         .font-size(14);
@@ -292,12 +289,3 @@
         margin: 0 20px;
     }
 }
-
-// @media (max-width: 1024px) {
-//     .header {
-//         position: absolute;
-//         top: 0;
-//         left: 0;
-//         width: 100%;
-//     }
-// }

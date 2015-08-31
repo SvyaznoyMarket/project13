@@ -20,7 +20,7 @@
 
             <!-- пустая корзина -->
             <div class="cart-empty">
-                <div class="cart-empty__title">Нет товаров</div>
+                <div class="cart-empty__title">В корзине нет товаров</div>
                 <div class="cart-empty__desc">
                     Попробуйте <label for="search-field" class="cart-empty__search"><span class="underline">поиск</span></label>
                 </div>

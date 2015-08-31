@@ -1,9 +1,7 @@
 .product-card-tools {
     margin: 0 0 10px 10px;
-
     &__i {
         margin: 5px 0 0;
-
         &--onclick {
             .product-card-tools__tx {
                 margin-left: 1px;
@@ -17,26 +15,38 @@
         text-decoration: none;
 
         .inline-block();
+        .i-tools-icon {
+            width: 22px;
+            height: 22px;
 
+            .inline-block(middle);
+            &--wish {
+                background-position: -51px 0;
+            }
+            &--product-compare {
+                background: 0 0 no-repeat url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAQAAABuvaSwAAABIklEQVR4AcXKs2IFQRTG8bCK6lhVbHSxbdu2kypOFbOKHiO2HiNlPLe5+nIW9TXOf3dmdvZnodfUug57CxV6qqFRASmyQpRQhUiRRfiqxMFuKfI7fFL3hIPd1OIncPOsPU52igmO8eeKDU92UoMrD1LluTKudFnTghrcflKHG7zQVy/61tTiVjAACkwYF8fblNgL5TrE26jB9ZmNT233XFVv1blqcNd2ORapOeSg9VQN7lubgIz6Qws6jtRjOgLM3HgEn/jGOxrRcczhc3xTF4QD3dtPmujPN4kRDvculEtm2AybZgWSpoMwl7TvQTZDDbK0r2jvtp0C7i9VwbpWLNpdu/MHcrg68hvcI2yb0rkzV1N6hG2zW4f4ty+33dVCm/kH1xKy2j3cawQAAAAASUVORK5CYII=');
+            }
+        }
         &.active {
             text-decoration: none;
-
             .i-tools-icon {
                 &--wish {
                     background-position: -51px 0;
                 }
-
                 &--product-compare {
-                    background-position: -75px 0;
+                    background: 0 0 no-repeat url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAABqUlEQVR4AeWUA8xcQRRGpwxq27Zt27Ztu12jto24DWqGtR03Tm0vTt/NJIs4Xf97k/MG371nwqcSVtialWBb53JhrKhWJjLpJFWD+fk9rKgAq6tpZD+/gIfJqsL/iyeqkswr4OXpefj6VvP0ghYbWeTiF5cJ1IsrsRczOV8e5mSvzazs1QPMyFZf7iMTW2ruY34hL0tLe1imYWFhD+4WjsjE69sex94QnpyBl9eM7Cps7gJbu2+JUNzuOGtbwa+vOvP5YM+gVBVjUlkx1cgZxuIqueQ+MvHaFt1xNLnNutY3NK1uYK1zH1O93pGJN3XciakmHJusOTIRlpbGeORERGL5sGcweP8aeODnF1jbEmPoaHTEcgnSlNbinf3gyxv49g7evwJXM1jX5lhA/OCkzoQHp7R4nColYlzNZUYy7djZV4vZ0tWBqfYPDoz6LrBv+HeWl/+Bu/k+xqviLCj8mW29dGYge+PuExNVOda23iW9HBgZyDHX/s7GDmsVtvYlWN+hL1u79QogZ1ujUkxW2VjbrGtYJsidZO628iMKn93cqTcb25dQsap/VSW6VVyLydgAAAAASUVORK5CYII=');
                 }
             }
         }
-
         &:hover {
             text-decoration: none;
         }
     }
     &__tx {
+        line-height: 1;
+
+        margin: 5px 0 0;
+
         color: @grey-bright;
         border-bottom: 1px dotted @grey-bright;
 
