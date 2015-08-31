@@ -77,7 +77,7 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl, $ca
             </div>
 
             <div class="fltrSet_cnt js-category-filter-otherParams">
-                <div class="filter-content js-category-filter-otherParamsContent" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
+                <div class="filter-content js-category-filter-otherParamsContent">
                     <ul class="filter-params">
                         <? foreach ($otherFilters as $i => $filter): ?>
                             <li class="filter-params__item <? if (0 == $i): ?>mActive<? endif ?> js-category-filter-param">

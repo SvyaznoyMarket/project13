@@ -66,7 +66,7 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
 
             <div class="fltrSet_cnt js-category-filter-otherParams">
                 <!-- Фильтр по выбранным параметрам -->
-                <div class="filter-content js-category-filter-otherParamsContent" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
+                <div class="filter-content js-category-filter-otherParamsContent">
                     <!-- Список названий параметров -->
                     <ul class="filter-params">
                         <? foreach ($otherFilters as $i => $filter): ?>

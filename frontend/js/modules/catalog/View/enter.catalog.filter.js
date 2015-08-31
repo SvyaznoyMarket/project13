@@ -49,7 +49,7 @@
                 BRANDS_OPENER: 'js-category-filter-otherBrandsOpener',
                 BRANDS_OPEN: 'open',
                 OTHER_PARAMS_TOGGLE: 'js-category-filter-otherParamsToggleButton',
-                OTHER_PARAMS_CONTAINER: '',
+                OTHER_PARAMS_OPEN: 'open',
                 CLEAR_FILTER: 'js-filter-clear'
             };
 
@@ -89,6 +89,12 @@
             },
 
             toggleOtherParams: function() {
+                if ( this.$el.hasClass(CSS_CLASSES.OTHER_PARAMS_OPEN) ) {
+                     this.$el.removeClass(CSS_CLASSES.OTHER_PARAMS_OPEN);
+                } else {
+                     this.$el.addClass(CSS_CLASSES.OTHER_PARAMS_OPEN);
+                }
+
                 return false;
             },
 
