@@ -23,9 +23,12 @@
                 <li class="personal-favorit__act js-fav-popup-show" data-popup="js-share-popup">Поделиться</li>
                 <li class="personal-favorit__act js-fav-popup-show" data-popup="js-create-popup">Создать список</li>
                 <li
-                    class="personal-favorit__act js-fav-popup-show"
+                    class="personal-favorit__act js-fav-popup-show js-favorite-showMovePopup"
                     data-popup="js-move-popup"
-                    data-container=".id-favoriteContainer"
+                    data-action="<?= $helper->json([
+                        'container' => '.id-favoriteContainer',
+                        'target'    => '.js-move-popup',
+                    ]) ?>"
                 >
                     Перенести в список
                 </li>
@@ -38,7 +41,7 @@
         ?>
         <div class="personal-favorit__item <?= $rowId ?>">
             <div class="personal-favorit__cell personal-favorit__choose">
-                <input class="personal-favorit__checkbox" type="checkbox" id="<?= $rowId . '-input' ?>">
+                <input class="personal-favorit__checkbox" type="checkbox" id="<?= $rowId . '-input' ?>" data-type="product" value="<?= $product->getUi() ?>">
                 <label for="<?= $rowId . '-input' ?>" class="personal-favorit__checkbox-icon"></label>
             </div>
             <div class="personal-favorit__cell personal-favorit__pic">
@@ -236,8 +239,10 @@
         <div class="popup-closer"></div>
         <div class="personal-popup__head">Выберите список</div>
         <div class="personal-popup__content">
-            <form>
+            <form action="" method="post">
                 <div class="custom-select">
+                    <input type="hidden" name="productUis">
+
                     <select class="custom-select__inn">
                     <? foreach ($wishlists as $wishlist): ?>
                         <option class="custom-select__i"><?= $helper->escape($wishlist->title) ?></option>

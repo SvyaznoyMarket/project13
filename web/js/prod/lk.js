@@ -91,6 +91,39 @@
         $('.overlay').remove();
     });
 
+    $body.on('click', '.js-favorite-showMovePopup', function() {
+        var
+            $el = $(this),
+            data = $el.data('action'),
+            $container = data.container && $(data.container),
+            $target = data.target && $(data.target),
+            $productInputs,
+            productUis = []
+        ;
+
+        try {
+            if (!$container.length) {
+                throw {name: 'Контейнер не найден'};
+            }
+            $productInputs = $container.find('input[data-type="product"]:checked');
+            if (!$productInputs.length) {
+                throw {name: 'Товары не выбраны'};
+            }
+            $productInputs.each(function(i, el) {
+                productUis.push($(el).val());
+            });
+
+            if (!$target.length) {
+                throw {name: 'Целевой элемент не найден'};
+            }
+            $formInput = $target.find('input[name="productUis"]');
+            if (!$formInput.length) {
+                throw {name: 'Инпут формы не найден'};
+            }
+            $formInput.val(productUis.join(','));
+        } catch (error) { console.error(error); }
+    });
+
 }(jQuery));
 /**
  * Orders Page
