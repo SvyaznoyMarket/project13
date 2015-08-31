@@ -904,11 +904,9 @@ return [
         'method'    => ['POST'],
     ],
     'wishlist.addProduct' => [
-        'pattern' => '/wishlist/add-product/{productUi}',
-        'action'  => ['Wishlist\SetAction', 'execute'],
-        'require' => [
-            'productUi' => '[\w\d-_]+',
-        ],
+        'pattern' => '/wishlist/add-product',
+        'action'  => ['Wishlist\AddProductAction', 'execute'],
+        'method'  => ['POST'],
     ],
     'wishlist.deleteProduct' => [
         'pattern' => '/wishlist/delete-product/{productUi}',

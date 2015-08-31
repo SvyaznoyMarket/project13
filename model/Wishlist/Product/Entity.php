@@ -10,6 +10,6 @@ class Entity {
      * @param array $data
      */
     public function __construct(array $data = []) {
-        if (array_keys($data, 'ui')) $this->ui = (string)$data['ui'];
+        if (array_key_exists('uid', $data)) $this->ui = (string)$data['uid'];
     }
 }

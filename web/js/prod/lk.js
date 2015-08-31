@@ -116,7 +116,7 @@
             if (!$target.length) {
                 throw {name: 'Целевой элемент не найден'};
             }
-            $formInput = $target.find('input[name="productUis"]');
+            $formInput = $target.find('input[data-field=productUis]');
             if (!$formInput.length) {
                 throw {name: 'Инпут формы не найден'};
             }

@@ -239,13 +239,13 @@
         <div class="popup-closer"></div>
         <div class="personal-popup__head">Выберите список</div>
         <div class="personal-popup__content">
-            <form action="" method="post">
+            <form action="<?= $helper->url('wishlist.addProduct') ?>" method="post">
                 <div class="custom-select">
-                    <input type="hidden" name="productUis">
+                    <input type="hidden" name="wishlist[productUis]" data-field="productUis" />
 
-                    <select class="custom-select__inn">
+                    <select class="custom-select__inn" name="wishlist[id]">
                     <? foreach ($wishlists as $wishlist): ?>
-                        <option class="custom-select__i"><?= $helper->escape($wishlist->title) ?></option>
+                        <option class="custom-select__i" value="<?= $wishlist->id ?>"><?= $helper->escape($wishlist->title) ?></option>
                     <? endforeach ?>
                     </select>
                 </div>

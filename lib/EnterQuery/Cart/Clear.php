@@ -34,8 +34,8 @@ namespace EnterQuery\Cart
                     ]
                 ),
                 [], // data
-                function($response, $statusCode) {
-                    $result = $this->decodeResponse($response, $statusCode)['result'];
+                function($response, $curlQuery) {
+                    $result = $this->decodeResponse($response, $curlQuery)['result'];
 
                     return $result; // for cache
                 },
