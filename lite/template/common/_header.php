@@ -6,15 +6,14 @@
 
 <div class="header js-userbar">
     <div class="wrapper table">
-        <div class="header__side header__logotype table-cell">
+        <div class="header__left table-cell">
+            <a href="" class="location dotted js-popup-show js-change-region" data-popup="region"><?= App::user()->getRegion()->getName() ?></a>
             <a href="/" class="logotype"></a>
         </div>
 
         <div class="header__center table-cell">
             <div class="header__line header__line_top">
-                <div class="header__line-left">
-                    <a href="" class="location dotted js-popup-show js-change-region" data-popup="region"><?= \App::user()->getRegion()->getName() ?></a>
-                </div>
+                <div class="header__line-left"></div>
 
                 <ul class="header-shop-info">
                     <li class="header-shop-info__item"><a href="/delivery" class="header-shop-info__link underline">Самовывоз</a></li>
