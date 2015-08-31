@@ -53,6 +53,7 @@ class FavoriteAction extends PrivateAction {
         $page = new \View\User\FavoritesPage();
         $page->setParam('products', $products);
         $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
+        $page->setParam('wishlists', $wishlists);
 
         return new \Http\Response($page->show());
     }

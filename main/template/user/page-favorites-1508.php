@@ -5,13 +5,14 @@
  * @var $user                 \Session\User
  * @var $products             \Model\Product\Entity[]
  * @var $favoriteProductsByUi \Model\Favorite\Product\Entity[]
+ * @var $wishlists            \Model\Wishlist\Entity[]
  */
 ?>
 
 <div class="personal">
     <?= $page->render('user/_menu', ['page' => $page]) ?>
 
-    <div class="personal__favorits">
+    <div class="personal__favorits id-favoriteContainer">
         <div class="personal-favorit__top">
             <div class="personal-favorit__choose">
                 <input id="cb1" type="checkbox" class="personal-favorit__checkbox js-fav-all">
@@ -21,13 +22,19 @@
             <ul class="personal-favorit__acts">
                 <li class="personal-favorit__act js-fav-popup-show" data-popup="js-share-popup">Поделиться</li>
                 <li class="personal-favorit__act js-fav-popup-show" data-popup="js-create-popup">Создать список</li>
-                <li class="personal-favorit__act js-fav-popup-show" data-popup="js-move-popup">Перенести в список</li>
+                <li
+                    class="personal-favorit__act js-fav-popup-show"
+                    data-popup="js-move-popup"
+                    data-container=".id-favoriteContainer"
+                >
+                    Перенести в список
+                </li>
                 <li class="personal-favorit__act js-fav-popup-show" data-popup="js-del-popup">Удалить</li>
             </ul>
         </div>
         <? foreach ($products as $product): ?>
         <?
-            $rowId = 'id-favoriteRow-' . $product->getUi() ?: uniqid();
+            $rowId = 'id-favoriteRow-' . ($product->getUi() ?: uniqid());
         ?>
         <div class="personal-favorit__item <?= $rowId ?>">
             <div class="personal-favorit__cell personal-favorit__choose">
@@ -232,9 +239,9 @@
             <form>
                 <div class="custom-select">
                     <select class="custom-select__inn">
-                        <option class="custom-select__i">На ДР</option>
-                        <option class="custom-select__i">Для дачи</option>
-                        <option class="custom-select__i">Ремонт</option>
+                    <? foreach ($wishlists as $wishlist): ?>
+                        <option class="custom-select__i"><?= $helper->escape($wishlist->title) ?></option>
+                    <? endforeach ?>
                     </select>
                 </div>
                 <button type="submit" class="btn btn--default">Сохранить</button>
