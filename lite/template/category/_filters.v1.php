@@ -62,33 +62,33 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl, $ca
     $showParamsButton = (bool) ($countInListFilters > 1 || !$priceFilter);
 ?>
 
-    <div class="filter filter-options fltr filter-components js-category-filter-wrapper">
-        <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter" action="<?= $baseUrl ?>" method="GET">
-            <div class="bFilterHead">
-                <? if ($showParamsButton): ?>
-                    <a class="bFilterToggle btnGrey <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton js-category-filter-otherParamsToggleButton" href="#">
-                        <!--noindex--><span class="bToggleText">Бренды и параметры</span><!--/noindex-->
-                    </a>
-                <? endif ?>
+    <div class="filter filter-options fltr js-category-filter-wrapper">
+        <form id="productCatalog-filter-form" class="fltrSet js-category-filter" action="<?= $baseUrl ?>" method="GET">
+            <div class="filter-price" style="padding-bottom: 10px;">
+                <div class="fltrSet_tggl <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton">
+                    <? if ($showParamsButton): ?>
+                        <!--noindex--><span class="fltrSet_tggl_tx">Бренды и параметры</span><!--/noindex-->
+                    <? endif ?>
+                </div>
 
                 <? if ($priceFilter && $productFilter): ?>
-                    <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
+                    <span class="fltrRange_lbl">Цена</span> <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
                 <? endif ?>
             </div>
-
-            <div class="fltrSet js-category-filter-otherParams" style="padding-top: 0;">
-                <div class="bFilterCont clearfix js-category-filter-otherParamsContent" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
-                    <ul class="bFilterParams">
+            
+            <div class="fltrSet_cnt js-category-filter-otherParams">
+                <div class="filter-content js-category-filter-otherParamsContent" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
+                    <ul class="filter-params">
                         <? foreach ($otherFilters as $i => $filter): ?>
-                            <li class="bFilterParams__eItem <? if (0 == $i): ?>mActive<? endif ?> js-category-filter-param">
-                                <span class="bParamName"><?= $filter->getName() ?></span>
+                            <li class="filter-params__item <? if (0 == $i): ?>mActive<? endif ?> js-category-filter-param">
+                                <span class="filter-params__text"><?= $filter->getName() ?></span>
                             </li>
                         <? endforeach ?>
                     </ul>
 
-                    <div class="bFilterValues clearfix">
+                    <div class="filter-values">
                         <? foreach ($otherFilters as $i => $filter): ?>
-                            <div class="bFilterValuesItem clearfix <? if ($i > 0): ?>hf<? endif ?> <? if (in_array($filter->getId(), ['shop', 'category'])): ?>mLineItem<? endif ?>">
+                            <div class="filter-values__inner <? if ($i > 0): ?>hf<? endif ?> <? if (in_array($filter->getId(), ['shop', 'category'])): ?>mLineItem<? endif ?>">
                                 <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $filter]) ?>
                             </div>
                         <? endforeach ?>

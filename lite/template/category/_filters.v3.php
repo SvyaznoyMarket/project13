@@ -33,8 +33,8 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
     if (0 == $countInListFilters) return;
     ?>
 
-    <div class="fltr">
-        <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter js-category-filter" action="<?= $baseUrl ?>" method="GET">
+    <div class="filter filter-options fltr">
+        <form id="productCatalog-filter-form" class="fltrSet js-category-filter" action="<?= $baseUrl ?>" method="GET">
             <? // Для IE9 (чтобы он отправлял форму при нажатии на клавишу enter в текстовом поле ввода) ?>
             <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
 
@@ -45,7 +45,7 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
                     </div>
 
                     <div class="fltrSet_cnt js-category-filter-toggle-content" <? if (!$filter->isOpenByDefault): ?>style="display: none;"<? endif ?>>
-                        <div class="fltrSet_inn clearfix">
+                        <div class="fltrSet_inn">
                             <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $filter]) ?>
                         </div>
                     </div>
@@ -59,31 +59,29 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
             <? endif ?>
 
             <? if ($otherFilters): ?>
-                <div class="bFilterHead">
-                    <div class="fltrSet_tggl <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton">
-                        <span class="fltrSet_tggl_tx">Ещё параметры</span>
-                    </div>
-                </div>
+                <div class="fltrSet_tggl <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton">
+                    <span class="fltrSet_tggl_tx">Ещё параметры</span>
+                </div>            
             <? endif ?>
 
-            <div class="fltrSet js-category-filter-otherParams" style="padding-top: 0;">
+            <div class="fltrSet_cnt js-category-filter-otherParams">
                 <!-- Фильтр по выбранным параметрам -->
-                <div class="bFilterCont clearfix js-category-filter-otherParamsContent" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
+                <div class="filter-content js-category-filter-otherParamsContent" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
                     <!-- Список названий параметров -->
-                    <ul class="bFilterParams">
+                    <ul class="filter-params">
                         <? foreach ($otherFilters as $i => $filter): ?>
                             <? $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId()); ?>
-                            <li class="bFilterParams__eItem<? if (0 == $i): ?> mActive<? endif ?> js-category-filter-param" data-ref="<?= $viewId ?>">
-                                <span class="bParamName"><?= $filter->getName() ?></span>
+                            <li class="filter-params__item<? if (0 == $i): ?> mActive<? endif ?> js-category-filter-param" data-ref="<?= $viewId ?>">
+                                <span class="filter-params__text"><?= $filter->getName() ?></span>
                             </li>
-                            <? endforeach ?>
+                        <? endforeach ?>
                     </ul>
                     <!-- /Список названий параметров -->
 
                     <!-- Список значений параметров -->
-                    <div class="bFilterValues clearfix">
+                    <div class="filter-values">
                         <? foreach ($otherFilters as $i => $filter): ?>
-                            <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if (in_array($filter->getId(), ['shop', 'category'])): ?> mLineItem<? endif ?> js-category-filter-element" id="<?= \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId()) ?>">
+                            <div class="filter-values__inner<? if ($i > 0): ?> hf<? endif ?><? if (in_array($filter->getId(), ['shop', 'category'])): ?> mLineItem<? endif ?> js-category-filter-element" id="<?= \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId()) ?>">
                                 <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $filter]) ?>
                             </div>
                         <? endforeach ?>
