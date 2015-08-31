@@ -1,9 +1,9 @@
-<div class="header__side header-cart table-cell js-cart <? if (\App::user() && \App::user()->getCart()->count()) : ?><? endif ?>">
-
+<li class="user-controls__item user-controls__item_cart header-cart js-cart <? if (\App::user() && \App::user()->getCart()->count()) : ?><? endif ?>">
     <div class="notice-show">
-        <a class="header-cart__link" href="<?= \App::router()->generate('cart') ?>" title="">
-            <i class="header-cart__icon i-controls i-controls--cart"><span class="header-cart__count disc-count js-cart-quantity"></span></i>
-            <span class="header-cart__text">Корзина</span>
+        <a class="user-controls__link" href="<?= \App::router()->generate('cart') ?>" title="">
+            <i class="user-controls__icon i-controls i-controls--cart"></i>
+            <span class="user-controls__text">Корзина</span>
+            <span class="disc-count js-cart-quantity"></span>
         </a>
 
         <div class="notice-dd notice-dd_cart js-cart-notice">
@@ -17,7 +17,7 @@
             <a href="<?= \App::router()->generate('orderV3') ?>" class="btn-primary btn-primary_bigger btn-primary_width">Оформить заказ</a>
         </div>
     </div>
-</div>
+</li>
 
 <script type="text/html" id="js-cart-item-template">
     <li class="notice-cart__row">

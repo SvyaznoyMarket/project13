@@ -1,15 +1,17 @@
 .user-controls {
     float: right;
+    margin: 15px 0  0;
     &__item {
-        width: 120px;
-        height: 40px;
-        margin: 5px 0 0;
+        height: 70px;
+        margin: 0 10px 0;
+        text-align: center;
+        position: relative;
 
         .inline-block(middle);
         &_compare {
             &.active {
                 .i-controls {
-                    .i-sprite(-105px, 0px, 25px, 25px);
+                    .i-sprite(-38px, -1px, 35px, 35px);
                 }
                 .user-controls__count {
                     .inline-block(middle);
@@ -20,7 +22,7 @@
                     color: @orange-bright;
                 }
                 .i-controls {
-                    .i-sprite(-105px, 0px, 25px, 25px);
+                    .i-sprite(-38px, -1px, 35px, 35px);
                 }
             }
         }
@@ -50,10 +52,8 @@
         .inline-block();
     }
     &__icon {
-        width: 25px;
-        margin: 0 2px 0 0;
-
-        .inline-block(middle);
+        margin: 0 2px 5px 0;
+        .inline-block();
     }
     &__count {
         line-height: 1.3333;
@@ -71,25 +71,28 @@
         white-space: nowrap;
         text-overflow: ellipsis;
 
-        .inline-block(middle);
+        display: block;
+        .font-size(14);
     }
 }
 
 .i-controls {
     background: url('@{base-url}/header/i-controls.png') no-repeat 0 0;
+
     &--cart {
-        .i-sprite(0px, 0px, 46px, 56px);
+        .i-sprite(-1px, -1px, 35px, 35px);
     }
+
     &--compare {
-        .i-sprite(-78px, 0, 25px, 25px);
+        .i-sprite(-75px, -1px, 35px, 35px);
     }
-    &--phone {
-        .i-sprite(-72px, -29px, 17px, 17px);
+
+    &.sprite-mini-like {
+        .i-sprite(-131px, -1px, 17px, 17px);
     }
+
     &--search {
-        .i-sprite(-49px, -27px, 19px, 19px);
-    }
-    &--user {
-        .i-sprite(-50px, 0px, 25px, 25px);
+        .i-sprite(-150px, -2px, 19px, 19px);
     }
 }
+

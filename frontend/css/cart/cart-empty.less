@@ -1,17 +1,14 @@
 .cart-empty {
-    width: 470px;
-    margin: 20px auto 50px;
-    padding: 80px 0 90px 32px;
+    width: 370px;
+    margin: 50px auto 50px;
 
     color: @grey-light;
-    background: url('@{base-url}/cart/cart-empty.png') no-repeat 0 0 @white;
     &__title {
         margin-right: 40px;
 
-        color: @orange-bright;
+        color: @grey-light;
 
-        .font-size(24);
-        .inline-block(middle);
+        .font-size(32);
     }
     &__desc {
         .font-size(22);
@@ -26,11 +23,11 @@
         &:before {
             width: 19px;
             height: 19px;
-            margin: 7px 5px 0 5px;
+            margin: 6px 7px 0 5px;
 
             content: '';
-
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAABWUlEQVR4Aa2TA9NWURSFV7btumefbNs1qmEY1yjb1mfzvmfvL9uuX9Owf9GwO/u1+Vxrba2LJPajD5zZDqZasP0MoccQ+xZM7+HsFbBnURCtUweBqVuFfG8VgF6I0jRhCNjuAtNzCF3DPfRGVjppHJj+gu1Z5OIe+oPpHYRakQktTTMyB1EobH/DmcNIJdajYmidOhps36Bt5sgUMaqBm7UaRaItYdqLJIQ+aLOLRWauAdMdJMH0BKXgG0obhPqoFMRbBKb6dDF/3FAUifpOzMUUMXMZQrtRLEJ3wXZz6k2jzu6kAUWW+Eg9mobQSQj9KWiq3d5sCH1HyKzIlXadei4wJLLhz1wKsf/UTqFZc5ATMYfU2Y7Og2kd2LPBR4sjP/l9LU1oObppgb4XlJuvHyPg7B44cxNMLZGMzweim5J65MxCBIJ6rASVFwxKVUGm+agIbuoUOHP0P+HecWASUj0YAAAAAElFTkSuQmCC') no-repeat 0 0;
+            background: url('@{base-url}/header/i-controls.png') no-repeat 0 0;
+            .i-sprite(-171px, -1px, 23px, 23px);
 
             .inline-block();
         }
