@@ -30,12 +30,13 @@ $c->authToken['authorized_cookie'] = '_authorized';
 
 $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 2592000; // 30 дней
-$c->session['cookie_domain'] = '.enter.ru';
+$c->session['cookie_domain'] = array_key_exists('HTTP_HOST', $_SERVER) ? '.' . implode('.', array_slice(explode('.', $_SERVER['HTTP_HOST']), -2)) : '.sordex.ru';
+#$c->session['cookie_domain'] = '.wallashop.com';
 $c->session['compareKey']   = 'compare'; // ключ для массива сравнения
 $c->session['favouriteKey'] = 'favourite'; // ключ для масссива избранного
 
-$c->mainHost = 'www.enter.ru';
-$c->mobileHost = 'm.enter.ru';
+$c->mainHost = array_key_exists('HTTP_HOST', $_SERVER) ? $_SERVER['HTTP_HOST'] : 'www.sordex.ru';
+$c->mobileHost = array_key_exists('HTTP_HOST', $_SERVER) ? 'm.' . implode('.', array_slice(explode('.', $_SERVER['HTTP_HOST']), -2)) : 'm.sordex.ru';
 $c->description = 'Enter – это все товары для жизни по интернет-ценам. В Enter вы можете купить что угодно, когда угодно и любым удобным для Вас способом!';
 
 $c->redirect301['enabled'] = true;
@@ -61,7 +62,7 @@ $c->coreV2['chunk_size']   = 50;
 $c->coreV2['debug']        = false;
 
 $c->eventService['url'] = 'http://event.enter.ru/';
-$c->eventService['enabled'] = true; // FIXME
+$c->eventService['enabled'] = false; // FIXME
 $c->eventService['timeout'] = 0.2 * 2;
 $c->eventService['client_id'] = 'site';
 
@@ -205,9 +206,9 @@ $c->fileStorage = [
 $c->connectTerminal = true;
 
 $c->company['phone'] = '+7 (495) 135-10-70';
-$c->company['moscowPhone'] = '+7 (495) 775-00-06';
-$c->company['spbPhone'] = '+7 (812) 703-77-30';
-$c->company['icq'] = '648198963';
+//$c->company['moscowPhone'] = '+7 (495) 775-00-06';
+//$c->company['spbPhone'] = '+7 (812) 703-77-30';
+//$c->company['icq'] = '648198963';
 
 $c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
