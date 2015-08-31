@@ -17,7 +17,7 @@ $c->templateDir = $c->appDir . '/lite/template';
 // project Lite
 $c->lite['enabled'] = true;
 $c->feedback['enabled'] = true;
-$c->feedback['email'] = 'feedback@isalezz.com';
+$c->feedback['email'] = 'feedback@wallashop.com';
 
 $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
