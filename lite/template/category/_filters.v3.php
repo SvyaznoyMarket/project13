@@ -33,8 +33,8 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
     if (0 == $countInListFilters) return;
     ?>
 
-    <div class="filter filter-options fltr">
-        <form id="productCatalog-filter-form" class="fltrSet js-category-filter" action="<?= $baseUrl ?>" method="GET">
+    <div class="filter filter-components fltr">
+        <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" method="GET">
             <? // Для IE9 (чтобы он отправлял форму при нажатии на клавишу enter в текстовом поле ввода) ?>
             <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
 
@@ -52,45 +52,80 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
                 </div>
             <? endforeach ?>
 
-            <? if ($priceFilter && $productFilter): ?>
-                <div class="flrtBox">
-                    <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
-                </div>
-            <? endif ?>
+            <!-- фильтр по цене -->
+            <div class="fltrBtn_kit fltrBtn_kit-box">
+                <div class="filter-price">
+                    <div class="fltrBtnBox js-category-v2-filter-dropBox js-category-v2-filter-dropBox-price">
+                        <div class="fltrBtnBox_tggl icon-corder js-category-v2-filter-dropBox-opener">
+                            <span class="fltrBtnBox_tggl_tx dotted">Цена</span>
+                        </div>
 
-            <? if ($otherFilters): ?>
-                <div class="fltrSet_tggl <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton">
-                    <span class="fltrSet_tggl_tx">Ещё параметры</span>
-                </div>
-            <? endif ?>
+                        <div class="fltrBtnBox_dd fltrBtnBox_dd-l">
+                            <ul class="fltrBtnBox_dd_inn lstdotted js-category-v2-filter-dropBox-content">
+                                <li class="lstdotted_i">
+                                    <a class="dotted js-category-v2-filter-price-link" href="/catalog/electronics/telefoni-897?f-price-to=12800">
+                                        <span class="txmark1">до</span> 12&thinsp;800
+                                    </a>
+                                </li>
 
-            <div class="fltrSet_cnt js-category-filter-otherParams">
-                <!-- Фильтр по выбранным параметрам -->
-                <div class="filter-content js-category-filter-otherParamsContent">
-                    <!-- Список названий параметров -->
-                    <ul class="filter-params">
-                        <? foreach ($otherFilters as $i => $filter): ?>
-                            <? $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId()); ?>
-                            <li class="filter-params__item<? if (0 == $i): ?> mActive<? endif ?> js-category-filter-param" data-ref="<?= $viewId ?>">
-                                <span class="filter-params__text"><?= $filter->getName() ?></span>
-                            </li>
-                        <? endforeach ?>
-                    </ul>
-                    <!-- /Список названий параметров -->
+                                <li class="lstdotted_i">
+                                    <a class="dotted js-category-v2-filter-price-link" href="/catalog/electronics/telefoni-897?f-price-from=12801&amp;f-price-to=25200">
+                                        <span class="txmark1">от</span> 12&thinsp;801
+                                        <span class="txmark1">до</span> 25&thinsp;200
+                                    </a>
+                                </li>
 
-                    <!-- Список значений параметров -->
-                    <div class="filter-values">
-                        <? foreach ($otherFilters as $i => $filter): ?>
-                            <div class="filter-values__inner<? if ($i > 0): ?> hf<? endif ?><? if (in_array($filter->getId(), ['shop', 'category'])): ?> mLineItem<? endif ?> js-category-filter-element" id="<?= \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId()) ?>">
-                                <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $filter]) ?>
-                            </div>
-                        <? endforeach ?>
+                                <li class="lstdotted_i">
+                                    <a class="dotted js-category-v2-filter-price-link" href="/catalog/electronics/telefoni-897?f-price-from=50001">
+                                        <span class="txmark1">от</span> 50&thinsp;001
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    <!-- /Список значений параметров -->
-                </div>
-                <!-- /Фильтр по выбранным параметрам -->
 
-                <?= $helper->render('category/filters/selected.filters', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
+                    <? if ($priceFilter && $productFilter): ?>
+                        <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
+                    <? endif ?>
+                </div>
+            </div>
+            <!--/ фильтр по цене -->
+            
+            <div class="fltrSet">
+                <? if ($otherFilters): ?>
+                    <div class="fltrSet_tggl <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton">
+                        <span class="fltrSet_tggl_tx">Ещё параметры</span>
+                    </div>
+                <? endif ?>
+
+                <div class="fltrSet_cnt js-category-filter-otherParams">
+                    <!-- Фильтр по выбранным параметрам -->
+                    <div class="filter-content js-category-filter-otherParamsContent">
+                        <!-- Список названий параметров -->
+                        <ul class="filter-params">
+                            <? foreach ($otherFilters as $i => $filter): ?>
+                                <? $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId()); ?>
+                                <li class="filter-params__item<? if (0 == $i): ?> mActive<? endif ?> js-category-filter-param" data-ref="<?= $viewId ?>">
+                                    <span class="filter-params__text"><?= $filter->getName() ?></span>
+                                </li>
+                            <? endforeach ?>
+                        </ul>
+                        <!-- /Список названий параметров -->
+
+                        <!-- Список значений параметров -->
+                        <div class="filter-values">
+                            <? foreach ($otherFilters as $i => $filter): ?>
+                                <div class="filter-values__inner<? if ($i > 0): ?> hf<? endif ?><? if (in_array($filter->getId(), ['shop', 'category'])): ?> mLineItem<? endif ?> js-category-filter-element" id="<?= \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId()) ?>">
+                                    <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $filter]) ?>
+                                </div>
+                            <? endforeach ?>
+                        </div>
+                        <!-- /Список значений параметров -->
+                    </div>
+                    <!-- /Фильтр по выбранным параметрам -->
+
+                    <?= $helper->render('category/filters/selected.filters', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
+                </div>
             </div>
         </form>
     </div>
