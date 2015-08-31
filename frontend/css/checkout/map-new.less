@@ -68,23 +68,35 @@
                 background: @orange-light-4;
             }
         }
-        &:not(.no-hidden):hover {
-            .delivery-points-list__info {
-                padding-top: 0;
+        // &:not(.no-hidden):hover {
+        //     .delivery-points-list__info {
+        //         padding-top: 0;
 
-                vertical-align: middle;
-                &-btn {
-                    display: block;
-                }
-                &-hidden {
-                    display: none;
-                }
-            }
-        }
+        //         vertical-align: middle;
+        //         &-btn {
+        //             display: block;
+        //         }
+        //         &-hidden {
+        //             display: none;
+        //         }
+        //     }
+        // }
         &.no-hidden {
             .delivery-points-list__info {
-                vertical-align: middle;
+                vertical-align: top;
             }
+        }
+    }
+    &_on-map {
+        font-size: 12px;
+        .delivery-points-list__address-name {
+            font-size: 12px;
+        }
+        .delivery-points-list__address-metro {
+            font-size: 14px;
+        }
+        .btn-primary {
+            font-size: 14px;
         }
     }
     &__name {
@@ -394,6 +406,20 @@
     }
 }
 
+.delivery-points-map {
+    .btn-primary {
+        font-size: 14px;
+    }
+    .delivery-points-list__row:hover .table-cell {
+        background: @white;
+    }
+    .delivery-points-list__logo {
+        padding-left: 0;
+    }
+    .delivery-points-list__info {
+        padding: 0;
+    }
+}
 
 ymaps[class$='-balloon__content'] {
     height: 100% !important;

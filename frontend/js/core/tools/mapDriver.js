@@ -26,20 +26,21 @@
 
         var
             BALLOON_TEMPLATE =
-                '<table class="pick-point-list"><tbody><tr class="pick-point-item clearfix" ><td class="pick-point-item__logo">'+
-                '<img src="{{ icon }}" class="pick-point-item__img" >'+
-                '<span class="pick-point-item__name">{{ listName }}</span>'+
-                '</td><td class="pick-point-item__addr">'+
+                '<div class="delivery-points-map"><table class="delivery-points-list delivery-points-list_on-map"><tbody><tr class="delivery-points-list__row" ><td class="delivery-points-list__logo">'+
+                '<img src="{{ icon }}" class="delivery-points-list__img" >'+
+                '<span class="delivery-points-list__name">{{ listName }}</span>'+
+                '</td><td class="delivery-points-list__address">'+
                 '{{# subway }}' +
-                '<div class="pick-point-item__metro" style="background: {{ subway.line.color }};">'+
-                '<div class="pick-point-item__metro-inn">{{ subway.name }}</div></div>'+
+                '<div class="delivery-points-list__address-metro" style="background: {{ subway.line.color }};">'+
+                '<div class="delivery-points-list__address-metro__inn">{{ subway.name }}</div></div>'+
                 '{{/ subway }}'+
-                '<div class="pick-point-item__addr-name">{{ address }}</div>'+
-                '<div class="pick-point-item__time">{{ regtime }}</div></td>'+
-                '<td class="pick-point-item__info pick-point-item__info--nobtn">'+
-                '<div class="pick-point-item__date" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
-                '<div class="pick-point-item__price"><span >{{ humanCost }}</span> {{# showRubles }}<span class="rubl">p</span></div>{{/ showRubles }}'+
-                '</td></tr></tbody></table>',
+                '<div class="delivery-points-list__address-name">{{ address }}</div>'+
+                '<div class="delivery-points-list__address-time">{{ regtime }}</div></td>'+
+                '<td class="delivery-points-list__info no-hidden">'+
+                '<div class="delivery-points-list__info-date" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
+                '<div class="delivery-points-list__info-price"><span >{{ humanCost }}</span>{{# showRubles }}&thinsp;<span class="rubl">C</span>{{/ showRubles }}'+
+                '</div></td></tr></tbody></table>'+
+                '<div class="btn-container"><button class="btn-primary btn-primary_middle">Выбрать</button></div></div>',
 
             /**
              * @classdesc   Конструктор карты с точками
