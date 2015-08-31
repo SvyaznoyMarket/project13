@@ -44,7 +44,7 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
                         <span class="fltrSet_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>
                     </div>
 
-                    <div class="fltrSet_cnt js-category-filter-toggle-content" <? if (!$filter->isOpenByDefault): ?>style="display: none;"<? endif ?>>
+                    <div class="fltrSet_cnt js-category-filter-toggle-content <? if (!$filter->isOpenByDefault): ?>open<? endif ?>">
                         <div class="fltrSet_inn">
                             <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $filter]) ?>
                         </div>
@@ -61,7 +61,7 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
             <? if ($otherFilters): ?>
                 <div class="fltrSet_tggl <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton">
                     <span class="fltrSet_tggl_tx">Ещё параметры</span>
-                </div>            
+                </div>
             <? endif ?>
 
             <div class="fltrSet_cnt js-category-filter-otherParams">

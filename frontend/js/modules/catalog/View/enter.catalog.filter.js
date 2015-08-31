@@ -48,6 +48,8 @@
                 BRANDS: 'js-category-filter-otherBrands',
                 BRANDS_OPENER: 'js-category-filter-otherBrandsOpener',
                 BRANDS_OPEN: 'open',
+                OTHER_PARAMS_TOGGLE: 'js-category-filter-otherParamsToggleButton',
+                OTHER_PARAMS_CONTAINER: '',
                 CLEAR_FILTER: 'js-filter-clear'
             };
 
@@ -67,9 +69,10 @@
                 this.sliders.each(this.initSlider.bind(this));
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.DROPDOWN_OPENER] = 'toggleDropdown';
-                this.events['click .' + CSS_CLASSES.BRANDS_OPENER]   = 'toggleBrands';
-                this.events['click .' + CSS_CLASSES.CLEAR_FILTER]    = 'clearFilter';
+                this.events['click .' + CSS_CLASSES.DROPDOWN_OPENER]     = 'toggleDropdown';
+                this.events['click .' + CSS_CLASSES.BRANDS_OPENER]       = 'toggleBrands';
+                this.events['click .' + CSS_CLASSES.CLEAR_FILTER]        = 'clearFilter';
+                this.events['click .' + CSS_CLASSES.OTHER_PARAMS_TOGGLE] = 'toggleOtherParams';
 
                 // Apply events
                 this.delegateEvents();
@@ -83,6 +86,10 @@
              */
             events: {
                 'change': 'filterChanged'
+            },
+
+            toggleOtherParams: function() {
+                return false;
             },
 
             /**

@@ -75,7 +75,7 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl, $ca
                     <span class="fltrRange_lbl">Цена</span> <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
                 <? endif ?>
             </div>
-            
+
             <div class="fltrSet_cnt js-category-filter-otherParams">
                 <div class="filter-content js-category-filter-otherParamsContent" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
                     <ul class="filter-params">
