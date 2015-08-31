@@ -1,45 +1,32 @@
-.erro-page {
+.error-page {
     position: relative;
 
-    width: 559px;
-    min-height: 666px;
-    margin: 30px auto;
-    padding: 215px 20px 0;
+    width: 500px;
+    margin: 90px auto;
 
     background: no-repeat 50% 0 @white;
+    &__title {
+        .inline-block(middle);
+        margin-right: 30px;
+    }
     &__code {
         line-height: 1;
 
-        color: @white;
+        color: @orange-bright;
 
-        .font-size(170);
+        .font-size(120);
     }
     &__text {
         line-height: 1;
 
         margin-top: -25px;
 
-        color: @white;
+        color: @orange-bright;
 
-        .font-size(52);
+        .font-size(21);
         .font-face('GloberRegular');
     }
     &__continue {
-        position: absolute;
-        right: 0;
-        bottom: 25px;
-    }
-    &_500 {
-        padding: 206px 20px 0;
-        .erro-page__code {
-            .font-size(130);
-        }
-        .erro-page__text {
-            line-height: 1.2;
-
-            margin-top: -15px;
-
-            .font-size(24);
-        }
+        .inline-block(middle);
     }
 }
