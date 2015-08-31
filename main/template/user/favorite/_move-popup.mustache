@@ -1,0 +1,18 @@
+<div id="move-popup" class="personal-popup">
+    <div class="popup-closer"></div>
+    <div class="personal-popup__head">Выберите список</div>
+    <div class="personal-popup__content">
+        <form action="{{form.url}}" method="post">
+            <input type="hidden" name="wishlist[productUis]" data-field="productUis" value="{{productUis}}" />
+
+            <div class="custom-select">
+                <select class="custom-select__inn" name="wishlist[id]">
+                {{#wishlists}}
+                    <option class="custom-select__i" value="{{id}}">{{title}}</option>
+                {{/wishlists}}
+                </select>
+            </div>
+            <button type="submit" class="btn btn--default">Сохранить</button>
+        </form>
+    </div>
+</div>

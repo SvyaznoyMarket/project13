@@ -54,8 +54,36 @@
 }());
 ;(function($) {
     var
-        $body = $('body')
+        $body = $('body'),
+        $mainContainer = $('#personal-container'),
+        $createPopupTemplate = $('#tpl-favorite-createPopup'),
+        $movePopupTemplate = $('#tpl-favorite-movePopup'),
+        $deletePopupTemplate = $('#tpl-favorite-deletePopup'),
+        $shareProductPopupTemplate = $('#tpl-favorite-shareProductPopup'),
+
+        showPopup = function(selector) {
+            $('body').append('<div class="overlay"></div>');
+            $('.overlay').data('popup', selector).show();
+            $(selector).show();
+        },
+
+        hidePopup = function(selector) {
+            $(selector).remove();
+            $('.overlay').remove();
+        },
+
+        shareLink = function(url) {
+            // TODO
+        }
     ;
+
+    $body.on('click', '.overlay',function() {
+        var selector = $(this).data('popup');
+        hidePopup(selector);
+    });
+    $body.on('click', '.popup-closer', function() {
+        hidePopup('#' + $(this).parent().attr('id'))
+    });
 
     $body.on('click', '.personal-favorit__price-change', function() {
         $(this).toggleClass('on');
@@ -63,18 +91,7 @@
     $body.on('click', '.personal-favorit__stock', function() {
         $(this).toggleClass('on');
     });
-    $body.on('click', '.js-fav-popup-show', 'click',function() {
-        var popup = $(this).data('popup');
 
-        $('body').append('<div class="overlay"></div>');
-        $('.overlay').data('popup', popup).show();
-        $('.'+popup).show();
-    });
-    $body.on('click', '.overlay',function() {
-        var popup = $(this).data('popup');
-        $('.' + popup).hide();
-        $('.overlay').remove();
-    });
     $body.on('change', '.js-fav-all', function() {
 
         var
@@ -86,18 +103,31 @@
             $(this).attr('checked', val);
         });
     });
-    $body.on('click', '.popup-closer', function() {
-        $(this).parent().hide();
-        $('.overlay').remove();
-    });
 
-    $body.on('click', '.js-favorite-showMovePopup', function() {
+    // создать список
+    $body.on('click', '.js-favorite-createPopup', function() {
         var
             $el = $(this),
-            data = $el.data('action'),
+            data = $el.data(),
+            templateValue = data.value
+        ;
+
+        try {
+            $popup = $(Mustache.render($createPopupTemplate.html(), templateValue)).appendTo($mainContainer);
+            showPopup('#' + $popup.attr('id'));
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    // перенести товары в список
+    $body.on('click', '.js-favorite-movePopup', function() {
+        var
+            $el = $(this),
+            $popup,
+            data = $el.data(),
             $container = data.container && $(data.container),
-            $target = data.target && $(data.target),
-            $productInputs,
+            templateValue = data.value,
             productUis = []
         ;
 
@@ -107,22 +137,95 @@
             }
             $productInputs = $container.find('input[data-type="product"]:checked');
             if (!$productInputs.length) {
-                throw {name: 'Товары не выбраны'};
+                throw {name: 'Товары не выбраны', code: 'empty-product'};
             }
             $productInputs.each(function(i, el) {
                 productUis.push($(el).val());
             });
+            templateValue.productUis = productUis.join(',');
 
-            if (!$target.length) {
-                throw {name: 'Целевой элемент не найден'};
+            $popup = $(Mustache.render($movePopupTemplate.html(), templateValue)).appendTo($mainContainer);
+            showPopup('#' + $popup.attr('id'));
+        } catch (error) {
+            if ('empty-product' === error.code) {
+                showPopup('#message-popup');
             }
-            $formInput = $target.find('input[data-field=productUis]');
-            if (!$formInput.length) {
-                throw {name: 'Инпут формы не найден'};
-            }
-            $formInput.val(productUis.join(','));
-        } catch (error) { console.error(error); }
+
+            console.error(error);
+        }
     });
+
+    // удалить товары из списка
+    $body.on('click', '.js-favorite-deletePopup', function() {
+        var
+            $el = $(this),
+            $popup,
+            data = $el.data(),
+            $container = data.container && $(data.container),
+            templateValue = data.value,
+            productUis = []
+        ;
+
+        try {
+            if (!$container.length) {
+                throw {name: 'Контейнер не найден'};
+            }
+            $productInputs = $container.find('input[data-type="product"]:checked');
+            if (!$productInputs.length) {
+                throw {name: 'Товары не выбраны', code: 'empty-product'};
+            }
+            $productInputs.each(function(i, el) {
+                productUis.push($(el).val());
+            });
+            templateValue.productUis = productUis.join(',');
+
+            $popup = $(Mustache.render($deletePopupTemplate.html(), templateValue)).appendTo($mainContainer);
+            showPopup('#' + $popup.attr('id'));
+        } catch (error) {
+            if ('empty-product' === error.code) {
+                showPopup('#message-popup');
+            }
+
+            console.error(error);
+        }
+    });
+
+    // поделится списком
+    $body.on('click', '.js-favorite-shareProductPopup', function() {
+        var
+            $el = $(this),
+            $popup,
+            data = $el.data(),
+            $container = data.container && $(data.container),
+            templateValue = data.value,
+            productUis = []
+        ;
+
+        try {
+            if (!$container.length) {
+                throw {name: 'Контейнер не найден'};
+            }
+            $productInputs = $container.find('input[data-type="product"]:checked');
+            if (!$productInputs.length) {
+                throw {name: 'Товары не выбраны', code: 'empty-product'};
+            }
+            $productInputs.each(function(i, el) {
+                productUis.push($(el).val());
+            });
+            templateValue.productUis = productUis.join(',');
+            templateValue.countMessage = productUis.length + ' ' + ENTER.utils.numberChoice(productUis.length, ['товаром', 'товарами', 'товарами'])
+
+            $popup = $(Mustache.render($shareProductPopupTemplate.html(), templateValue)).appendTo($mainContainer);
+            showPopup('#' + $popup.attr('id'));
+        } catch (error) {
+            if ('empty-product' === error.code) {
+                showPopup('#message-popup');
+            }
+
+            console.error(error);
+        }
+    });
+
 
 }(jQuery));
 /**

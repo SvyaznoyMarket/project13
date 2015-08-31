@@ -909,11 +909,9 @@ return [
         'method'  => ['POST'],
     ],
     'wishlist.deleteProduct' => [
-        'pattern' => '/wishlist/delete-product/{productUi}',
-        'action'  => ['Wishlist\DeleteAction', 'execute'],
-        'require' => [
-            'productUi' => '[\w\d-_]+',
-        ],
+        'pattern' => '/wishlist/delete-product',
+        'action'  => ['Wishlist\DeleteProductAction', 'execute'],
+        'method'  => ['POST'],
     ],
 
     'compare' => [

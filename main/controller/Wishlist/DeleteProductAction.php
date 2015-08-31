@@ -4,7 +4,7 @@ namespace Controller\Wishlist;
 
 use EnterQuery as Query;
 
-class AddProductAction {
+class DeleteProductAction {
     use \EnterApplication\CurlTrait;
 
     /**
@@ -48,7 +48,7 @@ class AddProductAction {
             /** @var Query\User\Wishlist\AddProduct[] $addQueries */
             $addQueries = [];
             foreach ($formData['productUis'] as $productUi) {
-                $addQuery = new Query\User\Wishlist\AddProduct();
+                $addQuery = new Query\User\Wishlist\DeleteProduct();
                 $addQuery->userUi = $userEntity->getUi();
                 $addQuery->data['id'] = $formData['id'];
                 $addQuery->data['productUi'] = $productUi;

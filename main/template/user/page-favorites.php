@@ -3,7 +3,8 @@
  * @var $page                 \View\User\OrdersPage
  * @var $helper               \Helper\TemplateHelper
  * @var $user                 \Session\User
- * @var $products             \Model\Product\Entity[]
+ * @var $productsByUi         \Model\Product\Entity[]
+ * @var $product              \Model\Product\Entity|null
  * @var $favoriteProductsByUi \Model\Favorite\Product\Entity[]
  */
 ?>
@@ -13,14 +14,15 @@
     <div class="personalTitle">Избранное</div>
 
     <div class="table-favorites table table--border-cell-hor">
-        <? if (!$products): ?>
+        <? if (!$favoriteProductsByUi): ?>
             У вас нет избранных товаров
         <? endif ?>
 
-        <? foreach ($products as $product): ?>
-            <?
+        <? foreach ($favoriteProductsByUi as $favoriteProduct): ?>
+        <?
+            if (!$product = @$productsByUi[$favoriteProduct->ui]) continue;
             $rowId = 'id-favoriteRow-' . $product->getUi() ?: uniqid();
-            ?>
+        ?>
 
             <div class="table-row <?= $rowId ?>">
                 <div class="table-favorites__cell-left table-cell">

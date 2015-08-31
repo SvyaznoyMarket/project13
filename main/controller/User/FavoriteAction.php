@@ -27,31 +27,42 @@ class FavoriteAction extends PrivateAction {
 
         $curl->execute();
 
+        $productUis = [];
         $favoriteProductsByUi = [];
         foreach ($favoriteListQuery->response->products as $item) {
             $ui = isset($item['uid']) ? (string)$item['uid'] : null;
             if (!$ui) continue;
 
             $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
+            $productUis[] = $ui;
         }
 
         $wishlists = [];
         foreach ($wishlistListQuery->response->wishlists as $item) {
             if (!@$item['id']) continue;
 
-            $wishlists[] = new \Model\Wishlist\Entity($item);
+            $wishlist = new \Model\Wishlist\Entity($item);
+            $wishlists[] = $wishlist;
+            foreach ($wishlist->products as $product) {
+                $productUis[] = $product->ui;
+            }
         }
 
-        /** @var \Model\Product\Entity[] $products */
-        $products = [];
-        if ($favoriteProductsByUi) {
-            $products = array_map(function($productUi) { return new \Model\Product\Entity(['ui' => $productUi]); }, array_keys($favoriteProductsByUi));
-            \RepositoryManager::product()->prepareProductQueries($products, 'media');
-            \App::coreClientV2()->execute();
+        $productUis = array_unique($productUis);
+
+        /** @var \Model\Product\Entity[] $productsByUi */
+        $productsByUi = [];
+        if ($productUis) {
+            foreach ($productUis as $productUi) {
+                $productsByUi[$productUi] = new \Model\Product\Entity(['ui' => $productUi]);
+            }
+            \RepositoryManager::product()->prepareProductQueries($productsByUi, 'media');
         }
+
+        \App::coreClientV2()->execute();
 
         $page = new \View\User\FavoritesPage();
-        $page->setParam('products', $products);
+        $page->setParam('productsByUi', $productsByUi);
         $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
         $page->setParam('wishlists', $wishlists);
 
