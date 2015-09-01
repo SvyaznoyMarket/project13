@@ -139,8 +139,10 @@
 
             <div class="delivery-points-list__info table-cell">
                 <div class="delivery-points-list__info-hidden">
-                    <div class="delivery-points-list__info-date">{{humanNearestDay}}</div>
-                    <div class="delivery-points-list__info-price"><span>{{humanCost}}</span>{{#showCurrency}}&thinsp;<span class="rubl">C</span>{{/showCurrency}}</div>
+                    {{^productInShowroom}}
+                        <div class="delivery-points-list__info-date">{{humanNearestDay}}</div>
+                        <div class="delivery-points-list__info-price"><span>{{humanCost}}</span>{{#showCurrency}}&thinsp;<span class="rubl">C</span>{{/showCurrency}}</div>
+                    {{/productInShowroom}}
                 </div>
 
                 {{#showBuyButton}}
@@ -150,7 +152,7 @@
                 {{/showBuyButton}}
 
                 {{#productInShowroom}}
-                <div class="delivery-points-list__info table-cell">
+                <div class="delivery-points-list__info-hidden">
                     <span class="delivery-points-list__info-price">На витрине</span>
                     <!-- попап-подсказка с описание пункта самовывоза -->
                     <div class="delivery-points-info delivery-points-info_inline">
@@ -160,8 +162,9 @@
                             Чтобы купить товар с витрины,<br>нужно приехать в магазин и обратиться к продавцу.
                         </div>
                     </div>
-                    <!--/ попап-подсказка с описание пункта самовывоза -->
                 </div>
+                <!--/ попап-подсказка с описание пункта самовывоза -->
+
                 {{/productInShowroom}}
             </div>
         </div>
