@@ -41,6 +41,7 @@
                 DROPDOWN_OPEN: 'opn',
                 DROPDOWN_ACTIVE: 'actv',
                 RANGE_SLIDER: 'js-category-filter-rangeSlider',
+                RANGE_SLIDER_PRICE: 'js-category-filter-rangeSlider-price',
                 SLIDER: 'js-category-filter-rangeSlider-slider',
                 SLIDER_FROM: 'js-category-filter-rangeSlider-from',
                 SLIDER_TO: 'js-category-filter-rangeSlider-to',
@@ -52,7 +53,8 @@
                 FILTER_GROUP_NAME: 'js-category-filter-param',
                 FILTER_GROUP_NAME_ACTIVE: 'mActive',
                 FILTER_GROUP: 'js-category-filter-group',
-                FILTER_GROUP_HIDE: 'hf'
+                FILTER_GROUP_HIDE: 'hf',
+                SILECT_PRICE_RANGE: 'js-filter-select-price-range'
             };
 
         provide(BaseViewClass.extend({
@@ -68,18 +70,20 @@
                 this.sliders     = this.$el.find('.' + CSS_CLASSES.RANGE_SLIDER);
                 this.brands      = this.$el.find('.' + CSS_CLASSES.BRANDS);
 
-                this.sliders.each(this.initSlider.bind(this));
-
                 this.subViews = {
                     filterGroups: this.$el.find('.' + CSS_CLASSES.FILTER_GROUP),
-                    filterGroupsName: this.$el.find('.' + CSS_CLASSES.FILTER_GROUP_NAME)
+                    filterGroupsName: this.$el.find('.' + CSS_CLASSES.FILTER_GROUP_NAME),
+                    dropDowns: this.$el.find('.' + CSS_CLASSES.DROPDOWN)
                 };
 
+                this.sliders.each(this.initSlider.bind(this));
+
                 // Setup events
-                this.events['click .' + CSS_CLASSES.DROPDOWN_OPENER]     = 'toggleDropdown';
-                this.events['click .' + CSS_CLASSES.BRANDS_OPENER]       = 'toggleBrands';
-                this.events['click .' + CSS_CLASSES.CLEAR_FILTER]        = 'clearFilter';
-                this.events['click .' + CSS_CLASSES.FILTER_GROUP_NAME]   = 'selectFilterGroup';
+                this.events['click .' + CSS_CLASSES.DROPDOWN_OPENER]    = 'toggleDropdown';
+                this.events['click .' + CSS_CLASSES.BRANDS_OPENER]      = 'toggleBrands';
+                this.events['click .' + CSS_CLASSES.CLEAR_FILTER]       = 'clearFilter';
+                this.events['click .' + CSS_CLASSES.FILTER_GROUP_NAME]  = 'selectFilterGroup';
+                this.events['click .' + CSS_CLASSES.SILECT_PRICE_RANGE] = 'selectPriceRange';
 
                 // Apply events
                 this.delegateEvents();
@@ -93,6 +97,35 @@
              */
             events: {
                 'change': 'filterChanged'
+            },
+
+            selectPriceRange: function( event ) {
+                var
+                    target     = $(event.currentTarget),
+                    from       = target.attr('data-from'),
+                    to         = target.attr('data-to'),
+                    slider     = this.subViews.priceSlider,
+                    sliderWrap, fromVal, toVal, config;
+
+                if ( !slider ) {
+                    return false;
+                }
+
+                sliderWrap = slider.find('.' + CSS_CLASSES.SLIDER);
+                fromVal    = slider.find('.' + CSS_CLASSES.SLIDER_FROM);
+                toVal      = slider.find('.' + CSS_CLASSES.SLIDER_TO);
+                config     = sliderWrap.data('config');
+
+                from = ( from < config.min ) ? config.min : from;
+                to   = ( to > config.max ) ? config.max : to;
+
+                fromVal.val(from);
+                sliderWrap.slider('values', 0, from);
+
+                toVal.val(to);
+                sliderWrap.slider('values', 1, to);
+
+                return false;
             },
 
             selectFilterGroup: function( event ) {
@@ -257,6 +290,7 @@
                     tickPercentage = [20, 40, 60, 80],
 
                     slider         = $(element),
+                    isPrice        = slider.hasClass(CSS_CLASSES.RANGE_SLIDER_PRICE),
                     sliderWrap     = slider.find('.' + CSS_CLASSES.SLIDER),
                     tickWrap       = slider.find('.' + CSS_CLASSES.SLIDER_TICK),
                     config         = sliderWrap.data('config'),
@@ -303,6 +337,10 @@
 
                 fromVal.change(setSliderValues);
                 toVal.change(setSliderValues);
+
+                if ( isPrice ) {
+                    this.subViews.priceSlider = slider;
+                }
 
                 if ( !tickWrap.length ) {
                     return;
@@ -406,6 +444,7 @@
                         $(input).val('');
                     };
 
+                this.subViews.dropDowns.removeClass(CSS_CLASSES.DROPDOWN_ACTIVE);
                 this.$el.find(':input:radio:checked').each(resetRadio.bind(this));
                 this.$el.find(':input:checkbox:checked').each(resetCheckbox.bind(this));
                 this.$el.find(':input:text:not(.js-category-filter-rangeSlider-from):not(.js-category-filter-rangeSlider-to)').each(resetText.bind(this));
@@ -427,20 +466,31 @@
 
                     updateInput = {
                         'text': function( input, val ) {
+                            var
+                                dropdown = input.parents('.' + CSS_CLASSES.DROPDOWN);
+
                             input.val(val);
+                            dropdown.addClass(CSS_CLASSES.DROPDOWN_ACTIVE);
                         },
 
                         'radio': function( input, val ) {
                             var
-                                target = input.filter('[value="'+val+'"]'),
-                                id     = target.attr('id'),
-                                label  = self.$el.find('label[for="'+id+'"]');
+                                target   = input.filter('[value="'+val+'"]'),
+                                dropdown = target.parents('.' + CSS_CLASSES.DROPDOWN),
+                                id       = target.attr('id'),
+                                label    = self.$el.find('label[for="'+id+'"]');
 
                             target.prop('checked', true);
+                            dropdown.addClass(CSS_CLASSES.DROPDOWN_ACTIVE);
                         },
 
                         'checkbox': function( input, val ) {
-                            input.filter('[value="'+val+'"]').prop('checked', true);
+                            var
+                                target   = input.filter('[value="'+val+'"]'),
+                                dropdown = target.parents('.' + CSS_CLASSES.DROPDOWN);
+
+                            target.prop('checked', true);
+                            dropdown.addClass(CSS_CLASSES.DROPDOWN_ACTIVE);
                         }
                     };
 

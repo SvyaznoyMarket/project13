@@ -71,21 +71,27 @@ return function (
 
                                 <div class="goods__price-now"><span data-bind="html: price"></span>&thinsp;<span class="rubl">C</span></div>
 
-                                <a href="" class="goods__btn btn-primary js-buy-button "
-                                   data-bind="attr: {
-                                    'data-product-id': id,
-                                    'data-product-ui': ui,
-                                    'data-product-article': article,
-                                    'data-product-url': link,
-                                    'data-in-shop-stock-only': inShopStockOnly ? 'true' : 'false',
-                                    'data-in-shop-showroom-only': inShopShowroomOnly ? 'true' : 'false',
-                                    'data-is-buyable': isBuyable ? 'true' : 'false',
-                                    'data-status-id': statusId, 'data-upsale': upsale,
-                                    'data-full': 1, 'data-partner-name': partnerName,
-                                    'data-partner-offer-url': partnerOfferUrl,
-                                    'data-is-slot': isSlot,
-                                    'data-sender': typeof sender != 'undefined' ? sender : '',
-                                   }">Купить</a>
+                                <!-- ko if: isBuyable -->
+                                    <a href="" class="goods__btn btn-primary "
+                                       data-bind="
+                                        css: {'btn-set js-buy-slot-button': isSlot, 'js-buy-button': !isSlot},
+                                        text: isSlot ? 'Отправить заявку' : 'Купить',
+                                        attr: {
+                                            'data-product-id': id,
+                                            'data-product-ui': ui,
+                                            'data-product-article': article,
+                                            'data-product-url': link,
+                                            'data-in-shop-stock-only': inShopStockOnly ? 'true' : 'false',
+                                            'data-in-shop-showroom-only': inShopShowroomOnly ? 'true' : 'false',
+                                            'data-is-buyable': isBuyable ? 'true' : 'false',
+                                            'data-status-id': statusId, 'data-upsale': upsale,
+                                            'data-full': 1, 'data-partner-name': partnerName,
+                                            'data-partner-offer-url': partnerOfferUrl,
+                                            'data-is-slot': isSlot,
+                                            'data-sender': typeof sender != 'undefined' ? sender : '',
+                                        }
+                                       ">Купить</a>
+                                <!-- /ko -->
                             </div>
                         </td>
                         <!-- /ko -->
