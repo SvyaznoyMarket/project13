@@ -154,6 +154,30 @@
     }
 }
 
+.loader-fixed {
+    position: relative;
+    &:after {
+        position: fixed;
+        z-index: 999;
+        top: 0;
+        right: 0;
+        left: 0;
+        left: 0;
+
+        overflow: hidden;
+
+        width: 100%;
+        height: 100%;
+
+        content: '';
+
+        background: url('@{base-url}/loader.gif') no-repeat 50% 50% @white;
+
+        .opacity(.75);
+    }
+}
+
+
 .loader {
     position: relative;
 
