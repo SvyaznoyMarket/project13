@@ -3,6 +3,7 @@
 namespace Controller\User;
 
 use EnterApplication\CurlTrait;
+use Exception\NotFoundException;
 use Session\AbTest\ABHelperTrait;
 use \Model\Session\FavouriteProduct;
 use Controller\Enterprize\ConfirmAction;
@@ -64,6 +65,10 @@ class Action {
      */
     public function login(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
+
+        if (\App::config()->lite['enabled']) {
+            throw new NotFoundException();
+        }
 
         $checkRedirect = $this->checkRedirect($request);
         if ($checkRedirect) return $checkRedirect;
