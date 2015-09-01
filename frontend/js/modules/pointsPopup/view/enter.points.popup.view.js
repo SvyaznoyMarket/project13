@@ -12,13 +12,14 @@
         [
             'jQuery',
             'enter.ui.BasePopup',
+            'jquery.ui',
             'Mustache'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BasePopup, mustache ) {
+    function( provide, $, BasePopup, jQueryUI, mustache ) {
         'use strict';
 
         var
@@ -77,6 +78,7 @@
              */
             initialize: function( options ) {
                 var
+                    self      = this,
                     uniqIndex = 'ORDER_POPUP_' + (index++);
 
                 console.info('module:enter.points.popup.view~PointsPopup#initialize');
@@ -99,11 +101,24 @@
                     dropdowns: this.$el.find('.' + CSS_CLASSES.POINT_OPENER)
                 };
 
+                this.subViews.searchInput.autocomplete({
+                    source: this.searchAddress.bind(this),
+                    minLength: 2,
+                    select: this.selectAutocompleteItem.bind(this),
+                    appendTo: this.subViews.autocomplete,
+                    open: function() {
+                        console.log('open');
+                        self.subViews.filterOverlay.show();
+                        self.subViews.autocomplete.show();
+                    },
+                    close: function() {}
+                });
+
                 // Setup events
                 this.events['click .' + CSS_CLASSES.PICK_POINT]               = 'pickPoint';
-                this.events['keyup .' + CSS_CLASSES.SEARCH]                   = 'searchAddress';
+                // this.events['keyup .' + CSS_CLASSES.SEARCH]                   = 'searchAddress';
                 this.events['click .' + CSS_CLASSES.POINT_OPENER]             = 'openPointsFilter';
-                this.events['click .' + CSS_CLASSES.AUTOCOMPLETE_ITEM]        = 'selectAutocompleteItem';
+                // this.events['click .' + CSS_CLASSES.AUTOCOMPLETE_ITEM]        = 'selectAutocompleteItem';
                 this.events['change .' + CSS_CLASSES.POINT_FILTER_PARAM]      = 'applyFilter';
                 this.events['click .' + CSS_CLASSES.POINTS_BALOON_CHOOSE_BTN] = 'pickPoint';
 
@@ -117,7 +132,7 @@
 
             events: {},
 
-            /**
+             /**
              * Выбор адреса из автокомлита
              *
              * @method      selectAutocompleteItem
@@ -125,15 +140,14 @@
              *
              * @param       {Object}    event
              */
-            selectAutocompleteItem: function( event ) {
-                var
-                    target = $(event.currentTarget),
-                    bounds = target.data('bounds');
+            selectAutocompleteItem: function( event, ui ) {
+                 var
+                    bounds = ui.item.bounds;
 
-                this.subViews.searchInput.val(target.text()),
                 this.map.setCenterAndZoom(bounds);
                 this.subViews.autocomplete.hide();
-                this.subViews.autocompleteWrapper.empty();
+
+                return false;
             },
 
             /**
@@ -268,68 +282,116 @@
                 };
             }()),
 
+            searchAddress: function ( request, response ) {
+                var
+                    self       = this,
+                    address    = request.term,
+                    myGeocoder = this.map.getGeoCoder(address);
+
+                if ( address === '' ) {
+                    this.resetPoints();
+                }
+
+                myGeocoder.then(
+                    function ( res ) {
+                        var
+                            searchAutocompleteList = [],
+                            html;
+
+                        console.log(address);
+                        console.log(res.geoObjects.getLength());
+
+                        res.geoObjects.each(function( obj ) {
+                            var
+                                val = obj.properties.get('name') + ', ' + obj.properties.get('description');
+                            searchAutocompleteList.push({
+                                'value': val,
+                                'label': val,
+                                'bounds': obj.geometry.getBounds()
+                            });
+                        });
+
+                        console.log(searchAutocompleteList);
+                        response( searchAutocompleteList );
+
+                        // html = mustache.render(TEMPLATES.AUTOCOMPLETE, {bounds: searchAutocompleteList});
+
+                        // if ( res.geoObjects.getLength() > 0 ) {
+                        //     self.subViews.filterOverlay.show();
+                        //     self.subViews.autocomplete.show();
+                        //     self.subViews.autocompleteWrapper.html(html);
+                        // }
+
+                        self.delegateEvents();
+                    },
+                    function ( err ) {
+                        console.log(err);
+                    }
+                );
+            },
+
             /**
              * Поиск точек, соответствующих введенному адресу, формирование автокомплита поиска
              *
              * @method      searchAddress
              * @memberOf    module:module:enter.points.popup.view~PointsPopup#
              */
-            searchAddress: (function () {
-                var
-                    timeWindow = 500, // time in ms
-                    timeout,
+            // searchAddress: (function () {
+            //     var
+            //         timeWindow = 500, // time in ms
+            //         timeout,
 
-                    searchAddress = function ( args ) {
-                        var
-                            self       = this,
-                            address    = this.subViews.searchInput.val(),
-                            myGeocoder = this.map.getGeoCoder(address);
+            //         searchAddress = function ( args ) {
+            //             var
+            //                 self       = this,
+            //                 address    = this.subViews.searchInput.val(),
+            //                 myGeocoder = this.map.getGeoCoder(address);
 
-                        if ( address === '' ) {
-                            this.resetPoints();
-                        }
+            //             if ( address === '' ) {
+            //                 this.resetPoints();
+            //             }
 
-                        myGeocoder.then(
-                            function ( res ) {
-                                var
-                                    searchAutocompleteList = [],
-                                    html;
+            //             myGeocoder.then(
+            //                 function ( res ) {
+            //                     var
+            //                         searchAutocompleteList = [],
+            //                         html;
 
-                                res.geoObjects.each(function( obj ) {
-                                    searchAutocompleteList.push({
-                                        'name': obj.properties.get('name') + ', ' + obj.properties.get('description'),
-                                        'bounds': JSON.stringify(obj.geometry.getBounds())
-                                    });
-                                });
+            //                     res.geoObjects.each(function( obj ) {
+            //                         searchAutocompleteList.push({
+            //                             'name': obj.properties.get('name') + ', ' + obj.properties.get('description'),
+            //                             'bounds': JSON.stringify(obj.geometry.getBounds())
+            //                         });
+            //                     });
 
-                                html = mustache.render(TEMPLATES.AUTOCOMPLETE, {bounds: searchAutocompleteList});
+            //                     html = mustache.render(TEMPLATES.AUTOCOMPLETE, {bounds: searchAutocompleteList});
 
-                                if ( res.geoObjects.getLength() > 0 ) {
-                                    self.subViews.filterOverlay.show();
-                                    self.subViews.autocomplete.show();
-                                    self.subViews.autocompleteWrapper.html(html);
-                                }
+            //                     if ( res.geoObjects.getLength() > 0 ) {
+            //                         self.subViews.filterOverlay.show();
+            //                         self.subViews.autocomplete.show();
+            //                         self.subViews.autocompleteWrapper.html(html);
+            //                     }
 
-                                self.delegateEvents();
-                            },
-                            function ( err ) {
-                                console.log(err);
-                            }
-                        );
-                    };
+            //                     self.delegateEvents();
+            //                 },
+            //                 function ( err ) {
+            //                     console.log(err);
+            //                 }
+            //             );
+            //         };
 
-                return function() {
-                    var
-                        context = this,
-                        args    = arguments;
+            //     return function() {
+            //         var
+            //             context = this,
+            //             args    = arguments;
 
-                    clearTimeout(timeout);
+            //         clearTimeout(timeout);
 
-                    timeout = setTimeout(function() {
-                        searchAddress.apply(context, args);
-                    }, timeWindow);
-                };
-            }()),
+            //         timeout = setTimeout(function() {
+            //             searchAddress.apply(context, args);
+            //         }, timeWindow);
+            //     };
+            // }()),
 
             /**
              * Сброс выбранных по адресу точек
