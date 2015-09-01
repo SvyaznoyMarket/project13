@@ -42,6 +42,8 @@
 
             onLoad: function() {},
 
+            beforeOnLoad: function() {},
+
             /**
              * Показ окна
              *
@@ -53,6 +55,8 @@
             show: function() {
                 var
                     self = this;
+
+                this.beforeOnLoad();
 
                 modules.require('jquery.lightbox_me', function(){
                     self.$el.lightbox_me({

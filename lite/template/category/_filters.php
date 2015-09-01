@@ -7,9 +7,9 @@
  */
 ?>
 <? if ($category && $category->isV3()): ?>
-    <?= \App::helper()->render('category/_filters.v3', ['productFilter' => $productFilter, 'openFilter' => $openFilter, 'baseUrl' => $baseUrl]) ?>
+    <?= \App::helper()->render('category/filters/v3/_filters', ['productFilter' => $productFilter, 'openFilter' => $openFilter, 'baseUrl' => $baseUrl]) ?>
 <? elseif ($category && $category->isV2()): ?>
-    <?= \App::helper()->render('category/_filters.v2', ['productFilter' => $productFilter, 'openFilter' => $openFilter, 'baseUrl' => $baseUrl]) ?>
+    <?= \App::helper()->render('category/filters/v2/_filters', ['productFilter' => $productFilter, 'openFilter' => $openFilter, 'baseUrl' => $baseUrl]) ?>
 <? else: ?>
-    <?= \App::helper()->render('category/_filters.v1', ['productFilter' => $productFilter, 'openFilter' => $openFilter, 'baseUrl' => $baseUrl, 'categories' => $categories]) ?>
+    <?= \App::helper()->render('category/filters/v1/_filters', ['productFilter' => $productFilter, 'openFilter' => $openFilter, 'baseUrl' => $baseUrl, 'categories' => $categories]) ?>
 <? endif ?>

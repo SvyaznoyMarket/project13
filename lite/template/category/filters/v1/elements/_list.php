@@ -8,32 +8,28 @@ return function(
     $values = $productFilter->getValue($filter);
     $category = $helper->getParam('selectedCategory');
     $categoryId = $category ? $category->getId() : null;
-    ?>
 
+    $showFasets = \App::config()->sphinx['showFacets'];
+?>
 
-    <? $i = 0; foreach ($filter->getOption() as $option): ?>
+    <? foreach ($filter->getOption() as $option): ?>
         <?
         $optionId = $option->getId();
         $viewId = \View\Id::productCategoryFilter($filter->getId()) . '-option-' . $optionId;
         ?>
 
-        <div class="fltrBtn_i <? if ($option->getImageUrl()): ?>bFilterValuesCol-gbox<? endif ?>">
+        <div class="filter-values__cell">
             <input
-                class="customInput customInput-btn jsCustomRadio js-customInput <?= $filter->isBrand() ? 'js-category-filter-brand js-category-v2-filter-brand' : '' ?>"
+                class="custom-input <?= $filter->getIsMultiple() ? 'filter-check' : 'filter-radio' ?> jsCustomRadio js-customInput"
                 type="<?= $filter->getIsMultiple() ? 'checkbox' : 'radio' ?>"
                 id="<?= $viewId ?>"
                 name="<?= \View\Name::productCategoryFilter($filter, $option) ?>"
                 value="<?= $optionId ?>"
-                <? if ($filter->isBrand()) { echo 'data-name="',$option->getName(),'"'; } ?>
                 <? if (in_array($optionId, $values) || $optionId === $categoryId) { ?> checked="checked"<? } ?>
                 />
-            <label class="fltrBtn_btn icon-clear <? if (!$filter->getIsMultiple()) { ?> mCustomLabelRadio<? } ?>" for="<?= $viewId ?>">
-                <? if ($option->getImageUrl()): ?>
-                    <img class="fltrBtn_btn_img" src="<?= $helper->escape($option->getImageUrl()) ?>">
-                <? else: ?>
-                    <span class="fltrBtn_btn_tx"><?= $option->getName() ?></span>
-                <? endif ?>
+            <label class="custom-label" for="<?= $viewId ?>">
+                <?= $option->getName() ?><?= ($showFasets && $option->getQuantity()) ? " ({$option->getQuantity()})" : '' ?>
             </label>
         </div>
-        <? $i++; endforeach ?>
+    <? endforeach ?>
 <? };

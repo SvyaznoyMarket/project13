@@ -3,8 +3,6 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
     $helper = \App::helper();
     $visibleBrandsCount = 12;
 
-    /** @var \Model\Product\Filter\Entity[] $alwaysShowFilters */
-    $alwaysShowFilters = [];
     /** @var \Model\Product\Filter\Entity $priceFilter */
     $priceFilter = null;
     /** @var \Model\Product\Filter\Entity $labelFilter */
@@ -22,27 +20,10 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
 
     // Ювелирка
     foreach ($productFilter->getFilterCollection() as $filter) {
-
         foreach ($productFilter->getValues() as $valKey => $value) {
             if ($valKey == $filter->getId()) {
                 $filter->isOpenByDefault = true;
             }
-        }
-
-        if (!$filter->getIsInList()) {
-            continue;
-        } else if ($filter->isPrice()) {
-//            $priceFilter = $filter;
-//            $priceFilter->setStepType('price');
-        } else if ($filter->getIsAlwaysShow() && !$filter->isBrand()) {
-            $alwaysShowFilters[] = $filter;
-        } else {
-//            $otherFilters[] = $filter;
-//            $i++;
-        }
-
-        if ($filter->getIsInList()){
-//            $countInListFilters++;
         }
     }
 
@@ -74,7 +55,7 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
         } else {
             if ($property->isBrand()) { // Сортировка брендов по алфавиту
                 $option = $property->getOption();
-                usort($option, function(Option $a, Option $b){ return $a->getName() > $b->getName(); });
+                usort($option, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b){ return $a->getName() > $b->getName(); });
                 $property->setOption($option);
             }
             $tyreFilters[$key] = $property;
@@ -95,30 +76,6 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
     <div class="filter filter-options fltr filter-components js-category-filter-wrapper" style="display: block">
 
         <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" method="GET">
-
-            <? foreach ($alwaysShowFilters as $filter): ?>
-
-                <!-- фильтр по компонентам -->
-                <div class="
-                fltrSet js-category-filter-toggle-container
-                <?= $filter->isOpenByDefault ? 'open' : '' ?>
-                <? if ($filter->isMetall()): ?>fltrSet-metall<? endif ?>
-                <? if ($filter->isInsertion()): ?>fltrSet-insertion<? endif ?>
-            ">
-
-                    <div class="fltrSet_tggl js-category-filter-toggle-button">
-                        <span class="fltrSet_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>
-                    </div>
-
-                    <div class="fltrSet_cnt js-category-filter-toggle-content">
-                        <div class="fltrSet_inn">
-                            <?= $helper->render('category/filters/_images', ['productFilter' => $productFilter, 'filter' => $filter]) ?>
-                        </div>
-                    </div>
-                </div>
-                <!--/ фильтр по компонентам -->
-            <? endforeach ?>
-
             <? if ($brandFilter1): ?>
                 <!-- бренды -->
                 <div class="fltrBtn_kit fltrBtn_kit-brands fltrBtn_kit--mark js-category-filter-otherBrands <?= $hasSelectedOtherBrands ? 'open' : '' ?>">
@@ -129,7 +86,7 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
                     <!-- список брендов -->
                     <div class="fltrBtn_kit_r">
 
-                        <?= $helper->render('category/filters/_brand', ['productFilter' => $productFilter, 'filter' => $brandFilter1]) ?>
+                        <?= $helper->render('category/filters/v2/elements/_brand', ['productFilter' => $productFilter, 'filter' => $brandFilter1]) ?>
 
                         <? if ($brandFilter2 && count($brandFilter2->getOption())): ?>
                             <a href="#" class="fltrBtn_btn fltrBtn_btn-btn fltrBtn_kit-brands__btn-more js-category-filter-otherBrandsOpener">
@@ -140,7 +97,7 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
                         <? if ($brandFilter2): ?>
                             <!-- больше брендов -->
                             <span class="fltrBtn_kit-brands__more js-category-filter-otherBrands">
-                        <?= $helper->render('category/filters/_brand', ['productFilter' => $productFilter, 'filter' => $brandFilter2]) ?>
+                        <?= $helper->render('category/filters/v2/elements/_brand', ['productFilter' => $productFilter, 'filter' => $brandFilter2]) ?>
                     </span>
                             <!--/ больше брендов -->
                         <? endif ?>
@@ -153,45 +110,23 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
             <? if ($priceFilter || ($labelFilter && $labelFilter->getOption())): ?>
                 <div class="fltrBtn_kit fltrBtn_kit-box clearfix">
                     <? if ($priceFilter): ?>
-                        <div class="fltrBtnBox fl-l js-category-filter-dropBox js-category-filter-dropBox-price">
-                            <div class="fltrBtnBox_tggl icon-corder js-category-filter-dropBox-opener">
-                                <span class="dotted"><?= $priceFilter->getName() ?></span>
-                            </div>
-
-                            <div class="fltrBtnBox_dd fltrBtnBox_dd-l">
-                                <ul class="fltrBtnBox_dd_inn js-category-filter-dropBox-content">
-                                    <? foreach ($priceFilter->getPriceRanges() as $range): ?>
-                                        <li class="lstdotted_i">
-                                            <a class="lstdotted_lk dotted js-category-filter-price-link" href="<?= $helper->escape($range['url']) ?>">
-                                                <? if (isset($range['from'])): ?>
-                                                    <span class="txmark1">от</span> <?= $helper->formatPrice($range['from']) ?>
-                                                <? endif ?>
-
-                                                <? if (isset($range['to'])): ?>
-                                                    <span class="txmark1">до</span> <?= $helper->formatPrice($range['to']) ?>
-                                                <? endif ?>
-                                            </a>
-                                        </li>
-                                    <? endforeach ?>
-                                </ul>
-                            </div>
-                        </div>
+                        <?= $helper->render('category/filters/priceDropBox', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
 
                         <? if ($labelFilter && $labelFilter->getOption()): ?>
-                            <div class="fltrBtnBox fltrBtnBox-mark fl-r js-category-filter-dropBox js-category-filter-dropBox-labels">
+                            <div class="fltrBtnBox fltrBtnBox-mark fl-r js-category-filter-dropBox">
                                 <div class="fltrBtnBox_tggl icon-corder js-category-filter-dropBox-opener">
                                     <span class="dotted"><?= $labelFilter->getName() ?></span>
                                 </div>
 
                                 <div class="fltrBtnBox_dd fltrBtnBox_dd-r js-category-filter-dropBox-content">
                                     <div class="fltrBtnBox_dd_inn">
-                                        <?= $helper->render('category/filters/_list', ['productFilter' => $productFilter, 'filter' => $labelFilter]) ?>
+                                        <?= $helper->render('category/filters/v2/elements/_list', ['productFilter' => $productFilter, 'filter' => $labelFilter]) ?>
                                     </div>
                                 </div>
                             </div>
                         <? endif ?>
 
-                        <div class="fltrBtn_range"><?= $helper->render('category/filters/_slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?></div>
+                        <div class="fltrBtn_range"><?= $helper->render('category/filters/v2/elements/_slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?></div>
                     <? endif ?>
                 </div>
             <? endif ?>
@@ -214,7 +149,7 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
                                                         <div class="fltrBtn_param_n"><?= $property->getName() ?></div>
                                                     <? endif ?>
 
-                                                    <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $property]) ?>
+                                                    <?= $helper->render('category/filters/v2/_element', ['productFilter' => $productFilter, 'filter' => $property]) ?>
                                                 </div>
                                             <? endif ?>
                                         <? endforeach ?>
@@ -226,12 +161,7 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
                 </div>
             <? endif ?>
 
-            <div class="fltrBtn_kit fltrBtn_kit-nborder">
-                <div class="js-category-filter-selected">
-                    <?= $helper->render('category/filters/selected.filters', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
-                </div>
-            </div>
-
+            <?= $helper->render('category/filters/v2/selected.filters', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
         </form>
     </div>
     <!-- фильтр "Бренды и параметры" -->

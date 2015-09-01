@@ -20,7 +20,7 @@ return function(
         ?>
         <div class="fltrBtn_ln <? if ($option->getImageUrl()): ?>bFilterValuesCol-gbox<? endif ?>">
             <input
-                class="custom-input <?= $filter->getIsMultiple() ? 'custom-input_check js-category-v2-filter-element-list-checkbox' : 'custom-input_radio js-category-v2-filter-element-list-radio' ?> <?= $filter->isBrand() ? 'js-category-filter-brand' : '' ?> <?= $filter->isShop() ? 'js-category-v2-filter-element-shop-input' : '' ?>"
+                class="custom-input <?= $filter->getIsMultiple() ? 'custom-input_check' : 'custom-input_radio' ?>"
                 type="<?= $filter->getIsMultiple() ? 'checkbox' : 'radio' ?>"
                 id="<?= $viewId ?>"
                 name="<?= \View\Name::productCategoryFilter($filter, $option) ?>"

@@ -48,8 +48,6 @@
                 BRANDS: 'js-category-filter-otherBrands',
                 BRANDS_OPENER: 'js-category-filter-otherBrandsOpener',
                 BRANDS_OPEN: 'open',
-                OTHER_PARAMS_TOGGLE: 'js-category-filter-otherParamsToggleButton',
-                OTHER_PARAMS_OPEN: 'open',
                 CLEAR_FILTER: 'js-filter-clear',
                 FILTER_GROUP_NAME: 'js-category-filter-param',
                 FILTER_GROUP_NAME_ACTIVE: 'mActive',
@@ -81,7 +79,6 @@
                 this.events['click .' + CSS_CLASSES.DROPDOWN_OPENER]     = 'toggleDropdown';
                 this.events['click .' + CSS_CLASSES.BRANDS_OPENER]       = 'toggleBrands';
                 this.events['click .' + CSS_CLASSES.CLEAR_FILTER]        = 'clearFilter';
-                this.events['click .' + CSS_CLASSES.OTHER_PARAMS_TOGGLE] = 'toggleOtherParams';
                 this.events['click .' + CSS_CLASSES.FILTER_GROUP_NAME]   = 'selectFilterGroup';
 
                 // Apply events
@@ -112,16 +109,6 @@
 
                 this.subViews.filterGroupsName.removeClass(CSS_CLASSES.FILTER_GROUP_NAME_ACTIVE);
                 target.addClass(CSS_CLASSES.FILTER_GROUP_NAME_ACTIVE);
-
-                return false;
-            },
-
-            toggleOtherParams: function() {
-                if ( this.$el.hasClass(CSS_CLASSES.OTHER_PARAMS_OPEN) ) {
-                     this.$el.removeClass(CSS_CLASSES.OTHER_PARAMS_OPEN);
-                } else {
-                     this.$el.addClass(CSS_CLASSES.OTHER_PARAMS_OPEN);
-                }
 
                 return false;
             },

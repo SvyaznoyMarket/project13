@@ -313,7 +313,7 @@
             toggleFilter: function( event ) {
                 var
                     currentTarget = $(event.currentTarget),
-                    wrapper       = currentTarget.parent('.' + CSS_CLASSES.FILTER_TOGGLE_WRAPPER);
+                    wrapper       = currentTarget.closest('.' + CSS_CLASSES.FILTER_TOGGLE_WRAPPER);
 
                 if ( wrapper.hasClass(CSS_CLASSES.FILTER_TOGGLE_ACTIVE) ) {
                     wrapper.removeClass(CSS_CLASSES.FILTER_TOGGLE_ACTIVE);

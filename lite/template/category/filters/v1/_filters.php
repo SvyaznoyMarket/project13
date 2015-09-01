@@ -63,21 +63,21 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl, $ca
 ?>
 
     <div class="filter filter-options fltr js-category-filter-wrapper">
-        <form id="productCatalog-filter-form" class="fltrSet js-category-filter" action="<?= $baseUrl ?>" method="GET">
+        <form id="productCatalog-filter-form" class="fltrSet js-category-filter js-category-filter-toggle-container" action="<?= $baseUrl ?>" method="GET">
             <div class="filter-price" style="padding-bottom: 10px;">
-                <div class="fltrSet_tggl <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton">
+                <div class="fltrSet_tggl <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-toggle-button">
                     <? if ($showParamsButton): ?>
                         <!--noindex--><span class="fltrSet_tggl_tx">Бренды и параметры</span><!--/noindex-->
                     <? endif ?>
                 </div>
 
                 <? if ($priceFilter && $productFilter): ?>
-                    <span class="fltrRange_lbl">Цена</span> <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
+                    <?= $helper->render('category/filters/v1/elements/_slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
                 <? endif ?>
             </div>
 
-            <div class="fltrSet_cnt js-category-filter-otherParams">
-                <div class="filter-content js-category-filter-otherParamsContent">
+            <div class="fltrSet_cnt">
+                <div class="filter-content">
                     <ul class="filter-params">
                         <? foreach ($otherFilters as $i => $filter): ?>
                             <li class="filter-params__item <? if (0 == $i): ?>mActive<? endif ?> js-category-filter-param">
@@ -87,20 +87,18 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl, $ca
                     </ul>
 
                     <div class="filter-values">
-                        <? foreach ($otherFilters as $i => $filter): ?>
-                            <div class="filter-values__inner js-category-filter-group <? if ($i > 0): ?>hf<? endif ?> <? if (in_array($filter->getId(), ['shop', 'category'])): ?>mLineItem<? endif ?>">
-                                <?= $helper->render('category/filters/__element', ['productFilter' => $productFilter, 'filter' => $filter]) ?>
-                            </div>
-                        <? endforeach ?>
-                    </div>
-                </div>
-
-                <div class="fltrBtn_kit fltrBtn_kit-nborder">
-                    <div class="js-category-filter-selected">
-                        <?= $helper->render('category/filters/selected.filters', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
+                        <div class="filter-values__inner">
+                            <? foreach ($otherFilters as $i => $filter): ?>
+                                <div class="filter-values__item <? if ($i > 0): ?>hf<? endif ?> <? if (in_array($filter->getId(), ['shop', 'category'])): ?>mLineItem<? endif ?> js-category-filter-group">
+                                    <?= $helper->render('category/filters/v1/_element', ['productFilter' => $productFilter, 'filter' => $filter]) ?>
+                                </div>
+                            <? endforeach ?>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <?= $helper->render('category/filters/v1/selected.filters', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
         </form>
     </div>
 
