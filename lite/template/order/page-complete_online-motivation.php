@@ -35,11 +35,11 @@ return function(
         >
 
         <!-- Блок оплата -->
-        <div class="orderPayment_wrap">
+        <div class="single-order_wrap">
             <!-- Заголовок-->
-            <div class="orderPayment_head">
+            <div class="single-order__title">
                 <? if ($userEntity) : ?>
-                    Оформлен заказ №<a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>" class="orderPayment_num"><?= $order->getNumberErp() ?></a>
+                    Оформлен заказ №<a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>" class="single-order_num"><?= $order->getNumberErp() ?></a>
                 <? else : ?>
                     Оформлен заказ №<?= $order->getNumberErp() ?>
                 <? endif ?>
@@ -82,8 +82,8 @@ return function(
 <!--            </div>-->
         <? endif */ ?>
 
-        <div class="orderCompl orderCompl_final clearfix">
-            <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
+
+            <div class="back-main"><a class="underline" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a></div>
         </div>
     </section>
 
