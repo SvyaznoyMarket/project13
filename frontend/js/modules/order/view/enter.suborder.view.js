@@ -61,7 +61,7 @@
              * @constructs  SubOrderView
              */
             initialize: function( options ) {
-                console.info('module:enter.suborder.view~SubOrderView#initialize');
+                console.warn('module:enter.suborder.view~SubOrderView#initialize', this.$el.attr('data-block_name'), this.$el);
 
                 var
                     self            = this,
@@ -215,14 +215,18 @@
                         block_name: this.blockName
                     };
 
-                console.info('module:enter.suborder.view~SubOrderView#changePaymentMethod');
-
                 data[method] = true;
 
-                this.orderView.trigger('sendChanges', {
-                    action: 'changePaymentMethod',
-                    data: data
-                });
+                console.groupCollapsed('module:enter.suborder.view~SubOrderView#changePaymentMethod');
+                console.log(this.$el);
+                console.log(this.blockName);
+                console.dir(data);
+                console.groupEnd();
+
+                // this.orderView.trigger('sendChanges', {
+                //     action: 'changePaymentMethod',
+                //     data: data
+                // });
 
                 return false;
             },

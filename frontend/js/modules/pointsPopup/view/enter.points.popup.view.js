@@ -56,9 +56,7 @@
              */
             TEMPLATES = {
                 POINT: $('#js-point-template').html(),
-                POPUP: $('#js-points-popup-template').html(),
-                BALOON: $('').html(),
-                AUTOCOMPLETE: $('#js-pointpopup-autocomplete-template').html(),
+                POPUP: $('#js-points-popup-template').html()
             },
 
             $BODY = $('body'),
@@ -282,6 +280,13 @@
                 };
             }()),
 
+
+            /**
+             * Поиск точек, соответствующих введенному адресу, формирование автокомплита поиска
+             *
+             * @method      searchAddress
+             * @memberOf    module:module:enter.points.popup.view~PointsPopup#
+             */
             searchAddress: function ( request, response ) {
                 var
                     self       = this,
@@ -298,9 +303,6 @@
                             searchAutocompleteList = [],
                             html;
 
-                        console.log(address);
-                        console.log(res.geoObjects.getLength());
-
                         res.geoObjects.each(function( obj ) {
                             var
                                 val = obj.properties.get('name') + ', ' + obj.properties.get('description');
@@ -311,16 +313,7 @@
                             });
                         });
 
-                        console.log(searchAutocompleteList);
                         response( searchAutocompleteList );
-
-                        // html = mustache.render(TEMPLATES.AUTOCOMPLETE, {bounds: searchAutocompleteList});
-
-                        // if ( res.geoObjects.getLength() > 0 ) {
-                        //     self.subViews.filterOverlay.show();
-                        //     self.subViews.autocomplete.show();
-                        //     self.subViews.autocompleteWrapper.html(html);
-                        // }
 
                         self.delegateEvents();
                     },
@@ -329,69 +322,6 @@
                     }
                 );
             },
-
-            /**
-             * Поиск точек, соответствующих введенному адресу, формирование автокомплита поиска
-             *
-             * @method      searchAddress
-             * @memberOf    module:module:enter.points.popup.view~PointsPopup#
-             */
-            // searchAddress: (function () {
-            //     var
-            //         timeWindow = 500, // time in ms
-            //         timeout,
-
-            //         searchAddress = function ( args ) {
-            //             var
-            //                 self       = this,
-            //                 address    = this.subViews.searchInput.val(),
-            //                 myGeocoder = this.map.getGeoCoder(address);
-
-            //             if ( address === '' ) {
-            //                 this.resetPoints();
-            //             }
-
-            //             myGeocoder.then(
-            //                 function ( res ) {
-            //                     var
-            //                         searchAutocompleteList = [],
-            //                         html;
-
-            //                     res.geoObjects.each(function( obj ) {
-            //                         searchAutocompleteList.push({
-            //                             'name': obj.properties.get('name') + ', ' + obj.properties.get('description'),
-            //                             'bounds': JSON.stringify(obj.geometry.getBounds())
-            //                         });
-            //                     });
-
-            //                     html = mustache.render(TEMPLATES.AUTOCOMPLETE, {bounds: searchAutocompleteList});
-
-            //                     if ( res.geoObjects.getLength() > 0 ) {
-            //                         self.subViews.filterOverlay.show();
-            //                         self.subViews.autocomplete.show();
-            //                         self.subViews.autocompleteWrapper.html(html);
-            //                     }
-
-            //                     self.delegateEvents();
-            //                 },
-            //                 function ( err ) {
-            //                     console.log(err);
-            //                 }
-            //             );
-            //         };
-
-            //     return function() {
-            //         var
-            //             context = this,
-            //             args    = arguments;
-
-            //         clearTimeout(timeout);
-
-            //         timeout = setTimeout(function() {
-            //             searchAddress.apply(context, args);
-            //         }, timeWindow);
-            //     };
-            // }()),
 
             /**
              * Сброс выбранных по адресу точек

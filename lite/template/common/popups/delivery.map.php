@@ -168,10 +168,3 @@
     {{/shown}}
 {{/point}}
 </script>
-
-
-<script id="js-pointpopup-autocomplete-template" type="text/template" class="hidden">
-    {{#bounds}}
-        <li class="js-pointpopup-autocomplete-item" data-bounds="{{bounds}}">{{name}}</li>
-    {{/bounds}}
-</script>
