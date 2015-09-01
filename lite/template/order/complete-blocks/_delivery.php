@@ -13,24 +13,23 @@
                     Время и место
                 <? endif ?>
             </div>
-            <div class="single-order_msg_shop markerLst_row">
+
+            <div class="single-order-box__shop shop-info">
                 <? if ($order->getAddress()) : ?>
-                    <span class="markerList_col">
-                        <span class="single-order_msg_shop_addr"><?= $order->getAddress() ?></span>
-                    </span>
+                    <div class="shop-info__address"><?= $order->getAddress() ?></div>
                 <? else : ?>
-                    <div class="single-order_msg_info info-phrase">
+                    <div class="shop-info__address">
                     Адрес и дату доставки вашего заказа уточнит по&nbsp;телефону наш менеджер.
                     </div>
                 <? endif ?>
                 <? if ($order->comment) : ?>
-                    <span class="markerList_col">
-                        <div class="single-order_msg_adding">Дополнительные пожелания:<br/> «<?= $order->comment ?>»</div>
-                    </span>
+                    <div class="shop-info__address">
+                        Дополнительные пожелания:<br/> «<?= $order->comment ?>»
+                    </div>
                 <? endif ?>
             </div>
 
-            <div class="single-order_msg_info">
+            <div class="single-order-box__info">
                 <? if ($order->isPaid()) : ?>
                     Заказ оплачен
                 <? elseif ($order->getPaymentId() == PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY) : ?>
