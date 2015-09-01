@@ -36,10 +36,14 @@
              */
             initialize: function() {
                 var
-                    cost = this.get('cost'),
-                    showCurrency = !!(cost > 0);
+                    cost         = this.get('cost'),
+                    showCurrency = !!(cost > 0),
+                    nearestDay   = this.get('nearestDay');
 
-                this.set({showCurrency: showCurrency});
+                this.set({
+                    showCurrency: showCurrency,
+                    ts: new Date(nearestDay).getTime()
+                });
             }
         }));
     }

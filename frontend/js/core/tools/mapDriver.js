@@ -208,11 +208,11 @@
                     ],
 
                     // данные для шаблона
-                    _.extend({}, currPoint, {
+                    _.extend({}, {
                         balloonContentBody: balloonContent,
                         hintContent: currPoint.name,
                         enterToken: currPoint.token
-                    }),
+                    }, currPoint),
 
                     // оформление метки на карте
                     _.extend({}, {

@@ -386,8 +386,8 @@
                     sortable.push(plm.properties.get(0));
                 });
 
-                sortable.sort( function(firstId, secondId) {
-                    return firstId.id - secondId.id;
+                sortable.sort(function( firstId, secondId ) {
+                    return firstId.ts - secondId.ts;
                 });
 
                 html = mustache.render(TEMPLATES.POINT, {point: sortable});
