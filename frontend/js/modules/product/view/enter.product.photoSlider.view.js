@@ -39,7 +39,9 @@
                 SLIDE_CTRL: 'jsProductThumbBtn',
                 SLIDE_CTRL_DISABLIED: 'product-card-photo-thumbs__btn--disabled',
                 POPUP_3D: 'js-product-3d-popup',
-                POPUP_3D_BTN: 'js-product-open-3d'
+                POPUP_3D_BTN: 'js-product-open-3d',
+                POPUP_VIDEO: 'js-product-video-popup',
+                POPUP_VIDEO_BTN: 'js-product-open-video'
             },
 
             /**
@@ -73,7 +75,8 @@
                     f_thumb: this.$el.find('.' + CSS_CLASSES.PHOTO_THUMB).eq(0),
                     slideControl: this.$el.find('.' + CSS_CLASSES.SLIDE_CTRL),
                     slideWrapper: this.$el.find('.' + CSS_CLASSES.SLIDE_WRAPPER),
-                    popup3D_el: this.$el.find('.' + CSS_CLASSES.POPUP_3D)
+                    popup3D_el: this.$el.find('.' + CSS_CLASSES.POPUP_3D),
+                    popupVideo_el: this.$el.find('.' + CSS_CLASSES.POPUP_VIDEO)
                 };
 
                 productContentPaddingLeft = parseInt($PRODUCT_CONTENT.css('paddingLeft'), 10);
@@ -117,9 +120,10 @@
                 this.subViews.photo.elevateZoom(zoomConfig);
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.PHOTO_THUMB]  = 'changePhoto';
-                this.events['click .' + CSS_CLASSES.SLIDE_CTRL]   = 'slide';
-                this.events['click .' + CSS_CLASSES.POPUP_3D_BTN] = 'openPopup3D';
+                this.events['click .' + CSS_CLASSES.PHOTO_THUMB]     = 'changePhoto';
+                this.events['click .' + CSS_CLASSES.SLIDE_CTRL]      = 'slide';
+                this.events['click .' + CSS_CLASSES.POPUP_3D_BTN]    = 'openPopup3D';
+                this.events['click .' + CSS_CLASSES.POPUP_VIDEO_BTN] = 'openPopupVideo';
 
                 // Apply events
                 this.delegateEvents();
@@ -140,6 +144,25 @@
                         });
 
                         self.subViews.popup3D.show();
+                    });
+                }
+
+                return false;
+            },
+
+            openPopupVideo: function() {
+                var
+                    self = this;
+
+                if ( this.subViews.popupVideo ) {
+                    this.subViews.popupVideo.show();
+                } else {
+                    modules.require(['enter.productvideo.popup'], function( ProductVideoPopup ) {
+                        self.subViews.popupVideo = new ProductVideoPopup({
+                            el: self.subViews.popupVideo_el
+                        });
+
+                        self.subViews.popupVideo.show();
                     });
                 }
 
