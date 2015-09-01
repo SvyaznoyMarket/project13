@@ -25,9 +25,9 @@ return function(
     <section id="js-order-content" class="order-page orderCnt jsOrderV3PageDelivery">
         <div class="pagehead"><h1 class="orderCnt_t">Самовывоз и доставка</h1></div>
 
-        <?/* if ($orderCount != 1) : ?>
-            <p class="orderInf">Товары будут оформлены как <strong><?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></strong></p>
-        <? endif; */?>
+        <? if ($orderCount != 1) : ?>
+            <div class="order-error order-error--success">Товары будут оформлены как <strong><?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></strong></div>
+        <? endif; ?>
 
         <!--div class="orderInf clearfix">
             <div class="fl-l">Ваш регион: <strong><?= \App::user()->getRegion()->getName() ?></strong> <br/>
@@ -36,7 +36,7 @@ return function(
             <button class="btnLightGrey orderCnt_btn fl-r jsChangeRegion">Изменить регион</button>
         </div-->
 
-        <?= $helper->render('order-v3-new/__error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
+        <?= $helper->render('order-v3-new/partial/error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
 
         <?= $helper->render('order-v3-new/partial/orders-list',['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
