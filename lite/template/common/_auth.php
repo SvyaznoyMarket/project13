@@ -3,6 +3,10 @@
  * @var $page \View\LiteLayout
  */
 
+if (!\App::config()->user['enabled']) {
+    return;
+}
+
 if (!isset($redirect)) $redirect = null;
 $oauthEnabled = \App::config()->oauthEnabled;
 ?>

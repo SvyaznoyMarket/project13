@@ -35,11 +35,11 @@ return function(
         >
 
         <!-- Блок оплата -->
-        <div class="orderPayment_wrap">
+        <div class="single-order_wrap">
             <!-- Заголовок-->
-            <div class="orderPayment_head">
+            <div class="single-order__title">
                 <? if ($userEntity) : ?>
-                    Оформлен заказ №<a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>" class="orderPayment_num"><?= $order->getNumberErp() ?></a>
+                    Оформлен заказ №<a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>" class="single-order_num"><?= $order->getNumberErp() ?></a>
                 <? else : ?>
                     Оформлен заказ №<?= $order->getNumberErp() ?>
                 <? endif ?>
@@ -47,9 +47,11 @@ return function(
 
             <?= $helper->render('order/complete-blocks/_errors', ['errors' => $errors]) ?>
 
+            <? /*
             <? if ($isOnlinePaymentChecked && !$order->isPaid()) : ?>
                 <?= $helper->render('order/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
             <? endif ?>
+            */ ?>
 
             <? if (!$order->isCredit()) : ?>
 
@@ -70,7 +72,9 @@ return function(
         <? endif ?>
 
 
+        <? /*
         <?= $helper->render('order/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
+        */ ?>
 
         <?= $motivationAction && !$order->isPaidBySvyaznoy() ? $helper->render('order/complete-blocks/_online_motivation_action', ['order' => $order, 'orderPayment' => $orderPayment, 'action' => $motivationAction]) : '' ?>
 
@@ -82,8 +86,8 @@ return function(
 <!--            </div>-->
         <? endif */ ?>
 
-        <div class="orderCompl orderCompl_final clearfix">
-            <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
+
+            <div class="back-main"><a class="underline" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a></div>
         </div>
     </section>
 

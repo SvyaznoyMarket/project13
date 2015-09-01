@@ -130,7 +130,12 @@ class App {
             if (\App::config()->debug) {
                 $globalParams['parent_ri'] = \App::$id;
             }
-            $rules = require self::$config->configDir . '/route-' . $name . '.php';
+            if (\App::config()->lite['enabled']) {
+                $rules = require self::$config->configDir . '/route-lite-' . $name . '.php';
+            } else {
+                $rules = require self::$config->configDir . '/route-' . $name . '.php';
+            }
+
             $instances[$name] = new \Routing\Router($rules, self::$config->routePrefix, $globalParams);
         }
 

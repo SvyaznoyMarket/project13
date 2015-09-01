@@ -172,6 +172,78 @@
 /*===========================================================================
  Оформление заказа: оплата
 ============================================================================*/
+.back-main {
+    text-align: center;
+
+    a {
+        .font-size(20);
+        .font-face('GloberRegular');
+        color: @grey-type;
+    }
+}
+
+.single-order {
+    margin: 15px auto 60px;
+    &-box {
+        width: 405px;
+        margin: 15px auto 30px;
+        padding: 20px 20px 20px;
+
+        border: 1px solid #ccc;
+        &_error {
+            border-color: yellow;
+        }
+        &__head {
+            margin: 0 0 10px;
+
+            .font-size(20);
+        }
+        &__info {
+            line-height: 1.2;
+
+            .font-size(16);
+            .font-face('GloberRegular');
+        }
+    }
+    &__title {
+        margin-top: 50px;
+
+        text-align: center;
+
+        .font-size(28);
+    }
+}
+
+.shop-info {
+    margin: 0 0 10px;
+    &__subway {
+        position: relative;
+
+        .font-size(16);
+        &-bullet {
+            width: 7px;
+            height: 7px;
+            margin: 5px 5px 0 -12px;
+
+            .rounded(50%);
+            .inline-block(top);
+        }
+    }
+    &__address {
+        line-height: 1.2;
+
+        color: @grey-bright;
+        margin: 0 0 10px;
+
+        .font-size(16);
+
+        &-details {
+            .font-size(16);
+            .font-face('GloberRegular');
+        }
+    }
+}
+
 .orderPayment {
     width: 432px;
     margin: 15px auto 10px;
