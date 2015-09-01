@@ -156,17 +156,19 @@
 
 .loader {
     position: relative;
+
     min-height: 100px;
 }
 
 .loader-box {
     position: relative;
     z-index: 10;
+    top: 1px;
+
+    clear: both;
 
     width: 100%;
     min-height: 100px;
-    top: 1px;
-    clear: both;
 
     background: url('@{base-url}/loader.gif') no-repeat 50% 50% @white;
 
@@ -318,6 +320,8 @@
 
         height: 250px;
         padding: 15px 0 0;
+
+        .transition(all, .3s, ease);
     }
     &__name {
         display: block;
@@ -332,9 +336,16 @@
         .font-face('GloberRegular');
     }
     &__img {
+        max-width: 88%;
         margin: 15px 0 0;
-        max-width: 95%;
 
         .inline-block();
+        .transition(all, .4s, ease-out);
+        &_max {
+            max-width: 80%;
+        }
+        &:hover {
+            max-width: 100%;
+        }
     }
 }

@@ -63,7 +63,7 @@
                         <a href="/catalog/tovari-dlya-givotnih" class="main-categories__link">
                             <span class="main-categories__name">Любимым питомцам</span>
                             <span class="main-categories__sub-name"></span>
-                            <img src="/public/images/main-page/categories/cat6.png" alt="" class="main-categories__img">
+                            <img src="/public/images/main-page/categories/cat6.png" alt="" class="main-categories__img main-categories__img_max">
                         </a>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                         <a href="/catalog/furniture/matrasi-1193" class="main-categories__link">
                             <span class="main-categories__name">Крепкий сон</span>
                             <span class="main-categories__sub-name">Матрасы</span>
-                            <img src="/public/images/main-page/categories/cat7.png" alt="" class="main-categories__img">
+                            <img src="/public/images/main-page/categories/cat7.png" alt="" class="main-categories__img main-categories__img_max">
                         </a>
                     </div>
                 </div>
