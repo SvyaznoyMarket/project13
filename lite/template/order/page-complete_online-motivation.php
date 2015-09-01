@@ -47,9 +47,11 @@ return function(
 
             <?= $helper->render('order/complete-blocks/_errors', ['errors' => $errors]) ?>
 
+            <? /*
             <? if ($isOnlinePaymentChecked && !$order->isPaid()) : ?>
                 <?= $helper->render('order/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
             <? endif ?>
+            */ ?>
 
             <? if (!$order->isCredit()) : ?>
 
@@ -70,7 +72,9 @@ return function(
         <? endif ?>
 
 
+        <? /*
         <?= $helper->render('order/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
+        */ ?>
 
         <?= $motivationAction && !$order->isPaidBySvyaznoy() ? $helper->render('order/complete-blocks/_online_motivation_action', ['order' => $order, 'orderPayment' => $orderPayment, 'action' => $motivationAction]) : '' ?>
 

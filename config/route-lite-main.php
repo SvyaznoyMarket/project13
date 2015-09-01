@@ -57,7 +57,7 @@ return [
         'action'  => ['User\InfoAction', 'setSubscribeStatus'],
     ],*/
     // вход пользователя
-    /*
+
     'user.login' => [
         'pattern' => '/login',
         'action'  => ['User\Action', 'login'],
@@ -118,7 +118,7 @@ return [
         'pattern' => '/login-{providerName}/response',
         'action'  => ['User\ExternalLoginResponseAction', 'execute'],
     ],
-*/
+
     // Регистрация поставщика
     'supplier.new' => [
         'pattern'   => '/supplier/new',
