@@ -11,7 +11,7 @@ return function(
         'step' => $filter->isPrice() ? 10 : $filter->getStepByFilter()
     ];
     ?>
-    <div class="fltrRange js-category-filter-rangeSlider">
+    <div class="fltrRange js-category-filter-rangeSlider <? if ($filter->isPrice()): ?>js-category-filter-rangeSlider-price<? endif ?>">
         <span class="fltrRange_lbl">от</span>
         <input class="fltrRange_it mFromRange js-category-filter-rangeSlider-from" name="<?= \View\Name::productCategoryFilter($filter, 'from') ?>" value="<?= $helper->clearZeroValue($productFilter->getValueMin($filter)) ?>" type="text" data-min="<?= $filter->getMin() ?>" />
 

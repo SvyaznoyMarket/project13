@@ -18,7 +18,7 @@ return function(
             <ul class="fltrBtnBox_dd_inn lstdotted js-category-filter-dropBox-content">
                 <? foreach ($filter->getPriceRanges() as $range): ?>
                     <li class="lstdotted_i">
-                        <a class="dotted" href="<?= $helper->escape($range['url']) ?>" data-from="<?= isset($range['from']) ? $range['from'] : null ?>" data-to="<?= isset($range['to']) ? $range['to'] : null ?>">
+                        <a class="dotted js-filter-select-price-range" href="<?= $helper->escape($range['url']) ?>" data-from="<?= isset($range['from']) ? $range['from'] : null ?>" data-to="<?= isset($range['to']) ? $range['to'] : null ?>">
                             <? if (isset($range['from'])): ?>
                                 <span class="txmark1">от</span> <?= $helper->formatPrice($range['from']) ?>
                             <? endif ?>
