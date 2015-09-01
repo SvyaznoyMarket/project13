@@ -125,6 +125,7 @@ class MapView {
                         'icon'  => '',
                         'cost'  => $pickup->price,
                         'nearestDay'  => $deliveryDate->date->format('Y-m-d'),
+                        'nearestDayTimestamp'  => $deliveryDate->date->getTimestamp(),
 //                        'blockName'    => $orderDelivery->points[$token]->block_name, // blockName == orderToken ??
 //                        'orderToken' => $order->block_name,
                         'dropdownName'  => 'drowdown name',
@@ -167,6 +168,7 @@ class MapView {
                     'icon'  => $orderDelivery->points[$token]->icon,
                     'cost'  => (string)$point['cost'],
                     'nearestDay'  => $point['nearestDay'],
+                    'nearestDayTimestamp'  => strtotime($point['nearestDay']),
                     'blockName'    => $orderDelivery->points[$token]->block_name, // blockName == orderToken ??
                     'orderToken' => $order->block_name,
                     'dropdownName'  => $orderDelivery->points[$token]->dropdown_name,
