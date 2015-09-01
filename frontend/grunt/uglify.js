@@ -7,10 +7,10 @@ module.exports = function( grunt, options ) {
     return {
 
         options: {
-            sourceMap: true,
+            sourceMap: !options.isProduction,
             banner: options.methods.createBanner(),
             compress: {
-                // drop_console: true
+                drop_console: options.isProduction
             }
         },
 
@@ -22,7 +22,7 @@ module.exports = function( grunt, options ) {
                 dest: '../web/public/js'
             }],
             options: {
-                sourceMap: true
+                sourceMap: !options.isProduction
             }
         }
 

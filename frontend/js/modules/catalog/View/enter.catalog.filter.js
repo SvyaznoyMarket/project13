@@ -72,7 +72,8 @@
 
                 this.subViews = {
                     filterGroups: this.$el.find('.' + CSS_CLASSES.FILTER_GROUP),
-                    filterGroupsName: this.$el.find('.' + CSS_CLASSES.FILTER_GROUP_NAME)
+                    filterGroupsName: this.$el.find('.' + CSS_CLASSES.FILTER_GROUP_NAME),
+                    dropDowns: this.$el.find('.' + CSS_CLASSES.DROPDOWN)
                 };
 
                 this.sliders.each(this.initSlider.bind(this));
@@ -443,6 +444,7 @@
                         $(input).val('');
                     };
 
+                this.subViews.dropDowns.removeClass(CSS_CLASSES.DROPDOWN_ACTIVE);
                 this.$el.find(':input:radio:checked').each(resetRadio.bind(this));
                 this.$el.find(':input:checkbox:checked').each(resetCheckbox.bind(this));
                 this.$el.find(':input:text:not(.js-category-filter-rangeSlider-from):not(.js-category-filter-rangeSlider-to)').each(resetText.bind(this));
@@ -464,20 +466,31 @@
 
                     updateInput = {
                         'text': function( input, val ) {
+                            var
+                                dropdown = input.parents('.' + CSS_CLASSES.DROPDOWN);
+
                             input.val(val);
+                            dropdown.addClass(CSS_CLASSES.DROPDOWN_ACTIVE);
                         },
 
                         'radio': function( input, val ) {
                             var
-                                target = input.filter('[value="'+val+'"]'),
-                                id     = target.attr('id'),
-                                label  = self.$el.find('label[for="'+id+'"]');
+                                target   = input.filter('[value="'+val+'"]'),
+                                dropdown = target.parents('.' + CSS_CLASSES.DROPDOWN),
+                                id       = target.attr('id'),
+                                label    = self.$el.find('label[for="'+id+'"]');
 
                             target.prop('checked', true);
+                            dropdown.addClass(CSS_CLASSES.DROPDOWN_ACTIVE);
                         },
 
                         'checkbox': function( input, val ) {
-                            input.filter('[value="'+val+'"]').prop('checked', true);
+                            var
+                                target   = input.filter('[value="'+val+'"]'),
+                                dropdown = target.parents('.' + CSS_CLASSES.DROPDOWN);
+
+                            target.prop('checked', true);
+                            dropdown.addClass(CSS_CLASSES.DROPDOWN_ACTIVE);
                         }
                     };
 
