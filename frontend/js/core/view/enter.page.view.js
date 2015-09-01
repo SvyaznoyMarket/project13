@@ -50,7 +50,7 @@
                 FEEDBACK_BTN: 'js-feedback-from-btn',
                 CHANGE_REGION_LNK: 'js-change-region',
                 GO_TO_LNK: 'js-go-to',
-                LOADER: 'loading'
+                LOADER: 'loader-fixed'
             };
 
         provide(BaseViewClass.extend({
@@ -101,7 +101,7 @@
                 this.events['click .' + CSS_CLASSES.GO_TO_LNK]  = 'goToTarget';
 
                 window.onbeforeunload = function() {
-                    this.$el.addClass(CSS_CLASSES.LOADER);
+                    self.$el.addClass(CSS_CLASSES.LOADER);
                     console.warn('window.onbeforeunload');
                 };
 
