@@ -1,8 +1,9 @@
 module.exports = function(grunt) {
 
     var
-        path            = require('path'),
-        paths           = {};
+        path  = require('path'),
+        env   = process.env.NODE_ENV || 'development',
+        paths = {};
 
     // Grunt tasks
     paths.config      = path.resolve('./grunt/');
@@ -40,6 +41,7 @@ module.exports = function(grunt) {
         },
         data: {
             pkg: grunt.file.readJSON('package.json'),
+            isProduction: !!( env === 'production' ),
             paths: paths,
             methods: {
                 createBanner: function() {
