@@ -37,7 +37,9 @@
                 PHOTO_THUMB_ACTIVE: 'active',
                 SLIDE_WRAPPER: 'jsProductThumbList',
                 SLIDE_CTRL: 'jsProductThumbBtn',
-                SLIDE_CTRL_DISABLIED: 'product-card-photo-thumbs__btn--disabled'
+                SLIDE_CTRL_DISABLIED: 'product-card-photo-thumbs__btn--disabled',
+                POPUP_3D: 'js-product-3d-popup',
+                POPUP_3D_BTN: 'js-product-open-3d'
             },
 
             /**
@@ -60,6 +62,7 @@
              */
             initialize: function( options ) {
                 var
+                    self = this,
                     zoomConfig, productContentPaddingLeft, photoContainerW,
                     photoContainerH, photoW, photoH;
 
@@ -69,7 +72,8 @@
                     thumbs: this.$el.find('.' + CSS_CLASSES.PHOTO_THUMB),
                     f_thumb: this.$el.find('.' + CSS_CLASSES.PHOTO_THUMB).eq(0),
                     slideControl: this.$el.find('.' + CSS_CLASSES.SLIDE_CTRL),
-                    slideWrapper: this.$el.find('.' + CSS_CLASSES.SLIDE_WRAPPER)
+                    slideWrapper: this.$el.find('.' + CSS_CLASSES.SLIDE_WRAPPER),
+                    popup3D_el: this.$el.find('.' + CSS_CLASSES.POPUP_3D)
                 };
 
                 productContentPaddingLeft = parseInt($PRODUCT_CONTENT.css('paddingLeft'), 10);
@@ -113,14 +117,34 @@
                 this.subViews.photo.elevateZoom(zoomConfig);
 
                 // Setup events
-                this.events['click .' + CSS_CLASSES.PHOTO_THUMB] = 'changePhoto';
-                this.events['click .' + CSS_CLASSES.SLIDE_CTRL]  = 'slide';
+                this.events['click .' + CSS_CLASSES.PHOTO_THUMB]  = 'changePhoto';
+                this.events['click .' + CSS_CLASSES.SLIDE_CTRL]   = 'slide';
+                this.events['click .' + CSS_CLASSES.POPUP_3D_BTN] = 'openPopup3D';
 
                 // Apply events
                 this.delegateEvents();
             },
 
             events: {},
+
+            openPopup3D: function() {
+                var
+                    self = this;
+
+                if ( this.subViews.popup3D ) {
+                    this.subViews.popup3D.show();
+                } else {
+                    modules.require(['enter.product3d.popup'], function( Product3dPopup ) {
+                        self.subViews.popup3D = new Product3dPopup({
+                            el: self.subViews.popup3D_el
+                        });
+
+                        self.subViews.popup3D.show();
+                    });
+                }
+
+                return false;
+            },
 
             changePhoto: function( event ) {
                 var

@@ -46,10 +46,10 @@ $f = function(
                 <!--/ Попап видео-->
             <? endif ?>
             <? if ($product->has3d()) : ?>
-                <li class="product-card-media__i product-card-media__i--3d"></li>
+                <li class="product-card-media__i product-card-media__i--3d js-product-open-3d"></li>
                 <!-- Попап 3D -->
-                <div class="popup popup--skinny" style="display: none">
-                    <i class="closer jsPopupCloser">×</i>
+                <div class="popup popup--skinny js-product-3d-popup" style="display: none">
+                    <i class="closer js-popup-close">×</i>
                     <? if ($properties3D['type'] == 'swf') : ?>
                         <div class="jsProduct3DContainer" style="position: relative" data-url="<?= $helper->escape($properties3D['url']); ?>" data-type="swf">
                             <div id="js-product-3d-swf-popup-model">
