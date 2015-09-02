@@ -32,11 +32,14 @@ class IndexAction extends \Controller\User\PrivateAction {
         /** @var \Model\User\Order\Entity[] $orders */
         $orders = [];
         $pointUis = [];
+        $orderNumberErps = [];
         foreach ($orderQuery->response->orders as $item) {
             $order = new \Model\User\Order\Entity($item);
             if (!$order->numberErp) continue;
 
             $orders[] = $order;
+
+            $orderNumberErps[] = $order->numberErp;
 
             if ($order->pointUi) {
                 $pointUis[$order->pointUi] = null;
@@ -81,6 +84,16 @@ class IndexAction extends \Controller\User\PrivateAction {
             $pointQueries[] = $pointQuery;
         }
 
+        /** @var Query\PaymentMethod\GetByOrderNumberErp[] $paymentMethodQueries */
+        $paymentMethodQueries = [];
+        foreach (array_chunk($orderNumberErps, 5) as $numbersInChunk) {
+            $paymentMethodQuery = new Query\PaymentMethod\GetByOrderNumberErp();
+            $paymentMethodQuery->regionId = $region->getId();
+            $paymentMethodQuery->numberErps = $numbersInChunk;
+            $paymentMethodQuery->prepare();
+            $paymentMethodQueries[] = $paymentMethodQuery;
+        }
+
         $curl->execute();
 
         /** @var \Model\Product\Entity[] $productsById */
@@ -103,11 +116,25 @@ class IndexAction extends \Controller\User\PrivateAction {
             }
         }
 
+        /** @var array */
+        $onlinePaymentAvailableByNumberErp = [];
+        foreach ($paymentMethodQueries as $paymentMethodQuery) {
+            foreach ($paymentMethodQuery->response->paymentMethodsByOrderNumberErp as $numberErp => $items) {
+                foreach ($items as $item) {
+                    if (5 == $item['id']) {
+                        $onlinePaymentAvailableByNumberErp[$numberErp] = true;
+                        break;
+                    }
+                }
+            }
+        }
+
         $page = new \View\User\Order\IndexPage();
         $page->setParam('ordersByYear', $ordersByYear);
         $page->setParam('productsById', $productsById);
         $page->setParam('orderCount', $orderCount);
         $page->setParam('pointsByUi', $pointsByUi);
+        $page->setParam('onlinePaymentAvailableByNumberErp', $onlinePaymentAvailableByNumberErp);
 
         return new \Http\Response($page->show());
     }

@@ -1,16 +1,17 @@
 <?php
 /**
- * @var $page         \View\User\OrdersPage
- * @var $helper       \Helper\TemplateHelper
- * @var $user         \Session\User
- * @var $orderCount   int
- * @var $ordersByYear array
- * @var $orders       \Model\User\Order\Entity[]
- * @var $orderProduct \Model\Order\Product\Entity|null
- * @var $product      \Model\Product\Entity|null
- * @var $productsById \Model\Product\Entity[]
- * @var $point        \Model\Point\PointEntity
- * @var $pointsByUi   \Model\Point\PointEntity[]
+ * @var $page                              \View\User\OrdersPage
+ * @var $helper                            \Helper\TemplateHelper
+ * @var $user                              \Session\User
+ * @var $orderCount                        int
+ * @var $ordersByYear                      array
+ * @var $orders                            \Model\User\Order\Entity[]
+ * @var $orderProduct                      \Model\Order\Product\Entity|null
+ * @var $product                           \Model\Product\Entity|null
+ * @var $productsById                      \Model\Product\Entity[]
+ * @var $point                             \Model\Point\PointEntity
+ * @var $pointsByUi                        \Model\Point\PointEntity[]
+ * @var $onlinePaymentAvailableByNumberErp bool[]
  */
 ?>
 
@@ -18,6 +19,8 @@
 $showStatus = \App::user()->getEntity() && in_array(\App::user()->getEntity()->getId(), ['1019768', '104406', '1036742', '764984', '395421', '180860', '197474', '54', '325127', '641265', '11446', '11447']);
 
 $currentYear = (int)(new \DateTime())->format('Y');
+
+$prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::config()->order['prepayment']['priceLimit'] : null;
 ?>
 
 <div class="personal">
@@ -51,7 +54,11 @@ $currentYear = (int)(new \DateTime())->format('Y');
                                     <div style="color: #868686">и еще <?= $moreProductCount . ' ' . $helper->numberChoice($moreProductCount, ['товар', 'товара', 'товаров']) ?></div>
                                 <? endif ?>
                             <? endif ?>
-                            <span class="personal-order__info warning">Требуется предоплата</span>
+                            <span class="personal-order__info warning">
+                            <? if ((null !== $prepaymentPriceLimit) && ($order->sum >= $prepaymentPriceLimit)): ?>
+                                Требуется предоплата
+                            <? endif ?>
+                            </span>
                         </div>
                         <div class="personal-order__cell">
                             <span class="personal-order__deliv-type">
@@ -73,7 +80,9 @@ $currentYear = (int)(new \DateTime())->format('Y');
                             <? if ($showStatus): ?>
                                 <span class="personal-order__status"><?= $order->getLastLifecycleStatus() ?></span>
                             <? endif ?>
-                            <span class="personal-order__pay-status online">Оплатить онлайн</span>
+                            <? if (isset($onlinePaymentAvailableByNumberErp[$order->numberErp]) && $onlinePaymentAvailableByNumberErp[$order->numberErp]): ?>
+                                <span class="personal-order__pay-status online">Оплатить онлайн</span>
+                            <? endif ?>
                         </div>
                         <div class="personal-order__cell">
                             <span class="personal-order__more">Еще

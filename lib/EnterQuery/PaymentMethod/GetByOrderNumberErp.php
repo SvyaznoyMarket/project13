@@ -34,9 +34,13 @@ namespace EnterQuery\PaymentMethod
             if (!$this->regionId) {
                 throw new \Exception('Не указан регион');
             }
+            if (!is_array($this->numberErps) || !$this->numberErps) {
+                throw new \Exception('Не указаны номера erp заказов');
+            }
 
             $queryParams = [
-                'geo_id' => $this->regionId,
+                'geo_id'     => $this->regionId,
+                'number_erp' => $this->numberErps,
             ];
 
             $this->prepareCurlQuery(
@@ -47,9 +51,22 @@ namespace EnterQuery\PaymentMethod
                 [
                 ], // data
                 function($response, $statusCode) {
-                    $result = $this->decodeResponse($response, $statusCode)['result'];
+                    $result = (array)$this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->paymentMethods = is_array($result) ? $result : [];
+                    foreach ($result as $orderNumberErp => $item) {
+                        $this->response->paymentMethodsByOrderNumberErp[$orderNumberErp] =
+                            isset($item['methods'][0])
+                            ? $item['methods']
+                            : []
+                        ;
+
+                        $this->response->paymentGroupsByOrderNumberErp[$orderNumberErp] =
+                            isset($item['groups'][0])
+                            ? $item['groups']
+                            : []
+                        ;
+                    }
+
 
                     return $result; // for cache
                 },
@@ -67,6 +84,8 @@ namespace EnterQuery\PaymentMethod\GetByOrderNumberErp
     class Response
     {
         /** @var array */
-        public $paymentMethods = [];
+        public $paymentMethodsByOrderNumberErp = [];
+        /** @var array */
+        public $paymentGroupsByOrderNumberErp = [];
     }
 }
