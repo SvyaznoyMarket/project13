@@ -16,10 +16,6 @@
         hidePopup = function(selector) {
             $(selector).remove();
             $('.overlay').remove();
-        },
-
-        shareLink = function(url) {
-            // TODO
         }
     ;
 
@@ -178,6 +174,5 @@
             console.error(error);
         }
     });
-
 
 }(jQuery));
