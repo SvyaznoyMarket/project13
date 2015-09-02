@@ -120,9 +120,9 @@ return function(
                                         <? endif; ?>
                                     <? endif; ?>
                                 </div>
-                                <? if ($order->delivery->point && $order->delivery->point->isSvyaznoy()) : ?>
+                                <? /* if ($order->delivery->point && $order->delivery->point->isSvyaznoy()) : ?>
                                     <span class="order-warning">В магазинах «Связной» не принимаются бонусы «Спасибо от Сбербанка»</span>
-                                <? endif ?>
+                                <? endif */ ?>
                             </div>
 
                             <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order/_payment.methods', ['order' => $order]) : '' ?>
