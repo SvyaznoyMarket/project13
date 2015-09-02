@@ -259,7 +259,6 @@ namespace Session {
                     if ($backendProduct) {
                         $sessionCart['product'][$key] = array_merge($sessionProduct, $this->createSessionProductFromBackendProduct($backendProduct));
                         $sessionCart['product'][$key]['isGone'] = false;
-                        $sessionCart['product'][$key]['isAvailable'] = (bool)$backendProduct->isAvailable();
                     } else {
                         // Если бэкэнд не вернул товар и не было ошибок запроса, то это означает, что товары были
                         // удалены (из ядра или scms) или заблокированы (в scms)
@@ -449,7 +448,7 @@ namespace Session {
                         'category'           => $cartProduct['category'],
                         'rootCategory'       => $cartProduct['rootCategory'],
                         'isCredit'           => isset($cartProduct['credit']['enabled']) && ($cartProduct['credit']['enabled'] === true),
-                        'isAvailable'        => $cartProduct['isAvailable'],
+                        'isAvailable'        => isset($cartProduct['isAvailable']) ? $cartProduct['isAvailable'] : true,
                         'deleteUrl'          => $helper->url('cart.product.setList', ['products' => [['ui' => $cartProduct['ui'], 'quantity' => '0']]]),
                         'decreaseUrl'        => $helper->url('cart.product.setList', ['products' => [['ui' => $cartProduct['ui'], 'quantity' => '-1']]]),
                         'increaseUrl'        => $helper->url('cart.product.setList', ['products' => [['ui' => $cartProduct['ui'], 'quantity' => '+1']]]),
@@ -549,6 +548,7 @@ namespace Session {
                 'url'               => $backendProduct->getLink(),
                 'isSlot'            => (bool)$backendProduct->getSlotPartnerOffer(),
                 'isOnlyFromPartner' => $backendProduct->isOnlyFromPartner(),
+                'isAvailable'       => (bool)$backendProduct->isAvailable(),
                 'rootCategory' => [
                     'id'    => $backendProduct->getRootCategory() ? $backendProduct->getRootCategory()->getId() : null,
                     'name'  => $backendProduct->getRootCategory() ? $backendProduct->getRootCategory()->getName() : null
@@ -586,7 +586,6 @@ namespace Session {
                         'referer' => null,
                         'quantity' => 0,
                         'isGone' => false,
-                        'isAvailable' => true,
                         'added' => null,
                     ];
                 }
