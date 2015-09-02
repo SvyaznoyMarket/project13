@@ -5,7 +5,6 @@
  * @requires    jQuery
  * @requires    enter.BaseViewClass
  * @requires    kladr
- * @requires    FormValidator
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  * [About kladr]{@link https://github.com/garakh/kladrapi-jsclient}
@@ -18,14 +17,13 @@
             'underscore',
             'enter.BaseViewClass',
             'kladr',
-            'FormValidator',
             'lscache'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, _, BaseViewClass, jKladr, FormValidator, lscache ) {
+    function( provide, $, _, BaseViewClass, jKladr, lscache ) {
         'use strict';
 
         var
@@ -78,30 +76,7 @@
                     apartment: this.orderView.$el.find('.' + CSS_CLASSES.APARTMENT_INPUT)
                 };
 
-                validationConfig = {
-                    fields: [
-                        {
-                            fieldNode: this.subViews.street,
-                            require: !!this.subViews.street.attr('data-required'),
-                            validateOnChange: true,
-                            errorMsg: 'Введите улицу'
-                        },
-                        {
-                            fieldNode: this.subViews.building,
-                            require: !!this.subViews.building.attr('data-required'),
-                            validateOnChange: true,
-                            errorMsg: 'Заполните поле'
-                        },
-                        {
-                            fieldNode: this.subViews.apartment,
-                            require: !!this.subViews.apartment.attr('data-required'),
-                            validateOnChange: true,
-                            errorMsg: 'Заполните поле'
-                        }
-                    ]
-                };
-
-                this.validator = new FormValidator(validationConfig);
+                this.validator = options.validator;
 
                 this.subViews.street.kladr({
                     type: $.kladr.type.street,

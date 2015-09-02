@@ -391,7 +391,7 @@
             FormValidator.prototype._markFieldValid = function( fieldNode ) {
                 this._unmarkField(fieldNode);
 
-                if ( fieldNode.val().length ) {
+                if ( fieldNode.val() && fieldNode.val().length ) {
                     fieldNode.addClass(this.config.validClass);
                 }
 

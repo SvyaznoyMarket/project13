@@ -6,6 +6,7 @@
  * @requires    enter.BaseViewClass
  * @requires    enter.suborder.view
  * @requires    enter.order.offer.popup
+ * @requires    FormValidator
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
@@ -16,13 +17,14 @@
             'jQuery',
             'enter.BaseViewClass',
             'enter.suborder.view',
-            'enter.order.offer.popup'
+            'enter.order.offer.popup',
+            'FormValidator'
         ],
         module
     );
 }(
     this.modules,
-    function( provide, $, BaseViewClass, SubOrderView, OfferPopupView ) {
+    function( provide, $, BaseViewClass, SubOrderView, OfferPopupView, FormValidator ) {
         'use strict';
 
         var
@@ -43,7 +45,10 @@
                 ACTIVE: 'active',
                 SMART_ADRRESS: 'jsSmartAddressBlock',
                 OFFER_POPUP: 'js-order-oferta-popup',
-                OFFER_POPUP_BTN: 'js-order-oferta-popup-bt'
+                OFFER_POPUP_BTN: 'js-order-oferta-popup-bt',
+                STREET_INPUT: 'js-smartadress-street',
+                BUILD_INPUT: 'js-smartadress-build',
+                APARTMENT_INPUT: 'js-smartadress-apartment'
             },
 
             $BODY = $('body');
@@ -64,7 +69,9 @@
                 var
                     self        = this,
                     suborders   = this.$el.find('.' + CSS_CLASSES.SUB_ORDER),
-                    smartAdress = this.$el.find('.' + CSS_CLASSES.SMART_ADRRESS);
+                    smartAdress = this.$el.find('.' + CSS_CLASSES.SMART_ADRRESS),
+
+                    validationConfig;
 
                 console.info(this.$el);
 
@@ -73,7 +80,10 @@
                     commentArea: this.$el.find('.' + CSS_CLASSES.COMMENT_AREA),
                     acceptCheckbox: this.$el.find('.' + CSS_CLASSES.ACCEPT_CHECKBOX),
                     offerPopup: $('.' + CSS_CLASSES.OFFER_POPUP),
-                    offerPopupContent: $('.' + CSS_CLASSES.OFFER_POPUP_CONTENT)
+                    offerPopupContent: $('.' + CSS_CLASSES.OFFER_POPUP_CONTENT),
+                    street: this.$el.find('.' + CSS_CLASSES.STREET_INPUT),
+                    building: this.$el.find('.' + CSS_CLASSES.BUILD_INPUT),
+                    apartment: this.$el.find('.' + CSS_CLASSES.APARTMENT_INPUT)
                 };
 
                 suborders.each(function( index ) {
@@ -83,11 +93,41 @@
                     });
                 });
 
+                validationConfig = {
+                    fields: [
+                        {
+                            fieldNode: this.subViews.acceptCheckbox,
+                            require: true
+                        },
+                        {
+                            fieldNode: this.subViews.street,
+                            require: !!this.subViews.street.attr('data-required'),
+                            validateOnChange: true,
+                            errorMsg: 'Введите улицу'
+                        },
+                        {
+                            fieldNode: this.subViews.building,
+                            require: !!this.subViews.building.attr('data-required'),
+                            validateOnChange: true,
+                            errorMsg: 'Заполните поле'
+                        },
+                        {
+                            fieldNode: this.subViews.apartment,
+                            require: !!this.subViews.apartment.attr('data-required'),
+                            validateOnChange: true,
+                            errorMsg: 'Заполните поле'
+                        }
+                    ]
+                };
+
+                this.validator = new FormValidator(validationConfig);
+
                 if ( smartAdress.length ) {
                     modules.require('enter.order.smartadress.view', function( OrderSmartAdress ) {
                         self.subViews.smartAdress = new OrderSmartAdress({
                             el: smartAdress,
-                            orderView: self
+                            orderView: self,
+                            validator: self.validator
                         });
                     });
                 }
@@ -193,10 +233,19 @@
              * @todo        Дописать обработчик. Валидировать подзаказы
              */
             submitOrder: function() {
-                if ( !this.subViews.acceptCheckbox.is(':checked') ) {
-                    // mark error
-                    return false;
-                }
+                var
+                    valid = false;
+
+                this.validator.validate({
+                    onInvalid: function( err ) {
+                        valid = false;
+                    },
+                    onValid: function() {
+                        valid = true;
+                    }
+                });
+
+                return valid;
             },
 
             showOfferPopup: function( event ) {
