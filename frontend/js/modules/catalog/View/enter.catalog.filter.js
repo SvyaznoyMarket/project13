@@ -28,6 +28,7 @@
         'use strict';
 
         var
+            overlayTransparent = $('.js-overlay-transparent'),
             /**
              * Используемые CSS классы
              *
@@ -78,6 +79,9 @@
 
                 this.sliders.each(this.initSlider.bind(this));
 
+                this.dropdownCloseBinded = this.dropdownClose.bind(this);
+                overlayTransparent.on('click', this.dropdownCloseBinded);
+
                 // Setup events
                 this.events['click .' + CSS_CLASSES.DROPDOWN_OPENER]    = 'toggleDropdown';
                 this.events['click .' + CSS_CLASSES.BRANDS_OPENER]      = 'toggleBrands';
@@ -96,7 +100,8 @@
              * @type        {Object}
              */
             events: {
-                'change': 'filterChanged'
+                'change': 'filterChanged',
+                'click .js-overlay-transparent': 'dropdownClose',
             },
 
             selectPriceRange: function( event ) {
@@ -383,10 +388,17 @@
                     isOpen          = currentDropdown.hasClass(CSS_CLASSES.DROPDOWN_OPEN);
 
                 dropdowns.removeClass(CSS_CLASSES.DROPDOWN_OPEN);
+                overlayTransparent.hide();
 
                 if ( !isOpen ) {
                     currentDropdown.addClass(CSS_CLASSES.DROPDOWN_OPEN);
+                    overlayTransparent.show();
                 }
+            },
+
+            dropdownClose: function() {
+                this.subViews.dropDowns.removeClass(CSS_CLASSES.DROPDOWN_OPEN);
+                overlayTransparent.hide();
             },
 
             /**

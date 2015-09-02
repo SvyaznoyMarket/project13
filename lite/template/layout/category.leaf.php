@@ -25,5 +25,6 @@
 
 	    <?= $page->blockPopupTemplates() ?>
 	    <div class="overlay js-overlay"></div>
+	    <div class="overlay-transparent js-overlay-transparent"></div>
 	</body>
 </html>
