@@ -1,0 +1,10 @@
+<ul class="delivery-logo-lst">
+    {{#partners}}
+        <!-- Для активности добавить класс active-->
+        <li class="delivery-logo-lst__i jsPartnerListItem" data-value="{{slug}}">
+            <img class="delivery-logo-lst__img" src="/styles/delivery/img/{{slug}}.png">
+            <!-- картинка для плоского фона - другая: <img class="delivery-logo-lst-i__img" src="/styles/delivery/img/logo1-plain.png"> -->
+            <div class="delivery-logo-lst__close icon-clear"></div>
+        </li>
+    {{/partners}}
+</ul>

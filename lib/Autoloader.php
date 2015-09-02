@@ -18,9 +18,13 @@ class Autoloader {
             $path = null;
             switch ($namespace) {
                 case 'View':
-                $class = lcfirst($class);
-                $path = $basePath . '/lite';
-                break;
+                    $class = lcfirst($class);
+                    $path = $basePath . '/lite';
+                    break;
+                case 'Controller':
+                    $class = lcfirst($class);
+                    $path = $basePath . '/lite';
+                    break;
             }
 
             $file = $path . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';

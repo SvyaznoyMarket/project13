@@ -12,13 +12,7 @@
 
 		<?= $page->blockHeader() ?>
 
-		<div class="wrapper wrapper-content">
-		    <main class="content">
-		    	<section class="section">
-		        	<?= $page->blockContent() ?>
-		        </section>
-		    </main>
-		</div>
+		<?= $page->blockContent() ?>
 
 		<hr class="hr-orange">
 
