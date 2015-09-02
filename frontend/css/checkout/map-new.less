@@ -71,7 +71,6 @@
         // &:not(.no-hidden):hover {
         //     .delivery-points-list__info {
         //         padding-top: 0;
-
         //         vertical-align: middle;
         //         &-btn {
         //             display: block;
@@ -115,8 +114,8 @@
         position: relative;
 
         width: 219px;
-        max-width: 219px;
         min-width: 0;
+        max-width: 219px;
         margin: 0 0 5px 5px;
         padding: 10px 5px 10px 10px;
         &-name {
@@ -133,8 +132,9 @@
         &-time {
             clear: both;
 
-            color: @grey-bright;
             word-wrap: break-word;
+
+            color: @grey-bright;
 
             .font-face('GloberRegular');
         }
@@ -379,7 +379,10 @@
         }
     }
     &-suggest {
+        position: relative;
+        top: 0;
 
+        width: 399px;
         .ui-autocomplete {
             position: absolute;
             z-index: 40;
@@ -388,24 +391,29 @@
 
             overflow: auto;
 
-            max-height: 160px;
             width: 100%;
             min-height: 100px;
+            max-height: 160px;
             padding: 0;
 
             border: 1px solid @grey-light-2;
             background-color: @white;
+            border-top: 0;
             & > li {
-                margin: 0;
-                padding: 4px 10px 2px;
-                color: @grey-type;
-                .font-size(14);
                 font-family: GloberRegular;
 
+                margin: 0;
+                padding: 4px 10px 2px;
+
                 cursor: pointer;
+
+                color: @grey-type;
+
+                .font-size(14);
+                &.ui-state-focus,
                 &:hover {
-                    background: @orange-light-4;
                     color: @orange-bright;
+                    background: @orange-light-4;
                 }
             }
         }
