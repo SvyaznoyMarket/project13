@@ -1,4 +1,4 @@
-<div class="popup js-order-oferta-popup">
+<div class="popup popup_710 js-order-oferta-popup">
     <div class="popup__close js-popup-close">×</div>
 
     <div class="popup_inn">
