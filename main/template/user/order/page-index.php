@@ -79,15 +79,17 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
                         <div class="personal-order__cell">
                             <? if ($showStatus): ?>
                                 <span class="personal-order__status"><?= $order->getLastLifecycleStatus() ?></span>
-                            <? endif ?>
-                            <? if (isset($onlinePaymentAvailableByNumberErp[$order->numberErp]) && $onlinePaymentAvailableByNumberErp[$order->numberErp]): ?>
-                                <span class="personal-order__pay-status online">Оплатить онлайн</span>
+                                <? if (isset($onlinePaymentAvailableByNumberErp[$order->numberErp]) && $onlinePaymentAvailableByNumberErp[$order->numberErp]): ?>
+                                    <!--<span class="personal-order__pay-status online">Оплатить онлайн</span>-->
+                                <? endif ?>
                             <? endif ?>
                         </div>
                         <div class="personal-order__cell">
+                            <!--
                             <span class="personal-order__more">Еще
                                 <div class="personal-order__cancel">Повторить заказ</div>
                             </span>
+                            -->
                         </div>
                     </div>
                 <? endforeach ?>
@@ -95,6 +97,7 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
         </div>
     <? endforeach ?>
 
+    <? if (false): ?>
     <div class="personal__orders">
         <div class="personal-order__block expanded">
                 <span class="personal-order__year-container">
@@ -161,5 +164,6 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
             </div>
         </div>
     </div>
+    <? endif ?>
 
 </div>
