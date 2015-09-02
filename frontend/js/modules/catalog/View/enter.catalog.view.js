@@ -3,6 +3,7 @@
  * @version     0.1
  *
  * @requires    jQuery
+ * @requires    underscore
  * @requires    Mustache
  * @requires    docCookies
  * @requires    enter.BaseViewClass
@@ -539,13 +540,6 @@
                     productsHtml, paginationHtml, selectedFiltersHtml;
 
                 console.info('enter.catalog~CatalogView#renderCatalog');
-
-                // Validation
-                if ( !_.isObject(data) || !_.isObject(data.list) || !_.isArray(data.list.products) || !data.list.products.length ) {
-                    console.warn('Render empty listing');
-                    // render error
-                    // return;
-                }
 
                 productsHtml        = this.render.products.bind(this, data.list.products || []);
                 paginationHtml      = this.render.pagination(data.pagination);

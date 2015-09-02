@@ -61,7 +61,7 @@
              * @constructs  SubOrderView
              */
             initialize: function( options ) {
-                console.warn('module:enter.suborder.view~SubOrderView#initialize', this.$el.attr('data-block_name'), this.$el);
+                console.warn('module:enter.suborder.view~SubOrderView#initialize');
 
                 var
                     self            = this,
@@ -223,10 +223,10 @@
                 console.dir(data);
                 console.groupEnd();
 
-                // this.orderView.trigger('sendChanges', {
-                //     action: 'changePaymentMethod',
-                //     data: data
-                // });
+                this.orderView.trigger('sendChanges', {
+                    action: 'changePaymentMethod',
+                    data: data
+                });
 
                 return false;
             },

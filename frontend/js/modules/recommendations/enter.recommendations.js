@@ -7,7 +7,11 @@
 !function( modules, module ) {
     modules.define(
         'enter.recommendations',
-        ['jQuery', 'enter.recommendation.view', 'jquery.slick'],
+        [
+            'jQuery',
+            'enter.recommendation.view',
+            'jquery.slick'
+        ],
         module
     );
 }(
@@ -16,7 +20,18 @@
         'use strict';
 
         provide({
-            init: function(el){
+            init: function( el ) {
+                var
+                    $el         = $(el),
+                    inited      = $el.prop('inited');
+
+                if ( inited ) {
+                    // console.warn('--- element %s initialized! ---', $el);
+                    return;
+                }
+
+                $el.prop('inited', true);
+
                 new RecommendationView({
                     el: $(el)
                 })

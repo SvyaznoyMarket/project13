@@ -2,6 +2,7 @@
  * @module      deliveryPage.point.model
  * @version     0.1
  *
+ * @requires    underscore
  * @requires    Backbone
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}

@@ -69,11 +69,7 @@
                 var
                     self        = this,
                     suborders   = this.$el.find('.' + CSS_CLASSES.SUB_ORDER),
-                    smartAdress = this.$el.find('.' + CSS_CLASSES.SMART_ADRRESS),
-
-                    validationConfig;
-
-                console.info(this.$el);
+                    smartAdress = this.$el.find('.' + CSS_CLASSES.SMART_ADRRESS);
 
                 this.subViews = {
                     commentBtn: this.$el.find('.' + CSS_CLASSES.COMMENT_BTN),
@@ -93,7 +89,7 @@
                     });
                 });
 
-                validationConfig = {
+                this.validator = new FormValidator({
                     fields: [
                         {
                             fieldNode: this.subViews.acceptCheckbox,
@@ -118,9 +114,7 @@
                             errorMsg: 'Заполните поле'
                         }
                     ]
-                };
-
-                this.validator = new FormValidator(validationConfig);
+                });
 
                 if ( smartAdress.length ) {
                     modules.require('enter.order.smartadress.view', function( OrderSmartAdress ) {
@@ -229,8 +223,6 @@
              *
              * @method      submitOrder
              * @memberOf    module:enter.order.step2.view~OrderStep2View#
-             *
-             * @todo        Дописать обработчик. Валидировать подзаказы
              */
             submitOrder: function() {
                 var
@@ -248,6 +240,12 @@
                 return valid;
             },
 
+            /**
+             * Показ окна с оффертой
+             *
+             * @method      showOfferPopup
+             * @memberOf    module:enter.order.step2.view~OrderStep2View#
+             */
             showOfferPopup: function( event ) {
                 var
                     target   = $(event.currentTarget),

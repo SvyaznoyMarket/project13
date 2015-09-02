@@ -51,15 +51,12 @@
              * @constructs  OrderView
              */
             initialize: function( options ) {
-                var
-                    validationConfig;
 
                 // маски для полей ввода
                 $.mask.autoclear = false;
 
                 this.$el.find('input').each(function( i,elem ) {
                     if ($(elem).data('mask')) $(elem).mask($(elem).data('mask'));
-                    // if ($(elem).val().length > 0) $(elem).addClass(CSS_CLASSES.valid);
                 });
 
                 this.subViews = {
@@ -68,7 +65,7 @@
                     name: this.$el.find('.' + CSS_CLASSES.nameField)
                 };
 
-                validationConfig = {
+                this.validator = new FormValidator({
                     fields: [
                         {
                             fieldNode: this.subViews.email,
@@ -88,13 +85,10 @@
                             validateOnChange: true
                         }
                     ]
-                };
-
-                this.validator = new FormValidator(validationConfig);
+                });
 
                 this.subViews.phone.focus();
 
-                // this.events['keyup input']  = 'validateForm';
                 this.events['submit form']  = 'formSubmit';
 
                 // Apply events

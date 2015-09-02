@@ -2,7 +2,10 @@
  * @module      enter.points.popup.view
  * @version     0.1
  *
+ * @requires    jQuery
  * @requires    enter.ui.BasePopup
+ * @requires    jquery.ui
+ * @requires    Mustache
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */

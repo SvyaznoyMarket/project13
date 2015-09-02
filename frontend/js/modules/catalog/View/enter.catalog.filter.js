@@ -3,9 +3,9 @@
  * @version     0.1
  *
  * @requires    jQuery
+ * @requires    Mustache
  * @requires    enter.BaseViewClass
  * @requires    urlHelper
- * @requires    Mustache
  * @requires    jquery.ui
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}

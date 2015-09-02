@@ -8,6 +8,7 @@
  * @requires    enter.userbar.view
  * @requires    enter.feedback.popup.view
  * @requires    jquery.visible
+ * @requires    jquery.scrollTo
  * @requires    findModules
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}

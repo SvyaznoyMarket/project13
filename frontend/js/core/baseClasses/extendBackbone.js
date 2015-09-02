@@ -76,9 +76,6 @@
                     delete currentAjaxCalls[rid];
                 };
 
-
-            console.info('Backbone.ajax',requestID);
-
             xhr.__requestID = requestID;
             currentAjaxCalls[requestID] = xhr;
             xhr.always(alwaysCb.bind(this, requestID));
@@ -99,8 +96,6 @@
                 // Уникальная строка, позволяющая отделить собственный 'abort' запроса от реальной ошибки при выполнении запроса
                 uuid = generateUUID(),
                 key;
-
-            console.warn('Backbone.disposeAjax', id);
 
             if ( id ) {
                 if ( currentAjaxCalls.hasOwnProperty(id) ) {

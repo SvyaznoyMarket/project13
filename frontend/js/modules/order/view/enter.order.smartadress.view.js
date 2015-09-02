@@ -5,6 +5,7 @@
  * @requires    jQuery
  * @requires    enter.BaseViewClass
  * @requires    kladr
+ * @requires    lscache
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  * [About kladr]{@link https://github.com/garakh/kladrapi-jsclient}

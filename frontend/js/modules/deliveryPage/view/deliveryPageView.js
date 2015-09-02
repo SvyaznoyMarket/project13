@@ -3,8 +3,11 @@
  * @version     0.1
  *
  * @requires    jQuery
+ * @requires    underscore
  * @requires    enter.BaseViewClass
  * @requires    deliveryPage.points.collection
+ * @requires    Mustache
+ * @requires    jquery.scrollTo
  *
  * [About YM Modules]{@link https://github.com/ymaps/modules}
  */
