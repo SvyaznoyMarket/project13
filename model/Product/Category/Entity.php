@@ -61,6 +61,7 @@ class Entity extends BasicEntity {
 
         if (isset($data['parent_id'])) $this->setParentId($data['parent_id']); // Берётся из http://search.enter.ru/category/tree (из элемента "children") и http://api.enter.ru/v2/product/get (из элемента "category")
         if (isset($data['parent']['id'])) $this->setParentId($data['parent']['id']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets
+        if (isset($data['parent']['core_id'])) $this->setParentId($data['parent']['core_id']); // Берётся из https://scms.enter.ru/product/get-description/v1, https://scms.enter.ru/category/gets
 
         if (isset($data['main'])) $this->isMain = (bool)$data['main'];
         if (isset($data['is_furniture'])) $this->setIsFurniture($data['is_furniture']);

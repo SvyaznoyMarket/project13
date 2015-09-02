@@ -2,11 +2,14 @@
 
 namespace Controller\ProductCategory;
 
+use EnterApplication\CurlTrait;
 use Model\Product\Filter\Entity;
 use View\Partial\ProductCategory\RootPage\Brands;
 use View\Product\FilterForm;
 
 class Action {
+    use CurlTrait;
+
     protected $pageTitle;
 
     /**
@@ -645,6 +648,32 @@ class Action {
 
         \App::coreClientV2()->execute();
 
+        // избранные товары пользователя
+        /** @var \Model\Favorite\Product\Entity[] $favoriteProductsByUi */
+        $favoriteProductsByUi = [];
+        call_user_func(function() use (&$products, &$favoriteProductsByUi) {
+            $userUi = \App::user()->getEntity() ? \App::user()->getEntity()->getUi() : null;
+            if (!$userUi) return;
+            $productUis = array_map(function(\Model\Product\Entity $product) { return $product->ui; }, $products);
+            if (!$productUis) return;
+
+            $favoriteQuery = new \EnterQuery\User\Favorite\Check($userUi, $productUis);
+            $favoriteQuery->prepare();
+
+            $this->getCurl()->execute();
+
+            // избранные товары
+            $favoriteProductsByUi = [];
+            foreach ($favoriteQuery->response->products as $item) {
+                if (!isset($item['is_favorite']) || !$item['is_favorite']) continue;
+
+                $ui = isset($item['uid']) ? (string)$item['uid'] : null;
+                if (!$ui) continue;
+
+                $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
+            }
+        });
+
         if (!$products && 'true' == $request->get('ajax') && !\App::config()->lite['enabled']) {
             throw new \Exception('Товары не найдены');
         }
@@ -700,7 +729,8 @@ class Action {
                     $columnCount,
                     $productView,
                     [],
-                    $category
+                    $category,
+                    $favoriteProductsByUi
                 ),
                 'selectedFilter' => $selectedFilter->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -734,6 +764,7 @@ class Action {
 
         $page->setParam('smartChoiceProducts', $smartChoiceData);
         $page->setParam('productPager', $productPager);
+        $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
         $page->setParam('hasBanner', $hasBanner);
@@ -771,9 +802,6 @@ class Action {
 
     private function setPageTitle(\Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null) {
         $this->pageTitle = $category->getName();
-        if ($brand) {
-            $this->pageTitle .= ' ' . $brand->getName();
-        }
     }
 
 

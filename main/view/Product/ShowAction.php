@@ -25,8 +25,11 @@ class ShowAction {
         $reviewtAction = null,
         $imageSourceType = 'product_160',
         array $cartButtonSender = [],
-        \Model\Product\Category\Entity $category = null
+        \Model\Product\Category\Entity $category = null,
+        \Model\Favorite\Product\Entity $favoriteProduct = null
     ) {
+        $router = \App::router();
+
         if ($product->isInShopOnly()) {
             $inShopOnlyLabel = ['name' => 'Только в магазинах'];
         } else {
@@ -95,7 +98,32 @@ class ShowAction {
             'brandImage'    => $product->getBrand() && $product->getBrand()->getImage() ? $product->getBrand()->getImage() : null,
             'isSlot' => (bool)$product->getSlotPartnerOffer(),
             'isOnlyFromPartner' => $product->isOnlyFromPartner(),
-            'isNewWindow'       => \App::abTest()->isNewWindow() // открытие товаров в новом окне
+            'isNewWindow'       => \App::abTest()->isNewWindow(), // открытие товаров в новом окне
+            'compareButton'     => [
+                'id'                => $product->id,
+                'typeId'            => $product->getType() ? $product->getType()->getId() : null,
+                'addUrl'            => $router->generate('compare.add', ['productId' => $product->getId(), 'location' => 'product']),
+                'isSlot'            => (bool)$product->getSlotPartnerOffer(),
+                'isOnlyFromPartner' => $product->isOnlyFromPartner(),
+            ],
+            'favoriteButton'     =>
+                [
+                    'ui' => $product->ui,
+                ]
+                + (
+                    $favoriteProduct && $favoriteProduct->isFavourite
+                    ? [
+                        'isInFavorite' => true,
+                        'url'          => $helper->url('favorite.delete', ['productUi' => $product->getUi()]),
+                        'text'         => 'Убрать из избранного',
+                    ]
+                    : [
+                        'isInFavorite' => false,
+                        'url'          => $helper->url('favorite.add', ['productUi' => $product->getUi()]),
+                        'text'         => 'В избранное',
+                    ]
+                )
+            ,
         ];
 
         // Дополняем свойствами для каталога в виде листинга
@@ -106,13 +134,13 @@ class ShowAction {
                     'value' => $entity->getStringValue(),
 
                 ];
-            }, $product->getPropertiesInView(3));
+            }, $product->getPropertiesInView(5));
         }
 
         // oldPrice and priceSale
         if ( $product->getPriceOld() && $product->getLabel()) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
-            $productItem['priceSale'] = round( ( 1 - ($product->getPrice() / $product->getPriceOld() ) ) *100, 0 );
+            $productItem['priceSale'] = ($product->getPrice() < $product->getPriceOld()) ? round($product->getPrice() - $product->getPriceOld(), 0) : 0; //round((1 - ($product->getPrice() / $product->getPriceOld())) * 100, 0);
             $productItem['showPriceSale'] = AbTest::isShowSalePercentage();
         }
 

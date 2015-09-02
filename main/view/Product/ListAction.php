@@ -23,7 +23,8 @@ class ListAction {
         $columnCount = 4,
         $view = 'compact',
         array $cartButtonSender = [],
-        \Model\Product\Category\Entity $category = null
+        \Model\Product\Category\Entity $category = null,
+        $favoriteProductsByUi = []
     ) {
         /** @var \Model\Product\Entity $product */
 
@@ -51,7 +52,8 @@ class ListAction {
                 $reviewAction,
                 (3 === $columnCount) ? 'product_350' : 'product_200',
                 $cartButtonSender,
-                $category
+                $category,
+                isset($favoriteProductsByUi[$product->ui]) ? $favoriteProductsByUi[$product->ui] : null
             );
         }
 

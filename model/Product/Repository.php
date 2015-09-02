@@ -68,18 +68,16 @@ class Repository {
      * Подготавливает запросы к ядру и scms для получения данных товаров. После выполнения запросов те товары, для
      * которых ядро или scms не вернули данных будут удалены из массива $products (ключи массива изменены не будут), а
      * остальные товары будут заполнены данными из ядра и scms.
+     *
+     * TODO разбить на несколько функций: prepareProductQueriesById, prepareProductQueriesByUi, prepareProductQueriesByBarcode
      * 
      * @param \Model\Product\Entity[] $products У всех товаров должны быть заданы id или ui или barcode (притом, если у
      *                                          первого товара задан id, то и у всех товаров должен быть задан именно
      *                                          id; аналогично для ui и barcode)
      * @param string $options Необходимые свойства товаров, через пробел: model media property label brand category
-     * @param \Closure $finalCallback($firstException) Вызывается один раз после выполнения последнего из запросов
-     *                                                 (успешного или неудачного). Функции будет передано первое из
-     *                                                 возникших при выполнении HTTP запросов исключений или null, если
-     *                                                 ошибок HTTP запросов не было
      * @throws
      */
-    public function prepareProductQueries(array &$products, $options = '', \Model\Region\Entity $region = null, $finalCallback = null) {
+    public function prepareProductQueries(array &$products, $options = '', \Model\Region\Entity $region = null) {
         $options = trim($options) ? explode(' ', (string)$options) : [];
         $unavailableOptions = array_diff($options, ['model', 'media', 'property', 'label', 'brand', 'category']);
         if ($unavailableOptions) {
@@ -119,12 +117,7 @@ class Repository {
             return;
         }
 
-        $productIdentifierChunks = array_chunk($productIdentifiers, \App::config()->coreV2['chunk_size']);
-        $callCount = 0;
-        $expectedCallCount = count($productIdentifierChunks) * 2;
-        $firstException = null;
-
-        foreach ($productIdentifierChunks as $productIdentifierChunk) {
+        foreach (array_chunk($productIdentifiers, \App::config()->coreV2['chunk_size']) as $productIdentifierChunk) {
             \App::coreClientV2()->addQuery(
                 'product/get-v3',
                 [
@@ -133,9 +126,7 @@ class Repository {
                     $coreProductIdentifierName => $productIdentifierChunk,
                 ] + (!in_array('model', $options, true) ? ['withModels' => 0] : []),
                 [],
-                function($response) use(&$products, &$modelProductIdentifierName, &$coreProductIdentifierName, &$productIdentifierChunk, &$callCount, &$expectedCallCount, &$firstException, &$finalCallback) {
-                    $callCount++;
-
+                function($response) use(&$products, &$modelProductIdentifierName, &$coreProductIdentifierName, $productIdentifierChunk) {
                     $coreProductsByIdentifier = [];
                     call_user_func(function() use(&$response, &$coreProductsByIdentifier, &$coreProductIdentifierName) {
                         if (is_array($response)) {
@@ -152,53 +143,24 @@ class Repository {
                             unset($products[$key]);
                         }
                     }
-
-                    if ($finalCallback && $callCount == $expectedCallCount) {
-                        $finalCallback($firstException);
-                    }
                 },
-                function(\Exception $e) use(&$products, &$modelProductIdentifierName, &$productIdentifierChunk, &$callCount, &$expectedCallCount, &$firstException, &$finalCallback) {
-                    $callCount++;
-                    
-                    if (!$firstException) {
-                        $firstException = $e;
-                    }
-
+                function() use(&$products, &$modelProductIdentifierName, $productIdentifierChunk) {
                     foreach ($products as $key => $product) {
                         if (in_array($product->$modelProductIdentifierName, $productIdentifierChunk, true)) {
                             unset($products[$key]);
                         }
                     }
-
-                    if ($finalCallback && $callCount == $expectedCallCount) {
-                        $finalCallback($firstException);
-                    }
                 }
             );
         }
 
-        // TODO: удалить данный блок после реализации FCMS-778
-        call_user_func(function() use(&$products, &$productIdentifiers, &$modelProductIdentifierName, &$scmsProductRequestIdentifierName, &$scmsProductResponseIdentifierName) {
-            if ($modelProductIdentifierName === 'barcode') {
-                \App::coreClientV2()->execute();
-
-                $modelProductIdentifierName = 'id';
-                $scmsProductRequestIdentifierName = 'ids';
-                $scmsProductResponseIdentifierName = 'core_id';
-
-                $productIdentifiers = array_filter(array_map(function(\Model\Product\Entity $product) use(&$entityIdentifierName) { return $product->$entityIdentifierName; }, $products));
-            }
-        });
-
         // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
-        foreach ($productIdentifierChunks as $productIdentifierChunk) {
+        foreach (array_chunk($productIdentifiers, \App::config()->coreV2['chunk_size']) as $productIdentifierChunk) {
             \App::scmsClient()->addQuery(
                 'product/get-description/v1',
                 [$scmsProductRequestIdentifierName => $productIdentifierChunk] + array_fill_keys(array_intersect($options, ['media', 'property', 'label', 'brand', 'category']), 1),
                 [],
-                function($response) use(&$products, &$modelProductIdentifierName, &$scmsProductResponseIdentifierName, &$productIdentifierChunk, &$callCount, &$expectedCallCount, &$firstException, &$finalCallback) {
-                    $callCount++;
-
+                function($response) use(&$products, &$modelProductIdentifierName, &$scmsProductResponseIdentifierName, $productIdentifierChunk) {
                     $scmsProductsByIdentifier = [];
                     call_user_func(function() use(&$response, &$scmsProductsByIdentifier, &$scmsProductResponseIdentifierName) {
                         if (isset($response['products']) && is_array($response['products'])) {
@@ -215,26 +177,12 @@ class Repository {
                             unset($products[$key]);
                         }
                     }
-
-                    if ($finalCallback && $callCount == $expectedCallCount) {
-                        $finalCallback($firstException);
-                    }
                 },
-                function(\Exception $e) use(&$products, &$modelProductIdentifierName, &$productIdentifierChunk, &$callCount, &$expectedCallCount, &$firstException, &$finalCallback) {
-                    $callCount++;
-                    
-                    if (!$firstException) {
-                        $firstException = $e;
-                    }
-
+                function() use(&$products, &$modelProductIdentifierName, $productIdentifierChunk) {
                     foreach ($products as $key => $product) {
                         if (in_array($product->$modelProductIdentifierName, $productIdentifierChunk, true)) {
                             unset($products[$key]);
                         }
-                    }
-
-                    if ($finalCallback && $callCount == $expectedCallCount) {
-                        $finalCallback($firstException);
                     }
                 }
             );
@@ -303,6 +251,7 @@ class Repository {
             $result[$id]['count'] = isset($kitCountById[$id]) ? $kitCountById[$id] : 0;
 
             if (\App::config()->lite['enabled']) {
+                $result[$id]['stockCount'] = $product->getStockWithMaxQuantity() ? $product->getStockWithMaxQuantity()->getQuantity() : 0;
                 $result[$id]['product'] = $product;
             }
 

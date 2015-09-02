@@ -2,7 +2,7 @@
 /**
  * @var $banners \Model\Banner\BannerEntity[]
  */
-$isArrowsVisible = count($banners) > 4
+$isArrowsVisible = count($banners) > 4;
 ?>
 
 <? if (!empty($banners)) : ?>
@@ -24,7 +24,7 @@ $isArrowsVisible = count($banners) > 4
                 <img class="slidesbnnr_thmbs_img <?= $key == 0 ? 'slidesbnnr_thmbs_img-act' : '' ?>"
                      src="<?= $banner->getImageSmall() ?>"
                      alt=""
-                     data-timeout="1500"
+                     data-timeout="5000"
                 />
             </li>
             <? endforeach ?>

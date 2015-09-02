@@ -4,8 +4,11 @@ namespace Controller\OrderV3;
 
 use Model\OrderDelivery\Error;
 use Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
+use Session\AbTest\ABHelperTrait;
 
 class DeliveryAction extends OrderV3 {
+    use ABHelperTrait;
+
     /** Main function
      * @param \Http\Request $request
      * @return \Http\Response
@@ -148,7 +151,7 @@ class DeliveryAction extends OrderV3 {
                             'id' => $cartProduct->id,
                             'quantity' => $cartProduct->quantity,
                         ];
-                    }, $this->cart->getInOrderProductsById()),
+                    }, $this->cart->getProductsById()),
                 ]
             ];
 
@@ -157,6 +160,22 @@ class DeliveryAction extends OrderV3 {
             }
 
             if (!empty($this->cart->getCreditProductIds())) $splitData['payment_method_id'] = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT;
+
+            try {
+                // SITE-6016
+                if (in_array(\App::user()->getRegion()->parentId, [76, 90])) { // Воронеж, Ярославль
+                    switch ( \App::abTest()->getTest('order_delivery_type')->getChosenCase()->getKey()) {
+                        case 'self':
+                            $splitData += ['delivery_type' => 'self'];
+                            break;
+                        case 'delivery':
+                            $splitData += ['delivery_type' => 'standart'];
+                            break;
+                    }
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
+            }
         }
 
 
