@@ -105,7 +105,10 @@
                     select: this.selectAutocompleteItem.bind(this),
                     appendTo: this.subViews.autocomplete,
                     open: function() {
-                        console.log('open');
+                        self.subViews.autocomplete.find('.ui-autocomplete').css({
+                            left: 0,
+                            top: 0
+                        });
                         self.subViews.filterOverlay.show();
                         self.subViews.autocomplete.show();
                     },
@@ -114,9 +117,7 @@
 
                 // Setup events
                 this.events['click .' + CSS_CLASSES.PICK_POINT]               = 'pickPoint';
-                // this.events['keyup .' + CSS_CLASSES.SEARCH]                   = 'searchAddress';
                 this.events['click .' + CSS_CLASSES.POINT_OPENER]             = 'openPointsFilter';
-                // this.events['click .' + CSS_CLASSES.AUTOCOMPLETE_ITEM]        = 'selectAutocompleteItem';
                 this.events['change .' + CSS_CLASSES.POINT_FILTER_PARAM]      = 'applyFilter';
                 this.events['click .' + CSS_CLASSES.POINTS_BALOON_CHOOSE_BTN] = 'pickPoint';
 

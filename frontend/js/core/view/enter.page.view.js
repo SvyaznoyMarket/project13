@@ -92,13 +92,11 @@
                     el: feedbackPopup
                 });
 
-                console.log(this.subViews.feedbackPopup);
-
                 // Setup events
-                this.events['click .' + CSS_CLASSES.LOGIN_POPUP_BTN] = 'showLoginPopup';
-                this.events['click .' + CSS_CLASSES.FEEDBACK_BTN]    = 'showFeedbackPopup';
+                this.events['click .' + CSS_CLASSES.LOGIN_POPUP_BTN]   = 'showLoginPopup';
+                this.events['click .' + CSS_CLASSES.FEEDBACK_BTN]      = 'showFeedbackPopup';
                 this.events['click .' + CSS_CLASSES.CHANGE_REGION_LNK] = 'showRegionPopup';
-                this.events['click .' + CSS_CLASSES.GO_TO_LNK]  = 'goToTarget';
+                this.events['click .' + CSS_CLASSES.GO_TO_LNK]         = 'goToTarget';
 
                 window.onbeforeunload = function() {
                     self.$el.addClass(CSS_CLASSES.LOADER);
@@ -119,9 +117,13 @@
                 'DOMNodeInserted': 'change'
             },
 
+            /**
+             * Показ окна с формой обратной связи
+             *
+             * @method      showFeedbackPopup
+             * @memberOf    module:enter.page.view~EnterPageView#
+             */
             showFeedbackPopup: function() {
-                console.info('showFeedbackPopup');
-                console.log(this.subViews);
                 this.subViews.feedbackPopup.show();
 
                 return false;
@@ -137,8 +139,13 @@
                 return false;
             },
 
+            /**
+             * Показ окна с выбором региона
+             *
+             * @method      showRegionPopup
+             * @memberOf    module:enter.page.view~EnterPageView#
+             */
             showRegionPopup: function() {
-                console.info('showRegionPopup');
                 modules.require('enter.region', function(module){
                     if (typeof module.show == 'function') {
                         module.show()
@@ -147,9 +154,13 @@
                 return false;
             },
 
+            /**
+             * Показ окна с формой авторизации
+             *
+             * @method      showLoginPopup
+             * @memberOf    module:enter.page.view~EnterPageView#
+             */
             showLoginPopup: function() {
-                console.warn('showLoginPopup');
-
                 var
                     self = this;
 
