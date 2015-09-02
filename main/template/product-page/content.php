@@ -29,6 +29,8 @@
 
 $helper = \App::helper();
 
+if (!isset($additionalData)) $additionalData = [];
+
 $isProductAvailable = $product->isAvailable();
 if (\App::config()->preview) $isProductAvailable = true;
 

@@ -41,10 +41,11 @@ foreach ($orders as $order) {
         if (
             in_array(\App::user()->getRegion()->parentId, [76, 90])  // Воронеж, Ярославль
             && in_array($testKey, ['self', 'delivery'])
+            && $order->getDelivery()
         ) {
             $data[] = [
                 'category' => 'delivery_option',
-                'action'   => ('self' === $testKey) ? 'buy_pickup' : 'buy_delivery',
+                'action'   => $order->getDelivery()->isShipping ? 'buy_delivery' : 'buy_pickup',
                 'label'    => '',
             ];
         }
