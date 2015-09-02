@@ -19,5 +19,5 @@ return function(
         <div class="order-error order-error--hint">">Вы хотели <?= $error->details['requested_amount'] ?> шт. Есть только <?= $error->details['max_available_quantity'] ?> шт.</div>
     <? endif; ?>
     <? endif; ?>
-
+    <div class="order-error order-error--hint">">Вы хотели <?= $error->details['requested_amount'] ?> шт. Есть только <?= $error->details['max_available_quantity'] ?> шт.</div>
 <? } ?>

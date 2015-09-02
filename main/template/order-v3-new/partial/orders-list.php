@@ -39,14 +39,11 @@ return function (
                             class="order-bill__oferta js-order-oferta-popup-btn" href="<?= $order->seller->offer ?>"
                             data-value="<?= $order->seller->offer ?>" target="_blank">Информация и оферта</a></div>
                 <? endif ?>
-                <? /*if (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_cost > \App::config()->order['prepayment']['priceLimit'])) : ?>
-                    <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span
-                            class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay"
-                                                                                                     target="_blank">Подробнее</a></span>
-                    </div>
-                <? endif; */?>
+                
 
                 <? foreach ($order->products as $product): ?>
+                    <?= $helper->render('order-v3-new/partial/errors', [ 'orderDelivery' => $orderDelivery, 'order' => $order, 'product' => $product ]) ?>
+
                     <div class="order-good__item">
                         <a href="<?= $product->link ?>" class="order-good__item-lk" target="_blank">
                             <img class="order-good__img" src="<?= $product->getMainImageUrl('product_60') ?>"
@@ -83,7 +80,7 @@ return function (
 
                         <span class="order-good__total-price"><?= $helper->formatPrice($product->original_price) ?>
                             <span class="rubl">p</span></span>
-                        <?= $helper->render('order-v3-new/__errors', ['orderDelivery' => $orderDelivery, 'order' => $order, 'product' => $product]) ?>
+
                     </div>
                 <? endforeach ?>
 
