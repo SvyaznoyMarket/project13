@@ -25,6 +25,17 @@
 
         provide({
             init: function( el ) {
+                var
+                    $el         = $(el),
+                    inited      = $el.prop('inited');
+
+                if ( inited ) {
+                    // console.warn('--- element %s initialized! ---', $el);
+                    return;
+                }
+
+                $el.prop('inited', true);
+
                 new OrderView({
                     el: $(el)
                 });

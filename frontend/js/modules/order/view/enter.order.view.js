@@ -59,7 +59,7 @@
 
                 this.$el.find('input').each(function( i,elem ) {
                     if ($(elem).data('mask')) $(elem).mask($(elem).data('mask'));
-                    if ($(elem).val().length > 0) $(elem).addClass(CSS_CLASSES.valid);
+                    // if ($(elem).val().length > 0) $(elem).addClass(CSS_CLASSES.valid);
                 });
 
                 this.subViews = {
@@ -91,6 +91,8 @@
                 };
 
                 this.validator = new FormValidator(validationConfig);
+
+                this.subViews.phone.focus();
 
                 // this.events['keyup input']  = 'validateForm';
                 this.events['submit form']  = 'formSubmit';

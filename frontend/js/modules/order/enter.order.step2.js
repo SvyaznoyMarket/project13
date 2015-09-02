@@ -1,5 +1,5 @@
 /**
- * @module      enter.order
+ * @module      nter.order.step2
  * @version     0.1
  *
  * @requires    jQuery
@@ -25,7 +25,6 @@
             init: function( el ) {
                 var
                     $el         = $(el),
-                    productData = $el.data('product'),
                     inited      = $el.prop('inited');
 
                 if ( inited ) {
