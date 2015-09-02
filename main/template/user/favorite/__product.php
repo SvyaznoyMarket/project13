@@ -47,11 +47,11 @@ $f = function (
             </div>
             <div class="personal-favorit__reminds">
                 <span class="remind-text">Сообщить</span>
-                <div class="personal-favorit__price-change">
-                    <div class="personal__hint">о снижении цены</div>
-                </div>
+                <a class="personal-favorit__price-change js-notification-link" href="<?= $helper->url('user.notification.addProduct', ['productId' => $product->getId(), 'channelId' => '2']) ?>">
+                    <span class="personal__hint">о снижении цены</span>
+                </a>
                 <div class="personal-favorit__stock">
-                    <div class="personal__hint">о наличии</div>
+                    <a class="personal__hint">о наличии</a>
                 </div>
             </div>
         </div>

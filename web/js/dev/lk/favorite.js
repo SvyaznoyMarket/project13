@@ -50,6 +50,13 @@
         });
     });
 
+    // подписатьсяна уведомления о товаре
+    $body.on('click', '.js-notification-link', function() {
+        var $el = $(this);
+
+
+    });
+
     // создать список
     $body.on('click', '.js-favorite-createPopup', function() {
         var

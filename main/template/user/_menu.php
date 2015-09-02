@@ -12,7 +12,7 @@ $activeMenuCss = 'active';
 <div class="personal__menu">
     <ul class="personal-navs">
         <li class="personal-navs__i <?= in_array($route, ['user.recommend']) ? $activeMenuCss : '' ?>">
-            <a href="#" class="personal-navs__lk">Наше все</a>
+            <a href="<?= $helper->url('user.recommend') ?>" class="personal-navs__lk">Наше все</a>
         </li>
         <li class="personal-navs__i <?= in_array($route, ['user.order', 'user.orders']) ? $activeMenuCss : '' ?>">
             <a href="<?= $helper->url('user.orders') ?>" class="personal-navs__lk">Заказы</a>

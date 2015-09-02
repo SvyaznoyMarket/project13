@@ -572,6 +572,11 @@ return [
         'pattern' => '/private/subscriptions',
         'action'  => ['User\SubscriptionsAction', 'execute'],
     ],
+    'user.notification.addProduct' => [
+        'pattern' => '/private/notification/add-product',
+        'action'  => ['User\Product\Notification\AddProductAction', 'execute'],
+        'method'  => ['POST'],
+    ],
 
     // маршрутизатор нескольких запросов
     'route' => [
