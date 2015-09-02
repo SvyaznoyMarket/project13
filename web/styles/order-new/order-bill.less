@@ -71,6 +71,7 @@
         border-top: 1px solid #e6e6e6;
         .box-sizing(border-box);
         padding: 10px 10px 15px 0;
+        position: relative;
     }
     &__item-lk{
         float: left;
@@ -101,7 +102,8 @@
     &__price{
         font-size: 16px;
         color: @txtColor;
-        margin-right: 30px;
+        width: 90px;
+        .inline-block();
     }
     &__total-price{
         font-size: 16px;
@@ -113,18 +115,59 @@
         color: @txtColor;
         border-bottom: 1px dotted;
         cursor: pointer;
+        margin-left: 40px;
     }
     &__count{
-        width: 105px;
-        .inline-block(middle);
+        .inline-block();
+        border-color: #5e5e5e;
         .count{
             &__ctrl{
                 font-size: 16px;
+                background-color: @white;
+                width: 25px;
+                height: 20px;
             }
             &__num{
                 font-size: 16px;
+                width: 35px;
+                height: 20px;
+                border-color: #5e5e5e;
+                color: #5e5d5d;
+                line-height: 20px;
             }
         }
+    }
+    &__edit{
+        .inline-block();
+    }
+    &__units{
+        color: #5e5d5d;
+        font-size: 16px;
+    }
+    &__apply{
+        font-size: 0;
+        width: 32px;
+        height: 20px;
+        border: 1px solid #5e5e5e;
+        .rounded(3px);
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABHklEQVQoFWNkIBKYmJgE/////zQzMerNzc29mJiYOoBq5RkJaTA1NZVlZGRcB1T3B0gHsODTYGxszApU1AvE3EB12SdPnnzJhE8DMzNzIVCxDlDNYqDi/SC1TEArTS0sLGrQNQKF7YBiCUB8/cuXL70weSagCbFA30cBPRYBE7SyshIDioM8+e3Xr19FV69e/QWTYwIK1AE1vALiCjMzMzWgBNOfP3+6gBoEgGKN58+ffwhTDKKZX7x48UNKSuoqUEEQkG8uLS0tDmT7AhWvP3369HRkxWANIOIZEEhKSjICw9odqNgIqPg+0MM5T548+YNVA1TTWaDpZkC2yL9//1JPnTr1Al0xiI8cD//Y2Njyf/78qXvmzJmb2BSDxAAyOmliqt77sgAAAABJRU5ErkJggg==');
+        background-position: center;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        .inline-block();
+        &:hover{
+            text-decoration: none;
+        }
+    }
+    &__del{
+        position: absolute;
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat  -27px -53px;
+        width: 10px;
+        height: 10px;
+        cursor: pointer;
+        top: 10px;
+        right: 5px;
+        font-size: 0;
     }
 }
 .order-discount{
@@ -244,5 +287,27 @@
     &__oferta{
         border-bottom: 1px dotted;
         cursor: pointer;
+    }
+}
+.order-popup{
+    padding: 20px;
+    width: 200px;
+    height: 100px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -100px;
+    background-color: #fff;
+
+    &__closer{
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat  -27px -53px;
+        width: 10px;
+        height: 10px;
+        .inline-block(middle);
+        position: absolute;
+        cursor: pointer;
+        top: 10px;
+        right: 10px;
     }
 }

@@ -20,6 +20,7 @@ return function(
         <? if ($e->isMaxQuantityError() && !isset($e->details['block_name'])) : ?>
             <div class="order-error order-error--warning">
                 <?= $e->message ?>
+                <i class="order-error__closer js-order-err-close"></i>
             </div>
         <? endif ?>
     <? endforeach ?>

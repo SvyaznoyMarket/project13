@@ -26,7 +26,7 @@ return function(
         <div class="pagehead"><h1 class="orderCnt_t">Самовывоз и доставка</h1></div>
 
         <? if ($orderCount != 1) : ?>
-            <div class="order-error order-error--success">Товары будут оформлены как <strong><?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></strong></div>
+            <div class="order-error order-error--success">Товары будут оформлены как <strong><?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></strong><i class="order-error__closer js-order-err-close"></i></div>
         <? endif; ?>
 
         <!--div class="orderInf clearfix">
@@ -45,13 +45,13 @@ return function(
         <div class="order-receiver">
             <div class="order-receiver__login">
                 <div class="order-ctrl required">
-                    <label class="order-ctrl__lbl">*Телефон</label>
-                    <input class="order-ctrl__input" placeholder="*Телефон">
+                    <label class="order-ctrl__lbl js-order-ctrl__lbl">*Телефон</label>
+                    <input class="order-ctrl__input js-order-ctrl__input" placeholder="*Телефон">
                 </div>
                 <div class="order-receiver__hint">Для смс о состоянии заказа</div>
                 <div class="order-ctrl required">
-                    <label class="order-ctrl__lbl">*E-mail</label>
-                    <input class="order-ctrl__input" placeholder="*E-mail">
+                    <label class="order-ctrl__lbl js-order-ctrl__lbl">*E-mail</label>
+                    <input class="order-ctrl__input js-order-ctrl__input" placeholder="*E-mail">
                 </div>
                 <div class="order-receiver__subscribe">
                     <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="" value="">
@@ -60,8 +60,8 @@ return function(
                         <span class="order-receiver__subscribe-txt">Подпишись на рассылку и получить скидку<br>на следующую покупку</span>
                     </label></div>
                 <div class="order-ctrl">
-                    <label class="order-ctrl__lbl">Имя</label>
-                    <input class="order-ctrl__input" placeholder="Имя">
+                    <label class="order-ctrl__lbl js-order-ctrl__lbl">Имя</label>
+                    <input class="order-ctrl__input js-order-ctrl__input" placeholder="Имя">
                 </div>
             </div>
             <div class="order-receiver__social social">

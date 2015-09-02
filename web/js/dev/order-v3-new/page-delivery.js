@@ -525,16 +525,45 @@
         $body.trigger('trackGoogleEvent', ['pickup_ux', 'list_point', 'выбор'])
     });
 
-    $body.on('keyup', '.order-ctrl__input', function(){
+    $body.on('keyup', '.js-order-ctrl__input', function(){
         var $this = $(this),
-            $label = $this.parent().find('.order-ctrl__lbl');
-        console.log($this.val());
+            $label = $this.parent().find('.js-order-ctrl__lbl');
 
         if ( $this.val() !== '' ) {
             $label.show();
         } else {
             $label.hide();
         }
+    });
+    //показать блок редактирования товара - новая версия
+    $body.on('click', '.js-show-edit',function(){
+        $(this).hide();
+        $(this).parent().find('.js-edit').show();
+    });
+    //изменение кол-ва товара - новая версия
+    $body.on('click','.js-edit-quant',function(){
+        var $this = $(this),
+            $input = $this.parent().find('.js-quant'),
+            min = $input.data('min'),
+            delta = $this.data('delta'),
+            newVal = parseInt($input.val()) + parseInt(delta);
+        if (newVal >= min){
+            $input.val(newVal);
+        }
+
+    })
+    //вызов попапа подтверждения удаления товара из заказа
+    $body.on('click','.js-del-popup-show',function(){
+        var $this = $(this);
+            $this.parent().find('.js-del-popup').show();
+    });
+    $body.on('click','.js-del-popup-close',function(){
+        var $this = $(this);
+        $this.closest('.js-del-popup').hide();
+    });
+    //закрытие алертов к заказу
+    $body.on('click','.js-order-err-close',function(){
+        $(this).closest('.order-error').hide();
     });
 
 })(jQuery);
