@@ -55,11 +55,9 @@
     </div>
     <? endforeach ?>
 
-
-    <div id="message-popup" class="personal-popup">
-        <div class="popup-closer"></div>
-        <div class="personal-popup__head">Выберите товары</div>
-    </div>
+    <script id="tpl-favorite-messagePopup" type="text/html" data-partial="<?= $helper->json([]) ?>">
+        <?= file_get_contents(\App::config()->templateDir . '/user/favorite/_message-popup.mustache') ?>
+    </script>
 
     <script id="tpl-favorite-createPopup" type="text/html" data-partial="<?= $helper->json([]) ?>">
         <?= file_get_contents(\App::config()->templateDir . '/user/favorite/_create-popup.mustache') ?>

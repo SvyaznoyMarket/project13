@@ -56,6 +56,7 @@
     var
         $body = $('body'),
         $mainContainer = $('#personal-container'),
+        $messagePopupTemplate = $('#tpl-favorite-messagePopup'),
         $createPopupTemplate = $('#tpl-favorite-createPopup'),
         $movePopupTemplate = $('#tpl-favorite-movePopup'),
         $deletePopupTemplate = $('#tpl-favorite-deletePopup'),
@@ -151,7 +152,8 @@
             showPopup('#' + $popup.attr('id'));
         } catch (error) {
             if ('empty-product' === error.code) {
-                showPopup('#message-popup');
+                $popup = $(Mustache.render($messagePopupTemplate.html(), {message: {title: error.name}})).appendTo($mainContainer);
+                showPopup('#' + $popup.attr('id'));
             }
 
             console.error(error);
@@ -186,7 +188,8 @@
             showPopup('#' + $popup.attr('id'));
         } catch (error) {
             if ('empty-product' === error.code) {
-                showPopup('#message-popup');
+                $popup = $(Mustache.render($messagePopupTemplate.html(), {message: {title: error.name}})).appendTo($mainContainer);
+                showPopup('#' + $popup.attr('id'));
             }
 
             console.error(error);
@@ -222,7 +225,8 @@
             showPopup('#' + $popup.attr('id'));
         } catch (error) {
             if ('empty-product' === error.code) {
-                showPopup('#message-popup');
+                $popup = $(Mustache.render($messagePopupTemplate.html(), {message: {title: error.name}})).appendTo($mainContainer);
+                showPopup('#' + $popup.attr('id'));
             }
 
             console.error(error);
