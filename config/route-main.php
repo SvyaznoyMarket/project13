@@ -902,6 +902,11 @@ return [
             'productUi' => '[\w\d-_]+',
         ],
     ],
+    'favorite.deleteProducts' => [
+        'pattern' => '/favorite/delete-product-list',
+        'action'  => ['Favorite\DeleteListAction', 'execute'],
+        'method'  => ['POST'],
+    ],
 
     'wishlist.create' => [
         'pattern' => '/wishlist/create',

@@ -66,7 +66,9 @@ $f = function (
                 data-container="<?= ('.' . $containerId) ?>"
                 data-value="<?= $helper->json([
                     'wishlist' => $wishlist ? ['id' => $wishlist->id, 'title' => $wishlist->title] : null,
-                    'form'     => ['url' => $helper->url('wishlist.deleteProduct')],
+                    'form'     => [
+                        'url' => $wishlist ? $helper->url('wishlist.deleteProduct') : $helper->url('favorite.deleteProducts')
+                    ],
                 ]) ?>"
             >
                 Удалить
