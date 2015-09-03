@@ -28,9 +28,6 @@
         hidePopup('#' + $(this).parent().attr('id'))
     });
 
-    $body.on('click', '.personal-favorit__price-change', function() {
-        $(this).toggleClass('on');
-    });
     $body.on('click', '.personal-favorit__stock', function() {
         $(this).toggleClass('on');
     });
@@ -48,10 +45,15 @@
     });
 
     // подписатьсяна уведомления о товаре
-    $body.on('click', '.js-notification-link', function() {
+    $body.on('click', '.js-notification-link', function(e) {
         var $el = $(this);
 
+        try {
+            $el.toggleClass('on');
+            $.post($el.attr('href'));
 
+            e.preventDefault();
+        } catch(error) { console.error(error); }
     });
 
     // создать список

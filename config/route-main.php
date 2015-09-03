@@ -574,7 +574,7 @@ return [
     ],
     'user.notification.addProduct' => [
         'pattern' => '/private/notification/add-product',
-        'action'  => ['User\Product\Notification\AddProductAction', 'execute'],
+        'action'  => ['User\Notification\AddProductAction', 'execute'],
         'method'  => ['POST'],
     ],
 

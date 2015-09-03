@@ -17,19 +17,33 @@ class AddProductAction extends \Controller\User\PrivateAction {
         $productId = $request->get('productId');
         $channelId = $request->get('channelId');
 
-        $createQuery = new Query\Subscribe\CreateByProduct();
-        $createQuery->userToken = \App::user()->getEntity()->getToken();
-        $createQuery->channelId = $channelId;
-        $createQuery->productId = $productId;
-        $createQuery->regionId = $region->getId();
-        $createQuery->prepare();
+        $responseData = [
+            'errors' => [],
+        ];
 
-        $curl->execute();
+        try {
+            $createQuery = new Query\Subscribe\CreateByProduct();
+            $createQuery->userToken = \App::user()->getEntity()->getToken();
+            $createQuery->channelId = $channelId;
+            $createQuery->productId = $productId;
+            $createQuery->regionId = $region->getId();
+            $createQuery->prepare();
 
-        if ($error = $createQuery->error) {
-            throw $error;
+            $curl->execute();
+
+            if ($error = $createQuery->error) {
+                throw new \Exception('Не удалось добавить подписку', $error->getCode());
+            }
+        } catch(\Exception $error) {
+            $responseData['errors'] = ['code' => $error->getCode(), 'message' => $error->getMessage()];
         }
 
-        die(var_dump('ok'));
+        if ($request->isXmlHttpRequest()) {
+            $response = new \Http\JsonResponse($responseData);
+        } else {
+            $response =  new \Http\RedirectResponse($request->headers->get('referer') ?: '/');
+        }
+
+        return $response;
     }
 }
