@@ -21,10 +21,6 @@ $(function() {
 
         // клик по ссылке на товар
         $body.on('click', '.js-listing-item', function() {
-            var
-                $el = $(this)
-            ;
-
             $body.trigger('trackGoogleEvent', {
                 category: 'slices_sale',
                 action: 'product',
@@ -34,10 +30,6 @@ $(function() {
 
         // клик по кнопке "Купить"
         $body.on('click', '.jsBuyButton', function(e) {
-            var
-                $el = $(this)
-            ;
-
             e.stopPropagation();
 
             $body.trigger('trackGoogleEvent', {
@@ -46,5 +38,37 @@ $(function() {
                 label: ''
             });
         });
+
+        // Если категория - Мебель или БТ или Электроника
+        if (sliderData.category && (sliderData.category.isFurniture || sliderData.category.isElectronics || sliderData.category.isHouseholdAppliances)) {
+            // клик по кнопке "Бренды и параметры"
+            $body.on('click', '.js-category-filter-otherParamsToggleButton', function(e) {
+                $body.trigger('trackGoogleEvent', {
+                    category: 'filter',
+                    action: 'cost_sale',
+                    label: sliderData.category.name
+                });
+            });
+
+            // клик по фильтру "Цена"
+            $body.on('mousedown', '.js-category-v1-filter-element-price', function(e) {
+                $body.trigger('trackGoogleEvent', {
+                    category: 'filter',
+                    action: 'cost_range',
+                    label: sliderData.category.name
+                });
+            });
+
+            // клик по другим фильтрам
+            $body.on('mousedown', '.js-category-filter-param', function(e) {
+                var $el = $(this);
+
+                $body.trigger('trackGoogleEvent', {
+                    category: 'filter',
+                    action: 'other_' + $el.find('span').text(),
+                    label: sliderData.category.name
+                });
+            });
+        }
     }
 });
