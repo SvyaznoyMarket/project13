@@ -16,7 +16,7 @@ return function(
         ?>
         <? if (isset($error) && $error->details['product_id'] == $product->id) : ?>
 
-        <div class="order-error order-error--hint">Вы хотели <?= $error->details['requested_amount'] ?> шт. Есть только <?= $error->details['max_available_quantity'] ?> шт.<i class="order-error__closer js-order-err-close"></i></div>
+        <div class="order-error order-error--warning">Вы хотели <?= $error->details['requested_amount'] ?> шт. Есть только <?= $error->details['max_available_quantity'] ?> шт.<i class="order-error__closer js-order-err-close"></i></div>
     <? endif; ?>
     <? endif; ?>
 <? } ?>

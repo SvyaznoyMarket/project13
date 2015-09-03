@@ -551,19 +551,25 @@
             $input.val(newVal);
         }
 
-    })
+    });
     //вызов попапа подтверждения удаления товара из заказа
     $body.on('click','.js-del-popup-show',function(){
         var $this = $(this);
             $this.parent().find('.js-del-popup').show();
+		$body.append("<div class='order-popup__overlay js-order-overlay'></div>");
     });
     $body.on('click','.js-del-popup-close',function(){
         var $this = $(this);
         $this.closest('.js-del-popup').hide();
+		$('.js-order-overlay').remove();
     });
     //закрытие алертов к заказу
     $body.on('click','.js-order-err-close',function(){
         $(this).closest('.order-error').hide();
     });
+	$body.on('click','.js-order-overlay',function(){
+		$body.find('.js-del-popup').hide();
+		$(this).remove();
+	});
 
 })(jQuery);

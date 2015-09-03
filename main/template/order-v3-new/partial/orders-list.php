@@ -24,7 +24,7 @@ return function (
 
     <? foreach ($orderDelivery->orders as $order): $i++; ?>
         <? if ((bool)$order->validationErrors) : ?>
-            <div class="jsOrderValidationErrors order-error order-error--warning" data-value="<?= $helper->json($order->validationErrors) ?>"> <i class="order-error__closer js-order-err-close"></i></div>
+<!--            <div class="jsOrderValidationErrors order-error order-error--warning" data-value="--><?//= $helper->json($order->validationErrors) ?><!--"> <i class="order-error__closer js-order-err-close"></i></div>-->
         <? endif; ?>
 
         <!-- блок разбиения заказа -->
@@ -79,11 +79,10 @@ return function (
                             <a class="order-good__del js-del-popup-show">Удалить товар</a>
                             <div class="order-good__del-popup order-popup js-del-popup" style="display:none;">
                                 <div class="order-popup__closer js-del-popup-close"></div>
-                                Удалить товар?<br>
-                                <button class="js-del-popup-close">Отмена</button>
-                                <button class="jsDeleteProduct" href="" data-id="<?= $product->id; ?>"
-                                   data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Удалить
-                                    товар</button>
+									<div class="order-popup__tl">Удалить товар?</div>
+									<button class="order-popup__btn order-btn order-btn--default js-del-popup-close">Отмена</button>
+									<button class="order-popup__btn order-btn order-btn--default jsDeleteProduct" href="" data-id="<?= $product->id; ?>"
+									   data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Удалить</button>
                             </div>
                         </div>
                         <!-- END редактирование кол-ва/удаление товара -->
