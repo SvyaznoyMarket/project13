@@ -206,7 +206,7 @@ class DeliveryAction extends OrderV3 {
         if (!$orderDelivery->orders) {
             foreach ($orderDelivery->errors as $error) {
                 if (708 == $error->code) {
-                    throw new \Exception('Товара нет в наличии');
+                    throw new \Exception(count($splitData['cart']['product_list']) == 1 ? 'Товара нет в наличии' : 'Товаров нет в наличии');
                 }
             }
 

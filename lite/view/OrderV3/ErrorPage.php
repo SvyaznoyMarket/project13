@@ -11,6 +11,10 @@ class ErrorPage extends Layout {
         return \App::closureTemplating()->render('order/_error.delivery', $this->params);
     }
 
+    public function blockOrderHead() {
+        return $this->render('order/common/order-head', ['step' => 1, 'hasErrors' => true]);
+    }
+
     /** Для совместимости с контроллером
      * @return string
      */
