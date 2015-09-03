@@ -32,10 +32,9 @@ return function(
                         <? endif ?>
 
                         <? if ($order->getPaySum() > 100000) : ?>
-                            <div class="order-delivery-info-warn">
+                            <div>
                                 Требуется предоплата.<br/>
                                 Сумма заказа превышает 100&nbsp;000&nbsp;руб.
-                                <a class="order-delivery-info-warn__icon" href="/how_pay" target="_blank"></a>
                             </div>
                         <? endif; ?>
 
