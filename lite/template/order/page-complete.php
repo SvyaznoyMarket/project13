@@ -31,6 +31,14 @@ return function(
                             <div class="checkout-complete-box__title">Заказ №<?= $order->getNumberErp()?></div>
                         <? endif ?>
 
+                        <? if ($order->getPaySum() > 100000) : ?>
+                            <div class="order-delivery-info-warn">
+                                Требуется предоплата.<br/>
+                                Сумма заказа превышает 100&nbsp;000&nbsp;руб.
+                                <a class="order-delivery-info-warn__icon" href="/how_pay" target="_blank"></a>
+                            </div>
+                        <? endif; ?>
+
                         <? if ($order->getPaySum()): ?>
                             <div class="checkout-complete-box__summ">
                                 <span class="checkout-complete-box__summ-title">Сумма заказа:</span>
