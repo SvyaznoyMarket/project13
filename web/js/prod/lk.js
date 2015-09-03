@@ -204,7 +204,10 @@
             data = $el.data(),
             $container = data.container && $(data.container),
             templateValue = data.value,
-            productUis = []
+            product,
+            productBarcodes = [],
+            productNames = [],
+            shareUrl
         ;
 
         try {
@@ -216,10 +219,37 @@
                 throw {name: 'Товары не выбраны', code: 'empty-product'};
             }
             $productInputs.each(function(i, el) {
-                productUis.push($(el).val());
+                product = $(el).data('product');
+                productBarcodes.push(product.barcode);
+                productNames.push(product.name);
             });
-            templateValue.productUis = productUis.join(',');
-            templateValue.countMessage = productUis.length + ' ' + ENTER.utils.numberChoice(productUis.length, ['товаром', 'товарами', 'товарами'])
+            templateValue.productUis = productBarcodes.join(',');
+            templateValue.countMessage = productBarcodes.length + ' ' + ENTER.utils.numberChoice(productBarcodes.length, ['товаром', 'товарами', 'товарами'])
+            templateValue.productNames = productNames.join(', ');
+
+            shareUrl = 'http://www.enter.ru/products/set/' + productBarcodes.join(',');
+            templateValue.twitter = {
+                url: ENTER.utils.shareLink.twitter(shareUrl, '')
+            };
+            templateValue.facebook = {
+                url: ENTER.utils.shareLink.facebook(shareUrl, '')
+            };
+            templateValue.vkontakte = {
+                url: ENTER.utils.shareLink.vkontakte(shareUrl, '')
+            };
+            templateValue.googleplus = {
+                url: ENTER.utils.shareLink.googleplus(shareUrl, '')
+            };
+            templateValue.odnoklassniki = {
+                url: ENTER.utils.shareLink.odnoklassniki(shareUrl, '')
+            };
+            templateValue.mailru = {
+                url: ENTER.utils.shareLink.mailru(shareUrl, '')
+            };
+            templateValue.mail = {
+                url: ENTER.utils.shareLink.mail(shareUrl, '', '', '')
+            };
+            console.info(templateValue);
 
             $popup = $(Mustache.render($shareProductPopupTemplate.html(), templateValue)).appendTo($mainContainer);
             showPopup('#' + $popup.attr('id'));
@@ -230,6 +260,20 @@
             }
 
             console.error(error);
+        }
+    });
+
+    // поделиться в соцсети
+    $body.on('click', '.js-shareLink', function(e) {
+        var
+            $el = $(this),
+            url = $el.attr('href')
+        ;
+
+        if (0 === url.indexOf('http')) {
+            e.stopPropagation();
+            window.open(url, '', 'toolbar=0,status=0,width=626,height=436');
+            e.preventDefault();
         }
     });
 

@@ -12,7 +12,17 @@ $f = function (
 ) { ?>
     <div class="personal-favorit__item <?= $rowId ?>">
         <div class="personal-favorit__cell personal-favorit__choose">
-            <input class="personal-favorit__checkbox" type="checkbox" id="<?= $rowId . '-input' ?>" data-type="product" value="<?= $product->getUi() ?>">
+            <input
+                class="personal-favorit__checkbox"
+                type="checkbox"
+                id="<?= $rowId . '-input' ?>"
+                data-type="product"
+                data-product="<?= $helper->json([
+                    'name'    => $product->getWebName(),
+                    'barcode' => $product->barcode,
+                ]) ?>"
+                value="<?= $product->getUi() ?>"
+            />
             <label for="<?= $rowId . '-input' ?>" class="personal-favorit__checkbox-icon"></label>
         </div>
         <div class="personal-favorit__cell personal-favorit__pic">

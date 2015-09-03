@@ -31,9 +31,7 @@ $f = function (
             <li
                 class="personal-favorit__act js-favorite-shareProductPopup"
                 data-container="<?= ('.' . $containerId) ?>"
-                data-value="<?= $helper->json([
-                    'form' => ['url' => null],
-                ]) ?>"
+                data-value="<?= $helper->json([]) ?>"
             >
                 Поделиться
             </li>
