@@ -10,6 +10,7 @@ $f = function(
     $jsClass = 'js-buy-button';
     $link = $helper->url('cart.product.set', ['productId' => $product->getId()]);
     $onclick = null;
+    $dataAttrs = [];
 
     // классы для набор-пакетов
     if ($product->getKit() && !$product->getIsKitLocked()) {
@@ -34,8 +35,10 @@ $f = function(
         $jsClass = null;
         $link = '';
         $buttonText = 'На витрине';
-        $class .= ' btn-in-showroom ';
+        $class .= ' btn-in-showroom jsShowDeliveryMap';
         $onclick = 'return false;';
+        $dataAttrs['product-ui'] = $product->getUi();
+        $dataAttrs['product-id'] = $product->getId();
     }
 
     ?>
@@ -44,6 +47,9 @@ $f = function(
         class="goods__btn btn-primary <?= $jsClass ?> <?= $class ?>"
         href="<?= $link ?>"
         <? if ($onclick) : ?>onclick="<?= $onclick ?>"<? endif ?>
+        <? foreach ($dataAttrs as $key => $value) : ?>
+            data-<?= $key ?>="<?= $value ?>"
+        <? endforeach ?>
         ><?= $buttonText ?></a>
 
 <? }; return $f;
