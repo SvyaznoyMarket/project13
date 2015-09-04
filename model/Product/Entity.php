@@ -227,8 +227,17 @@ class Entity {
             $this->json3d = $data['json3d'];
         }
 
+        $hasAffectOldPriceLabel = false;
         if (!empty($data['label']['uid'])) {
             $this->setLabel(new Label($data['label']));
+
+            $hasAffectOldPriceLabel = $this->label->affectPrice;
+        }
+
+        // Т.к. из метода api.enter.ru/v2/product/get-v3 была убрана связь между выводом старой цены и наличием
+        // шильдика, реализуем эту связь пока здесь (подробности в CORE-2936)
+        if (!$hasAffectOldPriceLabel) {
+            $this->priceOld = null;
         }
 
         if (!empty($data['brand']) && @$data['brand']['slug'] === 'tchibo-3569') {
