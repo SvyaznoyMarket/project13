@@ -14,8 +14,26 @@
         }
         &__title {
             float: left;
+            margin-right: 20px;
 
             .font-size(20);
+        }
+        &__error {
+            float: left;
+
+            color: @red-normal;
+
+            .font-size(20);
+            &:before {
+                width: 24px;
+                height: 21px;
+
+                content: '';
+
+                background: no-repeat 0 0 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVCAMAAABrN94UAAAAflBMVEUAAADcRjjgRDjcRDjjRzn/gEDbRDjbRTjcRjjcRDjbRTjbRTjcRTjcRjjbRDf////++vrbSDvng3vlenHeVEjjcmj++/viamD88/LgYlf76+rfW1DdT0LdUET54uDzwr7dUkbnhHzmgHf99vbleG/mgXj54+HkdGr99vXbRjre6R9bAAAADnRSTlMASSmSEgT77W6319a2bQnQ9a0AAACUSURBVHjabc5HDsMwEARBUZFU6JVzzvn/HzRAEbCxYh9nLpX8ZUwSrajrInpYsLE9r6DKI0cGkI33tAQo09HhmPa3OU7vBh4iezCaCjORDyiyBRayBLCaykrW4MmKupEtnqypO3miyA6Aw/GEz/2ovvPlypAJ1AbfXWSCrxnIHUOv/h0OukBVBXJGpMxTVYHcEq39An7SDwns6gOIAAAAAElFTkSuQmCC');
+
+                .inline-block();
+            }
         }
         &__summ {
             float: right;
@@ -77,14 +95,15 @@
 
     border: 1px solid @orange-bright;
     &__title {
-        .font-size(16);
         margin: 0 0 3px;
+
+        .font-size(16);
     }
     &__btn {
-    	margin-right: 5px;
+        margin-right: 5px;
     }
     &__img {
-    	.inline-block(middle);
+        .inline-block(middle);
     }
 }
 

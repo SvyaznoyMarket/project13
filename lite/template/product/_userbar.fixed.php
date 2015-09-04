@@ -7,18 +7,12 @@ $helper = \App::helper();
 
 <!-- параплашка -->
 <div class="header header_fix js-userbar js-userbar-fixed" style="display: none">
-    <div class="wrapper">
-        <div class="header__left">
+    <div class="wrapper table">
+        <div class="header__left table-cell">
             <a href="/" class="logotype"></a>
         </div>
 
-        <ul class="user-controls">
-            <?= $page->render('common/userbar/_compare') ?>
-            <?= $page->render('common/userbar/_user') ?>
-            <?= $page->render('common/userbar/_cart') ?>
-        </ul>
-
-        <div class="header__center">
+        <div class="header__center table-cell">
             <div class="header__line header__line_top">
                 <ul class="bread-crumbs bread-crumbs_mini">
                     <li class="bread-crumbs__item"><a href="/catalog/electronics" class="bread-crumbs__link underline">Электроника</a></li>
@@ -51,6 +45,12 @@ $helper = \App::helper();
                 <!--/ карточка товара -->
             </div>
         </div>
+
+        <ul class="user-controls table-cell">
+            <?= $page->render('common/userbar/_compare') ?>
+            <?= $page->render('common/userbar/_user') ?>
+            <?= $page->render('common/userbar/_cart') ?>
+        </ul>
     </div>
 </div>
 <!--/ параплашка -->

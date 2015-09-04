@@ -32,9 +32,8 @@ return function(
                         <? endif ?>
 
                         <? if ($order->getPaySum() > 100000) : ?>
-                            <div>
-                                Требуется предоплата.<br/>
-                                Сумма заказа превышает 100&nbsp;000&nbsp;руб.
+                            <div class="checkout-complete-box__error">
+                                Требуется предоплата
                             </div>
                         <? endif; ?>
 
