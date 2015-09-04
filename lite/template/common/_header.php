@@ -5,8 +5,8 @@
 ?>
 
 <div class="header js-userbar">
-    <div class="wrapper">
-        <div class="header__left">
+    <div class="wrapper table">
+        <div class="header__left table-cell">
             <div class="header__line header__line_top">
                 <a href="" class="location dotted js-popup-show js-change-region" data-popup="region"><?= App::user()->getRegion()->getName() ?></a>
             </div>
@@ -22,14 +22,7 @@
             </div>
         </div>
 
-        <ul class="user-controls">
-            <?= $page->render('common/userbar/_compare') ?>
-            <?= $page->render('common/userbar/_user') ?>
-            <?= $page->blockAuth() ?>
-            <?= $page->render('common/userbar/_cart') ?>
-        </ul>
-
-        <div class="header__center">
+        <div class="header__center table-cell">
             <div class="header__center-inn">
                 <div class="header__line header__line_top">
                     <ul class="header-shop-info">
@@ -54,6 +47,13 @@
                 </div>
             </div>
         </div>
+
+        <ul class="user-controls table-cell">
+            <?= $page->render('common/userbar/_compare') ?>
+            <?= $page->render('common/userbar/_user') ?>
+            <?= $page->blockAuth() ?>
+            <?= $page->render('common/userbar/_cart') ?>
+        </ul>
     </div>
 </div>
 

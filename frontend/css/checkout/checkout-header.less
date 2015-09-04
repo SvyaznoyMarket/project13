@@ -15,9 +15,8 @@
         width: 100%;
         padding: 0 0 0 30px;
 
+        text-align: right;
         vertical-align: middle;
-
-        border-left: 1px solid @orange-bright;
 
         .font-size(18);
         &__item {
@@ -42,12 +41,25 @@
                 background: no-repeat 0 50% url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAnklEQVR4AWNgYGi91RrBgA5aZrW+bhBBE2wQaH3RtghTbXjb/2YXDOG2ra13CjnR1cq3fWmtxzSiqPVdkzaaYChz69m2PQ1MaMIddq2fW9PQncbROqXtSYMAmnCVZOuttmTcggjtLVPbHsO1IyxqS8V00u4GJnTHv23SxvBmWx2WAGngwAi6VmcUoQrB1hetC9G0ts7GEh2tt1rCUUUAg5hEDLFLGaQAAAAASUVORK5CYII=');
             }
             &:last-child {
+                margin-right: 10px;
                 &:after {
                     background: none;
                 }
             }
             &.active {
                 color: @orange-bright;
+            }
+            &_title {
+                margin-right: 30px;
+                padding-right: 30px;
+
+                color: @orange-bright;
+                border-right: 1px solid @orange-bright;
+                &:after {
+                    display: none;
+
+                    background: none;
+                }
             }
         }
     }
@@ -61,12 +73,6 @@
     &__logo {
         margin-left: 10px;
 
-        .inline-block(middle);
-    }
-    &__title {
-        margin: 0 0 0 10px;
-
-        .font-size(18);
         .inline-block(middle);
     }
 }
