@@ -117,6 +117,7 @@
                 });
 
                 if ( smartAdress.length ) {
+                    console.warn('init smartadress');
                     modules.require('enter.order.smartadress.view', function( OrderSmartAdress ) {
                         self.subViews.smartAdress = new OrderSmartAdress({
                             el: smartAdress,
@@ -230,6 +231,7 @@
 
                 this.validator.validate({
                     onInvalid: function( err ) {
+                        err[0].fieldNode.focus();
                         valid = false;
                     },
                     onValid: function() {
@@ -300,6 +302,7 @@
                 }
 
                 delete this.subViews;
+                delete this.validator;
 
                 // COMPLETELY UNBIND THE VIEW
                 this.undelegateEvents();

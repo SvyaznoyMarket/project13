@@ -91,7 +91,7 @@
                     this.validator._markFieldValid(this.subViews.street);
                 }
 
-                if ( !_.isEmpty(buildingData) ) {
+                if ( buildingData ) {
                     this.setBuilingValue(buildingData);
                     this.validator._markFieldValid(this.subViews.building);
                 }
@@ -123,7 +123,7 @@
                     return;
                 }
 
-                console.groupCollapsed('module:enter.order.smartadress.view~OrderSmartAdress#setStreet');
+
 
                 if ( streetData instanceof $.Event ) {
                     console.warn('is $.Event');
@@ -140,6 +140,8 @@
                     });
                 }
 
+                console.groupCollapsed('module:enter.order.smartadress.view~OrderSmartAdress#setStreet');
+
                 // this.subViews.streetLabel.text(streetData.type);
 
                 console.log(streetData);
@@ -153,7 +155,7 @@
 
                 console.groupCollapsed('module:enter.order.smartadress.view~OrderSmartAdress#setBuiling');
 
-                if ( buildingData instanceof jQuery.Event ) {
+                if ( buildingData instanceof $.Event ) {
                     console.warn('is $.Event');
                     this.setBuilingValue($(buildingData.currentTarget).val());
                 } else {
@@ -186,12 +188,14 @@
             },
 
             setBuilingValue: function( val ) {
+                console.info('setBuilingValue', val);
                 lscache.set('smartadress_buildingData', val);
                 this.subViews.building.val(val);
                 // this.subViews.building.kladr && this.subViews.building.kladr('controller').setValueByName(val);
             },
 
             setApartmentValue: function( val ) {
+                console.info('setApartmentValue', val);
                 this.subViews.apartment.val(val);
                 lscache.set('smartadress_apartment', val);
             },

@@ -44,15 +44,6 @@
             };
 
             /**
-             * Поля, на которые уже навешен обработчик валидации на ходу
-             *
-             * @member      _validateOnChangeFields
-             * @memberOf    module:FormValidator~FormValidator
-             */
-            FormValidator.prototype._validateOnChangeFields = {
-            };
-
-            /**
              * Проверка обязательных к заполнению полей
              *
              * @member      _requireAs
@@ -405,7 +396,7 @@
              * @this        {FormValidator}
              */
             FormValidator.prototype._enableHandlers = function() {
-                //console.groupCollapsed('_enableHandlers');
+                // console.groupCollapsed('module:FormValidator~FormValidator#_enableHandlers');
 
                 var
                     self = this,
@@ -435,6 +426,7 @@
                     },
 
                     blurHandler = function( fieldNode ) {
+                        console.warn('blur handler');
                         var
                             timeout_id = null;
 
@@ -452,18 +444,18 @@
 
 
                     if ( currentField.validateOnChange ) {
-                        if ( self._validateOnChangeFields[ currentField.fieldNode.get(0).outerHTML ] ) {
+                        if ( currentField.fieldNode.prop('FormValidator_validateOnChange') ) {
                             //console.log('уже вешали');
                             continue;
                         }
 
+                        currentField.fieldNode.prop('FormValidator_validateOnChange', true);
                         currentField.fieldNode.on('blur', blurHandler.bind(self, currentField.fieldNode));
-                        self._validateOnChangeFields[ currentField.fieldNode.get(0).outerHTML ] = true;
                     }
                 }
 
                 //console.log(self);
-                //console.groupEnd();
+                // console.groupEnd();
             };
 
             /**
