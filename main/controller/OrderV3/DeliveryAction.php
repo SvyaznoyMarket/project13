@@ -4,8 +4,11 @@ namespace Controller\OrderV3;
 
 use Model\OrderDelivery\Error;
 use Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
+use Session\AbTest\ABHelperTrait;
 
 class DeliveryAction extends OrderV3 {
+    use ABHelperTrait;
+
     /** Main function
      * @param \Http\Request $request
      * @return \Http\Response

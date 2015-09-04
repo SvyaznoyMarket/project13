@@ -2,8 +2,16 @@
 
 namespace View\OrderV3;
 
+use Session\AbTest\ABHelperTrait;
+
 class Layout extends \View\DefaultLayout {
+    use ABHelperTrait;
+
     protected $layout  = 'layout-orderV3';
+
+    public function slotBodyClassAttribute() {
+        return self::isOrderWithCart() ? 'order-new' : '';
+    }
 
     public function slotOrderHead() {
         return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 1]);

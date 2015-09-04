@@ -2,7 +2,11 @@
 
 namespace Controller\Cart;
 
+use Session\AbTest\ABHelperTrait;
+
 class IndexAction {
+    use ABHelperTrait;
+
     /**
      * @param \Http\Request $request
      * @return \Http\Response
@@ -13,6 +17,8 @@ class IndexAction {
         $client = \App::coreClientV2();
         $user = \App::user();
         $cart = $user->getCart();
+
+        $orderWithCart = self::isOrderWithCart();
 
         // подготовка 1-го пакета запросов
 
@@ -40,7 +46,8 @@ class IndexAction {
 
         $updateResultProducts = $cart->update([], true);
 
-        $page = new \View\Cart\IndexPage();
+        $page = $orderWithCart ? new \View\OrderV3\CartPage() : new \View\Cart\IndexPage();
+        $page->setParam('orderUrl', \App::router()->generate($orderWithCart ? 'orderV3.delivery' : 'order'));
         $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
         $page->setParam('cartProductsById', array_reverse($cart->getProductsById(), true));
         $page->setParam('products', array_values(array_filter(array_map(function(\Session\Cart\Update\Result\Product $updateResultProduct) {

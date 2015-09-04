@@ -3,18 +3,23 @@
 namespace Controller\OrderV3;
 
 use EnterApplication\CurlTrait;
+use Session\AbTest\ABHelperTrait;
 use Http\RedirectResponse;
 use Model\OrderDelivery\ValidateException;
 use EnterQuery as Query;
 
 class NewAction extends OrderV3 {
-    use CurlTrait;
+    use CurlTrait, ABHelperTrait;
 
     /**
      * @param \Http\Request $request
      * @return \Http\Response
      */
     public function execute(\Http\Request $request) {
+        if (self::isOrderWithCart()) {
+            return (new \Controller\Cart\IndexAction())->execute($request);
+        }
+
         $response = parent::execute($request);
         if ($response) {
             return $response;
