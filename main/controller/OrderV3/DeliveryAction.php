@@ -72,11 +72,13 @@ class DeliveryAction extends OrderV3 {
 
             $this->logger(['action' => 'view-page-delivery']);
 
-            if (!$this->session->get($this->splitSessionKey)) return new \Http\RedirectResponse(\App::router()->generate('cart'));
-
-            // сохраняем данные пользователя
-            $data['action'] = 'changeUserInfo';
-            $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+            $data = null;
+            if (!self::isOrderWithCart()) {
+                if (!$this->session->get($this->splitSessionKey)) return new \Http\RedirectResponse(\App::router()->generate('cart'));
+                // сохраняем данные пользователя
+                $data['action'] = 'changeUserInfo';
+                $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+            }
 
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
             $orderDelivery = $this->getSplit($data);
