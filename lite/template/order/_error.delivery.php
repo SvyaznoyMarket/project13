@@ -8,8 +8,8 @@ return function(
 
     ?>
 
-    <section class="orderCnt">
-        <h1 class="orderCnt_t">Ошибка</h1>
+    <section class="checkout">
+        <h1 class="checkout__title">Ошибка</h1>
         <?= $error ?>
     </section>
 
