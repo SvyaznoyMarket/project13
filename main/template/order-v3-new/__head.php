@@ -41,19 +41,21 @@ return function(
 
 <!-- шапка оформления заказа -->
 <header class="orderHd orderHd-v2">
-    <div class="orderHd_l">
-        <img class="orderHd_lg" src="/styles/order/img/logo.png" />
-        <div class="orderHd_t">Оформление заказа</div>
-    </div>
+    <div class="order-head__inn">
+        <div class="orderHd_l">
+            <img class="orderHd_lg" src="/styles/order/img/logo.png" />
+            <div class="orderHd_t">Оформление заказа</div>
+        </div>
 
-    <!-- если шаг пройден то orderHd_stps_i-pass, текущий шаг orderHd_stps_i-act -->
-    <ul class="orderHd_stps">
-    <? foreach ($links as $link): ?>
-        <li class="orderHd_stps_i<? if ($link['isPassed']): ?> orderHd_stps_i-pass<? endif ?><? if ($link['isActive']): ?> orderHd_stps_i-act<? endif ?>">
-            <?= $link['name'] ?>
-        </li>
-    <? endforeach ?>
-    </ul>
+        <!-- если шаг пройден то orderHd_stps_i-pass, текущий шаг orderHd_stps_i-act -->
+        <ul class="orderHd_stps">
+        <? foreach ($links as $link): ?>
+            <li class="orderHd_stps_i<? if ($link['isPassed']): ?> orderHd_stps_i-pass<? endif ?><? if ($link['isActive']): ?> orderHd_stps_i-act<? endif ?>">
+                <?= $link['name'] ?>
+            </li>
+        <? endforeach ?>
+        </ul>
+    </div>
 </header>
 <!--/ шапка оформления заказа -->
 
