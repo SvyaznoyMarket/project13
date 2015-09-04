@@ -231,7 +231,7 @@
 
                 this.validator.validate({
                     onInvalid: function( err ) {
-                        err[0].fieldNode.focus();
+                        err[0].fieldNode.eq(0).focus();
                         valid = false;
                     },
                     onValid: function() {
