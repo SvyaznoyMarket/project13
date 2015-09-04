@@ -146,6 +146,8 @@ class Entity {
     public $json3d = [];
     /** @var Coupon[] */
     public $coupons = [];
+    private $isImportedFromCore = false;
+    private $isImportedFromScms = false;
 
     public function __construct($data = []) {
         $this->importFromCore($data);
@@ -212,6 +214,9 @@ class Entity {
 
         // TODO удалить
         if ($this->isGifteryCertificate()) $this->state->setIsBuyable(true);
+
+        $this->isImportedFromCore = true;
+        $this->fixOldPrice();
     }
 
     public function importFromScms($data = []) {
@@ -227,17 +232,8 @@ class Entity {
             $this->json3d = $data['json3d'];
         }
 
-        $hasAffectOldPriceLabel = false;
         if (!empty($data['label']['uid'])) {
             $this->setLabel(new Label($data['label']));
-
-            $hasAffectOldPriceLabel = $this->label->affectPrice;
-        }
-
-        // Т.к. из метода api.enter.ru/v2/product/get-v3 была убрана связь между выводом старой цены и наличием
-        // шильдика, реализуем эту связь пока здесь (подробности в CORE-2936)
-        if (!$hasAffectOldPriceLabel) {
-            $this->priceOld = null;
         }
 
         if (!empty($data['brand']) && @$data['brand']['slug'] === 'tchibo-3569') {
@@ -343,6 +339,22 @@ class Entity {
             });
 
             $this->secondaryGroupedProperties = $this->groupedProperties;
+        }
+
+        $this->isImportedFromScms = true;
+        $this->fixOldPrice();
+    }
+
+    /**
+     * Т.к. из метода api.enter.ru/v2/product/get-v3 была убрана связь между выводом старой цены и наличием шильдика,
+     * реализуем эту связь пока здесь (подробности в CORE-2936).
+     *
+     * Поскольку порядок вызова методов importFromCore и importFromScms может меняться, данный метод должен вызываться
+     * в каждом из них.
+     */
+    private function fixOldPrice() {
+        if ($this->isImportedFromCore && $this->isImportedFromScms && (!$this->label || !$this->label->affectPrice)) {
+            $this->priceOld = null;
         }
     }
 
