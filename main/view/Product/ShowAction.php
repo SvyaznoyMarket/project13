@@ -117,13 +117,7 @@ class ShowAction {
 
         // Дополняем свойствами для каталога в виде листинга
         if (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category && $category->isInSiteListingWithViewSwitcherAbTest()) {
-            $productItem['properties']= array_map(function(\Model\Product\Property\Entity $entity) {
-                return [
-                    'name' => $entity->getName(),
-                    'value' => $entity->getStringValue(),
-
-                ];
-            }, $product->getPropertiesInView(5));
+            $productItem['properties'] = (new \View\Product\Properties())->execute($helper, $product);
         }
 
         // oldPrice and priceSale
