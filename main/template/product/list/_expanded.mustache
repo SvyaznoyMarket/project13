@@ -62,11 +62,11 @@
                         </li>
                     {{/properties}}
                 </ul>
-                <div class="listing-variations">
-                    {{#hasVariations}}
-                        <span class="listing-variations__lbl">Можно выбрать:</span> <span class="listing-variations__val">Стандарт комплекта</span>
-                    {{/hasVariations}}
-                </div>
+                {{#hasVariations}}
+                    <div class="listing-variations">
+                        <span class="listing-variations__lbl">Можно выбрать:</span> {{#variations}}<span class="listing-variations__val">{{name}}</span>{{/variations}}
+                    </div>
+                {{/hasVariations}}
             </div>
         {{! END: Блок с названием и характеристиками }}
         {{! Блок с ценой, рейтингом }}
