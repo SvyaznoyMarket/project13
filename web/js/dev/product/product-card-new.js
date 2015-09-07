@@ -398,13 +398,6 @@
 
     $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); });
 
-
-	$('.js-description-expand.collapsed').on('click', function(){
-
-        $(this).removeClass('collapsed js-description-expand');
-
-    });
-
     $body.on('click', '.jsProductCardNewLabelInfo', function(){
         $('.jsProductCardNewLabelPopup').toggleClass('info-popup--open');
     });
