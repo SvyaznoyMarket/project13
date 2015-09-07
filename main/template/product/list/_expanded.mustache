@@ -38,7 +38,7 @@
                 <a class="listing__title" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a>
 
                 {{#review}}
-                    <div class="listing__reviews">
+                   <a href="{{link}}" class="listing__reviews">
                         <!-- Блок отзыввов -->
                         <div class="bSimplyDescReviews">
                             <div class="bSimplyDescReviews__eStars">
@@ -50,11 +50,11 @@
                             <div class="bSimplyDescReviews__eLink"><span class="review-count">{{count}}</span></div>
                         </div>
                         <!--/ Блок отзыввов -->
-                    </div>
+                    </a>
                 {{/review}}
 
                 <ul class="listing-props">
-                    {{#properties}}<!-- TODO: вывести здесь 5 строчек, а не 3 как сейчас -->
+                    {{#properties}}
                         <li class="listing-props__i">
                             <span class="listing-props__name"><span
                                     class="listing-props__name-wrap">{{name}}</span></span>
@@ -64,7 +64,7 @@
                 </ul>
                 <div class="listing-variations">
                     <!--{{!#hasVariations}}-->
-                        <span class="listing-variations__lbl">Можно выбрать:</span><span class="listing-variations__val">Стандарт комплекта</span>
+                        <span class="listing-variations__lbl">Можно выбрать:</span> <span class="listing-variations__val">Стандарт комплекта</span>
                     <!--{{!/hasVariations}}-->
                 </div>
             </div>
