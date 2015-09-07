@@ -28,7 +28,7 @@ return function (
         <? endif; ?>
 
         <!-- блок разбиения заказа -->
-        <div class="order-bill__item clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : '' ?>"
+        <div class="orderRow order-bill__item clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : '' ?>"
              data-block_name="<?= $order->block_name ?>">
             <!-- информация о заказе -->
             <div class="order-bill__head">Заказ №<?= ($i) ?></div>

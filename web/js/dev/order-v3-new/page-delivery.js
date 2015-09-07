@@ -420,6 +420,26 @@
         e.preventDefault();
     });
 
+    // применить скидку
+    $orderContent.on('click', '.jsApplyDiscount-1509', function(e){
+        var
+            $el = $(this),
+            relations = $el.data('relation'),
+            value = $el.data('value') || {}
+        ;
+
+        value['number'] = $(relations['number.selector']).val().trim();
+
+        // проверяем код PandaPay если есть совпадение маски и нет применённых дискаунтов
+        if (/SN.{10}/.test(value['number']) && $orderBlock.find('.jsOrderV3Discount').length == 0) {
+            checkPandaPay($el, value['number']); // иначе стандартный вариант
+        } else if ('' != value['number']) {
+            applyDiscount(value[['block_name']], value['number']);
+        }
+
+        e.preventDefault();
+    });
+
     // удалить скидку
     $orderContent.on('click', '.jsDeleteDiscount', function(e){
         var $this = $(this),

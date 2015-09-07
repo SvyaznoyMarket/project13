@@ -20,11 +20,6 @@ class IndexAction {
 
         $orderWithCart = self::isOrderWithCart();
 
-        if ($orderWithCart) {
-            $cart->update([], true);
-            $cart->markProductsAsInOrder();
-        }
-
         // подготовка 1-го пакета запросов
 
         // запрашиваем пользователя, если он авторизован
