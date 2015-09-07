@@ -14,7 +14,7 @@ class Layout extends \View\DefaultLayout {
     }
 
     public function slotOrderHead() {
-        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 1]);
+        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 1, 'withCart' => self::isOrderWithCart()]);
     }
 
     public function slotPartnerCounter()

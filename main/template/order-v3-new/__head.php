@@ -1,8 +1,15 @@
 <?php
 
-return function(
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param $step
+ * @param bool $withCart
+ * @return string
+ */
+$f = function(
     \Helper\TemplateHelper $helper,
-    $step
+    $step,
+    $withCart = false
 ) {
     if (!in_array($step, [1, 2, 3])) {
         return '';
@@ -10,7 +17,7 @@ return function(
 
     $links = [
         1 => [
-            'name'     => 'Получатель',
+            'name'     => $withCart ? 'Корзина' : 'Получатель',
             'url'      => $helper->url('orderV3'),
             'isActive' => false,
             'isPassed' => false,
@@ -59,4 +66,4 @@ return function(
 </header>
 <!--/ шапка оформления заказа -->
 
-<? };
+<? }; return $f;
