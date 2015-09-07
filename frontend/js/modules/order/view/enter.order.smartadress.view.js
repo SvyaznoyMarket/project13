@@ -184,6 +184,7 @@
                 console.info('setStreetValue', val);
                 lscache.set('smartadress_streetData', val);
                 this.subViews.street.val(val);
+                this.street = val;
                 // this.subViews.street.kladr('controller').setValueByName(val);
             },
 
@@ -191,12 +192,14 @@
                 console.info('setBuilingValue', val);
                 lscache.set('smartadress_buildingData', val);
                 this.subViews.building.val(val);
+                this.building = val;
                 // this.subViews.building.kladr && this.subViews.building.kladr('controller').setValueByName(val);
             },
 
             setApartmentValue: function( val ) {
                 console.info('setApartmentValue', val);
                 this.subViews.apartment.val(val);
+                this.apartment = val;
                 lscache.set('smartadress_apartment', val);
             },
 

@@ -79,7 +79,8 @@
                     offerPopupContent: $('.' + CSS_CLASSES.OFFER_POPUP_CONTENT),
                     street: this.$el.find('.' + CSS_CLASSES.STREET_INPUT),
                     building: this.$el.find('.' + CSS_CLASSES.BUILD_INPUT),
-                    apartment: this.$el.find('.' + CSS_CLASSES.APARTMENT_INPUT)
+                    apartment: this.$el.find('.' + CSS_CLASSES.APARTMENT_INPUT),
+                    orderForm: this.$el.find('#js-orderForm')
                 };
 
                 suborders.each(function( index ) {
@@ -227,11 +228,11 @@
              */
             submitOrder: function() {
                 var
+                    self  = this,
                     valid = false;
 
                 this.validator.validate({
                     onInvalid: function( err ) {
-                        err[0].fieldNode.eq(0).focus();
                         valid = false;
                     },
                     onValid: function() {
@@ -239,7 +240,40 @@
                     }
                 });
 
-                return valid;
+                if ( !valid ) {
+                    return false;
+                }
+
+                if ( this.subViews.smartAdress ) {
+                    this.ajax({
+                        type: 'POST',
+                        data: {
+                            action: 'changeAddress',
+                            params: {
+                                street: this.subViews.smartAdress.street,
+                                building: this.subViews.smartAdress.building,
+                                apartment: this.subViews.smartAdress.apartment,
+                                kladr_id: this.subViews.smartAdress.regionData.kladrId
+                            }
+                        },
+                        url: this.url,
+                        loader: this.loader,
+                        success: function( data ) {
+                            console.info('module:enter.order.step2.view~OrderStep2View#submitOrder true');
+                            self.subViews.orderForm.submit()
+                        },
+                        error: function( jqXHR, textStatus, errorThrown ) {
+                            valid = false;
+                            console.groupCollapsed('module:enter.order.step2.view~OrderStep2View#submitOrder: error');
+                            console.log(jqXHR);
+                            console.log(textStatus);
+                            console.log(errorThrown);
+                            console.groupEnd();
+                        }
+                    });
+                }
+
+                return false;
             },
 
             /**
