@@ -31,7 +31,6 @@ class NewAction extends OrderV3 {
         try {
             if ($request->isMethod('GET')) {
                 $this->cart->update([], true);
-                $this->cart->markProductsAsInOrder();
                 $this->pushEvent(['step' => 1]);
             }
 
@@ -75,7 +74,7 @@ class NewAction extends OrderV3 {
             return new \Http\Response($page->show(), 500);
         }
 
-        $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection(['product_list' => array_map(function(\Model\Cart\Product\Entity $cartProduct) { return ['id' => $cartProduct->id, 'quantity' => $cartProduct->quantity]; }, $this->cart->getInOrderProductsById())]);
+        $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection(['product_list' => array_map(function(\Model\Cart\Product\Entity $cartProduct) { return ['id' => $cartProduct->id, 'quantity' => $cartProduct->quantity]; }, $this->cart->getProductsById())]);
 
         $page->setParam('user', $this->user);
         $page->setParam('previousPost', $post);
@@ -111,7 +110,7 @@ class NewAction extends OrderV3 {
      * @return bool
      */
     private function hasProductsOnlyFromPartner() {
-        foreach ($this->cart->getInOrderProductsById() as $cartProduct) {
+        foreach ($this->cart->getProductsById() as $cartProduct) {
             if ($cartProduct->isOnlyFromPartner) {
                 return true;
             }

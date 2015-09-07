@@ -44,7 +44,7 @@ class ShowAction {
 
         if (count($sliceRequestFilters) == 1 && !empty($sliceRequestFilters['barcode'])) {
             return (new SetAction())->execute(
-                isset($sliceRequestFilters['barcode'][1]) ? join(',', $sliceRequestFilters['barcode']) : $sliceRequestFilters['barcode'], // поддержка как barcode=2060103001326,2060103001814 так и barcode[]=2060103001326&barcode[]=2060103001814
+                !empty($sliceRequestFilters['barcode'][0]) ? join(',', $sliceRequestFilters['barcode']) : $sliceRequestFilters['barcode'], // поддержка как barcode=2060103001326,2060103001814 так и barcode[]=2060103001326&barcode[]=2060103001814
                 $request,
                 $slice->getName()
             );

@@ -69,7 +69,11 @@ class RecommendedAction {
         $client->execute(null, 1); // нихай, пускай только один раз запрашивает
 
         /** @var \Model\Product\Entity[] $productsById */
-        $productsById = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $productIdsByCategoryId);
+        $productsById = [];
+        foreach ($productIdsByCategoryId as $productId) {
+            $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
+        }
+
         \RepositoryManager::product()->prepareProductQueries($productsById, 'media');
         \App::coreClientV2()->execute();
 

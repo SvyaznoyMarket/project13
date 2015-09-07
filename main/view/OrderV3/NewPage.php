@@ -34,7 +34,7 @@ class NewPage extends Layout {
     {
         $html = parent::slotHubrusJS();
         if (!empty($html)) {
-            return $html . \View\Partners\Hubrus::addHubrusData('cart_items', \App::user()->getCart()->getInOrderProductsById());
+            return $html . \View\Partners\Hubrus::addHubrusData('cart_items', \App::user()->getCart()->getProductsById());
         } else {
             return '';
         }

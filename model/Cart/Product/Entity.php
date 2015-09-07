@@ -41,11 +41,6 @@ namespace Model\Cart\Product {
         public $isGone = false;
         /** @var bool */
         public $isAvailable = true;
-        /**
-         * Если данный товар попал на оформление заказа
-         * @var bool
-         */
-        public $inOrder = false;
         /** @var mixed */
         public $added = null;
 
@@ -67,7 +62,6 @@ namespace Model\Cart\Product {
             if (isset($data['referer'])) $this->referer = $data['referer'];
             if (isset($data['quantity'])) $this->quantity = (int)$data['quantity'];
             if (isset($data['isGone'])) $this->isGone = (bool)$data['isGone'];
-            if (isset($data['inOrder'])) $this->inOrder = (bool)$data['inOrder'];
             if (isset($data['isAvailable'])) $this->isAvailable = (bool)$data['isAvailable'];
             if (isset($data['added'])) $this->added = $data['added'];
 

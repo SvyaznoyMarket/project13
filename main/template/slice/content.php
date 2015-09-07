@@ -17,7 +17,7 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 
-<?= $helper->render('slice/__data', ['slice' => $slice]) ?>
+<?= $helper->render('slice/__data', ['slice' => $slice, 'category' => $category]) ?>
 
 <div class="bCatalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 

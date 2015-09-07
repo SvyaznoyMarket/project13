@@ -300,11 +300,24 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // категория товаров
-            call_user_func(function() use (&$productQuery, &$categoryQuery) {
-                $categoryUi = isset($productQuery->response->product['category']) ? end($productQuery->response->product['category'])['ui'] : null;
-                if (!$categoryUi) return;
+            call_user_func(function() use (&$categoryQuery, $regionQuery, $productDescriptionQuery) {
+                if (empty($productDescriptionQuery->response->products[0]['categories']) || !is_array($productDescriptionQuery->response->products[0]['categories'])) {
+                    return;
+                }
 
-                $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $productQuery->regionId))->prepare();
+                $categoryUi = null;
+                foreach ($productDescriptionQuery->response->products[0]['categories'] as $category) {
+                    if ($category['main']) {
+                        $categoryUi = $category['uid'];
+                        break;
+                    }
+                }
+
+                if (!$categoryUi) {
+                    return;
+                }
+
+                $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $regionQuery->response->region['id']))->prepare();
             });
 
             // избранные товары пользователя

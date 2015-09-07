@@ -71,7 +71,9 @@
 .pick-point-list {
     padding: 12px 12px 0 0;
     text-align: left;
-    width: 400px;
+    width: 100%;
+    
+    .box-sizing(border-box);
 
     .selShop_l {
         &:after {
@@ -85,7 +87,9 @@
         border-bottom: 1px solid @lightgrey-2;
         cursor: pointer;
         margin: 0 6px 0 3px;
-        width: 415px;
+        width: 100%;
+        display: table;
+        .box-sizing(border-box);
 
         &:hover .pick-point-item__buy{
             display: block;
@@ -112,6 +116,8 @@
         }
         &__addr {
             position: relative;
+            display: table-cell;
+            .box-sizing(border-box);
 
             width: 100%;
             min-width: 0;
@@ -125,6 +131,8 @@
         }
         &__logo {
             position: relative;
+            display: table-cell;
+            .box-sizing(border-box);
 
             width: 67px;
             padding: 10px 5px;
@@ -194,6 +202,8 @@
         }
         &__info {
             position: relative;
+            display: table-cell;
+            .box-sizing(border-box);
 
             padding: 10px 10px 0 0;
             vertical-align: top;

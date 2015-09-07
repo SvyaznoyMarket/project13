@@ -2,6 +2,8 @@
     $helper = new \Helper\TemplateHelper();
     $region = \App::user()->getRegion();
 
+    $pathInfo = \App::request()->getPathInfo();
+
     // SITE-5853
     $availableParentRegions = [
         82, // Москва
@@ -34,20 +36,34 @@
         24, // Татарстан Респ
     ];
 ?>
+<? if (in_array($region->parentId, [76/* Воронежская обл */, 90/* Ярославская обл */])): ?>
+<?
+    // TODO удалить даный блок if после реализации FCMS-779
+    if ($region->name) {
+        $scmsResponse = \App::scmsClient()->query('api/word-inflect', ['names' => [$region->name]], []);
 
-<? if (\App::request()->getPathInfo() !== '/delivery' && $region->pointCount && in_array($region->parentId, $availableParentRegions)): ?>
-    <?
-        // TODO удалить даный блок if после реализации FCMS-779
-        if ($region->name) {
-            $scmsResponse = \App::scmsClient()->query('api/word-inflect', ['names' => [$region->name]], []);
-
-            if (isset($scmsResponse[$region->name])) {
-                $region->names = new \Model\Inflections($scmsResponse[$region->name]);
-            }
+        if (isset($scmsResponse[$region->name])) {
+            $region->names = new \Model\Inflections($scmsResponse[$region->name]);
         }
-    ?>
+    }
+?>
+    <span class="header__bann stripe-bann">
+        Бесплатные <a href="/dostavka">доставка</a> домой и в офис и <a href="<?= $helper->url('delivery') ?>">самовывоз</a> из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?> <? if ($region->names->locativus): ?> в <?= $helper->escape($region->names->locativus) ?><? endif ?>
+        <span class="stripe-bann__small">Для заказов от 1990 <span class="rubl">p</span></span>
+    </span>
+<? elseif (('/delivery' !== $pathInfo) && $region->pointCount && in_array($region->parentId, $availableParentRegions)): ?>
+<?
+    // TODO удалить даный блок if после реализации FCMS-779
+    if ($region->name) {
+        $scmsResponse = \App::scmsClient()->query('api/word-inflect', ['names' => [$region->name]], []);
 
-    <a class="header__bann stripe-bann" href="<?= \App::helper()->url('delivery') ?>">
+        if (isset($scmsResponse[$region->name])) {
+            $region->names = new \Model\Inflections($scmsResponse[$region->name]);
+        }
+    }
+?>
+
+    <a class="header__bann stripe-bann" href="<?= $helper->url('delivery') ?>">
         Бесплатный самовывоз из <?= $region->pointCount ?> <?= $helper->numberChoice($region->pointCount, ['точки', 'точек', 'точек']) ?><? if ($region->names->locativus): ?> в <?= $helper->escape($region->names->locativus) ?><? endif ?>.
         <span class="stripe-bann__small">Для заказов от 1990 <span class="rubl">p</span></span>
     </a>

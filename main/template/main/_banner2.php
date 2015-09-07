@@ -2,7 +2,7 @@
 /**
  * @var $banners \Model\Banner\BannerEntity[]
  */
-$isArrowsVisible = count($banners) > 4
+$isArrowsVisible = count($banners) > 4;
 ?>
 
 <? if (!empty($banners)) : ?>
