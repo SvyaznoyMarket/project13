@@ -38,7 +38,7 @@
                         error.render = showFieldError
                     }
 
-                    $field = $form.find('[name="' + error.field + '"]');
+                    $field = $form.find('[data-field="' + error.field + '"]');
                     error.render(error, $field, $form)
                 })
             }
@@ -49,6 +49,7 @@
          */
         showFieldError = function(error, $field, $form) {
             $field.addClass('error'); // TODO error.message
+            $field.find('[data-message]').text(error.message);
         },
 
         /**

@@ -3,7 +3,7 @@
 @borderColor: #c7c7c7;
 @requiredColor: #f99b1c;
 
-.order-ctrl{
+.order-ctrl {
     width: 110px;
     position: relative;
     padding-top: 15px;
@@ -49,6 +49,13 @@
             color: @placeholderColor;
         }
     }
+    &__err{
+        display: none;
+        color: #d45745;
+        font-size: 12px;
+        margin-left: 5px;
+    }
+
     &.required{
         .order-ctrl{
             &__lbl{
@@ -70,6 +77,19 @@
             }
         }
     }
+    &.error{
+        .order-ctrl{
+            border-color: #d45745;
+
+            &__err{
+                .inline-block();
+            }
+            &__lbl{
+                display: block;
+                color: #d45745;
+            }
+        }
+    }
 }
 
 
@@ -84,5 +104,13 @@
     &--default{
         color: @txtColor;
         background-color: @white;
+    }
+}
+
+.order-agreement__check{
+    border: 1px solid transparent;
+    .rounded(3px);
+    &.error{
+        border-color:#d45745;
     }
 }

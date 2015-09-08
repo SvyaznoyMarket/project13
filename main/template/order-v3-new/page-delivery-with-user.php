@@ -65,16 +65,17 @@ $f = function(
             <div class="order-receiver">
                 <form id="js-orderForm js-form" action="<?= $helper->url('orderV3.create') ?>" method="post">
                     <div class="order-receiver__login">
-                        <div class="order-ctrl required">
-                            <label class="order-ctrl__lbl js-order-ctrl__lbl">*Телефон</label>
-
-                            <input name="user_info[phone]" class="order-ctrl__input js-order-ctrl__input js-order-phone" data-field="phone" placeholder="*Телефон" name="user_info[phone]" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : $userPhone ?>" data-mask="+7 (xxx) xxx-xx-xx" <? if (!$userEntity): ?> data-event="true"<? endif ?>>
+                        <div class="order-ctrl required" data-field="phone" >
+                            <label class="order-ctrl__lbl js-order-ctrl__lbl">*Телефон <span class="order-ctrl__err" data-message=""></span>
+                            </label>
+                            <input name="user_info[phone]" class="order-ctrl__input js-order-ctrl__input js-order-phone" placeholder="*Телефон" name="user_info[phone]" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : $userPhone ?>" data-mask="+7 (xxx) xxx-xx-xx" <? if (!$userEntity): ?> data-event="true"<? endif ?>>
 
                         </div>
                         <div class="order-receiver__hint">Для смс о состоянии заказа</div>
-                        <div class="order-ctrl required">
-                            <label class="order-ctrl__lbl js-order-ctrl__lbl">*E-mail</label>
-                            <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input" placeholder="*E-mail" data-field="email" />
+                        <div class="order-ctrl required" data-field="email" >
+                            <label class="order-ctrl__lbl js-order-ctrl__lbl">*E-mail <span class="order-ctrl__err" data-message=""></span>
+                            </label>
+                            <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input" placeholder="*E-mail"/>
                         </div>
                         <div class="order-receiver__subscribe">
                             <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="" value="">
@@ -82,9 +83,9 @@ $f = function(
                                 <img class="order-receiver__chip" src="/styles/order-new/img/chip-s.png" alt="">
                                 <span class="order-receiver__subscribe-txt">Подпишись на рассылку и получить скидку<br>на следующую покупку</span>
                             </label></div>
-                        <div class="order-ctrl">
+                        <div class="order-ctrl" data-field="first_name">
                             <label class="order-ctrl__lbl js-order-ctrl__lbl">Имя</label>
-                            <input name="user_info[first_name]" class="order-ctrl__input js-order-ctrl__input" placeholder="Имя" data-field="first_name" />
+                            <input name="user_info[first_name]" class="order-ctrl__input js-order-ctrl__input" placeholder="Имя"/>
                         </div>
                     </div>
                 </form>
@@ -187,7 +188,7 @@ $f = function(
 
                 <?= \App::templating()->render('order-v3/common/_blackfriday', ['version' => 2]) ?>
 
-                <div class="order-agreement__check">
+                <div class="order-agreement__check" data-field="accept">
                     <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" value="" />
 
                     <label  class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">

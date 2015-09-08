@@ -10,6 +10,7 @@
     var body = document.getElementsByTagName('body')[0],
         $body = $(body),
         $orderContent = $('#js-order-content'),
+        $inputs = $('.js-order-ctrl__input'),
         comment = '',
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
@@ -673,5 +674,6 @@
     $.map($inputs, function(elem, i) {
         if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
     });
-    $('.js-order-phone').focus();
+
+
 })(jQuery);
