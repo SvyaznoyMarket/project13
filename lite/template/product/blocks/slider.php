@@ -58,8 +58,16 @@ $f = function (
         'nextArrow'  => '.js-goods-slider-btn-next',
         'prevArrow'  => '.js-goods-slider-btn-prev',
         'slider'     => '.js-slider-goods',
-        'responsive' => '[{breakpoint: 1100,settings: {slidesToShow: 4,slidesToScroll: 4}}]'
+        'responsive' => [
+            [
+                'breakpoint' => 1100,
+                'settings' => [
+                    'slidesToShow' => 4,
+                    'slidesToScroll' => 4,
+                ],
+            ]
         ]
+    ];
 
     // слайдер товаров для слайдера с аксессуарами применяем модификатор goods-slider--5items
     ?>
