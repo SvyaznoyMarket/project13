@@ -63,16 +63,16 @@ $f = function(
             <div class="pagehead"><h1 class="orderCnt_t">Получатель</h1></div>
 
             <div class="order-receiver">
-                <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
+                <form id="js-orderForm js-form" action="<?= $helper->url('orderV3.create') ?>" method="post">
                     <div class="order-receiver__login">
                         <div class="order-ctrl required">
                             <label class="order-ctrl__lbl js-order-ctrl__lbl">*Телефон</label>
-                            <input name="user_info[phone]" class="order-ctrl__input js-order-ctrl__input" placeholder="*Телефон">
+                            <input name="user_info[phone]" class="order-ctrl__input js-order-ctrl__input" placeholder="*Телефон" data-field="phone" />
                         </div>
                         <div class="order-receiver__hint">Для смс о состоянии заказа</div>
                         <div class="order-ctrl required">
                             <label class="order-ctrl__lbl js-order-ctrl__lbl">*E-mail</label>
-                            <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input" placeholder="*E-mail">
+                            <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input" placeholder="*E-mail" data-field="email" />
                         </div>
                         <div class="order-receiver__subscribe">
                             <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="" value="">
@@ -82,7 +82,7 @@ $f = function(
                             </label></div>
                         <div class="order-ctrl">
                             <label class="order-ctrl__lbl js-order-ctrl__lbl">Имя</label>
-                            <input class="order-ctrl__input js-order-ctrl__input" placeholder="Имя">
+                            <input name="user_info[first_name]" class="order-ctrl__input js-order-ctrl__input" placeholder="Имя" data-field="first_name" />
                         </div>
                     </div>
                 </form>
