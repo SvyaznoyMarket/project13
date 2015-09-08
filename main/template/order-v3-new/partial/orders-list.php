@@ -251,14 +251,16 @@ $f = function (
                             <? endif ?>
                         </div>
 
-                        <!-- TODO: разместить вывод в блок <div class="order-delivery__block"> -->
-                        <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order-v3-new/__payment-methods', ['order' => $order]) : '' ?>
+                        <? if (\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) { ?>
+                            <div class="order-delivery__block"><?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?></div>
+                        <? } ?>
 
                     <? else: ?>
                         <?= $helper->render('order-v3-new/partial/user-address', ['order' => $order, 'orderDelivery' => $orderDelivery]) ?>
 
-                        <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order-v3-new/__payment-methods', ['order' => $order]) : '' ?>
-
+                        <? if (\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) { ?>
+                        <div class="order-delivery__block"><?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?></div>
+                        <? } ?>
                         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
 
                             <div class="order-delivery__block">
