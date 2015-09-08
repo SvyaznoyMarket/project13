@@ -162,8 +162,14 @@ class DeliveryAction extends OrderV3 {
             if (!empty($this->cart->getCreditProductIds())) $splitData['payment_method_id'] = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT;
 
             try {
-                // SITE-6016
-                if (in_array(\App::user()->getRegion()->parentId, [76, 90])) { // Воронеж, Ярославль
+                // SITE-6016, SITE-6051
+                if (in_array(\App::user()->getRegion()->parentId, [
+                    76, // Воронеж
+                    90, // Ярославль
+                    18, // НН
+                    77, // Иваново
+                    96, // Краснодар
+                ])) {
                     switch ( \App::abTest()->getTest('order_delivery_type')->getChosenCase()->getKey()) {
                         case 'self':
                             $splitData += ['delivery_type' => 'self'];
