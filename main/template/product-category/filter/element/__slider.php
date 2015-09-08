@@ -14,7 +14,7 @@ return function(
 ?>
 
 
-    <div class="bRangeSlider js-category-filter-rangeSlider <? if ($filter->isPrice()): ?>js-category-v1-filter-element-price<? endif ?>" <? if(!empty($promoStyle['bRangeSlider'])): ?> style="<?= $promoStyle['bRangeSlider'] ?>"<? endif ?>>
+    <div class="bRangeSlider js-category-filter-rangeSlider <? if ($filter->isPrice()): ?>js-category-filter-element-price<? endif ?>" <? if(!empty($promoStyle['bRangeSlider'])): ?> style="<?= $promoStyle['bRangeSlider'] ?>"<? endif ?>>
         <? if ($filter->isPrice()): ?>
             <span class="bRangeSlider__eTitle"><?= $filter->getName() ?></span>
         <? endif ?>

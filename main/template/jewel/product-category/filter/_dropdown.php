@@ -23,11 +23,11 @@ foreach ($options as $option) {
 ?>
 
 
-<li class="bBrandSortingList__eItem">
+<li class="bBrandSortingList__eItem js-category-filter-jewel-element" data-name="<?= $page->escape($filter->getName()) ?>">
   <div class="bBrandSortingOptiontTitle"><?= $filter->getName() ?></div>
   <div class="bBrandSortingOption">
     <? if(empty($values)) { ?>
-        <a class="bBrandSortingOption__eLink" href="<?= $allLink ?>">Все</a>
+        <a class="bBrandSortingOption__eLink js-category-filter-jewel-element-link" href="<?= $allLink ?>">Все</a>
     <? } else { ?>
         <? foreach ($options as $optKey => $option) { $id = $option->getId() ?>
             <? if(in_array($id, $values)) { ?>
@@ -38,10 +38,10 @@ foreach ($options as $option) {
     <? } ?>
     <ul class="bBrandSortingOption__eDropDown">
         <? if(!empty($values)) { ?>
-            <li class="bDropDownItem"><a class="bDropDownItem__eLink" href="<?= $allLink ?>">Все</a></li>
+            <li class="bDropDownItem"><a class="bDropDownItem__eLink js-category-filter-jewel-element-link" href="<?= $allLink ?>">Все</a></li>
         <? } ?>
         <? foreach ($options as $option) { ?>
-            <li class="bDropDownItem"><a class="bDropDownItem__eLink" href="<?= $option->getLink() ?>"><?= $option->getName() ?></a></li>
+            <li class="bDropDownItem"><a class="bDropDownItem__eLink js-category-filter-jewel-element-link" href="<?= $option->getLink() ?>"><?= $option->getName() ?></a></li>
         <? } ?>
     </ul>
   </div>

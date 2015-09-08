@@ -546,6 +546,54 @@ class Entity extends BasicEntity {
         ], true);
     }
 
+    public function isPandora() {
+        return $this->getCategoryClass() === 'jewel';
+    }
+
+    public function isGrid() {
+        return $this->getCategoryClass() === 'grid';
+    }
+
+    public function isDefault() {
+        return ($this->getCategoryClass() === 'default' || $this->getCategoryClass() == '');
+    }
+
+    public function getCategoryClass() {
+        return !empty($this->catalogJson['category_class']) ? strtolower(trim((string)$this->catalogJson['category_class'])) : null;
+    }
+
+    /**
+     * SITE-5772
+     * @return array
+     */
+    public function getSenderForGoogleAnalytics() {
+        if ($this->isPandora()) {
+            $sender = ['name' => 'filter_pandora'];
+        } else if ($this->isV3()) {
+            $sender = ['name' => 'filter_jewelry'];
+        } else if ($this->isV2()) {
+            $sender = ['name' => 'filter'];
+        } else if ($this->isDefault()) {
+            $sender = ['name' => 'filter_old'];
+        } else {
+            $sender = [];
+        }
+
+        if ($sender) {
+            $sender['categoryUrlPrefix'] = $this->getUrlPrefix();
+        }
+
+        return $sender;
+    }
+
+    private function getUrlPrefix() {
+        if (preg_match('/^\/catalog\/([^\/]*).*$/i', parse_url($this->link, PHP_URL_PATH), $matches)) {
+            return $matches[1];
+        }
+
+        return '';
+    }
+
     private function convertCatalogJsonToOldFormat($data) {
         $result = [];
 

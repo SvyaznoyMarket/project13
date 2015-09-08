@@ -65,7 +65,7 @@ return function(
     ?>
 
     <div class="fltrBtn fltrBtn-bt">
-        <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" data-count-url="<?//= $countUrl ?>" method="GET">
+        <form id="productCatalog-filter-form" class="js-category-filter js-category-filter-v2" action="<?= $baseUrl ?>" data-count-url="<?//= $countUrl ?>" method="GET">
             <? // Для IE9 (чтобы он отправлял форму при нажатии на клавишу enter в текстовом поле ввода) ?>
             <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
 
@@ -160,7 +160,7 @@ return function(
                     <? foreach ($productFilter->getGroupedPropertiesV2() as $group): ?>
                         <? if ($group->hasInListProperties()): ?>
                             <div class="fltrBtnBox <? if ($group->hasSelectedProperties): ?>actv<? endif ?> js-category-v2-filter-dropBox">
-                                <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
+                                <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-name="<?= $helper->escape($group->name) ?>">
                                     <span class="fltrBtnBox_tggl_tx"><?= $group->name ?></span>
                                     <i class="fltrBtnBox_tggl_corner"></i>
                                 </div>

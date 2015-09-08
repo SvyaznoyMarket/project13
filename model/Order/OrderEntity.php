@@ -343,13 +343,15 @@ class OrderEntity {
                         if (isset($sender['name']))     $data[sprintf('product.%s.sender', $product->getUi())] = $sender['name'];       // система рекомендаций
                         if (isset($sender['position'])) $data[sprintf('product.%s.position', $product->getUi())] = $sender['position']; // позиция блока на сайте
                         if (isset($sender['method']))   $data[sprintf('product.%s.method', $product->getUi())] = $sender['method'];     // метод рекомендаций
-                        if (isset($sender['from']) && !empty($sender['from']))     $data[sprintf('product.%s.from', $product->getUi())] = $sender['from'];         // откуда перешели на карточку товара
+                        if (!empty($sender['from']))    $data[sprintf('product.%s.from', $product->getUi())] = $sender['from'];         // откуда перешели на карточку товара
+                        if (!empty($sender['isFromProductCard']))    $data[sprintf('product.%s.isFromProductCard', $product->getUi())] = $sender['isFromProductCard']; // SITE-5772
                     } else if (isset($cartProducts[$product->getId()]) && $cartProducts[$product->getId()]->sender) {
                         $cartProductSender = $cartProducts[$product->getId()]->sender;
                         if (isset($cartProductSender['name']))     $data[sprintf('product.%s.sender', $product->getUi())] = $cartProductSender['name'];       // система рекомендаций
                         if (isset($cartProductSender['position'])) $data[sprintf('product.%s.position', $product->getUi())] = $cartProductSender['position']; // позиция блока на сайте
                         if (isset($cartProductSender['method']))   $data[sprintf('product.%s.method', $product->getUi())] = $cartProductSender['method'];     // метод рекомендаций
-                        if (isset($cartProductSender['from']) && !empty($cartProductSender['from']))     $data[sprintf('product.%s.from', $product->getUi())] = $cartProductSender['from'];         // откуда перешели на карточку товара
+                        if (!empty($cartProductSender['from']))    $data[sprintf('product.%s.from', $product->getUi())] = $cartProductSender['from'];         // откуда перешели на карточку товара
+                        if (!empty($cartProductSender['isFromProductCard']))    $data[sprintf('product.%s.isFromProductCard', $product->getUi())] = $cartProductSender['isFromProductCard']; // SITE-5772
                         unset($cartProductSender);
                     }
 
