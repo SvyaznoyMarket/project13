@@ -333,20 +333,20 @@
     margin: 40px 0 20px;
 
     color: @grey-light;
-
-    .font-face('GloberRegular');
+    
     &__title {
         margin: 0 0 5px;
 
-        .font-size(20);
+        .font-size(32);
     }
     &__text {
-        .font-size(16);
+        .font-size(22);
+        .font-face('GloberRegular');
     }
 }
 
 .search-result-status-notfound {
-    width: 425px;
+    width: 525px;
     margin: 0 auto 50px;
     &__title {
         margin: 0 0 10px;
@@ -356,7 +356,8 @@
         .font-size(32);
     }
     &__text {
-        .font-size(18);
+        .font-size(22);
+        .font-face('GloberRegular');
     }
     &__phone {
         color: @grey-type;
@@ -369,24 +370,13 @@
 
     color: @grey-light;
     &__title {
-        width: 195px;
-        height: 195px;
-        max-width: 195px;
+        color: @grey-light;
 
-        text-align: center;
-        vertical-align: middle;
-
-        color: @orange-bright;
-        background: url('@{base-url}/cart/cart-empty.png') no-repeat 0 0 @white;
-
-        .font-size(24);
+        .font-size(32);
     }
     &__text {
-        vertical-align: middle;
-
-        .font-size(18);
+        .font-size(22);
         .font-face('GloberRegular');
-        line-height: 1.6;
     }
     &__link {
         color: @grey-type;
