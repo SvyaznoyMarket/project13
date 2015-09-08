@@ -9,58 +9,59 @@ $f = function (
 
     <div class="paymentMethods">
         <strong>Способы оплаты</strong>
-        <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH]) || isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
-            <div class="paymentRow">
-                <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CASH || $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
-                <input id="payment-cash" type="radio" name="payment-type[]" value="by_cash" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?> />
-                <label for="payment-cash" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">При получении</label>
 
-                <? if ($order->delivery_group_id != 1) : /* Скрываем выбор наличные/банковская карта при самовывозе */?>
-                    <div class="customSel">
-                        <select class="customSel-inner jsPaymentMethodSelect">
-                            <? if (array_key_exists(PaymentMethod::PAYMENT_CASH, $order->possible_payment_methods)) : ?>
-                                <option value="by_cash" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CASH ? 'selected' : '' ?>>наличными</option>
-                            <? endif ?>
-                            <? if (array_key_exists(PaymentMethod::PAYMENT_CARD_ON_DELIVERY, $order->possible_payment_methods)) : ?>
-                                <option value="by_credit_card" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY ? 'selected' : '' ?>>банковской картой</option>
-                            <? endif ?>
-                        </select>
-                    </div>
-                <? endif ?>
-
-            </div>
-        <? endif ?>
-
-        <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ONLINE])) : ?>
-            <div class="paymentRow jsDeliveryChooseOnline">
-                <? $checked = ($order->payment_method_id == PaymentMethod::PAYMENT_CARD_ONLINE); ?>
-                <input id="payment-online" type="radio" name="payment-type[]" value="by_online" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?>>
-                <label for="payment-online" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">Онлайн-оплата:
-                    <ul class="orderPaymentWeb_lst-sm">
-                        <? if (array_key_exists(PaymentMethod::PAYMENT_CARD_ONLINE, $order->possible_payment_methods)) : ?>
-                            <li class="orderPaymentWeb_lst-sm-i"><img src ="/styles/order/img/visa-logo-sm.jpg"></li>
-                        <? endif ?>
-                        <? if (false) : /* Яндекс-денег пока вообще нет */ ?>
-                            <li class="orderPaymentWeb_lst-sm-i"><img src ="/styles/order/img/yamoney-sm.jpg"></li>
-                        <? endif ?>
-                        <? if (array_key_exists(PaymentMethod::PAYMENT_PAYPAL, $order->possible_payment_methods)) : ?>
-                            <li class="orderPaymentWeb_lst-sm-i"><img src ="/styles/order/img/paypal.png"></li>
-                        <? endif ?>
-                        <? if (array_key_exists(PaymentMethod::PAYMENT_PSB, $order->possible_payment_methods)) : ?>
-                            <li class="orderPaymentWeb_lst-sm-i"><img src ="/styles/order/img/psb.png"></li>
-                        <? endif ?>
-                    </ul>
+        <!-- Новые способы оплаты - статика -->
+        <div class="payment-methods__discount discount">
+            <span class="discount__pay-type">Онлайн-оплата</span>
+            <span class="discount__val">Скидка 15%</span>
+        </div>
+        <ul class="payment-methods__lst">
+            <li class="payment-methods__i">
+                    <input id="payment-card" type="radio" name="payment-type[]" value="by_card" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" checked="">
+                    <label for="payment-card" class="customLabel customLabel-defradio2 mChecked">
+                        Банковская карта
+                        <img class="payment-methods__img" src="/styles/order-new/img/payment/pay-card.png">
+                    </label>
+            </li>
+            <li class="payment-methods__i">
+                <input id="payment-yandex" type="radio" name="payment-type[]" value="by_yandex" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" >
+                <label for="payment-yandex" class="customLabel customLabel-defradio2">
+                    Яндекс.Деньги
+                    <img class="payment-methods__img" src="/styles/order-new/img/payment/pay-yandex.png">
                 </label>
-            </div>
-        <? endif ?>
+            </li>
+            <li class="payment-methods__i">
+                <input id="payment-webmoney" type="radio" name="payment-type[]" value="by_webmoney" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" >
+                <label for="payment-webmoney" class="customLabel customLabel-defradio2">
+                    WebMoney
+                    <img class="payment-methods__img" src="/styles/order-new/img/payment/pay-webmoney.png">
+                </label>
+            </li>
+            <li class="payment-methods__i">
+                <input id="payment-qiwi" type="radio" name="payment-type[]" value="by_qiwi" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" >
+                <label for="payment-qiwi" class="customLabel customLabel-defradio2">
+                    Qiwi
+                    <img class="payment-methods__img" src="/styles/order-new/img/payment/pay-qiwi.png">
+                </label>
+            </li>
 
-        <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT])) : ?>
-            <div class="paymentRow jsDeliveryChooseCredit">
-                <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
-                <input id="payment-credit" type="radio" name="payment-type[]" value="by_online_credit" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?>>
-                <label for="payment-credit" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">Купить в кредит</label><br>
-            </div>
-        <? endif ?>
+            <li class="payment-methods__i top-space"><!-- ставим класс top-space на элемент, который имеет сверху бОльший оступ-->
+                <input id="payment-psb" type="radio" name="payment-type[]" value="by_psb" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" >
+                <label for="payment-psb" class="customLabel customLabel-defradio2">
+                    Выставить счет в PSB
+                    <img class="payment-methods__img" src="/styles/order-new/img/payment/pay-psb.png">
+                </label>
+            </li>
+            <li class="payment-methods__i">
+                <input id="payment-cash" type="radio" name="payment-type[]" value="by_cash" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" >
+                <label for="payment-cash" class="customLabel customLabel-defradio2">
+                    При получении
+                </label>
+            </li>
+
+        </ul>
+        <!-- END Новые способы оплаты - статика -->
+
 
     </div>
 
