@@ -130,7 +130,7 @@
                                                    type="checkbox" id="id-delivery-date-<?= $day.$uniqId ?>" name="" value="<?= $day ?>"
                                                    data-bind="checked: choosenDates" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-date-<?= $day.$uniqId ?>">
-                                                <span class="customLabel_btx"><?= $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $day)) ?></span>
+                                                <span class="customLabel_btx"><?= $helper->escape($day) ?></span>
                                             </label>
                                         </div>
                                     <? endforeach ?>

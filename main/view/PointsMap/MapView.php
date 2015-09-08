@@ -36,9 +36,42 @@ class MapView {
     }
 
     public function getUniquePointDays(){
-        $days = array_unique(array_map(function(Point $point){ return $point->nearestDay; }, $this->points));
-        sort($days);
-        return $days;
+        $days = [];
+        foreach ($this->points as $point) {
+            $days[$point->humanNearestDay] = $point;
+        }
+
+
+        uasort($days, function(\Model\Point\MapPoint $point1, \Model\Point\MapPoint $point2) {
+            if ($point1->dateInterval) {
+                $point1DateFrom = strtotime($point1->dateInterval['from']);
+                $point1DateTo = strtotime($point1->dateInterval['to']);
+            } else {
+                $point1DateFrom = $point1DateTo = strtotime($point1->nearestDay);
+            }
+
+            if ($point2->dateInterval) {
+                $point2DateFrom = strtotime($point2->dateInterval['from']);
+                $point2DateTo = strtotime($point2->dateInterval['to']);
+            } else {
+                $point2DateFrom = $point2DateTo = strtotime($point2->nearestDay);
+            }
+
+            if ($point1DateFrom < $point2DateFrom) {
+                return -1;
+            } else if ($point1DateFrom > $point2DateFrom) {
+                return 1;
+            } else if ($point1DateFrom == $point2DateFrom) {
+                if ($point1DateTo < $point2DateTo) {
+                    return -1;
+                } else if ($point1DateTo > $point2DateTo) {
+                    return 1;
+                }
+            }
+
+            return 0;
+        });
+        return array_keys($days);
     }
 
     public function getUniquePointTokens() {
