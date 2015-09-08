@@ -121,6 +121,7 @@
                 // Setup events
                 this.events['click .' + CSS_CLASSES.PICK_POINT]               = 'pickPoint';
                 this.events['click .' + CSS_CLASSES.POINT_OPENER]             = 'openPointsFilter';
+                this.events['mouseleave .' + CSS_CLASSES.POINT_FILTER]        = 'mouseleavePointFilter';
                 this.events['change .' + CSS_CLASSES.POINT_FILTER_PARAM]      = 'applyFilter';
                 this.events['click .' + CSS_CLASSES.POINTS_BALOON_CHOOSE_BTN] = 'pickPoint';
 
@@ -134,7 +135,23 @@
 
             events: {},
 
-             /**
+            /**
+             * Автоматическое скрытие дропдауна при уводе курсора с него
+             *
+             * @method      mouseleavePointFilter
+             * @memberOf    module:module:enter.points.popup.view~PointsPopup#
+             *
+             * @param       {Object}    event
+             */
+            mouseleavePointFilter: function( event ) {
+                var
+                    target   = $(event.currentTarget);
+
+                target.removeClass(CSS_CLASSES.POINT_FILTER_OPEN);
+                this.subViews.filterOverlay.hide();
+            },
+
+            /**
              * Выбор адреса из автокомлита
              *
              * @method      selectAutocompleteItem
