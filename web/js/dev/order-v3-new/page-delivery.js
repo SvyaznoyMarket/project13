@@ -651,4 +651,5 @@
 
     });
 
+    $('#auth-block').attr('data-state', 'register').addClass('state_register');
 })(jQuery);

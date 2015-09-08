@@ -89,11 +89,14 @@ $f = function(
                 <div class="order-receiver__social social">
                     <div class="social__head">Войти через</div>
                     <ul class="social__list">
-                        <li class="social__item"><a href=""><img src="/styles/order-new/img/social1.png"></a></li>
-                        <li class="social__item"><a href=""><img src="/styles/order-new/img/social2.png"></a></li>
-                        <li class="social__item"><a href=""><img src="/styles/order-new/img/social3.png"></a></li>
+                        <? if ($oauthEnabled['facebook']): ?>
+                            <li class="social__item"><a class="js-registerForm-socnetLink" href="<?= $helper->url('user.login.external', ['providerName' => 'facebook' ]) ?>"><img src="/styles/order-new/img/social2.png"></a></li>
+                        <? endif ?>
+                        <? if ($oauthEnabled['vkontakte']): ?>
+                            <li class="social__item"><a class="js-registerForm-socnetLink" href="<?= $helper->url('user.login.external', ['providerName' => 'vkontakte' ]) ?>"><img src="/styles/order-new/img/social3.png"></a></li>
+                        <? endif ?>
                     </ul>
-                    <div class="social__register"><span>Регистрация</span></div>
+                    <div class="social__register"><a class="bAuthLink" href="<?= $helper->url('user.login') ?>">Регистрация</a></div>
 
                     <!-- Берем из старой верстки - бонусные карты -->
                     <div class="bonusCnt bonusCnt-v2">
