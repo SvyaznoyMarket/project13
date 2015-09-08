@@ -641,15 +641,27 @@
         $container.data('timer', timer);
     });
 
-    $body.on('change', '.js-order-deliveryAddress', function() {
+    $('#auth-block').attr('data-state', 'register').addClass('state_register');
+
+    $body.on('click', '[form="js-orderForm"]', function(e) {
         var
             $el = $(this),
-            params = $el.data('value') || {},
-            relations = $el.data('relation'),
-            $container = $(relations['container'])
+            $form = $el.attr('form') && $('#' + $el.attr('form'))
         ;
+        console.info($form);
 
+        try {
+            if (!$('.jsAcceptAgreement').is(':checked')) {
+                console.warn('not accepted');
+                // TODO: show error
+
+                e.preventDefault();
+            } else if ($form.length) {
+                console.warn('form not found');
+                $form.submit();
+
+                e.preventDefault();
+            } // else default handler
+        } catch (error) { console.error(); }
     });
-
-    $('#auth-block').attr('data-state', 'register').addClass('state_register');
 })(jQuery);

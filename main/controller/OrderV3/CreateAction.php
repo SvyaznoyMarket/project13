@@ -44,10 +44,20 @@ class CreateAction extends OrderV3 {
             $splitResult['user_info']['email'] = $userInfo['email'];
             $splitResult['user_info']['bonus_card_number'] = !empty($userInfo['bonus_card_number']) ? $userInfo['bonus_card_number'] : null;
 
+            $orderForm = ['comment' => null];
+            $orderForm = array_merge($orderForm, (array)$request->get('order'));
+            if (is_string($orderForm['comment'])) {
+                $item = null;
+                foreach ($splitResult['orders'] as &$item) {
+                    $item['comment'] = $orderForm['comment'];
+                }
+                unset($item);
+            }
+
             $this->session->set($this->splitSessionKey, $splitResult);
         }
 
-        die(var_dump($splitResult));
+        die(json_encode($splitResult));
 
         try {
 
