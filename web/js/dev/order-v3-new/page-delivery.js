@@ -592,4 +592,8 @@
 		$(this).remove();
 	});
 
+    $body.on('change', '.js-order-address', function() {
+
+    });
+
 })(jQuery);

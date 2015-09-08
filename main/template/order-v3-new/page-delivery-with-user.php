@@ -2,9 +2,18 @@
 
 use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
 
-return function(
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\OrderDelivery\Entity $orderDelivery
+ * @param $bonusCards \Model\Order\BonusCard\Entity[]
+ * @param bool $hasProductsOnlyFromPartner
+ * @param null $error
+ */
+$f = function(
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity $orderDelivery,
+    array $bonusCards,
+    $hasProductsOnlyFromPartner,
     $error = null
 ) {
     $orderCount = count($orderDelivery->orders);
@@ -19,6 +28,15 @@ return function(
         'longitude' => $isCoordsValid ? $region->getLongitude() : 37.64,
         'zoom' => $isCoordsValid ? 10 : 4
     ];
+
+    /** @var $bonusCards \Model\Order\BonusCard\Entity[] */
+    $userEntity = \App::user()->getEntity();
+
+    $userBonusCards = $userEntity ? $userEntity->getBonusCard() : null;
+    $userBonusCard = null;
+
+    /** @var \Model\OrderDelivery\Entity\Order|null $order */
+    $order = reset($orderDelivery->orders) ?: null;
 
 ?>
     <div class="order__wrap">
@@ -42,28 +60,31 @@ return function(
             <?= $helper->render('order-v3-new/partial/orders-list',['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
             <div class="pagehead"><h1 class="orderCnt_t">Получатель</h1></div>
+
             <div class="order-receiver">
-                <div class="order-receiver__login">
-                    <div class="order-ctrl required">
-                        <label class="order-ctrl__lbl js-order-ctrl__lbl">*Телефон</label>
-                        <input class="order-ctrl__input js-order-ctrl__input" placeholder="*Телефон">
+                <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
+                    <div class="order-receiver__login">
+                        <div class="order-ctrl required">
+                            <label class="order-ctrl__lbl js-order-ctrl__lbl">*Телефон</label>
+                            <input name="user_info[phone]" class="order-ctrl__input js-order-ctrl__input" placeholder="*Телефон">
+                        </div>
+                        <div class="order-receiver__hint">Для смс о состоянии заказа</div>
+                        <div class="order-ctrl required">
+                            <label class="order-ctrl__lbl js-order-ctrl__lbl">*E-mail</label>
+                            <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input" placeholder="*E-mail">
+                        </div>
+                        <div class="order-receiver__subscribe">
+                            <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="" value="">
+                            <label class="customLabel customLabel-checkbox" for="sale">
+                                <img class="order-receiver__chip" src="/styles/order-new/img/chip-s.png" alt="">
+                                <span class="order-receiver__subscribe-txt">Подпишись на рассылку и получить скидку<br>на следующую покупку</span>
+                            </label></div>
+                        <div class="order-ctrl">
+                            <label class="order-ctrl__lbl js-order-ctrl__lbl">Имя</label>
+                            <input class="order-ctrl__input js-order-ctrl__input" placeholder="Имя">
+                        </div>
                     </div>
-                    <div class="order-receiver__hint">Для смс о состоянии заказа</div>
-                    <div class="order-ctrl required">
-                        <label class="order-ctrl__lbl js-order-ctrl__lbl">*E-mail</label>
-                        <input class="order-ctrl__input js-order-ctrl__input" placeholder="*E-mail">
-                    </div>
-                    <div class="order-receiver__subscribe">
-                        <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="" value="">
-                        <label class="customLabel customLabel-checkbox" for="sale">
-                            <img class="order-receiver__chip" src="/styles/order-new/img/chip-s.png" alt="">
-                            <span class="order-receiver__subscribe-txt">Подпишись на рассылку и получить скидку<br>на следующую покупку</span>
-                        </label></div>
-                    <div class="order-ctrl">
-                        <label class="order-ctrl__lbl js-order-ctrl__lbl">Имя</label>
-                        <input class="order-ctrl__input js-order-ctrl__input" placeholder="Имя">
-                    </div>
-                </div>
+                </form>
                 <div class="order-receiver__social social">
                     <div class="social__head">Войти через</div>
                     <ul class="social__list">
@@ -114,7 +135,7 @@ return function(
 
                         <? endif ?>
 
-                        <? if ($config->partners['MnogoRu']['enabled'] && !$hasProductsOnlyFromPartner) : ?>
+                        <? if (\App::config()->partners['MnogoRu']['enabled'] && !$hasProductsOnlyFromPartner) : ?>
                             <!-- Карта Много.ру -->
                             <div class="bonusCnt_i" data-eq="<?= count($bonusCards) ?>">
                                 <img class="bonusCnt_img" src="/styles/order/img/mnogoru-mini.png" alt="mnogo.ru" />
@@ -161,18 +182,15 @@ return function(
 
                 <?= \App::templating()->render('order-v3/common/_blackfriday', ['version' => 2]) ?>
 
-                <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
+                <div class="order-agreement__check">
+                    <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" value="" />
 
-                    <div class="order-agreement__check">
-                        <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" value="" />
+                    <label  class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">
+                        Я ознакомлен и согласен<br><span class="<? if ($orderCount == 1) { ?>order-agreement__oferta<? } ?> js-order-oferta-popup-btn" data-value="<?= $order->seller->offer ?>" >с информацией о продавце и его офертой</span>
+                    </label>
+                </div><br/>
 
-                        <label  class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">
-                            Я ознакомлен и согласен<br><span class="<? if ($orderCount == 1) { ?>order-agreement__oferta<? } ?> js-order-oferta-popup-btn" data-value="<?= $order->seller->offer ?>" >с информацией о продавце и его офертой</span>
-                        </label>
-                    </div><br/>
-
-                    <button class="btn-type btn-type--buy btn-type--order">Оформить</button>
-                </form>
+                <button class="btn-type btn-type--buy btn-type--order" type="submit" form="js-orderForm">Оформить</button>
             </div>
 
             <? if (\App::abTest()->isOrderMinSumRestriction() && \App::config()->minOrderSum > $orderDelivery->getProductsSum()) : ?>
@@ -233,4 +251,4 @@ return function(
         </div>
 
     </div>
-<? };
+<? }; return $f;

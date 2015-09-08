@@ -2,12 +2,14 @@
 
 namespace Controller\OrderV3;
 
+use Session\AbTest\ABHelperTrait;
 use Http\RedirectResponse;
 use Http\Response;
 use Model\Order\OrderEntity;
 use Model\OrderDelivery\Entity;
 
 class CreateAction extends OrderV3 {
+    use ABHelperTrait;
 
     /**
      * @param \Http\Request $request
@@ -17,6 +19,8 @@ class CreateAction extends OrderV3 {
     public function execute(\Http\Request $request) {
 
         //\App::logger()->debug('Exec ' . __METHOD__);
+
+        $config = \App::config();
 
         $coreResponse = null;   // ответ о ядра
         $ordersData = [];       // данные для отправки на ядро
@@ -30,6 +34,20 @@ class CreateAction extends OrderV3 {
         }
 
         $params += ['request_id' => \App::$id]; // SITE-4445
+
+        // SITE-5653
+        if (self::isOrderWithCart()) {
+            $userInfo = ['phone' => null, 'email' => null, 'first_name' => null];
+            $userInfo = array_merge($userInfo, (array)$request->get('user_info'));
+            $splitResult['user_info']['phone'] = $userInfo['phone'];
+            $splitResult['user_info']['first_name'] = $userInfo['first_name'];
+            $splitResult['user_info']['email'] = $userInfo['email'];
+            $splitResult['user_info']['bonus_card_number'] = !empty($userInfo['bonus_card_number']) ? $userInfo['bonus_card_number'] : null;
+
+            $this->session->set($this->splitSessionKey, $splitResult);
+        }
+
+        die(var_dump($splitResult));
 
         try {
 

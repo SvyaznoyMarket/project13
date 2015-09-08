@@ -22,6 +22,13 @@ class DeliveryAction extends OrderV3 {
             return $response;
         }
 
+        $bonusCards = [];
+        try {
+            $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection(['product_list' => array_map(function(\Model\Cart\Product\Entity $cartProduct) { return ['id' => $cartProduct->id, 'quantity' => $cartProduct->quantity]; }, $this->cart->getProductsById())]);
+        } catch (\Exception $e) {
+            \App::logger()->error($e->getMessage(), ['cart/split']);
+        }
+
         if ($request->isXmlHttpRequest()) {
 
             $splitData = [];
@@ -45,9 +52,10 @@ class DeliveryAction extends OrderV3 {
                     $result['OrderDeliveryModel'] = $orderDeliveryModel;
                 }
 
-
                 $page = new \View\OrderV3\DeliveryPage();
                 $page->setParam('orderDelivery', $orderDeliveryModel);
+                $page->setParam('bonusCards', $bonusCards);
+                $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner());
                 $result['page'] = $page->slotContent();
 
             } catch (\Curl\Exception $e) {
@@ -103,6 +111,8 @@ class DeliveryAction extends OrderV3 {
 
             $page = new \View\OrderV3\DeliveryPage();
             $page->setParam('orderDelivery', $orderDelivery);
+            $page->setParam('bonusCards', $bonusCards);
+            $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner());
 
             // http-ответ
             $response = new \Http\Response($page->show());

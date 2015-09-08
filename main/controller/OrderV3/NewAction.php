@@ -106,19 +106,6 @@ class NewAction extends OrderV3 {
 
     }
 
-    /** Есть ли товары не от Enter?
-     * @return bool
-     */
-    private function hasProductsOnlyFromPartner() {
-        foreach ($this->cart->getProductsById() as $cartProduct) {
-            if ($cartProduct->isOnlyFromPartner) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     private function validateInput(\Http\Request $request){
 
         $result = ['errors' => [], 'phone' => '', 'email' => ''];
