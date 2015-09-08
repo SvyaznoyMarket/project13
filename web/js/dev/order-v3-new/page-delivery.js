@@ -664,4 +664,14 @@
             } // else default handler
         } catch (error) { console.error(); }
     });
+
+    // jQuery masked input
+    delete $.mask.definitions[9];
+    $.mask.definitions['x']='[0-9]';
+    $.mask.placeholder= "_";
+    $.mask.autoclear = false;
+    $.map($inputs, function(elem, i) {
+        if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
+    });
+    $('.js-order-phone').focus();
 })(jQuery);
