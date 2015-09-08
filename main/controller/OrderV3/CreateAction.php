@@ -57,7 +57,7 @@ class CreateAction extends OrderV3 {
             $this->session->set($this->splitSessionKey, $splitResult);
         }
 
-        die(json_encode($splitResult));
+        //die(json_encode($splitResult));
 
         try {
 
