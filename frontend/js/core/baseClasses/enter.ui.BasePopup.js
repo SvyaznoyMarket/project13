@@ -60,6 +60,7 @@
 
                 modules.require('jquery.lightbox_me', function(){
                     self.$el.lightbox_me({
+                        centered: true,
                         closeSelector: self.closeSelector,
                         onLoad: self.onLoad.bind(self),
                         onClose: self.onClose.bind(self)
