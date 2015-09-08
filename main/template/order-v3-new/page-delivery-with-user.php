@@ -38,6 +38,7 @@ $f = function(
     /** @var \Model\OrderDelivery\Entity\Order|null $order */
     $order = reset($orderDelivery->orders) ?: null;
 
+    $oauthEnabled = \App::config()->oauthEnabled;
 ?>
     <div class="order__wrap">
         <section id="js-order-content" class="order-page orderCnt jsOrderV3PageDelivery">

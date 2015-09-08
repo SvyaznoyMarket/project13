@@ -2,7 +2,12 @@
 
 use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
 
-return function (
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\OrderDelivery\Entity $orderDelivery
+ * @param null $error
+ */
+$f = function (
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity $orderDelivery,
     $error = null
@@ -250,34 +255,28 @@ return function (
                         <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order-v3-new/__payment-methods', ['order' => $order]) : '' ?>
 
                     <? else: ?>
-                        <div class="order-delivery__block jsSmartAddressBlock">
+                        <?= $helper->render('order-v3-new/partial/user-address', ['order' => $order, 'orderDelivery' => $orderDelivery]) ?>
 
-                                <?= $helper->render('order-v3-new/partial/user-address') ?>
+                        <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order-v3-new/__payment-methods', ['order' => $order]) : '' ?>
 
-                        </div>
+                        <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
 
+                            <div class="order-delivery__block">
+                                <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
+                                <input type="checkbox"
+                                   class="customInput customInput-checkbox jsCreditCardPayment js-customInput"
+                                   id="creditCardsPay-<?= $order->block_name ?>" name=""
+                                   value="" <?= $checked ? 'checked ' : '' ?>/>
+                                <label class="customLabel customLabel-checkbox <?= $checked ? 'mChecked ' : '' ?>"
+                                   for="creditCardsPay-<?= $order->block_name ?>">
+                                <span class="brb-dt"
+                                    style="vertical-align: top;">Оплата курьеру банковской картой</span> <img
+                                    class="orderCheck_img" src="/styles/order/img/i-visa.png" alt=""><img
+                                    class="orderCheck_img" src="/styles/order/img/i-mc.png" alt="">
+                                </label>
+                            </div>
 
-                            <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order-v3-new/__payment-methods', ['order' => $order]) : '' ?>
-
-                            <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
-
-                                <div class="order-delivery__block">
-                                    <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
-                                    <input type="checkbox"
-                                           class="customInput customInput-checkbox jsCreditCardPayment js-customInput"
-                                           id="creditCardsPay-<?= $order->block_name ?>" name=""
-                                           value="" <?= $checked ? 'checked ' : '' ?>/>
-                                    <label class="customLabel customLabel-checkbox <?= $checked ? 'mChecked ' : '' ?>"
-                                           for="creditCardsPay-<?= $order->block_name ?>">
-                                    <span class="brb-dt"
-                                          style="vertical-align: top;">Оплата курьеру банковской картой</span> <img
-                                            class="orderCheck_img" src="/styles/order/img/i-visa.png" alt=""><img
-                                            class="orderCheck_img" src="/styles/order/img/i-mc.png" alt="">
-                                    </label>
-                                </div>
-
-                            <? endif; ?>
-
+                        <? endif ?>
                     <? endif ?>
 
                     <?
@@ -295,10 +294,8 @@ return function (
 
                         <div class="orderCheck orderCheck-credit clearfix">
                             <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
-                            <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment js-customInput"
-                                   id="credit-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked' : '' ?>>
-                            <label class="customLabel customLabel-checkbox <?= $checked ? 'mChecked' : '' ?>"
-                                   for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц-->
+                            <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment js-customInput" id="credit-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked' : '' ?>>
+                            <label class="customLabel customLabel-checkbox <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц-->
                             </label>
                         </div>
 
@@ -320,9 +317,8 @@ return function (
                             class="order-bill__serv"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>
                             :</span>
 
-                        <span class="order-bill__total-price"><?= $helper->formatPrice($order->total_cost) ?> <span
-                                class="rubl">p</span></span>
-                    <span class="order-bill__serv">Итого:</span>
+                        <span class="order-bill__total-price"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
+                    <span class="order-bill__serv">Итого: </span>
                 </div>
 
                 <?= $helper->render('order-v3-new/partial/discount', ['order' => $order]) ?>
@@ -330,13 +326,9 @@ return function (
             </div>
             <!-- END ввести код скидки -->
 
-
-
             <!--/ информация о заказе -->
-
-
         </div>
         <!--/ блок разбиения заказа -->
     <? endforeach ?>
 
-<? };
+<? }; return $f;

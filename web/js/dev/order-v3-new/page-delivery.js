@@ -49,6 +49,9 @@
             params[method] = isActive;
             sendChanges('changePaymentMethod', params)
         },
+        changeAddress = function changeAddressF(params) {
+            sendChanges('changeAddress', params)
+        },
         changeOrderComment = function changeOrderCommentF(comment){
             sendChanges('changeOrderComment', {'comment': comment})
         },
@@ -123,7 +126,7 @@
 
             var hideContent = true;
 
-            if ($.inArray(action, ['changeDate', 'changeInterval', 'changeOrderComment']) != -1) hideContent = false;
+            if (-1 !== $.inArray(action, ['changeDate', 'changeInterval', 'changeOrderComment'])) hideContent = false;
 
             $.ajax({
                 type: 'POST',
@@ -428,7 +431,7 @@
             value = $el.data('value') || {}
         ;
 
-        value['number'] = $(relations['number.selector']).val().trim();
+        value['number'] = $(relations['number']).val().trim();
 
         // проверяем код PandaPay если есть совпадение маски и нет применённых дискаунтов
         if (/SN.{10}/.test(value['number']) && $orderBlock.find('.jsOrderV3Discount').length == 0) {
@@ -592,7 +595,59 @@
 		$(this).remove();
 	});
 
-    $body.on('change', '.js-order-address', function() {
+    $body.on('blur', '.js-order-deliveryAddress', function() {
+        var
+            $el = $(this),
+            params = $el.data('value') || {},
+            relations = $el.data('relation'),
+            $container = $(relations['container']),
+            timer = $container.data('timer')
+        ;
+
+        // clear old timer
+        if (timer) {
+            clearTimeout(timer);
+            $container.data('timer', null);
+        }
+
+        // create new timer
+        timer = setTimeout(
+            function() {
+                var hasFocus = false;
+
+                $.each($container.find('[data-field]'), function(i, el) {
+                    var $el = $(el);
+
+                    if ($el.is(':focus')) {
+                        hasFocus = true;
+                        return false;
+                    }
+                });
+                if (hasFocus) {
+                    return;
+                }
+
+                $.each($container.find('[data-field]'), function(i, el) {
+                    var $el = $(el);
+
+                    params[$el.data('field')] = $el.val();
+                });
+
+                changeAddress(params);
+                console.info('changeAddress', params);
+            },
+            800
+        );
+        $container.data('timer', timer);
+    });
+
+    $body.on('change', '.js-order-deliveryAddress', function() {
+        var
+            $el = $(this),
+            params = $el.data('value') || {},
+            relations = $el.data('relation'),
+            $container = $(relations['container'])
+        ;
 
     });
 

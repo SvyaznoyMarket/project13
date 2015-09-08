@@ -62,7 +62,7 @@ class DeliveryAction extends OrderV3 {
                 \App::exception()->remove($e);
                 $result['error']    = ['message' => $e->getMessage()];
                 $result['data']     = ['data' => $splitData];
-                if ($e->getCode() == 600) {
+                if (in_array($e->getCode(), [600, 302])) {
                     $this->cart->clear();
                     $result['redirect'] = \App::router()->generate('cart');
                 }
@@ -137,6 +137,10 @@ class DeliveryAction extends OrderV3 {
 
             return new \Http\Response($page->show());
         } catch (\Exception $e) {
+            if (302 === $e->getCode()) {
+                return new \Http\RedirectResponse(\App::router()->generate('cart'));
+            }
+
             \App::logger()->error($e->getMessage(), ['cart/split']);
             $page = new \View\OrderV3\ErrorPage();
             $page->setParam('error', $e->getMessage());
@@ -148,7 +152,7 @@ class DeliveryAction extends OrderV3 {
 
     public function getSplit(array $data = null, $userData = null) {
 
-        if (!$this->cart->count()) throw new \Exception('Пустая корзина');
+        if (!$this->cart->count()) throw new \Exception('Пустая корзина', 302);
 
         if ($data) {
             $splitData = [

@@ -42,7 +42,7 @@ return function(
                 'block_name' => $order->block_name,
             ]) ?>"
             data-relation="<?= $helper->json([
-                'number.selector' => '.' . $inputSelectorId,
+                'number' => '.' . $inputSelectorId,
             ]) ?>"
         >Применить</button>
     </div>
