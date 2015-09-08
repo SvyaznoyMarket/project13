@@ -50,15 +50,16 @@ $f = function (
     $products = array_filter($products, function($product) { return $product instanceof \Model\Product\Entity; });
 
     $slickConfig = [
-        'slidesToShow' => 4,
-        'slidesToScroll' => 4,
-        'lazyLoad'  => 'ondemand',
-        'dots'      => false,
-        'infinite'  => false,
-        'nextArrow' => '.js-goods-slider-btn-next',
-        'prevArrow' => '.js-goods-slider-btn-prev',
-        'slider'    => '.js-slider-goods'
-    ]
+        'slidesToShow' => 5,
+        'slidesToScroll' => 5,
+        'lazyLoad'   => 'ondemand',
+        'dots'       => false,
+        'infinite'   => false,
+        'nextArrow'  => '.js-goods-slider-btn-next',
+        'prevArrow'  => '.js-goods-slider-btn-prev',
+        'slider'     => '.js-slider-goods',
+        'responsive' => '[{breakpoint: 1100,settings: {slidesToShow: 4,slidesToScroll: 4}}]'
+        ]
 
     // слайдер товаров для слайдера с аксессуарами применяем модификатор goods-slider--5items
     ?>
@@ -103,13 +104,13 @@ $f = function (
                             data-product="<?= $category->getId() ? 'self' : 'all' ?>">
                             <span class="product-accessoires-list-item__name"><?= $category->getName() ?></span>
                         </li>
-                        <? $i++; endforeach ?>
+                    <? $i++; endforeach ?>
                 </ul>
             </div>
         <? endif ?>
 
         <div class="slider-section goods-slider__inn">
-            <ul class="js-slider-goods">
+            <div class="js-slider-goods">
 
                 <? foreach ($products as $index => $product):
 
@@ -141,7 +142,7 @@ $f = function (
                     $category = $product->getParentCategory() ? $product->getParentCategory() : null;
                     ?>
 
-                    <li class="goods-slider-list__i goods__item js-module-require
+                    <div class="goods-slider-list__i goods__item js-module-require
                                 <?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>
                                 <?= $sliderId . '-category-0'?> "
                         data-module="enter.product"
@@ -189,11 +190,11 @@ $f = function (
                         ]) // Кнопка купить ?>
 
                         <!--                <a href="" class="btn-type btn-type--buy btn-type--light">Купить</a>-->
-                    </li>
+                    </div>
 
                 <? endforeach ?>
 
-            </ul>
+            </div>
 
             <? if ($products && count($products) > $slickConfig['slidesToShow']) : ?>
                 <div class="goods-slider__btn goods-slider__btn--prev js-goods-slider-btn-prev"></div>

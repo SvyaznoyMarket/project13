@@ -5,20 +5,23 @@
 
     width: 270px;
     height: 240px;
+    background: @grey-light-4;
     padding: 0;
 
     &-list {
         &-item {
             background: @grey-light-4;
-            margin: 0 0 1px;
+            border-bottom: 1px solid @white;
+            margin: 0;
             padding: 13px 0 10px;
 
             cursor: pointer;
             &.mActive {
                 cursor: default;
-            }
-            &.mActive {
                 background: @white;
+            }
+            &:last-child {
+                border-bottom: none;
             }
             &:hover {
                 background: @white;
