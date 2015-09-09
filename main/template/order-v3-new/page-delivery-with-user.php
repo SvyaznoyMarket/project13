@@ -48,15 +48,7 @@ $f = function(
                 <div class="order-error order-error--success">Товары будут оформлены как <strong><?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></strong><i class="order-error__closer js-order-err-close"></i></div>
             <? endif; ?>
 
-            <!--div class="orderInf clearfix">
-                <div class="fl-l">Ваш регион: <strong><?= \App::user()->getRegion()->getName() ?></strong> <br/>
-                    От региона зависят доступные способы получения и оплаты заказов.</div>
-
-                <button class="btnLightGrey orderCnt_btn fl-r jsChangeRegion">Изменить регион</button>
-            </div-->
-
             <?= $helper->render('order-v3-new/partial/error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
-
 
             <?= $helper->render('order-v3-new/partial/orders-list',['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
