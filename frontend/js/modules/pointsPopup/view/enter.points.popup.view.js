@@ -90,7 +90,8 @@
                 this.mapId        = uniqIndex;
 
                 this.mapContainer.attr('id', uniqIndex);
-                this.isShowroom = options.isShowroom;
+                this.isShowroom       = options.isShowroom;
+                this.pointsSelectable = options.pointsSelectable;
 
                 this.subViews = {
                     pointsWrapper: this.$el.find('.' + CSS_CLASSES.POINTS_WRAPPER),
@@ -273,7 +274,10 @@
                                 self.map = СreateMap({
                                     nodeId: self.mapId,
                                     points: points,
-                                    baloonTemplate: TEMPLATES.BALOON
+                                    baloonTemplate: TEMPLATES.BALOON,
+                                    addPointsData: {
+                                        pointsSelectable: self.pointsSelectable
+                                    }
                                 });
 
                                 self.map.showMarkers(points);

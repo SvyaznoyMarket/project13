@@ -40,7 +40,7 @@
                 '<div class="delivery-points-list__info-date" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
                 '<div class="delivery-points-list__info-price"><span >{{ humanCost }}</span>{{# showRubles }}&thinsp;<span class="rubl">C</span>{{/ showRubles }}'+
                 '</div></td></tr></tbody></table>'+
-                '<div class="btn-container"><button data-id="{{id}}" data-token={{token}} class="btn-primary btn-primary_middle js-map-point-choose">Выбрать</button></div></div>',
+                '<div class="btn-container">{{#pointsSelectable}}<button data-id="{{id}}" data-token={{token}} class="btn-primary btn-primary_middle js-map-point-choose">Выбрать</button>{{/pointsSelectable}}</div></div>',
 
             /**
              * @classdesc   Конструктор карты с точками
@@ -48,10 +48,11 @@
              * @constructs  CreateMap
              *
              * @param       {Object}    options
-             * @param       {String}    options.nodeId          Идентификатор DOM элемента в котором необходимо отобразить карту
-             * @param       {Array}     options.points          Массив точек которые необходимо отобразить на карте
-             * @param       {String}    options.baloonTemplate  Mustache шаблон всплывашки отображаемой при клике на точку на карте
-             * @param       {String}    options.clusterer       Необходима кластеризация
+             * @param       {String}    options.nodeId              Идентификатор DOM элемента в котором необходимо отобразить карту
+             * @param       {Array}     options.points              Массив точек которые необходимо отобразить на карте
+             * @param       {String}    options.baloonTemplate      Mustache шаблон всплывашки отображаемой при клике на точку на карте
+             * @param       {String}    options.clusterer           Необходима кластеризация
+             * @param       {Object}    options.addPointsData       Дополнительная ифнформация о точках
              */
             CreateMap = function CreateMap( options ) {
                 // enforces new
@@ -62,10 +63,11 @@
 
                 console.info('CreateMap');
 
-                this.points   = options.points;
-                this.template = options.baloonTemplate || BALLOON_TEMPLATE;
-                this.center   = this.calcCenter();
-                this.$nodeId  = $('#'+options.nodeId);
+                this.points        = options.points;
+                this.addPointsData = options.addPointsData;
+                this.template      = options.baloonTemplate || BALLOON_TEMPLATE;
+                this.center        = this.calcCenter();
+                this.$nodeId       = $('#'+options.nodeId);
 
                 if ( !this.$nodeId.length || this.$nodeId.width() === 0 || this.$nodeId.height() === 0 || this.$nodeId.is('visible') === false ) {
                     console.warn('Do you have a problem with init map?');
@@ -190,7 +192,9 @@
             this.mapWS.geoObjects.removeAll();
 
             for ( i = this.points.length - 1; i >= 0; i-- ) {
-                currPoint = this.points[i];
+                currPoint = _.extend({
+                    pointsSelectable: true
+                }, this.addPointsData, this.points[i]);
 
                 if ( !currPoint.latitude || !currPoint.longitude ) {
                     console.warn('Точка не имеет координат');

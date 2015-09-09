@@ -274,7 +274,8 @@
                 }
 
                 this.subViews.pointsPopup = new OrderPointMapPopupView({
-                    collection: this.pointsCollection
+                    collection: this.pointsCollection,
+                    pointsSelectable: true
                 });
 
                 this.subViews.pointsPopup.on('changePoint', this.changePoint.bind(this));

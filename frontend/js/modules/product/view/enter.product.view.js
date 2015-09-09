@@ -108,7 +108,8 @@
 
                             this.subViews.pointsPopup = new PointsPopup({
                                 collection: this.pointsCollection,
-                                isShowroom: pointsData.isShowroom
+                                isShowroom: pointsData.isShowroom,
+                                pointsSelectable: false
                             });
 
                             this.subViews.pointsPopup.on('changePoint', this.changePoint.bind(this));

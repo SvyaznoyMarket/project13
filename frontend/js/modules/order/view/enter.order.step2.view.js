@@ -284,8 +284,8 @@
              */
             showOfferPopup: function( event ) {
                 var
-                    target   = $(event.currentTarget),
-                    offerUrl = target.attr('data-offer'),
+                    target     = $(event.currentTarget),
+                    offerUrl   = target.attr('data-offer'),
                     privacyUrl = target.attr('data-privacy');
 
                 if ( offerUrl === '' && privacyUrl === '' ) {
