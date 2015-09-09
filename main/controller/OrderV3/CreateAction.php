@@ -37,7 +37,7 @@ class CreateAction extends OrderV3 {
 
         // SITE-5653
         if (self::isOrderWithCart()) {
-            $userInfo = ['phone' => null, 'email' => null, 'first_name' => null];
+            $userInfo = ['phone' => null, 'email' => null, 'first_name' => null, 'subscribe' => null];
             $userInfo = array_merge($userInfo, (array)$request->get('user_info'));
             $splitResult['user_info']['phone'] = $userInfo['phone'];
             $splitResult['user_info']['first_name'] = $userInfo['first_name'];
@@ -55,9 +55,11 @@ class CreateAction extends OrderV3 {
             }
 
             $this->session->set($this->splitSessionKey, $splitResult);
-        }
 
-        //die(json_encode($splitResult));
+            if ($userInfo['subscribe'] && $userInfo['email']) {
+                $this->addSubscribeRequest($subscribeResult, $userInfo['email']);
+            }
+        }
 
         try {
             if (self::isOrderWithCart()) {
@@ -160,5 +162,26 @@ class CreateAction extends OrderV3 {
                 \App::logger()->info(['message' => 'Заказ успешно создан', 'orderData' => $orderData], ['order']);
             }
         }
+    }
+
+    private function addSubscribeRequest(&$subscribeResult, $email) {
+
+        $subscribeParams = [
+            'email'      => $email,
+            'geo_id'     => $this->user->getRegion()->getId(),
+            'channel_id' => 1,
+        ];
+
+        if ($userEntity = $this->user->getEntity()) {
+            $subscribeParams['token'] = $userEntity->getToken();
+        }
+
+        $this->client->addQuery('subscribe/create', $subscribeParams, [], function($data) use (&$subscribeResult) {
+            if (isset($data['subscribe_id']) && isset($data['subscribe_id'])) $subscribeResult = true;
+        }, function(\Exception $e) use (&$subscribeResult) {
+            \App::exception()->remove($e);
+            // "code":910,"message":"Не удается добавить подписку, указанный email уже подписан на этот канал рассылок"
+            if ($e->getCode() == 910) $subscribeResult = true;
+        });
     }
 }
