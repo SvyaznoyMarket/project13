@@ -333,7 +333,7 @@ return function(
                     <label class="accept-rules custom-label jsAcceptTerms" for="accept">
                         <span class="accept-rules__text">Я ознакомлен и согласен с информацией о продавце и его офертой</span>
                         <? if ($orderCount == 1) : ?>
-                            <span class="accept-rules__link underline js-order-oferta-popup-bt" data-value="<?= $order->seller->offer ?>">Ознакомиться</span>
+                            <span class="accept-rules__link underline js-order-oferta-popup-bt" data-offer="<?= preg_replace('/https?\:\/\/.*?\//i', '/', $order->seller->offer) ?>" data-privacy="/sordex-privacy-content">Ознакомиться</span>
                         <? endif; ?>
                     </label>
                 </div>
