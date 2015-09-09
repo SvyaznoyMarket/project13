@@ -738,7 +738,7 @@ class Action {
                     true,
                     $columnCount,
                     $productView,
-                    [],
+                    $category->getSenderForGoogleAnalytics(),
                     $category,
                     $favoriteProductsByUi
                 ),
