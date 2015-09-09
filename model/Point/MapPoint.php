@@ -59,7 +59,10 @@ class MapPoint extends BasicPoint {
         if (isset($data['dropdownName'])) $this->dropdownName = $data['dropdownName'];
         if (isset($data['listName'])) $this->listName = $data['listName'];
 
-        $this->humanNearestDay = $this->humanizeDate();
+        if ($this->nearestDay) {
+            $this->humanNearestDay = $this->humanizeDate();
+        }
+
         if ($this->cost == 0) {
             $this->humanCost = 'Бесплатно';
             $this->showRubles = false;
