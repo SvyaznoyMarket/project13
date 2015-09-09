@@ -6,11 +6,15 @@
     .inline-block();
 }
 
+.delivery-points {
+    .clearfix();
+
+    border-bottom: 1px solid @grey-light-3;
+}
+
 .delivery-points-lwrap {
     position: relative;
-
     border-top: 1px solid @grey-light-3;
-    border-bottom: 1px solid @grey-light-3;
     &__inn {
         overflow-x: hidden;
         overflow-y: auto;
@@ -50,6 +54,7 @@
 
 .delivery-points-list {
     text-align: left;
+    width: 97%;
     &__row {
         cursor: pointer;
         .table-cell {
@@ -191,7 +196,8 @@
 
             width: 96px;
             margin: 0 0 5px;
-            padding: 4px 5px 1px;
+            padding: 0 5px 0 0;
+            line-height: 17px;
 
             text-align: right;
 
@@ -218,6 +224,14 @@
 
         margin: 0 2px 0;
     }
+}
+
+.delivery-points-warning {
+    clear: both;
+    .font-size(16);
+    margin: 20px 0 0;
+    padding: 0 0 0px 30px;
+    background: no-repeat 0 0 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAABE0lEQVR4Aa2UtVkFQRzEJ8Elw6EEYjxCIyLc3clfA2hKE0gXaAH0QHY5POTPDC57fvN9Z3szv/WFS7aBJltBjtcFrzteD3p+fOf0H2GybRTZKg4Z8GwZR7x6+F5nwyjUU98q13/55HeD1lBNww3NJ7aEGgRI/+WTXzlXiwTa/RecRCWvZrauHH8kv3K/WqgmqyZnK+awzMtsFjNwSDnlfw6259c1m0IXQWcEtvp1WXlxoNnRoCKFlBdHsAvNkq9xFoO8btmygQBYjzj4WD91kELHzC3lxdHLg9ZRGpjy4mTeso8xC4eFjVnobP6Ehc1m+Dr7AQtbZ6E7QBDC8jaD0ZAdELI3Q/Rzb2Z5amR/nmV60r4Cg0QdUkWNMe8AAAAASUVORK5CYII=');
 }
 
 // попап-подсказка с описание пункта самовывоза

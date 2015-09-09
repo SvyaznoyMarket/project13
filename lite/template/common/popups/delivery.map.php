@@ -1,5 +1,5 @@
 <script id="js-points-popup-template" type="text/template" class="hidden">
-    <div class="delivery-points popup">
+    <div class="popup">
         <div class="popup__close js-popup-close">×</div>
         <div class="popup__title">
             {{#isShowroom}}
@@ -19,110 +19,112 @@
         </div>
 
         <!-- Новая верстка -->
-        <div class="delivery-points__left">
-            {{^isShowroom}}
-                <div class="point-search">
-                    <i class="point-search__icon i-controls i-controls--search"></i>
-                    <input class="point-search__it it js-pointpopup-search" type="text" placeholder="Искать по улице, метро">
-                    <div class="point-search" style="display: none;">×</div>
+        <div class="delivery-points">
+            <div class="delivery-points__left">
+                {{^isShowroom}}
+                    <div class="point-search">
+                        <i class="point-search__icon i-controls i-controls--search"></i>
+                        <input class="point-search__it it js-pointpopup-search" type="text" placeholder="Искать по улице, метро">
+                        <div class="point-search" style="display: none;">×</div>
 
-                    <div class="pick-point-suggest js-pointpopup-autocomplete" style="display: none">
-                        <ul class="pick-point-suggest__list js-pointpopup-autocomplete-wrapper"></ul>
-                    </div>
-                </div>
-
-                <div class="drop-filter-kit drop-filter-kit-box">
-
-                    <!-- Точки самовывоза - для поселекченного фильтра добавляем класс active-->
-                    <div class="drop-filter-box js-point-filter">
-                        <div class="drop-filter-box__tggl js-point-filter-opener">
-                            <span class="drop-filter-box__tggl-tx">Все точки</span>
+                        <div class="pick-point-suggest js-pointpopup-autocomplete" style="display: none">
+                            <ul class="pick-point-suggest__list js-pointpopup-autocomplete-wrapper"></ul>
                         </div>
+                    </div>
 
-                        <div class="drop-filter-box__dd">
-                            <div class="drop-filter-box__dd-inn">
-                                {{#uniqueTokens}}
-                                <div class="drop-filter-box__dd-line">
-                                    <input class="custom-input js-point-filter-param custom-input_check-fill" type="checkbox" id="point_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
-                                    <label class="custom-label" for="point_{{key}}_{{value}}">
-                                        {{displayValue}}
+                    <div class="drop-filter-kit drop-filter-kit-box">
 
-                                        {{#help}}
-                                        <!-- попап-подсказка с описание пункта самовывоза -->
-                                        <div class="delivery-points-info delivery-points-info_inline">
-                                            <a class="delivery-points-info__icon"></a>
-                                            <div class="delivery-points-info__popup delivery-points-info__popup_top info-popup">
-                                                <a class="delivery-points-info__link" href="{{help.url}}" title="{{help.name}}" target="_blank">{{help.name}}</a>
+                        <!-- Точки самовывоза - для поселекченного фильтра добавляем класс active-->
+                        <div class="drop-filter-box js-point-filter">
+                            <div class="drop-filter-box__tggl js-point-filter-opener">
+                                <span class="drop-filter-box__tggl-tx">Все точки</span>
+                            </div>
+
+                            <div class="drop-filter-box__dd">
+                                <div class="drop-filter-box__dd-inn">
+                                    {{#uniqueTokens}}
+                                    <div class="drop-filter-box__dd-line">
+                                        <input class="custom-input js-point-filter-param custom-input_check-fill" type="checkbox" id="point_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
+                                        <label class="custom-label" for="point_{{key}}_{{value}}">
+                                            {{displayValue}}
+
+                                            {{#help}}
+                                            <!-- попап-подсказка с описание пункта самовывоза -->
+                                            <div class="delivery-points-info delivery-points-info_inline">
+                                                <a class="delivery-points-info__icon"></a>
+                                                <div class="delivery-points-info__popup delivery-points-info__popup_top info-popup">
+                                                    <a class="delivery-points-info__link" href="{{help.url}}" title="{{help.name}}" target="_blank">{{help.name}}</a>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <!--/ попап-подсказка с описание пункта самовывоза -->
-                                        {{/help}}
-                                    </label>
-                                </div>
-                                {{/uniqueTokens}}
+                                            <!--/ попап-подсказка с описание пункта самовывоза -->
+                                            {{/help}}
+                                        </label>
+                                    </div>
+                                    {{/uniqueTokens}}
 
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!--/ Точки самовывоза -->
+                        <!--/ Точки самовывоза -->
 
 
-                    <!-- Cтоимость -->
-                    <div class="drop-filter-box js-point-filter">
-                        <div class="drop-filter-box__tggl js-point-filter-opener">
-                            <span class="drop-filter-box__tggl-tx">Стоимость</span>
-                        </div>
+                        <!-- Cтоимость -->
+                        <div class="drop-filter-box js-point-filter">
+                            <div class="drop-filter-box__tggl js-point-filter-opener">
+                                <span class="drop-filter-box__tggl-tx">Стоимость</span>
+                            </div>
 
-                        <div class="drop-filter-box__dd">
-                            <div class="drop-filter-box__dd-inn">
-                                {{#uniqueCosts}}
-                                <div class="drop-filter-box__dd-line">
-                                    <input class="custom-input js-point-filter-param custom-input_check" type="checkbox" id="cost_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
-                                    <label class="custom-label" for="cost_{{key}}_{{value}}">
-                                        <span class="customLabel_btx">{{displayValue}}</span>
-                                    </label>
+                            <div class="drop-filter-box__dd">
+                                <div class="drop-filter-box__dd-inn">
+                                    {{#uniqueCosts}}
+                                    <div class="drop-filter-box__dd-line">
+                                        <input class="custom-input js-point-filter-param custom-input_check" type="checkbox" id="cost_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
+                                        <label class="custom-label" for="cost_{{key}}_{{value}}">
+                                            <span class="customLabel_btx">{{displayValue}}</span>
+                                        </label>
+                                    </div>
+                                     {{/uniqueCosts}}
                                 </div>
-                                 {{/uniqueCosts}}
                             </div>
                         </div>
-                    </div>
-                    <!-- Cтоимость -->
+                        <!-- Cтоимость -->
 
-                    <!-- Дата самовывоза -->
-                    <div class="drop-filter-box js-point-filter">
-                        <div class="drop-filter-box__tggl js-point-filter-opener">
-                            <span class="drop-filter-box__tggl-tx">Дата</span>
-                        </div>
+                        <!-- Дата самовывоза -->
+                        <div class="drop-filter-box js-point-filter">
+                            <div class="drop-filter-box__tggl js-point-filter-opener">
+                                <span class="drop-filter-box__tggl-tx">Дата</span>
+                            </div>
 
-                        <div class="drop-filter-box__dd">
-                            <div class="drop-filter-box__dd-inn">
-                                {{#uniqueDays}}
-                                <div class="drop-filter-box__dd-line">
-                                    <input class="custom-input js-point-filter-param custom-input_check" type="checkbox" id="date_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
-                                    <label class="custom-label" for="date_{{key}}_{{value}}">
-                                        <span class="customLabel_btx">{{displayValue}}</span>
-                                    </label>
+                            <div class="drop-filter-box__dd">
+                                <div class="drop-filter-box__dd-inn">
+                                    {{#uniqueDays}}
+                                    <div class="drop-filter-box__dd-line">
+                                        <input class="custom-input js-point-filter-param custom-input_check" type="checkbox" id="date_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
+                                        <label class="custom-label" for="date_{{key}}_{{value}}">
+                                            <span class="customLabel_btx">{{displayValue}}</span>
+                                        </label>
+                                    </div>
+                                    {{/uniqueDays}}
                                 </div>
-                                {{/uniqueDays}}
                             </div>
                         </div>
+                        <!--/ Дата самовывоза -->
                     </div>
-                    <!--/ Дата самовывоза -->
-                </div>
 
-                <span class="delivery-points-nomatch" style="display: none;">Поиск не дал результатов</span>
-            {{/isShowroom}}
+                    <span class="delivery-points-nomatch" style="display: none;">Поиск не дал результатов</span>
+                {{/isShowroom}}
 
-            <div class="delivery-points-lwrap">
-                <div class="delivery-points-lwrap__inn">
-                    <div class="delivery-points-list table js-pointpopup-points-wrapper"></div>
+                <div class="delivery-points-lwrap">
+                    <div class="delivery-points-lwrap__inn">
+                        <div class="delivery-points-list table js-pointpopup-points-wrapper"></div>
+                    </div>
                 </div>
             </div>
+
+            <div class="delivery-points__right js-pointpopup-map-container"></div>
         </div>
 
-        <div class="delivery-points__right js-pointpopup-map-container"></div>
-
-        Чтобы купить товар с витрины, нужно приехать в магазин и обратиться к продавцу
+        <div class="delivery-points-warning">Чтобы купить товар с витрины, нужно приехать в магазин и обратиться к продавцу</div>
     </div>
 </script>
 
