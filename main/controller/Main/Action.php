@@ -135,7 +135,7 @@ class Action {
             $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
 
-        \RepositoryManager::product()->prepareProductQueries($productsById, 'media');
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label');
         \App::coreClientV2()->execute();
 
         $page = new \View\Main\IndexPage();
