@@ -19,6 +19,7 @@ class Variations {
                 /** @var \Model\Product\Model\Property\Entity $property */
                 $result[] = [
                     'name' => $property->getName(),
+                    'lowerName' => mb_strtolower($property->getName()),
                     'isLast' => $index == $lastIndex,
                 ];
             }

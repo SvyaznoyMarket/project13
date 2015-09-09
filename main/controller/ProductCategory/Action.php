@@ -644,7 +644,7 @@ class Action {
         /** @var \Model\Product\Entity[] $products */
         $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $productIds);
 
-        $repository->prepareProductQueries($products, 'media label brand category' . (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category->isInSiteListingWithViewSwitcherAbTest() ? ' model property' : ''));
+        $repository->prepareProductQueries($products, 'media label brand category' . (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category->isInSiteListingWithViewSwitcherAbTest() ? ' property' : ''));
 
         \App::coreClientV2()->execute();
 

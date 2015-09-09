@@ -159,7 +159,19 @@
     &__btns{
         margin-top: 10px;
         .product-card-tools{
-            margin-left: 0px;
+            margin-left: -2px;
+        }
+        .product-card-tools__lk.btnCmprb-act{
+            text-decoration: none;
+            background-color: transparent;
+
+            .i-tools-icon {
+                background-image: url('@{base-url}/product/img/i-tools-icons-hover.png');
+            }
+            .product-card-tools__tx {
+                color: #363636;
+                border-color: #363636;
+            }
         }
     }
     &__item-state{
