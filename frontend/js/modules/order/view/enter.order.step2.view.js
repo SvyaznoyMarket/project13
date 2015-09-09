@@ -285,9 +285,10 @@
             showOfferPopup: function( event ) {
                 var
                     target   = $(event.currentTarget),
-                    termsUrl = target.attr('data-value');
+                    offerUrl = target.attr('data-offer'),
+                    privacyUrl = target.attr('data-privacy');
 
-                if ( termsUrl === '' ) {
+                if ( offerUrl === '' && privacyUrl === '' ) {
                     return false;
                 }
 
@@ -298,7 +299,8 @@
 
                 this.subViews.offerPopupView = new OfferPopupView({
                     el: this.subViews.offerPopup,
-                    url: termsUrl
+                    offerUrl: offerUrl,
+                    privacyUrl: privacyUrl
                 });
 
                 return false;

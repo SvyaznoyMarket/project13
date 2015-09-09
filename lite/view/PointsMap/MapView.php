@@ -20,6 +20,8 @@ class MapView {
     public $uniqueTokens = [];
     /** @var array */
     public $mapConfig = [];
+    /** @var bool */
+    public $isShowroom = false;
 
     public function __construct() {
         $region = \App::user()->getRegion();
@@ -182,4 +184,42 @@ class MapView {
         return $this;
     }
 
+    /** Заполняет список точек информацией из product/get-v3 и scms.enter.ru/shop/get
+     * @param \Model\Product\ShopState\Entity[] $shopStates
+     * @return self
+     */
+    public function preparePointsWithShopStates($shopStates) {
+        foreach ($shopStates as $shopState) {
+            $shop = $shopState->getShop();
+            $data = [
+                /* BasicPoint */
+                'id' => $shop->getId(),
+                'name' => $shop->getName(),
+                'address' => \App::helper()->noBreakSpaceAfterDot($shop->getAddress()),
+                'subway' => isset($shop->getSubway()[0]) ? $shop->getSubway()[0] : null,
+
+                /* MapPoint */
+                'regtime' => $shop->getRegime(),
+                'latitude' => $shop->getLatitude(),
+                'longitude' => $shop->getLongitude(),
+                'marker' => [
+                    'iconImageSize' => [23, 30],
+                    'iconImageOffset' => [-12, -30],
+                    'iconImageHref' => '/images/deliv-icon/enter.png',
+                ],
+                'token' => '',
+                'icon' => '/images/deliv-logo/enter.png',
+                'cost' => null,
+                'nearestDay' => null,
+                'nearestDayTimestamp' => null,
+                'orderToken' => null,
+                'dropdownName' => null,
+                'listName' => 'Магазин Enter',
+
+            ];
+            $this->points[] = new Point($data);
+        }
+
+        return $this;
+    }
 }

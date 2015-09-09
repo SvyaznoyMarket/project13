@@ -40,6 +40,8 @@ $f = function (
         $namePosition = 'bottom';
     }
 
+    $products = array_slice($products, 0, 5);
+
     $sender += ['name' => null, 'method' => null, 'position' => null, 'from' => null, 'items' => []];
 
     $retailrocketIds = (array)$sender['items'];
@@ -58,8 +60,17 @@ $f = function (
         'nextArrow'  => '.js-goods-slider-btn-next',
         'prevArrow'  => '.js-goods-slider-btn-prev',
         'slider'     => '.js-slider-goods',
-        'responsive' => '[{breakpoint: 1100,settings: {slidesToShow: 4,slidesToScroll: 4}}]'
+        'responsive' => [
+            [
+                'breakpoint' => 1100,
+                'settings' => [
+                    'slidesToShow' => 4,
+                    'slidesToScroll' => 4,
+                    'arrows' => true
+                ],
+            ]
         ]
+    ];
 
     // слайдер товаров для слайдера с аксессуарами применяем модификатор goods-slider--5items
     ?>
@@ -196,10 +207,8 @@ $f = function (
 
             </div>
 
-            <? if ($products && count($products) > $slickConfig['slidesToShow']) : ?>
-                <div class="goods-slider__btn goods-slider__btn--prev js-goods-slider-btn-prev"></div>
-                <div class="goods-slider__btn goods-slider__btn--next js-goods-slider-btn-next"></div>
-            <? endif ?>
+            <div class="goods-slider__btn goods-slider__btn--prev js-goods-slider-btn-prev"></div>
+            <div class="goods-slider__btn goods-slider__btn--next js-goods-slider-btn-next"></div>
 
         </div>
     </div>

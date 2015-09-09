@@ -33,6 +33,8 @@
              */
             CSS_CLASSES = {
                 OFFER_POPUP_CONTENT: 'js-tab-oferta-content',
+                OFFER_POPUP_OFFER_CONTENT: 'js-tab-oferta-content-offer',
+                OFFER_POPUP_PRIVACY_CONTENT: 'js-tab-oferta-content-privacy',
                 OFFER_TAB: 'js-oferta-tab',
                 TAB_ACTIVE: 'orderOferta_tabs_i-cur'
             };
@@ -52,17 +54,19 @@
                 this.subViews = {
                     tabs: this.$el.find('.' + CSS_CLASSES.OFFER_TAB),
                     tabsContent: this.$el.find('.' + CSS_CLASSES.OFFER_POPUP_CONTENT),
-                    offerContent: this.$el.find('.' + CSS_CLASSES.OFFER_POPUP_CONTENT).eq(0)
+                    offerContent: this.$el.find('.' + CSS_CLASSES.OFFER_POPUP_OFFER_CONTENT),
+                    privacyContent: this.$el.find('.' + CSS_CLASSES.OFFER_POPUP_PRIVACY_CONTENT)
                 };
 
-                this.url = ( window.location.host !== 'www.enter.ru' ) ? options.url.replace(/^.*enter.ru/, '') : options.url; /* для работы на demo-серверах */
+                this.offerUrl = options.offerUrl;
+                this.privacyUrl = options.privacyUrl;
 
                 // Setup events
                 this.events['click .' + CSS_CLASSES.OFFER_TAB] = 'changeTab';
 
                 this.ajax({
                     type: 'GET',
-                    url: urlHelper.addParams(this.url, {
+                    url: urlHelper.addParams(this.offerUrl, {
                         ajax: 1
                     }),
                     success: function(data) {
@@ -70,6 +74,17 @@
                         self.show();
                     }
                 });
+
+                 this.ajax({
+                     type: 'GET',
+                     url: urlHelper.addParams(this.privacyUrl, {
+                         ajax: 1
+                     }),
+                     success: function(data) {
+                         self.subViews.privacyContent.html(data.content || '');
+                         self.show();
+                     }
+                 });
 
                 // Apply events
                 this.delegateEvents();

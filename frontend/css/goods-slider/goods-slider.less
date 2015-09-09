@@ -90,7 +90,7 @@
         background-repeat: no-repeat;
         background-position: 50% 50%;
 
-        .opacity(.6);
+        .opacity(0);
         .transition(all .2s ease);
         &--prev {
             left: 0;
@@ -102,15 +102,18 @@
 
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAYAAAD5Jg1dAAAAxElEQVQoz2PQ1tYWMjM13WtiYmLIgA8YGhrKm5ua/jY3MbkmIyPDiVcxUGEdEP83NTGZwkAAMAOtPwZSDHSCJ16VpqamSkDrPwM1PAc6R5SQ4kSQqUANGwk5gQGoaA3YvUZGqXgVmmloCAMVPzUzMfliYGCgilcx0EOuQIX/gBpOArks+N1rYtIPdq+paRNehQoKChxAUy8DFf4BOkGBcoXmxsYTCFpNlGeIDh6iAhwWhUDTNlCcKIhLZkQlXKKzArGZCwBWk1bwkL7ALQAAAABJRU5ErkJggg==');
         }
-        &.slick-disabled {
-            cursor: default;
-
-            .opacity(.2);
-            &:hover {
-                .opacity(.2);
-            }
+        &.slick-arrow {
+            .opacity(.6);
         }
         &.slick-hidden {
+            cursor: default;
+
+            .opacity(0);
+            &:hover {
+                .opacity(0);
+            }
+        }
+        &.slick-disabled {
             cursor: default;
 
             .opacity(.2);
