@@ -63,11 +63,6 @@ $slickConfig = [
                          'ui'   => $product->getUi()
                      ], JSON_HEX_APOS) ?>'
                      data-id="<?= $product->getId() ?>">
-                    <? if ($product->getLabel()) : ?>
-                        <div class="sticker-list">
-                            <div class="sticker sticker_sale"><?= $product->getLabel()->getName() ?></div>
-                        </div>
-                    <? endif ?>
 
                     <a href="<?= $productLink ?>" class="goods__img">
                         <img data-lazy="<?= $product->getMainImageUrl('product_160') ?>" src="" alt="" class="goods__img-image">

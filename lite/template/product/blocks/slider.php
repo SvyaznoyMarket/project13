@@ -166,13 +166,6 @@ $f = function (
                             'isUpsale' => $product->getIsUpsale(),
                         ]) ?>" >
 
-                        <? if ($product->getLabel()) : ?>
-                            <? /* img class="sticker-img" src="<?= $product->getLabel()->getImageUrl() ?>" alt="<?= $product->getLabel()->getName() ?>"*/ ?>
-                            <div class="sticker-list">
-                                 <a href="<?= $product->getLabel()->getImageUrl() ?>" class="sticker"><?= $product->getLabel()->getName() ?></a>
-                            </div>
-                        <? endif ?>
-
                         <a id="<?= $elementId ?>" class="goods-slider-list__link" href="<?= $link ?>" target="_blank">
 
                             <span class="goods-slider-list__action">

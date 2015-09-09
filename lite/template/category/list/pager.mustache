@@ -1,16 +1,5 @@
 <div class="goods__item grid-4col__item js-module-require" data-module="enter.product" data-id="{{id}}" data-product='{{productJSON}}' >
 
-    {{#label}}
-        <div class="sticker-list">
-            {{#link}}
-                 <a href="{{.}}" class="sticker sticker_{{class}}">{{name}}</a>
-            {{/link}}
-            {{^link}}
-                <div class="sticker sticker_{{class}}">{{name}}</div>
-            {{/link}}
-        </div>
-    {{/label}}
-
     <div class="goods__controls">
         <!--<a class="add-control add-control_wish js-favorite-button" href="" data-status="В избранное"></a>-->
         <a class="add-control add-control_compare js-compare-button" href="/compare/add-product/{{id}}" data-id="{{id}}" data-status="В сравнение"></a>
