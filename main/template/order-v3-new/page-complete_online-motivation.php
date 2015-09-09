@@ -85,12 +85,13 @@ return function(
                             Онлайн-оплата в два клика
                         </div>
                         <div class="orderPayment_msg_shop orderPayment_pay">
-                            <button class="orderPayment_btn btn3">Оплатить</button>
                             <ul class="orderPaymentWeb_lst-sm">
                                 <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/visa-logo-sm.jpg"></a></li>
                                 <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/psb.png" /></a></li>
                             </ul>
+                            <button class="orderPayment_btn btn3">Оплатить онлайн</button>
                         </div>
+                        <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
                     </div>
                 </div>
             </div>
