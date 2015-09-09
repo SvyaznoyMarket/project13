@@ -44,7 +44,7 @@ $f = function (
                             class="order-bill__oferta js-order-oferta-popup-btn" href="<?= $order->seller->offer ?>"
                             data-value="<?= $order->seller->offer ?>" target="_blank">Информация и оферта</a></div>
                 <? endif ?>
-                
+
 
                 <? foreach ($order->products as $product): ?>
                     <?= $helper->render('order-v3-new/partial/errors', [ 'orderDelivery' => $orderDelivery, 'order' => $order, 'product' => $product ]) ?>
@@ -147,6 +147,24 @@ $f = function (
                     <? endif; ?>
 
                 <? endif; ?>
+                <!-- Введенная скидка - при выборе типа оплаты -->
+                <div class="order-discount__item clearfix">
+                    <div class="order-discount__cell">
+                        <span class="order-discount__del jsDeleteCertificate">удалить</span>
+                    </div>
+                    <a href="" class="order-discount__lk">
+                        <img class="order-discount__img" src="/styles/order-new/img/payment-discount.png" alt="">
+                    </a>
+
+                    <div class="order-discount__name">Онлайн-оплата. Скидка 15%</div>
+
+                            <span
+                                class="order-discount__val">-350
+                                <span class="rubl">p</span></span>
+                </div>
+                <!-- END Введенная скидка - при выборе типа оплаты -->
+
+
                 <!-- END: введенные скидки, купоны -->
 
             </div>
