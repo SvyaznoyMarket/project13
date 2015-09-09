@@ -147,7 +147,7 @@ $f = function (
                     <? endif; ?>
 
                 <? endif; ?>
-                <!-- Введенная скидка - при выборе типа оплаты -->
+                <!-- статика: Введенная скидка - при выборе типа оплаты -->
                 <div class="order-discount__item clearfix">
                     <div class="order-discount__cell">
                         <span class="order-discount__del jsDeleteCertificate">удалить</span>

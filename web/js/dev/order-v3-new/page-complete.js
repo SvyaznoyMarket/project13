@@ -265,4 +265,19 @@
 			});
 		}
 	});
+
+    $('.js-payment-popup-show').on('click',function(){
+
+        $(this).parent().find('.js-payment-popup').show();
+        $('body').append('<div class="payments-popup__overlay js-payment-popup-overlay"></div>');
+    });
+    $('.js-payment-popup-closer').on('click',function(){
+        $(this).parent().hide();
+        $('.js-payment-popup-overlay').remove();
+    });
+    $body.on('click','.js-payment-popup-overlay',function(){
+        $('.js-payment-popup').hide();
+        $(this).remove();
+    });
+
 }(jQuery));

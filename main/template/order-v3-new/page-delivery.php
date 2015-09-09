@@ -130,6 +130,18 @@ $f = function(
                 <? endif; ?>
 
             <? endif; ?>
+            <!-- статика: скидка за выбор способа оплаты -->
+            <div class="orderCol_cnt clearfix">
+                <a href="" class="orderCol_lk">
+                    <img class="orderCol_img" src="/styles/order-new/img/payment-discount.png" alt="">
+                </a>
+
+                <div class="orderCol_n">Скидка 15%</div>
+
+                <span class="orderCol_data orderCol_data-summ orderCol_data-sale">-350 <span class="rubl">p</span></span>
+                <span class="orderCol_data orderCol_data-del jsDeleteCertificate">удалить</span>
+            </div>
+            <!-- END статика: скидка за выбор способа оплаты -->
 
             <div class="orderCol_f clearfix">
 
