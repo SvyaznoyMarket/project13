@@ -124,7 +124,9 @@
             <div class="delivery-points__right js-pointpopup-map-container"></div>
         </div>
 
-        <div class="delivery-points-warning">Чтобы купить товар с витрины, нужно приехать в магазин и обратиться к продавцу</div>
+        {{#isShowroom}}
+            <div class="delivery-points-warning">Чтобы купить товар с витрины, нужно приехать в магазин и обратиться к продавцу</div>
+        {{/isShowroom}}
     </div>
 </script>
 
