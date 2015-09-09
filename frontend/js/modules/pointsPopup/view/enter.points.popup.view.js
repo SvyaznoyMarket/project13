@@ -90,6 +90,7 @@
                 this.mapId        = uniqIndex;
 
                 this.mapContainer.attr('id', uniqIndex);
+                this.isShowroom = options.isShowroom;
 
                 this.subViews = {
                     pointsWrapper: this.$el.find('.' + CSS_CLASSES.POINTS_WRAPPER),
@@ -411,7 +412,7 @@
                     return firstId.ts - secondId.ts;
                 });
 
-                html = mustache.render(TEMPLATES.POINT, {point: sortable});
+                html = mustache.render(TEMPLATES.POINT, {point: sortable, isShowroom: this.isShowroom});
 
                 // Оставшиеся объекты будем удалять с карты.
                 this.map.pointsGeoQuery.remove(visibleObjects).removeFromMap(this.map.mapWS);

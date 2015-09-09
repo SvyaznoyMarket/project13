@@ -2,6 +2,9 @@
 
 namespace Model\Point;
 
+/**
+ * TODO переименовать в Partner
+ */
 class Group {
     /** @var string */
     public $id;
