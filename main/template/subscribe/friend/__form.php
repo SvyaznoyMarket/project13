@@ -3,10 +3,12 @@
 /**
  * @param \Helper\TemplateHelper $helper
  * @param string $channelId
+ * @param \EnterModel\Error|null $error
  */
 $f = function(
     \Helper\TemplateHelper $helper,
-    $channelId = '1'
+    $channelId = '1',
+    \EnterModel\Error $error = null
 ) { ?>
 
 <form class="subscribe-form" action="<?= $helper->url('subscribe.friend.create') ?>" method="post">
