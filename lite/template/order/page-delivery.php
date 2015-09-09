@@ -131,6 +131,9 @@ return function(
                             <div class="order-delivery-info order-delivery-info_transparent jsSmartAddressBlock">
                                 <div class="order-delivery-info-title">
                                     <span class="order-delivery-info-title__left">Адрес</span>
+                                    <? if ($orderCount != 1) : ?>
+                                    <span class="order-delivery-info-title__left">для всех товаров с доставкой</span>
+                                    <? endif; ?>
                                 </div>
 
                                 <div class="form-address form">
