@@ -10,7 +10,7 @@ $(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter_jewelry',
 			action: $(e.currentTarget).closest('.js-category-filter-alwaysShowFilter').data('name'),
-			label: ''
+			label: $(e.currentTarget).data('title')
 		});
 	});
 
@@ -38,7 +38,7 @@ $(function() {
 			$body.trigger('trackGoogleEvent', {
 				category: 'filter_jewelry',
 				action: $(e.currentTarget).closest('.js-category-filter-element').data('name'),
-				label: ''
+				label: $(e.currentTarget).data('title')
 			});
 		});
 
