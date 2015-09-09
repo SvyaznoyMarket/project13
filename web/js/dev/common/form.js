@@ -2,7 +2,6 @@
 
     var
         $body = $('body'),
-        eventName = 'form.result',
         formSelector = '.js-form',
 
         /**
@@ -16,7 +15,7 @@
                     ;
 
                 if (result && ('object' == typeof result)) {
-                    $form.trigger(eventName, [result]);
+                    $form.trigger('form.result', [result]);
                 }
             });
         },
@@ -38,17 +37,26 @@
                         error.render = showFieldError
                     }
 
-                    $field = $form.find('[data-field="' + error.field + '"]');
+                    $field = $form.find('[data-field-container="' + error.field + '"]');
                     error.render(error, $field, $form)
                 })
             }
+        },
+
+        onReset = function($form) {
+            $form.find('[data-field-container]').each(function(i, field) {
+                var $field = $(field);
+
+                $field.removeClass('error');
+                $field.find('[data-message]').text('');
+            });
         },
 
         /**
          * Отображает ошибку у поля формы
          */
         showFieldError = function(error, $field, $form) {
-            $field.addClass('error'); // TODO error.message
+            $field.addClass('error');
             $field.find('[data-message]').text(error.message);
         },
 
@@ -56,7 +64,7 @@
          * Добавляет обработчик
          */
         attachEvent = function() {
-            $body.on(eventName, formSelector, function(event, result) {
+            $body.on('form.result', formSelector, function(event, result) {
                 var
                     $form = $(this)
                     ;
@@ -65,8 +73,18 @@
 
                 onResult($form, result);
             });
+
+            $body.on('form.reset', formSelector, function(event, result) {
+                var
+                    $form = $(this)
+                ;
+
+                console.info('event/form.reset', {'event': event, '$form': $form, 'result': result});
+
+                onReset($form, result);
+            });
         }
-        ;
+    ;
 
 
     attachEvent();

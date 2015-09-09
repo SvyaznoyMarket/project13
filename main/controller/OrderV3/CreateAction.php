@@ -60,6 +60,14 @@ class CreateAction extends OrderV3 {
         //die(json_encode($splitResult));
 
         try {
+            if (self::isOrderWithCart()) {
+                $errors = (new \Controller\OrderV3\NewAction())->validateInput($request);
+                if ($errors['errors']) {
+                    \App::session()->flash($errors['errors']);
+
+                    return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
+                }
+            }
 
             if (!isset($splitResult['orders']) || empty($splitResult['orders'])) {
                 throw new \Exception('Ошибка создания заказа: невозможно получить предыдущее разбиение');
@@ -86,6 +94,7 @@ class CreateAction extends OrderV3 {
             $page = new \View\OrderV3\ErrorPage();
             $page->setParam('error', 708 == $e->getCode() ? 'Товара нет в наличии' : $e->getMessage());
             $page->setParam('step', 3);
+
             return new Response($page->show());
         } catch (\Exception $e) {
             if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {

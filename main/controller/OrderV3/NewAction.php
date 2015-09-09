@@ -106,7 +106,7 @@ class NewAction extends OrderV3 {
 
     }
 
-    private function validateInput(\Http\Request $request){
+    public function validateInput(\Http\Request $request){
 
         $result = ['errors' => [], 'phone' => '', 'email' => ''];
 

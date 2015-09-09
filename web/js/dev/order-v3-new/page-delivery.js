@@ -647,22 +647,37 @@
     $body.on('click', '[form="js-orderForm"]', function(e) {
         var
             $el = $(this),
-            $form = $el.attr('form') && $('#' + $el.attr('form'))
+            $form = $el.attr('form') && $('#' + $el.attr('form')),
+            formResult = { errors: [] }
         ;
-        console.info($form);
+        console.info($el, $form, formResult);
 
         try {
-            if (!$('.jsAcceptAgreement').is(':checked')) {
-                console.warn('not accepted');
-                // TODO: show error
+            if ($form.length) {
+                $form.trigger('form.reset');
+
+                $form.find('[required]').each(function(i, el) {
+                    var $el = $(el);
+
+                    if ($el.is(':checkbox')) {
+                        !$el.is(':checked') && formResult.errors.push({message: '', field: $el.data('field')});
+                    } else if ($el.is('input')) {
+                        console.warn($el.data('field'));
+                        !$el.val() && formResult.errors.push({message: '', field: $el.data('field')});
+                    }
+                });
+
+                if (formResult.errors.length) {
+                    $form.trigger('form.result', [formResult]);
+                } else {
+                    $form.submit();
+                }
 
                 e.preventDefault();
-            } else if ($form.length) {
+            } else {
+                // default handler
                 console.warn('form not found');
-                $form.submit();
-
-                e.preventDefault();
-            } // else default handler
+            }
         } catch (error) { console.error(); }
     });
 
