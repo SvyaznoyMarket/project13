@@ -26,6 +26,7 @@ class FriendAction {
         $page = new \View\Subscribe\Friend\ShowPage();
         $page->setParam('alreadySubscribed', $error ? ('already_subscribed' === $error->id) : false);
         $page->setParam('successfullySubscribed', $success);
+        $page->setParam('error', $error);
 
         $response = new \Http\Response($page->show());
 
