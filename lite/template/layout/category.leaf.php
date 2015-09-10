@@ -19,8 +19,6 @@
 
 	    <?= $page->blockFooter() ?>
 
-	    <?= $page->slotBodyJavascript() ?>
-
 	    <?= $page->blockUserConfig() ?>
 
 	    <?= $page->blockPopupTemplates() ?>

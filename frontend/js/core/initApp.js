@@ -23,14 +23,12 @@
 !function( window, document, modules ) {
 
     var
-        modulesDep = JSON.parse(document.getElementById('js-modules-definitions').innerHTML),
-
         /**
          * Первая точка входа в приложение
          *
          * @method  initApp
          */
-        initApp = function( App, Backbone, _, PageView, ProductsCollection, CartCollection, CompareCollection, FavoriteCollection ) {
+        initApp = function( App, UserInfo, Backbone, _, PageView, ProductsCollection, CartCollection, CompareCollection, FavoriteCollection ) {
             console.info('Application initialize');
 
             // Добавляем возможность добавлять события к объекту приложения
@@ -41,15 +39,10 @@
             App.compare            = new CompareCollection();
             App.favorite           = new FavoriteCollection();
 
-            function initEnterUser() {
-                modules.require(['enter.user'], function( model ) {
-                    App.cart.updateCart(model);
-                    App.compare.updateCompare(model);
-                    App.favorite.updateFavorite(model);
-                });
-            }
 
-            document.readyState == 'complete' ? initEnterUser() : window.addEventListener('load', initEnterUser);
+            App.cart.updateCart(UserInfo);
+            App.compare.updateCompare(UserInfo);
+            App.favorite.updateFavorite(UserInfo);
 
             /**
              * Главное View приложения
@@ -66,6 +59,9 @@
          * Расширяем стандартные функции YM Modules
          */
         extendModules = function( enterModules, loadModule ) {
+            var
+                modulesDep = JSON.parse(document.getElementById('js-modules-definitions').innerHTML);
+
             modules.setOptions({
                 loadModules: loadModule,
                 findDep: function( dep ) {
@@ -73,27 +69,33 @@
                     return modulesDep.hasOwnProperty(dep);
                 }
             });
+        },
+
+        domReady = function() {
+            // Загружаем 'enter.modules' только для того чтобы сразу объявить все модули.
+            // Не очень кошерно, на самом деле
+            modules.require(['enter.modules', 'loadModule'], extendModules);
+
+            /**
+             * Запрос модулей для инициализации приложения.
+             * Вызываем extendBackbone для того чтобы сразу расширить функционал Backbone'a
+             */
+            modules.require([
+                'App',
+                'enter.user',
+                'extendBackbone',
+                'underscore',
+                'enter.page.view',
+                'enter.products.collection',
+                'enter.cart.collection',
+                'enter.compare.collection',
+                'enter.favorite.collection'
+            ], initApp);
         };
 
-    // Загружаем 'enter.modules' только для того чтобы сразу объявить все модули.
-    // Не очень кошерно, на самом деле
-    modules.require(['enter.modules', 'loadModule'], extendModules);
+    document.readyState == 'complete' ? domReady() : window.addEventListener('load', domReady);
 
-    /**
-     * Запрос модулей для инициализации приложения.
-     * Вызываем extendBackbone для того чтобы сразу расширить функционал Backbone'a
-     */
-    modules.require([
-        'App',
-        'extendBackbone',
-        'underscore',
-        'enter.page.view',
-        'enter.products.collection',
-        'enter.cart.collection',
-        'enter.compare.collection',
-        'enter.favorite.collection'
-    ], initApp);
-}(
+    }(
     this,
     this.document,
     this.modules

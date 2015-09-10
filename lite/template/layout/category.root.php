@@ -72,8 +72,6 @@ $category = $page->getParam('category');
 
 <?= $page->blockFooter() ?>
 
-<?= $page->slotBodyJavascript() ?>
-
 <?= $page->blockUserConfig() ?>
 
 <?= $page->blockPopupTemplates() ?>

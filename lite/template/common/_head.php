@@ -22,5 +22,6 @@
 
     <?= $page->blockStylesheet() ?>
     <?= $page->blockHeadJavascript() ?>
+    <?= $page->slotBodyJavascript() ?>
     <link href='http://fonts.googleapis.com/css?family=Roboto:500,100,300,700,400&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 </head>
