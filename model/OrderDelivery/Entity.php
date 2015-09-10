@@ -459,6 +459,11 @@ namespace Model\OrderDelivery\Entity {
                             $point = [
                                 'point'         => &$orderDelivery->points[$pointType]->list[$pointItem['id']],
                                 'nearestDay'    => $pointItem['nearest_day'],
+                                'dateInterval'  => (
+                                    (isset($pointItem['date_interval']) && is_array($pointItem['date_interval']))
+                                    ? ($pointItem['date_interval'] + ['from' => null, 'to' => null])
+                                    : null
+                                ),
                                 'cost'          => (int)$pointItem['cost']
                             ];
 
@@ -873,12 +878,13 @@ namespace Model\OrderDelivery\Entity\Order\Delivery {
         public $token;
         /** @var string */
         public $id;
+        /** @var array|null */
+        public $dateInterval;
 
 
         public function __construct(array $data = []) {
             if (isset($data['token'])) $this->token = (string)$data['token'];
             if (isset($data['id'])) $this->id = (string)$data['id'];
-
         }
 
         /** Точка Связного?
