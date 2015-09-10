@@ -24,7 +24,7 @@ class Entity extends BasicRegionEntity {
         if (isset($data['tk_available'])) $this->hasTransportCompany = (bool)$data['tk_available'];
         if (isset($data['number_of_enter_shops']) && isset($data['number_of_pickup_points'])) $this->pointCount = $data['number_of_enter_shops'] + $data['number_of_pickup_points'];
         if (isset($data['names'])) {
-            $this->names = new \Model\Inflections($data['names']); // TODO: заработает после реализации FCMS-779
+            $this->names = new \Model\Inflections($data['name_inflect']);
         } else {
             $this->names = new \Model\Inflections();
         }
