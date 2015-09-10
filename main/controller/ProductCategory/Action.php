@@ -576,6 +576,7 @@ class Action {
         $filters = $productFilter->dump();
 
         $smartChoiceData = [];
+        /** @var \Model\Product\Entity[] $smartChoiceProductsById */
         $smartChoiceProductsById = [];
         call_user_func(function() use(&$smartChoiceData, &$smartChoiceProductsById, $filters, $catalogJson, $repository) {
             if (!isset($catalogJson['smartchoice']) || !$catalogJson['smartchoice']) {
@@ -599,7 +600,7 @@ class Action {
                     $smartChoiceProductsById[$smartChoiceItem['products'][0]['id']] = new \Model\Product\Entity(['id' => $smartChoiceItem['products'][0]['id']]);
                 }
 
-                $repository->prepareProductQueries($smartChoiceProductsById, 'media');
+                $repository->prepareProductQueries($smartChoiceProductsById, 'media label');
             } catch (\Exception $e) {
                 $smartChoiceData = [];
             }

@@ -226,7 +226,6 @@ class DeliveryAction extends OrderV3 {
 
         if ($pointUiToObject) {
             \App::scmsClient()->addQuery('api/point/get', [
-                'geo_id' => $this->user->getRegion()->getId(),
                 'uids' => array_keys($pointUiToObject),
             ], [],
                 function ($data) use($pointUiToObject) {
@@ -243,7 +242,13 @@ class DeliveryAction extends OrderV3 {
                                 /** @var \Model\OrderDelivery\Entity\Point\DefaultPoint $point */
                                 $point = $pointUiToObject[$pointData['uid']];
                                 if (!empty($pointData['partner']) && !empty($partners[$pointData['partner']])) {
-                                    $point->group = new \Model\Point\Group($partners[$pointData['partner']]);
+                                    $partner = $partners[$pointData['partner']];
+
+                                    if (strpos($point->name, 'Постамат') === 0 && strpos($partner['slug'], 'pickpoint') !== false) {
+                                        $partner['name'] = 'Постамат PickPoint';
+                                    }
+
+                                    $point->group = new \Model\Point\Group($partner);
                                 }
                             }
                         }
