@@ -16,7 +16,7 @@ class UpdateAction extends PrivateAction {
     public function execute(\Http\Request $request) {
         $userEntity = \App::user()->getEntity();
 
-        $userData = [
+        $formData = [
             'first_name'   => null,
             'middle_name'  => null,
             'last_name'    => null,
@@ -28,7 +28,7 @@ class UpdateAction extends PrivateAction {
             'occupation'   => null,
         ];
         if (is_array($request->get('user'))) {
-            $userData = array_merge($userData, $request->get('user'));
+            $formData = array_merge($formData, $request->get('user'));
         }
 
         $flashData = [
@@ -37,11 +37,11 @@ class UpdateAction extends PrivateAction {
             'errors'  => [],
         ];
         try {
-            if (empty($userData['first_name'])) {
-                $flashData['errors'][] = ['field' => 'user[first_name]', 'message' => 'Не указано имя'];
+            if (empty($formData['first_name'])) {
+                $flashData['errors'][] = ['field' => 'first_name', 'message' => 'Не указано имя'];
             }
-            if (!$userEntity->isEnterprizeMember() && empty($userData['email'])) {
-                $flashData['errors'][] = ['field' => 'user[email]', 'message' => 'Не указан email'];
+            if (!$userEntity->isEnterprizeMember() && empty($formData['email'])) {
+                $flashData['errors'][] = ['field' => 'email', 'message' => 'Не указан email'];
             }
 
             if ($flashData['errors']) {
@@ -50,17 +50,17 @@ class UpdateAction extends PrivateAction {
 
             $updateQuery = new Query\User\Update();
             $updateQuery->token = $userEntity->getToken();
-            $updateQuery->user->firstName = isset($userData['first_name']) ? $userData['first_name'] : null;
-            $updateQuery->user->middleName = isset($userData['middle_name']) ? $userData['middle_name'] : null;
-            $updateQuery->user->lastName = isset($userData['last_name']) ? $userData['last_name'] : null;
-            if (isset($userData['birthday']['year']) && isset($userData['birthday']['month']) && isset($userData['birthday']['day'])) {
-                $updateQuery->user->birthday = sprintf('%04d-%02d-%02d', $userData['birthday']['year'], $userData['birthday']['month'], $userData['birthday']['day']);
+            $updateQuery->user->firstName = isset($formData['first_name']) ? $formData['first_name'] : null;
+            $updateQuery->user->middleName = isset($formData['middle_name']) ? $formData['middle_name'] : null;
+            $updateQuery->user->lastName = isset($formData['last_name']) ? $formData['last_name'] : null;
+            if (isset($formData['birthday']['year']) && isset($formData['birthday']['month']) && isset($formData['birthday']['day'])) {
+                $updateQuery->user->birthday = sprintf('%04d-%02d-%02d', $formData['birthday']['year'], $formData['birthday']['month'], $formData['birthday']['day']);
             }
-            $updateQuery->user->sex = isset($userData['sex']) ? $userData['sex'] : null;
-            $updateQuery->user->email = isset($userData['email']) ? $userData['email'] : null;
-            $updateQuery->user->phone = isset($userData['mobile_phone']) ? $userData['mobile_phone'] : null;
-            $updateQuery->user->homePhone = isset($userData['home_phone']) ? $userData['home_phone'] : null;
-            $updateQuery->user->occupation = isset($userData['occupation']) ? $userData['occupation'] : null;
+            $updateQuery->user->sex = isset($formData['sex']) ? $formData['sex'] : null;
+            $updateQuery->user->email = isset($formData['email']) ? $formData['email'] : null;
+            $updateQuery->user->phone = isset($formData['mobile_phone']) ? $formData['mobile_phone'] : null;
+            $updateQuery->user->homePhone = isset($formData['home_phone']) ? $formData['home_phone'] : null;
+            $updateQuery->user->occupation = isset($formData['occupation']) ? $formData['occupation'] : null;
             $updateQuery->prepare();
 
             $this->getCurl()->execute();
@@ -70,7 +70,7 @@ class UpdateAction extends PrivateAction {
                 throw $error;
             }
 
-            // если ошибок нет, значит пароль изменен успешно
+            // если ошибок нет
             $flashData['success'] = true;
         } catch (\Exception $error) {
             $flashData['success'] = false;
