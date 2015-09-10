@@ -132,7 +132,7 @@ return function(
                                 <div class="order-delivery-info-title">
                                     <span class="order-delivery-info-title__left">Адрес</span>
                                     <? if ($orderCount != 1) : ?>
-                                    <span class="order-delivery-info-title__left">для всех товаров с доставкой</span>
+                                    <span class="order-delivery-info-title__left">&nbsp;для всех товаров с доставкой</span>
                                     <? endif; ?>
                                 </div>
 
