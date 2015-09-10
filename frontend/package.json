@@ -1,9 +1,9 @@
 {
-  "name": "Enter_Lite",
-  "title": "Enter.ru",
-  "homepage": "http://www.enter.ru/",
+  "name": "Wallashop",
+  "title": "www.wallashop.ru",
+  "homepage": "http://www.wallashop.ru/",
   "author": {
-    "name": "Enter Frontend Team",
+    "name": "Wallashop Frontend Team",
     "url": "https://github.com/SvyaznoyMarket/project13"
   },
   "repository": {
