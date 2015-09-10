@@ -9,9 +9,9 @@ class IndexPage extends LiteLayout
 
     protected $layout = 'layout/main';
 
-    public function blockHead()
-    {
-        return $this->render('main/_head');
+    public function __construct() {
+        parent::__construct();
+        $this->metatags[] = '<meta name="yandex-verification" content="5c7063a53fa016cf" />';
     }
 
     /** Блок с рекомендациями

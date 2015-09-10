@@ -6,11 +6,18 @@ namespace view;
 class LiteLayout extends \View\Layout
 {
 
+    public $metatags = [];
+
     public function __construct() {
         parent::__construct();
         $this->setGlobalParam('menu', (new \View\Menu($this))->generate_new(\App::user()->getRegion()));
         $this->addStylesheet(\App::config()->debug ? '/public/css/global.css' : '/public/css/global.min.css');
         $this->addJavascript('/public/js/core.min.js');
+
+        $this->metatags[] = '<meta charset="utf-8">';
+        $this->metatags[] = '<meta http-equiv="x-ua-compatible" content="ie=edge">';
+        $this->metatags[] = '<meta name="description" content="">';
+        $this->metatags[] = '<meta name="viewport" content="width=device-width, initial-scale=1">';
     }
 
     public function getParams() {
@@ -37,6 +44,10 @@ class LiteLayout extends \View\Layout
     public function blockHead()
     {
         return $this->render('common/_head');
+    }
+
+    public function blockMetatags() {
+        return implode(PHP_EOL, $this->metatags);
     }
 
     /** Навигация
