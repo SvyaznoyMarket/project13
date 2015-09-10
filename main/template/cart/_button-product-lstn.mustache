@@ -6,7 +6,7 @@
 
         <a
             href="{{url}}"
-            class="btn-type btn-type--buy btn-type--lstn {{#disabled}}mDisabled{{/disabled}} {{#inShopOnly}}btn-type--default{{/inShopOnly}} {{#isKit}}btn-type--buy-kit{{/isKit}}"
+            class="jsBuyButton btn-type btn-type--buy btn-type--lstn {{#disabled}}mDisabled{{/disabled}} {{#inShopOnly}}btn-type--default{{/inShopOnly}} {{#isKit}}btn-type--buy-kit{{/isKit}}"
             data-product-id="{{data.productId}}"
             data-product-ui="{{productUi}}"
             data-upsale="{{data.upsale}}"
@@ -22,6 +22,6 @@
             {{#data.noUpdate}}data-no-update="{{data.noUpdate}}"{{/data.noUpdate}}
             {{#onClick}}onclick="{{onClick}}"{{/onClick}}
             data-bind="buyButtonBinding: cart"
-        >{{value}}</a>
+        >Купить</a>
 
 {{/inShowroomAsLabel}}
