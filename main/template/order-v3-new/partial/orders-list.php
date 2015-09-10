@@ -38,7 +38,10 @@ $f = function (
             <!-- информация о заказе -->
             <div class="order-bill__head">Заказ №<?= ($i) ?></div>
             <!-- левая часть блока заказа - список заказанных товаров-->
+            <div class="order-bill__wrap">
             <div class="order-bill__goods">
+                <div class="">
+                <div class="order-bill__body">
                 <? if ($order->seller): ?>
                     <div class="order-bill__seller">продавец: <?= $order->seller->name ?> <a
                             class="order-bill__oferta js-order-oferta-popup-btn" href="<?= $order->seller->offer ?>"
@@ -147,26 +150,29 @@ $f = function (
                     <? endif; ?>
 
                 <? endif; ?>
-                <!-- статика: Введенная скидка - при выборе типа оплаты -->
-                <div class="order-discount__item clearfix">
-                    <div class="order-discount__cell">
-                        <span class="order-discount__del jsDeleteCertificate">удалить</span>
-                    </div>
-                    <a href="" class="order-discount__lk">
-                        <img class="order-discount__img" src="/styles/order-new/img/payment-discount.png" alt="">
-                    </a>
-
-                    <div class="order-discount__name">Онлайн-оплата. Скидка 15%</div>
-
-                            <span
-                                class="order-discount__val">-350
-                                <span class="rubl">p</span></span>
                 </div>
+                <!-- статика: Введенная скидка - при выборе типа оплаты -->
+                    <div class="payment-discount">
+                    <div class="order-discount__item clearfix">
+                        <div class="order-discount__cell">
+                            <span class="order-discount__del jsDeleteCertificate">удалить</span>
+                        </div>
+                        <a href="" class="order-discount__lk">
+                            <img class="order-discount__img" src="/styles/order-new/img/payment-discount.png" alt="">
+                        </a>
+
+                        <div class="order-discount__name">Онлайн-оплата. Скидка 15%</div>
+
+                                <span
+                                    class="order-discount__val">-350
+                                    <span class="rubl">p</span></span>
+                    </div>
+                    </div>
                 <!-- END Введенная скидка - при выборе типа оплаты -->
 
 
                 <!-- END: введенные скидки, купоны -->
-
+                </div>
             </div>
             <!-- END левая часть блока заказа - список заказанных товаров-->
 
@@ -325,7 +331,7 @@ $f = function (
             </div>
             <!-- END правая часть блока заказа - выбор доставки/самовывоза -->
 
-
+            </div>
 
             <!-- ввести код скидки -->
             <div class="order-bill__adds">

@@ -51,6 +51,13 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     </dl>
 
     <?= $helper->render('product-page/blocks/trustfactors', ['trustfactors' => $trustfactors]) ?>
+    <ul class="pay-system-list">
+        <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-card-g.png"></li>
+        <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-yandex-g.png"></li>
+        <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-webmoney-g.png"></li>
+        <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-qiwi-g.png"></li>
+        <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-psb-g.png"></li>
+    </ul>
 
     <div class="product-card-sharing-list">
         <!-- AddThis Button BEGIN -->
@@ -66,11 +73,6 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         <!-- AddThis Button END -->
     </div>
 
-    <ul class="pay-system-list">
-        <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--visa"></i></li>
-        <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--mastercard"></i></li>
-        <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--psb"></i></li>
-    </ul>
 </div>
 <!--/ краткое описание товара -->
 
