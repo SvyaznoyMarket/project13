@@ -9,6 +9,11 @@ class IndexPage extends LiteLayout
 
     protected $layout = 'layout/main';
 
+    public function blockHead()
+    {
+        return $this->render('main/_head');
+    }
+
     /** Блок с рекомендациями
      * @return string
      */
