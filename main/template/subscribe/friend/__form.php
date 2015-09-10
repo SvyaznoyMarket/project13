@@ -17,8 +17,8 @@ $f = function(
 
     <div class="subscribe-form-group<? if ($error): ?> error<? endif ?>">
         <label>Ваш e-mail</label>
-        <input class="subscribe-email" type="email" name="email" required>
-        <span class="error-txt"><!-- сообщение об ошибке --></span>
+        <input class="subscribe-email" type="text" name="email" required>
+        <span class="error-txt"><?= ($error ? $error->message : null) ?></span>
         <button class="subscribe-form-btn" type="submit">Подписаться</button>
     </div>
 </form>
