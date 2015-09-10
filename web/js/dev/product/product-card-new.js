@@ -20,7 +20,7 @@
     /* Если это не новая карточка, то do nothing */
     if (!$body.hasClass('product-card-new')) return;
 
-    tabsOffset = $tabs.offset().top;
+    tabsOffset = $tabs.length ? $tabs.offset().top : 0;
 
 
     // Кредит

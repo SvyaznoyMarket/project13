@@ -339,7 +339,7 @@ $(function() {
 		var timer;
 		function checkReviewsShowing() {
 			var windowHeight = $window.height();
-			if ($window.scrollTop() + windowHeight > $reviews.offset().top) {
+			if ($reviews.length && $window.scrollTop() + windowHeight > $reviews.offset().top) {
 				if (!timer) {
 					timer = setTimeout(function() {
 						$window.unbind('scroll', checkReviewsShowing);
@@ -996,7 +996,7 @@ $(function() {
     /* Если это не новая карточка, то do nothing */
     if (!$body.hasClass('product-card-new')) return;
 
-    tabsOffset = $tabs.offset().top;
+    tabsOffset = $tabs.length ? $tabs.offset().top : 0;
 
 
     // Кредит
