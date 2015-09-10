@@ -163,7 +163,7 @@ class DeliveryAction extends OrderV3 {
 
             try {
                 // SITE-6016
-                if (in_array(\App::user()->getRegion()->parentId, [76, 90])) { // Воронеж, Ярославль
+                if (\Session\AbTest\ABHelperTrait::isOrderDeliveryTypeTestAvailableInCurrentRegion()) {
                     switch ( \App::abTest()->getTest('order_delivery_type')->getChosenCase()->getKey()) {
                         case 'self':
                             $splitData += ['delivery_type' => 'self'];

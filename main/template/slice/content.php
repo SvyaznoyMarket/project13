@@ -17,9 +17,9 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 
-<?= $helper->render('slice/__data', ['slice' => $slice, 'category' => $category]) ?>
+<?= $helper->render('slice/__data', ['slice' => $slice]) ?>
 
-<div class="bCatalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
+<div class="bCatalog js-slice" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 
     <?= $helper->render('slice/__breadcrumbs', ['category' => $category, 'slice' => $slice]) // хлебные крошки ?>
 

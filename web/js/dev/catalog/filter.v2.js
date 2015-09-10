@@ -4,15 +4,15 @@ $(function() {
 		dropBoxSelectClass = 'actv',
 		brandTitleOpenClass = 'opn',
 		$body = $(document.body),
-		$filter = $('.js-category-filter'),
-		$otherBrands = $('.js-category-v2-filter-otherBrands'),
-		$otherBrandsOpener = $('.js-category-v2-filter-otherBrandsOpener'),
-		$brandTitle = $('.js-category-v2-filter-brandTitle'),
-		$brandFilter = $('.js-category-v2-filter-brand'),
-		$priceFilter = $('.js-category-v2-filter-element-price'),
-		$priceLinks = $('.js-category-v2-filter-price-link'),
-		$radio = $('.js-category-v2-filter-element-list-radio'),
-		catalogPath = ENTER.utils.getCategoryPath();
+		$v2Filter = $('.js-category-filter-v2'),
+		$otherBrands = $('.js-category-v2-filter-otherBrands', $v2Filter),
+		$otherBrandsOpener = $('.js-category-v2-filter-otherBrandsOpener', $v2Filter),
+		$brandTitle = $('.js-category-v2-filter-brandTitle', $v2Filter),
+		$v2BrandFilter = $('.js-category-v2-filter-brand', $v2Filter),
+		$v2PriceFilter = $('.js-category-v2-filter-element-price', $v2Filter),
+		$priceLinks = $('.js-category-v2-filter-price-link', $v2Filter),
+		$radio = $('.js-category-v2-filter-element-list-radio', $v2Filter),
+		pageBusinessUnitId = ENTER.utils.getPageBusinessUnitId();
 
 	// Выпадающие списки
 	(function() {
@@ -130,7 +130,7 @@ $(function() {
 	})();
 
 	// Выделение групп при изменении фильтра
-	$('input, select, textarea', $filter).on('change', function(e) {
+	$('input, select, textarea', $v2Filter).on('change', function(e) {
 		var
 			$dropBox = $(e.currentTarget).closest('.js-category-v2-filter-dropBox, .js-category-v2-filter-dropBox2'),
 			isSelected = false;
@@ -211,7 +211,7 @@ $(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',
 			action: 'brand',
-			label: catalogPath
+			label: pageBusinessUnitId
 		});
 	});
 
@@ -246,72 +246,73 @@ $(function() {
 	$('.js-category-v2-filter-element-number input[type="text"]').placeholder();
 
 	// Нажатие на один из брендов
-	$brandFilter.click(function() {
+	$v2BrandFilter.click(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',
 			action: 'brand',
-			label: catalogPath
+			label: pageBusinessUnitId
 		});
 	});
 
 	// Фокус ввода на поля цены
-	$('input', $priceFilter).focus(function() {
+	$('input', $v2PriceFilter).focus(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',
 			action: 'cost',
-			label: catalogPath
+			label: pageBusinessUnitId
 		});
 	});
 
 	// Нажатие на слайдер цены
-	$('.js-category-filter-rangeSlider-slider', $priceFilter).mousedown(function() {
+	$('.js-category-filter-rangeSlider-slider', $v2PriceFilter).mousedown(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',
 			action: 'cost',
-			label: catalogPath
+			label: pageBusinessUnitId
 		});
 	});
 
-	// Нажатие на ссылки открытия выпадающих списков "Цена" и "Скидки"
-	$('.js-category-v2-filter-dropBox-price .js-category-v2-filter-dropBox-opener, .js-category-v2-filter-dropBox-labels .js-category-v2-filter-dropBox-opener').click(function() {
+	// Нажатие на ссылки открытия выпадающего списка "Цена"
+	$('.js-category-v2-filter-dropBox-price .js-category-v2-filter-dropBox-opener', $v2Filter).click(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',
 			action: 'cost',
-			label: catalogPath
+			label: pageBusinessUnitId
 		});
 	});
 
 	// Нажатие на диапазоны цен
-	$('.js-category-v2-filter-dropBox-price .js-category-v2-filter-price-link').click(function() {
+	$('.js-category-v2-filter-dropBox-price .js-category-v2-filter-price-link', $v2Filter).click(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',
-			action: 'cost_var',
-			label: catalogPath
+			action: 'cost_range',
+			label: pageBusinessUnitId
 		});
 	});
 
-	// Нажатие на элементы блока "Скидки"
-	$('.js-category-v2-filter-dropBox-labels .js-customInput').click(function() {
+	// Нажатие на ссылки открытия выпадающего списка "Скидки" и на элементы блока "Скидки"
+	$('.js-category-v2-filter-dropBox-labels .js-category-v2-filter-dropBox-opener, .js-category-v2-filter-dropBox-labels .js-customInput', $v2Filter).click(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',
 			action: 'cost_sale',
-			label: catalogPath
+			label: pageBusinessUnitId
 		});
 	});
 
-	$('.js-category-v2-filter-otherGroups .js-category-v2-filter-dropBox-opener').click(function() {
+	// Открытие остальных групп фильтров
+	$('.js-category-v2-filter-otherGroups .js-category-v2-filter-dropBox-opener', $v2Filter).click(function(e) {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',
-			action: 'other',
-			label: catalogPath
+			action: 'other_' + $(e.currentTarget).data('name'),
+			label: pageBusinessUnitId
 		});
 	});
 
-	$('.js-category-v2-filter-element-shop-input').click(function() {
+	$('.js-category-v2-filter-element-shop-input', $v2Filter).click(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',
 			action: 'other_shops',
-			label: catalogPath
+			label: pageBusinessUnitId
 		});
 	});
 });

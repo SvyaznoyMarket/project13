@@ -52,6 +52,7 @@ class ShowAction {
             $inStoreLabel = null;
         }
 
+        $variations = (new \View\Product\Variations())->execute($helper, $product);
         $productItem = [
             'id'           => $product->getId(),
             'name'         => $product->getName(),
@@ -75,20 +76,8 @@ class ShowAction {
             'inStoreLabel' => $inStoreLabel,
             'onlyInShop'   => $product->isInShopOnly(),
             'stateLabel'   => $showState ? ($inShopOnlyLabel ? $inShopOnlyLabel : $inStoreLabel) : null,
-            'variations'   =>
-            ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty()) // TODO: перенести в \View\*Action
-                ? array_map(function(\Model\Product\Model\Property\Entity $property) {
-                return [
-                    'name' => $property->getName(),
-                ];
-            }, $product->getModel()->getProperty())
-                : null
-            ,
-            'hasVariations' =>
-            ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty())
-                ? true
-                : null
-            ,
+            'variations'   => $variations,
+            'hasVariations' => $variations ? true : null,
             'hasVideo' => $product->hasVideo(),
             'has360'   => $product->has3d(),
             'review'   => $reviewtAction ? $reviewtAction->execute($helper, $product) : null,
@@ -128,13 +117,7 @@ class ShowAction {
 
         // Дополняем свойствами для каталога в виде листинга
         if (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category && $category->isInSiteListingWithViewSwitcherAbTest()) {
-            $productItem['properties']= array_map(function(\Model\Product\Property\Entity $entity) {
-                return [
-                    'name' => $entity->getName(),
-                    'value' => $entity->getStringValue(),
-
-                ];
-            }, $product->getPropertiesInView(5));
+            $productItem['properties'] = (new \View\Product\Properties())->execute($helper, $product);
         }
 
         // oldPrice and priceSale

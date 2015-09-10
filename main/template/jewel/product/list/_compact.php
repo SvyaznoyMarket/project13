@@ -17,6 +17,7 @@
     <?= $page->render('jewel/product/show/_compact', [
         'product' => $product,
         'itemsPerRow' => $itemsPerRow,
+        'category' => $category,
     ]) ?>
 <? endforeach ?>
 

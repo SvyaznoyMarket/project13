@@ -4,7 +4,6 @@
 	var
 		$body = $('body'),
 		catalog = ENTER.utils.extendApp('ENTER.catalog'),
-		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'), // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
 
 		filterOpenClass = 'fltrSet_tggl-dn',
 		viewSwitcherActiveClass = 'active',
@@ -16,9 +15,7 @@
 		$filterNumbers = $filterBlock.find('.js-category-v2-filter-element-number input'),
 		$filterMenuItem = $filterBlock.find('.js-category-filter-param'),
 		$filterCategoryBlocks = $filterBlock.find('.js-category-filter-element'),
-		$priceFilter = $('.js-category-v1-filter-element-price'),
 		$priceForFacetSearch = $('.js-gift-category-filter-element-price'),
-		$otherParams = $('.js-category-v1-filter-otherParams'),
 		$viewParamPanel = $('.js-category-sortingAndPagination'),
 		$bottomInfButton = $('.js-category-pagination-infinity-enableLink').last(),
 		$filterSubmitBtn = $('.js-category-filter-submit', '.js-category-filter'),
@@ -834,14 +831,8 @@
 	});
 
 	// Нажатие на кнопку "Подобрать"
-	$('.js-category-v1-filter-submit').click(function() {
+	$('.js-category-filter-submit').click(function() {
 		$.scrollTo($filterBlock.find('.js-category-filter-selected'), 500);
-
-		$body.trigger('trackGoogleEvent', {
-			category: 'filter_old',
-			action: 'find',
-			label: catalogPath
-		});
 	});
 
 	// Сортировка элементов
@@ -860,6 +851,8 @@
 		$viewParamPanel.find('.js-category-sorting-item').removeClass(activeClass).removeClass('act').removeClass('js-category-sorting-activeItem');
 		$parentItem.addClass(activeClass).addClass('act').addClass('js-category-sorting-activeItem');
 		sendFilter(1);
+
+		ENTER.utils.sendSortEvent($self.data('sort'), ENTER.config.pageConfig.category);
 	});
 
 	// Обработчик для ссылок смены отображения каталога
@@ -942,69 +935,6 @@
 			enableInfinityScroll();
 		}
 	});
-
-	// Фокус ввода на поля цены
-	$('input', $priceFilter).focus(function() {
-		$body.trigger('trackGoogleEvent', {
-			category: 'filter_old',
-			action: 'cost',
-			label: catalogPath
-		});
-	});
-
-	// Нажатие на слайдер цены
-	$('.js-category-filter-rangeSlider-slider', $priceFilter).mousedown(function() {
-		$body.trigger('trackGoogleEvent', {
-			category: 'filter_old',
-			action: 'cost',
-			label: catalogPath
-		});
-	});
-
-	// Нажатие на кнопку "Бренды и параметры"
-	$('.js-category-v1-filter-otherParamsToggleButton').click(function() {
-		$body.trigger('trackGoogleEvent', {
-			category: 'filter_old',
-			action: 'brand_parameters',
-			label: catalogPath
-		});
-	});
-
-	// Нажатие на ссылки разделов фильтра
-	$('.js-category-filter-param', $otherParams).click(function() {
-		$body.trigger('trackGoogleEvent', {
-			category: 'filter_old',
-			action: 'using_brand_parameters',
-			label: catalogPath
-		});
-	});
-
-	// Использование элементов фильтра
-	(function() {
-		$('input[type="checkbox"], input[type="radio"]', $otherParams).click(function() {
-			$body.trigger('trackGoogleEvent', {
-				category: 'filter_old',
-				action: 'using_brand_parameters',
-				label: catalogPath
-			});
-		});
-
-		$('input[type="text"]', $otherParams).focus(function() {
-			$body.trigger('trackGoogleEvent', {
-				category: 'filter_old',
-				action: 'using_brand_parameters',
-				label: catalogPath
-			});
-		});
-
-		$('.js-category-filter-rangeSlider-slider', $otherParams).mousedown(function() {
-			$body.trigger('trackGoogleEvent', {
-				category: 'filter_old',
-				action: 'using_brand_parameters',
-				label: catalogPath
-			});
-		});
-	})();
 
 	catalog.filter = {
 		open: function() {

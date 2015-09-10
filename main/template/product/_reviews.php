@@ -16,9 +16,7 @@
             <div class="bReviewsWrapper js-reviews-wrapper"
                  data-product-ui="<?= $product->getUi() ?>"
                  data-page-count="<?= $reviewsData['page_count'] ?>"
-                 data-avg-score="<?= empty($reviewsData['avg_score']) ? 0 : $page->escape($reviewsData['avg_score']) ?>"
-                 data-first-page-avg-score="<?= empty($reviewsData['current_page_avg_score']) ? 0 : $page->escape($reviewsData['current_page_avg_score']) ?>"
-                 data-category-name="<?= $page->escape($product->getParentCategory() ? $product->getParentCategory()->getName() : '') ?>">
+            >
                 <ul class="bReviewsTabs clearfix">
                     <li class="bReviewsTabs__eTab bReviewsTabs__eUser user<?= !empty($reviewsData['review_list']) ? ' active' : ' hfImportant' ?>"><span>Отзывы пользователей</span></li>
 

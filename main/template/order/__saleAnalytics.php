@@ -39,7 +39,7 @@ foreach ($orders as $order) {
         // SITE-6016
         $testKey = \App::abTest()->getTest('order_delivery_type')->getChosenCase()->getKey();
         if (
-            in_array(\App::user()->getRegion()->parentId, [76, 90])  // Воронеж, Ярославль
+            \Session\AbTest\ABHelperTrait::isOrderDeliveryTypeTestAvailableInCurrentRegion()
             && in_array($testKey, ['self', 'delivery'])
             && $order->getDelivery()
         ) {

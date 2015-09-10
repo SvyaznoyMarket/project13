@@ -295,6 +295,15 @@ $(function() {
 	ENTER.utils.analytics.productPageSenders.add(product.ui, query.sender);
 	ENTER.utils.analytics.productPageSenders2.add(product.ui, query.sender2);
 
+	// SITE-5772
+	if (query.sender && typeof query.sender.name == 'string' && query.sender.name.indexOf('filter') == 0) {
+		$('body').trigger('trackGoogleEvent', {
+			category: query.sender.name,
+			action: 'product',
+			label: query.sender.categoryUrlPrefix
+		});
+	}
+
 	if ( typeof _gaq !== 'undefined' ) {
 		// GoogleAnalitycs for review click
 		$( 'a.reviewLink.yandex' ).each(function() {
@@ -311,6 +320,50 @@ $(function() {
 			});
 		}
 	} catch (error) { console.error(error); }
+
+	// SITE-5466
+	(function() {
+		if (!ENTER.config || !ENTER.config.pageConfig || !ENTER.config.pageConfig.product) {
+			return;
+		}
+
+		var
+			productUi = ENTER.config.pageConfig.product.ui,
+			avgScore = ENTER.config.pageConfig.product.avgScore,
+			firstPageAvgScore = ENTER.config.pageConfig.product.firstPageAvgScore,
+			categoryName = ENTER.config.pageConfig.product.category.name,
+			$window = $(window),
+			$reviews = $('.jsReviewsList')
+		;
+
+		var timer;
+		function checkReviewsShowing() {
+			var windowHeight = $window.height();
+			if ($window.scrollTop() + windowHeight > $reviews.offset().top) {
+				if (!timer) {
+					timer = setTimeout(function() {
+						$window.unbind('scroll', checkReviewsShowing);
+
+						$body.trigger('trackGoogleEvent', {
+							category: 'Items_review',
+							action: 'All_' + avgScore + '_Top_' + firstPageAvgScore,
+							label: categoryName
+						});
+
+						ENTER.utils.analytics.reviews.add(productUi, avgScore, firstPageAvgScore, categoryName);
+					}, 2000);
+				}
+			} else {
+				if (timer) {
+					clearTimeout(timer);
+					timer = null;
+				}
+			}
+		}
+
+		$window.scroll(checkReviewsShowing);
+		checkReviewsShowing();
+	})();
 });
 /**
  * Кредит для карточки товара
@@ -1321,13 +1374,6 @@ $(function() {
 
     $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); });
 
-
-	$('.js-description-expand.collapsed').on('click', function(){
-
-        $(this).removeClass('collapsed js-description-expand');
-
-    });
-
     $body.on('click', '.jsProductCardNewLabelInfo', function(){
         $('.jsProductCardNewLabelPopup').toggleClass('info-popup--open');
     });
@@ -1550,10 +1596,7 @@ $(document).ready(function() {
 		$moreReviewsButton = $('.js-reviews-getMore'),
 		reviewCurrentPage = 0,
 		reviewPageCount = $reviewWrap.attr('data-page-count'),
-		productUi = $reviewWrap.attr('data-product-ui'),
-		avgScore = $reviewWrap.data('avg-score'),
-		firstPageAvgScore = $reviewWrap.data('first-page-avg-score'),
-		categoryName = $reviewWrap.data('category-name');
+		productUi = $reviewWrap.attr('data-product-ui');
 
 	if (!$reviewWrap.length) {
 		return;
@@ -1580,37 +1623,6 @@ $(document).ready(function() {
 			}
 		});
 	});
-
-	// SITE-5466
-	(function() {
-		var timer;
-		function checkReviewsShowing() {
-			var windowHeight = $window.height();
-			if ($window.scrollTop() + windowHeight > $reviewWrap.offset().top) {
-				if (!timer) {
-					timer = setTimeout(function() {
-						$window.unbind('scroll', checkReviewsShowing);
-
-						$body.trigger('trackGoogleEvent', {
-							category: 'Items_review',
-							action: 'All_' + avgScore + '_Top_' + firstPageAvgScore,
-							label: categoryName
-						});
-
-						ENTER.utils.analytics.reviews.add(productUi, avgScore, firstPageAvgScore, categoryName);
-					}, 2000);
-				}
-			} else {
-				if (timer) {
-					clearTimeout(timer);
-					timer = null;
-				}
-			}
-		}
-
-		$window.scroll(checkReviewsShowing);
-		checkReviewsShowing();
-	})();
 }());
 
 
