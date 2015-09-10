@@ -4,6 +4,7 @@ namespace Controller\Favorite;
 
 use EnterQuery as Query;
 use \Model\Media;
+use \Model\Session\FavouriteProduct;
 
 class SetAction {
     use \EnterApplication\CurlTrait;
@@ -18,6 +19,8 @@ class SetAction {
 
         $curl = $this->getCurl();
         $user = \App::user();
+        $session = \App::session();
+        $sessionKey = \App::config()->session['favouriteKey'];
 
         if (!$user->getEntity()) {
             throw new \Exception\AccessDeniedException('Пользователь не авторизован');
@@ -40,14 +43,13 @@ class SetAction {
 
         $curl->execute();
 
-        // проверяет, если такой товар, чтобы не пихать в избранное мусор
-        if (!count($coreProductQuery->response->product)) {
+        // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
+        if (empty($coreProductQuery->response->product) || empty($productQuery->response->products[0])) {
             throw new \Exception(sprintf('Товар %s не найден', $productUi));
         }
 
         $product = new \Model\Product\Entity($coreProductQuery->response->product);
-        $productDescription = reset($productQuery->response->products);
-        $product->medias = array_map(function($mediaData) {return new Media($mediaData);}, $productDescription['medias']);
+        $product->importFromScms($productQuery->response->products[0]);
 
         $favoriteQuery = (new Query\User\Favorite\Set($user->getEntity()->getUi(), $product->getUi()))->prepare();
 
@@ -55,6 +57,11 @@ class SetAction {
 
         if ($favoriteQuery->error) {
             throw new $favoriteQuery->error;
+        } else {
+            $sessionFavourite = $session->get($sessionKey, []);
+            if (!isset($sessionFavourite[$product->getUi()])) {
+                $session->set($sessionKey, $sessionFavourite + [ $product->getId() => (array) (new FavouriteProduct($product)) ] );
+            }
         }
 
         if ($request->isXmlHttpRequest()) {
@@ -76,6 +83,12 @@ class SetAction {
                         ]
                     ),
                 ],
+                'favourite' => $sessionFavourite,
+                'product'   => [
+                    'imageUrl'  => $product->getMainImageUrl('product_60'),
+                    'prefix'    => $product->getPrefix(),
+                    'webName'   => $product->getWebName()
+                ]
             ]);
         } else {
             $response =  new \Http\RedirectResponse($request->headers->get('referer') ?: '/');

@@ -70,46 +70,53 @@
 					var
 						$el = $(e.target),
 						data = $el.serializeArray()
-						;
+                    ;
 
-					$.post($el.attr('action'), data).done(function(response) {
-						function getFieldValue(fieldName) {
-							for (var i = 0; i < data.length; i++) {
-								if (data[i]['name'] == fieldName) {
-									return data[i]['value'];
-								}
-							}
+                    $el.find('[type="submit"]').attr('disabled', 'disabled');
 
-							return null;
-						}
+					$.post($el.attr('action'), data)
+                        .done(function(response) {
+                            function getFieldValue(fieldName) {
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i]['name'] == fieldName) {
+                                        return data[i]['value'];
+                                    }
+                                }
 
-						if ($el.hasClass('js-registerForm') && getFieldValue('subscribe') && typeof _gaq != 'undefined') {
-							_gaq.push(['_trackEvent', 'subscription', 'subscribe_registration', getFieldValue('register[email]')]);
-						}
+                                return null;
+                            }
 
-						if (response.data && response.data.link) {
-							window.location.href = response.data.link ? response.data.link : window.location.href;
+                            if ($el.hasClass('js-registerForm') && getFieldValue('subscribe') && typeof _gaq != 'undefined') {
+                                _gaq.push(['_trackEvent', 'subscription', 'subscribe_registration', getFieldValue('register[email]')]);
+                            }
 
-							return true;
-						}
+                            if (response.data && response.data.link) {
+                                window.location.href = response.data.link ? response.data.link : window.location.href;
 
-						$el.trigger('clearError');
+                                return true;
+                            }
 
-						var message = response.message;
-						if (!message && response.notice && response.notice.message) {
-							message = response.notice.message;
-						}
+                            $el.trigger('clearError');
 
-						if (message) {
-							$el.find('.js-message').html(message);
-						}
+                            var message = response.message;
+                            if (!message && response.notice && response.notice.message) {
+                                message = response.notice.message;
+                            }
 
-						response.form && response.form.error && $.each(response.form.error, function(i, error) {
-							console.warn(error);
+                            if (message) {
+                                $el.find('.js-message').html(message);
+                            }
 
-							$el.trigger('fieldError', [error]);
-						});
-					});
+                            response.form && response.form.error && $.each(response.form.error, function(i, error) {
+                                console.warn(error);
+
+                                $el.trigger('fieldError', [error]);
+                            });
+					    })
+                        .always(function() {
+                            $el.find('[type="submit"]').removeAttr('disabled');
+                        })
+                    ;
 
 					e.preventDefault();
 				})

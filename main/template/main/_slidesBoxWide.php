@@ -21,48 +21,48 @@
 
             <li class="slidesBox_i jsSlidesWideItem">
                 <a href="/catalog/jewel/pandora-1320">
-                    <img src="styles/mainpage/img/pandora/pandora-main-b.jpg" alt="" class="slidesBox_img">
+                    <img src="styles/mainpage/img/pandora/banner-pandora.jpg" alt="" class="slidesBox_img">
                 </a>
 
                 <ul class="slidesBox_items">
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Сверкающая пальма Pandora 791540CZ</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Крылья ангела Pandora 791737CZ</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-sverkayushchaya-palma-pandora-791540cz-2034000005701" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand1.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-krilya-angela-pandora-791737cz-2034001000576" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/p-1.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Pandora 791499SBQ</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Розовый ограненный кристалл Pandora 791729NBP</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-pandora-791499sbq-2034000005657" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand2.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-rozoviy-ogranenniy-kristall-pandora-791729nbp-2034001000491" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/p-2.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Все краски океана Pandora 791261MCZMX</div>
+                            <div class="slideItem_flt_i">Подвеска-шарм Королевское сердце Pandora 791739CZ</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-vse-kraski-okeana-pandora-791261mczmx-2034000005633" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand3.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/podveska-sharm-korolevskoe-serdtse-pandora-791739cz-2034001000590" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/p-3.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Pandora 791499SGQ</div>
+                            <div class="slideItem_flt_i">Серебряное кольцо с кубическим цирконием Волшебные перья Pandora 190960CZ-58</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-pandora-791499sgq-2034000005664" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand4.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/pandora-serebryanoe-koltso-s-kubicheskim-tsirkoniem-volshebnie-perya-pandora-190960cz-54-2034001001030-18" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/p-4.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Дружелюбный дельфин Pandora 791541CZ</div>
+                            <div class="slideItem_flt_i">Серьги-пуссеты из серебра с золотом Путь любви Pandora 290583CZ</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-drugelyubniy-delfin-pandora-791541cz-2034000005718" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pand5.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/sergi-pusseti-iz-serebra-s-zolotom-put-lyubvi-pandora-290583cz-2034001000231" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/p-5.png" alt="" class="slidesBox_items_img"></a>
                     </li>
                 </ul>
 

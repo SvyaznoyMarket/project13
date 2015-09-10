@@ -4,27 +4,47 @@
 		UserModel = ENTER.UserModel,
 		updateTimeoutId = false;
 
-	/* Увеличение и уменьшение товара AJAX */
-	$body.on('click', '.numerbox a', function(e){
+	/* Уменьшение товара AJAX */
+	$body.on('click', '.jsCartNumberBoxLess', function(e){
+		e.preventDefault();
+
+		// SITE-5957 В расширенной корзине при уменьшении кол-ва до нуля товар не должен удаляться
+		if (parseInt($(e.currentTarget).closest('.jsCartNumber').find('.jsCartNumberBoxInput').val(), 10) <= 1) {
+			return;
+		}
+
 		var $elem = $(this),
 			href = $elem.attr('href');
 
 		if (href != '') {
-			e.preventDefault();
 			$.ajax({
 				url: href,
 				success: function(data){
-					if (data.success && data.product) {
-						if (typeof data.product.quantity != 'undefined' && data.product.quantity > 0) {
-							UserModel.productQuantityUpdate(data.product.id, data.product.quantity);
-						} else {
-							UserModel.removeProductByID(data.product.id);
-						}
+					if (data.success) {
+						UserModel.cart().update(data.cart);
 					}
 				}
 			})
 		}
+	});
 
+	/* Увеличение товара AJAX */
+	$body.on('click', '.jsCartNumberBoxMore', function(e){
+		e.preventDefault();
+
+		var $elem = $(this),
+			href = $elem.attr('href');
+
+		if (href != '') {
+			$.ajax({
+				url: href,
+				success: function(data){
+					if (data.success) {
+						UserModel.cart().update(data.cart);
+					}
+				}
+			})
+		}
 	});
 
 	/* Удаление продукта AJAX */
@@ -36,9 +56,11 @@
 			$.ajax({
 				url: href,
 				success: function(data){
-					if (data.success && data.product) {
-						UserModel.removeProductByID(data.product.id);
-						$body.trigger('removeFromCart', [data.product]);
+					if (data.success) {
+						UserModel.cart().update(data.cart);
+						if (data.setProducts) {
+							$body.trigger('removeFromCart', [data.setProducts]);
+						}
 
 						try {
 							if (0 === data.cart.products.length) {
@@ -53,7 +75,7 @@
 	});
 
 	// Событие добавления в корзину SITE-5289
-	$body.on('addtocart', function ga_addtocart(event, data) {
+	$body.on('addtocart', function(event, data) {
 		try {
 			if (1 == data.cart.products.length) {
 				console.info('#js-cart-firstRecommendation');
@@ -70,10 +92,9 @@
 	});
 
 	// Ручное обновление количества продукта
-	$body.on('keydown', '.ajaquant', function(e){
+	$body.on('keydown', '.jsCartNumberBoxInput', function(e){
 		var $input = $(e.target),
-			keyCode = e.which,
-			$initialQuantity = $input.val();
+			keyCode = e.which;
 
 		/* http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes */
 		if (keyCode > 36 && keyCode < 41) return true;
@@ -87,20 +108,25 @@
 					return;
 				}
 
+				var productUi = $input.data('product-ui');
+
 				$.ajax({
-					url: $input.data('url'),
-					data: {
-						quantity: $input.val()
-					},
+					url: ENTER.utils.generateUrl('cart.product.setList', {
+						products: [{ui: $input.data('product-ui'), quantity: $input.val()}]
+					}),
 					beforeSend: function() {
 						$input.attr('disabled', true)
 					}
-				}).done(function(resp){
-					if (resp.success && resp.product) {
-						UserModel.productQuantityUpdate(resp.product.id, resp.product.quantity)
+				}).done(function(data){
+					if (data.success) {
+						UserModel.cart().update(data.cart);
+						// Используется далее в always
+						$input = $('.jsCartNumberBoxInput[data-product-ui="' + productUi + '"]');
 					} else {
-						$input.val($initialQuantity);
+						$input.val($input.prop('defaultValue'));
 					}
+
+					updateTimeoutId = false;
 				}).always(function(){
 					updateTimeoutId = false;
 					$input.attr('disabled', false).focus();
@@ -108,6 +134,16 @@
 			}, 500)
 		} else {
 			return false
+		}
+	});
+
+	// Если кол-во > 0 не было введено, то сбрасываем значение на изначальное
+	$body.on('blur', '.jsCartNumberBoxInput', function(e){
+		var $input = $(e.target);
+
+		if ($input.val() == '' || parseInt($input.val(), 10) == 0) {
+			updateTimeoutId = false;
+			$input.val($input.prop('defaultValue'));
 		}
 	});
 

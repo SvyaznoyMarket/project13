@@ -23,7 +23,7 @@ abstract class Layout extends \View\DefaultLayout {
 
         // content title
         if (!$this->getParam('title')) {
-            $this->setParam('title', $category->getName() . ($brand ? (' ' . $brand->getName()) : ''));
+            $this->setParam('title', $category->getName());
         }
 
         // breadcrumbs

@@ -13,7 +13,6 @@ $c->dataDir = $c->appDir . '/data';
 $c->logDir = realpath($c->appDir . '/../logs');
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
-$c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
 
 $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
@@ -28,9 +27,11 @@ $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 2592000; // 30 дней
 $c->session['cookie_domain'] = '.enter.ru';
 $c->session['compareKey']   = 'compare'; // ключ для массива сравнения
+$c->session['favouriteKey'] = 'favourite'; // ключ для масссива избранного
 
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
+$c->description = 'Enter – это все товары для жизни по интернет-ценам. В Enter вы можете купить что угодно, когда угодно и любым удобным для Вас способом!';
 
 $c->redirect301['enabled'] = true;
 $c->mobileRedirect['enabled'] = false;
@@ -213,7 +214,7 @@ $c->googleTagManager['containerId'] = 'GTM-P65PBR';
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
 $c->pickpoint['timeout'] = 60;
-$c->pickpoint['retryCount'] = 3;
+$c->pickpoint['retryCount'] = 2;
 $c->pickpoint['retryTimeout'] = [
     'default' => 0.04,
     'tiny'    => 0.04,
@@ -261,6 +262,8 @@ $c->partners['Adblender']['enabled'] = true;
 
 $c->partners['Giftery']['enabled'] = true;
 $c->partners['Giftery']['lowestPrice'] = 500;
+
+$c->partners['facebook']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 
@@ -354,13 +357,7 @@ $c->shopPhoto['url'] = [
 ];
 
 $c->banner['timeout'] = 5000;
-$c->banner['url'] = [
-    0 => '/4/1/230x302/',
-    1 => '/4/1/768x302/',
-    2 => '/4/1/920x320/',
-    3 => '/4/1/960x240/', // баннеры для новой главной (большой)
-    4 => '/4/1/220x50/', // баннеры для новой главной (маленький)
-];
+$c->banner['checkStatus'] = true;
 
 $c->cart['productLimit'] = 30;
 $c->cart['sessionName'] = 'cart';
@@ -394,7 +391,6 @@ $c->subscribe['cookieName'] = 'subscribed';
 $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {channelId:status}
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
 
-$c->mainMenu['requestMenu'] = true;
 $c->mainMenu['recommendationsEnabled'] = true;
 
 $c->newOrder = true;
@@ -442,19 +438,7 @@ $c->tchibo['rowHeight'] = 78;
 $c->tchibo['rowPadding'] = 0;
 $c->tchiboSlider['analytics'] = [
     'enabled' => true,
-    'use_page_visibility' => true,
-    'collection_view' => [
-        'enabled' => false,
-        'tchiboOnly' => true
-    ],
-    'collection_click' => [
-        'enabled' => true,
-        'tchiboOnly' => false
-    ],
-    'product_click' => [
-        'enabled' => true,
-        'tchiboOnly' => false
-    ],
+    'use_page_visibility' => true
 ];
 
 $c->abTest = [

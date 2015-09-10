@@ -91,17 +91,13 @@ class RecommendedAction {
 
             /** @var \Model\Product\Entity[] $productsById */
             $productsById = [];
-            \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionById($productIds, $region, function($data) use (&$productsById) {
-                foreach ((array)$data as $item) {
-                    if (empty($item['id'])) continue;
-
-                    $productsById[$item['id']] = new \Model\Product\Entity($item);
+            call_user_func(function() use(&$productsById, &$productIds) {
+                foreach ($productIds as $productId) {
+                    $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
                 }
             });
 
-            $client->execute(); // 2-й пакет запросов
-
-            \RepositoryManager::product()->enrichProductsFromScms($productsById, 'media label category');
+            \RepositoryManager::product()->prepareProductQueries($productsById, 'media label category');
             $client->execute();
 
             /**
@@ -177,14 +173,13 @@ class RecommendedAction {
                 }
 
                 $template = \App::abTest()->isNewProductPage() && 'viewed' != $sender['type'] ? 'product-page/blocks/slider' : 'product/__slider';
-//                $template = 'product/__slider';
+                if (\App::config()->lite['enabled']) $template = 'product/blocks/slider';
 
                 $recommendData[$type] = [
                     'success'   => true,
                     'content'   => $templating->render($template, [
                         'title'          => $this->getTitleByType($type),
                         'products'       => $products,
-                        'count'          => count($products),
                         'sender'         => $sender,
                         'sender2'        => (string)$request->get('sender2'),
                         'class'          => $cssClass,

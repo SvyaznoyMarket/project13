@@ -2,7 +2,7 @@
     <div class="footer_t clearfix">
         <div class="footer_cmpn_wrap">
             <ul class="footer_cmpn clearfix">
-                <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/about_company">О компании</a></li>
+                <li class="footer_cmpn_i"><a class="footer_cmpn_lk nowrap" href="/about_company">О компании</a></li>
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="http://my.enter.ru/feedback/">Обратная связь</a></li>
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/how_pay">Способы оплаты</a></li>
                 <? if (\App::config()->payment['creditEnabled']) : ?>
@@ -21,7 +21,6 @@
                     <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/terms">Условия продажи</a></li>
                     <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/media_info">Информация о СМИ</a></li>
                     <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/refurbished-sale">Уцененные товары оптом</a></li>
-                    <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/adv">Рекламные возможности</a></li>
                 </ul>
 
                 <p class="footer_inf_tx">Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.</p>

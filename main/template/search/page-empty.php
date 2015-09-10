@@ -14,7 +14,6 @@ $helper = new \Helper\TemplateHelper();
         'type'           => 'search',
         'title'          => 'Возможно, вам подойдут',
         'products'       => [],
-        'count'          => null,
         'limit'          => \App::config()->product['itemsInSlider'],
         'page'           => 1,
         'url'            => $page->url('search.recommended', ['q' => $searchQuery]),

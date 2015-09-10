@@ -23,15 +23,19 @@ class BasicRecommendedAction {
      * @throws  \Exception
      */
     protected function getProducts($ids, $senderName) {
-        if (!(bool)$ids) {
+        if (!$ids) {
             throw new \Exception('Рекомендации не получены');
         }
 
-        $products = \RepositoryManager::product()->getCollectionById($ids);
+        /** @var \Model\Product\Entity[] $products */
+        $products = array_map(function($productId) {
+            return new \Model\Product\Entity(['id' => $productId]);
+        }, $ids);
+
+        \RepositoryManager::product()->prepareProductQueries($products);
+        \App::coreClientV2()->execute();
 
         foreach ($products as $i => $product) {
-            /* @var product Model\Product\Entity */
-
             if (!$product->getIsBuyable())  {
                 unset($products[$i]);
                 continue;
@@ -55,7 +59,7 @@ class BasicRecommendedAction {
 
         }
 
-        if (!(bool)$products) {
+        if (!$products) {
             throw new \Exception('Нет товаров');
         }
 
@@ -63,7 +67,7 @@ class BasicRecommendedAction {
     }
 
     /**
-     * @param \Model\Product\Entity     $product
+     * @param \Model\Product\Entity|\Model\Cart\Product\Entity     $product
      * @param \Http\Request             $request
      * @param string                    $method
      * @return \Model\Product\Entity[]  $products
@@ -74,7 +78,7 @@ class BasicRecommendedAction {
         $this->setEngine('retailrocket');
 
         $client = \App::retailrocketClient();
-        $productId = $product ? $product->getId() : null;
+        $productId = $product ? $product->id : null;
         $ids = $client->query('Recomendation/' . $method, $productId);
 
         return $ids;

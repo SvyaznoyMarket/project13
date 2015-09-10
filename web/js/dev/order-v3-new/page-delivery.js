@@ -11,7 +11,6 @@
         $body = $(body),
         $orderContent = $('#js-order-content'),
         comment = '',
-        region = $('.jsRegion').data('value'),
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -42,8 +41,8 @@
         changeInterval = function changeIntervalF(block_name, interval) {
             sendChanges('changeInterval', {'block_name': block_name, 'interval': interval})
         },
-        changeProductQuantity = function changeProductQuantityF(block_name, id, quantity) {
-            sendChanges('changeProductQuantity', {'block_name': block_name, 'id': id, 'quantity': quantity})
+        changeProductQuantity = function changeProductQuantityF(block_name, id, ui, quantity) {
+            sendChanges('changeProductQuantity', {'block_name': block_name, 'id': id, 'ui': ui, 'quantity': quantity})
         },
         changePaymentMethod = function changePaymentMethodF(block_name, method, isActive) {
             var params = {'block_name': block_name};
@@ -151,7 +150,7 @@
 
                 $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
 
-                $orderContent.empty().html($(data.result.page).find('#js-order-content').html());
+                $orderContent.empty().html(data.result.page);
 				if ($orderContent.find('.jsAddressRootNode').length > 0) {
 					$.each($orderContent.find('.jsAddressRootNode'), function(i,val){
 						ko.applyBindings(ENTER.OrderV3.address, val);
@@ -359,14 +358,14 @@
     $orderContent.on('click', '.jsChangeProductQuantity', function(e){
         var $this = $(this),
             quantity = $this.parent().find('input').val();
-        changeProductQuantity($this.data('block_name'), $this.data('id'), quantity);
+        changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), quantity);
         e.preventDefault();
     });
 
     // клик по ссылке "Удалить" у каунтера
     $orderContent.on('click', '.jsDeleteProduct', function(e){
         var $this = $(this);
-        changeProductQuantity($this.data('block_name'), $this.data('id'), 0);
+        changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), 0);
         e.preventDefault();
     });
 
@@ -430,7 +429,7 @@
 
     // клик по "Я ознакомлен и согласен..."
     $orderContent.on('click', '.jsAcceptTerms', function(){
-        $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
+        if (!$('.jsAcceptAgreement').is(':checked')) $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
     });
 
 	/* Оферта */
@@ -442,9 +441,9 @@
 			if (window.location.host != 'www.enter.ru') href = href.replace(/^.*enter.ru/, ''); /* для работы на demo-серверах */
 			console.log('NEW href', href);
 			$.ajax({
-				url: href,
+				url: ENTER.utils.setURLParam('ajax', 1, href),
 				success: function(data) {
-					$('.orderOferta_tl:first').html($(data).find('.entry-content').html());
+					$('.orderOferta_tl:first').html(data.content || '');
 					showOfertaPopup();
 				}
 			})
@@ -468,10 +467,10 @@
 			block_name = $this.closest('.orderRow').data('block_name'),
 			method = $this.val();
         if (method == 'by_online_credit') {
-            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Кредит']);
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Кредит']);
             $body.trigger('trackGoogleEvent', ['Credit', 'Выбор опции', 'Оформление заказа']);
         }
-        if (method == 'by_online') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Онлайн-оплата']);
+        if (method == 'by_online') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Онлайн-оплата']);
 		changePaymentMethod(block_name, method, 'true')
 	});
 
@@ -481,7 +480,7 @@
 			selectedMethod = $this.find(':selected').val();
 		changePaymentMethod(block_name, selectedMethod, 'true');
         console.log('[G changed', e);
-        if (selectedMethod == 'by_credit_card') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
+        if (selectedMethod == 'by_credit_card') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
 		e.preventDefault();
 	});
 

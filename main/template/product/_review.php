@@ -9,7 +9,7 @@ if (!$review->isEnterReview()): ?>
             <?= $page->render('product/_starsFive', ['score' => $review->scoreStar, 'emptyText' => 'нет оценки']) ?>
             <h3 class="bReview__eAuthtor-name"><?= empty($review->author) ? $review->sourceName : $review->author ?></h3>
             <span class="bReview__eAuthtor-date">
-                <?= \Util\Date::strftimeRu('%e %B2 %G', $review->date->format('U')) ?>
+                <?= \Util\Date::strftimeRu('%e %B2 %Y', $review->date->format('U')) ?>
             </span>
         </div>
 

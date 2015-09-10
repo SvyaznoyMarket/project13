@@ -49,8 +49,7 @@
 
             <!-- Header -->
             <div id="header" class="clearfix">
-                <a id="topLogo" href="/">Enter Связной</a>
-                <?= $page->slotMainMenu() ?>
+                <a href="/">Enter Связной</a>
             </div>
             <!-- /Header -->
 

@@ -17,7 +17,6 @@
  * @var $isUserSubscribedToEmailActions boolean
  * @var $actionChannelName string
  * @var $kitProducts            array   Продукты кита
- * @var $useLens                bool    Показывать лупу
  * @var $reviewsData            array   Данные отзывов
  * @var $breadcrumbs            array   Хлебные крошки
  * @var $trustfactors           array   Трастфакторы
@@ -29,6 +28,8 @@
  */
 
 $helper = \App::helper();
+
+if (!isset($additionalData)) $additionalData = [];
 
 $isProductAvailable = $product->isAvailable();
 if (\App::config()->preview) $isProductAvailable = true;
@@ -89,7 +90,6 @@ $buySender2 = $request->get('sender2');
                 'type'           => 'alsoBought',
                 'title'          => 'С этим товаром покупают',
                 'products'       => [],
-                'count'          => null,
                 'limit'          => \App::config()->product['itemsInSlider'],
                 'page'           => 1,
 //                'additionalData' => $additionalData,
@@ -156,7 +156,6 @@ $buySender2 = $request->get('sender2');
                 'title'          => null,
                 'products'       => array_values($accessories),
                 'categories'     => $accessoryCategory,
-                'count'          => count($product->getAccessoryId()),
                 'limit'          => (bool)$accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
                 'page'           => 1,
                 //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
@@ -192,7 +191,6 @@ $buySender2 = $request->get('sender2');
                 'type'     => 'similar',
                 'title'    => 'Похожие товары',
                 'products' => [],
-                'count'    => null,
                 'limit'    => \App::config()->product['itemsInSlider'],
                 'page'     => 1,
                 'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
@@ -213,7 +211,6 @@ $buySender2 = $request->get('sender2');
                 'type'      => 'viewed',
                 'title'     => 'Вы смотрели',
                 'products'  => [],
-                'count'     => null,
                 'limit'     => \App::config()->product['itemsInSlider'],
                 'page'      => 1,
                 'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),

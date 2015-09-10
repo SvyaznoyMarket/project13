@@ -15,35 +15,38 @@ class NewAction extends OrderV3 {
      * @return \Http\Response
      */
     public function execute(\Http\Request $request) {
+        $response = parent::execute($request);
+        if ($response) {
+            return $response;
+        }
 
         $page = new \View\OrderV3\NewPage();
         $post = null;
 
         try {
             if ($request->isMethod('GET')) {
+                $this->cart->update([], true);
                 $this->pushEvent(['step' => 1]);
             }
 
             if ($request->isMethod('POST')) {
+
+                $errors = $this->validateInput($request);
+                if ($errors['errors']) {
+                    \App::session()->flash($errors);
+                    return new RedirectResponse(\App::router()->generate('orderV3'));
+                }
+
                 $post = $request->request->all();
-                $shop =  null;
-                if (method_exists($this->cart, 'getShop')) $shop = $this->cart->getShop();
-                $splitResult = (new DeliveryAction())->getSplit(null, $shop, @$post['user_info']);
+                $splitResult = (new DeliveryAction())->getSplit(null, @$post['user_info']);
                 if ($splitResult->errors) $this->session->flash($splitResult->errors);
 
-                switch ($request->attributes->get('route')) {
-                    case 'orderV3.one-click': return new RedirectResponse(\App::router()->generate('orderV3.delivery.one-click'));
-                    default: return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
-                }
+                return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
             }
 
             $this->getLastOrderData();
 
             $this->session->remove($this->splitSessionKey);
-
-            // testing purpose only
-            if (\App::config()->debug) (new DeliveryAction())->getSplit();
-
         } catch (ValidateException $e) {
             $page->setParam('error', $e->getMessage());
         } catch (\Curl\Exception $e) {
@@ -66,13 +69,12 @@ class NewAction extends OrderV3 {
             return new \Http\Response($page->show(), 500);
         }
 
-        $cart = \App::user()->getCart();
-        $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection(['product_list' => array_map(function(\Model\Cart\Product\Entity $v) { return ['id' => $v->getId(), 'quantity' => $v->getQuantity()]; }, $cart->getProducts())]);
+        $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection(['product_list' => array_map(function(\Model\Cart\Product\Entity $cartProduct) { return ['id' => $cartProduct->id, 'quantity' => $cartProduct->quantity]; }, $this->cart->getProductsById())]);
 
         $page->setParam('user', $this->user);
         $page->setParam('previousPost', $post);
         $page->setParam('bonusCards', $bonusCards);
-        $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner($cart));
+        $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner());
 
         return new \Http\Response($page->show());
     }
@@ -100,14 +102,40 @@ class NewAction extends OrderV3 {
     }
 
     /** Есть ли товары не от Enter?
-     * @param \Session\Cart $cart
      * @return bool
      */
-    private function hasProductsOnlyFromPartner(\Session\Cart $cart) {
-        $ids = array_keys($cart->getProductData());
-        $products = (bool)$ids ? \RepositoryManager::product()->getCollectionById($ids, \App::user()->getRegion(), false) : [];
-        $productsFromPartner = array_filter($products, function (\Model\Product\Entity $p) { return $p->isOnlyFromPartner() ; });
+    private function hasProductsOnlyFromPartner() {
+        foreach ($this->cart->getProductsById() as $cartProduct) {
+            if ($cartProduct->isOnlyFromPartner) {
+                return true;
+            }
+        }
 
-        return (bool)$productsFromPartner;
+        return false;
+    }
+
+    private function validateInput(\Http\Request $request){
+
+        $result = ['errors' => [], 'phone' => '', 'email' => ''];
+
+        $post = $request->request->all();
+        if (isset($post['user_info']['phone'])) {
+            $result['phone'] = $post['user_info']['phone'];
+            $phone = preg_replace('/^\+7/', '8', $post['user_info']['phone']);
+            $phone = preg_replace('/[\s\(\)-]/', '', $phone);
+            if (strlen($phone) != 11) $result['errors'][] = 'Некорректный номер телефона';
+        } else {
+            $result['errors'][] = 'Не указан номер телефона';
+        }
+        if (isset($post['user_info']['email'])) {
+            $result['email'] = $post['user_info']['email'];
+            if (!filter_var($post['user_info']['email'], FILTER_VALIDATE_EMAIL)) {
+                $result['errors'][] = 'Некорректный email';
+            }
+        } else {
+            $result['errors'][] = 'Не указан email';
+        }
+
+        return $result;
     }
 }

@@ -22,7 +22,7 @@ class Hubrus {
 
     /** Возвращает div с данными о продуктах
      * @param string $propertyName
-     * @param \Model\Product\Entity[]|null $products
+     * @param \Model\Product\Entity[]|\Model\Cart\Product\Entity[|null $products
      * @return string
      */
     public static function addHubrusData($propertyName, $products) {
@@ -30,21 +30,25 @@ class Hubrus {
         if (empty($products)) return '';
 
         $json = \App::helper()->json(array_values(array_map(function($product) {
-            return $product instanceof \Model\Product\Entity ? self::getProductInfo($product) : self::getProductInfoFromArray($product);
+            if ($product instanceof \Model\Product\Entity) {
+                return self::getProductInfo($product);
+            } else if ($product instanceof \Model\Cart\Product\Entity) {
+                return self::getProductInfoFromCartProduct($product);
+            }
         }, $products )));
 
         return sprintf('<div class="hubrusData" data-property="%s" data-value="%s"></div>', $propertyName, $json);
     }
 
     /** Возвращает информацию по продукту
-     * @param $arr
+     * @param $cartProduct
      * @return array
      */
-    public static function getProductInfoFromArray($arr) {
+    private static function getProductInfoFromCartProduct(\Model\Cart\Product\Entity $cartProduct) {
         $info = [];
-        if (isset($arr['id'])) $info['id'] = $arr['id'];
-        if (isset($arr['rootCategory']['id'])) $info['category'] = $arr['rootCategory']['id'];
-        if (isset($arr['price'])) $info['price'] = $arr['price'];
+        if ($cartProduct->id !== null) $info['id'] = $cartProduct->id;
+        if ($cartProduct->rootCategory && $cartProduct->rootCategory->id !== null) $info['category'] = $cartProduct->rootCategory->id;
+        if ($cartProduct->price !== null) $info['price'] = $cartProduct->price;
         return $info;
     }
 
@@ -52,7 +56,7 @@ class Hubrus {
      * @param $product
      * @return array
      */
-    public static function getProductInfo($product) {
+    private static function getProductInfo($product) {
         if ($product instanceof \Model\Product\Entity) {
             return [
                 'id'        => $product->getId(),

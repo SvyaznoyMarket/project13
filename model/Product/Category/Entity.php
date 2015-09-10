@@ -7,6 +7,8 @@ use Model\Media;
 class Entity extends BasicEntity {
     use \Model\MediaHostTrait;
 
+    /** @var bool Является ли категория главной для товара */
+    public $isMain = false;
     /** @var bool|null */
     protected $isFurniture;
     /** @var string|null */
@@ -29,6 +31,10 @@ class Entity extends BasicEntity {
     protected $priceChangePercentTrigger;
     /** @var bool|null */
     protected $priceChangeTriggerEnabled;
+    /** @var string|null */
+    protected $image;
+    /** @var string|null */
+    protected $image480x480;
     /** @var Media[] */
     public $medias = [];
     /** @var array */
@@ -37,35 +43,38 @@ class Entity extends BasicEntity {
     public $grid = [];
     /** @var Entity|null */
     protected $parent;
-    /** @var Entity|null */
-    protected $root;
     /** @var Entity[] */
     protected $ancestor = [];
     /** @var Entity[] */
     protected $child = [];
 
     public function __construct(array $data = []) {
+        $templateHelper = new \Helper\TemplateHelper();
+        
         $data['price_change_trigger_enabled'] = true;
         $data['price_change_percent_trigger'] = 90;
 
         if (isset($data['id'])) $this->setId($data['id']);
+        if (isset($data['core_id'])) $this->setId($data['core_id']); // Берётся из методов scms
         if (isset($data['ui'])) $this->setUi($data['ui']); // Берётся из http://api.enter.ru/v2/product/get (из элемента "category")
         if (isset($data['uid'])) $this->setUi($data['uid']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets и http://search.enter.ru/category/tree
 
         if (isset($data['parent_id'])) $this->setParentId($data['parent_id']); // Берётся из http://search.enter.ru/category/tree (из элемента "children") и http://api.enter.ru/v2/product/get (из элемента "category")
         if (isset($data['parent']['id'])) $this->setParentId($data['parent']['id']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets
+        if (isset($data['parent']['core_id'])) $this->setParentId($data['parent']['core_id']); // Берётся из https://scms.enter.ru/product/get-description/v1, https://scms.enter.ru/category/gets
 
+        if (isset($data['main'])) $this->isMain = (bool)$data['main'];
         if (isset($data['is_furniture'])) $this->setIsFurniture($data['is_furniture']);
         if (isset($data['name'])) $this->setName($data['name']);
 
         if (isset($data['link'])) $this->setLink($data['link']); // Берётся из http://search.enter.ru/category/tree (из элемента "children") и http://api.enter.ru/v2/product/get (из элемента "category")
-        if (isset($data['url'])) $this->setLink($data['url']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets
+        if (isset($data['url'])) $this->setLink($data['url']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets, https://scms.enter.ru/product/get-description и т.п.
 
         if (isset($data['token'])) $this->setToken($data['token']); // Берётся из http://search.enter.ru/category/tree (из элемента "children") и http://api.enter.ru/v2/product/get (из элемента "category")
-        if (isset($data['slug'])) $this->setToken($data['slug']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets
+        if (isset($data['slug'])) $this->setToken($data['slug']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets, https://scms.enter.ru/product/get-description и т.п.
 
-        if (isset($data['media_image'])) $this->setImage($data['media_image']);
-        if (isset($data['media_image_480x480'])) $this->image480x480 = $data['media_image_480x480'];
+        if (isset($data['media_image'])) $this->image = $data['media_image']; // Возвращается методом http://search.enter.ru/category/tree
+        if (isset($data['media_image_480x480'])) $this->image480x480 = $data['media_image_480x480']; // Возвращается методом http://search.enter.ru/category/tree
 
         // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets
         if (isset($data['medias']) && is_array($data['medias'])) {
@@ -79,9 +88,9 @@ class Entity extends BasicEntity {
         if (isset($data['product_view_id'])) $this->setProductView($data['product_view_id']);
         if (isset($data['level'])) $this->setLevel($data['level']);
 
-        if (isset($data['title'])) $this->setSeoTitle($data['title']);
-        if (isset($data['meta_keywords'])) $this->setSeoKeywords($data['meta_keywords']);
-        if (isset($data['meta_description'])) $this->setSeoDescription($data['meta_description']);
+        if (isset($data['title'])) $this->setSeoTitle($templateHelper->unescape($data['title']));
+        if (isset($data['meta_keywords'])) $this->setSeoKeywords($templateHelper->unescape($data['meta_keywords']));
+        if (isset($data['meta_description'])) $this->setSeoDescription($templateHelper->unescape($data['meta_description']));
         if (isset($data['content'])) $this->setSeoContent($data['content']);
 
         if (isset($data['property']['seo']['hotlinks'])) {
@@ -327,7 +336,6 @@ class Entity extends BasicEntity {
             if ($source) {
                 return $source->url;
             }
-
         }
     }
 
@@ -350,6 +358,8 @@ class Entity extends BasicEntity {
 
         return null;
     }
+
+    // TODO отрефакторить методы для получения родительских категорий
 
     public function setParent(Entity $parent = null) {
         $this->parent = $parent;
@@ -378,7 +388,7 @@ class Entity extends BasicEntity {
      * @return Entity
      */
     public function getRoot() {
-        return $this->root ?: reset($this->ancestor);
+        return reset($this->ancestor);
     }
 
     public function addAncestor(Entity $ancestor) {

@@ -5,6 +5,13 @@ namespace View\OrderV3;
 class NewPage extends Layout {
     public function prepare() {
         $this->setTitle('Оформление заказа - Enter');
+        $errors = \App::session()->flash();
+        if ($errors) {
+            $this->setParam('error', $errors['errors']);
+            $this->setParam('email', $errors['email']);
+            $this->setParam('phone', $errors['phone']);
+        }
+
     }
 
     public function slotGoogleRemarketingJS($tagParams = []) {
@@ -27,8 +34,7 @@ class NewPage extends Layout {
     {
         $html = parent::slotHubrusJS();
         if (!empty($html)) {
-            $products = \App::user()->getCart()->getProductData();
-            return $html . \View\Partners\Hubrus::addHubrusData('cart_items', $products);
+            return $html . \View\Partners\Hubrus::addHubrusData('cart_items', \App::user()->getCart()->getProductsById());
         } else {
             return '';
         }

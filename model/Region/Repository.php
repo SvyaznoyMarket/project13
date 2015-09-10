@@ -29,10 +29,10 @@ class Repository {
     public function getEntityById($id) {
         //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $client = clone $this->client;
+        $client = \App::scmsClient();
 
         $entity = null;
-        $client->addQuery('geo/get',
+        $client->addQuery('api/geo/get-town',
             [
                 'id' => [$id],
             ],
@@ -60,33 +60,7 @@ class Repository {
     public function prepareEntityById($id, $callback) {
         //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('geo/get', array('id' => array($id)), [], $callback);
-    }
-
-    /**
-     * @param string $token
-     * @return Entity|null
-     */
-    public function getEntityByToken($token) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
-
-        $client = clone $this->client;
-
-        $entity = null;
-        $client->addQuery('geo/get',
-            [
-                'slug' => [$token],
-            ],
-            [],
-            function($data) use(&$entity) {
-                $data = reset($data);
-                $entity = $data ? new Entity($data) : null;
-            }
-        );
-
-        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
-
-        return $entity;
+        \App::scmsClient()->addQuery('api/geo/get-town', ['id' => [$id]], [], $callback);
     }
 
     /**

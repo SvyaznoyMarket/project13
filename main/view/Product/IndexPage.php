@@ -115,7 +115,7 @@ class IndexPage extends \View\DefaultLayout {
         } elseif ($this->product->getTagline()) {
             $description = $this->product->getTagline();
         } else {
-            $description = 'Enter - новый способ покупать. Любой из ' . number_format(\App::config()->product['totalCount'], 0, ',', ' ') . ' товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.';
+            $description = \App::config()->description;
         }
 
         return "<meta property=\"og:title\" content=\"" . $this->escape($this->product->getName()) . "\"/>\r\n" .
@@ -161,7 +161,7 @@ class IndexPage extends \View\DefaultLayout {
             'url'       => \App::router()->generate('product', ['productPath' => $this->product->getToken()], true),
             'picture'   => $this->product->getMainImageUrl('product_120'),
             'name'      => $this->product->getName(),
-            'category'  => $this->product->getLastCategory() ? $this->product->getLastCategory()->getId() : null
+            'category'  => $this->product->getParentCategory() ? $this->product->getParentCategory()->getId() : null
         ];
         return '<!-- AdvMaker -->
             <script type="text/javascript" defer="defer">
@@ -200,7 +200,7 @@ class IndexPage extends \View\DefaultLayout {
         $data = [
             'productId' => $this->product ? (string)$this->product->getId() : '',
             'productPrice' => $this->product ? (string)$this->product->getPrice() : '',
-            'categoryId' => $this->product && $this->product->getLastCategory() ? (string)$this->product->getLastCategory()->getId() : '',
+            'categoryId' => $this->product && $this->product->getParentCategory() ? (string)$this->product->getParentCategory()->getId() : '',
         ];
 
         return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';

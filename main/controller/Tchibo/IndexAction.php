@@ -76,31 +76,26 @@ class IndexAction {
             }
         });
 
-        /** @var \Model\Product\Entity[] $products */
-        $products = [];
-        $medias = [];
-        $productsIds = [];
+        $productIds = [];
         // перевариваем данные изображений
         // используя айдишники товаров из секции image.products, получим мини-карточки товаров для баннере
         foreach ($promo->getImage() as $image) {
-            $productsIds = array_merge($productsIds, $image->getProducts());
+            $productIds = array_merge($productIds, $image->getProducts());
         }
-        $productsIds = array_unique($productsIds);
-        if ($productsIds) {
-            \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
-                foreach ($data as $item) {
-                    if (!isset($item['id'])) continue;
-                    $products[ $item['id'] ] = new \Model\Product\Entity($item);
-                }
-            });
+        $productIds = array_unique($productIds);
 
-            \RepositoryManager::product()->prepareProductsMediasByIds($productsIds, $medias);
+        /** @var \Model\Product\Entity[] $products */
+        $products = [];
+        foreach ($productIds as $productId) {
+            $products[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
+
+        // Необходимо запрашивать модели товаров, т.к. option моделей используется в методе
+        // \Model\Product\Entity::hasAvailableModels, который вызывается ниже
+        \RepositoryManager::product()->prepareProductQueries($products, 'model media label');
 
         // выполнение 2-го пакета запросов в ядро
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
-
-        \RepositoryManager::product()->setMediasForProducts($products, $medias);
 
         // перевариваем данные изображений для слайдера в $slideData
         foreach ($promo->getImage() as $image) {

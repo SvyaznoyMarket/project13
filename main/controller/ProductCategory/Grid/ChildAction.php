@@ -72,25 +72,13 @@ class ChildAction {
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        // SITE-5513
-        foreach (array_chunk($productsByUi, 10, true) as $uisInChunk) {
-            \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionByUi(array_values($uisInChunk), \App::user()->getRegion(), function($data) use (&$productsByUi, &$uisInChunk) {
-                foreach ($data as $item) {
-                    $key = array_search($item['ui'], $productsByUi, true);
-                    if (!isset($productsByUi[$key])) {
-                        continue;
-                    }
-                    $productsByUi[$key] = new \Model\Product\Entity($item);
-                }
-            });
-        }
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $productsByUi = array_map(function($productUi) { return new \Model\Product\Entity(['ui' => $productUi]); }, $productsByUi);
 
-        $productsByUi = array_filter($productsByUi, function($product) {
-            return $product instanceof \Model\Product\Entity;
-        });
+        // Необходимо запрашивать модели товаров, т.к. option моделей используются в методе
+        // \Model\Product\Entity::hasAvailableModels, который вызывается в \Model\Product\Entity::isSoldOut, который
+        // вызывается в main/template/grid/__show.php
+        \RepositoryManager::product()->prepareProductQueries($productsByUi, 'model media label brand category');
 
-        \RepositoryManager::product()->enrichProductsFromScms($productsByUi, 'media label brand category');
         \App::coreClientV2()->execute();
 
         if (

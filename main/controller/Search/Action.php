@@ -174,12 +174,10 @@ class Action {
         // вид товаров
         $productView = $request->get('view', $selectedCategory ? $selectedCategory->getProductView() : \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT);
 
-        // товары
-        $productRepository = \RepositoryManager::product()->useV3()->withoutModels();
+        /** @var \Model\Product\Entity[] $products */
+        $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $result['data']);
 
-        $products = $productRepository->getCollectionById($result['data']);
-
-        $productRepository->enrichProductsFromScms($products, 'media label brand category');
+        \RepositoryManager::product()->prepareProductQueries($products, 'media label brand category');
 
         $bannerPlaceholder = [];
         \App::scmsClient()->addQuery('category/get/v1', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId(), 'load_inactive' => 1], [], function($data) use (&$bannerPlaceholder) {
@@ -192,6 +190,8 @@ class Action {
         });
 
         \App::scmsClient()->execute();
+
+        \RepositoryManager::review()->addScores($products);
 
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);
@@ -309,8 +309,7 @@ class Action {
             'products' => []
         ];
 
-        // Локальные переменные
-        $productsIds = [];
+        /** @var \Model\Product\Entity[] $products */
         $products = [];
 
         // Параметры для автокомплита (забираем категории)
@@ -341,8 +340,12 @@ class Action {
             \App::logger()->error($e);
         });
 
-        \App::coreClientV2()->addQuery('listing/list', $params2, [], function ($result) use(&$productsIds){
-            $productsIds = (array)@$result['list'];
+        \App::searchClient()->addQuery('v2/listing/list', $params2, [], function ($result) use(&$products){
+            if (isset($result['list']) && is_array($result['list'])) {
+                $products = array_map(function($productId) {
+                    return new \Model\Product\Entity(['id' => $productId]);
+                }, $result['list']);
+            }
         }, function ($e) {
             \App::exception()->remove($e);
             \App::logger()->error($e);
@@ -350,9 +353,8 @@ class Action {
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
-        if ($productsIds) {
-            $products = \RepositoryManager::product()->useV3()->withoutModels()->getCollectionById($productsIds, null, false);
-        }
+        \RepositoryManager::product()->prepareProductQueries($products, 'media');
+        \App::coreClientV2()->execute();
 
         foreach ($products as $product) {
             $data['products'][] = [

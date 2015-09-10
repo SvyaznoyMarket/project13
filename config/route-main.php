@@ -17,17 +17,6 @@ return [
         'action'  => ['Ssi\UserConfigAction', 'execute'],
     ],
 
-    'category.mainMenu' => [ // TODO: переименовать в mainMenu
-        'pattern' => '/category/main_menu',
-        'action'  => ['ProductCategory\MainMenuAction', 'execute'],
-    ],
-    'category.mainMenu.region' => [ // TODO: переименовать в mainMenu.region
-        'pattern' => '/category/main_menu/{regionId}',
-        'action'  => ['ProductCategory\MainMenuAction', 'execute'],
-        'require' => [
-            'regionId' => '\d+',
-        ],
-    ],
     'mainMenu.recommendation' => [
         'pattern' => '/main_menu/recommendations/{rootCategoryId}/{childIds}',
         'action'  => ['MainMenu\RecommendedAction', 'execute'],
@@ -57,11 +46,6 @@ return [
         'action'  => ['Search\RecommendedAction', 'execute'],
     ],
 
-    // инфо пользователя
-    'user.info' => [
-        'pattern' => '/ajax/user/info',
-        'action'  => ['User\InfoAction', 'execute'],
-    ],
     /*// Статус подписки пользователя, получить
     'user.subscribe.getStatus' => [
         'pattern' => '/ajax/subscribe/status/get',
@@ -297,16 +281,6 @@ return [
         'action'  => ['Product\DeliveryAction', 'execute'],
         'method'  => ['POST'],
     ],
-    'product.stock' => [
-        'pattern' => '/product/{productPath}/stock',
-        'action'  => ['Product\StockAction', 'execute'],
-        'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
-    ],
-    'product.comment' => [
-        'pattern' => '/product/{productPath}/comments',
-        'action'  => ['Product\CommentAction', 'execute'],
-        'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
-    ],
     'product.set' => [
         'pattern' => '/products/set/{productBarcodes}',
         'action'  => ['Product\SetAction', 'execute'],
@@ -376,21 +350,19 @@ return [
         'pattern' => '/cart',
         'action'  => ['Cart\IndexAction', 'execute'],
     ],
-    'cart.info' => [
-        'pattern' => '/cart/info',
-        'action'  => ['Cart\InfoAction', 'execute'],
-    ],
     // очистка корзины
     'cart.clear' => [
         'pattern' => '/cart/clear',
         'action'  => ['Cart\ClearAction', 'execute'],
     ],
     // добавление товара в корзину
-    'cart.product.set' => [ // TODO cart.product.set изменмить Url
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
+    'cart.product.set' => [
         'pattern' => '/cart/add-product/{productId}',
         'action'  => ['Cart\ProductAction', 'set'],
     ],
     // удаление товара из корзины
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'cart.product.delete' => [
         'pattern' => '/cart/delete-product/{productId}',
         'action'  => ['Cart\ProductAction', 'delete'],
@@ -401,37 +373,10 @@ return [
         'action'  => ['Cart\ProductAction', 'setList'],
     ],
     // добавление товара в корзину
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'cart.oneClick.product.set' => [
         'pattern' => '/cart/one-click/add-product/{productId}',
         'action'  => ['Cart\OneClick\ProductAction', 'set'],
-    ],
-    // удаление товара из корзины
-    'cart.oneClick.product.delete' => [
-        'pattern' => '/cart/one-click/delete-product/{productId}',
-        'action'  => ['Cart\OneClick\ProductAction', 'delete'],
-    ],
-    // изменение товара в корзине
-    'cart.oneClick.product.change' => [
-        'pattern' => '/cart/one-click/change-product/{productId}',
-        'action'  => ['Cart\OneClick\ProductAction', 'change'],
-    ],
-    // добавление списка товаров в корзину
-    'cart.oneClick.product.setList' => [
-        'pattern' => '/cart/one-click/set-products',
-        'action'  => ['Cart\OneClick\ProductAction', 'setList'],
-    ],
-
-    'cart.certificate.apply' => [
-        'pattern' => '/cart/f1-certificate',
-        'action'  => ['Cart\CertificateAction', 'apply'],
-    ],
-    'cart.certificate.delete' => [
-        'pattern' => '/cart/f1-certificate/delete',
-        'action'  => ['Cart\CertificateAction', 'delete'],
-    ],
-    'cart.sum' => [
-        'pattern' => '/cart/sum',
-        'action'  => ['Cart\SumAction', 'execute'],
     ],
     'cart.recommended' => [
         'pattern' => '/cart/recommended',
@@ -444,6 +389,7 @@ return [
         'action'  => ['OrderV3\NewAction', 'execute'],
     ],
     // оформление заказа: 1-й шаг - один клик
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'orderV3.one-click' => [
         'pattern' => '/order/new/one-click',
         'action'  => ['OrderV3\NewAction', 'execute'],
@@ -454,6 +400,7 @@ return [
         'action'  => ['OrderV3\DeliveryAction', 'execute'],
     ],
     // оформление заказа: 2-й шаг - выбор доставки
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'orderV3.delivery.one-click' => [
         'pattern' => '/order/delivery/one-click',
         'action'  => ['OrderV3\DeliveryAction', 'execute'],
@@ -520,13 +467,14 @@ return [
     ],
 
     // заказ
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'order.oneClick.new' => [
         'pattern' => '/orders/one-click/new',
-        'action'  => ['Order\OneClick\NewAction', 'execute'],
+        'action'  => ['OrderV3\NewAction', 'execute'],
     ],
     'order' => [
         'pattern' => '/orders/new',
-        'action'  => ['Order\NewAction', 'execute'],
+        'action'  => ['OrderV3\NewAction', 'execute'],
     ],
     'order.complete' => [
         'pattern' => '/orders/complete',
@@ -690,20 +638,6 @@ return [
     'debug.session' => [
         'pattern' => '/debug/session',
         'action'  => ['DebugAction', 'session'],
-    ],
-
-    //cron
-    'cron-index' => [
-        'pattern' => '/cron',
-        'action'  => ['Cron\IndexAction', 'execute'],
-    ],
-    'cron-task' => [
-        'pattern' => '/cron/{task}',
-        'action'  => ['Cron\Action', 'execute'],
-    ],
-    'cron-task-links' => [
-        'pattern' => '/cron/{task}/links',
-        'action'  => ['Cron\LinksAction', 'execute'],
     ],
 
     // enterprize
@@ -962,10 +896,11 @@ return [
         'action'  => ['Compare\CompareAction', 'clear'],
     ],
 
-    // Внешние ссылки на карточку товара
-    'product.internal' => [
-        'pattern'   => '/internal/product',
-        'action'    => ['Product\ShowInternalAction', 'execute'],
+    // Форма обратной связи
+    'feedback.send' => [
+        'pattern'   => '/feedback/send',
+        'action'    => ['User\FeedbackAction', 'execute'],
+        'method'    => ['POST']
     ],
 
     // Переключение АБ-тестов

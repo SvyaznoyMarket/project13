@@ -1,12 +1,13 @@
 /* Новая страница /delivery со всеми точками самовывоза */
 +function($){
 
-    var menuItems = $('.menu-item'),
+    var $window = $(window),
+        menuItems = $('.menu-item'),
         $mapContainer = $('#jsDeliveryMap'),
         partners = $.parseJSON($('#partnersJSON').html()),
         geoObjects = $.parseJSON($('#objectManagerDataJSON').html()),
         $partnersList = $('.jsPartnerListItem'),
-        $pointListHolder= $('.jsPointList'),
+        $pointListHolder = $('.jsPointList'),
         $pointList = $('.jsPointListItem'),
         $pointListItemPartners = $('.jsPointListItemPartner'),
         pointActiveClass = 'current',
@@ -14,7 +15,10 @@
         $searchClear = $('.jsSearchClear'),
         $searchAutocompleteList = $('.jsSearchAutocompleteList'),
         $searchAutocompleteHolder = $('.jsSearchAutocompleteHolder'),
-        activePartners = [], map, objectManager, uidsToShow = [];
+        activePartners = [], map, objectManager, uidsToShow = [],
+        scrollAnalyticsTimer = null,
+        windowScrollTimer = null
+    ;
 
     if ($mapContainer.length == 0) return ;
 
@@ -120,6 +124,13 @@
             $searchAutocompleteHolder.hide();
             $searchInput.val($(this).text())
         }
+
+        // analytics
+        $('body').trigger('trackGoogleEvent', {
+            action: 'pickup_ux_shops',
+            category: 'search_enter',
+            label: $(this).text()
+        });
     });
 
     // инициализация карты
@@ -147,6 +158,11 @@
             suppressMapOpenBlock: true,
             suppressObsoleteBrowserNotifier: true
         });
+
+        if (location.hash == '#full') {
+            map.controls.add('fullscreenControl');
+            $pointListHolder.hide();
+        }
 
         var searchControl = map.controls.get('searchControl');
         searchControl.options.set('size', 'small');
@@ -179,8 +195,49 @@
         map.setBounds(map.geoObjects.getBounds());
 
         var position = map.getGlobalPixelCenter();
-        map.setGlobalPixelCenter([ position[0] + 110, position[1] ]);
+        if (location.hash != '#full') map.setGlobalPixelCenter([ position[0] + 110, position[1] ]);
 
+        // analytics
+        var control;
+        if (control = map.controls.get('geolocationControl')) {
+            control.events.add(['click'], function(e){
+                $('body').trigger('trackGoogleEvent', {
+                    action: 'pickup_ux_shops',
+                    category: 'geo-position',
+                    label: ''
+                });
+            });
+        }
+        if (control = map.controls.get('searchControl')) {
+            control.events.add(['click'], function(e){
+                $('body').trigger('trackGoogleEvent', {
+                    action: 'pickup_ux_shops',
+                    category: 'search_yandex',
+                    label: ''
+                });
+            });
+        }
+        if (control = map.controls.get('zoomControl')) {
+            control.events.add(['click'], function(e){
+                $('body').trigger('trackGoogleEvent', {
+                    action: 'pickup_ux_shops',
+                    category: 'scale',
+                    label: (e.get('target').state.get('zoom') > map.getZoom()) ? 'plus' : 'minus'
+                });
+            });
+        }
+
+        objectManager.objects.events.add(['click'], function(e){
+            var objId = e.get('objectId'),
+                idSelector ='#uid-' + objId
+            ;
+
+            $('body').trigger('trackGoogleEvent', {
+                action: 'pickup_ux_shops',
+                category: 'map',
+                label: $pointList.filter(idSelector).data('partner')
+            });
+        });
     });
 
     // Переключение партнеров
@@ -212,6 +269,11 @@
             $pointListItemPartners.show()
         }
 
+        $('body').trigger('trackGoogleEvent', {
+            action: 'pickup_ux_shops',
+            category: 'filter',
+            label: $(this).data('value')
+        });
     });
 
     $pointList.on('click', function(){
@@ -225,6 +287,13 @@
                     return activePartners.length == 0 ? true : $.inArray(point.properties.ePartner, activePartners) !== -1;
                 });
             }
+
+            // analytics
+            $('body').trigger('trackGoogleEvent', {
+                action: 'pickup_ux_shops',
+                category: 'list',
+                label: 'click_out_' + $(this).data('partner')
+            });
         } else {
             $pointList.removeClass(pointActiveClass);
             $this.addClass(pointActiveClass);
@@ -233,11 +302,94 @@
                 var position = map.getGlobalPixelCenter();
                 map.setGlobalPixelCenter([ position[0] + 110, position[1] ]);
             }
+
+            // analytics
+            $('body').trigger('trackGoogleEvent', {
+                action: 'pickup_ux_shops',
+                category: 'list',
+                label: 'click_' + $(this).data('partner')
+            });
         }
 
         fireMapEvent('boundschange');
     });
 
+    // analytics
+    $pointListHolder.on('scroll', function() {
+        if (!scrollAnalyticsTimer) {
+            scrollAnalyticsTimer = setTimeout(function() {
+                $('body').trigger('trackGoogleEvent', {
+                    action: 'pickup_ux_shops',
+                    category: 'list',
+                    label: 'scroll'
+                });
+
+                scrollAnalyticsTimer = null;
+            }, 1200)
+        }
+    });
+
+    $window.on('scroll', function() {
+        if (!windowScrollTimer) {
+            windowScrollTimer = setTimeout(function() {
+                var
+                    scrollTop = $window.scrollTop(),
+                    scrollBottom = $window.scrollTop() + $window.height(),
+                    $el,
+                    elMiddle
+                ;
+
+                windowScrollTimer = null;
+
+                $el = $('#deliv-free');
+                if ($el.length && $el.offset()) {
+                    elMiddle = $el.offset().top + 50;
+                    console.info($el, [scrollTop, scrollBottom], elMiddle);
+                    if (((elMiddle> scrollTop) || (elMiddle > scrollBottom)) && ((elMiddle < scrollTop) || (elMiddle < scrollBottom))) {
+                        $('body').trigger('trackGoogleEvent', {
+                            action: 'pickup_ux_shops',
+                            category: 'text_free-pickup',
+                            label: ''
+                        });
+                    }
+                }
+
+                $el = $('#deliv-nonfree');
+                if ($el.length && $el.offset()) {
+                    elMiddle = $el.offset().top + 50;
+                    console.info($el, [scrollTop, scrollBottom], elMiddle);
+                    if (((elMiddle> scrollTop) || (elMiddle > scrollBottom)) && ((elMiddle < scrollTop) || (elMiddle < scrollBottom))) {
+                        $('body').trigger('trackGoogleEvent', {
+                            action: 'pickup_ux_shops',
+                            category: 'text_pickup-points',
+                            label: ''
+                        });
+                    }
+                }
+
+                $el = $('#postamat-video');
+                if ($el.length && $el.offset()) {
+                    elMiddle = $el.offset().top + 50;
+                    console.info($el, [scrollTop, scrollBottom], elMiddle);
+                    if (((elMiddle> scrollTop) || (elMiddle > scrollBottom)) && ((elMiddle < scrollTop) || (elMiddle < scrollBottom))) {
+                        $('body').trigger('trackGoogleEvent', {
+                            action: 'pickup_ux_shops',
+                            category: 'video_pick-point',
+                            label: 'reached'
+                        });
+                    }
+                }
+            }, 2000);
+        }
+    });
+
+    $('.delivery-video').find('video').on('play', function() {
+        $('body').trigger('trackGoogleEvent', {
+            action: 'pickup_ux_shops',
+            category: 'video_pick-point',
+            label: 'play'
+        });
+    });
 
 }(jQuery);
 /**

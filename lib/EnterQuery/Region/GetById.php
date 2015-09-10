@@ -7,7 +7,7 @@ namespace EnterQuery\Region
     class GetById
     {
         use \EnterQuery\CurlQueryTrait;
-        use \EnterQuery\CoreQueryTrait;
+        use \EnterQuery\ScmsQueryTrait;
 
         /** @var string */
         public $id;
@@ -28,7 +28,7 @@ namespace EnterQuery\Region
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'v2/geo/get',
+                    'api/geo/get-town',
                     [
                         'id' => [$this->id],
                     ]

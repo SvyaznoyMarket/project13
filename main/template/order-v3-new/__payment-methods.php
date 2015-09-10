@@ -33,21 +33,21 @@ $f = function (
 
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ONLINE])) : ?>
             <div class="paymentRow jsDeliveryChooseOnline">
-                <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ONLINE; ?>
+                <? $checked = ($order->payment_method_id == PaymentMethod::PAYMENT_CARD_ONLINE); ?>
                 <input id="payment-online" type="radio" name="payment-type[]" value="by_online" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?>>
                 <label for="payment-online" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">Онлайн-оплата:
                     <ul class="orderPaymentWeb_lst-sm">
                         <? if (array_key_exists(PaymentMethod::PAYMENT_CARD_ONLINE, $order->possible_payment_methods)) : ?>
-                            <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/visa-logo-sm.jpg"></a></li>
+                            <li class="orderPaymentWeb_lst-sm-i"><img src ="/styles/order/img/visa-logo-sm.jpg"></li>
                         <? endif ?>
                         <? if (false) : /* Яндекс-денег пока вообще нет */ ?>
-                            <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/yamoney-sm.jpg"></a></li>
+                            <li class="orderPaymentWeb_lst-sm-i"><img src ="/styles/order/img/yamoney-sm.jpg"></li>
                         <? endif ?>
                         <? if (array_key_exists(PaymentMethod::PAYMENT_PAYPAL, $order->possible_payment_methods)) : ?>
-                            <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/paypal.png"></a></li>
+                            <li class="orderPaymentWeb_lst-sm-i"><img src ="/styles/order/img/paypal.png"></li>
                         <? endif ?>
                         <? if (array_key_exists(PaymentMethod::PAYMENT_PSB, $order->possible_payment_methods)) : ?>
-                            <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/psb.png"></a></li>
+                            <li class="orderPaymentWeb_lst-sm-i"><img src ="/styles/order/img/psb.png"></li>
                         <? endif ?>
                     </ul>
                 </label>

@@ -27,11 +27,12 @@ class GetCouponByProductsUi {
     {
         $this->prepareCurlQuery(
             $this->buildUrl(
-                'v2/product/get-product-coupons', []
+                'v2/product/get-product-coupons',
+                [
+                    'product_list' => $this->productUids,
+                ]
             ),
-            [
-                'product_list' => $this->productUids
-            ],
+            [],
             function($response, $statusCode) {
                 $result = $this->decodeResponse($response, $statusCode)['result'];
                 if (is_array($result)) {
@@ -45,7 +46,9 @@ class GetCouponByProductsUi {
                     }
                 }
                 return $result;
-            }
+            },
+            0.5,
+            [0]
         );
 
         return $this;

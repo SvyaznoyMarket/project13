@@ -43,7 +43,7 @@ class ShowAction {
             }
         });
 
-        if (!$product->isInShopOnly() && $isFurniture && $product->getState() && ($product->getState()->getIsStore() || $product->getState()->getIsSupplier()) && !$product->getSlotPartnerOffer()) {
+        if (!$product->isInShopOnly() && $isFurniture && $product->getState() && $product->getState()->getIsStore() && !$product->getSlotPartnerOffer()) {
             $inStoreLabel = ['name' => 'Товар со склада', 'inStore' => true]; // SITE-3131
         } else {
             $inStoreLabel = null;
@@ -51,7 +51,7 @@ class ShowAction {
 
         $productItem = [
             'id'           => $product->getId(),
-            'name'         => htmlspecialchars_decode($product->getName()),
+            'name'         => $product->getName(),
             'link'         => $product->getLink(),
             'label'        =>
             $product->getLabel()

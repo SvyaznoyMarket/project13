@@ -70,26 +70,16 @@ class RecommendedAction {
 
         /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
-        $medias = [];
-        foreach (array_chunk(array_values($productIdsByCategoryId), \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-            \RepositoryManager::product()->useV3()->withoutModels()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
-                foreach ((array)$data as $item) {
-                    if (empty($item['id'])) continue;
-
-                    $product = new \Model\Product\Entity($item);
-                    // если товар недоступен для покупки - пропустить
-                    if (!$product->isAvailable() || $product->isInShopShowroomOnly()) continue;
-
-                    $productsById[$product->getId()] = $product;
-                }
-            });
-
-            \RepositoryManager::product()->prepareProductsMediasByIds($productsInChunk, $medias);
+        foreach ($productIdsByCategoryId as $productId) {
+            $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
 
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label');
         \App::coreClientV2()->execute();
 
-        \RepositoryManager::product()->setMediasForProducts($productsById, $medias);
+        $productsById = array_filter($productsById, function(\Model\Product\Entity $product) {
+            return ($product->isAvailable() && !$product->isInShopShowroomOnly());
+        });
 
         // ответ
         $responseData = [

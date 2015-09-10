@@ -7,6 +7,10 @@ class CompletePage extends Layout {
     /** @var \Model\Order\Entity[] */
     private $orders;
 
+    public function slotOrderHead() {
+        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 3]);
+    }
+
     public function slotGoogleRemarketingJS($tagParams = []) {
 
         $ordersSum = 0;

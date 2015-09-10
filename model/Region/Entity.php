@@ -6,74 +6,28 @@ class Entity extends BasicRegionEntity {
     /** @var string|null */
     public $kladrId;
     /** @var int */
-    private $parentId;
-    /** @var bool */
-    private $isMain;
-    /** @var bool */
-    private $hasShop;
-    /** @var bool */
-    private $hasDelivery;
-    /** @var bool */
-    private $hasSubway;
-    /** @var Entity */
-    private $parent;
+    public $parentId;
     /** @var bool */
     private $hasTransportCompany;
+    /** @var int */
+    public $pointCount;
+    /** @var \Model\Inflections */
+    public $names;
 
     public function __construct(array $data = []) {
         parent::__construct($data);
-        if (array_key_exists('kladr_id', $data)) $this->kladrId = $data['kladr_id'];
-        if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
-        if (array_key_exists('slug', $data)) $this->setToken($data['slug']);
-        if (array_key_exists('is_main', $data)) $this->setIsMain($data['is_main']);
-        if (array_key_exists('has_shop', $data)) $this->setHasShop($data['has_shop']);
-        if (array_key_exists('has_delivery', $data)) $this->setHasDelivery($data['has_delivery']);
-        if (array_key_exists('has_subway', $data)) $this->setHasSubway($data['has_subway']);
-        if (isset($data['location']['longitude'])) $this->setLongitude($data['location']['longitude']);
-        if (isset($data['location']['latitude'])) $this->setLatitude($data['location']['latitude']);
-        if (array_key_exists('tk_available', $data)) $this->setHasTransportCompany($data['tk_available']);
-    }
-
-    /**
-     * @param boolean $hasDelivery
-     */
-    public function setHasDelivery($hasDelivery) {
-        $this->hasDelivery = $hasDelivery;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getHasDelivery() {
-        return $this->hasDelivery;
-    }
-
-    /**
-     * @param boolean $hasShop
-     */
-    public function setHasShop($hasShop) {
-        $this->hasShop = $hasShop;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getHasShop() {
-        return $this->hasShop;
-    }
-
-    /**
-     * @param boolean $hasSubway
-     */
-    public function setHasSubway($hasSubway) {
-        $this->hasSubway = (bool)$hasSubway;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getHasSubway() {
-        return $this->hasSubway;
+        if (isset($data['kladr_id'])) $this->kladrId = substr($data['kladr_id'], 0, 13); // TODO: удалить обрезание, когда будет реализовано https://jira.enter.ru/browse/FCMS-746?focusedCommentId=165705&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-165705
+        if (isset($data['parent_id'])) $this->parentId = $data['parent_id'];
+        if (isset($data['slug'])) $this->token = $data['slug'];
+        if (isset($data['location']['longitude'])) $this->longitude = $data['location']['longitude'];
+        if (isset($data['location']['latitude'])) $this->latitude = $data['location']['latitude'];
+        if (isset($data['tk_available'])) $this->hasTransportCompany = (bool)$data['tk_available'];
+        if (isset($data['number_of_enter_shops']) && isset($data['number_of_pickup_points'])) $this->pointCount = $data['number_of_enter_shops'] + $data['number_of_pickup_points'];
+        if (isset($data['name_inflect'])) {
+            $this->names = new \Model\Inflections($data['name_inflect']);
+        } else {
+            $this->names = new \Model\Inflections();
+        }
     }
 
     /**
@@ -91,38 +45,10 @@ class Entity extends BasicRegionEntity {
     }
 
     /**
-     * @param boolean $isMain
-     */
-    public function setIsMain($isMain) {
-        $this->isMain = $isMain;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsMain() {
-        return $this->isMain;
-    }
-
-    /**
-     * @param float $latitude
-     */
-    public function setLatitude($latitude) {
-        $this->latitude = $latitude;
-    }
-
-    /**
      * @return float
      */
     public function getLatitude() {
         return $this->latitude;
-    }
-
-    /**
-     * @param float $longitude
-     */
-    public function setLongitude($longitude) {
-        $this->longitude = $longitude;
     }
 
     /**
@@ -147,38 +73,10 @@ class Entity extends BasicRegionEntity {
     }
 
     /**
-     * @param Entity|null $parent
-     */
-    public function setParent(Entity $parent = null) {
-        $this->parent = $parent;
-    }
-
-    /**
-     * @return Entity|null
-     */
-    public function getParent() {
-        return $this->parent;
-    }
-
-    /**
-     * @param int $parentId
-     */
-    public function setParentId($parentId) {
-        $this->parentId = $parentId;
-    }
-
-    /**
      * @return int
      */
     public function getParentId() {
         return $this->parentId;
-    }
-
-    /**
-     * @param string $token
-     */
-    public function setToken($token) {
-        $this->token = $token;
     }
 
     /**
@@ -197,13 +95,6 @@ class Entity extends BasicRegionEntity {
         } else {
             return true;
         }
-    }
-
-    /**
-     * @param bool $hasTransportCompany
-     */
-    public function setHasTransportCompany($hasTransportCompany) {
-        $this->hasTransportCompany = (bool)$hasTransportCompany;
     }
 
     /**

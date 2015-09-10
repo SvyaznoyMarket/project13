@@ -110,7 +110,6 @@ $f = function(
                'type'           => 'main',
                'title'          => 'Популярные товары',
                'products'       => [],
-               'count'          => null,
                'limit'          => \App::config()->product['itemsInSlider'],
                'page'           => 1,
                'url'            => $helper->url('main.recommended', [

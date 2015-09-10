@@ -75,18 +75,17 @@
                                 <td class="query-cell">{{header.X-Server-Name}}</td>
                                 <td class="query-cell">{{header.X-API-Mode}}</td>
                                 <td class="query-cell">{{responseBodyLength}}</td>
-                                <td class="query-cell">{{#error}}({{code}}) {{message}}{{/error}}</td>
+                                <td class="query-cell">{{#error}}({{code}}) <span title="{{message}}">{{&substrMessage}}</span>{{/error}}</td>
                                 <td class="query-cell">
                                     <a href="{{^data}}{{url}}{{/data}}{{#data}}/debug/query?data={{encodedData}}&url={{encodedUrl}}{{/data}}" target="_blank" class="openDirectly">&#11016;</a>
-                                    <a class="query
-                                            {{#error}}
-                                                query-fail
-                                            {{/error}}
-                                            {{#url}}
-                                                query-ok
-                                            {{/url}}"
-                                        href="/debug/query?data={{encodedData}}&url={{encodedUrl}}" target="_blank">{{url}}</a>
-                                    {{#data}}{{data}}{{/data}}
+                                    <form action="/debug/query" target="_blank" method="post" style="display: inline-block;">
+                                        <input type="hidden" value="{{data}}" name="data">
+                                        <input type="hidden" value="{{url}}" name="url">
+                                        <button type="submit" class="formButton" >
+                                            <span class="query {{#error}}query-fail{{/error}} {{#url}}query-ok{{/url}}">{{url}}</span>
+                                            {{#data}}{{data}}{{/data}}
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         {{/value}}
@@ -203,12 +202,12 @@
             </table>
         </div>
         <div class="debug-panel-item-prev jsDebugPanelItem">
-            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#" title="Previous document debug"><?= $helper->escape($prevDebugData['server']['value']['REQUEST_URI']) ?></a>
+            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#" title="Previous document debug"><?= (isset($prevDebugData['server']['value']['REQUEST_URI']) ? $helper->escape($prevDebugData['server']['value']['REQUEST_URI']) : '') ?></a>
             <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
             <table class="debug-panel-item-content jsDebugPanelItemContent jsPrevDebugPanelItemContent"></table>
         </div>
         <div class="jsDebugPanelItem">
-            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#"><?= $helper->escape($debugData['server']['value']['REQUEST_URI']) ?></a>
+            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#"><?= (isset($debugData['server']['value']['REQUEST_URI']) ? $helper->escape($debugData['server']['value']['REQUEST_URI']) : '') ?></a>
             <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
             <table class="debug-panel-item-content jsDebugPanelItemContent jsCurrentDebugPanelItemContent"></table>
         </div>
@@ -378,5 +377,11 @@
     }
     .debug-panel .openDirectly {
         color: #bebebe;
+    }
+
+    .debug-panel .formButton {
+        color: white;
+        background: none;
+        border: none;
     }
 </style>

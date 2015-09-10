@@ -102,7 +102,16 @@ namespace Model\OrderDelivery {
             $this->validate();
             $this->validateOrders();
 
-
+            // проверка на 100000 SITE-5958
+            foreach ($this->orders as $order) {
+                if (\App::config()->order['prepayment']['priceLimit'] && ($order->total_cost > \App::config()->order['prepayment']['priceLimit'])) {
+                    foreach ($order->possible_payment_methods as $i => $possiblePaymentMethod) {
+                        if (in_array($possiblePaymentMethod->id, ['1', '2']) && (count($order->possible_payment_methods) > 1)) {
+                            unset($order->possible_payment_methods[$i]);
+                        }
+                    }
+                }
+            }
         }
 
         /**
@@ -263,7 +272,7 @@ namespace Model\OrderDelivery\Entity {
                     case 'self_partner_pickpoint':
                         $this->marker['iconImageHref'] = '/images/deliv-icon/pickpoint.png';
                         $this->icon = '/images/deliv-logo/pickpoint.png';
-                        $this->dropdown_name = 'Пункты выдачи Pickpoint';
+                        $this->dropdown_name = 'Пункты выдачи PickPoint';
                         break;
                     case 'self_partner_svyaznoy_pred_supplier':
                     case 'self_partner_svyaznoy':
@@ -450,6 +459,11 @@ namespace Model\OrderDelivery\Entity {
                             $point = [
                                 'point'         => &$orderDelivery->points[$pointType]->list[$pointItem['id']],
                                 'nearestDay'    => $pointItem['nearest_day'],
+                                'dateInterval'  => (
+                                    (isset($pointItem['date_interval']) && is_array($pointItem['date_interval']))
+                                    ? ($pointItem['date_interval'] + ['from' => null, 'to' => null])
+                                    : null
+                                ),
                                 'cost'          => (int)$pointItem['cost']
                             ];
 
@@ -686,6 +700,8 @@ namespace Model\OrderDelivery\Entity\Order {
         /** @var int */
         public $id;
         /** @var string */
+        public $ui;
+        /** @var string */
         public $name;
         /** @var string */
         public $link;
@@ -716,6 +732,7 @@ namespace Model\OrderDelivery\Entity\Order {
                 throw new \Exception('Не указан id продукта');
             }
 
+            if (isset($data['ui'])) $this->ui = (string)$data['ui'];
             if (isset($data['name'])) $this->name = (string)$data['name'];
             if (isset($data['url'])) $this->link = (string)$data['url'];
             if (isset($data['name_web'])) $this->name_web = (string)$data['name_web'];
@@ -861,12 +878,13 @@ namespace Model\OrderDelivery\Entity\Order\Delivery {
         public $token;
         /** @var string */
         public $id;
+        /** @var array|null */
+        public $dateInterval;
 
 
         public function __construct(array $data = []) {
             if (isset($data['token'])) $this->token = (string)$data['token'];
             if (isset($data['id'])) $this->id = (string)$data['id'];
-
         }
 
         /** Точка Связного?

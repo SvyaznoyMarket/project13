@@ -237,19 +237,6 @@ class RepositoryManager {
     }
 
     /**
-     * @return Model\Brand\Repository
-     */
-    static function brand() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \Model\Brand\Repository(\App::coreClientV2());
-        }
-
-        return $instance;
-    }
-
-    /**
      * @return Model\Review\Repository
      */
     static function review() {

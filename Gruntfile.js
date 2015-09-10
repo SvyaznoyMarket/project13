@@ -20,7 +20,8 @@ module.exports = function(grunt) {
                 jsDevPath+'jquery-plugins/customDropDown.js',
                 jsDevPath+'jquery-plugins/goodsSlider.js',
                 jsDevPath+'jquery-plugins/jquery-ui-1.10.3.custom.js',
-                jsDevPath+'jquery-plugins/jquery.kladr.js'
+                jsDevPath+'jquery-plugins/jquery.kladr.js',
+                jsDevPath+'jquery-plugins/slick.js'
             ],
             libraryFiles: [
                 jsDevPath+'library/getKeysLength.js',

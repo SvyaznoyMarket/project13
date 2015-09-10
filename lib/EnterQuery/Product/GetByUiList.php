@@ -2,6 +2,7 @@
 
 namespace EnterQuery\Product
 {
+    use EnterQuery\Product\GetByUiList\Filter;
     use EnterQuery\Product\GetByUiList\Response;
 
     class GetByUiList
@@ -13,15 +14,18 @@ namespace EnterQuery\Product
         public $uis = [];
         /** @var string|null */
         public $regionId;
+        /** @var Filter */
+        public $filter;
         /** @var Response */
         public $response;
 
-        public function __construct($uis = null, $regionId = null)
+        public function __construct($uis = null, $regionId = null, $filter = null)
         {
             $this->response = new Response();
 
             $this->uis = $uis;
             $this->regionId = $regionId;
+            $this->filter = $filter ?: new Filter();
         }
 
         /**
@@ -29,14 +33,20 @@ namespace EnterQuery\Product
          */
         public function prepare()
         {
+            $params = [
+                'select_type' => 'ui',
+                'ui'          => $this->uis,
+                'geo_id'      => $this->regionId,
+            ];
+
+            if (!$this->filter->model) {
+                $params['withModels'] = 0;
+            }
+
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'v2/product/get',
-                    [
-                        'select_type' => 'ui',
-                        'ui'          => $this->uis,
-                        'geo_id'      => $this->regionId,
-                    ]
+                    'v2/product/get-v3',
+                    $params
                 ),
                 [], // data
                 function($response, $statusCode) {
@@ -59,5 +69,11 @@ namespace EnterQuery\Product\GetByUiList
     {
         /** @var array */
         public $products = [];
+    }
+
+    class Filter
+    {
+        /** @var bool */
+        public $model = true;
     }
 }

@@ -130,7 +130,7 @@
                                                    type="checkbox" id="id-delivery-date-<?= $day.$uniqId ?>" name="" value="<?= $day ?>"
                                                    data-bind="checked: choosenDates" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-date-<?= $day.$uniqId ?>">
-                                                <span class="customLabel_btx"><?= $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $day)) ?></span>
+                                                <span class="customLabel_btx"><?= $helper->escape($day) ?></span>
                                             </label>
                                         </div>
                                     <? endforeach ?>
@@ -181,7 +181,7 @@
                                     <div class="pick-point-item__buy">
                                         <button
                                             href=""
-                                            class="btn-type btn-type--buy <? if ($page == 'page') : ?>jsOneClickButton-new<? endif ?>"
+                                            class="btn-type btn-type--buy <? if ($page == 'page') : ?>jsOneClickButton<? endif ?>"
                                             <? if (isset($productUi)) : ?>data-product-ui="<?= $productUi ?>"<? endif ?>
                                             data-bind="attr: { 'data-shop': id }">Купить</button>
                                     </div>

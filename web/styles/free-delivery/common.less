@@ -1,63 +1,30 @@
 .header__bann {
-    height: 86px;
-    width: 100%;
-    background: url('@{base-url}/free-delivery/img/orangebann-all.png') no-repeat;
-    position: relative;
-    display: none;
-    width: 960px;
-    margin: 0 auto;
+    display: block;
+    text-align: center;
 
-    .box-sizing(border-box);
-
-    line-height: 36px;
-    padding: 12px 10px 0 243px;
-    
     &:hover{
         text-decoration: none;
     }
+    a {
+        color: inherit;
+        text-decoration: underline;
+    }
+}
+.stripe-bann{
+    color: #feffff;
+    background: #009812;
+    height: 36px;
+    line-height: 36px;
+    font-size: 23px;
+    font-family: 'Enter Type';
+    overflow: hidden;
 
-    &.shown{
-        display: block;
-    }
-    .close-btn {
-        cursor: pointer;
-        background: url('@{base-url}/free-delivery/img/close.png') no-repeat;
-        width: 17px;
-        height: 17px;
-        position: absolute;
-        right: 10px;
-        top: 10px;
-    }
-    &-tl{
-        color: #fff;
-        font-family: 'Enter';
-        font-size: 48px;
-        text-decoration: none;
-    }
-    &-msg{
-        color: #fff;
-        font-size: 24px;
-        text-decoration: none;
-
-    }
-    &-c{
-        color: #fff;
-        font-size: 12px;
-        text-decoration: none;
-        float: right;
-    }
-    &-btn{
-        color: #fff;
-        font-size: 18px;
-        text-align: center;
-        width: 92px;
-        height: 35px;
-        line-height: 33px;
-        border: 1px solid #fff;
-        .rounded(4px);
-        float: right;
-        margin-top: -10px;
-        margin-right: 40px;
+    &__small{
+        font-size: 15px;
+        .inline-block();
+        margin-left: 10px;
+        padding: 0 30px;
+        background-color: #007a15;
     }
 }
 
@@ -66,6 +33,8 @@
         border-top: 3px solid #80c342;
         padding: 10px;
         text-align: center;
+        height: 78px;
+
         &__intro {
             font-size: 12px;
             color: #363636;
@@ -74,7 +43,7 @@
         }
         &__remain-sum {
             font-size: 25px;
-            color: #363636;
+            color: #80C342;
             margin-bottom: 5px;
             display: block;
         }
@@ -91,21 +60,7 @@
             color: #80c342;
         }
     }
-    &-alert {
-        float: right;
-        padding: 10px;
-        background-color: #f2f9ec;
-        border: 1px solid #80c342;
-        border-left-width: 5px;
-        &__info {
-            font-size: 16px;
-            color: #363636;
-        }
-        &__remain-sum {
-            font-size: 24px;
-            color: #363636;
-        }
-    }
+
     &-popup{
         width: 432px;
         height: 155px;
@@ -145,6 +100,35 @@
         &-info{
             * {
                 color: #fff;
+            }
+        }
+    }
+}
+
+.cart-alert {
+    float: right;
+    color: #80c342;
+
+    &__info {
+        font-size: 16px;
+    }
+    &__remain-sum {
+        font-size: 24px;
+        min-width: 90px;
+        .inline-block(baseline);
+    }
+    &&--old{
+        padding: 10px;
+        background-color: #f2f9ec;
+        border: 1px solid #80c342;
+        border-left-width: 5px;
+        .cart-alert{
+            &__info {
+                color: #363636;
+            }
+            &__remain-sum {
+                color: #363636;
+                width: auto;
             }
         }
     }

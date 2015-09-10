@@ -35,7 +35,19 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isOrderMinSumRestriction(){
-        return in_array(\App::user()->getRegionId(), [18074, 99958, 10374]);
+        // SITE-5921
+        $notAvailableParentRegions = [
+            82, // Москва
+            14974, // Москва
+            83, // Московская область
+        ];
+
+        $notAvailableRegions = [
+            108136, // Санкт-Петербург
+        ];
+
+        $region = \App::user()->getRegion();
+        return (!in_array($region->parentId, $notAvailableParentRegions) && !in_array($region->id, $notAvailableRegions));
     }
 
     public static function isShowSalePercentage() {
@@ -69,6 +81,39 @@ trait ABHelperTrait {
         return 1;
     }
 
+    /**
+     * SITE-6016, SITE-6062
+     * @return bool
+     */
+    public static function isOrderDeliveryTypeTestAvailableInCurrentRegion() {
+        return in_array(\App::user()->getRegion()->id, [
+            14974, // Москва
+            108136, // Санкт-Петербург
+            83210, // Брянск
+            96423, // Владимир
+            18074, // Воронеж
+            124229, // Казань
+            148110, // Калуга
+            74562, // Курск
+            99, // Липецк
+            99958, // Нижний Новгород
+            18073, // Тверь
+            74358, // Тула
+            124232, // Чебоксары
+            93746, // Ярославль
+            13241, // Белгород
+            93747, // Иваново
+            88434, // Смоленск
+            13242, // Орел
+            83209, // Тамбов
+            10374, // Рязань
+
+            119623, // Ростов-на-Дону
+            124201, // Саратов
+            124190, // Краснодар
+        ]);
+    }
+
     /** Открытие ссылок на товары в новом окне
      * @return bool
      */
@@ -90,5 +135,13 @@ trait ABHelperTrait {
      */
     public static function isNewProductPage() {
         return \App::abTest()->getTest('productCard') && \App::abTest()->getTest('productCard')->getChosenCase()->getKey() == 'new';
+    }
+
+    /**
+     * Ядерная корзина
+     * @return bool
+     */
+    public static function isCoreCart() {
+        return 'enabled' === \App::abTest()->getTest('core_cart')->getChosenCase()->getKey();
     }
 }

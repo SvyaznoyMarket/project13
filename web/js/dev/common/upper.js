@@ -21,7 +21,7 @@
 	}
 
 	function checkScroll() {
-		var cartLength = ENTER.UserModel ? ENTER.UserModel.cart().length : 0;
+		var cartLength = ENTER.UserModel ? ENTER.UserModel.cart().products().length : 0;
 		if (!visible && $window.scrollTop() > offset && (!showWhenFullCartOnly || cartLength)) {
 			//появление
 			visible = true;
@@ -40,7 +40,7 @@
 
 	$window.scroll(checkScroll);
 
-	$body.on('closeBuyInfo showBuyInfo', function(){
+	$body.on('closeFullFixedUserBar openFullFixedUserBar', function(){
 		checkScroll();
 	});
 
