@@ -28,7 +28,7 @@
          *
          * @method  initApp
          */
-        initApp = function( App, UserInfo, Backbone, _, PageView, ProductsCollection, CartCollection, CompareCollection, FavoriteCollection ) {
+        initApp = function( App, userInfo, Backbone, _, PageView, ProductsCollection, CartCollection, CompareCollection, FavoriteCollection ) {
             console.info('Application initialize');
 
             // Добавляем возможность добавлять события к объекту приложения
@@ -39,10 +39,9 @@
             App.compare            = new CompareCollection();
             App.favorite           = new FavoriteCollection();
 
-
-            App.cart.updateCart(UserInfo);
-            App.compare.updateCompare(UserInfo);
-            App.favorite.updateFavorite(UserInfo);
+            App.cart.updateCart(userInfo);
+            App.compare.updateCompare(userInfo);
+            App.favorite.updateFavorite(userInfo);
 
             /**
              * Главное View приложения
