@@ -37,6 +37,7 @@ if (!isset($isAddInfo)) $isAddInfo = false;
     'pager' => $pager,
     'view' => $view,
     'isAddInfo' => $isAddInfo,
+    'category' => $category,
     'itemsPerRow' => $page->getParam('itemsPerRow')
 ]) ?>
 

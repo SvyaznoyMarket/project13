@@ -138,21 +138,20 @@ class Action {
             $scmsClient->execute();
         }
 
-        // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
-        $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
-
-        if ($categoryClass && ('default' !== $categoryClass)) {
-            if ('jewel' == $categoryClass) {
-                if (\App::config()->debug) \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
-
-                return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent);
-            } else if ('grid' == $categoryClass) {
-                if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
-
-                return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
+        if ($category->isPandora()) {
+            if (\App::config()->debug) {
+                \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
             }
 
-            \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
+            return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent);
+        } else if ($category->isGrid()) {
+            if (\App::config()->debug) {
+                \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
+            }
+
+            return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
+        } else if (!$category->isDefault()) {
+            \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $category->getCategoryClass()));
         }
 
         $relatedCategories = [];
@@ -575,6 +574,7 @@ class Action {
         $filters = $productFilter->dump();
 
         $smartChoiceData = [];
+        /** @var \Model\Product\Entity[] $smartChoiceProductsById */
         $smartChoiceProductsById = [];
         call_user_func(function() use(&$smartChoiceData, &$smartChoiceProductsById, $filters, $catalogJson, $repository) {
             if (!isset($catalogJson['smartchoice']) || !$catalogJson['smartchoice']) {
@@ -598,7 +598,7 @@ class Action {
                     $smartChoiceProductsById[$smartChoiceItem['products'][0]['id']] = new \Model\Product\Entity(['id' => $smartChoiceItem['products'][0]['id']]);
                 }
 
-                $repository->prepareProductQueries($smartChoiceProductsById, 'media');
+                $repository->prepareProductQueries($smartChoiceProductsById, 'media label');
             } catch (\Exception $e) {
                 $smartChoiceData = [];
             }
@@ -686,6 +686,16 @@ class Action {
 
         \App::coreClientV2()->execute();
 
+        // SITE-5772
+        call_user_func(function() use(&$products, $category) {
+            $sender = $category->getSenderForGoogleAnalytics();
+            if ($sender) {
+                foreach ($products as $product) {
+                    $product->setLink($product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&') . http_build_query(['sender' => $sender]));
+                }
+            }
+        });
+
         $productPager = new \Iterator\EntityPager($products, $productCount);
 
         // Если товаров слишком мало (меньше 3 строк в листинге), то не показываем SmartChoice
@@ -728,7 +738,7 @@ class Action {
                     true,
                     $columnCount,
                     $productView,
-                    [],
+                    $category->getSenderForGoogleAnalytics(),
                     $category,
                     $favoriteProductsByUi
                 ),

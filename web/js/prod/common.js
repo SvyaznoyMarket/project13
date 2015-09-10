@@ -916,11 +916,11 @@
                 if (e.hasOwnProperty(elem)) {
                     switch (elem) {
                         case 'category':
-                            e[elem] = e[elem].slice(0, 150);
+                            e[elem] = (e[elem] + '').slice(0, 150);
                             break;
                         case 'action':
                         case 'label':
-                            e[elem] = e[elem].slice(0, 500);
+                            e[elem] = (e[elem] + '').slice(0, 500);
                             break;
                         case 'value':
                             e[elem] = parseInt(e[elem] + '', 10);
@@ -1116,7 +1116,7 @@
 			sender2 = ENTER.utils.analytics.productPageSenders2.get($button)
 		;
 
-		if (sender && JSON.stringify(sender) != JSON.stringify($button.data('sender'))) {
+		if (sender) {
 			for (var key in sender) {
 				if (sender.hasOwnProperty(key)) {
 					url = ENTER.utils.setURLParam('sender[' + key + ']', sender[key], url);
@@ -1124,7 +1124,7 @@
 			}
 		}
 
-		if (sender2 && sender2 != $button.data('sender2')) {
+		if (sender2) {
 			url = ENTER.utils.setURLParam('sender2', sender2, url);
 		}
 
@@ -1150,6 +1150,15 @@
 				data.location = $button.data('location');
 
 				ENTER.UserModel.cart().update(data.cart);
+
+				if (data.sender && typeof data.sender.name == 'string' && data.sender.name.indexOf('filter') == 0) {
+					$('body').trigger('trackGoogleEvent', {
+						category: data.sender.name,
+						action: 'basket',
+						label: data.sender.categoryUrlPrefix
+					});
+				}
+
 				$body.trigger('addtocart', [data, upsale]);
 			},
 			error: function() {
@@ -1645,7 +1654,6 @@ $(function() {
 
     var
         $body = $('body'),
-        eventName = 'form.result',
         formSelector = '.js-form',
 
         /**
@@ -1656,10 +1664,10 @@ $(function() {
                 var
                     $form = $(el),
                     result = $form.data('result')
-                ;
+                    ;
 
                 if (result && ('object' == typeof result)) {
-                    $form.trigger(eventName, [result]);
+                    $form.trigger('form.result', [result]);
                 }
             });
         },
@@ -1670,7 +1678,7 @@ $(function() {
         onResult = function($form, result) {
             var
                 $field
-            ;
+                ;
 
             console.info('typeof result.errors', typeof result.errors);
             if ('object' == typeof result.errors) {
@@ -1681,31 +1689,51 @@ $(function() {
                         error.render = showFieldError
                     }
 
-                    $field = $form.find('[name="' + error.field + '"]');
+                    $field = $form.find('[data-field-container="' + error.field + '"]');
                     error.render(error, $field, $form)
                 })
             }
+        },
+
+        onReset = function($form) {
+            $form.find('[data-field-container]').each(function(i, field) {
+                var $field = $(field);
+
+                $field.removeClass('error');
+                $field.find('[data-message]').text('');
+            });
         },
 
         /**
          * Отображает ошибку у поля формы
          */
         showFieldError = function(error, $field, $form) {
-            $field.addClass('error'); // TODO error.message
+            $field.addClass('error');
+            $field.find('[data-message]').text(error.message);
         },
 
         /**
          * Добавляет обработчик
          */
         attachEvent = function() {
-            $body.on(eventName, formSelector, function(event, result) {
+            $body.on('form.result', formSelector, function(event, result) {
                 var
                     $form = $(this)
-                ;
+                    ;
 
                 console.info('event/form.result', {'event': event, '$form': $form, 'result': result});
 
                 onResult($form, result);
+            });
+
+            $body.on('form.reset', formSelector, function(event, result) {
+                var
+                    $form = $(this)
+                ;
+
+                console.info('event/form.reset', {'event': event, '$form': $form, 'result': result});
+
+                onReset($form, result);
             });
         }
     ;
@@ -3601,7 +3629,7 @@ window.ENTER.utils.shareLink = (function() {
 		$body = $('body'),
 		errorCssClass = 'lbl-error',
 		region = ENTER.config.pageConfig.user.region.name,
-		catalogPath = ENTER.utils.getCategoryPath(),
+		pageBusinessUnitId = ENTER.utils.getPageBusinessUnitId(),
 
 		showError = function($input) {
 			var $element = $input.closest('.js-slotButton-popup-element');
@@ -3753,7 +3781,7 @@ window.ENTER.utils.shareLink = (function() {
 			$errors.empty().hide();
 
 			if (!validate($form)) {
-				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
+				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', pageBusinessUnitId]);
 				return;
 			}
 
@@ -3767,7 +3795,7 @@ window.ENTER.utils.shareLink = (function() {
 				success: function(result){
 					if (result.error) {
 						$errors.text(result.error).show();
-						$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
+						$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', pageBusinessUnitId]);
 						return;
 					}
 
@@ -3781,7 +3809,7 @@ window.ENTER.utils.shareLink = (function() {
 						$popup.trigger('close');
 					});
 
-					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7 Оформить успешно', catalogPath]);
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7 Оформить успешно', pageBusinessUnitId]);
 
 					if (typeof ENTER.utils.sendOrderToGA == 'function' && result.orderAnalytics) {
 						ENTER.utils.sendOrderToGA(result.orderAnalytics);
@@ -3789,7 +3817,7 @@ window.ENTER.utils.shareLink = (function() {
 				},
 				error: function(){
 					$errors.text('Ошибка при создании заявки').show();
-					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', pageBusinessUnitId]);
 				},
 				complete: function(){
 					$submitButton.removeAttr('disabled');
@@ -3799,28 +3827,28 @@ window.ENTER.utils.shareLink = (function() {
 
 		ENTER.utils.sendAdd2BasketGaEvent(productArticle, productPrice, true, true, ($button.data('sender') || {}).name);
 
-		$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '1 Вход', catalogPath]);
+		$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '1 Вход', pageBusinessUnitId]);
 
 		$phone.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '2 Телефон', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '2 Телефон', pageBusinessUnitId]);
 		});
 
 		$email.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '3 Email', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '3 Email', pageBusinessUnitId]);
 		});
 
 		$name.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '4 Имя', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '4 Имя', pageBusinessUnitId]);
 		});
 
 		$confirm.click(function(e) {
 			if (e.currentTarget.checked) {
-				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '5 Оферта', catalogPath]);
+				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '5 Оферта', pageBusinessUnitId]);
 			}
 		});
 
 		$goToProduct.click(function(e) {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '6 Перейти в карточку', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '6 Перейти в карточку', pageBusinessUnitId]);
 		});
 
 		$phone.focus();

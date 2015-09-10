@@ -113,6 +113,7 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         'class'                  => $category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing() ? 'lstn-btn2' : '',
         'category'               => $category,
         'favoriteProductsByUi'   => $favoriteProductsByUi,
+        'cartButtonSender'       => $category->getSenderForGoogleAnalytics(),
     ]) // листинг ?>
 
     <? if ($category->isV2()): ?>

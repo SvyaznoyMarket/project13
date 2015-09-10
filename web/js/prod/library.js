@@ -3478,19 +3478,29 @@ var toObject = function (o) {
 				/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
 				if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery.price) productName = productName + ' (paid pickup)';
 
-				// Аналитика по купленным товарам из рекомендаций
-				// Отправляем RR_покупка не только для retailrocket товаров
 				if (p.sender) {
-					var rrEventLabel = '';
-					// Если товар был куплен из рекомендаций с карточки товара маркетплейс
-					if (p.sender2 == 'slot') {
-						rrEventLabel = '_marketplace-slot';
-					} else if (p.sender2 == 'marketplace') {
-						rrEventLabel = '_marketplace';
-					}
+					// SITE-5772
+					if (typeof p.sender == 'string' && p.sender.indexOf('filter') == 0) {
+						$('body').trigger('trackGoogleEvent', {
+							category: p.sender,
+							action: 'buy',
+							label: p.isFromProductCard ? 'product' : 'basket'
+						});
+					} else {
+						// Аналитика по купленным товарам из рекомендаций
+						// Отправляем RR_покупка не только для retailrocket товаров
 
-					if (p.from) $body.trigger('trackGoogleEvent',['RR_покупка' + rrEventLabel,'Купил просмотренные', p.position || '']);
-					else $body.trigger('trackGoogleEvent',['RR_покупка' + rrEventLabel,'Купил добавленные', p.position || '']);
+						var rrEventLabel = '';
+						// Если товар был куплен из рекомендаций с карточки товара маркетплейс
+						if (p.sender2 == 'slot') {
+							rrEventLabel = '_marketplace-slot';
+						} else if (p.sender2 == 'marketplace') {
+							rrEventLabel = '_marketplace';
+						}
+
+						if (p.from) $body.trigger('trackGoogleEvent',['RR_покупка' + rrEventLabel,'Купил просмотренные', p.position || '']);
+						else $body.trigger('trackGoogleEvent',['RR_покупка' + rrEventLabel,'Купил добавленные', p.position || '']);
+					}
 				}
 
 				if (p.inCompare) {
@@ -3591,8 +3601,43 @@ var toObject = function (o) {
 		}
 	};
 
-	utils.getCategoryPath = function() {
-		return document.location.pathname.replace(/^\/(?:catalog|product)\/([^\/]*).*$/i, '$1');
+	/**
+	 * SITE-5772
+	 * @param {String} sort Например, price-ask
+	 * @param {Object} category Данные категории вида {name: "", ancestors: [{name: ""}]}
+	 */
+	utils.sendSortEvent = function(sort, category) {
+		// Для слайсов события в аналитику пока не шлём, т.к. для реализации событий перехода на карточку, добавления в
+		// корзину и покупки необходимо добавить либо поддержку множественных sender'ов либо добавить поддержку
+		// параметра sender3 (который использовать для данной аналитики). Отравку событий взаимодействия с фильтрами без
+		// отправки события перехода/добавления/покупки не делает, чтобы не портить статистику по filter_old.
+		if ($('.js-slice').length) {
+			return;
+		}
+
+		$('body').trigger('trackGoogleEvent', {
+			category: 'sort',
+			action: sort,
+			label: utils.getPageBusinessUnitId() + (function() {
+				var result = '';
+
+				if (!category || !category.name) {
+					return [];
+				}
+
+				if (category.ancestors) {
+					$.each(category.ancestors, function(key, category) {
+						result += '_' + category.name;
+					});
+				}
+
+				return result + '_' + category.name;
+			})()
+		});
+	};
+
+	utils.getPageBusinessUnitId = function() {
+		return document.location.pathname.replace(/^(?:\/(?:catalog|product))?\/(slices?\/(?:[^\/]*\/)?[^\/]*|[^\/]*).*$/i, '$1');
 	};
 
 	var abstractAnalytics = {
@@ -3715,6 +3760,10 @@ var toObject = function (o) {
 						if (!isSenderPresent(sender)) {
 							sender = productPageSender;
 						}
+					}
+
+					if (sender && typeof sender.name == 'string' && sender.name.indexOf('filter') == 0) {
+						sender.isFromProductCard = true;
 					}
 				}
 

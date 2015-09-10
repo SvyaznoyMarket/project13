@@ -34,7 +34,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <?= $helper->render('product-page/blocks/variants', ['product' => $product, 'trustfactors' => $trustfactors]) ?>
 
     <? if ($product->getTagline()) : ?>
-    <p class="product-card-desc collapsed js-description-expand"><?= $product->getTagline() ?></p>
+    <p class="product-card-desc"><?= $product->getTagline() ?></p>
     <? endif ?>
 
     <dl class="product-card-prop">
@@ -51,26 +51,27 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     </dl>
 
     <?= $helper->render('product-page/blocks/trustfactors', ['trustfactors' => $trustfactors]) ?>
-
-    <div class="product-card-sharing-list">
-        <!-- AddThis Button BEGIN -->
-        <div class="addthis_toolbox addthis_default_style mt15 ">
-            <a class="addthis_button_facebook"></a>
-            <a class="addthis_button_twitter"></a>
-            <a class="addthis_button_vk"></a>
-            <a class="addthis_button_compact"></a>
-            <a class="addthis_counter addthis_bubble_style"></a>
+    <div class="product-card__addings">
+        <div class="product-card-sharing-list">
+            <!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style mt15 ">
+                <a class="addthis_button_facebook"></a>
+                <a class="addthis_button_twitter"></a>
+                <a class="addthis_button_vk"></a>
+                <a class="addthis_button_compact"></a>
+                <a class="addthis_counter addthis_bubble_style"></a>
+            </div>
+            <script type="text/javascript">var addthis_config = { data_track_addressbar:true, ui_language: "ru" };</script>
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1&domready=1" async></script>
+            <!-- AddThis Button END -->
         </div>
-        <script type="text/javascript">var addthis_config = { data_track_addressbar:true, ui_language: "ru" };</script>
-        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1&domready=1" async></script>
-        <!-- AddThis Button END -->
-    </div>
 
-    <ul class="pay-system-list">
-        <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--visa"></i></li>
-        <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--mastercard"></i></li>
-        <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--psb"></i></li>
-    </ul>
+        <ul class="pay-system-list">
+            <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--visa"></i></li>
+            <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--mastercard"></i></li>
+            <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--psb"></i></li>
+        </ul>
+    </div>
 </div>
 <!--/ краткое описание товара -->
 

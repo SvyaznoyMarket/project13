@@ -113,6 +113,9 @@
         padding: 10px;
         width: 130px;
         text-align: center;
+        &:active{
+            margin-top: 0;
+        }
     }
     &--default{
         background-color: @white;
@@ -122,6 +125,16 @@
         &:hover, &:active{
             background-color: @white;
         }
+    }
+    //кнопка для корзины - без нижнего бордера TODO: объединить с кнопкой для листингов
+    &--order{
+        border: none;
+        font-size: 20px;
+        padding: 10px;
+        width: 265px;
+        margin: 0 auto;
+        text-align: center;
+        display: block;
     }
 }
 

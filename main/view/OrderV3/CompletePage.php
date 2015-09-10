@@ -2,13 +2,16 @@
 
 namespace View\OrderV3;
 
+use Session\AbTest\ABHelperTrait;
+
 class CompletePage extends Layout {
+    use ABHelperTrait;
 
     /** @var \Model\Order\Entity[] */
     private $orders;
 
     public function slotOrderHead() {
-        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 3]);
+        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 3, 'withCart' => self::isOrderWithCart()]);
     }
 
     public function slotGoogleRemarketingJS($tagParams = []) {

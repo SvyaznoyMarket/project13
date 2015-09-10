@@ -31,7 +31,7 @@
     <?= $page->slotGoogleAnalytics() ?>
 </head>
 
-<body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
+<body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
 <?= $page->slotConfig() ?>
 
 <div class="wrapper">

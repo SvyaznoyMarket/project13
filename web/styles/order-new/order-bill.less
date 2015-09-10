@@ -1,0 +1,351 @@
+@txtColor: #363636;
+@txtLightColor: #868686;
+@textGrey: #616161;
+@bgGrey: #f7f7f7;
+
+.order-bill{
+    &__item{
+        margin-top: 10px;
+    }
+    &__head{
+        color: @txtColor;
+        font-size: 20px;
+        margin-bottom: 0;
+        padding-left: 10px;
+    }
+    &__goods{
+        padding-left: 10px;
+        width: 470px;
+        float: left;
+    }
+    &__seller{
+        color: @textGrey;
+        font-size: 14px;
+        position: relative;
+        margin-bottom: 20px;
+    }
+    &__oferta{
+        width: 15px;
+        height: 15px;
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat -45px -53px;
+        .inline-block(middle);
+        margin: -2px 0 0 3px;
+        font-size: 0;
+        cursor: pointer;
+    }
+    &__delivery-details{
+        margin-left: 490px;
+    }
+    &__adds{
+        padding: 10px 475px 10px 10px;
+        background-color: @bgGrey;
+        margin: 10px 0 20px;
+
+        clear: both;
+    }
+    &__total{
+        .clearfix();
+        &:last-child{
+            margin-bottom: -10px;
+        }
+    }
+    &__total-price {
+        width: 110px;
+        float: right;
+        font-size: 18px;
+        color: @txtColor;
+        text-align: right;
+        margin-bottom: 10px;
+        clear: right;
+    }
+    &__serv{
+        float: right;
+        font-size: 14px;
+        color: @txtColor;
+        line-height: 24px;
+    }
+}
+.order-good{
+    &__item{
+        width: 100%;
+        border-top: 1px solid #e6e6e6;
+        .box-sizing(border-box);
+        padding: 10px 10px 15px 0;
+        position: relative;
+    }
+    &__item-lk{
+        float: left;
+        width: 70px;
+        height: 70px;
+        display: block;
+        text-align: center;
+
+        &:after{
+            content: '';
+            width: 0;
+            height: 100%;
+            .inline-block(middle);
+        }
+    }
+    &__img{
+        max-width: 65px;
+        max-height: 65px;
+        .inline-block(middle);
+    }
+    &__name{
+        display: block;
+        margin-left: 80px;
+        margin-bottom: 15px;
+        color: @txtColor;
+        font-size: 14px;
+    }
+    &__price{
+        font-size: 16px;
+        color: @txtColor;
+        width: 90px;
+        .inline-block();
+    }
+    &__total-price{
+        font-size: 16px;
+        color: @txtColor;
+        float: right;
+    }
+    &__quantity{
+        font-size: 16px;
+        color: @txtColor;
+        border-bottom: 1px dotted;
+        cursor: pointer;
+        margin-left: 40px;
+    }
+    &__count{
+        .inline-block();
+        border-color: #5e5e5e;
+        .count{
+            &__ctrl{
+                font-size: 16px;
+                background-color: @white;
+                width: 25px;
+                height: 20px;
+            }
+            &__num{
+                font-size: 16px;
+                width: 35px;
+                height: 20px;
+                border-color: #5e5e5e;
+                color: #5e5d5d;
+                line-height: 20px;
+            }
+        }
+    }
+    &__edit{
+        .inline-block();
+    }
+    &__units{
+        color: #5e5d5d;
+        font-size: 16px;
+    }
+    &__apply{
+        font-size: 0;
+        width: 32px;
+        height: 20px;
+        border: 1px solid #5e5e5e;
+        .rounded(3px);
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABHklEQVQoFWNkIBKYmJgE/////zQzMerNzc29mJiYOoBq5RkJaTA1NZVlZGRcB1T3B0gHsODTYGxszApU1AvE3EB12SdPnnzJhE8DMzNzIVCxDlDNYqDi/SC1TEArTS0sLGrQNQKF7YBiCUB8/cuXL70weSagCbFA30cBPRYBE7SyshIDioM8+e3Xr19FV69e/QWTYwIK1AE1vALiCjMzMzWgBNOfP3+6gBoEgGKN58+ffwhTDKKZX7x48UNKSuoqUEEQkG8uLS0tDmT7AhWvP3369HRkxWANIOIZEEhKSjICw9odqNgIqPg+0MM5T548+YNVA1TTWaDpZkC2yL9//1JPnTr1Al0xiI8cD//Y2Njyf/78qXvmzJmb2BSDxAAyOmliqt77sgAAAABJRU5ErkJggg==');
+        background-position: center;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        .inline-block();
+        &:hover{
+            text-decoration: none;
+        }
+    }
+    &__del{
+        position: absolute;
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat  -27px -53px;
+        width: 10px;
+        height: 10px;
+        cursor: pointer;
+        top: 10px;
+        right: 5px;
+        font-size: 0;
+    }
+}
+.order-discount{
+    font-size: 0;
+
+    &__head{
+        font-size: 18px;
+        color: @txtColor;
+        margin: 20px 0 0px;
+    }
+    &__item{
+        display: table;
+        position: relative;
+        width: 100%;
+        border-top: 1px solid #e6e6e6;
+    }
+    &__lk{
+        display: table-cell;
+        padding: 10px 0;
+    }
+
+    &__name{
+        display: table-cell;
+        padding: 10px;
+        width: 100%;
+        max-width: 0;
+        font-size: 14px;
+        color: @txtColor;
+    }
+    &__val{
+        display: table-cell;
+        padding: 10px 20px 10px 0;
+        text-align: right;
+        white-space: nowrap;
+        font-size: 16px;
+        color: @txtColor;
+    }
+    &__cell{
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        padding: 10px;
+    }
+    &__del{
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat  -27px -53px;
+        width: 10px;
+        height: 10px;
+        cursor: pointer;
+        .inline-block(middle);
+        font-size: 0;
+    }
+
+    &__tl{
+        font-size: 12px;
+        color: @txtColor;
+        .inline-block(middle);
+        text-align: right;
+        margin: 0 10px;
+    }
+    .order-ctrl{
+        .inline-block(middle);
+        width: 165px;
+        padding-top: 0;
+        margin-bottom: 0;
+        margin-right: 0;
+    }
+    .order-btn{
+        .inline-block(middle);
+        margin-left: 10px;
+    }
+}
+.order-wishes{
+    text-align: center;
+    margin: 25px 0 10px;
+    &__lk{
+        color: @txtColor;
+        font-size: 16px;
+        border-bottom: 1px dotted;
+        .inline-block();
+        cursor: pointer;
+    }
+    &__field{
+        border: 1px solid #d7d7d7;
+        .rounded(3px);
+        display: block;
+        margin: 10px auto 15px;
+        padding: 10px;
+        color: @txtColor;
+        height: 100px;
+        width: 740px;
+    }
+}
+.order-total{
+    text-align: center;
+    background-color: #f7f7f7;
+    margin: 10px 0 20px;
+    padding: 10px;
+
+    &__txt{
+        font-size: 14px;
+        color: @txtColor;
+        .inline-block(middle);
+    }
+    &__sum{
+        font-size: 24px;
+        color: #000000;
+        .inline-block(middle);
+    }
+}
+.order-agreement{
+    &__check{
+        width: 300px;
+        margin: 0 auto;
+        font-size: 12px;
+        padding: 5px 10px;
+        color: @txtColor;
+    }
+    &__oferta{
+        border-bottom: 1px dotted;
+        cursor: pointer;
+    }
+}
+.order-popup{
+    padding: 20px;
+    width: 250px;
+    height: 100px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -125px;
+    background-color: #fff;
+    .box-shadow(0 0 10px rgba(0,0,0,0.5));
+    border: 1px solid #f5f5f5;
+    z-index: 1002;
+
+    &__closer{
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat  -27px -53px;
+        width: 10px;
+        height: 10px;
+        .inline-block(middle);
+        position: absolute;
+        cursor: pointer;
+        top: 10px;
+        right: 10px;
+    }
+  &__tl{
+    font-size: 18px;
+    color: @txtColor;
+    margin: 10px 0 20px;
+    text-align: center;
+  }
+  &__btn{
+    margin: 0 20px;
+    .inline-block();
+    &:last-child{
+      margin: 0;
+    }
+  }
+  &__overlay{
+    background-color: rgba(0,0,0,.3);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1001;
+    top: 0;
+    left: 0;
+  }
+
+}
+.order{
+    &__bonus-cards{
+        clear: both;
+        margin-top: 20px;
+        margin-left: 10px;
+
+        .bonusCnt_img{
+            width: 46px;
+        }
+    }
+}

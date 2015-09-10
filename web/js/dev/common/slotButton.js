@@ -3,7 +3,7 @@
 		$body = $('body'),
 		errorCssClass = 'lbl-error',
 		region = ENTER.config.pageConfig.user.region.name,
-		catalogPath = ENTER.utils.getCategoryPath(),
+		pageBusinessUnitId = ENTER.utils.getPageBusinessUnitId(),
 
 		showError = function($input) {
 			var $element = $input.closest('.js-slotButton-popup-element');
@@ -155,7 +155,7 @@
 			$errors.empty().hide();
 
 			if (!validate($form)) {
-				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
+				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', pageBusinessUnitId]);
 				return;
 			}
 
@@ -169,7 +169,7 @@
 				success: function(result){
 					if (result.error) {
 						$errors.text(result.error).show();
-						$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
+						$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', pageBusinessUnitId]);
 						return;
 					}
 
@@ -183,7 +183,7 @@
 						$popup.trigger('close');
 					});
 
-					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7 Оформить успешно', catalogPath]);
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7 Оформить успешно', pageBusinessUnitId]);
 
 					if (typeof ENTER.utils.sendOrderToGA == 'function' && result.orderAnalytics) {
 						ENTER.utils.sendOrderToGA(result.orderAnalytics);
@@ -191,7 +191,7 @@
 				},
 				error: function(){
 					$errors.text('Ошибка при создании заявки').show();
-					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', catalogPath]);
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '7_1 Оформить ошибка', pageBusinessUnitId]);
 				},
 				complete: function(){
 					$submitButton.removeAttr('disabled');
@@ -201,28 +201,28 @@
 
 		ENTER.utils.sendAdd2BasketGaEvent(productArticle, productPrice, true, true, ($button.data('sender') || {}).name);
 
-		$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '1 Вход', catalogPath]);
+		$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '1 Вход', pageBusinessUnitId]);
 
 		$phone.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '2 Телефон', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '2 Телефон', pageBusinessUnitId]);
 		});
 
 		$email.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '3 Email', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '3 Email', pageBusinessUnitId]);
 		});
 
 		$name.focus(function() {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '4 Имя', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '4 Имя', pageBusinessUnitId]);
 		});
 
 		$confirm.click(function(e) {
 			if (e.currentTarget.checked) {
-				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '5 Оферта', catalogPath]);
+				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '5 Оферта', pageBusinessUnitId]);
 			}
 		});
 
 		$goToProduct.click(function(e) {
-			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '6 Перейти в карточку', catalogPath]);
+			$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot', '6 Перейти в карточку', pageBusinessUnitId]);
 		});
 
 		$phone.focus();

@@ -47,8 +47,17 @@ class ShowPage extends \View\DefaultLayout {
     }
 
     public function slotConfig() {
+        $category = $this->getParam('category');
         return $this->tryRender('_config', ['config' => [
             'location' => ['listing'],
+            'category' => $category instanceof \Model\Product\Category\Entity ? [
+                'name' => $category->getName(),
+                'ancestors' => array_map(function(\Model\Product\Category\Entity $category) {
+                    return [
+                        'name' => $category->getName(),
+                    ];
+                }, $category->getAncestor()),
+            ] : [],
         ]]);
     }
 }

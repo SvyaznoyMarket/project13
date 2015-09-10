@@ -1051,6 +1051,7 @@
     var body = document.getElementsByTagName('body')[0],
         $body = $(body),
         $orderContent = $('#js-order-content'),
+        $inputs = $('.js-order-ctrl__input'),
         comment = '',
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
@@ -1089,6 +1090,9 @@
             var params = {'block_name': block_name};
             params[method] = isActive;
             sendChanges('changePaymentMethod', params)
+        },
+        changeAddress = function changeAddressF(params) {
+            sendChanges('changeAddress', params)
         },
         changeOrderComment = function changeOrderCommentF(comment){
             sendChanges('changeOrderComment', {'comment': comment})
@@ -1164,7 +1168,7 @@
 
             var hideContent = true;
 
-            if ($.inArray(action, ['changeDate', 'changeInterval', 'changeOrderComment']) != -1) hideContent = false;
+            if (-1 !== $.inArray(action, ['changeDate', 'changeInterval', 'changeOrderComment'])) hideContent = false;
 
             $.ajax({
                 type: 'POST',
@@ -1358,6 +1362,13 @@
         }
     });
 
+    // клик по способу доставки
+    $orderContent.on('click', '.jsDeliveryChange:not(.active)', function() {
+        var $elem = $(this);
+            changeDelivery($elem.closest('.jsOrderRow').data('block_name'), $elem.data('delivery_method_token'));
+
+    });
+
     // клик по дате в календаре
     $orderContent.on('click', '.celedr_col', function(){
         var timestamp = $(this).data('value');
@@ -1450,6 +1461,26 @@
         if (/SN.{10}/.test(number) && $orderBlock.find('.jsOrderV3Discount').length == 0) checkPandaPay($this, number);
         // иначе стандартный вариант
         else if (number != '') applyDiscount(block_name, number);
+
+        e.preventDefault();
+    });
+
+    // применить скидку
+    $orderContent.on('click', '.jsApplyDiscount-1509', function(e){
+        var
+            $el = $(this),
+            relations = $el.data('relation'),
+            value = $el.data('value') || {}
+        ;
+
+        value['number'] = $(relations['number']).val().trim();
+
+        // проверяем код PandaPay если есть совпадение маски и нет применённых дискаунтов
+        if (/SN.{10}/.test(value['number']) && $orderBlock.find('.jsOrderV3Discount').length == 0) {
+            checkPandaPay($el, value['number']); // иначе стандартный вариант
+        } else if ('' != value['number']) {
+            applyDiscount(value[['block_name']], value['number']);
+        }
 
         e.preventDefault();
     });
@@ -1557,7 +1588,149 @@
 
     $body.on('click', '.jsMapDeliveryList .jsChangePoint', function(){
         $body.trigger('trackGoogleEvent', ['pickup_ux', 'list_point', 'выбор'])
-    })
+    });
+
+    $body.on('keyup', '.js-order-ctrl__input', function(){
+        var $this = $(this),
+            $label = $this.parent().find('.js-order-ctrl__lbl');
+
+        if ( $this.val() !== '' ) {
+            $label.show();
+        } else {
+            $label.hide();
+        }
+    });
+    //показать блок редактирования товара - новая версия
+    $body.on('click', '.js-show-edit',function(){
+        $(this).hide();
+        $(this).parent().find('.js-edit').show();
+    });
+    //изменение кол-ва товара - новая версия
+    $body.on('click','.js-edit-quant',function(){
+        var $this = $(this),
+            $input = $this.parent().find('.js-quant'),
+            min = $input.data('min'),
+            delta = $this.data('delta'),
+            newVal = parseInt($input.val()) + parseInt(delta);
+        if (newVal >= min){
+            $input.val(newVal);
+        }
+
+    });
+    //вызов попапа подтверждения удаления товара из заказа
+    $body.on('click','.js-del-popup-show',function(){
+        var $this = $(this);
+            $this.parent().find('.js-del-popup').show();
+		$body.append("<div class='order-popup__overlay js-order-overlay'></div>");
+    });
+    $body.on('click','.js-del-popup-close',function(){
+        var $this = $(this);
+        $this.closest('.js-del-popup').hide();
+		$('.js-order-overlay').remove();
+    });
+    //закрытие алертов к заказу
+    $body.on('click','.js-order-err-close',function(){
+        $(this).closest('.order-error').hide();
+    });
+	$body.on('click','.js-order-overlay',function(){
+		$body.find('.js-del-popup').hide();
+		$(this).remove();
+	});
+
+    $body.on('blur', '.js-order-deliveryAddress', function() {
+        var
+            $el = $(this),
+            params = $el.data('value') || {},
+            relations = $el.data('relation'),
+            $container = $(relations['container']),
+            timer = $container.data('timer')
+        ;
+
+        // clear old timer
+        if (timer) {
+            clearTimeout(timer);
+            $container.data('timer', null);
+        }
+
+        // create new timer
+        timer = setTimeout(
+            function() {
+                var hasFocus = false;
+
+                $.each($container.find('[data-field]'), function(i, el) {
+                    var $el = $(el);
+
+                    if ($el.is(':focus')) {
+                        hasFocus = true;
+                        return false;
+                    }
+                });
+                if (hasFocus) {
+                    return;
+                }
+
+                $.each($container.find('[data-field]'), function(i, el) {
+                    var $el = $(el);
+
+                    params[$el.data('field')] = $el.val();
+                });
+
+                changeAddress(params);
+                console.info('changeAddress', params);
+            },
+            800
+        );
+        $container.data('timer', timer);
+    });
+
+    $('#auth-block').attr('data-state', 'register').addClass('state_register');
+
+    $body.on('click', '[form="js-orderForm"]', function(e) {
+        var
+            $el = $(this),
+            $form = $el.attr('form') && $('#' + $el.attr('form')),
+            formResult = { errors: [] }
+        ;
+        console.info($el, $form, formResult);
+
+        try {
+            if ($form.length) {
+                $form.trigger('form.reset');
+
+                $form.find('[required]').each(function(i, el) {
+                    var $el = $(el);
+
+                    if ($el.is(':checkbox')) {
+                        !$el.is(':checked') && formResult.errors.push({message: '', field: $el.data('field')});
+                    } else if ($el.is('input')) {
+                        console.warn($el.data('field'));
+                        !$el.val() && formResult.errors.push({message: '', field: $el.data('field')});
+                    }
+                });
+
+                if (formResult.errors.length) {
+                    $form.trigger('form.result', [formResult]);
+                } else {
+                    $form.submit();
+                }
+
+                e.preventDefault();
+            } else {
+                // default handler
+                console.warn('form not found');
+            }
+        } catch (error) { console.error(); }
+    });
+
+    // jQuery masked input
+    delete $.mask.definitions[9];
+    $.mask.definitions['x']='[0-9]';
+    $.mask.placeholder= "_";
+    $.mask.autoclear = false;
+    $.map($inputs, function(elem, i) {
+        if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
+    });
+
 
 })(jQuery);
 (function($) {
