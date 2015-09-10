@@ -11,7 +11,7 @@ return function(
         /** @var \Model\OrderDelivery\Entity\Order|null $order */
         $order = reset($orderDelivery->orders) ?: null;
         if (
-            in_array(\App::user()->getRegion()->parentId, [76, 90])  // Воронеж, Ярославль
+            \Session\AbTest\ABHelperTrait::isOrderDeliveryTypeTestAvailableInCurrentRegion()
             && ('default' !== $testKey)
             && $order
         ) {
