@@ -242,7 +242,13 @@ class DeliveryAction extends OrderV3 {
                                 /** @var \Model\OrderDelivery\Entity\Point\DefaultPoint $point */
                                 $point = $pointUiToObject[$pointData['uid']];
                                 if (!empty($pointData['partner']) && !empty($partners[$pointData['partner']])) {
-                                    $point->group = new \Model\Point\Group($partners[$pointData['partner']]);
+                                    $partner = $partners[$pointData['partner']];
+
+                                    if (strpos($point->name, 'Постамат') === 0 && strpos($partner['slug'], 'pickpoint') !== false) {
+                                        $partner['name'] = 'Постамат PickPoint';
+                                    }
+
+                                    $point->group = new \Model\Point\Group($partner);
                                 }
                             }
                         }
