@@ -92,7 +92,7 @@ class IndexAction {
 
         // Необходимо запрашивать модели товаров, т.к. option моделей используется в методе
         // \Model\Product\Entity::hasAvailableModels, который вызывается ниже
-        \RepositoryManager::product()->prepareProductQueries($products, 'model media');
+        \RepositoryManager::product()->prepareProductQueries($products, 'model media label');
 
         // выполнение 2-го пакета запросов в ядро
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);

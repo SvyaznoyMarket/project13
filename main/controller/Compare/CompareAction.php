@@ -34,7 +34,7 @@ class CompareAction {
             }
 
             $client = \App::coreClientV2();
-            \RepositoryManager::product()->prepareProductQueries($productsById, 'media property category');
+            \RepositoryManager::product()->prepareProductQueries($productsById, 'media property category label');
             \RepositoryManager::review()->prepareScoreCollection($productsById, function($data) use(&$reviewsData){
                 $reviewsData = $data;
             });
