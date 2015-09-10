@@ -66,7 +66,7 @@
                 // Setup events
                 this.events['click .' + CSS_CLASSES.PLUS]  = 'plus';
                 this.events['click .' + CSS_CLASSES.MINUS] = 'minus';
-                this.events['blur .' + CSS_CLASSES.VALUE]  = 'updateByHand';
+                this.events['keydown .' + CSS_CLASSES.VALUE]  = 'updateByHand';
 
                 // Apply events
                 this.delegateEvents();
@@ -105,22 +105,44 @@
                 this.input.val(this.quantity);
             },
 
-            updateByHand: function() {
+            updateByHand: (function () {
                 var
-                    val = parseInt(this.input.val(), 10);
+                    timeWindow = 500, // time in ms
+                    timeout,
 
-                if ( val < this.minValue ) {
-                    val = this.minValue;
-                } else if ( val > this.maxValue ) {
-                    val = this.maxValue;
-                }
+                    updateByHand = function ( args ) {
+                        var
+                            val = parseInt(this.input.val(), 10);
 
-                this.quantity = val
+                        if ( isNaN(val) || !val ) {
+                            return;
+                        }
 
-                this.trigger('changeQuantity', {
-                    quantity: this.quantity
-                });
-            },
+                        if ( val < this.minValue ) {
+                            val = this.minValue;
+                        } else if ( val > this.maxValue ) {
+                            val = this.maxValue;
+                        }
+
+                        this.quantity = val
+
+                        this.trigger('changeQuantity', {
+                            quantity: this.quantity
+                        });
+                    };
+
+                return function() {
+                    var
+                        context = this,
+                        args    = arguments;
+
+                    clearTimeout(timeout);
+
+                    timeout = setTimeout(function(){
+                        updateByHand.apply(context, args);
+                    }, timeWindow);
+                };
+            }()),
 
             /**
              * Вызов отрисовки модели
