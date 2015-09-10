@@ -78,6 +78,8 @@
 
 <?= $page->blockFooter() ?>
 
+<?= $page->blockUserConfig() ?>
+
 <?= $page->blockPopupTemplates() ?>
 
 </body>
