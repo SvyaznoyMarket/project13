@@ -302,21 +302,9 @@ $(document).ready(function(){
 		});
 	}
 
-    /* tabs на страницах доставки*/
-    $('.d-tab').on('click',function(){
-        var $this = $(this);
-        var id = $this.data('link');
-        var src = $this.parent().data('src');
-
-        if (!$this.hasClass('active')){
-            $this.parent().find('.d-tab').removeClass('active');
-            $this.addClass('active');
-
-            $('#'+src).find('.d-table').removeClass('active');
-            $('#'+src).find('#'+id).addClass('active');
-        }
-
-    })
+    $('.js-scms-changeRegion').on('click',function(){
+		$('.jsChangeRegion').click();
+    });
 
     //Попап стоимости доставки
     $('.js-tarifs-popup-show').on('click',function(){
