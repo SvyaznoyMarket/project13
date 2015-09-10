@@ -121,8 +121,8 @@
                 toVal      = slider.find('.' + CSS_CLASSES.SLIDER_TO);
                 config     = sliderWrap.data('config');
 
-                from = ( from < config.min ) ? config.min : from;
-                to   = ( to > config.max ) ? config.max : to;
+                from = ( !from || from < config.min ) ? config.min : from;
+                to   = ( !to || to > config.max ) ? config.max : to;
 
                 fromVal.val(from);
                 sliderWrap.slider('values', 0, from);
