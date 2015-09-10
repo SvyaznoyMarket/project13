@@ -11,6 +11,8 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <meta name='yandex-verification' content='5c7063a53fa016cf' />
+
     <link href="/public/favicon/mediumtile.png" rel="apple-touch-icon" />
     <link href="/public/favicon/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
     <link href="/public/favicon/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
