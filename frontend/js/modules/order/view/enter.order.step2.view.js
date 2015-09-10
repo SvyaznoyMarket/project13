@@ -241,8 +241,11 @@
                 });
 
                 if ( !valid ) {
+                    console.warn('with errors');
                     return false;
                 }
+
+                console.warn('without errors');
 
                 if ( this.subViews.smartAdress ) {
                     this.ajax({
@@ -271,9 +274,9 @@
                             console.groupEnd();
                         }
                     });
-                }
 
-                return false;
+                    return false;
+                }
             },
 
             /**
