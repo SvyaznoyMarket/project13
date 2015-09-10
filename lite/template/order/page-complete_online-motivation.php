@@ -78,7 +78,7 @@ return function(
 
         <? /*= $motivationAction && !$order->isPaidBySvyaznoy() ? $helper->render('order/complete-blocks/_online_motivation_action', ['order' => $order, 'orderPayment' => $orderPayment, 'action' => $motivationAction]) : '' */ ?>
 
-        <?= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order/complete-blocks/_svyaznoy-club') : '' ?>
+        <? /*= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order/complete-blocks/_svyaznoy-club') : '' */ ?>
 
         <? /* if (\App::config()->flocktoryExchange['enabled'] && !$order->isCredit()) : ?>
 <!--            <div>-->
