@@ -3,18 +3,23 @@
 namespace Controller\OrderV3;
 
 use EnterApplication\CurlTrait;
+use Session\AbTest\ABHelperTrait;
 use Http\RedirectResponse;
 use Model\OrderDelivery\ValidateException;
 use EnterQuery as Query;
 
 class NewAction extends OrderV3 {
-    use CurlTrait;
+    use CurlTrait, ABHelperTrait;
 
     /**
      * @param \Http\Request $request
      * @return \Http\Response
      */
     public function execute(\Http\Request $request) {
+        if (self::isOrderWithCart()) {
+            return (new \Controller\Cart\IndexAction())->execute($request);
+        }
+
         $response = parent::execute($request);
         if ($response) {
             return $response;
@@ -101,20 +106,7 @@ class NewAction extends OrderV3 {
 
     }
 
-    /** Есть ли товары не от Enter?
-     * @return bool
-     */
-    private function hasProductsOnlyFromPartner() {
-        foreach ($this->cart->getProductsById() as $cartProduct) {
-            if ($cartProduct->isOnlyFromPartner) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function validateInput(\Http\Request $request){
+    public function validateInput(\Http\Request $request){
 
         $result = ['errors' => [], 'phone' => '', 'email' => ''];
 

@@ -1,0 +1,116 @@
+@txtColor: #363636;
+@placeholderColor: #a0a0a0;
+@borderColor: #c7c7c7;
+@requiredColor: #f99b1c;
+
+.order-ctrl {
+    width: 110px;
+    position: relative;
+    padding-top: 15px;
+    margin-bottom: 6px;
+    .inline-block(middle);
+    margin-right: 30px;
+
+    &.fullwidth{
+        width: 100%;
+        max-width: 420px;
+        margin-right: 0px;
+    }
+    &__lbl{
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 12px;
+        margin-left: 10px;
+        color: @borderColor;
+        display: none;
+    }
+    &__input{
+        width: 100%;
+        height: 35px;
+        .box-sizing(border-box);
+        padding: 0 10px;
+        font-size: 14px;
+        color: @txtColor;
+        line-height: 33px;
+        border: 1px solid @borderColor;
+        .rounded(3px);
+
+        &::-webkit-input-placeholder {
+            color: @placeholderColor;
+        }
+        &::-moz-placeholder {
+            color: @placeholderColor;
+        }
+        &:-ms-input-placeholder {
+            color: @placeholderColor;
+        }
+        &:-moz-placeholder {
+            color: @placeholderColor;
+        }
+    }
+    &__err{
+        display: none;
+        color: #d45745;
+        font-size: 12px;
+        margin-left: 5px;
+    }
+
+    &.required{
+        .order-ctrl{
+            &__lbl{
+                color: @requiredColor;
+            }
+            &__input{
+                &::-webkit-input-placeholder {
+                    color: @requiredColor;
+                }
+                &::-moz-placeholder {
+                    color: @requiredColor;
+                }
+                &:-ms-input-placeholder {
+                    color: @requiredColor;
+                }
+                &:-moz-placeholder {
+                    color: @requiredColor;
+                }
+            }
+        }
+    }
+    &.error{
+        .order-ctrl{
+            border-color: #d45745;
+
+            &__err{
+                .inline-block();
+            }
+            &__lbl{
+                display: block;
+                color: #d45745;
+            }
+        }
+    }
+}
+
+
+.order-btn{
+    border: 1px solid;
+    .rounded(3px);
+    font-size: 14px;
+    height: 33px;
+    padding: 0 23px;
+    line-height: 33px;
+
+    &--default{
+        color: @txtColor;
+        background-color: @white;
+    }
+}
+
+.order-agreement__check{
+    border: 1px solid transparent;
+    .rounded(3px);
+    &.error{
+        border-color:#d45745;
+    }
+}

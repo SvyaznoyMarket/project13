@@ -149,4 +149,18 @@ class OrderV3 {
             \App::logger()->error(['error' => $e]);
         }
     }
+
+    /**
+     * Есть ли товары не от Enter?
+     * @return bool
+     */
+    protected function hasProductsOnlyFromPartner() {
+        foreach ($this->cart->getProductsById() as $cartProduct) {
+            if ($cartProduct->isOnlyFromPartner) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 } 

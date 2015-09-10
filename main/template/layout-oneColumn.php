@@ -39,7 +39,7 @@
 
     <?= $page->slotAdFoxBground() ?>
 
-    <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
+    <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage order-page<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
         <div class="header <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?> clearfix">
             <?= $page->render('main/banner.pickup') ?>
 

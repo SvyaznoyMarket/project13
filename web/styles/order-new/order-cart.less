@@ -1,0 +1,196 @@
+.order-cart {
+    margin-top: 10px;
+
+    &__item {
+        display: table;
+        position: relative;
+        width: 100%;
+        border-bottom: 1px solid #bababa;
+    }
+    &__item-del {
+        position: absolute;
+        top: 23px;
+        right: 6px;
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat -4px -53px;
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+        font-size: 0;
+    }
+    &__img {
+        display: table-cell;
+        padding: 10px 0px;
+    }
+    &__img-lk {
+        .inline-block();
+        width: 130px;
+        height: 130px;
+        text-align: center;
+        img {
+            max-width: 120px;
+            max-height: 120px;
+            .inline-block(middle);
+        }
+        &:after {
+            content: '';
+            .inline-block(middle);
+            width: 0;
+            height: 100%;
+        }
+    }
+    &__desc {
+        display: table-cell;
+        padding: 10px 5px 45px 14px;
+        vertical-align: top;
+        position: relative;
+    }
+    &__name {
+        width: 640px;
+        font-size: 16px;
+        &.unavailable{
+            .order-cart__name-lk{
+                color: #868686;
+            }
+            .order-cart__is-available{
+                color: #d45745;
+            }
+        }
+    }
+    &__name-lk {
+        color: #363636;
+    }
+    &__is-available {
+        font-size: 14px;
+        border-left: 3px solid;
+        color: #80c342;
+        padding-left: 5px;
+        line-height: 17px;
+        margin-top: 10px;
+    }
+
+    &__price-counter {
+        position: absolute;
+        bottom: 13px;
+        height: 26px;
+        width: 100%;
+        left: 0px;
+        text-align: right;
+        font-size: 0;
+    }
+    &__price {
+        .inline-block(middle);
+        font-size: 18px;
+        color: #5e5d5d;
+    }
+    &__count {
+        .inline-block(middle);
+        margin-left: 20px;
+    }
+    &__info {
+        display: table-cell;
+        padding: 10px 5px;
+        vertical-align: bottom;
+    }
+    &__total {
+        width: 150px;
+        color: #363636;
+        font-size: 24px;
+        text-align: right;
+        white-space: nowrap;
+    }
+    &__total-sum {
+        .inline-block(middle);
+    }
+    &__units{
+        margin-left: 5px;
+        color: #5e5d5d;
+        font-size: 16px;
+        .inline-block(middle);
+    }
+    &__common-total{
+        border-bottom: 1px solid #bababa;
+        text-align: right;
+        padding: 35px 15px 35px 0;
+
+        .order-cart__total{
+            width: auto;
+        }
+    }
+    &__sum-txt{
+        color: #5e5e5e;
+        .inline-block(middle);
+        margin-right: 5px;
+        font-size: 17px;
+    }
+    &__btn{
+        margin: 20px 0 10px;
+    }
+    &__back{
+        text-align: center;
+
+        a {
+            color: #363636;
+            font-size: 18px;
+            &:before{
+                content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAATCAQAAAD2HN/VAAAAjklEQVR4AWPADViR2No8pnfMAqEcY1azRWZHGVggPEazKLN3FpowOWXTl2YZUI4Kn9k+0yUMjBAes1m96U0rMaicpYrZN1MPuAWmzmZPzPQRFjKbrjTbYCaMkFcyuWZSaoxwk5ml6SXTNIQGRpNss4umpnC+Oq/ZArMN5nxwAUNRsw0mZkh+cpDw5WLACwCynx0N07qtHAAAAABJRU5ErkJggg==');
+                width: 7px;
+                height: 19px;
+                .inline-block(middle);
+                margin-right: 8px;
+            }
+            text-decoration: none;
+
+            &:hover{
+                text-decoration: none;
+            }
+        }
+        &-txt{
+            padding-bottom: 1px;
+            border-bottom: 1px solid;
+        }
+    }
+}
+
+
+// счетчик количества товара
+.count{
+    overflow: hidden;
+    .rounded(3px);
+    border: 1px solid #d3d3d3;
+    font-size: 0;
+    white-space: nowrap;
+
+    &__ctrl{
+        .inline-block();
+        height: 23px;
+        width: 34px;
+        color: #5e5d5d;
+        border: none;
+        outline: none;
+        background-color: #f6f6f6;
+        font-size: 20px;
+        text-align: center;
+        line-height: 1;
+
+        &--less{
+        }
+        &--more{
+        }
+        &:hover{
+            text-decoration: none;
+        }
+    }
+
+    &__num{
+        .inline-block();
+        height: 23px;
+        width: 35px;
+        border: 0;
+        border-right: 1px solid #d3d3d3;
+        border-left: 1px solid #d3d3d3;
+        text-align: center;
+        font-size: 18px;
+        padding: 0;
+        margin: 0;
+    }
+}

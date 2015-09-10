@@ -22,6 +22,13 @@ class DeliveryAction extends OrderV3 {
             return $response;
         }
 
+        $bonusCards = [];
+        try {
+            $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection(['product_list' => array_map(function(\Model\Cart\Product\Entity $cartProduct) { return ['id' => $cartProduct->id, 'quantity' => $cartProduct->quantity]; }, $this->cart->getProductsById())]);
+        } catch (\Exception $e) {
+            \App::logger()->error($e->getMessage(), ['cart/split']);
+        }
+
         if ($request->isXmlHttpRequest()) {
 
             $splitData = [];
@@ -45,16 +52,17 @@ class DeliveryAction extends OrderV3 {
                     $result['OrderDeliveryModel'] = $orderDeliveryModel;
                 }
 
-
                 $page = new \View\OrderV3\DeliveryPage();
                 $page->setParam('orderDelivery', $orderDeliveryModel);
+                $page->setParam('bonusCards', $bonusCards);
+                $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner());
                 $result['page'] = $page->slotContent();
 
             } catch (\Curl\Exception $e) {
                 \App::exception()->remove($e);
                 $result['error']    = ['message' => $e->getMessage()];
                 $result['data']     = ['data' => $splitData];
-                if ($e->getCode() == 600) {
+                if (in_array($e->getCode(), [600, 302])) {
                     $this->cart->clear();
                     $result['redirect'] = \App::router()->generate('cart');
                 }
@@ -72,11 +80,18 @@ class DeliveryAction extends OrderV3 {
 
             $this->logger(['action' => 'view-page-delivery']);
 
-            if (!$this->session->get($this->splitSessionKey)) return new \Http\RedirectResponse(\App::router()->generate('cart'));
-
-            // сохраняем данные пользователя
-            $data['action'] = 'changeUserInfo';
-            $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+            $data = null;
+            $previousSplit = $this->session->get($this->splitSessionKey);
+            if (!self::isOrderWithCart()) {
+                if (!$previousSplit) return new \Http\RedirectResponse(\App::router()->generate('cart'));
+                // сохраняем данные пользователя
+                $data['action'] = 'changeUserInfo';
+                $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+            } else {
+                if (isset($previousSplit['user_info'])) {
+                    $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+                }
+            }
 
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
             $orderDelivery = $this->getSplit($data);
@@ -101,6 +116,8 @@ class DeliveryAction extends OrderV3 {
 
             $page = new \View\OrderV3\DeliveryPage();
             $page->setParam('orderDelivery', $orderDelivery);
+            $page->setParam('bonusCards', $bonusCards);
+            $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner());
 
             // http-ответ
             $response = new \Http\Response($page->show());
@@ -125,6 +142,10 @@ class DeliveryAction extends OrderV3 {
 
             return new \Http\Response($page->show());
         } catch (\Exception $e) {
+            if (302 === $e->getCode()) {
+                return new \Http\RedirectResponse(\App::router()->generate('cart'));
+            }
+
             \App::logger()->error($e->getMessage(), ['cart/split']);
             $page = new \View\OrderV3\ErrorPage();
             $page->setParam('error', $e->getMessage());
@@ -136,7 +157,7 @@ class DeliveryAction extends OrderV3 {
 
     public function getSplit(array $data = null, $userData = null) {
 
-        if (!$this->cart->count()) throw new \Exception('Пустая корзина');
+        if (!$this->cart->count()) throw new \Exception('Пустая корзина', 302);
 
         if ($data) {
             $splitData = [

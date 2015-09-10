@@ -144,4 +144,12 @@ trait ABHelperTrait {
     public static function isCoreCart() {
         return 'enabled' === \App::abTest()->getTest('core_cart')->getChosenCase()->getKey();
     }
+
+    /**
+     * Корзина в заказе
+     * @return bool
+     */
+    public static function isOrderWithCart() {
+        return 'enabled' === \App::abTest()->getTest('order_with_cart')->getChosenCase()->getKey();
+    }
 }

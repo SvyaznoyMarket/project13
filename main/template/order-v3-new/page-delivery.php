@@ -2,7 +2,12 @@
 
 use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
 
-return function(
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\OrderDelivery\Entity $orderDelivery
+ * @param null $error
+ */
+$f = function(
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity $orderDelivery,
     $error = null
@@ -363,4 +368,4 @@ return function(
 
 <?= $helper->render('order-v3-new/__delivery-analytics', ['orderDelivery' => $orderDelivery]) ?>
 
-<? };
+<? }; return $f;
