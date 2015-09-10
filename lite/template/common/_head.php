@@ -5,11 +5,10 @@
 ?>
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><?= $page->getTitle() ?></title>
+
+    <?= $page->blockMetatags() ?>
 
     <link href="/public/favicon/mediumtile.png" rel="apple-touch-icon" />
     <link href="/public/favicon/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
