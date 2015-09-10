@@ -40,17 +40,17 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
         <form class="js-form" action="<?= $page->url('user.update.password') ?>" method="post" data-result="<?= $helper->json($passwordFormResult) ?>">
             <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
 
-            <div class="form-group">
+            <div class="form-group" data-field-container="password_old">
                 <label class="label-control">Старый пароль</label>
-                <input class="input-control" type="password" name="password_old" autocomplete="off">
+                <input class="input-control" type="password" name="password_old" autocomplete="off" data-field="password_old">
             </div>
-            <div class="form-group">
+            <div class="form-group" data-field-container="password_new">
                 <label class="label-control">Новый пароль</label>
-                <input class="input-control" type="password" name="password_new" autocomplete="off">
+                <input class="input-control" type="password" name="password_new" autocomplete="off" data-field="password_new">
             </div>
-            <div class="form-group">
+            <div class="form-group" data-field-container="password_repeat">
                 <label class="label-control">Повторите пароль</label>
-                <input class="input-control" type="password" name="password_repeat" autocomplete="off">
+                <input class="input-control" type="password" name="password_repeat" autocomplete="off" data-field="password_repeat">
             </div>
             <div class="form-group">
                 <button type="submit" class="btn-type btn-type--buy">Сохранить</button>
@@ -62,37 +62,37 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
         <form class="js-form" action="<?= $page->url('user.update') ?>" method="post" data-result="<?= $helper->json($formResult) ?>">
             <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
 
-            <div class="form-group">
+            <div class="form-group" data-field-container="first_name">
                 <label class="label-control">Имя</label>
-                <input class="input-control" type="text" value="<?= $form->getFirstName() ?>" name="user[first_name]">
+                <input class="input-control" type="text" value="<?= $form->getFirstName() ?>" name="user[first_name]" data-field="first_name">
             </div>
-            <div class="form-group">
+            <div class="form-group" data-field-container="middle_name">
                 <label class="label-control">Отчество</label>
-                <input class="input-control" type="text" value="<?= $form->getMiddleName() ?>" name="user[middle_name]">
+                <input class="input-control" type="text" value="<?= $form->getMiddleName() ?>" name="user[middle_name]" data-field="middle_name">
             </div>
-            <div class="form-group">
+            <div class="form-group" data-field-container="last_name">
                 <label class="label-control">Фамилия</label>
-                <input class="input-control" type="text" value="<?= $form->getLastName() ?>" name="user[last_name]">
+                <input class="input-control" type="text" value="<?= $form->getLastName() ?>" name="user[last_name]" data-field="last_name">
             </div>
-            <div class="form-group inline">
+            <div class="form-group inline" data-field-container="birthday.day">
                 <label class="label-control">Дата рождения</label>
                 <div class="custom-select custom-select--day">
-                    <select class="custom-select__inn" name="user[birthday][day]">
+                    <select class="custom-select__inn" name="user[birthday][day]" data-field="birthday.day">
                     <? foreach (array_merge([''], range(1, 31)) as $day):  ?>
                         <option class="custom-select__i" value="<?= $day ?>"<? if ((int)$day == (int)$selectedDay): ?> selected="selected"<? endif ?>><?= $day ?></option>
                     <? endforeach ?>
                     </select>
                 </div>
-                <div class="custom-select custom-select--month">
-                    <select class="custom-select__inn" name="user[birthday][month]">
+                <div class="custom-select custom-select--month" data-field-container="birthday.month">
+                    <select class="custom-select__inn" name="user[birthday][month]" data-field="birthday.month">
                     <? foreach (array_merge([''], range(1, 12)) as $month): ?>
                         <option class="custom-select__i" value="<?= $month ?>"<? if ((int)$month == (int)$selectedMonth): ?> selected="selected"<? endif ?>><?= $month ?></option>
                     <? endforeach ?>
                     </select>
                 </div>
 
-                <div class="custom-select custom-select--year">
-                    <select class="custom-select__inn" name="user[birthday][year]">
+                <div class="custom-select custom-select--year" data-field-container="birthday.year">
+                    <select class="custom-select__inn" name="user[birthday][year]" data-field="birthday.year">
                     <? foreach (array_merge([''], range(date('Y')-6, 1939)) as $year): ?>
                         <option class="custom-select__i" value="<?= $year ?>"<? if ((int)$year == (int)$selectedYear): ?> selected="selected"<? endif ?>><?= $year ?></option>
                     <? endforeach ?>
@@ -101,29 +101,29 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
             </div>
             <div class="form-group inline right">
                 <label class="label-control">Пол</label>
-                <div class="custom-select custom-select--sex">
-                    <select class="custom-select__inn" name="user[sex]">
+                <div class="custom-select custom-select--sex" data-field-container="sex">
+                    <select class="custom-select__inn" name="user[sex]" data-field="sex">
                     <? foreach (['' => '', '1' => 'мужской', '2' => 'женский'] as $sexValue => $sexName): ?>
                         <option class="custom-select__i" value="<?= $sexValue ?>"<? if ((int)$sexValue == (int)$form->getSex()): ?> selected="selected"<? endif ?>><?= $sexName ?></option>
                     <? endforeach ?>
                     </select>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="label-control">email не редактируется</label>
-                <input class="input-control disabled" type="text" value="<?= $form->getEmail() ?>" name="user[email]" <? if ($form->getIsDisabled()): ?>disabled<? endif ?>>
+            <div class="form-group" data-field-container="email">
+                <label class="label-control">Email</label>
+                <input class="input-control disabled" type="text" value="<?= $form->getEmail() ?>" name="user[email]" <? if ($form->getIsDisabled()): ?>disabled<? endif ?> data-field="email">
             </div>
-            <div class="form-group">
+            <div class="form-group" data-field-container="phone">
                 <label class="label-control">Мобильный телефон</label>
-                <input class="input-control" type="text" value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" <? if ($form->getIsDisabled()): ?>disabled<? endif ?>>
+                <input class="input-control" type="text" value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" <? if ($form->getIsDisabled()): ?>disabled<? endif ?> data-field="phone">
             </div>
-            <div class="form-group">
+            <div class="form-group" data-field-container="home_phone">
                 <label class="label-control">Домашний телефон</label>
-                <input class="input-control" type="text" value="<?= $form->getHomePhone() ?>" name="user[home_phone]">
+                <input class="input-control" type="text" value="<?= $form->getHomePhone() ?>" name="user[home_phone]" data-field="home_phone">
             </div>
-            <div class="form-group">
+            <div class="form-group" data-field-container="occupation">
                 <label class="label-control">Род деятельности</label>
-                <input class="input-control" type="text" value="<?= $form->getOccupation() ?>" name="user[occupation]">
+                <input class="input-control" type="text" value="<?= $form->getOccupation() ?>" name="user[occupation]" data-field="occupation">
             </div>
             <div class="form-group">
                 <button type="submit" class="btn-type btn-type--buy">Сохранить изменения</button>
