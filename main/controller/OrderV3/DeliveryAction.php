@@ -226,7 +226,6 @@ class DeliveryAction extends OrderV3 {
 
         if ($pointUiToObject) {
             \App::scmsClient()->addQuery('api/point/get', [
-                'geo_id' => $this->user->getRegion()->getId(),
                 'uids' => array_keys($pointUiToObject),
             ], [],
                 function ($data) use($pointUiToObject) {
