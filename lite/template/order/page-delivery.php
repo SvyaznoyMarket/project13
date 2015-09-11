@@ -209,7 +209,7 @@ return function(
                     <div class="checkout-order__head order-head">
                         <span class="checkout-order__number">Заказ №<?= ($i) ?></span>
                         <? if ($order->seller): ?>
-                            <span class="checkout-order__vendor">продавец: <?= $order->seller->name ?> <a class="checkout-order__vendor-offer js-order-oferta-popup-btn" href="<?= $order->seller->offer ?>" data-value="<?= $order->seller->offer ?>" target="_blank"></a></span>
+                            <span class="checkout-order__vendor">продавец: <?= $order->seller->name ?> <a href="#" class="checkout-order__vendor-offer js-order-oferta-popup-bt" data-offer="<?= preg_replace('/https?\:\/\/.*?\//i', '/', $order->seller->offer) ?>" data-privacy="/sordex-privacy-content"></a></span>
                         <? endif ?>
                     </div>
 
