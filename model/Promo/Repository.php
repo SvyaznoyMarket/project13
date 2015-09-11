@@ -23,7 +23,7 @@ class Repository {
             [
                 'slugs' => [$token],
             ]
-        )['result'][0];
+        )[0];
         if (is_array($data)) {
             $data['token'] = $token;
         }
