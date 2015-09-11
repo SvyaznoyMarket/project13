@@ -26,7 +26,6 @@ class Autoloader {
                     $path = $basePath . '/lite';
                     break;
                 case 'Repository':
-                    $class = lcfirst($class);
                     $path = $basePath . '/lite';
                     break;
             }
