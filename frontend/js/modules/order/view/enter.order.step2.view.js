@@ -296,15 +296,17 @@
                 }
 
                 if ( this.subViews.offerPopupView ) {
-                    this.subViews.offerPopupView.show();
-                    return false;
+                    this.subViews.offerPopupView.initialize({
+                        offerUrl: offerUrl,
+                        privacyUrl: privacyUrl
+                    });
+                } else {
+                    this.subViews.offerPopupView = new OfferPopupView({
+                        el: this.subViews.offerPopup,
+                        offerUrl: offerUrl,
+                        privacyUrl: privacyUrl
+                    });
                 }
-
-                this.subViews.offerPopupView = new OfferPopupView({
-                    el: this.subViews.offerPopup,
-                    offerUrl: offerUrl,
-                    privacyUrl: privacyUrl
-                });
 
                 return false;
             },
