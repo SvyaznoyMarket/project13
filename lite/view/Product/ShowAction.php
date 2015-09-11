@@ -55,6 +55,7 @@ class ShowAction {
             'price'        => $helper->formatPrice($product->getPrice()),
             'oldPrice'     => null,
             'isBuyable'    => $product->getIsBuyable(),
+            'isAvailable'  => $product->isAvailable(),
             'inShopShowroomLabel'  => !$product->getIsBuyable() && $product->isInShopShowroomOnly() ? 'На витрине' : '',
             'inShopStockOnlyLabel' => $product->isInShopStockOnly() ? 'Только в магазинах' : '',
             'notBuyableLabel'      => !$product->isInShopShowroomOnly() && !$product->isInShopStockOnly() && !$product->getIsBuyable() ? 'Нет в наличии' : '',
