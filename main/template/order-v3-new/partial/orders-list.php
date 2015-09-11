@@ -40,7 +40,6 @@ $f = function (
             <!-- левая часть блока заказа - список заказанных товаров-->
             <div class="order-bill__wrap">
             <div class="order-bill__goods">
-                <div class="">
                 <div class="order-bill__body">
                 <? if ($order->seller): ?>
                     <div class="order-bill__seller">продавец: <?= $order->seller->name ?> <a
@@ -152,8 +151,9 @@ $f = function (
                 <? endif; ?>
                 </div>
                 <!-- статика: Введенная скидка - при выборе типа оплаты -->
-                    <div class="payment-discount">
-                    <div class="order-discount__item clearfix">
+                <div class="payment-discount"><!-- контейнер купонов, max их может быть 2 (инфо от редакции)-->
+                    <!-- элемент скидки -->
+                    <div class="order-discount__item">
                         <div class="order-discount__cell">
                             <span class="order-discount__del jsDeleteCertificate">удалить</span>
                         </div>
@@ -167,12 +167,12 @@ $f = function (
                                     class="order-discount__val">-350
                                     <span class="rubl">p</span></span>
                     </div>
-                    </div>
+                    <!-- END элемент скидки -->
+                </div>
                 <!-- END Введенная скидка - при выборе типа оплаты -->
 
 
                 <!-- END: введенные скидки, купоны -->
-                </div>
             </div>
             <!-- END левая часть блока заказа - список заказанных товаров-->
 
