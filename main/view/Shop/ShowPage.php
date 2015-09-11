@@ -3,7 +3,7 @@
 namespace View\Shop;
 
 class ShowPage extends \View\DefaultLayout {
-    protected $layout = 'layout-oneColumn';
+    protected $layout  = 'layout-twoColumn';
 
     public function slotBodyDataAttribute() {
         return 'shop';
@@ -32,7 +32,6 @@ class ShowPage extends \View\DefaultLayout {
         }
 
         return \App::mustache()->render('shop/show/content', [
-            'title' => $this->getTitle(),
             'backUrl' => \App::router()->generate('shop'),
             'point' => [
                 'address' => $point->address,
@@ -69,6 +68,10 @@ class ShowPage extends \View\DefaultLayout {
                 }, $point->medias))),
             ],
         ]);
+    }
+
+    public function slotSidebar() {
+        return $this->getParam('sidebar');
     }
 
     public function slotBodyClassAttribute() {

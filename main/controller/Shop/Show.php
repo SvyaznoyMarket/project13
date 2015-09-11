@@ -10,11 +10,11 @@ class Show {
      * @throws \Exception\NotFoundException
      */
     public function execute($shopToken) {
-        $client = \App::coreClientV2();
+        $scmsClient = \App::scmsClient();
         $user = \App::user();
 
         /** @var $point \Model\Point\ScmsPoint */
-        \App::scmsClient()->addQuery('api/point/get', ['slugs' => [$shopToken], 'full' => 1], [], function($data) use(&$point) {
+        $scmsClient->addQuery('api/point/get', ['slugs' => [$shopToken], 'full' => 1], [], function($data) use(&$point) {
             if (isset($data['points']) && is_array($data['points'])) {
                 $point = new \Model\Point\ScmsPoint($data['points'][0]);
             }
@@ -28,14 +28,25 @@ class Show {
             }
         });
 
-        $client->execute();
+        $scmsClient->addQuery(
+            'api/static-page',
+            ['token' => ['menu']],
+            [],
+            function($data) use (&$sidebar) {
+                if (isset($data['pages'][0]['content'])) {
+                    $sidebar = (string)$data['pages'][0]['content'];
+                }
+            }
+        );
+
+        $scmsClient->execute();
 
         if (!$point) {
             throw new \Exception\NotFoundException('Магазин ' . $shopToken . ' не найдена');
         }
 
         if ($point->town->names->nominativus) {
-            \App::scmsClient()->addQuery('api/word-inflect', ['names' => [$point->town->names->nominativus]], [], function($data) use(&$point) {
+            $scmsClient->addQuery('api/word-inflect', ['names' => [$point->town->names->nominativus]], [], function($data) use(&$point) {
                 if (isset($data[$point->town->names->nominativus])) {
                     $point->town->names = new \Model\Inflections($data[$point->town->names->nominativus]);
                 }
@@ -51,7 +62,7 @@ class Show {
             });
         }
 
-        $client->execute();
+        $scmsClient->execute();
 
 //        if (in_array($point->getId(), [194])) {
 //            \RepositoryManager::product()->prepareIteratorByFilter(
@@ -76,6 +87,8 @@ class Show {
 
         $page = new \View\Shop\ShowPage();
         $page->setTitle($point->partner->name . ', ' . $point->name);
+        $page->setParam('title', $page->getTitle());
+        $page->setParam('sidebar', $sidebar);
         $page->setParam('point', $point);
 
         return new \Http\Response($page->show());

@@ -5,7 +5,6 @@ namespace View\Shop;
 use Model\Point\ScmsPoint;
 
 class IndexPage extends \View\DefaultLayout {
-
     protected $layout  = 'layout-twoColumn';
 
     protected function prepare() {
