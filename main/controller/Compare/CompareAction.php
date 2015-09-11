@@ -111,6 +111,7 @@ class CompareAction {
                         'inShopStockOnly' => $product->isInShopStockOnly(),
                         'inShopShowroomOnly' => $product->isInShopShowroomOnly(),
                         'isBuyable' => $product->getIsBuyable(),
+                        'isAvailable' => $product->isAvailable(),
                         'statusId' => $product->getStatusId(),
                         'imageUrl' => $product->getMainImageUrl('product_120'),
                         'partnerName' => $slotPartnerOffer ? $slotPartnerOffer['name'] : '',
