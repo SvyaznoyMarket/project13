@@ -1,11 +1,10 @@
 <?php
 
-namespace View\Content;
-
+namespace View\Shop;
 
 use Model\Point\ScmsPoint;
 
-class DeliveryMapPage extends \View\DefaultLayout {
+class IndexPage extends \View\DefaultLayout {
 
     protected $layout  = 'layout-twoColumn';
 
@@ -17,7 +16,7 @@ class DeliveryMapPage extends \View\DefaultLayout {
         $this->filterPoints($points);
 
         // Фильтруем партнеров, оставляя только тех, которые есть в списке точек
-        $existingPartners = array_unique(array_map(function(ScmsPoint $point){ return $point->partner;}, $points));
+        $existingPartners = array_unique(array_map(function(ScmsPoint $point){ return $point->partner->slug; }, $points));
         $partners = array_intersect_key($partners, array_fill_keys($existingPartners, null));
 
         // Сортируем
@@ -38,7 +37,7 @@ class DeliveryMapPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('content/page-delivery', $this->params);
+        return $this->render('shop/content', $this->params);
     }
 
     public function slotSidebar() {
@@ -46,6 +45,7 @@ class DeliveryMapPage extends \View\DefaultLayout {
     }
 
     /** Фильтруем точки вручную (вынужденный говнокод)
+     * SITE-5819
      * @param $points ScmsPoint[]
      */
     private function filterPoints(&$points) {
@@ -53,7 +53,7 @@ class DeliveryMapPage extends \View\DefaultLayout {
         $svyaznoyList = ['4050800','4010800','4020000','4020800','4060800','7060800','7010403','7071800','7080000','2030000','5010000','5091900','5050800','5030000','1021900','3010000','3050000','2010000','11040000','11140800','11150000','11160000'];
 
         $points = array_filter($points, function (ScmsPoint $point) use ($svyaznoyList) {
-            return $point->partner != ScmsPoint::PARTNER_SLUG_SVYAZNOY ? true :
+            return $point->partner->slug != ScmsPoint::PARTNER_SLUG_SVYAZNOY ? true :
                 false !== in_array($point->vendorId, $svyaznoyList);
         });
     }
@@ -82,7 +82,7 @@ class DeliveryMapPage extends \View\DefaultLayout {
                 ],
                 'properties'    => [
                     'eUid'     => $point->uid,
-                    'ePartner' => $point->partner
+                    'ePartner' => $point->partner->slug
                 ]
             ];
         }

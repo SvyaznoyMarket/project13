@@ -1,0 +1,60 @@
+<h1>{{title}}</h1>
+<p><a href="{{backUrl}}">Все магазины и точки самовывоза в {{point.town.names.locativus}}</a></p>
+
+{{#point.subway.name}}
+    <p>{{point.subway.name}}</p>
+{{/point.subway.name}}
+
+{{#point.address}}
+    <p>{{point.address}}</p>
+{{/point.address}}
+
+{{#point.workingTime}}
+    <p>Работает {{point.workingTime}}</p>
+{{/point.workingTime}}
+
+{{#point.phone}}
+    <p>Телефон: {{point.phone}}</p>
+{{/point.phone}}
+
+<a href="#">Распечатать</a>
+<a href="#">Отправить на email</a>
+
+{{#point.showMap}}
+    <div class="bMap__eBody js-shop-viewport" data-map-latitude="{{point.latitude}}" data-map-longitude="{{point.longitude}}"></div>
+    {{#point.images.0}}
+        {{#point.images}}
+            <a class="js-shop-image-opener" data-big-url="{{big.url}}" data-type="image">
+                <img src="{{small.url}}" alt="" />
+            </a>
+        {{/point.images}}
+
+        <a class="js-shop-image-opener" data-type="map">
+            <img src="/images/map_ico.png" alt="" />
+        </a>
+    {{/point.images.0}}
+{{/point.showMap}}
+
+{{#point.description}}
+    <p>{{point.description}}</p>
+{{/point.description}}
+
+{{#point.way}}
+    <h2>Как добраться</h2>
+
+    {{#point.way.common}}
+        <p>{{point.way.common}}</p>
+    {{/point.way.common}}
+
+    {{^point.way.common}}
+        {{#point.way.walk}}
+            <h3>На городском транспорте</h3>
+            <p>{{point.way.walk}}</p>
+        {{/point.way.walk}}
+
+        {{#point.way.auto}}
+            <h3>На авто</h3>
+            <p>{{point.way.auto}}</p>
+        {{/point.way.auto}}
+    {{/point.way.common}}
+{{/point.way}}

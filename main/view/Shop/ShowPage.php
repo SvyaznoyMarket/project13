@@ -5,45 +5,70 @@ namespace View\Shop;
 class ShowPage extends \View\DefaultLayout {
     protected $layout = 'layout-oneColumn';
 
-    public function prepare() {
-        /** @var $shop \Model\Shop\Entity */
-        $shop = $this->getParam('shop');
-        if (!$shop) {
-            return;
-        }
-
-        $region = $shop->getRegion();
-        if (!$region) {
-            return;
-        }
-
-        // breadcrumbs
-        if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = [];
-            $shopRegionNameInPrepositionalCase = $this->getParam('shopRegionNameInPrepositionalCase');
-            $breadcrumbs[] = array(
-                'name' => 'Магазины Enter в ' . ($shopRegionNameInPrepositionalCase ? $shopRegionNameInPrepositionalCase : 'городе ' . $region->getName()),
-                'url'  => \App::router()->generate('shop.region', array('regionId' => $region->getId())),
-            );
-            $breadcrumbs[] = array(
-                'name' => $shop->getName(),
-                'url'  => null, // потому что последний элемент ;)
-            );
-
-            $this->setParam('breadcrumbs', $breadcrumbs);
-        }
-
-        // seo: title
-        $this->setTitle($shop->getName());
-        $this->setParam('title', $shop->getName());
-    }
-
     public function slotBodyDataAttribute() {
         return 'shop';
     }
 
     public function slotContent() {
-        return $this->render('shop/page-show', $this->params);
+        /** @var $point \Model\Point\ScmsPoint */
+        $point = $this->getParam('point');
+
+        if ($point->wayWalk || $point->wayAuto) {
+            if ($point->wayWalk && !$point->wayAuto) {
+                $commonWay = $point->wayWalk;
+            } else if (!$point->wayWalk && $point->wayAuto) {
+                $commonWay = $point->wayAuto;
+            } else {
+                $commonWay = '';
+            }
+
+            $way = [
+                'common' => $commonWay,
+                'walk' => $point->wayWalk,
+                'auto' => $point->wayAuto,
+            ];
+        } else {
+            $way = [];
+        }
+
+        return \App::mustache()->render('shop/show/content', [
+            'title' => $this->getTitle(),
+            'backUrl' => \App::router()->generate('shop'),
+            'point' => [
+                'address' => $point->address,
+                'showMap' => $point->latitude && $point->longitude,
+                'latitude' => $point->latitude,
+                'longitude' => $point->longitude,
+                'workingTime' => $point->workingTime,
+                'phone' => $point->phone,
+                'name' => $point->description,
+                'way' => $way,
+                'town' => [
+                    'names' => [
+                        'locativus' => $point->town->names->locativus,
+                    ],
+                ],
+                'subway' => [
+                    'name' => $point->subway->getName(),
+                ],
+                'images' => array_values(array_filter(array_map(function(\Model\Media $media) {
+                    if ($media->provider !== 'image') {
+                        return null;
+                    }
+
+                    $smallSource = $media->getSource('shop_small');
+                    $bigSource = $media->getSource('shop_big');
+                    return [
+                        'small' => [
+                            'url' => $smallSource ? $smallSource->url : '',
+                        ],
+                        'big' => [
+                            'url' => $bigSource ? $bigSource->url : '',
+                        ],
+                    ];
+                }, $point->medias))),
+            ],
+        ]);
     }
 
     public function slotBodyClassAttribute() {
