@@ -99,7 +99,9 @@ $f = function (
 
                 <!-- введенные скидки, купоны -->
 
+
                 <? if ((bool)$order->discounts || $order->certificate['par'] !== null) : ?>
+                    <div class="payment-discount"><!-- контейнер купонов, max их может быть 2 (инфо от редакции)-->
 
                     <div class="order-discount__head">Скидки</div>
 
@@ -148,31 +150,26 @@ $f = function (
 
                     <? endif; ?>
 
-                <? endif; ?>
-                </div>
-                <!-- статика: Введенная скидка - при выборе типа оплаты -->
-                <div class="payment-discount"><!-- контейнер купонов, max их может быть 2 (инфо от редакции)-->
-                    <!-- элемент скидки -->
-                    <div class="order-discount__item">
-                        <div class="order-discount__cell">
-                            <span class="order-discount__del jsDeleteCertificate">удалить</span>
-                        </div>
-                        <a href="" class="order-discount__lk">
-                            <img class="order-discount__img" src="/styles/order-new/img/payment-discount.png" alt="">
-                        </a>
+                        <!-- Статика: скидка за выбранный способ оплаты -->
+                        <div class="order-discount__item">
+                            <div class="order-discount__cell">
+                                <span class="order-discount__del jsDeleteCertificate">удалить</span>
+                            </div>
+                            <a href="" class="order-discount__lk">
+                                <img class="order-discount__img" src="/styles/order-new/img/payment-discount.png" alt="">
+                            </a>
 
-                        <div class="order-discount__name">Онлайн-оплата. Скидка 15%</div>
+                            <div class="order-discount__name">Онлайн-оплата. Скидка 15%</div>
 
                                 <span
                                     class="order-discount__val">-350
                                     <span class="rubl">p</span></span>
-                    </div>
-                    <!-- END элемент скидки -->
+                        </div>
+                        <!-- END скидка за выбранный способ оплаты -->
+                <? endif; ?>
                 </div>
-                <!-- END Введенная скидка - при выборе типа оплаты -->
-
-
                 <!-- END: введенные скидки, купоны -->
+                    </div>
             </div>
             <!-- END левая часть блока заказа - список заказанных товаров-->
 
