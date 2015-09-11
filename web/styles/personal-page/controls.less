@@ -23,26 +23,7 @@
             margin-bottom: 17px;
         }
     }
-    .form-group{
-        position: relative;
-        margin-top: 35px;
 
-        .custom-select{
-
-            &__inn{
-                padding: 0;
-                font-size: 14px;
-                color: @selectColor;
-            }
-        }
-        &.inline{
-            display: inline-block;
-            font-size: 0;
-        }
-        &.right{
-            margin-left: 42px;
-        }
-    }
     .label-control{
         position: absolute;
         width: 100%;
@@ -50,6 +31,10 @@
         font-size: 12px;
         margin: 0 10px;
         color: @ctrlPlaceholder;
+
+        &:not(.always-show){
+            display: none;
+        }
     }
     .custom-select{
         height: 21px;
@@ -81,6 +66,49 @@
         &--sex{
             width: 95px;
             margin-right: 0;
+        }
+    }
+    .form-group{
+        position: relative;
+        margin-top: 35px;
+
+        .custom-select{
+
+            &__inn{
+                padding: 0 0 0 5px;
+                font-size: 14px;
+                color: @selectColor;
+            }
+        }
+        &.inline{
+            display: inline-block;
+            font-size: 0;
+        }
+        &.right{
+            margin-left: 42px;
+        }
+        &.error {
+            .input-control{
+                border-color: @errorRed;
+                &::-webkit-input-placeholder {
+                    color: @errorRed;
+                }
+
+                &:-moz-placeholder { /* Firefox 18- */
+                    color: @errorRed;
+                }
+
+                &::-moz-placeholder {  /* Firefox 19+ */
+                    color: @errorRed;
+                }
+
+                &:-ms-input-placeholder {
+                    color: @errorRed;
+                }
+            }
+            .label-control{
+                color: @errorRed;
+            }
         }
     }
 }

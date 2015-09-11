@@ -41,16 +41,16 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
             <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
 
             <div class="form-group" data-field-container="password_old">
-                <label class="label-control">Старый пароль</label>
-                <input class="input-control" type="password" name="password_old" autocomplete="off" data-field="password_old">
+                <label class="label-control js-label-control">Старый пароль</label>
+                <input class="input-control js-input-control" type="password" name="password_old" autocomplete="off" data-field="password_old" placeholder="Старый пароль">
             </div>
             <div class="form-group" data-field-container="password_new">
-                <label class="label-control">Новый пароль</label>
-                <input class="input-control" type="password" name="password_new" autocomplete="off" data-field="password_new">
+                <label class="label-control js-label-control">Новый пароль</label>
+                <input class="input-control js-input-control" type="password" name="password_new" autocomplete="off" data-field="password_new" placeholder="Новый пароль">
             </div>
             <div class="form-group" data-field-container="password_repeat">
-                <label class="label-control">Повторите пароль</label>
-                <input class="input-control" type="password" name="password_repeat" autocomplete="off" data-field="password_repeat">
+                <label class="label-control js-label-control">Повторите пароль</label>
+                <input class="input-control js-input-control" type="password" name="password_repeat" autocomplete="off" data-field="password_repeat" placeholder="Повторите пароль">
             </div>
             <div class="form-group">
                 <button type="submit" class="btn-type btn-type--buy">Сохранить</button>
@@ -63,19 +63,19 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
             <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
 
             <div class="form-group" data-field-container="first_name">
-                <label class="label-control">Имя</label>
-                <input class="input-control" type="text" value="<?= $form->getFirstName() ?>" name="user[first_name]" data-field="first_name">
+                <label class="label-control js-label-control">Имя</label>
+                <input class="input-control js-input-control" type="text" value="<?= $form->getFirstName() ?>" name="user[first_name]" data-field="first_name" placeholder="Имя">
             </div>
             <div class="form-group" data-field-container="middle_name">
-                <label class="label-control">Отчество</label>
-                <input class="input-control" type="text" value="<?= $form->getMiddleName() ?>" name="user[middle_name]" data-field="middle_name">
+                <label class="label-control js-label-control">Отчество</label>
+                <input class="input-control js-input-control" type="text" value="<?= $form->getMiddleName() ?>" name="user[middle_name]" data-field="middle_name" placeholder="Отчество">
             </div>
             <div class="form-group" data-field-container="last_name">
-                <label class="label-control">Фамилия</label>
-                <input class="input-control" type="text" value="<?= $form->getLastName() ?>" name="user[last_name]" data-field="last_name">
+                <label class="label-control js-label-control">Фамилия</label>
+                <input class="input-control js-input-control" type="text" value="<?= $form->getLastName() ?>" name="user[last_name]" data-field="last_name" placeholder="Фамилия">
             </div>
             <div class="form-group inline" data-field-container="birthday.day">
-                <label class="label-control">Дата рождения</label>
+                <label class="label-control always-show">Дата рождения</label>
                 <div class="custom-select custom-select--day">
                     <select class="custom-select__inn" name="user[birthday][day]" data-field="birthday.day">
                     <? foreach (array_merge([''], range(1, 31)) as $day):  ?>
@@ -100,7 +100,7 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
                 </div>
             </div>
             <div class="form-group inline right">
-                <label class="label-control">Пол</label>
+                <label class="label-control always-show">Пол</label>
                 <div class="custom-select custom-select--sex" data-field-container="sex">
                     <select class="custom-select__inn" name="user[sex]" data-field="sex">
                     <? foreach (['' => '', '1' => 'мужской', '2' => 'женский'] as $sexValue => $sexName): ?>
@@ -110,20 +110,20 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
                 </div>
             </div>
             <div class="form-group" data-field-container="email">
-                <label class="label-control">Email</label>
-                <input class="input-control disabled" type="text" value="<?= $form->getEmail() ?>" name="user[email]" <? if ($form->getIsDisabled()): ?>disabled<? endif ?> data-field="email">
+                <label class="label-control always-show js-label-control">Email</label>
+                <input class="input-control js-input-control disabled" type="text" value="<?= $form->getEmail() ?>" name="user[email]" <? if ($form->getIsDisabled()): ?>disabled<? endif ?> data-field="email">
             </div>
             <div class="form-group" data-field-container="phone">
-                <label class="label-control">Мобильный телефон</label>
-                <input class="input-control" type="text" value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" <? if ($form->getIsDisabled()): ?>disabled<? endif ?> data-field="phone">
+                <label class="label-control js-label-control">Мобильный телефон</label>
+                <input class="input-control js-input-control" type="text" value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" <? if ($form->getIsDisabled()): ?>disabled<? endif ?> data-field="phone" placeholder="Мобильный телефон">
             </div>
             <div class="form-group" data-field-container="home_phone">
-                <label class="label-control">Домашний телефон</label>
-                <input class="input-control" type="text" value="<?= $form->getHomePhone() ?>" name="user[home_phone]" data-field="home_phone">
+                <label class="label-control js-label-control">Домашний телефон</label>
+                <input class="input-control js-input-control" type="text" value="<?= $form->getHomePhone() ?>" name="user[home_phone]" data-field="home_phone" placeholder="Домашний телефон">
             </div>
             <div class="form-group" data-field-container="occupation">
-                <label class="label-control">Род деятельности</label>
-                <input class="input-control" type="text" value="<?= $form->getOccupation() ?>" name="user[occupation]" data-field="occupation">
+                <label class="label-control js-label-control">Род деятельности</label>
+                <input class="input-control js-input-control" type="text" value="<?= $form->getOccupation() ?>" name="user[occupation]" data-field="occupation" placeholder="Род деятельности">
             </div>
             <div class="form-group">
                 <button type="submit" class="btn-type btn-type--buy">Сохранить изменения</button>
