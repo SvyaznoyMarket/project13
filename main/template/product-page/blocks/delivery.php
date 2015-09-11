@@ -19,7 +19,17 @@ $f = function (
         <span class="buy-now-inshop__tl">В наличии</span>
 
         <? if ($deliveryPickup) : ?>
-            <div class="buy-now-inshop__line jsDeliveryPickupAvailable">Самовывоз <span class="buy-now-inshop__mark"><?= mb_strtolower($helper->humanizeDate($deliveryPickup->getMinDate()->date)) ?>, <?= $deliveryPickup->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryPickup->price) . '&nbsp;<span class="rubl">p</span>' ?></span></div>
+            <div class="buy-now-inshop__line jsDeliveryPickupAvailable">
+                Самовывоз
+                <span class="buy-now-inshop__mark">
+                    <? if ($deliveryPickup->dateInterval): ?>
+                        <?= sprintf('%s %s,', $deliveryPickup->dateInterval->from ? ('с ' . $deliveryPickup->dateInterval->from->format('d.m')) : '', $deliveryPickup->dateInterval->to ? (' по ' . $deliveryPickup->dateInterval->to->format('d.m')) : '') ?>
+                    <? else: ?>
+                        <?= mb_strtolower($helper->humanizeDate($deliveryPickup->getMinDate()->date)) ?>,
+                    <? endif ?>
+                    <?= $deliveryPickup->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryPickup->price) . '&nbsp;<span class="rubl">p</span>' ?>
+                </span>
+            </div>
         <? endif ?>
 
         <? if ($deliveryDelivery) : ?>

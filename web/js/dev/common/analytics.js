@@ -64,11 +64,11 @@
                 if (e.hasOwnProperty(elem)) {
                     switch (elem) {
                         case 'category':
-                            e[elem] = e[elem].slice(0, 150);
+                            e[elem] = (e[elem] + '').slice(0, 150);
                             break;
                         case 'action':
                         case 'label':
-                            e[elem] = e[elem].slice(0, 500);
+                            e[elem] = (e[elem] + '').slice(0, 500);
                             break;
                         case 'value':
                             e[elem] = parseInt(e[elem] + '', 10);

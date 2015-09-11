@@ -34,7 +34,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <?= $helper->render('product-page/blocks/variants', ['product' => $product, 'trustfactors' => $trustfactors]) ?>
 
     <? if ($product->getTagline()) : ?>
-    <p class="product-card-desc collapsed js-description-expand"><?= $product->getTagline() ?></p>
+    <p class="product-card-desc"><?= $product->getTagline() ?></p>
     <? endif ?>
 
     <dl class="product-card-prop">
@@ -51,26 +51,25 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     </dl>
 
     <?= $helper->render('product-page/blocks/trustfactors', ['trustfactors' => $trustfactors]) ?>
-    <ul class="pay-system-list">
-        <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-card-g.png"></li>
-        <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-yandex-g.png"></li>
-        <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-webmoney-g.png"></li>
-        <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-qiwi-g.png"></li>
-        <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-psb-g.png"></li>
-    </ul>
 
-    <div class="product-card-sharing-list">
-        <!-- AddThis Button BEGIN -->
-        <div class="addthis_toolbox addthis_default_style mt15 ">
-            <a class="addthis_button_facebook"></a>
-            <a class="addthis_button_twitter"></a>
-            <a class="addthis_button_vk"></a>
-            <a class="addthis_button_compact"></a>
-            <a class="addthis_counter addthis_bubble_style"></a>
+    <div class="product-card__addings">
+        <ul class="pay-system-list">
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-card-g.png"></li>
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-yandex-g.png"></li>
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-webmoney-g.png"></li>
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-qiwi-g.png"></li>
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-psb-g.png"></li>
+        </ul>
+
+        <div class="product-card-sharing-list">
+            <!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style mt15 ">
+                <a class="addthis_button_facebook"></a>
+                <a class="addthis_button_twitter"></a>
+                <a class="addthis_button_vk"></a>
+                <a class="addthis_button_compact"></a>
+                <a class="addthis_counter addthis_bubble_style"></a>
         </div>
-        <script type="text/javascript">var addthis_config = { data_track_addressbar:true, ui_language: "ru" };</script>
-        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1&domready=1" async></script>
-        <!-- AddThis Button END -->
     </div>
 
 </div>

@@ -116,6 +116,7 @@ class Analytics {
                 if (isset($order->meta_data[sprintf('product.%s.position', $product->getUi())])) $productData['position'] = $order->meta_data[sprintf('product.%s.position', $product->getUi())][0];
                 if (isset($order->meta_data[sprintf('product.%s.method', $product->getUi())])) $productData['method'] = $order->meta_data[sprintf('product.%s.method', $product->getUi())][0];
                 if (isset($order->meta_data[sprintf('product.%s.from', $product->getUi())])) $productData['from'] = $order->meta_data[sprintf('product.%s.from', $product->getUi())][0];
+                if (isset($order->meta_data[sprintf('product.%s.isFromProductCard', $product->getUi())])) $productData['isFromProductCard'] = $order->meta_data[sprintf('product.%s.isFromProductCard', $product->getUi())][0]; // SITE-5772
                 if (isset($order->meta_data[sprintf('product.%s.sender2', $product->getUi())])) $productData['sender2'] = $order->meta_data[sprintf('product.%s.sender2', $product->getUi())][0];
 
                 $orderData['products'][] = $productData;

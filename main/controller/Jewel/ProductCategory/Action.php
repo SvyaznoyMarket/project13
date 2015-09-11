@@ -196,6 +196,16 @@ class Action extends \Controller\ProductCategory\Action {
             }
         });
 
+        // SITE-5772
+        call_user_func(function() use(&$products, $category) {
+            $sender = $category->getSenderForGoogleAnalytics();
+            if ($sender) {
+                foreach ($products as $product) {
+                    $product->setLink($product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&') . http_build_query(['sender' => $sender]));
+                }
+            }
+        });
+
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);

@@ -8,5 +8,5 @@
 ?>
 
 <? foreach ($pager as $i => $product): ?>
-    <?= $page->render('jewel/product/show/_expanded', array('product' => $product)) ?>
+    <?= $page->render('jewel/product/show/_expanded', array('product' => $product, 'category' => $category)) ?>
 <?php endforeach ?>

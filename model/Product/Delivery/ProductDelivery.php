@@ -6,6 +6,7 @@ namespace Model\Product\Delivery;
 use Model\Shop\Entity as Shop; // TODO BasicShopEntity
 use Model\Region\BasicRegionEntity as Region;
 use Point\PickpointPoint;
+use Validator\DateTime;
 
 class ProductDelivery {
 
@@ -130,6 +131,8 @@ class Delivery {
     public $price;
     /** @var DeliveryDate[] */
     public $dates = [];
+    /** @var DateInterval|null */
+    public $dateInterval;
 
     public function __construct(array $arr = [], ProductDelivery &$productDelivery) {
         if (isset($arr['id'])) $this->id = $arr['id'];
@@ -138,6 +141,15 @@ class Delivery {
         if (isset($arr['price'])) $this->price = $arr['price'];
         if (isset($arr['date_list']) && is_array($arr['date_list'])) {
             foreach ($arr['date_list'] as $dateData) $this->dates[] = new DeliveryDate($dateData, $productDelivery);
+        }
+        if (isset($arr['date_interval']['from']) && isset($arr['date_interval']['to'])) {
+            $this->dateInterval = new DateInterval();
+            if ($arr['date_interval']['from']) {
+                $this->dateInterval->from = new \DateTime($arr['date_interval']['from']);
+            }
+            if ($arr['date_interval']['to']) {
+                $this->dateInterval->to = new \DateTime($arr['date_interval']['to']);
+            }
         }
         // сортируем по дате
         usort($this->dates, function($a, $b){ return $a > $b; });
@@ -179,4 +191,11 @@ class Interval {
         if (isset($arr['time_begin'])) $this->start = $arr['time_begin'];
         if (isset($arr['time_end'])) $this->end = $arr['time_end'];
     }
+}
+
+class DateInterval {
+    /** @var \DateTime */
+    public $from;
+    /** @var \DateTime */
+    public $to;
 }

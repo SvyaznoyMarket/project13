@@ -127,12 +127,19 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotConfig() {
+        $reviewsData = $this->getParam('reviewsData');
         $config = [
             'location'  => ['product'],
             'product'   => [
-                'id' => $this->product->getId(),
+                'id' => $this->product->id,
+                'ui' => $this->product->ui,
                 'isSlot' => (bool)$this->product->getSlotPartnerOffer(),
                 'isOnlyFromPartner' => $this->product->isOnlyFromPartner(),
+                'avgScore' => empty($reviewsData['avg_score']) ? 0 : $reviewsData['avg_score'],
+                'firstPageAvgScore' => empty($reviewsData['current_page_avg_score']) ? 0 : $reviewsData['current_page_avg_score'],
+                'category' => [
+                    'name' => $this->product->getParentCategory() ? $this->product->getParentCategory()->getName() : ''
+                ],
             ]
         ];
 

@@ -24,7 +24,7 @@
 			sender2 = ENTER.utils.analytics.productPageSenders2.get($button)
 		;
 
-		if (sender && JSON.stringify(sender) != JSON.stringify($button.data('sender'))) {
+		if (sender) {
 			for (var key in sender) {
 				if (sender.hasOwnProperty(key)) {
 					url = ENTER.utils.setURLParam('sender[' + key + ']', sender[key], url);
@@ -32,7 +32,7 @@
 			}
 		}
 
-		if (sender2 && sender2 != $button.data('sender2')) {
+		if (sender2) {
 			url = ENTER.utils.setURLParam('sender2', sender2, url);
 		}
 
@@ -58,6 +58,15 @@
 				data.location = $button.data('location');
 
 				ENTER.UserModel.cart().update(data.cart);
+
+				if (data.sender && typeof data.sender.name == 'string' && data.sender.name.indexOf('filter') == 0) {
+					$('body').trigger('trackGoogleEvent', {
+						category: data.sender.name,
+						action: 'basket',
+						label: data.sender.categoryUrlPrefix
+					});
+				}
+
 				$body.trigger('addtocart', [data, upsale]);
 			},
 			error: function() {

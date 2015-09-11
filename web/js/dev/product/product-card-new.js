@@ -20,7 +20,7 @@
     /* Если это не новая карточка, то do nothing */
     if (!$body.hasClass('product-card-new')) return;
 
-    tabsOffset = $tabs.offset().top;
+    tabsOffset = $tabs.length ? $tabs.offset().top : 0;
 
 
     // Кредит
@@ -397,13 +397,6 @@
     });
 
     $body.on('click', '.jsProductImgPopup .jsBuyButton', function(){ $(this).closest('.jsProductImgPopup').trigger('close'); });
-
-
-	$('.js-description-expand.collapsed').on('click', function(){
-
-        $(this).removeClass('collapsed js-description-expand');
-
-    });
 
     $body.on('click', '.jsProductCardNewLabelInfo', function(){
         $('.jsProductCardNewLabelPopup').toggleClass('info-popup--open');

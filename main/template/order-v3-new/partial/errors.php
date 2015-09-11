@@ -13,10 +13,9 @@ return function(
     ) :
         $errors = array_filter($order->errors, function(\Model\OrderDelivery\Error $error) use ($product) { return $error->code == 708 && $error->details['product_id'] == $product->id; });
         if ((bool)$errors) $error = reset($errors);
-        ?>
+    ?>
         <? if (isset($error) && $error->details['product_id'] == $product->id) : ?>
-
-        <div class="order-error order-error--warning">Вы хотели <?= $error->details['requested_amount'] ?> шт. Есть только <?= $error->details['max_available_quantity'] ?> шт.<i class="order-error__closer js-order-err-close"></i></div>
-    <? endif; ?>
-    <? endif; ?>
+            <div class="order-error order-error--warning">Вы хотели <?= $error->details['requested_amount'] ?> шт. Есть только <?= $error->details['max_available_quantity'] ?> шт.<i class="order-error__closer js-order-err-close"></i></div>
+        <? endif ?>
+    <? endif ?>
 <? } ?>

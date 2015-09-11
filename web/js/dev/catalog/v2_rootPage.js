@@ -9,7 +9,7 @@
 		$otherBrandsOpener = $('.js-category-v2-root-brands-otherOpener'),
 		$brandsTitle = $('.js-category-v2-root-brands-title'),
 		$linksWrapper = $('.js-category-v2-root-linksWrapper'),
-		catalogPath = ENTER.utils.getCategoryPath();
+		pageBusinessUnitId = ENTER.utils.getPageBusinessUnitId();
 
 	function renderSelectedBrandsTemplate() {
 		var $template = $('#root_page_selected_brands_tmpl');
@@ -58,7 +58,7 @@
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',
 			action: 'brand',
-			label: catalogPath
+			label: pageBusinessUnitId
 		});
 
 		updateLinks(url);
@@ -81,7 +81,7 @@
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',
 			action: 'brand',
-			label: catalogPath
+			label: pageBusinessUnitId
 		});
 	});
 
@@ -95,7 +95,7 @@
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',
 			action: 'brand',
-			label: catalogPath
+			label: pageBusinessUnitId
 		});
 
 		updateLinks('?');

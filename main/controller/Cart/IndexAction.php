@@ -20,6 +20,10 @@ class IndexAction {
 
         $orderWithCart = self::isOrderWithCart();
 
+        if ($orderWithCart) {
+            \App::session()->remove(\App::config()->order['splitSessionKey']);
+        }
+
         // подготовка 1-го пакета запросов
 
         // запрашиваем пользователя, если он авторизован
