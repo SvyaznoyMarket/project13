@@ -25,6 +25,10 @@ class Autoloader {
                     $class = lcfirst($class);
                     $path = $basePath . '/lite';
                     break;
+                case 'Repository':
+                    $class = lcfirst($class);
+                    $path = $basePath . '/lite';
+                    break;
             }
 
             $file = $path . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';

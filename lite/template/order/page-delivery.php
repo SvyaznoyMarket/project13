@@ -125,7 +125,7 @@ return function(
                                 <? endif */ ?>
                             </div>
 
-                            <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order/_payment.methods', ['order' => $order]) : '' ?>
+                            <?= (new \Repository\Order())->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order/_payment.methods', ['order' => $order]) : '' ?>
 
                         <? else: ?>
                             <div class="order-delivery-info order-delivery-info_transparent jsSmartAddressBlock">
@@ -175,7 +175,7 @@ return function(
 
                             <? /* LITE-134 ОЗ Шаг 2 - убрать задублированный способ оплаты */ ?>
                             <? /*
-                            <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
+                            <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY]) && !(new \Repository\Order())->isOnlineMotivation(count($orderDelivery->orders))) : ?>
                                 <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
                                 <input type="checkbox" class="custom-input custom-input_check jsCreditCardPayment" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked ' : '' ?>/>
                                 <label class="order-check custom-label <?= $checked ? 'mChecked ' : '' ?>" for="creditCardsPay-<?= $order->block_name ?>">
@@ -195,7 +195,7 @@ return function(
                         ?>
 
                         <!--/ способ доставки -->
-                        <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
+                        <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && !(new \Repository\Order())->isOnlineMotivation(count($orderDelivery->orders))) : ?>
                             <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
                             <input type="checkbox" class="custom-input custom-input_checkbox jsCreditPayment" id="credit-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked' : '' ?>>
                             <label class="order-check custom-label <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>"><span class="dotted">Купить в кредит</span><!--, от 2 223 &thinsp;<span class="rubl">C</span> в месяц--></label>
