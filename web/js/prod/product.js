@@ -614,7 +614,7 @@ $(function() {
 				}
 
 				if ($subscribe[0] && $subscribe[0].checked && typeof _gaq != 'undefined') {
-					_gaq.push(['_trackEvent', 'subscription', 'subscribe_price_alert', $email.val()]);
+					_gaq.push(['_trackEvent', 'subscription', 'subscribe_price_alert']);
 				}
 
 				hidePopup();
