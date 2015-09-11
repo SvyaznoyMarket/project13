@@ -1,6 +1,6 @@
 <!-- попап одноклика -->
 <div class="popup popup_540">
-    <div class="popup__close js-popup-close">×</div>
+    <div class="popup__close js-popup-close"></div>
 
     <div class="popup__title">Оформить заказ</div>
 

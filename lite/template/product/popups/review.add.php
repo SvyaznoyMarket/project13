@@ -1,6 +1,6 @@
 <!-- Добавить отзыв -->
 <div class="popup-add-review popup popup_640" style="display: none">
-    <div class="popup__close">×</div>
+    <div class="popup__close"></div>
 
     <div class="jsReviewFormInner">
         <div class="popup__title">Отзыв о товаре</div>

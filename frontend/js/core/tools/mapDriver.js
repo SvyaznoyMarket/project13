@@ -26,7 +26,7 @@
 
         var
             BALLOON_TEMPLATE =
-                '<div class="delivery-points-map"><table class="delivery-points-list delivery-points-list_on-map"><tbody><tr class="delivery-points-list__row" ><td class="delivery-points-list__logo">'+
+                '<div class="delivery-points-map"><table class="delivery-points-list delivery-points-list_on-map"><tbody><tr class="delivery-points-list__row delivery-points-list__row_noclick" ><td class="delivery-points-list__logo">'+
                 '<img src="{{ icon }}" class="delivery-points-list__img" >'+
                 '<span class="delivery-points-list__name">{{ listName }}</span>'+
                 '</td><td class="delivery-points-list__address">'+

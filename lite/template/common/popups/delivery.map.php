@@ -1,7 +1,7 @@
 <script id="js-points-popup-template" type="text/template" class="hidden">
     <div class="popup">
-        <div class="popup__close js-popup-close">×</div>
-        <div class="popup__title">
+        <div class="popup__close js-popup-close"></div>
+        <div class="popup__title popup__title_mb10 popup__title_">
             {{#isShowroom}}
                 На витрине в
                 {{#points.1}}
@@ -115,7 +115,7 @@
                 {{/isShowroom}}
 
                 <div class="delivery-points-lwrap">
-                    <div class="delivery-points-lwrap__inn">
+                    <div class="delivery-points-lwrap__inn {{#isShowroom}}delivery-points-lwrap__inn_455{{/isShowroom}}">
                         <div class="delivery-points-list table js-pointpopup-points-wrapper"></div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <!-- попап - узнать о снижении цены -->
 <div class="popup-best-price popup popup_360">
-    <div class="popup__close js-popup-close">×</div>
+    <div class="popup__close js-popup-close"></div>
 
     <div class="popup__title">Узнать о снижении цены</div>
 

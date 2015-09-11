@@ -19,8 +19,10 @@
         overflow-x: hidden;
         overflow-y: auto;
 
-        min-height: 374px;
         max-height: 374px;
+        &_455 {
+            max-height: 455px;
+        }
     }
     &:before {
         position: absolute;
@@ -59,6 +61,9 @@
         cursor: pointer;
         .table-cell {
             min-height: 85px;
+        }
+        &_noclick {
+            cursor: text;
         }
         &:not(:last-child) {
             .table-cell {

@@ -41,41 +41,32 @@
     &_nopadding {
         padding: 0;
         .popup__close {
-            line-height: 26px;
-
             top: 0;
             right: -30px;
 
             width: 25px;
             height: 25px;
-
-            text-align: center;
-
-            background: @grey-light-3;
-
-            .rounded(50%);
         }
     }
     &__title {
         margin: 0 0 32px;
 
         .font-size(22);
+        &_mb10 {
+            margin-bottom: 10px;
+        }
     }
     &__close {
-        line-height: 1;
-
         position: absolute;
-        top: 5px;
-        right: 5px;
-
-        padding: 0 5px;
+        top: 10px;
+        right: 10px;
+        height: 25px;
+        width: 25px;
+        .opacity(.8);
 
         cursor: pointer;
 
-        color: @grey-bright;
-
-        .font-size(24);
-        .font-face('GloberRegular');
+        background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCI+PHBvbHlnb24gZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIHBvaW50cz0iMTQsMC43IDEzLjMsMCA3LDYuMjk5IDAuNywwIDAsMC43IDYuMyw3IDAsMTMuMjk5IDAuNywxNCA3LDcuNyAxMy4zLDE0IDE0LDEzLjI5OSA3LjcsNyIvPjwvc3ZnPg==') no-repeat 50% 50%;
     }
     &__desc {
         line-height: 1.4;

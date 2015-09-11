@@ -1,6 +1,6 @@
 <!-- просмотр большого изображения товара -->
 <div class="popup popup-photo" style="display: none;">
-    <div class="popup__close">×</div>
+    <div class="popup__close"></div>
 
     <div class="product-card-photo">
         <img src="http://c.imgenter.ru/uploads/media/7b/a4/d5/thumb_be1c_product_1500.jpeg" class="product-card-photo__img fixed" style="max-height: 100%; max-width: 100%; top: 0px; left: 0px;">

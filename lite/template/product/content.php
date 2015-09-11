@@ -233,7 +233,7 @@ $reviewsData = null;
 
 <!-- просмотр видео и 3D -->
 <div class="popup popup_710 popup_nopadding" style="display: none;">
-    <div class="popup__close">×</div>
+    <div class="popup__close"></div>
 </div>
 <!--/ просмотр видео и 3D -->
 

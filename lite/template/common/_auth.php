@@ -14,7 +14,7 @@ $oauthEnabled = \App::config()->oauthEnabled;
 <!-- попап авторизации/регистрации -->
 <div class="popup popup_log js-popup-login">
 
-    <div class="popup__close js-popup-close">&#215;</div>
+    <div class="popup__close js-popup-close"></div>
 
     <div class="popup__content">
         <!--

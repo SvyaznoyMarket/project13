@@ -15,7 +15,7 @@ $currentRegion = $user->getRegion();
      data-region='<?= json_encode([ 'id' => $currentRegion->getId(), 'name'=> $currentRegion->getName() ], JSON_UNESCAPED_UNICODE) ?>'
     >
 
-    <div class="popup__close js-popup-close">&#215;</div>
+    <div class="popup__close js-popup-close"></div>
 
     <div class="popup__content">
         <div class="popup__title">Ваш город</div>

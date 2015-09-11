@@ -1,6 +1,6 @@
 <!-- Заявка на кухни -->
 <div class="popup popup-application popup_460 js-popup-application" style="display: none;">
-    <div class="popup__close js-popup-close">×</div>
+    <div class="popup__close js-popup-close"></div>
 
     <div class="popup-application__order">
         <div class="popup__title">Отправить заявку</div>
