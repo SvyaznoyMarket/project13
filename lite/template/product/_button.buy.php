@@ -54,7 +54,7 @@ $f = function(
             <? endforeach ?>
             ><?= $buttonText ?></a>
     <? else: ?>
-        <span>Нет в наличии</span>
+        <span class="btn-primary btn-primary_middle btn-in-showroom">Нет в наличии</span>
     <? endif ?>
 
 <? }; return $f;
