@@ -4,6 +4,8 @@
  * @var \Helper\TemplateHelper $helper
  */
 
+if (!isset($helper)) $helper = new \Helper\TemplateHelper();
+
 $id = $product->getId();
 $typeId = $product->getType() ? $product->getType()->getId() : null;
 ?>
