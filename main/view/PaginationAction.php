@@ -16,7 +16,7 @@ class PaginationAction {
         $first = 1;
         $last = $pager->getLastPage();
         $current = $pager->getPage();
-        if (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher'], true) && $category && $category->isInSiteListingWithViewSwitcherAbTest()) {
+        if ($category && $category->config->listingDisplaySwitch) {
             $onSides = 1;
         } else {
             $onSides = 2;

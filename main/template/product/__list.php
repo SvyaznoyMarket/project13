@@ -58,9 +58,7 @@ $f = function(
 
     $expandedTemplatePath = 'product/list/_expanded';
 
-    $chosenTestCase = \App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey();
-    $chosenCategoryView = \App::request()->cookies->get('categoryView');
-    if (((($chosenTestCase === 'compactWithSwitcher' && $chosenCategoryView === 'expanded') || ($chosenTestCase === 'expandedWithSwitcher' && $chosenCategoryView !== 'compact')) || $chosenTestCase === 'expandedWithoutSwitcher') && $category && $category->isInSiteListingWithViewSwitcherAbTest()) {
+    if ($category && $category->listingView->isList) {
         $defaultTemplatePath = $expandedTemplatePath;
         $defaultView = 'expanded';
         $listingClass = 'listing';
@@ -78,7 +76,7 @@ $f = function(
         <?= file_get_contents(\App::config()->templateDir . '/' . $compactTemplatePath . '.mustache') ?>
     </script>
 
-    <? if ($chosenTestCase === 'compactWithSwitcher' || $chosenTestCase === 'expandedWithSwitcher' || $chosenTestCase === 'expandedWithoutSwitcher'): ?>
+    <? if ($category && ($category->config->listingDisplaySwitch || $category->config->listingDefaultView->isList)): ?>
         <script id="listing_expanded_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
             <?= file_get_contents(\App::config()->templateDir . '/' . $expandedTemplatePath . '.mustache') ?>
         </script>

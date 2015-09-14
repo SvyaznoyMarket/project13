@@ -47,8 +47,15 @@ class Entity extends BasicEntity {
     protected $ancestor = [];
     /** @var Entity[] */
     protected $child = [];
+    /** @var Config */
+    public $config;
+    /**
+     * Вид листинга (с учётом пользовательского выбора)
+     * @var ListingView
+     */
+    public $listingView;
 
-    public function __construct(array $data = []) {
+    public function __construct($data = []) {
         $templateHelper = new \Helper\TemplateHelper();
         
         $data['price_change_trigger_enabled'] = true;
@@ -113,6 +120,14 @@ class Entity extends BasicEntity {
         }
 
         if (isset($data['parent'])) $this->parent = new Entity($data['parent']);
+
+        if (isset($data['config'])) {
+            $this->config = new Config($data['config']);
+        } else {
+            $this->config = new Config();
+        }
+
+        $this->listingView = new ListingView();
     }
 
     /**
@@ -479,14 +494,6 @@ class Entity extends BasicEntity {
         ], true);
     }
 
-    public function isInSiteListingWithViewSwitcherAbTest() {
-        return (bool)$this->getClosest([
-            '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
-            'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электроника
-            '0e80c81b-31c9-4519-bd10-e6a556fe000c', // Сделай сам
-        ]);
-    }
-
     private function getClosest(array $expectedUis) {
         /** @var Entity[] $ancestors */
         $ancestors = $this->ancestor;
@@ -714,4 +721,11 @@ class Entity extends BasicEntity {
 
         return $result;
     }
+}
+
+class ListingView {
+    /** @var bool */
+    public $isList = false;
+    /** @var bool */
+    public $isMosaic = true;
 }
