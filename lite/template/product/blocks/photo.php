@@ -36,7 +36,7 @@ $f = function(
         </div>
 
         <ul class="product-card-media jsProductMediaButton">
-            <? if ($product->hasVideo()) : ?>
+            <? if (false && $product->hasVideo()) : ?>
                 <li class="product-card-media__i product-card-media__i--video js-product-open-video"></li>
                 <!-- Попап видео -->
                 <div class="popup popup--skinny js-product-video-popup" style="display: none">
