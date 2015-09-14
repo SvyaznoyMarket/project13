@@ -97,9 +97,9 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl, $ca
                     </div>
                 </div>
             </div>
-
-            <?= $helper->render('category/filters/v1/selected.filters', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
         </form>
+
+        <?= $helper->render('category/filters/v1/selected.filters', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
     </div>
 
 <?php }; ?>

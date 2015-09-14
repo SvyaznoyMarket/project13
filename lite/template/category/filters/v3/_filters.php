@@ -97,9 +97,8 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
                     </div>
                 </div>
             <? endif ?>
-
-            <?= $helper->render('category/filters/v3/selected.filters', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
         </form>
+        <?= $helper->render('category/filters/v3/selected.filters', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
     </div>
     <!-- фильтр "Ювелирный" -->
 

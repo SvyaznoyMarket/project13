@@ -160,9 +160,9 @@ return function(\Model\Product\Filter $productFilter, $openFilter, $baseUrl) {
                     <? endforeach ?>
                 </div>
             <? endif ?>
-
-            <?= $helper->render('category/filters/v2/selected.filters', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
         </form>
+
+        <?= $helper->render('category/filters/v2/selected.filters', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
     </div>
     <!-- фильтр "Бренды и параметры" -->
 
