@@ -11,7 +11,7 @@ return function(
     <section class="checkout">
         <h1 class="checkout__title">Ошибка</h1>
         <?= $error ?>
-        <h2><a href="/">Вернуться к покупкам</a></h2>
+        <div class="back-main" style="margin: 40px 0;"><a class="underline" href="/?parent_ri=55f6cc9a0a787">Вернуться на главную</a></div>
     </section>
 
 
