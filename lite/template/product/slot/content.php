@@ -134,7 +134,7 @@ uasort($mainProperties, function(\Model\Product\Property\Entity $a, \Model\Produ
                     <? endforeach ?>
 
                     <dd class="set-specify-list__name">
-                        <a class="dotted" href="" title="">Все характеристики</a>
+                        <a class="dotted js-go-to" href="#more" title="">Все характеристики</a>
                     </dd>
                     <dt class="set-specify-list__value">
                     </dt>
