@@ -123,7 +123,13 @@ class ShowAction {
         // oldPrice and priceSale
         if ( $product->getPriceOld() && $product->getLabel()) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
-            $productItem['priceSale'] = round((1 - ($product->getPrice() / $product->getPriceOld())) * 100, 0); //($product->getPrice() < $product->getPriceOld()) ? round($product->getPrice() - $product->getPriceOld(), 0) : 0;
+            if (AbTest::isCurrencyDiscountPrice()) {
+                $productItem['priceSale'] = $helper->formatPrice($product->getPriceOld() - $product->getPrice());
+                $productItem['priceSaleUnit'] = ' <span class="rubl">p</span>';
+            } else {
+                $productItem['priceSale'] = round((1 - ($product->getPrice() / $product->getPriceOld())) * 100, 0);
+                $productItem['priceSaleUnit'] = '%';
+            }
             $productItem['showPriceSale'] = AbTest::isShowSalePercentage();
         }
 

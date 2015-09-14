@@ -16,8 +16,16 @@ if (!isset($addInfo)) {
 // открытие товаров в новом окне
 $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
 
+// скидка в рублях
+$isCurrencyDiscountPrice = \App::abTest()->isCurrencyDiscountPrice();
+
+
 if ($product->getPriceOld()) {
-    $priceSale = round( ( 1 - ($product->getPrice() / $product->getPriceOld() ) ) *100, 0 );
+    $priceSale =
+        \App::abTest()->isCurrencyDiscountPrice()
+        ? round($product->getPrice() - $product->getPriceOld(), 0)
+        : round((1 - ($product->getPrice() / $product->getPriceOld())) * 100, 0)
+    ;
 } else {
     $priceSale = 0;
 }
@@ -58,7 +66,7 @@ if ($product->getPriceOld()) {
                     <span class="td-lineth"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
 
                     <? if ($priceSale): ?>
-                        &nbsp;<span class="lstn_pr_sale">-<?= $priceSale ?>%</span>
+                        &nbsp;<span class="lstn_pr_sale">-<?= $priceSale ?><?= ($isCurrencyDiscountPrice ? '<span class="rubl">p</span>' : '%') ?></span>
                     <? endif ?>
                 </span>
             <? endif ?>
