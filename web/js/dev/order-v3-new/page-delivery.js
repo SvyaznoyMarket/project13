@@ -561,7 +561,7 @@
     });
 
     $.each($inputs, showHideLabels);
-    $inputs.keyup(showHideLabels);
+    $body.on('keyup', '.js-order-ctrl__input', showHideLabels);
 
     //показать блок редактирования товара - новая версия
     $body.on('click', '.js-show-edit',function(){
