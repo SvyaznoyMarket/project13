@@ -32,9 +32,17 @@
              * @constructs  PointsPopupCollection
              */
             initialize: function( models, options ) {
+                var
+                    i;
+
                 console.info('module:enter.points.popup.collection~PointsPopupCollection#initialize');
 
                 this.popupData = options.popupData;
+
+                // prepare cost filter
+                for ( i = 0; i < this.popupData.uniqueCosts.length; i++ ) {
+                    this.popupData.uniqueCosts[i].showCurrency = (this.popupData.uniqueCosts[i].value != 0)
+                }
             },
 
             filterMyPoints: function( params ) {

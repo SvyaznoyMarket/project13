@@ -80,7 +80,7 @@
                                     <div class="drop-filter-box__dd-line">
                                         <input class="custom-input js-point-filter-param custom-input_check" type="checkbox" id="cost_{{key}}_{{value}}" name="{{key}}" value="{{value}}">
                                         <label class="custom-label" for="cost_{{key}}_{{value}}">
-                                            <span class="customLabel_btx">{{displayValue}}</span>
+                                            <span class="customLabel_btx">{{displayValue}}{{#showCurrency}}&thinsp;<span class="rubl">C</span>{{/showCurrency}}</span>
                                         </label>
                                     </div>
                                      {{/uniqueCosts}}
