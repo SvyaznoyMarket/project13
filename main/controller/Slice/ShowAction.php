@@ -59,7 +59,23 @@ class ShowAction {
 
         $this->prepareEntityBranch($category, $sliceToken, $sliceFiltersForSearchClientRequest, $region);
         $this->prepareProductFilter($filters, $category, $sliceFiltersForSearchClientRequest, $region);
+        /** @var \Model\Product\Category\Entity[] $sliceCategories */
+        $sliceCategories = [];
+        if (!$request->isXmlHttpRequest()) {
+            // категории в фильтре среза, например { slice.filter: category[]=1239&category[]=1245&category[]=1232&category[]=1216&category[]=1224&category[]=1209&category[]=338 }
+            $this->prepareSliceCategories($slice, $region, $sliceCategories);
+        }
+
         \App::coreClientV2()->execute();
+
+        // если есть категории в фильтре среза
+        if ($sliceCategories) {
+            if ($category->id) {
+                $category->setChild([]);
+            } else {
+                $category->setChild($sliceCategories);
+            }
+        }
 
         $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category->getId() ? $category : null, null, $request, $shop);
         $productPager = $this->getProductPager($productFilter, $sliceFiltersForSearchClientRequest, $productSorting, $pageNum, $region);
@@ -139,6 +155,7 @@ class ShowAction {
         $page->setParam('productView', $request->get('view', $category->getProductView()));
         $page->setParam('hasCategoryChildren', !$this->isSeoSlice()); // SITE-3558
         $page->setParam('cartButtonSender', $cartButtonSender);
+        $page->setParam('sliceCategories', $sliceCategories);
         $page->setGlobalParam('shop', $shop);
 
         return new \Http\Response($page->show());
@@ -185,6 +202,30 @@ class ShowAction {
         }
 
         return $category;
+    }
+
+    /**
+     * @param \Model\Slice\Entity $slice
+     * @param \Model\Region\Entity $region
+     * @param \Model\Product\Category\Entity[] $categories
+     */
+    private function prepareSliceCategories(\Model\Slice\Entity $slice, \Model\Region\Entity $region, &$categories = []) {
+        parse_str($slice->getFilterQuery(), $requestFilters);
+
+        $categoryIds = isset($requestFilters['category'][0]) ? $requestFilters['category'] : [];
+        if (!$categoryIds) {
+            return;
+        }
+
+        \RepositoryManager::productCategory()->prepareCollectionById($categoryIds, $region, function ($data) use (&$categories) {
+            if (!isset($data[0])) return;
+
+            foreach ($data as $item) {
+                if (!isset($item['uid'])) continue;
+
+                $categories[] = new \Model\Product\Category\Entity($item);
+            }
+        });
     }
 
     /**

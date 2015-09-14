@@ -407,6 +407,13 @@ class Entity extends BasicEntity {
     }
 
     /**
+     * @param Entity[] $children
+     */
+    public function setChild(array $children) {
+        $this->child = $children;
+    }
+
+    /**
      * @return Entity[]
      */
     public function getChild() {

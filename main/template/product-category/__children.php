@@ -6,7 +6,6 @@ return function(
     array $promoStyle = [],
     array $relatedCategories = [],
     array $categoryConfigById = [],
-    \Iterator\EntityPager $productPager = null,
     $category_class = null,
     $showFullChildren = true
 ) {
