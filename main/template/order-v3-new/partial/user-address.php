@@ -34,6 +34,7 @@ $f = function(
             data-field="street"
             data-value="<?= $helper->json($dataValue) ?>"
             data-relation="<?= $helper->json(['container' => '.' . $containerId])?>"
+            data-parent-kladr-id="<?= \App::user()->getRegion()->kladrId ?>"
         />
     </div>
     <div class="order-ctrl">

@@ -698,7 +698,6 @@
 	}
 
     $.each($('.jsAddressRootNode'), function(i,val){
-        console.log(val)
         ko.applyBindings(address, val);
     });
 
@@ -1637,50 +1636,89 @@
 		$(this).remove();
 	});
 
-    $body.on('blur', '.js-order-deliveryAddress', function() {
-        var
-            $el = $(this),
-            params = $el.data('value') || {},
-            relations = $el.data('relation'),
-            $container = $(relations['container']),
-            timer = $container.data('timer')
-        ;
+    // авктокомплит адерса
+    $body.on('focus', '.js-order-deliveryAddress', function() {
 
-        // clear old timer
-        if (timer) {
-            clearTimeout(timer);
-            $container.data('timer', null);
+        var $el = $(this),
+            type = $el.data('field'), // тип поля адреса (улица, дом)
+            relations = $el.data('relation'),
+            parentKladrId = $el.data('parent-kladr-id'),
+            $container = $(relations['container']),
+            $inputFields = $container.find('input.js-order-deliveryAddress');
+
+        function autoCompleteRequest (request, response) {
+            if (getParent() !== false) {
+                var query = $.extend({}, { limit: 10, name: request.term }, getParent());
+                console.log('[КЛАДР] запрос: ', query);
+                $.kladr.api(query, function (data) {
+                    console.log('[КЛАДР] ответ', data);
+                    response($.map(data, function (elem) {
+                        return { label: (type == 'street' ? elem.name + ' ' + elem.typeShort + '.' : elem.name)  , value: elem }
+                    }))
+                });
+            }
         }
 
-        // create new timer
-        timer = setTimeout(
-            function() {
-                var hasFocus = false;
+        function getParent() {
+            var result = false;
+            if (type == 'street' && parentKladrId) result = { type: $.kladr.type.street, parentType: 'city', parentId: parentKladrId };
+            else if (type == 'building' && parentKladrId) result = { type: $.kladr.type.building, parentType: 'street', parentId: parentKladrId };
+            return result;
+        }
 
-                $.each($container.find('[data-field]'), function(i, el) {
-                    var $el = $(el);
-
-                    if ($el.is(':focus')) {
-                        hasFocus = true;
-                        return false;
-                    }
-                });
-                if (hasFocus) {
-                    return;
+        function save() {
+            $.ajax({
+                type: 'POST',
+                data: {
+                    'action' : 'changeAddress',
+                    'params' : {
+                        // сохраняем улицу в формате "Название + сокращенный тип" для автосогласования в 1С
+                        street: $inputFields.eq(0).val(),
+                        building: $inputFields.eq(1).val(),
+                        apartment: $inputFields.eq(2).val(),
+                        kladr_id: $container.data('last-kladr-id') }
                 }
+            }).fail(function(jqXHR){
+                var response = $.parseJSON(jqXHR.responseText);
+                if (response.result) {
+                    console.error(response.result);
+                }
+            }).done(function(data){
+//			console.log("Query: %s", data.result.OrderDeliveryRequest);
+                console.log("Saved address:", data.result.OrderDeliveryModel.user_info.address);
+            })
+        }
 
-                $.each($container.find('[data-field]'), function(i, el) {
-                    var $el = $(el);
-
-                    params[$el.data('field')] = $el.val();
-                });
-
-                changeAddress(params);
-                console.info('changeAddress', params);
+        $el.autocomplete({
+//            appendTo: '#kladrAutocomplete',
+            source: autoCompleteRequest,
+            minLength: 1,
+            open: function( event, ui ) {
+                //$('.ui-autocomplete').css({'position' : 'absolute', 'top' : 29, 'left' : 0});
             },
-            800
-        );
-        $container.data('timer', timer);
+            select: function( event, ui ) {
+                $el.val(ui.item.label);
+                $inputFields.eq(1).data('parent-kladr-id', ui.item.value.id);
+                $container.data('last-kladr-id', ui.item.value.id);
+                save();
+                return false;
+            },
+            focus: function( event, ui ) {
+                this.value = ui.item.label;
+                event.preventDefault(); // without this: keyboard movements reset the input to ''
+                event.stopPropagation(); // without this: keyboard movements reset the input to ''
+            },
+            change: function( event, ui ) {
+            },
+            messages: {
+                noResults: '',
+                results: function() {}
+            }
+        });
+
+        // Сохранение дома
+        $inputFields.eq(2).off().on('keyup', save);
+
     });
 
     $('#auth-block').attr('data-state', 'register').addClass('state_register');

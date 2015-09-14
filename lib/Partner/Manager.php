@@ -6,6 +6,7 @@ use EnterQuery as Query;
 
 class Manager {
     use \EnterApplication\CurlTrait;
+    use \EnterQuery\ScmsQueryTrait;
 
     private $cookieName;
     private $secondClickCookieName;
@@ -46,6 +47,8 @@ class Manager {
             $request = \App::request();
             $cookie = null;
             $lastPartner = null;
+            $freeHosts = [];
+            $paidSources = [];
 
             $referer = parse_url($request->server->get('HTTP_REFERER'));
             $refererHost = $referer && !empty($referer['host']) ? $referer['host'] : null;
@@ -55,26 +58,27 @@ class Manager {
             // ОСНОВНАЯ ЛОГИКА
             if ($refererHost && !preg_match('/ent(er|3)\.(ru|loc)/', $refererHost)) {
 
-                $partnerQuery = (new Query\CmsQuery('partner/paid-source.json'))->prepare();
-                $hostQuery = (new Query\CmsQuery('partner/free-host.json'))->prepare();
+                $partners = \App::scmsClient()->query('api/traffic-source');
 
-                $this->getCurl()->execute();
-
-                $paidSources = $partnerQuery->response;
-                $freeHosts = $hostQuery->response;
-
-                if (!is_array($paidSources) || !is_array($freeHosts)) {
-                    throw new \Exception('Ошибка получения данных для партнеров из GIT CMS');
+                foreach ($partners as $partner) {
+                    if ($partner['paid'] === true) {
+                        $paidSources[] = $partner;
+                    } else {
+                        $freeHosts[] = $partner;
+                    }
                 }
 
                 // Платные партнеры
-                foreach ($paidSources as $nameSource => $sourceOptions) {
+                foreach ($paidSources as $source) {
 
                     $matchesCount = 0;
+                    $nameSource = $source['token'];
 
-                    if (!isset($sourceOptions['match']) || !is_array($sourceOptions['match'])) continue;
+                    if (!isset($source['matches']) || !is_array($source['matches'])) continue;
 
-                    foreach ($sourceOptions['match'] as $matchKey => $matchValue) {
+                    foreach ($source['matches'] as $matchArr) {
+                        $matchKey = $matchArr['key'];
+                        $matchValue = $matchArr['value'];
                         if ($matchValue !== null && 0 === strpos($request->query->get($matchKey), $matchValue)) {
                             $matchesCount += 1;
                         }
@@ -84,16 +88,16 @@ class Manager {
                     }
 
                     // если платный партнер
-                    if ($matchesCount == count($sourceOptions['match'])) {
+                    if ($matchesCount == count($source['matches'])) {
                         $lastPartner = $nameSource;
 
                         // ставим партнерские cookie
-                        if (isset($paidSources[$nameSource]['cookie']) && is_array($paidSources[$nameSource]['cookie'])) {
-                            foreach ($paidSources[$nameSource]['cookie'] as $partnerCookieName) {
-                                if ($request->query->has($partnerCookieName)) {
+                        if (isset($source['cookies']) && is_array($source['cookies'])) {
+                            foreach ($source['cookies'] as $partnerCookie) {
+                                if ($request->query->has($partnerCookie['name'])) {
                                     $this->cookieArray[] = [
-                                        'name'  => $partnerCookieName,
-                                        'value' => $request->query->get($partnerCookieName),
+                                        'name'  => $partnerCookie['name'],
+                                        'value' => $request->query->get($partnerCookie['name']),
                                         'time'  => $this->cookieLifetime
                                     ];
                                 }
@@ -112,12 +116,12 @@ class Manager {
                 // Бесплатные партнеры
                 if ($lastPartner === null && !$request->cookies->has($this->cookieName)) {
                     foreach ($freeHosts as $freeHost) {
-                        if (preg_match('/' . $freeHost . '/', $refererHost)) {
-                            $lastPartner = $freeHost;
+                        if (preg_match('/' . @$freeHost['host_name'] . '/', $refererHost)) {
+                            $lastPartner = $freeHost['host_name'];
                             // кука для отслеживания заказа
                             $this->cookieArray[] = [
                                 'name'  => $this->cookieName,
-                                'value' => $freeHost
+                                'value' => $freeHost['host_name']
                             ];
                         }
                     }
@@ -127,7 +131,8 @@ class Manager {
                 if ($lastPartner === null && !$request->cookies->has($this->cookieName)) {
                     $this->cookieArray[] = [
                         'name'  => $this->cookieName,
-                        'value' => $request->cookies->has($this->cookieName) && in_array($request->cookies->get($this->cookieName), array_keys($paidSources))
+                        'value' => $request->cookies->has($this->cookieName)
+                                && in_array($request->cookies->get($this->cookieName), array_map(function($arr){ return $arr['token']; }, $paidSources))
                             ? $request->cookies->get($this->cookieName)
                             : $refererHost
                         ];
@@ -135,9 +140,7 @@ class Manager {
 
             }
 
-            foreach ($this->cookieArray as $cookie) {
-                $result['cookie'][] = $cookie;
-            }
+            $result['cookie'] = $this->cookieArray;
 
         } catch (\Exception $e) {
             \App::logger()->error($e, ['partner']);
