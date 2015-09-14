@@ -295,8 +295,9 @@ class Action {
                     /** @var $promo \Model\Promo\Entity */
                     $promo = null;
 
-                    $promoRepository->prepareEntityByToken($promoCategoryToken, function($data) use (&$promo, &$promoCategoryToken) {
-                        if (is_array($data)) {
+                    $promoRepository->prepareByToken($promoCategoryToken, function($data) use (&$promo, &$promoCategoryToken) {
+                        $data = isset($data[0]['uid']) ? $data[0] : null;
+                        if ($data) {
                             $data['token'] = $promoCategoryToken;
                             $promo = new \Model\Promo\Entity($data);
                         }
@@ -307,31 +308,36 @@ class Action {
                         throw new \Exception\NotFoundException(sprintf('Промо-каталог @%s', $promoCategoryToken));
                     }
 
-                    $products = [];
-                    $productIds = [];
+                    $productsByUi = [];
+                    $productUis = [];
                     // перевариваем данные изображений
                     // используя айдишники товаров из секции image.products, получим мини-карточки товаров
-                    foreach ($promo->getImage() as $image) {
-                        $productIds = array_merge($productIds, $image->getProducts());
+                    foreach ($promo->getPages() as $promoPage) {
+                        $uiChunk = [];
+                        foreach ($promoPage->getProducts() as $product) {
+                            $uiChunk[] = $product->ui;
+                        }
+
+                        $productUis = array_merge($productUis, $uiChunk);
                     }
-                    $productIds = array_unique($productIds);
+                    $productUis = array_unique($productUis);
                     
-                    foreach ($productIds as $productId) {
-                        $products[$productId] = new \Model\Product\Entity(['id' => $productId]);
+                    foreach ($productUis as $productUi) {
+                        $productsByUi[$productUi] = new \Model\Product\Entity(['ui' => $productUi]);
                     }
 
-                    \RepositoryManager::product()->prepareProductQueries($products, 'media');
+                    \RepositoryManager::product()->prepareProductQueries($productsByUi, 'media');
                     $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
                     $cartButtonAction = new \View\Cart\ProductButtonAction();
                     // перевариваем данные изображений для слайдера в $slideData
-                    foreach ($promo->getImage() as $image) {
-                        if (!$image instanceof \Model\Promo\Image\Entity) continue;
+                    foreach ($promo->getPages() as $promoPage) {
+                        if (!$promoPage instanceof \Model\Promo\Page\Entity) continue;
 
                         $itemProducts = [];
-                        foreach($image->getProducts() as $productId) {
-                            $product = isset($products[$productId]) ? $products[$productId] : null;
-                            if (!$product) continue;
+                        foreach($promoPage->getProducts() as $promoProduct) {
+                            $product = isset($productsByUi[$promoProduct->ui]) ? $productsByUi[$promoProduct->ui] : null;
+                            if (!$product || !$promoPage->getImageUrl()) continue;
 
                             /** @var $product \Model\Product\Entity */
                             $itemProducts[] = [
@@ -346,12 +352,12 @@ class Action {
                         }
 
                         $slideData[] = [
-                            'target'  => \App::abTest()->isNewWindow() ? '_blank' : '_self',
-                            'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),
-                            'title'   => $image->getName(),
-                            'linkUrl' => $image->getLink()?($image->getLink().'?from='.$promo->getToken()):'',
-                            'time'    => $image->getTime() ? $image->getTime() : 3000,
-                            'products'=> $itemProducts,
+                            'target'   => \App::abTest()->isNewWindow() ? '_blank' : '_self',
+                            'imgUrl'   => $promoPage->getImageUrl(),
+                            'title'    => $promoPage->getName(),
+                            'linkUrl'  => $promoPage->getLink()?($promoPage->getLink().'?from='.$promo->getToken()):'',
+                            'time'     => $promoPage->getTime() ? $promoPage->getTime() : 3000,
+                            'products' => $itemProducts,
                             // Пока не нужно, но в будущем, возможно понадобится делать $repositoryPromo->setEntityImageLink() как в /main/controller/Promo/IndexAction.php
                         ];
                     }

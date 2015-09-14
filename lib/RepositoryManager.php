@@ -204,7 +204,7 @@ class RepositoryManager {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Model\Promo\Repository(\App::dataStoreClient());
+            $instance = new \Model\Promo\Repository(\App::scmsClient());
         }
 
         return $instance;

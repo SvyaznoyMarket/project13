@@ -77,7 +77,7 @@ $(function() {
 		var timer;
 		function checkReviewsShowing() {
 			var windowHeight = $window.height();
-			if ($window.scrollTop() + windowHeight > $reviews.offset().top) {
+			if ($reviews.length && $window.scrollTop() + windowHeight > $reviews.offset().top) {
 				if (!timer) {
 					timer = setTimeout(function() {
 						$window.unbind('scroll', checkReviewsShowing);
