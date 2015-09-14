@@ -677,7 +677,7 @@
         });
 
         // Сохранение дома
-        $inputFields.off().on('keyup', save);
+        $inputFields.eq(2).off().on('keyup', save);
 
     });
 
