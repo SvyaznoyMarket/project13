@@ -73,7 +73,7 @@ return function(
                                     <? if ($order->deliveredAt) : ?><?= date('d.m.Y', $order->deliveredAt->getTimestamp()) ?><? endif ?>
                                     <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
                                 </div>
-                                <!--<div>Оплата при получении: наличные, банковская карта</div>-->
+                                <div>Оплата при получении: наличные, банковская карта</div>
                             </div>
 
                         <? endif ?>
