@@ -56,7 +56,7 @@ class Manager {
             $this->fixReferer($refererHost, $request);
 
             // ОСНОВНАЯ ЛОГИКА
-            if (true || $refererHost && !preg_match('/ent(er|3)\.(ru|loc)/', $refererHost)) {
+            if ($refererHost && !preg_match('/ent(er|3)\.(ru|loc)/', $refererHost)) {
 
                 $partners = \App::scmsClient()->query('api/traffic-source');
 
