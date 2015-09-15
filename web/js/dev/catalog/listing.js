@@ -49,7 +49,7 @@ $(function() {
 		}
 	});
 
-    $('.js-listing-variation').click(function(e) {
+    $('.js-listing-variation-link').click(function(e) {
         e.preventDefault();
 
         var
