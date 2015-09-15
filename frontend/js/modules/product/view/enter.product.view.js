@@ -131,7 +131,8 @@
                 return false;
             },
 
-            changePoint: function() {
+            changePoint: function( event ) {
+                this.subViews.pointsPopup.map.setCenter(event.center, 15);
                 // this.subViews.pointsPopup.hide();
                 return false;
             },

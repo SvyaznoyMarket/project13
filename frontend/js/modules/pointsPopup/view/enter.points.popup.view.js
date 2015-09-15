@@ -379,7 +379,8 @@
 
                 this.trigger('changePoint', {
                     id: target.attr('data-id'),
-                    token: target.attr('data-token')
+                    token: target.attr('data-token'),
+                    center: target.data('center')
                 });
 
                 return false;

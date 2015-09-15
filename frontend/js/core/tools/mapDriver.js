@@ -135,6 +135,22 @@
 
         };
 
+        /**
+         * Установка центра и масштаба карты
+         *
+         * @memberOf    module:createMap~CreateMap
+         * @method      setCenter
+         *
+         * @param       {Number[]}  center
+         * @param       {Number}    zoom
+         * @param       {Object}    options
+         *
+         * @link        https://tech.yandex.ru/maps/doc/jsapi/2.0/ref/reference/Map-docpage/#setCenter
+         */
+        CreateMap.prototype.setCenter = function( center, zoom, options ) {
+            this.mapWS.setCenter(center, zoom, options);
+        };
+
         CreateMap.prototype.clasterize = function() {
 
         };

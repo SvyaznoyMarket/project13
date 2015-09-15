@@ -137,6 +137,7 @@
         <div class="js-pointpopup-pick-point delivery-points-list__row table-row no-hidden {{#productInShowroom}}no-hidden{{/productInShowroom}}"
             data-id="{{id}}"
             data-token="{{token}}"
+            data-center="[{{latitude}}, {{longitude}}]"
         >
             <div class="delivery-points-list__logo table-cell">
                 <img src="{{icon}}" class="delivery-points-list__img">
