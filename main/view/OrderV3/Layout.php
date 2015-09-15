@@ -30,6 +30,8 @@ class Layout extends \View\DefaultLayout {
             $dataValue = [];
             if ('orderV3.complete' === $routeName) {
                 return;
+            } else if ($routeName == 'order' || $routeName == 'orderV3') {
+                $dataValue['type'] = 'cart';
             } else {
                 $dataValue['type'] = 'default';
             }
