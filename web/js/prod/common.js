@@ -852,14 +852,11 @@
 
     var body = $(document.body),
         ga = this.ga,       // Universal
-        _gaq = this._gaq,   // Classic
 
         isUniversalAvailable = function isUniversalAvailableF (){
             return typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0;
         },
-        isClassicAvailable = function isClassicAvailableF() {
-            return typeof _gaq === 'object';
-        },
+
         /**
          * Логирование просмотра страницы в Google Analytics (Classical + Universal)
          * @link 'https://developers.google.com/analytics/devguides/collection/analyticsjs/pages'
@@ -878,9 +875,6 @@
                 ga('send', 'pageview', data);
                 ga('secondary.send', 'pageview', data);
             }
-            if (isClassicAvailable()) {
-                _gaq.push(['_trackPageview', data.page])
-            }
         },
 
         /**
@@ -893,7 +887,6 @@
 
             var e = {},
                 universalEvent = { hitType: 'event' },
-                classicEvent = ['_trackEvent'],
                 props = ['category', 'action', 'label', 'value', 'nonInteraction', 'hitCallback'];
 
             console.info('eventObject', eventObject);
@@ -929,17 +922,6 @@
                     }
                 }
             });
-
-            // Classic Tracking Code
-            if (isClassicAvailable()) {
-                classicEvent.push(e.category, e.action);
-                classicEvent.push(e.label ? e.label: null);
-                classicEvent.push(e.value ? e.value: null);
-                if (e.nonInteraction) classicEvent.push(e.nonInteraction);
-                _gaq.push(classicEvent);
-            } else {
-                console.warn('No Google Analytics object found')
-            }
 
             // Universal Tracking Code
             if (isUniversalAvailable()) {
@@ -1048,17 +1030,6 @@
 
                 googleTrans = new GoogleTransaction(eventObject.transaction);
                 googleProducts = $.map(eventObject.products, function(elem){ return new GoogleProduct(elem, googleTrans.id)});
-
-                // Classic Tracking Code
-                if (isClassicAvailable()) {
-                    _gaq.push(['_addTrans'].concat(googleTrans.toArray()));
-                    $.each(googleProducts, function(i, product){
-                        _gaq.push(['_addItem'].concat(product.toArray()))
-                    });
-                    _gaq.push(['_trackTrans']);
-                } else {
-                    console.warn('No Google Analytics object found')
-                }
 
                 // Universal Tracking Code
                 if (isUniversalAvailable()) {
