@@ -45,7 +45,9 @@
 $(document).ready(function(){
 
     var menuItems = $('.menu-item'),
-		subscribeBtn = $('.subscribe-form__btn');
+		subscribeBtn = $('.subscribe-form__btn'),
+        $popupTarifs = $('.js-tarifs-popup').clone(),
+        $popupShops = $('.js-shops-popup').clone();
 
     // Выделение активного пункта в боковом меню
     $.each(menuItems, function() {
@@ -346,11 +348,13 @@ $(document).ready(function(){
 		});
 	}
     //Попап стоимости доставки
-    $('.js-tarifs-popup-show').on('click',function(){
-        var popup = $('.js-tarifs-popup').clone();
+    $('.js-tarifs-popup-show').on('click',function(e){
+
+        e.preventDefault();
+
         $('.js-tarifs-popup').remove();
         $('body').append('<div class="js-tarifs-overlay"></div>');
-        $('body').append(popup).addClass('body-fixed');
+        $('body').append($popupTarifs).addClass('body-fixed');
 
         $('.js-tarifs-popup').show();
 
@@ -392,6 +396,21 @@ $(document).ready(function(){
         });
 
         noResult ? $('.tarifs-search__no-result').show() : $('.tarifs-search__no-result').hide();
+    });
+    $('.js-shops-popup-show').on('click',function(e){
+
+        e.preventDefault();
+
+        $('.js-shops-popup').remove();
+        $('body').append('<div class="js-tarifs-overlay"></div>');
+        $('body').append($popupShops).addClass('body-fixed');
+
+        $('.js-shops-popup').show();
+    });
+    $('body').on('click', '.js-shops-popup .popup-closer', function(){
+        $('.js-shops-popup').hide();
+        $('.js-tarifs-overlay').remove();
+        $('body').removeClass('body-fixed');
     });
 });
 
