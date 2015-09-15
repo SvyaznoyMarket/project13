@@ -146,12 +146,61 @@
             .inline-block();
             
             .btnBuy__eLink{
-                //width: 125px;
+                //кнопка для листинга - без нижнего бордера
+
+                    line-height: 1;
+
+                    cursor: pointer;
+
+                    .rounded(3px);
+                    .inline-block();
+
+                    color: #fff;
+
+                    background: #f99b1c;
+
+                    border: none;
+                    font-size: 18px;
+                    padding: 10px;
+                    width: 130px;
+                    text-align: center;
+
+                    .transition(background-color .2s ease);
+
+                    &:hover {
+                        background-color: #ff9f1d;
+                    }
+                    &:active {
+                        background-color: #f99b1c;
+                    }
+
+                &.btn-type--kit{
+
+                    &:before{
+                        content: '\e800';
+
+                        font-family: 'kit';
+                        font-style: normal;
+                        font-weight: normal;
+                        .inline-block(baseline);
+
+                        text-align: center;
+                        font-variant: normal;
+                        text-transform: none;
+
+                        margin-right: 0.5em;
+                    }
+
+                }
             }
             .mDisabled{
-                background-color: #fff;
+                background-color: @white;
+                border: 1px solid #a0a0a0;
                 color: #a0a0a0;
-                border: 1px solid;
+                cursor: default;
+                &:hover, &:active{
+                    background-color: @white;
+                }
             }
         }
 

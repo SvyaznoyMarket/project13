@@ -647,10 +647,31 @@ class Action {
         // TODO удалить (электронный сертификат в листинг сертификатов)
         if ($category->ui === 'b2885b1b-06bc-4c6f-b40d-9a0af22ff61c') array_unshift($productIds, 201540);
 
+        call_user_func(function() use(&$category) {
+            $userChosenCategoryView = \App::request()->cookies->get('categoryView');
+
+            if (
+                (!$category->config->listingDisplaySwitch && $category->config->listingDefaultView->isList)
+                || (
+                    $category->config->listingDisplaySwitch
+                    && (
+                        $userChosenCategoryView === 'expanded'
+                        || ($category->config->listingDefaultView->isList && $userChosenCategoryView == '')
+                    )
+                )
+            ) {
+                $category->listingView->isList = true;
+                $category->listingView->isMosaic = false;
+            } else {
+                $category->listingView->isList = false;
+                $category->listingView->isMosaic = true;
+            }
+        });
+
         /** @var \Model\Product\Entity[] $products */
         $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $productIds);
 
-        $repository->prepareProductQueries($products, 'media label brand category' . (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category->isInSiteListingWithViewSwitcherAbTest() ? ' property' : ''));
+        $repository->prepareProductQueries($products, 'media label brand category' . ($category->listingView->isList ? ' property' : ''));
 
         \App::coreClientV2()->execute();
 

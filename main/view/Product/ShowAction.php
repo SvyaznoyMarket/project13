@@ -115,10 +115,7 @@ class ShowAction {
             ,
         ];
 
-        // Дополняем свойствами для каталога в виде листинга
-        if (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category && $category->isInSiteListingWithViewSwitcherAbTest()) {
-            $productItem['properties'] = (new \View\Product\Properties())->execute($helper, $product);
-        }
+        $productItem['properties'] = (new \View\Product\Properties())->execute($helper, $product);
 
         // oldPrice and priceSale
         if ( $product->getPriceOld() && $product->getLabel()) {

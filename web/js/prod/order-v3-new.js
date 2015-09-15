@@ -1296,7 +1296,18 @@
 
 			$self.addClass('orderOferta_tabs_i-cur');
 			$("#"+tab_id).addClass('orderOferta_tabcnt-cur');
-		};
+        },
+        showHideLabels = function showHideLabels() {
+            var $this = $(this),
+                $label = $this.parent().find('.js-order-ctrl__lbl');
+
+            if ( $this.val() !== '' ) {
+                $label.show();
+            } else {
+                $label.hide();
+            }
+        }
+        ;
 
     // TODO change all selectors to .jsMethod
 
@@ -1589,16 +1600,9 @@
         $body.trigger('trackGoogleEvent', ['pickup_ux', 'list_point', 'выбор'])
     });
 
-    $body.on('keyup', '.js-order-ctrl__input', function(){
-        var $this = $(this),
-            $label = $this.parent().find('.js-order-ctrl__lbl');
+    $.each($inputs, showHideLabels);
+    $body.on('keyup', '.js-order-ctrl__input', showHideLabels);
 
-        if ( $this.val() !== '' ) {
-            $label.show();
-        } else {
-            $label.hide();
-        }
-    });
     //показать блок редактирования товара - новая версия
     $body.on('click', '.js-show-edit',function(){
         $(this).hide();

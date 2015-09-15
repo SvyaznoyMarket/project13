@@ -57,7 +57,7 @@
             </div><!--/ Контент-->
         </div><!--/ Шаблон -->
 
-        <?= $page->render('common/_footer-ep') ?>
+        <?= $page->render('common/_footer-new') ?>
 
         <?= $page->slotUpper() ?>
         <?= $page->slotUserbar() ?>
