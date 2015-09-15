@@ -17,7 +17,10 @@ class DeliveryMap {
         $scmsClient = \App::scmsClient();
         $scmsClient->addQuery(
             'api/static-page',
-            ['token' => ['menu']],
+            [
+                'token' => ['menu'],
+                'tags' => ['site-web'],
+            ],
             [],
             function($data) use (&$sidebar) {
                 if (isset($data['pages'][0]['content'])) {
@@ -28,7 +31,10 @@ class DeliveryMap {
 
         $scmsClient->addQuery(
             'api/static-page',
-            ['token' => ['delivery']],
+            [
+                'token' => ['delivery'],
+                'tags' => ['site-web'],
+            ],
             [],
             function($data) use (&$content) {
                 if (isset($data['pages'][0]['content'])) {

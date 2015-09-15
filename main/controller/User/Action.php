@@ -723,7 +723,10 @@ class Action {
         $scmsClient = \App::scmsClient();
         $scmsClient->addQuery(
             'api/static-page',
-            ['token' => ['reg_corp_user_cont']],
+            [
+                'token' => ['reg_corp_user_cont'],
+                'tags' => ['site-web'],
+            ],
             [],
             function($data) use (&$content) {
                 if (!empty($data['pages'][0]['content'])) {

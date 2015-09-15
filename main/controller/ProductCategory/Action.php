@@ -122,7 +122,10 @@ class Action {
             $scmsClient = \App::scmsClient();
             $scmsClient->addQuery(
                 'api/static-page',
-                ['token' => [trim((string)$catalogJson['promo_token'])]],
+                [
+                    'token' => [trim((string)$catalogJson['promo_token'])],
+                    'tags' => ['site-web'],
+                ],
                 [],
                 function($data) use (&$promoContent) {
                     if (!empty($data['pages'][0]['content'])) {

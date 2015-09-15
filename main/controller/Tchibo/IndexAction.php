@@ -141,7 +141,10 @@ class IndexAction {
         if (!empty($catalogJson['promo_token'])) {
             $scmsClient->addQuery(
                 'api/static-page',
-                ['token' => [$catalogJson['promo_token']]],
+                [
+                    'token' => [$catalogJson['promo_token']],
+                    'tags' => ['site-web'],
+                ],
                 [],
                 function($data) use (&$bannerBottom) {
                     if (!empty($data['pages'][0]['content'])) {
@@ -159,7 +162,10 @@ class IndexAction {
         $promoToken = 'tchibo_promo';
         $scmsClient->addQuery(
             'api/static-page',
-            ['token' => [$promoToken]],
+            [
+                'token' => [$promoToken],
+                'tags' => ['site-web'],
+            ],
             [],
             function($data) use (&$promoContent) {
                 if (!empty($data['pages'][0]['content'])) {
