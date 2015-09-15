@@ -1549,6 +1549,40 @@ $(function() {
 			ko.applyBindings(ENTER.UserModel, goodsSlider);
 		}
 	});
+
+    $('.js-listing-variation').click(function(e) {
+        e.preventDefault();
+
+        var
+            $self = $(e.currentTarget),
+            $variation = $self.closest('.js-listing-variation');
+
+        $.ajax({
+            type: 'GET',
+            url: ENTER.utils.generateUrl('ajax.product.variation', {
+                productUi: $self.closest('.js-listing-item').data('product-ui'),
+                variationId: $variation.data('variation-id')
+            }),
+            success: function(res) {
+                if (res.contentHtml) {
+                    $variation.html(res.contentHtml);
+                    $variation.find('.js-listing-variation-item').dropbox({
+                        titleCssSelector: '.js-listing-variation-item-title',
+                        openerCssSelector: '.js-listing-variation-item-opener',
+                        openCssClass: 'open',
+                        onChoose: function(value, $input) {
+                            $input.closest('.js-listing-item').find('.jsBuyButton')
+                                .attr('href', ENTER.utils.generateUrl('cart.product.setList', {
+                                    products: [{ui: $input.data('product-ui'), quantity: '+1', up: 1}]
+                                }))
+                                .attr('data-product-id', $input.data('product-id'))
+                                .attr('data-product-ui', $input.data('product-ui'));
+                        }
+                    });
+                }
+            }
+        });
+    });
 });
 ;(function($) {
 	var seoList = $('.js-seo-list');

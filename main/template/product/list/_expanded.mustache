@@ -1,7 +1,10 @@
 {{#products}}
     {{^isBanner}}
         <li class="listing__i js-listing-item"
-            {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
+            data-product-ui="{{ui}}"
+            {{#isSlot}}data-is-slot="true"{{/isSlot}}
+            {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}
+        >
         {{! Картинка }}
             <div class="listing-img">
                 <div class="listing-stickers">
@@ -64,7 +67,10 @@
                 </ul>
                 {{#hasVariations}}
                     <div class="listing-variations">
-                        <span class="listing-variations__lbl">Можно выбрать:</span> {{#variations}}<span class="listing-variations__val">{{lowerName}}{{^isLast}}, {{/isLast}}</span> {{/variations}}
+                        <span class="listing-variations__lbl">Можно выбрать:</span>
+                        {{#variations}}
+                            {{>product/variation}}
+                        {{/variations}}
                     </div>
                 {{/hasVariations}}
             </div>
