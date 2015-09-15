@@ -43,4 +43,13 @@ $(function($){
 			}
 		});
     }
+
+     $('.js-tab-head').on('click',function(){
+         var $this = $(this),
+             $tab = $('#'+$this.data('target'));
+         $('.js-tab-head').removeClass('active');
+         $this.addClass('active');
+         $('.js-tab').removeClass('active');
+         $tab.addClass('active');
+     })
 });
