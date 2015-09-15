@@ -60,6 +60,8 @@
                 var
                     validationConfig;
 
+                this.model = options.model;
+
                 this.subViews = {
                     phone: this.$el.find('.' + CSS_CLASSES.PHONE_INPUT),
                     email: this.$el.find('.' + CSS_CLASSES.EMAIL_INPUT),
@@ -140,6 +142,8 @@
              * @memberOf    module:enter.application.popup~ApplicationPopupView#
              */
             sendApplicationSuccess: function( data ) {
+                this.subViews.submit.removeClass(CSS_CLASSES.LOADER);
+
                 console.info('module:enter.application.popup~ApplicationPopupView#sendApplicationSuccess');
                 console.dir(data);
             },
@@ -151,10 +155,15 @@
              * @memberOf    module:enter.application.popup~ApplicationPopupView#
              */
             sendApplicationError: function( jqXHR, textStatus, errorThrown ) {
+                this.subViews.submit.removeClass(CSS_CLASSES.LOADER);
                 console.warn('module:enter.application.popup~ApplicationPopupView#sendApplicationError');
                 console.log(jqXHR);
                 console.log(textStatus);
                 console.log(errorThrown);
+            },
+
+            onClose: function() {
+                this.completelyUnbind();
             },
 
             /**
@@ -165,8 +174,7 @@
              */
             sendApplication: function() {
                 console.info('module:enter.application.popup~ApplicationPopupView#sendApplication');
-
-                this.subViews.submit.addClass(CSS_CLASSES.LOADER)
+                this.subViews.submit.addClass(CSS_CLASSES.LOADER);
 
                 this.ajax({
                     type: 'POST',

@@ -211,14 +211,15 @@
                 console.info('module:enter.userbar.view~EnterUserbarView#showApplicationPopup');
 
                 if ( this.subViews.applicationPopup ) {
-                    this.subViews.applicationPopup.show();
-                    return false;
+                    this.subViews.applicationPopup.initialize({
+                        model: this.model
+                    });
+                } else {
+                    this.subViews.applicationPopup = new ApplicationPopupView({
+                        model: this.model,
+                        el: $('.' + CSS_CLASSES.APPLICATION_POPUP)
+                    });
                 }
-
-                this.subViews.applicationPopup = new ApplicationPopupView({
-                    model: this.model,
-                    el: $('.' + CSS_CLASSES.APPLICATION_POPUP)
-                });
 
                 this.subViews.applicationPopup.show();
 

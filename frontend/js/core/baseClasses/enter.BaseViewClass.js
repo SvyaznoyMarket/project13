@@ -58,6 +58,14 @@
                 hide: function() {}
             },
 
+            completelyUnbind: function() {
+                // COMPLETELY UNBIND THE VIEW
+                this.undelegateEvents();
+                this.stopListening();
+
+                this.$el.removeData().unbind();
+            },
+
             /**
              * Удаление преставлений всегда осуществляем через destroy
              *
