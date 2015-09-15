@@ -3,9 +3,7 @@
     var body = $(document.body),
         ga = this.ga,       // Universal
 
-        isUniversalAvailable = function isUniversalAvailableF (){
-            return typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0;
-        },
+        isUniversalAvailable = ENTER.utils.analytics.isEnabled,
 
         /**
          * Логирование просмотра страницы в Google Analytics (Classical + Universal)
@@ -38,8 +36,6 @@
             var e = {},
                 universalEvent = { hitType: 'event' },
                 props = ['category', 'action', 'label', 'value', 'nonInteraction', 'hitCallback'];
-
-            console.info('eventObject', eventObject);
 
             // Формируем event
             if (arguments.length == 2 && typeof eventObject == 'object') {
@@ -183,8 +179,6 @@
 
                 // Universal Tracking Code
                 if (isUniversalAvailable()) {
-                    ga('require', 'ecommerce', 'ecommerce.js');
-                    ga('secondary.require', 'ecommerce', 'ecommerce.js');
                     ga('ecommerce:addTransaction', googleTrans.toObject());
                     ga('secondary.ecommerce:addTransaction', googleTrans.toObject());
                     $.each(googleProducts, function(i, product){

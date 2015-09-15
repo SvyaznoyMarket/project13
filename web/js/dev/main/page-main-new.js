@@ -13,6 +13,7 @@
         thumbsHeightWithMargin = 58,    // количество пикселов для промотки превьюшек
         $bannersButtons = $('.jsMainBannersButton'),    // кнопки вверх-вниз у превьюшек
         bannersUpClass = 'jsMainBannersUpButton',
+		viewedBanners = {},
 
 		slidesWidth = 473,
 		slidesDotClass = 'slidesBox_dott_i',
@@ -251,6 +252,34 @@
 		})
 	});
 
+
+	$body.on('mainBannerView', function(event, bannerIndex) {
+
+		var $banner = $bannerThumbs.eq(bannerIndex),
+			data = {
+				id: $banner.data('uid'),
+				name: $banner.data('name'),
+				position: bannerIndex + 1
+			};
+
+		// TODO проверку доступности трекера можно вынести в ENTER.utils
+		if (ENTER.utils.analytics.isEnabled() && typeof viewedBanners[data.id] == 'undefined') {
+			// Добавляем баннер в ecommerce
+			ga('ec:addPromo', data);
+			// Отсылаем событие
+			$body.trigger('trackGoogleEvent', {
+				category: 'Internal Promotions',
+				action: 'view',
+				label: data.name,
+				nonInteraction: 1
+			});
+			// Добавляем баннер в просмотренные баннеры
+			viewedBanners[data.id] = data;
+		}
+	});
+
+	// Tрекаем первый баннер
+	$body.trigger('mainBannerView', 0);
 
 	// пролистывание рекомендаций
 	$body.on('click', '.jsMainSlidesRetailRocket .jsMainSlidesButton, .jsMainSlidesRetailRocket .slidesBox_dott', function(){

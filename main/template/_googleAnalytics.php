@@ -44,6 +44,10 @@
         ga( 'create', 'UA-25485956-1', 'enter.ru' ); // основной (premium-аккаунт)
         ga( 'create', 'UA-25485956-5', 'enter.ru', { 'name': 'secondary'} ); // дополнительный
 
+        /* E-commerce plugin */
+        ga('require', 'ec');
+        ga('secondary.require', 'ec');
+
         /* The display features plugin for analytics.js can be used to enable Advertising Features in Google Analytics,
         such as Remarketing, Demographics and Interest Reporting, and more */
         ga( 'require', 'displayfeatures' );

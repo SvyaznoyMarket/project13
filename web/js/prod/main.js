@@ -5,11 +5,34 @@ $(function() {
 
     // клик на главном баннере
     $body.on('click', '.jsMainBannerLink', function() {
+
+        var $el = $(this),
+            data = {
+                id: $el.data('uid'),
+                name: $el.data('name'),
+                position: 1 + $el.data('position')
+            };
+
+        // Старое событие
+        /*
         $body.trigger('trackGoogleEvent', {
             category: 'banner_main',
             action: 'click',
             label: 'banner'
         });
+        */
+
+        if (!ENTER.utils.analytics.isEnabled()) return;
+
+        /* Cобытие с использованием e-commerce */
+        ga('ec:addPromo', data);
+        ga('ec:setAction', 'promo_click');
+        $body.trigger('trackGoogleEvent', {
+            category: 'Internal Promotions',
+            action: 'click',
+            label: data.name,
+            hitCallback: $el.attr('href')
+        })
     });
 
     // скролл на главном баннере
@@ -72,6 +95,7 @@ $(function() {
         thumbsHeightWithMargin = 58,    // количество пикселов для промотки превьюшек
         $bannersButtons = $('.jsMainBannersButton'),    // кнопки вверх-вниз у превьюшек
         bannersUpClass = 'jsMainBannersUpButton',
+		viewedBanners = {},
 
 		slidesWidth = 473,
 		slidesDotClass = 'slidesBox_dott_i',
@@ -310,6 +334,34 @@ $(function() {
 		})
 	});
 
+
+	$body.on('mainBannerView', function(event, bannerIndex) {
+
+		var $banner = $bannerThumbs.eq(bannerIndex),
+			data = {
+				id: $banner.data('uid'),
+				name: $banner.data('name'),
+				position: bannerIndex + 1
+			};
+
+		// TODO проверку доступности трекера можно вынести в ENTER.utils
+		if (ENTER.utils.analytics.isEnabled() && typeof viewedBanners[data.id] == 'undefined') {
+			// Добавляем баннер в ecommerce
+			ga('ec:addPromo', data);
+			// Отсылаем событие
+			$body.trigger('trackGoogleEvent', {
+				category: 'Internal Promotions',
+				action: 'view',
+				label: data.name,
+				nonInteraction: 1
+			});
+			// Добавляем баннер в просмотренные баннеры
+			viewedBanners[data.id] = data;
+		}
+	});
+
+	// Tрекаем первый баннер
+	$body.trigger('mainBannerView', 0);
 
 	// пролистывание рекомендаций
 	$body.on('click', '.jsMainSlidesRetailRocket .jsMainSlidesButton, .jsMainSlidesRetailRocket .slidesBox_dott', function(){

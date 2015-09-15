@@ -488,6 +488,15 @@
 	};
 
 	utils.analytics = {
+
+		/**
+		 * Проверка доступности трекеров
+		 * @returns {boolean}
+		 */
+		isEnabled: function() {
+			return typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0
+		},
+
 		// SITE-5466
 		reviews: {
 			add: function(productUi, avgScore, firstPageAvgScore, categoryName) {
