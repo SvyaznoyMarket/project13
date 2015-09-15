@@ -48,4 +48,39 @@ $(function() {
 			ko.applyBindings(ENTER.UserModel, goodsSlider);
 		}
 	});
+
+    $('.js-listing-variation-link').click(function(e) {
+        e.preventDefault();
+
+        var
+            $self = $(e.currentTarget),
+            $variation = $self.closest('.js-listing-variation');
+
+        $.ajax({
+            type: 'GET',
+            url: ENTER.utils.generateUrl('ajax.product.variation', {
+                productUi: $self.closest('.js-listing-item').data('product-ui'),
+                variationId: $variation.data('variation-id')
+            }),
+            success: function(res) {
+                if (res.contentHtml) {
+                    $variation.html(res.contentHtml);
+                    $variation.find('.js-listing-variation-values').change(function(e) {
+                        var $select = $(e.currentTarget);
+
+                        if ($select.length && $select[0].selectedOptions[0]) {
+                            var $selectedOption = $($select[0].selectedOptions[0]);
+
+                            $select.closest('.js-listing-item').find('.jsBuyButton')
+                                .attr('href', ENTER.utils.generateUrl('cart.product.setList', {
+                                    products: [{ui: $selectedOption.data('product-ui'), quantity: '+1', up: 1}]
+                                }))
+                                .attr('data-product-id', $selectedOption.data('product-id'))
+                                .attr('data-product-ui', $selectedOption.data('product-ui'));
+                        }
+                    });
+                }
+            }
+        });
+    });
 });

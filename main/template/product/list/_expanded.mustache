@@ -1,7 +1,10 @@
 {{#products}}
     {{^isBanner}}
         <li class="listing__i js-listing-item"
-            {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
+            data-product-ui="{{ui}}"
+            {{#isSlot}}data-is-slot="true"{{/isSlot}}
+            {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}
+        >
         {{! Картинка }}
             <div class="listing-img">
                 <div class="listing-stickers">
@@ -64,7 +67,10 @@
                 </ul>
                 {{#hasVariations}}
                     <div class="listing-variations">
-                        <span class="listing-variations__lbl">Можно выбрать:</span> {{#variations}}<span class="listing-variations__val">{{lowerName}}{{^isLast}}, {{/isLast}}</span> {{/variations}}
+
+                        {{#variations}}
+                            {{>product/variation}}
+                        {{/variations}}
                     </div>
                 {{/hasVariations}}
             </div>
@@ -116,7 +122,6 @@
                                 data-is-slot="{{isSlot}}"
                                 data-is-only-from-partner="{{isOnlyFromPartner}}"
                             >
-                                <!-- по клику сюда цепляется класс product-card-tools__lk--active-->
                                 <i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
                                 <span class="product-card-tools__tx">Сравнить</span>
                             </a>

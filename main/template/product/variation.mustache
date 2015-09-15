@@ -1,0 +1,16 @@
+<div class="js-listing-variation" data-variation-id="{{id}}">
+    <span class="listing-variations__lbl">{{name}}:</span>
+    {{^values.0}}
+        <a href="#" class="listing-variations__val js-listing-variation-link">Выбрать</a>
+    {{/values.0}}
+
+    {{#values.0}}
+        <div class="custom-select variations-select">
+            <select class="custom-select__inn js-listing-variation-values">
+                {{#values}}
+                    <option class="custom-select__i" name="variation[{{variation.product.ui}}][{{id}}]" data-product-id="{{product.id}}" data-product-ui="{{product.ui}}" {{#checked}}selected{{/checked}}>{{name}}</option>
+                {{/values}}
+            </select>
+        </div>
+    {{/values.0}}
+</div>

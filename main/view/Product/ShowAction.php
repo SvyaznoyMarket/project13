@@ -54,7 +54,8 @@ class ShowAction {
 
         $variations = (new \View\Product\Variations())->execute($helper, $product);
         $productItem = [
-            'id'           => $product->getId(),
+            'id'           => $product->id,
+            'ui'           => $product->ui,
             'name'         => $product->getName(),
             'link'         => $product->getLink(),
             'label'        =>
