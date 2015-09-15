@@ -104,7 +104,6 @@ module.exports = function (grunt, options) {
                 'dev/jquery-plugins/jquery.put_cursor_at_end.js',
                 'dev/jquery-plugins/goodsCounter.js',
                 'dev/jquery-plugins/jquery.deparam.js',
-                'dev/jquery-plugins/jquery.dropbox.js',
                 'dev/jquery-plugins/jquery.elevatezoom.js',
                 'dev/jquery-plugins/jquery.enterLightboxMe.js',
                 'dev/jquery-plugins/customDropDown.js',

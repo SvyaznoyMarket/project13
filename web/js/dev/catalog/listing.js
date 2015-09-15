@@ -65,17 +65,18 @@ $(function() {
             success: function(res) {
                 if (res.contentHtml) {
                     $variation.html(res.contentHtml);
-                    $variation.find('.js-listing-variation-item').dropbox({
-                        titleCssSelector: '.js-listing-variation-item-title',
-                        openerCssSelector: '.js-listing-variation-item-opener',
-                        openCssClass: 'open',
-                        onChoose: function(value, $input) {
-                            $input.closest('.js-listing-item').find('.jsBuyButton')
+                    $variation.find('.js-listing-variation-values').change(function(e) {
+                        var $select = $(e.currentTarget);
+
+                        if ($select.length && $select[0].selectedOptions[0]) {
+                            var $selectedOption = $($select[0].selectedOptions[0]);
+
+                            $select.closest('.js-listing-item').find('.jsBuyButton')
                                 .attr('href', ENTER.utils.generateUrl('cart.product.setList', {
-                                    products: [{ui: $input.data('product-ui'), quantity: '+1', up: 1}]
+                                    products: [{ui: $selectedOption.data('product-ui'), quantity: '+1', up: 1}]
                                 }))
-                                .attr('data-product-id', $input.data('product-id'))
-                                .attr('data-product-ui', $input.data('product-ui'));
+                                .attr('data-product-id', $selectedOption.data('product-id'))
+                                .attr('data-product-ui', $selectedOption.data('product-ui'));
                         }
                     });
                 }
