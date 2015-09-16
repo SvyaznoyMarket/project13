@@ -733,5 +733,9 @@
         if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
     });
 
+    $body.on('input', '.js-quant', function() {
+        var $el = $(this);
 
+        $el.val($el.val().replace(/[^0-9]+/g, ''));
+    });
 })(jQuery);
