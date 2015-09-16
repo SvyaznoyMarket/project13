@@ -6,8 +6,8 @@ $f = function (
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity\Order $order
 ) {
-    $isOrderWithCart = true;
-    ?>
+    $isOrderWithCart = \App::abTest()->isOrderWithCart();
+?>
 
     <div class="paymentMethods <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
         <strong>Способы оплаты</strong>
