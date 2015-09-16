@@ -12,9 +12,10 @@ $helper = new \Helper\TemplateHelper();
 $isNewProductPage = \App::abTest()->isNewProductPage();
 ?>
 
-<div class="personalPage">
+<div class="personalPage personal">
 
     <?= $page->render('user/_menu', ['page' => $page]) ?>
+
 
     <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
         'type'           => 'main',

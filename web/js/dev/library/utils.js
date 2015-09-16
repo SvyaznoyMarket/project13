@@ -29,6 +29,12 @@
 		return len;
 	};
 
+	utils.numberChoice = function(number, choices) {
+		var cases = [2, 0, 1, 1, 1, 2];
+
+		return choices[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[Math.min(number % 10, 5)]];
+	};
+
 	/**
 	 * Возвращает гет-параметр с именем paramName у ссылки url
 	 *

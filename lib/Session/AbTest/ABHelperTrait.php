@@ -146,6 +146,14 @@ trait ABHelperTrait {
     }
 
     /**
+     * Старый личный кабинет
+     * @return bool
+     */
+    public static function isOldPrivate() {
+        return 'off' === \App::abTest()->getTest('new_private')->getChosenCase()->getKey();
+    }
+
+    /**
      * Корзина в заказе
      * @return bool
      */

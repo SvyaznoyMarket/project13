@@ -117,6 +117,16 @@ return [
         'pattern' => '/login-{providerName}/response',
         'action'  => ['User\ExternalLoginResponseAction', 'execute'],
     ],
+    'user.update' => [
+        'pattern' => '/private/update',
+        'action'  => ['User\UpdateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+    'user.update.password' => [
+        'pattern' => '/private/update-password',
+        'action'  => ['User\UpdatePasswordAction', 'execute'],
+        'method'  => ['POST'],
+    ],
 
     // Регистрация поставщика
     'supplier.new' => [
@@ -134,14 +144,14 @@ return [
     'supplier.load' => [
         'pattern'   => '/supplier/load',
         'action'    => ['Supplier\CabinetAction', 'load'],
-        'method'  => ['POST']
+        'method'  => ['POST'],
     ],
 
     // Обновление данных о поставщике
     'supplier.update' => [
         'pattern'   => '/supplier/update',
         'action'    => ['Supplier\CabinetAction', 'update'],
-        'method'  => ['POST']
+        'method'  => ['POST'],
     ],
 
     // Тестирование curl-client
@@ -567,6 +577,11 @@ return [
         'pattern' => '/private/subscriptions',
         'action'  => ['User\SubscriptionsAction', 'execute'],
     ],
+    'user.notification.addProduct' => [
+        'pattern' => '/private/notification/add-product',
+        'action'  => ['User\Notification\AddProductAction', 'execute'],
+        'method'  => ['POST'],
+    ],
 
     // маршрутизатор нескольких запросов
     'route' => [
@@ -891,6 +906,27 @@ return [
         'require' => [
             'productUi' => '[\w\d-_]+',
         ],
+    ],
+    'favorite.deleteProducts' => [
+        'pattern' => '/favorite/delete-product-list',
+        'action'  => ['Favorite\DeleteListAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+
+    'wishlist.create' => [
+        'pattern' => '/wishlist/create',
+        'action'  => ['Wishlist\CreateAction', 'execute'],
+        'method'    => ['POST'],
+    ],
+    'wishlist.addProduct' => [
+        'pattern' => '/wishlist/add-product',
+        'action'  => ['Wishlist\AddProductAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+    'wishlist.deleteProduct' => [
+        'pattern' => '/wishlist/delete-product',
+        'action'  => ['Wishlist\DeleteProductAction', 'execute'],
+        'method'  => ['POST'],
     ],
 
     'compare' => [

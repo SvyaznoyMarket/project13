@@ -3,14 +3,20 @@
 
 namespace Controller\User;
 
+use Session\AbTest\ABHelperTrait;
 
 class OrdersAction extends PrivateAction {
+    use ABHelperTrait;
 
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\Response
      */
     public function execute(\Http\Request $request) {
+        if (!$this->isOldPrivate()) {
+            return (new \Controller\User\Order\IndexAction())->execute($request);
+        }
+        
         $data = $this->getData();
 
         $page = new \View\User\OrdersPage();

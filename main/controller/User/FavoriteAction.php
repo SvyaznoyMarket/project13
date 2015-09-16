@@ -14,29 +14,57 @@ class FavoriteAction extends PrivateAction {
     public function get() {
         $curl = $this->getCurl();
 
-        $favoriteQuery = (new Query\User\Favorite\Get(\App::user()->getEntity()->getUi()))->prepare();
+        $userEntity = \App::user()->getEntity();
+
+        $favoriteListQuery = new Query\User\Favorite\Get();
+        $favoriteListQuery->userUi = $userEntity->getUi();
+        $favoriteListQuery->prepare();
+
+        $wishlistListQuery = new Query\User\Wishlist\Get();
+        $wishlistListQuery->userUi = $userEntity->getUi();
+        $wishlistListQuery->filter->withProducts = true;
+        $wishlistListQuery->prepare();
 
         $curl->execute();
-        
+
+        $productUis = [];
         $favoriteProductsByUi = [];
-        foreach ($favoriteQuery->response->products as $item) {
+        foreach ($favoriteListQuery->response->products as $item) {
             $ui = isset($item['uid']) ? (string)$item['uid'] : null;
             if (!$ui) continue;
 
             $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
+            $productUis[] = $ui;
         }
 
-        /** @var \Model\Product\Entity[] $products */
-        $products = [];
-        if ($favoriteProductsByUi) {
-            $products = array_map(function($productUi) { return new \Model\Product\Entity(['ui' => $productUi]); }, array_keys($favoriteProductsByUi));
-            \RepositoryManager::product()->prepareProductQueries($products, 'media');
-            \App::coreClientV2()->execute();
+        $wishlists = [];
+        foreach ($wishlistListQuery->response->wishlists as $item) {
+            if (!@$item['id']) continue;
+
+            $wishlist = new \Model\Wishlist\Entity($item);
+            $wishlists[] = $wishlist;
+            foreach ($wishlist->products as $product) {
+                $productUis[] = $product->ui;
+            }
         }
+
+        $productUis = array_unique($productUis);
+
+        /** @var \Model\Product\Entity[] $productsByUi */
+        $productsByUi = [];
+        if ($productUis) {
+            foreach ($productUis as $productUi) {
+                $productsByUi[$productUi] = new \Model\Product\Entity(['ui' => $productUi]);
+            }
+            \RepositoryManager::product()->prepareProductQueries($productsByUi, 'media');
+        }
+
+        \App::coreClientV2()->execute();
 
         $page = new \View\User\FavoritesPage();
-        $page->setParam('products', $products);
+        $page->setParam('productsByUi', $productsByUi);
         $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
+        $page->setParam('wishlists', $wishlists);
 
         return new \Http\Response($page->show());
     }

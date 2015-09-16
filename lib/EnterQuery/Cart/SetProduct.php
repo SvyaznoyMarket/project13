@@ -42,8 +42,8 @@ namespace EnterQuery\Cart
                     'uid'      => $this->ui,
                     'quantity' => $this->quantity,
                 ], // data
-                function($response, $statusCode) {
-                    $result = $this->decodeResponse($response, $statusCode)['result'];
+                function($response, $curlQuery) {
+                    $result = $this->decodeResponse($response, $curlQuery)['result'];
 
                     $this->response->quantity = isset($result['quantity']) ? $result['quantity'] : null;
 
