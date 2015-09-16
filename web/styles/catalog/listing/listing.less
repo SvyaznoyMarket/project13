@@ -253,12 +253,16 @@
             .inline-block(top);
             margin-top: 5px;
         }
-        &__val{
+        &__lk{
             font-size: 12px;
             .inline-block();
             position: relative;
             color: #363636;
             margin-top: 5px;
+            border-bottom: 1px dotted;
+            &:hover {
+                text-decoration: none;
+            }
         }
         .variations-select{
             width: auto;
@@ -282,6 +286,9 @@
                 top: 10px;
             }
         }
+    }
+    &__rewiews{
+        height: 16px;
     }
 }
 .stroke-out{

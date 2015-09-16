@@ -39,22 +39,23 @@
         {{! Блок с названием и характеристиками }}
             <div class="listing__desc">
                 <a class="listing__title" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a>
+                <div class="listing__rewiews">
+                    {{#review}}
+                       <a href="{{link}}#reviews" class="listing__reviews">
+                            <!-- Блок отзыввов -->
+                            <div class="bSimplyDescReviews">
+                                <div class="bSimplyDescReviews__eStars">
+                                    {{#stars}}
+                                        <img class="bSimplyDescReviews__eStarsImg" src="{{image}}">
+                                    {{/stars}}
+                                </div>
 
-                {{#review}}
-                   <a href="{{link}}#reviews" class="listing__reviews">
-                        <!-- Блок отзыввов -->
-                        <div class="bSimplyDescReviews">
-                            <div class="bSimplyDescReviews__eStars">
-                                {{#stars}}
-                                    <img class="bSimplyDescReviews__eStarsImg" src="{{image}}">
-                                {{/stars}}
+                                <div class="bSimplyDescReviews__eLink"><span class="review-count">{{count}}</span></div>
                             </div>
-
-                            <div class="bSimplyDescReviews__eLink"><span class="review-count">{{count}}</span></div>
-                        </div>
-                        <!--/ Блок отзыввов -->
-                    </a>
-                {{/review}}
+                            <!--/ Блок отзыввов -->
+                        </a>
+                    {{/review}}
+                </div>
 
                 <ul class="listing-props">
                     {{#properties}}
@@ -65,14 +66,13 @@
                         </li>
                     {{/properties}}
                 </ul>
-                {{#hasVariations}}
+                {{#variations.0}}
                     <div class="listing-variations">
-
                         {{#variations}}
                             {{>product/variation}}
                         {{/variations}}
                     </div>
-                {{/hasVariations}}
+                {{/variations.0}}
             </div>
         {{! END: Блок с названием и характеристиками }}
         {{! Блок с ценой, рейтингом }}
