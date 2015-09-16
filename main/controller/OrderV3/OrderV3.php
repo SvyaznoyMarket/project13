@@ -149,4 +149,35 @@ class OrderV3 {
             \App::logger()->error(['error' => $e]);
         }
     }
-} 
+
+    /**
+     * Валидация пользовательских данных ядром
+     * Метод вынесен из cart/split для облегчения
+     * @link https://wiki.enter.ru/pages/viewpage.action?pageId=25869011
+     * @param   $data   []
+     * @return  mixed
+     */
+    public function validateUserInfo($data) {
+
+        $userData = [
+            'phone'             => '',
+            'first_name'        => '',
+            'last_name'         => '',
+            'email'             => '',
+            'address_id'        => '',
+            'bonus_card_number' => '',
+            'address'       => [
+                'street'        => '',
+                'building'      => '',
+                'number'        => '',
+                'apartment'     => '',
+                'floor'         => '',
+                'metro_station' => '',
+                'kladr_id'      => ''
+            ]
+        ];
+
+        return $this->client->query('cart/validate-user-info', [], array_merge($userData, $data));
+
+    }
+}

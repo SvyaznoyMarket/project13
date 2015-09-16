@@ -1995,7 +1995,7 @@ $(function() {
                             }
 
                             if ($el.hasClass('js-registerForm') && getFieldValue('subscribe') && typeof _gaq != 'undefined') {
-                                _gaq.push(['_trackEvent', 'subscription', 'subscribe_registration', getFieldValue('register[email]')]);
+                                _gaq.push(['_trackEvent', 'subscription', 'subscribe_registration']);
                             }
 
                             if (response.data && response.data.link) {

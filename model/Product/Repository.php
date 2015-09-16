@@ -265,7 +265,7 @@ class Repository {
             if ($product->getProperty()) {
                 foreach ($product->getProperty() as $property) {
                     if (in_array($property->getName(), array('Высота', 'Ширина', 'Глубина'))) {
-                        $result[$id][$dimensionsTranslate[$property->getName()]] = $property->getValue();
+                        $result[$id][$dimensionsTranslate[$property->getName()]] = $property->getOptionValue();
                     }
                 }
             }
