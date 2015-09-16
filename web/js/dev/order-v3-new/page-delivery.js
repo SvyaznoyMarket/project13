@@ -181,6 +181,8 @@
             }).always(function(){
                 $orderContent.stop(true, true).fadeIn(200);
                 if (spinner) spinner.stop();
+
+                bindMask();
             });
 
         },
@@ -266,8 +268,15 @@
             } else {
                 $label.hide();
             }
+        },
+        bindMask = function() {
+            var $inputs = $('.js-order-ctrl__input');
+
+            $.map($inputs, function(elem, i) {
+                if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
+            });
         }
-        ;
+    ;
 
     // TODO change all selectors to .jsMethod
 
@@ -729,9 +738,7 @@
     $.mask.definitions['x']='[0-9]';
     $.mask.placeholder= "_";
     $.mask.autoclear = false;
-    $.map($inputs, function(elem, i) {
-        if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
-    });
+    bindMask();
 
     $body.on('input', '.js-quant', function() {
         var $el = $(this);
