@@ -76,8 +76,9 @@ ANALYTICS.gaJS = function(data) {
 
         ga_product = function() {
             console.info( 'gaJS product page' );
-            var
-                product = $('#jsProductCard').data('value'),
+
+            var $productDataDiv = $('#jsProductCard'),
+                product = $productDataDiv.data('value'),
 
                 gaBannerClickPrepare = function gaBannerClickPrepare() {
                     var
@@ -85,6 +86,10 @@ ANALYTICS.gaJS = function(data) {
                         BannerId = img.attr( 'alt' ) || img.attr( 'src' );
                     gaBannerClick(BannerId);
                 };
+
+            /* GA Ecommerce */
+            ENTER.utils.analytics.addProduct($productDataDiv);
+            ga('ec:setAction', 'detail');
 
             /** Событие клика на баннер */
             $( '.trustfactor-right, .trustfactor-main, .trustfactor-content' ).on( 'click', gaBannerClickPrepare );
