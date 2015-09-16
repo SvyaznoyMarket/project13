@@ -32,7 +32,7 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
         <p class="<?= $flash['type'] == 'success' ? 'green' : 'red' ?>"><?= $flash['message'] ?></p>
     <? endif; ?>
 
-    <?= $page->render('user/_menu', ['page' => $page]) ?>
+    <?= $page->render('user/_menu-1508', ['page' => $page]) ?>
 
     <div class="personal__password">
         <div class="personal__sub-head">Изменить пароль</div>

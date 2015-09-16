@@ -24,7 +24,7 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
 ?>
 
 <div class="personal">
-    <?= $page->render('user/_menu', ['page' => $page]) ?>
+    <?= $page->render('user/_menu-1508', ['page' => $page]) ?>
 
     <? foreach ($ordersByYear as $year => $orders): ?>
         <?

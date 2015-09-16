@@ -11,7 +11,7 @@
 ?>
 
 <div id="personal-container" class="personal">
-    <?= $page->render('user/_menu', ['page' => $page]) ?>
+    <?= $page->render('user/_menu-1508', ['page' => $page]) ?>
 
     <div class="personal__favorits id-favorite-container js-favorite-container">
         <div class="personal-favorit__top">
