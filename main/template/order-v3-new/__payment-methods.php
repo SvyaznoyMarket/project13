@@ -5,9 +5,11 @@ use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
 $f = function (
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity\Order $order
-) { ?>
+) {
+    $isOrderWithCart = true;
+    ?>
 
-    <div class="paymentMethods">
+    <div class="paymentMethods <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
         <strong>Способы оплаты</strong>
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH]) || isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
             <div class="paymentRow">
