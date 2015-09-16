@@ -89,7 +89,7 @@ ANALYTICS.gaJS = function(data) {
 
             /* GA Ecommerce */
             ENTER.utils.analytics.addProduct($productDataDiv);
-            ga('ec:setAction', 'detail');
+            ENTER.utils.analytics.setAction('detail');
 
             /** Событие клика на баннер */
             $( '.trustfactor-right, .trustfactor-main, .trustfactor-content' ).on( 'click', gaBannerClickPrepare );

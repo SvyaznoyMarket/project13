@@ -26,7 +26,7 @@ $(function() {
 
         /* Cобытие с использованием e-commerce */
         ga('ec:addPromo', data);
-        ga('ec:setAction', 'promo_click');
+        ENTER.utils.analytics.setAction('promo_click');
         $body.trigger('trackGoogleEvent', {
             category: 'Internal Promotions',
             action: 'click',

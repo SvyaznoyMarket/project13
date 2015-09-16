@@ -529,6 +529,10 @@
 			this.addEcommData('ec:addProduct', buyButtonElem, additionalData)
 		},
 
+		setAction: function(action, params) {
+			if (this.isEnabled()) ga('ec:setAction', action, typeof params !== 'undefined' ? params : {})
+		},
+
 		// SITE-5466
 		reviews: {
 			add: function(productUi, avgScore, firstPageAvgScore, categoryName) {

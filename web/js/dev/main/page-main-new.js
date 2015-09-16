@@ -299,7 +299,7 @@
 			position: $productContainer.data('position')
 		});
 
-		if (ENTER.utils.analytics.isEnabled()) ga('ec:setAction', 'click', {list: block});
+		ENTER.utils.analytics.setAction('click', {list: block});
 
 		$body.trigger('trackGoogleEvent', {
 			category: 'RR_взаимодействие',
