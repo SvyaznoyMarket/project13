@@ -320,6 +320,22 @@
 
     });
 
+    $body.on('click', '.js-orderContainer-link', function() {
+        var
+            $el = $(this),
+            relations = $el.data('relation'),
+            $container = relations['container'] && $(relations['container'])
+        ;
+
+        try {
+            if (!$container.length) {
+                throw {message: 'Не найден контейнер'};
+            }
+
+            $container.toggleClass('expanded');
+        } catch (error) { console.error(error); }
+    });
+
     /* Init */
     $('.textCorner.mOldYear').removeClass('textCorner-open');
     $('.personalTable_rowgroup.mOldYear').hide();

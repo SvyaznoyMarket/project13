@@ -27,15 +27,16 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
     <?= $page->render('user/_menu-1508', ['page' => $page]) ?>
 
     <? foreach ($ordersByYear as $year => $orders): ?>
-        <?
-          $count = count($orders);
-        ?>
+    <?
+        $containerId = 'id-orderContainer-' . $year;
+        $count = count($orders);
+    ?>
 
         <div class="personal__orders <? if ($currentYear === $year): ?>current<? endif ?>">
-            <div class="personal-order__block <?= ($currentYear === $year ? 'expanded' : 'collapsed') ?>">
+            <div class="<?= $containerId ?> personal-order__block <?= ($currentYear == $year ? 'expanded' : '') ?>">
                 <? if ($currentYear !== $year): ?>
                 <span class="personal-order__year-container">
-                   <span class="personal-order__year"> <?= $year ?></span>
+                   <span class="personal-order__year js-orderContainer-link" data-relation="<?= $helper->json(['container' => '.' . $containerId]) ?>"> <?= $year ?></span>
                 </span>
                 <span class="personal-order__year-total"><?= ($count . ' ' . $helper->numberChoice($count, ['заказ', 'заказа', 'заказов'])) ?></span>
                 <? endif ?>
