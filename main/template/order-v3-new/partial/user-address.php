@@ -25,23 +25,24 @@ $f = function(
 ?>
 <div class="order-delivery__block jsSmartAddressBlock <?= $containerId ?>">
     <div class="order-ctrl fullwidth">
-        <label class="order-ctrl__lbl ">Улица</label>
+        <label class="order-ctrl__lbl js-order-ctrl__lbl ">Улица</label>
         <input
             type="text"
             value="<?= $address['street'] ?>"
-            class="order-ctrl__input js-order-deliveryAddress"
+            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             placeholder="Улица"
             data-field="street"
             data-value="<?= $helper->json($dataValue) ?>"
             data-relation="<?= $helper->json(['container' => '.' . $containerId])?>"
+            data-parent-kladr-id="<?= \App::user()->getRegion()->kladrId ?>"
         />
     </div>
     <div class="order-ctrl">
-        <label class="order-ctrl__lbl">Дом</label>
+        <label class="order-ctrl__lbl js-order-ctrl__lbl">Дом</label>
         <input
             type="text"
             value="<?= $address['building'] ?>"
-            class="order-ctrl__input js-order-deliveryAddress"
+            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             placeholder="Дом"
             data-field="building"
             data-value="<?= $helper->json($dataValue) ?>"
@@ -49,11 +50,11 @@ $f = function(
         />
     </div>
     <div class="order-ctrl">
-        <label class="order-ctrl__lbl">Квартира</label>
+        <label class="order-ctrl__lbl js-order-ctrl__lbl">Квартира</label>
         <input
             type="text"
             value="<?= $address['apartment'] ?>"
-            class="order-ctrl__input js-order-deliveryAddress"
+            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             placeholder="Квартира"
             data-field="apartment"
             data-value="<?= $helper->json($dataValue) ?>"

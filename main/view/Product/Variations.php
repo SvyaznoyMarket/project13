@@ -6,27 +6,19 @@ class Variations {
     /**
      * @param \Helper\TemplateHelper $helper
      * @param \Model\Product\Entity $product
-     * @return array|null
+     * @return array
      */
     public function execute(
         \Helper\TemplateHelper $helper,
         \Model\Product\Entity $product
     ) {
+        $result = [];
         if ($product->getModel() && $product->getModel()->getProperty()) {
-            $result = [];
-            $lastIndex = count($product->getModel()->getProperty()) - 1;
-            foreach (array_values($product->getModel()->getProperty()) as $index => $property) {
-                /** @var \Model\Product\Model\Property\Entity $property */
-                $result[] = [
-                    'name' => $property->getName(),
-                    'lowerName' => mb_strtolower($property->getName()),
-                    'isLast' => $index == $lastIndex,
-                ];
+            foreach ($product->getModel()->getProperty() as $property) {
+                $result[] = (new \View\Product\Variation())->execute($helper, $product, $property);
             }
-
-            return $result;
         }
 
-        return null;
+        return $result;
     }
 }

@@ -97,8 +97,8 @@ $helper = new \Helper\TemplateHelper();
         <? elseif ($successfullySubscribed): ?>
             <?= $helper->render('subscribe/friend/__successfullySubscribed') ?>
         <? else: ?>
-            <div class="subscribe-content__wrap">
-                <?= $helper->render('subscribe/friend/__form', ['error' => $error]) ?>
+            <div id="bottom" class="subscribe-content__wrap">
+                <?= $helper->render('subscribe/friend/__form', ['error' => $error, 'location' => 'bottom']) ?>
             </div>
         <? endif ?>
     </div>

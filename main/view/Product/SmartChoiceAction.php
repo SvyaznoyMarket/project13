@@ -36,7 +36,14 @@ class SmartChoiceAction {
         if ($product->getPriceOld()) {
             $productData['onePrice'] = false;
             $productData['priceOld'] = $helper->formatPrice($product->getPriceOld());
-            $productData['priceSale'] = round((1 - ($product->getPrice() / $product->getPriceOld())) * 100, 0);
+
+            if (\App::abTest()->isCurrencyDiscountPrice()) {
+                $productData['priceSale'] = $helper->formatPrice($product->getPriceOld() - $product->getPrice());
+                $productData['priceSaleUnit'] = ' <span class="rubl">p</span>';
+            } else {
+                $productData['priceSale'] = round((1 - ($product->getPrice() / $product->getPriceOld())) * 100, 0);
+                $productData['priceSaleUnit'] = '%';
+            }
         }
 
         // cart

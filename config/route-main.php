@@ -253,6 +253,11 @@ return [
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
     ],
 
+    'ajax.product.variation' => [
+        'pattern' => '/ajax/product/{productUi}/variation/{variationId}',
+        'action'  => ['Product\Variation', 'execute'],
+    ],
+
     // каталог товаров
     'product.gift' => [
         'pattern' => '/gift',

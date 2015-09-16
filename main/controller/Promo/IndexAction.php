@@ -21,58 +21,17 @@ class IndexAction {
             throw new \Exception\NotFoundException(sprintf('Промо-каталог @%s не найден.', $promoToken));
         }
 
-        // товары, услуги, категории
-        /** @var $productsById \Model\Product\Entity[] */
-        $productsById = [];
-        /** @var $productsById \Model\Product\Category\Entity[] */
-        $categoriesById = [];
-        foreach ($promo->getImage() as $promoImage) {
-            switch ($promoImage->getAction()) {
-                case \Model\Promo\Image\Entity::ACTION_PRODUCT:
-                    foreach ($promoImage->getItem() as $id) $productsById[$id] = new \Model\Product\Entity(['id' => $id]);
-                    break;
-                case \Model\Promo\Image\Entity::ACTION_PRODUCT_CATEGORY:
-                    foreach ($promoImage->getItem() as $id) $categoriesById[$id] = null;
-                    break;
-            }
-        }
-
-        // подготовка 2-го пакета запросов
-        // запрашиваем товары
-        \RepositoryManager::product()->prepareProductQueries($productsById, '', $region);
-
-        // запрашиваем категории товаров
-        if ((bool)$categoriesById) {
-            \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), $region, function($data) use (&$categoriesById) {
-                if (is_array($data)) {
-                    foreach ($data as $item) {
-                        if ($item) {
-                            $category = new \Model\Product\Category\Entity($item);
-                            $categoriesById[$category->getId()] = $category;
-                        }
-                    }
-                }
-            }, function(\Exception $e) {
-                \App::exception()->remove($e);
-                \App::logger()->error('Не удалось получить категории товаров для промо-каталога');
-            });
-        }
-
-        if ((bool)$productsById || (bool)$categoriesById) {
-            // выполнение 2-го пакета запросов
-            $client->execute();
-        }
-
-        $repository = \RepositoryManager::promo();
-
         $slideData = [];
-        foreach ($promo->getImage() as $image) {
-            $repository->setEntityImageLink($image, $router, $productsById, $categoriesById);
+        foreach ($promo->getPages() as $promoPage) {
+            if (!$promoPage->getImageUrl()) continue;
 
             $slideData[] = [
-                'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),
-                'title'   => $image->getName(),
-                'linkUrl' => $image->getLink()?($image->getLink().'?from='.$promo->getToken()):'',
+                'imgUrl'  => $promoPage->getImageUrl(),
+                'title'   => $promoPage->getName(),
+                'linkUrl' =>
+                    $promoPage->getLink()
+                    ? ($promoPage->getLink() . ((false === strpos($promoPage->getLink(), '?')) ? '?' : '&'). 'from=' . $promo->getToken())
+                    : null,
             ];
         }
 

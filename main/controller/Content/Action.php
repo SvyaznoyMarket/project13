@@ -20,6 +20,7 @@ class Action {
             'api/static-page',
             [
                 'token' => [$token],
+                'tags' => ['site-web'],
             ],
             [],
             function($response) use (&$content, &$token) {

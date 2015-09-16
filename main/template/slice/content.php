@@ -43,6 +43,7 @@ $helper = new \Helper\TemplateHelper();
 
     <?= $helper->render('product/__list', [
         'pager'            => $productPager,
+        'category'         => $category,
         'view'             => $productView,
         'buyMethod'        => $slice->getProductBuyMethod(),
         'showState'        => $slice->getShowProductState(),

@@ -152,4 +152,12 @@ trait ABHelperTrait {
     public static function isOrderWithCart() {
         return 'enabled' === \App::abTest()->getTest('order_with_cart')->getChosenCase()->getKey();
     }
+
+    /**
+     * Скидка в рублях
+     * @return bool
+     */
+    public static function isCurrencyDiscountPrice() {
+        return 'currency' === \App::abTest()->getTest('discount_price')->getChosenCase()->getKey();
+    }
 }

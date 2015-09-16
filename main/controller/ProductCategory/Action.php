@@ -122,7 +122,10 @@ class Action {
             $scmsClient = \App::scmsClient();
             $scmsClient->addQuery(
                 'api/static-page',
-                ['token' => [trim((string)$catalogJson['promo_token'])]],
+                [
+                    'token' => [trim((string)$catalogJson['promo_token'])],
+                    'tags' => ['site-web'],
+                ],
                 [],
                 function($data) use (&$promoContent) {
                     if (!empty($data['pages'][0]['content'])) {
@@ -295,8 +298,9 @@ class Action {
                     /** @var $promo \Model\Promo\Entity */
                     $promo = null;
 
-                    $promoRepository->prepareEntityByToken($promoCategoryToken, function($data) use (&$promo, &$promoCategoryToken) {
-                        if (is_array($data)) {
+                    $promoRepository->prepareByToken($promoCategoryToken, function($data) use (&$promo, &$promoCategoryToken) {
+                        $data = isset($data[0]['uid']) ? $data[0] : null;
+                        if ($data) {
                             $data['token'] = $promoCategoryToken;
                             $promo = new \Model\Promo\Entity($data);
                         }
@@ -307,31 +311,36 @@ class Action {
                         throw new \Exception\NotFoundException(sprintf('Промо-каталог @%s', $promoCategoryToken));
                     }
 
-                    $products = [];
-                    $productIds = [];
+                    $productsByUi = [];
+                    $productUis = [];
                     // перевариваем данные изображений
                     // используя айдишники товаров из секции image.products, получим мини-карточки товаров
-                    foreach ($promo->getImage() as $image) {
-                        $productIds = array_merge($productIds, $image->getProducts());
+                    foreach ($promo->getPages() as $promoPage) {
+                        $uiChunk = [];
+                        foreach ($promoPage->getProducts() as $product) {
+                            $uiChunk[] = $product->ui;
+                        }
+
+                        $productUis = array_merge($productUis, $uiChunk);
                     }
-                    $productIds = array_unique($productIds);
+                    $productUis = array_unique($productUis);
                     
-                    foreach ($productIds as $productId) {
-                        $products[$productId] = new \Model\Product\Entity(['id' => $productId]);
+                    foreach ($productUis as $productUi) {
+                        $productsByUi[$productUi] = new \Model\Product\Entity(['ui' => $productUi]);
                     }
 
-                    \RepositoryManager::product()->prepareProductQueries($products, 'media');
+                    \RepositoryManager::product()->prepareProductQueries($productsByUi, 'media');
                     $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
                     $cartButtonAction = new \View\Cart\ProductButtonAction();
                     // перевариваем данные изображений для слайдера в $slideData
-                    foreach ($promo->getImage() as $image) {
-                        if (!$image instanceof \Model\Promo\Image\Entity) continue;
+                    foreach ($promo->getPages() as $promoPage) {
+                        if (!$promoPage instanceof \Model\Promo\Page\Entity) continue;
 
                         $itemProducts = [];
-                        foreach($image->getProducts() as $productId) {
-                            $product = isset($products[$productId]) ? $products[$productId] : null;
-                            if (!$product) continue;
+                        foreach($promoPage->getProducts() as $promoProduct) {
+                            $product = isset($productsByUi[$promoProduct->ui]) ? $productsByUi[$promoProduct->ui] : null;
+                            if (!$product || !$promoPage->getImageUrl()) continue;
 
                             /** @var $product \Model\Product\Entity */
                             $itemProducts[] = [
@@ -346,12 +355,12 @@ class Action {
                         }
 
                         $slideData[] = [
-                            'target'  => \App::abTest()->isNewWindow() ? '_blank' : '_self',
-                            'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),
-                            'title'   => $image->getName(),
-                            'linkUrl' => $image->getLink()?($image->getLink().'?from='.$promo->getToken()):'',
-                            'time'    => $image->getTime() ? $image->getTime() : 3000,
-                            'products'=> $itemProducts,
+                            'target'   => \App::abTest()->isNewWindow() ? '_blank' : '_self',
+                            'imgUrl'   => $promoPage->getImageUrl(),
+                            'title'    => $promoPage->getName(),
+                            'linkUrl'  => $promoPage->getLink()?($promoPage->getLink().'?from='.$promo->getToken()):'',
+                            'time'     => $promoPage->getTime() ? $promoPage->getTime() : 3000,
+                            'products' => $itemProducts,
                             // Пока не нужно, но в будущем, возможно понадобится делать $repositoryPromo->setEntityImageLink() как в /main/controller/Promo/IndexAction.php
                         ];
                     }
@@ -641,10 +650,31 @@ class Action {
         // TODO удалить (электронный сертификат в листинг сертификатов)
         if ($category->ui === 'b2885b1b-06bc-4c6f-b40d-9a0af22ff61c') array_unshift($productIds, 201540);
 
+        call_user_func(function() use(&$category) {
+            $userChosenCategoryView = \App::request()->cookies->get('categoryView');
+
+            if (
+                (!$category->config->listingDisplaySwitch && $category->config->listingDefaultView->isList)
+                || (
+                    $category->config->listingDisplaySwitch
+                    && (
+                        $userChosenCategoryView === 'expanded'
+                        || ($category->config->listingDefaultView->isList && $userChosenCategoryView == '')
+                    )
+                )
+            ) {
+                $category->listingView->isList = true;
+                $category->listingView->isMosaic = false;
+            } else {
+                $category->listingView->isList = false;
+                $category->listingView->isMosaic = true;
+            }
+        });
+
         /** @var \Model\Product\Entity[] $products */
         $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $productIds);
 
-        $repository->prepareProductQueries($products, 'media label brand category' . (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category->isInSiteListingWithViewSwitcherAbTest() ? ' property' : ''));
+        $repository->prepareProductQueries($products, 'media label brand category' . ($category->listingView->isList ? ' property' : ''));
 
         \App::coreClientV2()->execute();
 
