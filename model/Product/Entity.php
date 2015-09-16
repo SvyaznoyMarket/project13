@@ -1481,4 +1481,17 @@ class Entity {
         return $bestCoupon;
     }
 
+    /** JSON для Google Ecommerce Analytic
+     * @return string
+     */
+    public function ecommerceData(){
+        return json_encode([
+            'id'        => $this->getId(),
+            'name'      => $this->getName(),
+            'price'     => $this->getPrice(),
+            'brand'     => $this->getBrand() ? $this->getBrand()->getName() : '',
+            'category'  => $this->getRootCategory() ? $this->getRootCategory()->name : ''
+        ], JSON_UNESCAPED_UNICODE|JSON_HEX_APOS);
+    }
+
 }

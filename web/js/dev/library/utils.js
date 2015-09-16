@@ -497,6 +497,38 @@
 			return typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0
 		},
 
+		/**
+		 * E-commerce common helper
+		 * @param action Действие
+		 * @param buyButtonElem Кнопка "купить"
+		 * @param additionalData
+		 */
+		addEcommData: function(action, buyButtonElem, additionalData) {
+			console.log(buyButtonElem);
+			var data = $(buyButtonElem).data('ecommerce');
+			if (!this.isEnabled || typeof data != 'object') return;
+			if (typeof additionalData != 'undefined') data = $.extend({}, data, additionalData);
+			ga(action, data);
+		},
+
+		/**
+		 * E-commerce ec:addImpression helper
+		 * @param buyButtonElem Кнопка "купить"
+		 * @param additionalData
+		 */
+		addImpression: function(buyButtonElem, additionalData) {
+			this.addEcommData('ec:addImpression', buyButtonElem, additionalData);
+		},
+
+		/**
+		 * E-commerce ec:addProduct helper
+		 * @param buyButtonElem Кнопка "купить"
+		 * @param additionalData
+		 */
+		addProduct: function(buyButtonElem, additionalData) {
+			this.addEcommData('ec:addProduct', buyButtonElem, additionalData)
+		},
+
 		// SITE-5466
 		reviews: {
 			add: function(productUi, avgScore, firstPageAvgScore, categoryName) {

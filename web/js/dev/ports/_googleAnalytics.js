@@ -22,6 +22,17 @@ ANALYTICS.gaJS = function(data) {
 
         ga_main = function() {
             console.info( 'GoogleAnalyticsJS main page' );
+
+            /* e-commerce analytics */
+            $('.jsMainSlidesRetailRocket').each(function(i, elem) {
+                $(elem).find('.jsBuyButton').each(function(ii, product) {
+                    if (ii > 3) return false;
+                    ENTER.utils.analytics.addImpression(product, {
+                        list: $(elem).data('block'),
+                        position: ii
+                    })
+                })
+            })
         },
 
         ga_category = function ga_category() {

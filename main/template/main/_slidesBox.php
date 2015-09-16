@@ -47,6 +47,7 @@ $rrProducts = array_filter($rrProducts, function($p){
 
 $blocks = array_chunk($rrProducts, 4);
 $helper = new \Helper\TemplateHelper();
+$i = 0;
 
 // открытие товаров в новом окне
 $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
@@ -83,7 +84,7 @@ $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
                     'sender[method]'    => @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ' ? 'ItemsToMain' : 'PersonalRecommendation',
                     'sender[from]'      => 'MainPage'
                 ]) ?>
-                <div class="item">
+                <div class="item jsProductContainer" data-position="<?= $i ?>" data-ecommerce='<?= $product->ecommerceData() ?>'>
                     <a href="<?= $productLink ?>" class="item_imgw" <?= $linkTarget ?>><img src="<?= $product->getMainImageUrl('product_160') ?>" class="item_img" alt="<?= $product->getName() ?>"/></a>
                     <div class="item_n"><a href="<?= $productLink ?>" <?= $linkTarget ?>><?= $helper->escape($product->getName()) ?></a></div>
                     <div class="item_pr"><?= $helper->formatPrice($product->getPrice()) ?>&nbsp;<span class="rubl">p</span></div>
@@ -96,7 +97,7 @@ $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
                     ]) // Кнопка купить ?>
                     <!-- <a class="item_btn btn5" href="">Купить</a>-->
                 </div>
-                <? endforeach ?>
+                <? $i++; endforeach ?>
             </li>
             <? endforeach ?>
 

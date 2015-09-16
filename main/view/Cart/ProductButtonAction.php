@@ -68,6 +68,8 @@ class ProductButtonAction {
                     ] : null,
                 ];
             }, $shopStates),
+            // Данные для Google Enhanced Ecommerce
+            'ecommerceData' => $product->ecommerceData()
         ];
 
         if (!$product->getIsBuyable()) {
