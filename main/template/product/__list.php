@@ -36,6 +36,7 @@ $f = function(
         'cart/_button-product-lstn' => file_get_contents(\App::config()->templateDir . '/cart/_button-product-lstn.mustache'),
         'product/_review-compact'   => file_get_contents(\App::config()->templateDir . '/product/_review-compact.mustache'),
         'product/_favoriteButton'   => file_get_contents(\App::config()->templateDir . '/product/_favoriteButton.mustache'),
+        'product/variation'         => file_get_contents(\App::config()->templateDir . '/product/variation.mustache'),
     ];
 
     switch ($view) {
