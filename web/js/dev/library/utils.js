@@ -500,12 +500,11 @@
 		/**
 		 * E-commerce common helper
 		 * @param action Действие
-		 * @param buyButtonElem Кнопка "купить"
+		 * @param elem Кнопка "купить" или объект для для GA (определяется по наличию свойства id)
 		 * @param additionalData
 		 */
-		addEcommData: function(action, buyButtonElem, additionalData) {
-			console.log(buyButtonElem);
-			var data = $(buyButtonElem).data('ecommerce');
+		addEcommData: function(action, elem, additionalData) {
+			var data = typeof elem.id == 'undefined' ? $(elem).data('ecommerce') : elem;
 			if (!this.isEnabled || typeof data != 'object') return;
 			if (typeof additionalData != 'undefined') data = $.extend({}, data, additionalData);
 			ga(action, data);
@@ -513,20 +512,20 @@
 
 		/**
 		 * E-commerce ec:addImpression helper
-		 * @param buyButtonElem Кнопка "купить"
+		 * @param elem Кнопка "купить" или объект для для GA (определяется по наличию свойства id)
 		 * @param additionalData
 		 */
-		addImpression: function(buyButtonElem, additionalData) {
-			this.addEcommData('ec:addImpression', buyButtonElem, additionalData);
+		addImpression: function(elem, additionalData) {
+			this.addEcommData('ec:addImpression', elem, additionalData);
 		},
 
 		/**
 		 * E-commerce ec:addProduct helper
-		 * @param buyButtonElem Кнопка "купить"
+		 * @param elem Кнопка "купить" или объект для для GA (определяется по наличию свойства id)
 		 * @param additionalData
 		 */
-		addProduct: function(buyButtonElem, additionalData) {
-			this.addEcommData('ec:addProduct', buyButtonElem, additionalData)
+		addProduct: function(elem, additionalData) {
+			this.addEcommData('ec:addProduct', elem, additionalData)
 		},
 
 		setAction: function(action, params) {
