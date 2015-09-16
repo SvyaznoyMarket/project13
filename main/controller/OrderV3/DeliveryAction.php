@@ -171,7 +171,11 @@ class DeliveryAction extends OrderV3 {
                     throw new  \Exception('Ошибка валидации данных пользователя');
                 }
 
-                return new Entity($newSplit);
+                $orderDelivery = new Entity($newSplit);
+                \RepositoryManager::order()->prepareOrderDeliveryMedias($orderDelivery);
+                \App::coreClientV2()->execute();
+
+                return $orderDelivery;
             }
 
             // иначе подготовим данные для разбиения
@@ -249,20 +253,9 @@ class DeliveryAction extends OrderV3 {
             throw new \Exception('Отстуствуют данные по заказам');
         }
 
-        $medias = [];
-        foreach($orderDelivery->orders as $order) {
-            \RepositoryManager::product()->prepareProductsMediasByIds(array_map(function(\Model\OrderDelivery\Entity\Order\Product $product) { return $product->id; }, $order->products), $medias);
-        }
+        \RepositoryManager::order()->prepareOrderDeliveryMedias($orderDelivery);
 
         \App::coreClientV2()->execute();
-
-        foreach($orderDelivery->orders as $order) {
-            foreach ($order->products as $product) {
-                if (isset($medias[$product->id])) {
-                    $product->medias = $medias[$product->id];
-                }
-            }
-        }
 
         // обновляем корзину пользователя
         if (isset($data['action']) && isset($data['params']['id']) && $data['action'] == 'changeProductQuantity') {
