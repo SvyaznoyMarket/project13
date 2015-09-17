@@ -24,6 +24,9 @@
         margin-left: 10px;
         color: @borderColor;
         display: none;
+        &.nohide{
+            display: block;
+        }
     }
     &__input{
         width: 100%;
@@ -111,6 +114,6 @@
     border: 1px solid transparent;
     .rounded(3px);
     &.error{
-        border-color:#d45745;
+        border-color: #d45745;
     }
 }
