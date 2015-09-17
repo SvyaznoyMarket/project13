@@ -39,7 +39,7 @@ $f = function(
     $link = null;
     foreach ($links as $iStep => &$link) {
         $link['isActive'] = $iStep == $step;
-        $link['isPassed'] = $iStep < $step;
+        $link['isPassed'] = ($step < 3) && ($iStep < $step);
     }
     unset($link);
 ?>
@@ -58,7 +58,7 @@ $f = function(
         <ul class="orderHd_stps">
         <? foreach ($links as $step => $link): ?>
             <li class="orderHd_stps_i<? if ($link['isPassed']): ?> orderHd_stps_i-pass<? endif ?><? if ($link['isActive']): ?> orderHd_stps_i-act<? endif ?>">
-                <? if ($link['isPassed'] && ($step < 2)): ?>
+                <? if ($link['isPassed']): ?>
                     <a href="<?= $link['url'] ?>"><?= $link['name'] ?></a>
                 <? else: ?>
                     <?= $link['name'] ?>
