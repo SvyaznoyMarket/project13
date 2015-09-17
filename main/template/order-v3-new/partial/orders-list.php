@@ -272,14 +272,14 @@ $f = function (
                         </div>
 
                         <? if (\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) { ?>
-                            <div class="order-delivery__block"><?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?></div>
+                            <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?>
                         <? } ?>
 
                     <? else: ?>
                         <?= $helper->render('order-v3-new/partial/user-address', ['order' => $order, 'orderDelivery' => $orderDelivery]) ?>
 
                         <? if (\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) { ?>
-                        <div class="order-delivery__block"><?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?></div>
+                        <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?>
                         <? } ?>
                         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
 
