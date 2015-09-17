@@ -56,6 +56,7 @@ $f = function (
                 <? endif ?>
             </div>
             <div class="personal-favorit__reminds">
+            <? if (false): ?>
                 <span class="remind-text">Сообщить</span>
                 <a class="personal-favorit__price-change js-notification-link" href="<?= $helper->url('user.notification.addProduct', ['productId' => $product->getId(), 'channelId' => '2']) ?>">
                     <span class="personal__hint">о снижении цены</span>
@@ -63,6 +64,7 @@ $f = function (
                 <div class="personal-favorit__stock">
                     <a class="personal__hint">о наличии</a>
                 </div>
+            <? endif ?>
             </div>
         </div>
     </div>
