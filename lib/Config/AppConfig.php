@@ -203,6 +203,7 @@ class AppConfig {
     /** @var array */
     public $googleAnalytics = [
         'enabled' => null,
+        'secondary.enabled' => null,
     ];
     /** @var array */
     public $googleAnalyticsTchibo = [

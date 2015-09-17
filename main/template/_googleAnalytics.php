@@ -1,4 +1,7 @@
-<? if (\App::config()->googleAnalytics['enabled']): ?>
+<?
+$secondaryEnabled = \App::config()->googleAnalytics['secondary.enabled'];
+
+if (\App::config()->googleAnalytics['enabled']): ?>
 
     <!-- Universal Google Analytics (async method) -->
     <script async src='//www.google-analytics.com/analytics.js'></script>
@@ -40,22 +43,28 @@
             });
         <? endif ?>
 
-        /* Создаем два Universal-трекера */
+        /* Создаем Universal-трекер */
         ga( 'create', 'UA-25485956-1', 'enter.ru' ); // основной (premium-аккаунт)
-        ga( 'create', 'UA-25485956-5', 'enter.ru', { 'name': 'secondary'} ); // дополнительный
 
         /* E-commerce plugin */
         ga('require', 'ec');
-        ga('secondary.require', 'ec');
 
         /* The display features plugin for analytics.js can be used to enable Advertising Features in Google Analytics,
         such as Remarketing, Demographics and Interest Reporting, and more */
         ga( 'require', 'displayfeatures' );
-        ga( 'secondary.require', 'displayfeatures' );
+
+        // Делаем то же самое, если включен дополнительный трекер
+        <? if ($secondaryEnabled) : ?>
+            ga( 'create', 'UA-25485956-5', 'enter.ru', { 'name': 'secondary'} ); // дополнительный
+            ga('secondary.require', 'ec');
+            ga( 'secondary.require', 'displayfeatures' );
+        <? endif ?>
 
         <? if (\App::user()->getEntity()) : ?>
             ga('set', '&uid', '<?= \App::user()->getEntity()->getId() ?>');
-            ga('secondary.set', '&uid', '<?= \App::user()->getEntity()->getId() ?>');
+            <? if ($secondaryEnabled) : ?>
+                ga('secondary.set', '&uid', '<?= \App::user()->getEntity()->getId() ?>');
+            <? endif ?>
         <? endif ?>
 
         /* Общая часть для Classic и Universal */
@@ -63,39 +72,53 @@
         /* Регион */
         <? if (\App::user()->getRegion() && \App::user()->getRegion()->getName()) : ?>
             ga('set', 'dimension21', '<?= \App::user()->getRegion()->getName() ?>');
-            ga('secondary.set', 'dimension21', '<?= \App::user()->getRegion()->getName() ?>');
+            <? if ($secondaryEnabled) : ?>
+                ga('secondary.set', 'dimension21', '<?= \App::user()->getRegion()->getName() ?>');
+            <? endif ?>
         <? endif ?>
 
         /* Авторизованный пользователь */
         ga('set', 'dimension22', '<?= \App::user()->getEntity() ? 1 : 0 ?>');
-        ga('secondary.set', 'dimension22', '<?= \App::user()->getEntity() ? 1 : 0 ?>');
+        <? if ($secondaryEnabled) : ?>
+            ga('secondary.set', 'dimension22', '<?= \App::user()->getEntity() ? 1 : 0 ?>');
+        <? endif ?>
 
         /* Минимальная сумма заказа */
         ga('set', 'dimension43', '<?= \App::abTest()->isOrderMinSumRestriction() ? 'minOrderSum_enabled' : 'minOrderSum_disabled' ?>');
-        ga('secondary.set', 'dimension43', '<?= \App::abTest()->isOrderMinSumRestriction() ? 'minOrderSum_enabled' : 'minOrderSum_disabled' ?>');
+        <? if ($secondaryEnabled) : ?>
+            ga('secondary.set', 'dimension43', '<?= \App::abTest()->isOrderMinSumRestriction() ? 'minOrderSum_enabled' : 'minOrderSum_disabled' ?>');
+        <? endif ?>
 
         <? /* Маркировка продуктов Marketplace */ ?>
         <? if (isset($product) && $product instanceof \Model\Product\Entity): ?>
             <? if ($product->getSlotPartnerOffer()): ?>
             ga('set', 'dimension32', 'marketplace-slot');
-            ga('secondary.set', 'dimension32', 'marketplace-slot');
+            <? if ($secondaryEnabled) : ?>
+                ga('secondary.set', 'dimension32', 'marketplace-slot');
+            <? endif ?>
             <? elseif ($product->isOnlyFromPartner() || ($product->getPartnersOffer() && !$product->getIsBuyable())): ?>
             /*  Если товар ТОЛЬКО от партнеров или нет у нас, но есть у партнеров */
             ga('set', 'dimension32', 'marketplace');
-            ga('secondary.set', 'dimension32', 'marketplace');
+            <? if ($secondaryEnabled) : ?>
+                ga('secondary.set', 'dimension32', 'marketplace');
+            <? endif ?>
             if (console && typeof console.log == 'function') console.log('[Google Analytics] _setCustomVar 11 shop_type marketplace');
         <? endif ?>
 
-        ga('set', 'dimension41', '<?= $product->getNumReviews() ? 'Yes' : 'No' ?>');
-        ga('secondary.set', 'dimension41', '<?= $product->getNumReviews() ? 'Yes' : 'No' ?>');
+            ga('set', 'dimension41', '<?= $product->getNumReviews() ? 'Yes' : 'No' ?>');
+            <? if ($secondaryEnabled) : ?>
+                ga('secondary.set', 'dimension41', '<?= $product->getNumReviews() ? 'Yes' : 'No' ?>');
+            <? endif ?>
         <? endif ?>
 
         <? /* customVar (classic): Слот 1 занят под регион, а слоты 3, 4, 5 заняты под нужды сотрудников отдела аналитики */ ?>
         <? /* dimension (universal): 1-20 под аналитику, 21+ АБ-тесты - customVar_index + 20 */ ?>
         <? foreach (\App::abTest()->getTests() as $test): ?>
             <? if ($test->isActive() && $test->gaSlotNumber): ?>
-            ga('set', '<?= sprintf('dimension%s', $test->gaSlotNumber + 20) ?>', '<?= $test->getChosenCase()->getKey() ?>');
-            ga('secondary.set', '<?= sprintf('dimension%s', $test->gaSlotNumber + 20) ?>', '<?= $test->getChosenCase()->getKey() ?>');
+                ga('set', '<?= sprintf('dimension%s', $test->gaSlotNumber + 20) ?>', '<?= $test->getChosenCase()->getKey() ?>');
+                <? if ($secondaryEnabled) : ?>
+                    ga('secondary.set', '<?= sprintf('dimension%s', $test->gaSlotNumber + 20) ?>', '<?= $test->getChosenCase()->getKey() ?>');
+                <? endif ?>
             <? endif ?>
         <? endforeach ?>
 
