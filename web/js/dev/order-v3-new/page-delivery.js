@@ -535,6 +535,21 @@
 		e.preventDefault();
 	});
 
+    $body.on('change', '.js-order-paymentMethod', function(e) {
+        var
+            $el = $(this),
+            params = $el.data('value')
+        ;
+
+        sendChanges('changePaymentMethod', params);
+
+        if ($el.data('online')) {
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
+        }
+
+        e.preventDefault();
+    });
+
     // АНАЛИТИКА
 
     if (/order\/delivery/.test(window.location.href)) {
