@@ -82,6 +82,8 @@ class Entity {
     protected $seoKeywords;
     /** @var string|null */
     protected $seoDescription;
+    /** @var string|null */
+    public $seoText;
     /** @var int */
     protected $viewId;
     /** @var int */
@@ -297,6 +299,10 @@ class Entity {
 
         if (!empty($data['property_groups']) && is_array($data['property_groups'])) {
             $this->setPropertyGroup(array_map(function($data) { return new \Model\Product\Property\Group\Entity($data); }, $data['property_groups']));
+        }
+
+        if (isset($data['seo_text']) && is_string($data['seo_text'])) {
+            $this->seoText = $data['seo_text'];
         }
 
         $indexedPropertyGroups = [];
