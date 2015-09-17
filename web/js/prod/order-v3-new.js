@@ -1032,8 +1032,7 @@
 		if (data && data.subscribe && data.email) {
 			$body.trigger('trackGoogleEvent', {
 				category: 'subscription',
-				action: 'subscribe_order_confirmation',
-				label: data.email
+				action: 'subscribe_order_confirmation'
 			});
 		}
 	});

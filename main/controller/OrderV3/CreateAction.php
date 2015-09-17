@@ -26,7 +26,7 @@ class CreateAction extends OrderV3 {
         $ordersData = [];       // данные для отправки на ядро
         $params = [];           // параметры запроса на ядро
 
-        $splitResult = $this->session->get($this->splitSessionKey);
+        $splitResult = $this->session->get($this->splitSessionKey, []);
         $orderDelivery = new Entity($splitResult);
 
         if ($this->user->getEntity() && $this->user->getEntity()->getToken()) {

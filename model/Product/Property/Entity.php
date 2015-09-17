@@ -262,6 +262,13 @@ class Entity {
         return $this->value;
     }
 
+    /** Возвращает значение первой опции
+     * @return null|string
+     */
+    public function getOptionValue() {
+        return isset($this->option[0]) ? $this->option[0]->getValue() : null;
+    }
+
     public function getStringValue() {
         $value = implode(
             ', ',

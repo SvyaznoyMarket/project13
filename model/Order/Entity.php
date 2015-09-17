@@ -137,6 +137,8 @@ class Entity {
     public $seller;
     /** @var string */
     private $accessToken;
+    /** @var string|null */
+    public $pointUi;
     /** @var Point|null */
     public $point;
     /** @var Shop|null */
@@ -177,6 +179,7 @@ class Entity {
         }
         if (array_key_exists('store_id', $data)) $this->setStoreId($data['store_id']);
         if (array_key_exists('shop_id', $data)) $this->setShopId($data['shop_id']);
+        if (array_key_exists('point_ui', $data)) $this->pointUi = $data['point_ui'] ? (string)$data['point_ui']: null;
         if (array_key_exists('address_id', $data)) $this->setAddressId($data['address_id']);
         if (array_key_exists('geo_id', $data)) $this->setCityId($data['geo_id']);
         if (array_key_exists('region_id', $data)) $this->setRegionId($data['region_id']);

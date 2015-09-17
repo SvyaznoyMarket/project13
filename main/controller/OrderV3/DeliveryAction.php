@@ -2,6 +2,7 @@
 
 namespace Controller\OrderV3;
 
+use Model\OrderDelivery\Entity;
 use Model\OrderDelivery\Error;
 use Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
 use Session\AbTest\ABHelperTrait;
@@ -39,6 +40,7 @@ class DeliveryAction extends OrderV3 {
 
                 if ($previousSplit === null) throw new \Exception('Истекла сессия');
 
+                // debug purpose
                 $splitData = [
                     'previous_split' => $previousSplit,
                     'changes'        => $this->formatChanges($request->request->all(), $previousSplit)
@@ -155,14 +157,53 @@ class DeliveryAction extends OrderV3 {
         }
     }
 
+    /** Разбиение заказа ядром
+     * @param array|null $data
+     * @param null $userData
+     *
+     * @return \Model\OrderDelivery\Entity
+     * @throws \Exception
+     */
     public function getSplit(array $data = null, $userData = null) {
 
+        $previousSplit = $this->session->get($this->splitSessionKey);
+        
         if (!$this->cart->count()) throw new \Exception('Пустая корзина', 302);
 
         if ($data) {
+
+            // если изменение только в информации о пользователе, то валидируем, сохраняем и не переразбиваем
+            if (in_array(@$data['action'], ['changeUserInfo', 'changeAddress'])) {
+
+                // подготовим данные
+                if ($data['action'] == 'changeAddress') {
+                    $dataToValidate = array_replace_recursive($previousSplit['user_info'], ['address' => $data['params']]);
+                } else {
+                    $dataToValidate = $data['user_info'];
+                }
+
+                // провалидируем
+                $userInfo = $this->validateUserInfo($dataToValidate);
+
+                //
+                if (!isset($userInfo['error'])) {
+                    $newSplit = array_replace_recursive($previousSplit, ['user_info' => $userInfo]);
+                    $this->session->set($this->splitSessionKey, $newSplit);
+                } else {
+                    throw new  \Exception('Ошибка валидации данных пользователя');
+                }
+
+                $orderDelivery = new Entity($newSplit);
+                \RepositoryManager::order()->prepareOrderDeliveryMedias($orderDelivery);
+                \App::coreClientV2()->execute();
+
+                return $orderDelivery;
+            }
+
+            // иначе подготовим данные для разбиения
             $splitData = [
-                'previous_split' => $this->session->get($this->splitSessionKey),
-                'changes'        => $this->formatChanges($data, $this->session->get($this->splitSessionKey))
+                'previous_split' => $previousSplit,
+                'changes'        => $this->formatChanges($data, $previousSplit)
             ];
         } else {
             $splitData = [
@@ -234,20 +275,9 @@ class DeliveryAction extends OrderV3 {
             throw new \Exception('Отстуствуют данные по заказам');
         }
 
-        $medias = [];
-        foreach($orderDelivery->orders as $order) {
-            \RepositoryManager::product()->prepareProductsMediasByIds(array_map(function(\Model\OrderDelivery\Entity\Order\Product $product) { return $product->id; }, $order->products), $medias);
-        }
+        \RepositoryManager::order()->prepareOrderDeliveryMedias($orderDelivery);
 
         \App::coreClientV2()->execute();
-
-        foreach($orderDelivery->orders as $order) {
-            foreach ($order->products as $product) {
-                if (isset($medias[$product->id])) {
-                    $product->medias = $medias[$product->id];
-                }
-            }
-        }
 
         // обновляем корзину пользователя
         if (isset($data['action']) && isset($data['params']['id']) && $data['action'] == 'changeProductQuantity') {

@@ -188,23 +188,6 @@ class Repository {
             );
         }
     }
-    
-    public function prepareProductsMediasByIds($productIds, &$medias) {
-        \App::scmsClient()->addQuery(
-            'product/get-description/v1',
-            ['ids' => $productIds, 'media' => 1],
-            [],
-            function($data) use(&$medias) {
-                if (isset($data['products']) && is_array($data['products'])) {
-                    foreach ($data['products'] as $product) {
-                        if (isset($product['core_id']) && isset($product['medias'])) {
-                            $medias[$product['core_id']] = array_map(function($media) { return new \Model\Media($media); }, $product['medias']);
-                        }
-                    }
-                }
-            }
-        );
-    }
 
     /**
      * @param Entity[] $partProducts
@@ -265,7 +248,7 @@ class Repository {
             if ($product->getProperty()) {
                 foreach ($product->getProperty() as $property) {
                     if (in_array($property->getName(), array('Высота', 'Ширина', 'Глубина'))) {
-                        $result[$id][$dimensionsTranslate[$property->getName()]] = $property->getValue();
+                        $result[$id][$dimensionsTranslate[$property->getName()]] = $property->getOptionValue();
                     }
                 }
             }

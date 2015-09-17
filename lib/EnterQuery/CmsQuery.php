@@ -31,8 +31,8 @@ namespace EnterQuery
                     []
                 ),
                 [], // data
-                function($response, $statusCode) {
-                    $this->response = $this->decodeResponse($response, $statusCode);
+                function($response, $curlQuery) {
+                    $this->response = $this->decodeResponse($response, $curlQuery);
 
                     return $this->response; // for cache
                 },
@@ -64,15 +64,15 @@ namespace EnterQuery
 
         /**
          * @param string|null $response
-         * @param $statusCode
+         * @param \EnterLab\Curl\Query $curlQuery
          * @return array
          * @throws \Exception
          */
-        protected function decodeResponse(&$response, $statusCode)
+        protected function decodeResponse(&$response, \EnterLab\Curl\Query $curlQuery)
         {
             $result = $this->jsonToArray($response);
-            if ($statusCode >= 300) {
-                throw new \Exception(sprintf('Invalid http code %s', $statusCode), (int)$statusCode);
+            if ($curlQuery->response->statusCode >= 300) {
+                throw new \Exception(sprintf('Invalid http code %s', $curlQuery), (int)$curlQuery->response->statusCode);
             }
 
             return $result;
