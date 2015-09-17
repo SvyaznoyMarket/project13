@@ -1,7 +1,5 @@
 <?php
 
-use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
-
 $f = function (
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity\Order $order
