@@ -52,7 +52,7 @@ $c->coreV2['retryTimeout'] = [
     'long'    => 0.8,
     'huge'    => 1.5,
 ];
-$c->coreV2['chunk_size']   = 50;
+$c->coreV2['chunk_size']   = 30;
 $c->coreV2['debug']        = false;
 
 $c->eventService['url'] = 'http://event.enter.ru/';
