@@ -28,11 +28,11 @@ return function(
     ?>
 
     <section class="orderCnt jsNewOnlineCompletePage"
-             data-order-id="<?= $order->getId() ?>"
-             data-order-number="<?= $order->getNumber() ?>"
-             data-order-number-erp="<?= $order->getNumberErp() ?>"
-             data-order-action="<?= $motivationAction ?>"
-        >
+         data-order-id="<?= $order->getId() ?>"
+         data-order-number="<?= $order->getNumber() ?>"
+         data-order-number-erp="<?= $order->getNumberErp() ?>"
+         data-order-action="<?= $motivationAction ?>"
+    >
 
         <!-- Блок оплата -->
         <div class="orderPayment_wrap">
@@ -47,7 +47,7 @@ return function(
 
             <?= $helper->render('order-v3-new/complete-blocks/_errors', ['errors' => $errors]) ?>
 
-            <? if ($isOnlinePaymentChecked && !$order->isPaid()) : ?>
+            <? if (false && $isOnlinePaymentChecked && !$order->isPaid()): // TODO: выпилить  ?>
                 <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
             <? endif ?>
 
@@ -69,8 +69,9 @@ return function(
             <?= $helper->render('order-v3-new/complete-blocks/_credit', ['order' => $order, 'creditData' => $creditData, 'banks' => $banks]) ?>
         <? endif ?>
 
-
-        <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
+        <? if (false): //TODO: выпилить ?>
+            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
+        <? endif ?>
 
         <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && !$order->isCredit() && !$motivationAction && !$order->isPaidBySvyaznoy()) : ?>
 
@@ -85,7 +86,7 @@ return function(
                             Онлайн-оплата
                         </div>
                         <div class="order-payment__sum-msg">
-                            К оплате <span class="order-payment__sum">1500 <span class="rubl">p</span></span>
+                            К оплате <span class="order-payment__sum"><?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span>
                         </div>
                         <div class="orderPayment_msg_shop orderPayment_pay">
                             <ul class="orderPaymentWeb_lst-sm">
@@ -141,7 +142,7 @@ return function(
                             Онлайн-оплата
                         </div>
                         <div class="order-payment__sum-msg">
-                            К оплате <span class="order-payment__sum">1500 <span class="rubl">p</span></span>
+                            К оплате <span class="order-payment__sum"><?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span>
                         </div>
 
                         <!-- Этот блок идентичен блоку, который используется на 2м шаге, но у меня не получилось здесь отрендерить его-->
@@ -211,7 +212,9 @@ return function(
 
         <? endif ?>
 
-        <?= $motivationAction && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_online_motivation_action', ['order' => $order, 'orderPayment' => $orderPayment, 'action' => $motivationAction]) : '' ?>
+        <? if (false): // TODO: выпилить ?>
+            <?= $motivationAction && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_online_motivation_action', ['order' => $order, 'orderPayment' => $orderPayment, 'action' => $motivationAction]) : '' ?>
+        <? endif ?>
 
         <?= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_svyaznoy-club') : '' ?>
 

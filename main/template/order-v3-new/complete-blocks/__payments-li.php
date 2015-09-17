@@ -2,6 +2,11 @@
 
 use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
 
+/**
+ * @deprecated
+ * @param \Model\PaymentMethod\PaymentEntity|null $orderPayment
+ * @return string
+ */
 $f = function(
     \Model\PaymentMethod\PaymentEntity $orderPayment = null
 ) {

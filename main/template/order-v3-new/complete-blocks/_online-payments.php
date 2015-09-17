@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * @deprecated
+ * @param \Helper\TemplateHelper $helper
+ * @param string $topMessage
+ * @param string $bottomMessage
+ * @param \Model\Order\Entity $order
+ * @param \Model\PaymentMethod\PaymentEntity $orderPayment
+ * @param bool $blockVisible
+ */
 $f = function(
     \Helper\TemplateHelper $helper,
     $topMessage = '',

@@ -32,10 +32,12 @@ $f = function (
         <?
             if (in_array($paymentMethod->id, ['10'])) continue;
             $checked = $order->payment_method_id == $paymentMethod->id;
+
+            $elementId = sprintf('paymentMethod-%s', $paymentMethod->id);
         ?>
             <li class="payment-methods__i">
                 <input
-                    id="<?= sprintf('paymentMethod-%s', $paymentMethod->id) ?>"
+                    id="<?= $elementId ?>"
                     type="radio"
                     name="payment-type[]"
                     value="<?= $paymentMethod->id ?>"
@@ -47,7 +49,7 @@ $f = function (
                     class="customInput customInput-defradio2 js-order-paymentMethod js-customInput"
                     <?= $checked ? 'checked' : '' ?>
                 />
-                <label for="<?= sprintf('paymentMethod-%s', $paymentMethod->id) ?>" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">
+                <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">
                     <?= $paymentMethod->name ?>
                     <? if ($image = (isset($imagesByPaymentId[$paymentMethod->id]) ? $imagesByPaymentId[$paymentMethod->id] : null)): ?>
                         <img class="payment-methods__img" src="/styles/order-new/img/payment/<?= $image ?>">
