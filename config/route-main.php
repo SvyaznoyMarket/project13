@@ -918,6 +918,11 @@ return [
         'action'  => ['Wishlist\CreateAction', 'execute'],
         'method'    => ['POST'],
     ],
+    'wishlist.delete' => [
+        'pattern' => '/wishlist/delete',
+        'action'  => ['Wishlist\DeleteAction', 'execute'],
+        'method'    => ['POST'],
+    ],
     'wishlist.addProduct' => [
         'pattern' => '/wishlist/add-product',
         'action'  => ['Wishlist\AddProductAction', 'execute'],

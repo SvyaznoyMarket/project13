@@ -74,6 +74,7 @@
         $createPopupTemplate = $('#tpl-favorite-createPopup'),
         $movePopupTemplate = $('#tpl-favorite-movePopup'),
         $deletePopupTemplate = $('#tpl-favorite-deletePopup'),
+        $deleteFavoritePopupTemplate = $('#tpl-favorite-deleteFavoritePopup'),
         $shareProductPopupTemplate = $('#tpl-favorite-shareProductPopup'),
 
         showPopup = function(selector) {
@@ -134,6 +135,22 @@
 
         try {
             $popup = $(Mustache.render($createPopupTemplate.html(), templateValue)).appendTo($mainContainer);
+            showPopup('#' + $popup.attr('id'));
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    // удалить список
+    $body.on('click', '.js-favorite-deleteFavoritePopup', function() {
+        var
+            $el = $(this),
+            data = $el.data(),
+            templateValue = data.value
+        ;
+
+        try {
+            $popup = $(Mustache.render($deleteFavoritePopupTemplate.html(), templateValue)).appendTo($mainContainer);
             showPopup('#' + $popup.attr('id'));
         } catch (error) {
             console.error(error);

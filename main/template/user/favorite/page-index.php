@@ -34,11 +34,21 @@
     <div class="personal__favorits favorit-list<? if (true): ?> expanded<? endif ?> js-favorite-container <?= $containerId ?>">
         <div class="favorit-list__header">
             <ul class="personal-favorit__acts">
+                <!--
                 <li
                     class="personal-favorit__act js-fav-popup-show"
                     data-popup=".id-share-popup"
                 >Поделиться</li>
-                <li class="personal-favorit__act js-fav-popup-show" data-popup=".id-delete-popup">Удалить</li>
+                -->
+                <li
+                    class="personal-favorit__act js-favorite-deleteFavoritePopup"
+                    data-value="<?= $helper->json([
+                        'wishlist' => ['id' => $wishlist->id, 'title' => $wishlist->title],
+                        'form'     => [
+                            'url' => $helper->url('wishlist.delete')
+                        ],
+                    ]) ?>"
+                >Удалить</li>
             </ul>
             <div class="favorit-list__name">Список: <?= $helper->escape($wishlist->title) ?></div>
         </div>
@@ -69,6 +79,10 @@
 
     <script id="tpl-favorite-deletePopup" type="text/html" data-partial="<?= $helper->json([]) ?>">
         <?= file_get_contents(\App::config()->templateDir . '/user/favorite/_delete-popup.mustache') ?>
+    </script>
+
+    <script id="tpl-favorite-deleteFavoritePopup" type="text/html" data-partial="<?= $helper->json([]) ?>">
+        <?= file_get_contents(\App::config()->templateDir . '/user/favorite/_deleteFavorite-popup.mustache') ?>
     </script>
 
     <script id="tpl-favorite-shareProductPopup" type="text/html" data-partial="<?= $helper->json([]) ?>">

@@ -1,0 +1,11 @@
+<div id="deleteFavorite-popup" class="personal-popup">
+    <div class="popup-closer"></div>
+    <div class="personal-popup__head">Удалить список</div>
+    <div class="personal-popup__list-name">{{wishlist.title}}</div>
+    <div class="personal-popup__content">
+        <form action="{{form.url}}" method="post">
+            <input type="hidden" name="wishlist[id]" data-field="id" value="{{wishlist.id}}" />
+            <button type="submit" class="btn btn--default">Удалить</button>
+        </form>
+    </div>
+</div>
