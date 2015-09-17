@@ -88,7 +88,7 @@ ANALYTICS.gaJS = function(data) {
                 };
 
             /* GA Ecommerce */
-            ENTER.utils.analytics.addProduct($productDataDiv);
+            ENTER.utils.analytics.addProduct($productDataDiv[0]);
             ENTER.utils.analytics.setAction('detail');
 
             /** Событие клика на баннер */

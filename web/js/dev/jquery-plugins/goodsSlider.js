@@ -164,6 +164,7 @@
 				slider = $self.find(options.sliderSelector),
 				item = $self.find(options.itemSelector),
 				catItem = $self.find(options.categoryItemSelector),
+				classDisabled = 'mDisabled disabled',
 
 				nowLeft = 0;
 			// end of vars
@@ -181,7 +182,7 @@
 				 * Переключение на следующий слайд. Проверка состояния кнопок.
 				 */
 				nextSlide = function nextSlide(e) {
-					if ( $(this).hasClass('mDisabled disabled') ) {
+					if ( $(this).hasClass(classDisabled) ) {
 						return false;
 					}
 
@@ -189,15 +190,15 @@
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					leftBtn.removeClass('mDisabled disabled');
+					leftBtn.removeClass(classDisabled);
 
 					if ( nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW ) {
 						nowLeft = slider.width() - elementOnSlide * itemW;
-						rightBtn.addClass('mDisabled disabled');
+						rightBtn.addClass(classDisabled);
 					}
 					else {
 						nowLeft += elementOnSlide * itemW;
-						rightBtn.removeClass('mDisabled disabled');
+						rightBtn.removeClass(classDisabled);
 					}
 
 					slider.animate({'left': -nowLeft }, {
@@ -213,7 +214,7 @@
 				 * Переключение на предыдущий слайд. Проверка состояния кнопок.
 				 */
 				prevSlide = function prevSlide(e) {
-					if ( $(this).hasClass('mDisabled disabled') ) {
+					if ( $(this).hasClass(classDisabled) ) {
 						return false;
 					}
 
@@ -221,15 +222,15 @@
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					rightBtn.removeClass('mDisabled disabled');
+					rightBtn.removeClass(classDisabled);
 
 					if ( nowLeft - elementOnSlide * itemW <= 0 ) {
 						nowLeft = 0;
-						leftBtn.addClass('mDisabled disabled');
+						leftBtn.addClass(classDisabled);
 					}
 					else {
 						nowLeft -= elementOnSlide * itemW;
-						leftBtn.removeClass('mDisabled disabled');
+						leftBtn.removeClass(classDisabled);
 					}
 
 					slider.animate({'left': -nowLeft }, {
@@ -241,6 +242,10 @@
                     e.preventDefault();
 				},
 
+				/**
+				 * Отправка e-comm аналитики при загрузке или прокрутке слайдера
+				 * @param action
+				 */
 				sendAnalytic = function(action) {
 					var $slider = $(this),
 						itemW = calculateItemWidth($slider.find(options.itemSelector)),
@@ -250,7 +255,6 @@
 						sender = $slider.data('slider').sender,
 						position = '';
 
-					console.log(sliderParams);
 					if (sender) position = sender.position + '_' + sender.method;
 
 					$slider.find('.jsBuyButton').slice(firstIndex, lastIndex).each(function(i,el){
@@ -264,6 +268,38 @@
 				},
 
 				/**
+				 * Отправка аналитики про клике на товаре
+				 */
+				bindAnalyticOnProductClick = function(){
+
+					var $slider = $(this);
+
+					$slider.find('a:not(.jsBuyButton)').on('click', function(e){
+						e.preventDefault();
+
+						var link = $(this).attr('href'),
+							sender = $slider.data('slider') ? $slider.data('slider').sender : {},
+							productIndex = $(this).closest('li').index(),
+							position = sender.position + '_' + sender.method,
+							data = $(this).closest('li').find('.jsBuyButton').data('ecommerce');
+
+						ENTER.utils.analytics.addProduct(data, {
+							position: productIndex
+						});
+						ENTER.utils.analytics.setAction('click', {
+							list: position
+						});
+						body.trigger('trackGoogleEvent', {
+							category: 'Recommendations',
+							action: 'click',
+							label: position,
+							value: productIndex,
+							hitCallback: link
+						})
+					});
+				},
+
+				/**
 				 * Вычисление ширины слайдера
 				 * 
 				 * @param	{Object}	nowItems	Текущие элементы слайдера
@@ -273,16 +309,16 @@
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					leftBtn.addClass('mDisabled disabled');
-					rightBtn.addClass('mDisabled disabled');
+					leftBtn.addClass(classDisabled);
+					rightBtn.addClass(classDisabled);
 
 					if ( nowItems.length > elementOnSlide ) {
-						rightBtn.removeClass('mDisabled disabled');
+						rightBtn.removeClass(classDisabled);
 					}
 
 					slider.width(nowItems.length * itemW);
 					nowLeft = 0;
-					leftBtn.addClass('mDisabled disabled');
+					leftBtn.addClass(classDisabled);
 					slider.css({'left':nowLeft});
 					wrap.removeClass('mLoader');
 					nowItems.show();
@@ -327,7 +363,8 @@
 					$self.before(newSlider).remove();
 					$n = $(newSlider).goodsSlider(options);
 
-					sendAnalytic.apply($n, ['load']);
+					sendAnalytic.call($n, 'load');
+					bindAnalyticOnProductClick.call($n);
 					if (typeof params.onLoad == 'function') {
 						params.onLoad(newSlider);
 					}

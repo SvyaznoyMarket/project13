@@ -295,7 +295,7 @@
 
 		if (aTarget != '_blank') e.preventDefault();
 
-		ENTER.utils.analytics.addProduct($productContainer, {
+		ENTER.utils.analytics.addProduct($productContainer[0], {
 			position: $productContainer.data('position')
 		});
 

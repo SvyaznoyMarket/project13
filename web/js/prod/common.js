@@ -44,7 +44,7 @@ if('on'===credit){url=ENTER.utils.setURLParam('credit','on',url);}
 $.ajax({url:url,type:'GET',success:function(data){var
 upsale=$button.data('upsale')?$button.data('upsale'):null,product=$button.parents('.jsSliderItem').data('product');if(!data.success){return;}
 $button.removeClass('mLoading');data.location=$button.data('location');ENTER.UserModel.cart().update(data.cart);if(data.sender&&typeof data.sender.name=='string'&&data.sender.name.indexOf('filter')==0){$('body').trigger('trackGoogleEvent',{category:data.sender.name,action:'basket',label:data.sender.categoryUrlPrefix});}
-ENTER.utils.analytics.addProduct($button);ENTER.utils.analytics.setAction('add');$body.trigger('addtocart',[data,upsale]);},error:function(){$button.removeClass('mLoading');}});e.preventDefault();});$body.on('click','.js-buyButton-points-opener',function(e){e.preventDefault();var
+ENTER.utils.analytics.addProduct($button[0]);ENTER.utils.analytics.setAction('add');$body.trigger('addtocart',[data,upsale]);},error:function(){$button.removeClass('mLoading');}});e.preventDefault();});$body.on('click','.js-buyButton-points-opener',function(e){e.preventDefault();var
 $points=$(e.currentTarget).closest('.js-buyButton-points'),$pointsContent=$points.find('.js-buyButton-points-content');$.enterLightboxMe.closeAll();$pointsContent.enterLightboxMe({centered:true,closeSelector:'.js-buyButton-points-content-closer',closeClick:true,destroyOnClose:true,preventScroll:true,onClose:function(){$points.prepend($pointsContent.hide());}});});$body.on('addtocart',function(event,data){var
 googleAnalytics=function(event,productData,sender){var
 tchiboGA=function(){if(typeof window.ga==="undefined"||!productData.hasOwnProperty("isTchiboProduct")||!productData.isTchiboProduct){return;}

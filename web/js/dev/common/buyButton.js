@@ -67,7 +67,7 @@
 					});
 				}
 
-				ENTER.utils.analytics.addProduct($button);
+				ENTER.utils.analytics.addProduct($button[0]);
 				ENTER.utils.analytics.setAction('add');
 				$body.trigger('addtocart', [data, upsale]);
 			},
