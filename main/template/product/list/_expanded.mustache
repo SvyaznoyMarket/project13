@@ -1,7 +1,10 @@
 {{#products}}
     {{^isBanner}}
         <li class="listing__i js-listing-item"
-            {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
+            {{#isSlot}}data-is-slot="true"{{/isSlot}}
+            {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}
+            {{#ecommerce}}data-ecommerce='{{ecommerce}}'{{/ecommerce}}
+                >
         {{! Картинка }}
             <div class="listing-img">
                 <div class="listing-stickers">

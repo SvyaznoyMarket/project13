@@ -13,6 +13,7 @@ ANALYTICS.gaJS = function(data) {
         route 		= template.substring(0, (templSep > 0) ? templSep : templLen),
         rType 		= (templSep > 0) ? template.substring(templSep + 1, templLen) : '',
         useTchiboAnalytics = Boolean($('#gaJS').data('use-tchibo-analytics')),
+        ecommList = '',
     // end of vars
 
         /* Adfox listing */
@@ -37,6 +38,9 @@ ANALYTICS.gaJS = function(data) {
 
         ga_category = function ga_category() {
             console.info( 'gaJS product catalog' );
+
+            ecommList = 'Catalog';
+
             /** Событие выбора фильтра */
             $('.js-category-filter-brand:not(:checked)').click(function ga_filterBrand(){
                 var
@@ -72,6 +76,20 @@ ANALYTICS.gaJS = function(data) {
                     hitCallback: url
                 });
             });
+
+            /* ecomm analytics */
+            $('.js-orderButton').each(function(i,el) {
+                ENTER.utils.analytics.addImpression(el, {
+                    list: ecommList,
+                    position: i
+                });
+            });
+
+        },
+
+        ga_search = function () {
+            console.info( 'gaJS search');
+            ecommList = 'Search results';
         },
 
         ga_product = function() {

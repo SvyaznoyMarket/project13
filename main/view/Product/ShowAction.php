@@ -113,6 +113,7 @@ class ShowAction {
                     ]
                 )
             ,
+            'ecommerce' => $product->ecommerceData()
         ];
 
         $productItem['properties'] = (new \View\Product\Properties())->execute($helper, $product);

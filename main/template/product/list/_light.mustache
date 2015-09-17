@@ -11,7 +11,11 @@
     {{/isBanner}}
 
     {{^isBanner}}
-        <li class="lstn_i {{#view.hoverDescription}}lstn_i-hover{{/view.hoverDescription}} js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
+        <li class="lstn_i {{#view.hoverDescription}}lstn_i-hover{{/view.hoverDescription}} js-listing-item"
+                {{#isSlot}}data-is-slot="true"{{/isSlot}}
+                {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}
+                {{#ecommerce}}data-ecommerce='{{ecommerce}}'{{/ecommerce}}
+                >
             <div class="lstn_i_inn">
                 <ul class="stickLst clearfix">
                     {{#label}}

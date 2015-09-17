@@ -85,6 +85,9 @@ class EntityPager implements \Iterator {
         return $this->collection[$this->position];
     }
 
+    /** Returns current position
+     * @return int
+     */
     public function key() {
         return $this->position;
     }

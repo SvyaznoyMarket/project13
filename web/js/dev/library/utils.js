@@ -508,6 +508,7 @@
 			if (!this.isEnabled || typeof data != 'object') return;
 			if (typeof additionalData != 'undefined') data = $.extend({}, data, additionalData);
 			ga(action, data);
+			console.log('[GA] %s', action, data)
 		},
 
 		/**
@@ -529,7 +530,8 @@
 		},
 
 		setAction: function(action, params) {
-			if (this.isEnabled()) ga('ec:setAction', action, typeof params !== 'undefined' ? params : {})
+			if (this.isEnabled()) ga('ec:setAction', action, typeof params !== 'undefined' ? params : {});
+			console.log('[GA] ec:setAction %s', action, params)
 		},
 
 		// SITE-5466
