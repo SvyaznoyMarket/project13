@@ -1,5 +1,6 @@
 $(function($){
-    var $viewport = $('.js-shop-viewport');
+    var $viewport = $('.js-shop-viewport'),
+        $sendPopup = $('.js-send-popup').clone();
 
     if ($viewport.length) {
         ymaps.ready(function () {
@@ -51,5 +52,18 @@ $(function($){
          $this.addClass('active');
          $('.js-tab').removeClass('active');
          $tab.addClass('active');
-     })
+     });
+
+    $('.js-send-popup').remove();
+    $('body').prepend($sendPopup);
+
+    $('.js-send-popup-show').on('click',function(e){
+        e.preventDefault();
+        $('.js-send-popup').show();
+        $('body').prepend('<div class="s-overlay js-overlay"></div>');
+    });
+    $('body').on('click','js-send-popup-closer, .js-overlay',function(){
+        $('.js-send-popup').hide();
+        $('.js-overlay').remove();
+    })
 });

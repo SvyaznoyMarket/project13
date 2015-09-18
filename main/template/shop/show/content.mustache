@@ -3,7 +3,7 @@
 <div class="shops__info">
     <div class="shops__btns">
         <a class="shops__btn-default" href="#">Распечатать</a>
-        <a class="shops__btn-default" href="#">Отправить на email</a>
+        <a class="shops__btn-default js-send-popup-show" href="#">Отправить на email</a>
     </div>
 
     <div class="pick-point-item">
@@ -93,4 +93,27 @@
         {{/point.way.common}}
 
     {{/point.way}}
+</div>
+<!-- send popup-->
+<div class="popup send-popup js-send-popup">
+    <div class="closer js-send-popup-closer">×</div>
+    <div class="send-popup__head">Отправить информацию о пункте выдачи PickPoint</div>
+
+    <div class="pick-point-item__addr">
+        {{#point.subway.name}}
+
+            <div class="pick-point-item__metro" style=" background-color: orange">
+                <div class="pick-point-item__metro-inn">м. {{point.subway.name}}</div>
+            </div>
+        {{/point.subway.name}}
+        {{#point.address}}
+            <div class="pick-point-item__addr-name">{{point.address}}</div>
+        {{/point.address}}
+    </div>
+
+    <div class="send-popup__sbscr">
+        <label class="err-label">Неправильный email</label>
+        <input class="send-popup__input" placeholder="Ваш email">
+    </div>
+    <div class="send-popup__btn js-send-email">Отправить</div>
 </div>
