@@ -5,8 +5,6 @@ namespace Model\Product\Category;
 use Model\Media;
 
 class Entity extends BasicEntity {
-    use \Model\MediaHostTrait;
-
     /** @var bool Является ли категория главной для товара */
     public $isMain = false;
     /** @var bool|null */
@@ -329,27 +327,16 @@ class Entity extends BasicEntity {
 
     public function getImageUrl($size = 0) {
         if ($this->image) {
-            if (preg_match('/^(https?|ftp)\:\/\//i', $this->image)) {
-                if (0 == $size) {
-                    return $this->image;
-                } else if (3 == $size) {
-                    return $this->image480x480;
-                }
-            } else {
-                $urls = \App::config()->productCategory['url'];
-                return $this->getHost() . $urls[$size] . $this->image;
+            if (0 == $size) {
+                return $this->image;
+            } else if (3 == $size) {
+                return $this->image480x480;
             }
         } else if ($this->medias) {
             if (0 == $size) {
-                $source = $this->getMediaSource('category_163x163');
+                return $this->getMediaSource('category_163x163')->url;
             } else if (3 == $size) {
-                $source = $this->getMediaSource('category_480x480');
-            } else {
-                $source = null;
-            }
-
-            if ($source) {
-                return $source->url;
+                return $this->getMediaSource('category_480x480')->url;
             }
         }
     }
@@ -358,9 +345,9 @@ class Entity extends BasicEntity {
      * @param string $sourceType
      * @param string $mediaProvider
      * @param string $mediaTag
-     * @return Media\Source|null
+     * @return Media\Source
      */
-    private function getMediaSource($sourceType, $mediaTag = 'main', $mediaProvider = 'image') {
+    public function getMediaSource($sourceType, $mediaTag = 'main', $mediaProvider = 'image') {
         foreach ($this->medias as $media) {
             if ($media->provider === $mediaProvider && in_array($mediaTag, $media->tags, true)) {
                 foreach ($media->sources as $source) {
@@ -371,7 +358,7 @@ class Entity extends BasicEntity {
             }
         }
 
-        return null;
+        return new Media\Source();
     }
 
     // TODO отрефакторить методы для получения родительских категорий

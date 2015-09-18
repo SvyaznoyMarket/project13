@@ -290,24 +290,10 @@ $c->region['cookieLifetime'] = 31536000; // 365 дней
 $c->region['defaultId']      = 14974;
 $c->region['autoresolve']    = true;
 
-$c->loadMediaHost = true;
 $c->shop['cookieName'] = 'shopid';
 $c->shop['cookieLifetime'] = 31536000; // 365 дней
 $c->shop['autoresolve']    = true;
 $c->shop['enabled'] = true;
-
-$c->mediaHost = [
-    0 => 'http://fs01.enter.ru',
-    1 => 'http://fs02.enter.ru',
-    2 => 'http://fs03.enter.ru',
-    3 => 'http://fs04.enter.ru',
-    4 => 'http://fs05.enter.ru',
-    5 => 'http://fs06.enter.ru',
-    6 => 'http://fs07.enter.ru',
-    7 => 'http://fs08.enter.ru',
-    8 => 'http://fs09.enter.ru',
-    9 => 'http://fs10.enter.ru',
-];
 
 $c->search['itemLimit'] = 1000;
 $c->search['queryStringLimit'] = 1;
@@ -335,26 +321,6 @@ $c->product['itemsPerRowJewel']       = 4;
 $c->product['pullRecommendation']     = true;
 $c->product['pushRecommendation']     = true;
 $c->product['viewedEnabled']          = true;
-
-$c->productLabel['url'] = [
-    0 => '/7/1/66x23/',
-    1 => '/7/1/124x38/',
-];
-
-$c->productCategory['url'] = [
-    0 => '/6/1/163/',
-    3 => '/6/1/500/',
-    5 => '/6/1/960/'
-];
-
-$c->shopPhoto['url'] = [
-    0 => '/8/1/40/',
-    1 => '/8/1/120/',
-    2 => '/8/1/163/',
-    3 => '/8/1/500/',
-    4 => '/8/1/2500/',
-    5 => '/8/1/original/',
-];
 
 $c->banner['timeout'] = 5000;
 $c->banner['checkStatus'] = true;

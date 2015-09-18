@@ -9,9 +9,6 @@
 namespace Model\Menu;
 
 class BasicMenuEntity {
-
-    use \Model\MediaHostTrait;
-
     public $id;
     public $ui;
     public $name;
@@ -32,23 +29,5 @@ class BasicMenuEntity {
         if (isset($data['children']) && is_array($data['children'])) {
             foreach ($data['children'] as $item) $this->children[$item['id']] = new BasicMenuEntity($item);
         }
-
     }
-
-    public function getImagePath($size = 0) {
-        static $urls;
-
-        if (!$urls) $urls = \App::config()->productCategory['url'];
-
-        if ($this->image) {
-            if (preg_match('/^(https?|ftp)\:\/\//i', $this->image)) {
-                return $this->image;
-            } else {
-                return $this->getHost() . $urls[$size] . $this->image;
-            }
-        } else {
-            return null;
-        }
-    }
-
 }

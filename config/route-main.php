@@ -38,7 +38,7 @@ return [
     // автоподстановка поиска
     'search.autocomplete' => [
         'pattern' => '/search/autocomplete',
-        'action'  => ['Search\Action', 'autocomplete'],
+        'action'  => ['Search\Autocomplete', 'execute'],
     ],
     // рекомендации в поиске
     'search.recommended' => [

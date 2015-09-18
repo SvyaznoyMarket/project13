@@ -7,8 +7,6 @@ use Model\Product\Delivery\ProductDelivery;
 use Model\EnterprizeCoupon\Entity as Coupon;
 
 class Entity {
-    use \Model\MediaHostTrait;
-
     const LABEL_ID_PODARI_ZHIZN = 17;
     const PARTNER_OFFER_TYPE_SLOT = 2;
     /** Электронный подарочный сертификат giftery.ru */
