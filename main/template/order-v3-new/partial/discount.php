@@ -15,26 +15,30 @@ return function(
 ?>
     <div class="order-discount">
         <span class="order-discount__tl">Код скидки/фишки,<br>подарочный сертификат</span>
-        <div class="order-ctrl">
+        <div class="order-ctrl <?= ( $couponErrors ? 'error' : '' ) ?>">
             <input class="order-ctrl__input <?= $inputSelectorId ?>" value="<?= $couponNumber ?>" >
+            <label class="order-ctrl__lbl nohide">
+                 <span class="order-ctrl__err">
+                    <? foreach ($couponErrors as $err) : ?>
+                        <? if ($err->code == 404) : ?>
+                            Скидки с таким кодом не существует
+                        <? elseif ($err->code == 1001) : ?>
+                            Купон неприменим к данному заказу
+                        <? elseif ($err->code == 1022) : ?>
+                           Купон уже был использован или истек срок действия
+                        <? else : ?>
+                            <?= $err->message ?>
+                        <? endif ?>
+                    <? endforeach ?>
+                 </span>
+            </label>
         </div>
-
-        <div class="cuponPin" style="display: none">
-            <label class="cuponLbl">PIN:</label>
-            <input class="cuponField cuponPin_it textfieldgrey jsCertificatePinInput" type="text" name="" value="" />
+        <div class="order-discount__pin" style="display: none">
+            <div class="order-ctrl">
+                <label class="order-ctrl__lbl js-order-ctrl__lbl">PIN:</label>
+                <input class="order-ctrl__input js-order-ctrl__input jsCertificatePinInput" type="text" name="" value="" placeholder="PIN">
+            </div>
         </div>
-
-        <? foreach ($couponErrors as $err) : ?>
-            <? if ($err->code == 404) : ?>
-                <div class="cuponErr">Скидки с таким кодом не существует</div>
-            <? elseif ($err->code == 1001) : ?>
-                <div class="cuponErr">Купон неприменим к данному заказу</div>
-            <? elseif ($err->code == 1022) : ?>
-                <div class="cuponErr">Купон уже был использован или истек срок действия</div>
-            <? else : ?>
-                <div class="cuponErr"><?= $err->message ?></div>
-            <? endif ?>
-        <? endforeach ?>
 
         <button
             class="order-btn order-btn--default jsApplyDiscount-1509"

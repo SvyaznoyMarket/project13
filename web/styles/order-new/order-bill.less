@@ -180,6 +180,7 @@
 }
 .order-discount{
     font-size: 0;
+    margin-right: -200px;
 
     &__head{
         font-size: 18px;
@@ -235,12 +236,21 @@
         text-align: right;
         margin: 0 10px;
     }
+    &__pin{
+        .inline-block(middle);
+        margin-left: 10px;
+    }
     .order-ctrl{
         .inline-block(middle);
         width: 165px;
         padding-top: 0;
         margin-bottom: 0;
         margin-right: 0;
+        &__lbl{
+            top: -15px;
+            margin-left: 0;
+            width: 500px;
+        }
     }
     .order-btn{
         .inline-block(middle);
