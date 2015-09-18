@@ -193,15 +193,27 @@ return [
     // магазины
     'shop' => [
         'pattern' => '/shops',
-        'action'  => ['Shop\Action', 'index'],
+        'action'  => ['Shop', 'execute'],
     ],
     'shop.region' => [ // deprecated
         'pattern' => '/shops/{regionId}',
-        'action'  => ['Shop\Action', 'region'],
+        'action'  => ['Shop\Region', 'execute'],
+        'require' => [
+            'regionId'   => '\d+',
+        ],
+    ],
+    'shop.region.show' => [ // deprecated
+        'pattern' => '/shops/{regionToken}/{shopToken}',
+        'action'  => ['Shop\Region\Show', 'execute'],
     ],
     'shop.show' => [
-        'pattern' => '/shops/{regionToken}/{shopToken}',
-        'action'  => ['Shop\Action', 'show'],
+        'pattern' => '/shops/{pointToken}',
+        'action'  => ['Shop\Show', 'execute'],
+    ],
+    'shop.send' => [
+        'pattern' => '/ajax/shops/{pointUi}/send',
+        'action'  => ['Shop\Send', 'execute'],
+        'method'  => ['POST'],
     ],
 
     // срезы. каталог товаров
