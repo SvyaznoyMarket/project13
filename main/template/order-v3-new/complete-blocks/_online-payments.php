@@ -1,43 +1,109 @@
 <?php
 
 /**
- * @deprecated
  * @param \Helper\TemplateHelper $helper
- * @param string $topMessage
- * @param string $bottomMessage
  * @param \Model\Order\Entity $order
- * @param \Model\PaymentMethod\PaymentEntity $orderPayment
- * @param bool $blockVisible
+ * @param \Model\PaymentMethod\PaymentEntity|null $orderPayment
+ * @return string
  */
 $f = function(
     \Helper\TemplateHelper $helper,
-    $topMessage = '',
-    $bottomMessage = 'Вы будете перенаправлены на сайт платежной системы',
     \Model\Order\Entity $order,
-    $orderPayment,
-    $blockVisible = false
-) { ?>
+    \Model\PaymentMethod\PaymentEntity $orderPayment = null
+) {
+    if (!$orderPayment || !$orderPayment->methods) {
+        return '';
+    }
 
-    <!-- Блок оплата платежные системы -->
-    <div class="orderPayment orderPaymentWeb jsOnlinePaymentBlock <?= $blockVisible ? 'jsOnlinePaymentBlockVisible' : '' ?>" style="display: <?= $blockVisible ? 'block' : 'none' ?>">
+    /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity[] $paymentMethods */
+    $paymentMethods = array_filter($orderPayment->methods, function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod) {
+        return $paymentMethod->isOnline;
+    });
+
+    $formUrl = \App::router()->generate('orderV3.paymentForm');
+?>
+
+    <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
-                    <? if ($topMessage) : ?>
-                        <?= $topMessage ?>
-                    <? else : ?>
-                        К оплате: <?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span>
-                    <? endif ?>
+                    Онлайн-оплата
                 </div>
-                <ul class="orderPaymentWeb_lst clearfix">
-                    <?= $helper->render('order-v3-new/complete-blocks/__payments-li', ['orderPayment' => $orderPayment]) ?>
+                <div class="order-payment__sum-msg">
+                    К оплате <span class="order-payment__sum"><?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span>
+                </div>
+                <div class="orderPayment_msg_shop orderPayment_pay">
+                    <ul class="orderPaymentWeb_lst-sm">
+                    <? foreach ($paymentMethods as $paymentMethod): ?>
+                        <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="<?= $paymentMethod->icon ?>"></a></li>
+                    <? endforeach ?>
+                    </ul>
+                    <button class="orderPayment_btn btn3">Оплатить онлайн</button>
+                </div>
+                <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="orderPayment orderPaymentWeb">
+        <!-- Заголовок-->
+        <!-- Блок в обводке -->
+        <div class="orderPayment_block orderPayment_noOnline">
+
+            <div class="orderPayment_msg orderPayment_noOnline_msg">
+                <div class="orderPayment_msg_head">
+                    Онлайн-оплата
+                </div>
+                <div class="order-payment__sum-msg">
+                    К оплате <span class="order-payment__sum"><?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span>
+                </div>
+
+                <!-- Этот блок идентичен блоку, который используется на 2м шаге, но у меня не получилось здесь отрендерить его-->
+                <div class="payment-methods__discount discount">
+                    <span class="discount__pay-type">Онлайн-оплата</span>
+                    <span class="discount__val">Скидка 15%</span>
+                </div>
+                <ul class="payment-methods__lst">
+                    <? foreach ($paymentMethods as $paymentMethod): ?>
+                    <?
+                        $elementId = sprintf('paymentMethod-%s', $paymentMethod->id);
+                        $checked = $order->paymentId == $paymentMethod->id;
+                    ?>
+                    <li class="payment-methods__i">
+                        <input
+                            id="<?= $elementId ?>"
+                            type="radio"
+                            name="onlinePaymentMethodId"
+                            value="<?= $paymentMethod->id ?>"
+                            data-url="<?= $formUrl ?>"
+                            data-value="<?= $helper->json([
+                                'method' => $paymentMethod->id,
+                                'order'  => $order->id,
+                                'number' => $order->number,
+                            ]) ?>"
+                            data-relation="<?= $helper->json([
+                                'formContainer' => '.id-paymentForm-container',
+                            ]) ?>"
+                            class="customInput customInput-defradio2 js-order-onlinePaymentMethod js-customInput"
+                            <? if ($checked): ?> checked="checked"<? endif ?>
+                        />
+                        <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2<? if ($checked): ?> mChecked<? endif ?>">
+                            <?= $paymentMethod->name ?>
+                            <? if ($image = $paymentMethod->icon): ?>
+                                <img class="payment-methods__img" src="<?= $image ?>" />
+                            <? endif ?>
+                        </label>
+                    </li>
+                <? endforeach ?>
                 </ul>
-                <div class="orderPayment_msg_info">
-                    <?= $bottomMessage ?>
+
+                <div class="orderPayment_msg_shop orderPayment_pay id-paymentForm-container">
+                    <button class="orderPayment_btn btn3">Оплатить</button>
                 </div>
+                <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
             </div>
         </div>
     </div>

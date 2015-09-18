@@ -7,15 +7,6 @@ $f = function (
     $isOrderWithCart = \App::abTest()->isOrderWithCart();
 
     $paymentMethods = $order->possible_payment_methods;
-    $imagesByPaymentId = [
-        '1' => null,
-        '2' => 'pay-card.png',
-        '8' => 'pay-psb.png',
-        'yandex' => 'pay-yandex.png',
-        'webmoney' => 'pay-webmoney.png',
-        'qiwi' => 'pay-qiwi.png',
-    ];
-
     $onlinePaymentMethodIds = ['2', '5', '8'];
 ?>
 
@@ -31,9 +22,8 @@ $f = function (
         <? foreach ($paymentMethods as $paymentMethod): ?>
         <?
             if (in_array($paymentMethod->id, ['10'])) continue;
-            $checked = $order->payment_method_id == $paymentMethod->id;
-
             $elementId = sprintf('paymentMethod-%s', $paymentMethod->id);
+            $checked = $order->payment_method_id == $paymentMethod->id;
         ?>
             <li class="payment-methods__i">
                 <input
@@ -51,8 +41,8 @@ $f = function (
                 />
                 <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">
                     <?= $paymentMethod->name ?>
-                    <? if ($image = (isset($imagesByPaymentId[$paymentMethod->id]) ? $imagesByPaymentId[$paymentMethod->id] : null)): ?>
-                        <img class="payment-methods__img" src="/styles/order-new/img/payment/<?= $image ?>">
+                    <? if ($image = $paymentMethod->icon): ?>
+                        <img class="payment-methods__img" src="<?= $image ?>">
                     <? endif ?>
                 </label>
             </li>

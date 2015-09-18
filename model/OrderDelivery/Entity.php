@@ -510,11 +510,23 @@ namespace Model\OrderDelivery\Entity {
         public $name;
         /** @var string */
         public $description;
+        /** @var string */
+        public $icon;
 
         public function __construct(array $data = []) {
             if (isset($data['id'])) $this->id = (string)$data['id'];
             if (isset($data['name'])) $this->name = (string)$data['name'];
             if (isset($data['description'])) $this->description = (string)$data['description'];
+
+            switch ($this->id) {
+                case '2': $this->icon = '/styles/order-new/img/payment/pay-card.png'; break;
+                case '8': $this->icon = '/styles/order-new/img/payment/pay-psb.png'; break;
+                case '11': $this->icon = '/styles/order-new/img/payment/pay-webmoney.png'; break;
+                case '12': $this->icon = '/styles/order-new/img/payment/pay-qiwi.png'; break;
+                case '13': $this->icon = '/styles/order-new/img/payment/pay-paypal.png'; break;
+                case '14': $this->icon = '/styles/order-new/img/payment/pay-svyaznoy.png'; break;
+                case 'yandex': $this->icon = '/styles/order-new/img/payment/pay-yandex.png'; break;
+            }
         }
     }
 

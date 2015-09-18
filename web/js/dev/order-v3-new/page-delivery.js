@@ -547,7 +547,39 @@
             $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
         }
 
-        e.preventDefault();
+        //e.preventDefault();
+    });
+
+    $body.on('change', '.js-order-onlinePaymentMethod', function(e) {
+        var
+            $el = $(this),
+            url = $el.data('url'),
+            value = $el.data('value'),
+            relations = $el.data('relation'),
+            $formContainer = relations['formContainer'] && $(relations['formContainer'])
+        ;
+
+        try {
+            if (!url) {
+                throw {message: 'Не задан url для получения формы'};
+            }
+            if (!$formContainer.length) {
+                throw {message: 'Не найден контейнер для формы'};
+            }
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: value
+            }).fail(function(jqXHR){
+            }).done(function(response){
+                if (response.form) {
+                    $formContainer.html(response.form);
+                }
+            }).always(function(){});
+        } catch(error) { console.error(error); };
+
+        //e.preventDefault();
     });
 
     // АНАЛИТИКА

@@ -34,12 +34,12 @@ $f = function(
         <? if ($ordersPayment[$order->getNumber()] && array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $ordersPayment[$order->getNumber()]->groups)) : ?>
 
             <? if (false): // TODO: выпилить ?>
-            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', [
-                'order' => $order,
-                'orderPayment' => $ordersPayment[$order->getNumber()],
-                'blockVisible' => false,
-                'bottomMessage' => 'Вы будете перемещены на сайт платежной системы'
-            ]) ?>
+                <?= $helper->render('order-v3-new/complete-blocks/_online-payments', [
+                    'order' => $order,
+                    'orderPayment' => $ordersPayment[$order->getNumber()],
+                    'blockVisible' => false,
+                    'bottomMessage' => 'Вы будете перемещены на сайт платежной системы'
+                ]) ?>
             <? endif ?>
 
             <!-- Блок оплата в два клика-->
