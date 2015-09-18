@@ -105,12 +105,8 @@ class CompletePage extends Layout {
     public function slotContent() {
         $template = 'page-complete';
         $orders = $this->getParam('orders');
-        if (\App::abTest()->isOnlineMotivation(count($orders))) {
-            /* @var $order \Model\Order\Entity */
-            $order = reset($orders);
-            /* Если выбран самовывоз из определенной точки или выбрана доставка с адресом */
-            /* Пикпоинт (6) пока исключим, т.к. для него не отдаётся адрес: CORE-2558 */
-            if (in_array($order->getDeliveryTypeId(), [3,4]) || $order->getDeliveryTypeId() == 1 || $order->point) $template = 'page-complete_online-motivation';
+        if (1 === count($orders)) {
+            $template = 'page-complete-single';
         }
         return \App::closureTemplating()->render('order-v3-new/' . $template, $this->params);
     }

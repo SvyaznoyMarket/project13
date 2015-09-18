@@ -281,7 +281,7 @@ $f = function(
             ]) ?>
 
             <!--/ способ доставки -->
-            <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
+            <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && (1 === count($orderDelivery->orders))) : ?>
 
                 <div class="orderCheck orderCheck-credit clearfix">
                     <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
