@@ -54,7 +54,7 @@ class ShowPage extends \View\DefaultLayout {
                     ],
                 ],
                 'subway' => [
-                    'name' => $point->subway->getName(),
+                    'name' => $point->subway ? $point->subway->getName() : null,
                 ],
                 'images' => array_values(array_filter(array_map(function(\Model\Media $media) {
                     if ($media->provider !== 'image') {
