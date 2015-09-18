@@ -20,9 +20,6 @@
             {{/point.address}}
 
             <div class="pick-point-item__time">
-                {{#point.workingTime}}
-                   Работает {{point.workingTime}}<br>
-                {{/point.workingTime}}
                 {{#point.phone}}
                     Телефон: {{point.phone}}
                 {{/point.phone}}
@@ -36,26 +33,34 @@
 
 
 {{#point.showMap}}
-    <div class="bMap__eBody js-shop-viewport" data-map-latitude="{{point.latitude}}" data-map-longitude="{{point.longitude}}"></div>
-    <div class="shops-gallery">
-        {{#point.images.0}}
-            <ul class="shops-gallery__lst">
-            {{#point.images}}
-                <li>
-                    <a class="shops-gallery__i js-shop-image-opener" data-big-url="{{big.url}}" data-type="image">
-                        <img src="{{small.url}}" alt="" />
-                    </a>
-                </li>
-            {{/point.images}}
-            </ul>
+    <div class="shops__map">
+        <div class="bMap__eBody js-shop-viewport" data-map-latitude="{{point.latitude}}" data-map-longitude="{{point.longitude}}"></div>
+        <div class="shops-gallery">
+            {{#point.images.0}}
+                <ul class="shops-gallery__lst">
+                {{#point.images}}
+                    <li>
+                        <a class="shops-gallery__i js-shop-image-opener" data-big-url="{{big.url}}" data-type="image">
+                            <img src="{{small.url}}" alt="" />
+                        </a>
+                    </li>
+                {{/point.images}}
+                </ul>
 
-            <a class="shops-gallery__i shops-gallery__bottom js-shop-image-opener" data-type="map">
-                <img src="/images/map_ico.png" alt="" />
-            </a>
-        {{/point.images.0}}
+                <a class="shops-gallery__i shops-gallery__bottom js-shop-image-opener" data-type="map">
+                    <img src="/images/map_ico.png" alt="" />
+                </a>
+            {{/point.images.0}}
+        </div>
     </div>
 {{/point.showMap}}
 <div class="shops__descr">
+    <div class="shops__working-time">
+        {{#point.workingTime}}
+            <span class="shops__schedule">Режим работы</span>
+            <div class="shops__schedule-val">{{point.workingTime}}</div>
+        {{/point.workingTime}}
+    </div>
     {{#point.description}}
         <p>{{point.description}}</p>
     {{/point.description}}
