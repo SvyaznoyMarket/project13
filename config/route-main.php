@@ -181,9 +181,9 @@ return [
     ],
 
     // магазины
-    'shop' => [ // deprecated
+    'shop' => [
         'pattern' => '/shops',
-        'action'  => ['Shop\Index', 'execute'],
+        'action'  => ['Shop', 'execute'],
     ],
     'shop.region' => [ // deprecated
         'pattern' => '/shops/{regionId}',
@@ -192,13 +192,18 @@ return [
             'regionId'   => '\d+',
         ],
     ],
-    'shop.region.show' => [
+    'shop.region.show' => [ // deprecated
         'pattern' => '/shops/{regionToken}/{shopToken}',
         'action'  => ['Shop\Region\Show', 'execute'],
     ],
     'shop.show' => [
-        'pattern' => '/shops/{shopToken}',
+        'pattern' => '/shops/{pointToken}',
         'action'  => ['Shop\Show', 'execute'],
+    ],
+    'shop.send' => [
+        'pattern' => '/ajax/shops/{pointUi}/send',
+        'action'  => ['Shop\Send', 'execute'],
+        'method'  => ['POST'],
     ],
 
     // срезы. каталог товаров

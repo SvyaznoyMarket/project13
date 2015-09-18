@@ -13,14 +13,16 @@ class ScmsPoint {
     const PARTNER_SLUG_ENTER = 'enter';
 
     /** @var string */
-    public $uid;
+    public $ui;
+    /** @var string */
+    public $id;
     /** @var string */
     public $vendorId;
     /** @var \Model\Point\Partner */
     public $partner;
     /** @var string */
     public $slug;
-    /** @var string */
+    /** @var \Model\Point\WorkingTime|null */
     public $workingTime;
     /** @var string */
     public $phone;
@@ -46,15 +48,35 @@ class ScmsPoint {
     public $town;
     /** @var \Model\Media[] */
     public $medias = [];
+    /** @var int */
+    public $productCount = 0;
 
     function __construct($data = []) {
         $this->partner = new \Model\Point\Partner();
 
-        if (isset($data['uid'])) $this->uid = $data['uid'];
+        if (isset($data['uid'])) $this->ui = $data['uid'];
+        if (isset($data['id'])) $this->id = $data['id'];
         if (isset($data['vendor_id'])) $this->vendorId = $data['vendor_id'];
         if (isset($data['partner'])) $this->partner->slug = $data['partner'];
         if (isset($data['slug'])) $this->slug = $data['slug'];
-        if (isset($data['working_time'])) $this->workingTime = $data['working_time'];
+
+        // Время работы
+        call_user_func(function() use($data) {
+            if (isset($data['working_time_array'])) {
+                $this->workingTime = new \Model\Point\WorkingTime($data['working_time_array']);
+            } else {
+                $this->workingTime = new \Model\Point\WorkingTime();
+            }
+
+            if (isset($data['working_time'])) {
+                $this->workingTime->common = $data['working_time'];
+            }
+
+            if (!$this->workingTime->common && !$this->workingTime->days) {
+                $this->workingTime = null;
+            }
+        });
+
         if (isset($data['phone'])) $this->phone = $data['phone'];
 
         if (isset($data['location']) && is_array($data['location'])) {
@@ -62,6 +84,7 @@ class ScmsPoint {
         }
 
         if (isset($data['name'])) $this->name = $data['name'];
+
         if (isset($data['description'])) $this->description = $data['description'];
         if (isset($data['address'])) $this->address = $data['address'];
         if (isset($data['way_walk'])) $this->wayWalk = $data['way_walk'];

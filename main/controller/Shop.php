@@ -1,12 +1,12 @@
 <?php
 
-namespace Controller\Shop;
+namespace Controller;
 
 
 use View\Shop\IndexPage;
 use Model\Point\ScmsPoint;
 
-class Index {
+class Shop {
     public function execute(\Http\Request $request) {
         $points = null;
         $partners = null;

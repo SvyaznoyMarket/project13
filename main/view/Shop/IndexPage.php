@@ -71,7 +71,7 @@ class IndexPage extends \View\DefaultLayout {
         foreach ($points as $point) {
             $result['features'][] = [
                 'type'  => 'Feature',
-                'id'    => $point->uid,
+                'id'    => $point->ui,
                 'geometry'  => [
                     'type'          => 'Point',
                     'coordinates'   => [$point->latitude, $point->longitude]
@@ -80,7 +80,7 @@ class IndexPage extends \View\DefaultLayout {
                     'iconImageHref' => $point->icon
                 ],
                 'properties'    => [
-                    'eUid'     => $point->uid,
+                    'eUid'     => $point->ui,
                     'ePartner' => $point->partner->slug
                 ]
             ];

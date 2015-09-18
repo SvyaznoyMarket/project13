@@ -1,6 +1,8 @@
 $(function($){
-    var $viewport = $('.js-shop-viewport'),
-        $sendPopup = $('.js-send-popup').clone();
+    var
+		$viewport = $('.js-shop-viewport'),
+		errorClass = 'error',
+		loadingClass = 'loading';
 
     if ($viewport.length) {
         ymaps.ready(function () {
@@ -45,25 +47,81 @@ $(function($){
 		});
     }
 
-     $('.js-tab-head').on('click',function(){
-         var $this = $(this),
-             $tab = $('#'+$this.data('target'));
-         $('.js-tab-head').removeClass('active');
-         $this.addClass('active');
-         $('.js-tab').removeClass('active');
-         $tab.addClass('active');
-     });
+	$('.js-shop-tab-head').on('click',function(){
+		var $this = $(this),
+			$tab = $('#' + $this.data('target'));
 
-    $('.js-send-popup').remove();
-    $('body').prepend($sendPopup);
+		$('.js-shop-tab-head').removeClass('active');
+		$this.addClass('active');
+		$('.js-shop-tab').removeClass('active');
+		$tab.addClass('active');
+	});
 
-    $('.js-send-popup-show').on('click',function(e){
-        e.preventDefault();
-        $('.js-send-popup').show();
-        $('body').prepend('<div class="s-overlay js-overlay"></div>');
-    });
-    $('body').on('click','js-send-popup-closer, .js-overlay',function(){
-        $('.js-send-popup').hide();
-        $('.js-overlay').remove();
-    })
+	$('.js-shop-print-opener').click(function(e) {
+		e.preventDefault();
+		print();
+	});
+
+	$('.js-shop-email-opener').click(function(e) {
+		e.preventDefault();
+		var
+			$popup = $('.js-shop-email-popup'),
+			$form = $('.js-shop-email-popup-form', $popup),
+			$error = $('.js-shop-email-popup-error', $form),
+			isPopupCreated = false;
+
+		$popup.enterLightboxMe({
+			centered: true,
+			closeSelector: '.js-shop-email-popup-closer',
+			onLoad: function() {
+				if (isPopupCreated) {
+					return;
+				}
+
+				isPopupCreated = true;
+
+				$('.js-shop-email-popup-send', $popup).click(function(e) {
+					e.preventDefault();
+					$form.submit();
+				});
+
+				$form.submit(function(e) {
+					e.preventDefault();
+
+					if ($form.hasClass(loadingClass)) {
+						return;
+					}
+
+					$form.addClass(loadingClass);
+
+					$.ajax({
+						type: $form.attr('method'),
+						url: $form.attr('action'),
+						data: {
+							email: $('.js-shop-email-popup-input', $form).val()
+						},
+						complete: function() {
+							$form.removeClass(loadingClass);
+						},
+						success: function(data) {
+							if (data.error) {
+								$form.addClass(errorClass);
+								$error.text(data.error);
+							} else {
+								$popup.trigger('close');
+							}
+						},
+						error: function() {
+							$form.addClass(errorClass);
+							$error.text('Не удалось отправить письмо');
+						}
+					});
+				});
+			},
+			onClose: function() {
+				$form.removeClass(errorClass);
+				$error.text('');
+			}
+		});
+	});
 });
