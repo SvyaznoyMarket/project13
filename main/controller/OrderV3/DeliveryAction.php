@@ -115,6 +115,7 @@ class DeliveryAction extends OrderV3 {
             $this->bindErrors($this->session->flash(), $orderDelivery);
 
             $page = new \View\OrderV3\DeliveryPage();
+            $page->setParam('step', 2);
             $page->setParam('orderDelivery', $orderDelivery);
             $page->setParam('bonusCards', $bonusCards);
             $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner());

@@ -312,7 +312,6 @@
 				return {
 					'id': p.id,
 					'name': productName,
-					'sku': p.article,
 					'category': p.category.length ? (p.category[0].name +  ' - ' + p.category[p.category.length -1].name) : '',
 					'price': p.price,
 					'quantity': p.quantity

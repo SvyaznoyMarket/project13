@@ -154,6 +154,16 @@
                 }
             };
 
+            this.toEnhancedObject = function() {
+                return {
+                    'id': this.sku,
+                    'name': this.name,
+                    'category': this.category,
+                    'price': this.price,
+                    'quantity': this.quantity
+                }
+            };
+
             this.toArray = function toArrayF(){
                 return [this.id, this.sku, this.name, this.category, this.price, this.quantity];
             };
@@ -179,13 +189,16 @@
 
                 // Universal Tracking Code
                 if (isUniversalAvailable()) {
-                    ga('ecommerce:addTransaction', googleTrans.toObject());
+                    //ga('ecommerce:addTransaction', googleTrans.toObject());
                     ga('secondary.ecommerce:addTransaction', googleTrans.toObject());
                     $.each(googleProducts, function(i, product){
-                        ga('ecommerce:addItem',product.toObject());
+                        //ga('ecommerce:addItem',product.toObject());
+                        ENTER.utils.analytics.addProduct(product.toEnhancedObject());
                         ga('secondary.ecommerce:addItem',product.toObject());
                     });
-                    ga('ecommerce:send');
+                    //ga('ecommerce:send');
+                    ENTER.utils.analytics.setAction('purchase', googleTrans.toObject());
+                    body.trigger('trackGoogleEvent', ['Purchase', 'complete']);
                     ga('secondary.ecommerce:send');
                 } else {
                     console.warn('No Universal Google Analytics function found');

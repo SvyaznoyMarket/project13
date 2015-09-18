@@ -146,6 +146,14 @@ ANALYTICS.gaJS = function(data) {
             }
         },
 
+        ga_order = function() {
+            console.log('ga_order', data);
+            $.each(data.enhancedEcomm.products, function(i,v) {
+                ENTER.utils.analytics.addProduct(v);
+            });
+            ENTER.utils.analytics.setAction('checkout', data.enhancedEcomm.options)
+        },
+
         ga_action = function ga_action() {
             console.log( 'gaJS action' );
             switch (route) {
@@ -167,13 +175,16 @@ ANALYTICS.gaJS = function(data) {
                     }
                     ga_catalog(); // для всех страниц каталога
                     break;
+                case 'order-v3-new':
+                    ga_order();
             }
         }
         ;// end of functions
 
     console.group('ports.js::gaJS');
 
-    try{
+    try {
+
         if ( 'function' !== typeof(ga) ) {
             console.warn('GA: init error');
             console.groupEnd();
