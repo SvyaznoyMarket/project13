@@ -22615,7 +22615,7 @@ img[height='0'] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    border-color: #5e5e5e;
+    border-color: #d3d3d3;
   }
   .order-good__count .count__ctrl {
     font-size: 16px;
@@ -22627,7 +22627,7 @@ img[height='0'] {
     font-size: 16px;
     width: 35px;
     height: 20px;
-    border-color: #5e5e5e;
+    border-color: #d3d3d3;
     color: #5e5d5d;
     line-height: 20px;
   }
@@ -22646,7 +22646,7 @@ img[height='0'] {
     font-size: 0;
     width: 32px;
     height: 20px;
-    border: 1px solid #5e5e5e;
+    border: 1px solid #d3d3d3;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
