@@ -33,6 +33,8 @@ class ScmsPoint {
     /** @var string */
     public $name;
     /** @var string */
+    public $url;
+    /** @var string */
     public $description;
     /** @var string */
     public $wayWalk;
@@ -115,6 +117,8 @@ class ScmsPoint {
             foreach ($data['medias'] as $media)
                 $this->medias[] = new \Model\Media($media);
         }
+        
+        $this->url = \App::router()->generate('shop.show', ['pointToken' => $this->slug]);
     }
 
     /**

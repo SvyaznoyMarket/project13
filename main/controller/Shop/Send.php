@@ -10,6 +10,9 @@ class Send {
      * @throws \Exception
      */
     public function execute($pointUi, \Http\Request $request) {
+        // TODO SITE-6096
+        return new \Http\JsonResponse([]);
+        
         $responseData = [
             'error' => '',
         ];
