@@ -26,7 +26,10 @@ $f = function(
 
         <div class="reviews__tl">Комментарий:</div>
         <p class="reviews__tx"><?= $review->extract ?></p>
-
+        <div class="reviews-src">
+            <span class="reviews-src__tl">Источник:</span>
+            <img src="/styles/product/img/mnogoru-sm.png"/>
+        </div>
         <div class="reviews-voting jsReviewVote" data-user-vote="<?= $review->userVote ?>">
             <div class="reviews-voting__tl">Полезный отзыв?</div>
             <span class="reviews-vote reviews-vote--positive <?= $review->userVote > 0 ?  'active' : null ?>jsReviewVoteBtn" data-vote="1"><?= $review->getPositiveCount() ?></span>

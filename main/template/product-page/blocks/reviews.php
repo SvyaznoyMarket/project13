@@ -99,7 +99,17 @@
                 <textarea id="reviewFormExtract" class="form-ctrl__textarea" name="review[extract]"></textarea>
                 <label class="form-ctrl__textarea-lbl--err" style="display: none">Не указан комментарий</label>
             </div>
-
+            <div class="partner-group">
+                <img src="/styles/product/img/mnogoru-big.png">
+                <span class="partner-group__tl">
+                    <span class="partner-group__h">Есть карта Много.ру?</span><br>
+                    Получайте бонусы за каждый отзыв
+                </span>
+            </div>
+            <div class="form-ctrl__group form-ctrl__group--inline">
+                <input id="" class="form-ctrl__input" type="text" name="">
+                <label class="form-ctrl__input-lbl" for="">Номер</label>
+            </div>
             <div class="form-ctrl__btn-container">
                 <button class="btn-type btn-type--buy" type="submit">Отправить</button>
             </div>
