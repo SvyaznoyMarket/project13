@@ -90,7 +90,9 @@ class IndexAction {
             $products[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
 
-        \RepositoryManager::product()->prepareProductQueries($products, 'media label');
+        // Необходимо запрашивать модели товаров, т.к. option моделей используется в методе
+        // \Model\Product\Entity::hasAvailableModels, который вызывается ниже
+        \RepositoryManager::product()->prepareProductQueries($products, 'model media label');
 
         // выполнение 2-го пакета запросов в ядро
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
@@ -108,7 +110,7 @@ class IndexAction {
                     'link'          => $product->getLink(),
                     'name'          => $product->getName(),
                     'price'         => $product->getPrice(),
-                    'isBuyable'     => $product->isAvailable(),
+                    'isBuyable'     => $product->isAvailable() || $product->hasAvailableModels(),
                     'statusId'      => $product->getStatusId(),
                     'cartButton'    => (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product),
                 ];
