@@ -87,7 +87,7 @@ $f = function(
                             data-relation="<?= $helper->json([
                                 'formContainer' => '.id-paymentForm-container',
                             ]) ?>"
-                            class="customInput customInput-defradio2 js-order-onlinePaymentMethod js-customInput"
+                            class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
                             <? if ($checked): ?> checked="checked"<? endif ?>
                         />
                         <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2<? if ($checked): ?> mChecked<? endif ?>">
@@ -101,7 +101,7 @@ $f = function(
                 </ul>
 
                 <div class="orderPayment_msg_shop orderPayment_pay id-paymentForm-container">
-                    <button class="orderPayment_btn btn3">Оплатить</button>
+                    <!--<button class="orderPayment_btn btn3">Оплатить</button>-->
                 </div>
                 <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
             </div>

@@ -65,7 +65,7 @@ return function(
             <?= $helper->render('order-v3-new/complete-blocks/_credit', ['order' => $order, 'creditData' => $creditData, 'banks' => $banks]) ?>
         <? endif ?>
 
-        <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && !$order->isCredit() && !$motivationAction && !$order->isPaidBySvyaznoy()) : ?>
+        <? if ($isOnlinePaymentPossible && !$order->isCredit() && !$motivationAction && !$order->isPaidBySvyaznoy()) : ?>
             <? if ($order->paymentId === PaymentMethodEntity::PAYMENT_CASH): ?>
                 <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment]) ?>
             <? else: ?>

@@ -19,5 +19,5 @@ if (!$form instanceof \Payment\PsbInvoice\Form) {
     <input type="hidden" name="AdditionalInfo" value="<?= $form->getAdditionalInfo() ?>" />
     <input type="hidden" name="Signature" value="<?= $form->getSignature() ?>" />
 
-    <input id="pay-button" type="submit" class="button bigbutton" value="Оплатить заказ" />
+    <button id="pay-button" type="submit" class="orderPayment_btn btn3">Оплатить</button>
 </form>

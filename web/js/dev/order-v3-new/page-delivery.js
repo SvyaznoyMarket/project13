@@ -567,11 +567,14 @@
                 throw {message: 'Не найден контейнер для формы'};
             }
 
+            $formContainer.html('Загрузка...'); // TODO: loader
+
             $.ajax({
                 url: url,
                 type: 'POST',
                 data: value
             }).fail(function(jqXHR){
+                $formContainer.html('Ошибка');
             }).done(function(response){
                 if (response.form) {
                     $formContainer.html(response.form);
