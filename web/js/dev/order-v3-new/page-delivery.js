@@ -275,6 +275,21 @@
             $.map($inputs, function(elem, i) {
                 if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
             });
+        },
+        loadPaymentForm = function($container, url, data) {
+            $container.html('Загрузка...'); // TODO: loader
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data
+            }).fail(function(jqXHR){
+                $container.html('Ошибка');
+            }).done(function(response){
+                if (response.form) {
+                    $container.html(response.form);
+                }
+            }).always(function(){});
         }
     ;
 
@@ -554,7 +569,7 @@
         var
             $el = $(this),
             url = $el.data('url'),
-            value = $el.data('value'),
+            data = $el.data('value'),
             relations = $el.data('relation'),
             $formContainer = relations['formContainer'] && $(relations['formContainer'])
         ;
@@ -567,22 +582,28 @@
                 throw {message: 'Не найден контейнер для формы'};
             }
 
-            $formContainer.html('Загрузка...'); // TODO: loader
-
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: value
-            }).fail(function(jqXHR){
-                $formContainer.html('Ошибка');
-            }).done(function(response){
-                if (response.form) {
-                    $formContainer.html(response.form);
-                }
-            }).always(function(){});
+            loadPaymentForm($formContainer, url, data);
         } catch(error) { console.error(error); };
 
         //e.preventDefault();
+    });
+    $('.js-order-onlinePaymentMethod').each(function(i, el) {
+        var
+            $el = $(this),
+            url,
+            data,
+            relations,
+            $formContainer
+        ;
+
+        if ($el.data('checked')) {
+            url = $el.data('url');
+            data = $el.data('value');
+            relations = $el.data('relation');
+            $formContainer = relations['formContainer'] && $(relations['formContainer']);
+
+            loadPaymentForm($formContainer, url, data);
+        }
     });
 
     // АНАЛИТИКА
