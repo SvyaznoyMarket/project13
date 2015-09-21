@@ -75,7 +75,7 @@ class Repository {
 
         $params = [];
 
-        if ($category) {
+        if ($category && $category->getId()) {
             $params['category_id'] = $category->getId();
         }
 
@@ -86,6 +86,8 @@ class Repository {
         if (!empty($filters)) {
             $params['filter']['filters'] = $filters;
         }
+
+        $params['bu'] = 1;
 
         $this->client->addQuery('listing/filter', $params, [], $done, $fail);
     }

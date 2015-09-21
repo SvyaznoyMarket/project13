@@ -3,6 +3,7 @@
 namespace Controller\ProductCategory;
 
 use EnterApplication\CurlTrait;
+use Model\Product\Category\Entity as Category;
 use Model\Product\Filter\Entity;
 use View\Partial\ProductCategory\RootPage\Brands;
 use View\Product\FilterForm;
@@ -50,15 +51,35 @@ class Action {
         /** @var $category \Model\Product\Category\Entity|null */
         $category = null;
         $catalogJson = [];
-        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category, &$catalogJson) {
-            if ($data) {
-                $category = new \Model\Product\Category\Entity($data);
-                $catalogJson = $category->catalogJson;
-            }
-        }, $brandToken);
 
-        // выполнение 2-го пакета запросов
-        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+        // получаем категорию по токену из запроса (если это не фейковый токен)
+        if ($categoryToken != Category::FAKE_SHOP_TOKEN) {
+            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category, &$catalogJson) {
+                if ($data) {
+                    $category = new Category($data);
+                    $catalogJson = $category->catalogJson;
+                }
+            }, $brandToken);
+
+            $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+        } else {
+            // если уже есть фильтрация по категории
+            if ($request->query->has('category')) {
+                \RepositoryManager::productCategory()->prepareCollectionById((array)$request->query->get('category'), $region, function($data) use (&$category){
+                    if ($data) {
+                        $category = new Category(reset($data));
+                    }
+                });
+                $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+            } else {
+                // Листинги по магазинам
+                $category = new Category([]);
+            }
+            $category->setProductView(1);
+            $category->setName('Товары в магазинах');
+            $category->setLink(sprintf('/catalog/%s/', Category::FAKE_SHOP_TOKEN));
+            $category->setToken($categoryToken);
+        }
 
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
@@ -93,13 +114,13 @@ class Action {
         $brands = [];
         \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, [], function($data) use (&$filters, &$brands, &$brand, $brandToken) {
             foreach ($data as $item) {
-                $filters[] = new \Model\Product\Filter\Entity($item);
+                $filters[] = $filter = new \Model\Product\Filter\Entity($item);
                 // бренды
-                if (isset($item['filter_id']) && $item['filter_id'] == 'brand' && is_array($item['options'])) {
-                    foreach ($item['options'] as $brandData) {
-                        $brandEntity = new \Model\Brand\Entity($brandData);
+                if ($filter->isBrand() && $filter->getOption()) {
+                    foreach ($filter->getOption() as $option) {
+                        $brandEntity = new \Model\Brand\Entity((array)$option);
                         $brands[] = $brandEntity;
-                        if (isset($brandData['token']) && $brandData['token'] == $brandToken) {
+                        if ($option->getToken() == $brandToken) {
                             $brand = $brandEntity;
                         }
                     }
@@ -180,7 +201,7 @@ class Action {
                         if (is_array($data)) {
                             foreach ($data as $item) {
                                 if ($item) {
-                                    $relatedCategories[] = new \Model\Product\Category\Entity($item);
+                                    $relatedCategories[] = new Category($item);
                                 }
                             }
                         }

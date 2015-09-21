@@ -364,6 +364,10 @@ class Entity {
         return 'shop' === $this->getId();
     }
 
+    public function isCategory() {
+        return 'category' === $this->getId();
+    }
+
     /**
      * Возвращает диапазоны цен для нового фильтра
      * @return array
