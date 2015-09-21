@@ -66,7 +66,7 @@ $helper = \App::helper();
                     <? endif ?>
                     <div class="deliv-item__addr-name"><?= $point->address ?></div>
                     <? if ($point->url): ?>
-                        <div><a href="<?= $helper->escape($point->url) ?>" class="jsPointListItemLink">Подробнее</a></div>
+                        <a href="<?= $helper->escape($point->url) ?>" class="points-lst-i__more jsPointListItemLink">Подробнее</a>
                     <? endif ?>
                 </div>
             </li>
