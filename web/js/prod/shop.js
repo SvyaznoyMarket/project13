@@ -275,10 +275,16 @@
             label: $(this).data('value')
         });
     });
-
-    $pointList.on('click', function(){
+    
+    $pointList.on('click', function(e){
 
         var $this = $(this);
+        
+        // Чтобы ctrl+клик по ссылке "Подробнее" приводил к открытию страницы в новой вкладке и не приводил к выбору
+        // точки на карте 
+        if ($(e.target).closest('.jsPointListItemLink, .jsPointListItem').hasClass('jsPointListItemLink')) {
+            return;
+        }
 
         if ($this.hasClass(pointActiveClass)) {
             $this.removeClass(pointActiveClass);
