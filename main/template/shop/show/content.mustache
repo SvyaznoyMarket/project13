@@ -54,9 +54,14 @@
 {{/point.showMap}}
 
 <div class="shops__descr">
+    {{#point.productCountText}}
+        <div class="shops__instock instock">{{point.productCountText}}</div>
+    {{/point.productCountText}}
+
     <div class="shops__working-time">
         <span class="shops__schedule">Режим работы</span>
         {{#point.workingTime.days}}
+        <div class="shops__schedule-val">
             <ul>
                 {{#point.workingTime.days.monday}}
                     <li>с {{point.workingTime.days.monday.from}} {{point.workingTime.days.monday.to}}</li>
@@ -86,6 +91,7 @@
                     <li>с {{point.workingTime.days.sunday.from}} {{point.workingTime.days.sunday.to}}</li>
                 {{/point.workingTime.days.sunday}}
             </ul>
+            </div>
         {{/point.workingTime.days}}
 
         {{^point.workingTime.days}}
@@ -96,10 +102,6 @@
             {{/point.workingTime.common}}
         {{/point.workingTime.days}}
     </div>
-
-    {{#point.productCountText}}
-        <p>{{point.productCountText}}</p>
-    {{/point.productCountText}}
 
     {{#point.description}}
         <p>{{point.description}}</p>
