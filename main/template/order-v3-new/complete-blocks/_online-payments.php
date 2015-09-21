@@ -23,7 +23,7 @@ $f = function(
     $formUrl = \App::router()->generate('orderV3.paymentForm');
 ?>
 
-    <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
+    <div class="orderPayment orderPaymentWeb id-orderPaymentPreview-container jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">
@@ -41,14 +41,20 @@ $f = function(
                         <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="<?= $paymentMethod->icon ?>"></a></li>
                     <? endforeach ?>
                     </ul>
-                    <button class="orderPayment_btn btn3">Оплатить онлайн</button>
+                    <button
+                        class="orderPayment_btn btn3 js-showBlock"
+                        data-show-block="<?= $helper->json([
+                            'target'     => '.id-orderPaymentList-container',
+                            'hideTarget' => '.id-orderPaymentPreview-container',
+                        ]) ?>"
+                    >Оплатить онлайн</button>
                 </div>
                 <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
             </div>
         </div>
     </div>
 
-    <div class="orderPayment orderPaymentWeb">
+    <div class="orderPayment orderPaymentWeb id-orderPaymentList-container" style="display: none;">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">
