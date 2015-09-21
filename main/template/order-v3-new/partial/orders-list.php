@@ -60,11 +60,11 @@ $f = function (
                             <?= $product->name_web ?>
                         </a>
 
-                        <span class="order-good__price"><?= $helper->formatPrice($product->original_sum) ?>
+                        <span class="order-good__price"><?= $helper->formatPrice($product->original_price) ?>
                             <span class="rubl">p</span></span>
                         <span class="order-good__quantity js-show-edit"><?= $product->quantity ?> шт.</span>
 
-                        <span class="order-good__total-price"><?= $helper->formatPrice($product->original_price) ?>
+                        <span class="order-good__total-price"><?= $helper->formatPrice($product->original_sum) ?>
                             <span class="rubl">p</span>
                         </span>
 
