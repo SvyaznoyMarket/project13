@@ -14,16 +14,17 @@ class Show {
         $helper = new \Templating\Helper();
         $user = \App::user();
 
-        /** @var $point \Model\Point\ScmsPoint */
+        /** @var $point \Model\Point\ScmsPoint|null */
+        $point = null;
         $scmsClient->addQuery('api/point/get', ['slugs' => [$pointToken], 'full' => 1], [], function($data) use(&$point) {
-            if (isset($data['points']) && is_array($data['points'])) {
+            if (isset($data['points']) && isset($data['points'][0])) {
                 $point = new \Model\Point\ScmsPoint($data['points'][0]);
-            }
-
-            if (isset($data['partners'])) {
-                foreach ($data['partners'] as $partner) {
-                    if ($partner['slug'] === $point->partner->slug) {
-                        $point->partner = new \Model\Point\Partner($partner);
+                
+                if (isset($data['partners'])) {
+                    foreach ($data['partners'] as $partner) {
+                        if ($partner['slug'] === $point->partner->slug) {
+                            $point->partner = new \Model\Point\Partner($partner);
+                        }
                     }
                 }
             }
@@ -43,7 +44,7 @@ class Show {
         $scmsClient->execute();
 
         if (!$point) {
-            throw new \Exception\NotFoundException('Магазин ' . $pointToken . ' не найдена');
+            throw new \Exception\NotFoundException('Точка ' . $pointToken . ' не найдена');
         }
 
         $scmsClient->addQuery('api/word-inflect', ['names' => [$point->partner->names->nominativus, $point->town->names->nominativus]], [], function($data) use(&$point) {
