@@ -90,10 +90,6 @@
         display: table-cell;
         padding: 10px 5px;
         vertical-align: bottom;
-
-        .order-cart__total-sum {
-            height: 37px;
-        }
     }
     &__total {
         width: 150px;
@@ -101,9 +97,11 @@
         font-size: 24px;
         text-align: right;
         white-space: nowrap;
+        height: 37px;
+        line-height: 37px;
     }
     &__total-sum {
-        .inline-block(middle);
+        .inline-block();
     }
     &__units{
         margin-left: 5px;

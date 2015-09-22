@@ -32,8 +32,7 @@
     <div class="order-cart__info">
 
         <div class="order-cart__total">
-            <span class="order-cart__total-sum" data-bind="html: window.printPrice(price * quantity())"></span>
-            <span class="rubl">p</span>
+            <span class="order-cart__total-sum" data-bind="html: window.printPrice(price * quantity())"></span> <span class="rubl">p</span>
         </div>
     </div>
 
