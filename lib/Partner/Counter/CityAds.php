@@ -88,7 +88,7 @@ class CityAds {
                 }
                 /** @var $category Category*/
 
-                $commission += self::getCategoryCommission($category) / 100 * $product->getPrice() * $orderProduct->getQuantity();
+                $commission += self::getCategoryCommission($category) * 0.01 * $product->getPrice() * $orderProduct->getQuantity();
 
                 $basket[] = [
                     'pid' => $product->getId(),
