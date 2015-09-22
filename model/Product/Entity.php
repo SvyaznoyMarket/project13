@@ -7,8 +7,6 @@ use Model\Product\Delivery\ProductDelivery;
 use Model\EnterprizeCoupon\Entity as Coupon;
 
 class Entity {
-    use \Model\MediaHostTrait;
-
     const LABEL_ID_PODARI_ZHIZN = 17;
     const PARTNER_OFFER_TYPE_SLOT = 2;
     /** Электронный подарочный сертификат giftery.ru */
@@ -1351,6 +1349,9 @@ class Entity {
     }
 
     /**
+     * У товаров, полученных методом http://api.enter.ru/v2/product/from-model, проверять наличие моделей не требуется,
+     * т.к. данный метод всегда возвращает модель товара, которая в наличии (см. комментарии на
+     * https://wiki.enter.ru/pages/viewpage.action?pageId=21569552) 
      * @return bool
      */
     public function hasAvailableModels() {

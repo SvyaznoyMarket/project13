@@ -35,7 +35,7 @@
 
                         <span class="orderPayment_msg_shop_addr"><?= $order->point->address ?></span>
                             <? if ($order->shop) : ?>
-                                <a href="<?= \App::router()->generate('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $order->shop->getToken()])?>" class="orderPayment_msg_addr_link jsCompleteOrderShowShop" target="_blank">
+                                <a href="<?= \App::router()->generate('shop.show', ['pointToken' => $order->shop->getToken()])?>" class="orderPayment_msg_addr_link jsCompleteOrderShowShop" target="_blank">
                                     Как добраться
                                 </a>
                             <? endif ?>

@@ -3,8 +3,6 @@
 namespace Model\Product\Category;
 
 class TreeEntity extends BasicEntity {
-    use \Model\MediaHostTrait;
-
     /** @var bool|null */
     protected $isFurniture;
     /** @var string|null */
@@ -142,19 +140,14 @@ class TreeEntity extends BasicEntity {
 
     public function getImageUrl($size = 0) {
         if ($this->image) {
-            if (preg_match('/^(https?|ftp)\:\/\//i', $this->image)) {
-                if (0 == $size) {
-                    return $this->image;
-                } else if (3 == $size) {
-                    return $this->image480x480;
-                }
-            } else {
-                $urls = \App::config()->productCategory['url'];
-                return $this->getHost() . $urls[$size] . $this->image;
+            if (0 == $size) {
+                return $this->image;
+            } else if (3 == $size) {
+                return $this->image480x480;
             }
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**

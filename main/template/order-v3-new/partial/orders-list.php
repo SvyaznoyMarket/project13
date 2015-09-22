@@ -62,11 +62,11 @@ $f = function (
                             <?= $product->name_web ?>
                         </a>
 
-                        <span class="order-good__price"><?= $helper->formatPrice($product->original_sum) ?>
+                        <span class="order-good__price"><?= $helper->formatPrice($product->original_price) ?>
                             <span class="rubl">p</span></span>
                         <span class="order-good__quantity js-show-edit"><?= $product->quantity ?> шт.</span>
 
-                        <span class="order-good__total-price"><?= $helper->formatPrice($product->original_price) ?>
+                        <span class="order-good__total-price"><?= $helper->formatPrice($product->original_sum) ?>
                             <span class="rubl">p</span>
                         </span>
 
@@ -237,7 +237,7 @@ $f = function (
                             class="order-delivery__block <?= ($order->delivery->point && $order->delivery->point->isSvyaznoy()) ? 'warn' : ''  ?> <?= $order->delivery->point ? 'plain' : 'empty' ?>">
 
                             <? if ($order->delivery->point) { ?>
-                                <div class="order-delivery__shop clearfix">
+                                <div class="order-delivery__shop">
                                     <?= @$order->delivery->delivery_method->name ?>
                                 </div>
                             <? }; ?>
@@ -314,8 +314,7 @@ $f = function (
                         <span
                             class="order-bill__total-price"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price) . ' <span class="rubl">p</span>' ?></span>
                         <span
-                            class="order-bill__serv"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>
-                            :</span>
+                            class="order-bill__serv"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
 
                         <span class="order-bill__total-price"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
                     <span class="order-bill__serv">Итого: </span>

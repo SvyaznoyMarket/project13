@@ -25,7 +25,9 @@ return function(
     $isOnlinePaymentPossible = (bool)$orderPayment ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $orderPayment->groups) : false;
     // При создании заказа выбрана онлайн-оплата
     $isOnlinePaymentChecked = in_array($order->getPaymentId(), [PaymentMethodEntity::PAYMENT_CARD_ONLINE, PaymentMethodEntity::PAYMENT_PAYPAL, PaymentMethodEntity::PAYMENT_PSB]);
+
 ?>
+    <div class="order__wrap">
 
     <section class="orderCnt jsNewOnlineCompletePage"
          data-order-id="<?= $order->getId() ?>"
@@ -88,7 +90,8 @@ return function(
         </div>
     </section>
 
-    <? if (!$isOnlinePaymentPossible): ?>
+    </div>
+    <? if (!$isOnlinePaymentPossible) : ?>
         <!--Аналитика-->
         <div class="jsGAOnlinePaymentNotPossible"></div>
     <? endif ?>
