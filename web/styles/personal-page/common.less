@@ -59,8 +59,13 @@
         width: 345px;
         .clearfix();
         margin-bottom: 50px;
-        .btn-type{
+        .btn-type.btn-type--buy{
             float: right;
+            border: 0;
+            padding: 0;
+            width: 180px;
+            height: 32px;
+            line-height: 32px;
         }
     }
     &__password{
@@ -71,6 +76,13 @@
         background-color: @bgGrey;
         .form-group{
             width: 230px;
+        }
+        .btn-type.btn-type--buy{
+            border: 0;
+            padding: 0;
+            width: 180px;
+            height: 32px;
+            line-height: 32px;
         }
     }
     &__sub-head{
@@ -198,6 +210,9 @@
                 background-position: -225px 0;
             }
         }
+    }
+    &__txt{
+        font-size: 14px;
     }
 
 
