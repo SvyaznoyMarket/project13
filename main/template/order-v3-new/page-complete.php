@@ -1,6 +1,19 @@
 <?php
 
-return function(
+use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity, \Model\PaymentMethod\PaymentGroup\PaymentGroupEntity;
+
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\Order\Entity[] $orders
+ * @param \Model\PaymentMethod\PaymentEntity $ordersPayment
+ * @param \Model\Product\Entity[] $products
+ * @param $userEntity
+ * @param $sessionIsReaded
+ * @param $banks
+ * @param $creditData
+ * @param $subscribe
+ */
+$f = function(
     \Helper\TemplateHelper $helper,
     $orders,
     $ordersPayment,
@@ -11,9 +24,10 @@ return function(
     $creditData,
     $subscribe
 ) {
-/** @var $products \Model\Product\Entity[] */
     $page = new \View\OrderV3\CompletePage();
     array_map(function(\Model\PaymentMethod\PaymentEntity &$entity) {$entity->unsetSvyaznoyClub();}, $ordersPayment); // fix for SITE-5229 (see comments)
+
+    $formUrl = \App::router()->generate('orderV3.paymentForm');
 ?>
 <style>
     .jsPaymentForms {
@@ -27,7 +41,23 @@ return function(
         <div class="orderLnSet">
 
             <? foreach ($orders as $order): ?>
-            <? /** @var $order \Model\Order\Entity */?>
+            <?
+                /** @var \Model\PaymentMethod\PaymentEntity|null $paymentEntity */
+                $paymentEntity = isset($ordersPayment[$order->getNumber()]) ? $ordersPayment[$order->getNumber()] : null;
+                /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity|null $checkedPaymentMethod */
+                $checkedPaymentMethod = null;
+                foreach ($paymentEntity->methods as $iPaymentMethod) {
+                    if ($iPaymentMethod->id == $order->paymentId) {
+                        $checkedPaymentMethod = $iPaymentMethod;
+                        break;
+                    }
+                }
+
+                /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity[] $paymentMethods */
+                $onlinePaymentMethods = array_filter($paymentEntity->methods, function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod) {
+                    return $paymentMethod->isOnline;
+                });
+            ?>
 
                 <div class="orderLn clearfix" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
                     <div class="orderLn_l">
@@ -70,105 +100,126 @@ return function(
                     </div>
 
                     <? endif ?>
-                    <!-- статика: тип оплаты -->
+                    <!-- тип оплаты -->
                     <div class="payment-block">
+                        <? if ($checkedPaymentMethod): ?>
                         <div class="payment-block__type">Тип оплаты: </div>
                         <div class="payment-block__logo">
-                            Яндекс.деньги <img src="/styles/order-new/img/payment/pay-yandex.png">
-                            <!--При получении: наличные, банковская карта-->
+                            <?= $checkedPaymentMethod->name ?>
+                            <? if ($image = $checkedPaymentMethod->icon): ?>
+                                <img src="<?= $image ?>" alt="<?= $helper->escape($checkedPaymentMethod->name) ?>" />
+                            <? endif ?>
                         </div>
+                        <? endif ?>
                     </div>
-                    <!-- END статика: тип оплаты -->
+                    <!-- тип оплаты -->
 
                     <div class="orderLn_r">
                         <? if ($order->getPaySum()): ?>
                             <div class="order-sum">
-                                <div class="order-sum__prev"><span class="line-through">22 244</span> <span class="rubl">p</span></div>
+                                <? if (false): ?>
+                                    <div class="order-sum__prev"><span class="line-through"><?= $helper->formatPrice($order->getPaySum()) ?></span> <span class="rubl">p</span></div>
+                                <? endif ?>
                                 <div class="order-sum__val"><?= $helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></div>
-                                <button class="orderPayment_btn btn3 js-payment-popup-show">Оплатить онлайн</button>
-                                <ul class="payments__lst">
-                                    <li class="payments__i"><img src="/styles/order-new/img/payment/pay-card-g.png"></li>
-                                    <li class="payments__i"><img src="/styles/order-new/img/payment/pay-yandex-g.png"></li>
-                                    <li class="payments__i"><img src="/styles/order-new/img/payment/pay-webmoney-g.png"></li>
-                                    <li class="payments__i"><img src="/styles/order-new/img/payment/pay-qiwi-g.png"></li>
-                                    <li class="payments__i"><img src="/styles/order-new/img/payment/pay-psb-g.png"></li>
-                                </ul>
+                                <? if (PaymentMethodEntity::PAYMENT_CASH === $order->paymentId): ?>
+                                    <button class="orderPayment_btn btn3 js-payment-popup-show">Оплатить онлайн</button>
 
+                                    <ul class="payments__lst">
+                                        <? foreach ($paymentEntity->methods as $paymentMethod): ?>
+                                        <?
+                                            $image = $paymentMethod->icon ? str_replace('.png', '-g.png', $paymentMethod->icon) : null;
+                                            if (!$image) continue;
+                                        ?>
+                                            <li class="payments__i"><img src="<?= $image ?>" alt="<?= $helper->escape($paymentMethod->name) ?>" /></li>
+                                        <? endforeach ?>
+                                    </ul>
 
-                            <!-- popup оплаты -->
-                            <div class="payments-popup js-payment-popup">
-                                <div class="js-payment-popup-closer payments-popup__closer"></div>
+                                    <!-- popup оплаты -->
+                                    <div class="payments-popup js-payment-popup">
+                                        <div class="js-payment-popup-closer payments-popup__closer"></div>
 
-                                <div class="orderPayment_msg_head">
-                                    Онлайн-оплата
-                                </div>
-                                <div class="order-payment__sum-msg">
-                                    К оплате <span class="order-payment__sum">1500 <span class="rubl">p</span></span>
-                                </div>
+                                        <div class="orderPayment_msg_head">
+                                            Онлайн-оплата
+                                        </div>
+                                        <div class="order-payment__sum-msg">
+                                            К оплате <span class="order-payment__sum"><?= $helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></span>
+                                        </div>
 
-                                <!-- Новые способы оплаты - статика -->
-                                <div class="payment-methods__discount discount">
-                                    <span class="discount__val">Скидка 15%</span>
-                                </div>
-                                <ul class="payment-methods__lst">
-                                    <li class="payment-methods__i">
-                                        <input id="payment-card" type="radio" name="payment-type[]" value="by_card" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" checked="">
-                                        <label for="payment-card" class="customLabel customLabel-defradio2 mChecked">
-                                            Банковская карта
-                                            <img class="payment-methods__img" src="/styles/order-new/img/payment/pay-card.png">
-                                        </label>
-                                    </li>
-                                    <li class="payment-methods__i">
-                                        <input id="payment-yandex" type="radio" name="payment-type[]" value="by_yandex" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" >
-                                        <label for="payment-yandex" class="customLabel customLabel-defradio2">
-                                            Яндекс.Деньги
-                                            <img class="payment-methods__img" src="/styles/order-new/img/payment/pay-yandex.png">
-                                        </label>
-                                    </li>
-                                    <li class="payment-methods__i">
-                                        <input id="payment-webmoney" type="radio" name="payment-type[]" value="by_webmoney" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" >
-                                        <label for="payment-webmoney" class="customLabel customLabel-defradio2">
-                                            WebMoney
-                                            <img class="payment-methods__img" src="/styles/order-new/img/payment/pay-webmoney.png">
-                                        </label>
-                                    </li>
-                                    <li class="payment-methods__i">
-                                        <input id="payment-qiwi" type="radio" name="payment-type[]" value="by_qiwi" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" >
-                                        <label for="payment-qiwi" class="customLabel customLabel-defradio2">
-                                            Qiwi
-                                            <img class="payment-methods__img" src="/styles/order-new/img/payment/pay-qiwi.png">
-                                        </label>
-                                    </li>
-
-                                    <li class="payment-methods__i top-space"><!-- ставим класс top-space на элемент, который имеет сверху бОльший оступ-->
-                                        <input id="payment-psb" type="radio" name="payment-type[]" value="by_psb" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" >
-                                        <label for="payment-psb" class="customLabel customLabel-defradio2">
-                                            Выставить счет в PSB
-                                            <img class="payment-methods__img" src="/styles/order-new/img/payment/pay-psb.png">
-                                        </label>
-                                    </li>
-
-                                </ul>
-                                <!-- END Новые способы оплаты - статика -->
-                                <div class="payments-popup__pay">
-                                    <button class="orderPayment_btn btn3">Оплатить онлайн</button>
-                                    <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
-                                </div>
-                            </div>
-                            <!-- END popup оплаты -->
+                                        <!-- Новые способы оплаты - статика -->
+                                        <div class="payment-methods__discount discount">
+                                            <span class="discount__val">Скидка 15%</span>
+                                        </div>
+                                        <ul class="payment-methods__lst">
+                                            <? foreach ($onlinePaymentMethods as $paymentMethod): ?>
+                                                <?
+                                                $containerId = sprintf('id-order-%s-paymentMethod-container', $order->id);
+                                                $elementId = sprintf('order-%s-paymentMethod-%s', $order->id, $paymentMethod->id);
+                                                $checked = $order->paymentId == $paymentMethod->id;
+                                                ?>
+                                                <li class="payment-methods__i">
+                                                    <input
+                                                        id="<?= $elementId ?>"
+                                                        type="radio"
+                                                        name="<?= sprintf('paymentMethodId_%s', $order->id) ?>"
+                                                        value="<?= $paymentMethod->id ?>"
+                                                        data-url="<?= $formUrl ?>"
+                                                        data-value="<?= $helper->json([
+                                                            'method' => $paymentMethod->id,
+                                                            'order'  => $order->id,
+                                                            'number' => $order->number,
+                                                        ]) ?>"
+                                                        data-relation="<?= $helper->json([
+                                                            'formContainer' => '.' . $containerId,
+                                                        ]) ?>"
+                                                        class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
+                                                        <? if ($checked): ?> checked="checked"<? endif ?>
+                                                    />
+                                                    <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2<? if ($checked): ?> mChecked<? endif ?>">
+                                                        <?= $paymentMethod->name ?>
+                                                        <? if ($image = $paymentMethod->icon): ?>
+                                                            <img class="payment-methods__img" src="<?= $image ?>" alt="<?= $helper->escape($paymentMethod->name) ?>" />
+                                                        <? endif ?>
+                                                    </label>
+                                                </li>
+                                            <? endforeach ?>
+                                        </ul>
+                                        <!-- END Новые способы оплаты - статика -->
+                                        <div class="payments-popup__pay <?= $containerId ?>"></div>
+                                        <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
+                                    </div>
+                                    <!-- END popup оплаты -->
+                                <? elseif ($checkedPaymentMethod): ?>
+                                <?
+                                    $containerId = sprintf('id-order-%s-paymentMethod-container', $order->id);
+                                ?>
+                                    <!--<button class="orderPayment_btn btn3 js-payment-popup-show">Оплатить</button>-->
+                                    <input
+                                        type="hidden"
+                                        name="<?= sprintf('paymentMethodId_%s', $order->id) ?>"
+                                        value="<?= $checkedPaymentMethod->id ?>"
+                                        data-url="<?= $formUrl ?>"
+                                        data-value="<?= $helper->json([
+                                            'method' => $checkedPaymentMethod->id,
+                                            'order'  => $order->id,
+                                            'number' => $order->number,
+                                        ]) ?>"
+                                        data-relation="<?= $helper->json([
+                                            'formContainer' => '.' . $containerId,
+                                        ]) ?>"
+                                        data-checked="true"
+                                        class="js-order-onlinePaymentMethod"
+                                    />
+                                    <div class="<?= $containerId ?>"></div>
+                                <? endif ?>
                             </div>
                         <? endif ?>
 
                         <? if ($order->isPaid()) : ?>
-
                             <!-- Оплачено -->
                             <div class="orderLn_row orderLn_row-bg orderLn_row-bg-grey jsOrderPaid">
-                                <img class="orderLn_row_imgpay" src="/styles/order/img/payment.png" alt="">
+                                <img class="orderLn_row_imgpay" src="/styles/order/img/payment.png" alt="" />
                             </div>
-
                         <? endif ?>
-
-
                     </div>
                 </div>
 
@@ -208,7 +259,4 @@ return function(
         ?>
     <? endif ?>
 
-<? };
-
-
-
+<? }; return $f;
