@@ -133,6 +133,20 @@ class IndexPage extends \View\DefaultLayout {
         return $return;
     }
 
+    public function slotInfoBox() {
+        return \App::mustache()->render('main/infoBox', [
+            'categories' => array_values(array_map(function(\Model\Product\Category\Entity $category) {
+                return [
+                    'name' => $category->name,
+                    'url' => $category->getLink(),
+                    'image' => [
+                        'url' => $category->getMediaSource('category_163x163')->url,
+                    ],
+                ];
+            }, $this->getParam('infoBoxCategoriesByUis')))
+        ]);
+    }
+
     public function slotMyThings($data) {
         return parent::slotMyThings(['Action' => '200']);
     }

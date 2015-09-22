@@ -1465,6 +1465,7 @@
     // клик по ссылке "Удалить" у каунтера
     $orderContent.on('click', '.jsDeleteProduct', function(e){
         var $this = $(this);
+        $('.js-order-overlay').remove();
         changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), 0);
         e.preventDefault();
     });

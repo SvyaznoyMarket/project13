@@ -2,17 +2,35 @@
 namespace Model;
 
 class Inflections {
-    /** @var string */
+    /**
+     * Именительный падеж
+     * @var string
+     */
     public $nominativus = '';
-    /** @var string */
+    /**
+     * Родительный падеж
+     * @var string
+     */
     public $genitivus = '';
-    /** @var string */
+    /**
+     * Дательный падеж
+     * @var string
+     */
     public $dativus = '';
-    /** @var string */
+    /**
+     * Винительный падеж
+     * @var string
+     */
     public $accusativus = '';
-    /** @var string */
+    /**
+     * Творительный падеж
+     * @var string
+     */
     public $ablativus = '';
-    /** @var string */
+    /**
+     * Предложный падеж
+     * @var string
+     */
     public $locativus = '';
 
     public function __construct($data = []) {

@@ -5,8 +5,6 @@ namespace Model\Shop;
 use \Model\Point\GeoPointInterface;
 
 class Entity implements GeoPointInterface {
-    use \Model\MediaHostTrait;
-
     /* @var int */
     private $id;
     /* @var string */
@@ -37,8 +35,6 @@ class Entity implements GeoPointInterface {
     private $isReconstructed;
     /* @var Photo\Entity[] */
     private $photo = [];
-    /* @var Panorama\Entity */
-    private $panorama;
     /* @var \Model\Region\Entity|null */
     private $region;
     /* @var string */
@@ -276,20 +272,6 @@ class Entity implements GeoPointInterface {
     }
 
     /**
-     * @param \Model\Shop\Panorama\Entity $panorama
-     */
-    public function setPanorama(Panorama\Entity $panorama = null) {
-        $this->panorama = $panorama;
-    }
-
-    /**
-     * @return \Model\Shop\Panorama\Entity
-     */
-    public function getPanorama() {
-        return $this->panorama;
-    }
-
-    /**
      * @param Photo\Entity $photo
      */
     public function addPhoto(Photo\Entity $photo) {
@@ -315,20 +297,6 @@ class Entity implements GeoPointInterface {
      */
     public function getIsReconstructed() {
         return $this->isReconstructed;
-    }
-
-    /**
-     * @param int $size
-     * @return null|string
-     */
-    public function getImageUrl($size = 1) {
-        if ($this->image) {
-            $urls = \App::config()->shopPhoto['url'];
-
-            return $this->getHost() . $urls[$size] . $this->image;
-        } else {
-            return null;
-        }
     }
 
     /**

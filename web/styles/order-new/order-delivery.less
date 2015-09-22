@@ -68,10 +68,15 @@
         }
         &.one{
             border: none;
+            padding-right: 0;
+            cursor: default;
             &:after{
                 content: none;
                 display: none;
             }
+        }
+        .customSel_def{
+            line-height: 22px;
         }
     }
     &__block{
@@ -88,6 +93,9 @@
         }
         &.empty{
             display: none;
+        }
+        &.deliv-addr{
+            padding: 10px 10px 20px;
         }
     }
     &__change-place{

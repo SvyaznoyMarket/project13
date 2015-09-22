@@ -9,17 +9,19 @@ class Action {
     public function execute(\Http\Request $request, $token) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
+        $region = \App::user()->getRegion();
         $client = \App::scmsClient();
 
         $contentPage = null;
         $data = [
-            'regionName' => \App::user()->getRegion()->getName(),
+            'regionName' => $region->getName(),
         ];
 
         $client->addQuery(
             'api/static-page',
             [
                 'token' => [$token],
+                'geo_town_id' => $region->id,
                 'tags' => ['site-web'],
             ],
             [],

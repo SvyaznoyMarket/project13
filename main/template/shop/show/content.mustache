@@ -1,0 +1,140 @@
+<a class="shops__back" href="{{backUrl}}">Все магазины и точки самовывоза в {{point.town.names.locativus}}</a>
+
+<div class="shops__info">
+    <div class="shops__btns">
+        <a class="shops__btn-default js-shop-print-opener" href="#">Распечатать</a>
+        {{! SITE-6096 }}
+        {{! <a class="shops__btn-default js-shop-email-opener" href="#">Отправить на email</a> }}
+    </div>
+
+    <div class="pick-point-item">
+
+        <div class="pick-point-item__addr">
+            {{#point.subway.name}}
+
+                <div class="pick-point-item__metro" style=" background-color: orange">
+                    <div class="pick-point-item__metro-inn">м. {{point.subway.name}}</div>
+                </div>
+            {{/point.subway.name}}
+            {{#point.address}}
+                <div class="pick-point-item__addr-name">{{point.address}}</div>
+            {{/point.address}}
+
+            <div class="pick-point-item__time">
+                {{#point.phone}}
+                    Телефон: {{point.phone}}
+                {{/point.phone}}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{{#point.showMap}}
+    <div class="shops__map">
+        <div class="bMap__eBody js-shop-viewport" data-map-latitude="{{point.latitude}}" data-map-longitude="{{point.longitude}}"></div>
+        <div class="shops-gallery">
+            {{#point.images.0}}
+                <ul class="shops-gallery__lst">
+                {{#point.images}}
+                    <li>
+                        <a class="shops-gallery__i js-shop-image-opener" data-big-url="{{big.url}}" data-type="image">
+                            <img src="{{small.url}}" alt="" />
+                        </a>
+                    </li>
+                {{/point.images}}
+                </ul>
+
+                <a class="shops-gallery__i shops-gallery__bottom js-shop-image-opener" data-type="map">
+                    <img src="/images/map_ico.png" alt="" />
+                </a>
+            {{/point.images.0}}
+        </div>
+    </div>
+{{/point.showMap}}
+
+<div class="shops__descr">
+    {{#point.productCountText}}
+        <div class="shops__instock instock">{{point.productCountText}}</div>
+    {{/point.productCountText}}
+
+    {{#point.workingTime}}
+        <div class="shops__working-time">
+            <span class="shops__schedule">Режим работы</span>
+            {{#point.workingTime.array.0}}
+                <div class="shops__schedule-val">
+                    <ul>
+                        {{#point.workingTime.array}}
+                            <li>{{.}}</li>
+                        {{/point.workingTime.array}}
+                    </ul>
+                </div>
+            {{/point.workingTime.array.0}}
+
+            {{^point.workingTime.array.0}}
+                {{#point.workingTime.string}}
+                    <div class="shops__schedule-val">{{point.workingTime.string}}</div>
+                {{/point.workingTime.string}}
+            {{/point.workingTime.array.0}}
+        </div>
+    {{/point.workingTime}}
+
+    {{#point.description}}
+        <p>{{point.description}}</p>
+    {{/point.description}}
+
+    {{#point.way}}
+        <div class="shops-way__head">Как добраться</div>
+        {{#point.way.common}}
+            <p>{{point.way.common}}</p>
+        {{/point.way.common}}
+
+        {{^point.way.common}}
+            <div class="shops-way-tabs tabs">
+                <div class="tabs-head">
+                    {{#point.way.walk}}<div class="tabs-head__i active js-shop-tab-head" data-target="transport"><a>На городском транспорте</a></div>{{/point.way.walk}}
+                    {{#point.way.auto}}<div class="tabs-head__i js-shop-tab-head" data-target="auto"><a>На авто</a></div>{{/point.way.auto}}
+                </div>
+
+                <div class="tabs-body">
+                    {{#point.way.walk}}
+                        <div class="tabs-body__i active js-shop-tab" id="transport">
+                            {{point.way.walk}}
+                        </div>
+                    {{/point.way.walk}}
+
+                {{#point.way.auto}}
+                    <div class="tabs-body__i js-shop-tab" id="auto">{{point.way.auto}}</div>
+                {{/point.way.auto}}
+                </div>
+
+            </div>
+        {{/point.way.common}}
+    {{/point.way}}
+</div>
+<!-- send popup-->
+<div class="popup send-popup js-shop-email-popup">
+    <div class="closer js-shop-email-popup-closer">×</div>
+    <div class="send-popup__head">Отправить информацию о {{point.partner.names.locativus}}</div>
+
+    <form action="{{point.emailSendUrl}}" method="post" class="js-shop-email-popup-form">
+        <div class="pick-point-item__addr">
+            {{#point.subway.name}}
+
+                <div class="pick-point-item__metro" style=" background-color: orange">
+                    <div class="pick-point-item__metro-inn">м. {{point.subway.name}}</div>
+                </div>
+            {{/point.subway.name}}
+            {{#point.address}}
+                <div class="pick-point-item__addr-name">{{point.address}}</div>
+            {{/point.address}}
+        </div>
+
+        <div class="send-popup__sbscr">
+            <label class="err-label js-shop-email-popup-error"></label>
+            <input class="send-popup__input js-shop-email-popup-input" name="email" placeholder="Ваш email">
+        </div>
+        <a href="#" class="send-popup__btn js-shop-email-popup-send">Отправить</a>
+    </form>
+</div>

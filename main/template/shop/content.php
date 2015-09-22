@@ -5,7 +5,7 @@
  * @var $partnersBySlug []
  * @var $objectManagerData []
  * @var $content string
- * @var $page View\Content\DeliveryMapPage
+ * @var $page \View\Shop\IndexPage
  */
 $helper = \App::helper();
 ?>
@@ -55,7 +55,7 @@ $helper = \App::helper();
         <ul class="points-lst deliv-list jsPointList">
             <? foreach ($points as $point) : ?>
 
-            <li class="points-lst-i jsPointListItem" id="uid-<?= $point->uid ?>" data-geo="<?= $helper->json([$point->latitude, $point->longitude]) ?>" data-partner="<?= $point->partner ?>">
+            <li class="points-lst-i jsPointListItem" id="uid-<?= $point->ui ?>" data-geo="<?= $helper->json([$point->latitude, $point->longitude]) ?>" data-partner="<?= $point->partner->slug ?>">
                 <div class="points-lst-i__partner jsPointListItemPartner"><?= $point->getPartnerName($partnersBySlug) ?></div>
 
                 <div class="deliv-item__addr">
@@ -65,6 +65,9 @@ $helper = \App::helper();
                     </div>
                     <? endif ?>
                     <div class="deliv-item__addr-name"><?= $point->address ?></div>
+                    <? if ($point->url): ?>
+                        <a href="<?= $helper->escape($point->url) ?>" class="points-lst-i__more jsPointListItemLink">Подробнее</a>
+                    <? endif ?>
                 </div>
             </li>
             <? endforeach ?>

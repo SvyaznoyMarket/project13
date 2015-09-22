@@ -38,7 +38,7 @@ return [
     // автоподстановка поиска
     'search.autocomplete' => [
         'pattern' => '/search/autocomplete',
-        'action'  => ['Search\Action', 'autocomplete'],
+        'action'  => ['Search\Autocomplete', 'execute'],
     ],
     // рекомендации в поиске
     'search.recommended' => [
@@ -193,15 +193,27 @@ return [
     // магазины
     'shop' => [
         'pattern' => '/shops',
-        'action'  => ['Shop\Action', 'index'],
+        'action'  => ['Shop', 'execute'],
     ],
     'shop.region' => [ // deprecated
         'pattern' => '/shops/{regionId}',
-        'action'  => ['Shop\Action', 'region'],
+        'action'  => ['Shop\Region', 'execute'],
+        'require' => [
+            'regionId'   => '\d+',
+        ],
+    ],
+    'shop.region.show' => [ // deprecated
+        'pattern' => '/shops/{regionToken}/{shopToken}',
+        'action'  => ['Shop\Region\Show', 'execute'],
     ],
     'shop.show' => [
-        'pattern' => '/shops/{regionToken}/{shopToken}',
-        'action'  => ['Shop\Action', 'show'],
+        'pattern' => '/shops/{pointToken}',
+        'action'  => ['Shop\Show', 'execute'],
+    ],
+    'shop.send' => [
+        'pattern' => '/ajax/shops/{pointUi}/send',
+        'action'  => ['Shop\Send', 'execute'],
+        'method'  => ['POST'],
     ],
 
     // срезы. каталог товаров
@@ -216,10 +228,12 @@ return [
         'pattern' => '/catalog/tchibo',
         'action'  => ['Tchibo\IndexAction', 'execute'],
     ],
+    /* https://jira.enter.ru/browse/SITE-5910?focusedCommentId=169611&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-169611
     'tchibo.where_buy' => [
         'pattern'   => '/where_buy_tchibo',
-        'action'    => ['Shop\Action', 'index']
+        'action'    => ['Shop', 'index']
     ],
+    */
 
     // каталог товаров
     'product.category' => [
