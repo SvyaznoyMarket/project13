@@ -42,7 +42,7 @@
         }
         &__current{
             font-size: 16px;
-            margin-right: 12px;
+            margin-right: 10px;
             width: 154px;
             .inline-block();
             cursor: pointer;
@@ -158,28 +158,35 @@
 
         }
     }
+    // Контентная таблица для страницы /delivery
     &-table{
-        td, th{
-            padding: 10px 5px 5px 10px;
+        td{
+            padding: 5px 10px;
             text-align: left;
         }
-        td,tr,th{
-            border: 1px solid #e6e6e6;
+        td,tr{
+            border: 1px solid #d7d7d7;
+            vertical-align: top;
+            text-align: left;
         }
         th{
-            padding: 5px;
-            font-weight: bold;
+            vertical-align: middle;
             text-align: center;
+            border: 1px solid #afafaf;
+            background-color: #f2f2f2;
+            color: #363636;
+            font-size: 12px;
+            padding: 5px 10px;
+            height: 60px;
         }
         td{
-            &:first-child{
+            &:nth-child(1),&:nth-child(2){
                 text-align: center;
-                padding-left: 0px;
             }
         }
         .table-lbl{
             font-size: 10px;
-            width: 110px;
+            width: 70px;
             display: block;
         }
         .measures{

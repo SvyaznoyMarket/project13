@@ -301,6 +301,11 @@ $(document).ready(function(){
 			return false;
 		});
 	}
+
+    $('.js-scms-changeRegion').on('click',function(){
+		$('.jsChangeRegion').click();
+    });
+
     //Попап стоимости доставки
     $('.js-tarifs-popup-show').on('click',function(){
         var popup = $('.js-tarifs-popup').clone();
