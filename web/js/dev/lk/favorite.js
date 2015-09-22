@@ -8,6 +8,7 @@
         $deletePopupTemplate = $('#tpl-favorite-deletePopup'),
         $deleteFavoritePopupTemplate = $('#tpl-favorite-deleteFavoritePopup'),
         $shareProductPopupTemplate = $('#tpl-favorite-shareProductPopup'),
+        $productCheckboxes = $('.personal-favorit__checkbox').not('.js-fav-all'),
 
         showPopup = function(selector) {
             $('body').append('<div class="overlay"></div>');
@@ -33,6 +34,22 @@
         $(this).toggleClass('on');
     });
 
+    $productCheckboxes.on('change', function( event ) {
+        var
+            $this      = $(this),
+            checkAll   = $this.closest('.personal__favorits').find('.js-fav-all'),
+            list       = $this.closest('.personal__favorits').find('.personal-favorit__checkbox').not('.js-fav-all'),
+            allChecked = true;
+
+        list.each(function( i ) {
+            allChecked = !!$(this).prop('checked');
+
+            return allChecked;
+        });
+
+        checkAll.attr('checked', allChecked);
+    });
+
     $body.on('change', '.js-fav-all', function() {
 
         var
@@ -41,7 +58,7 @@
         ;
 
         $(list).each(function(){
-            $(this).attr('checked', val);
+            $(this).prop('checked', val);
         });
     });
 
