@@ -217,7 +217,7 @@ $f = function (
                             class="order-delivery__block <?= ($order->delivery->point && $order->delivery->point->isSvyaznoy()) ? 'warn' : ''  ?> <?= $order->delivery->point ? 'plain' : 'empty' ?>">
 
                             <? if ($order->delivery->point) { ?>
-                                <div class="order-delivery__shopп">
+                                <div class="order-delivery__shop">
                                     <?= @$order->delivery->delivery_method->name ?>
                                 </div>
                             <? }; ?>
