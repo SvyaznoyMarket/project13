@@ -72,6 +72,7 @@ $(function() {
 		backClick = true,
 		updateOnChange = true,
 		nowPage = 1,
+		triggeredScrollPage = null,
 		lastPage = $('#bCatalog').data('lastpage'),
 		lastResult = null,
 		loading = false, // SITE-5008 "Товары не найдены" в листингах
@@ -1004,17 +1005,21 @@ $(function() {
             if (!loading && $('.js-category-pagination').last().visible()) {
                 var categoryName, data;
 
-                if (data = $('#jsProductCategory').data('value')) {
-                    categoryName = data.name;
-                } else if (data = $('#jsSlice').data('value')) {
-                    categoryName = data.category ? data.category.name : '';
-                }
+				if (triggeredScrollPage !== nowPage) {
+					triggeredScrollPage = nowPage;
 
-                $('body').trigger('trackGoogleEvent', {
-                    action: (docCookies.getItem('infScroll') != '1') ? 'not_upload' : 'upload',
-                    category: 'listing_upload',
-                    label: ('string' === typeof categoryName) ? categoryName : ''
-                });
+					if (data = $('#jsProductCategory').data('value')) {
+						categoryName = data.name;
+					} else if (data = $('#jsSlice').data('value')) {
+						categoryName = data.category ? data.category.name : '';
+					}
+
+					$('body').trigger('trackGoogleEvent', {
+						action: (docCookies.getItem('infScroll') != '1') ? 'not_upload' : 'upload',
+						category: 'listing_upload',
+						label: ('string' === typeof categoryName) ? categoryName : ''
+					});
+				}
             }
         } catch (error) { console.info(error); }
     });
