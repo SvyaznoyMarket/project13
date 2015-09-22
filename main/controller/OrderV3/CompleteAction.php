@@ -290,7 +290,7 @@ class CompleteAction extends OrderV3 {
                 $form = new \Payment\Yandex\Form($result['detail']);
                 $form = \App::closureTemplating()->render('order/payment/__form-yandex', [
                     'form'  => $form,
-                    'url'   => $result['url'],
+                    'url'   => $result['detail']['url'],
                     'order' => $order
                 ]);
                 break;
