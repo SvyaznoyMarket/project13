@@ -36,6 +36,8 @@ class CompleteAction extends OrderV3 {
         ProductPageSenders::clean();
         ProductPageSenders2::clean();
 
+        $context = $request->get('context');
+
         /** @var \Model\Order\Entity[] $orders */
         $orders = [];
         /** @var \Model\PaymentMethod\PaymentEntity[] $ordersPayment */
@@ -53,6 +55,25 @@ class CompleteAction extends OrderV3 {
         $userEntity = \App::user()->getEntity();
 
         $this->pushEvent(['step' => 3]);
+
+        if ($context) {
+            $this->client->addQuery(
+                'order/get-context',
+                [
+                    'hash' => $context,
+                ],
+                [],
+                function($data) {
+
+                },
+                function(\Exception $e) {
+                    \App::exception()->remove($e);
+
+                    \App::logger()->error(['error' => $e, 'message' => 'Заказы не найдены'], ['order', 'fatal']);
+                }
+            );
+            $this->client->execute();
+        }
 
         try {
 
@@ -219,6 +240,7 @@ class CompleteAction extends OrderV3 {
         $methodId = $request->request->get('method');
         $orderId = $request->request->get('order');
         $orderNumber = $request->request->get('number');
+        $backUrl = $request->request->get('url') ?: \App::router()->generate('orderV3.complete', ['refresh' => 1], true);
         $action = $request->request->get('action'); // акция по мотивации онлайн-оплаты
 
         $privateClient = \App::coreClientPrivate();
@@ -241,7 +263,7 @@ class CompleteAction extends OrderV3 {
         $result = $privateClient->query('site-integration/payment-config',
             $data,
             [
-                'back_ref'    => \App::router()->generate('orderV3.complete', ['refresh' => 1], true), // обратная ссылка
+                'back_ref'    => $backUrl, // обратная ссылка
                 'email'       => $order->getUser() ? $order->getUser()->getEmail() : '',
 //                            'card_number' => $order->card,
                 'user_token'  => $request->cookies->get('UserTicket'),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)

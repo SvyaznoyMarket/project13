@@ -445,6 +445,11 @@ return [
         'pattern' => '/order/complete',
         'action'  => ['OrderV3\CompleteAction', 'execute'],
     ],
+    // оформление заказа: онлайн-оплата
+    'orderV3.status' => [
+        'pattern' => '/order/status',
+        'action'  => ['OrderV3\CompleteAction', 'execute'],
+    ],
     'orderV3.paymentForm' => [
         'pattern' => '/order/getPaymentForm',
         'action'  => ['OrderV3\CompleteAction', 'getPaymentForm'],

@@ -167,6 +167,7 @@ $f = function(
                                                             'method' => $paymentMethod->id,
                                                             'order'  => $order->id,
                                                             'number' => $order->number,
+                                                            'url'    => \App::router()->generate('orderV3.status', ['context' => $order->context]),
                                                         ]) ?>"
                                                         data-relation="<?= $helper->json([
                                                             'formContainer' => '.' . $containerId,
@@ -188,7 +189,7 @@ $f = function(
                                         <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
                                     </div>
                                     <!-- END popup оплаты -->
-                                <? elseif ($checkedPaymentMethod): ?>
+                                <? elseif ($checkedPaymentMethod && $paymentEntity->methods): ?>
                                 <?
                                     $containerId = sprintf('id-order-%s-paymentMethod-container', $order->id);
                                 ?>
@@ -202,6 +203,7 @@ $f = function(
                                             'method' => $checkedPaymentMethod->id,
                                             'order'  => $order->id,
                                             'number' => $order->number,
+                                            'url'    => \App::router()->generate('orderV3.status', ['context' => $order->context]),
                                         ]) ?>"
                                         data-relation="<?= $helper->json([
                                             'formContainer' => '.' . $containerId,
