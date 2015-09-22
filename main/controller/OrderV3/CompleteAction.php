@@ -255,36 +255,44 @@ class CompleteAction extends OrderV3 {
             case '5':
                 $formEntity = (new \Payment\Psb\Form());
                 $formEntity->fromArray($result['detail']);
-                $form = (new \Templating\HtmlLayout())->render('order/payment/form-psb', array(
+                $form = (new \Templating\HtmlLayout())->render('order/payment/form-psb', [
                     'provider' => new \Payment\Psb\Provider(['payUrl' => $result['url']]),
                     'order' => $order,
                     'form' => $formEntity
-                ));
+                ]);
                 break;
             case '8':
                 $formEntity = (new \Payment\PsbInvoice\Form());
                 $formEntity->fromArray($result['detail']);
-                $form = (new \Templating\HtmlLayout())->render('order/payment/form-psbInvoice', array(
+                $form = (new \Templating\HtmlLayout())->render('order/payment/form-psbInvoice', [
                     'provider' => new \Payment\PsbInvoice\Provider(['payUrl' => $result['url']]),
                     'order' => $order,
                     'form' => $formEntity
-                ));
+                ]);
                 break;
             case '13':
-                $form = (new \Templating\HtmlLayout())->render('order/payment/form-paypal', array(
+                $form = (new \Templating\HtmlLayout())->render('order/payment/form-paypal', [
                     'url'           => $result['url'],
                     'url_params'    => isset($result['url_params']) && !empty($result['url_params']) ? $result['url_params'] : null
-                ));
+                ]);
                 break;
             case '14':
                 $form = new \Payment\SvyaznoyClub\Form();
                 $form->fromArray($result['detail']);
                 $provider = new \Payment\SvyaznoyClub\Provider($form);
                 $provider->setPayUrl($result['url']);
-                $form = (new \Templating\HtmlLayout())->render('order/payment/form-svyaznoyClub', array(
+                $form = (new \Templating\HtmlLayout())->render('order/payment/form-svyaznoyClub', [
                     'provider'  => $provider,
                     'order'     => $order
-                ));
+                ]);
+                break;
+            case '11': case '12':
+                $form = new \Payment\Yandex\Form($result['detail']);
+                $form = \App::closureTemplating()->render('order/payment/__form-yandex', [
+                    'form'  => $form,
+                    'url'   => $result['url'],
+                    'order' => $order
+                ]);
                 break;
         }
 
