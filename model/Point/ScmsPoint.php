@@ -64,18 +64,36 @@ class ScmsPoint {
 
         // Время работы
         call_user_func(function() use($data) {
-            if (isset($data['working_time_array'])) {
-                $this->workingTime = new \Model\Point\WorkingTime($data['working_time_array']);
-            } else {
+            if (!empty($data['working_time']) || (!empty($data['working_time_array']) && is_array($data['working_time_array']))) {
                 $this->workingTime = new \Model\Point\WorkingTime();
-            }
 
-            if (isset($data['working_time'])) {
-                $this->workingTime->common = $data['working_time'];
-            }
+                if (!empty($data['working_time'])) {
+                    $this->workingTime->string = (string)$data['working_time'];
+                }
 
-            if (!$this->workingTime->common && !$this->workingTime->days) {
-                $this->workingTime = null;
+                if (!empty($data['working_time_array']) && is_array($data['working_time_array'])) {
+                    if (isset($data['working_time_array']['common'])) {
+                        // TODO удалить данный блок после релиза FCMS-851
+
+                        $days = [
+                            'monday' => 'Понедельник',
+                            'tuesday' => 'Вторник',
+                            'wednesday' => 'Среда',
+                            'thursday' => 'Четверг',
+                            'friday' => 'Пятница',
+                            'saturday' => 'Суббота',
+                            'sunday' => 'Воскресенье',
+                        ];
+
+                        foreach ($days as $en => $ru) {
+                            if (!empty($data['working_time_array'][$en][0]) && !empty($data['working_time_array'][$en][1])) {
+                                $this->workingTime->array[] = $ru . ' ' . $data['working_time_array'][$en][0] . '—' . $data['working_time_array'][$en][1];
+                            }
+                        }
+                    } else {
+                        $this->workingTime->array = $data['working_time_array'];
+                    }
+                }
             }
         });
 
