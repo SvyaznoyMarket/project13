@@ -109,7 +109,7 @@ class CityAds {
                 '{commission}'      => $commission,
                 '{currency}'        => 'RUR',
                 '{coupon}'          => $coupon,
-                'discount'          => $discount,
+                '{discount}'        => $discount,
                 '{basket}'          => $page->json($basket),
             ]);
 
