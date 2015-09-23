@@ -120,7 +120,7 @@ $f = function (
                             </a>
 
                             <div class="order-discount__name">
-                                Фишка на скидку<?= $discount->name; ?>
+                                Фишка на скидку <?= $discount->name; ?>
                             </div>
 
                             <div
