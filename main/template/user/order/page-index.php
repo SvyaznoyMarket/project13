@@ -45,7 +45,7 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
                 <? foreach ($orders as $order): ?>
                     <div class="personal-order__item">
                         <div class="personal-order__cell">
-                            <span class="personal-order__num"><?= $order->numberErp ?></span>
+                            <a class="personal-order__num" href="<?= $page->url('user.order', ['orderId' => $order->id ]) ?>"><?= $order->numberErp ?></a>
                             <span class="personal-order__date"><?= $order->createdAt ? $order->createdAt->format('d.m.Y') : '' ?></span>
                         </div>
                         <div class="personal-order__cell">
