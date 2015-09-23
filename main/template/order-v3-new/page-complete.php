@@ -29,11 +29,6 @@ $f = function(
 
     $formUrl = \App::router()->generate('orderV3.paymentForm');
 ?>
-<style>
-    .jsPaymentForms {
-        display: none;
-    }
-</style>
     <div class="order__wrap">
     <section class="orderCnt jsOrderV3PageComplete order-page">
         <div class="pagehead"><h1 class="orderCnt_t">Ваши заказы</h1></div>
@@ -167,7 +162,7 @@ $f = function(
                                                             'method' => $paymentMethod->id,
                                                             'order'  => $order->id,
                                                             'number' => $order->number,
-                                                            'url'    => \App::router()->generate('orderV3.status', ['context' => $order->context]),
+                                                            'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context]),
                                                         ]) ?>"
                                                         data-relation="<?= $helper->json([
                                                             'formContainer' => '.' . $containerId,
@@ -203,7 +198,7 @@ $f = function(
                                             'method' => $checkedPaymentMethod->id,
                                             'order'  => $order->id,
                                             'number' => $order->number,
-                                            'url'    => \App::router()->generate('orderV3.status', ['context' => $order->context]),
+                                            'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context]),
                                         ]) ?>"
                                         data-relation="<?= $helper->json([
                                             'formContainer' => '.' . $containerId,

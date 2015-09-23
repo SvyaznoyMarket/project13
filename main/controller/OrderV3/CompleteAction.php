@@ -64,7 +64,11 @@ class CompleteAction extends OrderV3 {
                 ],
                 [],
                 function($data) {
+                    foreach ($data as $item) {
+                        if (!$item['number']) continue;
 
+                        $this->sessionOrders[] = $item;
+                    }
                 },
                 function(\Exception $e) {
                     \App::exception()->remove($e);

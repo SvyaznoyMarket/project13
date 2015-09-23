@@ -89,7 +89,7 @@ $f = function(
                                 'method' => $paymentMethod->id,
                                 'order'  => $order->id,
                                 'number' => $order->number,
-                                'url'    => \App::router()->generate('orderV3.status', ['context' => $order->context]),
+                                'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context]),
                             ]) ?>"
                             data-relation="<?= $helper->json([
                                 'formContainer' => '.id-paymentForm-container',
