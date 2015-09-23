@@ -56,24 +56,33 @@ class CompleteAction extends OrderV3 {
 
         $this->pushEvent(['step' => 3]);
 
+        $onlinePaymentStatusByNumber = [];
+
         if ($context) {
+            $now = new \DateTime();
             $this->client->addQuery(
                 'order/get-context',
                 [
                     'hash' => $context,
                 ],
                 [],
-                function($data) {
+                function($data) use (&$onlinePaymentStatusByNumber, &$now) {
                     foreach ($data as $item) {
-                        if (!$item['number']) continue;
+                        $number = isset($item['order']['number']) ? $item['order']['number'] : null;
+                        if (!$number) continue;
 
-                        $this->sessionOrders[] = $item;
+                        $this->sessionOrders[$number] = $item['order'];
+                        try {
+                            $onlinePaymentStatusByNumber[$number] = new \DateTime($item['online_payment_expired']) < $now;
+                        } catch (\Exception $e) {
+                            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
+                        }
                     }
                 },
                 function(\Exception $e) {
                     \App::exception()->remove($e);
 
-                    \App::logger()->error(['error' => $e, 'message' => 'Заказы не найдены'], ['order', 'fatal']);
+                    \App::logger()->error(['error' => $e, 'message' => 'Заказы не найдены', 'sender' => __FILE__ . ' ' .  __LINE__], ['order', 'fatal']);
                 }
             );
             $this->client->execute();
@@ -116,7 +125,7 @@ class CompleteAction extends OrderV3 {
                         $ordersPayment[$sessionOrder['number']] = new PaymentEntity($data);
                     },
                     function (\Exception $e) {
-                        \App::logger()->error(['error' => $e, 'message' => 'Не получены методы оплаты'], ['order']);
+                        \App::logger()->error(['error' => $e, 'message' => 'Не получены методы оплаты', 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
                         \App::exception()->remove($e);
                     }
                 );
@@ -220,6 +229,7 @@ class CompleteAction extends OrderV3 {
         $this->session->remove(self::SESSION_IS_READED_KEY);
 
         $page->setParam('orders', $orders);
+        $page->setParam('onlinePaymentStatusByNumber', $onlinePaymentStatusByNumber);
         $page->setParam('ordersPayment', $ordersPayment);
         $page->setParam('motivationAction', $this->getMotivationAction($orders, $ordersPayment));
         $page->setParam('products', $products);

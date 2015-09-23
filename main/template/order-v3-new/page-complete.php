@@ -12,6 +12,7 @@ use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity, \Model\PaymentMethod
  * @param $banks
  * @param $creditData
  * @param $subscribe
+ * @param bool[] $onlinePaymentStatusByNumber
  */
 $f = function(
     \Helper\TemplateHelper $helper,
@@ -22,7 +23,8 @@ $f = function(
     $sessionIsReaded,
     $banks,
     $creditData,
-    $subscribe
+    $subscribe,
+    $onlinePaymentStatusByNumber = []
 ) {
     $page = new \View\OrderV3\CompletePage();
     array_map(function(\Model\PaymentMethod\PaymentEntity &$entity) {$entity->unsetSvyaznoyClub();}, $ordersPayment); // fix for SITE-5229 (see comments)
@@ -52,6 +54,13 @@ $f = function(
                 $onlinePaymentMethods = array_filter($paymentEntity->methods, function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod) {
                     return $paymentMethod->isOnline;
                 });
+                $isOnlinePaymentPossible =
+                    (
+                        !isset($onlinePaymentStatusByNumber[$order->number])
+                        || (true === $onlinePaymentStatusByNumber[$order->number])
+                    )
+                    && ((bool)$paymentEntity ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $paymentEntity->groups) : false)
+                ;
             ?>
 
                 <div class="orderLn clearfix" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
@@ -184,7 +193,7 @@ $f = function(
                                         <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
                                     </div>
                                     <!-- END popup оплаты -->
-                                <? elseif ($checkedPaymentMethod && $paymentEntity->methods): ?>
+                                <? elseif ($checkedPaymentMethod && $paymentEntity->methods && $isOnlinePaymentPossible): ?>
                                 <?
                                     $containerId = sprintf('id-order-%s-paymentMethod-container', $order->id);
                                 ?>

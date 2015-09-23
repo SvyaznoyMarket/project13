@@ -2,7 +2,21 @@
 
 use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity, \Model\PaymentMethod\PaymentGroup\PaymentGroupEntity;
 
-return function(
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\Order\Entity[] $orders
+ * @param \Model\PaymentMethod\PaymentEntity $ordersPayment
+ * @param \Model\Product\Entity[] $products
+ * @param $userEntity
+ * @param $sessionIsReaded
+ * @param $banks
+ * @param $creditData
+ * @param $subscribe
+ * @param $motivationAction
+ * @param $errors
+ * @param bool[] $onlinePaymentStatusByNumber
+ */
+$f = function(
     \Helper\TemplateHelper $helper,
     $orders,
     $ordersPayment,
@@ -13,7 +27,8 @@ return function(
     $creditData,
     $subscribe,
     $motivationAction,
-    $errors
+    $errors,
+    $onlinePaymentStatusByNumber = []
 ) {
     /** @var \Model\Product\Entity[] $products */
     $page = new \View\OrderV3\CompletePage();
@@ -22,7 +37,13 @@ return function(
     /* @var \Model\PaymentMethod\PaymentEntity|null $orderPayment */
     $orderPayment = isset($ordersPayment[$order->getNumber()]) ? $ordersPayment[$order->getNumber()] : null;
     // Онлайн оплата возможна при существовании такой группы
-    $isOnlinePaymentPossible = (bool)$orderPayment ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $orderPayment->groups) : false;
+    $isOnlinePaymentPossible =
+        (
+            !isset($onlinePaymentStatusByNumber[$order->number])
+            || (true === $onlinePaymentStatusByNumber[$order->number])
+        )
+        && ((bool)$orderPayment ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $orderPayment->groups) : false)
+    ;
     // При создании заказа выбрана онлайн-оплата
     $isOnlinePaymentChecked = in_array($order->getPaymentId(), [PaymentMethodEntity::PAYMENT_CARD_ONLINE, PaymentMethodEntity::PAYMENT_PAYPAL, PaymentMethodEntity::PAYMENT_PSB]);
 
@@ -134,7 +155,4 @@ return function(
 
     <? endif ?>
 
-<? };
-
-
-
+<? }; return $f;
