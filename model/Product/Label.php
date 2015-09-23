@@ -32,7 +32,7 @@ class Label {
         if (isset($data['uid'])) $this->uid = $data['uid'];
         if (isset($data['name'])) $this->name = $data['name'];
         if (isset($data['affects_price'])) $this->affectPrice = $data['affects_price'];
-        if (isset($data['expires_at']) && Date::isDateTimeString($data['expires_at'])) {
+        if (isset($data['expires_at']) && is_string($data['expires_at'])) {
             $this->expires = new \DateTime($data['expires_at']);
         }
         if (isset($data['medias']) && is_array($data['medias'])) {
