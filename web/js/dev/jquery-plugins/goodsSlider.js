@@ -25,7 +25,7 @@
 			 * @return bool
 			 */
 			isRecommendation = function isRecommendation( type ) {
-				return -1 != $.inArray(type, ['alsoBought', 'similar', 'alsoViewed', 'main', 'search'/*, 'viewed'*/]);
+				return -1 != $.inArray(type, ['alsoBought', 'similar', 'alsoViewed', 'main', 'search', 'popular', 'personal'/*, 'viewed'*/]);
 			};
 		// end of functions
 

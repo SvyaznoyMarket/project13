@@ -195,12 +195,13 @@ $f = function(
 
             <? if (\App::abTest()->isOrderMinSumRestriction() && \App::config()->minOrderSum > $orderDelivery->getProductsSum()) : ?>
                 <div class="popup popup-simple deliv-free-popup jsMinOrderSumPopup" style="display: none;">
-
+                    <a class="to-cart-lnk" href="/">
                     <div class="popup_inn">
                         <span class="info">До оформления заказа осталось</span>
                         <span class="remain-sum"><?= \App::config()->minOrderSum - $orderDelivery->getProductsSum() ?>&thinsp;<span class="rubl">p</span></span>
-                        <a href="/cart" class="to-cart-lnk">Вернуться в корзину</a>
+                        <span class="to-cart-lnk">Продолжить покупки</span>
                     </div>
+                    </a>
                 </div>
             <? endif ?>
 
