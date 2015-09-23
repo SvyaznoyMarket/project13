@@ -741,7 +741,17 @@
                 noResults: '',
                 results: function() {}
             }
-        });
+        }).data("ui-autocomplete")._renderMenu = function(ul, items) {
+            var that = this;
+            $.each( items, function( index, item ) {
+                that._renderItemData( ul, item );
+            });
+            if ($el.data('field') == 'street') {
+                ul.addClass('ui-autocomplete-street');
+            } else {
+                ul.addClass('ui-autocomplete-house-or-apartment');
+            }
+        };
 
         // Сохранение дома
         $inputFields.eq(2).off().on('keyup', save);
