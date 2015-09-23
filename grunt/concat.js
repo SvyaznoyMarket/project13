@@ -112,5 +112,11 @@ module.exports = {
     supplier: {
         src: ['<%= pathDev %>supplier/*.js'],
         dest: '<%= pathProd %>supplier.js'
+    },
+
+    /* Adfox присылают уже минифицированный скрипт, который необходимо только положить в папку prod */
+    adfox: {
+        src: ['<%= pathDev %>adfox/adfox.js'],
+        dest: '<%= pathProd %>adfox_lib_ff.min.js'
     }
 };
