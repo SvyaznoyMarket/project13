@@ -81,6 +81,7 @@ $f = function(
                         </div>
                     </div>
 
+                    <? if (!$userEntity) : ?>
                     <div class="order-receiver__social social">
                         <div class="social__head">Войти через</div>
                         <ul class="social__list">
@@ -94,6 +95,8 @@ $f = function(
                         <div class="social__register"><a class="bAuthLink" href="<?= $helper->url('user.login') ?>">Регистрация</a></div>
 
                     </div>
+                    <? endif ?>
+
                     <!-- Берем из старой верстки - бонусные карты -->
                     <div class="order__bonus-cards bonusCnt bonusCnt-v2">
 
