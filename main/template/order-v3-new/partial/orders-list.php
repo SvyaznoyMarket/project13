@@ -124,7 +124,7 @@ $f = function (
                             </div>
 
                             <div
-                                class="order-discount__val">-<?= $discount->discount ?>500
+                                class="order-discount__val">-<?= $discount->discount ?>
                                 <span class="rubl">p</span></div>
 
                         </div>
