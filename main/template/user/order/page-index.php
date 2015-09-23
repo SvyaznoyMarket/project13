@@ -73,6 +73,9 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
                                 <? if ($order->pointUi && ($point = $pointsByUi[$order->pointUi])): ?>
                                     <?= $point->getTypeName() ?><br><?= $point->address ?>
                                 <? endif ?>
+                                <? if ($order->getDelivery()->isShipping) : ?>
+                                    <?= $order->address ?>
+                                <? endif ?>
                             </div>
                         </div>
                         <div class="personal-order__cell personal-order__price">
