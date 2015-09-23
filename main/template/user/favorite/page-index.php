@@ -31,7 +31,7 @@
     <?
         $containerId = sprintf('id-wishlist-container-%s', $wishlist->id ?: uniqid());
     ?>
-    <div class="personal__favorits favorit-list<? if (true): ?> expanded<? endif ?> js-favorite-container <?= $containerId ?>">
+    <div class="personal__favorits favorit-list<? if (count($wishlist->products) != 0): ?> expanded <? else: ?> collapsed<? endif ?> js-favorite-container <?= $containerId ?>">
         <div class="favorit-list__header">
             <ul class="personal-favorit__acts">
                 <!--
@@ -50,7 +50,7 @@
                     ]) ?>"
                 >Удалить</li>
             </ul>
-            <div class="favorit-list__name">Список: <?= $helper->escape($wishlist->title) ?></div>
+            <div class="favorit-list__name js-toggle-list">Список: <?= $helper->escape($wishlist->title) ?></div>
         </div>
         <div class="personal-favorit__top">
             <?= $helper->render('user/favorite/__action', ['containerId' => $containerId, 'wishlists' => $wishlists, 'wishlist' => $wishlist, 'actions' => ['create' => false]]) ?>

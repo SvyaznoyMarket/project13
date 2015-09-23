@@ -46,7 +46,7 @@ trait CrmQueryTrait
         if (isset($result['error'])) {
             $error = (array)$result['error'] + ['code' => null, 'message' => null];
             $exception = new Exception($error['message'], $error['code']);
-            $exception->setDetail($error['detail']);
+            $exception->setDetail(is_array($error['detail']) ? $error['detail'] : []);
         }
 
         if ($exception) {
