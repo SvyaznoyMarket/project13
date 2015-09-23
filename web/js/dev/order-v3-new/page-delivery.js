@@ -695,8 +695,6 @@
 
     });
 
-    $('#auth-block').attr('data-state', 'register').addClass('state_register');
-
     $body.on('click', '[form="js-orderForm"]', function(e) {
         var
             $el = $(this),
