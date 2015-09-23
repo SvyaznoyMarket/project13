@@ -46,7 +46,9 @@ trait CoreQueryTrait
         if (isset($result['error'])) {
             $error = (array)$result['error'] + ['code' => null, 'message' => null];
             $exception = new Exception($error['message'], $error['code']);
-            $exception->setDetail($error['detail']);
+            if (isset($error['detail']) && is_array($error['detail'])) {
+                $exception->setDetail($error['detail']);
+            }
         }
 
         if ($exception) {
