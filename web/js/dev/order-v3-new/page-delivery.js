@@ -7,11 +7,14 @@
     } catch (e) {
     }
 
-    var body = document.getElementsByTagName('body')[0],
-        $body = $(body),
-        $orderContent = $('#js-order-content'),
-        $inputs = $('.js-order-ctrl__input'),
-        comment = '',
+    var
+        body             = document.getElementsByTagName('body')[0],
+        $body            = $(body),
+        $orderContent    = $('#js-order-content'),
+        $inputs          = $('.js-order-ctrl__input'),
+        comment          = '',
+        validator        = null,
+
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -270,8 +273,58 @@
             }
         },
         bindMask = function() {
-            var $inputs = $('.js-order-ctrl__input');
+            var
+                $inputs        = $('.js-order-ctrl__input'),
+                $phoneInput    = $('.js-order-phone'),
+                $emailInput    = $('.js-order-email'),
+                $agreeCheckbox = $('.jsAcceptAgreement'),
 
+                validationConfig = {
+                    fields: [{
+                        fieldNode: $agreeCheckbox,
+                        require: true,
+                        errorMsg: null
+                    }],
+                    callbackError: function( field, error ) {
+                        var
+                            parent = field.fieldNode.parent();
+                        console.warn('===== custom callbackError', field.fieldNode.parent());
+                        parent.addClass('error');
+                        parent.find('.js-order-ctrl__lbl').show();
+                        parent.find('.order-ctrl__err').html(error);
+                    },
+                    callbackValid: function( field ) {},
+                    unmarkField: function( field ) {
+                        var
+                            parent = field.fieldNode.parent();
+
+                        parent.removeClass('error');
+                        parent.find('.order-ctrl__err').html('');
+                    }
+                };
+
+            // Validator
+            $phoneInput.length && validationConfig.fields.push({
+                fieldNode: $phoneInput,
+                require: !!$phoneInput.attr('required'),
+                validBy: 'isPhone',
+                validateOnChange: true,
+                errorMsg: 'Введите телефон'
+            });
+
+            $emailInput.length && validationConfig.fields.push({
+                fieldNode: $emailInput,
+                require: !!$emailInput.attr('required'),
+                validBy: 'isEmail',
+                validateOnChange: true,
+                errorMsg: 'Введите email'
+            });
+
+            if ( validationConfig.fields.length ) {
+                validator = new FormValidator(validationConfig);
+            }
+
+            // masks
             $.map($inputs, function(elem, i) {
                 if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
             });
@@ -697,9 +750,10 @@
 
     $body.on('click', '[form="js-orderForm"]', function(e) {
         var
-            $el = $(this),
-            $form = $el.attr('form') && $('#' + $el.attr('form')),
-            formResult = { errors: [] }
+            $el        = $(this),
+            $form      = $el.attr('form') && $('#' + $el.attr('form')),
+            formResult = { errors: [] },
+            valid      = true
         ;
         console.info($el, $form, formResult);
 
@@ -707,24 +761,16 @@
             if ($form.length) {
                 $form.trigger('form.reset');
 
-                $form.find('[required]').each(function(i, el) {
-                    var $el = $(el);
-
-                    if ($el.is(':checkbox')) {
-                        !$el.is(':checked') && formResult.errors.push({message: '', field: $el.data('field')});
-                    } else if ($el.is('input')) {
-                        console.warn($el.data('field'));
-                        !$el.val() && formResult.errors.push({message: '', field: $el.data('field')});
+                validator && validator.validate({
+                    onInvalid: function( err ) {
+                        valid = false;
+                    },
+                    onValid: function() {
+                        $form.submit();
                     }
                 });
 
-                if (formResult.errors.length) {
-                    $form.trigger('form.result', [formResult]);
-                } else {
-                    $form.submit();
-                }
-
-                e.preventDefault();
+                return false;
             } else {
                 // default handler
                 console.warn('form not found');

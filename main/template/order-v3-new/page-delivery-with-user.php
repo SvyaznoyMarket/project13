@@ -66,7 +66,7 @@ $f = function(
                         <div class="order-ctrl required" data-field-container="email">
                             <label class="order-ctrl__lbl js-order-ctrl__lbl">*E-mail <span class="order-ctrl__err" data-message=""></span>
                             </label>
-                            <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input" placeholder="*E-mail" data-field="email" value="<?= $userEntity ? $userEntity->getEmail() : $orderDelivery->user_info->email ?>" required="required" />
+                            <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input js-order-email" placeholder="*E-mail" data-field="email" value="<?= $userEntity ? $userEntity->getEmail() : $orderDelivery->user_info->email ?>" required="required" />
                         </div>
                         <div class="order-receiver__subscribe">
                             <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="user_info[subscribe]" value="">
