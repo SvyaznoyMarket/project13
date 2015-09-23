@@ -137,15 +137,25 @@
             }
         }
         &__buy{
-            .btn-type{
-                width: 100px;
+            .btn-type.btn-type--buy{
+                width: 110px;
+                border: 0;
                 text-align: center;
                 margin: 10px auto;
+                padding: 0;
+                height: 32px;
+                line-height: 32px;
+                font-size: 16px;
+                &:hover{
+                    margin: 10px auto;
+                    border: 0;
+                }
             }
         }
         &__price{
             font-size: 16px;
             text-align: center;
+            width: 110px;
 
             .old-price{
                 color: @textGrey;

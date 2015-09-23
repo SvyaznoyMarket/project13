@@ -36,7 +36,7 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
 
     <div class="personal__password">
         <div class="personal__sub-head">Изменить пароль</div>
-        <p>Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные буквы, цифры или символы, но не должен включать широко распространенные слова и имена.</p>
+        <p class="personal__txt">Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные буквы, цифры или символы, но не должен включать широко распространенные слова и имена.</p>
         <form class="js-form" action="<?= $page->url('user.update.password') ?>" method="post" data-result="<?= $helper->json($passwordFormResult) ?>">
             <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
 
@@ -75,7 +75,7 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
                 <input class="input-control js-input-control" type="text" value="<?= $form->getLastName() ?>" name="user[last_name]" data-field="last_name" placeholder="Фамилия">
             </div>
             <div class="form-group inline" data-field-container="birthday.day">
-                <label class="label-control always-show">Дата рождения</label>
+                <label class="label-control always-show big">Дата рождения</label>
                 <div class="custom-select custom-select--day">
                     <select class="custom-select__inn" name="user[birthday][day]" data-field="birthday.day">
                     <? foreach (array_merge([''], range(1, 31)) as $day):  ?>
@@ -100,7 +100,7 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
                 </div>
             </div>
             <div class="form-group inline right">
-                <label class="label-control always-show">Пол</label>
+                <label class="label-control always-show  big">Пол</label>
                 <div class="custom-select custom-select--sex" data-field-container="sex">
                     <select class="custom-select__inn" name="user[sex]" data-field="sex">
                     <? foreach (['' => '', '1' => 'мужской', '2' => 'женский'] as $sexValue => $sexName): ?>
@@ -110,7 +110,7 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
                 </div>
             </div>
             <div class="form-group" data-field-container="email">
-                <label class="label-control always-show js-label-control">Email</label>
+                <label class="label-control always-show js-label-control">E-mail не редактируется</label>
                 <input class="input-control js-input-control disabled" type="text" value="<?= $form->getEmail() ?>" name="user[email]" <? if ($form->getIsDisabled()): ?>disabled<? endif ?> data-field="email">
             </div>
             <div class="form-group" data-field-container="phone">

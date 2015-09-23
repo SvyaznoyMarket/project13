@@ -411,7 +411,10 @@
 })(jQuery);
 ;(function($){
 
-    var $orderContent = $('#js-order-content');
+    var
+        $orderContent = $('#js-order-content'),
+        minValue      = 1;
+        maxValue      = 99;
 
     $orderContent.on('click', '.orderCol_data-count', function(e){
         var $this = $(this);
@@ -440,8 +443,20 @@
 
     });
 
-    $orderContent.on('change', '.bCountSection__eNum', function(e){
-        e.stopPropagation();
+    $orderContent.on('keyup', '.bCountSection__eNum', function(e){
+        var
+            $this = $(this),
+            val   = parseInt($this.val(), 10);
+
+        if ( isNaN(val) || !val ) {
+            val = '';
+        } else if ( val < minValue ) {
+            val = minValue;
+        } else if ( val > maxValue ) {
+            val = maxValue;
+        }
+
+        $this.val(val);
     });
 
 

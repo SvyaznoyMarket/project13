@@ -59,14 +59,14 @@ $f = function(
                     <div class="order-receiver__login">
                         <div class="order-ctrl required" data-field-container="phone">
                             <label class="order-ctrl__lbl js-order-ctrl__lbl">*Телефон <span class="order-ctrl__err" data-message=""></span></label>
-                            <input name="user_info[phone]" class="order-ctrl__input js-order-ctrl__input js-order-phone" placeholder="*Телефон" name="user_info[phone]" data-field="phone" value="<?= $orderDelivery->user_info->phone ?>" data-mask="+7 (xxx) xxx-xx-xx" <? if (!$userEntity): ?> data-event="true"<? endif ?> required="required" />
+                            <input name="user_info[phone]" class="order-ctrl__input js-order-ctrl__input js-order-phone" placeholder="*Телефон" name="user_info[phone]" data-field="phone" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : $orderDelivery->user_info->phone ?>" data-mask="+7 (xxx) xxx-xx-xx" <? if (!$userEntity): ?> data-event="true"<? endif ?> required="required" />
 
                         </div>
                         <div class="order-receiver__hint">Для смс о состоянии заказа</div>
                         <div class="order-ctrl required" data-field-container="email">
                             <label class="order-ctrl__lbl js-order-ctrl__lbl">*E-mail <span class="order-ctrl__err" data-message=""></span>
                             </label>
-                            <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input" placeholder="*E-mail" data-field="email" value="<?= $orderDelivery->user_info->email ?>" required="required" />
+                            <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input" placeholder="*E-mail" data-field="email" value="<?= $userEntity ? $userEntity->getEmail() : $orderDelivery->user_info->email ?>" required="required" />
                         </div>
                         <div class="order-receiver__subscribe">
                             <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="user_info[subscribe]" value="">
@@ -77,10 +77,11 @@ $f = function(
                         </div>
                         <div class="order-ctrl" data-field-container="first_name">
                             <label class="order-ctrl__lbl js-order-ctrl__lbl">Имя</label>
-                            <input name="user_info[first_name]" class="order-ctrl__input js-order-ctrl__input" placeholder="Имя" data-field="first_name" value="<?= $orderDelivery->user_info->first_name ?>" />
+                            <input name="user_info[first_name]" class="order-ctrl__input js-order-ctrl__input" placeholder="Имя" data-field="first_name" value="<?= $userEntity ? $userEntity->getFirstName() : $orderDelivery->user_info->first_name ?>" />
                         </div>
                     </div>
 
+                    <? if (!$userEntity) : ?>
                     <div class="order-receiver__social social">
                         <div class="social__head">Войти через</div>
                         <ul class="social__list">
@@ -94,6 +95,8 @@ $f = function(
                         <div class="social__register"><a class="bAuthLink" href="<?= $helper->url('user.login') ?>">Регистрация</a></div>
 
                     </div>
+                    <? endif ?>
+
                     <!-- Берем из старой верстки - бонусные карты -->
                     <div class="order__bonus-cards bonusCnt bonusCnt-v2">
 

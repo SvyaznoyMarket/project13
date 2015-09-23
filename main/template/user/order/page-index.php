@@ -33,6 +33,7 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
     ?>
 
         <div class="personal__orders <? if ($currentYear === $year): ?>current<? endif ?>">
+            <div class="personal__orders-head"><?= (($currentYear === $year) ? 'Текущие заказы' : 'История заказов') ?></div>
             <div class="<?= $containerId ?> personal-order__block <?= ($currentYear == $year ? 'expanded' : '') ?>">
                 <? if ($currentYear !== $year): ?>
                 <span class="personal-order__year-container">

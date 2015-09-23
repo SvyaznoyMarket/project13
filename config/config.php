@@ -10,7 +10,7 @@ $c->appDir = realpath(__DIR__ . '/..');
 $c->configDir = $c->appDir . '/config';
 $c->libDir = $c->appDir . '/lib';
 $c->dataDir = $c->appDir . '/data';
-$c->logDir = realpath($c->appDir . '/../logs');
+$c->logDir = realpath($c->appDir . (basename($c->appDir) !== 'wwwroot' ? '/..' : '') . '/../logs');
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
 
