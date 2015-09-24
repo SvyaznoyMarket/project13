@@ -4,8 +4,12 @@ namespace Controller\Slice;
 
 use Controller\Product\SetAction;
 use Model\Product\Category\Entity;
+use EnterApplication\CurlTrait;
+use EnterQuery as Query;
 
 class ShowAction {
+    use CurlTrait;
+
     /**
      * @param \Http\Request $request
      * @param string        $sliceToken
@@ -73,6 +77,36 @@ class ShowAction {
             if ($category->id) {
                 $category->setChild([]);
             } else {
+                $availableCategoryQuery = new Query\Product\Category\GetAvailable();
+                $availableCategoryQuery->regionId = $region->getId();
+                //$availableCategoryQuery->depth = 1;
+                $availableCategoryQuery->filterData = call_user_func(function() use ($sliceFiltersForSearchClientRequest) {
+                    foreach ($sliceFiltersForSearchClientRequest as $i => $item) {
+                        if (isset($item[0]) && ('category' === $item[0])) {
+                            unset($sliceFiltersForSearchClientRequest[$i]); // TODO: убрать как только будет готова SPPX-259
+                        }
+                    }
+
+                    return $sliceFiltersForSearchClientRequest;
+                });
+                $availableCategoryQuery->prepare();
+
+                $this->getCurl()->execute();
+
+                if (!$availableCategoryQuery->error) {
+                    $availableCategoryUis = [];
+                    foreach ($availableCategoryQuery->response->categories as $item) {
+                        if (!isset($item['product_count']) || !$item['product_count'] || !isset($item['uid'])) continue;
+                        $availableCategoryUis[$item['uid']] = true;
+                    }
+                }
+
+                foreach ($sliceCategories as $i => $sliceCategory) {
+                    if (!isset($availableCategoryUis[$sliceCategory->ui])) {
+                        unset($sliceCategories[$i]);
+                    }
+                }
+
                 $category->setChild($sliceCategories);
             }
         }
@@ -322,8 +356,7 @@ class ShowAction {
             if (isset($data['count'])) {
                 $productCount = (int)$data['count'];
             }
-        }
-        );
+        });
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
