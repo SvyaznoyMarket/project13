@@ -56,7 +56,7 @@ class FavoriteAction extends PrivateAction {
             foreach ($productUis as $productUi) {
                 $productsByUi[$productUi] = new \Model\Product\Entity(['ui' => $productUi]);
             }
-            \RepositoryManager::product()->prepareProductQueries($productsByUi, 'media');
+            \RepositoryManager::product()->prepareProductQueries($productsByUi, 'media label');
         }
 
         \App::coreClientV2()->execute();
