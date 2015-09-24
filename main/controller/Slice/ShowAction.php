@@ -81,6 +81,27 @@ class ShowAction {
         $productPager = $this->getProductPager($productFilter, $sliceFiltersForSearchClientRequest, $productSorting, $pageNum, $region);
         $category->setProductCount($productPager->count());
 
+        call_user_func(function() use(&$category) {
+            $userChosenCategoryView = \App::request()->cookies->get('categoryView');
+
+            if (
+                (!$category->config->listingDisplaySwitch && $category->config->listingDefaultView->isList)
+                || (
+                    $category->config->listingDisplaySwitch
+                    && (
+                        $userChosenCategoryView === 'expanded'
+                        || ($category->config->listingDefaultView->isList && $userChosenCategoryView == '')
+                    )
+                )
+            ) {
+                $category->listingView->isList = true;
+                $category->listingView->isMosaic = false;
+            } else {
+                $category->listingView->isList = false;
+                $category->listingView->isMosaic = true;
+            }
+        });
+
         if ($productPager->getPage() > $productPager->getLastPage()) {
             return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
                 'page' => $productPager->getLastPage(),
