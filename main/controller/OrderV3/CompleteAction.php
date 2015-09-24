@@ -288,6 +288,7 @@ class CompleteAction extends OrderV3 {
         if (!$result) throw new \Exception('Ошибка получения данных payment-config');
 
         switch ($methodId) {
+            /*
             case '5':
                 $formEntity = (new \Payment\Psb\Form());
                 $formEntity->fromArray($result['detail']);
@@ -297,6 +298,7 @@ class CompleteAction extends OrderV3 {
                     'form' => $formEntity
                 ]);
                 break;
+            */
             case '8':
                 $formEntity = (new \Payment\PsbInvoice\Form());
                 $formEntity->fromArray($result['detail']);
@@ -322,7 +324,7 @@ class CompleteAction extends OrderV3 {
                     'order'     => $order
                 ]);
                 break;
-            case '11': case '12':
+            case '2': case '5': case '11': case '12': case '12':
                 $form = new \Payment\Yandex\Form($result['detail']);
                 $form = \App::closureTemplating()->render('order/payment/__form-yandex', [
                     'form'  => $form,
