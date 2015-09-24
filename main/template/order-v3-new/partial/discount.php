@@ -19,17 +19,19 @@ return function(
             <input class="order-ctrl__input <?= $inputSelectorId ?>" value="<?= $couponNumber ?>" >
             <label class="order-ctrl__lbl nohide">
                  <span class="order-ctrl__err">
+                     <span class="err-inn-tb">
                     <? foreach ($couponErrors as $err) : ?>
                         <? if ($err->code == 404) : ?>
-                            Скидки с таким кодом не существует
+                            Скидки с таким кодом<br>не существует
                         <? elseif ($err->code == 1001) : ?>
-                            Купон неприменим к данному заказу
+                            Купон неприменим<br>к данному заказу
                         <? elseif ($err->code == 1022) : ?>
-                           Купон уже был использован или истек срок действия
+                           Купон уже был использован<br>или истек срок действия
                         <? else : ?>
                             <?= $err->message ?>
                         <? endif ?>
                     <? endforeach ?>
+                         </span>
                  </span>
             </label>
         </div>

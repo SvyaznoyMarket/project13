@@ -1,6 +1,12 @@
 <?php
 
-return function(
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\Product\Sorting $productSorting
+ * @param \Iterator\EntityPager $pager
+ * @param \Model\Product\Category\Entity|null $category
+ */
+$f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Sorting $productSorting,
     \Iterator\EntityPager $pager,
@@ -25,4 +31,4 @@ return function(
     </div>
     <!-- /Сортировка товаров на странице -->
 
-<? };
+<? }; return $f;

@@ -50,17 +50,17 @@ class UpdateAction extends PrivateAction {
 
             $updateQuery = new Query\User\Update();
             $updateQuery->token = $userEntity->getToken();
-            $updateQuery->user->firstName = isset($formData['first_name']) ? $formData['first_name'] : null;
-            $updateQuery->user->middleName = isset($formData['middle_name']) ? $formData['middle_name'] : null;
-            $updateQuery->user->lastName = isset($formData['last_name']) ? $formData['last_name'] : null;
+            $updateQuery->user->firstName = isset($formData['first_name']) ? $formData['first_name'] : '';
+            $updateQuery->user->middleName = isset($formData['middle_name']) ? $formData['middle_name'] : '';
+            $updateQuery->user->lastName = isset($formData['last_name']) ? $formData['last_name'] : '';
             if (isset($formData['birthday']['year']) && isset($formData['birthday']['month']) && isset($formData['birthday']['day'])) {
                 $updateQuery->user->birthday = sprintf('%04d-%02d-%02d', $formData['birthday']['year'], $formData['birthday']['month'], $formData['birthday']['day']);
             }
             $updateQuery->user->sex = isset($formData['sex']) ? $formData['sex'] : null;
             $updateQuery->user->email = isset($formData['email']) ? $formData['email'] : null;
             $updateQuery->user->phone = isset($formData['mobile_phone']) ? $formData['mobile_phone'] : null;
-            $updateQuery->user->homePhone = isset($formData['home_phone']) ? $formData['home_phone'] : null;
-            $updateQuery->user->occupation = isset($formData['occupation']) ? $formData['occupation'] : null;
+            $updateQuery->user->homePhone = isset($formData['home_phone']) ? $formData['home_phone'] : '';
+            $updateQuery->user->occupation = isset($formData['occupation']) ? $formData['occupation'] : '';
             $updateQuery->prepare();
 
             $this->getCurl()->execute();

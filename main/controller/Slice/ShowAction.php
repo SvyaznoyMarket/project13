@@ -81,6 +81,27 @@ class ShowAction {
         $productPager = $this->getProductPager($productFilter, $sliceFiltersForSearchClientRequest, $productSorting, $pageNum, $region);
         $category->setProductCount($productPager->count());
 
+        call_user_func(function() use(&$category) {
+            $userChosenCategoryView = \App::request()->cookies->get('categoryView');
+
+            if (
+                (!$category->config->listingDisplaySwitch && $category->config->listingDefaultView->isList)
+                || (
+                    $category->config->listingDisplaySwitch
+                    && (
+                        $userChosenCategoryView === 'expanded'
+                        || ($category->config->listingDefaultView->isList && $userChosenCategoryView == '')
+                    )
+                )
+            ) {
+                $category->listingView->isList = true;
+                $category->listingView->isMosaic = false;
+            } else {
+                $category->listingView->isList = false;
+                $category->listingView->isMosaic = true;
+            }
+        });
+
         if ($productPager->getPage() > $productPager->getLastPage()) {
             return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
                 'page' => $productPager->getLastPage(),
@@ -217,13 +238,18 @@ class ShowAction {
             return;
         }
 
-        \RepositoryManager::productCategory()->prepareCollectionById($categoryIds, $region, function ($data) use (&$categories) {
+        \RepositoryManager::productCategory()->prepareCollectionById($categoryIds, $region, function ($data) use (&$slice, &$categories) {
             if (!isset($data[0])) return;
+
+            $router = \App::router();
 
             foreach ($data as $item) {
                 if (!isset($item['uid'])) continue;
 
-                $categories[] = new \Model\Product\Category\Entity($item);
+                $category = new \Model\Product\Category\Entity($item);
+                $category->setLink($router->generate('slice.category', ['sliceToken' => $slice->getToken(), 'categoryToken' => $category->getToken()]));
+
+                $categories[] = $category;
             }
         });
     }
@@ -301,7 +327,7 @@ class ShowAction {
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $productRepository->prepareProductQueries($products, 'media label brand category');
+        $productRepository->prepareProductQueries($products, 'media property label brand category');
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {

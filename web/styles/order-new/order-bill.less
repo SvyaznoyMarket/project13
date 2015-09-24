@@ -190,6 +190,7 @@
     &__lk{
         display: table-cell;
         padding: 10px 0;
+        vertical-align: middle;
     }
 
     &__name{
@@ -199,6 +200,7 @@
         max-width: 0;
         font-size: 14px;
         color: @txtColor;
+        vertical-align: middle;
     }
     &__val{
         display: table-cell;
@@ -207,6 +209,7 @@
         white-space: nowrap;
         font-size: 16px;
         color: @txtColor;
+        vertical-align: middle;
     }
     &__cell{
         display: table-cell;
@@ -241,9 +244,15 @@
         margin-bottom: 0;
         margin-right: 0;
         &__lbl{
-            top: -15px;
+            top: -30px;
+            line-height: 13px;
             margin-left: 0;
             width: 500px;
+        }
+        .err-inn-tb{
+            display: table-cell;
+            vertical-align: bottom;
+            height: 28px;
         }
     }
     .order-btn{

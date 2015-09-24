@@ -33,7 +33,7 @@ $f = function (
         <? endif; ?>
 
         <!-- блок разбиения заказа -->
-        <div class="orderRow order-bill__item clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : '' ?>"
+        <div class="orderRow order-bill__item clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : '' ?>"\
              data-block_name="<?= $order->block_name ?>">
             <!-- информация о заказе -->
             <div class="order-bill__head">Заказ №<?= ($i) ?></div>
@@ -44,7 +44,11 @@ $f = function (
                             class="order-bill__oferta js-order-oferta-popup-btn" href="<?= $order->seller->offer ?>"
                             data-value="<?= $order->seller->offer ?>" target="_blank">Информация и оферта</a></div>
                 <? endif ?>
-                
+
+                <? if (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_cost > \App::config()->order['prepayment']['priceLimit'])) : ?>
+                    <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
+                <? endif; ?>
+
 
                 <? foreach ($order->products as $product): ?>
                     <?= $helper->render('order-v3-new/partial/errors', [ 'orderDelivery' => $orderDelivery, 'order' => $order, 'product' => $product ]) ?>
@@ -116,11 +120,11 @@ $f = function (
                             </a>
 
                             <div class="order-discount__name">
-                                Фишка на скидку<?= $discount->name; ?>
+                                Фишка на скидку <?= $discount->name; ?>
                             </div>
 
                             <div
-                                class="order-discount__val">-<?= $discount->discount ?>500
+                                class="order-discount__val">-<?= $discount->discount ?>
                                 <span class="rubl">p</span></div>
 
                         </div>
