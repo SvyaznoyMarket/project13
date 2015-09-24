@@ -102,7 +102,7 @@ class ShowAction {
 
                 foreach ($children as $i => $child) {
                     if (!isset($availableCategoryUis[$child->ui])) {
-                        unset($sliceCategories[$i]);
+                        unset($children[$i]);
                     }
                 }
 
