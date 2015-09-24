@@ -217,13 +217,18 @@ class ShowAction {
             return;
         }
 
-        \RepositoryManager::productCategory()->prepareCollectionById($categoryIds, $region, function ($data) use (&$categories) {
+        \RepositoryManager::productCategory()->prepareCollectionById($categoryIds, $region, function ($data) use (&$slice, &$categories) {
             if (!isset($data[0])) return;
+
+            $router = \App::router();
 
             foreach ($data as $item) {
                 if (!isset($item['uid'])) continue;
 
-                $categories[] = new \Model\Product\Category\Entity($item);
+                $category = new \Model\Product\Category\Entity($item);
+                $category->setLink($router->generate('slice.category', ['sliceToken' => $slice->getToken(), 'categoryToken' => $category->getToken()]));
+
+                $categories[] = $category;
             }
         });
     }
