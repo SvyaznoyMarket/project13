@@ -74,40 +74,39 @@ class ShowAction {
 
         // если есть категории в фильтре среза
         if ($sliceCategories) {
-            if ($category->id) {
-                $category->setChild([]);
-            } else {
-                $availableCategoryQuery = new Query\Product\Category\GetAvailable();
-                $availableCategoryQuery->regionId = $region->getId();
-                //$availableCategoryQuery->depth = 1;
-                $availableCategoryQuery->filterData = call_user_func(function() use ($sliceFiltersForSearchClientRequest) {
-                    foreach ($sliceFiltersForSearchClientRequest as $i => $item) {
-                        if (isset($item[0]) && ('category' === $item[0])) {
-                            unset($sliceFiltersForSearchClientRequest[$i]); // TODO: убрать как только будет готова SPPX-259
-                        }
-                    }
-
-                    return $sliceFiltersForSearchClientRequest;
-                });
-                $availableCategoryQuery->prepare();
-
-                $this->getCurl()->execute();
-
-                if (!$availableCategoryQuery->error) {
-                    $availableCategoryUis = [];
-                    foreach ($availableCategoryQuery->response->categories as $item) {
-                        if (!isset($item['product_count']) || !$item['product_count'] || !isset($item['uid'])) continue;
-                        $availableCategoryUis[$item['uid']] = true;
+            $availableCategoryQuery = new Query\Product\Category\GetAvailable();
+            $availableCategoryQuery->regionId = $region->getId();
+            $availableCategoryQuery->rootCriteria = $category->id ? ['id' => $category->id] : [];
+            //$availableCategoryQuery->depth = 1;
+            $availableCategoryQuery->filterData = call_user_func(function() use ($sliceFiltersForSearchClientRequest) {
+                foreach ($sliceFiltersForSearchClientRequest as $i => $item) {
+                    if (isset($item[0]) && ('category' === $item[0])) {
+                        unset($sliceFiltersForSearchClientRequest[$i]); // TODO: убрать как только будет готова SPPX-259
                     }
                 }
 
-                foreach ($sliceCategories as $i => $sliceCategory) {
-                    if (!isset($availableCategoryUis[$sliceCategory->ui])) {
+                return $sliceFiltersForSearchClientRequest;
+            });
+            $availableCategoryQuery->prepare();
+
+            $this->getCurl()->execute();
+
+            $availableCategoryUis = [];
+            if (!$availableCategoryQuery->error) {
+                foreach ($availableCategoryQuery->response->categories as $item) {
+                    if (!isset($item['product_count']) || !$item['product_count'] || !isset($item['uid'])) continue;
+                    $availableCategoryUis[$item['uid']] = true;
+                }
+
+                $children = $category->id ? $category->getChild() : $sliceCategories;
+
+                foreach ($children as $i => $child) {
+                    if (!isset($availableCategoryUis[$child->ui])) {
                         unset($sliceCategories[$i]);
                     }
                 }
 
-                $category->setChild($sliceCategories);
+                $category->setChild($children);
             }
         }
 
