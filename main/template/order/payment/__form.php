@@ -17,6 +17,10 @@ $f = function(
     if (!$url || !$form) {
         return '';
     }
+
+    $form = array_filter($form, function($value) {
+        return null !== $value;
+    });
 ?>
 
 <form action="<?= $url ?>" method="post">
