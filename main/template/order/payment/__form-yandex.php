@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @deprecated
+ * @param \Helper\TemplateHelper $helper
+ * @param $url
+ * @param \Payment\Yandex\Form $form
+ * @param \Model\Order\Entity $order
+ */
 $f = function(
     \Helper\TemplateHelper $helper,
     $url,

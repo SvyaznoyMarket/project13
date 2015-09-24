@@ -1,5 +1,6 @@
 <?php
 /**
+ * @deprecated
  * @var $page     \Templating\HtmlLayout
  * @var $user     \Session\User
  * @var $provider \Payment\Psb\Provider
