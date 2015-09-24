@@ -12,6 +12,7 @@
  * @var $point                             \Model\Point\PointEntity
  * @var $pointsByUi                        \Model\Point\PointEntity[]
  * @var $onlinePaymentAvailableByNumberErp bool[]
+ * @var $viewedProducts                    \Model\Product\Entity[]
  */
 ?>
 
@@ -30,10 +31,11 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
     <?
         $containerId = 'id-orderContainer-' . $year;
         $count = count($orders);
+        $isCurrentOrders = $currentYear === $year;
     ?>
 
-        <div class="personal__orders <? if ($currentYear === $year): ?>current<? endif ?>">
-            <div class="personal__orders-head"><?= (($currentYear === $year) ? 'Текущие заказы' : 'История заказов') ?></div>
+        <div class="personal__orders <? if ($isCurrentOrders): ?>current<? endif ?>">
+            <div class="personal__orders-head"><?= ($isCurrentOrders ? 'Текущие заказы' : 'История заказов') ?></div>
             <div class="<?= $containerId ?> personal-order__block <?= ($currentYear == $year ? 'expanded' : '') ?>">
                 <? if ($currentYear !== $year): ?>
                 <span class="personal-order__year-container">
@@ -100,6 +102,29 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
                 <? endforeach ?>
             </div>
         </div>
+
+        <? if ($isCurrentOrders): ?>
+            <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
+                'type'      => 'personal',
+                'products'  => [],
+                'url'       => $page->url('recommended', [
+                    'types'  => ['personal'],
+                    'sender' => [
+                        'position' => 'Basket',
+                    ],
+                ]),
+            ]) ?>
+        <? else: ?>
+            <?= $helper->render('product/__slider', [
+                'type'      => 'viewed',
+                'title'     => 'Вы смотрели',
+                'products'  => $viewedProducts,
+                'limit'     => \App::config()->product['itemsInSlider'],
+                'page'      => 1,
+                'class'     => 'slideItem-viewed',
+                'isCompact' => true,
+            ]) ?>
+        <? endif ?>
     <? endforeach ?>
 
     <? if (false): ?>
