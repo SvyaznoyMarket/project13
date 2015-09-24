@@ -100,11 +100,28 @@ class ShowAction {
 
                 $children = $category->id ? $category->getChild() : $sliceCategories;
 
-                foreach ($children as $i => $child) {
-                    if (!isset($availableCategoryUis[$child->ui])) {
-                        unset($children[$i]);
+                $level = 0;
+                /**
+                 * @param \Model\Product\Category\Entity[] $categories
+                 * @return \Model\Product\Category\Entity[]
+                 */
+                $filter = function($categories) use (&$filter, &$level, &$availableCategoryUis) {
+                    $level++;
+                    if ($level > 6) return []; // защита от чрезмерного глубокого погружения
+
+                    foreach ($categories as $i => $category) {
+                        if (!isset($availableCategoryUis[$category->ui])) {
+                            unset($categories[$i]);
+                        }
+
+                        if ($children = $category->getChild()) {
+                            $category->setChild($filter($children));
+                        }
                     }
-                }
+
+                    return $categories;
+                };
+                $children = $filter($children);
 
                 $category->setChild($children);
             }
