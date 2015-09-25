@@ -178,6 +178,7 @@ class ProductAction {
                         // 'category'        => $this->getCategories($product),
                         'isSlot' => $updateResultProduct->cartProduct->isSlot,
                         'isOnlyFromPartner' => $updateResultProduct->cartProduct->isOnlyFromPartner,
+                        'quantity'  => $updateResultProduct->cartProduct->quantity
                     ];
                 }, $updateResultProducts))),
                 'kitProduct' => $kitProduct,
