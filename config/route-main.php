@@ -967,6 +967,11 @@ return [
         'action'  => ['Compare\CompareAction', 'clear'],
     ],
 
+    'recommended' => [
+        'pattern' => '/ajax/recommended',
+        'action'  => ['Recommended', 'execute'],
+    ],
+
     // Форма обратной связи
     'feedback.send' => [
         'pattern'   => '/feedback/send',
