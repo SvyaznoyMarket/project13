@@ -74,7 +74,16 @@ class CreateAction {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
             \App::exception()->remove($e);
 
-            $message = (708 == $e->getCode()) ? 'Товара нет в наличии' : $e->getMessage();
+            switch ($e->getCode()) {
+                case 708:
+                    $message = 'Товара нет в наличии';
+                    break;
+                case 732:
+                    $message = 'Выберите точку самовывоза';
+                    break;
+                default:
+                    $message = $e->getMessage();
+            }
 
             $result['error'] = ['message' => $message];
             $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $message]);

@@ -1,10 +1,11 @@
 <?php
+
 return function(
     $orderDelivery,
     $error
 ) {
 
-    if (!is_array($error)) $error = (array) $error;
+    if (!is_array($error)) $error = (array)$error;
 
 ?>
 
@@ -17,7 +18,7 @@ return function(
     <? if (!$orderDelivery instanceof \Model\OrderDelivery\Entity) return ?>
 
     <? foreach ($orderDelivery->errors as $e) : ?>
-        <? if ($e->isMaxQuantityError() && !isset($e->details['block_name'])) : ?>
+        <? if (true || $e->isMaxQuantityError() && !isset($e->details['block_name'])) : ?>
             <div class="order-error order-error--warning">
                 <?= $e->message ?>
                 <i class="order-error__closer js-order-err-close"></i>
