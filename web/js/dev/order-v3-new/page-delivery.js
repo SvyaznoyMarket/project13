@@ -272,6 +272,22 @@
                 $label.hide();
             }
         },
+        lblPosition = function lblPosition() {
+          var $this = $(this),
+              $label = $this.parent().find('.js-order-ctrl__txt');
+            if ($this.is(":focus") || ($this.val() !== '')) {
+                $label.addClass('top');
+            } else {
+                $label.removeClass('top');
+            }
+        },
+        lblToTop = function lblToTop() {
+            var $this = $(this),
+                $label = $this.parent().find('.js-order-ctrl__txt');
+
+            $.each($inputs, lblPosition);
+            $label.addClass('top');
+        },
         bindMask = function() {
             var
                 $inputs        = $('.js-order-ctrl__input'),
@@ -290,8 +306,7 @@
                             parent = field.fieldNode.parent();
                         console.warn('===== custom callbackError', field.fieldNode.parent());
                         parent.addClass('error');
-                        parent.find('.js-order-ctrl__lbl').show();
-                        parent.find('.order-ctrl__err').html(error);
+                        parent.find('.js-order-ctrl__txt').html(error);
                     },
                     callbackValid: function( field ) {},
                     unmarkField: function( field ) {
@@ -299,7 +314,7 @@
                             parent = field.fieldNode.parent();
 
                         parent.removeClass('error');
-                        parent.find('.order-ctrl__err').html('');
+                        //parent.find('.order-ctrl__err').html('');
                     }
                 };
 
@@ -623,8 +638,11 @@
         $body.trigger('trackGoogleEvent', ['pickup_ux', 'list_point', 'выбор'])
     });
 
-    $.each($inputs, showHideLabels);
-    $body.on('keyup', '.js-order-ctrl__input', showHideLabels);
+    //$.each($inputs, showHideLabels);
+    //$body.on('keyup', '.js-order-ctrl__input', showHideLabels);
+    $.each($inputs, lblPosition);
+    $body.on('keyup', '.js-order-ctrl__input', lblPosition);
+    $body.on('click','.js-order-ctrl__input', lblToTop)
 
     //показать блок редактирования товара - новая версия
     $body.on('click', '.js-show-edit',function(){
