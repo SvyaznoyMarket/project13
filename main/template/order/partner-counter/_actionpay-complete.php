@@ -8,6 +8,6 @@
 ?>
 <? foreach ($orders as $order) : ?>
     <? if ($link = \Partner\Counter\Actionpay::getOrderCompleteLink($order, $productsById)): ?>
-        <img src="http://n.actionpay.ru/ok/3781.png?<?= $link ?>" height="1" width="1" />
+        <img src="http://apypxl.com/ok/3781.png?<?= $link ?>" height="1" width="1" />
     <? endif ?>
 <? endforeach ?>
