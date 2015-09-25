@@ -106,7 +106,7 @@ class CityAds {
                 '{customer_type}'   => ($uid)  ? 'returned' : 'new',
                 '{payment_method}'  => $paymentMethod,
                 '{order_total}'     => $order->getSum(),
-                '{commission}'      => $commission,
+                '{commission}'      => sprintf('%0.2f', $commission),
                 '{currency}'        => 'RUR',
                 '{coupon}'          => $coupon,
                 '{discount}'        => $discount,
