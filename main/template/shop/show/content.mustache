@@ -33,7 +33,9 @@
 
 {{#point.showMap}}
     <div class="shops__map">
-        <div class="bMap__eBody js-shop-viewport" data-map-latitude="{{point.latitude}}" data-map-longitude="{{point.longitude}}"></div>
+        <div class="shops__viewport">
+            <div class="shops__viewport__container js-shop-viewport" data-map-latitude="{{point.latitude}}" data-map-longitude="{{point.longitude}}"></div>
+        </div>
         <div class="shops-gallery">
             {{#point.images.0}}
                 <ul class="shops-gallery__lst">
