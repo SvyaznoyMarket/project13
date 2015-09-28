@@ -107,8 +107,8 @@
                 </span>
             </div>
             <div class="form-ctrl__group form-ctrl__group--inline">
-                <input id="" class="form-ctrl__input" type="text" name="">
-                <label class="form-ctrl__input-lbl" for="">Номер</label>
+                <input id="reviewFormMnogoRu" class="form-ctrl__input" type="text" name="review[mnogoru]" data-mask="9999 9999">
+                <label class="form-ctrl__input-lbl" for="reviewFormMnogoRu">Номер</label>
             </div>
             <div class="form-ctrl__btn-container">
                 <button class="btn-type btn-type--buy" type="submit">Отправить</button>
