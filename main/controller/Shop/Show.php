@@ -32,7 +32,11 @@ class Show {
 
         $scmsClient->addQuery(
             'api/static-page',
-            ['token' => ['menu']],
+            [
+                'token' => ['menu'],
+                'geo_town_id' => \App::user()->getRegion()->id,
+                'tags' => ['site-web'],
+            ],
             [],
             function($data) use (&$sidebar) {
                 if (isset($data['pages'][0]['content'])) {
