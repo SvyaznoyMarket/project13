@@ -52,34 +52,44 @@ $(function() {
     $body.on('click', '.js-listing-variation-link', function(e) {
         e.preventDefault();
 
-        var
-            $self = $(e.currentTarget),
-            $variation = $self.closest('.js-listing-variation');
+        var $self = $(e.currentTarget);
 
         $.ajax({
             type: 'GET',
-            url: ENTER.utils.generateUrl('ajax.product.variation', {
-                productUi: $self.closest('.js-listing-item').data('product-ui'),
-                variationId: $variation.data('variation-id')
-            }),
+            url: $self.data('url'),
             success: function(res) {
                 if (res.contentHtml) {
-                    $variation.html(res.contentHtml);
-                    $variation.find('.js-listing-variation-values').change(function(e) {
-                        var $select = $(e.currentTarget);
-
-                        if ($select.length && $select[0].selectedOptions[0]) {
-                            var $selectedOption = $($select[0].selectedOptions[0]);
-
-                            $select.closest('.js-listing-item').find('.jsBuyButton')
-                                .attr('href', ENTER.utils.generateUrl('cart.product.setList', {
-                                    products: [{ui: $selectedOption.data('product-ui'), quantity: '+1', up: 1}]
-                                }))
-                                .attr('data-product-id', $selectedOption.data('product-id'))
-                                .attr('data-product-ui', $selectedOption.data('product-ui'));
-                        }
-                    });
+                    $self.closest('.js-listing-variation').replaceWith(res.contentHtml);
                 }
+            }
+        });
+    });
+
+    $body.on('change', '.js-listing-variation-values', function(e) {
+        var $values = $(e.currentTarget);
+
+        if (!$values.length || !$values[0].selectedOptions[0]) {
+            return;
+        }
+
+        var $selectedOption = $($values[0].selectedOptions[0]);
+
+        $.ajax({
+            type: 'GET',
+            url: $selectedOption.data('url'),
+            success: function(res) {
+                if (!res.product) {
+                    return;
+                }
+
+                var $template = $('#listing_expanded_item_tmpl');
+
+                $(Mustache.render($template.html(), res.product, $template.data('partial'))).replaceAll($values.closest('.js-listing-item'));
+
+                $('.js-listing, .js-jewelListing').each(function() {
+                    ko.cleanNode(this);
+                    ko.applyBindings(ENTER.UserModel, this);
+                });
             }
         });
     });

@@ -80,6 +80,26 @@ class Repository {
     }
 
     /**
+     * @param string $uid
+     * @param callable $callback
+     */
+    public function prepareEntityByUid($uid, $callback) {
+        \App::scmsClient()->addQuery('category/get/v1',
+            [
+                'uid'     => $uid,
+                'geo_id' => \App::user()->getRegion()->getId(),
+            ],
+            [],
+            $callback,
+            function(\Exception $e) {
+                if (404 == $e->getCode()) {
+                    \App::exception()->remove($e);
+                }
+            }
+        );
+    }
+
+    /**
      * @param int $id
      * @return Entity|null
      */
