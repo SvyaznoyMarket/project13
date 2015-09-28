@@ -66,6 +66,23 @@
         width: 100%;
         display: table;
     }
+    &__viewport {
+        width: 585px;
+        display: table-cell;
+        height: 390px;
+        &__container {
+            overflow: hidden;
+            width: 585px;
+            height: 390px;
+            & > img {
+                display: block;
+                position: relative;
+                left: 0;
+                min-width: 585px;
+                min-height: 390px;
+            }
+        }
+    }
     &-gallery{
         width: 100px;
         display: table-cell;
@@ -76,6 +93,7 @@
         border-bottom: 1px solid #e6e6e6;
         position: relative;
         overflow: hidden;
+        vertical-align: top;
 
         &__lst{
             height: 390px;
@@ -85,6 +103,9 @@
             margin-top: 10px;
             .inline-block();
             cursor: pointer;
+            img {
+                max-width: 66px;
+            }
         }
         &__bottom{
             position: absolute;

@@ -66,24 +66,6 @@ class Show {
             });
         }
 
-        if (in_array($point->id, [194])) {
-            \RepositoryManager::product()->prepareIteratorByFilter(
-                [
-                    ['shop', 1, [$point->id]],
-                    ['is_view_list', 1, [true]],
-                ],
-                [],
-                null,
-                null,
-                null,
-                function($data) use (&$point) {
-                    if (isset($data['count'])) {
-                        $point->productCount = (int)$data['count'];
-                    }
-                }
-            );
-        }
-
         \App::curl()->execute();
 
         $page = new \View\Shop\ShowPage();
