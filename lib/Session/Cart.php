@@ -289,13 +289,13 @@ namespace Session {
     
                 $sessionCart['product'] = $sessionProductsById;
             });
-    
-            call_user_func(function() use(&$sessionCart) {
+
+            $isPriceUpdated = false;
+            call_user_func(function() use(&$sessionCart, &$isPriceUpdated) {
                 if (!$sessionCart['product']) {
                     return;
                 }
                 
-                $isPriceUpdated = false;
                 // Для корректного подсчёта суммы следует вызывать данный метод лишь после добавления/замены/удаления
                 // $setProducts товаров и обновления товаров в сессии
                 \App::coreClientV2()->addQuery(
@@ -337,9 +337,11 @@ namespace Session {
                 }
             });
 
-            $sessionCart['updated'] = (new \DateTime('now'))->format('c');
-            $this->setSessionCart($sessionCart);
-            
+            if ($isPriceUpdated) {
+                $sessionCart['updated'] = (new \DateTime('now'))->format('c');
+                $this->setSessionCart($sessionCart);
+            }
+
             // TODO может перенести синхронизацию серверной корзины сюда (выполняя её на основе данных из $resultProducts)?
 
             return $resultProducts;
