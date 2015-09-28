@@ -23,7 +23,7 @@ $f = function(
 
     $containerId = 'id-order-deliveryAddress-' . ($order->block_name ?: uniqid());
 ?>
-<div class="order-delivery__block jsSmartAddressBlock <?= $containerId ?>">
+<div class="order-delivery__block deliv-addr jsSmartAddressBlock <?= $containerId ?>">
     <div class="order-ctrl fullwidth">
         <label class="order-ctrl__lbl js-order-ctrl__lbl ">Улица</label>
         <input

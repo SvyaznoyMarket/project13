@@ -3,7 +3,8 @@
 <div class="shops__info">
     <div class="shops__btns">
         <a class="shops__btn-default js-shop-print-opener" href="#">Распечатать</a>
-        <a class="shops__btn-default js-shop-email-opener" href="#">Отправить на email</a>
+        {{! SITE-6096 }}
+        {{! <a class="shops__btn-default js-shop-email-opener" href="#">Отправить на email</a> }}
     </div>
 
     <div class="pick-point-item">
@@ -54,52 +55,30 @@
 {{/point.showMap}}
 
 <div class="shops__descr">
-    <div class="shops__working-time">
-        <span class="shops__schedule">Режим работы</span>
-        {{#point.workingTime.days}}
-            <ul>
-                {{#point.workingTime.days.monday}}
-                    <li>с {{point.workingTime.days.monday.from}} {{point.workingTime.days.monday.to}}</li>
-                {{/point.workingTime.days.monday}}
-
-                {{#point.workingTime.days.tuesday}}
-                    <li>с {{point.workingTime.days.tuesday.from}} {{point.workingTime.days.tuesday.to}}</li>
-                {{/point.workingTime.days.tuesday}}
-
-                {{#point.workingTime.days.wednesday}}
-                    <li>с {{point.workingTime.days.wednesday.from}} {{point.workingTime.days.wednesday.to}}</li>
-                {{/point.workingTime.days.wednesday}}
-
-                {{#point.workingTime.days.thursday}}
-                    <li>с {{point.workingTime.days.thursday.from}} {{point.workingTime.days.thursday.to}}</li>
-                {{/point.workingTime.days.thursday}}
-
-                {{#point.workingTime.days.friday}}
-                    <li>с {{point.workingTime.days.friday.from}} {{point.workingTime.days.friday.to}}</li>
-                {{/point.workingTime.days.friday}}
-
-                {{#point.workingTime.days.saturday}}
-                    <li>с {{point.workingTime.days.saturday.from}} {{point.workingTime.days.saturday.to}}</li>
-                {{/point.workingTime.days.saturday}}
-
-                {{#point.workingTime.days.sunday}}
-                    <li>с {{point.workingTime.days.sunday.from}} {{point.workingTime.days.sunday.to}}</li>
-                {{/point.workingTime.days.sunday}}
-            </ul>
-        {{/point.workingTime.days}}
-
-        {{^point.workingTime.days}}
-            {{#point.workingTime.common}}
-                {{#point.workingTime.common}}
-                    <div class="shops__schedule-val">{{point.workingTime.common}}</div>
-                {{/point.workingTime.common}}
-            {{/point.workingTime.common}}
-        {{/point.workingTime.days}}
-    </div>
-
     {{#point.productCountText}}
-        <p>{{point.productCountText}}</p>
+        <div class="shops__instock instock">{{point.productCountText}}</div>
     {{/point.productCountText}}
+
+    {{#point.workingTime}}
+        <div class="shops__working-time">
+            <span class="shops__schedule">Режим работы</span>
+            {{#point.workingTime.array.0}}
+                <div class="shops__schedule-val">
+                    <ul>
+                        {{#point.workingTime.array}}
+                            <li>{{.}}</li>
+                        {{/point.workingTime.array}}
+                    </ul>
+                </div>
+            {{/point.workingTime.array.0}}
+
+            {{^point.workingTime.array.0}}
+                {{#point.workingTime.string}}
+                    <div class="shops__schedule-val">{{point.workingTime.string}}</div>
+                {{/point.workingTime.string}}
+            {{/point.workingTime.array.0}}
+        </div>
+    {{/point.workingTime}}
 
     {{#point.description}}
         <p>{{point.description}}</p>

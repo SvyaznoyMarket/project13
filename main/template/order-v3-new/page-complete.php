@@ -20,9 +20,9 @@ return function(
         display: none;
     }
 </style>
-
-    <section class="orderCnt jsOrderV3PageComplete">
-        <h1 class="orderCnt_t">Ваши заказы</h1>
+    <div class="order__wrap">
+    <section class="orderCnt jsOrderV3PageComplete order-page">
+        <div class="pagehead"><h1 class="orderCnt_t">Ваши заказы</h1></div>
 
         <div class="orderLnSet">
 
@@ -180,7 +180,7 @@ return function(
             <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
         </div>
     </section>
-
+    </div>
     <? if (!$sessionIsReaded): ?>
         <span class="js-orderV3New-complete-subscribe" data-value="<?=$helper->json(['subscribe' => $subscribe, 'email' => isset($orders[0]->email) ? $orders[0]->email : null])?>"></span>
 

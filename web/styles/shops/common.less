@@ -1,20 +1,6 @@
 .shops {
     &-btn{
-        float: right;
-        margin-top: 2px;
-        margin-right: 14px;
 
-        padding: 11px 14px 11px 0;
-        border-right: 1px dotted @white;
-        cursor: pointer;
-
-        &__icon{
-            .inline-block(middle);
-        }
-        &__txt{
-            color: @white;
-            .inline-block(middle);
-        }
     }
 
     &__back {
@@ -112,22 +98,25 @@
     }
     &__descr{
         clear:both;
-        padding: 10px 15px;
+        padding: 15px 15px 10px;
+        font-size: 14px;
+        color: #616161;
     }
     &__working-time{
         background-color: #f7f7f7;
-        padding: 10px;
+        padding: 10px 15px 15px;
         margin-left: -15px;
         margin-bottom: 10px;
     }
     &__schedule{
         float: left;
         display: block;
-        font-size: 14px;
+        font-size: 16px;
         color: #363636;
     }
     &__schedule-val{
-        margin-left: 100px;
+        font-size: 14px;
+        margin-left: 123px;
         margin-top: 2px;
         color: #616161;
         word-break: break-word;//for pickpoint's long string
@@ -309,4 +298,17 @@
     left: 0px;
     background-color: rgba(0,0,0,0.5);
     z-index: 1009;
+}
+.instock{
+    background-color: #e5f5e9;
+    border: 1px solid #009925;
+    border-left-width: 3px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 12px;
+    margin-bottom: 15px;
+    margin-left: -15px;
+    font-size: 14px;
+    color: #363636;
+    .inline-block();
 }

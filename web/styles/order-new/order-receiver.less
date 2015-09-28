@@ -7,7 +7,6 @@
         float: left;
         width: 620px;
         padding: 0 10px;
-        border-right: 1px dashed #afafaf;
         font-size: 0;
     }
     &__social{
@@ -41,7 +40,7 @@
         }
     }
     &__subscribe{
-        width: 320px;
+        width: 325px;
         height: 41px;
         margin-top: 8px;
         .inline-block(middle);
@@ -52,6 +51,9 @@
     }
     &__chip{
         margin-right: 5px;
+    }
+    &__social{
+        border-left: 1px dashed #afafaf;
     }
 }
 .social{
@@ -72,13 +74,16 @@
         margin: 0 5px;
     }
     &__register{
-        margin: 10px 0;
+        margin: 30px 0 10px;
         color: #363636;
         font-size: 16px;
         text-align: center;
 
-        span {
+        a {
             border-bottom: 1px dotted;
+            &:hover{
+                text-decoration: none;
+            }
         }
     }
 }

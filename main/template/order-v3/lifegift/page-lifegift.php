@@ -62,7 +62,7 @@ return function(
                 <? if (!$user) : ?>
                     <div class="orderAuth">
                         <div class="orderAuth_t">Уже заказывали у нас?</div>
-                        <button class="orderAuth_btn btnLightGrey bAuthLink jsLoginButton">Войти с паролем</button>
+                        <button class="orderAuth_btn btnLightGrey js-login-opener">Войти с паролем</button>
                     </div>
                 <? endif; ?>
             </fieldset>

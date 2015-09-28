@@ -228,10 +228,12 @@ return [
         'pattern' => '/catalog/tchibo',
         'action'  => ['Tchibo\IndexAction', 'execute'],
     ],
+    /* https://jira.enter.ru/browse/SITE-5910?focusedCommentId=169611&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-169611
     'tchibo.where_buy' => [
         'pattern'   => '/where_buy_tchibo',
-        'action'    => ['Shop\Action', 'index']
+        'action'    => ['Shop', 'index']
     ],
+    */
 
     // каталог товаров
     'product.category' => [

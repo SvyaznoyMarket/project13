@@ -10,7 +10,7 @@ $c->appDir = realpath(__DIR__ . '/..');
 $c->configDir = $c->appDir . '/config';
 $c->libDir = $c->appDir . '/lib';
 $c->dataDir = $c->appDir . '/data';
-$c->logDir = realpath($c->appDir . '/../logs');
+$c->logDir = realpath($c->appDir . (basename($c->appDir) !== 'wwwroot' ? '/..' : '') . '/../logs');
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
 
@@ -52,7 +52,7 @@ $c->coreV2['retryTimeout'] = [
     'long'    => 0.8,
     'huge'    => 1.5,
 ];
-$c->coreV2['chunk_size']   = 50;
+$c->coreV2['chunk_size']   = 30;
 $c->coreV2['debug']        = false;
 
 $c->eventService['url'] = 'http://event.enter.ru/';

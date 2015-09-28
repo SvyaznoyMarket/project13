@@ -59,8 +59,13 @@
         width: 345px;
         .clearfix();
         margin-bottom: 50px;
-        .btn-type{
+        .btn-type.btn-type--buy{
             float: right;
+            border: 0;
+            padding: 0;
+            width: 180px;
+            height: 32px;
+            line-height: 32px;
         }
     }
     &__password{
@@ -71,6 +76,13 @@
         background-color: @bgGrey;
         .form-group{
             width: 230px;
+        }
+        .btn-type.btn-type--buy{
+            border: 0;
+            padding: 0;
+            width: 180px;
+            height: 32px;
+            line-height: 32px;
         }
     }
     &__sub-head{
@@ -115,12 +127,18 @@
                 height: 30px;
                 padding-top:0;
                 padding-bottom: 0px;
-                line-height: 30px;
+                line-height: 28px;
                 width: 100%;
+                color: #363636;
+
+                &__i{
+                    font-size: 14px;
+                    color: #363636;
+                }
 
                 &__inn{
                     font-size: 14px;
-                    color: @textGrey;
+                    color: #363636;
                 }
                 &:after{
                     width: 0;
@@ -192,6 +210,9 @@
                 background-position: -225px 0;
             }
         }
+    }
+    &__txt{
+        font-size: 14px;
     }
 
 

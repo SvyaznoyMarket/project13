@@ -16,7 +16,7 @@ if (!isset($showRegisterForm)) $showRegisterForm = true;
 
 <noindex>
     <!-- Registration -->
-    <div class="popup popup-auth" data-state="default" id="auth-block">
+    <div class="popup popup-auth js-login-content" data-state="default" id="auth-block">
         <span class="close close-auth">Закрыть</span>
         
         <div class="authWrap">
