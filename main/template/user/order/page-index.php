@@ -32,6 +32,7 @@ $recommendationsHtml = [
             'sender' => [
                 'position' => 'Basket',
             ],
+            'showLimit' => 6,
         ]),
     ]),
     $helper->render('product/__slider', [
