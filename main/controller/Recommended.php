@@ -14,6 +14,8 @@ class Recommended {
         $productIds = is_array($request->query->get('productIds')) ? $request->query->get('productIds') : [];
         $rrUserId = $request->cookies->get('rrpusid');
 
+        $showLimit = (int)$request->get('showLimit') ?: null;
+
         $recommendedProductsByType = call_user_func(function() use($request, $rrUserId) {
             $types = $request->query->get('types');
             if (!is_array($types)) {
@@ -120,7 +122,7 @@ class Recommended {
                 'alsoBought' => !empty($recommendedProductsByType['alsoBought']) ? [
                     'content' => \App::closureTemplating()->render(\App::abTest()->isNewProductPage() ? 'product-page/blocks/slider' : 'product/__slider', [
                         'products' => array_values($recommendedProductsByType['alsoBought']),
-                        'class' => 'slideItem-7item',
+                        'class' => sprintf('slideItem-%sitem', $showLimit ?: 7),
                         'title' => count($productIds) > 1 ? 'С этими товарами покупают' : 'С этим товаром покупают',
                         'sender' => [
                             'name' => 'retailrocket',
@@ -133,7 +135,7 @@ class Recommended {
                 'popular' => !empty($recommendedProductsByType['popular']) ? [
                     'content' => \App::closureTemplating()->render(\App::abTest()->isNewProductPage() ? 'product-page/blocks/slider' : 'product/__slider', [
                         'products' => array_values($recommendedProductsByType['popular']),
-                        'class' => 'slideItem-7item',
+                        'class' => sprintf('slideItem-%sitem', $showLimit ?: 7),
                         'title' => 'Популярные товары',
                         'sender' => [
                             'name' => 'retailrocket',
@@ -146,7 +148,7 @@ class Recommended {
                 'personal' => !empty($recommendedProductsByType['personal']) ? [
                     'content' => \App::closureTemplating()->render(\App::abTest()->isNewProductPage() ? 'product-page/blocks/slider' : 'product/__slider', [
                         'products' => array_values($recommendedProductsByType['personal']),
-                        'class' => 'slideItem-7item',
+                        'class' => sprintf('slideItem-%sitem', $showLimit ?: 7),
                         'title' => 'Мы рекомендуем',
                         'sender' => [
                             'name' => 'retailrocket',

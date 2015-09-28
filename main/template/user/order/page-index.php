@@ -32,13 +32,14 @@ $recommendationsHtml = [
             'sender' => [
                 'position' => 'Basket',
             ],
+            'showLimit' => 6,
         ]),
     ]),
     $helper->render('product/__slider', [
         'type'      => 'viewed',
         'title'     => 'Вы смотрели',
         'products'  => $viewedProducts,
-        'limit'     => 6, // \App::config()->product['itemsInSlider'],
+        'limit'     => \App::config()->product['itemsInSlider'],
         'page'      => 1,
         'class'     => 'slideItem-viewed',
         'isCompact' => true,
