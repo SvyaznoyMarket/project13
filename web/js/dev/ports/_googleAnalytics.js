@@ -97,6 +97,7 @@ ANALYTICS.gaJS = function(data) {
 
             var $productDataDiv = $('#jsProductCard'),
                 product = $productDataDiv.data('value'),
+                couponData = $('.js-enterprize-coupon').data('value');
 
                 gaBannerClickPrepare = function gaBannerClickPrepare() {
                     var
@@ -107,6 +108,11 @@ ANALYTICS.gaJS = function(data) {
 
             /* GA Ecommerce */
             ENTER.utils.analytics.addProduct($productDataDiv[0]);
+            // если есть купон и акция, то нужно задублировать просмотр товара.
+            // т.к. чуть выше залогировали акцию, то надо теперь оправить и купон
+            if (couponData && $productDataDiv.data('ecommerce') && $productDataDiv.data('ecommerce').coupon) {
+                ENTER.utils.analytics.addProduct($productDataDiv[0], {coupon: couponData.token})
+            }
             ENTER.utils.analytics.setAction('detail');
 
             /** Событие клика на баннер */

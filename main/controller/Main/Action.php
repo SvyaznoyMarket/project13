@@ -105,7 +105,7 @@ class Action {
 
         $productsById = array_filter($productsById);
 
-        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label');
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label brand category');
 
         $client->execute();
 
@@ -135,7 +135,7 @@ class Action {
             $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
 
-        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label');
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label brand category');
         \App::coreClientV2()->execute();
 
         $page = new \View\Main\IndexPage();

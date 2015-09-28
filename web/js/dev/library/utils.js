@@ -384,7 +384,8 @@
 					actions.push(location);
 				}
 
-				$body.trigger('trackGoogleEvent', ['Add2Basket', '(' + actions.join(')(') + ')', productArticle]);
+				//$body.trigger('trackGoogleEvent', ['Add2Basket', '(' + actions.join(')(') + ')', productArticle]);
+				$body.trigger('trackGoogleEvent', ['Product', 'click', 'add to cart']);
 			}
 		}
 	};

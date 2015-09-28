@@ -236,13 +236,13 @@ class Entity {
             $this->setLabel(new Label($data['label']));
         }
 
-        if (!empty($data['brand']) && @$data['brand']['slug'] === 'tchibo-3569') {
+        if (!empty($data['brand'])) {
             $this->setBrand(new \Model\Brand\Entity([
                 'ui'        => @$data['brand']['uid'],
                 'id'        => @$data['brand']['core_id'],
                 'token'     => @$data['brand']['slug'],
                 'name'      => @$data['brand']['name'],
-                'media_image' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png', // TODO после решения FCMS-740 заменить на URL из scms и удалить условие "@$thisData['brand']['slug'] === 'tchibo-3569'"
+                'medias'    => @$data['brand']['medias']
             ]));
         }
 
@@ -1485,12 +1485,23 @@ class Entity {
      * @return string
      */
     public function ecommerceData(){
+
+        $category = '';
+
+        if ($cat = $this->parentCategory) {
+            while ($cat) {
+                $category = $cat->getName() . ($cat == $this->parentCategory ? '' : ' / ') . $category;
+                $cat = $cat->getParent();
+            }
+        }
+
         return json_encode([
             'id'        => $this->getId(),
             'name'      => $this->getName(),
             'price'     => $this->getPrice(),
             'brand'     => $this->getBrand() ? $this->getBrand()->getName() : '',
-            'category'  => $this->getRootCategory() ? $this->getRootCategory()->name : ''
+            'category'  => $category,
+            'coupon'    => $this->label ? $this->label->name : ''
         ], JSON_UNESCAPED_UNICODE|JSON_HEX_APOS);
     }
 

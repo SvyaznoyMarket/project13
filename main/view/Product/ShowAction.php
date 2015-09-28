@@ -84,7 +84,7 @@ class ShowAction {
             'isBanner' => false,
             'hasKit'       => (bool)$product->getKit(),
             'isKitLocked'   => (bool)$product->getIsKitLocked(),
-            'brandImage'    => $product->getBrand() && $product->getBrand()->getImage() ? $product->getBrand()->getImage() : null,
+            'brandImage'    => $product->getBrand() && $product->getBrand()->isTchibo() ? $product->getBrand()->getImage() : null,
             'isSlot' => (bool)$product->getSlotPartnerOffer(),
             'isOnlyFromPartner' => $product->isOnlyFromPartner(),
             'isNewWindow'       => \App::abTest()->isNewWindow(), // открытие товаров в новом окне
