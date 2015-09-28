@@ -46,7 +46,7 @@ $f = function (
                 <? endif ?>
 
                 <? if (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_cost > \App::config()->order['prepayment']['priceLimit'])) : ?>
-                    <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
+                    <div class="order-error order-error--hint">Требуется предоплата.<br>Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a><i class="order-error__closer js-order-err-close"></i></div>
                 <? endif; ?>
 
 

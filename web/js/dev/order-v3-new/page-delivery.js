@@ -54,7 +54,8 @@
             sendChanges('changePaymentMethod', params)
         },
         changeAddress = function changeAddressF(params) {
-            sendChanges('changeAddress', params)
+            sendChanges('changeAddress', params);
+            $.each($inputs, lblPosition);
         },
         changeOrderComment = function changeOrderCommentF(comment){
             sendChanges('changeOrderComment', {'comment': comment})
@@ -179,7 +180,10 @@
                     closeClick: false,
                     closeEsc: false,
                     centered: true
-                })
+                });
+
+                $inputs = $('.js-order-ctrl__input');
+                $.each($inputs, lblPosition);
 
             }).always(function(){
                 $orderContent.stop(true, true).fadeIn(200);
@@ -262,14 +266,14 @@
 			$self.addClass('orderOferta_tabs_i-cur');
 			$("#"+tab_id).addClass('orderOferta_tabcnt-cur');
         },
-        showHideLabels = function showHideLabels() {
-            var $this = $(this),
-                $label = $this.parent().find('.js-order-ctrl__lbl');
+        lblPosition = function lblPosition() {
+          var $this = $(this),
+              $label = $this.parent().find('.js-order-ctrl__txt');
 
-            if ( $this.val() !== '' ) {
-                $label.show();
+            if ($this.is(":focus") || ($this.val() !== '')) {
+                $label.addClass('top');
             } else {
-                $label.hide();
+                $label.removeClass('top');
             }
         },
         bindMask = function() {
@@ -290,16 +294,16 @@
                             parent = field.fieldNode.parent();
                         console.warn('===== custom callbackError', field.fieldNode.parent());
                         parent.addClass('error');
-                        parent.find('.js-order-ctrl__lbl').show();
-                        parent.find('.order-ctrl__err').html(error);
+                        parent.find('.js-order-ctrl__txt').html(error);
                     },
                     callbackValid: function( field ) {},
                     unmarkField: function( field ) {
+                        console.log('custom unmarkField callback ');
                         var
                             parent = field.fieldNode.parent();
 
                         parent.removeClass('error');
-                        parent.find('.order-ctrl__err').html('');
+                        parent.find('.order-ctrl__txt').html(field.fieldNode.data('text-default'));
                     }
                 };
 
@@ -623,8 +627,13 @@
         $body.trigger('trackGoogleEvent', ['pickup_ux', 'list_point', 'выбор'])
     });
 
-    $.each($inputs, showHideLabels);
-    $body.on('keyup', '.js-order-ctrl__input', showHideLabels);
+    //$.each($inputs, lblPosition);
+    $(document).ready(function(){
+        $.each($inputs, lblPosition);
+    });
+
+    $body.on('focus', '.js-order-ctrl__input', lblPosition);
+    $body.on('blur', '.js-order-ctrl__input', lblPosition);
 
     //показать блок редактирования товара - новая версия
     $body.on('click', '.js-show-edit',function(){
@@ -769,7 +778,6 @@
 
         try {
             if ($form.length) {
-                $form.trigger('form.reset');
 
                 validator && validator.validate({
                     onInvalid: function( err ) {

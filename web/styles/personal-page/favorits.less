@@ -108,7 +108,7 @@
             vertical-align: middle;
             text-align: center;
             padding: 10px 0;
-            
+
             img {
                 max-width: 80px;
                 max-height: 80px;
@@ -155,7 +155,8 @@
         &__price{
             font-size: 16px;
             text-align: center;
-            width: 110px;
+            width: 140px;
+            white-space: nowrap;
 
             .old-price{
                 color: @textGrey;
@@ -245,6 +246,15 @@
             border-color: #afafaf transparent transparent transparent;
             .inline-block(middle);
             margin-right: 10px;
+        }
+    }
+    &.collapsed{
+        .personal-favorit__top {
+            display: none;
+        }
+
+        .personal-favorit__item {
+            display: none;
         }
     }
     &.expanded{
