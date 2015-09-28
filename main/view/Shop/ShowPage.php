@@ -47,7 +47,6 @@ class ShowPage extends \View\DefaultLayout {
                 'phone' => $point->phone,
                 'descriptionHtml' => $point->descriptionHtml,
                 'way' => $way,
-                'productCountText' => $point->productCount ? ($point->productCount . ' ' . $helper->numberChoice($point->productCount, ['товар', 'товара', 'товаров']) . ' можно забрать сегодня') : null,
                 'town' => [
                     'names' => [
                         'locativus' => $point->town->names->locativus,
