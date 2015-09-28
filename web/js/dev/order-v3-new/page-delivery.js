@@ -54,7 +54,8 @@
             sendChanges('changePaymentMethod', params)
         },
         changeAddress = function changeAddressF(params) {
-            sendChanges('changeAddress', params)
+            sendChanges('changeAddress', params);
+            $.each($inputs, lblPosition);
         },
         changeOrderComment = function changeOrderCommentF(comment){
             sendChanges('changeOrderComment', {'comment': comment})
@@ -179,7 +180,10 @@
                     closeClick: false,
                     closeEsc: false,
                     centered: true
-                })
+                });
+
+                $inputs = $('.js-order-ctrl__input');
+                $.each($inputs, lblPosition);
 
             }).always(function(){
                 $orderContent.stop(true, true).fadeIn(200);
@@ -641,6 +645,9 @@
     //$.each($inputs, showHideLabels);
     //$body.on('keyup', '.js-order-ctrl__input', showHideLabels);
     $.each($inputs, lblPosition);
+    $(document).ready(function(){
+        $.each($inputs, lblPosition);
+    });
     $body.on('keyup', '.js-order-ctrl__input', lblPosition);
     $body.on('click','.js-order-ctrl__input', lblToTop)
 
