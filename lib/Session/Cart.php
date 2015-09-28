@@ -333,7 +333,7 @@ namespace Session {
                 }
         
                 if (!$isPriceUpdated) {
-                    throw new \Exception('Не удалось получить цены для товаров');
+                    //throw new \Exception('Не удалось получить цены для товаров');
                 }
             });
 
