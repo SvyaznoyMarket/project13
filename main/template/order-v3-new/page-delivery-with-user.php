@@ -59,14 +59,14 @@ $f = function(
                     <div class="order-receiver__login">
                         <div class="order-ctrl required" data-field-container="phone">
                             <label class="order-ctrl__txt js-order-ctrl__txt" data-message="">*Телефон</label>
-                            <input name="user_info[phone]" class="order-ctrl__input js-order-ctrl__input js-order-phone" name="user_info[phone]" data-field="phone" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : $orderDelivery->user_info->phone ?>" data-mask="+7 (xxx) xxx-xx-xx" <? if (!$userEntity): ?> data-event="true"<? endif ?> required="required" />
+                            <input name="user_info[phone]" class="order-ctrl__input js-order-ctrl__input js-order-phone" name="user_info[phone]" data-field="phone" data-text-default="*Телефон" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : $orderDelivery->user_info->phone ?>" data-mask="+7 (xxx) xxx-xx-xx" <? if (!$userEntity): ?> data-event="true"<? endif ?> required="required" />
 
                         </div>
                         <div class="order-receiver__hint">Для смс о состоянии заказа</div>
                         <div class="order-ctrl required" data-field-container="email">
                             <label class="order-ctrl__txt js-order-ctrl__txt" data-message="">*E-mail</span>
                             </label>
-                            <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input js-order-email" data-field="email" value="<?= $userEntity ? $userEntity->getEmail() : $orderDelivery->user_info->email ?>" required="required" />
+                            <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input js-order-email" data-field="email" data-text-default="*E-mail" value="<?= $userEntity ? $userEntity->getEmail() : $orderDelivery->user_info->email ?>" required="required" />
                         </div>
                         <div class="order-receiver__subscribe">
                             <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="user_info[subscribe]" value="">
