@@ -34,6 +34,11 @@ class ShowPage extends \View\DefaultLayout {
 
         return \App::mustache()->render('shop/show/content', [
             'backUrl' => \App::router()->generate('shop'),
+            'town' => [
+                'names' => [
+                    'locativus' => \App::user()->getRegion()->names->locativus,
+                ],
+            ],
             'point' => [
                 'partner' => [
                     'names' => $point->partner->names,
@@ -47,11 +52,6 @@ class ShowPage extends \View\DefaultLayout {
                 'phone' => $point->phone,
                 'descriptionHtml' => $point->descriptionHtml,
                 'way' => $way,
-                'town' => [
-                    'names' => [
-                        'locativus' => $point->town->names->locativus,
-                    ],
-                ],
                 'subway' => [
                     'name' => $point->subway ? $point->subway->getName() : null,
                 ],
