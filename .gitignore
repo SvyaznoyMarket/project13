@@ -1,4 +1,5 @@
 /config/config-local.php
+/config/config-demo.php
 /config/databases.yml
 /cache
 /log

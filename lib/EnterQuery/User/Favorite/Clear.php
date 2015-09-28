@@ -41,7 +41,9 @@ namespace EnterQuery\User\Favorite
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
                     return $result; // for cache
-                }
+                },
+                1, // timeout ratio
+                [0] // delay ratio
             );
 
             return $this;

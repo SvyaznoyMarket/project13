@@ -82,6 +82,8 @@ class Entity {
     protected $seoKeywords;
     /** @var string|null */
     protected $seoDescription;
+    /** @var string|null */
+    public $seoText;
     /** @var int */
     protected $viewId;
     /** @var int */
@@ -297,6 +299,10 @@ class Entity {
 
         if (!empty($data['property_groups']) && is_array($data['property_groups'])) {
             $this->setPropertyGroup(array_map(function($data) { return new \Model\Product\Property\Group\Entity($data); }, $data['property_groups']));
+        }
+
+        if (isset($data['seo_text']) && is_string($data['seo_text'])) {
+            $this->seoText = $data['seo_text'];
         }
 
         $indexedPropertyGroups = [];
@@ -1345,6 +1351,9 @@ class Entity {
     }
 
     /**
+     * У товаров, полученных методом http://api.enter.ru/v2/product/from-model, проверять наличие моделей не требуется,
+     * т.к. данный метод всегда возвращает модель товара, которая в наличии (см. комментарии на
+     * https://wiki.enter.ru/pages/viewpage.action?pageId=21569552) 
      * @return bool
      */
     public function hasAvailableModels() {

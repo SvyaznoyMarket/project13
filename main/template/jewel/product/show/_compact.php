@@ -70,7 +70,7 @@ if ($product->getPriceOld()) {
             <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare" data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>" data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>"></a>
 
             <? if ($product->getIsBuyable()): ?>
-                <?= $helper->render('cart/__button-product', ['product' => $product]) // Кнопка купить ?>
+                <?= $helper->render('cart/__button-product', ['product' => $product, 'sender' => $category ? $category->getSenderForGoogleAnalytics() : []]) // Кнопка купить ?>
             <? endif ?>
         </div>
     </div>

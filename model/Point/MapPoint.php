@@ -29,6 +29,8 @@ class MapPoint extends BasicPoint {
     public $dateInterval;
     /** @var string */
     public $humanNearestDay;
+    /** @var bool Является ли точка пикпоинтом */
+    public $isPickpoint;
 
 //    public $blockName;
     public $orderToken;
@@ -61,6 +63,7 @@ class MapPoint extends BasicPoint {
 
         $this->humanNearestDay = $this->humanizeDate();
         $this->humanCost = $this->cost == 0 ? 'Бесплатно' : \App::helper()->formatPrice($this->cost);
+        $this->isPickpoint = strpos($this->token, 'pickpoint') !== false;
         $this->postamatFix();
 
     }

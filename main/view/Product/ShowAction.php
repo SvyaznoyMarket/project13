@@ -25,8 +25,11 @@ class ShowAction {
         $reviewtAction = null,
         $imageSourceType = 'product_160',
         array $cartButtonSender = [],
-        \Model\Product\Category\Entity $category = null
+        \Model\Product\Category\Entity $category = null,
+        \Model\Favorite\Product\Entity $favoriteProduct = null
     ) {
+        $router = \App::router();
+
         if ($product->isInShopOnly()) {
             $inShopOnlyLabel = ['name' => 'Только в магазинах'];
         } else {
@@ -49,6 +52,7 @@ class ShowAction {
             $inStoreLabel = null;
         }
 
+        $variations = (new \View\Product\Variations())->execute($helper, $product);
         $productItem = [
             'id'           => $product->getId(),
             'name'         => $product->getName(),
@@ -72,20 +76,8 @@ class ShowAction {
             'inStoreLabel' => $inStoreLabel,
             'onlyInShop'   => $product->isInShopOnly(),
             'stateLabel'   => $showState ? ($inShopOnlyLabel ? $inShopOnlyLabel : $inStoreLabel) : null,
-            'variations'   =>
-            ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty()) // TODO: перенести в \View\*Action
-                ? array_map(function(\Model\Product\Model\Property\Entity $property) {
-                return [
-                    'name' => $property->getName(),
-                ];
-            }, $product->getModel()->getProperty())
-                : null
-            ,
-            'hasVariations' =>
-            ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty())
-                ? true
-                : null
-            ,
+            'variations'   => $variations,
+            'hasVariations' => $variations ? true : null,
             'hasVideo' => $product->hasVideo(),
             'has360'   => $product->has3d(),
             'review'   => $reviewtAction ? $reviewtAction->execute($helper, $product) : null,
@@ -95,24 +87,43 @@ class ShowAction {
             'brandImage'    => $product->getBrand() && $product->getBrand()->getImage() ? $product->getBrand()->getImage() : null,
             'isSlot' => (bool)$product->getSlotPartnerOffer(),
             'isOnlyFromPartner' => $product->isOnlyFromPartner(),
-            'isNewWindow'       => \App::abTest()->isNewWindow() // открытие товаров в новом окне
+            'isNewWindow'       => \App::abTest()->isNewWindow(), // открытие товаров в новом окне
+            'compareButton'     => [
+                'id'                => $product->id,
+                'typeId'            => $product->getType() ? $product->getType()->getId() : null,
+                'addUrl'            => $router->generate('compare.add', ['productId' => $product->getId(), 'location' => 'product']),
+                'isSlot'            => (bool)$product->getSlotPartnerOffer(),
+                'isOnlyFromPartner' => $product->isOnlyFromPartner(),
+            ],
+            'favoriteButton'     =>
+                [
+                    'ui' => $product->ui,
+                ]
+                + (
+                    $favoriteProduct && $favoriteProduct->isFavourite
+                    ? [
+                        'isInFavorite' => true,
+                        'url'          => $helper->url('favorite.delete', ['productUi' => $product->getUi()]),
+                        'text'         => 'Убрать из избранного',
+                    ]
+                    : [
+                        'isInFavorite' => false,
+                        'url'          => $helper->url('favorite.add', ['productUi' => $product->getUi()]),
+                        'text'         => 'В избранное',
+                    ]
+                )
+            ,
         ];
 
         // Дополняем свойствами для каталога в виде листинга
         if (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category && $category->isInSiteListingWithViewSwitcherAbTest()) {
-            $productItem['properties']= array_map(function(\Model\Product\Property\Entity $entity) {
-                return [
-                    'name' => $entity->getName(),
-                    'value' => $entity->getStringValue(),
-
-                ];
-            }, $product->getPropertiesInView(3));
+            $productItem['properties'] = (new \View\Product\Properties())->execute($helper, $product);
         }
 
         // oldPrice and priceSale
         if ( $product->getPriceOld() && $product->getLabel()) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
-            $productItem['priceSale'] = round( ( 1 - ($product->getPrice() / $product->getPriceOld() ) ) *100, 0 );
+            $productItem['priceSale'] = round((1 - ($product->getPrice() / $product->getPriceOld())) * 100, 0); //($product->getPrice() < $product->getPriceOld()) ? round($product->getPrice() - $product->getPriceOld(), 0) : 0;
             $productItem['showPriceSale'] = AbTest::isShowSalePercentage();
         }
 

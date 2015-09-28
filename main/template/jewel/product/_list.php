@@ -25,6 +25,7 @@ if (!isset($isAddInfo)) $isAddInfo = false;
                 'isAjax' => $isAjax,
                 'isAddInfo' => $isAddInfo,
                 'itemsPerRow' => $itemsPerRow,
+                'category' => $category,
             ]);
             break;
         default:
@@ -33,6 +34,7 @@ if (!isset($isAddInfo)) $isAddInfo = false;
                 'isAjax' => $isAjax,
                 'isAddInfo' => $isAddInfo,
                 'itemsPerRow' => $itemsPerRow,
+                'category' => $category,
             ]);
             break;
     } ?>

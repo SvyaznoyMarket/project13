@@ -37,7 +37,7 @@ foreach ($productSorting->getAll() as $item)
             <a class="bBrandSortingOption__eLink" href="<?= $active['url'] ?>"><?= $active['title'] ?></a>
             <ul class="bBrandSortingOption__eDropDown">
                 <? foreach ($list as $item): ?>
-                    <li class="bDropDownItem"><a class="bDropDownItem__eLink" href="<?= $item['url'] ?>"><?= $item['title'] ?></a></li>
+                    <li class="bDropDownItem"><a class="bDropDownItem__eLink js-category-sorting-jewel-element-link" data-sort="<?= $page->escape($item['name'] . '-' . $item['direction']) ?>" href="<?= $item['url'] ?>"><?= $item['title'] ?></a></li>
                 <? endforeach ?>
             </ul>
         </div>

@@ -11,7 +11,7 @@ class Action {
     public function create(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        $client = \App::coreClientV2();
+        $userEntity = \App::user()->getEntity();
         $channelId = (int)$request->get('channel', 1);
 
         $email = null;
@@ -21,29 +21,24 @@ class Action {
                 throw new \Exception('Не передан email для подписки');
             }
 
-            $channels = \RepositoryManager::subscribeChannel()->getCollection(\App::user()->getEntity());
-            if (!(bool)$channels) {
-                throw new \Exception('Не получен ни один канал для подписки');
+            $controller = new \EnterApplication\Action\Subscribe\Create();
+            $controllerRequest = $controller->createRequest();
+            $controllerRequest->userToken = $userEntity ? $userEntity->getToken() : null;
+            $controllerRequest->channelId = $channelId;
+            $controllerRequest->email = $email;
+
+            $controllerResponse = $controller->execute($controllerRequest);
+
+            if ($error = $controllerResponse->errors->reset()) {
+                throw new \Exception($error->message, $error->code);
             }
-
-            $params = [
-                'email'      => $email,
-                'channel_id' => $channelId,
-            ];
-
-            if ($userEntity = \App::user()->getEntity()) {
-                $params['token'] = $userEntity->getToken();
-            }
-
-            $client->query('subscribe/create', $params, []);
 
             $responseData = [
                 'success' => true,
-                'data' => 'Спасибо! подтверждение подписки отправлено на указанный e-mail',
+                'data'    => 'Спасибо! подтверждение подписки отправлено на указанный e-mail',
             ];
         } catch (\Exception $e) {
             \App::logger()->error($e);
-            \App::exception()->remove($e);
 
             $responseData = [
                 'success'   => false,

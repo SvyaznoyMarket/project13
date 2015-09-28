@@ -12,8 +12,10 @@
     }
     &-img{
         display: table-cell;
-        width: 200px;
+
         position: relative;
+        padding-right: 23px;
+
         &__lnk{
             display: block;
             width: 165px;
@@ -62,7 +64,7 @@
         vertical-align: top;
         width: 100%;
         min-width: 0;
-        padding: 10px 0 30px 5px;
+        padding: 20px 0 15px 5px;
     }
     &__title{
         font-size: 14px;
@@ -71,19 +73,20 @@
 
     }
     &-props{
-        margin-top: 23px;
+        margin-top: 8px;
+
         &__i{
-            margin-bottom: 15px;
+            margin-bottom: 4px;
             .clearfix();
         }
         &__name{
             font-size: 12px;
             color: #8c8c8c;
-            width: 245px;
-            padding-right: 20px;
-            border-bottom: 1px dotted;
+
+            margin-right: 5px;
+
             float: left;
-            margin-bottom: -1px;
+
             &-wrap{
                 .inline-block();
                 background-color: #fff;
@@ -94,8 +97,7 @@
         &__val{
             font-size: 12px;
             display: block;
-
-            top: 3px;
+            top: 1px;
             position: relative;
             color: #363636;
         }
@@ -109,50 +111,117 @@
     }
     &__reviews{
         height: 16px;
-        margin-bottom: 25px;
-        float: right;
-
+        margin: 2px 0;
+        display: block;
+        &:hover{
+            text-decoration: none;
+        }
     }
     &-price-block{
         text-align: right;
         display: block;
         clear: right;
         &__price-old{
-            font-size: 18px;
+            font-size: 14px;
             color: #a0a0a0;
         }
         &__price-current{
-            font-size: 18px;
-
+            font-size: 24px;
+            display: block;
         }
         &__discount{
-            color: #ef404a;
+            color: #d45745;
             font-size: 14px;
-            border: 1px solid rgba(239,64,74,0.5);
-            margin: 0 6px;
-            padding: 1px 4px;
+            margin-left: 5px;
         }
         &__price-sale{
 
         }
     }
     &__btn-group{
-        margin: 10px 0;
+        margin: 5px 0 5px;
         text-align: right;
 
         .btnBuy{
             .inline-block();
             
             .btnBuy__eLink{
-                //width: 125px;
+                //кнопка для листинга - без нижнего бордера
+
+                    line-height: 1;
+
+                    cursor: pointer;
+
+                    .rounded(3px);
+                    .inline-block();
+
+                    color: #fff;
+
+                    background: #f99b1c;
+
+                    border: none;
+                    font-size: 18px;
+                    padding: 10px;
+                    width: 130px;
+                    text-align: center;
+
+                    .transition(background-color .2s ease);
+
+                    &:hover {
+                        background-color: #ff9f1d;
+                    }
+                    &:active {
+                        background-color: #f99b1c;
+                    }
+
+                &.btn-type--kit{
+
+                    &:before{
+                        content: '\e800';
+
+                        font-family: 'kit';
+                        font-style: normal;
+                        font-weight: normal;
+                        .inline-block(baseline);
+
+                        text-align: center;
+                        font-variant: normal;
+                        text-transform: none;
+
+                        margin-right: 0.5em;
+                    }
+
+                }
             }
             .mDisabled{
-                background-color: #fff;
+                background-color: @white;
+                border: 1px solid #a0a0a0;
                 color: #a0a0a0;
-                border: 1px solid;
+                cursor: default;
+                &:hover, &:active{
+                    background-color: @white;
+                }
             }
         }
 
+    }
+    &__btns{
+        margin-top: 10px;
+        .product-card-tools{
+            margin-left: -2px;
+        }
+        .product-card-tools__lk.btnCmprb-act{
+            text-decoration: none;
+            background-color: transparent;
+
+            .i-tools-icon {
+                background-image: url('@{base-url}/product/img/i-tools-icons-hover.png');
+            }
+            .product-card-tools__tx {
+                color: #363636;
+                border-color: #363636;
+            }
+        }
     }
     &__item-state{
         margin: 0 0 10px;
@@ -160,7 +229,6 @@
         font-size: 12px;
         text-align: center;
         min-width: 125px;
-        float: right;
     }
     .btn-compare{
         width: 22px;
@@ -175,18 +243,19 @@
     }
     &-variations{
         height: 16px;
-        margin: 10px 0px 7px;
+        margin: 10px 0px 0px;
         display: block;
         width: 100%;
-        position: absolute;
-        bottom: 0px;
+
         &__lbl{
             font-size: 12px;
             color: #8c8c8c;
-            padding-left: 34px;
-            background-image: url('/css/bCatalog/img/bOptions.png');
-            background-position: 2px 0px;
-            background-repeat: no-repeat;
+        }
+        &__val{
+            font-size: 12px;
+            .inline-block();
+            position: relative;
+            color: #363636;
         }
     }
 }
@@ -196,7 +265,8 @@
 .sorting-top{
     .lstn-type{
         &-btn{
-            padding: 1px 8px 1px 24px;
+            width: 24px;
+            height: 24px;
             font-size: 12px;
             color: #363636;
             .inline-block();
@@ -206,6 +276,8 @@
             margin-right: 5px;
             cursor: pointer;
             position: relative;
+            .box-sizing(border-box);
+            text-align: center;
 
             &.active, &:hover{
                 background-color: #363636;
@@ -218,8 +290,8 @@
             }
         }
         &__choose{
-            float: left;
-            margin-left: 35px;
+            float: right;
+            margin-left: 30px;
         }
 
         &-icon{
@@ -232,13 +304,8 @@
             text-align: center;
             font-variant: normal;
             text-transform: none;
-            margin-right: 5px;
             font-size: 16px;
-            display: block;
-            position: absolute;
-            top: 50%;
-            left: 5px;
-            margin-top: -10px;
+            display: inline-block;
 
             &.bar{
                 

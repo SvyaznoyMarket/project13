@@ -21,10 +21,6 @@ $(function() {
 
         // клик по ссылке на товар
         $body.on('click', '.js-listing-item', function() {
-            var
-                $el = $(this)
-            ;
-
             $body.trigger('trackGoogleEvent', {
                 category: 'slices_sale',
                 action: 'product',
@@ -34,10 +30,6 @@ $(function() {
 
         // клик по кнопке "Купить"
         $body.on('click', '.jsBuyButton', function(e) {
-            var
-                $el = $(this)
-            ;
-
             e.stopPropagation();
 
             $body.trigger('trackGoogleEvent', {

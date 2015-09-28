@@ -7,10 +7,7 @@
 		$moreReviewsButton = $('.js-reviews-getMore'),
 		reviewCurrentPage = 0,
 		reviewPageCount = $reviewWrap.attr('data-page-count'),
-		productUi = $reviewWrap.attr('data-product-ui'),
-		avgScore = $reviewWrap.data('avg-score'),
-		firstPageAvgScore = $reviewWrap.data('first-page-avg-score'),
-		categoryName = $reviewWrap.data('category-name');
+		productUi = $reviewWrap.attr('data-product-ui');
 
 	if (!$reviewWrap.length) {
 		return;
@@ -37,37 +34,6 @@
 			}
 		});
 	});
-
-	// SITE-5466
-	(function() {
-		var timer;
-		function checkReviewsShowing() {
-			var windowHeight = $window.height();
-			if ($window.scrollTop() + windowHeight > $reviewWrap.offset().top) {
-				if (!timer) {
-					timer = setTimeout(function() {
-						$window.unbind('scroll', checkReviewsShowing);
-
-						$body.trigger('trackGoogleEvent', {
-							category: 'Items_review',
-							action: 'All_' + avgScore + '_Top_' + firstPageAvgScore,
-							label: categoryName
-						});
-
-						ENTER.utils.analytics.reviews.add(productUi, avgScore, firstPageAvgScore, categoryName);
-					}, 2000);
-				}
-			} else {
-				if (timer) {
-					clearTimeout(timer);
-					timer = null;
-				}
-			}
-		}
-
-		$window.scroll(checkReviewsShowing);
-		checkReviewsShowing();
-	})();
 }());
 
 

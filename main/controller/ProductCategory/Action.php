@@ -2,11 +2,14 @@
 
 namespace Controller\ProductCategory;
 
+use EnterApplication\CurlTrait;
 use Model\Product\Filter\Entity;
 use View\Partial\ProductCategory\RootPage\Brands;
 use View\Product\FilterForm;
 
 class Action {
+    use CurlTrait;
+
     protected $pageTitle;
 
     /**
@@ -135,21 +138,20 @@ class Action {
             $scmsClient->execute();
         }
 
-        // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
-        $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
-
-        if ($categoryClass && ('default' !== $categoryClass)) {
-            if ('jewel' == $categoryClass) {
-                if (\App::config()->debug) \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
-
-                return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent);
-            } else if ('grid' == $categoryClass) {
-                if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
-
-                return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
+        if ($category->isPandora()) {
+            if (\App::config()->debug) {
+                \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
             }
 
-            \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
+            return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent);
+        } else if ($category->isGrid()) {
+            if (\App::config()->debug) {
+                \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
+            }
+
+            return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
+        } else if (!$category->isDefault()) {
+            \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $category->getCategoryClass()));
         }
 
         $relatedCategories = [];
@@ -646,6 +648,32 @@ class Action {
 
         \App::coreClientV2()->execute();
 
+        // избранные товары пользователя
+        /** @var \Model\Favorite\Product\Entity[] $favoriteProductsByUi */
+        $favoriteProductsByUi = [];
+        call_user_func(function() use (&$products, &$favoriteProductsByUi) {
+            $userUi = \App::user()->getEntity() ? \App::user()->getEntity()->getUi() : null;
+            if (!$userUi) return;
+            $productUis = array_map(function(\Model\Product\Entity $product) { return $product->ui; }, $products);
+            if (!$productUis) return;
+
+            $favoriteQuery = new \EnterQuery\User\Favorite\Check($userUi, $productUis);
+            $favoriteQuery->prepare();
+
+            $this->getCurl()->execute();
+
+            // избранные товары
+            $favoriteProductsByUi = [];
+            foreach ($favoriteQuery->response->products as $item) {
+                if (!isset($item['is_favorite']) || !$item['is_favorite']) continue;
+
+                $ui = isset($item['uid']) ? (string)$item['uid'] : null;
+                if (!$ui) continue;
+
+                $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
+            }
+        });
+
         if (!$products && 'true' == $request->get('ajax') && !\App::config()->lite['enabled']) {
             throw new \Exception('Товары не найдены');
         }
@@ -657,6 +685,16 @@ class Action {
         });
 
         \App::coreClientV2()->execute();
+
+        // SITE-5772
+        call_user_func(function() use(&$products, $category) {
+            $sender = $category->getSenderForGoogleAnalytics();
+            if ($sender) {
+                foreach ($products as $product) {
+                    $product->setLink($product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&') . http_build_query(['sender' => $sender]));
+                }
+            }
+        });
 
         $productPager = new \Iterator\EntityPager($products, $productCount);
 
@@ -700,8 +738,9 @@ class Action {
                     true,
                     $columnCount,
                     $productView,
-                    [],
-                    $category
+                    $category->getSenderForGoogleAnalytics(),
+                    $category,
+                    $favoriteProductsByUi
                 ),
                 'selectedFilter' => $selectedFilter->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -735,6 +774,7 @@ class Action {
 
         $page->setParam('smartChoiceProducts', $smartChoiceData);
         $page->setParam('productPager', $productPager);
+        $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
         $page->setParam('hasBanner', $hasBanner);

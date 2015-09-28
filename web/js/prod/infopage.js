@@ -106,9 +106,9 @@ $(document).ready(function(){
 
 					if (typeof(_gaq) != 'undefined') {
 						if (location.pathname == '/enter-friends') {
-							_gaq.push(['_trackEvent', 'subscription', 'subscribe_enter_friends', email]);
+							_gaq.push(['_trackEvent', 'subscription', 'subscribe_enter_friends']);
 						} else if (location.pathname == '/special_offers') {
-							_gaq.push(['_trackEvent', 'subscription', 'subscribe_special_offers', email]);
+							_gaq.push(['_trackEvent', 'subscription', 'subscribe_special_offers']);
 						}
 					}
 				});
@@ -347,6 +347,11 @@ $(document).ready(function(){
 			return false;
 		});
 	}
+
+    $('.js-scms-changeRegion').on('click',function(){
+		$('.jsChangeRegion').click();
+    });
+
     //Попап стоимости доставки
     $('.js-tarifs-popup-show').on('click',function(e){
 
@@ -397,6 +402,7 @@ $(document).ready(function(){
 
         noResult ? $('.tarifs-search__no-result').show() : $('.tarifs-search__no-result').hide();
     });
+
     $('.js-shops-popup-show').on('click',function(e){
 
         e.preventDefault();
@@ -411,6 +417,38 @@ $(document).ready(function(){
         $('.js-shops-popup').hide();
         $('.js-tarifs-overlay').remove();
         $('body').removeClass('body-fixed');
+    });
+
+    $(document).ready(function(){
+        $('.subscribe-block[data-type="background"]').each(function(){
+            var $this = $(this),
+                $scrolled = $this.find('.scrolled-bg'),
+                $window = $(window),
+                lastScrollTop = $(window).scrollTop(),
+                delta = 0;
+
+
+                $window.scroll(function() {
+
+                    var st = $(window).scrollTop();
+                    delta = lastScrollTop - st;
+
+                    lastScrollTop = st;
+
+                    if ( ($window.scrollTop() + $window.height()) >= $this.offset().top ){
+
+
+                        var prevCoords = $scrolled.css('backgroundPosition').split(' '),
+                            prevY = parseInt( prevCoords[1] ),
+                            coords = 'center '+ (prevY + (delta / $this.data('speed')) ) + 'px';
+
+                        $scrolled.css({ 'background-position': coords });
+                    }
+
+                });
+
+        });
+
     });
 });
 

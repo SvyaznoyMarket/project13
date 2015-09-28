@@ -356,6 +356,8 @@ class Action {
         \RepositoryManager::product()->prepareProductQueries($products, 'media');
         \App::coreClientV2()->execute();
 
+        \App::coreClientV2()->execute();
+
         foreach ($products as $product) {
             $data['products'][] = [
                 'name'  => html_entity_decode($product->getName()),
