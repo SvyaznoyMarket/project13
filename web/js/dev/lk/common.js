@@ -1,5 +1,5 @@
 +function($){
-    $('.js-slider-2').goodsSlider({
+    $('.js-slider').goodsSlider({
         leftArrowSelector: '.goods-slider__btn--prev',
         rightArrowSelector: '.goods-slider__btn--next',
         sliderWrapperSelector: '.goods-slider__inn',
