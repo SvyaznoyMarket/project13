@@ -18,7 +18,7 @@ return function(
     <? if (!$orderDelivery instanceof \Model\OrderDelivery\Entity) return ?>
 
     <? foreach ($orderDelivery->errors as $e) : ?>
-        <? if (true || $e->isMaxQuantityError() && !isset($e->details['block_name'])) : ?>
+        <? if (!isset($e->details['block_name'])) : ?>
             <div class="order-error order-error--warning">
                 <?= $e->message ?>
                 <i class="order-error__closer js-order-err-close"></i>
