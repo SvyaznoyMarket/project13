@@ -20,8 +20,12 @@ namespace Session {
     
             // очистить старую корзину
             $this->storage->remove('userCart');
-    
-            $this->update();
+
+            try {
+                $this->update();
+            } catch(\Exception $e) {
+                \App::logger()->error(['message' => 'Не удалось обновить корзину', 'error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['cart/update']);
+            }
         }
     
         public function clear() {
@@ -289,13 +293,13 @@ namespace Session {
     
                 $sessionCart['product'] = $sessionProductsById;
             });
-
-            $isPriceUpdated = false;
-            call_user_func(function() use(&$sessionCart, &$isPriceUpdated) {
+    
+            call_user_func(function() use(&$sessionCart) {
                 if (!$sessionCart['product']) {
                     return;
                 }
                 
+                $isPriceUpdated = false;
                 // Для корректного подсчёта суммы следует вызывать данный метод лишь после добавления/замены/удаления
                 // $setProducts товаров и обновления товаров в сессии
                 \App::coreClientV2()->addQuery(
@@ -333,15 +337,13 @@ namespace Session {
                 }
         
                 if (!$isPriceUpdated) {
-                    //throw new \Exception('Не удалось получить цены для товаров');
+                    throw new \Exception('Не удалось получить цены для товаров');
                 }
             });
 
-            if ($isPriceUpdated) {
-                $sessionCart['updated'] = (new \DateTime('now'))->format('c');
-                $this->setSessionCart($sessionCart);
-            }
-
+            $sessionCart['updated'] = (new \DateTime('now'))->format('c');
+            $this->setSessionCart($sessionCart);
+            
             // TODO может перенести синхронизацию серверной корзины сюда (выполняя её на основе данных из $resultProducts)?
 
             return $resultProducts;

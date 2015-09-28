@@ -32,11 +32,8 @@ class ExceptionStack {
      */
     public function first() {
         $first = reset($this->exceptions);
-        if ($first) {
-            return $first;
-        } else {
-            return null;
-        }
+
+        return $first ?: null;
     }
     
     /**
@@ -45,10 +42,7 @@ class ExceptionStack {
     public function last() {
         $last = end($this->exceptions);
         reset($this->exceptions);
-        if ($last) {
-            return $last;
-        } else {
-            return null;
-        }
+
+        return $last ?: null;
     }
 }
