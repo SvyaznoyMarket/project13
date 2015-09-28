@@ -69,8 +69,10 @@ $f = function(
 
                 <!-- Этот блок идентичен блоку, который используется на 2м шаге, но у меня не получилось здесь отрендерить его-->
                 <div class="payment-methods__discount discount">
-                    <span class="discount__pay-type">Онлайн-оплата</span>
-                    <span class="discount__val">Скидка 15%</span>
+                    <div class="id-onlineDiscount-container" style="display: none;">
+                        <span class="discount__pay-type">Онлайн-оплата</span>
+                        <span class="discount__val">Скидка 15%</span>
+                    </div>
                 </div>
                 <ul class="payment-methods__lst">
                     <? foreach ($paymentMethods as $paymentMethod): ?>
@@ -91,8 +93,12 @@ $f = function(
                                 'number' => $order->number,
                                 'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context]),
                             ]) ?>"
+                            <? if (in_array($paymentMethod->id, \App::config()->payment['discountIds'])): ?>
+                                data-discount="true"
+                            <? endif ?>
                             data-relation="<?= $helper->json([
-                                'formContainer' => '.id-paymentForm-container',
+                                'formContainer'     => '.id-paymentForm-container',
+                                'discountContainer' => '.id-onlineDiscount-container',
                             ]) ?>"
                             class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
                             <? if ($checked): ?> checked="checked"<? endif ?>

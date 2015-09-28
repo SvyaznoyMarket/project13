@@ -13,11 +13,13 @@ $f = function (
     <div class="paymentMethods <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
         <strong>Способы оплаты</strong>
 
-        <!-- Новые способы оплаты - статика -->
         <div class="payment-methods__discount discount">
+        <? if (in_array($order->payment_method_id, \App::config()->payment['discountIds'])): ?>
             <span class="discount__pay-type">Онлайн-оплата</span>
             <span class="discount__val">Скидка 15%</span>
+        <? endif ?>
         </div>
+
         <ul class="payment-methods__lst">
         <? foreach ($paymentMethods as $paymentMethod): ?>
         <?

@@ -61,6 +61,8 @@ $f = function(
                     )
                     && ((bool)$paymentEntity ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $paymentEntity->groups) : false)
                 ;
+
+                $discountContainerId = sprintf('id-onlineDiscount-container', $order->id);
             ?>
 
                 <div class="orderLn clearfix" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
@@ -151,15 +153,17 @@ $f = function(
 
                                         <!-- Новые способы оплаты - статика -->
                                         <div class="payment-methods__discount discount">
-                                            <span class="discount__val">Скидка 15%</span>
+                                            <div class="<?= $discountContainerId ?>" style="display: none;">
+                                                <span class="discount__val">Скидка 15%</span>
+                                            </div>
                                         </div>
                                         <ul class="payment-methods__lst">
                                             <? foreach ($onlinePaymentMethods as $paymentMethod): ?>
-                                                <?
+                                            <?
                                                 $containerId = sprintf('id-order-%s-paymentMethod-container', $order->id);
                                                 $elementId = sprintf('order-%s-paymentMethod-%s', $order->id, $paymentMethod->id);
                                                 $checked = $order->paymentId == $paymentMethod->id;
-                                                ?>
+                                            ?>
                                                 <li class="payment-methods__i">
                                                     <input
                                                         id="<?= $elementId ?>"
@@ -173,8 +177,12 @@ $f = function(
                                                             'number' => $order->number,
                                                             'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context]),
                                                         ]) ?>"
+                                                        <? if (in_array($paymentMethod->id, \App::config()->payment['discountIds'])): ?>
+                                                            data-discount="true"
+                                                        <? endif ?>
                                                         data-relation="<?= $helper->json([
-                                                            'formContainer' => '.' . $containerId,
+                                                            'formContainer'     => '.' . $containerId,
+                                                            'discountContainer' => '.' . $discountContainerId,
                                                         ]) ?>"
                                                         class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
                                                         <? if ($checked): ?> checked="checked"<? endif ?>

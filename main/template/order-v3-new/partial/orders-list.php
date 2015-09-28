@@ -150,26 +150,8 @@ $f = function (
                                 class="order-discount__val">-<?= $order->certificate['par'] ?>
                                 <span class="rubl">p</span></span>
                         </div>
-
-                    <? endif; ?>
-
-                        <!-- Статика: скидка за выбранный способ оплаты -->
-                        <div class="order-discount__item">
-                            <div class="order-discount__cell">
-                                <span class="order-discount__del jsDeleteCertificate">удалить</span>
-                            </div>
-                            <a href="" class="order-discount__lk">
-                                <img class="order-discount__img" src="/styles/order-new/img/payment-discount.png" alt="">
-                            </a>
-
-                            <div class="order-discount__name">Онлайн-оплата. Скидка 15%</div>
-
-                                <span
-                                    class="order-discount__val">-350
-                                    <span class="rubl">p</span></span>
-                        </div>
-                        <!-- END скидка за выбранный способ оплаты -->
-                <? endif; ?>
+                    <? endif ?>
+                <? endif ?>
                 </div>
                 <!-- END: введенные скидки, купоны -->
             </div>

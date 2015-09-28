@@ -327,8 +327,9 @@ class AppConfig {
     ];
     /** @var array */
     public $payment = [
-        'creditEnabled'    => null,
-        'blockedIds'       => [],
+        'creditEnabled' => null,
+        'blockedIds'    => [],
+        'discountIds'   => [],
     ];
     /**
      * @var array
@@ -351,6 +352,7 @@ class AppConfig {
         'merchantName' => null,
         'key'          => null,
         'payUrl'       => null,
+        'discountIds'  => [],
     ];
     /**
      * @var array
