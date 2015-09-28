@@ -31,12 +31,13 @@ $(function($){
 
 				if (!$img.length) {
 					$img = $('<img />').appendTo($viewport);
+					$img.load(function() {
+						var left = parseInt(($img.width() - $viewport.width()) / 2);
+						$img.css('left', left > 0 ? '-' + left + 'px' : 0);
+					});
 				}
 
-				$img.one('load', function() {
-					var left = parseInt(($img.width() - $viewport.width()) / 2);
-					$img.css('left', left > 0 ? '-' + left + 'px' : 0);
-				}).attr('src', $self.data('big-url')).show();
+				$img.attr('src', $self.data('big-url')).show();
 			} else if ($self.data('type') == 'map') {
 				$viewport.find('ymaps:first').show();
 				$viewport.find('img:first').hide();
