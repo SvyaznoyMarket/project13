@@ -71,7 +71,7 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
                                     <?= $deliveredAt->format('d.m.Y') ?>
                                 <? endif ?>
                             </span>
-                            <div class="personal-order__deliv-info ellipsis">
+                            <div class="personal-order__deliv-info">
                                 <? if ($order->pointUi && ($point = $pointsByUi[$order->pointUi])): ?>
                                     <?= $point->getTypeName() ?><br><?= $point->address ?>
                                 <? endif ?>
