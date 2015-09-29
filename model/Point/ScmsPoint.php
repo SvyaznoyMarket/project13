@@ -35,11 +35,11 @@ class ScmsPoint {
     /** @var string */
     public $url;
     /** @var string */
-    public $description;
+    public $descriptionHtml;
     /** @var string */
-    public $wayWalk;
+    public $wayWalkHtml;
     /** @var string */
-    public $wayAuto;
+    public $wayAutoHtml;
     /** @var string */
     public $address;
     /** @var Subway|null */
@@ -105,10 +105,10 @@ class ScmsPoint {
 
         if (isset($data['name'])) $this->name = $data['name'];
 
-        if (isset($data['description'])) $this->description = $data['description'];
+        if (isset($data['description'])) $this->descriptionHtml = $data['description'];
         if (isset($data['address'])) $this->address = $data['address'];
-        if (isset($data['way_walk'])) $this->wayWalk = $data['way_walk'];
-        if (isset($data['way_auto'])) $this->wayAuto = $data['way_auto'];
+        if (isset($data['way_walk'])) $this->wayWalkHtml = $data['way_walk'];
+        if (isset($data['way_auto'])) $this->wayAutoHtml = $data['way_auto'];
 
         if (isset($data['subway'])) {
             if (is_array($data['subway'])) $this->subway = new Subway($data['subway']);

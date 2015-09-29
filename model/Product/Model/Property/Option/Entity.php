@@ -6,7 +6,7 @@ class Entity {
 
     /** @var string */
     public $value;
-    /** @var \Model\Product\Entity[] */
+    /** @var \Model\Product\Entity|null */
     public $product;
 
     public function __construct(array $data = []) {

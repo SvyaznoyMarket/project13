@@ -183,9 +183,7 @@ class CompleteAction extends OrderV3 {
             $updateResultProducts = [];
             try {
                 $updateResultProducts = $this->cart->update(array_map(function(\Model\Product\Entity $product){ return ['ui' => $product->ui, 'quantity' => 0]; }, $products));
-            } catch(\Exception $e) {
-                \App::logger()->error(['message' => 'Не удалось очистить корзину после оформления заказа', 'error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['order', 'cart/update']);
-            }
+            } catch(\Exception $e) {}
 
             if ($userEntity && $this->isCoreCart()) {
                 try {

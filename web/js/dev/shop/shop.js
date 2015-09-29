@@ -25,21 +25,19 @@ $(function($){
 			var $self = $(e.currentTarget);
 
 			if ($self.data('type') == 'image') {
-				var
-					bigUrl = $self.data('big-url'),
-					$img = $viewport.find('img')
-				;
+				var $img = $viewport.find('img');
 
 				$viewport.find('ymaps:first').hide();
 
-				if ($img.length) {
-					$img.attr('src', bigUrl).show();
-				} else {
-					$viewport.append($('<img />', {
-						src: bigUrl,
-						width: $viewport.width()
-					}));
+				if (!$img.length) {
+					$img = $('<img />').appendTo($viewport);
+					$img.load(function() {
+						var left = parseInt(($img.width() - $viewport.width()) / 2);
+						$img.css('left', left > 0 ? '-' + left + 'px' : 0);
+					});
 				}
+
+				$img.attr('src', $self.data('big-url')).show();
 			} else if ($self.data('type') == 'map') {
 				$viewport.find('ymaps:first').show();
 				$viewport.find('img:first').hide();

@@ -124,6 +124,7 @@ class Action {
                 'api/static-page',
                 [
                     'token' => [trim((string)$catalogJson['promo_token'])],
+                    'geo_town_id' => \App::user()->getRegion()->id,
                     'tags' => ['site-web'],
                 ],
                 [],

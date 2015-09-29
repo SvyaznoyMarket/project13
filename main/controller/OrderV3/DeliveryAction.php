@@ -281,12 +281,14 @@ class DeliveryAction extends OrderV3 {
 
         // обновляем корзину пользователя
         if (isset($data['action']) && isset($data['params']['id']) && $data['action'] == 'changeProductQuantity') {
-            // SITE-5442
-            if (isset($orderDelivery->getProductsById()[$data['params']['id']])) {
-                $this->cart->update([['ui' => $data['params']['ui'], 'quantity' => $orderDelivery->getProductsById()[$data['params']['id']]->quantity]]);
-            } else {
-                $this->cart->update([['ui' => $data['params']['ui'], 'quantity' => 0]]);
-            }
+            try {
+                // SITE-5442
+                if (isset($orderDelivery->getProductsById()[$data['params']['id']])) {
+                    $this->cart->update([['ui' => $data['params']['ui'], 'quantity' => $orderDelivery->getProductsById()[$data['params']['id']]->quantity]]);
+                } else {
+                    $this->cart->update([['ui' => $data['params']['ui'], 'quantity' => 0]]);
+                }
+            } catch(\Exception $e) {}
         }
 
         // сохраняем в сессию расчет доставки
