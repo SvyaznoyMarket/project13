@@ -30,7 +30,10 @@ class NewAction extends OrderV3 {
 
         try {
             if ($request->isMethod('GET')) {
-                $this->cart->update([], true);
+                try {
+                    $this->cart->update([], true);
+                } catch(\Exception $e) {}
+
                 $this->pushEvent(['step' => 1]);
             }
 

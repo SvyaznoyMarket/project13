@@ -43,9 +43,7 @@ namespace EnterApplication\Action\Cart
         
             try {
                 $cart->update($productsToUpdate);
-            } catch(\Exception $e) {
-                \App::logger()->error(['message' => 'Не удалось синхронизировать сессионную корзину с серверной корзиной', 'error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['cart/update']);
-            }
+            } catch(\Exception $e) {}
 
             // response
             $response = new Response();
