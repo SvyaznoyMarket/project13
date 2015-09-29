@@ -16,7 +16,7 @@
         <div class="topbarfix-cart-wrap" data-bind="css: {'min-sum': isMinOrderSumVisible() }"><!--сюда добавить класс "min-sum" если корзина у нас для выводит сообщение о минимальной сумме заказа-->
             <table class="table-cart">
                 <tbody data-bind="foreach: cart().products()">
-                    <tr class="table-cart__i">
+                    <tr class="table-cart__i" data-bind="css: {'unaval': !isAvailable } ">
                         <td class="table-cart__img-wrap" valign="middle">
                             <a data-bind="attr: { href: link }">
                                 <img class="table-cart__img" src="" data-bind="attr: { src: img }"/>
@@ -24,6 +24,7 @@
                         </td>
                         <td class="table-cart__name">
                             <a class="table-cart__name-inn" data-bind="attr: { href: link, title: name }, text: name"></a>
+                            <span class="table-cart__unavalible-text" data-bind="visible: !isAvailable">Нет в наличии</span>
                         </td>
                         <td class="table-cart__inf">
                             <span class="price"><span data-bind="html: window.printPrice(price)"></span> &nbsp;<span class="rubl">p</span></span>
