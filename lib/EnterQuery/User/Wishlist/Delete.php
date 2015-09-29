@@ -40,7 +40,7 @@ namespace EnterQuery\User\Wishlist
                 ),
                 [
                     'user_uid'    => $this->userUi,
-                    'id' => $this->id,
+                    'wishlist_id' => $this->id,
                 ], // data
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
