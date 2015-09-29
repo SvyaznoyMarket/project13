@@ -282,6 +282,7 @@
                 $phoneInput    = $('.js-order-phone'),
                 $emailInput    = $('.js-order-email'),
                 $agreeCheckbox = $('.jsAcceptAgreement'),
+                $address       = $('.js-order-deliveryAddress'),
 
                 validationConfig = {
                     fields: [{
@@ -314,6 +315,18 @@
                 validBy: 'isPhone',
                 validateOnChange: true,
                 errorMsg: 'Введите телефон'
+            });
+
+            $address.length && $address.each(function() {
+                var
+                    $self = $(this);
+
+                validationConfig.fields.push({
+                    fieldNode: $self,
+                    require: !!$self.attr('required'),
+                    validateOnChange: true,
+                    errorMsg: $self.attr('data-text-default')
+                });
             });
 
             $emailInput.length && validationConfig.fields.push({

@@ -31,8 +31,10 @@ $f = function(
             value="<?= $address['street'] ?>"
             class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             data-field="street"
+            required="<?= $order->isPartnerOffer() ? 'true' : 'false' ?>"
             data-value="<?= $helper->json($dataValue) ?>"
             data-relation="<?= $helper->json(['container' => '.' . $containerId])?>"
+            data-text-default="*Улица"
             data-parent-kladr-id="<?= \App::user()->getRegion()->kladrId ?>"
         />
     </div>
@@ -43,7 +45,9 @@ $f = function(
             value="<?= $address['building'] ?>"
             class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             data-field="building"
+            required="<?= $order->isPartnerOffer() ? 'true' : 'false' ?>"
             data-value="<?= $helper->json($dataValue) ?>"
+            data-text-default="*Дом"
             data-relation="<?= $helper->json(['container' => '.' . $containerId])?>"
         />
     </div>
@@ -60,4 +64,3 @@ $f = function(
     </div>
 </div>
 <? }; return $f;
- 
