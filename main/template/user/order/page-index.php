@@ -75,7 +75,10 @@ $recommendationsHtml = [
                         </div>
                         <div class="personal-order__cell">
                             <? if (($orderProduct = reset($order->product) ?: null) && ($product = @$productsById[$orderProduct->getId()] ?: null)): ?>
-                                <div class="personal-order__name ellipsis"><?= $product->getName() ?> <?= $orderProduct->getQuantity() ?> шт</div>
+                                <div class="personal-order__name">
+                                    <div class="ellipsis"><div><?= $product->getName() ?> <?= $orderProduct->getQuantity() ?> шт</div>
+                                    </div>
+                                </div>
 
                                 <? if ($moreProductCount = (count($order->product) - 1)): ?>
                                     <div style="color: #868686">и еще <?= $moreProductCount . ' ' . $helper->numberChoice($moreProductCount, ['товар', 'товара', 'товаров']) ?></div>

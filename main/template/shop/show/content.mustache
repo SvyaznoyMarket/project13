@@ -32,12 +32,13 @@
 </div>
 
 {{#point.showMap}}
-    <div class="shops__map">
+    <div class="shops__map {{^point.images.0}}shops__map__single{{/point.images.0}}">
         <div class="shops__viewport">
             <div class="shops__viewport__container js-shop-viewport" data-map-latitude="{{point.latitude}}" data-map-longitude="{{point.longitude}}"></div>
         </div>
-        <div class="shops-gallery">
-            {{#point.images.0}}
+
+        {{#point.images.0}}
+            <div class="shops-gallery">
                 <ul class="shops-gallery__lst">
                 {{#point.images}}
                     <li>
@@ -51,8 +52,8 @@
                 <a class="shops-gallery__i shops-gallery__bottom js-shop-image-opener" data-type="map">
                     <img src="/images/map_ico.png" alt="" />
                 </a>
-            {{/point.images.0}}
-        </div>
+            </div>
+        {{/point.images.0}}
     </div>
 {{/point.showMap}}
 

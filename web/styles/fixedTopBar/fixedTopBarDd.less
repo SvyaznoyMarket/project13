@@ -156,6 +156,17 @@
         height: 55px;
 
         vertical-align: top;
+        .unaval& {
+            .table-cart__name-inn {
+                opacity: 0.5;
+            }
+            .price {
+                opacity: 0.5;
+            }
+            .quan {
+                opacity: 0.5;
+            }
+        }
     }
     &__img {
         max-width: 30px;
@@ -168,7 +179,7 @@
         }
     }
     &__name {
-        line-height: 1.2;
+        line-height: 15px;
 
         width: 100%;
         max-width: 0;
@@ -182,11 +193,15 @@
             overflow: hidden;
 
             max-width: 120px;
-            max-height: 40px;
+            max-height: 30px;
             &:after {
                 .after-gradient-stub(15px);
             }
         }
+    }
+    &__unavalible-text {
+        color: #DB4437;
+        line-height: 17px;
     }
     &__inf {
         padding: 5px 10px 5px 0;
