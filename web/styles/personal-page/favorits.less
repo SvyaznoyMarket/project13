@@ -7,8 +7,17 @@
         padding: 10px;
         margin: 10px 0 20px;
         background-color: @lightGrey;
-        &.favorit-list{
 
+        &.disabled {
+            .personal-favorit__act{
+                cursor: default;
+                color: #B8B8B8;
+                pointer-events: none;
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
         }
     }
     &-favorit{
@@ -191,8 +200,13 @@
             font-size: 14px;
             color: @textColor;
             margin: 0 10px;
-            text-decoration: underline;
+            text-decoration: none
             cursor: pointer;
+            
+            &:hover{
+                text-decoration: underline;
+                cursor: pointer;
+            }
         }
 
     }
@@ -238,6 +252,11 @@
 .favorit-list{
     &__header{
         border-bottom: 1px solid #d7d7d7;
+
+        .personal-favorit__acts{
+            float: right;
+            margin: 4px 0px;
+        }
     }
     &__name{
         font-size: 20px;
@@ -255,7 +274,7 @@
             margin-right: 10px;
         }
     }
-    &.collapsed{
+    &.collapsed {
         .personal-favorit__top {
             display: none;
         }
@@ -264,16 +283,12 @@
             display: none;
         }
     }
-    &.expanded{
+    &.expanded {
         .favorit-list__name{
             &:before{
                 border-width: 0 8.5px 7px 8.5px;
                 border-color: transparent transparent #afafaf transparent;
             }
         }
-    }
-    .personal-favorit__acts{
-        float: right;
-        margin: 4px 0px;
     }
 }
