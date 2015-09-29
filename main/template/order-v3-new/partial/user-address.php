@@ -31,7 +31,7 @@ $f = function(
             value="<?= $address['street'] ?>"
             class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             data-field="street"
-            required="<?= $order->isPartnerOffer() ? 'true' : 'false' ?>"
+            <?= $order->isPartnerOffer() ? 'required' : '' ?>
             data-value="<?= $helper->json($dataValue) ?>"
             data-relation="<?= $helper->json(['container' => '.' . $containerId])?>"
             data-text-default="*Улица"
@@ -45,7 +45,7 @@ $f = function(
             value="<?= $address['building'] ?>"
             class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             data-field="building"
-            required="<?= $order->isPartnerOffer() ? 'true' : 'false' ?>"
+            <?= $order->isPartnerOffer() ? 'required' : '' ?>
             data-value="<?= $helper->json($dataValue) ?>"
             data-text-default="*Дом"
             data-relation="<?= $helper->json(['container' => '.' . $containerId])?>"

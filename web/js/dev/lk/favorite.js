@@ -269,6 +269,8 @@
             hasChecked = false
         ;
 
+        console.info({'$container': $container, disabledClass: disabledClass});
+
         if ($container && $container.length && disabledClass) {
             $container.find('.js-favoriteProduct-checkbox').each(function(i, el) {
                 var $el = $(el);
