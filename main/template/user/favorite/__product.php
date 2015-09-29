@@ -26,10 +26,10 @@ $f = function (
             <label for="<?= $rowId . '-input' ?>" class="personal-favorit__checkbox-icon"></label>
         </div>
         <div class="personal-favorit__cell personal-favorit__pic">
-            <img src="<?= $product->getImageUrl(1) ?>">
+            <a href="#"><img src="<?= $product->getImageUrl(1) ?>"></a>
         </div>
         <div class="personal-favorit__cell">
-            <div class="personal-favorit__name"><?= $helper->escape($product->getName()) ?></div>
+            <a href="#"><div class="personal-favorit__name"><?= $helper->escape($product->getName()) ?></div></a>
             <? if ($product->getIsBuyable()): ?>
                 <div class="personal-favorit__status">В наличии</div>
             <? else: ?>
