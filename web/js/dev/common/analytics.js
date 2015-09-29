@@ -137,6 +137,7 @@
             this.sku = data.sku ? String(data.sku) : '';
             this.price = data.price ? String(data.price) : '';
             this.quantity = data.quantity ? String(data.quantity) : '';
+            this.brand = data.brand ? String(data.brand) : '';
 
             if (!this.id) throw 'Некорректный ID товара';
             if (!this.name) throw 'Некорректное название товара';
@@ -158,6 +159,7 @@
                 return {
                     'id': this.sku,
                     'name': this.name,
+                    'brand': this.brand,
                     'category': this.category,
                     'price': this.price,
                     'quantity': this.quantity

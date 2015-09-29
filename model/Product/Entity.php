@@ -1496,7 +1496,7 @@ class Entity {
         }
 
         return json_encode([
-            'id'        => $this->getId(),
+            'id'        => $this->getBarcode(),
             'name'      => $this->getName(),
             'price'     => $this->getPrice(),
             'brand'     => $this->getBrand() ? $this->getBrand()->getName() : '',

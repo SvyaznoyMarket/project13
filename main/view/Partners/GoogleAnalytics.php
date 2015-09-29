@@ -240,10 +240,10 @@ class GoogleAnalytics {
 
         foreach ($this->cart->getProductsById() as $product) {
             $this->sendData['enhancedEcomm']['products'][] = [
-                'id'        => $product->id,
+                'id'        => $product->barcode,
                 'name'      => $product->name,
-                'category'  => $product->category ? $product->category->name : '',
-                'brand'     => '', // TODO добавить в сессию при добавлении продукта в корзину
+                'category'  => $product->categoryPath,
+                'brand'     => $product->brandName,
                 'price'     => $product->price,
                 'quantity'  => $product->quantity
             ];

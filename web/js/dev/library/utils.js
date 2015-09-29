@@ -310,11 +310,13 @@
 				productUis.push(p.ui);
 
 				return {
-					'id': p.id,
-					'name': productName,
-					'category': p.category.length ? (p.category[0].name +  ' - ' + p.category[p.category.length -1].name) : '',
+					'id': p.barcode,
+					'sku': p.barcode,
+					'name': p.name,
+					'category': $.map(p.category, function(obj) {return obj.name}).join(' / '),
 					'price': p.price,
-					'quantity': p.quantity
+					'quantity': p.quantity,
+					'brand': p.brand ? p.brand.name : ''
 				}
 			});
 

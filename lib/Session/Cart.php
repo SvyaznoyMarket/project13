@@ -2,7 +2,8 @@
 
 namespace Session {
     use EnterApplication\CurlTrait;
-    
+    use Model\Product\Category\Entity;
+
     class Cart {
         use CurlTrait;
     
@@ -110,8 +111,8 @@ namespace Session {
                 }
     
                 $exceptionCount = count(\App::exception()->all());
-                \RepositoryManager::product()->prepareProductQueries($backendProductsByUi, 'media category');
-                \RepositoryManager::product()->prepareProductQueries($backendProductsById, 'media category');
+                \RepositoryManager::product()->prepareProductQueries($backendProductsByUi, 'media category brand');
+                \RepositoryManager::product()->prepareProductQueries($backendProductsById, 'media category brand');
                 \App::coreClientV2()->execute();
                 
                 if (count(\App::exception()->all()) > $exceptionCount && \App::exception()->last()) {
@@ -538,11 +539,16 @@ namespace Session {
         }
         
         private function createSessionProductFromBackendProduct(\Model\Product\Entity $backendProduct) {
+
+            $categoryNames = array_map(function(Entity $category) { return $category->name; }, $backendProduct->getCategory() );
+
             return [
                 'id'                => $backendProduct->id,
                 'ui'                => $backendProduct->ui,
                 'article'           => $backendProduct->getArticle(),
+                'barcode'           => $backendProduct->barcode,
                 'name'              => $backendProduct->getName(),
+                'brandName'         => $backendProduct->getBrand() ? $backendProduct->getBrand()->getName() : '',
                 'price'             => $backendProduct->getPrice(),
                 'image'             => $backendProduct->getMainImageUrl('product_120'),
                 'url'               => $backendProduct->getLink(),
@@ -557,6 +563,7 @@ namespace Session {
                     'id'    => $backendProduct->getParentCategory() ? $backendProduct->getParentCategory()->getId() : null,
                     'name'  => $backendProduct->getParentCategory() ? $backendProduct->getParentCategory()->getName() : null
                 ],
+                'categoryPath'  => implode(' / ', $categoryNames)
             ];
         }
         

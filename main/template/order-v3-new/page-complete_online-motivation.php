@@ -125,7 +125,7 @@ return function(
         ]); ?>
     <? endif; ?>
 
-    <? if (!$sessionIsReaded): ?>
+    <? if ($sessionIsReaded): ?>
         <span class="js-orderV3New-complete-subscribe" data-value="<?=$helper->json(['subscribe' => $subscribe, 'email' => isset($orders[0]->email) ? $orders[0]->email : null])?>"></span>
 
         <?

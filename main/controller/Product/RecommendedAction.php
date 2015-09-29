@@ -97,7 +97,7 @@ class RecommendedAction {
                 }
             });
 
-            \RepositoryManager::product()->prepareProductQueries($productsById, 'media label category');
+            \RepositoryManager::product()->prepareProductQueries($productsById, 'media label category brand');
             $client->execute();
 
             /**

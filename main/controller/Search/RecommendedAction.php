@@ -58,7 +58,7 @@ class RecommendedAction {
             $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
 
-        \RepositoryManager::product()->prepareProductQueries($productsById, 'category label media');
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'category label media brand');
 
         $client->execute(); // 2-й пакет запросов
 
