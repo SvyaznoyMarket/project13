@@ -7,11 +7,14 @@
     } catch (e) {
     }
 
-    var body = document.getElementsByTagName('body')[0],
-        $body = $(body),
-        $orderContent = $('#js-order-content'),
-        $inputs = $('.js-order-ctrl__input'),
-        comment = '',
+    var
+        body             = document.getElementsByTagName('body')[0],
+        $body            = $(body),
+        $orderContent    = $('#js-order-content'),
+        $inputs          = $('.js-order-ctrl__input'),
+        comment          = '',
+        validator        = null,
+
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -51,7 +54,8 @@
             sendChanges('changePaymentMethod', params)
         },
         changeAddress = function changeAddressF(params) {
-            sendChanges('changeAddress', params)
+            sendChanges('changeAddress', params);
+            $.each($inputs, lblPosition);
         },
         changeOrderComment = function changeOrderCommentF(comment){
             sendChanges('changeOrderComment', {'comment': comment})
@@ -176,11 +180,16 @@
                     closeClick: false,
                     closeEsc: false,
                     centered: true
-                })
+                });
+
+                $inputs = $('.js-order-ctrl__input');
+                $.each($inputs, lblPosition);
 
             }).always(function(){
                 $orderContent.stop(true, true).fadeIn(200);
                 if (spinner) spinner.stop();
+
+                bindMask();
             });
 
         },
@@ -256,7 +265,75 @@
 
 			$self.addClass('orderOferta_tabs_i-cur');
 			$("#"+tab_id).addClass('orderOferta_tabcnt-cur');
-		};
+        },
+        lblPosition = function lblPosition() {
+          var $this = $(this),
+              $label = $this.parent().find('.js-order-ctrl__txt');
+
+            if ($this.is(":focus") || ($this.val() !== '')) {
+                $label.addClass('top');
+            } else {
+                $label.removeClass('top');
+            }
+        },
+        bindMask = function() {
+            var
+                $inputs        = $('.js-order-ctrl__input'),
+                $phoneInput    = $('.js-order-phone'),
+                $emailInput    = $('.js-order-email'),
+                $agreeCheckbox = $('.jsAcceptAgreement'),
+
+                validationConfig = {
+                    fields: [{
+                        fieldNode: $agreeCheckbox,
+                        require: true,
+                        errorMsg: null
+                    }],
+                    callbackError: function( field, error ) {
+                        var
+                            parent = field.fieldNode.parent();
+                        console.warn('===== custom callbackError', field.fieldNode.parent());
+                        parent.addClass('error');
+                        parent.find('.js-order-ctrl__txt').html(error);
+                    },
+                    callbackValid: function( field ) {},
+                    unmarkField: function( field ) {
+                        console.log('custom unmarkField callback ');
+                        var
+                            parent = field.fieldNode.parent();
+
+                        parent.removeClass('error');
+                        parent.find('.order-ctrl__txt').html(field.fieldNode.data('text-default'));
+                    }
+                };
+
+            // Validator
+            $phoneInput.length && validationConfig.fields.push({
+                fieldNode: $phoneInput,
+                require: !!$phoneInput.attr('required'),
+                validBy: 'isPhone',
+                validateOnChange: true,
+                errorMsg: 'Введите телефон'
+            });
+
+            $emailInput.length && validationConfig.fields.push({
+                fieldNode: $emailInput,
+                require: !!$emailInput.attr('required'),
+                validBy: 'isEmail',
+                validateOnChange: true,
+                errorMsg: 'Введите email'
+            });
+
+            if ( validationConfig.fields.length ) {
+                validator = new FormValidator(validationConfig);
+            }
+
+            // masks
+            $.map($inputs, function(elem, i) {
+                if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
+            });
+        }
+    ;
 
     // TODO change all selectors to .jsMethod
 
@@ -376,6 +453,7 @@
     // клик по ссылке "Удалить" у каунтера
     $orderContent.on('click', '.jsDeleteProduct', function(e){
         var $this = $(this);
+        $('.js-order-overlay').remove();
         changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), 0);
         e.preventDefault();
     });
@@ -549,16 +627,14 @@
         $body.trigger('trackGoogleEvent', ['pickup_ux', 'list_point', 'выбор'])
     });
 
-    $body.on('keyup', '.js-order-ctrl__input', function(){
-        var $this = $(this),
-            $label = $this.parent().find('.js-order-ctrl__lbl');
-
-        if ( $this.val() !== '' ) {
-            $label.show();
-        } else {
-            $label.hide();
-        }
+    //$.each($inputs, lblPosition);
+    $(document).ready(function(){
+        $.each($inputs, lblPosition);
     });
+
+    $body.on('focus', '.js-order-ctrl__input', lblPosition);
+    $body.on('blur', '.js-order-ctrl__input', lblPosition);
+
     //показать блок редактирования товара - новая версия
     $body.on('click', '.js-show-edit',function(){
         $(this).hide();
@@ -596,84 +672,123 @@
 		$(this).remove();
 	});
 
-    $body.on('blur', '.js-order-deliveryAddress', function() {
-        var
-            $el = $(this),
-            params = $el.data('value') || {},
-            relations = $el.data('relation'),
-            $container = $(relations['container']),
-            timer = $container.data('timer')
-        ;
+    // авктокомплит адерса
+    $body.on('focus', '.js-order-deliveryAddress', function() {
 
-        // clear old timer
-        if (timer) {
-            clearTimeout(timer);
-            $container.data('timer', null);
+        var $el = $(this),
+            type = $el.data('field'), // тип поля адреса (улица, дом)
+            relations = $el.data('relation'),
+            parentKladrId = $el.data('parent-kladr-id'),
+            $container = $(relations['container']),
+            $inputFields = $container.find('input.js-order-deliveryAddress');
+
+        function autoCompleteRequest (request, response) {
+            if (getParent() !== false) {
+                var query = $.extend({}, { limit: 10, name: request.term }, getParent());
+                console.log('[КЛАДР] запрос: ', query);
+                $.kladr.api(query, function (data) {
+                    console.log('[КЛАДР] ответ', data);
+                    response($.map(data, function (elem) {
+                        return { label: (type == 'street' ? elem.name + ' ' + elem.typeShort + '.' : elem.name)  , value: elem }
+                    }))
+                });
+            }
         }
 
-        // create new timer
-        timer = setTimeout(
-            function() {
-                var hasFocus = false;
+        function getParent() {
+            var result = false;
+            if (type == 'street' && parentKladrId) result = { type: $.kladr.type.street, parentType: 'city', parentId: parentKladrId };
+            else if (type == 'building' && parentKladrId) result = { type: $.kladr.type.building, parentType: 'street', parentId: parentKladrId };
+            return result;
+        }
 
-                $.each($container.find('[data-field]'), function(i, el) {
-                    var $el = $(el);
-
-                    if ($el.is(':focus')) {
-                        hasFocus = true;
-                        return false;
-                    }
-                });
-                if (hasFocus) {
-                    return;
+        function save() {
+            $.ajax({
+                type: 'POST',
+                data: {
+                    'action' : 'changeAddress',
+                    'params' : {
+                        // сохраняем улицу в формате "Название + сокращенный тип" для автосогласования в 1С
+                        street: $inputFields.eq(0).val(),
+                        building: $inputFields.eq(1).val(),
+                        apartment: $inputFields.eq(2).val(),
+                        kladr_id: $container.data('last-kladr-id') }
                 }
+            }).fail(function(jqXHR){
+                var response = $.parseJSON(jqXHR.responseText);
+                if (response.result) {
+                    console.error(response.result);
+                }
+            }).done(function(data){
+//			console.log("Query: %s", data.result.OrderDeliveryRequest);
+                console.log("Saved address:", data.result.OrderDeliveryModel.user_info.address);
+            })
+        }
 
-                $.each($container.find('[data-field]'), function(i, el) {
-                    var $el = $(el);
-
-                    params[$el.data('field')] = $el.val();
-                });
-
-                changeAddress(params);
-                console.info('changeAddress', params);
+        $el.autocomplete({
+//            appendTo: '#kladrAutocomplete',
+            source: autoCompleteRequest,
+            minLength: 1,
+            open: function( event, ui ) {
+                //$('.ui-autocomplete').css({'position' : 'absolute', 'top' : 29, 'left' : 0});
             },
-            800
-        );
-        $container.data('timer', timer);
-    });
+            select: function( event, ui ) {
+                $el.val(ui.item.label);
+                $inputFields.eq(1).data('parent-kladr-id', ui.item.value.id);
+                $container.data('last-kladr-id', ui.item.value.id);
+                save();
+                return false;
+            },
+            focus: function( event, ui ) {
+                this.value = ui.item.label;
+                event.preventDefault(); // without this: keyboard movements reset the input to ''
+                event.stopPropagation(); // without this: keyboard movements reset the input to ''
+            },
+            change: function( event, ui ) {
+            },
+            messages: {
+                noResults: '',
+                results: function() {}
+            }
+        }).data("ui-autocomplete")._renderMenu = function(ul, items) {
+            var that = this;
+            $.each( items, function( index, item ) {
+                that._renderItemData( ul, item );
+            });
+            if ($el.data('field') == 'street') {
+                ul.addClass('ui-autocomplete-street');
+            } else {
+                ul.addClass('ui-autocomplete-house-or-apartment');
+            }
+        };
 
-    $('#auth-block').attr('data-state', 'register').addClass('state_register');
+        // Сохранение дома
+        $inputFields.eq(2).off().on('keyup', save);
+
+    });
 
     $body.on('click', '[form="js-orderForm"]', function(e) {
         var
-            $el = $(this),
-            $form = $el.attr('form') && $('#' + $el.attr('form')),
-            formResult = { errors: [] }
+            $el        = $(this),
+            $form      = $el.attr('form') && $('#' + $el.attr('form')),
+            formResult = { errors: [] },
+            valid      = true
         ;
         console.info($el, $form, formResult);
 
         try {
             if ($form.length) {
-                $form.trigger('form.reset');
 
-                $form.find('[required]').each(function(i, el) {
-                    var $el = $(el);
-
-                    if ($el.is(':checkbox')) {
-                        !$el.is(':checked') && formResult.errors.push({message: '', field: $el.data('field')});
-                    } else if ($el.is('input')) {
-                        console.warn($el.data('field'));
-                        !$el.val() && formResult.errors.push({message: '', field: $el.data('field')});
+                validator && validator.validate({
+                    onInvalid: function( err ) {
+                        valid = false;
+                    },
+                    onValid: function() {
+                        $form.submit();
                     }
                 });
 
-                if (formResult.errors.length) {
-                    $form.trigger('form.result', [formResult]);
-                } else {
-                    $form.submit();
-                }
-
-                e.preventDefault();
+                return false;
             } else {
                 // default handler
                 console.warn('form not found');
@@ -686,9 +801,11 @@
     $.mask.definitions['x']='[0-9]';
     $.mask.placeholder= "_";
     $.mask.autoclear = false;
-    $.map($inputs, function(elem, i) {
-        if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
+    bindMask();
+
+    $body.on('input', '.js-quant', function() {
+        var $el = $(this);
+
+        $el.val($el.val().replace(/[^0-9]+/g, ''));
     });
-
-
 })(jQuery);

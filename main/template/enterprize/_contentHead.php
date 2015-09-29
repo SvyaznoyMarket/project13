@@ -98,7 +98,7 @@
 
         <? if (!$user->getEntity() && in_array($routeName, ['enterprize', 'enterprize.show', 'enterprize.form.show'])): ?>
             <?= $page->render('enterprize/_auth') ?>
-            <div class="ep-box__login">У Вас есть логин и пароль? <a href="<?= \App::router()->generate('user.login') ?>" class="bAuthLink">Войти</a></div>
+            <div class="ep-box__login">У Вас есть логин и пароль? <a href="<?= \App::router()->generate('user.login') ?>" class="js-login-opener">Войти</a></div>
         <? endif ?>
 
         <? if (in_array($routeName, ['enterprize.confirmPhone.show', 'enterprize.confirmEmail.show'])): ?>

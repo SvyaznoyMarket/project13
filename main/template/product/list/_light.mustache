@@ -32,13 +32,13 @@
 
                 {{#hoverImage}}
                     <div class="lstn_imgbox">
-                        <a href="{{link}}" target="_blank" class="lstn_imglk lstn_imglk-default js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
-                        <a href="{{link}}" target="_blank" class="lstn_imglk lstn_imglk-hover js-listing-item-img"><img class="lstn_img" src="{{hoverImage}}" alt="" /></a>
+                        <a href="{{link}}" class="lstn_imglk lstn_imglk-default js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
+                        <a href="{{link}}" class="lstn_imglk lstn_imglk-hover js-listing-item-img"><img class="lstn_img" src="{{hoverImage}}" alt="" /></a>
                     </div>
                 {{/hoverImage}}
 
                 {{^hoverImage}}
-                    <div class="lstn_imgbox"><a href="{{link}}" target="_blank" class="lstn_imglk js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a></div>
+                    <div class="lstn_imgbox"><a href="{{link}}" class="lstn_imglk js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a></div>
                 {{/hoverImage}}
 
                 <div style="display: table; width: 100%;">
@@ -47,7 +47,7 @@
                             <span class="lstn_pr_old">
                                 <span class="td-lineth">{{&oldPrice}}</span> <span class="rubl">p</span>
                                 {{#priceSale}}
-                                    &nbsp;<span class="lstn_pr_sale">-{{priceSale}}%</span>
+                                    &nbsp;<span class="lstn_pr_sale">-{{priceSale}}{{&priceSaleUnit}}</span>
                                 {{/priceSale}}
                             </span>
                         {{/oldPrice}}

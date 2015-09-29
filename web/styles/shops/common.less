@@ -1,4 +1,8 @@
 .shops {
+    &-btn{
+
+    }
+
     &__back {
         .inline-block();
         font-size: 14px;
@@ -61,6 +65,26 @@
     &__map{
         width: 100%;
         display: table;
+        &.shops__map__single .shops__viewport .shops__viewport__container {
+            width: 670px;
+        }
+    }
+    &__viewport {
+        width: 585px;
+        display: table-cell;
+        height: 390px;
+        &__container {
+            overflow: hidden;
+            width: 585px;
+            height: 390px;
+            & > img {
+                display: block;
+                position: relative;
+                left: 0;
+                min-width: 585px;
+                min-height: 390px;
+            }
+        }
     }
     &-gallery{
         width: 100px;
@@ -72,6 +96,7 @@
         border-bottom: 1px solid #e6e6e6;
         position: relative;
         overflow: hidden;
+        vertical-align: top;
 
         &__lst{
             height: 390px;
@@ -81,6 +106,9 @@
             margin-top: 10px;
             .inline-block();
             cursor: pointer;
+            img {
+                max-width: 66px;
+            }
         }
         &__bottom{
             position: absolute;
@@ -94,22 +122,25 @@
     }
     &__descr{
         clear:both;
-        padding: 10px 15px;
+        padding: 15px 15px 10px;
+        font-size: 14px;
+        color: #616161;
     }
     &__working-time{
         background-color: #f7f7f7;
-        padding: 10px;
+        padding: 10px 15px 15px;
         margin-left: -15px;
         margin-bottom: 10px;
     }
     &__schedule{
         float: left;
         display: block;
-        font-size: 14px;
+        font-size: 16px;
         color: #363636;
     }
     &__schedule-val{
-        margin-left: 100px;
+        font-size: 14px;
+        margin-left: 123px;
         margin-top: 2px;
         color: #616161;
         word-break: break-word;//for pickpoint's long string
@@ -291,4 +322,17 @@
     left: 0px;
     background-color: rgba(0,0,0,0.5);
     z-index: 1009;
+}
+.instock{
+    background-color: #e5f5e9;
+    border: 1px solid #009925;
+    border-left-width: 3px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 12px;
+    margin-bottom: 15px;
+    margin-left: -15px;
+    font-size: 14px;
+    color: #363636;
+    .inline-block();
 }

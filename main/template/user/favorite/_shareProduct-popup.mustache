@@ -1,0 +1,32 @@
+<div id="shareProduct-popup" class="personal-popup">
+    <div class="popup-closer"></div>
+    <div class="personal-popup__head">Поделиться {{countMessage}}</div>
+    <div class="personal-popup__list-name">{{productNames}}</div>
+    <div class="personal-popup__content">
+        <ul class="personal__sharings">
+            {{#twitter.url}}
+            <li class="personal-share">
+                <a class="js-shareLink" target="_blank" href="{{twitter.url}}"><i class="personal-share__icon twitter"></i></a>
+            </li>
+            {{/twitter.url}}
+            <li class="personal-share">
+                <a class="js-shareLink" target="_blank" href="{{facebook.url}}"><i class="personal-share__icon fb"></i></a>
+            </li>
+            <li class="personal-share">
+                <a class="js-shareLink" target="_blank" href="{{vkontakte.url}}"><i class="personal-share__icon vk"></i></a>
+            </li>
+            <li class="personal-share">
+                <a class="js-shareLink" target="_blank" href="{{googleplus.url}}"><i class="personal-share__icon gplus"></i></a>
+            </li>
+            <li class="personal-share">
+                <a class="js-shareLink" target="_blank" href="{{odnoklassniki.url}}"><i class="personal-share__icon ok"></i></a>
+            </li>
+            <li class="personal-share">
+                <a class="js-shareLink" target="_blank" href="{{mailru.url}}"><i class="personal-share__icon mailru"></i></a>
+            </li>
+            <li class="personal-share">
+                <a class="js-shareLink" target="_blank" href="{{mail.url}}"><i class="personal-share__icon mail"></i></a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -188,23 +188,6 @@ class Repository {
             );
         }
     }
-    
-    public function prepareProductsMediasByIds($productIds, &$medias) {
-        \App::scmsClient()->addQuery(
-            'product/get-description/v1',
-            ['ids' => $productIds, 'media' => 1],
-            [],
-            function($data) use(&$medias) {
-                if (isset($data['products']) && is_array($data['products'])) {
-                    foreach ($data['products'] as $product) {
-                        if (isset($product['core_id']) && isset($product['medias'])) {
-                            $medias[$product['core_id']] = array_map(function($media) { return new \Model\Media($media); }, $product['medias']);
-                        }
-                    }
-                }
-            }
-        );
-    }
 
     /**
      * @param Entity[] $partProducts
@@ -265,7 +248,7 @@ class Repository {
             if ($product->getProperty()) {
                 foreach ($product->getProperty() as $property) {
                     if (in_array($property->getName(), array('Высота', 'Ширина', 'Глубина'))) {
-                        $result[$id][$dimensionsTranslate[$property->getName()]] = $property->getValue();
+                        $result[$id][$dimensionsTranslate[$property->getName()]] = $property->getOptionValue();
                     }
                 }
             }
@@ -288,5 +271,57 @@ class Repository {
         }
 
         return $result;
+    }
+
+    /**
+     * @param \Model\Product\Entity[] $products
+     * @param array $excludeProductIds
+     */
+    public function filterRecommendedProducts(array &$products, array $excludeProductIds = []) {
+        $products = array_filter($products, function(\Model\Product\Entity $product) use($excludeProductIds) {
+            return (!in_array($product->id, $excludeProductIds) && $product->isAvailable() && !$product->isInShopShowroomOnly() && !$product->isInShopOnly());
+        });
+
+        $products = array_slice($products, 0, 30);
+    }
+
+    /**
+     * @param \Model\Product\Entity[] $products
+     */
+    public function sortRecommendedProducts(&$products) {
+        try {
+            usort($products, function(\Model\Product\Entity $a, \Model\Product\Entity $b) {
+                if ($b->getIsBuyable() != $a->getIsBuyable()) {
+                    return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
+                } else if ($b->isInShopOnly() != $a->isInShopOnly()) {
+                    return ($b->isInShopOnly() ? -1 : 1) - ($a->isInShopOnly() ? -1 : 1); // потом те, которые можно зарезервировать
+                } else if ($b->isInShopShowroomOnly() != $a->isInShopShowroomOnly()) {// потом те, которые есть на витрине
+                    return ($b->isInShopShowroomOnly() ? -1 : 1) - ($a->isInShopShowroomOnly() ? -1 : 1);
+                } else {
+                    return (int)rand(-1, 1);
+                }
+            });
+        } catch (\Exception $e) {}
+    }
+
+    public function getViewedProductIdsByHttpRequest(\Http\Request $request) {
+        $viewedProductIds = $request->get('rrviewed');
+
+        if (is_string($viewedProductIds)) {
+            $viewedProductIds = explode(',', $viewedProductIds);
+        }
+
+        if (empty($viewedProductIds)) {
+            $viewedProductIds = explode(',', (string)$request->cookies->get('product_viewed'));
+        }
+
+        if (is_array($viewedProductIds)) {
+            $viewedProductIds = array_reverse(array_filter($viewedProductIds));
+            $viewedProductIds = array_slice(array_unique($viewedProductIds), 0, 30);
+        } else {
+            $viewedProductIds = [];
+        }
+
+        return $viewedProductIds;
     }
 }

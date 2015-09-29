@@ -231,9 +231,7 @@ $buySender2 = $request->get('sender2');
     <div class="bottom-content">
         <?= $page->tryRender('product/_tag', ['product' => $product, 'newVersion' => true]) ?>
         <?= $page->tryRender('product/_similarProducts', ['products' => $similarProducts, 'newVersion' => true]) ?>
-        <?php /*<p class="bottom-content__p bottom-content__text">
-
-        </p>*/ ?>
+        <? if ($product->seoText) : ?><p class="bottom-content__p bottom-content__text"><?= $product->seoText ?></p><? endif ?>
     </div>
     <!--/ seo информация -->
 

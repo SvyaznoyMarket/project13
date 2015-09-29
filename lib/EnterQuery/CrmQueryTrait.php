@@ -30,22 +30,29 @@ trait CrmQueryTrait
 
     /**
      * @param string|null $response
-     * @param $statusCode
+     * @param \EnterLab\Curl\Query $curlQuery
      * @return array
      * @throws \Exception
      */
-    protected function decodeResponse(&$response, $statusCode)
+    protected function decodeResponse(&$response, \EnterLab\Curl\Query $curlQuery)
     {
         $result = $this->jsonToArray($response);
 
-        if ($statusCode >= 300) {
-            throw new \Exception(sprintf('Invalid http code %s', $statusCode), (int)$statusCode);
+        $exception = null;
+        if ($curlQuery->response->statusCode >= 300) {
+            $exception = new Exception(sprintf('Invalid http code %s', $curlQuery->response->statusCode), (int)$curlQuery->response->statusCode);
         }
 
-        if (array_key_exists('error', $result)) {
+        if (isset($result['error'])) {
             $error = (array)$result['error'] + ['code' => null, 'message' => null];
+            $exception = new Exception($error['message'], $error['code']);
+            $exception->setDetail(is_array($error['detail']) ? $error['detail'] : []);
+        }
 
-            throw new \Exception($error['message'], $error['code']);
+        if ($exception) {
+            $exception->setQuery(['url' => $curlQuery->request->options[CURLOPT_URL], 'data' => isset($curlQuery->request->options[CURLOPT_POSTFIELDS]) ? $curlQuery->request->options[CURLOPT_POSTFIELDS] : null]);
+
+            throw $exception;
         }
 
         return $result;

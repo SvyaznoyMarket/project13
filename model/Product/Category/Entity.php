@@ -5,8 +5,6 @@ namespace Model\Product\Category;
 use Model\Media;
 
 class Entity extends BasicEntity {
-    use \Model\MediaHostTrait;
-
     const FAKE_SHOP_TOKEN = 'shop';
 
     /** @var bool Является ли категория главной для товара */
@@ -49,8 +47,15 @@ class Entity extends BasicEntity {
     protected $ancestor = [];
     /** @var Entity[] */
     protected $child = [];
+    /** @var Config */
+    public $config;
+    /**
+     * Вид листинга (с учётом пользовательского выбора)
+     * @var ListingView
+     */
+    public $listingView;
 
-    public function __construct(array $data = []) {
+    public function __construct($data = []) {
         $templateHelper = new \Helper\TemplateHelper();
         
         $data['price_change_trigger_enabled'] = true;
@@ -115,6 +120,14 @@ class Entity extends BasicEntity {
         }
 
         if (isset($data['parent'])) $this->parent = new Entity($data['parent']);
+
+        if (isset($data['config'])) {
+            $this->config = new Config($data['config']);
+        } else {
+            $this->config = new Config();
+        }
+
+        $this->listingView = new ListingView();
     }
 
     /**
@@ -316,27 +329,16 @@ class Entity extends BasicEntity {
 
     public function getImageUrl($size = 0) {
         if ($this->image) {
-            if (preg_match('/^(https?|ftp)\:\/\//i', $this->image)) {
-                if (0 == $size) {
-                    return $this->image;
-                } else if (3 == $size) {
-                    return $this->image480x480;
-                }
-            } else {
-                $urls = \App::config()->productCategory['url'];
-                return $this->getHost() . $urls[$size] . $this->image;
+            if (0 == $size) {
+                return $this->image;
+            } else if (3 == $size) {
+                return $this->image480x480;
             }
         } else if ($this->medias) {
             if (0 == $size) {
-                $source = $this->getMediaSource('category_163x163');
+                return $this->getMediaSource('category_163x163')->url;
             } else if (3 == $size) {
-                $source = $this->getMediaSource('category_480x480');
-            } else {
-                $source = null;
-            }
-
-            if ($source) {
-                return $source->url;
+                return $this->getMediaSource('category_480x480')->url;
             }
         }
     }
@@ -345,9 +347,9 @@ class Entity extends BasicEntity {
      * @param string $sourceType
      * @param string $mediaProvider
      * @param string $mediaTag
-     * @return Media\Source|null
+     * @return Media\Source
      */
-    private function getMediaSource($sourceType, $mediaTag = 'main', $mediaProvider = 'image') {
+    public function getMediaSource($sourceType, $mediaTag = 'main', $mediaProvider = 'image') {
         foreach ($this->medias as $media) {
             if ($media->provider === $mediaProvider && in_array($mediaTag, $media->tags, true)) {
                 foreach ($media->sources as $source) {
@@ -358,7 +360,7 @@ class Entity extends BasicEntity {
             }
         }
 
-        return null;
+        return new Media\Source();
     }
 
     // TODO отрефакторить методы для получения родительских категорий
@@ -406,6 +408,13 @@ class Entity extends BasicEntity {
 
     public function addChild(Entity $child) {
         $this->child[] = $child;
+    }
+
+    /**
+     * @param Entity[] $children
+     */
+    public function setChild(array $children) {
+        $this->child = $children;
     }
 
     /**
@@ -476,14 +485,6 @@ class Entity extends BasicEntity {
             '94fe0c01-665b-4f66-bb9d-c20e62aa9b7a', // Шины и принадлежности
             '018638bb-b54b-473f-8cb0-fa3953cd3695', // Шины и принадлежности -> Шины
         ], true);
-    }
-
-    public function isInSiteListingWithViewSwitcherAbTest() {
-        return (bool)$this->getClosest([
-            '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
-            'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электроника
-            '0e80c81b-31c9-4519-bd10-e6a556fe000c', // Сделай сам
-        ]);
     }
 
     private function getClosest(array $expectedUis) {
@@ -713,4 +714,11 @@ class Entity extends BasicEntity {
 
         return $result;
     }
+}
+
+class ListingView {
+    /** @var bool */
+    public $isList = false;
+    /** @var bool */
+    public $isMosaic = true;
 }

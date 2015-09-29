@@ -48,4 +48,49 @@ $(function() {
 			ko.applyBindings(ENTER.UserModel, goodsSlider);
 		}
 	});
+
+    $body.on('click', '.js-listing-variation-link', function(e) {
+        e.preventDefault();
+
+        var $self = $(e.currentTarget);
+
+        $.ajax({
+            type: 'GET',
+            url: $self.data('url'),
+            success: function(res) {
+                if (res.contentHtml) {
+                    $self.closest('.js-listing-variation').replaceWith(res.contentHtml);
+                }
+            }
+        });
+    });
+
+    $body.on('change', '.js-listing-variation-values', function(e) {
+        var $values = $(e.currentTarget);
+
+        if (!$values.length || !$values[0].selectedOptions[0]) {
+            return;
+        }
+
+        var $selectedOption = $($values[0].selectedOptions[0]);
+
+        $.ajax({
+            type: 'GET',
+            url: $selectedOption.data('url'),
+            success: function(res) {
+                if (!res.product) {
+                    return;
+                }
+
+                var $template = $('#listing_expanded_item_tmpl');
+
+                $(Mustache.render($template.html(), res.product, $template.data('partial'))).replaceAll($values.closest('.js-listing-item'));
+
+                $('.js-listing, .js-jewelListing').each(function() {
+                    ko.cleanNode(this);
+                    ko.applyBindings(ENTER.UserModel, this);
+                });
+            }
+        });
+    });
 });

@@ -43,7 +43,7 @@
                             <strong class="bDecor">{{&oldPrice}}</strong> <span class="rubl">p</span>
                             {{#showPriceSale}}
                                 {{#priceSale}}
-                                    <span class="bPriceSale">-{{priceSale}}%</span>
+                                    <span class="bPriceSale">-{{priceSale}}{{&priceSaleUnit}}</span>
                                 {{/priceSale}}
                             {{/showPriceSale}}
                         </span>
@@ -55,12 +55,12 @@
 
                 <div class="bPriceLine clearfix">
                     <span class="bPrice{{#priceSale}} bHasSale{{/priceSale}}"><strong>{{&price}}</strong> <span class="rubl">p</span></span>
-                    {{#hasVariations}}
+                    {{#variations.0}}
                         <span class="bOptions"><span class="bDecor">Варианты</span></span>
-                    {{/hasVariations}}
+                    {{/variations.0}}
                 </div>
 
-                {{#hasVariations}}
+                {{#variations.0}}
                     <div class="bOptionsSection">
                         <i class="bCorner"></i>
                         <i class="bCornerDark"></i>
@@ -71,7 +71,7 @@
                             {{/variations}}
                         </ul>
                     </div>
-                {{/hasVariations}}
+                {{/variations.0}}
 
                 <div class="bBtnLine clearfix">
                     {{#showCartButton}}

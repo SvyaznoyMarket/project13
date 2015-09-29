@@ -52,9 +52,9 @@ class ShowAction {
             $inStoreLabel = null;
         }
 
-        $variations = (new \View\Product\Variations())->execute($helper, $product);
         $productItem = [
-            'id'           => $product->getId(),
+            'id'           => $product->id,
+            'ui'           => $product->ui,
             'name'         => $product->getName(),
             'link'         => $product->getLink(),
             'label'        =>
@@ -76,8 +76,7 @@ class ShowAction {
             'inStoreLabel' => $inStoreLabel,
             'onlyInShop'   => $product->isInShopOnly(),
             'stateLabel'   => $showState ? ($inShopOnlyLabel ? $inShopOnlyLabel : $inStoreLabel) : null,
-            'variations'   => $variations,
-            'hasVariations' => $variations ? true : null,
+            'variations'   => (new \View\Category\Listing\Product\Variations())->execute($helper, $product, $category ? $category->ui : '', $cartButtonSender),
             'hasVideo' => $product->hasVideo(),
             'has360'   => $product->has3d(),
             'review'   => $reviewtAction ? $reviewtAction->execute($helper, $product) : null,
@@ -115,15 +114,18 @@ class ShowAction {
             ,
         ];
 
-        // Дополняем свойствами для каталога в виде листинга
-        if (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category && $category->isInSiteListingWithViewSwitcherAbTest()) {
-            $productItem['properties'] = (new \View\Product\Properties())->execute($helper, $product);
-        }
+        $productItem['properties'] = (new \View\Product\Properties())->execute($helper, $product);
 
         // oldPrice and priceSale
         if ( $product->getPriceOld() && $product->getLabel()) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
-            $productItem['priceSale'] = round((1 - ($product->getPrice() / $product->getPriceOld())) * 100, 0); //($product->getPrice() < $product->getPriceOld()) ? round($product->getPrice() - $product->getPriceOld(), 0) : 0;
+            if (AbTest::isCurrencyDiscountPrice()) {
+                $productItem['priceSale'] = $helper->formatPrice($product->getPriceOld() - $product->getPrice());
+                $productItem['priceSaleUnit'] = ' <span class="rubl">p</span>';
+            } else {
+                $productItem['priceSale'] = round((1 - ($product->getPrice() / $product->getPriceOld())) * 100, 0);
+                $productItem['priceSaleUnit'] = '%';
+            }
             $productItem['showPriceSale'] = AbTest::isShowSalePercentage();
         }
 

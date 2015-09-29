@@ -26,7 +26,7 @@ $helper = new \Helper\TemplateHelper();
 
     <? if (!$user->getEntity()): ?>
         <ul class="ep-head__control">
-            <li class="ep-head__control__i"><a href="/login" class="ep-head__control__i__log undrl bAuthLink">Войти</a></li>
+            <li class="ep-head__control__i"><a href="/login" class="ep-head__control__i__log undrl js-login-opener">Войти</a></li>
             <!--<li class="ep-head__control__i js-ep-btn-hint-popup"><span class="ep-head__control__i__hint">Как стать участником?</span></li>-->
             <li class="ep-head__control__i"><a class="ep-head__control__i__lk undrl" href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></li>
         </ul>

@@ -89,7 +89,7 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         <? endif ?>
 
 
-        <? if ($category->isV2() || (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category && $category->isInSiteListingWithViewSwitcherAbTest())): ?>
+        <? if ($category->isV2() || $category->config->listingDisplaySwitch || $category->config->listingDefaultView->isList): ?>
             <?= $helper->render('product-category/v2/__listAction', [
                 'pager'          => $productPager,
                 'productSorting' => $productSorting,

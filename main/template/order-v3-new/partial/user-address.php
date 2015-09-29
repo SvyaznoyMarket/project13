@@ -23,38 +23,36 @@ $f = function(
 
     $containerId = 'id-order-deliveryAddress-' . ($order->block_name ?: uniqid());
 ?>
-<div class="order-delivery__block jsSmartAddressBlock <?= $containerId ?>">
+<div class="order-delivery__block deliv-addr jsSmartAddressBlock <?= $containerId ?>">
     <div class="order-ctrl fullwidth">
-        <label class="order-ctrl__lbl ">Улица</label>
+        <label class="order-ctrl__txt js-order-ctrl__txt ">Улица</label>
         <input
             type="text"
             value="<?= $address['street'] ?>"
-            class="order-ctrl__input js-order-deliveryAddress"
-            placeholder="Улица"
+            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             data-field="street"
             data-value="<?= $helper->json($dataValue) ?>"
             data-relation="<?= $helper->json(['container' => '.' . $containerId])?>"
+            data-parent-kladr-id="<?= \App::user()->getRegion()->kladrId ?>"
         />
     </div>
     <div class="order-ctrl">
-        <label class="order-ctrl__lbl">Дом</label>
+        <label class="order-ctrl__txt js-order-ctrl__txt">Дом</label>
         <input
             type="text"
             value="<?= $address['building'] ?>"
-            class="order-ctrl__input js-order-deliveryAddress"
-            placeholder="Дом"
+            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             data-field="building"
             data-value="<?= $helper->json($dataValue) ?>"
             data-relation="<?= $helper->json(['container' => '.' . $containerId])?>"
         />
     </div>
     <div class="order-ctrl">
-        <label class="order-ctrl__lbl">Квартира</label>
+        <label class="order-ctrl__txt js-order-ctrl__txt">Квартира</label>
         <input
             type="text"
             value="<?= $address['apartment'] ?>"
-            class="order-ctrl__input js-order-deliveryAddress"
-            placeholder="Квартира"
+            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
             data-field="apartment"
             data-value="<?= $helper->json($dataValue) ?>"
             data-relation="<?= $helper->json(['container' => '.' . $containerId])?>"

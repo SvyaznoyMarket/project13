@@ -2,9 +2,7 @@
 
 namespace View\User;
 
-
 class OrdersPage extends \View\DefaultLayout {
-
     /** @var string */
     protected $layout  = 'layout-oneColumn';
 

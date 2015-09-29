@@ -55,9 +55,7 @@ $recommendationSender2 = $product->isOnlyFromPartner() && !$product->getSlotPart
 
             <?= $helper->render('product/__lowPriceNotifier', ['product' => $product, 'actionChannelName' => $actionChannelName]) // Узнать о снижении цены ?>
 
-            <? if (count($product->getPartnersOffer()) == 0) : ?>
-                <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
-            <? endif ?>
+            <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
 
             <? if ($product->getTagline()): // new Card Properties Begin { ?>
                 <div itemprop="description" class="bProductDescText">

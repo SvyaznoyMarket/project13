@@ -58,15 +58,15 @@ $f = function(
                 <div class="order-receiver">
                     <div class="order-receiver__login">
                         <div class="order-ctrl required" data-field-container="phone">
-                            <label class="order-ctrl__lbl js-order-ctrl__lbl">*Телефон <span class="order-ctrl__err" data-message=""></span></label>
-                            <input name="user_info[phone]" class="order-ctrl__input js-order-ctrl__input js-order-phone" placeholder="*Телефон" name="user_info[phone]" data-field="phone" value="<?= $orderDelivery->user_info->phone ?>" data-mask="+7 (xxx) xxx-xx-xx" <? if (!$userEntity): ?> data-event="true"<? endif ?> required="required" />
+                            <label class="order-ctrl__txt js-order-ctrl__txt" data-message="">*Телефон</label>
+                            <input name="user_info[phone]" class="order-ctrl__input js-order-ctrl__input js-order-phone" name="user_info[phone]" data-field="phone" data-text-default="*Телефон" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : $orderDelivery->user_info->phone ?>" data-mask="+7 (xxx) xxx-xx-xx" <? if (!$userEntity): ?> data-event="true"<? endif ?> required="required" />
 
                         </div>
                         <div class="order-receiver__hint">Для смс о состоянии заказа</div>
                         <div class="order-ctrl required" data-field-container="email">
-                            <label class="order-ctrl__lbl js-order-ctrl__lbl">*E-mail <span class="order-ctrl__err" data-message=""></span>
+                            <label class="order-ctrl__txt js-order-ctrl__txt" data-message="">*E-mail</span>
                             </label>
-                            <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input" placeholder="*E-mail" data-field="email" value="<?= $orderDelivery->user_info->email ?>" required="required" />
+                            <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input js-order-email" data-field="email" data-text-default="*E-mail" value="<?= $userEntity ? $userEntity->getEmail() : $orderDelivery->user_info->email ?>" required="required" />
                         </div>
                         <div class="order-receiver__subscribe">
                             <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="user_info[subscribe]" value="">
@@ -76,24 +76,31 @@ $f = function(
                             </label>
                         </div>
                         <div class="order-ctrl" data-field-container="first_name">
-                            <label class="order-ctrl__lbl js-order-ctrl__lbl">Имя</label>
-                            <input name="user_info[first_name]" class="order-ctrl__input js-order-ctrl__input" placeholder="Имя" data-field="first_name" value="<?= $orderDelivery->user_info->first_name ?>" />
+                            <label class="order-ctrl__txt js-order-ctrl__txt">Имя</label>
+                            <input name="user_info[first_name]" class="order-ctrl__input js-order-ctrl__input" data-field="first_name" value="<?= $userEntity ? $userEntity->getFirstName() : $orderDelivery->user_info->first_name ?>" />
                         </div>
                     </div>
 
+                    <? if (!$userEntity) : ?>
                     <div class="order-receiver__social social">
                         <div class="social__head">Войти через</div>
                         <ul class="social__list">
+                            <li class="social__item"><a class="js-login-opener" href="<?= $helper->url('user.login') ?>"><img src="/styles/order-new/img/social1.png"></a></li>
+
                             <? if ($oauthEnabled['facebook']): ?>
-                                <li class="social__item"><a class="js-registerForm-socnetLink" href="<?= $helper->url('user.login.external', ['providerName' => 'facebook' ]) ?>"><img src="/styles/order-new/img/social2.png"></a></li>
+                                <li class="social__item"><a href="<?= $helper->url('user.login.external', ['providerName' => 'facebook' ]) ?>"><img src="/styles/order-new/img/social2.png"></a></li>
                             <? endif ?>
+
                             <? if ($oauthEnabled['vkontakte']): ?>
-                                <li class="social__item"><a class="js-registerForm-socnetLink" href="<?= $helper->url('user.login.external', ['providerName' => 'vkontakte' ]) ?>"><img src="/styles/order-new/img/social3.png"></a></li>
+                                <li class="social__item"><a href="<?= $helper->url('user.login.external', ['providerName' => 'vkontakte' ]) ?>"><img src="/styles/order-new/img/social3.png"></a></li>
                             <? endif ?>
                         </ul>
-                        <div class="social__register"><a class="bAuthLink" href="<?= $helper->url('user.login') ?>">Регистрация</a></div>
+
+                        <div class="social__register"><a class="js-login-opener" data-state="register" href="<?= $helper->url('user.register') ?>">Регистрация</a></div>
 
                     </div>
+                    <? endif ?>
+
                     <!-- Берем из старой верстки - бонусные карты -->
                     <div class="order__bonus-cards bonusCnt bonusCnt-v2">
 
@@ -192,12 +199,13 @@ $f = function(
 
             <? if (\App::abTest()->isOrderMinSumRestriction() && \App::config()->minOrderSum > $orderDelivery->getProductsSum()) : ?>
                 <div class="popup popup-simple deliv-free-popup jsMinOrderSumPopup" style="display: none;">
-
+                    <a class="to-cart-lnk" href="/">
                     <div class="popup_inn">
                         <span class="info">До оформления заказа осталось</span>
                         <span class="remain-sum"><?= \App::config()->minOrderSum - $orderDelivery->getProductsSum() ?>&thinsp;<span class="rubl">p</span></span>
-                        <a href="/cart" class="to-cart-lnk">Вернуться в корзину</a>
+                        <span class="to-cart-lnk">Продолжить покупки</span>
                     </div>
+                    </a>
                 </div>
             <? endif ?>
 

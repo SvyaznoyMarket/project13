@@ -14,7 +14,11 @@ class Shop {
         $scmsClient = \App::scmsClient();
         $scmsClient->addQuery(
             'api/static-page',
-            ['token' => ['menu']],
+            [
+                'token' => ['menu'],
+                'geo_town_id' => \App::user()->getRegion()->id,
+                'tags' => ['site-web'],
+            ],
             [],
             function($data) use (&$sidebar) {
                 if (isset($data['pages'][0]['content'])) {
@@ -25,7 +29,11 @@ class Shop {
 
         $scmsClient->addQuery(
             'api/static-page',
-            ['token' => ['delivery']],
+            [
+                'token' => ['delivery'],
+                'geo_town_id' => \App::user()->getRegion()->id,
+                'tags' => ['site-web'],
+            ],
             [],
             function($data) use (&$content) {
                 if (isset($data['pages'][0]['content'])) {

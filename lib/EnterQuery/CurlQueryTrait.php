@@ -151,7 +151,7 @@ trait CurlQueryTrait
                 $result = null;
                 if (is_callable($decoder)) {
                     try {
-                        $result = call_user_func($decoder, $query->response->body, $query->response->statusCode);
+                        $result = call_user_func($decoder, $query->response->body, $query);
 
                         // TODO: удалить; сейчас нужно для старого журнала
                         $endAt = microtime(true);

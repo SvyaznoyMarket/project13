@@ -60,9 +60,9 @@ $(document).ready(function(){
 
 					if (typeof(_gaq) != 'undefined') {
 						if (location.pathname == '/enter-friends') {
-							_gaq.push(['_trackEvent', 'subscription', 'subscribe_enter_friends', email]);
+							_gaq.push(['_trackEvent', 'subscription', 'subscribe_enter_friends']);
 						} else if (location.pathname == '/special_offers') {
-							_gaq.push(['_trackEvent', 'subscription', 'subscribe_special_offers', email]);
+							_gaq.push(['_trackEvent', 'subscription', 'subscribe_special_offers']);
 						}
 					}
 				});
@@ -301,6 +301,11 @@ $(document).ready(function(){
 			return false;
 		});
 	}
+
+    $('.js-scms-changeRegion').on('click',function(){
+		$('.jsChangeRegion').click();
+    });
+
     //Попап стоимости доставки
     $('.js-tarifs-popup-show').on('click',function(){
         var popup = $('.js-tarifs-popup').clone();
