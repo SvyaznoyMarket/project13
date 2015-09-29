@@ -4,8 +4,12 @@ namespace Controller\Slice;
 
 use Controller\Product\SetAction;
 use Model\Product\Category\Entity;
+use EnterApplication\CurlTrait;
+use EnterQuery as Query;
 
 class ShowAction {
+    use CurlTrait;
+
     /**
      * @param \Http\Request $request
      * @param string        $sliceToken
@@ -70,10 +74,56 @@ class ShowAction {
 
         // если есть категории в фильтре среза
         if ($sliceCategories) {
-            if ($category->id) {
-                $category->setChild([]);
-            } else {
-                $category->setChild($sliceCategories);
+            $availableCategoryQuery = new Query\Product\Category\GetAvailable();
+            $availableCategoryQuery->regionId = $region->getId();
+            $availableCategoryQuery->rootCriteria = $category->id ? ['id' => $category->id] : [];
+            //$availableCategoryQuery->depth = 1;
+            $availableCategoryQuery->filterData = call_user_func(function() use ($sliceFiltersForSearchClientRequest) {
+                foreach ($sliceFiltersForSearchClientRequest as $i => $item) {
+                    if (isset($item[0]) && ('category' === $item[0])) {
+                        unset($sliceFiltersForSearchClientRequest[$i]); // TODO: убрать как только будет готова SPPX-259
+                    }
+                }
+
+                return $sliceFiltersForSearchClientRequest;
+            });
+            $availableCategoryQuery->prepare();
+
+            $this->getCurl()->execute();
+
+            $availableCategoryUis = [];
+            if (!$availableCategoryQuery->error) {
+                foreach ($availableCategoryQuery->response->categories as $item) {
+                    if (!isset($item['product_count']) || !$item['product_count'] || !isset($item['uid'])) continue;
+                    $availableCategoryUis[$item['uid']] = true;
+                }
+
+                $children = $category->id ? $category->getChild() : $sliceCategories;
+
+                $level = 0;
+                /**
+                 * @param \Model\Product\Category\Entity[] $categories
+                 * @return \Model\Product\Category\Entity[]
+                 */
+                $filter = function($categories) use (&$filter, &$level, &$availableCategoryUis) {
+                    $level++;
+                    if ($level > 6) return []; // защита от чрезмерного глубокого погружения
+
+                    foreach ($categories as $i => $category) {
+                        if (!isset($availableCategoryUis[$category->ui])) {
+                            unset($categories[$i]);
+                        }
+
+                        if ($children = $category->getChild()) {
+                            $category->setChild($filter($children));
+                        }
+                    }
+
+                    return $categories;
+                };
+                $children = $filter($children);
+
+                $category->setChild($children);
             }
         }
 
@@ -322,8 +372,7 @@ class ShowAction {
             if (isset($data['count'])) {
                 $productCount = (int)$data['count'];
             }
-        }
-        );
+        });
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 

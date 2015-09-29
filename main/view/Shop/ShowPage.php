@@ -14,19 +14,19 @@ class ShowPage extends \View\DefaultLayout {
         $point = $this->getParam('point');
         $helper = new \Helper\TemplateHelper();
 
-        if ($point->wayWalk || $point->wayAuto) {
-            if ($point->wayWalk && !$point->wayAuto) {
-                $commonWay = $point->wayWalk;
-            } else if (!$point->wayWalk && $point->wayAuto) {
-                $commonWay = $point->wayAuto;
-            } else {
-                $commonWay = '';
-            }
-
+        if ($point->wayWalkHtml || $point->wayAutoHtml) {
             $way = [
-                'common' => $commonWay,
-                'walk' => $point->wayWalk,
-                'auto' => $point->wayAuto,
+                'commonHtml' => call_user_func(function() use($point) {
+                    if ($point->wayWalkHtml && !$point->wayAutoHtml) {
+                        return $point->wayWalkHtml;
+                    } else if (!$point->wayWalkHtml && $point->wayAutoHtml) {
+                        return $point->wayAutoHtml;
+                    }
+
+                    return '';
+                }),
+                'walkHtml' => $point->wayWalkHtml,
+                'autoHtml' => $point->wayAutoHtml,
             ];
         } else {
             $way = [];
@@ -34,6 +34,11 @@ class ShowPage extends \View\DefaultLayout {
 
         return \App::mustache()->render('shop/show/content', [
             'backUrl' => \App::router()->generate('shop'),
+            'town' => [
+                'names' => [
+                    'locativus' => \App::user()->getRegion()->names->locativus,
+                ],
+            ],
             'point' => [
                 'partner' => [
                     'names' => $point->partner->names,
@@ -45,14 +50,8 @@ class ShowPage extends \View\DefaultLayout {
                 'longitude' => $point->longitude,
                 'workingTime' => $point->workingTime,
                 'phone' => $point->phone,
-                'description' => $point->description,
+                'descriptionHtml' => $point->descriptionHtml,
                 'way' => $way,
-                'productCountText' => $point->productCount ? ($point->productCount . ' ' . $helper->numberChoice($point->productCount, ['товар', 'товара', 'товаров']) . ' можно забрать сегодня') : null,
-                'town' => [
-                    'names' => [
-                        'locativus' => $point->town->names->locativus,
-                    ],
-                ],
                 'subway' => [
                     'name' => $point->subway ? $point->subway->getName() : null,
                 ],

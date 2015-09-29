@@ -17,7 +17,7 @@ $f = function (
     $actions += [
         'share'  => true,
         'create' => true,
-        'move'   => count($wishlists) > 1,
+        'move'   => count($wishlists) > 0,
         'delete' => true,
     ];
 ?>

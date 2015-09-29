@@ -78,8 +78,12 @@ $f = function(
     </script>
 
     <? if ($category && ($category->config->listingDisplaySwitch || $category->config->listingDefaultView->isList)): ?>
-        <script id="listing_expanded_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
+        <script id="listing_expanded_tmpl" type="text/html" data-partial="<?= $helper->json(array_merge($partials, ['product/list/item/_expanded' => file_get_contents(\App::config()->templateDir . '/product/list/item/_expanded.mustache')])) ?>">
             <?= file_get_contents(\App::config()->templateDir . '/' . $expandedTemplatePath . '.mustache') ?>
+        </script>
+
+        <script id="listing_expanded_item_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
+            <?= file_get_contents(\App::config()->templateDir . '/product/list/item/_expanded.mustache') ?>
         </script>
     <? endif ?>
 <? }; return $f;

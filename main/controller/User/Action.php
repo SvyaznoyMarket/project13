@@ -721,6 +721,7 @@ class Action {
             'api/static-page',
             [
                 'token' => ['reg_corp_user_cont'],
+                'geo_town_id' => \App::user()->getRegion()->id,
                 'tags' => ['site-web'],
             ],
             [],

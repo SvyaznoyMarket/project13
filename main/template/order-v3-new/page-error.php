@@ -7,10 +7,13 @@ return function(
 ) {
 
  ?>
-
+<div class="order__wrap order-page">
     <section class="orderCnt">
-        <h1 class="orderCnt_t">Ошибка</h1>
+        <div class="pagehead">
+            <h1 class="orderCnt_t">Ошибка</h1>
+        </div>
+        <br>
         <?= $error ?>
     </section>
-
+</div>
 <? } ?>

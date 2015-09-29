@@ -18,8 +18,6 @@ return function(
         <div class="order-ctrl <?= ( $couponErrors ? 'error' : '' ) ?>">
             <input class="order-ctrl__input <?= $inputSelectorId ?>" value="<?= $couponNumber ?>" >
             <label class="order-ctrl__lbl nohide">
-                 <span class="order-ctrl__err">
-                     <span class="err-inn-tb">
                     <? foreach ($couponErrors as $err) : ?>
                         <? if ($err->code == 404) : ?>
                             Скидки с таким кодом<br>не существует
@@ -31,8 +29,6 @@ return function(
                             <?= $err->message ?>
                         <? endif ?>
                     <? endforeach ?>
-                         </span>
-                 </span>
             </label>
         </div>
         <div class="order-discount__pin" style="display: none">

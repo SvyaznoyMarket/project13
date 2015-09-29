@@ -7,7 +7,10 @@ return function(
 ) {
     $user = \App::user();
 
-    if (!($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany())) {
+    if (
+        count($product->getPartnersOffer())
+        || (!($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()))
+    ) {
         return '';
     }
 ?>

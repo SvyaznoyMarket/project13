@@ -16,6 +16,7 @@ class Shop {
             'api/static-page',
             [
                 'token' => ['menu'],
+                'geo_town_id' => \App::user()->getRegion()->id,
                 'tags' => ['site-web'],
             ],
             [],
@@ -30,6 +31,7 @@ class Shop {
             'api/static-page',
             [
                 'token' => ['delivery'],
+                'geo_town_id' => \App::user()->getRegion()->id,
                 'tags' => ['site-web'],
             ],
             [],

@@ -32,7 +32,11 @@ class Show {
 
         $scmsClient->addQuery(
             'api/static-page',
-            ['token' => ['menu']],
+            [
+                'token' => ['menu'],
+                'geo_town_id' => \App::user()->getRegion()->id,
+                'tags' => ['site-web'],
+            ],
             [],
             function($data) use (&$sidebar) {
                 if (isset($data['pages'][0]['content'])) {
@@ -64,24 +68,6 @@ class Show {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
             });
-        }
-
-        if (in_array($point->id, [194])) {
-            \RepositoryManager::product()->prepareIteratorByFilter(
-                [
-                    ['shop', 1, [$point->id]],
-                    ['is_view_list', 1, [true]],
-                ],
-                [],
-                null,
-                null,
-                null,
-                function($data) use (&$point) {
-                    if (isset($data['count'])) {
-                        $point->productCount = (int)$data['count'];
-                    }
-                }
-            );
         }
 
         \App::curl()->execute();

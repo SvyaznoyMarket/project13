@@ -143,6 +143,7 @@ class IndexAction {
                 'api/static-page',
                 [
                     'token' => [$catalogJson['promo_token']],
+                    'geo_town_id' => \App::user()->getRegion()->id,
                     'tags' => ['site-web'],
                 ],
                 [],
@@ -164,6 +165,7 @@ class IndexAction {
             'api/static-page',
             [
                 'token' => [$promoToken],
+                'geo_town_id' => \App::user()->getRegion()->id,
                 'tags' => ['site-web'],
             ],
             [],

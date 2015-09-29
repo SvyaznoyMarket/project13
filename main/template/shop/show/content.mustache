@@ -1,4 +1,4 @@
-<a class="shops__back" href="{{backUrl}}">Все магазины и точки самовывоза в {{point.town.names.locativus}}</a>
+<a class="shops__back" href="{{backUrl}}">Все магазины и точки самовывоза в {{town.names.locativus}}</a>
 
 <div class="shops__info">
     <div class="shops__btns">
@@ -32,10 +32,13 @@
 </div>
 
 {{#point.showMap}}
-    <div class="shops__map">
-        <div class="bMap__eBody js-shop-viewport" data-map-latitude="{{point.latitude}}" data-map-longitude="{{point.longitude}}"></div>
-        <div class="shops-gallery">
-            {{#point.images.0}}
+    <div class="shops__map {{^point.images.0}}shops__map__single{{/point.images.0}}">
+        <div class="shops__viewport">
+            <div class="shops__viewport__container js-shop-viewport" data-map-latitude="{{point.latitude}}" data-map-longitude="{{point.longitude}}"></div>
+        </div>
+
+        {{#point.images.0}}
+            <div class="shops-gallery">
                 <ul class="shops-gallery__lst">
                 {{#point.images}}
                     <li>
@@ -49,16 +52,12 @@
                 <a class="shops-gallery__i shops-gallery__bottom js-shop-image-opener" data-type="map">
                     <img src="/images/map_ico.png" alt="" />
                 </a>
-            {{/point.images.0}}
-        </div>
+            </div>
+        {{/point.images.0}}
     </div>
 {{/point.showMap}}
 
 <div class="shops__descr">
-    {{#point.productCountText}}
-        <div class="shops__instock instock">{{point.productCountText}}</div>
-    {{/point.productCountText}}
-
     {{#point.workingTime}}
         <div class="shops__working-time">
             <span class="shops__schedule">Режим работы</span>
@@ -80,37 +79,37 @@
         </div>
     {{/point.workingTime}}
 
-    {{#point.description}}
-        <p>{{point.description}}</p>
-    {{/point.description}}
+    {{#point.descriptionHtml}}
+        <p>{{&point.descriptionHtml}}</p>
+    {{/point.descriptionHtml}}
 
     {{#point.way}}
         <div class="shops-way__head">Как добраться</div>
-        {{#point.way.common}}
-            <p>{{point.way.common}}</p>
-        {{/point.way.common}}
+        {{#point.way.commonHtml}}
+            <p>{{&point.way.commonHtml}}</p>
+        {{/point.way.commonHtml}}
 
-        {{^point.way.common}}
+        {{^point.way.commonHtml}}
             <div class="shops-way-tabs tabs">
                 <div class="tabs-head">
-                    {{#point.way.walk}}<div class="tabs-head__i active js-shop-tab-head" data-target="transport"><a>На городском транспорте</a></div>{{/point.way.walk}}
-                    {{#point.way.auto}}<div class="tabs-head__i js-shop-tab-head" data-target="auto"><a>На авто</a></div>{{/point.way.auto}}
+                    {{#point.way.walkHtml}}<div class="tabs-head__i active js-shop-tab-head" data-target="walk"><a>На городском транспорте</a></div>{{/point.way.walkHtml}}
+                    {{#point.way.autoHtml}}<div class="tabs-head__i js-shop-tab-head" data-target="auto"><a>На авто</a></div>{{/point.way.autoHtml}}
                 </div>
 
                 <div class="tabs-body">
-                    {{#point.way.walk}}
-                        <div class="tabs-body__i active js-shop-tab" id="transport">
-                            {{point.way.walk}}
+                    {{#point.way.walkHtml}}
+                        <div class="tabs-body__i active js-shop-tab" id="walk">
+                            {{&point.way.walkHtml}}
                         </div>
-                    {{/point.way.walk}}
+                    {{/point.way.walkHtml}}
 
-                {{#point.way.auto}}
-                    <div class="tabs-body__i js-shop-tab" id="auto">{{point.way.auto}}</div>
-                {{/point.way.auto}}
+                {{#point.way.autoHtml}}
+                    <div class="tabs-body__i js-shop-tab" id="auto">{{&point.way.autoHtml}}</div>
+                {{/point.way.autoHtml}}
                 </div>
 
             </div>
-        {{/point.way.common}}
+        {{/point.way.commonHtml}}
     {{/point.way}}
 </div>
 <!-- send popup-->

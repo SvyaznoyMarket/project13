@@ -28,6 +28,18 @@
             display: block;
         }
     }
+    &__txt{
+        position: absolute;
+        .transition(all 0.2s ease-out);
+        top: 24px;
+        color: @borderColor;
+        font-size: 12px;
+        left: 0;
+        margin-left: 10px;
+        &.top{
+            top: -2px;
+        }
+    }
     &__input{
         width: 100%;
         height: 35px;
@@ -90,6 +102,10 @@
             }
             &__lbl{
                 display: block;
+                color: #d45745;
+            }
+            &__txt{
+                top: -2px;
                 color: #d45745;
             }
         }
