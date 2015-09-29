@@ -32,6 +32,7 @@ $(function($){
 				if (!$img.length) {
 					$img = $('<img />').appendTo($viewport);
 					$img.load(function() {
+						// Центрируем изображение, выходящее за пределы viewport
 						var left = parseInt(($img.width() - $viewport.width()) / 2);
 						$img.css('left', left > 0 ? '-' + left + 'px' : 0);
 					});
