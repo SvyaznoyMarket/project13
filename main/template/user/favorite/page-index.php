@@ -13,7 +13,7 @@
 <div id="personal-container" class="personal">
     <?= $page->render('user/_menu-1508', ['page' => $page]) ?>
 
-    <div class="personal__favorits id-favorite-container js-favorite-container" data-disabled-class="disabled">
+    <div class="personal__favorits id-favorite-container js-favorite-container disabled" data-disabled-class="disabled">
         <div class="personal-favorit__top">
             <?= $helper->render('user/favorite/__action', ['containerId' => 'id-favorite-container', 'wishlists' => $wishlists]) ?>
         </div>
@@ -31,7 +31,7 @@
     <?
         $containerId = sprintf('id-wishlist-container-%s', $wishlist->id ?: uniqid());
     ?>
-    <div class="personal__favorits favorit-list<? if (count($wishlist->products) != 0): ?> expanded <? else: ?> collapsed<? endif ?> js-favorite-container <?= $containerId ?>" data-disabled-class="disabled">
+    <div class="personal__favorits favorit-list<? if (count($wishlist->products) != 0): ?> expanded <? else: ?> collapsed<? endif ?> js-favorite-container <?= $containerId ?> disabled" data-disabled-class="disabled">
         <div class="favorit-list__header">
             <ul class="personal-favorit__acts">
                 <!--

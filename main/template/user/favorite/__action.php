@@ -22,14 +22,19 @@ $f = function (
     ];
 ?>
     <div class="personal-favorit__choose">
-        <input id="<?= ($containerId . '-selectAll') ?>" type="checkbox" class="personal-favorit__checkbox js-fav-all">
+        <input
+            id="<?= ($containerId . '-selectAll') ?>"
+            type="checkbox"
+            class="personal-favorit__checkbox js-fav-all js-favoriteProduct-checkbox"
+            data-container="<?= ('.' . $containerId) ?>"
+        />
         <label for="<?= ($containerId . '-selectAll') ?>" class="personal-favorit__checkbox-icon"></label>
         <span class="choose-all">Выбрать все</span>
     </div>
     <ul class="personal-favorit__acts">
         <? if ($actions['share']): ?>
             <li
-                class="personal-favorit__act js-favorite-shareProductPopup"
+                class="personal-favorit__act can-be-disabled js-favorite-shareProductPopup"
                 data-container="<?= ('.' . $containerId) ?>"
                 data-value="<?= $helper->json([]) ?>"
             >
@@ -48,7 +53,7 @@ $f = function (
         <? endif ?>
         <? if ($actions['move']): ?>
             <li
-                class="personal-favorit__act js-favorite-movePopup"
+                class="personal-favorit__act can-be-disabled js-favorite-movePopup"
                 data-container="<?= ('.' . $containerId) ?>"
                 data-value="<?= $helper->json([
                     'form'      => ['url' => $helper->url('wishlist.addProduct')],
@@ -60,7 +65,7 @@ $f = function (
         <? endif ?>
         <? if ($actions['delete']): ?>
             <li
-                class="personal-favorit__act js-favorite-deletePopup"
+                class="personal-favorit__act can-be-disabled js-favorite-deletePopup"
                 data-container="<?= ('.' . $containerId) ?>"
                 data-value="<?= $helper->json([
                     'wishlist' => $wishlist ? ['id' => $wishlist->id, 'title' => $wishlist->title] : null,
