@@ -1,0 +1,9 @@
+{{#products.0}}
+    <h1>Товары в этом магазине</h1>
+    <ul class="bListing clearfix js-listing">
+        {{#products}}
+            {{>product/list/item/compact}}
+        {{/products}}
+    </ul>
+    <a href="{{shopProductUrl}}">Посмотреть все товары</a>
+{{/products.0}}
