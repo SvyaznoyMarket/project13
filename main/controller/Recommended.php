@@ -90,11 +90,13 @@ class Recommended {
                 }
 
                 if (empty($recommendedProductsByType['personal']) && !empty($recommendedProductsByType['popular'])) {
+                    $i = 0;
                     foreach ($recommendedProductsByType['popular'] as $key => $item) {
-                        if ($key % 2) {
+                        if ($i % 2) {
                             $recommendedProductsByType['personal'][$key] = $item;
                             unset($recommendedProductsByType['popular'][$key]);
                         }
+                        $i++;
                     }
                 }
             });
