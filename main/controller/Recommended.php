@@ -16,17 +16,13 @@ class Recommended {
 
         $showLimit = (int)$request->get('showLimit') ?: null;
 
-        $recommendedProductsByType = call_user_func(function() use($request, $rrUserId) {
+        $recommendedProductsByType = call_user_func(function() use($request) {
             $types = $request->query->get('types');
             if (!is_array($types)) {
                 return [];
             }
 
             $types = array_flip($types);
-
-            if (!$rrUserId) {
-                unset($types['personal']);
-            }
 
             // Если в personal не будет товаров, то их надо будет взять из popular
             if (isset($types['personal'])) {
@@ -51,7 +47,7 @@ class Recommended {
                 $this->prepareRecommendationQuery('Recomendation/ItemsToMain', null, [], $recommendedProductsByType['popular']);
             }
 
-            if (isset($recommendedProductsByType['personal'])) {
+            if (isset($recommendedProductsByType['personal']) && $rrUserId) {
                 $this->prepareRecommendationQuery('Recomendation/PersonalRecommendation', null, ['rrUserId' => $rrUserId], $recommendedProductsByType['personal']);
             }
 
