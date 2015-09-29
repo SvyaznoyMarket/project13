@@ -34,7 +34,7 @@ $f = function(
             <?= $order->isPartnerOffer() ? 'required' : '' ?>
             data-value="<?= $helper->json($dataValue) ?>"
             data-relation="<?= $helper->json(['container' => '.' . $containerId])?>"
-            data-text-default="*Улица"
+            data-text-default="Улица"
             data-parent-kladr-id="<?= \App::user()->getRegion()->kladrId ?>"
         />
     </div>
@@ -47,7 +47,7 @@ $f = function(
             data-field="building"
             <?= $order->isPartnerOffer() ? 'required' : '' ?>
             data-value="<?= $helper->json($dataValue) ?>"
-            data-text-default="*Дом"
+            data-text-default="Дом"
             data-relation="<?= $helper->json(['container' => '.' . $containerId])?>"
         />
     </div>
