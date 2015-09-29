@@ -13,7 +13,7 @@
 <div id="personal-container" class="personal">
     <?= $page->render('user/_menu-1508', ['page' => $page]) ?>
 
-    <div class="personal__favorits id-favorite-container js-favorite-container">
+    <div class="personal__favorits id-favorite-container js-favorite-container" data-disabled-class="disabled">
         <div class="personal-favorit__top">
             <?= $helper->render('user/favorite/__action', ['containerId' => 'id-favorite-container', 'wishlists' => $wishlists]) ?>
         </div>
@@ -22,7 +22,7 @@
             if (!$product = @$productsByUi[$favoriteProduct->ui]) continue;
             $rowId = sprintf('id-favoriteRow-%s', ($product->getUi() ?: uniqid()));
         ?>
-            <?= $helper->render('user/favorite/__product', ['rowId' => $rowId, 'product' => $product]) ?>
+            <?= $helper->render('user/favorite/__product', ['rowId' => $rowId, 'containerId' => 'id-favorite-container', 'product' => $product]) ?>
         <? endforeach ?>
     </div>
 
@@ -31,7 +31,7 @@
     <?
         $containerId = sprintf('id-wishlist-container-%s', $wishlist->id ?: uniqid());
     ?>
-    <div class="personal__favorits favorit-list<? if (count($wishlist->products) != 0): ?> expanded <? else: ?> collapsed<? endif ?> js-favorite-container <?= $containerId ?>">
+    <div class="personal__favorits favorit-list<? if (count($wishlist->products) != 0): ?> expanded <? else: ?> collapsed<? endif ?> js-favorite-container <?= $containerId ?>" data-disabled-class="disabled">
         <div class="favorit-list__header">
             <ul class="personal-favorit__acts">
                 <!--
@@ -60,7 +60,7 @@
             if (!$product = @$productsByUi[$wishlistProduct->ui]) continue;
             $rowId = sprintf('id-wishlistRow-%s-%s', $wishlist->id, ($product->getUi() ?: uniqid()));
         ?>
-            <?= $helper->render('user/favorite/__product', ['rowId' => $rowId, 'product' => $product]) ?>
+            <?= $helper->render('user/favorite/__product', ['rowId' => $rowId, 'containerId' => $containerId, 'product' => $product]) ?>
         <? endforeach ?>
     </div>
     <? endforeach ?>

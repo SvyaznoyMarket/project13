@@ -259,4 +259,32 @@
         }
     });
 
+    // клик по чекбоксу с товаром
+    $body.on('change', '.js-favoriteProduct-checkbox', function() {
+        var
+            $el = $(this),
+            data = $el.data(),
+            $container = data.container && $(data.container),
+            disabledClass = $container && $container.data('disabledClass'),
+            hasChecked = false
+        ;
+
+        if ($container && $container.length && disabledClass) {
+            $container.find('.js-favoriteProduct-checkbox').each(function(i, el) {
+                var $el = $(el);
+
+                if ($el.is(':checked')) {
+                    hasChecked = true;
+                    return false;
+                }
+            });
+
+            if (hasChecked) {
+                $container.removeClass(disabledClass);
+            } else {
+                $container.addClass(disabledClass);
+            }
+        }
+    });
+
 }(jQuery));

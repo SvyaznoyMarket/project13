@@ -2,21 +2,24 @@
 
 /**
  * @param \Helper\TemplateHelper $helper
+ * @param string $containerId
  * @param string $rowId
  * @param \Model\Product\Entity $product
  */
 $f = function (
     \Helper\TemplateHelper $helper,
+    $containerId,
     $rowId,
     \Model\Product\Entity $product
 ) { ?>
     <div class="personal-favorit__item <?= $rowId ?>">
         <div class="personal-favorit__cell personal-favorit__choose">
             <input
-                class="personal-favorit__checkbox"
+                class="personal-favorit__checkbox js-favoriteProduct-checkbox"
                 type="checkbox"
                 id="<?= $rowId . '-input' ?>"
                 data-type="product"
+                data-container="<?= ('.' . $containerId) ?>"
                 data-product="<?= $helper->json([
                     'name'    => $product->getWebName(),
                     'barcode' => $product->barcode,
