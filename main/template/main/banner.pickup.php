@@ -1,3 +1,4 @@
+<? if (0) { ?>
 <?
     // SITE-5853б SITE-6062
 
@@ -80,3 +81,7 @@
         </a>
     <? endif ?>
 <? endif ?>
+<? } ?>
+<a class="header__bann stripe-bann" href="/delivery">
+    Оплачивать заказы стало Проще!   Платите удобным способом   <span class="payments-bann"><img src="/images/payments-bann.png"></span>
+</a>
