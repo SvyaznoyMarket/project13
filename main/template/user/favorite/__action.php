@@ -22,7 +22,12 @@ $f = function (
     ];
 ?>
     <div class="personal-favorit__choose">
-        <input id="<?= ($containerId . '-selectAll') ?>" type="checkbox" class="personal-favorit__checkbox js-fav-all">
+        <input
+            id="<?= ($containerId . '-selectAll') ?>"
+            type="checkbox"
+            class="personal-favorit__checkbox js-fav-all js-favoriteProduct-checkbox"
+            data-container="<?= ('.' . $containerId) ?>"
+        />
         <label for="<?= ($containerId . '-selectAll') ?>" class="personal-favorit__checkbox-icon"></label>
         <span class="choose-all">Выбрать все</span>
     </div>
