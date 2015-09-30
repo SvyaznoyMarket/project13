@@ -28,7 +28,7 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
 
 <div class="personal">
 
-    <? if ($flash !== null) : ?>
+    <? if (!empty($flash['message'])) : ?>
         <p class="<?= $flash['type'] == 'success' ? 'green' : 'red' ?>"><?= $flash['message'] ?></p>
     <? endif; ?>
 
