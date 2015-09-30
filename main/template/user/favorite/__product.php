@@ -2,21 +2,24 @@
 
 /**
  * @param \Helper\TemplateHelper $helper
+ * @param string $containerId
  * @param string $rowId
  * @param \Model\Product\Entity $product
  */
 $f = function (
     \Helper\TemplateHelper $helper,
+    $containerId,
     $rowId,
     \Model\Product\Entity $product
 ) { ?>
     <div class="personal-favorit__item <?= $rowId ?>">
         <div class="personal-favorit__cell personal-favorit__choose">
             <input
-                class="personal-favorit__checkbox"
+                class="personal-favorit__checkbox js-favoriteProduct-checkbox"
                 type="checkbox"
                 id="<?= $rowId . '-input' ?>"
                 data-type="product"
+                data-container="<?= ('.' . $containerId) ?>"
                 data-product="<?= $helper->json([
                     'name'    => $product->getWebName(),
                     'barcode' => $product->barcode,
@@ -26,10 +29,10 @@ $f = function (
             <label for="<?= $rowId . '-input' ?>" class="personal-favorit__checkbox-icon"></label>
         </div>
         <div class="personal-favorit__cell personal-favorit__pic">
-            <img src="<?= $product->getImageUrl(1) ?>">
+            <a href="<?= $product->getLink() ?>"><img src="<?= $product->getImageUrl(1) ?>"></a>
         </div>
         <div class="personal-favorit__cell">
-            <div class="personal-favorit__name"><?= $helper->escape($product->getName()) ?></div>
+            <a href="<?= $product->getLink() ?>"><div class="personal-favorit__name"><?= $helper->escape($product->getName()) ?></div></a>
             <? if ($product->getIsBuyable()): ?>
                 <div class="personal-favorit__status">В наличии</div>
             <? else: ?>
