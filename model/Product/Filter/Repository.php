@@ -243,7 +243,11 @@ class Repository {
         $productFilter->setValues($values);
 
         foreach ($productFilter->getFilterCollection() as $property) {
-            if (\Model\Product\Filter\Entity::TYPE_LIST == $property->getTypeId() && !in_array($property->getId(), ['shop', 'category']) && !($category && $category->isTyre() && in_array($property->getName(), ['Сезон', 'Ширина', 'Профиль', 'Диаметр'], true))) {
+            if (
+                \Model\Product\Filter\Entity::TYPE_LIST == $property->getTypeId()
+                && (!in_array($property->getId(), ['shop', 'category']) || $category->getToken() == \Model\Product\Category\Entity::FAKE_SHOP_TOKEN)
+                && !($category && $category->isTyre() && in_array($property->getName(), ['Сезон', 'Ширина', 'Профиль', 'Диаметр'], true))
+            ) {
                 $property->setIsMultiple(true);
             } else {
                 $property->setIsMultiple(false);

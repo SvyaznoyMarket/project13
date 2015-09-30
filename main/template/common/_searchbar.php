@@ -99,10 +99,10 @@ $btnTypes = array(
                 <a href="<?= \App::router()->generate('enterprize') ?>" class="i-header i-header--ep jsEnterprizeInSearchBarButton"></a>
             </div>
 
-            <div class="shops-btn">
+            <a href="<?= \App::router()->generate('product.category', ['categoryPath' => Model\Product\Category\Entity::FAKE_SHOP_TOKEN]) ?>" class="shops-btn">
                 <img class="shops-btn__icon" src="/styles/shops/img/shop-icon.png">
                 <span class="shops-btn__txt">Товары<br>в магазине</span>
-            </div>
+            </a>
 
             <? if (false): // SITE-5833 ?>
             <div class="hdgift <?= $btnTypes[ $page->escape(\Session\AbTest\ABHelperTrait::getGiftButtonNumber()) ] ?>">

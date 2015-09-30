@@ -63,21 +63,10 @@ class Action {
 
             $client->execute(\App::config()->coreV2['retryTimeout']['short']);
         } else {
-            // если уже есть фильтрация по категории
-            if ($request->query->has('category')) {
-                \RepositoryManager::productCategory()->prepareCollectionById((array)$request->query->get('category'), $region, function($data) use (&$category){
-                    if ($data) {
-                        $category = new Category(reset($data));
-                    }
-                });
-                $client->execute(\App::config()->coreV2['retryTimeout']['short']);
-            } else {
-                // Листинги по магазинам
-                $category = new Category([]);
-            }
+            $category = new Category();
             $category->setProductView(1);
             $category->setName('Товары в магазинах');
-            $category->setLink(sprintf('/catalog/%s/', Category::FAKE_SHOP_TOKEN));
+            $category->setLink(\App::router()->generate('product.category', ['categoryPath' => Category::FAKE_SHOP_TOKEN]));
             $category->setToken($categoryToken);
         }
 
@@ -112,16 +101,38 @@ class Action {
         $brand = null;
         $filters = [];
         $brands = [];
-        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, [], function($data) use (&$filters, &$brands, &$brand, $brandToken) {
+        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, [], function($data) use (&$filters, &$brands, &$brand, $brandToken, $categoryToken) {
             foreach ($data as $item) {
-                $filters[] = $filter = new \Model\Product\Filter\Entity($item);
+                $filter = new \Model\Product\Filter\Entity($item);
+                if ($filter->isCategory() && $categoryToken != Category::FAKE_SHOP_TOKEN) {
+                    continue;
+                }
+                
+                if ($categoryToken == Category::FAKE_SHOP_TOKEN) {
+                    if ($filter->isShop()) {
+                        $filter->defaultTitle = 'Все магазины региона';
+                        $filter->showDefaultTitleInSelectedList = true;
+                    }
+
+                    if ($filter->isCategory()) {
+                        $filter->defaultTitle = 'Все';
+                        $filter->showDefaultTitleInSelectedList = true;
+                    }
+                }
+                
+                $filters[] = $filter;
                 // бренды
                 if ($filter->isBrand() && $filter->getOption()) {
                     foreach ($filter->getOption() as $option) {
-                        $brandEntity = new \Model\Brand\Entity((array)$option);
-                        $brands[] = $brandEntity;
+                        $filterBrand = new \Model\Brand\Entity();
+                        $filterBrand->id = $option->id;
+                        $filterBrand->token = $option->token;
+                        $filterBrand->name = $option->name;
+                        $filterBrand->image = $option->imageUrl;
+                        
+                        $brands[] = $filterBrand;
                         if ($option->getToken() == $brandToken) {
-                            $brand = $brandEntity;
+                            $brand = $filterBrand;
                         }
                     }
                 }

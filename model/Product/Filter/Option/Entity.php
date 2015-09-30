@@ -4,17 +4,17 @@ namespace Model\Product\Filter\Option;
 
 class Entity {
     /** @var int */
-    private $id;
+    public $id;
     /** @var string */
-    private $token;
+    public $token;
     /** @var string */
-    private $name;
+    public $name;
     /** @var string */
-    private $link;
+    public $link;
     /** @var int */
-    private $quantity;
+    public $quantity;
     /** @var string */
-    private $imageUrl;
+    public $imageUrl;
 
 
     public function __construct(array $data = []) {

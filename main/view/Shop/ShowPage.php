@@ -79,6 +79,8 @@ class ShowPage extends \View\DefaultLayout {
     }
 
     public function slotBottombar() {
+        /** @var \Model\Point\ScmsPoint $point */
+        $point = $this->getParam('point');
         /** @var \Model\Product\Entity[] $products */
         $products = $this->getParam('products');
         $productShowAction = new \View\Product\ShowAction();
@@ -87,7 +89,7 @@ class ShowPage extends \View\DefaultLayout {
         $reviewAction = new \View\Product\ReviewCompactAction();
 
         return \App::mustache()->render('shop/show/bottombar', [
-            'shopProductUrl' => \App::router()->generate('product.category', ['categoryPath' => 'shop']),
+            'shopProductUrl' => $point->id ? \App::router()->generate('product.category', ['categoryPath' => 'shop', 'f-shop' => $point->id]) : '',
             'products' => array_values(array_map(function(\Model\Product\Entity $product) use($productShowAction, $helper, $cartButtonAction, $reviewAction) {
                 return $productShowAction->execute(
                     $helper,
