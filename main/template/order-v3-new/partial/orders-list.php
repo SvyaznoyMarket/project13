@@ -63,39 +63,39 @@ $f = function (
                             <? if ($product->prefix): ?><?= $product->prefix ?><br/><? endif ?>
                             <?= $product->name_web ?>
                         </a>
+						<div class="order-good__price-block">
+							<span class="order-good__price"><?= $helper->formatPrice($product->original_price) ?>
+								<span class="rubl">p</span></span>
+							<span class="order-good__quantity js-show-edit"><?= $product->quantity ?> шт.</span>
 
-                        <span class="order-good__price"><?= $helper->formatPrice($product->original_price) ?>
-                            <span class="rubl">p</span></span>
-                        <span class="order-good__quantity js-show-edit"><?= $product->quantity ?> шт.</span>
+							<span class="order-good__total-price"><?= $helper->formatPrice($product->original_sum) ?>
+								<span class="rubl">p</span>
+							</span>
 
-                        <span class="order-good__total-price"><?= $helper->formatPrice($product->original_sum) ?>
-                            <span class="rubl">p</span>
-                        </span>
+							<!-- редактирование кол-ва/удаление товара -->
+							<div class="order-good__edit js-edit" style="display: none">
+								<div data-spinner-for="" class="order-good__count count">
+									<button class="count__ctrl count__ctrl--less js-edit-quant" title="Уменьшить" data-delta="-1">−</button>
+									<input name="productQuantity[]" type="text" value="<?= $product->quantity ?>"
+										   class="count__num js-quant" data-stock="<?= $product->stock ?>"
+										   data-min="1"/>
+									<button class="count__ctrl count__ctrl--more js-edit-quant" title="Увеличить" data-delta="+1">+</button>
+								</div>
+								<span class="order-good__units">шт.</span>
 
-                        <!-- редактирование кол-ва/удаление товара -->
-                        <div class="order-good__edit js-edit" style="display: none">
-                            <div data-spinner-for="" class="order-good__count count">
-                                <button class="count__ctrl count__ctrl--less js-edit-quant" title="Уменьшить" data-delta="-1">−</button>
-                                <input name="productQuantity[]" type="text" value="<?= $product->quantity ?>"
-                                       class="count__num js-quant" data-stock="<?= $product->stock ?>"
-                                       data-min="1"/>
-                                <button class="count__ctrl count__ctrl--more js-edit-quant" title="Увеличить" data-delta="+1">+</button>
-                            </div>
-                            <span class="order-good__units">шт.</span>
-
-                            <a class="order-good__apply jsChangeProductQuantity" href="" data-id="<?= $product->id; ?>"
-                               data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
-                            <a class="order-good__del js-del-popup-show">Удалить товар</a>
-                            <div class="order-good__del-popup order-popup js-del-popup" style="display:none;">
-                                <div class="order-popup__closer js-del-popup-close"></div>
-									<div class="order-popup__tl">Удалить товар?</div>
-									<button class="order-popup__btn order-btn order-btn--default js-del-popup-close">Отмена</button>
-									<button class="order-popup__btn order-btn order-btn--default jsDeleteProduct" href="" data-id="<?= $product->id; ?>"
-									   data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Удалить</button>
-                            </div>
-                        </div>
-                        <!-- END редактирование кол-ва/удаление товара -->
-
+								<a class="order-good__apply jsChangeProductQuantity" href="" data-id="<?= $product->id; ?>"
+								   data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
+								<a class="order-good__del js-del-popup-show">Удалить товар</a>
+								<div class="order-good__del-popup order-popup js-del-popup" style="display:none;">
+									<div class="order-popup__closer js-del-popup-close"></div>
+										<div class="order-popup__tl">Удалить товар?</div>
+										<button class="order-popup__btn order-btn order-btn--default js-del-popup-close">Отмена</button>
+										<button class="order-popup__btn order-btn order-btn--default jsDeleteProduct" href="" data-id="<?= $product->id; ?>"
+										   data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Удалить</button>
+								</div>
+							</div>
+							<!-- END редактирование кол-ва/удаление товара -->
+						</div>
                     </div>
                 <? endforeach ?>
 
