@@ -54,7 +54,10 @@ class UpdateAction extends PrivateAction {
             $updateQuery->user->middleName = isset($formData['middle_name']) ? $formData['middle_name'] : '';
             $updateQuery->user->lastName = isset($formData['last_name']) ? $formData['last_name'] : '';
             if (isset($formData['birthday']['year']) && isset($formData['birthday']['month']) && isset($formData['birthday']['day'])) {
-                $updateQuery->user->birthday = sprintf('%04d-%02d-%02d', $formData['birthday']['year'], $formData['birthday']['month'], $formData['birthday']['day']);
+                $birthday = sprintf('%04d-%02d-%02d', $formData['birthday']['year'], $formData['birthday']['month'], $formData['birthday']['day']);
+                if ('0000-00-00' !== $birthday) {
+                    $updateQuery->user->birthday = $birthday;
+                }
             }
             $updateQuery->user->sex = isset($formData['sex']) ? $formData['sex'] : null;
             $updateQuery->user->email = isset($formData['email']) ? $formData['email'] : null;
