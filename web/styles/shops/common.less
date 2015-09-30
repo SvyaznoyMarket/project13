@@ -109,11 +109,11 @@
             padding-right: 17px;
 
             li{
-                padding: 0 9px 0 12px;
+                padding: 0 9px 0 10px;
             }
         }
         &__i{
-            margin-top: 10px;
+            margin-bottom: 10px;
             .inline-block();
             cursor: pointer;
             img {
@@ -122,12 +122,15 @@
         }
         &__map{
             position: absolute;
-            padding: 10px 9px 10px 10px;
+            padding: 10px;
             margin: 0;
             background-color: @white;
             top: 0;
             left: 0px;
+
+          &.shadow.act{
             .box-shadow(0 0 12px 0 rgba(0, 0, 0, 0.50));
+          }
         }
 
     }
