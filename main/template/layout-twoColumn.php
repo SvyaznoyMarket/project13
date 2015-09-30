@@ -70,7 +70,7 @@
                 <?= $page->slotSidebar() ?>
             </div>
 
-            <div style="clear: both;">
+            <div class="shops__bottombar" style="clear: both;">
                 <?= $page->slotBottombar() ?>
             </div>
         </div>
