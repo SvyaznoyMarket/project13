@@ -1,11 +1,23 @@
 <?php
-return function(
-    $orderDelivery,
+
+/**
+ * @param \Model\OrderDelivery\Entity $orderDelivery
+ * @param $error
+ */
+$f = function(
+    \Model\OrderDelivery\Entity $orderDelivery,
     $error
 ) {
 
-    if (!is_array($error)) $error = (array) $error;
+    if (!is_array($error)) $error = (array)$error;
 
+    /** @var \Model\OrderDelivery\Error[] $deliveryErrors */
+    $deliveryErrors = [];
+    foreach ($orderDelivery->errors as $e) {
+        if ($e->isMaxQuantityError() && !isset($e->details['block_name'])) {
+            $deliveryErrors[md5($e->message)] = $e;
+        }
+    }
 ?>
 
     <? foreach ($error as $e) : ?>
@@ -16,13 +28,11 @@ return function(
 
     <? if (!$orderDelivery instanceof \Model\OrderDelivery\Entity) return ?>
 
-    <? foreach ($orderDelivery->errors as $e) : ?>
-        <? if ($e->isMaxQuantityError() && !isset($e->details['block_name'])) : ?>
-            <div class="order-error order-error--warning">
-                <?= $e->message ?>
-                <i class="order-error__closer js-order-err-close"></i>
-            </div>
-        <? endif ?>
+    <? foreach ($deliveryErrors as $e) : ?>
+        <div class="order-error order-error--warning">
+            <?= $e->message ?>
+            <i class="order-error__closer js-order-err-close"></i>
+        </div>
     <? endforeach ?>
 
-<? } ?>
+<? }; return $f;
