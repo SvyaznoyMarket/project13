@@ -1,21 +1,23 @@
 <?php
 
 /**
- * @param \Model\OrderDelivery\Entity $orderDelivery
  * @param $error
+ * @param \Model\OrderDelivery\Entity|null $orderDelivery
  */
 $f = function(
-    \Model\OrderDelivery\Entity $orderDelivery,
-    $error
+    $error,
+    \Model\OrderDelivery\Entity $orderDelivery = null
 ) {
 
     if (!is_array($error)) $error = (array)$error;
 
     /** @var \Model\OrderDelivery\Error[] $deliveryErrors */
     $deliveryErrors = [];
-    foreach ($orderDelivery->errors as $e) {
-        if ($e->isMaxQuantityError() && !isset($e->details['block_name'])) {
-            $deliveryErrors[md5($e->message)] = $e;
+    if ($orderDelivery) {
+        foreach ($orderDelivery->errors as $e) {
+            if ($e->isMaxQuantityError() && !isset($e->details['block_name'])) {
+                $deliveryErrors[md5($e->message)] = $e;
+            }
         }
     }
 ?>
