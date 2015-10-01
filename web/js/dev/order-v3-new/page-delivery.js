@@ -8,12 +8,13 @@
     }
 
     var
-        body             = document.getElementsByTagName('body')[0],
-        $body            = $(body),
-        $orderContent    = $('#js-order-content'),
-        $inputs          = $('.js-order-ctrl__input'),
-        comment          = '',
-        validator        = null,
+        body          = document.getElementsByTagName('body')[0],
+        $body         = $(body),
+        $orderContent = $('#js-order-content'),
+        $inputs       = $('.js-order-ctrl__input'),
+        $offertaPopup = $('.js-order-oferta-popup').eq(0),
+        comment       = '',
+        validator     = null,
 
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
@@ -157,8 +158,10 @@
                 console.log("Model:", data.result.OrderDeliveryModel);
 
                 $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
-
+                $offertaPopup.remove();
                 $orderContent.empty().html(data.result.page);
+                $offertaPopup = $('.js-order-oferta-popup').eq(0);
+
 				if ($orderContent.find('.jsAddressRootNode').length > 0) {
 					$.each($orderContent.find('.jsAddressRootNode'), function(i,val){
 						ko.applyBindings(ENTER.OrderV3.address, val);
@@ -252,7 +255,7 @@
 		},
 
 		showOfertaPopup = function showOfertaPopupF() {
-			$('.js-order-oferta-popup').lightbox_me();
+			$offertaPopup.lightbox_me();
 		},
 
 		tabsOfertaAction = function tabsOfertaActionF(that) {
@@ -565,7 +568,7 @@
 			$.ajax({
 				url: ENTER.utils.setURLParam('ajax', 1, href),
 				success: function(data) {
-					$('.orderOferta_tl:first').html(data.content || '');
+					$offertaPopup.find('.orderOferta_tl:first').html(data.content || '');
 					showOfertaPopup();
 				}
 			})
@@ -685,7 +688,7 @@
 		$(this).remove();
 	});
 
-    // авктокомплит адерса
+    // автокомплит адреса
     $body.on('focus', '.js-order-deliveryAddress', function() {
 
         var $el = $(this),
@@ -746,8 +749,10 @@
                 //$('.ui-autocomplete').css({'position' : 'absolute', 'top' : 29, 'left' : 0});
             },
             select: function( event, ui ) {
+                var dataField = $el.data('field');
                 $el.val(ui.item.label);
-                $inputFields.eq(1).data('parent-kladr-id', ui.item.value.id);
+                $('[data-field=building]').data('parent-kladr-id', ui.item.value.id);
+                $('[data-field=' + dataField + ']').val(ui.item.label);
                 $container.data('last-kladr-id', ui.item.value.id);
                 save();
                 return false;
@@ -776,8 +781,17 @@
         };
 
         // Сохранение дома
-        $inputFields.eq(2).off().on('keyup', save);
+        $inputFields.eq(2).off().on('keyup', function() {
+            $('[data-field=apartment]').val($(this).val());
+            save();
+        });
 
+    });
+
+    // синхронизация между полями доставки между заказами
+    $body.find('.js-order-deliveryAddress').on('keyup', function(){
+        var field = $(this).data('field');
+        $('[data-field=' + field + ']').val($(this).val());
     });
 
     $body.on('click', '[form="js-orderForm"]', function(e) {

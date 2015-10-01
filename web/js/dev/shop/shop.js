@@ -1,8 +1,10 @@
 $(function($){
     var
 		$viewport = $('.js-shop-viewport'),
+		$mapImageOpener = $('.js-shop-image-opener-map'),
 		errorClass = 'error',
-		loadingClass = 'loading';
+		loadingClass = 'loading',
+		shadowClass = 'shadow';
 
     if ($viewport.length) {
         ymaps.ready(function () {
@@ -42,6 +44,14 @@ $(function($){
 			} else if ($self.data('type') == 'map') {
 				$viewport.find('ymaps:first').show();
 				$viewport.find('img:first').hide();
+			}
+		});
+
+		$('.js-shop-gallery').scroll(function(){
+			if ($(this).scrollTop()) {
+				$mapImageOpener.addClass(shadowClass);
+			} else {
+				$mapImageOpener.removeClass(shadowClass);
 			}
 		});
     }
