@@ -77,8 +77,8 @@ class Manager {
                     if (!isset($source['matches']) || !is_array($source['matches'])) continue;
 
                     foreach ($source['matches'] as $matchArr) {
-                        $matchKey = $matchArr['key'];
-                        $matchValue = $matchArr['value'];
+                        $matchKey = isset($matchArr['key']) ? $matchArr['key'] : null;
+                        $matchValue = isset($matchArr['value']) ? $matchArr['value'] : null;
                         if ($matchValue !== null && 0 === strpos($request->query->get($matchKey), $matchValue)) {
                             $matchesCount += 1;
                         }
