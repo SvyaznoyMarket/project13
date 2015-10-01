@@ -177,7 +177,7 @@ $f = function(
                                                             'number' => $order->number,
                                                             'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context]),
                                                         ]) ?>"
-                                                        <? if (in_array($paymentMethod->id, \App::config()->payment['discountIds'])): ?>
+                                                        <? if ($paymentMethod->isOnline): ?>
                                                             data-discount="true"
                                                         <? endif ?>
                                                         data-relation="<?= $helper->json([

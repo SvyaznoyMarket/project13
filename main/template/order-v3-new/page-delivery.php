@@ -257,7 +257,7 @@ $f = function(
                     <? endif ?>
                 </div>
 
-                <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?>
+                <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order, 'orderDelivery' => $orderDelivery]) ?>
 
             <? else: ?>
                 <div class="orderCol_delivrIn orderCol_delivrIn-empty jsSmartAddressBlock">
@@ -271,7 +271,7 @@ $f = function(
 
                 </div>
 
-                <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?>
+                <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order, 'orderDelivery' => $orderDelivery]) ?>
 
             <? endif ?>
 

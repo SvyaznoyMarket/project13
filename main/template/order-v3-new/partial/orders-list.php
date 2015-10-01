@@ -256,12 +256,12 @@ $f = function (
                             <? endif ?>
                         </div>
 
-                        <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?>
+                        <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order, 'orderDelivery' => $orderDelivery]) ?>
 
                     <? else: ?>
                         <?= $helper->render('order-v3-new/partial/user-address', ['order' => $order, 'orderDelivery' => $orderDelivery]) ?>
 
-                        <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?>
+                        <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order, 'orderDelivery' => $orderDelivery]) ?>
                     <? endif ?>
 
                     <?
