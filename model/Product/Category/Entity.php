@@ -5,6 +5,8 @@ namespace Model\Product\Category;
 use Model\Media;
 
 class Entity extends BasicEntity {
+    const FAKE_SHOP_TOKEN = 'shop';
+
     /** @var bool Является ли категория главной для товара */
     public $isMain = false;
     /** @var bool|null */
@@ -431,7 +433,7 @@ class Entity extends BasicEntity {
             self::UI_BYTOVAYA_TEHNIKA, // Бытовая техника
             self::UI_MEBEL, // Мебель
             self::UI_ELECTRONIKA, // Электронника
-        ], true) || $this->isTyre();
+        ], true) || $this->isTyre() || $this->token == 'shop';
     }
 
     public function isV2Furniture() {
@@ -463,12 +465,16 @@ class Entity extends BasicEntity {
         return true;
     }
 
+    public function isFakeShopCategory() {
+        return $this->token == self::FAKE_SHOP_TOKEN;
+    }
+
     public function isAlwaysShowBrand() {
         if ($this->isV2()) {
             return (bool)$this->getClosest([
                 self::UI_BYTOVAYA_TEHNIKA, // Бытовая техника
                 self::UI_ELECTRONIKA, // Электронника
-            ]);
+            ]) || $this->isFakeShopCategory();
         }
 
         return false;

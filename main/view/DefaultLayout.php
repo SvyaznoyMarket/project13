@@ -124,6 +124,10 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    public function slotBottombar() {
+        return '';
+    }
+
     /**
      * @return string
      */

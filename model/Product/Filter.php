@@ -81,7 +81,7 @@ class Filter {
 
         $return[] = ['is_view_list', 1, [true]];
 
-        if ($this->category) {
+        if ($this->category && $this->category->getId()) {
             $return[] = ['category', 1, $this->category->getId()];
         }
 
@@ -217,6 +217,7 @@ class Filter {
         $shopProperty = null;
         $brandProperty = null;
         $instoreProperty = null;
+        $categoryProperty = null;
         $additionalGroup = null;
         foreach ($this->filters as $property) {
             if ($property->isPrice()) {
@@ -227,6 +228,8 @@ class Filter {
                 $instoreProperty = $property;
             } else if ($property->isShop()) {
                 $shopProperty = $property;
+            } else if ($property->isCategory()) {
+                $categoryProperty = $property;
             } else if ($property->groupUi) {
                 if (isset($groups[$property->groupUi])) {
                     $group = $groups[$property->groupUi];
@@ -256,6 +259,14 @@ class Filter {
 
             return $a->position < $b->position ? -1 : 1;
         });
+
+        if ($categoryProperty) {
+            $group = new Group();
+            $group->name = $categoryProperty->getName();
+            $group->properties[] = $categoryProperty;
+            $group->hasSelectedProperties = (bool)$this->getValue($categoryProperty);
+            array_unshift($groups, $group);
+        }
 
         if ($instoreProperty) {
             $group = new Group();
