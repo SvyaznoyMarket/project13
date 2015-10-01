@@ -2,13 +2,17 @@
 
 namespace Partner\Counter;
 
+use \Model\Product\Category\Entity as Category;
+
 class CityAds {
     const NAME = 'cityads';
     const PARTNER_ID = 5085;
+    const ENTER_ID = '2085';
 
     /**
+     * @deprecated
      * @param \Model\Order\Entity $order
-     * @return string[]
+     * @return string
      */
     public static function getLink(\Model\Order\Entity $order) {
         $link = null;
@@ -16,7 +20,7 @@ class CityAds {
         try {
             $link = strtr('https://t.gameleads.ru/{order.id}/q1/{sig}', [
                 '{order.id}' => $order->getNumber(),
-                '{sig}'      => md5('2085' . $order->getNumber()),
+                '{sig}'      => md5(self::ENTER_ID . $order->getNumber()),
             ]);
         } catch (\Exception $e) {
             \App::logger()->error($e, ['partner', 'cityads']);
@@ -28,22 +32,24 @@ class CityAds {
 
     /**
      * @param \Model\Order\Entity $order
-     * @param array $productsById
-     * @param bool $isScript
+     * @param \Model\Product\Entity[] $productsById
+     * @param \Templating\HtmlLayout $page
      * @return bool|null|string
      */
-    public static function getCityAdspixLink(\Model\Order\Entity $order,  array &$productsById = [], $page, $isScript = false) {
+    public static function getCityAdspixLink(\Model\Order\Entity $order,  &$productsById = [], $page) {
         $request = \App::request();
-        $click_id = $request->cookies->get('click_id');
-        $prx = $request->cookies->get('prx');
+        $clickId = $request->cookies->get('click_id');
 
-        if (!$click_id || !$prx){
+        if (!$clickId){
             return false;
         }
 
         $userEntity = \App::user()->getEntity();
         $uid = $userEntity ? $userEntity->getId() : 0;
         $paymentMethod = null;
+        $coupon = null;
+        $discount = null;
+        $commission = 0;
         $link = null;
         $basket = [];
 
@@ -69,8 +75,7 @@ class CityAds {
 
         try {
 
-            foreach ($order->getProduct() as $orderProduct)
-            {
+            foreach ($order->getProduct() as $orderProduct) {
                 /** @var $product \Model\Product\Entity */
                 $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
                 if (!$product) continue;
@@ -81,7 +86,9 @@ class CityAds {
                     $category = $product->getCategory();
                     $category = reset($category);
                 }
-                /** @var $category \Model\Product\Category\Entity*/
+                /** @var $category Category*/
+
+                $commission += self::getCategoryCommission($category) * 0.01 * $product->getPrice() * $orderProduct->getQuantity();
 
                 $basket[] = [
                     'pid' => $product->getId(),
@@ -92,19 +99,19 @@ class CityAds {
                 ];
             }
 
-            $link = strtr('https://cityadspix.com/track/{order_id}/ct/q1/c/2085?click_id={click_id}&prx={prx}&customer_type={customer_type}&payment_method={payment_method}&price={price}&currency={currency}&basket={basket}', [
+            $link = strtr('https://cityadspix.com/track/{order_id}/ct/q1/c/{enter_id}?click_id={click_id}&customer_type={customer_type}&payment_method={payment_method}&order_total={order_total}&commission={commission}&currency={currency}&coupon={coupon}&discount={discount}&basket={basket}', [
+                '{enter_id}'        => self::ENTER_ID,
                 '{order_id}'        => $order->getNumber(),
-                '{click_id}'        => $click_id,
-                '{prx}'             =>  $prx,
+                '{click_id}'        => $clickId,
                 '{customer_type}'   => ($uid)  ? 'returned' : 'new',
                 '{payment_method}'  => $paymentMethod,
-                '{price}'           => $order->getSum(),
+                '{order_total}'     => $order->getSum(),
+                '{commission}'      => sprintf('%0.2f', $commission),
                 '{currency}'        => 'RUR',
-                //'{basket}'          => str_replace( '\"' ,  '\'', json_encode($basket, JSON_UNESCAPED_UNICODE)),
+                '{coupon}'          => $coupon,
+                '{discount}'        => $discount,
                 '{basket}'          => $page->json($basket),
             ]);
-
-            if ($isScript) $link .= '&md=' . count($order->getProduct());
 
         } catch (\Exception $e) {
             \App::logger()->error($e, ['partner', 'cityads']);
@@ -112,6 +119,49 @@ class CityAds {
         }
 
         return $link;
+    }
+
+    /**
+     * Возвращает комиссию для категории в процентах
+     * @param Category $category
+     * @return float
+     */
+    private static function getCategoryCommission($category) {
+        switch ($category->getUi()) {
+            case Category::UI_BYTOVAYA_TEHNIKA:
+                return 3.77;
+            case Category::UI_MEBEL:
+                return 12.36;
+            case Category::UI_SDELAY_SAM:
+                return 7.8;
+            case Category::UI_AVTO:
+                return 5.32;
+            case Category::UI_DETSKIE_TOVARY:
+                return 3.52;
+            case Category::UI_TOVARY_DLYA_DOMA:
+                return 5.93;
+            case Category::UI_AKSESSUARY:
+                return 5.0;
+            case Category::UI_KRASOTA_I_ZDOROVIE:
+                return 3.55;
+            case Category::UI_UKRASHENIYA_I_CHASY:
+                return 11.82;
+            case Category::UI_PARFUMERIA_I_COSMETIKA:
+                return 3.9;
+            case Category::UI_ZOOTOVARY:
+                return 3.17;
+            case Category::UI_SPORT_I_OTDYH:
+                return 9.0;
+            case Category::UI_ELECTRONIKA:
+                return 2.0;
+            case Category::UI_TCHIBO:
+                return 10.4;
+            case Category::UI_IGRY_I_KONSOLI:
+                return 5.91;
+            default:
+                return 0.0;
+        }
+
     }
 
 
@@ -123,15 +173,14 @@ class CityAds {
     public static function getSubscribeLink()
     {
         $link = null;
-        //$user = \App::user();
 
         try {
-            $target_name = "q1";
+            $targetName = "q1";
 
-            $order_id = \App::request()->get('email');
-            if ( empty($order_id) ) {
+            $orderId = \App::request()->get('email');
+            if ( empty($orderId) ) {
                 //return false;
-                $order_id = 'none';
+                $orderId = 'none';
             }
 
             /*if ( $user ) {
@@ -141,7 +190,7 @@ class CityAds {
                 }
             }*/
 
-            $link = "cityadspix.com/track/$order_id/ct/{$target_name}/c/" . self::PARTNER_ID;
+            $link = "cityadspix.com/track/$orderId/ct/{$targetName}/c/" . self::PARTNER_ID;
         } catch (\Exception $e) {
             \App::logger()->error($e, ['partner', 'cityads']);
         }

@@ -242,7 +242,7 @@ class DefaultLayout extends Layout {
                 'order.complete',
                 'cart',
             ])) {
-                if (\App::config()->partners['SmartLeads']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
+                if (\App::config()->partners['CityAdsRetargeting']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
             }
 
             // Реактив (adblender) SITE-5718

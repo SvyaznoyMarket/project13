@@ -1,5 +1,5 @@
 /**
- * CityAds counter
+ * CityAds retargeting
  */
 ANALYTICS.xcntmyAsync = function () {
     var
@@ -29,6 +29,7 @@ ANALYTICS.xcntmyAsync = function () {
         }
         ;// end of functions
 
+    console.log('cityads retargeting: ', page);
 
     if ( 'cart' === page ) {
         cart();
