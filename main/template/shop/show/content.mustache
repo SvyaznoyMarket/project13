@@ -39,17 +39,17 @@
 
         {{#point.images.0}}
             <div class="shops-gallery">
-                <ul class="shops-gallery__lst">
-                {{#point.images}}
-                    <li>
-                        <a class="shops-gallery__i js-shop-image-opener" data-big-url="{{big.url}}" data-type="image">
-                            <img src="{{small.url}}" alt="" />
-                        </a>
-                    </li>
-                {{/point.images}}
+                <ul class="shops-gallery__lst js-shop-gallery">
+                    {{#point.images}}
+                        <li>
+                            <a class="shops-gallery__i js-shop-image-opener" data-big-url="{{big.url}}" data-type="image">
+                                <img src="{{small.url}}" alt="" />
+                            </a>
+                        </li>
+                    {{/point.images}}
                 </ul>
 
-                <a class="shops-gallery__i shops-gallery__bottom js-shop-image-opener" data-type="map">
+                <a class="shops-gallery__i shops-gallery__map js-shop-image-opener js-shop-image-opener-map" data-type="map">
                     <img src="/images/map_ico.png" alt="" />
                 </a>
             </div>

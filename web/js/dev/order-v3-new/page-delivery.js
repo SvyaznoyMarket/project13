@@ -8,12 +8,13 @@
     }
 
     var
-        body             = document.getElementsByTagName('body')[0],
-        $body            = $(body),
-        $orderContent    = $('#js-order-content'),
-        $inputs          = $('.js-order-ctrl__input'),
-        comment          = '',
-        validator        = null,
+        body          = document.getElementsByTagName('body')[0],
+        $body         = $(body),
+        $orderContent = $('#js-order-content'),
+        $inputs       = $('.js-order-ctrl__input'),
+        $offertaPopup = $('.js-order-oferta-popup').eq(0),
+        comment       = '',
+        validator     = null,
 
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
@@ -157,8 +158,10 @@
                 console.log("Model:", data.result.OrderDeliveryModel);
 
                 $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
-
+                $offertaPopup.remove();
                 $orderContent.empty().html(data.result.page);
+                $offertaPopup = $('.js-order-oferta-popup').eq(0);
+
 				if ($orderContent.find('.jsAddressRootNode').length > 0) {
 					$.each($orderContent.find('.jsAddressRootNode'), function(i,val){
 						ko.applyBindings(ENTER.OrderV3.address, val);
@@ -252,7 +255,7 @@
 		},
 
 		showOfertaPopup = function showOfertaPopupF() {
-			$('.js-order-oferta-popup').lightbox_me();
+			$offertaPopup.lightbox_me();
 		},
 
 		tabsOfertaAction = function tabsOfertaActionF(that) {
@@ -580,7 +583,7 @@
 			$.ajax({
 				url: ENTER.utils.setURLParam('ajax', 1, href),
 				success: function(data) {
-					$('.orderOferta_tl:first').html(data.content || '');
+					$offertaPopup.find('.orderOferta_tl:first').html(data.content || '');
 					showOfertaPopup();
 				}
 			})
