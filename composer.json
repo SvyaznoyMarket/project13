@@ -1,0 +1,15 @@
+{
+    "name": "enter/project13",
+    "description": "www.enter.ru",
+    "require-dev": {
+        "halleck45/phpmetrics": "^1.3",
+        "squizlabs/php_codesniffer": "2.*"
+    },
+    "authors": [
+        {
+            "name": "Enter Frontend Team",
+            "email": "dev@enter.ru"
+        }
+    ],
+    "require": {}
+}

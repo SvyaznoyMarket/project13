@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="core" default="build">
+    <property name="toolsdir" value="${basedir}/vendor/bin"/>
+
+    <target name="build"
+            depends="prepare,lint,phpcs"
+            description="Процесс сборки."/>
+
+    <target name="clean"
+            unless="clean.done"
+            description="Удаляет артефакты от предыдущего билда.">
+        <delete dir="${basedir}/build/logs"/>
+        <property name="clean.done" value="true"/>
+    </target>
+
+    <target name="prepare"
+            unless="prepare.done"
+            depends="clean"
+            description="Подготавливает окружение для билда.">
+        <mkdir dir="${basedir}/build/logs"/>
+        <property name="prepare.done" value="true"/>
+    </target>
+
+    <target name="lint"
+            description="Осуществляет поиск синтаксических ошибок (./php -l)">
+        <apply executable="php" failonerror="true">
+            <arg value="-l" />
+            <fileset dir="${basedir}">
+                <include name="lib/**/*.php" />
+                <include name="model/**/*.php" />
+                <modified />
+            </fileset>
+            <fileset dir="${basedir}/main">
+                <include name="**/*.php" />
+                <exclude name="**/template/**"/>
+                <modified />
+            </fileset>
+        </apply>
+    </target>
+
+    <target name="phpcs"
+            depends="prepare"
+            description="Проверяет соблюдение стандарта кодирования (https://github.com/squizlabs/PHP_CodeSniffer/wiki).">
+        <exec executable="${toolsdir}/phpcs" output="/dev/null">
+            <arg value="--encoding=utf-8" />
+            <arg value="--report=checkstyle" />
+            <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
+            <arg value="--standard=PSR2" />
+            <arg value="--extensions=php" />
+            <arg value="--ignore=autoload.php" />
+            <arg path="${basedir}/lib" />
+            <arg path="${basedir}/main" />
+            <arg path="${basedir}/model" />
+        </exec>
+    </target>
+
+    <target name="phpmetrics"
+            depends="prepare"
+            description="Строит красивые графики (http://www.phpmetrics.org).">
+        <exec executable="${toolsdir}/phpmetrics" output="/dev/null">
+            <arg value="--report-html=build/phpmetrics.html" />
+            <arg value="--report-xml=build/phpmetrics.xml" />
+            <arg value="--violations-xml=build/violations.xml" />
+            <arg path="${basedir}/src" />
+        </exec>
+    </target>
+
+</project>
