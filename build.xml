@@ -3,7 +3,7 @@
     <property name="toolsdir" value="${basedir}/vendor/bin"/>
 
     <target name="build"
-            depends="prepare,lint,phpcs"
+            depends="prepare,lint,phpcs, phpcpd"
             description="Процесс сборки."/>
 
     <target name="clean"
