@@ -54,6 +54,20 @@
         </exec>
     </target>
 
+    <target name="phpcpd"
+            unless="phpcpd.done"
+            description="Find duplicate code using PHPCPD and print human readable output. Intended for usage on the command line before committing.">
+        <exec executable="${toolsdir}/phpcpd" taskname="phpcpd">
+            <arg value="--log-pmd=${basedir}/build/logs/cpd.xml" />
+            <arg value="--min-lines=3" />
+            <arg value="--min-tokens=50" />
+            <arg value="-n" />
+            <arg path="${basedir}/lib" />
+        </exec>
+
+        <property name="phpcpd.done" value="true"/>
+    </target>
+
     <target name="phpmetrics"
             depends="prepare"
             description="Строит красивые графики (http://www.phpmetrics.org).">
