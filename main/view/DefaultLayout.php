@@ -9,6 +9,13 @@ class DefaultLayout extends Layout {
     protected $breadcrumbsPath = null;
     protected $useTchiboAnalytics = false;
 
+    /**
+     * Flocktory precheckout data
+     *
+     * @var array
+     */
+    protected $flPrecheckoutData = [];
+
     public function __construct() {
         parent::__construct();
 
@@ -264,14 +271,16 @@ class DefaultLayout extends Layout {
                 ]);
             });
 
-            if ('subscribe_friends' == $routeToken) {
+            if ($routeToken === 'subscribe_friends') {
                 $return .= $this->tryRender('partner-counter/_actionpay_subscribe');
                 $return .= $this->tryRender('partner-counter/_cityAds_subscribe');
             }
 
             // ActionPay ретаргетинг
-            if (\App::config()->partners['ActionpayRetargeting']['enabled']) $return .= '<div id="ActionPayJS" data-vars="' .
-                $this->json( (new \View\Partners\ActionPay($routeName, $this->params))->execute() ) . '" class="jsanalytics"></div>';
+            if (\App::config()->partners['ActionpayRetargeting']['enabled']) {
+                $return .= '<div id="ActionPayJS" data-vars="' .
+                    $this->json( (new \View\Partners\ActionPay($routeName, $this->params))->execute() ) . '" class="jsanalytics"></div>';
+            }
 
             // вызов JS Alexa-кода
             if (\App::config()->partners['alexa']['enabled']) {
@@ -286,6 +295,13 @@ class DefaultLayout extends Layout {
 
             $return .= $this->googleAnalyticsJS();
 
+            if (\App::config()->flocktory['precheckout']) {
+                // формирование данных для скрипта
+                $return .= $this->slotFlocktoryPrecheckout($this->flPrecheckoutData);
+                // загрузка самого скрипта
+                $return .= sprintf('<div id="flocktoryScriptJS" class="jsanalytics" data-vars="%s" ></div>', \App::config()->flocktory['site_id']);
+            }
+
             if (\App::config()->partners['TagMan']['enabled']) {
                 $return .= '<div id="TagManJS" class="jsanalytics"></div>';
             }
@@ -297,6 +313,21 @@ class DefaultLayout extends Layout {
         $return .= $this->slotSociaPlus();
 
         return $return;
+    }
+
+    /**
+     * Flocktory pre-checkout data layer
+     *
+     * @param array $data
+     *
+     * @return string
+     */
+    public function slotFlocktoryPrecheckout(array $data = []) {
+        $dataString = '';
+        foreach ($data as $key => $value) {
+            $dataString .= sprintf('data-%s="%s" ', $key, $value);
+        }
+        return sprintf('<div class="i-flocktory js-flocktory-data-layer" %s ></div>', $dataString);
     }
 
     public function googleAnalyticsJS(){
