@@ -688,7 +688,7 @@
 		$(this).remove();
 	});
 
-    // авктокомплит адерса
+    // автокомплит адреса
     $body.on('focus', '.js-order-deliveryAddress', function() {
 
         var $el = $(this),
@@ -749,8 +749,10 @@
                 //$('.ui-autocomplete').css({'position' : 'absolute', 'top' : 29, 'left' : 0});
             },
             select: function( event, ui ) {
+                var dataField = $el.data('field');
                 $el.val(ui.item.label);
-                $inputFields.eq(1).data('parent-kladr-id', ui.item.value.id);
+                $('[data-field=building]').data('parent-kladr-id', ui.item.value.id);
+                $('[data-field=' + dataField + ']').val(ui.item.label);
                 $container.data('last-kladr-id', ui.item.value.id);
                 save();
                 return false;
@@ -779,8 +781,17 @@
         };
 
         // Сохранение дома
-        $inputFields.eq(2).off().on('keyup', save);
+        $inputFields.eq(2).off().on('keyup', function() {
+            $('[data-field=apartment]').val($(this).val());
+            save();
+        });
 
+    });
+
+    // синхронизация между полями доставки между заказами
+    $body.find('.js-order-deliveryAddress').on('keyup', function(){
+        var field = $(this).data('field');
+        $('[data-field=' + field + ']').val($(this).val());
     });
 
     $body.on('click', '[form="js-orderForm"]', function(e) {
