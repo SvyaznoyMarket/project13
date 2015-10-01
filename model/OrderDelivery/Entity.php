@@ -512,11 +512,14 @@ namespace Model\OrderDelivery\Entity {
         public $description;
         /** @var string */
         public $icon;
+        /** @var bool */
+        public $is_online;
 
         public function __construct(array $data = []) {
             if (isset($data['id'])) $this->id = (string)$data['id'];
             if (isset($data['name'])) $this->name = (string)$data['name'];
             if (isset($data['description'])) $this->description = (string)$data['description'];
+            if (isset($data['is_online'])) $this->is_online = (bool)$data['is_online'];
 
             switch ($this->id) {
                 case '2': $this->icon = '/styles/order-new/img/payment/pay-card.png'; break;

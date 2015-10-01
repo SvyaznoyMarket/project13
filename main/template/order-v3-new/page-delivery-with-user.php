@@ -1,7 +1,5 @@
 <?php
 
-use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
-
 /**
  * @param \Helper\TemplateHelper $helper
  * @param \Model\OrderDelivery\Entity $orderDelivery
@@ -19,7 +17,6 @@ $f = function(
     $orderCount = count($orderDelivery->orders);
     $region = \App::user()->getRegion();
     $firstOrder = reset($orderDelivery->orders);
-    $i = 0;
 
     $isCoordsValid = $region && $region->getLatitude() != null && $region->getLongitude() != null;
 
@@ -50,7 +47,7 @@ $f = function(
 
             <?= $helper->render('order-v3-new/partial/error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
-            <?= $helper->render('order-v3-new/partial/orders-list',['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
+            <?= $helper->render('order-v3-new/partial/order-list', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
             <div class="pagehead"><h1 class="orderCnt_t">Получатель</h1></div>
 
@@ -138,7 +135,7 @@ $f = function(
                                         <img src="<?= $card->getImage() ?>" alt="" />
                                     </div>
                                 </div>
-                            <? endforeach ; ?>
+                            <? endforeach ?>
 
                         <? endif ?>
 

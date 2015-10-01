@@ -54,6 +54,11 @@ $f = function(
                 $onlinePaymentMethods = array_filter($paymentEntity->methods, function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod) {
                     return $paymentMethod->isOnline;
                 });
+                $paymentMethodsByDiscount = [];
+                foreach ($onlinePaymentMethods as $iPaymentMethod) {
+                    $index = in_array($iPaymentMethod->id, \App::config()->payment['discountIds']) ? 0 : 1;
+                    $paymentMethodsByDiscount[$index][] = $iPaymentMethod;
+                }
                 $isOnlinePaymentPossible =
                     (
                         !isset($onlinePaymentStatusByNumber[$order->number])
@@ -153,12 +158,13 @@ $f = function(
 
                                         <!-- Новые способы оплаты - статика -->
                                         <div class="payment-methods__discount discount">
-                                            <div class="<?= $discountContainerId ?>" style="display: none;">
+                                            <div class="<?= $discountContainerId ?>">
                                                 <span class="discount__val">Скидка 15%</span>
                                             </div>
                                         </div>
                                         <ul class="payment-methods__lst">
-                                            <? foreach ($onlinePaymentMethods as $paymentMethod): ?>
+                                        <? foreach ($paymentMethodsByDiscount as $paymentMethodChunk): ?>
+                                            <? foreach ($paymentMethodChunk as $paymentMethod): ?>
                                             <?
                                                 $containerId = sprintf('id-order-%s-paymentMethod-container', $order->id);
                                                 $elementId = sprintf('order-%s-paymentMethod-%s', $order->id, $paymentMethod->id);
@@ -195,6 +201,8 @@ $f = function(
                                                     </label>
                                                 </li>
                                             <? endforeach ?>
+                                            <li class="payment-methods__i"><br /></li>
+                                        <? endforeach ?>
                                         </ul>
                                         <!-- END Новые способы оплаты - статика -->
                                         <div class="payments-popup__pay <?= $containerId ?>"></div>

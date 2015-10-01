@@ -20,6 +20,12 @@ $f = function(
         return $paymentMethod->isOnline;
     });
 
+    $paymentMethodsByDiscount = [];
+    foreach ($paymentMethods as $paymentMethod) {
+        $index = in_array($paymentMethod->id, \App::config()->payment['discountIds']) ? 0 : 1;
+        $paymentMethodsByDiscount[$index][] = $paymentMethod;
+    }
+
     $formUrl = \App::router()->generate('orderV3.paymentForm');
 ?>
 
@@ -69,47 +75,50 @@ $f = function(
 
                 <!-- Этот блок идентичен блоку, который используется на 2м шаге, но у меня не получилось здесь отрендерить его-->
                 <div class="payment-methods__discount discount">
-                    <div class="id-onlineDiscount-container" style="display: none;">
+                    <div class="id-onlineDiscount-container">
                         <span class="discount__pay-type">Онлайн-оплата</span>
                         <span class="discount__val">Скидка 15%</span>
                     </div>
                 </div>
                 <ul class="payment-methods__lst">
+                <? foreach ($paymentMethodsByDiscount as $paymentMethods): ?>
                     <? foreach ($paymentMethods as $paymentMethod): ?>
-                    <?
-                        $elementId = sprintf('paymentMethod-%s', $paymentMethod->id);
-                        $checked = $order->paymentId == $paymentMethod->id;
-                    ?>
-                    <li class="payment-methods__i">
-                        <input
-                            id="<?= $elementId ?>"
-                            type="radio"
-                            name="onlinePaymentMethodId"
-                            value="<?= $paymentMethod->id ?>"
-                            data-url="<?= $formUrl ?>"
-                            data-value="<?= $helper->json([
-                                'method' => $paymentMethod->id,
-                                'order'  => $order->id,
-                                'number' => $order->number,
-                                'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context]),
-                            ]) ?>"
-                            <? if ($paymentMethod->isOnline): ?>
-                                data-discount="true"
-                            <? endif ?>
-                            data-relation="<?= $helper->json([
-                                'formContainer'     => '.id-paymentForm-container',
-                                'discountContainer' => '.id-onlineDiscount-container',
-                            ]) ?>"
-                            class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
-                            <? if ($checked): ?> checked="checked"<? endif ?>
-                        />
-                        <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2<? if ($checked): ?> mChecked<? endif ?>">
-                            <?= $paymentMethod->name ?>
-                            <? if ($image = $paymentMethod->icon): ?>
-                                <img class="payment-methods__img" src="<?= $image ?>" />
-                            <? endif ?>
-                        </label>
-                    </li>
+                <?
+                    $elementId = sprintf('paymentMethod-%s', $paymentMethod->id);
+                    $checked = $order->paymentId == $paymentMethod->id;
+                ?>
+                <li class="payment-methods__i">
+                    <input
+                        id="<?= $elementId ?>"
+                        type="radio"
+                        name="onlinePaymentMethodId"
+                        value="<?= $paymentMethod->id ?>"
+                        data-url="<?= $formUrl ?>"
+                        data-value="<?= $helper->json([
+                            'method' => $paymentMethod->id,
+                            'order'  => $order->id,
+                            'number' => $order->number,
+                            'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context]),
+                        ]) ?>"
+                        <? if ($paymentMethod->isOnline): ?>
+                            data-discount="true"
+                        <? endif ?>
+                        data-relation="<?= $helper->json([
+                            'formContainer'     => '.id-paymentForm-container',
+                            'discountContainer' => '.id-onlineDiscount-container',
+                        ]) ?>"
+                        class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
+                        <? if ($checked): ?> checked="checked"<? endif ?>
+                    />
+                    <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2<? if ($checked): ?> mChecked<? endif ?>">
+                        <?= $paymentMethod->name ?>
+                        <? if ($image = $paymentMethod->icon): ?>
+                            <img class="payment-methods__img" src="<?= $image ?>" />
+                        <? endif ?>
+                    </label>
+                </li>
+            <? endforeach ?>
+                    <li class="payment-methods__i"><br /></li>
                 <? endforeach ?>
                 </ul>
 

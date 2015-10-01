@@ -329,6 +329,7 @@ class AppConfig {
     public $payment = [
         'creditEnabled' => null,
         'blockedIds'    => [],
+        'discountIds'   => [],
     ];
     /**
      * @var array

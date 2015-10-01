@@ -659,12 +659,6 @@
             }
 
             loadPaymentForm($formContainer, url, data);
-
-            if (hasDiscount && $discountContainer && $discountContainer.length) {
-                $discountContainer.show();
-            } else {
-                $discountContainer.hide();
-            }
         } catch(error) { console.error(error); };
 
         //e.preventDefault();
