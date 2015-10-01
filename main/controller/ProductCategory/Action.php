@@ -101,43 +101,45 @@ class Action {
         $brand = null;
         $filters = [];
         $brands = [];
-        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, [], function($data) use (&$filters, &$brands, &$brand, $brandToken, $categoryToken) {
-            foreach ($data as $item) {
-                $filter = new \Model\Product\Filter\Entity($item);
-                if ($filter->isCategory() && $categoryToken != Category::FAKE_SHOP_TOKEN) {
-                    continue;
-                }
-                
-                if ($categoryToken == Category::FAKE_SHOP_TOKEN) {
-                    if ($filter->isShop()) {
-                        $filter->defaultTitle = 'Все магазины региона';
-                        $filter->showDefaultTitleInSelectedList = true;
+        \RepositoryManager::productFilter()->prepareCollectionByCategory(
+            $category,
+            $region,
+            [],
+            function($data) use (&$filters, &$brands, &$brand, $brandToken, $categoryToken) {
+                foreach ($data as $item) {
+                    $filter = new \Model\Product\Filter\Entity($item);
+
+                    if ($categoryToken == Category::FAKE_SHOP_TOKEN) {
+                        if ($filter->isShop()) {
+                            $filter->defaultTitle = 'Все магазины региона';
+                            $filter->showDefaultTitleInSelectedList = true;
+                        }
+
+                        if ($filter->isCategory()) {
+                            $filter->defaultTitle = 'Все';
+                            $filter->showDefaultTitleInSelectedList = true;
+                        }
                     }
 
-                    if ($filter->isCategory()) {
-                        $filter->defaultTitle = 'Все';
-                        $filter->showDefaultTitleInSelectedList = true;
-                    }
-                }
-                
-                $filters[] = $filter;
-                // бренды
-                if ($filter->isBrand() && $filter->getOption()) {
-                    foreach ($filter->getOption() as $option) {
-                        $filterBrand = new \Model\Brand\Entity();
-                        $filterBrand->id = $option->id;
-                        $filterBrand->token = $option->token;
-                        $filterBrand->name = $option->name;
-                        $filterBrand->image = $option->imageUrl;
-                        
-                        $brands[] = $filterBrand;
-                        if ($option->getToken() == $brandToken) {
-                            $brand = $filterBrand;
+                    $filters[] = $filter;
+                    // бренды
+                    if ($filter->isBrand() && $filter->getOption()) {
+                        foreach ($filter->getOption() as $option) {
+                            $filterBrand = new \Model\Brand\Entity();
+                            $filterBrand->id = $option->id;
+                            $filterBrand->token = $option->token;
+                            $filterBrand->name = $option->name;
+                            $filterBrand->image = $option->imageUrl;
+
+                            $brands[] = $filterBrand;
+                            if ($option->getToken() == $brandToken) {
+                                $brand = $filterBrand;
+                            }
                         }
                     }
                 }
             }
-        });
+        );
 
         $client->execute();
 

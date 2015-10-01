@@ -66,6 +66,15 @@ class SelectedFilter {
             }
         }
 
+        $filterGroups = array_values($filterGroups);
+
+        $filterGroupLastIndex = count($filterGroups) - 1;
+        foreach ($filterGroups as $index => $filterGroup) {
+            if ($index == $filterGroupLastIndex) {
+                $filterGroups[$index]['isLast'] = true;
+            }
+        }
+
         return [
             'cleanUrl' => $helper->replacedUrl(
                 [
@@ -78,7 +87,7 @@ class SelectedFilter {
                 ['q'],
                 $baseUrl
             ),
-            'filters' => array_values($filterGroups),
+            'filters' => $filterGroups,
             'filtersCount' => $selectedFilterCount, // TODO удалить через несколько дней после релиза SITE-6082
             'selectedFilterCount' => $selectedFilterCount,
             // SITE-4825
@@ -177,7 +186,7 @@ class SelectedFilter {
                         'name' => $property->isShop() ? $option->getName() : mb_strtoupper(mb_substr($option->getName(), 0, 1)) . mb_substr($option->getName(), 1),
                         'url'  => $helper->replacedUrl(
                             [
-                                \View\Name::productCategoryFilter($property, $option) => null,
+                                \View\Name::productCategoryFilter($property, $option) => $property->isShop() || $property->isCategory() ? implode(',', array_diff($value, [$option->id])) : null,
                                 'ajax'     => null,
                                 'page'     => null, // SITE-4511
                                 'sort'     => $sort,

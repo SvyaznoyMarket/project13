@@ -75,8 +75,14 @@ class Repository {
 
         $params = [];
 
-        if ($category && $category->getId()) {
-            $params['category_id'] = $category->getId();
+        if ($category) {
+            if ($category->getId()) {
+                $params['category_id'] = $category->getId();
+            }
+
+            if ($category->getToken() === \Model\Product\Category\Entity::FAKE_SHOP_TOKEN) {
+                $params['bu'] = 1;
+            }
         }
 
         if ($region) {
@@ -86,8 +92,6 @@ class Repository {
         if (!empty($filters)) {
             $params['filter']['filters'] = $filters;
         }
-
-        $params['bu'] = 1;
 
         $this->client->addQuery('listing/filter', $params, [], $done, $fail);
     }
@@ -245,7 +249,7 @@ class Repository {
         foreach ($productFilter->getFilterCollection() as $property) {
             if (
                 \Model\Product\Filter\Entity::TYPE_LIST == $property->getTypeId()
-                && (!in_array($property->getId(), ['shop', 'category']) || $category->getToken() == \Model\Product\Category\Entity::FAKE_SHOP_TOKEN)
+                && (!in_array($property->getId(), ['shop', 'category']) || ($category && $category->getToken() == \Model\Product\Category\Entity::FAKE_SHOP_TOKEN))
                 && !($category && $category->isTyre() && in_array($property->getName(), ['Сезон', 'Ширина', 'Профиль', 'Диаметр'], true))
             ) {
                 $property->setIsMultiple(true);
@@ -265,9 +269,10 @@ class Repository {
 
     /**
      * @param \Http\Request $request
+     * @param array $excludeFilterNames
      * @return array
      */
-    public function getFilterValuesFromHttpRequest(\Http\Request $request) {
+    public function getFilterValuesFromHttpRequest(\Http\Request $request, array $excludeFilterNames = []) {
         // добывание фильтров из http-запроса
         $requestData = 'POST' == $request->getMethod() ? $request->request : $request->query;
 
@@ -279,10 +284,19 @@ class Repository {
 
             $parts = array_pad(explode('-', $k), 3, null);
 
-            if ('from' == $parts[2] || 'to' == $parts[2]) {
-                $values[$parts[1]][$parts[2]] = $v;
-            } else {
-                $values[$parts[1]][] = $v;
+            if (!in_array($parts[1], $excludeFilterNames, true)) {
+                if ('from' == $parts[2] || 'to' == $parts[2]) {
+                    $values[$parts[1]][$parts[2]] = $v;
+                } else {
+                    if ($parts[1] === 'shop' || $parts[1] === 'category') {
+                        $v = array_filter(array_map('trim', explode(',', $v)));
+                        if ($v) {
+                            $values[$parts[1]] = isset($values[$parts[1]]) ? array_merge($values[$parts[1]], $v) : $v;
+                        }
+                    } else {
+                        $values[$parts[1]][] = $v;
+                    }
+                }
             }
         }
 

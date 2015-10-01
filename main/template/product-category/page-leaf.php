@@ -69,6 +69,7 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
             <?= $helper->render('product-category/v2/__filter', [
                 'baseUrl'       => $category->getLink(),
                 'productFilter' => $productFilter,
+                'category'      => $category,
             ]) // фильтры ?>
         <? elseif ($category->isV3()): ?>
             <?= $helper->render('product-category/v3/__filter', [

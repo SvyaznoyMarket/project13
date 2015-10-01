@@ -16,8 +16,12 @@ class Name {
             case \Model\Product\Filter\Entity::TYPE_BOOLEAN:
                 return 'f-' . $filter->getId() . (is_scalar($option) ? ('-' . $option) : '');
             case \Model\Product\Filter\Entity::TYPE_LIST:
-                if (in_array($filter->getId(), ['shop', 'category']) && !$filter->getIsMultiple()) {
-                    return $filter->getId();
+                if (in_array($filter->getId(), ['shop', 'category'])) {
+                    if ($filter->getIsMultiple()) {
+                        return 'f-' . $filter->getId();
+                    } else {
+                        return $filter->getId();
+                    }
                 } else if ('label' === $filter->getId() && $option instanceof \Model\Product\Filter\Option\Entity && 'instore' === $option->getToken()) {
                     return $option->getToken(); // TODO SITE-2403 Вернуть фильтр instore
                 } else {
