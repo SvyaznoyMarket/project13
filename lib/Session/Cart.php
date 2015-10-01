@@ -21,8 +21,10 @@ namespace Session {
     
             // очистить старую корзину
             $this->storage->remove('userCart');
-    
-            $this->update();
+
+            try {
+                $this->update();
+            } catch(\Exception $e) {}
         }
     
         public function clear() {
@@ -30,8 +32,14 @@ namespace Session {
         }
     
         /**
+         * ВНИМАНИЕ! Перед редактирование кода данного метода ознакомьтесь с комментариями к методу self::setSessionCart
+         *
+         * Медот актулизирует данные товаров в корзине, при необходимости добавляя/изменяя/удаляя товары из
+         * $setProducts. Данные в сессию будут сохранены только, если метод был выполнен без ошибок.
+         *
          * TODO заменить в маршрутах cart.product.setList id на ui
          * TODO заменить в вызовах данного метода $setProducts[]['id'] на $setProducts[]['ui']
+         *
          * @param array      $setProducts Массив вида [['id' => '12345', 'quantity' => '10', 'up' => '1'], ...]
          * @param string|int $setProducts[]['id'] Идентификатор товара
          * @param string     $setProducts[]['ui'] Идентификатор товара
@@ -53,6 +61,8 @@ namespace Session {
          * @param mixed           $setProducts[]['sender2']
          * @param mixed           $setProducts[]['credit']
          * @param mixed           $setProducts[]['referer']
+         * @param bool $forceUpdate Актуализировать данные в корзине вне зависимости от времени последнего обновления
+         *                          и $setProducts
          *
          * @throws \Exception Если обновление корзины не удалось выполнить
          *
@@ -63,56 +73,65 @@ namespace Session {
          *                                               возвращён пустой массив)
          */
         public function update(array $setProducts = [], $forceUpdate = false) {
-            // ВНИМАНИЕ! Перед редактирование кода данного метода ознакомьтесь с комментариями к методу self::setSessionCart
+            try {
+                $resultProducts = [];
+                $sessionCart = $this->getSessionCart();
+                /** @var \Model\Product\Entity[] $backendProductsByUi */
+                $backendProductsByUi = [];
+                /** @var \Model\Product\Entity[] $backendProductsById */
+                $backendProductsById = [];
 
-            $resultProducts = [];
-            $sessionCart = $this->getSessionCart();
-            /** @var \Model\Product\Entity[] $backendProductsByUi */
-            $backendProductsByUi = [];
-            /** @var \Model\Product\Entity[] $backendProductsById */
-            $backendProductsById = [];
+                // Фильтруем и форматируем $setProducts
+                call_user_func(function() use(&$setProducts) {
+                    foreach ($setProducts as $key => $setProduct) {
+                        if (empty($setProduct['id']) && empty($setProduct['ui'])) {
+                            \App::logger()->error(['message' => 'Не указан id и ui товара'], ['cart/update']);
+                            unset($setProducts[$key]);
+                            continue;
+                        }
 
-            // Фильтруем и форматируем $setProducts
-            call_user_func(function() use(&$setProducts) {
-                foreach ($setProducts as $key => $setProduct) {
-                    if (empty($setProduct['id']) && empty($setProduct['ui'])) {
-                        \App::logger()->error(['message' => 'Не указан id и ui товара'], ['cart/update']);
-                        unset($setProducts[$key]);
-                        continue;
+                        $setProducts[$key]['id'] = !empty($setProduct['id']) ? (int)$setProduct['id'] : null;
+                        $setProducts[$key]['ui'] = !empty($setProduct['ui']) ? (string)$setProduct['ui'] : null;
+                        $setProducts[$key]['quantity'] = isset($setProduct['quantity']) ? (string)$setProduct['quantity'] : '';
+                        $setProducts[$key]['up'] = isset($setProduct['up']) ? (bool)$setProduct['up'] : false;
                     }
-    
-                    $setProducts[$key]['id'] = !empty($setProduct['id']) ? (int)$setProduct['id'] : null;
-                    $setProducts[$key]['ui'] = !empty($setProduct['ui']) ? (string)$setProduct['ui'] : null;
-                    $setProducts[$key]['quantity'] = isset($setProduct['quantity']) ? (string)$setProduct['quantity'] : '';
-                    $setProducts[$key]['up'] = isset($setProduct['up']) ? (bool)$setProduct['up'] : false;
+                });
+
+                if (!$setProducts && !$this->hasSessionProductWithoutExpectedData() && !($sessionCart['product'] && ($forceUpdate || $this->isExpired()))) {
+                    return $resultProducts;
                 }
-            });
 
-            if (!$setProducts && !$this->hasSessionProductWithoutExpectedData() && !($sessionCart['product'] && ($forceUpdate || $this->isExpired()))) {
-                return $resultProducts;
-            }
-
-            // Получение данные от бэкэнда для $setProducts товаров и сессионных товаров
-            call_user_func(function() use(&$backendProductsByUi, &$backendProductsById, $setProducts, $sessionCart) {
-                foreach ($setProducts as $setProduct) {
-                    if (!empty($setProduct['ui'])) {
-                        $backendProductsByUi[$setProduct['ui']] = new \Model\Product\Entity(['ui' => $setProduct['ui']]);
-                    } else if (!empty($setProduct['id'])) {
-                        $backendProductsById[$setProduct['id']] = new \Model\Product\Entity(['id' => $setProduct['id']]);
+                // Получение данные от бэкэнда для $setProducts товаров и сессионных товаров
+                call_user_func(function() use(&$backendProductsByUi, &$backendProductsById, $setProducts, $sessionCart) {
+                    foreach ($setProducts as $setProduct) {
+                        if (!empty($setProduct['ui'])) {
+                            $backendProductsByUi[$setProduct['ui']] = new \Model\Product\Entity(['ui' => $setProduct['ui']]);
+                        } else if (!empty($setProduct['id'])) {
+                            $backendProductsById[$setProduct['id']] = new \Model\Product\Entity(['id' => $setProduct['id']]);
+                        }
                     }
-                }
-    
-                foreach ($sessionCart['product'] as $sessionProduct) {
-                    if (!empty($sessionProduct['ui'])) {
-                        $backendProductsByUi[$sessionProduct['ui']] = new \Model\Product\Entity(['ui' => $sessionProduct['ui']]);
-                    } else if (!empty($sessionProduct['id'])) {
-                        $backendProductsById[$sessionProduct['id']] = new \Model\Product\Entity(['id' => $sessionProduct['id']]);
+
+                    foreach ($sessionCart['product'] as $sessionProduct) {
+                        if (!empty($sessionProduct['ui'])) {
+                            $backendProductsByUi[$sessionProduct['ui']] = new \Model\Product\Entity(['ui' => $sessionProduct['ui']]);
+                        } else if (!empty($sessionProduct['id'])) {
+                            $backendProductsById[$sessionProduct['id']] = new \Model\Product\Entity(['id' => $sessionProduct['id']]);
+                        }
+                    }
+
+                    $exceptionCount = count(\App::exception()->all());
+                    \RepositoryManager::product()->prepareProductQueries($backendProductsByUi, 'media category');
+                    \RepositoryManager::product()->prepareProductQueries($backendProductsById, 'media category');
+                    \App::coreClientV2()->execute();
+
+                    if (count(\App::exception()->all()) > $exceptionCount && \App::exception()->last()) {
+                        throw new \Exception(\App::exception()->last()->getMessage());
                     }
                 }
     
                 $exceptionCount = count(\App::exception()->all());
-                \RepositoryManager::product()->prepareProductQueries($backendProductsByUi, 'media category brand');
-                \RepositoryManager::product()->prepareProductQueries($backendProductsById, 'media category brand');
+                \RepositoryManager::product()->prepareProductQueries($backendProductsByUi, 'media category');
+                \RepositoryManager::product()->prepareProductQueries($backendProductsById, 'media category');
                 \App::coreClientV2()->execute();
                 
                 if (count(\App::exception()->all()) > $exceptionCount && \App::exception()->last()) {
@@ -150,200 +169,232 @@ namespace Session {
     
                         continue;
                     }
-    
-                    $backendProduct = null;
-                    if (!empty($setProduct['ui']) && isset($backendProductsByUi[$setProduct['ui']])) {
-                        $backendProduct = $backendProductsByUi[$setProduct['ui']];
-                    } else if (!empty($setProduct['id']) && isset($backendProductsById[$setProduct['id']])) {
-                        $backendProduct = $backendProductsById[$setProduct['id']];
-                    }
-                    
-                    // Если бэкэнд не вернул товар и не было ошибок запроса, то это означает, что товары были
-                    // удалены (из ядра или scms) или заблокированы (в scms)
-                    if (!$backendProduct) {
-                        continue;
-                    }
-    
-                    // В сессию должны попадать лишь товары и с id и с ui
-                    if (empty($backendProduct->id) || empty($backendProduct->ui)) {
-                        \App::logger()->error(['message' => 'Не получены id или ui товара от бэкэнда (id товара из параметров: ' . $setProduct['id'] . ', ui товара из параметров: ' . $setProduct['ui'] . ', id товара из бэкэнда: ' . $backendProduct->id . ', ui товара из бэкэнда: ' . $backendProduct->ui . ')'], ['cart/update']);
-                        continue;
-                    }
-                    
-                    if (isset($sessionCart['product'][$backendProduct->id])) {
-                        $newSessionProduct = $sessionCart['product'][$backendProduct->id];
-                        // Обратите внимание, что $setProduct из следующей итерации может изменить action для
-                        // данного товара на совершенно другой
-                        $setProductResultActionsById[$backendProduct->id] = 'replace';
-                    } else {
-                        $newSessionProduct = array_merge(['quantity' => 0], $this->createSessionProductFromBackendProduct($backendProduct));
-                        // Обратите внимание, что $setProduct из следующей итерации может изменить action для
-                        // данного товара на совершенно другой
-                        $setProductResultActionsById[$backendProduct->id] = 'add';
-                    }
-    
-                    $newSessionProduct = array_merge($newSessionProduct, [
-                        'sender' => isset($setProduct['sender']) ? $setProduct['sender'] : null,
-                        'sender2' => isset($setProduct['sender2']) ? $setProduct['sender2'] : null,
-                        'credit' => isset($setProduct['credit']) ? $setProduct['credit'] : null,
-                        'referer' => isset($setProduct['referer']) ? $setProduct['referer'] : null,
-                    ]);
-    
-                    if (preg_match('/^([\+\-])?(\d+)$/s', $setProduct['quantity'], $matches)) {
-                        if ($matches[1] === '+') {
-                            $newSessionProduct['quantity'] += $matches[2];
-                        } else if ($matches[1] === '-') {
-                            $newSessionProduct['quantity'] -= $matches[2];
 
-                            // SITE-5957 В расширенной корзине при уменьшении кол-ва до нуля товар не должен удаляться
-                            if ($newSessionProduct['quantity'] <= 0) {
-                                $newSessionProduct['quantity'] = 1;
+                    foreach ($setProducts as $key => $setProduct) {
+                        // Удаление товара. Должно происходить вне зависимости то того, вернул ли бэкэнд товар или нет
+                        // (иначе у пользователя не будет возможности удалить из корзины товар, который был удалён (из ядра
+                        // или scms) или заблокирован (в scms))
+                        if ((string)$setProduct['quantity'] === '0') {
+                            call_user_func(function() use(&$setProductResultActionsById, $setProduct, $sessionCart, $sessionProductsByUi) {
+                                $sessionProduct = null;
+                                if (!empty($setProduct['ui']) && isset($sessionProductsByUi[$setProduct['ui']])) {
+                                    $sessionProduct = $sessionProductsByUi[$setProduct['ui']];
+                                } else if (!empty($setProduct['id']) && isset($sessionCart['product'][$setProduct['id']])) {
+                                    $sessionProduct = $sessionCart['product'][$setProduct['id']];
+                                }
+
+                                if ($sessionProduct) {
+                                    // Обратите внимание, что $setProduct из следующей итерации может изменить action для
+                                    // данного товара на совершенно другой
+                                    $setProductResultActionsById[$sessionProduct['id']] = 'delete';
+                                }
+                            });
+
+                            continue;
+                        }
+
+                        $backendProduct = null;
+                        if (!empty($setProduct['ui']) && isset($backendProductsByUi[$setProduct['ui']])) {
+                            $backendProduct = $backendProductsByUi[$setProduct['ui']];
+                        } else if (!empty($setProduct['id']) && isset($backendProductsById[$setProduct['id']])) {
+                            $backendProduct = $backendProductsById[$setProduct['id']];
+                        }
+
+                        // Если бэкэнд не вернул товар и не было ошибок запроса, то это означает, что товары были
+                        // удалены (из ядра или scms) или заблокированы (в scms)
+                        if (!$backendProduct) {
+                            continue;
+                        }
+
+                        // В сессию должны попадать лишь товары и с id и с ui
+                        if (empty($backendProduct->id) || empty($backendProduct->ui)) {
+                            \App::logger()->error(['message' => 'Не получены id или ui товара от бэкэнда (id товара из параметров: ' . $setProduct['id'] . ', ui товара из параметров: ' . $setProduct['ui'] . ', id товара из бэкэнда: ' . $backendProduct->id . ', ui товара из бэкэнда: ' . $backendProduct->ui . ')'], ['cart/update']);
+                            continue;
+                        }
+
+                        if (isset($sessionCart['product'][$backendProduct->id])) {
+                            $newSessionProduct = $sessionCart['product'][$backendProduct->id];
+                            // Обратите внимание, что $setProduct из следующей итерации может изменить action для
+                            // данного товара на совершенно другой
+                            $setProductResultActionsById[$backendProduct->id] = 'replace';
+                        } else {
+                            $newSessionProduct = array_merge(['quantity' => 0], $this->createSessionProductFromBackendProduct($backendProduct));
+                            // Обратите внимание, что $setProduct из следующей итерации может изменить action для
+                            // данного товара на совершенно другой
+                            $setProductResultActionsById[$backendProduct->id] = 'add';
+                        }
+
+                        $newSessionProduct = array_merge($newSessionProduct, [
+                            'sender' => isset($setProduct['sender']) ? $setProduct['sender'] : null,
+                            'sender2' => isset($setProduct['sender2']) ? $setProduct['sender2'] : null,
+                            'credit' => isset($setProduct['credit']) ? $setProduct['credit'] : null,
+                            'referer' => isset($setProduct['referer']) ? $setProduct['referer'] : null,
+                        ]);
+
+                        if (preg_match('/^([\+\-])?(\d+)$/s', $setProduct['quantity'], $matches)) {
+                            if ($matches[1] === '+') {
+                                $newSessionProduct['quantity'] += $matches[2];
+                            } else if ($matches[1] === '-') {
+                                $newSessionProduct['quantity'] -= $matches[2];
+
+                                // SITE-5957 В расширенной корзине при уменьшении кол-ва до нуля товар не должен удаляться
+                                if ($newSessionProduct['quantity'] <= 0) {
+                                    $newSessionProduct['quantity'] = 1;
+                                }
+                            } else {
+                                $newSessionProduct['quantity'] = (int)$matches[2];
                             }
                         } else {
-                            $newSessionProduct['quantity'] = (int)$matches[2];
+                            $newSessionProduct['quantity'] += 1;
                         }
-                    } else {
-                        $newSessionProduct['quantity'] += 1;
-                    }
 
-                    if ($newSessionProduct['quantity'] <= 0) {
-                        // Обратите внимание, что $setProduct из следующей итерации может изменить action для
-                        // данного товара на совершенно другой
-                        $setProductResultActionsById[$backendProduct->id] = 'delete';
-                        continue;
-                    }
-    
-                    if (\App::config()->cart['checkStock'] && $backendProduct->getStock()) {
-                        if ($newSessionProduct['quantity'] > $backendProduct->getStockWithMaxQuantity()->getQuantity()) {
-                            // TODO может вместо выброса исключения сохранять у товара в сессии значение maxQuantity (и в корзине при привышении quantity над maxQuantity выводить надпись вроде "указанного кол-ва нет в наличии, максимально доступно: 25 шт.")?
-                            throw new \Exception('Нет запрошенного количества товара');
+                        if ($newSessionProduct['quantity'] <= 0) {
+                            // Обратите внимание, что $setProduct из следующей итерации может изменить action для
+                            // данного товара на совершенно другой
+                            $setProductResultActionsById[$backendProduct->id] = 'delete';
+                            continue;
                         }
+
+                        if (\App::config()->cart['checkStock'] && $backendProduct->getStock()) {
+                            if ($newSessionProduct['quantity'] > $backendProduct->getStockWithMaxQuantity()->getQuantity()) {
+                                // TODO может вместо выброса исключения сохранять у товара в сессии значение maxQuantity (и в корзине при привышении quantity над maxQuantity выводить надпись вроде "указанного кол-ва нет в наличии, максимально доступно: 25 шт.")?
+                                throw new \Exception('Нет запрошенного количества товара');
+                            }
+                        }
+
+                        if (!isset($newSessionProduct['added'])) {
+                            $newSessionProduct['added'] = date('c');
+                        }
+
+                        // https://jira.enter.ru/browse/SITE-5022?focusedCommentId=153694&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-153694
+                        if ($setProduct['up']) {
+                            unset($sessionCart['product'][$backendProduct->id]);
+                        }
+
+                        $sessionCart['product'][$backendProduct->id] = $newSessionProduct;
                     }
-    
-                    if (!isset($newSessionProduct['added'])) {
-                        $newSessionProduct['added'] = date('c');
-                    }
-                    
-                    // https://jira.enter.ru/browse/SITE-5022?focusedCommentId=153694&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-153694
-                    if ($setProduct['up']) {
-                        unset($sessionCart['product'][$backendProduct->id]);
-                    }
-    
-                    $sessionCart['product'][$backendProduct->id] = $newSessionProduct;
-                }
-            });
-            
-            // Обновление сессионных товаров
-            call_user_func(function() use(&$sessionCart, &$resultProducts, $setProductResultActionsById, $backendProductsByUi, $backendProductsById) {
-                foreach ($sessionCart['product'] as $key => $sessionProduct) {
-                    $backendProduct = null;
-                    if (!empty($sessionProduct['ui']) && isset($backendProductsByUi[$sessionProduct['ui']])) {
-                        $backendProduct = $backendProductsByUi[$sessionProduct['ui']];
-                    } else if (!empty($sessionProduct['id']) && isset($backendProductsById[$sessionProduct['id']])) {
-                        $backendProduct = $backendProductsById[$sessionProduct['id']];
-                    }
-                    
-                    // Удаление товара. Должно происходить вне зависимости то того, вернул ли бэкэнд товар или нет
-                    // (иначе у пользователя не будет возможности удалить из корзины товар, который был удалён (из ядра
-                    // или scms) или заблокирован (в scms))
-                    if (isset($setProductResultActionsById[$sessionProduct['id']]) && $setProductResultActionsById[$sessionProduct['id']] === 'delete') {
+                });
+
+                // Обновление сессионных товаров
+                call_user_func(function() use(&$sessionCart, &$resultProducts, $setProductResultActionsById, $backendProductsByUi, $backendProductsById) {
+                    foreach ($sessionCart['product'] as $key => $sessionProduct) {
+                        $backendProduct = null;
+                        if (!empty($sessionProduct['ui']) && isset($backendProductsByUi[$sessionProduct['ui']])) {
+                            $backendProduct = $backendProductsByUi[$sessionProduct['ui']];
+                        } else if (!empty($sessionProduct['id']) && isset($backendProductsById[$sessionProduct['id']])) {
+                            $backendProduct = $backendProductsById[$sessionProduct['id']];
+                        }
+
+                        // Удаление товара. Должно происходить вне зависимости то того, вернул ли бэкэнд товар или нет
+                        // (иначе у пользователя не будет возможности удалить из корзины товар, который был удалён (из ядра
+                        // или scms) или заблокирован (в scms))
+                        if (isset($setProductResultActionsById[$sessionProduct['id']]) && $setProductResultActionsById[$sessionProduct['id']] === 'delete') {
+                            $resultProduct = new \Session\Cart\Update\Result\Product();
+                            $resultProduct->cartProduct = new \Model\Cart\Product\Entity($sessionProduct);
+                            $resultProduct->fullProduct = $backendProduct;
+                            $resultProduct->setAction = $setProductResultActionsById[$sessionProduct['id']];
+                            $resultProducts[] = $resultProduct;
+
+                            unset($sessionCart['product'][$key]);
+                            continue;
+                        }
+
+                        if ($backendProduct) {
+                            $sessionCart['product'][$key] = array_merge($sessionProduct, $this->createSessionProductFromBackendProduct($backendProduct));
+                            $sessionCart['product'][$key]['isGone'] = false;
+                        } else {
+                            // Если бэкэнд не вернул товар и не было ошибок запроса, то это означает, что товары были
+                            // удалены (из ядра или scms) или заблокированы (в scms)
+                            $sessionCart['product'][$key]['isGone'] = true;
+                        }
+
                         $resultProduct = new \Session\Cart\Update\Result\Product();
                         $resultProduct->cartProduct = new \Model\Cart\Product\Entity($sessionProduct);
                         $resultProduct->fullProduct = $backendProduct;
-                        $resultProduct->setAction = $setProductResultActionsById[$sessionProduct['id']];
-                        $resultProducts[] = $resultProduct;
-                        
-                        unset($sessionCart['product'][$key]);
-                        continue;
-                    }
-                    
-                    if ($backendProduct) {
-                        $sessionCart['product'][$key] = array_merge($sessionProduct, $this->createSessionProductFromBackendProduct($backendProduct));
-                        $sessionCart['product'][$key]['isGone'] = false;
-                    } else {
-                        // Если бэкэнд не вернул товар и не было ошибок запроса, то это означает, что товары были
-                        // удалены (из ядра или scms) или заблокированы (в scms)
-                        $sessionCart['product'][$key]['isGone'] = true;
-                    }
-                    
-                    $resultProduct = new \Session\Cart\Update\Result\Product();
-                    $resultProduct->cartProduct = new \Model\Cart\Product\Entity($sessionProduct);
-                    $resultProduct->fullProduct = $backendProduct;
-                    if (isset($setProductResultActionsById[$sessionProduct['id']])) {
-                        $resultProduct->setAction = $setProductResultActionsById[$sessionProduct['id']];
-                    }
-                    
-                    $resultProducts[] = $resultProduct;
-                }
-            });
-            
-            // Переиндексируем массив для исправления возможных ошибок
-            call_user_func(function() use(&$sessionCart) {
-                $sessionProductsById = [];
-                foreach ($sessionCart['product'] as $key => $sessionProduct) {
-                    if ((string)$key !== (string)$sessionProduct['id']) {
-                        \App::logger()->warn(['message' => 'У сессионного товара (id: ' . $sessionProduct['id'] . ', ui: ' . $sessionProduct['ui'] . ') значение элемента id не совпадает с ключом элемента (' . $key . '), ключ будет обновлён'], ['cart/update']);
-                    }
-    
-                    $sessionProductsById[$sessionProduct['id']] = $sessionProduct;
-                }
-    
-                $sessionCart['product'] = $sessionProductsById;
-            });
-    
-            call_user_func(function() use(&$sessionCart) {
-                if (!$sessionCart['product']) {
-                    return;
-                }
-                
-                $isPriceUpdated = false;
-                // Для корректного подсчёта суммы следует вызывать данный метод лишь после добавления/замены/удаления
-                // $setProducts товаров и обновления товаров в сессии
-                \App::coreClientV2()->addQuery(
-                    'cart/get-price',
-                    ['geo_id' => \App::user()->getRegion()->getId()],
-                    [
-                        'product_list'  => array_map(function($product) {
-                            return [
-                                'id'       => $product['id'],
-                                'quantity' => $product['quantity'],
-                            ];
-                        }, $sessionCart['product']),
-                    ],
-                    function ($response) use (&$sessionCart, &$isPriceUpdated) {
-                        if (!isset($response['product_list'][0])) return;
-        
-                        $sessionCart['sum'] = isset($response['sum']) ? $response['sum'] : 0;
-        
-                        foreach ($response['product_list'] as $item) {
-                            // TODO добавить обработку ситуации, когда для одного из товаров данный блок не будет выполнен (ведь в таком случае $sessionCart['sum'] будет содержать некорректные данные?)
-                            if (isset($item['id']) && !empty($item['price']) && isset($item['sum']) && isset($sessionCart['product'][$item['id']])) {
-                                $sessionCart['product'][$item['id']]['price'] = (float)$item['price'];
-                                $sessionCart['product'][$item['id']]['sum'] = (float)$item['sum'];
-                                $isPriceUpdated = true;
-                            }
+                        if (isset($setProductResultActionsById[$sessionProduct['id']])) {
+                            $resultProduct->setAction = $setProductResultActionsById[$sessionProduct['id']];
                         }
+
+                        $resultProducts[] = $resultProduct;
                     }
-                );
-                
-                $exceptionCount = count(\App::exception()->all());
-                \App::coreClientV2()->execute();
-        
-                if (count(\App::exception()->all()) > $exceptionCount && \App::exception()->last()) {
-                    throw new \Exception(\App::exception()->last()->getMessage());
-                }
-        
-                if (!$isPriceUpdated) {
-                    throw new \Exception('Не удалось получить цены для товаров');
-                }
-            });
+                });
 
-            $sessionCart['updated'] = (new \DateTime('now'))->format('c');
-            $this->setSessionCart($sessionCart);
-            
-            // TODO может перенести синхронизацию серверной корзины сюда (выполняя её на основе данных из $resultProducts)?
+                // Переиндексируем массив для исправления возможных ошибок
+                call_user_func(function() use(&$sessionCart) {
+                    $sessionProductsById = [];
+                    foreach ($sessionCart['product'] as $key => $sessionProduct) {
+                        if ((string)$key !== (string)$sessionProduct['id']) {
+                            \App::logger()->warn(['message' => 'У сессионного товара (id: ' . $sessionProduct['id'] . ', ui: ' . $sessionProduct['ui'] . ') значение элемента id не совпадает с ключом элемента (' . $key . '), ключ будет обновлён'], ['cart/update']);
+                        }
 
-            return $resultProducts;
+                        $sessionProductsById[$sessionProduct['id']] = $sessionProduct;
+                    }
+
+                    $sessionCart['product'] = $sessionProductsById;
+                });
+
+                // Обновление цен
+                call_user_func(function() use(&$sessionCart) {
+                    if (!$sessionCart['product']) {
+                        return;
+                    }
+
+                    $isPriceUpdated = false;
+                    // Для корректного подсчёта суммы следует вызывать данный метод лишь после добавления/замены/удаления
+                    // $setProducts товаров и обновления товаров в сессии
+                    \App::coreClientV2()->addQuery(
+                        'cart/get-price',
+                        ['geo_id' => \App::user()->getRegion()->getId()],
+                        [
+                            'product_list'  => array_map(function($product) {
+                                return [
+                                    'id'       => $product['id'],
+                                    'quantity' => $product['quantity'],
+                                ];
+                            }, $sessionCart['product']),
+                        ],
+                        function ($response) use (&$sessionCart, &$isPriceUpdated) {
+                            if (!isset($response['product_list'])) {
+                                return;
+                            }
+
+                            $isPriceUpdated = true;
+
+                            if (is_array($response['product_list'])) {
+                                foreach ($response['product_list'] as $item) {
+                                    if (isset($item['id']) && isset($sessionCart['product'][$item['id']])) {
+                                        $sessionCart['product'][$item['id']]['price'] = isset($item['price']) ? (float)$item['price'] : 0;
+                                        $sessionCart['product'][$item['id']]['sum'] = isset($item['sum']) ? (float)$item['sum'] : 0;
+                                    }
+                                }
+                            }
+
+                            $sessionCart['sum'] = isset($response['sum']) ? (float)$response['sum'] : 0;
+                        }
+                    );
+
+                    $exceptionCount = count(\App::exception()->all());
+                    \App::coreClientV2()->execute();
+
+                    if (count(\App::exception()->all()) > $exceptionCount && \App::exception()->last()) {
+                        throw new \Exception(\App::exception()->last()->getMessage());
+                    }
+
+                    if (!$isPriceUpdated) {
+                        throw new \Exception('Не удалось получить цены для товаров');
+                    }
+                });
+
+                $sessionCart['updated'] = (new \DateTime('now'))->format('c');
+                $this->setSessionCart($sessionCart);
+
+                // TODO может перенести синхронизацию серверной корзины сюда (выполняя её на основе данных из $resultProducts)?
+
+                return $resultProducts;
+            } catch(\Exception $e) {
+                \App::logger()->error(['message' => 'Не удалось обновить корзину', 'error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['cart/update']);
+                throw $e;
+            }
         }
     
         /**

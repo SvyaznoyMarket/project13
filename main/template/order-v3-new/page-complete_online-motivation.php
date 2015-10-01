@@ -26,7 +26,7 @@ return function(
     // При создании заказа выбрана онлайн-оплата
     $isOnlinePaymentChecked = in_array($order->getPaymentId(), [PaymentMethodEntity::PAYMENT_CARD_ONLINE, PaymentMethodEntity::PAYMENT_PAYPAL, PaymentMethodEntity::PAYMENT_PSB]);
     ?>
-
+    <div class="order__wrap">
     <section class="orderCnt jsNewOnlineCompletePage"
              data-order-id="<?= $order->getId() ?>"
              data-order-number="<?= $order->getNumber() ?>"
@@ -111,7 +111,7 @@ return function(
             <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
         </div>
     </section>
-
+    </div>
     <? if (!$isOnlinePaymentPossible) : ?>
         <!--Аналитика-->
         <div class="jsGAOnlinePaymentNotPossible"></div>

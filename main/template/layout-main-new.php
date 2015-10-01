@@ -66,7 +66,7 @@
                 <?= $page->slotRecommendations() ?>
             </div>
 
-            <?= $page->render('main/infoBox') ?>
+            <?= $page->slotInfoBox() ?>
 
             <?= $page->render('main/_slidesBoxWide') ?>
 

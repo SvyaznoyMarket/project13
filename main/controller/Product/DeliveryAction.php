@@ -213,7 +213,7 @@ class DeliveryAction {
                             foreach ($shops as $shop) {
                                 foreach ($delivery['shop'] as $key => $shopItem) {
                                     if ($shop && ($shopItem['id'] == $shop->getId()) && $shop->getRegion()) {
-                                        $delivery['shop'][$key]['url'] = \App::router()->generate('shop.show', ['regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken()]);
+                                        $delivery['shop'][$key]['url'] = \App::router()->generate('shop.show', ['pointToken' => $shop->getToken()]);
                                     }
                                 }
                             }

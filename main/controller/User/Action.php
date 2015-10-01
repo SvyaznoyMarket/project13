@@ -265,11 +265,6 @@ class Action {
     public function register(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        if (!$request->isMethod('post') && !$request->isXmlHttpRequest()) {
-            // SITE-3676
-            return $this->login($request);
-        }
-
         $checkRedirect = $this->checkRedirect($request);
         if ($checkRedirect) return $checkRedirect;
 
@@ -395,6 +390,7 @@ class Action {
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
+        $page->setParam('defaultState', 'register');
 
         return new \Http\Response($page->show());
     }
@@ -723,7 +719,11 @@ class Action {
         $scmsClient = \App::scmsClient();
         $scmsClient->addQuery(
             'api/static-page',
-            ['token' => ['reg_corp_user_cont']],
+            [
+                'token' => ['reg_corp_user_cont'],
+                'geo_town_id' => \App::user()->getRegion()->id,
+                'tags' => ['site-web'],
+            ],
             [],
             function($data) use (&$content) {
                 if (!empty($data['pages'][0]['content'])) {

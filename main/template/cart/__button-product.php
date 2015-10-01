@@ -24,5 +24,5 @@ return function (
             $useNewStyles,
             $inShowroomAsButton,
             $shopStates
-        )) ?>
+    )) ?>
 <? };

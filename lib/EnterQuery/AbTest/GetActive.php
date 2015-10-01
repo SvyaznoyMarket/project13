@@ -28,8 +28,8 @@ namespace EnterQuery\AbTest
                     ['tags' => ['site-web']]
                 ),
                 [], // data
-                function($response, $statusCode) {
-                    $result = $this->decodeResponse($response, $statusCode)['result'];
+                function($response, $curlQuery) {
+                    $result = $this->decodeResponse($response, $curlQuery)['result'];
 
                     $this->response->tests = isset($result[0]) ? $result : [];
 

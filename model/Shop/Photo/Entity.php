@@ -3,8 +3,6 @@
 namespace Model\Shop\Photo;
 
 class Entity {
-    use \Model\MediaHostTrait;
-
     /** @var string[] */
     private $urlsByType = [];
 

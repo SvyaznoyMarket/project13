@@ -6,9 +6,9 @@
  */
 ?>
 
-<?= $page->render('user/_menu', ['page' => $page]) ?>
-
 <?
+$isOldView = \App::abTest()->isOldPrivate();
+
 $i = 0; $channelsByType = [];
 // сортировка каналов по типам
 array_walk($userChannels, function($ch) use (&$channelsByType) {
@@ -16,6 +16,8 @@ array_walk($userChannels, function($ch) use (&$channelsByType) {
     $channelsByType[$ch->getType()][] = $ch;
 });
 ?>
+
+<?= $page->render($isOldView ? 'user/_menu' : 'user/_menu-1508', ['page' => $page]) ?>
 
 <div class="personalPage">
     <div class="personalTitle">Подписки</div>

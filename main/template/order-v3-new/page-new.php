@@ -139,7 +139,7 @@ return function(
 
                 <div class="orderAuth">
                     <div class="orderAuth_t">Уже заказывали у нас?</div>
-                    <a class="orderAuth_btn btnLightGrey bAuthLink jsOrderV3AuthLink" href="<?= \App::router()->generate('user.login') ?>">Войти с паролем</a>
+                    <a class="orderAuth_btn btnLightGrey js-login-opener jsOrderV3AuthLink" href="<?= \App::router()->generate('user.login') ?>">Войти с паролем</a>
                 </div>
 
             <? endif ?>

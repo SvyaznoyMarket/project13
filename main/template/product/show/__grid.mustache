@@ -22,22 +22,22 @@
                 </div>
             </div>
 
-            {{#hasVariations}}
+            {{#variations.0}}
                 <span class="bOptions"><span class="bDecor">Варианты</span></span>
-            {{/hasVariations}}
+            {{/variations.0}}
 
-            {{#hasVariations}}
-            <div class="bOptionsSection">
-                <i class="bCorner"></i>
-                <i class="bCornerDark"></i>
+            {{#variations.0}}
+                <div class="bOptionsSection">
+                    <i class="bCorner"></i>
+                    <i class="bCornerDark"></i>
 
-                <ul class="bOptionsList">
-                    {{#variations}}
-                    <li class="bOptionsList__eItem">{{name}}</li>
-                    {{/variations}}
-                </ul>
-            </div>
-            {{/hasVariations}}
+                    <ul class="bOptionsList">
+                        {{#variations}}
+                        <li class="bOptionsList__eItem">{{name}}</li>
+                        {{/variations}}
+                    </ul>
+                </div>
+            {{/variations.0}}
         </div>
     </div><!--/ описание продукта -->
 </div>

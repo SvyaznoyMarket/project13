@@ -343,4 +343,13 @@ class Helper {
     public function escapeJavaScript($value) {
         return strtr($value, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', '</' => '<\/'));
     }
+
+    /**
+     * Преобразует первую букву в верхний регистр. Работает с UTF-8.
+     * @param string $value
+     * @return string
+     */
+    public function ucfirst($value) {
+        return mb_strtoupper(mb_substr($value, 0, 1)) . mb_substr($value, 1);
+    }
 }

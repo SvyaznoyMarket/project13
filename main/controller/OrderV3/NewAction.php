@@ -31,7 +31,10 @@ class NewAction extends OrderV3 {
 
         try {
             if ($request->isMethod('GET')) {
-                $this->cart->update([], true);
+                try {
+                    $this->cart->update([], true);
+                } catch(\Exception $e) {}
+
                 $this->pushEvent(['step' => 1]);
             }
 
@@ -111,6 +114,7 @@ class NewAction extends OrderV3 {
         $result = ['errors' => [], 'phone' => '', 'email' => ''];
 
         $post = $request->request->all();
+
         if (isset($post['user_info']['phone'])) {
             $result['phone'] = $post['user_info']['phone'];
             $phone = preg_replace('/^\+7/', '8', $post['user_info']['phone']);
@@ -126,6 +130,15 @@ class NewAction extends OrderV3 {
             }
         } else {
             $result['errors'][] = 'Не указан email';
+        }
+
+        // валидируем ядром
+        $validationResult = $this->validateUserInfo($post['user_info']);
+
+        if (isset($validationResult['error']) && is_array($validationResult['error'])) {
+            foreach ($validationResult['error'] as $e) {
+                $result['errors'][] = isset($e['message']) && $e['message'] ? $e['message'] : 'Неизвестная ошибка';
+            }
         }
 
         return $result;

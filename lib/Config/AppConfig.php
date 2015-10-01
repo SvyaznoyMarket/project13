@@ -300,10 +300,6 @@ class AppConfig {
         'autoresolve'    => null,
         'enabled'        => null,
     ];
-    /** @var bool */
-    public $loadMediaHost = null;
-    /** @var array */
-    public $mediaHost = [];
     /** @var array */
     public $search = [
         'itemLimit' => null,
@@ -324,18 +320,6 @@ class AppConfig {
         'lowerPriceNotification' => null,
         'recommendationPull'     => null, // подтягивать информацию о рекоммендованных товарах
         'recommendationPush'     => null, // отправлять данные для расчета рекоммендованных товаров
-    ];
-    /** @var array */
-    public $productLabel = [
-        'url' => [],
-    ];
-    /** @var array */
-    public $productCategory = [
-        'url' => [],
-    ];
-    /** @var array */
-    public $shopPhoto = [
-        'url' => [],
     ];
     /** @var array */
     public $banner = [

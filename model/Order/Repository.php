@@ -142,4 +142,49 @@ class Repository {
 
         return $entity;
     }
+
+    /**
+     * Подготавливает запрос для получения medias товаров заказов и, после выполнения запроса, задаёт medias для товаров
+     * @param \Model\OrderDelivery\Entity $orderDelivery
+     */
+    public function prepareOrderDeliveryMedias(\Model\OrderDelivery\Entity $orderDelivery) {
+        $productIds = [];
+        foreach ($orderDelivery->orders as $order) {
+            foreach ($order->products as $product) {
+                $productIds[] = $product->id;
+            }
+        }
+
+        \App::scmsClient()->addQuery(
+            'product/get-description/v1',
+            [
+                'ids' => $productIds,
+                'media' => 1,
+            ],
+            [],
+            function($data) use($orderDelivery) {
+                if (!isset($data['products']) || !is_array($data['products'])) {
+                    return;
+                }
+
+                foreach ($data['products'] as $product) {
+                    if (!isset($product['core_id']) || !isset($product['medias'])) {
+                        continue;
+                    }
+
+                    $medias = array_map(function($media) { return new \Model\Media($media); }, $product['medias']);
+
+                    // Учитываем ситуацию, когда товар с одним и тем же id присутствует в разных заказах (в таком
+                    // случае объекты товаров будут разные)
+                    foreach($orderDelivery->orders as $order) {
+                        foreach ($order->products as $orderProduct) {
+                            if ($orderProduct->id == $product['core_id']) {
+                                $orderProduct->medias = $medias;
+                            }
+                        }
+                    }
+                }
+            }
+        );
+    }
 }

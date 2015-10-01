@@ -48,7 +48,7 @@ class CompletePage extends Layout {
                 if (!$order->isCredit()) continue;
 
                 // Данные для "Купи-в-кредит"
-                $data = new Credit\Kupivkredit($order, $this->params['products']);
+                $data = new Credit\Kupivkredit($order, $this->params['productsById']);
                 $creditData[$order->getNumber()]['kupivkredit'] = [
                     'widget' => 'kupivkredit',
                     'vars'   => [
@@ -70,7 +70,7 @@ class CompletePage extends Layout {
 
                 foreach ($order->getProduct() as $orderProduct) {
                     /** @var $product \Model\Product\Entity|null */
-                    $product = isset($this->params['products'][$orderProduct->getId()]) ? $this->params['products'][$orderProduct->getId()] : null;
+                    $product = isset($this->params['productsById'][$orderProduct->getId()]) ? $this->params['productsById'][$orderProduct->getId()] : null;
                     if (!$product) {
                         throw new \Exception(sprintf('Не найден товар #%s, который есть в заказе', $orderProduct->getId()));
                     }

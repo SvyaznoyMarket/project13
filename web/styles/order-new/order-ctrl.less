@@ -18,12 +18,27 @@
     }
     &__lbl{
         position: absolute;
-        top: 0;
+        top: -2px;
         left: 0;
         font-size: 12px;
         margin-left: 10px;
         color: @borderColor;
         display: none;
+        &.nohide{
+            display: block;
+        }
+    }
+    &__txt{
+        position: absolute;
+        .transition(all 0.2s ease-out);
+        top: 24px;
+        color: @borderColor;
+        font-size: 12px;
+        left: 0;
+        margin-left: 10px;
+        &.top{
+            top: -2px;
+        }
     }
     &__input{
         width: 100%;
@@ -79,13 +94,18 @@
     }
     &.error{
         .order-ctrl{
-            border-color: #d45745;
-
+            &__input{
+                border-color: #d45745;
+            }
             &__err{
                 .inline-block();
             }
             &__lbl{
                 display: block;
+                color: #d45745;
+            }
+            &__txt{
+                top: -2px;
                 color: #d45745;
             }
         }
@@ -111,6 +131,6 @@
     border: 1px solid transparent;
     .rounded(3px);
     &.error{
-        border-color:#d45745;
+        border-color: #d45745;
     }
 }

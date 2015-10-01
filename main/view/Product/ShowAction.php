@@ -52,9 +52,9 @@ class ShowAction {
             $inStoreLabel = null;
         }
 
-        $variations = (new \View\Product\Variations())->execute($helper, $product);
         $productItem = [
-            'id'           => $product->getId(),
+            'id'           => $product->id,
+            'ui'           => $product->ui,
             'name'         => $product->getName(),
             'link'         => $product->getLink(),
             'label'        =>
@@ -76,8 +76,7 @@ class ShowAction {
             'inStoreLabel' => $inStoreLabel,
             'onlyInShop'   => $product->isInShopOnly(),
             'stateLabel'   => $showState ? ($inShopOnlyLabel ? $inShopOnlyLabel : $inStoreLabel) : null,
-            'variations'   => $variations,
-            'hasVariations' => $variations ? true : null,
+            'variations'   => (new \View\Category\Listing\Product\Variations())->execute($helper, $product, $category ? $category->ui : '', $cartButtonSender),
             'hasVideo' => $product->hasVideo(),
             'has360'   => $product->has3d(),
             'review'   => $reviewtAction ? $reviewtAction->execute($helper, $product) : null,

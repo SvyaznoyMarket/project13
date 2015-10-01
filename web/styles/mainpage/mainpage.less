@@ -90,7 +90,7 @@
 }
 
 // простой каталог - картинка с названием категориии/товара или без него
-.lstitem{
+.lstitem {
     margin: 0 0 20px;
     &_i{
         margin: 0 15px 10px 0;
@@ -136,6 +136,26 @@
     }
     &_n{
         display: inline;
+    }
+    &_img-cnt{
+        width: 120px;
+        height: 120px;
+        text-align: center;
+        .inline-block();
+        margin-bottom: 10pxc;
+
+        &:after{
+            content: "";
+            width: 0;
+            height: 100%;
+            .inline-block(middle);
+        }
+        img.lstitem_img {
+            max-width: 94%;
+            height: auto;
+            .inline-block(middle);
+            margin: 0;
+        }
     }
 }
 

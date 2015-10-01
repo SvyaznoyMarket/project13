@@ -7,11 +7,15 @@
     } catch (e) {
     }
 
-    var body = document.getElementsByTagName('body')[0],
-        $body = $(body),
+    var
+        body          = document.getElementsByTagName('body')[0],
+        $body         = $(body),
         $orderContent = $('#js-order-content'),
-        $inputs = $('.js-order-ctrl__input'),
-        comment = '',
+        $inputs       = $('.js-order-ctrl__input'),
+        $offertaPopup = $('.js-order-oferta-popup').eq(0),
+        comment       = '',
+        validator     = null,
+
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -56,7 +60,8 @@
             sendChanges('changePaymentMethod', params)
         },
         changeAddress = function changeAddressF(params) {
-            sendChanges('changeAddress', params)
+            sendChanges('changeAddress', params);
+            $.each($inputs, lblPosition);
         },
         changeOrderComment = function changeOrderCommentF(comment){
             sendChanges('changeOrderComment', {'comment': comment})
@@ -158,8 +163,10 @@
                 console.log("Model:", data.result.OrderDeliveryModel);
 
                 $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
-
+                $offertaPopup.remove();
                 $orderContent.empty().html(data.result.page);
+                $offertaPopup = $('.js-order-oferta-popup').eq(0);
+
 				if ($orderContent.find('.jsAddressRootNode').length > 0) {
 					$.each($orderContent.find('.jsAddressRootNode'), function(i,val){
 						ko.applyBindings(ENTER.OrderV3.address, val);
@@ -181,11 +188,16 @@
                     closeClick: false,
                     closeEsc: false,
                     centered: true
-                })
+                });
+
+                $inputs = $('.js-order-ctrl__input');
+                $.each($inputs, lblPosition);
 
             }).always(function(){
                 $orderContent.stop(true, true).fadeIn(200);
                 if (spinner) spinner.stop();
+
+                bindMask();
             });
 
         },
@@ -248,7 +260,7 @@
 		},
 
 		showOfertaPopup = function showOfertaPopupF() {
-			$('.js-order-oferta-popup').lightbox_me();
+			$offertaPopup.lightbox_me();
 		},
 
 		tabsOfertaAction = function tabsOfertaActionF(that) {
@@ -262,17 +274,87 @@
 			$self.addClass('orderOferta_tabs_i-cur');
 			$("#"+tab_id).addClass('orderOferta_tabcnt-cur');
         },
-        showHideLabels = function showHideLabels() {
-            var $this = $(this),
-                $label = $this.parent().find('.js-order-ctrl__lbl');
+        lblPosition = function lblPosition() {
+          var $this = $(this),
+              $label = $this.parent().find('.js-order-ctrl__txt');
 
-            if ( $this.val() !== '' ) {
-                $label.show();
+            if ($this.is(":focus") || ($this.val() !== '')) {
+                $label.addClass('top');
             } else {
-                $label.hide();
+                $label.removeClass('top');
             }
+        },
+        bindMask = function() {
+            var
+                $inputs        = $('.js-order-ctrl__input'),
+                $phoneInput    = $('.js-order-phone'),
+                $emailInput    = $('.js-order-email'),
+                $agreeCheckbox = $('.jsAcceptAgreement'),
+                $address       = $('.js-order-deliveryAddress'),
+
+                validationConfig = {
+                    fields: [{
+                        fieldNode: $agreeCheckbox,
+                        require: true,
+                        errorMsg: null
+                    }],
+                    callbackError: function( field, error ) {
+                        var
+                            parent = field.fieldNode.parent();
+                        console.warn('===== custom callbackError', field.fieldNode.parent());
+                        parent.addClass('error');
+                        parent.find('.js-order-ctrl__txt').html(error);
+                    },
+                    callbackValid: function( field ) {},
+                    unmarkField: function( field ) {
+                        console.log('custom unmarkField callback ');
+                        var
+                            parent = field.fieldNode.parent();
+
+                        parent.removeClass('error');
+                        parent.find('.order-ctrl__txt').html(field.fieldNode.data('text-default'));
+                    }
+                };
+
+            // Validator
+            $phoneInput.length && validationConfig.fields.push({
+                fieldNode: $phoneInput,
+                require: !!$phoneInput.attr('required'),
+                validBy: 'isPhone',
+                validateOnChange: true,
+                errorMsg: 'Введите телефон'
+            });
+
+            $address.length && $address.each(function() {
+                var
+                    $self = $(this);
+
+                validationConfig.fields.push({
+                    fieldNode: $self,
+                    require: !!$self.attr('required'),
+                    validateOnChange: true,
+                    errorMsg: $self.attr('data-text-default')
+                });
+            });
+
+            $emailInput.length && validationConfig.fields.push({
+                fieldNode: $emailInput,
+                require: !!$emailInput.attr('required'),
+                validBy: 'isEmail',
+                validateOnChange: true,
+                errorMsg: 'Введите email'
+            });
+
+            if ( validationConfig.fields.length ) {
+                validator = new FormValidator(validationConfig);
+            }
+
+            // masks
+            $.map($inputs, function(elem, i) {
+                if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
+            });
         }
-        ;
+    ;
 
     // TODO change all selectors to .jsMethod
 
@@ -392,6 +474,7 @@
     // клик по ссылке "Удалить" у каунтера
     $orderContent.on('click', '.jsDeleteProduct', function(e){
         var $this = $(this);
+        $('.js-order-overlay').remove();
         changeProductQuantity($this.data('block_name'), $this.data('id'), $this.data('ui'), 0);
         e.preventDefault();
     });
@@ -490,7 +573,7 @@
 			$.ajax({
 				url: ENTER.utils.setURLParam('ajax', 1, href),
 				success: function(data) {
-					$('.orderOferta_tl:first').html(data.content || '');
+					$offertaPopup.find('.orderOferta_tl:first').html(data.content || '');
 					showOfertaPopup();
 				}
 			})
@@ -565,8 +648,13 @@
         $body.trigger('trackGoogleEvent', ['pickup_ux', 'list_point', 'выбор'])
     });
 
-    $.each($inputs, showHideLabels);
-    $body.on('keyup', '.js-order-ctrl__input', showHideLabels);
+    //$.each($inputs, lblPosition);
+    $(document).ready(function(){
+        $.each($inputs, lblPosition);
+    });
+
+    $body.on('focus', '.js-order-ctrl__input', lblPosition);
+    $body.on('blur', '.js-order-ctrl__input', lblPosition);
 
     //показать блок редактирования товара - новая версия
     $body.on('click', '.js-show-edit',function(){
@@ -605,7 +693,7 @@
 		$(this).remove();
 	});
 
-    // авктокомплит адерса
+    // автокомплит адреса
     $body.on('focus', '.js-order-deliveryAddress', function() {
 
         var $el = $(this),
@@ -666,8 +754,10 @@
                 //$('.ui-autocomplete').css({'position' : 'absolute', 'top' : 29, 'left' : 0});
             },
             select: function( event, ui ) {
+                var dataField = $el.data('field');
                 $el.val(ui.item.label);
-                $inputFields.eq(1).data('parent-kladr-id', ui.item.value.id);
+                $('[data-field=building]').data('parent-kladr-id', ui.item.value.id);
+                $('[data-field=' + dataField + ']').val(ui.item.label);
                 $container.data('last-kladr-id', ui.item.value.id);
                 save();
                 return false;
@@ -683,45 +773,54 @@
                 noResults: '',
                 results: function() {}
             }
-        });
+        }).data("ui-autocomplete")._renderMenu = function(ul, items) {
+            var that = this;
+            $.each( items, function( index, item ) {
+                that._renderItemData( ul, item );
+            });
+            if ($el.data('field') == 'street') {
+                ul.addClass('ui-autocomplete-street');
+            } else {
+                ul.addClass('ui-autocomplete-house-or-apartment');
+            }
+        };
 
         // Сохранение дома
-        $inputFields.eq(2).off().on('keyup', save);
+        $inputFields.eq(2).off().on('keyup', function() {
+            $('[data-field=apartment]').val($(this).val());
+            save();
+        });
 
     });
 
-    $('#auth-block').attr('data-state', 'register').addClass('state_register');
+    // синхронизация между полями доставки между заказами
+    $body.find('.js-order-deliveryAddress').on('keyup', function(){
+        var field = $(this).data('field');
+        $('[data-field=' + field + ']').val($(this).val());
+    });
 
     $body.on('click', '[form="js-orderForm"]', function(e) {
         var
-            $el = $(this),
-            $form = $el.attr('form') && $('#' + $el.attr('form')),
-            formResult = { errors: [] }
+            $el        = $(this),
+            $form      = $el.attr('form') && $('#' + $el.attr('form')),
+            formResult = { errors: [] },
+            valid      = true
         ;
         console.info($el, $form, formResult);
 
         try {
             if ($form.length) {
-                $form.trigger('form.reset');
 
-                $form.find('[required]').each(function(i, el) {
-                    var $el = $(el);
-
-                    if ($el.is(':checkbox')) {
-                        !$el.is(':checked') && formResult.errors.push({message: '', field: $el.data('field')});
-                    } else if ($el.is('input')) {
-                        console.warn($el.data('field'));
-                        !$el.val() && formResult.errors.push({message: '', field: $el.data('field')});
+                validator && validator.validate({
+                    onInvalid: function( err ) {
+                        valid = false;
+                    },
+                    onValid: function() {
+                        $form.submit();
                     }
                 });
 
-                if (formResult.errors.length) {
-                    $form.trigger('form.result', [formResult]);
-                } else {
-                    $form.submit();
-                }
-
-                e.preventDefault();
+                return false;
             } else {
                 // default handler
                 console.warn('form not found');
@@ -734,9 +833,11 @@
     $.mask.definitions['x']='[0-9]';
     $.mask.placeholder= "_";
     $.mask.autoclear = false;
-    $.map($inputs, function(elem, i) {
-        if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
+    bindMask();
+
+    $body.on('input', '.js-quant', function() {
+        var $el = $(this);
+
+        $el.val($el.val().replace(/[^0-9]+/g, ''));
     });
-
-
 })(jQuery);

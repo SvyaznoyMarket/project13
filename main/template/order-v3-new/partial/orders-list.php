@@ -33,7 +33,7 @@ $f = function (
         <? endif; ?>
 
         <!-- блок разбиения заказа -->
-        <div class="orderRow order-bill__item clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : '' ?>"
+        <div class="orderRow order-bill__item clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : '' ?>"\
              data-block_name="<?= $order->block_name ?>">
             <!-- информация о заказе -->
             <div class="order-bill__head">Заказ №<?= ($i) ?></div>
@@ -44,7 +44,11 @@ $f = function (
                             class="order-bill__oferta js-order-oferta-popup-btn" href="<?= $order->seller->offer ?>"
                             data-value="<?= $order->seller->offer ?>" target="_blank">Информация и оферта</a></div>
                 <? endif ?>
-                
+
+                <? if (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_cost > \App::config()->order['prepayment']['priceLimit'])) : ?>
+                    <div class="order-error order-error--hint">Требуется предоплата.<br>Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a><i class="order-error__closer js-order-err-close"></i></div>
+                <? endif; ?>
+
 
                 <? foreach ($order->products as $product): ?>
                     <?= $helper->render('order-v3-new/partial/errors', [ 'orderDelivery' => $orderDelivery, 'order' => $order, 'product' => $product ]) ?>
@@ -59,39 +63,39 @@ $f = function (
                             <? if ($product->prefix): ?><?= $product->prefix ?><br/><? endif ?>
                             <?= $product->name_web ?>
                         </a>
+						<div class="order-good__price-block">
+							<span class="order-good__price"><?= $helper->formatPrice($product->original_price) ?>
+								<span class="rubl">p</span></span>
+							<span class="order-good__quantity js-show-edit"><?= $product->quantity ?> шт.</span>
 
-                        <span class="order-good__price"><?= $helper->formatPrice($product->original_sum) ?>
-                            <span class="rubl">p</span></span>
-                        <span class="order-good__quantity js-show-edit"><?= $product->quantity ?> шт.</span>
+							<span class="order-good__total-price"><?= $helper->formatPrice($product->original_sum) ?>
+								<span class="rubl">p</span>
+							</span>
 
-                        <span class="order-good__total-price"><?= $helper->formatPrice($product->original_price) ?>
-                            <span class="rubl">p</span>
-                        </span>
+							<!-- редактирование кол-ва/удаление товара -->
+							<div class="order-good__edit js-edit" style="display: none">
+								<div data-spinner-for="" class="order-good__count count">
+									<button class="count__ctrl count__ctrl--less js-edit-quant" title="Уменьшить" data-delta="-1">−</button>
+									<input name="productQuantity[]" type="text" value="<?= $product->quantity ?>"
+										   class="count__num js-quant" data-stock="<?= $product->stock ?>"
+										   data-min="1"/>
+									<button class="count__ctrl count__ctrl--more js-edit-quant" title="Увеличить" data-delta="+1">+</button>
+								</div>
+								<span class="order-good__units">шт.</span>
 
-                        <!-- редактирование кол-ва/удаление товара -->
-                        <div class="order-good__edit js-edit" style="display: none">
-                            <div data-spinner-for="" class="order-good__count count">
-                                <button class="count__ctrl count__ctrl--less js-edit-quant" title="Уменьшить" data-delta="-1">−</button>
-                                <input name="productQuantity[]" type="text" value="<?= $product->quantity ?>"
-                                       class="count__num js-quant" data-stock="<?= $product->stock ?>"
-                                       data-min="1"/>
-                                <button class="count__ctrl count__ctrl--more js-edit-quant" title="Увеличить" data-delta="+1">+</button>
-                            </div>
-                            <span class="order-good__units">шт.</span>
-
-                            <a class="order-good__apply jsChangeProductQuantity" href="" data-id="<?= $product->id; ?>"
-                               data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
-                            <a class="order-good__del js-del-popup-show">Удалить товар</a>
-                            <div class="order-good__del-popup order-popup js-del-popup" style="display:none;">
-                                <div class="order-popup__closer js-del-popup-close"></div>
-									<div class="order-popup__tl">Удалить товар?</div>
-									<button class="order-popup__btn order-btn order-btn--default js-del-popup-close">Отмена</button>
-									<button class="order-popup__btn order-btn order-btn--default jsDeleteProduct" href="" data-id="<?= $product->id; ?>"
-									   data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Удалить</button>
-                            </div>
-                        </div>
-                        <!-- END редактирование кол-ва/удаление товара -->
-
+								<a class="order-good__apply jsChangeProductQuantity" href="" data-id="<?= $product->id; ?>"
+								   data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Применить</a>
+								<a class="order-good__del js-del-popup-show">Удалить товар</a>
+								<div class="order-good__del-popup order-popup js-del-popup" style="display:none;">
+									<div class="order-popup__closer js-del-popup-close"></div>
+										<div class="order-popup__tl">Удалить товар?</div>
+										<button class="order-popup__btn order-btn order-btn--default js-del-popup-close">Отмена</button>
+										<button class="order-popup__btn order-btn order-btn--default jsDeleteProduct" href="" data-id="<?= $product->id; ?>"
+										   data-ui="<?= $product->ui; ?>" data-block_name="<?= $order->block_name ?>">Удалить</button>
+								</div>
+							</div>
+							<!-- END редактирование кол-ва/удаление товара -->
+						</div>
                     </div>
                 <? endforeach ?>
 
@@ -116,11 +120,11 @@ $f = function (
                             </a>
 
                             <div class="order-discount__name">
-                                Фишка на скидку<?= $discount->name; ?>
+                                Фишка на скидку <?= $discount->name; ?>
                             </div>
 
                             <div
-                                class="order-discount__val">-<?= $discount->discount ?>500
+                                class="order-discount__val">-<?= $discount->discount ?>
                                 <span class="rubl">p</span></div>
 
                         </div>
@@ -217,7 +221,7 @@ $f = function (
                             class="order-delivery__block <?= ($order->delivery->point && $order->delivery->point->isSvyaznoy()) ? 'warn' : ''  ?> <?= $order->delivery->point ? 'plain' : 'empty' ?>">
 
                             <? if ($order->delivery->point) { ?>
-                                <div class="order-delivery__shop clearfix">
+                                <div class="order-delivery__shop">
                                     <?= @$order->delivery->delivery_method->name ?>
                                 </div>
                             <? }; ?>
@@ -314,8 +318,7 @@ $f = function (
                         <span
                             class="order-bill__total-price"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price) . ' <span class="rubl">p</span>' ?></span>
                         <span
-                            class="order-bill__serv"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>
-                            :</span>
+                            class="order-bill__serv"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
 
                         <span class="order-bill__total-price"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
                     <span class="order-bill__serv">Итого: </span>

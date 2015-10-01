@@ -5,7 +5,8 @@
 
 .order-bill{
     &__item{
-        margin-top: 10px;
+        margin-top: 20px;
+        border: 0;
     }
     &__head{
         color: @txtColor;
@@ -37,7 +38,7 @@
         margin-left: 490px;
     }
     &__adds{
-        padding: 10px 475px 10px 10px;
+        padding: 10px 490px 10px 10px;
         background-color: @bgGrey;
         margin: 10px 0 20px;
 
@@ -99,6 +100,10 @@
         color: @txtColor;
         font-size: 14px;
     }
+    &__price-block {
+      display: block;
+      margin-left: 80px;
+    }
     &__price{
         font-size: 16px;
         color: @txtColor;
@@ -119,7 +124,7 @@
     }
     &__count{
         .inline-block();
-        border-color: #5e5e5e;
+        border-color: #d3d3d3;
         .count{
             &__ctrl{
                 font-size: 16px;
@@ -131,7 +136,7 @@
                 font-size: 16px;
                 width: 35px;
                 height: 20px;
-                border-color: #5e5e5e;
+                border-color: #d3d3d3;
                 color: #5e5d5d;
                 line-height: 20px;
             }
@@ -148,7 +153,7 @@
         font-size: 0;
         width: 32px;
         height: 20px;
-        border: 1px solid #5e5e5e;
+        border: 1px solid #d3d3d3;
         .rounded(3px);
         background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABHklEQVQoFWNkIBKYmJgE/////zQzMerNzc29mJiYOoBq5RkJaTA1NZVlZGRcB1T3B0gHsODTYGxszApU1AvE3EB12SdPnnzJhE8DMzNzIVCxDlDNYqDi/SC1TEArTS0sLGrQNQKF7YBiCUB8/cuXL70weSagCbFA30cBPRYBE7SyshIDioM8+e3Xr19FV69e/QWTYwIK1AE1vALiCjMzMzWgBNOfP3+6gBoEgGKN58+ffwhTDKKZX7x48UNKSuoqUEEQkG8uLS0tDmT7AhWvP3369HRkxWANIOIZEEhKSjICw9odqNgIqPg+0MM5T548+YNVA1TTWaDpZkC2yL9//1JPnTr1Al0xiI8cD//Y2Njyf/78qXvmzJmb2BSDxAAyOmliqt77sgAAAABJRU5ErkJggg==');
         background-position: center;
@@ -172,6 +177,7 @@
 }
 .order-discount{
     font-size: 0;
+    margin-right: -200px;
 
     &__head{
         font-size: 18px;
@@ -187,6 +193,7 @@
     &__lk{
         display: table-cell;
         padding: 10px 0;
+        vertical-align: middle;
     }
 
     &__name{
@@ -196,14 +203,16 @@
         max-width: 0;
         font-size: 14px;
         color: @txtColor;
+        vertical-align: middle;
     }
     &__val{
         display: table-cell;
-        padding: 10px 20px 10px 0;
+        padding: 10px 10px 10px 0;
         text-align: right;
         white-space: nowrap;
         font-size: 16px;
         color: @txtColor;
+        vertical-align: middle;
     }
     &__cell{
         display: table-cell;
@@ -227,12 +236,25 @@
         text-align: right;
         margin: 0 10px;
     }
+    &__pin{
+        .inline-block(middle);
+        margin-left: 10px;
+    }
     .order-ctrl{
         .inline-block(middle);
         width: 165px;
         padding-top: 0;
         margin-bottom: 0;
         margin-right: 0;
+        &__lbl{
+            bottom: 38px;
+            line-height: 13px;
+            margin-left: 0;
+            width: 100%;
+            padding-right: 10px;
+            top: auto;
+            .box-sizing(border-box);
+        }
     }
     .order-btn{
         .inline-block(middle);

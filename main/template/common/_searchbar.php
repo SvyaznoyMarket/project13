@@ -99,10 +99,10 @@ $btnTypes = array(
                 <a href="<?= \App::router()->generate('enterprize') ?>" class="i-header i-header--ep jsEnterprizeInSearchBarButton"></a>
             </div>
             <!-- кнопка "в магазинах" -->
-            <div class="shops-btn">
+            <!--div class="shops-btn">
                 <img class="shops-btn__icon" src="/styles/shops/img/shop-icon.png">
                 <span class="shops-btn__txt">Товары<br>в магазине</span>
-            </div>
+            </div-->
             <!-- END кнопка "в магазинах" -->
             <? if (false): // SITE-5833 ?>
             <div class="hdgift <?= $btnTypes[ $page->escape(\Session\AbTest\ABHelperTrait::getGiftButtonNumber()) ] ?>">

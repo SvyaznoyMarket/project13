@@ -32,7 +32,7 @@ class SetAction {
         \RepositoryManager::product()->prepareProductQueries($products, 'media label brand category');
         \App::coreClientV2()->execute();
 
-        $products = array_filter($products, function(\Model\Product\Entity $product) { return $product->isAvailable(); });
+        //$products = array_filter($products, function(\Model\Product\Entity $product) { return $product->isAvailable(); });
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();

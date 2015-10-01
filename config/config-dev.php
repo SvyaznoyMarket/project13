@@ -9,8 +9,6 @@ $c->debug = true;
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/apitest/';
 
-$c->loadMediaHost = false;
-
 $c->jsonLog['enabled'] = false;
 $c->analytics['enabled'] = false;
 $c->googleAnalytics['enabled'] = false;
