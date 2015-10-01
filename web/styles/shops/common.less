@@ -65,29 +65,32 @@
     &__map{
         width: 100%;
         display: table;
+
         &--single .shops__viewport .shops__viewport__container {
-            width: 670px;
+            width: 684px;
         }
     }
     &__viewport {
-        width: 585px;
+        width: 600px;
         display: table-cell;
-        height: 390px;
+        height: 391px;
+
+        border-bottom: 1px solid #e6e6e6;
         &__container {
             overflow: hidden;
-            width: 585px;
-            height: 390px;
+            width: 600px;
+            height: 391px;
             & > img {
                 display: block;
                 position: relative;
                 left: 0;
-                min-width: 585px;
-                min-height: 390px;
+                min-width: 600px;
+                min-height: 391px;
             }
         }
     }
     &-gallery{
-        width: 100px;
+        width: 85px;
         display: table-cell;
         text-align: center;
         .box-sizing(border-box);
@@ -97,32 +100,46 @@
         position: relative;
         overflow: hidden;
         vertical-align: top;
+        .box-sizing(border-box);
+        padding-top: 63px;
+        overflow: hidden;
 
         &__lst{
-            height: 390px;
-            overflow: scroll;
+            height: 327px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            margin-right: -18px;
+            padding-right: 17px;
+
+            li{
+                padding: 0 9px 0 10px;
+            }
         }
         &__i{
-            margin-top: 10px;
+            margin-bottom: 10px;
             .inline-block();
             cursor: pointer;
             img {
                 max-width: 66px;
             }
         }
-        &__bottom{
+        &__map{
             position: absolute;
-            padding: 10px 9px 10px 10px;
+            padding: 10px;
+            margin: 0;
             background-color: @white;
-            bottom:0;
+            top: 0;
             left: 0px;
+
+          &.shadow{
             .box-shadow(0 0 12px 0 rgba(0, 0, 0, 0.50));
+          }
         }
 
     }
     &__descr{
         clear:both;
-        padding: 15px 15px 10px;
+        padding: 15px 0px 10px 15px;
         font-size: 14px;
         color: #616161;
     }
@@ -143,7 +160,7 @@
         margin-left: 123px;
         margin-top: 2px;
         color: #616161;
-        word-break: break-word;//for pickpoint's long string
+        word-break: break-all; //for pickpoint's long string
     }
     &-way{
         &__head{
