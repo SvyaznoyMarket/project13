@@ -237,6 +237,11 @@ $buySender2 = $request->get('sender2');
 
     <?= $helper->render('product/__data', ['product' => $product]) ?>
 
+    <? if (\App::config()->analytics['enabled']): ?>
+        <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
+        <?//= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
+    <? endif ?>
+
 </section>
 
 

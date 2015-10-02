@@ -394,6 +394,17 @@
             text-decoration: none;
         }
     }
+    &-src{
+        float: left;
+        &__tl{
+            font-size: 14px;
+            color: #8c8c8c;
+            .inline-block(middle);
+        }
+        img{
+            .inline-block(middle);
+        }
+    }
 }
 
 .btn--more-reviews {
@@ -444,5 +455,21 @@
         &:after{
             background-color: #363636;
         }
+    }
+}
+
+.partner-group{
+    margin-bottom: 10px;
+    &__tl{
+        .inline-block(middle);
+        color: #363636;
+        line-height: 18px;
+    }
+    &__h{
+        font-weight: bold;
+    }
+    img{
+        .inline-block(middle);
+        margin-right: 8px;
     }
 }

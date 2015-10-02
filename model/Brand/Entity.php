@@ -9,17 +9,17 @@ class Entity {
     const UI_TCHIBO = '73b7d62f-67ae-11e3-93ee-e4115baba630';
 
     /** @var string */
-    private $ui;
+    public $ui;
     /** @var int */
-    private $id;
+    public $id;
     /** @var string */
-    private $token;
+    public $token;
     /** @var string */
-    private $name;
+    public $name;
     /** @var string */
-    private $image;
+    public $image;
     /** @var Media[]  */
-    private $medias = [];
+    public $medias = [];
 
     public function __construct(array $data = []) {
         if (array_key_exists('ui', $data)) $this->ui = $data['ui'];

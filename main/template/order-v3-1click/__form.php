@@ -1,6 +1,12 @@
 <?php
 
-return function(
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\Product\Entity $product
+ * @param array $sender
+ * @param string $sender2
+ */
+$f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
     $sender = [], // Поставщик товара: обычно retail rocket
@@ -68,4 +74,4 @@ return function(
         </fieldset>
     </form>
 </div>
-<? };
+<? }; return $f;
