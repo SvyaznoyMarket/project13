@@ -8,6 +8,7 @@
         $deletePopupTemplate = $('#tpl-favorite-deletePopup'),
         $deleteFavoritePopupTemplate = $('#tpl-favorite-deleteFavoritePopup'),
         $shareProductPopupTemplate = $('#tpl-favorite-shareProductPopup'),
+        $shareFavoritePopupTemplate = $('#tpl-favorite-shareFavoritePopup'),
         $productCheckboxes = $('.personal-favorit__checkbox').not('.js-fav-all'),
 
         showPopup = function(selector) {
@@ -19,6 +20,30 @@
         hidePopup = function(selector) {
             $(selector).remove();
             $('.overlay').remove();
+        },
+
+        makeShareData = function(url, data) {
+            data.twitter = {
+                url: ENTER.utils.shareLink.twitter(url, '')
+            };
+            data.facebook = {
+                url: ENTER.utils.shareLink.facebook(url, '')
+            };
+            data.vkontakte = {
+                url: ENTER.utils.shareLink.vkontakte(url, '')
+            };
+            data.googleplus = {
+                url: ENTER.utils.shareLink.googleplus(url, '')
+            };
+            data.odnoklassniki = {
+                url: ENTER.utils.shareLink.odnoklassniki(url, '')
+            };
+            data.mailru = {
+                url: ENTER.utils.shareLink.mailru(url, '')
+            };
+            data.mail = {
+                url: ENTER.utils.shareLink.mail(url, '', '', '')
+            };
         }
     ;
 
@@ -178,7 +203,7 @@
         }
     });
 
-    // поделится списком
+    // поделится списком товаров
     $body.on('click', '.js-favorite-shareProductPopup', function() {
         var
             $el = $(this),
@@ -210,27 +235,7 @@
             templateValue.productNames = productNames.join(', ');
 
             shareUrl = 'http://www.enter.ru/products/set/' + productBarcodes.join(',');
-            templateValue.twitter = {
-                url: ENTER.utils.shareLink.twitter(shareUrl, '')
-            };
-            templateValue.facebook = {
-                url: ENTER.utils.shareLink.facebook(shareUrl, '')
-            };
-            templateValue.vkontakte = {
-                url: ENTER.utils.shareLink.vkontakte(shareUrl, '')
-            };
-            templateValue.googleplus = {
-                url: ENTER.utils.shareLink.googleplus(shareUrl, '')
-            };
-            templateValue.odnoklassniki = {
-                url: ENTER.utils.shareLink.odnoklassniki(shareUrl, '')
-            };
-            templateValue.mailru = {
-                url: ENTER.utils.shareLink.mailru(shareUrl, '')
-            };
-            templateValue.mail = {
-                url: ENTER.utils.shareLink.mail(shareUrl, '', '', '')
-            };
+            makeShareData(shareUrl, templateValue);
             console.info(templateValue);
 
             $popup = $(Mustache.render($shareProductPopupTemplate.html(), templateValue)).appendTo($mainContainer);
@@ -241,6 +246,31 @@
                 showPopup('#' + $popup.attr('id'));
             }
 
+            console.error(error);
+        }
+    });
+
+    // поделится списком
+    $body.on('click', '.js-favorite-shareFavoritePopup', function() {
+        var
+            $el = $(this),
+            $popup,
+            data = $el.data(),
+            templateValue = data.value,
+            shareUrl = data.url
+        ;
+
+        try {
+            if (!shareUrl) {
+                throw {name: 'Не получен url'};
+            }
+
+            makeShareData(shareUrl, templateValue);
+            console.info(templateValue);
+
+            $popup = $(Mustache.render($shareFavoritePopupTemplate.html(), templateValue)).appendTo($mainContainer);
+            showPopup('#' + $popup.attr('id'));
+        } catch (error) {
             console.error(error);
         }
     });
