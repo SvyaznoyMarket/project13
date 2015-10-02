@@ -68,6 +68,7 @@ $f = function(
                             </label>
                             <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input js-order-email" data-field="email" data-text-default="*E-mail" value="<?= $userEntity ? $userEntity->getEmail() : $orderDelivery->user_info->email ?>" required="required" />
                         </div>
+                        <? if (!\App::user()->isSubscribed(1)): ?>
                         <div class="order-receiver__subscribe">
                             <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="user_info[subscribe]" value="">
                             <label class="customLabel customLabel-checkbox" for="sale">
@@ -75,6 +76,7 @@ $f = function(
                                 <span class="order-receiver__subscribe-txt">Подписаться на рассылку и получить скидку<br>на следующую покупку</span>
                             </label>
                         </div>
+                        <? endif ?>
                         <div class="order-ctrl" data-field-container="first_name">
                             <label class="order-ctrl__txt js-order-ctrl__txt">Имя</label>
                             <input name="user_info[first_name]" class="order-ctrl__input js-order-ctrl__input" data-field="first_name" value="<?= $userEntity ? $userEntity->getFirstName() : $orderDelivery->user_info->first_name ?>" />
