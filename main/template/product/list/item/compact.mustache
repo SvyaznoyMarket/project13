@@ -1,0 +1,78 @@
+<li class="bListingItem js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
+    <div class="bListingItem__eInner">
+        <!-- Блок с именем продукта и иконками доп. просмотра товара -->
+        <div class="bSimplyDesc">
+            <p class="bSimplyDesc__eText"><a href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a></p>
+            {{#review}}{{> product/_review-compact }}{{/review}}
+
+            <ul class="bSimplyDescStikers clearfix">
+                {{#label}}
+                    <li class="bSimplyDescStikers__eItem mLeftStiker"><a href="{{link}}"><img class="SimplyDescStikers__eImg" src="{{image}}" alt="{{name}}" /></a></li>
+                {{/label}}
+
+                {{#brandImage}}
+                    <li class="bSimplyDescStikers__eItem mRightStiker"><a href="{{link}}"><img class="SimplyDescStikers__eImg" src="{{brandImage}}" alt="{{name}}" /></a></li>
+                {{/brandImage}}
+
+                {{#hasVideo}}
+                    <li class="bSimplyDescStikers__eItem"><a href="{{link}}"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></a></li>
+                {{/hasVideo}}
+
+                {{#has360}}
+                    <li class="bSimplyDescStikers__eItem"><a href="{{link}}"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></a></li>
+                {{/has360}}
+            </ul>
+        </div>
+        <!-- /Блок с именем продукта и иконками доп. просмотра товара -->
+
+        <a href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}} class="bProductImg js-listing-item-img"><img class="bProductImg__eImg" src="{{image}}" alt="" /></a>
+
+        <div class="bPriceLine clearfix">
+            {{#oldPrice}}
+                <span class="bPriceOld">
+                            <strong class="bDecor">{{&oldPrice}}</strong> <span class="rubl">p</span>
+                    {{#showPriceSale}}
+                        {{#priceSale}}
+                            <span class="bPriceSale">-{{priceSale}}{{&priceSaleUnit}}</span>
+                        {{/priceSale}}
+                    {{/showPriceSale}}
+                        </span>
+            {{/oldPrice}}
+            {{#stateLabel}}
+                <span class="bAvailible {{#inStore}}from-stock{{/inStore}}">{{name}}</span>
+            {{/stateLabel}}
+        </div>
+
+        <div class="bPriceLine clearfix">
+            <span class="bPrice{{#priceSale}} bHasSale{{/priceSale}}"><strong>{{&price}}</strong> <span class="rubl">p</span></span>
+            {{#variations.0}}
+                <span class="bOptions"><span class="bDecor">Варианты</span></span>
+            {{/variations.0}}
+        </div>
+
+        {{#variations.0}}
+            <div class="bOptionsSection">
+                <i class="bCorner"></i>
+                <i class="bCornerDark"></i>
+
+                <ul class="bOptionsList">
+                    {{#variations}}
+                        <li class="bOptionsList__eItem">{{name}}</li>
+                    {{/variations}}
+                </ul>
+            </div>
+        {{/variations.0}}
+
+        <div class="bBtnLine clearfix">
+            {{#showCartButton}}
+                {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
+            {{/showCartButton}}
+
+            {{#showCompareButton}}
+                <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
+            {{/showCompareButton}}
+
+            <!--noindex--><a class="btnView btn1 js-listing-item-viewButton" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>Посмотреть</a><!--/noindex-->
+        </div>
+    </div>
+</li>

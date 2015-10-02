@@ -5,7 +5,8 @@ use \Model\Product\Filter\Option\Entity as Option;
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
-    $baseUrl
+    $baseUrl = null,
+    \Model\Product\Category\Entity $category = null
 ) {
 
     /** @var \Model\Product\Filter\Entity $priceFilter */
@@ -159,7 +160,7 @@ return function(
                 <div class="fltrBtn_kit fltrBtn_kit-box js-category-v2-filter-otherGroups">
                     <? foreach ($productFilter->getGroupedPropertiesV2() as $group): ?>
                         <? if ($group->hasInListProperties()): ?>
-                            <div class="fltrBtnBox <? if ($group->hasSelectedProperties): ?>actv<? endif ?> js-category-v2-filter-dropBox">
+                            <div class="fltrBtnBox <? if ($group->hasSelectedProperties): ?>actv<? elseif (isset($category) && $category->getToken() === \Model\Product\Category\Entity::FAKE_SHOP_TOKEN && isset($group->properties[0]) && $group->properties[0]->isShop()): ?>opn<? endif ?> js-category-v2-filter-dropBox">
                                 <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-name="<?= $helper->escape($group->name) ?>">
                                     <span class="fltrBtnBox_tggl_tx"><?= $group->name ?></span>
                                     <i class="fltrBtnBox_tggl_corner"></i>

@@ -10,9 +10,8 @@ class ShowPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        /** @var $point \Model\Point\ScmsPoint */
+        /** @var \Model\Point\ScmsPoint $point */
         $point = $this->getParam('point');
-        $helper = new \Helper\TemplateHelper();
 
         if ($point->wayWalkHtml || $point->wayAutoHtml) {
             $way = [
@@ -76,7 +75,33 @@ class ShowPage extends \View\DefaultLayout {
     }
 
     public function slotSidebar() {
-        return $this->getParam('sidebar');
+        return $this->getParam('sidebarHtml');
+    }
+
+    public function slotBottombar() {
+        /** @var \Model\Point\ScmsPoint $point */
+        $point = $this->getParam('point');
+        /** @var \Model\Product\Entity[] $products */
+        $products = $this->getParam('products');
+        $productShowAction = new \View\Product\ShowAction();
+        $helper = new \Helper\TemplateHelper();
+        $cartButtonAction = new \View\Cart\ProductButtonAction();
+        $reviewAction = new \View\Product\ReviewCompactAction();
+
+        return \App::mustache()->render('shop/show/bottombar', [
+            'shopProductUrl' => $point->id ? \App::router()->generate('product.category', ['categoryPath' => 'shop', 'f-shop' => $point->id]) : '',
+            'products' => array_values(array_map(function(\Model\Product\Entity $product) use($productShowAction, $helper, $cartButtonAction, $reviewAction) {
+                return $productShowAction->execute(
+                    $helper,
+                    $product,
+                    null,
+                    true,
+                    $cartButtonAction,
+                    $reviewAction,
+                    'product_200'
+                );
+            }, $products)),
+        ]);
     }
 
     public function slotBodyClassAttribute() {

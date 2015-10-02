@@ -73,7 +73,7 @@ $f = function(
         <?= $helper->renderWithMustache($defaultTemplatePath, (new \View\Product\ListAction())->execute($helper, $pager, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $defaultView, $cartButtonSender, $category, $favoriteProductsByUi)) ?>
     </ul>
 
-    <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
+    <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json(array_merge($partials, ['product/list/item/compact' => file_get_contents(\App::config()->templateDir . '/product/list/item/compact.mustache')])) ?>">
         <?= file_get_contents(\App::config()->templateDir . '/' . $compactTemplatePath . '.mustache') ?>
     </script>
 

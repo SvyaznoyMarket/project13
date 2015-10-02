@@ -69,6 +69,10 @@
             <div class="column215">
                 <?= $page->slotSidebar() ?>
             </div>
+
+            <div class="shops__bottombar" style="clear: both;">
+                <?= $page->slotBottombar() ?>
+            </div>
         </div>
     </div><!--/ Контент-->
 
