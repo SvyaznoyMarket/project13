@@ -1,4 +1,8 @@
-<li class="bListingItem js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
+<li class="bListingItem js-listing-item"
+    {{#isSlot}}data-is-slot="true"{{/isSlot}}
+    {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}
+    {{#ecommerce}}data-ecommerce='{{ecommerce}}'{{/ecommerce}}
+        >
     <div class="bListingItem__eInner">
         <!-- Блок с именем продукта и иконками доп. просмотра товара -->
         <div class="bSimplyDesc">
