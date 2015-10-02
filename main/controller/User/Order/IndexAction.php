@@ -11,6 +11,7 @@ class IndexAction extends \Controller\User\PrivateAction {
 
     public function execute(\Http\Request $request) {
         $curl = $this->getCurl();
+        $productRepository = \RepositoryManager::product();
 
         $region = \App::user()->getRegion();
 
@@ -65,14 +66,36 @@ class IndexAction extends \Controller\User\PrivateAction {
             return array_keys($ids);
         });
 
-        /** @var Query\Product\GetByIdListV3[] $productQueries */
+        /** @var Query\Product\GetByIdList[] $productQueries */
         $productQueries = [];
         foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
-            $productQuery = new Query\Product\GetByIdListV3();
+            $productQuery = new Query\Product\GetByIdList();
             $productQuery->regionId = $region->getId();
             $productQuery->ids = $idsInChunk;
+            $productQuery->filter->model = false;
             $productQuery->prepare();
             $productQueries[] = $productQuery;
+        }
+
+        /** @var Query\Product\GetByIdList[] $viewedProductQueries */
+        $viewedProductQueries = [];
+        foreach (array_chunk($productRepository->getViewedProductIdsByHttpRequest($request), \App::config()->coreV2['chunk_size']) as $idsInChunk) {
+            $viewedProductQuery = new Query\Product\GetByIdList();
+            $viewedProductQuery->regionId = $region->getId();
+            $viewedProductQuery->ids = $idsInChunk;
+            $viewedProductQuery->filter->model = false;
+            $viewedProductQuery->prepare();
+            $viewedProductQueries[] = $viewedProductQuery;
+        }
+
+        /** @var Query\Product\GetDescriptionByIdList[] $viewedProductDescriptionQueries */
+        $viewedProductDescriptionQueries = [];
+        foreach (array_chunk($productRepository->getViewedProductIdsByHttpRequest($request), \App::config()->coreV2['chunk_size']) as $idsInChunk) {
+            $viewedProductDescriptionQuery = new Query\Product\GetDescriptionByIdList();
+            $viewedProductDescriptionQuery->ids = $idsInChunk;
+            $viewedProductDescriptionQuery->filter->media = true;
+            $viewedProductDescriptionQuery->prepare();
+            $viewedProductDescriptionQueries[] = $viewedProductDescriptionQuery;
         }
 
         /** @var Query\Point\GetByUiList[] $pointQueries */
@@ -106,6 +129,26 @@ class IndexAction extends \Controller\User\PrivateAction {
             }
         }
 
+        $viewedProductDescriptionDataById = [];
+        foreach ($viewedProductDescriptionQueries as $viewedProductDescriptionQuery) {
+            foreach ($viewedProductDescriptionQuery->response->products as $item) {
+                if (@$item['core_id']) {
+                    $viewedProductDescriptionDataById[$item['core_id']] = $item;
+                }
+            }
+        }
+
+        /** @var \Model\Product\Entity[] $viewedProductsById */
+        $viewedProductsById = [];
+        foreach ($viewedProductQueries as $viewedProductQuery) {
+            foreach ($viewedProductQuery->response->products as $item) {
+                if (!@$item['id'] || !isset($viewedProductDescriptionDataById[$item['id']])) continue;
+                $product = new \Model\Product\Entity($item);
+                $product->importFromScms($viewedProductDescriptionDataById[$item['id']]);
+                $viewedProductsById[$product->getId()] = $product;
+            }
+        }
+
         /** @var \Model\Point\PointEntity[] $pointsByUi */
         $pointsByUi = [];
         foreach ($pointQueries as $pointQuery) {
@@ -134,6 +177,7 @@ class IndexAction extends \Controller\User\PrivateAction {
         $page->setParam('productsById', $productsById);
         $page->setParam('orderCount', $orderCount);
         $page->setParam('pointsByUi', $pointsByUi);
+        $page->setParam('viewedProducts', array_values($viewedProductsById));
         $page->setParam('onlinePaymentAvailableByNumberErp', $onlinePaymentAvailableByNumberErp);
 
         return new \Http\Response($page->show());

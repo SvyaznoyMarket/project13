@@ -10,18 +10,20 @@ class Shop {
     public function execute(\Http\Request $request) {
         $points = null;
         $partners = null;
+        $sidebarHtml = '';
 
         $scmsClient = \App::scmsClient();
         $scmsClient->addQuery(
             'api/static-page',
             [
                 'token' => ['menu'],
+                'geo_town_id' => \App::user()->getRegion()->id,
                 'tags' => ['site-web'],
             ],
             [],
-            function($data) use (&$sidebar) {
+            function($data) use (&$sidebarHtml) {
                 if (isset($data['pages'][0]['content'])) {
-                    $sidebar = (string)$data['pages'][0]['content'];
+                    $sidebarHtml = (string)$data['pages'][0]['content'];
                 }
             }
         );
@@ -30,6 +32,7 @@ class Shop {
             'api/static-page',
             [
                 'token' => ['delivery'],
+                'geo_town_id' => \App::user()->getRegion()->id,
                 'tags' => ['site-web'],
             ],
             [],
@@ -50,7 +53,7 @@ class Shop {
         \App::curl()->execute();
 
         $page = new IndexPage();
-        $page->setParam('sidebar', $sidebar);
+        $page->setParam('sidebarHtml', $sidebarHtml);
         $page->setParam('content', $content);
         $page->setParam('title', 'Магазины и точки самовывоза');
         $page->setParam('points', $points);

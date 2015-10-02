@@ -12,6 +12,7 @@
  * @var $point                             \Model\Point\PointEntity
  * @var $pointsByUi                        \Model\Point\PointEntity[]
  * @var $onlinePaymentAvailableByNumberErp bool[]
+ * @var $viewedProducts                    \Model\Product\Entity[]
  */
 ?>
 
@@ -21,6 +22,29 @@ $showStatus = \App::user()->getEntity() && in_array(\App::user()->getEntity()->g
 $currentYear = (int)(new \DateTime())->format('Y');
 
 $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::config()->order['prepayment']['priceLimit'] : null;
+
+$recommendationsHtml = [
+    $helper->render('product/__slider', [
+        'type'      => 'personal',
+        'products'  => [],
+        'url'       => $page->url('recommended', [
+            'types'  => ['personal'],
+            'sender' => [
+                'position' => 'Basket',
+            ],
+            'showLimit' => 6,
+        ]),
+    ]),
+    $helper->render('product/__slider', [
+        'type'      => 'viewed',
+        'title'     => 'Вы смотрели',
+        'products'  => $viewedProducts,
+        'limit'     => \App::config()->product['itemsInSlider'],
+        'page'      => 1,
+        'class'     => 'slideItem-viewed',
+        'isCompact' => true,
+    ]),
+];
 ?>
 
 <div class="personal">
@@ -30,10 +54,11 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
     <?
         $containerId = 'id-orderContainer-' . $year;
         $count = count($orders);
+        $isCurrentOrders = $currentYear === $year;
     ?>
 
-        <div class="personal__orders <? if ($currentYear === $year): ?>current<? endif ?>">
-            <div class="personal__orders-head"><?= (($currentYear === $year) ? 'Текущие заказы' : 'История заказов') ?></div>
+        <div class="personal__orders <? if ($isCurrentOrders): ?>current<? endif ?>">
+            <div class="personal__orders-head"><?= ($isCurrentOrders ? 'Текущие заказы' : 'История заказов') ?></div>
             <div class="<?= $containerId ?> personal-order__block <?= ($currentYear == $year ? 'expanded' : '') ?>">
                 <? if ($currentYear !== $year): ?>
                 <span class="personal-order__year-container">
@@ -50,7 +75,10 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
                         </div>
                         <div class="personal-order__cell">
                             <? if (($orderProduct = reset($order->product) ?: null) && ($product = @$productsById[$orderProduct->getId()] ?: null)): ?>
-                                <div class="personal-order__name ellipsis"><?= $product->getName() ?> <?= $orderProduct->getQuantity() ?> шт</div>
+                                <div class="personal-order__name">
+                                    <div class="ellipsis"><div><?= $product->getName() ?> <?= $orderProduct->getQuantity() ?> шт</div>
+                                    </div>
+                                </div>
 
                                 <? if ($moreProductCount = (count($order->product) - 1)): ?>
                                     <div style="color: #868686">и еще <?= $moreProductCount . ' ' . $helper->numberChoice($moreProductCount, ['товар', 'товара', 'товаров']) ?></div>
@@ -69,7 +97,7 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
                                     <?= $deliveredAt->format('d.m.Y') ?>
                                 <? endif ?>
                             </span>
-                            <div class="personal-order__deliv-info ellipsis">
+                            <div class="personal-order__deliv-info">
                                 <? if ($order->pointUi && ($point = $pointsByUi[$order->pointUi])): ?>
                                     <?= $point->getTypeName() ?><br><?= $point->address ?>
                                 <? endif ?>
@@ -100,6 +128,12 @@ $prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::c
                 <? endforeach ?>
             </div>
         </div>
+
+        <?= array_shift($recommendationsHtml) ?>
+    <? endforeach ?>
+
+    <? foreach ($recommendationsHtml as $recommendationHtml): ?>
+        <?= $recommendationHtml ?>
     <? endforeach ?>
 
     <? if (false): ?>

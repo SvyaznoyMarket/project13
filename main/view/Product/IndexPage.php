@@ -2,10 +2,12 @@
 
 namespace View\Product;
 
+use \Model\Product\Entity as Product;
+
 class IndexPage extends \View\DefaultLayout {
     /** @var string */
     protected $layout  = 'layout-oneColumn';
-    /** @var \Model\Product\Entity|null */
+    /** @var Product */
     protected $product;
     /** Карточка товара 2015
      * @var bool
@@ -13,11 +15,12 @@ class IndexPage extends \View\DefaultLayout {
     protected $isNewProductPage = false;
 
     public function prepare() {
-        /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-        if (!$product) return;
-        $this->product = $product;
+        $product = $this->product = $this->getParam('product', new Product());
+
         $this->isNewProductPage = \App::abTest()->isNewProductPage();
+
+        $this->flPrecheckoutData['fl-action']   = 'track-item-view';
+        $this->flPrecheckoutData['fl-item-id']  = $product->id;
 
         // Хлебные крошки
         $this->prepareBreadcrumbs();

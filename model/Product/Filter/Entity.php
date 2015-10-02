@@ -63,6 +63,8 @@ class Entity {
     public $isOpenByDefault = false;
     /** @var string */
     public $defaultTitle = '';
+    /** @var bool */
+    public $showDefaultTitleInSelectedList = false;
 
     public function __construct(array $data = []) {
         if (array_key_exists('filter_id', $data)) $this->setId($data['filter_id']);
@@ -362,6 +364,10 @@ class Entity {
 
     public function isShop() {
         return 'shop' === $this->getId();
+    }
+
+    public function isCategory() {
+        return 'category' === $this->getId();
     }
 
     /**

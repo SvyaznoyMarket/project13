@@ -49,6 +49,8 @@
             .warning{
                 color: @errorRed;
             }
+
+            .multiline-ellipsis(36px,normal);
         }
         &__num{
             text-align: center;
@@ -64,12 +66,13 @@
         }
         &__name{
             width: 213px;
-            max-height: 36px;
+
             display: block;
+           
         }
+
         &__deliv-info{
             color: @textGrey;
-            max-height: 36px;
             width: 240px;
             display: block;
         }
@@ -205,20 +208,5 @@
             vertical-align: middle;
             margin-bottom: 7px;
         }
-    }
-}
-.ellipsis{
-    position: relative;
-    overflow: hidden;
-
-    &:after{
-        content: "";
-        width: 20px;
-        height: 14px;
-        bottom: 0;
-        right: 0;
-        position: absolute;
-
-        background-color: white;
     }
 }

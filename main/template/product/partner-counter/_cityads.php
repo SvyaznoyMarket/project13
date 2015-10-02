@@ -4,7 +4,7 @@
  * @var $product \Model\Product\Entity
  */
 
-if (!\App::config()->partners['SmartLeads']['enabled']) return '';
+if (!\App::config()->partners['CityAdsRetargeting']['enabled']) return '';
 
 // стр. товара
 $data = [

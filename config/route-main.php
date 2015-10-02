@@ -277,9 +277,14 @@ return [
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
     ],
 
-    'ajax.product.variation' => [
-        'pattern' => '/ajax/product/{productUi}/variation/{variationId}',
-        'action'  => ['Product\Variation', 'execute'],
+    'ajax.category.listing.product.variation' => [
+        'pattern' => '/ajax/category/{categoryUi}/listing/product/{productUi}/variation/{variationId}',
+        'action'  => ['Category\Listing\Product\Variation', 'execute'],
+    ],
+
+    'ajax.category.listing.product' => [
+        'pattern' => '/ajax/category/{categoryUi}/listing/product/{productUi}',
+        'action'  => ['Category\Listing\Product', 'execute'],
     ],
 
     // каталог товаров
@@ -965,6 +970,11 @@ return [
     'compare.clear' => [
         'pattern' => '/compare/clear',
         'action'  => ['Compare\CompareAction', 'clear'],
+    ],
+
+    'recommended' => [
+        'pattern' => '/ajax/recommended',
+        'action'  => ['Recommended', 'execute'],
     ],
 
     // Форма обратной связи
