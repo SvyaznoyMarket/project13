@@ -72,7 +72,7 @@ $f = function(
                             <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="user_info[subscribe]" value="">
                             <label class="customLabel customLabel-checkbox" for="sale">
                                 <img class="order-receiver__chip" src="/styles/order-new/img/chip-s.png" alt="">
-                                <span class="order-receiver__subscribe-txt">Подпишись на рассылку и получить скидку<br>на следующую покупку</span>
+                                <span class="order-receiver__subscribe-txt">Подписаться на рассылку и получить скидку<br>на следующую покупку</span>
                             </label>
                         </div>
                         <div class="order-ctrl" data-field-container="first_name">
