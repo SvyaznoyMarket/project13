@@ -20,8 +20,6 @@ class CreateAction extends OrderV3 {
 
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        $config = \App::config();
-
         $coreResponse = null;   // ответ о ядра
         $ordersData = [];       // данные для отправки на ядро
         $params = [];           // параметры запроса на ядро
@@ -93,8 +91,16 @@ class CreateAction extends OrderV3 {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
             \App::exception()->remove($e);
 
+            if (732 === $e->getCode()) {
+                \App::session()->flash([
+                    ['code' => $e->getCode(), 'message' => 'Выберите точку самовывоза'],
+                ]);
+
+                return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
+            }
+
             $page = new \View\OrderV3\ErrorPage();
-            $page->setParam('error', 708 == $e->getCode() ? 'Товара нет в наличии' : $e->getMessage());
+            $page->setParam('error', 708 === $e->getCode() ? 'Товара нет в наличии' : $e->getMessage());
             $page->setParam('step', 3);
 
             return new Response($page->show());
