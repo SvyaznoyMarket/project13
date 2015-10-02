@@ -36,6 +36,11 @@
         }) : null,
         changeDelivery = function changeDeliveryF (block_name, delivery_method_token) {
             sendChanges('changeDelivery', {'block_name': block_name, 'delivery_method_token': delivery_method_token});
+            ENTER.utils.analytics.setAction('checkout_option', {
+                'step': 2,
+                'option' : delivery_method_token == 'self' ? 'самовывоз' : 'доставка'
+            });
+            $body.trigger('trackGoogleEvent', ['Checkout', 'Option'])
         },
         changeDate = function changeDateF (block_name, timestamp) {
             sendChanges('changeDate', {'block_name': block_name, 'date': timestamp})

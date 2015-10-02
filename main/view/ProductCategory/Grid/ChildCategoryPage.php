@@ -2,8 +2,15 @@
 
 namespace View\ProductCategory\Grid;
 
+use \Model\Product\Category\Entity as Category;
+
 class ChildCategoryPage extends \View\DefaultLayout {
     protected $layout = 'layout-oneColumn';
+
+    /**
+     * @var Category
+     */
+    protected $category;
 
     public function slotBodyDataAttribute() {
         return 'product_catalog';
@@ -20,10 +27,10 @@ class ChildCategoryPage extends \View\DefaultLayout {
     }
 
     public function prepare() {
-        $category = $this->getParam('category');
-        if (!($category instanceof \Model\Product\Category\Entity)) {
-            return;
-        }
+        $category = $this->category = $this->getParam('category', new Category());
+
+        $this->flPrecheckoutData['fl-action'] = 'track-category-view';
+        $this->flPrecheckoutData['fl-category-id'] = $this->category->id;
 
         $title = $category->getSeoTitle();
         if (!empty($title)) {

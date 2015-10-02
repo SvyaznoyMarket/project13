@@ -12,7 +12,7 @@ namespace EnterQuery\User\Wishlist
         /** @var string */
         public $userUi;
         /** @var array */
-        public $data;
+        public $data = [];
         /** @var Response */
         public $response;
 
@@ -42,9 +42,9 @@ namespace EnterQuery\User\Wishlist
                     []
                 ),
                 [
-                    'user_uid'    => $this->userUi,
-                    'wishlist_id' => $this->data['id'],
-                    'product_uid' => $this->data['productUi'],
+                    'user_uid' => $this->userUi,
+                    'id'       => $this->data['id'],
+                    'uid'      => $this->data['productUi'],
                 ], // data
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];

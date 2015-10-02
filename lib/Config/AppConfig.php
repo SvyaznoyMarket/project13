@@ -203,6 +203,7 @@ class AppConfig {
     /** @var array */
     public $googleAnalytics = [
         'enabled' => null,
+        'secondary.enabled' => null,
     ];
     /** @var array */
     public $googleAnalyticsTchibo = [
@@ -416,7 +417,7 @@ class AppConfig {
         'maxLockTime' => null,
     ];
 
-    /** @var bool */
+    /** @var array */
     public $mainMenu = [
         'recommendationsEnabled'    => null
     ];
@@ -515,13 +516,11 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $flocktoryExchange = [
-        'enabled' => null,
-    ];
-
-    /** @var array */
-    public $flocktoryPostCheckout = [
-        'enabled' => null,
+    public $flocktory = [
+        'site_id'       => null,
+        'exchange'      => null,
+        'postcheckout'  => null,
+        'precheckout'   => null,
     ];
 
     /** @var array */

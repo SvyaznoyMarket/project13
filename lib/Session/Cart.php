@@ -2,7 +2,8 @@
 
 namespace Session {
     use EnterApplication\CurlTrait;
-    
+    use Model\Product\Category\Entity;
+
     class Cart {
         use CurlTrait;
     
@@ -29,7 +30,7 @@ namespace Session {
         public function clear() {
             $this->setSessionCart(null);
         }
-    
+
         /**
          * ВНИМАНИЕ! Перед редактирование кода данного метода ознакомьтесь с комментариями к методу self::setSessionCart
          *
@@ -556,11 +557,16 @@ namespace Session {
         }
         
         private function createSessionProductFromBackendProduct(\Model\Product\Entity $backendProduct) {
+
+            $categoryNames = array_map(function(Entity $category) { return $category->name; }, $backendProduct->getCategory() );
+
             return [
                 'id'                => $backendProduct->id,
                 'ui'                => $backendProduct->ui,
                 'article'           => $backendProduct->getArticle(),
+                'barcode'           => $backendProduct->barcode,
                 'name'              => $backendProduct->getName(),
+                'brandName'         => $backendProduct->getBrand() ? $backendProduct->getBrand()->getName() : '',
                 'price'             => $backendProduct->getPrice(),
                 'image'             => $backendProduct->getMainImageUrl('product_120'),
                 'url'               => $backendProduct->getLink(),
@@ -575,6 +581,7 @@ namespace Session {
                     'id'    => $backendProduct->getParentCategory() ? $backendProduct->getParentCategory()->getId() : null,
                     'name'  => $backendProduct->getParentCategory() ? $backendProduct->getParentCategory()->getName() : null
                 ],
+                'categoryPath'  => implode(' / ', $categoryNames)
             ];
         }
         

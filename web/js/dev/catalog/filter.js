@@ -201,10 +201,25 @@
 	}
 
 	function checkInfinityScroll() {
-        console.info('check...', {lastPage: lastPage});
 		if (!loading && $bottomInfButton.visible() && (lastPage - nowPage > 0 || null == lastPage)) {
 			loadInfinityPage();
 			$body.trigger('loadInfinityPage', [nowPage]);
+		}
+	}
+
+	function sendEcomAnalytics(res) {
+		/* analytics */
+		if (res.list && res.list.products) {
+			var count = res.list.productCount,
+				multiplier = liveScroll ? nowPage - 1 : res.pagination.currentPage;
+			$.each(res.list.products, function(i,val){
+				if (typeof val.ecommerce != 'undefined') {
+					ENTER.utils.analytics.addImpression(JSON.parse(val.ecommerce), {
+						position: count * multiplier + i,
+						list: location.pathname.indexOf('/search') === 0 ? 'Search results' : 'Catalog'
+					})
+				}
+			})
 		}
 	}
 
@@ -218,6 +233,7 @@
 			function(res) {
 				loading = false;
 				$listingWrap.append(templateRenderers['list'](res['list'])); // TODO Вызывать renderCatalogPage вместо templateRenderers['list']?
+				sendEcomAnalytics(res);
 			}
 		);
 
@@ -301,6 +317,7 @@
 	 * @param	{Object}	res		Данные для шаблона
 	 */
 	function renderCatalogPage(res) {
+
 		var
 			dataToRender = res ? res : lastResult,
 			key,
@@ -366,6 +383,7 @@
 
 		lastResult = dataToRender;
 		enableInfinityScroll(true);
+		sendEcomAnalytics(res);
 	}
 
 	/**
@@ -450,6 +468,26 @@
 			}
 		}
 
+		// Преобразуем записи вида f-xxx=1 и f-xxx=2 в f-xxx=1,2
+		!function(){
+			var newFormData = [];
+			var multipleItems = {};
+			for (var i = 0; i < formData.length; i++) {
+				if (formData[i].name == 'f-shop' || formData[i].name == 'f-category') {
+					if (multipleItems[formData[i].name]) {
+						multipleItems[formData[i].name].value += ',' + formData[i].value;
+					} else {
+						multipleItems[formData[i].name] = formData[i];
+						newFormData.push(formData[i]);
+					}
+				} else {
+					newFormData.push(formData[i]);
+				}
+			}
+
+			formData = newFormData;
+		}();
+
 		formSerizalizeData = $.param(formData);
 
 		if (formSerizalizeData.length !== 0) {
@@ -495,7 +533,7 @@
 	function updateFilterForm(values) {
 		var
 			input,
-			val,
+			fieldValues,
 			type,
 			fieldName;
 
@@ -526,11 +564,18 @@
 			}
 
 			input = $filterBlock.find('input[name="'+fieldName+'"]');
-			val = values[fieldName];
 			type = input.attr('type');
 
+			if (fieldName == 'f-shop' || fieldName == 'f-category') {
+				fieldValues = values[fieldName].split(',');
+			} else {
+				fieldValues = [values[fieldName]];
+			}
+
 			if (updateInput.hasOwnProperty(type)) {
-				updateInput[type](input, val);
+				$.each(fieldValues, function(key, value) {
+					updateInput[type](input, value);
+				});
 			}
 		}
 	}

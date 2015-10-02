@@ -3,6 +3,7 @@
 namespace Controller\ProductCategory;
 
 use EnterApplication\CurlTrait;
+use Model\Product\Category\Entity as Category;
 use Model\Product\Filter\Entity;
 use View\Partial\ProductCategory\RootPage\Brands;
 use View\Product\FilterForm;
@@ -50,15 +51,24 @@ class Action {
         /** @var $category \Model\Product\Category\Entity|null */
         $category = null;
         $catalogJson = [];
-        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category, &$catalogJson) {
-            if ($data) {
-                $category = new \Model\Product\Category\Entity($data);
-                $catalogJson = $category->catalogJson;
-            }
-        }, $brandToken);
 
-        // выполнение 2-го пакета запросов
-        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+        // получаем категорию по токену из запроса (если это не фейковый токен)
+        if ($categoryToken != Category::FAKE_SHOP_TOKEN) {
+            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category, &$catalogJson) {
+                if ($data) {
+                    $category = new Category($data);
+                    $catalogJson = $category->catalogJson;
+                }
+            }, $brandToken);
+
+            $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+        } else {
+            $category = new Category();
+            $category->setProductView(1);
+            $category->setName('Товары в магазинах');
+            $category->setLink(\App::router()->generate('product.category', ['categoryPath' => Category::FAKE_SHOP_TOKEN]));
+            $category->setToken($categoryToken);
+        }
 
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
@@ -91,21 +101,45 @@ class Action {
         $brand = null;
         $filters = [];
         $brands = [];
-        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, [], function($data) use (&$filters, &$brands, &$brand, $brandToken) {
-            foreach ($data as $item) {
-                $filters[] = new \Model\Product\Filter\Entity($item);
-                // бренды
-                if (isset($item['filter_id']) && $item['filter_id'] == 'brand' && is_array($item['options'])) {
-                    foreach ($item['options'] as $brandData) {
-                        $brandEntity = new \Model\Brand\Entity($brandData);
-                        $brands[] = $brandEntity;
-                        if (isset($brandData['token']) && $brandData['token'] == $brandToken) {
-                            $brand = $brandEntity;
+        \RepositoryManager::productFilter()->prepareCollectionByCategory(
+            $category,
+            $region,
+            [],
+            function($data) use (&$filters, &$brands, &$brand, $brandToken, $categoryToken) {
+                foreach ($data as $item) {
+                    $filter = new \Model\Product\Filter\Entity($item);
+
+                    if ($categoryToken == Category::FAKE_SHOP_TOKEN) {
+                        if ($filter->isShop()) {
+                            $filter->defaultTitle = 'Все магазины региона';
+                            $filter->showDefaultTitleInSelectedList = true;
+                        }
+
+                        if ($filter->isCategory()) {
+                            $filter->defaultTitle = 'Все';
+                            $filter->showDefaultTitleInSelectedList = true;
+                        }
+                    }
+
+                    $filters[] = $filter;
+                    // бренды
+                    if ($filter->isBrand() && $filter->getOption()) {
+                        foreach ($filter->getOption() as $option) {
+                            $filterBrand = new \Model\Brand\Entity();
+                            $filterBrand->id = $option->id;
+                            $filterBrand->token = $option->token;
+                            $filterBrand->name = $option->name;
+                            $filterBrand->image = $option->imageUrl;
+
+                            $brands[] = $filterBrand;
+                            if ($option->getToken() == $brandToken) {
+                                $brand = $filterBrand;
+                            }
                         }
                     }
                 }
             }
-        });
+        );
 
         $client->execute();
 
@@ -184,7 +218,7 @@ class Action {
                         if (is_array($data)) {
                             foreach ($data as $item) {
                                 if ($item) {
-                                    $relatedCategories[] = new \Model\Product\Category\Entity($item);
+                                    $relatedCategories[] = new Category($item);
                                 }
                             }
                         }

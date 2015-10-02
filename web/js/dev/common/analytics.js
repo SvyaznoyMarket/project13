@@ -2,14 +2,9 @@
 
     var body = $(document.body),
         ga = this.ga,       // Universal
-        _gaq = this._gaq,   // Classic
 
-        isUniversalAvailable = function isUniversalAvailableF (){
-            return typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0;
-        },
-        isClassicAvailable = function isClassicAvailableF() {
-            return typeof _gaq === 'object';
-        },
+        isUniversalAvailable = ENTER.utils.analytics.isEnabled,
+
         /**
          * Логирование просмотра страницы в Google Analytics (Classical + Universal)
          * @link 'https://developers.google.com/analytics/devguides/collection/analyticsjs/pages'
@@ -28,9 +23,6 @@
                 ga('send', 'pageview', data);
                 ga('secondary.send', 'pageview', data);
             }
-            if (isClassicAvailable()) {
-                _gaq.push(['_trackPageview', data.page])
-            }
         },
 
         /**
@@ -43,10 +35,7 @@
 
             var e = {},
                 universalEvent = { hitType: 'event' },
-                classicEvent = ['_trackEvent'],
                 props = ['category', 'action', 'label', 'value', 'nonInteraction', 'hitCallback'];
-
-            console.info('eventObject', eventObject);
 
             // Формируем event
             if (arguments.length == 2 && typeof eventObject == 'object') {
@@ -79,17 +68,6 @@
                     }
                 }
             });
-
-            // Classic Tracking Code
-            if (isClassicAvailable()) {
-                classicEvent.push(e.category, e.action);
-                classicEvent.push(e.label ? e.label: null);
-                classicEvent.push(e.value ? e.value: null);
-                if (e.nonInteraction) classicEvent.push(e.nonInteraction);
-                _gaq.push(classicEvent);
-            } else {
-                console.warn('No Google Analytics object found')
-            }
 
             // Universal Tracking Code
             if (isUniversalAvailable()) {
@@ -159,6 +137,7 @@
             this.sku = data.sku ? String(data.sku) : '';
             this.price = data.price ? String(data.price) : '';
             this.quantity = data.quantity ? String(data.quantity) : '';
+            this.brand = data.brand ? String(data.brand) : '';
 
             if (!this.id) throw 'Некорректный ID товара';
             if (!this.name) throw 'Некорректное название товара';
@@ -170,6 +149,17 @@
                     'id': this.id,
                     'name': this.name,
                     'sku': this.sku,
+                    'category': this.category,
+                    'price': this.price,
+                    'quantity': this.quantity
+                }
+            };
+
+            this.toEnhancedObject = function() {
+                return {
+                    'id': this.sku,
+                    'name': this.name,
+                    'brand': this.brand,
                     'category': this.category,
                     'price': this.price,
                     'quantity': this.quantity
@@ -199,28 +189,18 @@
                 googleTrans = new GoogleTransaction(eventObject.transaction);
                 googleProducts = $.map(eventObject.products, function(elem){ return new GoogleProduct(elem, googleTrans.id)});
 
-                // Classic Tracking Code
-                if (isClassicAvailable()) {
-                    _gaq.push(['_addTrans'].concat(googleTrans.toArray()));
-                    $.each(googleProducts, function(i, product){
-                        _gaq.push(['_addItem'].concat(product.toArray()))
-                    });
-                    _gaq.push(['_trackTrans']);
-                } else {
-                    console.warn('No Google Analytics object found')
-                }
-
                 // Universal Tracking Code
                 if (isUniversalAvailable()) {
-                    ga('require', 'ecommerce', 'ecommerce.js');
-                    ga('secondary.require', 'ecommerce', 'ecommerce.js');
-                    ga('ecommerce:addTransaction', googleTrans.toObject());
+                    //ga('ecommerce:addTransaction', googleTrans.toObject());
                     ga('secondary.ecommerce:addTransaction', googleTrans.toObject());
                     $.each(googleProducts, function(i, product){
-                        ga('ecommerce:addItem',product.toObject());
+                        //ga('ecommerce:addItem',product.toObject());
+                        ENTER.utils.analytics.addProduct(product.toEnhancedObject());
                         ga('secondary.ecommerce:addItem',product.toObject());
                     });
-                    ga('ecommerce:send');
+                    //ga('ecommerce:send');
+                    ENTER.utils.analytics.setAction('purchase', googleTrans.toObject());
+                    body.trigger('trackGoogleEvent', ['Purchase', 'complete']);
                     ga('secondary.ecommerce:send');
                 } else {
                     console.warn('No Universal Google Analytics function found');

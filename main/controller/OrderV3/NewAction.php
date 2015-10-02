@@ -26,6 +26,7 @@ class NewAction extends OrderV3 {
         }
 
         $page = new \View\OrderV3\NewPage();
+        $page->setParam('step', 1);
         $post = null;
 
         try {
@@ -64,7 +65,6 @@ class NewAction extends OrderV3 {
             $page = $e->getCode() == 759 ? new \View\OrderV3\NewPage() : new \View\OrderV3\ErrorPage();
 
             $page->setParam('error', $e->getMessage());
-
             $page->setParam('step', 1);
 
         } catch (\Exception $e) {

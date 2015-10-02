@@ -93,7 +93,17 @@
 			if (!setProduct.id) return;
 			console.info('RetailRocket removeFromCart id = %s', setProduct.id);
 			if (window.rrApiOnReady) window.rrApiOnReady.push(function(){ window.rrApi.removeFromBasket(setProduct.id) });
+			ENTER.utils.analytics.addProduct({
+				id: setProduct.id,
+				name: setProduct.name,
+				price: setProduct.price,
+				category: setProduct.categoryName,
+				brand: setProduct.brand,
+				quantity: setProduct.quantity
+			});
+			$body.trigger('trackGoogleEvent',['Product', 'click', 'remove from cart'])
 		});
+		ENTER.utils.analytics.setAction('remove');
     });
 
 	/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */

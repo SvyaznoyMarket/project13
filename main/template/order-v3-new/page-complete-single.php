@@ -2,21 +2,7 @@
 
 use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity, \Model\PaymentMethod\PaymentGroup\PaymentGroupEntity;
 
-/**
- * @param \Helper\TemplateHelper $helper
- * @param \Model\Order\Entity[] $orders
- * @param \Model\PaymentMethod\PaymentEntity $ordersPayment
- * @param \Model\Product\Entity[] $products
- * @param $userEntity
- * @param $sessionIsReaded
- * @param $banks
- * @param $creditData
- * @param $subscribe
- * @param $motivationAction
- * @param $errors
- * @param bool[] $onlinePaymentStatusByNumber
- */
-$f = function(
+return function(
     \Helper\TemplateHelper $helper,
     $orders,
     $ordersPayment,
@@ -27,35 +13,26 @@ $f = function(
     $creditData,
     $subscribe,
     $motivationAction,
-    $errors,
-    $onlinePaymentStatusByNumber = []
+    $errors
 ) {
-    /** @var \Model\Product\Entity[] $products */
+    /** @var $products \Model\Product\Entity[] */
     $page = new \View\OrderV3\CompletePage();
-    /** @var \Model\Order\Entity $order */
+    /** @var $order \Model\Order\Entity */
     $order = reset($orders);
-    /* @var \Model\PaymentMethod\PaymentEntity|null $orderPayment */
-    $orderPayment = isset($ordersPayment[$order->getNumber()]) ? $ordersPayment[$order->getNumber()] : null;
+    /* @var $orderPayment \Model\PaymentMethod\PaymentEntity|null */
+    $orderPayment = @$ordersPayment[$order->getNumber()];
     // Онлайн оплата возможна при существовании такой группы
-    $isOnlinePaymentPossible =
-        (
-            !isset($onlinePaymentStatusByNumber[$order->number])
-            || (true === $onlinePaymentStatusByNumber[$order->number])
-        )
-        && ((bool)$orderPayment ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $orderPayment->groups) : false)
-    ;
+    $isOnlinePaymentPossible = (bool)$orderPayment ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $orderPayment->groups) : false;
     // При создании заказа выбрана онлайн-оплата
     $isOnlinePaymentChecked = in_array($order->getPaymentId(), [PaymentMethodEntity::PAYMENT_CARD_ONLINE, PaymentMethodEntity::PAYMENT_PAYPAL, PaymentMethodEntity::PAYMENT_PSB]);
-
-?>
+    ?>
     <div class="order__wrap">
-
     <section class="orderCnt jsNewOnlineCompletePage"
-         data-order-id="<?= $order->getId() ?>"
-         data-order-number="<?= $order->getNumber() ?>"
-         data-order-number-erp="<?= $order->getNumberErp() ?>"
-         data-order-action="<?= $motivationAction ?>"
-    >
+             data-order-id="<?= $order->getId() ?>"
+             data-order-number="<?= $order->getNumber() ?>"
+             data-order-number-erp="<?= $order->getNumberErp() ?>"
+             data-order-action="<?= $motivationAction ?>"
+        >
 
         <!-- Блок оплата -->
         <div class="orderPayment_wrap">
@@ -69,6 +46,10 @@ $f = function(
             </div>
 
             <?= $helper->render('order-v3-new/complete-blocks/_errors', ['errors' => $errors]) ?>
+
+            <? if ($isOnlinePaymentChecked && !$order->isPaid()) : ?>
+                <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
+            <? endif ?>
 
             <? if (!$order->isCredit()) : ?>
 
@@ -84,25 +65,43 @@ $f = function(
 
         </div>
 
-        <? if ($order->isCredit()): ?>
+        <? if ($order->isCredit()) : ?>
             <?= $helper->render('order-v3-new/complete-blocks/_credit', ['order' => $order, 'creditData' => $creditData, 'banks' => $banks]) ?>
         <? endif ?>
 
-        <? if ($isOnlinePaymentPossible && !$order->isCredit() && !$motivationAction && !$order->isPaidBySvyaznoy()) : ?>
-            <? if ($order->paymentId === PaymentMethodEntity::PAYMENT_CASH): ?>
-                <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment]) ?>
-            <? else: ?>
-                <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single', ['order' => $order, 'orderPayment' => $orderPayment]) ?>
-            <? endif ?>
+
+        <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
+
+        <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && !$order->isCredit() && !$motivationAction && !$order->isPaidBySvyaznoy()) : ?>
+
+            <!-- Блок оплата в два клика-->
+            <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
+                <!-- Заголовок-->
+                <!-- Блок в обводке -->
+                <div class="orderPayment_block orderPayment_noOnline">
+
+                    <div class="orderPayment_msg orderPayment_noOnline_msg">
+                        <div class="orderPayment_msg_head">
+                            Онлайн-оплата в два клика
+                        </div>
+                        <div class="orderPayment_msg_shop orderPayment_pay">
+                            <button class="orderPayment_btn btn3">Оплатить</button>
+                            <ul class="orderPaymentWeb_lst-sm">
+                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/visa-logo-sm.jpg"></a></li>
+                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/psb.png" /></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         <? endif ?>
 
-        <? if (false): // TODO: выпилить ?>
-            <?= $motivationAction && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_online_motivation_action', ['order' => $order, 'orderPayment' => $orderPayment, 'action' => $motivationAction]) : '' ?>
-        <? endif ?>
+        <?= $motivationAction && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_online_motivation_action', ['order' => $order, 'orderPayment' => $orderPayment, 'action' => $motivationAction]) : '' ?>
 
         <?= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_svyaznoy-club') : '' ?>
 
-        <? if (\App::config()->flocktoryExchange['enabled'] && !$order->isCredit()): ?>
+        <? if (\App::config()->flocktory['exchange'] && !$order->isCredit()) : ?>
             <div class="i-flocktory orderPayment" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-username="<?= $order->getFirstName() ?>" data-fl-user-email="<?= $order->email ?>"></div>
         <? endif ?>
 
@@ -110,7 +109,6 @@ $f = function(
             <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
         </div>
     </section>
-
     </div>
     <? if (!$isOnlinePaymentPossible) : ?>
         <!--Аналитика-->
@@ -118,7 +116,7 @@ $f = function(
     <? endif ?>
 
     <? // Показываем флоктори, если покупатель вернулся после оплаты заказа ?>
-    <? if ($order->isPaid()): ?>
+    <? if ($order->isPaid()) : ?>
         <?= $helper->render('order-v3/partner-counter/_flocktory-complete',[
             'orders'    => $orders,
             'products'  => $products,
@@ -128,12 +126,12 @@ $f = function(
     <? if (!$sessionIsReaded): ?>
         <span class="js-orderV3New-complete-subscribe" data-value="<?=$helper->json(['subscribe' => $subscribe, 'email' => isset($orders[0]->email) ? $orders[0]->email : null])?>"></span>
 
-    <?
+        <?
         // Если сесиия уже была прочитана, значит юзер обновляет страницу, не трекаем партнёров вторично
-        echo $page->render('order/_analytics', [
+        echo $page->render('order/_analytics', array(
             'orders'       => $orders,
             'productsById' => $products,
-        ]);
+        ));
 
         echo $page->render('order/partner-counter/_complete', [
             'orders'       => $orders,
@@ -146,13 +144,16 @@ $f = function(
 
         /* Показываем флоктори без нарушения конверсии онлайн-оплаты (т.е. не выбран онлайновый метод оплаты) */
         if (!$isOnlinePaymentChecked) {
-            echo $helper->render('order-v3/partner-counter/_flocktory-complete', [
+            echo $helper->render('order-v3/partner-counter/_flocktory-complete',[
                 'orders'    => $orders,
                 'products'  => $products,
             ]);
         }
-    ?>
 
+        ?>
     <? endif ?>
 
-<? }; return $f;
+<? };
+
+
+

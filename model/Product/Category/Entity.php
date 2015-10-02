@@ -5,6 +5,8 @@ namespace Model\Product\Category;
 use Model\Media;
 
 class Entity extends BasicEntity {
+    const FAKE_SHOP_TOKEN = 'shop';
+
     /** @var bool Является ли категория главной для товара */
     public $isMain = false;
     /** @var bool|null */
@@ -423,28 +425,28 @@ class Entity extends BasicEntity {
     }
 
     public function isV2Root() {
-        return ('616e6afd-fd4d-4ff4-9fe1-8f78236d9be6' === $this->getUi()); // Корневая бытовой техники
+        return (self::UI_BYTOVAYA_TEHNIKA === $this->getUi()); // Корневая бытовой техники
     }
 
     public function isV2() {
         return in_array($this->getRootOrSelf()->getUi(), [
-            '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
-            'f7a2f781-c776-4342-81e8-ab2ebe24c51a', // Мебель
-            'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электронника
-        ], true) || $this->isTyre();
+            self::UI_BYTOVAYA_TEHNIKA, // Бытовая техника
+            self::UI_MEBEL, // Мебель
+            self::UI_ELECTRONIKA, // Электронника
+        ], true) || $this->isTyre() || $this->token == 'shop';
     }
 
     public function isV2Furniture() {
         $root = $this->getRootOrSelf();
         // Мебель
-        return $root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a';
+        return $root->getUi() === self::UI_MEBEL;
     }
 
     public function isShowSmartChoice() {
         $root = $this->getRootOrSelf();
 
         // Мебель
-        return $root->getUi() !== 'f7a2f781-c776-4342-81e8-ab2ebe24c51a';
+        return $root->getUi() !== self::UI_MEBEL;
     }
 
     public function isShowFullChildren() {
@@ -463,12 +465,16 @@ class Entity extends BasicEntity {
         return true;
     }
 
+    public function isFakeShopCategory() {
+        return $this->token == self::FAKE_SHOP_TOKEN;
+    }
+
     public function isAlwaysShowBrand() {
         if ($this->isV2()) {
             return (bool)$this->getClosest([
-                '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
-                'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электронника
-            ]);
+                self::UI_BYTOVAYA_TEHNIKA, // Бытовая техника
+                self::UI_ELECTRONIKA, // Электронника
+            ]) || $this->isFakeShopCategory();
         }
 
         return false;

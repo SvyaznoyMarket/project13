@@ -117,6 +117,7 @@ class DeliveryAction extends OrderV3 {
             $this->bindErrors($this->session->flash(), $orderDelivery);
 
             $page = new \View\OrderV3\DeliveryPage();
+            $page->setParam('step', 2);
             $page->setParam('orderDelivery', $orderDelivery);
             $page->setParam('bonusCards', $bonusCards);
             $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner());
@@ -471,6 +472,9 @@ class DeliveryAction extends OrderV3 {
         if (!is_array($errors)) return;
 
         foreach ($errors as $error) {
+            if (isset($error['message'])) {
+                $error = new \Model\OrderDelivery\Error($error, $orderDelivery);
+            }
 
             if (!$error instanceof \Model\OrderDelivery\Error) continue;
 
@@ -484,6 +488,8 @@ class DeliveryAction extends OrderV3 {
                 $ord = reset($orderDelivery->orders);
                 $orderDelivery->orders[$ord->block_name]->errors[] = $error;
             } else if ($error->isMaxQuantityError()) {
+                $orderDelivery->errors[] = $error;
+            } else if (in_array($error->code, [732])) {
                 $orderDelivery->errors[] = $error;
             }
         }

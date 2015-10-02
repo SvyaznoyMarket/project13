@@ -124,8 +124,9 @@ class CompletePage extends Layout {
         $html .= '<div id="sociomanticOrderCompleteJS" class="jsanalytics" ></div>';
 
         // Flocktory
-        if ($config->flocktoryExchange['enabled'] || $config->flocktoryPostCheckout['enabled'])
-            $html .= '<div id="flocktoryScriptJS" class="jsanalytics" ></div>';
+        if ($config->flocktory['exchange'] || $config->flocktory['postcheckout']) {
+            $html .= sprintf('<div id="flocktoryScriptJS" class="jsanalytics" data-vars="%s" ></div>', $config->flocktory['site_id']);
+        }
 
         if (\App::config()->partners['MyThings']['enabled'] && \App::partner()->getName() == 'mythings') {
             /** @var $order \Model\Order\Entity */

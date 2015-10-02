@@ -1,4 +1,8 @@
-<div class="productInner__hover js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
+<div class="productInner__hover js-listing-item"
+     {{#isSlot}}data-is-slot="true"{{/isSlot}}
+     {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}
+     {{#ecommerce}}data-ecommerce='{{ecommerce}}'{{/ecommerce}}
+        >
     <div class="productInner__imgBox">
         <a class="productInner__imgLink js-listing-item-img" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>
             <img class="productInner__img" src="{{image}}" alt="{{name}}" />

@@ -207,6 +207,7 @@ $c->company['icq'] = '648198963';
 $c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
+$c->googleAnalytics['secondary.enabled'] = false;
 $c->googleAnalyticsTchibo['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 $c->googleTagManager['enabled'] = true;
@@ -250,7 +251,7 @@ $c->partners['GetIntent']['enabled'] = true;
 $c->partners['AddThis']['enabled'] = true;
 $c->partners['AdvMaker']['enabled'] = true;
 $c->partners['Hubrus']['enabled'] = true;
-$c->partners['SmartLeads']['enabled'] = true;
+$c->partners['CityAdsRetargeting']['enabled'] = true;
 $c->partners['Sociaplus']['enabled'] = true;
 $c->partners['ActionpayRetargeting']['enabled'] = true;
 $c->partners['MnogoRu']['enabled'] = true;
@@ -425,9 +426,10 @@ $c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
 $c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 $c->svyaznoyClub['cardNumber']['cookieName'] = 'scid';
 
-$c->flocktoryExchange['enabled'] = true;
-$c->flocktoryPostCheckout['enabled'] = true;
-
+$c->flocktory['site_id'] = '427';
+$c->flocktory['exchange'] = true;
+$c->flocktory['postcheckout'] = true;
+$c->flocktory['precheckout'] = true;
 
 $c->photoContest = [
 	'client' => [

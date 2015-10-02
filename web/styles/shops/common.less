@@ -1,6 +1,20 @@
 .shops {
     &-btn{
+        float: right;
+        margin-top: 2px;
+        margin-right: 14px;
 
+        padding: 11px 14px 11px 0;
+        border-right: 1px dotted @white;
+        cursor: pointer;
+        
+        &__icon{
+            .inline-block(middle);
+        }
+        &__txt{
+            color: @white;
+            .inline-block(middle);
+        }
     }
 
     &__back {
@@ -65,7 +79,8 @@
     &__map{
         width: 100%;
         display: table;
-        &.shops__map__single .shops__viewport .shops__viewport__container {
+
+        &--single .shops__viewport .shops__viewport__container {
             width: 684px;
         }
     }
@@ -226,7 +241,17 @@
             }
         }
     }
-
+  &__bottombar{
+    border-top: 1px solid #bebebe;
+    padding-top: 7px;
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .btn-type{
+      margin-top: 50px;
+    }
+  }
 }
 .bMap__eBody{
     width: 585px;

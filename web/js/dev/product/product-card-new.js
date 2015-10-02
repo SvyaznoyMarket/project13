@@ -70,7 +70,11 @@
 			if (user.name) $('[name=review\\[author_name\\]]').val(user.name.slice(0,19));
 			if (user.email) $('[name=review\\[author_email\\]]').val(user.email);
 			$reviewForm.lightbox_me($.extend(popupDefaults, {
-				onLoad: function() {},
+				onLoad: function() {
+                    $reviewForm.find('input').each(function(i,v){
+                        if ($(v).data('mask')) $(v).mask($(v).data('mask'))
+                    })
+                },
 				onClose: function() {
 					$reviewForm.find('.form-ctrl__textarea--err, .form-ctrl__input--err').removeClass('form-ctrl__textarea--err form-ctrl__input--err')
 				}
