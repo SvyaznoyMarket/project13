@@ -952,6 +952,13 @@ return [
         'action'  => ['Wishlist\DeleteProductAction', 'execute'],
         'method'  => ['POST'],
     ],
+    'wishlist.show' => [
+        'pattern' => '/wishlist/{wishlistToken}',
+        'action'  => ['Wishlist\ShowAction', 'execute'],
+        'require' => [
+            'wishlistToken' => '[\w\d-_]+',
+        ],
+    ],
 
     'compare' => [
         'pattern' => '/compare',
