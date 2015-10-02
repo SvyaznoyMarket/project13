@@ -1,4 +1,10 @@
 <?php
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\Order\Entity $order
+ * @param array $creditData
+ * @param \Model\CreditBank\Entity[] $banks
+ */
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Order\Entity $order,
