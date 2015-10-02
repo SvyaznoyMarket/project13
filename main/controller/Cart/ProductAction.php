@@ -178,10 +178,9 @@ class ProductAction {
                         // 'category'        => $this->getCategories($product),
                         'isSlot' => $updateResultProduct->cartProduct->isSlot,
                         'isOnlyFromPartner' => $updateResultProduct->cartProduct->isOnlyFromPartner,
-                        'quantity'  => $updateResultProduct->cartProduct->quantity
+                        'quantity'          => $updateResultProduct->cartProduct->quantity,
                         'categoryName'      => $updateResultProduct->fullProduct && $updateResultProduct->fullProduct->getRootCategory() ? $updateResultProduct->fullProduct->getRootCategory()->getName() : '',
                         'brand'             => $updateResultProduct->fullProduct && $updateResultProduct->fullProduct->getBrand() ? $updateResultProduct->fullProduct->getBrand()->getName() : '',
-                        'quantity'          => $updateResultProduct->cartProduct->quantity
                     ];
                 }, $updateResultProducts))),
                 'kitProduct' => $kitProduct,
