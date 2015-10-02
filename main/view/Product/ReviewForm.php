@@ -3,41 +3,56 @@
 namespace View\Product;
 
 class ReviewForm {
+
     /**
      * Достоинства
      * @var string
      */
     private $advantage;
+
     /**
      * Недостатки
      * @var string
      */
     private $disadvantage;
+
     /**
      * Текст отзыва
      * @var string
      */
     private $extract;
+
     /**
      * Оценка (1..10)
      * @var float
      */
     private $score;
+
     /**
      * Имя автора отзыва
      * @var string
      */
     private $authorName;
+
     /**
      * E-mail автора
      * @var string
      */
     private $authorEmail;
+
     /**
      * Дата в формате "Y-m-d"
      * @var string
      */
     private $date;
+
+    /**
+     * Номер карты mnogo.ru
+     *
+     * @var string
+     */
+    private $mnogoru;
+
     /** @var array */
     private $errors = array(
         'global'   => null,
@@ -65,7 +80,30 @@ class ReviewForm {
         } else {
             $this->setDate(date('Y-m-d'));
         }
+        if (array_key_exists('mnogoru', $data)) $this->setMnogoRu($data['mnogoru']);
 
+    }
+
+    /**
+     * @param $data
+     */
+    public function setMnogoRu($data) {
+        $this->mnogoru = $data;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMnogoRu() {
+        return $this->mnogoru;
+    }
+
+    /**
+     * Возвращает значение, состоящее из одних цифр
+     * @return string
+     */
+    public function getMnogoRuAsNumeric(){
+        return preg_replace('@[^0-9]@', '', $this->mnogoru);
     }
 
     /**

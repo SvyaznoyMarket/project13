@@ -110,6 +110,7 @@ class ReviewsAction {
                         'author_name'   => $form->getAuthorName(),
                         'author_email'  => $form->getAuthorEmail(),
                         'datetime'      => (new \DateTime())->format('Y-m-d H:i:s'),
+                        'mnogoru'       => $form->getMnogoRuAsNumeric()
                     ];
 
                     \App::reviewsClient()->query('add.json', [], $data, \App::config()->coreV2['hugeTimeout']);

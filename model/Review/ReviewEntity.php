@@ -44,6 +44,8 @@ class ReviewEntity {
     public $negative;
     /** @var int Оценка пользователя */
     public $userVote = 0;
+    /** @var string|null Номер карты много.ру, с которым был оставлен отзыв */
+    protected $mnogoru;
 
     public function __construct($arr) {
         if (isset($arr['uid'])) $this->ui = $arr['uid'];
@@ -64,6 +66,7 @@ class ReviewEntity {
         if (isset($arr['positive'])) $this->positive = $arr['positive'];
         if (isset($arr['negative'])) $this->negative = $arr['negative'];
         if (isset($arr['user_vote'])) $this->userVote = $arr['user_vote'];
+        if (isset($arr['mnogoru'])) $this->mnogoru = $arr['mnogoru'];
     }
 
     /** Положительная полезность отзыва
@@ -84,14 +87,21 @@ class ReviewEntity {
      * @return bool
      */
     public function isEnterReview(){
-        return $this->origin == self::ORIGIN_ENTER;
+        return $this->origin === self::ORIGIN_ENTER;
     }
 
     /** Это отзыв от Яндекса?
      * @return bool
      */
     public function isYandexReview(){
-        return $this->origin == self::ORIGIN_YANDEX;
+        return $this->origin === self::ORIGIN_YANDEX;
+    }
+
+    /** Это отзыв с привязанной картой Много.Ру?
+     * @return bool
+     */
+    public function isMnogoRuReview(){
+        return !empty($this->mnogoru);
     }
 
 }
