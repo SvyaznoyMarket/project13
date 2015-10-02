@@ -30,7 +30,7 @@ namespace Session {
         public function clear() {
             $this->setSessionCart(null);
         }
-    
+
         /**
          * ВНИМАНИЕ! Перед редактирование кода данного метода ознакомьтесь с комментариями к методу self::setSessionCart
          *
@@ -127,47 +127,14 @@ namespace Session {
                     if (count(\App::exception()->all()) > $exceptionCount && \App::exception()->last()) {
                         throw new \Exception(\App::exception()->last()->getMessage());
                     }
-                }
-    
-                $exceptionCount = count(\App::exception()->all());
-                \RepositoryManager::product()->prepareProductQueries($backendProductsByUi, 'media category');
-                \RepositoryManager::product()->prepareProductQueries($backendProductsById, 'media category');
-                \App::coreClientV2()->execute();
-                
-                if (count(\App::exception()->all()) > $exceptionCount && \App::exception()->last()) {
-                    throw new \Exception(\App::exception()->last()->getMessage());
-                }
-            });
-            
-            $setProductResultActionsById = [];
-            // Добавление/замена/удаление $setProducts товаров в $sessionCart
-            call_user_func(function() use(&$sessionCart, &$setProductResultActionsById, $setProducts, $backendProductsByUi, $backendProductsById) {
-                $sessionProductsByUi = [];
-                foreach ($sessionCart['product'] as $sessionProduct) {
-                    $sessionProductsByUi[$sessionProduct['ui']] = $sessionProduct;
-                }
-    
-                foreach ($setProducts as $key => $setProduct) {
-                    // Удаление товара. Должно происходить вне зависимости то того, вернул ли бэкэнд товар или нет
-                    // (иначе у пользователя не будет возможности удалить из корзины товар, который был удалён (из ядра
-                    // или scms) или заблокирован (в scms))
-                    if ((string)$setProduct['quantity'] === '0') {
-                        call_user_func(function() use(&$setProductResultActionsById, $setProduct, $sessionCart, $sessionProductsByUi) {
-                            $sessionProduct = null;
-                            if (!empty($setProduct['ui']) && isset($sessionProductsByUi[$setProduct['ui']])) {
-                                $sessionProduct = $sessionProductsByUi[$setProduct['ui']];
-                            } else if (!empty($setProduct['id']) && isset($sessionCart['product'][$setProduct['id']])) {
-                                $sessionProduct = $sessionCart['product'][$setProduct['id']];
-                            }
-    
-                            if ($sessionProduct) {
-                                // Обратите внимание, что $setProduct из следующей итерации может изменить action для
-                                // данного товара на совершенно другой
-                                $setProductResultActionsById[$sessionProduct['id']] = 'delete';
-                            }
-                        });
-    
-                        continue;
+                });
+
+                $setProductResultActionsById = [];
+                // Добавление/замена/удаление $setProducts товаров в $sessionCart
+                call_user_func(function() use(&$sessionCart, &$setProductResultActionsById, $setProducts, $backendProductsByUi, $backendProductsById) {
+                    $sessionProductsByUi = [];
+                    foreach ($sessionCart['product'] as $sessionProduct) {
+                        $sessionProductsByUi[$sessionProduct['ui']] = $sessionProduct;
                     }
 
                     foreach ($setProducts as $key => $setProduct) {
