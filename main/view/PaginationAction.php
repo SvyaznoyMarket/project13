@@ -50,6 +50,7 @@ class PaginationAction {
         return [
             'links' => $pageData,
             'lastPage'  => $pager->getLastPage(),
+            'currentPage'   => $pager->key()
         ];
     }
 }

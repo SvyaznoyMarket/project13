@@ -52,7 +52,10 @@ $f = function(
             <div class="jsOrderValidationErrors" data-value="<?= $helper->json($order->validationErrors) ?>"></div>
         <? endif; ?>
     <!-- блок разбиения заказа -->
-    <div class="orderRow clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>" data-block_name="<?= $order->block_name ?>">
+    <div class="orderRow clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>"
+         data-block_name="<?= $order->block_name ?>"
+         data-is-delivery="<?= $order->delivery && $order->delivery->use_user_address ?>"
+        >
         <!-- информация о заказе -->
         <div class="orderCol">
             <div class="orderCol_h">

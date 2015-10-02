@@ -316,12 +316,13 @@
 				productUis.push(p.ui);
 
 				return {
-					'id': p.id,
-					'name': productName,
-					'sku': p.article,
-					'category': p.category.length ? (p.category[0].name +  ' - ' + p.category[p.category.length -1].name) : '',
+					'id': p.barcode,
+					'sku': p.barcode,
+					'name': p.name,
+					'category': $.map(p.category, function(obj) {return obj.name}).join(' / '),
 					'price': p.price,
-					'quantity': p.quantity
+					'quantity': p.quantity,
+					'brand': p.brand ? p.brand.name : ''
 				}
 			});
 
@@ -391,7 +392,8 @@
 					actions.push(location);
 				}
 
-				$body.trigger('trackGoogleEvent', ['Add2Basket', '(' + actions.join(')(') + ')', productArticle]);
+				//$body.trigger('trackGoogleEvent', ['Add2Basket', '(' + actions.join(')(') + ')', productArticle]);
+				$body.trigger('trackGoogleEvent', ['Product', 'click', 'add to cart']);
 			}
 		}
 	};
@@ -494,6 +496,52 @@
 	};
 
 	utils.analytics = {
+
+		/**
+		 * Проверка доступности трекеров
+		 * @returns {boolean}
+		 */
+		isEnabled: function() {
+			return typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0
+		},
+
+		/**
+		 * E-commerce common helper
+		 * @param action Действие
+		 * @param elem Кнопка "купить" или объект для для GA (определяется по наличию свойства id)
+		 * @param additionalData
+		 */
+		addEcommData: function(action, elem, additionalData) {
+			var data = typeof elem.tagName != 'undefined' ? $(elem).data('ecommerce') : elem;
+			if (!this.isEnabled || typeof data != 'object') return;
+			if (typeof additionalData != 'undefined') data = $.extend({}, data, additionalData);
+			ga(action, data);
+			console.log('[GA] %s', action, data)
+		},
+
+		/**
+		 * E-commerce ec:addImpression helper
+		 * @param elem Кнопка "купить" или объект для для GA (определяется по наличию свойства id)
+		 * @param additionalData
+		 */
+		addImpression: function(elem, additionalData) {
+			this.addEcommData('ec:addImpression', elem, additionalData);
+		},
+
+		/**
+		 * E-commerce ec:addProduct helper
+		 * @param elem Кнопка "купить" или объект для для GA (определяется по наличию свойства id)
+		 * @param additionalData
+		 */
+		addProduct: function(elem, additionalData) {
+			this.addEcommData('ec:addProduct', elem, additionalData)
+		},
+
+		setAction: function(action, params) {
+			if (this.isEnabled()) ga('ec:setAction', action, typeof params !== 'undefined' ? params : {});
+			console.log('[GA] ec:setAction %s', action, params)
+		},
+
 		// SITE-5466
 		reviews: {
 			add: function(productUi, avgScore, firstPageAvgScore, categoryName) {

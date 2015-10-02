@@ -201,10 +201,25 @@
 	}
 
 	function checkInfinityScroll() {
-        console.info('check...', {lastPage: lastPage});
 		if (!loading && $bottomInfButton.visible() && (lastPage - nowPage > 0 || null == lastPage)) {
 			loadInfinityPage();
 			$body.trigger('loadInfinityPage', [nowPage]);
+		}
+	}
+
+	function sendEcomAnalytics(res) {
+		/* analytics */
+		if (res.list && res.list.products) {
+			var count = res.list.productCount,
+				multiplier = liveScroll ? nowPage - 1 : res.pagination.currentPage;
+			$.each(res.list.products, function(i,val){
+				if (typeof val.ecommerce != 'undefined') {
+					ENTER.utils.analytics.addImpression(JSON.parse(val.ecommerce), {
+						position: count * multiplier + i,
+						list: location.pathname.indexOf('/search') === 0 ? 'Search results' : 'Catalog'
+					})
+				}
+			})
 		}
 	}
 
@@ -218,6 +233,7 @@
 			function(res) {
 				loading = false;
 				$listingWrap.append(templateRenderers['list'](res['list'])); // TODO Вызывать renderCatalogPage вместо templateRenderers['list']?
+				sendEcomAnalytics(res);
 			}
 		);
 
@@ -301,6 +317,7 @@
 	 * @param	{Object}	res		Данные для шаблона
 	 */
 	function renderCatalogPage(res) {
+
 		var
 			dataToRender = res ? res : lastResult,
 			key,
@@ -366,6 +383,7 @@
 
 		lastResult = dataToRender;
 		enableInfinityScroll(true);
+		sendEcomAnalytics(res);
 	}
 
 	/**

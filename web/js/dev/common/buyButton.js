@@ -67,6 +67,8 @@
 					});
 				}
 
+				ENTER.utils.analytics.addProduct($button[0]);
+				ENTER.utils.analytics.setAction('add');
 				$body.trigger('addtocart', [data, upsale]);
 			},
 			error: function() {

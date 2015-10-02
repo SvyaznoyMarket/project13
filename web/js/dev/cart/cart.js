@@ -153,7 +153,6 @@
         sliderWrapperSelector: '.goods-slider__inn',
         sliderSelector: '.goods-slider-list',
         itemSelector: '.goods-slider-list__i'
-
     });
 
 }(jQuery));

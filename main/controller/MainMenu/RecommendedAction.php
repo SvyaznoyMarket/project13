@@ -74,7 +74,7 @@ class RecommendedAction {
             $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
 
-        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label');
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label brand');
         \App::coreClientV2()->execute();
 
         $productsById = array_filter($productsById, function(\Model\Product\Entity $product) {

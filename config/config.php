@@ -207,6 +207,7 @@ $c->company['icq'] = '648198963';
 $c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
+$c->googleAnalytics['secondary.enabled'] = false;
 $c->googleAnalyticsTchibo['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 $c->googleTagManager['enabled'] = true;
