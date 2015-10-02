@@ -283,7 +283,7 @@ class ShowAction {
     private function prepareSliceCategories(\Model\Slice\Entity $slice, \Model\Region\Entity $region, &$categories = []) {
         parse_str($slice->getFilterQuery(), $requestFilters);
 
-        $categoryIds = isset($requestFilters['category'][0]) ? $requestFilters['category'] : [];
+        $categoryIds = isset($requestFilters['category'][0]) ? (array)$requestFilters['category'] : [];
         if (!$categoryIds) {
             return;
         }
