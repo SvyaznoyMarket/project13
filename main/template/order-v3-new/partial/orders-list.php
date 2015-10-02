@@ -34,7 +34,8 @@ $f = function (
 
         <!-- блок разбиения заказа -->
         <div class="orderRow order-bill__item clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : '' ?>"\
-             data-block_name="<?= $order->block_name ?>">
+             data-block_name="<?= $order->block_name ?>"
+             data-is-delivery="<?= $order->delivery && $order->delivery->use_user_address ?>">
             <!-- информация о заказе -->
             <div class="order-bill__head">Заказ №<?= ($i) ?></div>
             <!-- левая часть блока заказа - список заказанных товаров-->

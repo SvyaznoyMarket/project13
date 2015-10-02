@@ -154,10 +154,18 @@ ANALYTICS.gaJS = function(data) {
 
         ga_order = function() {
             console.log('ga_order', data);
+
             $.each(data.enhancedEcomm.products, function(i,v) {
                 ENTER.utils.analytics.addProduct(v);
             });
-            ENTER.utils.analytics.setAction('checkout', data.enhancedEcomm.options)
+            ENTER.utils.analytics.setAction('checkout', data.enhancedEcomm.options);
+
+            $('.jsOrderRow').each(function(i,v){
+                ENTER.utils.analytics.setAction('checkout_option', {
+                    'step': 2,
+                    'option' : $(v).data('is-delivery') ? 'доставка' : 'самовывоз'
+                });
+            });
         },
 
         ga_action = function ga_action() {
