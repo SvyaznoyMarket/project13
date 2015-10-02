@@ -35,7 +35,7 @@ namespace EnterQuery\User\Wishlist
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'api/wishlist/add',
+                    'api/wishlist/add-batch',
                     []
                 ),
                 [
