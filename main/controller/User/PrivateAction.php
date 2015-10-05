@@ -6,7 +6,7 @@ namespace Controller\User;
 class PrivateAction {
 
     public function __construct() {
-        if (!\App::user()->getToken() || !\App::config()->user['enabled']) {
+        if (!\App::user()->getEntity() || !\App::config()->user['enabled']) {
             throw new \Exception\AccessDeniedException();
         }
     }
