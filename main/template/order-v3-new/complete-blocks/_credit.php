@@ -26,7 +26,7 @@ $f = function(
                 <ul class="orderPaymentCr_lst clearfix jsCreditList jsCreditListOnlineMotiv">
                     <? foreach ($banks as $bank) : ?>
                         <? /** @var $bank \Model\CreditBank\Entity */?>
-                        <li class="orderPaymentCr_lst-i" data-value="<?= $bank->getId() ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>">
+                        <li class="orderPaymentCr_lst-i" data-value="<?= $bank->getId() ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>" data-order-id="<?= $order->getId() ?>">
                             <div class="orderPaymentCr_lst_l">
                                 <div><span class="undrl"><?= $bank->getName() ?></span></div>
                                 <a href="<?= $bank->getLink() ?>" target="_blank" class="pb-small undrl jsCreditListOnlineMotivRules">Условия кредитования</a>
