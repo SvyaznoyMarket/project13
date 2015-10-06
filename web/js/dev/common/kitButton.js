@@ -25,7 +25,7 @@
 
                 $('.jsProductImgPopup').trigger('close'); // закрытие окна с изображением
 
-				$popup.lightbox_me({
+				$popup.enterLightboxMe({
 					autofocus: true,
 					closeSelector: ".jsPopupCloser",
 					destroyOnClose: true
