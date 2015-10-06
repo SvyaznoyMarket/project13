@@ -36,6 +36,43 @@
 
         background: url('@{base-url}/common/img/closeBtnOrange.png') no-repeat 0 0 ;
     }
+    &_default {
+        display: block;
+
+        width: 630px;
+        padding: 20px;
+
+        border: 1px solid #c7c7c7;
+
+        .box-shadow(0 0 32px 0 rgba(0, 0, 0, .3));
+        .rounded(0px);
+        .box-sizing(border-box);
+    }
+    &_450 {
+        width: 450px;
+    }
+}
+.noty-popup {
+    &__text {
+        font-size: 18px;
+        color: #363636;
+        margin: 0 0 20px;
+    }
+    &__btn {
+        font-size: 18px;
+        display: block;
+        color: @white;
+        background: #f99b1c;
+        .rounded(3px);
+        width: 230px;
+        height: 35px;
+        line-height: 35px;
+        margin: 0 auto;
+        text-align: center;
+        &:hover {
+            text-decoration: none;
+        }
+    }
 }
 .blackPopup {
     color: @white;
