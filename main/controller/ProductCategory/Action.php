@@ -739,8 +739,8 @@ class Action {
             }
         });
 
-        if (!$products && 'true' == $request->get('ajax') && !\App::config()->lite['enabled']) {
-            throw new \Exception('Товары не найдены');
+        if (!$products && 'true' == $request->get('ajax') && $pageNum > 1 && !\App::config()->lite['enabled']) {
+            throw new \Exception('Не удалось получить товары');
         }
 
         \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {

@@ -87,7 +87,7 @@ class DeliveryAction extends OrderV3 {
             if (!self::isOrderWithCart()) {
                 if (!$previousSplit) return new \Http\RedirectResponse(\App::router()->generate('cart'));
                 // сохраняем данные пользователя
-                $data['action'] = 'changeUserInfo';
+                //$data['action'] = 'changeUserInfo'; // SITE-6209
                 $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
             } else {
                 if (isset($previousSplit['user_info'])) {
