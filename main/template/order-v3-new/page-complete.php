@@ -59,6 +59,7 @@ $f = function(
                     $index = in_array($iPaymentMethod->id, \App::config()->payment['discountIds']) ? 0 : 1;
                     $paymentMethodsByDiscount[$index][] = $iPaymentMethod;
                 }
+                ksort($paymentMethodsByDiscount);
                 $isOnlinePaymentPossible =
                     (
                         !isset($onlinePaymentStatusByNumber[$order->number])

@@ -19,6 +19,7 @@ $f = function (
         $index = in_array($paymentMethod->id, \App::config()->payment['discountIds']) ? 0 : 1;
         $paymentMethodsByDiscount[$index][] = $paymentMethod;
     }
+    ksort($paymentMethodsByDiscount);
 ?>
 
     <div class="paymentMethods <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
