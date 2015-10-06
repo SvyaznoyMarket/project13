@@ -16,7 +16,7 @@ return function(\Config\AppConfig $c) {
         $c->crm['retryCount'] = 1;
         $c->pickpoint['retryCount'] = 1;
 
-        $c->cart['productLimit'] = 20;
+        $c->cart['productLimit'] = 7;
 
         $c->banner['checkStatus'] = false;
     }
