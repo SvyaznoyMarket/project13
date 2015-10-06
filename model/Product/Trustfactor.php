@@ -5,8 +5,8 @@ use Model\Media;
 
 class Trustfactor {
 
-    const UID_MNOGO_RU = '10259a2e-ce37-49a7-8971-8366de3337d3';
-    const UID_SBERBANK_SPASIBO = 'ab3ca73c-6cc4-4820-b303-8165317420d5';
+    const UID_MNOGO_RU = '28f735f7-bb47-4d77-87d5-962557a2bd18';
+    const UID_SBERBANK_SPASIBO = 'b0b9fc5b-7767-48fe-97ff-e3c6b719967f';
     const TAG_NEW_PRODUCT_CARD = 'product-2015';
     const TAG_NEW_PRODUCT_CARD_PARTNER = 'product-2015-partner';
 

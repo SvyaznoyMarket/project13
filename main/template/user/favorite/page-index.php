@@ -31,21 +31,24 @@
     <?
         $containerId = sprintf('id-wishlist-container-%s', $wishlist->id ?: uniqid());
     ?>
-    <div class="personal__favorits favorit-list<? if (count($wishlist->products) != 0): ?> expanded <? else: ?> collapsed<? endif ?> js-favorite-container <?= $containerId ?> disabled" data-disabled-class="disabled">
+    <div class="personal__favorits favorit-list<? if ($wishlist->products): ?> expanded <? else: ?> collapsed<? endif ?> js-favorite-container <?= $containerId ?> disabled" data-disabled-class="disabled">
         <div class="favorit-list__header">
             <ul class="personal-favorit__acts">
-                <!--
+                <? if ($wishlist->products): ?>
                 <li
-                    class="personal-favorit__act js-fav-popup-show"
-                    data-popup=".id-share-popup"
+                    class="personal-favorit__act js-favorite-shareFavoritePopup"
+                    data-value="<?= $helper->json([
+                        'wishlist' => ['id' => $wishlist->id, 'title' => $wishlist->title],
+                    ]) ?>"
+                    data-url="<?= 'http://www.enter.ru' . $helper->url('wishlist.show', ['wishlistToken' => $wishlist->token]) ?>"
                 >Поделиться</li>
-                -->
+                <? endif ?>
                 <li
                     class="personal-favorit__act js-favorite-deleteFavoritePopup"
                     data-value="<?= $helper->json([
                         'wishlist' => ['id' => $wishlist->id, 'title' => $wishlist->title],
                         'form'     => [
-                            'url' => $helper->url('wishlist.delete')
+                            'url' => $helper->url('wishlist.delete'),
                         ],
                     ]) ?>"
                 >Удалить</li>
@@ -89,22 +92,8 @@
         <?= file_get_contents(\App::config()->templateDir . '/user/favorite/_shareProduct-popup.mustache') ?>
     </script>
 
-    <div class="personal-popup id-share-popup">
-        <div class="popup-closer"></div>
-        <div class="personal-popup__head">Поделиться списком</div>
-        <div class="personal-popup__list-name" data-value="wishlist.title"></div>
-        <div class="personal-popup__content">
-            <ul class="personal__sharings">
-                <li class="personal-share"><i class="personal-share__icon twitter"></i></li>
-                <li class="personal-share"><i class="personal-share__icon fb"></i></li>
-                <li class="personal-share"><i class="personal-share__icon vk"></i></li>
-                <li class="personal-share"><i class="personal-share__icon gplus"></i></li>
-                <li class="personal-share"><i class="personal-share__icon ok"></i></li>
-                <li class="personal-share"><i class="personal-share__icon mailru"></i></li>
-                <li class="personal-share"><i class="personal-share__icon mail"></i></li>
-
-            </ul>
-        </div>
-    </div>
+    <script id="tpl-favorite-shareFavoritePopup" type="text/html" data-partial="<?= $helper->json([]) ?>">
+        <?= file_get_contents(\App::config()->templateDir . '/user/favorite/_shareFavorite-popup.mustache') ?>
+    </script>
 
 </div>

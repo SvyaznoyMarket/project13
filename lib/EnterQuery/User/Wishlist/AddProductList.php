@@ -2,9 +2,9 @@
 
 namespace EnterQuery\User\Wishlist
 {
-    use EnterQuery\User\Wishlist\AddProduct\Response;
+    use EnterQuery\User\Wishlist\AddProductList\Response;
 
-    class AddProduct
+    class AddProductList
     {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\CrmQueryTrait;
@@ -25,10 +25,7 @@ namespace EnterQuery\User\Wishlist
             $this->response = new Response();
 
             $this->userUi = $userUi;
-            $this->data = $data + [
-                'id'        => null,
-                'productUi' => null,
-            ];
+            $this->data = $data;
         }
 
         /**
@@ -38,13 +35,17 @@ namespace EnterQuery\User\Wishlist
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'api/wishlist/add',
+                    'api/wishlist/add-batch',
                     []
                 ),
                 [
                     'user_uid' => $this->userUi,
                     'id'       => $this->data['id'],
-                    'uid'      => $this->data['productUi'],
+                    'products' => array_map(function($item) {
+                        return [
+                            'uid' => $item['productUi'],
+                        ];
+                    }, $this->data['products']),
                 ], // data
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
@@ -60,7 +61,7 @@ namespace EnterQuery\User\Wishlist
     }
 }
 
-namespace EnterQuery\User\Wishlist\AddProduct
+namespace EnterQuery\User\Wishlist\AddProductList
 {
     class Response
     {

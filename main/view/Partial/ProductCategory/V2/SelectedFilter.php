@@ -25,7 +25,55 @@ class SelectedFilter {
 
         $sort = \App::request()->query->get('sort');
 
-        $filters = $this->getFilterLinks($helper, $productFilter, $selected, $baseUrl, $sort);
+        $filterGroups = [];
+        $selectedFilterCount = 0;
+
+        foreach ($productFilter->getUngroupedPropertiesV2() as $property) {
+            if (!in_array($property->getId(), $selected)) {
+                continue;
+            }
+
+            $links = $this->getPropertyLinks($helper, $productFilter, $property, $baseUrl, $sort);
+            if ($links) {
+                $filterGroups[] = ['name' => $property->getName(), 'isGroup' => false, 'links' => $links];
+                $selectedFilterCount++;
+            }
+        }
+
+        foreach ($productFilter->getGroupedPropertiesV2() as $group) {
+            $filterGroup = ['name' => $group->name, 'isGroup' => true, 'properties' => []];
+
+            foreach ($group->properties as $property) {
+                if (count($group->properties) > 1 || $property->getName() !== $group->name) {
+                    $name = $property->getName();
+                } else {
+                    $name = '';
+                }
+                
+                if (in_array($property->getId(), $selected)) {
+                    $links = $this->getPropertyLinks($helper, $productFilter, $property, $baseUrl, $sort);
+                    if ($links) {
+                        $filterGroup['properties'][] = ['name' => $name, 'links' => $links];
+                        $selectedFilterCount++;
+                    }
+                } else if ($property->showDefaultTitleInSelectedList && $property->defaultTitle) {
+                    $filterGroup['properties'][] = ['name' => $name, 'defaultTitle' => $property->defaultTitle];
+                }
+            }
+
+            if ($filterGroup['properties']) {
+                $filterGroups[] = $filterGroup;
+            }
+        }
+
+        $filterGroups = array_values($filterGroups);
+
+        $filterGroupLastIndex = count($filterGroups) - 1;
+        foreach ($filterGroups as $index => $filterGroup) {
+            if ($index == $filterGroupLastIndex) {
+                $filterGroups[$index]['isLast'] = true;
+            }
+        }
 
         return [
             'cleanUrl' => $helper->replacedUrl(
@@ -39,55 +87,12 @@ class SelectedFilter {
                 ['q'],
                 $baseUrl
             ),
-            'filters' => $filters,
-            'filtersCount' => count($filters),
+            'filters' => $filterGroups,
+            'filtersCount' => $selectedFilterCount, // TODO удалить через несколько дней после релиза SITE-6082
+            'selectedFilterCount' => $selectedFilterCount,
             // SITE-4825
 //            'values'  => $this->getFilterValues($productFilter, $selected),
         ];
-    }
-
-    private function getFilterLinks(\Helper\TemplateHelper $helper, \Model\Product\Filter $productFilter, $selected, $baseUrl, $sort) {
-        $filterGroups = [];
-
-        foreach ($productFilter->getUngroupedPropertiesV2() as $property) {
-            if (!in_array($property->getId(), $selected)) {
-                continue;
-            }
-
-            $links = $this->getPropertyLinks($helper, $productFilter, $property, $baseUrl, $sort);
-            if ($links) {
-                $filterGroups[] = ['name' => $property->getName(), 'isGroup' => false, 'links' => $links];
-            }
-        }
-
-        foreach ($productFilter->getGroupedPropertiesV2() as $group) {
-            $filterGroup = ['name' => $group->name, 'isGroup' => true, 'properties' => []];
-
-            foreach ($group->properties as $property) {
-                if (!in_array($property->getId(), $selected)) {
-                    continue;
-                }
-
-                $links = $this->getPropertyLinks($helper, $productFilter, $property, $baseUrl, $sort);
-                if ($links) {
-                    if (count($group->properties) > 1 || $property->getName() !== $group->name) {
-                        $name = $property->getName();
-                    } else {
-                        $name = '';
-                    }
-
-                    $filterGroup['properties'][] = ['name' => $name, 'links' => $links];
-                }
-            }
-
-            if ($filterGroup['properties']) {
-                $filterGroups[] = $filterGroup;
-            }
-        }
-
-        $filterGroups = array_values($filterGroups);
-
-        return $filterGroups;
     }
 
     private function getPropertyLinks(\Helper\TemplateHelper $helper, \Model\Product\Filter $productFilter, \Model\Product\Filter\Entity $property, $baseUrl, $sort) {
@@ -181,7 +186,7 @@ class SelectedFilter {
                         'name' => $property->isShop() ? $option->getName() : mb_strtoupper(mb_substr($option->getName(), 0, 1)) . mb_substr($option->getName(), 1),
                         'url'  => $helper->replacedUrl(
                             [
-                                \View\Name::productCategoryFilter($property, $option) => null,
+                                \View\Name::productCategoryFilter($property, $option) => $property->isShop() || $property->isCategory() ? implode(',', array_diff($value, [$option->id])) : null,
                                 'ajax'     => null,
                                 'page'     => null, // SITE-4511
                                 'sort'     => $sort,

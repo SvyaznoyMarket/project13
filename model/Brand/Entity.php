@@ -4,15 +4,15 @@ namespace Model\Brand;
 
 class Entity {
     /** @var string */
-    private $ui;
+    public $ui;
     /** @var int */
-    private $id;
+    public $id;
     /** @var string */
-    private $token;
+    public $token;
     /** @var string */
-    private $name;
+    public $name;
     /** @var string */
-    private $image;
+    public $image;
 
     public function __construct(array $data = []) {
         if (array_key_exists('ui', $data)) $this->ui = $data['ui'];

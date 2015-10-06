@@ -26,8 +26,8 @@ namespace EnterQuery\User\Wishlist
 
             $this->userUi = $userUi;
             $this->data = $data + [
-                'id'        => null,
-                'productUi' => null,
+                'id'  => null,
+                'uid' => null,
             ];
         }
 
@@ -42,9 +42,9 @@ namespace EnterQuery\User\Wishlist
                     []
                 ),
                 [
-                    'user_uid'    => $this->userUi,
-                    'wishlist_id' => $this->data['id'],
-                    'product_uid' => $this->data['productUi'],
+                    'user_uid' => $this->userUi,
+                    'id'       => $this->data['id'],
+                    'uid'      => $this->data['productUi'],
                 ], // data
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];

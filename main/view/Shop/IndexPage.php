@@ -40,7 +40,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotSidebar() {
-        return $this->getParam('sidebar');
+        return $this->getParam('sidebarHtml');
     }
 
     /** Фильтруем точки вручную (вынужденный говнокод)

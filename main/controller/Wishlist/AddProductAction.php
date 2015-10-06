@@ -45,23 +45,20 @@ class AddProductAction {
                 throw new \Exception('Форма заполнена неверно', 400);
             }
 
-            /** @var Query\User\Wishlist\AddProduct[] $addQueries */
-            $addQueries = [];
-            foreach ($formData['productUis'] as $productUi) {
-                $addQuery = new Query\User\Wishlist\AddProduct();
-                $addQuery->userUi = $userEntity->getUi();
-                $addQuery->data['id'] = $formData['id'];
-                $addQuery->data['productUi'] = $productUi;
-                $addQuery->prepare();
-                $addQueries[] = $addQuery;
-            }
+            $addQuery = new Query\User\Wishlist\AddProductList();
+            $addQuery->userUi = $userEntity->getUi();
+            $addQuery->data['id'] = $formData['id'];
+            $addQuery->data['products'] = array_map(function($ui) {
+                return [
+                    'productUi' => $ui,
+                ];
+            }, $formData['productUis']);
+            $addQuery->prepare();
 
             $curl->execute();
 
-            foreach ($addQueries as $addQuery) {
-                if ($error = $addQuery->error) {
-                    throw $error;
-                }
+            if ($error = $addQuery->error) {
+                throw $error;
             }
         } catch (\Exception $e) {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['wishlist']);

@@ -1,5 +1,5 @@
 {{#filters}}
-    <ul class="fltr_slctd">
+    <ul class="fltr_slctd {{#isLast}}fltr_slctd-last{{/isLast}}">
         <li class="fltr_slctd_i fltr_slctd_i-n">{{name}}:</li>
 
         {{^isGroup}}
@@ -22,15 +22,19 @@
                         <span>{{&name}}</span>
                         <a class="btn-closer2 js-category-filter-deleteLink" href="{{url}}"></a>
                     {{/links}}
+                    
+                    {{#defaultTitle}}
+                        <span>{{defaultTitle}}</span>
+                    {{/defaultTitle}}
                 </li>
             {{/properties}}
         {{/isGroup}}
     </ul>
 {{/filters}}
 
-{{#filtersCount}}
+{{#selectedFilterCount}}
     <a class="fltr_clsr js-category-filter-deleteLink" href="{{cleanUrl}}">
         <span class="btn-closer3"></span>
         <span class="fltr_clr_tx">Очистить все</span>
     </a>
-{{/filtersCount}}
+{{/selectedFilterCount}}
