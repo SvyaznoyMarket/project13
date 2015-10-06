@@ -46,6 +46,5 @@ $c->paymentPsbInvoice['key']          = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
 
 $c->mainMenu['recommendationsEnabled'] = false;
-$c->cart['productLimit'] = 7;
 
 return $c;
