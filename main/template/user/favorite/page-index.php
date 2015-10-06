@@ -31,9 +31,10 @@
     <?
         $containerId = sprintf('id-wishlist-container-%s', $wishlist->id ?: uniqid());
     ?>
-    <div class="personal__favorits favorit-list<? if (count($wishlist->products) != 0): ?> expanded <? else: ?> collapsed<? endif ?> js-favorite-container <?= $containerId ?> disabled" data-disabled-class="disabled">
+    <div class="personal__favorits favorit-list<? if ($wishlist->products): ?> expanded <? else: ?> collapsed<? endif ?> js-favorite-container <?= $containerId ?> disabled" data-disabled-class="disabled">
         <div class="favorit-list__header">
             <ul class="personal-favorit__acts">
+                <? if ($wishlist->products): ?>
                 <li
                     class="personal-favorit__act js-favorite-shareFavoritePopup"
                     data-value="<?= $helper->json([
@@ -41,6 +42,7 @@
                     ]) ?>"
                     data-url="<?= 'http://www.enter.ru' . $helper->url('wishlist.show', ['wishlistToken' => $wishlist->token]) ?>"
                 >Поделиться</li>
+                <? endif ?>
                 <li
                     class="personal-favorit__act js-favorite-deleteFavoritePopup"
                     data-value="<?= $helper->json([

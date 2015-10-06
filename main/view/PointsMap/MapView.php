@@ -98,6 +98,10 @@ class MapView {
             case 'self_partner_euroset':
                 return 'Магазины Евросеть';
                 break;
+            case 'self_partner_formula_m_pred_supplier':
+            case 'self_partner_formula_m':
+                return 'Пункты выдачи Express4U';
+                break;
             default:
                 if (strpos($token, MapPoint::POSTAMAT_SUFFIX) !== false) return 'Постаматы PickPoint';
                 return 'Магазины Enter';

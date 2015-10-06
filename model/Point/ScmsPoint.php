@@ -6,11 +6,14 @@ use Model\Shop\Subway\Entity as Subway;
 
 class ScmsPoint {
 
+    const PARTNER_SLUG_FORMULA_M = 'formula-m';
     const PARTNER_SLUG_HERMES = 'hermes';
     const PARTNER_SLUG_PICKPOINT = 'pickpoint';
     const PARTNER_SLUG_EUROSET = 'euroset';
     const PARTNER_SLUG_SVYAZNOY = 'svyaznoy';
     const PARTNER_SLUG_ENTER = 'enter';
+
+    const ICON_PATH = '/images/deliv-icon/';
 
     /** @var string */
     public $ui;
@@ -53,7 +56,7 @@ class ScmsPoint {
     /** @var int */
     public $productCount = 0;
 
-    function __construct($data = []) {
+    public function __construct($data = []) {
         $this->partner = new \Model\Point\Partner();
 
         if (isset($data['uid'])) $this->ui = $data['uid'];
@@ -114,14 +117,14 @@ class ScmsPoint {
             if (is_array($data['subway'])) $this->subway = new Subway($data['subway']);
         }
 
-        $iconPath = '/images/deliv-icon/';
         switch ($this->partner->slug) {
-            case self::PARTNER_SLUG_HERMES: $this->icon = $iconPath . 'hermes.png'; break;
-            case self::PARTNER_SLUG_SVYAZNOY: $this->icon = $iconPath . 'svyaznoy.png'; break;
-            case self::PARTNER_SLUG_EUROSET: $this->icon = $iconPath . 'euroset.png'; break;
-            case self::PARTNER_SLUG_ENTER: $this->icon = $iconPath . 'enter.png'; break;
+            case self::PARTNER_SLUG_FORMULA_M: $this->icon = self::ICON_PATH . 'formula_m.png'; break;
+            case self::PARTNER_SLUG_HERMES: $this->icon = self::ICON_PATH . 'hermes.png'; break;
+            case self::PARTNER_SLUG_SVYAZNOY: $this->icon = self::ICON_PATH . 'svyaznoy.png'; break;
+            case self::PARTNER_SLUG_EUROSET: $this->icon = self::ICON_PATH . 'euroset.png'; break;
+            case self::PARTNER_SLUG_ENTER: $this->icon = self::ICON_PATH . 'enter.png'; break;
             case self::PARTNER_SLUG_PICKPOINT:
-                $this->icon = $iconPath . (strpos($this->name, 'Постамат') === 0 ? 'pickpoint-postamat.png' : 'pickpoint.png');
+                $this->icon = self::ICON_PATH . (strpos($this->name, 'Постамат') === 0 ? 'pickpoint-postamat.png' : 'pickpoint.png');
                 break;
         }
 
