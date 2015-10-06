@@ -1,24 +1,21 @@
 .order-receiver{
     padding: 10px 0;
     border-bottom: 1px solid #a6a6a6;
-    .clearfix();
+    display: table;
+    width: 100%;
 
     &__login{
-        float: left;
-        width: 620px;
+        display: table-cell;
+        vertical-align: top;
         padding: 0 10px;
         font-size: 0;
     }
-    &__social{
-        margin-left: 640px;
-    }
-    &__chip{
-     .inline-block(middle);
-    }
     &__subscribe-txt{
-        .inline-block(middle);
-        font-size: 12px;
         color: #363636;
+        display: block;
+        font-size: 12px;
+        line-height: 1.2;
+        margin: 5px 0 0 50px;
     }
     .order-ctrl{
         width: 280px;
@@ -51,9 +48,15 @@
     }
     &__chip{
         margin-right: 5px;
+        float: left;
     }
     &__social{
-        border-left: 1px dashed #afafaf;
+        border-left: 1px dotted #afafaf;
+        display: table-cell;
+        vertical-align: top;
+        width: 310px;
+        min-width: 310px;
+        max-width: 310px;
     }
 }
 .social{
