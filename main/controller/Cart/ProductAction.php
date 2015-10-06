@@ -117,7 +117,7 @@ class ProductAction {
                 throw new \Exception('Не получен список товаров');
             }
 
-            $updateResultProducts = $cart->update($setProducts);
+            $updateResultProducts = $cart->update($setProducts, false, \App::config()->cart['productLimit']);
 
             $cart->pushStateEvent([]);
             
@@ -199,6 +199,13 @@ class ProductAction {
             }
             
             $response = new \Http\JsonResponse($response);
+        } catch(\Session\CartProductLimitException $e) {
+            $response = new \Http\JsonResponse([
+                'success' => false,
+                'noticePopupHtml' => \App::mustache()->render('notice-popup', [
+                    'text' => 'Из-за большого количества заказов ограничено количество товаров в корзине. Максимальное количество — ' . $e->productLimit . ' шт.',
+                ]),
+            ]);
         } catch(\Exception $e) {
             $response = new \Http\JsonResponse([
                 'success' => false,
