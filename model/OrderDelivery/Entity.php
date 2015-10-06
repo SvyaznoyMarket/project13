@@ -533,13 +533,13 @@ namespace Model\OrderDelivery\Entity {
             if (isset($data['is_online'])) $this->is_online = (bool)$data['is_online'];
 
             switch ($this->id) {
-                case '2': $this->icon = '/styles/order-new/img/payment/pay-card.png'; break;
+                case '5': $this->icon = '/styles/order-new/img/payment/pay-card.png'; break;
                 case '8': $this->icon = '/styles/order-new/img/payment/pay-psb.png'; break;
                 case '11': $this->icon = '/styles/order-new/img/payment/pay-webmoney.png'; break;
                 case '12': $this->icon = '/styles/order-new/img/payment/pay-qiwi.png'; break;
                 case '13': $this->icon = '/styles/order-new/img/payment/pay-paypal.png'; break;
                 case '14': $this->icon = '/styles/order-new/img/payment/pay-svyaznoy.png'; break;
-                case 'yandex': $this->icon = '/styles/order-new/img/payment/pay-yandex.png'; break;
+                case '16': $this->icon = '/styles/order-new/img/payment/pay-yandex.png'; break;
             }
         }
     }

@@ -69,6 +69,7 @@ class PaymentMethodEntity {
             case 12: $this->icon = '/styles/order-new/img/payment/pay-qiwi.png'; break;
             case 13: $this->icon = '/styles/order/img/paypal.png'; break;
             case 14: $this->icon = '/styles/order/img/svyaznoy.png'; break;
+            case 16: $this->icon = '/styles/order-new/img/payment/pay-yandex.png'; break;
         }
 
         if (isset($arr['available_actions']) && is_array($arr['available_actions'])) $this->availableActions = $arr['available_actions'];
