@@ -19,7 +19,7 @@ class IndexPage extends \View\DefaultLayout {
         $partners = array_intersect_key($partners, array_fill_keys($existingPartners, null));
 
         // Сортируем
-        $partnerOrder = ['enter', 'euroset', 'pickpoint', 'hermes', 'svyaznoy'];
+        $partnerOrder = ['enter', 'euroset', 'pickpoint', 'hermes', 'formula-m', 'svyaznoy'];
         usort($partners, function ($a, $b) use ($partnerOrder){ return array_search($a['slug'], $partnerOrder) > array_search($b['slug'], $partnerOrder);});
 
         // Создаем JSON для ObjectManager

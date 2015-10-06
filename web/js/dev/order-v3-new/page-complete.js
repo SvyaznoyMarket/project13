@@ -99,7 +99,8 @@
             var productArr = [];
 
             $LAB.script( '//api.direct-credit.ru/JsHttpRequest.js' )
-                .script({ src: '//api.direct-credit.ru/dc.js', type: 'text/javascript', charset: 'windows-1251' } )
+                //.script({ src: '//api.direct-credit.ru/dc.js', type: 'text/javascript', charset: 'windows-1251' } )
+                .script({ src: '//api.direct-credit.ru/dc.js', type: 'text/javascript' } )
                 .wait( function() {
                     console.info('скрипты загружены для кредитного виджета. начинаем обработку');
 
