@@ -49,6 +49,17 @@
 					upsale = $button.data('upsale') ? $button.data('upsale') : null,
 					product = $button.parents('.jsSliderItem').data('product');
 
+				if (data.noticePopupHtml) {
+					$.enterLightboxMe.closeAll();
+					$(data.noticePopupHtml).enterLightboxMe({
+						centered: true,
+						closeSelector: '.js-notice-popup-closer',
+						closeClick: true,
+						destroyOnClose: true,
+						preventScroll: true
+					});
+				}
+
 				if (!data.success) {
 					return;
 				}

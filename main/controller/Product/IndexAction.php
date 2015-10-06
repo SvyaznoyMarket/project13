@@ -273,7 +273,7 @@ class IndexAction {
             // пишем в сессию id товара
             if ($sessionName = \App::config()->product['recommendationSessionKey']) {
                 $storage = \App::session();
-                $limit = \App::config()->cart['productLimit'];
+                $limit = \App::config()->product['recommendationProductLimit'];
 
                 $data = (array)$storage->get($sessionName, []);
                 if (!in_array($product->getId(), $data)) {
