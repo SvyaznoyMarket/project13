@@ -515,7 +515,7 @@
 			var data = typeof elem.tagName != 'undefined' ? $(elem).data('ecommerce') : elem;
 			if (!this.isEnabled || typeof data != 'object') return;
 			if (typeof additionalData != 'undefined') data = $.extend({}, data, additionalData);
-			ga(action, data);
+			if (this.isEnabled()) ga(action, data);
 			console.log('[GA] %s', action, data)
 		},
 
