@@ -99,7 +99,7 @@ $f = function(
                             'method' => $paymentMethod->id,
                             'order'  => $order->id,
                             'number' => $order->number,
-                            'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context]),
+                            'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context], true),
                         ]) ?>"
                         <? if ($paymentMethod->isOnline): ?>
                             data-discount="true"
