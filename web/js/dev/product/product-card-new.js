@@ -46,7 +46,6 @@
 
                 if (result.payment) {
                     $creditButton.find('.jsProductCreditPrice').text(printPrice(Math.ceil(result.payment)));
-                    $creditButton.show();
                 }
             }
         );

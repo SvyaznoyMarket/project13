@@ -65,7 +65,6 @@ class DeliveryAction extends OrderV3 {
                 $result['error']    = ['message' => $e->getMessage()];
                 $result['data']     = ['data' => $splitData];
                 if (in_array($e->getCode(), [600, 302])) {
-                    $this->cart->clear();
                     $result['redirect'] = \App::router()->generate('cart');
                 }
             } catch (\Exception $e) {
@@ -166,6 +165,7 @@ class DeliveryAction extends OrderV3 {
      * @throws \Exception
      */
     public function getSplit(array $data = null, $userData = null) {
+        $cartRepository = new \Model\Cart\Repository();
 
         $previousSplit = $this->session->get($this->splitSessionKey);
         
@@ -256,7 +256,23 @@ class DeliveryAction extends OrderV3 {
                 );
             } catch (\Exception $e) {
                 if ($e->getCode() == \Curl\Client::CODE_TIMEOUT) \App::exception()->remove($e);
-                if (in_array($e->getCode(), [600, 759])) throw $e; // когда удалили последний товар, некорректный email
+
+                // когда удалили последний товар
+                if ($e->getCode() == 600) {
+                    if (isset($data['action']) && isset($data['params']['ui']) && $data['action'] == 'changeProductQuantity') {
+                        try {
+                            $updateResultProducts = $this->cart->update([['ui' => $data['params']['ui'], 'quantity' => 0]]);
+                            $cartRepository->updateCrmCart($updateResultProducts);
+                        } catch(\Exception $e) {}
+                    }
+
+                    throw $e;
+                }
+
+                // некорректный email
+                if ($e->getCode() == 759) {
+                    throw $e;
+                }
             }
 
             if ($splitResponse) break; // если получен ответ прекращаем попытки
@@ -281,14 +297,16 @@ class DeliveryAction extends OrderV3 {
         \App::coreClientV2()->execute();
 
         // обновляем корзину пользователя
-        if (isset($data['action']) && isset($data['params']['id']) && $data['action'] == 'changeProductQuantity') {
+        if (isset($data['action']) && isset($data['params']['id']) && isset($data['params']['ui']) && $data['action'] == 'changeProductQuantity') {
             try {
                 // SITE-5442
                 if (isset($orderDelivery->getProductsById()[$data['params']['id']])) {
-                    $this->cart->update([['ui' => $data['params']['ui'], 'quantity' => $orderDelivery->getProductsById()[$data['params']['id']]->quantity]]);
+                    $updateResultProducts = $this->cart->update([['ui' => $data['params']['ui'], 'quantity' => $orderDelivery->getProductsById()[$data['params']['id']]->quantity]]);
                 } else {
-                    $this->cart->update([['ui' => $data['params']['ui'], 'quantity' => 0]]);
+                    $updateResultProducts = $this->cart->update([['ui' => $data['params']['ui'], 'quantity' => 0]]);
                 }
+
+                $cartRepository->updateCrmCart($updateResultProducts);
             } catch(\Exception $e) {}
         }
 
@@ -472,7 +490,7 @@ class DeliveryAction extends OrderV3 {
         if (!is_array($errors)) return;
 
         foreach ($errors as $error) {
-            if (isset($error['message'])) {
+            if (is_array($error) && isset($error['message'])) {
                 $error = new \Model\OrderDelivery\Error($error, $orderDelivery);
             }
 
