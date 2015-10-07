@@ -159,12 +159,11 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         <a
             class="buy-on-credit btn-type btn-type--normal btn-type--longer jsProductCreditButton"
             href="<?= $helper->url('cart.product.setList', ['products' => [['ui' => $product->ui, 'quantity' => '+1', 'up' => '1']]]) ?>"
-            style="display: none"
             data-credit='<?= (isset($creditData['creditData']) ? $creditData['creditData'] : '') ?>'
             data-target=".<?= \View\Id::cartButtonForProduct($product->getId()) ?>"
         >
             <span class="buy-on-credit__tl">Купить в кредит</span>
-            <span class="buy-on-credit__tx">от <mark class="buy-on-credit__mark jsProductCreditPrice">0</mark>&nbsp;&nbsp;<span class="rubl">p</span> в месяц</span>
+            <span class="buy-on-credit__tx">от <mark class="buy-on-credit__mark jsProductCreditPrice">...</mark>&nbsp;&nbsp;<span class="rubl">p</span> в месяц</span>
         </a>
         <!--/ купить в кредит -->
     <? endif ?>
