@@ -1,0 +1,173 @@
+.s-sales {
+    width: 940px;
+    margin: 0 auto;
+    &__title {
+        font: normal 46px/1.4 'Enter type';
+
+        text-align: center;
+
+        color: #fe4c40;
+    }
+}
+
+.s-sales-head {
+    font: normal 32px/1.5 'Enter type';
+
+    margin: 0 0 20px;
+    padding: 0 10px 5px;
+
+    color: #363636;
+    border-bottom: 1px solid #363636;
+
+    .clearfix();
+    &__title {
+        font-size: 32px;
+
+        float: left;
+
+        margin: 0;
+        padding-left: 45px;
+
+        background: no-repeat 0 50% url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAQAAAC00HvSAAACcklEQVR4AbVWA6xdYQzubCO8C2bj/G042zaDebEz21s0RTeebduOMdtvttqj7NweTd+7ej++9tQQgQJNWtFs2ks36TV95fdN/j27SSsoAGnRoDLOpUf0I/TvEc5tUDmRoloRnETv5QLm4VoznnW6QD/k20zAtZhnU73HSdWKxJBQDbpqU1w2A7yDeJZp+nhCzAC8bFNdpRoQDmyOL/nAcxwB+YChaWzkwxH0nEW9xGahJPSBN89iJriuaBiYkVX6oIiohmiC+6ziAPE0jcryyl6rOO4TjahGwLB0VTRRJAw8xXJ7gof8uJtP3gZgItHo6i/Gxkm2TTIQAqsHZq0yvtYLmOSjIefRbBtN8uNEXMyGTQQNsr003Bc/QtzvxhHOFRezdxLQxLLFLQ14jd2Pc+2wl4g1A1LE9h2+sj+YDmaARDavcZxyxLKhYmEVouN87nrd8irqObI512g2b6+BBOAqlvrG1AvZWcs7s4H2Ss4kkIxlUd/F7RpmPNPsBbopSsWSNMPPfHRa+K4YhW4CvRFtTB/3r1NuRbFqIUcHbYZ8gVg6hWedP7ogjwv0NVhRcFSOLvd57R12Daxlc6rQV1sbuuBx4+HGdXJo1uE3m/6kaetrU4Z6+vqPt7VJto1VhVbiJ4fKahdum1SeEiqzwqU6xVTaU+niRoAZj4p2qLjRURxPhcuZ6q6K4sScUmhcqVFZlVPJGa6hMzxtvVFQ9Sa++kEBHMWxpKCqX3wtNp1457Be17U4tjOYPiJAk+jOEN6nNI3uU81Td01FE981dQ9XNKqHp5so1tiThOTMBfnGNXqi+D/zTcy09Ya+8jth2voJW3SlMZkAy6gAAAAASUVORK5CYII=');
+    }
+    &__counter {
+        float: right;
+    }
+}
+
+// сетка скидочных категорий
+.s-sales-grid {
+    margin: 0 -20px 20px 0;
+    &__row {
+        .clearfix();
+        // две ячейки
+        &.grid-2cell {
+            .s-sales-grid__cell {
+                width: 50%;
+            }
+        }
+        // три ячейки
+        &.grid-3cell {
+            .s-sales-grid__cell {
+                width: 33.33333%;
+            }
+        }
+        // высота ячейки 340
+        &.cell-h-340 {
+            .s-sales-grid__cell {
+                height: 360px;
+                max-height: 360px;
+            }
+        }
+        // высота ячейки 220
+        &.cell-h-220 {
+            .s-sales-grid__cell {
+                height: 240px;
+                max-height: 240px;
+            }
+        }
+        // две колонки в строке
+        &.grid-float {
+            .s-sales-grid__col:first-child {
+                width: 66.666666%;
+                .s-sales-grid__cell {
+                    width: 100%;
+                    height: 480px;
+                    max-height: 480px;
+                }
+            }
+            .s-sales-grid__col:last-child {
+                width: 33.3333333%;
+                .s-sales-grid__cell {
+                    float: none;
+
+                    width: 100%;
+                    height: 240px;
+                    max-height: 240px;
+                }
+            }
+        }
+        // больший блок, справа
+        &.grid-float-right {
+            .s-sales-grid__col:first-child {
+                float: right;
+            }
+        }
+    }
+    &__col {
+        float: left;
+    }
+    &__cell {
+        position: relative;
+
+        float: left;
+        overflow: hidden;
+
+        width: 100%;
+        height: 480px;
+        max-height: 480px;
+        padding: 0 20px 20px 0;
+
+        .box-sizing();
+    }
+    &__link {
+        position: relative;
+
+        display: block;
+        overflow: hidden;
+
+        width: 100%;
+        height: 100%;
+
+        .box-sizing();
+    }
+}
+
+.s-sales-grid-desc {
+    font-family: 'Enter type';
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: table;
+
+    width: 100%;
+    min-height: 60px;
+    &__value {
+        font-size: 24px;
+
+        display: table-cell;
+
+        width: 60px;
+        max-width: 60px;
+
+        text-align: center;
+        vertical-align: middle;
+
+        color: #fff;
+        background: #ef404a;
+    }
+    &__title {
+        display: table-cell;
+
+        padding: 5px 10px 5px 20px;
+
+        vertical-align: middle;
+
+        color: #363636;
+        background: #fff;
+        background: rgba(255, 255, 255, .75);
+        &-name {
+            font-size: 24px;
+            line-height: 1;
+            margin: 0 0 5px;
+
+            display: block;
+        }
+        &-duration {
+            display: block;
+        }
+    }
+}
