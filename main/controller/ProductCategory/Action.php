@@ -132,7 +132,7 @@ class Action {
                             $filterBrand->image = $option->imageUrl;
 
                             $brands[] = $filterBrand;
-                            if ($option->getToken() == $brandToken) {
+                            if ($brandToken !== null && $option->getToken() == $brandToken) {
                                 $brand = $filterBrand;
                             }
                         }

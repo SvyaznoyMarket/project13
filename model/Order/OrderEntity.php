@@ -72,6 +72,13 @@ class OrderEntity {
      * @var int
      */
 //    private $delivery_interval_id;
+    /**
+     * Интервалы дат доставки:
+     * Пример: { from: 2015-09-24, to: 2015-10-03 }
+     *
+     * @var array|null
+     */
+    private $delivery_date_interval;
     /** Интервал доставки
      * Обязательный. В массиве первый элемент - время начала, второй время завершения интервала
      * @var array
@@ -242,6 +249,12 @@ class OrderEntity {
             $this->delivery_period = $arr['order']['delivery']['interval'];
         } else {
             //throw new \Exception('Не указан интервал доставки');
+        }
+
+        if (isset($arr['delivery_date_interval']) && isset($arr['delivery_date_interval']['from']) && $arr['delivery_date_interval']['to']) {
+            $this->delivery_date_interval = $arr['delivery_date_interval'];
+        } else {
+            $this->delivery_date_interval = null;
         }
 
         if (isset($arr['order']['delivery']['point']['id'])) {

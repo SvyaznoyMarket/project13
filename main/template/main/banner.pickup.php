@@ -1,12 +1,11 @@
-<?php
+<?
+    // SITE-5853б SITE-6062
 
-$helper = new \Helper\TemplateHelper();
-$region = \App::user()->getRegion();
-$pathInfo = \App::request()->getPathInfo();
-
-$bannerNumber = (int)rand(0, 1);
+    $helper = new \Helper\TemplateHelper();
+    $region = \App::user()->getRegion();
+    $pathInfo = \App::request()->getPathInfo();
+    $bannerNumber = (int)rand(0, 1);
 ?>
-
 <? if (0 === $bannerNumber): ?>
     <? if (in_array($region->id, [
         14974, // Москва
@@ -25,7 +24,6 @@ $bannerNumber = (int)rand(0, 1);
         93746, // Ярославль
         13241, // Белгород
         93747, // Иваново
-        88434, // Смоленск
         13242, // Орел
         83209, // Тамбов
         10374, // Рязань
@@ -35,9 +33,27 @@ $bannerNumber = (int)rand(0, 1);
             <span class="stripe-bann__small">Для заказов от 1990 <span class="rubl">p</span></span>
         </span>
     <? elseif (in_array($region->id, [
+        88434, // Смоленск
         119623, // Ростов-на-Дону
         124201, // Саратов
         124190, // Краснодар
+        93751, // Екатеринбург
+        124217, // Ставрополь
+        93749, // Самара
+        143707, // Волгоград
+        93752, // Челябинск
+        93748, // Уфа
+        152595, // Вологда
+        124216, // Псков
+        124226, // Оренбург
+        124230, // Ижевск
+        124227, // Пенза
+        124231, // Ульяновск
+        78637, // Великий Новгород
+        124224, // Йошкар-Ола
+        124213, // Петрозаводск
+        124223, // Киров
+        124225, // Саранск
     ])): ?>
         <? if ('/dostavka' !== $pathInfo): ?>
             <a class="header__bann stripe-bann" href="/dostavka">

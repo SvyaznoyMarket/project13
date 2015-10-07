@@ -11,14 +11,11 @@ namespace Session {
         private $sessionName;
         /** @var \Http\Session */
         private $storage;
-        /** @var int */
-        private $productLimit = null;
-    
+
         public function __construct() {
             $this->sessionName = \App::config()->cart['sessionName'] ?: 'cart';
             $this->storage = \App::session();
-            $this->productLimit = \App::config()->cart['productLimit'];
-    
+
             // очистить старую корзину
             $this->storage->remove('userCart');
 
@@ -63,8 +60,13 @@ namespace Session {
          * @param mixed           $setProducts[]['referer']
          * @param bool $forceUpdate Актуализировать данные в корзине вне зависимости от времени последнего обновления
          *                          и $setProducts
+         * @param int $productLimit Макс. кол-во товаров в корзине, при достижении которого новые товары не будут
+         *                          добавляться по одному за раз (но по несколько за раз - будут, т.к. это нужно для
+         *                          полноценного добавления товаров из набора)
          *
          * @throws \Exception Если обновление корзины не удалось выполнить
+         * @throws \Session\CartProductLimitException Если добавляется один новый товар и кол-во товаров в корзине уже
+         *                                            больше или равно $productLimit
          *
          * @return \Session\Cart\Update\Result\Product[] Все товары корзины, включая удалённые через $setProducts товары
          *                                               (если какие-то товары из $setProducts фактически не изменили
@@ -72,7 +74,7 @@ namespace Session {
          *                                               изменения корзины не произошло (не из-за ошибок), то будет
          *                                               возвращён пустой массив)
          */
-        public function update(array $setProducts = [], $forceUpdate = false) {
+        public function update(array $setProducts = [], $forceUpdate = false, $productLimit = 0) {
             try {
                 $resultProducts = [];
                 $sessionCart = $this->getSessionCart();
@@ -242,6 +244,25 @@ namespace Session {
                     }
                 });
 
+                // Проверка на ограничение кол-ва добавляемых товаров
+                call_user_func(function() use($productLimit, $sessionCart, $setProductResultActionsById) {
+                    if (!$productLimit) {
+                        return;
+                    }
+
+                    $addProductCount = count(array_filter($setProductResultActionsById, function($action) {
+                        return $action === 'add';
+                    }));
+
+                    // Ограничивает добавление только одиночных товаров для возможности полноценного добавления товаров
+                    // из набор пакетов
+                    if ($addProductCount == 1 && count($sessionCart['product']) > $productLimit) {
+                        $e = new \Session\CartProductLimitException('Превышен лимит на добавление в корзину новых товаров');
+                        $e->productLimit = $productLimit;
+                        throw $e;
+                    }
+                });
+
                 // Обновление сессионных товаров
                 call_user_func(function() use(&$sessionCart, &$resultProducts, $setProductResultActionsById, $backendProductsByUi, $backendProductsById) {
                     foreach ($sessionCart['product'] as $key => $sessionProduct) {
@@ -358,6 +379,8 @@ namespace Session {
                 // TODO может перенести синхронизацию серверной корзины сюда (выполняя её на основе данных из $resultProducts)?
 
                 return $resultProducts;
+            } catch(\Session\CartProductLimitException $e) {
+                throw $e;
             } catch(\Exception $e) {
                 \App::logger()->error(['message' => 'Не удалось обновить корзину', 'error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['cart/update']);
                 throw $e;

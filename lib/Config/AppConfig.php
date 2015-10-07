@@ -320,6 +320,7 @@ class AppConfig {
         'lowerPriceNotification' => null,
         'recommendationPull'     => null, // подтягивать информацию о рекоммендованных товарах
         'recommendationPush'     => null, // отправлять данные для расчета рекоммендованных товаров
+        'recommendationProductLimit' => null,
     ];
     /** @var array */
     public $banner = [
