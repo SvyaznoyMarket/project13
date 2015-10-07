@@ -4,6 +4,7 @@ namespace Model\ClosedSale;
 
 
 use Model\Media;
+use Model\Product\Entity as Product;
 
 class ClosedSaleEntity
 {
@@ -30,6 +31,8 @@ class ClosedSaleEntity
     public $priority;
     /** @var Media[]  */
     public $medias = [];
+    /** @var Product[] */
+    public $products = [];
 
     public function __construct(array $arr)
     {
@@ -68,6 +71,15 @@ class ClosedSaleEntity
                     return new Media($media);
                 },
                 $arr['medias']
+            );
+        }
+
+        if (array_key_exists('products', $arr) && is_array($arr['products'])) {
+            $this->products = array_map(
+                function ($data) {
+                    return new Product($data);
+                },
+                $arr['products']
             );
         }
     }

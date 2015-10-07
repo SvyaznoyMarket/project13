@@ -26,12 +26,7 @@ class SaleAction
     {
         $page = new SaleIndexPage();
 
-        $sales = array_map(
-            function (array $data) {
-                return new ClosedSaleEntity($data);
-            },
-            $this->scmsClient->query('api/promo-sale/get', [], [])
-        );
+        $sales = $this->getSales();
 
         $page->setParam('sales', $sales);
         return new Response($page->show());
@@ -40,7 +35,40 @@ class SaleAction
     public function show($uid)
     {
         $page = new SaleShowPage();
+
+        $sales = $this->getSales();
+
+        $currentSales = array_map(
+            function (array $data) {
+                return new ClosedSaleEntity($data);
+            },
+            $this->scmsClient->query('api/promo-sale/get', ['uid' => [$uid]], [])
+        );
+
+        $currentSale = array_key_exists(0, $currentSales) ? $currentSales[0] : new ClosedSaleEntity([]);
+
+        $products = $currentSale->products;
+
+        \RepositoryManager::product()->prepareProductQueries($products, ['media', 'label', 'brand', 'category']);
+        \App::curl()->execute();
+
+        $page->setParam('sales', $sales);
+        $page->setParam('currentSale', $currentSale);
+        $page->setParam('products', $products);
         return new Response($page->show());
+    }
+
+    /**
+     * @return ClosedSaleEntity[]
+     */
+    private function getSales()
+    {
+        return array_map(
+            function (array $data) {
+                return new ClosedSaleEntity($data);
+            },
+            $this->scmsClient->query('api/promo-sale/get', [], [])
+        );
     }
 
 }

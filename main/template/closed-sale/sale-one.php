@@ -1,3 +1,11 @@
+<?
+
+$products = $page->getParam('products', []);
+$productPager = new \Iterator\EntityPager($products, count($products));
+$productView = '1';
+$helper = \App::closureTemplating();
+?>
+
 <section class="s-sales">
 	<header class="s-sales-header">
 		<h1 class="s-sales-header__title">Распродажа Диванов</h1>
@@ -7,6 +15,26 @@
 			<div class="s-sales-header-counter__avail">Осталось 35 товаров</div>
 		</div>
 	</header><!-- /header -->
+
+	<? if ($products) : ?>
+		<? $helper->render('product-category/v2/__listAction',
+			[
+				'productSorting'	=> new \Model\Product\Sorting(),
+				'pager'				=> $productPager
+			]) ?>
+
+		<? $helper->render('product/__list', [
+			'pager'                  => $productPager,
+			'view'                   => $productView,
+			'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) && 'jewel' !== $listingStyle ? $catalogJson['bannerPlaceholder'] : [],
+	//		'listingStyle'           => $listingStyle,
+	//		'columnCount'            => isset($columnCount) ? $columnCount : 4,
+	//		'class'                  => $category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing() ? 'lstn-btn2' : '',
+	//		'category'               => $category,
+	//		'favoriteProductsByUi'   => $favoriteProductsByUi,
+	//		'cartButtonSender'       => $category->getSenderForGoogleAnalytics(),
+		]) ?>
+	<? endif ?>
 
 	<!-- Сетка скидочных категорий -->
 	<div class="s-sales-grid">
