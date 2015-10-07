@@ -21,7 +21,7 @@
 						<span class="s-sales-grid-desc">
 							<span class="s-sales-grid-desc__value">-70%</span>
 							<span class="s-sales-grid-desc__title">
-								<span class="s-sales-grid-desc__title-name">Очень длинный текст о милых и пушитых котаках</span>
+								<span class="s-sales-grid-desc__title-name">Очень длинный текст о милых и пушитых котиках</span>
 								<span class="s-sales-grid-desc__title-duration">Конец акции 22.09.2015 00:00</span>
 							</span>
 						</span>
@@ -51,7 +51,7 @@
 						<span class="s-sales-grid-desc">
 							<span class="s-sales-grid-desc__value">-70%</span>
 							<span class="s-sales-grid-desc__title">
-								<span class="s-sales-grid-desc__title-name">Очень длинный текст о милых и пушитых котаках</span>
+								<span class="s-sales-grid-desc__title-name">Очень длинный текст о милых и пушитых котиках</span>
 								<span class="s-sales-grid-desc__title-duration">Конец акции 22.09.2015 00:00</span>
 							</span>
 						</span>
@@ -87,7 +87,7 @@
 					<span class="s-sales-grid-desc">
 						<span class="s-sales-grid-desc__value">-70%</span>
 						<span class="s-sales-grid-desc__title">
-							<span class="s-sales-grid-desc__title-name">Очень длинный текст о милых и пушитых котаках</span>
+							<span class="s-sales-grid-desc__title-name">Очень длинный текст о милых и пушитых котиках</span>
 							<span class="s-sales-grid-desc__title-duration">Конец акции 22.09.2015 00:00</span>
 						</span>
 					</span>
@@ -240,7 +240,7 @@
 						<span class="s-sales-grid-desc">
 							<span class="s-sales-grid-desc__value">-70%</span>
 							<span class="s-sales-grid-desc__title">
-								<span class="s-sales-grid-desc__title-name">Очень длинный текст о милых и пушитых котаках</span>
+								<span class="s-sales-grid-desc__title-name">Очень длинный текст о милых и пушитых котиках</span>
 								<span class="s-sales-grid-desc__title-duration">Конец акции 22.09.2015 00:00</span>
 							</span>
 						</span>
@@ -270,7 +270,7 @@
 						<span class="s-sales-grid-desc">
 							<span class="s-sales-grid-desc__value">-70%</span>
 							<span class="s-sales-grid-desc__title">
-								<span class="s-sales-grid-desc__title-name">Очень длинный текст о милых и пушитых котаках</span>
+								<span class="s-sales-grid-desc__title-name">Очень длинный текст о милых и пушитых котиках</span>
 								<span class="s-sales-grid-desc__title-duration">Конец акции 22.09.2015 00:00</span>
 							</span>
 						</span>
@@ -288,7 +288,7 @@
 						<span class="s-sales-grid-desc">
 							<span class="s-sales-grid-desc__value">-70%</span>
 							<span class="s-sales-grid-desc__title">
-								<span class="s-sales-grid-desc__title-name">Очень длинный текст о милых и пушитых котаках</span>
+								<span class="s-sales-grid-desc__title-name">Очень длинный текст о милых и пушитых котиках</span>
 								<span class="s-sales-grid-desc__title-duration">Конец акции 22.09.2015 00:00</span>
 							</span>
 						</span>
