@@ -34,6 +34,8 @@ class PaymentMethodEntity {
     /** Возможные маркетинговые акции
      * @var array */
     public $availableActions = [];
+    /** @var array|null */
+    public $discount;
 
     /** @var string|null */
     public $icon;
@@ -55,6 +57,8 @@ class PaymentMethodEntity {
         if (isset($arr['is_corporative'])) $this->isCorporative = (bool)$arr['is_corporative'];
 
         if (isset($arr['available_to_pickpoint'])) $this->isAvailableToPickpoint = (bool)$arr['available_to_pickpoint'];
+
+        if (isset($arr['discount']['value'])) $this->discount = $arr['discount'];
 
         if (isset($arr['payment_method_group_id'])) {
             $id = (string)$arr['payment_method_group_id'];

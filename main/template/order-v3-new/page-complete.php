@@ -56,7 +56,7 @@ $f = function(
                 });
                 $paymentMethodsByDiscount = [];
                 foreach ($onlinePaymentMethods as $iPaymentMethod) {
-                    $index = in_array($iPaymentMethod->id, \App::config()->payment['discountIds']) ? 0 : 1;
+                    $index = $iPaymentMethod->discount ? 0 : 1;
                     $paymentMethodsByDiscount[$index][] = $iPaymentMethod;
                 }
                 ksort($paymentMethodsByDiscount);

@@ -16,7 +16,7 @@ $f = function (
 
     $paymentMethodsByDiscount = [];
     foreach ($order->possible_payment_methods as $paymentMethod) {
-        $index = in_array($paymentMethod->id, \App::config()->payment['discountIds']) ? 0 : 1;
+        $index = $paymentMethod->discount ? 0 : 1;
         if (in_array($paymentMethod->id, ['1', '2'])) {
             $paymentMethodsByDiscount[$index]['При получении'][$paymentMethod->id] = $paymentMethod;
             if ('1' == $paymentMethod->id) {

@@ -22,7 +22,7 @@ $f = function(
 
     $paymentMethodsByDiscount = [];
     foreach ($paymentMethods as $paymentMethod) {
-        $index = in_array($paymentMethod->id, \App::config()->payment['discountIds']) ? 0 : 1;
+        $index = $paymentMethod->discount ? 0 : 1;
         $paymentMethodsByDiscount[$index][] = $paymentMethod;
     }
     ksort($paymentMethodsByDiscount);

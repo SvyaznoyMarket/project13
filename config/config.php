@@ -334,7 +334,6 @@ $c->cart['updateTime'] = 1; // обновлять корзину, если да�
 
 $c->payment['creditEnabled'] = false;
 $c->payment['blockedIds'] = [];
-$c->payment['discountIds'] = ['5', '11', '12', '16'];
 
 $c->f1Certificate['enabled'] = true;
 
