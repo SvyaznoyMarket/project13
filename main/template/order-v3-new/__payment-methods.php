@@ -18,9 +18,14 @@ $f = function (
     foreach ($order->possible_payment_methods as $paymentMethod) {
         $index = in_array($paymentMethod->id, \App::config()->payment['discountIds']) ? 0 : 1;
         if (in_array($paymentMethod->id, ['1', '2'])) {
-            $paymentMethodsByDiscount[$index]['grouped'][] = $paymentMethod;
+            $paymentMethodsByDiscount[$index]['При получении'][$paymentMethod->id] = $paymentMethod;
+            if ('1' == $paymentMethod->id) {
+                $paymentMethod->name = 'наличными';
+            } else if ('2' == $paymentMethod->id) {
+                $paymentMethod->name = 'банковской картой';
+            }
         } else {
-            $paymentMethodsByDiscount[$index][][] = $paymentMethod;
+            $paymentMethodsByDiscount[$index][][$paymentMethod->id] = $paymentMethod;
         }
     }
     ksort($paymentMethodsByDiscount);
@@ -51,13 +56,21 @@ $f = function (
                             class="customInput customInput-defradio2 js-customInput"
                             <?= $checked ? 'checked' : '' ?>
                         />
-                        <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>"></label>
-                        <select class="customSel-inner">
+                        <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>"><?= $groupIndex ?></label>
+                        <select class="customSel-inner js-order-paymentMethod">
                         <? foreach ($paymentMethods as $paymentMethod): ?>
                         <?
                             $checked = $order->payment_method_id == $paymentMethod->id;
                         ?>
-                            <option value="<?= $paymentMethod->id ?>" <?= $checked ? 'selected' : '' ?>><?= $paymentMethod->name ?></option>
+                            <option
+                                value="<?= $paymentMethod->id ?>"
+                                <?= $checked ? 'selected' : '' ?>
+                                <? if ($paymentMethod->is_online): ?>data-online="true"<? endif ?>
+                                data-value="<?= $helper->json([
+                                    'block_name'        => $order->block_name,
+                                    'payment_method_id' => $paymentMethod->id,
+                                ]) ?>"
+                            ><?= $paymentMethod->name ?></option>
                         <? endforeach ?>
                         </select>
                 <? else: ?>

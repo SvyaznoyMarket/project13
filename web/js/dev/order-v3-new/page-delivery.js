@@ -632,7 +632,7 @@
     $body.on('change', '.js-order-paymentMethod', function(e) {
         var
             $el = $(this),
-            params = $el.data('value')
+            params = $el.is('select') ? $el.find(':selected').data('value') : $el.data('value')
         ;
 
         sendChanges('changePaymentMethod', params);
