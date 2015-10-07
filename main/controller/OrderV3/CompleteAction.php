@@ -247,8 +247,6 @@ class CompleteAction extends OrderV3 {
     }
 
     public function getPaymentForm(\Http\Request $request) {
-        $form = '';
-
         $methodId = $request->request->get('method');
         $orderId = $request->request->get('order');
         $orderNumber = $request->request->get('number');
@@ -277,8 +275,8 @@ class CompleteAction extends OrderV3 {
             [
                 'back_ref'    => $backUrl, // обратная ссылка
                 'email'       => $order->getUser() ? $order->getUser()->getEmail() : '',
-//                            'card_number' => $order->card,
-                'user_token'  => $request->cookies->get('UserTicket'),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
+                //'card_number' => $order->card,
+                'user_token'  => $request->cookies->get('UserTicket'), // токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
             ],
             \App::config()->coreV2['hugeTimeout']
         );

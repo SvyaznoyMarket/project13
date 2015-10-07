@@ -15,17 +15,21 @@ return function(
     $motivationAction,
     $errors
 ) {
-    /** @var $products \Model\Product\Entity[] */
+    /** @var \Model\Product\Entity[] $products */
     $page = new \View\OrderV3\CompletePage();
-    /** @var $order \Model\Order\Entity */
+    /** @var \Model\Order\Entity $order */
     $order = reset($orders);
-    /* @var $orderPayment \Model\PaymentMethod\PaymentEntity|null */
+    /* @var \Model\PaymentMethod\PaymentEntity|null $orderPayment */
     $orderPayment = @$ordersPayment[$order->getNumber()];
     // Онлайн оплата возможна при существовании такой группы
     $isOnlinePaymentPossible = (bool)$orderPayment ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $orderPayment->groups) : false;
     // При создании заказа выбрана онлайн-оплата
-    $isOnlinePaymentChecked = in_array($order->getPaymentId(), [PaymentMethodEntity::PAYMENT_CARD_ONLINE, PaymentMethodEntity::PAYMENT_PAYPAL, PaymentMethodEntity::PAYMENT_PSB]);
-    ?>
+    $isOnlinePaymentChecked =
+        ($orderPayment && $order->getPaymentId() && isset($orderPayment->methods[$order->getPaymentId()]))
+        ? $orderPayment->methods[$order->getPaymentId()]->isOnline
+        : false
+    ;
+?>
     <div class="order__wrap">
     <section class="orderCnt jsNewOnlineCompletePage"
              data-order-id="<?= $order->getId() ?>"
@@ -47,8 +51,12 @@ return function(
 
             <?= $helper->render('order-v3-new/complete-blocks/_errors', ['errors' => $errors]) ?>
 
-            <? if ($isOnlinePaymentChecked && !$order->isPaid()) : ?>
-                <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
+            <? if ($isOnlinePaymentPossible && !$order->isPaid() && !$order->isCredit() && !$motivationAction && !$order->isPaidBySvyaznoy()): ?>
+                <? if ($isOnlinePaymentChecked): ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
+                <? else: ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
+                <? endif ?>
             <? endif ?>
 
             <? if (!$order->isCredit()) : ?>
@@ -67,10 +75,6 @@ return function(
 
         <? if ($order->isCredit()) : ?>
             <?= $helper->render('order-v3-new/complete-blocks/_credit', ['order' => $order, 'creditData' => $creditData, 'banks' => $banks]) ?>
-        <? endif ?>
-
-        <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && !$order->isCredit() && !$motivationAction && !$order->isPaidBySvyaznoy()): ?>
-            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
         <? endif ?>
 
         <?= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_svyaznoy-club') : '' ?>

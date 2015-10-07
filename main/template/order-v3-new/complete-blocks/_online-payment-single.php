@@ -59,7 +59,7 @@ $f = function(
                     />
                     <div class="order-payment__choosed">
                         <?= $paymentMethod->name ?>
-                        <? if ($image): ?>
+                        <? if ($image = $paymentMethod->icon): ?>
                             <img src="<?= $image ?>" alt="<?= $helper->escape($paymentMethod->name) ?>" />
                         <? endif ?>
                     </div>
