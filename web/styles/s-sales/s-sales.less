@@ -11,14 +11,14 @@
 }
 
 .s-sales-noty {
-    color: #363636;
     font-size: 18px;
+
     margin: 0 0 35px;
 
+    color: #363636;
     &__paragraph {
         margin: 0 0 5px;
     }
-
     .dotted {
         color: #363636;
         border-color: #363636;
@@ -127,6 +127,50 @@
         padding: 0 20px 20px 0;
 
         .box-sizing();
+        &.sale-finished {
+            &:before {
+                position: absolute;
+                z-index: 2;
+                top: 0;
+                right: 20px;
+                bottom: 20px;
+                left: 0;
+
+                content: '';
+                text-align: center;
+
+                background: rgba(255, 255, 255, .6);
+            }
+            &:after {
+                font-size: 14px;
+
+                position: absolute;
+                z-index: 3;
+                top: 50%;
+                left: 50%;
+
+                margin: auto;
+                padding: 0 15px;
+                height: 35px;
+                line-height: 35px;
+
+                content: attr(data-sale-status);
+                -webkit-transform: translate(-50%, -50%);
+                   -moz-transform: translate(-50%, -50%);
+                        transform: translate(-50%, -50%);
+                text-align: center;
+                white-space: nowrap;
+                .box-sizing(border-box);
+                margin: -10px 0 0 -10px;
+
+                color: #fff;
+                background: #363636;
+                background: rgba(54, 54, 54, .85);
+
+                .inline-block(middle);
+                .drop-shadow(0, 0, 12px, .2);
+            }
+        }
     }
     &__link {
         position: relative;
@@ -193,6 +237,7 @@
 
 .s-sales-header {
     font-family: 'Enter type';
+
     margin: 0 0 15px;
 
     .clearfix();
@@ -224,7 +269,6 @@
     }
 }
 
-
 .sales-noty {
     padding-bottom: 30px;
     .s-sales {
@@ -233,13 +277,13 @@
     }
     .s-sales-grid {
         margin: 0 -10px 0 0;
-
         &__cell {
             padding-right: 10px;
         }
     }
     .s-sales-noty {
         margin: 0 0 20px;
+
         text-align: center;
     }
 }

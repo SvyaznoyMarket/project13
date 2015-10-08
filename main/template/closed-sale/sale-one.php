@@ -58,8 +58,9 @@ $helper = \App::closureTemplating();
 			Строка с тремя ячейками, выста каждой ячейки 220 пиксел
 			Модификатор grid-3cell cell-h-220
 		 -->
+		 <!-- Если равершина добавляем модификатор sale-finished и соостветствующий текст в атрибут data-sale-status -->
 		<div class="s-sales-grid__row grid-3cell cell-h-220">
-			<div class="s-sales-grid__cell">
+			<div class="s-sales-grid__cell sale-finished" data-sale-status="Акция завершена"> 
 				<a class="s-sales-grid__link" href="">
 					<img src="http://img0.joyreactor.cc/pics/post/full/%D0%BA%D0%BE%D1%82%D0%B8%D0%BA%D0%B8-%D0%B6%D0%B8%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%8C-wallpaper-%D0%B1%D0%B0%D1%8F%D0%BD-885065.jpeg" alt="" class="s-sales-grid__img">
 
@@ -72,8 +73,9 @@ $helper = \App::closureTemplating();
 					</span>
 				</a>
 			</div>
-
-			<div class="s-sales-grid__cell">
+			
+			<!-- Если все товары распроданы добавляем модификатор sale-finished и соостветствующий текст в атрибут data-sale-status -->
+			<div class="s-sales-grid__cell sale-finished" data-sale-status="Все товары акции распроданы">
 				<a class="s-sales-grid__link" href="">
 					<img src="http://img0.joyreactor.cc/pics/post/full/%D0%BA%D0%BE%D1%82%D0%B8%D0%BA%D0%B8-%D0%B6%D0%B8%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%8C-wallpaper-%D0%B1%D0%B0%D1%8F%D0%BD-885065.jpeg" alt="" class="s-sales-grid__img">
 
@@ -86,7 +88,7 @@ $helper = \App::closureTemplating();
 					</span>
 				</a>
 			</div>
-
+			
 			<div class="s-sales-grid__cell">
 				<a class="s-sales-grid__link" href="">
 					<img src="http://img0.joyreactor.cc/pics/post/full/%D0%BA%D0%BE%D1%82%D0%B8%D0%BA%D0%B8-%D0%B6%D0%B8%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%8C-wallpaper-%D0%B1%D0%B0%D1%8F%D0%BD-885065.jpeg" alt="" class="s-sales-grid__img">
