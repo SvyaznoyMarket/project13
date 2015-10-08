@@ -32,11 +32,10 @@ return function(
 ?>
     <div class="order__wrap">
     <section class="orderCnt jsNewOnlineCompletePage"
-             data-order-id="<?= $order->getId() ?>"
-             data-order-number="<?= $order->getNumber() ?>"
-             data-order-number-erp="<?= $order->getNumberErp() ?>"
-             data-order-action="<?= $motivationAction ?>"
-        >
+         data-order-id="<?= $order->getId() ?>"
+         data-order-number="<?= $order->getNumber() ?>"
+         data-order-number-erp="<?= $order->getNumberErp() ?>"
+    >
 
         <!-- Блок оплата -->
         <div class="orderPayment_wrap">
@@ -44,14 +43,14 @@ return function(
             <div class="orderPayment_head">
                 <? if ($userEntity) : ?>
                     Оформлен заказ № <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>" class="orderPayment_num"><?= $order->getNumberErp() ?></a>
-                <? else : ?>
+                <? else: ?>
                     Оформлен заказ № <?= $order->getNumberErp() ?>
                 <? endif ?>
             </div>
 
             <?= $helper->render('order-v3-new/complete-blocks/_errors', ['errors' => $errors]) ?>
 
-            <? if ($isOnlinePaymentPossible && !$order->isPaid() && !$order->isCredit() && !$motivationAction && !$order->isPaidBySvyaznoy()): ?>
+            <? if ($isOnlinePaymentPossible && !$order->isPaid() && !$order->isCredit() && !$order->isPaidBySvyaznoy()): ?>
                 <? if ($isOnlinePaymentChecked): ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
                 <? else: ?>
@@ -59,13 +58,13 @@ return function(
                 <? endif ?>
             <? endif ?>
 
-            <? if (!$order->isCredit()) : ?>
+            <? if (!$order->isCredit()): ?>
 
                 <? if ($order->getDeliveryTypeId() == 3 || $order->getDeliveryTypeId() == 4 || $order->point) : ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_point', ['order' => $order]) ?>
                 <? endif ?>
 
-                <? if ($order->getDeliveryTypeId() == 1) : ?>
+                <? if ($order->getDeliveryTypeId() == 1): ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_delivery', ['order' => $order]) ?>
                 <? endif ?>
 
@@ -73,13 +72,13 @@ return function(
 
         </div>
 
-        <? if ($order->isCredit()) : ?>
+        <? if ($order->isCredit()): ?>
             <?= $helper->render('order-v3-new/complete-blocks/_credit', ['order' => $order, 'creditData' => $creditData, 'banks' => $banks]) ?>
         <? endif ?>
 
         <?= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_svyaznoy-club') : '' ?>
 
-        <? if (\App::config()->flocktory['exchange'] && !$order->isCredit()) : ?>
+        <? if (\App::config()->flocktory['exchange'] && !$order->isCredit()): ?>
             <div class="i-flocktory orderPayment" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-username="<?= $order->getFirstName() ?>" data-fl-user-email="<?= $order->email ?>"></div>
         <? endif ?>
 
@@ -94,7 +93,7 @@ return function(
     <? endif ?>
 
     <? // Показываем флоктори, если покупатель вернулся после оплаты заказа ?>
-    <? if ($order->isPaid()) : ?>
+    <? if ($order->isPaid()): ?>
         <?= $helper->render('order-v3/partner-counter/_flocktory-complete',[
             'orders'    => $orders,
             'products'  => $products,

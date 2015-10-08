@@ -77,10 +77,10 @@ class PaymentMethodEntity {
         }
 
         if (isset($arr['available_actions']) && is_array($arr['available_actions'])) $this->availableActions = $arr['available_actions'];
-
     }
 
-    /** Возвращает discount-акцию
+    /**
+     * Возвращает акцию по ее алиасу
      * @param $alias string
      * @return array|null
      */
@@ -89,6 +89,23 @@ class PaymentMethodEntity {
             if (isset($arr['alias']) && $alias == $arr['alias']) return $arr;
         }
         return null;
+    }
+
+    /**
+     * Возвращает online_motivation_discount-акцию
+     * @return array|null
+     */
+    public function getOnlineDiscountAction() {
+        $return = null;
+
+        foreach ($this->availableActions as $item) {
+            if (isset($item['alias']) && ('online_motivation_discount' === $item['alias'])) {
+                $return = $item + ['payment_sum' => null];
+                break;
+            }
+        }
+
+        return $return;
     }
 
     public function isSvyaznoyClub() {

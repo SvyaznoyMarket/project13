@@ -251,7 +251,8 @@ class CompleteAction extends OrderV3 {
         $orderId = $request->request->get('order');
         $orderNumber = $request->request->get('number');
         $backUrl = $request->request->get('url') ?: \App::router()->generate('orderV3.complete', ['refresh' => 1], true);
-        $action = $request->request->get('action'); // акция по мотивации онлайн-оплаты
+        $action = ['payment_sum' => null, 'alias' => null];
+        $action = array_merge($action, is_array($request->request->get('action')) ? $request->request->get('action') : []); // акция по мотивации онлайн-оплаты
 
         $privateClient = \App::coreClientPrivate();
 
@@ -268,7 +269,9 @@ class CompleteAction extends OrderV3 {
             'order_id'  => $orderId,
         ];
 
-        if ($action !== null) $data['action_alias'] = (string)$action;
+        if ($action['alias']) {
+            $data['action_alias'] = $action['alias'];
+        }
 
         $result = $privateClient->query('site-integration/payment-config',
             $data,

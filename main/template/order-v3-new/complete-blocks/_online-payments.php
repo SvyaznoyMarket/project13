@@ -96,6 +96,7 @@ $f = function(
                         value="<?= $paymentMethod->id ?>"
                         data-url="<?= $formUrl ?>"
                         data-value="<?= $helper->json([
+                            'action' => $paymentMethod->getOnlineDiscountAction() ?: null,
                             'method' => $paymentMethod->id,
                             'order'  => $order->id,
                             'number' => $order->number,

@@ -167,6 +167,7 @@ $f = function(
                                         <? foreach ($paymentMethodsByDiscount as $paymentMethodChunk): ?>
                                             <? foreach ($paymentMethodChunk as $paymentMethod): ?>
                                             <?
+                                                /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity|null $paymentMethod */
                                                 $containerId = sprintf('id-order-%s-paymentMethod-container', $order->id);
                                                 $elementId = sprintf('order-%s-paymentMethod-%s', $order->id, $paymentMethod->id);
                                                 $checked = $order->paymentId == $paymentMethod->id;
@@ -179,6 +180,7 @@ $f = function(
                                                         value="<?= $paymentMethod->id ?>"
                                                         data-url="<?= $formUrl ?>"
                                                         data-value="<?= $helper->json([
+                                                            'action' => $paymentMethod->getOnlineDiscountAction() ?: null,
                                                             'method' => $paymentMethod->id,
                                                             'order'  => $order->id,
                                                             'number' => $order->number,
@@ -221,6 +223,7 @@ $f = function(
                                         value="<?= $checkedPaymentMethod->id ?>"
                                         data-url="<?= $formUrl ?>"
                                         data-value="<?= $helper->json([
+                                            'action' => $checkedPaymentMethod->getOnlineDiscountAction() ?: null,
                                             'method' => $checkedPaymentMethod->id,
                                             'order'  => $order->id,
                                             'number' => $order->number,
