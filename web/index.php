@@ -163,11 +163,6 @@ $router = \App::router();
 try {
     $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
 
-    // проверка редиректа для мобильного устройства
-    if (!$response instanceof \Http\Response && \App::config()->mobileRedirect['enabled']) {
-        $response = (new \Controller\MobileRedirectAction())->execute($request);
-    }
-
     // проверка редиректа из scms
     if (!$response instanceof \Http\Response) {
         $response = (new \Controller\PreAction())->execute($request);
@@ -176,10 +171,6 @@ try {
     // если предыдущие контроллеры не вернули Response, ...
     if (!$response instanceof \Http\Response) {
         \App::logger()->info(['message' => 'Match route', 'route' => $request->attributes->get('route'), 'uri' => $request->getRequestUri(), 'method' => $request->getMethod()], ['router']);
-
-        if (\App::config()->mobileRedirect['enabled']) {
-            $response = (new \Controller\MobileRedirectAction())->execute($request);
-        }
 
         // action resolver
         $resolver = \App::actionResolver();
