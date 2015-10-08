@@ -1,0 +1,102 @@
+[
+  {
+    "uid": "9d7faeda-6d48-4267-83cd-95839e5c01e8",
+    "name": "Тестовая распродажа",
+    "discount": 0,
+    "starts_at": "2015-10-08T00:00:00+0300",
+    "priority": 2,
+    "medias": [
+      {
+        "uid": "7be1090d-c505-4436-9408-26fa42920148",
+        "content_type": "image/jpeg",
+        "provider": "image",
+        "tags": [
+
+        ],
+        "name": "Outside_Solar_System.jpg",
+        "sources": [
+          {
+            "type": "closed_sale_315x231",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/thumb_d014_closed_sale_315x231.jpeg",
+            "width": 315,
+            "height": 231
+          },
+          {
+            "type": "closed_sale_483x357",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/thumb_d014_closed_sale_483x357.jpeg",
+            "width": 483,
+            "height": 357
+          },
+          {
+            "type": "closed_sale_651x483",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/thumb_d014_closed_sale_651x483.jpeg",
+            "width": 651,
+            "height": 483
+          },
+          {
+            "type": "closed_sale_987x725",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/thumb_d014_closed_sale_987x725.jpeg",
+            "width": 987,
+            "height": 725
+          },
+          {
+            "type": "original",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/faae43ee6d37e9dbdf72b7d331e38aa2c84c282a.jpeg",
+            "width": 1920,
+            "height": 1200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "uid": "9d7faeda-6d48-4267-83cd-95839e5c01e8",
+    "name": "Тестовая распродажа",
+    "discount": 0,
+    "starts_at": "2015-10-07T00:00:00+0300",
+    "priority": 2,
+    "medias": [
+      {
+        "uid": "7be1090d-c505-4436-9408-26fa42920148",
+        "content_type": "image/jpeg",
+        "provider": "image",
+        "tags": [
+
+        ],
+        "name": "Outside_Solar_System.jpg",
+        "sources": [
+          {
+            "type": "closed_sale_315x231",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/thumb_d014_closed_sale_315x231.jpeg",
+            "width": 315,
+            "height": 231
+          },
+          {
+            "type": "closed_sale_483x357",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/thumb_d014_closed_sale_483x357.jpeg",
+            "width": 483,
+            "height": 357
+          },
+          {
+            "type": "closed_sale_651x483",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/thumb_d014_closed_sale_651x483.jpeg",
+            "width": 651,
+            "height": 483
+          },
+          {
+            "type": "closed_sale_987x725",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/thumb_d014_closed_sale_987x725.jpeg",
+            "width": 987,
+            "height": 725
+          },
+          {
+            "type": "original",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/faae43ee6d37e9dbdf72b7d331e38aa2c84c282a.jpeg",
+            "width": 1920,
+            "height": 1200
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -42,7 +42,8 @@ class SaleAction
             function (array $data) {
                 return new ClosedSaleEntity($data);
             },
-            $this->scmsClient->query('api/promo-sale/get', ['uid' => [$uid]], [])
+//            $this->scmsClient->query('api/promo-sale/get', ['uid' => [$uid]], [])
+            \App::dataStoreClient()->query('/fixture/promo-sale-get-one.json')
         );
 
         $currentSale = array_key_exists(0, $currentSales) ? $currentSales[0] : new ClosedSaleEntity([]);
@@ -67,7 +68,8 @@ class SaleAction
             function (array $data) {
                 return new ClosedSaleEntity($data);
             },
-            $this->scmsClient->query('api/promo-sale/get', [], [])
+//            $this->scmsClient->query('api/promo-sale/get', [], [])
+        \App::dataStoreClient()->query('/fixture/promo-sale-get.json')
         );
     }
 
