@@ -308,6 +308,7 @@ $c->product['itemsInAccessorySlider']   = 4;
 $c->product['minCreditPrice']           = 3000;
 $c->product['totalCount']               = 55000;
 $c->product['recommendationSessionKey']     = 'recommendationProductIds';
+$c->product['recommendationProductLimit']   = 30;
 $c->product['productPageSendersSessionKey'] = 'productPageSenders';
 $c->product['productPageSenders2SessionKey'] = 'productPageSendersForMarketplace';
 $c->product['showAveragePrice']       = false;
@@ -325,7 +326,7 @@ $c->product['viewedEnabled']          = true;
 $c->banner['timeout'] = 5000;
 $c->banner['checkStatus'] = true;
 
-$c->cart['productLimit'] = 30;
+$c->cart['productLimit'] = 0;
 $c->cart['sessionName'] = 'cart';
 $c->cart['checkStock'] = false;
 $c->cart['updateTime'] = 1; // обновлять корзину, если данные в ней устарели более, чем на 1 минуту
