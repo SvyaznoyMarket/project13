@@ -34,8 +34,8 @@ namespace Model\OrderDelivery {
          * @var float
          */
         public $total_cost;
-        /** Ошибки разбиения
-         * @var Error[]
+        /** Общая стоимость заказов
+         * @var float
          */
         public $errors = [];
 
@@ -104,7 +104,7 @@ namespace Model\OrderDelivery {
 
             // проверка на 100000 SITE-5958
             foreach ($this->orders as $order) {
-                if (\App::config()->order['prepayment']['priceLimit'] && ($order->total_cost > \App::config()->order['prepayment']['priceLimit'])) {
+                if (\App::config()->order['prepayment']['priceLimit'] && ($order->total_view_cost > \App::config()->order['prepayment']['priceLimit'])) {
                     foreach ($order->possible_payment_methods as $i => $possiblePaymentMethod) {
                         if (in_array($possiblePaymentMethod->id, ['1', '2']) && (count($order->possible_payment_methods) > 1)) {
                             unset($order->possible_payment_methods[$i]);
@@ -385,6 +385,10 @@ namespace Model\OrderDelivery\Entity {
          * @var float
          */
         public $total_cost;
+        /** Стоимость заказа (со скидками) для показа
+         * @var float
+         */
+        public $total_view_cost;
         /** Стоимость заказа (без скидок)
          * @var float
          */
@@ -453,6 +457,7 @@ namespace Model\OrderDelivery\Entity {
             if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) $this->possible_intervals = (array)$data['possible_intervals'];
 
             if (isset($data['total_cost'])) $this->total_cost = (float)$data['total_cost'];
+            if (isset($data['total_view_cost'])) $this->total_view_cost = (float)$data['total_view_cost'];
             if (isset($data['total_original_cost'])) $this->total_original_cost = (float)$data['total_original_cost'];
 
             if (isset($data['possible_point_data']) && is_array($data['possible_point_data'])) {

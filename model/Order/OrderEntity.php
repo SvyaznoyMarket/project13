@@ -203,6 +203,11 @@ class OrderEntity {
      * @var string|null
      */
     private $box_ui;
+    /**
+     * Цена заказа при онлайн-оплате
+     * @var float
+     */
+    private $total_view_cost;
 
     /** TODO принимать \Model\OrderDelivery\Entity\Order и \Model\OrderDelivery\Entity\UserInfo
      * @param array $arr
@@ -320,6 +325,8 @@ class OrderEntity {
         if (isset($arr['order']['actions']) && is_array($arr['order']['actions']) && (bool)$arr['order']['actions']) $this->action = $arr['order']['actions'];
 
         if (isset($arr['order']['delivery']['box_ui'])) $this->box_ui = $arr['order']['delivery']['box_ui'];
+
+        if (isset($arr['order']['total_view_cost'])) $this->total_view_cost = $arr['order']['total_view_cost'];
 
         if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2, $cartProducts);
 

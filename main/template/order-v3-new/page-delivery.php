@@ -65,7 +65,7 @@ $f = function(
                 <? endif ?>
             </div>
 
-            <? if (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_cost > \App::config()->order['prepayment']['priceLimit'])) : ?>
+            <? if (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_view_cost > \App::config()->order['prepayment']['priceLimit'])) : ?>
                 <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
             <? endif; ?>
 
@@ -147,7 +147,7 @@ $f = function(
                     <span class="orderCol_summ"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price).' <span class="rubl">p</span>' ?></span>
                     <span class="orderCol_summt orderCol_summt-m"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
 
-                    <span class="orderCol_summ"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
+                    <span class="orderCol_summ"><?= $helper->formatPrice($order->total_view_cost) ?> <span class="rubl">p</span></span>
                     <span class="orderCol_summt">Итого:</span>
                 </div>
             </div>
@@ -231,7 +231,7 @@ $f = function(
                         </div>
                         <div class="orderCol_tm">
                             <? if (isset($point->regtime)): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
-                            <? if (isset($point) && (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_cost < \App::config()->order['prepayment']['priceLimit']))) : ?>
+                            <? if (isset($point) && (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_view_cost < \App::config()->order['prepayment']['priceLimit']))) : ?>
                                 <br />
                                 <span class="orderCol_tm_t">Оплата при получении: </span>
                                 <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?>

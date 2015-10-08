@@ -36,7 +36,7 @@ $f = function (
                     </div>
                 <? endif ?>
 
-                <? if (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_cost > \App::config()->order['prepayment']['priceLimit'])) : ?>
+                <? if (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_view_cost > \App::config()->order['prepayment']['priceLimit'])) : ?>
                     <div class="order-error order-error--hint">Требуется предоплата.<br>Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a><i class="order-error__closer js-order-err-close"></i></div>
                 <? endif ?>
 
@@ -220,7 +220,7 @@ $f = function (
                             <div class="order-delivery__point-info">
                                 <? if (isset($point->regtime)): ?>Режим работы: <?= $point->regtime ?><? endif ?>
                             </div>
-                                <? if (isset($point) && (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_cost < \App::config()->order['prepayment']['priceLimit']))) : ?>
+                                <? if (isset($point) && (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_view_cost < \App::config()->order['prepayment']['priceLimit']))) : ?>
                                     <br/>
                                     Оплата при получении:
                                     <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?>
@@ -281,7 +281,7 @@ $f = function (
                         <span
                             class="order-bill__serv"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
 
-                        <span class="order-bill__total-price"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
+                        <span class="order-bill__total-price"><?= $helper->formatPrice($order->total_view_cost) ?> <span class="rubl">p</span></span>
                     <span class="order-bill__serv">Итого: </span>
                 </div>
 
