@@ -1,8 +1,12 @@
-<div class="basketLine basketline clearfix" ref="" data-product-id="" data-category-id="" data-bind="">
+<div class="basketLine basketline not-available clearfix" ref="" data-product-id="" data-category-id="" data-bind="">
     <div class="basketLine__img">
         <a class="basketLine__imgLink" href="" data-bind="attr: { href: link }">
             <img src="" alt="" data-bind="attr: { src: img, alt: name}">
         </a>
+
+        <!-- ko if: !isAvailable -->
+            <noindex><div class="not-available__sticker">Распродано</div></noindex>
+        <!-- /ko -->
     </div>
 
     <div class="basketLine__desc">
@@ -36,8 +40,5 @@
                 <a href="" class="button whitelink jsCartDeleteProduct" data-bind="attr: { href: deleteUrl }">Удалить</a>
             </div>
         </div>
-
-        <div class="clear pb15"></div>
-
     </div>
 </div>
