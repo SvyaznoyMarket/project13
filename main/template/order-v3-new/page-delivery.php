@@ -197,7 +197,7 @@ $f = function(
                         <span class="js-order-changePlace-link brb-dt" style="cursor: pointer;" data-content="#id-order-changePlace-content-<?= $order->id ?>">Указать место самовывоза</span>
                     <? else : ?>
                         <div class="orderCol_delivrIn_t clearfix">
-                            <strong><?= @$order->delivery->delivery_method->name ?></strong>
+                            <strong><?= strtr(@$order->delivery->delivery_method->name, ['Hermes DPD' => 'Hermes']) ?></strong>
                             <span class="js-order-changePlace-link orderChange brb-dt" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span>
                         </div>
 
