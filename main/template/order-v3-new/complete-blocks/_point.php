@@ -18,7 +18,7 @@
                     <? elseif ($order->point->isPickpoint()) : ?>
                         Вы можете забрать заказ из постамата <?= $order->getDeliveredAt()->format('d.m.Y') ?>
                     <? elseif ($order->point->isHermesPoint()) : ?>
-                        Вы можете забрать заказ в пункте выдачи Hermes-DPD <?= $order->getDeliveredAt()->format('d.m.Y') ?>
+                        Вы можете забрать заказ в пункте выдачи Hermes <?= $order->getDeliveredAt()->format('d.m.Y') ?>
                     <? endif ?>
                 </div>
                 <div class="orderPayment_msg_shop markerLst_row">
