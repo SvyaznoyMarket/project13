@@ -192,6 +192,18 @@ class CompleteAction extends OrderV3 {
         $sessionIsReaded = !($this->sessionIsReaded === false);
         $this->session->remove(self::SESSION_IS_READED_KEY);
 
+        /** @var string[] $creditDoneOrderIds */
+        $creditDoneOrderIds = call_user_func(function() {
+            $return = [];
+
+            try {
+                $data = \App::session()->get(\App::config()->order['creditStatusSessionKey']);
+                $return = array_column(is_array($data) ? $data : [], 'order_id');
+            } catch (\Exception $e) {}
+
+            return $return;
+        });
+
         $page->setParam('orders', $orders);
         $page->setParam('ordersPayment', $ordersPayment);
         $page->setParam('motivationAction', $this->getMotivationAction($orders, $ordersPayment));
@@ -205,6 +217,7 @@ class CompleteAction extends OrderV3 {
         $page->setParam('errors', array_merge( $page->getParam('errors', []), $errors));
 
         $page->setParam('sessionIsReaded', $sessionIsReaded);
+        $page->setGlobalParam('creditDoneOrderIds', $creditDoneOrderIds);
 
         $response = (bool)$orders ? new \Http\Response($page->show()) : new \Http\RedirectResponse($page->url('homepage'));
         $response->headers->setCookie(new \Http\Cookie('enter_order_v3_wanna', 0, 0, '/order',\App::config()->session['cookie_domain'], false, false)); // кнопка "Хочу быстрее"
@@ -290,18 +303,47 @@ class CompleteAction extends OrderV3 {
         return $response;
     }
 
+    /**
+     * @deprecated
+     * @return \Http\JsonResponse|null
+     */
     public function updateCredit() {
         $params = \App::request()->request->all();
 
         if (!isset($params['number_erp']) || !isset($params['bank_id'])) return null;
 
+        $result = [];
+        /*
         $result = \App::coreClientV2()->query('payment/credit-request',[],[
             'number_erp'    => $params['number_erp'],
             'bank_id'       => $params['bank_id']
         ]);
+        */
 
         return new \Http\JsonResponse($result);
 
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse
+     */
+    public function setCreditStatus(\Http\Request $request) {
+        $sessionKey = \App::config()->order['creditStatusSessionKey'];
+        $session = \App::session();
+
+        $form = [
+            'order_id' => null,
+        ];
+        $form = array_merge($form, is_array($request->get('form')) ? $request->get('form') : []);
+
+        if ($form['order_id']) {
+            $data = is_array($session->get($sessionKey)) ? $session->get($sessionKey) : [];
+            $data[$form['order_id']] = $form;
+            $session->set($sessionKey, $data);
+        }
+
+        return new \Http\JsonResponse([]);
     }
 
     /** Оплата баллами Связного
@@ -311,7 +353,7 @@ class CompleteAction extends OrderV3 {
      * @return bool Флаг об успешности операции
      * @link https://wiki.enter.ru/pages/viewpage.action?pageId=22588834
      */
-    private function completeSvyaznoy($request, $orders, &$page) {
+    private function completeSvyaznoy(\Http\Request $request, $orders, &$page) {
 
         $error = $request->query->get('Error');
 

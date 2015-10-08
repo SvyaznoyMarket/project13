@@ -4,13 +4,19 @@
  * @param \Model\Order\Entity $order
  * @param array $creditData
  * @param \Model\CreditBank\Entity[] $banks
+ * @return string
  */
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Order\Entity $order,
     $creditData,
-    $banks
-) { ?>
+    $banks,
+    $creditDoneOrderIds = []
+) {
+    if (in_array($order->id, $creditDoneOrderIds)) {
+        return '';
+    }
+?>
 
     <!-- Блок оплата в кредит -->
     <div class="orderPayment orderPaymentCr jsCreditBlock">

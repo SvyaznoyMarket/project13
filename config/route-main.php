@@ -469,6 +469,11 @@ return [
         'action'    => ['OrderV3\CompleteAction', 'updateCredit'],
         'method'    => ['POST']
     ],
+    'orderV3.set-credit-status'   => [
+        'pattern'   => '/order/set-credit-status',
+        'action'    => ['OrderV3\CompleteAction', 'setCreditStatus'],
+        'method'    => ['POST']
+    ],
     // Подари жизнь (новое оформление)
     'orderV3.lifegift' => [
         'pattern'   => '/order/life-gift/{productId}',

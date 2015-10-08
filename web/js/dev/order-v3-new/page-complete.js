@@ -22,6 +22,15 @@
             top: '50%', // Top position relative to parent
             left: '50%' // Left position relative to parent
         }) : null,
+        currentOrderIdInCredit = null,
+
+        setCreditDone = function(orderId) {
+            $.post('/order/set-credit-status', {
+                form: {
+                    order_id: orderId
+                }
+            });
+        },
 
 		getForm = function getFormF(methodId, orderId, orderNumber, action) {
 			var data = {
@@ -54,6 +63,7 @@
 		},
 
         showCreditWidget = function showCreditWidgetF(bankProviderId, data, number_erp, bank_id, orderId) {
+            currentOrderIdInCredit = orderId;
 
             if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit'], orderId);
             if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit'], orderId);
@@ -116,9 +126,12 @@
 
                     if (typeof window.DCCheckStatus !== 'function') {
                         window.DCCheckStatus = function(result) {
+                            console.info('DCCheckStatus.result', result);
                             if (5 == result) {
-
+                                currentOrderIdInCredit && setCreditDone(currentOrderIdInCredit)
                             }
+
+                            currentOrderIdInCredit = null;
                         }
                     }
 
