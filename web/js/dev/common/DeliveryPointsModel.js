@@ -71,10 +71,11 @@
         });
 
         self.autocompleteNavigation = function(data, e){
+            console.warn('autocompleteNavigation', e);
             var keycode = e.which,
-                $elements = $('.jsDeliverySuggestLi'),
-                $list = $('.deliv-suggest__list'),
-                activeClass = 'deliv-suggest__i--active',
+                $elements = $('.pick-point-suggest__i'),
+                $list = $('.pick-point-suggest__list'),
+                activeClass = 'pick-point-suggest__i-act',
                 index = $elements.index($elements.filter('.'+activeClass));
 
             $elements.removeClass(activeClass);
