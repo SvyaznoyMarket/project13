@@ -1,12 +1,30 @@
 .s-sales {
     width: 940px;
-    margin: 0 auto;
+    margin: 0 auto 20px;
     &__title {
         font: normal 46px/1.4 'Enter type';
 
         text-align: center;
 
         color: #fe4c40;
+    }
+}
+
+.s-sales-noty {
+    color: #363636;
+    font-size: 18px;
+    margin: 0 0 35px;
+
+    &__paragraph {
+        margin: 0 0 5px;
+    }
+
+    .dotted {
+        color: #363636;
+        border-color: #363636;
+        &:hover {
+            text-decoration: none;
+        }
     }
 }
 
@@ -203,5 +221,25 @@
 
             color: #5e5e5e;
         }
+    }
+}
+
+
+.sales-noty {
+    padding-bottom: 30px;
+    .s-sales {
+        width: 920px;
+        margin: 0;
+    }
+    .s-sales-grid {
+        margin: 0 -10px 0 0;
+
+        &__cell {
+            padding-right: 10px;
+        }
+    }
+    .s-sales-noty {
+        margin: 0 0 20px;
+        text-align: center;
     }
 }
