@@ -92,7 +92,7 @@ class MapView {
                 break;
             case 'self_partner_hermes_pred_supplier':
             case 'self_partner_hermes':
-                return 'Пункты выдачи Hermes-DPD';
+                return 'Пункты выдачи Hermes';
                 break;
             case 'self_partner_euroset_pred_supplier':
             case 'self_partner_euroset':
