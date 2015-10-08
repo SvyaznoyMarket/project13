@@ -38,6 +38,8 @@ namespace EnterQuery\Cart
                     $result = $this->decodeResponse($response, $curlQuery)['result'];
 
                     $this->response->products = isset($result['products'][0]) ? $result['products'] : [];
+                    $this->response->updatedAt = !empty($result['updated_at']) ? $result['updated_at'] : null;
+                    $this->response->timestamp = !empty($result['timestamp']) ? $result['timestamp'] : null;
 
                     return $result; // for cache
                 }
@@ -54,5 +56,9 @@ namespace EnterQuery\Cart\Get
     {
         /** @var array */
         public $products = [];
+        /** @var string|null */
+        public $updatedAt;
+        /** @var int|null */
+        public $timestamp;
     }
 }
