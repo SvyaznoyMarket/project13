@@ -1,4 +1,4 @@
-<div class="basketLine basketline not-available clearfix" ref="" data-product-id="" data-category-id="" data-bind="">
+<div class="basketLine basketline clearfix" ref="" data-product-id="" data-category-id="" data-bind="css: { 'not-available': !isAvailable }">
     <div class="basketLine__img">
         <a class="basketLine__imgLink" href="" data-bind="attr: { href: link }">
             <img src="" alt="" data-bind="attr: { src: img, alt: name}">

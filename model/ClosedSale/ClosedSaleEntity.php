@@ -52,8 +52,8 @@ class ClosedSaleEntity
             $this->startsAt = new \DateTime($arr['starts_at']);
         }
 
-        if (array_key_exists('ends_at', $arr)) {
-            $this->endsAt = new \DateTime($arr['ends_at']);
+        if (array_key_exists('expires_at', $arr)) {
+            $this->endsAt = new \DateTime($arr['expires_at']);
         } else {
             $start = clone $this->startsAt;
             $this->endsAt = $start
@@ -90,5 +90,39 @@ class ClosedSaleEntity
     public function getMedia()
     {
         return array_key_exists(0, $this->medias) ? $this->medias[0] : new Media();
+    }
+
+    /**
+     * Возвращает активность акции основанную на времени начала и времени окончания относительно текущего времени
+     * @return bool
+     */
+    public function isActive()
+    {
+        $time = new \DateTime();
+        return $this->startsAt < $time && $this->endsAt > $time;
+    }
+
+    /** Возвращает разницу во времени
+     * @return \DateInterval|null
+     */
+    public function getDateDiff() {
+        if ($this->endsAt instanceof \DateTime) {
+            return date_diff($this->endsAt, new \DateTime(), true);
+        }
+        return null;
+    }
+
+    /** Возвращает '2 дня 2:33:59'
+     * @return string
+     */
+    public function getDateDiffString() {
+        if ($diff = $this->getDateDiff()) {
+            if ($diff->days !== 0) {
+                return \App::helper()->numberChoiceWithCount($diff->days, ['день', 'дня', 'дней']). ' '. $diff->format('%H:%I:%S');
+            } else {
+                return $diff->format('%H:%I:%S');
+            }
+        }
+        return '';
     }
 }

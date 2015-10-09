@@ -1,4 +1,4 @@
-<div class="order-cart__item not-available clearfix" ref="" data-product-id="" data-category-id="" data-bind="">
+<div class="order-cart__item clearfix" ref="" data-product-id="" data-category-id="" data-bind="css: { 'not-available': !isAvailable }">
     <a href="" class="order-cart__item-del jsCartDeleteProduct" data-bind="attr: { href: deleteUrl }">Удалить</a>
     <div class="order-cart__img">
         <a class="order-cart__img-lk" href="" data-bind="attr: { href: link }">
