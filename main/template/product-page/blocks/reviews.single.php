@@ -7,8 +7,7 @@ $f = function(
     ?>
 
     <?= $review->isEnterReview() ? '' : '<noindex>' ?>
-    <!-- если отзыв самый полезный, выводим класс reviews__i--valuable: -->
-    <div class="reviews__i jsReviewItem reviews__i--valuable" style="display: <?= $hidden ? 'none' : 'block' ?>" data-review-ui="<?= $review->ui ?>">
+    <div class="reviews__i jsReviewItem <? if (false && $review->isMostHelpful()): // TODO FCMS-879 ?>reviews__i--valuable<? endif ?>" style="display: <?= $hidden ? 'none' : 'block' ?>" data-review-ui="<?= $review->ui ?>">
         <!-- если отзыв самый полезный, выводим лейбл: -->
         <label class="reviews__lbl">Самый полезный отзыв</label>
         <!-- /// -->
