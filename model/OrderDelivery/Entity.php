@@ -259,7 +259,7 @@ namespace Model\OrderDelivery\Entity {
                         case 'self_partner_hermes_pred_supplier':
                         case 'self_partner_hermes':
                             $this->list[(string)$item['id']] = new Point\Shop($item);
-                            $this->list[(string)$item['id']]->listName = 'HermesDPD';
+                            $this->list[(string)$item['id']]->listName = 'Hermes';
                             break;
                         case 'self_partner_formula_m_pred_supplier':
                         case 'self_partner_formula_m':
@@ -296,7 +296,7 @@ namespace Model\OrderDelivery\Entity {
                     case 'self_partner_hermes':
                         $this->marker['iconImageHref'] = '/images/deliv-icon/hermes.png';
                         $this->icon = '/images/deliv-logo/hermes.png';
-                        $this->dropdown_name = 'Пункты выдачи Hermes-DPD';
+                        $this->dropdown_name = 'Пункты выдачи Hermes';
                         break;
                     case 'self_partner_formula_m_pred_supplier':
                     case 'self_partner_formula_m':

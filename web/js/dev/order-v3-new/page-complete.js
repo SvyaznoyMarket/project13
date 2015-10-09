@@ -22,6 +22,15 @@
             top: '50%', // Top position relative to parent
             left: '50%' // Left position relative to parent
         }) : null,
+        currentOrderIdInCredit = null,
+
+        setCreditDone = function(orderId) {
+            $.post('/order/set-credit-status', {
+                form: {
+                    order_id: orderId
+                }
+            });
+        },
 
 		getForm = function getFormF(methodId, orderId, orderNumber, action) {
 			var data = {
@@ -53,10 +62,11 @@
 			})
 		},
 
-        showCreditWidget = function showCreditWidgetF(bankProviderId, data, number_erp, bank_id) {
+        showCreditWidget = function showCreditWidgetF(bankProviderId, data, number_erp, bank_id, orderId) {
+            currentOrderIdInCredit = orderId;
 
-            if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit']);
-            if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit']);
+            if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit'], orderId);
+            if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit'], orderId);
 
             $.ajax({
                 type: 'POST',
@@ -114,11 +124,20 @@
                         })
                     });
 
+                    if (typeof window.DCCheckStatus !== 'function') {
+                        window.DCCheckStatus = function(result) {
+                            console.info('DCCheckStatus.result', result);
+                            if (5 == result) {
+                                currentOrderIdInCredit && setCreditDone(currentOrderIdInCredit)
+                            }
+
+                            currentOrderIdInCredit = null;
+                        }
+                    }
 
                     DCLoans(data.vars.partnerID, 'getCredit', { products: productArr, order: data.vars.number, codeTT: data.vars.region }, function(result){
                        console.log(result);
                     }, false);
-
             });
         };
 
@@ -199,6 +218,7 @@
     $orderContent.on('click', '.jsCreditList li', function(e){
         var bankProviderId = $(this).data('bank-provider-id'),
             bank_id = $(this).data('value'),
+            orderId = $(this).data('orderId'),
             creditData = $(this).parent().siblings('.credit-widget').data('value'),
             order_number_erp = $(this).closest('.orderLn').data('order-number-erp');
 
@@ -214,7 +234,7 @@
         e.stopPropagation();
 
         if (!$(this).closest('ul').hasClass('jsCreditListOnlineMotiv')) $(this).parent().hide();
-        showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id);
+        showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id, orderId);
     });
 
     $body.on('click', function(){

@@ -86,7 +86,7 @@ return function(
             <? else: ?>
                 <div class="orderCol_delivrIn orderCol_delivrIn-pl">
                     <div class="orderCol_delivrIn_t clearfix">
-                        <strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
+                        <strong>Адрес</strong>
                     </div>
 
                     <div class="orderCol_addrs" style="margin-left: 0;">

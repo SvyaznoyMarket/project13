@@ -203,7 +203,7 @@ $f = function (
 
                             <? if ($order->delivery->point) { ?>
                                 <div class="order-delivery__shop">
-                                    <?= @$order->delivery->delivery_method->name ?>
+                                    <?= strtr(@$order->delivery->delivery_method->name, ['Hermes DPD' => 'Hermes']) ?>
                                 </div>
                             <? }; ?>
                             <div class="order__addr">

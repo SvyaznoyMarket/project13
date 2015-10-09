@@ -116,12 +116,14 @@ class Manager {
                 // Бесплатные партнеры
                 if ($lastPartner === null && !$request->cookies->has($this->cookieName)) {
                     foreach ($freeHosts as $freeHost) {
-                        if (preg_match('/' . @$freeHost['host_name'] . '/', $refererHost)) {
-                            $lastPartner = $freeHost['host_name'];
+                        $hostname = isset($freeHost['host_name']) ? $freeHost['host_name'] : null;
+
+                        if ($hostname && preg_match('/' . $hostname . '/', $refererHost)) {
+                            $lastPartner = $hostname;
                             // кука для отслеживания заказа
                             $this->cookieArray[] = [
                                 'name'  => $this->cookieName,
-                                'value' => $freeHost['host_name']
+                                'value' => $hostname,
                             ];
                         }
                     }

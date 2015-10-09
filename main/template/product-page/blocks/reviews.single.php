@@ -7,8 +7,10 @@ $f = function(
     ?>
 
     <?= $review->isEnterReview() ? '' : '<noindex>' ?>
-
-    <div class="reviews__i jsReviewItem" style="display: <?= $hidden ? 'none' : 'block' ?>" data-review-ui="<?= $review->ui ?>">
+    <div class="reviews__i jsReviewItem <? if (false && $review->isMostHelpful()): // TODO FCMS-879 ?>reviews__i--valuable<? endif ?>" style="display: <?= $hidden ? 'none' : 'block' ?>" data-review-ui="<?= $review->ui ?>">
+        <!-- если отзыв самый полезный, выводим лейбл: -->
+        <label class="reviews__lbl">Самый полезный отзыв</label>
+        <!-- /// -->
         <div class="reviews__cpt"><div class="reviews__author"><?= $review->author ? : 'Аноним' ?></div>,
             <div class="reviews__date"><?= \Util\Date::strftimeRu('%e %B2 %Y', $review->date->format('U')) ?></div></div>
 
