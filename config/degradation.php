@@ -20,6 +20,8 @@ return function(\Config\AppConfig $c) {
         $c->cart['productLimit'] = 7;
 
         $c->banner['checkStatus'] = false;
+
+        $c->abTest['enabled'] = false;
     }
 
 };

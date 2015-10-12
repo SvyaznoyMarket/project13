@@ -410,6 +410,7 @@ $c->tchiboSlider['analytics'] = [
 ];
 
 $c->abTest = [
+    'enabled'    => true,
     'cookieName' => 'switch',
     'tests'      => [],
 ];
