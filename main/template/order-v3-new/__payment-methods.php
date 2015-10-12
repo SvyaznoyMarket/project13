@@ -43,7 +43,9 @@ $f = function (
         <? foreach ($paymentMethodsByDiscount as $paymentMethodChunk): ?>
             <? foreach ($paymentMethodChunk as $groupIndex => $paymentMethods): ?>
             <?
-                $elementId = sprintf('paymentMethod-%s', $groupIndex);
+                $paymentMethod = reset($paymentMethods);
+
+                $elementId = sprintf('paymentMethod-%s', md5($groupIndex));
                 $checked = in_array($order->payment_method_id, array_keys($paymentMethods));
             ?>
                 <li class="payment-methods__i">
@@ -52,8 +54,13 @@ $f = function (
                             id="<?= $elementId ?>"
                             type="radio"
                             name="payment-type[]"
-                            value=""
-                            class="customInput customInput-defradio2 js-customInput"
+                            value="<?= $paymentMethod->id ?>"
+                            <? if ($paymentMethod->is_online): ?>data-online="true"<? endif ?>
+                            data-value="<?= $helper->json([
+                                'block_name'        => $order->block_name,
+                                'payment_method_id' => $paymentMethod->id,
+                            ]) ?>"
+                            class="customInput customInput-defradio2 js-order-paymentMethod js-customInput"
                             <?= $checked ? 'checked' : '' ?>
                         />
                         <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>"><?= $groupIndex ?></label>
