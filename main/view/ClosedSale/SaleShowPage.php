@@ -28,6 +28,7 @@ class SaleShowPage extends DefaultLayout
         );
 
         $this->setParam('availableProductCount', count($availableProducts));
+        $this->setTitle($this->sale->name);
     }
 
     public function slotBodyDataAttribute() {

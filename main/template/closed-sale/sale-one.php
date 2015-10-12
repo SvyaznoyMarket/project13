@@ -67,6 +67,10 @@ $helper = \App::closureTemplating()->getParam('helper');
 			'pager' => $productPager,
 			'view' => $productView,
 			'bannerPlaceholder' => !empty($bannerPlaceholder) ? $bannerPlaceholder : [],
+			'cartButtonSender'	=> [
+				'name'		=> 'secret_sale',
+				'position'	=> 'listing'
+			]
 		]) // листинг ?>
 	<? endif ?>
 

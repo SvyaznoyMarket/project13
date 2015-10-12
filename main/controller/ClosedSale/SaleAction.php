@@ -20,6 +20,11 @@ class SaleAction
         $this->scmsClient = \App::scmsClient();
     }
 
+    /**
+     * Страница всех акций
+     *
+     * @return Response
+     */
     public function index()
     {
         $page = new SaleIndexPage();
@@ -30,6 +35,15 @@ class SaleAction
         return new Response($page->show());
     }
 
+    /**
+     * Листинг одной акции
+     *
+     * @param $uid
+     * @param \Http\Request $request
+     *
+     * @return \Http\JsonResponse|Response
+     * @throws \Exception
+     */
     public function show($uid, \Http\Request $request)
     {
         $page = new SaleShowPage();
@@ -52,6 +66,11 @@ class SaleAction
         // получаем все продукты
         \RepositoryManager::product()->prepareProductQueries($products, 'media label brand category');
         $this->scmsClient->execute();
+
+        // немного аналитики
+        foreach ($products as $product) {
+            $product->setLink($product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&') . http_build_query(['sender' => ['name' => 'secret_sale']]));
+        }
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();
