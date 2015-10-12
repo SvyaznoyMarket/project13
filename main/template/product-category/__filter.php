@@ -1,8 +1,16 @@
 <?php
+
 /**
- * @param \Model\Product\Category\Entity[] $categories
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\Product\Filter $productFilter
+ * @param $baseUrl
+ * @param $openFilter
+ * @param array $promoStyle
+ * @param array $categories
+ * @param \Iterator\EntityPager|null $productPager
+ * @param bool|null $hasBanner
  */
-return function(
+$f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
     $baseUrl,
@@ -132,4 +140,4 @@ return function(
         </form>
     </div>
 
-<? };
+<? }; return $f;

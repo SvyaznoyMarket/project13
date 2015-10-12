@@ -231,6 +231,7 @@ class Action {
                     $helper,
                     $productSorting
                 ),
+                'countProducts'  => ($bannerPlaceholder) ? ($productPager->count() - 1) : $productPager->count(),
             ]);
         }
 
