@@ -387,6 +387,7 @@ class AppConfig {
      * @hidden
      */
     public $abTest = [
+        'enabled'     => null,
         'cookieName'  => null,
         'tests'       => [],
     ];
