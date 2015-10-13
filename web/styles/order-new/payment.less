@@ -1,47 +1,45 @@
 .payment-methods {
-    &__lst{
-        margin-top: 9px;
-    }
-
-    &__i{
+    &__i {
         line-height: 27px;
-        margin-bottom: 3px;
 
-        .customLabel{
+        margin-bottom: 3px;
+        .customLabel {
             background-position: 0 50%;
         }
-        &.top-space{
+        &.top-space {
             margin-top: 18px;
         }
     }
-    &__img{
-        margin-left: -2px;
+    &__img {
         margin-top: -5px;
+        margin-left: -2px;
+
         .inline-block(middle);
     }
-    &__discount{
-        float: right;
-        width: 172px;
-        height: 120px;
+    &__discount {
+        width: 150px;
+        max-width: 150px;
 
-        margin-top: 27px;
-
-        .box-sizing(border-box);
         border-left: 1px dotted #c7c7c7;
+
+        min-width: 150px;
+        .box-sizing(border-box);
     }
 }
-.discount{
-    padding: 10px 10px;
-
-    &__pay-type{
-        display: block;
-        color: #363636;
+.discount {
+    padding: 10px;
+    &__pay-type {
         font-size: 14px;
-        margin-top: 29px;
-    }
-    &__val{
-        font-size: 16px;
+
         display: block;
+
+        color: #363636;
+    }
+    &__val {
+        font-size: 16px;
+
+        display: block;
+
         color: #ef404a;
     }
 }
@@ -49,7 +47,10 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%;
+
     display: table-cell;
+
+    width: 100%;
+
     vertical-align: bottom;
 }
