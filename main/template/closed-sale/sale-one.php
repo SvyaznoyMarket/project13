@@ -6,6 +6,7 @@ use Model\ClosedSale\ClosedSaleEntity;
  * @var \Model\ClosedSale\ClosedSaleEntity $currentSale
  * @var \Model\ClosedSale\ClosedSaleEntity[] $sales
  * @var \Model\Product\Entity $products
+ * @var \Model\Product\Category\Entity[] $categories
  * @var $productPager
  * @var $productView
  * @var int $availableProductCount
@@ -58,6 +59,21 @@ $helper = \App::closureTemplating()->getParam('helper');
 	<? endif ?>
 
 	<? if ($products && $availableProductCount > 0) : ?>
+
+		<? if (count((array)$categories) > 1) : ?>
+		<!-- Категории -->
+		<ul>
+			<? foreach ($categories as $category) : ?>
+			<li>
+				<a href="<?= $page->url('sale.one', ['uid' => $currentSale->uid, 'categoryId' => $category->id]) ?>">
+					<img src="<?= $category->getMediaSource('category_96x96')->url ?>" />
+					<?= $category->getName() ?>
+				</a>
+			</li>
+			<? endforeach ?>
+		</ul>
+		<? endif ?>
+
 		<?= $helper->render( 'product/__listAction', [
 			'pager' => $productPager,
 			'productSorting' => $productSorting,

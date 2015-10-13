@@ -8,6 +8,7 @@ use \Http\Response;
 use Model\ClosedSale\ClosedSaleEntity;
 use \View\ClosedSale\SaleIndexPage;
 use \View\ClosedSale\SaleShowPage;
+use \Model\Product\Entity as Product;
 
 
 class SaleAction
@@ -61,6 +62,7 @@ class SaleAction
         $page = new SaleShowPage();
         $pageNum = (int)$request->get('page', 1);
         $limit = \App::config()->product['itemsPerPage'];
+        $selectedCategoryId = $request->query->get('categoryId');
 
         $sales = $this->getSales();
 
@@ -79,10 +81,29 @@ class SaleAction
         \RepositoryManager::product()->prepareProductQueries($products, 'media label brand category');
         $this->scmsClient->execute();
 
-        // немного аналитики
-        foreach ($products as $product) {
-            $product->setLink($product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&') . http_build_query(['sender' => ['name' => 'secret_sale']]));
+        // если в запросе есть ID категории, то отфильтруем товары
+        if ($selectedCategoryId) {
+            $products = array_filter($products,
+                function(Product $product) use ($selectedCategoryId) {
+                    return $product->getRootCategory() && $product->getRootCategory()->getId() == $selectedCategoryId;
+                }
+            );
         }
+
+        // немного аналитики и достаём категории
+        $categoryUids = [];
+        foreach ($products as $product) {
+            $product->setLink(
+                $product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&')
+                . http_build_query(['sender' => ['name' => 'secret_sale']])
+            );
+
+            if ($product->getRootCategory() && !in_array($categoryUids, $product->getRootCategory()->id, true)) {
+                $categoryUids[] = $product->getRootCategory()->id;
+            }
+        }
+
+        $categories = \RepositoryManager::productCategory()->getCollectionById($categoryUids);
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();
@@ -147,6 +168,7 @@ class SaleAction
         $page->setParam('currentSale', $currentSale);
         $page->setParam('productPager', $productPager);
         $page->setParam('products', $products);
+        $page->setParam('categories', $categories);
         $page->setParam('productView', \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT);
         $page->setParam('productSorting', $productSorting);
         return new Response($page->show());
