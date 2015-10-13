@@ -95,7 +95,10 @@ class SaleAction
         foreach ($products as $product) {
             $product->setLink(
                 $product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&')
-                . http_build_query(['sender' => ['name' => 'secret_sale']])
+                . http_build_query([
+                    'sender' => ['name' => 'secret_sale'],
+                    'secretsaleUid' => $uid
+                ])
             );
 
             if ($product->getRootCategory() && !in_array($categoryUids, $product->getRootCategory()->id, true)) {
