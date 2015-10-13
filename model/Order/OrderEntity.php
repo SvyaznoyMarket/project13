@@ -251,8 +251,8 @@ class OrderEntity {
             //throw new \Exception('Не указан интервал доставки');
         }
 
-        if (isset($arr['delivery_date_interval']) && isset($arr['delivery_date_interval']['from']) && $arr['delivery_date_interval']['to']) {
-            $this->delivery_date_interval = $arr['delivery_date_interval'];
+        if (isset($arr['order']['delivery']['date_interval']['from']) && isset($arr['order']['date_interval']['interval']['to'])) {
+            $this->delivery_date_interval = $arr['order']['delivery']['date_interval'];
         } else {
             $this->delivery_date_interval = null;
         }
