@@ -1,119 +1,69 @@
 <?php
 
-/**
- * @param \Helper\TemplateHelper $helper
- * @param \Model\OrderDelivery\Entity\Order $order
- * @param \Model\OrderDelivery\Entity $orderDelivery
- */
+use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
+
 $f = function (
     \Helper\TemplateHelper $helper,
-    \Model\OrderDelivery\Entity\Order $order,
-    \Model\OrderDelivery\Entity $orderDelivery
+    \Model\OrderDelivery\Entity\Order $order
 ) {
-    /** @var \Model\OrderDelivery\Entity\PaymentMethod $paymentMethod */
-
     $isOrderWithCart = \App::abTest()->isOrderWithCart();
-
-    $paymentMethodsByDiscount = [];
-    foreach ($order->possible_payment_methods as $paymentMethod) {
-        $index = $paymentMethod->discount ? 0 : 1;
-        if (in_array($paymentMethod->id, ['1', '2'])) {
-            $paymentMethodsByDiscount[$index]['При получении'][$paymentMethod->id] = $paymentMethod;
-            if ('1' == $paymentMethod->id) {
-                $paymentMethod->name = 'наличными';
-            } else if ('2' == $paymentMethod->id) {
-                $paymentMethod->name = 'банковской картой';
-            }
-        } else {
-            $paymentMethodsByDiscount[$index][][$paymentMethod->id] = $paymentMethod;
-        }
-    }
-    ksort($paymentMethodsByDiscount);
 ?>
-    <div class="payments-types-table table <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
 
-        <div class="payments-types-table__head"><strong>Способы оплаты</strong></div>
+    <div class="paymentMethods <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
+        <strong>Способы оплаты</strong>
+        <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH]) || isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
+            <div class="paymentRow">
+                <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CASH || $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
+                <input id="payment-cash" type="radio" name="payment-type[]" value="by_cash" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?> />
+                <label for="payment-cash" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">При получении</label>
 
-        <div class="paymentMethods payments-types-table__types table-cell">
-            <ul class="payment-methods__lst">
-            <? foreach ($paymentMethodsByDiscount as $paymentMethodChunk): ?>
-                <? foreach ($paymentMethodChunk as $groupIndex => $paymentMethods): ?>
-                <?
-                    $paymentMethod = reset($paymentMethods);
-
-                    $elementId = sprintf('paymentMethod-%s', md5($groupIndex));
-                    $checked = in_array($order->payment_method_id, array_keys($paymentMethods));
-                ?>
-                    <li class="payment-methods__i">
-                    <? if (count($paymentMethods) > 1): ?>
-                            <input
-                                id="<?= $elementId ?>"
-                                type="radio"
-                                name="payment-type[]"
-                                value="<?= $paymentMethod->id ?>"
-                                <? if ($paymentMethod->is_online): ?>data-online="true"<? endif ?>
-                                data-value="<?= $helper->json([
-                                    'block_name'        => $order->block_name,
-                                    'payment_method_id' => $paymentMethod->id,
-                                ]) ?>"
-                                class="customInput customInput-defradio2 js-order-paymentMethod js-customInput"
-                                <?= $checked ? 'checked' : '' ?>
-                            />
-                            <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>"><?= $groupIndex ?></label>
-                            <select class="customSel-inner js-order-paymentMethod">
-                            <? foreach ($paymentMethods as $paymentMethod): ?>
-                            <?
-                                $checked = $order->payment_method_id == $paymentMethod->id;
-                            ?>
-                                <option
-                                    value="<?= $paymentMethod->id ?>"
-                                    <?= $checked ? 'selected' : '' ?>
-                                    <? if ($paymentMethod->is_online): ?>data-online="true"<? endif ?>
-                                    data-value="<?= $helper->json([
-                                        'block_name'        => $order->block_name,
-                                        'payment_method_id' => $paymentMethod->id,
-                                    ]) ?>"
-                                ><?= $paymentMethod->name ?></option>
-                            <? endforeach ?>
-                            </select>
-                    <? else: ?>
-                    <?
-                        $paymentMethod = reset($paymentMethods);
-
-                        $elementId = sprintf('paymentMethod-%s', $paymentMethod->id);
-                        $checked = $order->payment_method_id == $paymentMethod->id;
-                    ?>
-                        <input
-                            id="<?= $elementId ?>"
-                            type="radio"
-                            name="payment-type[]"
-                            value="<?= $paymentMethod->id ?>"
-                            <? if ($paymentMethod->is_online): ?>data-online="true"<? endif ?>
-                            data-value="<?= $helper->json([
-                                'block_name'        => $order->block_name,
-                                'payment_method_id' => $paymentMethod->id,
-                            ]) ?>"
-                            class="customInput customInput-defradio2 js-order-paymentMethod js-customInput"
-                            <?= $checked ? 'checked' : '' ?>
-                        />
-                        <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">
-                            <?= $paymentMethod->name ?>
-                            <? if ($image = $paymentMethod->icon): ?>
-                                <img class="payment-methods__img" src="<?= $image ?>">
+                <? if ($order->delivery_group_id != 1) : /* Скрываем выбор наличные/банковская карта при самовывозе */?>
+                    <div class="customSel">
+                        <select class="customSel-inner jsPaymentMethodSelect">
+                            <? if (array_key_exists(PaymentMethod::PAYMENT_CASH, $order->possible_payment_methods)) : ?>
+                                <option value="by_cash" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CASH ? 'selected' : '' ?>>наличными</option>
                             <? endif ?>
-                        </label>
-                    <? endif ?>
-                    </li>
-                <? endforeach ?>
-                
-            <? endforeach ?>
-            </ul>
-        </div>
+                            <? if (array_key_exists(PaymentMethod::PAYMENT_CARD_ON_DELIVERY, $order->possible_payment_methods)) : ?>
+                                <option value="by_credit_card" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY ? 'selected' : '' ?>>банковской картой</option>
+                            <? endif ?>
+                        </select>
+                    </div>
+                <? endif ?>
 
-        <div class="payment-methods__discount discount payments-types-table__motivation table-cell">
-            <span class="discount__pay-type">Онлайн-оплата</span>
-            <span class="discount__val">Скидка 15%</span>
-        </div>
+            </div>
+        <? endif ?>
+
+        <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ONLINE])) : ?>
+            <div class="paymentRow jsDeliveryChooseOnline">
+                <? $checked = ($order->payment_method_id == PaymentMethod::PAYMENT_CARD_ONLINE); ?>
+                <input id="payment-online" type="radio" name="payment-type[]" value="by_online" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?>>
+                <label for="payment-online" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">Онлайн-оплата:
+                    <ul class="orderPaymentWeb_lst-sm">
+                        <? if (array_key_exists(PaymentMethod::PAYMENT_CARD_ONLINE, $order->possible_payment_methods)) : ?>
+                            <li class="orderPaymentWeb_lst-sm-i"><img src ="/styles/order/img/visa-logo-sm.jpg"></li>
+                        <? endif ?>
+                        <? if (false) : /* Яндекс-денег пока вообще нет */ ?>
+                            <li class="orderPaymentWeb_lst-sm-i"><img src ="/styles/order/img/yamoney-sm.jpg"></li>
+                        <? endif ?>
+                        <? if (array_key_exists(PaymentMethod::PAYMENT_PAYPAL, $order->possible_payment_methods)) : ?>
+                            <li class="orderPaymentWeb_lst-sm-i"><img src ="/styles/order/img/paypal.png"></li>
+                        <? endif ?>
+                        <? if (array_key_exists(PaymentMethod::PAYMENT_PSB, $order->possible_payment_methods)) : ?>
+                            <li class="orderPaymentWeb_lst-sm-i"><img src ="/styles/order/img/psb.png"></li>
+                        <? endif ?>
+                    </ul>
+                </label>
+            </div>
+        <? endif ?>
+
+        <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT])) : ?>
+            <div class="paymentRow jsDeliveryChooseCredit">
+                <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
+                <input id="payment-credit" type="radio" name="payment-type[]" value="by_online_credit" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?>>
+                <label for="payment-credit" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">Купить в кредит</label><br>
+            </div>
+        <? endif ?>
+
     </div>
 
 <? };
