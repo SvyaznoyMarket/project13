@@ -62,12 +62,12 @@ $helper = \App::closureTemplating()->getParam('helper');
 
 		<? if (count((array)$categories) > 1) : ?>
 		<!-- Категории -->
-		<ul>
+		<ul class="list-categories">
 			<? foreach ($categories as $category) : ?>
-			<li>
-				<a href="<?= $page->url('sale.one', ['uid' => $currentSale->uid, 'categoryId' => $category->id]) ?>">
-					<img src="<?= $category->getMediaSource('category_96x96')->url ?>" />
-					<?= $category->getName() ?>
+			<li class="list-categories__item">
+				<a class="list-categories__link" href="<?= $page->url('sale.one', ['uid' => $currentSale->uid, 'categoryId' => $category->id]) ?>">
+					<span class="list-categories__image"><img class="image" src="<?= $category->getMediaSource('category_96x96')->url ?>" /></span>
+					<span class="list-categories__name"><?= $category->getName() ?></span>
 				</a>
 			</li>
 			<? endforeach ?>
