@@ -55,7 +55,7 @@ class ClosedSaleEntity
         if (array_key_exists('expires_at', $arr)) {
             $this->endsAt = new \DateTime($arr['expires_at']);
         } else {
-            $start = clone $this->startsAt;
+            $start = is_object($this->startsAt) ? clone $this->startsAt : null;
             $this->endsAt = $start
                 ? $start->add(new \DateInterval(sprintf('P%sD', self::ACTION_DAYS)))
                 : new \DateTime(sprintf('%s days', self::ACTION_DAYS));

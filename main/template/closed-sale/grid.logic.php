@@ -8,7 +8,7 @@ $canUseThreeSmall = true;
 // А теперь логика грида!
 while ($currentSales) {
     // если оставшееся количество больше трех
-    if (count($currentSales) > 3) {
+    if (count($currentSales) >= 3) {
         // и не использовали левую раскладку
         if (!$leftUsed) {
             echo $page->render('closed-sale/partials/grid.middle-left',
