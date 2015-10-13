@@ -4,10 +4,10 @@ namespace Controller\User;
 
 use EnterApplication\CurlTrait;
 use Session\AbTest\ABHelperTrait;
-use \Model\Session\FavouriteProduct;
 use Controller\Enterprize\ConfirmAction;
 use EnterQuery as Query;
 use \Model\Product\Entity as Product;
+use \Model\User\Entity as User;
 
 class Action {
 
@@ -135,34 +135,12 @@ class Action {
                     $this->setFavourites();
 
                     // объединение корзины
-                    try {
-                        call_user_func(function() use (&$userEntity) {
-                            if (!$this->isCoreCart() || !$userEntity) return;
-
-                            $mergeCartAction = new \EnterApplication\Action\Cart\Merge();
-                            $request = $mergeCartAction->createRequest();
-                            $request->userUi = $userEntity->getUi();
-                            $request->regionId = \App::user()->getRegion()->getId();
-
-                            $mergeCartAction->execute($request);
-                        });
-                    } catch (\Exception $e) {
-                        \App::logger()->error(['message' => 'Не удалось объединить корзину пользователя', 'token' => \App::user()->getToken()], ['user']);
-                    }
-
-                    try {
-                        \App::coreClientV2()->query(
-                            'user/update',
-                            ['token' => \App::user()->getToken()],
-                            [
-                                'geo_id' => \App::user()->getRegion()->getId(),
-                            ]
-                        );
-                    } catch (\Exception $e) {
-                        \App::logger()->error(['message' => 'Не удалось обновить регион у пользователя', 'token' => \App::user()->getToken()], ['user']);
-                    }
+                    $this->mergeUserCart($userEntity);
+                    // обновление региона в ядре
+                    $this->updateUserRegion();
 
                     return $response;
+
                 } catch(\Exception $e) {
                     \App::exception()->remove($e);
 
@@ -212,6 +190,80 @@ class Action {
         $page->setParam('oauthEnabled', \App::config()->oauthEnabled);
 
         return new \Http\Response($page->show());
+    }
+
+    /**
+     * Авторизация с помощью одноразового токена
+     *
+     * @param string $token
+     *
+     * @return User|null
+     */
+    public function authWithToken($token = null)
+    {
+        $userEntity = null;
+
+        $authResult = \App::coreClientV2()->query(
+            'user/auth',
+            ['token' => $token],
+            [
+                'geo_id' => \App::user()->getRegion()->getId(),
+            ]
+        );
+
+        if (array_key_exists('token', $authResult)) {
+            $userEntity = \RepositoryManager::user()->getEntityByToken($authResult['token']);
+        }
+
+        if ($userEntity) {
+            $this->mergeUserCart($userEntity);
+            $this->updateUserRegion();
+        }
+
+        return $userEntity;
+    }
+
+    /**
+     * Объединение серверной корзины
+     *
+     * @param User $userEntity
+     */
+    private function mergeUserCart(User $userEntity)
+    {
+        if (!self::isCoreCart()) {
+            return;
+        }
+
+        try {
+            $mergeCartAction = new \EnterApplication\Action\Cart\Merge();
+            $request = $mergeCartAction->createRequest();
+            $request->userUi = $userEntity->getUi();
+            $request->regionId = \App::user()->getRegion()->getId();
+
+            $mergeCartAction->execute($request);
+        } catch (\Exception $e) {
+            \App::logger()->error(['message' => 'Не удалось объединить корзину пользователя', 'token' => \App::user()->getToken()], ['user']);
+            \App::exception()->remove($e);
+        }
+    }
+
+    /**
+     * Обновление региона у пользователя
+     */
+    private function updateUserRegion()
+    {
+        try {
+            \App::coreClientV2()->query(
+                'user/update',
+                ['token' => \App::user()->getToken()],
+                [
+                    'geo_id' => \App::user()->getRegion()->getId(),
+                ]
+            );
+        } catch (\Exception $e) {
+            \App::logger()->error(['message' => 'Не удалось обновить регион у пользователя', 'token' => \App::user()->getToken()], ['user']);
+            \App::exception()->remove($e);
+        }
     }
 
     /**

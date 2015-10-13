@@ -3,6 +3,7 @@
 namespace Controller\ClosedSale;
 
 
+use \Exception\AccessDeniedException;
 use \Http\Response;
 use Model\ClosedSale\ClosedSaleEntity;
 use \View\ClosedSale\SaleIndexPage;
@@ -18,6 +19,17 @@ class SaleAction
     public function __construct()
     {
         $this->scmsClient = \App::scmsClient();
+
+        /*if (!\App::user()->getToken()) {
+            $route = \App::request()->attributes->get('route');
+
+            $exception = new AccessDeniedException();
+            $exception->setRedirectUrl(
+                null
+            );
+            throw $exception;
+        }*/
+
     }
 
     /**

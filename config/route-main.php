@@ -907,12 +907,12 @@ return [
      */
 
     'sale.all'  => [
-        'pattern'   => '/sale',
+        'pattern'   => '/secretsale',
         'action'    => ['ClosedSale\SaleAction', 'index']
     ],
 
     'sale.one'  => [
-        'pattern'   => '/sale/{uid}',
+        'pattern'   => '/secretsale/{uid}',
         'action'    => ['ClosedSale\SaleAction', 'show'],
         'require' => [
             'uid'		=> '[\w\d-_]+'
