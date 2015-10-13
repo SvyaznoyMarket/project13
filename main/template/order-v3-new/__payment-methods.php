@@ -35,8 +35,8 @@ $f = function (
         <div class="payments-types-table__head"><strong>Способы оплаты</strong></div>
 
         <div class="paymentMethods payments-types-table__types table-cell">
-            <? foreach ($paymentMethodsByDiscount as $paymentMethodChunk): ?>
-            <ul class="payment-methods__lst">
+            <? foreach ($paymentMethodsByDiscount as $discountIndex => $paymentMethodChunk): ?>
+            <ul class="payment-methods__lst <? if (0 === $discountIndex): ?>discount<? endif ?>">
                 <? foreach ($paymentMethodChunk as $groupIndex => $paymentMethods): ?>
                 <?
                     $paymentMethod = reset($paymentMethods);
