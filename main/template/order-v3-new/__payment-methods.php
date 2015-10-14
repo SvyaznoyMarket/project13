@@ -36,7 +36,7 @@ $f = function (
 
         <div class="paymentMethods payments-types-table__types table-cell">
             <? foreach ($paymentMethodsByDiscount as $discountIndex => $paymentMethodChunk): ?>
-            <ul class="payment-methods__lst <? if (0 === $discountIndex): ?>discount<? endif ?>">
+            <ul class="payment-methods__lst">
                 <? foreach ($paymentMethodChunk as $groupIndex => $paymentMethods): ?>
                 <?
                     $paymentMethod = reset($paymentMethods);
@@ -106,12 +106,13 @@ $f = function (
                     </li>
                 <? endforeach ?>
             </ul>
+                <? if (0 === $discountIndex): ?>
+                    <div class="payment-methods__discount discount payments-types-table__motivation table-cell">
+                        <span class="discount__pay-type">Онлайн-оплата</span>
+                        <span class="discount__val">Скидка 15%</span>
+                    </div>
+                <? endif ?>
             <? endforeach ?>
-        </div>
-
-        <div class="payment-methods__discount discount payments-types-table__motivation table-cell">
-            <span class="discount__pay-type">Онлайн-оплата</span>
-            <span class="discount__val">Скидка 15%</span>
         </div>
     </div>
 
