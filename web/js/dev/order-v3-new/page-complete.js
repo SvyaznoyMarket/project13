@@ -62,11 +62,11 @@
 			})
 		},
 
-        showCreditWidget = function showCreditWidgetF(bankProviderId, data, number_erp, bank_id, orderId) {
+        showCreditWidget = function showCreditWidgetF(bankProviderId, data, number_erp, bank_id, orderId, containerId) {
             currentOrderIdInCredit = orderId;
 
-            if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit'], orderId);
-            if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit'], orderId);
+            if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit'], orderId, containerId);
+            if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit'], orderId, containerId);
 
             $.ajax({
                 type: 'POST',
@@ -105,7 +105,7 @@
                 });
         },
 
-        showDirectCredit = function showDirectCreditF(data){
+        showDirectCredit = function showDirectCreditF(data, orderId, containerId){
             var productArr = [];
 
             $LAB.script( '//api.direct-credit.ru/JsHttpRequest.js' )
@@ -126,9 +126,18 @@
 
                     if (typeof window.DCCheckStatus !== 'function') {
                         window.DCCheckStatus = function(result) {
+                            var $container = containerId && $('#' + containerId);
+
                             console.info('DCCheckStatus.result', result);
                             if (5 == result) {
-                                currentOrderIdInCredit && setCreditDone(currentOrderIdInCredit)
+                                currentOrderIdInCredit && setCreditDone(currentOrderIdInCredit);
+
+                                try {
+
+                                } catch (error) { console.error(error); }
+                                if ($container && $container.length) {
+                                    $container.hide();
+                                }
                             }
 
                             currentOrderIdInCredit = null;
@@ -220,7 +229,9 @@
             bank_id = $(this).data('value'),
             orderId = $(this).data('orderId'),
             creditData = $(this).parent().siblings('.credit-widget').data('value'),
-            order_number_erp = $(this).closest('.orderLn').data('order-number-erp');
+            order_number_erp = $(this).closest('.orderLn').data('order-number-erp')
+            containerId = $(this).closest('.jsCreditBlock').attr('id')
+        ;
 
 		if (typeof order_number_erp == 'undefined') order_number_erp = $orderContent.data('order-number-erp');
 
@@ -234,7 +245,7 @@
         e.stopPropagation();
 
         if (!$(this).closest('ul').hasClass('jsCreditListOnlineMotiv')) $(this).parent().hide();
-        showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id, orderId);
+        showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id, orderId, containerId);
     });
 
     $body.on('click', function(){

@@ -19,7 +19,7 @@ $f = function(
 ?>
 
     <!-- Блок оплата в кредит -->
-    <div class="orderPayment orderPaymentCr jsCreditBlock">
+    <div id="credit-<?= md5($order->id ?: uniqid()) ?>" class="orderPayment orderPaymentCr jsCreditBlock">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">
