@@ -191,6 +191,6 @@ trait ABHelperTrait {
      * @return bool
      */
     public function isCartTextInOrderButton() {
-        return 'cart' === \App::abTest()->getTest('cart_text')->getChosenCase()->getKey();
+        return self::isOrderWithCart() && ('cart' === \App::abTest()->getTest('cart_text')->getChosenCase()->getKey());
     }
 }
