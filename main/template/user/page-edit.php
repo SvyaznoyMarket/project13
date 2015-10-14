@@ -21,7 +21,7 @@
         <fieldset class="personalData_left">
             <legend class="legend">Личные данные</legend>
 
-            <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
+            <input type="hidden" name="redirect_to" value="<?= $page->escape($redirect) ?>">
 
             <label class="personalData_label labeltext">Имя:</label>
             <input class="personalData_text textfield" type="text" value="<?= $form->getFirstName() ?>" name="user[first_name]" />
