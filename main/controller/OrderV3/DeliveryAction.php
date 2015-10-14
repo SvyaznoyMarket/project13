@@ -462,7 +462,7 @@ class DeliveryAction extends OrderV3 {
         if (!is_array($errors)) return;
 
         foreach ($errors as $error) {
-            if (isset($error['message'])) {
+            if (is_array($error) && isset($error['message'])) {
                 $error = new \Model\OrderDelivery\Error($error, $orderDelivery);
             }
 
