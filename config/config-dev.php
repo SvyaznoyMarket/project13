@@ -47,4 +47,7 @@ $c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoic
 
 $c->mainMenu['recommendationsEnabled'] = false;
 
+$c->coreV2['url'] = 'http://cr2.core.ent3.ru/v2/';
+$c->corePrivate['url'] = 'http://cr2.core.ent3.ru/private/';
+
 return $c;

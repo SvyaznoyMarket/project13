@@ -30,13 +30,13 @@ $f = function (
     }
     ksort($paymentMethodsByDiscount);
 ?>
-    <div class="payments-types-table table <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
+    <div class="payments-types-table <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
 
         <div class="payments-types-table__head"><strong>Способы оплаты</strong></div>
 
-        <div class="paymentMethods payments-types-table__types table-cell">
+        <div class="paymentMethods">
             <? foreach ($paymentMethodsByDiscount as $discountIndex => $paymentMethodChunk): ?>
-            <ul class="payment-methods__lst">
+            <ul class="payment-methods__lst <? if (0 === $discountIndex): ?>payment-methods__lst_discount<? endif ?>">
                 <? foreach ($paymentMethodChunk as $groupIndex => $paymentMethods): ?>
                 <?
                     $paymentMethod = reset($paymentMethods);
@@ -107,7 +107,7 @@ $f = function (
                 <? endforeach ?>
             </ul>
                 <? if (0 === $discountIndex): ?>
-                    <div class="payment-methods__discount discount payments-types-table__motivation table-cell">
+                    <div class="payment-methods__discount discount">
                         <span class="discount__pay-type">Онлайн-оплата</span>
                         <span class="discount__val">Скидка 15%</span>
                     </div>

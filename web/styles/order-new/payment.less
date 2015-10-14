@@ -9,6 +9,9 @@
         &.top-space {
             margin-top: 18px;
         }
+        &:last-child {
+            margin-bottom: 0;
+        }
     }
     &__img {
         margin-top: -5px;
@@ -17,17 +20,31 @@
         .inline-block(middle);
     }
     &__discount {
-        width: 150px;
-        max-width: 150px;
+        width: 30%;
+        margin-bottom: 15px;
 
-        border-left: 1px dotted #c7c7c7;
-
-        min-width: 150px;
+        .inline-block(middle);
         .box-sizing(border-box);
+    }
+    &__lst {
+        margin: 0 0 15px;
+
+        .box-sizing(border-box);
+        &:last-child {
+            margin: 0;
+        }
+        &_discount {
+            width: 68%;
+            padding-right: 10px;
+
+            border-right: 1px dotted #c7c7c7;
+
+            .inline-block(middle);
+        }
     }
 }
 .discount {
-    padding: 10px;
+    padding: 0 0 0 10px;
     &__pay-type {
         font-size: 14px;
 
