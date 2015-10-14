@@ -201,5 +201,5 @@ try {
     $response = $action->execute($e, $request);
 } catch (\Exception\AccessDeniedException $e) {
     $action = new \Controller\Error\AccessDeniedAction();
-    $response = $action->execute($e, $request, $e->getRedirectUrl());
+    $response = $action->execute($e, $request);
 }

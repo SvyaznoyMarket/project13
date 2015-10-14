@@ -7,11 +7,13 @@ class AccessDeniedAction {
     /**
      * @param \Exception $exception
      * @param \Http\Request $request
-     * @param $redirectUrl
      *
      * @return \Http\RedirectResponse|\Http\Response
+     * @throws \InvalidArgumentException
+     * @throws \LogicException
+     * @throws \RuntimeException
      */
-    public function execute(\Exception $exception, \Http\Request $request, $redirectUrl) {
+    public function execute(\Exception $exception, \Http\Request $request) {
 
         \App::logger()->info([
             'message'   => 'Доступ запрещен.',
@@ -22,7 +24,7 @@ class AccessDeniedAction {
             $response = new \Http\Response('', 403);
         } else {
             $response = new \Http\RedirectResponse(
-                \App::router()->generate('user.login', ['redirect_to' => $redirectUrl])
+                \App::router()->generate('user.login')
             );
         }
 

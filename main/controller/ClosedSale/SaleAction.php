@@ -21,15 +21,11 @@ class SaleAction
     {
         $this->scmsClient = \App::scmsClient();
 
-        /*if (!\App::user()->getToken()) {
-            $route = \App::request()->attributes->get('route');
-
+        if (!\App::user()->getToken()) {
             $exception = new AccessDeniedException();
-            $exception->setRedirectUrl(
-                null
-            );
+            $exception->setRedirectUrl(\App::request()->getRequestUri());
             throw $exception;
-        }*/
+        }
 
     }
 
@@ -63,6 +59,7 @@ class SaleAction
         $pageNum = (int)$request->get('page', 1);
         $limit = \App::config()->product['itemsPerPage'];
         $selectedCategoryId = $request->query->get('categoryId');
+        $categories = [];
 
         $sales = $this->getSales();
 
@@ -106,7 +103,9 @@ class SaleAction
             }
         }
 
-        $categories = \RepositoryManager::productCategory()->getCollectionById($categoryUids);
+        if ($categoryUids) {
+            $categories = \RepositoryManager::productCategory()->getCollectionById($categoryUids);
+        }
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();

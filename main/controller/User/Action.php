@@ -4,6 +4,7 @@ namespace Controller\User;
 
 use EnterApplication\CurlTrait;
 use Session\AbTest\ABHelperTrait;
+use \Model\Session\FavouriteProduct;
 use Controller\Enterprize\ConfirmAction;
 use EnterQuery as Query;
 use \Model\Product\Entity as Product;
@@ -24,6 +25,8 @@ class Action {
      */
     private function checkRedirect(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
+        $userEntity = null;
+        $disposableParamName = \App::config()->authToken['disposableTokenParam'];
 
         $this->redirect = \App::router()->generate(\App::config()->user['defaultRoute']); // default redirect to the /private page (Личный кабинет)
         $redirectTo = rawurldecode($request->get('redirect_to'));
@@ -31,8 +34,21 @@ class Action {
             $this->redirect = $redirectTo;
             $this->requestRedirect = $redirectTo;
         }
+        if ($sessionRedirect = \App::session()->redirectUrl()) {
+            parse_str(parse_url($sessionRedirect, PHP_URL_QUERY), $queryArr);
+            if (array_key_exists($disposableParamName, $queryArr)) {
+                $userEntity = $this->authWithToken($queryArr[$disposableParamName]);
+                // удаляем токен из редиректа
+                $sessionRedirect = preg_replace(
+                    $disposableParamName. '=' . $queryArr[$disposableParamName],
+                    '',
+                    $sessionRedirect
+                );
+            }
+            $this->redirect = $sessionRedirect;
+        }
 
-        if (\App::user()->getEntity()) { // if user is logged in
+        if (\App::user()->getEntity() || $userEntity) { // if user is logged in
             if (empty($redirectTo)) {
                 return $request->isXmlHttpRequest()
                     ? new \Http\JsonResponse([
@@ -143,6 +159,7 @@ class Action {
 
                 } catch(\Exception $e) {
                     \App::exception()->remove($e);
+                    \App::session()->redirectUrl($this->redirect);
 
                     switch ($e->getCode()) {
                         case 614:
@@ -182,6 +199,8 @@ class Action {
                     'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
                 ]);
             }
+
+            \App::session()->redirectUrl($this->redirect);
         }
 
         $page = new \View\User\LoginPage();
@@ -204,9 +223,9 @@ class Action {
         $userEntity = null;
 
         $authResult = \App::coreClientV2()->query(
-            'user/auth',
-            ['token' => $token],
-            [
+            'user/auth-by-token',
+            [],
+            [   'token' => $token,
                 'geo_id' => \App::user()->getRegion()->getId(),
             ]
         );

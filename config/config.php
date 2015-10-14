@@ -20,8 +20,10 @@ $c->routePrefix = '';
 $c->debug = false;
 $c->logger['pretty'] = false;
 $c->appName = 'Enter';
+
 $c->authToken['name']     = '_token';
 $c->authToken['authorized_cookie'] = '_authorized';
+$c->authToken['disposableTokenParam'] = 'authToken'; // имя параметра для одноразовой аутенфикации
 
 $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 2592000; // 30 дней
