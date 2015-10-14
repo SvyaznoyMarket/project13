@@ -579,7 +579,7 @@ return [
     // редактирование данных пользователя
     'user.orders' => [
         'pattern' => '/private/orders',
-        'action'  => ['User\OrdersAction', 'execute'],
+        'action'  => ['User\Order\IndexAction', 'execute'],
     ],
     // редактирование данных пользователя
     'user.favorites' => [

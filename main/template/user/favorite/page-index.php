@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page                 \View\User\OrdersPage
+ * @var $page                 \View\User\FavoritesPage
  * @var $helper               \Helper\TemplateHelper
  * @var $user                 \Session\User
  * @var $productsByUi         \Model\Product\Entity[]

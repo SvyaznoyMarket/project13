@@ -35,8 +35,13 @@ class Entity {
     public $id;
     /** @var int */
     public $typeId;
-    /** @var int */
+    /**
+     * @deprecated
+     * @var int
+     */
     public $statusId;
+    /** @var StatusEntity|null */
+    public $status;
     /** @var string */
     public $number;
     /** @var string */
@@ -155,6 +160,7 @@ class Entity {
         } else if (!empty($data['status']['id'])) {
             $this->setStatusId($data['status']['id']);
         }
+        if (isset($data['status']['id'])) $this->status = new StatusEntity($data['status']);
         if (array_key_exists('access_token', $data)) $this->setAccessToken($data['access_token']);
         if (array_key_exists('number', $data)) $this->setNumber($data['number']);
         if (array_key_exists('number_erp', $data)) $this->setNumberErp($data['number_erp']);
