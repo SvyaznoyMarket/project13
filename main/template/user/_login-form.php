@@ -25,7 +25,7 @@ if (!isset($redirect_to)) $redirect_to = null;
                     >забыли?</span>
             </div>
 
-            <input type="hidden" name="redirect_to" value="<?= $redirect_to ?>">
+            <input type="hidden" name="redirect_to" value="<?= $page->escape($redirect_to) ?>">
 
             <input type="submit" class="authForm_is btnsubmit" name="" data-loading-value="Вхожу..." value="Войти">
 

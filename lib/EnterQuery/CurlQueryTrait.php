@@ -111,11 +111,16 @@ trait CurlQueryTrait
                     $this->error = $query->response->error;
 
                     // TODO: удалить; сейчас нужно для старого журнала
+                    $errorItem = ['code' => $this->error->getCode(), 'message' => $this->error->getMessage()];
+                    if (28 === $this->error->getCode()) {
+                        $errorItem['message'] = 'Operation timed out';
+                        $errorItem['detail'] = $this->error->getMessage();
+                    }
                     \App::logger()->error([
                         'message' => 'Fail curl',
                         'cache' => true, // важно
                         'delay' => $query->request->delay, // важно
-                        'error' => ['code' => $this->error->getCode(), 'message' => $this->error->getMessage()],
+                        'error' => $errorItem,
                         'url' => $query->request->options[CURLOPT_URL],
                         'data' => $data,
                         'info' => $query->response->info,
