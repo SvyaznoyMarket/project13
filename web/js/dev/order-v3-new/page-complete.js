@@ -133,11 +133,10 @@
                                 currentOrderIdInCredit && setCreditDone(currentOrderIdInCredit);
 
                                 try {
-
+                                    if ($container && $container.length) {
+                                        $container.hide();
+                                    }
                                 } catch (error) { console.error(error); }
-                                if ($container && $container.length) {
-                                    $container.hide();
-                                }
                             }
 
                             currentOrderIdInCredit = null;
