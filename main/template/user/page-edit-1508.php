@@ -38,7 +38,7 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
         <div class="personal__sub-head">Изменить пароль</div>
         <p class="personal__txt">Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные буквы, цифры или символы, но не должен включать широко распространенные слова и имена.</p>
         <form class="js-form" action="<?= $page->url('user.update.password') ?>" method="post" data-result="<?= $helper->json($passwordFormResult) ?>">
-            <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
+            <input type="hidden" name="redirect_to" value="<?= $page->escape($redirect) ?>">
 
             <div class="form-group" data-field-container="password_old">
                 <label class="label-control js-label-control">Старый пароль</label>
@@ -60,7 +60,7 @@ $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '';
 
     <div class="personal__info">
         <form class="js-form" action="<?= $page->url('user.update') ?>" method="post" data-result="<?= $helper->json($formResult) ?>">
-            <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
+            <input type="hidden" name="redirect_to" value="<?= $page->escape($redirect) ?>">
 
             <div class="form-group" data-field-container="first_name">
                 <label class="label-control js-label-control">Имя</label>
