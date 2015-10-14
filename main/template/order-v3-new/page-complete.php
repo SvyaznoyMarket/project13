@@ -157,14 +157,8 @@ $f = function(
                                             К оплате <span class="order-payment__sum"><?= $helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></span>
                                         </div>
 
-                                        <!-- Новые способы оплаты - статика -->
-                                        <div class="payment-methods__discount discount">
-                                            <div class="<?= $discountContainerId ?>">
-                                                <span class="discount__val">Скидка 15%</span>
-                                            </div>
-                                        </div>
+                                        <? foreach ($paymentMethodsByDiscount as $discountIndex => $paymentMethodChunk): ?>
                                         <ul class="payment-methods__lst">
-                                        <? foreach ($paymentMethodsByDiscount as $paymentMethodChunk): ?>
                                             <? foreach ($paymentMethodChunk as $paymentMethod): ?>
                                             <?
                                                 /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity|null $paymentMethod */
@@ -204,10 +198,15 @@ $f = function(
                                                     </label>
                                                 </li>
                                             <? endforeach ?>
-                                            <li class="payment-methods__i"><br /></li>
-                                        <? endforeach ?>
                                         </ul>
-                                        <!-- END Новые способы оплаты - статика -->
+                                            <? if (0 === $discountIndex): ?>
+                                                <div class="payment-methods__discount discount">
+                                                    <div class="<?= $discountContainerId ?>">
+                                                        <span class="discount__val">Скидка 15%</span>
+                                                    </div>
+                                                </div>
+                                            <? endif ?>
+                                        <? endforeach ?>
                                         <div class="payments-popup__pay <?= $containerId ?>"></div>
                                         <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>
                                     </div>
