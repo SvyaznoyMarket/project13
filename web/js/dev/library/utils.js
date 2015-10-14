@@ -512,7 +512,7 @@
 		 * @param additionalData
 		 */
 		addEcommData: function(action, elem, additionalData) {
-			var data = typeof elem.tagName != 'undefined' ? $(elem).data('ecommerce') : elem;
+			var data = (elem && (typeof elem.tagName != 'undefined')) ? $(elem).data('ecommerce') : elem;
 			if (!this.isEnabled || typeof data != 'object') return;
 			if (typeof additionalData != 'undefined') data = $.extend({}, data, additionalData);
 			if (this.isEnabled()) ga(action, data);
