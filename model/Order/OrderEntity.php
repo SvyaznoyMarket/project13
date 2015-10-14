@@ -419,7 +419,12 @@ class OrderEntity {
         $this->meta_data['split_version'] = 2;
 
         foreach (get_object_vars($this) as $key => $value) {
-            if ($value !== null) $data[$key] = $value;
+            if (
+                (null !== $value)
+                || ('delivery_date_interval' === $key)
+            ) {
+                $data[$key] = $value;
+            }
         }
 
         return $data;
