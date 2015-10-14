@@ -11,6 +11,9 @@ ANALYTICS.flocktoryScriptJS = function(siteId) {
         if (userconfig.user && userconfig.user.name) {
             $dataLayerDiv.data('fl-user-name', userconfig.user.name)
         }
+        if (userconfig.user && !userconfig.user.isEnterprizeMember) {
+            $dataLayerDiv.data('fl-action', 'precheckout').data('fl-spot', 'no_enterprize_reg')
+        }
     }
 
     console.log('flocktory precheckout data', $dataLayerDiv.data());
@@ -32,8 +35,19 @@ ANALYTICS.flocktoryScriptJS = function(siteId) {
 
                 window.flocktory.push([action, {
                     item: item
-                }])
+                }]);
+
             });
+        } else if (action == 'removeFromCart') {
+
+            var itemR = {
+                id: data[0].id,
+                price: data[0].price
+            };
+
+            window.flocktory.push([action, {
+                item: itemR
+            }]);
         }
     });
 

@@ -23,6 +23,9 @@
 					if (data.success) {
 						UserModel.cart().update(data.cart);
 					}
+					if (data.setProducts) {
+						$body.trigger('addtocart', data);
+					}
 				}
 			})
 		}
@@ -41,6 +44,9 @@
 				success: function(data){
 					if (data.success) {
 						UserModel.cart().update(data.cart);
+					}
+					if (data.setProducts) {
+						$body.trigger('addtocart', data);
 					}
 				}
 			})
