@@ -158,7 +158,7 @@ $f = function(
                                         </div>
 
                                         <? foreach ($paymentMethodsByDiscount as $discountIndex => $paymentMethodChunk): ?>
-                                        <ul class="payment-methods__lst">
+                                        <ul class="payment-methods__lst <? if (0 === $discountIndex): ?>payment-methods__lst_discount<? endif ?>">
                                             <? foreach ($paymentMethodChunk as $paymentMethod): ?>
                                             <?
                                                 /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity|null $paymentMethod */
