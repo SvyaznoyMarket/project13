@@ -56,7 +56,7 @@ class Action {
                         'alreadyLogged' => true
                     ])
                     : new \Http\RedirectResponse(\App::router()->generate(\App::config()->user['defaultRoute']));
-                \App::user()->signIn($userEntity, $response);
+                if ($userEntity) \App::user()->signIn($userEntity, $response);
                 return $response;
             } else { // if redirect isset:
                 $response = $request->isXmlHttpRequest()
@@ -68,7 +68,7 @@ class Action {
                         ],
                     ])
                     : new \Http\RedirectResponse($this->redirect);
-                \App::user()->signIn($userEntity, $response);
+                if ($userEntity) \App::user()->signIn($userEntity, $response);
                 return $response;
             }
         }
