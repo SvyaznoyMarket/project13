@@ -39,8 +39,8 @@ class Action {
             if (array_key_exists($disposableParamName, $queryArr)) {
                 $userEntity = $this->authWithToken($queryArr[$disposableParamName]);
                 // удаляем токен из редиректа
-                $sessionRedirect = preg_replace(
-                    $disposableParamName. '=' . $queryArr[$disposableParamName],
+                $sessionRedirect = str_replace(
+                    sprintf('%s=%s', $disposableParamName, $queryArr[$disposableParamName]),
                     '',
                     $sessionRedirect
                 );
@@ -49,23 +49,27 @@ class Action {
         }
 
         if (\App::user()->getEntity() || $userEntity) { // if user is logged in
-            if (empty($redirectTo)) {
-                return $request->isXmlHttpRequest()
+            if (empty($this->redirect)) {
+                $response = $request->isXmlHttpRequest()
                     ? new \Http\JsonResponse([
                         'success'       => true,
                         'alreadyLogged' => true
                     ])
                     : new \Http\RedirectResponse(\App::router()->generate(\App::config()->user['defaultRoute']));
+                \App::user()->signIn($userEntity, $response);
+                return $response;
             } else { // if redirect isset:
-                return $request->isXmlHttpRequest()
+                $response = $request->isXmlHttpRequest()
                     ? new \Http\JsonResponse([
                         'success'       => true,
                         'alreadyLogged' => true,
                         'data'    => [
-                            'link' => $redirectTo,
+                            'link' => $this->redirect,
                         ],
                     ])
-                    : new \Http\RedirectResponse($redirectTo);
+                    : new \Http\RedirectResponse($this->redirect);
+                \App::user()->signIn($userEntity, $response);
+                return $response;
             }
         }
 
@@ -221,20 +225,30 @@ class Action {
     public function authWithToken($token = null)
     {
         $userEntity = null;
+        $authResult = [];
 
-        $authResult = \App::coreClientV2()->query(
-            'user/auth-by-token',
-            [],
-            [   'token' => $token,
-                'geo_id' => \App::user()->getRegion()->getId(),
-            ]
-        );
+        try {
+            $authResult = \App::coreClientV2()->query(
+                'user/auth-by-token',
+                [],
+                [
+                    'token' => $token,
+                    'client_id' => 'site',
+                ]
+            );
+        } catch (\Exception $e) {
+            // Если пользователь не найден по токену
+            if ($e->getCode() === 614 ) {
+                \App::exception()->remove($e);
+            }
+        }
 
         if (array_key_exists('token', $authResult)) {
             $userEntity = \RepositoryManager::user()->getEntityByToken($authResult['token']);
         }
 
         if ($userEntity) {
+            $userEntity->setToken($authResult['token']);
             $this->mergeUserCart($userEntity);
             $this->updateUserRegion();
         }
