@@ -77,6 +77,8 @@ class Entity {
     public $deliveryTypeId;
     /** @var \DateTime */
     public $deliveredAt;
+    /** @var array */
+    public $deliveryDateInterval;
     /** @var int */
     public $storeId;
     /** @var int */
@@ -176,6 +178,11 @@ class Entity {
             } catch(\Exception $e) {
                 \App::logger()->error($e);
             }
+        }
+        if (isset($data['delivery_date_interval']['name'])) {
+            $this->deliveryDateInterval = [
+                'name' => $data['delivery_date_interval']['name'],
+            ];
         }
         if (array_key_exists('store_id', $data)) $this->setStoreId($data['store_id']);
         if (array_key_exists('shop_id', $data)) $this->setShopId($data['shop_id']);

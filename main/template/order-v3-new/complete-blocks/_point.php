@@ -1,10 +1,19 @@
-<? use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity; ?>
+<? use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
 
-<? $f  = function (
+$f  = function (
     \Helper\TemplateHelper $helper,
     \Model\Order\Entity $order
 ) {
-    ?>
+    $deliveryText =
+        !empty($order->deliveryDateInterval['name'])
+        ? $order->deliveryDateInterval['name']
+        : (
+            $order->getDeliveredAt()
+            ? $order->getDeliveredAt()->format('d.m.Y')
+            : null
+        )
+    ;
+?>
 
 <div class="orderPayment <?= $order->isPaid() ? 'orderPaid jsOrderPaid': '' ?>">
     <div class="orderPayment_block orderPayment_noOnline">
@@ -14,11 +23,11 @@
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
                     <? if ($order->point->isEnterShop() || $order->point->isSvyaznoyShop() || $order->point->isEurosetPoint()) : ?>
-                        Ждем вас <?= $order->getDeliveredAt()->format('d.m.Y') ?> в магазине
+                        Ждем вас <?= $deliveryText ?> в магазине
                     <? elseif ($order->point->isPickpoint()) : ?>
-                        Вы можете забрать заказ из постамата <?= $order->getDeliveredAt()->format('d.m.Y') ?>
+                        Вы можете забрать заказ из постамата <?= $deliveryText ?>
                     <? elseif ($order->point->isHermesPoint()) : ?>
-                        Вы можете забрать заказ в пункте выдачи Hermes <?= $order->getDeliveredAt()->format('d.m.Y') ?>
+                        Вы можете забрать заказ в пункте выдачи Hermes <?= $deliveryText ?>
                     <? endif ?>
                 </div>
                 <div class="orderPayment_msg_shop markerLst_row">
