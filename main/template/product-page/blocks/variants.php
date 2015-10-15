@@ -26,7 +26,9 @@ $f = function(
             <div class="filter-btn-box filter-btn-box--bordered" onclick="$(this).toggleClass('filter-btn-box--open')">
 
                 <div class="filter-btn-box__toggle">
-                    <span class="filter-btn-box__tx"><?= $product->getPropertyById($property->getId())->getStringValue() ?></span>
+                    <? if ($attribute = $product->getPropertyById($property->getId())): ?>
+                        <span class="filter-btn-box__tx"><?= $attribute->getStringValue() ?></span>
+                    <? endif ?>
                     <i class="filter-btn-box__corner"></i>
                 </div>
 
