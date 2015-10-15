@@ -336,7 +336,7 @@ class DefaultLayout extends Layout {
         foreach ($data as $key => $value) {
             $dataString .= sprintf('data-%s="%s" ', $key, $value);
         }
-        return sprintf('<div class="i-flocktory js-flocktory-data-layer" %s ></div>', $dataString);
+        return sprintf('<div class="i-flocktory js-flocktory-data-layer"></div><div class="i-flocktory" %s ></div>', $dataString);
     }
 
     public function googleAnalyticsJS(){
