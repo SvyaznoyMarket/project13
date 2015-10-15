@@ -17,7 +17,8 @@
 	}
 
 	// Обновление списка категорий
-	function updateLinks(url) {
+	function updateLinks(params) {
+		var url = ENTER.utils.generateUrl('product.category', $.extend(params, ENTER.config.pageConfig.request.route.attributes)) + document.location.hash;
 		if (!History.enabled) {
 			document.location.href = url;
 			return;
@@ -26,7 +27,7 @@
 		history.pushState({}, document.title, url);
 
 		$.ajax({
-			url: url,
+			url: ENTER.utils.generateUrl('ajax.product.category', $.extend(params, ENTER.config.pageConfig.request.route.attributes)) + document.location.hash,
 			type: 'GET',
 			success: function(result){
 				var $template = $('#root_page_links_tmpl');
@@ -41,27 +42,26 @@
 
 		var
 			$brandLink = $(e.currentTarget),
-			url = document.location.href,
+			params = $.deparam((document.location.search || '').replace(/^\?/, '')),
 			brandLinkParamName = $brandLink.data('paramName'),
 			brandLinkParamValue = $brandLink.data('paramValue');
 
 		if ($brandLink.hasClass(brandLinkActiveClass)) {
 			$brandLink.removeClass(brandLinkActiveClass);
-			url = ENTER.utils.setURLParam(brandLinkParamName, null, url);
+			delete params[brandLinkParamName];
 		} else {
 			$brandLink.addClass(brandLinkActiveClass);
-			url = ENTER.utils.setURLParam(brandLinkParamName, brandLinkParamValue, url);
+			params[brandLinkParamName] = brandLinkParamValue;
 		}
 
 		renderSelectedBrandsTemplate();
+		updateLinks(params);
 
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',
 			action: 'brand',
 			label: pageBusinessUnitId
 		});
-
-		updateLinks(url);
 	});
 
 	// Сворачивание/разворачивание брендов
@@ -98,7 +98,7 @@
 			label: pageBusinessUnitId
 		});
 
-		updateLinks('?');
+		updateLinks({});
 	});
 
 	// Выделение брендов, присутствующих в URL адресе
