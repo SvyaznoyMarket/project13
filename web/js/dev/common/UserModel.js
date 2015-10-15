@@ -88,8 +88,8 @@
 	});
 
     // Удаление товара из корзины (RetailRocket, etc)
-    $body.on('removeFromCart', function(e, setProducts) {
-		$.each(setProducts, function(key, setProduct) {
+    $body.on('removeFromCart', function(e, data) {
+		$.each(data.setProducts, function(key, setProduct) {
 			if (!setProduct.id) return;
 			console.info('RetailRocket removeFromCart id = %s', setProduct.id);
 			if (window.rrApiOnReady) window.rrApiOnReady.push(function(){ window.rrApi.removeFromBasket(setProduct.id) });
