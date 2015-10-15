@@ -6,13 +6,13 @@ ANALYTICS.flocktoryScriptJS = function(siteId) {
     // Дополняем data layer дополнительным данными о пользователе
     if ($dataLayerDiv.length) {
         if (userconfig.user && userconfig.user.email) {
-            $dataLayerDiv.data('fl-user-email', userconfig.user.email)
+            $dataLayerDiv.attr('data-fl-user-email', userconfig.user.email)
         }
         if (userconfig.user && userconfig.user.name) {
-            $dataLayerDiv.data('fl-user-name', userconfig.user.name)
+            $dataLayerDiv.attr('data-fl-user-name', userconfig.user.name)
         }
         if (userconfig.user && !userconfig.user.isEnterprizeMember) {
-            $dataLayerDiv.data('fl-action', 'precheckout').data('fl-spot', 'no_enterprize_reg')
+            $dataLayerDiv.attr('data-fl-action', 'precheckout').attr('data-fl-spot', 'no_enterprize_reg')
         }
     }
 
@@ -21,33 +21,23 @@ ANALYTICS.flocktoryScriptJS = function(siteId) {
     /** Событие добавления/удаления корзины */
     $body.on('addtocart removeFromCart', function flocktoryCartEvent(event, data) {
 
-        var action = (event.type == 'addtocart' ? 'addToCart' : 'removeFromCart');
-
         if ($.isArray(data.setProducts)) {
             $.each(data.setProducts, function (i,product) {
 
-                var item = {
-                    id: product.id,
-                    price: product.price
+                var action,
+                    item = {
+                        id: product.id,
+                        price: product.price,
+                        count: Math.abs(product.quantityDelta)
                 };
 
-                if (action == 'addToCart') item.count = product.quantity;
+                action = (product.quantityDelta > 0 ? 'addToCart' : 'removeFromCart');
 
                 window.flocktory.push([action, {
                     item: item
                 }]);
 
             });
-        } else if (action == 'removeFromCart') {
-
-            var itemR = {
-                id: data[0].id,
-                price: data[0].price
-            };
-
-            window.flocktory.push([action, {
-                item: itemR
-            }]);
         }
     });
 

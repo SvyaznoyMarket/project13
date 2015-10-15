@@ -20,8 +20,8 @@ ANALYTICS.ActionPayJS = function (data) {
         basketEvents(8, data.setProducts);
     });
 
-    $body.on('removeFromCart', function(event, setProducts) {
-        basketEvents(9, setProducts);
+    $body.on('removeFromCart', function(event, data) {
+        basketEvents(9, data.setProducts);
     });
 
     if ( typeof(data) === 'undefined' ) data = {pageType : 0};
