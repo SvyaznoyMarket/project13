@@ -635,7 +635,7 @@ class Action {
 
                 // SITE-4715
                 $smartChoiceData = array_filter($smartChoiceData, function($a) {
-                    return isset($a['products']);
+                    return !empty($a['products'][0]['id']);
                 });
 
                 foreach ($smartChoiceData as $smartChoiceItem) {
