@@ -241,6 +241,12 @@ return [
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
+    // каталог товаров
+    'ajax.product.category' => [
+        'pattern' => '/ajax/catalog/{categoryPath}',
+        'action'  => ['ProductCategory\Action', 'category'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+    ],
     // бесконечная листалка в категориях
     'product.category.sliderInfinity' => [
         'pattern' => '/catalog/{categoryPath}/_sliderInfinity',
