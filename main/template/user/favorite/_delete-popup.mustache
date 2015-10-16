@@ -1,0 +1,17 @@
+<div id="delete-popup" class="personal-popup">
+    <div class="popup-closer"></div>
+    <div class="personal-popup__head">Удалить товары из списка</div>
+    <div class="personal-popup__list-name">{{wishlist.title}}</div>
+    <div class="personal-popup__content">
+        <form action="{{form.url}}" method="post">
+        {{#wishlist}}
+            <input type="hidden" name="wishlist[id]" data-field="id" value="{{wishlist.id}}" />
+            <input type="hidden" name="wishlist[productUis]" data-field="productUis" value="{{productUis}}" />
+        {{/wishlist}}
+        {{^wishlist}}
+            <input type="hidden" name="productUis" data-field="productUis" value="{{productUis}}" />
+        {{/wishlist}}
+            <button type="submit" class="btn btn--default">Удалить</button>
+        </form>
+    </div>
+</div>

@@ -8,7 +8,7 @@
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <title><?= $page->getTitle() ?></title>
+    <title><?= $page->escape($page->getTitle()) ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="robots" content="noyaca"/>
@@ -38,9 +38,11 @@
 
     <?= $page->render('order/_footer') ?>
 
+    <?= $page->slotUserConfig() ?>
     <?= $page->slotBodyJavascript() ?>
     <?= $page->slotInnerJavascript() ?>
     <?= $page->slotAuth() ?>
+    <?= $page->slotMustacheTemplates() ?>
     <?= $page->slotYandexMetrika() ?>
     <?= $page->slotPartnerCounter() ?>
 

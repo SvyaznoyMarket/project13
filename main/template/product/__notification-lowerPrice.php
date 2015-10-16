@@ -47,9 +47,9 @@ return function(
                         </label>
                     <? endif ?>
 
-                    <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email" value="<?= $user->getEntity() ? $user->getEntity()->getEmail() : '' ?>" />
-                    <p class="bLowPriceNotiferPopup__eError red"></p>
-                    <a href="#" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink mDisabled" data-url="<?= $helper->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>">Сохранить</a>
+                    <input class="bLowPriceNotiferPopup__eInputEmail jsLowerPriceEmailInput" placeholder="Ваш email" value="<?= $user->getEntity() ? $user->getEntity()->getEmail() : '' ?>" />
+                    <p class="bLowPriceNotiferPopup__eError red jsLowerPriceError"></p>
+                    <a href="#" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink mDisabled jsLowerPriceSubmitBtn" data-url="<?= $helper->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>">Сохранить</a>
                 <? endif ?>
             </div>
         </div>

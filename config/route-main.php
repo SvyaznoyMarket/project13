@@ -12,17 +12,11 @@ return [
         'action'  => ['Main\Action', 'recommendations'],
     ],
 
-    'category.mainMenu' => [ // TODO: переименовать в mainMenu
-        'pattern' => '/category/main_menu',
-        'action'  => ['ProductCategory\MainMenuAction', 'execute'],
+    'ssi.userConfig' => [
+        'pattern' => '/ssi/user-config',
+        'action'  => ['Ssi\UserConfigAction', 'execute'],
     ],
-    'category.mainMenu.region' => [ // TODO: переименовать в mainMenu.region
-        'pattern' => '/category/main_menu/{regionId}',
-        'action'  => ['ProductCategory\MainMenuAction', 'execute'],
-        'require' => [
-            'regionId' => '\d+',
-        ],
-    ],
+
     'mainMenu.recommendation' => [
         'pattern' => '/main_menu/recommendations/{rootCategoryId}/{childIds}',
         'action'  => ['MainMenu\RecommendedAction', 'execute'],
@@ -36,10 +30,6 @@ return [
         'pattern' => '/search',
         'action'  => ['Search\Action', 'execute'],
     ],
-    'search.count' => [
-        'pattern' => '/ajax/search/_count',
-        'action'  => ['Search\Action', 'count'],
-    ],
     // поиск бесконечная прокрутка
     'search.infinity' => [
         'pattern' => '/search/_infinity',
@@ -48,7 +38,7 @@ return [
     // автоподстановка поиска
     'search.autocomplete' => [
         'pattern' => '/search/autocomplete',
-        'action'  => ['Search\Action', 'autocomplete'],
+        'action'  => ['Search\Autocomplete', 'execute'],
     ],
     // рекомендации в поиске
     'search.recommended' => [
@@ -56,11 +46,6 @@ return [
         'action'  => ['Search\RecommendedAction', 'execute'],
     ],
 
-    // инфо пользователя
-    'user.info' => [
-        'pattern' => '/ajax/user/info',
-        'action'  => ['User\InfoAction', 'execute'],
-    ],
     /*// Статус подписки пользователя, получить
     'user.subscribe.getStatus' => [
         'pattern' => '/ajax/subscribe/status/get',
@@ -71,11 +56,6 @@ return [
         'pattern' => '/ajax/subscribe/status/set/{status}',
         'action'  => ['User\InfoAction', 'setSubscribeStatus'],
     ],*/
-    // инфо пользователя
-    'old.user.info' => [
-        'pattern' => '/user/shortinfo',
-        'action'  => ['User\OldInfoAction', 'execute'],
-    ],
     // вход пользователя
     'user.login' => [
         'pattern' => '/login',
@@ -137,6 +117,48 @@ return [
         'pattern' => '/login-{providerName}/response',
         'action'  => ['User\ExternalLoginResponseAction', 'execute'],
     ],
+    'user.update' => [
+        'pattern' => '/private/update',
+        'action'  => ['User\UpdateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+    'user.update.password' => [
+        'pattern' => '/private/update-password',
+        'action'  => ['User\UpdatePasswordAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+
+    // Регистрация поставщика
+    'supplier.new' => [
+        'pattern'   => '/supplier/new',
+        'action'    => ['Supplier\NewAction', 'execute']
+    ],
+
+    // Кабинет поставщика
+    'supplier.cabinet' => [
+        'pattern'   => '/supplier/cabinet',
+        'action'    => ['Supplier\CabinetAction', 'index']
+    ],
+
+    // Загрузка прайс-листа
+    'supplier.load' => [
+        'pattern'   => '/supplier/load',
+        'action'    => ['Supplier\CabinetAction', 'load'],
+        'method'  => ['POST'],
+    ],
+
+    // Обновление данных о поставщике
+    'supplier.update' => [
+        'pattern'   => '/supplier/update',
+        'action'    => ['Supplier\CabinetAction', 'update'],
+        'method'  => ['POST'],
+    ],
+
+    // Тестирование curl-client
+    'supplier.test' => [
+        'pattern'   => '/supplier/load-test',
+        'action'    => ['Supplier\CabinetAction', 'loadTest']
+    ],
 
     // регион
     'region.init' => [
@@ -171,15 +193,27 @@ return [
     // магазины
     'shop' => [
         'pattern' => '/shops',
-        'action'  => ['Shop\Action', 'index'],
+        'action'  => ['Shop', 'execute'],
     ],
     'shop.region' => [ // deprecated
         'pattern' => '/shops/{regionId}',
-        'action'  => ['Shop\Action', 'region'],
+        'action'  => ['Shop\Region', 'execute'],
+        'require' => [
+            'regionId'   => '\d+',
+        ],
+    ],
+    'shop.region.show' => [ // deprecated
+        'pattern' => '/shops/{regionToken}/{shopToken}',
+        'action'  => ['Shop\Region\Show', 'execute'],
     ],
     'shop.show' => [
-        'pattern' => '/shops/{regionToken}/{shopToken}',
-        'action'  => ['Shop\Action', 'show'],
+        'pattern' => '/shops/{pointToken}',
+        'action'  => ['Shop\Show', 'execute'],
+    ],
+    'shop.send' => [
+        'pattern' => '/ajax/shops/{pointUi}/send',
+        'action'  => ['Shop\Send', 'execute'],
+        'method'  => ['POST'],
     ],
 
     // срезы. каталог товаров
@@ -194,14 +228,22 @@ return [
         'pattern' => '/catalog/tchibo',
         'action'  => ['Tchibo\IndexAction', 'execute'],
     ],
+    /* https://jira.enter.ru/browse/SITE-5910?focusedCommentId=169611&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-169611
     'tchibo.where_buy' => [
         'pattern'   => '/where_buy_tchibo',
-        'action'    => ['Shop\Action', 'index']
+        'action'    => ['Shop', 'index']
     ],
+    */
 
     // каталог товаров
     'product.category' => [
         'pattern' => '/catalog/{categoryPath}',
+        'action'  => ['ProductCategory\Action', 'category'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+    ],
+    // каталог товаров
+    'ajax.product.category' => [
+        'pattern' => '/ajax/catalog/{categoryPath}',
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
@@ -215,12 +257,6 @@ return [
     'product.category.slider' => [
         'pattern' => '/ajax/catalog/{categoryPath}/_slider',
         'action'  => ['ProductCategory\Action', 'slider'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
-    // общее количество отфильтрованных товаров
-    'product.category.count' => [
-        'pattern' => '/ajax/catalog/{categoryPath}/_count',
-        'action'  => ['ProductCategory\Action', 'count'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
     // каталог товаров с бесконечной прокруткой
@@ -247,6 +283,16 @@ return [
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
     ],
 
+    'ajax.category.listing.product.variation' => [
+        'pattern' => '/ajax/category/{categoryUi}/listing/product/{productUi}/variation/{variationId}',
+        'action'  => ['Category\Listing\Product\Variation', 'execute'],
+    ],
+
+    'ajax.category.listing.product' => [
+        'pattern' => '/ajax/category/{categoryUi}/listing/product/{productUi}',
+        'action'  => ['Category\Listing\Product', 'execute'],
+    ],
+
     // каталог товаров
     'product.gift' => [
         'pattern' => '/gift',
@@ -258,11 +304,6 @@ return [
         'pattern' => '/product/{productPath}',
         'action'  => ['Product\IndexAction', 'execute'],
         'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
-    ],
-    // карточка линии товара
-    'product.line' => [
-        'pattern' => '/line/{lineToken}',
-        'action'  => ['Product\LineAction', 'execute'],
     ],
     // расчет доставки товара
     'old.product.delivery' => [
@@ -280,54 +321,19 @@ return [
         'action'  => ['Product\DeliveryAction', 'execute'],
         'method'  => ['POST'],
     ],
-    'product.stock' => [
-        'pattern' => '/product/{productPath}/stock',
-        'action'  => ['Product\StockAction', 'execute'],
-        'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
-    ],
-    'product.accessory' => [
-        'pattern' => '/products/accessories/{productToken}',
-        'action'  => ['Product\AccessoryAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
-    'product.accessory.jewel' => [
-        'pattern' => '/jewel/products/accessories/{productToken}',
-        'action'  => ['Jewel\Product\AccessoryAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
-    'product.related' => [
-        'pattern' => '/products/related/{productToken}',
-        'action'  => ['Product\RelatedAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
-    'product.related.jewel' => [
-        'pattern' => '/jewel/products/related/{productToken}',
-        'action'  => ['Jewel\Product\RelatedAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
-    'product.comment' => [
-        'pattern' => '/product/{productPath}/comments',
-        'action'  => ['Product\CommentAction', 'execute'],
-        'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
-    ],
     'product.set' => [
         'pattern' => '/products/set/{productBarcodes}',
         'action'  => ['Product\SetAction', 'execute'],
-    ],
-    'product.widget' => [
-        'pattern' => '/products/widget/{productBarcodes}',
-        'action'  => ['Product\SetAction', 'widget'],
-    ],
-    'product.upsell' => [
-        'pattern' => '/tocart/{productToken}',
-        'action'  => ['Product\UpsellAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
     ],
     //reviews
     'product.review.create' => [
         'pattern' => '/product-reviews/create/{productUi}',
         'require' => ['productUi' => '[\w\d-_]+\/?[\w\d-_]+'],
         'action'  => ['Product\ReviewsAction', 'create'],
+    ],
+    'product.review.vote' => [
+        'pattern' => '/product-reviews/vote',
+        'action'  => ['Product\ReviewsAction', 'vote'],
     ],
     'product.reviews' => [
         'pattern' => '/product-reviews/{productUi}',
@@ -342,6 +348,11 @@ return [
     'product.kit' => [
         'pattern' => '/ajax/product/kit/{productUi}',
         'action'  => ['Product\KitAction', 'execute'],
+    ],
+    // Карта со всеми точками самовывоза
+    'product.map' => [
+        'pattern' => '/ajax/product/map/{productId}/{productUi}',
+        'action'  => ['Product\DeliveryAction', 'map']
     ],
 
     // теги
@@ -361,23 +372,6 @@ return [
         'pattern' => '/tags/{tagToken}/{categoryToken}/_infinity',
         'action'  => ['Tag\Action', 'index'],
     ],
-    // общее количество отфильтрованных товаров для тегов
-    'tag.count' => [
-        'pattern' => '/ajax/tags/{tagToken}/_count',
-        'action'  => ['Tag\Action', 'count'],
-        'require' => [
-            'tagToken' => '[\w\d-_]+\/?[\w\d-_]+',
-        ],
-    ],
-    // общее количество отфильтрованных товаров для категорий тегов
-    'tag.category.count' => [
-        'pattern' => '/ajax/tags/{tagToken}/{categoryToken}/_count',
-        'action'  => ['Tag\Action', 'count'],
-        'require' => [
-            'tagToken'      => '[\w\d-_]+\/?[\w\d-_]+',
-            'categoryToken' => '[\w\d-_]+\/?[\w\d-_]+',
-        ],
-    ],
     'product.rating.create_total' => [
         'pattern' => '/product-rating/createtotal/{productId}/{rating}',
         'require' => ['productId' => '\d+', 'rating' => '\d+'],
@@ -396,21 +390,19 @@ return [
         'pattern' => '/cart',
         'action'  => ['Cart\IndexAction', 'execute'],
     ],
-    'cart.info' => [
-        'pattern' => '/cart/info',
-        'action'  => ['Cart\InfoAction', 'execute'],
-    ],
     // очистка корзины
     'cart.clear' => [
         'pattern' => '/cart/clear',
         'action'  => ['Cart\ClearAction', 'execute'],
     ],
     // добавление товара в корзину
-    'cart.product.set' => [ // TODO cart.product.set изменмить Url
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
+    'cart.product.set' => [
         'pattern' => '/cart/add-product/{productId}',
         'action'  => ['Cart\ProductAction', 'set'],
     ],
     // удаление товара из корзины
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'cart.product.delete' => [
         'pattern' => '/cart/delete-product/{productId}',
         'action'  => ['Cart\ProductAction', 'delete'],
@@ -421,59 +413,10 @@ return [
         'action'  => ['Cart\ProductAction', 'setList'],
     ],
     // добавление товара в корзину
-    'cart.paypal.product.set' => [
-        'pattern' => '/cart/paypal/add-product/{productId}',
-        'action'  => ['Cart\Paypal\ProductAction', 'set'],
-    ],
-    // удаление товара из корзины
-    'cart.paypal.product.delete' => [
-        'pattern' => '/cart/paypal/delete-product/{productId}',
-        'action'  => ['Cart\Paypal\ProductAction', 'delete'],
-    ],
-
-    // добавление товара в корзину
-    'cart.lifeGift.product.set' => [
-        'pattern' => '/cart/life-gift/add-product/{productId}',
-        'action'  => ['Cart\LifeGift\ProductAction', 'set'],
-    ],
-    // удаление товара из корзины
-    'cart.lifeGift.product.delete' => [
-        'pattern' => '/cart/life-gift/delete-product/{productId}',
-        'action'  => ['Cart\LifeGift\ProductAction', 'delete'],
-    ],
-
-    // добавление товара в корзину
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'cart.oneClick.product.set' => [
         'pattern' => '/cart/one-click/add-product/{productId}',
         'action'  => ['Cart\OneClick\ProductAction', 'set'],
-    ],
-    // удаление товара из корзины
-    'cart.oneClick.product.delete' => [
-        'pattern' => '/cart/one-click/delete-product/{productId}',
-        'action'  => ['Cart\OneClick\ProductAction', 'delete'],
-    ],
-    // изменение товара в корзине
-    'cart.oneClick.product.change' => [
-        'pattern' => '/cart/one-click/change-product/{productId}',
-        'action'  => ['Cart\OneClick\ProductAction', 'change'],
-    ],
-    // добавление списка товаров в корзину
-    'cart.oneClick.product.setList' => [
-        'pattern' => '/cart/one-click/set-products',
-        'action'  => ['Cart\OneClick\ProductAction', 'setList'],
-    ],
-
-    'cart.certificate.apply' => [
-        'pattern' => '/cart/f1-certificate',
-        'action'  => ['Cart\CertificateAction', 'apply'],
-    ],
-    'cart.certificate.delete' => [
-        'pattern' => '/cart/f1-certificate/delete',
-        'action'  => ['Cart\CertificateAction', 'delete'],
-    ],
-    'cart.sum' => [
-        'pattern' => '/cart/sum',
-        'action'  => ['Cart\SumAction', 'execute'],
     ],
     'cart.recommended' => [
         'pattern' => '/cart/recommended',
@@ -486,6 +429,7 @@ return [
         'action'  => ['OrderV3\NewAction', 'execute'],
     ],
     // оформление заказа: 1-й шаг - один клик
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'orderV3.one-click' => [
         'pattern' => '/order/new/one-click',
         'action'  => ['OrderV3\NewAction', 'execute'],
@@ -496,6 +440,7 @@ return [
         'action'  => ['OrderV3\DeliveryAction', 'execute'],
     ],
     // оформление заказа: 2-й шаг - выбор доставки
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'orderV3.delivery.one-click' => [
         'pattern' => '/order/delivery/one-click',
         'action'  => ['OrderV3\DeliveryAction', 'execute'],
@@ -530,6 +475,11 @@ return [
         'action'    => ['OrderV3\CompleteAction', 'updateCredit'],
         'method'    => ['POST']
     ],
+    'orderV3.set-credit-status'   => [
+        'pattern'   => '/order/set-credit-status',
+        'action'    => ['OrderV3\CompleteAction', 'setCreditStatus'],
+        'method'    => ['POST']
+    ],
     // Подари жизнь (новое оформление)
     'orderV3.lifegift' => [
         'pattern'   => '/order/life-gift/{productId}',
@@ -542,6 +492,12 @@ return [
         'action'    => ['OrderV3\LifeGiftAction', 'complete']
     ],
 
+    'orderV3.svyaznoyClub.complete' => [
+        'pattern' => '/orders/svyaznoy-club',
+        'action'  => ['OrderV3\CompleteAction', 'execute'],
+        'method'  => ['GET'],
+    ],
+
     'orderV3OneClick.delivery' => [
         'pattern' => '/order-1click/delivery',
         'action'  => ['OrderV3OneClick\DeliveryAction', 'execute'],
@@ -550,105 +506,24 @@ return [
         'pattern' => '/order-1click/create',
         'action'  => ['OrderV3OneClick\CreateAction', 'execute'],
     ],
-    'orderV3OneClick.get' => [
-        'pattern' => '/order-1click/get/{accessToken}',
-        'action'  => ['OrderV3OneClick\GetAction', 'execute'],
-    ],
     'orderV3OneClick.form' => [
         'pattern' => '/order-1click/form/{productUid}',
         'action'  => ['OrderV3OneClick\FormAction', 'execute'],
     ],
 
-
     // заказ
-    'order.1click' => [
-        'pattern' => '/orders/1click',
-        'action'  => ['Order\OneClickAction', 'execute'],
-        'method'  => ['POST'],
-    ],
+    // TODO удалить, когда по логам к данному адресу перестанут поступать обращения
     'order.oneClick.new' => [
         'pattern' => '/orders/one-click/new',
-        'action'  => ['Order\OneClick\NewAction', 'execute'],
-    ],
-    'order.oneClick.create' => [
-        'pattern' => '/orders/one-click/create',
-        'action'  => ['Order\OneClick\CreateAction', 'execute'],
-        'method'  => ['POST'],
+        'action'  => ['OrderV3\NewAction', 'execute'],
     ],
     'order' => [
         'pattern' => '/orders/new',
-        'action'  => ['Order\NewAction', 'execute'],
-    ],
-    'order.create' => [
-        'pattern' => '/orders/create',
-        'action'  => ['Order\CreateAction', 'execute'],
-        'method'  => ['POST'],
-    ],
-    'order.delivery' => [
-        'pattern' => '/ajax/order-delivery',
-        'action'  => ['Order\DeliveryAction', 'execute'],
-    ],
-    'order.externalCreate' => [
-        'pattern' => '/orders/create-external',
-        'action'  => ['Order\ExternalCreateAction', 'execute'],
+        'action'  => ['OrderV3\NewAction', 'execute'],
     ],
     'order.complete' => [
         'pattern' => '/orders/complete',
         'action'  => ['Order\Action', 'complete'],
-    ],
-    'order.paymentComplete' => [
-        'pattern' => '/orders/payment/{orderNumber}',
-        'action'  => ['Order\Action', 'paymentComplete'],
-    ],
-    'order.paymentSuccess' => [
-        'pattern' => '/orders/complete_payment',
-        'action'  => ['Order\Action', 'paymentSuccess'],
-    ],
-    'order.paymentFail' => [
-        'pattern' => '/orders/fail_payment',
-        'action'  => ['Order\Action', 'paymentFail'],
-    ],
-    'order.paypal.new' => [
-        'pattern' => '/orders/paypal/new',
-        'action'  => ['Order\Paypal\NewAction', 'execute'],
-    ],
-    'order.paypal.create' => [
-        'pattern' => '/orders/paypal/create',
-        'action'  => ['Order\Paypal\CreateAction', 'execute'],
-        'method'  => ['POST'],
-    ],
-    'order.lifeGift.new' => [
-        'pattern' => '/orders/life-gift/new',
-        'action'  => ['Order\LifeGift\NewAction', 'execute'],
-    ],
-    'order.lifeGift.create' => [
-        'pattern' => '/orders/life-gift/create',
-        'action'  => ['Order\LifeGift\CreateAction', 'execute'],
-        'method'  => ['POST'],
-    ],
-    'order.bill' => [
-        'pattern' => '/private/orders/{orderNumber}/bill',
-        'action'  => ['Order\BillAction', 'execute'],
-    ],
-    'order.clearPaymentUrl' => [
-        'pattern' => '/orders/clearPaymentUrl',
-        'action'  => ['Order\Action', 'clearPaymentUrl'],
-    ],
-
-    // paypal
-    'order.paypal.complete' => [
-        'pattern' => '/orders/paypal-complete',
-        'action'  => ['Order\PaypalAction', 'complete'],
-    ],
-    'order.paypal.fail' => [
-        'pattern' => '/orders/paypal-fail',
-        'action'  => ['Order\PaypalAction', 'fail'],
-    ],
-
-    'order.svyaznoyClub.complete' => [
-        'pattern' => '/orders/svyaznoy-club',
-        'action'  => ['OrderV3\CompleteAction', 'execute'],
-        'method'  => ['GET'],
     ],
 
     'order.slot.create' => [
@@ -681,16 +556,6 @@ return [
         'pattern' => '/product-recommended',
         'action' => ['Product\RecommendedAction', 'execute'],
     ],
-    'product.similar' => [
-        'pattern' => '/ajax/product-similar/{productId}',
-        'action'  => ['Product\SimilarAction', 'execute'],
-        'require' => ['productId' => '\d+'],
-    ],
-    'product.alsoViewed' => [
-        'pattern' => '/ajax/product-also-viewed/{productId}',
-        'action'  => ['Product\AlsoViewedAction', 'execute'],
-        'require' => ['productId' => '\d+'],
-    ],
     'product.upsale' => [
         'pattern' => '/ajax/upsale/{productId}',
         'action' => ['Product\UpsaleAction', 'execute'],
@@ -722,6 +587,11 @@ return [
         'pattern' => '/private/orders',
         'action'  => ['User\OrdersAction', 'execute'],
     ],
+    // редактирование данных пользователя
+    'user.favorites' => [
+        'pattern' => '/private/favorites',
+        'action'  => ['User\FavoriteAction', 'get'],
+    ],
     // данные о заказе пользователя
     'user.order' => [
         'pattern'   => '/private/order/{orderId}',
@@ -737,11 +607,10 @@ return [
         'pattern' => '/private/subscriptions',
         'action'  => ['User\SubscriptionsAction', 'execute'],
     ],
-    // адвокат клиента
-    // @deprecated
-    'user.consultation' => [
-        'pattern' => '/private/consultation',
-        'action'  => ['User\ConsultationAction', 'execute'],
+    'user.notification.addProduct' => [
+        'pattern' => '/private/notification/add-product',
+        'action'  => ['User\Notification\AddProductAction', 'execute'],
+        'method'  => ['POST'],
     ],
 
     // маршрутизатор нескольких запросов
@@ -784,6 +653,12 @@ return [
         'action'  => ['Subscribe\Action', 'confirm'],
     ],
 
+    'event.push' => [
+        'pattern' => '/event/push',
+        'action'  => ['EventAction', 'push'],
+        'method'  => ['POST'],
+    ],
+
     // qrcode
     'qrcode' => [
         'pattern' => '/qr/{qrcode}',
@@ -813,20 +688,6 @@ return [
     'debug.session' => [
         'pattern' => '/debug/session',
         'action'  => ['DebugAction', 'session'],
-    ],
-
-    //cron
-    'cron-index' => [
-        'pattern' => '/cron',
-        'action'  => ['Cron\IndexAction', 'execute'],
-    ],
-    'cron-task' => [
-        'pattern' => '/cron/{task}',
-        'action'  => ['Cron\Action', 'execute'],
-    ],
-    'cron-task-links' => [
-        'pattern' => '/cron/{task}/links',
-        'action'  => ['Cron\LinksAction', 'execute'],
     ],
 
     // enterprize
@@ -948,6 +809,17 @@ return [
         'action'  => ['Enterprize\SliderAction', 'execute'],
     ],
 
+    'subscribe.friend.show' => [
+        'pattern' => '/enter-friends',
+        'action'  => ['Subscribe\FriendAction', 'show'],
+    ],
+
+    'subscribe.friend.create' => [
+        'pattern' => '/enter-friends/create',
+        'action'  => ['Subscribe\FriendAction', 'create'],
+        'method'  => ['POST'],
+    ],
+
     'mobidengi' => [
         'pattern' => '/tele2',
         'action'  => ['Mobidengi\IndexAction', 'execute'],
@@ -1029,6 +901,23 @@ return [
 			'page'	=> '\d{1,2}'
         ],
 	],
+
+    /*
+     * Закрытые распродажи
+     */
+
+    'sale.all'  => [
+        'pattern'   => '/secretsale',
+        'action'    => ['ClosedSale\SaleAction', 'index']
+    ],
+
+    'sale.one'  => [
+        'pattern'   => '/secretsale/{uid}',
+        'action'    => ['ClosedSale\SaleAction', 'show'],
+        'require' => [
+            'uid'		=> '[\w\d-_]+'
+        ],
+    ],
 	
 	/**
 	 * game.center
@@ -1052,8 +941,51 @@ return [
     ],
 
     'favorite.add' => [
-        'pattern' => '/favorite/add-product',
+        'pattern' => '/favorite/add-product/{productUi}',
         'action'  => ['Favorite\SetAction', 'execute'],
+        'require' => [
+            'productUi' => '[\w\d-_]+',
+        ],
+    ],
+    'favorite.delete' => [
+        'pattern' => '/favorite/delete-product/{productUi}',
+        'action'  => ['Favorite\DeleteAction', 'execute'],
+        'require' => [
+            'productUi' => '[\w\d-_]+',
+        ],
+    ],
+    'favorite.deleteProducts' => [
+        'pattern' => '/favorite/delete-product-list',
+        'action'  => ['Favorite\DeleteListAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+
+    'wishlist.create' => [
+        'pattern' => '/wishlist/create',
+        'action'  => ['Wishlist\CreateAction', 'execute'],
+        'method'    => ['POST'],
+    ],
+    'wishlist.delete' => [
+        'pattern' => '/wishlist/delete',
+        'action'  => ['Wishlist\DeleteAction', 'execute'],
+        'method'    => ['POST'],
+    ],
+    'wishlist.addProduct' => [
+        'pattern' => '/wishlist/add-product',
+        'action'  => ['Wishlist\AddProductAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+    'wishlist.deleteProduct' => [
+        'pattern' => '/wishlist/delete-product',
+        'action'  => ['Wishlist\DeleteProductAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+    'wishlist.show' => [
+        'pattern' => '/wishlist/{wishlistToken}',
+        'action'  => ['Wishlist\ShowAction', 'execute'],
+        'require' => [
+            'wishlistToken' => '[\w\d-_]+',
+        ],
     ],
 
     'compare' => [
@@ -1075,16 +1007,27 @@ return [
         'action'  => ['Compare\CompareAction', 'clear'],
     ],
 
-    // Внешние ссылки на карточку товара
-    'product.internal' => [
-        'pattern'   => '/internal/product',
-        'action'    => ['Product\ShowInternalAction', 'execute'],
+    'recommended' => [
+        'pattern' => '/ajax/recommended',
+        'action'  => ['Recommended', 'execute'],
+    ],
+
+    // Форма обратной связи
+    'feedback.send' => [
+        'pattern'   => '/feedback/send',
+        'action'    => ['User\FeedbackAction', 'execute'],
+        'method'    => ['POST']
     ],
 
     // Переключение АБ-тестов
     'switch' => [
         'pattern'   => '/switch',
         'action'    => ['SwitchAction', 'execute']
+    ],
+
+    'delivery' => [
+        'pattern'   => '/delivery',
+        'action'    => ['Content\DeliveryMap', 'execute']
     ],
 
 	//content (должен быть в самом конце, иначе под паттерн попадут другие страницы)

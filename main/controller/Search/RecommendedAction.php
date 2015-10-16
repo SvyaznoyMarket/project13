@@ -52,22 +52,19 @@ class RecommendedAction {
 
         $productIds = array_values(array_unique($productIds));
 
+        /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
-        foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-            \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
-                foreach ((array)$data as $item) {
-                    if (empty($item['id'])) continue;
-
-                    $product = new \Model\Product\Entity($item);
-                    // если товар недоступен для покупки - пропустить
-                    if (!$product->isAvailable() || $product->isInShopShowroomOnly()) continue;
-
-                    $productsById[$item['id']] = $product;
-                }
-            });
+        foreach ($productIds as $productId) {
+            $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
 
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'category label media brand');
+
         $client->execute(); // 2-й пакет запросов
+
+        $productsById = array_filter($productsById, function(\Model\Product\Entity $product) {
+            return ($product->isAvailable() && !$product->isInShopShowroomOnly());
+        });
 
         // ответ
         $responseData = [
@@ -114,7 +111,6 @@ class RecommendedAction {
                 'content' => $templating->render('product/__slider', [
                     'title'                        => $recommendController->getTitleByType($type),
                     'products'                     => $products,
-                    'count'                        => count($products),
                     'class'                        => 'slideItem-7item',
                     'sender'                       => $sender,
                 ]),

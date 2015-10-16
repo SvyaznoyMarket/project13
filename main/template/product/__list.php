@@ -1,6 +1,20 @@
 <?php
 
-return function(
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Iterator\EntityPager $pager
+ * @param array $bannerPlaceholder
+ * @param null $listingStyle
+ * @param $view
+ * @param null $buyMethod
+ * @param bool|true $showState
+ * @param int $columnCount
+ * @param string $class
+ * @param array $cartButtonSender
+ * @param \Model\Product\Category\Entity|null $category
+ * @param \Model\Favorite\Product\Entity[] $favoriteProductsByUi
+ */
+$f = function(
     \Helper\TemplateHelper $helper,
     \Iterator\EntityPager $pager,
     array $bannerPlaceholder = [],
@@ -10,41 +24,66 @@ return function(
     $showState = true,
     $columnCount = 4,
     $class = '',
-    array $cartButtonSender = []
+    array $cartButtonSender = [],
+    \Model\Product\Category\Entity $category = null,
+    $favoriteProductsByUi = []
 ) {
-    $partials = [
-        'cart/_button-product' => file_get_contents(\App::config()->templateDir . '/cart/_button-product.mustache'),
-        'product/_review-compact' => file_get_contents(\App::config()->templateDir . '/product/_review-compact.mustache')
-    ]; ?>
 
-    <?php switch ($view) {
+    $listingClass = '';
+
+    $partials = [
+        'cart/_button-product'      => file_get_contents(\App::config()->templateDir . '/cart/_button-product.mustache'),
+        'cart/_button-product-lstn' => file_get_contents(\App::config()->templateDir . '/cart/_button-product-lstn.mustache'),
+        'product/_review-compact'   => file_get_contents(\App::config()->templateDir . '/product/_review-compact.mustache'),
+        'product/_favoriteButton'   => file_get_contents(\App::config()->templateDir . '/product/_favoriteButton.mustache'),
+        'product/variation'         => file_get_contents(\App::config()->templateDir . '/product/variation.mustache'),
+    ];
+
+    switch ($view) {
         case 'light_with_bottom_description':
             $listingClass = 'lstn';
-            $templatePath = 'product/list/_light';
+            $compactTemplatePath = 'product/list/_light';
             break;
         case 'light_with_hover_bottom_description':
             $listingClass = 'lstn';
-            $templatePath = 'product/list/_light';
+            $compactTemplatePath = 'product/list/_light';
             break;
         case 'light_without_description':
             $listingClass = 'lstn-light lstn';
-            $templatePath = 'product/list/_light';
-            break;
-        case 'line':
-            $listingClass = '';
-            $templatePath = 'product/list/_line';
+            $compactTemplatePath = 'product/list/_light';
             break;
         default:
-            $listingClass = '';
-            $templatePath = 'product/list/_compact';
+            $compactTemplatePath = 'product/list/_compact';
             break;
-    } ?>
+    }
 
-    <ul class="bListing<? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> <?= $listingClass ?> <?= $class ?> js-listing"><!-- mPandora если необходимо застилить листинги под пандору -->
-        <?= $helper->renderWithMustache($templatePath, (new \View\Product\ListAction())->execute($helper, $pager, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $view, $cartButtonSender)) ?>
+    $expandedTemplatePath = 'product/list/_expanded';
+
+    if ($category && $category->listingView->isList) {
+        $defaultTemplatePath = $expandedTemplatePath;
+        $defaultView = 'expanded';
+        $listingClass = 'listing';
+    } else {
+        $defaultTemplatePath = $compactTemplatePath;
+        $defaultView = $view;
+    }
+?>
+
+    <ul class="bListing <? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> <?= $listingClass ?> <?= $class ?> js-listing" <? if ($defaultView === 'expanded'): ?>data-category-view="<?= $defaultView ?>"<? endif ?>><!-- mPandora если необходимо застилить листинги под пандору -->
+        <?= $helper->renderWithMustache($defaultTemplatePath, (new \View\Product\ListAction())->execute($helper, $pager, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $defaultView, $cartButtonSender, $category, $favoriteProductsByUi)) ?>
     </ul>
 
-    <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
-        <?= file_get_contents(\App::config()->templateDir . '/' . $templatePath . '.mustache') ?>
+    <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json(array_merge($partials, ['product/list/item/compact' => file_get_contents(\App::config()->templateDir . '/product/list/item/compact.mustache')])) ?>">
+        <?= file_get_contents(\App::config()->templateDir . '/' . $compactTemplatePath . '.mustache') ?>
     </script>
-<? };
+
+    <? if ($category && ($category->config->listingDisplaySwitch || $category->config->listingDefaultView->isList)): ?>
+        <script id="listing_expanded_tmpl" type="text/html" data-partial="<?= $helper->json(array_merge($partials, ['product/list/item/_expanded' => file_get_contents(\App::config()->templateDir . '/product/list/item/_expanded.mustache')])) ?>">
+            <?= file_get_contents(\App::config()->templateDir . '/' . $expandedTemplatePath . '.mustache') ?>
+        </script>
+
+        <script id="listing_expanded_item_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
+            <?= file_get_contents(\App::config()->templateDir . '/product/list/item/_expanded.mustache') ?>
+        </script>
+    <? endif ?>
+<? }; return $f;

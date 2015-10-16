@@ -74,7 +74,16 @@ class CreateAction {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
             \App::exception()->remove($e);
 
-            $message = (708 == $e->getCode()) ? 'Товара нет в наличии' : $e->getMessage();
+            switch ($e->getCode()) {
+                case 708:
+                    $message = 'Товара нет в наличии';
+                    break;
+                case 732:
+                    $message = 'Выберите точку самовывоза';
+                    break;
+                default:
+                    $message = $e->getMessage();
+            }
 
             $result['error'] = ['message' => $message];
             $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $message]);
@@ -128,6 +137,7 @@ class CreateAction {
             }
         }
 
+        $productsById = [];
         if ((bool)$createdOrders) {
             $this->session->set(\App::config()->order['sessionName'] ? : 'lastOrder', array_map(function(\Model\Order\Entity $createdOrder) use ($splitResult) {
                 return [
@@ -156,6 +166,12 @@ class CreateAction {
                         \App::exception()->remove($e);
                     }
                 );
+
+                foreach ($order->getProduct() as $product) {
+                    $productsById[$product->getId()] = new \Model\Product\Entity(['id' => $product->getId()]);
+                }
+                
+                \RepositoryManager::product()->prepareProductQueries($productsById, 'category');
             }
 
             $this->client->execute();
@@ -170,8 +186,10 @@ class CreateAction {
         $result = [
             'page' => \App::closureTemplating()->render('order-v3-1click/__complete', [
                 'orders'        => $createdOrders,
-                'ordersPayment' => $ordersPayment
+                'ordersPayment' => $ordersPayment,
+                'productsById'  => $productsById,
             ]),
+            'actionpay' => \App::partner()->getName() === \Partner\Counter\Actionpay::NAME ? (new \View\Partners\ActionPay('orderV3.complete', ['orders' => $createdOrders, 'products' => $productsById], false))->execute() : null,
             'orders' => [
                 [
                     'id' => $createdOrders[0]->getNumber(),
@@ -182,6 +200,10 @@ class CreateAction {
             ],
             'lastPartner' => \App::partner()->getName(),
         ];
+
+        if (\App::config()->googleAnalytics['enabled']) {
+            $result['orderAnalytics'] = \Util\Analytics::getForOrder($createdOrders);
+        }
 
         return $request->isXmlHttpRequest() ? new \Http\JsonResponse(['result' => $result]) : new \Http\RedirectResponse($referer);
     }

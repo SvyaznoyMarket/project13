@@ -4,7 +4,8 @@ return function(
     \Helper\TemplateHelper $helper,
     $url,
     $data,
-    $result
+    $result,
+    $isShow = false
 ) { ?>
 
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
@@ -75,6 +76,7 @@ return function(
     <div class="row">
         <div class="col-md-12" style="padding-top: 40px;">
             <form action="<?= $helper->url('debug.query') ?>" method="post" role="form">
+                <input type="hidden" value="<?= $isShow ? '1' : '0' ?>" name="isShow">
                 <div class="form-group navbar-fixed-top">
                     <div class="navbar-inner">
                         <input autofocus="autofocus" type="text" class="form-control" placeholder="http://api.enter.ru" name="url" value="<?= $url ?>" width="100" />
@@ -83,7 +85,7 @@ return function(
 
                 <div class="form-group">
                     <a class="jsJson" data-target=".jsDebugData" href="#"><span class="glyphicon glyphicon-align-left"></span></a>
-                    <textarea name="data" data-json-view="inline" class="form-control jsDebugData" rows="6" placeholder="{}"><?= (bool)$data ? json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : '' ?></textarea>
+                    <textarea name="data" data-json-view="inline" class="form-control jsDebugData" rows="6" placeholder="{}"><?= (bool)$data ? json_encode($data, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES) : '' ?></textarea>
                 </div>
 
                 <button type="submit" class="btn btn-default">Выполнить</button>

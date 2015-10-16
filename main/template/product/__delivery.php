@@ -2,7 +2,7 @@
 
 return function (
     \Helper\TemplateHelper $helper,
-    \Model\Product\BasicEntity $product,
+    \Model\Product\Entity $product,
     array $deliveryData = [],
     array $shopStates = []
 ) {
@@ -18,9 +18,17 @@ return function (
 
             // Если есть самовывоз от Связного, то добавим его в результирующий список
             // Если еще есть и наш самовывоз, то наш потом затрет связновский
-            if ($item['token'] == 'self_partner_svyaznoy') {
-                $delivery['self'] = $item;
-                $delivery['self']['isOnlyFromPartner'] = true;
+            if (in_array($item['token'], ['self_partner_svyaznoy', 'pickpoint'])) {
+                try {
+                    $existsDate = isset($delivery['self']['date']['value']) ? new \DateTime($delivery['self']['date']['value']) : null;
+                    $date = isset($item['date']['value']) ? new \DateTime($item['date']['value']) : null;
+                    if (!$existsDate || ($date && ($existsDate > $date))) {
+                        $delivery['self'] = $item;
+                        $delivery['self']['isOnlyFromPartner'] = true;
+                    }
+                } catch (\Exception $e) {
+                    \App::logger()->error($e);
+                }
             }
 
             if (in_array($item['token'], ['self', 'standart', 'pickpoint', 'now'])) {

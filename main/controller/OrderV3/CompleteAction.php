@@ -2,13 +2,17 @@
 
 namespace Controller\OrderV3;
 
+use EnterApplication\CurlTrait;
+use Session\AbTest\ABHelperTrait;
 use Model\Order\Entity;
 use Model\PaymentMethod\PaymentEntity;
 use Model\Point\PointEntity;
 use Session\ProductPageSenders;
-use Session\ProductPageSendersForMarketplace;
+use Session\ProductPageSenders2;
+use EnterQuery as Query;
 
 class CompleteAction extends OrderV3 {
+    use CurlTrait, ABHelperTrait;
 
     private $sessionOrders;
     private $sessionIsReaded;
@@ -30,12 +34,13 @@ class CompleteAction extends OrderV3 {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         ProductPageSenders::clean();
-        ProductPageSendersForMarketplace::clean();
+        ProductPageSenders2::clean();
 
         /** @var \Model\Order\Entity[] $orders */
         $orders = [];
         /** @var \Model\PaymentMethod\PaymentEntity[] $ordersPayment */
         $ordersPayment = [];
+        /** @var \Model\Product\Entity[] $products */
         $products = [];
         $paymentProviders = [];
         $privateClient = \App::coreClientPrivate();
@@ -45,6 +50,9 @@ class CompleteAction extends OrderV3 {
         $shopIds = [];
         $pointUis = [];
         $errors = [];
+        $userEntity = \App::user()->getEntity();
+
+        $this->pushEvent(['step' => 3]);
 
         try {
 
@@ -95,14 +103,15 @@ class CompleteAction extends OrderV3 {
 
             // получаем продукты для заказов
             foreach ($orders as $order) {
-                \RepositoryManager::product()->prepareCollectionById(array_map(function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $order->getProduct()), null, function ($data) use ($order, &$products) {
-                    foreach ($data as $productData) {
-                        $products[$productData['id']] = new \Model\Product\Entity($productData);
-                    }
-                });
+                // TODO все данные заказываемых товаров необходимо сохранять в сессии на первом шаге оформления заказа, т.к. на последнем шаге товара уже может не быть в бэкэнде или он будет заблокирован 
+                foreach ($order->getProduct() as $product) {
+                    $products[$product->getId()] = new \Model\Product\Entity(['id' => $product->getId()]);
+                }
+                
+                \RepositoryManager::product()->prepareProductQueries($products, 'media category brand');
 
                 // Нужны ли нам кредитные банки?
-                if ($order->paymentId == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) $needCreditBanksData = true;
+                if ($order->isCredit()) $needCreditBanksData = true;
                 // и магазины
                 if ($order->getShopId()) $shopIds[$order->getShopId()] = $order->getNumber();
                 if ($order->getDelivery()->pointUi) $pointUis[$order->getDelivery()->pointUi] = $order->getNumber();
@@ -137,10 +146,23 @@ class CompleteAction extends OrderV3 {
             unset($order, $methodId, $onlineMethodsId, $privateClient, $needCreditBanksData);
 
             // очищаем корзину от заказанных продуктов
-            foreach ($products as $product) {
-                if ($product instanceof \Model\Product\Entity) $this->cart->setProduct($product, 0);
+            $updateResultProducts = [];
+            try {
+                $updateResultProducts = $this->cart->update(array_map(function(\Model\Product\Entity $product){ return ['ui' => $product->ui, 'quantity' => 0]; }, $products));
+            } catch(\Exception $e) {}
+
+            if ($userEntity && $this->isCoreCart()) {
+                try {
+                    foreach ($updateResultProducts as $updateResultProduct) {
+                        if ($updateResultProduct->setAction === 'delete') {
+                            (new Query\Cart\RemoveProduct($userEntity->getUi(), $updateResultProduct->cartProduct->ui))->prepare();
+                        }
+                    }
+                    $this->getCurl()->execute();
+                } catch (\Exception $e) {
+                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['order']);
+                }
             }
-            unset($product);
 
             // логируем этот шит
             foreach ($orders as $order) {
@@ -150,7 +172,7 @@ class CompleteAction extends OrderV3 {
                 $data['order-number'] = $order->numberErp;
                 $data['order-products'] = $productIds;
                 $data['order-names'] = array_map(function(\Model\Product\Entity $product) { return $product->getName(); }, $productsForOrder);
-                $data['order-product-category'] = array_map(function(\Model\Product\Entity $product) { $category = $product->getMainCategory(); return $category ? $category->getName() : null; }, $productsForOrder);
+                $data['order-product-category'] = array_map(function(\Model\Product\Entity $product) { $category = $product->getRootCategory(); return $category ? $category->getName() : null; }, $productsForOrder);
                 $data['order-product-price'] = array_map(function(\Model\Product\Entity $product) { return $product->getPrice(); }, $productsForOrder);
                 $data['order-sum'] = $order->getSum();
                 $data['order-delivery-price'] = $order->getDelivery() ? $order->getDelivery()->getPrice() : '';
@@ -170,10 +192,23 @@ class CompleteAction extends OrderV3 {
         $sessionIsReaded = !($this->sessionIsReaded === false);
         $this->session->remove(self::SESSION_IS_READED_KEY);
 
+        /** @var string[] $creditDoneOrderIds */
+        $creditDoneOrderIds = call_user_func(function() {
+            $return = [];
+
+            try {
+                $data = \App::session()->get(\App::config()->order['creditStatusSessionKey']);
+                $return = array_column(is_array($data) ? $data : [], 'order_id');
+            } catch (\Exception $e) {}
+
+            return $return;
+        });
+
         $page->setParam('orders', $orders);
         $page->setParam('ordersPayment', $ordersPayment);
         $page->setParam('motivationAction', $this->getMotivationAction($orders, $ordersPayment));
         $page->setParam('products', $products);
+        $page->setParam('productsById', $products);
         $page->setParam('userEntity', $this->user->getEntity());
         $page->setParam('paymentProviders', $paymentProviders);
         $page->setParam('banks', $banks);
@@ -182,6 +217,7 @@ class CompleteAction extends OrderV3 {
         $page->setParam('errors', array_merge( $page->getParam('errors', []), $errors));
 
         $page->setParam('sessionIsReaded', $sessionIsReaded);
+        $page->setGlobalParam('creditDoneOrderIds', $creditDoneOrderIds);
 
         $response = (bool)$orders ? new \Http\Response($page->show()) : new \Http\RedirectResponse($page->url('homepage'));
         $response->headers->setCookie(new \Http\Cookie('enter_order_v3_wanna', 0, 0, '/order',\App::config()->session['cookie_domain'], false, false)); // кнопка "Хочу быстрее"
@@ -267,18 +303,47 @@ class CompleteAction extends OrderV3 {
         return $response;
     }
 
+    /**
+     * @deprecated
+     * @return \Http\JsonResponse|null
+     */
     public function updateCredit() {
         $params = \App::request()->request->all();
 
         if (!isset($params['number_erp']) || !isset($params['bank_id'])) return null;
 
+        $result = [];
+        /*
         $result = \App::coreClientV2()->query('payment/credit-request',[],[
             'number_erp'    => $params['number_erp'],
             'bank_id'       => $params['bank_id']
         ]);
+        */
 
         return new \Http\JsonResponse($result);
 
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse
+     */
+    public function setCreditStatus(\Http\Request $request) {
+        $sessionKey = \App::config()->order['creditStatusSessionKey'];
+        $session = \App::session();
+
+        $form = [
+            'order_id' => null,
+        ];
+        $form = array_merge($form, is_array($request->get('form')) ? $request->get('form') : []);
+
+        if ($form['order_id']) {
+            $data = is_array($session->get($sessionKey)) ? $session->get($sessionKey) : [];
+            $data[$form['order_id']] = $form;
+            $session->set($sessionKey, $data);
+        }
+
+        return new \Http\JsonResponse([]);
     }
 
     /** Оплата баллами Связного
@@ -288,7 +353,7 @@ class CompleteAction extends OrderV3 {
      * @return bool Флаг об успешности операции
      * @link https://wiki.enter.ru/pages/viewpage.action?pageId=22588834
      */
-    private function completeSvyaznoy($request, $orders, &$page) {
+    private function completeSvyaznoy(\Http\Request $request, $orders, &$page) {
 
         $error = $request->query->get('Error');
 
@@ -360,7 +425,7 @@ class CompleteAction extends OrderV3 {
             $delivery = $iOrder->getDelivery();
             if (!$delivery || !$delivery->getDeliveredAt() || $delivery->isShipping) continue;
 
-            if ((new \DateTime())->format('d.m.Y') === $delivery->getDeliveredAt()->format('d.m.Y')) { // сегодня
+            if ($delivery->pointUi && ((new \DateTime())->format('d.m.Y') === $delivery->getDeliveredAt()->format('d.m.Y'))) { // сегодня
                 return null;
             }
         }

@@ -1,4 +1,4 @@
-;(function ( window, document, $, ENTER, Mustache ) {
+;$(function () {
 	var
 		d = $(document),
 		debugPanel = $('.jsDebugPanel'),
@@ -6,7 +6,8 @@
 		currentDebugPanelItemConfig = $.parseJSON(debugPanel.find('script').eq(0).html()),
 		currentDebugPanelItemContent = debugPanel.find('.jsCurrentDebugPanelItemContent'),
 		prevDebugPanelItemConfig = $.parseJSON(debugPanel.find('script').eq(1).html()),
-		prevDebugPanelItemContent = debugPanel.find('.jsPrevDebugPanelItemContent');
+		prevDebugPanelItemContent = debugPanel.find('.jsPrevDebugPanelItemContent'),
+		googleAnalyticsCallsContent = debugPanel.find('.js-debugPanel-googleAnalyticsCalls-content');
 	// end of vars
 
 	var
@@ -218,7 +219,7 @@
 		/**
 		 * Инициализация панели отладки
 		 */
-		initPanel = function( node, data ) {
+		initPanel = function( node, data, doesNotHighlightGeneralTabOnError ) {
 			var
 				html,
 				key;
@@ -237,6 +238,18 @@
 				}
 
 				node.append(html);
+			}
+
+			// Подсвечиваем заголовок вкладки красным цветом, если в запросах к ядру есть ошибки
+			if (data.query && data.query.value) {
+				for (key in data.query.value) {
+					if (data.query.value.hasOwnProperty(key) && data.query.value[key].error) {
+						node.closest('.jsDebugPanelItem').find('.jsOpenDebugPanelItem').addClass('debug-panel-open-error');
+						if (!doesNotHighlightGeneralTabOnError) {
+							debugPanel.find('.jsOpenDebugPanelContent').addClass('debug-panel-open-error');
+						}
+					}
+				}
 			}
 		},
 
@@ -272,6 +285,10 @@
 			outNode = debugPanel.find('.jsDebugPanelItemContent').eq(debugPanel.find('.jsDebugPanelItemContent').length - 1);
 
 			initPanel( outNode, debugInfo );
+		},
+
+		googleAnalyticsCall = function(e, data) {
+			googleAnalyticsCallsContent.append(Mustache.render($('#tpl-debug-googleAnalyticsCalls-row').html(), data));
 		},
 
 		/**
@@ -340,7 +357,7 @@
 
 
 	initPanel( currentDebugPanelItemContent, currentDebugPanelItemConfig );
-	initPanel( prevDebugPanelItemContent, prevDebugPanelItemConfig );
+	initPanel( prevDebugPanelItemContent, prevDebugPanelItemConfig, true );
 
 	debugPanel.on('click', '.jsExpandValue', expandValue);
 	debugPanel.on('click', '.jsOpenDebugPanelItem', openDebugPanel);
@@ -348,5 +365,6 @@
 	debugPanel.on('click', '.jsOpenDebugPanelContent', openDebugPanelContent);
 
 	d.ajaxSuccess(ajaxResponse);
+	d.on('googleAnalyticsCall', googleAnalyticsCall);
 
-}(window, document, jQuery, ENTER, Mustache));
+});

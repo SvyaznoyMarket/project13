@@ -26,9 +26,7 @@ return function(
     // При создании заказа выбрана онлайн-оплата
     $isOnlinePaymentChecked = in_array($order->getPaymentId(), [PaymentMethodEntity::PAYMENT_CARD_ONLINE, PaymentMethodEntity::PAYMENT_PAYPAL, PaymentMethodEntity::PAYMENT_PSB]);
     ?>
-
-    <?= $helper->render('order-v3-new/__head', ['step' => 3]) ?>
-
+    <div class="order__wrap">
     <section class="orderCnt jsNewOnlineCompletePage"
              data-order-id="<?= $order->getId() ?>"
              data-order-number="<?= $order->getNumber() ?>"
@@ -53,7 +51,7 @@ return function(
                 <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
             <? endif ?>
 
-            <? if ($order->getPaymentId() != PaymentMethodEntity::PAYMENT_CREDIT) : ?>
+            <? if (!$order->isCredit()) : ?>
 
                 <? if ($order->getDeliveryTypeId() == 3 || $order->getDeliveryTypeId() == 4 || $order->point) : ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_point', ['order' => $order]) ?>
@@ -67,14 +65,14 @@ return function(
 
         </div>
 
-        <? if ($order->getPaymentId() == PaymentMethodEntity::PAYMENT_CREDIT) : ?>
+        <? if ($order->isCredit()) : ?>
             <?= $helper->render('order-v3-new/complete-blocks/_credit', ['order' => $order, 'creditData' => $creditData, 'banks' => $banks]) ?>
         <? endif ?>
 
 
         <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
 
-        <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && $order->getPaymentId() != PaymentMethodEntity::PAYMENT_CREDIT && !$motivationAction && !$order->isPaidBySvyaznoy()) : ?>
+        <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && !$order->isCredit() && !$motivationAction && !$order->isPaidBySvyaznoy()) : ?>
 
             <!-- Блок оплата в два клика-->
             <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
@@ -103,7 +101,7 @@ return function(
 
         <?= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_svyaznoy-club') : '' ?>
 
-        <? if (\App::config()->flocktoryExchange['enabled'] && $order->getPaymentId() != PaymentMethodEntity::PAYMENT_CREDIT) : ?>
+        <? if (\App::config()->flocktory['exchange'] && !$order->isCredit()) : ?>
 <!--            <div>-->
                 <div class="i-flocktory orderPayment" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-username="<?= $order->getFirstName() ?>" data-fl-user-email="<?= $order->email ?>"></div>
 <!--            </div>-->
@@ -113,7 +111,7 @@ return function(
             <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
         </div>
     </section>
-
+    </div>
     <? if (!$isOnlinePaymentPossible) : ?>
         <!--Аналитика-->
         <div class="jsGAOnlinePaymentNotPossible"></div>
@@ -143,6 +141,8 @@ return function(
         ]);
 
         echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products]);
+
+        echo $helper->render('order/__saleAnalytics', ['orders' => $orders]);
 
         /* Показываем флоктори без нарушения конверсии онлайн-оплаты (т.е. не выбран онлайновый метод оплаты) */
         if (!$isOnlinePaymentChecked) {

@@ -3,6 +3,7 @@
 namespace Controller\Compare;
 
 use EnterQuery as Query;
+use Session\AbTest\AbTest;
 
 class CompareAction {
     use \EnterApplication\CurlTrait;
@@ -19,6 +20,7 @@ class CompareAction {
     }
 
     public function execute(\Http\Request $request) {
+        /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
         $compareProducts = $this->session->get($this->compareSessionKey);
         $lastProduct = null;
@@ -27,52 +29,16 @@ class CompareAction {
             $productIds = array_keys($compareProducts);
             $lastProduct = end($compareProducts);
 
-            $productDataByUi = [];
-
-            $client = \App::coreClientV2();
-            $client->addQuery(
-                'product/get',
-                [
-                    'select_type' => 'id',
-                    'id'          => $productIds,
-                    'geo_id'      => \App::user()->getRegion()->getId(),
-                ],
-                [],
-                function($data) use(&$productDataByUi) {
-                    foreach ($data as $item) {
-                        if (!isset($item['ui'])) continue;
-                        $productDataByUi[$item['ui']] = $item;
-                    }
-                }
-            );
-
-            \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use(&$reviewsData){
-                $reviewsData = $data;
-            });
-
-            $client->execute();
-
-            // описание товара из scms
-            $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList(array_keys($productDataByUi)))->prepare();
-            $this->getCurl()->execute();
-
-            foreach ($productDescriptionQuery->response->products as $ui => $descriptionItem) {
-                $item = isset($productDataByUi[$ui]) ? $productDataByUi[$ui] : null;
-                if (!$item) continue;
-
-                $propertyData = isset($descriptionItem['properties'][0]) ? $descriptionItem['properties'] : [];
-                if ($propertyData) {
-                    $item['property'] = $propertyData;
-                }
-
-                $propertyGroupData = isset($descriptionItem['property_groups'][0]) ? $descriptionItem['property_groups'] : [];
-                if ($propertyGroupData) {
-                    $item['property_group'] = $propertyGroupData;
-                }
-
-                $productsById[$item['id']] = new \Model\Product\Entity($item);
+            foreach ($productIds as $productId) {
+                $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
             }
 
+            $client = \App::coreClientV2();
+            \RepositoryManager::product()->prepareProductQueries($productsById, 'media property category label');
+            \RepositoryManager::review()->prepareScoreCollection($productsById, function($data) use(&$reviewsData){
+                $reviewsData = $data;
+            });
+            $client->execute();
 
             $compareGroups = $this->getCompareGroups($compareProducts, $productsById, $reviewsData);
         } else {
@@ -100,7 +66,8 @@ class CompareAction {
 
             foreach ($compareProducts as $compareProduct) {
                 /** @var \Model\Product\Entity $product */
-                $product = $products[$compareProduct['id']];
+                $product = isset($products[$compareProduct['id']]) ? $products[$compareProduct['id']] : null;
+                if (!$product) continue;
 
                 $typeId = $product->getType() ? $product->getType()->getId() : null;
                 if (!isset($compareGroups[$typeId])) {
@@ -145,7 +112,7 @@ class CompareAction {
                         'inShopShowroomOnly' => $product->isInShopShowroomOnly(),
                         'isBuyable' => $product->getIsBuyable(),
                         'statusId' => $product->getStatusId(),
-                        'imageUrl' => $product->getImageUrl(1),
+                        'imageUrl' => $product->getMainImageUrl('product_120'),
                         'partnerName' => $slotPartnerOffer ? $slotPartnerOffer['name'] : '',
                         'partnerOfferUrl' => $slotPartnerOffer ? $slotPartnerOffer['offer'] : '',
                         'isSlot' => (bool)$slotPartnerOffer,
@@ -263,28 +230,34 @@ class CompareAction {
     }
 
     public function add(\Http\Request $request, $productId) {
+        /** @var \Model\Product\Entity[] $products */
+        $products = [new \Model\Product\Entity(['id' => $productId])];
+        \RepositoryManager::product()->prepareProductQueries($products, 'media');
+        \App::coreClientV2()->execute();
 
-        $product = \RepositoryManager::product()->getEntityById($productId);
+        if ($products) {
+            $product = $products[0];
 
-        if (!array_key_exists($product->getId(), $this->data)) {
-            $this->data[$product->getId()] = [
-                'id'     => $product->getId(),
-                'ui'     => $product->getUi(),
-                'typeId' => $product->getType() ? $product->getType()->getId() : null,
-                'location' => $request->query->get('location'),
-            ];
-            $this->session->set($this->compareSessionKey, $this->data);
-        }
+            if (!array_key_exists($product->getId(), $this->data)) {
+                $this->data[$product->getId()] = [
+                    'id'     => $product->getId(),
+                    'ui'     => $product->getUi(),
+                    'typeId' => $product->getType() ? $product->getType()->getId() : null,
+                    'location' => $request->query->get('location'),
+                ];
+                $this->session->set($this->compareSessionKey, $this->data);
+            }
 
-        if ($request->isXmlHttpRequest()) {
-            return new \Http\JsonResponse([
-                'compare' => $this->session->get($this->compareSessionKey),
-                'product' => [
-                    'prefix' => $product->getPrefix(),
-                    'webName' => $product->getWebName(),
-                    'imageUrl' => $product->getImageUrl(0),
-                ],
-            ]);
+            if ($request->isXmlHttpRequest()) {
+                return new \Http\JsonResponse([
+                    'compare' => $this->session->get($this->compareSessionKey),
+                    'product' => [
+                        'prefix' => $product->getPrefix(),
+                        'webName' => $product->getWebName(),
+                        'imageUrl' => $product->getMainImageUrl('product_60'),
+                    ],
+                ]);
+            }
         }
 
         $returnUrl = $request->server->get('HTTP_REFERER');

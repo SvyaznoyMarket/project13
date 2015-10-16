@@ -68,7 +68,7 @@ class ShowAction {
                     $queryData[$index] = [
                         'url'         => $url,
                         'encodedUrl'  => urlencode($url),
-                        'data'        => (bool)$data ? json_encode($data, JSON_UNESCAPED_UNICODE) : null,
+                        'data'        => (bool)$data ? json_encode($data, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT) : null,
                         'encodedData' => (bool)$data ? urlencode(json_encode($data, JSON_UNESCAPED_UNICODE)) : null,
                         'timeout'     => isset($message['timeout']) ? $message['timeout'] : null,
                         'startAt'     => $startAt,
@@ -80,6 +80,7 @@ class ShowAction {
                 } else if ((('Fail curl' == $message['message']) || ('End curl' == $message['message'])) && isset($queryData[$index])) {
                     if (isset($message['error'])) {
                         $queryData[$index]['error'] = $message['error'];
+                        $queryData[$index]['error']['substrMessage'] = isset($message['error']['message']) ? mb_substr($message['error']['message'], 0, 10) . '&#8230' : '';
                     }
                     if (isset($message['response'])) {
                         $queryData[$index]['response'] = $message['response'];
@@ -96,6 +97,7 @@ class ShowAction {
                     $queryData[$index]['retryCount'] = isset($message['retryCount']) ? $message['retryCount'] : null;
                     $queryData[$index]['retryTimeout'] = isset($message['retryTimeout']) ? $message['retryTimeout'] : null;
                     $queryData[$index]['header'] = isset($message['header']) ? $message['header'] : null;
+                    $queryData[$index]['responseBodyLength'] = isset($message['responseBodyLength']) ? $message['responseBodyLength'] : null;
                     $queryData[$index]['cache'] = isset($message['cache']);
                     $queryData[$index]['delay'] = $delay;
                     if (empty($queryData[$index]['delays'])) {
@@ -107,6 +109,8 @@ class ShowAction {
                     } else {
                         $iDelay = null;
                         foreach ($queryData[$index]['delays'] as &$iDelay) {
+                            if (!isset($iDelay['value'])) continue;
+
                             if ($delay == $iDelay['value']) {
                                 $iDelay['selected'] = true;
                                 $iDelay['http_code'] = isset($queryData[$index]['info']['http_code']) ? $queryData[$index]['info']['http_code'] : null;

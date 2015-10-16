@@ -8,6 +8,7 @@
 <?
 $appConfig = \App::config();
 $router = \App::router();
+$helper = new \Helper\TemplateHelper();
 
 try {
     $classFile = $appConfig->appDir . '/vendor/Mobile-Detect/Mobile_Detect.php';
@@ -27,10 +28,8 @@ $routerRules = \App::router()->getRules();
 $config = array_merge([
     'adfoxEnabled'     => $appConfig->adFox['enabled'],
     'jsonLog'               => $appConfig->jsonLog['enabled'],
-    'userUrl'               => $router->generate('user.info'),
     'routeUrl'              => $router->generate('route'),
     'f1Certificate'         => $appConfig->f1Certificate['enabled'],
-    'tealeaf'               => $appConfig->tealeaf['enabled'],
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
     'prepayment'            => $appConfig->order['prepayment'],
     'isMobile'              => $isMobile,
@@ -43,10 +42,14 @@ $config = array_merge([
             'name'            => \App::user()->getRegion() ? \App::user()->getRegion()->getName() : null
         ],
     ],
+    'request' => [
+        'route' => [
+            'attributes' => array_diff_key(\App::request()->attributes->all(), ['pattern' => null, 'method' => null, 'action' => null, 'route' => null, 'require' => null]),
+        ],
+    ],
     'routes' => [
         'cart'                      => ['pattern' => $routerRules['cart']['pattern']],
-        'cart.product.set'          => ['pattern' => $routerRules['cart.product.set']['pattern']],
-        'cart.oneClick.product.set' => ['pattern' => $routerRules['cart.oneClick.product.set']['pattern']],
+        'cart.product.setList'      => ['pattern' => $routerRules['cart.product.setList']['pattern']],
         'compare.add'               => ['pattern' => $routerRules['compare.add']['pattern']],
         'compare.delete'            => ['pattern' => $routerRules['compare.delete']['pattern']],
         'orderV3OneClick.delivery'  => ['pattern' => $routerRules['orderV3OneClick.delivery']['pattern']],
@@ -54,9 +57,14 @@ $config = array_merge([
         'product.kit'               => ['pattern' => $routerRules['product.kit']['pattern']],
         'orderV3OneClick.form'      => ['pattern' => $routerRules['orderV3OneClick.form']['pattern']],
         'order.slot.create'         => ['pattern' => $routerRules['order.slot.create']['pattern']],
+        'product.reviews.get'       => ['pattern' => $routerRules['product.reviews']['pattern']],
+        'ajax.product.category'     => ['pattern' => $routerRules['ajax.product.category']['pattern']],
     ],
+    'newProductPage' => \App::abTest()->isNewProductPage(),
     'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS
-    'selfDeliveryLimit'    => $appConfig->self_delivery['limit'] // стоимость платного самовывоза, удалять осторожно, поломается JS
+    'selfDeliveryLimit'    => $appConfig->self_delivery['limit'], // стоимость платного самовывоза, удалять осторожно, поломается JS
+    'minOrderSum'  => \App::abTest()->isOrderMinSumRestriction() ? $appConfig->minOrderSum : false,
+    'infinityScroll' => \App::abTest()->getTest('infinity_scroll') && ('on' === \App::abTest()->getTest('infinity_scroll')->getChosenCase()->getKey()),
 ], isset($config) ? (array)$config : []);
 ?>
 

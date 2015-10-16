@@ -9,7 +9,7 @@ return function (
         !\App::config()->lifeGift['enabled']
         || !$product->getIsBuyable()
         || (5 === $product->getStatusId()) // SITE-2924
-        || !(\App::config()->lifeGift['labelId'] === $product->getLabelId())
+        || ($product->getLabel() && $product->getLabel()->id != \App::config()->lifeGift['labelId'])
     ) {
         return '';
     }
@@ -17,9 +17,7 @@ return function (
     $urlParams = [
         'productId' => $product->getId(),
     ];
-    if ($helper->hasParam('sender')) {
-        $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
-    }
+
     $url = $helper->url('orderV3.lifegift', $urlParams);
 
 ?>

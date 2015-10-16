@@ -1,5 +1,5 @@
 ;(function ( ENTER ) {
-	var
+	var $body = $(document.body),
 		utils = ENTER.utils;
 	// end of vars
 
@@ -27,6 +27,12 @@
 		}
 
 		return len;
+	};
+
+	utils.numberChoice = function(number, choices) {
+		var cases = [2, 0, 1, 1, 1, 2];
+
+		return choices[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[Math.min(number % 10, 5)]];
 	};
 
 	/**
@@ -131,7 +137,7 @@
 
 		return url;
 	};
-	
+
 	utils.getObjectWithElement = function(array, elementKey, expectedElementValue) {
 		var object = null;
 		if (array) {
@@ -142,7 +148,7 @@
 				}
 			});
 		}
-		
+
 		return object;
 	};
 
@@ -203,7 +209,7 @@
 
 		// Return the result
 		return checksum == originalCheck;
-	}
+	};
 
     utils.arrayUnique = function(array) {
         var unique = [];
@@ -223,11 +229,12 @@
 	 * @param orderData
 	 */
 	utils.sendOrderToGA = function(orderData) {
-		var
-			$body = $('body'),
-			oData = orderData || { orders: [] };
+
+        var	oData = orderData || { orders: [] };
 
 		console.log('[Google Analytics] Start processing orders', oData.orders);
+
+		var productUis = [];
 		$.each(oData.orders, function(i,o) {
 			var googleOrderTrackingData = {};
 			googleOrderTrackingData.transaction = {
@@ -256,6 +263,9 @@
 					labels.push('RR_' + p.position);
 				}
 
+                // Отслеживание покупок в кредит
+                if (p.sender2 == 'credit') labels.push('Credit');
+
 				if (labels.length) {
 					productName += ' (' + labels.join(')(') + ')';
 				}
@@ -263,19 +273,29 @@
 				/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
 				if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery.price) productName = productName + ' (paid pickup)';
 
-				// Аналитика по купленным товарам из рекомендаций
-				// Отправляем RR_покупка не только для retailrocket товаров
 				if (p.sender) {
-					var rrEventLabel = '';
-					// Если товар был куплен из рекомендаций с карточки товаров маркетплейс
-					if (p.sender2 == 'slot') {
-						rrEventLabel = '_marketplace-slot';
-					} else if (p.sender2 == 'marketplace') {
-						rrEventLabel = '_marketplace';
-					}
+					// SITE-5772
+					if (typeof p.sender == 'string' && p.sender.indexOf('filter') == 0) {
+						$('body').trigger('trackGoogleEvent', {
+							category: p.sender,
+							action: 'buy',
+							label: p.isFromProductCard ? 'product' : 'basket'
+						});
+					} else {
+						// Аналитика по купленным товарам из рекомендаций
+						// Отправляем RR_покупка не только для retailrocket товаров
 
-					if (p.from) $body.trigger('trackGoogleEvent',['RR_покупка' + rrEventLabel,'Купил просмотренные', p.position || '']);
-					else $body.trigger('trackGoogleEvent',['RR_покупка' + rrEventLabel,'Купил добавленные', p.position || '']);
+						var rrEventLabel = '';
+						// Если товар был куплен из рекомендаций с карточки товара маркетплейс
+						if (p.sender2 == 'slot') {
+							rrEventLabel = '_marketplace-slot';
+						} else if (p.sender2 == 'marketplace') {
+							rrEventLabel = '_marketplace';
+						}
+
+						if (p.from) $body.trigger('trackGoogleEvent',['RR_покупка' + rrEventLabel,'Купил просмотренные', p.position || '']);
+						else $body.trigger('trackGoogleEvent',['RR_покупка' + rrEventLabel,'Купил добавленные', p.position || '']);
+					}
 				}
 
 				if (p.inCompare) {
@@ -289,23 +309,59 @@
 							action = 'enter';
 						}
 
-						$('body').trigger('trackGoogleEvent', ['Compare_покупка', action, p.compareLocation]);
+						$body.trigger('trackGoogleEvent', ['Compare_покупка', action, p.compareLocation]);
 					})();
 				}
 
+				productUis.push(p.ui);
+
 				return {
-					'id': p.id,
-					'name': productName,
-					'sku': p.article,
-					'category': p.category.length ? (p.category[0].name +  ' - ' + p.category[p.category.length -1].name) : '',
+					'id': p.barcode,
+					'sku': p.barcode,
+					'name': p.name,
+					'category': $.map(p.category, function(obj) {return obj.name}).join(' / '),
 					'price': p.price,
-					'quantity': p.quantity
+					'quantity': p.quantity,
+					'brand': p.brand ? p.brand.name : ''
 				}
 			});
+
+            if (o.isCredit) {
+                if ($.grep(o.products, function(product){ return product.sender2 == 'credit' }).length > 0) {
+                    $body.trigger('trackGoogleEvent', ['Credit', 'Покупка', 'Карточка товара'])
+                } else {
+                    $body.trigger('trackGoogleEvent', ['Credit', 'Покупка', 'Оформление заказа'])
+                }
+            }
 
 			console.log('[Google Analytics] Order', googleOrderTrackingData);
 			$body.trigger('trackGoogleTransaction', [googleOrderTrackingData]);
 		});
+
+		// SITE-5466
+		(function() {
+			var
+				action = '',
+				label = '';
+
+			var reviewProducts = ENTER.utils.analytics.reviews.get(productUis);
+            console.log('localstorage', localStorage.getItem('enter.analytics.reviews'));
+            console.log('products ui', productUis);
+            console.log('reviewProducts', reviewProducts);
+
+			if (reviewProducts.length) {
+				for (var i = 0; i < reviewProducts.length; i++) {
+					action += (i > 0 ? '_' : '') + (i + 1) + '_All_' + reviewProducts[i].avgScore + '_Top_' + reviewProducts[i].firstPageAvgScore;
+					label += (i > 0 ? '_' : '') + (i + 1) + '_' + reviewProducts[i].categoryName;
+				}
+
+				$body.trigger('trackGoogleEvent', {
+					category: 'Items_review_transaction',
+					action: action,
+					label: label
+				});
+			}
+		})();
 	};
 
 	utils.sendAdd2BasketGaEvent = function(productArticle, productPrice, isOnlyFromPartner, isSlot, senderName) {
@@ -336,13 +392,268 @@
 					actions.push(location);
 				}
 
-				$('body').trigger('trackGoogleEvent', ['Add2Basket', '(' + actions.join(')(') + ')', productArticle]);
+				//$body.trigger('trackGoogleEvent', ['Add2Basket', '(' + actions.join(')(') + ')', productArticle]);
+				$body.trigger('trackGoogleEvent', ['Product', 'click', 'add to cart']);
 			}
 		}
 	};
 
-	utils.getCategoryPath = function() {
-		return document.location.pathname.replace(/^\/(?:catalog|product)\/([^\/]*).*$/i, '$1');
+	/**
+	 * SITE-5772
+	 * @param {String} sort Например, price-ask
+	 * @param {Object} category Данные категории вида {name: "", ancestors: [{name: ""}]}
+	 */
+	utils.sendSortEvent = function(sort, category) {
+		// Для слайсов события в аналитику пока не шлём, т.к. для реализации событий перехода на карточку, добавления в
+		// корзину и покупки необходимо добавить либо поддержку множественных sender'ов либо добавить поддержку
+		// параметра sender3 (который использовать для данной аналитики). Отравку событий взаимодействия с фильтрами без
+		// отправки события перехода/добавления/покупки не делает, чтобы не портить статистику по filter_old.
+		if ($('.js-slice').length) {
+			return;
+		}
+
+		$('body').trigger('trackGoogleEvent', {
+			category: 'sort',
+			action: sort,
+			label: utils.getPageBusinessUnitId() + (function() {
+				var result = '';
+
+				if (!category || !category.name) {
+					return [];
+				}
+
+				if (category.ancestors) {
+					$.each(category.ancestors, function(key, category) {
+						result += '_' + category.name;
+					});
+				}
+
+				return result + '_' + category.name;
+			})()
+		});
+	};
+
+	utils.getPageBusinessUnitId = function() {
+		return document.location.pathname.replace(/^(?:\/(?:catalog|product))?\/(slices?\/(?:[^\/]*\/)?[^\/]*|[^\/]*).*$/i, '$1');
+	};
+
+	var abstractAnalytics = {
+		add: function(storageName, itemData, storageMaxLength) {
+			if (!window.localStorage) {
+				return;
+			}
+
+			try {
+				var data = JSON.parse(localStorage.getItem(storageName)) || [];
+			} catch(e) {
+				data = [];
+			}
+
+			// Поскольку при переполнении переменной удаляются первые товары, важно, чтобы повторное добавление
+			// товара перемещало его в конец массива
+			for (var i = 0; i < data.length; i++) {
+				if (data[i][0] == itemData[0]) {
+					data.splice(i, 1);
+					break;
+				}
+			}
+
+			data.push(itemData);
+
+			while (JSON.stringify(data).length > storageMaxLength) {
+				data.shift();
+			}
+
+			localStorage.setItem(storageName, JSON.stringify(data));
+		},
+		get: function(storageName, itemsIdentifiers) {
+			if (!window.localStorage) {
+				return;
+			}
+
+			try {
+				var data = JSON.parse(localStorage.getItem(storageName)) || [];
+			} catch(e) {
+				data = [];
+			}
+
+			var result = [];
+			for (var i = 0; i < data.length; i++) {
+				if (itemsIdentifiers.indexOf(data[i][0]) != -1) {
+					result.push(data[i]);
+				}
+			}
+
+			return result;
+		},
+		clean: function(storageName) {
+			if (!window.localStorage) {
+				return;
+			}
+
+			localStorage.removeItem(storageName);
+		}
+	};
+
+	utils.analytics = {
+
+		/**
+		 * Проверка доступности трекеров
+		 * @returns {boolean}
+		 */
+		isEnabled: function() {
+			return typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0
+		},
+
+		/**
+		 * E-commerce common helper
+		 * @param action Действие
+		 * @param elem Кнопка "купить" или объект для для GA (определяется по наличию свойства id)
+		 * @param additionalData
+		 */
+		addEcommData: function(action, elem, additionalData) {
+			var data = (elem && (typeof elem.tagName != 'undefined')) ? $(elem).data('ecommerce') : elem;
+			if (!this.isEnabled || typeof data != 'object') return;
+			if (typeof additionalData != 'undefined') data = $.extend({}, data, additionalData);
+			if (this.isEnabled()) ga(action, data);
+			console.log('[GA] %s', action, data)
+		},
+
+		/**
+		 * E-commerce ec:addImpression helper
+		 * @param elem Кнопка "купить" или объект для для GA (определяется по наличию свойства id)
+		 * @param additionalData
+		 */
+		addImpression: function(elem, additionalData) {
+			this.addEcommData('ec:addImpression', elem, additionalData);
+		},
+
+		/**
+		 * E-commerce ec:addProduct helper
+		 * @param elem Кнопка "купить" или объект для для GA (определяется по наличию свойства id)
+		 * @param additionalData
+		 */
+		addProduct: function(elem, additionalData) {
+			this.addEcommData('ec:addProduct', elem, additionalData)
+		},
+
+		setAction: function(action, params) {
+			if (this.isEnabled()) ga('ec:setAction', action, typeof params !== 'undefined' ? params : {});
+			console.log('[GA] ec:setAction %s', action, params)
+		},
+
+		// SITE-5466
+		reviews: {
+			add: function(productUi, avgScore, firstPageAvgScore, categoryName) {
+				// Размер хранилища выбран на основе исследования из задачи ADM-457 За эталон одной записи была взята
+				// запись "["00203e03-68ce-4a85-8862-8e7cd1542756",8.78,8.78,"Мобильные телефоны"]".
+				return abstractAnalytics.add('enter.analytics.reviews', [productUi, avgScore, firstPageAvgScore, categoryName], 3000);
+			},
+			get: function(productUis) {
+				var result = abstractAnalytics.get('enter.analytics.reviews', productUis);
+				for (var i = 0; i < result.length; i++) {
+					result[i] = {
+						avgScore: result[i][1],
+						firstPageAvgScore: result[i][2],
+						categoryName: result[i][3]
+					};
+				}
+
+				return result;
+			},
+			// Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа
+			// через обычное оформление заказа (не через одноклик или слоты).
+			clean: function() {
+				return abstractAnalytics.clean('enter.analytics.reviews');
+			}
+		},
+		// SITE-5062
+		productPageSenders: {
+			add: function(productUi, sender) {
+				// Размер хранилища выбран на основе исследования из задачи ADM-457 За эталон одной записи была взята
+				// запись "["00203e03-68ce-4a85-8862-8e7cd1542756",{"name":"retailrocket","position":"ProductAccessories","type":"alsoBought","method":"CrossSellItemToItems","from":"cart_rec"}],".
+				if (sender) {
+					return abstractAnalytics.add('enter.analytics.productPageSenders', [productUi, sender], 2500);
+				}
+			},
+			get: function($button) {
+				var sender = $button.data('sender') || {};
+
+				if ($('body').data('template') == 'product_card' && ($button.data('location') == 'product-card' || $button.data('location') == 'userbar')) {
+					var
+						product = $('#jsProductCard').data('value') || {},
+						productPageSender = abstractAnalytics.get('enter.analytics.productPageSenders', [product.ui])
+					;
+
+					productPageSender = (productPageSender[0] ? productPageSender[0][1] : null) || product.oldProductPageSender; // TODO: удалить oldProductPageSender через неделю после релиза SITE-5543
+
+					if (productPageSender && typeof productPageSender == 'object') {
+						function isSenderPresent(sender) {
+							if (sender && typeof sender == 'object') {
+								for (var key in sender) {
+									if (sender.hasOwnProperty(key) && key != 'from' && sender[key]) {
+										return true;
+									}
+								}
+							}
+
+							return false;
+						}
+
+						if (!isSenderPresent(sender)) {
+							sender = productPageSender;
+						}
+					}
+
+					if (sender && typeof sender.name == 'string' && sender.name.indexOf('filter') == 0) {
+						sender.isFromProductCard = true;
+					}
+				}
+
+				return sender;
+			},
+			// Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа
+			// через обычное оформление заказа (не через одноклик или слоты).
+			clean: function() {
+				return abstractAnalytics.clean('enter.analytics.productPageSenders');
+			}
+		},
+		// SITE-5072
+		// Используется для сохранения источников переходов, осуществлённых из рекомендаций с карточек товаров
+		// маркетплейс. Используется отдельное хранилище (а не хранилище productPageSenders), т.к. данные источники
+		// не должны перезатирать источники из productPageSenders.
+		productPageSenders2: {
+			add: function(productUi, sender2) {
+				// Размер хранилища выбран на основе исследования из задачи ADM-457. За эталон одной записи была взята
+				// запись "["00203e03-68ce-4a85-8862-8e7cd1542756","marketplace"],".
+				if (sender2) {
+					return abstractAnalytics.add('enter.analytics.productPageSenders2', [productUi, sender2], 1000);
+				}
+			},
+			get: function($button) {
+				var sender2 = $button.data('sender2') || '';
+
+				if ($('body').data('template') == 'product_card' && ($button.data('location') == 'product-card' || $button.data('location') == 'userbar')) {
+					var
+						product = $('#jsProductCard').data('value') || {},
+						productPageSender2 = abstractAnalytics.get('enter.analytics.productPageSenders2', [product.ui])
+					;
+
+					productPageSender2 = (productPageSender2[0] ? productPageSender2[0][1] : null) || product.oldProductPageSender2; // TODO: удалить oldProductPageSender2 через неделю после релиза SITE-5543
+
+					if (productPageSender2 && !sender2) {
+						sender2 = productPageSender2;
+					}
+				}
+
+				return sender2;
+			},
+			// Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа
+			// через обычное оформление заказа (не через одноклик или слоты).
+			clean: function() {
+				return abstractAnalytics.clean('enter.analytics.productPageSenders2');
+			}
+		}
 	};
 
 }(window.ENTER));

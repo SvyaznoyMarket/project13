@@ -25,8 +25,12 @@ class NotificationAction {
         $client = \App::coreClientV2();
         $region = \App::user()->getRegion();
 
-        $product = \RepositoryManager::product()->getEntityById($productId, $region);
-        if (!$product) {
+        /** @var \Model\Product\Entity[] $products */
+        $products = [new \Model\Product\Entity(['id' => $productId])];
+        \RepositoryManager::product()->prepareProductQueries($products, '', $region);
+        \App::coreClientV2()->execute();
+
+        if (!$products) {
             throw new \Exception\NotFoundException(sprintf('Товар #%s не найден', $productId));
         }
 
@@ -59,7 +63,7 @@ class NotificationAction {
             $params = [
                 'email'      => $email,
                 'geo_id'     => $region->getId(),
-                'product_id' => $product->getId(),
+                'product_id' => $productId,
                 'channel_id' => 2,
             ];
 

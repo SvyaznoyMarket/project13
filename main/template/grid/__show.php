@@ -22,10 +22,11 @@ $f = function(
     <? foreach ($gridCells as $cell): ?>
         <?
         /** @var \Model\Product\Entity|null $product */
-        $product = ((\Model\GridCell\Entity::TYPE_PRODUCT === $cell->getType()) && (isset($productsByUi[$cell->getObjectUi()]) && $productsByUi[$cell->getObjectUi()] instanceof \Model\Product\BasicEntity) ? $productsByUi[$cell->getObjectUi()] : null);
+        $product = ((\Model\GridCell\Entity::TYPE_PRODUCT === $cell->getType()) && (isset($productsByUi[$cell->getObjectUi()]) && $productsByUi[$cell->getObjectUi()] instanceof \Model\Product\Entity) ? $productsByUi[$cell->getObjectUi()] : null);
+        $isSoldOut = $product && $product->isSoldOut() && !\App::config()->preview;
         ?>
 
-        <div class="productInner js-gridListing<? if ($product && $product->isSoldOut()): ?> productInner-off<? endif ?>" style="position: absolute;
+        <div class="productInner js-gridListing<? if ($isSoldOut): ?> productInner-off<? endif ?>" style="position: absolute;
         <?= 'left: ' . (($cell->getColumn() - 1) *  $step + ($cell->getColumn() - 1) * $offset) . 'px;' ?>
         <?= 'top: ' . (($cell->getRow() - 1) *  $step + ($cell->getRow() - 1) * $offset) . 'px;' ?>
         <?= 'width:' . ($cell->getSizeX() * $step + ($cell->getSizeX() - 1) * $offset) . 'px;' ?>
@@ -39,7 +40,7 @@ $f = function(
                         </div>
                     <? endif ?>
 
-                    <? if ($product->isSoldOut()): ?>
+                    <? if ($isSoldOut): ?>
                         <div class="bProductDescSticker stockSticker">
                             <img class="stockSticker_img" src="/images/shild_sold_out.png" alt="Нет в наличии" />
                         </div>
@@ -52,7 +53,7 @@ $f = function(
                         false,
                         $cartButtonAction,
                         null,
-                        3
+                        'product_500'
                     )) ?>
                 <? endif ?>
             <? elseif (\Model\GridCell\Entity::TYPE_IMAGE === $cell->getType()): ?>

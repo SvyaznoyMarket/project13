@@ -12,6 +12,7 @@
 <?
 if (!isset($isAjax)) $isAjax = false;
 if (!isset($isAddInfo)) $isAddInfo = false;
+if (!isset($category)) $category = null;
 ?>
 
 <? if (!$pager->count()) { ?>
@@ -25,14 +26,7 @@ if (!isset($isAddInfo)) $isAddInfo = false;
                 'isAjax' => $isAjax,
                 'isAddInfo' => $isAddInfo,
                 'itemsPerRow' => $itemsPerRow,
-            ]);
-            break;
-        case 'line':
-            print $page->render('jewel/product/list/_line', [
-                'pager' => $pager,
-                'isAjax' => $isAjax,
-                'isAddInfo' => $isAddInfo,
-                'itemsPerRow' => $itemsPerRow,
+                'category' => $category,
             ]);
             break;
         default:
@@ -41,6 +35,7 @@ if (!isset($isAddInfo)) $isAddInfo = false;
                 'isAjax' => $isAjax,
                 'isAddInfo' => $isAddInfo,
                 'itemsPerRow' => $itemsPerRow,
+                'category' => $category,
             ]);
             break;
     } ?>

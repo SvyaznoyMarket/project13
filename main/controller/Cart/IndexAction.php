@@ -2,7 +2,12 @@
 
 namespace Controller\Cart;
 
+use Session\AbTest\ABHelperTrait;
+use Model\ClosedSale\ClosedSaleEntity;
+
 class IndexAction {
+    use ABHelperTrait;
+
     /**
      * @param \Http\Request $request
      * @return \Http\Response
@@ -13,6 +18,13 @@ class IndexAction {
         $client = \App::coreClientV2();
         $user = \App::user();
         $cart = $user->getCart();
+        $sales = [];
+
+        $orderWithCart = self::isOrderWithCart();
+
+        if ($orderWithCart) {
+            \App::session()->remove(\App::config()->order['splitSessionKey']);
+        }
 
         // подготовка 1-го пакета запросов
 
@@ -26,91 +38,40 @@ class IndexAction {
             });
         }*/
 
-        // запрашиваем текущий регион, если есть кука региона
-        $regionConfig = [];
-        if ($user->getRegionId()) {
-            $regionConfig = (array)\App::dataStoreClient()->query("/region/{$user->getRegionId()}.json");
+        $sales = array_map(
+            function (array $data) {
+                return new ClosedSaleEntity($data);
+            },
+            \App::scmsClient()->query('api/promo-sale/get', [], [])
+        );
+        $sales = array_slice($sales, 0, 3);
 
+        // запрашиваем текущий регион, если есть кука региона
+        if ($user->getRegionId()) {
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
-                if ((bool)$data) {
+                if ($data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
             });
-        }
-
-        // выполнение 1-го пакета запросов
-        $client->execute();
-
-        $regionEntity = $user->getRegion();
-        if ($regionEntity instanceof \Model\Region\Entity) {
-            if (array_key_exists('reserve_as_buy', $regionConfig)) {
-                $regionEntity->setForceDefaultBuy(false == $regionConfig['reserve_as_buy']);
-            }
-            $user->setRegion($regionEntity);
-        }
-
-        $region = $user->getRegion();
-
-        // подготовка 2-го пакета запросов
-
-        // TODO: запрашиваем меню
-        $cartProductsById = array_reverse($cart->getProducts(), true);
-
-        $productIds = array_keys($cartProductsById);
-
-        /** @var $products \Model\Product\CartEntity[] */
-        $products = [];
-        /** @var $products \Model\Product\Entity[] */
-        $productEntities = [];
-
-        // запрашиваем список товаров
-        if ((bool)$productIds) {
-            \RepositoryManager::product()->prepareCollectionById($productIds, $region, function($data) use(&$products, $cartProductsById, &$productEntities) {
-                foreach ($data as $item) {
-                    $products[] = new \Model\Product\Entity($item);
-                    $productEntities[] = new \Model\Product\Entity($item);
-                }
-            });
-        }
-
-        // выполнение 2-го пакета запросов
-        $client->execute();
-
-        $categoryIdByProductId = [];
-        foreach ($productEntities as $key => $productEntity) {
-            if($productEntity->getParentCategory()) {
-                $categoryIdByProductId[$productEntity->getId()] = $productEntity->getParentCategory()->getId();
-            }
-        }
-
-        // подготовка 3-го пакета запросов
-        $hasAnyoneKit = false;
-        $productKitsById = [];
-        foreach ($products as $product) {
-            $kitIds = array_map(function($kit) { /** @var $kit \Model\Product\Kit\Entity */ return $kit->getId(); }, $product->getKit());
-            if ((bool)$kitIds) {
-                $hasAnyoneKit = true;
-                \RepositoryManager::product()->prepareCollectionById($kitIds, $region, function($data) use(&$productKitsById) {
-                    foreach ($data as $item) {
-                        $productKitsById[$item['id']] = new \Model\Product\CartEntity($item);
-                    }
-                });
-            }
-        }
-
-        // выполнение 3-го пакета запросов
-        if ($hasAnyoneKit) {
+            
             $client->execute();
         }
 
-        $page = new \View\Cart\IndexPage();
+        $updateResultProducts = $cart->update([], true);
+
+        $page = $orderWithCart ? new \View\OrderV3\CartPage() : new \View\Cart\IndexPage();
+        $page->setParam('sales', $sales);
+        $page->setParam('orderUrl', \App::router()->generate($orderWithCart ? 'orderV3.delivery' : 'order'));
         $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
-        $page->setParam('productEntities', $productEntities);
-        $page->setParam('products', $products);
-        $page->setParam('cartProductsById', $cartProductsById);
-        $page->setParam('productKitsById', $productKitsById);
-        $page->setParam('categoryIdByProductId', $categoryIdByProductId);
+        $page->setParam('cartProductsById', array_reverse($cart->getProductsById(), true));
+        $page->setParam('products', array_values(array_filter(array_map(function(\Session\Cart\Update\Result\Product $updateResultProduct) {
+            if ($updateResultProduct->setAction === 'delete') {
+                return;
+            } else {
+                return $updateResultProduct->fullProduct;
+            }
+        }, $updateResultProducts))));
 
         return new \Http\Response($page->show());
     }

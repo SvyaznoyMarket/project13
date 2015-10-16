@@ -1,4 +1,8 @@
-<div class="productInner__hover js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
+<div class="productInner__hover js-listing-item"
+     {{#isSlot}}data-is-slot="true"{{/isSlot}}
+     {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}
+     {{#ecommerce}}data-ecommerce='{{ecommerce}}'{{/ecommerce}}
+        >
     <div class="productInner__imgBox">
         <a class="productInner__imgLink js-listing-item-img" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>
             <img class="productInner__img" src="{{image}}" alt="{{name}}" />
@@ -12,29 +16,28 @@
             <div class="clearfix">
                 <span class="price" class="">{{&price}} <span class="rubl">p</span></span>
 
-                {{#hasVariations}}
+                <div class="bBtnLine">
+                    <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
+                    {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
+                </div>
+            </div>
+
+            {{#variations.0}}
                 <span class="bOptions"><span class="bDecor">Варианты</span></span>
-                {{/hasVariations}}
-            </div>
+            {{/variations.0}}
 
-            {{#hasVariations}}
-            <div class="bOptionsSection">
-                <i class="bCorner"></i>
-                <i class="bCornerDark"></i>
+            {{#variations.0}}
+                <div class="bOptionsSection">
+                    <i class="bCorner"></i>
+                    <i class="bCornerDark"></i>
 
-                <ul class="bOptionsList">
-                    {{#variations}}
-                    <li class="bOptionsList__eItem">{{name}}</li>
-                    {{/variations}}
-                </ul>
-            </div>
-            {{/hasVariations}}
-
-            <div class="bBtnLine clearfix">
-                {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
-                <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
-                <a class="btnView btn1 js-listing-item-viewButton" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>Посмотреть</a>
-            </div>
+                    <ul class="bOptionsList">
+                        {{#variations}}
+                        <li class="bOptionsList__eItem">{{name}}</li>
+                        {{/variations}}
+                    </ul>
+                </div>
+            {{/variations.0}}
         </div>
     </div><!--/ описание продукта -->
 </div>

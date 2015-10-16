@@ -46,8 +46,8 @@
 
     <?= $helper->render('product-category/__filter', [
         'baseUrl'          => $helper->url('search', ['q' => $searchQuery]),
-        'countUrl'         => null,
         'productFilter'    => $productFilter,
+        'productPager'     => $productPager,
         'categories'       => $categories,
         'openFilter'       => true,
     ]) // фильтры ?>

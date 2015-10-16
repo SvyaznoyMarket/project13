@@ -8,7 +8,7 @@
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <title><?= $page->getTitle() ?></title>
+    <title><?= $page->escape($page->getTitle()) ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="robots" content="noyaca"/>
@@ -38,6 +38,8 @@
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
     <?= $page->slotConfig() ?>
     <?= $page->slotContent() ?>
+    <?= $page->slotUserConfig() ?>
+    <?= $page->slotMustacheTemplates() ?>
 
     <div style="position:absolute; height: 0; top:0; z-index:-1;">
         <?= $page->slotBodyJavascript() // for loadjs.js ?>

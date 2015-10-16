@@ -1,201 +1,229 @@
 /**
 * Выпадающие блоки из блока корзины и логина
 */
+.userbar-dd {
+    position: absolute;
+    z-index: 101;
+    top: 50px;
+
+    display: none;
+
+    color: @black;
+    border: 1px solid #c7c7c7;
+    background: @white;
+
+    .box-sizing();
+    &--account {
+        left: -5px;
+        &:after {
+            position: absolute;
+            top: -7px;
+            left: 12px;
+
+            width: 0;
+            height: 0;
+
+            content: '';
+
+            border-right: 6px solid transparent;
+            border-bottom: 7px solid #fff;
+            border-left: 6px solid transparent;
+        }
+        &:before {
+            position: absolute;
+            top: -9px;
+            left: 10px;
+
+            width: 0;
+            height: 0;
+
+            content: '';
+
+            border-right: 8px solid transparent;
+            border-bottom: 9px solid #bbb;
+            border-left: 8px solid transparent;
+        }
+    }
+}
+
+.minicart {
+    right: 0;
+
+    width: 228px;
+    &__buy {
+        padding: 10px;
+
+        border-top: 1px solid #ccc;
+    }
+    &__btn {
+        font-size: 18px;
+
+        padding: 10px 0;
+    }
+}
 
 .topbarfix {
+    &_logout {
+        width: 180px;
+        padding: 10px;
+    }
+}
 
-	&_dd {
-		position: absolute;
-		display: none;
-		z-index: 101;
-		top: 50px;
-		right: -1px;
-		background: #ffffff;
-		border: 1px solid #ccc;
-		width: 227px;
-		.drop-shadow(0, 3px, 5px, 0.2);
-		color: @black;
+.hintDd {
+    position: absolute;
+    top: 50px;
+    left: -837px;
 
-		.btnBuy {
+    overflow: hidden;
 
-			&-inf {
-				position: relative;
+    width: 732px;
+    height: 0;
 
-				.btnBuy__eLink {
-				    padding-left: 30px;
+    border-left: 1px solid #ccc;
+    background: #fff;
 
-					&:after {
-						background: url("@{base-url}/fixedTopBar/img/i-btn.png") no-repeat 0 0;
-						position: absolute;
-						content: '';
-						height: 20px;
-					    top: 50%;
-					    left: 30px;
-						width: 20px;
-						margin-top: -10px;
-					}
-				}
-			}
-		}
-	}
+    .box-sizing();
+    /* Переход */
+    .transition(all .2s ease-out .1s);
+    .bHeadSection {
+        font-size: 16px;
 
-	&_logOut {
-		width: 230px;
-		left: -1px;
-	}
+        margin: 0;
+        padding: 10px 0 0 10px;
 
-	.enterPrize {
-		line-height: 1.3;
-		padding-bottom: 10px;
+        border-top: 1px solid #ccc;
+    }
+    &.mhintDdOn {
+        height: 261px;
 
-		&_text {
-			background: url("@{base-url}/enterPrize/img/bgFishkiSmall.png") no-repeat 0 20px;
-			padding: 12px 0 12px 65px;
-
-			.title {
-				display: block;
-				margin: 0 0 3px;
-			}
-		}
-	}
-
-	&_logOutLink {
-		display: block;
-		text-align: center;
-		margin: 10px 10px 10px;
-		height: 25px;
-		line-height: 25px;
-	}
-
-	.hintDd {
-		position: absolute;
-		top: 50px;
-		width: 729px;
-		left: -839px;
-		background: #fff;
-		height: 0;
-		/* Переход */
-	    .transition(all 0.2s ease-out 0.1s);
-	    overflow: hidden;
-	    border: 1px solid #ccc;
-		border-top: none;
-		border-bottom: none;
-
-		.bHeadSection {
-			padding: 10px 0 0 10px;
-			font-size: 16px;
-			margin: 0;
-			border-top: 1px solid #ccc;
-		}
-
-		&.mhintDdOn {
-			height: 270px;
-			.drop-shadow(0px, 4px, 11px, 0.2);
-			border-bottom: 1px solid #ccc;
-		}
-	}
-
-	.slideItem {
-		width: 700px;
-		margin: 0 auto;
-	}
+        border-bottom: 1px solid #ccc;
+    }
+    .slideItem {
+        width: 700px;
+        margin: 0 auto;
+    }
 }
 
 .buyInfo {
-	border-top: 3px solid #f99b1c;
-	text-align: center;
-	padding: 10px 0 8px;
+    padding: 10px 0 8px;
 
-	&_pr {
-		font-size: 20px;
-		font-weight: bold;
-		margin: 5px 0;
-	}
+    text-align: center;
 
-	&_lk {
-		text-decoration: underline;
-	}
+    border-top: 3px solid #f99b1c;
+    &_pr {
+        font-size: 20px;
+        font-weight: bold;
 
-	&_self {
-		color: #f99b1c;
-		font-weight: bold;
-		font-size: 20px;
-	}
+        margin: 5px 0;
+    }
+    &_lk {
+        text-decoration: underline;
+    }
+    &_self {
+        font-size: 20px;
+        font-weight: bold;
+
+        color: #f99b1c;
+    }
 }
 
-.quickOrder {
-	border-top: 1px solid #ccc;
-	padding: 10px;
-	.rounded(0);
-
-	&.btnBuy {
-
-		.btnBuy__eLink {
-			width: 100%;
-		}
-	}
-}
 
 .ddBlock {
-	display: block;
+    display: block;
 }
 /*
 Новая верстка - таблица
 */
-.topbarfix-cart-wrap{
-	max-height: 207px;
-	overflow-y: auto;
-	overflow-x: hidden;
+
+.topbarfix-cart-wrap {
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    max-height: 197px;
+    &.min-sum{
+        max-height: 158px;
+        height: 158px;
+    }
 }
-.table-cart{
-	border: none;
 
-	&__i{
-		height: 55px;
-		overflow: hidden;
-		font-size: 11px;
-		vertical-align: top;
-	}
-	&__img{
-		max-height: 40px;
-		max-width: 30px;
-		&-wrap{
-			padding: 5px;
-			width: 40px;
-		}
+.table-cart {
+    border: none;
+    &__i {
+        font-size: 11px;
 
-	}
-	&__name{
-		line-height: 1.2;
-		padding: 5px 5px 5px 0;
-		width: 100%;
-		max-width: 0;
-		&-inn{
-			max-width: 120px;
-			display: block;
-			position: relative;
-			overflow: hidden;
-			max-height: 40px;
-			&:after{
-				.after-gradient-stub(15px);
-			}
-		}
-	}
-	&__inf{
-		padding:5px 10px 5px 0px;
+        overflow: hidden;
 
-		white-space: nowrap;
-		.price{
-			white-space: nowrap;
-			display: block;
-			min-width: 50px;
-		}
-		.quan{
-			display: block;
-		}
-		.del{
-			display: block;
-			text-decoration: underline;
-		}
-	}
+        height: 55px;
+
+        vertical-align: top;
+        .unaval& {
+            .table-cart__name-inn {
+                opacity: 0.5;
+            }
+            .table-cart__img {
+                opacity: 0.5;
+            }
+            .price {
+                opacity: 0.5;
+            }
+            .quan {
+                opacity: 0.5;
+            }
+        }
+    }
+    &__img {
+        max-width: 30px;
+        max-height: 40px;
+        &-wrap {
+            width: 40px;
+            padding: 5px;
+
+            text-align: center;
+        }
+    }
+    &__name {
+        line-height: 15px;
+
+        width: 100%;
+        max-width: 0;
+        padding: 5px 5px 5px 0;
+
+        vertical-align: middle;
+        &-inn {
+            position: relative;
+
+            display: block;
+            overflow: hidden;
+
+            max-width: 120px;
+            max-height: 30px;
+            &:after {
+                .after-gradient-stub(15px);
+            }
+        }
+    }
+    &__unavalible-text {
+        color: #DB4437;
+        line-height: 17px;
+    }
+    &__inf {
+        padding: 5px 10px 5px 0;
+
+        white-space: nowrap;
+        .price {
+            display: block;
+
+            min-width: 50px;
+
+            white-space: nowrap;
+        }
+        .quan {
+            display: block;
+        }
+        .del {
+            display: block;
+
+            text-decoration: underline;
+        }
+    }
 }

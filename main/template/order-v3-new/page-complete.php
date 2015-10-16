@@ -20,10 +20,9 @@ return function(
         display: none;
     }
 </style>
-<?= $helper->render('order-v3-new/__head', ['step' => 3]) ?>
-
-    <section class="orderCnt jsOrderV3PageComplete">
-        <h1 class="orderCnt_t">Ваши заказы</h1>
+    <div class="order__wrap">
+    <section class="orderCnt jsOrderV3PageComplete order-page">
+        <div class="pagehead"><h1 class="orderCnt_t">Ваши заказы</h1></div>
 
         <div class="orderLnSet">
 
@@ -95,7 +94,7 @@ return function(
                             <div class="orderLn_row orderLn_row-bg jsOnlinePaymentBlock">
 
                                 <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])
-                                        && $order->paymentId == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT ) : ?>
+                                        && $order->isCredit() ) : ?>
 
                                     <!-- Кредит -->
 
@@ -181,7 +180,7 @@ return function(
             <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
         </div>
     </section>
-
+    </div>
     <? if (!$sessionIsReaded): ?>
         <span class="js-orderV3New-complete-subscribe" data-value="<?=$helper->json(['subscribe' => $subscribe, 'email' => isset($orders[0]->email) ? $orders[0]->email : null])?>"></span>
 
@@ -198,6 +197,8 @@ return function(
         ]);
 
         echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products]);
+
+        echo $helper->render('order/__saleAnalytics', ['orders' => $orders]);
 
         // Flocktory popup
         echo $helper->render('order-v3/partner-counter/_flocktory-complete',[

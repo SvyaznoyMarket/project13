@@ -1,6 +1,8 @@
 <?php
 
 namespace Controller\Product;
+use \Model\Product\Entity as Product;
+use Model\Product\Delivery\ProductDelivery;
 
 class DeliveryAction {
     /**
@@ -22,9 +24,10 @@ class DeliveryAction {
      * @param array $product
      * @param int $region
      * @param \EnterQuery\Delivery\GetByCart|null $deliveryQuery
+     * @param Product $productModel
      * @return array
      */
-    public function getResponseData($product, $region = null, \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
+    public function getResponseData($product, $region = null, \EnterQuery\Delivery\GetByCart $deliveryQuery = null, &$productModel = null) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         $helper = new \View\Helper();
@@ -148,6 +151,8 @@ class DeliveryAction {
 
             \App::coreClientV2()->execute();
 
+            if ($productModel instanceof Product) $productModel->delivery = new ProductDelivery($result, $productModel->getId());
+
             foreach ($result['product_list'] as $item) {
                 if (!in_array($item['id'], $productIds)) continue;
 
@@ -208,7 +213,7 @@ class DeliveryAction {
                             foreach ($shops as $shop) {
                                 foreach ($delivery['shop'] as $key => $shopItem) {
                                     if ($shop && ($shopItem['id'] == $shop->getId()) && $shop->getRegion()) {
-                                        $delivery['shop'][$key]['url'] = \App::router()->generate('shop.show', ['regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken()]);
+                                        $delivery['shop'][$key]['url'] = \App::router()->generate('shop.show', ['pointToken' => $shop->getToken()]);
                                     }
                                 }
                             }
@@ -234,5 +239,87 @@ class DeliveryAction {
         }
 
         return $responseData;
+    }
+
+    public function map ($productId, $productUi) {
+
+        $result = [
+            'success' => false
+        ];
+
+        /** @var \Model\Product\Entity[] $products */
+        $products = [new \Model\Product\Entity(['id' => $productId])];
+        \RepositoryManager::product()->prepareProductQueries($products);
+
+        $splitResult = null;
+        \App::coreClientV2()->addQuery('cart/split',
+            [
+                'geo_id'     => \App::user()->getRegionId(),
+                'request_id' => \App::$id,
+            ],
+            [ 'cart' => [
+                    'product_list' => [
+                        $productId => [
+                            'id' => $productId,
+                            'quantity'  => 1
+                        ]
+                    ]
+                ]
+            ],
+            function($data) use(&$splitResult) {
+                $splitResult = $data;
+            }
+        );
+
+        \App::coreClientV2()->execute();
+
+        if (!$products) {
+            return new \Http\JsonResponse(['error' => 'Товар не найден']);
+        }
+
+        $order = new \Model\OrderDelivery\Entity($splitResult);
+
+        if ($order && $order->orders) {
+            $map = new \View\PointsMap\MapView();
+            $map->preparePointsWithOrder(reset($order->orders), $order);
+
+
+            foreach ($products[0]->getStock() as $stock) {
+                if ($stock->getQuantityShowroom() && $stock->getShopId()) {
+                    foreach ($map->points as $point) {
+                        if ($point->id == $stock->getShopId()) {
+                            $point->productInShowroom = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // TODO нужен рефакторинг (отдавать через View)
+            if (!\App::config()->lite['enabled']) {
+                $result = [
+                    'html'      => \App::templating()->render('order-v3/common/_map',
+                        ['dataPoints' => $map,
+                            'visible' => true,
+                            'class'   => 'jsDeliveryMapPoints',
+                            'productUi' => $productUi,
+                            'page'      => 'product'
+                        ])
+                ];
+            } else {
+                $map->uniqueCosts = $map->getUniquePointCosts();
+                $map->uniqueDays = $map->getUniquePointDays();
+                $map->uniqueTokens = $map->getUniquePointTokens();
+                $result['result'] = $map;
+            }
+
+            $result['success'] = true;
+
+        } else {
+            $result['error'] = 'Ошибка разбиения';
+        }
+
+        return new \Http\JsonResponse($result);
+
     }
 }

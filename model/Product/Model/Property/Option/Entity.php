@@ -5,30 +5,33 @@ namespace Model\Product\Model\Property\Option;
 class Entity {
 
     /** @var string */
-    private $value;
-    /** @var \Model\Product\BasicEntity[] */
-    private $product;
+    public $value;
+    /** @var \Model\Product\Entity|null */
+    public $product;
 
     public function __construct(array $data = []) {
-        if (array_key_exists('value', $data)) $this->setValue($data['value']);
-        if (array_key_exists('product', $data) && (bool)$data['product']) $this->setProduct(new \Model\Product\BasicEntity($data['product']));
+        if (array_key_exists('value', $data)) $this->value = $data['value'];
+        if (array_key_exists('product', $data) && (bool)$data['product']) $this->product = new \Model\Product\Entity($data['product']);
     }
 
     /**
-     * @param \Model\Product\BasicEntity $product
+     * @deprecated Используйте свойство $product
+     * @param \Model\Product\Entity $product
      */
     public function setProduct($product) {
         $this->product = $product;
     }
 
     /**
-     * @return \Model\Product\BasicEntity
+     * @deprecated Используйте свойство $product
+     * @return \Model\Product\Entity
      */
     public function getProduct() {
         return $this->product;
     }
 
     /**
+     * @deprecated Используйте свойство $value
      * @param string $value
      */
     public function setValue($value) {
@@ -36,6 +39,7 @@ class Entity {
     }
 
     /**
+     * @deprecated Используйте свойство $value
      * @return string
      */
     public function getValue() {

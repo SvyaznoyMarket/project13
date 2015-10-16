@@ -1,6 +1,16 @@
 $(document).ready(function(){
-	var
+
+    var menuItems = $('.menu-item'),
 		subscribeBtn = $('.subscribe-form__btn');
+
+    // Выделение активного пункта в боковом меню
+    $.each(menuItems, function() {
+        var $this = $(this);
+        if ($this.find('a').attr('href') == location.pathname ) {
+            $this.addClass('active');
+            return false;
+        }
+    });
 
 	if ( subscribeBtn.length ) {
 		var
@@ -25,9 +35,20 @@ $(document).ready(function(){
 				}
 
 				$.post(url, data, function(res){
+                    var errorDiv = form.find('.formErrorMsg');
+
 					if ( res.hasOwnProperty('data') && undefined != typeof(res.data) ) {
 						form.html('<div class="subscribe-form__title">' + res.data + '</div>');
 					}
+
+                    if ( res.error ) {
+                        if (errorDiv.length == 0) {
+                            form.append($('<div class="formErrorMsg" style="margin-left: 135px; clear: both; color: red;"/>').text(res.error));
+                        } else {
+                            errorDiv.text(res.error).show();
+                        }
+                        form.find('.formErrorMsg').delay(2000).slideUp(600);
+                    }
 
 					if( !res.success ) {
 						return false;
@@ -39,9 +60,9 @@ $(document).ready(function(){
 
 					if (typeof(_gaq) != 'undefined') {
 						if (location.pathname == '/enter-friends') {
-							_gaq.push(['_trackEvent', 'subscription', 'subscribe_enter_friends', email]);
+							_gaq.push(['_trackEvent', 'subscription', 'subscribe_enter_friends']);
 						} else if (location.pathname == '/special_offers') {
-							_gaq.push(['_trackEvent', 'subscription', 'subscribe_special_offers', email]);
+							_gaq.push(['_trackEvent', 'subscription', 'subscribe_special_offers']);
 						}
 					}
 				});
@@ -62,28 +83,6 @@ $(document).ready(function(){
 	 * Бесконечный скролл
 	 */
 	$('.infiniteCarousel').infiniteCarousel();
-
-	/**
-	 * Получение продуктов
-	 */
-	if ( $('.getProductList').length ) {
-		// console.log('yes!')
-		$('.getProductList').each(function() {
-			var wrapper = $(this),
-				productList = wrapper.data('product'),
-				url = '/products/widget/'+productList;
-			// end of vars
-
-			$.get(url, function( res ) {
-				if ( !res.success ) {
-					return false;
-				}
-
-				wrapper.html(res.content);
-			});
-		});
-	}
-
 
 	/**
 	 * form register corporate
@@ -208,20 +207,18 @@ $(document).ready(function(){
 
 	/* Credits inline */
 	if ( $('.bCreditLine').length ) {
-		document.getElementById('requirementsFullInfoHref').style.cursor = 'pointer';
-
-		$('#requirementsFullInfoHref').bind('click', function() {
-			$('.bCreditLine2').toggle();
-		});
+		document.getElementById('requirementsFullInfoHref').style.cursor = 'pointer'; // TODO перенести в css в scms
 
 		var creditOptions = $('#creditOptions').data('value');
 		var bankInfo = $('#bankInfo').data('value');
 		var relations = $('#relations').data('value');
 
-		for ( var i = 0; i < creditOptions.length; i++){
-			var creditOption = creditOptions[i];
+		if (creditOptions) {
+			for ( var i = 0; i < creditOptions.length; i++){
+				var creditOption = creditOptions[i];
 
-			$('<option>').val(creditOption.id).text(creditOption.name).appendTo('#productSelector');
+				$('<option>').val(creditOption.id).text(creditOption.name).appendTo('#productSelector');
+			}
 		}
 
 		$('#productSelector').change(function() {
@@ -304,4 +301,88 @@ $(document).ready(function(){
 			return false;
 		});
 	}
+
+    $('.js-scms-changeRegion').on('click',function(){
+		$('.jsChangeRegion').click();
+    });
+
+    //Попап стоимости доставки
+    $('.js-tarifs-popup-show').on('click',function(){
+        var popup = $('.js-tarifs-popup').clone();
+        $('.js-tarifs-popup').remove();
+        $('body').append('<div class="js-tarifs-overlay"></div>');
+        $('body').append(popup).addClass('body-fixed');
+
+        $('.js-tarifs-popup').show();
+
+    });
+    $('body').on('click', '.js-tarifs-popup .popup-closer', function(){
+        $('.js-tarifs-popup').hide();
+        $('.js-tarifs-overlay').remove();
+        $('body').removeClass('body-fixed');
+    });
+    $('body').on('click', '.js-tarifs-overlay', function(){
+        $('.js-tarifs-popup').hide();
+        $(this).remove();
+        $('body').removeClass('body-fixed');
+    });
+    $('body').on('keyup', '.js-tarifs-search', function(){
+       var $this = $(this),
+           value = $this.val().toLowerCase(),
+           noResult = true;
+
+        $('.tarifs-search__i').each(function(){//Пробегаем по списку букв
+            var $letter = $(this).find('.tarifs-search__letter'),
+                $cityList = $(this).find('.tarifs-search-city__i'),
+                isLetterShown = false;
+
+            $($cityList).each(function(){//Пробегаем по списку городов
+                var name = $(this).find('.tarifs-search-city__name').text().toLowerCase();
+
+                if (name.indexOf(value) == 0){
+                    $(this).show();
+                    isLetterShown = true;//Если хотя бы один город на эту букву найден - будем отображать и букву
+                    noResult = false;//Если хотя бы один город найден, не будем выводить сообщение о том, что ничего не найдено
+                } else {
+                    $(this).hide();
+                }
+            });
+
+            isLetterShown ? $letter.show() : $letter.hide();
+
+        });
+
+        noResult ? $('.tarifs-search__no-result').show() : $('.tarifs-search__no-result').hide();
+    });
+
+    $(document).ready(function(){
+        $('.subscribe-block[data-type="background"]').each(function(){
+            var $this = $(this),
+                $scrolled = $this.find('.scrolled-bg'),
+                $window = $(window),
+                lastScrollTop = $(window).scrollTop(),
+                delta = 0;
+
+
+                $window.scroll(function() {
+
+                    var st = $(window).scrollTop();
+                    delta = lastScrollTop - st;
+
+                    lastScrollTop = st;
+
+                    if ( ($window.scrollTop() + $window.height()) >= $this.offset().top ){
+
+
+                        var prevCoords = $scrolled.css('backgroundPosition').split(' '),
+                            prevY = parseInt( prevCoords[1] ),
+                            coords = 'center '+ (prevY + (delta / $this.data('speed')) ) + 'px';
+
+                        $scrolled.css({ 'background-position': coords });
+                    }
+
+                });
+
+        });
+    });
 });

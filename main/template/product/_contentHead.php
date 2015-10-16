@@ -22,17 +22,17 @@ $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
 if (!isset($titlePrefix)) $titlePrefix = null;
 ?>
 
-<div class="bProductSection clearfix<? if ('product.line' == \App::request()->attributes->get('route')): ?> mProductSectionSet<? endif ?>">
+<div class="bProductSection clearfix">
     
 
     <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
 
     <div class="bPageHead">
         <? if ($product->getPrefix()): ?>
-        <div class="bPageHead__eSubtitle"><?= $product->getPrefix() ?></div>
+        <div class="bPageHead__eSubtitle"><?= $page->escape($product->getPrefix()) ?></div>
         <? endif ?>
         <div class="bPageHead__eTitle clearfix">
-            <h1 itemprop="name"><?= $product->getWebName() ?></h1>
+            <h1 itemprop="name"><?= $page->escape($product->getWebName()) ?></h1>
             <? if (isset($trustfactors)): ?>
                 <?= \App::closureTemplating()->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'top', 'reviewsData' => @$reviewsData]) ?>
             <? endif ?>

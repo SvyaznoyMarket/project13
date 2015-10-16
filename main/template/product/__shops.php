@@ -9,8 +9,9 @@ $f = function (
     \Helper\TemplateHelper $helper,
     array $shopStates = [],
     \Model\Product\Entity $product,
-    array $sender = [],
-    $sender2 = ''
+    $sender = [],
+    $sender2 = '',
+    $location = ''
 ) {
     $currentRegionId = \App::user()->getRegionId();
 ?>
@@ -50,7 +51,7 @@ $f = function (
                             м. <?= $shop->getSubway()[0]->getName() ?>
                         <? endif ?>
                         <div>
-                            <a class="markerList_light" href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>">
+                            <a class="markerList_light" href="<?= $helper->url('shop.show', ['pointToken' => $shop->getToken()]) ?>">
                                 <? if ($shop && $shop->getRegion() && ($currentRegionId != $shop->getRegion()->getId())): ?>
                                     <?= $shop->getName() // $shop->getRegion()->getName() ?>
                                 <? else: ?>
@@ -67,16 +68,16 @@ $f = function (
 
                     <!--  Кнопка "Резерв" или "На витрине"  -->
                     <span class="markerList_col markerList_col-right">
-                        <? if ( $shopState->getQuantity() > 0 ) : ?>
+                        <? if ($shopState->getQuantity() > 0): ?>
                             <?= $helper->render('cart/__button-product-oneClick', [
                                 'product' => $product,
                                 'shop'    => $shop,
-                                'url'     => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId(), 'sender' => $sender, 'sender2' => $sender2]),
                                 //'class'   => 'btnBuy__eLink mShopsOnly',
                                 'class'   => 'btnBuy__eLink',
                                 'value'   => 'Купить',
                                 'sender'  => $sender,
                                 'sender2' => $sender2,
+                                'location'  => $location,
                             ]) ?>
                         <? else: ?>
                             <span class="btnText">На витрине</span>

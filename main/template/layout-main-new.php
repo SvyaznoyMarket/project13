@@ -8,7 +8,7 @@
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <title><?= $page->getTitle() ?></title>
+    <title><?= $page->escape($page->getTitle()) ?></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="robots" content="noyaca"/>
 
@@ -32,26 +32,33 @@
 
 </head>
 
-<body class="main main-new jsMainNew <?= $page->slotBodyClassAttribute() ?>" data-template="main" data-id="<?= \App::$id ?>" data-debug=<?= $page->json(\App::config()->debug) ?>>
+<body class="main jsMainNew <?= $page->slotBodyClassAttribute() ?>" data-template="main" data-id="<?= \App::$id ?>" data-debug=<?= $page->json(\App::config()->debug) ?>>
 
 <?= $page->slotConfig() ?>
 
     <div class="wrapper">
         <!-- шапка -->
-        <div class="header header-new <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?>">
+        <div class="header <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?>">
+            <?= $page->render('main/banner.pickup') ?>
 
-            <?= $page->slotTopbar() ?>
+            <div class="header__inn">
+                <?= $page->slotTopbar() ?>
+            </div>
 
             <?= $page->slotSearchBar() ?>
 
-            <?= $page->slotNavigation() ?>
+            <div class="header__inn">
+                <?= $page->slotNavigation() ?>
+            </div>
 
         </div>
         <!--/ шапка -->
 
         <div class="content">
 
-            <?= $page->render('main/_banner2', ['banners' => (array)$page->getParam('bannerData')]) ?>
+            <div class="inn">
+
+            <?= $page->render('main/_banner2', ['banners' => $page->getParam('banners'), []]) ?>
 
             <?= $page->render('main/_infoBlocks') ?>
 
@@ -59,11 +66,13 @@
                 <?= $page->slotRecommendations() ?>
             </div>
 
-            <?= $page->render('main/infoBox') ?>
+            <?= $page->slotInfoBox() ?>
 
             <?= $page->render('main/_slidesBoxWide') ?>
 
             <?= $page->render('main/_popularBrands') ?>
+
+            </div>
 
         </div><!--/ Контент -->
     </div><!--/ Шаблон -->
@@ -73,11 +82,12 @@
     <?= $page->slotUpper() ?>
     <?= $page->slotUserbar() ?>
     <?= $page->slotAuth() ?>
+    <?= $page->slotUserConfig() ?>
+    <?= $page->slotMustacheTemplates() ?>
     <?= $page->slotYandexMetrika() ?>
     <?= $page->slotBodyJavascript() ?>
     <?= $page->slotInnerJavascript() ?>
     <?= $page->slotPartnerCounter() ?>
-    <?= $page->slotGifteryJS() ?>
 
     <? if (\App::config()->analytics['enabled']): ?>
         <div id="yandexMetrika" class="jsanalytics"></div>

@@ -1,4 +1,5 @@
 /config/config-local.php
+/config/config-demo.php
 /config/databases.yml
 /cache
 /log
@@ -28,5 +29,6 @@ erase_barcode.cmd
 /web/survey
 /node_modules
 /web/version.txt
+npm-debug.log
 *.map
 sftp-config.json

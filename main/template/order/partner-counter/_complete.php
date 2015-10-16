@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page               \View\Order\CreatePage
+ * @var $page               \Templating\HtmlLayout
  * @var $user               \Session\User
  * @var $orders             \Model\Order\Entity[]
  * @var $productsById       \Model\Product\Entity[]
@@ -34,7 +34,9 @@
             echo $page->tryRender('order/partner-counter/_advmaker', $orderParams);
             break;
     }
-    ?>
-    <?= $page->tryRender('order/partner-counter/_cityads-complete-counter', array('orders' => $orders)) ?>
 
-<? endif ?>
+    echo $page->tryRender('order/partner-counter/_cityads-complete-counter', array('orders' => $orders));
+
+    echo $page->tryRender('order/partner-counter/_adblender-complete', array('orders' => $orders));
+
+ endif ?>

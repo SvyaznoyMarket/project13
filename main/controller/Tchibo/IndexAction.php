@@ -8,7 +8,7 @@ class IndexAction {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
-        $contentClient = \App::contentClient();
+        $scmsClient = \App::scmsClient();
         $user = \App::user();
         $promoRepository = \RepositoryManager::promo();
         $region = $user->getRegion();
@@ -21,8 +21,9 @@ class IndexAction {
 
         // подготовка для 1-го пакета запросов в ядро
         // promo
-        $promoRepository->prepareEntityByToken($categoryToken, function($data) use (&$promo, &$categoryToken) {
-            if (is_array($data)) {
+        $promoRepository->prepareByToken($categoryToken, function($data) use (&$promo, &$categoryToken) {
+            $data = isset($data[0]['uid']) ? $data[0] : null;
+            if ($data) {
                 $data['token'] = $categoryToken;
                 $promo = new \Model\Promo\Entity($data);
             }
@@ -76,38 +77,43 @@ class IndexAction {
             }
         });
 
-        $products = [];
-        $productsIds = [];
+        $productUis = [];
         // перевариваем данные изображений
         // используя айдишники товаров из секции image.products, получим мини-карточки товаров для баннере
-        foreach ($promo->getImage() as $image) {
-            $productsIds = array_merge($productsIds, $image->getProducts());
+        foreach ($promo->getPages() as $promoPage) {
+            $uiChunk = [];
+            foreach ($promoPage->getProducts() as $product) {
+                $uiChunk[] = $product->ui;
+            }
+
+            $productUis = array_merge($productUis, $uiChunk);
         }
-        $productsIds = array_unique($productsIds);
-        if (count($productsIds) > 0) {
-            \RepositoryManager::product()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
-                foreach ($data as $item) {
-                    if (!isset($item['id'])) continue;
-                    $products[ $item['id'] ] = new \Model\Product\Entity($item);
-                }
-            });
+        $productUis = array_unique($productUis);
+
+        /** @var \Model\Product\Entity[] $productsByUi */
+        $productsByUi = [];
+        foreach ($productUis as $productUi) {
+            $productsByUi[$productUi] = new \Model\Product\Entity(['ui' => $productUi]);
         }
+
+        // Необходимо запрашивать модели товаров, т.к. option моделей используется в методе
+        // \Model\Product\Entity::hasAvailableModels, который вызывается ниже
+        \RepositoryManager::product()->prepareProductQueries($productsByUi, 'model media label');
 
         // выполнение 2-го пакета запросов в ядро
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
-
-
         // перевариваем данные изображений для слайдера в $slideData
-        foreach ($promo->getImage() as $image) {
+        foreach ($promo->getPages() as $promoPage) {
 
             $itemProducts = [];
-            foreach($image->getProducts() as $productId) {
-                if (!isset($products[$productId])) continue;
-                $product = $products[$productId];
+            foreach($promoPage->getProducts() as $promoProduct) {
+                $product = isset($productsByUi[$promoProduct->ui]) ? $productsByUi[$promoProduct->ui] : null;
+                if (!$product || !$promoPage->getImageUrl()) continue;
+
                 /** @var $product \Model\Product\Entity */
                 $itemProducts[] = [
-                    'image'         => $product->getImageUrl(2), // 163х163 seize
+                    'image'         => $product->getMainImageUrl('product_160'),
                     'link'          => $product->getLink(),
                     'name'          => $product->getName(),
                     'price'         => $product->getPrice(),
@@ -118,12 +124,12 @@ class IndexAction {
             }
 
             $slideData[] = [
-                'target'  => \App::abTest()->isNewWindow() ? '_blank' : '_self',
-                'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),
-                'title'   => $image->getName(),
-                'linkUrl' => $image->getLink()?($image->getLink().'?from='.$promo->getToken()):'',
-                'time'    => $image->getTime() ? $image->getTime() : 3000,
-                'products'=> $itemProducts,
+                'target'   => \App::abTest()->isNewWindow() ? '_blank' : '_self',
+                'imgUrl'   => $promoPage->getImageUrl(),
+                'title'    => $promoPage->getName(),
+                'linkUrl'  => $promoPage->getLink()?($promoPage->getLink().'?from='.$promo->getToken()):'',
+                'time'     => $promoPage->getTime() ? $promoPage->getTime() : 3000,
+                'products' => $itemProducts,
                 // Пока не нужно, но в будущем, возможно понадобится делать $repositoryPromo->setEntityImageLink() как в /main/controller/Promo/IndexAction.php
             ];
         }
@@ -133,12 +139,17 @@ class IndexAction {
         }
 
         if (!empty($catalogJson['promo_token'])) {
-            $contentClient->addQuery(
-                $catalogJson['promo_token'],
+            $scmsClient->addQuery(
+                'api/static-page',
+                [
+                    'token' => [$catalogJson['promo_token']],
+                    'geo_town_id' => \App::user()->getRegion()->id,
+                    'tags' => ['site-web'],
+                ],
                 [],
                 function($data) use (&$bannerBottom) {
-                    if (!empty($data['content'])) {
-                        $bannerBottom = $data['content'];
+                    if (!empty($data['pages'][0]['content'])) {
+                        $bannerBottom = $data['pages'][0]['content'];
                     }
                 },
                 function(\Exception $e) {
@@ -148,15 +159,19 @@ class IndexAction {
             );
         }
 
-        // Получаем контентный блок с вордпресса
         $promoContent = null;
         $promoToken = 'tchibo_promo';
-        $contentClient->addQuery(
-            $promoToken,
+        $scmsClient->addQuery(
+            'api/static-page',
+            [
+                'token' => [$promoToken],
+                'geo_town_id' => \App::user()->getRegion()->id,
+                'tags' => ['site-web'],
+            ],
             [],
             function($data) use (&$promoContent) {
-                if (!empty($data['content'])) {
-                    $promoContent = $data['content'];
+                if (!empty($data['pages'][0]['content'])) {
+                    $promoContent = $data['pages'][0]['content'];
                 }
             },
             function(\Exception $e) use (&$promoToken) {
@@ -165,8 +180,7 @@ class IndexAction {
             }
         );
 
-        // выполнение пакета запросов к вордпрессу
-        $contentClient->execute();
+        $scmsClient->execute();
 
         // SITE-3970
         // Стили для названий категорий в меню tchibo

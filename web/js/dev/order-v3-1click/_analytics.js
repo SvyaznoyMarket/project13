@@ -2,7 +2,6 @@
 
     var body = $(document.body),
         _gaq = window._gaq,
-        region = $('.jsChangeRegion').text().trim(),
 
         sendAnalytic = function sendAnalyticF (category, action, label, value) {
 			var lbl = label || '',
@@ -16,8 +15,8 @@
 			if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
 
 			// sending
-			if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'Воронка_1 клик_' + region, act, lbl]);
-			if (typeof ga === 'function') ga('send', 'event', 'Воронка_1 клик_' + region, act, lbl);
+			if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'Воронка_1 клик', act, lbl]);
+			if (typeof ga === 'function') ga('send', 'event', 'Воронка_1 клик', act, lbl);
 
 		};
 

@@ -5,7 +5,7 @@
 		$LAB.script('/maybe3dPlayer/player.min.js').wait(function() {
 			$('.js-product-3d-html5-popup').lightbox_me({
 				centered: true,
-				closeSelector: '.close',
+				closeSelector: '.jsPopupCloser',
 				onLoad: function() {
 					var $popup = $('.js-product-3d-html5-popup');
 					Maybe3D.Starter.setModelPathHTML5($popup.data('url'));
@@ -55,7 +55,7 @@
 
 				$popup.lightbox_me({
 					centered: true,
-					closeSelector: '.close',
+					closeSelector: '.jsPopupCloser',
 					onClose: function() {
 						swfobject.removeSWF(swfId);
 					}
@@ -72,17 +72,16 @@
 		$LAB.script('DAnimFramePlayer.min.js').wait(function() {
 			var
 				$element = $('.js-product-3d-img-popup'),
-				data = $element.data('value'),
-				host = $element.data('host');
+				data = $element.data('value');
 
 			try {
 				if (!$('#js-product-3d-img-container').length) {
-					(new DAnimFramePlayer($element[0], host)).DoLoadModel(data);
+					(new DAnimFramePlayer($element[0])).DoLoadModel(data);
 				}
 
 				$element.lightbox_me({
 					centered: true,
-					closeSelector: '.close'
+					closeSelector: '.jsPopupCloser'
 				});
 			}
 			catch (err) {}

@@ -6,6 +6,7 @@ use EnterQuery as Query;
 
 class Manager {
     use \EnterApplication\CurlTrait;
+    use \EnterQuery\ScmsQueryTrait;
 
     private $cookieName;
     private $secondClickCookieName;
@@ -31,43 +32,53 @@ class Manager {
         $this->cookieDomain = $c->session['cookie_domain'];
     }
 
-    /**
-     * @param \Http\Response $response
+    /** Возвращает параметры партнера
+     * @return array
      */
-    public function set(\Http\Response $response = null) {
+    public function setPartner() {
+
+        $result = [
+            'lastPartner'   => null,
+            'cookie'        => []
+        ];
 
         try {
 
             $request = \App::request();
             $cookie = null;
             $lastPartner = null;
+            $freeHosts = [];
+            $paidSources = [];
 
             $referer = parse_url($request->server->get('HTTP_REFERER'));
             $refererHost = $referer && !empty($referer['host']) ? $referer['host'] : null;
 
+            $this->fixReferer($refererHost, $request);
+
             // ОСНОВНАЯ ЛОГИКА
             if ($refererHost && !preg_match('/ent(er|3)\.(ru|loc)/', $refererHost)) {
 
-                $partnerQuery = (new Query\CmsQuery('partner/paid-source.json'))->prepare();
-                $hostQuery = (new Query\CmsQuery('partner/free-host.json'))->prepare();
+                $partners = \App::scmsClient()->query('api/traffic-source');
 
-                $this->getCurl()->execute();
-
-                $paidSources = $partnerQuery->response;
-                $freeHosts = $hostQuery->response;
-
-                if (!is_array($paidSources) || !is_array($freeHosts)) {
-                    throw new \Exception('Ошибка получения данных для партнеров из GIT CMS');
+                foreach ($partners as $partner) {
+                    if ($partner['paid'] === true) {
+                        $paidSources[] = $partner;
+                    } else {
+                        $freeHosts[] = $partner;
+                    }
                 }
 
                 // Платные партнеры
-                foreach ($paidSources as $nameSource => $sourceOptions) {
+                foreach ($paidSources as $source) {
 
                     $matchesCount = 0;
+                    $nameSource = $source['token'];
 
-                    if (!isset($sourceOptions['match']) || !is_array($sourceOptions['match'])) continue;
+                    if (!isset($source['matches']) || !is_array($source['matches'])) continue;
 
-                    foreach ($sourceOptions['match'] as $matchKey => $matchValue) {
+                    foreach ($source['matches'] as $matchArr) {
+                        $matchKey = isset($matchArr['key']) ? $matchArr['key'] : null;
+                        $matchValue = isset($matchArr['value']) ? $matchArr['value'] : null;
                         if ($matchValue !== null && 0 === strpos($request->query->get($matchKey), $matchValue)) {
                             $matchesCount += 1;
                         }
@@ -77,30 +88,25 @@ class Manager {
                     }
 
                     // если платный партнер
-                    if ($matchesCount == count($sourceOptions['match'])) {
+                    if ($matchesCount == count($source['matches'])) {
                         $lastPartner = $nameSource;
 
                         // ставим партнерские cookie
-                        if (isset($paidSources[$nameSource]['cookie']) && is_array($paidSources[$nameSource]['cookie'])) {
-                            foreach ($paidSources[$nameSource]['cookie'] as $partnerCookieName) {
-                                if ($request->query->has($partnerCookieName)) {
-                                    $this->cookieArray[] = new \Http\Cookie(
-                                        $partnerCookieName,
-                                        $request->query->get($partnerCookieName),
-                                        time() + $this->cookieLifetime,
-                                        '/',
-                                        $this->cookieDomain,
-                                        false,
-                                        false
-                                    );
+                        if (isset($source['cookies']) && is_array($source['cookies'])) {
+                            foreach ($source['cookies'] as $partnerCookie) {
+                                if ($request->query->has($partnerCookie['name'])) {
+                                    $this->cookieArray[] = [
+                                        'name'  => $partnerCookie['name'],
+                                        'value' => $request->query->get($partnerCookie['name']),
+                                        'time'  => $this->cookieLifetime
+                                    ];
                                 }
                             }
                         }
 
                         // если нет utm_source cookie или же она была проставлена не этим партнером
-                        // SITE-4834 ставим js-переменную last_partner_second_click, кука last_partner будет проставлена позже через common/last_partner.js
                         if ($request->cookies->get($this->cookieName) != $lastPartner) {
-                            $response->setContent(str_replace('<!-- last_partner_second_click -->', "<script type='text/javascript'>var last_partner_second_click = '$lastPartner';</script>", $response->getContent()));
+                            $result['lastPartner'] = $lastPartner;
                         }
 
                     }
@@ -110,44 +116,40 @@ class Manager {
                 // Бесплатные партнеры
                 if ($lastPartner === null && !$request->cookies->has($this->cookieName)) {
                     foreach ($freeHosts as $freeHost) {
-                        if (preg_match('/'.$freeHost.'/', $refererHost)) {
-                            $lastPartner = $freeHost;
+                        $hostname = isset($freeHost['host_name']) ? $freeHost['host_name'] : null;
+
+                        if ($hostname && preg_match('/' . $hostname . '/', $refererHost)) {
+                            $lastPartner = $hostname;
                             // кука для отслеживания заказа
-                            $this->cookieArray[] = new \Http\Cookie(
-                                $this->cookieName,
-                                $freeHost,
-                                0,
-                                '/',
-                                $this->cookieDomain
-                            );
+                            $this->cookieArray[] = [
+                                'name'  => $this->cookieName,
+                                'value' => $hostname,
+                            ];
                         }
                     }
                 }
 
                 // Рефералка
                 if ($lastPartner === null && !$request->cookies->has($this->cookieName)) {
-                    $this->cookieArray[] = new \Http\Cookie(
-                        $this->cookieName,
-                        $request->cookies->has($this->cookieName) && in_array($request->cookies->get($this->cookieName), array_keys($paidSources))
+                    $this->cookieArray[] = [
+                        'name'  => $this->cookieName,
+                        'value' => $request->cookies->has($this->cookieName)
+                                && in_array($request->cookies->get($this->cookieName), array_map(function($arr){ return $arr['token']; }, $paidSources))
                             ? $request->cookies->get($this->cookieName)
-                            : $refererHost,
-                        0,
-                        '/',
-                        $this->cookieDomain
-                    );
+                            : $refererHost
+                        ];
                 }
 
             }
 
-            foreach ($this->cookieArray as $cookie) {
-                if ($cookie instanceof \Http\Cookie) {
-                    $response->headers->setCookie($cookie);
-                }
-            }
+            $result['cookie'] = $this->cookieArray;
 
         } catch (\Exception $e) {
             \App::logger()->error($e, ['partner']);
+            \App::exception()->remove($e);
         }
+
+        return $result;
     }
 
     public function getName() {
@@ -188,8 +190,8 @@ class Manager {
             } else {
                 $keyName .= '.id.' . $product->getId();
             }
-            if ($product->getMainCategory()) {
-                $return[$keyName . '.category'] = $product->getMainCategory()->getId();
+            if ($product->getRootCategory()) {
+                $return[$keyName . '.category'] = $product->getRootCategory()->getId();
             }
         }
 
@@ -233,6 +235,17 @@ class Manager {
 
         return array_merge_recursive($mainMeta, $mergedMeta, [$prefix => $partnerNames]);
 
+    }
+
+    /** Хардкодный фикс, когда не передается referer, например переходы из баннеров внутри приложений
+     *  Несмотря на это в список партнеров всё-равно необходимо заносить нужные правила
+     * @param $ref
+     * @param \Http\Request $request
+     */
+    private function fixReferer(&$ref, \Http\Request $request) {
+        if ($request->query->get('utm_source') == 'skype') {
+            $ref = 'skype_application';
+        }
     }
 
 }

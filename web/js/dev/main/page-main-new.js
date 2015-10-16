@@ -13,6 +13,8 @@
         thumbsHeightWithMargin = 58,    // количество пикселов для промотки превьюшек
         $bannersButtons = $('.jsMainBannersButton'),    // кнопки вверх-вниз у превьюшек
         bannersUpClass = 'jsMainBannersUpButton',
+		animationDuration = 400,
+		viewedBanners = {},
 
 		slidesWidth = 473,
 		slidesDotClass = 'slidesBox_dott_i',
@@ -24,27 +26,40 @@
 		$jsSlidesWideItems = $('.jsSlidesWideItem'),
 		$jsSlidesWideName = $('.jsSlidesWideName');
 
+	function slideRecommendations($block, toIndex) {
+
+		var $dots = $block.find('.' + slidesDotClass);
+
+		$block.find('.jsMainSlidesProductBlock').animate({
+			'margin-left' : - toIndex * slidesWidth
+		}, {
+			duration: 0,
+			complete: function(){
+				$dots.removeClass(slidesDotActiveClass);
+				$dots.eq(toIndex).addClass(slidesDotActiveClass);
+				/* Ecommerce analytic */
+				$.each($block.find('.jsBuyButton').slice( toIndex * 4, (toIndex + 1) * 4), function(i,el) {
+					ENTER.utils.analytics.addImpression(el, {
+						list: $block.data('block'),
+						position: toIndex * 4 + i
+					});
+				});
+				$body.trigger('trackGoogleEvent',['RR_взаимодействие', 'Пролистывание', $block.data('block')])
+			}
+		});
+	}
+
 	// Слайдеры рекомендаций
 	$body.on('click', '.jsMainSlidesButton', function(){
-		var step = slidesWidth,
-			$block = $(this).closest('.jsMainSlidesRetailRocket'), // родительский блок
+		var $block = $(this).closest('.jsMainSlidesRetailRocket'), // родительский блок
 			$dots = $block.find('.' + slidesDotClass), // точки навигации
 			index = $dots.index($block.find('.' + slidesDotActiveClass).first()),
-			nextIndex = $(this).hasClass('jsMainSlidesLeftButton') ? index - 1 : index + 1
-			;
+			nextIndex = $(this).hasClass('jsMainSlidesLeftButton') ? index - 1 : index + 1;
 
 		if (nextIndex == $block.find('.jsMainSlidesProductBlock').data('count')) nextIndex = 0;
 		if (nextIndex == -1) nextIndex = $block.find('.jsMainSlidesProductBlock').data('count') - 1;
 
-		if ($(this).hasClass('jsMainSlidesLeftButton')) {
-			$block.find('.jsMainSlidesProductBlock').css('margin-left', - nextIndex * step);
-			$dots.removeClass(slidesDotActiveClass);
-			$dots.eq(nextIndex).addClass(slidesDotActiveClass)
-		} else {
-			$block.find('.jsMainSlidesProductBlock').css('margin-left', - nextIndex * step);
-			$dots.removeClass(slidesDotActiveClass);
-			$dots.eq(nextIndex).addClass(slidesDotActiveClass)
-		}
+		slideRecommendations($block, nextIndex);
 
 	});
 
@@ -54,17 +69,9 @@
 		var $this = $(this),
 			$block = $(this).closest('.jsMainSlidesRetailRocket'),
 			$dots = $block.find('.slidesBox_dott_i'),
-			index = $dots.index($this),
-			margin = index * slidesWidth;
+			index = $dots.index($this);
 
-		$block.find('.jsMainSlidesProductBlock').animate({
-			'margin-left': - margin
-		},{
-			complete: function(){
-				$dots.removeClass(slidesDotActiveClass);
-				$this.addClass(slidesDotActiveClass);
-			}
-		})
+		slideRecommendations($block, index);
 	});
 
 	// Маленькие блоки с информацией под баннерами
@@ -186,7 +193,7 @@
 		$this.css('width', $this.data('count') * slidesWidth)
 	});
 
-	// Листалка нижнего слайдера
+	// Листалка широкого нижнего слайдера
 	$body.on('click', '.jsSlidesWideLeft, .jsSlidesWideRight', function(){
 		var index = $('.jsSlidesWide .slidesBox_dott_i').index($('.jsSlidesWide .'+slidesDotActiveClass)),
 			nextIndex = $(this).hasClass('jsSlidesWideLeft') ? index - 1: index + 1,
@@ -251,27 +258,49 @@
 		})
 	});
 
-	// просмотр коллекций
-	$body.on('mainSlidesWideView', function(e, index) {
-		$body.trigger('trackGoogleEvent',['slider view', 'main collections', index + 1 + ''])
+
+	$body.on('mainBannerView', function(event, bannerIndex) {
+
+		var $banner = $bannerThumbs.eq(bannerIndex),
+			data = {
+				id: $banner.data('uid'),
+				name: $banner.data('name'),
+				position: bannerIndex + 1
+			};
+
+		if (ENTER.utils.analytics.isEnabled() && typeof viewedBanners[data.id] == 'undefined') {
+			// Добавляем баннер в ecommerce
+			ga('ec:addPromo', data);
+			// Отсылаем событие
+			$body.trigger('trackGoogleEvent', {
+				category: 'Internal Promotions',
+				action: 'view',
+				label: data.name,
+				nonInteraction: 1
+			});
+			// Добавляем баннер в просмотренные баннеры
+			viewedBanners[data.id] = data;
+		}
 	});
 
-	// просмотр главного баннера
-	/*$body.on('mainBannerView', function(e, index) {
-		$body.trigger('trackGoogleEvent',['slider view', 'main banner', index + 1 + ''])
-	});*/
+	// Tрекаем первый баннер
+	$body.trigger('mainBannerView', 0);
 
-	// пролистывание рекомендаций
-	$body.on('click', '.jsMainSlidesRetailRocket .jsMainSlidesButton, .jsMainSlidesRetailRocket .slidesBox_dott', function(){
-		var block = $(this).closest('.jsMainSlidesRetailRocket').data('block');
-		$body.trigger('trackGoogleEvent',['RR_взаимодействие', 'Пролистывание', block])
-	});
-
+	// Клики по товарам в рекомендациях
 	$body.on('click', '.jsMainSlidesRetailRocket a:not(.js-orderButton)', function(e){
 		var block = $(this).closest('.jsMainSlidesRetailRocket').data('block'),
+			$productContainer = $(this).closest('.jsProductContainer'),
 			link = $(this).attr('href'),
             aTarget = $(this).attr('target');
+
 		if (aTarget != '_blank') e.preventDefault();
+
+		ENTER.utils.analytics.addProduct($productContainer[0], {
+			position: $productContainer.data('position')
+		});
+
+		ENTER.utils.analytics.setAction('click', {list: block});
+
 		$body.trigger('trackGoogleEvent', {
 			category: 'RR_взаимодействие',
 			action: 'Перешел на карточку товара',

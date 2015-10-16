@@ -10,10 +10,7 @@
 $productCount = $category->getProductCount();
 
 // total text
-$totalText = $productCount . ' ' . ($category->getHasLine()
-    ? $page->helper->numberChoice($productCount, array('серия', 'серии', 'серий'))
-    : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
-);
+$totalText = $productCount . ' ' . ($page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров')));
 
 $link = $category->getLink() . (\App::request()->get('instore') ? '?instore=1' : '');
 ?>

@@ -2,10 +2,17 @@
 
 namespace View\OrderV3;
 
+use Session\AbTest\ABHelperTrait;
+
 class CompletePage extends Layout {
+    use ABHelperTrait;
 
     /** @var \Model\Order\Entity[] */
     private $orders;
+
+    public function slotOrderHead() {
+        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 3, 'withCart' => self::isOrderWithCart()]);
+    }
 
     public function slotGoogleRemarketingJS($tagParams = []) {
 
@@ -38,10 +45,10 @@ class CompletePage extends Layout {
 
             foreach ($this->params['orders'] as $order) {
                 /** @var $order \Model\Order\Entity */
-                if ($order->paymentId != \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) continue;
+                if (!$order->isCredit()) continue;
 
                 // Данные для "Купи-в-кредит"
-                $data = new \View\Order\Credit\Kupivkredit($order, $this->params['products']);
+                $data = new Credit\Kupivkredit($order, $this->params['productsById']);
                 $creditData[$order->getNumber()]['kupivkredit'] = [
                     'widget' => 'kupivkredit',
                     'vars'   => [
@@ -63,7 +70,7 @@ class CompletePage extends Layout {
 
                 foreach ($order->getProduct() as $orderProduct) {
                     /** @var $product \Model\Product\Entity|null */
-                    $product = isset($this->params['products'][$orderProduct->getId()]) ? $this->params['products'][$orderProduct->getId()] : null;
+                    $product = isset($this->params['productsById'][$orderProduct->getId()]) ? $this->params['productsById'][$orderProduct->getId()] : null;
                     if (!$product) {
                         throw new \Exception(sprintf('Не найден товар #%s, который есть в заказе', $orderProduct->getId()));
                     }
@@ -73,7 +80,7 @@ class CompletePage extends Layout {
                         'quantity' => (int)$orderProduct->getQuantity(),
                         'price'    => (int)$orderProduct->getPrice(),
                         'articul'  => $product->getArticle(),
-                        'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null)
+                        'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getRootCategory() ? $product->getRootCategory()->getToken() : null)
                     ];
                 }
             }
@@ -109,19 +116,7 @@ class CompletePage extends Layout {
     }
 
     public function slotBodyDataAttribute() {
-        $region = \App::user()->getRegion();
-        if ($region && \App::config()->newOrder) {
-            $ordersNewTest = \App::abTest()->getTest('orders_new');
-            $ordersNewSomeRegionsTest = \App::abTest()->getTest('orders_new_some_regions');
-            if (
-                (!in_array($region->getId(), [93746, 119623]) && $ordersNewTest && in_array($ordersNewTest->getChosenCase()->getKey(), ['new_2'], true)) // АБ-тест для остальных регионов
-                || (in_array($region->getId(), [93746, 119623]) && $ordersNewSomeRegionsTest && in_array($ordersNewSomeRegionsTest->getChosenCase()->getKey(), ['new_2'], true)) // АБ-тест для Ярославля и Ростова-на-дону
-            ) {
-                return 'order-v3-new';
-            }
-        }
-
-        return 'order-v3';
+        return 'order-v3-new';
     }
 
     public function slotPartnerCounter()
@@ -133,8 +128,24 @@ class CompletePage extends Layout {
         $html .= '<div id="sociomanticOrderCompleteJS" class="jsanalytics" ></div>';
 
         // Flocktory
-        if ($config->flocktoryExchange['enabled'] || $config->flocktoryPostCheckout['enabled'])
-            $html .= '<div id="flocktoryScriptJS" class="jsanalytics" ></div>';
+        if ($config->flocktory['exchange'] || $config->flocktory['postcheckout']) {
+            $html .= sprintf('<div id="flocktoryScriptJS" class="jsanalytics" data-vars="%s" ></div>', $config->flocktory['site_id']);
+        }
+
+        if (\App::config()->partners['MyThings']['enabled'] && \App::partner()->getName() == 'mythings') {
+            /** @var $order \Model\Order\Entity */
+            $order = reset($this->orders);
+            $data = [
+                'EventType' => 'Conversion',
+                'Action'    => '9902',
+                'Products'  => array_map(function(\Model\Order\Product\Entity $p) {
+                    return ['id' => (string)$p->getId(), 'price' => (string)$p->getPrice(), 'qty' => $p->getQuantity()];
+                }, $order->getProduct()),
+                'TransactionReference'  => $order->getNumber(),
+                'TransactionAmount'     => (string)$order->getSum()
+            ];
+            $html .= sprintf('<div id="MyThingsJS" class="jsanalytics" data-value="%s"></div>', $this->json($data));
+        }
 
         return $html;
     }
@@ -194,6 +205,8 @@ class CompletePage extends Layout {
                 'orderNumber' => $order->getNumber(),
                 'orderSum' => $order->getSum(),
             ];
+
+            if (\App::partner()->getName()) $orderData['partner'] = \App::partner()->getName();
 
             /* Дополнительные данные для LinkProfit */
             if (\App::config()->partners['LinkProfit']['enabled'] && \App::partner()->getName() == 'linkprofit') {

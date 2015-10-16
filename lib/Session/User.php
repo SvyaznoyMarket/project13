@@ -18,10 +18,6 @@ class User {
     private $region;
     /** @var Cart */
     private $cart;
-    /** @var Cart\LifeGift */
-    private $lifeGiftCart;
-    /** @var Cart\OneClick */
-    private $oneClickCart;
 
     public function __construct() {
         $this->authTokenName = \App::config()->authToken['name'];
@@ -238,28 +234,6 @@ class User {
         }
 
         return $this->cart;
-    }
-
-    /**
-     * @return Cart\LifeGift
-     */
-    public function getLifeGiftCart() {
-        if (!$this->lifeGiftCart) {
-            $this->lifeGiftCart = new Cart\LifeGift();
-        }
-
-        return $this->lifeGiftCart;
-    }
-
-    /**
-     * @return Cart\OneClick
-     */
-    public function getOneClickCart() {
-        if (!$this->oneClickCart) {
-            $this->oneClickCart = new Cart\OneClick();
-        }
-
-        return $this->oneClickCart;
     }
 
     /** Подписан пользователь на канал?

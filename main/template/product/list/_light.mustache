@@ -3,12 +3,19 @@
     <!-- Элемент листинга/продукт -->
     {{#isBanner}}
         <li class="lstn_i lstn_i-banner {{#view.hoverDescription}}lstn_i-hover{{/view.hoverDescription}}" style="background-image: url('{{image}}'); background-repeat: no-repeat;">
+            {{#url}}
+                <a class="lstn_i-banner-link" href="{{url}}"></a>
+            {{/url}}
             <div class="lstn_i_inn"><div class="adfoxWrapper" id="adfox215"></div></div>
         </li>
     {{/isBanner}}
 
     {{^isBanner}}
-        <li class="lstn_i {{#view.hoverDescription}}lstn_i-hover{{/view.hoverDescription}} js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
+        <li class="lstn_i {{#view.hoverDescription}}lstn_i-hover{{/view.hoverDescription}} js-listing-item"
+                {{#isSlot}}data-is-slot="true"{{/isSlot}}
+                {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}
+                {{#ecommerce}}data-ecommerce='{{ecommerce}}'{{/ecommerce}}
+                >
             <div class="lstn_i_inn">
                 <ul class="stickLst clearfix">
                     {{#label}}
@@ -28,21 +35,23 @@
                 </ul>
 
                 {{#hoverImage}}
-                    <a href="{{link}}" target="_blank" class="lstn_imglk lstn_imglk-default js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
-                    <a href="{{link}}" target="_blank" class="lstn_imglk lstn_imglk-hover js-listing-item-img"><img class="lstn_img" src="{{hoverImage}}" alt="" /></a>
+                    <div class="lstn_imgbox">
+                        <a href="{{link}}" class="lstn_imglk lstn_imglk-default js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
+                        <a href="{{link}}" class="lstn_imglk lstn_imglk-hover js-listing-item-img"><img class="lstn_img" src="{{hoverImage}}" alt="" /></a>
+                    </div>
                 {{/hoverImage}}
 
                 {{^hoverImage}}
-                    <a href="{{link}}" target="_blank" class="lstn_imglk js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
+                    <div class="lstn_imgbox"><a href="{{link}}" class="lstn_imglk js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a></div>
                 {{/hoverImage}}
-                
+
                 <div style="display: table; width: 100%;">
                     <div class="lstn_pr">
                         {{#oldPrice}}
                             <span class="lstn_pr_old">
                                 <span class="td-lineth">{{&oldPrice}}</span> <span class="rubl">p</span>
                                 {{#priceSale}}
-                                    &nbsp;<span class="lstn_pr_sale">-{{priceSale}}%</span>
+                                    &nbsp;<span class="lstn_pr_sale">-{{priceSale}}{{&priceSaleUnit}}</span>
                                 {{/priceSale}}
                             </span>
                         {{/oldPrice}}
@@ -77,7 +86,7 @@
                         </div>
                     {{/view.extraContent}}
                 </div>
-                
+
                 {{#view.bottomDescription}}
                     <div class="lstn_desc"><a href="{{link}}" target="_blank">{{name}}</a></div>
                     {{#review}}{{> product/_review-compact }}{{/review}}

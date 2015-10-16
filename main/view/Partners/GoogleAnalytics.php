@@ -68,11 +68,19 @@ class GoogleAnalytics {
                     break;
 
                 case "order":
+                case "orderV3":
+                    $this->order();
                     $this->routeOrderNew();
+                    break;
+
+                case "orderV3.delivery":
+                    $this->order();
+                    $this->routeOrderDelivery();
                     break;
 
                 case "order.complete":
                 case "orderV3.complete":
+                    $this->order();
                     $this->routeOrderComplete();
                     break;
 
@@ -98,17 +106,12 @@ class GoogleAnalytics {
         return $this->sendData;
     }
 
-
-
-
     /**
      * Вызывается на неописанной странице
      */
     private function routeDefault() {
         $this->sendData['vars']['dimension5'] = 'Other';
     }
-
-
 
     /**
      * Вызывается на всех страницах счётчика
@@ -123,16 +126,12 @@ class GoogleAnalytics {
         }
     }
 
-
-
     /**
      * Вызывается на главной странице
      */
     private function routeHomepage() {
         $this->sendData['vars']['dimension5'] = 'Home';
     }
-
-
 
     /**
      * Вызывается на стр продукта
@@ -144,11 +143,6 @@ class GoogleAnalytics {
         $categories = $product->getCategory();
         $categoryUpper = reset($categories);
         $categoryDown = end($categories);
-        /*
-        $categoryMain = $product->getMainCategory();
-        if ( !$categoryMain ) {
-            $categoryMain = end( $categories );
-        }*/
 
         if (!empty($_SERVER['HTTP_REFERER'])) {
             if (strpos($_SERVER['HTTP_REFERER'], 'search?q=') > 0) {
@@ -174,26 +168,6 @@ class GoogleAnalytics {
         }
     }
 
-
-    /**
-     * Добавляет инфу о категории и её родительской категори, если оная существует.
-     *
-     * @param $category
-     */
-    /*private function addCategoryInfo($category) {
-        if ( $category instanceof \Model\Product\Category\Entity ) {
-            $this->sendData['vars']['dimension12'] = $category->getName(); // Имя текущей категории
-
-            $parentCat = $category->getParent();
-            if ($parentCat) {
-                $this->sendData['vars']['dimension6'] = $parentCat->getName();  // Имя родительской категории, если есть
-            } else {
-                $this->sendData['vars']['dimension12'] = $category->getName(); // Если нет родительской
-            }
-        }
-    }*/
-
-
     /**
      * Вызывается на стр категории
      */
@@ -217,16 +191,12 @@ class GoogleAnalytics {
         }
     }
 
-
-
     /**
      * Вызывается на стр поиска
      */
     private function routeSearch() {
         $this->sendData['vars']['dimension5'] = 'Search';
     }
-
-
 
     /**
      * Вызывается на стр корзины
@@ -239,20 +209,18 @@ class GoogleAnalytics {
         $SKUs = '';
         $userEntity = $this->user->getEntity();
         $cartProductsById = $this->getParam('cartProductsById');
+        /** @var $products \Model\Product\Entity[] */
         $products = $this->getParam('products');
 
         if (!$cartProductsById) return false;
 
         foreach ($products as $product) {
             if (!isset($cartProductsById[$product->getId()])) continue;
-            //$cartProduct = $cartProductsById[$product->getId()];
-            /** @var $cartProduct \Model\Cart\Product\Entity */
-            /** @var $product \Model\Product\CartEntity */
             $SKUs .= $product->getArticle() . ',';
             $total += $product->getPrice();
         }
 
-        self::rmLastSeporator($SKUs);
+        self::removeLastSymbol($SKUs);
 
         $this->sendData['cart'] = [
             'sum'   => $total,
@@ -261,21 +229,36 @@ class GoogleAnalytics {
         ];
     }
 
+    private function order(){
+
+        $this->sendData['enhancedEcomm'] = [
+            'products'  => [],
+            'options'   => [
+                'step'  => $this->getParam('step')
+            ]
+        ];
+
+        foreach ($this->cart->getProductsById() as $product) {
+            $this->sendData['enhancedEcomm']['products'][] = [
+                'id'        => $product->barcode,
+                'name'      => $product->name,
+                'category'  => $product->categoryPath,
+                'brand'     => $product->brandName,
+                'price'     => $product->price,
+                'quantity'  => $product->quantity
+            ];
+        }
+
+    }
+
+    private function routeOrderDelivery(){
+
+    }
+
 
     private function routeOrderNew() {
         $this->sendData['vars']['dimension5'] = 'Checkout';
     }
-
-
-    /**
-     * Метод не нужен, напрямую трекаем код на стр.
-     * main/template/error/page-404.php
-     */
-    /*
-    private function route404() {
-        $this->sendData['vars']['dimension5'] = '404';
-    }*/
-
 
     /**
      * Вызывается на страницЕ "Спасибо за заказ"
@@ -319,14 +302,14 @@ class GoogleAnalytics {
                 $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : false;
 
                 $categoryName = null;
-                $mainCategory = $product ? $product->getMainCategory() : null;
+                $mainCategory = $product ? $product->getRootCategory() : null;
                 $parentCategory = $product ? $product->getParentCategory() : null;
 
                 $productName = $product ? $product->getName() : '';
                 $RR_buy_viewed = false;
                 $RR_buy_added = false;
                 $RR_buy_block = null;
-                if (isset($order->meta_data[sprintf('product.%s.sender', $product->getUi())][0])) {
+                if ($product && isset($order->meta_data[sprintf('product.%s.sender', $product->getUi())][0])) {
                     if ($order->meta_data[sprintf('product.%s.sender', $product->getUi())][0] == 'retailrocket') {
                         $productName .= sprintf(' (RR_%s)', @$order->meta_data[sprintf('product.%s.position', $product->getUi())][0]);
                         $RR_buy_block = @$order->meta_data[sprintf('product.%s.position', $product->getUi())][0];
@@ -381,7 +364,7 @@ class GoogleAnalytics {
      * @param $str
      * @return string
      */
-    private function rmLastSeporator(&$str) {
+    private function removeLastSymbol(&$str) {
         $str = (string) $str;
         if (isset($str[1])) {
             $str = substr($str, 0, strlen($str)-1);

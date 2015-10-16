@@ -76,7 +76,13 @@ class Repository {
         $params = [];
 
         if ($category) {
-            $params['category_id'] = $category->getId();
+            if ($category->getId()) {
+                $params['category_id'] = $category->getId();
+            }
+
+            if ($category->getToken() === \Model\Product\Category\Entity::FAKE_SHOP_TOKEN) {
+                $params['bu'] = 1;
+            }
         }
 
         if ($region) {
@@ -154,7 +160,6 @@ class Repository {
 
         // добывание фильтров из http-запроса
         $values = $this->getFilterValuesFromHttpRequest($request);
-        $values = $this->deleteNotExistsValues($values, $filters);
 
         if (\App::request()->get('instore')) {
             $values['instore'] = 1; // TODO SITE-2403 Вернуть фильтр instore
@@ -168,9 +173,11 @@ class Repository {
 
         //если есть фильтр по магазину
         if ($shop) {
-            /** @var \Model\Shop\Entity $shop */
-            $values['shop'] = $shop->getId();
+            $values['shop'] = [$shop->getId()];
         }
+
+        $values = $this->deleteNotExistsValues($values, $filters);
+        $values = $this->correctPriceRangeOutside($values, $filters);
 
         // проверяем есть ли в запросе фильтры
         if ((bool)$values) {
@@ -240,7 +247,11 @@ class Repository {
         $productFilter->setValues($values);
 
         foreach ($productFilter->getFilterCollection() as $property) {
-            if (\Model\Product\Filter\Entity::TYPE_LIST == $property->getTypeId() && !in_array($property->getId(), ['shop', 'category'])) {
+            if (
+                \Model\Product\Filter\Entity::TYPE_LIST == $property->getTypeId()
+                && (!in_array($property->getId(), ['shop', 'category']) || ($category && $category->getToken() == \Model\Product\Category\Entity::FAKE_SHOP_TOKEN))
+                && !($category && $category->isTyre() && in_array($property->getName(), ['Сезон', 'Ширина', 'Профиль', 'Диаметр'], true))
+            ) {
                 $property->setIsMultiple(true);
             } else {
                 $property->setIsMultiple(false);
@@ -258,9 +269,10 @@ class Repository {
 
     /**
      * @param \Http\Request $request
+     * @param array $excludeFilterNames
      * @return array
      */
-    public function getFilterValuesFromHttpRequest(\Http\Request $request) {
+    public function getFilterValuesFromHttpRequest(\Http\Request $request, array $excludeFilterNames = []) {
         // добывание фильтров из http-запроса
         $requestData = 'POST' == $request->getMethod() ? $request->request : $request->query;
 
@@ -272,13 +284,23 @@ class Repository {
 
             $parts = array_pad(explode('-', $k), 3, null);
 
-            if ('from' == $parts[2] || 'to' == $parts[2]) {
-                $values[$parts[1]][$parts[2]] = $v;
-            } else {
-                $values[$parts[1]][] = $v;
+            if (!in_array($parts[1], $excludeFilterNames, true)) {
+                if ('from' == $parts[2] || 'to' == $parts[2]) {
+                    $values[$parts[1]][$parts[2]] = $v;
+                } else {
+                    if ($parts[1] === 'shop' || $parts[1] === 'category') {
+                        $v = array_filter(array_map('trim', explode(',', $v)));
+                        if ($v) {
+                            $values[$parts[1]] = isset($values[$parts[1]]) ? array_merge($values[$parts[1]], $v) : $v;
+                        }
+                    } else {
+                        $values[$parts[1]][] = $v;
+                    }
+                }
             }
         }
 
+        // SITE-5017
         foreach ($values as $k => $v) {
             if (isset($v['from']) && isset($v['to'])) {
                 if ($v['from'] > $v['to']) {
@@ -297,7 +319,6 @@ class Repository {
     }
 
     /**
-     * @param array $values
      * @param \Model\Product\Filter\Entity[] $filters
      * @return array
      */
@@ -315,8 +336,11 @@ class Repository {
                             $optionIds[] = (string)$option->getId();
                         }
 
-                        foreach ($propertyValues as $i => $value) {
-                            if (!in_array((string)$value, $optionIds, true)) {
+                        foreach ((array)$propertyValues as $i => $value) {
+                            if (
+                                !in_array((string)$value, $optionIds, true)
+                                && !$property->isBrand() // SITE-5844
+                            ) {
                                 unset($values[$propertyId][$i]);
                             }
                         }
@@ -336,5 +360,49 @@ class Repository {
         }
 
         return $values;
+    }
+
+    /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     * @return array
+     */
+    private function correctPriceRangeOutside(array $values, array $filters) {
+        if (isset($values['price'])) {
+            $filter = $this->getFilterById('price', $filters);
+
+            if ($filter) {
+                $min = $filter->getMin();
+                $max = $filter->getMax();
+
+                if (isset($values['price']['from'])) {
+                    if ($values['price']['from'] > $max) {
+                        $values['price']['from'] = $max;
+                    }
+                }
+
+                if (isset($values['price']['to'])) {
+                    if ($values['price']['to'] < $min) {
+                        $values['price']['to'] = $min;
+                    }
+                }
+            }
+        }
+
+        return $values;
+    }
+
+    /**
+     * @param string $id
+     * @param \Model\Product\Filter\Entity[] $filters
+     * @return \Model\Product\Filter\Entity|null
+     */
+    private function getFilterById($id, array $filters) {
+        foreach ($filters as $filter) {
+            if ($filter->getId() === $id) {
+                return $filter;
+            }
+        }
+
+        return null;
     }
 }

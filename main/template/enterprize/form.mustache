@@ -1,4 +1,8 @@
-<div class="ep-hint {{^user.isMember}}ep-hint--2col{{/user.isMember}} {{#isUserOwner}}ep-hint--position{{/isUserOwner}} js-enterprize-coupon-hint">
+<div class="ep-hint
+            {{#isProductCard}} ep-hint-card {{/isProductCard}}
+            {{^user.isMember}} ep-hint--2col {{/user.isMember}}
+            {{#isUserOwner}} ep-hint--position {{/isUserOwner}}
+            js-enterprize-coupon-hint">
     <div class="ep-hint__closer clsr-light js-ep-hint-closer"></div>
 
     <div class="ep-hint__row clearfix js-ep-reg-form">
@@ -29,7 +33,7 @@
 
             {{^isUserOwner}}
                 {{#user.isMember}}
-                    <form action="{{form.action}}">
+                    <form class="jsEnterprizeGetCouponForm" action="{{form.action}}">
                         <button class="btn-def">Получить код фишки</button>
                     </form>
                 {{/user.isMember}}
@@ -64,6 +68,8 @@
                 <fieldset class="form-reg__fld">
                     <div class="form-reg__tl">МЫ ОТПРАВИМ КОД НА СКИДКУ В SMS И E-MAIL</div>
 
+                    <div class="errtx-light js-global-error"></div>
+
                     <div class="txFld-w">
                         <input class="txFld-it" type="text" name="user[name]" id="" value="{{user.name}}">
                         <label class="txFld-lbl" for=""><span class="txFld-lbl__str">*</span> Имя</label>
@@ -95,10 +101,12 @@
                 </fieldset>
 
                 <fieldset class="form-reg__fld form-reg__btn clearfix">
+                    {{^user.isAuthorized}}
                     <div class="form-reg__login">
                         У Вас есть логин и пароль?<br/>
-                        <a href="/login" class="form-reg__login__lk undrl bAuthLink">Войти</a>
+                        <a href="/login" class="form-reg__login__lk undrl js-login-opener">Войти</a>
                     </div>
+                    {{/user.isAuthorized}}
 
                     <button type="submit" class="btn-def fl-r">Зарегистрироваться</button>
                 </fieldset>
@@ -119,7 +127,7 @@
     </div>
     {{/isUserOwner}}
 
-    
+
     <div class="ep-hint__row ep-hint__row--cut">
         <div class="ta-r mb10">
             {{#user.isMember}}

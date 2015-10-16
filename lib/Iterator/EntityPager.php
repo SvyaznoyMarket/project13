@@ -17,7 +17,7 @@ class EntityPager implements \Iterator {
     private $maxPerPage = 10;
 
     public function __construct(array $collection, $count) {
-        $this->collection = $collection;
+        $this->collection = array_values($collection);
         $this->count = $count;
     }
 
@@ -85,6 +85,9 @@ class EntityPager implements \Iterator {
         return $this->collection[$this->position];
     }
 
+    /** Returns current position
+     * @return int
+     */
     public function key() {
         return $this->position;
     }

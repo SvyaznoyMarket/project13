@@ -174,6 +174,15 @@ class TemplateHelper {
      * @param $value
      * @return string
      */
+    public function unescape($value) {
+        // Без ENT_HTML5 не преобразуется сущность &apos; (и, возможно, другие)
+        return htmlspecialchars_decode($value, ENT_QUOTES | ENT_HTML5);
+    }
+
+    /**
+     * @param $value
+     * @return string
+     */
     public function json($value) {
         return htmlspecialchars(json_encode($value, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_HEX_APOS), ENT_QUOTES, 'UTF-8');
     }

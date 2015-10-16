@@ -5,25 +5,9 @@ $c = require __DIR__ . '/config.php';
 
 $c->debug = true;
 
-// $c->coreV2['url'] = 'http://tester.core.ent3.ru/v2/';
-
-/*
-$c->coreV2['timeout']      *= 1.5;
-$c->corePrivate['timeout']      *= 1.5;
-
-$c->reviewsStore['timeout']      *= 1.5;
-
-$c->wordpress['timeout']        *= 1.5;
-$c->wordpress['throwException'] = false;
-
-$c->dataStore['timeout'] *= 1.5;
-*/
+//$c->eventService['url'] = 'http://event.ent3.ru/';
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/apitest/';
-
-$c->order['emailRequired'] = false;
-
-$c->loadMediaHost = false;
 
 $c->jsonLog['enabled'] = false;
 $c->analytics['enabled'] = false;
@@ -31,7 +15,6 @@ $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 $c->adFox['enabled'] = false;
 $c->googleTagManager['enabled'] = false;
-$c->tealeaf['enabled'] = false;
 
 $c->partners['Revolver']['enabled'] = false;
 $c->partners['GetIntent']['enabled'] = false;
@@ -44,9 +27,13 @@ $c->partners['alexa']['enabled'] = false;
 $c->partners['AddThis']['enabled'] = false;
 $c->partners['AdvMaker']['enabled'] = false;
 $c->partners['Hubrus']['enabled'] = false;
-$c->partners['SmartLeads']['enabled'] = false;
+$c->partners['CityAdsRetargeting']['enabled'] = false;
 $c->partners['Sociaplus']['enabled'] = false;
 $c->partners['ActionpayRetargeting']['enabled'] = false;
+$c->partners['MyThings']['enabled'] = false;
+$c->partners['Adblender']['enabled'] = false;
+$c->partners['Giftery']['enabled'] = false;
+$c->partners['facebook']['enabled'] = false;
 
 $c->paymentPsb['terminal']     = '79036768';
 $c->paymentPsb['merchant']     = '790367686219999';
@@ -58,9 +45,6 @@ $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key']          = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
 
-$c->mainMenu['requestMenu'] = false;
 $c->mainMenu['recommendationsEnabled'] = false;
-
-$c->tealeaf['enabled'] = false;
 
 return $c;

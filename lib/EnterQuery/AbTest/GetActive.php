@@ -24,13 +24,27 @@ namespace EnterQuery\AbTest
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'api/ab_test/get-active'
+                    'api/ab_test/get-active',
+                    ['tags' => ['site-web']]
                 ),
                 [], // data
-                function($response, $statusCode) {
-                    $result = $this->decodeResponse($response, $statusCode)['result'];
+                function($response, $curlQuery) {
+                    $result = $this->decodeResponse($response, $curlQuery)['result'];
 
                     $this->response->tests = isset($result[0]) ? $result : [];
+
+                    if (isset($result[0])) {
+                        $tests = [];
+                        foreach ($result as $item) {
+                            if (empty($item['token'])) {
+                                continue;
+                            }
+
+                            $tests[$item['token']] = $item;
+                        }
+
+                        \App::config()->abTest['tests'] = $tests;
+                    }
 
                     return $result; // for cache
                 }

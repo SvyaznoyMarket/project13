@@ -5,12 +5,12 @@ namespace Model\Product\Category;
 use Model\Media;
 
 class Entity extends BasicEntity {
-    use \Model\MediaHostTrait;
+    const FAKE_SHOP_TOKEN = 'shop';
 
+    /** @var bool Является ли категория главной для товара */
+    public $isMain = false;
     /** @var bool|null */
     protected $isFurniture;
-    /** @var bool|null */
-    protected $hasLine;
     /** @var string|null */
     protected $productView;
     /** @var string|null */
@@ -31,6 +31,10 @@ class Entity extends BasicEntity {
     protected $priceChangePercentTrigger;
     /** @var bool|null */
     protected $priceChangeTriggerEnabled;
+    /** @var string|null */
+    protected $image;
+    /** @var string|null */
+    protected $image480x480;
     /** @var Media[] */
     public $medias = [];
     /** @var array */
@@ -39,35 +43,45 @@ class Entity extends BasicEntity {
     public $grid = [];
     /** @var Entity|null */
     protected $parent;
-    /** @var Entity|null */
-    protected $root;
     /** @var Entity[] */
     protected $ancestor = [];
     /** @var Entity[] */
     protected $child = [];
+    /** @var Config */
+    public $config;
+    /**
+     * Вид листинга (с учётом пользовательского выбора)
+     * @var ListingView
+     */
+    public $listingView;
 
-    public function __construct(array $data = []) {
+    public function __construct($data = []) {
+        $templateHelper = new \Helper\TemplateHelper();
+        
         $data['price_change_trigger_enabled'] = true;
         $data['price_change_percent_trigger'] = 90;
 
         if (isset($data['id'])) $this->setId($data['id']);
+        if (isset($data['core_id'])) $this->setId($data['core_id']); // Берётся из методов scms
         if (isset($data['ui'])) $this->setUi($data['ui']); // Берётся из http://api.enter.ru/v2/product/get (из элемента "category")
         if (isset($data['uid'])) $this->setUi($data['uid']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets и http://search.enter.ru/category/tree
 
         if (isset($data['parent_id'])) $this->setParentId($data['parent_id']); // Берётся из http://search.enter.ru/category/tree (из элемента "children") и http://api.enter.ru/v2/product/get (из элемента "category")
         if (isset($data['parent']['id'])) $this->setParentId($data['parent']['id']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets
+        if (isset($data['parent']['core_id'])) $this->setParentId($data['parent']['core_id']); // Берётся из https://scms.enter.ru/product/get-description/v1, https://scms.enter.ru/category/gets
 
+        if (isset($data['main'])) $this->isMain = (bool)$data['main'];
         if (isset($data['is_furniture'])) $this->setIsFurniture($data['is_furniture']);
         if (isset($data['name'])) $this->setName($data['name']);
 
         if (isset($data['link'])) $this->setLink($data['link']); // Берётся из http://search.enter.ru/category/tree (из элемента "children") и http://api.enter.ru/v2/product/get (из элемента "category")
-        if (isset($data['url'])) $this->setLink($data['url']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets
+        if (isset($data['url'])) $this->setLink($data['url']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets, https://scms.enter.ru/product/get-description и т.п.
 
         if (isset($data['token'])) $this->setToken($data['token']); // Берётся из http://search.enter.ru/category/tree (из элемента "children") и http://api.enter.ru/v2/product/get (из элемента "category")
-        if (isset($data['slug'])) $this->setToken($data['slug']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets
+        if (isset($data['slug'])) $this->setToken($data['slug']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets, https://scms.enter.ru/product/get-description и т.п.
 
-        if (isset($data['media_image'])) $this->setImage($data['media_image']);
-        if (isset($data['media_image_480x480'])) $this->image480x480 = $data['media_image_480x480'];
+        if (isset($data['media_image'])) $this->image = $data['media_image']; // Возвращается методом http://search.enter.ru/category/tree
+        if (isset($data['media_image_480x480'])) $this->image480x480 = $data['media_image_480x480']; // Возвращается методом http://search.enter.ru/category/tree
 
         // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets
         if (isset($data['medias']) && is_array($data['medias'])) {
@@ -78,13 +92,12 @@ class Entity extends BasicEntity {
             }
         }
 
-        if (isset($data['has_line'])) $this->setHasLine($data['has_line']);
         if (isset($data['product_view_id'])) $this->setProductView($data['product_view_id']);
         if (isset($data['level'])) $this->setLevel($data['level']);
 
-        if (isset($data['title'])) $this->setSeoTitle($data['title']);
-        if (isset($data['meta_keywords'])) $this->setSeoKeywords($data['meta_keywords']);
-        if (isset($data['meta_description'])) $this->setSeoDescription($data['meta_description']);
+        if (isset($data['title'])) $this->setSeoTitle($templateHelper->unescape($data['title']));
+        if (isset($data['meta_keywords'])) $this->setSeoKeywords($templateHelper->unescape($data['meta_keywords']));
+        if (isset($data['meta_description'])) $this->setSeoDescription($templateHelper->unescape($data['meta_description']));
         if (isset($data['content'])) $this->setSeoContent($data['content']);
 
         if (isset($data['property']['seo']['hotlinks'])) {
@@ -105,6 +118,16 @@ class Entity extends BasicEntity {
                 }
             }
         }
+
+        if (isset($data['parent'])) $this->parent = new Entity($data['parent']);
+
+        if (isset($data['config'])) {
+            $this->config = new Config($data['config']);
+        } else {
+            $this->config = new Config();
+        }
+
+        $this->listingView = new ListingView();
     }
 
     /**
@@ -132,20 +155,6 @@ class Entity extends BasicEntity {
      */
     public function isLeaf() {
         return !$this->hasChild;
-    }
-
-    /**
-     * @param boolean $hasLine
-     */
-    public function setHasLine($hasLine) {
-        $this->hasLine = (bool)$hasLine;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getHasLine() {
-        return $this->hasLine;
     }
 
     /**
@@ -320,29 +329,17 @@ class Entity extends BasicEntity {
 
     public function getImageUrl($size = 0) {
         if ($this->image) {
-            if (preg_match('/^(https?|ftp)\:\/\//i', $this->image)) {
-                if (0 == $size) {
-                    return $this->image;
-                } else if (3 == $size) {
-                    return $this->image480x480;
-                }
-            } else {
-                $urls = \App::config()->productCategory['url'];
-                return $this->getHost() . $urls[$size] . $this->image;
+            if (0 == $size) {
+                return $this->image;
+            } else if (3 == $size) {
+                return $this->image480x480;
             }
         } else if ($this->medias) {
             if (0 == $size) {
-                $source = $this->getMediaSource('category_163x163');
+                return $this->getMediaSource('category_163x163')->url;
             } else if (3 == $size) {
-                $source = $this->getMediaSource('category_480x480');
-            } else {
-                $source = null;
+                return $this->getMediaSource('category_480x480')->url;
             }
-
-            if ($source) {
-                return $source->url;
-            }
-
         }
     }
 
@@ -350,9 +347,9 @@ class Entity extends BasicEntity {
      * @param string $sourceType
      * @param string $mediaProvider
      * @param string $mediaTag
-     * @return Media\Source|null
+     * @return Media\Source
      */
-    private function getMediaSource($sourceType, $mediaTag = 'main', $mediaProvider = 'image') {
+    public function getMediaSource($sourceType, $mediaTag = 'main', $mediaProvider = 'image') {
         foreach ($this->medias as $media) {
             if ($media->provider === $mediaProvider && in_array($mediaTag, $media->tags, true)) {
                 foreach ($media->sources as $source) {
@@ -363,8 +360,10 @@ class Entity extends BasicEntity {
             }
         }
 
-        return null;
+        return new Media\Source();
     }
+
+    // TODO отрефакторить методы для получения родительских категорий
 
     public function setParent(Entity $parent = null) {
         $this->parent = $parent;
@@ -380,8 +379,20 @@ class Entity extends BasicEntity {
     /**
      * @return Entity
      */
+    public function getRootOfParents() {
+        $root = $this;
+        while ($root->parent) {
+            $root = $root->parent;
+        }
+
+        return $root;
+    }
+
+    /**
+     * @return Entity
+     */
     public function getRoot() {
-        return $this->root ?: reset($this->ancestor);
+        return reset($this->ancestor);
     }
 
     public function addAncestor(Entity $ancestor) {
@@ -400,6 +411,13 @@ class Entity extends BasicEntity {
     }
 
     /**
+     * @param Entity[] $children
+     */
+    public function setChild(array $children) {
+        $this->child = $children;
+    }
+
+    /**
      * @return Entity[]
      */
     public function getChild() {
@@ -407,28 +425,28 @@ class Entity extends BasicEntity {
     }
 
     public function isV2Root() {
-        return ('616e6afd-fd4d-4ff4-9fe1-8f78236d9be6' === $this->getUi()); // Корневая бытовой техники
+        return (self::UI_BYTOVAYA_TEHNIKA === $this->getUi()); // Корневая бытовой техники
     }
 
     public function isV2() {
         return in_array($this->getRootOrSelf()->getUi(), [
-            '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
-            'f7a2f781-c776-4342-81e8-ab2ebe24c51a', // Мебель
-//                'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электронника
-        ], true);
+            self::UI_BYTOVAYA_TEHNIKA, // Бытовая техника
+            self::UI_MEBEL, // Мебель
+            self::UI_ELECTRONIKA, // Электронника
+        ], true) || $this->isTyre() || $this->token == 'shop';
     }
 
     public function isV2Furniture() {
         $root = $this->getRootOrSelf();
         // Мебель
-        return $root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a';
+        return $root->getUi() === self::UI_MEBEL;
     }
 
     public function isShowSmartChoice() {
         $root = $this->getRootOrSelf();
 
         // Мебель
-        return $root->getUi() !== 'f7a2f781-c776-4342-81e8-ab2ebe24c51a';
+        return $root->getUi() !== self::UI_MEBEL;
     }
 
     public function isShowFullChildren() {
@@ -445,6 +463,28 @@ class Entity extends BasicEntity {
         }
 
         return true;
+    }
+
+    public function isFakeShopCategory() {
+        return $this->token == self::FAKE_SHOP_TOKEN;
+    }
+
+    public function isAlwaysShowBrand() {
+        if ($this->isV2()) {
+            return (bool)$this->getClosest([
+                self::UI_BYTOVAYA_TEHNIKA, // Бытовая техника
+                self::UI_ELECTRONIKA, // Электронника
+            ]) || $this->isFakeShopCategory();
+        }
+
+        return false;
+    }
+
+    public function isTyre() {
+        return in_array($this->getUi(), [
+            '94fe0c01-665b-4f66-bb9d-c20e62aa9b7a', // Шины и принадлежности
+            '018638bb-b54b-473f-8cb0-fa3953cd3695', // Шины и принадлежности -> Шины
+        ], true);
     }
 
     private function getClosest(array $expectedUis) {
@@ -513,6 +553,54 @@ class Entity extends BasicEntity {
         ], true);
     }
 
+    public function isPandora() {
+        return $this->getCategoryClass() === 'jewel';
+    }
+
+    public function isGrid() {
+        return $this->getCategoryClass() === 'grid';
+    }
+
+    public function isDefault() {
+        return ($this->getCategoryClass() === 'default' || $this->getCategoryClass() == '');
+    }
+
+    public function getCategoryClass() {
+        return !empty($this->catalogJson['category_class']) ? strtolower(trim((string)$this->catalogJson['category_class'])) : null;
+    }
+
+    /**
+     * SITE-5772
+     * @return array
+     */
+    public function getSenderForGoogleAnalytics() {
+        if ($this->isPandora()) {
+            $sender = ['name' => 'filter_pandora'];
+        } else if ($this->isV3()) {
+            $sender = ['name' => 'filter_jewelry'];
+        } else if ($this->isV2()) {
+            $sender = ['name' => 'filter'];
+        } else if ($this->isDefault()) {
+            $sender = ['name' => 'filter_old'];
+        } else {
+            $sender = [];
+        }
+
+        if ($sender) {
+            $sender['categoryUrlPrefix'] = $this->getUrlPrefix();
+        }
+
+        return $sender;
+    }
+
+    private function getUrlPrefix() {
+        if (preg_match('/^\/catalog\/([^\/]*).*$/i', parse_url($this->link, PHP_URL_PATH), $matches)) {
+            return $matches[1];
+        }
+
+        return '';
+    }
+
     private function convertCatalogJsonToOldFormat($data) {
         $result = [];
 
@@ -523,6 +611,14 @@ class Entity extends BasicEntity {
 
             if (isset($data['property']['bannerPlaceholder'])) {
                 $result['bannerPlaceholder'] = $data['property']['bannerPlaceholder'];
+
+                if (isset($result['bannerPlaceholder']['image'])) {
+                    $result['bannerPlaceholder']['image'] = trim($result['bannerPlaceholder']['image']);
+                }
+
+                if (isset($result['bannerPlaceholder']['url'])) {
+                    $result['bannerPlaceholder']['url'] = trim($result['bannerPlaceholder']['url']);
+                }
             }
 
             if (isset($data['property']['smartchoice']['enabled'])) {
@@ -543,10 +639,6 @@ class Entity extends BasicEntity {
 
             if (isset($data['property']['appearance']['logo_path'])) {
                 $result['logo_path'] = $data['property']['appearance']['logo_path'];
-            }
-
-            if (isset($data['property']['appearance']['use_lens'])) {
-                $result['use_lens'] = $data['property']['appearance']['use_lens'];
             }
 
             if (isset($data['property']['appearance']['is_new'])) {
@@ -622,4 +714,11 @@ class Entity extends BasicEntity {
 
         return $result;
     }
+}
+
+class ListingView {
+    /** @var bool */
+    public $isList = false;
+    /** @var bool */
+    public $isMosaic = true;
 }

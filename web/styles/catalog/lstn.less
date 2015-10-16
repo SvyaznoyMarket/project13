@@ -1,403 +1,411 @@
 .lstn {
-	margin: 0 0 0 -10px;
-	width: 960px;
-
-	.btnBuy {
-
-		&.mBuySet {
-			width: auto;
-
-			.btnBuy__eLink {
-				padding-left: 27px;
-				width: auto;
-
-				&:after {
-					background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 0 0;
-					height: 12px;
-					left: 10px;
-					margin-top: -6px;
-					top: 50%;
-					width: 12px;
-				}
-			}
-		}
-	}
-
-	.btn--short {
-		box-shadow: none;
-		width: auto;
-		font-size: 12px;
-		text-align: center;
-		padding: 7px 5px 8px;
-		margin-top: 0;
-		line-height: 1;
-		.rounded(3px);
-	}
-
-	.btn--slot--container {
-		width: auto;
-		.inline-block();
-		vertical-align: middle;
-		margin-left: 5px;
-	}
-
-	&_empty {
-		padding: 30px 0;
-		font-size: 14px;
-		text-align: center;
-	}
-
-	&_i {
-		float: left;
-		width: 241px;
-		position: relative;
-		height: 350px;
-		margin: -1px -1px 0 0;
-		z-index: 2;
-
-		&_inn {
-			border: 1px solid #e6e6e6;
-			width: 199px;
-			position: relative;
-			height: 312px;
-			padding: 20px 20px 16px;
-			background-color: @white;
-			z-index: 2;
-		}
-
-		&.js-listing-item:hover {
-			z-index: 10;
-
-			.lstn_i_inn {
-				border-color: #a0a0a0;
-			}
-
-			.lstn_btn {
-				.opacity(1);
-			}
-
-			.lstn_n {
-				.opacity(1);
-			}
-
-			.notBuying {
-				display: block;
-			}
-
-			.lstn_imglk-default {
-				display: none;
-			}
-
-			.lstn_imglk-hover {
-				display: block;
-			}
-		}
-
-		&-hover {
-			height: 281px;
-			overflow: hidden;
-
-			.lstn_i_inn {
-				height: 243px;
-			}
-
-			.lstn_desc,
-			.bSimplyDescReviews {
-				display: none;
-			}
-
-			&.lstn_i-banner {
-
-				&:hover {
-
-					.lstn_btn {
-						.opacity(1);
-					}
-
-					.lstn_i_inn {
-						height: auto;
-					}
-				}
-			}
-
-			&:hover {
-				overflow: visible;
-
-				.lstn_i_inn {
-					height: auto;
-					z-index: 5;
-				}
-
-				.lstn_btn {
-					.opacity(1);
-				}
-
-				.bSimplyDescReviews {
-					display: block;
-				}
-
-				.lstn_desc {
-					display: table-cell;
-				}
-			}
-		}
-
-		&-banner {
-			background-position: 50% 50%;
-
-			.lstn_i_inn {
-				background-color: transparent;
-				min-height: 243px;
-			}
-
-			.adfoxWrapper {
-				left: 50%;
-			    line-height: 100%;
-			    margin: -129px 0 0 -107.5px;
-			    position: absolute;
-			    top: 50%;
-			}
-		}
-	}
-
-	&_n {
-		.opacity(0);
-		display: block;
-	}
-
-	.notBuying {
-		display: none;
-	}
-
-	&_imglk {
-		display: block;
-		width: 200px;
-		height: 200px;
-		margin: 0 auto 8px;
-
-		&-hover {
-			display: none;
-		}
-	}
-
-	&_img {
-		display: block;
-		width: 200px;
-		height: 200px;
-	}
-
-	&_pr {
-		display: table-cell;
-		min-width: 80px;
-		vertical-align: middle;
-
-		&_old {
-			color: #9c9c9c;
-			display: block;
-		}
-
-		&_now {
-			color: #404040;
-			font-size: 14px;
-		}
-	}
-
-	&_btn {
-		display: table-cell;
-		vertical-align: middle;
-		text-align: right;
-		.opacity(0);
-
-		.btnBuy {
-			.inline-block();
-			margin-left: 5px;
-			.rounded(3px);
-
-			&__eLink {
-				background: #404040;
-				border: 1px solid @black;
-				height: auto;
-				font-size: 12px;
-				.rounded(3px);
-				line-height: 1;
-				padding: 7px 10px;
-	    		width: auto;
-
-	    		&.mBought {
-				    background: none repeat scroll 0 0 #fff;
-				    border: 1px solid #b3b3b3;
-				    box-shadow: none;
-				    color: #000;
-				}
-			}
-		}
-
-		.btnCmprb {
-			vertical-align: middle;
-		}
-
-		&_not {
-			.inline-block();
-			vertical-align: middle;
-			color: #9c9c9c;
-			margin-left: 3px;
-		}
-
-		&_ftn {
-			color: #9c9c9c;
-			display: block;
-			margin: 3px 0 0;
-		}
-	}
-
-	&_desc {
-	    display: table-cell;
-	    height: 41px;
-	    line-height: 1.1;
-	    overflow: hidden;
-	    padding: 5px 0;
-	    text-align: center;
-	    vertical-align: middle;
-	    width: 218px;
-
-	    a {
-			color: #404040;
-	    }
-	}
-
-	.bSimplyDescReviews {
-		text-align: center;
-	}
-
-	&-light {
-
-		.lstn_i {
-			height: 281px;
-
-			&_inn {
-				height: 249px;
-			}
-		}
-	}
-
-	&-btn2 {
-		.btnBuy__eLink {
-			background: @orange-2;
-			border-color: @orange-2;
-
-			&.mShopsOnly {
-				background: #404040;
-				border: 1px solid @black;
-
-				&:hover {
-					background: @black;
-				}
-			}
-		}
-	}
-
-	&-jewel {
-		margin-left: 0;
-
-		.stickLst {
-			top: 45px;
-		}
-
-		.lstn {
-
-			&_i {
-				height: 240px;
-
-				&:hover {
-
-					.lstn_i_inn {
-						height: 228px;
-					}
-				}
-
-				&_inn {
-					border-color: #f9f9f9;
-					padding: 10px 10px 0;
-    				width: 219px;
-    				height: 228px;
-				}
-			}
-
-			&_img {
-				width: 160px;
-				height: 160px;
-			}
-
-			&_imglk {
-			    height: 160px;
-			    width: 160px;
-			}
-
-			&_pr {
-				position: absolute;
-				bottom: 10px;
-				left: 10px;
-			}
-
-			&_btn {
-				position: absolute;
-				bottom: 10px;
-				right: 10px;
-			}
-		}
-
-		&-3col {
-
-			.lstn {
-
-				&_i {
-					width: 321px;
-					height: 340px;
-
-					&:hover {
-						.lstn_i_inn {
-							height: 328px;
-						}
-					}
-
-					&_inn {
-						width: 299px;
-						height: 328px;
-					}
-				}
-
-				&_img,
-				&_imglk {
-				    height: 260px;
-				    width: 260px;
-				}
-
-				&_pr {
-		            width: 180px;
+    width: 960px;
+    margin: 0 0 0 -10px;
+    .btnBuy {
+        &.mBuySet {
+            width: auto;
+            .btnBuy__eLink {
+                width: auto;
+                padding-left: 27px;
+                &:after {
+                    top: 50%;
+                    left: 10px;
+
+                    width: 12px;
+                    height: 12px;
+                    margin-top: -6px;
+
+                    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 0 0;
+                }
+            }
+        }
+    }
+    .btn--short {
+        font-size: 12px;
+        line-height: 1;
+
+        width: auto;
+        margin-top: 0;
+        padding: 7px 5px 8px;
+
+        text-align: center;
+
+        box-shadow: none;
+
+        .rounded(3px);
+    }
+    .btn--slot--container {
+        width: auto;
+        margin-left: 5px;
+
+        vertical-align: middle;
+
+        .inline-block();
+    }
+    &_empty {
+        font-size: 14px;
+
+        padding: 30px 0;
+
+        text-align: center;
+    }
+    &_i {
+        position: relative;
+        z-index: 2;
+
+        float: left;
+
+        width: 241px;
+        height: 350px;
+        margin: -1px -1px 0 0;
+        &_inn {
+            position: relative;
+            z-index: 2;
+
+            width: 199px;
+            height: 312px;
+            padding: 20px 20px 16px;
+
+            border: 1px solid #e6e6e6;
+            background-color: @white;
+        }
+        &.js-listing-item:hover ,
+        &.js-goodsbox:hover {
+            z-index: 10;
+            .lstn_i_inn {
+                border-color: #a0a0a0;
+            }
+            .lstn_btn {
+                .opacity(1);
+            }
+            .lstn_n {
+                .opacity(1);
+            }
+            .notBuying {
+                display: block;
+            }
+            .lstn_imglk-default {
+                display: none;
+            }
+            .lstn_imglk-hover {
+                display: block;
+            }
+        }
+        &-hover {
+            overflow: hidden;
+
+            height: 281px;
+            .lstn_i_inn {
+                height: 243px;
+            }
+            .lstn_desc ,
+            .bSimplyDescReviews {
+                display: none;
+            }
+            &.lstn_i-banner {
+                &:hover {
+                    .lstn_btn {
+                        .opacity(1);
+                    }
+                    .lstn_i_inn {
+                        height: auto;
+                    }
+                }
+            }
+            &:hover {
+                overflow: visible;
+                .lstn_i_inn {
+                    z-index: 5;
+
+                    height: auto;
+                }
+                .lstn_btn {
+                    .opacity(1);
+                }
+                .bSimplyDescReviews {
+                    display: block;
+                }
+                .lstn_desc {
+                    display: table-cell;
+                }
+            }
+        }
+        &-banner {
+            background-position: 50% 50%;
+            .lstn_i_inn {
+                min-height: 243px;
+
+                background-color: transparent;
+            }
+            &-link {
+                position: absolute;
+
+                width: 100%;
+                height: 100%;
+            }
+            .adfoxWrapper {
+                line-height: 100%;
+
+                position: absolute;
+                z-index: 1;
+                top: 50%;
+                left: 50%;
+
+                margin: -129px 0 0 -107.5px;
+            }
+        }
+    }
+    &_n {
+        display: block;
+
+        .opacity(0);
+    }
+    .notBuying {
+        display: none;
+    }
+    &_imgbox {
+        width: 100%;
+    }
+    &_imglk {
+        display: block;
+        text-align: center;
+
+        width: 100%;
+        height: 200px;
+        padding: 0 0 8px;
+
+        &-hover {
+            display: none;
+        }
+        &:hover{
+            text-decoration: none;
+        }
+        &:after{
+            content:"";
+            .inline-block-middle();
+            width: 0;
+            height: 100%;
+        }
+    }
+    &_img {
+        max-width: 90%;
+        max-height: 90%;
+        .inline-block-middle();
+    }
+    &_pr {
+        display: table-cell;
+
+        min-width: 80px;
+
+        vertical-align: middle;
+        &_old {
+            display: block;
+
+            color: #9c9c9c;
+        }
+        &_now {
+            font-size: 14px;
+
+            color: #404040;
+        }
+    }
+    &_btn {
+        display: table-cell;
+
+        text-align: right;
+        vertical-align: middle;
+
+        .opacity(0);
+        .btnBuy {
+            margin-left: 5px;
+
+            .inline-block();
+            .rounded(3px);
+            &__eLink {
+                font-size: 12px;
+                line-height: 1;
+
+                width: auto;
+                height: auto;
+                padding: 7px 10px;
+
+                border: 1px solid @black;
+                background: #404040;
+
+                .rounded(3px);
+                &.mBought {
+                    color: #000;
+                    border: 1px solid #b3b3b3;
+                    background: none repeat scroll 0 0 #fff;
+                    box-shadow: none;
+                }
+
+                &.mBought {
+		            .box-shadow(none);
+		            color: @black;
+		            border: 1px solid lighten(@black, 70);
+		            background: @white;
+
+		            &:hover {
+		                background: @white;
+		            }
 		        }
-			}
-		}
-	}
+            }
+        }
+        .btnCmprb {
+            vertical-align: middle;
+        }
+        &_not {
+            margin-left: 3px;
+
+            vertical-align: middle;
+
+            color: #9c9c9c;
+
+            .inline-block();
+        }
+        &_ftn {
+            display: block;
+
+            margin: 3px 0 0;
+
+            color: #9c9c9c;
+        }
+    }
+    &_desc {
+        line-height: 1.1;
+
+        display: table-cell;
+        overflow: hidden;
+
+        width: 218px;
+        height: 41px;
+        padding: 5px 0;
+
+        text-align: center;
+        vertical-align: middle;
+        a {
+            color: #404040;
+        }
+    }
+    .bSimplyDescReviews {
+        text-align: center;
+    }
+    &-light {
+        .lstn_i {
+            height: 281px;
+            &_inn {
+                height: 249px;
+            }
+        }
+    }
+    &-btn2 {
+        .btnBuy__eLink {
+            border-color: @orange-2;
+            background: @orange-2;
+            &.mShopsOnly {
+                border: 1px solid @black;
+                background: #404040;
+                &:hover {
+                    background: @black;
+                }
+            }
+            &.mBought {
+	            .box-shadow(none);
+	            color: @black;
+	            border: 1px solid lighten(@black, 70);
+	            background: @white;
+
+	            &:hover {
+	                background: @white;
+	            }
+	        }
+        }
+    }
+    &-jewel {
+        margin-left: 0;
+        .stickLst {
+            top: 45px;
+        }
+        .lstn {
+            &_i {
+                height: 240px;
+                &:hover {
+                    .lstn_i_inn {
+                        height: 228px;
+                    }
+                }
+                &_inn {
+                    width: 219px;
+                    height: 228px;
+                    padding: 10px 10px 0;
+
+                    border-color: #f9f9f9;
+                }
+            }
+            &_imglk {
+                height: 160px;
+            }
+            &_pr {
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+            }
+            &_btn {
+                position: absolute;
+                right: 10px;
+                bottom: 10px;
+            }
+        }
+        &-3col {
+            .lstn {
+                &_i {
+                    width: 321px;
+                    height: 340px;
+                    &:hover {
+                        .lstn_i_inn {
+                            height: 328px;
+                        }
+                    }
+                    &_inn {
+                        width: 299px;
+                        height: 328px;
+                    }
+                }
+                &_imglk {
+                    height: 260px;
+                }
+                &_pr {
+                    width: 180px;
+                }
+            }
+        }
+    }
 }
 
 .stickLst {
-	left: 10px;
-    padding: 0;
     position: absolute;
-    top: 10px;
-    width: 200px;
     z-index: 2;
+    top: 10px;
+    left: 10px;
 
+    width: 200px;
+    padding: 0;
     &_i {
-    	float: left;
-    	margin-right: 5px;
+        float: left;
 
-    	&-l {
-    		float: left;
-    	}
-
-    	&-r {
-    		float: right;
-    	}
+        margin-right: 5px;
+        &-l {
+            float: left;
+        }
+        &-r {
+            float: right;
+        }
     }
+}
+.adfoxWrapper{
+    .transition(2s all ease);
+}
+body{
+    .transition(2s all ease);
 }

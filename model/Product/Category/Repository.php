@@ -47,9 +47,10 @@ class Repository {
     }
 
     /**
-     * @param string               $token
+     * @param string $token
      * @param \Model\Region\Entity $region
      * @param                      $callback
+     * @param string|null $brandSlug
      */
     public function prepareEntityByToken($token, \Model\Region\Entity $region = null, $callback, $brandSlug = null) {
         //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
@@ -76,6 +77,26 @@ class Repository {
                 \App::exception()->remove($e);
             }
         });
+    }
+
+    /**
+     * @param string $uid
+     * @param callable $callback
+     */
+    public function prepareEntityByUid($uid, $callback) {
+        \App::scmsClient()->addQuery('category/get/v1',
+            [
+                'uid'     => $uid,
+                'geo_id' => \App::user()->getRegion()->getId(),
+            ],
+            [],
+            $callback,
+            function(\Exception $e) {
+                if (404 == $e->getCode()) {
+                    \App::exception()->remove($e);
+                }
+            }
+        );
     }
 
     /**

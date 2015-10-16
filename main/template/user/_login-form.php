@@ -13,7 +13,7 @@ if (!isset($redirect_to)) $redirect_to = null;
     <fieldset class="authForm_fld authForm_fld-scrll">
         <!-- секция входа -->
         <div class="authForm_inn">
-            <div class="authForm_t legend">Вход в Enter</div>
+            <div class="authForm_t legend jsAuthFormLoginTitle">Вход в Enter</div>
 
             <input type="text" class="authForm_it textfield" name="signin[username]" value="<?= $form->getUsername() ?>" placeholder="Email или телефон">
 
@@ -25,7 +25,7 @@ if (!isset($redirect_to)) $redirect_to = null;
                     >забыли?</span>
             </div>
 
-            <input type="hidden" name="redirect_to" value="<?= $redirect_to ?>">
+            <input type="hidden" name="redirect_to" value="<?= $page->escape($redirect_to) ?>">
 
             <input type="submit" class="authForm_is btnsubmit" name="" data-loading-value="Вхожу..." value="Войти">
 

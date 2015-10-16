@@ -1,0 +1,121 @@
+@ctrlGrey : #c7c7c7;
+@ctrlPlaceholder: #afafaf;
+@textColor: #363636;
+@errorRed: #d45745;
+@selectColor: #5e5e5e;
+
+.personal{
+    .input-control{
+        width: 100%;
+        height: 37px;
+        line-height: 33px;
+        border: 1px solid @ctrlGrey;
+
+        .rounded(3px);
+        .box-sizing(border-box);
+
+        font-size: 14px;
+        padding: 0 10px;
+        &.disabled{
+            border: none;
+            height: 20px;
+            line-height: 20px;
+            margin-bottom: 17px;
+            background-color: transparent;
+        }
+    }
+
+    .label-control{
+        position: absolute;
+        width: 100%;
+        top: -20px;
+        font-size: 12px;
+        margin: 0 10px;
+        color: @ctrlPlaceholder;
+
+        &:not(.always-show){
+            display: none;
+        }
+        &.big{
+            margin: 0;
+            font-size: 14px;
+        }
+    }
+    .custom-select{
+        height: 21px;
+        line-height: 21px;
+        display: inline-block;
+        border: 1px solid @ctrlGrey;
+        margin-right: 10px;
+        margin-top: 10px;
+        
+        &__inn{
+            padding: 0 3px;
+        }
+
+        &:after{
+            content: '';
+            background: url("@{base-url}/personal-page/img/private-sprite.png") no-repeat  -100px 0;
+            width: 20px;
+            height: 21px;
+            right: 2px;
+        }
+        &--day{
+            width: 53px;
+        }
+        &--month{
+            width: 53px;
+        }
+        &--year{
+            width: 70px;
+            margin-right: 0;
+        }
+        &--sex{
+            width: 95px;
+            margin-right: 0;
+        }
+    }
+    .form-group{
+        position: relative;
+        margin-top: 35px;
+
+        .custom-select{
+
+            &__inn{
+                padding: 0 0 0 5px;
+                font-size: 14px;
+                color: @selectColor;
+            }
+        }
+        &.inline{
+            display: inline-block;
+            font-size: 0;
+        }
+        &.right{
+            margin-left: 42px;
+        }
+        &.error {
+            .input-control{
+                border-color: @errorRed;
+                &::-webkit-input-placeholder {
+                    color: @errorRed;
+                }
+
+                &:-moz-placeholder { /* Firefox 18- */
+                    color: @errorRed;
+                }
+
+                &::-moz-placeholder {  /* Firefox 19+ */
+                    color: @errorRed;
+                }
+
+                &:-ms-input-placeholder {
+                    color: @errorRed;
+                }
+            }
+            .label-control{
+                color: @errorRed;
+            }
+        }
+    }
+}

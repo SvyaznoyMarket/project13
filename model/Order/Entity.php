@@ -77,6 +77,8 @@ class Entity {
     public $deliveryTypeId;
     /** @var \DateTime */
     public $deliveredAt;
+    /** @var array */
+    public $deliveryDateInterval;
     /** @var int */
     public $storeId;
     /** @var int */
@@ -137,6 +139,8 @@ class Entity {
     public $seller;
     /** @var string */
     private $accessToken;
+    /** @var string|null */
+    public $pointUi;
     /** @var Point|null */
     public $point;
     /** @var Shop|null */
@@ -175,8 +179,14 @@ class Entity {
                 \App::logger()->error($e);
             }
         }
+        if (isset($data['delivery_date_interval']['name'])) {
+            $this->deliveryDateInterval = [
+                'name' => $data['delivery_date_interval']['name'],
+            ];
+        }
         if (array_key_exists('store_id', $data)) $this->setStoreId($data['store_id']);
         if (array_key_exists('shop_id', $data)) $this->setShopId($data['shop_id']);
+        if (array_key_exists('point_ui', $data)) $this->pointUi = $data['point_ui'] ? (string)$data['point_ui']: null;
         if (array_key_exists('address_id', $data)) $this->setAddressId($data['address_id']);
         if (array_key_exists('geo_id', $data)) $this->setCityId($data['geo_id']);
         if (array_key_exists('region_id', $data)) $this->setRegionId($data['region_id']);
@@ -967,6 +977,10 @@ class Entity {
             : $default;
     }
 
+    public function getMeta() {
+        return $this->meta_data;
+    }
+
     /** Оплата с помощью баллов Связного клуба
      * @return bool
      */
@@ -979,6 +993,20 @@ class Entity {
      */
     public function getSvyaznoyPaymentSum(){
         return (float)$this->getMetaByKey('payment.svyaznoy_club', 0);
+    }
+
+    /** Является ли заказ заявкой (например, заказ кухонь)
+     * @return bool
+     */
+    public function isSlot(){
+        return $this->typeId == self::TYPE_SLOT;
+    }
+
+    /** Оформлен ли заказ в кредит
+     * @return bool
+     */
+    public function isCredit(){
+        return $this->paymentId == self::PAYMENT_TYPE_ID_ONLINE_CREDIT;
     }
 }
 

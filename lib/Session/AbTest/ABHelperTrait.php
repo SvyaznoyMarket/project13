@@ -3,6 +3,8 @@
 
 namespace Session\AbTest;
 
+use Model\Product\Entity;
+
 /** Трейт, помогающий определять вариант АБ-теста у пользователя
  * Class ABHelperTrait
  * @package Session\AbTest
@@ -25,22 +27,31 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isSelfPaidDelivery(){
-        if (\App::config()->self_delivery['enabled'] == false) return false;
-        // если нет магазинов в регионе пользователя
-        if (\App::user()->getRegion() && !\App::user()->getRegion()->getHasShop()) return false;
-        /* Область -> parent_id
-         * --------------------
-         * Московская - 83
-         * Москва - 82
-         * Ленинградская - 34
-         * Санкт-Петербург - 39
-         */
-        /* Если пользователь попадает в регион теста */
-        if (\App::user()->getRegion() && !in_array(\App::user()->getRegion()->getParentId(), [82,83,34,39])) {
-//            return \App::abTest()->getTest('order_delivery_price_2') && \App::abTest()->getTest('order_delivery_price_2')->getChosenCase()->getKey() == 'delivery_self_100';
-            return true;
-        }
+        // SITE-5298, SITE-5425
         return false;
+    }
+
+    /** Минимальная сумма заказа для Воронежа, Н.Новгорода, Рязани
+     * @return bool
+     */
+    public static function isOrderMinSumRestriction(){
+        // SITE-5921
+        $notAvailableParentRegions = [
+            82, // Москва
+            14974, // Москва
+            83, // Московская область
+        ];
+
+        $notAvailableRegions = [
+            108136, // Санкт-Петербург
+        ];
+
+        $region = \App::user()->getRegion();
+        return (!in_array($region->parentId, $notAvailableParentRegions) && !in_array($region->id, $notAvailableRegions));
+    }
+
+    public static function isShowSalePercentage() {
+        return !in_array(\App::request()->attributes->get('route'), ['slice.category', 'slice.show'], true) || \App::request()->attributes->get('sliceToken') !== 'all_labels' || \App::abTest()->getTest('salePercentage')->getChosenCase()->getKey() !== 'hide';
     }
 
     /** Онлайн-мотивация при покупке?
@@ -70,6 +81,56 @@ trait ABHelperTrait {
         return 1;
     }
 
+    /**
+     * SITE-6016, SITE-6062
+     * @return bool
+     */
+    public static function isOrderDeliveryTypeTestAvailableInCurrentRegion() {
+        return in_array(\App::user()->getRegion()->id, [
+            14974, // Москва
+            108136, // Санкт-Петербург
+            83210, // Брянск
+            96423, // Владимир
+            18074, // Воронеж
+            124229, // Казань
+            148110, // Калуга
+            74562, // Курск
+            99, // Липецк
+            99958, // Нижний Новгород
+            18073, // Тверь
+            74358, // Тула
+            124232, // Чебоксары
+            93746, // Ярославль
+            13241, // Белгород
+            93747, // Иваново
+            13242, // Орел
+            83209, // Тамбов
+            10374, // Рязань
+
+            88434, // Смоленск
+            119623, // Ростов-на-Дону
+            124201, // Саратов
+            124190, // Краснодар
+            93751, // Екатеринбург
+            124217, // Ставрополь
+            93749, // Самара
+            143707, // Волгоград
+            93752, // Челябинск
+            93748, // Уфа
+            152595, // Вологда
+            124216, // Псков
+            124226, // Оренбург
+            124230, // Ижевск
+            124227, // Пенза
+            124231, // Ульяновск
+            78637, // Великий Новгород
+            124224, // Йошкар-Ола
+            124213, // Петрозаводск
+            124223, // Киров
+            124225, // Саранск
+        ]);
+    }
+
     /** Открытие ссылок на товары в новом окне
      * @return bool
      */
@@ -84,5 +145,52 @@ trait ABHelperTrait {
     public static function isMenuHamburger(){
         $test = \App::abTest()->getTest('new_window');
         return $test && $test->getChosenCase()->getKey() == 'hamburger' && \App::request()->attributes->get('route') == 'product';
+    }
+
+    /** Новая карточка товара
+     * @return bool
+     */
+    public static function isNewProductPage() {
+        return \App::abTest()->getTest('productCard') && \App::abTest()->getTest('productCard')->getChosenCase()->getKey() == 'new';
+    }
+
+    /**
+     * Ядерная корзина
+     * @return bool
+     */
+    public static function isCoreCart() {
+        return 'enabled' === \App::abTest()->getTest('core_cart')->getChosenCase()->getKey();
+    }
+
+    /**
+     * Старый личный кабинет
+     * @return bool
+     */
+    public static function isOldPrivate() {
+        return 'off' === \App::abTest()->getTest('new_private')->getChosenCase()->getKey();
+    }
+
+    /**
+     * Корзина в заказе
+     * @return bool
+     */
+    public static function isOrderWithCart() {
+        return 'enabled' === \App::abTest()->getTest('order_with_cart')->getChosenCase()->getKey();
+    }
+
+    /**
+     * Скидка в рублях
+     * @return bool
+     */
+    public static function isCurrencyDiscountPrice() {
+        return 'currency' === \App::abTest()->getTest('discount_price')->getChosenCase()->getKey();
+    }
+
+    /**
+     * Текст кнопки "Оформить заказ" в параплашке изменен на "В корзину"?
+     * @return bool
+     */
+    public function isCartTextInOrderButton() {
+        return self::isOrderWithCart() && ('cart' === \App::abTest()->getTest('cart_text')->getChosenCase()->getKey());
     }
 }

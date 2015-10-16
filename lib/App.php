@@ -61,8 +61,8 @@ class App {
                 case E_USER_DEPRECATED:
                 case E_USER_WARNING:
                 case E_USER_NOTICE:
-                    if ($logger = \App::logger()) {
-                        $logger->error(['message' => $message, 'sender' => $file . ' ' . $line], ['critical', 'error_handler']);
+                    if ((0 !== error_reporting()) && \App::logger()) {
+                        \App::logger()->error(['message' => $message, 'sender' => $file . ' ' . $line, 'level' => isset($levels[$level]) ? $levels[$level] : null], ['critical', 'error_handler']);
                     }
 
                     return true;
@@ -292,21 +292,6 @@ class App {
 
         return $instance;
     }
-
-    /**
-     * @static
-     * @return \Content\Client
-     */
-    public static function contentClient() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \Content\Client(self::config()->wordpress, self::curl());
-        }
-
-        return $instance;
-    }
-	
 	
 	/**
      * @static
@@ -326,6 +311,22 @@ class App {
 
         return $instance;
     }
+
+    /** File storage client
+     * @static
+     * @return \Core\ClientV2
+     */
+    public static function fileStorageClient() {
+        static $instance;
+        $curl = clone self::curl();
+
+        if (!$instance) {
+            $curl->setNativePost();
+            $instance = new \Core\ClientV2(self::config()->fileStorage, $curl);
+        }
+
+        return $instance;
+    }
 	
 	
 	/**
@@ -341,7 +342,6 @@ class App {
 
         return $instance;
     }
-	
 
     /**
      * @static

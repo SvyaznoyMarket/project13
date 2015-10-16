@@ -24,6 +24,11 @@ module.exports = {
 		dest: '<%= pathProd %>compare.js'
 	},
 
+	favoriteJS : {
+		src: ['<%= pathDev %>favorite/*.js'],
+		dest: '<%= pathProd %>favorite.js'
+	},
+
     commonJS : {
         src: ['<%= pathDev %>common/*.js'],
         dest: '<%= pathProd %>common.js'
@@ -52,16 +57,6 @@ module.exports = {
     mainJS : {
         src: ['<%= pathDev %>main/*.js'],
         dest: '<%= pathProd %>main.js'
-    },
-
-    orderNewV5JS : {
-        src: ['<%= pathDev %>order-new-v5/*.js'],
-        dest: '<%= pathProd %>order-new-v5.js'
-    },
-
-    orderV3JS: {
-        src: ['<%= pathDev %>order-v3/*.js'],
-        dest: '<%= pathProd %>order-v3.js'
     },
 
     orderV31ClickJS: {
@@ -109,31 +104,19 @@ module.exports = {
         dest: '<%= pathProd %>shop.js'
     },
 
-    tchiboJS : {
-        src: ['<%= pathDev %>tchibo/*.js'],
-        dest: '<%= pathProd %>tchibo.js'
-    },
-
     watch3dJS : {
         src: ['<%= pathDev %>watch3d/*.js'],
         dest: '<%= pathProd %>watch3d.js'
     },
 
-    gameSlotsJs: {
-        src: [
-			'<%= pathDev %>game/slots/jquery.transit.js',
-			'<%= pathDev %>game/slots/slots.js'
-        ],
-        dest: '<%= pathProd %>game/slots.js'
+    supplier: {
+        src: ['<%= pathDev %>supplier/*.js'],
+        dest: '<%= pathProd %>supplier.js'
     },
 
-    serviceHaJS : {
-        src: ['<%= pathDev %>service_ha/*.js'],
-        dest: '<%= pathProd %>service_ha.js'
-    },
-
-    tealeaf : {
-        src: ['<%= pathDev %>tealeaf/*.js'],
-        dest: '<%= pathProd %>tealeaf.js'
+    /* Adfox присылают уже минифицированный скрипт, который необходимо только положить в папку prod */
+    adfox: {
+        src: ['<%= pathDev %>adfox/adfox.js'],
+        dest: '<%= pathProd %>adfox_lib_ff.min.js'
     }
 };

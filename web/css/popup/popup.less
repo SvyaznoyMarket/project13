@@ -1,40 +1,89 @@
-.allpopupstyle(){
-  display: none;
-  position: relative;
-  text-align: left;
-  .close{
-    cursor: pointer;
-    display: block;
-    height: 26px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 26px;
-  }
+.allpopupstyle() {
+    position: relative;
+
+    display: none;
+
+    text-align: left;
+    .close {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        display: block;
+
+        width: 26px;
+        height: 26px;
+
+        cursor: pointer;
+    }
 }
-.popup{
-  .rounded(6px);
-  .box-shadow(0 0 7px @typBoxShadowColor);
-  background-color:@white;
-  border:2px solid @firmOrange;
-  color: @black;
-  cursor: default;
-  overflow: hidden;
-  padding: 20px 25px;
-  .allpopupstyle();
-  .close{
-    background: url("@{base-url}/common/img/closeBtnOrange.png") no-repeat 0 0 ;
-    text-indent:-10000px;
-  }
+.popup {
+    overflow: hidden;
+
+    padding: 20px 25px;
+
+    cursor: default;
+
+    color: @black;
+    border: 2px solid @firmOrange;
+    background-color: @white;
+
+    .rounded(6px);
+    .box-shadow(0 0 7px @typBoxShadowColor);
+    .allpopupstyle();
+    .close {
+        text-indent: -10000px;
+
+        background: url('@{base-url}/common/img/closeBtnOrange.png') no-repeat 0 0 ;
+    }
+    &_default {
+        display: block;
+
+        width: 630px;
+        padding: 20px;
+
+        border: 1px solid #c7c7c7;
+
+        .box-shadow(0 0 32px 0 rgba(0, 0, 0, .3));
+        .rounded(0px);
+        .box-sizing(border-box);
+    }
+    &_450 {
+        width: 450px;
+    }
 }
-.blackPopup{
-  background: @black;
-  color:@white;
-  .allpopupstyle();
-  .close{
-    font-family: sans-serif;
-    font-size: 18px;
-    line-height: 26px;
-    text-align: center;
-  }
+.noty-popup {
+    &__text {
+        font-size: 18px;
+        color: #363636;
+        margin: 0 0 20px;
+    }
+    &__btn {
+        font-size: 18px;
+        display: block;
+        color: @white;
+        background: #f99b1c;
+        .rounded(3px);
+        width: 230px;
+        height: 35px;
+        line-height: 35px;
+        margin: 0 auto;
+        text-align: center;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+.blackPopup {
+    color: @white;
+    background: @black;
+
+    .allpopupstyle();
+    .close {
+        font-family: sans-serif;
+        font-size: 18px;
+        line-height: 26px;
+
+        text-align: center;
+    }
 }

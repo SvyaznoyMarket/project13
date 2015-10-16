@@ -13,6 +13,7 @@ class QueryAction {
 
         \App::config()->debug = false;
 
+        $isShow = (bool)$request->get('isShow');
         $url = urldecode(trim((string)$request->get('url')));
         $data = $request->get('data');
         if (is_string($data)) {
@@ -28,36 +29,51 @@ class QueryAction {
                 throw new \Exception\NotFoundException();
             }
 
-            try {
-                $result = \App::curl()->query($url, $data, 10);
-                \App::logger('query')->info([
-                    'url'    => $url,
-                    'data'   => $data,
-                    'result' => $result,
-                ]);
-            } catch (\Exception $e) {
-                \App::exception()->remove($e);
+            if ($isShow) {
+                try {
+                    $result = \App::curl()->query($url, $data, 10);
+                } catch (\Exception $e) {
+                    \App::exception()->remove($e);
 
-                if ($e instanceof \Curl\Exception) {
-                    $result = ['error' => $e->getContent()];
-                } else {
-                    $result = ['error' => ['code' => $e->getCode(), 'message' => $e->getMessage()]];
+                    if ($e instanceof \Curl\Exception) {
+                        $result = ['error' => $e->getContent()];
+                    } else {
+                        $result = ['error' => ['code' => $e->getCode(), 'message' => $e->getMessage()]];
+                    }
+                }
+            } else {
+                try {
+                    $result = \App::curl()->query($url, $data, 10);
+                    \App::logger('query')->info([
+                        'url'    => $url,
+                        'data'   => $data,
+                        'result' => $result,
+                    ]);
+                } catch (\Exception $e) {
+                    \App::exception()->remove($e);
+
+                    if ($e instanceof \Curl\Exception) {
+                        $result = ['error' => $e->getContent()];
+                    } else {
+                        $result = ['error' => ['code' => $e->getCode(), 'message' => $e->getMessage()]];
+                    }
+
+                    \App::logger('query')->error([
+                        'url'    => $url,
+                        'data'   => $data,
+                        'result' => $result,
+                    ]);
                 }
 
-                \App::logger('query')->error([
-                    'url'    => $url,
-                    'data'   => $data,
-                    'result' => $result,
-                ]);
+                return new \Http\RedirectResponse(\App::router()->generate('debug.query.show', ['queryToken' => \App::$id]));
             }
-
-            return new \Http\RedirectResponse(\App::router()->generate('debug.query.show', ['queryToken' => \App::$id]));
         }
 
         return new \Http\Response(\App::closureTemplating()->render('page-query', [
             'url'    => $url,
             'data'   => $data,
             'result' => $result,
+            'isShow' => $isShow,
         ]));
     }
 

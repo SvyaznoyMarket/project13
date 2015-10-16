@@ -25,6 +25,7 @@ return function(
             id="<?= $viewId ?>"
             name="<?= \View\Name::productCategoryFilter($filter, $option) ?>"
             value="<?= $optionId ?>"
+            data-title="<?= $helper->escape($option->getName()) ?>"
             <? if ($filter->isBrand()) { echo 'data-name="',$option->getName(),'"'; } ?>
             <? if (in_array($optionId, $values) || $optionId === $categoryId) { ?> checked="checked"<? } ?>
         />

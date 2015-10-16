@@ -221,9 +221,6 @@
 					moveSlide(slide);
 					setScrollInterval(slide);
 
-					if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
-						_gaq.push(['_trackEvent', 'slider view', 'tchibo', getSlideIndex(slide) + 1 + '']);
-					}
 				}, time);
 			},
 
@@ -259,9 +256,6 @@
 				moveSlide(slide);
 				setScrollInterval(slide);
 				
-				if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
-					_gaq.push(['_trackEvent', 'slider view', 'tchibo', getSlideIndex(slide) + 1 + '']);
-				}
 			},
 
 			/**
@@ -296,9 +290,6 @@
 
 				setScrollInterval(link);
 				
-				if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
-					_gaq.push(['_trackEvent', 'slider view', 'tchibo', link + 1 + '']);
-				}
 			},
 
 			/**
@@ -407,27 +398,7 @@
 					window.location.hash = 'slide' + ((slideId * 1) + 1);
 				}
 
-				slideData = data[slideId];
-				if ( (slideData.hasOwnProperty('title') && slideData.hasOwnProperty('time')) && tchiboAnalytics.checkRule('collection_view') ) {
-					tchiboAnalytics.collectionShow(slideData.title, (slideId*1)+1, slideData.time);
-				}
-			},
-
-			getSlideIndex = function(slide) {
-				var slideId = parseInt(slide);
-
-				if (activeCarousel) {
-					if ( slide > slider_SlideCount - 1 ) {
-						slide = slider_SlideCount - 1;
-					} else if ( slide < 0 ) {
-						slide = 0;
-					}
-
-					slideId = parseInt($(".jsPromoCatalogSliderWrap .bPromoCatalogSliderWrap_eSlide").eq(slide).attr("id").replace('slide_id_', ''));
-				}
-
-				return slideId;
-			},
+            },
 
 			tchiboAnalytics = {
 				init: function() {
@@ -451,9 +422,6 @@
 							slideId = slide.attr('id').replace('slide_id_', '');
 							slideData = data[slideId];
 
-							if ( slideData.hasOwnProperty('title') ) {
-								tchiboAnalytics.collectionClick(slideData.title, (slideId*1)+1);
-							}
 						},
 
 						productClickHandler = function() {
@@ -479,9 +447,6 @@
 								return;
 							}
 
-							if ( slideData.hasOwnProperty('title') && undefined != typeof(slideData.products[productIndex].name) ) {
-								tchiboAnalytics.productClick(slideData.title, slideData.products[productIndex].name, (productIndex*1)+1);
-							}
 						};
 					// end of functions
 
@@ -542,61 +507,6 @@
 					}
 				},
 
-				/**
-				 * @param collection_name		название коллекции
-				 * @param collection_position	позиция в слайдере
-				 * @param delay					текущая задержка на данном слайдере
-				 */
-				collectionShow: function(collection_name, collection_position, delay) {	},
-
-				/**
-				 * @param collection_name		название коллекции
-				 * @param collection_position	позиция в слайдере
-				 */
-				collectionClick: function(collection_name, collection_position) {
-					var item;
-
-					if (
-						!tchiboAnalytics.isAnalyticsEnabled ||
-						'undefined' == typeof(_gaq) ||
-						'undefined' == typeof(collection_name) ||
-						'undefined' == typeof(collection_position)
-						) {
-						return;
-					}
-
-					item = ['_trackEvent', 'collection_click', collection_name+'_'+collection_position]
-
-					console.info('TchiboSliderAnalytics collection_click');
-					console.log(item);
-					_gaq.push(item);
-				},
-
-				/**
-				 * @param collection_name	название коллекции
-				 * @param item_name			название товара
-				 * @param position			позиция товара на слайдере (1, 2, 3 слева направо)
-				 */
-				productClick: function(collection_name, item_name, position) {
-					var item;
-
-					if (
-						!tchiboAnalytics.isAnalyticsEnabled ||
-						'undefined' == typeof(_gaq) ||
-						'undefined' == typeof(collection_name) ||
-						'undefined' == typeof(item_name) ||
-						'undefined' == typeof(position)
-						) {
-						return;
-					}
-
-					item = ['_trackEvent', 'item_click', collection_name+'_'+item_name, position.toString()];
-
-					console.info('TchiboSliderAnalytics item_click');
-					console.log(item);
-					_gaq.push(item);
-				},
-
 				isAnalyticsEnabled: function() {
 					return analyticsConfig && analyticsConfig.hasOwnProperty('enabled') && true == analyticsConfig.enabled;
 				},
@@ -634,10 +544,6 @@
 
 			setScrollInterval(toSlide);
 
-			// аналитика показа первого слайда
-			if ( data.hasOwnProperty(toSlide) && data[toSlide].hasOwnProperty('title') && data[toSlide].hasOwnProperty('time') && tchiboAnalytics.checkRule('collection_view') ) {
-				tchiboAnalytics.collectionShow(data[toSlide].title, ((toSlide*1)+1), data[toSlide].time);
-			}
 		});
 	}
 })(jQuery);

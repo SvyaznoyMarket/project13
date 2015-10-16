@@ -3,7 +3,7 @@
 return function(
     \Helper\TemplateHelper $helper,
     array $orders,
-    array $productsById
+    array $productsById = null
 ) {
 ?>
 

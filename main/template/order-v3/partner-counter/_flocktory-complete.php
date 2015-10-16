@@ -5,7 +5,7 @@ return function (
     $products
 ) {
 
-    if (!\App::config()->flocktoryPostCheckout['enabled']) return '';
+    if (!\App::config()->flocktory['postcheckout']) return '';
 
     /** @var $order \Model\Order\Entity */
     $order = reset($orders) ?: null;
@@ -21,7 +21,7 @@ return function (
             'id'    => $product->getArticle(),
             'title' => $product->getName(),
             'price' => $product->getPrice(),
-            'image' => $product->getImageUrl(),
+            'image' => $product->getMainImageUrl('product_120'),
             'count' => $orderProduct->getQuantity(),
         ];
     }

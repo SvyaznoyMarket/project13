@@ -120,19 +120,6 @@ class RepositoryManager {
     }
 
     /**
-     * @return Model\Line\Repository
-     */
-    static function line() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \Model\Line\Repository(\App::coreClientV2());
-        }
-
-        return $instance;
-    }
-
-    /**
      * @return Model\Order\Repository
      */
     static function order() {
@@ -217,7 +204,7 @@ class RepositoryManager {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Model\Promo\Repository(\App::dataStoreClient());
+            $instance = new \Model\Promo\Repository(\App::scmsClient());
         }
 
         return $instance;
@@ -244,19 +231,6 @@ class RepositoryManager {
 
         if (!$instance) {
             $instance = new \Model\Subscribe\Channel\Repository(\App::coreClientV2());
-        }
-
-        return $instance;
-    }
-
-    /**
-     * @return Model\Brand\Repository
-     */
-    static function brand() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \Model\Brand\Repository(\App::coreClientV2());
         }
 
         return $instance;

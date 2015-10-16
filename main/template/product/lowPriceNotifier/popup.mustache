@@ -1,0 +1,30 @@
+<div class="bLowPriceNotifierPopup popup js-lowPriceNotifier-popup">
+    <i class="close js-lowPriceNotifier-popup-close"></i>
+    <div class="uEntered">
+        {{#showUserEmailNotify}}
+            <div class="bLowPriceNotifierPopup__eTitle">
+                Пожалуйста, укажите ваш e-mail в <a href="{{userOfficeUrl}}" title="Перейти в личный кабинет">личном кабинете</a>.
+            </div>
+        {{/showUserEmailNotify}}
+
+        {{^showUserEmailNotify}}
+            <div class="bLowPriceNotifierPopup__eTitle">
+                Вы получите письмо,<br/>когда цена станет ниже
+                {{#price}}
+                    <strong class="price">{{&price}}</strong> <span class="rubl">p</span>
+                {{/price}}
+            </div>
+
+            {{^isSubscribedToActionChannel}}
+                <label class="bLowPriceNotifierPopup__actionChannel clearfix checked">
+                    <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="bCustomInput subscribe js-lowPriceNotifier-popup-subscribe" checked="checked" />
+                    <b></b>{{actionChannelName}}
+                </label>
+            {{/isSubscribedToActionChannel}}
+
+            <input class="bLowPriceNotifierPopup__eInputEmail js-lowPriceNotifier-popup-email" placeholder="Ваш email" value="{{userEmail}}" />
+            <p class="bLowPriceNotifierPopup__eError red js-lowPriceNotifier-popup-error"></p>
+            <a href="#" class="bLowPriceNotifierPopup__eSubmitEmail button bigbuttonlink mDisabled js-lowPriceNotifier-popup-submit">Сохранить</a>
+        {{/showUserEmailNotify}}
+    </div>
+</div>

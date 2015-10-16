@@ -9,7 +9,11 @@ return function (
 ) {
 
     $properties = $product->getMainProperties();
-    ?>
+
+    uasort($properties, function(\Model\Product\Property\Entity $a, \Model\Product\Property\Entity $b) {
+        return $a->getPosition() - $b->getPosition();
+    });
+?>
 
     <div class="bSpecifications mSimpleProperty">
 
@@ -20,17 +24,13 @@ return function (
                     <dd class="bSpecificationsList__eName">
                         <span class="bName">
                             <?= $property->getName() ?>
-                            <? if ($property->getHint()): ?>
-                                <?= $helper->render('__hint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
-                            <? endif ?>
+                            <?= $helper->render('product-page/blocks/hint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
                         </span>
                     </dd>
                     <dt class="bSpecificationsList__eValue">
                         <span>
                             <?= $property->getStringValue() ?>
-                            <? if ($property->getValueHint()): ?>
-                                <?= $helper->render('__hint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
-                            <? endif ?>
+                            <?= $helper->render('product-page/blocks/hint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
                         </span>
                     </dt>
                 <? endforeach; ?>

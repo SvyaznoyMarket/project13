@@ -3,7 +3,7 @@
  * @var $page \View\DefaultLayout
  */
 ?>
-
+<?= $page->slotGifteryJS() ?>
 <?= $page->slotSociomantic() ?>
 <?= $page->slotRetailRocket() ?>
 <?= $page->slotCriteo() ?>
@@ -11,7 +11,6 @@
 <?= $page->slotMarinConversionTagJS() ?>
 <?= $page->slotСpaexchangeJS() ?>
 <?= $page->slotСpaexchangeConversionJS() ?>
-<?= $page->slotRevolvermarketingConversionJS() ?>
 <?= $page->slotGoogleRemarketingJS() ?>
 <?= $page->slotGoogleTagManagerJS() ?>
 <?= $page->slotRevolverJS() ?>

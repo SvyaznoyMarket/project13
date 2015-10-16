@@ -30,9 +30,9 @@ class AbTest {
                 $test = new Test($testData);
                 $test->chooseCase(isset($this->cookie[$test->getKey()]) && is_string($this->cookie[$test->getKey()]) ? $this->cookie[$test->getKey()] : null);
 
-                // Если у пользователя вариант АБ-теста, который стоит с трафиком 0, то перевыберем вариант (из актуальных с трафиком > 0)
-                // Для девелоперов оставим возможность выбора
-                if (!$config->debug && $test->getChosenCase()->getTraffic() == 0) $test->chooseCase();
+                if (!$test->getChosenCase()->getTraffic()) {
+                    $test->chooseCase();
+                }
 
                 if ($test->isActive()) {
                     $this->cookie[$test->getKey()] = $test->getChosenCase()->getKey();
@@ -52,6 +52,8 @@ class AbTest {
                 unset($this->cookie[$testKey]);
             }
         }
+
+        ksort($this->cookie);
     }
 
     /**

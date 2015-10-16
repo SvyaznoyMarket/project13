@@ -8,12 +8,25 @@
 	padding-bottom: 15px;
 
 	&__img {
-		display: inline-block;
-		vertical-align: top;
+		.inline-block-middle();
 		width: 120px;
-
-		*display: inline;
-		zoom: 1;
+		position: relative;
+		padding: 0 10px;
+		text-align: center;
+		a{
+			display: block;
+			width: 100%;
+			img{
+				max-width: 96%;
+				.inline-block-middle();
+			}
+			&:after{
+				content: "";
+				height: 100%;
+				width: 0;
+				.inline-block-middle();
+			}
+		}
 	}
 
 
@@ -34,6 +47,13 @@
 		}
 
 		&__available {
+			color: #80c342;
+			font-size: 12px;
+			margin: 5px 0 0;
+		}
+
+		&__notAvailable {
+			color: #d45745;
 			font-size: 12px;
 			margin: 5px 0 0;
 		}

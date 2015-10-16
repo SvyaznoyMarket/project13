@@ -1,5 +1,5 @@
 default:
-  - 'newer:less'
+  - 'less'
   - 'newer:concat'
   - 'newer:uglify'
 

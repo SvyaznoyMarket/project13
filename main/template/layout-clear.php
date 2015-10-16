@@ -5,7 +5,7 @@
 ?>
 <html>
 <head>
-    <title><?= $page->getTitle() ?></title>
+    <title><?= $page->escape($page->getTitle()) ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="robots" content="noyaca"/>
@@ -23,9 +23,18 @@
 
     <?= $page->slotStylesheet() ?>
     <?= $page->slotHeadJavascript() ?>
+    <?= $page->slotGoogleAnalytics() ?>
 </head>
 
-<body>
+<body
+    class="<?= $page->slotBodyDataAttribute() ?>"
+    data-template="<?= $page->slotBodyDataAttribute()?>"
+    data-id="<?= \App::$id ?>"
+    <? if (\App::config()->debug): ?>data-debug=true<? endif ?>
+    >
+    <?= $page->slotConfig() ?>
+    <?= $page->slotUserConfig() ?>
     <?= $page->slotContent() ?>
+    <?= $page->slotMustacheTemplates() ?>
 </body>
 </html>

@@ -27,13 +27,9 @@ class DeliveryAction {
                 $shopId = $params['shopId'];
             }
         }
-        $quantity = is_scalar($request->get('quantity')) ? (int)$request->get('quantity') : 1;
-        if ($quantity <= 1) {
-            $quantity = 1;
-        }
 
         foreach ($product_list as &$productItem) {
-            $productItem['quantity'] = $quantity;
+            $productItem['quantity'] = 1;
         }
         if (isset($productItem)) unset($productItem);
 
@@ -59,7 +55,14 @@ class DeliveryAction {
 
                 $result['page'] = \App::closureTemplating()->render('order-v3-1click/__delivery', [
                     'orderDelivery' => $result['OrderDeliveryModel'],
+                    'shopId'        => $shopId,
                 ]);
+
+                $quantityError = array_filter($result['OrderDeliveryModel']->errors, function(\Model\OrderDelivery\Error $error){ return $error->code == 708; });
+
+                if ($quantityError && isset($quantityError[0]->details['max_available_quantity'])) {
+                    $result['warn'] = 'Запрошенного количества нет в наличии, будет оформлено '. $quantityError[0]->details['max_available_quantity'] . ' шт.';
+                }
 
             } catch (\Curl\Exception $e) {
                 \App::exception()->remove($e);
@@ -67,7 +70,6 @@ class DeliveryAction {
                 $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $e->getMessage()]);
                 $result['data']     = ['data' => $splitData];
                 if ($e->getCode() == 600) {
-                    //$this->cart->clear();
                     //$result['redirect'] = \App::router()->generate('cart');
                 }
             } catch (\Exception $e) {
@@ -109,6 +111,13 @@ class DeliveryAction {
 
     }
 
+    /**
+     * @param array $data
+     * @param null $shopId
+     * @param $product_list
+     * @return \Model\OrderDelivery\Entity
+     * @throws \Exception
+     */
     public function getSplit(array $data = null, $shopId = null, $product_list) {
         if (!(bool)$product_list) throw new \Exception('Пустая корзина');
 
@@ -130,7 +139,7 @@ class DeliveryAction {
         }
 
         $orderDeliveryData = null;
-        foreach ([1, 3] as $i) { // две попытки на расчет доставки: 1*4 и 3*4 секунды
+        foreach ([2, 3] as $i) { // две попытки на расчет доставки: 2*4 и 3*4 секунды
             try {
                 $orderDeliveryData = $this->client->query(
                     'cart/split',
@@ -141,7 +150,9 @@ class DeliveryAction {
                     $splitData,
                     $i * \App::config()->coreV2['timeout']
                 );
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+                if ($e->getCode() == \Curl\Client::CODE_TIMEOUT) \App::exception()->remove($e);
+            }
 
             if ($orderDeliveryData) break; // если получен ответ прекращаем попытки
         }
@@ -158,12 +169,6 @@ class DeliveryAction {
             }
 
             throw new \Exception('Отстуствуют данные по заказам');
-        }
-
-        // обновляем корзину пользователя
-        if (isset($data['action']) && isset($data['params']['id']) && $data['action'] == 'changeProductQuantity') {
-            $product = (new \Model\Product\Repository($this->client))->getEntityById($data['params']['id']);
-            //if ($product !== null) $this->cart->setProduct($product, $data['params']['quantity']);
         }
 
         // сохраняем в сессию расчет доставки
@@ -195,7 +200,9 @@ class DeliveryAction {
                 $changes['orders'] = array(
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
                 );
-                $changes['orders'][$data['params']['block_name']]['delivery']['point'] = ['id' => $data['params']['id'], 'token' => $data['params']['token']];
+                // SITE-5703 TODO remove
+                $true_token = strpos($data['params']['token'], '_postamat') !== false ? str_replace('_postamat', '', $data['params']['token']) : $data['params']['token'];
+                $changes['orders'][$data['params']['block_name']]['delivery']['point'] = ['id' => $data['params']['id'], 'token' => $true_token];
                 break;
 
             case 'changeDate':

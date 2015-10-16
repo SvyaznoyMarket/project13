@@ -1,6 +1,12 @@
 <?php
 
-return function(
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\Product\Entity $product
+ * @param array $sender
+ * @param string $sender2
+ */
+$f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
     $sender = [], // Поставщик товара: обычно retail rocket
@@ -14,13 +20,13 @@ return function(
     <?= $helper->render('order-v3/__error', ['error' => null]) ?>
 
     <div class="orderOneClick_hd">
-        <img class="orderOneClick_hd_l" src="<?= $product->getImageUrl(1) ?>" />
+        <span class="orderOneClick_hd_wr"><img class="orderOneClick_hd_l" src="<?= $product->getMainImageUrl('product_120') ?>" /></span>
         <div class="orderOneClick_hd_r">
             <div class="orderOneClick_hd_n">
                 <? if ($product->getPrefix()): ?>
-                    <?= $product->getPrefix() ?><br/>
+                    <?= $helper->escape($product->getPrefix()) ?><br/>
                 <? endif ?>
-                <?= $product->getWebName() ?>
+                <?= $helper->escape($product->getWebName()) ?>
             </div>
 
             <div class="orderOneClick_hd_pr"><strong><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
@@ -40,8 +46,8 @@ return function(
                 </div>
 
                 <div class="orderU_fld">
-                    <input class="orderU_tx textfield jsOrderV3EmailField" type="text" name="user_info[email]" value="<?= $user ? $helper->escape($user->getEmail()) : '' ?>" placeholder="mail@domain.com">
-                    <label class="orderU_lbl" for="">E-mail</label>
+                    <input class="orderU_tx textfield jsOrderV3EmailField jsOrderV3EmailRequired" type="text" name="user_info[email]" value="<?= $user ? $helper->escape($user->getEmail()) : '' ?>" placeholder="mail@domain.com">
+                    <label class="orderU_lbl orderU_lbl-str" for="">E-mail</label>
                     <span class="errTx" style="display: none">Неверный формат email</span>
                 </div>
 
@@ -56,17 +62,7 @@ return function(
             <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения<span class="orderU_lgnd_tgglnote js-order-oneclick-delivery-toggle-btn-note">скрыть</span></legend>
 
             <div class="js-order-oneclick-delivery-toggle" style="display: none;">
-                <div
-                    id="js-order-content"
-                    class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery"
-                    data-url="<?= $helper->url('orderV3OneClick.delivery') ?>"
-                    data-param="<?= $helper->json([
-                        'products' => [
-                            ['id' => $product->getId(), 'quantity' => 1],
-                        ],
-                        'shopId'   => null, // устанавливается на стороне javascript
-                    ]) ?>
-                "></div>
+                <div id="js-order-content" class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery"></div>
             </div>
         </fieldset>
 
@@ -78,4 +74,4 @@ return function(
         </fieldset>
     </form>
 </div>
-<? };
+<? }; return $f;

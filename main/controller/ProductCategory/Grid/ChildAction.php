@@ -72,23 +72,11 @@ class ChildAction {
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        // внимание! получаем значения массива
-        foreach (array_chunk($productsByUi, \App::config()->coreV2['chunk_size'], true) as $uisInChunk) {
-            \RepositoryManager::product()->prepareCollectionByUi(array_values($uisInChunk), \App::user()->getRegion(), function($data) use (&$productsByUi, &$uisInChunk) {
-                foreach ($data as $item) {
-                    $key = array_search($item['ui'], $productsByUi, true);
-                    if (!isset($productsByUi[$key])) {
-                        continue;
-                    }
-                    $productsByUi[$key] = new \Model\Product\Entity($item);
-                }
-            });
-        }
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $productsByUi = array_map(function($productUi) { return new \Model\Product\Entity(['ui' => $productUi]); }, $productsByUi);
 
-        $productsByUi = array_filter($productsByUi, function($product) {
-            return $product instanceof \Model\Product\BasicEntity;
-        });
+        \RepositoryManager::product()->prepareProductQueries($productsByUi, 'media label brand category');
+
+        \App::coreClientV2()->execute();
 
         if (
             ($category->getProductCount() == 0)

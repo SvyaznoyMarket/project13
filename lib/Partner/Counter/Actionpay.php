@@ -2,138 +2,107 @@
 
 namespace Partner\Counter;
 
+use \Model\Order\Entity as Order;
+use \Model\Product\Category\Entity as Category;
+
 class Actionpay {
+
     const NAME = 'actionpay';
 
     /**
-     * @param \Model\Order\Entity[] $orders
+     * @link https://docs.google.com/document/d/1e-dbe51-ez78aQoSwmsmlnUHf6I6uQIhAZaw4GNDKEc
+     * @param Order $order
      * @param \Model\Product\Entity[] $productsById
      * @return null|string
      */
-    public static function getOrderCompleteLink(array $orders, array &$productsById = []) {
+    public static function getOrderCompleteLink(Order $order, array &$productsById = []) {
+
         $link = null;
 
         try {
-            $actionpayId = \App::request()->cookies->get('actionpay');
-            if (!$actionpayId) {
-                \App::logger()->error(['action' => __METHOD__, 'message' => 'В куках отсутсвует actionpay'], ['partner', 'actionpay']);
-            }
 
-            /** @var \Model\Order\Entity $order */
-            $order = reset($orders);
-            if (!$order) {
-                throw new \Exception('Заказ не передан');
-            }
+            $actionpayId = self::getActionpayId();
 
-            $orderSum = 0;
-            foreach ($orders as $order) {
-                foreach ($order->getProduct() as $orderProduct) {
-                    /** @var $product \Model\Product\Entity */
-                    $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
-                    if (!$product) {
-                        \App::logger()->warn(sprintf('В заказе @%s не найден товар #%s', $order->getNumber(), $orderProduct->getId()));
-                        continue;
-                    }
+            $partnerCommission = 0;
 
-                    $categoriesArr = $product->getCategory();
+            foreach ($order->getProduct() as $orderProduct) {
+                /** @var $product \Model\Product\Entity */
+                $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
 
-                    $mainCategory = $product->getMainCategory();
-                    if (!$mainCategory) {
-                        \App::logger()->warn(sprintf('В заказе @%s не найдена категория для товара #%s', $order->getNumber(), $orderProduct->getId()));
-
-                        if ($categoriesArr) $mainCategory = reset($categoriesArr);
-
-                        if (!$mainCategory) $mainCategory = $product->getParentCategory();
-                    }
-
-                    $secondLevelCategory = null;
-                    if (is_array($categoriesArr) && !empty($categoriesArr)) {
-                        foreach ($categoriesArr as $category) {
-                            if (!$category instanceof \Model\Product\Category\Entity) continue;
-                            if (2 !== $category->getLevel()) continue;
-
-                            $secondLevelCategory = $category;
-                        }
-                    }
-
-                    $categoryRate = 0.005; //на неопределенные товары по умолчанию ставим минимальный процент, для web-мастеров =0,5%
-
-                    // Пытаемся получить rate для категории 2-го уровня
-                    $isRateSet = false;
-                    if ($secondLevelCategory) {
-                        switch ($secondLevelCategory->getId()) {
-                            case 225:  // Аксессуары для авто
-                                $categoryRate = 0.0585;
-                                $isRateSet = true;
-                                break;
-                            case 2989:  // Красота и здоровье
-                                $categoryRate = 0.039;
-                                $isRateSet = true;
-                                break;
-                            case 1024: //Электроника => Аксессуары
-                                $categoryRate = 0.065;
-                                break;
-                            case 868: // Электроника => Портативная электроника
-                                $categoryRate = 0.052;
-                                break;
-                        }
-                    }
-
-                    if ($mainCategory && !$isRateSet) {
-                        switch ($mainCategory->getId()) {
-                            case 80:  // Мебель
-                                $categoryRate = 0.136;
-                                break;
-                            case 224:  // Сделай сам
-                                $categoryRate = 0.0585;
-                                break;
-                            case 1438: // Зоотовары
-                                $categoryRate = 0.0585;
-                                break;
-                            case 320: // Детские товары
-                                $categoryRate = 0.091;
-                                break;
-                            case 443: // Товары для дома
-                                $categoryRate = 0.136;
-                                break;
-                            case 788: // Электроника
-                                $categoryRate = 0.0257;
-                                break;
-                            case 185:  // Подарки и хобби
-                                $categoryRate = 0.065;
-                                break;
-                            case 1: // Бытовая техника
-                                $categoryRate = 0.0541;
-                                break;
-                            case 923: // Украшения и часы
-                                $categoryRate = 0.13;
-                                break;
-                            case 2545: // Парфюмерия и косметика
-                                $categoryRate = 0.078;
-                                break;
-                            case 647: // Спорт и отдых
-                                $categoryRate = 0.099;
-                                break;
-                            case 4506: // Товары Tchibo
-                                $categoryRate = 0.1144;
-                                break;
-                            default:
-                                if ( 'cpo' == \App::request()->cookies->get('utm_medium') ) {
-                                    //для всех товаров по которым не удалось расчитать %
-                                    $categoryRate = 0.0065; // CPO агрегатора = 0,65%
-                                }
-                        }
-                    }
-
-                    $orderSum += $orderProduct->getPrice() * $categoryRate * $orderProduct->getQuantity();
-
-                    /*if ((0 == $rate) || ($categoryRate < $rate)) {
-                        $rate = $categoryRate;
-                    }*/
+                if (!$product) {
+                    \App::logger()->warn(sprintf('В заказе @%s не найден товар #%s', $order->getNumber(), $orderProduct->getId()));
+                    continue;
                 }
+
+                /** @var Category[] $categoriesArr */
+                $categoriesArr = $product->getCategory();
+
+                // default category rate
+                $categoryRate = 0.033;
+
+                // пройдем по категориям, начиная с самой глубокой
+                foreach (array_reverse($categoriesArr) as $category) {
+                    $rate = null;
+                    /** @var Category $category */
+                    switch ($category->ui) {
+                        case Category::UI_MEBEL:  // Мебель
+                            $rate = 0.136;
+                            break;
+                        case Category::UI_SDELAY_SAM:  // Сделай сам
+                            $rate = 0.0858;
+                            break;
+                        case Category::UI_DETSKIE_TOVARY: // Детские товары
+                            $rate = 0.0387;
+                            break;
+                        case Category::UI_TOVARY_DLYA_DOMA: // Товары для дома
+                            $rate = 0.0652;
+                            break;
+                        case Category::UI_ELECTRONIKA: // Электроника
+                            $rate = 0.022;
+                            break;
+                        case Category::UI_PODARKI_I_HOBBY:  // Подарки и хобби
+                            $rate = 0.065;
+                            break;
+                        case Category::UI_BYTOVAYA_TEHNIKA: // Бытовая техника
+                            $rate = 0.0415;
+                            break;
+                        case Category::UI_UKRASHENIYA_I_CHASY: // Украшения и часы
+                            $rate = 0.13;
+                            break;
+                        case Category::UI_PARFUMERIA_I_COSMETIKA: // Парфюмерия и косметика
+                            $rate = 0.0429;
+                            break;
+                        case Category::UI_SPORT_I_OTDYH: // Спорт и отдых
+                            $rate = 0.099;
+                            break;
+                        case Category::UI_ZOOTOVARY: // Зоотовары
+                            $rate = 0.0349;
+                            break;
+                        case Category::UI_TCHIBO: // Товары Tchibo
+                            $rate = 0.1144;
+                            break;
+                        case Category::UI_KRASOTA_I_ZDOROVIE: // Красота и здоровье
+                            $rate = 0.039;
+                            break;
+                        case Category::UI_AKSESSUARY: // Аксессуары
+                            $rate = 0.055;
+                            break;
+                        case Category::UI_IGRY_I_KONSOLI: // Игры и консоли
+                            $rate = 0.065;
+                            break;
+                    }
+
+                    if ($rate !== null) {
+                        $categoryRate = $rate;
+                        break;
+                    }
+                }
+
+                $partnerCommission += $orderProduct->getPrice() * $categoryRate * $orderProduct->getQuantity();
+
             }
 
-            $link = sprintf('actionpay=%s&apid=%s', $actionpayId, $order->getNumber());
+            $link = sprintf('actionpay=%s&apid=%s&price=%F&totalPrice=%F', $actionpayId, $order->getNumber(), $partnerCommission, $order->getSum());
         } catch (\Exception $e) {
             \App::logger()->error($e, ['partner', 'actionpay ' . __METHOD__]);
         }
@@ -149,10 +118,8 @@ class Actionpay {
         $link = null;
 
         try {
-            $actionpayId = \App::request()->cookies->get('actionpay');
-            if (!$actionpayId) {
-                \App::logger()->error(['action' => __METHOD__, 'message' => 'В куках отсутсвует actionpay'], ['partner', 'actionpay']);
-            }
+
+            $actionpayId = self::getActionpayId();
 
             $appid = null;
             $user = \App::user();
@@ -173,6 +140,20 @@ class Actionpay {
         }
 
         return $link;
+    }
+
+    /** Возвращает значение из куки "actionpay"
+     * @return null|string
+     */
+    public static function getActionpayId() {
+
+        $actionpayId = \App::request()->cookies->get('actionpay');
+
+        if (!$actionpayId) {
+            \App::logger()->error(['action' => __METHOD__, 'message' => 'В куках отсутсвует actionpay'], ['partner', 'actionpay']);
+        }
+
+        return $actionpayId;
     }
 
 }

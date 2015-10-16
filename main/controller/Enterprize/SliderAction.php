@@ -63,6 +63,7 @@ class SliderAction {
 
         return new \Http\JsonResponse([
             'success' => true,
+            'productCount'  => count($products),
             'content' => $helper->renderWithMustache('enterprize/_slider', [
                 'products'     => array_map(function(\Model\Product\Entity $product) use (&$helper, &$enterpizeCoupon, &$cartButtonAction) {
                     return [
@@ -74,14 +75,13 @@ class SliderAction {
                             : ceil($product->getPrice() - $product->getPrice() * $enterpizeCoupon->getPrice() / 100)
                         ),
                         'name'          => $product->getName(),
-                        'image'         => $product->getImageUrl(),
+                        'image'         => $product->getMainImageUrl('product_120'),
                         'cartButton'    =>
                             $enterpizeCoupon->getDiscount()
                             ? $cartButtonAction->execute(
                                 new \Helper\TemplateHelper(),
                                 $product,
                                 null,
-                                false,
                                 [],
                                 false,
                                 'slider'
@@ -95,7 +95,6 @@ class SliderAction {
                 ],
                 'isUserOwner' => (bool)$enterpizeCoupon->getDiscount(),
                 'dataSlider'  => $helper->json([
-                    'count'  => count($products),
                     'limit'  => 7,
                     'url'    => null,
                     'sender' => [

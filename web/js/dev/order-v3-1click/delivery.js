@@ -4,27 +4,10 @@
 		$body = $(body);
 
 	//console.log('Model', $('#initialOrderModel').data('value'));
-	ENTER.OrderV31Click.functions.initDelivery = function() {
+	ENTER.OrderV31Click.functions.initDelivery = function(buyProducts, shopId) {
 		var $orderContent = $('#js-order-content'),
 			$popup = $('#jsOneClickContent'),
-			spinner = typeof Spinner == 'function' ? new Spinner({
-				lines: 11, // The number of lines to draw
-				length: 5, // The length of each line
-				width: 8, // The line thickness
-				radius: 23, // The radius of the inner circle
-				corners: 1, // Corner roundness (0..1)
-				rotate: 0, // The rotation offset
-				direction: 1, // 1: clockwise, -1: counterclockwise
-				color: '#666', // #rgb or #rrggbb or array of colors
-				speed: 1, // Rounds per second
-				trail: 62, // Afterglow percentage
-				shadow: false, // Whether to render a shadow
-				hwaccel: true, // Whether to use hardware acceleration
-				className: 'spinner', // The CSS class to assign to the spinner
-				zIndex: 2e9, // The z-index (defaults to 2000000000)
-				top: '50%', // Top position relative to parent
-				left: '50%' // Left position relative to parent
-			}) : null,
+			spinnerClass = 'spinner-new',
 			changeDelivery = function changeDeliveryF (block_name, delivery_method_token) {
 				sendChanges('changeDelivery', {'block_name': block_name, 'delivery_method_token': delivery_method_token});
 			},
@@ -86,22 +69,21 @@
 			sendChanges = function sendChangesF (action, params) {
 				console.info('Sending action "%s" with params:', action, params);
 
-				if ($orderContent.data('shop')) {
-					params.shopId = $orderContent.data('shop')
+				if (shopId) {
+					params.shopId = shopId
 				}
 
 				$.ajax({
-					url: '/order-1click/delivery',
+					url: ENTER.utils.generateUrl('orderV3OneClick.delivery'),
 					type: 'POST',
 					data: {
 						action : action,
 						params : params,
-						products: JSON.parse($orderContent.data('param')).products,
+						products: buyProducts,
 						update: 1
 					},
 					beforeSend: function() {
-						$orderContent.fadeOut(500);
-						if (spinner) spinner.spin(body)
+						$popup.addClass(spinnerClass);
 					}
 				}).fail(function(jqXHR){
 						var response = $.parseJSON(jqXHR.responseText);
@@ -127,8 +109,7 @@
                         })
 
 					}).always(function(){
-						$orderContent.stop(true, true).fadeIn(200);
-						if (spinner) spinner.stop();
+						$popup.removeClass(spinnerClass);
 					});
 
 			},
@@ -139,17 +120,11 @@
 					"url": '/order/log'
 				})
 			},
-			showMap = function(elem, token) {
+			showMap = function(elem) {
 				var $currentMap = elem.find('.js-order-map').first(),
                     mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
 					mapOptions = ENTER.OrderV31Click.mapOptions,
 					map = ENTER.OrderV31Click.map;
-
-				if (!token) {
-					token = Object.keys(mapData.points)[0];
-					$currentMap.siblings('.selShop_l').hide();
-					$currentMap.siblings('.selShop_l[data-token='+token+']').show();
-				}
 
 				if (mapData && typeof map.getType == 'function') {
 
@@ -160,14 +135,12 @@
 					$currentMap.append(ENTER.OrderV31Click.$map.show());
 					map.container.fitToViewport();
 
-                    // добавляем невидимые точки на карту
-                    $.each(mapData.points, function(token){
-                        for (var i = 0; i < mapData.points[token].length; i++) {
-                            try {
-                                map.geoObjects.add(new ENTER.Placemark(mapData.points[token][i], false));
-                            } catch (e) {
-                                console.error('Ошибка добавления точки на карту', e);
-                            }
+                    // добавляем точки на карту
+                    $.each(mapData.points, function(i, point){
+                        try {
+                            map.geoObjects.add(new ENTER.Placemark(point, true));
+                        } catch (e) {
+                            console.error('Ошибка добавления точки на карту', e, point);
                         }
                     });
 
@@ -177,21 +150,19 @@
                     } else {
                         map.setBounds(map.geoObjects.getBounds());
                         // точки становятся видимыми только при увеличения зума
-                        map.events.add('boundschange', function(event){
+                        /*map.events.once('boundschange', function(event){
                             if (event.get('oldZoom') < event.get('newZoom')) {
                                 map.geoObjects.each(function(point) { point.options.set('visible', true)})
                             }
-                        })
+                        })*/
                     }
 
-				} else {
-					console.error('No map data for token = "%s"', token,  elem);
 				}
 
 			},
 			chooseDelivery = function(){
 				var token = $(this).data('token'),
-					id = $(this).closest('.popupFl').attr('id');
+					$map = $(this).closest('.jsNewPoints').first();
 				// переключение списка магазинов
 				$('.selShop_l').hide();
 				$('.selShop_l[data-token='+token+']').show();
@@ -199,7 +170,7 @@
 				$('.selShop_tab').removeClass('selShop_tab-act');
 				$('.selShop_tab[data-token='+token+']').addClass('selShop_tab-act');
 				// показ карты
-				showMap($('#'+id), token);
+				//showMap($map);
 			},
 			choosePoint = function() {
 				var id = $(this).data('id'),
@@ -207,8 +178,8 @@
 				if (id && token) {
 					$body.trigger('trackUserAction', ['2_2 Ввод_данных_Самовывоза|Доставки']);
 					$body.children('.selShop').remove();
-					$body.children('.lb_overlay')[1].remove();
-					changePoint($(this).closest('.selShop').data('block_name'), id, token);
+					//$body.children('.lb_overlay')[1].remove();
+					changePoint($('.jsOneClickOrderRow').data('block_name'), id, token);
 				}
 			};
 
@@ -228,34 +199,28 @@
 
 		// клик по "изменить дату" и "изменить место"
 		$orderContent.on('click', '.orderCol_date, .js-order-changePlace-link', function(e) {
-			var $elem = $($(this).data('content'));
+			var $elem = $(this).parent().parent().next();
 			e.stopPropagation();
 			$('.popupFl').hide();
 
 			if ($(this).hasClass('js-order-changePlace-link')) {
-				var token = $elem.find('.selShop_l:first').data('token');
-				// скрываем все списки точек и показываем первую
-				$elem.find('.selShop_l').hide().first().show();
-				// первая вкладка активная
-				$elem.find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
 				$elem.lightbox_me({
 					centered: true,
 					closeSelector: '.jsCloseFl',
 					removeOtherOnCreate: false
 				});
-				showMap($elem, token);
+				showMap($elem);
 				$body.trigger('trackUserAction', ['2_1 Место_самовывоза|Адрес_доставки']);
 
 				// клик по способу доставки
-				$elem.off('click', '.selShop_tab:not(.selShop_tab-act)', chooseDelivery);
-				$elem.on('click', '.selShop_tab:not(.selShop_tab-act)', chooseDelivery);
+				//$elem.off('click', '.selShop_tab:not(.selShop_tab-act)', chooseDelivery);
+				//$elem.on('click', '.selShop_tab:not(.selShop_tab-act)', chooseDelivery);
 
 				// клик по списку точек самовывоза
-				$elem.off('click', '.jsChangePoint', choosePoint);
+				//$body.on('click', '.jsChangePoint', choosePoint);
 				$elem.on('click', '.jsChangePoint', choosePoint);
 			} else {
-				$elem.show();
-				log({'action':'view-date'});
+				$($(this).data('content')).show();
 				//$body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
 			}
 

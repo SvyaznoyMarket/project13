@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $page          \View\Layout
- * @var $product       \Model\Product\ExpandedEntity
+ * @var $product       \Model\Product\Entity
  * @var $addInfo       array
  **/
 ?>
@@ -34,11 +34,11 @@ $addInfo = isset($addInfo)?$addInfo:[];
                     <img class="bLabels" src="<?= $label->getImageUrl() ?>" alt="<?= $page->escape($label->getName()) ?>"/>
                 <? endif ?>
 
-                <img height="160" width="160" title="<?= $page->escape($product->getName()) ?>" alt="<?= $page->escape($product->getName()) ?>" src="<?= $product->getImageUrl() ?>" class="mainImg"/>
+                <img height="160" width="160" title="<?= $page->escape($product->getName()) ?>" alt="<?= $page->escape($product->getName()) ?>" src="<?= $product->getMainImageUrl('product_120') ?>" class="mainImg"/>
             </a>
         </div>
         <div class="info">
-            <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
+            <h3><a href="<?= $product->getLink() ?>"><?= $page->escape($product->getName()) ?></a></h3>
             <span class="gray bNGB__eArt mInlineBlock">
                 Артикул #<?= $product->getArticle() ?>
 
@@ -68,7 +68,7 @@ $addInfo = isset($addInfo)?$addInfo:[];
             <span class="db font18 pb10"><b><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></b></span>
 
             <div class="goodsbar mSmallBtns">
-                <?= \App::closureTemplating()->render('cart/__button-product', ['product' => $product]) ?>
+                <?= \App::closureTemplating()->render('cart/__button-product', ['product' => $product, 'sender' => $category ? $category->getSenderForGoogleAnalytics() : []]) ?>
             </div>
             <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
             <? if ($product->getIsBuyable()): ?>

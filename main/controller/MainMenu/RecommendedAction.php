@@ -68,22 +68,18 @@ class RecommendedAction {
         }
         $client->execute(null, 1); // нихай, пускай только один раз запрашивает
 
+        /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
-        foreach (array_chunk(array_values($productIdsByCategoryId), \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-            \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
-                foreach ((array)$data as $item) {
-                    if (empty($item['id'])) continue;
-
-                    $product = new \Model\Product\Entity($item);
-                    // если товар недоступен для покупки - пропустить
-                    if (!$product->isAvailable() || $product->isInShopShowroomOnly()) continue;
-
-                    $productsById[$product->getId()] = $product;
-                }
-            });
+        foreach ($productIdsByCategoryId as $productId) {
+            $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
 
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label brand');
         \App::coreClientV2()->execute();
+
+        $productsById = array_filter($productsById, function(\Model\Product\Entity $product) {
+            return ($product->isAvailable() && !$product->isInShopShowroomOnly());
+        });
 
         // ответ
         $responseData = [

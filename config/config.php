@@ -10,10 +10,9 @@ $c->appDir = realpath(__DIR__ . '/..');
 $c->configDir = $c->appDir . '/config';
 $c->libDir = $c->appDir . '/lib';
 $c->dataDir = $c->appDir . '/data';
-$c->logDir = realpath($c->appDir . '/../logs');
+$c->logDir = realpath($c->appDir . (basename($c->appDir) !== 'wwwroot' ? '/..' : '') . '/../logs');
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
-$c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
 
 $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
@@ -21,19 +20,22 @@ $c->routePrefix = '';
 $c->debug = false;
 $c->logger['pretty'] = false;
 $c->appName = 'Enter';
+
 $c->authToken['name']     = '_token';
 $c->authToken['authorized_cookie'] = '_authorized';
+$c->authToken['disposableTokenParam'] = 'authToken'; // имя параметра для одноразовой аутенфикации
 
 $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 2592000; // 30 дней
 $c->session['cookie_domain'] = '.enter.ru';
 $c->session['compareKey']   = 'compare'; // ключ для массива сравнения
+$c->session['favouriteKey'] = 'favourite'; // ключ для масссива избранного
 
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
+$c->description = 'Enter – это все товары для жизни по интернет-ценам. В Enter вы можете купить что угодно, когда угодно и любым удобным для Вас способом!';
 
 $c->redirect301['enabled'] = true;
-$c->mobileRedirect['enabled'] = false;
 
 $c->curlCache['enabled'] = true;
 $c->curlCache['delayRatio'] = [0, 0.025]; // количество и время задержек
@@ -51,8 +53,13 @@ $c->coreV2['retryTimeout'] = [
     'long'    => 0.8,
     'huge'    => 1.5,
 ];
-$c->coreV2['chunk_size']   = 50;
+$c->coreV2['chunk_size']   = 30;
 $c->coreV2['debug']        = false;
+
+$c->eventService['url'] = 'http://event.enter.ru/';
+$c->eventService['enabled'] = true; // FIXME
+$c->eventService['timeout'] = 0.2;
+$c->eventService['client_id'] = 'site';
 
 $c->corePrivate['url']          = 'http://api.enter.ru/private/';
 $c->corePrivate['user']         = 'Developer';
@@ -111,19 +118,6 @@ $c->reviewsStore['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 1,
     'huge'    => 2,
-];
-
-$c->wordpress['url'] = 'http://content.enter.ru/';
-$c->wordpress['timeout'] = 2;
-$c->wordpress['throwException'] = true;
-$c->wordpress['retryCount'] = 2;
-$c->wordpress['retryTimeout'] = [
-    'default' => 0.3,
-    'tiny'    => 0.1,
-    'short'   => 0.2,
-    'medium'  => 0.3,
-    'long'    => 0.5,
-    'huge'    => 1,
 ];
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
@@ -189,6 +183,21 @@ $c->crm['retryTimeout'] = [
 ];
 $c->crm['debug'] = false;
 
+$c->fileStorage = [
+    'url'          => 'http://api.enter.ru/v2/',
+    'client_id'    => 'site',
+    'timeout'      => 5,
+    'retryTimeout' => [
+        'default' => 0.18,
+        'tiny'    => 0.18,
+        'short'   => 0.25,
+        'medium'  => 0.5,
+        'long'    => 1,
+        'huge'    => 2,
+    ],
+    'retryCount'   => 2,
+];
+
 $c->connectTerminal = true;
 
 $c->company['phone'] = '+7 (800) 700-00-09';
@@ -199,6 +208,7 @@ $c->company['icq'] = '648198963';
 $c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
+$c->googleAnalytics['secondary.enabled'] = false;
 $c->googleAnalyticsTchibo['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 $c->googleTagManager['enabled'] = true;
@@ -206,7 +216,7 @@ $c->googleTagManager['containerId'] = 'GTM-P65PBR';
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
 $c->pickpoint['timeout'] = 60;
-$c->pickpoint['retryCount'] = 3;
+$c->pickpoint['retryCount'] = 2;
 $c->pickpoint['retryTimeout'] = [
     'default' => 0.04,
     'tiny'    => 0.04,
@@ -233,9 +243,8 @@ $c->partners['RetailRocket']['userEmail']['cookieName'] = 'user_email';
 
 $c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
-//$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
+$c->partners['MyThings']['enabled'] = true;
 $c->partners['Сpaexchange']['enabled'] = true;
-$c->partners['Revolvermarketing']['enabled'] = true;
 $c->partners['TagMan']['enabled'] = false;
 $c->partners['Revolver']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
@@ -243,7 +252,7 @@ $c->partners['GetIntent']['enabled'] = true;
 $c->partners['AddThis']['enabled'] = true;
 $c->partners['AdvMaker']['enabled'] = true;
 $c->partners['Hubrus']['enabled'] = true;
-$c->partners['SmartLeads']['enabled'] = true;
+$c->partners['CityAdsRetargeting']['enabled'] = true;
 $c->partners['Sociaplus']['enabled'] = true;
 $c->partners['ActionpayRetargeting']['enabled'] = true;
 $c->partners['MnogoRu']['enabled'] = true;
@@ -251,9 +260,12 @@ $c->partners['MnogoRu']['cookieName'] = 'enter_mnogo_ru';
 $c->partners['PandaPay']['cookieName'] = 'enter_panda_pay';
 $c->partners['LinkProfit']['enabled'] = true;
 $c->partners['LinkProfit']['cookieName'] = 'linkprofit_id';
+$c->partners['Adblender']['enabled'] = true;
 
 $c->partners['Giftery']['enabled'] = true;
 $c->partners['Giftery']['lowestPrice'] = 500;
+
+$c->partners['facebook']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 
@@ -280,24 +292,10 @@ $c->region['cookieLifetime'] = 31536000; // 365 дней
 $c->region['defaultId']      = 14974;
 $c->region['autoresolve']    = true;
 
-$c->loadMediaHost = true;
 $c->shop['cookieName'] = 'shopid';
 $c->shop['cookieLifetime'] = 31536000; // 365 дней
 $c->shop['autoresolve']    = true;
 $c->shop['enabled'] = true;
-
-$c->mediaHost = [
-    0 => 'http://fs01.enter.ru',
-    1 => 'http://fs02.enter.ru',
-    2 => 'http://fs03.enter.ru',
-    3 => 'http://fs04.enter.ru',
-    4 => 'http://fs05.enter.ru',
-    5 => 'http://fs06.enter.ru',
-    6 => 'http://fs07.enter.ru',
-    7 => 'http://fs08.enter.ru',
-    8 => 'http://fs09.enter.ru',
-    9 => 'http://fs10.enter.ru',
-];
 
 $c->search['itemLimit'] = 1000;
 $c->search['queryStringLimit'] = 1;
@@ -312,14 +310,14 @@ $c->product['itemsInAccessorySlider']   = 4;
 $c->product['minCreditPrice']           = 3000;
 $c->product['totalCount']               = 55000;
 $c->product['recommendationSessionKey']     = 'recommendationProductIds';
+$c->product['recommendationProductLimit']   = 30;
 $c->product['productPageSendersSessionKey'] = 'productPageSenders';
-$c->product['productPageSendersForMarketplaceSessionKey'] = 'productPageSendersForMarketplace';
+$c->product['productPageSenders2SessionKey'] = 'productPageSendersForMarketplace';
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
 $c->product['pushReview']             = true;
 $c->product['lowerPriceNotification'] = true;
-$c->product['furnitureConstructor']   = true;
 // jewel
 $c->product['itemsPerPageJewel']      = 24;
 $c->product['itemsPerRowJewel']       = 4;
@@ -327,57 +325,15 @@ $c->product['pullRecommendation']     = true;
 $c->product['pushRecommendation']     = true;
 $c->product['viewedEnabled']          = true;
 
-$c->productPhoto['url'] = [
-    0 => '/1/1/60/',
-    1 => '/1/1/120/',
-    2 => '/1/1/163/',
-    3 => '/1/1/500/',
-    4 => '/1/1/2500/',
-    5 => '/1/1/1500/',
-    6 => '/1/1/350/',
-    7 => '/1/1/200/',
-];
-
-$c->productPhoto3d['url'] = [
-    0 => '/1/2/500/',
-    1 => '/1/2/2500/',
-];
-
-$c->productLabel['url'] = [
-    0 => '/7/1/66x23/',
-    1 => '/7/1/124x38/',
-];
-
-$c->productCategory['url'] = [
-    0 => '/6/1/163/',
-    3 => '/6/1/500/',
-    5 => '/6/1/960/'
-];
-
-$c->shopPhoto['url'] = [
-    0 => '/8/1/40/',
-    1 => '/8/1/120/',
-    2 => '/8/1/163/',
-    3 => '/8/1/500/',
-    4 => '/8/1/2500/',
-    5 => '/8/1/original/',
-];
-
 $c->banner['timeout'] = 5000;
-$c->banner['url'] = [
-    0 => '/4/1/230x302/',
-    1 => '/4/1/768x302/',
-    2 => '/4/1/920x320/',
-    3 => '/4/1/960x240/', // баннеры для новой главной (большой)
-    4 => '/4/1/220x50/', // баннеры для новой главной (маленький)
-];
+$c->banner['checkStatus'] = true;
 
-$c->cart['productLimit'] = 30;
-$c->cart['sessionName'] = 'userCart';
+$c->cart['productLimit'] = 0;
+$c->cart['sessionName'] = 'cart';
 $c->cart['checkStock'] = false;
+$c->cart['updateTime'] = 1; // обновлять корзину, если данные в ней устарели более, чем на 1 минуту
 
-$c->payment['creditEnabled'] = true;
-$c->payment['paypalECS'] = false;
+$c->payment['creditEnabled'] = false;
 $c->payment['blockedIds'] = [];
 
 $c->f1Certificate['enabled'] = true;
@@ -404,7 +360,6 @@ $c->subscribe['cookieName'] = 'subscribed';
 $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {channelId:status}
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
 
-$c->mainMenu['requestMenu'] = true;
 $c->mainMenu['recommendationsEnabled'] = true;
 
 $c->newOrder = true;
@@ -424,7 +379,8 @@ $c->order['prepayment'] = [
 $c->order['splitSessionKey'] = 'order_split';
 $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
 $c->order['sessionInfoOnComplete'] = true; // краткая инфа о заказе
-$c->order['emailRequired'] = true;          // обязательность email
+$c->order['emailRequired'] = true; // обязательность email
+$c->order['creditStatusSessionKey'] = 'order_credit';
 
 $c->newDeliveryCalc = true;
 
@@ -433,16 +389,6 @@ $c->kladr = [
     'key'       => 'c20b52a7dc6f6b28023e3d8ef81b9dbdb51ff74b',
     'itemLimit' => 20,
 ];
-
-$c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
-$c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
-$c->maybe3d['swfUrl']     = 'http://fs01.enter.ru/3d/flash/';
-$c->maybe3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
-$c->maybe3d['timeout']    = 30;
-
-$c->img3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
-
-$c->tag['numSidebarCategoriesShown'] = 3;
 
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
@@ -462,22 +408,11 @@ $c->tchibo['rowHeight'] = 78;
 $c->tchibo['rowPadding'] = 0;
 $c->tchiboSlider['analytics'] = [
     'enabled' => true,
-    'use_page_visibility' => true,
-    'collection_view' => [
-        'enabled' => false,
-        'tchiboOnly' => true
-    ],
-    'collection_click' => [
-        'enabled' => true,
-        'tchiboOnly' => false
-    ],
-    'product_click' => [
-        'enabled' => true,
-        'tchiboOnly' => false
-    ],
+    'use_page_visibility' => true
 ];
 
 $c->abTest = [
+    'enabled'    => true,
     'cookieName' => 'switch',
     'tests'      => [],
 ];
@@ -486,15 +421,18 @@ $c->self_delivery['enabled'] = true;
 $c->self_delivery['limit'] = 500;
 $c->self_delivery['regions'] = [119623, 93746, 14974];
 
+$c->minOrderSum = 990;
+
 $c->preview = false;
 
 $c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
 $c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 $c->svyaznoyClub['cardNumber']['cookieName'] = 'scid';
 
-$c->flocktoryExchange['enabled'] = true;
-$c->flocktoryPostCheckout['enabled'] = true;
-
+$c->flocktory['site_id'] = '427';
+$c->flocktory['exchange'] = true;
+$c->flocktory['postcheckout'] = true;
+$c->flocktory['precheckout'] = true;
 
 $c->photoContest = [
 	'client' => [
@@ -513,7 +451,5 @@ $c->siteVersionSwitcher['cookieName'] = 'mobile';
 $c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;
 
 $c->bandit['enabled'] = false;
-
-$c->tealeaf['enabled'] = true;
 
 return $c;

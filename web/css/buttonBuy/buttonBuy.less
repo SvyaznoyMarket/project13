@@ -1,36 +1,12 @@
 // button buy
 .btnBuy {
-    .rounded(5px);
+    .rounded(3px);
     overflow: hidden;
     text-align: center;
 
-
-    &.mBtnPayPal {
-        width: 195px;
-        height: 42px;
-        margin-top: 20px;
-
-        .bPayPalLink {
-            width: 195px;
-            height: 42px;
-            display: block;
-
-            &.mLoading {
-                cursor: default;
-                .opacity(0.5);
-            }
-
-            &.mBought {
-                text-indent: -9999px;
-                background: url("https://www.paypalobjects.com/ru_RU/i/btn/btn_xpressCheckout.gif");
-                .opacity(0.5);
-            }
-        }
-    }
-
     &__eLink {
         .gradient(#ffc000, #ffaa01, #ffc000);
-        .rounded(5px);
+        .rounded(3px);
         display: block;
         .box-sizing();
         .inline-block();
@@ -63,15 +39,21 @@
             }
         }
 
+        &:hover {
+            .gradient(#ffa200, #f79200, #ffa200);
+            text-decoration: none;
+        }
+
+        &:active {
+            background: #f79200;
+            text-decoration: none;
+        }
+
         &.mBought {
             .box-shadow(none);
             color: @black;
             border: 1px solid lighten(@black, 70);
             background: @white;
-
-            &:hover {
-                background: @white;
-            }
         }
 
         &.mDisabled {
@@ -88,16 +70,11 @@
                 background: #f1f0f0;
             }
         }
-
-        &:hover {
-            .gradient(#ffa200, #f79200, #ffa200);
-            text-decoration: none;
-        }
-
-        &:active {
-            background: #f79200;
-            text-decoration: none;
-        }
+    }
+    &.quickOrder{
+        .rounded(0px);
+        padding: 10px;
+        border-top: 1px solid #ccc;
     }
 }
 
@@ -144,4 +121,22 @@
   .goodsbox {
     height: 300px;
   }
+}
+.bBtnLine {
+    .btnBuy__eLink {
+        &.mDisabled {
+            .box-shadow(none);
+            cursor: default;
+
+            color: #cbcbcb;
+            border: 1px solid #f1f0f0;
+            background: #f1f0f0;
+
+            &:hover {
+                color: #cbcbcb;
+                border: 1px solid #f1f0f0;
+                background: #f1f0f0;
+            }
+        }
+    }
 }

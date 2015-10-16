@@ -23,9 +23,12 @@
 					$phoneInput.removeClass(errorClass).siblings('.errTx').hide();
 				}
 
-				if ($emailInput.val().length != 0 && !validateEmail($emailInput.val())) {
-					isValid = false;
-					$emailInput.addClass(errorClass).siblings('.errTx').show();
+				if ($emailInput.hasClass('jsOrderV3EmailRequired') && $emailInput.val().length == 0) {
+                    $emailInput.addClass('textfield-err').siblings('.errTx').text('Не указан email').show();
+                    isValid = false;
+                } else if ($emailInput.val().length != 0 && !validateEmail($emailInput.val())) {
+                    $emailInput.addClass('textfield-err').siblings('.errTx').text('Неверный формат email').show();
+                    isValid = false;
 				} else {
 					$emailInput.removeClass(errorClass).siblings('.errTx').hide();
 				}
@@ -135,6 +138,11 @@
 							});
 						})();
 
+						// actionpay
+						if (response.result.actionpay) {
+							APRT_SEND(response.result.actionpay);
+						}
+
 						// Счётчик RetailRocket
 						(function() {
 							$.each(response.result.orders, function(index, order) {
@@ -153,16 +161,10 @@
 								});
 							});
 						})();
-					}
 
-					var $orderContainer = $('#jsOrderV3OneClickOrder');
-					if ($orderContainer.length) {
-						$.get($orderContainer.data('url')).done(function(response) {
-							$orderContainer.html(response.result.page);
-
-							if (typeof ENTER.utils.sendOrderToGA == 'function') ENTER.utils.sendOrderToGA($('#jsOrder').data('value'));
-
-						});
+						if (response.result.orderAnalytics) {
+							ENTER.utils.sendOrderToGA(response.result.orderAnalytics);
+						}
 					}
 				})
 				.fail(function(jqXHR){

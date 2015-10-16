@@ -32,26 +32,38 @@ namespace EnterQuery\Product\Review
          */
         public function prepare()
         {
+
+            $queryParams = [
+                'product_ui'   => $this->productUi,
+                'current_page' => $this->pageNum,
+                'page_size'    => $this->pageSize,
+            ];
+
+            if (\App::user()->getEntity()) $queryParams['user_uid'] = \App::user()->getEntity()->getUi();
+
             $this->prepareCurlQuery(
                 $this->buildUrl(
                     'reviews/list',
-                    [
-                        'product_ui'   => $this->productUi,
-                        'current_page' => $this->pageNum,
-                        'page_size'    => $this->pageSize,
-                        'type'         => 'user', // TODO: удалить
-                    ]
+                    $queryParams
                 ),
                 [], // data
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode);
 
-                    $this->response->reviews = isset($result['review_list'][0]) ? $result['review_list'] : [];
+                    $this->response->reviews = [];
+
+                    if (isset($result['review_list'][0])) {
+                        foreach ($result['review_list'] as $review) {
+                            $this->response->reviews[] = new \Model\Review\ReviewEntity($review);
+                        }
+                    }
+
                     $this->response->reviewCount = isset($result['num_reviews']) ? $result['num_reviews'] : null;
                     $this->response->score = isset($result['avg_score']) ? $result['avg_score'] : null;
                     $this->response->starScore = isset($result['avg_star_score']) ? $result['avg_star_score'] : null;
                     $this->response->groupedScoreCount = isset($result['num_users_by_score']) ? $result['num_users_by_score'] : [];
                     $this->response->pageCount = isset($result['page_count']) ? $result['page_count'] : null;
+                    $this->response->currentPageAvgScore = isset($result['current_page_avg_score']) ? $result['current_page_avg_score'] : null;
 
                     return $result; // for cache
                 }
@@ -74,6 +86,8 @@ namespace EnterQuery\Product\Review\GetByProductUi
         public $score;
         /** @var float */
         public $starScore;
+        /** @var float */
+        public $currentPageAvgScore;
         /** @var array */
         public $groupedScoreCount;
         /** @var int */

@@ -14,17 +14,15 @@ class Analytics {
 
             foreach ($orders as $order) {
                 foreach ($order->getProduct() as $orderProduct) {
-                    $productsById[$orderProduct->getId()] = null;
+                    $productsById[$orderProduct->getId()] = new \Model\Product\Entity(['id' => $orderProduct->getId()]);
                 }
             }
 
             if ($productsById) {
-                foreach (\RepositoryManager::product()->getCollectionById(array_keys($productsById)) as $product) {
-                    $productsById[$product->getId()] = $product;
-                }
+                \RepositoryManager::product()->prepareProductQueries($productsById, 'media category brand');
+                \App::coreClientV2()->execute();
+                \RepositoryManager::review()->addScores($productsById);
             }
-
-            $productsById = array_filter($productsById);
         }
 
         $recommendationProductIds = [];
@@ -73,7 +71,8 @@ class Analytics {
                 'products'      => [],
                 'coupon_number' => $order->getCouponNumber(),
                 'is_partner'    => $order->getIsPartner(),
-                'isSlot'        => $order->getTypeId() == \Model\Order\Entity::TYPE_SLOT,
+                'isSlot'        => $order->isSlot(),
+                'isCredit'      => $order->isCredit()
             ];
 
             foreach ($order->getProduct() as $orderProduct) {
@@ -86,11 +85,12 @@ class Analytics {
                 $compareProduct = static::getCompareProduct($product->getUi());
 
                 $productData = [
+                    'id'       => $product->getId(),
+                    'ui'       => $product->getUi(),
                     'quantity' => $orderProduct->getQuantity(),
                     'price'    => $orderProduct->getPrice(),
                     'article'  => $product->getArticle(),
                     'barcode'  => $product->getBarcode(),
-                    'id'       => $product->getId(),
                     'name'     => $product->getName(),
                     'token'    => $product->getToken(),
                     'link'     => $product->getLink(),
@@ -116,6 +116,7 @@ class Analytics {
                 if (isset($order->meta_data[sprintf('product.%s.position', $product->getUi())])) $productData['position'] = $order->meta_data[sprintf('product.%s.position', $product->getUi())][0];
                 if (isset($order->meta_data[sprintf('product.%s.method', $product->getUi())])) $productData['method'] = $order->meta_data[sprintf('product.%s.method', $product->getUi())][0];
                 if (isset($order->meta_data[sprintf('product.%s.from', $product->getUi())])) $productData['from'] = $order->meta_data[sprintf('product.%s.from', $product->getUi())][0];
+                if (isset($order->meta_data[sprintf('product.%s.isFromProductCard', $product->getUi())])) $productData['isFromProductCard'] = $order->meta_data[sprintf('product.%s.isFromProductCard', $product->getUi())][0]; // SITE-5772
                 if (isset($order->meta_data[sprintf('product.%s.sender2', $product->getUi())])) $productData['sender2'] = $order->meta_data[sprintf('product.%s.sender2', $product->getUi())][0];
 
                 $orderData['products'][] = $productData;

@@ -5,32 +5,60 @@
 	var $body = $('body');
 
 	// Обработчик для кнопок купить
-	$body.on('click', '.jsBuyButton', function(e) {
+	$body.on('click', '.jsBuyButton', function(e, credit) {
 		var $button = $(e.currentTarget);
 
-        $body.trigger('TL_buyButton_clicked');
-
-		if ( $button.hasClass('mDisabled') ) {
-			//return false;
+		if ($button.hasClass('mDisabled')) {
             e.preventDefault();
 		}
 
-		if ( $button.hasClass('mBought') ) {
-			document.location.href($button.attr('href'));
-			//return false;
-            e.preventDefault();
+		if ($button.hasClass('mBought')) {
+            return;
 		}
 
 		$button.addClass('mLoading');
 
+		var
+			url = $button.attr('href'),
+			sender = ENTER.utils.analytics.productPageSenders.get($button),
+			sender2 = ENTER.utils.analytics.productPageSenders2.get($button)
+		;
+
+		if (sender) {
+			for (var key in sender) {
+				if (sender.hasOwnProperty(key)) {
+					url = ENTER.utils.setURLParam('sender[' + key + ']', sender[key], url);
+				}
+			}
+		}
+
+		if (sender2) {
+			url = ENTER.utils.setURLParam('sender2', sender2, url);
+		}
+
+        if ('on' === credit) {
+            url = ENTER.utils.setURLParam('credit', 'on', url);
+        }
+
 		// Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
 		$.ajax({
-			url: $button.attr('href'),
+			url: url,
 			type: 'GET',
 			success: function(data) {
 				var
 					upsale = $button.data('upsale') ? $button.data('upsale') : null,
 					product = $button.parents('.jsSliderItem').data('product');
+
+				if (data.noticePopupHtml) {
+					$.enterLightboxMe.closeAll();
+					$(data.noticePopupHtml).enterLightboxMe({
+						centered: true,
+						closeSelector: '.js-notice-popup-closer',
+						closeClick: true,
+						destroyOnClose: true,
+						preventScroll: true
+					});
+				}
 
 				if (!data.success) {
 					return;
@@ -38,13 +66,20 @@
 
 				$button.removeClass('mLoading');
 
-				if (data.product) {
-					data.product.isUpsale = product && product.isUpsale ? true : false;
-					data.product.fromUpsale = upsale && upsale.fromUpsale ? true : false;
-				}
-
 				data.location = $button.data('location');
 
+				ENTER.UserModel.cart().update(data.cart);
+
+				if (data.sender && typeof data.sender.name == 'string' && data.sender.name.indexOf('filter') == 0) {
+					$('body').trigger('trackGoogleEvent', {
+						category: data.sender.name,
+						action: 'basket',
+						label: data.sender.categoryUrlPrefix
+					});
+				}
+
+				ENTER.utils.analytics.addProduct($button[0]);
+				ENTER.utils.analytics.setAction('add');
 				$body.trigger('addtocart', [data, upsale]);
 			},
 			error: function() {
@@ -56,15 +91,35 @@
         e.preventDefault();
 	});
 
+	$body.on('click', '.js-buyButton-points-opener', function(e){
+		e.preventDefault();
+
+		var
+			$points = $(e.currentTarget).closest('.js-buyButton-points'),
+			$pointsContent = $points.find('.js-buyButton-points-content')
+		;
+
+		$.enterLightboxMe.closeAll();
+
+		$pointsContent.enterLightboxMe({
+			centered: true,
+			closeSelector: '.js-buyButton-points-content-closer',
+			closeClick: true,
+			destroyOnClose: true,
+			preventScroll: true,
+			onClose: function() {
+				$points.prepend($pointsContent.hide());
+			}
+		});
+	});
+
 	// analytics
 	$body.on('addtocart', function(event, data){
 		var
 			/**
 			 * Google Analytics аналитика добавления в корзину
 			 */
-				googleAnalytics = function googleAnalytics( event, data ) {
-				var productData = data.product;
-
+			googleAnalytics = function( event, productData, sender ) {
 				var
 					tchiboGA = function() {
 						if (typeof window.ga === "undefined" || !productData.hasOwnProperty("isTchiboProduct") || !productData.isTchiboProduct) {
@@ -76,31 +131,23 @@
 					};
 				// end of functions
 
-				if ( !productData || typeof _gaq === 'undefined' ) {
-					return;
-				}
-
 				tchiboGA();
 
-				ENTER.utils.sendAdd2BasketGaEvent(productData.article, productData.price, productData.isOnlyFromPartner, productData.isSlot, data.sender ? data.sender.name : '');
-
-				productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
-				productData.fromUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
+				ENTER.utils.sendAdd2BasketGaEvent(productData.article, productData.price, productData.isOnlyFromPartner, productData.isSlot, sender ? sender.name : '');
 
                 try {
-                    var sender = data.sender;
                     console.info({sender: sender});
                     if (sender && ('retailrocket' == sender.name)) {
 						var rrEventLabel = '';
 						if (ENTER.config.pageConfig.product) {
 							if (ENTER.config.pageConfig.product.isSlot) {
-								rrEventLabel = ' (marketplace-slot)';
+								rrEventLabel = '(marketplace-slot)';
 							} else if (ENTER.config.pageConfig.product.isOnlyFromPartner) {
-								rrEventLabel = ' (marketplace)';
+								rrEventLabel = '(marketplace)';
 							}
 						}
 
-                        $body.trigger('trackGoogleEvent',['RR_Взаимодействие' + rrEventLabel, 'Добавил в корзину', sender.position]);
+                        $body.trigger('trackGoogleEvent',['RR_взаимодействие ' + rrEventLabel, 'Добавил в корзину', sender.position]);
                     }
                 } catch (e) {
                     console.error(e);
@@ -110,13 +157,10 @@
 			/**
 			 * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
 			 */
-				addToRetailRocket = function addToRetailRocket( event, data ) {
-				var product = data.product;
-
-
+			addToRetailRocket = function( event, productId ) {
 				if ( typeof rcApi === 'object' ) {
 					try {
-						rcApi.addToBasket(product.id);
+						rcApi.addToBasket(productId);
 					}
 					catch ( err ) {}
 				}
@@ -124,17 +168,12 @@
 		//end of functions
 
 		try{
-			if (data.product) {
-				googleAnalytics(event, data);
-				addToRetailRocket(event, data);
-			}
-
-			if (data.products) {
+			if (data.setProducts) {
 				console.groupCollapsed('Аналитика для набора продуктов');
-				for (var i in data.products) {
-					/* Google Analytics */
-					googleAnalytics(event, $.extend({}, data, {product: data.products[i]}));
-				}
+				$.each(data.setProducts, function(key, setProduct) {
+					googleAnalytics(event, setProduct, data.sender);
+					addToRetailRocket(event, setProduct.id);
+				});
 				console.groupEnd();
 			}
 		}

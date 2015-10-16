@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page \View\DefaultLayout
+ * @var $page \View\OrderV3\DeliveryPage
  */
 ?><!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -8,7 +8,7 @@
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <title><?= $page->getTitle() ?></title>
+    <title><?= $page->escape($page->getTitle()) ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="robots" content="noyaca"/>
@@ -31,18 +31,21 @@
     <?= $page->slotGoogleAnalytics() ?>
 </head>
 
-<body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
+<body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
 <?= $page->slotConfig() ?>
 
 <div class="wrapper">
     <div class="content mContentOrder clearfix">
+        <?= $page->slotOrderHead() ?>
         <?= $page->slotContent() ?>
     </div><!--/ Контент -->
 </div><!--/ Шаблон -->
 
+<?= $page->slotUserConfig() ?>
 <?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
 <?= $page->slotAuth() ?>
+<?= $page->slotMustacheTemplates() ?>
 <?= $page->slotYandexMetrika() ?>
 <?= $page->slotPartnerCounter() ?>
 

@@ -9,9 +9,6 @@
 ?>
 
 <?php
-// название региона в предложном падеже
-$regionInflectedName = $user->getRegion()->getInflectedName(5);
-
 // список категорий
 /** @var \Model\Product\Category\Entity[] $categories */
 $categories = [];

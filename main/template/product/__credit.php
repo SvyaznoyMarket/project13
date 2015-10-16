@@ -3,11 +3,14 @@
 return function(
     \Helper\TemplateHelper $helper,
     array $creditData,
-    \Model\Product\BasicEntity $product
+    \Model\Product\Entity $product
 ) {
     $user = \App::user();
 
-    if (!($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany())) {
+    if (
+        count($product->getPartnersOffer())
+        || (!($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()))
+    ) {
         return '';
     }
 ?>

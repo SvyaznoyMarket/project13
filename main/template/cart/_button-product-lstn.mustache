@@ -1,0 +1,27 @@
+{{#inShowroomAsLabel}}
+        <div class="btn-type btn-type--buy btn-type--lstn btn-type--default">На витрине</div>
+{{/inShowroomAsLabel}}
+
+{{^inShowroomAsLabel}}
+
+        <a
+            href="{{url}}"
+            class="{{class}} btn-type btn-type--buy btn-type--lstn {{#disabled}}mDisabled{{/disabled}} {{#inShopOnly}}btn-type--default{{/inShopOnly}} {{#isKit}}btn-type--buy-kit{{/isKit}}"
+            data-product-id="{{data.productId}}"
+            data-product-ui="{{productUi}}"
+            data-upsale="{{data.upsale}}"
+            {{#sender}}data-sender="{{&sender}}"{{/sender}}
+            {{#sender2}}data-sender2="{{sender2}}"{{/sender2}}
+            {{#full}}data-full="{{full}}"{{/full}}
+            {{#productUrl}}data-product-url="{{productUrl}}"{{/productUrl}}
+            {{#productArticle}}data-product-article="{{productArticle}}"{{/productArticle}}
+            {{#productPrice}}data-product-price="{{productPrice}}"{{/productPrice}}
+            {{#partnerName}}data-partner-name="{{partnerName}}"{{/partnerName}}
+            {{#partnerOfferUrl}}data-partner-offer-url="{{partnerOfferUrl}}"{{/partnerOfferUrl}}
+            {{#location}}data-location="{{location}}"{{/location}}
+            {{#data.noUpdate}}data-no-update="{{data.noUpdate}}"{{/data.noUpdate}}
+            {{#onClick}}onclick="{{onClick}}"{{/onClick}}
+            data-bind="buyButtonBinding: cart"
+        >{{value}}</a>
+
+{{/inShowroomAsLabel}}

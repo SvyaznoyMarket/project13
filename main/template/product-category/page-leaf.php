@@ -5,6 +5,7 @@
  * @var $brand                  \Model\Brand\Entity|null
  * @var $productFilter          \Model\Product\Filter
  * @var $productPager           \Iterator\EntityPager
+ * @var $favoriteProductsByUi   \Model\Favorite\Product\Entity[]
  * @var $productSorting         \Model\Product\Sorting
  * @var $productView            string
  * @var $hotlinks               array
@@ -26,6 +27,8 @@ $listingStyle = !empty($catalogJson['listing_style']) ? $catalogJson['listing_st
 $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? $catalogJson['promo_style'] : [];
 $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 ?>
+
+<?= $helper->render('product-category/__data', ['category' => $category]) ?>
 
 <div class="bCatalog <? if ($category->isV3()): ?>bCatalog-custom<? endif ?> <?= 'jewel' === $listingStyle ? 'mCustomCss' : '' ?>" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 
@@ -64,22 +67,20 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
 
         <? if ($category->isV2()): ?>
             <?= $helper->render('product-category/v2/__filter', [
-                'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
-                'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
+                'baseUrl'       => $category->getLink(),
                 'productFilter' => $productFilter,
+                'category'      => $category,
             ]) // фильтры ?>
         <? elseif ($category->isV3()): ?>
             <?= $helper->render('product-category/v3/__filter', [
-                'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
-                'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
+                'baseUrl'       => $category->getLink(),
                 'productFilter' => $productFilter,
                 'openFilter'    => false,
                 'promoStyle'    => $promoStyle,
             ]) // фильтры ?>
         <? else: ?>
             <?= $helper->render('product-category/__filter', [
-                'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
-                'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
+                'baseUrl'       => $category->getLink(),
                 'productFilter' => $productFilter,
                 'openFilter'    => false,
                 'promoStyle'    => $promoStyle,
@@ -89,15 +90,17 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         <? endif ?>
 
 
-        <? if ($category->isV2()): ?>
+        <? if ($category->isV2() || $category->config->listingDisplaySwitch || $category->config->listingDefaultView->isList): ?>
             <?= $helper->render('product-category/v2/__listAction', [
                 'pager'          => $productPager,
                 'productSorting' => $productSorting,
+                'category'       => $category,
             ]) // сортировка, режим просмотра, режим листания ?>
         <? else: ?>
             <?= $helper->render('product/__listAction', [
                 'pager'          => $productPager,
                 'productSorting' => $productSorting,
+                'category'       => $category,
             ]) // сортировка, режим просмотра, режим листания ?>
         <? endif ?>
     </div>
@@ -109,15 +112,18 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         'listingStyle'           => $listingStyle,
         'columnCount'            => isset($columnCount) ? $columnCount : 4,
         'class'                  => $category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing() ? 'lstn-btn2' : '',
+        'category'               => $category,
+        'favoriteProductsByUi'   => $favoriteProductsByUi,
+        'cartButtonSender'       => $category->getSenderForGoogleAnalytics(),
     ]) // листинг ?>
 
     <? if ($category->isV2()): ?>
         <div class="sorting clearfix js-category-sortingAndPagination">
-            <?= $helper->render('product-category/v2/__pagination', ['pager' => $productPager]) // листалка ?>
+            <?= $helper->render('product-category/v2/__pagination', ['pager' => $productPager, 'category' => $category]) // листалка ?>
         </div>
     <? else: ?>
         <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
-            <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
+            <?= $helper->render('product/__pagination', ['pager' => $productPager, 'category' => $category]) // листалка ?>
         </div>
     <? endif ?>
 
@@ -126,7 +132,6 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
             'type'      => 'viewed',
             'title'     => 'Вы смотрели',
             'products'  => [],
-            'count'     => null,
             'limit'     => \App::config()->product['itemsInSlider'],
             'page'      => 1,
             'url'       => $page->url('product.recommended'),

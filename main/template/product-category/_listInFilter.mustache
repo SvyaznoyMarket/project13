@@ -1,18 +1,18 @@
 <!-- Категории товаров -->
-<ul class="bCatalogList clearfix"{{#promoStyle.bCatalogList}} style="{{promoStyle.bCatalogList}}"{{/promoStyle.bCatalogList}}>
+<ul class="list-categories "{{#promoStyle.bCatalogList}} style="{{promoStyle.bCatalogList}}"{{/promoStyle.bCatalogList}}>
     {{#links}}
     <!--li class="bCatalogList__eItem mBannerItem"></li-->
     <!-- Место для баннера, если баннер то addClass mBannerItem -->
 
-    <li class="bCatalogList__eItem{{#active}} mActive{{/active}}"{{#bCatalogList__eItemStyle}} style="{{bCatalogList__eItemStyle}}"{{/bCatalogList__eItemStyle}}>
-        <a class="bCatalogList__eLink" {{#css.link}} style="{{css.link}}" {{/css.link}} href="{{url}}">
+    <li class="list-categories__item{{#active}} mActive{{/active}}"{{#bCatalogList__eItemStyle}} style="{{bCatalogList__eItemStyle}}"{{/bCatalogList__eItemStyle}}>
+        <a class="list-categories__link js-productCategory-link" {{#css.link}} style="{{css.link}}" {{/css.link}} href="{{url}}">
             {{#image}}
-            <span class="bCategoriesImg">
-                <img class="bCategoriesImg__eImg" src="{{image}}" alt="{{name}}" />
+            <span class="list-categories__image">
+                <img class="image" src="{{image}}" alt="{{name}}" />
             </span>
             {{/image}}
 
-            <span class="bCategoriesName"{{#css.name}} style="{{css.name}}" {{/css.name}}>{{&name}}</span>
+            <span data-type="name" class="list-categories__name"{{#css.name}} style="{{css.name}}" {{/css.name}}>{{&name}}</span>
         </a>
     </li>
     {{/links}}

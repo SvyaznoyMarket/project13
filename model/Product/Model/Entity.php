@@ -37,4 +37,18 @@ class Entity {
 
         return implode(', ', $list);
     }
+
+    /**
+     * @param string|int $id
+     * @return Property\Entity|null
+     */
+    public function getPropertyById($id) {
+        foreach ($this->property as $property) {
+            if ($property->getId() == $id) {
+                return $property;
+            }
+        }
+
+        return null;
+    }
 }

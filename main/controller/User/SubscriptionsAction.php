@@ -8,17 +8,14 @@ namespace Controller\User;
  * Class SubscriptionsAction
  * @package Controller\User
  */
-class SubscriptionsAction {
+class SubscriptionsAction extends PrivateAction {
 
     private $client;
     private $user;
     private $session;
 
     public function __construct() {
-
-        if (!\App::user()->getToken()) {
-            throw new \Exception\AccessDeniedException();
-        }
+        parent::__construct();
         $this->client = \App::coreClientV2();
         $this->user = \App::user();
         $this->session = \App::session();

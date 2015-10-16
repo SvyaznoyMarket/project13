@@ -7,14 +7,10 @@
 	var
 		i,
 		global  = this,
-		fnProto = Function.prototype,
-		fnApply = fnProto.apply,
-		fnBind  = fnProto.bind,
+		// Function.prototype.bind не работает в IE8
 		bind    = function ( context, fn ) {
-			return fnBind ?
-				fnBind.call( fn, context ) :
-				function () {
-					return fnApply.call( fn, context, arguments );
+			return function () {
+					return Function.prototype.apply.call( fn, context, arguments );
 				};
 		},
 		methods = 'assert count debug dir dirxml error group groupCollapsed groupEnd info log markTimeline profile profileEnd table time timeEnd trace warn'.split(' '),
@@ -51,7 +47,7 @@
 				return diff;
 			};
 		}
-		
+
 		for ( i = methods.length; i-- ; ) {
 			console[methods[i]] = methods[i] in console ?
 				bind(console, console[methods[i]]) : emptyFn;
@@ -81,9 +77,9 @@
 
         pageConfig = $('#page-config').data('value'),
 
-		directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
+		directCreditUrl = 'http://api.direct-credit.ru/dc.js',
         adfoxUrl = 'adfox_lib_ff.min.js', // 'adfox.asyn.code.ver3.min.js',
-		yandexMapUrl, yandexMapUrlv2_1, mustacheUrl, historyUrl, kladr, knockoutUrl, tealeafUrl,
+		yandexMapUrl, yandexMapUrlv2_1, mustacheUrl, historyUrl, kladr, knockoutUrl,
 
 		debug = false,
 		templateType = document.body.getAttribute('data-template') || '',
@@ -156,7 +152,7 @@
 		 */
 		loadDebugPanel = function loadDebugPanel() {
 			if ( debug ) {
-				$LAB.script('debug-panel.js')
+				return 'debug-panel.js';
 			}
 		},
 
@@ -217,6 +213,7 @@
 	global.ENTER.config.debug = debug;
 	global.ENTER.config.jsStartTime = jsStartTime;
 	global.ENTER.config.pageConfig = pageConfig;
+	global.ENTER.config.userInfo = $('.js-userConfig').data('value');
 
 	extendApp('ENTER.constructors');
 
@@ -241,7 +238,6 @@
 	mustacheUrl = ( debug ) ? '/js/vendor/mustache.js' : '/js/prod/mustache.min.js';
 	historyUrl = ( debug ) ? '/js/vendor/history.js' : '/js/prod/history.min.js';
 	kladr = ( debug ) ? '/js/vendor/jquery.kladr.js' : '/js/prod/jquery.kladr.min.js';
-	tealeafUrl = ( debug ) ? '/js/prod/tealeaf.js' : '/js/prod/tealeaf.min.js';
 
 	/**
 	 * Загрузка скриптов по шаблону
@@ -253,12 +249,14 @@
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
                     .wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )
+                    .script( getWithVersion('supplier.js') )
                     .script( getWithVersion('ports.js') )
 			}).runQueue();
 		},
@@ -291,6 +289,7 @@
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -314,6 +313,7 @@
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -332,6 +332,7 @@
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -351,6 +352,7 @@
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -370,9 +372,10 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script('JsHttpRequest.min.js')
 					.script( getWithVersion('library.js') )
-					.script( directCreditUrl )
+					.script( { src: directCreditUrl, type: 'text/javascript', charset: 'windows-1251' } )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -391,9 +394,10 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
-					.script( directCreditUrl )
+					.script( { src: directCreditUrl, type: 'text/javascript', charset: 'windows-1251' } )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -414,10 +418,12 @@
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('lk.js') )
+					.script( getWithVersion('favorite.js') )
 					.script( getWithVersion('product.js') )
 					.wait()
 					.script(yandexMapUrlv2_1)
@@ -434,9 +440,10 @@
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script('JsHttpRequest.min.js')
 						.script( getWithVersion('library.js') )
-						.script( directCreditUrl )
+						.script( { src: directCreditUrl, type: 'text/javascript', charset: 'windows-1251' } )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
+						.wait()
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
@@ -448,43 +455,6 @@
 				}).runQueue();
 		},
 
-		'order_new': function() {
-			$LAB.queueScript( yandexMapUrl )
-				.queueScript( kladr )
-				.queueWait( function() {
-					$LAB.script( getWithVersion('jquery-plugins.js') )
-						.script('JsHttpRequest.min.js')
-						.script( getWithVersion('library.js') )
-						.script( directCreditUrl )
-						.script( mustacheUrl )
-						.script( knockoutUrl )
-						.script( loadDebugPanel )
-						.wait()
-						.script( getWithVersion('common.js') )
-						.script( getWithVersion('order-new-v5.js') )
-						.wait()
-						.script( adfoxUrl )
-						.wait()
-						.script( getWithVersion('ports.js') );
-				}).runQueue();
-		},
-
-        'order-v3': function() {
-            $LAB.queueScript(yandexMapUrlv2_1)
-                .queueWait( function() {
-                    $LAB.script( getWithVersion('jquery-plugins.js') )
-                        .script( getWithVersion('library.js') )
-                        .script( mustacheUrl )
-                        .script( knockoutUrl )
-                        .script( loadDebugPanel )
-                        .wait()
-                        .script( getWithVersion('common.js') )
-                        .script( getWithVersion('order-v3.js') )
-                        .wait()
-                        .script( getWithVersion('ports.js') );
-                }).runQueue();
-        },
-
 		'order-v3-new': function() {
 			$LAB.queueScript(yandexMapUrlv2_1)
 				.queueWait( function() {
@@ -492,6 +462,7 @@
 						.script( getWithVersion('library.js') )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
+						.wait()
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
@@ -507,6 +478,7 @@
 						.script( getWithVersion('library.js') )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
+						.wait()
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
@@ -522,6 +494,7 @@
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -540,11 +513,11 @@
 					.script( historyUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
                     .script( getWithVersion('infopage.js') )
-					.script( getWithVersion('tchibo.js') )
 					.script( getWithVersion('catalog.js') )
 					.script( getWithVersion('pandora.js') )
 					.wait()
@@ -562,13 +535,15 @@
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
 						.script('JsHttpRequest.min.js')
-						.script( directCreditUrl )
+						.script( { src: directCreditUrl, type: 'text/javascript', charset: 'windows-1251' } )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
+						.wait()
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('product.js') )
+                        .script( getWithVersion('enterprize.js') )
 						.wait()
                         .script(yandexMapUrlv2_1)
                         .script( getWithVersion('order-v3-1click.js') )
@@ -585,6 +560,7 @@
 					.script( historyUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
+					.wait()
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -607,14 +583,15 @@
 						.script( getWithVersion('library.js') )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
+						.wait()
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('shop.js') )
+                        .script( getWithVersion('infopage.js') )
 						.wait()
 						.script('tour.min.js')
 						.wait()
-						.script(yandexMapUrlv2_1)
 						.script( getWithVersion('order-v3-1click.js') )
                         .wait()
                         .script( getWithVersion('ports.js') )
@@ -627,7 +604,8 @@
                     .script( getWithVersion('library.js') )
                     .script( mustacheUrl )
                     .script( knockoutUrl )
-                    .script( loadDebugPanel )
+                    .wait()
+					.script( loadDebugPanel )
                     .wait()
                     .script( getWithVersion('common.js') )
                     .script( getWithVersion('infopage.js') )
@@ -648,7 +626,8 @@
                     .script('JsHttpRequest.min.js')
                     .script( mustacheUrl )
                     .script( knockoutUrl )
-                    .script( loadDebugPanel )
+                    .wait()
+					.script( loadDebugPanel )
                     .wait()
                     .script( getWithVersion('common.js') )
                     .script( getWithVersion('product.js') )
@@ -663,7 +642,6 @@
 	if ( loadScripts.hasOwnProperty(templateType) ) {
 		console.log('Загрузка скриптов. Шаблон %s', templateType);
 		loadScripts[templateType]();
-		if (pageConfig.tealeaf === true) $LAB.script( getWithVersion('tealeaf.js') );
 	}
 	else {
 		console.log('Шаблон %s не найден. Загрузка стандартного набора скриптов', templateType);

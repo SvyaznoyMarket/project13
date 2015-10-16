@@ -1,0 +1,229 @@
+@bgGrey: #f7f7f7;
+@textGrey: #868686;
+
+.personal{
+    &__menu{
+
+    }
+    &-navs{
+        padding: 0;
+        border-bottom: 4px solid #e8e8e8;
+
+        &__i{
+            font-size: 16px;
+            line-height: 50px;
+            position: relative;
+            height: 45px;
+            margin: 0 5px 0 0;
+            padding: 0 20px;
+            text-align: center;
+            display: inline-block;
+            vertical-align: top;
+            &.active{
+                font-weight: bold;
+                .personal-navs__lk{
+                    border-bottom-color: transparent;
+                }
+               &:after{
+                   position: absolute;
+                   bottom: -4px;
+                   left: 0;
+                   width: 100%;
+                   height: 4px;
+                   content: '';
+                   background: #f99b1c;
+               }
+            }
+            &.right-nav{
+                float: right;
+            }
+            &:hover{
+                .personal-navs__lk{
+                    color: @black;
+                    border-color: @black;
+
+                    .transition(all .3s ease-out);
+                }
+            }
+        }
+        &__lk{
+            text-decoration: none;
+            color: #363636;
+            border-bottom: 1px solid;
+            &:hover{
+                text-decoration: none;
+            }
+        }
+    }
+    &__info {
+        width: 345px;
+        .clearfix();
+        margin-bottom: 50px;
+        .btn-type.btn-type--buy{
+            float: right;
+            border: 0;
+            padding: 0;
+            width: 180px;
+            height: 32px;
+            line-height: 32px;
+        }
+    }
+    &__password{
+        margin-top: 35px;
+        width: 415px;
+        float: right;
+        padding: 10px 20px;
+        background-color: @bgGrey;
+        .form-group{
+            width: 230px;
+        }
+        .btn-type.btn-type--buy{
+            border: 0;
+            padding: 0;
+            width: 180px;
+            height: 32px;
+            line-height: 32px;
+        }
+    }
+    &__sub-head{
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    &__head{
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    .personal-popup{
+        width: 340px;
+        padding: 10px 20px 20px;
+        background-color: @white;
+        .box-shadow(0 0 20px 2px rgba(0, 0, 0, 0.20));
+        border: 1px solid #afafaf;
+
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-top: -100px;
+        margin-left: -180px;
+        z-index: 2005;
+
+        .popup-closer{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAnklEQVQYGW3QwQ3CMAwFUDseDJYgnInUlbhUcrlSloDB0uDvKpUV1YeqTl5/nPJL9bkRvUspPzqpZZ6vLJITUGJeVfUyOl8TWd0gaWstM9EnYk+ytUZ0g7H9vYCAscG1MlkS1Zof0/SFOCAapDhAExDahEevJmKBe8V3rBwwHo20cWaHQLh5H9znGjB3hJuP/zKekizyfoYwl39oyTB/pBVhzsz6V0wAAAAASUVORK5CYII=');
+            width: 10px;
+            height: 10px;
+            cursor: pointer;
+        }
+        &__head{
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        &__content{
+            .custom-select{
+                margin-top: 10px;
+                height: 30px;
+                padding-top:0;
+                padding-bottom: 0px;
+                line-height: 28px;
+                width: 100%;
+                color: #363636;
+
+                &__i{
+                    font-size: 14px;
+                    color: #363636;
+                }
+
+                &__inn{
+                    font-size: 14px;
+                    color: #363636;
+                }
+                &:after{
+                    width: 0;
+                    height: 0;
+                    border-style: solid;
+                    border-width: 7px 5.5px 0 5.5px;
+                    border-color: #afafaf transparent transparent transparent;
+                    background: none;
+                    top: 13px;
+                    right: 7px;
+                }
+            }
+            .btn--default{
+                width: 117px;
+                display: block;
+                border: 1px solid #363636;
+                color: #363636;
+                background-color: @white;
+                margin: 20px auto 10px;
+                font-size: 14px;
+                height: 33px;
+                line-height: 30px;
+            }
+        }
+        &__list-name{
+            font-size: 16px;
+            color: #5e5e5e;
+            margin: 15px 0 10px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+    }
+    &__sharings{
+        font-size: 0;
+        margin-top: 20px;
+        text-align: center;
+    }
+    &-share{
+        margin: 0 6px;
+        .inline-block(middle);
+        &__icon{
+            width: 36px;
+            height: 35px;
+            display: block;
+            background: url("@{base-url}/personal-page/img/social-sprite.png") no-repeat;
+
+            &.twitter{
+                background-position: 0 0;
+            }
+            &.fb{
+                background-position: -37px 0;
+            }
+            &.vk{
+                background-position: -75px 0;
+            }
+            &.gplus{
+                background-position: -112px 0;
+            }
+            &.ok{
+                background-position: -150px 0;
+            }
+            &.mailru{
+                background-position: -188px 0;
+            }
+            &.mail{
+                background-position: -225px 0;
+            }
+        }
+    }
+    &__txt{
+        font-size: 14px;
+    }
+
+
+}
+.overlay{
+    z-index: 2000;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.4);
+    display: none;
+}

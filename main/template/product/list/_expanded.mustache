@@ -1,0 +1,8 @@
+{{#products}}
+    {{^isBanner}}
+        {{>product/list/item/_expanded}}
+    {{/isBanner}}
+{{/products}}
+{{^products}}
+    <li class="lstn_empty">Товары не найдены</li>
+{{/products}}

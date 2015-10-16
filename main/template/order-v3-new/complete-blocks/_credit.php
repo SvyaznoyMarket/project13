@@ -1,13 +1,25 @@
 <?php
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\Order\Entity $order
+ * @param array $creditData
+ * @param \Model\CreditBank\Entity[] $banks
+ * @return string
+ */
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Order\Entity $order,
     $creditData,
-    $banks
-) { ?>
+    $banks,
+    $creditDoneOrderIds = []
+) {
+    if (in_array($order->id, $creditDoneOrderIds)) {
+        return '';
+    }
+?>
 
     <!-- Блок оплата в кредит -->
-    <div class="orderPayment orderPaymentCr jsCreditBlock">
+    <div id="credit-<?= md5($order->id ?: uniqid()) ?>" class="orderPayment orderPaymentCr jsCreditBlock">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">
@@ -20,7 +32,7 @@ $f = function(
                 <ul class="orderPaymentCr_lst clearfix jsCreditList jsCreditListOnlineMotiv">
                     <? foreach ($banks as $bank) : ?>
                         <? /** @var $bank \Model\CreditBank\Entity */?>
-                        <li class="orderPaymentCr_lst-i" data-value="<?= $bank->getId() ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>">
+                        <li class="orderPaymentCr_lst-i" data-value="<?= $bank->getId() ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>" data-order-id="<?= $order->getId() ?>">
                             <div class="orderPaymentCr_lst_l">
                                 <div><span class="undrl"><?= $bank->getName() ?></span></div>
                                 <a href="<?= $bank->getLink() ?>" target="_blank" class="pb-small undrl jsCreditListOnlineMotivRules">Условия кредитования</a>

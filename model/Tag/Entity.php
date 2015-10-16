@@ -6,13 +6,19 @@ class Entity {
     /** @var int */
     private $id;
     /** @var string */
+    public $ui;
+    /** @var string */
     private $name;
     /** @var string */
     private $token;
     /** @var Category\Entity[] */
     private $category;
 
-    public function __construct(array $data = []) {
+    public function __construct($data = []) {
+        if (isset($data['core_id'])) $this->id = $data['core_id'];
+        if (isset($data['uid'])) $this->ui = $data['uid'];
+        if (isset($data['slug'])) $this->token = $data['slug'];
+
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);

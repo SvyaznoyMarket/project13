@@ -15,16 +15,16 @@
 
     <? if ($flash !== null) : ?>
         <p class="<?= $flash['type'] == 'success' ? 'green' : 'red' ?>"><?= $flash['message'] ?></p>
-    <? endif; ?>
+    <? endif ?>
 
     <form action="<?= $page->url('user.edit') ?>" method="post" class="personalData">
         <fieldset class="personalData_left">
             <legend class="legend">Личные данные</legend>
 
-            <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
+            <input type="hidden" name="redirect_to" value="<?= $page->escape($redirect) ?>">
 
             <label class="personalData_label labeltext">Имя:</label>
-            <input class="personalData_text textfield" type="text" value ="<?= $form->getFirstName() ?>" name="user[first_name]" />
+            <input class="personalData_text textfield" type="text" value="<?= $form->getFirstName() ?>" name="user[first_name]" />
 
             <label class="personalData_label labeltext">Отчество:</label>
             <input class="personalData_text textfield" type="text" value="<?= $form->getMiddleName() ?>" name="user[middle_name]" />
@@ -37,21 +37,21 @@
 
                 <? $selectedDay = $form->getBirthday() ? $form->getBirthday()->format('j') : '' ?>
                 <select id="user_birthday_day" name="user[birthday][day]">
-                    <? foreach (array_merge(array(''), range(1, 31)) as $day):  ?>
+                    <? foreach (array_merge([''], range(1, 31)) as $day):  ?>
                         <option value="<?= $day ?>"<? if ((int)$day == (int)$selectedDay): ?> selected="selected"<? endif ?>><?= $day ?></option>
                     <? endforeach ?>
                 </select>
 
                 <? $selectedMonth = $form->getBirthday() ? $form->getBirthday()->format('n') : '' ?>
                 <select id="user_birthday_month" name="user[birthday][month]">
-                    <? foreach (array_merge(array(''), range(1, 12)) as $month): ?>
+                    <? foreach (array_merge([''], range(1, 12)) as $month): ?>
                         <option value="<?= $month ?>"<? if ((int)$month == (int)$selectedMonth): ?> selected="selected"<? endif ?>><?= $month ?></option>
                     <? endforeach ?>
                 </select>
 
                 <? $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '' ?>
                 <select id="user_birthday_year" name="user[birthday][year]">
-                    <? foreach (array_merge(array(''), range(date("Y")-6, 1930)) as $year): ?>
+                    <? foreach (array_merge([''], range(date("Y")-6, 1930)) as $year): ?>
                         <option value="<?= $year ?>"<? if ((int)$year == (int)$selectedYear): ?> selected="selected"<? endif ?>><?= $year ?></option>
                     <? endforeach ?>
                 </select>
@@ -61,7 +61,7 @@
                 <label class="personalData_label labeltext">Пол:</label>
 
                 <select name="user[sex]">
-                    <? foreach (array('' => '', '1' => 'мужской', '2' => 'женский') as $sexValue => $sexName): ?>
+                    <? foreach (['' => '', '1' => 'мужской', '2' => 'женский'] as $sexValue => $sexName): ?>
                         <option value="<?= $sexValue ?>"<? if ((int)$sexValue == (int)$form->getSex()): ?> selected="selected"<? endif ?>><?= $sexName ?></option>
                     <? endforeach ?>
                 </select>
@@ -77,7 +77,7 @@
             <input class="personalData_text textfield" type="email"  value="<?= $form->getEmail() ?>" name="user[email]" <? if ($form->getIsDisabled()): ?>readonly<? endif ?> />
 
             <label class="personalData_label labeltext">Мобильный телефон:</label>
-            <input class="personalData_text textfield js-lk-mobilePhone" type="text"  value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" class="text" <? if ($form->getIsDisabled()): ?>readonly<? endif ?> />
+            <input class="personalData_text textfield js-lk-mobilePhone" type="text" value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" class="text" <? if ($form->getIsDisabled()): ?>readonly<? endif ?> />
 
             <label class="personalData_label labeltext">Домашний телефон:</label>
             <input class="personalData_text textfield js-lk-homePhone" type="text" value="<?= $form->getHomePhone() ?>" name="user[home_phone]" />

@@ -31,10 +31,9 @@ namespace EnterQuery\Product
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'v2/product/get',
+                    'v2/product/get-v3',
                     [
-                        'select_type' => 'ui',
-                        'ui'          => $this->ui,
+                        'ui'          => [$this->ui],
                         'geo_id'      => $this->regionId,
                     ]
                 ),

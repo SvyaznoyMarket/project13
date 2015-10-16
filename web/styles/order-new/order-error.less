@@ -1,0 +1,40 @@
+.order-error{
+    border: 1px solid;
+    padding: 10px;
+    margin-top: 20px;
+    font-size: 16px;
+    position: relative;
+
+    &--hint{
+        background-color: #fff6e5;
+        color: #f99b1c;
+    }
+    &--warning{
+        background-color: #fbeceb;
+        color: #db4437;
+    }
+    &--success{
+        background-color: #e5f5e9;
+        color: #009925;
+    }
+    &__closer{
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat  -27px -53px;
+        width: 10px;
+        height: 10px;
+        .inline-block(middle);
+        position: absolute;
+        cursor: pointer;
+        top: 50%;
+        margin-top: -5px;
+        right: 10px;
+    }
+    a {
+        color: inherit;
+        text-decoration: none;
+        border-bottom: 1px solid;
+        &:hover{
+            color: inherit;
+            text-decoration: none;
+        }
+    }
+}

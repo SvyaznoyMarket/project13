@@ -174,13 +174,10 @@ class Action {
         // вид товаров
         $productView = $request->get('view', $selectedCategory ? $selectedCategory->getProductView() : \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT);
 
-        // товары
-        $productRepository = \RepositoryManager::product();
-        $productRepository->setEntityClass('\\Model\\Product\\Entity');
+        /** @var \Model\Product\Entity[] $products */
+        $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $result['data']);
 
-        $products = $productRepository->getCollectionById($result['data']);
-
-        $productRepository->prepareProductsMedias($products);
+        \RepositoryManager::product()->prepareProductQueries($products, 'media label brand category');
 
         $bannerPlaceholder = [];
         \App::scmsClient()->addQuery('category/get/v1', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId(), 'load_inactive' => 1], [], function($data) use (&$bannerPlaceholder) {
@@ -193,6 +190,8 @@ class Action {
         });
 
         \App::scmsClient()->execute();
+
+        \RepositoryManager::review()->addScores($products);
 
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);
@@ -232,6 +231,7 @@ class Action {
                     $helper,
                     $productSorting
                 ),
+                'countProducts'  => ($bannerPlaceholder) ? ($productPager->count() - 1) : $productPager->count(),
             ]);
         }
 
@@ -268,139 +268,6 @@ class Action {
         return new \Http\Response($page->show());
     }
 
-
-    public function count(\Http\Request $request) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
-
-        if (!$request->isXmlHttpRequest()) {
-            throw new \Exception\NotFoundException('Request is not xml http request');
-        }
-
-
-        $searchQuery = (string)$request->get('q');
-        $encode = mb_detect_encoding($searchQuery, array('UTF-8', 'Windows-1251'), TRUE);
-        switch ($encode) {
-            case 'Windows-1251': {
-                $searchQuery = iconv('Windows-1251', 'UTF-8', $searchQuery);
-            }
-        }
-        $searchQuery = trim(preg_replace('/[^\wА-Яа-я-]+/u', ' ', $searchQuery));
-
-        if (empty($searchQuery) || (mb_strlen($searchQuery) < \App::config()->search['queryStringLimit'])) {
-            return new \Http\JsonResponse(array(
-                'success' => false,
-                'count'    => 0,
-            ));
-        }
-
-
-        $categoryId = (int)$request->get('category');
-        if (!$categoryId) $categoryId = null;
-
-        $selectedCategory = $categoryId ? \RepositoryManager::productCategory()->getEntityById($categoryId) : null;
-
-        // запрашиваем фильтры
-        /** @var $filters \Model\Product\Filter\Entity[] */
-        $filters = [];
-        \RepositoryManager::productFilter()->prepareCollectionBySearchText($searchQuery, \App::user()->getRegion(), function($data) use (&$filters) {
-            foreach ($data as $item) {
-                $filters[] = new \Model\Product\Filter\Entity($item);
-            }
-        }, function (\Exception $e) { \App::exception()->remove($e); });
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
-
-        $shop = null;
-        try {
-            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
-                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
-            }
-        } catch (\Exception $e) {}
-
-        // фильтры
-        $brand = null;
-        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $selectedCategory, $brand, $request, $shop);
-
-        $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
-
-        return new \Http\JsonResponse(array(
-            'success' => true,
-            'count'    => $count,
-        ));
-    }
-
-
-    /**
-     * @param \Http\Request $request
-     * @return \Http\Response
-     * @throws \Exception\NotFoundException
-     */
-    public function autocomplete(\Http\Request $request) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
-
-        if (!$request->isXmlHttpRequest()) {
-            throw new \Exception\NotFoundException('Request is not xml http request');
-        }
-
-        if ($request->get('sender') == 'knockout') return $this->autocompleteForKnockout($request);
-
-        $limit = 5;
-        $keyword = trim(mb_strtolower($request->get('q')));
-        $data = [
-            'product'  => null,
-            'category' => null,
-        ];
-        $mapData = [1 => 'product', 3 => 'category'];
-        $responseData = [];
-
-        if (mb_strlen($keyword) >= 3) {
-            // параметры ядерного запроса
-            $params = ['letters' => $keyword];
-            if (\App::user()->getRegion()) {
-                $params['region_id'] = \App::user()->getRegion()->getId();
-            }
-            \App::coreClientV2()->addQuery('search/autocomplete', $params, [], function($result) use(&$data, $limit, $mapData){
-                foreach ($mapData as $key => $value) {
-                    if (!is_array($result[$key])) continue;
-
-                    $i = 0;
-                    $entity = '\\Model\\Search\\'.ucfirst($value).'\\Entity';
-
-                    foreach ($result[$key] as $item) {
-                        if ($i >= $limit) break;
-
-                        $data[$value][] = new $entity($item);
-                        $i++;
-                    }
-                }
-            }, function ($e) use (&$data, $mapData) {
-                \App::exception()->remove($e);
-                \App::logger()->error($e);
-            });
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
-        }
-
-        if (!(bool)$data['product'] && !(bool)$data['category'] && preg_match('/^enter разработка$/iu', $keyword)) {
-            $responseData = [
-                'success' => true,
-                'content' => \App::templating()->render('search/_autocomplete_easter_egg'),
-            ];
-        } else {
-            $responseData = [
-                'success' => true,
-                'content' => (bool)$data['product'] || (bool)$data['category']
-                    ? \App::templating()->render(
-                        'search/_autocomplete',
-                        ['products' => $data['product'],
-                        'categories' => $data['category'],
-                        'searchQuery' => $keyword]
-                    )
-                    : '',
-            ];
-        }
-        
-        return new \Http\JsonResponse($responseData);
-    }
-
     /**
      * @param \Http\Request $request
      * @return string
@@ -417,81 +284,4 @@ class Action {
 
         return $searchQuery;
     }
-
-    private function autocompleteForKnockout(\Http\Request $request) {
-
-        $searchTerm = trim(mb_strtolower($request->query->get('q')));
-
-        $responseData['result'] = $this->coreRequest($searchTerm, $request->query->get('catId'));
-
-        return new \Http\JsonResponse($responseData);
-    }
-
-    private function coreRequest($searchQuery, $category = null) {
-
-        // Структура выходных данных
-        $data = [
-            'categories' => [],
-            'products' => []
-        ];
-
-        // Локальные переменные
-        $productsIds = [];
-        $products = [];
-
-        // Параметры для автокомплита (забираем категории)
-
-        $params1 = ['letters' => $searchQuery];
-
-        if (\App::user()->getRegion()) $params1['region_id'] = \App::user()->getRegion()->getId();
-
-        // Параметры для сфинкса (забираем продукты)
-
-        $params2 = [
-            'filter'=> [
-                'filters' => [
-                    ['text', 3, $searchQuery]
-                ],
-                'limit' => 5
-            ]
-        ];
-
-        if ($category) $params2['filter']['filters'][] = ['category', 1, (int)$category];
-
-        // Параллельный запрос
-
-        \App::coreClientV2()->addQuery('search/autocomplete', $params1, [], function($result) use(&$data){
-            $data['categories'] = array_slice((array)@$result[3], 0, 5);
-        }, function ($e)  {
-            \App::exception()->remove($e);
-            \App::logger()->error($e);
-        });
-
-        \App::coreClientV2()->addQuery('listing/list', $params2, [], function ($result) use(&$productsIds){
-            $productsIds = (array)@$result['list'];
-        }, function ($e) {
-            \App::exception()->remove($e);
-            \App::logger()->error($e);
-        });
-
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
-
-        if (!empty($productsIds)) $products = \RepositoryManager::product()->getCollectionById($productsIds, null, false);
-
-        foreach ($products as $product) {
-            $data['products'][] = [
-                'name'  => $product->getName(),
-                'link'  => $product->getLink(),
-                'image'   => $product->getImageUrl(0)
-            ];
-        }
-
-        // уберем слэши у категорий
-        array_walk($data['categories'], function(&$val) {
-            $val['link'] = preg_replace('/\/$/', '', (string)@$val['link']);
-        });
-
-        return $data;
-    }
-
 }

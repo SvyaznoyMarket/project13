@@ -1,12 +1,27 @@
 <?php
 return function(
-    \Helper\TemplateHelper $helper,
+    $orderDelivery,
     $error
 ) {
+
+    if (!is_array($error)) $error = (array) $error;
+
 ?>
 
-    <div id="OrderV3ErrorBlock" class="errtx" style="display: <?= $error ? 'block' : 'none'?>">
-        <?= $error ?>
-    </div>
+    <? foreach ($error as $e) : ?>
+        <div id="OrderV3ErrorBlock" class="errtx" style="display: <?= $e ? 'block' : 'none'?>">
+            <?= $e ?>
+        </div>
+    <? endforeach ?>
+
+    <? if (!$orderDelivery instanceof \Model\OrderDelivery\Entity) return ?>
+
+    <? foreach ($orderDelivery->errors as $e) : ?>
+        <? if (!isset($e->details['block_name'])) : ?>
+            <div class="errtx" style="display: block">
+                <?= $e->message ?>
+            </div>
+        <? endif ?>
+    <? endforeach ?>
 
 <? } ?>

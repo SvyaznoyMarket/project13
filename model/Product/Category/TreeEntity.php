@@ -3,16 +3,12 @@
 namespace Model\Product\Category;
 
 class TreeEntity extends BasicEntity {
-    use \Model\MediaHostTrait;
-
     /** @var bool|null */
     protected $isFurniture;
     /** @var string|null */
     protected $image;
     /** @var string|null */
     protected $image480x480;
-    /** @var bool|null */
-    protected $hasLine;
     /** @var string|null */
     protected $productView;
     /** @var int|null */
@@ -32,9 +28,8 @@ class TreeEntity extends BasicEntity {
         if (isset($data['name'])) $this->setName($data['name']);
         if (isset($data['link'])) $this->setLink($data['link']);
         if (isset($data['token'])) $this->setToken($data['token']);
-        if (isset($data['media_image'])) $this->setImage($data['media_image']);
-        if (isset($data['media_image_480x480'])) $this->image480x480 = $data['media_image_480x480'];
-        if (isset($data['has_line'])) $this->setHasLine($data['has_line']);
+        if (isset($data['media_image'])) $this->image = $data['media_image']; // Возвращается методом http://search.enter.ru/category/tree
+        if (isset($data['media_image_480x480'])) $this->image480x480 = $data['media_image_480x480']; // Возвращается методом http://search.enter.ru/category/tree
         if (isset($data['product_view_id'])) $this->setProductView($data['product_view_id']);
         if (isset($data['level'])) $this->setLevel($data['level']);
         if (isset($data['product_count'])) $this->setProductCount($data['product_count']);
@@ -75,34 +70,6 @@ class TreeEntity extends BasicEntity {
      */
     public function isLeaf() {
         return !$this->hasChild;
-    }
-
-    /**
-     * @param boolean $hasLine
-     */
-    public function setHasLine($hasLine) {
-        $this->hasLine = (bool)$hasLine;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getHasLine() {
-        return $this->hasLine;
-    }
-
-    /**
-     * @param string $image
-     */
-    public function setImage($image) {
-        $this->image = (string)$image;
-    }
-
-    /**
-     * @return string
-     */
-    public function getImage() {
-        return $this->image;
     }
 
     /**
@@ -173,19 +140,14 @@ class TreeEntity extends BasicEntity {
 
     public function getImageUrl($size = 0) {
         if ($this->image) {
-            if (preg_match('/^(https?|ftp)\:\/\//i', $this->image)) {
-                if (0 == $size) {
-                    return $this->image;
-                } else if (3 == $size) {
-                    return $this->image480x480;
-                }
-            } else {
-                $urls = \App::config()->productCategory['url'];
-                return $this->getHost() . $urls[$size] . $this->image;
+            if (0 == $size) {
+                return $this->image;
+            } else if (3 == $size) {
+                return $this->image480x480;
             }
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**

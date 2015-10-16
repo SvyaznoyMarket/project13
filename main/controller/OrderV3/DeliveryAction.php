@@ -2,9 +2,13 @@
 
 namespace Controller\OrderV3;
 
-use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
+use Model\OrderDelivery\Entity;
+use Model\OrderDelivery\Error;
+use Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
+use Session\AbTest\ABHelperTrait;
 
 class DeliveryAction extends OrderV3 {
+    use ABHelperTrait;
 
     /** Main function
      * @param \Http\Request $request
@@ -12,12 +16,19 @@ class DeliveryAction extends OrderV3 {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-//        $controller = parent::execute($request);
-//        if ($controller) {
-//            return $controller;
-//        }
-
         //\App::logger()->debug('Exec ' . __METHOD__);
+
+        $response = parent::execute($request);
+        if ($response) {
+            return $response;
+        }
+
+        $bonusCards = [];
+        try {
+            $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection(['product_list' => array_map(function(\Model\Cart\Product\Entity $cartProduct) { return ['id' => $cartProduct->id, 'quantity' => $cartProduct->quantity]; }, $this->cart->getProductsById())]);
+        } catch (\Exception $e) {
+            \App::logger()->error($e->getMessage(), ['cart/split']);
+        }
 
         if ($request->isXmlHttpRequest()) {
 
@@ -29,48 +40,63 @@ class DeliveryAction extends OrderV3 {
 
                 if ($previousSplit === null) throw new \Exception('Истекла сессия');
 
+                // debug purpose
                 $splitData = [
                     'previous_split' => $previousSplit,
                     'changes'        => $this->formatChanges($request->request->all(), $previousSplit)
                 ];
 
                 $orderDeliveryModel = $this->getSplit($request->request->all());
+                $this->bindErrors($orderDeliveryModel->errors, $orderDeliveryModel);
 
                 if (\App::debug()) {
                     $result['OrderDeliveryRequest'] = json_encode($splitData, JSON_UNESCAPED_UNICODE);
                     $result['OrderDeliveryModel'] = $orderDeliveryModel;
                 }
 
-
                 $page = new \View\OrderV3\DeliveryPage();
                 $page->setParam('orderDelivery', $orderDeliveryModel);
-                $result['page'] = $page->show();
+                $page->setParam('bonusCards', $bonusCards);
+                $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner());
+                $result['page'] = $page->slotContent();
 
             } catch (\Curl\Exception $e) {
                 \App::exception()->remove($e);
                 $result['error']    = ['message' => $e->getMessage()];
                 $result['data']     = ['data' => $splitData];
-                if ($e->getCode() == 600) {
-                    $this->cart->clear();
+                if (in_array($e->getCode(), [600, 302])) {
                     $result['redirect'] = \App::router()->generate('cart');
                 }
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
                 $result['error'] = ['message' => $e->getMessage()];
+                if (!$previousSplit) {
+                    $result['redirect'] = \App::router()->generate('orderV3.delivery');
+                }
             }
 
             return new \Http\JsonResponse(['result' => $result], isset($result['error']) ? 500 : 200);
+        } else {
+            $this->pushEvent(['step' => 2]);
         }
 
         try {
 
             $this->logger(['action' => 'view-page-delivery']);
 
-            if (!$this->session->get($this->splitSessionKey)) return new \Http\RedirectResponse(\App::router()->generate('cart'));
-
-            // сохраняем данные пользователя
-            $data['action'] = 'changeUserInfo';
-            $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+            $data = null;
+            $previousSplit = $this->session->get($this->splitSessionKey);
+            if (!self::isOrderWithCart()) {
+                if (!$previousSplit) return new \Http\RedirectResponse(\App::router()->generate('cart'));
+                // сохраняем данные пользователя
+                //$data['action'] = 'changeUserInfo'; // SITE-6209
+                $data['action'] = null;
+                $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+            } else {
+                if (isset($previousSplit['user_info'])) {
+                    $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+                }
+            }
 
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
             $orderDelivery = $this->getSplit($data);
@@ -91,18 +117,13 @@ class DeliveryAction extends OrderV3 {
             }
 
             // вытаскиваем старые ошибки из предыдущих разбиений
-            $oldErrors = $this->session->flash();
-            if ($oldErrors && is_array($oldErrors)) {
-                foreach ($oldErrors as $error) {
-                    // распихиваем их по заказам
-                    if ($error instanceof \Model\OrderDelivery\Error && isset($error->details['block_name']) && isset($orderDelivery->orders[$error->details['block_name']])) {
-                        $orderDelivery->orders[$error->details['block_name']]->errors[] = $error;
-                    }
-                }
-            }
+            $this->bindErrors($this->session->flash(), $orderDelivery);
 
             $page = new \View\OrderV3\DeliveryPage();
+            $page->setParam('step', 2);
             $page->setParam('orderDelivery', $orderDelivery);
+            $page->setParam('bonusCards', $bonusCards);
+            $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner());
 
             // http-ответ
             $response = new \Http\Response($page->show());
@@ -122,48 +143,113 @@ class DeliveryAction extends OrderV3 {
             \App::exception()->remove($e);
             \App::logger()->error($e->getMessage(), ['curl', 'cart/split']);
             $page = new \View\OrderV3\ErrorPage();
-            $page->setParam('error', 'CORE: '.$e->getMessage());
+            $page->setParam('error', $e->getMessage());
             $page->setParam('step', 2);
-            return new \Http\Response($page->show(), 500);
+
+            return new \Http\Response($page->show());
         } catch (\Exception $e) {
+            if (302 === $e->getCode()) {
+                return new \Http\RedirectResponse(\App::router()->generate('cart'));
+            }
+
             \App::logger()->error($e->getMessage(), ['cart/split']);
             $page = new \View\OrderV3\ErrorPage();
             $page->setParam('error', $e->getMessage());
             $page->setParam('step', 2);
+
             return new \Http\Response($page->show(), 500);
         }
-
     }
 
-    public function getSplit(array $data = null, $shopId = null) {
+    /** Разбиение заказа ядром
+     * @param array|null $data
+     * @param null $userData
+     *
+     * @return \Model\OrderDelivery\Entity
+     * @throws \Exception
+     */
+    public function getSplit(array $data = null, $userData = null) {
+        $cartRepository = new \Model\Cart\Repository();
 
-        if (!$this->cart->count()) throw new \Exception('Пустая корзина');
+        $previousSplit = $this->session->get($this->splitSessionKey);
+        
+        if (!$this->cart->count()) throw new \Exception('Пустая корзина', 302);
 
         if ($data) {
+
+            // если изменение только в информации о пользователе, то валидируем, сохраняем и не переразбиваем
+            if (in_array(@$data['action'], ['changeUserInfo', 'changeAddress'])) {
+
+                // подготовим данные
+                if ($data['action'] == 'changeAddress') {
+                    $dataToValidate = array_replace_recursive($previousSplit['user_info'], ['address' => $data['params']]);
+                } else {
+                    $dataToValidate = $data['user_info'];
+                }
+
+                // провалидируем
+                $userInfo = $this->validateUserInfo($dataToValidate);
+
+                //
+                if (!isset($userInfo['error'])) {
+                    $newSplit = array_replace_recursive($previousSplit, ['user_info' => $userInfo]);
+                    $this->session->set($this->splitSessionKey, $newSplit);
+                } else {
+                    throw new  \Exception('Ошибка валидации данных пользователя');
+                }
+
+                $orderDelivery = new Entity($newSplit);
+                \RepositoryManager::order()->prepareOrderDeliveryMedias($orderDelivery);
+                \App::coreClientV2()->execute();
+
+                return $orderDelivery;
+            }
+
+            // иначе подготовим данные для разбиения
             $splitData = [
-                'previous_split' => $this->session->get($this->splitSessionKey),
-                'changes'        => $this->formatChanges($data, $this->session->get($this->splitSessionKey))
+                'previous_split' => $previousSplit,
+                'changes'        => $this->formatChanges($data, $previousSplit)
             ];
         } else {
-            $product_list = [];
-            foreach ($this->cart->getProductData() as $product) $product_list[$product['id']] = $product;
-
             $splitData = [
                 'cart' => [
-                    'product_list' => $product_list
+                    'product_list' => array_map(function(\Model\Cart\Product\Entity $cartProduct) {
+                        return [
+                            'id' => $cartProduct->id,
+                            'quantity' => $cartProduct->quantity,
+                        ];
+                    }, $this->cart->getProductsById()),
                 ]
             ];
 
-            if ($shopId) $splitData['shop_id'] = (int)$shopId;
-            // Проверка метода getCreditProductIds необходима, т.к. Cart/OneClickCart не имеет этого метода
-            if (method_exists($this->cart, 'getCreditProductIds') && !empty($this->cart->getCreditProductIds())) $splitData['payment_method_id'] = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT;
+            if ($userData) {
+                $splitData += ['user_info' => $userData];
+            }
+
+            if (!empty($this->cart->getCreditProductIds())) $splitData['payment_method_id'] = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT;
+
+            try {
+                // SITE-6016
+                if (\Session\AbTest\ABHelperTrait::isOrderDeliveryTypeTestAvailableInCurrentRegion()) {
+                    switch ( \App::abTest()->getTest('order_delivery_type')->getChosenCase()->getKey()) {
+                        case 'self':
+                            $splitData += ['delivery_type' => 'self'];
+                            break;
+                        case 'delivery':
+                            $splitData += ['delivery_type' => 'standart'];
+                            break;
+                    }
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
+            }
         }
 
 
-        $orderDeliveryData = null;
-        foreach ([1, 8] as $i) { // две попытки на расчет доставки: 1*4 и 8*4 секунды
+        $splitResponse = null;
+        foreach ([2, 8] as $i) { // две попытки на расчет доставки: 2*4 и 8*4 секунды
             try {
-                $orderDeliveryData = $this->client->query(
+                $splitResponse = $this->client->query(
                     'cart/split',
                     [
                         'geo_id'     => $this->user->getRegion()->getId(),
@@ -173,17 +259,34 @@ class DeliveryAction extends OrderV3 {
                     $i * \App::config()->coreV2['timeout']
                 );
             } catch (\Exception $e) {
-                if ($e->getCode() == 600) throw $e; // когда удалили последний товар
+                if ($e->getCode() == \Curl\Client::CODE_TIMEOUT) \App::exception()->remove($e);
+
+                // когда удалили последний товар
+                if ($e->getCode() == 600) {
+                    if (isset($data['action']) && isset($data['params']['ui']) && $data['action'] == 'changeProductQuantity') {
+                        try {
+                            $updateResultProducts = $this->cart->update([['ui' => $data['params']['ui'], 'quantity' => 0]]);
+                            $cartRepository->updateCrmCart($updateResultProducts);
+                        } catch(\Exception $e) {}
+                    }
+
+                    throw $e;
+                }
+
+                // некорректный email
+                if ($e->getCode() == 759) {
+                    throw $e;
+                }
             }
 
-            if ($orderDeliveryData) break; // если получен ответ прекращаем попытки
+            if ($splitResponse) break; // если получен ответ прекращаем попытки
         }
-        if (!$orderDeliveryData) {
+        if (!$splitResponse) {
             throw new \Exception('Не удалось расчитать доставку. Повторите попытку позже.');
         }
 
-        $orderDelivery = new \Model\OrderDelivery\Entity($orderDeliveryData);
-        if (!(bool)$orderDelivery->orders) {
+        $orderDelivery = new \Model\OrderDelivery\Entity($splitResponse);
+        if (!$orderDelivery->orders) {
             foreach ($orderDelivery->errors as $error) {
                 if (708 == $error->code) {
                     throw new \Exception('Товара нет в наличии');
@@ -193,14 +296,26 @@ class DeliveryAction extends OrderV3 {
             throw new \Exception('Отстуствуют данные по заказам');
         }
 
+        \RepositoryManager::order()->prepareOrderDeliveryMedias($orderDelivery);
+
+        \App::coreClientV2()->execute();
+
         // обновляем корзину пользователя
-        if (isset($data['action']) && isset($data['params']['id']) && $data['action'] == 'changeProductQuantity') {
-            $product = (new \Model\Product\Repository($this->client))->getEntityById($data['params']['id']);
-            if ($product !== null) $this->cart->setProduct($product, $data['params']['quantity']);
+        if (isset($data['action']) && isset($data['params']['id']) && isset($data['params']['ui']) && $data['action'] == 'changeProductQuantity') {
+            try {
+                // SITE-5442
+                if (isset($orderDelivery->getProductsById()[$data['params']['id']])) {
+                    $updateResultProducts = $this->cart->update([['ui' => $data['params']['ui'], 'quantity' => $orderDelivery->getProductsById()[$data['params']['id']]->quantity]]);
+                } else {
+                    $updateResultProducts = $this->cart->update([['ui' => $data['params']['ui'], 'quantity' => 0]]);
+                }
+
+                $cartRepository->updateCrmCart($updateResultProducts);
+            } catch(\Exception $e) {}
         }
 
         // сохраняем в сессию расчет доставки
-        $this->session->set($this->splitSessionKey, $orderDeliveryData);
+        $this->session->set($this->splitSessionKey, $splitResponse);
 
         return $orderDelivery;
     }
@@ -234,7 +349,9 @@ class DeliveryAction extends OrderV3 {
                 $changes['orders'] = array(
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
                 );
-                $changes['orders'][$data['params']['block_name']]['delivery']['point'] = ['id' => $data['params']['id'], 'token' => $data['params']['token']];
+                // SITE-5703 TODO remove
+                $true_token = strpos($data['params']['token'], '_postamat') !== false ? str_replace('_postamat', '', $data['params']['token']) : $data['params']['token'];
+                $changes['orders'][$data['params']['block_name']]['delivery']['point'] = ['id' => $data['params']['id'], 'token' => $true_token];
                 break;
 
             case 'changeDate':
@@ -273,8 +390,24 @@ class DeliveryAction extends OrderV3 {
                 $productsArray = &$changes['orders'][$data['params']['block_name']]['products'];
 
                 array_walk($productsArray, function(&$product) use ($id, $quantity) {
-                        if ($product['id'] == $id) $product['quantity'] = (int)$quantity;
+                    if ($product['id'] == $id) $product['quantity'] = (int)$quantity;
                 });
+
+                // SITE-5958
+                try {
+                    // FIXME: осторожно, мбыть неверный результат при использовании скидки
+                    $totalSum = array_reduce($productsArray, function($carry, $item){ return $carry + $item['price'] * $item['quantity']; }, 0.0);
+                    if (
+                        \App::config()->order['prepayment']['priceLimit']
+                        && ($totalSum > \App::config()->order['prepayment']['priceLimit'])
+                        && in_array(PaymentMethodEntity::PAYMENT_CARD_ONLINE, $changes['orders'][$data['params']['block_name']]['possible_payment_methods'])
+                    ) {
+                        $changes['orders'][$data['params']['block_name']]['payment_method_id'] = PaymentMethodEntity::PAYMENT_CARD_ONLINE;
+                    }
+                } catch (\Exception $e) {
+                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
+                }
+
                 break;
             case 'changeAddress':
                 $changes['user_info'] = $previousSplit['user_info'];
@@ -340,5 +473,37 @@ class DeliveryAction extends OrderV3 {
             // "code":910,"message":"Не удается добавить подписку, указанный email уже подписан на этот канал рассылок"
             if ($e->getCode() == 910) $subscribeResult = true;
         });
+    }
+
+    /** Распихиваем ошибки из общего блока ошибок по заказам
+     * @param $errors
+     * @param \Model\OrderDelivery\Entity $orderDelivery
+     */
+    private function bindErrors($errors, \Model\OrderDelivery\Entity &$orderDelivery) {
+
+        if (!is_array($errors)) return;
+
+        foreach ($errors as $error) {
+            if (is_array($error) && isset($error['message'])) {
+                $error = new \Model\OrderDelivery\Error($error, $orderDelivery);
+            }
+
+            if (!$error instanceof \Model\OrderDelivery\Error) continue;
+
+            // распихиваем их по заказам
+            if (isset($error->details['block_name']) && isset($orderDelivery->orders[$error->details['block_name']])) {
+                // Если кода этой ошибки нет в уже существующих ошибках заказа
+                if (!in_array($error->code, array_map(function(Error $err){ return $err->code; }, $orderDelivery->orders[$error->details['block_name']]->errors))) {
+                    $orderDelivery->orders[$error->details['block_name']]->errors[] = $error;
+                }
+            } else if ($error->isMaxQuantityError() && count($orderDelivery->orders) == 1) {
+                $ord = reset($orderDelivery->orders);
+                $orderDelivery->orders[$ord->block_name]->errors[] = $error;
+            } else if ($error->isMaxQuantityError()) {
+                $orderDelivery->errors[] = $error;
+            } else if (in_array($error->code, [732])) {
+                $orderDelivery->errors[] = $error;
+            }
+        }
     }
 }

@@ -7,11 +7,7 @@
 <div class="userbar userbar-static topbar clearfix js-topbar">
     <div class="topbar_r">
         <noindex>
-            <ul class="userbtn topbarfix topbarfix-stc js-topbarfix js-topbar-static <?=('homepage'==\App::request()->attributes->get('route') || isset($scheme) && $scheme === 'homepage'?'topbarfix-home':null)?>">
-                <?= $page->render('userbar/_userinfo') ?>
-                <?= $page->render('userbar/_usercompare') ?>
-                <?= $page->render('userbar/_usercart') ?>
-            </ul>
+            <?= $page->render('userbar/_userbar', ['class' => 'userbtn topbarfix topbarfix-stc js-topbarfix js-topbar-static ' . ('homepage' == \App::request()->attributes->get('route') || isset($scheme) && $scheme === 'homepage' ? 'topbarfix-home' : null)]) ?>
         </noindex>
     </div>
 

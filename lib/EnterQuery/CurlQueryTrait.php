@@ -111,15 +111,21 @@ trait CurlQueryTrait
                     $this->error = $query->response->error;
 
                     // TODO: удалить; сейчас нужно для старого журнала
+                    $errorItem = ['code' => $this->error->getCode(), 'message' => $this->error->getMessage()];
+                    if (28 === $this->error->getCode()) {
+                        $errorItem['message'] = 'Operation timed out';
+                        $errorItem['detail'] = $this->error->getMessage();
+                    }
                     \App::logger()->error([
                         'message' => 'Fail curl',
                         'cache' => true, // важно
                         'delay' => $query->request->delay, // важно
-                        'error' => ['code' => $this->error->getCode(), 'message' => $this->error->getMessage()],
+                        'error' => $errorItem,
                         'url' => $query->request->options[CURLOPT_URL],
                         'data' => $data,
                         'info' => $query->response->info,
                         'header' => null,
+                        'responseBodyLength' => is_string($query->response->body) ? strlen($query->response->body) : 0,
                         'response' => $query->response->body,
                         'retryTimeout' => null,
                         'retryCount' => null,
@@ -150,7 +156,7 @@ trait CurlQueryTrait
                 $result = null;
                 if (is_callable($decoder)) {
                     try {
-                        $result = call_user_func($decoder, $query->response->body, $query->response->statusCode);
+                        $result = call_user_func($decoder, $query->response->body, $query);
 
                         // TODO: удалить; сейчас нужно для старого журнала
                         $endAt = microtime(true);
@@ -172,6 +178,7 @@ trait CurlQueryTrait
                             'data' => $data,
                             'info' => $query->response->info,
                             'header' => $headers,
+                            'responseBodyLength' => is_string($query->response->body) ? strlen($query->response->body) : 0,
                             'timeout' => $query->request->options[CURLOPT_TIMEOUT_MS],
                             'startAt' => $startedAt,
                             'endAt' => $endAt,
@@ -250,6 +257,7 @@ trait CurlQueryTrait
             },
             CURLOPT_NOSIGNAL => true,
             CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_0, // для решения проблемы {"code":56,"message":"Problem (2) in the Chunked-Encoded data"}
             CURLOPT_ENCODING => 'gzip,deflate',
 
             CURLOPT_URL => $url,
@@ -258,11 +266,9 @@ trait CurlQueryTrait
             CURLOPT_HTTPHEADER => ['X-Request-Id: ' . \App::$id, 'Expect:'], // TODO: customize
         ];
         if ($data) {
+            $query->request->options[CURLOPT_POST] = true;
+            $query->request->options[CURLOPT_POSTFIELDS] = json_encode($data); // TODO: customize
             $query->request->options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/json'; // TODO: customize
-            $query->request->options += [
-                CURLOPT_POST => true,
-                CURLOPT_POSTFIELDS => json_encode($data),
-            ];
         }
 
         return $query;

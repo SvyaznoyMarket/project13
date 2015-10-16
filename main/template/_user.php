@@ -9,4 +9,4 @@
     &nbsp;<a id="bUserlogoutLink" href="<?= $page->url('user.logout') ?>">(выйти)</a>
 </script>
 
-<a id="auth-link" class="bAuthLink" href="<?= $page->url('user.login') ?>">Войти</a>
+<a id="auth-link" class="js-login-opener" href="<?= $page->url('user.login') ?>">Войти</a>

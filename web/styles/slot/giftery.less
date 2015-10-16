@@ -1,0 +1,110 @@
+.textcolor {
+    color: @darkgrey5;
+}
+
+.product-container {
+    &--giftery {
+        .product-wrapper {
+            overflow: hidden;
+
+            margin-bottom: 10px;
+            padding-right: 305px;
+        }
+        .product-card {
+            &__head {
+                font-size: 16px;
+
+                margin: 0 0 10px;
+                padding: 0;
+                &__subtitle {
+                    .inline-block();
+                }
+                &__title {
+                    font-size: 24px;
+
+                    margin: 0 0 5px;
+                }
+                &__article {
+                    font-size: 12px;
+
+                    .textcolor();
+                }
+            }
+            &__section-left {
+                display: inline-block;
+                float: left;
+
+                width: 100%;
+                margin: 0 0 0 15px;
+                margin-bottom: -99999px;
+                padding-bottom: 99999px;
+                .bProductDescImg {
+                    position: relative;
+
+                    width: 632px;
+                    &Big {
+                        width: 632px;
+                        height: 632px;
+
+                        text-align: center;
+                        &:after {
+                            width: 0;
+                            height: 100%;
+
+                            content: '';
+
+                            .inline-block-middle();
+                        }
+                        .bProductDescImgBig__eImg {
+                            float: none;
+
+                            width: auto;
+                            height: auto;
+
+                            .inline-block-middle();
+                        }
+                    }
+                }
+            }
+            &__section-right {
+                float: right;
+                zoom: 1;
+
+                width: 260px;
+                margin: 0 -300px 0;
+                margin-bottom: -99999px;
+                padding: 50px 10px 0 15px;
+                padding-bottom: 99999px;
+
+                border-left: 1px dotted @lightgrey-4;
+            }
+            &-price {
+                text-align: center;
+                &__inner {
+                    font-size: 36px;
+
+                    margin-left: 0;
+                }
+            }
+            &__info {
+                font-size: 14px;
+
+                margin: 10px -20px 0 -15px;
+                padding: 15px 20px 15px 20px;
+
+                background-color: #f9f9f9;
+            }
+            &__desc {
+                font-size: 14px;
+
+                margin: 15px 0 0;
+                .bHeadSection {
+                    font-size: 16px;
+                }
+            }
+        }
+        .btn--container {
+            margin-top: 25px;
+        }
+    }
+}

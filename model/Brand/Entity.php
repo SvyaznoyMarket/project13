@@ -2,51 +2,39 @@
 
 namespace Model\Brand;
 
+use Model\Media;
+
 class Entity {
+
+    const UI_TCHIBO = '73b7d62f-67ae-11e3-93ee-e4115baba630';
+
     /** @var string */
-    private $ui;
+    public $ui;
     /** @var int */
-    private $id;
+    public $id;
     /** @var string */
-    private $token;
+    public $token;
     /** @var string */
-    private $name;
+    public $name;
     /** @var string */
-    private $description;
-    /** @var string */
-    private $image;
-    /** @var bool */
-    private $isInFilter;
+    public $image;
+    /** @var Media[]  */
+    public $medias = [];
 
     public function __construct(array $data = []) {
-        if (array_key_exists('ui', $data)) $this->setUi($data['ui']);
-        if (array_key_exists('id', $data)) $this->setId($data['id']);
-        if (array_key_exists('token', $data)) $this->setToken($data['token']);
-        if (array_key_exists('name', $data)) $this->setName($data['name']);
-        if (array_key_exists('description', $data)) $this->setDescription($data['description']);
-        if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
-        if (array_key_exists('is_view_filter', $data)) $this->setIsInFilter($data['is_view_filter']);
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription($description) {
-        $this->description = (string)$description;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription() {
-        return $this->description;
-    }
-
-    /**
-     * @param string $ui
-     */
-    public function setUi($ui) {
-        $this->ui = $ui;
+        if (array_key_exists('ui', $data)) $this->ui = $data['ui'];
+        if (array_key_exists('id', $data)) $this->id = $data['id'];
+        if (array_key_exists('token', $data)) $this->token = $data['token'];
+        if (array_key_exists('name', $data)) $this->name = $data['name'];
+        if (array_key_exists('medias', $data) && is_array($data['medias'])) {
+            $this->medias = array_map(function($arr){ return new Media($arr); }, $data['medias']);
+        }
+        // set default (small) image
+        foreach ($this->medias as $media) {
+            if (in_array('small', $media->tags, true)) {
+                $this->image = $media->getOriginalImage();
+            }
+        }
     }
 
     /**
@@ -57,24 +45,10 @@ class Entity {
     }
 
     /**
-     * @param int $id
-     */
-    public function setId($id) {
-        $this->id = (int)$id;
-    }
-
-    /**
      * @return int
      */
     public function getId() {
         return $this->id;
-    }
-
-    /**
-     * @param string $image
-     */
-    public function setImage($image) {
-        $this->image = (string)$image;
     }
 
     /**
@@ -85,27 +59,6 @@ class Entity {
     }
 
     /**
-     * @param boolean $isInFilter
-     */
-    public function setIsInFilter($isInFilter) {
-        $this->isInFilter = (bool)$isInFilter;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsInFilter() {
-        return $this->isInFilter;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name) {
-        $this->name = (string)$name;
-    }
-
-    /**
      * @return string
      */
     public function getName() {
@@ -113,16 +66,16 @@ class Entity {
     }
 
     /**
-     * @param string $token
-     */
-    public function setToken($token) {
-        $this->token = (string)$token;
-    }
-
-    /**
      * @return string
      */
     public function getToken() {
         return $this->token;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTchibo() {
+        return $this->ui === self::UI_TCHIBO;
     }
 }

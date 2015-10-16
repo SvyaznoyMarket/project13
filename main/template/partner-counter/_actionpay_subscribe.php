@@ -1,6 +1,5 @@
 <?php
 /**
- * @var $page          \View\Order\CreatePage
  * @var $user          \Session\User
  */
 
@@ -10,4 +9,4 @@ if ($email = \App::request()->get('email')) {
     $params .= (!empty($link) ? '&' : '') . "email=$email";
 }?>
 
-<img src="http://n.actionpay.ru/ok/4388.png?<?= $params ?>" height="1" width="1" />
+<img src="http://apypxl.com/ok/4388.png?<?= $params ?>" height="1" width="1" />

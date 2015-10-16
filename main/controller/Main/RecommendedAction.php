@@ -12,13 +12,15 @@ class RecommendedAction {
      */
     public function execute(\Http\Request $request) {
         $client = \App::retailrocketClient();
+
         $region = \App::user()->getRegion();
 
         $cssClass = $request->query->get('class') ?: 'slideItem-main';
         $namePosition = $request->query->get('namePosition') ?: 'bottom';
         $sender = (array)$request->query->get('sender') + ['name' => null, 'position' => null, 'action' => null];
 
-        $productIds = [];
+        /** @var \Model\Product\Entity[] $products */
+        $products = [];
         $client->addQuery(
             'Recommendation/Popular',
             null,
@@ -27,7 +29,7 @@ class RecommendedAction {
                 //'$filter'     => 'Price gt 3000',
             ],
             [],
-            function($data) use (&$sender, &$productIds) {
+            function($data) use (&$sender, &$products) {
                 if (!is_array($data)) return;
 
                 $ids = [];
@@ -38,7 +40,7 @@ class RecommendedAction {
                 }
 
                 $sender['items'] = array_slice($ids, 0, 15);
-                $productIds = array_merge($productIds, $sender['items']);
+                $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $sender['items']);
             },
             null,
             null,
@@ -49,29 +51,12 @@ class RecommendedAction {
         $sender['name'] = 'retailrocket';
         $sender['method'] = 'Popular';
 
-        /* Получаем продукты из ядра */
-        $products = [];
-        foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-            \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$products) {
-                foreach ((array)$data as $item) {
-                    if (empty($item['id'])) continue;
-
-                    /*
-                    \Controller\Product\BasicRecommendedAction::prepareLink(
-                        $item['link'], ['engine' => 'retailrocket', 'method' => 'MainToMain', 'id' => $item['id']]
-                    );
-                    */
-
-                    $product = new \Model\Product\Entity($item);
-                    // если товар недоступен для покупки - пропустить
-                    if (!$product->isAvailable() || $product->isInShopShowroomOnly()) continue;
-
-                    $products[] = $product;
-                }
-            });
-        }
-
+        \RepositoryManager::product()->prepareProductQueries($products, 'media', $region);
         \App::coreClientV2()->execute();
+
+        $products = array_filter($products, function(\Model\Product\Entity $product) {
+            return ($product->isAvailable() && !$product->isInShopShowroomOnly());
+        });
 
         try {
             // TODO: вынести в репозиторий
@@ -100,7 +85,6 @@ class RecommendedAction {
         /* Рендерим слайдер */
         $slider = \App::closureTemplating()->render('product/__slider', [
             'products'     => $products,
-            'count'        => count($products),
             'class'        => $cssClass,
             'namePosition' => $namePosition,
             'sender'       => $sender,

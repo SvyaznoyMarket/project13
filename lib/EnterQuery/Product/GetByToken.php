@@ -31,7 +31,7 @@ namespace EnterQuery\Product
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'v2/product/get',
+                    'v2/product/get-v3',
                     [
                         'select_type' => 'slug',
                         'slug'        => $this->token,
@@ -42,7 +42,7 @@ namespace EnterQuery\Product
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->product = $result[0];
+                    $this->response->product = isset($result[0]) ? $result[0] : null;
 
                     return $result; // for cache
                 }

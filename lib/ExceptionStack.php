@@ -26,4 +26,23 @@ class ExceptionStack {
     public function all() {
         return $this->exceptions;
     }
+
+    /**
+     * @return Exception|null
+     */
+    public function first() {
+        $first = reset($this->exceptions);
+
+        return $first ?: null;
+    }
+    
+    /**
+     * @return Exception|null
+     */
+    public function last() {
+        $last = end($this->exceptions);
+        reset($this->exceptions);
+
+        return $last ?: null;
+    }
 }

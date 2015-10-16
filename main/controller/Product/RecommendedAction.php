@@ -18,12 +18,6 @@ class RecommendedAction {
             $productId = null;
         }
 
-        if ($test = \App::abTest()->getTest('recommended_product')) {
-            if ($productId && $test->getEnabled() && $test->getChosenCase() && ('old_recommendation' == $test->getChosenCase()->getKey())) {
-                return (new \Controller\Product\OldRecommendedAction())->execute($request, $productId);
-            }
-        }
-
         try {
             // поставщик из http-запроса
             $sendersByType = $this->getSendersIndexedByTypeByHttpRequest($request);
@@ -83,7 +77,7 @@ class RecommendedAction {
                         $data = explode(',', (string)$request->cookies->get('product_viewed'));
                     }
                     if (is_array($data)) {
-                        $data = array_reverse(array_filter($data));
+                        $data = array_reverse(array_filter($data, function($productId) { return (int)$productId; }));
                         $sender['items'] = array_slice(array_unique($data), 0, $productLimitInSlice);
                         $productIds = array_merge($productIds, $sender['items']);
                     }
@@ -95,18 +89,16 @@ class RecommendedAction {
 
             $productIds = array_filter(array_values(array_unique($productIds)));
 
+            /** @var \Model\Product\Entity[] $productsById */
             $productsById = [];
-            foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-                \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
-                    foreach ((array)$data as $item) {
-                        if (empty($item['id'])) continue;
+            call_user_func(function() use(&$productsById, &$productIds) {
+                foreach ($productIds as $productId) {
+                    $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
+                }
+            });
 
-                        $productsById[$item['id']] = new \Model\Product\Entity($item);
-                    }
-                });
-            }
-
-            $client->execute(); // 2-й пакет запросов
+            \RepositoryManager::product()->prepareProductQueries($productsById, 'media label category brand');
+            $client->execute();
 
             /**
              * Главный товар
@@ -180,12 +172,14 @@ class RecommendedAction {
                     $rowsCount = 2;
                 }
 
+                $template = \App::abTest()->isNewProductPage() && 'viewed' != $sender['type'] ? 'product-page/blocks/slider' : 'product/__slider';
+                if (\App::config()->lite['enabled']) $template = 'product/blocks/slider';
+
                 $recommendData[$type] = [
                     'success'   => true,
-                    'content'   => $templating->render('product/__slider', [
+                    'content'   => $templating->render($template, [
                         'title'          => $this->getTitleByType($type),
                         'products'       => $products,
-                        'count'          => count($products),
                         'sender'         => $sender,
                         'sender2'        => (string)$request->get('sender2'),
                         'class'          => $cssClass,

@@ -5,43 +5,46 @@
  */
 $helper = new \Helper\TemplateHelper();
 $links = [];
-if (!isset($line)) $line = false;
 
 if ($product) {
     $links[] = ['name' => $product->getParentCategory() ? $product->getParentCategory()->getName() : '', 'url' => $product->getParentCategory() ? $product->getParentCategory()->getLink() : null, 'last' => false];
     $links[] = ['name' => $product->getName(), 'url' => null, 'last' => true];
 }
 
-$productPageSender = \Session\ProductPageSenders::get($product->getUi());
-$productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
+$buySender = $request->get('sender');
+$buySender2 = $request->get('sender2');
 ?>
 
-<div class="topbarfix_crumbs">
-    <div class="topbarfix_crumbsImg"><img class="crumbsImg" src="<?= $product ? $product->getImageUrl() : '' ?>" /></div>
+<div class="userbar-crumbs">
+    <div class="userbar-crumbs-img"><img class="userbar-crumbs-img__img" src="<?= $product ? $product->getImageUrl() : '' ?>" /></div>
 
-    <div class="wrapperCrumbsList">
+    <div class="userbar-crumbs-wrap">
         <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
     </div>
 </div>
 
-<div class="topbarfix_buy js-topbarfixBuy <?= $line ? 'hidden' : 'none' ?>">
+<? if (!$product->getIsBuyable()) return ?>
+
+<div class="topbarfix_buy js-topbarfixBuy none">
+
+    <div class="topbarfix_buy-price">
+        <? if ($product->getPriceOld()) : ?>
+        <div class="product-card-old-price" style="font-size: 12px;">
+            <span class="product-card-old-price__inn"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
+        </div>
+        <? endif ?>
+
+        <span class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></span><span class="rubl">p</span>
+    </div>
 
     <?= $helper->render('cart/__button-product', [
         'product'  => $product,
         'onClick'  => $addToCartJS ? $addToCartJS : null,
-        'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
+        'sender'   => $buySender,
+        'sender2'  => $buySender2,
+        'noUpdate'  => true,
         'location' => 'userbar',
-        'sender2'  => $productPageSender2,
     ]) // Кнопка купить ?>
 
-    <? if (!$product->getSlotPartnerOffer() && $product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && (!$product->getKit() || $product->getIsKitLocked())): ?>
-        <?= $helper->render('__spinner', [
-            'id'        => \View\Id::cartButtonForProduct($product->getId()),
-            'productId' => $product->getId(),
-            'location'  => 'userbar',
-        ]) ?>
-    <? endif ?>
-
-    <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 
 </div>

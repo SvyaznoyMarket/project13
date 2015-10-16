@@ -50,7 +50,7 @@
 
 			&-empty {
 				background: #fee6c6;
-				padding: 10px 10px 1px;
+				padding: 10px;
 				.rounded(4px);
 			}
 
@@ -70,7 +70,12 @@
 				border: 1px solid #d3d3d3;
 				padding: 10px 10px 1px;
 				.rounded(4px);
-			} 
+			}
+			&-warn{
+				border: 1px solid @firmOrange;
+				border-left-width: 5px;
+				.rounded(0px);
+			}
 		}
 
 		.orderCol_addrs {
@@ -80,6 +85,7 @@
 		.orderCol_tm {
 			font-size: 13px;
 			margin-bottom: 5px;
+            word-break: break-all;
 		}
 
 		.orderCol_date,

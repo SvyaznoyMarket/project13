@@ -9,7 +9,7 @@ class IndexAction {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->bandit['enabled']) {
-            return new \Http\RedirectResponse(\App::router()->generate('homepage'));
+            throw new \Exception\NotFoundException();
         }
 
         $banditJson = \RepositoryManager::gameBandit()->getBanditJson();
