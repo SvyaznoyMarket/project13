@@ -30,7 +30,6 @@
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
     <?= $page->slotMetaOg() ?>
-    <?= $page->slotGifteryJS() ?>
     <?= $page->slotUserConfig() ?>
 </head>
 
