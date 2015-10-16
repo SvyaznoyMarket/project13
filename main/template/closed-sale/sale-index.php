@@ -44,13 +44,24 @@ $oldSales = $page->getSales(false);
 	<? endif ?>
 
 	<? if (!$newSales && !$oldSales) : ?>
-		<p>Сейчас нет активных акций.</p>
-		<p>Но у нас еще много интересных товаров по привлекательным ценам.<br />Вы наверняка найдете то, что ищете!</p>
-		<p>Посмотреть <a href="<?= $page->url('slice.show', ['sliceToken' => 'all_labels']) ?>">все товары по супер-ценам</a>,
-			посмотреть <a href="<?= $page->url('content', ['token' => 'special_offers']) ?>">все акции</a>
-			или вернуться на <a href="<?= $page->url('homepage') ?>">главную страницу</a>,
-			где вы найдете персональные рекомендации и популярные товары.</p>
-		<p>Если вы считаете, что это ошибка, попробуйте <a href="<?= $page->url('sale.all') ?>">обновить страницу</a></p>
+		<div class="s-sales-noty">
+			<p class="s-sales-noty__paragraph">Сейчас нет активных акций.</p>
+		</div>
+
+		<div class="s-sales-noty">
+			<p class="s-sales-noty__paragraph">Но у нас еще много интересных товаров по привлекательным ценам.<br />Вы наверняка найдете то, что ищете!</p>
+		</div>
+
+		<div class="s-sales-noty">
+			<p class="s-sales-noty__paragraph">Посмотреть <a class="link" href="<?= $page->url('slice.show', ['sliceToken' => 'all_labels']) ?>">все товары по супер-ценам</a>,
+				посмотреть <a class="link" href="<?= $page->url('content', ['token' => 'special_offers']) ?>">все акции</a>
+				или вернуться на <a class="link" href="<?= $page->url('homepage') ?>">главную страницу</a>,<br/>
+				где вы найдете персональные рекомендации и популярные товары.</p>
+		</div>
+
+		<div class="s-sales-noty s-sales-noty_footnote">
+			<p class="s-sales-noty__paragraph">Если вы считаете, что это ошибка, попробуйте <a class="dotted" href="<?= $page->url('sale.all') ?>">обновить страницу</a></p>
+		</div>
 	<? endif ?>
 
 </section>
