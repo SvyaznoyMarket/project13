@@ -9,7 +9,7 @@ $oldSales = $page->getSales(false);
 ?>
 
 <section class="s-sales">
-	<h1 class="s-sales__title">Secret Sale</h1>
+	<h1 class="s-sales__title">Секретная распродажа</h1>
 
 	<? if ($newSales) : ?>
 

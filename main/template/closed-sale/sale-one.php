@@ -29,11 +29,13 @@ $helper = \App::closureTemplating()->getParam('helper');
 	<header class="s-sales-header">
 		<h1 class="s-sales-header__title"><?= $currentSale->name ?></h1>
 
+		<? if ($currentSale->isActive()) : ?>
 		<div class="s-sales-header-counter">
 			<div class="s-sales-header-counter__time js-countdown-out js-countdown"
 				 data-expires="<?= $currentSale->endsAt->format('U') ?>"><?= $currentSale->getDateDiffString() ?></div>
 			<div class="s-sales-header-counter__avail">Осталось <?= $helper->numberChoiceWithCount($availableProductCount, ['товар', 'товара', 'товаров'])?></div>
 		</div>
+		<? endif ?>
 	</header><!-- /header -->
 
 	<? if ($availableProductCount === 0) : ?>
@@ -58,7 +60,7 @@ $helper = \App::closureTemplating()->getParam('helper');
 	</div>
 	<? endif ?>
 
-	<? if ($products && $availableProductCount > 0) : ?>
+	<? if ($products && $availableProductCount > 0 && $currentSale->isActive()) : ?>
 
 		<? if (count((array)$categories) > 1) : ?>
 		<!-- Категории -->

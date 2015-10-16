@@ -321,17 +321,21 @@ class IndexPage extends \View\DefaultLayout {
             return;
         }
 
-        $this->addMeta('',''); // TODO close for search robots
+        $this->addMeta('robots', 'none');
 
         // Модифицируем хлебные крошки
         $breadcrumbs = [
             [
-                'name' => 'Secret Sale',
+                'name' => 'Секретная распродажа',
                 'url'  => $this->url('sale.all')
             ],
             [
                 'name' => $sale->name,
                 'url'  => $this->url('sale.one', ['uid' => $sale->uid])
+            ],
+            [
+                'name' => $this->product->getRootCategory()->getName(),
+                'url'  => $this->url('sale.one', ['uid' => $sale->uid, 'categoryId' => $this->product->getRootCategory()->getId()])
             ],
             [
                 'name' => 'Артикул ' . $this->product->getArticle()
@@ -343,6 +347,7 @@ class IndexPage extends \View\DefaultLayout {
         // Акция
         $label = new Label([]);
         $label->expires = $sale->endsAt;
+        $label->url = $this->url('sale.one', ['uid' => $sale->uid]);
         $this->product->setLabel($label);
 
         $this->setParam('product', $this->product);

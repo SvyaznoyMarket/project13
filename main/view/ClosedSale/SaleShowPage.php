@@ -32,7 +32,7 @@ class SaleShowPage extends DefaultLayout
 
         $breadcrumbs = [
             [
-                'name' => 'Secret Sale',
+                'name' => 'Секретная распродажа',
                 'url'  => $this->url('sale.all'),
             ],
             [
@@ -56,6 +56,7 @@ class SaleShowPage extends DefaultLayout
 
         $this->setParam('availableProductCount', count($availableProducts));
         $this->setTitle($this->sale->name);
+        $this->addMeta('robots', 'none');
     }
 
     public function slotBodyDataAttribute() {

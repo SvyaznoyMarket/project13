@@ -16,7 +16,8 @@ class SaleIndexPage extends DefaultLayout
     {
         parent::prepare();
         $this->sales = $this->getParam('sales', []);
-        $this->title = 'Secret Sale';
+        $this->title = 'Секретная распродажа';
+        $this->addMeta('robots', 'none');
     }
 
     public function slotContent() {
