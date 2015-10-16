@@ -312,13 +312,10 @@ class CompleteAction extends OrderV3 {
 
         if (!isset($params['number_erp']) || !isset($params['bank_id'])) return null;
 
-        $result = [];
-        /*
         $result = \App::coreClientV2()->query('payment/credit-request',[],[
             'number_erp'    => $params['number_erp'],
             'bank_id'       => $params['bank_id']
         ]);
-        */
 
         return new \Http\JsonResponse($result);
 
