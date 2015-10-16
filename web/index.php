@@ -179,10 +179,8 @@ try {
         /* @var $response \Http\Response */
         $response = call_user_func_array($actionCall, $actionParams);
 
-        if (\App::config()->abTest['enabled']) {
-            //сохраняю данные для abtest
-            \App::abTest()->setCookie($response);
-        }
+        //сохраняю данные для abtest
+        \App::abTest()->setCookie($response);
     }
 } catch (\Exception\NotFoundException $e) {
     \App::logger()->warn([
