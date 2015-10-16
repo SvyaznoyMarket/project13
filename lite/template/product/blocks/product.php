@@ -170,9 +170,11 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
 
             <?= $helper->render('product/blocks/variants', ['product' => $product, 'trustfactors' => $trustfactors]) ?>
 
+            <? /* LITE-253
             <? if ($product->getTagline()) : ?>
             <p class="product-card-desc collapsed js-description-expand"><?= $product->getTagline() ?></p>
             <? endif ?>
+            */ ?>
 
             <dl class="product-card-prop">
                 <? $i = 0; foreach ($product->getMainProperties() as $property) : $i++ ?>

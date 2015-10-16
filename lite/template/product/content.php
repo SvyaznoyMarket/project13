@@ -33,19 +33,18 @@ $helper = \App::helper();
 $isProductAvailable = $product->isAvailable();
 if (\App::config()->preview) $isProductAvailable = true;
 
-$showAccessories = $accessories && \App::config()->product['showAccessories'];
-
-/* Показывать блок "Подробнее" если есть описание или инструкции или характеристики */
-$hasMedia = array_filter($trustfactors, function(\Model\Product\Trustfactor $t) { return $t->media && $t->media->isFile(); });
-$showDescription = $product->getDescription()
-    || $hasMedia
-    || $product->getSecondaryGroupedProperties();
-
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
 $buySender2 = $request->get('sender2');
 
 $reviewsData = null;
 
+
+/* Показывать блок "Подробнее" если есть описание или инструкции или характеристики */
+$hasFiles = array_filter($trustfactors, function(\Model\Product\Trustfactor $t) { return $t->media && $t->media->isFile(); });
+$showDescription = $hasFiles /* LITE-253 || $product->getDescription()*/;
+
+$showDetails = $showDescription || $product->getSecondaryGroupedProperties();
+$showAccessories = $accessories && \App::config()->product['showAccessories'];
 ?>
 
 <div id="product-info"
@@ -118,7 +117,7 @@ $reviewsData = null;
     <!-- навигация по странице -->
     <ul class="nav product-tabs">
         <? if ($product->getKit()) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit" title="">Состав</a></li><? endif ?>
-        <? if ($showDescription) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
+        <? if ($showDetails) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
         <? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
         <? if (false) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li><? endif ?>
         <? if ($product->isAvailable()) : ?><li class="product-tabs__i jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar" title="">Похожие товары</a></li><? endif ?>
@@ -129,20 +128,22 @@ $reviewsData = null;
         <?= $helper->render('product/blocks/kit', ['product' => $product, 'products' => $kitProducts, 'sender' => $buySender, 'sender2' => $buySender2]) ?>
     <? endif ?>
 
-    <? if ($showDescription) : ?>
+    <? if ($showDetails) : ?>
 
         <!-- характеристики/описание товара -->
         <div class="product-section grid-2col" id="more">
 
             <?= $helper->render('product/blocks/properties', ['product' => $product]) ?>
 
-            <? if ($hasMedia || $product->getDescription()) : ?>
+            <? if ($showDescription) : ?>
 
                 <div class="grid-2col__item">
                     <div class="product-section__desc">
                         <div class="product-section__tl">Описание</div>
                         <?= $helper->render('product/blocks/guides', ['trustfactors' => $trustfactors]) ?>
+                        <? /* LITE-253
                         <div class="product-section__content"><?= $product->getDescription() ?></div>
+                        */ ?>
                     </div>
                 </div>
 

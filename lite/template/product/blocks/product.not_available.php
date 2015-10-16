@@ -68,10 +68,12 @@ $f = function(
 
                     <?= $helper->render('product/blocks/reviews.short', ['reviewsData' => $reviewsData]) ?>
 
+                    <? /* LITE-253
                     <? if ($product->getTagline()) : ?>
                         <!-- краткое описание товара -->
                         <p class="product-card-desc"><?= $product->getTagline() ?></p>
                     <? endif ?>
+                    */ ?>
 
                     <dl class="product-card-prop">
                         <? foreach ($product->getMainProperties() as $property) : ?>
