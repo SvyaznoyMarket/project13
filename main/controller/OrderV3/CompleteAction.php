@@ -407,7 +407,7 @@ class CompleteAction extends OrderV3 {
      */
     private function getMotivationAction($orders, $ordersPayment) {
         /** @var $order \Model\Order\Entity */
-        if (count($orders) != 1 || count($ordersPayment) != 1 || !\App::abTest()->getTest('online_motivation')) {
+        if (count($orders) != 1 || count($ordersPayment) != 1) {
             return null;
         }
 
@@ -434,7 +434,7 @@ class CompleteAction extends OrderV3 {
             return null;
         }
 
-        $key = \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey();
+        $key = \App::abTest()->getOnlineMotivationKey();
         if ($onlineMethods[0]->getAction($key)) {
             return $key;
         }

@@ -82,7 +82,7 @@ class AbTest {
 
     /** Возвращает AB-тест
      * @param $key
-     * @return null|Test
+     * @return Test
      */
     public function getTest($key) {
         return
