@@ -37,6 +37,8 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 
 </div>
 
+<?= $page->render('cart/_cart-sales', ['sales' => $sales]) ?>
+
 <div class="backShop fl mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">&lt; <a class="underline" href="<?= $backlink ?>">Вернуться к покупкам</a></div>
 
 <div class="basketBuy mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">

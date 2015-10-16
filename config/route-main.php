@@ -901,6 +901,23 @@ return [
 			'page'	=> '\d{1,2}'
         ],
 	],
+
+    /*
+     * Закрытые распродажи
+     */
+
+    'sale.all'  => [
+        'pattern'   => '/secretsale',
+        'action'    => ['ClosedSale\SaleAction', 'index']
+    ],
+
+    'sale.one'  => [
+        'pattern'   => '/secretsale/{uid}',
+        'action'    => ['ClosedSale\SaleAction', 'show'],
+        'require' => [
+            'uid'		=> '[\w\d-_]+'
+        ],
+    ],
 	
 	/**
 	 * game.center

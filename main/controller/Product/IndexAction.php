@@ -2,6 +2,7 @@
 
 namespace Controller\Product;
 
+use Model\ClosedSale\ClosedSaleEntity;
 use Model\Product\Trustfactor;
 
 class IndexAction {
@@ -302,6 +303,8 @@ class IndexAction {
             $page = new \View\Product\IndexPage();
         }
 
+        $this->setClosedSale($request, $page);
+
         (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
 
         // избранные товары
@@ -347,6 +350,26 @@ class IndexAction {
         $page->setGlobalParam('similarProducts', $similarProducts);
 
         return new \Http\Response($page->show());
+    }
+
+    /**
+     * Устанавливает параметр для View
+     *
+     * @param \Http\Request $request
+     * @param \View\DefaultLayout $page
+     */
+    public function setClosedSale(\Http\Request $request, \View\DefaultLayout $page) {
+
+        if (!$uid = $request->query->get('secretsaleUid')) {
+            return;
+        }
+
+        $closedSaleResponse = \App::scmsClient()->query('api/promo-sale/get', ['uid' => [$uid]]);
+
+        if (array_key_exists(0, $closedSaleResponse)) {
+            $page->setParam('closedSale', new ClosedSaleEntity($closedSaleResponse[0]));
+        }
+
     }
 
     /**

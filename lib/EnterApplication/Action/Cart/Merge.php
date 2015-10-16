@@ -36,7 +36,7 @@ namespace EnterApplication\Action\Cart
 
             $productsToUpdate = [];
             foreach ($cartQuery->response->products as $item) {
-                if (isset($item['uid']) && isset($item['quantity'])) {
+                if (isset($item['uid'], $item['quantity'])) {
                     $productsToUpdate[] = ['ui' => $item['uid'], 'quantity' => $item['quantity']];
                 }
             }
