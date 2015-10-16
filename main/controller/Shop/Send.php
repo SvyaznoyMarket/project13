@@ -10,9 +10,6 @@ class Send {
      * @throws \Exception
      */
     public function execute($pointUi, \Http\Request $request) {
-        // TODO SITE-6096
-        return new \Http\JsonResponse([]);
-        
         $responseData = [
             'error' => '',
         ];
@@ -20,15 +17,15 @@ class Send {
         try {
             $email = trim($request->request->get('email'));
             if (!$email) {
-                throw new \Exception('Не введён email');
+                throw new \Controller\Exception('Не введён email');
             }
 
             $coreClient = \App::coreClientV2();
             $coreClient->addQuery(
-                'notification/send-shop-contacts',
+                'notification/send-point-shop-contacts',
                 [
-                    'point_ui' => $pointUi,
-                    'email'    => $email,
+                    'email' => $email,
+                    'uid'   => $pointUi,
                 ],
                 [],
                 null,
@@ -44,7 +41,7 @@ class Send {
                 throw $exception;
             }
         } catch (\Exception $e) {
-            if ($e instanceof \Curl\Exception || $e instanceof \Controller\Exception) {
+            if (($e instanceof \Curl\Exception && in_array($e->getCode(), [850, 737])) || $e instanceof \Controller\Exception) {
                 $responseData['error'] = $e->getMessage();
             } else {
                 $responseData['error'] = 'Не удалось отправить письмо';

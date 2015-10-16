@@ -261,7 +261,6 @@
 .send-popup{
     z-index: 1010;
     width: 365px;
-    height: 210px;
     position: fixed;
     background-color: #fff;
     left: 50%;
@@ -325,6 +324,7 @@
         }
     }
     &__btn{
+        display: block;
         width: 150px;
         text-align: center;
         height: 35px;
@@ -336,10 +336,13 @@
         font-size: 16px;
     }
     .pick-point-item__addr{
-        padding-top: 0;
+        padding: 0 5px 15px 10px;
         &-name{
             font-size: 14px;
             color: #363636;
+        }
+        &--no-metro{
+            padding-left: 0;
         }
     }
     .pick-point-item__metro{
