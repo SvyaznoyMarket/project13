@@ -1,49 +1,32 @@
 <?php
 
-namespace Model\Product;
+namespace Model\Review;
 
 class Sorting {
-    const NAME_DEFAULT = 'default';
+    const NAME_DEFAULT = 'helpful';
 
     /** @var array */
     private $list = [
         'default'  => [
             'name'      => self::NAME_DEFAULT,
-            'title'     => 'Автоматически',
+            'title'     => 'Полезности &#9660;',
             'direction' => 'desc',
         ],
         'hits_desc'  => [
-            'name'      => 'hits',
-            'title'     => 'Хиты продаж',
-            'direction' => 'desc',
-        ],
-        'price_asc'   => [
-            'name'      => 'price',
-            'title'     => 'По цене &#9650;',
+            'name'      => self::NAME_DEFAULT,
+            'title'     => 'Полезности &#9650;',
             'direction' => 'asc',
         ],
         'price_desc'   => [
-            'name'      => 'price',
-            'title'     => 'По цене &#9660;',
+            'name'      => 'date',
+            'title'     => 'По дате &#9660;',
             'direction' => 'desc',
         ],
-        'creator_asc' => [
-            'name'      => 'creator',
-            'title'     => 'Бренды А&#8594;Я',
+        'price_asc'   => [
+            'name'      => 'date',
+            'title'     => 'По дате &#9650;',
             'direction' => 'asc',
         ],
-        'creator_desc' => [
-            'name'      => 'creator',
-            'title'     => 'Бренды Я&#8592;А',
-            'direction' => 'desc',
-        ],
-        /*
-        'rating'  => [
-             'name'      => 'rating',
-             'title'     => 'по рейтингу',
-             'direction' => 'desc',
-        ],
-        */
     ];
     /** @var string */
     private $active = 'default';
@@ -59,7 +42,7 @@ class Sorting {
      * @param string $name
      * @param string $direction
      */
-    public function setActive($name, $direction = 'asc') {
+    public function setActive($name, $direction = 'desc') {
         $id = $name . '_' . $direction;
         if(isset($this->list[$id])) {
             $this->active = $id;

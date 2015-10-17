@@ -14,8 +14,13 @@ class Get {
 
         $page = $request->get('page', 0);
 
+        // сортировка
+        $sorting = new \Model\Product\Sorting();
+        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
+        $sorting->setActive($sortingName, $sortingDirection);
+
         $reviewsData = [];
-        \RepositoryManager::review()->prepareData($productUi, $page, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
+        \RepositoryManager::review()->prepareData($productUi, $page, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, $sorting, function($data) use(&$reviewsData) {
             $reviewsData = (array)$data;
         });
         \App::curl()->execute();

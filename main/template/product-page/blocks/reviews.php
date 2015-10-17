@@ -1,23 +1,23 @@
-<? $f = function(
+<?php
+
+$f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
     $reviewsData
-){
+) {
 
-    $reviews = (array)$reviewsData['review_list'];
+$reviews = (array)$reviewsData['review_list'];
 
-    ?>
+?>
 
 <div class="reviews clearfix">
     <div class="reviews__l jsReviewsList">
-        <? if (false): // TODO FCMS-880 ?>
         <!-- Кнопки сортировки -->
         <div class="reviews-sort">
             <span class="reviews-sort__tl">Сортировать:</span>
             <a href="#" class="reviews-sort__btn reviews-sort__btn--val active asc">По полезности</a>
             <a href="#" class="reviews-sort__btn reviews-sort__btn--date desc">По дате</a>
         </div>
-        <? endif ?>
         <!-- Кнопки сортировки END -->
         <? if ($reviewsData['num_reviews'] == 0) : ?>
             <span class="reviews__msg">Пока нет отзывов.</span>
