@@ -102,7 +102,7 @@
 
         e.preventDefault();
 
-        if ($hiddenReviews.length > 0) {
+        if (isAppend && ($hiddenReviews.length > 0)) {
             $hiddenReviews.show();
             if ($('.jsReviewItem').length == totalNum) $('.js-review-update').hide();
         } else {
@@ -111,7 +111,7 @@
                 $el.data('url'),
                 {
                     data: {
-                        page: currentCount / 10,
+                        page: isAppend ? (currentCount / 10) : 0,
                         numOnPage: 10
                     }
                 }
