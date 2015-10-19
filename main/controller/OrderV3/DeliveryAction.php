@@ -70,7 +70,10 @@ class DeliveryAction extends OrderV3 {
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
                 $result['error'] = ['message' => $e->getMessage()];
-                if (!$previousSplit) {
+
+                if (302 === $e->getCode()) {
+                    $result['redirect'] = \App::router()->generate('cart');
+                } else if (!$previousSplit) {
                     $result['redirect'] = \App::router()->generate('orderV3.delivery');
                 }
             }
