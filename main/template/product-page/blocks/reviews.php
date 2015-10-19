@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\Product\Entity $product
+ * @param $reviewsData
+ * @param \Model\Review\Sorting|null $sorting
+ */
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
@@ -14,38 +20,32 @@ $reviews = (array)$reviewsData['review_list'];
 ?>
 
 <div class="reviews clearfix">
-    <div class="reviews__l jsReviewsList">
-        <!-- Кнопки сортировки -->
-        <div class="reviews-sort">
-            <span class="reviews-sort__tl">Сортировать:</span>
-            <a href="#" class="reviews-sort__btn reviews-sort__btn--val active asc">По полезности</a>
-            <a href="#" class="reviews-sort__btn reviews-sort__btn--date desc">По дате</a>
-        </div>
-        <!-- Кнопки сортировки END -->
+    <div class="reviews__l">
+        <?= $helper->render('product-page/blocks/reviews.sorting', ['sorting' => $sorting, 'product' => $product]) // сортировка ?>
+
+        <div class="jsReviewsList">
         <? if ($reviewsData['num_reviews'] == 0) : ?>
             <span class="reviews__msg">Пока нет отзывов.</span>
             <div class="btn-type btn-type--normal jsReviewAdd">+ Добавить отзыв</div>
-        <? else : ?>
-            <? foreach ($reviews as $key => $review) : ?>
+        <? else: ?>
+            <? foreach ($reviews as $key => $review): ?>
                 <?= $helper->render('product-page/blocks/reviews.single', ['review' => $review, 'hidden' => $key > 1]) ?>
             <? endforeach ?>
         <? endif ?>
+        </div>
     </div>
 
     <div class="reviews__r">
-
-
-        <? if ($reviewsData['num_reviews'] > 0) : ?>
+        <? if ($reviewsData['num_reviews'] > 0): ?>
             <div class="btn-type btn-type--normal jsReviewAdd">+ Добавить отзыв</div>
             <span class="reviews-percentage__tl">Всего <?= $helper->numberChoiceWithCount($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span>
             <?= $helper->render('product-page/blocks/reviews.rating', ['scores' => (array)$reviewsData['num_users_by_score']]) ?>
         <? endif ?>
-
     </div>
 </div>
 
-<? if ($reviewsData['num_reviews'] > 2) : ?>
-    <button class="btn-type btn-type--normal jsShowMoreReviews" data-url="<?= $helper->url('product.reviews', ['productUi' => $product->ui]) ?>" data-ui="<?= $product->getUi() ?>" data-total-num="<?= $reviewsData['num_reviews'] ?>">Показать больше отзывов</button>
+<? if ($reviewsData['num_reviews'] > 2): ?>
+    <button class="js-review-update btn-type btn-type--normal" data-append="true" data-url="<?= $helper->url('product.reviews', ['productUi' => $product->ui, 'sort' => $sorting->getActive() ? $sorting->getActive()->getSwitchValue() : null]) ?>" data-ui="<?= $product->getUi() ?>" data-total-num="<?= $reviewsData['num_reviews'] ?>">Показать больше отзывов</button>
 <? endif ?>
 
 <!-- попап добавления отзыва -->

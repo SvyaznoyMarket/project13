@@ -1,83 +1,91 @@
 <?php
 
-namespace Model\Review;
+namespace Model\Review {
+    class Sorting {
+        /** @var Sorting\Sort[] */
+        public $listByToken = [];
+        /** @var Sorting\Sort|null */
+        private $active;
 
-class Sorting {
-    const NAME_DEFAULT = 'helpful';
+        public function __construct() {
+            foreach (
+                [
+                    [
+                        'token'     => 'helpful',
+                        'name'      => 'Полезности',
+                        'direction' => 'desc',
+                        'isActive'  => true,
+                    ],
+                    [
+                        'token'     => 'date',
+                        'name'      => 'По дате',
+                        'direction' => 'desc',
+                        'isActive'  => false,
+                    ],
+                ]
+                as $item
+            ) {
+                $sort = new Sorting\Sort();
+                foreach ($item as $k => $v) {
+                    $sort->{$k} = $v;
+                }
 
-    /** @var array */
-    private $list = [
-        'default'  => [
-            'name'      => self::NAME_DEFAULT,
-            'title'     => 'Полезности &#9660;',
-            'direction' => 'desc',
-        ],
-        'hits_desc'  => [
-            'name'      => self::NAME_DEFAULT,
-            'title'     => 'Полезности &#9650;',
-            'direction' => 'asc',
-        ],
-        'price_desc'   => [
-            'name'      => 'date',
-            'title'     => 'По дате &#9660;',
-            'direction' => 'desc',
-        ],
-        'price_asc'   => [
-            'name'      => 'date',
-            'title'     => 'По дате &#9650;',
-            'direction' => 'asc',
-        ],
-    ];
-    /** @var string */
-    private $active = 'default';
+                $this->listByToken[$item['token']] = $sort;
+                if ($sort->isActive) {
+                    $this->active = $sort;
+                }
+            }
 
-    /**
-     * @return string
-     */
-    public function getDirection() {
-        return $this->list[$this->active]['direction'];
-    }
+        }
 
-    /**
-     * @param string $name
-     * @param string $direction
-     */
-    public function setActive($name, $direction = 'desc') {
-        $id = $name . '_' . $direction;
-        if(isset($this->list[$id])) {
-            $this->active = $id;
+        /**
+         * @param string $token
+         * @param string $direction
+         */
+        public function setActive($token, $direction) {
+            $sort = !empty($this->listByToken[$token]) ? $this->listByToken[$token] : null;
+            if (!$sort) {
+                throw new \InvalidArgumentException(sprintf('Неверный токен сортировки %s', $token));
+            }
+            if (!in_array($direction, ['asc', 'desc'])) {
+                throw new \InvalidArgumentException(sprintf('Неверное направление сортировки %s', $direction));
+            }
+
+            foreach ($this->listByToken as $iSort) {
+                $iSort->isActive = false;
+            }
+
+            $sort->isActive = true;
+            $sort->direction = $direction;
+            $this->active = $sort;
+        }
+
+        /**
+         * @return Sorting\Sort
+         */
+        public function getActive() {
+            return $this->active;
         }
     }
+}
 
-    /**
-     * @return array
-     */
-    public function getActive() {
-        return $this->list[$this->active];
-    }
+namespace Model\Review\Sorting {
+    class Sort {
+        /** @var string */
+        public $token;
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $direction;
+        /** @var bool */
+        public $isActive = false;
 
-    /**
-     * @return array
-     */
-    public function getAll() {
-        return $this->list;
-    }
-
-    /**
-     * @return array
-     */
-    public function dump() {
-        $active = $this->getActive();
-
-        return array($active['name'] => $active['direction']);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDefault() {
-        $active = $this->getActive();
-
-        return $active['name'] == self::NAME_DEFAULT;
+        /**
+         * Получает значение-переключатель url-параметра
+         * @return string
+         */
+        public function getSwitchValue() {
+            return implode('-', [$this->token, 'desc' === $this->direction ? 'asc' : 'desc']);
+        }
     }
 }

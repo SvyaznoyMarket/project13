@@ -91,9 +91,12 @@
 	})();
 
     // Отзывы
-    $body.on('click', '.jsShowMoreReviews', function(e){
-        var totalNum = $(this).data('total-num'),
+    $body.on('click', '.js-review-update', function(e){
+        var
+            $el = $(this),
+            totalNum = $el.data('total-num'),
             $hiddenReviews = $('.jsReviewItem:hidden'),
+            isAppend = !!$el.data('append'),
             currentCount
         ;
 
@@ -101,11 +104,11 @@
 
         if ($hiddenReviews.length > 0) {
             $hiddenReviews.show();
-            if ($('.jsReviewItem').length == totalNum) $('.jsShowMoreReviews').hide();
+            if ($('.jsReviewItem').length == totalNum) $('.js-review-update').hide();
         } else {
             currentCount = $('.jsReviewItem').length;
             $.ajax(
-                $(this).data('url'),
+                $el.data('url'),
                 {
                     data: {
                         page: currentCount / 10,
@@ -114,9 +117,16 @@
                 }
             ).done(function(data){
                 if (data.content) {
-                    $('.jsReviewsList').append(data.content);
-                    if ($('.jsReviewItem').length == totalNum) $('.jsShowMoreReviews').hide();
+                    if (isAppend) {
+                        $('.jsReviewsList').append(data.content);
+                    } else {
+                        $('.jsReviewsList').html(data.content);
+                    }
+                    if ($('.jsReviewItem').length == totalNum) $('.js-review-update').hide();
                 }
+                    if (data.sorting) {
+                        $('.jsReviewsSorting').replaceWith(data.sorting);
+                    }
             });
         }
     });

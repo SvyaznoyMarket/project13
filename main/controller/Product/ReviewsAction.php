@@ -18,8 +18,15 @@ class ReviewsAction {
         $reviewsType = $request->get('type', 'user');
         $layout = $request->get('layout', false);
 
+        // сортировка
+        $sorting = new \Model\Review\Sorting();
+        list($sortingToken, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
+        if ($sortingToken && $sortingDirection) {
+            $sorting->setActive($sortingToken, $sortingDirection);
+        }
+
         $reviewsData = [];
-        \RepositoryManager::review()->prepareData($productUi, $page, $numReviewsOnPage, null, function($data) use(&$reviewsData) {
+        \RepositoryManager::review()->prepareData($productUi, $page, $numReviewsOnPage, $sorting, function($data) use(&$reviewsData) {
             $reviewsData = (array)$data;
             if (isset($reviewsData['review_list'][0])) {
                 foreach ($reviewsData['review_list'] as $key => $review) {
@@ -31,7 +38,7 @@ class ReviewsAction {
 
         $response = $reviewsType == 'user' ? 'Нет отзывов' : 'Нет обзоров';
 
-        if(!empty($reviewsData['review_list'])) {
+        if (!empty($reviewsData['review_list'])) {
             $response = '';
             foreach ($reviewsData['review_list'] as $key => $review) {
                 if (!\App::abTest()->isNewProductPage()) {
@@ -50,7 +57,14 @@ class ReviewsAction {
             }
         }
 
-        return new \Http\JsonResponse(['content' => $response, 'pageCount' => empty($reviewsData['page_count']) ? 0 : $reviewsData['page_count']]);
+        return new \Http\JsonResponse([
+            'content'   => $response,
+            'sorting'   => \App::helper()->render('product-page/blocks/reviews.sorting', [
+                'sorting' => $sorting,
+                'product' => new \Model\Product\Entity(['uid' => $productUi]),
+            ]),
+            'pageCount' => empty($reviewsData['page_count']) ? 0 : $reviewsData['page_count'],
+        ]);
     }
 
 

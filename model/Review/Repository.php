@@ -22,9 +22,9 @@ class Repository {
             'current_page' => $currentPage,
             'page_size'    => $perPage,
         ];
-        if ($sorting) {
-            $data['sort_field'] = $sorting->getActive()['name'];
-            $data['sort_direction'] = $sorting->getActive()['direction'];
+        if ($sorting && ($activeSorting = $sorting->getActive())) {
+            $data['sort_field'] = $activeSorting->token;
+            $data['sort_direction'] = $activeSorting->direction;
         }
 
         $this->client->addQuery(

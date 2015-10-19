@@ -1,4 +1,5 @@
 <?php
+
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Review\ReviewEntity $review,
