@@ -31,6 +31,11 @@ class CreateAction extends OrderV3 {
             $params['token'] = $this->user->getEntity()->getToken();
         }
 
+        // SITE-6071
+        if ('call-center' === $this->session->get(\App::config()->order['channelSessionKey'])) {
+            $params['client_id'] = 20; // call center
+        }
+
         $params += ['request_id' => \App::$id]; // SITE-4445
 
         // SITE-5653
