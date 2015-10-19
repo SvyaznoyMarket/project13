@@ -3,11 +3,14 @@
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    $reviewsData
+    $reviewsData,
+    \Model\Review\Sorting $sorting = null
 ) {
 
+if (!$sorting) {
+    $sorting = new \Model\Review\Sorting();
+}
 $reviews = (array)$reviewsData['review_list'];
-
 ?>
 
 <div class="reviews clearfix">
@@ -42,7 +45,7 @@ $reviews = (array)$reviewsData['review_list'];
 </div>
 
 <? if ($reviewsData['num_reviews'] > 2) : ?>
-    <div class="btn-type btn-type--normal jsShowMoreReviews" data-ui="<?= $product->getUi() ?>" data-total-num="<?= $reviewsData['num_reviews'] ?>">Показать больше отзывов</div>
+    <button class="btn-type btn-type--normal jsShowMoreReviews" data-url="<?= $helper->url('product.reviews', ['productUi' => $product->ui]) ?>" data-ui="<?= $product->getUi() ?>" data-total-num="<?= $reviewsData['num_reviews'] ?>">Показать больше отзывов</button>
 <? endif ?>
 
 <!-- попап добавления отзыва -->
@@ -76,7 +79,6 @@ $reviews = (array)$reviewsData['review_list'];
         </div>
 
         <form id="reviewForm" class="popup-form popup-form--review form-ctrl" method="post" action="<?= $helper->url('product.review.create', ['productUi' => $product->getUi()]) ?>">
-
             <input id="reviewFormRating" type="hidden" name="review[score]" value="5">
 
             <fieldset class="form-ctrl__line">

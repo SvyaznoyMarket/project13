@@ -91,29 +91,33 @@
 	})();
 
     // Отзывы
-    $body.on('click', '.jsShowMoreReviews', function(){
-        var productUi = $(this).data('ui'),
-            totalNum = $(this).data('total-num'),
+    $body.on('click', '.jsShowMoreReviews', function(e){
+        var totalNum = $(this).data('total-num'),
             $hiddenReviews = $('.jsReviewItem:hidden'),
-            currentCount;
+            currentCount
+        ;
+
+        e.preventDefault();
+
         if ($hiddenReviews.length > 0) {
             $hiddenReviews.show();
             if ($('.jsReviewItem').length == totalNum) $('.jsShowMoreReviews').hide();
         } else {
             currentCount = $('.jsReviewItem').length;
             $.ajax(
-                '/product-reviews/' + productUi, {
+                $(this).data('url'),
+                {
                     data: {
                         page: currentCount / 10,
                         numOnPage: 10
                     }
                 }
             ).done(function(data){
-                    if (data.content) {
-                        $('.jsReviewsList').append(data.content);
-                        if ($('.jsReviewItem').length == totalNum) $('.jsShowMoreReviews').hide();
-                    }
-                });
+                if (data.content) {
+                    $('.jsReviewsList').append(data.content);
+                    if ($('.jsReviewItem').length == totalNum) $('.jsShowMoreReviews').hide();
+                }
+            });
         }
     });
 
