@@ -70,6 +70,9 @@ class DeliveryAction extends OrderV3 {
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
                 $result['error'] = ['message' => $e->getMessage()];
+                if (302 === $e->getCode()) {
+                    $result['redirect'] = \App::router()->generate('cart');
+                }
             }
 
             return new \Http\JsonResponse(['result' => $result], isset($result['error']) ? 500 : 200);
