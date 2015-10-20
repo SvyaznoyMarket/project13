@@ -90,6 +90,11 @@ $helper = \App::closureTemplating()->getParam('helper');
 				'position'	=> 'listing'
 			]
 		]) // листинг ?>
+
+		<div class="sorting sorting-top clearfix js-category-sortingAndPagination">
+			<?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
+		</div>
+
 	<? endif ?>
 
 	<!-- Сетка скидочных категорий -->
