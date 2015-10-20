@@ -90,6 +90,12 @@ $helper = \App::closureTemplating()->getParam('helper');
 				'position'	=> 'listing'
 			]
 		]) // листинг ?>
+
+		<?= $helper->render( 'product/__listAction', [
+			'pager' => $productPager,
+			'productSorting' => $productSorting,
+		] ) // сортировка, режим просмотра, режим листания ?>
+
 	<? endif ?>
 
 	<!-- Сетка скидочных категорий -->
