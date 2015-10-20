@@ -50,7 +50,13 @@ $f = function(
 <header class="orderHd orderHd-v2">
     <div class="order-head__inn">
         <div class="orderHd_l">
-            <img class="orderHd_lg" src="/styles/order/img/logo.png" />
+            <? if (\App::abTest()->isOrderWithCart() && !\App::user()->getCart()->count()): ?>
+                <a href="<?= $helper->url('homepage') ?>" class="orderHd_t">
+                    <img class="orderHd_lg" alt="Enter" src="/styles/order/img/logo.png" />
+                </a>
+            <? else: ?>
+                <img class="orderHd_lg" src="/styles/order/img/logo.png" />
+            <? endif ?>
             <div class="orderHd_t">Оформление заказа</div>
         </div>
 
