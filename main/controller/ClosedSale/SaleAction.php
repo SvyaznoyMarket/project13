@@ -78,6 +78,9 @@ class SaleAction
         \RepositoryManager::product()->prepareProductQueries($products, 'media label brand category');
         $this->scmsClient->execute();
 
+        // убираем товары, которые нельзя купить
+        $products = array_filter($products, function(Product $product) { return $product->getIsBuyable(); } );
+
         // если в запросе есть ID категории, то отфильтруем товары
         if ($selectedCategoryId) {
             $products = array_filter($products,

@@ -17,7 +17,7 @@ if (!\App::user()->getEntity()) return '';
         <div class="s-sales-grid__row grid-3cell cell-h-220">
 
             <? foreach ($sales as $sale) : ?>
-                <?= $page->render('closed-sale/partials/sale', ['sale' => $sale, 'imageType' => ClosedSaleEntity::MEDIA_MEDIUM]) ?>
+                <?= $page->render('closed-sale/partials/sale', ['sale' => $sale, 'imageType' => ClosedSaleEntity::MEDIA_SMALL]) ?>
             <? endforeach ?>
 
         </div>

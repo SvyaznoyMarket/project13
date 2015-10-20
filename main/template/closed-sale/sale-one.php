@@ -103,7 +103,7 @@ $helper = \App::closureTemplating()->getParam('helper');
 			<!-- Если равершина добавляем модификатор sale-finished и соостветствующий текст в атрибут data-sale-status внутри партиала -->
 			<!--< div class="s-sales-grid__cell sale-finished" data-sale-status="Акция завершена"> -->
 
-				<?= $page->render('closed-sale/partials/sale', ['sale' => $sale, 'imageType' => ClosedSaleEntity::MEDIA_MEDIUM]) ?>
+				<?= $page->render('closed-sale/partials/sale', ['sale' => $sale, 'imageType' => ClosedSaleEntity::MEDIA_SMALL]) ?>
 
 		<? endforeach ?>
 		</div>

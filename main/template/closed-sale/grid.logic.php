@@ -15,7 +15,8 @@ while ($currentSales) {
                 ['sales' => array_splice($currentSales, 0, 3)]);
         } else if ($canUseThreeSmall) {
             // если можем использовать три маленьких изображения, но не использовали два больших
-            if (!$twoMidlleUsed) {
+            // если число оставшихся акций будет равно 4, то получится грид с двумя строками по два блока, bad
+            if (!$twoMidlleUsed && count($currentSales) !== 4) {
                 echo $page->render('closed-sale/partials/grid.two-middle',
                     ['sales' => array_splice($currentSales, 0, 2)]);
                 $twoMidlleUsed = true;
