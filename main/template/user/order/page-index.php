@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page                              \View\User\OrdersPage
+ * @var $page                              \View\User\Order\IndexPage
  * @var $helper                            \Helper\TemplateHelper
  * @var $user                              \Session\User
  * @var $orderCount                        int
@@ -111,7 +111,7 @@ $recommendationsHtml = [
                         </div>
                         <div class="personal-order__cell">
                             <? if ($showStatus): ?>
-                                <span class="personal-order__status"><?= $order->getLastLifecycleStatus() ?></span>
+                                <span class="personal-order__status"><?= $order->getStatusText() ?></span>
                                 <? if (isset($onlinePaymentAvailableByNumberErp[$order->numberErp]) && $onlinePaymentAvailableByNumberErp[$order->numberErp]): ?>
                                     <!--<span class="personal-order__pay-status online">Оплатить онлайн</span>-->
                                 <? endif ?>
