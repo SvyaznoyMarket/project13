@@ -142,47 +142,8 @@
 
         .box-sizing();
         &.sale-finished {
-            &:before {
-                position: absolute;
-                z-index: 2;
-                top: 0;
-                right: 20px;
-                bottom: 20px;
-                left: 0;
-
-                content: '';
-                text-align: center;
-
-                background: rgba(255, 255, 255, .6);
-            }
             &:after {
-                font-size: 14px;
-                line-height: 35px;
-
-                position: absolute;
-                z-index: 3;
-                top: 50%;
-                left: 50%;
-
-                height: 35px;
-                margin: auto;
                 margin: -10px 0 0 -10px;
-                padding: 0 15px;
-
-                content: attr(data-sale-status);
-                -webkit-transform: translate(-50%, -50%);
-                   -moz-transform: translate(-50%, -50%);
-                        transform: translate(-50%, -50%);
-                text-align: center;
-                white-space: nowrap;
-
-                color: #fff;
-                background: #363636;
-                background: rgba(54, 54, 54, .85);
-
-                .box-sizing(border-box);
-                .inline-block(middle);
-                .drop-shadow(0, 0, 12px, .2);
             }
         }
     }
@@ -198,6 +159,51 @@
         background: #888;
 
         .box-sizing();
+    }
+}
+
+.sale-finished {
+    &:before {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        right: 20px;
+        bottom: 20px;
+        left: 0;
+
+        content: '';
+        text-align: center;
+
+        background: rgba(255, 255, 255, .6);
+    }
+    &:after {
+        font-size: 14px;
+        line-height: 35px;
+
+        position: absolute;
+        z-index: 3;
+        top: 50%;
+        left: 50%;
+
+        height: 35px;
+        margin: auto;
+        margin: -10px 0 0 -10px;
+        padding: 0 15px;
+
+        content: attr(data-sale-status);
+        -webkit-transform: translate(-50%, -50%);
+           -moz-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+        text-align: center;
+        white-space: nowrap;
+
+        color: #fff;
+        background: #363636;
+        background: rgba(54, 54, 54, .85);
+
+        .box-sizing(border-box);
+        .inline-block(middle);
+        .drop-shadow(0, 0, 12px, .2);
     }
 }
 

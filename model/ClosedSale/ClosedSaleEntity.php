@@ -14,9 +14,6 @@ class ClosedSaleEntity
     const MEDIA_BIG = 'closed_sale_651x483';
     const MEDIA_FULL = 'closed_sale_987x725';
 
-    // Время действия акции
-    const ACTION_DAYS = 2;
-
     /** @var string  */
     public $uid;
     /** @var string  */
@@ -54,11 +51,6 @@ class ClosedSaleEntity
 
         if (array_key_exists('expires_at', $arr)) {
             $this->endsAt = new \DateTime($arr['expires_at']);
-        } else {
-            $start = is_object($this->startsAt) ? clone $this->startsAt : null;
-            $this->endsAt = $start
-                ? $start->add(new \DateInterval(sprintf('P%sD', self::ACTION_DAYS)))
-                : new \DateTime(sprintf('%s days', self::ACTION_DAYS));
         }
 
         if (array_key_exists('priority', $arr)) {

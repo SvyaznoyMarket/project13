@@ -10,7 +10,7 @@ namespace Session\AbTest;
 trait ABHelperTrait {
 
     public static function isNewFurnitureListing() {
-        return \App::abTest()->getTest('furnitureListing')->getChosenCase()->getKey() === 'new';
+        return \App::abTest()->getTest('furnitureListing')->getChosenCase()->getKey() !== 'old';
     }
 
     /** Поиск с возможностью фильтрации по категориям?
@@ -56,11 +56,21 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isOnlineMotivation($ordersCount = 0){
-        return (int)$ordersCount == 1 && in_array(\App::abTest()->getTest('online_motivation')->getChosenCase()->getKey(), ['on', 'online_motivation_coupon', 'online_motivation_discount']);
+        $case = \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey();
+        if ($case === 'default') {
+            $case = 'on';
+        }
+
+        return (int)$ordersCount == 1 && in_array($case, ['on', 'online_motivation_coupon', 'online_motivation_discount']);
     }
 
     public function getOnlineMotivationKey() {
-        return \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey();
+        $case = \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey();
+        if ($case === 'default') {
+            $case = 'on';
+        }
+
+        return $case;
     }
 
     /**
@@ -93,7 +103,7 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isNewProductPage() {
-        return \App::abTest()->getTest('productCard')->getChosenCase()->getKey() == 'new';
+        return true;
     }
 
     /**
@@ -101,7 +111,7 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isCoreCart() {
-        return 'enabled' === \App::abTest()->getTest('core_cart')->getChosenCase()->getKey();
+        return 'disabled' !== \App::abTest()->getTest('core_cart')->getChosenCase()->getKey();
     }
 
     /**

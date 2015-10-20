@@ -1,10 +1,21 @@
 <?
+
+use \Model\ClosedSale\ClosedSaleEntity as Sale;
 /**
  * @var \View\ClosedSale\SaleIndexPage $page
  */
 
 $newSales = $page->getSales();
 $oldSales = $page->getSales(false);
+
+// Определим акцию с наименьшим сроком действия из "новых"
+if ($newSales) {
+	$newSaleWithMinEndDate = array_reduce(
+		$newSales,
+		function(Sale $carry, Sale $sale){ return $carry->endsAt < $sale->endsAt ? $carry : $sale; },
+		$newSales[0]
+	);
+}
 
 ?>
 
@@ -16,7 +27,7 @@ $oldSales = $page->getSales(false);
 	<div class="s-sales-head">
 		<h2 class="s-sales-head__title">Новые акции</h2>
 		<div class="s-sales-head__counter js-countdown-out js-countdown"
-			 data-expires="<?= $newSales[0]->endsAt->format('U') ?>"><?= $newSales[0]->getDateDiffString() ?></div>
+			 data-expires="<?= $newSaleWithMinEndDate->endsAt->format('U') ?>"><?= $newSaleWithMinEndDate->getDateDiffString() ?></div>
 	</div>
 
 	<!-- Сетка скидочных категорий -->
