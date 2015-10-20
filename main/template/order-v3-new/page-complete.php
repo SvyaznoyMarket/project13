@@ -40,14 +40,6 @@ return function(
                             <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <?= $order->getNumberErp()?></div>
                         <? endif ?>
 
-                        <? if ($showStatus): ?>
-                            <div style="background: #cc9999">
-                            <? if (!$order->ui): ?>
-                                Проверьте заказ в 1С
-                            <? endif ?>
-                            </div>
-                        <? endif ?>
-
                         <ul class="orderLn_lst">
                             <? foreach ($order->getProduct() as $key => $product): ?>
                             <? /** @var $product \Model\Order\Product\Entity */?>
@@ -80,6 +72,11 @@ return function(
                     <? endif ?>
 
                     <div class="orderLn_r">
+                        <? if (true || $showStatus && $order->status): ?>
+                            <?= $order->status->name ?>
+                            <span>Новый</span>
+                        <? endif ?>
+
                         <? if ($order->getPaySum()): ?>
                             <div class="orderLn_row orderLn_row-summ">
                                 <span class="summT">Сумма заказа:</span>
