@@ -98,16 +98,16 @@ $f = function (
                     <? foreach ($order->discounts as $discount) : ?>
                         <div class="order-discount__item jsOrderV3Discount">
                             <div class="order-discount__cell">
-                                <?// if ($discount->number !== null) : ?> <!-- это условие точно нужно? Как по мне - если уж вывели фишку, надо дать возможность ее удалить-->
+                                <? if (null !== $discount->number) : ?>
                                     <span class="order-discount__del jsDeleteDiscount" data-value="<?= $discount->number ?>">удалить</span>
-                                <?// endif ?>
+                                <? endif ?>
                             </div>
                             <a href="" class="order-discount__lk">
                                 <img class="order-discount__img" src="/styles/order-new/img/chip.png" alt="">
                             </a>
 
                             <div class="order-discount__name">
-                                Фишка на скидку <?= $discount->name ?>
+                                <?= $discount->name ?>
                             </div>
 
                             <div class="order-discount__val">-<?= $discount->discount ?> <span class="rubl">p</span></div>

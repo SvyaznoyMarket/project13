@@ -509,6 +509,18 @@ namespace Model\OrderDelivery\Entity {
                 if (isset($data['certificate']['par']))  $this->certificate['par'] = (string)$data['certificate']['par'];
             }
 
+            // SITE-4744 если выбран способ оплаты со скидкой, то добавить discount
+            if ($this->payment_method_id && ($paymentMethod = isset($this->possible_payment_methods[$this->payment_method_id]) ? $this->possible_payment_methods[$this->payment_method_id] : null) && $paymentMethod->discount) {
+                $discount = new Order\Discount();
+                $discount->discount =
+                    ('%' === $paymentMethod->discount['unit'])
+                    ? ($this->total_original_cost * ($paymentMethod->discount['value']) / 100)
+                    : $paymentMethod->discount['value']
+                ;
+                $discount->type = 'online';
+                $discount->name = sprintf("Скидка %s%s", $paymentMethod->discount['value'], $paymentMethod->discount['unit']);
+                $this->discounts[] = $discount;
+            }
         }
 
         /** Это заказ партнерский?
@@ -839,7 +851,7 @@ namespace Model\OrderDelivery\Entity\Order {
         private function validate() {
             foreach (get_object_vars($this) as $name => $value) {
                 // для некоторых скидок может и не быть number (бесплатная доставка)
-                if ($this->$name === null && $name !== 'number') throw new ValidateException("Для скидки не указан $name");
+                //if ($this->$name === null && $name !== 'number') throw new ValidateException("Для скидки не указан $name");
             }
         }
     }
