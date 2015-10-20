@@ -601,7 +601,7 @@ class Action {
         // стиль листинга
         $listingStyle = isset($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null;
 
-        $hasBanner = 'jewel' !== $listingStyle;
+        $hasBanner = !empty($catalogJson['bannerPlaceholder']) && 'jewel' !== $listingStyle;
 
         if (\App::config()->lite['enabled']) {
             $hasBanner = false;
@@ -635,7 +635,7 @@ class Action {
 
                 // SITE-4715
                 $smartChoiceData = array_filter($smartChoiceData, function($a) {
-                    return isset($a['products']);
+                    return !empty($a['products'][0]['id']);
                 });
 
                 foreach ($smartChoiceData as $smartChoiceItem) {
@@ -798,7 +798,7 @@ class Action {
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
-                    !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : [],
+                    $hasBanner ? $catalogJson['bannerPlaceholder'] : [],
                     null,
                     true,
                     $columnCount,

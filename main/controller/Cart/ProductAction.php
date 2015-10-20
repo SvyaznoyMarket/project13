@@ -117,6 +117,24 @@ class ProductAction {
                 throw new \Exception('Не получен список товаров');
             }
 
+            // вычисляем дельту между количеством старого продукта и нового
+            $productsQuantityDelta = [];
+            $productsInCart = \App::user()->getCart()->getProductsByUi();
+            foreach ($setProducts as $setProd) {
+                if (array_key_exists($setProd['ui'], $productsInCart)) {
+                    if ($setProd['quantity'] === 0) {
+                        $productsQuantityDelta[$setProd['ui']] = $productsInCart[$setProd['ui']]->quantity;
+                    } else if (preg_match('/^[\+-]/', $setProd['quantity'])) {
+                        $productsQuantityDelta[$setProd['ui']] = (int)$setProd['quantity'];
+                    } else {
+                        $productsQuantityDelta[$setProd['ui']] = (int)$setProd['quantity'] - $productsInCart[$setProd['ui']]->quantity;
+                    }
+
+                } else {
+                    $productsQuantityDelta[$setProd['ui']] = (int)$setProd['quantity'];
+                }
+            }
+
             $updateResultProducts = $cart->update($setProducts, false, \App::config()->cart['productLimit']);
 
             $cart->pushStateEvent([]);
@@ -158,7 +176,7 @@ class ProductAction {
                 'success' => true,
                 'cart'    => $cart->getDump(),
                 // Содержит товары из корзины и удалённые товары
-                'setProducts'  => array_values(array_filter(array_map(function(\Session\Cart\Update\Result\Product $updateResultProduct) {
+                'setProducts'  => array_values(array_filter(array_map(function(\Session\Cart\Update\Result\Product $updateResultProduct) use ($productsQuantityDelta) {
                     if (!$updateResultProduct->setAction) {
                         return;
                     }
@@ -179,6 +197,7 @@ class ProductAction {
                         'isSlot' => $updateResultProduct->cartProduct->isSlot,
                         'isOnlyFromPartner' => $updateResultProduct->cartProduct->isOnlyFromPartner,
                         'quantity'          => $updateResultProduct->cartProduct->quantity,
+                        'quantityDelta'     => array_key_exists($updateResultProduct->cartProduct->ui, $productsQuantityDelta) ? $productsQuantityDelta[$updateResultProduct->cartProduct->ui] : false,
                         'categoryName'      => $updateResultProduct->fullProduct && $updateResultProduct->fullProduct->getRootCategory() ? $updateResultProduct->fullProduct->getRootCategory()->getName() : '',
                         'brand'             => $updateResultProduct->fullProduct && $updateResultProduct->fullProduct->getBrand() ? $updateResultProduct->fullProduct->getBrand()->getName() : '',
                     ];

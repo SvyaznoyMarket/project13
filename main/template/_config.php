@@ -42,6 +42,11 @@ $config = array_merge([
             'name'            => \App::user()->getRegion() ? \App::user()->getRegion()->getName() : null
         ],
     ],
+    'request' => [
+        'route' => [
+            'attributes' => array_diff_key(\App::request()->attributes->all(), ['pattern' => null, 'method' => null, 'action' => null, 'route' => null, 'require' => null]),
+        ],
+    ],
     'routes' => [
         'cart'                      => ['pattern' => $routerRules['cart']['pattern']],
         'cart.product.setList'      => ['pattern' => $routerRules['cart.product.setList']['pattern']],
@@ -53,6 +58,7 @@ $config = array_merge([
         'orderV3OneClick.form'      => ['pattern' => $routerRules['orderV3OneClick.form']['pattern']],
         'order.slot.create'         => ['pattern' => $routerRules['order.slot.create']['pattern']],
         'product.reviews.get'       => ['pattern' => $routerRules['product.reviews']['pattern']],
+        'ajax.product.category'     => ['pattern' => $routerRules['ajax.product.category']['pattern']],
     ],
     'newProductPage' => \App::abTest()->isNewProductPage(),
     'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS

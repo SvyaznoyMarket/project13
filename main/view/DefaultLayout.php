@@ -2,9 +2,12 @@
 
 namespace View;
 
+use Session\AbTest\ABHelperTrait;
 use Session\AbTest\AbTest;
 
 class DefaultLayout extends Layout {
+    use ABHelperTrait;
+
     protected $layout  = 'layout-oneColumn';
     protected $breadcrumbsPath = null;
     protected $useTchiboAnalytics = false;
@@ -181,6 +184,8 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotTopbar() {
+        $this->setGlobalParam('cartTextInOrderButton', $this->isCartTextInOrderButton()); // SITE-6213
+
         return $this->render('userbar2/topbar');
     }
 
@@ -331,7 +336,7 @@ class DefaultLayout extends Layout {
         foreach ($data as $key => $value) {
             $dataString .= sprintf('data-%s="%s" ', $key, $value);
         }
-        return sprintf('<div class="i-flocktory js-flocktory-data-layer" %s ></div>', $dataString);
+        return sprintf('<div class="i-flocktory js-flocktory-data-layer"></div><div class="i-flocktory" %s ></div>', $dataString);
     }
 
     public function googleAnalyticsJS(){

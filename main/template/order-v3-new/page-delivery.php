@@ -19,6 +19,13 @@ $f = function(
 
     $isCoordsValid = $region && $region->getLatitude() != null && $region->getLongitude() != null;
 
+    $useUserAddressCount = 0;
+    foreach ($orderDelivery->orders as $order) {
+        if ($order->delivery && $order->delivery->use_user_address) {
+            $useUserAddressCount++;
+        }
+    }
+
     $initialMapCords = [
         'latitude' => $isCoordsValid ? $region->getLatitude() : 55.76,
         'longitude' => $isCoordsValid ? $region->getLongitude() : 37.64,
@@ -253,7 +260,7 @@ $f = function(
             <? else: ?>
                 <div class="orderCol_delivrIn orderCol_delivrIn-empty jsSmartAddressBlock">
                     <div class="orderCol_delivrIn_t clearfix">
-                        <strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
+                        <strong>Адрес</strong> <? if ($useUserAddressCount > 1): ?><span class="colorBrightGrey">для всех заказов с доставкой</span><? endif ?>
                     </div>
 
                     <div class="orderCol_addrs" style="margin-left: 0;">

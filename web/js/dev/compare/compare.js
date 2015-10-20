@@ -81,14 +81,14 @@
 			});
 
 			model.activeCompareGroupIndex = ko.observable(activeCompareGroupIndex);
-			model.similarOnly = ko.observable(true);
+			model.isDiffMode = ko.observable(true);
 			model.scrolled = ko.observable(false);
 			model.cart = ENTER.UserModel.cart().products;
 			model.compare = ENTER.UserModel.compare;
 			return model;
 		}
 
-		function hideNotSimilarProperties() {
+		function hideSimilarProperties() {
 			var compareGroups = compareModel.compareGroups();
 			if (compareGroups.length) {
 				$.each(compareGroups[compareModel.activeCompareGroupIndex()].propertyGroups(), function(key, value){
@@ -98,15 +98,20 @@
 						var isSimilarProperty = true,
 							previousValueText = null;
 
-						$.each(value.values(), function(key, value){
-							if (value.text != previousValueText && previousValueText !== null) {
-								isSimilarGroup = false;
-								isSimilarProperty = false;
-								return false;
-							}
+						if (value.values().length > 1) {
+							$.each(value.values(), function(key, value){
+								if (value.text != previousValueText && previousValueText !== null) {
+									isSimilarGroup = false;
+									isSimilarProperty = false;
+									return false;
+								}
 
-							previousValueText = value.text;
-						});
+								previousValueText = value.text;
+							});
+						} else {
+							isSimilarGroup = false;
+							isSimilarProperty = false;
+						}
 
 						value.isSimilar(isSimilarProperty);
 					});
@@ -115,10 +120,10 @@
 				});
 			}
 
-			compareModel.similarOnly(true);
+			compareModel.isDiffMode(true);
 		}
 
-		function showNotSimilarProperties() {
+		function showSimilarProperties() {
 			var compareGroups = compareModel.compareGroups();
 			if (compareGroups.length) {
 				$.each(compareGroups[compareModel.activeCompareGroupIndex()].propertyGroups(), function(key, value){
@@ -130,7 +135,7 @@
 				});
 			}
 
-			compareModel.similarOnly(false);
+			compareModel.isDiffMode(false);
 		}
 
 		function createFixedTableCells(rowContainers, columnContainers, events) {
@@ -410,10 +415,10 @@
 		}
 
 		function updateSimilarPropertiesDisplay() {
-			if (compareModel.similarOnly()) {
-				hideNotSimilarProperties();
+			if (compareModel.isDiffMode()) {
+				hideSimilarProperties();
 			} else {
-				showNotSimilarProperties();
+				showSimilarProperties();
 			}
 		}
 
@@ -457,7 +462,7 @@
 			updateElements();
 		});
 
-		compareModel.similarOnly.subscribe(function(){
+		compareModel.isDiffMode.subscribe(function(){
 			if (fixedTableCells) {
 				fixedTableCells.updateSize();
 			}
@@ -526,12 +531,12 @@
 			compareModel.activeCompareGroupIndex($(e.currentTarget).data('index'));
 		});
 
-		$compare.on('click', '.js-compare-modeSimilarOnly', function(){
-			hideNotSimilarProperties();
+		$compare.on('click', '.js-compare-mode-diff', function(){
+			hideSimilarProperties();
 		});
 
-		$compare.on('click', '.js-compare-modeAll', function(){
-			showNotSimilarProperties();
+		$compare.on('click', '.js-compare-mode-all', function(){
+			showSimilarProperties();
 		});
 
 		$compare.on('click', '.js-compare-propertyGroupLink', function(e){

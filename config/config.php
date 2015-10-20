@@ -34,7 +34,6 @@ $c->mobileHost = 'm.enter.ru';
 $c->description = 'Enter – это все товары для жизни по интернет-ценам. В Enter вы можете купить что угодно, когда угодно и любым удобным для Вас способом!';
 
 $c->redirect301['enabled'] = true;
-$c->mobileRedirect['enabled'] = false;
 
 $c->curlCache['enabled'] = true;
 $c->curlCache['delayRatio'] = [0, 0.025]; // количество и время задержек
@@ -378,7 +377,8 @@ $c->order['prepayment'] = [
 $c->order['splitSessionKey'] = 'order_split';
 $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
 $c->order['sessionInfoOnComplete'] = true; // краткая инфа о заказе
-$c->order['emailRequired'] = true;          // обязательность email
+$c->order['emailRequired'] = true; // обязательность email
+$c->order['creditStatusSessionKey'] = 'order_credit';
 
 $c->newDeliveryCalc = true;
 

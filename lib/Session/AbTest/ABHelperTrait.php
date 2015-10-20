@@ -185,4 +185,12 @@ trait ABHelperTrait {
     public static function isCurrencyDiscountPrice() {
         return 'currency' === \App::abTest()->getTest('discount_price')->getChosenCase()->getKey();
     }
+
+    /**
+     * Текст кнопки "Оформить заказ" в параплашке изменен на "В корзину"?
+     * @return bool
+     */
+    public function isCartTextInOrderButton() {
+        return self::isOrderWithCart() && ('cart' === \App::abTest()->getTest('cart_text')->getChosenCase()->getKey());
+    }
 }

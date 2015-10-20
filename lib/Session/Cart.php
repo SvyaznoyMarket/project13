@@ -374,6 +374,12 @@ namespace Session {
                 });
 
                 $sessionCart['updated'] = (new \DateTime('now'))->format('c');
+
+                // метка обновления ядерной корзины
+                if (!array_key_exists('coreUpdated', $sessionCart)) {
+                    $sessionCart['coreUpdated'] = null;
+                }
+
                 $this->setSessionCart($sessionCart);
 
                 // TODO может перенести синхронизацию серверной корзины сюда (выполняя её на основе данных из $resultProducts)?
@@ -499,6 +505,32 @@ namespace Session {
                 'sum' => $sessionCart['sum'],
                 'link' => \App::router()->generate('order'),
             ];
+        }
+
+        /**
+         * @return \DateTime|null
+         */
+        public function getCoreUpdated() {
+            $sessionCart = $this->getSessionCart();
+
+            $date = isset($sessionCart['coreUpdated']) ? $sessionCart['coreUpdated'] : null;
+            if ($date) {
+                try {
+                    $date = new \DateTime($sessionCart['coreUpdated']);
+                } catch (\Exception $e) {}
+            }
+
+            return $date;
+        }
+
+        /**
+         * @param \DateTime|null $date
+         */
+        public function setCoreUpdated(\DateTime $date = null) {
+            $sessionCart = $this->getSessionCart();
+
+            $sessionCart['coreUpdated'] = $date ? $date->format('Y-m-d H:i:s') : null;
+            $this->setSessionCart($sessionCart);
         }
     
         /**

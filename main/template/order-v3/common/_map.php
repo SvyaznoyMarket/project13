@@ -47,13 +47,13 @@
 
                 <div class="pick-point-search">
                     <div class="pick-point-search__input-wrap">
-                        <input class="pick-point-search-input" type="text" placeholder="Искать по улице, метро" data-bind="click: enableAutocompleteListVisible, value: searchInput, valueUpdate: 'afterkeydown'" />
+                        <input class="pick-point-search-input" type="text" placeholder="Искать по улице, метро" data-bind="click: enableAutocompleteListVisible, value: searchInput, valueUpdate: 'afterkeydown', event: { keydown: autocompleteNavigation }" />
                         <div class="pick-point-search__clear" data-bind="click: clearSearchInput, visible: searchInput ">×</div>
                     </div>
                     <div class="pick-point-suggest" style="display: none"
                          data-bind="visible: searchAutocompleteListVisible() && searchAutocompleteList().length > 0, event: { mouseleave: disableAutocompleteListVisible }">
                         <ul class="pick-point-suggest__list" data-bind="foreach: searchAutocompleteList">
-                            <li class="pick-point-suggest__i" data-bind="text: name, attr: { 'data-bounds': bounds }, click: $parent.setMapCenter"></li>
+                            <li class="pick-point-suggest__i" data-bind="text: name, attr: { 'data-element': ko.toJSON($data) }, click: $parent.setMapCenter"></li>
                         </ul>
                     </div>
                 </div>

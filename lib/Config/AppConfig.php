@@ -432,6 +432,7 @@ class AppConfig {
         'splitSessionKey'         => null,
         'oneClickSplitSessionKey' => null,
         'sessionInfoOnComplete'   => null, // краткая инфа о заказе на странице order.complete
+        'creditStatusSessionKey'  => null,
     ];
     /** @var bool */
     public $newDeliveryCalc;

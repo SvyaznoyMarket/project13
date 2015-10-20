@@ -228,7 +228,7 @@
     &__l {
         float: left;
 
-        width: 680px;
+        width: 692px;
     }
     &__r {
         float: right;
@@ -242,6 +242,26 @@
         padding: 0 10px 15px 10px;
 
         border-bottom: 1px solid #e8e8e8;
+        &--valuable{
+            border: 2px solid #80c342;
+            position: relative;
+            padding-top: 25px;
+            margin-top: 20px;
+        }
+        .product-card-rating{
+            margin-bottom: 15px;
+        }
+    }
+    &__lbl{
+        position: absolute;
+        padding: 0 5px;
+
+        top: -12px;
+        left: 5px;
+
+        color: #80c342;
+        font-size: 14px;
+        background-color: #fff;
     }
     &__msg {
         line-height: 26px;
@@ -392,6 +412,70 @@
         }
         &:hover {
             text-decoration: none;
+        }
+    }
+    &-sort{
+        border-bottom: 1px solid #e8e8e8;
+        padding: 0 10px 5px 0px;
+        text-align: right;
+        margin-top: -17px;
+        margin-left: -10px;
+
+        &__tl{
+            .inline-block(middle);
+            color: #8c8c8c;
+            font-size: 14px;
+        }
+        &__btn{
+            .inline-block(middle);
+            background-color: @white;
+            color: #686868;
+            border: 1px solid #c7c7c7;
+            font-size: 12px;
+            padding: 4px 10px;
+            .rounded(3px);
+            margin-left: 10px;
+            cursor: pointer;
+            
+            &:hover{
+                text-decoration: none;
+            }
+
+            &:after{
+                content: '';
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 7px 4.5px 0 4.5px;
+                border-color: #686868 transparent transparent transparent;
+                .inline-block(middle);
+                margin-left: 4px;
+            }
+
+            &.active{
+                color: @white;
+                background-color: #424242;
+                border-color: @black;
+                &:after{
+                    border-color: @white transparent transparent transparent;
+                }
+                &.asc{
+                    &:after{
+                        border-color: transparent transparent @white transparent;
+                    }
+                }
+
+            }
+            &.asc{
+                &:after{
+                    border-width: 0 4.5px 7px 4.5px;
+                    border-color: transparent transparent #686868 transparent;
+                }
+
+            }
+            &.desc{
+
+            }
         }
     }
     &-src{
