@@ -33,6 +33,8 @@ class Entity {
 
     /** @var int */
     public $id;
+    /** @var string */
+    public $ui;
     /** @var int */
     public $typeId;
     /** @var int */
@@ -151,6 +153,7 @@ class Entity {
      */
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
+        if (isset($data['ui'])) $this->ui = (string)$data['ui'];
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('status_id', $data)) $this->setStatusId($data['status_id']);
         if (array_key_exists('access_token', $data)) $this->setAccessToken($data['access_token']);

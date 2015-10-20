@@ -14,6 +14,8 @@ return function(
 /** @var $products \Model\Product\Entity[] */
     $page = new \View\OrderV3\CompletePage();
     array_map(function(\Model\PaymentMethod\PaymentEntity &$entity) {$entity->unsetSvyaznoyClub();}, $ordersPayment); // fix for SITE-5229 (see comments)
+
+    $showStatus = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
 ?>
 <style>
     .jsPaymentForms {
@@ -36,6 +38,14 @@ return function(
                             <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
                         <? else : ?>
                             <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <?= $order->getNumberErp()?></div>
+                        <? endif ?>
+
+                        <? if ($showStatus): ?>
+                            <div style="background: #cc9999">
+                            <? if (!$order->ui): ?>
+                                Проверьте заказ в 1С
+                            <? endif ?>
+                            </div>
                         <? endif ?>
 
                         <ul class="orderLn_lst">
