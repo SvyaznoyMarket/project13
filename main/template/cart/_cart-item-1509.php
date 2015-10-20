@@ -5,13 +5,13 @@
             <img src="" alt="" data-bind="attr: { src: img, alt: name}">
         </a>
 
-        <!-- ko if: !isAvailable -->
+        <!-- ko if: !isAvailable && sender && sender.name == 'secret_sale' -->
             <noindex><div class="not-available__sticker">Распродано</div></noindex>
         <!-- /ko -->
     </div>
 
     <div class="order-cart__desc">
-        <div class="order-cart__name" data-bind="css: { unavailable: !isAvailable }">
+        <div class="order-cart__name" data-bind="css: { unavailable: !isAvailable && sender && sender.name == 'secret_sale' }">
             <a class="order-cart__name-lk" href="" data-bind="text: name, attr: {href: link}"></a>
             <!-- ko if: isAvailable -->
                 <noindex><div class="order-cart__is-available">Есть в наличии</div></noindex>

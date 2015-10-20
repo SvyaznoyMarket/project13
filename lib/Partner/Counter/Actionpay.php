@@ -49,16 +49,16 @@ class Actionpay {
                             $rate = 0.136;
                             break;
                         case Category::UI_SDELAY_SAM:  // Сделай сам
-                            $rate = 0.0858;
+                            $rate = 0.0586;
                             break;
                         case Category::UI_DETSKIE_TOVARY: // Детские товары
-                            $rate = 0.0387;
+                            $rate = 0.091;
                             break;
                         case Category::UI_TOVARY_DLYA_DOMA: // Товары для дома
-                            $rate = 0.0652;
+                            $rate = 0.136;
                             break;
                         case Category::UI_ELECTRONIKA: // Электроника
-                            $rate = 0.022;
+                            $rate = 0.0055;
                             break;
                         case Category::UI_PODARKI_I_HOBBY:  // Подарки и хобби
                             $rate = 0.065;
@@ -70,13 +70,13 @@ class Actionpay {
                             $rate = 0.13;
                             break;
                         case Category::UI_PARFUMERIA_I_COSMETIKA: // Парфюмерия и косметика
-                            $rate = 0.0429;
+                            $rate = 0.078;
                             break;
                         case Category::UI_SPORT_I_OTDYH: // Спорт и отдых
                             $rate = 0.099;
                             break;
                         case Category::UI_ZOOTOVARY: // Зоотовары
-                            $rate = 0.0349;
+                            $rate = 0.0586;
                             break;
                         case Category::UI_TCHIBO: // Товары Tchibo
                             $rate = 0.1144;
