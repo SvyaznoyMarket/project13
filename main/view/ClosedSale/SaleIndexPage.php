@@ -31,16 +31,14 @@ class SaleIndexPage extends DefaultLayout
      */
     public function getSales($new = true)
     {
-        if ($new) {
-            $endDate = (new \DateTime())->setTimestamp(strtotime(sprintf('%s day midnight', ClosedSaleEntity::ACTION_DAYS)));
-        } else {
-            $endDate = (new \DateTime)->setTimestamp(strtotime(sprintf('%s day midnight', ClosedSaleEntity::ACTION_DAYS - 1)));
-        }
+        $endDate = (new \DateTime)->setTimestamp(strtotime('1 day midnight'));
 
         $actions = array_filter(
             $this->sales,
-            function(ClosedSaleEntity $saleEntity) use ($endDate) {
-                return $saleEntity->endsAt->format('d.m.Y') === $endDate->format('d.m.Y');
+            function(ClosedSaleEntity $saleEntity) use ($endDate, $new) {
+                return $new
+                    ? $saleEntity->endsAt > $endDate
+                    : $saleEntity->endsAt == $endDate;
             }
         );
 
