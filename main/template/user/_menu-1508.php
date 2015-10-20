@@ -23,6 +23,12 @@ $activeMenuCss = 'active';
         <li class="personal-navs__i <?= $route == 'user.subscriptions' ? $activeMenuCss : '' ?>">
             <a href="<?= $helper->url('user.subscriptions') ?>"  class="personal-navs__lk">Подписки</a>
         </li>
+        <li class="personal-navs__i <?= $route == 'user.address' ? $activeMenuCss : '' ?>">
+            <a href="<?= $helper->url('user.address') ?>"  class="personal-navs__lk">Адреса</a>
+        </li>
+        <li class="personal-navs__i <?= $route == 'user.message' ? $activeMenuCss : '' ?>">
+            <a href="<?= $helper->url('user.message') ?>"  class="personal-navs__lk">Сообщения</a>
+        </li>
         <li class="personal-navs__i <?= $route == 'user.edit' ? $activeMenuCss : '' ?>">
             <a href="<?= $helper->url('user.edit') ?>" class="personal-navs__lk">Личные данные</a>
         </li>

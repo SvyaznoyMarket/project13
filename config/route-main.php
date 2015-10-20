@@ -606,6 +606,14 @@ return [
         'action'  => ['User\Notification\AddProductAction', 'execute'],
         'method'  => ['POST'],
     ],
+    'user.address' => [
+        'pattern' => '/private/address',
+        'action'  => ['User\Address\IndexAction', 'execute'],
+    ],
+    'user.message' => [
+        'pattern' => '/private/messages',
+        'action'  => ['User\Message\IndexAction', 'execute'],
+    ],
 
     // маршрутизатор нескольких запросов
     'route' => [
