@@ -44,6 +44,10 @@
 			$.each(data.compare, function(i,val){ model.compare.push(val); })
 		}
 
+		model.cart().hasAvailableProducts = ko.computed(function(){
+			return $.grep(model.cart().products(), function(product){ return product.isAvailable })
+		});
+
 		/* АБ-тест платного самовывоза */
 		model.infoIconVisible = ko.observable(false);
 		model.infoBlock_1Visible = ko.computed(function(){
