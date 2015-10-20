@@ -86,7 +86,7 @@ $f = function (
 						</div>
                     </div>
                 <? endforeach ?>
-
+                </div>
                 <!-- введенные скидки, купоны -->
 
 
@@ -131,8 +131,8 @@ $f = function (
                                 <span class="rubl">p</span></span>
                         </div>
                     <? endif ?>
+                    </div>
                 <? endif ?>
-                </div>
                 <!-- END: введенные скидки, купоны -->
             </div>
             <!-- END левая часть блока заказа - список заказанных товаров-->
