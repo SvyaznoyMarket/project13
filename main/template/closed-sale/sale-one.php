@@ -91,10 +91,9 @@ $helper = \App::closureTemplating()->getParam('helper');
 			]
 		]) // листинг ?>
 
-		<?= $helper->render( 'product/__listAction', [
-			'pager' => $productPager,
-			'productSorting' => $productSorting,
-		] ) // сортировка, режим просмотра, режим листания ?>
+		<div class="sorting sorting-top clearfix js-category-sortingAndPagination">
+			<?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
+		</div>
 
 	<? endif ?>
 
