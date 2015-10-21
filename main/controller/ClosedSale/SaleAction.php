@@ -58,7 +58,7 @@ class SaleAction
         $page = new SaleShowPage();
         $pageNum = (int)$request->get('page', 1);
         $limit = \App::config()->product['itemsPerPage'];
-        $selectedCategoryId = $request->query->get('categoryId');
+        $selectedCategoryId = $request->query->get('category');
         $categories = [];
 
         $sales = $this->getSales();
