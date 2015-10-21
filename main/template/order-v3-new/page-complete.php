@@ -175,9 +175,13 @@ return function(
                     </div>
 
                     <div class="orderLn_status orderLn_cell">
-                        <? if (true || $showStatus && $order->status): ?>
+                        <? if ($showStatus): ?>
                             <div class="orderLn_status-title">Статус:</div>
-                            <strong class="orderLn_status-new"><?= $order->status->name ?></strong>
+                            <? if ($order->status): ?>
+                                <strong class="orderLn_status-new"><?= $order->status->name ?></strong>
+                            <? else:?>
+                                <strong>Не известен</strong>
+                            <? endif ?>
                         <? endif ?>
                     </div>
                 </div>
