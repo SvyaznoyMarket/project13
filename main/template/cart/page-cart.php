@@ -50,6 +50,8 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 
 <div class="clear"></div>
 
+<?= $page->render('cart/_cart-sales', ['sales' => $sales]) ?>
+
 <? if (\App::config()->product['pullRecommendation']): ?>
     <? if ($cart->count()): ?>
         <div class="basketLine">

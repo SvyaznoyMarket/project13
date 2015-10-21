@@ -118,7 +118,7 @@ class ShowAction {
         $productItem['properties'] = (new \View\Product\Properties())->execute($helper, $product);
 
         // oldPrice and priceSale
-        if ( $product->getPriceOld() && $product->getLabel()) {
+        if ($product->getPriceOld()) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
             if (AbTest::isCurrencyDiscountPrice()) {
                 $productItem['priceSale'] = $helper->formatPrice($product->getPriceOld() - $product->getPrice());

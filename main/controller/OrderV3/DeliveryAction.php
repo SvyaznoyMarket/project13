@@ -70,7 +70,10 @@ class DeliveryAction extends OrderV3 {
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
                 $result['error'] = ['message' => $e->getMessage()];
-                if (!$previousSplit) {
+
+                if (302 === $e->getCode()) {
+                    $result['redirect'] = \App::router()->generate('cart');
+                } else if (!$previousSplit) {
                     $result['redirect'] = \App::router()->generate('orderV3.delivery');
                 }
             }
@@ -229,16 +232,13 @@ class DeliveryAction extends OrderV3 {
             if (!empty($this->cart->getCreditProductIds())) $splitData['payment_method_id'] = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT;
 
             try {
-                // SITE-6016
-                if (\Session\AbTest\ABHelperTrait::isOrderDeliveryTypeTestAvailableInCurrentRegion()) {
-                    switch ( \App::abTest()->getTest('order_delivery_type')->getChosenCase()->getKey()) {
-                        case 'self':
-                            $splitData += ['delivery_type' => 'self'];
-                            break;
-                        case 'delivery':
-                            $splitData += ['delivery_type' => 'standart'];
-                            break;
-                    }
+                switch (\App::abTest()->getOrderDeliveryType()) {
+                    case 'self':
+                        $splitData += ['delivery_type' => 'self'];
+                        break;
+                    case 'delivery':
+                        $splitData += ['delivery_type' => 'standart'];
+                        break;
                 }
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);

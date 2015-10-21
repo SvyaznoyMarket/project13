@@ -1,7 +1,6 @@
 <?php
 
 return [
-    // главная страница
     'homepage' => [
         'pattern' => '/',
         'action'  => ['Main\Action', 'index'],
@@ -585,7 +584,7 @@ return [
     // редактирование данных пользователя
     'user.orders' => [
         'pattern' => '/private/orders',
-        'action'  => ['User\OrdersAction', 'execute'],
+        'action'  => ['User\Order\IndexAction', 'execute'],
     ],
     // редактирование данных пользователя
     'user.favorites' => [
@@ -901,6 +900,23 @@ return [
 			'page'	=> '\d{1,2}'
         ],
 	],
+
+    /*
+     * Закрытые распродажи
+     */
+
+    'sale.all'  => [
+        'pattern'   => '/secretsale',
+        'action'    => ['ClosedSale\SaleAction', 'index']
+    ],
+
+    'sale.one'  => [
+        'pattern'   => '/secretsale/{uid}',
+        'action'    => ['ClosedSale\SaleAction', 'show'],
+        'require' => [
+            'uid'		=> '[\w\d-_]+'
+        ],
+    ],
 	
 	/**
 	 * game.center

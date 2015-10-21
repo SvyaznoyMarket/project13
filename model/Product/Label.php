@@ -24,6 +24,8 @@ class Label {
     public $affectPrice = false;
     /** @var \DateTime|null */
     public $expires;
+    /** @var string|null */
+    public $url;
     /** @var Media[] */
     public $medias = [];
 
