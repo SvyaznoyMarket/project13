@@ -11,15 +11,19 @@ trait ProductHelperTrait {
      * @return \Model\Product\Entity[]|[]
      */
     public static function filterByModelId($collection) {
-        $modelIds = [];
-        return array_filter($collection, function ($product) use (&$modelIds) {
+        $modelUis = [];
+        return array_filter($collection, function ($product) use (&$modelUis) {
             // Оставим элемент в этих случаях
-            if (!($product instanceof \Model\Product\Entity) || is_null($product->getModelId())) return true;
-            if (!in_array($product->getModelId(), $modelIds)) {
-                $modelIds[] = $product->getModelId();
-            } else return false;
-            return true;
+            if (!($product instanceof \Model\Product\Entity) || !$product->model || !$product->model->ui) {
+                return true;
+            }
+
+            if (!in_array($product->model->ui, $modelUis, true)) {
+                $modelUis[] = $product->model->ui;
+                return true;
+            } else {
+                return false;
+            }
         });
     }
-
 }

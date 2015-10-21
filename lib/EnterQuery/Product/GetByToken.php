@@ -36,6 +36,7 @@ namespace EnterQuery\Product
                         'select_type' => 'slug',
                         'slug'        => $this->token,
                         'geo_id'      => $this->regionId,
+                        'withModels'  => 0,
                     ]
                 ),
                 [], // data
