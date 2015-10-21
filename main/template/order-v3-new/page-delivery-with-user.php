@@ -132,10 +132,11 @@ $f = function(
                                 <!-- Карта Много.ру -->
                                 <div class="bonusCnt_i" data-eq="<?= count($bonusCards) ?>">
                                     <img class="bonusCnt_img" src="/styles/order/img/mnogoru-mini.png" alt="mnogo.ru" />
-                                            <span class="bonusCnt_tx">
-                                                <span id="bonusCardLink-<?= md5(json_encode(['mnogoru'])) ?>" class="brb-dt">Карта Много.ру</span> <!-- что бы убрать бордер можно удалить класс brb-dt -->
-                                                <span id="bonusCardCode-<?= md5(json_encode(['mnogoru'])) ?>" class="bonusCnt_tx_code"><span class="brb-dt jsMnogoRuSpan"></span></span>
-                                            </span>
+                                    
+                                    <span class="bonusCnt_tx">
+                                        <span id="bonusCardLink-<?= md5(json_encode(['mnogoru'])) ?>" class="brb-dt">Карта Много.ру</span> <!-- что бы убрать бордер можно удалить класс brb-dt -->
+                                        <span id="bonusCardCode-<?= md5(json_encode(['mnogoru'])) ?>" class="bonusCnt_tx_code"><span class="brb-dt jsMnogoRuSpan"></span></span>
+                                    </span>
                                 </div>
 
                                 <div class="bonusCnt_it clearfix" style="display: none">
@@ -158,7 +159,7 @@ $f = function(
                         </div>
                         <!-- END Берем из старой верстки - бонусные карты -->
                     </div>
-
+                          
                     <? if (!$userEntity) : ?>
                     <div class="order-receiver__social social">
                         <div class="social__head">Войти через</div>

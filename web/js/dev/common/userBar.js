@@ -340,7 +340,7 @@
 					openFullFixedUserBar(false, {setProducts: [{article: $this.data('product-article')}]}, {url: '/ajax/upsale/' + $this.data('product-id'), fromUpsale: false});
 				}
 
-				$body.trigger('removeFromCart', [data.setProducts]);
+				$body.trigger('removeFromCart', [data]);
 			}
 		});
 	});

@@ -500,6 +500,7 @@ namespace Session {
                         'deleteUrl'          => $helper->url('cart.product.setList', ['products' => [['ui' => $cartProduct['ui'], 'quantity' => '0']]]),
                         'decreaseUrl'        => $helper->url('cart.product.setList', ['products' => [['ui' => $cartProduct['ui'], 'quantity' => '-1']]]),
                         'increaseUrl'        => $helper->url('cart.product.setList', ['products' => [['ui' => $cartProduct['ui'], 'quantity' => '+1']]]),
+                        'sender'             => $cartProduct['sender']
                     ];
                 }, $sessionCart['product'])),
                 'sum' => $sessionCart['sum'],

@@ -86,6 +86,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <?= $helper->render('product-page/blocks/coupon', ['coupon' => $coupon]) ?>
 
     <? if ($product->getLabel() && $product->getLabel()->expires && !$product->getLabel()->isExpired()) : ?>
+        <?= $product->getLabel()->url ? '<a href="' . $product->getLabel()->url .'" style="cursor: pointer">' : '' ?>
         <!-- Шильдик с правой стороны -->
         <div class="product-card-action i-info <?= !$labelImage ? 'product-card-action-no-image' : ''?>">
 
@@ -106,6 +107,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
                 <!--/ попап - подробности акции -->
             <? endif ?>
         </div>
+        <?= $product->getLabel()->url ? '</a>' : '' ?>
     <? endif ?>
 
     <? if ($product->getPriceOld()) : ?>

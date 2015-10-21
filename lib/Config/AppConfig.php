@@ -74,6 +74,7 @@ class AppConfig {
     public $authToken = [
         'name'     => null,
         'authorized_cookie' => null,
+        'disposableTokenParam'  => null
     ];
     /** @var array */
     public $session = [
