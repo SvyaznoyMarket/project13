@@ -91,7 +91,7 @@ $helper = \App::closureTemplating()->getParam('helper');
 			]
 		]) // листинг ?>
 
-		<div class="sorting sorting-top clearfix js-category-sortingAndPagination">
+		<div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
 			<?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
 		</div>
 
