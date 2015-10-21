@@ -3,13 +3,7 @@
 }
 
 .orderLn {
-	padding: 10px;
-
-	border-bottom: 1px solid @typGray;
-
-	&:first-child {
-		border-top: 1px solid @typGray;
-	}
+	border-bottom: 1px solid #c7c7c7;
 
 	.summT {
 		.inline-block();
@@ -47,25 +41,37 @@
 		}
 	}
 
-	&_l {
-		float: left;
-
-		width: 350px;
+	&_cell {
+		display: table-cell;
+		vertical-align: top;
+		padding: 10px;
 	}
 
-	&_r {
-		float: right;
+	&_l {
+		width: 330px;
+		padding-right: 20px;
 	}
 
 	&_c {
-		float: left;
+		width: 300px;
+		padding: 39px 0 0;
+	}
 
-		width: 350px;
-		padding: 37px 0 0;
+	&_status {
+		width: 145px;
+		padding: 39px 0 0 20px;
+		font-size: 14px;
+
+		&-title {
+			color: #868686;
+		}
+
+		&-new {
+			color: #009925
+		}
 	}
 
 	&_row {
-		margin: 0 0 10px;
 		position: relative;
 
 		&:last-child {
@@ -83,7 +89,7 @@
 		    width: 500px;
 		}
 
-		&-t {  
+		&-t {
 			font-size: 20px;
 		}
 
@@ -134,7 +140,7 @@
 	}
 
 	&_lst {
-		color: @lightgrey-5;
+		color: #868686;
 
 		font-size: 14px;
 
@@ -143,7 +149,7 @@
 		}
 
 		&_lk {
-			color: @lightgrey-5;
+			color: #868686;
 			border-bottom: 1px dotted;
 		}
 	}

@@ -31,8 +31,8 @@ return function(
             <? foreach ($orders as $order): ?>
             <? /** @var $order \Model\Order\Entity */?>
 
-                <div class="orderLn clearfix" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
-                    <div class="orderLn_l">
+                <div class="orderLn table" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
+                    <div class="orderLn_l orderLn_cell">
 
                         <? if ($userEntity) : ?>
                             <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
@@ -61,8 +61,9 @@ return function(
 
                     <? if (\RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)) : ?>
 
-                    <div class="orderLn_c">
-                        <div><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>
+                    <div class="orderLn_c orderLn_cell">
+                        <div>
+                            <span style="color: #868686"><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>:</span><br/>
                             <? if ($order->deliveredAt) : ?><?= strftime('%e %b %Y', $order->deliveredAt->getTimestamp()) ?><? endif ?>
                             <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
                         </div>
@@ -71,12 +72,7 @@ return function(
 
                     <? endif ?>
 
-                    <div class="orderLn_r">
-                        <? if (true || $showStatus && $order->status): ?>
-                            <?= $order->status->name ?>
-                            <span>Новый</span>
-                        <? endif ?>
-
+                    <div class="orderLn_cell">
                         <? if ($order->getPaySum()): ?>
                             <div class="orderLn_row orderLn_row-summ">
                                 <span class="summT">Сумма заказа:</span>
@@ -177,10 +173,15 @@ return function(
 
                         <? endif ?>
                     </div>
+
+                    <div class="orderLn_status orderLn_cell">
+                        <? if (true || $showStatus && $order->status): ?>
+                            <div class="orderLn_status-title">Статус:</div>
+                            <strong class="orderLn_status-new"><?= $order->status->name ?></strong>
+                        <? endif ?>
+                    </div>
                 </div>
-
             <? endforeach ?>
-
         </div>
 
         <div class="orderCompl orderCompl_final clearfix">
