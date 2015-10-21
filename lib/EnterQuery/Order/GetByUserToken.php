@@ -50,7 +50,8 @@ namespace EnterQuery\Order
 
                     return $result; // for cache
                 },
-                5
+                5,
+                [0, 0.025, 0.05] // иногда отваливается с 402 статусом
             );
 
             return $this;
