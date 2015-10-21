@@ -33,7 +33,7 @@ class CreateAction extends OrderV3 {
 
         // SITE-6071
         if ('call-center' === $this->session->get(\App::config()->order['channelSessionKey'])) {
-            $params['client_id'] = 20; // call center
+            $params['client_id'] = 'call-center'; // call center
         }
 
         $params += ['request_id' => \App::$id]; // SITE-4445
