@@ -1,7 +1,6 @@
 <?php
 
 return [
-    // главная страница
     'homepage' => [
         'pattern' => '/',
         'action'  => ['Main\Action', 'index'],

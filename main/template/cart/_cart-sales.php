@@ -6,7 +6,7 @@ use Model\ClosedSale\ClosedSaleEntity;
 if (!\App::user()->getEntity()) return '';
 ?>
 
-<div class="s-sales">
+<div class="s-sales jsKnockoutCart" style="display: none" data-bind="visible: cart().hasAvailableProducts().length == 0">
 
     <!-- Сетка скидочных категорий -->
     <div class="s-sales-grid">

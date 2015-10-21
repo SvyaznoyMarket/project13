@@ -58,7 +58,7 @@ class SaleAction
         $page = new SaleShowPage();
         $pageNum = (int)$request->get('page', 1);
         $limit = \App::config()->product['itemsPerPage'];
-        $selectedCategoryId = $request->query->get('categoryId');
+        $selectedCategoryId = $request->query->get('category');
         $categories = [];
 
         $sales = $this->getSales();
@@ -73,6 +73,16 @@ class SaleAction
         $currentSale = array_key_exists(0, $currentSales) ? $currentSales[0] : new ClosedSaleEntity([]);
 
         $products = $currentSale->products;
+
+        // исключаем модельные ряды по названию товара, пока нет времени это сделать на стороне scms
+        $productName = null;
+        foreach ($products as $key => $product ) {
+            if ($productName === $product->getName()) {
+                unset($products[$key]);
+            } else {
+                $productName = $product->getName();
+            }
+        }
 
         // получаем все продукты
         \RepositoryManager::product()->prepareProductQueries($products, 'media label brand category');
