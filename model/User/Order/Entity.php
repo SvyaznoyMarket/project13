@@ -4,6 +4,8 @@
 namespace Model\User\Order;
 
 
+use Model\Order\StatusEntity;
+
 class Entity extends \Model\Order\Entity {
 
     /**
@@ -18,29 +20,6 @@ class Entity extends \Model\Order\Entity {
     ];
 
     /**
-     * @var array
-     */
-    protected $status_id_relation = [
-        10 => "Новый",
-        1 => "Ваш заказ принят в обработку",
-        3 => "Заказ размещен у поставщика",
-        4 => "Заказ передан в доставку",
-        20 => "Заказ готов к передаче",
-        5 => "Получен",
-        100 => "Отменен",
-    ];
-
-    /**
-     * @var LifecycleEntity[]|null
-     */
-    public $lifecycle;
-
-    public function __construct($data) {
-        parent::__construct($data);
-        if (isset($data['lifecycle'])) $this->setLifecycle($data['lifecycle']);
-    }
-
-    /**
      * Возвращает название типа доставки
      * @return string
      */
@@ -51,53 +30,11 @@ class Entity extends \Model\Order\Entity {
     }
 
     /**
-     * @param mixed $data
-     */
-    public function setLifecycle($data)
-    {
-        if (is_array($data)) {
-            foreach ($data as $cycle) {
-                $this->lifecycle[] = new LifecycleEntity($cycle);
-            }
-        } else {
-            $this->lifecycle = [];
-        }
-
-    }
-
-    /**
-     * @return LifecycleEntity[]|null
-     */
-    public function getLifecycle()
-    {
-        return $this->lifecycle;
-    }
-
-    /**
-     * Возвращает title первого false-статуса
-     * @return string
-     */
-    public function getLastLifecycleStatus() {
-        $status = '';
-        if ($this->lifecycle && is_array($this->lifecycle)) {
-            foreach ($this->lifecycle as $cycle) {
-                if (!$cycle->getCompleted()) break;
-                $status = $cycle->getTitle();
-            }
-        }
-        return $status;
-    }
-
-    /**
-     * Возвращает статус последнего lifecycle-а
+     * @deprecated
      * @return bool
      */
     public function isCompleted() {
-        $status = true;
-        if ($this->lifecycle && is_array($this->lifecycle)) {
-            $status = $this->lifecycle[count($this->lifecycle)-1]->getCompleted();
-        }
-        return $status;
+        return $this->status && in_array($this->status, [StatusEntity::ID_READY]);
     }
 
     /**
@@ -148,15 +85,10 @@ class Entity extends \Model\Order\Entity {
     }
 
     /**
-     * @param $statusId
      * @return string
      */
-    public function getStatusText($statusId) {
-        if (isset($this->status_id_relation[$statusId])) {
-            return $this->status_id_relation[$statusId];
-        } else {
-            return '';
-        }
+    public function getStatusText() {
+        return (string)($this->status ? $this->status->name : '');
     }
 
 } 
