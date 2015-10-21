@@ -14,6 +14,15 @@ $f = function(
     $clothSizeTrust = array_filter($trustfactors, function(Trustfactor $t) { return $t->type == 'content' && strpos($t->name, 'Таблица размеров') !== false; });
     if ($clothSizeTrust) $clothSizeTrust = reset($clothSizeTrust);
 
+    // Сохраняем URL-параметры
+    $query = http_build_query(\App::request()->query->all());
+    foreach ($product->getModel()->getProperty() as $property) {
+        foreach ($property->getOption() as $option) {
+            $modelProduct = $option->product;
+            $modelProduct->setLink($modelProduct->getLink() . '?'. $query);
+        }
+    }
+
     ?>
 
     <div class="product-card-filter">

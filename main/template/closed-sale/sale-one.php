@@ -67,7 +67,7 @@ $helper = \App::closureTemplating()->getParam('helper');
 		<ul class="list-categories">
 			<? foreach ($categories as $category) : ?>
 			<li class="list-categories__item">
-				<a class="list-categories__link" href="<?= $page->url('sale.one', ['uid' => $currentSale->uid, 'categoryId' => $category->id]) ?>">
+				<a class="list-categories__link" href="<?= $page->url('sale.one', ['uid' => $currentSale->uid, 'category' => $category->id]) ?>">
 					<span class="list-categories__image"><img class="image" src="<?= $category->getMediaSource('category_96x96')->url ?>" /></span>
 					<span class="list-categories__name"><?= $category->getName() ?></span>
 				</a>
@@ -90,6 +90,11 @@ $helper = \App::closureTemplating()->getParam('helper');
 				'position'	=> 'listing'
 			]
 		]) // листинг ?>
+
+		<div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
+			<?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
+		</div>
+
 	<? endif ?>
 
 	<!-- Сетка скидочных категорий -->

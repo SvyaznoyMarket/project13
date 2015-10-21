@@ -5,7 +5,7 @@
             <img src="" alt="" data-bind="attr: { src: img, alt: name}">
         </a>
 
-        <!-- ko if: !isAvailable -->
+        <!-- ko if: !isAvailable && sender && sender.name == 'secret_sale' -->
             <noindex><div class="not-available__sticker">Распродано</div></noindex>
         <!-- /ko -->
     </div>

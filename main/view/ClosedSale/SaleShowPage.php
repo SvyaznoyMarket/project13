@@ -28,7 +28,7 @@ class SaleShowPage extends DefaultLayout
         );
 
         $categories = $this->getParam('categories', []);
-        $filteredByCategory = \App::request()->query->has('categoryId') && count($categories) === 1;
+        $filteredByCategory = \App::request()->query->has('category') && count($categories) === 1;
 
         $breadcrumbs = [
             [
