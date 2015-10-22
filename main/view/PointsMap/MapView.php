@@ -38,6 +38,8 @@ class MapView {
     public function getUniquePointDays(){
         $days = [];
         foreach ($this->points as $point) {
+            if (!$point->humanNearestDay) continue;
+
             $days[$point->humanNearestDay] = $point;
         }
 

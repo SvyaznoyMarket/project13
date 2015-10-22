@@ -114,6 +114,7 @@
                         </div>
                     </div>
 
+                    <? if ($uniqueDays): ?>
                     <!-- Дата самовывоза -->
                     <div class="drop-filter-box js-category-v2-filter-dropBox jsOrderV3Dropbox" data-bind="css: { picked: choosenDates().length > 0 }">
                         <div class="drop-filter-box__tggl js-category-v2-filter-dropBox-opener">
@@ -138,6 +139,7 @@
                             </div>
                         </div>
                     </div>
+                    <? endif ?>
 
                 </div>
             </div>
