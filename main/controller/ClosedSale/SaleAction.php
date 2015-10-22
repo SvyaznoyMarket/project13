@@ -89,6 +89,7 @@ class SaleAction
         $this->scmsClient->execute();
 
         // убираем товары, которые нельзя купить
+        /** @var \Model\Product\Entity[] $products */
         $products = array_filter($products, function(Product $product) { return $product->getIsBuyable(); } );
 
         // если в запросе есть ID категории, то отфильтруем товары
@@ -111,7 +112,7 @@ class SaleAction
                 ])
             );
 
-            if ($product->getRootCategory() && !in_array($categoryUids, $product->getRootCategory()->id, true)) {
+            if ($product->getRootCategory() && !in_array($product->getRootCategory()->id, $categoryUids, true)) {
                 $categoryUids[] = $product->getRootCategory()->id;
             }
         }
