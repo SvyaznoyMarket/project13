@@ -35,8 +35,7 @@ class Variation {
 
                 return [
                     'name' => $option->value,
-                    'fieldName' => 'variation[' . $mainProduct->ui . '][' . $option->product->ui . ']',
-                    'checked' => $option->product->ui == $mainProduct->ui,
+                    'checked' => $option->product->ui === $mainProduct->ui,
                     'url' => \App::router()->generate('ajax.category.listing.product', [
                         'categoryUi' => $categoryUi,
                         'productUi' => $option->product->ui,
