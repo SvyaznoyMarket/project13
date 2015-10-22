@@ -443,12 +443,17 @@ namespace Model\OrderDelivery\Entity {
                 }
             }
 
+            // FIXME
+            $data['possible_days'] = []; // fixture
             if (isset($data['possible_days']) && is_array($data['possible_days'])) {
                 $this->possible_days = (array)$data['possible_days'];
                 //if (count($this->possible_days) == 0) throw new \Exception('Не существует доступных дней'); // SITE-6276
             }
 
-            if (isset($data['delivery']['delivery_method_token']) && $this->possible_days) $this->delivery = new Order\Delivery($data['delivery'], $orderDelivery);
+            if (isset($data['delivery']['delivery_method_token'])) $this->delivery = new Order\Delivery($data['delivery'], $orderDelivery);
+            if ($this->delivery && !$this->possible_days) {
+                $this->delivery->date = null;
+            }
 
             if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) $this->possible_intervals = (array)$data['possible_intervals'];
 
@@ -466,6 +471,9 @@ namespace Model\OrderDelivery\Entity {
                             ) {
                                 continue;
                             }
+
+                            // FIXME
+                            //$pointItem['nearest_day'] = null; // fixture
 
                             $point = [
                                 'point'         => &$orderDelivery->points[$pointType]->list[$pointItem['id']],
