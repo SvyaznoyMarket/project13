@@ -425,8 +425,6 @@ namespace Model\OrderDelivery\Entity {
 
             if (isset($data['actions']) && is_array($data['actions'])) $this->actions = $data['actions'];
 
-            if (isset($data['delivery']['delivery_method_token'])) $this->delivery = new Order\Delivery($data['delivery'], $orderDelivery);
-
             if (isset($data['payment_method_id'])) $this->payment_method_id = (int)$data['payment_method_id'];
 
             if (isset($data['possible_deliveries']) && is_array($data['possible_deliveries'])) {
@@ -447,8 +445,10 @@ namespace Model\OrderDelivery\Entity {
 
             if (isset($data['possible_days']) && is_array($data['possible_days'])) {
                 $this->possible_days = (array)$data['possible_days'];
-                if (count($this->possible_days) == 0) throw new \Exception('Не существует доступных дней');
+                //if (count($this->possible_days) == 0) throw new \Exception('Не существует доступных дней'); // SITE-6276
             }
+
+            if (isset($data['delivery']['delivery_method_token']) && $this->possible_days) $this->delivery = new Order\Delivery($data['delivery'], $orderDelivery);
 
             if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) $this->possible_intervals = (array)$data['possible_intervals'];
 
