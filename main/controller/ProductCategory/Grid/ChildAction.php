@@ -74,7 +74,7 @@ class ChildAction {
 
         $productsByUi = array_map(function($productUi) { return new \Model\Product\Entity(['ui' => $productUi]); }, $productsByUi);
 
-        \RepositoryManager::product()->prepareProductQueries($productsByUi, 'media label brand category');
+        \RepositoryManager::product()->prepareProductQueries($productsByUi, 'model media label brand category');
 
         \App::coreClientV2()->execute();
 

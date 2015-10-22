@@ -19,13 +19,13 @@ class Variation {
         array $cartButtonSender = []
     ) {
         return [
-            'id' => $property->getId(),
-            'name' => $property->getName(),
-            'lowerName' => mb_strtolower($property->getName()),
+            'id' => $property->id,
+            'name' => $property->name,
+            'lowerName' => mb_strtolower($property->name),
             'url' => \App::router()->generate('ajax.category.listing.product.variation', [
                 'categoryUi' => $categoryUi,
                 'productUi' => $mainProduct->ui,
-                'variationId' => $property->getId(),
+                'variationId' => $property->id,
                 'cartButtonSender' => $cartButtonSender,
             ]),
             'values' => array_values(array_filter(array_map(function(\Model\Product\Model\Property\Option\Entity $option) use($mainProduct, $property, $categoryUi, $cartButtonSender) {
@@ -34,16 +34,15 @@ class Variation {
                 }
 
                 return [
-                    'name' => $option->getHumanizedName(),
-                    'fieldName' => 'variation[' . $mainProduct->ui . '][' . $option->product->ui . ']',
-                    'checked' => $option->product->ui == $mainProduct->ui,
+                    'name' => $option->value,
+                    'checked' => $option->product->ui === $mainProduct->ui,
                     'url' => \App::router()->generate('ajax.category.listing.product', [
                         'categoryUi' => $categoryUi,
                         'productUi' => $option->product->ui,
                         'cartButtonSender' => $cartButtonSender,
                     ]),
                 ];
-            }, $property->getOption()))),
+            }, $property->option))),
         ];
     }
 }
