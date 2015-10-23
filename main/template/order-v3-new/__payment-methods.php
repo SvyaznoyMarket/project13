@@ -49,7 +49,7 @@ $f = function (
                             <input
                                 id="<?= $elementId ?>"
                                 type="radio"
-                                name="payment-type[]"
+                                name="payment-type-<?= md5($order->block_name) ?>[]"
                                 value="<?= $paymentMethod->id ?>"
                                 <? if ($paymentMethod->is_online): ?>data-online="true"<? endif ?>
                                 data-value="<?= $helper->json([
