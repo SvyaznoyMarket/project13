@@ -37,11 +37,8 @@ namespace EnterQuery\Product
                 'select_type' => 'ui',
                 'ui'          => $this->uis,
                 'geo_id'      => $this->regionId,
+                'withModels'  => 0, // Модели теперь берутся из scms
             ];
-
-            if (!$this->filter->model) {
-                $params['withModels'] = 0;
-            }
 
             $this->prepareCurlQuery(
                 $this->buildUrl(
@@ -73,7 +70,5 @@ namespace EnterQuery\Product\GetByUiList
 
     class Filter
     {
-        /** @var bool */
-        public $model = true;
     }
 }

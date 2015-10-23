@@ -72,7 +72,6 @@ class IndexAction extends \Controller\User\PrivateAction {
             $productQuery = new Query\Product\GetByIdList();
             $productQuery->regionId = $region->getId();
             $productQuery->ids = $idsInChunk;
-            $productQuery->filter->model = false;
             $productQuery->prepare();
             $productQueries[] = $productQuery;
         }
@@ -83,7 +82,6 @@ class IndexAction extends \Controller\User\PrivateAction {
             $viewedProductQuery = new Query\Product\GetByIdList();
             $viewedProductQuery->regionId = $region->getId();
             $viewedProductQuery->ids = $idsInChunk;
-            $viewedProductQuery->filter->model = false;
             $viewedProductQuery->prepare();
             $viewedProductQueries[] = $viewedProductQuery;
         }

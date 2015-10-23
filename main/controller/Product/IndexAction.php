@@ -63,6 +63,10 @@ class IndexAction {
                     }
                 }
             }
+
+            if (!empty($actionResponse->productModelQuery->response->products[0])) {
+                $product->importModelFromScms($actionResponse->productModelQuery->response->products[0]);
+            }
         });
 
         // товар для Подари Жизнь

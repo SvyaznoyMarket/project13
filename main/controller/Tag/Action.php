@@ -185,7 +185,7 @@ class Action {
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         if ($products) {
-            \RepositoryManager::product()->prepareProductQueries($products, 'media label brand category');
+            \RepositoryManager::product()->prepareProductQueries($products, 'model media label brand category');
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
         }
 

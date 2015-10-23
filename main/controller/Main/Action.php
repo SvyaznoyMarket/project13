@@ -57,7 +57,6 @@ class Action {
                         $productListQuery = new Query\Product\GetByUiList();
                         $productListQuery->uis = $sliceRequestFilters['barcode'];
                         $productListQuery->regionId = $region->getId();
-                        $productListQuery->filter->model = false;
                         $productListQuery->prepare();
                         $productCheckQueriesByBannerUi[$banner->uid] = $productListQuery;
                     } else {
@@ -105,7 +104,7 @@ class Action {
 
         $productsById = array_filter($productsById);
 
-        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label brand category');
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'model media label brand category');
 
         /** @var \Model\Product\Category\Entity[] $infoBoxCategoriesByUis */
         $infoBoxCategoriesByUis = [
@@ -158,7 +157,7 @@ class Action {
             $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
         }
 
-        \RepositoryManager::product()->prepareProductQueries($productsById, 'media label brand category');
+        \RepositoryManager::product()->prepareProductQueries($productsById, 'model media label brand category');
         \App::coreClientV2()->execute();
 
         $page = new \View\Main\IndexPage();
