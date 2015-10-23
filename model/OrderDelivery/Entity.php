@@ -443,8 +443,6 @@ namespace Model\OrderDelivery\Entity {
                 }
             }
 
-            // FIXME
-            $data['possible_days'] = []; // fixture
             if (isset($data['possible_days']) && is_array($data['possible_days'])) {
                 $this->possible_days = (array)$data['possible_days'];
                 //if (count($this->possible_days) == 0) throw new \Exception('Не существует доступных дней'); // SITE-6276
