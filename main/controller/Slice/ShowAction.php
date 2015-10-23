@@ -376,7 +376,7 @@ class ShowAction {
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $productRepository->prepareProductQueries($products, 'media property label brand category');
+        $productRepository->prepareProductQueries($products, 'model media property label brand category');
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {

@@ -96,8 +96,6 @@ class IndexAction {
             $productsByUi[$productUi] = new \Model\Product\Entity(['ui' => $productUi]);
         }
 
-        // Необходимо запрашивать модели товаров, т.к. option моделей используется в методе
-        // \Model\Product\Entity::hasAvailableModels, который вызывается ниже
         \RepositoryManager::product()->prepareProductQueries($productsByUi, 'model media label');
 
         // выполнение 2-го пакета запросов в ядро

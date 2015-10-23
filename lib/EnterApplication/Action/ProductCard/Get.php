@@ -39,7 +39,8 @@ namespace EnterApplication\Action\ProductCard
             // товар
             /** @var Query\Product\GetByToken $productQuery */
             /** @var Query\Product\GetDescriptionByTokenList $productDescriptionQuery */
-            call_user_func(function() use (&$productQuery, &$productDescriptionQuery, $regionQuery, $request) {
+            /** @var Query\Product\Model\GetByTokenList $productModelQuery */
+            call_user_func(function() use (&$productQuery, &$productDescriptionQuery, &$productModelQuery, $regionQuery, $request) {
                 if ($request->productCriteria['token']) {
                     $productQuery = new Query\Product\GetByToken($request->productCriteria['token'], $regionQuery->response->region['id']);
                     $productQuery->prepare();
@@ -55,6 +56,9 @@ namespace EnterApplication\Action\ProductCard
                     $productDescriptionQuery->filter->brand = true;
                     $productDescriptionQuery->filter->tag = true;
                     $productDescriptionQuery->prepare();
+
+                    $productModelQuery = new Query\Product\Model\GetByTokenList([$request->productCriteria['token']], $regionQuery->response->region['id']);
+                    $productModelQuery->prepare();
                 } else {
                     throw new \InvalidArgumentException('Неверный критерий получения товара');
                 }
@@ -86,6 +90,7 @@ namespace EnterApplication\Action\ProductCard
                 $response->menuQuery = $menuQuery;
                 $response->productQuery = $productQuery;
                 $response->productDescriptionQuery = $productDescriptionQuery;
+                $response->productModelQuery = $productModelQuery;
                 $response->categoryRootTreeQuery = $categoryRootTreeQuery;
                 $response->userQuery = $userQuery;
                 $response->subscribeChannelQuery = $subscribeChannelQuery;
@@ -105,7 +110,6 @@ namespace EnterApplication\Action\ProductCard
                 $accessoryIds = array_slice($productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage']);
                 foreach (array_chunk($accessoryIds, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
                     $accessoryProductQuery = new Query\Product\GetByIdList($idsInChunk, $productQuery->regionId);
-                    $accessoryProductQuery->filter->model = false;
                     $accessoryProductQuery->prepare();
                     $accessoryProductQueries[] = $accessoryProductQuery;
 
@@ -132,7 +136,6 @@ namespace EnterApplication\Action\ProductCard
                 $kitIds = array_column($productQuery->response->product['kit'], 'id');
                 foreach (array_chunk($kitIds, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
                     $kitProductQuery = new Query\Product\GetByIdList($idsInChunk, $productQuery->regionId);
-                    $kitProductQuery->filter->model = false;
                     $kitProductQuery->prepare();
                     $kitProductQueries[] = $kitProductQuery;
 
@@ -168,7 +171,6 @@ namespace EnterApplication\Action\ProductCard
                 if (!$productUis) return;
 
                 $similarProductQuery = new Query\Product\GetByUiList($productUis, $regionQuery->response->region['id']);
-                $similarProductQuery->filter->model = false;
                 $similarProductQuery->prepare();
 
                 $similarProductDescriptionQuery = new Query\Product\GetDescriptionByUiList();
@@ -367,6 +369,7 @@ namespace EnterApplication\Action\ProductCard
             $response = new Response();
             $response->productQuery = $productQuery;
             $response->productDescriptionQuery = $productDescriptionQuery;
+            $response->productModelQuery = $productModelQuery;
             $response->userQuery = $userQuery;
             $response->favoriteQuery = $favoriteQuery;
 //            $response->subscribeQuery = $subscribeQuery;
@@ -427,6 +430,8 @@ namespace EnterApplication\Action\ProductCard\Get
         public $productQuery;
         /** @var Query\Product\GetDescriptionByTokenList */
         public $productDescriptionQuery;
+        /** @var Query\Product\Model\GetByTokenList */
+        public $productModelQuery;
         /** @var Query\User\GetByToken|null */
         public $userQuery;
         /** @var Query\Redirect\GetByUrl */
