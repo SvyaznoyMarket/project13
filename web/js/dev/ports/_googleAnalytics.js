@@ -227,7 +227,7 @@ ANALYTICS.gaJS = function(data) {
             console.log('GA: send pageview');
             console.log(data.vars);
             ga('send', 'pageview', data.vars); // трекаем весь массив с полями {dimensionN: <*М*>}
-            ga('secondary.send', 'pageview', data.vars); // трекаем весь массив с полями {dimensionN: <*М*>}
+            //ga('secondary.send', 'pageview', data.vars); // трекаем весь массив с полями {dimensionN: <*М*>}
         }
 
         // отсылаем impressions, которые не влезли в pageview

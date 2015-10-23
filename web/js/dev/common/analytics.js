@@ -21,7 +21,7 @@
             }
             if (isUniversalAvailable()) {
                 ga('send', 'pageview', data);
-                ga('secondary.send', 'pageview', data);
+                //ga('secondary.send', 'pageview', data);
             }
         },
 
@@ -79,7 +79,7 @@
                 else if (typeof e.hitCallback == 'string') universalEvent.hitCallback = function(){ window.location.href = e.hitCallback };
                 if (e.nonInteraction) ga('set', 'nonInteraction', true);
                 ga('send', universalEvent);
-                ga('secondary.send', universalEvent);
+                //ga('secondary.send', universalEvent);
                 console.info('[Google Analytics] Send event:', e);
             } else {
                 console.warn('No Universal Google Analytics function found', typeof universalEvent.hitCallback, e.hitCallback);
