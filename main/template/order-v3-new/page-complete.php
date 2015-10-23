@@ -16,6 +16,7 @@ return function(
     array_map(function(\Model\PaymentMethod\PaymentEntity &$entity) {$entity->unsetSvyaznoyClub();}, $ordersPayment); // fix for SITE-5229 (see comments)
 
     $showStatus = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
+    $onlinePaymentAvailable = ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']));
 ?>
 <style>
     .jsPaymentForms {
@@ -144,7 +145,7 @@ return function(
                                             <? endforeach ?>
                                         </ul>
 
-                                    <? else : ?>
+                                    <? elseif ($onlinePaymentAvailable) : ?>
 
                                         <div class="payT">Можно <span class="payBtn btn4 jsOnlinePaymentSpan"><span class="brb-dt">оплатить онлайн</span></span></div>
 
