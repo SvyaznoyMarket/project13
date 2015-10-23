@@ -116,7 +116,7 @@ $f = function(
 
                     <div class="orderCol_cnt clearfix jsOrderV3Discount">
                         <a href="" class="orderCol_lk">
-                            <img class="orderCol_img" src="/styles/order/img/fishka.png" alt="">
+                            <img class="orderCol_img" src="<?= ('online' === $discount->type ? '/styles/order/img/!!!.png' : '/styles/order/img/fishka.png') ?>" alt="<?= $helper->escape($discount->name) ?>">
                         </a>
 
                         <div class="orderCol_n">
