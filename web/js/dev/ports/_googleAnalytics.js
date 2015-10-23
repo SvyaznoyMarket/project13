@@ -13,6 +13,7 @@ ANALYTICS.gaJS = function(data) {
         route 		= template.substring(0, (templSep > 0) ? templSep : templLen),
         rType 		= (templSep > 0) ? template.substring(templSep + 1, templLen) : '',
         useTchiboAnalytics = Boolean($('#gaJS').data('use-tchibo-analytics')),
+        postImpressions = [], // impression, которые не влезли в send pageview
         ecommList = '',
     // end of vars
 
@@ -79,10 +80,15 @@ ANALYTICS.gaJS = function(data) {
 
             /* ecomm analytics */
             $('.js-orderButton').each(function(i,el) {
-                ENTER.utils.analytics.addImpression(el, {
-                    list: ecommList,
-                    position: i
-                });
+                // из-за ограничений в 8 кб на передачу в самом GA
+                if (i < 10) {
+                    ENTER.utils.analytics.addImpression(el, {
+                        list: ecommList,
+                        position: i
+                    });
+                } else {
+                    postImpressions.push({i: i, el: el});
+                }
             });
 
         },
@@ -222,6 +228,21 @@ ANALYTICS.gaJS = function(data) {
             console.log(data.vars);
             ga('send', 'pageview', data.vars); // трекаем весь массив с полями {dimensionN: <*М*>}
             ga('secondary.send', 'pageview', data.vars); // трекаем весь массив с полями {dimensionN: <*М*>}
+        }
+
+        // отсылаем impressions, которые не влезли в pageview
+        while (postImpressions.length > 0) {
+            $.each(postImpressions.splice(0,10), function(i,v){
+                ENTER.utils.analytics.addImpression(v.el, {
+                    list: ecommList,
+                    position: v.i
+                });
+            });
+            $body.trigger('trackGoogleEvent', {
+                category: 'catalog_impression',
+                action: 'send impressions',
+                nonInteraction: true
+            })
         }
 
         /** Событие добавления в корзину */
