@@ -512,11 +512,7 @@ namespace Model\OrderDelivery\Entity {
             // SITE-4744 если выбран способ оплаты со скидкой, то добавить discount
             if ($this->payment_method_id && ($paymentMethod = isset($this->possible_payment_methods[$this->payment_method_id]) ? $this->possible_payment_methods[$this->payment_method_id] : null) && $paymentMethod->discount) {
                 $discount = new Order\Discount();
-                $discount->discount =
-                    ('%' === $paymentMethod->discount['unit'])
-                    ? ($this->total_original_cost * ($paymentMethod->discount['value']) / 100)
-                    : $paymentMethod->discount['value']
-                ;
+                $discount->discount = $this->total_cost - $this->total_view_cost;
                 $discount->type = 'online';
                 $discount->name = sprintf("Скидка %s%s", $paymentMethod->discount['value'], $paymentMethod->discount['unit']);
                 $this->discounts[] = $discount;
