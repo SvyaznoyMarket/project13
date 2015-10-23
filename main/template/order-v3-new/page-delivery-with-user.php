@@ -57,17 +57,17 @@ $f = function(
                         <div class="order-ctrl-wrapper">
                             <div class="order-ctrl required" data-field-container="phone">
                                 <label class="order-ctrl__txt js-order-ctrl__txt" data-message="">*Телефон</label>
-                                <input name="user_info[phone]" class="order-ctrl__input js-order-ctrl__input js-order-phone" name="user_info[phone]" data-field="phone" data-text-default="*Телефон" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : $orderDelivery->user_info->phone ?>" data-mask="+7 (xxx) xxx-xx-xx" <? if (!$userEntity): ?> data-event="true"<? endif ?> required="required" />
+                                <input name="user_info[phone]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-phone" name="user_info[phone]" data-field="phone" data-text-default="*Телефон" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : $orderDelivery->user_info->phone ?>" data-mask="+7 (xxx) xxx-xx-xx" <? if (!$userEntity): ?> data-event="true"<? endif ?> required="required" />
                             </div>
 
                             <div class="order-receiver__hint">Для смс о состоянии заказа</div>
                         </div>
-                        
+
                         <div class="order-ctrl-wrapper">
                             <div class="order-ctrl required" data-field-container="email">
                                 <label class="order-ctrl__txt js-order-ctrl__txt" data-message="">*E-mail</span>
                                 </label>
-                                <input name="user_info[email]" class="order-ctrl__input js-order-ctrl__input js-order-email" data-field="email" data-text-default="*E-mail" value="<?= $userEntity ? $userEntity->getEmail() : $orderDelivery->user_info->email ?>" required="required" />
+                                <input name="user_info[email]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-email" data-field="email" data-text-default="*E-mail" value="<?= $userEntity ? $userEntity->getEmail() : $orderDelivery->user_info->email ?>" required="required" />
                             </div>
                             <? if (!\App::user()->isSubscribed(1)): ?>
                             <div class="order-receiver__subscribe">
@@ -83,7 +83,7 @@ $f = function(
                         <div class="order-ctrl-wrapper">
                             <div class="order-ctrl" data-field-container="first_name">
                                 <label class="order-ctrl__txt js-order-ctrl__txt">Имя</label>
-                                <input name="user_info[first_name]" class="order-ctrl__input js-order-ctrl__input" data-field="first_name" value="<?= $userEntity ? $userEntity->getFirstName() : $orderDelivery->user_info->first_name ?>" />
+                                <input name="user_info[first_name]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input" data-field="first_name" value="<?= $userEntity ? $userEntity->getFirstName() : $orderDelivery->user_info->first_name ?>" />
                             </div>
                         </div>
 
@@ -132,7 +132,7 @@ $f = function(
                                 <!-- Карта Много.ру -->
                                 <div class="bonusCnt_i" data-eq="<?= count($bonusCards) ?>">
                                     <img class="bonusCnt_img" src="/styles/order/img/mnogoru-mini.png" alt="mnogo.ru" />
-                                    
+
                                     <span class="bonusCnt_tx">
                                         <span id="bonusCardLink-<?= md5(json_encode(['mnogoru'])) ?>" class="brb-dt">Карта Много.ру</span> <!-- что бы убрать бордер можно удалить класс brb-dt -->
                                         <span id="bonusCardCode-<?= md5(json_encode(['mnogoru'])) ?>" class="bonusCnt_tx_code"><span class="brb-dt jsMnogoRuSpan"></span></span>
@@ -159,7 +159,7 @@ $f = function(
                         </div>
                         <!-- END Берем из старой верстки - бонусные карты -->
                     </div>
-                          
+
                     <? if (!$userEntity) : ?>
                     <div class="order-receiver__social social">
                         <div class="social__head">Войти через</div>

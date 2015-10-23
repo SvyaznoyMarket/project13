@@ -6,11 +6,13 @@
 
     {{#values.0}}
         <div class="custom-select variations-select">
-            <select class="custom-select__inn js-listing-variation-values">
-                {{#values}}
-                    <option class="custom-select__i" name="{{fieldName}}" data-url="{{url}}" {{#checked}}selected{{/checked}}>{{name}}</option>
-                {{/values}}
-            </select>
+            <form action="#" autocomplete="off">
+                <select class="custom-select__inn js-listing-variation-values">
+                    {{#values}}
+                        <option class="custom-select__i" data-url="{{url}}" {{#checked}}selected{{/checked}}>{{name}}</option>
+                    {{/values}}
+                </select>
+            </form>
         </div>
     {{/values.0}}
 </div>

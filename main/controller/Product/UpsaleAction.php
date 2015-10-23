@@ -48,7 +48,7 @@ class UpsaleAction extends BasicRecommendedAction {
 
             $this->getRetailrocketMethodName();
 
-            \RepositoryManager::product()->prepareProductQueries($products, 'media label');
+            \RepositoryManager::product()->prepareProductQueries($products, 'model media label');
 
             \App::coreClientV2()->execute();
 

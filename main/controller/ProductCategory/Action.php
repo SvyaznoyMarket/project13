@@ -709,7 +709,7 @@ class Action {
         /** @var \Model\Product\Entity[] $products */
         $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $productIds);
 
-        $repository->prepareProductQueries($products, 'media label brand category' . ($category->listingView->isList ? ' property' : ''));
+        $repository->prepareProductQueries($products, 'model media label brand category' . ($category->listingView->isList ? ' property' : ''));
 
         \App::coreClientV2()->execute();
 

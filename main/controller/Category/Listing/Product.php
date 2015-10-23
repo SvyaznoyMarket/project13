@@ -60,44 +60,6 @@ class Product {
                 }
             });
 
-            // получение ui для моделей
-            // TODO удалить данный код после релиза CORE-3159
-            call_user_func(function() use(&$contentHtml, $products) {
-                if (!$products[0]->getModel()) {
-                    return;
-                }
-
-                /** @var \Model\Product\Entity[] $optionProductsById */
-                $optionProductsById = [];
-                foreach ($products[0]->getModel()->getProperty() as $property) {
-                    foreach ($property->getOption() as $option) {
-                        $optionProductsById[$option->product->id] = $option->product;
-                    }
-                }
-
-                \App::coreClientV2()->addQuery(
-                    'product/get-v3',
-                    [
-                        'select_type' => 'id',
-                        'id' => array_keys($optionProductsById),
-                        'geo_id' => \App::user()->getRegion()->id,
-                        'withModels' => 0,
-                        'withRelated' => 0,
-                    ],
-                    [],
-                    function($data) use(&$optionProductsById) {
-                        if (is_array($data)) {
-                            foreach ($data as $item) {
-                                $product = new \Model\Product\Entity($item);
-                                $optionProductsById[$product->id]->ui = $product->ui;
-                            }
-                        }
-                    }
-                );
-
-                \App::coreClientV2()->execute();
-            });
-
             return new \Http\JsonResponse([
                 'product' => (new \View\Product\ShowAction())->execute(
                     new \Helper\TemplateHelper(),

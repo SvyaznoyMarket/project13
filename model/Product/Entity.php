@@ -72,8 +72,8 @@ class Entity {
     protected $hasPartnerStock;
     /** @var bool|null */
     protected $isUpsale = false;
-    /** @var Model\Entity|null */
-    protected $model;
+    /** @var \Model\Product\Model|null */
+    public $model;
     /** @var string|null */
     protected $seoTitle;
     /** @var string|null */
@@ -89,11 +89,7 @@ class Entity {
     /** @var int */
     protected $setId;
     /** @var bool */
-    protected $isModel;
-    /** @var bool */
     protected $isPrimaryLine;
-    /** @var int */
-    protected $modelId;
     /** @var int|null */
     protected $score;
     /** @var string */
@@ -177,7 +173,6 @@ class Entity {
         if (isset($data['avg_star_score'])) $this->setAvgStarScore($data['avg_star_score']);
         if (isset($data['num_reviews'])) $this->setNumReviews($data['num_reviews']);
         if (isset($data['is_upsale'])) $this->setIsUpsale($data['is_upsale']);
-        if (isset($data['model']) && $data['model']) $this->setModel(new Model\Entity($data['model']));
 
         if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
             return new Kit\Entity($data);
@@ -189,9 +184,7 @@ class Entity {
         if (array_key_exists('view_id', $data)) $this->setViewId($data['view_id']);
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('set_id', $data)) $this->setSetId($data['set_id']);
-        if (array_key_exists('is_model', $data)) $this->setIsModel($data['is_model']);
         if (array_key_exists('is_primary_line', $data)) $this->setIsPrimaryLine($data['is_primary_line']);
-        if (array_key_exists('model_id', $data)) $this->setModelId($data['model_id']);
         if (array_key_exists('score', $data)) $this->setScore($data['score']);
         if (isset($data['name'])) $this->setName($templateHelper->unescape($data['name'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
         if (array_key_exists('name_web', $data)) $this->setWebName($templateHelper->unescape($data['name_web'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
@@ -319,7 +312,7 @@ class Entity {
         }
 
         $propertiesCount = $this->getPropertiesCount();
-        if (((!$this->getTagline() && !$this->getModel() && !$this->getDescription() && $propertiesCount < 16) || $propertiesCount < 8) && !$this->hasLongProperties()) {
+        if (((!$this->getTagline() && !$this->model && !$this->getDescription() && $propertiesCount < 16) || $propertiesCount < 8) && !$this->hasLongProperties()) {
             foreach ($this->groupedProperties as $group) {
                 if (!(bool)$group['properties']) continue;
 
@@ -347,6 +340,12 @@ class Entity {
 
         $this->isImportedFromScms = true;
         $this->fixOldPrice();
+    }
+
+    public function importModelFromScms($data) {
+        if (!empty($data['model']['property']) && !empty($data['model']['items'])) {
+            $this->model = new \Model\Product\Model($data['model']);
+        }
     }
 
     /**
@@ -476,20 +475,6 @@ class Entity {
     }
 
     /**
-     * @param boolean $isModel
-     */
-    public function setIsModel($isModel) {
-        $this->isModel = (bool)$isModel;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsModel() {
-        return $this->isModel;
-    }
-
-    /**
      * @param boolean $isPrimaryLine
      */
     public function setIsPrimaryLine($isPrimaryLine) {
@@ -501,20 +486,6 @@ class Entity {
      */
     public function getIsPrimaryLine() {
         return $this->isPrimaryLine;
-    }
-
-    /**
-     * @param int $modelId
-     */
-    public function setModelId($modelId = null) {
-        $this->modelId = $modelId ? (int)$modelId : null;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getModelId() {
-        return $this->modelId;
     }
 
     /**
@@ -1288,17 +1259,6 @@ class Entity {
         return null;
     }
 
-    public function setModel(Model\Entity $model = null) {
-        $this->model = $model;
-    }
-
-    /**
-     * @return Model\Entity|null
-     */
-    public function getModel() {
-        return $this->model;
-    }
-
     /**
      * @param string $seoTitle
      */
@@ -1351,21 +1311,12 @@ class Entity {
     /**
      * У товаров, полученных методом http://api.enter.ru/v2/product/from-model, проверять наличие моделей не требуется,
      * т.к. данный метод всегда возвращает модель товара, которая в наличии (см. комментарии на
-     * https://wiki.enter.ru/pages/viewpage.action?pageId=21569552) 
+     * https://wiki.enter.ru/pages/viewpage.action?pageId=21569552)
      * @return bool
      */
     public function hasAvailableModels() {
-        if ($this->getModel()) {
-            foreach ($this->getModel()->getProperty() as $property) {
-                foreach ($property->getOption() as $option) {
-                    if ($option->getProduct()->isAvailable()) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
+        // https://scms.enter.ru/api/product/get-models всегда возвращает лишь товары в наличии
+        return ($this->model && $this->model->property && $this->model->property->option);
     }
 
     /**
