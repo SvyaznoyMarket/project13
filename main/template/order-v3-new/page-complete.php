@@ -93,14 +93,11 @@ return function(
                         <? if (isset($ordersPayment[$order->getNumber()])) : ?>
                         <? $paymentEntity = $ordersPayment[$order->getNumber()]; /** @var $paymentEntity \Model\PaymentMethod\PaymentEntity */?>
 
-                            <? if (isset($paymentEntity->groups[2])) : ?>
+                            <? if (isset($paymentEntity->groups[2]) && ($onlinePaymentAvailable || ($order->sum > \App::config()->order['prepayment']['priceLimit']) || $order->isCredit())) : ?>
 
                             <div class="orderLn_row orderLn_row-bg jsOnlinePaymentBlock">
 
-                                <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])
-                                        && $order->isCredit() ) : ?>
-
-                                    <!-- Кредит -->
+                                <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT]) && $order->isCredit() ) : ?>
 
                                     <div class="payT">Покупка в кредит</div>
                                     <a href="" class="btnLightGrey jsCreditButton"><strong>Заполнить заявку</strong></a>
@@ -110,8 +107,6 @@ return function(
                                             <? /** @var $bank \Model\CreditBank\Entity */?>
                                             <li class="customSel_i jsPaymentMethod" data-value="<?= $bank->getId() ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>">
                                                 <img src="<?= $bank->getImage() ?>" />
-<!--                                                <strong>--><?//= $bank->getName() ?><!--</strong><br/>-->
-<!--                                                --><?//= $bank->getDescription() ?><!--<br/>-->
                                                 <a href="<?= $bank->getLink() ?>" target="_blank" style="float: right">Условия кредитования</a>
                                             </li>
                                         <? endforeach ?>
@@ -123,8 +118,6 @@ return function(
 
                                 <? elseif (isset($paymentEntity->groups[\Model\PaymentMethod\PaymentGroup\PaymentGroupEntity::PAYMENT_NOW])) : ?>
                                 <? $paymentMethods = array_filter($paymentEntity->methods, function (\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $method) use ($paymentEntity) {return $method->paymentGroup === $paymentEntity->groups[\Model\PaymentMethod\PaymentGroup\PaymentGroupEntity::PAYMENT_NOW]; }) ?>
-
-                                    <!-- Онлайн-оплата -->
 
                                     <? if ($order->sum > \App::config()->order['prepayment']['priceLimit']) : ?>
 
