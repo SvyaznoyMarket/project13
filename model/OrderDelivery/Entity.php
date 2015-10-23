@@ -464,7 +464,7 @@ namespace Model\OrderDelivery\Entity {
                         foreach ($points as $pointItem) {
                             if (
                                 !isset($pointItem['id'])
-                                || empty($pointItem['nearest_day'])
+                                //|| empty($pointItem['nearest_day']) SITE-6307
                                 || !isset($orderDelivery->points[$pointType]->list[$pointItem['id']])
                             ) {
                                 continue;
