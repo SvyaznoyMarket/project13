@@ -7,7 +7,6 @@
 ?>
 
 <?php
-$hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
 $addInfo = isset($addInfo)?$addInfo:[];
 ?>
 
@@ -51,13 +50,13 @@ $addInfo = isset($addInfo)?$addInfo:[];
                 <?php endforeach ?>
             </div>
 
-            <? if ($hasModel): ?>
-            <a href="<?= $product->getLink() ?>">
-                <div class="bListVariants">
-                    Доступно в разных вариантах<br>
-                    (<?= $product->getModel()->getVariations() ?>)
-                </div>
-            </a>
+            <? if ($product->model && $product->model->property): ?>
+                <a href="<?= $product->getLink() ?>">
+                    <div class="bListVariants">
+                        Доступно в разных вариантах<br>
+                        (<?= mb_strtolower($product->model->property->name) ?>)
+                    </div>
+                </a>
             <? endif ?>
 
         </div>

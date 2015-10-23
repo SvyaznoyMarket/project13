@@ -30,46 +30,14 @@ class Variation {
             $contentHtml = '';
             // Получение HTML кода опций варианта
             call_user_func(function() use(&$contentHtml, $product, $variationId, $categoryUi, $cartButtonSender) {
-                if (!$product->getModel()) {
+                if (!$product->model) {
                     return;
                 }
 
-                $property = $product->getModel()->getPropertyById($variationId);
-                if (!$property) {
+                $property = $product->model->property;
+                if (!$property || $property->id != $variationId) {
                     return;
                 }
-
-                // получение ui для моделей
-                // TODO удалить данный код после релиза CORE-3159
-                call_user_func(function() use(&$property) {
-                    /** @var \Model\Product\Entity[] $optionProductsById */
-                    $optionProductsById = [];
-                    foreach ($property->getOption() as $option) {
-                        $optionProductsById[$option->product->id] = $option->product;
-                    }
-
-                    \App::coreClientV2()->addQuery(
-                        'product/get-v3',
-                        [
-                            'select_type' => 'id',
-                            'id' => array_keys($optionProductsById),
-                            'geo_id' => \App::user()->getRegion()->id,
-                            'withModels' => 0,
-                            'withRelated' => 0,
-                        ],
-                        [],
-                        function($data) use(&$optionProductsById) {
-                            if (is_array($data)) {
-                                foreach ($data as $item) {
-                                    $product = new \Model\Product\Entity($item);
-                                    $optionProductsById[$product->id]->ui = $product->ui;
-                                }
-                            }
-                        }
-                    );
-
-                    \App::coreClientV2()->execute();
-                });
 
                 $variation = (new \View\Category\Listing\Product\Variations\Variation())->execute(new \Helper\TemplateHelper(), $product, $property, $categoryUi, $cartButtonSender);
                 if ($variation) {

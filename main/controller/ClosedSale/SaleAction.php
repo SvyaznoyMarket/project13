@@ -85,7 +85,7 @@ class SaleAction
         }
 
         // получаем все продукты
-        \RepositoryManager::product()->prepareProductQueries($products, 'media label brand category');
+        \RepositoryManager::product()->prepareProductQueries($products, 'model media label brand category');
         $this->scmsClient->execute();
 
         // убираем товары, которые нельзя купить

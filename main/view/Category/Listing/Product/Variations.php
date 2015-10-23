@@ -17,16 +17,14 @@ class Variations {
         array $cartButtonSender = []
     ) {
         $result = [];
-        if ($mainProduct->getModel() && $mainProduct->getModel()->getProperty()) {
-            foreach ($mainProduct->getModel()->getProperty() as $property) {
-                $result[] = (new \View\Category\Listing\Product\Variations\Variation())->execute(
-                    $helper,
-                    $mainProduct,
-                    $property,
-                    $categoryUi,
-                    $cartButtonSender
-                );
-            }
+        if ($mainProduct->model && $mainProduct->model->property) {
+            $result[] = (new \View\Category\Listing\Product\Variations\Variation())->execute(
+                $helper,
+                $mainProduct,
+                $mainProduct->model->property,
+                $categoryUi,
+                $cartButtonSender
+            );
         }
 
         return $result;
