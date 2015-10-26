@@ -2,8 +2,6 @@
 
 namespace Controller\ProductCategory\Grid;
 
-use Model\Product\Category\Entity;
-
 class ChildAction {
     /**
      * @param \Http\Request $request

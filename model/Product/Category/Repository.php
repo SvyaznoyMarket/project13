@@ -406,7 +406,7 @@ class Repository {
              * @use $loadBranch
              * @use $category     Текущая категория каталога
              */
-            $iterateLevel = function($data) use(&$iterateLevel, &$loadBranch, $category) {
+            $iterateLevel = function ($data) use (&$iterateLevel, &$loadBranch, $category) {
                 if (!is_array($data)) {
                     return;
                 }

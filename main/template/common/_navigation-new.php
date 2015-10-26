@@ -32,12 +32,11 @@ foreach ($menu as $menu1) {
     }
 }
 
-$hideMenu = \App::abTest()->isMenuHamburger() ? '' : '';
-$hamburgerJsClass = \App::abTest()->isMenuHamburger() ? ' jsHamburgerIcon ' : '';
+$hamburgerJsClass = $page->isMenuHamburger() ? ' jsHamburgerIcon ' : '';
 ?>
 
 <!-- навигация -->
-<div class="header_b" <?= $hideMenu ?>>
+<div class="header_b">
 
     <div class="header-ddnav-wrap">
         <span class="header-icon-ddnav <?= $hamburgerJsClass ?>"></span>
