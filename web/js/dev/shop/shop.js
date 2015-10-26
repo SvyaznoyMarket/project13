@@ -2,7 +2,6 @@ $(function($){
     var
 		$viewport = $('.js-shop-viewport'),
 		$mapImageOpener = $('.js-shop-image-opener-map'),
-		errorClass = 'error',
 		loadingClass = 'loading',
 		shadowClass = 'shadow';
 
@@ -114,22 +113,19 @@ $(function($){
 						},
 						success: function(data) {
 							if (data.error) {
-								$form.addClass(errorClass);
-								$error.text(data.error);
+								$error.text(data.error).show();
 							} else {
 								$popup.trigger('close');
 							}
 						},
 						error: function() {
-							$form.addClass(errorClass);
-							$error.text('Не удалось отправить письмо');
+							$error.text('Не удалось отправить письмо').show();
 						}
 					});
 				});
 			},
 			onClose: function() {
-				$form.removeClass(errorClass);
-				$error.text('');
+				$error.text('').hide();
 			}
 		});
 	});
