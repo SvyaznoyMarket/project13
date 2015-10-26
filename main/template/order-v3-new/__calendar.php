@@ -1,10 +1,19 @@
 <?php
 
-return function(
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param $id
+ * @param array $possible_days
+ * @return string
+ */
+$f = function(
     \Helper\TemplateHelper $helper,
     $id,
-    array $possible_days
+    array $possible_days = []
 ) {
+    if (!$possible_days) {
+        return '';
+    }
 
     $lastAvailableDay = DateTime::createFromFormat('U', (string)end($possible_days));
     $firstAvailableDay = DateTime::createFromFormat('U', (string)reset($possible_days));
@@ -78,4 +87,4 @@ return function(
         </div>
     </div>
 
-<? };
+<? }; return $f;

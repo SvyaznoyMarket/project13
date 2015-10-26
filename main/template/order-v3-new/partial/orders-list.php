@@ -195,7 +195,6 @@ $f = function (
                 <!-- -->
                     <!-- дата доставки -->
                     <div class="order-delivery__info">
-                        <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
                         <? if ($order->delivery->date): ?>
                             <div class="order-delivery__date orderCol_date"
                                  data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y', $order->delivery->date->format('U'))) ?></div>
