@@ -401,6 +401,8 @@ namespace Model\OrderDelivery\Entity {
             'pin'   => null,
             'par'   => null
         ];
+        /** @var int */
+        public $prepaid_sum = 0;
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
 
@@ -510,6 +512,7 @@ namespace Model\OrderDelivery\Entity {
                 if (isset($data['certificate']['par']))  $this->certificate['par'] = (string)$data['certificate']['par'];
             }
 
+            if (isset($data['prepaid_sum'])) $this->prepaid_sum = (int)$data['prepaid_sum'];
         }
 
         /** Это заказ партнерский?
