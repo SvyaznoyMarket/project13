@@ -84,6 +84,7 @@ class CreateAction extends OrderV3 {
             if (isset($splitOrder)) unset($splitOrder);
 
             $coreResponse = $this->client->query('order/create-packet2', $params, $ordersData, \App::config()->coreV2['hugeTimeout']);
+            \App::logger()->info(['order/create-packet.response' => $coreResponse], ['order']);
 
             $this->client->execute();
 
