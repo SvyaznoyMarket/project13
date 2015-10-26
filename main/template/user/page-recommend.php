@@ -71,38 +71,6 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                                 <div class="order-list__status-payment order-list__status-payment_warn">Требуется предоплата</div>
                             </div>
                         </li>
-
-                        <li class="grid-scroll-list__item order-list__item">
-                            <div class="order-list__data">
-                                <a class="order-list__data-number" href="">COXF-767608</a>
-                                <div class="order-list__data-date">17.06.2015</div>
-                            </div>
-
-                            <div class="order-list__price">
-                                60 740 <span class="rubl">p</span>
-                            </div>
-
-                            <div class="order-list__status">
-                                <div class="order-list__status-confrm">Создан</div>
-                                <div class="order-list__status-payment order-list__status-payment_warn">Требуется предоплата</div>
-                            </div>
-                        </li>
-
-                        <li class="grid-scroll-list__item order-list__item">
-                            <div class="order-list__data">
-                                <a class="order-list__data-number" href="">COXF-767608</a>
-                                <div class="order-list__data-date">17.06.2015</div>
-                            </div>
-
-                            <div class="order-list__price">
-                                60 740 <span class="rubl">p</span>
-                            </div>
-
-                            <div class="order-list__status">
-                                <div class="order-list__status-confrm">Создан</div>
-                                <div class="order-list__status-payment order-list__status-payment_warn">Требуется предоплата</div>
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -112,7 +80,41 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
             <div class="private-sections__item private-sections__item_ep private-sections grid__inner">
                 <header class="private-sections__head">Горящие фишки</header>
 
+                <div class="grid-scroll">
+                    <ul class="grid-scroll-list grid-scroll-list_2col private-ep-list">
+                        <li class="grid-scroll-list__col">
+                            <div class="grid-scroll-list__item private-ep-list__item">
+                                <span class="ep-coupon" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
+                                    <span class="ep-coupon__inner">
+                                        <span class="ep-coupon__ico"><img src="http://content.enter.ru/wp-content/uploads/2014/03/bit.png"></span>
+                                        
+                                        <span class="ep-coupon__desc">Крупногабаритная и встраиваемая техника</span>
+                                        
+                                        <span class="ep-coupon__price">5%</span>
+                                    </span>
+                                </span>
 
+                                <div class="private-ep-list__dutation">3 д 19 ч 52 мин 51 с</div>
+                            </div>
+                        </li>
+
+                        <li class="grid-scroll-list__col">
+                            <div class="grid-scroll-list__item private-ep-list__item">
+                                <span class="ep-coupon" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_lime_b1.png);">
+                                    <span class="ep-coupon__inner">
+                                        <span class="ep-coupon__ico"><img src="http://content.enter.ru/wp-content/uploads/2014/03/kids.png"></span>
+                                        
+                                        <span class="ep-coupon__desc">Гигиена и уход за малышом</span>
+                                        
+                                        <span class="ep-coupon__price">10%</span>
+                                    </span>
+                                </span>
+
+                                <div class="private-ep-list__dutation">3 д 19 ч 52 мин 51 с</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -259,34 +261,6 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                                 17.08.2015
                             </div>
                         </li>
-
-                        <li class="grid-scroll-list__item message-list__item">
-                            <div class="message-list__left">
-                                <div class="message-list__title">Заказ #COXD-123456 накаав дылваолдыва</div>
-
-                                <p class="message-list__text">
-                                    Ваш заказ передан в транспортную компанию! Ваш Enter! приятных гадин
-                                </p>
-                            </div>
-
-                            <div class="message-list__date">
-                                17.08.2015
-                            </div>
-                        </li>
-
-                        <li class="grid-scroll-list__item message-list__item">
-                            <div class="message-list__left">
-                                <div class="message-list__title">Заказ #COXD-123456 накаав дылваолдыва</div>
-
-                                <p class="message-list__text">
-                                    Ваш заказ передан в транспортную компанию! Ваш Enter! приятных гадин
-                                </p>
-                            </div>
-
-                            <div class="message-list__date">
-                                17.08.2015
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -297,10 +271,30 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                 <header class="private-sections__head">Подписки</header>
 
                 <div class="grid-scroll">
-                    <ul class="grid-scroll-list address-list">
-                        <li class="grid-scroll-list__item address-list__item">
-                            <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep" />
+                    <ul class="grid-scroll-list subscribe-list">
+                        <li class="grid-scroll-list__item subscribe-list__item">
+                            <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep" checked />
                             <label class="customLabel" for="subscribe-ep">Новости EnterPrize</label>
+                        </li>
+
+                        <li class="grid-scroll-list__item subscribe-list__item">
+                            <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep-2" disabled />
+                            <label class="customLabel" for="subscribe-ep-2">Новости EnterPrize Новости EnterPrize Новости EnterPrize Новости EnterPrize Новости EnterPrize Новости EnterPrize</label>
+                        </li>
+
+                        <li class="grid-scroll-list__item subscribe-list__item">
+                            <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep-3" checked />
+                            <label class="customLabel" for="subscribe-ep-3">Новости EnterPrize</label>
+                        </li>
+
+                        <li class="grid-scroll-list__item subscribe-list__item">
+                            <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep-4" />
+                            <label class="customLabel" for="subscribe-ep-4">Новости EnterPrize</label>
+                        </li>
+
+                        <li class="grid-scroll-list__item subscribe-list__item">
+                            <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep-5" checked />
+                            <label class="customLabel" for="subscribe-ep-5">Новости EnterPrize</label>
                         </li>
                     </ul>
                 </div>
