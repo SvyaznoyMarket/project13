@@ -172,7 +172,7 @@
 			var
 				calculateItemWidth = function(i) {
 					i = i || item;
-					return i.width() + parseInt(i.css('marginLeft'),10) + parseInt(i.css('marginRight'),10);
+					return i.width() + parseInt(i.css('marginLeft'),10) + parseInt(i.css('marginRight'),10) + parseInt(i.css('borderRight'),10) + parseInt(i.css('borderLeft'),10);
 				},
 				calculateElementOnSlideCount = function(itemW, wrapEl) {
 					wrapEl = wrapEl || wrap;

@@ -317,13 +317,13 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
         ],
     ]) ?>
 
-    <?= $helper->render('product/__slider', [
+    <?= $helper->render('product-page/blocks/slider', [
         'type'      => 'viewed',
         'title'     => 'Вы смотрели',
         'products'  => $viewedProducts,
         'limit'     => \App::config()->product['itemsInSlider'],
         'page'      => 1,
-        'class'     => 'slideItem-7item',
+        'class'     => 'slideItem-7item goods-slider_mark',
     ]) ?>
 
 </div>
