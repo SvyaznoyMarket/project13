@@ -11,8 +11,8 @@ return function(
 ) {
     /** @var $categories \Model\Product\Category\TreeEntity[] */
 ?>
-    <? if ($rootCategoryInMenu && "tchibo" === $rootCategoryInMenu->getToken() && 0 == $rootCategoryInMenu->getProductCount()): ?>
-        <img src="http://content.enter.ru/wp-content/uploads/2014/04/Tch_out.jpg" alt="К сожалению, товары Tchibo недоступны к покупке в вашем городе" />
+    <? if ($rootCategoryInMenu && 'tchibo' === $rootCategoryInMenu->getToken() && 0 == $rootCategoryInMenu->getProductCount()): ?>
+        <img src="//content.enter.ru/wp-content/uploads/2014/04/Tch_out.jpg" alt="К сожалению, товары Tchibo недоступны к покупке в вашем городе" />
     <? endif ?>
 
     <!-- TCHIBO - слайдер-меню разделов Чибо -->
@@ -28,28 +28,27 @@ return function(
 
         <ul class="tchiboNav_lst clearfix">
         <? $i = 0; foreach ($categories as $category):
-            $active = $currentCategory && in_array($category->getId(), [$currentCategory->getParentId(), $currentCategory->getId()]) ? true : false;
             $last = (count($categories) - ($i++)) <= 1; ?>
 
-            <li class="tchiboNav_lst_i<? if ($active): ?> tchiboNav_lst_i-act<? endif ?><? if ($last): ?> tchiboNav_lst_i-last<? endif ?>">
+            <li class="tchiboNav_lst_i<? if ($last): ?> tchiboNav_lst_i-last<? endif ?>">
                 <a class="tchiboNav_lst_lk" href="<?= $category->getLink() ?>"<? if (in_array($category->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$category->getId()] ?>"<? endif ?>>
                     <span class="tchiboNav_lst_tx"><?= $category->getName() ?></span>
                 </a>
 
-                <? if ((bool)$category->getChild() && ($active || !$currentCategory)): ?>
-                    <ul class="tchiboNav_slst<? if (!$last): ?> tchiboNav_slst-def<? endif ?><? if ($active): ?> tchiboNav_slst-act<? endif ?><? if ($last): ?> tchiboNav_slst-last<? endif ?>">
+                <? if ((bool)$category->getChild()): ?>
+                    <ul class="tchiboNav_slst<? if (!$last): ?> tchiboNav_slst-def<? endif ?><? if ($last): ?> tchiboNav_slst-last<? endif ?>">
                     <? foreach ($category->getChild() as $child):
-                        $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId()) ? true : false;
+                        $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId());
                         // Шильдик NEW
                         $newCategory = false;
                         if (isset($catalogConfig['category_timing'])
                             && is_array($catalogConfig['category_timing'])
-                            && in_array($child->getToken(), array_keys($catalogConfig['category_timing']))) {
+                            && in_array($child->getToken(), array_keys($catalogConfig['category_timing']), false)) {
 
                             $catalogTiming = $catalogConfig['category_timing'][$child->getToken()];
                             $until = strtotime($catalogTiming['until']);
                             if (time() < $until) {
-                                if ($catalogTiming['type'] == 'new') $newCategory = true;
+                                if ($catalogTiming['type'] === 'new') $newCategory = true;
                             }
                         }?>
 
