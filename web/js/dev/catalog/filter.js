@@ -210,16 +210,28 @@
 	function sendEcomAnalytics(res) {
 		/* analytics */
 		if (res.list && res.list.products) {
-			var count = res.list.productCount,
+			var productList = res.list.products,
+				ii = 0,
+				count = res.list.productCount,
 				multiplier = liveScroll ? nowPage - 1 : res.pagination.currentPage;
-			$.each(res.list.products, function(i,val){
-				if (typeof val.ecommerce != 'undefined') {
-					ENTER.utils.analytics.addImpression(JSON.parse(val.ecommerce), {
-						position: count * multiplier + i,
-						list: location.pathname.indexOf('/search') === 0 ? 'Search results' : 'Catalog'
-					})
-				}
-			})
+
+			while (productList.length > 0) {
+				$.each(productList.splice(0, 10), function(i,val){
+					if (typeof val.ecommerce != 'undefined') {
+						ENTER.utils.analytics.addImpression(JSON.parse(val.ecommerce), {
+							position: count * multiplier + ii,
+							list: location.pathname.indexOf('/search') === 0 ? 'Search results' : 'Catalog'
+						})
+					}
+					ii++;
+				});
+				$body.trigger('trackGoogleEvent', {
+					category: 'catalog_impression',
+					action: 'send impressions',
+					nonInteraction: true
+				})
+			}
+
 		}
 	}
 
