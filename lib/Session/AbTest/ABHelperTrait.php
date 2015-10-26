@@ -119,7 +119,7 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isOldPrivate() {
-        return 'off' === \App::abTest()->getTest('new_private')->getChosenCase()->getKey();
+        return false;
     }
 
     /**

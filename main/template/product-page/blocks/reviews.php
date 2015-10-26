@@ -21,7 +21,9 @@ $reviews = (array)$reviewsData['review_list'];
 
 <div class="reviews clearfix">
     <div class="reviews__l">
-        <?= $helper->render('product-page/blocks/reviews.sorting', ['sorting' => $sorting, 'product' => $product]) // сортировка ?>
+        <? if ($reviewsData['num_reviews']) : ?>
+            <?= $helper->render('product-page/blocks/reviews.sorting', ['sorting' => $sorting, 'product' => $product]) // сортировка ?>
+        <? endif ?>
 
         <div class="jsReviewsList">
         <? if ($reviewsData['num_reviews'] == 0) : ?>
