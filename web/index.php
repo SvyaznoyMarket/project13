@@ -16,9 +16,6 @@ $env = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'dev';
 $config = include realpath(__DIR__ . '/../config/config-' . $env . '.php');
 if (false === $config) die(sprintf('Не удалось загрузить конфигурацию для среды "%s"', $env));
 
-// graceful degradation
-call_user_func(include realpath(__DIR__ . '/../config/degradation.php'), $config);
-
 // autoload
 require_once __DIR__ . '/../lib/Autoloader.php';
 Autoloader::register($config->appDir);
@@ -38,8 +35,6 @@ if (isset($_GET['APPLICATION_DEBUG'])) {
 
 // request
 \Http\Request::trustProxyData();
-// TODO: придумать, как по другому можно получить имя хоста
-//$request = \Http\Request::createFromGlobals(); // TODO: временно убрал проверку на мобильное приложение
 
 // app name
 \App::$name = isset($_SERVER['APPLICATION_NAME']) ? $_SERVER['APPLICATION_NAME'] : 'main';
@@ -156,6 +151,9 @@ $request =
     )
     : \App::request()
 ;
+
+// degradation
+call_user_func(include realpath(__DIR__ . '/../config/degradation.php'), $config, $request);
 
 // router
 $router = \App::router();
