@@ -69,7 +69,7 @@ class CompleteAction extends OrderV3 {
                 if (!isset($sessionOrder['number'])) continue;
 
                 // сами заказы
-                if (\App::config()->order['sessionInfoOnComplete'] && !$request->query->get('refresh')) { // SITE-4828
+                if (('call-center' !== $this->session->get(\App::config()->order['channelSessionKey'])) && \App::config()->order['sessionInfoOnComplete'] && !$request->query->get('refresh')) { // SITE-4828
                     $orders[$sessionOrder['number']] = new Entity($sessionOrder);
                 } else {
                     $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => preg_replace('/[^0-9]/', '', $sessionOrder['mobile'])], [], function ($data) use (&$orders, $sessionOrder) {

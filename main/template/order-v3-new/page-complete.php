@@ -14,6 +14,9 @@ return function(
 /** @var $products \Model\Product\Entity[] */
     $page = new \View\OrderV3\CompletePage();
     array_map(function(\Model\PaymentMethod\PaymentEntity &$entity) {$entity->unsetSvyaznoyClub();}, $ordersPayment); // fix for SITE-5229 (see comments)
+
+    $showStatus = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
+    $onlinePaymentAvailable = ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']));
 ?>
 <style>
     .jsPaymentForms {
@@ -29,8 +32,8 @@ return function(
             <? foreach ($orders as $order): ?>
             <? /** @var $order \Model\Order\Entity */?>
 
-                <div class="orderLn clearfix" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
-                    <div class="orderLn_l">
+                <div class="orderLn table" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
+                    <div class="orderLn_l orderLn_cell">
 
                         <? if ($userEntity) : ?>
                             <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
@@ -59,8 +62,9 @@ return function(
 
                     <? if (\RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)) : ?>
 
-                    <div class="orderLn_c">
-                        <div><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>
+                    <div class="orderLn_c orderLn_cell">
+                        <div>
+                            <span style="color: #868686"><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>:</span><br/>
                             <? if ($order->deliveredAt) : ?><?= strftime('%e %b %Y', $order->deliveredAt->getTimestamp()) ?><? endif ?>
                             <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
                         </div>
@@ -69,7 +73,7 @@ return function(
 
                     <? endif ?>
 
-                    <div class="orderLn_r">
+                    <div class="orderLn_cell">
                         <? if ($order->getPaySum()): ?>
                             <div class="orderLn_row orderLn_row-summ">
                                 <span class="summT">Сумма заказа:</span>
@@ -89,14 +93,11 @@ return function(
                         <? if (isset($ordersPayment[$order->getNumber()])) : ?>
                         <? $paymentEntity = $ordersPayment[$order->getNumber()]; /** @var $paymentEntity \Model\PaymentMethod\PaymentEntity */?>
 
-                            <? if (isset($paymentEntity->groups[2])) : ?>
+                            <? if (isset($paymentEntity->groups[2]) && ($onlinePaymentAvailable || ($order->sum > \App::config()->order['prepayment']['priceLimit']) || $order->isCredit())) : ?>
 
                             <div class="orderLn_row orderLn_row-bg jsOnlinePaymentBlock">
 
-                                <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])
-                                        && $order->isCredit() ) : ?>
-
-                                    <!-- Кредит -->
+                                <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT]) && $order->isCredit() ) : ?>
 
                                     <div class="payT">Покупка в кредит</div>
                                     <a href="" class="btnLightGrey jsCreditButton"><strong>Заполнить заявку</strong></a>
@@ -106,8 +107,6 @@ return function(
                                             <? /** @var $bank \Model\CreditBank\Entity */?>
                                             <li class="customSel_i jsPaymentMethod" data-value="<?= $bank->getId() ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>">
                                                 <img src="<?= $bank->getImage() ?>" />
-<!--                                                <strong>--><?//= $bank->getName() ?><!--</strong><br/>-->
-<!--                                                --><?//= $bank->getDescription() ?><!--<br/>-->
                                                 <a href="<?= $bank->getLink() ?>" target="_blank" style="float: right">Условия кредитования</a>
                                             </li>
                                         <? endforeach ?>
@@ -119,8 +118,6 @@ return function(
 
                                 <? elseif (isset($paymentEntity->groups[\Model\PaymentMethod\PaymentGroup\PaymentGroupEntity::PAYMENT_NOW])) : ?>
                                 <? $paymentMethods = array_filter($paymentEntity->methods, function (\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $method) use ($paymentEntity) {return $method->paymentGroup === $paymentEntity->groups[\Model\PaymentMethod\PaymentGroup\PaymentGroupEntity::PAYMENT_NOW]; }) ?>
-
-                                    <!-- Онлайн-оплата -->
 
                                     <? if ($order->sum > \App::config()->order['prepayment']['priceLimit']) : ?>
 
@@ -141,7 +138,7 @@ return function(
                                             <? endforeach ?>
                                         </ul>
 
-                                    <? else : ?>
+                                    <? elseif ($onlinePaymentAvailable) : ?>
 
                                         <div class="payT">Можно <span class="payBtn btn4 jsOnlinePaymentSpan"><span class="brb-dt">оплатить онлайн</span></span></div>
 
@@ -170,10 +167,19 @@ return function(
 
                         <? endif ?>
                     </div>
+
+                    <div class="orderLn_status orderLn_cell">
+                        <? if ($showStatus): ?>
+                            <div class="orderLn_status-title">Статус:</div>
+                            <? if ($order->status): ?>
+                                <strong class="orderLn_status-new"><?= $order->status->name ?></strong>
+                            <? else:?>
+                                <strong>Не известен</strong>
+                            <? endif ?>
+                        <? endif ?>
+                    </div>
                 </div>
-
             <? endforeach ?>
-
         </div>
 
         <div class="orderCompl orderCompl_final clearfix">

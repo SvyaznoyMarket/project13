@@ -381,6 +381,7 @@ $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
 $c->order['sessionInfoOnComplete'] = true; // краткая инфа о заказе
 $c->order['emailRequired'] = true; // обязательность email
 $c->order['creditStatusSessionKey'] = 'order_credit';
+$c->order['channelSessionKey'] = 'order_channel';
 
 $c->newDeliveryCalc = true;
 

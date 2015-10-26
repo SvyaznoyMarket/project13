@@ -105,7 +105,7 @@ class CompletePage extends Layout {
     public function slotContent() {
         $template = 'page-complete';
         $orders = $this->getParam('orders');
-        if (\App::abTest()->isOnlineMotivation(count($orders))) {
+        if (('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey'])) && \App::abTest()->isOnlineMotivation(count($orders))) {
             /* @var $order \Model\Order\Entity */
             $order = reset($orders);
             /* Если выбран самовывоз из определенной точки или выбрана доставка с адресом */
