@@ -1,8 +1,9 @@
 <?php
 
-return function(\Config\AppConfig $c) {
+return function(\Config\AppConfig $c, \Http\Request $request = null) {
     /** @var int $degradation */
-    $degradation = isset($_SERVER['DEGRADATION_LEVEL']) ? (int)$_SERVER['DEGRADATION_LEVEL'] : 0;
+    $degradation = $request ? (int)$request->headers->get('X-Enter-Degradation-Level') : 0;
+    //$degradation = isset($_SERVER['DEGRADATION_LEVEL']) ? (int)$_SERVER['DEGRADATION_LEVEL'] : 0;
 
     if (1 === $degradation) {
         $c->coreV2['retryCount'] = 1;
