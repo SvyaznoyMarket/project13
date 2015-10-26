@@ -163,9 +163,6 @@
 		margin: 0;
 		overflow: hidden;
 		width: 940px;
-		height: 630px;
-		background: url("@{base-url}/tchibo/img/shadow.png") no-repeat 50% 100%;
-		padding-bottom: 50px;
 
 		.bPromoCatalogSliderWrap_eSlide {
 			width: 940px;
@@ -213,31 +210,35 @@
 
 	.bPromoCatalogSlider_eArrow {
 		background-repeat: no-repeat;
-		width: 58px;
-		height: 86px;
-		top: 148px;
+		width: 25px;
+		height: 65px;
+		top: 0;
+		bottom: 0;
+		margin: auto;
 
 		&.mArRight {
-			background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAABWCAYAAACejYUJAAADaElEQVR42u3c60tTcRgHcHUX51zOjUKtxNbadLDN4ZaL6byVXcgoKiMIQrSs6E0Q/S8V0Yuo/o1uZLe/wZy+iEydc9kur9bzg0fOAWMPwdmJZz0HvuCO4+x8th/nPJzfpeFvNqvD1VgtDWw2GtiEsUCsGAumSQNzRmo4G8QOcWCacR9EA3NG2hDWCmmDuFXwbxfEge+xalieyBZEebe28g/L5fKrufnbQXjdAdmLaCfErsdyQzoR0rGRzT6uVCrfVAqFwtsLl6ZjsL8H0gnxQFp3YRkh2xXkx9raEwXUJ5//+X7y9Nlj8H8/ZD/ES2C5IbVAU14YP3FqGN4XgBwgsByRWnK5rYXRick0vD9IYBkguWP/cHV1E0h+WEQ24Uk48BbSoUfywtJQG56MV38L4Yelm60d0qaKAQLBEYtQrdm6VcVDADhgaagq61TFwxdLN93mnQuRKutUxcMXS99aXFig96iyTlU8HLH0VRebLxboflXWwcnVHVZfFXmwQA+ok+KJpYsG+879FE8iKFjBClawghWsYAUrWMEKVrCCFaxgBfvfYAP4+McDcerGVDTWFRb7Z/34YM8NaUGs9quaiD0I6RsenRjbzOU+GIbFzmjseT+Ej2xd+NkWDWoOdg9kH55IJJkaOQmdWZ8Mw+IwA2zCnfgwvpmAGozV+l092IRDqfTY8ezm5kejf1V1bPyMdnxObf1n0DNT5xNG9wKoL019eQTUvKZ75eq18Pb2r3dGItc3Nj7HB1Pn4PhxoumaczG6PjMXMrqnbm19/UsskbwIxx+ChImLUe2RM7M3+2qBjA4cnYbjpyEx4vbCHjkCGaAKhrpAVisBBSlIQQpSkIIUpCAFKUhBClKQghQkgazpMNbZG7d6mSPpgcnzd+4GisXiG8ZIeqj5vfsPfKVS6TVzJD15AKeDcEfS00Ggl+tRHSBpKKTr++rqU+ZIesoWztn2L6+sPGOOpCfhQbohoUxm+TlzJD2tEuKDRJaWMi+YI+mJspDDkOji4teXzJH01GfE9itsNWR/fPCyCUhTsFFsxrs6YbF/Mm0C0jRsRH+BUiNLEsmhKdifgsRMWJ7ANKwPElK3HjUCBIbRjGN3ephacILdEiKQbkT1Yo5QS4iwXRQGwV0q1KIwssyPLNwkS3GZsfFfXO03PVtK4eIMj4AAAAAASUVORK5CYII=");
+			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAABBCAQAAACOPcdyAAABw0lEQVR4AbXXJZwbURSF8XNfmbmmXP8rqqgytzMvsoxelBlNyFWWSQ65gkrsol1Sy+titsx0TeHcwvP/ZCb5Hkl6JLwJ05D0+fucbzWR5D26Jq5cXzeQ+IHsQebzeE+TyyOXtmORnA6LNHmPZDb65f2IdTuqNAHi9e6ZDIxavnWAJkBawTGphWvxliYicaOskEp4gibA7UnThmTsCL8jowkQr3BNqI9ZuaWLJkByXMrSOiW3+gVNgOSpbMBtf9hAro+Z14OZOOJv0QSIF7sueaGpEgSId7lHmipFgORLqt5ArnxOFad8iSaApkoTINkgTzVVigCaKkc01XJ4kiM/SJUgP0iVID9IlSCaKkk0VXc4uM2RH6RKESDZLQ+/pEoTTdVANFWaaKoGAsTX3HlpMX+LW2t8FzkRVmiSPJTdpl8s3uvuM/+L/d/Xxub2yXRtjCzZ3QqO/L/5kq5Eo2lWPpo8ftCNcfkdmW2FKYanTesYqn4dvY6lG/HEsFpqgkHNtPK7k0EZIIkmSBJN8D/slT9Y5iiiCf6v04X5DGM6KWmCrhScAkiiCZJEEwQoognS52RNkCSxJmg98//fm0V2SBPkxgfJEBxxfoVTuQAAAABJRU5ErkJggg==');
 			right: 10px;
 		}
 
 		&.mArLeft {
 			left: 10px;
-			background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAABWCAYAAACejYUJAAAD6ElEQVR42u3czU8TQRgGcIXSQqEtbWm3paUpbRVI0YLY+IkJCSpq9ODFxP/Ekyej8WI0RDkQkYsG44GIUUAgUU9+QOTCN/JNJIKQ4B2fTV6ThglOTdcus4zJc3Apb/LLTmeGnZ3Zt5v/mfKL9v8t6dQQBZhDyd0Wuk5gkZEEMiF5iBmxUMx0zcRgBUXmEcyK2BA7pYiuWegzuQxWMGSBCotVxj2bm79aF5eWbuD/CuJBnITPZ7CCIa2IIxyt8K1vbLRtbW0tq5mYmLyJ62EkQGA7UsBgBUIWh8oPBFbX1tpVYGq+Dg/fws8rCaxwsCIh2XwZHLyDz8V52F2P/LG6Ssid8/HT57v4fDVSzsEKimSxh3hYoZHsnU1txtQb0zgrNpLFxgnroaHHkjqpEBvJdlCVSIDGWStzV/VC2pweP5CPMwAyQ0/KXS1CzH++q3rNeBwq8vvKykNNkJSFxcVnqB1L+a5aGKjoyOnpby+cHl+SAxUbOT4+0elwextQv4aGGi9iY5quyMjR0bGXdpf3POofQ6qQIOJiOiORkSMjo12oewH1T9HEIUx3084ML4IjL6L+aSSBRBAf4kidHRkNGSVkMWLdPgWUyN2KnJqa7kbdS4ZGYpzs9frLLhOyZi8h/RJpAGRMIiVSIiVSIiVSIiVSIiXyn6Es0mdEZA5iQiyIHU/VlP/wR/NbIK+g/hmkNltIFkpLBcUlihvLBM1aIicnp/o8vuBV1G9A6pCDSCni5CO1b7ZmxIZ3Bu5riRwbGx9wK6XXUbsJOYnEkRDiRgoRMwepMZSa7c/19QcaP0XvL1EC11D7LJJEKqjJOpD8LC3tsVC1E1paXm7RuhNSSkNNOkLZpot4Cx3uyOzsXKuW2Ln5+deBUKRep6bLdkaICwla7a4q9JRtGi/rvSoLx47r1BmxwwviRcIFNudh9JhPtMTiDbAurHInszS88CcMiIJEgE2gQ2nXEos+QMUe1WUs3QHrk1iJlViJlViJlViJlViJldisYaOGx84vLHS6vP4jewKLJx/Pga0lrE9iDYOdk1hjY3mvsRoGi9WABOfFZPGx9Ny4AysCcd6r5kaZVDzlbB7QDzszM9uhFXRwaOg2ZzuIfli1I1G/Y5ki373/cI+WJBmo7lu2CBvNFNvXP9CMOvVIgrNlS1xsd0/vI/x+I5LkbcITFvumu6eF1l1PpLOtUkgsIc8RMq2NsoJhqbnSnUx367NwWOp4GglZnTlSf2xEndapM55tQ0g9ktT2eAL9sWF1WqfOeGgyUIckxDpwgo910FQuSM0zRuEeISLkoTCIi8BKOofCyGN+5MFN8iguMQ9X+w0Ku8arYhxufAAAAABJRU5ErkJggg==");
+			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAABBCAMAAAAT6v/LAAAAvVBMVEX///+wsLCvr6+wsLC7u7uvr6+vr6////+vr6+urq6wsLCvr6+AgICysrKvr6+urq6urq61tbWwsLCtra3///+wsLCvr6+wsLCurq4AAACysrKurq6dnZ22travr6+tra2/v7+wsLCurq6vr6+urq6vr6+vr6+SkpKtra2tra2urq6vr6+urq6wsLCxsbGurq6wsLCtra2xsbGwsLCurq6tra2xsbGvr6+wsLCkpKSwsLCvr6+vr6+xsbGxsbGKmloUAAAAP3RSTlMAZDD3D9z/AbChd94EP/z9FhjnRAPBjIvNAU/3DSPwMgjPdJ26Y+sHIlqjdkWKYlvOgz50pF2cM/4OiMBGdYm399DCAAAAvUlEQVR42tWTxQ4CURAEGxsWd1tkcXf3//8sjly6D5AQoK6Vl5fUzEDhU8IfECIYMi7CjkW4iVosTkUimUpTkclajop8wYqglKxcocK1ao2KesM8Kpota4PSsS4XPesPREcbqo4jUBwbczF5p+P0xY6zr3acv9Nx8fGOWNoKnLV8g436B3Bsq+9rB+gGuptQ+2drOh8104NQ7rF6Euqsdgf5ixUBtaPX19ve/rqtB+gb49x/pO1Yt4VsC8X8ATu2E+iV9a6DAAAAAElFTkSuQmCC');
+
 		}
 	}
 }
 
 .bPaginator {
-
 	&.mTchiboPaginator {
 		margin: 0 auto;
 		text-align: center;
 		position: absolute;
 		z-index: 10;
-		top: 340px;
+		top: auto;
+		bottom: 10px;
 		width: 940px;
+		height: 10px;
 
 		.bPaginatorSlider {
 			display: none;
@@ -248,10 +249,6 @@
 			font-size: 0;
 			width: auto !important;
 			left: 0 !important;
-			padding: 8px 8px 8px 3px;
-			background: #4c4c4c;
-			background: rgba(0,0,0,0.5);
-			.rounded(4px);
 		}
 
 		.bPaginator_eLink {
@@ -259,94 +256,16 @@
 			border: none;
 			.inline-block();
 			float: none;
-			width: 11px;
-			height: 11px;
-			margin: 0 0 0 5px !important;
+			width: 10px;
+			height: 10px;
+			margin: 0 0 0 8px !important;
 			line-height: 10px;
-			background: #E6E6E6;
+			background: #002957;
 			.rounded(50%);
+			.opacity(.3);
 
 			&.active {
-				background: #737373;
-			}
-		}
-	}
-}
-
-.bPromoCatalogProducts {
-	margin: 15px 0 0 0;
-
-	.prodItem {
-		float: left;
-		position: relative;
-		height: 236px;
-
-		width: 312px;
-		margin: 0;
-	}
-
-	.prodImg {
-		text-align: center;
-	}
-
-	.prodPrice {
-	    font-size: 18px;
-	    font-weight: bold;
-	    float: left;
-	}
-
-	.btnBuy {
-		float: right;
-	}
-
-	.prodName {
-	    font-size: 14px;
-	    margin: 0 0 2px;
-	}
-
-	.prodDesc {
-		background: url("@{base-url}/tchibo/img/bgWhiteIe.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
-	    bottom: 0;
-	    left: 0;
-	    padding: 5px 0;
-	    position: absolute;
-	    width: 100%;
-
-	    &__inner {
-	    	margin: 0 auto;
-		    padding: 0 5px 0 10px;
-		    width: 185px;
-	    }
-	}
-}
-
-.slider2 {
-	.btnBuy {
-		margin-right: 0;
-
-		.btnBuy__eLink {
-			.orangeGradLight();
-			border-color: #002958;
-
-			&.mBought {
-				.greyLiner();
-				border: 1px solid #E6E6E6;
-				box-shadow: none;
-				color: #A6A6A6;
-			}
-
-			&.mDisabled {
-				.lightGreyLiner();
-				border: 1px solid #F1F0F0;
-				box-shadow: none;
-				color: #CBCBCB;
-				cursor: default;
-			}
-
-			&.mShopsOnly {
-				.blackGrad();
-				border: 1px solid #A1A1A1;
-				.inline-block();
+				.opacity(1);
 			}
 		}
 	}

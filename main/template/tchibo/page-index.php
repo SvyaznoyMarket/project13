@@ -68,38 +68,6 @@ if ((bool)$siblingCategories) {
                 <a class="titleCat" href="<?= $catalogCategory->getLink() ?>">
                     <?= $catalogCategory->getName() ?>
                 </a>
-
-                <? if ($categoryChildren): ?>
-                    <ul class="tchiboCatalog__list">
-                        <? foreach($categoryChildren as $child): ?>
-
-                        <?  // Шильдики NEW и дата действия коллекции
-
-                        $newCategory = false;
-                        $oldCategory = '';
-
-                        if (isset($catalogConfig['category_timing'])
-                            && is_array($catalogConfig['category_timing'])
-                            && in_array($child->getToken(), array_keys($catalogConfig['category_timing']))) {
-
-                                $catalogTiming = $catalogConfig['category_timing'][$child->getToken()];
-                                $until = strtotime($catalogTiming['until']);
-                                if (time() < $until) {
-                                    if ($catalogTiming['type'] == 'new') $newCategory = true;
-                                    if ($catalogTiming['type'] == 'old') $oldCategory = '<br /><span style="color: #e21f26; font-weight: bold">до '.$page->helper->monthDeclension(strftime('%e %B')).'</span>';
-                                }
-                        }
-                        // Шильдики NEW и дата действия коллекции
-                        ?>
-
-                        <li class="item <?= $newCategory ? 'new' : '' ?>">
-                            <a class="link" href="<?= $child->getLink() ?>">
-                                <?= $child->getName().$oldCategory ?>
-                            </a>
-                        </li>
-                        <? endforeach; ?>
-                    </ul><? /* <!--/ список подкатегории --> */ ?>
-                <? endif; ?>
             </div>
         </div><? /* <!--/ категория --> */ ?>
     <? endforeach; ?>
