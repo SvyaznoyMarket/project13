@@ -355,6 +355,7 @@
             });
         },
         loadPaymentForm = function($container, url, data) {
+            console.info('Загрузка формы оплаты ...');
             $container.html('Загрузка...'); // TODO: loader
 
             $.ajax({
@@ -670,7 +671,7 @@
     });
     $('.js-order-onlinePaymentMethod').each(function(i, el) {
         var
-            $el = $(this),
+            $el = $(el),
             url,
             data,
             relations,

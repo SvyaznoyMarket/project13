@@ -20,6 +20,13 @@ $f = function(
         return $paymentMethod->isOnline;
     });
 
+    // SITE-6304
+    $checkedPaymentMethodId = $order->paymentId;
+    if (!array_key_exists($order->paymentId, $paymentMethods) && ($paymentMethod = reset($paymentMethods) ?: null)) {
+        /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod */
+        $checkedPaymentMethodId = $paymentMethod->id;
+    }
+
     $paymentMethodsByDiscount = [];
     foreach ($paymentMethods as $paymentMethod) {
         $index = $paymentMethod->discount ? 0 : 1;
@@ -79,7 +86,7 @@ $f = function(
                     <? foreach ($paymentMethods as $paymentMethod): ?>
                     <?
                         $elementId = sprintf('paymentMethod-%s', $paymentMethod->id);
-                        $checked = $order->paymentId == $paymentMethod->id;
+                        $checked = $checkedPaymentMethodId == $paymentMethod->id;
                     ?>
                     <li class="payment-methods__i">
                         <input
@@ -103,7 +110,10 @@ $f = function(
                                 'discountContainer' => '.id-onlineDiscount-container',
                             ]) ?>"
                             class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
-                            <? if ($checked): ?> checked="checked"<? endif ?>
+                            <? if ($checked): ?>
+                                data-checked="true"
+                                checked="checked"
+                            <? endif ?>
                         />
                         <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2<? if ($checked): ?> mChecked<? endif ?>">
                             <?= $paymentMethod->name ?>
