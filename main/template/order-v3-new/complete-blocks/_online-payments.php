@@ -4,12 +4,14 @@
  * @param \Helper\TemplateHelper $helper
  * @param \Model\Order\Entity $order
  * @param \Model\PaymentMethod\PaymentEntity|null $orderPayment
+ * @param string $title
  * @return string
  */
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Order\Entity $order,
-    \Model\PaymentMethod\PaymentEntity $orderPayment = null
+    \Model\PaymentMethod\PaymentEntity $orderPayment = null,
+    $title = 'Онлайн-оплата'
 ) {
     if (!$orderPayment || !$orderPayment->methods) {
         return '';
@@ -44,7 +46,7 @@ $f = function(
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
-                    Онлайн-оплата
+                    <?= $title ?>
                 </div>
                 <div class="order-payment__sum-msg">
                     К оплате <span class="order-payment__sum"><?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span>
@@ -75,7 +77,7 @@ $f = function(
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
-                    Онлайн-оплата
+                    <?= $title ?>
                 </div>
                 <div class="order-payment__sum-msg">
                     К оплате <span class="order-payment__sum"><?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span>

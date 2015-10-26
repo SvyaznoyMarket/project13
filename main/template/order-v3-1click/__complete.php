@@ -35,7 +35,7 @@ $f = function(
         </div>
 
         <? if ($ordersPayment[$order->getNumber()] && array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $ordersPayment[$order->getNumber()]->groups)) : ?>
-            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment]) ?>
+            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'title' => 'Оплатить онлайн со скидкой 15%']) ?>
         <? endif ?>
     </div>
 <? endforeach ?>

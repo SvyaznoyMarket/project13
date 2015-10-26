@@ -54,7 +54,7 @@ return function(
                 <? if ($isOnlinePaymentChecked): ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
                 <? else: ?>
-                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true, 'title' => 'Оплатить онлайн со скидкой 15%']) ?>
                 <? endif ?>
             <? endif ?>
 
