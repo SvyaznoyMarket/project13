@@ -29,7 +29,7 @@ class FavoritesPage extends \View\DefaultLayout {
 
     public function slotContent() {
         return $this->render(
-            $this->isOldPrivate() ? 'user/page-favorites' : 'user/favorite/page-index',
+            'user/favorite/page-index',
             $this->params
         );
     }
