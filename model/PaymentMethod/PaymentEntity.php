@@ -67,7 +67,7 @@ class PaymentEntity {
             if ($methodId !== $method->id) continue;
 
             if ($action = $method->getOnlineDiscountAction()) {
-                $sum = (int)$action['payment_sum'];
+                $sum = $action['payment_sum'];
             }
         }
 

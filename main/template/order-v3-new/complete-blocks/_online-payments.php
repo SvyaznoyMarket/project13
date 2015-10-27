@@ -49,7 +49,13 @@ $f = function(
                     <?= $title ?>
                 </div>
                 <div class="order-payment__sum-msg">
-                    К оплате <span class="order-payment__sum"><?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span>
+                <?
+                    $sum = ($checkedPaymentMethodId && $orderPayment) ? ($orderPayment->getPaymentSumByMethodId($checkedPaymentMethodId)) : null;
+                    if (!$sum) {
+                        $sum = $order->paySum;
+                    }
+                ?>
+                    К оплате <span class="order-payment__sum"><?= $helper->formatPrice($sum) ?> <span class="rubl">p</span></span>
                 </div>
                 <div class="orderPayment_msg_shop orderPayment_pay">
                     <ul class="orderPaymentWeb_lst-sm">
@@ -80,7 +86,7 @@ $f = function(
                     <?= $title ?>
                 </div>
                 <div class="order-payment__sum-msg">
-                    К оплате <span class="order-payment__sum"><?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span>
+                    К оплате <span class="order-payment__sum"><span class="id-onlineSum-container"><?= $helper->formatPrice($sum) ?></span> <span class="rubl">p</span></span>
                 </div>
 
                 <? foreach ($paymentMethodsByDiscount as $discountIndex => $paymentMethods): ?>
@@ -104,12 +110,16 @@ $f = function(
                                 'number' => $order->number,
                                 'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context], true),
                             ]) ?>"
-                            <? if ($paymentMethod->isOnline): ?>
-                                data-discount="true"
+                            <? if ($sum = ($paymentMethod->getOnlineDiscountActionSum() ?: $order->paySum)): ?>
+                                data-sum="<?= $helper->json([
+                                    'name'  => isset($paymentMethod->discount['value']) ? ('Скидка ' . $paymentMethod->discount['value'] .'%') : null,
+                                    'value' => $helper->formatPrice($sum)
+                                ])?>"
                             <? endif ?>
                             data-relation="<?= $helper->json([
                                 'formContainer'     => '.id-paymentForm-container',
                                 'discountContainer' => '.id-onlineDiscount-container',
+                                'sumContainer'      => '.id-onlineSum-container',
                             ]) ?>"
                             class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
                             <? if ($checked): ?>

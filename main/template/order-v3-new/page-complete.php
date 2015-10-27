@@ -69,6 +69,7 @@ $f = function(
                 ;
 
                 $discountContainerId = sprintf('id-onlineDiscount-container', $order->id);
+                $sumContainerId = sprintf('id-onlineDiscountSum-container', $order->id);
 
                 // SITE-6304
                 $checkedPaymentMethodId = $order->paymentId;
@@ -161,7 +162,13 @@ $f = function(
                                             Онлайн-оплата
                                         </div>
                                         <div class="order-payment__sum-msg">
-                                            К оплате <span class="order-payment__sum"><?= $helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></span>
+                                        <?
+                                            $sum = ($checkedPaymentMethodId && $paymentEntity) ? ($paymentEntity->getPaymentSumByMethodId($checkedPaymentMethodId)) : null;
+                                            if (!$sum) {
+                                                $sum = $order->paySum;
+                                            }
+                                        ?>
+                                            К оплате <span class="order-payment__sum"><span class="<?= $sumContainerId ?>"><?= $helper->formatPrice($sum) ?></span> <span class="rubl">p</span></span>
                                         </div>
 
                                         <? foreach ($paymentMethodsByDiscount as $discountIndex => $paymentMethodChunk): ?>
@@ -187,12 +194,16 @@ $f = function(
                                                             'number' => $order->number,
                                                             'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context], true),
                                                         ]) ?>"
-                                                        <? if ($paymentMethod->isOnline): ?>
-                                                            data-discount="true"
+                                                        <? if ($sum = ($paymentMethod->getOnlineDiscountActionSum() ?: $order->paySum)): ?>
+                                                            data-sum="<?= $helper->json([
+                                                                'name'  => isset($paymentMethod->discount['value']) ? ('Скидка ' . $paymentMethod->discount['value'] .'%') : null,
+                                                                'value' => $helper->formatPrice($sum)
+                                                            ])?>"
                                                         <? endif ?>
                                                         data-relation="<?= $helper->json([
                                                             'formContainer'     => '.' . $containerId,
                                                             'discountContainer' => '.' . $discountContainerId,
+                                                            'sumContainer'      => '.' . $sumContainerId,
                                                         ]) ?>"
                                                         class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
                                                         <? if ($checked): ?>
@@ -209,10 +220,10 @@ $f = function(
                                                 </li>
                                             <? endforeach ?>
                                         </ul>
-                                            <? if (0 === $discountIndex): ?>
+                                            <? if ((0 === $discountIndex) && isset($paymentMethodChunk[0]->discount['value'])): ?>
                                                 <div class="payment-methods__discount discount">
                                                     <div class="<?= $discountContainerId ?>">
-                                                        <span class="discount__val">Скидка 15%</span>
+                                                        <span class="discount__val">Скидка <?= $paymentMethodChunk[0]->discount['value'] ?>%</span>
                                                     </div>
                                                 </div>
                                             <? endif ?>
