@@ -41,6 +41,7 @@ if ((bool)$siblingCategories) {
     </div>
 <? endif */?>
 
+<!-- Блок скидок -->
 <div class="s-sales-grid">
     <div class="s-sales-grid__row grid-3cell cell-h-220">
         <div class="s-sales-grid__cell">
@@ -80,7 +81,9 @@ if ((bool)$siblingCategories) {
         </div>
     </div>
 </div>
+<!-- END Блок скидок -->
 
+<!-- Форма подписки -->
 <div class="b-subscribe-to-sale subscribe-form">
     <div class="b-subscribe-to-sale__title">Узнай первым о новинках и акциях</div>
 
@@ -98,8 +101,9 @@ if ((bool)$siblingCategories) {
         <div class="b-subscribe-to-sale__check">Хочу получать рассылку о коллекциях Tchibo</div>
     </div>
 </div>
+<!-- END Форма подписки -->
 
-<!--TCHIBO - каталог разделов, баннеров, товаров Чибо -->
+<!-- Разделы -->
 <div class="s-sales-grid">
     <div class="s-sales-grid__row grid-2cell cell-h-340">
         <? foreach($catalogCategories as $key => $catalogCategory): ?>
@@ -157,6 +161,7 @@ if ((bool)$siblingCategories) {
         </div>
     </div>
 </div>
+<!-- END Разделы -->
 
 <? if (!empty($bannerBottom)): ?>
     <div class="tchiboCatalogInnerBanner">
@@ -181,5 +186,3 @@ if ((bool)$siblingCategories) {
         ]) ?>
     <? endif ?>
 </div>
-
-<div class="clear"></div>
