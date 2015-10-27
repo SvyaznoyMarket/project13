@@ -136,8 +136,8 @@ $f = function(
                     <div class="orderLn_r">
                         <? if ($order->getPaySum()): ?>
                             <div class="order-sum">
-                                <? if (false): ?>
-                                    <div class="order-sum__prev"><span class="line-through"><?= $helper->formatPrice($order->getPaySum()) ?></span> <span class="rubl">p</span></div>
+                                <? if ($order->sum > $order->paySum): ?>
+                                    <div class="order-sum__prev"><span class="line-through"><?= $helper->formatPrice($order->sum) ?></span> <span class="rubl">p</span></div>
                                 <? endif ?>
                                 <div class="order-sum__val"><?= $helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></div>
                                 <? if (PaymentMethodEntity::PAYMENT_CASH === $order->paymentId): ?>

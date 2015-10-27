@@ -135,6 +135,15 @@ class CompleteAction extends OrderV3 {
 
             $this->client->execute();
 
+            // изменяет order.pauSum, если есть акция
+            foreach ($ordersPayment as $orderNumber => $payment) {
+                if (!$order = $orders[$orderNumber]) continue;
+
+                if ($order->paymentId && ($sum = $payment->getPaymentSumByMethodId($order->paymentId))) {
+                    $order->paySum = $sum;
+                }
+            }
+
             // получаем продукты для заказов
             foreach ($orders as $order) {
                 // TODO все данные заказываемых товаров необходимо сохранять в сессии на первом шаге оформления заказа, т.к. на последнем шаге товара уже может не быть в бэкэнде или он будет заблокирован 
@@ -256,6 +265,7 @@ class CompleteAction extends OrderV3 {
 
         $response = (bool)$orders ? new \Http\Response($page->show()) : new \Http\RedirectResponse($page->url('homepage'));
         $response->headers->setCookie(new \Http\Cookie('enter_order_v3_wanna', 0, 0, '/order',\App::config()->session['cookie_domain'], false, false)); // кнопка "Хочу быстрее"
+
         return $response;
     }
 
@@ -325,7 +335,6 @@ class CompleteAction extends OrderV3 {
         ]);
 
         return new \Http\JsonResponse($result);
-
     }
 
     /**
