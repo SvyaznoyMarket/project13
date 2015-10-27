@@ -35,58 +35,69 @@ if ((bool)$siblingCategories) {
     } ?>
 </div>
 
-<div class="tchiboSubscribe subscribe-form clearfix">
-    <div class="tchiboSubscribe_title">Узнай первым о новинках и акциях</div>
-    <input type="text" placeholder="Введите Ваш e-mail адрес" class="tchiboSubscribe_input subscribe-form__email" name="email" />
-    <input type="hidden" value="13" name="channel" />
-    <button data-url="<?= $page->url('subscribe.create') ?>" data-error-msg="<?= $page->escape('Вы уже подписаны на рассылку! О всех проблемах сообщайте на my.enter.ru/feedback/') ?>" class="tchiboSubscribe_btn subscribe-form__btn">Подписаться</button>
-    <div class="subscribecheck">Хочу получать рассылку о коллекциях Tchibo</div>
+<div class="s-sales-grid">
+    <div class="s-sales-grid__row grid-3cell cell-h-220">
+        <? if ($isCategoriesOddCount && isset($promoContent) && !empty($promoContent)): ?>
+            <div class="tchiboCatalogInner">
+                <?= $promoContent ?>
+            </div>
+        <? endif ?>
+    </div>
+</div>
+
+<div class="b-subscribe-to-sale subscribe-form">
+    <div class="b-subscribe-to-sale__title">Узнай первым о новинках и акциях</div>
+
+    <div class="b-subscribe-to-sale__form">
+        <input type="text" placeholder="Введите Ваш e-mail адрес" class="b-subscribe-to-sale__input subscribe-form__email" name="email" />
+        <input type="hidden" value="13" name="channel" />
+
+        <button 
+            class="b-subscribe-to-sale__button subscribe-form__btn" 
+            data-url="<?= $page->url('subscribe.create') ?>" 
+            data-error-msg="<?= $page->escape('Вы уже подписаны на рассылку! О всех проблемах сообщайте на my.enter.ru/feedback/') ?>">
+            Подписаться
+        </button>
+
+        <div class="b-subscribe-to-sale__check">Хочу получать рассылку о коллекциях Tchibo</div>
+    </div>
 </div>
 
 <!--TCHIBO - каталог разделов, баннеров, товаров Чибо -->
-<div class="tchiboCatalog clearfix">
-    <? foreach($catalogCategories as $key => $catalogCategory): ?>
-        <?
-        /** @var \Model\Product\Category\TreeEntity $catalogCategory */
-        $imgSrc = $catalogCategory->getImageUrl(3);
-        if (empty($imgSrc)) {
-            // TODO: изображение заглушки
-            $imgSrc = '/styles/tchiboCatalog/img/woman.jpg';
-            //$imgSrc = '/styles/tchiboCatalog/img/man.jpg';
-        }
+<div class="s-sales-grid">
+    <div class="s-sales-grid__row grid-2cell cell-h-340">
+        <? foreach($catalogCategories as $key => $catalogCategory): ?>
+            <?
+            /** @var \Model\Product\Category\TreeEntity $catalogCategory */
+            $imgSrc = $catalogCategory->getImageUrl(3);
+            if (empty($imgSrc)) {
+                // TODO: изображение заглушки
+                $imgSrc = '/styles/tchiboCatalog/img/woman.jpg';
+                //$imgSrc = '/styles/tchiboCatalog/img/man.jpg';
+            }
 
-        $categoryChildren = $catalogCategory->getChild();
-        ?>
+            $categoryChildren = $catalogCategory->getChild();
+            ?>
 
-        <div class="tchiboCatalogInner">
-            <a href="<?= $catalogCategory->getLink() ?>">
-                <img class="tchiboCatalog__img"
-                     src="<?= $imgSrc ?>" alt="<?= $catalogCategory->getName() ?>" />
-            </a>
-
-            <div class="tchiboCatalog__title">
-                <a class="titleCat" href="<?= $catalogCategory->getLink() ?>">
-                    <?= $catalogCategory->getName() ?>
+            <div class="s-sales-grid__cell">
+                <a class="s-sales-grid__link" href="<?= $catalogCategory->getLink() ?>">
+                    <img src="<?= $imgSrc ?>" alt="<?= $catalogCategory->getName() ?>" class="s-sales-grid__img">
+                    <span class="s-sales-grid-desc">
+                        <span class="s-sales-grid-desc__title">
+                            <?= $catalogCategory->getName() ?>
+                        </span>
+                    </span>
                 </a>
             </div>
-        </div><? /* <!--/ категория --> */ ?>
-    <? endforeach; ?>
+        <? endforeach; ?>
+    </div>
+</div>
 
-    <? if ($isCategoriesOddCount && isset($promoContent) && !empty($promoContent)): ?>
-        <div class="tchiboCatalogInner">
-            <?= $promoContent ?>
-        </div>
-    <? endif ?>
-
-    <? if (!empty($bannerBottom)): ?>
+<? if (!empty($bannerBottom)): ?>
     <div class="tchiboCatalogInnerBanner">
         <?= $bannerBottom ?>
     </div> <? /* <!--/ вывод баннера или категории без списка подкатегорий и верхней плашкой-заголовком --> */ ?>
-    <? endif; ?>
-</div>
-<!--/ TCHIBO - каталог разделов, баннеров, товаров Чибо -->
-
-<div class="clear"></div>
+<? endif; ?>
 
 <div style="margin: 0 0 30px;">
     <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>

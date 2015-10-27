@@ -87,69 +87,69 @@
 	}
 }
 
-.tchiboSubscribe {
-	padding: 10px 0 10px 200px;
-	margin: 10px 0 0 -10px;
-	width: 760px;
+.b-subscribe-to-sale {
+	padding: 15px 0;
+	
+	margin: 0 0 20px;
+	background: #f2f2f2;
 
-	color: @white;
-	background: @tchiboBlue;
-
-	&_title {
-		margin: 0 0 10px;
-
-		font-size: 24px;
+	&.subscribe-form {
+		text-align: center;
 	}
 
-	&_input {
-		.rounded(4px);
-		float: left;
+	&__title {
+		font-size: 20px;
+		color: #002957;
+		.inline-block();
+		line-height: 37px;
+		margin-right: 20px;
+	}
 
-		width: 350px;
-		height: 36px;
+	&__form {
+		.inline-block();
+	}
+
+	&__input {
+		width: 280px;
+		height: 35px;
 		padding: 0 10px;
 
-		border: none;
+		border: 1px solid #a0a0a0;
 
-		font-size: 16px;
-		line-height: 36px;
-		margin: 0 10px 10px 0;
-
-		box-shadow: 0 0 3px #f9e37f inset;
+		font-size: 14px;
+		line-height: 35px;
+		margin: 0 8px 0 0;
 
 		&.mError {
-			box-shadow: 0 0 3px #ff0000 inset;
+			border-color: #ff0000;
 		}
 	}
 
-	&_btn {
-		.tchboGradLight();
-		.rounded(4px);
-		width: 175px;
-		height: 35px;
+	&__button {
+		width: 125px;
+		height: 37px;
+		background: #002957;
+		vertical-align: top;
 
 		text-align: center;
 
-		color: @tchiboBlue;
+		color: @white;
 		border: none;
 
-		line-height: 35px;
+		line-height: 37px;
 
 		font-size: 16px;
-		font-weight: bold;
 		padding: 0;
 		cursor: pointer;
 	}
 
-	.subscribecheck {
-		clear: both;
-		background: url("@{base-url}/tchibo/img/check.png") no-repeat 0 0;
-		line-height: 25px;
-    	padding: 0 0 0 35px;
-	}
-
-	.subscribe-form__title {
-		font-size: 17px;
+	&__check {
+		background: no-repeat 0 0 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABiklEQVR42q3VvUoDQRAH8K30IfxGtNDOQkFsbHwBrRTFhxDs8gYBFawSNYpRjFpFYixVMI1iRMQv/AhILILRaEjudm/37842pyjkuMvAwN4c+2OYPfYYEqwBcTans4h1Bj9Je8kgi+nFPLIhQDrwG7SXDEKZ0V0sEEoWo5b9hFLyT40sX6AUVYj9cYjtYajiTUBQOpDnC7AjzbCjrRCn4WCgfM1oqN2A1s4IlKjUAKXQyf+fWykHvjlgMB7vg3q/qzFDpwqZz0DphFL4FbwMcTBtMHulC85tovahOA974LFu2FtDUOX8j645RHbRYFa0Dfxwhqq1Qfl8AHut12wU6SmoSgFQEvIxCb7UCSvSBJGagOJf3kAKcRKCvdxhUOcsDFm40HMbNM9cdy7frkHhGVTWB+zkGHVjZsX1mjBrtQfyfhcUXkEX/cxpaJQg9xCuYvTGH0ghX45gb/RrsAXieBaKl6nsH1R0GJcRiPQkVOmJSoFA9yO3irTyDNb/+qJLsb4XbIo11vMX8A2V+owdvYNMqAAAAABJRU5ErkJggg==');
+		line-height: 20px;
+    	padding: 0 0 0 25px;
+    	text-align: left;
+    	margin: 10px 0 0;
+    	color: #002957;
 	}
 }
 
@@ -160,7 +160,7 @@
 .bPromoCatalogSlider {
 
 	&.mTchiboSlider {
-		margin: 0;
+		margin: 0 0 20px;
 		overflow: hidden;
 		width: 940px;
 
@@ -236,7 +236,7 @@
 		position: absolute;
 		z-index: 10;
 		top: auto;
-		bottom: 10px;
+		bottom: 30px;
 		width: 940px;
 		height: 10px;
 

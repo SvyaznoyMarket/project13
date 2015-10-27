@@ -2,7 +2,7 @@
     width: 940px;
     margin: 0 auto 20px;
     &__title {
-        font: normal 46px/1.4 'Enter type';
+        font: normal 46px/1.4 Tahoma;
 
         text-align: center;
 
@@ -41,7 +41,7 @@
 }
 
 .s-sales-head {
-    font: normal 32px/1.5 'Enter type';
+    font: normal 32px/1.5 Tahoma;
 
     margin: 0 0 20px;
     padding: 0 10px 5px;
@@ -74,6 +74,7 @@
         .clearfix();
         // две ячейки
         &.grid-2cell {
+            font-size: 22px;
             .s-sales-grid__cell {
                 width: 50%;
             }
@@ -156,10 +157,10 @@
         width: 100%;
         height: 100%;
 
-        background: #888;
-
+        background-color: @white;
         .box-sizing();
         &:hover {
+            background-size: inherit;
             .s-sales-grid__img {
                 -webkit-transform: translate(-50%, -50%) scale(1.05);
                    -moz-transform: translate(-50%, -50%) scale(1.05);
@@ -228,16 +229,13 @@
 }
 
 .s-sales-grid-desc {
-    font-family: 'Enter type';
-
     position: absolute;
-    right: 0;
-    bottom: 0;
+    bottom: 30px;
     left: 0;
+    width: 80%;
 
     display: table;
 
-    width: 101%;
     min-height: 60px;
     &__value {
         font-size: 24px;
@@ -278,8 +276,6 @@
 }
 
 .s-sales-header {
-    font-family: 'Enter type';
-
     margin: 0 0 15px;
 
     .clearfix();
