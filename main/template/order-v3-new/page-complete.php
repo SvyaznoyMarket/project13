@@ -69,6 +69,13 @@ $f = function(
                 ;
 
                 $discountContainerId = sprintf('id-onlineDiscount-container', $order->id);
+
+                // SITE-6304
+                $checkedPaymentMethodId = $order->paymentId;
+                if (!array_key_exists($order->paymentId, $onlinePaymentMethods) && ($paymentMethod = reset($onlinePaymentMethods) ?: null)) {
+                    /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod */
+                    $checkedPaymentMethodId = $paymentMethod->id;
+                }
             ?>
 
                 <div class="orderLn clearfix" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
@@ -164,7 +171,7 @@ $f = function(
                                                 /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity|null $paymentMethod */
                                                 $containerId = sprintf('id-order-%s-paymentMethod-container', $order->id);
                                                 $elementId = sprintf('order-%s-paymentMethod-%s', $order->id, $paymentMethod->id);
-                                                $checked = $order->paymentId == $paymentMethod->id;
+                                                $checked = $checkedPaymentMethodId == $paymentMethod->id;
                                             ?>
                                                 <li class="payment-methods__i">
                                                     <input
@@ -188,7 +195,10 @@ $f = function(
                                                             'discountContainer' => '.' . $discountContainerId,
                                                         ]) ?>"
                                                         class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
-                                                        <? if ($checked): ?> checked="checked"<? endif ?>
+                                                        <? if ($checked): ?>
+                                                            checked="checked"
+                                                            data-checked="true"
+                                                        <? endif ?>
                                                     />
                                                     <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2<? if ($checked): ?> mChecked<? endif ?>">
                                                         <?= $paymentMethod->name ?>
