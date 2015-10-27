@@ -15,28 +15,26 @@ return function(
         <img src="//content.enter.ru/wp-content/uploads/2014/04/Tch_out.jpg" alt="К сожалению, товары Tchibo недоступны к покупке в вашем городе" />
     <? endif ?>
 
-    <!-- TCHIBO - слайдер-меню разделов Чибо -->
-    <div class="tchiboNav clearfix">
+    <!-- Меню разделов Чибо -->
+    <div class="tchibo-nav clearfix">
         <? if ($rootCategoryInMenu): ?>
-            <a class="tchiboNav_t" href="<?= rtrim($rootCategoryInMenu->getLink(), '/') ?>">
-                <div class="tchiboNav_t_img"<? if ((bool)$rootCategoryInMenuImage): ?> style="background-image: url(<?= $rootCategoryInMenuImage ?>)" <? endif ?>></div>
-            </a>
+            <a class="tchibo-nav__title" href="<?= rtrim($rootCategoryInMenu->getLink(), '/') ?>"></a>
         <? else: ?>
-            <div class="tchiboNav_t"<? if ((bool)$rootCategoryInMenuImage): ?> style="background-image: url(<?= $rootCategoryInMenuImage ?>)" <? endif ?>></div>
+            <div class="tchibo-nav__title"<? if ((bool)$rootCategoryInMenuImage): ?> style="background-image: url(<?= $rootCategoryInMenuImage ?>)" <? endif ?>></div>
         <? endif ?>
 
-
-        <ul class="tchiboNav_lst clearfix">
+        <ul class="tchibo-nav-list nav-default">
+            <li class="tchibo-nav-list__item tchibo-nav-list__item_title">Коллекции</li>
         <? $i = 0; foreach ($categories as $category):
             $last = (count($categories) - ($i++)) <= 1; ?>
 
-            <li class="tchiboNav_lst_i<? if ($last): ?> tchiboNav_lst_i-last<? endif ?>">
-                <a class="tchiboNav_lst_lk" href="<?= $category->getLink() ?>"<? if (in_array($category->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$category->getId()] ?>"<? endif ?>>
-                    <span class="tchiboNav_lst_tx"><?= $category->getName() ?></span>
+            <li class="tchibo-nav-list__item nav-default__item nav-default__item_child">
+                <a class="tchibo-nav-list__link nav-default__link" href="<?= $category->getLink() ?>"<? if (in_array($category->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$category->getId()] ?>"<? endif ?>>
+                    <?= $category->getName() ?>
                 </a>
 
                 <? if ((bool)$category->getChild()): ?>
-                    <ul class="tchiboNav_slst<? if (!$last): ?> tchiboNav_slst-def<? endif ?><? if ($last): ?> tchiboNav_slst-last<? endif ?>">
+                    <ul class="tchibo-nav-list-sub nav-default-sub">
                     <? foreach ($category->getChild() as $child):
                         $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId());
                         // Шильдик NEW
@@ -52,11 +50,17 @@ return function(
                             }
                         }?>
 
-                        <li class="tchiboNav_slst_i jsItemListTchibo<? if ($activeChild): ?> tchiboNav_slst_i-act<? endif ?> <?= $newCategory ? 'new' : '' ?>">
-                            <a class="tchiboNav_slst_lk" href="<?= $child->getLink() ?>"<? if (in_array($child->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$child->getId()] ?>"<? endif ?>><?= $child->getName() ?></a>
+                        <li class="tchibo-nav-list-sub__item nav-default-sub__item <? if ($activeChild): ?> tchibo-nav-list-sub__item_active<? endif ?> <?= $newCategory ? 'new' : '' ?>">
+                            <a class="tchibo-nav-list-sub__link nav-default-sub__link" href="<?= $child->getLink() ?>"<? if (in_array($child->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$child->getId()] ?>"<? endif ?>><?= $child->getName() ?></a>
                             <? if ($child->isNew): // SITE-3809 ?>
                                 <span class="itemNew">NEW!</span>
                             <? endif ?>
+
+                            <ul class="tchibo-nav-list-sub2 nav-default-sub2">
+                                <li class="tchibo-nav-list-sub2__item nav-default-sub2__item">
+                                    <a class="tchibo-nav-list-sub2__link nav-default-sub2__link" href="">Какой второй уровень Чибы</a>
+                                </li>
+                            </ul>
                         </li>
                     <? endforeach ?>
                     </ul>
@@ -65,6 +69,5 @@ return function(
         <? endforeach ?>
         </ul>
     </div>
-    <!--/ TCHIBO - слайдер-меню разделов Чибо -->
-
+    <!--/ END Млайдер-меню разделов Чибо -->
 <? };
