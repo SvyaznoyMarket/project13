@@ -41,7 +41,7 @@ $f = function (
                 <?
                     $paymentMethod = reset($paymentMethods);
 
-                    $elementId = sprintf('paymentMethod-%s', md5($groupIndex));
+                    $elementId = sprintf('order_%s-paymentMethod_%s', md5($order->block_name), md5($groupIndex));
                     $checked = in_array($order->payment_method_id, array_keys($paymentMethods));
                 ?>
                     <li class="payment-methods__i">
@@ -80,7 +80,7 @@ $f = function (
                     <?
                         $paymentMethod = reset($paymentMethods);
 
-                        $elementId = sprintf('paymentMethod-%s', $paymentMethod->id);
+                        $elementId = sprintf('order_%s-paymentMethod_%s', md5($order->block_name), $paymentMethod->id);
                         $checked = $order->payment_method_id == $paymentMethod->id;
                     ?>
                         <input

@@ -635,6 +635,7 @@
             $el = $(this),
             params = $el.is('select') ? $el.find(':selected').data('value') : $el.data('value')
         ;
+        console.info({'$el': $el, 'data': params});
 
         sendChanges('changePaymentMethod', params);
 

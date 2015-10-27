@@ -170,7 +170,7 @@ $f = function(
                                             <?
                                                 /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity|null $paymentMethod */
                                                 $containerId = sprintf('id-order-%s-paymentMethod-container', $order->id);
-                                                $elementId = sprintf('order-%s-paymentMethod-%s', $order->id, $paymentMethod->id);
+                                                $elementId = sprintf('order_%s-paymentMethod_%s', $order->id, $paymentMethod->id);
                                                 $checked = $checkedPaymentMethodId == $paymentMethod->id;
                                             ?>
                                                 <li class="payment-methods__i">

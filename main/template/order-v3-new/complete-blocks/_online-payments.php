@@ -87,7 +87,7 @@ $f = function(
                 <ul class="payment-methods__lst">
                     <? foreach ($paymentMethods as $paymentMethod): ?>
                     <?
-                        $elementId = sprintf('paymentMethod-%s', $paymentMethod->id);
+                        $elementId = sprintf('order_%s-paymentMethod_%s', $order->id, $paymentMethod->id);
                         $checked = $checkedPaymentMethodId == $paymentMethod->id;
                     ?>
                     <li class="payment-methods__i">
