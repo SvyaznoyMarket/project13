@@ -104,9 +104,21 @@
 
     border: 1px solid @darkgrey4;
     border-top-width: 6px;
-    background: url('@{base-url}/mainpage/img/nav-shadow.png') repeat-y 204px 0 @white;
+    background: #fff;
 
     .opacity(100);
+    &:after {
+        position: absolute;
+        top: 0;
+        left: 205px;
+
+        width: 1px;
+        height: 100%;
+
+        content: '';
+
+        border-left: 1px dotted @darkgrey4;
+    }
     &__link {
         display: block;
 
