@@ -298,7 +298,7 @@
 
     $('.js-payment-popup-show').on('click',function(){
 
-        $(this).parent().find('.js-payment-popup').show();
+        $(this).closest('.js-order-cell').find('.js-payment-popup').show();
         $('body').append('<div class="payments-popup__overlay js-payment-popup-overlay"></div>');
     });
     $('.js-payment-popup-closer').on('click',function(){

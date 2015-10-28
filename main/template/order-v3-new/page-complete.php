@@ -136,7 +136,7 @@ $f = function(
                     </div>
                     <!-- тип оплаты -->
 
-                    <div class="orderLn_cell">
+                    <div class="orderLn_cell js-order-cell">
                         <? if ($order->paySum): ?>
                             <div class="order-sum">
                                 <? if ($order->sum > $order->paySum): ?>
