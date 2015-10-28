@@ -31,6 +31,7 @@ $f = function(
 
     $formUrl = \App::router()->generate('orderV3.paymentForm');
     $showStatus = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
+    $showPaymentStatus = ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']));
 ?>
     <div class="order__wrap">
     <section class="orderCnt jsOrderV3PageComplete order-page">
@@ -122,6 +123,8 @@ $f = function(
                     </div>
 
                     <? endif ?>
+
+                    <? if ($showPaymentStatus): ?>
                     <!-- тип оплаты -->
                     <div class="payment-block orderLn_c orderLn_cell">
                         <? if ($checkedPaymentMethod): ?>
@@ -134,6 +137,8 @@ $f = function(
                         </div>
                         <? endif ?>
                     </div>
+                    <? endif ?>
+
                     <!-- тип оплаты -->
 
                     <div class="orderLn_cell js-order-cell">
