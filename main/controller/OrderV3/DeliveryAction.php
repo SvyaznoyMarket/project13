@@ -403,21 +403,6 @@ class DeliveryAction extends OrderV3 {
                     if ($product['id'] == $id) $product['quantity'] = (int)$quantity;
                 });
 
-                // SITE-5958
-                try {
-                    // FIXME: осторожно, мбыть неверный результат при использовании скидки
-                    $totalSum = array_reduce($productsArray, function($carry, $item){ return $carry + $item['price'] * $item['quantity']; }, 0.0);
-                    if (
-                        \App::config()->order['prepayment']['priceLimit']
-                        && ($totalSum > \App::config()->order['prepayment']['priceLimit'])
-                        && in_array(PaymentMethodEntity::PAYMENT_CARD_ONLINE, $changes['orders'][$data['params']['block_name']]['possible_payment_methods'])
-                    ) {
-                        $changes['orders'][$data['params']['block_name']]['payment_method_id'] = PaymentMethodEntity::PAYMENT_CARD_ONLINE;
-                    }
-                } catch (\Exception $e) {
-                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
-                }
-
                 break;
             case 'changeAddress':
                 $changes['user_info'] = $previousSplit['user_info'];
