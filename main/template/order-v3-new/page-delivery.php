@@ -300,7 +300,7 @@ $f = function(
     </div>
 
     <div class="orderComplSumm">
-        <span class="l">Итого <strong><?= $orderCount ?></strong> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <strong><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span></strong></span>
+        <span class="l">Итого <strong><?= $orderCount ?></strong> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <strong><?= $helper->formatPrice($orderDelivery->total_view_cost) ?> <span class="rubl">p</span></strong></span>
     </div>
 
     <div class="orderCompl orderCompl-v2 clearfix">

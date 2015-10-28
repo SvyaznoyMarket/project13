@@ -37,6 +37,10 @@ namespace Model\OrderDelivery {
         /** Общая стоимость заказов
          * @var float
          */
+        public $total_view_cost;
+        /** Общая стоимость заказов
+         * @var float
+         */
         public $errors = [];
 
         public function __construct(array $data = []) {
@@ -91,6 +95,11 @@ namespace Model\OrderDelivery {
                 $this->total_cost = (float)$data['total_cost'];
             } else {
                 throw new \Exception('Отстуствует общая стоимость заказа');
+            }
+            if (isset($data['total_view_cost'])) {
+                $this->total_view_cost = (float)$data['total_view_cost'];
+            } else {
+                //throw new \Exception('Отстуствует total_view_cost заказа');
             }
 
             if (isset($data['errors']) && is_array($data['errors'])) {
