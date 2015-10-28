@@ -270,16 +270,16 @@ $f = function(
                         <? endif ?>
                     </div>
 
+                    <? if ($showStatus): ?>
                     <div class="orderLn_status orderLn_cell">
-                        <? if ($showStatus): ?>
-                            <div class="orderLn_status-title">Статус:</div>
-                            <? if ($order->status): ?>
-                                <strong class="orderLn_status-new"><?= $order->status->name ?></strong>
-                            <? else:?>
-                                <strong>Не известен</strong>
-                            <? endif ?>
+                        <div class="orderLn_status-title">Статус:</div>
+                        <? if ($order->status): ?>
+                            <strong class="orderLn_status-new"><?= $order->status->name ?></strong>
+                        <? else:?>
+                            <strong>Не известен</strong>
                         <? endif ?>
                     </div>
+                    <? endif ?>
                 </div>
             <? endforeach ?>
         </div>
