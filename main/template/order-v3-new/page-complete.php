@@ -31,7 +31,6 @@ $f = function(
 
     $formUrl = \App::router()->generate('orderV3.paymentForm');
     $showStatus = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
-    $onlinePaymentAvailable = ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']));
 ?>
     <div class="order__wrap">
     <section class="orderCnt jsOrderV3PageComplete order-page">
@@ -68,6 +67,7 @@ $f = function(
                         || (true === $onlinePaymentStatusByNumber[$order->number])
                     )
                     && ((bool)$paymentEntity ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $paymentEntity->groups) : false)
+                    && ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']))
                 ;
 
                 $discountContainerId = sprintf('id-onlineDiscount-container', $order->id);
@@ -137,13 +137,13 @@ $f = function(
                     <!-- тип оплаты -->
 
                     <div class="orderLn_cell">
-                        <? if ($order->getPaySum()): ?>
+                        <? if ($order->paySum): ?>
                             <div class="order-sum">
                                 <? if ($order->sum > $order->paySum): ?>
                                     <div class="order-sum__prev"><span class="line-through"><?= $helper->formatPrice($order->sum) ?></span> <span class="rubl">p</span></div>
                                 <? endif ?>
-                                <div class="order-sum__val"><?= $helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></div>
-                                <? if (PaymentMethodEntity::PAYMENT_CASH === $order->paymentId): ?>
+                                <div class="order-sum__val"><?= $helper->formatPrice($order->paySum) ?> <span class="rubl">p</span></div>
+                                <? if ($isOnlinePaymentPossible && (PaymentMethodEntity::PAYMENT_CASH === $order->paymentId)): ?>
                                     <div style="text-align: right;"><button class="orderPayment_btn btn3 js-payment-popup-show">Оплатить онлайн</button></div>
 
                                     <ul class="payments__lst">
