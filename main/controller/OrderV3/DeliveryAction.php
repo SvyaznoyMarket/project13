@@ -321,7 +321,7 @@ class DeliveryAction extends OrderV3 {
     }
 
     private function formatChanges($data, $previousSplit) {
-
+        $data += ['action' => null];
         $changes = [];
 
         if (isset($data['user_info']['phone'])) {

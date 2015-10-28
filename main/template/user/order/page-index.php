@@ -48,7 +48,7 @@ $recommendationsHtml = [
 ?>
 
 <div class="personal">
-    <?= $page->render('user/_menu-1508', ['page' => $page]) ?>
+    <?= $page->render('user/_menu', ['page' => $page]) ?>
 
     <? foreach ($ordersByYear as $year => $orders): ?>
     <?

@@ -30,6 +30,8 @@ $f = function(
     array_map(function(\Model\PaymentMethod\PaymentEntity &$entity) {$entity->unsetSvyaznoyClub();}, $ordersPayment); // fix for SITE-5229 (see comments)
 
     $formUrl = \App::router()->generate('orderV3.paymentForm');
+    $showStatus = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
+    $onlinePaymentAvailable = ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']));
 ?>
     <div class="order__wrap">
     <section class="orderCnt jsOrderV3PageComplete order-page">
@@ -79,8 +81,8 @@ $f = function(
                 }
             ?>
 
-                <div class="orderLn clearfix" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
-                    <div class="orderLn_l">
+                <div class="orderLn table" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
+                    <div class="orderLn_l orderLn_cell">
 
                         <? if ($userEntity) : ?>
                             <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
@@ -134,7 +136,7 @@ $f = function(
                     </div>
                     <!-- тип оплаты -->
 
-                    <div class="orderLn_r">
+                    <div class="orderLn_cell">
                         <? if ($order->getPaySum()): ?>
                             <div class="order-sum">
                                 <? if ($order->sum > $order->paySum): ?>
@@ -267,10 +269,19 @@ $f = function(
                             </div>
                         <? endif ?>
                     </div>
+
+                    <div class="orderLn_status orderLn_cell">
+                        <? if ($showStatus): ?>
+                            <div class="orderLn_status-title">Статус:</div>
+                            <? if ($order->status): ?>
+                                <strong class="orderLn_status-new"><?= $order->status->name ?></strong>
+                            <? else:?>
+                                <strong>Не известен</strong>
+                            <? endif ?>
+                        <? endif ?>
+                    </div>
                 </div>
-
             <? endforeach ?>
-
         </div>
 
         <div class="orderCompl orderCompl_final clearfix">

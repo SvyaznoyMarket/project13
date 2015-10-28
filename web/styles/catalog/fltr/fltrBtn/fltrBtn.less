@@ -1,400 +1,408 @@
-.fltrBtn{
-	width: 960px;
-	margin: 0 0 0 -10px;
-	position: relative;
+.fltrBtn {
+    position: relative;
 
-	&-mb10{
-		margin-bottom: 10px;
-	}
-	&-bt{
-		border-top: 5px solid @typLightGray;
-	}
-	// шапка фильтров в рутовых категориях
-	&_hd{
-		margin-bottom: 10px;
-		padding: 10px 10px 0;
-		&_r{
-			margin: 3px 0 0 30px;
+    width: 960px;
+    margin: 0 0 0 -10px;
+    &-mb10 {
+        margin-bottom: 10px;
+    }
+    &-bt {
+        border-top: 5px solid @typLightGray;
+    }
+    // шапка фильтров в рутовых категориях
+    &_hd {
+        margin-bottom: 10px;
+        padding: 10px 10px 0;
+        &_r {
+            margin: 3px 0 0 30px;
 
-			color: @darkgrey6;
+            color: @darkgrey6;
 
-			.inline-block();
-		}
-		&_count{
-			.inline-block-middle();
-		}
-		// отчисть фильтры в рутовых категориях
-		&_clr{
-			line-height: 13px;
+            .inline-block();
+        }
+        &_count {
+            .inline-block-middle();
+        }
+        // отчисть фильтры в рутовых категориях
+        &_clr {
+            line-height: 13px;
 
-			margin: 0 0 0 15px;
+            margin: 0 0 0 15px;
 
-			cursor: pointer;
+            cursor: pointer;
 
-			.inline-block-middle();
-			&_tx{
-				border-bottom: 1px dotted @darkgrey6;
+            .inline-block-middle();
+            &_tx {
+                border-bottom: 1px dotted @darkgrey6;
 
-				.inline-block-middle();
-			}
-			&_btn{
-				.inline-block-middle();
-			}
-		}
-	}
-	// название фильтра
-	&_tggl{
-		font-size: 16px;
+                .inline-block-middle();
+            }
+            &_btn {
+                .inline-block-middle();
+            }
+        }
+    }
+    // название фильтра
+    &_tggl {
+        font-size: 16px;
 
-		padding: 0 0 0 15px;
+        padding: 0 0 0 15px;
 
-		cursor: pointer;
+        cursor: pointer;
 
-		color: @black;
-		background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAKCAQAAADMDLw1AAAAQUlEQVQIW2Nw3uGiy4AKnP47/3We4y6JIgSCzl+c6t24UYTAws+ckxuYUITAwpdc3PELoWl0/uLSgGQ8hiMwnQoAAEs8bqiaIsoAAAAASUVORK5CYII=') no-repeat 0 50%;
+        color: @black;
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAKCAQAAADMDLw1AAAAQUlEQVQIW2Nw3uGiy4AKnP47/3We4y6JIgSCzl+c6t24UYTAws+ckxuYUITAwpdc3PELoWl0/uLSgGQ8hiMwnQoAAEs8bqiaIsoAAAAASUVORK5CYII=') no-repeat 0 50%;
 
-		.inline-block();
-		&_tx{
-			border-bottom: 1px dotted #515151;
-		}
-		&.opn{
-			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAQAAAChr3WYAAAAXElEQVQI11XKwQ0AERSE4YmrChShCSMUohAKUYg6FKECV9nN2rDre5eXPwMWc53HAqs5jjSsBsB8xIyHV+w7da/wMnEvIxYn2eauOYkPw4wBf0mwsiaBk/XWr/8G2pM8a8IWUVQAAAAASUVORK5CYII=');
-		}
-		&-ncorner{
-			padding-left: 0;
-			cursor: default;
+        .inline-block();
+        &_tx {
+            border-bottom: 1px dotted #515151;
+        }
+        &.opn {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAQAAAChr3WYAAAAXElEQVQI11XKwQ0AERSE4YmrChShCSMUohAKUYg6FKECV9nN2rDre5eXPwMWc53HAqs5jjSsBsB8xIyHV+w7da/wMnEvIxYn2eauOYkPw4wBf0mwsiaBk/XWr/8G2pM8a8IWUVQAAAAASUVORK5CYII=');
+        }
+        &-ncorner {
+            padding-left: 0;
 
-			background: none;
-			.fltrBtn_tggl_tx{
-				border: none;
-			}
-		}
-	}
-	// секция фильтра
-	&_kit{
-		padding: 0 10px;
+            cursor: default;
 
-		border-bottom: 1px solid @typLightGray;
-		&-box{
-			padding: 10px;
-		}
-		&-nborder{
-			border-bottom: none;
-		}
-		&-ovrflw{
-			overflow: auto;
+            background: none;
+            .fltrBtn_tggl_tx {
+                border: none;
+            }
+        }
+    }
+    // секция фильтра
+    &_kit {
+        padding: 0 10px;
 
-			max-height: 165px;
-			padding: 7px 10px 0;
-		}
-		&_l{
-			float: left;
+        border-bottom: 1px solid @typLightGray;
+        &-box {
+            padding: 10px;
+        }
+        &-nborder {
+            border-bottom: none;
+        }
+        &-ovrflw {
+            overflow: auto;
 
-			min-width: 80px;
-			margin: 15px 0 0 12px;
-		}
-		&_r{
-			float: right;
-			overflow-y:auto;
-			overflow-x:hidden;
+            max-height: 165px;
+            padding: 7px 10px 0;
+        }
+        &_l {
+            float: left;
 
-			width: 830px;
-			max-height: 135px;
-			padding: 10px 0 0 1px;
-		}
-		&--titled{
-			padding: 8px 10px;
-			height: 55px;
+            min-width: 80px;
+            margin: 15px 0 0 12px;
+        }
+        &_r {
+            float: right;
+            overflow-x: hidden;
+            overflow-y: auto;
 
-			.fltrBtnBox{
-				border: 1px solid #c7c7c7;
-				.rounded(2px);
-			}
-			.fltrBtnBox.opn{
-				background: @white;
-				.drop-shadow(0px, 3px, 5px, .3);
-				border: none;
+            width: 830px;
+            max-height: 135px;
+            padding: 10px 0 0 1px;
+        }
+        &--titled {
+            height: 55px;
+            padding: 8px 10px;
+            .fltrBtnBox {
+                border: 1px solid #c7c7c7;
 
-				.fltrBtnBox_tggl{
-					border-color: #c7c7c7;
-					padding: 5px 11px 2px;
-				}
-				&.actv{
-					margin: 5px 6px 0px 1px;
-					.fltrBtnBox_tggl{
-						padding: 5px 10px 2px;
-						margin-bottom: 3px;
-					}
-				}
-			}
-			.fltrBtnBox_tggl_tx{
-				border-color: transparent;
-				height: 16px;
-				line-height: 16px;
-			}
-			.fltrBtnBox{
-				margin-top: 5px;
-			}
-			.fltrBtn_kit_l{
-				margin-top: 27px;
-			}
-		}
-	}
-	&_range {
-		text-align: center;
-		width: 100%;
-	}
-	// ссекция кнопки фильтрации
-	&_i{
-		margin: 0 9px 9px 0;
+                .rounded(2px);
+            }
+            .fltrBtnBox.opn {
+                border: none;
+                background: @white;
 
-		float: left;
-	}
-	// кнопка фильтра
-	&_btn{
-		position: relative;
+                .drop-shadow(0px, 3px, 5px, .3);
+                .fltrBtnBox_tggl {
+                    padding: 5px 11px 2px;
 
-		width: 100px;
-		height: 43px;
-		padding: 0 10px;
-		margin: 0 5px 10px 0;
+                    border-color: #c7c7c7;
+                }
+                &.actv {
+                    margin: 5px 6px 0 1px;
+                    .fltrBtnBox_tggl {
+                        margin-bottom: 3px;
+                        padding: 5px 10px 2px;
+                    }
+                }
+            }
+            .fltrBtnBox_tggl_tx {
+                line-height: 16px;
 
-		cursor: pointer;
-		cursor: pointer;
-		text-align: center;
-		vertical-align: middle;
+                height: 16px;
 
-		border: 1px solid @typLightGray;
-		background: @white;
+                border-color: transparent;
+            }
+            .fltrBtnBox {
+                margin-top: 5px;
+            }
+            .fltrBtn_kit_l {
+                margin-top: 27px;
+            }
+        }
+    }
+    &_range {
+        width: 100%;
 
-		&:hover {
-			text-decoration: none;
-		}
+        text-align: center;
+    }
+    // ссекция кнопки фильтрации
+    &_i {
+        float: left;
 
-		.table-cell();
-		.rounded(4px);
-		&:last-child{
-			margin-right: 0;
-		}
-		&_img{
-			vertical-align: middle;
-			width: 100%;
-			pointer-events: none;
-			//max-width: 100px;
-		}
-		&_tx{
-			font-size: 11px;
-			line-height: 1.2;
+        margin: 0 9px 9px 0;
+    }
+    // кнопка фильтра
+    &_btn {
+        position: relative;
 
-			.inline-block();
-		}
-		// кнопка - ещё бренды
-		&-btn{
-			font-size: 14px;
-			line-height: 40px;
-			width: 120px;
-			padding: 0;
+        width: 100px;
+        height: 43px;
+        margin: 0 5px 10px 0;
+        padding: 0 10px;
 
-			margin-right: 0;
+        cursor: pointer;
+        cursor: pointer;
+        text-align: center;
+        vertical-align: middle;
 
-			color: @darkgrey6;
-			border-style: dashed;
+        border: 1px solid @typLightGray;
+        background: @white;
 
-			.inline-block();
-			.fltrBtn_btn_tx{
-				font-size: 14px;
+        .table-cell();
+        .rounded(4px);
+        .table-cell();
+        .rounded(4px);
+        &:hover {
+            text-decoration: none;
+        }
+        &:last-child {
+            margin-right: 0;
+        }
+        &_img {
+            max-width: 85%;
+            vertical-align: middle;
+            pointer-events: none;
+        }
+        &_tx {
+            font-size: 11px;
+            line-height: 1.2;
 
-				vertical-align: middle;
+            overflow: hidden;
 
-				border-bottom: 1px dotted @darkgrey6;
-			}
-			&:hover{
-				text-decoration: none;
-			}
-		}
-		&-mini{
-			line-height: 31px;
+            max-height: 25px;
 
-			width: 80px;
-			height: 33px;
-		}
-		// отметить фильтр по бренду
-		&_clsr{
-			position: absolute;
-			top: -7px;
-			right: -7px;
+            .inline-block(baseline);
+        }
+        // кнопка - ещё бренды
+        &-btn {
+            font-size: 14px;
+            line-height: 40px;
 
-			display: none;
-		}
-		&.act{
-			width: 98px;
-			height: 41px;
+            width: 120px;
+            margin-right: 0;
+            padding: 0;
 
-			border-width: 2px;
-			border-color: @orange-2;
-			.fltrBtn_btn_clsr{
-				display: block;
-			}
-		}
-	}
-	// строка с параметрами
-	&_ln{
-		line-height: 14px;
+            color: @darkgrey6;
+            border-style: dashed;
 
-		margin: 0 0 10px;
-	}
-	// параметры фильтрации
-	&_param{
-		margin-bottom: 8px;
-		padding-right: 10px;
+            .inline-block();
+            .fltrBtn_btn_tx {
+                font-size: 14px;
 
-		border-bottom: 1px solid @lightgrey9;
-		&:last-child{
-			margin-bottom: 0;
+                vertical-align: middle;
 
-			border-bottom: none;
-		}
-		&_n{
-			font-size: 14px;
+                border-bottom: 1px dotted @darkgrey6;
+            }
+            &:hover {
+                text-decoration: none;
+            }
+        }
+        &-mini {
+            line-height: 31px;
 
-			margin: 0 0 8px;
-		}
-		&_lbl{
-			font-size: 14px;
+            width: 80px;
+            height: 33px;
+        }
+        // отметить фильтр по бренду
+        &_clsr {
+            position: absolute;
+            top: -7px;
+            right: -7px;
 
-			.inline-block-middle();
-		}
-		&_it{
-			font-size: 14px;
-			line-height: 1;
+            display: none;
+        }
+        &.act {
+            width: 98px;
+            height: 41px;
 
-			width: 45px;
-			padding: 4px 10px;
+            border-width: 2px;
+            border-color: @orange-2;
+            .fltrBtn_btn_clsr {
+                display: block;
+            }
+        }
+    }
+    // строка с параметрами
+    &_ln {
+        line-height: 14px;
 
-			color: #8a8a8a;
-			color: @black;
-			border: 1px solid @lightgrey9;
+        margin: 0 0 10px;
+    }
+    // параметры фильтрации
+    &_param {
+        margin-bottom: 8px;
+        padding-right: 10px;
 
-			.rounded(3px);
-			.inline-block-middle();
+        border-bottom: 1px solid @lightgrey9;
+        &:last-child {
+            margin-bottom: 0;
 
-			&:-ms-input-placeholder {
-				color: #8a8a8a;
-			}
-		}
-		&-2col{
-			   .fltrBtn_ln{
-				   width: @full-size/2 - 1%;
+            border-bottom: none;
+        }
+        &_n {
+            font-size: 14px;
 
-				   .inline-block-middle();
-			   }
-		}
-	}
+            margin: 0 0 8px;
+        }
+        &_lbl {
+            font-size: 14px;
 
-	&_anim-item {
-		position: absolute;
-		right: -8px;
-		top: 300px;
-		display: block;
-		animation: animPuls 7s ease-in-out 1s infinite;
-		-webkit-animation: animPuls 7s ease-in-out 1s infinite;
-		-moz-animation: animPuls 7s ease-in-out 1s infinite;
-		-o-animation: animPuls 7s ease-in-out 1s infinite;
+            .inline-block-middle();
+        }
+        &_it {
+            font-size: 14px;
+            line-height: 1;
 
-		&:hover {
-			-webkit-animation: none;
-			-moz-animation: none;
-			-o-animation: none;
-			animation: none;
+            width: 45px;
+            padding: 4px 10px;
 
-			img {
-				right: 0;
-				top: -10px;
-			}
-		}
+            color: #8a8a8a;
+            color: @black;
+            border: 1px solid @lightgrey9;
 
-		img {
-			transition: all .2s ease;
-			display: block;
-			position: absolute;
-			top: 0;
-			right: 0;
-		}
-	}
-	&_lst {
-			float: left;
-			margin: 0 0 0 30px;
+            .rounded(3px);
+            .inline-block-middle();
+            &:-ms-input-placeholder {
+                color: #8a8a8a;
+            }
+        }
+        &-2col {
+            .fltrBtn_ln {
+                width: @full-size/2 - 1%;
 
-			&-i {
-				float:left;
-				margin: 0 10px 0 0;
+                .inline-block-middle();
+            }
+        }
+    }
+    &_anim-item {
+        position: absolute;
+        top: 300px;
+        right: -8px;
 
-				&-name {
-					font-size: 14px;
-				}
-				&.slash-after:after{
-					content:"/";
-					font-size: 23px;
-				}
+        display: block;
 
-			}
-		}
+        -webkit-animation: animPuls 7s ease-in-out 1s infinite;
+           -moz-animation: animPuls 7s ease-in-out 1s infinite;
+             -o-animation: animPuls 7s ease-in-out 1s infinite;
+                animation: animPuls 7s ease-in-out 1s infinite;
+        &:hover {
+            -webkit-animation: none;
+               -moz-animation: none;
+                 -o-animation: none;
+                    animation: none;
+            img {
+                top: -10px;
+                right: 0;
+            }
+        }
+        img {
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            display: block;
+
+            transition: all .2s ease;
+        }
+    }
+    &_lst {
+        float: left;
+
+        margin: 0 0 0 30px;
+        &-i {
+            float: left;
+
+            margin: 0 10px 0 0;
+            &-name {
+                font-size: 14px;
+            }
+            &.slash-after:after {
+                font-size: 23px;
+
+                content: '/';
+            }
+        }
+    }
 }
 
 // анимация карты на странице с подарками /gift
-@keyframes animPuls{
-	0%,
-    5%{
-		transform: scale3d(1, 1, 1);
-		transform: scale3d(1, 1, 1);
-	}
+@keyframes animPuls {
+    0%,
+    5% {
+        transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
 
-	3%,
-	7%{
-		transform: scale3d(1.06, 1.06, 1.06);
-		transform: scale3d(1.06, 1.06, 1.06);
-	}
+    3%,
+    7% {
+        transform: scale3d(1.06, 1.06, 1.06);
+        transform: scale3d(1.06, 1.06, 1.06);
+    }
 
-	9%{
-		transform: scale3d(1, 1, 1);
-		transform: scale3d(1, 1, 1);
-	}
+    9% {
+        transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
 }
 
-@-webkit-keyframes animPuls{
-	0%,
-	5%{
-		-webkit-transform: scale3d(1, 1, 1);
-		transform: scale3d(1, 1, 1);
-	}
+@-webkit-keyframes animPuls {
+    0%,
+    5% {
+        -webkit-transform: scale3d(1, 1, 1);
+                transform: scale3d(1, 1, 1);
+    }
 
-	3%,
-	7%{
-		-webkit-transform: scale3d(1.06, 1.06, 1.06);
-		transform: scale3d(1.06, 1.06, 1.06);
-	}
+    3%,
+    7% {
+        -webkit-transform: scale3d(1.06, 1.06, 1.06);
+                transform: scale3d(1.06, 1.06, 1.06);
+    }
 
-	9%{
-		-webkit-transform: scale3d(1, 1, 1);
-		transform: scale3d(1, 1, 1);
-	}
+    9% {
+        -webkit-transform: scale3d(1, 1, 1);
+                transform: scale3d(1, 1, 1);
+    }
 }
 
-@-moz-keyframes animPuls{
-	0%,
-	5%{
-		-moz-transform: scale3d(1, 1, 1);
-		transform: scale3d(1, 1, 1);
-	}
+@-moz-keyframes animPuls {
+    0%,
+    5% {
+        -moz-transform: scale3d(1, 1, 1);
+             transform: scale3d(1, 1, 1);
+    }
 
-	3%,
-	7%{
-		-moz-transform: scale3d(1.06, 1.06, 1.06);
-		transform: scale3d(1.06, 1.06, 1.06);
-	}
+    3%,
+    7% {
+        -moz-transform: scale3d(1.06, 1.06, 1.06);
+             transform: scale3d(1.06, 1.06, 1.06);
+    }
 
-	9%{
-		-moz-transform: scale3d(1, 1, 1);
-		transform: scale3d(1, 1, 1);
-	}
+    9% {
+        -moz-transform: scale3d(1, 1, 1);
+             transform: scale3d(1, 1, 1);
+    }
 }

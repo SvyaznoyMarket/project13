@@ -257,48 +257,29 @@ class Action {
             $category->setProductView(3);
         }
 
-        // получаем из json данные о горячих ссылках и content
         $hotlinks = [];
         $seoContent = '';
         try {
-            $seoContent = $category->getSeoContent();
             if ($category) {
-                $hotlinks = $category->getSeoHotlinks();
-            }
-        } catch (\Exception $e) {
-            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
-        }
+                $seoContent = $category->getSeoContent();
 
-        // SITE-4439
-        try {
-            // если у категории нет дочерних узлов
-            if ($category && (!$category->getHasChild() || in_array($category->getId(), [1096]))) {
-//                $hotlinks = array_filter($hotlinks, function(\Model\Seo\Hotlink\Entity $item) { return (bool)$item->getGroupName(); }); // TODO: временная заглушка
-                // опции брендов
-                $brandOptions = [];
-                foreach ($filters as $filter) {
-                    if ('brand' == $filter->getId()) {
-                        foreach ($filter->getOption() as $option) {
-                            $brandOptions[] = $option;
+                if ($categoryToken != Category::FAKE_SHOP_TOKEN) {
+                    $hotlinks = $category->getSeoHotlinks();
+
+                    // SITE-4439
+                    if (!$category->getHasChild() || in_array($category->getId(), [1096])) {
+                        foreach ($brands as $iBrand) {
+                            $hotlinks[] = new \Model\Seo\Hotlink\Entity([
+                                'group' => '',
+                                'name' => $iBrand->getName(),
+                                'url' => \App::router()->generate('product.category.brand', [
+                                    'categoryPath' => $categoryPath,
+                                    'brandToken'   => $iBrand->getToken(),
+                                ]),
+                            ]);
                         }
-
-                        break;
                     }
                 }
-                // сортировка брендов по наибольшему количеству товаров
-                usort($brandOptions, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) { return $b->getQuantity() - $a->getQuantity(); });
-
-                foreach ($brands as $iBrand) {
-                    $hotlinks[] = new \Model\Seo\Hotlink\Entity([
-                        'group' => '',
-                        'name' => $iBrand->getName(),
-                        'url' => \App::router()->generate('product.category.brand', [
-                            'categoryPath' => $categoryPath,
-                            'brandToken'   => $iBrand->getToken(),
-                        ]),
-                    ]);
-                }
-
             }
         } catch (\Exception $e) {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['hotlinks']);

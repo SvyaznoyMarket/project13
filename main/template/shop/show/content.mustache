@@ -3,8 +3,7 @@
 <div class="shops__info">
     <div class="shops__btns">
         <a class="shops__btn-default js-shop-print-opener" href="#">Распечатать</a>
-        {{! SITE-6096 }}
-        {{! <a class="shops__btn-default js-shop-email-opener" href="#">Отправить на email</a> }}
+        <a class="shops__btn-default js-shop-email-opener" href="#">Отправить на email</a>
     </div>
 
     <div class="pick-point-item">
@@ -118,9 +117,8 @@
     <div class="send-popup__head">Отправить информацию о {{point.partner.names.locativus}}</div>
 
     <form action="{{point.emailSendUrl}}" method="post" class="js-shop-email-popup-form">
-        <div class="pick-point-item__addr">
+        <div class="pick-point-item__addr {{^point.subway.name}}pick-point-item__addr--no-metro{{/point.subway.name}}">
             {{#point.subway.name}}
-
                 <div class="pick-point-item__metro" style=" background-color: orange">
                     <div class="pick-point-item__metro-inn">м. {{point.subway.name}}</div>
                 </div>

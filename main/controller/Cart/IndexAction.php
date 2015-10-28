@@ -18,7 +18,11 @@ class IndexAction {
         $client = \App::coreClientV2();
         $user = \App::user();
         $cart = $user->getCart();
-        $sales = [];
+
+        $orderChannel = is_string($request->query->get('channel')) ? trim($request->query->get('channel')) : null; // SITE-6071
+        if ($orderChannel) {
+            \App::session()->set(\App::config()->order['channelSessionKey'], $orderChannel);
+        }
 
         $orderWithCart = self::isOrderWithCart();
 

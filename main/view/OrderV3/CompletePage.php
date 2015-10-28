@@ -105,7 +105,7 @@ class CompletePage extends Layout {
     public function slotContent() {
         $template = 'page-complete';
         $orders = $this->getParam('orders');
-        if (1 === count($orders)) {
+        if (('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey'])) && (1 === count($orders))) {
             $template = 'page-complete-single';
         }
         return \App::closureTemplating()->render('order-v3-new/' . $template, $this->params);
