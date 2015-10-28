@@ -330,8 +330,8 @@ class AppConfig {
     ];
     /** @var array */
     public $payment = [
-        'creditEnabled'    => null,
-        'blockedIds'       => [],
+        'creditEnabled' => null,
+        'blockedIds'    => [],
     ];
     /**
      * @var array

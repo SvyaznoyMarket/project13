@@ -17,20 +17,23 @@
 
         color: @txtColor;
     }
-    &__goods {
-        float: left;
-
-        width: 470px;
+    &__wrap{
+        display: table;
+        width: 100%;
+    }
+    &__goods{
         padding-left: 10px;
+        width: 470px;
+        height: 100%;
+        display: table-cell;
+        padding-bottom: 163px;//высота 2х строк скидки по способу оплаты+заголовок - max их может быть 2.
+        position: relative;
     }
     &__seller {
         font-size: 14px;
 
         position: relative;
-
-        margin-bottom: 20px;
-
-        color: @textGrey;
+        margin-bottom: 13px;
     }
     &__oferta {
         font-size: 0;
@@ -45,8 +48,8 @@
 
         .inline-block(middle);
     }
-    &__delivery-details {
-        margin-left: 490px;
+    &__delivery-details{
+        display: table-cell;
     }
     &__adds {
         clear: both;

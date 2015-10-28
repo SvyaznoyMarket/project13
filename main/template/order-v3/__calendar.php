@@ -5,6 +5,7 @@
  * @param $id
  * @param array $possible_days
  * @param string $position
+ * @return string
  */
 $f = function(
     \Helper\TemplateHelper $helper,
@@ -12,6 +13,9 @@ $f = function(
     array $possible_days,
     $position = 'top' // top, bottom
 ) {
+    if (!$possible_days) {
+        return '';
+    }
 
     $lastAvailableDay = DateTime::createFromFormat('U', (string)end($possible_days));
     $firstAvailableDay = DateTime::createFromFormat('U', (string)reset($possible_days));

@@ -36,6 +36,8 @@ class CompleteAction extends OrderV3 {
         ProductPageSenders::clean();
         ProductPageSenders2::clean();
 
+        $context = $request->get('context');
+
         /** @var \Model\Order\Entity[] $orders */
         $orders = [];
         /** @var \Model\PaymentMethod\PaymentEntity[] $ordersPayment */
@@ -53,6 +55,38 @@ class CompleteAction extends OrderV3 {
         $userEntity = \App::user()->getEntity();
 
         $this->pushEvent(['step' => 3]);
+
+        $onlinePaymentStatusByNumber = [];
+
+        if ($context) {
+            $now = new \DateTime();
+            $this->client->addQuery(
+                'order/get-context',
+                [
+                    'hash' => $context,
+                ],
+                [],
+                function($data) use (&$onlinePaymentStatusByNumber, &$now) {
+                    foreach ($data as $item) {
+                        $number = isset($item['order']['number']) ? $item['order']['number'] : null;
+                        if (!$number) continue;
+
+                        $this->sessionOrders[$number] = $item['order'];
+                        try {
+                            $onlinePaymentStatusByNumber[$number] = new \DateTime($item['online_payment_expired']) < $now;
+                        } catch (\Exception $e) {
+                            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
+                        }
+                    }
+                },
+                function(\Exception $e) {
+                    \App::exception()->remove($e);
+
+                    \App::logger()->error(['error' => $e, 'message' => 'Заказы не найдены', 'sender' => __FILE__ . ' ' .  __LINE__], ['order', 'fatal']);
+                }
+            );
+            $this->client->execute();
+        }
 
         try {
 
@@ -91,7 +125,7 @@ class CompleteAction extends OrderV3 {
                         $ordersPayment[$sessionOrder['number']] = new PaymentEntity($data);
                     },
                     function (\Exception $e) {
-                        \App::logger()->error(['error' => $e, 'message' => 'Не получены методы оплаты'], ['order']);
+                        \App::logger()->error(['error' => $e, 'message' => 'Не получены методы оплаты', 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
                         \App::exception()->remove($e);
                     }
                 );
@@ -100,6 +134,15 @@ class CompleteAction extends OrderV3 {
             unset($sessionOrder);
 
             $this->client->execute();
+
+            // изменяет order.pauSum, если есть акция
+            foreach ($ordersPayment as $orderNumber => $payment) {
+                if (!$order = $orders[$orderNumber]) continue;
+
+                if ($order->paymentId && ($sum = $payment->getPaymentSumByMethodId($order->paymentId))) {
+                    $order->paySum = $sum;
+                }
+            }
 
             // получаем продукты для заказов
             foreach ($orders as $order) {
@@ -205,6 +248,7 @@ class CompleteAction extends OrderV3 {
         });
 
         $page->setParam('orders', $orders);
+        $page->setParam('onlinePaymentStatusByNumber', $onlinePaymentStatusByNumber);
         $page->setParam('ordersPayment', $ordersPayment);
         $page->setParam('motivationAction', $this->getMotivationAction($orders, $ordersPayment));
         $page->setParam('products', $products);
@@ -221,16 +265,17 @@ class CompleteAction extends OrderV3 {
 
         $response = (bool)$orders ? new \Http\Response($page->show()) : new \Http\RedirectResponse($page->url('homepage'));
         $response->headers->setCookie(new \Http\Cookie('enter_order_v3_wanna', 0, 0, '/order',\App::config()->session['cookie_domain'], false, false)); // кнопка "Хочу быстрее"
+
         return $response;
     }
 
     public function getPaymentForm(\Http\Request $request) {
-        $form = '';
-
         $methodId = $request->request->get('method');
         $orderId = $request->request->get('order');
         $orderNumber = $request->request->get('number');
-        $action = $request->request->get('action'); // акция по мотивации онлайн-оплаты
+        $backUrl = $request->request->get('url') ?: \App::router()->generate('orderV3.complete', ['refresh' => 1], true);
+        $action = ['payment_sum' => null, 'alias' => null];
+        $action = array_merge($action, is_array($request->request->get('action')) ? $request->request->get('action') : []); // акция по мотивации онлайн-оплаты
 
         $privateClient = \App::coreClientPrivate();
 
@@ -247,60 +292,32 @@ class CompleteAction extends OrderV3 {
             'order_id'  => $orderId,
         ];
 
-        if ($action !== null) $data['action_alias'] = (string)$action;
+        if ($action['alias']) {
+            $data['action_alias'] = $action['alias'];
+        }
 
         $result = $privateClient->query('site-integration/payment-config',
             $data,
             [
-                'back_ref'    => \App::router()->generate('orderV3.complete', ['refresh' => 1], true), // обратная ссылка
+                'back_ref'    => $backUrl, // обратная ссылка
                 'email'       => $order->getUser() ? $order->getUser()->getEmail() : '',
-//                            'card_number' => $order->card,
-                'user_token'  => $request->cookies->get('UserTicket'),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
+                //'card_number' => $order->card,
+                'user_token'  => $request->cookies->get('UserTicket'), // токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
             ],
             \App::config()->coreV2['hugeTimeout']
         );
 
-        if (!$result) throw new \Exception('Ошибка получения данных payment-config');
-
-        switch ($methodId) {
-            case '5':
-                $formEntity = (new \Payment\Psb\Form());
-                $formEntity->fromArray($result['detail']);
-                $form = (new \Templating\HtmlLayout())->render('order/payment/form-psb', array(
-                    'provider' => new \Payment\Psb\Provider(['payUrl' => $result['url']]),
-                    'order' => $order,
-                    'form' => $formEntity
-                ));
-                break;
-            case '8':
-                $formEntity = (new \Payment\PsbInvoice\Form());
-                $formEntity->fromArray($result['detail']);
-                $form = (new \Templating\HtmlLayout())->render('order/payment/form-psbInvoice', array(
-                    'provider' => new \Payment\PsbInvoice\Provider(['payUrl' => $result['url']]),
-                    'order' => $order,
-                    'form' => $formEntity
-                ));
-                break;
-            case '13':
-                $form = (new \Templating\HtmlLayout())->render('order/payment/form-paypal', array(
-                    'url'           => $result['url'],
-                    'url_params'    => isset($result['url_params']) && !empty($result['url_params']) ? $result['url_params'] : null
-                ));
-                break;
-            case '14':
-                $form = new \Payment\SvyaznoyClub\Form();
-                $form->fromArray($result['detail']);
-                $provider = new \Payment\SvyaznoyClub\Provider($form);
-                $provider->setPayUrl($result['url']);
-                $form = (new \Templating\HtmlLayout())->render('order/payment/form-svyaznoyClub', array(
-                    'provider'  => $provider,
-                    'order'     => $order
-                ));
-                break;
+        if (!$result) {
+            throw new \Exception('Ошибка получения данных payment-config');
         }
 
-        $response = new \Http\JsonResponse(['result' => $result, 'form' => $form]);
-        return $response;
+        $form = \App::closureTemplating()->render('order/payment/__form', [
+            'form'  => $result['detail'],
+            'url'   => $result['url'],
+            'order' => $order
+        ]);
+
+        return new \Http\JsonResponse(['result' => $result, 'form' => $form]);
     }
 
     /**
@@ -318,7 +335,6 @@ class CompleteAction extends OrderV3 {
         ]);
 
         return new \Http\JsonResponse($result);
-
     }
 
     /**

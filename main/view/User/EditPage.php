@@ -27,7 +27,7 @@ class EditPage extends \View\DefaultLayout {
 
     public function slotContent() {
         return $this->render(
-            $this->isOldPrivate() ? 'user/page-edit' : 'user/page-edit-1508',
+            'user/page-edit',
             $this->params
         );
     }

@@ -12,7 +12,7 @@ namespace Model\Review {
                 [
                     [
                         'token'     => 'helpful',
-                        'name'      => 'Полезности',
+                        'name'      => 'По полезности',
                         'direction' => 'desc',
                         'isActive'  => true,
                     ],

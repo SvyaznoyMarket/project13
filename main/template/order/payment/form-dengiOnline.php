@@ -1,3 +1,7 @@
+<?php
+/** @deprecated */
+?>
+
 <form class="form dengiOnline" action="http://www.onlinedengi.ru/wmpaycheck.php" method="post">
   <input type="hidden" name="project" value="3321">
   <input type="hidden" name="source" value="3321">

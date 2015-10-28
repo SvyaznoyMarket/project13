@@ -13,6 +13,7 @@ class OrderEntity {
 
     const TYPE_ORDER = 1;
     const DEFAULT_PAYMENT_ID = 1;
+    const DEFAULT_PAYMENT_UI = 'ff291b2a-ef90-11e0-83b5-005056af2ef1';
     const PAYMENT_ID_CREDIT_CARD = 2;
     const PAYMENT_ID_CREDIT_ONLINE = 6;
     const PAYMENT_ID_CERTIFICATE = 10;
@@ -43,6 +44,11 @@ class OrderEntity {
      * @var int
      */
     private $payment_id;
+    /** Способ оплаты
+     * Обязательный
+     * @var int
+     */
+    private $payment_ui;
     /** Статус оплаты
      * По умолчанию "Не оплачено"
      * @var int|null
@@ -203,6 +209,11 @@ class OrderEntity {
      * @var string|null
      */
     private $box_ui;
+    /**
+     * Цена заказа при онлайн-оплате
+     * @var float
+     */
+    private $total_view_cost;
 
     /** TODO принимать \Model\OrderDelivery\Entity\Order и \Model\OrderDelivery\Entity\UserInfo
      * @param array $arr
@@ -229,6 +240,11 @@ class OrderEntity {
             $this->payment_id = (int)$arr['order']['payment_method_id'];
         } else {
             $this->payment_id = self::DEFAULT_PAYMENT_ID;
+        }
+        if (isset($arr['order']['payment_method_ui']) && $arr['order']['payment_method_ui'] !== null) {
+            $this->payment_ui = (int)$arr['order']['payment_method_ui'];
+        } else {
+            $this->payment_ui = self::DEFAULT_PAYMENT_UI;
         }
 
         if (isset($arr['order']['delivery']['mode_id'])) {
@@ -320,6 +336,8 @@ class OrderEntity {
         if (isset($arr['order']['actions']) && is_array($arr['order']['actions']) && (bool)$arr['order']['actions']) $this->action = $arr['order']['actions'];
 
         if (isset($arr['order']['delivery']['box_ui'])) $this->box_ui = $arr['order']['delivery']['box_ui'];
+
+        if (isset($arr['order']['total_view_cost'])) $this->total_view_cost = $arr['order']['total_view_cost'];
 
         if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2, $cartProducts);
 
