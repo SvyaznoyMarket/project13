@@ -111,7 +111,7 @@ $f = function(
 
                     <? if (\RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)) : ?>
 
-                    <div class="orderLn_c">
+                    <div class="orderLn_c orderLn_cell">
                         <div class="delivery-block">
                             <div class="delivery-block__type"><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?></div>
                             <div class="delivery-block__info"><? if ($order->deliveredAt) : ?><?= strftime('%e %b %Y', $order->deliveredAt->getTimestamp()) ?><? endif ?>
@@ -123,7 +123,7 @@ $f = function(
 
                     <? endif ?>
                     <!-- тип оплаты -->
-                    <div class="payment-block">
+                    <div class="payment-block orderLn_c orderLn_cell">
                         <? if ($checkedPaymentMethod): ?>
                         <div class="payment-block__type">Тип оплаты: </div>
                         <div class="payment-block__logo">
