@@ -15,7 +15,11 @@ $btnTypes = array(
 <div class="header__width">
     <div class="header__inn clearfix">
         <div class="header_c header_c-v2">
-            <a href="/" class="hdlogo sitelogo"></a>
+            <? if (\App::abTest()->isOrderWithCart() && !\App::user()->getCart()->count()): ?>
+                <a href="/" class="hdlogo sitelogo"></a>
+            <? else: ?>
+                <span class="hdlogo sitelogo"></span>
+            <? endif ?>
 
             <div class="hdsearch jsKnockoutSearch" data-bind="css: { 'hdsearch-v2': advancedSearch }">
                 <!--noindex-->

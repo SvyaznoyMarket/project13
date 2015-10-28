@@ -104,7 +104,9 @@
 
         if (isAppend && ($hiddenReviews.length > 0)) {
             $hiddenReviews.show();
-            if ($('.jsReviewItem').length == totalNum) $('.js-review-update').hide();
+            if ($('.jsReviewItem').length == totalNum) {
+                $el.hide();
+            }
         } else {
             currentCount = $('.jsReviewItem').length;
             $.ajax(
