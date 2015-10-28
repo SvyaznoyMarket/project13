@@ -111,9 +111,7 @@ if ((bool)$siblingCategories) {
             /** @var \Model\Product\Category\TreeEntity $catalogCategory */
             $imgSrc = $catalogCategory->getImageUrl(3);
             if (empty($imgSrc)) {
-                // TODO: изображение заглушки
                 $imgSrc = '/styles/tchiboCatalog/img/woman.jpg';
-                //$imgSrc = '/styles/tchiboCatalog/img/man.jpg';
             }
 
             $categoryChildren = $catalogCategory->getChild();
@@ -130,6 +128,15 @@ if ((bool)$siblingCategories) {
                 </a>
             </div>
         <? endforeach; ?>
+
+        <? if (count($catalogCategories) % 2 === 1) : ?>
+            <!-- Дополняем до четного количества баннером -->
+            <div class="s-sales-grid__cell">
+                <a class="s-sales-grid__link" href="">
+                    <img src='//www.imgenter.ru/uploads/media/c5/30/4c/036ebabd7dadfefba83f9d5a24a6c40099f8ac8a.jpeg' class="s-sales-grid__img">
+                </a>
+            </div>
+        <? endif ?>
     </div>
 
     <div class="s-sales-grid__row grid-3cell cell-h-220">

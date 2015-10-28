@@ -121,11 +121,7 @@ class Entity extends BasicEntity {
 
         if (isset($data['parent'])) $this->parent = new Entity($data['parent']);
 
-        if (isset($data['config'])) {
-            $this->config = new Config($data['config']);
-        } else {
-            $this->config = new Config();
-        }
+        $this->config = new Config(array_key_exists('config', $data) ? $data['config'] : []);
 
         $this->listingView = new ListingView();
     }
@@ -433,6 +429,7 @@ class Entity extends BasicEntity {
             self::UI_BYTOVAYA_TEHNIKA, // Бытовая техника
             self::UI_MEBEL, // Мебель
             self::UI_ELECTRONIKA, // Электронника
+            self::UI_TCHIBO
         ], true) || $this->isTyre() || $this->token == 'shop';
     }
 
@@ -449,9 +446,13 @@ class Entity extends BasicEntity {
         return $root->getUi() !== self::UI_MEBEL;
     }
 
+    /**
+     * Показывать ли изображения категорий в фильтрах
+     * @return bool
+     */
     public function isShowFullChildren() {
         if ($this->isV2()) {
-            return (bool)$this->getClosest([
+            return (bool)$this->getClosestFromAncestors([
                 '56ee3e3c-a1ee-4a42-834f-97bd1de3b16e', // Мебель для руководителей
                 'da1e9ace-9c81-4d19-a069-36a809e8b98f', // Мебель для персонала
                 'df612c33-3a48-47dd-b424-f0398f82e37e', // Коллекции мебели для гостиной
@@ -459,6 +460,7 @@ class Entity extends BasicEntity {
                 '61b83d8a-6383-4e51-9173-f51f89726cd4', // Коллекции мебели для прихожей
                 '4358f982-288f-4973-8eec-d77253fc9233', // Коллекции мебели для детской
                 '81dd06df-221c-4eb8-b095-73b3982f0874', // Коллекции мягкой мебели
+                self::UI_TCHIBO
             ]);
         }
 
@@ -471,7 +473,7 @@ class Entity extends BasicEntity {
 
     public function isAlwaysShowBrand() {
         if ($this->isV2()) {
-            return (bool)$this->getClosest([
+            return (bool)$this->getClosestFromAncestors([
                 self::UI_BYTOVAYA_TEHNIKA, // Бытовая техника
                 self::UI_ELECTRONIKA, // Электронника
             ]) || $this->isFakeShopCategory();
@@ -487,7 +489,13 @@ class Entity extends BasicEntity {
         ], true);
     }
 
-    private function getClosest(array $expectedUis) {
+    /**
+     * Возвращает ближайшую категорию из родителей по ui
+     * @param array $expectedUis
+     *
+     * @return Entity|null
+     */
+    private function getClosestFromAncestors(array $expectedUis) {
         /** @var Entity[] $ancestors */
         $ancestors = $this->ancestor;
         $ancestors[] = $this;
@@ -557,8 +565,27 @@ class Entity extends BasicEntity {
         return $this->getCategoryClass() === 'jewel';
     }
 
-    public function isGrid() {
-        return $this->getCategoryClass() === 'grid';
+    /**
+     * Является ли категория Чибовской
+     * @return bool
+     */
+    public function isTchibo()
+    {
+        return array_key_exists(0, $this->ancestor) && $this->ancestor[0]->getUi() === self::UI_TCHIBO;
+    }
+
+    /** Ручной гридстер
+     * @return bool
+     */
+    public function isManualGrid() {
+        return $this->config->isManualGridView();
+    }
+
+    /** Автоматический гридстер
+     * @return bool
+     */
+    public function isAutoGrid() {
+        return $this->config->isAutoGridView();
     }
 
     public function isDefault() {

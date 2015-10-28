@@ -18,6 +18,10 @@ abstract class Layout extends \View\DefaultLayout {
 
         $category = $this->category = $this->getParam('category', new Category());
 
+        if ($this->category->isTchibo()) {
+            $this->useMenuHamburger = true;
+        }
+
         $this->flPrecheckoutData['fl-action'] = 'track-category-view';
         $this->flPrecheckoutData['fl-category-id'] = $this->category->id;
 

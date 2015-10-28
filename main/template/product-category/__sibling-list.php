@@ -1,15 +1,19 @@
 <?php
 
+use Model\Product\Category\Entity as Category;
+
 return function(
     \Helper\TemplateHelper $helper,
     array $categories,
-    $catalogConfig = [],
     \Model\Product\Category\Entity $currentCategory = null,
     \Model\Product\Category\TreeEntity $rootCategoryInMenu = null,
     $tchiboMenuCategoryNameStyles = [],
     $rootCategoryInMenuImage = null
 ) {
     /** @var $categories \Model\Product\Category\TreeEntity[] */
+    $categoryUids = $currentCategory
+        ? array_map(function (Category $cat) { return $cat->getUi(); }, $currentCategory->getAncestor())
+        : [];
 ?>
     <? if ($rootCategoryInMenu && 'tchibo' === $rootCategoryInMenu->getToken() && 0 == $rootCategoryInMenu->getProductCount()): ?>
         <img src="//content.enter.ru/wp-content/uploads/2014/04/Tch_out.jpg" alt="К сожалению, товары Tchibo недоступны к покупке в вашем городе" />
@@ -24,12 +28,23 @@ return function(
         <? endif ?>
 
         <ul class="tchibo-nav-list nav-default">
-            <li class="tchibo-nav-list__item tchibo-nav-list__item_title">Коллекции</li>
-        <? $i = 0; foreach ($categories as $category):
-            $last = (count($categories) - ($i++)) <= 1; ?>
 
-            <li class="tchibo-nav-list__item nav-default__item nav-default__item_child">
-                <a class="tchibo-nav-list__link nav-default__link" href="<?= $category->getLink() ?>"<? if (in_array($category->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$category->getId()] ?>"<? endif ?>>
+        <? foreach ($categories as $category): ?>
+
+            <? if ($currentCategory->getUi() === $category->getUi() || in_array($category->getUi(), $categoryUids, true)) {
+                $activeRootCategoryClass = 'tchibo-nav-list__item_active';
+            } else {
+                $activeRootCategoryClass = null;
+            } ?>
+
+            <?  $liClass = 'nav-default__item_child ' . $activeRootCategoryClass;
+                if ($category->getUi() === Category::UI_TCHIBO_COLLECTIONS) $liClass = 'tchibo-nav-list__item_title';
+                if ($category->getUi() === Category::UI_TCHIBO_SALE) $liClass = 'tchibo-nav-list__item_sale';
+            ?>
+
+            <li class="tchibo-nav-list__item nav-default__item <?= $liClass ?>">
+
+                <a class="tchibo-nav-list__link nav-default__link" href="<?= $category->getLink() ?>">
                     <?= $category->getName() ?>
                 </a>
 
@@ -37,30 +52,26 @@ return function(
                     <ul class="tchibo-nav-list-sub nav-default-sub">
                     <? foreach ($category->getChild() as $child):
                         $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId());
-                        // Шильдик NEW
-                        $newCategory = false;
-                        if (isset($catalogConfig['category_timing'])
-                            && is_array($catalogConfig['category_timing'])
-                            && in_array($child->getToken(), array_keys($catalogConfig['category_timing']), false)) {
+                        ?>
 
-                            $catalogTiming = $catalogConfig['category_timing'][$child->getToken()];
-                            $until = strtotime($catalogTiming['until']);
-                            if (time() < $until) {
-                                if ($catalogTiming['type'] === 'new') $newCategory = true;
-                            }
-                        }?>
+                        <li class="tchibo-nav-list-sub__item nav-default-sub__item <? if ($activeChild): ?> tchibo-nav-list-sub__item_active<? endif ?>">
+                            <a class="tchibo-nav-list-sub__link nav-default-sub__link"
+                               href="<?= $child->getLink() ?>"<? if (in_array($child->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$child->getId()] ?>"<? endif ?>><?= $child->getName() ?></a>
 
-                        <li class="tchibo-nav-list-sub__item nav-default-sub__item <? if ($activeChild): ?> tchibo-nav-list-sub__item_active<? endif ?> <?= $newCategory ? 'new' : '' ?>">
-                            <a class="tchibo-nav-list-sub__link nav-default-sub__link" href="<?= $child->getLink() ?>"<? if (in_array($child->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$child->getId()] ?>"<? endif ?>><?= $child->getName() ?></a>
-                            <? if ($child->isNew): // SITE-3809 ?>
-                                <span class="itemNew">NEW!</span>
+                            <? if ($child->getChild()) : ?>
+                                <!-- Третий уровень -->
+                                <ul class="tchibo-nav-list-sub2 nav-default-sub2">
+                                    <? foreach ($child->getChild() as $subChild) : ?>
+                                        <li class="tchibo-nav-list-sub2__item nav-default-sub2__item">
+                                            <a class="tchibo-nav-list-sub2__link nav-default-sub2__link"
+                                               href="<?= $subChild->getLink() ?>">
+                                                <?= $subChild->getName() ?>
+                                            </a>
+                                        </li>
+                                    <? endforeach ?>
+                                </ul>
                             <? endif ?>
 
-                            <ul class="tchibo-nav-list-sub2 nav-default-sub2">
-                                <li class="tchibo-nav-list-sub2__item nav-default-sub2__item">
-                                    <a class="tchibo-nav-list-sub2__link nav-default-sub2__link" href="">Какой второй уровень Чибы</a>
-                                </li>
-                            </ul>
                         </li>
                     <? endforeach ?>
                     </ul>

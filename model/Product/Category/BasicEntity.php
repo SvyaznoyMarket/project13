@@ -30,6 +30,10 @@ abstract class BasicEntity {
     const UI_IGRY_I_KONSOLI             = 'ed807fca-962b-4b75-9813-d5efbb8ef586';
     const UI_AVTO                       = 'f0d53c46-d4fc-413f-b5b3-a2b57b93a717';
 
+    // TCHIBO
+    const UI_TCHIBO_COLLECTIONS         = '';
+    const UI_TCHIBO_SALE                = '7779fe2f-13c1-40dc-9de7-57f983ccb6dc';
+
     /** @var int|null */
     public $id;
     /** @var string|null */

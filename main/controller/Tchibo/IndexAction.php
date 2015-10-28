@@ -67,7 +67,6 @@ class IndexAction {
 
         // подготовка для 2-го пакета запросов в ядро
         // получим данные для меню
-        $rootCategoryIdInMenu = null;
         /** @var \Model\Product\Category\TreeEntity $rootCategoryInMenu */
         $rootCategoryInMenu = null;
         \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($category->getId(), $region, 3, function($data) use (&$rootCategoryInMenu) {
