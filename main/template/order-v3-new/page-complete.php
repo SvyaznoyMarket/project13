@@ -144,7 +144,7 @@ $f = function(
                                 <? endif ?>
                                 <div class="order-sum__val"><?= $helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></div>
                                 <? if (PaymentMethodEntity::PAYMENT_CASH === $order->paymentId): ?>
-                                    <button class="orderPayment_btn btn3 js-payment-popup-show">Оплатить онлайн</button>
+                                    <div style="text-align: right;"><button class="orderPayment_btn btn3 js-payment-popup-show">Оплатить онлайн</button></div>
 
                                     <ul class="payments__lst">
                                         <? foreach ($paymentEntity->methods as $paymentMethod): ?>
