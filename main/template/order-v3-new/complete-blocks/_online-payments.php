@@ -90,7 +90,7 @@ $f = function(
                 </div>
 
                 <? foreach ($paymentMethodsByDiscount as $discountIndex => $paymentMethods): ?>
-                <ul class="payment-methods__lst">
+                <ul class="payment-methods__lst <? if (0 === $discountIndex): ?>payment-methods__lst_discount<? endif ?>">
                     <? foreach ($paymentMethods as $paymentMethod): ?>
                     <?
                         $elementId = sprintf('order_%s-paymentMethod_%s', $order->id, $paymentMethod->id);
