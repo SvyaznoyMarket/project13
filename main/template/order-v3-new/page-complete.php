@@ -113,7 +113,22 @@ $f = function(
                     <div class="orderLn_c orderLn_cell">
                         <div class="delivery-block">
                             <div class="delivery-block__type"><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?></div>
-                            <div class="delivery-block__info"><? if ($order->deliveredAt) : ?><?= strftime('%e %b %Y', $order->deliveredAt->getTimestamp()) ?><? endif ?>
+                            <div class="delivery-block__info">
+                                <? if ($order->deliveredAt) : ?>
+                                <?
+                                    $deliveryText =
+                                        !empty($order->deliveryDateInterval['name'])
+                                        ? $order->deliveryDateInterval['name']
+                                        : (
+                                            strftime('%e %b %Y', $order->deliveredAt->getTimestamp())
+                                            ? $order->getDeliveredAt()->format('d.m.Y')
+                                            : null
+                                        )
+                                    ;
+                                ?>
+                                    <?= $deliveryText ?>
+
+                                <? endif ?>
                                 <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
                             </div>
                         </div>

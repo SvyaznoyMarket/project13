@@ -73,6 +73,16 @@ class Repository {
                 'methods'                => ['self_partner_pickpoint'],
                 'possible_method_tokens' => ['self_partner_pickpoint', 'now', 'self', 'self_pred_supplier', 'standart_furniture', 'standart_other', 'standart', 'standart_pred_supplier'],
             ],
+            [
+                'id'                     => 8,
+                'token'                  => 'self_partner_euroset',
+                'short_name'             => 'Евросеть',
+                'name'                   => 'Самостоятельно забрать в магазине Евросети',
+                'button_name'            => 'Забрать из этого магазина',
+                'description'            => '',
+                'methods'                => ['self_partner_euroset'],
+                'possible_method_tokens' => ['self_partner_euroset', 'self_partner_pickpoint', 'now', 'self', 'self_pred_supplier', 'standart_furniture', 'standart_other', 'standart', 'standart_pred_supplier'],
+            ],
 /*            [
                 'id'                     => 7,
                 'token'                  => 'standart_svyaznoy',

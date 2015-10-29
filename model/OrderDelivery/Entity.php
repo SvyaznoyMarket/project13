@@ -448,9 +448,10 @@ namespace Model\OrderDelivery\Entity {
             }
 
             if (isset($data['possible_payment_methods']) && is_array($data['possible_payment_methods'])) {
-//                $this->possible_payment_methods = (array)$data['possible_payment_methods'];
                 foreach ($data['possible_payment_methods'] as $id) {
                     if ($id == PaymentMethodEntity::PAYMENT_CREDIT && !\App::config()->payment['creditEnabled']) continue;
+                    if ('10' == $id) continue; // подарочный сертификат
+
                     if (isset($orderDelivery->payment_methods[$id])) $this->possible_payment_methods[$id] = &$orderDelivery->payment_methods[$id];
                     else throw new \Exception('Не существует метода оплаты для заказа');
                 }
