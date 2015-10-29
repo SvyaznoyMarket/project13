@@ -2,14 +2,8 @@
 /**
  * @var $page           \View\User\CorporateRegistrationPage
  * @var $form           \View\User\CorporateRegistrationForm
- * @var $rootCategories \Model\Product\Category\Entity[]
  */
 ?>
-
-<?
-if (empty($rootCategories)) $rootCategories = [];
-?>
-
 
 <div class="bBusinessReg">
 

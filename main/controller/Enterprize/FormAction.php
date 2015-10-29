@@ -498,9 +498,23 @@ class FormAction {
             // SITE-4150 Поддержка фишки на все товары
             if ('/' === $coupon->getLink()) {
                 // получаем ids root категорий
-                $rootCategoriesIds = array_map(function($category) {
-                    return $category instanceof \Model\Product\Category\Entity ? $category->getId() : null;
-                }, $productCategoryRepository->getRootCollection());
+
+                $rootCategoriesIds = [];
+                \App::searchClient()->addQuery('category/get-available', [
+                        'depth'     => 0,
+                        'region_id' => $region->getId(),
+                    ], [], function($data) use(&$rootCategoriesIds) {
+                    $rootCategoriesIds = [];
+                    if (is_array($data)) {
+                        foreach ($data as $item) {
+                            if (!empty($item['id'])) {
+                                $rootCategoriesIds[] = $item['id'];
+                            }
+                        }
+                    }
+                });
+
+                \App::searchClient()->execute();
 
                 $filters[] = ['category', 1, $rootCategoriesIds, false];
 
@@ -538,7 +552,6 @@ class FormAction {
                                 $linkParts[2] = is_array($requestData['barcode']) ? implode(',', $requestData['barcode']) : $requestData['barcode'];
                             }
                         }
-
                     }
                 }
 

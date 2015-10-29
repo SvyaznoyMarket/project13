@@ -1008,12 +1008,8 @@ class Action {
             }
         }
 
-        // список рутовых категорий
-        $rootCategories = \RepositoryManager::productCategory()->getRootCollection();
-
         $page = new \View\User\CorporateRegistrationPage();
         $page->setParam('form', $form);
-        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('content', $content);
 
         return new \Http\Response($page->show());

@@ -61,7 +61,39 @@ class ShowAction {
         $category = $this->getCategory($categoryToken, $slice, $region);
         $sliceFiltersForSearchClientRequest = \RepositoryManager::slice()->getSliceFiltersForSearchClientRequest($slice, $category->getId() ? true : false);
 
-        $this->prepareEntityBranch($category, $sliceToken, $sliceFiltersForSearchClientRequest, $region);
+        $categoryTreeData = null;
+        $availableCategoriesDataByUi = null;
+        call_user_func(function() use($category, $sliceToken, $sliceFiltersForSearchClientRequest, $region, &$categoryTreeData, &$availableCategoriesDataByUi) {
+            $rootId = $category->getId() ? $category->getId() : ($category->getParentId() ? $category->getParentId() : 0);
+            $depth = $category->getId() ? $category->getLevel() : 0;
+
+            \App::scmsClient()->addQuery('api/category/tree', [
+                'root_id'         => $rootId,
+                'depth'           => $depth,
+                'load_parents'    => true,
+                'load_medias'     => true,
+            ], [], function($data) use(&$categoryTreeData) {
+                $categoryTreeData = $data;
+            });
+
+            \App::searchClient()->addQuery('category/get-available', [
+                'root_id'         => $rootId,
+                'depth'           => $depth,
+                'is_load_parents' => true,
+                'filter'          => ['filters' => $sliceFiltersForSearchClientRequest],
+                'region_id'       => $region->getId(),
+            ], [], function($data) use(&$availableCategoriesDataByUi) {
+                $availableCategoriesDataByUi = [];
+                if (is_array($data)) {
+                    foreach ($data as $item) {
+                        if (isset($item['uid'])) {
+                            $availableCategoriesDataByUi[$item['uid']] = $item;
+                        }
+                    }
+                }
+            });
+        });
+
         $this->prepareProductFilter($filters, $category, $sliceFiltersForSearchClientRequest, $region);
         /** @var \Model\Product\Category\Entity[] $sliceCategories */
         $sliceCategories = [];
@@ -71,6 +103,111 @@ class ShowAction {
         }
 
         \App::coreClientV2()->execute();
+
+        call_user_func(function() use($category, $sliceToken, $region, $categoryTreeData, $availableCategoriesDataByUi) {
+            if ($this->isSeoSlice()) {
+                // SITE-5432
+                $changeCategoryUrlToSliceUrl = function() {};
+            } else {
+                $helper = new \Helper\TemplateHelper();
+                $changeCategoryUrlToSliceUrl = function(\Model\Product\Category\Entity $category) use($sliceToken, $helper) {
+                    $url = explode('/', $category->getLink());
+                    $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
+                    $category->setLink($url);
+                };
+            }
+
+            /**
+             * Загрузка дочерних и родительских узлов категории
+             *
+             * @param \Model\Product\Category\Entity $category
+             * @param array $data
+             */
+            $loadBranch = function(\Model\Product\Category\Entity $category, array $data) use($changeCategoryUrlToSliceUrl, $availableCategoriesDataByUi) {
+                if (!isset($data['uid']) || !isset($availableCategoriesDataByUi[$data['uid']])) {
+                    return;
+                }
+
+                if (isset($availableCategoriesDataByUi[$data['uid']]['product_count'])) {
+                    $category->setProductCount($availableCategoriesDataByUi[$data['uid']]['product_count']);
+                }
+
+                // добавляем дочерние узлы
+                if (isset($data['children']) && is_array($data['children'])) {
+                    foreach ($data['children'] as $childData) {
+                        if (isset($childData['uid']) && isset($availableCategoriesDataByUi[$childData['uid']])) {
+                            $child = new \Model\Product\Category\Entity($childData);
+                            $changeCategoryUrlToSliceUrl($child);
+                            $category->addChild($child);
+                        }
+                    }
+                }
+
+                // если категория не выбрана, выводим рутовые категории
+                if (!$category->getId()) {
+                    $child = new \Model\Product\Category\Entity($data);
+                    $changeCategoryUrlToSliceUrl($child);
+                    $category->addChild($child);
+                }
+            };
+
+            /**
+             * Перебор дерева категорий на данном уровне
+             *
+             * @param $data
+             * @use $iterateLevel
+             * @use $loadBranch
+             * @use $category     Текущая категория каталога
+             */
+            $iterateLevel = function($data) use(&$iterateLevel, &$loadBranch, $category, $availableCategoriesDataByUi) {
+                if (!is_array($data)) {
+                    return;
+                }
+
+                $item = reset($data);
+                if (!$item || !isset($item['uid']) || !isset($availableCategoriesDataByUi[$item['uid']])) {
+                    return;
+                }
+
+                $level = (int)$item['level'];
+                if ($level < $category->getLevel()) {
+                    // если текущий уровень меньше уровня категории, загружаем данные для предков и прямого родителя категории
+                    $ancestor = new \Model\Product\Category\Entity($item);
+                    if (1 == $category->getLevel() - $level) {
+                        $loadBranch($ancestor, $item);
+                        $category->setParent($ancestor);
+                    }
+
+                    $category->addAncestor($ancestor);
+                } else if ($level == $category->getLevel()) {
+                    // если текущий уровень равен уровню категории, пробуем найти данные для категории
+                    foreach ($data as $item) {
+                        // ура, наконец-то наткнулись на текущую категорию
+                        if (isset($item['uid']) && isset($availableCategoriesDataByUi[$item['uid']]) && $item['id'] == $category->getId() || !$category->getId()) {
+                            $loadBranch($category, $item);
+                            // SITE-2444
+                            if ($item['id'] == $category->getId()) {
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                $item = reset($data);
+                if (isset($item['children'])) {
+                    $iterateLevel($item['children']);
+                }
+            };
+
+            $iterateLevel($categoryTreeData);
+
+            // переделываем url для breadcrumbs
+            foreach ($category->getAncestor() as $ancestor) {
+                $changeCategoryUrlToSliceUrl($ancestor);
+            }
+
+            $changeCategoryUrlToSliceUrl($category);
+        });
 
         // если есть категории в фильтре среза
         if ($sliceCategories) {
@@ -98,8 +235,6 @@ class ShowAction {
                     $availableCategoryUis[$item['uid']] = true;
                 }
 
-                $children = $category->id ? $category->getChild() : $sliceCategories;
-
                 $level = 0;
                 /**
                  * @param \Model\Product\Category\Entity[] $categories
@@ -121,9 +256,8 @@ class ShowAction {
 
                     return $categories;
                 };
-                $children = $filter($children);
 
-                $category->setChild($children);
+                $category->setChild($filter($category->id ? $category->getChild() : $sliceCategories));
             }
         }
 
@@ -239,15 +373,12 @@ class ShowAction {
     private function getRegion($regionFilterValue) {
         if (!empty($regionFilterValue)) {
             $region = \RepositoryManager::region()->getEntityById((int)$regionFilterValue);
-
-            if (!$region) {
-                $region = \App::user()->getRegion();
+            if ($region) {
+                return $region;
             }
-
-            return $region;
-        } else {
-            return \App::user()->getRegion();
         }
+
+        return \App::user()->getRegion();
     }
 
     /**
@@ -391,125 +522,6 @@ class ShowAction {
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
         return $productPager;
-    }
-
-    private function prepareEntityBranch(Entity $category, $sliceToken, array $filters = [], \Model\Region\Entity $region = null) {
-        $params = [
-            'root_id'         => $category->getId() ? $category->getId() : ($category->getParentId() ? $category->getParentId() : 0),
-            'max_level'       => $category->getId() ? $category->getLevel() + 1 : 1,
-            'is_load_parents' => true,
-            'filter' => ['filters' => $filters],
-        ];
-
-        if ($region) {
-            $params['region_id'] = $region->getId();
-        }
-
-        $isSeoSlice = $this->isSeoSlice();
-
-        \App::searchClient()->addQuery('category/tree', $params, [], function($data) use (&$category, &$region, $sliceToken, &$isSeoSlice) {
-            $helper = new \Helper\TemplateHelper();
-
-            if ($isSeoSlice) {
-                // SITE-5432
-                $changeCategoryUrlToSliceUrl = function() {};
-            } else {
-                $changeCategoryUrlToSliceUrl = function(\Model\Product\Category\Entity $category) use($sliceToken, $helper) {
-                    $url = explode('/', $category->getLink());
-                    $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
-                    $category->setLink($url);
-                };
-            }
-
-            /**
-             * Загрузка дочерних и родительских узлов категории
-             *
-             * @param \Model\Product\Category\Entity $category
-             * @param array $data
-             * @use \Model\Region\Entity $region
-             */
-            $loadBranch = function(\Model\Product\Category\Entity $category, array $data) use (&$region, $changeCategoryUrlToSliceUrl) {
-                // только при загрузке дерева ядро может отдать нам количество товаров в ней
-                if ($region && isset($data['product_count'])) {
-                    $category->setProductCount($data['product_count']);
-                }
-
-                // добавляем дочерние узлы
-                if (isset($data['children']) && is_array($data['children'])) {
-                    foreach ($data['children'] as $childData) {
-                        if (is_array($childData)) {
-                            $child = new \Model\Product\Category\Entity($childData);
-                            // переделываем url для дочерних категорий
-                            $changeCategoryUrlToSliceUrl($child);
-                            $category->addChild($child);
-                        }
-                    }
-                }
-
-                // если категория не выбрана, выводим рутовые категории
-                if (!$category->getId()) {
-                    if (is_array($data)) {
-                        $child = new \Model\Product\Category\Entity($data);
-                        // переделываем url для категорий
-                        $changeCategoryUrlToSliceUrl($child);
-                        $category->addChild($child);
-                    }
-                }
-            };
-
-            /**
-             * Перебор дерева категорий на данном уровне
-             *
-             * @param $data
-             * @use $iterateLevel
-             * @use $loadBranch
-             * @use $category     Текущая категория каталога
-             */
-            $iterateLevel = function($data) use(&$iterateLevel, &$loadBranch, $category) {
-                if (!is_array($data)) {
-                    return;
-                }
-
-                $item = reset($data);
-                if (!(bool)$item) return;
-
-                $level = (int)$item['level'];
-                if ($level < $category->getLevel()) {
-                    // если текущий уровень меньше уровня категории, загружаем данные для предков и прямого родителя категории
-                    $ancestor = new \Model\Product\Category\Entity($item);
-                    if (1 == ($category->getLevel() - $level)) {
-                        $loadBranch($ancestor, $item);
-                        $category->setParent($ancestor);
-                    }
-                    $category->addAncestor($ancestor);
-                } else if ($level == $category->getLevel()) {
-                    // если текущий уровень равен уровню категории, пробуем найти данные для категории
-                    foreach ($data as $item) {
-                        // ура, наконец-то наткнулись на текущую категорию
-                        if ($item['id'] == $category->getId() || !$category->getId()) {
-                            $loadBranch($category, $item);
-                            if ($item['id'] == $category->getId()) {
-                                return;
-                            }
-                        }
-                    }
-                }
-
-                $item = reset($data);
-                if (isset($item['children'])) {
-                    $iterateLevel($item['children']);
-                }
-            };
-
-            $iterateLevel($data);
-
-            // переделываем url для breadcrumbs
-            foreach ($category->getAncestor() as $ancestor) {
-                $changeCategoryUrlToSliceUrl($ancestor);
-            }
-
-            $changeCategoryUrlToSliceUrl($category);
-        });
     }
 
     private function prepareProductFilter(&$filters, Entity $category, array $sliceFiltersForSearchClientRequest, \Model\Region\Entity $region = null) {

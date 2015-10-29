@@ -64,9 +64,8 @@ class Entity extends BasicEntity {
         if (isset($data['id'])) $this->setId($data['id']);
         if (isset($data['core_id'])) $this->setId($data['core_id']); // Берётся из методов scms
         if (isset($data['ui'])) $this->setUi($data['ui']); // Берётся из http://api.enter.ru/v2/product/get (из элемента "category")
-        if (isset($data['uid'])) $this->setUi($data['uid']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets и http://search.enter.ru/category/tree
+        if (isset($data['uid'])) $this->setUi($data['uid']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets
 
-        if (isset($data['parent_id'])) $this->setParentId($data['parent_id']); // Берётся из http://search.enter.ru/category/tree (из элемента "children") и http://api.enter.ru/v2/product/get (из элемента "category")
         if (isset($data['parent']['id'])) $this->setParentId($data['parent']['id']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets
         if (isset($data['parent']['core_id'])) $this->setParentId($data['parent']['core_id']); // Берётся из https://scms.enter.ru/product/get-description/v1, https://scms.enter.ru/category/gets
 
@@ -74,14 +73,10 @@ class Entity extends BasicEntity {
         if (isset($data['is_furniture'])) $this->setIsFurniture($data['is_furniture']);
         if (isset($data['name'])) $this->setName($data['name']);
 
-        if (isset($data['link'])) $this->setLink($data['link']); // Берётся из http://search.enter.ru/category/tree (из элемента "children") и http://api.enter.ru/v2/product/get (из элемента "category")
+        if (isset($data['link'])) $this->setLink($data['link']); // Берётся из http://scms.enter.ru/api/category/tree
         if (isset($data['url'])) $this->setLink($data['url']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets, https://scms.enter.ru/product/get-description и т.п.
 
-        if (isset($data['token'])) $this->setToken($data['token']); // Берётся из http://search.enter.ru/category/tree (из элемента "children") и http://api.enter.ru/v2/product/get (из элемента "category")
         if (isset($data['slug'])) $this->setToken($data['slug']); // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets, https://scms.enter.ru/product/get-description и т.п.
-
-        if (isset($data['media_image'])) $this->image = $data['media_image']; // Возвращается методом http://search.enter.ru/category/tree
-        if (isset($data['media_image_480x480'])) $this->image480x480 = $data['media_image_480x480']; // Возвращается методом http://search.enter.ru/category/tree
 
         // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets
         if (isset($data['medias']) && is_array($data['medias'])) {
@@ -89,6 +84,19 @@ class Entity extends BasicEntity {
                 if (is_array($media)) {
                     $this->medias[] = new Media($media);
                 }
+            }
+
+            $this->image = $this->getMediaSource('category_163x163')->url;
+            $this->image480x480 = $this->getMediaSource('category_480x480')->url;
+
+            // TODO удалить после релиза FCMS-932
+            if (!$this->image) {
+                $this->image = $this->getMediaSource('category_163x163', '')->url;
+            }
+
+            // TODO удалить после релиза FCMS-932
+            if (!$this->image480x480) {
+                $this->image480x480 = $this->getMediaSource('category_480x480', '')->url;
             }
         }
 
@@ -351,7 +359,7 @@ class Entity extends BasicEntity {
      */
     public function getMediaSource($sourceType, $mediaTag = 'main', $mediaProvider = 'image') {
         foreach ($this->medias as $media) {
-            if ($media->provider === $mediaProvider && in_array($mediaTag, $media->tags, true)) {
+            if ($media->provider === $mediaProvider && (!$mediaTag || in_array($mediaTag, $media->tags, true))) {
                 foreach ($media->sources as $source) {
                     if ($source->type === $sourceType) {
                         return $source;

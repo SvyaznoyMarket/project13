@@ -64,9 +64,6 @@ namespace EnterApplication\Action\ProductCard
                 }
             });
 
-            // дерево категорий для меню
-            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($regionQuery->response->region['id'], 3))->prepare();
-
             // пользователь и его подписки
             /** @var Query\User\GetByToken $userQuery */
             $userQuery = null;
@@ -91,7 +88,6 @@ namespace EnterApplication\Action\ProductCard
                 $response->productQuery = $productQuery;
                 $response->productDescriptionQuery = $productDescriptionQuery;
                 $response->productModelQuery = $productModelQuery;
-                $response->categoryRootTreeQuery = $categoryRootTreeQuery;
                 $response->userQuery = $userQuery;
                 $response->subscribeChannelQuery = $subscribeChannelQuery;
                 return $response;
@@ -377,7 +373,6 @@ namespace EnterApplication\Action\ProductCard
             $response->abTestQuery = $abTestQuery;
             $response->regionQuery = $regionQuery;
             $response->subscribeChannelQuery = $subscribeChannelQuery;
-            $response->categoryRootTreeQuery = $categoryRootTreeQuery;
             $response->menuQuery = $menuQuery;
             $response->deliveryQuery = $deliveryQuery;
             $response->shopQuery = $shopQuery;
@@ -442,8 +437,6 @@ namespace EnterApplication\Action\ProductCard\Get
         public $regionQuery;
         /** @var Query\Subscribe\Channel\Get */
         public $subscribeChannelQuery;
-        /** @var Query\Product\Category\GetRootTree */
-        public $categoryRootTreeQuery;
         /** @var Query\MainMenu\GetByTagList */
         public $menuQuery;
         /** @var Query\Delivery\GetByCart|null */

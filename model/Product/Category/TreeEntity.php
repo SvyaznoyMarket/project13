@@ -28,8 +28,8 @@ class TreeEntity extends BasicEntity {
         if (isset($data['name'])) $this->setName($data['name']);
         if (isset($data['link'])) $this->setLink($data['link']);
         if (isset($data['token'])) $this->setToken($data['token']);
-        if (isset($data['media_image'])) $this->image = $data['media_image']; // Возвращается методом http://search.enter.ru/category/tree
-        if (isset($data['media_image_480x480'])) $this->image480x480 = $data['media_image_480x480']; // Возвращается методом http://search.enter.ru/category/tree
+        if (isset($data['media_image'])) $this->image = $data['media_image'];
+        if (isset($data['media_image_480x480'])) $this->image480x480 = $data['media_image_480x480'];
         if (isset($data['product_view_id'])) $this->setProductView($data['product_view_id']);
         if (isset($data['level'])) $this->setLevel($data['level']);
         if (isset($data['product_count'])) $this->setProductCount($data['product_count']);

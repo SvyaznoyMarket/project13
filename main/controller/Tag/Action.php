@@ -23,14 +23,6 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Тег "%s" не связан ни с одной категорией', $tag->getToken()));
         }
 
-        // категории
-        /** @var $tagCategoriesById \Model\Tag\Category\Entity[] */
-        $tagCategoriesById = [];
-        //$tagCategories = $tag->getCategory();
-        /** @var $categoriesByToken \Model\Product\Category\Entity[] */
-        $categoriesByToken = [];
-        $categories = [];
-
         $selectedCategory = $this->getSelectedCategoryByRequest($request); // Попробуем получить категорию из request
 
         if (!$selectedCategory && $categoryToken) {
@@ -46,50 +38,64 @@ class Action {
 
         }
 
-        $queryParams = [
-            'filter' => ['filters' => [
-                ['tag', 1, $tag->getId()],
-            ]],
-            'client_id' => 'site',
-            //'is_load_parents' => false,
-            'min_level'       => 1,
-            'max_level'       => 1,
-        ];
-
-        if ($selectedCategory) {
-            $queryParams['root_id'] = $selectedCategory->getId();
-            $queryParams['min_level'] += $selectedCategory->getLevel();
-            $queryParams['max_level'] += $selectedCategory->getLevel();
-        }
-
-        if ($region) {
-            $queryParams['region_id'] = $region->getId();
-        }
-
-        \App::searchClient()->addQuery('category/tree', $queryParams, [],
-            function ($data) use (&$categories, &$tagCategoriesNumbers) {
-                if (is_array($data)) {
-                    foreach ($data as $catFields) {
-                        if (is_array($catFields)) {
-                            $categories[] = new \Model\Product\Category\Entity($catFields);
-                        }
-                    }
-                }
-            }
-        );
-
         if ($selectedCategory) {
             $catalogJson = $selectedCategory->catalogJson;
         }
 
-        $client->execute();
+        /** @var $categoriesByToken \Model\Product\Category\Entity[] */
+        $categoriesByToken = [];
+        call_user_func(function() use(&$categoriesByToken, $tag, $region, $selectedCategory, $client) {
+            $params = [
+                'depth' => 0,
+            ];
 
+            if ($selectedCategory) {
+                $params['root_id'] = $selectedCategory->getId();
+                $params['depth'] = 1;
+            }
 
-        foreach ($categories as $category) {
-            /** @var $category \Model\Product\Category\Entity */
-            $categoriesByToken[$category->getToken()] = $category;
-            $tagCategoriesById[$category->getId()] = $category;
-        }
+            $categoryTreeData = null;
+            \App::scmsClient()->addQuery('api/category/tree', $params + [
+                'load_medias' => true,
+            ], [], function($data) use(&$categoryTreeData) {
+                $categoryTreeData = $data;
+            });
+
+            $availableCategoriesDataByUi = null;
+            \App::searchClient()->addQuery('category/get-available', $params + [
+                'filter'    => ['filters' => [['tag', 1, $tag->getId()]]],
+                'region_id' => $region->getId(),
+            ], [], function($data) use(&$availableCategoriesDataByUi) {
+                $availableCategoriesDataByUi = [];
+                if (is_array($data)) {
+                    foreach ($data as $item) {
+                        if (isset($item['uid'])) {
+                            $availableCategoriesDataByUi[$item['uid']] = $item;
+                        }
+                    }
+                }
+            });
+
+            $client->execute();
+
+            if (is_array($categoryTreeData)) {
+                if ($selectedCategory && isset($categoryTreeData[0]['children'])) {
+                    $categoryTreeData = $categoryTreeData[0]['children'];
+                }
+
+                foreach ($categoryTreeData as $item) {
+                    if (isset($item['uid']) && isset($availableCategoriesDataByUi[$item['uid']])) {
+                        $category = new \Model\Product\Category\Entity($item);
+
+                        if (isset($availableCategoriesDataByUi[$item['uid']]['product_count'])) {
+                            $category->setProductCount($availableCategoriesDataByUi[$item['uid']]['product_count']);
+                        }
+
+                        $categoriesByToken[$category->getToken()] = $category;
+                    }
+                }
+            }
+        });
 
 
         // Проверим ещё раз: Для указанного $categoryToken обязательно должна быть $selectedCategory
@@ -154,12 +160,6 @@ class Action {
             $sort = $catalogJson['sort'];
         } else {
             $sort = $productSorting->dump();
-        }
-
-        // вид товаров
-        $productView = \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT;
-        if ($selectedCategory) {
-            $productView = $request->get('view', $selectedCategory->getProductView());
         }
 
         // листалка
@@ -245,7 +245,6 @@ class Action {
             ]);
         }
 
-        // new
         $page = new \View\Tag\IndexPage();
         $page->setParam('productPager', $productPager);
         $page->setParam('productFilter', $productFilter);
@@ -255,11 +254,9 @@ class Action {
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('sort', $sort);
-        $page->setParam('productView', $productView);
         $page->setParam('selectedCategory', $selectedCategory);
         $page->setParam('categories', array_values($categoriesByToken));
-        $page->setParam('categoriesByToken', $categoriesByToken);
-        $page->setParam('productView', $productView);
+        $page->setParam('productView', $selectedCategory ? $request->get('view', $selectedCategory->getProductView()) : \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT);
         return new \Http\Response($page->show());
     }
 
@@ -281,15 +278,11 @@ class Action {
      * @param \Http\Request $request
      * @return \Model\Product\Category\Entity|null
      */
-    private function getSelectedCategoryByRequest(\Http\Request $request)
-    {
-        $selectedCategory = null;
+    private function getSelectedCategoryByRequest(\Http\Request $request) {
         $categoryId = $request->get('category');
         if ($categoryId) {
-            $selectedCategory = \RepositoryManager::productCategory()->getEntityById($categoryId);
-            //$categoryToken = $category->getToken();
+            return \RepositoryManager::productCategory()->getEntityById($categoryId);
         }
-        return $selectedCategory;
+        return null;
     }
-
 }
