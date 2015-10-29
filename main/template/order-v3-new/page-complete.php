@@ -82,9 +82,8 @@ $f = function(
                 }
             ?>
 
-                <div class="orderLn table" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
+                <div class="orderLn table <? if ($showStatus): ?>orderLn--status<? endif ?>" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
                     <div class="orderLn_l orderLn_cell">
-
                         <? if ($userEntity) : ?>
                             <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
                         <? else : ?>
@@ -107,7 +106,6 @@ $f = function(
                                 <? break; endif ?>
                             <? endforeach ?>
                         </ul>
-
                     </div>
 
                     <? if (\RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)) : ?>
@@ -119,14 +117,13 @@ $f = function(
                                 <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
                             </div>
                         </div>
-                        <!--<div>Оплата при получении: наличные, банковская карта</div>-->
                     </div>
 
                     <? endif ?>
 
                     <? if ($showPaymentStatus): ?>
                     <!-- тип оплаты -->
-                    <div class="payment-block orderLn_c orderLn_cell">
+                    <div class="payment-block orderLn_c orderLn_cell" style="width: 255px;">
                         <? if ($checkedPaymentMethod): ?>
                         <div class="payment-block__type">Тип оплаты: </div>
                         <div class="payment-block__logo">
@@ -262,7 +259,7 @@ $f = function(
                                         data-checked="true"
                                         class="js-order-onlinePaymentMethod"
                                     />
-                                    <div class="<?= $containerId ?>"></div>
+                                    <div style="text-align: right;" class="<?= $containerId ?>"></div>
                                 <? endif ?>
                             </div>
                         <? endif ?>
