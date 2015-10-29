@@ -214,6 +214,11 @@ class OrderEntity {
      * @var float
      */
     private $total_view_cost;
+    /**
+     * Сумма предоплаты
+     * @var int
+     */
+    private $prepaid_sum;
 
     /** TODO принимать \Model\OrderDelivery\Entity\Order и \Model\OrderDelivery\Entity\UserInfo
      * @param array $arr
@@ -289,6 +294,10 @@ class OrderEntity {
             }
         } else {
             throw new \Exception('Нет продуктов для заказа');
+        }
+
+        if (!empty($arr['order']['prepaid_sum'])) {
+            $this->prepaid_sum = (int)$arr['order']['prepaid_sum'];
         }
 
         /*
