@@ -14,6 +14,8 @@ return function(
     $categoryUids = $currentCategory
         ? array_map(function (Category $cat) { return $cat->getUi(); }, $currentCategory->getAncestor())
         : [];
+
+    $currentCategory = $currentCategory ? : new \Model\Product\Category\Entity([]);
 ?>
     <? if ($rootCategoryInMenu && 'tchibo' === $rootCategoryInMenu->getToken() && 0 == $rootCategoryInMenu->getProductCount()): ?>
         <img src="//content.enter.ru/wp-content/uploads/2014/04/Tch_out.jpg" alt="К сожалению, товары Tchibo недоступны к покупке в вашем городе" />

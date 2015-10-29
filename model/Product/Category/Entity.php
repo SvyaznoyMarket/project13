@@ -92,6 +92,12 @@ class Entity extends BasicEntity {
             }
         }
 
+        if (array_key_exists('children', $data) && is_array($data['children'])) {
+            foreach ($data['children'] as $childrenData) {
+                $this->addChild(new self($childrenData));
+            }
+        }
+
         if (isset($data['product_view_id'])) $this->setProductView($data['product_view_id']);
         if (isset($data['level'])) $this->setLevel($data['level']);
 

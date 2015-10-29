@@ -18,6 +18,7 @@ class IndexAction {
         $promo = null;
         $bannerBottom = null;
         $categoryTree = null;
+        $categoryWithChilds = null;
 
         // подготовка для 1-го пакета запросов в ядро
         // promo
@@ -42,6 +43,15 @@ class IndexAction {
         \RepositoryManager::productCategory()->prepareTreeCollection($region, 1, 1, function($data) use (&$categoryTree) {
             $categoryTree = $data;
         });
+
+        \RepositoryManager::productCategory()->prepareCategoryTree(
+            'root_slug',
+            $categoryToken,
+            1,
+            false,
+            false,
+            true,
+            $categoryWithChilds);
 
         // выполнение 1-го пакета запросов в ядро
         $client->execute();
