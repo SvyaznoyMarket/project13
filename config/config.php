@@ -265,6 +265,10 @@ $c->partners['Adblender']['enabled'] = true;
 $c->partners['Giftery']['enabled'] = true;
 $c->partners['Giftery']['lowestPrice'] = 500;
 
+// SITE-6208
+$c->partners['soloway']['enabled'] = true;
+$c->partners['soloway']['id'] = 209723;
+
 $c->partners['facebook']['enabled'] = true;
 
 $c->adFox['enabled'] = true;

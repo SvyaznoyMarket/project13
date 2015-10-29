@@ -187,6 +187,10 @@
 
 					if (typeof ENTER.utils.sendOrderToGA == 'function' && result.orderAnalytics) {
 						ENTER.utils.sendOrderToGA(result.orderAnalytics);
+						ENTER.utils.analytics.soloway.send({
+							action: 'orderComplete',
+							orders: result.orderAnalytics.orders
+						});
 					}
 				},
 				error: function(){

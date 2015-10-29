@@ -407,6 +407,9 @@ class Action {
                             'data'    => [
                                 //'link' => $this->redirect,
                             ],
+                            'newUser' => [
+                                'id' => isset($result['id']) ? $result['id'] : '',
+                            ],
                             'error' => null,
                             'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
                         ])

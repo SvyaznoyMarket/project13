@@ -666,4 +666,12 @@ class DefaultLayout extends Layout {
             ? '<div id="gifteryJS" class="jsanalytics"></div>'
             : '';
     }
+
+    public function slotSolowayJS() {
+        if (!\App::config()->partners['soloway']['enabled']) {
+            return '';
+        }
+
+        return '<div id="solowayJS" class="jsanalytics"></div>';
+    }
 }

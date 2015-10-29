@@ -353,4 +353,20 @@ class IndexPage extends \View\DefaultLayout {
         $this->setParam('product', $this->product);
 
     }
+
+    public function slotSolowayJS() {
+        if (!\App::config()->partners['soloway']['enabled']) {
+            return '';
+        }
+
+        return '<div id="solowayJS" class="jsanalytics" data-vars="' . $this->json([
+            'type' => 'product',
+            'product' => [
+                'ui' => $this->product->ui,
+                'category' => [
+                    'ui' => $this->product->getParentCategory() ? $this->product->getParentCategory()->ui : '',
+                ],
+            ],
+        ]) . '"></div>';
+    }
 }
