@@ -45,7 +45,7 @@
     text-align: left;
 
     border: 1px solid @darkgrey4;
-    border-top-width: 6px;
+    border-top-width: 4px;
     background: @white;
     &__item {
         &:hover,
@@ -156,9 +156,6 @@
             float: left;
 
             margin: 0 5px 0 0;
-            &_active {
-                border-bottom: 1px solid;
-            }
             &_title {
                 font-size: 16px;
                 font-weight: bold;
@@ -185,15 +182,16 @@
                     left: auto;
                 }
             }
-            &_act {
+            &_active {
                 .tchibo-nav-list__link {
                     font-weight: bold;
+                    border-bottom: 4px solid;
                 }
             }
             &:hover {
                 .tchibo-nav-list__link {
                     &:after {
-                        .pseudo-corner-top(6px, @tchiboBlue, 34px);
+                        .pseudo-corner-top(6px, @tchiboBlue, 36px);
                     }
                 }
             }
@@ -211,7 +209,7 @@
 }
 
 .tchibo-nav-list-sub {
-    top: 40px;
+    top: 42px;
     left: 0;
 
     border-color: @tchiboBlue;
