@@ -1,4 +1,6 @@
 <?php
+
+use Model\Product\Category\Entity as Category;
 /**
  * @var $page               \View\DefaultLayout
  * @var $rootCategoryInMenu \Model\Product\Category\TreeEntity
@@ -7,6 +9,7 @@
  * @var $slideData          array
  * @var $bannerBottom       string
  * @var $promoContent       string
+ * @var $categoryWithChilds Category
  */
 
 
@@ -23,6 +26,12 @@ if ((bool)$siblingCategories) {
             'catalogConfig' => $catalogConfig
         ]);
     /* <!--/ TCHIBO - слайдер-меню разделов Чибо -->*/
+}
+
+/** @var Category[] $categoryByUi */
+$categoryByUi = [];
+foreach ($categoryWithChilds->getChild() as $ct) {
+    $categoryByUi[$ct->getUi()] = $ct;
 }
 
 ?>
@@ -109,12 +118,14 @@ if ((bool)$siblingCategories) {
         <? foreach($catalogCategories as $key => $catalogCategory): ?>
             <?
             /** @var \Model\Product\Category\TreeEntity $catalogCategory */
-            $imgSrc = $catalogCategory->getImageUrl(3);
-            if (empty($imgSrc)) {
-                $imgSrc = '/styles/tchiboCatalog/img/woman.jpg';
+
+            if (array_key_exists($catalogCategory->getUi(), $categoryByUi)) {
+                $imgSrc = $categoryByUi[$catalogCategory->getUi()]->getMediaSource('category_grid_366x488', 'category_grid')->url;
             }
 
-            $categoryChildren = $catalogCategory->getChild();
+            if (empty($imgSrc)) {
+                $imgSrc = $catalogCategory->getImageUrl(3);
+            }
             ?>
 
             <div class="s-sales-grid__cell">
