@@ -34,18 +34,13 @@ class Criteo {
             $searchQuery = (string)$request->get('q');
             $searchQuery = $this->escape($searchQuery);
 
-            switch ($routeName) { // begin of case
-                case "homepage":
-                    //$viewEvent = 'viewHome';
-                    //break;
-                    return false; // нечего передовать на homepage, выходим
-
-                case "product":
+            switch ($routeName) {
+                case 'product':
                     $viewEvent = 'viewItem';
                     $eventItemsID = $this->getParam('product')->getId();
                     break;
 
-                case "cart":
+                case 'cart':
                     $viewEvent = 'viewBasket';
                     //$in_basket = $cart->getData()['productList'];
                     $in_basket = $cart->getProductsById();
@@ -53,39 +48,33 @@ class Criteo {
 
                     foreach($products as $product) {
                         /* @var $product \Model\Product\Entity */
-                        $eventItems_arr[] = array(
+                        $eventItems_arr[] = [
                             'id' => $product->getId(),
                             'price' => $product->getPrice(),
                             'quantity' => $in_basket[$product->getId()]->quantity,
-                        );
+                        ];
                     }
                     break;
 
-                case "search":
-                    $viewEvent = 'viewList';
-                    $productPager = $this->getParam('productPager'); /** @var $productPager \Iterator\EntityPager */
-                    $this->addProductsIDs( $productPager,  $eventItemsID );
-                    break;
-
-                case "product.category":
-                    $productPagersByCategory = $this->getParam('productPagersByCategory');
-                    /* @var $productPagersByCategory \Iterator\EntityPager[] */
+                case 'search':
+                case 'product.category':
+                case 'slice.show':
+                case 'slice.category':
+                case 'product.set':
+                case 'sale.all':
+                case 'sale.one':
+                case 'wishlist.show':
+                    /** @var \Iterator\EntityPager $productPager */
                     $productPager = $this->getParam('productPager');
-                    /** @var $productPager \Iterator\EntityPager */
 
                     $countIDs = 0;
-                    if ( $productPager ) {
+                    if ($productPager) {
                         $countIDs = $this->addProductsIDs( $productPager,  $eventItemsID );
-                    }else if ($productPagersByCategory) {
-                        foreach ($productPagersByCategory as $productPager) {
-                            /** @var $productPager \Iterator\EntityPager */
-                            $countIDs = $this->addProductsIDs( $productPager,  $eventItemsID );
-                        }
                     }
 
                     if ($countIDs) {
                         $viewEvent = 'viewList';
-                    }else{
+                    } else {
                         //$viewEvent = '';
                         return false; // eсли нет продуктов, нечего передовать на этой стр, выходим
                     }
@@ -93,8 +82,8 @@ class Criteo {
 
                     break;
 
-                case "order.complete":
-                case "orderV3.complete":
+                case 'order.complete':
+                case 'orderV3.complete':
                     $viewEvent = 'trackTransaction';
                     $orders = $this->getParam('orders');
                     foreach($orders as $ord) {
@@ -103,22 +92,20 @@ class Criteo {
 
                         foreach($products as $product) {
                             // @var $product \Model\Product\Entity
-                            $eventItems_arr[]  = array(
+                            $eventItems_arr[]  = [
                                 'id' => $product->getId(),
                                 'price' => $product->getPrice(),
                                 'quantity' => $product->getQuantity(),
-                            );
+                            ];
                         }
 
                     }
                     break;
 
                 default:
-                    //$viewEvent = 'view.'.$routeName;
-                    //$viewEvent = '';
-                    return false; // нечего передовать на этой стр, выходим
-
-            }// end of case
+                    $viewEvent = 'viewHome';
+                    break;
+            }
 
 
             if (isset($orders) and !empty($orders)){
@@ -128,13 +115,13 @@ class Criteo {
                 $beforeItems['deduplication'] = (int) $this->utmzCookieHas('criteo');
                 /* // example:
                 {
-                    event: "trackTransaction" ,
-                    id: "Transaction Id",
+                    event: 'trackTransaction' ,
+                    id: 'Transaction Id',
                     new_customer: 1 if first purchase or 0 if not,
                     deduplication: 1 if attributed to Criteo or 0 if not,
                     item: [
                         {
-                            id: "First item id",
+                            id: 'First item id',
                             price: First item unit price,
                             quantity: First item quantity
                         }, etc ...
@@ -191,12 +178,11 @@ class Criteo {
 
 
     /**
-     * @param $productPager  is array or object!
+     * @param \Iterator\EntityPager $productPager
      * @param $arr
      * @return bool|int
      */
-    private function addProductsIDs( &$productPager, &$arr ) {
-        //if ( isset($productPager) and !empty($productPager) ) {
+    private function addProductsIDs( $productPager, &$arr ) {
         if ( $productPager instanceof \Iterator\EntityPager ) {
             $i = 0;
             foreach ($productPager as $product) {
