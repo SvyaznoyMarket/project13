@@ -175,11 +175,7 @@ $buySender2 = $request->get('sender2');
 	<? if ($reviewsData) : ?>
         <!-- отзывы -->
         <div class="product-section product-section--reviews" id="reviews">
-            <div class="product-section__tl">Отзывы</div>
-
             <?= $helper->render('product-page/blocks/reviews', ['reviewsData' => $reviewsData, 'product' => $product]) ?>
-
-
         </div>
         <!--/ отзывы -->
     <? endif ?>
