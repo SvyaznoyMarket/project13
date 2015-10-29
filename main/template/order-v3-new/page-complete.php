@@ -160,6 +160,19 @@ $f = function(
                                     <div class="order-sum__prev"><span class="line-through"><?= $helper->formatPrice($order->sum) ?></span> <span class="rubl">p</span></div>
                                 <? endif ?>
                                 <div class="order-sum__val"><?= $helper->formatPrice($order->paySum) ?> <span class="rubl">p</span></div>
+
+                                <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT]) && $order->isCredit()): ?>
+                                    <button class="orderPayment_btn btn3 jsCreditButton">Оформить кредит</button>
+
+                                    <div style="display: none;" class=" jsCreditList">
+                                        <?= $helper->render('order-v3-new/complete-blocks/_credit', [
+                                            'order'      => $order,
+                                            'banks'      => $banks,
+                                            'creditData' => $creditData,
+                                        ]) ?>
+                                    </div>
+                                <? endif ?>
+
                                 <? if ($isOnlinePaymentPossible && (PaymentMethodEntity::PAYMENT_CASH === $order->paymentId)): ?>
                                     <div style="text-align: right;"><button class="orderPayment_btn btn3 js-payment-popup-show">Оплатить онлайн</button></div>
 

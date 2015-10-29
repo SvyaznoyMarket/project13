@@ -356,14 +356,14 @@
         },
         loadPaymentForm = function($container, url, data) {
             console.info('Загрузка формы оплаты ...');
-            $container.html('Загрузка...'); // TODO: loader
+            $container.html('...'); // TODO: loader
 
             $.ajax({
                 url: url,
                 type: 'POST',
                 data: data
             }).fail(function(jqXHR){
-                $container.html('Ошибка');
+                $container.html('');
             }).done(function(response){
                 if (response.form) {
                     $container.html(response.form);
