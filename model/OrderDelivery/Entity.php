@@ -110,17 +110,6 @@ namespace Model\OrderDelivery {
 
             $this->validate();
             $this->validateOrders();
-
-            // проверка на 100000 SITE-5958
-            foreach ($this->orders as $order) {
-                if (\App::config()->order['prepayment']['priceLimit'] && ($order->total_view_cost > \App::config()->order['prepayment']['priceLimit'])) {
-                    foreach ($order->possible_payment_methods as $i => $possiblePaymentMethod) {
-                        if (in_array($possiblePaymentMethod->id, ['1', '2']) && (count($order->possible_payment_methods) > 1)) {
-                            unset($order->possible_payment_methods[$i]);
-                        }
-                    }
-                }
-            }
         }
 
         /**
@@ -414,6 +403,8 @@ namespace Model\OrderDelivery\Entity {
             'pin'   => null,
             'par'   => null
         ];
+        /** @var int */
+        public $prepaid_sum = 0;
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
 
@@ -533,6 +524,8 @@ namespace Model\OrderDelivery\Entity {
                 $discount->name = sprintf("Скидка %s%s", $paymentMethod->discount['value'], $paymentMethod->discount['unit']);
                 $this->discounts[] = $discount;
             }
+
+            if (isset($data['prepaid_sum'])) $this->prepaid_sum = (int)$data['prepaid_sum'];
         }
 
         /** Это заказ партнерский?

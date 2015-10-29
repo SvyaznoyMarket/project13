@@ -21,8 +21,6 @@ $showStatus = true || \App::user()->getEntity() && in_array(\App::user()->getEnt
 
 $currentYear = (int)(new \DateTime())->format('Y');
 
-$prepaymentPriceLimit = \App::config()->order['prepayment']['enabled'] ? \App::config()->order['prepayment']['priceLimit'] : null;
-
 $recommendationsHtml = [
     $helper->render('product/__slider', [
         'type'      => 'personal',
@@ -85,7 +83,7 @@ $recommendationsHtml = [
                                 <? endif ?>
                             <? endif ?>
                             <span class="personal-order__info warning">
-                            <? if ((null !== $prepaymentPriceLimit) && ($order->sum >= $prepaymentPriceLimit)): ?>
+                            <? if ($order->prepaidSum): ?>
                                 Требуется предоплата
                             <? endif ?>
                             </span>

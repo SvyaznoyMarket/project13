@@ -72,7 +72,7 @@ $f = function(
                 <? endif ?>
             </div>
 
-            <? if (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_view_cost > \App::config()->order['prepayment']['priceLimit'])) : ?>
+            <? if ($order->prepaid_sum) : ?>
                 <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
             <? endif; ?>
 
@@ -237,7 +237,7 @@ $f = function(
                         </div>
                         <div class="orderCol_tm">
                             <? if (isset($point->regtime)): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
-                            <? if (isset($point) && (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_view_cost < \App::config()->order['prepayment']['priceLimit']))) : ?>
+                            <? if (isset($point) && !$order->prepaid_sum) : ?>
                                 <br />
                                 <span class="orderCol_tm_t">Оплата при получении: </span>
                                 <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?>
