@@ -69,7 +69,6 @@ class CreateAction {
                 $ordersData,
                 \App::config()->coreV2['hugeTimeout']
             );
-            //$coreResponse = \App::dataStoreClient()->query('/fixture/v2-create-packet.json');
         } catch (\Curl\Exception $e) {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
             \App::exception()->remove($e);
@@ -117,8 +116,8 @@ class CreateAction {
 
         \App::logger()->info(['action' => __METHOD__, 'core.response' => $coreResponse], ['order']);
 
+        $criteoData = [];
         if ((bool)$coreResponse) {
-
             foreach ($coreResponse as $orderData) {
                 if (!is_array($orderData)) {
                     \App::logger()->error(['message' => 'Получены неверные данные для созданного заказа', 'orderData' => $orderData], ['order']);
@@ -134,6 +133,14 @@ class CreateAction {
 
                 $createdOrders[] = $createdOrder;
                 \App::logger()->info(['message' => 'Заказ успешно создан', 'orderData' => $orderData], ['order']);
+            }
+
+            try {
+                if ($createdOrders) {
+                    $criteoData = (new \View\Partners\Criteo(['orders' => $createdOrders]))->execute();
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order', 'criteo']);
             }
         }
 
@@ -199,6 +206,7 @@ class CreateAction {
                 ],
             ],
             'lastPartner' => \App::partner()->getName(),
+            'criteoData'  => $criteoData,
         ];
 
         if (\App::config()->googleAnalytics['enabled']) {
