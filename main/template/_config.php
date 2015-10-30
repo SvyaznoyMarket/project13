@@ -68,7 +68,6 @@ $config = array_merge([
         'product.reviews.get'       => ['pattern' => $routerRules['product.reviews']['pattern']],
         'ajax.product.category'     => ['pattern' => $routerRules['ajax.product.category']['pattern']],
     ],
-    'newProductPage' => \App::abTest()->isNewProductPage(),
     'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS
     'selfDeliveryLimit'    => $appConfig->self_delivery['limit'], // стоимость платного самовывоза, удалять осторожно, поломается JS
     'minOrderSum'  => \App::abTest()->isOrderMinSumRestriction() ? $appConfig->minOrderSum : false,

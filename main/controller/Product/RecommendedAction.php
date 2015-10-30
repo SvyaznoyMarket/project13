@@ -172,7 +172,7 @@ class RecommendedAction {
                     $rowsCount = 2;
                 }
 
-                $template = \App::abTest()->isNewProductPage() && 'viewed' != $sender['type'] ? 'product-page/blocks/slider' : 'product/__slider';
+                $template = ('viewed' != $sender['type']) ? 'product-page/blocks/slider' : 'product/__slider';
                 if (\App::config()->lite['enabled']) $template = 'product/blocks/slider';
 
                 $recommendData[$type] = [

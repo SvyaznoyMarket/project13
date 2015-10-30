@@ -1,6 +1,3 @@
-/*
-* Новая карточка товара
-* */
 ;(function($){
 
     var $window = $(window),

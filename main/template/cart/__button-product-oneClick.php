@@ -35,10 +35,6 @@ return function (
     }
 ?>
     <!--noindex-->
-        <? if (\App::abTest()->isNewProductPage()): ?>
-            <?= $helper->renderWithMustache('product-page/_buyButtonOneClick', $data) ?>
-        <? else: ?>
-            <?= $helper->renderWithMustache('product/_buyButtonOneClick', $data) ?>
-        <? endif ?>
+        <?= $helper->renderWithMustache('product-page/_buyButtonOneClick', $data) ?>
     <!--/noindex-->
 <?php };

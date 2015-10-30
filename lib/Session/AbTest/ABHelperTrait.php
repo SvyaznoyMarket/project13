@@ -99,13 +99,6 @@ trait ABHelperTrait {
         return \App::abTest()->getTest('new_window')->getChosenCase()->getKey() == 'hamburger' && \App::request()->attributes->get('route') == 'product';
     }
 
-    /** Новая карточка товара
-     * @return bool
-     */
-    public static function isNewProductPage() {
-        return true;
-    }
-
     /**
      * Ядерная корзина
      * @return bool
