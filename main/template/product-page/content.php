@@ -108,14 +108,15 @@ $buySender2 = $request->get('sender2');
     <?= $helper->render('product-page/blocks/trustfactors.partner', ['trustfactors' => $trustfactors]) ?>
 
     <div style="height: 50px">
+
         <!-- навигация по странице -->
-        <div id="jsScrollSpy" class="product-tabs-scroll jsProductTabs">
-            <ul class="nav product-tabs">
-                <? if ($product->getKit()) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit" title="">Состав</a></li><? endif ?>
-                <? if ($showDescription) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
-                <? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
-                <li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li>
-                <? if ($product->isAvailable()) : ?><li class="product-tabs__i jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar" title="">Похожие товары</a></li><? endif ?>
+        <div id="jsScrollSpy" class="product-tabs-scroll jsProductTabs tabs js-tabs">
+            <ul class="nav product-tabs tabs__controls tabs__controls_h-incomplete">
+                <? if ($product->getKit()) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit" title="">Состав</a></li><? endif ?>
+                <? if ($showDescription) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
+                <? if ($showAccessories) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
+                <li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li>
+                <? if ($product->isAvailable()) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar" title="">Похожие товары</a></li><? endif ?>
             </ul>
         </div>
 	    <!--/ навигация по странице -->
