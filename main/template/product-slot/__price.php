@@ -9,7 +9,7 @@ return function(
     }
 ?>
     <? if ($product->getPriceOld()): ?>
-        <div class="product-card__info--oldprice"><span><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
+        <div class="product-card__info--oldprice"><span class="td-lineth"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
     <? endif ?>
 
     <span>
