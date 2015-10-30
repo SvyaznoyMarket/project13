@@ -169,6 +169,15 @@
 								orders: response.result.orderAnalytics.orders
 							});
 						}
+
+						// criteo
+						if (
+							response.result.criteoData
+							&& typeof(window.criteo_q) != 'undefined'
+							&& !$.isEmptyObject(response.result.criteoData)
+						) {
+							window.criteo_q.push(response.result.criteoData);
+						}
 					}
 				})
 				.fail(function(jqXHR){
