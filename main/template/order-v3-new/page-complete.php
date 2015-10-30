@@ -162,9 +162,11 @@ $f = function(
                                 <div class="order-sum__val"><?= $helper->formatPrice($order->paySum) ?> <span class="rubl">p</span></div>
 
                                 <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT]) && $order->isCredit()): ?>
-                                    <button class="orderPayment_btn btn3 jsCreditButton">Оформить кредит</button>
+                                    <button class="orderPayment_btn btn3 js-payment-popup-show">Оформить кредит</button>
 
-                                    <div style="display: none;" class=" jsCreditList">
+                                    <div style="display: none;" class="payments-popup js-payment-popup">
+                                        <div class="js-payment-popup-closer payments-popup__closer"></div>
+                                        
                                         <?= $helper->render('order-v3-new/complete-blocks/_credit', [
                                             'order'      => $order,
                                             'banks'      => $banks,
