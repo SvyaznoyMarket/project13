@@ -304,7 +304,7 @@ class CompleteAction extends OrderV3 {
                 //'card_number' => $order->card,
                 'user_token'  => $request->cookies->get('UserTicket'), // токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
             ],
-            \App::config()->coreV2['hugeTimeout']
+            2 * \App::config()->coreV2['timeout']
         );
 
         if (!$result) {
