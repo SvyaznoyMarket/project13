@@ -348,7 +348,7 @@ class OrderEntity {
         if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2, $cartProducts);
 
         if (!empty($arr['order']['prepaid_sum'])) { // SITE-6256
-            $this->meta_data['prepaid_sum'] = (int)$arr['order']['prepaid_sum'];
+            $this->meta_data['prepaid_sum'] = $arr['order']['prepaid_sum'];
         }
     }
 
