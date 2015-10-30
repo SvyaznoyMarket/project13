@@ -15,7 +15,7 @@ $btnTypes = array(
 <div class="header__width">
     <div class="header__inn clearfix">
         <div class="header_c header_c-v2">
-            <? if (\App::abTest()->isOrderWithCart() && !\App::user()->getCart()->count()): ?>
+            <? if ('cart' !== (\App::request()->attributes->get('route')) || (\App::abTest()->isOrderWithCart() && !\App::user()->getCart()->count())): ?>
                 <a href="/" class="hdlogo sitelogo"></a>
             <? else: ?>
                 <span class="hdlogo sitelogo"></span>
