@@ -72,6 +72,13 @@ class ChildAction {
 
         $productsByUi = array_map(function($productUi) { return new \Model\Product\Entity(['ui' => $productUi]); }, $productsByUi);
 
+        // проставляем оценки
+        \RepositoryManager::review()->prepareScoreCollection($productsByUi, function($data) use(&$productsByUi) {
+            if (isset($data['product_scores'][0])) {
+                \RepositoryManager::review()->addScores($productsByUi, $data);
+            }
+        });
+
         \RepositoryManager::product()->prepareProductQueries($productsByUi, 'model media label brand category');
 
         \App::coreClientV2()->execute();
