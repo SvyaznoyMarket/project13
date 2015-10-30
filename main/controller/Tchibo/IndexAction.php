@@ -17,7 +17,6 @@ class IndexAction {
         $categoryToken = 'tchibo';
         $promo = null;
         $bannerBottom = null;
-        $categoryTree = null;
 
         // подготовка для 1-го пакета запросов в ядро
         // promo
@@ -39,8 +38,15 @@ class IndexAction {
             }
         });
 
-        \RepositoryManager::productCategory()->prepareTreeCollection($region, 1, 1, function($data) use (&$categoryTree) {
-            $categoryTree = $data;
+        $tchiboProductCount = 0;
+        \App::searchClient()->addQuery('category/get-available', [
+            'root_slug'       => $categoryToken,
+            'depth'           => 0,
+            'region_id'       => $region->getId(),
+        ], [], function($data) use(&$tchiboProductCount) {
+            if (!empty($data[0]['product_count'])) {
+                $tchiboProductCount = (int)$data[0]['product_count'];
+            }
         });
 
         // выполнение 1-го пакета запросов в ядро
@@ -54,15 +60,12 @@ class IndexAction {
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
         }
-        /** @var $category  \Model\Product\Category\Entity */
 
-        $categoriesTchibo = null;
-        if (is_array($categoryTree) && !empty($categoryTree)) {
-            $categoriesTchibo = array_filter($categoryTree, function ($cat) use ($categoryToken) { return $cat['token'] === $categoryToken; } );
-        }
+        if (!$tchiboProductCount && !\App::config()->preview) {
+            // https://jira.enter.ru/browse/SITE-5910?focusedCommentId=169611&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-169611
+//            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
 
-        if (!(bool) $categoriesTchibo || $categoriesTchibo[0]['product_count'] == 0 && \App::config()->preview !== true) {
-            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
+            throw new \Exception\NotFoundException('Товары Tchibo отсутствуют');
         }
 
         // подготовка для 2-го пакета запросов в ядро

@@ -54,14 +54,14 @@ class Action {
                 $params['depth'] = 1;
             }
 
-            $categoryTreeData = null;
+            $categoryTreeData = [];
             \App::scmsClient()->addQuery('api/category/tree', $params + [
                 'load_medias' => true,
             ], [], function($data) use(&$categoryTreeData) {
                 $categoryTreeData = $data;
             });
 
-            $availableCategoriesDataByUi = null;
+            $availableCategoriesDataByUi = [];
             \App::searchClient()->addQuery('category/get-available', $params + [
                 'filter'    => ['filters' => [['tag', 1, $tag->getId()]]],
                 'region_id' => $region->getId(),

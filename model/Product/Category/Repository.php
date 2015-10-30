@@ -237,30 +237,6 @@ class Repository {
     }
 
     /**
-     * @param \Model\Region\Entity $region
-     * @param int                  $maxLevel
-     * @param int                  $count_local
-     * @param callback             $done
-     * @param callback|null        $fail
-     */
-    public function prepareTreeCollection(\Model\Region\Entity $region = null, $maxLevel = null, $count_local = 0, $done, $fail = null) {
-        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
-
-        $params = [
-            'is_load_parents' => true,
-            'count_local' => $count_local
-        ];
-        if (null !== $maxLevel) {
-            $params['max_level'] = $maxLevel;
-        }
-        if ($region instanceof \Model\Region\Entity) {
-            $params['region_id'] = $region->getId();
-        }
-
-        \App::searchClient()->addQuery('category/tree', $params, [], $done, $fail);
-    }
-
-    /**
      * @param $rootId
      * @param \Model\Region\Entity $region
      * @param int $maxLevel
@@ -375,36 +351,6 @@ class Repository {
             };
 
             $iterateLevel($data);
-        });
-    }
-
-    public function prepareEntityHasChildren(Entity $category) {
-        $params = [
-            'root_id' => $category->getId(),
-            'is_load_parents' => false,
-//            'max_level' => $category->getLevel(), // Не выбираем дочерние категории
-            'max_level' => $category->getLevel() + 1, // TODO: временный хак
-            'region_id' => \App::user()->getRegion()->getId(),
-        ];
-
-        // SITE-3524 Поддержка неактивных категорий для отладки страниц на preview.enter.ru
-        if (\App::config()->preview === true) {
-            $params['load_inactive'] = 1;
-            $params['load_empty'] = 1;
-        }
-
-        \App::searchClient()->addQuery('category/tree', $params, [], function($data) use (&$category) {
-            if (is_array($data)) {
-                $data = reset($data);
-//                if (isset($data['has_children'])) {
-//                    $category->setHasChild($data['has_children']);
-//                }
-
-                // TODO: временный хак
-                if (isset($data['children'][0])) {
-                    $category->setHasChild(true);
-                }
-            }
         });
     }
 }

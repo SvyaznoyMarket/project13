@@ -81,9 +81,39 @@ class Action {
 
         // подготовка 3-го пакета запросов
 
-        \RepositoryManager::productCategory()->prepareEntityHasChildren($category);
+        $categoryTreeData = [];
+        $availableCategoriesData = [];
+        call_user_func(function() use(&$categoryTreeData, &$availableCategoriesData, $category) {
+            $params = [
+                'root_id' => $category->getId(),
+            ];
+
+            // SITE-3524 Поддержка неактивных категорий для отладки страниц на preview.enter.ru
+            if (\App::config()->preview === true) {
+                $params['load_inactive'] = 1;
+                $params['load_empty'] = 1;
+            }
+
+            \App::scmsClient()->addQuery('api/category/tree', $params + [
+                'depth' => 0,
+            ], [], function($data) use(&$categoryTreeData) {
+                $categoryTreeData = $data;
+            });
+
+            \App::searchClient()->addQuery('category/get-available', $params + [
+                'depth' => 1,
+                'region_id' => \App::user()->getRegion()->getId(),
+            ], [], function($data) use(&$availableCategoriesData) {
+                $availableCategoriesData = $data;
+            });
+        });
 
         $client->execute();
+
+        // Если категория доступна и у неё есть доступные дети
+        if (isset($categoryTreeData[0]['has_children']) && is_array($availableCategoriesData) && count($availableCategoriesData) > 2) {
+            $category->setHasChild($categoryTreeData[0]['has_children']);
+        }
 
         // запрашиваем дерево категорий
         if ($category->isV2Root()) {

@@ -61,8 +61,8 @@ class ShowAction {
         $category = $this->getCategory($categoryToken, $slice, $region);
         $sliceFiltersForSearchClientRequest = \RepositoryManager::slice()->getSliceFiltersForSearchClientRequest($slice, $category->getId() ? true : false);
 
-        $categoryTreeData = null;
-        $availableCategoriesDataByUi = null;
+        $categoryTreeData = [];
+        $availableCategoriesDataByUi = [];
         call_user_func(function() use($category, $sliceToken, $sliceFiltersForSearchClientRequest, $region, &$categoryTreeData, &$availableCategoriesDataByUi) {
             $rootId = $category->getId() ? $category->getId() : ($category->getParentId() ? $category->getParentId() : 0);
             $depth = $category->getId() ? $category->getLevel() : 0;

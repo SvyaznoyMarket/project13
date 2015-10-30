@@ -85,7 +85,10 @@ class ChildAction {
             && (\App::config()->preview !== true)
             && !\App::config()->debug
         ) {
-            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
+            // https://jira.enter.ru/browse/SITE-5910?focusedCommentId=169611&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-169611
+//            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
+
+            throw new \Exception\NotFoundException('Товары Tchibo отсутствуют');
         }
 
         // SITE-3970
