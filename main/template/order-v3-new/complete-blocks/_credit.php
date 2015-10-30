@@ -20,10 +20,12 @@ $f = function(
 ?>
 
     <!-- Блок оплата в кредит -->
-    <div id="credit-<?= md5($order->id ?: uniqid()) ?>" class="orderPayment orderPaymentCr jsCreditBlock">
+    <div id="credit-<?= md5($order->id ?: uniqid()) ?>" class="orderPaymentCr jsCreditBlock">
+    <!--div id="credit-<?= md5($order->id ?: uniqid()) ?>" class="orderPayment orderPaymentCr jsCreditBlock"-->
         <!-- Заголовок-->
         <!-- Блок в обводке -->
-        <div class="orderPayment_block orderPayment_noOnline">
+        <!--div class="orderPayment_block orderPayment_noOnline"-->
+        <div>
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
