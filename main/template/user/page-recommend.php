@@ -8,15 +8,13 @@
 ?>
 
 <?
-$isOldView = \App::abTest()->isOldPrivate();
-
 $helper = new \Helper\TemplateHelper();
 $isNewProductPage = \App::abTest()->isNewProductPage();
 ?>
 
 <div class="personalPage personal">
 
-    <?= $page->render($isOldView ? 'user/_menu' : 'user/_menu-1508', ['page' => $page]) ?>
+    <?= $page->render('user/_menu', ['page' => $page]) ?>
 
 
     <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [

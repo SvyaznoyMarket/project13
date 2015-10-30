@@ -4,6 +4,7 @@
  * @param \Model\Order\Entity $order
  * @param array $creditData
  * @param \Model\CreditBank\Entity[] $banks
+ * @param array $creditDoneOrderIds
  * @return string
  */
 $f = function(

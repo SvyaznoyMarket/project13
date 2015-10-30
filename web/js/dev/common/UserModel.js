@@ -95,8 +95,13 @@
     $body.on('removeFromCart', function(e, data) {
 		$.each(data.setProducts, function(key, setProduct) {
 			if (!setProduct.id) return;
+
 			console.info('RetailRocket removeFromCart id = %s', setProduct.id);
-			if (window.rrApiOnReady) window.rrApiOnReady.push(function(){ window.rrApi.removeFromBasket(setProduct.id) });
+
+			if (window.rrApiOnReady) {
+				window.rrApiOnReady.push(function(){ window.rrApi.removeFromBasket(setProduct.id) });
+			}
+
 			ENTER.utils.analytics.addProduct({
 				id: setProduct.id,
 				name: setProduct.name,
@@ -105,7 +110,18 @@
 				brand: setProduct.brand,
 				quantity: setProduct.quantity
 			});
+
 			$body.trigger('trackGoogleEvent',['Product', 'click', 'remove from cart'])
+
+			ENTER.utils.analytics.soloway.send({
+				action: 'basketProductDelete',
+				product: {
+					ui: setProduct.ui,
+					category: {
+						ui: setProduct.category ? setProduct.category.ui : ''
+					}
+				}
+			});
 		});
 		ENTER.utils.analytics.setAction('remove');
     });

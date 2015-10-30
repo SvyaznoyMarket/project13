@@ -1,5 +1,6 @@
 <?php
 /**
+ * @deprecated
  * @var $page     \Templating\HtmlLayout
  * @var $user     \Session\User
  * @var $provider \Payment\Psb\Provider
@@ -26,5 +27,5 @@ if (!$form instanceof \Payment\Psb\Form) {
     <input type="hidden" name="BACKREF" value="<?= $form->getBackref() ?>" />
     <input type="hidden" name="P_SIGN" value="<?= $form->getPSign() ?>" />
 
-    <input id="pay-button" type="submit" class="button bigbutton" value="Оплатить заказ" />
+    <button id="pay-button" type="submit" class="orderPayment_btn btn3">Оплатить</button>
 </form>

@@ -183,6 +183,7 @@ class ProductAction {
                     
                     return [
                         'id'        => $updateResultProduct->cartProduct->id,
+                        'ui'        => $updateResultProduct->cartProduct->ui,
                         'article'   => $updateResultProduct->cartProduct->article,
                         'name'      => $updateResultProduct->cartProduct->name,
                         'img'       => $updateResultProduct->cartProduct->image,
@@ -199,6 +200,9 @@ class ProductAction {
                         'quantity'          => $updateResultProduct->cartProduct->quantity,
                         'quantityDelta'     => array_key_exists($updateResultProduct->cartProduct->ui, $productsQuantityDelta) ? $productsQuantityDelta[$updateResultProduct->cartProduct->ui] : false,
                         'categoryName'      => $updateResultProduct->fullProduct && $updateResultProduct->fullProduct->getRootCategory() ? $updateResultProduct->fullProduct->getRootCategory()->getName() : '',
+                        'category'          => $updateResultProduct->fullProduct && $updateResultProduct->fullProduct->getParentCategory() ? [
+                            'ui' => $updateResultProduct->fullProduct->getParentCategory()->ui,
+                        ] : null,
                         'brand'             => $updateResultProduct->fullProduct && $updateResultProduct->fullProduct->getBrand() ? $updateResultProduct->fullProduct->getBrand()->getName() : '',
                     ];
                 }, $updateResultProducts))),

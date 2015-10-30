@@ -15,9 +15,12 @@ $f = function(
     $ordersPayment,
     $productsById
 ) {
-
+    /** @var \Model\Order\Entity|null $order */
     $order = reset($orders) ?: null;
     if (!$order) return '';
+
+    /** @var \Model\PaymentMethod\PaymentEntity|null $orderPayment */
+    $orderPayment = isset($ordersPayment[$order->getNumber()]) ? $ordersPayment[$order->getNumber()] : null;
 ?>
 
 <? foreach ($orders as $order): ?>
@@ -32,32 +35,7 @@ $f = function(
         </div>
 
         <? if ($ordersPayment[$order->getNumber()] && array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $ordersPayment[$order->getNumber()]->groups)) : ?>
-
-            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', [
-                'order' => $order,
-                'orderPayment' => $ordersPayment[$order->getNumber()],
-                'blockVisible' => false,
-                'bottomMessage' => 'Вы будете перемещены на сайт платежной системы'
-            ]) ?>
-
-            <!-- Блок оплата в два клика-->
-            <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible">
-                <div class="orderPayment_block orderPayment_noOnline">
-
-                    <div class="orderPayment_msg orderPayment_noOnline_msg">
-                        <div class="orderPayment_msg_head">
-                            Онлайн-оплата в два клика
-                        </div>
-                        <div class="orderPayment_msg_shop orderPayment_pay">
-                            <button class="orderPayment_btn btn3">Оплатить</button>
-                            <ul class="orderPaymentWeb_lst-sm">
-                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/visa-logo-sm.jpg"></a></li>
-                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/psb.png" /></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'title' => 'Оплатить онлайн со скидкой 15%']) ?>
         <? endif ?>
     </div>
 <? endforeach ?>

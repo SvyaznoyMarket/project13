@@ -31,6 +31,11 @@ class CreateAction extends OrderV3 {
             $params['token'] = $this->user->getEntity()->getToken();
         }
 
+        // SITE-6071
+        if ('call-center' === $this->session->get(\App::config()->order['channelSessionKey'])) {
+            $params['client_id'] = 'call-center'; // call center
+        }
+
         $params += ['request_id' => \App::$id]; // SITE-4445
 
         // SITE-5653
@@ -84,6 +89,7 @@ class CreateAction extends OrderV3 {
             if (isset($splitOrder)) unset($splitOrder);
 
             $coreResponse = $this->client->query('order/create-packet2', $params, $ordersData, \App::config()->coreV2['hugeTimeout']);
+            \App::logger()->info(['order/create-packet.response' => $coreResponse], ['order']);
 
             $this->client->execute();
 

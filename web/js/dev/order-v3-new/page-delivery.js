@@ -353,6 +353,22 @@
             $.map($inputs, function(elem, i) {
                 if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
             });
+        },
+        loadPaymentForm = function($container, url, data) {
+            console.info('Загрузка формы оплаты ...');
+            $container.html('...'); // TODO: loader
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data
+            }).fail(function(jqXHR){
+                $container.html('');
+            }).done(function(response){
+                if (response.form) {
+                    $container.html(response.form);
+                }
+            }).always(function(){});
         }
     ;
 
@@ -613,6 +629,70 @@
         if (selectedMethod == 'by_credit_card') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
 		e.preventDefault();
 	});
+
+    $body.on('change', '.js-order-paymentMethod', function(e) {
+        var
+            $el = $(this),
+            params = $el.is('select') ? $el.find(':selected').data('value') : $el.data('value')
+        ;
+        console.info({'$el': $el, 'data': params});
+
+        sendChanges('changePaymentMethod', params);
+
+        if ($el.data('online')) {
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
+        }
+
+        //e.preventDefault();
+    });
+
+    $body.on('change', '.js-order-onlinePaymentMethod', function(e) {
+        var
+            $el = $(this),
+            url = $el.data('url'),
+            data = $el.data('value'),
+            relations = $el.data('relation'),
+            $formContainer = relations['formContainer'] && $(relations['formContainer']),
+            $discountContainer = relations['discountContainer'] && $(relations['discountContainer']),
+            $sumContainer = relations['sumContainer'] && $(relations['sumContainer']),
+            sum = $el.data('sum')
+        ;
+
+        try {
+            if (!url) {
+                throw {message: 'Не задан url для получения формы'};
+            }
+            if (!$formContainer.length) {
+                throw {message: 'Не найден контейнер для формы'};
+            }
+
+            loadPaymentForm($formContainer, url, data);
+
+            if (sum && sum.value) {
+                $sumContainer.html(sum.value);
+            }
+        } catch(error) { console.error(error); };
+
+        //e.preventDefault();
+    });
+    $('.js-order-onlinePaymentMethod').each(function(i, el) {
+        var
+            $el = $(el),
+            url,
+            data,
+            relations,
+            $formContainer
+        ;
+
+        if ($el.data('checked')) {
+            url = $el.data('url');
+            data = $el.data('value');
+            relations = $el.data('relation');
+            $formContainer = relations['formContainer'] && $(relations['formContainer']);
+
+            loadPaymentForm($formContainer, url, data);
+        }
+    });
 
     // АНАЛИТИКА
 

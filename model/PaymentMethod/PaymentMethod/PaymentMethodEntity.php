@@ -34,6 +34,8 @@ class PaymentMethodEntity {
     /** Возможные маркетинговые акции
      * @var array */
     public $availableActions = [];
+    /** @var array|null */
+    public $discount;
 
     /** @var string|null */
     public $icon;
@@ -56,6 +58,8 @@ class PaymentMethodEntity {
 
         if (isset($arr['available_to_pickpoint'])) $this->isAvailableToPickpoint = (bool)$arr['available_to_pickpoint'];
 
+        if (isset($arr['discount']['value'])) $this->discount = $arr['discount'];
+
         if (isset($arr['payment_method_group_id'])) {
             $id = (string)$arr['payment_method_group_id'];
             if(!isset($groups[$id])) throw new \Exception('Для метода нет группы оплаты');
@@ -63,19 +67,20 @@ class PaymentMethodEntity {
         } else throw new \Exception('Для метода нет группы оплаты');
 
         switch ($this->id) {
-            case 5: $this->icon = '/styles/order/img/visa-and-mastercard.png'; break;
-            case 8: $this->icon = '/styles/order/img/psb.png'; break;
-            case 11: $this->icon = '/styles/order/img/webmoney.png'; break;
-            case 12: $this->icon = '/styles/order/img/qiwi.png'; break;
+            case 5: $this->icon = '/styles/order-new/img/payment/pay-card.png'; break;
+            case 8: $this->icon = '/styles/order-new/img/payment/pay-psb.png'; break;
+            case 11: $this->icon = '/styles/order-new/img/payment/pay-webmoney.png'; break;
+            case 12: $this->icon = '/styles/order-new/img/payment/pay-qiwi.png'; break;
             case 13: $this->icon = '/styles/order/img/paypal.png'; break;
             case 14: $this->icon = '/styles/order/img/svyaznoy.png'; break;
+            case 16: $this->icon = '/styles/order-new/img/payment/pay-yandex.png'; break;
         }
 
         if (isset($arr['available_actions']) && is_array($arr['available_actions'])) $this->availableActions = $arr['available_actions'];
-
     }
 
-    /** Возвращает discount-акцию
+    /**
+     * Возвращает акцию по ее алиасу
      * @param $alias string
      * @return array|null
      */
@@ -84,6 +89,32 @@ class PaymentMethodEntity {
             if (isset($arr['alias']) && $alias == $arr['alias']) return $arr;
         }
         return null;
+    }
+
+    /**
+     * Возвращает online_motivation_discount-акцию
+     * @return array|null
+     */
+    public function getOnlineDiscountAction() {
+        $return = null;
+
+        foreach ($this->availableActions as $item) {
+            if (isset($item['alias']) && ('online_motivation_discount' === $item['alias'])) {
+                $return = $item + ['payment_sum' => null];
+                break;
+            }
+        }
+
+        return $return;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getOnlineDiscountActionSum() {
+        $action = $this->getOnlineDiscountAction();
+
+        return isset($action['payment_sum']) ? $action['payment_sum'] : null;
     }
 
     public function isSvyaznoyClub() {

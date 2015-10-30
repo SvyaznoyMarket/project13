@@ -279,10 +279,18 @@
     }
 
     if ($jsOrder.length != 0) {
-		ENTER.utils.sendOrderToGA($jsOrder.data('value'));
-		ENTER.utils.analytics.reviews.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
-		ENTER.utils.analytics.productPageSenders.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
-		ENTER.utils.analytics.productPageSenders2.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+        !function() {
+            var orderAnalytics = $jsOrder.data('value');
+            ENTER.utils.sendOrderToGA(orderAnalytics);
+            ENTER.utils.analytics.reviews.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+            ENTER.utils.analytics.productPageSenders.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+            ENTER.utils.analytics.productPageSenders2.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+
+            ENTER.utils.analytics.soloway.send({
+                action: 'orderComplete',
+                orders: orderAnalytics.orders
+            });
+        }();
     }
 
 	$(function(){
@@ -295,4 +303,19 @@
 			});
 		}
 	});
+
+    $('.js-payment-popup-show').on('click',function(){
+
+        $(this).closest('.js-order-cell').find('.js-payment-popup').show();
+        $('body').append('<div class="payments-popup__overlay js-payment-popup-overlay"></div>');
+    });
+    $('.js-payment-popup-closer').on('click',function(){
+        $(this).parent().hide();
+        $('.js-payment-popup-overlay').remove();
+    });
+    $body.on('click','.js-payment-popup-overlay',function(){
+        $('.js-payment-popup').hide();
+        $(this).remove();
+    });
+
 }(jQuery));

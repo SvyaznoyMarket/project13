@@ -321,7 +321,7 @@ class DeliveryAction extends OrderV3 {
     }
 
     private function formatChanges($data, $previousSplit) {
-
+        $data += ['action' => null];
         $changes = [];
 
         if (isset($data['user_info']['phone'])) {
@@ -346,9 +346,9 @@ class DeliveryAction extends OrderV3 {
                 break;
 
             case 'changePoint':
-                $changes['orders'] = array(
+                $changes['orders'] = [
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
-                );
+                ];
                 // SITE-5703 TODO remove
                 $true_token = strpos($data['params']['token'], '_postamat') !== false ? str_replace('_postamat', '', $data['params']['token']) : $data['params']['token'];
                 $changes['orders'][$data['params']['block_name']]['delivery']['point'] = ['id' => $data['params']['id'], 'token' => $true_token];
@@ -356,34 +356,44 @@ class DeliveryAction extends OrderV3 {
 
             case 'changeDate':
                 $this->logger(['action' => 'change-date']);
-                $changes['orders'] = array(
+                $changes['orders'] = [
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
-                );
+                ];
                 $changes['orders'][$data['params']['block_name']]['delivery']['date'] = $data['params']['date'];
                 break;
 
             case 'changeInterval':
-                $changes['orders'] = array(
+                $changes['orders'] = [
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
-                );
+                ];
                 $changes['orders'][$data['params']['block_name']]['delivery']['interval'] = $data['params']['interval'];
                 break;
 
             case 'changePaymentMethod':
-                $changes['orders'] = array(
+                $changes['orders'] = [
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
-                );
-                if (@$data['params']['by_credit_card'] == 'true') $paymentTypeId = PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY;
-                    else if (@$data['params']['by_online_credit']== 'true') $paymentTypeId = PaymentMethodEntity::PAYMENT_CREDIT;
-                    else if (@$data['params']['by_online'] == 'true') $paymentTypeId = PaymentMethodEntity::PAYMENT_CARD_ONLINE;
-                    else $paymentTypeId = PaymentMethodEntity::PAYMENT_CASH;
+                ];
+                if (!empty($data['params']['payment_method_id'])) {
+                    $paymentTypeId = $data['params']['payment_method_id'];
+                } else {
+                    if (@$data['params']['by_credit_card'] == 'true') {
+                        $paymentTypeId = PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY;
+                    } else if (@$data['params']['by_online_credit']== 'true') {
+                        $paymentTypeId = PaymentMethodEntity::PAYMENT_CREDIT;
+                    } else if (@$data['params']['by_online'] == 'true') {
+                        $paymentTypeId = PaymentMethodEntity::PAYMENT_CARD_ONLINE;
+                    } else {
+                        $paymentTypeId = PaymentMethodEntity::PAYMENT_CASH;
+                    }
+                }
+
                 $changes['orders'][$data['params']['block_name']]['payment_method_id'] = $paymentTypeId;
                 break;
 
             case 'changeProductQuantity':
-                $changes['orders'] = array(
+                $changes['orders'] = [
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
-                );
+                ];
 
                 $id = $data['params']['id'];
                 $quantity = $data['params']['quantity'];
@@ -392,21 +402,6 @@ class DeliveryAction extends OrderV3 {
                 array_walk($productsArray, function(&$product) use ($id, $quantity) {
                     if ($product['id'] == $id) $product['quantity'] = (int)$quantity;
                 });
-
-                // SITE-5958
-                try {
-                    // FIXME: осторожно, мбыть неверный результат при использовании скидки
-                    $totalSum = array_reduce($productsArray, function($carry, $item){ return $carry + $item['price'] * $item['quantity']; }, 0.0);
-                    if (
-                        \App::config()->order['prepayment']['priceLimit']
-                        && ($totalSum > \App::config()->order['prepayment']['priceLimit'])
-                        && in_array(PaymentMethodEntity::PAYMENT_CARD_ONLINE, $changes['orders'][$data['params']['block_name']]['possible_payment_methods'])
-                    ) {
-                        $changes['orders'][$data['params']['block_name']]['payment_method_id'] = PaymentMethodEntity::PAYMENT_CARD_ONLINE;
-                    }
-                } catch (\Exception $e) {
-                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
-                }
 
                 break;
             case 'changeAddress':
@@ -420,15 +415,15 @@ class DeliveryAction extends OrderV3 {
                 }
                 break;
             case 'applyDiscount':
-                $changes['orders'] = array(
+                $changes['orders'] = [
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
-                );
+                ];
                 $changes['orders'][$data['params']['block_name']]['discounts'][] = ['number' => $data['params']['number'], 'name' => null, 'type' => null, 'discount' => null];
                 break;
             case 'deleteDiscount':
-                $changes['orders'] = array(
+                $changes['orders'] = [
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
-                );
+                ];
                 $changes['orders'][$data['params']['block_name']]['discounts'] = array_filter($changes['orders'][$data['params']['block_name']]['discounts'], function($discount) use ($data) {
                     return $discount['number'] != $data['params']['number'];
                 });

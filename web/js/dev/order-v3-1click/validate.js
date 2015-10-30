@@ -164,6 +164,10 @@
 
 						if (response.result.orderAnalytics) {
 							ENTER.utils.sendOrderToGA(response.result.orderAnalytics);
+							ENTER.utils.analytics.soloway.send({
+								action: 'orderComplete',
+								orders: response.result.orderAnalytics.orders
+							});
 						}
 					}
 				})

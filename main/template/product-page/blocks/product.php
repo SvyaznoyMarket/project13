@@ -51,7 +51,16 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
     </dl>
 
     <?= $helper->render('product-page/blocks/trustfactors', ['trustfactors' => $trustfactors]) ?>
+
     <div class="product-card__addings">
+        <ul class="pay-system-list">
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-card-g.png"></li>
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-yandex-g.png"></li>
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-webmoney-g.png"></li>
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-qiwi-g.png"></li>
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-psb-g.png"></li>
+        </ul>
+
         <div class="product-card-sharing-list">
             <!-- AddThis Button BEGIN -->
             <div class="addthis_toolbox addthis_default_style mt15 ">
@@ -61,17 +70,13 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
                 <a class="addthis_button_compact"></a>
                 <a class="addthis_counter addthis_bubble_style"></a>
             </div>
-            <script type="text/javascript">var addthis_config = { data_track_addressbar:true, ui_language: "ru" };</script>
-            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1&domready=1" async></script>
-            <!-- AddThis Button END -->
-        </div>
 
-        <ul class="pay-system-list">
-            <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--visa"></i></li>
-            <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--mastercard"></i></li>
-            <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--psb"></i></li>
-        </ul>
+            <script type="text/javascript">var addthis_config = {"data_track_addressbar":true, ui_language: "ru"};</script>
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1&domready=1"></script>
+            <? /* <!-- AddThis Button END --> */ ?>
+        </div>
     </div>
+
 </div>
 <!--/ краткое описание товара -->
 

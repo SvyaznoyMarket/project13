@@ -1,4 +1,5 @@
 <?php
+
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Review\ReviewEntity $review,
@@ -7,8 +8,8 @@ $f = function(
     ?>
 
     <?= $review->isEnterReview() ? '' : '<noindex>' ?>
-    <div class="reviews__i jsReviewItem <? if (false && $review->isMostHelpful()): // TODO FCMS-879 ?>reviews__i--valuable<? endif ?>" style="display: <?= $hidden ? 'none' : 'block' ?>" data-review-ui="<?= $review->ui ?>">
-        <? if (false && $review->isMostHelpful()): ?>
+    <div class="reviews__i jsReviewItem <? if ($review->isMostHelpful): ?>reviews__i--valuable<? endif ?>" style="display: <?= $hidden ? 'none' : 'block' ?>" data-review-ui="<?= $review->ui ?>">
+        <? if ($review->isMostHelpful): ?>
             <!-- если отзыв самый полезный, выводим лейбл: -->
             <label class="reviews__lbl">Самый полезный отзыв</label>
             <!-- /// -->

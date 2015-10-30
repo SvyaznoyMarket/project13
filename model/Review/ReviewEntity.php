@@ -44,29 +44,35 @@ class ReviewEntity {
     public $negative;
     /** @var int Оценка пользователя */
     public $userVote = 0;
+    /** @var bool */
+    public $isMostHelpful;
     /** @var string|null Номер карты много.ру, с которым был оставлен отзыв */
     protected $mnogoru;
 
-    public function __construct($arr) {
-        if (isset($arr['uid'])) $this->ui = $arr['uid'];
-        if (isset($arr['origin'])) $this->origin = $arr['origin'];
-        if (isset($arr['source_name'])) $this->sourceName = $arr['source_name'];
-        if (isset($arr['source_logo_url'])) $this->sourceLogoUrl = $arr['source_logo_url'];
-        if (isset($arr['url'])) $this->sourceUrl = $arr['url'];
-        if (isset($arr['title'])) $this->title = $arr['title'];
-        if (isset($arr['extract'])) $this->extract = $arr['extract'];
-        if (isset($arr['pros'])) $this->pros = $arr['pros'];
-        if (isset($arr['cons'])) $this->cons = $arr['cons'];
-        if (isset($arr['author']) && !empty($arr['author'])) $this->author = $arr['author'];
-        if (isset($arr['score'])) $this->score = $arr['score'];
-        if (isset($arr['star_score'])) $this->scoreStar = $arr['star_score'];
-        if (isset($arr['date'])) $this->date = new \DateTime($arr['date']);
-        if (isset($arr['useful_count'])) $this->usefulCount = $arr['useful_count'];
-        if (isset($arr['not_useful_count'])) $this->notUsefulCount = $arr['not_useful_count'];
-        if (isset($arr['positive'])) $this->positive = $arr['positive'];
-        if (isset($arr['negative'])) $this->negative = $arr['negative'];
-        if (isset($arr['user_vote'])) $this->userVote = $arr['user_vote'];
-        if (isset($arr['mnogoru'])) $this->mnogoru = $arr['mnogoru'];
+    /**
+     * @param array $data
+     */
+    public function __construct(array $data = []) {
+        if (isset($data['uid'])) $this->ui = $data['uid'];
+        if (isset($data['origin'])) $this->origin = $data['origin'];
+        if (isset($data['source_name'])) $this->sourceName = $data['source_name'];
+        if (isset($data['source_logo_url'])) $this->sourceLogoUrl = $data['source_logo_url'];
+        if (isset($data['url'])) $this->sourceUrl = $data['url'];
+        if (isset($data['title'])) $this->title = $data['title'];
+        if (isset($data['extract'])) $this->extract = $data['extract'];
+        if (isset($data['pros'])) $this->pros = $data['pros'];
+        if (isset($data['cons'])) $this->cons = $data['cons'];
+        if (isset($data['author']) && !empty($data['author'])) $this->author = $data['author'];
+        if (isset($data['score'])) $this->score = $data['score'];
+        if (isset($data['star_score'])) $this->scoreStar = $data['star_score'];
+        if (isset($data['date'])) $this->date = new \DateTime($data['date']);
+        if (isset($data['useful_count'])) $this->usefulCount = $data['useful_count'];
+        if (isset($data['not_useful_count'])) $this->notUsefulCount = $data['not_useful_count'];
+        if (isset($data['positive'])) $this->positive = $data['positive'];
+        if (isset($data['negative'])) $this->negative = $data['negative'];
+        if (isset($data['user_vote'])) $this->userVote = $data['user_vote'];
+        if (isset($data['is_most_helpful'])) $this->isMostHelpful = (bool)$data['is_most_helpful'];
+        if (isset($data['mnogoru'])) $this->mnogoru = $data['mnogoru'];
     }
 
     /** Положительная полезность отзыва

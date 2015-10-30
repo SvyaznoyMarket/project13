@@ -265,6 +265,10 @@ $c->partners['Adblender']['enabled'] = true;
 $c->partners['Giftery']['enabled'] = true;
 $c->partners['Giftery']['lowestPrice'] = 500;
 
+// SITE-6208
+$c->partners['soloway']['enabled'] = true;
+$c->partners['soloway']['id'] = 209723;
+
 $c->partners['facebook']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
@@ -373,7 +377,6 @@ $c->order['addressAutocomplete'] = true;
 // предоплата (SITE-2959)
 $c->order['prepayment'] = [
     'enabled'    => true,
-    'priceLimit' => 100000,// если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
     'labelId'    => 15, // id шильдика "предоплата"
 ];
 $c->order['splitSessionKey'] = 'order_split';
@@ -381,6 +384,7 @@ $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
 $c->order['sessionInfoOnComplete'] = true; // краткая инфа о заказе
 $c->order['emailRequired'] = true; // обязательность email
 $c->order['creditStatusSessionKey'] = 'order_credit';
+$c->order['channelSessionKey'] = 'order_channel';
 
 $c->newDeliveryCalc = true;
 

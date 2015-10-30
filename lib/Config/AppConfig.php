@@ -330,8 +330,8 @@ class AppConfig {
     ];
     /** @var array */
     public $payment = [
-        'creditEnabled'    => null,
-        'blockedIds'       => [],
+        'creditEnabled' => null,
+        'blockedIds'    => [],
     ];
     /**
      * @var array
@@ -435,6 +435,7 @@ class AppConfig {
         'oneClickSplitSessionKey' => null,
         'sessionInfoOnComplete'   => null, // краткая инфа о заказе на странице order.complete
         'creditStatusSessionKey'  => null,
+        'channelSessionKey'       => null,
     ];
     /** @var bool */
     public $newDeliveryCalc;

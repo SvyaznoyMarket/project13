@@ -18,3 +18,4 @@
 <?= $page->slotGetIntentJS() ?>
 <?= $page->slotAdvMakerJS() ?>
 <?= $page->slotHubrusJS() ?>
+<?= $page->slotSolowayJS() ?>

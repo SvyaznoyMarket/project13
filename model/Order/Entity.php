@@ -33,6 +33,8 @@ class Entity {
 
     /** @var int */
     public $id;
+    /** @var string */
+    public $ui;
     /** @var int */
     public $typeId;
     /**
@@ -150,12 +152,17 @@ class Entity {
     public $point;
     /** @var Shop|null */
     public $shop;
+    /** @var string */
+    public $context;
+    /** @var int|null */
+    public $prepaidSum;
 
     /**
      * @param array $data
      */
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
+        if (isset($data['ui'])) $this->ui = (string)$data['ui'];
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (!empty($data['status_id'])) {
             $this->setStatusId($data['status_id']);
@@ -186,13 +193,17 @@ class Entity {
             try {
                 $this->setDeliveredAt(new \DateTime($data['delivery_date']));
             } catch(\Exception $e) {
-                \App::logger()->error($e);
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
             }
         }
-        if (isset($data['delivery_date_interval']['name'])) {
-            $this->deliveryDateInterval = [
-                'name' => $data['delivery_date_interval']['name'],
-            ];
+        if (isset($data['delivery'][0]['delivery_date_interval']['from']) && isset($data['delivery'][0]['delivery_date_interval']['to'])) {
+            try {
+                $this->deliveryDateInterval = [
+                    'name' => sprintf('с %s по %s', (new \DateTime($data['delivery'][0]['delivery_date_interval']['from']))->format('d.m'), (new \DateTime($data['delivery'][0]['delivery_date_interval']['to']))->format('d.m')),
+                ];
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
+            }
         }
         if (array_key_exists('store_id', $data)) $this->setStoreId($data['store_id']);
         if (array_key_exists('shop_id', $data)) $this->setShopId($data['shop_id']);
@@ -246,6 +257,8 @@ class Entity {
         if (array_key_exists('meta_data', $data) && is_array($data['meta_data'])) $this->meta_data = $data['meta_data'];
         if (array_key_exists('email', $data) && !empty($data['email'])) $this->email = (string)$data['email'];
         if (array_key_exists('seller', $data) && !empty($data['seller'])) $this->seller = new Seller($data['seller']);
+        if (!empty($data['context'])) $this->context = (string)$data['context'];
+        if (!empty($data['prepaid_sum'])) $this->prepaidSum = (float)$data['prepaid_sum'];
     }
 
     public function dump() {

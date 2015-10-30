@@ -24,6 +24,14 @@ try {
     $isMobile = false;
 }
 
+$analytics = [];
+
+if (\App::config()->partners['soloway']['enabled']) {
+    $analytics['soloway'] = [
+        'id' => \App::config()->partners['soloway']['id'],
+    ];
+}
+
 $routerRules = \App::router()->getRules();
 $config = array_merge([
     'adfoxEnabled'     => $appConfig->adFox['enabled'],
@@ -65,6 +73,7 @@ $config = array_merge([
     'selfDeliveryLimit'    => $appConfig->self_delivery['limit'], // стоимость платного самовывоза, удалять осторожно, поломается JS
     'minOrderSum'  => \App::abTest()->isOrderMinSumRestriction() ? $appConfig->minOrderSum : false,
     'infinityScroll' => \App::abTest()->isInfinityScroll(),
+    'analytics' => $analytics,
 ], isset($config) ? (array)$config : []);
 ?>
 

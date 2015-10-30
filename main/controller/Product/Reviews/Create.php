@@ -24,7 +24,7 @@ class ReviewsActionOld {
         $layout = $request->get('layout', false);
 
         $reviewsData = [];
-        \RepositoryManager::review()->prepareData($productUi, $reviewsType, $page, $numReviewsOnPage, function($data) use(&$reviewsData) {
+        \RepositoryManager::review()->prepareData($productUi, $reviewsType, $page, $numReviewsOnPage, null, function($data) use(&$reviewsData) {
             $reviewsData = (array)$data;
             if (isset($reviewsData['review_list'][0])) {
                 foreach ($reviewsData['review_list'] as $key => $review) {
