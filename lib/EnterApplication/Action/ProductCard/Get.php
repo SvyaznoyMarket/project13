@@ -271,7 +271,7 @@ namespace EnterApplication\Action\ProductCard
                 $paymentGroupQuery->regionId = $productQuery->regionId;
                 // фильтер
                 $paymentGroupQuery->filter->isCorporative = false;
-                $paymentGroupQuery->filter->isCredit = (bool)(($price * (($cart->getProductQuantity($productId) > 0) ? $cart->getProductQuantity($productId) : 1)) >= \App::config()->product['minCreditPrice']);
+                $paymentGroupQuery->filter->isCredit = true;
 
                 $paymentGroupQuery->prepare();
             });

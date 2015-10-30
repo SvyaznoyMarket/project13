@@ -312,7 +312,6 @@ class AppConfig {
         'showRelated'            => null,
         'itemsInSlider'          => null,
         'itemsInCategorySlider'  => null,
-        'minCreditPrice'         => null,
         'totalCount'             => null,
         'showAveragePrice'       => null,
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине

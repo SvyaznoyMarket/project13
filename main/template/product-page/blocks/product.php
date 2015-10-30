@@ -161,7 +161,7 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
         ]) // Кнопка купить ?>
     </div>
 
-    <? if (\App::config()->payment['creditEnabled'] && ($product->getPrice() >= \App::config()->product['minCreditPrice']) && !count($product->getPartnersOffer()) && !$product->isInShopOnly()) : ?>
+    <? if ($creditData['creditIsAllowed'] && !count($product->getPartnersOffer()) && !$product->isInShopOnly()): ?>
         <!-- купить в кредит -->
         <a
             class="buy-on-credit btn-type btn-type--normal btn-type--longer jsProductCreditButton"

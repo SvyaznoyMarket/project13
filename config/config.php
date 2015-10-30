@@ -311,7 +311,6 @@ $c->product['showRelated']              = true;
 $c->product['itemsInSlider']            = 5;
 $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;
-$c->product['minCreditPrice']           = 3000;
 $c->product['totalCount']               = 55000;
 $c->product['recommendationSessionKey']     = 'recommendationProductIds';
 $c->product['recommendationProductLimit']   = 30;
@@ -337,7 +336,7 @@ $c->cart['sessionName'] = 'cart';
 $c->cart['checkStock'] = false;
 $c->cart['updateTime'] = 1; // обновлять корзину, если данные в ней устарели более, чем на 1 минуту
 
-$c->payment['creditEnabled'] = false;
+$c->payment['creditEnabled'] = true;
 $c->payment['blockedIds'] = [];
 
 $c->f1Certificate['enabled'] = true;

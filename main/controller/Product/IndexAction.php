@@ -404,8 +404,6 @@ class IndexAction {
 
         // SITE-4076 Учитывать возможность кредита из API
         $hasCreditPaymentMethod = false;
-        $is_credit = (bool)(($product->getPrice() * (($cart->getProductQuantity($product->getId()) > 0) ? $cart->getProductQuantity($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
-
         $successCallback = function($data) use (&$hasCreditPaymentMethod) {
             if (!isset($data['detail']) || !is_array($data['detail'])) {
                 return;
@@ -449,7 +447,7 @@ class IndexAction {
             \RepositoryManager::paymentGroup()->prepareCollection($region,
                 [
                     'is_corporative' => false,
-                    'is_credit'      => $is_credit,
+                    'is_credit'      => true,
                 ],
                 [
                     'product_list'   => [['id' => $product->getId(), 'quantity' => (($cart->getProductQuantity($product->getId()) > 0) ? $cart->getProductQuantity($product->getId()) : 1)]],
@@ -473,7 +471,6 @@ class IndexAction {
         );
 
         $result['creditIsAllowed'] = $hasCreditPaymentMethod;
-//        $result['creditIsAllowed'] = (bool)(($product->getPrice() * (($cart->getProductQuantity($product->getId()) > 0) ? $cart->getProductQuantity($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
         $result['creditData'] = json_encode($dataForCredit);
 
         return $result;
