@@ -113,7 +113,7 @@ class Criteo {
                 $order = reset($orders);
                 $beforeItems['id'] = $order->getNumber();
                 // $beforeItems['new_customer'] = '1'; // TODO: new_customer: 1 if first purchase or 0 if not,  deduplication: 1 if attributed to Criteo or 0 if not,
-                $beforeItems['deduplication'] = (int) $this->utmzCookieHas('criteo');
+                $beforeItems['deduplication'] = (int) $this->utmzCookieHas('last_partner');
                 /* // example:
                 {
                     event: 'trackTransaction' ,
