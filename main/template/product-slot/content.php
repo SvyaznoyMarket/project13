@@ -95,26 +95,6 @@ $buySender2 = $request->get('sender2');
 
     <div class="clear"></div>
 
-    <? /*
-    <div class="product-card__bordered">
-        <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
-            <?= $helper->render('product/__slider', [
-                'type'     => 'similar',
-                'title'    => 'Похожие товары',
-                'products' => [],
-                'limit'    => \App::config()->product['itemsInSlider'],
-                'page'     => 1,
-                'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-                'sender'   => [
-                    'name'     => 'retailrocket',
-                    'position' => 'ProductSimilar',
-                ],
-                'sender2'  => 'slot',
-            ]) ?>
-        <? endif ?>
-    </div>
-    */ ?>
-
     <div class="product-card__bordered">
         <div class="product-card__desc">
             <?= $product->getDescription() ?>
@@ -137,21 +117,6 @@ $buySender2 = $request->get('sender2');
 
 
         <div class="clear"></div>
-        <? /* if (\App::config()->product['pullRecommendation']): ?>
-            <?= $helper->render('product/__slider', [
-                'type'           => 'alsoBought',
-                'title'          => 'С этим товаром покупают',
-                'products'       => [],
-                'limit'          => \App::config()->product['itemsInSlider'],
-                'page'           => 1,
-                'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
-                'sender'         => [
-                    'name'     => 'retailrocket',
-                    'position' => 'ProductAccessories', // все правильно - так и надо!
-                ],
-                'sender2'  => 'slot',
-            ]) ?>
-        <? endif */ ?>
 
         <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
             <?= $helper->render('product/__slider', [
