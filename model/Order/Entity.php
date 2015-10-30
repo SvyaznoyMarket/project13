@@ -258,7 +258,7 @@ class Entity {
         if (array_key_exists('email', $data) && !empty($data['email'])) $this->email = (string)$data['email'];
         if (array_key_exists('seller', $data) && !empty($data['seller'])) $this->seller = new Seller($data['seller']);
         if (!empty($data['context'])) $this->context = (string)$data['context'];
-        if (!empty($data['prepaid_sum'])) $this->prepaidSum = (float)$data['prepaid_sum'];
+        if (!empty($this->meta_data['prepaid_sum'])) $this->prepaidSum = (float)$this->meta_data['prepaid_sum'];
     }
 
     public function dump() {
