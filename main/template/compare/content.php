@@ -78,7 +78,7 @@ return function (
 
                                     <!-- ko if: priceOld != '0' -->
                                                     <span class="cmprCnt_price cmprCnt_price-l">
-                                                        <span data-bind="html: priceOld"></span>
+                                                        <span class="td-lineth" data-bind="html: priceOld"></span>
                                                         <span class="rubl">p</span>
                                                     </span>
                                     <!-- /ko -->

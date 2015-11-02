@@ -159,21 +159,21 @@
     &_btn {
         position: relative;
 
+        max-width: 100px;
         width: 100px;
         height: 43px;
+        max-height: 43px;
         margin: 0 5px 10px 0;
         padding: 0 10px;
 
         cursor: pointer;
-        cursor: pointer;
         text-align: center;
         vertical-align: middle;
+        overflow: hidden;
 
         border: 1px solid @typLightGray;
         background: @white;
 
-        .table-cell();
-        .rounded(4px);
         .table-cell();
         .rounded(4px);
         &:hover {
@@ -184,7 +184,8 @@
         }
         &_img {
             max-width: 85%;
-            vertical-align: middle;
+            .inline-block(middle);
+            height: auto;
             pointer-events: none;
         }
         &_tx {
@@ -203,6 +204,7 @@
             line-height: 40px;
 
             width: 120px;
+            max-width: 120px;
             margin-right: 0;
             padding: 0;
 
@@ -347,6 +349,10 @@
             }
         }
     }
+}
+
+.lte-ie9 .fltrBtn_btn_img {
+    width: 85%;
 }
 
 // анимация карты на странице с подарками /gift
