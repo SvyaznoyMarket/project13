@@ -5,6 +5,7 @@
  * @param array $creditData
  * @param \Model\CreditBank\Entity[] $banks
  * @param array $creditDoneOrderIds
+ * @param bool $isStatic
  * @return string
  */
 $f = function(
@@ -12,7 +13,8 @@ $f = function(
     \Model\Order\Entity $order,
     $creditData,
     $banks,
-    $creditDoneOrderIds = []
+    $creditDoneOrderIds = [],
+    $isStatic = true // временной костыль, FIXME
 ) {
     if (in_array($order->id, $creditDoneOrderIds)) {
         return '';
