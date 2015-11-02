@@ -81,9 +81,19 @@ class Repository {
                 'button_name'            => 'Забрать из этого магазина',
                 'description'            => '',
                 'methods'                => ['self_partner_euroset'],
-                'possible_method_tokens' => ['self_partner_euroset', 'self_partner_pickpoint', 'now', 'self', 'self_pred_supplier', 'standart_furniture', 'standart_other', 'standart', 'standart_pred_supplier'],
+                'possible_method_tokens' => ['self_partner_euroset', 'self_partner_pickpoint', 'now', 'self', 'self_pred_supplier', 'standart_furniture', 'standart_other'],
             ],
-/*            [
+            [
+                'id'                     => 9,
+                'token'                  => 'self_partner_hermes',
+                'short_name'             => 'Hermes DPD',
+                'name'                   => 'Самостоятельно забрать в Hermes',
+                'button_name'            => 'Забрать из этого пункта выдачи',
+                'description'            => '',
+                'methods'                => ['self_partner_hermes'],
+                'possible_method_tokens' => ['self_partner_hermes', 'self_partner_euroset', 'self_partner_pickpoint', 'now', 'self', 'self_pred_supplier', 'standart_furniture', 'standart_other'],
+            ],
+            /*[
                 'id'                     => 7,
                 'token'                  => 'standart_svyaznoy',
                 'short_name'             => 'доставка',
