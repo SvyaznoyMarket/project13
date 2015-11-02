@@ -29,6 +29,23 @@ if ((bool)$siblingCategories) {
     /* <!--/ TCHIBO - слайдер-меню разделов Чибо -->*/
 }
 
+// background image для title в Чибе
+$titleBackgroundStyle = '';
+if ($category->isTchibo()) {
+    $titleBackgroundStyle = $category->getMediaSource('category_wide_940x150', 'category_wide')->url
+        ? sprintf("background-image: url('%s')",
+            $category->getMediaSource('category_wide_940x150', 'category_wide')->url)
+        : '';
+}
+
+?>
+
+    <? if ($titleBackgroundStyle) : ?>
+        <h1 class="bTitlePage_tchibo js-pageTitle" style="<?= $titleBackgroundStyle ?>"><?= $title ?></h1>
+    <? endif ?>
+
+<?
+
 /** @var Category[] $categoryByUi */
 $categoryByUi = [];
 foreach ($categoryWithChilds->getChild() as $ct) {
@@ -36,14 +53,6 @@ foreach ($categoryWithChilds->getChild() as $ct) {
 }
 
 ?>
-
-
-
-<?/* if ($isCategoriesOddCount && isset($promoContent) && !empty($promoContent)): ?>
-    <div class="tchiboCatalogInner">
-        <?= $promoContent ?>
-    </div>
-<? endif */?>
 
 <!-- Разделы -->
 <div class="s-sales-grid">
