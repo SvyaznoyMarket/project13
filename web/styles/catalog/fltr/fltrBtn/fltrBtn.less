@@ -159,12 +159,15 @@
     &_btn {
         position: relative;
 
+        max-width: 100px;
+        min_width: 100px;
         width: 100px;
         height: 43px;
+        max-height: 43px;
+        min-height: 43px;
         margin: 0 5px 10px 0;
         padding: 0 10px;
 
-        cursor: pointer;
         cursor: pointer;
         text-align: center;
         vertical-align: middle;
@@ -172,8 +175,6 @@
         border: 1px solid @typLightGray;
         background: @white;
 
-        .table-cell();
-        .rounded(4px);
         .table-cell();
         .rounded(4px);
         &:hover {
@@ -184,7 +185,8 @@
         }
         &_img {
             max-width: 85%;
-            vertical-align: middle;
+            .inline-block(middle);
+            height: auto;
             pointer-events: none;
         }
         &_tx {
