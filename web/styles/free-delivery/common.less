@@ -38,10 +38,20 @@
 
 .deliv-free {
     &-info {
-        border-top: 3px solid #80c342;
-        padding: 10px;
+        //border-top: 3px solid #80c342;
+        padding: 10px 0;
         text-align: center;
-        height: 78px;
+       // height: 78px;
+
+        &__min-sum{
+            display: block;
+            height: 25px;
+            line-height: 25px;
+            margin-bottom: 5px;
+            background: #80c342;
+            font-size: 12px;
+            color: #FFFFFF;
+        }
 
         &__intro {
             font-size: 12px;
@@ -71,7 +81,6 @@
 
     &-popup{
         width: 432px;
-        height: 155px;
         border: 1px solid #80c342;
         border-top-width: 3px;
         .rounded(0px);
