@@ -2,10 +2,10 @@
 
 return function(\Config\AppConfig $c, \Http\Request $request = null) {
     /** @var int $degradation */
-    $degradation = $request ? (int)$request->headers->get('X-Enter-Degradation-Level') : 0;
-    //$degradation = isset($_SERVER['DEGRADATION_LEVEL']) ? (int)$_SERVER['DEGRADATION_LEVEL'] : 0;
+    $c->degradation = $request ? (int)$request->headers->get('X-Enter-Degradation-Level') : 0;
+    //$c->degradation = isset($_SERVER['DEGRADATION_LEVEL']) ? (int)$_SERVER['DEGRADATION_LEVEL'] : 0;
 
-    if (1 === $degradation) {
+    if (1 === $c->degradation) {
         $c->coreV2['retryCount'] = 1;
         $c->corePrivate['retryCount'] = 1;
         $c->searchClient['retryCount'] = 1;

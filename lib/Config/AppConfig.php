@@ -9,6 +9,8 @@ require_once __DIR__ . '/Oauth/TwitterConfig.php';
 
 
 class AppConfig {
+    /** @var int */
+    public $degradation; // для отладки - неспользовать!
     /** Проект Lite
      * @var bool
      */
