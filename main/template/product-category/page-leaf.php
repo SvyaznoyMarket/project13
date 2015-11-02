@@ -26,16 +26,35 @@ $listingStyle = !empty($catalogJson['listing_style']) ? $catalogJson['listing_st
 // получаем promo стили
 $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? $catalogJson['promo_style'] : [];
 $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
+
+// background image для title в Чибе
+$titleBackgroundStyle = '';
+if ($category->isTchibo()) {
+    $titleBackgroundStyle = $category->getMediaSource('category_wide_940x150', 'category_wide')->url
+        ? sprintf("background-image: url('%s')", $category->getMediaSource('category_wide_940x150', 'category_wide')->url)
+        : '';
+}
+$siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
 ?>
 
 <?= $helper->render('product-category/__data', ['category' => $category]) ?>
 
 <div class="bCatalog <? if ($category->isV3()): ?>bCatalog-custom<? endif ?> <?= 'jewel' === $listingStyle ? 'mCustomCss' : '' ?>" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 
-    <?= $helper->render('product-category/__breadcrumbs', ['category' => $category, 'isBrand' => isset($brand)]) // хлебные крошки ?>
+    <? if ($category->isTchibo()) : ?>
+        <?= $helper->render('product-category/__sibling-list', ['categories' => $siblingCategories, 'currentCategory'    => $category,
+            'rootCategoryInMenu' => $rootCategoryInMenu]) ?>
+    <? else : ?>
+        <?= $helper->render('product-category/__breadcrumbs', ['category' => $category, 'isBrand' => isset($brand)]) // хлебные крошки ?>
+    <? endif ?>
 
     <div class="bCustomFilter"<? if(!empty($promoStyle['promo_image'])): ?> style="<?= $promoStyle['promo_image'] ?>"<? endif ?>>
-        <h1 class="bTitlePage js-pageTitle"<? if(!empty($promoStyle['title'])): ?> style="<?= $promoStyle['title'] ?>"<? endif ?>><?= $title ?></h1>
+
+        <? if ($titleBackgroundStyle) : ?>
+            <h1 class="bTitlePage_tchibo js-pageTitle" style="<?= $titleBackgroundStyle ?>"><?= $title ?></h1>
+        <? else : ?>
+            <h1 class="bTitlePage js-pageTitle"<? if(!empty($promoStyle['title'])): ?> style="<?= $promoStyle['title'] ?>"<? endif ?>><?= $title ?></h1>
+        <? endif ?>
 
         <? if (\App::config()->adFox['enabled']): ?>
             <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->

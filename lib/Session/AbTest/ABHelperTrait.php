@@ -92,11 +92,11 @@ trait ABHelperTrait {
         return \App::abTest()->getTest('new_window')->getChosenCase()->getKey() == 'on';
     }
 
-    /** Меню-гамбургер (только в карточке товара)
+    /** Новая карточка товара
      * @return bool
      */
-    public static function isMenuHamburger(){
-        return \App::abTest()->getTest('new_window')->getChosenCase()->getKey() == 'hamburger' && \App::request()->attributes->get('route') == 'product';
+    public static function isNewProductPage() {
+        return true;
     }
 
     /**

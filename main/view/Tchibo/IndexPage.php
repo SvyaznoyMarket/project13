@@ -7,6 +7,7 @@ use \Model\Product\Category\Entity as Category;
 class IndexPage extends \View\DefaultLayout {
     protected $layout = 'layout-oneColumn';
     protected $useTchiboAnalytics = true;
+    protected $useMenuHamburger = true;
 
     /**
      * @var Category

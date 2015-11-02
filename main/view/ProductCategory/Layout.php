@@ -5,6 +5,7 @@ namespace View\ProductCategory;
 use \Model\Product\Category\Entity as Category;
 
 abstract class Layout extends \View\DefaultLayout {
+
     use LayoutTrait;
 
     protected $layout  = 'layout-oneColumn';
@@ -17,6 +18,10 @@ abstract class Layout extends \View\DefaultLayout {
     public function prepare() {
 
         $category = $this->category = $this->getParam('category', new Category());
+
+        if ($this->category->isTchibo()) {
+            $this->useMenuHamburger = true;
+        }
 
         $this->flPrecheckoutData['fl-action'] = 'track-category-view';
         $this->flPrecheckoutData['fl-category-id'] = $this->category->id;

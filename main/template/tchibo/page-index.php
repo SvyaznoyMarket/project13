@@ -1,4 +1,6 @@
 <?php
+
+use Model\Product\Category\Entity as Category;
 /**
  * @var $page               \View\DefaultLayout
  * @var $rootCategoryInMenu \Model\Product\Category\TreeEntity
@@ -7,6 +9,7 @@
  * @var $slideData          array
  * @var $bannerBottom       string
  * @var $promoContent       string
+ * @var $categoryWithChilds Category
  */
 
 
@@ -25,6 +28,12 @@ if ((bool)$siblingCategories) {
     /* <!--/ TCHIBO - слайдер-меню разделов Чибо -->*/
 }
 
+/** @var Category[] $categoryByUi */
+$categoryByUi = [];
+foreach ($categoryWithChilds->getChild() as $ct) {
+    $categoryByUi[$ct->getUi()] = $ct;
+}
+
 ?>
 
 <div class="slider2">
@@ -35,90 +44,154 @@ if ((bool)$siblingCategories) {
     } ?>
 </div>
 
-<div class="tchiboSubscribe subscribe-form clearfix">
-    <div class="tchiboSubscribe_title">Узнай первым о новинках и акциях</div>
-    <input type="text" placeholder="Введите Ваш e-mail адрес" class="tchiboSubscribe_input subscribe-form__email" name="email" />
-    <input type="hidden" value="13" name="channel" />
-    <button data-url="<?= $page->url('subscribe.create') ?>" data-error-msg="<?= $page->escape('Вы уже подписаны на рассылку! О всех проблемах сообщайте на my.enter.ru/feedback/') ?>" class="tchiboSubscribe_btn subscribe-form__btn">Подписаться</button>
-    <div class="subscribecheck">Хочу получать рассылку о коллекциях Tchibo</div>
-</div>
+<?/* if ($isCategoriesOddCount && isset($promoContent) && !empty($promoContent)): ?>
+    <div class="tchiboCatalogInner">
+        <?= $promoContent ?>
+    </div>
+<? endif */?>
 
-<!--TCHIBO - каталог разделов, баннеров, товаров Чибо -->
-<div class="tchiboCatalog clearfix">
-    <? foreach($catalogCategories as $key => $catalogCategory): ?>
-        <?
-        /** @var \Model\Product\Category\TreeEntity $catalogCategory */
-        $imgSrc = $catalogCategory->getImageUrl(3);
-        if (empty($imgSrc)) {
-            // TODO: изображение заглушки
-            $imgSrc = '/styles/tchiboCatalog/img/woman.jpg';
-            //$imgSrc = '/styles/tchiboCatalog/img/man.jpg';
-        }
-
-        $categoryChildren = $catalogCategory->getChild();
-        ?>
-
-        <div class="tchiboCatalogInner">
-            <a href="<?= $catalogCategory->getLink() ?>">
-                <img class="tchiboCatalog__img"
-                     src="<?= $imgSrc ?>" alt="<?= $catalogCategory->getName() ?>" />
+<!-- Блок скидок -->
+<div class="s-sales-grid">
+    <div class="s-sales-grid__row grid-3cell cell-h-220">
+        <div class="s-sales-grid__cell">
+            <a class="s-sales-grid__link" href="">
+                <img src="http://scms.enter.ru/uploads/media/56/5d/1e/4ba9c57c55cb91b4b574daf4371c68c4261866b7.png" alt="" class="s-sales-grid__img">
+                <span class="s-sales-grid-desc">
+                    <span class="s-sales-grid-desc__value">-10%</span>
+                    <span class="s-sales-grid-desc__title">
+                        <span class="s-sales-grid-desc__title-name">Фишка со скидкой</span>
+                    </span>
+                </span>
             </a>
-
-            <div class="tchiboCatalog__title">
-                <a class="titleCat" href="<?= $catalogCategory->getLink() ?>">
-                    <?= $catalogCategory->getName() ?>
-                </a>
-
-                <? if ($categoryChildren): ?>
-                    <ul class="tchiboCatalog__list">
-                        <? foreach($categoryChildren as $child): ?>
-
-                        <?  // Шильдики NEW и дата действия коллекции
-
-                        $newCategory = false;
-                        $oldCategory = '';
-
-                        if (isset($catalogConfig['category_timing'])
-                            && is_array($catalogConfig['category_timing'])
-                            && in_array($child->getToken(), array_keys($catalogConfig['category_timing']))) {
-
-                                $catalogTiming = $catalogConfig['category_timing'][$child->getToken()];
-                                $until = strtotime($catalogTiming['until']);
-                                if (time() < $until) {
-                                    if ($catalogTiming['type'] == 'new') $newCategory = true;
-                                    if ($catalogTiming['type'] == 'old') $oldCategory = '<br /><span style="color: #e21f26; font-weight: bold">до '.$page->helper->monthDeclension(strftime('%e %B')).'</span>';
-                                }
-                        }
-                        // Шильдики NEW и дата действия коллекции
-                        ?>
-
-                        <li class="item <?= $newCategory ? 'new' : '' ?>">
-                            <a class="link" href="<?= $child->getLink() ?>">
-                                <?= $child->getName().$oldCategory ?>
-                            </a>
-                        </li>
-                        <? endforeach; ?>
-                    </ul><? /* <!--/ список подкатегории --> */ ?>
-                <? endif; ?>
-            </div>
-        </div><? /* <!--/ категория --> */ ?>
-    <? endforeach; ?>
-
-    <? if ($isCategoriesOddCount && isset($promoContent) && !empty($promoContent)): ?>
-        <div class="tchiboCatalogInner">
-            <?= $promoContent ?>
         </div>
-    <? endif ?>
 
-    <? if (!empty($bannerBottom)): ?>
+        <div class="s-sales-grid__cell">
+            <a class="s-sales-grid__link" href="">
+                <img src="http://scms.enter.ru/uploads/media/f6/a5/57/afa3ddf741fda9f4557542ab981a712feccaf1ed.png" alt="" class="s-sales-grid__img">
+                <span class="s-sales-grid-desc">
+                    <span class="s-sales-grid-desc__value">-70%</span>
+                    <span class="s-sales-grid-desc__title">
+                        <span class="s-sales-grid-desc__title-name">Tchibo скидки</span>
+                    </span>
+                </span>
+            </a>
+        </div>
+
+        <div class="s-sales-grid__cell">
+            <a class="s-sales-grid__link" href="">
+                <img src="http://scms.enter.ru/uploads/media/56/5d/1e/4ba9c57c55cb91b4b574daf4371c68c4261866b7.png" alt="" class="s-sales-grid__img">
+                <span class="s-sales-grid-desc">
+                    <span class="s-sales-grid-desc__value">-17%</span>
+                    <span class="s-sales-grid-desc__title">
+                        <span class="s-sales-grid-desc__title-name">Фишка со скидкой</span>
+                    </span>
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- END Блок скидок -->
+
+<!-- Форма подписки -->
+<div class="b-subscribe-to-sale subscribe-form">
+    <div class="b-subscribe-to-sale__title">Узнай первым о новинках и акциях</div>
+
+    <div class="b-subscribe-to-sale__form">
+        <input type="text" placeholder="Введите Ваш e-mail адрес" class="b-subscribe-to-sale__input subscribe-form__email" name="email" />
+        <input type="hidden" value="13" name="channel" />
+
+        <button
+            class="b-subscribe-to-sale__button subscribe-form__btn"
+            data-url="<?= $page->url('subscribe.create') ?>"
+            data-error-msg="<?= $page->escape('Вы уже подписаны на рассылку! О всех проблемах сообщайте на my.enter.ru/feedback/') ?>">
+            Подписаться
+        </button>
+
+        <div class="b-subscribe-to-sale__check">Хочу получать рассылку о коллекциях Tchibo</div>
+    </div>
+</div>
+<!-- END Форма подписки -->
+
+<!-- Разделы -->
+<div class="s-sales-grid">
+    <div class="s-sales-grid__row grid-2cell cell-h-340">
+        <? foreach($catalogCategories as $key => $catalogCategory): ?>
+            <?
+            /** @var \Model\Product\Category\TreeEntity $catalogCategory */
+
+            if (array_key_exists($catalogCategory->getUi(), $categoryByUi)) {
+                $imgSrc = $categoryByUi[$catalogCategory->getUi()]->getMediaSource('category_grid_366x488', 'category_grid')->url;
+            }
+
+            if (empty($imgSrc)) {
+                $imgSrc = $catalogCategory->getImageUrl(3);
+            }
+            ?>
+
+            <div class="s-sales-grid__cell">
+                <a class="s-sales-grid__link" href="<?= $catalogCategory->getLink() ?>">
+                    <img src="<?= $imgSrc ?>" alt="<?= $catalogCategory->getName() ?>" class="s-sales-grid__img">
+                    <span class="s-sales-grid-desc">
+                        <span class="s-sales-grid-desc__title">
+                            <?= $catalogCategory->getName() ?>
+                        </span>
+                    </span>
+                </a>
+            </div>
+        <? endforeach; ?>
+
+        <? if (count($catalogCategories) % 2 === 1) : ?>
+            <!-- Дополняем до четного количества баннером -->
+            <div class="s-sales-grid__cell">
+                <a class="s-sales-grid__link" href="">
+                    <img src='//www.imgenter.ru/uploads/media/c5/30/4c/036ebabd7dadfefba83f9d5a24a6c40099f8ac8a.jpeg' class="s-sales-grid__img">
+                </a>
+            </div>
+        <? endif ?>
+    </div>
+
+    <div class="s-sales-grid__row grid-3cell cell-h-220">
+        <div class="s-sales-grid__cell">
+            <a class="s-sales-grid__link" href="">
+                <img src="http://scms.enter.ru/uploads/media/56/5d/1e/4ba9c57c55cb91b4b574daf4371c68c4261866b7.png" alt="" class="s-sales-grid__img">
+                <span class="s-sales-grid-desc">
+                    <span class="s-sales-grid-desc__title">
+                        <span class="s-sales-grid-desc__title-name">Фишка со скидкой</span>
+                    </span>
+                </span>
+            </a>
+        </div>
+
+        <div class="s-sales-grid__cell">
+            <a class="s-sales-grid__link" href="">
+                <img src="http://scms.enter.ru/uploads/media/f6/a5/57/afa3ddf741fda9f4557542ab981a712feccaf1ed.png" alt="" class="s-sales-grid__img">
+                <span class="s-sales-grid-desc">
+                    <span class="s-sales-grid-desc__title">
+                        <span class="s-sales-grid-desc__title-name">Tchibo скидки</span>
+                    </span>
+                </span>
+            </a>
+        </div>
+
+        <div class="s-sales-grid__cell">
+            <a class="s-sales-grid__link" href="">
+                <img src="http://scms.enter.ru/uploads/media/56/5d/1e/4ba9c57c55cb91b4b574daf4371c68c4261866b7.png" alt="" class="s-sales-grid__img">
+                <span class="s-sales-grid-desc">
+                    <span class="s-sales-grid-desc__title">
+                        <span class="s-sales-grid-desc__title-name">Фишка со скидкой</span>
+                    </span>
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- END Разделы -->
+
+<? if (!empty($bannerBottom)): ?>
     <div class="tchiboCatalogInnerBanner">
         <?= $bannerBottom ?>
     </div> <? /* <!--/ вывод баннера или категории без списка подкатегорий и верхней плашкой-заголовком --> */ ?>
-    <? endif; ?>
-</div>
-<!--/ TCHIBO - каталог разделов, баннеров, товаров Чибо -->
-
-<div class="clear"></div>
+<? endif; ?>
 
 <div style="margin: 0 0 30px;">
     <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
@@ -137,5 +210,3 @@ if ((bool)$siblingCategories) {
         ]) ?>
     <? endif ?>
 </div>
-
-<div class="clear"></div>

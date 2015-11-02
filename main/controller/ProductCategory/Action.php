@@ -176,18 +176,16 @@ class Action {
             $scmsClient->execute();
         }
 
+        // роутим на специфичные категории
         if ($category->isPandora()) {
-            if (\App::config()->debug) {
-                \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
-            }
-
+            \App::config()->debug && \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
             return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent);
-        } else if ($category->isGrid()) {
-            if (\App::config()->debug) {
-                \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
-            }
-
+        } else if ($category->isManualGrid()) {
+            \App::config()->debug && \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
             return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
+        } else if ($category->isAutoGrid()) {
+            \App::config()->debug && \App::debug()->add('sub.act', 'ProductCategory\Grid\AutoGridAction.execute', 134);
+            return (new \Controller\ProductCategory\Grid\AutoGridAction())->execute($request, $category);
         } else if (!$category->isDefault()) {
             \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $category->getCategoryClass()));
         }
@@ -254,6 +252,8 @@ class Action {
         $this->correctProductFilterAndCategoryForJewel($category, $productFilter);
 
         if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
+            $category->setProductView(3);
+        } else if ($category->isTchibo()) {
             $category->setProductView(3);
         }
 
@@ -572,6 +572,8 @@ class Action {
         // листалка
         if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
             $itemsPerPage = 21;
+        } else if ($category->isTchibo()) {
+            $itemsPerPage = 21;
         } else {
             $itemsPerPage = \App::config()->product['itemsPerPage'];
         }
@@ -772,6 +774,19 @@ class Action {
             $columnCount = (bool)array_intersect(array_map(function(\Model\Product\Category\Entity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
         }
 
+        if ($category->isTchibo()) {
+            $columnCount = 3;
+            $rootCategoryInMenu = null;
+                \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($category->getRoot()->getId(), $region, 3, function($data) use (&$rootCategoryInMenu) {
+                    $data = is_array($data) ? reset($data) : [];
+                    if (isset($data['id'])) {
+                        $rootCategoryInMenu = new \Model\Product\Category\TreeEntity($data);
+                    }
+                });
+
+                \App::searchClient()->execute();
+        }
+
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $selectedFilter = $category->isV2() ? new \View\Partial\ProductCategory\V2\SelectedFilter() : new \View\ProductCategory\SelectedFilterAction();
@@ -825,6 +840,7 @@ class Action {
         $page->setParam('productView', $productView);
         $page->setParam('hasBanner', $hasBanner);
         $page->setParam('columnCount', $columnCount);
+        $page->setParam('rootCategoryInMenu', $rootCategoryInMenu);
 
         return new \Http\Response($page->show());
     }
