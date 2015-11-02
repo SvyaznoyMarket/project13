@@ -25,6 +25,8 @@ class CreatedEntity {
     public $numberErp;
     /** @var int */
     public $paymentId;
+    /** @var int|null */
+    public $prepaidSum;
 
     /**
      * @param array $data
@@ -47,6 +49,7 @@ class CreatedEntity {
             }
         }
         if (array_key_exists('number_erp', $data)) $this->numberErp = (string)$data['number_erp'];
+        if (!empty($data['meta_data']['prepaid_sum'])) $this->prepaidSum = (float)$data['meta_data']['prepaid_sum'];
     }
 
     /**

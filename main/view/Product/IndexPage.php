@@ -11,15 +11,9 @@ class IndexPage extends \View\DefaultLayout {
     protected $layout  = 'layout-oneColumn';
     /** @var Product */
     protected $product;
-    /** Карточка товара 2015
-     * @var bool
-     */
-    protected $isNewProductPage = false;
 
     public function prepare() {
         $product = $this->product = $this->getParam('product', new Product());
-
-        $this->isNewProductPage = \App::abTest()->isNewProductPage();
 
         $this->flPrecheckoutData['fl-action']   = 'track-item-view';
         $this->flPrecheckoutData['fl-item-id']  = $product->id;
@@ -80,11 +74,11 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContentHead() {
-        return $this->isNewProductPage ? null : $this->render('product/_contentHead', $this->params);
+        return null;
     }
 
     public function slotContent() {
-        return $this->render($this->isNewProductPage ? 'product-page/content' : 'product/page-index', $this->params);
+        return $this->render('product-page/content', $this->params);
     }
 
     public function slotBodyDataAttribute() {
@@ -94,7 +88,7 @@ class IndexPage extends \View\DefaultLayout {
     public function slotBodyClassAttribute() {
         return parent::slotBodyClassAttribute()
         . ($this->hasParam('categoryClass') ? ' ' . $this->getParam('categoryClass') : '')
-        . ($this->isNewProductPage && (!$this->getParam('product') || !$this->getParam('product')->getSlotPartnerOffer()) ? ' product-card-new ' : '');
+        . ((!$this->getParam('product') || !$this->getParam('product')->getSlotPartnerOffer()) ? ' product-card-new ' : '');
     }
 
     public function slotGoogleRemarketingJS($tagParams = []) {
@@ -236,8 +230,8 @@ class IndexPage extends \View\DefaultLayout {
 
             // Последний элемент
             $breadcrumbs[] = [
-                'name' => $this->isNewProductPage ? 'Артикул ' . $this->product->getArticle() : $this->product->getName(),
-                'url'  => $this->isNewProductPage ? null : $this->product->getLink(),
+                'name' => 'Артикул ' . $this->product->getArticle(),
+                'url'  => null,
             ];
 
             $this->setParam('breadcrumbs', $breadcrumbs);

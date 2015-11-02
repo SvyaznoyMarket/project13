@@ -157,9 +157,6 @@ class Entity {
         if (isset($data['ui'])) $this->setUi($data['ui']);
         if (isset($data['uid'])) $this->setUi($data['uid']); // для scms
         if (isset($data['status_id'])) $this->setStatusId($data['status_id']);
-        if (isset($data['link'])) $this->setLink($data['link']);
-        if (isset($data['url'])) $this->setLink($data['url']);
-        if (isset($data['token'])) $this->setToken($data['token']);
         if (isset($data['article'])) $this->setArticle($data['article']);
         if (isset($data['bar_code'])) $this->setBarcode($data['bar_code']);
         if (isset($data['price'])) $this->setPrice($data['price']);
@@ -189,9 +186,7 @@ class Entity {
         if (isset($data['name'])) $this->setName($templateHelper->unescape($data['name'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
         if (array_key_exists('name_web', $data)) $this->setWebName($templateHelper->unescape($data['name_web'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
         if (array_key_exists('prefix', $data)) $this->setPrefix($templateHelper->unescape($data['prefix'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
-        if (array_key_exists('tagline', $data)) $this->setTagline($data['tagline']);
         if (array_key_exists('announce', $data)) $this->setAnnounce($data['announce']);
-        if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('rating', $data)) $this->setRating($data['rating']);
         if (array_key_exists('rating_count', $data)) $this->setRatingCount($data['rating_count']);
         if (array_key_exists('type', $data) && (bool)$data['type']) $this->setType(new Type\Entity($data['type']));
@@ -213,6 +208,11 @@ class Entity {
     }
 
     public function importFromScms($data = []) {
+        if (!empty($data['slug'])) $this->token = (string)$data['slug'];
+        if (!empty($data['url'])) $this->link = (string)$data['url'];
+        if (!empty($data['tagline'])) $this->tagline = (string)$data['tagline'];
+        if (!empty($data['description'])) $this->description = (string)$data['description'];
+
         if (!empty($data['medias']) && is_array($data['medias'])) {
             foreach ($data['medias'] as $media) {
                 if (is_array($media)) {

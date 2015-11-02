@@ -452,8 +452,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotCriteo() {
-        return $this->render( 'partner-counter/_criteo',
-            ['criteoData' =>  (new \View\Partners\Criteo($this->params))->execute()] );
+        return $this->render('partner-counter/_criteo', ['criteoData' => (new \View\Partners\Criteo($this->params))->execute()]);
     }
 
 

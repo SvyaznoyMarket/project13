@@ -296,10 +296,6 @@ class OrderEntity {
             throw new \Exception('Нет продуктов для заказа');
         }
 
-        if (!empty($arr['order']['prepaid_sum'])) {
-            $this->prepaid_sum = (int)$arr['order']['prepaid_sum'];
-        }
-
         /*
          * НЕОБЯЗАТЕЛЬНЫЕ СВОЙСТВА
          */
@@ -348,9 +344,12 @@ class OrderEntity {
 
         if (isset($arr['order']['total_view_cost'])) $this->total_view_cost = $arr['order']['total_view_cost'];
 
+        // meta data
         if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2, $cartProducts);
 
-
+        if (!empty($arr['order']['prepaid_sum'])) { // SITE-6256
+            $this->meta_data['prepaid_sum'] = $arr['order']['prepaid_sum'];
+        }
     }
 
     /** Возвращает мета-данные для партнеров

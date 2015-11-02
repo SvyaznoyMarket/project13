@@ -1,0 +1,80 @@
+.tabs{
+  display: block;
+
+  &__controls{
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 0;
+    list-style: none;
+
+    /*Используется, где контролы табов должны занимать всю доступную ширину*/
+    &_h-full{
+      display: table;
+    }
+
+    /*Используется, где контролы табов должны занимать ширину в зависимости от своего контента*/
+    &_h-incomplete{
+      font-size: 0;
+      border-bottom: 4px solid @firmLGray;
+      .clearfix;
+    }
+  }
+
+  &__controls-item{
+    display: block;
+    vertical-align: middle;
+    text-align: center;
+    padding: 10px 0;
+    margin: 0;
+    border-bottom: 4px solid @firmLGray;
+    cursor: pointer;
+    font-size: 100%;
+    color: @black;
+
+    &:hover{
+      border-color: @firmOrangeLight;
+    }
+
+    &.active{
+      border-color: @orange-2;
+      cursor: default;
+    }
+
+    /*Используется, где контролы табов должны занимать всю доступную ширину*/
+    &_h-full{
+      display: table-cell;
+      border-bottom: 4px solid @firmLGray;
+
+    }
+
+    /*Используется, где контролы табов должны занимать ширину в зависимости от своего контента*/
+    &_h-incomplete{
+      display: inline-block;
+      vertical-align: middle;
+      margin-bottom: -4px;
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+
+    &_h-incomplete-last{
+      float: right;
+    }
+
+    a{
+      text-decoration: none;
+
+      &:hover{
+        text-decoration: none;
+      }
+    }
+  }
+
+  &__item{
+    display: none;
+
+    &.active{
+      display: block;
+    }
+  }
+}

@@ -41,19 +41,12 @@ class ReviewsAction {
         if (!empty($reviewsData['review_list'])) {
             $response = '';
             foreach ($reviewsData['review_list'] as $key => $review) {
-                if (!\App::abTest()->isNewProductPage()) {
-                    $response .= \App::templating()->render('product/_review', [
-                        'page' => (new \View\Product\IndexPage()),
-                        'review' => $review,
-                        'last' => empty($reviewsData['review_list'][$key + 1]),
-                        'layout' => $layout
-                    ]);
-                } else {
-                    $response .= \App::helper()->render('product-page/blocks/reviews.single', [
-                        'review' => $review,
-                        'hidden' => false
-                    ]);
-                }
+                $response .= \App::templating()->render('product/_review', [
+                    'page' => (new \View\Product\IndexPage()),
+                    'review' => $review,
+                    'last' => empty($reviewsData['review_list'][$key + 1]),
+                    'layout' => $layout
+                ]);
             }
         }
 

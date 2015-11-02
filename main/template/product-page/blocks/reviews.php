@@ -21,6 +21,8 @@ $reviews = (array)$reviewsData['review_list'];
 
 <div class="reviews clearfix">
     <div class="reviews__l">
+        <div class="product-section__tl">Отзывы</div>
+
         <? if ($reviewsData['num_reviews']) : ?>
             <?= $helper->render('product-page/blocks/reviews.sorting', ['sorting' => $sorting, 'product' => $product]) // сортировка ?>
         <? endif ?>

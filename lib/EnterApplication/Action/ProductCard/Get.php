@@ -271,7 +271,7 @@ namespace EnterApplication\Action\ProductCard
                 $paymentGroupQuery->regionId = $productQuery->regionId;
                 // фильтер
                 $paymentGroupQuery->filter->isCorporative = false;
-                $paymentGroupQuery->filter->isCredit = (bool)(($price * (($cart->getProductQuantity($productId) > 0) ? $cart->getProductQuantity($productId) : 1)) >= \App::config()->product['minCreditPrice']);
+                $paymentGroupQuery->filter->isCredit = true;
 
                 $paymentGroupQuery->prepare();
             });
@@ -297,7 +297,7 @@ namespace EnterApplication\Action\ProductCard
             call_user_func(function() use (&$productQuery, &$reviewQuery) {
                 $productUi = $productQuery->response->product['ui'];
                 if (!$productUi) return;
-                $pageSize = \App::abTest()->isNewProductPage() ? 10 : 7;
+                $pageSize = 10;
                 $reviewQuery = (new Query\Product\Review\GetByProductUi($productUi, 0, $pageSize))->prepare();
             });
 
