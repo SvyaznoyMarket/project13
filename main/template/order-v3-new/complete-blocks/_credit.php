@@ -22,7 +22,7 @@ $f = function(
 ?>
 
     <!-- Блок оплата в кредит -->
-    <div id="credit-<?= md5($order->id ?: uniqid()) ?>" class="orderPayment orderPayment--static orderPaymentCr jsCreditBlock">
+    <div id="credit-<?= md5($order->id ?: uniqid()) ?>" class="orderPayment <?= ($isStatic ? 'orderPayment--static' : '') ?> orderPaymentCr jsCreditBlock">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">

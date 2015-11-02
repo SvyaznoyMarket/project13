@@ -171,6 +171,7 @@ $f = function(
                                             'order'      => $order,
                                             'banks'      => $banks,
                                             'creditData' => $creditData,
+                                            'isStatic'   => false,
                                         ]) ?>
                                     </div>
                                 <? endif ?>
