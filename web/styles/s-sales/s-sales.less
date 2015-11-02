@@ -2,7 +2,7 @@
     width: 940px;
     margin: 0 auto 20px;
     &__title {
-        font: normal 46px/1.4 'Enter type';
+        font: normal 46px/1.4 Tahoma;
 
         text-align: center;
 
@@ -41,7 +41,7 @@
 }
 
 .s-sales-head {
-    font: normal 32px/1.5 'Enter type';
+    font: normal 32px/1.5 Tahoma;
 
     margin: 0 0 20px;
     padding: 0 10px 5px;
@@ -69,11 +69,12 @@
 
 // сетка скидочных категорий
 .s-sales-grid {
-    margin: 0 -20px 20px 0;
+    margin: 0 -20px 0 0;
     &__row {
         .clearfix();
         // две ячейки
         &.grid-2cell {
+            font-size: 22px;
             .s-sales-grid__cell {
                 width: 50%;
             }
@@ -82,6 +83,14 @@
         &.grid-3cell {
             .s-sales-grid__cell {
                 width: 33.33333%;
+            }
+
+            .s-sales-grid-desc {
+                min-height: 50px;
+
+                &__title-name {
+                    font-size: 16px;
+                }
             }
         }
         // высота ячейки 340
@@ -156,14 +165,14 @@
         width: 100%;
         height: 100%;
 
-        background: #888;
-
+        background-color: @white;
         .box-sizing();
         &:hover {
+            background-size: inherit;
             .s-sales-grid__img {
-                -webkit-transform: translate(-50%, -50%) scale(1.05);
-                   -moz-transform: translate(-50%, -50%) scale(1.05);
-                        transform: translate(-50%, -50%) scale(1.05);
+                -webkit-transform: translate(-50%, -50%) scale(1.060869565);
+                   -moz-transform: translate(-50%, -50%) scale(1.060869565);
+                        transform: translate(-50%, -50%) scale(1.060869565);
             }
         }
     }
@@ -228,19 +237,16 @@
 }
 
 .s-sales-grid-desc {
-    font-family: 'Enter type';
-
     position: absolute;
-    right: 0;
-    bottom: 0;
+    bottom: 30px;
     left: 0;
+    width: 80%;
 
     display: table;
 
-    width: 101%;
     min-height: 60px;
     &__value {
-        font-size: 24px;
+        font-size: 20px;
 
         display: table-cell;
 
@@ -256,7 +262,7 @@
     &__title {
         display: table-cell;
 
-        padding: 5px 10px;
+        padding: 5px 10px 5px 15px;
 
         vertical-align: middle;
 
@@ -268,18 +274,15 @@
             line-height: 1;
 
             display: block;
-
-            margin: 0 0 5px;
         }
         &-duration {
             display: block;
+            margin: 5px 0 0;
         }
     }
 }
 
 .s-sales-header {
-    font-family: 'Enter type';
-
     margin: 0 0 15px;
 
     .clearfix();

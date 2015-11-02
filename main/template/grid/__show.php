@@ -17,6 +17,7 @@ $f = function(
 
     $showAction = new \View\Product\ShowAction();
     $cartButtonAction = new \View\Cart\ProductButtonAction();
+    $reviewAction = new \View\Product\ReviewCompact2Action();
     ?>
 
     <? foreach ($gridCells as $cell): ?>
@@ -46,13 +47,13 @@ $f = function(
                         </div>
                     <? endif ?>
 
-                    <?= $helper->renderWithMustache('product/show/__grid', $showAction->execute(
+                    <?= $helper->renderWithMustache('product/show/__grid', $a = $showAction->execute(
                         $helper,
                         $product,
                         null,
                         false,
                         $cartButtonAction,
-                        null,
+                        $reviewAction,
                         'product_500'
                     )) ?>
                 <? endif ?>
