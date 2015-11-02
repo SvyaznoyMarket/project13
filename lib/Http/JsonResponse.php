@@ -6,6 +6,8 @@ namespace Http;
  * Response represents an HTTP response in JSON format.
  */
 class JsonResponse extends Response {
+    /** @var int|null */
+    public static $jsonOptions = null;
     /** @var array */
     protected $data;
     protected $callback;
@@ -91,6 +93,8 @@ class JsonResponse extends Response {
 
         $this->headers->set('Content-Type', 'application/json', false);
 
-        return $this->setContent(json_encode($this->data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT));
+        $jsonOptions = (null === self::$jsonOptions) ? (JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) : self::$jsonOptions;
+
+        return $this->setContent(json_encode($this->data, $jsonOptions));
     }
 }

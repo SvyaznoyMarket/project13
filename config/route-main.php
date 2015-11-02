@@ -668,18 +668,19 @@ return [
         'pattern' => '/debug/query',
         'action'  => ['QueryAction', 'index'],
     ],
-
+    'debug.query.json' => [
+        'pattern' => '/debug/query/{queryToken}.json',
+        'action'  => ['QueryAction', 'getJson'],
+    ],
     'debug.query.show' => [
         'pattern' => '/debug/query/{queryToken}',
         'action'  => ['QueryAction', 'show'],
     ],
-
     'debug.log' => [
         'pattern' => '/debug/log/{id}',
         'action'  => ['LogAction', 'execute'],
         'method'  => ['POST'],
     ],
-
     'debug.info' => [
         'pattern' => '/debug/info',
         'action'  => ['DebugAction', 'info'],

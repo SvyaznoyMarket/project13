@@ -5,7 +5,8 @@ return function(
     $url,
     $data,
     $result,
-    $isShow = false
+    $isShow = false,
+    $queryToken = null
 ) { ?>
 
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
@@ -89,6 +90,9 @@ return function(
                 </div>
 
                 <button type="submit" class="btn btn-default">Выполнить</button>
+                <? if ($queryToken): ?>
+                    <a href="<?= $helper->url('debug.query.json', ['queryToken' => $queryToken]) ?>" class="btn btn-default">Соранить как json</a>
+                <? endif ?>
             </form>
         </div>
     </div>
