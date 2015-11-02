@@ -339,8 +339,6 @@ $c->cart['updateTime'] = 1; // обновлять корзину, если да�
 $c->payment['creditEnabled'] = true;
 $c->payment['blockedIds'] = [];
 
-$c->f1Certificate['enabled'] = true;
-
 $c->user['corporateRegister'] = true;
 $c->user['defaultRoute'] = 'user.recommend';
 
