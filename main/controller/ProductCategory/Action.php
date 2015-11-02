@@ -176,18 +176,16 @@ class Action {
             $scmsClient->execute();
         }
 
+        // роутим на специфичные категории
         if ($category->isPandora()) {
-            if (\App::config()->debug) {
-                \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
-            }
-
+            \App::config()->debug && \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
             return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent);
         } else if ($category->isManualGrid()) {
-            if (\App::config()->debug) {
-                \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
-            }
-
+            \App::config()->debug && \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
             return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
+        } else if ($category->isAutoGrid()) {
+            \App::config()->debug && \App::debug()->add('sub.act', 'ProductCategory\Grid\AutoGridAction.execute', 134);
+            return (new \Controller\ProductCategory\Grid\AutoGridAction())->execute($request, $category);
         } else if (!$category->isDefault()) {
             \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $category->getCategoryClass()));
         }

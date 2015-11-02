@@ -12,6 +12,7 @@ class DefaultLayout extends Layout {
     protected $layout  = 'layout-oneColumn';
     protected $breadcrumbsPath = null;
     /** @var bool */
+    // TODO переделать на автоопределение
     protected $useTchiboAnalytics = false;
     /** @var bool */
     protected $useMenuHamburger = false;

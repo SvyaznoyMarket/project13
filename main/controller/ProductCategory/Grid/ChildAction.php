@@ -10,7 +10,6 @@ class ChildAction {
      * @return \Http\Response
      */
     public function executeByEntity(\Http\Request $request, \Model\Product\Category\Entity $category, $catalogConfig = []) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $region = \App::user()->getRegion();
 

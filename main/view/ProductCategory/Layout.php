@@ -5,6 +5,7 @@ namespace View\ProductCategory;
 use \Model\Product\Category\Entity as Category;
 
 abstract class Layout extends \View\DefaultLayout {
+
     use LayoutTrait;
 
     protected $layout  = 'layout-oneColumn';
