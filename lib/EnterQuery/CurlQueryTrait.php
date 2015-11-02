@@ -65,7 +65,9 @@ trait CurlQueryTrait
         }
 
         // задержки по умолчанию
-        if (null === $delayRatios) {
+        if (\App::config()->degradation > 0) { // FIXME: гкод!
+            $delayRatios = [0];
+        } else if (null === $delayRatios) {
             $delayRatios = \App::config()->curlCache['delayRatio'] ?: [0];
         }
 
