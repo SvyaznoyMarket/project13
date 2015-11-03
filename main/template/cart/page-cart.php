@@ -28,6 +28,10 @@ $helper = new \Helper\TemplateHelper();
 
     <div class="basketLine clearfix">
 
+        <div class="basketLine__min-sum" data-bind="visible: isMinOrderSumVisible()">
+            <span class="basketLine__min-sum-desc">Минимальная стоимость заказа 990 <span class="rubl">p</span></span>
+        </div>
+
         <?= $page->render('cart/ab-self-delivery/_infoblock', ['cart' => $cart]) ?>
 
         <?= $page->render('cart/_cart-total') ?>
@@ -42,7 +46,7 @@ $helper = new \Helper\TemplateHelper();
     <a href="<?= $page->url('order') ?>" class="bBigOrangeButton" data-bind="visible: !isMinOrderSumVisible()">Оформить заказ</a>
 </div>
 
-<div class="cart-alert jsKnockoutCart" data-bind="visible: isMinOrderSumVisible()" style="display: none;">
+<div class="cart-alert cart-alert_mr jsKnockoutCart" data-bind="visible: isMinOrderSumVisible()" style="display: none;">
     <span class="cart-alert__info">До оформления заказа осталось</span>
     <span class="cart-alert__remain-sum"><span data-bind="text: minOrderSum - cart().sum()"><?= \App::config()->minOrderSum ?></span>&thinsp;<span class="rubl">p</span></span>
 </div>
