@@ -8,7 +8,7 @@
         <div class="orderPayment_block orderPayment_block--border orderPayment_noOnline">
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
-                <div class="orderPayment_msg_head">
+                <div class="orderPayment_msg_head" style="text-align: left;">
                     <? if ($order->getAddress() && $order->getDeliveredAt()) : ?>
                         Доставка назначена на <?= $order->getDeliveredAt()->format('d.m.Y') ?>
                     <? else : ?>
