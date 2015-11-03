@@ -300,6 +300,7 @@ class CompleteAction extends OrderV3 {
             $data,
             [
                 'back_ref'    => $backUrl, // обратная ссылка
+                'fail_ref'    => $backUrl,
                 'email'       => $order->getUser() ? $order->getUser()->getEmail() : '',
                 //'card_number' => $order->card,
                 'user_token'  => $request->cookies->get('UserTicket'), // токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
