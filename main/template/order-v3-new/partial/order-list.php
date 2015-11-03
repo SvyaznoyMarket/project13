@@ -102,9 +102,15 @@ $f = function (
                                     <span class="order-discount__del jsDeleteDiscount" data-value="<?= $discount->number ?>">удалить</span>
                                 <? endif ?>
                             </div>
-                            <a href="" class="order-discount__lk">
-                                <img class="order-discount__img" src="/styles/order-new/img/chip.png" alt="">
-                            </a>
+                            <? if ('online' === $discount->type): ?>
+                                <a href="" class="order-discount__lk">
+                                    <span class="order-discount__img_font">%</span>
+                                </a>
+                            <? else: ?>
+                                <a href="" class="order-discount__lk">
+                                    <img class="order-discount__img" src="/styles/order-new/img/chip.png" alt="">
+                                </a>
+                            <? endif ?>
 
                             <div class="order-discount__name">
                                 <?= $discount->name ?>
