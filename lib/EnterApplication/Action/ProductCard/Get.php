@@ -25,7 +25,11 @@ namespace EnterApplication\Action\ProductCard
             $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare(); // TODO: throw Exception
 
             // аб-тест
-            $abTestQuery = (new Query\AbTest\GetActive())->prepare();
+            $abTestQuery =
+                \App::config()->abTest['enabled']
+                ? (new Query\AbTest\GetActive())->prepare()
+                : null
+            ;
 
             // главное меню
             $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare();
