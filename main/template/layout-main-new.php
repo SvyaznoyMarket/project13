@@ -40,17 +40,18 @@
         <!-- шапка -->
         <div class="header">
             <?= $page->render('main/banner.pickup') ?>
+            
+            <div style="position: relative;">
+                <div class="header__inn">
+                    <?= $page->slotTopbar() ?>
+                </div>
 
-            <div class="header__inn">
-                <?= $page->slotTopbar() ?>
+                <?= $page->slotSearchBar() ?>
+
+                <div class="header__inn">
+                    <?= $page->slotNavigation() ?>
+                </div>
             </div>
-
-            <?= $page->slotSearchBar() ?>
-
-            <div class="header__inn">
-                <?= $page->slotNavigation() ?>
-            </div>
-
         </div>
         <!--/ шапка -->
 

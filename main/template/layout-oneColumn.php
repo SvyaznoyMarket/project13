@@ -39,17 +39,18 @@
     <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage order-page<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
         <div class="header <?= $page->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?> clearfix">
             <?= $page->render('main/banner.pickup') ?>
+            <div style="position: relative;">
+                <div class="header__inn">
+                    <?= $page->slotHeader() ?>
 
-            <div class="header__inn">
-                <?= $page->slotHeader() ?>
+                    <?= $page->slotTopbar() ?>
+                </div>
 
-                <?= $page->slotTopbar() ?>
-            </div>
+                <?= $page->slotSearchBar() ?>
 
-            <?= $page->slotSearchBar() ?>
-
-            <div class="header__inn">
-                <?= $page->slotNavigation() ?>
+                <div class="header__inn">
+                    <?= $page->slotNavigation() ?>
+                </div>
             </div>
         </div>
 
