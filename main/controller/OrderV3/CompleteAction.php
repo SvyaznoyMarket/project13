@@ -73,7 +73,7 @@ class CompleteAction extends OrderV3 {
 
                         $this->sessionOrders[$number] = $item['order'];
                         try {
-                            $onlinePaymentStatusByNumber[$number] = new \DateTime($item['online_payment_expired']) < $now;
+                            $onlinePaymentStatusByNumber[$number] = $now <= new \DateTime($item['online_payment_expired']);
                         } catch (\Exception $e) {
                             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
                         }
