@@ -112,7 +112,7 @@ $f = function(
 
                     <div class="orderLn_c orderLn_cell">
                         <div class="delivery-block">
-                            <div class="delivery-block__type"><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?></div>
+                            <div class="delivery-block__type"><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>:</div>
                             <div class="delivery-block__info">
                                 <? if ($order->deliveredAt) : ?>
                                 <?
@@ -140,7 +140,7 @@ $f = function(
                     <!-- тип оплаты -->
                     <div class="payment-block orderLn_c orderLn_cell" style="width: 255px;">
                         <? if ($checkedPaymentMethod): ?>
-                        <div class="payment-block__type">Тип оплаты: </div>
+                        <div class="payment-block__type">Способ оплаты: </div>
                         <div class="payment-block__logo">
                             <?= $checkedPaymentMethod->name ?>
                             <? if ($image = $checkedPaymentMethod->icon): ?>
