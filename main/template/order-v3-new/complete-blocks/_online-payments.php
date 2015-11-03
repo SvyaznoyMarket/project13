@@ -39,7 +39,7 @@ $f = function(
     $formUrl = \App::router()->generate('orderV3.paymentForm');
 ?>
 
-    <div class="orderPayment orderPaymentWeb id-orderPaymentPreview-container jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
+    <div class="orderPayment orderPayment--static orderPaymentWeb id-orderPaymentPreview-container jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">
@@ -76,7 +76,7 @@ $f = function(
         </div>
     </div>
 
-    <div class="orderPayment orderPaymentWeb id-orderPaymentList-container" style="display: none;">
+    <div class="orderPayment orderPayment--static orderPaymentWeb id-orderPaymentList-container" style="display: none;">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">
