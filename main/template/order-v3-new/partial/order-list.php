@@ -104,7 +104,7 @@ $f = function (
                             </div>
                             <? if ('online' === $discount->type): ?>
                                 <a href="" class="order-discount__lk">
-                                    <span class="order-discount__img_font">%</span>
+                                    <span class="order-discount__img order-discount__img_font">%</span>
                                 </a>
                             <? else: ?>
                                 <a href="" class="order-discount__lk">

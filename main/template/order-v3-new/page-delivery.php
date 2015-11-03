@@ -115,9 +115,15 @@ $f = function(
                 <? foreach ($order->discounts as $discount) : ?>
 
                     <div class="orderCol_cnt clearfix jsOrderV3Discount">
-                        <a href="" class="orderCol_lk">
-                            <img class="orderCol_img" src="<?= ('online' === $discount->type ? '/styles/order/img/!!!.png' : '/styles/order/img/fishka.png') ?>" alt="<?= $helper->escape($discount->name) ?>">
-                        </a>
+                        <? if ('online' === $discount->type): ?>
+                            <a href="" class="orderCol_lk">
+                                <span class="orderCol_img orderCol_img--font">%</span>
+                            </a>
+                        <? else: ?>
+                            <a href="" class="orderCol_lk">
+                                <img class="orderCol_img" src="/styles/order/img/fishka.png" alt="<?= $helper->escape($discount->name) ?>">
+                            </a>
+                        <? endif ?>
 
                         <div class="orderCol_n">
                             <?= $discount->name; ?>
