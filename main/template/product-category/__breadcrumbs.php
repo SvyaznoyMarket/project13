@@ -8,14 +8,14 @@ return function(
 
     $links = [];
     /** @var \Model\Product\Category\Entity[] $categories */
-    $categories = array_merge($category->getAncestor(), [$category]);
+    $categories = $category->getAncestor();
     $count = count($categories);
     $i = 1;
     foreach ($categories as $ancestor) {
         $isLast = $i == $count;
 
         $links[] = [
-            'url'  => $isLast ? null : $ancestor->getLink(),
+            'url'  => $ancestor->getLink(),
             'name' => $ancestor->getName(),
             'last' => $isLast,
         ];
