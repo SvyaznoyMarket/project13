@@ -21,7 +21,8 @@ return function(
     /* Если Товар + Бренд, то добавляем к крошкам текущую категорию */
     if ($brand) {
         $links[] = [
-            'url'  => $helper->url('product.category.brand', ['categoryPath' => $category->getPath(), 'brandToken' => $brand->getToken()]),
+            //'url'  => $helper->url('product.category.brand', ['categoryPath' => $category->getPath(), 'brandToken' => $brand->getToken()]),
+            'url'  => null,
             'name' => $category->getName(),
             'last' => true,
         ];
