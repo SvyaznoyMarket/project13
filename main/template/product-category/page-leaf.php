@@ -35,6 +35,9 @@ if ($category->isTchibo()) {
         : '';
 }
 $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
+
+$isOrangeBuyButton = ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing())
+    || $category->isTchibo();
 ?>
 
 <?= $helper->render('product-category/__data', ['category' => $category]) ?>
@@ -130,7 +133,7 @@ $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
         'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) && 'jewel' !== $listingStyle ? $catalogJson['bannerPlaceholder'] : [],
         'listingStyle'           => $listingStyle,
         'columnCount'            => isset($columnCount) ? $columnCount : 4,
-        'class'                  => $category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing() ? 'lstn-btn2' : '',
+        'class'                  => $isOrangeBuyButton ? 'lstn-btn2' : '',
         'category'               => $category,
         'favoriteProductsByUi'   => $favoriteProductsByUi,
         'cartButtonSender'       => $category->getSenderForGoogleAnalytics(),
