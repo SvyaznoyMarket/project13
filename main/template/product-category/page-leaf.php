@@ -60,7 +60,7 @@ $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
             <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
         <? endif ?>
 
-        <? if((bool)$slideData): ?>
+        <? if((bool)$slideData && !$category->isTchibo()): ?>
             <?= $helper->render('tchibo/promo-catalog', ['slideData' => $slideData, 'categoryToken' => $category->getRoot() ? $category->getRoot()->getToken() : '']) // promo slider ?>
         <? endif ?>
 
@@ -144,6 +144,11 @@ $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
         <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
             <?= $helper->render('product/__pagination', ['pager' => $productPager, 'category' => $category]) // листалка ?>
         </div>
+    <? endif ?>
+
+    <!-- Промокаталог Tchibo в листинге -->
+    <? if((bool)$slideData && $category->isTchibo()): ?>
+        <?= $helper->render('tchibo/promo-catalog', ['slideData' => $slideData, 'categoryToken' => $category->getRoot() ? $category->getRoot()->getToken() : '']) // promo slider ?>
     <? endif ?>
 
     <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
