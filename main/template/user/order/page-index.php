@@ -17,8 +17,6 @@
 ?>
 
 <?
-$showStatus = true || \App::user()->getEntity() && in_array(\App::user()->getEntity()->getId(), ['1019768', '104406', '1036742', '764984', '395421', '180860', '197474', '54', '325127', '641265', '11446', '11447']);
-
 $currentYear = (int)(new \DateTime())->format('Y');
 
 $recommendationsHtml = [
@@ -108,11 +106,9 @@ $recommendationsHtml = [
                             <?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span>
                         </div>
                         <div class="personal-order__cell">
-                            <? if ($showStatus): ?>
-                                <span class="personal-order__status"><?= $order->getStatusText() ?></span>
-                                <? if (isset($onlinePaymentAvailableByNumberErp[$order->numberErp]) && $onlinePaymentAvailableByNumberErp[$order->numberErp]): ?>
-                                    <? if (false): ?><span class="personal-order__pay-status online">Оплатить онлайн</span><? endif ?>
-                                <? endif ?>
+                            <span class="personal-order__status"><?= $order->getStatusText() ?></span>
+                            <? if (isset($onlinePaymentAvailableByNumberErp[$order->numberErp]) && $onlinePaymentAvailableByNumberErp[$order->numberErp]): ?>
+                                <span class="personal-order__pay-status online">Оплатить онлайн</span>
                             <? endif ?>
                         </div>
                         <div class="personal-order__cell">
