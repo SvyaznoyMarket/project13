@@ -10,6 +10,9 @@ class Entity {
 
     public function __construct($data = []) {
         if (isset($data['property_value'])) $this->value = (string)$data['property_value'];
-        if (isset($data['product'])) $this->product = new \Model\Product\Entity($data['product']);
+        if (isset($data['product'])) {
+            $this->product = new \Model\Product\Entity($data['product']);
+            $this->product->importFromScms($data['product']);
+        }
     }
 }

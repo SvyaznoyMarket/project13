@@ -23,8 +23,9 @@ if ((bool)$siblingCategories) {
     /* <!-- TCHIBO - слайдер-меню разделов Чибо --> */
     echo $helper->render('product-category/__sibling-list',
         [
-            'categories' => $siblingCategories, // категории-соседи
-            'catalogConfig' => $catalogConfig
+            'categories'        => $siblingCategories, // категории-соседи
+            'catalogConfig'     => $catalogConfig,
+            'currentCategory'   => $categoryWithChilds
         ]);
     /* <!--/ TCHIBO - слайдер-меню разделов Чибо -->*/
 }

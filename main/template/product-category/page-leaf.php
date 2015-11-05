@@ -35,6 +35,9 @@ if ($category->isTchibo()) {
         : '';
 }
 $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
+
+$isOrangeBuyButton = ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing())
+    || $category->isTchibo();
 ?>
 
 <?= $helper->render('product-category/__data', ['category' => $category]) ?>
@@ -45,7 +48,7 @@ $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
         <?= $helper->render('product-category/__sibling-list', ['categories' => $siblingCategories, 'currentCategory'    => $category,
             'rootCategoryInMenu' => $rootCategoryInMenu]) ?>
     <? else : ?>
-        <?= $helper->render('product-category/__breadcrumbs', ['category' => $category, 'isBrand' => isset($brand)]) // хлебные крошки ?>
+        <?= $helper->render('product-category/__breadcrumbs', ['category' => $category, 'brand' => $brand]) // хлебные крошки ?>
     <? endif ?>
 
     <div class="bCustomFilter"<? if(!empty($promoStyle['promo_image'])): ?> style="<?= $promoStyle['promo_image'] ?>"<? endif ?>>
@@ -60,7 +63,7 @@ $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
             <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
         <? endif ?>
 
-        <? if((bool)$slideData): ?>
+        <? if((bool)$slideData && !$category->isTchibo()): ?>
             <?= $helper->render('tchibo/promo-catalog', ['slideData' => $slideData, 'categoryToken' => $category->getRoot() ? $category->getRoot()->getToken() : '']) // promo slider ?>
         <? endif ?>
 
@@ -130,7 +133,7 @@ $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
         'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) && 'jewel' !== $listingStyle ? $catalogJson['bannerPlaceholder'] : [],
         'listingStyle'           => $listingStyle,
         'columnCount'            => isset($columnCount) ? $columnCount : 4,
-        'class'                  => $category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing() ? 'lstn-btn2' : '',
+        'class'                  => $isOrangeBuyButton ? 'lstn-btn2' : '',
         'category'               => $category,
         'favoriteProductsByUi'   => $favoriteProductsByUi,
         'cartButtonSender'       => $category->getSenderForGoogleAnalytics(),
@@ -144,6 +147,11 @@ $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
         <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
             <?= $helper->render('product/__pagination', ['pager' => $productPager, 'category' => $category]) // листалка ?>
         </div>
+    <? endif ?>
+
+    <!-- Промокаталог Tchibo в листинге -->
+    <? if((bool)$slideData && $category->isTchibo()): ?>
+        <?= $helper->render('tchibo/promo-catalog', ['slideData' => $slideData, 'categoryToken' => $category->getRoot() ? $category->getRoot()->getToken() : '']) // promo slider ?>
     <? endif ?>
 
     <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>

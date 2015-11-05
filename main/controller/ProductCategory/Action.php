@@ -304,10 +304,14 @@ class Action {
 
         // promo slider
         $slideData = null;
-        if (array_key_exists('promo_slider', $catalogJson)) {
+        if (array_key_exists('promo_slider', $catalogJson) || $category->isTchibo()) {
             $show = isset($catalogJson['promo_slider']['show']) ? (bool)$catalogJson['promo_slider']['show'] : false;
             $promoCategoryToken = isset($catalogJson['promo_slider']['promo_token']) ? trim($catalogJson['promo_slider']['promo_token']) : null;
 
+            if ($category->isTchibo()) {
+                $promoCategoryToken = 'tchibo';
+                $show = true;
+}
             if ($show && !empty($promoCategoryToken)) {
                 try {
                     $promoRepository = \RepositoryManager::promo();
