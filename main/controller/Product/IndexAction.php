@@ -443,7 +443,7 @@ class IndexAction {
 
         if ($paymentGroupQuery) {
             call_user_func($successCallback, ['detail' => $paymentGroupQuery->response->paymentGroups]);
-        } else {
+        } else if (\App::config()->product['creditEnabledInCard']) {
             \RepositoryManager::paymentGroup()->prepareCollection($region,
                 [
                     'is_corporative' => false,
@@ -461,14 +461,14 @@ class IndexAction {
             \App::curl()->execute();
         }
 
-        $dataForCredit = array(
+        $dataForCredit = [
             'price'        => $product->getPrice(),
             //'articul'      => $product->getArticle(),
             'name'         => $product->getName(),
             'count'        => 1, //$cart->getProductQuantity($product->getId()),
             'product_type' => $productType,
             'session_id'   => session_id()
-        );
+        ];
 
         $result['creditIsAllowed'] = $hasCreditPaymentMethod;
         $result['creditData'] = json_encode($dataForCredit);

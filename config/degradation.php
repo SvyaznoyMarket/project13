@@ -18,6 +18,7 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->pickpoint['retryCount'] = 1;
 
         $c->product['recommendationProductLimit'] = 7;
+        $c->product['creditEnabledInCard'] = false;
         $c->cart['productLimit'] = 7;
 
         $c->banner['checkStatus'] = false;

@@ -260,7 +260,7 @@ namespace EnterApplication\Action\ProductCard
             // группы оплаты
             call_user_func(function() use (&$productQuery, &$paymentGroupQuery) {
                 $productId = $productQuery->response->product['id'];
-                if (!$productId) return;
+                if (!$productId || !\App::config()->product['creditEnabledInCard']) return;
 
                 $paymentGroupQuery = new Query\PaymentGroup\GetByCart();
                 // корзина
