@@ -50,16 +50,7 @@ return function(
 
             <?= $helper->render('order-v3-new/complete-blocks/_errors', ['errors' => $errors]) ?>
 
-            <? if ($isOnlinePaymentPossible && !$order->isPaid() && !$order->isCredit() && !$order->isPaidBySvyaznoy()): ?>
-                <? if ($isOnlinePaymentChecked): ?>
-                    <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
-                <? else: ?>
-                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true, 'title' => 'Оплатить онлайн со скидкой 15%']) ?>
-                <? endif ?>
-            <? endif ?>
-
             <? if (!$order->isCredit()): ?>
-
                 <? if ($order->getDeliveryTypeId() == 3 || $order->getDeliveryTypeId() == 4 || $order->point) : ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_point', ['order' => $order]) ?>
                 <? endif ?>
@@ -67,7 +58,14 @@ return function(
                 <? if ($order->getDeliveryTypeId() == 1): ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_delivery', ['order' => $order]) ?>
                 <? endif ?>
+            <? endif ?>
 
+            <? if ($isOnlinePaymentPossible && !$order->isPaid() && !$order->isCredit() && !$order->isPaidBySvyaznoy()): ?>
+                <? if ($isOnlinePaymentChecked): ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
+                <? else: ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true, 'title' => 'Оплатить онлайн со скидкой 15%']) ?>
+                <? endif ?>
             <? endif ?>
 
         </div>

@@ -23,7 +23,6 @@ $f = function(
         return '';
     }
 
-    $image = $paymentMethod->icon ? str_replace('.png', '-big.png', $paymentMethod->icon) : null;
     $formUrl = \App::router()->generate('orderV3.paymentForm');
 ?>
 
