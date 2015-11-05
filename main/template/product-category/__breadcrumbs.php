@@ -7,25 +7,20 @@ return function(
 ) {
 
     $links = [];
-    $count = count($category->getAncestor());
+    /** @var \Model\Product\Category\Entity[] $categories */
+    $categories = array_merge($category->getAncestor(), [$category]);
+    $count = count($categories);
     $i = 1;
-    foreach ($category->getAncestor() as $ancestor) {
+    foreach ($categories as $ancestor) {
+        $isLast = $i == $count;
+
         $links[] = [
-            'url'  => $ancestor->getLink(),
+            'url'  => $isLast ? null : $ancestor->getLink(),
             'name' => $ancestor->getName(),
-            'last' => $i == $count && !$brand,
+            'last' => $isLast,
         ];
 
         $i++;
-    }
-    /* Если Товар + Бренд, то добавляем к крошкам текущую категорию */
-    if ($brand) {
-        $links[] = [
-            //'url'  => $helper->url('product.category.brand', ['categoryPath' => $category->getPath(), 'brandToken' => $brand->getToken()]),
-            'url'  => null,
-            'name' => $category->getName(),
-            'last' => true,
-        ];
     }
 ?>
 
