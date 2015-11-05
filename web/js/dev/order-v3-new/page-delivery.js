@@ -512,7 +512,7 @@
     });
 
     // сохранение комментария
-    $orderContent.on('blur focus', '.orderComment_fld', function(){
+    $orderContent.on('blur focus', '.jsOrderV3CommentField', function(){
         if (comment != $(this).val()) {
             comment = $(this).val();
             changeOrderComment($(this).val());
@@ -521,7 +521,7 @@
 
     // клик по "Дополнительные пожелания"
     $orderContent.on('click', '.jsOrderV3Comment', function(){
-        $('.orderComment_fld').toggle();
+        $('.jsOrderV3CommentField').toggle();
     });
 
     // применить скидку
