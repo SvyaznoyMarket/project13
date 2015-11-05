@@ -40,8 +40,8 @@ return function(
             } ?>
 
             <?  $liClass = 'nav-default__item_child ' . $activeRootCategoryClass;
-                if ($category->getUi() === Category::UI_TCHIBO_COLLECTIONS) $liClass = 'tchibo-nav-list__item_title';
-                if ($category->getUi() === Category::UI_TCHIBO_SALE) $liClass = 'nav-default__item_child tchibo-nav-list__item_sale';
+                if ($category->getUi() === Category::UI_TCHIBO_COLLECTIONS) $liClass .= ' tchibo-nav-list__item_title';
+                if ($category->getUi() === Category::UI_TCHIBO_SALE) $liClass .= ' nav-default__item_child tchibo-nav-list__item_sale';
             ?>
 
             <li class="tchibo-nav-list__item nav-default__item <?= $liClass ?>">
