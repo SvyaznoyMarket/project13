@@ -3,7 +3,7 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Category\Entity $category,
-    $isBrand = false
+    \Model\Brand\Entity $brand = null
 ) {
 
     $links = [];
@@ -13,15 +13,15 @@ return function(
         $links[] = [
             'url'  => $ancestor->getLink(),
             'name' => $ancestor->getName(),
-            'last' => $i == $count && !$isBrand,
+            'last' => $i == $count && !$brand,
         ];
 
         $i++;
     }
     /* Если Товар + Бренд, то добавляем к крошкам текущую категорию */
-    if ($isBrand) {
+    if ($brand) {
         $links[] = [
-            'url'  => $category->getLink(),
+            'url'  => $helper->url('product.category.brand', ['categoryPath' => $category->getPath(), 'brandToken' => $brand->getToken()]),
             'name' => $category->getName(),
             'last' => true,
         ];

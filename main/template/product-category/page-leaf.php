@@ -48,7 +48,7 @@ $isOrangeBuyButton = ($category->isV2Furniture() && \Session\AbTest\AbTest::isNe
         <?= $helper->render('product-category/__sibling-list', ['categories' => $siblingCategories, 'currentCategory'    => $category,
             'rootCategoryInMenu' => $rootCategoryInMenu]) ?>
     <? else : ?>
-        <?= $helper->render('product-category/__breadcrumbs', ['category' => $category, 'isBrand' => isset($brand)]) // хлебные крошки ?>
+        <?= $helper->render('product-category/__breadcrumbs', ['category' => $category, 'brand' => $brand]) // хлебные крошки ?>
     <? endif ?>
 
     <div class="bCustomFilter"<? if(!empty($promoStyle['promo_image'])): ?> style="<?= $promoStyle['promo_image'] ?>"<? endif ?>>
