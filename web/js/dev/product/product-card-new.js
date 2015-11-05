@@ -42,7 +42,7 @@
                 console.info('DCLoans.getPayment.result', result);
 
                 if (result.payment) {
-                    $creditButton.find('.jsProductCreditPrice').text(printPrice(Math.ceil(result.payment)));
+                    $creditButton.find('.jsProductCreditPrice').html(printPrice(Math.ceil(result.payment)));
                 }
             }
         );
