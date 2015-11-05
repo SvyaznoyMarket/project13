@@ -379,11 +379,13 @@ class ShowAction {
         $productRepository->prepareProductQueries($products, 'model media property label brand category');
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
-            if (isset($data['product_scores'][0])) {
-                \RepositoryManager::review()->addScores($products, $data);
-            }
-        });
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareScoreCollection($products, function ($data) use (&$products) {
+                if (isset($data['product_scores'][0])) {
+                    \RepositoryManager::review()->addScores($products, $data);
+                }
+            });
+        }
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 

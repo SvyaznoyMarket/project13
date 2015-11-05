@@ -276,6 +276,8 @@ namespace EnterApplication\Action\ProductCard
 
             // рейтинг товаров
             call_user_func(function() use (&$productQuery, &$ratingQuery) {
+                if (!\App::config()->product['reviewEnabled']) return;
+
                 $ids = []; // идентификаторы товаров
                 if ($accessoryIds = array_slice((array)$productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage'])) {
                     $ids = array_merge($ids, $accessoryIds);
@@ -293,6 +295,8 @@ namespace EnterApplication\Action\ProductCard
 
             // отзывы товара
             call_user_func(function() use (&$productQuery, &$reviewQuery) {
+                if (!\App::config()->product['reviewEnabled']) return;
+
                 $productUi = $productQuery->response->product['ui'];
                 if (!$productUi) return;
                 $pageSize = 10;

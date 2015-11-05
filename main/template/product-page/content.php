@@ -44,6 +44,8 @@ $showDescription = $product->getDescription()
 
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
 $buySender2 = $request->get('sender2');
+
+$showReview = \App::config()->product['reviewEnabled'];
 ?>
 
 <div id="product-info"
@@ -115,7 +117,7 @@ $buySender2 = $request->get('sender2');
                 <? if ($product->getKit()) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit" title="">Состав</a></li><? endif ?>
                 <? if ($showDescription) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
                 <? if ($showAccessories) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
-                <li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li>
+                <? if ($showReview): ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li><? endif ?>
                 <? if ($product->isAvailable()) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar" title="">Похожие товары</a></li><? endif ?>
             </ul>
         </div>

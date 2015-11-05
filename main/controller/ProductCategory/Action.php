@@ -730,11 +730,13 @@ class Action {
             throw new \Exception('Не удалось получить товары');
         }
 
-        \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
-            if (isset($data['product_scores'][0])) {
-                \RepositoryManager::review()->addScores($products, $data);
-            }
-        });
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
+                if (isset($data['product_scores'][0])) {
+                    \RepositoryManager::review()->addScores($products, $data);
+                }
+            });
+        }
 
         \App::coreClientV2()->execute();
 
