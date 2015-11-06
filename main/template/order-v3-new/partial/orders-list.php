@@ -293,16 +293,6 @@ $f = function (
                         ]) ?>
 
                         <!--/ способ доставки -->
-                        <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
-
-                            <div class="orderCheck orderCheck-credit clearfix">
-                                <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
-                                <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment js-customInput" id="credit-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked' : '' ?>>
-                                <label class="customLabel customLabel-checkbox <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц-->
-                                </label>
-                            </div>
-
-                        <? endif; ?>
                     <!--/ информация о доставке -->
 
                 </div>
