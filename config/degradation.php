@@ -5,6 +5,7 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
     $c->degradation = $request ? (int)$request->headers->get('X-Enter-Degradation-Level') : 0;
     //$c->degradation = isset($_SERVER['DEGRADATION_LEVEL']) ? (int)$_SERVER['DEGRADATION_LEVEL'] : 0;
 
+    // отключение некритичного функционала, повторных запросов
     if ($c->degradation > 0) {
         $c->coreV2['retryCount'] = 1;
         $c->corePrivate['retryCount'] = 1;
@@ -26,7 +27,9 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->abTest['enabled'] = false;
     }
 
+    // отключение функционала
     if ($c->degradation > 1) {
         $c->product['reviewEnabled'] = false;
+        $c->mainMenu['recommendationsEnabled'] = false;
     }
 };

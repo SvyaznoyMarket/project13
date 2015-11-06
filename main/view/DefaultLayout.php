@@ -28,7 +28,7 @@ class DefaultLayout extends Layout {
         parent::__construct();
 
         // Меню нужно в нескольких рендерингах, поэтому запрашиваем его сразу
-        $this->setGlobalParam('menu', (new Menu($this))->generate_new(\App::user()->getRegion()));
+        $this->setGlobalParam('menu', (new Menu($this))->generate(\App::user()->getRegion()));
 
         $this->setTitle('Enter - это выход!');
         $this->addMeta('yandex-verification', '623bb356993d4993');

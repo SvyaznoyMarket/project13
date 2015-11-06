@@ -780,9 +780,9 @@ class Action {
             $columnCount = (bool)array_intersect(array_map(function(\Model\Product\Category\Entity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
         }
 
+        $rootCategoryInMenu = null;
         if ($category->isTchibo()) {
             $columnCount = 3;
-            $rootCategoryInMenu = null;
                 \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($category->getRoot()->getId(), $region, 3, function($data) use (&$rootCategoryInMenu) {
                     $data = is_array($data) ? reset($data) : [];
                     if (isset($data['id'])) {
