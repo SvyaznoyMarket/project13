@@ -319,6 +319,7 @@ class AppConfig {
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
         'reviewEnabled'          => null, // отзывы о товаре
         'creditEnabledInCard'    => null, // кнопка "Купить в кредит" в карточке товара
+        'couponEnabledInCard'    => null, // купон в карточке товара
         'pushReview'             => null, // возможность добавлять отзывы
         'lowerPriceNotification' => null,
         'recommendationPull'     => null, // подтягивать информацию о рекоммендованных товарах

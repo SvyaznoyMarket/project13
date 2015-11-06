@@ -320,6 +320,7 @@ $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
 $c->product['creditEnabledInCard']    = true;
+$c->product['couponEnabledInCard']    = true;
 $c->product['pushReview']             = true;
 $c->product['lowerPriceNotification'] = true;
 // jewel

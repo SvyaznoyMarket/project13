@@ -30,6 +30,7 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
     // отключение функционала
     if ($c->degradation > 1) {
         $c->product['reviewEnabled'] = false;
+        $c->product['couponEnabledInCard'] = false;
         $c->mainMenu['recommendationsEnabled'] = false;
     }
 };

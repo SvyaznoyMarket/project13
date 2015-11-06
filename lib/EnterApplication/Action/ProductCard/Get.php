@@ -191,7 +191,7 @@ namespace EnterApplication\Action\ProductCard
             });
 
             call_user_func(function() use (&$productQuery, &$couponQuery) {
-                if (empty($productQuery->response->product['ui'])) {
+                if (empty($productQuery->response->product['ui']) || !\App::config()->product['couponEnabledInCard']) {
                     return;
                 }
 
