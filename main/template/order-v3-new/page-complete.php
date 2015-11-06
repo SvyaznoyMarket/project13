@@ -69,6 +69,7 @@ $f = function(
                     )
                     && ((bool)$paymentEntity ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $paymentEntity->groups) : false)
                     && ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']))
+                    && !$order->isPaid()
                 ;
 
                 $discountContainerId = sprintf('id-onlineDiscount-container', $order->id);
