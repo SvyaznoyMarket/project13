@@ -313,6 +313,7 @@ class AppConfig {
         'showAccessories'        => null,
         'showRelated'            => null,
         'getModel'               => null, // запрашивать модели для товара
+        'deliveryCalc'           => null, // расчитывать доставку в карточке товара
         'itemsInSlider'          => null,
         'itemsInCategorySlider'  => null,
         'totalCount'             => null,

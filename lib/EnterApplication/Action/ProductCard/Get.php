@@ -206,9 +206,11 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // доставка
-            call_user_func(function() use (&$productQuery, &$deliveryQuery, $kitProductQueries, $kitProductDescriptionQueries) {
+            call_user_func(function() use (&$productQuery, &$deliveryQuery, $kitProductQueries, $kitProductDescriptionQueries, &$config) {
                 $productId = $productQuery->response->product['id'];
-                if (!$productId) return;
+                if (!$productId || !$config->product['deliveryCalc']) {
+                    return;
+                }
 
                 $deliveryQuery = new Query\Delivery\GetByCart();
                 // корзина

@@ -36,4 +36,9 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->mainMenu['recommendationsEnabled'] = false;
         $c->product['getModel'] = false;
     }
+
+    // отключение расчета доставки
+    if ($c->degradation > 2) {
+        $c->product['deliveryCalc'] = false;
+    }
 };

@@ -30,6 +30,12 @@ class DeliveryAction {
     public function getResponseData($product, $region = null, \EnterQuery\Delivery\GetByCart $deliveryQuery = null, &$productModel = null) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
+        if (!\App::config()->product['deliveryCalc']) {
+            return [
+                'success' => false,
+            ];
+        }
+
         $helper = new \View\Helper();
         $user = \App::user();
 
