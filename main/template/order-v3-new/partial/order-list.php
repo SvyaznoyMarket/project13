@@ -1,7 +1,5 @@
 <?php
 
-use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
-
 /**
  * @param \Helper\TemplateHelper $helper
  * @param \Model\OrderDelivery\Entity $orderDelivery
@@ -204,8 +202,7 @@ $f = function (
                         <? $point = $order->delivery->point ? $orderDelivery->points[$order->delivery->point->token]->list[$order->delivery->point->id] : null ?>
 
                         <!--Добавляем класс warn если у нас будет текст-предупреждение о баллах связного: -->
-                        <div
-                            class="order-delivery__block <?= ($order->delivery->point && $order->delivery->point->isSvyaznoy()) ? 'warn' : ''  ?> <?= $order->delivery->point ? 'plain' : 'empty' ?>">
+                        <div class="order-delivery__block <?= ($order->delivery->point && $order->delivery->point->isSvyaznoy()) ? 'warn' : ''  ?> <?= $order->delivery->point ? 'plain' : 'empty' ?>">
 
                             <? if ($order->delivery->point) { ?>
                                 <div class="order-delivery__shop">
@@ -226,16 +223,6 @@ $f = function (
                             <div class="order-delivery__point-info">
                                 <? if (isset($point->regtime)): ?>Режим работы: <?= $point->regtime ?><? endif ?>
                             </div>
-                                <? if (isset($point) && !$order->prepaid_sum) : ?>
-                                    <br/>
-                                    Оплата при получении:
-                                    <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?>
-                                        <!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные
-                                    <? endif ?>
-                                    <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
-                                        <!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта
-                                    <? endif ?>
-                                <? endif ?>
 
                             <? if ($order->delivery->point && $order->delivery->point->isSvyaznoy()) : ?>
                                 <span class="order-warning">В магазинах «Связной» не принимаются бонусы «Спасибо от Сбербанка»</span>
