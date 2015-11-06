@@ -255,7 +255,7 @@ $f = function (
                             </div>
 
                             <!-- TODO: разместить вывод в блок <div class="order-delivery__block"> -->
-                            <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order-v3-new/__payment-methods', ['order' => $order]) : '' ?>
+                            <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?>
 
                         <? else: ?>
                             <?= $helper->render('order-v3-new/partial/user-address', ['order' => $order, 'orderDelivery' => $orderDelivery]) ?>
