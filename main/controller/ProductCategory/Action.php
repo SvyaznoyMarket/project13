@@ -32,14 +32,22 @@ class Action {
         // подготовка 1-го пакета запросов
 
         // запрашиваем текущий регион, если есть кука региона
-        if ($user->getRegionId()) {
-            \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
-                $data = reset($data);
-                if ((bool)$data) {
+        if ($regionId = $user->getRegionId()) {
+            if ((true === \App::config()->region['cache']) && ($regionId === \App::config()->region['defaultId'])) {
+                $data = \App::dataStoreClient()->query('/region-default.json');
+                $data = !empty($data['result'][0]['id']) ? $data['result'][0] : null;
+                if ($data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
-            });
-            
+            } else {
+                \RepositoryManager::region()->prepareEntityById($regionId, function($data) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        \App::user()->setRegion(new \Model\Region\Entity($data));
+                    }
+                });
+            }
+
             $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
         }
 

@@ -20,7 +20,11 @@ namespace EnterApplication\Action\ProductCard
             $curl = $this->getCurl();
 
             // регион
-            $regionQuery = $this->getRegionQuery($request->regionId);
+            $regionQuery =
+                ((true === \App::config()->region['cache']) && ($request->regionId === (string)$config->region['defaultId']))
+                ? null
+                : $this->getRegionQuery($request->regionId)
+            ;
 
             // редирект
             $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare(); // TODO: throw Exception
@@ -167,9 +171,11 @@ namespace EnterApplication\Action\ProductCard
 
             /** @var \EnterQuery\Product\Similar\GetUiListByProductUi|null $similarProductUiListQuery */
             $similarProductUiListQuery = null;
-            call_user_func(function() use (&$productQuery, &$regionQuery, &$similarProductUiListQuery) {
+            call_user_func(function() use (&$productQuery, &$regionQuery, &$similarProductUiListQuery, &$config) {
                 $productUi = $productQuery->response->product['ui'];
-                if (!$productUi) return;
+                if (!$productUi || !$config->mainMenu['recommendationsEnabled']) {
+                    return;
+                }
 
                 $similarProductUiListQuery = (new Query\Product\Similar\GetUiListByProductUi($productUi, $regionQuery->response->region['id']))->prepare();
             });
@@ -254,8 +260,13 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // магазины на основе остатков
-            call_user_func(function() use (&$productQuery, &$shopQuery) {
+            call_user_func(function() use (&$productQuery, &$shopQuery, &$config) {
                 $shopIds = [];
+
+                if (!$config->product['deliveryCalc']) {
+                    return;
+                }
+
                 foreach ($productQuery->response->product['stock'] as $stock) {
                     if (!$stock['shop_id'] || !($stock['quantity'] + $stock['quantity_showroom'])) continue;
 

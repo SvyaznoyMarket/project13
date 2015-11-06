@@ -41,4 +41,9 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
     if ($c->degradation > 2) {
         $c->product['deliveryCalc'] = false;
     }
+
+    // агрессивное кеширование
+    if ($c->degradation > 3) {
+        $c->region['cache'] = true;
+    }
 };

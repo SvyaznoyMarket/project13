@@ -295,6 +295,7 @@ class AppConfig {
         'cookieLifetime' => null,
         'defaultId'      => null,
         'autoresolve'    => null,
+        'cache'          => null, // кешировать запросы к основным городам
     ];
     /** @var array */
     public $shop = [
