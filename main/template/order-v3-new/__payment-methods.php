@@ -7,15 +7,19 @@ $f = function (
     \Model\OrderDelivery\Entity\Order $order
 ) {
     $isOrderWithCart = \App::abTest()->isOrderWithCart();
+    $elementName = sprintf('payment-%s-type[]', md5($order->block_name));
 ?>
 
     <div class="paymentMethods <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
         <strong>Способы оплаты</strong>
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH]) || isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
             <div class="paymentRow">
-                <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CASH || $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
-                <input id="payment-cash" type="radio" name="payment-type[]" value="by_cash" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?> />
-                <label for="payment-cash" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">При получении</label>
+            <?
+                $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CASH || $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY;
+                $elementId = sprintf('payment-%s-cash', md5($order->block_name));
+            ?>
+                <input id="<?= $elementId ?>" type="radio" name="<?= $elementName ?>" value="by_cash" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?> />
+                <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">При получении</label>
 
                 <? if ($order->delivery_group_id != 1) : /* Скрываем выбор наличные/банковская карта при самовывозе */?>
                     <div class="customSel">
@@ -35,9 +39,12 @@ $f = function (
 
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ONLINE])) : ?>
             <div class="paymentRow jsDeliveryChooseOnline">
-                <? $checked = ($order->payment_method_id == PaymentMethod::PAYMENT_CARD_ONLINE); ?>
-                <input id="payment-online" type="radio" name="payment-type[]" value="by_online" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?>>
-                <label for="payment-online" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">Онлайн-оплата:
+            <?
+                $checked = ($order->payment_method_id == PaymentMethod::PAYMENT_CARD_ONLINE);
+                $elementId = sprintf('payment-%s-online', md5($order->block_name));
+            ?>
+                <input id="<?= $elementId ?>" type="radio" name="<?= $elementName ?>" value="by_online" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?>>
+                <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">Онлайн-оплата:
                     <ul class="orderPaymentWeb_lst-sm">
                         <? if (array_key_exists(PaymentMethod::PAYMENT_CARD_ONLINE, $order->possible_payment_methods)) : ?>
                             <li class="orderPaymentWeb_lst-sm-i"><img src ="/styles/order/img/visa-logo-sm.jpg"></li>
@@ -58,9 +65,12 @@ $f = function (
 
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT])) : ?>
             <div class="paymentRow jsDeliveryChooseCredit">
-                <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
-                <input id="payment-credit" type="radio" name="payment-type[]" value="by_online_credit" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?>>
-                <label for="payment-credit" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">Купить в кредит</label><br>
+            <?
+                $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT;
+                $elementId = sprintf('payment-%s-credit', md5($order->block_name));
+            ?>
+                <input id="<?= $elementId ?>" type="radio" name="<?= $elementName ?>" value="by_online_credit" class="customInput customInput-defradio2 jsPaymentMethodRadio js-customInput" <?= $checked ? 'checked' : '' ?>>
+                <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">Купить в кредит</label><br>
             </div>
         <? endif ?>
 
