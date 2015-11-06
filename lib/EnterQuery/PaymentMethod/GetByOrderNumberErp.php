@@ -13,15 +13,18 @@ namespace EnterQuery\PaymentMethod
         public $regionId;
         /** @var string[] */
         public $numberErps = [];
+        /** @var bool */
+        public $noDiscount;
         /** @var Response */
         public $response;
 
-        public function __construct($regionId = null, array $numberErps = [])
+        public function __construct($regionId = null, array $numberErps = [], $noDiscount = null)
         {
             $this->response = new Response();
 
             $this->regionId = $regionId;
             $this->numberErps = $numberErps;
+            $this->noDiscount = $noDiscount;
         }
 
         /**
@@ -42,6 +45,9 @@ namespace EnterQuery\PaymentMethod
                 'geo_id'     => $this->regionId,
                 'number_erp' => $this->numberErps,
             ];
+            if (null !== $this->noDiscount) {
+                $queryParams['no_discount'] = $this->noDiscount;
+            }
 
             $this->prepareCurlQuery(
                 $this->buildUrl(

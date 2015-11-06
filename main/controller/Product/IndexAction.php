@@ -448,6 +448,7 @@ class IndexAction {
                 [
                     'is_corporative' => false,
                     'is_credit'      => true,
+                    'no_discount'    => true,
                 ],
                 [
                     'product_list'   => [['id' => $product->getId(), 'quantity' => (($cart->getProductQuantity($product->getId()) > 0) ? $cart->getProductQuantity($product->getId()) : 1)]],

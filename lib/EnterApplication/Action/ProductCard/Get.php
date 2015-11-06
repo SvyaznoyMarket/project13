@@ -270,6 +270,7 @@ namespace EnterApplication\Action\ProductCard
                 // фильтер
                 $paymentGroupQuery->filter->isCorporative = false;
                 $paymentGroupQuery->filter->isCredit = true;
+                $paymentGroupQuery->filter->noDiscount = true;
 
                 $paymentGroupQuery->prepare();
             });
