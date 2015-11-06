@@ -308,6 +308,7 @@ $c->search['categoriesLimit'] = 200;
 $c->product['itemsPerPage']             = 20;
 $c->product['showAccessories']          = true;
 $c->product['showRelated']              = true;
+$c->product['getModel']                 = true;
 $c->product['itemsInSlider']            = 5;
 $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;

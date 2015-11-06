@@ -45,7 +45,7 @@ namespace EnterApplication\Action\ProductCard
             /** @var Query\Product\GetByToken $productQuery */
             /** @var Query\Product\GetDescriptionByTokenList $productDescriptionQuery */
             /** @var Query\Product\Model\GetByTokenList $productModelQuery */
-            call_user_func(function() use (&$productQuery, &$productDescriptionQuery, &$productModelQuery, $regionQuery, $request) {
+            call_user_func(function() use (&$productQuery, &$productDescriptionQuery, &$productModelQuery, $regionQuery, $request, &$config) {
                 if ($request->productCriteria['token']) {
                     $productQuery = new Query\Product\GetByToken($request->productCriteria['token'], $regionQuery->response->region['id']);
                     $productQuery->prepare();
@@ -62,8 +62,10 @@ namespace EnterApplication\Action\ProductCard
                     $productDescriptionQuery->filter->tag = true;
                     $productDescriptionQuery->prepare();
 
-                    $productModelQuery = new Query\Product\Model\GetByTokenList([$request->productCriteria['token']], $regionQuery->response->region['id']);
-                    $productModelQuery->prepare();
+                    if ($config->product['getModel']) {
+                        $productModelQuery = new Query\Product\Model\GetByTokenList([$request->productCriteria['token']], $regionQuery->response->region['id']);
+                        $productModelQuery->prepare();
+                    }
                 } else {
                     throw new \InvalidArgumentException('Неверный критерий получения товара');
                 }

@@ -312,6 +312,7 @@ class AppConfig {
         'itemsPerPage'           => null,
         'showAccessories'        => null,
         'showRelated'            => null,
+        'getModel'               => null, // запрашивать модели для товара
         'itemsInSlider'          => null,
         'itemsInCategorySlider'  => null,
         'totalCount'             => null,

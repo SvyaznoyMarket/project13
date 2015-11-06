@@ -34,5 +34,6 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->product['reviewEnabled'] = false;
         $c->product['couponEnabledInCard'] = false;
         $c->mainMenu['recommendationsEnabled'] = false;
+        $c->product['getModel'] = false;
     }
 };
