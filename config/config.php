@@ -359,6 +359,7 @@ $c->queue['workerLimit'] = 10;
 $c->queue['maxLockTime'] = 600;
 
 $c->subscribe['enabled'] = true;
+$c->subscribe['getChannel'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
 $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {channelId:status}
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ

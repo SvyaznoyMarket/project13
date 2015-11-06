@@ -405,6 +405,7 @@ class AppConfig {
     /** @var array */
     public $subscribe = [
         'enabled'    => null,
+        'getChannel' => null,
         'cookieName' => null,
     ];
 

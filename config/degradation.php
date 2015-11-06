@@ -25,6 +25,8 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->banner['checkStatus'] = false;
 
         $c->abTest['enabled'] = false;
+
+        $c->subscribe['getChannel'] = false;
     }
 
     // отключение функционала
