@@ -22,7 +22,15 @@ return function(
     /* @var \Model\PaymentMethod\PaymentEntity|null $orderPayment */
     $orderPayment = @$ordersPayment[$order->getNumber()];
     // Онлайн оплата возможна при существовании такой группы
-    $isOnlinePaymentPossible = (bool)$orderPayment ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $orderPayment->groups) : false;
+    $isOnlinePaymentPossible =
+        (bool)$orderPayment
+        ? (
+            array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $orderPayment->groups)
+            && !$order->isPaid()
+            && !$order->isCredit()
+            && !$order->isPaidBySvyaznoy()
+        )
+        : false;
     // При создании заказа выбрана онлайн-оплата
     $isOnlinePaymentChecked =
         ($orderPayment && $order->getPaymentId() && isset($orderPayment->methods[$order->getPaymentId()]))
@@ -50,6 +58,10 @@ return function(
 
             <?= $helper->render('order-v3-new/complete-blocks/_errors', ['errors' => $errors]) ?>
 
+            <? if ($isOnlinePaymentPossible && $isOnlinePaymentChecked): ?>
+                <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
+            <? endif ?>
+
             <? if (!$order->isCredit()): ?>
                 <? if ($order->getDeliveryTypeId() == 3 || $order->getDeliveryTypeId() == 4 || $order->point) : ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_point', ['order' => $order]) ?>
@@ -60,12 +72,8 @@ return function(
                 <? endif ?>
             <? endif ?>
 
-            <? if ($isOnlinePaymentPossible && !$order->isPaid() && !$order->isCredit() && !$order->isPaidBySvyaznoy()): ?>
-                <? if ($isOnlinePaymentChecked): ?>
-                    <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
-                <? else: ?>
+            <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked): ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true, 'title' => 'Оплатить онлайн со скидкой 15%']) ?>
-                <? endif ?>
             <? endif ?>
 
         </div>

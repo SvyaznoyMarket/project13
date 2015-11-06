@@ -69,6 +69,7 @@ $f = function(
                     )
                     && ((bool)$paymentEntity ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $paymentEntity->groups) : false)
                     && ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']))
+                    && !$order->isPaid()
                 ;
 
                 $discountContainerId = sprintf('id-onlineDiscount-container', $order->id);
@@ -298,7 +299,7 @@ $f = function(
                         <? if ($order->isPaid()) : ?>
                             <!-- Оплачено -->
                             <div class="orderLn_row orderLn_row-bg orderLn_row-bg-grey jsOrderPaid">
-                                <img class="orderLn_row_imgpay" src="/styles/order/img/payment.png" alt="" />
+                                <img class="orderLn_row_imgpay" src="/styles/order/img/payment.png" alt="Оплачено" />
                             </div>
                         <? endif ?>
                     </div>
