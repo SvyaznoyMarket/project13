@@ -49,8 +49,10 @@ if ($category->isTchibo()) {
 
 /** @var Category[] $categoryByUi */
 $categoryByUi = [];
-foreach ($categoryWithChilds->getChild() as $ct) {
-    $categoryByUi[$ct->getUi()] = $ct;
+if ($categoryWithChilds) {
+    foreach ($categoryWithChilds->getChild() as $ct) {
+        $categoryByUi[$ct->getUi()] = $ct;
+    }
 }
 
 ?>
