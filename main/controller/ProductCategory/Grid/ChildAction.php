@@ -2,8 +2,6 @@
 
 namespace Controller\ProductCategory\Grid;
 
-use Model\Product\Category\Entity;
-
 class ChildAction {
     /**
      * @param \Http\Request $request
@@ -12,7 +10,6 @@ class ChildAction {
      * @return \Http\Response
      */
     public function executeByEntity(\Http\Request $request, \Model\Product\Category\Entity $category, $catalogConfig = []) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $region = \App::user()->getRegion();
 
@@ -74,9 +71,13 @@ class ChildAction {
 
         $productsByUi = array_map(function($productUi) { return new \Model\Product\Entity(['ui' => $productUi]); }, $productsByUi);
 
-        // Необходимо запрашивать модели товаров, т.к. option моделей используются в методе
-        // \Model\Product\Entity::hasAvailableModels, который вызывается в \Model\Product\Entity::isSoldOut, который
-        // вызывается в main/template/grid/__show.php
+        // проставляем оценки
+        \RepositoryManager::review()->prepareScoreCollection($productsByUi, function($data) use(&$productsByUi) {
+            if (isset($data['product_scores'][0])) {
+                \RepositoryManager::review()->addScores($productsByUi, $data);
+            }
+        });
+
         \RepositoryManager::product()->prepareProductQueries($productsByUi, 'model media label brand category');
 
         \App::coreClientV2()->execute();

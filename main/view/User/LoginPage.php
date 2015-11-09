@@ -21,6 +21,6 @@ class LoginPage extends \View\DefaultLayout {
     }
 
     public function slotBodyDataAttribute() {
-        return 'infopage';
+        return 'login';
     }
 }

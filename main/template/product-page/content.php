@@ -44,6 +44,8 @@ $showDescription = $product->getDescription()
 
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
 $buySender2 = $request->get('sender2');
+
+$showReview = \App::config()->product['reviewEnabled'];
 ?>
 
 <div id="product-info"
@@ -108,14 +110,15 @@ $buySender2 = $request->get('sender2');
     <?= $helper->render('product-page/blocks/trustfactors.partner', ['trustfactors' => $trustfactors]) ?>
 
     <div style="height: 50px">
+
         <!-- навигация по странице -->
-        <div id="jsScrollSpy" class="product-tabs-scroll jsProductTabs">
-            <ul class="nav product-tabs">
-                <? if ($product->getKit()) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit" title="">Состав</a></li><? endif ?>
-                <? if ($showDescription) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
-                <? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
-                <li class="product-tabs__i"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li>
-                <? if ($product->isAvailable()) : ?><li class="product-tabs__i jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar" title="">Похожие товары</a></li><? endif ?>
+        <div id="jsScrollSpy" class="product-tabs-scroll jsProductTabs tabs js-tabs">
+            <ul class="nav product-tabs tabs__controls tabs__controls_h-incomplete">
+                <? if ($product->getKit()) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyKitLink" href="#kit" title="">Состав</a></li><? endif ?>
+                <? if ($showDescription) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyMoreLink" href="#more" title="">Подробности</a></li><? endif ?>
+                <? if ($showAccessories) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyAccessorizeLink" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
+                <? if ($showReview): ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete"><a class="product-tabs__lk jsScrollSpyReviewsLink" href="#reviews" title="">Отзывы</a></li><? endif ?>
+                <? if ($product->isAvailable()) : ?><li class="product-tabs__i tabs__controls-item tabs__controls-item_h-incomplete jsSimilarTab" style="display: none"><a class="product-tabs__lk jsScrollSpySimilarLink" href="#similar" title="">Похожие товары</a></li><? endif ?>
             </ul>
         </div>
 	    <!--/ навигация по странице -->
@@ -175,11 +178,7 @@ $buySender2 = $request->get('sender2');
 	<? if ($reviewsData) : ?>
         <!-- отзывы -->
         <div class="product-section product-section--reviews" id="reviews">
-            <div class="product-section__tl">Отзывы</div>
-
-            <?= $helper->render('product-page/blocks/reviews', ['reviewsData' => $reviewsData, 'product' => $product ]) ?>
-
-
+            <?= $helper->render('product-page/blocks/reviews', ['reviewsData' => $reviewsData, 'product' => $product]) ?>
         </div>
         <!--/ отзывы -->
     <? endif ?>
@@ -231,13 +230,16 @@ $buySender2 = $request->get('sender2');
     <div class="bottom-content">
         <?= $page->tryRender('product/_tag', ['product' => $product, 'newVersion' => true]) ?>
         <?= $page->tryRender('product/_similarProducts', ['products' => $similarProducts, 'newVersion' => true]) ?>
-        <?php /*<p class="bottom-content__p bottom-content__text">
-
-        </p>*/ ?>
+        <? if ($product->seoText) : ?><p class="bottom-content__p bottom-content__text"><?= $product->seoText ?></p><? endif ?>
     </div>
     <!--/ seo информация -->
 
     <?= $helper->render('product/__data', ['product' => $product]) ?>
+
+    <? if (\App::config()->analytics['enabled']): ?>
+        <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
+        <?//= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
+    <? endif ?>
 
 </section>
 

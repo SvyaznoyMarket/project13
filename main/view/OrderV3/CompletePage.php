@@ -2,13 +2,16 @@
 
 namespace View\OrderV3;
 
+use Session\AbTest\ABHelperTrait;
+
 class CompletePage extends Layout {
+    use ABHelperTrait;
 
     /** @var \Model\Order\Entity[] */
     private $orders;
 
     public function slotOrderHead() {
-        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 3]);
+        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 3, 'withCart' => self::isOrderWithCart()]);
     }
 
     public function slotGoogleRemarketingJS($tagParams = []) {
@@ -45,7 +48,7 @@ class CompletePage extends Layout {
                 if (!$order->isCredit()) continue;
 
                 // Данные для "Купи-в-кредит"
-                $data = new Credit\Kupivkredit($order, $this->params['products']);
+                $data = new Credit\Kupivkredit($order, $this->params['productsById']);
                 $creditData[$order->getNumber()]['kupivkredit'] = [
                     'widget' => 'kupivkredit',
                     'vars'   => [
@@ -67,7 +70,7 @@ class CompletePage extends Layout {
 
                 foreach ($order->getProduct() as $orderProduct) {
                     /** @var $product \Model\Product\Entity|null */
-                    $product = isset($this->params['products'][$orderProduct->getId()]) ? $this->params['products'][$orderProduct->getId()] : null;
+                    $product = isset($this->params['productsById'][$orderProduct->getId()]) ? $this->params['productsById'][$orderProduct->getId()] : null;
                     if (!$product) {
                         throw new \Exception(sprintf('Не найден товар #%s, который есть в заказе', $orderProduct->getId()));
                     }
@@ -102,12 +105,8 @@ class CompletePage extends Layout {
     public function slotContent() {
         $template = 'page-complete';
         $orders = $this->getParam('orders');
-        if (\App::abTest()->isOnlineMotivation(count($orders))) {
-            /* @var $order \Model\Order\Entity */
-            $order = reset($orders);
-            /* Если выбран самовывоз из определенной точки или выбрана доставка с адресом */
-            /* Пикпоинт (6) пока исключим, т.к. для него не отдаётся адрес: CORE-2558 */
-            if (in_array($order->getDeliveryTypeId(), [3,4]) || $order->getDeliveryTypeId() == 1 || $order->point) $template = 'page-complete_online-motivation';
+        if (('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey'])) && (1 === count($orders))) {
+            $template = 'page-complete-single';
         }
         return \App::closureTemplating()->render('order-v3-new/' . $template, $this->params);
     }
@@ -125,8 +124,9 @@ class CompletePage extends Layout {
         $html .= '<div id="sociomanticOrderCompleteJS" class="jsanalytics" ></div>';
 
         // Flocktory
-        if ($config->flocktoryExchange['enabled'] || $config->flocktoryPostCheckout['enabled'])
-            $html .= '<div id="flocktoryScriptJS" class="jsanalytics" ></div>';
+        if ($config->flocktory['exchange'] || $config->flocktory['postcheckout']) {
+            $html .= sprintf('<div id="flocktoryScriptJS" class="jsanalytics" data-vars="%s" ></div>', $config->flocktory['site_id']);
+        }
 
         if (\App::config()->partners['MyThings']['enabled'] && \App::partner()->getName() == 'mythings') {
             /** @var $order \Model\Order\Entity */

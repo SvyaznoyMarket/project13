@@ -9,8 +9,14 @@ $isArrowsVisible = count($banners) > 4;
 <div class="slidesbnnr jsMainBannerWrapper">
     <ul class="slidesbnnr_lst jsMainBannerHolder">
         <? foreach ($banners as $key => $banner) : ?>
-        <li class="slidesbnnr_i jsMainBannerImage">
-            <a href="<?= $banner->url ?>" class="jsMainBannerLink slidesbnnr_lk"><img src="<?= $banner->getImageBig() ?>" alt="" class="slidesbnnr_img" /></a>
+        <li class="slidesbnnr_i jsMainBannerImage" >
+            <a href="<?= $banner->url ?>"
+               class="jsMainBannerLink slidesbnnr_lk"
+               data-uid="<?= $banner->uid ?>"
+               data-name="<?= $banner->name ?>"
+               data-position="<?= $key ?>">
+                <img src="<?= $banner->getImageBig() ?>" alt="" class="slidesbnnr_img" />
+            </a>
         </li>
         <? endforeach; ?>
     </ul>
@@ -20,7 +26,7 @@ $isArrowsVisible = count($banners) > 4;
 
         <ul class="slidesbnnr_thmbs jsMainBannerThumbsWrapper">
             <? foreach ($banners as $key => $banner) : ?>
-            <li class="slidesbnnr_thmbs_i jsMainBannerThumb">
+            <li class="slidesbnnr_thmbs_i jsMainBannerThumb" data-uid="<?= $banner->uid ?>" data-name="<?= $banner->name ?>" data-position="<?= $key ?>">
                 <img class="slidesbnnr_thmbs_img <?= $key == 0 ? 'slidesbnnr_thmbs_img-act' : '' ?>"
                      src="<?= $banner->getImageSmall() ?>"
                      alt=""

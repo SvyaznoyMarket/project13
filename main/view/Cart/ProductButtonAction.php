@@ -55,7 +55,7 @@ class ProductButtonAction {
                 $subway = isset($shop->getSubway()[0]) ? $shop->getSubway()[0] : null;
                 return [
                     'name' => $shop && $shop->getRegion() && $shop->getRegion()->getId() != \App::user()->getRegionId() ? $shop->getName() : $shop->getAddress(),
-                    'url' => $shop->getToken() ? $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) : null,
+                    'url' => $shop->getToken() ? $helper->url('shop.show', ['pointToken' => $shop->getToken()]) : null,
                     'todayWorkingTime' => $shop->getWorkingTimeToday() ? [
                         'from' => $shop->getWorkingTimeToday()['start_time'],
                         'to' => $shop->getWorkingTimeToday()['end_time'],
@@ -68,6 +68,8 @@ class ProductButtonAction {
                     ] : null,
                 ];
             }, $shopStates),
+            // Данные для Google Enhanced Ecommerce
+            'ecommerceData' => $product->ecommerceData()
         ];
 
         if (!$product->getIsBuyable()) {
@@ -129,11 +131,12 @@ class ProductButtonAction {
             $data['url'] = $this->getBuyUrl($helper, $product, $sender, $sender2);
             $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton';
             $data['value'] = 'Купить';
-            if (\App::abTest()->isNewProductPage() && in_array($location, ['product-card', 'userbar'])) $data['value'] = 'Купить';
+            if (in_array($location, ['product-card', 'userbar'])) {
+                $data['value'] = 'Купить';
+            }
         }
 
-        /* Новая карточка товара */
-        if (\App::abTest()->isNewProductPage() && $location !== null && $useNewStyles) {
+        if ($location !== null && $useNewStyles) {
             $data['class'] = str_replace('btnBuy__eLink', '', $data['class']) . ' btn-type btn-type--buy';
             if ('product-card' === $location) $data['class'] .= ' btn-type--longer btn-type--buy--bigger';
             if ('slider' === $location) $data['class'] .= ' btn-type--light';
@@ -175,14 +178,21 @@ class ProductButtonAction {
         $urlParams = [];
 
         if ($sender) {
-            $urlParams = array_merge($urlParams, [
+            $correctSender = [
                 'sender' => [
                     'name'      => isset($sender['name']) ? $sender['name'] : null,
                     'position'  => isset($sender['position']) ? $sender['position'] : null,
                     'method'    => isset($sender['method']) ? $sender['method'] : null,
                     'from'      => isset($sender['from']) ? $sender['from'] : null,
                 ],
-            ]);
+            ];
+
+            // SITE-5772
+            if (isset($sender['categoryUrlPrefix'])) {
+                $correctSender['sender']['categoryUrlPrefix'] = $sender['categoryUrlPrefix'];
+            }
+
+            $urlParams = array_merge($urlParams, $correctSender);
         }
 
         if ($sender2) {

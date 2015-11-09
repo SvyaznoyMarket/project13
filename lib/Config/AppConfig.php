@@ -9,6 +9,8 @@ require_once __DIR__ . '/Oauth/TwitterConfig.php';
 
 
 class AppConfig {
+    /** @var int */
+    public $degradation; // для отладки - неспользовать!
     /** Проект Lite
      * @var bool
      */
@@ -74,6 +76,7 @@ class AppConfig {
     public $authToken = [
         'name'     => null,
         'authorized_cookie' => null,
+        'disposableTokenParam'  => null
     ];
     /** @var array */
     public $session = [
@@ -203,6 +206,7 @@ class AppConfig {
     /** @var array */
     public $googleAnalytics = [
         'enabled' => null,
+        'secondary.enabled' => null,
     ];
     /** @var array */
     public $googleAnalyticsTchibo = [
@@ -291,6 +295,7 @@ class AppConfig {
         'cookieLifetime' => null,
         'defaultId'      => null,
         'autoresolve'    => null,
+        'cache'          => null, // кешировать запросы к основным городам
     ];
     /** @var array */
     public $shop = [
@@ -299,10 +304,6 @@ class AppConfig {
         'autoresolve'    => null,
         'enabled'        => null,
     ];
-    /** @var bool */
-    public $loadMediaHost = null;
-    /** @var array */
-    public $mediaHost = [];
     /** @var array */
     public $search = [
         'itemLimit' => null,
@@ -312,29 +313,21 @@ class AppConfig {
         'itemsPerPage'           => null,
         'showAccessories'        => null,
         'showRelated'            => null,
+        'getModel'               => null, // запрашивать модели для товара
+        'deliveryCalc'           => null, // расчитывать доставку в карточке товара
         'itemsInSlider'          => null,
         'itemsInCategorySlider'  => null,
-        'minCreditPrice'         => null,
         'totalCount'             => null,
         'showAveragePrice'       => null,
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
         'reviewEnabled'          => null, // отзывы о товаре
+        'creditEnabledInCard'    => null, // кнопка "Купить в кредит" в карточке товара
+        'couponEnabledInCard'    => null, // купон в карточке товара
         'pushReview'             => null, // возможность добавлять отзывы
         'lowerPriceNotification' => null,
         'recommendationPull'     => null, // подтягивать информацию о рекоммендованных товарах
         'recommendationPush'     => null, // отправлять данные для расчета рекоммендованных товаров
-    ];
-    /** @var array */
-    public $productLabel = [
-        'url' => [],
-    ];
-    /** @var array */
-    public $productCategory = [
-        'url' => [],
-    ];
-    /** @var array */
-    public $shopPhoto = [
-        'url' => [],
+        'recommendationProductLimit' => null,
     ];
     /** @var array */
     public $banner = [
@@ -343,8 +336,8 @@ class AppConfig {
     ];
     /** @var array */
     public $payment = [
-        'creditEnabled'    => null,
-        'blockedIds'       => [],
+        'creditEnabled' => null,
+        'blockedIds'    => [],
     ];
     /**
      * @var array
@@ -379,10 +372,6 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $f1Certificate = [
-        'enabled' => null,
-    ];
-    /** @var array */
     public $cart = [
         'productLimit' => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
         'sessionName'  => null,
@@ -401,6 +390,7 @@ class AppConfig {
      * @hidden
      */
     public $abTest = [
+        'enabled'     => null,
         'cookieName'  => null,
         'tests'       => [],
     ];
@@ -418,6 +408,7 @@ class AppConfig {
     /** @var array */
     public $subscribe = [
         'enabled'    => null,
+        'getChannel' => null,
         'cookieName' => null,
     ];
 
@@ -431,7 +422,7 @@ class AppConfig {
         'maxLockTime' => null,
     ];
 
-    /** @var bool */
+    /** @var array */
     public $mainMenu = [
         'recommendationsEnabled'    => null
     ];
@@ -446,6 +437,8 @@ class AppConfig {
         'splitSessionKey'         => null,
         'oneClickSplitSessionKey' => null,
         'sessionInfoOnComplete'   => null, // краткая инфа о заказе на странице order.complete
+        'creditStatusSessionKey'  => null,
+        'channelSessionKey'       => null,
     ];
     /** @var bool */
     public $newDeliveryCalc;
@@ -530,13 +523,11 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $flocktoryExchange = [
-        'enabled' => null,
-    ];
-
-    /** @var array */
-    public $flocktoryPostCheckout = [
-        'enabled' => null,
+    public $flocktory = [
+        'site_id'       => null,
+        'exchange'      => null,
+        'postcheckout'  => null,
+        'precheckout'   => null,
     ];
 
     /** @var array */

@@ -2,11 +2,19 @@
 
 namespace View\OrderV3;
 
+use Session\AbTest\ABHelperTrait;
+
 class Layout extends \View\DefaultLayout {
+    use ABHelperTrait;
+
     protected $layout  = 'layout-orderV3';
 
+    public function slotBodyClassAttribute() {
+        return self::isOrderWithCart() ? 'order-new' : '';
+    }
+
     public function slotOrderHead() {
-        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 1]);
+        return \App::closureTemplating()->render('order-v3-new/__head', ['step' => 1, 'withCart' => self::isOrderWithCart()]);
     }
 
     public function slotPartnerCounter()
@@ -30,6 +38,8 @@ class Layout extends \View\DefaultLayout {
             $dataValue = [];
             if ('orderV3.complete' === $routeName) {
                 return;
+            } else if ($routeName == 'order' || $routeName == 'orderV3') {
+                $dataValue['type'] = 'cart';
             } else {
                 $dataValue['type'] = 'default';
             }
@@ -48,6 +58,13 @@ class Layout extends \View\DefaultLayout {
             $html .= strtr('<div id="facebookJs" class="jsanalytics" data-value="{{dataValue}}"></div>', [
                 '{{dataValue}}' => $this->json(['id' => \App::config()->facebookOauth->clientId]),
             ]);
+        }
+
+        if (\App::config()->flocktory['precheckout']) {
+            // формирование данных для скрипта
+            $html .= $this->slotFlocktoryPrecheckout($this->flPrecheckoutData);
+            // загрузка самого скрипта
+            $html .= sprintf('<div id="flocktoryScriptJS" class="jsanalytics" data-vars="%s" ></div>', \App::config()->flocktory['site_id']);
         }
 
         // Livetex chat

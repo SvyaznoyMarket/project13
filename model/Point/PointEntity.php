@@ -51,7 +51,7 @@ class PointEntity extends BasicPoint {
         return $this->type == self::TYPE_SVYAZNOY;
     }
 
-    /** Пункт выдачи Hermes-DPD?
+    /** Пункт выдачи Hermes?
      * @return bool
      */
     public function isHermesPoint(){
@@ -65,4 +65,24 @@ class PointEntity extends BasicPoint {
         return $this->type == self::TYPE_EUROSET;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getTypeName() {
+        $name = null;
+
+        if ($this->isPickpoint()) {
+            $name = 'Постамат PickPoint';
+        } else if ($this->isHermesPoint()) {
+            $name = 'Постамат Hermes';
+        } else if ($this->isEurosetPoint()) {
+            $name = 'Евросеть';
+        } else if ($this->isSvyaznoyShop()) {
+            $name = 'Связной';
+        } else if ($this->isEnterShop()) {
+            $name = 'Магазин Enter';
+        }
+
+        return $name;
+    }
 }

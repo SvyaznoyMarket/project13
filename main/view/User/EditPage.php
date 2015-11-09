@@ -2,7 +2,10 @@
 
 namespace View\User;
 
+use Session\AbTest\ABHelperTrait;
+
 class EditPage extends \View\DefaultLayout {
+    use ABHelperTrait;
 
     protected $layout  = 'layout-oneColumn';
 
@@ -23,7 +26,10 @@ class EditPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('user/page-edit', $this->params);
+        return $this->render(
+            'user/page-edit',
+            $this->params
+        );
     }
 
     public function slotBodyDataAttribute() {

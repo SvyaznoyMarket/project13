@@ -80,7 +80,7 @@ return function(
             <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
 
             <? foreach ($alwaysShowFilters as $filter): ?>
-                <div class="fltrSet <? if (!$filter->isOpenByDefault): ?>fltrSet-close<? endif ?> js-category-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>">
+                <div class="fltrSet <? if (!$filter->isOpenByDefault): ?>fltrSet-close<? endif ?> js-category-filter-alwaysShowFilter js-category-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>" data-name="<?= $helper->escape($filter->getName()) ?>">
                     <div class="fltrSet_tggl <? if ($filter->isOpenByDefault): ?>fltrSet_tggl-dn<? endif ?> js-category-filter-toggle-button">
                         <span class="fltrSet_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>
                     </div>
@@ -107,7 +107,7 @@ return function(
                 </div>
             <? endif ?>
 
-            <div class="fltrSet js-category-v1-filter-otherParams" style="padding-top: 0;">
+            <div class="fltrSet" style="padding-top: 0;">
                 <!-- Фильтр по выбранным параметрам -->
                 <div class="bFilterCont clearfix js-category-filter-otherParamsContent" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
                     <!-- Список названий параметров -->
@@ -125,7 +125,7 @@ return function(
                     <div class="bFilterValues clearfix">
                         <? $i = 0; ?>
                         <? foreach ($otherFilters as $filter): ?>
-                            <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if (in_array($filter->getId(), ['shop', 'category'])): ?> mLineItem<? endif ?> js-category-filter-element" id="<?= \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId()) ?>">
+                            <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if (in_array($filter->getId(), ['shop', 'category'])): ?> mLineItem<? endif ?> js-category-filter-element" data-name="<?= $helper->escape($filter->getName()) ?>" id="<?= \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId()) ?>">
                                 <?= $helper->render('product-category/filter/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
                             </div>
                             <? $i++; ?>

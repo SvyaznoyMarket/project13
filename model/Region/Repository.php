@@ -29,6 +29,14 @@ class Repository {
     public function getEntityById($id) {
         //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
+        if ((true === \App::config()->region['cache']) && ($id === \App::config()->region['defaultId'])) {
+            $data = \App::dataStoreClient()->query('/region-default.json');
+            $data = !empty($data['result'][0]['id']) ? $data['result'][0] : null;
+            if ($data) {
+                return new Entity($data);
+            }
+        }
+
         $client = \App::scmsClient();
 
         $entity = null;

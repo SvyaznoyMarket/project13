@@ -16,14 +16,20 @@ class Repository {
         $this->client = $client;
     }
 
-    public function prepareData($productUi, $currentPage = 0, $perPage = self::NUM_REVIEWS_ON_PAGE, $done) {
+    public function prepareData($productUi, $currentPage = 0, $perPage = self::NUM_REVIEWS_ON_PAGE, \Model\Review\Sorting $sorting = null, $done) {
+        $data = [
+            'product_ui'   => $productUi,
+            'current_page' => $currentPage,
+            'page_size'    => $perPage,
+        ];
+        if ($sorting && ($activeSorting = $sorting->getActive())) {
+            $data['sort_field'] = $activeSorting->token;
+            $data['sort_direction'] = $activeSorting->direction;
+        }
+
         $this->client->addQuery(
             'list',
-            [
-                'product_ui'   => $productUi,
-                'current_page' => $currentPage,
-                'page_size'    => $perPage,
-            ],
+            $data,
             [],
             $done,
             function(\Exception $e) {

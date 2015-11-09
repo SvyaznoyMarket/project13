@@ -7,7 +7,6 @@
 ?>
 
 <?php
-$hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
 $addInfo = isset($addInfo)?$addInfo:[];
 ?>
 
@@ -51,13 +50,13 @@ $addInfo = isset($addInfo)?$addInfo:[];
                 <?php endforeach ?>
             </div>
 
-            <? if ($hasModel): ?>
-            <a href="<?= $product->getLink() ?>">
-                <div class="bListVariants">
-                    Доступно в разных вариантах<br>
-                    (<?= $product->getModel()->getVariations() ?>)
-                </div>
-            </a>
+            <? if ($product->model && $product->model->property): ?>
+                <a href="<?= $product->getLink() ?>">
+                    <div class="bListVariants">
+                        Доступно в разных вариантах<br>
+                        (<?= mb_strtolower($product->model->property->name) ?>)
+                    </div>
+                </a>
             <? endif ?>
 
         </div>
@@ -68,7 +67,7 @@ $addInfo = isset($addInfo)?$addInfo:[];
             <span class="db font18 pb10"><b><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></b></span>
 
             <div class="goodsbar mSmallBtns">
-                <?= \App::closureTemplating()->render('cart/__button-product', ['product' => $product]) ?>
+                <?= \App::closureTemplating()->render('cart/__button-product', ['product' => $product, 'sender' => $category ? $category->getSenderForGoogleAnalytics() : []]) ?>
             </div>
             <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
             <? if ($product->getIsBuyable()): ?>

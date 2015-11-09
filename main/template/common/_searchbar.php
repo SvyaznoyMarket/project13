@@ -15,7 +15,11 @@ $btnTypes = array(
 <div class="header__width">
     <div class="header__inn clearfix">
         <div class="header_c header_c-v2">
-            <a href="/" class="hdlogo sitelogo"></a>
+            <? if ('cart' !== (\App::request()->attributes->get('route')) || (\App::abTest()->isOrderWithCart() && !\App::user()->getCart()->count())): ?>
+                <a href="/" class="hdlogo sitelogo"></a>
+            <? else: ?>
+                <span class="hdlogo sitelogo"></span>
+            <? endif ?>
 
             <div class="hdsearch jsKnockoutSearch" data-bind="css: { 'hdsearch-v2': advancedSearch }">
                 <!--noindex-->
@@ -98,6 +102,11 @@ $btnTypes = array(
                 <div class="hdep_h">Больше скидок</div>
                 <a href="<?= \App::router()->generate('enterprize') ?>" class="i-header i-header--ep jsEnterprizeInSearchBarButton"></a>
             </div>
+
+            <a href="<?= \App::router()->generate('product.category', ['categoryPath' => Model\Product\Category\Entity::FAKE_SHOP_TOKEN]) ?>" class="shops-btn">
+                <img class="shops-btn__icon" src="/styles/shops/img/shop-icon.png">
+                <span class="shops-btn__txt">Товары<br>в магазине</span>
+            </a>
 
             <? if (false): // SITE-5833 ?>
             <div class="hdgift <?= $btnTypes[ $page->escape(\Session\AbTest\ABHelperTrait::getGiftButtonNumber()) ] ?>">

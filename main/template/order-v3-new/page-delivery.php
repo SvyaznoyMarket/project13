@@ -2,7 +2,12 @@
 
 use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
 
-return function(
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\OrderDelivery\Entity $orderDelivery
+ * @param null $error
+ */
+$f = function(
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity $orderDelivery,
     $error = null
@@ -13,6 +18,13 @@ return function(
     $i = 0;
 
     $isCoordsValid = $region && $region->getLatitude() != null && $region->getLongitude() != null;
+
+    $useUserAddressCount = 0;
+    foreach ($orderDelivery->orders as $order) {
+        if ($order->delivery && $order->delivery->use_user_address) {
+            $useUserAddressCount++;
+        }
+    }
 
     $initialMapCords = [
         'latitude' => $isCoordsValid ? $region->getLatitude() : 55.76,
@@ -37,12 +49,20 @@ return function(
 
     <?= $helper->render('order-v3-new/__error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
-    <? foreach ($orderDelivery->orders as $order): $i++;?>
+    <? foreach ($orderDelivery->orders as $order): $i++ ?>
+    <?
+        $dataPoints = (new \View\PointsMap\MapView());
+        $dataPoints->preparePointsWithOrder($order, $orderDelivery);
+    ?>
+
         <? if ((bool)$order->validationErrors) : ?>
             <div class="jsOrderValidationErrors" data-value="<?= $helper->json($order->validationErrors) ?>"></div>
         <? endif; ?>
     <!-- блок разбиения заказа -->
-    <div class="orderRow clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>" data-block_name="<?= $order->block_name ?>">
+    <div class="orderRow clearfix jsOrderRow <?= $order->isPartnerOffer() ? 'jsPartnerOrder' : ''?>"
+         data-block_name="<?= $order->block_name ?>"
+         data-is-delivery="<?= $order->delivery && $order->delivery->use_user_address ?>"
+        >
         <!-- информация о заказе -->
         <div class="orderCol">
             <div class="orderCol_h">
@@ -52,7 +72,7 @@ return function(
                 <? endif ?>
             </div>
 
-            <? if (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_cost > \App::config()->order['prepayment']['priceLimit'])) : ?>
+            <? if ($order->prepaid_sum) : ?>
                 <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
             <? endif; ?>
 
@@ -95,9 +115,15 @@ return function(
                 <? foreach ($order->discounts as $discount) : ?>
 
                     <div class="orderCol_cnt clearfix jsOrderV3Discount">
-                        <a href="" class="orderCol_lk">
-                            <img class="orderCol_img" src="/styles/order/img/fishka.png" alt="">
-                        </a>
+                        <? if ('online' === $discount->type): ?>
+                            <a href="" class="orderCol_lk">
+                                <span class="orderCol_img orderCol_img--font">%</span>
+                            </a>
+                        <? else: ?>
+                            <a href="" class="orderCol_lk">
+                                <img class="orderCol_img" src="/styles/order/img/fishka.png" alt="<?= $helper->escape($discount->name) ?>">
+                            </a>
+                        <? endif ?>
 
                         <div class="orderCol_n">
                             <?= $discount->name; ?>
@@ -122,9 +148,9 @@ return function(
                         <span class="orderCol_data orderCol_data-del jsDeleteCertificate">удалить</span>
                     </div>
 
-                <? endif; ?>
+                <? endif ?>
 
-            <? endif; ?>
+            <? endif ?>
 
             <div class="orderCol_f clearfix">
 
@@ -134,7 +160,7 @@ return function(
                     <span class="orderCol_summ"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price).' <span class="rubl">p</span>' ?></span>
                     <span class="orderCol_summt orderCol_summt-m"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
 
-                    <span class="orderCol_summ"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
+                    <span class="orderCol_summ"><?= $helper->formatPrice($order->total_view_cost) ?> <span class="rubl">p</span></span>
                     <span class="orderCol_summt">Итого:</span>
                 </div>
             </div>
@@ -160,7 +186,6 @@ return function(
 
             <!-- дата доставки -->
             <div class="orderCol_delivrIn clearfix">
-                <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
                 <? if ($order->delivery->date): ?>
                     <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y, %A', $order->delivery->date->format('U'))) ?></div>
                 <? endif ?>
@@ -187,42 +212,60 @@ return function(
                         <span class="js-order-changePlace-link brb-dt" style="cursor: pointer;" data-content="#id-order-changePlace-content-<?= $order->id ?>">Указать место самовывоза</span>
                     <? else : ?>
                         <div class="orderCol_delivrIn_t clearfix">
-                            <strong><?= @$order->delivery->delivery_method->name ?></strong>
+                            <strong><?= strtr(@$order->delivery->delivery_method->name, ['Hermes DPD' => 'Hermes']) ?></strong>
                             <span class="js-order-changePlace-link orderChange brb-dt" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span>
                         </div>
-                    <? endif; ?>
 
-                        <div class="orderCol_addrs"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
-                            <span class="orderCol_addrs_tx">
+                        <div class="order__addr">
+                            <div class="order__img"><img src="<?= @$orderDelivery->points[$order->delivery->point->token]->icon ?>">
+                                <span class="order__point-name"><?= $point->listName ?></span></div>
+                            <div class="order__point">
+                                <div class="order__point-addr"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
+                            <span class="order__addr-tx">
                                 <? if (isset($point->subway[0])): ?><?= $point->subway[0]->name ?><br/><? endif ?>
                                 <? if (isset($point->address)): ?><span class="colorBrightGrey"><?= $point->address ?></span><? endif; ?>
                             </span>
+                                </div>
+                            </div>
+                            <? if ($dateInterval = $order->delivery->point->dateInterval): ?>
+                            <?
+                                $from = null;
+                                $to = null;
+                                try {
+                                    $from = !empty($dateInterval['from']) ? \DateTime::createFromFormat('Y-m-d', $dateInterval['from']) : null;
+                                    $to = !empty($dateInterval['to']) ? \DateTime::createFromFormat('Y-m-d', $dateInterval['to']) : null;
+                                } catch (\Exception $e) {}
+                            ?>
+                            <div class="order__reserv">
+                                <span class="order__reserv-inn"><?= sprintf('%s %s', $from ? ('с ' . $from->format('d.m')) : '', $to ? (' по ' . $to->format('d.m')) : '') ?></span>
+                            </div>
+                            <? endif ?>
                         </div>
-
                         <div class="orderCol_tm">
                             <? if (isset($point->regtime)): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
-                            <? if (isset($point) && (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_cost < \App::config()->order['prepayment']['priceLimit']))) : ?>
+                            <? if (isset($point) && !$order->prepaid_sum) : ?>
                                 <br />
                                 <span class="orderCol_tm_t">Оплата при получении: </span>
                                 <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?>
                                     <!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные
-                                <? endif; ?>
+                                <? endif ?>
                                 <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
                                     <!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта
-                                <? endif; ?>
-                            <? endif; ?>
+                                <? endif ?>
+                            <? endif ?>
                         </div>
-                    <? if ($order->delivery->point && $order->delivery->point->isSvyaznoy()) : ?>
-                        <span class="order-warning">В магазинах «Связной» не принимаются бонусы «Спасибо от Сбербанка»</span>
+                        <? if ($order->delivery->point && $order->delivery->point->isSvyaznoy()) : ?>
+                            <span class="order-warning">В магазинах «Связной» не принимаются бонусы «Спасибо от Сбербанка»</span>
+                        <? endif ?>
                     <? endif ?>
                 </div>
 
-                <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order-v3-new/__payment-methods', ['order' => $order]) : '' ?>
+                <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order, 'orderDelivery' => $orderDelivery]) ?>
 
             <? else: ?>
                 <div class="orderCol_delivrIn orderCol_delivrIn-empty jsSmartAddressBlock">
                     <div class="orderCol_delivrIn_t clearfix">
-                        <strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
+                        <strong>Адрес</strong> <? if ($useUserAddressCount > 1): ?><span class="colorBrightGrey">для всех заказов с доставкой</span><? endif ?>
                     </div>
 
                     <div class="orderCol_addrs" style="margin-left: 0;">
@@ -231,26 +274,9 @@ return function(
 
                 </div>
 
-                <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order-v3-new/__payment-methods', ['order' => $order]) : '' ?>
-
-                <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
-
-                    <div class="orderCheck" style="margin-bottom: 0;">
-                        <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
-                        <input type="checkbox" class="customInput customInput-checkbox jsCreditCardPayment js-customInput" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked ' : '' ?>/>
-                        <label  class="customLabel customLabel-checkbox <?= $checked ? 'mChecked ' : '' ?>" for="creditCardsPay-<?= $order->block_name ?>">
-                            <span class="brb-dt" style="vertical-align: top;">Оплата курьеру банковской картой</span> <img class="orderCheck_img" src="/styles/order/img/i-visa.png" alt=""><img class="orderCheck_img" src="/styles/order/img/i-mc.png" alt="">
-                        </label>
-                    </div>
-
-                <? endif; ?>
+                <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order, 'orderDelivery' => $orderDelivery]) ?>
 
             <? endif ?>
-
-            <?
-                $dataPoints = (new \View\PointsMap\MapView());
-                $dataPoints->preparePointsWithOrder($order, $orderDelivery);
-            ?>
 
             <?= \App::templating()->render('order-v3/common/_map', [
                 'dataPoints'    => $dataPoints,
@@ -258,15 +284,6 @@ return function(
             ]) ?>
 
             <!--/ способ доставки -->
-            <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
-
-                <div class="orderCheck orderCheck-credit clearfix">
-                    <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
-                    <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment js-customInput" id="credit-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked' : '' ?>>
-                    <label class="customLabel customLabel-checkbox <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
-                </div>
-
-            <? endif; ?>
         </div>
         <!--/ информация о доставке -->
     </div>
@@ -276,11 +293,11 @@ return function(
     <div class="orderComment">
         <div class="orderComment_t jsOrderV3Comment">Дополнительные пожелания</div>
 
-        <textarea class="orderComment_fld textarea" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
+        <textarea class="jsOrderV3CommentField orderComment_fld textarea" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
     </div>
 
     <div class="orderComplSumm">
-        <span class="l">Итого <strong><?= $orderCount ?></strong> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <strong><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span></strong></span>
+        <span class="l">Итого <strong><?= $orderCount ?></strong> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <strong><?= $helper->formatPrice($orderDelivery->total_view_cost) ?> <span class="rubl">p</span></strong></span>
     </div>
 
     <div class="orderCompl orderCompl-v2 clearfix">
@@ -363,4 +380,4 @@ return function(
 
 <?= $helper->render('order-v3-new/__delivery-analytics', ['orderDelivery' => $orderDelivery]) ?>
 
-<? };
+<? }; return $f;

@@ -29,10 +29,10 @@ class SetAction {
         /** @var \Model\Product\Entity[] $products */
         $products = array_map(function($productBarcode) { return new \Model\Product\Entity(['bar_code' => $productBarcode]); }, $productBarcodes);
 
-        \RepositoryManager::product()->prepareProductQueries($products, 'media label brand category');
+        \RepositoryManager::product()->prepareProductQueries($products, 'model media label brand category');
         \App::coreClientV2()->execute();
 
-        $products = array_filter($products, function(\Model\Product\Entity $product) { return $product->isAvailable(); });
+        //$products = array_filter($products, function(\Model\Product\Entity $product) { return $product->isAvailable(); });
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();

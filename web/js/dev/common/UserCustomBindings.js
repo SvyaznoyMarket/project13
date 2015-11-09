@@ -114,11 +114,9 @@
 				location = 'product';
 			}
 
-            if (ENTER.config.pageConfig.newProductPage) {
-                activeLinkClass = 'product-card-tools__lk--active';
-                buttonText = 'Сравнить';
-            }
-			
+			activeLinkClass = 'product-card-tools__lk--active';
+			buttonText = 'Сравнить';
+
 			if (ENTER.utils.getObjectWithElement(compare, 'id', productId)) {
 				$elem
 					.addClass('btnCmpr-act')

@@ -2,11 +2,10 @@
 /**
  * @var $page Templating\HtmlLayout
  * @var $user \Session\User
-*/
+ */
 
 $cart = $user->getCart();
 $helper = new \Helper\TemplateHelper();
-$isNewProductPage = \App::abTest()->isNewProductPage();
 ?>
 
 <? /*
@@ -24,7 +23,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
     <?= $page->render('cart/partner/_adfox') ?>
 
     <!-- ko foreach: cart().products() -->
-        <?= $page->render('cart/_cart-item') ?>
+    <?= $page->render('cart/_cart-item') ?>
     <!-- /ko -->
 
     <div class="basketLine clearfix">
@@ -50,66 +49,84 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 
 <div class="clear"></div>
 
-<? if (!$cart->count()): // жуткий костыль SITE-5289 ?>
-    <div id="js-cart-firstRecommendation" style="display: none;">
-        <? $page->startEscape()?>
+<?= $page->render('cart/_cart-sales', ['sales' => $sales]) ?>
+
+<? if (\App::config()->product['pullRecommendation']): ?>
+    <? if ($cart->count()): ?>
         <div class="basketLine">
-            <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
+        <?= $helper->render(
+            'product-page/blocks/slider',
+            [
                 'type'      => 'alsoBought',
                 'products'  => [],
                 'url'       => $page->url('cart.recommended', [
+                    'types'  => ['alsoBought'],
                     'sender' => [
                         'position' => 'Basket',
                     ],
                 ]),
-            ]) ?>
+            ]
+        ) ?>
         </div>
-        <? $page->endEscape() ?>
-    </div>
+    <? else: ?>
+        <? /* Жуткий костыль SITE-5289 */ ?>
+        <div id="js-cart-firstRecommendation" style="display: none;">
+            <? $page->startEscape()?>
+            <div class="basketLine">
+            <?= $helper->render(
+                'product-page/blocks/slider',
+                [
+                    'type'      => 'popular',
+                    'products'  => [],
+                    'url'       => $page->url('cart.recommended', [
+                        'types'  => ['personal', 'popular'],
+                        'sender' => [
+                            'position' => 'Basket',
+                        ],
+                    ]),
+                ]
+            ) ?>
+            </div>
+            <? $page->endEscape() ?>
+        </div>
 
-    <div class="basketLine">
-    <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
-        'type'      => 'main',
-        'products'  => [],
-        'url'       => $page->url('cart.recommended', [
-            'sender' => [
-                'position' => 'Basket',
-            ],
-        ]),
-    ]) ?>
-    </div>
-    <div class="basketLine">
-    <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
-        'type'      => 'alsoBought',
-        'products'  => [],
-        'url'       => $page->url('cart.recommended', [
-            'sender' => [
-                'position' => 'Basket',
-            ],
-        ]),
-    ]) ?>
-    </div>
-    <div class="cart--ep"><a href="/enterprize" title=""><img src="/css/bEmptyCart/img/ep.jpg" alt="" /></a></div>
-<? endif ?>
+        <div class="basketLine">
+        <?= $helper->render(
+            'product-page/blocks/slider',
+            [
+                'type'      => 'personal',
+                'products'  => [],
+                'url'       => $page->url('cart.recommended', [
+                    'types'  => ['personal', 'popular'],
+                    'sender' => [
+                        'position' => 'Basket',
+                    ],
+                ]),
+            ]
+        ) ?>
+        </div>
+
+        <div class="basketLine">
+        <?= $helper->render(
+            'product-page/blocks/slider',
+            [
+                'type'      => 'popular',
+                'products'  => [],
+                'url'       => $page->url('cart.recommended', [
+                    'types'  => ['personal', 'popular'],
+                    'sender' => [
+                        'position' => 'Basket',
+                    ],
+                ]),
+            ]
+        ) ?>
+        </div>
+
+        <div class="cart--ep"><a href="/enterprize" title=""><img src="/css/bEmptyCart/img/ep.jpg" alt="" /></a></div>
+    <? endif ?>
 
     <div class="clear"></div>
-
-
-<? if (\App::config()->product['pullRecommendation'] && $cart->count()): ?>
-    <div class="basketLine">
-        <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
-            'type'      => 'alsoBought',
-            'products'  => [],
-            'url'       => $page->url('cart.recommended', [
-                'sender' => [
-                    'position' => 'Basket',
-                ],
-            ]),
-        ]) ?>
-    </div>
 <? endif ?>
-
-<div class="clear"></div>
 
 <? if (\App::config()->analytics['enabled']): ?>
     <?= $page->tryRender('cart/partner/_cityads') ?>

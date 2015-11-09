@@ -1,0 +1,498 @@
+@txtColor: #363636;
+@txtLightColor: #868686;
+@textGrey: #616161;
+@bgGrey: #f7f7f7;
+
+.order-bill {
+    &__item {
+        margin-top: 20px;
+
+        border: 0;
+    }
+    &__head {
+        font-size: 20px;
+
+        margin-bottom: 0;
+        padding-left: 10px;
+
+        color: @txtColor;
+    }
+    &__wrap{
+        display: table;
+        width: 100%;
+    }
+    &__goods{
+        padding-left: 10px;
+        width: 470px;
+        height: 100%;
+        display: table-cell;
+        padding-bottom: 163px;//высота 2х строк скидки по способу оплаты+заголовок - max их может быть 2.
+        position: relative;
+    }
+    &__seller {
+        font-size: 14px;
+
+        position: relative;
+        margin-bottom: 13px;
+    }
+    &__oferta {
+        font-size: 0;
+
+        width: 15px;
+        height: 15px;
+        margin: -2px 0 0 3px;
+
+        cursor: pointer;
+
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat -45px -53px;
+
+        .inline-block(middle);
+    }
+    &__delivery-details{
+        display: table-cell;
+    }
+    &__adds {
+        clear: both;
+
+        margin: 10px 0 20px;
+        padding: 10px 490px 10px 10px;
+
+        background-color: @bgGrey;
+    }
+    &__total {
+        .clearfix();
+        &:last-child {
+            margin-bottom: -10px;
+        }
+    }
+    &__total-price {
+        font-size: 18px;
+
+        float: right;
+        clear: right;
+
+        width: 110px;
+        margin-bottom: 10px;
+
+        text-align: right;
+
+        color: @txtColor;
+    }
+    &__serv {
+        font-size: 14px;
+        line-height: 24px;
+
+        float: right;
+
+        color: @txtColor;
+    }
+}
+.order-good {
+    &__item {
+        position: relative;
+
+        width: 100%;
+        padding: 10px 10px 15px 0;
+
+        border-top: 1px solid #e6e6e6;
+
+        .box-sizing(border-box);
+    }
+    &__item-lk {
+        display: block;
+        float: left;
+
+        width: 70px;
+        height: 70px;
+
+        text-align: center;
+        &:after {
+            width: 0;
+            height: 100%;
+
+            content: '';
+
+            .inline-block(middle);
+        }
+    }
+    &__img {
+        max-width: 65px;
+        max-height: 65px;
+
+        .inline-block(middle);
+    }
+    &__name {
+        font-size: 14px;
+
+        display: block;
+
+        margin-bottom: 15px;
+        margin-left: 80px;
+
+        color: @txtColor;
+    }
+    &__price-block {
+        display: block;
+
+        margin-left: 80px;
+    }
+    &__price {
+        font-size: 16px;
+
+        width: 90px;
+
+        color: @txtColor;
+
+        .inline-block();
+    }
+    &__total-price {
+        font-size: 16px;
+
+        float: right;
+
+        color: @txtColor;
+    }
+    &__quantity {
+        font-size: 16px;
+
+        margin-left: 40px;
+
+        cursor: pointer;
+
+        color: @txtColor;
+        border-bottom: 1px dotted;
+    }
+    &__count {
+        border-color: #d3d3d3;
+
+        .inline-block();
+        .count {
+            &__ctrl {
+                font-size: 16px;
+
+                width: 25px;
+                height: 20px;
+
+                background-color: @white;
+            }
+            &__num {
+                font-size: 16px;
+                line-height: 20px;
+
+                width: 35px;
+                height: 20px;
+
+                color: #5e5d5d;
+                border-color: #d3d3d3;
+            }
+        }
+    }
+    &__edit {
+        .inline-block();
+    }
+    &__units {
+        font-size: 16px;
+
+        color: #5e5d5d;
+    }
+    &__apply {
+        font-size: 0;
+
+        width: 32px;
+        height: 20px;
+
+        cursor: pointer;
+
+        border: 1px solid #d3d3d3;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABHklEQVQoFWNkIBKYmJgE/////zQzMerNzc29mJiYOoBq5RkJaTA1NZVlZGRcB1T3B0gHsODTYGxszApU1AvE3EB12SdPnnzJhE8DMzNzIVCxDlDNYqDi/SC1TEArTS0sLGrQNQKF7YBiCUB8/cuXL70weSagCbFA30cBPRYBE7SyshIDioM8+e3Xr19FV69e/QWTYwIK1AE1vALiCjMzMzWgBNOfP3+6gBoEgGKN58+ffwhTDKKZX7x48UNKSuoqUEEQkG8uLS0tDmT7AhWvP3369HRkxWANIOIZEEhKSjICw9odqNgIqPg+0MM5T548+YNVA1TTWaDpZkC2yL9//1JPnTr1Al0xiI8cD//Y2Njyf/78qXvmzJmb2BSDxAAyOmliqt77sgAAAABJRU5ErkJggg==');
+        background-repeat: no-repeat;
+        background-position: center;
+
+        .rounded(3px);
+        .inline-block();
+        &:hover {
+            text-decoration: none;
+        }
+    }
+    &__del {
+        font-size: 0;
+
+        position: absolute;
+        top: 10px;
+        right: 5px;
+
+        width: 10px;
+        height: 10px;
+
+        cursor: pointer;
+
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat  -27px -53px;
+    }
+}
+.order-discount {
+    font-size: 0;
+
+    margin-right: -200px;
+    &__head {
+        font-size: 18px;
+
+        margin: 20px 0 0;
+
+        color: @txtColor;
+    }
+    &__item {
+        position: relative;
+
+        display: table;
+
+        width: 100%;
+
+        border-top: 1px solid #e6e6e6;
+    }
+    &__lk {
+        display: table-cell;
+
+        padding: 10px 0;
+
+        vertical-align: middle;
+    }
+    &__name {
+        font-size: 14px;
+
+        display: table-cell;
+
+        width: 100%;
+        max-width: 0;
+        padding: 10px;
+
+        vertical-align: middle;
+
+        color: @txtColor;
+    }
+    &__val {
+        font-size: 16px;
+
+        display: table-cell;
+
+        padding: 10px 10px 10px 0;
+
+        text-align: right;
+        vertical-align: middle;
+        white-space: nowrap;
+
+        color: @txtColor;
+    }
+    &__cell {
+        display: table-cell;
+
+        min-width: 10px;
+
+        padding: 10px;
+
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    &__img{
+
+        &_font{
+            display: block;
+
+            min-width: 38px;
+
+            font-size: 24px;
+            font-family: Tahoma, sans-serif;
+            color: #fe4c40;
+            text-align: center;
+        }
+    }
+
+    &__del {
+        font-size: 0;
+
+        width: 10px;
+        height: 10px;
+
+        cursor: pointer;
+
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat  -27px -53px;
+
+        .inline-block(middle);
+    }
+    &__tl {
+        font-size: 12px;
+
+        margin: 0 10px;
+
+        text-align: right;
+
+        color: @txtColor;
+
+        .inline-block(middle);
+    }
+    &__pin {
+        margin-left: 10px;
+
+        .inline-block(middle);
+    }
+    .order-ctrl {
+        width: 165px;
+        margin-right: 0;
+        margin-bottom: 0;
+        padding-top: 0;
+
+        .inline-block(middle);
+        &__lbl {
+            line-height: 13px;
+
+            top: auto;
+            bottom: 38px;
+
+            width: 100%;
+            margin-left: 0;
+            padding-right: 10px;
+
+            .box-sizing(border-box);
+        }
+    }
+    .order-btn {
+        margin-left: 10px;
+
+        .inline-block(middle);
+    }
+}
+.order-wishes {
+    margin: 25px 0 10px;
+
+    text-align: center;
+    &__lk {
+        font-size: 16px;
+
+        cursor: pointer;
+
+        color: @txtColor;
+        border-bottom: 1px dotted;
+
+        .inline-block();
+    }
+    &__field {
+        display: block;
+
+        width: 740px;
+        height: 100px;
+        margin: 10px auto 15px;
+        padding: 10px;
+
+        color: @txtColor;
+        border: 1px solid #d7d7d7;
+
+        .rounded(3px);
+    }
+}
+.order-total {
+    margin: 10px 0 20px;
+    padding: 10px;
+
+    text-align: center;
+
+    background-color: #f7f7f7;
+    &__txt {
+        font-size: 14px;
+
+        color: @txtColor;
+
+        .inline-block(middle);
+    }
+    &__sum {
+        font-size: 24px;
+
+        color: #000;
+
+        .inline-block(middle);
+    }
+}
+.order-agreement {
+    &__check {
+        font-size: 12px;
+
+        width: 300px;
+        margin: 0 auto;
+        padding: 5px 10px;
+
+        color: @txtColor;
+    }
+    &__oferta {
+        cursor: pointer;
+
+        border-bottom: 1px dotted;
+    }
+}
+.order-popup {
+    position: fixed;
+    z-index: 1002;
+    top: 50%;
+    left: 50%;
+
+    width: 250px;
+    height: 100px;
+    margin-top: -50px;
+    margin-left: -125px;
+    padding: 20px;
+
+    border: 1px solid #f5f5f5;
+    background-color: #fff;
+
+    .box-shadow(0 0 10px rgba(0,0,0,.5));
+    &__closer {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+
+        width: 10px;
+        height: 10px;
+
+        cursor: pointer;
+
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat  -27px -53px;
+
+        .inline-block(middle);
+    }
+    &__tl {
+        font-size: 18px;
+
+        margin: 10px 0 20px;
+
+        text-align: center;
+
+        color: @txtColor;
+    }
+    &__btn {
+        margin: 0 20px;
+
+        .inline-block();
+        &:last-child {
+            margin: 0;
+        }
+    }
+    &__overlay {
+        position: fixed;
+        z-index: 1001;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        background-color: rgba(0,0,0,.3);
+    }
+}
+.order {
+    &__bonus-cards {
+        clear: both;
+
+        margin-top: 20px;
+        .bonusCnt_img {
+            width: 46px;
+        }
+    }
+}

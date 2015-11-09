@@ -53,7 +53,8 @@ class ShowAction {
         }
 
         $productItem = [
-            'id'           => $product->getId(),
+            'id'           => $product->id,
+            'ui'           => $product->ui,
             'name'         => $product->getName(),
             'link'         => $product->getLink(),
             'label'        =>
@@ -75,27 +76,14 @@ class ShowAction {
             'inStoreLabel' => $inStoreLabel,
             'onlyInShop'   => $product->isInShopOnly(),
             'stateLabel'   => $showState ? ($inShopOnlyLabel ? $inShopOnlyLabel : $inStoreLabel) : null,
-            'variations'   =>
-            ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty()) // TODO: перенести в \View\*Action
-                ? array_map(function(\Model\Product\Model\Property\Entity $property) {
-                return [
-                    'name' => $property->getName(),
-                ];
-            }, $product->getModel()->getProperty())
-                : null
-            ,
-            'hasVariations' =>
-            ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty())
-                ? true
-                : null
-            ,
+            'variations'   => (new \View\Category\Listing\Product\Variations())->execute($helper, $product, $category ? $category->ui : '', $cartButtonSender),
             'hasVideo' => $product->hasVideo(),
             'has360'   => $product->has3d(),
             'review'   => $reviewtAction ? $reviewtAction->execute($helper, $product) : null,
             'isBanner' => false,
             'hasKit'       => (bool)$product->getKit(),
             'isKitLocked'   => (bool)$product->getIsKitLocked(),
-            'brandImage'    => $product->getBrand() && $product->getBrand()->getImage() ? $product->getBrand()->getImage() : null,
+            'brandImage'    => $product->getBrand() && $product->getBrand()->isTchibo() ? $product->getBrand()->getImage() : null,
             'isSlot' => (bool)$product->getSlotPartnerOffer(),
             'isOnlyFromPartner' => $product->isOnlyFromPartner(),
             'isNewWindow'       => \App::abTest()->isNewWindow(), // открытие товаров в новом окне
@@ -124,23 +112,25 @@ class ShowAction {
                     ]
                 )
             ,
+            'ecommerce' => $product->ecommerceData()
         ];
 
-        // Дополняем свойствами для каталога в виде листинга
-        if (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category && $category->isInSiteListingWithViewSwitcherAbTest()) {
-            $productItem['properties']= array_map(function(\Model\Product\Property\Entity $entity) {
-                return [
-                    'name' => $entity->getName(),
-                    'value' => $entity->getStringValue(),
+        $productItem['properties'] = (new \View\Product\Properties())->execute($helper, $product);
 
-                ];
-            }, $product->getPropertiesInView(5));
+        if ($category && $category->isTchibo()) {
+            $productItem['brandImage'] = null;
         }
 
         // oldPrice and priceSale
-        if ( $product->getPriceOld() && $product->getLabel()) {
+        if ($product->getPriceOld()) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
-            $productItem['priceSale'] = ($product->getPrice() < $product->getPriceOld()) ? round($product->getPrice() - $product->getPriceOld(), 0) : 0; //round((1 - ($product->getPrice() / $product->getPriceOld())) * 100, 0);
+            if (AbTest::isCurrencyDiscountPrice()) {
+                $productItem['priceSale'] = $helper->formatPrice($product->getPriceOld() - $product->getPrice());
+                $productItem['priceSaleUnit'] = ' <span class="rubl">p</span>';
+            } else {
+                $productItem['priceSale'] = round((1 - ($product->getPrice() / $product->getPriceOld())) * 100, 0);
+                $productItem['priceSaleUnit'] = '%';
+            }
             $productItem['showPriceSale'] = AbTest::isShowSalePercentage();
         }
 

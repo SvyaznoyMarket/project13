@@ -30,6 +30,12 @@ class DeliveryAction {
     public function getResponseData($product, $region = null, \EnterQuery\Delivery\GetByCart $deliveryQuery = null, &$productModel = null) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
+        if (!\App::config()->product['deliveryCalc']) {
+            return [
+                'success' => false,
+            ];
+        }
+
         $helper = new \View\Helper();
         $user = \App::user();
 
@@ -213,7 +219,7 @@ class DeliveryAction {
                             foreach ($shops as $shop) {
                                 foreach ($delivery['shop'] as $key => $shopItem) {
                                     if ($shop && ($shopItem['id'] == $shop->getId()) && $shop->getRegion()) {
-                                        $delivery['shop'][$key]['url'] = \App::router()->generate('shop.show', ['regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken()]);
+                                        $delivery['shop'][$key]['url'] = \App::router()->generate('shop.show', ['pointToken' => $shop->getToken()]);
                                     }
                                 }
                             }

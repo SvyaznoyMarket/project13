@@ -109,4 +109,21 @@ class Session implements \Http\SessionInterface {
             return $data;
         }
     }
+
+    /** Функция для работы с flash-сообщениями
+     *  При передаче параметра устанавливает сообщение
+     *  При вызове без параметра возвращает сообщение и удаляет его из сессии
+     * @param mixed $data
+     * @return mixed|null
+     */
+    public function redirectUrl($data = null) {
+        if ($data !== null) {
+            $this->set('redirectUrl', $data);
+            return null;
+        } else {
+            $data = $this->get('redirectUrl');
+            $this->remove('redirectUrl');
+            return $data;
+        }
+    }
 }

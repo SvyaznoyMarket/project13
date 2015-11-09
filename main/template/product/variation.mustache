@@ -1,0 +1,18 @@
+<div class="js-listing-variation">
+    <span class="listing-variations__lbl">{{name}}:</span>
+    {{^values.0}}
+        <a href="#" class="listing-variations__lk js-listing-variation-link" data-url="{{url}}">выбрать</a>
+    {{/values.0}}
+
+    {{#values.0}}
+        <div class="custom-select variations-select">
+            <form action="#" autocomplete="off">
+                <select class="custom-select__inn js-listing-variation-values">
+                    {{#values}}
+                        <option class="custom-select__i" data-url="{{url}}" {{#checked}}selected{{/checked}}>{{name}}</option>
+                    {{/values}}
+                </select>
+            </form>
+        </div>
+    {{/values.0}}
+</div>

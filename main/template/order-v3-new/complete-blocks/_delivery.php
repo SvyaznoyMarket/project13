@@ -4,12 +4,12 @@
     \Model\Order\Entity $order
 ) { ?>
 
-    <div class="orderPayment orderDelivery <?= $order->isPaid() ? 'orderPaid': '' ?>">
-        <div class="orderPayment_block orderPayment_noOnline">
+    <div class="orderPayment orderPayment--static orderDelivery <?= $order->isPaid() ? 'orderPaid': '' ?>">
+        <div class="orderPayment_block orderPayment_block--border orderPayment_noOnline">
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
-                <div class="orderPayment_msg_head">
-                    <? if ($order->getAddress()) : ?>
+                <div class="orderPayment_msg_head" style="text-align: left;">
+                    <? if ($order->getAddress() && $order->getDeliveredAt()) : ?>
                         Доставка назначена на <?= $order->getDeliveredAt()->format('d.m.Y') ?>
                     <? else : ?>
                         Время и место

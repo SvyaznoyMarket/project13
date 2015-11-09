@@ -2,6 +2,7 @@
 
 namespace Controller\Product;
 
+use Model\ClosedSale\ClosedSaleEntity;
 use Model\Product\Trustfactor;
 
 class IndexAction {
@@ -61,6 +62,10 @@ class IndexAction {
                         }
                     }
                 }
+            }
+
+            if (!empty($actionResponse->productModelQuery->response->products[0])) {
+                $product->importModelFromScms($actionResponse->productModelQuery->response->products[0]);
             }
         });
 
@@ -273,7 +278,7 @@ class IndexAction {
             // пишем в сессию id товара
             if ($sessionName = \App::config()->product['recommendationSessionKey']) {
                 $storage = \App::session();
-                $limit = \App::config()->cart['productLimit'];
+                $limit = \App::config()->product['recommendationProductLimit'];
 
                 $data = (array)$storage->get($sessionName, []);
                 if (!in_array($product->getId(), $data)) {
@@ -300,6 +305,10 @@ class IndexAction {
             $page = new \View\Product\GifteryPage();
         } else {
             $page = new \View\Product\IndexPage();
+        }
+
+        if (!\App::config()->lite['enabled']) {
+            $this->setClosedSale($request, $page);
         }
 
         (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
@@ -350,6 +359,26 @@ class IndexAction {
     }
 
     /**
+     * Устанавливает параметр для View
+     *
+     * @param \Http\Request $request
+     * @param \View\DefaultLayout $page
+     */
+    public function setClosedSale(\Http\Request $request, \View\DefaultLayout $page) {
+
+        if (!$uid = $request->query->get('secretsaleUid')) {
+            return;
+        }
+
+        $closedSaleResponse = \App::scmsClient()->query('api/promo-sale/get', ['uid' => [$uid]]);
+
+        if (array_key_exists(0, $closedSaleResponse)) {
+            $page->setParam('closedSale', new ClosedSaleEntity($closedSaleResponse[0]));
+        }
+
+    }
+
+    /**
      * Собирает в массив данные, необходимые для плагина online кредитовария // скопировано из symfony
      *
      * @param $product
@@ -377,8 +406,6 @@ class IndexAction {
 
         // SITE-4076 Учитывать возможность кредита из API
         $hasCreditPaymentMethod = false;
-        $is_credit = (bool)(($product->getPrice() * (($cart->getProductQuantity($product->getId()) > 0) ? $cart->getProductQuantity($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
-
         $successCallback = function($data) use (&$hasCreditPaymentMethod) {
             if (!isset($data['detail']) || !is_array($data['detail'])) {
                 return;
@@ -418,11 +445,12 @@ class IndexAction {
 
         if ($paymentGroupQuery) {
             call_user_func($successCallback, ['detail' => $paymentGroupQuery->response->paymentGroups]);
-        } else {
+        } else if (\App::config()->product['creditEnabledInCard']) {
             \RepositoryManager::paymentGroup()->prepareCollection($region,
                 [
                     'is_corporative' => false,
-                    'is_credit'      => $is_credit,
+                    'is_credit'      => true,
+                    'no_discount'    => true,
                 ],
                 [
                     'product_list'   => [['id' => $product->getId(), 'quantity' => (($cart->getProductQuantity($product->getId()) > 0) ? $cart->getProductQuantity($product->getId()) : 1)]],
@@ -436,17 +464,16 @@ class IndexAction {
             \App::curl()->execute();
         }
 
-        $dataForCredit = array(
+        $dataForCredit = [
             'price'        => $product->getPrice(),
             //'articul'      => $product->getArticle(),
             'name'         => $product->getName(),
             'count'        => 1, //$cart->getProductQuantity($product->getId()),
             'product_type' => $productType,
             'session_id'   => session_id()
-        );
+        ];
 
         $result['creditIsAllowed'] = $hasCreditPaymentMethod;
-//        $result['creditIsAllowed'] = (bool)(($product->getPrice() * (($cart->getProductQuantity($product->getId()) > 0) ? $cart->getProductQuantity($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
         $result['creditData'] = json_encode($dataForCredit);
 
         return $result;

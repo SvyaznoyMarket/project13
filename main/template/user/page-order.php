@@ -28,7 +28,7 @@
         </div>-->
     </div>
 
-    <? if (false && (bool)$order->getLifecycle()) : ?>
+    <? if (false) : ?>
     <!-- статусы заказа -->
     <ul class="personalControl personalControl-arrow">
 
@@ -94,7 +94,7 @@
                 </div>
 
                 <div class="personalTable_cell va-m">
-                    <a href="<?= $page->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>" title="">Как добраться?</a>
+                    <a href="<?= $page->url('shop.show', ['pointToken' => $shop->getToken()]) ?>" title="">Как добраться?</a>
                 </div>
             </div>
         </div>

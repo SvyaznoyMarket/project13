@@ -71,10 +71,11 @@
         });
 
         self.autocompleteNavigation = function(data, e){
+            console.warn('autocompleteNavigation', e);
             var keycode = e.which,
-                $elements = $('.jsDeliverySuggestLi'),
-                $list = $('.deliv-suggest__list'),
-                activeClass = 'deliv-suggest__i--active',
+                $elements = $('.pick-point-suggest__i'),
+                $list = $('.pick-point-suggest__list'),
+                activeClass = 'pick-point-suggest__i-act',
                 index = $elements.index($elements.filter('.'+activeClass));
 
             $elements.removeClass(activeClass);
@@ -152,9 +153,7 @@
 
         /* Текст для дропдауна с датой */
         self.datesText = ko.computed(function(){
-            return self.choosenDates().length == 1
-                ? $.grep(self.availablePoints(), function(point){ return self.choosenDates()[0] == point['nearestDay'] })[0]['humanNearestDay']
-                : 'Дата';
+            return self.choosenDates().length == 1 ? self.choosenDates()[0] : 'Дата';
         });
 
         /* Список точек с учетом фильтрации */
@@ -172,7 +171,7 @@
                 /* Если не попадает в список выбранной цены доставки */
                 if (costs.length && costs.indexOf(point.cost) == -1) return false;
                 /* Если не попадает в список выбранных дат */
-                if (dates.length && dates.indexOf(point.nearestDay) == -1) return false;
+                if (dates.length && dates.indexOf(point.humanNearestDay) == -1) return false;
                 /* В итоге проверяем на попадание в видимые границы карты */
                 return self.isPointInBounds(point);
             });

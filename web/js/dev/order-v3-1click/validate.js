@@ -164,6 +164,19 @@
 
 						if (response.result.orderAnalytics) {
 							ENTER.utils.sendOrderToGA(response.result.orderAnalytics);
+							ENTER.utils.analytics.soloway.send({
+								action: 'orderComplete',
+								orders: response.result.orderAnalytics.orders
+							});
+						}
+
+						// criteo
+						if (
+							response.result.criteoData
+							&& typeof(window.criteo_q) != 'undefined'
+							&& !$.isEmptyObject(response.result.criteoData)
+						) {
+							window.criteo_q.push(response.result.criteoData);
 						}
 					}
 				})

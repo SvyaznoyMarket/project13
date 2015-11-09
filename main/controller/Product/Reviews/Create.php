@@ -24,7 +24,7 @@ class ReviewsActionOld {
         $layout = $request->get('layout', false);
 
         $reviewsData = [];
-        \RepositoryManager::review()->prepareData($productUi, $reviewsType, $page, $numReviewsOnPage, function($data) use(&$reviewsData) {
+        \RepositoryManager::review()->prepareData($productUi, $reviewsType, $page, $numReviewsOnPage, null, function($data) use(&$reviewsData) {
             $reviewsData = (array)$data;
             if (isset($reviewsData['review_list'][0])) {
                 foreach ($reviewsData['review_list'] as $key => $review) {
@@ -39,19 +39,12 @@ class ReviewsActionOld {
         if(!empty($reviewsData['review_list'])) {
             $response = '';
             foreach ($reviewsData['review_list'] as $key => $review) {
-                if (!\App::abTest()->isNewProductPage()) {
-                    $response .= \App::templating()->render('product/_review', [
-                        'page' => (new \View\Product\IndexPage()),
-                        'review' => $review,
-                        'last' => empty($reviewsData['review_list'][$key + 1]),
-                        'layout' => $layout
-                    ]);
-                } else {
-                    $response .= \App::helper()->render('product-page/blocks/reviews.single', [
-                        'review' => $review,
-                        'hidden' => false
-                    ]);
-                }
+                $response .= \App::templating()->render('product/_review', [
+                    'page' => (new \View\Product\IndexPage()),
+                    'review' => $review,
+                    'last' => empty($reviewsData['review_list'][$key + 1]),
+                    'layout' => $layout
+                ]);
             }
         }
 

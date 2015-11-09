@@ -51,7 +51,7 @@ $f = function (
                             м. <?= $shop->getSubway()[0]->getName() ?>
                         <? endif ?>
                         <div>
-                            <a class="markerList_light" href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>">
+                            <a class="markerList_light" href="<?= $helper->url('shop.show', ['pointToken' => $shop->getToken()]) ?>">
                                 <? if ($shop && $shop->getRegion() && ($currentRegionId != $shop->getRegion()->getId())): ?>
                                     <?= $shop->getName() // $shop->getRegion()->getName() ?>
                                 <? else: ?>

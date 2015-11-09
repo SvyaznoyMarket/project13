@@ -22,6 +22,15 @@
             top: '50%', // Top position relative to parent
             left: '50%' // Left position relative to parent
         }) : null,
+        currentOrderIdInCredit = null,
+
+        setCreditDone = function(orderId) {
+            $.post('/order/set-credit-status', {
+                form: {
+                    order_id: orderId
+                }
+            });
+        },
 
 		getForm = function getFormF(methodId, orderId, orderNumber, action) {
 			var data = {
@@ -53,10 +62,11 @@
 			})
 		},
 
-        showCreditWidget = function showCreditWidgetF(bankProviderId, data, number_erp, bank_id) {
+        showCreditWidget = function showCreditWidgetF(bankProviderId, data, number_erp, bank_id, orderId, containerId) {
+            currentOrderIdInCredit = orderId;
 
-            if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit']);
-            if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit']);
+            if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit'], orderId, containerId);
+            if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit'], orderId, containerId);
 
             $.ajax({
                 type: 'POST',
@@ -95,11 +105,12 @@
                 });
         },
 
-        showDirectCredit = function showDirectCreditF(data){
+        showDirectCredit = function showDirectCreditF(data, orderId, containerId){
             var productArr = [];
 
             $LAB.script( '//api.direct-credit.ru/JsHttpRequest.js' )
-                .script({ src: '//api.direct-credit.ru/dc.js', type: 'text/javascript', charset: 'windows-1251' } )
+                //.script({ src: '//api.direct-credit.ru/dc.js', type: 'text/javascript', charset: 'windows-1251' } )
+                .script({ src: '//api.direct-credit.ru/dc.js', type: 'text/javascript' } )
                 .wait( function() {
                     console.info('скрипты загружены для кредитного виджета. начинаем обработку');
 
@@ -113,11 +124,28 @@
                         })
                     });
 
+                    if (typeof window.DCCheckStatus !== 'function') {
+                        window.DCCheckStatus = function(result) {
+                            var $container = containerId && $('#' + containerId);
+
+                            console.info('DCCheckStatus.result', result);
+                            if (5 == result) {
+                                currentOrderIdInCredit && setCreditDone(currentOrderIdInCredit);
+
+                                try {
+                                    if ($container && $container.length) {
+                                        $container.hide();
+                                    }
+                                } catch (error) { console.error(error); }
+                            }
+
+                            currentOrderIdInCredit = null;
+                        }
+                    }
 
                     DCLoans(data.vars.partnerID, 'getCredit', { products: productArr, order: data.vars.number, codeTT: data.vars.region }, function(result){
                        console.log(result);
                     }, false);
-
             });
         };
 
@@ -198,8 +226,11 @@
     $orderContent.on('click', '.jsCreditList li', function(e){
         var bankProviderId = $(this).data('bank-provider-id'),
             bank_id = $(this).data('value'),
+            orderId = $(this).data('orderId'),
             creditData = $(this).parent().siblings('.credit-widget').data('value'),
-            order_number_erp = $(this).closest('.orderLn').data('order-number-erp');
+            order_number_erp = $(this).closest('.orderLn').data('order-number-erp')
+            containerId = $(this).closest('.jsCreditBlock').attr('id')
+        ;
 
 		if (typeof order_number_erp == 'undefined') order_number_erp = $orderContent.data('order-number-erp');
 
@@ -213,7 +244,7 @@
         e.stopPropagation();
 
         if (!$(this).closest('ul').hasClass('jsCreditListOnlineMotiv')) $(this).parent().hide();
-        showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id);
+        showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id, orderId, containerId);
     });
 
     $body.on('click', function(){
@@ -248,10 +279,18 @@
     }
 
     if ($jsOrder.length != 0) {
-		ENTER.utils.sendOrderToGA($jsOrder.data('value'));
-		ENTER.utils.analytics.reviews.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
-		ENTER.utils.analytics.productPageSenders.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
-		ENTER.utils.analytics.productPageSenders2.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+        !function() {
+            var orderAnalytics = $jsOrder.data('value');
+            ENTER.utils.sendOrderToGA(orderAnalytics);
+            ENTER.utils.analytics.reviews.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+            ENTER.utils.analytics.productPageSenders.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+            ENTER.utils.analytics.productPageSenders2.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+
+            ENTER.utils.analytics.soloway.send({
+                action: 'orderComplete',
+                orders: orderAnalytics.orders
+            });
+        }();
     }
 
 	$(function(){
@@ -260,9 +299,23 @@
 		if (data && data.subscribe && data.email) {
 			$body.trigger('trackGoogleEvent', {
 				category: 'subscription',
-				action: 'subscribe_order_confirmation',
-				label: data.email
+				action: 'subscribe_order_confirmation'
 			});
 		}
 	});
+
+    $('.js-payment-popup-show').on('click',function(){
+
+        $(this).closest('.js-order-cell').find('.js-payment-popup').show();
+        $('body').append('<div class="payments-popup__overlay js-payment-popup-overlay"></div>');
+    });
+    $('.js-payment-popup-closer').on('click',function(){
+        $(this).parent().hide();
+        $('.js-payment-popup-overlay').remove();
+    });
+    $body.on('click','.js-payment-popup-overlay',function(){
+        $('.js-payment-popup').hide();
+        $(this).remove();
+    });
+
 }(jQuery));

@@ -19,7 +19,7 @@ $helper = new \Helper\TemplateHelper();
 
 <?= $helper->render('slice/__data', ['slice' => $slice]) ?>
 
-<div class="bCatalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
+<div class="bCatalog js-slice" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 
     <?= $helper->render('slice/__breadcrumbs', ['category' => $category, 'slice' => $slice]) // хлебные крошки ?>
 
@@ -36,13 +36,23 @@ $helper = new \Helper\TemplateHelper();
         'productPager'  => $productPager,
     ]) ?>
 
-    <?= $helper->render('product/__listAction', [
-        'pager'          => $productPager,
-        'productSorting' => $productSorting,
-    ]) // сортировка, режим просмотра, режим листания ?>
+    <? if ($category->isV2() || $category->config->listingDisplaySwitch || $category->config->listingDefaultView->isList): ?>
+        <?= $helper->render('product-category/v2/__listAction', [
+            'pager'          => $productPager,
+            'productSorting' => $productSorting,
+            'category'       => $category,
+        ]) // сортировка, режим просмотра, режим листания ?>
+    <? else: ?>
+        <?= $helper->render('product/__listAction', [
+            'pager'          => $productPager,
+            'productSorting' => $productSorting,
+            'category'       => $category,
+        ]) // сортировка, режим просмотра, режим листания ?>
+    <? endif ?>
 
     <?= $helper->render('product/__list', [
         'pager'            => $productPager,
+        'category'         => $category,
         'view'             => $productView,
         'buyMethod'        => $slice->getProductBuyMethod(),
         'showState'        => $slice->getShowProductState(),

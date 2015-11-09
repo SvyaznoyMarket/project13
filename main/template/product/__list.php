@@ -32,8 +32,11 @@ $f = function(
     $listingClass = '';
 
     $partials = [
+        'cart/_button-product'      => file_get_contents(\App::config()->templateDir . '/cart/_button-product.mustache'),
         'cart/_button-product-lstn' => file_get_contents(\App::config()->templateDir . '/cart/_button-product-lstn.mustache'),
-        'product/_review-compact'   => file_get_contents(\App::config()->templateDir . '/product/_review-compact.mustache')
+        'product/_review-compact'   => file_get_contents(\App::config()->templateDir . '/product/_review-compact.mustache'),
+        'product/_favoriteButton'   => file_get_contents(\App::config()->templateDir . '/product/_favoriteButton.mustache'),
+        'product/variation'         => file_get_contents(\App::config()->templateDir . '/product/variation.mustache'),
     ];
 
     switch ($view) {
@@ -56,9 +59,7 @@ $f = function(
 
     $expandedTemplatePath = 'product/list/_expanded';
 
-    $chosenTestCase = \App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey();
-    $chosenCategoryView = \App::request()->cookies->get('categoryView');
-    if (((($chosenTestCase === 'compactWithSwitcher' && $chosenCategoryView === 'expanded') || ($chosenTestCase === 'expandedWithSwitcher' && $chosenCategoryView !== 'compact')) || $chosenTestCase === 'expandedWithoutSwitcher') && $category && $category->isInSiteListingWithViewSwitcherAbTest()) {
+    if ($category && $category->listingView->isList) {
         $defaultTemplatePath = $expandedTemplatePath;
         $defaultView = 'expanded';
         $listingClass = 'listing';
@@ -72,13 +73,17 @@ $f = function(
         <?= $helper->renderWithMustache($defaultTemplatePath, (new \View\Product\ListAction())->execute($helper, $pager, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $defaultView, $cartButtonSender, $category, $favoriteProductsByUi)) ?>
     </ul>
 
-    <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
+    <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json(array_merge($partials, ['product/list/item/compact' => file_get_contents(\App::config()->templateDir . '/product/list/item/compact.mustache')])) ?>">
         <?= file_get_contents(\App::config()->templateDir . '/' . $compactTemplatePath . '.mustache') ?>
     </script>
 
-    <? if ($chosenTestCase === 'compactWithSwitcher' || $chosenTestCase === 'expandedWithSwitcher' || $chosenTestCase === 'expandedWithoutSwitcher'): ?>
-        <script id="listing_expanded_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
+    <? if ($category && ($category->config->listingDisplaySwitch || $category->config->listingDefaultView->isList)): ?>
+        <script id="listing_expanded_tmpl" type="text/html" data-partial="<?= $helper->json(array_merge($partials, ['product/list/item/_expanded' => file_get_contents(\App::config()->templateDir . '/product/list/item/_expanded.mustache')])) ?>">
             <?= file_get_contents(\App::config()->templateDir . '/' . $expandedTemplatePath . '.mustache') ?>
+        </script>
+
+        <script id="listing_expanded_item_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
+            <?= file_get_contents(\App::config()->templateDir . '/product/list/item/_expanded.mustache') ?>
         </script>
     <? endif ?>
 <? }; return $f;

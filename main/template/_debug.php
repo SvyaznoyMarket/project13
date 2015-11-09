@@ -77,7 +77,21 @@
                                 <td class="query-cell">{{responseBodyLength}}</td>
                                 <td class="query-cell">{{#error}}({{code}}) <span title="{{message}}">{{&substrMessage}}</span>{{/error}}</td>
                                 <td class="query-cell">
-                                    <a href="{{^data}}{{url}}{{/data}}{{#data}}/debug/query?data={{encodedData}}&url={{encodedUrl}}{{/data}}" target="_blank" class="openDirectly">&#11016;</a>
+                                    {{#data}}
+                                        <form action="/debug/query" target="_blank" method="post" style="display: inline-block;">
+                                            <input type="hidden" value="1" name="isShow">
+                                            <input type="hidden" value="{{data}}" name="data">
+                                            <input type="hidden" value="{{url}}" name="url">
+                                            <button type="submit" class="openDirectly" >
+                                                &#11016;
+                                            </button>
+                                        </form>
+                                    {{/data}}
+
+                                    {{^data}}
+                                        <a href="{{url}}" target="_blank" class="openDirectly">&#11016;</a>
+                                    {{/data}}
+
                                     <form action="/debug/query" target="_blank" method="post" style="display: inline-block;">
                                         <input type="hidden" value="{{data}}" name="data">
                                         <input type="hidden" value="{{url}}" name="url">
@@ -377,6 +391,9 @@
     }
     .debug-panel .openDirectly {
         color: #bebebe;
+        background: none;
+        border: none;
+        padding: 0;
     }
 
     .debug-panel .formButton {

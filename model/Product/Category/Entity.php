@@ -5,7 +5,7 @@ namespace Model\Product\Category;
 use Model\Media;
 
 class Entity extends BasicEntity {
-    use \Model\MediaHostTrait;
+    const FAKE_SHOP_TOKEN = 'shop';
 
     /** @var bool Является ли категория главной для товара */
     public $isMain = false;
@@ -47,8 +47,15 @@ class Entity extends BasicEntity {
     protected $ancestor = [];
     /** @var Entity[] */
     protected $child = [];
+    /** @var Config */
+    public $config;
+    /**
+     * Вид листинга (с учётом пользовательского выбора)
+     * @var ListingView
+     */
+    public $listingView;
 
-    public function __construct(array $data = []) {
+    public function __construct($data = []) {
         $templateHelper = new \Helper\TemplateHelper();
         
         $data['price_change_trigger_enabled'] = true;
@@ -85,6 +92,12 @@ class Entity extends BasicEntity {
             }
         }
 
+        if (array_key_exists('children', $data) && is_array($data['children'])) {
+            foreach ($data['children'] as $childrenData) {
+                $this->addChild(new self($childrenData));
+            }
+        }
+
         if (isset($data['product_view_id'])) $this->setProductView($data['product_view_id']);
         if (isset($data['level'])) $this->setLevel($data['level']);
 
@@ -113,6 +126,10 @@ class Entity extends BasicEntity {
         }
 
         if (isset($data['parent'])) $this->parent = new Entity($data['parent']);
+
+        $this->config = new Config(array_key_exists('config', $data) ? $data['config'] : []);
+
+        $this->listingView = new ListingView();
     }
 
     /**
@@ -314,27 +331,16 @@ class Entity extends BasicEntity {
 
     public function getImageUrl($size = 0) {
         if ($this->image) {
-            if (preg_match('/^(https?|ftp)\:\/\//i', $this->image)) {
-                if (0 == $size) {
-                    return $this->image;
-                } else if (3 == $size) {
-                    return $this->image480x480;
-                }
-            } else {
-                $urls = \App::config()->productCategory['url'];
-                return $this->getHost() . $urls[$size] . $this->image;
+            if (0 == $size) {
+                return $this->image;
+            } else if (3 == $size) {
+                return $this->image480x480;
             }
         } else if ($this->medias) {
             if (0 == $size) {
-                $source = $this->getMediaSource('category_163x163');
+                return $this->getMediaSource('category_163x163')->url;
             } else if (3 == $size) {
-                $source = $this->getMediaSource('category_480x480');
-            } else {
-                $source = null;
-            }
-
-            if ($source) {
-                return $source->url;
+                return $this->getMediaSource('category_480x480')->url;
             }
         }
     }
@@ -343,11 +349,13 @@ class Entity extends BasicEntity {
      * @param string $sourceType
      * @param string $mediaProvider
      * @param string $mediaTag
-     * @return Media\Source|null
+     * @return Media\Source
      */
-    private function getMediaSource($sourceType, $mediaTag = 'main', $mediaProvider = 'image') {
+    public function getMediaSource($sourceType, $mediaTag = 'main', $mediaProvider = 'image') {
         foreach ($this->medias as $media) {
-            if ($media->provider === $mediaProvider && in_array($mediaTag, $media->tags, true)) {
+            if ($media->provider === $mediaProvider
+
+            ) {
                 foreach ($media->sources as $source) {
                     if ($source->type === $sourceType) {
                         return $source;
@@ -356,7 +364,7 @@ class Entity extends BasicEntity {
             }
         }
 
-        return null;
+        return new Media\Source();
     }
 
     // TODO отрефакторить методы для получения родительских категорий
@@ -407,6 +415,13 @@ class Entity extends BasicEntity {
     }
 
     /**
+     * @param Entity[] $children
+     */
+    public function setChild(array $children) {
+        $this->child = $children;
+    }
+
+    /**
      * @return Entity[]
      */
     public function getChild() {
@@ -414,33 +429,38 @@ class Entity extends BasicEntity {
     }
 
     public function isV2Root() {
-        return ('616e6afd-fd4d-4ff4-9fe1-8f78236d9be6' === $this->getUi()); // Корневая бытовой техники
+        return (self::UI_BYTOVAYA_TEHNIKA === $this->getUi()); // Корневая бытовой техники
     }
 
     public function isV2() {
         return in_array($this->getRootOrSelf()->getUi(), [
-            '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
-            'f7a2f781-c776-4342-81e8-ab2ebe24c51a', // Мебель
-            'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электронника
-        ], true) || $this->isTyre();
+            self::UI_BYTOVAYA_TEHNIKA, // Бытовая техника
+            self::UI_MEBEL, // Мебель
+            self::UI_ELECTRONIKA, // Электронника
+            self::UI_TCHIBO
+        ], true) || $this->isTyre() || $this->token == 'shop';
     }
 
     public function isV2Furniture() {
         $root = $this->getRootOrSelf();
         // Мебель
-        return $root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a';
+        return $root->getUi() === self::UI_MEBEL;
     }
 
     public function isShowSmartChoice() {
         $root = $this->getRootOrSelf();
 
         // Мебель
-        return $root->getUi() !== 'f7a2f781-c776-4342-81e8-ab2ebe24c51a';
+        return $root->getUi() !== self::UI_MEBEL;
     }
 
+    /**
+     * Показывать ли изображения категорий в фильтрах
+     * @return bool
+     */
     public function isShowFullChildren() {
         if ($this->isV2()) {
-            return (bool)$this->getClosest([
+            return (bool)$this->getClosestFromAncestors([
                 '56ee3e3c-a1ee-4a42-834f-97bd1de3b16e', // Мебель для руководителей
                 'da1e9ace-9c81-4d19-a069-36a809e8b98f', // Мебель для персонала
                 'df612c33-3a48-47dd-b424-f0398f82e37e', // Коллекции мебели для гостиной
@@ -448,18 +468,23 @@ class Entity extends BasicEntity {
                 '61b83d8a-6383-4e51-9173-f51f89726cd4', // Коллекции мебели для прихожей
                 '4358f982-288f-4973-8eec-d77253fc9233', // Коллекции мебели для детской
                 '81dd06df-221c-4eb8-b095-73b3982f0874', // Коллекции мягкой мебели
+                self::UI_TCHIBO
             ]);
         }
 
         return true;
     }
 
+    public function isFakeShopCategory() {
+        return $this->token == self::FAKE_SHOP_TOKEN;
+    }
+
     public function isAlwaysShowBrand() {
         if ($this->isV2()) {
-            return (bool)$this->getClosest([
-                '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
-                'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электронника
-            ]);
+            return (bool)$this->getClosestFromAncestors([
+                self::UI_BYTOVAYA_TEHNIKA, // Бытовая техника
+                self::UI_ELECTRONIKA, // Электронника
+            ]) || $this->isFakeShopCategory();
         }
 
         return false;
@@ -472,15 +497,13 @@ class Entity extends BasicEntity {
         ], true);
     }
 
-    public function isInSiteListingWithViewSwitcherAbTest() {
-        return (bool)$this->getClosest([
-            '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
-            'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электроника
-            '0e80c81b-31c9-4519-bd10-e6a556fe000c', // Сделай сам
-        ]);
-    }
-
-    private function getClosest(array $expectedUis) {
+    /**
+     * Возвращает ближайшую категорию из родителей по ui
+     * @param array $expectedUis
+     *
+     * @return Entity|null
+     */
+    private function getClosestFromAncestors(array $expectedUis) {
         /** @var Entity[] $ancestors */
         $ancestors = $this->ancestor;
         $ancestors[] = $this;
@@ -544,6 +567,73 @@ class Entity extends BasicEntity {
             'e0b806a4-bd2b-4360-869d-9c078dadd6c3', // Серьги из серебра
             'f2ffa700-0ac7-4125-867b-1a114b5f20b6', // Подвески из серебра
         ], true);
+    }
+
+    public function isPandora() {
+        return $this->getCategoryClass() === 'jewel';
+    }
+
+    /**
+     * Является ли категория Чибовской
+     * @return bool
+     */
+    public function isTchibo()
+    {
+        return array_key_exists(0, $this->ancestor) && $this->ancestor[0]->getUi() === self::UI_TCHIBO;
+    }
+
+    /** Ручной гридстер
+     * @return bool
+     */
+    public function isManualGrid() {
+        return $this->config->isManualGridView();
+    }
+
+    /** Автоматический гридстер
+     * @return bool
+     */
+    public function isAutoGrid() {
+        return $this->config->isAutoGridView();
+    }
+
+    public function isDefault() {
+        return ($this->getCategoryClass() === 'default' || $this->getCategoryClass() == '');
+    }
+
+    public function getCategoryClass() {
+        return !empty($this->catalogJson['category_class']) ? strtolower(trim((string)$this->catalogJson['category_class'])) : null;
+    }
+
+    /**
+     * SITE-5772
+     * @return array
+     */
+    public function getSenderForGoogleAnalytics() {
+        if ($this->isPandora()) {
+            $sender = ['name' => 'filter_pandora'];
+        } else if ($this->isV3()) {
+            $sender = ['name' => 'filter_jewelry'];
+        } else if ($this->isV2()) {
+            $sender = ['name' => 'filter'];
+        } else if ($this->isDefault()) {
+            $sender = ['name' => 'filter_old'];
+        } else {
+            $sender = [];
+        }
+
+        if ($sender) {
+            $sender['categoryUrlPrefix'] = $this->getUrlPrefix();
+        }
+
+        return $sender;
+    }
+
+    private function getUrlPrefix() {
+        if (preg_match('/^\/catalog\/([^\/]*).*$/i', parse_url($this->link, PHP_URL_PATH), $matches)) {
+            return $matches[1];
+        }
+
+        return '';
     }
 
     private function convertCatalogJsonToOldFormat($data) {
@@ -659,4 +749,11 @@ class Entity extends BasicEntity {
 
         return $result;
     }
+}
+
+class ListingView {
+    /** @var bool */
+    public $isList = false;
+    /** @var bool */
+    public $isMosaic = true;
 }

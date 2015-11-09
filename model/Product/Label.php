@@ -24,6 +24,8 @@ class Label {
     public $affectPrice = false;
     /** @var \DateTime|null */
     public $expires;
+    /** @var string|null */
+    public $url;
     /** @var Media[] */
     public $medias = [];
 
@@ -32,7 +34,7 @@ class Label {
         if (isset($data['uid'])) $this->uid = $data['uid'];
         if (isset($data['name'])) $this->name = $data['name'];
         if (isset($data['affects_price'])) $this->affectPrice = $data['affects_price'];
-        if (isset($data['expires_at']) && Date::isDateTimeString($data['expires_at'])) {
+        if (isset($data['expires_at']) && is_string($data['expires_at']) && ('3f781954-122c-4555-940f-66d731242d33' !== $this->uid)) {
             $this->expires = new \DateTime($data['expires_at']);
         }
         if (isset($data['medias']) && is_array($data['medias'])) {

@@ -37,11 +37,8 @@ namespace EnterQuery\Product
                 'select_type' => 'id',
                 'id'          => $this->ids,
                 'geo_id'      => $this->regionId,
+                'withModels'  => 0,
             ];
-
-            if (!$this->filter->model) {
-                $params['withModels'] = 0;
-            }
 
             $this->prepareCurlQuery(
                 $this->buildUrl(
@@ -73,7 +70,5 @@ namespace EnterQuery\Product\GetByIdList
 
     class Filter
     {
-        /** @var bool */
-        public $model = true;
     }
 }

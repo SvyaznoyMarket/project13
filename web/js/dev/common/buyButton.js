@@ -24,7 +24,7 @@
 			sender2 = ENTER.utils.analytics.productPageSenders2.get($button)
 		;
 
-		if (sender && JSON.stringify(sender) != JSON.stringify($button.data('sender'))) {
+		if (sender) {
 			for (var key in sender) {
 				if (sender.hasOwnProperty(key)) {
 					url = ENTER.utils.setURLParam('sender[' + key + ']', sender[key], url);
@@ -32,7 +32,7 @@
 			}
 		}
 
-		if (sender2 && sender2 != $button.data('sender2')) {
+		if (sender2) {
 			url = ENTER.utils.setURLParam('sender2', sender2, url);
 		}
 
@@ -49,6 +49,17 @@
 					upsale = $button.data('upsale') ? $button.data('upsale') : null,
 					product = $button.parents('.jsSliderItem').data('product');
 
+				if (data.noticePopupHtml) {
+					$.enterLightboxMe.closeAll();
+					$(data.noticePopupHtml).enterLightboxMe({
+						centered: true,
+						closeSelector: '.js-notice-popup-closer',
+						closeClick: true,
+						destroyOnClose: true,
+						preventScroll: true
+					});
+				}
+
 				if (!data.success) {
 					return;
 				}
@@ -58,6 +69,17 @@
 				data.location = $button.data('location');
 
 				ENTER.UserModel.cart().update(data.cart);
+
+				if (data.sender && typeof data.sender.name == 'string' && data.sender.name.indexOf('filter') == 0) {
+					$('body').trigger('trackGoogleEvent', {
+						category: data.sender.name,
+						action: 'basket',
+						label: data.sender.categoryUrlPrefix
+					});
+				}
+
+				ENTER.utils.analytics.addProduct($button[0]);
+				ENTER.utils.analytics.setAction('add');
 				$body.trigger('addtocart', [data, upsale]);
 			},
 			error: function() {
@@ -151,6 +173,15 @@
 				$.each(data.setProducts, function(key, setProduct) {
 					googleAnalytics(event, setProduct, data.sender);
 					addToRetailRocket(event, setProduct.id);
+					ENTER.utils.analytics.soloway.send({
+						action: 'basketProductAdd',
+						product: {
+							ui: setProduct.ui,
+							category: {
+								ui: setProduct.category ? setProduct.category.ui : ''
+							}
+						}
+					});
 				});
 				console.groupEnd();
 			}

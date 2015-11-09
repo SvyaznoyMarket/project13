@@ -4,8 +4,12 @@ namespace Controller\Slice;
 
 use Controller\Product\SetAction;
 use Model\Product\Category\Entity;
+use EnterApplication\CurlTrait;
+use EnterQuery as Query;
 
 class ShowAction {
+    use CurlTrait;
+
     /**
      * @param \Http\Request $request
      * @param string        $sliceToken
@@ -59,11 +63,94 @@ class ShowAction {
 
         $this->prepareEntityBranch($category, $sliceToken, $sliceFiltersForSearchClientRequest, $region);
         $this->prepareProductFilter($filters, $category, $sliceFiltersForSearchClientRequest, $region);
+        /** @var \Model\Product\Category\Entity[] $sliceCategories */
+        $sliceCategories = [];
+        if (!$request->isXmlHttpRequest()) {
+            // категории в фильтре среза, например { slice.filter: category[]=1239&category[]=1245&category[]=1232&category[]=1216&category[]=1224&category[]=1209&category[]=338 }
+            $this->prepareSliceCategories($slice, $region, $sliceCategories);
+        }
+
         \App::coreClientV2()->execute();
+
+        // если есть категории в фильтре среза
+        if ($sliceCategories) {
+            $availableCategoryQuery = new Query\Product\Category\GetAvailable();
+            $availableCategoryQuery->regionId = $region->getId();
+            $availableCategoryQuery->rootCriteria = $category->id ? ['id' => $category->id] : [];
+            //$availableCategoryQuery->depth = 1;
+            $availableCategoryQuery->filterData = call_user_func(function() use ($sliceFiltersForSearchClientRequest) {
+                foreach ($sliceFiltersForSearchClientRequest as $i => $item) {
+                    if (isset($item[0]) && ('category' === $item[0])) {
+                        unset($sliceFiltersForSearchClientRequest[$i]); // TODO: убрать как только будет готова SPPX-259
+                    }
+                }
+
+                return $sliceFiltersForSearchClientRequest;
+            });
+            $availableCategoryQuery->prepare();
+
+            $this->getCurl()->execute();
+
+            $availableCategoryUis = [];
+            if (!$availableCategoryQuery->error) {
+                foreach ($availableCategoryQuery->response->categories as $item) {
+                    if (!isset($item['product_count']) || !$item['product_count'] || !isset($item['uid'])) continue;
+                    $availableCategoryUis[$item['uid']] = true;
+                }
+
+                $children = $category->id ? $category->getChild() : $sliceCategories;
+
+                $level = 0;
+                /**
+                 * @param \Model\Product\Category\Entity[] $categories
+                 * @return \Model\Product\Category\Entity[]
+                 */
+                $filter = function($categories) use (&$filter, &$level, &$availableCategoryUis) {
+                    $level++;
+                    if ($level > 6) return []; // защита от чрезмерного глубокого погружения
+
+                    foreach ($categories as $i => $category) {
+                        if (!isset($availableCategoryUis[$category->ui])) {
+                            unset($categories[$i]);
+                        }
+
+                        if ($children = $category->getChild()) {
+                            $category->setChild($filter($children));
+                        }
+                    }
+
+                    return $categories;
+                };
+                $children = $filter($children);
+
+                $category->setChild($children);
+            }
+        }
 
         $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category->getId() ? $category : null, null, $request, $shop);
         $productPager = $this->getProductPager($productFilter, $sliceFiltersForSearchClientRequest, $productSorting, $pageNum, $region);
         $category->setProductCount($productPager->count());
+
+        call_user_func(function() use(&$category) {
+            $userChosenCategoryView = \App::request()->cookies->get('categoryView');
+
+            if (
+                (!$category->config->listingDisplaySwitch && $category->config->listingDefaultView->isList)
+                || (
+                    $category->config->listingDisplaySwitch
+                    && (
+                        $userChosenCategoryView === 'expanded'
+                        || ($category->config->listingDefaultView->isList && $userChosenCategoryView == '')
+                    )
+                )
+            ) {
+                $category->listingView->isList = true;
+                $category->listingView->isMosaic = false;
+            } else {
+                $category->listingView->isList = false;
+                $category->listingView->isMosaic = true;
+            }
+        });
 
         if ($productPager->getPage() > $productPager->getLastPage()) {
             return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
@@ -139,6 +226,7 @@ class ShowAction {
         $page->setParam('productView', $request->get('view', $category->getProductView()));
         $page->setParam('hasCategoryChildren', !$this->isSeoSlice()); // SITE-3558
         $page->setParam('cartButtonSender', $cartButtonSender);
+        $page->setParam('sliceCategories', $sliceCategories);
         $page->setGlobalParam('shop', $shop);
 
         return new \Http\Response($page->show());
@@ -185,6 +273,35 @@ class ShowAction {
         }
 
         return $category;
+    }
+
+    /**
+     * @param \Model\Slice\Entity $slice
+     * @param \Model\Region\Entity $region
+     * @param \Model\Product\Category\Entity[] $categories
+     */
+    private function prepareSliceCategories(\Model\Slice\Entity $slice, \Model\Region\Entity $region, &$categories = []) {
+        parse_str($slice->getFilterQuery(), $requestFilters);
+
+        $categoryIds = isset($requestFilters['category'][0]) ? (array)$requestFilters['category'] : [];
+        if (!$categoryIds) {
+            return;
+        }
+
+        \RepositoryManager::productCategory()->prepareCollectionById($categoryIds, $region, function ($data) use (&$slice, &$categories) {
+            if (!isset($data[0])) return;
+
+            $router = \App::router();
+
+            foreach ($data as $item) {
+                if (!isset($item['uid'])) continue;
+
+                $category = new \Model\Product\Category\Entity($item);
+                $category->setLink($router->generate('slice.category', ['sliceToken' => $slice->getToken(), 'categoryToken' => $category->getToken()]));
+
+                $categories[] = $category;
+            }
+        });
     }
 
     /**
@@ -255,19 +372,20 @@ class ShowAction {
             if (isset($data['count'])) {
                 $productCount = (int)$data['count'];
             }
-        }
-        );
-
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        $productRepository->prepareProductQueries($products, 'media label brand category');
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
-            if (isset($data['product_scores'][0])) {
-                \RepositoryManager::review()->addScores($products, $data);
-            }
         });
+
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+        $productRepository->prepareProductQueries($products, 'model media property label brand category');
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareScoreCollection($products, function ($data) use (&$products) {
+                if (isset($data['product_scores'][0])) {
+                    \RepositoryManager::review()->addScores($products, $data);
+                }
+            });
+        }
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 

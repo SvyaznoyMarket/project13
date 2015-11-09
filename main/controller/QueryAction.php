@@ -13,6 +13,7 @@ class QueryAction {
 
         \App::config()->debug = false;
 
+        $isShow = (bool)$request->get('isShow');
         $url = urldecode(trim((string)$request->get('url')));
         $data = $request->get('data');
         if (is_string($data)) {
@@ -28,36 +29,51 @@ class QueryAction {
                 throw new \Exception\NotFoundException();
             }
 
-            try {
-                $result = \App::curl()->query($url, $data, 10);
-                \App::logger('query')->info([
-                    'url'    => $url,
-                    'data'   => $data,
-                    'result' => $result,
-                ]);
-            } catch (\Exception $e) {
-                \App::exception()->remove($e);
+            if ($isShow) {
+                try {
+                    $result = \App::curl()->query($url, $data, 10);
+                } catch (\Exception $e) {
+                    \App::exception()->remove($e);
 
-                if ($e instanceof \Curl\Exception) {
-                    $result = ['error' => $e->getContent()];
-                } else {
-                    $result = ['error' => ['code' => $e->getCode(), 'message' => $e->getMessage()]];
+                    if ($e instanceof \Curl\Exception) {
+                        $result = ['error' => $e->getContent()];
+                    } else {
+                        $result = ['error' => ['code' => $e->getCode(), 'message' => $e->getMessage()]];
+                    }
+                }
+            } else {
+                try {
+                    $result = \App::curl()->query($url, $data, 10);
+                    \App::logger('query')->info([
+                        'url'    => $url,
+                        'data'   => $data,
+                        'result' => $result,
+                    ]);
+                } catch (\Exception $e) {
+                    \App::exception()->remove($e);
+
+                    if ($e instanceof \Curl\Exception) {
+                        $result = ['error' => $e->getContent()];
+                    } else {
+                        $result = ['error' => ['code' => $e->getCode(), 'message' => $e->getMessage()]];
+                    }
+
+                    \App::logger('query')->error([
+                        'url'    => $url,
+                        'data'   => $data,
+                        'result' => $result,
+                    ]);
                 }
 
-                \App::logger('query')->error([
-                    'url'    => $url,
-                    'data'   => $data,
-                    'result' => $result,
-                ]);
+                return new \Http\RedirectResponse(\App::router()->generate('debug.query.show', ['queryToken' => \App::$id]));
             }
-
-            return new \Http\RedirectResponse(\App::router()->generate('debug.query.show', ['queryToken' => \App::$id]));
         }
 
         return new \Http\Response(\App::closureTemplating()->render('page-query', [
             'url'    => $url,
             'data'   => $data,
             'result' => $result,
+            'isShow' => $isShow,
         ]));
     }
 
@@ -73,7 +89,6 @@ class QueryAction {
 
         $queryToken = trim((string)$queryToken);
 
-        $data = [];
         try {
             $log = shell_exec(sprintf('cd %s && tail -n 50000 query.log | grep %s',
                 \App::config()->logDir,
@@ -85,8 +100,45 @@ class QueryAction {
             $data = [];
         }
 
-        $data = array_merge(['url' => null, 'data' => null, 'result' => null], $data);
+        $data = array_merge(['url' => null, 'data' => null, 'result' => null, 'queryToken' => $queryToken], $data);
 
         return new \Http\Response(\App::closureTemplating()->render('page-query', $data));
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @param $queryToken
+     * @return \Http\Response
+     */
+    public function getJson(\Http\Request $request, $queryToken) {
+        //\App::logger()->debug('Exec ' . __METHOD__);
+
+        \App::config()->debug = false;
+
+        $queryToken = trim((string)$queryToken);
+
+        try {
+            $log = shell_exec(sprintf('cd %s && tail -n 50000 query.log | grep %s',
+                \App::config()->logDir,
+                $queryToken
+            ));
+
+            $data = (array)json_decode($log, true);
+        } catch(\Exception $e) {
+            $data = [];
+        }
+
+        $data = [
+            'request' => [
+                'url'  => $data['url'],
+                'data' => $data['data'],
+            ],
+            'response' => $data['result'],
+        ];
+
+        \Http\JsonResponse::$jsonOptions = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT;
+        $response = new \Http\JsonResponse($data);
+
+        return $response;
     }
 }

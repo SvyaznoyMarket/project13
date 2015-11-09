@@ -45,49 +45,49 @@ class Actionpay {
                     $rate = null;
                     /** @var Category $category */
                     switch ($category->ui) {
-                        case 'f7a2f781-c776-4342-81e8-ab2ebe24c51a':  // Мебель
+                        case Category::UI_MEBEL:  // Мебель
                             $rate = 0.136;
                             break;
-                        case '0e80c81b-31c9-4519-bd10-e6a556fe000c':  // Сделай сам
-                            $rate = 0.0858;
+                        case Category::UI_SDELAY_SAM:  // Сделай сам
+                            $rate = 0.0586;
                             break;
-                        case 'feccd951-d555-42c2-b417-a161a78faf03': // Детские товары
-                            $rate = 0.0387;
+                        case Category::UI_DETSKIE_TOVARY: // Детские товары
+                            $rate = 0.091;
                             break;
-                        case 'b8569e65-e31e-47a1-af20-5b06aff9f189': // Товары для дома
-                            $rate = 0.0652;
+                        case Category::UI_TOVARY_DLYA_DOMA: // Товары для дома
+                            $rate = 0.136;
                             break;
-                        case 'd91b814f-0470-4fd5-a2d0-a0449e63ab6f': // Электроника
-                            $rate = 0.022;
+                        case Category::UI_ELECTRONIKA: // Электроника
+                            $rate = 0.0055;
                             break;
-                        case 'c9c2dc8d-1ee5-4355-a0c1-898f219eb892':  // Подарки и хобби
+                        case Category::UI_PODARKI_I_HOBBY:  // Подарки и хобби
                             $rate = 0.065;
                             break;
-                        case '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6': // Бытовая техника
+                        case Category::UI_BYTOVAYA_TEHNIKA: // Бытовая техника
                             $rate = 0.0415;
                             break;
-                        case '022fa1e3-c51f-4a48-87fc-de2c917176d6': // Украшения и часы
+                        case Category::UI_UKRASHENIYA_I_CHASY: // Украшения и часы
                             $rate = 0.13;
                             break;
-                        case '19b9f12c-d489-4540-9a17-23dba0641166': // Парфюмерия и косметика
-                            $rate = 0.0429;
+                        case Category::UI_PARFUMERIA_I_COSMETIKA: // Парфюмерия и косметика
+                            $rate = 0.078;
                             break;
-                        case '846eccd2-e9f0-4ce4-b7a2-bb28a835fd7a': // Спорт и отдых
+                        case Category::UI_SPORT_I_OTDYH: // Спорт и отдых
                             $rate = 0.099;
                             break;
-                        case 'b933de12-5037-46db-95a4-370779bb4ee2': // Зоотовары
-                            $rate = 0.0349;
+                        case Category::UI_ZOOTOVARY: // Зоотовары
+                            $rate = 0.0586;
                             break;
-                        case 'caf18e17-550a-4d3e-8285-b1c9cc99b5f4': // Товары Tchibo
+                        case Category::UI_TCHIBO: // Товары Tchibo
                             $rate = 0.1144;
                             break;
-                        case '5f3aa3be-1ac2-4dff-a473-c603e6e51e41': // Красота и здоровье
+                        case Category::UI_KRASOTA_I_ZDOROVIE: // Красота и здоровье
                             $rate = 0.039;
                             break;
-                        case '5e78849d-01e8-4509-8bfe-85f8e148b37d': // Аксессуары
+                        case Category::UI_AKSESSUARY: // Аксессуары
                             $rate = 0.055;
                             break;
-                        case 'ed807fca-962b-4b75-9813-d5efbb8ef586': // Игры и консоли
+                        case Category::UI_IGRY_I_KONSOLI: // Игры и консоли
                             $rate = 0.065;
                             break;
                     }

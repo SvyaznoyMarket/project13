@@ -61,15 +61,13 @@ class DefaultLogger implements LoggerInterface {
     protected function log($message, $level, array $tags = []) {
         if ($level > $this->level) return;
 
+        // exception check
         if ($message instanceof \Exception) {
             $message = [
-                'error' => [
-                    'code'    => $message->getCode(),
-                    'message' => $message->getMessage(),
-                    'file'    => $message->getFile() . ' (' . $message->getLine() . ')',
-                    'trace'   => $message->getTrace()
-                ],
+                'error' => $this->dumpException($message),
             ];
+        } else if (isset($message['error']) && ($message['error'] instanceof \Exception)) {
+            $message['error'] = $this->dumpException($message['error']);
         }
 
         $item = [
@@ -106,5 +104,20 @@ class DefaultLogger implements LoggerInterface {
 
     public function getMessages() {
         return $this->messages;
+    }
+
+    private function dumpException(\Exception $exception) {
+        if ($exception instanceof \EnterQuery\Exception) {
+            $message['detail'] = $exception->getDetail();
+            $message['curl'] = $exception->getQuery();
+        } else if ($exception instanceof \Curl\Exception) {
+            $message['detail'] = $exception->getContent();
+        }
+        $message['code'] = $exception->getCode();
+        $message['message'] = $exception->getMessage();
+        $message['file'] = $exception->getFile() . ' (' . $exception->getLine() . ')';
+        $message['trace'] = $exception->getTraceAsString();
+
+        return $message;
     }
 }

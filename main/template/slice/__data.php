@@ -9,6 +9,6 @@ return function(
         'name'   => $slice->getName(),
         'isSale' => 'all_labels' === $slice->getToken(),
     ];
-?>
+    ?>
     <div id="jsSlice" data-value="<?= $helper->json($data) ?>"></div>
 <? };

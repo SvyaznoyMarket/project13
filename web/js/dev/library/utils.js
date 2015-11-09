@@ -29,6 +29,12 @@
 		return len;
 	};
 
+	utils.numberChoice = function(number, choices) {
+		var cases = [2, 0, 1, 1, 1, 2];
+
+		return choices[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[Math.min(number % 10, 5)]];
+	};
+
 	/**
 	 * Возвращает гет-параметр с именем paramName у ссылки url
 	 *
@@ -267,19 +273,29 @@
 				/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
 				if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery.price) productName = productName + ' (paid pickup)';
 
-				// Аналитика по купленным товарам из рекомендаций
-				// Отправляем RR_покупка не только для retailrocket товаров
 				if (p.sender) {
-					var rrEventLabel = '';
-					// Если товар был куплен из рекомендаций с карточки товара маркетплейс
-					if (p.sender2 == 'slot') {
-						rrEventLabel = '_marketplace-slot';
-					} else if (p.sender2 == 'marketplace') {
-						rrEventLabel = '_marketplace';
-					}
+					// SITE-5772
+					if (typeof p.sender == 'string' && p.sender.indexOf('filter') == 0) {
+						$('body').trigger('trackGoogleEvent', {
+							category: p.sender,
+							action: 'buy',
+							label: p.isFromProductCard ? 'product' : 'basket'
+						});
+					} else {
+						// Аналитика по купленным товарам из рекомендаций
+						// Отправляем RR_покупка не только для retailrocket товаров
 
-					if (p.from) $body.trigger('trackGoogleEvent',['RR_покупка' + rrEventLabel,'Купил просмотренные', p.position || '']);
-					else $body.trigger('trackGoogleEvent',['RR_покупка' + rrEventLabel,'Купил добавленные', p.position || '']);
+						var rrEventLabel = '';
+						// Если товар был куплен из рекомендаций с карточки товара маркетплейс
+						if (p.sender2 == 'slot') {
+							rrEventLabel = '_marketplace-slot';
+						} else if (p.sender2 == 'marketplace') {
+							rrEventLabel = '_marketplace';
+						}
+
+						if (p.from) $body.trigger('trackGoogleEvent',['RR_покупка' + rrEventLabel,'Купил просмотренные', p.position || '']);
+						else $body.trigger('trackGoogleEvent',['RR_покупка' + rrEventLabel,'Купил добавленные', p.position || '']);
+					}
 				}
 
 				if (p.inCompare) {
@@ -300,12 +316,13 @@
 				productUis.push(p.ui);
 
 				return {
-					'id': p.id,
-					'name': productName,
-					'sku': p.article,
-					'category': p.category.length ? (p.category[0].name +  ' - ' + p.category[p.category.length -1].name) : '',
+					'id': p.barcode,
+					'sku': p.barcode,
+					'name': p.name,
+					'category': $.map(p.category, function(obj) {return obj.name}).join(' / '),
 					'price': p.price,
-					'quantity': p.quantity
+					'quantity': p.quantity,
+					'brand': p.brand ? p.brand.name : ''
 				}
 			});
 
@@ -375,13 +392,49 @@
 					actions.push(location);
 				}
 
-				$body.trigger('trackGoogleEvent', ['Add2Basket', '(' + actions.join(')(') + ')', productArticle]);
+				//$body.trigger('trackGoogleEvent', ['Add2Basket', '(' + actions.join(')(') + ')', productArticle]);
+				$body.trigger('trackGoogleEvent', ['Product', 'click', 'add to cart']);
 			}
 		}
 	};
 
-	utils.getCategoryPath = function() {
-		return document.location.pathname.replace(/^\/(?:catalog|product)\/([^\/]*).*$/i, '$1');
+	/**
+	 * SITE-5772
+	 * @param {String} sort Например, price-ask
+	 * @param {Object} category Данные категории вида {name: "", ancestors: [{name: ""}]}
+	 */
+	utils.sendSortEvent = function(sort, category) {
+		// Для слайсов события в аналитику пока не шлём, т.к. для реализации событий перехода на карточку, добавления в
+		// корзину и покупки необходимо добавить либо поддержку множественных sender'ов либо добавить поддержку
+		// параметра sender3 (который использовать для данной аналитики). Отравку событий взаимодействия с фильтрами без
+		// отправки события перехода/добавления/покупки не делает, чтобы не портить статистику по filter_old.
+		if ($('.js-slice').length) {
+			return;
+		}
+
+		$('body').trigger('trackGoogleEvent', {
+			category: 'sort',
+			action: sort,
+			label: utils.getPageBusinessUnitId() + (function() {
+				var result = '';
+
+				if (!category || !category.name) {
+					return [];
+				}
+
+				if (category.ancestors) {
+					$.each(category.ancestors, function(key, category) {
+						result += '_' + category.name;
+					});
+				}
+
+				return result + '_' + category.name;
+			})()
+		});
+	};
+
+	utils.getPageBusinessUnitId = function() {
+		return document.location.pathname.replace(/^(?:\/(?:catalog|product))?\/(slices?\/(?:[^\/]*\/)?[^\/]*|[^\/]*).*$/i, '$1');
 	};
 
 	var abstractAnalytics = {
@@ -443,6 +496,52 @@
 	};
 
 	utils.analytics = {
+
+		/**
+		 * Проверка доступности трекеров
+		 * @returns {boolean}
+		 */
+		isEnabled: function() {
+			return typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0
+		},
+
+		/**
+		 * E-commerce common helper
+		 * @param action Действие
+		 * @param elem Кнопка "купить" или объект для для GA (определяется по наличию свойства id)
+		 * @param additionalData
+		 */
+		addEcommData: function(action, elem, additionalData) {
+			var data = (elem && (typeof elem.tagName != 'undefined')) ? $(elem).data('ecommerce') : elem;
+			if (!this.isEnabled || typeof data != 'object') return;
+			if (typeof additionalData != 'undefined') data = $.extend({}, data, additionalData);
+			if (this.isEnabled()) ga(action, data);
+			console.log('[GA] %s', action, data)
+		},
+
+		/**
+		 * E-commerce ec:addImpression helper
+		 * @param elem Кнопка "купить" или объект для для GA (определяется по наличию свойства id)
+		 * @param additionalData
+		 */
+		addImpression: function(elem, additionalData) {
+			this.addEcommData('ec:addImpression', elem, additionalData);
+		},
+
+		/**
+		 * E-commerce ec:addProduct helper
+		 * @param elem Кнопка "купить" или объект для для GA (определяется по наличию свойства id)
+		 * @param additionalData
+		 */
+		addProduct: function(elem, additionalData) {
+			this.addEcommData('ec:addProduct', elem, additionalData)
+		},
+
+		setAction: function(action, params) {
+			if (this.isEnabled()) ga('ec:setAction', action, typeof params !== 'undefined' ? params : {});
+			console.log('[GA] ec:setAction %s', action, params)
+		},
+
 		// SITE-5466
 		reviews: {
 			add: function(productUi, avgScore, firstPageAvgScore, categoryName) {
@@ -505,6 +604,10 @@
 							sender = productPageSender;
 						}
 					}
+
+					if (sender && typeof sender.name == 'string' && sender.name.indexOf('filter') == 0) {
+						sender.isFromProductCard = true;
+					}
 				}
 
 				return sender;
@@ -550,7 +653,92 @@
 			clean: function() {
 				return abstractAnalytics.clean('enter.analytics.productPageSenders2');
 			}
+		},
+		soloway: {
+			send: function(data) {
+				if (!ENTER.config.pageConfig.analytics.soloway) {
+					return;
+				}
+
+				if (!data.user) {
+					data.user = {
+						id: ENTER.config.userInfo.user.id
+					};
+				}
+
+				var send = function(h){function k(){var a=function(d,b){if(this instanceof AdriverCounter)d=a.items.length||1,a.items[d]=this,b.ph=d,b.custom&&(b.custom=a.toQueryString(b.custom,";")),a.request(a.toQueryString(b));else return a.items[d]};a.httplize=function(a){return(/^\/\//.test(a)?location.protocol:"")+a};a.loadScript=function(a){try{var b=g.getElementsByTagName("head")[0],c=g.createElement("script");c.setAttribute("type","text/javascript");c.setAttribute("charset","windows-1251");c.setAttribute("src",a.split("![rnd]").join(Math.round(1E6*Math.random())));c.onreadystatechange=function(){/loaded|complete/.test(this.readyState)&&(c.onload=null,b.removeChild(c))};c.onload=function(){b.removeChild(c)};b.insertBefore(c,b.firstChild)}catch(f){}};a.toQueryString=function(a,b,c){b=b||"&";c=c||"=";var f=[],e;for(e in a)a.hasOwnProperty(e)&&f.push(e+c+escape(a[e]));return f.join(b)};a.request=function(d){var b=a.toQueryString(a.defaults);a.loadScript(a.redirectHost+"/cgi-bin/erle.cgi?"+d+"&rnd=![rnd]"+(b?"&"+b:""))};a.items=[];a.defaults={tail256:document.referrer||"unknown"};a.redirectHost=a.httplize("//ad.adriver.ru");return a}var g=document;"undefined"===typeof AdriverCounter&&(AdriverCounter=k());new AdriverCounter(0,h)};
+
+				var custom = {};
+				if (data.user.id) {
+					custom['153'] = data.user.id;
+				}
+
+				switch (data.action) {
+					case 'pageView':
+						send({
+							"sid": ENTER.config.pageConfig.analytics.soloway.id,
+							"bt": 62,
+							"custom": custom
+						});
+						break;
+					case 'productView':
+						custom["10"] = data.product.ui;
+						custom["11"] = data.product.category.ui;
+
+						send({
+							"sid": ENTER.config.pageConfig.analytics.soloway.id,
+							"bt": 62,
+							"custom": custom
+						});
+						break;
+					case 'orderComplete':
+						$.each(data.orders, function(key, order) {
+							custom["150"] = order.number;
+							custom["151"] = order.sum;
+
+							send({
+								"sid": ENTER.config.pageConfig.analytics.soloway.id,
+								"sz": "order",
+								"bt": 62,
+								"custom": custom
+							});
+						});
+						break;
+					case 'userRegistrationComplete':
+						if (data.user.id) {
+							custom['152'] = data.user.id;
+						}
+						send({
+							"sid": ENTER.config.pageConfig.analytics.soloway.id,
+							"sz": "regist",
+							"bt": 62,
+							"custom": custom
+						});
+						break;
+					case 'basketProductAdd':
+						custom["10"] = data.product.ui;
+						custom["11"] = data.product.category.ui;
+
+						send({
+							"sid": ENTER.config.pageConfig.analytics.soloway.id,
+							"sz": "add_basket",
+							"bt": 62,
+							"custom": custom
+						});
+						break;
+					case 'basketProductDelete':
+						custom["10"] = data.product.ui;
+						custom["11"] = data.product.category.ui;
+
+						send({
+							"sid": ENTER.config.pageConfig.analytics.soloway.id,
+							"sz": "del_basket",
+							"bt": 62,
+							"custom": custom
+						});
+						break;
+				}
+			}
 		}
 	};
-
 }(window.ENTER));

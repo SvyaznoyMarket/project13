@@ -29,7 +29,6 @@ return function(
             <label class="fltrBtn_btn<? if (!$filter->getIsMultiple()) { ?> mCustomLabelRadio<? } ?>" for="<?= $viewId ?>">
                 <? if ($option->getImageUrl()): ?>
                     <img class="fltrBtn_btn_img" src="<?= $helper->escape($option->getImageUrl()) ?>">
-                    <span class="fixpix"></span>
                 <? else: ?>
                     <span class="fltrBtn_btn_tx"><?= $option->getName() ?></span>
                 <? endif ?>

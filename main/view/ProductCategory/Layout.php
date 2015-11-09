@@ -2,24 +2,34 @@
 
 namespace View\ProductCategory;
 
+use \Model\Product\Category\Entity as Category;
+
 abstract class Layout extends \View\DefaultLayout {
+
     use LayoutTrait;
 
     protected $layout  = 'layout-oneColumn';
 
+    /**
+     * @var Category
+     */
+    protected $category;
+
     public function prepare() {
-        $category = $this->getParam('category');
-        if (!($category instanceof \Model\Product\Category\Entity)) {
-            return;
+
+        $category = $this->category = $this->getParam('category', new Category());
+
+        if ($this->category->isTchibo()) {
+            $this->useMenuHamburger = true;
         }
+
+        $this->flPrecheckoutData['fl-action'] = 'track-category-view';
+        $this->flPrecheckoutData['fl-category-id'] = $this->category->id;
 
         /** @var $productPager \Iterator\EntityPager */
         $productPager = $this->getParam('productPager') instanceof \Iterator\EntityPager ? $this->getParam('productPager') : null;
         /** @var $regionName string */
         $regionName = \App::user()->getRegion()->getName();
-
-        /** @var $brand \Model\Brand\Entity */
-        $brand = $this->getParam('brand') instanceof \Model\Brand\Entity ? $this->getParam('brand') : null;
 
         // content title
         if (!$this->getParam('title')) {

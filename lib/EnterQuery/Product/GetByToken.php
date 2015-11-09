@@ -36,13 +36,14 @@ namespace EnterQuery\Product
                         'select_type' => 'slug',
                         'slug'        => $this->token,
                         'geo_id'      => $this->regionId,
+                        'withModels'  => 0,
                     ]
                 ),
                 [], // data
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->product = $result[0];
+                    $this->response->product = isset($result[0]) ? $result[0] : null;
 
                     return $result; // for cache
                 }

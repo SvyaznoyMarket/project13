@@ -31,5 +31,5 @@ return function(
         'oldProductPageSender2' => \Session\ProductPageSenders2::get($product->getUi()),
     ];
 ?>
-    <div id="jsProductCard" data-value="<?= $helper->json($data) ?>"></div>
+    <div id="jsProductCard" data-value="<?= $helper->json($data) ?>" data-ecommerce='<?= $product->ecommerceData() ?>'></div>
 <? };

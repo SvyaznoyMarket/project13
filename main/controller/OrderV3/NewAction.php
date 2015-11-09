@@ -3,29 +3,38 @@
 namespace Controller\OrderV3;
 
 use EnterApplication\CurlTrait;
+use Session\AbTest\ABHelperTrait;
 use Http\RedirectResponse;
 use Model\OrderDelivery\ValidateException;
 use EnterQuery as Query;
 
 class NewAction extends OrderV3 {
-    use CurlTrait;
+    use CurlTrait, ABHelperTrait;
 
     /**
      * @param \Http\Request $request
      * @return \Http\Response
      */
     public function execute(\Http\Request $request) {
+        if (self::isOrderWithCart()) {
+            return (new \Controller\Cart\IndexAction())->execute($request);
+        }
+
         $response = parent::execute($request);
         if ($response) {
             return $response;
         }
 
         $page = new \View\OrderV3\NewPage();
+        $page->setParam('step', 1);
         $post = null;
 
         try {
             if ($request->isMethod('GET')) {
-                $this->cart->update([], true);
+                try {
+                    $this->cart->update([], true);
+                } catch(\Exception $e) {}
+
                 $this->pushEvent(['step' => 1]);
             }
 
@@ -56,7 +65,6 @@ class NewAction extends OrderV3 {
             $page = $e->getCode() == 759 ? new \View\OrderV3\NewPage() : new \View\OrderV3\ErrorPage();
 
             $page->setParam('error', $e->getMessage());
-
             $page->setParam('step', 1);
 
         } catch (\Exception $e) {
@@ -101,24 +109,12 @@ class NewAction extends OrderV3 {
 
     }
 
-    /** Есть ли товары не от Enter?
-     * @return bool
-     */
-    private function hasProductsOnlyFromPartner() {
-        foreach ($this->cart->getProductsById() as $cartProduct) {
-            if ($cartProduct->isOnlyFromPartner) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function validateInput(\Http\Request $request){
+    public function validateInput(\Http\Request $request){
 
         $result = ['errors' => [], 'phone' => '', 'email' => ''];
 
         $post = $request->request->all();
+
         if (isset($post['user_info']['phone'])) {
             $result['phone'] = $post['user_info']['phone'];
             $phone = preg_replace('/^\+7/', '8', $post['user_info']['phone']);
@@ -134,6 +130,15 @@ class NewAction extends OrderV3 {
             }
         } else {
             $result['errors'][] = 'Не указан email';
+        }
+
+        // валидируем ядром
+        $validationResult = $this->validateUserInfo($post['user_info']);
+
+        if (isset($validationResult['error']) && is_array($validationResult['error'])) {
+            foreach ($validationResult['error'] as $e) {
+                $result['errors'][] = isset($e['message']) && $e['message'] ? $e['message'] : 'Неизвестная ошибка';
+            }
         }
 
         return $result;

@@ -7,8 +7,6 @@ use Model\Product\Delivery\ProductDelivery;
 use Model\EnterprizeCoupon\Entity as Coupon;
 
 class Entity {
-    use \Model\MediaHostTrait;
-
     const LABEL_ID_PODARI_ZHIZN = 17;
     const PARTNER_OFFER_TYPE_SLOT = 2;
     /** Электронный подарочный сертификат giftery.ru */
@@ -74,14 +72,16 @@ class Entity {
     protected $hasPartnerStock;
     /** @var bool|null */
     protected $isUpsale = false;
-    /** @var Model\Entity|null */
-    protected $model;
+    /** @var \Model\Product\Model|null */
+    public $model;
     /** @var string|null */
     protected $seoTitle;
     /** @var string|null */
     protected $seoKeywords;
     /** @var string|null */
     protected $seoDescription;
+    /** @var string|null */
+    public $seoText;
     /** @var int */
     protected $viewId;
     /** @var int */
@@ -89,11 +89,7 @@ class Entity {
     /** @var int */
     protected $setId;
     /** @var bool */
-    protected $isModel;
-    /** @var bool */
     protected $isPrimaryLine;
-    /** @var int */
-    protected $modelId;
     /** @var int|null */
     protected $score;
     /** @var string */
@@ -161,9 +157,6 @@ class Entity {
         if (isset($data['ui'])) $this->setUi($data['ui']);
         if (isset($data['uid'])) $this->setUi($data['uid']); // для scms
         if (isset($data['status_id'])) $this->setStatusId($data['status_id']);
-        if (isset($data['link'])) $this->setLink($data['link']);
-        if (isset($data['url'])) $this->setLink($data['url']);
-        if (isset($data['token'])) $this->setToken($data['token']);
         if (isset($data['article'])) $this->setArticle($data['article']);
         if (isset($data['bar_code'])) $this->setBarcode($data['bar_code']);
         if (isset($data['price'])) $this->setPrice($data['price']);
@@ -177,7 +170,6 @@ class Entity {
         if (isset($data['avg_star_score'])) $this->setAvgStarScore($data['avg_star_score']);
         if (isset($data['num_reviews'])) $this->setNumReviews($data['num_reviews']);
         if (isset($data['is_upsale'])) $this->setIsUpsale($data['is_upsale']);
-        if (isset($data['model']) && $data['model']) $this->setModel(new Model\Entity($data['model']));
 
         if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
             return new Kit\Entity($data);
@@ -189,16 +181,12 @@ class Entity {
         if (array_key_exists('view_id', $data)) $this->setViewId($data['view_id']);
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('set_id', $data)) $this->setSetId($data['set_id']);
-        if (array_key_exists('is_model', $data)) $this->setIsModel($data['is_model']);
         if (array_key_exists('is_primary_line', $data)) $this->setIsPrimaryLine($data['is_primary_line']);
-        if (array_key_exists('model_id', $data)) $this->setModelId($data['model_id']);
         if (array_key_exists('score', $data)) $this->setScore($data['score']);
         if (isset($data['name'])) $this->setName($templateHelper->unescape($data['name'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
         if (array_key_exists('name_web', $data)) $this->setWebName($templateHelper->unescape($data['name_web'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
         if (array_key_exists('prefix', $data)) $this->setPrefix($templateHelper->unescape($data['prefix'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
-        if (array_key_exists('tagline', $data)) $this->setTagline($data['tagline']);
         if (array_key_exists('announce', $data)) $this->setAnnounce($data['announce']);
-        if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('rating', $data)) $this->setRating($data['rating']);
         if (array_key_exists('rating_count', $data)) $this->setRatingCount($data['rating_count']);
         if (array_key_exists('type', $data) && (bool)$data['type']) $this->setType(new Type\Entity($data['type']));
@@ -220,6 +208,11 @@ class Entity {
     }
 
     public function importFromScms($data = []) {
+        if (!empty($data['slug'])) $this->token = (string)$data['slug'];
+        if (!empty($data['url'])) $this->link = (string)$data['url'];
+        if (!empty($data['tagline'])) $this->tagline = (string)$data['tagline'];
+        if (!empty($data['description'])) $this->description = (string)$data['description'];
+
         if (!empty($data['medias']) && is_array($data['medias'])) {
             foreach ($data['medias'] as $media) {
                 if (is_array($media)) {
@@ -236,13 +229,13 @@ class Entity {
             $this->setLabel(new Label($data['label']));
         }
 
-        if (!empty($data['brand']) && @$data['brand']['slug'] === 'tchibo-3569') {
+        if (!empty($data['brand'])) {
             $this->setBrand(new \Model\Brand\Entity([
                 'ui'        => @$data['brand']['uid'],
                 'id'        => @$data['brand']['core_id'],
                 'token'     => @$data['brand']['slug'],
                 'name'      => @$data['brand']['name'],
-                'media_image' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png', // TODO после решения FCMS-740 заменить на URL из scms и удалить условие "@$thisData['brand']['slug'] === 'tchibo-3569'"
+                'medias'    => @$data['brand']['medias']
             ]));
         }
 
@@ -299,6 +292,10 @@ class Entity {
             $this->setPropertyGroup(array_map(function($data) { return new \Model\Product\Property\Group\Entity($data); }, $data['property_groups']));
         }
 
+        if (isset($data['seo_text']) && is_string($data['seo_text'])) {
+            $this->seoText = $data['seo_text'];
+        }
+
         $indexedPropertyGroups = [];
         foreach ($this->propertyGroup as $group) {
             if (!isset($this->groupedProperties[$group->getId()])) {
@@ -315,7 +312,7 @@ class Entity {
         }
 
         $propertiesCount = $this->getPropertiesCount();
-        if (((!$this->getTagline() && !$this->getModel() && !$this->getDescription() && $propertiesCount < 16) || $propertiesCount < 8) && !$this->hasLongProperties()) {
+        if (((!$this->getTagline() && !$this->model && !$this->getDescription() && $propertiesCount < 16) || $propertiesCount < 8) && !$this->hasLongProperties()) {
             foreach ($this->groupedProperties as $group) {
                 if (!(bool)$group['properties']) continue;
 
@@ -343,6 +340,12 @@ class Entity {
 
         $this->isImportedFromScms = true;
         $this->fixOldPrice();
+    }
+
+    public function importModelFromScms($data) {
+        if (!empty($data['model']['property']) && !empty($data['model']['items'])) {
+            $this->model = new \Model\Product\Model($data['model']);
+        }
     }
 
     /**
@@ -472,20 +475,6 @@ class Entity {
     }
 
     /**
-     * @param boolean $isModel
-     */
-    public function setIsModel($isModel) {
-        $this->isModel = (bool)$isModel;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsModel() {
-        return $this->isModel;
-    }
-
-    /**
      * @param boolean $isPrimaryLine
      */
     public function setIsPrimaryLine($isPrimaryLine) {
@@ -497,20 +486,6 @@ class Entity {
      */
     public function getIsPrimaryLine() {
         return $this->isPrimaryLine;
-    }
-
-    /**
-     * @param int $modelId
-     */
-    public function setModelId($modelId = null) {
-        $this->modelId = $modelId ? (int)$modelId : null;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getModelId() {
-        return $this->modelId;
     }
 
     /**
@@ -1284,17 +1259,6 @@ class Entity {
         return null;
     }
 
-    public function setModel(Model\Entity $model = null) {
-        $this->model = $model;
-    }
-
-    /**
-     * @return Model\Entity|null
-     */
-    public function getModel() {
-        return $this->model;
-    }
-
     /**
      * @param string $seoTitle
      */
@@ -1345,20 +1309,14 @@ class Entity {
     }
 
     /**
+     * У товаров, полученных методом http://api.enter.ru/v2/product/from-model, проверять наличие моделей не требуется,
+     * т.к. данный метод всегда возвращает модель товара, которая в наличии (см. комментарии на
+     * https://wiki.enter.ru/pages/viewpage.action?pageId=21569552)
      * @return bool
      */
     public function hasAvailableModels() {
-        if ($this->getModel()) {
-            foreach ($this->getModel()->getProperty() as $property) {
-                foreach ($property->getOption() as $option) {
-                    if ($option->getProduct()->isAvailable()) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
+        // https://scms.enter.ru/api/product/get-models всегда возвращает лишь товары в наличии
+        return ($this->model && $this->model->property && $this->model->property->option);
     }
 
     /**
@@ -1479,6 +1437,30 @@ class Entity {
         }
 
         return $bestCoupon;
+    }
+
+    /** JSON для Google Ecommerce Analytic
+     * @return string
+     */
+    public function ecommerceData(){
+
+        $category = '';
+
+        if ($cat = $this->parentCategory) {
+            while ($cat) {
+                $category = $cat->getName() . ($cat == $this->parentCategory ? '' : ' / ') . $category;
+                $cat = $cat->getParent();
+            }
+        }
+
+        return json_encode([
+            'id'        => $this->getBarcode(),
+            'name'      => $this->getName(),
+            'price'     => $this->getPrice(),
+            'brand'     => $this->getBrand() ? $this->getBrand()->getName() : '',
+            'category'  => $category,
+            'coupon'    => $this->label ? $this->label->name : ''
+        ], JSON_UNESCAPED_UNICODE|JSON_HEX_APOS);
     }
 
 }

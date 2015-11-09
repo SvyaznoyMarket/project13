@@ -113,6 +113,9 @@
         padding: 10px;
         width: 130px;
         text-align: center;
+        &:active{
+            margin-top: 0;
+        }
     }
     &--default{
         background-color: @white;
@@ -122,6 +125,36 @@
         &:hover, &:active{
             background-color: @white;
         }
+    }
+    //кнопка для корзины - без нижнего бордера TODO: объединить с кнопкой для листингов
+    &--order{
+        border: none;
+        font-size: 20px;
+        padding: 10px;
+        width: 265px;
+        margin: 0 auto;
+        text-align: center;
+        display: block;
+    }
+    &--uni{
+      background-color: #f99b1c;
+      color: #fff;
+      font-size: 14px;
+      .transition(background-color .2s ease);
+      margin: 0 auto;
+      width: 192px;
+      text-align: center;
+      padding: 9px 0;
+      display: block;
+      border: 0;
+
+      &:hover {
+        background-color: #ff9f1d;
+      }
+      &:active {
+        background-color: #f99b1c;
+        border: 0;
+      }
     }
 }
 

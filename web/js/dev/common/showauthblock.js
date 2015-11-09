@@ -11,7 +11,7 @@
 		error : function(jqXHR) {
 			if ( 403 == jqXHR.status ) {
 
-                loginLink = $('.bAuthLink');
+                loginLink = $('.js-login-opener');
 
                 if (loginLink.length) {
                     loginLink.trigger('click');

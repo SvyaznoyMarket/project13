@@ -7,14 +7,10 @@ return function(
     $data = [];
     try {
         // SITE-6016
-        $testKey = \App::abTest()->getTest('order_delivery_type')->getChosenCase()->getKey();
+        $testKey = \App::abTest()->getOrderDeliveryType();
         /** @var \Model\OrderDelivery\Entity\Order|null $order */
         $order = reset($orderDelivery->orders) ?: null;
-        if (
-            in_array(\App::user()->getRegion()->parentId, [76, 90])  // Воронеж, Ярославль
-            && ('default' !== $testKey)
-            && $order
-        ) {
+        if ($testKey && $order) {
             if (1 === count($order->possible_delivery_groups)) {
                 $data[] = [
                     'category' => 'delivery_option',

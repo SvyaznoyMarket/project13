@@ -9,6 +9,7 @@ use \Model\Session\FavouriteProduct;
 use Controller\Enterprize\ConfirmAction;
 use EnterQuery as Query;
 use \Model\Product\Entity as Product;
+use \Model\User\Entity as User;
 
 class Action {
 
@@ -25,6 +26,8 @@ class Action {
      */
     private function checkRedirect(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
+        $userEntity = null;
+        $disposableParamName = \App::config()->authToken['disposableTokenParam'];
 
         $this->redirect = \App::router()->generate(\App::config()->user['defaultRoute']); // default redirect to the /private page (Личный кабинет)
         $redirectTo = rawurldecode($request->get('redirect_to'));
@@ -32,25 +35,42 @@ class Action {
             $this->redirect = $redirectTo;
             $this->requestRedirect = $redirectTo;
         }
+        if ($sessionRedirect = \App::session()->redirectUrl()) {
+            parse_str(parse_url($sessionRedirect, PHP_URL_QUERY), $queryArr);
+            if (array_key_exists($disposableParamName, $queryArr)) {
+                $userEntity = $this->authWithToken($queryArr[$disposableParamName]);
+                // удаляем токен из редиректа
+                $sessionRedirect = str_replace(
+                    sprintf('%s=%s', $disposableParamName, $queryArr[$disposableParamName]),
+                    '',
+                    $sessionRedirect
+                );
+            }
+            $this->redirect = $sessionRedirect;
+        }
 
-        if (\App::user()->getEntity()) { // if user is logged in
-            if (empty($redirectTo)) {
-                return $request->isXmlHttpRequest()
+        if (\App::user()->getEntity() || $userEntity) { // if user is logged in
+            if (empty($this->redirect)) {
+                $response = $request->isXmlHttpRequest()
                     ? new \Http\JsonResponse([
                         'success'       => true,
                         'alreadyLogged' => true
                     ])
                     : new \Http\RedirectResponse(\App::router()->generate(\App::config()->user['defaultRoute']));
+                if ($userEntity) \App::user()->signIn($userEntity, $response);
+                return $response;
             } else { // if redirect isset:
-                return $request->isXmlHttpRequest()
+                $response = $request->isXmlHttpRequest()
                     ? new \Http\JsonResponse([
                         'success'       => true,
                         'alreadyLogged' => true,
                         'data'    => [
-                            'link' => $redirectTo,
+                            'link' => $this->redirect,
                         ],
                     ])
-                    : new \Http\RedirectResponse($redirectTo);
+                    : new \Http\RedirectResponse($this->redirect);
+                if ($userEntity) \App::user()->signIn($userEntity, $response);
+                return $response;
             }
         }
 
@@ -140,36 +160,15 @@ class Action {
                     $this->setFavourites();
 
                     // объединение корзины
-                    try {
-                        call_user_func(function() use (&$userEntity) {
-                            if (!$this->isCoreCart() || !$userEntity) return;
-
-                            $mergeCartAction = new \EnterApplication\Action\Cart\Merge();
-                            $request = $mergeCartAction->createRequest();
-                            $request->userUi = $userEntity->getUi();
-                            $request->regionId = \App::user()->getRegion()->getId();
-
-                            $mergeCartAction->execute($request);
-                        });
-                    } catch (\Exception $e) {
-                        \App::logger()->error(['message' => 'Не удалось объединить корзину пользователя', 'token' => \App::user()->getToken()], ['user']);
-                    }
-
-                    try {
-                        \App::coreClientV2()->query(
-                            'user/update',
-                            ['token' => \App::user()->getToken()],
-                            [
-                                'geo_id' => \App::user()->getRegion()->getId(),
-                            ]
-                        );
-                    } catch (\Exception $e) {
-                        \App::logger()->error(['message' => 'Не удалось обновить регион у пользователя', 'token' => \App::user()->getToken()], ['user']);
-                    }
+                    $this->mergeUserCart($userEntity);
+                    // обновление региона в ядре
+                    $this->updateUserRegion();
 
                     return $response;
+
                 } catch(\Exception $e) {
                     \App::exception()->remove($e);
+                    \App::session()->redirectUrl($this->redirect);
 
                     switch ($e->getCode()) {
                         case 614:
@@ -209,6 +208,8 @@ class Action {
                     'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
                 ]);
             }
+
+            \App::session()->redirectUrl($this->redirect);
         }
 
         $page = new \View\User\LoginPage();
@@ -217,6 +218,90 @@ class Action {
         $page->setParam('oauthEnabled', \App::config()->oauthEnabled);
 
         return new \Http\Response($page->show());
+    }
+
+    /**
+     * Авторизация с помощью одноразового токена
+     *
+     * @param string $token
+     *
+     * @return User|null
+     */
+    public function authWithToken($token = null)
+    {
+        $userEntity = null;
+        $authResult = [];
+
+        try {
+            $authResult = \App::coreClientV2()->query(
+                'user/auth-by-token',
+                [],
+                [
+                    'token' => $token,
+                    'client_id' => 'site',
+                ]
+            );
+        } catch (\Exception $e) {
+            // Если пользователь не найден по токену
+            if ($e->getCode() === 614 ) {
+                \App::exception()->remove($e);
+            }
+        }
+
+        if (array_key_exists('token', $authResult)) {
+            $userEntity = \RepositoryManager::user()->getEntityByToken($authResult['token']);
+        }
+
+        if ($userEntity) {
+            $userEntity->setToken($authResult['token']);
+            $this->mergeUserCart($userEntity);
+            $this->updateUserRegion();
+        }
+
+        return $userEntity;
+    }
+
+    /**
+     * Объединение серверной корзины
+     *
+     * @param User $userEntity
+     */
+    private function mergeUserCart(User $userEntity)
+    {
+        if (!self::isCoreCart()) {
+            return;
+        }
+
+        try {
+            $mergeCartAction = new \EnterApplication\Action\Cart\Merge();
+            $request = $mergeCartAction->createRequest();
+            $request->userUi = $userEntity->getUi();
+            $request->regionId = \App::user()->getRegion()->getId();
+
+            $mergeCartAction->execute($request);
+        } catch (\Exception $e) {
+            \App::logger()->error(['message' => 'Не удалось объединить корзину пользователя', 'token' => \App::user()->getToken()], ['user']);
+            \App::exception()->remove($e);
+        }
+    }
+
+    /**
+     * Обновление региона у пользователя
+     */
+    private function updateUserRegion()
+    {
+        try {
+            \App::coreClientV2()->query(
+                'user/update',
+                ['token' => \App::user()->getToken()],
+                [
+                    'geo_id' => \App::user()->getRegion()->getId(),
+                ]
+            );
+        } catch (\Exception $e) {
+            \App::logger()->error(['message' => 'Не удалось обновить регион у пользователя', 'token' => \App::user()->getToken()], ['user']);
+            \App::exception()->remove($e);
+        }
     }
 
     /**
@@ -269,11 +354,6 @@ class Action {
      */
     public function register(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
-
-        if (!$request->isMethod('post') && !$request->isXmlHttpRequest()) {
-            // SITE-3676
-            return $this->login($request);
-        }
 
         $checkRedirect = $this->checkRedirect($request);
         if ($checkRedirect) return $checkRedirect;
@@ -331,6 +411,9 @@ class Action {
 
                             'data'    => [
                                 //'link' => $this->redirect,
+                            ],
+                            'newUser' => [
+                                'id' => isset($result['id']) ? $result['id'] : '',
                             ],
                             'error' => null,
                             'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
@@ -400,6 +483,7 @@ class Action {
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
+        $page->setParam('defaultState', 'register');
 
         return new \Http\Response($page->show());
     }
@@ -728,7 +812,11 @@ class Action {
         $scmsClient = \App::scmsClient();
         $scmsClient->addQuery(
             'api/static-page',
-            ['token' => ['reg_corp_user_cont']],
+            [
+                'token' => ['reg_corp_user_cont'],
+                'geo_town_id' => \App::user()->getRegion()->id,
+                'tags' => ['site-web'],
+            ],
             [],
             function($data) use (&$content) {
                 if (!empty($data['pages'][0]['content'])) {

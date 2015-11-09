@@ -4,7 +4,9 @@ return function(
     \Helper\TemplateHelper $helper,
     $url,
     $data,
-    $result
+    $result,
+    $isShow = false,
+    $queryToken = null
 ) { ?>
 
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
@@ -75,6 +77,7 @@ return function(
     <div class="row">
         <div class="col-md-12" style="padding-top: 40px;">
             <form action="<?= $helper->url('debug.query') ?>" method="post" role="form">
+                <input type="hidden" value="<?= $isShow ? '1' : '0' ?>" name="isShow">
                 <div class="form-group navbar-fixed-top">
                     <div class="navbar-inner">
                         <input autofocus="autofocus" type="text" class="form-control" placeholder="http://api.enter.ru" name="url" value="<?= $url ?>" width="100" />
@@ -87,6 +90,9 @@ return function(
                 </div>
 
                 <button type="submit" class="btn btn-default">Выполнить</button>
+                <? if ($queryToken): ?>
+                    <a href="<?= $helper->url('debug.query.json', ['queryToken' => $queryToken]) ?>" class="btn btn-default">Соранить как json</a>
+                <? endif ?>
             </form>
         </div>
     </div>

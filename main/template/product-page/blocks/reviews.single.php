@@ -1,4 +1,5 @@
 <?php
+
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Review\ReviewEntity $review,
@@ -7,8 +8,12 @@ $f = function(
     ?>
 
     <?= $review->isEnterReview() ? '' : '<noindex>' ?>
-
-    <div class="reviews__i jsReviewItem" style="display: <?= $hidden ? 'none' : 'block' ?>" data-review-ui="<?= $review->ui ?>">
+    <div class="reviews__i jsReviewItem <? if ($review->isMostHelpful): ?>reviews__i--valuable<? endif ?>" style="display: <?= $hidden ? 'none' : 'block' ?>" data-review-ui="<?= $review->ui ?>">
+        <? if ($review->isMostHelpful): ?>
+            <!-- если отзыв самый полезный, выводим лейбл: -->
+            <label class="reviews__lbl">Самый полезный отзыв</label>
+            <!-- /// -->
+        <? endif ?>
         <div class="reviews__cpt"><div class="reviews__author"><?= $review->author ? : 'Аноним' ?></div>,
             <div class="reviews__date"><?= \Util\Date::strftimeRu('%e %B2 %Y', $review->date->format('U')) ?></div></div>
 
@@ -26,7 +31,18 @@ $f = function(
 
         <div class="reviews__tl">Комментарий:</div>
         <p class="reviews__tx"><?= $review->extract ?></p>
-
+        <? if ($review->isMnogoRuReview()) : ?>
+            <div class="reviews-src">
+                <span class="reviews-src__tl">Источник:</span>
+                <img src="/styles/product/img/mnogoru-sm.png"/>
+            </div>
+        <? endif ?>
+        <? if ($review->isYandexReview()) : ?>
+            <div class="reviews-src">
+                <span class="reviews-src__tl">Источник:</span>
+                <img src="/styles/product/img/yandex-sm.png"/>
+            </div>
+        <? endif ?>
         <div class="reviews-voting jsReviewVote" data-user-vote="<?= $review->userVote ?>">
             <div class="reviews-voting__tl">Полезный отзыв?</div>
             <span class="reviews-vote reviews-vote--positive <?= $review->userVote > 0 ?  'active' : null ?>jsReviewVoteBtn" data-vote="1"><?= $review->getPositiveCount() ?></span>

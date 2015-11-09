@@ -33,10 +33,17 @@ class Entity {
 
     /** @var int */
     public $id;
+    /** @var string */
+    public $ui;
     /** @var int */
     public $typeId;
-    /** @var int */
+    /**
+     * @deprecated
+     * @var int
+     */
     public $statusId;
+    /** @var StatusEntity|null */
+    public $status;
     /** @var string */
     public $number;
     /** @var string */
@@ -77,6 +84,8 @@ class Entity {
     public $deliveryTypeId;
     /** @var \DateTime */
     public $deliveredAt;
+    /** @var array */
+    public $deliveryDateInterval;
     /** @var int */
     public $storeId;
     /** @var int */
@@ -137,18 +146,30 @@ class Entity {
     public $seller;
     /** @var string */
     private $accessToken;
+    /** @var string|null */
+    public $pointUi;
     /** @var Point|null */
     public $point;
     /** @var Shop|null */
     public $shop;
+    /** @var string */
+    public $context;
+    /** @var int|null */
+    public $prepaidSum;
 
     /**
      * @param array $data
      */
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
+        if (isset($data['ui'])) $this->ui = (string)$data['ui'];
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
-        if (array_key_exists('status_id', $data)) $this->setStatusId($data['status_id']);
+        if (!empty($data['status_id'])) {
+            $this->setStatusId($data['status_id']);
+        } else if (!empty($data['status']['id'])) {
+            $this->setStatusId($data['status']['id']);
+        }
+        if (isset($data['status']['id'])) $this->status = new StatusEntity($data['status']);
         if (array_key_exists('access_token', $data)) $this->setAccessToken($data['access_token']);
         if (array_key_exists('number', $data)) $this->setNumber($data['number']);
         if (array_key_exists('number_erp', $data)) $this->setNumberErp($data['number_erp']);
@@ -172,11 +193,21 @@ class Entity {
             try {
                 $this->setDeliveredAt(new \DateTime($data['delivery_date']));
             } catch(\Exception $e) {
-                \App::logger()->error($e);
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
+            }
+        }
+        if (isset($data['delivery'][0]['delivery_date_interval']['from']) && isset($data['delivery'][0]['delivery_date_interval']['to'])) {
+            try {
+                $this->deliveryDateInterval = [
+                    'name' => sprintf('с %s по %s', (new \DateTime($data['delivery'][0]['delivery_date_interval']['from']))->format('d.m'), (new \DateTime($data['delivery'][0]['delivery_date_interval']['to']))->format('d.m')),
+                ];
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
             }
         }
         if (array_key_exists('store_id', $data)) $this->setStoreId($data['store_id']);
         if (array_key_exists('shop_id', $data)) $this->setShopId($data['shop_id']);
+        if (array_key_exists('point_ui', $data)) $this->pointUi = $data['point_ui'] ? (string)$data['point_ui']: null;
         if (array_key_exists('address_id', $data)) $this->setAddressId($data['address_id']);
         if (array_key_exists('geo_id', $data)) $this->setCityId($data['geo_id']);
         if (array_key_exists('region_id', $data)) $this->setRegionId($data['region_id']);
@@ -226,6 +257,8 @@ class Entity {
         if (array_key_exists('meta_data', $data) && is_array($data['meta_data'])) $this->meta_data = $data['meta_data'];
         if (array_key_exists('email', $data) && !empty($data['email'])) $this->email = (string)$data['email'];
         if (array_key_exists('seller', $data) && !empty($data['seller'])) $this->seller = new Seller($data['seller']);
+        if (!empty($data['context'])) $this->context = (string)$data['context'];
+        if (!empty($this->meta_data['prepaid_sum'])) $this->prepaidSum = (float)$this->meta_data['prepaid_sum'];
     }
 
     public function dump() {

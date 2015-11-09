@@ -6,8 +6,6 @@
  */
 ?>
 
-<?= $page->render('user/_menu', ['page' => $page]) ?>
-
 <?
 $i = 0; $channelsByType = [];
 // сортировка каналов по типам
@@ -16,6 +14,8 @@ array_walk($userChannels, function($ch) use (&$channelsByType) {
     $channelsByType[$ch->getType()][] = $ch;
 });
 ?>
+
+<?= $page->render('user/_menu', ['page' => $page]) ?>
 
 <div class="personalPage">
     <div class="personalTitle">Подписки</div>

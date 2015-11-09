@@ -48,7 +48,7 @@ return function(
                             <? if ($userEntity && $userEntity->isEnterprizeMember()) : ?>
                             <? else : ?>
                             <span class="orderU_hint">
-                                <? $checked = \App::abTest()->getTest('order_email'); ?>
+                                <? $checked = true; ?>
                                 <input class="customInput customInput-defcheck jsCustomRadio js-customInput jsOrderV3SubscribeCheckbox" type="checkbox" name="subscribe" value="" id="orderV3Subscribe" <?= $checked ? 'checked' : '' ?>>
                                 <label class="customLabel customLabel-defcheck <?= $checked ? 'mChecked' : '' ?> jsOrderV3SubscribeLabel" for="orderV3Subscribe">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
                             </span>
@@ -139,7 +139,7 @@ return function(
 
                 <div class="orderAuth">
                     <div class="orderAuth_t">Уже заказывали у нас?</div>
-                    <a class="orderAuth_btn btnLightGrey bAuthLink jsOrderV3AuthLink" href="<?= \App::router()->generate('user.login') ?>">Войти с паролем</a>
+                    <a class="orderAuth_btn btnLightGrey js-login-opener jsOrderV3AuthLink" href="<?= \App::router()->generate('user.login') ?>">Войти с паролем</a>
                 </div>
 
             <? endif ?>

@@ -20,7 +20,7 @@
                 {{#product.priceOld}}
                 <span class="priceBox_old">
                     <span class="price">{{&product.priceOld}}</span> <span class="rubl">p</span>
-                    <span class="persent">-{{product.priceSale}}%</span>
+                    <span class="persent">-{{product.priceSale}}{{&product.priceSaleUnit}}</span>
                 </span>
                 {{/product.priceOld}}
                 <span class="priceBox_new {{# product.onePrice}}mStatic{{/product.onePrice}}"><strong>{{&product.price}}</strong> <span class="rubl">p</span></span><!-- если нет скидки то добавляем класс модификатор mStatic -->

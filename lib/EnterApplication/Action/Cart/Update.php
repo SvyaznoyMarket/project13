@@ -40,9 +40,32 @@ namespace EnterApplication\Action\Cart
             }
 
             try {
+                $localUpdatedAt = $cart->getCoreUpdated();
+                $remoteUpdatedAt = $cartQuery->response->updatedAt ? new \DateTime($cartQuery->response->updatedAt) : null;
+
+                // если получена метка обновления из ядра
+                if ($remoteUpdatedAt) {
+                    $remoteProductUis = array_column($cartQuery->response->products, 'uid');
+
+                    // если локальные данные устарели, то удаляем товары, которых нет в ядерной корзине
+                    if (!$localUpdatedAt || ($localUpdatedAt < $remoteUpdatedAt)) {
+                        foreach ($cartProductsByUi as $i => $cartProduct) {
+                            if (!in_array($cartProduct->ui, $remoteProductUis)) {
+                                $productsToUpdate[] = ['ui' => $cartProduct->ui, 'quantity' => '0'];
+                            }
+                        }
+                    }
+
+                    $cart->setCoreUpdated($remoteUpdatedAt);
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);
+            }
+
+            try {
                 $cart->update($productsToUpdate);
             } catch(\Exception $e) {
-                \App::logger()->error(['message' => 'Не удалось синхронизировать сессионную корзину с серверной корзиной', 'error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['cart/update']);
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);
             }
 
             return $response;

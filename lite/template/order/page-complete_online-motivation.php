@@ -80,7 +80,7 @@ return function(
 
         <? /*= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order/complete-blocks/_svyaznoy-club') : '' */ ?>
 
-        <? /* if (\App::config()->flocktoryExchange['enabled'] && !$order->isCredit()) : ?>
+        <? /* if (\App::config()->flocktory['exchange'] && !$order->isCredit()) : ?>
 <!--            <div>-->
                 <div class="i-flocktory orderPayment" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-username="<?= $order->getFirstName() ?>" data-fl-user-email="<?= $order->email ?>"></div>
 <!--            </div>-->

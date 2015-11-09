@@ -3,9 +3,7 @@
  * @var $page \View\DefaultLayout
  */
 ?><!DOCTYPE html>
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if lte IE 9]> <html class="no-js lte-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
     <title><?= $page->escape($page->getTitle()) ?></title>
@@ -30,7 +28,6 @@
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
     <?= $page->slotMetaOg() ?>
-    <?= $page->slotGifteryJS() ?>
 </head>
 
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
@@ -39,20 +36,21 @@
 
     <?= $page->slotAdFoxBground() ?>
 
-    <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
-        <div class="header <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?> clearfix">
+    <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage order-page<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
+        <div class="header <?= $page->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?> clearfix">
             <?= $page->render('main/banner.pickup') ?>
+            <div style="position: relative;">
+                <div class="header__inn">
+                    <?= $page->slotHeader() ?>
 
-            <div class="header__inn">
-                <?= $page->slotHeader() ?>
+                    <?= $page->slotTopbar() ?>
+                </div>
 
-                <?= $page->slotTopbar() ?>
-            </div>
+                <?= $page->slotSearchBar() ?>
 
-            <?= $page->slotSearchBar() ?>
-
-            <div class="header__inn">
-                <?= $page->slotNavigation() ?>
+                <div class="header__inn">
+                    <?= $page->slotNavigation() ?>
+                </div>
             </div>
         </div>
 

@@ -35,13 +35,13 @@ trait ActionTrait
      * Проверяет ответ запроса на пустоту:
      * если регион не получен - подменяет ответ с регионом по умолчанию
      *
-     * @param $query
+     * @param Query\Region\GetById|null  $query
      */
-    protected function checkRegionQuery(&$query)
+    protected function checkRegionQuery(&$query = null)
     {
-        if (empty($query->response->region['id'])) {
+        if (!$query || empty($query->response->region['id'])) {
             $query = new Query\Region\GetById(\App::config()->region['defaultId']);
-            $query->response->region = \App::dataStoreClient()->query('/region-default.json')['result'];
+            $query->response->region = \App::dataStoreClient()->query('/region-default.json')['result'][0];
         }
     }
 }

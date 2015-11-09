@@ -23,6 +23,9 @@
 					if (data.success) {
 						UserModel.cart().update(data.cart);
 					}
+					if (data.setProducts) {
+						$body.trigger('addtocart', data);
+					}
 				}
 			})
 		}
@@ -42,6 +45,9 @@
 					if (data.success) {
 						UserModel.cart().update(data.cart);
 					}
+					if (data.setProducts) {
+						$body.trigger('addtocart', data);
+					}
 				}
 			})
 		}
@@ -59,7 +65,7 @@
 					if (data.success) {
 						UserModel.cart().update(data.cart);
 						if (data.setProducts) {
-							$body.trigger('removeFromCart', [data.setProducts]);
+							$body.trigger('removeFromCart', [data]);
 						}
 
 						try {
@@ -120,6 +126,13 @@
 				}).done(function(data){
 					if (data.success) {
 						UserModel.cart().update(data.cart);
+						if (data.setProducts[0]) {
+							if (data.setProducts[0].quantityDelta > 0) {
+								$body.trigger('addtocart', [data]);		// TODO унифицировать аргументы
+							} else {
+								$body.trigger('removeFromCart', [data]); // TODO унифицировать аргументы
+							}
+						}
 						// Используется далее в always
 						$input = $('.jsCartNumberBoxInput[data-product-ui="' + productUi + '"]');
 					} else {
@@ -153,7 +166,6 @@
         sliderWrapperSelector: '.goods-slider__inn',
         sliderSelector: '.goods-slider-list',
         itemSelector: '.goods-slider-list__i'
-
     });
 
 }(jQuery));

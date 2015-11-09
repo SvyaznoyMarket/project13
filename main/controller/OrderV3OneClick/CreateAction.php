@@ -69,12 +69,20 @@ class CreateAction {
                 $ordersData,
                 \App::config()->coreV2['hugeTimeout']
             );
-            //$coreResponse = \App::dataStoreClient()->query('/fixture/v2-create-packet.json');
         } catch (\Curl\Exception $e) {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
             \App::exception()->remove($e);
 
-            $message = (708 == $e->getCode()) ? 'Товара нет в наличии' : $e->getMessage();
+            switch ($e->getCode()) {
+                case 708:
+                    $message = 'Товара нет в наличии';
+                    break;
+                case 732:
+                    $message = 'Выберите точку самовывоза';
+                    break;
+                default:
+                    $message = $e->getMessage();
+            }
 
             $result['error'] = ['message' => $message];
             $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $message]);
@@ -108,8 +116,8 @@ class CreateAction {
 
         \App::logger()->info(['action' => __METHOD__, 'core.response' => $coreResponse], ['order']);
 
+        $criteoData = [];
         if ((bool)$coreResponse) {
-
             foreach ($coreResponse as $orderData) {
                 if (!is_array($orderData)) {
                     \App::logger()->error(['message' => 'Получены неверные данные для созданного заказа', 'orderData' => $orderData], ['order']);
@@ -125,6 +133,14 @@ class CreateAction {
 
                 $createdOrders[] = $createdOrder;
                 \App::logger()->info(['message' => 'Заказ успешно создан', 'orderData' => $orderData], ['order']);
+            }
+
+            try {
+                if ($createdOrders) {
+                    $criteoData = (new \View\Partners\Criteo(['orders' => $createdOrders]))->execute();
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order', 'criteo']);
             }
         }
 
@@ -190,6 +206,7 @@ class CreateAction {
                 ],
             ],
             'lastPartner' => \App::partner()->getName(),
+            'criteoData'  => $criteoData,
         ];
 
         if (\App::config()->googleAnalytics['enabled']) {

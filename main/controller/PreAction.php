@@ -60,32 +60,33 @@ class PreAction {
             );
         }
 
-        \App::scmsClient()->addQuery(
-            'api/ab_test/get-active',
-            //('switch'  === $request->attributes->get('route')) ? [] : ['tags' => ['site-web']],
-            ['tags' => ['site-web']],
-            [],
-            function($data) {
-                if (isset($data[0])) {
-                    // FIXME: сомнительно
-                    $tests = [];
-                    foreach ($data as $item) {
-                        if (empty($item['token'])) {
-                            continue;
+        if (\App::config()->abTest['enabled']) {
+            \App::scmsClient()->addQuery(
+                'api/ab_test/get-active',
+                //('switch'  === $request->attributes->get('route')) ? [] : ['tags' => ['site-web']],
+                ['tags' => ['site-web']],
+                [],
+                function($data) {
+                    if (isset($data[0])) {
+                        $tests = [];
+                        foreach ($data as $item) {
+                            if (empty($item['token'])) {
+                                continue;
+                            }
+
+                            $tests[$item['token']] = $item;
                         }
 
-                        $tests[$item['token']] = $item;
+                        \App::config()->abTest['tests'] = $tests; // FIXME: нельзя модифицировать конфигурацию
                     }
-
-                    \App::config()->abTest['tests'] = $tests;
+                },
+                function(\Exception $e) {
+                    \App::exception()->remove($e);
                 }
-            },
-            function(\Exception $e) {
-                \App::exception()->remove($e);
-            }
-        );
+            );
 
-        \App::scmsSeoClient()->execute(\App::config()->scmsSeo['retryTimeout']['tiny']);
+            \App::scmsSeoClient()->execute(\App::config()->scmsSeo['retryTimeout']['tiny']);
+        }
 
         if (!$redirectUrl) {
             try {

@@ -112,6 +112,10 @@
     &__reviews{
         height: 16px;
         margin: 2px 0;
+        display: block;
+        &:hover{
+            text-decoration: none;
+        }
     }
     &-price-block{
         text-align: right;
@@ -142,12 +146,61 @@
             .inline-block();
             
             .btnBuy__eLink{
-                //width: 125px;
+                //кнопка для листинга - без нижнего бордера
+
+                    line-height: 1;
+
+                    cursor: pointer;
+
+                    .rounded(3px);
+                    .inline-block();
+
+                    color: #fff;
+
+                    background: #f99b1c;
+
+                    border: none;
+                    font-size: 18px;
+                    padding: 10px;
+                    width: 130px;
+                    text-align: center;
+
+                    .transition(background-color .2s ease);
+
+                    &:hover {
+                        background-color: #ff9f1d;
+                    }
+                    &:active {
+                        background-color: #f99b1c;
+                    }
+
+                &.btn-type--kit{
+
+                    &:before{
+                        content: '\e800';
+
+                        font-family: 'kit';
+                        font-style: normal;
+                        font-weight: normal;
+                        .inline-block(baseline);
+
+                        text-align: center;
+                        font-variant: normal;
+                        text-transform: none;
+
+                        margin-right: 0.5em;
+                    }
+
+                }
             }
             .mDisabled{
-                background-color: #fff;
+                background-color: @white;
+                border: 1px solid #a0a0a0;
                 color: #a0a0a0;
-                border: 1px solid;
+                cursor: default;
+                &:hover, &:active{
+                    background-color: @white;
+                }
             }
         }
 
@@ -155,7 +208,19 @@
     &__btns{
         margin-top: 10px;
         .product-card-tools{
-            margin-left: 0px;
+            margin-left: -2px;
+        }
+        .product-card-tools__lk.btnCmprb-act{
+            text-decoration: none;
+            background-color: transparent;
+
+            .i-tools-icon {
+                background-image: url('@{base-url}/product/img/i-tools-icons-hover.png');
+            }
+            .product-card-tools__tx {
+                color: #363636;
+                border-color: #363636;
+            }
         }
     }
     &__item-state{
@@ -177,7 +242,7 @@
 
     }
     &-variations{
-        height: 16px;
+        height: 26px;
         margin: 10px 0px 0px;
         display: block;
         width: 100%;
@@ -185,13 +250,45 @@
         &__lbl{
             font-size: 12px;
             color: #8c8c8c;
+            .inline-block(top);
+            margin-top: 5px;
         }
-        &__val{
+        &__lk{
             font-size: 12px;
             .inline-block();
             position: relative;
             color: #363636;
+            margin-top: 5px;
+            border-bottom: 1px dotted;
+            &:hover {
+                text-decoration: none;
+            }
         }
+        .variations-select{
+            width: auto;
+            .inline-block(middle);
+            border: 1px solid #afafaf;
+
+            .custom-select{
+                &__inn{
+                    font-size: 12px;
+                    color: #363636;
+                    padding: 5px 30px 5px 10px;
+                }
+            }
+            &:after{
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 7px 4.5px 0 4.5px;
+                border-color: #868686 transparent transparent transparent;
+                background-image: none;
+                top: 10px;
+            }
+        }
+    }
+    &__rewiews{
+        height: 16px;
     }
 }
 .stroke-out{

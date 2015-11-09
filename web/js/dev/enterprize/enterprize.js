@@ -18,25 +18,25 @@
          */
         validationConfig = {
             fields: [{
-                fieldNode: $('.jsName'),
+                fieldNode: form.find('[name="user[name]"]'),
                 require: true,
                 customErr: 'Не указано имя'
             }, {
-                fieldNode: mobilePhoneField,
+                fieldNode: form.find('[name="user[mobile]"]'),
                 require: true,
                 validBy: 'isPhone',
                 customErr: 'Не указан мобильный телефон'
             }, {
-                fieldNode: $('.jsEmail'),
+                fieldNode: form.find('[name="user[email]"]'),
                 require: true,
                 validBy: 'isEmail',
                 customErr: 'Не указан email'
             }, {
-                fieldNode: $('.jsAgree'),
+                fieldNode: form.find('[name="user[agree]"]'),
                 require: true,
                 customErr: 'Необходимо согласие'
             }, {
-                fieldNode: $('.jsSubscribe'),
+                fieldNode: form.find('[name="user[isSubscribe]"]'),
                 require: true,
                 customErr: 'Необходимо согласие'
             }]
@@ -121,13 +121,13 @@
 
             var
                 clearError = function clearError() {
-                    validator._unmarkFieldError($(this));
+                    validator._unmarkFieldError({ fieldNode: $(this) });
                 };
             // end of functions
 
             console.warn('Ошибка в поле');
 
-            validator._markFieldError(field, formError.message);
+            validator._markFieldError({ fieldNode: field }, formError.message);
             field.bind('focus', clearError);
 
             return false;
@@ -439,7 +439,6 @@
         }
     });
 
-    // Новая карточка товара
     body.on('click', '.jsCouponRightIcon', function(){
         $('.js-enterprize-coupon-hint').toggle()
     });

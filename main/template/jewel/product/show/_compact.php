@@ -16,8 +16,16 @@ if (!isset($addInfo)) {
 // открытие товаров в новом окне
 $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
 
+// скидка в рублях
+$isCurrencyDiscountPrice = \App::abTest()->isCurrencyDiscountPrice();
+
+
 if ($product->getPriceOld()) {
-    $priceSale = round( ( 1 - ($product->getPrice() / $product->getPriceOld() ) ) *100, 0 );
+    $priceSale =
+        \App::abTest()->isCurrencyDiscountPrice()
+        ? round($product->getPrice() - $product->getPriceOld(), 0)
+        : round((1 - ($product->getPrice() / $product->getPriceOld())) * 100, 0)
+    ;
 } else {
     $priceSale = 0;
 }
@@ -53,12 +61,12 @@ if ($product->getPriceOld()) {
         </ul>
 
         <div class="lstn_pr">
-            <? if ($product->getPriceOld() && $product->getLabel()): ?>
+            <? if ($product->getPriceOld()): ?>
                 <span class="lstn_pr_old">
                     <span class="td-lineth"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
 
                     <? if ($priceSale): ?>
-                        &nbsp;<span class="lstn_pr_sale">-<?= $priceSale ?>%</span>
+                        &nbsp;<span class="lstn_pr_sale">-<?= $priceSale ?><?= ($isCurrencyDiscountPrice ? '<span class="rubl">p</span>' : '%') ?></span>
                     <? endif ?>
                 </span>
             <? endif ?>
@@ -70,7 +78,7 @@ if ($product->getPriceOld()) {
             <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare" data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>" data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>"></a>
 
             <? if ($product->getIsBuyable()): ?>
-                <?= $helper->render('cart/__button-product', ['product' => $product]) // Кнопка купить ?>
+                <?= $helper->render('cart/__button-product', ['product' => $product, 'sender' => $category ? $category->getSenderForGoogleAnalytics() : []]) // Кнопка купить ?>
             <? endif ?>
         </div>
     </div>

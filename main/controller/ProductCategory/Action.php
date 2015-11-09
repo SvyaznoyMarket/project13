@@ -3,6 +3,7 @@
 namespace Controller\ProductCategory;
 
 use EnterApplication\CurlTrait;
+use Model\Product\Category\Entity as Category;
 use Model\Product\Filter\Entity;
 use View\Partial\ProductCategory\RootPage\Brands;
 use View\Product\FilterForm;
@@ -31,13 +32,21 @@ class Action {
         // подготовка 1-го пакета запросов
 
         // запрашиваем текущий регион, если есть кука региона
-        if ($user->getRegionId()) {
-            \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
-                $data = reset($data);
-                if ((bool)$data) {
+        if ($regionId = $user->getRegionId()) {
+            if ((true === \App::config()->region['cache']) && ($regionId === \App::config()->region['defaultId'])) {
+                $data = \App::dataStoreClient()->query('/region-default.json');
+                $data = !empty($data['result'][0]['id']) ? $data['result'][0] : null;
+                if ($data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
-            });
+            } else {
+                \RepositoryManager::region()->prepareEntityById($regionId, function($data) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        \App::user()->setRegion(new \Model\Region\Entity($data));
+                    }
+                });
+            }
 
             $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
         }
@@ -50,15 +59,24 @@ class Action {
         /** @var $category \Model\Product\Category\Entity|null */
         $category = null;
         $catalogJson = [];
-        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category, &$catalogJson) {
-            if ($data) {
-                $category = new \Model\Product\Category\Entity($data);
-                $catalogJson = $category->catalogJson;
-            }
-        }, $brandToken);
 
-        // выполнение 2-го пакета запросов
-        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+        // получаем категорию по токену из запроса (если это не фейковый токен)
+        if ($categoryToken != Category::FAKE_SHOP_TOKEN) {
+            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category, &$catalogJson) {
+                if ($data) {
+                    $category = new Category($data);
+                    $catalogJson = $category->catalogJson;
+                }
+            }, $brandToken);
+
+            $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+        } else {
+            $category = new Category();
+            $category->setProductView(1);
+            $category->setName('Товары в магазинах');
+            $category->setLink(\App::router()->generate('product.category', ['categoryPath' => Category::FAKE_SHOP_TOKEN]));
+            $category->setToken($categoryToken);
+        }
 
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
@@ -91,21 +109,45 @@ class Action {
         $brand = null;
         $filters = [];
         $brands = [];
-        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, [], function($data) use (&$filters, &$brands, &$brand, $brandToken) {
-            foreach ($data as $item) {
-                $filters[] = new \Model\Product\Filter\Entity($item);
-                // бренды
-                if (isset($item['filter_id']) && $item['filter_id'] == 'brand' && is_array($item['options'])) {
-                    foreach ($item['options'] as $brandData) {
-                        $brandEntity = new \Model\Brand\Entity($brandData);
-                        $brands[] = $brandEntity;
-                        if (isset($brandData['token']) && $brandData['token'] == $brandToken) {
-                            $brand = $brandEntity;
+        \RepositoryManager::productFilter()->prepareCollectionByCategory(
+            $category,
+            $region,
+            [],
+            function($data) use (&$filters, &$brands, &$brand, $brandToken, $categoryToken) {
+                foreach ($data as $item) {
+                    $filter = new \Model\Product\Filter\Entity($item);
+
+                    if ($categoryToken == Category::FAKE_SHOP_TOKEN) {
+                        if ($filter->isShop()) {
+                            $filter->defaultTitle = 'Все магазины региона';
+                            $filter->showDefaultTitleInSelectedList = true;
+                        }
+
+                        if ($filter->isCategory()) {
+                            $filter->defaultTitle = 'Все';
+                            $filter->showDefaultTitleInSelectedList = true;
+                        }
+                    }
+
+                    $filters[] = $filter;
+                    // бренды
+                    if ($filter->isBrand() && $filter->getOption()) {
+                        foreach ($filter->getOption() as $option) {
+                            $filterBrand = new \Model\Brand\Entity();
+                            $filterBrand->id = $option->id;
+                            $filterBrand->token = $option->token;
+                            $filterBrand->name = $option->name;
+                            $filterBrand->image = $option->imageUrl;
+
+                            $brands[] = $filterBrand;
+                            if ($brandToken !== null && $option->getToken() == $brandToken) {
+                                $brand = $filterBrand;
+                            }
                         }
                     }
                 }
             }
-        });
+        );
 
         $client->execute();
 
@@ -122,7 +164,11 @@ class Action {
             $scmsClient = \App::scmsClient();
             $scmsClient->addQuery(
                 'api/static-page',
-                ['token' => [trim((string)$catalogJson['promo_token'])]],
+                [
+                    'token' => [trim((string)$catalogJson['promo_token'])],
+                    'geo_town_id' => \App::user()->getRegion()->id,
+                    'tags' => ['site-web'],
+                ],
                 [],
                 function($data) use (&$promoContent) {
                     if (!empty($data['pages'][0]['content'])) {
@@ -138,22 +184,18 @@ class Action {
             $scmsClient->execute();
         }
 
-        // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
-        $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
-        if (\App::config()->lite['enabled']) $categoryClass = null;
-
-        if ($categoryClass && ('default' !== $categoryClass)) {
-            if ('jewel' == $categoryClass) {
-                if (\App::config()->debug) \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
-
-                return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent);
-            } else if ('grid' == $categoryClass) {
-                if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
-
-                return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
-            }
-
-            \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
+        // роутим на специфичные категории
+        if ($category->isPandora()) {
+            \App::config()->debug && \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
+            return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent);
+        } else if ($category->isManualGrid()) {
+            \App::config()->debug && \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
+            return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
+        } else if ($category->isAutoGrid()) {
+            \App::config()->debug && \App::debug()->add('sub.act', 'ProductCategory\Grid\AutoGridAction.execute', 134);
+            return (new \Controller\ProductCategory\Grid\AutoGridAction())->execute($request, $category);
+        } else if (!$category->isDefault()) {
+            \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $category->getCategoryClass()));
         }
 
         $relatedCategories = [];
@@ -182,7 +224,7 @@ class Action {
                         if (is_array($data)) {
                             foreach ($data as $item) {
                                 if ($item) {
-                                    $relatedCategories[] = new \Model\Product\Category\Entity($item);
+                                    $relatedCategories[] = new Category($item);
                                 }
                             }
                         }
@@ -219,50 +261,33 @@ class Action {
 
         if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
             $category->setProductView(3);
+        } else if ($category->isTchibo()) {
+            $category->setProductView(3);
         }
 
-        // получаем из json данные о горячих ссылках и content
         $hotlinks = [];
         $seoContent = '';
         try {
-            $seoContent = $category->getSeoContent();
             if ($category) {
-                $hotlinks = $category->getSeoHotlinks();
-            }
-        } catch (\Exception $e) {
-            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
-        }
+                $seoContent = $category->getSeoContent();
 
-        // SITE-4439
-        try {
-            // если у категории нет дочерних узлов
-            if ($category && (!$category->getHasChild() || in_array($category->getId(), [1096]))) {
-//                $hotlinks = array_filter($hotlinks, function(\Model\Seo\Hotlink\Entity $item) { return (bool)$item->getGroupName(); }); // TODO: временная заглушка
-                // опции брендов
-                $brandOptions = [];
-                foreach ($filters as $filter) {
-                    if ('brand' == $filter->getId()) {
-                        foreach ($filter->getOption() as $option) {
-                            $brandOptions[] = $option;
+                if ($categoryToken != Category::FAKE_SHOP_TOKEN) {
+                    $hotlinks = $category->getSeoHotlinks();
+
+                    // SITE-4439
+                    if (!$category->getHasChild() || in_array($category->getId(), [1096])) {
+                        foreach ($brands as $iBrand) {
+                            $hotlinks[] = new \Model\Seo\Hotlink\Entity([
+                                'group' => '',
+                                'name' => $iBrand->getName(),
+                                'url' => \App::router()->generate('product.category.brand', [
+                                    'categoryPath' => $categoryPath,
+                                    'brandToken'   => $iBrand->getToken(),
+                                ]),
+                            ]);
                         }
-
-                        break;
                     }
                 }
-                // сортировка брендов по наибольшему количеству товаров
-                usort($brandOptions, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) { return $b->getQuantity() - $a->getQuantity(); });
-
-                foreach ($brands as $iBrand) {
-                    $hotlinks[] = new \Model\Seo\Hotlink\Entity([
-                        'group' => '',
-                        'name' => $iBrand->getName(),
-                        'url' => \App::router()->generate('product.category.brand', [
-                            'categoryPath' => $categoryPath,
-                            'brandToken'   => $iBrand->getToken(),
-                        ]),
-                    ]);
-                }
-
             }
         } catch (\Exception $e) {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['hotlinks']);
@@ -287,18 +312,23 @@ class Action {
 
         // promo slider
         $slideData = null;
-        if (array_key_exists('promo_slider', $catalogJson)) {
+        if (array_key_exists('promo_slider', $catalogJson) || $category->isTchibo()) {
             $show = isset($catalogJson['promo_slider']['show']) ? (bool)$catalogJson['promo_slider']['show'] : false;
             $promoCategoryToken = isset($catalogJson['promo_slider']['promo_token']) ? trim($catalogJson['promo_slider']['promo_token']) : null;
 
+            if ($category->isTchibo()) {
+                $promoCategoryToken = 'tchibo';
+                $show = true;
+}
             if ($show && !empty($promoCategoryToken)) {
                 try {
                     $promoRepository = \RepositoryManager::promo();
                     /** @var $promo \Model\Promo\Entity */
                     $promo = null;
 
-                    $promoRepository->prepareEntityByToken($promoCategoryToken, function($data) use (&$promo, &$promoCategoryToken) {
-                        if (is_array($data)) {
+                    $promoRepository->prepareByToken($promoCategoryToken, function($data) use (&$promo, &$promoCategoryToken) {
+                        $data = isset($data[0]['uid']) ? $data[0] : null;
+                        if ($data) {
                             $data['token'] = $promoCategoryToken;
                             $promo = new \Model\Promo\Entity($data);
                         }
@@ -309,31 +339,37 @@ class Action {
                         throw new \Exception\NotFoundException(sprintf('Промо-каталог @%s', $promoCategoryToken));
                     }
 
-                    $products = [];
-                    $productIds = [];
+                    $productsByUi = [];
+                    $productUis = [];
                     // перевариваем данные изображений
                     // используя айдишники товаров из секции image.products, получим мини-карточки товаров
-                    foreach ($promo->getImage() as $image) {
-                        $productIds = array_merge($productIds, $image->getProducts());
-                    }
-                    $productIds = array_unique($productIds);
+                    foreach ($promo->getPages() as $promoPage) {
+                        $uiChunk = [];
+                        foreach ($promoPage->getProducts() as $product) {
+                            $uiChunk[] = $product->ui;
+                        }
 
-                    foreach ($productIds as $productId) {
-                        $products[$productId] = new \Model\Product\Entity(['id' => $productId]);
+                        $productUis = array_merge($productUis, $uiChunk);
                     }
 
-                    \RepositoryManager::product()->prepareProductQueries($products, 'media');
+                    $productUis = array_unique($productUis);
+                    
+                    foreach ($productUis as $productUi) {
+                        $productsByUi[$productUi] = new \Model\Product\Entity(['ui' => $productUi]);
+                    }
+
+                    \RepositoryManager::product()->prepareProductQueries($productsByUi, 'media');
                     $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
                     $cartButtonAction = new \View\Cart\ProductButtonAction();
                     // перевариваем данные изображений для слайдера в $slideData
-                    foreach ($promo->getImage() as $image) {
-                        if (!$image instanceof \Model\Promo\Image\Entity) continue;
+                    foreach ($promo->getPages() as $promoPage) {
+                        if (!$promoPage instanceof \Model\Promo\Page\Entity) continue;
 
                         $itemProducts = [];
-                        foreach($image->getProducts() as $productId) {
-                            $product = isset($products[$productId]) ? $products[$productId] : null;
-                            if (!$product) continue;
+                        foreach($promoPage->getProducts() as $promoProduct) {
+                            $product = isset($productsByUi[$promoProduct->ui]) ? $productsByUi[$promoProduct->ui] : null;
+                            if (!$product || !$promoPage->getImageUrl()) continue;
 
                             /** @var $product \Model\Product\Entity */
                             $itemProducts[] = [
@@ -348,12 +384,12 @@ class Action {
                         }
 
                         $slideData[] = [
-                            'target'  => \App::abTest()->isNewWindow() ? '_blank' : '_self',
-                            'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),
-                            'title'   => $image->getName(),
-                            'linkUrl' => $image->getLink()?($image->getLink().'?from='.$promo->getToken()):'',
-                            'time'    => $image->getTime() ? $image->getTime() : 3000,
-                            'products'=> $itemProducts,
+                            'target'   => \App::abTest()->isNewWindow() ? '_blank' : '_self',
+                            'imgUrl'   => $promoPage->getImageUrl(),
+                            'title'    => $promoPage->getName(),
+                            'linkUrl'  => $promoPage->getLink()?($promoPage->getLink().'?from='.$promo->getToken()):'',
+                            'time'     => $promoPage->getTime() ? $promoPage->getTime() : 3000,
+                            'products' => $itemProducts,
                             // Пока не нужно, но в будущем, возможно понадобится делать $repositoryPromo->setEntityImageLink() как в /main/controller/Promo/IndexAction.php
                         ];
                     }
@@ -549,6 +585,8 @@ class Action {
         // листалка
         if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
             $itemsPerPage = 21;
+        } else if ($category->isTchibo()) {
+            $itemsPerPage = 21;
         } else {
             $itemsPerPage = \App::config()->product['itemsPerPage'];
         }
@@ -559,7 +597,7 @@ class Action {
         // стиль листинга
         $listingStyle = isset($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null;
 
-        $hasBanner = 'jewel' !== $listingStyle;
+        $hasBanner = !empty($catalogJson['bannerPlaceholder']) && 'jewel' !== $listingStyle;
 
         if (\App::config()->lite['enabled']) {
             $hasBanner = false;
@@ -593,7 +631,7 @@ class Action {
 
                 // SITE-4715
                 $smartChoiceData = array_filter($smartChoiceData, function($a) {
-                    return isset($a['products']);
+                    return !empty($a['products'][0]['id']);
                 });
 
                 foreach ($smartChoiceData as $smartChoiceItem) {
@@ -643,10 +681,31 @@ class Action {
         // TODO удалить (электронный сертификат в листинг сертификатов)
         if ($category->ui === 'b2885b1b-06bc-4c6f-b40d-9a0af22ff61c') array_unshift($productIds, 201540);
 
+        call_user_func(function() use(&$category) {
+            $userChosenCategoryView = \App::request()->cookies->get('categoryView');
+
+            if (
+                (!$category->config->listingDisplaySwitch && $category->config->listingDefaultView->isList)
+                || (
+                    $category->config->listingDisplaySwitch
+                    && (
+                        $userChosenCategoryView === 'expanded'
+                        || ($category->config->listingDefaultView->isList && $userChosenCategoryView == '')
+                    )
+                )
+            ) {
+                $category->listingView->isList = true;
+                $category->listingView->isMosaic = false;
+            } else {
+                $category->listingView->isList = false;
+                $category->listingView->isMosaic = true;
+            }
+        });
+
         /** @var \Model\Product\Entity[] $products */
         $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $productIds);
 
-        $repository->prepareProductQueries($products, 'media label brand category' . (in_array(\App::abTest()->getTest('siteListingWithViewSwitcher')->getChosenCase()->getKey(), ['compactWithSwitcher', 'expandedWithSwitcher', 'expandedWithoutSwitcher'], true) && $category->isInSiteListingWithViewSwitcherAbTest() ? ' property' : ''));
+        $repository->prepareProductQueries($products, 'model media label brand category' . ($category->listingView->isList ? ' property' : ''));
 
         \App::coreClientV2()->execute();
 
@@ -676,17 +735,29 @@ class Action {
             }
         });
 
-        if (!$products && 'true' == $request->get('ajax') && !\App::config()->lite['enabled']) {
-            throw new \Exception('Товары не найдены');
+        if (!$products && 'true' == $request->get('ajax') && $pageNum > 1 && !\App::config()->lite['enabled']) {
+            throw new \Exception('Не удалось получить товары');
         }
 
-        \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
-            if (isset($data['product_scores'][0])) {
-                \RepositoryManager::review()->addScores($products, $data);
-            }
-        });
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
+                if (isset($data['product_scores'][0])) {
+                    \RepositoryManager::review()->addScores($products, $data);
+                }
+            });
+        }
 
         \App::coreClientV2()->execute();
+
+        // SITE-5772
+        call_user_func(function() use(&$products, $category) {
+            $sender = $category->getSenderForGoogleAnalytics();
+            if ($sender) {
+                foreach ($products as $product) {
+                    $product->setLink($product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&') . http_build_query(['sender' => $sender]));
+                }
+            }
+        });
 
         $productPager = new \Iterator\EntityPager($products, $productCount);
 
@@ -718,6 +789,19 @@ class Action {
             $columnCount = (bool)array_intersect(array_map(function(\Model\Product\Category\Entity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
         }
 
+        $rootCategoryInMenu = null;
+        if ($category->isTchibo()) {
+            $columnCount = 3;
+                \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($category->getRoot()->getId(), $region, 3, function($data) use (&$rootCategoryInMenu) {
+                    $data = is_array($data) ? reset($data) : [];
+                    if (isset($data['id'])) {
+                        $rootCategoryInMenu = new \Model\Product\Category\TreeEntity($data);
+                    }
+                });
+
+                \App::searchClient()->execute();
+        }
+
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $selectedFilter = $category->isV2() ? new \View\Partial\ProductCategory\V2\SelectedFilter() : new \View\ProductCategory\SelectedFilterAction();
@@ -725,12 +809,12 @@ class Action {
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
-                    !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : [],
+                    $hasBanner ? $catalogJson['bannerPlaceholder'] : [],
                     null,
                     true,
                     $columnCount,
                     $productView,
-                    [],
+                    $category->getSenderForGoogleAnalytics(),
                     $category,
                     $favoriteProductsByUi
                 ),
@@ -778,6 +862,7 @@ class Action {
         $page->setParam('productView', $productView);
         $page->setParam('hasBanner', $hasBanner);
         $page->setParam('columnCount', $columnCount);
+        $page->setParam('rootCategoryInMenu', $rootCategoryInMenu);
 
         return new \Http\Response($page->show());
     }

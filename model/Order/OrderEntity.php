@@ -13,6 +13,7 @@ class OrderEntity {
 
     const TYPE_ORDER = 1;
     const DEFAULT_PAYMENT_ID = 1;
+    const DEFAULT_PAYMENT_UI = 'ff291b2a-ef90-11e0-83b5-005056af2ef1';
     const PAYMENT_ID_CREDIT_CARD = 2;
     const PAYMENT_ID_CREDIT_ONLINE = 6;
     const PAYMENT_ID_CERTIFICATE = 10;
@@ -43,6 +44,11 @@ class OrderEntity {
      * @var int
      */
     private $payment_id;
+    /** Способ оплаты
+     * Обязательный
+     * @var int
+     */
+    private $payment_ui;
     /** Статус оплаты
      * По умолчанию "Не оплачено"
      * @var int|null
@@ -72,6 +78,13 @@ class OrderEntity {
      * @var int
      */
 //    private $delivery_interval_id;
+    /**
+     * Интервалы дат доставки:
+     * Пример: { from: 2015-09-24, to: 2015-10-03 }
+     *
+     * @var array|null
+     */
+    private $delivery_date_interval;
     /** Интервал доставки
      * Обязательный. В массиве первый элемент - время начала, второй время завершения интервала
      * @var array
@@ -196,6 +209,16 @@ class OrderEntity {
      * @var string|null
      */
     private $box_ui;
+    /**
+     * Цена заказа при онлайн-оплате
+     * @var float
+     */
+    private $total_view_cost;
+    /**
+     * Сумма предоплаты
+     * @var int
+     */
+    private $prepaid_sum;
 
     /** TODO принимать \Model\OrderDelivery\Entity\Order и \Model\OrderDelivery\Entity\UserInfo
      * @param array $arr
@@ -223,6 +246,11 @@ class OrderEntity {
         } else {
             $this->payment_id = self::DEFAULT_PAYMENT_ID;
         }
+        if (isset($arr['order']['payment_method_ui']) && $arr['order']['payment_method_ui'] !== null) {
+            $this->payment_ui = (int)$arr['order']['payment_method_ui'];
+        } else {
+            $this->payment_ui = self::DEFAULT_PAYMENT_UI;
+        }
 
         if (isset($arr['order']['delivery']['mode_id'])) {
             if ($arr['order']['delivery']['mode_id'] === null) $this->delivery_type_id = null;
@@ -242,6 +270,12 @@ class OrderEntity {
             $this->delivery_period = $arr['order']['delivery']['interval'];
         } else {
             //throw new \Exception('Не указан интервал доставки');
+        }
+
+        if (isset($arr['order']['delivery']['date_interval']['from']) && isset($arr['order']['delivery']['date_interval']['to'])) {
+            $this->delivery_date_interval = $arr['order']['delivery']['date_interval'];
+        } else {
+            $this->delivery_date_interval = null;
         }
 
         if (isset($arr['order']['delivery']['point']['id'])) {
@@ -308,9 +342,14 @@ class OrderEntity {
 
         if (isset($arr['order']['delivery']['box_ui'])) $this->box_ui = $arr['order']['delivery']['box_ui'];
 
+        if (isset($arr['order']['total_view_cost'])) $this->total_view_cost = $arr['order']['total_view_cost'];
+
+        // meta data
         if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2, $cartProducts);
 
-
+        if (!empty($arr['order']['prepaid_sum'])) { // SITE-6256
+            $this->meta_data['prepaid_sum'] = $arr['order']['prepaid_sum'];
+        }
     }
 
     /** Возвращает мета-данные для партнеров
@@ -343,13 +382,15 @@ class OrderEntity {
                         if (isset($sender['name']))     $data[sprintf('product.%s.sender', $product->getUi())] = $sender['name'];       // система рекомендаций
                         if (isset($sender['position'])) $data[sprintf('product.%s.position', $product->getUi())] = $sender['position']; // позиция блока на сайте
                         if (isset($sender['method']))   $data[sprintf('product.%s.method', $product->getUi())] = $sender['method'];     // метод рекомендаций
-                        if (isset($sender['from']) && !empty($sender['from']))     $data[sprintf('product.%s.from', $product->getUi())] = $sender['from'];         // откуда перешели на карточку товара
+                        if (!empty($sender['from']))    $data[sprintf('product.%s.from', $product->getUi())] = $sender['from'];         // откуда перешели на карточку товара
+                        if (!empty($sender['isFromProductCard']))    $data[sprintf('product.%s.isFromProductCard', $product->getUi())] = $sender['isFromProductCard']; // SITE-5772
                     } else if (isset($cartProducts[$product->getId()]) && $cartProducts[$product->getId()]->sender) {
                         $cartProductSender = $cartProducts[$product->getId()]->sender;
                         if (isset($cartProductSender['name']))     $data[sprintf('product.%s.sender', $product->getUi())] = $cartProductSender['name'];       // система рекомендаций
                         if (isset($cartProductSender['position'])) $data[sprintf('product.%s.position', $product->getUi())] = $cartProductSender['position']; // позиция блока на сайте
                         if (isset($cartProductSender['method']))   $data[sprintf('product.%s.method', $product->getUi())] = $cartProductSender['method'];     // метод рекомендаций
-                        if (isset($cartProductSender['from']) && !empty($cartProductSender['from']))     $data[sprintf('product.%s.from', $product->getUi())] = $cartProductSender['from'];         // откуда перешели на карточку товара
+                        if (!empty($cartProductSender['from']))    $data[sprintf('product.%s.from', $product->getUi())] = $cartProductSender['from'];         // откуда перешели на карточку товара
+                        if (!empty($cartProductSender['isFromProductCard']))    $data[sprintf('product.%s.isFromProductCard', $product->getUi())] = $cartProductSender['isFromProductCard']; // SITE-5772
                         unset($cartProductSender);
                     }
 
@@ -374,6 +415,8 @@ class OrderEntity {
                     $mnogoruCookieValue = $request->cookies->get(\App::config()->partners['MnogoRu']['cookieName']);
                     if (!empty($mnogoruCookieValue) && $mnogoruCookieValue != 'undefined') {
                         $data['mnogo_ru_card'] = $mnogoruCookieValue;
+                    } else if ($mnogoruRequestValue = $request->get('user_info[mnogo_ru_number]', null, true)) {
+                        $data['mnogo_ru_card'] = $mnogoruRequestValue;
                     }
                 }
 
@@ -404,7 +447,12 @@ class OrderEntity {
         $this->meta_data['split_version'] = 2;
 
         foreach (get_object_vars($this) as $key => $value) {
-            if ($value !== null) $data[$key] = $value;
+            if (
+                (null !== $value)
+                || ('delivery_date_interval' === $key)
+            ) {
+                $data[$key] = $value;
+            }
         }
 
         return $data;

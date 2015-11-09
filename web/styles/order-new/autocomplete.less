@@ -1,0 +1,37 @@
+.ui-menu{
+    z-index: 2;
+    width: 420px;
+
+    &.ui-autocomplete-house-or-apartment{
+        width: 110px;
+        .ui-menu-item{
+            width: 110px;
+        }
+    }
+}
+.ui-menu-item {
+    width: 420px;
+    background-color: #fff;
+    border-right: 1px solid #c7c7c7;
+    border-left: 1px solid #c7c7c7;
+    border-bottom: 1px solid #c7c7c7;
+    .box-sizing(border-box);
+    z-index: 2;
+
+    a  {
+        display: block;
+        padding: 10px 0 10px 10px;
+        color: #363636;
+        font-size: 14px;
+        &.ui-state-focus{
+            background-color: #FFF6E5;
+        }
+        &:hover{
+            text-decoration: none;
+        }
+    }
+    &:last-child{
+            .border-radius(0,3px,3px,0);
+
+    }
+}

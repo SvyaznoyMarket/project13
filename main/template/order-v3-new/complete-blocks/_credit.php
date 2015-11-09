@@ -1,17 +1,31 @@
 <?php
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\Order\Entity $order
+ * @param array $creditData
+ * @param \Model\CreditBank\Entity[] $banks
+ * @param array $creditDoneOrderIds
+ * @param bool $isStatic
+ * @return string
+ */
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Order\Entity $order,
     $creditData,
-    $banks
-) { ?>
+    $banks,
+    $creditDoneOrderIds = [],
+    $isStatic = true // временной костыль, FIXME
+) {
+    if (in_array($order->id, $creditDoneOrderIds)) {
+        return '';
+    }
+?>
 
     <!-- Блок оплата в кредит -->
-    <div class="orderPayment orderPaymentCr jsCreditBlock">
+    <div id="credit-<?= md5($order->id ?: uniqid()) ?>" class="orderPayment <?= ($isStatic ? 'orderPayment--static' : '') ?> orderPaymentCr jsCreditBlock">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">
-
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
                     Заявка на кредит
@@ -20,7 +34,7 @@ $f = function(
                 <ul class="orderPaymentCr_lst clearfix jsCreditList jsCreditListOnlineMotiv">
                     <? foreach ($banks as $bank) : ?>
                         <? /** @var $bank \Model\CreditBank\Entity */?>
-                        <li class="orderPaymentCr_lst-i" data-value="<?= $bank->getId() ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>">
+                        <li class="orderPaymentCr_lst-i" data-value="<?= $bank->getId() ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>" data-order-id="<?= $order->getId() ?>">
                             <div class="orderPaymentCr_lst_l">
                                 <div><span class="undrl"><?= $bank->getName() ?></span></div>
                                 <a href="<?= $bank->getLink() ?>" target="_blank" class="pb-small undrl jsCreditListOnlineMotivRules">Условия кредитования</a>

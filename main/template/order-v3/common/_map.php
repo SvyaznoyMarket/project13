@@ -47,13 +47,13 @@
 
                 <div class="pick-point-search">
                     <div class="pick-point-search__input-wrap">
-                        <input class="pick-point-search-input" type="text" placeholder="Искать по улице, метро" data-bind="click: enableAutocompleteListVisible, value: searchInput, valueUpdate: 'afterkeydown'" />
+                        <input class="pick-point-search-input" type="text" placeholder="Искать по улице, метро" data-bind="click: enableAutocompleteListVisible, value: searchInput, valueUpdate: 'afterkeydown', event: { keydown: autocompleteNavigation }" />
                         <div class="pick-point-search__clear" data-bind="click: clearSearchInput, visible: searchInput ">×</div>
                     </div>
                     <div class="pick-point-suggest" style="display: none"
                          data-bind="visible: searchAutocompleteListVisible() && searchAutocompleteList().length > 0, event: { mouseleave: disableAutocompleteListVisible }">
                         <ul class="pick-point-suggest__list" data-bind="foreach: searchAutocompleteList">
-                            <li class="pick-point-suggest__i" data-bind="text: name, attr: { 'data-bounds': bounds }, click: $parent.setMapCenter"></li>
+                            <li class="pick-point-suggest__i" data-bind="text: name, attr: { 'data-element': ko.toJSON($data) }, click: $parent.setMapCenter"></li>
                         </ul>
                     </div>
                 </div>
@@ -114,6 +114,7 @@
                         </div>
                     </div>
 
+                    <? if ($uniqueDays): ?>
                     <!-- Дата самовывоза -->
                     <div class="drop-filter-box js-category-v2-filter-dropBox jsOrderV3Dropbox" data-bind="css: { picked: choosenDates().length > 0 }">
                         <div class="drop-filter-box__tggl js-category-v2-filter-dropBox-opener">
@@ -130,7 +131,7 @@
                                                    type="checkbox" id="id-delivery-date-<?= $day.$uniqId ?>" name="" value="<?= $day ?>"
                                                    data-bind="checked: choosenDates" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-date-<?= $day.$uniqId ?>">
-                                                <span class="customLabel_btx"><?= $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $day)) ?></span>
+                                                <span class="customLabel_btx"><?= $helper->escape($day) ?></span>
                                             </label>
                                         </div>
                                     <? endforeach ?>
@@ -138,6 +139,7 @@
                             </div>
                         </div>
                     </div>
+                    <? endif ?>
 
                 </div>
             </div>
@@ -147,19 +149,19 @@
                     <span class="pick-point-nomatch" data-bind="visible: points().length == 0">Поиск не дал результатов</span>
 
                     <div class="pick-point-list-wrap">
-                        <table class="pick-point-list">
-                            <tbody data-bind="foreach: points">
+                        <div class="pick-point-list" data-bind="foreach: points">
 
-                                <tr class="pick-point-item clearfix jsChangePoint"
+
+                                <div class="pick-point-item clearfix jsChangePoint"
                                     data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }
                                     <? if ($page == 'product') : ?>, click: $root.setMapCenter <? endif ?>">
 
-                                    <td class="pick-point-item__logo">
+                                    <div class="pick-point-item__logo">
                                         <img src="" class="pick-point-item__img" data-bind="attr: { src: icon }" />
                                         <span class="pick-point-item__name" data-bind="text: listName"></span>
-                                    </td>
+                                    </div>
 
-                                    <td class="pick-point-item__addr">
+                                    <div class="pick-point-item__addr">
                                         <!-- ko if: $.isArray(subway) -->
                                         <div class="pick-point-item__metro" data-bind="style: { background: subway[0].line.color }">
                                            <div class="pick-point-item__metro-inn" data-bind="text: subway[0].name"></div>
@@ -167,24 +169,24 @@
                                         <!-- /ko -->
                                         <div class="pick-point-item__addr-name" data-bind="text: address"></div>
                                         <div class="pick-point-item__time" data-bind="text: regtime"></div>
-                                    </td>
+                                    </div>
 
 
-                                    <td class="pick-point-item__info <?= $page == 'product' ? 'no-hide-info' : 'no-hide-info' ?>">
+                                    <div class="pick-point-item__info <?= $page == 'product' ? 'no-hide-info' : 'no-hide-info' ?>">
 
                                     <!-- ko if: !productInShowroom -->
-                                        <div class="pick-point-item__date" data-bind="text: humanNearestDay"></div>
-                                        <div class="pick-point-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div></div>
+                                        <div class="" data-bind="text: humanNearestDay, css: { 'pick-point-item__date': humanNearestDay }"></div>
+                                        <div class="pick-point-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div>
                                     <!-- /ko -->
 
                                     <!-- ko if: showBuyButton -->
-                                    <div class="pick-point-item__buy">
-                                        <button
-                                            href=""
-                                            class="btn-type btn-type--buy <? if ($page == 'page') : ?>jsOneClickButton<? endif ?>"
-                                            <? if (isset($productUi)) : ?>data-product-ui="<?= $productUi ?>"<? endif ?>
-                                            data-bind="attr: { 'data-shop': id }">Купить</button>
-                                    </div>
+                                        <div class="pick-point-item__buy">
+                                            <button
+                                                href=""
+                                                class="btn-type btn-type--buy <? if ($page == 'page') : ?>jsOneClickButton<? endif ?>"
+                                                <? if (isset($productUi)) : ?>data-product-ui="<?= $productUi ?>"<? endif ?>
+                                                data-bind="attr: { 'data-shop': id }">Купить</button>
+                                        </div>
                                     <!-- /ko -->
 
                                     <!-- ko if: productInShowroom -->
@@ -196,14 +198,14 @@
                                         </div>
                                     <!-- /ko -->
 
-                                    </td>
+                                    </div>
 
-                                </tr>
-                            </tbody>
-                        </table>
+                                </div>
+
+                        </div>
                     </div>
                 </div>
-            </div>
+        </div>
 
             <div id="<?= 'map-' . $uniqId ?>" class="js-order-map selShop_r clearfix"></div>
 

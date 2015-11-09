@@ -76,7 +76,7 @@ return function(
 
                     <div class="orderCol_tm">
                         <? if (isset($point->regtime)): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
-                        <? if (isset($point) && (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_cost < \App::config()->order['prepayment']['priceLimit']))) : ?>
+                        <? if (isset($point) && !$order->prepaid_sum) : ?>
                             <br />
                             <span class="orderCol_tm_t">Оплата при получении: </span>
                             <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные<? endif ?><? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта<? endif ?>
@@ -86,7 +86,7 @@ return function(
             <? else: ?>
                 <div class="orderCol_delivrIn orderCol_delivrIn-pl">
                     <div class="orderCol_delivrIn_t clearfix">
-                        <strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
+                        <strong>Адрес</strong>
                     </div>
 
                     <div class="orderCol_addrs" style="margin-left: 0;">

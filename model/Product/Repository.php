@@ -69,13 +69,15 @@ class Repository {
      * которых ядро или scms не вернули данных будут удалены из массива $products (ключи массива изменены не будут), а
      * остальные товары будут заполнены данными из ядра и scms.
      *
-     * TODO разбить на несколько функций: prepareProductQueriesById, prepareProductQueriesByUi, prepareProductQueriesByBarcode
+     * См. также: SITE-5975
      *
      * @param \Model\Product\Entity[] $products У всех товаров должны быть заданы id или ui или barcode (притом, если у
      *                                          первого товара задан id, то и у всех товаров должен быть задан именно
      *                                          id; аналогично для ui и barcode)
      * @param string $options Необходимые свойства товаров, через пробел: model media property label brand category
      * @throws
+     *
+     * TODO разбить на несколько функций: prepareProductQueriesById, prepareProductQueriesByUi, prepareProductQueriesByBarcode
      */
     public function prepareProductQueries(array &$products, $options = '', \Model\Region\Entity $region = null) {
         $options = trim($options) ? explode(' ', (string)$options) : [];
@@ -97,18 +99,30 @@ class Repository {
         if ($firstProduct->id) {
             $modelProductIdentifierName = 'id';
             $coreProductIdentifierName = 'id';
+
             $scmsProductRequestIdentifierName = 'ids';
             $scmsProductResponseIdentifierName = 'core_id';
+
+            $scmsProductModelRequestIdentifierName = 'ids';
+            $scmsProductModelResponseIdentifierName = 'id';
         } else if ($firstProduct->ui) {
             $modelProductIdentifierName = 'ui';
             $coreProductIdentifierName = 'ui';
+
             $scmsProductRequestIdentifierName = 'uids';
             $scmsProductResponseIdentifierName = 'uid';
+
+            $scmsProductModelRequestIdentifierName = 'uids';
+            $scmsProductModelResponseIdentifierName = 'uid';
         } else {
             $modelProductIdentifierName = 'barcode';
             $coreProductIdentifierName = 'bar_code';
+
             $scmsProductRequestIdentifierName = 'barcodes';
             $scmsProductResponseIdentifierName = 'barcode';
+
+            $scmsProductModelRequestIdentifierName = 'barcodes';
+            $scmsProductModelResponseIdentifierName = 'barcode';
         }
 
         $productIdentifiers = array_filter(array_map(function(\Model\Product\Entity $product) use(&$modelProductIdentifierName) { return $product->$modelProductIdentifierName; }, $products));
@@ -124,7 +138,8 @@ class Repository {
                     'geo_id' => $region->getId(),
                     'select_type' => $coreProductIdentifierName,
                     $coreProductIdentifierName => $productIdentifierChunk,
-                ] + (!in_array('model', $options, true) ? ['withModels' => 0] : []),
+                    'withModels' => 0,
+                ],
                 [],
                 function($response) use(&$products, &$modelProductIdentifierName, &$coreProductIdentifierName, $productIdentifierChunk) {
                     $coreProductsByIdentifier = [];
@@ -152,10 +167,7 @@ class Repository {
                     }
                 }
             );
-        }
 
-        // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
-        foreach (array_chunk($productIdentifiers, \App::config()->coreV2['chunk_size']) as $productIdentifierChunk) {
             \App::scmsClient()->addQuery(
                 'product/get-description/v1',
                 [$scmsProductRequestIdentifierName => $productIdentifierChunk] + array_fill_keys(array_intersect($options, ['media', 'property', 'label', 'brand', 'category']), 1),
@@ -186,24 +198,34 @@ class Repository {
                     }
                 }
             );
-        }
-    }
 
-    public function prepareProductsMediasByIds($productIds, &$medias) {
-        \App::scmsClient()->addQuery(
-            'product/get-description/v1',
-            ['ids' => $productIds, 'media' => 1],
-            [],
-            function($data) use(&$medias) {
-                if (isset($data['products']) && is_array($data['products'])) {
-                    foreach ($data['products'] as $product) {
-                        if (isset($product['core_id']) && isset($product['medias'])) {
-                            $medias[$product['core_id']] = array_map(function($media) { return new \Model\Media($media); }, $product['medias']);
+            if (\App::config()->product['getModel'] && in_array('model', $options, true)) {
+                \App::scmsClient()->addQuery(
+                    'api/product/get-models',
+                    [
+                        $scmsProductModelRequestIdentifierName => $productIdentifierChunk,
+                        'geo_id' => $region->getId(),
+                    ],
+                    [],
+                    function($response) use(&$products, &$modelProductIdentifierName, &$scmsProductModelResponseIdentifierName) {
+                        $scmsProductsByIdentifier = [];
+                        call_user_func(function() use(&$response, &$scmsProductsByIdentifier, &$scmsProductModelResponseIdentifierName) {
+                            if (isset($response['products']) && is_array($response['products'])) {
+                                foreach ($response['products'] as &$item) {
+                                    $scmsProductsByIdentifier[$item[$scmsProductModelResponseIdentifierName]] = &$item;
+                                }
+                            }
+                        });
+
+                        foreach ($products as $key => $product) {
+                            if (isset($scmsProductsByIdentifier[$product->$modelProductIdentifierName])) {
+                                $product->importModelFromScms($scmsProductsByIdentifier[$product->$modelProductIdentifierName]);
+                            }
                         }
                     }
-                }
+                );
             }
-        );
+        }
     }
 
     /**
@@ -265,7 +287,7 @@ class Repository {
             if ($product->getProperty()) {
                 foreach ($product->getProperty() as $property) {
                     if (in_array($property->getName(), array('Высота', 'Ширина', 'Глубина'))) {
-                        $result[$id][$dimensionsTranslate[$property->getName()]] = $property->getValue();
+                        $result[$id][$dimensionsTranslate[$property->getName()]] = $property->getOptionValue();
                     }
                 }
             }
@@ -349,5 +371,57 @@ class Repository {
             'videoHtml' => $videoHtml,
             'properties3D' => $properties3D,
         ];
+    }
+
+    /*
+     * @param \Model\Product\Entity[] $products
+     * @param array $excludeProductIds
+     */
+    public function filterRecommendedProducts(array &$products, array $excludeProductIds = []) {
+        $products = array_filter($products, function(\Model\Product\Entity $product) use($excludeProductIds) {
+            return (!in_array($product->id, $excludeProductIds) && $product->isAvailable() && !$product->isInShopShowroomOnly() && !$product->isInShopOnly());
+        });
+
+        $products = array_slice($products, 0, 30);
+    }
+
+    /**
+     * @param \Model\Product\Entity[] $products
+     */
+    public function sortRecommendedProducts(&$products) {
+        try {
+            usort($products, function(\Model\Product\Entity $a, \Model\Product\Entity $b) {
+                if ($b->getIsBuyable() != $a->getIsBuyable()) {
+                    return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
+                } else if ($b->isInShopOnly() != $a->isInShopOnly()) {
+                    return ($b->isInShopOnly() ? -1 : 1) - ($a->isInShopOnly() ? -1 : 1); // потом те, которые можно зарезервировать
+                } else if ($b->isInShopShowroomOnly() != $a->isInShopShowroomOnly()) {// потом те, которые есть на витрине
+                    return ($b->isInShopShowroomOnly() ? -1 : 1) - ($a->isInShopShowroomOnly() ? -1 : 1);
+                } else {
+                    return (int)rand(-1, 1);
+                }
+            });
+        } catch (\Exception $e) {}
+    }
+
+    public function getViewedProductIdsByHttpRequest(\Http\Request $request) {
+        $viewedProductIds = $request->get('rrviewed');
+
+        if (is_string($viewedProductIds)) {
+            $viewedProductIds = explode(',', $viewedProductIds);
+        }
+
+        if (empty($viewedProductIds)) {
+            $viewedProductIds = explode(',', (string)$request->cookies->get('product_viewed'));
+        }
+
+        if (is_array($viewedProductIds)) {
+            $viewedProductIds = array_reverse(array_filter($viewedProductIds));
+            $viewedProductIds = array_slice(array_unique($viewedProductIds), 0, 30);
+        } else {
+            $viewedProductIds = [];
+        }
+
+        return $viewedProductIds;
     }
 }

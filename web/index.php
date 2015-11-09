@@ -16,9 +16,6 @@ $env = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'dev';
 $config = include realpath(__DIR__ . '/../config/config-' . $env . '.php');
 if (false === $config) die(sprintf('Не удалось загрузить конфигурацию для среды "%s"', $env));
 
-// graceful degradation
-call_user_func(include realpath(__DIR__ . '/../config/degradation.php'), $config);
-
 // autoload
 require_once __DIR__ . '/../lib/Autoloader.php';
 Autoloader::register($config->appDir, $config);
@@ -38,8 +35,6 @@ if (isset($_GET['APPLICATION_DEBUG'])) {
 
 // request
 \Http\Request::trustProxyData();
-// TODO: придумать, как по другому можно получить имя хоста
-//$request = \Http\Request::createFromGlobals(); // TODO: временно убрал проверку на мобильное приложение
 
 // app name
 \App::$name = isset($_SERVER['APPLICATION_NAME']) ? $_SERVER['APPLICATION_NAME'] : 'main';
@@ -137,7 +132,7 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
 });
 
 // восстановление параметров родительского запроса для SSI, родительский запрос передается в headers x-uri
-if ($_SERVER['SCRIPT_NAME'] == '/ssi.php') {
+if ($_SERVER['SCRIPT_NAME'] === '/ssi.php') {
     $queryStrPosition = strpos($_SERVER['HTTP_X_URI'], '?');
     $parent_query = substr($_SERVER['HTTP_X_URI'], $queryStrPosition === false ? 0 : $queryStrPosition + 1);
     parse_str($parent_query, $params);
@@ -148,7 +143,7 @@ if ($_SERVER['SCRIPT_NAME'] == '/ssi.php') {
 
 // request
 $request =
-    $_SERVER['SCRIPT_NAME'] == '/ssi.php'
+    $_SERVER['SCRIPT_NAME'] === '/ssi.php'
     ? \Http\Request::create(
         '/ssi' . (!empty($_GET['path']) ? $_GET['path'] : ''),
         'GET',
@@ -157,16 +152,14 @@ $request =
     : \App::request()
 ;
 
+// degradation
+call_user_func(include realpath(__DIR__ . '/../config/degradation.php'), $config, $request);
+
 // router
 $router = \App::router();
 
 try {
     $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
-
-    // проверка редиректа для мобильного устройства
-    if (!$response instanceof \Http\Response && \App::config()->mobileRedirect['enabled']) {
-        $response = (new \Controller\MobileRedirectAction())->execute($request);
-    }
 
     // проверка редиректа из scms
     if (!$response instanceof \Http\Response) {
@@ -176,10 +169,6 @@ try {
     // если предыдущие контроллеры не вернули Response, ...
     if (!$response instanceof \Http\Response) {
         \App::logger()->info(['message' => 'Match route', 'route' => $request->attributes->get('route'), 'uri' => $request->getRequestUri(), 'method' => $request->getMethod()], ['router']);
-
-        if (\App::config()->mobileRedirect['enabled']) {
-            $response = (new \Controller\MobileRedirectAction())->execute($request);
-        }
 
         // action resolver
         $resolver = \App::actionResolver();

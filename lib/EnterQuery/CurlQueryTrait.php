@@ -65,7 +65,9 @@ trait CurlQueryTrait
         }
 
         // задержки по умолчанию
-        if (null === $delayRatios) {
+        if (\App::config()->degradation > 0) { // FIXME: гкод!
+            $delayRatios = [0];
+        } else if (null === $delayRatios) {
             $delayRatios = \App::config()->curlCache['delayRatio'] ?: [0];
         }
 
@@ -111,11 +113,16 @@ trait CurlQueryTrait
                     $this->error = $query->response->error;
 
                     // TODO: удалить; сейчас нужно для старого журнала
+                    $errorItem = ['code' => $this->error->getCode(), 'message' => $this->error->getMessage()];
+                    if (28 === $this->error->getCode()) {
+                        $errorItem['message'] = 'Operation timed out';
+                        $errorItem['detail'] = $this->error->getMessage();
+                    }
                     \App::logger()->error([
                         'message' => 'Fail curl',
                         'cache' => true, // важно
                         'delay' => $query->request->delay, // важно
-                        'error' => ['code' => $this->error->getCode(), 'message' => $this->error->getMessage()],
+                        'error' => $errorItem,
                         'url' => $query->request->options[CURLOPT_URL],
                         'data' => $data,
                         'info' => $query->response->info,
@@ -151,7 +158,7 @@ trait CurlQueryTrait
                 $result = null;
                 if (is_callable($decoder)) {
                     try {
-                        $result = call_user_func($decoder, $query->response->body, $query->response->statusCode);
+                        $result = call_user_func($decoder, $query->response->body, $query);
 
                         // TODO: удалить; сейчас нужно для старого журнала
                         $endAt = microtime(true);

@@ -13,8 +13,8 @@ $f = function(
     // отдельная картинка для шильдика
     $labelImage = $product->getLabel() ? $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) : null;
 
-$modelName = $product->getModel() && $product->getModel()->getProperty() ? $product->getModel()->getProperty()[0]->getName() : null;
-    $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceChangePercentTrigger())
+$modelName = $product->model && $product->model->property ? $product->model->property->name : null;
+$price = ($product->getRootCategory() && $product->getRootCategory()->getPriceChangePercentTrigger())
         ? round($product->getPrice() * $product->getRootCategory()->getPriceChangePercentTrigger())
         : 0;
 
@@ -34,7 +34,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <?= $helper->render('product-page/blocks/variants', ['product' => $product, 'trustfactors' => $trustfactors]) ?>
 
     <? if ($product->getTagline()) : ?>
-    <p class="product-card-desc collapsed js-description-expand"><?= $product->getTagline() ?></p>
+    <p class="product-card-desc"><?= $product->getTagline() ?></p>
     <? endif ?>
 
     <dl class="product-card-prop">
@@ -52,25 +52,31 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
 
     <?= $helper->render('product-page/blocks/trustfactors', ['trustfactors' => $trustfactors]) ?>
 
-    <div class="product-card-sharing-list">
-        <!-- AddThis Button BEGIN -->
-        <div class="addthis_toolbox addthis_default_style mt15 ">
-            <a class="addthis_button_facebook"></a>
-            <a class="addthis_button_twitter"></a>
-            <a class="addthis_button_vk"></a>
-            <a class="addthis_button_compact"></a>
-            <a class="addthis_counter addthis_bubble_style"></a>
+    <div class="product-card__addings">
+        <ul class="pay-system-list">
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-card-g.png"></li>
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-yandex-g.png"></li>
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-webmoney-g.png"></li>
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-qiwi-g.png"></li>
+            <li class="pay-system-list__i"><img class="pay-system-list__img" src="/styles/order-new/img/payment/pay-psb-g.png"></li>
+        </ul>
+
+        <div class="product-card-sharing-list">
+            <!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style mt15 ">
+                <a class="addthis_button_facebook"></a>
+                <a class="addthis_button_twitter"></a>
+                <a class="addthis_button_vk"></a>
+                <a class="addthis_button_compact"></a>
+                <a class="addthis_counter addthis_bubble_style"></a>
+            </div>
+
+            <script type="text/javascript">var addthis_config = {"data_track_addressbar":true, ui_language: "ru"};</script>
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1&domready=1"></script>
+            <? /* <!-- AddThis Button END --> */ ?>
         </div>
-        <script type="text/javascript">var addthis_config = { data_track_addressbar:true, ui_language: "ru" };</script>
-        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1&domready=1" async></script>
-        <!-- AddThis Button END -->
     </div>
 
-    <ul class="pay-system-list">
-        <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--visa"></i></li>
-        <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--mastercard"></i></li>
-        <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--psb"></i></li>
-    </ul>
 </div>
 <!--/ краткое описание товара -->
 
@@ -80,6 +86,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
     <?= $helper->render('product-page/blocks/coupon', ['coupon' => $coupon]) ?>
 
     <? if ($product->getLabel() && $product->getLabel()->expires && !$product->getLabel()->isExpired()) : ?>
+        <?= $product->getLabel()->url ? '<a href="' . $product->getLabel()->url .'" style="cursor: pointer">' : '' ?>
         <!-- Шильдик с правой стороны -->
         <div class="product-card-action i-info <?= !$labelImage ? 'product-card-action-no-image' : ''?>">
 
@@ -100,6 +107,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
                 <!--/ попап - подробности акции -->
             <? endif ?>
         </div>
+        <?= $product->getLabel()->url ? '</a>' : '' ?>
     <? endif ?>
 
     <? if ($product->getPriceOld()) : ?>
@@ -153,17 +161,16 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         ]) // Кнопка купить ?>
     </div>
 
-    <? if (\App::config()->payment['creditEnabled'] && ($product->getPrice() >= \App::config()->product['minCreditPrice']) && !count($product->getPartnersOffer())) : ?>
+    <? if ($creditData['creditIsAllowed'] && !count($product->getPartnersOffer()) && !$product->isInShopOnly()): ?>
         <!-- купить в кредит -->
         <a
             class="buy-on-credit btn-type btn-type--normal btn-type--longer jsProductCreditButton"
             href="<?= $helper->url('cart.product.setList', ['products' => [['ui' => $product->ui, 'quantity' => '+1', 'up' => '1']]]) ?>"
-            style="display: none"
             data-credit='<?= (isset($creditData['creditData']) ? $creditData['creditData'] : '') ?>'
             data-target=".<?= \View\Id::cartButtonForProduct($product->getId()) ?>"
         >
             <span class="buy-on-credit__tl">Купить в кредит</span>
-            <span class="buy-on-credit__tx">от <mark class="buy-on-credit__mark jsProductCreditPrice">0</mark>&nbsp;&nbsp;<span class="rubl">p</span> в месяц</span>
+            <span class="buy-on-credit__tx">от <mark class="buy-on-credit__mark jsProductCreditPrice">...</mark>&nbsp;&nbsp;<span class="rubl">p</span> в месяц</span>
         </a>
         <!--/ купить в кредит -->
     <? endif ?>

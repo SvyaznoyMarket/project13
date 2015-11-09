@@ -63,16 +63,12 @@ class ShowAction {
             'onlyInShop'   => $product->isInShopOnly(),
             'stateLabel'   => $showState ? ($inShopOnlyLabel ? $inShopOnlyLabel : $inStoreLabel) : null,
             'variations'   =>
-                ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty()) // TODO: перенести в \View\*Action
-                    ? array_map(function(\Model\Product\Model\Property\Entity $property) {
-                    return [
-                        'name' => $property->getName(),
-                    ];
-                }, $product->getModel()->getProperty())
+                ((isset($hasModel) ? $hasModel : true) && $product->model && $product->model->property) // TODO: перенести в \View\*Action
+                    ? [['name' => $product->model->property->name]]
                     : null
             ,
             'hasVariations' =>
-                ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty())
+                ((isset($hasModel) ? $hasModel : true) && $product->model && $product->model->property)
                     ? true
                     : null
             ,

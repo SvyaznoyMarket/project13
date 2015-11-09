@@ -2,8 +2,10 @@
 
 namespace View\User;
 
+use Session\AbTest\ABHelperTrait;
 
 class FavoritesPage extends \View\DefaultLayout {
+    use ABHelperTrait;
 
     /** @var string */
     protected $layout  = 'layout-oneColumn';
@@ -26,7 +28,10 @@ class FavoritesPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('user/page-favorites', $this->params);
+        return $this->render(
+            'user/favorite/page-index',
+            $this->params
+        );
     }
 
     public function slotBodyDataAttribute() {

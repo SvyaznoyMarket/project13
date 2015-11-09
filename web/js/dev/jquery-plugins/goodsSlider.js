@@ -25,7 +25,7 @@
 			 * @return bool
 			 */
 			isRecommendation = function isRecommendation( type ) {
-				return -1 != $.inArray(type, ['alsoBought', 'similar', 'alsoViewed', 'main', 'search'/*, 'viewed'*/]);
+				return -1 != $.inArray(type, ['alsoBought', 'similar', 'alsoViewed', 'main', 'search', 'popular', 'personal'/*, 'viewed'*/]);
 			};
 		// end of functions
 
@@ -69,8 +69,8 @@
 						url: url,
                         data: urlData,
 						success: function( res ) {
-							var
-								i, type, callbF, data;
+
+							var i, type, callbF, data;
 
 							try {
 								for ( i in recommendArray ) {
@@ -78,9 +78,8 @@
 									callbF = recommendArray[i].callback;
 
 									if ( 'undefined' !== typeof(callbF) ) {
-										if ( 'undefined' !== typeof(type) && 'undefined' !== typeof(res.recommend) && 'undefined' !== typeof(res.recommend[type]) ) {
+										if ( typeof type != 'undefined' && typeof res.recommend != 'undefined' && 'undefined' !== typeof(res.recommend[type]) ) {
 											callbF(res.recommend[type]);
-
 											data = res.recommend[type].data;
 											if ( data ) {
 												console.log('Показ товарных рекомендаций от Retailrocket для блока ' + type);
@@ -128,7 +127,7 @@
 		/**
 		 * Обработка для каждого элемента попавшего в набор
 		 */
-		var SliderControl = function( mainNode ) {
+		var SliderControl = function() {
 			/**
 			 * Обработка для каждого элемента попавшего в набор
 			 *
@@ -155,7 +154,7 @@
 							{},
 							$.fn.goodsSlider.defaults,
 							params ),
-				$self = mainNode,
+				$self = this,
 				sliderParams = $self.data('slider'),
 				hasCategory = $self.hasClass('mWithCategory'),
 
@@ -165,23 +164,25 @@
 				slider = $self.find(options.sliderSelector),
 				item = $self.find(options.itemSelector),
 				catItem = $self.find(options.categoryItemSelector),
-                pageTitle = $self.find(options.pageTitleSelector),
+				classDisabled = 'mDisabled disabled',
 
 				nowLeft = 0;
 			// end of vars
 
 			var
-				calculateItemWidth = function() {
-					return item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10);
+				calculateItemWidth = function(i) {
+					i = i || item;
+					return i.width() + parseInt(i.css('marginLeft'),10) + parseInt(i.css('marginRight'),10);
 				},
-				calculateElementOnSlideCount = function(itemW) {
-					return parseInt(wrap.width()/itemW, 10);
+				calculateElementOnSlideCount = function(itemW, wrapEl) {
+					wrapEl = wrapEl || wrap;
+					return Math.ceil(wrapEl.width()/itemW);
 				},
 				/**
 				 * Переключение на следующий слайд. Проверка состояния кнопок.
 				 */
 				nextSlide = function nextSlide(e) {
-					if ( $(this).hasClass('mDisabled disabled') ) {
+					if ( $(this).hasClass(classDisabled) ) {
 						return false;
 					}
 
@@ -189,33 +190,31 @@
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					leftBtn.removeClass('mDisabled disabled');
+					leftBtn.removeClass(classDisabled);
 
 					if ( nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW ) {
 						nowLeft = slider.width() - elementOnSlide * itemW;
-						rightBtn.addClass('mDisabled disabled');
+						rightBtn.addClass(classDisabled);
 					}
 					else {
-						nowLeft = nowLeft + elementOnSlide * itemW;
-						rightBtn.removeClass('mDisabled disabled');
+						nowLeft += elementOnSlide * itemW;
+						rightBtn.removeClass(classDisabled);
 					}
 
-					console.info(itemW);
-					console.log(elementOnSlide);
-					console.log(nowLeft);
-					console.log(wrap.width());
-
-					slider.animate({'left': -nowLeft });
+					slider.animate({'left': -nowLeft }, {
+						complete: function(){
+							sendAnalytic.apply($self)
+						}
+					});
 
                     e.preventDefault();
-                    //return false;
 				},
 
 				/**
 				 * Переключение на предыдущий слайд. Проверка состояния кнопок.
 				 */
 				prevSlide = function prevSlide(e) {
-					if ( $(this).hasClass('mDisabled disabled') ) {
+					if ( $(this).hasClass(classDisabled) ) {
 						return false;
 					}
 
@@ -223,21 +222,81 @@
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					rightBtn.removeClass('mDisabled disabled');
+					rightBtn.removeClass(classDisabled);
 
 					if ( nowLeft - elementOnSlide * itemW <= 0 ) {
 						nowLeft = 0;
-						leftBtn.addClass('mDisabled disabled');
+						leftBtn.addClass(classDisabled);
 					}
 					else {
-						nowLeft = nowLeft - elementOnSlide * itemW;
-						leftBtn.removeClass('mDisabled disabled');
+						nowLeft -= elementOnSlide * itemW;
+						leftBtn.removeClass(classDisabled);
 					}
 
-					slider.animate({'left': -nowLeft });
+					slider.animate({'left': -nowLeft }, {
+						complete: function(){
+							sendAnalytic.apply($self)
+						}
+					});
 
                     e.preventDefault();
-					//return false;
+				},
+
+				/**
+				 * Отправка e-comm аналитики при загрузке или прокрутке слайдера
+				 * @param action
+				 */
+				sendAnalytic = function(action) {
+					var $slider = $(this),
+						itemW = calculateItemWidth($slider.find(options.itemSelector)),
+						elementOnSlide = calculateElementOnSlideCount(itemW, $slider.find(options.sliderWrapperSelector)),
+						firstIndex = parseInt(nowLeft/itemW, 10),
+						lastIndex = firstIndex + elementOnSlide,
+						sender = $slider.data('slider').sender,
+						position = '';
+
+					if (sender) position = sender.position + '_' + sender.method;
+
+					$slider.find('.jsBuyButton').slice(firstIndex, lastIndex).each(function(i,el){
+						ENTER.utils.analytics.addImpression(el, {
+							position: firstIndex + i,
+							list: position
+						})
+					});
+
+					body.trigger('trackGoogleEvent', ['Recommendations', action == 'load' ? 'load' : 'scroll', position])
+				},
+
+				/**
+				 * Отправка аналитики про клике на товаре
+				 */
+				bindAnalyticOnProductClick = function(){
+
+					var $slider = $(this);
+
+					$slider.find('a:not(.jsBuyButton)').on('click', function(e){
+						e.preventDefault();
+
+						var link = $(this).attr('href'),
+							sender = $slider.data('slider') ? $slider.data('slider').sender : {},
+							productIndex = $(this).closest('li').index(),
+							position = sender.position + '_' + sender.method,
+							data = $(this).closest('li').find('.jsBuyButton').data('ecommerce');
+
+						ENTER.utils.analytics.addProduct(data, {
+							position: productIndex
+						});
+						ENTER.utils.analytics.setAction('click', {
+							list: position
+						});
+						body.trigger('trackGoogleEvent', {
+							category: 'Recommendations',
+							action: 'click',
+							label: position,
+							value: productIndex,
+							hitCallback: link
+						})
+					});
 				},
 
 				/**
@@ -250,16 +309,16 @@
 						itemW = calculateItemWidth(),
 						elementOnSlide = calculateElementOnSlideCount(itemW);
 
-					leftBtn.addClass('mDisabled disabled');
-					rightBtn.addClass('mDisabled disabled');
+					leftBtn.addClass(classDisabled);
+					rightBtn.addClass(classDisabled);
 
 					if ( nowItems.length > elementOnSlide ) {
-						rightBtn.removeClass('mDisabled disabled');
+						rightBtn.removeClass(classDisabled);
 					}
 
 					slider.width(nowItems.length * itemW);
 					nowLeft = 0;
-					leftBtn.addClass('mDisabled disabled');
+					leftBtn.addClass(classDisabled);
 					slider.css({'left':nowLeft});
 					wrap.removeClass('mLoader');
 					nowItems.show();
@@ -293,24 +352,23 @@
 				 * @param	{Object}	res	Ответ от сервера
 				 */
 				authFromServer = function authFromServer( res ) {
-					var newSlider;
+					var newSlider, $n;
 
 					if ( !res.success ){
 						$self.remove();
-						
 						return false;
 					}
 
 					newSlider = $(res.content)[0];
-					$self.before(newSlider);
-					$self.remove();
-					$(newSlider).goodsSlider(options);
+					$self.before(newSlider).remove();
+					$n = $(newSlider).goodsSlider(options);
 
-					if (params.onLoad) {
+					sendAnalytic.call($n, 'load');
+					bindAnalyticOnProductClick.call($n);
+					if (typeof params.onLoad == 'function') {
 						params.onLoad(newSlider);
 					}
 
-                    body.trigger('TLT_logCustomEvent', ['recommendation_loaded', $(newSlider).data('position')]);
 				},
 
 				/**
@@ -371,11 +429,8 @@
 			catItem.on('click', selectCategory);
 		};
 
-
 		return this.each(function() {
-			var $self = $(this);
-
-			new SliderControl($self);
+			SliderControl.apply($(this));
 		});
 	};
 

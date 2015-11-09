@@ -13,7 +13,7 @@ $f = function(
     // отдельная картинка для шильдика
     $labelImage = $product->getLabel() ? $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) : null;
 
-$modelName = $product->getModel() && $product->getModel()->getProperty() ? $product->getModel()->getProperty()[0]->getName() : null;
+$modelName = $product->model && $product->model->property ? $product->model->property->name : null;
     $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceChangePercentTrigger())
         ? round($product->getPrice() * $product->getRootCategory()->getPriceChangePercentTrigger())
         : 0;

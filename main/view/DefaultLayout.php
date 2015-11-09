@@ -2,18 +2,33 @@
 
 namespace View;
 
+use Session\AbTest\ABHelperTrait;
 use Session\AbTest\AbTest;
+use Model\Product\Category\Entity as Category;
 
 class DefaultLayout extends Layout {
+    use ABHelperTrait;
+
     protected $layout  = 'layout-oneColumn';
     protected $breadcrumbsPath = null;
+    /** @var bool */
+    // TODO переделать на автоопределение
     protected $useTchiboAnalytics = false;
+    /** @var bool */
+    protected $useMenuHamburger = false;
+
+    /**
+     * Flocktory precheckout data
+     *
+     * @var array
+     */
+    protected $flPrecheckoutData = [];
 
     public function __construct() {
         parent::__construct();
 
         // Меню нужно в нескольких рендерингах, поэтому запрашиваем его сразу
-        $this->setGlobalParam('menu', (new Menu($this))->generate_new(\App::user()->getRegion()));
+        $this->setGlobalParam('menu', (new Menu($this))->generate(\App::user()->getRegion()));
 
         $this->setTitle('Enter - это выход!');
         $this->addMeta('yandex-verification', '623bb356993d4993');
@@ -33,6 +48,25 @@ class DefaultLayout extends Layout {
          $this->addStylesheet(\App::config()->debug ? '/styles/global.css' : '/styles/global.min.css');
 
         $this->addJavascript(\App::config()->debug ? '/js/loadjs.js' : '/js/loadjs.min.js');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMenuHamburger()
+    {
+        return $this->useMenuHamburger;
+    }
+
+    /**
+     * Является ли категория "чибовской"
+     *
+     * @param Category $category
+     * @return bool
+     */
+    public function isTchiboCategory(Category $category)
+    {
+        return isset($category->getAncestor()[0]) && $category->getAncestor()[0]->getUi() === Category::UI_TCHIBO;
     }
 
     public function slotRelLink() {
@@ -116,6 +150,10 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    public function slotBottombar() {
+        return '';
+    }
+
     /**
      * @return string
      */
@@ -169,6 +207,8 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotTopbar() {
+        $this->setGlobalParam('cartTextInOrderButton', $this->isCartTextInOrderButton()); // SITE-6213
+
         return $this->render('userbar2/topbar');
     }
 
@@ -241,7 +281,7 @@ class DefaultLayout extends Layout {
                 'order.complete',
                 'cart',
             ])) {
-                if (\App::config()->partners['SmartLeads']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
+                if (\App::config()->partners['CityAdsRetargeting']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
             }
 
             // Реактив (adblender) SITE-5718
@@ -263,14 +303,16 @@ class DefaultLayout extends Layout {
                 ]);
             });
 
-            if ('subscribe_friends' == $routeToken) {
+            if ($routeToken === 'subscribe_friends') {
                 $return .= $this->tryRender('partner-counter/_actionpay_subscribe');
                 $return .= $this->tryRender('partner-counter/_cityAds_subscribe');
             }
 
             // ActionPay ретаргетинг
-            if (\App::config()->partners['ActionpayRetargeting']['enabled']) $return .= '<div id="ActionPayJS" data-vars="' .
-                $this->json( (new \View\Partners\ActionPay($routeName, $this->params))->execute() ) . '" class="jsanalytics"></div>';
+            if (\App::config()->partners['ActionpayRetargeting']['enabled']) {
+                $return .= '<div id="ActionPayJS" data-vars="' .
+                    $this->json( (new \View\Partners\ActionPay($routeName, $this->params))->execute() ) . '" class="jsanalytics"></div>';
+            }
 
             // вызов JS Alexa-кода
             if (\App::config()->partners['alexa']['enabled']) {
@@ -285,6 +327,13 @@ class DefaultLayout extends Layout {
 
             $return .= $this->googleAnalyticsJS();
 
+            if (\App::config()->flocktory['precheckout']) {
+                // формирование данных для скрипта
+                $return .= $this->slotFlocktoryPrecheckout($this->flPrecheckoutData);
+                // загрузка самого скрипта
+                $return .= sprintf('<div id="flocktoryScriptJS" class="jsanalytics" data-vars="%s" ></div>', \App::config()->flocktory['site_id']);
+            }
+
             if (\App::config()->partners['TagMan']['enabled']) {
                 $return .= '<div id="TagManJS" class="jsanalytics"></div>';
             }
@@ -296,6 +345,21 @@ class DefaultLayout extends Layout {
         $return .= $this->slotSociaPlus();
 
         return $return;
+    }
+
+    /**
+     * Flocktory pre-checkout data layer
+     *
+     * @param array $data
+     *
+     * @return string
+     */
+    public function slotFlocktoryPrecheckout(array $data = []) {
+        $dataString = '';
+        foreach ($data as $key => $value) {
+            $dataString .= sprintf('data-%s="%s" ', $key, $value);
+        }
+        return sprintf('<div class="i-flocktory js-flocktory-data-layer"></div><div class="i-flocktory" %s ></div>', $dataString);
     }
 
     public function googleAnalyticsJS(){
@@ -387,8 +451,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotCriteo() {
-        return $this->render( 'partner-counter/_criteo',
-            ['criteoData' =>  (new \View\Partners\Criteo($this->params))->execute()] );
+        return $this->render('partner-counter/_criteo', ['criteoData' => (new \View\Partners\Criteo($this->params))->execute()]);
     }
 
 
@@ -621,17 +684,16 @@ class DefaultLayout extends Layout {
     }
 
     public function slotGifteryJS() {
-        if (!\App::config()->partners['Giftery']['enabled']) return '';
-        return <<<EOL
-        <!-- BEGIN GIFTERY CODE {literal} -->
-        <script type="text/javascript">
-        (function(){
-        var s = document.createElement('script');s.type = 'text/javascript';s.async = true;
-        s.src = '//widget.giftery.ru/js/114550/11456/';
-        var ss = document.getElementsByTagName('script')[0];ss.parentNode.insertBefore(s, ss);
-        })();
-        </script>
-        <!-- {/literal} END GIFTERY CODE -->
-EOL;
+        return \App::config()->partners['Giftery']['enabled']
+            ? '<div id="gifteryJS" class="jsanalytics"></div>'
+            : '';
+    }
+
+    public function slotSolowayJS() {
+        if (!\App::config()->partners['soloway']['enabled']) {
+            return '';
+        }
+
+        return '<div id="solowayJS" class="jsanalytics"></div>';
     }
 }

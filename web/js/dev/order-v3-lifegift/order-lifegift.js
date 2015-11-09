@@ -1,6 +1,5 @@
 ;(function($){
 	var $body = $(document.body),
-		$loginButton = $('.jsLoginButton'), // кнопка логина
 		$mobileField = $('.jsMobileField'), // поле Телефон
 		$emailField = $('.jsEmailField'), // поле Email
 		$agreedCheckbox = $('.jsAgreedCheckbox'), // чекбокс соглашения
@@ -101,9 +100,4 @@
 				console.log('SERVER RESP:', data)
 			});
 	});
-
-	$loginButton.on('click',function(e){
-		e.preventDefault();
-	});
-
 }(jQuery));

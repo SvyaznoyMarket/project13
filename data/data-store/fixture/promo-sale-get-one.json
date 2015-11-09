@@ -1,0 +1,630 @@
+[
+  {
+    "uid": "9d7faeda-6d48-4267-83cd-95839e5c01e8",
+    "name": "Тестовая распродажа",
+    "discount": 0,
+    "starts_at": "2015-10-07T00:00:00+0300",
+    "priority": 2,
+    "products": [
+      {
+        "uid": "28324f98-72f5-46dd-b71d-10ec39606a3b",
+        "name": "Швабра с телескопической ручкой и насадкой Coronet, с магнитным замком",
+        "url": "/product/household/shvabra-s-teleskopicheskoy-ruchkoy-i-nasadkoy-coronet-s-magnitnim-zamkom-2040201032378",
+        "slug": "shvabra-s-teleskopicheskoy-ruchkoy-i-nasadkoy-coronet-s-magnitnim-zamkom-2040201032378"
+      },
+      {
+        "uid": "24dfccc3-2ec7-45b9-b546-3c8b99900689",
+        "name": "Заварочный чайник Elan Gallery \u0022Павлин на бежевом\u0022, 1 л",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-pavlin-na-begevom-1-l-2040101048370",
+        "slug": "zavarochniy-chaynik-elan-gallery-pavlin-na-begevom-1-l-2040101048370"
+      },
+      {
+        "uid": "15054f2f-ce8b-4ff1-a624-1f7536d5b6d0",
+        "name": "Заварочный чайник Elan Gallery \u0022Маки\u0022, 400 мл",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-maki-400-ml-2040101048561",
+        "slug": "zavarochniy-chaynik-elan-gallery-maki-400-ml-2040101048561"
+      },
+      {
+        "uid": "3c9d7be4-aa80-4869-bc6b-793211d34896",
+        "name": "Заварочный чайник Elan Gallery \u0022Павлин синий\u0022, 1 л",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-pavlin-siniy-1-l-2040101048394",
+        "slug": "zavarochniy-chaynik-elan-gallery-pavlin-siniy-1-l-2040101048394"
+      },
+      {
+        "uid": "eb1d80d0-25e3-47b8-9f0a-f9786f8c9934",
+        "name": "Силиконовая форма с ручками Marmiton \u0022Круг\u0022, 29 х 25,5 х 4,5 см",
+        "url": "/product/household/silikonovaya-forma-s-ruchkami-marmiton-krug-29-h-255-h-45-sm-2040101036971",
+        "slug": "silikonovaya-forma-s-ruchkami-marmiton-krug-29-h-255-h-45-sm-2040101036971"
+      },
+      {
+        "uid": "382b1372-10b6-4866-9668-f5a3343e7227",
+        "name": "Дуршлаг складной Premier, красный, 22, 5 см",
+        "url": "/product/household/durshlag-skladnoy-premier-krasniy-22-5-sm-2040101044815",
+        "slug": "durshlag-skladnoy-premier-krasniy-22-5-sm-2040101044815"
+      },
+      {
+        "uid": "b99a4248-07bd-4145-9158-24a0227a0a64",
+        "name": "Набор посуды из 7 предметов Mallony",
+        "url": "/product/-/nabor-posudi-iz-7-predmetov-mallony-2350000128326",
+        "slug": "nabor-posudi-iz-7-predmetov-mallony-2350000128326"
+      },
+      {
+        "uid": "7644fb43-ca90-4876-b5c8-0563a9a65c6d",
+        "name": "Швабра с телескопической ручкой и насадкой Peggy Perfect Mini",
+        "url": "/product/household/shvabra-s-teleskopicheskoy-ruchkoy-i-nasadkoy-peggy-perfect-mini-2350000083656",
+        "slug": "shvabra-s-teleskopicheskoy-ruchkoy-i-nasadkoy-peggy-perfect-mini-2350000083656"
+      },
+      {
+        "uid": "898f68d7-293a-42c0-9adb-5c9621795977",
+        "name": "Набор посуды из 3 предметов Tefal Ingenio L0349852",
+        "url": "/product/household/nabor-posudi-iz-3-predmetov-tefal-ingenio-l0349852-2040101051349",
+        "slug": "nabor-posudi-iz-3-predmetov-tefal-ingenio-l0349852-2040101051349"
+      },
+      {
+        "uid": "0768e8cc-6100-4631-94b3-e05619f31f34",
+        "name": "Набор посуды из 4 предметов Marier Fusion",
+        "url": "/product/-/nabor-posudi-iz-4-predmetov-marier-fusion-2040101032805",
+        "slug": "nabor-posudi-iz-4-predmetov-marier-fusion-2040101032805"
+      },
+      {
+        "uid": "09ba5145-afab-414b-a81b-3c8f343cd195",
+        "name": "Ваза с ручками Loucicentro \u0022Ирис\u0022, 30 см",
+        "url": "/product/household/vaza-s-ruchkami-loucicentro-iris-30-sm-2040607002074",
+        "slug": "vaza-s-ruchkami-loucicentro-iris-30-sm-2040607002074"
+      },
+      {
+        "uid": "718cd9df-403e-413a-ab72-2b8f42257c53",
+        "name": "Ваза с ручками Loucicentro \u0022Ирис\u0022, 45 см",
+        "url": "/product/household/loucicentro-vaza-s-ruchkami-loucicentro-iris-30-sm-2040607002050-45",
+        "slug": "loucicentro-vaza-s-ruchkami-loucicentro-iris-30-sm-2040607002050-45"
+      },
+      {
+        "uid": "cae5ba93-df25-4c47-a248-fef332a03e25",
+        "name": "Казан для барбекю Village people \u0022Удобный\u0022, с двумя ручками",
+        "url": "/product/-/kazan-dlya-barbekyu-village-people-udobniy-s-dvumya-ruchkami-2040702010554",
+        "slug": "kazan-dlya-barbekyu-village-people-udobniy-s-dvumya-ruchkami-2040702010554"
+      },
+      {
+        "uid": "eceb95e5-59c6-4555-b859-52f3d744a24a",
+        "name": "Сковорода Tefal Tendance Tobacco, 20 см",
+        "url": "/product/household/skovoroda-tefal-tendance-tobacco-20-sm-2040101039323",
+        "slug": "skovoroda-tefal-tendance-tobacco-20-sm-2040101039323"
+      },
+      {
+        "uid": "a3b677b1-664f-45ed-a2ad-ee6c62a674d8",
+        "name": "Набор посуды из 6 предметов Mallony",
+        "url": "/product/-/nabor-posudi-iz-6-predmetov-mallony-2350000128388",
+        "slug": "nabor-posudi-iz-6-predmetov-mallony-2350000128388"
+      },
+      {
+        "uid": "fcf4c094-87c6-4bf9-b4ec-5e11b97f98dd",
+        "name": "Телескопическая ручка Vileda Professional, 125 см",
+        "url": "/product/household/teleskopicheskaya-ruchka-vileda-professional-125-sm-2040201034143",
+        "slug": "teleskopicheskaya-ruchka-vileda-professional-125-sm-2040201034143"
+      },
+      {
+        "uid": "a89a2c3a-cbbf-4a12-862e-922f388f3b39",
+        "name": "Силиконовая форма с ручками Marmiton \u0022Кекс\u0022",
+        "url": "/product/household/silikonovaya-forma-s-ruchkami-marmiton-keks-2040101036964",
+        "slug": "silikonovaya-forma-s-ruchkami-marmiton-keks-2040101036964"
+      },
+      {
+        "uid": "bac0173c-04e1-46e8-b848-fd64e14b10ef",
+        "name": "Сковорода TVS Атлант, 28 см",
+        "url": "/product/household/skovoroda-tvs-atlant-28-sm-s-dopolnitelnoy-ruchkoy-2040101036186",
+        "slug": "skovoroda-tvs-atlant-28-sm-s-dopolnitelnoy-ruchkoy-2040101036186"
+      },
+      {
+        "uid": "3fd75deb-8fb8-43b8-b556-0f1b7b22a851",
+        "name": "Сотейник TVS Gea, 24 см",
+        "url": "/product/-/soteynik-tvs-gea-24-sm-2040101049452",
+        "slug": "soteynik-tvs-gea-24-sm-2040101049452"
+      },
+      {
+        "uid": "d16ac7a6-f006-4335-bc3b-82a961c6a6b1",
+        "name": "Кастрюля с крышкой Pensofal Bioceramix princess passion, 24 см",
+        "url": "/product/household/pensofal-kastryulya-s-krishkoy-pensofal-bioceramix-princess-passion-20-sm-2040101000170",
+        "slug": "pensofal-kastryulya-s-krishkoy-pensofal-bioceramix-princess-passion-20-sm-2040101000170"
+      },
+      {
+        "uid": "00e6eba8-d212-416e-8ddf-ef440c9ec495",
+        "name": "Набор посуды из 4 предметов Marier Fusion",
+        "url": "/product/household/nabor-posudi-iz-4-predmetov-marier-fusion-2040101032737",
+        "slug": "nabor-posudi-iz-4-predmetov-marier-fusion-2040101032737"
+      },
+      {
+        "uid": "afaa0826-f85e-478f-ab3c-880d809454c1",
+        "name": "Сервировочный столик с ручками Kesper",
+        "url": "/product/household/servirovochniy-stolik-s-ruchkami-kesper-2040102020832",
+        "slug": "servirovochniy-stolik-s-ruchkami-kesper-2040102020832"
+      },
+      {
+        "uid": "90745366-9538-462d-920e-781ef45f2a5d",
+        "name": "Набор посуды из 3 предметов Marier Fusion",
+        "url": "/product/household/nabor-posudi-iz-3-predmetov-marier-fusion-2040101032690",
+        "slug": "nabor-posudi-iz-3-predmetov-marier-fusion-2040101032690"
+      },
+      {
+        "uid": "d81a68c4-9f6a-49b0-a7ee-139bb87d3d20",
+        "name": "Набор посуды из 4 предметов Marier Fusion",
+        "url": "/product/household/nabor-posudi-iz-4-predmetov-marier-fusion-2040101032676",
+        "slug": "nabor-posudi-iz-4-predmetov-marier-fusion-2040101032676"
+      },
+      {
+        "uid": "02b7458a-0d30-4cdd-9df8-d613274a2596",
+        "name": "Набор посуды из 4 предметов Marier Fusion",
+        "url": "/product/household/nabor-posudi-iz-4-predmetov-marier-fusion-2040101032720",
+        "slug": "nabor-posudi-iz-4-predmetov-marier-fusion-2040101032720"
+      },
+      {
+        "uid": "52bb3d0a-6439-4da3-aadd-21891e3a5077",
+        "name": "Набор посуды из 4 предметов Marier Fusion",
+        "url": "/product/household/nabor-posudi-iz-4-predmetov-marier-fusion-2040101032751",
+        "slug": "nabor-posudi-iz-4-predmetov-marier-fusion-2040101032751"
+      },
+      {
+        "uid": "8ac6ebf5-1f29-4f51-ad58-00983ffe861a",
+        "name": "Ваза с ручками Loucicentro \u0022Ирис\u0022, 40 см",
+        "url": "/product/household/loucicentro-vaza-s-ruchkami-loucicentro-iris-30-sm-2040607002067-40",
+        "slug": "loucicentro-vaza-s-ruchkami-loucicentro-iris-30-sm-2040607002067-40"
+      },
+      {
+        "uid": "929ec5dd-40a8-4161-9f01-11a794038d4f",
+        "name": "Форма для СВЧ с ручками Borcam, 3,5 л",
+        "url": "/product/household/forma-dlya-svch-s-ruchkami-borcam-35-l-2040101034892",
+        "slug": "forma-dlya-svch-s-ruchkami-borcam-35-l-2040101034892"
+      },
+      {
+        "uid": "7e5bff38-6531-4ef1-8d99-b81e131e9104",
+        "name": "Набор посуды из 4 предметов Marier Fusion",
+        "url": "/product/household/nabor-posudi-iz-4-predmetov-marier-fusion-2040101032652",
+        "slug": "nabor-posudi-iz-4-predmetov-marier-fusion-2040101032652"
+      },
+      {
+        "uid": "0ac5bbfa-259b-4b72-b75c-1ebc6ef920cc",
+        "name": "Набор посуды из 4 предметов Marier Fusion",
+        "url": "/product/household/nabor-posudi-iz-4-predmetov-marier-fusion-2040101032645",
+        "slug": "nabor-posudi-iz-4-predmetov-marier-fusion-2040101032645"
+      },
+      {
+        "uid": "1f2e24e7-0677-43d4-80e1-3462e7cf3ef7",
+        "name": "Набор посуды из 4 предметов Marier Fusion",
+        "url": "/product/household/nabor-posudi-iz-4-predmetov-marier-fusion-2040101032744",
+        "slug": "nabor-posudi-iz-4-predmetov-marier-fusion-2040101032744"
+      },
+      {
+        "uid": "cf5366ef-6252-4a59-ba52-73e9132ee233",
+        "name": "Заварочный чайник Elan Gallery \u0022Маки\u0022, 1 л",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-maki-1-l-2040101048462",
+        "slug": "zavarochniy-chaynik-elan-gallery-maki-1-l-2040101048462"
+      },
+      {
+        "uid": "603d5b3d-4221-4cb1-87ce-5abea31aa193",
+        "name": "Сервировочный столик с ручками Kesper",
+        "url": "/product/household/servirovochniy-stolik-s-ruchkami-kesper-2040102020825",
+        "slug": "servirovochniy-stolik-s-ruchkami-kesper-2040102020825"
+      },
+      {
+        "uid": "f790b333-47c4-42d1-bace-c5852d98b1c4",
+        "name": "Заварочный чайник Elan Gallery \u0022Белый шиповник\u0022, 400 мл",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-beliy-shipovnik-400-ml-2040101048479",
+        "slug": "zavarochniy-chaynik-elan-gallery-beliy-shipovnik-400-ml-2040101048479"
+      },
+      {
+        "uid": "7a5ae84f-1981-4c05-a351-26853d305c52",
+        "name": "Швабра с телескопической ручкой и насадкой Peggy Perfect Profi",
+        "url": "/product/household/shvabra-s-teleskopicheskoy-ruchkoy-i-nasadkoy-peggy-perfect-profi-2350000083618",
+        "slug": "shvabra-s-teleskopicheskoy-ruchkoy-i-nasadkoy-peggy-perfect-profi-2350000083618"
+      },
+      {
+        "uid": "760c09ac-2a78-4133-9a51-85dbe8383fda",
+        "name": "Набор посуды из 3 предметов Tefal Ingenio \u0022Эмаль\u0022",
+        "url": "/product/household/nabor-posudi-iz-3-predmetov-tefal-ingenio-emal-2040101032331",
+        "slug": "nabor-posudi-iz-3-predmetov-tefal-ingenio-emal-2040101032331"
+      },
+      {
+        "uid": "e76e3851-d7cf-4a67-b68f-c0a0c378b6f3",
+        "name": "Блюдо Elan Gallery \u0022Чайные розы\u0022, 35 см",
+        "url": "/product/household/blyudo-elan-gallery-chaynie-rozi-35-sm-2040102031883",
+        "slug": "blyudo-elan-gallery-chaynie-rozi-35-sm-2040102031883"
+      },
+      {
+        "uid": "9ec29a70-dd80-474e-b061-e6069ebe90f8",
+        "name": "Заварочный чайник Elan Gallery \u0022Павлин на золоте\u0022, 1 л",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-pavlin-na-zolote-1-l-2040101048417",
+        "slug": "zavarochniy-chaynik-elan-gallery-pavlin-na-zolote-1-l-2040101048417"
+      },
+      {
+        "uid": "3abf49d3-2a56-4ccc-866c-b31b7b6862b2",
+        "name": "Кастрюля с крышкой Frybest Evergreen, 2,4 л",
+        "url": "/product/household/kastryulya-s-krishkoy-frybest-evergreen-24-l-2040101053305",
+        "slug": "kastryulya-s-krishkoy-frybest-evergreen-24-l-2040101053305"
+      },
+      {
+        "uid": "c109c0cb-fe94-4d6d-bc70-ef8a9dd32992",
+        "name": "Съемная ручка Frybest Splend",
+        "url": "/product/household/semnaya-ruchka-frybest-splend-2040101053848",
+        "slug": "semnaya-ruchka-frybest-splend-2040101053848"
+      },
+      {
+        "uid": "dc92caad-caa7-4837-b7ff-43fb7815d67f",
+        "name": "Жаровня с крышкой Frybest Fleur de lys, 24 см",
+        "url": "/product/household/garovnya-s-krishkoy-frybest-fleur-de-lys-24-sm-2040101053633",
+        "slug": "garovnya-s-krishkoy-frybest-fleur-de-lys-24-sm-2040101053633"
+      },
+      {
+        "uid": "236b171d-e099-4ac6-a1ec-219bcff06815",
+        "name": "Сотейник с крышкой Frybest Gray Posh, 28 см",
+        "url": "/product/household/soteynik-s-krishkoy-frybest-gray-posh-28-sm-2040101053824",
+        "slug": "soteynik-s-krishkoy-frybest-gray-posh-28-sm-2040101053824"
+      },
+      {
+        "uid": "30806134-d2b4-4470-9cc0-82b17d165ac9",
+        "name": "Жаровня с крышкой Frybest Evergreen, 24 см",
+        "url": "/product/household/garovnya-s-krishkoy-frybest-evergreen-24-sm-2040101053626",
+        "slug": "garovnya-s-krishkoy-frybest-evergreen-24-sm-2040101053626"
+      },
+      {
+        "uid": "db825393-c808-48ab-93b6-5d881bddbbdd",
+        "name": "Сотейник с крышкой Frybest Posh, 32 см",
+        "url": "/product/household/soteynik-s-krishkoy-frybest-posh-32-sm-2040101053831",
+        "slug": "soteynik-s-krishkoy-frybest-posh-32-sm-2040101053831"
+      },
+      {
+        "uid": "ce6ae22f-e506-4c34-b593-cf92f5f2ab8b",
+        "name": "Набор посуды из 10 предметов Frybest Berry",
+        "url": "/product/household/nabor-posudi-iz-10-predmetov-frybest-berry-2040101053947",
+        "slug": "nabor-posudi-iz-10-predmetov-frybest-berry-2040101053947"
+      },
+      {
+        "uid": "600fbe5e-9947-4c24-b0c0-711f963d111f",
+        "name": "Заварочный чайник Elan Gallery \u0022Белый шиповник\u0022, 1 л",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-beliy-shipovnik-1-l-2040101048356",
+        "slug": "zavarochniy-chaynik-elan-gallery-beliy-shipovnik-1-l-2040101048356"
+      },
+      {
+        "uid": "bb042bb6-3ffb-4aee-b072-55c2a9bd30e6",
+        "name": "Ручка для швабры Vileda Professional \u0022Эрго\u0022, 145 см",
+        "url": "/product/household/ruchka-dlya-shvabri-vileda-professional-quotergoquot-145-sm-2040201033788",
+        "slug": "ruchka-dlya-shvabri-vileda-professional-quotergoquot-145-sm-2040201033788"
+      },
+      {
+        "uid": "da2ceed5-adb6-4595-8d56-78d0abbfb60e",
+        "name": "Набор посуды из 3 предметов Marier Fusion",
+        "url": "/product/household/nabor-posudi-iz-3-predmetov-marier-fusion-2040101032706",
+        "slug": "nabor-posudi-iz-3-predmetov-marier-fusion-2040101032706"
+      },
+      {
+        "uid": "1e87cae7-aabc-4264-9eac-19f7fcae8cd5",
+        "name": "Швабра с отжимом и телескопической ручкой Фэйт \u0022Свифт\u0022, 155 см",
+        "url": "/product/household/shvabra-s-otgimom-i-teleskopicheskoy-ruchkoy-feyt-quotsviftquot-155-sm-2350000094751",
+        "slug": "shvabra-s-otgimom-i-teleskopicheskoy-ruchkoy-feyt-quotsviftquot-155-sm-2350000094751"
+      },
+      {
+        "uid": "ce505971-3bd3-4122-8b67-1e42f495febb",
+        "name": "Набор посуды из 4 предметов Marier Fusion",
+        "url": "/product/-/nabor-posudi-iz-4-predmetov-marier-fusion-2040101032799",
+        "slug": "nabor-posudi-iz-4-predmetov-marier-fusion-2040101032799"
+      },
+      {
+        "uid": "4dc3f399-0200-48ad-81db-18412f896967",
+        "name": "Заварочный чайник Elan Gallery \u0022Калейдоскоп\u0022, 1 л",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-kaleydoskop-1-l-2040101048400",
+        "slug": "zavarochniy-chaynik-elan-gallery-kaleydoskop-1-l-2040101048400"
+      },
+      {
+        "uid": "1cbb9163-7681-4a0a-97b8-a9b8306aefbf",
+        "name": "Заварочный чайник Elan Gallery \u0022Бабочки\u0022, 400 мл",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-babochki-400-ml-2040101048547",
+        "slug": "zavarochniy-chaynik-elan-gallery-babochki-400-ml-2040101048547"
+      },
+      {
+        "uid": "28e909af-51a5-4219-afac-0f404d337b62",
+        "name": "Заварочный чайник Elan Gallery \u0022Павлин на бежевом\u0022, 400 мл",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-pavlin-na-begevom-400-ml-2040101048493",
+        "slug": "zavarochniy-chaynik-elan-gallery-pavlin-na-begevom-400-ml-2040101048493"
+      },
+      {
+        "uid": "f46ef8df-bb8b-4c27-b0a7-07e39d5f0c7d",
+        "name": "Заварочный чайник Elan Gallery \u0022Бабочки\u0022, 1 л",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-babochki-1-l-2040101048424",
+        "slug": "zavarochniy-chaynik-elan-gallery-babochki-1-l-2040101048424"
+      },
+      {
+        "uid": "ca556986-e6c2-444c-b783-e62552a9f3c7",
+        "name": "Заварочный чайник Elan Gallery \u0022Калейдоскоп\u0022, 400 мл",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-kaleydoskop-400-ml-2040101048523",
+        "slug": "zavarochniy-chaynik-elan-gallery-kaleydoskop-400-ml-2040101048523"
+      },
+      {
+        "uid": "2f3c1734-9b90-4438-b8b8-4f4cc3dbeb0d",
+        "name": "Автоматическая вакуумная щетка для мытья окон Leifheit, 43 см",
+        "url": "/product/household/avtomaticheskaya-vakuumnaya-shchetka-dlya-mitya-okon-leifheit-43-sm-2040201021167",
+        "slug": "avtomaticheskaya-vakuumnaya-shchetka-dlya-mitya-okon-leifheit-43-sm-2040201021167"
+      },
+      {
+        "uid": "65154cf4-3d92-435d-81a7-c202e561a12f",
+        "name": "Швабра с гибкими краями Coronet",
+        "url": "/product/household/shvabra-s-gibkimi-krayami-coronet-2040201032354",
+        "slug": "shvabra-s-gibkimi-krayami-coronet-2040201032354"
+      },
+      {
+        "uid": "9a5bbaa7-4ed1-4285-9dde-2a2f232830f1",
+        "name": "Швабра с телескопической ручкой и насадкой Peggy Perfect Profi",
+        "url": "/product/household/shvabra-s-teleskopicheskoy-ruchkoy-i-nasadkoy-peggy-perfect-profi-2350000083632",
+        "slug": "shvabra-s-teleskopicheskoy-ruchkoy-i-nasadkoy-peggy-perfect-profi-2350000083632"
+      },
+      {
+        "uid": "8fb9b825-83cc-491d-972c-f794dbbb45e9",
+        "name": "Набор посуды из 4 предметов Marier Fusion",
+        "url": "/product/-/nabor-posudi-iz-4-predmetov-marier-fusion-2040101032812",
+        "slug": "nabor-posudi-iz-4-predmetov-marier-fusion-2040101032812"
+      },
+      {
+        "uid": "ea72fe59-87a9-4fb0-b06a-e8b79bcb7c84",
+        "name": "Заварочный чайник Elan Gallery \u0022Сакура\u0022, 400 мл",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-quotsakuraquot-400-ml-2040101048486",
+        "slug": "zavarochniy-chaynik-elan-gallery-quotsakuraquot-400-ml-2040101048486"
+      },
+      {
+        "uid": "74060fb9-046a-48ab-80e8-a0cee72dd7dc",
+        "name": "Ковш с крышкой Tefal Tendance Black Current, 18 см",
+        "url": "/product/household/kovsh-s-krishkoy-tefal-tendance-black-current-18-sm-2040101028396",
+        "slug": "kovsh-s-krishkoy-tefal-tendance-black-current-18-sm-2040101028396"
+      },
+      {
+        "uid": "c09d6f92-564c-4344-b032-2c8d8f36f657",
+        "name": "Заварочный чайник Elan Gallery \u0022Орхидея на розовом\u0022, 1 л",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-orhideya-na-rozovom-1-l-2040101048431",
+        "slug": "zavarochniy-chaynik-elan-gallery-orhideya-na-rozovom-1-l-2040101048431"
+      },
+      {
+        "uid": "cbd52866-32e9-4611-989e-706d314d4a3c",
+        "name": "Заварочный чайник Elan Gallery \u0022Павлин синий\u0022, 400 мл",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-quotpavlin-siniyquot-400-ml-2040101048516",
+        "slug": "zavarochniy-chaynik-elan-gallery-quotpavlin-siniyquot-400-ml-2040101048516"
+      },
+      {
+        "uid": "0c5fb6ff-15fa-4464-b206-22f8a135dd23",
+        "name": "Форма для СВЧ с ручками Borcam, 1,8 л",
+        "url": "/product/household/forma-dlya-svch-s-ruchkami-borcam-18-l-2040101034885",
+        "slug": "forma-dlya-svch-s-ruchkami-borcam-18-l-2040101034885"
+      },
+      {
+        "uid": "56208d1c-ad5f-4dfc-84ba-bb271796620a",
+        "name": "Заварочный чайник Elan Gallery \u0022Орхидея на розовом\u0022, 400 мл",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-quotorhideya-na-rozovomquot-400-ml-2040101048554",
+        "slug": "zavarochniy-chaynik-elan-gallery-quotorhideya-na-rozovomquot-400-ml-2040101048554"
+      },
+      {
+        "uid": "18403301-a35f-487f-a991-fb5928834bf5",
+        "name": "Щетка с совком Svip \u0022Ленивка\u0022",
+        "url": "/product/household/shchetka-s-sovkom-svip-lenivka-2040201022942",
+        "slug": "shchetka-s-sovkom-svip-lenivka-2040201022942"
+      },
+      {
+        "uid": "247f6e9a-052a-4ce0-adba-beefaa2bafbd",
+        "name": "Набор посуды из 3 предметов Marier Fusion",
+        "url": "/product/household/nabor-posudi-iz-3-predmetov-marier-fusion-2040101037442",
+        "slug": "nabor-posudi-iz-3-predmetov-marier-fusion-2040101037442"
+      },
+      {
+        "uid": "a663dfc1-7023-40ce-996f-1b26ccd692cc",
+        "name": "Набор посуды из 3 предметов Marier Fusion",
+        "url": "/product/household/nabor-posudi-iz-3-predmetov-marier-fusion-2040101032775",
+        "slug": "nabor-posudi-iz-3-predmetov-marier-fusion-2040101032775"
+      },
+      {
+        "uid": "07df093f-5019-49ee-82c8-93409fe07585",
+        "name": "Чайник со свистком Regent inox S.r.l., 2,6 л",
+        "url": "/product/household/chaynik-so-svistkom-regent-inox-srl-26-l-2040101047182",
+        "slug": "chaynik-so-svistkom-regent-inox-srl-26-l-2040101047182"
+      },
+      {
+        "uid": "92acbf38-382d-4601-87d2-af96a3ee9e9f",
+        "name": "Блюдо Elan Gallery \u0022Вальс цветов\u0022, 35 см",
+        "url": "/product/household/blyudo-elan-gallery-vals-tsvetov-35-sm-2040102031852",
+        "slug": "blyudo-elan-gallery-vals-tsvetov-35-sm-2040102031852"
+      },
+      {
+        "uid": "734dec31-b132-4fee-9bd0-53c3c9f2abfa",
+        "name": "Набор посуды из 4 предметов Marier Fusion",
+        "url": "/product/household/nabor-posudi-iz-4-predmetov-marier-fusion-2040101032713",
+        "slug": "nabor-posudi-iz-4-predmetov-marier-fusion-2040101032713"
+      },
+      {
+        "uid": "b178334c-e4b1-44dd-8130-ee3301277d0b",
+        "name": "Кувшин с ручкой Pasabahce, 1,5 л",
+        "url": "/product/household/kuvshin-s-ruchkoy-pasabahce-15-l-2040102025349",
+        "slug": "kuvshin-s-ruchkoy-pasabahce-15-l-2040102025349"
+      },
+      {
+        "uid": "b77304ea-5b67-489a-a3fb-a48499d88122",
+        "name": "Ведро с 2 ручками Leifheit Combi XL 52013, 20 л",
+        "url": "/product/household/vedro-s-2-ruchkami-leifheit-combi-xl-52013-20-l-2040201024915",
+        "slug": "vedro-s-2-ruchkami-leifheit-combi-xl-52013-20-l-2040201024915"
+      },
+      {
+        "uid": "af0bc883-560a-40f5-b85c-a7303e0b9923",
+        "name": "Телескопическая ручка Vileda Professional \u0022Хай-Спид\u0022, 100 - 180 см",
+        "url": "/product/household/teleskopicheskaya-ruchka-vileda-professional-quothay-spidquot-100-180-sm-2040201034105",
+        "slug": "teleskopicheskaya-ruchka-vileda-professional-quothay-spidquot-100-180-sm-2040201034105"
+      },
+      {
+        "uid": "a7c74293-2a66-4cb5-b515-8ea4e03b57c4",
+        "name": "Форма для СВЧ Borcam, 22 х 22 см",
+        "url": "/product/household/forma-dlya-svch-borcam-22-h-22-sm-2040101034847",
+        "slug": "forma-dlya-svch-borcam-22-h-22-sm-2040101034847"
+      },
+      {
+        "uid": "d8104ed8-7b48-4f56-8211-4e5e32655b38",
+        "name": "Ведро с отжимом Svip, 12 л",
+        "url": "/product/household/vedro-s-otgimom-svip-12-l-2040201022881",
+        "slug": "vedro-s-otgimom-svip-12-l-2040201022881"
+      },
+      {
+        "uid": "5eb1f3dc-999d-4962-9e02-0f8e37a0b39c",
+        "name": "Чайник со свистком Regent inox S.r.l., 2 л",
+        "url": "/product/household/chaynik-so-svistkom-regent-inox-srl-2-l-2040101047168",
+        "slug": "chaynik-so-svistkom-regent-inox-srl-2-l-2040101047168"
+      },
+      {
+        "uid": "f1e8ea20-3355-4359-8182-8fad7ca3b8b2",
+        "name": "Кастрюля с крышкой Tefal Tendance Black Current, 22 см",
+        "url": "/product/household/kastryulya-s-krishkoy-tefal-tendance-black-current-22-sm-2040101028372",
+        "slug": "kastryulya-s-krishkoy-tefal-tendance-black-current-22-sm-2040101028372"
+      },
+      {
+        "uid": "be436e03-c5ce-4a2f-b816-619a59bddd68",
+        "name": "Заварочный чайник Elan Gallery \u0022Райская роза\u0022, 1 л",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-rayskaya-roza-1-l-2040101048455",
+        "slug": "zavarochniy-chaynik-elan-gallery-rayskaya-roza-1-l-2040101048455"
+      },
+      {
+        "uid": "bce13099-5353-4220-9d48-d439c358de52",
+        "name": "Заварочный чайник Elan Gallery \u0022Павлин на серебре\u0022, 400 мл",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-pavlin-na-serebre-400-ml-2040101048509",
+        "slug": "zavarochniy-chaynik-elan-gallery-pavlin-na-serebre-400-ml-2040101048509"
+      },
+      {
+        "uid": "2c73d441-19e3-4b0e-a8a7-f912cc6ebdf4",
+        "name": "Ручка для щетки \u0022Флора\u0022, 120 см",
+        "url": "/product/household/ruchka-dlya-shchetki-flora-120-sm-2040201017078",
+        "slug": "ruchka-dlya-shchetki-flora-120-sm-2040201017078"
+      },
+      {
+        "uid": "d3fcb4b3-8cef-46c3-973c-ce9a824244ea",
+        "name": "Заварочный чайник Elan Gallery \u0022Душистый цветок\u0022, 1 л",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-dushistiy-tsvetok-1-l-2040101048448",
+        "slug": "zavarochniy-chaynik-elan-gallery-dushistiy-tsvetok-1-l-2040101048448"
+      },
+      {
+        "uid": "05629b21-0f5b-47a4-9805-c2e888fe4770",
+        "name": "Заварочный чайник Elan Gallery \u0022Павлин на золоте\u0022, 400 мл",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-pavlin-na-zolote-400-ml-2040101048530",
+        "slug": "zavarochniy-chaynik-elan-gallery-pavlin-na-zolote-400-ml-2040101048530"
+      },
+      {
+        "uid": "412edc8f-a759-4a04-8555-64fde69d3718",
+        "name": "Дверная ручка Esschert Design \u0022Молоток\u0022 TT183",
+        "url": "/product/household/dvernaya-ruchka-esschert-design-molotok-tt183-2040702014101",
+        "slug": "dvernaya-ruchka-esschert-design-molotok-tt183-2040702014101"
+      },
+      {
+        "uid": "88708d08-2e9f-4db6-912f-f33aa939f5d5",
+        "name": "Набор посуды из 4 предметов Marier Fusion",
+        "url": "/product/household/nabor-posudi-iz-4-predmetov-marier-fusion-2040101037459",
+        "slug": "nabor-posudi-iz-4-predmetov-marier-fusion-2040101037459"
+      },
+      {
+        "uid": "b6a38952-938c-4a25-9b8a-03a0a3df6b16",
+        "name": "Сковорода Tefal Tendance Tobacco, 22 см",
+        "url": "/product/household/tefal-skovoroda-tefal-tendance-tobacco-20-sm-2040101039330-22",
+        "slug": "tefal-skovoroda-tefal-tendance-tobacco-20-sm-2040101039330-22"
+      },
+      {
+        "uid": "ce3a527a-05d1-4742-af7b-86d5456b48d8",
+        "name": "Ручка для швабры Vileda Professional, 150 см",
+        "url": "/product/household/ruchka-dlya-shvabri-vileda-professional-150-sm-2040201034655",
+        "slug": "ruchka-dlya-shvabri-vileda-professional-150-sm-2040201034655"
+      },
+      {
+        "uid": "acd59c44-fdde-4721-9016-0a8c7c964033",
+        "name": "Телескопическая ручка Vileda Professional \u0022Эволюшн\u0022, 200 см",
+        "url": "/product/household/teleskopicheskaya-ruchka-vileda-professional-quotevolyushnquot-200-sm-2040201034198",
+        "slug": "teleskopicheskaya-ruchka-vileda-professional-quotevolyushnquot-200-sm-2040201034198"
+      },
+      {
+        "uid": "47b35431-2f8c-4114-b51d-570d28fce9f2",
+        "name": "Швабра для влажной уборки Scotch-Brite \u0022Экстра\u0022, 145 см",
+        "url": "/product/household/shvabra-dlya-vlagnoy-uborki-scotch-brite-ekstra-145-sm-2040201018525",
+        "slug": "shvabra-dlya-vlagnoy-uborki-scotch-brite-ekstra-145-sm-2040201018525"
+      },
+      {
+        "uid": "bd6c2a05-5d3b-4203-8cce-dfddbf439103",
+        "name": "Набор посуды из 3 предметов Marier Fusion",
+        "url": "/product/-/nabor-posudi-iz-3-predmetov-marier-fusion-2040101032782",
+        "slug": "nabor-posudi-iz-3-predmetov-marier-fusion-2040101032782"
+      },
+      {
+        "uid": "e707a69f-f68b-4fda-913b-06e1972ccbd9",
+        "name": "Салатница с двумя ручками Gefu \u0022Иероглифы\u0022, 14 см",
+        "url": "/product/-/salatnitsa-s-dvumya-ruchkami-gefu-ieroglifi-14-sm-2040102019775",
+        "slug": "salatnitsa-s-dvumya-ruchkami-gefu-ieroglifi-14-sm-2040102019775"
+      },
+      {
+        "uid": "791da864-75dc-4d22-bba9-ebe1a7cc14c2",
+        "name": "Телескопическая ручка с шарниром Leifheit Click system, 110-190 см",
+        "url": "/product/household/teleskopicheskaya-ruchka-s-sharnirom-leifheit-click-system-110-190-sm-2040201021174",
+        "slug": "teleskopicheskaya-ruchka-s-sharnirom-leifheit-click-system-110-190-sm-2040201021174"
+      },
+      {
+        "uid": "b4621255-78f8-4c1c-8b5c-e1035b1ec082",
+        "name": "Заварочный чайник Elan Gallery \u0022Павлин на серебре\u0022, 1 л",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-pavlin-na-serebre-1-l-2040101048387",
+        "slug": "zavarochniy-chaynik-elan-gallery-pavlin-na-serebre-1-l-2040101048387"
+      },
+      {
+        "uid": "d38619f5-a47d-4ee5-8791-74178914b356",
+        "name": "Заварочный чайник Elan Gallery \u0022Сакура\u0022, 1 л",
+        "url": "/product/household/zavarochniy-chaynik-elan-gallery-sakura-1-l-2040101048363",
+        "slug": "zavarochniy-chaynik-elan-gallery-sakura-1-l-2040101048363"
+      },
+      {
+        "uid": "33c16e12-ba4a-4ff4-82ee-7be5301c89de",
+        "name": "Ящик для хранения мелочей Abilita, 35 х 27 х 9 см, 16 секций",
+        "url": "/product/household/yashchik-dlya-hraneniya-melochey-abilita-35-h-27-h-9-sm-16-sektsiy-2040201007093",
+        "slug": "yashchik-dlya-hraneniya-melochey-abilita-35-h-27-h-9-sm-16-sektsiy-2040201007093"
+      },
+      {
+        "uid": "332ac280-78ca-4ce5-8352-f65ed3a7996d",
+        "name": "Коробка для хранения Abilita \u0022Бабочки\u0022, 13 x 27 x 12,5 см",
+        "url": "/product/household/korobka-dlya-hraneniya-abilita-quotbabochkiquot-13-x-27-x-125-sm-2040201022119",
+        "slug": "korobka-dlya-hraneniya-abilita-quotbabochkiquot-13-x-27-x-125-sm-2040201022119"
+      }
+    ],
+    "medias": [
+      {
+        "uid": "7be1090d-c505-4436-9408-26fa42920148",
+        "content_type": "image/jpeg",
+        "provider": "image",
+        "tags": [
+
+        ],
+        "name": "Outside_Solar_System.jpg",
+        "sources": [
+          {
+            "type": "closed_sale_315x231",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/thumb_d014_closed_sale_315x231.jpeg",
+            "width": 315,
+            "height": 231
+          },
+          {
+            "type": "closed_sale_483x357",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/thumb_d014_closed_sale_483x357.jpeg",
+            "width": 483,
+            "height": 357
+          },
+          {
+            "type": "closed_sale_651x483",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/thumb_d014_closed_sale_651x483.jpeg",
+            "width": 651,
+            "height": 483
+          },
+          {
+            "type": "closed_sale_987x725",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/thumb_d014_closed_sale_987x725.jpeg",
+            "width": 987,
+            "height": 725
+          },
+          {
+            "type": "original",
+            "url": "http://scms.enter.loc/uploads/media/b6/73/dd/faae43ee6d37e9dbdf72b7d331e38aa2c84c282a.jpeg",
+            "width": 1920,
+            "height": 1200
+          }
+        ]
+      }
+    ]
+  }
+]

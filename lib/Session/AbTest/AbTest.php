@@ -60,7 +60,7 @@ class AbTest {
      * @param \Http\Response|null $response
      */
     public function setCookie($response) {
-        if (null === $response || !$response instanceof \Http\Response) {
+        if (null === $response || !$response instanceof \Http\Response || !\App::config()->abTest['enabled']) {
             return;
         }
 
@@ -82,7 +82,7 @@ class AbTest {
 
     /** Возвращает AB-тест
      * @param $key
-     * @return null|Test
+     * @return Test
      */
     public function getTest($key) {
         return

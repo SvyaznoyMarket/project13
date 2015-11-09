@@ -5,7 +5,7 @@
 ?>
 
 <li class="userbtn_i topbarfix_log topbarfix_log-unlogin" data-bind="visible: !name()">
-    <a href="/login" class="topbarfix_log_lk bAuthLink"><span class="topbarfix_log_tx">Вход</span></a>
+    <a href="/login" class="topbarfix_log_lk js-login-opener"><span class="topbarfix_log_tx">Вход</span></a>
 </li>
 
 <li class="userbtn_i topbarfix_log topbarfix_log-login js-topbarfixLogin" data-bind="visible: name()" style="display: none">

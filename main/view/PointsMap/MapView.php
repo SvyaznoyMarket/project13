@@ -38,9 +38,44 @@ class MapView {
     }
 
     public function getUniquePointDays(){
-        $days = array_unique(array_map(function(Point $point){ return $point->nearestDay; }, $this->points));
-        sort($days);
-        return $days;
+        $days = [];
+        foreach ($this->points as $point) {
+            if (!$point->humanNearestDay) continue;
+
+            $days[$point->humanNearestDay] = $point;
+        }
+
+
+        uasort($days, function(\Model\Point\MapPoint $point1, \Model\Point\MapPoint $point2) {
+            if ($point1->dateInterval) {
+                $point1DateFrom = strtotime($point1->dateInterval['from']);
+                $point1DateTo = strtotime($point1->dateInterval['to']);
+            } else {
+                $point1DateFrom = $point1DateTo = strtotime($point1->nearestDay);
+            }
+
+            if ($point2->dateInterval) {
+                $point2DateFrom = strtotime($point2->dateInterval['from']);
+                $point2DateTo = strtotime($point2->dateInterval['to']);
+            } else {
+                $point2DateFrom = $point2DateTo = strtotime($point2->nearestDay);
+            }
+
+            if ($point1DateFrom < $point2DateFrom) {
+                return -1;
+            } else if ($point1DateFrom > $point2DateFrom) {
+                return 1;
+            } else if ($point1DateFrom == $point2DateFrom) {
+                if ($point1DateTo < $point2DateTo) {
+                    return -1;
+                } else if ($point1DateTo > $point2DateTo) {
+                    return 1;
+                }
+            }
+
+            return 0;
+        });
+        return array_keys($days);
     }
 
     public function getUniquePointTokens() {
@@ -61,11 +96,15 @@ class MapView {
                 break;
             case 'self_partner_hermes_pred_supplier':
             case 'self_partner_hermes':
-                return 'Пункты выдачи Hermes-DPD';
+                return 'Пункты выдачи Hermes';
                 break;
             case 'self_partner_euroset_pred_supplier':
             case 'self_partner_euroset':
                 return 'Магазины Евросеть';
+                break;
+            case 'self_partner_formula_m_pred_supplier':
+            case 'self_partner_formula_m':
+                return 'Пункты выдачи Express4U';
                 break;
             default:
                 if (strpos($token, MapPoint::POSTAMAT_SUFFIX) !== false) return 'Постаматы PickPoint';
@@ -129,6 +168,7 @@ class MapView {
                 $data = [
                     /* BasicPoint */
                     'id' => $p->id,
+                    'token' => $token,
                     'name' => $p->name,
                     'address' => \App::helper()->noBreakSpaceAfterDot($p->address),
                     'subway'    => is_array($p->subway) ? reset($p->subway) : null,
@@ -138,10 +178,10 @@ class MapView {
                     'latitude' => $p->latitude,
                     'longitude' => $p->longitude,
                     'marker'    => $orderDelivery->points[$token]->marker,
-                    'token'  => $token,
                     'icon'  => $orderDelivery->points[$token]->icon,
                     'cost'  => (string)$point['cost'],
                     'nearestDay'  => $point['nearestDay'],
+                    'dateInterval' => $point['dateInterval'],
                     'blockName'    => $orderDelivery->points[$token]->block_name, // blockName == orderToken ??
                     'orderToken' => $order->block_name,
                     'dropdownName'  => $orderDelivery->points[$token]->dropdown_name,
@@ -149,6 +189,10 @@ class MapView {
 
                 ];
                 $this->points[] = new Point($data);
+
+                if ($order->delivery && $order->delivery->point && ($order->delivery->point->id === $p->id)) {
+                    $order->delivery->point->dateInterval = $point['dateInterval'];
+                }
             }
         }
 

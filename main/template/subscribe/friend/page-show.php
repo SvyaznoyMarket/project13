@@ -3,6 +3,7 @@
  * @var $page                   \View\DefaultLayout
  * @var $alreadySubscribed      bool Уже подписан
  * @var $successfullySubscribed bool Успешно подписан
+ * @var $error                  \EnterModel\Error|null
  */
 ?>
 
@@ -33,7 +34,7 @@ $helper = new \Helper\TemplateHelper();
                     <span class="subscribe-text__big">Подпишитесь и получите<span class="absolute">в подарок</span></span>
                     <div class="subscribe-text__img"><img src="http://content.enter.ru/wp-content/uploads/2015/04/300rub.png"></div>
                 </div>
-                <?= $helper->render('subscribe/friend/__form') ?>
+                <?= $helper->render('subscribe/friend/__form', ['error' => $error]) ?>
             </div>
         </div>
     </div>
@@ -96,8 +97,8 @@ $helper = new \Helper\TemplateHelper();
         <? elseif ($successfullySubscribed): ?>
             <?= $helper->render('subscribe/friend/__successfullySubscribed') ?>
         <? else: ?>
-            <div class="subscribe-content__wrap">
-                <?= $helper->render('subscribe/friend/__form') ?>
+            <div id="bottom" class="subscribe-content__wrap">
+                <?= $helper->render('subscribe/friend/__form', ['error' => $error, 'location' => 'bottom']) ?>
             </div>
         <? endif ?>
     </div>

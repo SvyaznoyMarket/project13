@@ -1,11 +1,28 @@
 {
-  "result": {
-    "id": 14974,
-    "parent_id": 82,
-    "name": "Москва*",
-    "token": "moskva-g",
-    "coord_long": 37.617773222432,
-    "coord_lat": 55.75578355133,
-    "geodist": 0
-  }
+  "result": [
+    {
+      "id": 14974,
+      "parent_id": 82,
+      "kladr_id": "7700000000000",
+      "name": "Москва",
+      "name_inflect": {
+        "uid": "bb6016ec-cc37-45df-a423-2b13b3c223d9",
+        "name": "Москва",
+        "nominativus": "Москва",
+        "genitivus": "Москвы",
+        "dativus": "Москве",
+        "accusativus": "Москву",
+        "ablativus": "Москвой",
+        "locativus": "Москве"
+      },
+      "token": "moskva-g",
+      "is_main": true,
+      "show_in_menu": true,
+      "tk_available": false,
+      "coord_long": 37.6178,
+      "coord_lat": 55.7558,
+      "number_of_pickup_points": 646,
+      "number_of_enter_shops": 5
+    }
+  ]
 }

@@ -37,8 +37,8 @@ class DeliveryMap {
                 if (isset($data['points']) && is_array($data['points'])) {
                     $points = array_map(function(array $pointData) use($partners) {
                         $point = new ScmsPoint($pointData);
-                        if (!empty($point->group) && !empty($partners[$point->group->id])) {
-                            $point->group = new \Model\Point\Group($partners[$point->group->id]);
+                        if (!empty($point->partner) && !empty($partners[$point->partner->slug])) {
+                            $point->partner = new \Model\Point\Group($partners[$point->partner->slug]);
                         }
 
                         return $point;
@@ -64,7 +64,7 @@ class DeliveryMap {
 
         call_user_func(function() use(&$partners, $points) {
             // Фильтруем партнеров, оставляя только тех, которые есть в списке точек
-            $existingPartners = array_unique(array_map(function(ScmsPoint $point){ return $point->partner;}, $points));
+            $existingPartners = array_unique(array_map(function(ScmsPoint $point){ return $point->partner->slug;}, $points));
             $partners = array_intersect_key($partners, array_fill_keys($existingPartners, null));
 
             // Сортируем
@@ -95,7 +95,7 @@ class DeliveryMap {
         $svyaznoyList = ['4050800','4010800','4020000','4020800','4060800','7060800','7010403','7071800','7080000','2030000','5010000','5091900','5050800','5030000','1021900','3010000','3050000','2010000','11040000','11140800','11150000','11160000'];
 
         $points = array_filter($points, function (ScmsPoint $point) use ($svyaznoyList) {
-            return $point->partner != ScmsPoint::PARTNER_SLUG_SVYAZNOY ? true :
+            return $point->partner->slug != ScmsPoint::PARTNER_SLUG_SVYAZNOY ? true :
                 false !== in_array($point->vendorId, $svyaznoyList);
         });
     }

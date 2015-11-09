@@ -10,7 +10,7 @@ $c->appDir = realpath(__DIR__ . '/..');
 $c->configDir = $c->appDir . '/config';
 $c->libDir = $c->appDir . '/lib';
 $c->dataDir = $c->appDir . '/data';
-$c->logDir = realpath($c->appDir . '/../logs');
+$c->logDir = realpath($c->appDir . (basename($c->appDir) !== 'wwwroot' ? '/..' : '') . '/../logs');
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/lite/template';
 
@@ -25,8 +25,10 @@ $c->routePrefix = '';
 $c->debug = false;
 $c->logger['pretty'] = false;
 $c->appName = 'Enter';
+
 $c->authToken['name']     = '_token';
 $c->authToken['authorized_cookie'] = '_authorized';
+$c->authToken['disposableTokenParam'] = 'authToken'; // имя параметра для одноразовой аутенфикации
 
 $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 2592000; // 30 дней
@@ -40,7 +42,6 @@ $c->mobileHost = array_key_exists('HTTP_HOST', $_SERVER) ? 'm.' . implode('.', a
 $c->description = 'Enter – это все товары для жизни по интернет-ценам. В Enter вы можете купить что угодно, когда угодно и любым удобным для Вас способом!';
 
 $c->redirect301['enabled'] = true;
-$c->mobileRedirect['enabled'] = false;
 
 $c->curlCache['enabled'] = true;
 $c->curlCache['delayRatio'] = [0, 0.025]; // количество и время задержек
@@ -58,7 +59,7 @@ $c->coreV2['retryTimeout'] = [
     'long'    => 0.8,
     'huge'    => 1.5,
 ];
-$c->coreV2['chunk_size']   = 50;
+$c->coreV2['chunk_size']   = 30;
 $c->coreV2['debug']        = false;
 
 $c->eventService['url'] = 'http://event.enter.ru/';
@@ -213,6 +214,7 @@ $c->company['phone'] = '+7 (495) 135-10-70';
 $c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = false;
+$c->googleAnalytics['secondary.enabled'] = false;
 $c->googleAnalyticsTchibo['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 $c->googleTagManager['enabled'] = false;
@@ -256,7 +258,7 @@ $c->partners['GetIntent']['enabled'] = true;
 $c->partners['AddThis']['enabled'] = true;
 $c->partners['AdvMaker']['enabled'] = true;
 $c->partners['Hubrus']['enabled'] = true;
-$c->partners['SmartLeads']['enabled'] = true;
+$c->partners['CityAdsRetargeting']['enabled'] = true;
 $c->partners['Sociaplus']['enabled'] = true;
 $c->partners['ActionpayRetargeting']['enabled'] = true;
 $c->partners['MnogoRu']['enabled'] = true;
@@ -268,6 +270,10 @@ $c->partners['Adblender']['enabled'] = true;
 
 $c->partners['Giftery']['enabled'] = true;
 $c->partners['Giftery']['lowestPrice'] = 500;
+
+// SITE-6208
+$c->partners['soloway']['enabled'] = true;
+$c->partners['soloway']['id'] = 209723;
 
 $c->partners['facebook']['enabled'] = true;
 
@@ -295,25 +301,12 @@ $c->region['cookieName']     = 'geoshop';
 $c->region['cookieLifetime'] = 31536000; // 365 дней
 $c->region['defaultId']      = 14974;
 $c->region['autoresolve']    = true;
+$c->region['cache']          = false;
 
-$c->loadMediaHost = true;
 $c->shop['cookieName'] = 'shopid';
 $c->shop['cookieLifetime'] = 31536000; // 365 дней
 $c->shop['autoresolve']    = true;
 $c->shop['enabled'] = true;
-
-$c->mediaHost = [
-    0 => 'http://fs01.enter.ru',
-    1 => 'http://fs02.enter.ru',
-    2 => 'http://fs03.enter.ru',
-    3 => 'http://fs04.enter.ru',
-    4 => 'http://fs05.enter.ru',
-    5 => 'http://fs06.enter.ru',
-    6 => 'http://fs07.enter.ru',
-    7 => 'http://fs08.enter.ru',
-    8 => 'http://fs09.enter.ru',
-    9 => 'http://fs10.enter.ru',
-];
 
 $c->search['itemLimit'] = 1000;
 $c->search['queryStringLimit'] = 1;
@@ -322,17 +315,21 @@ $c->search['categoriesLimit'] = 200;
 $c->product['itemsPerPage']             = 20;
 $c->product['showAccessories']          = true;
 $c->product['showRelated']              = true;
+$c->product['getModel']                 = true;
+$c->product['deliveryCalc']             = true;
 $c->product['itemsInSlider']            = 5;
 $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;
-$c->product['minCreditPrice']           = 3000;
 $c->product['totalCount']               = 55000;
 $c->product['recommendationSessionKey']     = 'recommendationProductIds';
+$c->product['recommendationProductLimit']   = 30;
 $c->product['productPageSendersSessionKey'] = 'productPageSenders';
 $c->product['productPageSenders2SessionKey'] = 'productPageSendersForMarketplace';
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
+$c->product['creditEnabledInCard']    = true;
+$c->product['couponEnabledInCard']    = true;
 $c->product['pushReview']             = true;
 $c->product['lowerPriceNotification'] = true;
 // jewel
@@ -342,38 +339,16 @@ $c->product['pullRecommendation']     = false;
 $c->product['pushRecommendation']     = true;
 $c->product['viewedEnabled']          = true;
 
-$c->productLabel['url'] = [
-    0 => '/7/1/66x23/',
-    1 => '/7/1/124x38/',
-];
-
-$c->productCategory['url'] = [
-    0 => '/6/1/163/',
-    3 => '/6/1/500/',
-    5 => '/6/1/960/'
-];
-
-$c->shopPhoto['url'] = [
-    0 => '/8/1/40/',
-    1 => '/8/1/120/',
-    2 => '/8/1/163/',
-    3 => '/8/1/500/',
-    4 => '/8/1/2500/',
-    5 => '/8/1/original/',
-];
-
 $c->banner['timeout'] = 5000;
 $c->banner['checkStatus'] = true;
 
-$c->cart['productLimit'] = 30;
+$c->cart['productLimit'] = 0;
 $c->cart['sessionName'] = 'cart';
 $c->cart['checkStock'] = false;
 $c->cart['updateTime'] = 1; // обновлять корзину, если данные в ней устарели более, чем на 1 минуту
 
-$c->payment['creditEnabled'] = false;
+$c->payment['creditEnabled'] = true;
 $c->payment['blockedIds'] = [];
-
-$c->f1Certificate['enabled'] = true;
 
 $c->user['enabled'] = false;
 $c->user['corporateRegister'] = true;
@@ -394,6 +369,7 @@ $c->queue['workerLimit'] = 10;
 $c->queue['maxLockTime'] = 600;
 
 $c->subscribe['enabled'] = true;
+$c->subscribe['getChannel'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
 $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {channelId:status}
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
@@ -411,13 +387,14 @@ $c->order['addressAutocomplete'] = true;
 // предоплата (SITE-2959)
 $c->order['prepayment'] = [
     'enabled'    => true,
-    'priceLimit' => 100000,// если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
     'labelId'    => 15, // id шильдика "предоплата"
 ];
 $c->order['splitSessionKey'] = 'order_split';
 $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
 $c->order['sessionInfoOnComplete'] = true; // краткая инфа о заказе
-$c->order['emailRequired'] = true;          // обязательность email
+$c->order['emailRequired'] = true; // обязательность email
+$c->order['creditStatusSessionKey'] = 'order_credit';
+$c->order['channelSessionKey'] = 'order_channel';
 
 $c->newDeliveryCalc = true;
 
@@ -449,6 +426,7 @@ $c->tchiboSlider['analytics'] = [
 ];
 
 $c->abTest = [
+    'enabled'    => true,
     'cookieName' => 'switch',
     'tests'      => [],
 ];
@@ -465,9 +443,10 @@ $c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
 $c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 $c->svyaznoyClub['cardNumber']['cookieName'] = 'scid';
 
-$c->flocktoryExchange['enabled'] = false;
-$c->flocktoryPostCheckout['enabled'] = false;
-
+$c->flocktory['site_id'] = '427';
+$c->flocktory['exchange'] = false;
+$c->flocktory['postcheckout'] = false;
+$c->flocktory['precheckout'] = false;
 
 $c->photoContest = [
 	'client' => [

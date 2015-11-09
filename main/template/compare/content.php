@@ -32,13 +32,13 @@ return function (
                 <!-- ko if: compareGroups().length -->
                 <div data-bind="visible: compareGroups().length" style="display: none;">
                     <!-- ko if: compareGroups()[activeCompareGroupIndex()] -->
-                    <table class="cmprCnt clearfix js-compare-table" data-bind="css: {'cmprCnt_similarOnly': similarOnly, 'cmprCnt-scroll': scrolled}">
+                    <table class="cmprCnt clearfix js-compare-table" data-bind="css: {'cmprCnt_diff': isDiffMode, 'cmprCnt-scroll': scrolled}">
                         <tr class="cmprCnt_head js-compare-tableHeadRow">
                             <th class="cmprCnt_modes">
                                 <div class="cmprCnt_fixed cmprCnt_modeW js-compare-fixed cmprCnt_cell">
                                     <menu class="cmprCnt_mode">
-                                        <button class="cmprCnt_mode_btn btn1 js-compare-modeSimilarOnly" data-bind="css: {'cmprCnt_mode_btn-act': similarOnly}">Только отличия</button>
-                                        <button class="cmprCnt_mode_btn btn1 js-compare-modeAll" data-bind="css: {'cmprCnt_mode_btn-act': !similarOnly()}">Все характеристики</button>
+                                        <button class="cmprCnt_mode_btn btn1 js-compare-mode-diff" data-bind="css: {'cmprCnt_mode_btn-act': isDiffMode}">Только отличия</button>
+                                        <button class="cmprCnt_mode_btn btn1 js-compare-mode-all" data-bind="css: {'cmprCnt_mode_btn-act': !isDiffMode()}">Все характеристики</button>
                                     </menu>
                                 </div>
                             </th>
@@ -78,7 +78,7 @@ return function (
 
                                     <!-- ko if: priceOld != '0' -->
                                                     <span class="cmprCnt_price cmprCnt_price-l">
-                                                        <span data-bind="html: priceOld"></span>
+                                                        <span class="td-lineth" data-bind="html: priceOld"></span>
                                                         <span class="rubl">p</span>
                                                     </span>
                                     <!-- /ko -->
