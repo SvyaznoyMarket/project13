@@ -354,7 +354,7 @@ class Entity extends BasicEntity {
     public function getMediaSource($sourceType, $mediaTag = 'main', $mediaProvider = 'image') {
         foreach ($this->medias as $media) {
             if ($media->provider === $mediaProvider
-                && (!$media->tags || in_array($mediaTag, $media->tags, true))
+
             ) {
                 foreach ($media->sources as $source) {
                     if ($source->type === $sourceType) {

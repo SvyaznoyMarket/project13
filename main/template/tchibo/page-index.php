@@ -74,6 +74,12 @@ foreach ($categoryWithChilds->getChild() as $ct) {
         <? foreach($catalogCategories as $key => $catalogCategory): ?>
             <?
             /** @var \Model\Product\Category\TreeEntity $catalogCategory */
+            $imgSrc = null;
+
+            if ($catalogCategory->ui === Category::UI_TCHIBO_COLLECTIONS) {
+                unset($catalogCategories[$key]);
+                continue;
+            }
 
             if (array_key_exists($catalogCategory->getUi(), $categoryByUi)) {
                 $imgSrc = $categoryByUi[$catalogCategory->getUi()]->getMediaSource('category_grid_366x488', 'category_grid')->url;
