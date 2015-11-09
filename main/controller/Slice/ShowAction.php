@@ -436,6 +436,7 @@ class ShowAction {
 
                 // добавляем дочерние узлы
                 if (isset($data['children']) && is_array($data['children'])) {
+                    $category->setChild([]);
                     foreach ($data['children'] as $childData) {
                         if (is_array($childData)) {
                             $child = new \Model\Product\Category\Entity($childData);
