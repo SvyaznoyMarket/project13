@@ -62,7 +62,7 @@
 
 <? if ($action == 'online_motivation_discount') : ?>
 
-        <div class="orderPayment_block orderPayment_noOnline jsOnlinePaymentPossible orderPayment_block--border">
+        <div class="orderPayment_block orderPayment_noOnline orderPayment_block--border">
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">

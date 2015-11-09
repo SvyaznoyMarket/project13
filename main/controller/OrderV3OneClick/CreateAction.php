@@ -69,6 +69,8 @@ class CreateAction {
                 $ordersData,
                 \App::config()->coreV2['hugeTimeout']
             );
+            // fixture
+            //$coreResponse = \App::dataStoreClient()->query('/v2-create_packet.json');
         } catch (\Curl\Exception $e) {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
             \App::exception()->remove($e);
