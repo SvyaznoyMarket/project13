@@ -90,7 +90,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 
 
             <div class="grid__cell js-ep-item-margin">
-                <div class="private-sections__item private-sections grid__inner js-private-sections-container">
+                <div class="private-sections__item grid__inner js-private-sections-container">
                     <a href="#" class="private-sections__button  js-private-sections-button">
                         <span class="private-sections__button-icon js-private-sections-icon"></span>
                     </a>
@@ -132,7 +132,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 
 
             <div class="grid__cell">
-                <div class="private-sections__item private-sections grid__inner js-private-sections-container">
+                <div class="private-sections__item grid__inner js-private-sections-container">
                     <a href="#" class="private-sections__button  js-private-sections-button">
                         <span class="private-sections__button-icon js-private-sections-icon"></span>
                     </a>
@@ -204,7 +204,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
         <div class="grid__col grid__col_2">
             <div class="grid__cell js-ep-pointReport">
                 <div
-                    class="private-sections__item private-sections__item_ep private-sections grid__inner js-private-sections-container">
+                    class="private-sections__item private-sections__item_ep grid__inner js-private-sections-container">
                     <a href="#" class="private-sections__button  js-private-sections-button">
                         <span class="private-sections__button-icon js-private-sections-icon"></span>
                     </a>
@@ -440,7 +440,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 
 
             <div class="grid__cell">
-                <div class="private-sections__item private-sections grid__inner js-private-sections-container">
+                <div class="private-sections__item grid__inner js-private-sections-container">
                     <a href="#" class="private-sections__button  js-private-sections-button">
                         <span class="private-sections__button-icon js-private-sections-icon"></span>
                     </a>
@@ -542,7 +542,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
             </div>
 
             <div class="grid__cell">
-                <div class="private-sections__item private-sections grid__inner js-private-sections-container">
+                <div class="private-sections__item grid__inner js-private-sections-container">
                     <a href="#" class="private-sections__button  js-private-sections-button">
                         <span class="private-sections__button-icon js-private-sections-icon"></span>
                     </a>
@@ -759,8 +759,6 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         </div>
                     </li>
 
-
-
                 </ul>
             </div>
 
@@ -772,27 +770,5 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
         </div>
     </div>
 
-    <?= $helper->render($isNewProductPage ? 'product-page/blocks/slider' : 'product/__slider', [
-        'type' => 'main',
-        'title' => 'Рекомендованное',
-        'products' => $recommendedProducts,  //необходим $viewedProducts
-        'limit' => \App::config()->product['itemsInSlider'],
-        'page' => 1,
-        'class' => $isNewProductPage ? '' : 'slideItem-7item',
-        'sender' => [
-            'name' => 'retailrocket',
-            'position' => 'UserRecommended',
-            'method' => 'PersonalRecommendation',
-        ],
-    ]) ?>
-
-    <?= $helper->render('product-page/blocks/slider', [
-        'type' => 'viewed',
-        'title' => 'Вы смотрели',
-        'products' => $viewedProducts,
-        'limit' => \App::config()->product['itemsInSlider'],
-        'page' => 1,
-        'class' => 'slideItem-7item goods-slider_mark',
-    ]) ?>
 
 </div>
