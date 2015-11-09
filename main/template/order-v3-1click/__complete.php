@@ -21,6 +21,17 @@ $f = function(
 
     /** @var \Model\PaymentMethod\PaymentEntity|null $orderPayment */
     $orderPayment = isset($ordersPayment[$order->getNumber()]) ? $ordersPayment[$order->getNumber()] : null;
+
+    $isOnlinePaymentPossible =
+        (bool)$orderPayment
+            ? (
+            array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $orderPayment->groups)
+            && !$order->isPaid()
+            && !$order->isCredit()
+            && !$order->isPaidBySvyaznoy()
+        )
+        : false
+    ;
 ?>
 
 <? foreach ($orders as $order): ?>
@@ -34,8 +45,8 @@ $f = function(
             <p class="orderOneClick_recall" style="margin-bottom: 20px;">Наш сотрудник позвонит Вам для уточнения деталей заказа.</p>
         </div>
 
-        <? if ($ordersPayment[$order->getNumber()] && array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $ordersPayment[$order->getNumber()]->groups)) : ?>
-            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'title' => 'Оплатить онлайн со скидкой 15%']) ?>
+        <? if ($isOnlinePaymentPossible): ?>
+            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'title' => 'Оплатить онлайн' . (false ? 'со скидкой 15%' : '')]) ?>
         <? endif ?>
     </div>
 <? endforeach ?>
