@@ -4,13 +4,18 @@ namespace View;
 
 use Session\AbTest\ABHelperTrait;
 use Session\AbTest\AbTest;
+use Model\Product\Category\Entity as Category;
 
 class DefaultLayout extends Layout {
     use ABHelperTrait;
 
     protected $layout  = 'layout-oneColumn';
     protected $breadcrumbsPath = null;
+    /** @var bool */
+    // TODO переделать на автоопределение
     protected $useTchiboAnalytics = false;
+    /** @var bool */
+    protected $useMenuHamburger = false;
 
     /**
      * Flocktory precheckout data
@@ -44,6 +49,25 @@ class DefaultLayout extends Layout {
         $this->addStylesheet(\App::config()->debug ? '/styles/global.css' : '/styles/global.min.css');
 
         $this->addJavascript(\App::config()->debug ? '/js/loadjs.js' : '/js/loadjs.min.js');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMenuHamburger()
+    {
+        return $this->useMenuHamburger;
+    }
+
+    /**
+     * Является ли категория "чибовской"
+     *
+     * @param Category $category
+     * @return bool
+     */
+    public function isTchiboCategory(Category $category)
+    {
+        return isset($category->getAncestor()[0]) && $category->getAncestor()[0]->getUi() === Category::UI_TCHIBO;
     }
 
     public function slotRelLink() {
@@ -428,8 +452,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotCriteo() {
-        return $this->render( 'partner-counter/_criteo',
-            ['criteoData' =>  (new \View\Partners\Criteo($this->params))->execute()] );
+        return $this->render('partner-counter/_criteo', ['criteoData' => (new \View\Partners\Criteo($this->params))->execute()]);
     }
 
 
@@ -665,5 +688,13 @@ class DefaultLayout extends Layout {
         return \App::config()->partners['Giftery']['enabled']
             ? '<div id="gifteryJS" class="jsanalytics"></div>'
             : '';
+    }
+
+    public function slotSolowayJS() {
+        if (!\App::config()->partners['soloway']['enabled']) {
+            return '';
+        }
+
+        return '<div id="solowayJS" class="jsanalytics"></div>';
     }
 }

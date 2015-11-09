@@ -2,41 +2,4 @@
     <a class="bPromoCatalogSliderWrap_eSlideLink" href="<%=linkUrl%>">
         <img src="<%=imgUrl%>" alt="<%=title%>"/>
     </a>
-
-    <div class="bPromoCatalogProducts clearfix">
-    <% for( var i = 0; i < products.length; i++ ) { %>
-        <div class="prodItem">
-            <a href="<%= products[ i ].link %>" title="<%= products[ i ].name %>" target="<%= target %>">
-
-                <% if ( !products[ i ].isBuyable || products[ i ].statusId == 5 ) { %>
-                    <div class="bProductDescSticker stockSticker">
-                        <img class="stockSticker_img" src="/images/shild_sold_out.png" alt="Нет в наличии" />
-                    </div>
-                <% } %>
-
-                <div class="prodImg">
-                    <img src="<%= products[ i ].image %>" alt="<%= products[ i ].name %>" />
-                </div>
-            </a>
-
-            <div class="prodDesc">
-                <div class="prodDesc__inner bBtnLine clearfix" style="display: block;">
-                    <div class="prodName"><a href="<%= products[ i ].link %>" title="<%= products[ i ].name %>" target="<%= target %>"><%= products[ i ].name %></a></div>
-                    <div class="prodPrice"><%= products[ i ].price %> <span class="rubl">p</span></div>
-
-                    <div class="btnBuy">
-                        <a
-                            href="<%= products[ i ].cartButton.url %>"
-                            class="btnBuy__eLink <%= products[ i ].cartButton['class'] %>"
-                            data-product-id="<%= products[ i ].cartButton.data.productId %>"
-                            data-product-ui="<%= products[ i ].cartButton.productUi %>"
-                            data-upsale='<%= products[ i ].cartButton.data.upsale %>'
-                            data-bind="buyButtonBinding: cart"
-                        ><%= products[ i ].cartButton.value %></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <% } %>
-    </div>
 </div>

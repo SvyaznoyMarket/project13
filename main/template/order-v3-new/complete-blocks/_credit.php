@@ -4,6 +4,8 @@
  * @param \Model\Order\Entity $order
  * @param array $creditData
  * @param \Model\CreditBank\Entity[] $banks
+ * @param array $creditDoneOrderIds
+ * @param bool $isStatic
  * @return string
  */
 $f = function(
@@ -11,7 +13,8 @@ $f = function(
     \Model\Order\Entity $order,
     $creditData,
     $banks,
-    $creditDoneOrderIds = []
+    $creditDoneOrderIds = [],
+    $isStatic = true // временной костыль, FIXME
 ) {
     if (in_array($order->id, $creditDoneOrderIds)) {
         return '';
@@ -19,11 +22,10 @@ $f = function(
 ?>
 
     <!-- Блок оплата в кредит -->
-    <div id="credit-<?= md5($order->id ?: uniqid()) ?>" class="orderPayment orderPaymentCr jsCreditBlock">
+    <div id="credit-<?= md5($order->id ?: uniqid()) ?>" class="orderPayment <?= ($isStatic ? 'orderPayment--static' : '') ?> orderPaymentCr jsCreditBlock">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">
-
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
                     Заявка на кредит

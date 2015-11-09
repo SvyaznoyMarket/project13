@@ -28,6 +28,7 @@ class ChildCategoryPage extends \View\DefaultLayout {
 
     public function prepare() {
         $category = $this->category = $this->getParam('category', new Category());
+        $this->useMenuHamburger = $this->isTchiboCategory($this->category);
 
         $this->flPrecheckoutData['fl-action'] = 'track-category-view';
         $this->flPrecheckoutData['fl-category-id'] = $this->category->id;

@@ -24,12 +24,19 @@ try {
     $isMobile = false;
 }
 
+$analytics = [];
+
+if (\App::config()->partners['soloway']['enabled']) {
+    $analytics['soloway'] = [
+        'id' => \App::config()->partners['soloway']['id'],
+    ];
+}
+
 $routerRules = \App::router()->getRules();
 $config = array_merge([
     'adfoxEnabled'     => $appConfig->adFox['enabled'],
     'jsonLog'               => $appConfig->jsonLog['enabled'],
     'routeUrl'              => $router->generate('route'),
-    'f1Certificate'         => $appConfig->f1Certificate['enabled'],
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
     'prepayment'            => $appConfig->order['prepayment'],
     'isMobile'              => $isMobile,
@@ -60,11 +67,11 @@ $config = array_merge([
         'product.reviews.get'       => ['pattern' => $routerRules['product.reviews']['pattern']],
         'ajax.product.category'     => ['pattern' => $routerRules['ajax.product.category']['pattern']],
     ],
-    'newProductPage' => \App::abTest()->isNewProductPage(),
     'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS
     'selfDeliveryLimit'    => $appConfig->self_delivery['limit'], // стоимость платного самовывоза, удалять осторожно, поломается JS
     'minOrderSum'  => \App::abTest()->isOrderMinSumRestriction() ? $appConfig->minOrderSum : false,
     'infinityScroll' => \App::abTest()->isInfinityScroll(),
+    'analytics' => $analytics,
 ], isset($config) ? (array)$config : []);
 ?>
 

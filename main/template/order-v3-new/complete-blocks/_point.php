@@ -15,13 +15,13 @@ $f  = function (
     ;
 ?>
 
-<div class="orderPayment <?= $order->isPaid() ? 'orderPaid jsOrderPaid': '' ?>">
-    <div class="orderPayment_block orderPayment_noOnline">
+<div class="orderPayment orderPayment--static <?= $order->isPaid() ? 'orderPaid jsOrderPaid': '' ?>">
+    <div class="orderPayment_block orderPayment_block--border orderPayment_noOnline">
 
         <? if ((bool)$order->point) : ?>
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
-                <div class="orderPayment_msg_head">
+                <div class="orderPayment_msg_head" style="text-align: left;">
                     <? if ($order->point->isEnterShop() || $order->point->isSvyaznoyShop() || $order->point->isEurosetPoint()) : ?>
                         Ждем вас <?= $deliveryText ?> в магазине
                     <? elseif ($order->point->isPickpoint()) : ?>

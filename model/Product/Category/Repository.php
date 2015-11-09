@@ -166,6 +166,80 @@ class Repository {
     }
 
     /**
+     * @param string $type 'root_slug' || 'root_id' || 'root_uid'
+     * @param string $value Slug or Id or Uid
+     * @param int $depth
+     * @param bool|false $loadSiblings
+     * @param bool|false $loadParents
+     * @param bool|false $loadMedias
+     *
+     * @return Entity
+     */
+    public function getCategoryTree($type, $value, $depth = 1, $loadSiblings = false, $loadParents = false, $loadMedias = false)
+    {
+
+        if (!is_scalar($value) || !in_array($type, ['root_slug', 'root_id', 'root_uid'], true)) {
+            throw new \InvalidArgumentException();
+        }
+
+        $client = \App::scmsClient();
+        $response = $client->query('api/category/tree',
+            [
+                $type   => $value,
+                'depth' => $depth,
+                'load_siblings' => (int)$loadSiblings,
+                'load_parents'  => (int)$loadParents,
+                'load_medias'    => (int)$loadMedias
+            ],
+            []
+        );
+
+        return array_key_exists(0, $response) ? new Entity($response[0]) : new Entity([]);
+    }
+
+    /**
+     * @param string $type 'root_slug' || 'root_id' || 'root_uid'
+     * @param string $value Slug or Id or Uid
+     * @param int $depth
+     * @param bool|false $loadSiblings
+     * @param bool|false $loadParents
+     * @param bool|false $loadMedias
+     * @param mixed $category Пустое значение для заполнения
+     *
+     * @return void
+     */
+    public function prepareCategoryTree(
+        $type,
+        $value,
+        $depth = 1,
+        $loadSiblings = false,
+        $loadParents = false,
+        $loadMedias = false,
+        &$category)
+    {
+        if (!is_scalar($value) || !in_array($type, ['root_slug', 'root_id', 'root_uid'], true)) {
+            throw new \InvalidArgumentException();
+        }
+
+        $client = \App::scmsClient();
+        $client->addQuery('api/category/tree',
+            [
+                $type   => $value,
+                'depth' => $depth,
+                'load_siblings' => (int)$loadSiblings,
+                'load_parents'  => (int)$loadParents,
+                'load_medias'    => (int)$loadMedias
+            ],
+            [],
+            function ($data) use (&$category) {
+                if (array_key_exists(0, $data)) {
+                    $category = new Entity($data[0]);
+                }
+            }
+        );
+    }
+
+    /**
      * @param array $ids
      * @return Entity[]
      */
@@ -406,7 +480,7 @@ class Repository {
              * @use $loadBranch
              * @use $category     Текущая категория каталога
              */
-            $iterateLevel = function($data) use(&$iterateLevel, &$loadBranch, $category) {
+            $iterateLevel = function ($data) use (&$iterateLevel, &$loadBranch, $category) {
                 if (!is_array($data)) {
                     return;
                 }

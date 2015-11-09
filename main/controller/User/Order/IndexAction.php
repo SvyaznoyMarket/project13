@@ -68,27 +68,32 @@ class IndexAction extends \Controller\User\PrivateAction {
 
         /** @var Query\Product\GetByIdList[] $productQueries */
         $productQueries = [];
+        /** @var Query\Product\GetDescriptionByIdList[] $productDescriptionQueries */
+        $productDescriptionQueries = [];
         foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
             $productQuery = new Query\Product\GetByIdList();
             $productQuery->regionId = $region->getId();
             $productQuery->ids = $idsInChunk;
             $productQuery->prepare();
             $productQueries[] = $productQuery;
+
+            $productDescriptionQuery = new Query\Product\GetDescriptionByIdList();
+            $productDescriptionQuery->ids = $idsInChunk;
+            $productDescriptionQuery->prepare();
+            $productDescriptionQueries[] = $productDescriptionQuery;
         }
 
         /** @var Query\Product\GetByIdList[] $viewedProductQueries */
         $viewedProductQueries = [];
+        /** @var Query\Product\GetDescriptionByIdList[] $viewedProductDescriptionQueries */
+        $viewedProductDescriptionQueries = [];
         foreach (array_chunk($productRepository->getViewedProductIdsByHttpRequest($request), \App::config()->coreV2['chunk_size']) as $idsInChunk) {
             $viewedProductQuery = new Query\Product\GetByIdList();
             $viewedProductQuery->regionId = $region->getId();
             $viewedProductQuery->ids = $idsInChunk;
             $viewedProductQuery->prepare();
             $viewedProductQueries[] = $viewedProductQuery;
-        }
 
-        /** @var Query\Product\GetDescriptionByIdList[] $viewedProductDescriptionQueries */
-        $viewedProductDescriptionQueries = [];
-        foreach (array_chunk($productRepository->getViewedProductIdsByHttpRequest($request), \App::config()->coreV2['chunk_size']) as $idsInChunk) {
             $viewedProductDescriptionQuery = new Query\Product\GetDescriptionByIdList();
             $viewedProductDescriptionQuery->ids = $idsInChunk;
             $viewedProductDescriptionQuery->filter->media = true;
@@ -117,12 +122,22 @@ class IndexAction extends \Controller\User\PrivateAction {
 
         $curl->execute();
 
+        $productDescriptionDataById = [];
+        foreach ($productDescriptionQueries as $productDescriptionQuery) {
+            foreach ($productDescriptionQuery->response->products as $item) {
+                if (@$item['core_id']) {
+                    $productDescriptionDataById[$item['core_id']] = $item;
+                }
+            }
+        }
+
         /** @var \Model\Product\Entity[] $productsById */
         $productsById = [];
         foreach ($productQueries as $productQuery) {
             foreach ($productQuery->response->products as $item) {
-                if (!@$item['id']) continue;
+                if (!@$item['id'] || !isset($productDescriptionDataById[$item['id']])) continue;
                 $product = new \Model\Product\Entity($item);
+                $product->importFromScms($productDescriptionDataById[$item['id']]);
                 $productsById[$product->getId()] = $product;
             }
         }

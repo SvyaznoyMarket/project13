@@ -42,15 +42,11 @@ $buySender2 = $request->get('sender2');
 ?>
 
 <div class="product-container product-container--kitchen clearfix">
-    <? if (\App::abTest()->isNewProductPage()): ?>
-        <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product-page/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
-    <? else: ?>
-        <?= $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'bBreadcrumbs clearfix bBreadcrumbs--light')) ?>
-    <? endif ?>
+    <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product-page/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
 
     <?= $helper->render('product/__data', ['product' => $product]) ?>
 
-    <div class="product-card__section-left bProductSectionLeftCol <? if (\App::abTest()->isNewProductPage()) { ?>card-new<? } ?>">
+    <div class="product-card__section-left bProductSectionLeftCol card-new">
         <div class="product-card__head">
             <h1 class="product-card__head__title clearfix" itemprop="name">
                     <? if ($product->getPrefix()): ?>
@@ -58,10 +54,6 @@ $buySender2 = $request->get('sender2');
                     <? endif ?>
                     <?= $helper->escape($product->getWebName()) ?>
             </h1>
-            <? if (\App::abTest()->isNewProductPage()): ?>
-                <? else: ?>
-                <span class="product-card__head__article">Артикул: <?= $product->getArticle() ?></span>
-            <? endif ?>
         </div>
 
         <?= $helper->render('product/__photo', ['product' => $product, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
@@ -103,26 +95,6 @@ $buySender2 = $request->get('sender2');
 
     <div class="clear"></div>
 
-    <? /*
-    <div class="product-card__bordered">
-        <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
-            <?= $helper->render('product/__slider', [
-                'type'     => 'similar',
-                'title'    => 'Похожие товары',
-                'products' => [],
-                'limit'    => \App::config()->product['itemsInSlider'],
-                'page'     => 1,
-                'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-                'sender'   => [
-                    'name'     => 'retailrocket',
-                    'position' => 'ProductSimilar',
-                ],
-                'sender2'  => 'slot',
-            ]) ?>
-        <? endif ?>
-    </div>
-    */ ?>
-
     <div class="product-card__bordered">
         <div class="product-card__desc">
             <?= $product->getDescription() ?>
@@ -145,21 +117,6 @@ $buySender2 = $request->get('sender2');
 
 
         <div class="clear"></div>
-        <? /* if (\App::config()->product['pullRecommendation']): ?>
-            <?= $helper->render('product/__slider', [
-                'type'           => 'alsoBought',
-                'title'          => 'С этим товаром покупают',
-                'products'       => [],
-                'limit'          => \App::config()->product['itemsInSlider'],
-                'page'           => 1,
-                'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
-                'sender'         => [
-                    'name'     => 'retailrocket',
-                    'position' => 'ProductAccessories', // все правильно - так и надо!
-                ],
-                'sender2'  => 'slot',
-            ]) ?>
-        <? endif */ ?>
 
         <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
             <?= $helper->render('product/__slider', [
@@ -178,12 +135,8 @@ $buySender2 = $request->get('sender2');
             ]) ?>
         <? endif ?>
 
-        <div class="product-containter__brcr-bottom <? if (\App::abTest()->isNewProductPage()) { ?>card-new<? } ?>">
-            <? if (\App::abTest()->isNewProductPage()): ?>
-                <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product-page/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
-            <? else: ?>
-                <?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?>
-            <? endif ?>
+        <div class="product-containter__brcr-bottom card-new">
+            <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product-page/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
         </div>
 
         <? if (\App::config()->analytics['enabled']): ?>
@@ -191,6 +144,6 @@ $buySender2 = $request->get('sender2');
             <?//= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
         <? endif ?>
 
-    <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
+        <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
     </div>
 </div>

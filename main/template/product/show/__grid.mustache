@@ -3,6 +3,18 @@
      {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}
      {{#ecommerce}}data-ecommerce='{{ecommerce}}'{{/ecommerce}}
         >
+    {{#review.count}}
+    <div class="productInner__reviews">
+        <span class="product-card-rating__state">
+            {{#review.stars}}
+            <i class="product-card-rating__i {{#star}}product-card-rating__i--fill{{/star}}"></i>
+            {{/review.stars}}
+        </span>
+
+        <span class="product-card-rating__tx">({{review.count}})</span>
+    </div>
+    {{/review.count}}
+
     <div class="productInner__imgBox">
         <a class="productInner__imgLink js-listing-item-img" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>
             <img class="productInner__img" src="{{image}}" alt="{{name}}" />
@@ -13,8 +25,15 @@
         <div class="inner">
             <a class="name" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a>
 
+            {{#oldPrice}}
+            <div class="productInner__price-old">
+                <span class="td-lineth">{{price}}</span> <span class="rubl">p</span>&nbsp;
+                - {{oldPrice}} <span class="rubl">p</span>
+            </div>
+            {{/oldPrice}}
+
             <div class="clearfix">
-                <span class="price" class="">{{&price}} <span class="rubl">p</span></span>
+                <div class="price" class="">{{&price}} <span class="rubl">p</span></div>
 
                 <div class="bBtnLine">
                     <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>

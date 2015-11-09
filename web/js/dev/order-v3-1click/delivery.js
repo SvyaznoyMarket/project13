@@ -181,7 +181,23 @@
 					//$body.children('.lb_overlay')[1].remove();
 					changePoint($('.jsOneClickOrderRow').data('block_name'), id, token);
 				}
-			};
+			},
+			loadPaymentForm = function($container, url, data) {
+				$container.html('Загрузка...'); // TODO: loader
+
+				$.ajax({
+					url: url,
+					type: 'POST',
+					data: data
+				}).fail(function(jqXHR){
+					$container.html('Ошибка');
+				}).done(function(response){
+					if (response.form) {
+						$container.html(response.form);
+					}
+				}).always(function(){});
+			}
+		;
 
         // новый самовывоз
         $body.on('click', '.jsOrderV3Dropbox',function(){
@@ -262,6 +278,29 @@
 		// клик по интервалу доставки
 		$orderContent.on('click', '.customSel_lst li', function() {
 			changeInterval($(this).closest('.orderRow').data('block_name'), $(this).data('value'));
+		});
+
+		$body.on('change', '.js-order-onlinePaymentMethod', function(e) {
+			var
+				$el = $(this),
+				url = $el.data('url'),
+				data = $el.data('value'),
+				relations = $el.data('relation'),
+				$formContainer = relations['formContainer'] && $(relations['formContainer'])
+				;
+
+			try {
+				if (!url) {
+					throw {message: 'Не задан url для получения формы'};
+				}
+				if (!$formContainer.length) {
+					throw {message: 'Не найден контейнер для формы'};
+				}
+
+				loadPaymentForm($formContainer, url, data);
+			} catch(error) { console.error(error); };
+
+			//e.preventDefault();
 		});
 
 		// АНАЛИТИКА

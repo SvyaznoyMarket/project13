@@ -114,6 +114,15 @@
 							_gaq.push(['_trackEvent', 'subscription', 'subscribe_registration']);
 						}
 
+						if ($el.hasClass('js-registerForm') && response.newUser) {
+							ENTER.utils.analytics.soloway.send({
+								action: 'userRegistrationComplete',
+								user: {
+									id: response.newUser.id
+								}
+							});
+						}
+
 						if (response.data && response.data.link) {
 							window.location.href = response.data.link ? response.data.link : window.location.href;
 

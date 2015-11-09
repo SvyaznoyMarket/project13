@@ -331,8 +331,8 @@ class AppConfig {
     ];
     /** @var array */
     public $payment = [
-        'creditEnabled'    => null,
-        'blockedIds'       => [],
+        'creditEnabled' => null,
+        'blockedIds'    => [],
     ];
     /**
      * @var array
@@ -366,10 +366,6 @@ class AppConfig {
         'payUrl'       => null,
     ];
 
-    /** @var array */
-    public $f1Certificate = [
-        'enabled' => null,
-    ];
     /** @var array */
     public $cart = [
         'productLimit' => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины

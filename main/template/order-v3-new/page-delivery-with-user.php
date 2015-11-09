@@ -1,7 +1,5 @@
 <?php
 
-use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
-
 /**
  * @param \Helper\TemplateHelper $helper
  * @param \Model\OrderDelivery\Entity $orderDelivery
@@ -19,7 +17,6 @@ $f = function(
     $orderCount = count($orderDelivery->orders);
     $region = \App::user()->getRegion();
     $firstOrder = reset($orderDelivery->orders);
-    $i = 0;
 
     $isCoordsValid = $region && $region->getLatitude() != null && $region->getLongitude() != null;
 
@@ -50,7 +47,7 @@ $f = function(
 
             <?= $helper->render('order-v3-new/partial/error', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
-            <?= $helper->render('order-v3-new/partial/orders-list',['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
+            <?= $helper->render('order-v3-new/partial/order-list', ['error' => $error, 'orderDelivery' => $orderDelivery]) ?>
 
             <div class="pagehead"><h1 class="orderCnt_t">Получатель</h1></div>
 
@@ -190,7 +187,7 @@ $f = function(
                     <textarea name="order[comment]" class="orderComment_fld order-wishes__field" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
                 </div>
                 <div class="order-total">
-                    <span class="order-total__txt">Итого <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму</span> <span class="order-total__sum"><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span>
+                    <span class="order-total__txt">Итого <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму</span> <span class="order-total__sum"><?= $helper->formatPrice($orderDelivery->total_view_cost) ?> <span class="rubl">p</span>
                 </div>
 
 

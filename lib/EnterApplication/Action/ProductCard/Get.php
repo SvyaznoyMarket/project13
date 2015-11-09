@@ -25,7 +25,11 @@ namespace EnterApplication\Action\ProductCard
             $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare(); // TODO: throw Exception
 
             // аб-тест
-            $abTestQuery = (new Query\AbTest\GetActive())->prepare();
+            $abTestQuery =
+                \App::config()->abTest['enabled']
+                ? (new Query\AbTest\GetActive())->prepare()
+                : null
+            ;
 
             // главное меню
             $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare();
@@ -255,14 +259,8 @@ namespace EnterApplication\Action\ProductCard
 
             // группы оплаты
             call_user_func(function() use (&$productQuery, &$paymentGroupQuery) {
-                return false; // SITE-5460
-
                 $productId = $productQuery->response->product['id'];
                 if (!$productId) return;
-
-                $price = $productQuery->response->product['price'];
-
-                $cart = \App::user()->getCart(); // TODO: old usage
 
                 $paymentGroupQuery = new Query\PaymentGroup\GetByCart();
                 // корзина
@@ -297,7 +295,7 @@ namespace EnterApplication\Action\ProductCard
             call_user_func(function() use (&$productQuery, &$reviewQuery) {
                 $productUi = $productQuery->response->product['ui'];
                 if (!$productUi) return;
-                $pageSize = \App::abTest()->isNewProductPage() ? 10 : 7;
+                $pageSize = 10;
                 $reviewQuery = (new Query\Product\Review\GetByProductUi($productUi, 0, $pageSize))->prepare();
             });
 
