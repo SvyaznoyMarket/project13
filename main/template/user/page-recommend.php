@@ -21,8 +21,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
     <div class="private-sections grid js-ep-container">
         <div class="grid__col grid__col_2">
             <div class="grid__cell js-ep-item-top">
-                <div
-                    class="private-sections__item private-sections__item_order grid__inner js-private-sections-container">
+                <div class="private-sections__item private-sections__item_order grid__inner js-private-sections-container">
                     <a href="#" class="private-sections__button  js-private-sections-button">
                         <span class="private-sections__button-icon js-private-sections-icon"></span>
                     </a>
@@ -84,6 +83,15 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                                 </div>
                             </li>
                         </ul>
+
+                        <!--Если нет заказов, вывести блок .item-none-->
+
+                            <!--
+                            <div class="item-none">
+                                <span class="order-list__item-none-txt">У вас еще нет заказов</span>
+                                <a class="order-list__item-none-link" href="#">Перейти к покупкам</a>
+                            </div>
+                        -->
                     </div>
                 </div>
             </div>
@@ -100,7 +108,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                     <div class="grid-scroll js-private-sections-body">
                         <ul class="grid-scroll-list address-list">
                             <li class="grid-scroll-list__item address-list__item">
-                                <a class="address-list__item-link" href="<?= $helper->url('user.address') ?>"
+                                <a class="address-list__item-link" href="<?/*= $helper->url('user.address') */?>"
                                    target="_blank">
                                     <div class="address-list__mode">Домашний</div>
 
@@ -115,7 +123,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                             </li>
 
                             <li class="grid-scroll-list__item address-list__item">
-                                <a class="address-list__item-link" href="<?= $helper->url('user.address') ?>"
+                                <a class="address-list__item-link" href="<?/*= $helper->url('user.address') */?>"
                                    target="_blank">
                                     <ul class="address-list-details">
                                         <li class="address-list-details__item">Мытищи</li>
@@ -126,6 +134,16 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                                 </a>
                             </li>
                         </ul>
+
+                        <!--Если нет адресов, вывести блок .item-none-->
+
+
+     <!--                   <div class="item-none">
+                            <span class="item-none__txt">Мы пока не знаем куда доставить ваши товары</span>
+                            <a class="item-none__link" href="#">Добавить адрес доставки</a>
+                        </div>
+                        -->
+
                     </div>
                 </div>
             </div>
@@ -212,7 +230,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                     <header class="private-sections__head">Горящие фишки</header>
 
                     <div class="grid-scroll js-private-sections-body">
-                        <ul class="grid-scroll-list grid-scroll-list_2col private-ep-list ">
+<!--                        <ul class="grid-scroll-list grid-scroll-list_2col private-ep-list ">
                             <li class="grid-scroll-list__col js-ep-item">
                                 <div class="grid-scroll-list__item private-ep-list__item ">
                                 <span class="ep-coupon"
@@ -234,7 +252,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                             <li class="grid-scroll-list__col js-ep-item">
                                 <div class="grid-scroll-list__item private-ep-list__item ">
                                 <span class="ep-coupon"
-                                      style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
+                                      style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_lime_b1.png);">
                                     <span class="ep-coupon__inner">
                                         <span class="ep-coupon__ico"><img
                                                 src="http://content.enter.ru/wp-content/uploads/2014/03/kids.png"></span>
@@ -249,22 +267,35 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                                 </div>
                             </li>
 
-                            <!-- <li class="grid-scroll-list__col">
-                                 <div class="grid-scroll-list__item private-ep-list__item">
-                                 <span class="ep-coupon" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_lime_b1.png);">
-                                     <span class="ep-coupon__inner">
-                                         <span class="ep-coupon__ico"><img src="http://content.enter.ru/wp-content/uploads/2014/03/kids.png"></span>
 
-                                         <span class="ep-coupon__desc">Гигиена и уход за малышом</span>
+                        </ul>-->
 
-                                         <span class="ep-coupon__price">10%</span>
-                                     </span>
-                                 </span>
+                        <ul class="grid-scroll-list grid-scroll-list_2col private-ep-list">
+                            <li class="grid-scroll-list__col">
+                                <div class="grid-scroll-list__item private-ep-list__item">
+                                    <span class="ep-coupon"
+                                          style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
+                                    </span>
+                                    <div class="private-ep-list__img-desc">Получи фишки EnterPrize</div>
+                                </div>
+                            </li>
 
-                                     <div class="private-ep-list__dutation">3 д 19 ч 52 мин 51 с</div>
-                                 </div>
-                             </li>-->
+                            <li class="grid-scroll-list__col">
+                                <span class="private-ep-list__desc">
+                                    Фишки EnterPrize используются для получения скидок. У каждой фишки свои условия и срок действия скидки. Использовать фишку можно только один раз, для этого нужно применить ее к заказу при оформлении. Узнай больше на странице EnterPrize.
+                                </span>
+                            </li>
+
+
                         </ul>
+                        <!--Если нет адресов, вывести блок .item-none-->
+
+
+                        <!--                   <div class="item-none">
+                                               <span class="item-none__txt">Мы пока не знаем куда доставить ваши товары</span>
+                                               <a class="item-none__link" href="#">Добавить адрес доставки</a>
+                                           </div>
+                                           -->
                     </div>
                 </div>
             </div>
@@ -450,7 +481,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                     </header>
 
                     <div class="grid-scroll js-private-sections-body">
-                        <ul class="grid-scroll-list favorite-list">
+                       <ul class="grid-scroll-list favorite-list">
                             <li class="grid-scroll-list__item favorite-list__item">
                                 <a class="favorite-list__link" href="" target="_blank">
                                     <div class="favorite-list__views favorite-list__cell">
@@ -537,6 +568,18 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                                 </a>
                             </li>
                         </ul>
+
+                        <!--Если нет избранного, вывести блок .item-none-->
+
+
+<!--                                          <div class="item-none">
+                                               <span class="item-none__txt">
+                                                   Добавляй товары в избранное
+                                                   <br>
+                                                   и узнавай об изменении цены и наличии
+                                               </span>
+                                           </div>-->
+
                     </div>
                 </div>
             </div>
