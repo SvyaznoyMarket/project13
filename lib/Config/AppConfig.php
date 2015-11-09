@@ -440,8 +440,6 @@ class AppConfig {
         'creditStatusSessionKey'  => null,
         'channelSessionKey'       => null,
     ];
-    /** @var bool */
-    public $newDeliveryCalc;
 
     /** @var array */
     public $sphinx = [

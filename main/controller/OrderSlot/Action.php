@@ -31,7 +31,7 @@ class Action {
             $orderCreatePacketData = $this->getOrderCreatePacketData($cartSplitResponse, $phone, $request->request->get('email'), $request->request->get('name'), $request->request->get('sender'), (string)$request->request->get('sender2'));
 
             $orderCreatePacketResponse = \App::coreClientV2()->query(
-                (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),
+                'order/create-packet2',
                 $orderCreatePacketParams,
                 $orderCreatePacketData,
                 \App::config()->coreV2['hugeTimeout']
@@ -57,7 +57,7 @@ class Action {
             if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                 \App::logger('order')->error([
                     'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'trace' => $e->getTraceAsString()],
-                    'url'     => (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet') . ($orderCreatePacketParams ? ('?' . http_build_query($orderCreatePacketParams)) : ''),
+                    'url'     => 'order/create-packet2' . ($orderCreatePacketParams ? ('?' . http_build_query($orderCreatePacketParams)) : ''),
                     'data'    => $orderCreatePacketData,
                     'server'  => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
                         'HTTP_USER_AGENT',

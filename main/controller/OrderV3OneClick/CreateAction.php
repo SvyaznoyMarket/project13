@@ -64,7 +64,7 @@ class CreateAction {
             if (isset($splitOrder)) unset($splitOrder);
 
             $coreResponse = $this->client->query(
-                (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),
+                'order/create-packet2',
                 $params,
                 $ordersData,
                 \App::config()->coreV2['hugeTimeout']
@@ -94,7 +94,7 @@ class CreateAction {
             if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                 \App::logger('order')->error([
                     'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'detail' => $e instanceof \Curl\Exception ? $e->getContent() : null, 'trace' => $e->getTraceAsString()],
-                    'url'     => (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet') . ((bool)$params ? ('?' . http_build_query($params)) : ''),
+                    'url'     => 'order/create-packet2' . ((bool)$params ? ('?' . http_build_query($params)) : ''),
                     'data'    => $ordersData,
                     'server'  => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
                         'HTTP_USER_AGENT',
