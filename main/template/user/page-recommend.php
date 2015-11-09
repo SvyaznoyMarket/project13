@@ -591,21 +591,21 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 
     </div>
 
-    <div class="viewed-slider">
+    <div class="viewed-slider js-viewed-slider-full">
         <div class="viewed-slider__row clearfix">
             <h3 class="viewed-slider__title">
                 Вы смотрели
             </h3>
 
             <span class="viewed-slider__pagination">
-                 Страница 1 из 3
+                 Страница <span class="js-viewed-slider-page">1</span> из <span class="js-viewed-slider-allPage">1</span>
             </span>
         </div>
-        <div class="viewed-slider__slide js-epSlide">
+        <div class="viewed-slider__slide js-viewed-slider">
             <div class="viewed-slider__list-outer">
-                <ul class="viewed-slider__list clearfix js-epSlideList">
+                <ul class="viewed-slider__list clearfix js-viewed-slider-list">
 
-                    <li class="viewed-slider__item js-epSlideItem">
+                    <li class="viewed-slider__item js-viewed-slider-item">
                         <div class="viewed-slider__img-block">
                             <img src="#" alt="#">
 
@@ -627,7 +627,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         </div>
                     </li>
 
-                    <li class="viewed-slider__item js-epSlideItem">
+                    <li class="viewed-slider__item js-viewed-slider-item">
                         <div class="viewed-slider__img-block">
                             <img src="#" alt="#">
 
@@ -649,7 +649,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         </div>
                     </li>
 
-                    <li class="viewed-slider__item js-epSlideItem">
+                    <li class="viewed-slider__item js-viewed-slider-item">
                         <div class="viewed-slider__img-block">
                             <img src="#" alt="#">
 
@@ -671,7 +671,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         </div>
                     </li>
 
-                    <li class="viewed-slider__item js-epSlideItem">
+                    <li class="viewed-slider__item js-viewed-slider-item">
                         <div class="viewed-slider__img-block">
                             <img src="#" alt="#">
 
@@ -693,7 +693,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         </div>
                     </li>
 
-                    <li class="viewed-slider__item js-epSlideItem">
+                    <li class="viewed-slider__item js-viewed-slider-item">
                         <div class="viewed-slider__img-block">
                             <img src="#" alt="#">
 
@@ -715,7 +715,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         </div>
                     </li>
 
-                    <li class="viewed-slider__item js-epSlideItem">
+                    <li class="viewed-slider__item js-viewed-slider-item">
                         <div class="viewed-slider__img-block">
                             <img src="#" alt="#">
 
@@ -737,7 +737,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         </div>
                     </li>
 
-                    <li class="viewed-slider__item js-epSlideItem">
+                    <li class="viewed-slider__item js-viewed-slider-item">
                         <div class="viewed-slider__img-block">
                             <img src="#" alt="#">
 
@@ -758,15 +758,16 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                             Купить
                         </div>
                     </li>
+
 
 
                 </ul>
             </div>
 
 
-            <div class="viewed-slider__controls js-epSlideControls">
-                <a class="viewed-slider__prev js-epSlideControlsPrev" href="#"></a>
-                <a class="viewed-slider__next js-epSlideControlsNext" href="#"></a>
+            <div class="viewed-slider__controls js-viewedSlideControls">
+                <a class="viewed-slider__prev js-viewedSlideControlsPrev" href="#"></a>
+                <a class="viewed-slider__next js-viewedSlideControlsNext" href="#"></a>
             </div>
         </div>
     </div>
