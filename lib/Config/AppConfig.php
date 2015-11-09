@@ -377,6 +377,7 @@ class AppConfig {
         'sessionName'  => null,
         'checkStock'   => null, // проверять количество товара при добавлении в корзину
         'updateTime'   => null, // период обновления корзины, минуты
+        'oneClickOnly' => null, // только одноклик
     ];
     /** @var array */
     public $user = [
