@@ -295,6 +295,7 @@ class AppConfig {
         'cookieLifetime' => null,
         'defaultId'      => null,
         'autoresolve'    => null,
+        'cache'          => null, // кешировать запросы к основным городам
     ];
     /** @var array */
     public $shop = [
@@ -312,12 +313,16 @@ class AppConfig {
         'itemsPerPage'           => null,
         'showAccessories'        => null,
         'showRelated'            => null,
+        'getModel'               => null, // запрашивать модели для товара
+        'deliveryCalc'           => null, // расчитывать доставку в карточке товара
         'itemsInSlider'          => null,
         'itemsInCategorySlider'  => null,
         'totalCount'             => null,
         'showAveragePrice'       => null,
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
         'reviewEnabled'          => null, // отзывы о товаре
+        'creditEnabledInCard'    => null, // кнопка "Купить в кредит" в карточке товара
+        'couponEnabledInCard'    => null, // купон в карточке товара
         'pushReview'             => null, // возможность добавлять отзывы
         'lowerPriceNotification' => null,
         'recommendationPull'     => null, // подтягивать информацию о рекоммендованных товарах
@@ -403,6 +408,7 @@ class AppConfig {
     /** @var array */
     public $subscribe = [
         'enabled'    => null,
+        'getChannel' => null,
         'cookieName' => null,
     ];
 

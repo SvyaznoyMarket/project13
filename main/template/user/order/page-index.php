@@ -103,7 +103,7 @@ $recommendationsHtml = [
                             </div>
                         </div>
                         <div class="personal-order__cell personal-order__price">
-                            <?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span>
+                            <?= $helper->formatPrice($order->paySum) ?> <span class="rubl">p</span>
                         </div>
                         <div class="personal-order__cell">
                             <span class="personal-order__status"><?= $order->getStatusText() ?></span>

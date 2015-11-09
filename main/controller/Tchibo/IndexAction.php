@@ -19,6 +19,8 @@ class IndexAction {
         $promo = null;
         $bannerBottom = null;
         $categoryTree = null;
+        $promoBanners = null;
+        $collectionBanners = null;
 
         // подготовка для 1-го пакета запросов в ядро
         // promo
@@ -27,6 +29,20 @@ class IndexAction {
             if (is_array($data)) {
                 $data['token'] = $categoryToken;
                 $promo = new \Model\Promo\Entity($data);
+            }
+        });
+
+        $promoRepository->prepareByToken('tchibo_main_small_banners', function($data) use (&$promoBanners) {
+            $data = isset($data[0]['uid']) ? $data[0] : [];
+            if (is_array($data)) {
+                $promoBanners = new \Model\Promo\Entity($data);
+            }
+        });
+
+        $promoRepository->prepareByToken('tchibo_main_small_banners_bottom', function($data) use (&$collectionBanners) {
+            $data = isset($data[0]['uid']) ? $data[0] : [];
+            if (is_array($data)) {
+                $collectionBanners = new \Model\Promo\Entity($data);
             }
         });
 
@@ -206,6 +222,8 @@ class IndexAction {
         $page->setParam('catalogConfig', $catalogJson);
         $page->setParam('categoryWithChilds', $categoryWithChilds);
         $page->setParam('catalogCategories', $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : []);
+        $page->setParam('promoBanners', $promoBanners);
+        $page->setParam('collectionBanners', $collectionBanners);
         $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
         $page->setGlobalParam('bannerBottom', $bannerBottom);
         $page->setGlobalParam('tchiboMenuCategoryNameStyles', $tchiboMenuCategoryNameStyles);

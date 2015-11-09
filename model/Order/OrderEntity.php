@@ -415,6 +415,8 @@ class OrderEntity {
                     $mnogoruCookieValue = $request->cookies->get(\App::config()->partners['MnogoRu']['cookieName']);
                     if (!empty($mnogoruCookieValue) && $mnogoruCookieValue != 'undefined') {
                         $data['mnogo_ru_card'] = $mnogoruCookieValue;
+                    } else if ($mnogoruRequestValue = $request->get('user_info[mnogo_ru_number]', null, true)) {
+                        $data['mnogo_ru_card'] = $mnogoruRequestValue;
                     }
                 }
 

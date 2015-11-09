@@ -9,6 +9,8 @@ use Model\Product\Category\Entity as Category;
  * @var $slideData          array
  * @var $bannerBottom       string
  * @var $promoContent       string
+ * @var $promoBanners       \Model\Promo\Entity
+ * @var $collectionBanners  \Model\Promo\Entity
  * @var $categoryWithChilds Category
  */
 
@@ -44,53 +46,7 @@ foreach ($categoryWithChilds->getChild() as $ct) {
     } ?>
 </div>
 
-<?/* if ($isCategoriesOddCount && isset($promoContent) && !empty($promoContent)): ?>
-    <div class="tchiboCatalogInner">
-        <?= $promoContent ?>
-    </div>
-<? endif */?>
-
-<!-- Блок скидок -->
-<div class="s-sales-grid">
-    <div class="s-sales-grid__row grid-3cell cell-h-220">
-        <div class="s-sales-grid__cell">
-            <a class="s-sales-grid__link" href="">
-                <img src="http://scms.enter.ru/uploads/media/56/5d/1e/4ba9c57c55cb91b4b574daf4371c68c4261866b7.png" alt="" class="s-sales-grid__img">
-                <span class="s-sales-grid-desc">
-                    <span class="s-sales-grid-desc__value">-10%</span>
-                    <span class="s-sales-grid-desc__title">
-                        <span class="s-sales-grid-desc__title-name">Фишка со скидкой</span>
-                    </span>
-                </span>
-            </a>
-        </div>
-
-        <div class="s-sales-grid__cell">
-            <a class="s-sales-grid__link" href="">
-                <img src="http://scms.enter.ru/uploads/media/f6/a5/57/afa3ddf741fda9f4557542ab981a712feccaf1ed.png" alt="" class="s-sales-grid__img">
-                <span class="s-sales-grid-desc">
-                    <span class="s-sales-grid-desc__value">-70%</span>
-                    <span class="s-sales-grid-desc__title">
-                        <span class="s-sales-grid-desc__title-name">Tchibo скидки</span>
-                    </span>
-                </span>
-            </a>
-        </div>
-
-        <div class="s-sales-grid__cell">
-            <a class="s-sales-grid__link" href="">
-                <img src="http://scms.enter.ru/uploads/media/56/5d/1e/4ba9c57c55cb91b4b574daf4371c68c4261866b7.png" alt="" class="s-sales-grid__img">
-                <span class="s-sales-grid-desc">
-                    <span class="s-sales-grid-desc__value">-17%</span>
-                    <span class="s-sales-grid-desc__title">
-                        <span class="s-sales-grid-desc__title-name">Фишка со скидкой</span>
-                    </span>
-                </span>
-            </a>
-        </div>
-    </div>
-</div>
-<!-- END Блок скидок -->
+<?= $page->render('tchibo/banners-row', [ 'promo' => $promoBanners ]) ?>
 
 <!-- Форма подписки -->
 <div class="b-subscribe-to-sale subscribe-form">
@@ -118,6 +74,12 @@ foreach ($categoryWithChilds->getChild() as $ct) {
         <? foreach($catalogCategories as $key => $catalogCategory): ?>
             <?
             /** @var \Model\Product\Category\TreeEntity $catalogCategory */
+            $imgSrc = null;
+
+            if ($catalogCategory->ui === Category::UI_TCHIBO_COLLECTIONS) {
+                unset($catalogCategories[$key]);
+                continue;
+            }
 
             if (array_key_exists($catalogCategory->getUi(), $categoryByUi)) {
                 $imgSrc = $categoryByUi[$catalogCategory->getUi()]->getMediaSource('category_grid_366x488', 'category_grid')->url;
@@ -150,40 +112,8 @@ foreach ($categoryWithChilds->getChild() as $ct) {
         <? endif ?>
     </div>
 
-    <div class="s-sales-grid__row grid-3cell cell-h-220">
-        <div class="s-sales-grid__cell">
-            <a class="s-sales-grid__link" href="">
-                <img src="http://scms.enter.ru/uploads/media/56/5d/1e/4ba9c57c55cb91b4b574daf4371c68c4261866b7.png" alt="" class="s-sales-grid__img">
-                <span class="s-sales-grid-desc">
-                    <span class="s-sales-grid-desc__title">
-                        <span class="s-sales-grid-desc__title-name">Фишка со скидкой</span>
-                    </span>
-                </span>
-            </a>
-        </div>
+    <?= $page->render('tchibo/banners-row', [ 'promo' => $collectionBanners ]) ?>
 
-        <div class="s-sales-grid__cell">
-            <a class="s-sales-grid__link" href="">
-                <img src="http://scms.enter.ru/uploads/media/f6/a5/57/afa3ddf741fda9f4557542ab981a712feccaf1ed.png" alt="" class="s-sales-grid__img">
-                <span class="s-sales-grid-desc">
-                    <span class="s-sales-grid-desc__title">
-                        <span class="s-sales-grid-desc__title-name">Tchibo скидки</span>
-                    </span>
-                </span>
-            </a>
-        </div>
-
-        <div class="s-sales-grid__cell">
-            <a class="s-sales-grid__link" href="">
-                <img src="http://scms.enter.ru/uploads/media/56/5d/1e/4ba9c57c55cb91b4b574daf4371c68c4261866b7.png" alt="" class="s-sales-grid__img">
-                <span class="s-sales-grid-desc">
-                    <span class="s-sales-grid-desc__title">
-                        <span class="s-sales-grid-desc__title-name">Фишка со скидкой</span>
-                    </span>
-                </span>
-            </a>
-        </div>
-    </div>
 </div>
 <!-- END Разделы -->
 

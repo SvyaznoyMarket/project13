@@ -32,14 +32,22 @@ class Action {
         // подготовка 1-го пакета запросов
 
         // запрашиваем текущий регион, если есть кука региона
-        if ($user->getRegionId()) {
-            \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
-                $data = reset($data);
-                if ((bool)$data) {
+        if ($regionId = $user->getRegionId()) {
+            if ((true === \App::config()->region['cache']) && ($regionId === \App::config()->region['defaultId'])) {
+                $data = \App::dataStoreClient()->query('/region-default.json');
+                $data = !empty($data['result'][0]['id']) ? $data['result'][0] : null;
+                if ($data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
-            });
-            
+            } else {
+                \RepositoryManager::region()->prepareEntityById($regionId, function($data) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        \App::user()->setRegion(new \Model\Region\Entity($data));
+                    }
+                });
+            }
+
             $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
         }
 
@@ -304,10 +312,14 @@ class Action {
 
         // promo slider
         $slideData = null;
-        if (array_key_exists('promo_slider', $catalogJson)) {
+        if (array_key_exists('promo_slider', $catalogJson) || $category->isTchibo()) {
             $show = isset($catalogJson['promo_slider']['show']) ? (bool)$catalogJson['promo_slider']['show'] : false;
             $promoCategoryToken = isset($catalogJson['promo_slider']['promo_token']) ? trim($catalogJson['promo_slider']['promo_token']) : null;
 
+            if ($category->isTchibo()) {
+                $promoCategoryToken = 'tchibo';
+                $show = true;
+}
             if ($show && !empty($promoCategoryToken)) {
                 try {
                     $promoRepository = \RepositoryManager::promo();
@@ -726,11 +738,13 @@ class Action {
             throw new \Exception('Не удалось получить товары');
         }
 
-        \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
-            if (isset($data['product_scores'][0])) {
-                \RepositoryManager::review()->addScores($products, $data);
-            }
-        });
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
+                if (isset($data['product_scores'][0])) {
+                    \RepositoryManager::review()->addScores($products, $data);
+                }
+            });
+        }
 
         \App::coreClientV2()->execute();
 
@@ -774,9 +788,9 @@ class Action {
             $columnCount = (bool)array_intersect(array_map(function(\Model\Product\Category\Entity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
         }
 
+        $rootCategoryInMenu = null;
         if ($category->isTchibo()) {
             $columnCount = 3;
-            $rootCategoryInMenu = null;
                 \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($category->getRoot()->getId(), $region, 3, function($data) use (&$rootCategoryInMenu) {
                     $data = is_array($data) ? reset($data) : [];
                     if (isset($data['id'])) {

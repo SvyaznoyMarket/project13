@@ -295,6 +295,7 @@ $c->region['cookieName']     = 'geoshop';
 $c->region['cookieLifetime'] = 31536000; // 365 дней
 $c->region['defaultId']      = 14974;
 $c->region['autoresolve']    = true;
+$c->region['cache']          = false;
 
 $c->shop['cookieName'] = 'shopid';
 $c->shop['cookieLifetime'] = 31536000; // 365 дней
@@ -308,6 +309,8 @@ $c->search['categoriesLimit'] = 200;
 $c->product['itemsPerPage']             = 20;
 $c->product['showAccessories']          = true;
 $c->product['showRelated']              = true;
+$c->product['getModel']                 = true;
+$c->product['deliveryCalc']             = true;
 $c->product['itemsInSlider']            = 5;
 $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;
@@ -319,6 +322,8 @@ $c->product['productPageSenders2SessionKey'] = 'productPageSendersForMarketplace
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
+$c->product['creditEnabledInCard']    = true;
+$c->product['couponEnabledInCard']    = true;
 $c->product['pushReview']             = true;
 $c->product['lowerPriceNotification'] = true;
 // jewel
@@ -357,6 +362,7 @@ $c->queue['workerLimit'] = 10;
 $c->queue['maxLockTime'] = 600;
 
 $c->subscribe['enabled'] = true;
+$c->subscribe['getChannel'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
 $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {channelId:status}
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ

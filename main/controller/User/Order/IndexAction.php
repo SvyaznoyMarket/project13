@@ -116,6 +116,7 @@ class IndexAction extends \Controller\User\PrivateAction {
             $paymentMethodQuery = new Query\PaymentMethod\GetByOrderNumberErp();
             $paymentMethodQuery->regionId = $region->getId();
             $paymentMethodQuery->numberErps = $numbersInChunk;
+            $paymentMethodQuery->noDiscount = true;
             $paymentMethodQuery->prepare();
             $paymentMethodQueries[] = $paymentMethodQuery;
         }
