@@ -29,12 +29,6 @@
             })
         };
 
-    // Онлайн-оплата
-    $body.on('click', '.jsOnlinePaymentPossible', function(){
-        $('.jsOnlinePaymentPossible').hide();
-        $('.jsOnlinePaymentBlock').show();
-    });
-
     // клик по методу онлайн-оплаты
     $body.on('click', '.jsPaymentMethod', function(e){
         var id = $(this).data('value'),

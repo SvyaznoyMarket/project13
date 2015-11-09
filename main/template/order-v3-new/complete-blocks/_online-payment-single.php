@@ -27,7 +27,7 @@ $f = function(
 ?>
 
     <!-- блок когда была выбран конкретный способ оплаты -->
-    <div class="orderPayment orderPayment--static orderPaymentWeb jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
+    <div class="orderPayment orderPayment--static orderPaymentWeb">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">
