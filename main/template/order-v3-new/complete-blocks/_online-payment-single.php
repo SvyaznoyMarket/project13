@@ -34,7 +34,7 @@ $f = function(
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
-                    Онлайн-оплата со скидкой 15%
+                    Онлайн-оплата<? if (false): ?> со скидкой 15%<? endif ?>
                 </div>
 
                 <div class="orderPayment_msg_shop orderPayment_pay">

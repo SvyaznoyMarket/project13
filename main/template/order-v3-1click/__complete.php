@@ -46,7 +46,7 @@ $f = function(
         </div>
 
         <? if ($isOnlinePaymentPossible): ?>
-            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'title' => 'Оплатить онлайн']) ?>
+            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'title' => 'Оплатить онлайн' . (false ? 'со скидкой 15%' : '')]) ?>
         <? endif ?>
     </div>
 <? endforeach ?>
