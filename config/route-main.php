@@ -581,7 +581,6 @@ return [
         'pattern' => '/private/orders',
         'action'  => ['User\OrdersAction', 'execute'],
     ],
-    // редактирование данных пользователя
     'user.favorites' => [
         'pattern' => '/private/favorites',
         'action'  => ['User\FavoriteAction', 'get'],
@@ -613,6 +612,10 @@ return [
     'user.message' => [
         'pattern' => '/private/messages',
         'action'  => ['User\Message\IndexAction', 'execute'],
+    ],
+    'user.enterprize' => [
+        'pattern' => '/private/enterprize',
+        'action'  => ['User\Enterprize\IndexAction', 'execute'],
     ],
 
     // маршрутизатор нескольких запросов
