@@ -88,8 +88,8 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 
                             <!--
                             <div class="item-none">
-                                <span class="order-list__item-none-txt">У вас еще нет заказов</span>
-                                <a class="order-list__item-none-link" href="#">Перейти к покупкам</a>
+                                <span class="item-none__txt">У вас еще нет заказов</span>
+                                <a class="item-none__link" href="#">Перейти к покупкам</a>
                             </div>
                         -->
                     </div>
@@ -230,7 +230,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                     <header class="private-sections__head">Горящие фишки</header>
 
                     <div class="grid-scroll js-private-sections-body">
-<!--                        <ul class="grid-scroll-list grid-scroll-list_2col private-ep-list ">
+                        <ul class="grid-scroll-list grid-scroll-list_2col private-ep-list ">
                             <li class="grid-scroll-list__col js-ep-item">
                                 <div class="grid-scroll-list__item private-ep-list__item ">
                                 <span class="ep-coupon"
@@ -268,9 +268,11 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                             </li>
 
 
-                        </ul>-->
+                        </ul>
 
-                        <ul class="grid-scroll-list grid-scroll-list_2col private-ep-list">
+                        <!--Если нет фишек, вывести блок .item-none-->
+
+<!--                        <ul class="grid-scroll-list grid-scroll-list_2col private-ep-list item-none-">
                             <li class="grid-scroll-list__col">
                                 <div class="grid-scroll-list__item private-ep-list__item">
                                     <span class="ep-coupon"
@@ -285,17 +287,9 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                                     Фишки EnterPrize используются для получения скидок. У каждой фишки свои условия и срок действия скидки. Использовать фишку можно только один раз, для этого нужно применить ее к заказу при оформлении. Узнай больше на странице EnterPrize.
                                 </span>
                             </li>
+                        </ul>-->
 
 
-                        </ul>
-                        <!--Если нет адресов, вывести блок .item-none-->
-
-
-                        <!--                   <div class="item-none">
-                                               <span class="item-none__txt">Мы пока не знаем куда доставить ваши товары</span>
-                                               <a class="item-none__link" href="#">Добавить адрес доставки</a>
-                                           </div>
-                                           -->
                     </div>
                 </div>
             </div>

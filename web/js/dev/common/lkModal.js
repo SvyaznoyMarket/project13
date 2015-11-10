@@ -1,14 +1,21 @@
 $(function(){
     var self;
 
-   $('.js-modalShow').on('change', function(){
+   $('.js-modalShow').on('click change', function(e){
       var $this = $(this),
           modal = $('.js-modalLk');
-        if($this.prop("checked")){
-            modal.css('display', 'block');
-            self = $this;
-        }
+       if(e.type = 'change'){
+           if($this.prop("checked")){
+               modal.css('display', 'block');
+               self = $this;
+           }
+       }
+       if(e.type = 'click'){
+           e.preventDefault();
 
+           modal.css('display', 'block');
+           self = $this;
+       }
 
    });
 

@@ -1,14 +1,19 @@
 $(function(){
-   $('.js-private-sections-button').on('click', function(e){
-       e.preventDefault();
+    function contentShow(e){
 
-       var $this = $(this),
-           container = $this.closest('.js-private-sections-container'),
-           containerB = container.find('.js-private-sections-body'),
-           icon = $this.find('.js-private-sections-icon');
+            e.preventDefault();
 
-       containerB.slideToggle();
-       icon.toggleClass('private-sections__button-icon_hide');
+            var $this = $(this),
+                container = $this.closest('.js-private-sections-container'),
+                containerB = container.find('.js-private-sections-body'),
+                icon = $this.find('.js-private-sections-icon') || 0;
 
-   })
+            containerB.slideToggle();
+        if(icon){
+            icon.toggleClass('private-sections__button-icon_hide');
+        }
+    }
+
+    $('.js-private-sections-button').on('click', contentShow);
+
 });

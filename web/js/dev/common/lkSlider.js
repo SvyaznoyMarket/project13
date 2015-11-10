@@ -121,7 +121,7 @@ function viewedSlider(){
 
     itemList.css('left', position);
 
-    itemInfo(duration, itemLen, nextControl, prevControl, 6);
+    itemInfo(duration, itemLen, nextControl, prevControl, 6);/**/
 
     allPage.text(Math.ceil(itemLen / duration));
 
