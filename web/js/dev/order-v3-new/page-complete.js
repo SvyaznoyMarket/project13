@@ -177,21 +177,6 @@
         }
     });
 
-	// Мотивация онлайн-оплаты
-	$orderContent.on('click', '.jsOnlinePaymentPossible', function(){
-		$(this).find('.jsOnlinePaymentDiscount').hide();
-        $orderContent.find('.jsOnlinePaymentDiscountPayNow').show();
-        $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '17 Оплатить_онлайн_вход_Оплата']);
-	});
-
-    $orderContent.on('click', '.jsOnlinePaymentPossibleNoMotiv', function(){
-        var $blocks = $('.jsOnlinePaymentBlock');
-        if ($blocks.length) {
-            $(this).hide();
-            $blocks.show();
-        }
-    });
-
     // Мотивация онлайн-оплаты (купон)
     $orderContent.on('click', '.jsOrderCouponInitial', function(event){
         $(this).hide();
@@ -259,7 +244,6 @@
             // если невозможна онлайн-оплата
             if ($('.jsGAOnlinePaymentNotPossible').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '16 Вход_Оплата_ОБЯЗАТЕЛЬНО', 'нет онлайн оплаты']);
             // Без мотиватора
-            if ($('.jsOnlinePaymentPossibleNoMotiv').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '16 Вход_Оплата_ОБЯЗАТЕЛЬНО', 'нет мотиватора']);
             // При попадании пользователя на экран “Варианты оплаты онлайн”
             if ($('.jsOnlinePaymentBlockVisible').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '17 Оплатить_онлайн_вход_Оплата']);
             // При попадании на экран с вариантами заявок на кредит */

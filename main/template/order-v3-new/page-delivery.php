@@ -293,7 +293,7 @@ $f = function(
     <div class="orderComment">
         <div class="orderComment_t jsOrderV3Comment">Дополнительные пожелания</div>
 
-        <textarea class="jsOrderV3CommentField orderComment_fld textarea" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
+        <textarea class="jsOrderV3CommentField orderComment_fld textarea" data-auto-update="true" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
     </div>
 
     <div class="orderComplSumm">
