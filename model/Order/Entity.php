@@ -64,6 +64,8 @@ class Entity {
     public $homePhone;
     /** @var int */
     public $paymentStatusId;
+    /** @var PaymentStatusEntity|null */
+    public $paymentStatus;
     /** @var int */
     public $paymentId;
     /** @var string */
@@ -181,6 +183,7 @@ class Entity {
         if (array_key_exists('phone', $data)) $this->setHomePhone($data['phone']);
         if (array_key_exists('mobile', $data)) $this->setMobilePhone($data['mobile']);
         if (array_key_exists('payment_status_id', $data)) $this->setPaymentStatusId($data['payment_status_id']);
+        if (isset($data['payment_status']['id'])) $this->paymentStatus = new PaymentStatusEntity($data['payment_status']);
         if (array_key_exists('payment_id', $data)) $this->setPaymentId($data['payment_id']);
         if (array_key_exists('payment_detail', $data)) $this->setPaymentDetail($data['payment_detail']);
         if (array_key_exists('certificate', $data)) $this->setCertificateNumber($data['certificate']);

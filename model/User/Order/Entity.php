@@ -71,24 +71,4 @@ class Entity extends \Model\Order\Entity {
         });
         return reset($products);
     }
-
-    /**
-     * @param $payment_status_id
-     * @return string
-     */
-    public function getPaymentStatusText($payment_status_id) {
-        if (isset($this->payment_status_relation[$payment_status_id])) {
-            return $this->payment_status_relation[$payment_status_id];
-        } else {
-            return '';
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatusText() {
-        return (string)($this->status ? $this->status->name : '');
-    }
-
-} 
+}

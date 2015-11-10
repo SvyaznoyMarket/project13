@@ -106,8 +106,15 @@ $recommendationsHtml = [
                             <?= $helper->formatPrice($order->paySum) ?> <span class="rubl">p</span>
                         </div>
                         <div class="personal-order__cell">
-                            <span class="personal-order__status"><?= $order->getStatusText() ?></span>
-                            <? if (isset($onlinePaymentAvailableByNumberErp[$order->numberErp]) && $onlinePaymentAvailableByNumberErp[$order->numberErp]): ?>
+                            <? if ($status = $order->status): ?>
+                                <span class="personal-order__status"><?= $status->name ?></span>
+                            <? endif ?>
+
+                            <? if ($paymentStatus = $order->paymentStatus): ?>
+                                <span class="personal-order__status"><?= $paymentStatus->name ?></span>
+                            <? endif ?>
+
+                            <? if (false && isset($onlinePaymentAvailableByNumberErp[$order->numberErp]) && $onlinePaymentAvailableByNumberErp[$order->numberErp]): ?>
                                 <span class="personal-order__pay-status online">Оплатить онлайн</span>
                             <? endif ?>
                         </div>
