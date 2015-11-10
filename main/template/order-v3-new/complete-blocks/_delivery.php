@@ -25,7 +25,7 @@
                         Адрес и дату доставки вашего заказа уточнит по&nbsp;телефону наш менеджер.
                         </div>
                     <? endif ?>
-                    <? if ($order->comment) : ?>
+                    <? if (false && $order->comment) : ?>
                         <span class="markerList_col">
                             <div class="orderPayment_msg_adding">Дополнительные пожелания:<br/> «<?= $order->comment ?>»</div>
                         </span>
