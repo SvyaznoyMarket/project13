@@ -525,7 +525,7 @@ namespace Model\OrderDelivery\Entity {
                 $this->discounts[] = $discount;
             }
 
-            if (isset($data['prepaid_sum'])) $this->prepaid_sum = (int)$data['prepaid_sum'];
+            if (isset($data['prepaid_sum'])) $this->prepaid_sum = (float)$data['prepaid_sum'];
         }
 
         /** Это заказ партнерский?
