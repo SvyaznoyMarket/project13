@@ -112,7 +112,7 @@ class IndexAction extends \Controller\User\PrivateAction {
 
         /** @var Query\PaymentMethod\GetByOrderNumberErp[] $paymentMethodQueries */
         $paymentMethodQueries = [];
-        foreach (array_chunk($orderNumberErps, 4) as $numbersInChunk) {
+        foreach (array_chunk($orderNumberErps, 8) as $numbersInChunk) {
             $paymentMethodQuery = new Query\PaymentMethod\GetByOrderNumberErp();
             $paymentMethodQuery->regionId = $region->getId();
             $paymentMethodQuery->numberErps = $numbersInChunk;
