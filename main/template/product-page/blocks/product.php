@@ -85,13 +85,13 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
 
     <?= $helper->render('product-page/blocks/coupon', ['coupon' => $coupon]) ?>
 
-    <? if ($product->getLabel() && $product->getLabel()->expires && !$product->getLabel()->isExpired()) : ?>
-        <?= $product->getLabel()->url ? '<a href="' . $product->getLabel()->url .'" style="cursor: pointer">' : '' ?>
+    <? if (($label = $product->getLabel()) && $label->expires && !$label->isExpired()) : ?>
+        <?= $label->url ? '<a href="' . $label->url .'" style="cursor: pointer">' : '' ?>
         <!-- Шильдик с правой стороны -->
         <div class="product-card-action i-info <?= !$labelImage ? 'product-card-action-no-image' : ''?>">
 
             <span class="product-card-action__tx i-info__tx js-countdown"
-                  data-expires="<?= $product->getLabel()->expires->format('U') ?>">Акция действует<br>ещё <span class="js-countdown-out"><?= $product->getLabel()->getDateDiffString() ?></span>
+                  data-expires="<?= $label->expires->format('U') ?>">Акция действует<br>ещё <span class="js-countdown-out"><?= $label->getDateDiffString() ?></span>
             </span>
 
             <? if ($labelImage) : ?>
@@ -107,7 +107,7 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
                 <!--/ попап - подробности акции -->
             <? endif ?>
         </div>
-        <?= $product->getLabel()->url ? '</a>' : '' ?>
+        <?= $label->url ? '</a>' : '' ?>
     <? endif ?>
 
     <? if ($product->getPriceOld()) : ?>
