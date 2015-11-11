@@ -69,13 +69,15 @@ class Repository {
      * которых ядро или scms не вернули данных будут удалены из массива $products (ключи массива изменены не будут), а
      * остальные товары будут заполнены данными из ядра и scms.
      *
-     * TODO разбить на несколько функций: prepareProductQueriesById, prepareProductQueriesByUi, prepareProductQueriesByBarcode
-     * 
+     * См. также: SITE-5975
+     *
      * @param \Model\Product\Entity[] $products У всех товаров должны быть заданы id или ui или barcode (притом, если у
      *                                          первого товара задан id, то и у всех товаров должен быть задан именно
      *                                          id; аналогично для ui и barcode)
      * @param string $options Необходимые свойства товаров, через пробел: model media property label brand category
      * @throws
+     *
+     * TODO разбить на несколько функций: prepareProductQueriesById, prepareProductQueriesByUi, prepareProductQueriesByBarcode
      */
     public function prepareProductQueries(array &$products, $options = '', \Model\Region\Entity $region = null) {
         $options = trim($options) ? explode(' ', (string)$options) : [];
@@ -97,18 +99,30 @@ class Repository {
         if ($firstProduct->id) {
             $modelProductIdentifierName = 'id';
             $coreProductIdentifierName = 'id';
+
             $scmsProductRequestIdentifierName = 'ids';
             $scmsProductResponseIdentifierName = 'core_id';
+
+            $scmsProductModelRequestIdentifierName = 'ids';
+            $scmsProductModelResponseIdentifierName = 'id';
         } else if ($firstProduct->ui) {
             $modelProductIdentifierName = 'ui';
             $coreProductIdentifierName = 'ui';
+
             $scmsProductRequestIdentifierName = 'uids';
             $scmsProductResponseIdentifierName = 'uid';
+
+            $scmsProductModelRequestIdentifierName = 'uids';
+            $scmsProductModelResponseIdentifierName = 'uid';
         } else {
             $modelProductIdentifierName = 'barcode';
             $coreProductIdentifierName = 'bar_code';
+
             $scmsProductRequestIdentifierName = 'barcodes';
             $scmsProductResponseIdentifierName = 'barcode';
+
+            $scmsProductModelRequestIdentifierName = 'barcodes';
+            $scmsProductModelResponseIdentifierName = 'barcode';
         }
 
         $productIdentifiers = array_filter(array_map(function(\Model\Product\Entity $product) use(&$modelProductIdentifierName) { return $product->$modelProductIdentifierName; }, $products));
@@ -124,7 +138,8 @@ class Repository {
                     'geo_id' => $region->getId(),
                     'select_type' => $coreProductIdentifierName,
                     $coreProductIdentifierName => $productIdentifierChunk,
-                ] + (!in_array('model', $options, true) ? ['withModels' => 0] : []),
+                    'withModels' => 0,
+                ],
                 [],
                 function($response) use(&$products, &$modelProductIdentifierName, &$coreProductIdentifierName, $productIdentifierChunk) {
                     $coreProductsByIdentifier = [];
@@ -152,10 +167,7 @@ class Repository {
                     }
                 }
             );
-        }
 
-        // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
-        foreach (array_chunk($productIdentifiers, \App::config()->coreV2['chunk_size']) as $productIdentifierChunk) {
             \App::scmsClient()->addQuery(
                 'product/get-description/v1',
                 [$scmsProductRequestIdentifierName => $productIdentifierChunk] + array_fill_keys(array_intersect($options, ['media', 'property', 'label', 'brand', 'category']), 1),
@@ -186,6 +198,33 @@ class Repository {
                     }
                 }
             );
+
+            if (\App::config()->product['getModel'] && in_array('model', $options, true)) {
+                \App::scmsClient()->addQuery(
+                    'api/product/get-models',
+                    [
+                        $scmsProductModelRequestIdentifierName => $productIdentifierChunk,
+                        'geo_id' => $region->getId(),
+                    ],
+                    [],
+                    function($response) use(&$products, &$modelProductIdentifierName, &$scmsProductModelResponseIdentifierName) {
+                        $scmsProductsByIdentifier = [];
+                        call_user_func(function() use(&$response, &$scmsProductsByIdentifier, &$scmsProductModelResponseIdentifierName) {
+                            if (isset($response['products']) && is_array($response['products'])) {
+                                foreach ($response['products'] as &$item) {
+                                    $scmsProductsByIdentifier[$item[$scmsProductModelResponseIdentifierName]] = &$item;
+                                }
+                            }
+                        });
+
+                        foreach ($products as $key => $product) {
+                            if (isset($scmsProductsByIdentifier[$product->$modelProductIdentifierName])) {
+                                $product->importModelFromScms($scmsProductsByIdentifier[$product->$modelProductIdentifierName]);
+                            }
+                        }
+                    }
+                );
+            }
         }
     }
 

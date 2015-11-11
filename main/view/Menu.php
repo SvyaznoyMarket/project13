@@ -19,151 +19,12 @@ class Menu {
         if ($page instanceof \View\DefaultLayout) $this->page = $page;
     }
 
-    /** Умная рекурсивная функция Егора для построения меню, но пока не используемая
-     * @param \Model\Region\Entity $region
-     * @throws \Exception
-     * @return \Model\Menu\Entity[]
-     */
-    public function generate(\Model\Region\Entity $region = null) {
-        $menu = [];
-
-        $menuData = [];
-        $categoryData = [];
-        try {
-            $exception = false;
-
-            $this->repository->prepareCollection(
-                function($data) use (&$menuData) {
-                    $menuData = $data;
-                },
-                function(\Exception $e) use (&$exception) {
-                    \App::logger()->error(new \Exception('Не удалось получить главное меню'), ['menu']);
-
-                    $exception = $e;
-                }
-            );
-
-            \RepositoryManager::productCategory()->prepareTreeCollection(
-                $region,
-                3,
-                0,
-                function($data) use (&$categoryData) {
-                    $categoryData = $data;
-                });
-
-            \App::coreClientV2()->execute();
-
-            if ($exception instanceof \Exception) {
-                throw $exception;
-            }
-        } catch (\Exception $e) {
-            $menuData = $this->repository->getCollection();
-        }
-
-        if (!isset($menuData['item'][0])) {
-            throw new \Exception('Пустое главное меню');
-        }
-
-        $categoryItemsById = [];
-        // индексирование данных категорий по id
-        $walkByCategoryData = function(&$categoryData) use (&$categoryItemsById, &$walkByCategoryData) {
-            $categoryItem = null;
-            foreach ($categoryData as &$categoryItem) {
-                if (isset($categoryItem['id'])) $categoryItem['id'] = (string)$categoryItem['id'];
-                if (isset($categoryItem['root_id'])) $categoryItem['root_id'] = (string)$categoryItem['root_id'];
-
-                $categoryItemsById[$categoryItem['id']] = $categoryItem;
-
-                if (isset($categoryItem['children'][0])) {
-                    $walkByCategoryData($categoryItem['children']);
-                }
-            }
-            unset($categoryItem);
-        };
-        $walkByCategoryData($categoryData);
-
-        $walkByMenuElementItem = function($elementItems, \Model\Menu\Entity $parentElement = null) use (&$menu, &$walkByMenuElementItem, &$categoryItemsById) {
-            foreach ($elementItems as $elementItem) {
-                if (isset($elementItem['disabled']) && (true === $elementItem['disabled'])) {
-                    continue;
-                }
-
-                $element = null;
-
-                $source = !empty($elementItem['source']['type']) ? ($elementItem['source'] + ['type' => null, 'id' => null]) : null;
-                if ($source) {
-                    $id = $source['id'];
-
-                    if (('category-get' == $source['type']) && !empty($id)) {
-                        $categoryItem = isset($categoryItemsById[$id]) ? $categoryItemsById[$id] : null;
-
-                        $element = new \Model\Menu\Entity($elementItem);
-                        $element->type = 'category';
-                        $element->id = (string)$categoryItem['id'];
-                        if (!$element->id && isset($elementItem['source']['id'])) {
-                            $element->id = (string)$elementItem['source']['id'];
-                        }
-
-                        if (!$element->name) {
-                            $element->name = (string)$categoryItem['name'];
-                        }
-                        $element->link = rtrim((string)$categoryItem['link'], '/');
-                    } else if (('category-tree' == $source['type']) && !empty($id)) {
-                        $elementItems = [];
-                        $categoryItem = null;
-                        foreach (isset($categoryItemsById[$id]['children'][0]) ? $categoryItemsById[$id]['children'] : [] as $categoryItem) {
-                            $elementItems[] = [
-                                'source' => [
-                                    'type' => 'category-get',
-                                    'id'   => $categoryItem['id'],
-                                ],
-                                'children' => [['source'=> [
-                                    'type' => 'category-tree',
-                                    'id'   => $categoryItem['id'],
-                                ],]]
-                            ];
-                        }
-                        unset($categoryItem);
-
-                        $walkByMenuElementItem($elementItems, $parentElement);
-                    } else if (('slice' == $source['type']) && !empty($source['url'])) {
-                        $element = new \Model\Menu\Entity($elementItem);
-                        $element->type = 'slice';
-                        $element->id = $source['url'];
-                        $element->link = '/slices/' . $source['url']; // FIXME
-                    }
-                } else {
-                    $element = new \Model\Menu\Entity($elementItem);
-                }
-
-                if (!$element) continue;
-
-                $element->class .= ((bool)$element->class ? ' ' : '') . 'mId' . md5(json_encode($element));
-
-                if (isset($elementItem['children'][0])) {
-                    $walkByMenuElementItem($elementItem['children'], $element);
-                }
-
-                $element->level = $parentElement ? ($parentElement->level + 1) : 1;
-
-                if ($parentElement) {
-                    $parentElement->child[] = $element;
-                } else {
-                    $menu[] = $element;
-                }
-            }
-        };
-        $walkByMenuElementItem($menuData['item']);
-
-        return $menu;
-    }
-
     /** Текущая функция для построения меню
      * @param \Model\Region\Entity $region
      * @return array
      * @throws \Exception
      */
-    public function generate_new(\Model\Region\Entity $region = null){
+    public function generate(\Model\Region\Entity $region = null){
         $menu = [];
 
         $menuData = [];
@@ -256,7 +117,9 @@ class Menu {
 
         $this->limitCategories($menu);
 
-        if ($this->page) $this->page->setGlobalParam('menu', $menu);
+        if ($this->page) {
+            $this->page->setGlobalParam('menu', $menu);
+        }
 
         return $menu;
     }

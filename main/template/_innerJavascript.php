@@ -3,7 +3,7 @@
  * @var $page \View\DefaultLayout
  */
 ?>
-
+<?= $page->slotGifteryJS() ?>
 <?= $page->slotSociomantic() ?>
 <?= $page->slotRetailRocket() ?>
 <?= $page->slotCriteo() ?>
@@ -18,3 +18,4 @@
 <?= $page->slotGetIntentJS() ?>
 <?= $page->slotAdvMakerJS() ?>
 <?= $page->slotHubrusJS() ?>
+<?= $page->slotSolowayJS() ?>

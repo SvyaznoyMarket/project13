@@ -70,7 +70,10 @@ class DeliveryAction extends OrderV3 {
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
                 $result['error'] = ['message' => $e->getMessage()];
-                if (!$previousSplit) {
+
+                if (302 === $e->getCode()) {
+                    $result['redirect'] = \App::router()->generate('cart');
+                } else if (!$previousSplit) {
                     $result['redirect'] = \App::router()->generate('orderV3.delivery');
                 }
             }
@@ -229,16 +232,13 @@ class DeliveryAction extends OrderV3 {
             if (!empty($this->cart->getCreditProductIds())) $splitData['payment_method_id'] = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT;
 
             try {
-                // SITE-6016
-                if (\Session\AbTest\ABHelperTrait::isOrderDeliveryTypeTestAvailableInCurrentRegion()) {
-                    switch ( \App::abTest()->getTest('order_delivery_type')->getChosenCase()->getKey()) {
-                        case 'self':
-                            $splitData += ['delivery_type' => 'self'];
-                            break;
-                        case 'delivery':
-                            $splitData += ['delivery_type' => 'standart'];
-                            break;
-                    }
+                switch (\App::abTest()->getOrderDeliveryType()) {
+                    case 'self':
+                        $splitData += ['delivery_type' => 'self'];
+                        break;
+                    case 'delivery':
+                        $splitData += ['delivery_type' => 'standart'];
+                        break;
                 }
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
@@ -321,7 +321,7 @@ class DeliveryAction extends OrderV3 {
     }
 
     private function formatChanges($data, $previousSplit) {
-
+        $data += ['action' => null];
         $changes = [];
 
         if (isset($data['user_info']['phone'])) {
@@ -402,21 +402,6 @@ class DeliveryAction extends OrderV3 {
                 array_walk($productsArray, function(&$product) use ($id, $quantity) {
                     if ($product['id'] == $id) $product['quantity'] = (int)$quantity;
                 });
-
-                // SITE-5958
-                try {
-                    // FIXME: осторожно, мбыть неверный результат при использовании скидки
-                    $totalSum = array_reduce($productsArray, function($carry, $item){ return $carry + $item['price'] * $item['quantity']; }, 0.0);
-                    if (
-                        \App::config()->order['prepayment']['priceLimit']
-                        && ($totalSum > \App::config()->order['prepayment']['priceLimit'])
-                        && in_array(PaymentMethodEntity::PAYMENT_CARD_ONLINE, $changes['orders'][$data['params']['block_name']]['possible_payment_methods'])
-                    ) {
-                        $changes['orders'][$data['params']['block_name']]['payment_method_id'] = PaymentMethodEntity::PAYMENT_CARD_ONLINE;
-                    }
-                } catch (\Exception $e) {
-                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
-                }
 
                 break;
             case 'changeAddress':

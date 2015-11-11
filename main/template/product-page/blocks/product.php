@@ -13,8 +13,8 @@ $f = function(
     // отдельная картинка для шильдика
     $labelImage = $product->getLabel() ? $product->getLabel()->getImageUrlWithTag(Label::MEDIA_TAG_RIGHT_SIDE) : null;
 
-$modelName = $product->getModel() && $product->getModel()->getProperty() ? $product->getModel()->getProperty()[0]->getName() : null;
-    $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceChangePercentTrigger())
+$modelName = $product->model && $product->model->property ? $product->model->property->name : null;
+$price = ($product->getRootCategory() && $product->getRootCategory()->getPriceChangePercentTrigger())
         ? round($product->getPrice() * $product->getRootCategory()->getPriceChangePercentTrigger())
         : 0;
 
@@ -85,12 +85,13 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
 
     <?= $helper->render('product-page/blocks/coupon', ['coupon' => $coupon]) ?>
 
-    <? if ($product->getLabel() && $product->getLabel()->expires && !$product->getLabel()->isExpired()) : ?>
+    <? if (($label = $product->getLabel()) && $label->expires && !$label->isExpired()) : ?>
+        <?= $label->url ? '<a href="' . $label->url .'" style="cursor: pointer">' : '' ?>
         <!-- Шильдик с правой стороны -->
         <div class="product-card-action i-info <?= !$labelImage ? 'product-card-action-no-image' : ''?>">
 
             <span class="product-card-action__tx i-info__tx js-countdown"
-                  data-expires="<?= $product->getLabel()->expires->format('U') ?>">Акция действует<br>ещё <span class="js-countdown-out"><?= $product->getLabel()->getDateDiffString() ?></span>
+                  data-expires="<?= $label->expires->format('U') ?>">Акция действует<br>ещё <span class="js-countdown-out"><?= $label->getDateDiffString() ?></span>
             </span>
 
             <? if ($labelImage) : ?>
@@ -106,6 +107,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
                 <!--/ попап - подробности акции -->
             <? endif ?>
         </div>
+        <?= $label->url ? '</a>' : '' ?>
     <? endif ?>
 
     <? if ($product->getPriceOld()) : ?>
@@ -159,7 +161,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
         ]) // Кнопка купить ?>
     </div>
 
-    <? if (\App::config()->payment['creditEnabled'] && ($product->getPrice() >= \App::config()->product['minCreditPrice']) && !count($product->getPartnersOffer()) && !$product->isInShopOnly()) : ?>
+    <? if ($creditData['creditIsAllowed'] && !count($product->getPartnersOffer()) && !$product->isInShopOnly()): ?>
         <!-- купить в кредит -->
         <a
             class="buy-on-credit btn-type btn-type--normal btn-type--longer jsProductCreditButton"
@@ -177,6 +179,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
 
     <!-- сравнить, добавить в виш лист -->
     <ul class="product-card-tools">
+        <? if (!\Session\AbTest\ABHelperTrait::isOneClickOnly()): ?>
         <li class="product-card-tools__i product-card-tools__i--onclick">
             <?= $helper->render('cart/__button-product-oneClick', [
                 'product' => $product,
@@ -186,6 +189,7 @@ $modelName = $product->getModel() && $product->getModel()->getProperty() ? $prod
                 'location'  => 'product-card',
             ]) ?>
         </li>
+        <? endif ?>
 
         <li class="product-card-tools__i product-card-tools__i--compare js-compareProduct"
             data-bind="compareButtonBinding: compare"

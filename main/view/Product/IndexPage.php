@@ -3,21 +3,17 @@
 namespace View\Product;
 
 use \Model\Product\Entity as Product;
+use Model\ClosedSale\ClosedSaleEntity;
+use Model\Product\Label;
 
 class IndexPage extends \View\DefaultLayout {
     /** @var string */
     protected $layout  = 'layout-oneColumn';
     /** @var Product */
     protected $product;
-    /** Карточка товара 2015
-     * @var bool
-     */
-    protected $isNewProductPage = false;
 
     public function prepare() {
         $product = $this->product = $this->getParam('product', new Product());
-
-        $this->isNewProductPage = \App::abTest()->isNewProductPage();
 
         $this->flPrecheckoutData['fl-action']   = 'track-item-view';
         $this->flPrecheckoutData['fl-item-id']  = $product->id;
@@ -60,6 +56,7 @@ class IndexPage extends \View\DefaultLayout {
         if (!$this->hasParam('sender2')) $this->setParam('sender2', $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '');
         if (!$this->hasParam('isKit')) $this->setParam('isKit', (bool)$product->getKit());
 
+        $this->closedSale();
         $this->setTitle($page->getTitle());
         $this->addMeta('description', $page->getDescription());
         $this->addMeta('keywords', $page->getKeywords());
@@ -77,11 +74,11 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContentHead() {
-        return $this->isNewProductPage ? null : $this->render('product/_contentHead', $this->params);
+        return null;
     }
 
     public function slotContent() {
-        return $this->render($this->isNewProductPage ? 'product-page/content' : 'product/page-index', $this->params);
+        return $this->render('product-page/content', $this->params);
     }
 
     public function slotBodyDataAttribute() {
@@ -91,7 +88,7 @@ class IndexPage extends \View\DefaultLayout {
     public function slotBodyClassAttribute() {
         return parent::slotBodyClassAttribute()
         . ($this->hasParam('categoryClass') ? ' ' . $this->getParam('categoryClass') : '')
-        . ($this->isNewProductPage && (!$this->getParam('product') || !$this->getParam('product')->getSlotPartnerOffer()) ? ' product-card-new ' : '');
+        . ((!$this->getParam('product') || !$this->getParam('product')->getSlotPartnerOffer()) ? ' product-card-new ' : '');
     }
 
     public function slotGoogleRemarketingJS($tagParams = []) {
@@ -233,8 +230,8 @@ class IndexPage extends \View\DefaultLayout {
 
             // Последний элемент
             $breadcrumbs[] = [
-                'name' => $this->isNewProductPage ? 'Артикул ' . $this->product->getArticle() : $this->product->getName(),
-                'url'  => $this->isNewProductPage ? null : $this->product->getLink(),
+                'name' => 'Артикул ' . $this->product->getArticle(),
+                'url'  => null,
             ];
 
             $this->setParam('breadcrumbs', $breadcrumbs);
@@ -308,5 +305,62 @@ class IndexPage extends \View\DefaultLayout {
         ]);
     }
 
+    /**
+     * Изменяем хлебные крошки для товара из закрытой распродажи и добавляем Label к товару для счётчика справа
+     */
+    public function closedSale()
+    {
+        /** @var ClosedSaleEntity $sale */
+        if (!$sale = $this->getParam('closedSale')) {
+            return;
+        }
 
+        $this->addMeta('robots', 'none');
+
+        // Модифицируем хлебные крошки
+        $breadcrumbs = [
+            [
+                'name' => 'Секретная распродажа',
+                'url'  => $this->url('sale.all')
+            ],
+            [
+                'name' => $sale->name,
+                'url'  => $this->url('sale.one', ['uid' => $sale->uid])
+            ],
+            [
+                'name' => $this->product->getRootCategory()->getName(),
+                'url'  => $this->url('sale.one', ['uid' => $sale->uid, 'categoryId' => $this->product->getRootCategory()->getId()])
+            ],
+            [
+                'name' => 'Артикул ' . $this->product->getArticle()
+            ]
+        ];
+
+        $this->setParam('breadcrumbs', $breadcrumbs);
+
+        // Акция
+        $label = new Label([]);
+        $label->expires = $sale->endsAt;
+        $label->url = $this->url('sale.one', ['uid' => $sale->uid]);
+        $this->product->setLabel($label);
+
+        $this->setParam('product', $this->product);
+
+    }
+
+    public function slotSolowayJS() {
+        if (!\App::config()->partners['soloway']['enabled']) {
+            return '';
+        }
+
+        return '<div id="solowayJS" class="jsanalytics" data-vars="' . $this->json([
+            'type' => 'product',
+            'product' => [
+                'ui' => $this->product->ui,
+                'category' => [
+                    'ui' => $this->product->getParentCategory() ? $this->product->getParentCategory()->ui : '',
+                ],
+            ],
+        ]) . '"></div>';
+    }
 }

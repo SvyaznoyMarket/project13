@@ -4,12 +4,14 @@
  * @param \Helper\TemplateHelper $helper
  * @param \Model\Order\Entity $order
  * @param \Model\PaymentMethod\PaymentEntity|null $orderPayment
+ * @param string $title
  * @return string
  */
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Order\Entity $order,
-    \Model\PaymentMethod\PaymentEntity $orderPayment = null
+    \Model\PaymentMethod\PaymentEntity $orderPayment = null,
+    $title = 'Онлайн-оплата'
 ) {
     if (!$orderPayment || !$orderPayment->methods) {
         return '';
@@ -19,6 +21,13 @@ $f = function(
     $paymentMethods = array_filter($orderPayment->methods, function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod) {
         return $paymentMethod->isOnline;
     });
+
+    // SITE-6304
+    $checkedPaymentMethodId = $order->paymentId;
+    if (!array_key_exists($order->paymentId, $paymentMethods) && ($paymentMethod = reset($paymentMethods) ?: null)) {
+        /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod */
+        $checkedPaymentMethodId = $paymentMethod->id;
+    }
 
     $paymentMethodsByDiscount = [];
     foreach ($paymentMethods as $paymentMethod) {
@@ -30,17 +39,23 @@ $f = function(
     $formUrl = \App::router()->generate('orderV3.paymentForm');
 ?>
 
-    <div class="orderPayment orderPaymentWeb id-orderPaymentPreview-container jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
+    <div class="orderPayment orderPayment--static orderPaymentWeb id-orderPaymentPreview-container">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
-                    Онлайн-оплата
+                    <?= $title ?>
                 </div>
                 <div class="order-payment__sum-msg">
-                    К оплате <span class="order-payment__sum"><?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span>
+                <?
+                    $sum = ($checkedPaymentMethodId && $orderPayment) ? ($orderPayment->getPaymentSumByMethodId($checkedPaymentMethodId)) : null;
+                    if (!$sum) {
+                        $sum = $order->paySum;
+                    }
+                ?>
+                    К оплате <span class="order-payment__sum"><?= $helper->formatPrice($sum) ?> <span class="rubl">p</span></span>
                 </div>
                 <div class="orderPayment_msg_shop orderPayment_pay">
                     <ul class="orderPaymentWeb_lst-sm">
@@ -61,25 +76,25 @@ $f = function(
         </div>
     </div>
 
-    <div class="orderPayment orderPaymentWeb id-orderPaymentList-container" style="display: none;">
+    <div class="orderPayment orderPayment--static orderPaymentWeb id-orderPaymentList-container" style="display: none;">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
-                    Онлайн-оплата
+                    <?= $title ?>
                 </div>
                 <div class="order-payment__sum-msg">
-                    К оплате <span class="order-payment__sum"><?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span>
+                    К оплате <span class="order-payment__sum"><span class="id-onlineSum-container"><?= $helper->formatPrice($sum) ?></span> <span class="rubl">p</span></span>
                 </div>
 
                 <? foreach ($paymentMethodsByDiscount as $discountIndex => $paymentMethods): ?>
-                <ul class="payment-methods__lst">
+                <ul class="payment-methods__lst <? if (0 === $discountIndex): ?>payment-methods__lst_discount<? endif ?>">
                     <? foreach ($paymentMethods as $paymentMethod): ?>
                     <?
-                        $elementId = sprintf('paymentMethod-%s', $paymentMethod->id);
-                        $checked = $order->paymentId == $paymentMethod->id;
+                        $elementId = sprintf('order_%s-paymentMethod_%s', $order->id, $paymentMethod->id);
+                        $checked = $checkedPaymentMethodId == $paymentMethod->id;
                     ?>
                     <li class="payment-methods__i">
                         <input
@@ -95,15 +110,22 @@ $f = function(
                                 'number' => $order->number,
                                 'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context], true),
                             ]) ?>"
-                            <? if ($paymentMethod->isOnline): ?>
-                                data-discount="true"
+                            <? if ($sum = ($paymentMethod->getOnlineDiscountActionSum() ?: $order->paySum)): ?>
+                                data-sum="<?= $helper->json([
+                                    'name'  => isset($paymentMethod->discount['value']) ? ('Скидка ' . $paymentMethod->discount['value'] .'%') : null,
+                                    'value' => $helper->formatPrice($sum)
+                                ])?>"
                             <? endif ?>
                             data-relation="<?= $helper->json([
                                 'formContainer'     => '.id-paymentForm-container',
                                 'discountContainer' => '.id-onlineDiscount-container',
+                                'sumContainer'      => '.id-onlineSum-container',
                             ]) ?>"
                             class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
-                            <? if ($checked): ?> checked="checked"<? endif ?>
+                            <? if ($checked): ?>
+                                data-checked="true"
+                                checked="checked"
+                            <? endif ?>
                         />
                         <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2<? if ($checked): ?> mChecked<? endif ?>">
                             <?= $paymentMethod->name ?>

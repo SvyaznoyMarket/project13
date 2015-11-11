@@ -114,6 +114,7 @@
                         </div>
                     </div>
 
+                    <? if ($uniqueDays): ?>
                     <!-- Дата самовывоза -->
                     <div class="drop-filter-box js-category-v2-filter-dropBox jsOrderV3Dropbox" data-bind="css: { picked: choosenDates().length > 0 }">
                         <div class="drop-filter-box__tggl js-category-v2-filter-dropBox-opener">
@@ -138,6 +139,7 @@
                             </div>
                         </div>
                     </div>
+                    <? endif ?>
 
                 </div>
             </div>
@@ -173,7 +175,7 @@
                                     <div class="pick-point-item__info <?= $page == 'product' ? 'no-hide-info' : 'no-hide-info' ?>">
 
                                     <!-- ko if: !productInShowroom -->
-                                        <div class="pick-point-item__date" data-bind="text: humanNearestDay"></div>
+                                        <div class="" data-bind="text: humanNearestDay, css: { 'pick-point-item__date': humanNearestDay }"></div>
                                         <div class="pick-point-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div>
                                     <!-- /ko -->
 

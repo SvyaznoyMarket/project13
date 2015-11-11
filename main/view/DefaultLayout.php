@@ -4,13 +4,18 @@ namespace View;
 
 use Session\AbTest\ABHelperTrait;
 use Session\AbTest\AbTest;
+use Model\Product\Category\Entity as Category;
 
 class DefaultLayout extends Layout {
     use ABHelperTrait;
 
     protected $layout  = 'layout-oneColumn';
     protected $breadcrumbsPath = null;
+    /** @var bool */
+    // TODO переделать на автоопределение
     protected $useTchiboAnalytics = false;
+    /** @var bool */
+    protected $useMenuHamburger = false;
 
     /**
      * Flocktory precheckout data
@@ -23,7 +28,7 @@ class DefaultLayout extends Layout {
         parent::__construct();
 
         // Меню нужно в нескольких рендерингах, поэтому запрашиваем его сразу
-        $this->setGlobalParam('menu', (new Menu($this))->generate_new(\App::user()->getRegion()));
+        $this->setGlobalParam('menu', (new Menu($this))->generate(\App::user()->getRegion()));
 
         $this->setTitle('Enter - это выход!');
         $this->addMeta('yandex-verification', '623bb356993d4993');
@@ -44,6 +49,25 @@ class DefaultLayout extends Layout {
         $this->addStylesheet(\App::config()->debug ? '/styles/global.css' : '/styles/global.min.css');
 
         $this->addJavascript(\App::config()->debug ? '/js/loadjs.js' : '/js/loadjs.min.js');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMenuHamburger()
+    {
+        return $this->useMenuHamburger;
+    }
+
+    /**
+     * Является ли категория "чибовской"
+     *
+     * @param Category $category
+     * @return bool
+     */
+    public function isTchiboCategory(Category $category)
+    {
+        return isset($category->getAncestor()[0]) && $category->getAncestor()[0]->getUi() === Category::UI_TCHIBO;
     }
 
     public function slotRelLink() {
@@ -207,7 +231,11 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotNavigation() {
-        return $this->render('common/_navigation-new', ['menu' => $this->getGlobalParam('menu')]);
+        if ('on' === \App::request()->headers->get('SSI')) {
+            return \App::helper()->render('__ssi-cached', ['path' => '/navigation']);
+        } else {
+            return $this->render('common/_navigation', ['menu' => $this->getGlobalParam('menu')]);
+        }
     }
 
     public function slotUserbarContent() {
@@ -336,7 +364,7 @@ class DefaultLayout extends Layout {
         foreach ($data as $key => $value) {
             $dataString .= sprintf('data-%s="%s" ', $key, $value);
         }
-        return sprintf('<div class="i-flocktory js-flocktory-data-layer" %s ></div>', $dataString);
+        return sprintf('<div class="i-flocktory js-flocktory-data-layer"></div><div class="i-flocktory" %s ></div>', $dataString);
     }
 
     public function googleAnalyticsJS(){
@@ -428,8 +456,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotCriteo() {
-        return $this->render( 'partner-counter/_criteo',
-            ['criteoData' =>  (new \View\Partners\Criteo($this->params))->execute()] );
+        return $this->render('partner-counter/_criteo', ['criteoData' => (new \View\Partners\Criteo($this->params))->execute()]);
     }
 
 
@@ -665,5 +692,13 @@ class DefaultLayout extends Layout {
         return \App::config()->partners['Giftery']['enabled']
             ? '<div id="gifteryJS" class="jsanalytics"></div>'
             : '';
+    }
+
+    public function slotSolowayJS() {
+        if (!\App::config()->partners['soloway']['enabled']) {
+            return '';
+        }
+
+        return '<div id="solowayJS" class="jsanalytics"></div>';
     }
 }

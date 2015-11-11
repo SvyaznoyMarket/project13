@@ -72,7 +72,7 @@ $f = function(
                 <? endif ?>
             </div>
 
-            <? if (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_view_cost > \App::config()->order['prepayment']['priceLimit'])) : ?>
+            <? if ($order->prepaid_sum) : ?>
                 <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
             <? endif; ?>
 
@@ -115,9 +115,15 @@ $f = function(
                 <? foreach ($order->discounts as $discount) : ?>
 
                     <div class="orderCol_cnt clearfix jsOrderV3Discount">
-                        <a href="" class="orderCol_lk">
-                            <img class="orderCol_img" src="/styles/order/img/fishka.png" alt="">
-                        </a>
+                        <? if ('online' === $discount->type): ?>
+                            <a href="" class="orderCol_lk">
+                                <span class="orderCol_img orderCol_img--font">%</span>
+                            </a>
+                        <? else: ?>
+                            <a href="" class="orderCol_lk">
+                                <img class="orderCol_img" src="/styles/order/img/fishka.png" alt="<?= $helper->escape($discount->name) ?>">
+                            </a>
+                        <? endif ?>
 
                         <div class="orderCol_n">
                             <?= $discount->name; ?>
@@ -180,7 +186,6 @@ $f = function(
 
             <!-- дата доставки -->
             <div class="orderCol_delivrIn clearfix">
-                <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
                 <? if ($order->delivery->date): ?>
                     <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y, %A', $order->delivery->date->format('U'))) ?></div>
                 <? endif ?>
@@ -238,7 +243,7 @@ $f = function(
                         </div>
                         <div class="orderCol_tm">
                             <? if (isset($point->regtime)): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
-                            <? if (isset($point) && (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_view_cost < \App::config()->order['prepayment']['priceLimit']))) : ?>
+                            <? if (isset($point) && !$order->prepaid_sum) : ?>
                                 <br />
                                 <span class="orderCol_tm_t">Оплата при получении: </span>
                                 <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?>
@@ -279,15 +284,6 @@ $f = function(
             ]) ?>
 
             <!--/ способ доставки -->
-            <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && (1 === count($orderDelivery->orders))) : ?>
-
-                <div class="orderCheck orderCheck-credit clearfix">
-                    <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
-                    <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment js-customInput" id="credit-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked' : '' ?>>
-                    <label class="customLabel customLabel-checkbox <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
-                </div>
-
-            <? endif ?>
         </div>
         <!--/ информация о доставке -->
     </div>
@@ -297,11 +293,11 @@ $f = function(
     <div class="orderComment">
         <div class="orderComment_t jsOrderV3Comment">Дополнительные пожелания</div>
 
-        <textarea class="orderComment_fld textarea" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
+        <textarea class="jsOrderV3CommentField orderComment_fld textarea" data-auto-update="true" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
     </div>
 
     <div class="orderComplSumm">
-        <span class="l">Итого <strong><?= $orderCount ?></strong> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <strong><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span></strong></span>
+        <span class="l">Итого <strong><?= $orderCount ?></strong> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <strong><?= $helper->formatPrice($orderDelivery->total_view_cost) ?> <span class="rubl">p</span></strong></span>
     </div>
 
     <div class="orderCompl orderCompl-v2 clearfix">

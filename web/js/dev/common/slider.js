@@ -12,8 +12,6 @@
                 $slider = $el.parents('.js-slider'),
                 sender = $slider.length ? $slider.data('slider').sender : null;
 
-            $body.trigger('TLT_processDOMEvent', [event]);
-
             if (!$target.hasClass('js-orderButton')) {
 				var rrEventLabel = '';
 				if (ENTER.config.pageConfig.product) {

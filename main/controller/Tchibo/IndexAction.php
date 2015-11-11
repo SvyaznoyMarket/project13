@@ -2,10 +2,11 @@
 
 namespace Controller\Tchibo;
 
+use Model\Product\Category\Entity as Category;
+
 class IndexAction {
 
     public function execute(\Http\Request $request) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $scmsClient = \App::scmsClient();
@@ -18,14 +19,30 @@ class IndexAction {
         $promo = null;
         $bannerBottom = null;
         $categoryTree = null;
+        $promoBanners = null;
+        $collectionBanners = null;
 
         // подготовка для 1-го пакета запросов в ядро
         // promo
         $promoRepository->prepareByToken($categoryToken, function($data) use (&$promo, &$categoryToken) {
             $data = isset($data[0]['uid']) ? $data[0] : null;
-            if ($data) {
+            if (is_array($data)) {
                 $data['token'] = $categoryToken;
                 $promo = new \Model\Promo\Entity($data);
+            }
+        });
+
+        $promoRepository->prepareByToken('tchibo_main_small_banners', function($data) use (&$promoBanners) {
+            $data = isset($data[0]['uid']) ? $data[0] : [];
+            if (is_array($data)) {
+                $promoBanners = new \Model\Promo\Entity($data);
+            }
+        });
+
+        $promoRepository->prepareByToken('tchibo_main_small_banners_bottom', function($data) use (&$collectionBanners) {
+            $data = isset($data[0]['uid']) ? $data[0] : [];
+            if (is_array($data)) {
+                $collectionBanners = new \Model\Promo\Entity($data);
             }
         });
 
@@ -42,6 +59,18 @@ class IndexAction {
         \RepositoryManager::productCategory()->prepareTreeCollection($region, 1, 1, function($data) use (&$categoryTree) {
             $categoryTree = $data;
         });
+
+        /** @var Category[] $categoryWithChilds */
+        $categoryWithChilds = null;
+        // Получаем дочерние категории с category_grid изображениями
+        \RepositoryManager::productCategory()->prepareCategoryTree(
+            'root_slug',
+            $categoryToken,
+            1,
+            false,
+            false,
+            true,
+            $categoryWithChilds);
 
         // выполнение 1-го пакета запросов в ядро
         $client->execute();
@@ -67,7 +96,6 @@ class IndexAction {
 
         // подготовка для 2-го пакета запросов в ядро
         // получим данные для меню
-        $rootCategoryIdInMenu = null;
         /** @var \Model\Product\Category\TreeEntity $rootCategoryInMenu */
         $rootCategoryInMenu = null;
         \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($category->getId(), $region, 3, function($data) use (&$rootCategoryInMenu) {
@@ -96,8 +124,6 @@ class IndexAction {
             $productsByUi[$productUi] = new \Model\Product\Entity(['ui' => $productUi]);
         }
 
-        // Необходимо запрашивать модели товаров, т.к. option моделей используется в методе
-        // \Model\Product\Entity::hasAvailableModels, который вызывается ниже
         \RepositoryManager::product()->prepareProductQueries($productsByUi, 'model media label');
 
         // выполнение 2-го пакета запросов в ядро
@@ -194,7 +220,10 @@ class IndexAction {
         $page->setParam('category', $category);
         $page->setParam('slideData', $slideData);
         $page->setParam('catalogConfig', $catalogJson);
+        $page->setParam('categoryWithChilds', $categoryWithChilds);
         $page->setParam('catalogCategories', $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : []);
+        $page->setParam('promoBanners', $promoBanners);
+        $page->setParam('collectionBanners', $collectionBanners);
         $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
         $page->setGlobalParam('bannerBottom', $bannerBottom);
         $page->setGlobalParam('tchiboMenuCategoryNameStyles', $tchiboMenuCategoryNameStyles);

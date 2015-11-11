@@ -34,7 +34,7 @@ return function(
         <div class="order-discount__pin" style="display: none">
             <div class="order-ctrl">
                 <label class="order-ctrl__lbl js-order-ctrl__lbl">PIN:</label>
-                <input class="order-ctrl__input js-order-ctrl__input jsCertificatePinInput" type="text" name="" value="" placeholder="PIN">
+                <input class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsCertificatePinInput" type="text" name="" value="" placeholder="PIN">
             </div>
         </div>
 

@@ -100,7 +100,7 @@
     <? endif ?>
 
 <? elseif (1 === $bannerNumber):  ?>
-    <a class="header__bann stripe-bann" href="how_pay">
+    <a class="header__bann stripe-bann" href="/how_pay">
         Оплачивать заказы стало Проще!   Платите удобным способом   <span class="payments-bann"><img src="/images/payments-bann.png"></span>
     </a>
 <? endif ?>

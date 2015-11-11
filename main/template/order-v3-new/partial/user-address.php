@@ -30,7 +30,7 @@ $f = function(
         <input
             type="text"
             value="<?= $address['street'] ?>"
-            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
+            class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress"
             data-field="street"
             <?= ($required ? 'required' : '') ?>
             data-value="<?= $helper->json($dataValue) ?>"
@@ -44,7 +44,7 @@ $f = function(
         <input
             type="text"
             value="<?= $address['building'] ?>"
-            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
+            class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress"
             data-field="building"
             <?= ($required ? 'required' : '') ?>
             data-value="<?= $helper->json($dataValue) ?>"
@@ -57,7 +57,7 @@ $f = function(
         <input
             type="text"
             value="<?= $address['apartment'] ?>"
-            class="order-ctrl__input js-order-ctrl__input js-order-deliveryAddress"
+            class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress"
             data-field="apartment"
             data-value="<?= $helper->json($dataValue) ?>"
             data-relation="<?= $helper->json(['container' => '.' . $containerId])?>"

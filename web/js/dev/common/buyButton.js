@@ -173,6 +173,15 @@
 				$.each(data.setProducts, function(key, setProduct) {
 					googleAnalytics(event, setProduct, data.sender);
 					addToRetailRocket(event, setProduct.id);
+					ENTER.utils.analytics.soloway.send({
+						action: 'basketProductAdd',
+						product: {
+							ui: setProduct.ui,
+							category: {
+								ui: setProduct.category ? setProduct.category.ui : ''
+							}
+						}
+					});
 				});
 				console.groupEnd();
 			}

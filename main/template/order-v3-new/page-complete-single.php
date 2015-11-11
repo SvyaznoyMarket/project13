@@ -22,7 +22,15 @@ return function(
     /* @var \Model\PaymentMethod\PaymentEntity|null $orderPayment */
     $orderPayment = @$ordersPayment[$order->getNumber()];
     // Онлайн оплата возможна при существовании такой группы
-    $isOnlinePaymentPossible = (bool)$orderPayment ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $orderPayment->groups) : false;
+    $isOnlinePaymentPossible =
+        (bool)$orderPayment
+        ? (
+            array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $orderPayment->groups)
+            && !$order->isPaid()
+            && !$order->isCredit()
+            && !$order->isPaidBySvyaznoy()
+        )
+        : false;
     // При создании заказа выбрана онлайн-оплата
     $isOnlinePaymentChecked =
         ($orderPayment && $order->getPaymentId() && isset($orderPayment->methods[$order->getPaymentId()]))
@@ -50,16 +58,11 @@ return function(
 
             <?= $helper->render('order-v3-new/complete-blocks/_errors', ['errors' => $errors]) ?>
 
-            <? if ($isOnlinePaymentPossible && !$order->isPaid() && !$order->isCredit() && !$order->isPaidBySvyaznoy()): ?>
-                <? if ($isOnlinePaymentChecked): ?>
-                    <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
-                <? else: ?>
-                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
-                <? endif ?>
+            <? if ($isOnlinePaymentPossible && $isOnlinePaymentChecked): ?>
+                <?= $helper->render('order-v3-new/complete-blocks/_online-payment-single', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
             <? endif ?>
 
             <? if (!$order->isCredit()): ?>
-
                 <? if ($order->getDeliveryTypeId() == 3 || $order->getDeliveryTypeId() == 4 || $order->point) : ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_point', ['order' => $order]) ?>
                 <? endif ?>
@@ -67,7 +70,10 @@ return function(
                 <? if ($order->getDeliveryTypeId() == 1): ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_delivery', ['order' => $order]) ?>
                 <? endif ?>
+            <? endif ?>
 
+            <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked): ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true, 'title' => 'Оплатить онлайн' . (false ? 'со скидкой 15%' : '')]) ?>
             <? endif ?>
 
         </div>
@@ -79,7 +85,7 @@ return function(
         <?= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_svyaznoy-club') : '' ?>
 
         <? if (\App::config()->flocktory['exchange'] && !$order->isCredit()): ?>
-            <div class="i-flocktory orderPayment" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-username="<?= $order->getFirstName() ?>" data-fl-user-email="<?= $order->email ?>"></div>
+            <div class="i-flocktory orderPayment orderPayment--static" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-username="<?= $order->getFirstName() ?>" data-fl-user-email="<?= $order->email ?>"></div>
         <? endif ?>
 
         <div class="orderCompl orderCompl_final clearfix">

@@ -214,6 +214,11 @@ class OrderEntity {
      * @var float
      */
     private $total_view_cost;
+    /**
+     * Сумма предоплаты
+     * @var int
+     */
+    private $prepaid_sum;
 
     /** TODO принимать \Model\OrderDelivery\Entity\Order и \Model\OrderDelivery\Entity\UserInfo
      * @param array $arr
@@ -267,8 +272,8 @@ class OrderEntity {
             //throw new \Exception('Не указан интервал доставки');
         }
 
-        if (isset($arr['delivery_date_interval']) && isset($arr['delivery_date_interval']['from']) && $arr['delivery_date_interval']['to']) {
-            $this->delivery_date_interval = $arr['delivery_date_interval'];
+        if (isset($arr['order']['delivery']['date_interval']['from']) && isset($arr['order']['delivery']['date_interval']['to'])) {
+            $this->delivery_date_interval = $arr['order']['delivery']['date_interval'];
         } else {
             $this->delivery_date_interval = null;
         }
@@ -339,9 +344,12 @@ class OrderEntity {
 
         if (isset($arr['order']['total_view_cost'])) $this->total_view_cost = $arr['order']['total_view_cost'];
 
+        // meta data
         if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2, $cartProducts);
 
-
+        if (!empty($arr['order']['prepaid_sum'])) { // SITE-6256
+            $this->meta_data['prepaid_sum'] = $arr['order']['prepaid_sum'];
+        }
     }
 
     /** Возвращает мета-данные для партнеров
@@ -407,6 +415,8 @@ class OrderEntity {
                     $mnogoruCookieValue = $request->cookies->get(\App::config()->partners['MnogoRu']['cookieName']);
                     if (!empty($mnogoruCookieValue) && $mnogoruCookieValue != 'undefined') {
                         $data['mnogo_ru_card'] = $mnogoruCookieValue;
+                    } else if ($mnogoruRequestValue = $request->get('user_info[mnogo_ru_number]', null, true)) {
+                        $data['mnogo_ru_card'] = $mnogoruRequestValue;
                     }
                 }
 
@@ -437,7 +447,12 @@ class OrderEntity {
         $this->meta_data['split_version'] = 2;
 
         foreach (get_object_vars($this) as $key => $value) {
-            if ($value !== null) $data[$key] = $value;
+            if (
+                (null !== $value)
+                || ('delivery_date_interval' === $key)
+            ) {
+                $data[$key] = $value;
+            }
         }
 
         return $data;

@@ -34,7 +34,9 @@ class Autocomplete {
 
                 if (isset($data['products']) && is_array($data['products'])) {
                     $products = array_map(function($item) {
-                        return new \Model\Product\Entity($item);
+                        $product = new \Model\Product\Entity($item);
+                        $product->importFromScms($item);
+                        return $product;
                     }, array_slice($data['products'], 0, 5));
                 }
             }, function($e)  {

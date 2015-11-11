@@ -35,6 +35,7 @@ namespace EnterQuery\Product
                     [
                         'ui'          => [$this->ui],
                         'geo_id'      => $this->regionId,
+                        'withModels'  => 0,
                     ]
                 ),
                 [], // data

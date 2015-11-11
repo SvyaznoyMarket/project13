@@ -73,7 +73,7 @@ class CompleteAction extends OrderV3 {
 
                         $this->sessionOrders[$number] = $item['order'];
                         try {
-                            $onlinePaymentStatusByNumber[$number] = new \DateTime($item['online_payment_expired']) < $now;
+                            $onlinePaymentStatusByNumber[$number] = $now <= new \DateTime($item['online_payment_expired']);
                         } catch (\Exception $e) {
                             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
                         }
@@ -103,7 +103,7 @@ class CompleteAction extends OrderV3 {
                 if (!isset($sessionOrder['number'])) continue;
 
                 // сами заказы
-                if (\App::config()->order['sessionInfoOnComplete'] && !$request->query->get('refresh')) { // SITE-4828
+                if (('call-center' !== $this->session->get(\App::config()->order['channelSessionKey'])) && \App::config()->order['sessionInfoOnComplete'] && !$request->query->get('refresh')) { // SITE-4828
                     $orders[$sessionOrder['number']] = new Entity($sessionOrder);
                 } else {
                     $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => preg_replace('/[^0-9]/', '', $sessionOrder['mobile'])], [], function ($data) use (&$orders, $sessionOrder) {
@@ -134,6 +134,15 @@ class CompleteAction extends OrderV3 {
             unset($sessionOrder);
 
             $this->client->execute();
+
+            // изменяет order.pauSum, если есть акция
+            foreach ($ordersPayment as $orderNumber => $payment) {
+                if (!$order = $orders[$orderNumber]) continue;
+
+                if ($order->paymentId && ($sum = $payment->getPaymentSumByMethodId($order->paymentId))) {
+                    $order->paySum = $sum;
+                }
+            }
 
             // получаем продукты для заказов
             foreach ($orders as $order) {
@@ -256,6 +265,7 @@ class CompleteAction extends OrderV3 {
 
         $response = (bool)$orders ? new \Http\Response($page->show()) : new \Http\RedirectResponse($page->url('homepage'));
         $response->headers->setCookie(new \Http\Cookie('enter_order_v3_wanna', 0, 0, '/order',\App::config()->session['cookie_domain'], false, false)); // кнопка "Хочу быстрее"
+
         return $response;
     }
 
@@ -290,11 +300,12 @@ class CompleteAction extends OrderV3 {
             $data,
             [
                 'back_ref'    => $backUrl, // обратная ссылка
+                'fail_ref'    => $backUrl,
                 'email'       => $order->getUser() ? $order->getUser()->getEmail() : '',
                 //'card_number' => $order->card,
                 'user_token'  => $request->cookies->get('UserTicket'), // токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
             ],
-            \App::config()->coreV2['hugeTimeout']
+            2 * \App::config()->coreV2['timeout']
         );
 
         if (!$result) {
@@ -319,16 +330,12 @@ class CompleteAction extends OrderV3 {
 
         if (!isset($params['number_erp']) || !isset($params['bank_id'])) return null;
 
-        $result = [];
-        /*
         $result = \App::coreClientV2()->query('payment/credit-request',[],[
             'number_erp'    => $params['number_erp'],
             'bank_id'       => $params['bank_id']
         ]);
-        */
 
         return new \Http\JsonResponse($result);
-
     }
 
     /**
@@ -444,7 +451,7 @@ class CompleteAction extends OrderV3 {
             return null;
         }
 
-        $key = 'online_motivation';
+        $key = \App::abTest()->getOnlineMotivationKey();
         if ($onlineMethods[0]->getAction($key)) {
             return $key;
         }

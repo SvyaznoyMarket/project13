@@ -89,7 +89,6 @@ class QueryAction {
 
         $queryToken = trim((string)$queryToken);
 
-        $data = [];
         try {
             $log = shell_exec(sprintf('cd %s && tail -n 50000 query.log | grep %s',
                 \App::config()->logDir,
@@ -101,8 +100,45 @@ class QueryAction {
             $data = [];
         }
 
-        $data = array_merge(['url' => null, 'data' => null, 'result' => null], $data);
+        $data = array_merge(['url' => null, 'data' => null, 'result' => null, 'queryToken' => $queryToken], $data);
 
         return new \Http\Response(\App::closureTemplating()->render('page-query', $data));
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @param $queryToken
+     * @return \Http\Response
+     */
+    public function getJson(\Http\Request $request, $queryToken) {
+        //\App::logger()->debug('Exec ' . __METHOD__);
+
+        \App::config()->debug = false;
+
+        $queryToken = trim((string)$queryToken);
+
+        try {
+            $log = shell_exec(sprintf('cd %s && tail -n 50000 query.log | grep %s',
+                \App::config()->logDir,
+                $queryToken
+            ));
+
+            $data = (array)json_decode($log, true);
+        } catch(\Exception $e) {
+            $data = [];
+        }
+
+        $data = [
+            'request' => [
+                'url'  => $data['url'],
+                'data' => $data['data'],
+            ],
+            'response' => $data['result'],
+        ];
+
+        \Http\JsonResponse::$jsonOptions = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT;
+        $response = new \Http\JsonResponse($data);
+
+        return $response;
     }
 }

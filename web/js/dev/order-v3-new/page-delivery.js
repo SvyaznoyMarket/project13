@@ -355,14 +355,15 @@
             });
         },
         loadPaymentForm = function($container, url, data) {
-            $container.html('Загрузка...'); // TODO: loader
+            console.info('Загрузка формы оплаты ...');
+            $container.html('...'); // TODO: loader
 
             $.ajax({
                 url: url,
                 type: 'POST',
                 data: data
             }).fail(function(jqXHR){
-                $container.html('Ошибка');
+                $container.html('');
             }).done(function(response){
                 if (response.form) {
                     $container.html(response.form);
@@ -511,8 +512,8 @@
     });
 
     // сохранение комментария
-    $orderContent.on('blur focus', '.orderComment_fld', function(){
-        if (comment != $(this).val()) {
+    $orderContent.on('blur focus', '.jsOrderV3CommentField', function(){
+        if ((comment != $(this).val()) && $(this).data('autoUpdate')) {
             comment = $(this).val();
             changeOrderComment($(this).val());
         }
@@ -520,7 +521,7 @@
 
     // клик по "Дополнительные пожелания"
     $orderContent.on('click', '.jsOrderV3Comment', function(){
-        $('.orderComment_fld').toggle();
+        $('.jsOrderV3CommentField').toggle();
     });
 
     // применить скидку
@@ -634,6 +635,7 @@
             $el = $(this),
             params = $el.is('select') ? $el.find(':selected').data('value') : $el.data('value')
         ;
+        console.info({'$el': $el, 'data': params});
 
         sendChanges('changePaymentMethod', params);
 
@@ -652,7 +654,8 @@
             relations = $el.data('relation'),
             $formContainer = relations['formContainer'] && $(relations['formContainer']),
             $discountContainer = relations['discountContainer'] && $(relations['discountContainer']),
-            hasDiscount = true == $el.data('discount')
+            $sumContainer = relations['sumContainer'] && $(relations['sumContainer']),
+            sum = $el.data('sum')
         ;
 
         try {
@@ -664,13 +667,17 @@
             }
 
             loadPaymentForm($formContainer, url, data);
+
+            if (sum && sum.value) {
+                $sumContainer.html(sum.value);
+            }
         } catch(error) { console.error(error); };
 
         //e.preventDefault();
     });
     $('.js-order-onlinePaymentMethod').each(function(i, el) {
         var
-            $el = $(this),
+            $el = $(el),
             url,
             data,
             relations,

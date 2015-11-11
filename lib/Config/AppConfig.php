@@ -9,6 +9,8 @@ require_once __DIR__ . '/Oauth/TwitterConfig.php';
 
 
 class AppConfig {
+    /** @var int */
+    public $degradation; // для отладки - неспользовать!
     /** Проект Lite
      * @var bool
      */
@@ -74,6 +76,7 @@ class AppConfig {
     public $authToken = [
         'name'     => null,
         'authorized_cookie' => null,
+        'disposableTokenParam'  => null
     ];
     /** @var array */
     public $session = [
@@ -292,6 +295,7 @@ class AppConfig {
         'cookieLifetime' => null,
         'defaultId'      => null,
         'autoresolve'    => null,
+        'cache'          => null, // кешировать запросы к основным городам
     ];
     /** @var array */
     public $shop = [
@@ -309,13 +313,16 @@ class AppConfig {
         'itemsPerPage'           => null,
         'showAccessories'        => null,
         'showRelated'            => null,
+        'getModel'               => null, // запрашивать модели для товара
+        'deliveryCalc'           => null, // расчитывать доставку в карточке товара
         'itemsInSlider'          => null,
         'itemsInCategorySlider'  => null,
-        'minCreditPrice'         => null,
         'totalCount'             => null,
         'showAveragePrice'       => null,
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
         'reviewEnabled'          => null, // отзывы о товаре
+        'creditEnabledInCard'    => null, // кнопка "Купить в кредит" в карточке товара
+        'couponEnabledInCard'    => null, // купон в карточке товара
         'pushReview'             => null, // возможность добавлять отзывы
         'lowerPriceNotification' => null,
         'recommendationPull'     => null, // подтягивать информацию о рекоммендованных товарах
@@ -365,15 +372,12 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $f1Certificate = [
-        'enabled' => null,
-    ];
-    /** @var array */
     public $cart = [
         'productLimit' => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
         'sessionName'  => null,
         'checkStock'   => null, // проверять количество товара при добавлении в корзину
         'updateTime'   => null, // период обновления корзины, минуты
+        'oneClickOnly' => null, // только одноклик
     ];
     /** @var array */
     public $user = [
@@ -405,6 +409,7 @@ class AppConfig {
     /** @var array */
     public $subscribe = [
         'enabled'    => null,
+        'getChannel' => null,
         'cookieName' => null,
     ];
 
@@ -434,9 +439,8 @@ class AppConfig {
         'oneClickSplitSessionKey' => null,
         'sessionInfoOnComplete'   => null, // краткая инфа о заказе на странице order.complete
         'creditStatusSessionKey'  => null,
+        'channelSessionKey'       => null,
     ];
-    /** @var bool */
-    public $newDeliveryCalc;
 
     /** @var array */
     public $sphinx = [

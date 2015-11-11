@@ -6,45 +6,45 @@ class Sorting {
     const NAME_DEFAULT = 'default';
 
     /** @var array */
-    private $list = array(
-        'default'  => array(
+    private $list = [
+        'default'  => [
             'name'      => self::NAME_DEFAULT,
             'title'     => 'Автоматически',
             'direction' => 'desc',
-        ),
-        'hits_desc'  => array(
+        ],
+        'hits_desc'  => [
             'name'      => 'hits',
             'title'     => 'Хиты продаж',
             'direction' => 'desc',
-        ),
-        'price_asc'   => array(
+        ],
+        'price_asc'   => [
             'name'      => 'price',
             'title'     => 'По цене &#9650;',
             'direction' => 'asc',
-        ),
-        'price_desc'   => array(
+        ],
+        'price_desc'   => [
             'name'      => 'price',
             'title'     => 'По цене &#9660;',
             'direction' => 'desc',
-        ),
-        'creator_asc' => array(
+        ],
+        'creator_asc' => [
             'name'      => 'creator',
             'title'     => 'Бренды А&#8594;Я',
             'direction' => 'asc',
-        ),
-        'creator_desc' => array(
+        ],
+        'creator_desc' => [
             'name'      => 'creator',
             'title'     => 'Бренды Я&#8592;А',
             'direction' => 'desc',
-        ),
+        ],
         /*
-        'rating'  => array(
+        'rating'  => [
              'name'      => 'rating',
              'title'     => 'по рейтингу',
              'direction' => 'desc',
-        ),
+        ],
         */
-    );
+    ];
     /** @var string */
     private $active = 'default';
 

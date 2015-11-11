@@ -108,6 +108,15 @@ class PaymentMethodEntity {
         return $return;
     }
 
+    /**
+     * @return int|null
+     */
+    public function getOnlineDiscountActionSum() {
+        $action = $this->getOnlineDiscountAction();
+
+        return isset($action['payment_sum']) ? $action['payment_sum'] : null;
+    }
+
     public function isSvyaznoyClub() {
         return $this->id == self::PAYMENT_SVYAZNOY_CLUB;
     }

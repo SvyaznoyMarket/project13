@@ -36,10 +36,10 @@
             </table>
         </div>
         <!-- для кнопки с иконкой btnBuy-inf -->
-        <div class="<?= \App::abTest()->isNewProductPage() ? 'btn-container btn-container--quick-buy' : 'btnBuy quickOrder' ?>" data-bind="css: {'btnBuy-inf': infoIconVisible() }, visible: !isMinOrderSumVisible()">
+        <div class="<?= 'btn-container btn-container--quick-buy' ?>" data-bind="css: {'btnBuy-inf': infoIconVisible() }, visible: !isMinOrderSumVisible()">
             <a
                 href="<?= $page->url('order') ?>"
-                class="<?= \App::abTest()->isNewProductPage() ? 'btn-type btn-type--buy' : 'btnBuy__eLink quickOrder__link' ?>"
+                class="<?= 'btn-type btn-type--buy' ?>"
             >
                 <?= ((isset($cartTextInOrderButton) && (true === $cartTextInOrderButton)) ? 'В корзину' : 'Оформить заказ') ?>
             </a>

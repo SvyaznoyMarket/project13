@@ -2,7 +2,12 @@
 <ul class="bBreadcrumbs clearfix">
 {{#links}}
     <li class="bBreadcrumbs__eItem{{#last}} mLast{{/last}}">
+    {{#url}}
         <a class="bBreadcrumbs__eLink" href="{{url}}">{{name}}</a>
+    {{/url}}
+    {{^url}}
+        <span>{{name}}</span>
+    {{/url}}
     </li>
 {{/links}}
 </ul>

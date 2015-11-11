@@ -117,6 +117,6 @@ class ClientV2 implements ClientInterface {
     private function getUrl($action, array $params = []) {
         return $this->config['url']
             . $action
-            . '?' . http_build_query(array_merge($params, ['client_id' => $this->config['client_id']]));
+            . '?' . http_build_query($params + ['client_id' => $this->config['client_id']]);
     }
 }

@@ -1,7 +1,5 @@
 <?php
 
-use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
-
 /**
  * @param \Helper\TemplateHelper $helper
  * @param \Model\OrderDelivery\Entity $orderDelivery
@@ -36,7 +34,7 @@ $f = function (
                     </div>
                 <? endif ?>
 
-                <? if (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_view_cost > \App::config()->order['prepayment']['priceLimit'])) : ?>
+                <? if ($order->prepaid_sum) : ?>
                     <div class="order-error order-error--hint">Требуется предоплата.<br>Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a><i class="order-error__closer js-order-err-close"></i></div>
                 <? endif ?>
 
@@ -86,7 +84,7 @@ $f = function (
 						</div>
                     </div>
                 <? endforeach ?>
-
+                </div>
                 <!-- введенные скидки, купоны -->
 
 
@@ -98,16 +96,22 @@ $f = function (
                     <? foreach ($order->discounts as $discount) : ?>
                         <div class="order-discount__item jsOrderV3Discount">
                             <div class="order-discount__cell">
-                                <?// if ($discount->number !== null) : ?> <!-- это условие точно нужно? Как по мне - если уж вывели фишку, надо дать возможность ее удалить-->
+                                <? if (null !== $discount->number) : ?>
                                     <span class="order-discount__del jsDeleteDiscount" data-value="<?= $discount->number ?>">удалить</span>
-                                <?// endif ?>
+                                <? endif ?>
                             </div>
-                            <a href="" class="order-discount__lk">
-                                <img class="order-discount__img" src="/styles/order-new/img/chip.png" alt="">
-                            </a>
+                            <? if ('online' === $discount->type): ?>
+                                <a href="" class="order-discount__lk">
+                                    <span class="order-discount__img order-discount__img_font">%</span>
+                                </a>
+                            <? else: ?>
+                                <a href="" class="order-discount__lk">
+                                    <img class="order-discount__img" src="/styles/order-new/img/chip.png" alt="">
+                                </a>
+                            <? endif ?>
 
                             <div class="order-discount__name">
-                                Фишка на скидку <?= $discount->name ?>
+                                <?= $discount->name ?>
                             </div>
 
                             <div class="order-discount__val">-<?= $discount->discount ?> <span class="rubl">p</span></div>
@@ -131,8 +135,8 @@ $f = function (
                                 <span class="rubl">p</span></span>
                         </div>
                     <? endif ?>
+                    </div>
                 <? endif ?>
-                </div>
                 <!-- END: введенные скидки, купоны -->
             </div>
             <!-- END левая часть блока заказа - список заказанных товаров-->
@@ -198,8 +202,7 @@ $f = function (
                         <? $point = $order->delivery->point ? $orderDelivery->points[$order->delivery->point->token]->list[$order->delivery->point->id] : null ?>
 
                         <!--Добавляем класс warn если у нас будет текст-предупреждение о баллах связного: -->
-                        <div
-                            class="order-delivery__block <?= ($order->delivery->point && $order->delivery->point->isSvyaznoy()) ? 'warn' : ''  ?> <?= $order->delivery->point ? 'plain' : 'empty' ?>">
+                        <div class="order-delivery__block <?= ($order->delivery->point && $order->delivery->point->isSvyaznoy()) ? 'warn' : ''  ?> <?= $order->delivery->point ? 'plain' : 'empty' ?>">
 
                             <? if ($order->delivery->point) { ?>
                                 <div class="order-delivery__shop">
@@ -220,16 +223,6 @@ $f = function (
                             <div class="order-delivery__point-info">
                                 <? if (isset($point->regtime)): ?>Режим работы: <?= $point->regtime ?><? endif ?>
                             </div>
-                                <? if (isset($point) && (!\App::config()->order['prepayment']['priceLimit'] || ($order->total_view_cost < \App::config()->order['prepayment']['priceLimit']))) : ?>
-                                    <br/>
-                                    Оплата при получении:
-                                    <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?>
-                                        <!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные
-                                    <? endif ?>
-                                    <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
-                                        <!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта
-                                    <? endif ?>
-                                <? endif ?>
 
                             <? if ($order->delivery->point && $order->delivery->point->isSvyaznoy()) : ?>
                                 <span class="order-warning">В магазинах «Связной» не принимаются бонусы «Спасибо от Сбербанка»</span>
@@ -255,16 +248,6 @@ $f = function (
                     ]) ?>
 
                     <!--/ способ доставки -->
-                    <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && (1 === count($orderDelivery->orders))) : ?>
-
-                        <div class="orderCheck orderCheck-credit clearfix">
-                        <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
-                            <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment js-customInput" id="credit-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked' : '' ?>>
-                            <label class="customLabel customLabel-checkbox <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц-->
-                            </label>
-                        </div>
-
-                    <? endif ?>
                 <!--/ информация о доставке -->
 
             </div>

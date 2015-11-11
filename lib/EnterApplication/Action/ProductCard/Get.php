@@ -16,16 +16,25 @@ namespace EnterApplication\Action\ProductCard
          */
         public function execute(Request $request)
         {
+            $config = \App::config();
             $curl = $this->getCurl();
 
             // регион
-            $regionQuery = $this->getRegionQuery($request->regionId);
+            $regionQuery =
+                ((true === \App::config()->region['cache']) && ($request->regionId === (string)$config->region['defaultId']))
+                ? null
+                : $this->getRegionQuery($request->regionId)
+            ;
 
             // редирект
             $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare(); // TODO: throw Exception
 
             // аб-тест
-            $abTestQuery = (new Query\AbTest\GetActive())->prepare();
+            $abTestQuery =
+                $config->abTest['enabled']
+                ? (new Query\AbTest\GetActive())->prepare()
+                : null
+            ;
 
             // главное меню
             $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare();
@@ -39,7 +48,8 @@ namespace EnterApplication\Action\ProductCard
             // товар
             /** @var Query\Product\GetByToken $productQuery */
             /** @var Query\Product\GetDescriptionByTokenList $productDescriptionQuery */
-            call_user_func(function() use (&$productQuery, &$productDescriptionQuery, $regionQuery, $request) {
+            /** @var Query\Product\Model\GetByTokenList $productModelQuery */
+            call_user_func(function() use (&$productQuery, &$productDescriptionQuery, &$productModelQuery, $regionQuery, $request, &$config) {
                 if ($request->productCriteria['token']) {
                     $productQuery = new Query\Product\GetByToken($request->productCriteria['token'], $regionQuery->response->region['id']);
                     $productQuery->prepare();
@@ -55,6 +65,11 @@ namespace EnterApplication\Action\ProductCard
                     $productDescriptionQuery->filter->brand = true;
                     $productDescriptionQuery->filter->tag = true;
                     $productDescriptionQuery->prepare();
+
+                    if (true || $config->product['getModel']) {
+                        $productModelQuery = new Query\Product\Model\GetByTokenList([$request->productCriteria['token']], $regionQuery->response->region['id']);
+                        $productModelQuery->prepare();
+                    }
                 } else {
                     throw new \InvalidArgumentException('Неверный критерий получения товара');
                 }
@@ -72,7 +87,11 @@ namespace EnterApplication\Action\ProductCard
             }
 
             // каналы подписок
-            $subscribeChannelQuery = (new Query\Subscribe\Channel\Get())->prepare();
+            $subscribeChannelQuery =
+                $config->subscribe['getChannel']
+                ? (new Query\Subscribe\Channel\Get())->prepare()
+                : null
+            ;
             
             // выполнение запросов
             $curl->execute();
@@ -86,6 +105,7 @@ namespace EnterApplication\Action\ProductCard
                 $response->menuQuery = $menuQuery;
                 $response->productQuery = $productQuery;
                 $response->productDescriptionQuery = $productDescriptionQuery;
+                $response->productModelQuery = $productModelQuery;
                 $response->categoryRootTreeQuery = $categoryRootTreeQuery;
                 $response->userQuery = $userQuery;
                 $response->subscribeChannelQuery = $subscribeChannelQuery;
@@ -97,15 +117,14 @@ namespace EnterApplication\Action\ProductCard
             $accessoryProductQueries = [];
             /** @var Query\Product\GetByIdList[] $accessoryProductDescriptionQueries */
             $accessoryProductDescriptionQueries = [];
-            call_user_func(function() use (&$accessoryProductQueries, &$accessoryProductDescriptionQueries, $productQuery) {
+            call_user_func(function() use (&$accessoryProductQueries, &$accessoryProductDescriptionQueries, $productQuery, &$config) {
                 if (empty($productQuery->response->product['accessories']) || !is_array($productQuery->response->product['accessories'])) {
                     return;
                 }
 
-                $accessoryIds = array_slice($productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage']);
-                foreach (array_chunk($accessoryIds, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
+                $accessoryIds = array_slice($productQuery->response->product['accessories'], 0, $config->product['itemsPerPage']);
+                foreach (array_chunk($accessoryIds, $config->coreV2['chunk_size']) as $idsInChunk) {
                     $accessoryProductQuery = new Query\Product\GetByIdList($idsInChunk, $productQuery->regionId);
-                    $accessoryProductQuery->filter->model = false;
                     $accessoryProductQuery->prepare();
                     $accessoryProductQueries[] = $accessoryProductQuery;
 
@@ -124,15 +143,14 @@ namespace EnterApplication\Action\ProductCard
             $kitProductQueries = [];
             /** @var Query\Product\GetByIdList[] $kitProductDescriptionQueries */
             $kitProductDescriptionQueries = [];
-            call_user_func(function() use (&$kitProductQueries, &$kitProductDescriptionQueries, $productQuery) {
+            call_user_func(function() use (&$kitProductQueries, &$kitProductDescriptionQueries, $productQuery, &$config) {
                 if (empty($productQuery->response->product['kit']) || !is_array($productQuery->response->product['kit'])) {
                     return;
                 }
 
                 $kitIds = array_column($productQuery->response->product['kit'], 'id');
-                foreach (array_chunk($kitIds, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
+                foreach (array_chunk($kitIds, $config->coreV2['chunk_size']) as $idsInChunk) {
                     $kitProductQuery = new Query\Product\GetByIdList($idsInChunk, $productQuery->regionId);
-                    $kitProductQuery->filter->model = false;
                     $kitProductQuery->prepare();
                     $kitProductQueries[] = $kitProductQuery;
 
@@ -140,7 +158,7 @@ namespace EnterApplication\Action\ProductCard
                     $kitProductDescriptionQuery->ids = $idsInChunk;
                     $kitProductDescriptionQuery->filter->media = true;
                     $kitProductDescriptionQuery->filter->property = true;
-                    if (\App::config()->lite['enabled']) {
+                    if ($config->lite['enabled']) {
                         $kitProductDescriptionQuery->filter->label = true;
                         $kitProductDescriptionQuery->filter->brand = true;
                         $kitProductDescriptionQuery->filter->category = true;
@@ -153,9 +171,11 @@ namespace EnterApplication\Action\ProductCard
 
             /** @var \EnterQuery\Product\Similar\GetUiListByProductUi|null $similarProductUiListQuery */
             $similarProductUiListQuery = null;
-            call_user_func(function() use (&$productQuery, &$regionQuery, &$similarProductUiListQuery) {
+            call_user_func(function() use (&$productQuery, &$regionQuery, &$similarProductUiListQuery, &$config) {
                 $productUi = $productQuery->response->product['ui'];
-                if (!$productUi) return;
+                if (!$productUi || !$config->mainMenu['recommendationsEnabled']) {
+                    return;
+                }
 
                 $similarProductUiListQuery = (new Query\Product\Similar\GetUiListByProductUi($productUi, $regionQuery->response->region['id']))->prepare();
             });
@@ -168,7 +188,6 @@ namespace EnterApplication\Action\ProductCard
                 if (!$productUis) return;
 
                 $similarProductQuery = new Query\Product\GetByUiList($productUis, $regionQuery->response->region['id']);
-                $similarProductQuery->filter->model = false;
                 $similarProductQuery->prepare();
 
                 $similarProductDescriptionQuery = new Query\Product\GetDescriptionByUiList();
@@ -176,16 +195,16 @@ namespace EnterApplication\Action\ProductCard
                 $similarProductDescriptionQuery->prepare();
             });
 
-            call_user_func(function() use (&$productQuery, &$userQuery, &$productViewEventQuery) {
+            call_user_func(function() use (&$productQuery, &$userQuery, &$productViewEventQuery, &$config) {
                 $productUi = $productQuery->response->product['ui'];
-                if (!$productUi || !$userQuery || !\App::config()->eventService['enabled']) return;
+                if (!$productUi || !$userQuery || !$config->eventService['enabled']) return;
 
                 // product view событие
                 $productViewEventQuery = (new Query\Event\PushProductView($productUi, $userQuery->response->user['ui']))->prepare();
             });
 
-            call_user_func(function() use (&$productQuery, &$couponQuery) {
-                if (empty($productQuery->response->product['ui'])) {
+            call_user_func(function() use (&$productQuery, &$couponQuery, &$config) {
+                if (empty($productQuery->response->product['ui']) || !$config->product['couponEnabledInCard']) {
                     return;
                 }
 
@@ -193,9 +212,11 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // доставка
-            call_user_func(function() use (&$productQuery, &$deliveryQuery, $kitProductQueries, $kitProductDescriptionQueries) {
+            call_user_func(function() use (&$productQuery, &$deliveryQuery, $kitProductQueries, $kitProductDescriptionQueries, &$config) {
                 $productId = $productQuery->response->product['id'];
-                if (!$productId) return;
+                if (!$productId || !$config->product['deliveryCalc']) {
+                    return;
+                }
 
                 $deliveryQuery = new Query\Delivery\GetByCart();
                 // корзина
@@ -239,8 +260,13 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // магазины на основе остатков
-            call_user_func(function() use (&$productQuery, &$shopQuery) {
+            call_user_func(function() use (&$productQuery, &$shopQuery, &$config) {
                 $shopIds = [];
+
+                if (!$config->product['deliveryCalc']) {
+                    return;
+                }
+
                 foreach ($productQuery->response->product['stock'] as $stock) {
                     if (!$stock['shop_id'] || !($stock['quantity'] + $stock['quantity_showroom'])) continue;
 
@@ -252,15 +278,9 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // группы оплаты
-            call_user_func(function() use (&$productQuery, &$paymentGroupQuery) {
-                return false; // SITE-5460
-
+            call_user_func(function() use (&$productQuery, &$paymentGroupQuery, &$config) {
                 $productId = $productQuery->response->product['id'];
-                if (!$productId) return;
-
-                $price = $productQuery->response->product['price'];
-
-                $cart = \App::user()->getCart(); // TODO: old usage
+                if (!$productId || !$config->product['creditEnabledInCard']) return;
 
                 $paymentGroupQuery = new Query\PaymentGroup\GetByCart();
                 // корзина
@@ -269,15 +289,18 @@ namespace EnterApplication\Action\ProductCard
                 $paymentGroupQuery->regionId = $productQuery->regionId;
                 // фильтер
                 $paymentGroupQuery->filter->isCorporative = false;
-                $paymentGroupQuery->filter->isCredit = (bool)(($price * (($cart->getProductQuantity($productId) > 0) ? $cart->getProductQuantity($productId) : 1)) >= \App::config()->product['minCreditPrice']);
+                $paymentGroupQuery->filter->isCredit = true;
+                $paymentGroupQuery->filter->noDiscount = true;
 
                 $paymentGroupQuery->prepare();
             });
 
             // рейтинг товаров
-            call_user_func(function() use (&$productQuery, &$ratingQuery) {
+            call_user_func(function() use (&$productQuery, &$ratingQuery, &$config) {
+                if (!$config->product['reviewEnabled']) return;
+
                 $ids = []; // идентификаторы товаров
-                if ($accessoryIds = array_slice((array)$productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage'])) {
+                if ($accessoryIds = array_slice((array)$productQuery->response->product['accessories'], 0, $config->product['itemsPerPage'])) {
                     $ids = array_merge($ids, $accessoryIds);
                 }
 
@@ -292,10 +315,12 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // отзывы товара
-            call_user_func(function() use (&$productQuery, &$reviewQuery) {
+            call_user_func(function() use (&$productQuery, &$reviewQuery, &$config) {
+                if (!$config->product['reviewEnabled']) return;
+
                 $productUi = $productQuery->response->product['ui'];
                 if (!$productUi) return;
-                $pageSize = \App::abTest()->isNewProductPage() ? 10 : 7;
+                $pageSize = 10;
                 $reviewQuery = (new Query\Product\Review\GetByProductUi($productUi, 0, $pageSize))->prepare();
             });
 
@@ -332,17 +357,17 @@ namespace EnterApplication\Action\ProductCard
             // товар для Подари Жизнь
             /** @var Query\Product\GetByUi $lifeGiftProductQuery|null */
             /** @var Query\Product\GetDescriptionByUiList $lifeGiftProductDescriptionQuery|null */
-            call_user_func(function() use (&$productQuery, &$lifeGiftProductQuery, &$lifeGiftProductDescriptionQuery) {
+            call_user_func(function() use (&$productQuery, &$lifeGiftProductQuery, &$lifeGiftProductDescriptionQuery, &$config) {
                 $product = $productQuery->response->product;
                 if (!$product['ui']) return;
 
                 $labelId = isset($product['label'][0]['id']) ? $product['label'][0]['id'] : null;
                 if (
-                    \App::config()->lifeGift['enabled']
+                    $config->lifeGift['enabled']
                     && $labelId
-                    && (\App::config()->lifeGift['labelId'] === $labelId)
+                    && ($config->lifeGift['labelId'] === $labelId)
                 ) {
-                    $lifeGiftProductQuery = new Query\Product\GetByUi($product['ui'], \App::config()->lifeGift['regionId']);
+                    $lifeGiftProductQuery = new Query\Product\GetByUi($product['ui'], $config->lifeGift['regionId']);
 
                     $lifeGiftProductDescriptionQuery = new Query\Product\GetDescriptionByUiList();
                     $lifeGiftProductDescriptionQuery->uis = [$product['ui']];
@@ -367,6 +392,7 @@ namespace EnterApplication\Action\ProductCard
             $response = new Response();
             $response->productQuery = $productQuery;
             $response->productDescriptionQuery = $productDescriptionQuery;
+            $response->productModelQuery = $productModelQuery;
             $response->userQuery = $userQuery;
             $response->favoriteQuery = $favoriteQuery;
 //            $response->subscribeQuery = $subscribeQuery;
@@ -427,6 +453,8 @@ namespace EnterApplication\Action\ProductCard\Get
         public $productQuery;
         /** @var Query\Product\GetDescriptionByTokenList */
         public $productDescriptionQuery;
+        /** @var Query\Product\Model\GetByTokenList */
+        public $productModelQuery;
         /** @var Query\User\GetByToken|null */
         public $userQuery;
         /** @var Query\Redirect\GetByUrl */

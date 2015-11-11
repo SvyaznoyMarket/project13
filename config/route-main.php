@@ -1,7 +1,6 @@
 <?php
 
 return [
-    // главная страница
     'homepage' => [
         'pattern' => '/',
         'action'  => ['Main\Action', 'index'],
@@ -15,6 +14,10 @@ return [
     'ssi.userConfig' => [
         'pattern' => '/ssi/user-config',
         'action'  => ['Ssi\UserConfigAction', 'execute'],
+    ],
+    'ssi.mainMenu' => [
+        'pattern' => '/ssi/navigation',
+        'action'  => ['MainMenu\Get', 'execute'],
     ],
 
     'mainMenu.recommendation' => [
@@ -238,6 +241,12 @@ return [
     // каталог товаров
     'product.category' => [
         'pattern' => '/catalog/{categoryPath}',
+        'action'  => ['ProductCategory\Action', 'category'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+    ],
+    // каталог товаров
+    'ajax.product.category' => [
+        'pattern' => '/ajax/catalog/{categoryPath}',
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
@@ -579,7 +588,7 @@ return [
     // редактирование данных пользователя
     'user.orders' => [
         'pattern' => '/private/orders',
-        'action'  => ['User\OrdersAction', 'execute'],
+        'action'  => ['User\Order\IndexAction', 'execute'],
     ],
     'user.favorites' => [
         'pattern' => '/private/favorites',
@@ -674,18 +683,19 @@ return [
         'pattern' => '/debug/query',
         'action'  => ['QueryAction', 'index'],
     ],
-
+    'debug.query.json' => [
+        'pattern' => '/debug/query/{queryToken}.json',
+        'action'  => ['QueryAction', 'getJson'],
+    ],
     'debug.query.show' => [
         'pattern' => '/debug/query/{queryToken}',
         'action'  => ['QueryAction', 'show'],
     ],
-
     'debug.log' => [
         'pattern' => '/debug/log/{id}',
         'action'  => ['LogAction', 'execute'],
         'method'  => ['POST'],
     ],
-
     'debug.info' => [
         'pattern' => '/debug/info',
         'action'  => ['DebugAction', 'info'],
@@ -906,6 +916,23 @@ return [
 			'page'	=> '\d{1,2}'
         ],
 	],
+
+    /*
+     * Закрытые распродажи
+     */
+
+    'sale.all'  => [
+        'pattern'   => '/secretsale',
+        'action'    => ['ClosedSale\SaleAction', 'index']
+    ],
+
+    'sale.one'  => [
+        'pattern'   => '/secretsale/{uid}',
+        'action'    => ['ClosedSale\SaleAction', 'show'],
+        'require' => [
+            'uid'		=> '[\w\d-_]+'
+        ],
+    ],
 	
 	/**
 	 * game.center

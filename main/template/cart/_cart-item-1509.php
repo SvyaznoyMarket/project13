@@ -1,9 +1,13 @@
-<div class="order-cart__item clearfix" ref="" data-product-id="" data-category-id="" data-bind="">
+<div class="order-cart__item clearfix" ref="" data-product-id="" data-category-id="" data-bind="css: { 'not-available': !isAvailable }">
     <a href="" class="order-cart__item-del jsCartDeleteProduct" data-bind="attr: { href: deleteUrl }">Удалить</a>
     <div class="order-cart__img">
         <a class="order-cart__img-lk" href="" data-bind="attr: { href: link }">
             <img src="" alt="" data-bind="attr: { src: img, alt: name}">
         </a>
+
+        <!-- ko if: !isAvailable && sender && sender.name == 'secret_sale' -->
+            <noindex><div class="not-available__sticker">Распродано</div></noindex>
+        <!-- /ko -->
     </div>
 
     <div class="order-cart__desc">

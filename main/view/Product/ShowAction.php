@@ -117,8 +117,12 @@ class ShowAction {
 
         $productItem['properties'] = (new \View\Product\Properties())->execute($helper, $product);
 
+        if ($category && $category->isTchibo()) {
+            $productItem['brandImage'] = null;
+        }
+
         // oldPrice and priceSale
-        if ( $product->getPriceOld() && $product->getLabel()) {
+        if ($product->getPriceOld()) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
             if (AbTest::isCurrencyDiscountPrice()) {
                 $productItem['priceSale'] = $helper->formatPrice($product->getPriceOld() - $product->getPrice());

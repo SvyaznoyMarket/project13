@@ -32,14 +32,22 @@ class Action {
         // подготовка 1-го пакета запросов
 
         // запрашиваем текущий регион, если есть кука региона
-        if ($user->getRegionId()) {
-            \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
-                $data = reset($data);
-                if ((bool)$data) {
+        if ($regionId = $user->getRegionId()) {
+            if ((true === \App::config()->region['cache']) && ($regionId === \App::config()->region['defaultId'])) {
+                $data = \App::dataStoreClient()->query('/region-default.json');
+                $data = !empty($data['result'][0]['id']) ? $data['result'][0] : null;
+                if ($data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
-            });
-            
+            } else {
+                \RepositoryManager::region()->prepareEntityById($regionId, function($data) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        \App::user()->setRegion(new \Model\Region\Entity($data));
+                    }
+                });
+            }
+
             $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
         }
 
@@ -176,18 +184,16 @@ class Action {
             $scmsClient->execute();
         }
 
+        // роутим на специфичные категории
         if ($category->isPandora()) {
-            if (\App::config()->debug) {
-                \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
-            }
-
+            \App::config()->debug && \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
             return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent);
-        } else if ($category->isGrid()) {
-            if (\App::config()->debug) {
-                \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
-            }
-
+        } else if ($category->isManualGrid()) {
+            \App::config()->debug && \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
             return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
+        } else if ($category->isAutoGrid()) {
+            \App::config()->debug && \App::debug()->add('sub.act', 'ProductCategory\Grid\AutoGridAction.execute', 134);
+            return (new \Controller\ProductCategory\Grid\AutoGridAction())->execute($request, $category);
         } else if (!$category->isDefault()) {
             \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $category->getCategoryClass()));
         }
@@ -255,50 +261,33 @@ class Action {
 
         if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
             $category->setProductView(3);
+        } else if ($category->isTchibo()) {
+            $category->setProductView(3);
         }
 
-        // получаем из json данные о горячих ссылках и content
         $hotlinks = [];
         $seoContent = '';
         try {
-            $seoContent = $category->getSeoContent();
             if ($category) {
-                $hotlinks = $category->getSeoHotlinks();
-            }
-        } catch (\Exception $e) {
-            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
-        }
+                $seoContent = $category->getSeoContent();
 
-        // SITE-4439
-        try {
-            // если у категории нет дочерних узлов
-            if ($category && (!$category->getHasChild() || in_array($category->getId(), [1096]))) {
-//                $hotlinks = array_filter($hotlinks, function(\Model\Seo\Hotlink\Entity $item) { return (bool)$item->getGroupName(); }); // TODO: временная заглушка
-                // опции брендов
-                $brandOptions = [];
-                foreach ($filters as $filter) {
-                    if ('brand' == $filter->getId()) {
-                        foreach ($filter->getOption() as $option) {
-                            $brandOptions[] = $option;
+                if ($categoryToken != Category::FAKE_SHOP_TOKEN) {
+                    $hotlinks = $category->getSeoHotlinks();
+
+                    // SITE-4439
+                    if (!$category->getHasChild() || in_array($category->getId(), [1096])) {
+                        foreach ($brands as $iBrand) {
+                            $hotlinks[] = new \Model\Seo\Hotlink\Entity([
+                                'group' => '',
+                                'name' => $iBrand->getName(),
+                                'url' => \App::router()->generate('product.category.brand', [
+                                    'categoryPath' => $categoryPath,
+                                    'brandToken'   => $iBrand->getToken(),
+                                ]),
+                            ]);
                         }
-
-                        break;
                     }
                 }
-                // сортировка брендов по наибольшему количеству товаров
-                usort($brandOptions, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) { return $b->getQuantity() - $a->getQuantity(); });
-
-                foreach ($brands as $iBrand) {
-                    $hotlinks[] = new \Model\Seo\Hotlink\Entity([
-                        'group' => '',
-                        'name' => $iBrand->getName(),
-                        'url' => \App::router()->generate('product.category.brand', [
-                            'categoryPath' => $categoryPath,
-                            'brandToken'   => $iBrand->getToken(),
-                        ]),
-                    ]);
-                }
-
             }
         } catch (\Exception $e) {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['hotlinks']);
@@ -323,10 +312,14 @@ class Action {
 
         // promo slider
         $slideData = null;
-        if (array_key_exists('promo_slider', $catalogJson)) {
+        if (array_key_exists('promo_slider', $catalogJson) || $category->isTchibo()) {
             $show = isset($catalogJson['promo_slider']['show']) ? (bool)$catalogJson['promo_slider']['show'] : false;
             $promoCategoryToken = isset($catalogJson['promo_slider']['promo_token']) ? trim($catalogJson['promo_slider']['promo_token']) : null;
 
+            if ($category->isTchibo()) {
+                $promoCategoryToken = 'tchibo';
+                $show = true;
+}
             if ($show && !empty($promoCategoryToken)) {
                 try {
                     $promoRepository = \RepositoryManager::promo();
@@ -591,6 +584,8 @@ class Action {
         // листалка
         if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
             $itemsPerPage = 21;
+        } else if ($category->isTchibo()) {
+            $itemsPerPage = 21;
         } else {
             $itemsPerPage = \App::config()->product['itemsPerPage'];
         }
@@ -635,7 +630,7 @@ class Action {
 
                 // SITE-4715
                 $smartChoiceData = array_filter($smartChoiceData, function($a) {
-                    return isset($a['products']);
+                    return !empty($a['products'][0]['id']);
                 });
 
                 foreach ($smartChoiceData as $smartChoiceItem) {
@@ -709,7 +704,7 @@ class Action {
         /** @var \Model\Product\Entity[] $products */
         $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, $productIds);
 
-        $repository->prepareProductQueries($products, 'media label brand category' . ($category->listingView->isList ? ' property' : ''));
+        $repository->prepareProductQueries($products, 'model media label brand category' . ($category->listingView->isList ? ' property' : ''));
 
         \App::coreClientV2()->execute();
 
@@ -743,11 +738,13 @@ class Action {
             throw new \Exception('Не удалось получить товары');
         }
 
-        \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
-            if (isset($data['product_scores'][0])) {
-                \RepositoryManager::review()->addScores($products, $data);
-            }
-        });
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
+                if (isset($data['product_scores'][0])) {
+                    \RepositoryManager::review()->addScores($products, $data);
+                }
+            });
+        }
 
         \App::coreClientV2()->execute();
 
@@ -789,6 +786,19 @@ class Action {
             }
         } else {
             $columnCount = (bool)array_intersect(array_map(function(\Model\Product\Category\Entity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
+        }
+
+        $rootCategoryInMenu = null;
+        if ($category->isTchibo()) {
+            $columnCount = 3;
+                \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($category->getRoot()->getId(), $region, 3, function($data) use (&$rootCategoryInMenu) {
+                    $data = is_array($data) ? reset($data) : [];
+                    if (isset($data['id'])) {
+                        $rootCategoryInMenu = new \Model\Product\Category\TreeEntity($data);
+                    }
+                });
+
+                \App::searchClient()->execute();
         }
 
         // ajax
@@ -844,6 +854,7 @@ class Action {
         $page->setParam('productView', $productView);
         $page->setParam('hasBanner', $hasBanner);
         $page->setParam('columnCount', $columnCount);
+        $page->setParam('rootCategoryInMenu', $rootCategoryInMenu);
 
         return new \Http\Response($page->show());
     }

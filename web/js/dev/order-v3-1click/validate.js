@@ -5,6 +5,23 @@
 			$validationErrors = $('.jsOrderValidationErrors'),
 			$form = $('.jsOrderV3OneClickForm'),
 			errorClass = 'textfield-err',
+
+			loadPaymentForm = function($container, url, data) {
+				$container.html('...'); // TODO: loader
+
+				$.ajax({
+					url: url,
+					type: 'POST',
+					data: data
+				}).fail(function(jqXHR){
+					$container.html('Ошибка');
+				}).done(function(response){
+					if (response.form) {
+						$container.html(response.form);
+					}
+				}).always(function(){});
+			},
+
 			validateEmail = function validateEmailF(email) {
 				var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 				return re.test(email) && !/[а-яА-Я]/.test(email);
@@ -83,6 +100,27 @@
 					if (typeof response.result !== 'undefined') {
 						$('#jsOneClickContentPage').hide();
 						$('#jsOneClickContent').append(response.result.page);
+
+						try {
+							$('.js-order-onlinePaymentMethod').each(function(i, el) {
+								var
+									$el = $(el),
+									url,
+									data,
+									relations,
+									$formContainer
+								;
+
+								if ($el.data('checked')) {
+									url = $el.data('url');
+									data = $el.data('value');
+									relations = $el.data('relation');
+									$formContainer = relations['formContainer'] && $(relations['formContainer']);
+
+									loadPaymentForm($formContainer, url, data);
+								}
+							});
+						} catch (error) { console.error(error); }
 
 						$('body').trigger('trackUserAction', ['3_1 Оформить_успешно']);
 
@@ -164,6 +202,19 @@
 
 						if (response.result.orderAnalytics) {
 							ENTER.utils.sendOrderToGA(response.result.orderAnalytics);
+							ENTER.utils.analytics.soloway.send({
+								action: 'orderComplete',
+								orders: response.result.orderAnalytics.orders
+							});
+						}
+
+						// criteo
+						if (
+							response.result.criteoData
+							&& typeof(window.criteo_q) != 'undefined'
+							&& !$.isEmptyObject(response.result.criteoData)
+						) {
+							window.criteo_q.push(response.result.criteoData);
 						}
 					}
 				})
@@ -179,8 +230,30 @@
 					$('body').trigger('trackUserAction', ['3_2 Оформить_ошибка', 'Поле ошибки: '+ ((typeof error !== 'undefined') ? error.join(', ') : '')]);
 				})
 			;
-		})
-	};
+		});
 
+		$body.on('change', '.js-order-onlinePaymentMethod', function(e) {
+			var
+				$el = $(this),
+				url = $el.data('url'),
+				data = $el.data('value'),
+				relations = $el.data('relation'),
+				$formContainer = relations['formContainer'] && $(relations['formContainer'])
+			;
+
+			try {
+				if (!url) {
+					throw {message: 'Не задан url для получения формы'};
+				}
+				if (!$formContainer.length) {
+					throw {message: 'Не найден контейнер для формы'};
+				}
+
+				loadPaymentForm($formContainer, url, data);
+			} catch(error) { console.error(error); };
+
+			//e.preventDefault();
+		});
+	};
 
 }(jQuery));

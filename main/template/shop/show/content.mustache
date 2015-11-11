@@ -3,8 +3,7 @@
 <div class="shops__info">
     <div class="shops__btns">
         <a class="shops__btn-default js-shop-print-opener" href="#">Распечатать</a>
-        {{! SITE-6096 }}
-        {{! <a class="shops__btn-default js-shop-email-opener" href="#">Отправить на email</a> }}
+        <a class="shops__btn-default js-shop-email-opener" href="#">Отправить на email</a>
     </div>
 
     <div class="pick-point-item">
@@ -90,21 +89,21 @@
         {{/point.way.commonHtml}}
 
         {{^point.way.commonHtml}}
-            <div class="shops-way-tabs tabs">
-                <div class="tabs-head">
-                    {{#point.way.walkHtml}}<div class="tabs-head__i active js-shop-tab-head" data-target="walk"><a>На городском транспорте</a></div>{{/point.way.walkHtml}}
-                    {{#point.way.autoHtml}}<div class="tabs-head__i js-shop-tab-head" data-target="auto"><a>На авто</a></div>{{/point.way.autoHtml}}
-                </div>
+            <div class="tabs js-tabs">
+                <ul class="tabs__controls tabs__controls_h-incomplete">
+                    {{#point.way.walkHtml}}<li class="tabs__controls-item tabs__controls-item_h-incomplete active js-tabs-control" data-target="walk">На городском транспорте</li>{{/point.way.walkHtml}}
+                    {{#point.way.autoHtml}}<li class="tabs__controls-item tabs__controls-item_h-incomplete js-tabs-control" data-target="auto">На авто</li>{{/point.way.autoHtml}}
+                </ul>
 
                 <div class="tabs-body">
                     {{#point.way.walkHtml}}
-                        <div class="tabs-body__i active js-shop-tab" id="walk">
+                        <div class="tabs__item active js-tab" id="walk">
                             {{&point.way.walkHtml}}
                         </div>
                     {{/point.way.walkHtml}}
 
                 {{#point.way.autoHtml}}
-                    <div class="tabs-body__i js-shop-tab" id="auto">{{&point.way.autoHtml}}</div>
+                    <div class="tabs__item js-tab" id="auto">{{&point.way.autoHtml}}</div>
                 {{/point.way.autoHtml}}
                 </div>
 
@@ -118,9 +117,8 @@
     <div class="send-popup__head">Отправить информацию о {{point.partner.names.locativus}}</div>
 
     <form action="{{point.emailSendUrl}}" method="post" class="js-shop-email-popup-form">
-        <div class="pick-point-item__addr">
+        <div class="pick-point-item__addr {{^point.subway.name}}pick-point-item__addr--no-metro{{/point.subway.name}}">
             {{#point.subway.name}}
-
                 <div class="pick-point-item__metro" style=" background-color: orange">
                     <div class="pick-point-item__metro-inn">м. {{point.subway.name}}</div>
                 </div>

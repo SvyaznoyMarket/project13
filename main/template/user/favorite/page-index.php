@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page                 \View\User\OrdersPage
+ * @var $page                 \View\User\FavoritesPage
  * @var $helper               \Helper\TemplateHelper
  * @var $user                 \Session\User
  * @var $productsByUi         \Model\Product\Entity[]
@@ -11,7 +11,7 @@
 ?>
 
 <div id="personal-container" class="personal">
-    <?= $page->render('user/_menu-1508', ['page' => $page]) ?>
+    <?= $page->render('user/_menu', ['page' => $page]) ?>
 
     <div class="personal__favorits id-favorite-container js-favorite-container disabled" data-disabled-class="disabled">
         <div class="personal-favorit__top">

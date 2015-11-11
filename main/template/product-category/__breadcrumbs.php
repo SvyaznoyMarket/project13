@@ -3,28 +3,30 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Category\Entity $category,
-    $isBrand = false
+    \Model\Brand\Entity $brand = null
 ) {
 
     $links = [];
-    $count = count($category->getAncestor());
+    /** @var \Model\Product\Category\Entity[] $categories */
+    $categories = $category->getAncestor();
+    if ($brand) {
+        $iCategory = clone $category;
+        $iCategory->name = preg_replace('/' . $brand->name . '$/', '', $iCategory->name);
+        $categories[] = $iCategory; // SITE-6369
+    }
+
+    $count = count($categories);
     $i = 1;
-    foreach ($category->getAncestor() as $ancestor) {
+    foreach ($categories as $ancestor) {
+        $isLast = $i == $count;
+
         $links[] = [
             'url'  => $ancestor->getLink(),
             'name' => $ancestor->getName(),
-            'last' => $i == $count && !$isBrand,
+            'last' => $isLast,
         ];
 
         $i++;
-    }
-    /* Если Товар + Бренд, то добавляем к крошкам текущую категорию */
-    if ($isBrand) {
-        $links[] = [
-            'url'  => $category->getLink(),
-            'name' => $category->getName(),
-            'last' => true,
-        ];
     }
 ?>
 

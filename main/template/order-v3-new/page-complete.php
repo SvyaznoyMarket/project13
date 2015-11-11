@@ -30,6 +30,8 @@ $f = function(
     array_map(function(\Model\PaymentMethod\PaymentEntity &$entity) {$entity->unsetSvyaznoyClub();}, $ordersPayment); // fix for SITE-5229 (see comments)
 
     $formUrl = \App::router()->generate('orderV3.paymentForm');
+    $showStatus = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
+    $showPaymentStatus = ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']));
 ?>
     <div class="order__wrap">
     <section class="orderCnt jsOrderV3PageComplete order-page">
@@ -66,14 +68,23 @@ $f = function(
                         || (true === $onlinePaymentStatusByNumber[$order->number])
                     )
                     && ((bool)$paymentEntity ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $paymentEntity->groups) : false)
+                    && ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']))
+                    && !$order->isPaid()
                 ;
 
                 $discountContainerId = sprintf('id-onlineDiscount-container', $order->id);
+                $sumContainerId = sprintf('id-onlineDiscountSum-container', $order->id);
+
+                // SITE-6304
+                $checkedPaymentMethodId = $order->paymentId;
+                if (!array_key_exists($order->paymentId, $onlinePaymentMethods) && ($paymentMethod = reset($onlinePaymentMethods) ?: null)) {
+                    /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod */
+                    $checkedPaymentMethodId = $paymentMethod->id;
+                }
             ?>
 
-                <div class="orderLn clearfix" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
-                    <div class="orderLn_l">
-
+                <div class="orderLn table <? if ($showStatus): ?>orderLn--status<? endif ?>" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
+                    <div class="orderLn_l orderLn_cell">
                         <? if ($userEntity) : ?>
                             <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
                         <? else : ?>
@@ -96,26 +107,41 @@ $f = function(
                                 <? break; endif ?>
                             <? endforeach ?>
                         </ul>
-
                     </div>
 
                     <? if (\RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)) : ?>
 
-                    <div class="orderLn_c">
+                    <div class="orderLn_c orderLn_cell">
                         <div class="delivery-block">
-                            <div class="delivery-block__type"><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?></div>
-                            <div class="delivery-block__info"><? if ($order->deliveredAt) : ?><?= strftime('%e %b %Y', $order->deliveredAt->getTimestamp()) ?><? endif ?>
+                            <div class="delivery-block__type"><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>:</div>
+                            <div class="delivery-block__info">
+                                <? if ($order->deliveredAt) : ?>
+                                <?
+                                    $deliveryText =
+                                        !empty($order->deliveryDateInterval['name'])
+                                        ? $order->deliveryDateInterval['name']
+                                        : (
+                                            strftime('%e %b %Y', $order->deliveredAt->getTimestamp())
+                                            ? $order->getDeliveredAt()->format('d.m.Y')
+                                            : null
+                                        )
+                                    ;
+                                ?>
+                                    <?= $deliveryText ?>
+
+                                <? endif ?>
                                 <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
                             </div>
                         </div>
-                        <!--<div>Оплата при получении: наличные, банковская карта</div>-->
                     </div>
 
                     <? endif ?>
+
+                    <? if ($showPaymentStatus): ?>
                     <!-- тип оплаты -->
-                    <div class="payment-block">
+                    <div class="payment-block orderLn_c orderLn_cell" style="width: 255px;">
                         <? if ($checkedPaymentMethod): ?>
-                        <div class="payment-block__type">Тип оплаты: </div>
+                        <div class="payment-block__type">Способ оплаты: </div>
                         <div class="payment-block__logo">
                             <?= $checkedPaymentMethod->name ?>
                             <? if ($image = $checkedPaymentMethod->icon): ?>
@@ -124,17 +150,35 @@ $f = function(
                         </div>
                         <? endif ?>
                     </div>
+                    <? endif ?>
+
                     <!-- тип оплаты -->
 
-                    <div class="orderLn_r">
-                        <? if ($order->getPaySum()): ?>
+                    <div class="orderLn_cell js-order-cell">
+                        <? if ($order->paySum): ?>
                             <div class="order-sum">
-                                <? if (false): ?>
-                                    <div class="order-sum__prev"><span class="line-through"><?= $helper->formatPrice($order->getPaySum()) ?></span> <span class="rubl">p</span></div>
+                                <? if ($order->sum > $order->paySum): ?>
+                                    <div class="order-sum__prev"><span class="line-through"><?= $helper->formatPrice($order->sum) ?></span> <span class="rubl">p</span></div>
                                 <? endif ?>
-                                <div class="order-sum__val"><?= $helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></div>
-                                <? if (PaymentMethodEntity::PAYMENT_CASH === $order->paymentId): ?>
-                                    <button class="orderPayment_btn btn3 js-payment-popup-show">Оплатить онлайн</button>
+                                <div class="order-sum__val"><?= $helper->formatPrice($order->paySum) ?> <span class="rubl">p</span></div>
+
+                                <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT]) && $order->isCredit()): ?>
+                                    <button class="orderPayment_btn btn3 js-payment-popup-show">Оформить кредит</button>
+
+                                    <div style="display: none;" class="payments-popup js-payment-popup">
+                                        <div class="js-payment-popup-closer payments-popup__closer"></div>
+                                        
+                                        <?= $helper->render('order-v3-new/complete-blocks/_credit', [
+                                            'order'      => $order,
+                                            'banks'      => $banks,
+                                            'creditData' => $creditData,
+                                            'isStatic'   => false,
+                                        ]) ?>
+                                    </div>
+                                <? endif ?>
+
+                                <? if ($isOnlinePaymentPossible && (PaymentMethodEntity::PAYMENT_CASH === $order->paymentId)): ?>
+                                    <div style="text-align: right;"><button class="orderPayment_btn btn3 js-payment-popup-show">Оплатить онлайн</button></div>
 
                                     <ul class="payments__lst">
                                         <? foreach ($paymentEntity->methods as $paymentMethod): ?>
@@ -154,7 +198,13 @@ $f = function(
                                             Онлайн-оплата
                                         </div>
                                         <div class="order-payment__sum-msg">
-                                            К оплате <span class="order-payment__sum"><?= $helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></span>
+                                        <?
+                                            $sum = ($checkedPaymentMethodId && $paymentEntity) ? ($paymentEntity->getPaymentSumByMethodId($checkedPaymentMethodId)) : null;
+                                            if (!$sum) {
+                                                $sum = $order->paySum;
+                                            }
+                                        ?>
+                                            К оплате <span class="order-payment__sum"><span class="<?= $sumContainerId ?>"><?= $helper->formatPrice($sum) ?></span> <span class="rubl">p</span></span>
                                         </div>
 
                                         <? foreach ($paymentMethodsByDiscount as $discountIndex => $paymentMethodChunk): ?>
@@ -163,8 +213,8 @@ $f = function(
                                             <?
                                                 /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity|null $paymentMethod */
                                                 $containerId = sprintf('id-order-%s-paymentMethod-container', $order->id);
-                                                $elementId = sprintf('order-%s-paymentMethod-%s', $order->id, $paymentMethod->id);
-                                                $checked = $order->paymentId == $paymentMethod->id;
+                                                $elementId = sprintf('order_%s-paymentMethod_%s', $order->id, $paymentMethod->id);
+                                                $checked = $checkedPaymentMethodId == $paymentMethod->id;
                                             ?>
                                                 <li class="payment-methods__i">
                                                     <input
@@ -180,15 +230,22 @@ $f = function(
                                                             'number' => $order->number,
                                                             'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context], true),
                                                         ]) ?>"
-                                                        <? if ($paymentMethod->isOnline): ?>
-                                                            data-discount="true"
+                                                        <? if ($sum = ($paymentMethod->getOnlineDiscountActionSum() ?: $order->paySum)): ?>
+                                                            data-sum="<?= $helper->json([
+                                                                'name'  => isset($paymentMethod->discount['value']) ? ('Скидка ' . $paymentMethod->discount['value'] .'%') : null,
+                                                                'value' => $helper->formatPrice($sum)
+                                                            ])?>"
                                                         <? endif ?>
                                                         data-relation="<?= $helper->json([
                                                             'formContainer'     => '.' . $containerId,
                                                             'discountContainer' => '.' . $discountContainerId,
+                                                            'sumContainer'      => '.' . $sumContainerId,
                                                         ]) ?>"
                                                         class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
-                                                        <? if ($checked): ?> checked="checked"<? endif ?>
+                                                        <? if ($checked): ?>
+                                                            checked="checked"
+                                                            data-checked="true"
+                                                        <? endif ?>
                                                     />
                                                     <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2<? if ($checked): ?> mChecked<? endif ?>">
                                                         <?= $paymentMethod->name ?>
@@ -199,10 +256,10 @@ $f = function(
                                                 </li>
                                             <? endforeach ?>
                                         </ul>
-                                            <? if (0 === $discountIndex): ?>
+                                            <? if ((0 === $discountIndex) && isset($paymentMethodChunk[0]->discount['value'])): ?>
                                                 <div class="payment-methods__discount discount">
                                                     <div class="<?= $discountContainerId ?>">
-                                                        <span class="discount__val">Скидка 15%</span>
+                                                        <span class="discount__val">Скидка <?= $paymentMethodChunk[0]->discount['value'] ?>%</span>
                                                     </div>
                                                 </div>
                                             <? endif ?>
@@ -234,7 +291,7 @@ $f = function(
                                         data-checked="true"
                                         class="js-order-onlinePaymentMethod"
                                     />
-                                    <div class="<?= $containerId ?>"></div>
+                                    <div style="text-align: right;" class="<?= $containerId ?>"></div>
                                 <? endif ?>
                             </div>
                         <? endif ?>
@@ -242,14 +299,23 @@ $f = function(
                         <? if ($order->isPaid()) : ?>
                             <!-- Оплачено -->
                             <div class="orderLn_row orderLn_row-bg orderLn_row-bg-grey jsOrderPaid">
-                                <img class="orderLn_row_imgpay" src="/styles/order/img/payment.png" alt="" />
+                                <img class="orderLn_row_imgpay" src="/styles/order/img/payment.png" alt="Оплачено" />
                             </div>
                         <? endif ?>
                     </div>
+
+                    <? if ($showStatus): ?>
+                    <div class="orderLn_status orderLn_cell">
+                        <div class="orderLn_status-title">Статус:</div>
+                        <? if ($order->status): ?>
+                            <strong class="orderLn_status-new"><?= $order->status->name ?></strong>
+                        <? else:?>
+                            <strong>Не известен</strong>
+                        <? endif ?>
+                    </div>
+                    <? endif ?>
                 </div>
-
             <? endforeach ?>
-
         </div>
 
         <div class="orderCompl orderCompl_final clearfix">

@@ -52,6 +52,7 @@ namespace EnterQuery\PaymentGroup
                 if (null !== $this->filter->isPersonal) $urlQuery['is_personal'] = $this->filter->isPersonal;
                 if (null !== $this->filter->isLegal) $urlQuery['is_legal'] = $this->filter->isLegal;
                 if (null !== $this->filter->isCorporative) $urlQuery['is_corporative'] = $this->filter->isCorporative;
+                if (null !== $this->filter->noDiscount) $urlQuery['no_discount'] = $this->filter->noDiscount;
             }
 
             $this->prepareCurlQuery(
@@ -124,6 +125,8 @@ namespace EnterQuery\PaymentGroup\GetByCart
         public $isLegal;
         /** @var bool */
         public $isCorporative;
+        /** @var bool */
+        public $noDiscount;
     }
 }
 

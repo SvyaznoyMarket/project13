@@ -37,6 +37,10 @@ namespace Model\OrderDelivery {
         /** Общая стоимость заказов
          * @var float
          */
+        public $total_view_cost;
+        /** Общая стоимость заказов
+         * @var float
+         */
         public $errors = [];
 
         public function __construct(array $data = []) {
@@ -92,6 +96,11 @@ namespace Model\OrderDelivery {
             } else {
                 throw new \Exception('Отстуствует общая стоимость заказа');
             }
+            if (isset($data['total_view_cost'])) {
+                $this->total_view_cost = (float)$data['total_view_cost'];
+            } else {
+                //throw new \Exception('Отстуствует total_view_cost заказа');
+            }
 
             if (isset($data['errors']) && is_array($data['errors'])) {
                 foreach ($data['errors'] as $error) {
@@ -101,17 +110,6 @@ namespace Model\OrderDelivery {
 
             $this->validate();
             $this->validateOrders();
-
-            // проверка на 100000 SITE-5958
-            foreach ($this->orders as $order) {
-                if (\App::config()->order['prepayment']['priceLimit'] && ($order->total_view_cost > \App::config()->order['prepayment']['priceLimit'])) {
-                    foreach ($order->possible_payment_methods as $i => $possiblePaymentMethod) {
-                        if (in_array($possiblePaymentMethod->id, ['1', '2']) && (count($order->possible_payment_methods) > 1)) {
-                            unset($order->possible_payment_methods[$i]);
-                        }
-                    }
-                }
-            }
         }
 
         /**
@@ -405,6 +403,8 @@ namespace Model\OrderDelivery\Entity {
             'pin'   => null,
             'par'   => null
         ];
+        /** @var int */
+        public $prepaid_sum = 0;
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
 
@@ -429,8 +429,6 @@ namespace Model\OrderDelivery\Entity {
 
             if (isset($data['actions']) && is_array($data['actions'])) $this->actions = $data['actions'];
 
-            if (isset($data['delivery']['delivery_method_token'])) $this->delivery = new Order\Delivery($data['delivery'], $orderDelivery);
-
             if (isset($data['payment_method_id'])) $this->payment_method_id = (int)$data['payment_method_id'];
 
             if (isset($data['possible_deliveries']) && is_array($data['possible_deliveries'])) {
@@ -441,9 +439,10 @@ namespace Model\OrderDelivery\Entity {
             }
 
             if (isset($data['possible_payment_methods']) && is_array($data['possible_payment_methods'])) {
-//                $this->possible_payment_methods = (array)$data['possible_payment_methods'];
                 foreach ($data['possible_payment_methods'] as $id) {
                     if ($id == PaymentMethodEntity::PAYMENT_CREDIT && !\App::config()->payment['creditEnabled']) continue;
+                    if ('10' == $id) continue; // подарочный сертификат
+
                     if (isset($orderDelivery->payment_methods[$id])) $this->possible_payment_methods[$id] = &$orderDelivery->payment_methods[$id];
                     else throw new \Exception('Не существует метода оплаты для заказа');
                 }
@@ -451,7 +450,12 @@ namespace Model\OrderDelivery\Entity {
 
             if (isset($data['possible_days']) && is_array($data['possible_days'])) {
                 $this->possible_days = (array)$data['possible_days'];
-                if (count($this->possible_days) == 0) throw new \Exception('Не существует доступных дней');
+                //if (count($this->possible_days) == 0) throw new \Exception('Не существует доступных дней'); // SITE-6276
+            }
+
+            if (isset($data['delivery']['delivery_method_token'])) $this->delivery = new Order\Delivery($data['delivery'], $orderDelivery);
+            if ($this->delivery && !$this->possible_days) {
+                $this->delivery->date = null;
             }
 
             if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) $this->possible_intervals = (array)$data['possible_intervals'];
@@ -466,11 +470,14 @@ namespace Model\OrderDelivery\Entity {
                         foreach ($points as $pointItem) {
                             if (
                                 !isset($pointItem['id'])
-                                || empty($pointItem['nearest_day'])
+                                //|| empty($pointItem['nearest_day']) SITE-6307
                                 || !isset($orderDelivery->points[$pointType]->list[$pointItem['id']])
                             ) {
                                 continue;
                             }
+
+                            // FIXME
+                            //$pointItem['nearest_day'] = null; // fixture
 
                             $point = [
                                 'point'         => &$orderDelivery->points[$pointType]->list[$pointItem['id']],
@@ -509,6 +516,16 @@ namespace Model\OrderDelivery\Entity {
                 if (isset($data['certificate']['par']))  $this->certificate['par'] = (string)$data['certificate']['par'];
             }
 
+            // SITE-4744 если выбран способ оплаты со скидкой, то добавить discount
+            if ($this->payment_method_id && ($paymentMethod = isset($this->possible_payment_methods[$this->payment_method_id]) ? $this->possible_payment_methods[$this->payment_method_id] : null) && $paymentMethod->discount) {
+                $discount = new Order\Discount();
+                $discount->discount = $this->total_cost - $this->total_view_cost;
+                $discount->type = 'online';
+                $discount->name = sprintf("Скидка %s%s", $paymentMethod->discount['value'], $paymentMethod->discount['unit']);
+                $this->discounts[] = $discount;
+            }
+
+            if (isset($data['prepaid_sum'])) $this->prepaid_sum = (float)$data['prepaid_sum'];
         }
 
         /** Это заказ партнерский?
@@ -839,7 +856,7 @@ namespace Model\OrderDelivery\Entity\Order {
         private function validate() {
             foreach (get_object_vars($this) as $name => $value) {
                 // для некоторых скидок может и не быть number (бесплатная доставка)
-                if ($this->$name === null && $name !== 'number') throw new ValidateException("Для скидки не указан $name");
+                //if ($this->$name === null && $name !== 'number') throw new ValidateException("Для скидки не указан $name");
             }
         }
     }

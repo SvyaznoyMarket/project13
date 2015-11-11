@@ -72,6 +72,8 @@ class ProductButtonAction {
             'ecommerceData' => $product->ecommerceData()
         ];
 
+        $isOneClickOnly = \Session\AbTest\ABHelperTrait::isOneClickOnly();
+
         if (!$product->getIsBuyable()) {
             $data['disabled'] = true;
             $data['url'] = '#';
@@ -129,13 +131,14 @@ class ProductButtonAction {
         } else {
             // Внимание!!! Генерация URL адреса для покупки также происходит в web/js/dev/common/UserCustomBindings.js
             $data['url'] = $this->getBuyUrl($helper, $product, $sender, $sender2);
-            $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton';
+            $data['class'] .= ' btnBuy__eLink js-orderButton ' . ($isOneClickOnly ? 'jsOneClickButton' : 'jsBuyButton');
             $data['value'] = 'Купить';
-            if (\App::abTest()->isNewProductPage() && in_array($location, ['product-card', 'userbar'])) $data['value'] = 'Купить';
+            if (in_array($location, ['product-card', 'userbar'])) {
+                $data['value'] = 'Купить';
+            }
         }
 
-        /* Новая карточка товара */
-        if (\App::abTest()->isNewProductPage() && $location !== null && $useNewStyles) {
+        if ($location !== null && $useNewStyles) {
             $data['class'] = str_replace('btnBuy__eLink', '', $data['class']) . ' btn-type btn-type--buy';
             if ('product-card' === $location) $data['class'] .= ' btn-type--longer btn-type--buy--bigger';
             if ('slider' === $location) $data['class'] .= ' btn-type--light';

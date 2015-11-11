@@ -23,19 +23,18 @@ $f = function(
         return '';
     }
 
-    $image = $paymentMethod->icon ? str_replace('.png', '-big.png', $paymentMethod->icon) : null;
     $formUrl = \App::router()->generate('orderV3.paymentForm');
 ?>
 
     <!-- блок когда была выбран конкретный способ оплаты -->
-    <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
+    <div class="orderPayment orderPayment--static orderPaymentWeb">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
-                    Онлайн-оплата
+                    Онлайн-оплата<? if (false): ?> со скидкой 15%<? endif ?>
                 </div>
 
                 <div class="orderPayment_msg_shop orderPayment_pay">

@@ -1,28 +1,28 @@
-.fltrBtn{
+.fltrBtn {
     width: 960px;
     margin: 0 0 0 -10px;
-    &-mb10{
+    &-mb10 {
         margin-bottom: 10px;
     }
-    &-bt{
+    &-bt {
         border-top: 5px solid @typLightGray;
     }
     // шапка фильтров в рутовых категориях
-    &_hd{
+    &_hd {
         margin-bottom: 10px;
         padding: 10px 10px 0;
-        &_r{
+        &_r {
             margin: 3px 0 0 30px;
 
             color: @darkgrey6;
 
             .inline-block();
         }
-        &_count{
+        &_count {
             .inline-block-middle();
         }
         // отчисть фильтры в рутовых категориях
-        &_clr{
+        &_clr {
             line-height: 13px;
 
             margin: 0 0 0 15px;
@@ -30,18 +30,18 @@
             cursor: pointer;
 
             .inline-block-middle();
-            &_tx{
+            &_tx {
                 border-bottom: 1px dotted @darkgrey6;
 
                 .inline-block-middle();
             }
-            &_btn{
+            &_btn {
                 .inline-block-middle();
             }
         }
     }
     // название фильтра
-    &_tggl{
+    &_tggl {
         font-size: 16px;
 
         padding: 0 0 0 15px;
@@ -52,49 +52,50 @@
         background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAKCAQAAADMDLw1AAAAQUlEQVQIW2Nw3uGiy4AKnP47/3We4y6JIgSCzl+c6t24UYTAws+ckxuYUITAwpdc3PELoWl0/uLSgGQ8hiMwnQoAAEs8bqiaIsoAAAAASUVORK5CYII=') no-repeat 0 50%;
 
         .inline-block();
-        &_tx{
+        &_tx {
             border-bottom: 1px dotted #515151;
         }
-        &.opn{
+        &.opn {
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAQAAAChr3WYAAAAXElEQVQI11XKwQ0AERSE4YmrChShCSMUohAKUYg6FKECV9nN2rDre5eXPwMWc53HAqs5jjSsBsB8xIyHV+w7da/wMnEvIxYn2eauOYkPw4wBf0mwsiaBk/XWr/8G2pM8a8IWUVQAAAAASUVORK5CYII=');
         }
-        &-ncorner{
+        &-ncorner {
             padding-left: 0;
+
             cursor: default;
 
             background: none;
-            .fltrBtn_tggl_tx{
+            .fltrBtn_tggl_tx {
                 border: none;
             }
         }
     }
     // секция фильтра
-    &_kit{
+    &_kit {
         padding: 0 10px;
 
         border-bottom: 1px solid @typLightGray;
-        &-box{
+        &-box {
             padding: 10px;
         }
-        &-nborder{
+        &-nborder {
             border-bottom: none;
         }
-        &-ovrflw{
+        &-ovrflw {
             overflow: auto;
 
             max-height: 165px;
             padding: 7px 10px 0;
         }
-        &_l{
+        &_l {
             float: left;
 
             width: 80px;
             margin: 15px 0 0 12px;
         }
-        &_r{
+        &_r {
             float: right;
-            overflow-y:auto;
-            overflow-x:hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
 
             width: 830px;
             max-height: 135px;
@@ -102,19 +103,19 @@
         }
     }
     // ссекция кнопки фильтрации
-    &_i{
-        margin: 0 9px 9px 0;
-
+    &_i {
         float: left;
+
+        margin: 0 9px 9px 0;
     }
     // кнопка фильтра
-    &_btn{
+    &_btn {
         position: relative;
 
         width: 100px;
         height: 43px;
-        padding: 0 10px;
         margin: 0 5px 10px 0;
+        padding: 0 10px;
 
         cursor: pointer;
         cursor: pointer;
@@ -124,104 +125,108 @@
         border: 1px solid @typLightGray;
         background: @white;
 
+        .table-cell();
+        .rounded(4px);
         &:hover {
             text-decoration: none;
         }
-
-        .table-cell();
-        .rounded(4px);
-        &:last-child{
+        &:last-child {
             margin-right: 0;
         }
-        &_img{
+        &_img {
+            max-width: 90%;
+            max-height: 90%;
+
             vertical-align: middle;
-            width: 100%;
             pointer-events: none;
-            //max-width: 100px;
         }
-        &_tx{
+        &_tx {
             font-size: 11px;
             line-height: 1.2;
+
+            overflow: hidden;
+
+            max-height: 25px;
 
             .inline-block();
         }
         // кнопка - ещё бренды
-        &-btn{
+        &-btn {
             font-size: 14px;
             line-height: 40px;
-            width: 120px;
-            padding: 0;
 
+            width: 120px;
             margin-right: 0;
+            padding: 0;
 
             color: @darkgrey6;
             border-style: dashed;
 
             .inline-block();
-            .fltrBtn_btn_tx{
+            .fltrBtn_btn_tx {
                 font-size: 14px;
 
                 vertical-align: middle;
 
                 border-bottom: 1px dotted @darkgrey6;
             }
-            &:hover{
+            &:hover {
                 text-decoration: none;
             }
         }
-        &-mini{
+        &-mini {
             line-height: 31px;
 
             width: 80px;
             height: 33px;
         }
         // отметить фильтр по бренду
-        &_clsr{
+        &_clsr {
             position: absolute;
             top: -7px;
             right: -7px;
 
             display: none;
         }
-        &.act{
+        &.act {
             width: 98px;
             height: 41px;
 
             border-width: 2px;
             border-color: @orange-2;
-            .fltrBtn_btn_clsr{
+            .fltrBtn_btn_clsr {
                 display: block;
             }
         }
     }
     // строка с параметрами
-    &_ln{
+    &_ln {
         line-height: 14px;
 
         margin: 0 0 10px;
     }
     // параметры фильтрации
-    &_param{
+    &_param {
         margin-bottom: 8px;
         padding-right: 10px;
 
         border-bottom: 1px solid @lightgrey9;
-        &:last-child{
+        &:last-child {
             margin-bottom: 0;
 
             border-bottom: none;
         }
-        &_n{
+        &_n {
             font-size: 14px;
 
             margin: 0 0 8px;
         }
-        &_lbl{
+        &_lbl {
             font-size: 14px;
 
             .inline-block-middle();
         }
-        &_it{
+        &_it {
             font-size: 14px;
             line-height: 1;
 
@@ -234,13 +239,12 @@
 
             .rounded(3px);
             .inline-block-middle();
-
             &:-ms-input-placeholder {
                 color: #8a8a8a;
             }
         }
-        &-2col{
-            .fltrBtn_ln{
+        &-2col {
+            .fltrBtn_ln {
                 width: @full-size/2 - 1%;
 
                 .inline-block-middle();
@@ -250,6 +254,7 @@
 }
 
 .fltrBtnLn {
-    .inline-block();
     margin: 0 auto;
+
+    .inline-block();
 }

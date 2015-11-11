@@ -1,6 +1,3 @@
-/*
-* Новая карточка товара
-* */
 ;(function($){
 
     var $window = $(window),
@@ -45,7 +42,7 @@
                 console.info('DCLoans.getPayment.result', result);
 
                 if (result.payment) {
-                    $creditButton.find('.jsProductCreditPrice').text(printPrice(Math.ceil(result.payment)));
+                    $creditButton.find('.jsProductCreditPrice').html(printPrice(Math.ceil(result.payment)));
                 }
             }
         );
@@ -91,29 +88,45 @@
 	})();
 
     // Отзывы
-    $body.on('click', '.jsShowMoreReviews', function(){
-        var productUi = $(this).data('ui'),
-            totalNum = $(this).data('total-num'),
+    $body.on('click', '.js-review-update', function(e){
+        var
+            $el = $(this),
+            totalNum = $el.data('total-num'),
             $hiddenReviews = $('.jsReviewItem:hidden'),
-            currentCount;
-        if ($hiddenReviews.length > 0) {
+            isAppend = !!$el.data('append'),
+            currentCount
+        ;
+
+        e.preventDefault();
+
+        if (isAppend && ($hiddenReviews.length > 0)) {
             $hiddenReviews.show();
-            if ($('.jsReviewItem').length == totalNum) $('.jsShowMoreReviews').hide();
+            if ($('.jsReviewItem').length == totalNum) {
+                $el.hide();
+            }
         } else {
             currentCount = $('.jsReviewItem').length;
             $.ajax(
-                '/product-reviews/' + productUi, {
+                $el.data('url'),
+                {
                     data: {
-                        page: currentCount / 10,
+                        page: isAppend ? (currentCount / 10) : 0,
                         numOnPage: 10
                     }
                 }
             ).done(function(data){
-                    if (data.content) {
+                if (data.content) {
+                    if (isAppend) {
                         $('.jsReviewsList').append(data.content);
-                        if ($('.jsReviewItem').length == totalNum) $('.jsShowMoreReviews').hide();
+                    } else {
+                        $('.jsReviewsList').html(data.content);
                     }
-                });
+                    if ($('.jsReviewItem').length == totalNum) $('.js-review-update').hide();
+                }
+                    if (data.sorting) {
+                        $('.jsReviewsSorting').replaceWith(data.sorting);
+                    }
+            });
         }
     });
 
@@ -425,59 +438,3 @@
     })
 
 })(jQuery);
-
-
-/**
- * Обратный счетчик акции
- */
-!function() {
-    var
-        countDownWrapper = $('.js-countdown'),
-        countDownOut     = $('.js-countdown-out'),
-        expDate          = countDownWrapper.attr('data-expires'),
-
-        getDeclension = function( days ) {
-            var
-                str      = days + '',
-                lastChar = str.slice(-1),
-                lastNum  = lastChar * 1;
-
-            if ( lastNum === 0 ) {
-                return 'дней';
-            } else if ( days > 4 && days < 21 ) {
-                return 'дней';
-            } else if ( lastNum > 4 && days > 20 ) {
-                return 'дней';
-            } else if ( lastNum > 1 && lastNum < 5 ) {
-                return 'дня';
-            }
-
-            return 'день';
-        },
-
-        tick = function( opts ) {
-            var
-                mask = ( opts.days > 0 ) ? 'D ' + getDeclension(opts.days) + ' HH:MM:SS' : 'HH:MM:SS';
-
-            mask = mask.replace(/(D+)/, function( str, d) { return (d.length > 1 && opts.days < 10 ) ? '0' + opts.days : opts.days });
-            mask = mask.replace(/(H+)/, function( str, h) { return (h.length > 1 && opts.hours < 10 ) ? '0' + opts.hours : opts.hours });
-            mask = mask.replace(/(M+)/, function( str, m) { return (m.length > 1 && opts.minutes < 10 ) ? '0' + opts.minutes : opts.minutes });
-            mask = mask.replace(/(S+)/, function( str, s) { return (s.length > 1 && opts.seconds < 10 ) ? '0' + opts.seconds : opts.seconds });
-
-            countDownOut.html(mask);
-        },
-
-        countDown;
-
-    try {
-        countDown = new CountDown({
-            // timestamp: 1445597200000,
-            timestamp: expDate * 1000,
-            tick: tick
-        });
-    } catch ( err ) {
-        console.warn('Не удалось запустить обратный счетчик акции');
-        console.warn(err);
-    }
-
-}();

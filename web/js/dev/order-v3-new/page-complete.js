@@ -62,11 +62,11 @@
 			})
 		},
 
-        showCreditWidget = function showCreditWidgetF(bankProviderId, data, number_erp, bank_id, orderId) {
+        showCreditWidget = function showCreditWidgetF(bankProviderId, data, number_erp, bank_id, orderId, containerId) {
             currentOrderIdInCredit = orderId;
 
-            if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit'], orderId);
-            if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit'], orderId);
+            if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit'], orderId, containerId);
+            if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit'], orderId, containerId);
 
             $.ajax({
                 type: 'POST',
@@ -105,7 +105,7 @@
                 });
         },
 
-        showDirectCredit = function showDirectCreditF(data){
+        showDirectCredit = function showDirectCreditF(data, orderId, containerId){
             var productArr = [];
 
             $LAB.script( '//api.direct-credit.ru/JsHttpRequest.js' )
@@ -126,9 +126,17 @@
 
                     if (typeof window.DCCheckStatus !== 'function') {
                         window.DCCheckStatus = function(result) {
+                            var $container = containerId && $('#' + containerId);
+
                             console.info('DCCheckStatus.result', result);
                             if (5 == result) {
-                                currentOrderIdInCredit && setCreditDone(currentOrderIdInCredit)
+                                currentOrderIdInCredit && setCreditDone(currentOrderIdInCredit);
+
+                                try {
+                                    if ($container && $container.length) {
+                                        $container.hide();
+                                    }
+                                } catch (error) { console.error(error); }
                             }
 
                             currentOrderIdInCredit = null;
@@ -169,21 +177,6 @@
         }
     });
 
-	// Мотивация онлайн-оплаты
-	$orderContent.on('click', '.jsOnlinePaymentPossible', function(){
-		$(this).find('.jsOnlinePaymentDiscount').hide();
-        $orderContent.find('.jsOnlinePaymentDiscountPayNow').show();
-        $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '17 Оплатить_онлайн_вход_Оплата']);
-	});
-
-    $orderContent.on('click', '.jsOnlinePaymentPossibleNoMotiv', function(){
-        var $blocks = $('.jsOnlinePaymentBlock');
-        if ($blocks.length) {
-            $(this).hide();
-            $blocks.show();
-        }
-    });
-
     // Мотивация онлайн-оплаты (купон)
     $orderContent.on('click', '.jsOrderCouponInitial', function(event){
         $(this).hide();
@@ -220,7 +213,9 @@
             bank_id = $(this).data('value'),
             orderId = $(this).data('orderId'),
             creditData = $(this).parent().siblings('.credit-widget').data('value'),
-            order_number_erp = $(this).closest('.orderLn').data('order-number-erp');
+            order_number_erp = $(this).closest('.orderLn').data('order-number-erp')
+            containerId = $(this).closest('.jsCreditBlock').attr('id')
+        ;
 
 		if (typeof order_number_erp == 'undefined') order_number_erp = $orderContent.data('order-number-erp');
 
@@ -234,7 +229,7 @@
         e.stopPropagation();
 
         if (!$(this).closest('ul').hasClass('jsCreditListOnlineMotiv')) $(this).parent().hide();
-        showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id, orderId);
+        showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id, orderId, containerId);
     });
 
     $body.on('click', function(){
@@ -249,7 +244,6 @@
             // если невозможна онлайн-оплата
             if ($('.jsGAOnlinePaymentNotPossible').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '16 Вход_Оплата_ОБЯЗАТЕЛЬНО', 'нет онлайн оплаты']);
             // Без мотиватора
-            if ($('.jsOnlinePaymentPossibleNoMotiv').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '16 Вход_Оплата_ОБЯЗАТЕЛЬНО', 'нет мотиватора']);
             // При попадании пользователя на экран “Варианты оплаты онлайн”
             if ($('.jsOnlinePaymentBlockVisible').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '17 Оплатить_онлайн_вход_Оплата']);
             // При попадании на экран с вариантами заявок на кредит */
@@ -269,10 +263,18 @@
     }
 
     if ($jsOrder.length != 0) {
-		ENTER.utils.sendOrderToGA($jsOrder.data('value'));
-		ENTER.utils.analytics.reviews.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
-		ENTER.utils.analytics.productPageSenders.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
-		ENTER.utils.analytics.productPageSenders2.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+        !function() {
+            var orderAnalytics = $jsOrder.data('value');
+            ENTER.utils.sendOrderToGA(orderAnalytics);
+            ENTER.utils.analytics.reviews.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+            ENTER.utils.analytics.productPageSenders.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+            ENTER.utils.analytics.productPageSenders2.clean(); // Должна вызываться, как мы договорились с Захаровым Николаем Викторовичем, лишь при оформлении заказа через обычное оформление заказа (не через одноклик или слоты).
+
+            ENTER.utils.analytics.soloway.send({
+                action: 'orderComplete',
+                orders: orderAnalytics.orders
+            });
+        }();
     }
 
 	$(function(){
@@ -288,7 +290,7 @@
 
     $('.js-payment-popup-show').on('click',function(){
 
-        $(this).parent().find('.js-payment-popup').show();
+        $(this).closest('.js-order-cell').find('.js-payment-popup').show();
         $('body').append('<div class="payments-popup__overlay js-payment-popup-overlay"></div>');
     });
     $('.js-payment-popup-closer').on('click',function(){

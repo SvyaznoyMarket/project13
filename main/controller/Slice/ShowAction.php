@@ -376,14 +376,16 @@ class ShowAction {
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $productRepository->prepareProductQueries($products, 'media property label brand category');
+        $productRepository->prepareProductQueries($products, 'model media property label brand category');
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        \RepositoryManager::review()->prepareScoreCollection($products, function($data) use(&$products) {
-            if (isset($data['product_scores'][0])) {
-                \RepositoryManager::review()->addScores($products, $data);
-            }
-        });
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareScoreCollection($products, function ($data) use (&$products) {
+                if (isset($data['product_scores'][0])) {
+                    \RepositoryManager::review()->addScores($products, $data);
+                }
+            });
+        }
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
@@ -436,6 +438,7 @@ class ShowAction {
 
                 // добавляем дочерние узлы
                 if (isset($data['children']) && is_array($data['children'])) {
+                    $category->setChild([]);
                     foreach ($data['children'] as $childData) {
                         if (is_array($childData)) {
                             $child = new \Model\Product\Category\Entity($childData);

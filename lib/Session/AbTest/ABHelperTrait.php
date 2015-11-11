@@ -3,8 +3,6 @@
 
 namespace Session\AbTest;
 
-use Model\Product\Entity;
-
 /** Трейт, помогающий определять вариант АБ-теста у пользователя
  * Class ABHelperTrait
  * @package Session\AbTest
@@ -12,15 +10,14 @@ use Model\Product\Entity;
 trait ABHelperTrait {
 
     public static function isNewFurnitureListing() {
-        $test = \App::abTest()->getTest('furnitureListing');
-        return $test && $test->getChosenCase()->getKey() === 'new';
+        return \App::abTest()->getTest('furnitureListing')->getChosenCase()->getKey() !== 'old';
     }
 
     /** Поиск с возможностью фильтрации по категориям?
      * @return bool
      */
     public static function isAdvancedSearch(){
-        return \App::abTest()->getTest('adv_search') && \App::abTest()->getTest('adv_search')->getChosenCase()->getKey() == 'on';
+        return \App::abTest()->getTest('adv_search')->getChosenCase()->getKey() == 'on';
     }
 
     /** Платный самовывоз?
@@ -54,29 +51,102 @@ trait ABHelperTrait {
         return !in_array(\App::request()->attributes->get('route'), ['slice.category', 'slice.show'], true) || \App::request()->attributes->get('sliceToken') !== 'all_labels' || \App::abTest()->getTest('salePercentage')->getChosenCase()->getKey() !== 'hide';
     }
 
+    /** Онлайн-мотивация при покупке?
+     * @param $ordersCount int Количество заказов
+     * @return bool
+     */
+    public static function isOnlineMotivation($ordersCount = 0){
+        $case = \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey();
+        if ($case === 'default') {
+            $case = 'on';
+        }
+
+        return (int)$ordersCount == 1 && in_array($case, ['on', 'online_motivation_coupon', 'online_motivation_discount']);
+    }
+
+    public function getOnlineMotivationKey() {
+        $case = \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey();
+        if ($case === 'default') {
+            $case = 'on';
+        }
+
+        return $case;
+    }
+
     /**
      * @return int
      */
     public static function getGiftButtonNumber(){
-        $test = \App::abTest()->getTest('giftButton');
-        if ($test) {
-            $key = $test->getChosenCase()->getKey();
-            if ($key === 'default') {
-                return 1;
-            } else {
-                return $key;
-            }
+        $key = \App::abTest()->getTest('giftButton')->getChosenCase()->getKey();
+        if ($key === 'default') {
+            return 1;
+        } else {
+            return $key;
         }
+    }
 
-        return 1;
+    /** Открытие ссылок на товары в новом окне
+     * @return bool
+     */
+    public static function isNewWindow(){
+        return \App::abTest()->getTest('new_window')->getChosenCase()->getKey() == 'on';
+    }
+
+    /** Новая карточка товара
+     * @return bool
+     */
+    public static function isNewProductPage() {
+        return true;
     }
 
     /**
-     * SITE-6016, SITE-6062
+     * Ядерная корзина
      * @return bool
      */
-    public static function isOrderDeliveryTypeTestAvailableInCurrentRegion() {
-        return in_array(\App::user()->getRegion()->id, [
+    public static function isCoreCart() {
+        return 'disabled' !== \App::abTest()->getTest('core_cart')->getChosenCase()->getKey();
+    }
+
+    /**
+     * Старый личный кабинет
+     * @return bool
+     */
+    public static function isOldPrivate() {
+        return false;
+    }
+
+    /**
+     * Корзина в заказе
+     * @return bool
+     */
+    public static function isOrderWithCart() {
+        return 'enabled' === \App::abTest()->getTest('order_with_cart')->getChosenCase()->getKey();
+    }
+
+    /**
+     * Скидка в рублях
+     * @return bool
+     */
+    public static function isCurrencyDiscountPrice() {
+        return 'currency' === \App::abTest()->getTest('discount_price')->getChosenCase()->getKey();
+    }
+
+    /**
+     * Текст кнопки "Оформить заказ" в параплашке изменен на "В корзину"?
+     * @return bool
+     */
+    public function isCartTextInOrderButton() {
+        return self::isOrderWithCart() && ('cart' === \App::abTest()->getTest('cart_text')->getChosenCase()->getKey());
+    }
+
+    public function getOrderDeliveryType() {
+        $key = \App::abTest()->getTest('order_delivery_type')->getChosenCase()->getKey();
+        if (!in_array($key, ['self', 'delivery'], true)) {
+            return null;
+        }
+
+        // SITE-6016, SITE-6062
+        if (!in_array(\App::user()->getRegion()->id, [
             14974, // Москва
             108136, // Санкт-Петербург
             83210, // Брянск
@@ -118,69 +188,28 @@ trait ABHelperTrait {
             124213, // Петрозаводск
             124223, // Киров
             124225, // Саранск
-        ]);
+        ])) {
+            return null;
+        }
+
+        return $key;
     }
 
-    /** Открытие ссылок на товары в новом окне
-     * @return bool
-     */
-    public static function isNewWindow(){
-        $test = \App::abTest()->getTest('new_window');
-        return $test && $test->getChosenCase()->getKey() == 'on';
-    }
-
-    /** Меню-гамбургер (только в карточке товара)
-     * @return bool
-     */
-    public static function isMenuHamburger(){
-        $test = \App::abTest()->getTest('new_window');
-        return $test && $test->getChosenCase()->getKey() == 'hamburger' && \App::request()->attributes->get('route') == 'product';
-    }
-
-    /** Новая карточка товара
-     * @return bool
-     */
-    public static function isNewProductPage() {
-        return \App::abTest()->getTest('productCard') && \App::abTest()->getTest('productCard')->getChosenCase()->getKey() == 'new';
+    public function isInfinityScroll() {
+        return 'on' === \App::abTest()->getTest('infinity_scroll')->getChosenCase()->getKey();
     }
 
     /**
-     * Ядерная корзина
      * @return bool
      */
-    public static function isCoreCart() {
-        return 'enabled' === \App::abTest()->getTest('core_cart')->getChosenCase()->getKey();
-    }
+    public static function isOneClickOnly() {
+        $config = \App::config();
+        $user = \App::user();
 
-    /**
-     * Старый личный кабинет
-     * @return bool
-     */
-    public static function isOldPrivate() {
-        return 'off' === \App::abTest()->getTest('new_private')->getChosenCase()->getKey();
-    }
-
-    /**
-     * Корзина в заказе
-     * @return bool
-     */
-    public static function isOrderWithCart() {
-        return 'enabled' === \App::abTest()->getTest('order_with_cart')->getChosenCase()->getKey();
-    }
-
-    /**
-     * Скидка в рублях
-     * @return bool
-     */
-    public static function isCurrencyDiscountPrice() {
-        return 'currency' === \App::abTest()->getTest('discount_price')->getChosenCase()->getKey();
-    }
-
-    /**
-     * Текст кнопки "Оформить заказ" в параплашке изменен на "В корзину"?
-     * @return bool
-     */
-    public function isCartTextInOrderButton() {
-        return self::isOrderWithCart() && ('cart' === \App::abTest()->getTest('cart_text')->getChosenCase()->getKey());
+        return
+            (true === $config->cart['oneClickOnly'])
+            && ($config->region['defaultId'] === $user->getRegion()->id)
+            && !$user->getCart()->count()
+        ;
     }
 }

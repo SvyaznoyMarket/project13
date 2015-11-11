@@ -48,7 +48,7 @@ class UpsaleAction extends BasicRecommendedAction {
 
             $this->getRetailrocketMethodName();
 
-            \RepositoryManager::product()->prepareProductQueries($products, 'media label');
+            \RepositoryManager::product()->prepareProductQueries($products, 'model media label');
 
             \App::coreClientV2()->execute();
 
@@ -68,17 +68,20 @@ class UpsaleAction extends BasicRecommendedAction {
 
             $responseData = [
                 'success' => true,
-                'content' => \App::closureTemplating()->render(\App::abTest()->isNewProductPage() ? 'product-page/blocks/slider' : 'product/__slider', [
-                    'title'    => $this->actionTitle,
-                    'products' => $products,
-                    'class'    => 'goods-slider--top',
-                    'sender'   => [
-                        'name'     => 'retailrocket',
-                        'position' => 'AddBasket',
-                        'method'   => $this->retailrocketMethodName,
-                    ],
-                    'sender2'      => (string)$request->get('sender2'),
-                ]),
+                'content' => \App::closureTemplating()->render(
+                    'product-page/blocks/slider',
+                    [
+                        'title'    => $this->actionTitle,
+                        'products' => $products,
+                        'class'    => 'goods-slider--top',
+                        'sender'   => [
+                            'name'     => 'retailrocket',
+                            'position' => 'AddBasket',
+                            'method'   => $this->retailrocketMethodName,
+                        ],
+                        'sender2'      => (string)$request->get('sender2'),
+                    ]
+                ),
                 'data' => [
                     'id'              => $product->getId(),//идентификатор товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации
                     'method'          => $this->retailrocketMethodName,//название алгоритма по которому сформированны рекомендации (ItemToItems, UpSellItemToItems, CrossSellItemToItems и т.д.)

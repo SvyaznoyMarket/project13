@@ -64,12 +64,13 @@ class CreateAction {
             if (isset($splitOrder)) unset($splitOrder);
 
             $coreResponse = $this->client->query(
-                (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),
+                'order/create-packet2',
                 $params,
                 $ordersData,
                 \App::config()->coreV2['hugeTimeout']
             );
-            //$coreResponse = \App::dataStoreClient()->query('/fixture/v2-create-packet.json');
+            // fixture
+            //$coreResponse = \App::dataStoreClient()->query('/v2-create_packet.json');
         } catch (\Curl\Exception $e) {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
             \App::exception()->remove($e);
@@ -93,7 +94,7 @@ class CreateAction {
             if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                 \App::logger('order')->error([
                     'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'detail' => $e instanceof \Curl\Exception ? $e->getContent() : null, 'trace' => $e->getTraceAsString()],
-                    'url'     => (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet') . ((bool)$params ? ('?' . http_build_query($params)) : ''),
+                    'url'     => 'order/create-packet2' . ((bool)$params ? ('?' . http_build_query($params)) : ''),
                     'data'    => $ordersData,
                     'server'  => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
                         'HTTP_USER_AGENT',
@@ -117,8 +118,8 @@ class CreateAction {
 
         \App::logger()->info(['action' => __METHOD__, 'core.response' => $coreResponse], ['order']);
 
+        $criteoData = [];
         if ((bool)$coreResponse) {
-
             foreach ($coreResponse as $orderData) {
                 if (!is_array($orderData)) {
                     \App::logger()->error(['message' => 'Получены неверные данные для созданного заказа', 'orderData' => $orderData], ['order']);
@@ -134,6 +135,14 @@ class CreateAction {
 
                 $createdOrders[] = $createdOrder;
                 \App::logger()->info(['message' => 'Заказ успешно создан', 'orderData' => $orderData], ['order']);
+            }
+
+            try {
+                if ($createdOrders) {
+                    $criteoData = (new \View\Partners\Criteo(['orders' => $createdOrders]))->execute();
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order', 'criteo']);
             }
         }
 
@@ -199,6 +208,7 @@ class CreateAction {
                 ],
             ],
             'lastPartner' => \App::partner()->getName(),
+            'criteoData'  => $criteoData,
         ];
 
         if (\App::config()->googleAnalytics['enabled']) {

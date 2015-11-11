@@ -439,7 +439,6 @@
         }
     });
 
-    // Новая карточка товара
     body.on('click', '.jsCouponRightIcon', function(){
         $('.js-enterprize-coupon-hint').toggle()
     });

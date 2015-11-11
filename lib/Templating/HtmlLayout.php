@@ -318,7 +318,7 @@ class HtmlLayout {
 
     public function slotMustacheTemplates() {
         $templates = [
-            'tpl-cart-kitForm' => \App::abTest()->isNewProductPage() ? 'cart/kitForm2.mustache' : 'cart/kitForm.mustache',
+            'tpl-cart-kitForm' => 'cart/kitForm2.mustache',
             'tpl-cart-slot-form' => 'cart/slot/form.mustache',
             'tpl-cart-slot-form-result' => 'cart/slot/form/result.mustache',
         ];
@@ -334,7 +334,7 @@ class HtmlLayout {
     public function slotUserConfig() {
         // Проверяем заголовок от балансера - если страница попадает под кэширование, то можно рендерить # include virtual
         // В остальных случаях можно обойтись без дополнительного запроса к /ssi.php
-        if (\App::request()->headers->get('SSI') == 'on') {
+        if ('on' === \App::request()->headers->get('SSI')) {
             return \App::helper()->render('__ssi', ['path' => '/user-config']);
         } else {
             return \App::helper()->render('__userConfig');

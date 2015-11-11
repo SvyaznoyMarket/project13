@@ -20,8 +20,10 @@ $c->routePrefix = '';
 $c->debug = false;
 $c->logger['pretty'] = false;
 $c->appName = 'Enter';
+
 $c->authToken['name']     = '_token';
 $c->authToken['authorized_cookie'] = '_authorized';
+$c->authToken['disposableTokenParam'] = 'authToken'; // имя параметра для одноразовой аутенфикации
 
 $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 2592000; // 30 дней
@@ -263,6 +265,10 @@ $c->partners['Adblender']['enabled'] = true;
 $c->partners['Giftery']['enabled'] = true;
 $c->partners['Giftery']['lowestPrice'] = 500;
 
+// SITE-6208
+$c->partners['soloway']['enabled'] = true;
+$c->partners['soloway']['id'] = 209723;
+
 $c->partners['facebook']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
@@ -289,6 +295,7 @@ $c->region['cookieName']     = 'geoshop';
 $c->region['cookieLifetime'] = 31536000; // 365 дней
 $c->region['defaultId']      = 14974;
 $c->region['autoresolve']    = true;
+$c->region['cache']          = false;
 
 $c->shop['cookieName'] = 'shopid';
 $c->shop['cookieLifetime'] = 31536000; // 365 дней
@@ -302,10 +309,11 @@ $c->search['categoriesLimit'] = 200;
 $c->product['itemsPerPage']             = 20;
 $c->product['showAccessories']          = true;
 $c->product['showRelated']              = true;
+$c->product['getModel']                 = true;
+$c->product['deliveryCalc']             = true;
 $c->product['itemsInSlider']            = 5;
 $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;
-$c->product['minCreditPrice']           = 3000;
 $c->product['totalCount']               = 55000;
 $c->product['recommendationSessionKey']     = 'recommendationProductIds';
 $c->product['recommendationProductLimit']   = 30;
@@ -314,6 +322,8 @@ $c->product['productPageSenders2SessionKey'] = 'productPageSendersForMarketplace
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
+$c->product['creditEnabledInCard']    = true;
+$c->product['couponEnabledInCard']    = true;
 $c->product['pushReview']             = true;
 $c->product['lowerPriceNotification'] = true;
 // jewel
@@ -330,11 +340,10 @@ $c->cart['productLimit'] = 0;
 $c->cart['sessionName'] = 'cart';
 $c->cart['checkStock'] = false;
 $c->cart['updateTime'] = 1; // обновлять корзину, если данные в ней устарели более, чем на 1 минуту
+$c->cart['oneClickOnly'] = false; // важно! только при деградации true
 
-$c->payment['creditEnabled'] = false;
+$c->payment['creditEnabled'] = true;
 $c->payment['blockedIds'] = [];
-
-$c->f1Certificate['enabled'] = true;
 
 $c->user['corporateRegister'] = true;
 $c->user['defaultRoute'] = 'user.recommend';
@@ -354,6 +363,7 @@ $c->queue['workerLimit'] = 10;
 $c->queue['maxLockTime'] = 600;
 
 $c->subscribe['enabled'] = true;
+$c->subscribe['getChannel'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
 $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {channelId:status}
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
@@ -369,18 +379,14 @@ $c->order['maxSumOnlinePaypal'] = 5000;
 $c->order['excludedError'] = [705, 708, 735, 759, 800];
 $c->order['addressAutocomplete'] = true;
 // предоплата (SITE-2959)
-$c->order['prepayment'] = [
-    'enabled'    => true,
-    'priceLimit' => 100000,// если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
-    'labelId'    => 15, // id шильдика "предоплата"
-];
+$c->order['prepayment']['enabled'] = true;
+$c->order['prepayment']['labelId'] = 15; // id шильдика "предоплата"
 $c->order['splitSessionKey'] = 'order_split';
 $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
 $c->order['sessionInfoOnComplete'] = true; // краткая инфа о заказе
 $c->order['emailRequired'] = true; // обязательность email
 $c->order['creditStatusSessionKey'] = 'order_credit';
-
-$c->newDeliveryCalc = true;
+$c->order['channelSessionKey'] = 'order_channel';
 
 $c->kladr = [
     'token'     => '52b04de731608f2773000000',

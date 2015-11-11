@@ -84,6 +84,7 @@
                     }
 
                     this.tick && this.tick({
+                        el: this.el,
                         days: Math.floor(diff/ONE_DAY),
                         hours: Math.floor((diff % ONE_DAY) / ONE_HOUR),
                         minutes: Math.floor(((diff % ONE_DAY) % ONE_HOUR) / ONE_MIN),
@@ -130,6 +131,7 @@
                         throw new Error('Параметр "success" должен быть функцией');
                     }
 
+                    this.el = options.el;
                     this.endDate = new Date(options.timestamp);
                     this.tick    = options.tick;
                     this.success = options.success;
@@ -158,3 +160,58 @@
 
     return CountDown;
 });
+
+/**
+ * Обратный счетчик акции
+ */
+!function() {
+    var
+        countDownWrapper = $('.js-countdown'),
+
+        getDeclension = function( days ) {
+            var
+                str      = days + '',
+                lastChar = str.slice(-1),
+                lastNum  = lastChar * 1;
+
+            if ( lastNum === 0 ) {
+                return 'дней';
+            } else if ( days > 4 && days < 21 ) {
+                return 'дней';
+            } else if ( lastNum > 4 && days > 20 ) {
+                return 'дней';
+            } else if ( lastNum > 1 && lastNum < 5 ) {
+                return 'дня';
+            }
+
+            return 'день';
+        },
+
+        tick = function( opts ) {
+            var
+                countDownOut  = $(opts.el).hasClass('js-countdown-out') ? $(opts.el) : $(opts.el).find('.js-countdown-out'),
+                mask = ( opts.days > 0 ) ? 'D ' + getDeclension(opts.days) + ' HH:MM:SS' : 'HH:MM:SS';
+
+            mask = mask.replace(/(D+)/, function( str, d) { return (d.length > 1 && opts.days < 10 ) ? '0' + opts.days : opts.days });
+            mask = mask.replace(/(H+)/, function( str, h) { return (h.length > 1 && opts.hours < 10 ) ? '0' + opts.hours : opts.hours });
+            mask = mask.replace(/(M+)/, function( str, m) { return (m.length > 1 && opts.minutes < 10 ) ? '0' + opts.minutes : opts.minutes });
+            mask = mask.replace(/(S+)/, function( str, s) { return (s.length > 1 && opts.seconds < 10 ) ? '0' + opts.seconds : opts.seconds });
+
+            countDownOut.html(mask);
+        };
+
+    try {
+        countDownWrapper.each(function(i,el){
+            new CountDown({
+                // timestamp: 1445597200000,
+                timestamp: $(el).attr('data-expires') * 1000,
+                tick: tick,
+                el: el
+            })
+        });
+    } catch ( err ) {
+        // console.warn('Не удалось запустить обратный счетчик акции');
+        // console.warn(err);
+    }
+
+}();
