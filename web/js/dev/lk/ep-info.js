@@ -27,14 +27,14 @@ $(function(){
                 .removeClass('active');
 
             itemInfo.eq($this.filter('.active').index())
-                .toggleClass('active')
+                .toggleClass('active1')
                 .siblings().add(container.siblings('.js-ep-container').find('.js-ep-item-info'))
                 .removeClass('active');
 
             if(pointReport){
                 if(itemInfo.hasClass('active')){
                     if(itemTop.outerHeight() < pointReport.outerHeight()) {
-                        margin = itemInfofilter('.active').outerHeight() + pointReport.outerHeight() - itemTop.find('.js-ep-item-top-header').outerHeight(true);
+                        margin = itemInfo.filter('.active').outerHeight() + pointReport.outerHeight() - itemTop.find('.js-ep-item-top-header').outerHeight(true);
                     }else{
                         margin = itemInfo.filter('.active').outerHeight(true) + parseInt(itemInfo.css('margin-bottom'));
                     }
@@ -45,19 +45,6 @@ $(function(){
             }
 
         });
-    }
-
-    function itemInfo (duration, itemLen, next, prev, itemVis){
-        if(duration == itemLen){
-            next.css('display', 'none');
-        }else{
-            next.css('display', '');
-        }
-        if(duration == itemVis){
-            prev.css('display', 'none');
-        }else{
-            prev.css('display', '');
-        }
     }
 
     epInfoShow();

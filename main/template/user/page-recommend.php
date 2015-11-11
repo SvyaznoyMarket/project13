@@ -295,7 +295,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                 </div>
             </div>
 
-            <div class="private-el-list__info clearfix">
+            <div class="private-ep-list__info clearfix">
                 <div class="grid__cell grid__cell_2-big private-ep-list__item-info ep-info js-ep-item-info">
                     <div class="ep-info__desc">
                         <h4 class="ep-info__desc-title">Фишка со скидкой 15% на Текстиль</h4>
