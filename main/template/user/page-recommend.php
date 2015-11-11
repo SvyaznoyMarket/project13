@@ -21,7 +21,8 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
     <div class="private-sections grid js-ep-container">
         <div class="grid__col grid__col_2">
             <div class="grid__cell js-ep-item-top">
-                <div class="private-sections__item private-sections__item_order grid__inner js-private-sections-container">
+                <div
+                    class="private-sections__item private-sections__item_order grid__inner js-private-sections-container">
                     <a href="#" class="private-sections__button  js-private-sections-button">
                         <span class="private-sections__button-icon js-private-sections-icon"></span>
                     </a>
@@ -86,12 +87,12 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 
                         <!--Если нет заказов, вывести блок .item-none-->
 
-                            <!--
-                            <div class="item-none">
-                                <span class="item-none__txt">У вас еще нет заказов</span>
-                                <a class="item-none__link" href="#">Перейти к покупкам</a>
-                            </div>
-                        -->
+                        <!--
+                        <div class="item-none">
+                            <span class="item-none__txt">У вас еще нет заказов</span>
+                            <a class="item-none__link" href="#">Перейти к покупкам</a>
+                        </div>
+                    -->
                     </div>
                 </div>
             </div>
@@ -108,7 +109,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                     <div class="grid-scroll js-private-sections-body">
                         <ul class="grid-scroll-list address-list">
                             <li class="grid-scroll-list__item address-list__item">
-                                <a class="address-list__item-link" href="<?/*= $helper->url('user.address') */?>"
+                                <a class="address-list__item-link" href="<? /*= $helper->url('user.address') */ ?>"
                                    target="_blank">
                                     <div class="address-list__mode">Домашний</div>
 
@@ -123,7 +124,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                             </li>
 
                             <li class="grid-scroll-list__item address-list__item">
-                                <a class="address-list__item-link" href="<?/*= $helper->url('user.address') */?>"
+                                <a class="address-list__item-link" href="<? /*= $helper->url('user.address') */ ?>"
                                    target="_blank">
                                     <ul class="address-list-details">
                                         <li class="address-list-details__item">Мытищи</li>
@@ -138,11 +139,11 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         <!--Если нет адресов, вывести блок .item-none-->
 
 
-     <!--                   <div class="item-none">
-                            <span class="item-none__txt">Мы пока не знаем куда доставить ваши товары</span>
-                            <a class="item-none__link" href="#">Добавить адрес доставки</a>
-                        </div>
-                        -->
+                        <!--                   <div class="item-none">
+                                               <span class="item-none__txt">Мы пока не знаем куда доставить ваши товары</span>
+                                               <a class="item-none__link" href="#">Добавить адрес доставки</a>
+                                           </div>
+                                           -->
 
                     </div>
                 </div>
@@ -160,11 +161,11 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 
                     <div class="grid-scroll js-private-sections-body">
                         <ul class="grid-scroll-list message-list">
-                            <li class="grid-scroll-list__item message-list__item">
+                            <li class="grid-scroll-list__item message-list__item message-list__item_new">
                                 <a class="message-list__link clearfix" href="#" target="_blank">
                                     <div class="message-list__left">
-                                        <div class="message-list__title message-list__title_new">
-                                                Заказ #COXD-123456 накаав дылваолдыва
+                                        <div class="message-list__title">
+                                            Заказ #COXD-123456 накаав дылваолдыва
                                         </div>
 
                                         <p class="message-list__text">
@@ -181,7 +182,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                             <li class="grid-scroll-list__item message-list__item">
                                 <a class="message-list__link clearfix" href="#" target="_blank">
                                     <div class="message-list__left">
-                                        <div class="message-list__title message-list__title_new">
+                                        <div class="message-list__title">
                                             Заказ #COXD-123456 накаав дылваолдыва
                                         </div>
 
@@ -270,24 +271,24 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 
                         </ul>
 
-                        <!--Если нет фишек, вывести блок .item-none-->
+                        <!--Если нет фишек, вывести блок-->
 
-<!--                        <ul class="grid-scroll-list grid-scroll-list_2col private-ep-list item-none-">
-                            <li class="grid-scroll-list__col">
-                                <div class="grid-scroll-list__item private-ep-list__item">
-                                    <span class="ep-coupon"
-                                          style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
-                                    </span>
-                                    <div class="private-ep-list__img-desc">Получи фишки EnterPrize</div>
-                                </div>
-                            </li>
+<!--                                               <ul class="grid-scroll-list grid-scroll-list_2col private-ep-list">
+                                                    <li class="grid-scroll-list__col">
+                                                        <div class="grid-scroll-list__item private-ep-list__item">
+                                                            <span class="ep-coupon"
+                                                                  style="background-image: url(/styles/personal-page/img/fishki.png);">
+                                                            </span>
+                                                            <div class="private-ep-list__img-desc">Получи фишки EnterPrize</div>
+                                                        </div>
+                                                    </li>
 
-                            <li class="grid-scroll-list__col">
-                                <span class="private-ep-list__desc">
-                                    Фишки EnterPrize используются для получения скидок. У каждой фишки свои условия и срок действия скидки. Использовать фишку можно только один раз, для этого нужно применить ее к заказу при оформлении. Узнай больше на странице EnterPrize.
-                                </span>
-                            </li>
-                        </ul>-->
+                                                    <li class="grid-scroll-list__col">
+                                                        <span class="private-ep-list__desc">
+                                                            Фишки EnterPrize используются для получения скидок. У каждой фишки свои условия и срок действия скидки. Использовать фишку можно только один раз, для этого нужно применить ее к заказу при оформлении. Узнай больше на странице EnterPrize.
+                                                        </span>
+                                                    </li>
+                                                </ul>-->
 
 
                     </div>
@@ -295,7 +296,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
             </div>
 
             <div class="private-el-list__info clearfix">
-                <div class="grid__cell grid__cell_2 private-ep-list__item-info ep-info js-ep-item-info">
+                <div class="grid__cell grid__cell_2-big private-ep-list__item-info ep-info js-ep-item-info">
                     <div class="ep-info__desc">
                         <h4 class="ep-info__desc-title">Фишка со скидкой 15% на Текстиль</h4>
 
@@ -322,7 +323,7 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         </p>
                     </div>
 
-                    <div class="ep-info__product">
+                    <div class="ep-info__product ep-info__product_big">
                         <div class="ep-info__row clearfix">
                             <h4 class="ep-info__product-title">
                                 Действует на товары
@@ -332,134 +333,625 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                                 Посмотреть все
                             </a>
                         </div>
-                        <div class="ep-info__product-slide js-epSlide">
-                            <div class="ep-info__product-list-outer">
-                                <ul class="ep-info__product-list clearfix js-epSlideList">
+                        <div class=" js-slider-2 ep-info__product-slide" data-position="Basket"
+                             data-slider="{&quot;limit&quot;:null,&quot;url&quot;:null,&quot;type&quot;:null,&quot;sender&quot;:{&quot;name&quot;:&quot;retailrocket&quot;,&quot;method&quot;:&quot;PersonalRecommendation&quot;,&quot;position&quot;:&quot;Basket&quot;,&quot;from&quot;:null},&quot;sender2&quot;:&quot;&quot;}">
 
-                                    <li class="ep-info__product-item js-epSlideItem">
-                                        <div class="ep-info__product-img-block">
-                                            <img src="#" alt="#">
+                            <div class="goods-slider__inn ep-info__product-slide">
+                                <div class="ep-info__product-list-outer">
+                                    <ul class="goods-slider-list ep-info__product-list clearfix">
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
 
-                                            <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet, consectetur
-                                                adipisicing.</p>
-                                        </div>
-                                        <div class="ep-info__product-price">
-                                            <div class="ep-info__product-price-old">
-                                                <span>3809</span>
-                                                <span class="rubl">p</span>
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
                                             </div>
-                                            <div class="ep-info__product-price-new">
-                                                <span>2809</span>
-                                                <span class="rubl">p</span>
-                                            </div>
-                                        </div>
-                                        <div class="ep-info__product-buy">
-                                            Купить
-                                        </div>
-                                    </li>
+                                        </li>
 
-                                    <li class="ep-info__product-item js-epSlideItem">
-                                        <div class="ep-info__product-img-block">
-                                            <img src="#" alt="#">
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
 
-                                            <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet, consectetur
-                                                adipisicing.</p>
-                                        </div>
-                                        <div class="ep-info__product-price">
-                                            <div class="ep-info__product-price-old">
-                                                <span>3809</span>
-                                                <span class="rubl">p</span>
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
                                             </div>
-                                            <div class="ep-info__product-price-new">
-                                                <span>2809</span>
-                                                <span class="rubl">p</span>
-                                            </div>
-                                        </div>
-                                        <div class="ep-info__product-buy">
-                                            Купить
-                                        </div>
-                                    </li>
+                                        </li>
 
-                                    <li class="ep-info__product-item js-epSlideItem">
-                                        <div class="ep-info__product-img-block">
-                                            <img src="#" alt="#">
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
 
-                                            <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet, consectetur
-                                                adipisicing.</p>
-                                        </div>
-                                        <div class="ep-info__product-price">
-                                            <div class="ep-info__product-price-old">
-                                                <span>3809</span>
-                                                <span class="rubl">p</span>
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
                                             </div>
-                                            <div class="ep-info__product-price-new">
-                                                <span>2809</span>
-                                                <span class="rubl">p</span>
-                                            </div>
-                                        </div>
-                                        <div class="ep-info__product-buy">
-                                            Купить
-                                        </div>
-                                    </li>
+                                        </li>
 
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
 
-                                    <li class="ep-info__product-item js-epSlideItem">
-                                        <div class="ep-info__product-img-block">
-                                            <img src="#" alt="#">
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
 
-                                            <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet, consectetur
-                                                adipisicing.</p>
-                                        </div>
-                                        <div class="ep-info__product-price">
-                                            <div class="ep-info__product-price-old">
-                                                <span>3809</span>
-                                                <span class="rubl">p</span>
-                                            </div>
-                                            <div class="ep-info__product-price-new">
-                                                <span>2809</span>
-                                                <span class="rubl">p</span>
-                                            </div>
-                                        </div>
-                                        <div class="ep-info__product-buy">
-                                            Купить
-                                        </div>
-                                    </li>
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
 
-                                    <li class="ep-info__product-item js-epSlideItem">
-                                        <div class="ep-info__product-img-block">
-                                            <img src="#" alt="#">
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
 
-                                            <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet, consectetur
-                                                adipisicing.</p>
-                                        </div>
-                                        <div class="ep-info__product-price">
-                                            <div class="ep-info__product-price-old">
-                                                <span>3809</span>
-                                                <span class="rubl">p</span>
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
                                             </div>
-                                            <div class="ep-info__product-price-new">
-                                                <span>2809</span>
-                                                <span class="rubl">p</span>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="ep-info__product-buy">
-                                            Купить
-                                        </div>
-                                    </li>
-                                </ul>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div
+                                    class="goods-slider__btn goods-slider__btn--prev ep-info__product-prev disabled mDisabled"></div>
+                                <div class="goods-slider__btn goods-slider__btn--next ep-info__product-next"></div>
                             </div>
 
 
-                            <div class="ep-info__product-controls js-epSlideControls">
-                                <a class="ep-info__product-prev js-epSlideControlsPrev" href="#"></a>
-                                <a class="ep-info__product-next js-epSlideControlsNext" href="#"></a>
-                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid__cell grid__cell_2 private-ep-list__item-info js-ep-item-info">
-                    2
+                <div class="grid__cell grid__cell_2-big private-ep-list__item-info ep-info js-ep-item-info">
+                    <div class="ep-info__desc">
+                        <h4 class="ep-info__desc-title">Фишка со скидкой 15% на Текстиль</h4>
+
+                        <div class="ep-info__desc-duration">
+                            с
+                            <span class="ep-info__desc-duration-start">30.10.2016</span>
+                            по
+                            <span class="ep-info__desc-duration-end">30.20.2019</span>
+                        </div>
+                        <div class="ep-info__desc-timer">
+                            <p class="ep-info__desc-timer-desc">До конца действия осталось</p>
+
+                            <div class="ep-info__desc-timer-report">
+                                <span>3 д</span>
+                                <span>19 ч</span>
+                                <span>52 мин</span>
+                                <span>51 с</span>
+                            </div>
+                        </div>
+                        <p class="ep-info__desc-txt">
+                            Скидка по акции не суммируется
+                            со скидками по другим акциям ООО "Энтер" Фишка не действует на товары продавцов-партнеров
+                            Фишка действует на список товаров Минимальная сумма заказа 10 000 ₽
+                        </p>
+                    </div>
+
+                    <div class="ep-info__product ep-info__product_big">
+                        <div class="ep-info__row clearfix">
+                            <h4 class="ep-info__product-title">
+                                Действует на товары
+                            </h4>
+
+                            <a class="ep-info__product-all" href="#">
+                                Посмотреть все
+                            </a>
+                        </div>
+                        <div class=" js-slider-2 ep-info__product-slide" data-position="Basket"
+                             data-slider="{&quot;limit&quot;:null,&quot;url&quot;:null,&quot;type&quot;:null,&quot;sender&quot;:{&quot;name&quot;:&quot;retailrocket&quot;,&quot;method&quot;:&quot;PersonalRecommendation&quot;,&quot;position&quot;:&quot;Basket&quot;,&quot;from&quot;:null},&quot;sender2&quot;:&quot;&quot;}">
+
+                            <div class="goods-slider__inn ep-info__product-slide">
+                                <div class="ep-info__product-list-outer">
+                                    <ul class="goods-slider-list ep-info__product-list clearfix">
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="goods-slider-list__i ep-info__product-item">
+                                            <div class="ep-info__product-item-inner">
+                                                <div class="ep-info__product-img-block">
+                                                    <img src="#" alt="#">
+
+                                                    <p class="ep-info__product-img-title">Lorem ipsum dolor sit amet,
+                                                        consectetur
+                                                        adipisicing.</p>
+                                                </div>
+                                                <div class="ep-info__product-price">
+                                                    <div class="ep-info__product-price-old">
+                                                        <span>3809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                    <div class="ep-info__product-price-new">
+                                                        <span>2809</span>
+                                                        <span class="rubl">p</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ep-info__product-buy">
+                                                    Купить
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div
+                                    class="goods-slider__btn goods-slider__btn--prev ep-info__product-prev disabled mDisabled"></div>
+                                <div class="goods-slider__btn goods-slider__btn--next ep-info__product-next"></div>
+                            </div>
+
+
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -471,17 +963,18 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                     </a>
 
                     <header class="private-sections__head">
-                        <a class="private-sections__head-link" href="<?= $helper->url('user.favorites') ?>" target="_blank">Избранное</a>
+                        <a class="private-sections__head-link" href="<?= $helper->url('user.favorites') ?>"
+                           target="_blank">Избранное</a>
                     </header>
 
                     <div class="grid-scroll js-private-sections-body">
-                       <ul class="grid-scroll-list favorite-list">
+                        <ul class="grid-scroll-list favorite-list">
                             <li class="grid-scroll-list__item favorite-list__item">
                                 <a class="favorite-list__link" href="" target="_blank">
                                     <div class="favorite-list__views favorite-list__cell">
-                                            <img
-                                                src="http://8.imgenter.ru/uploads/sunny/08/b0/49/thumb_27dc_product_120.jpeg"
-                                                class="image" alt="">
+                                        <img
+                                            src="http://8.imgenter.ru/uploads/sunny/08/b0/49/thumb_27dc_product_120.jpeg"
+                                            class="image" alt="">
                                     </div>
 
                                     <div class="favorite-list__cell">
@@ -500,9 +993,9 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                                 <a class="favorite-list__link" href="" target="_blank">
                                     <div class="favorite-list__views favorite-list__cell">
 
-                                            <img
-                                                src="http://8.imgenter.ru/uploads/sunny/08/b0/49/thumb_27dc_product_120.jpeg"
-                                                class="image" alt="">
+                                        <img
+                                            src="http://8.imgenter.ru/uploads/sunny/08/b0/49/thumb_27dc_product_120.jpeg"
+                                            class="image" alt="">
 
                                     </div>
 
@@ -522,9 +1015,9 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                                 <a class="favorite-list__link" href="">
                                     <div class="favorite-list__views favorite-list__cell">
 
-                                            <img
-                                                src="http://8.imgenter.ru/uploads/sunny/08/b0/49/thumb_27dc_product_120.jpeg"
-                                                class="image" alt="">
+                                        <img
+                                            src="http://8.imgenter.ru/uploads/sunny/08/b0/49/thumb_27dc_product_120.jpeg"
+                                            class="image" alt="">
 
                                     </div>
 
@@ -542,23 +1035,23 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 
                             <li class="grid-scroll-list__item favorite-list__item">
                                 <a class="favorite-list__link" href="">
-                                        <div class="favorite-list__views favorite-list__cell">
+                                    <div class="favorite-list__views favorite-list__cell">
 
-                                                <img
-                                                    src="http://8.imgenter.ru/uploads/sunny/08/b0/49/thumb_27dc_product_120.jpeg"
-                                                    class="image" alt="">
+                                        <img
+                                            src="http://8.imgenter.ru/uploads/sunny/08/b0/49/thumb_27dc_product_120.jpeg"
+                                            class="image" alt="">
 
-                                        </div>
+                                    </div>
 
-                                        <div class="favorite-list__cell">
-                                            <span>Самокат JD Bug Classic MS-305 синий</span>
+                                    <div class="favorite-list__cell">
+                                        <span>Самокат JD Bug Classic MS-305 синий</span>
 
-                                            <div class="favorite-list__avail">В наличии</div>
-                                        </div>
+                                        <div class="favorite-list__avail">В наличии</div>
+                                    </div>
 
-                                        <div class="favorite-list__price favorite-list__cell">
-                                            5200 <span class="rubl">p</span>
-                                        </div>
+                                    <div class="favorite-list__price favorite-list__cell">
+                                        5200 <span class="rubl">p</span>
+                                    </div>
                                 </a>
                             </li>
                         </ul>
@@ -566,13 +1059,13 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         <!--Если нет избранного, вывести блок .item-none-->
 
 
-<!--                                          <div class="item-none">
-                                               <span class="item-none__txt">
-                                                   Добавляй товары в избранное
-                                                   <br>
-                                                   и узнавай об изменении цены и наличии
-                                               </span>
-                                           </div>-->
+                        <!--                                          <div class="item-none">
+                                                                       <span class="item-none__txt">
+                                                                           Добавляй товары в избранное
+                                                                           <br>
+                                                                           и узнавай об изменении цены и наличии
+                                                                       </span>
+                                                                   </div>-->
 
                     </div>
                 </div>
@@ -585,7 +1078,8 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                     </a>
 
                     <header class="private-sections__head">
-                        <a class="private-sections__head-link" href="<?= $helper->url('user.subscriptions') ?>">Подписки</a>
+                        <a class="private-sections__head-link" href="<?= $helper->url('user.subscriptions') ?>"
+                           target="_blank">Подписки</a>
                     </header>
 
                     <div class="grid-scroll js-private-sections-body">
@@ -628,21 +1122,26 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
 
     </div>
 
-    <div class="viewed-slider js-viewed-slider-full">
+
+    <div class=" js-slider-2 viewed-slider" data-position="Basket"
+         data-slider="{&quot;limit&quot;:null,&quot;url&quot;:null,&quot;type&quot;:null,&quot;sender&quot;:{&quot;name&quot;:&quot;retailrocket&quot;,&quot;method&quot;:&quot;PersonalRecommendation&quot;,&quot;position&quot;:&quot;Basket&quot;,&quot;from&quot;:null},&quot;sender2&quot;:&quot;&quot;}">
+
         <div class="viewed-slider__row clearfix">
             <h3 class="viewed-slider__title">
                 Вы смотрели
             </h3>
 
-            <span class="viewed-slider__pagination">
-                 Страница <span class="js-viewed-slider-page">1</span> из <span class="js-viewed-slider-allPage">1</span>
-            </span>
+            <!--                <span class="viewed-slider__pagination">
+                                 Страница <span class="js-viewed-slider-page">1</span> из <span class="js-viewed-slider-allPage">1</span>
+                            </span>-->
         </div>
-        <div class="viewed-slider__slide js-viewed-slider">
-            <div class="viewed-slider__list-outer">
-                <ul class="viewed-slider__list clearfix js-viewed-slider-list">
 
-                    <li class="viewed-slider__item js-viewed-slider-item">
+
+        <div class="goods-slider__inn viewed-slider__row">
+            <ul class="goods-slider-list viewed-slider__list clearfix">
+
+                <li class="goods-slider-list__i viewed-slider__item">
+                    <div class="viewed-slider__item-inner">
                         <div class="viewed-slider__img-block">
                             <img src="#" alt="#">
 
@@ -662,9 +1161,11 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         <div class="viewed-slider__buy">
                             Купить
                         </div>
-                    </li>
+                    </div>
+                </li>
 
-                    <li class="viewed-slider__item js-viewed-slider-item">
+                <li class="goods-slider-list__i viewed-slider__item">
+                    <div class="viewed-slider__item-inner">
                         <div class="viewed-slider__img-block">
                             <img src="#" alt="#">
 
@@ -684,9 +1185,11 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         <div class="viewed-slider__buy">
                             Купить
                         </div>
-                    </li>
+                    </div>
+                </li>
 
-                    <li class="viewed-slider__item js-viewed-slider-item">
+                <li class="goods-slider-list__i viewed-slider__item">
+                    <div class="viewed-slider__item-inner">
                         <div class="viewed-slider__img-block">
                             <img src="#" alt="#">
 
@@ -706,9 +1209,11 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         <div class="viewed-slider__buy">
                             Купить
                         </div>
-                    </li>
+                    </div>
+                </li>
 
-                    <li class="viewed-slider__item js-viewed-slider-item">
+                <li class="goods-slider-list__i viewed-slider__item">
+                    <div class="viewed-slider__item-inner">
                         <div class="viewed-slider__img-block">
                             <img src="#" alt="#">
 
@@ -728,9 +1233,11 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         <div class="viewed-slider__buy">
                             Купить
                         </div>
-                    </li>
+                    </div>
+                </li>
 
-                    <li class="viewed-slider__item js-viewed-slider-item">
+                <li class="goods-slider-list__i viewed-slider__item">
+                    <div class="viewed-slider__item-inner">
                         <div class="viewed-slider__img-block">
                             <img src="#" alt="#">
 
@@ -750,9 +1257,11 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         <div class="viewed-slider__buy">
                             Купить
                         </div>
-                    </li>
+                    </div>
+                </li>
 
-                    <li class="viewed-slider__item js-viewed-slider-item">
+                <li class="goods-slider-list__i viewed-slider__item">
+                    <div class="viewed-slider__item-inner">
                         <div class="viewed-slider__img-block">
                             <img src="#" alt="#">
 
@@ -772,9 +1281,11 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         <div class="viewed-slider__buy">
                             Купить
                         </div>
-                    </li>
+                    </div>
+                </li>
 
-                    <li class="viewed-slider__item js-viewed-slider-item">
+                <li class="goods-slider-list__i viewed-slider__item">
+                    <div class="viewed-slider__item-inner">
                         <div class="viewed-slider__img-block">
                             <img src="#" alt="#">
 
@@ -794,18 +1305,114 @@ $isNewProductPage = \App::abTest()->isNewProductPage();
                         <div class="viewed-slider__buy">
                             Купить
                         </div>
-                    </li>
+                    </div>
+                </li>
 
-                </ul>
-            </div>
+                <li class="goods-slider-list__i viewed-slider__item">
+                    <div class="viewed-slider__item-inner">
+                        <div class="viewed-slider__img-block">
+                            <img src="#" alt="#">
 
+                            <p class="viewed-slider__img-title">Lorem ipsum dolor sit amet, consectetur
+                                adipisicing.</p>
+                        </div>
+                        <div class="viewed-slider__price">
+                            <div class="viewed-slider__price-old">
+                                <span>3809</span>
+                                <span class="rubl">p</span>
+                            </div>
+                            <div class="viewed-slider__price-new">
+                                <span>2809</span>
+                                <span class="rubl">p</span>
+                            </div>
+                        </div>
+                        <div class="viewed-slider__buy">
+                            Купить
+                        </div>
+                    </div>
+                </li>
 
-            <div class="viewed-slider__controls js-viewedSlideControls">
-                <a class="viewed-slider__prev js-viewedSlideControlsPrev" href="#"></a>
-                <a class="viewed-slider__next js-viewedSlideControlsNext" href="#"></a>
-            </div>
+                <li class="goods-slider-list__i viewed-slider__item">
+                    <div class="viewed-slider__item-inner">
+                        <div class="viewed-slider__img-block">
+                            <img src="#" alt="#">
+
+                            <p class="viewed-slider__img-title">Lorem ipsum dolor sit amet, consectetur
+                                adipisicing.</p>
+                        </div>
+                        <div class="viewed-slider__price">
+                            <div class="viewed-slider__price-old">
+                                <span>3809</span>
+                                <span class="rubl">p</span>
+                            </div>
+                            <div class="viewed-slider__price-new">
+                                <span>2809</span>
+                                <span class="rubl">p</span>
+                            </div>
+                        </div>
+                        <div class="viewed-slider__buy">
+                            Купить
+                        </div>
+                    </div>
+                </li>
+
+                <li class="goods-slider-list__i viewed-slider__item">
+                    <div class="viewed-slider__item-inner">
+                        <div class="viewed-slider__img-block">
+                            <img src="#" alt="#">
+
+                            <p class="viewed-slider__img-title">Lorem ipsum dolor sit amet, consectetur
+                                adipisicing.</p>
+                        </div>
+                        <div class="viewed-slider__price">
+                            <div class="viewed-slider__price-old">
+                                <span>3809</span>
+                                <span class="rubl">p</span>
+                            </div>
+                            <div class="viewed-slider__price-new">
+                                <span>2809</span>
+                                <span class="rubl">p</span>
+                            </div>
+                        </div>
+                        <div class="viewed-slider__buy">
+                            Купить
+                        </div>
+                    </div>
+                </li>
+
+                <li class="goods-slider-list__i viewed-slider__item">
+                    <div class="viewed-slider__item-inner">
+                        <div class="viewed-slider__img-block">
+                            <img src="#" alt="#">
+
+                            <p class="viewed-slider__img-title">Lorem ipsum dolor sit amet, consectetur
+                                adipisicing.</p>
+                        </div>
+                        <div class="viewed-slider__price">
+                            <div class="viewed-slider__price-old">
+                                <span>3809</span>
+                                <span class="rubl">p</span>
+                            </div>
+                            <div class="viewed-slider__price-new">
+                                <span>2809</span>
+                                <span class="rubl">p</span>
+                            </div>
+                        </div>
+                        <div class="viewed-slider__buy">
+                            Купить
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+
+            <div class="goods-slider__btn goods-slider__btn--prev viewed-slider__prev disabled mDisabled"></div>
+            <div class="goods-slider__btn goods-slider__btn--next viewed-slider__next"></div>
         </div>
+
+
     </div>
+    <!--/ слайдер товаров -->
 
 
 </div>

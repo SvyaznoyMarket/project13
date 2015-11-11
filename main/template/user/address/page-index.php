@@ -41,7 +41,7 @@
 
                 <div class="item-none item-none_statis">
                     <div class="item-none__img-block">
-                        <img src="#" alt="#">
+                        <img src="/styles/personal-page/img/no-address.png" alt="#">
                     </div>
                     <span class="item-none__txt">Чтобы не пришлось вводить адрес в следующий раз, добавь и сохрани его на этой странице. Можно добавить несколько адресов.</span>
                 </div>-->

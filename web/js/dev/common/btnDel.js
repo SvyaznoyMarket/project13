@@ -15,7 +15,6 @@ $(function(){
     });
 
     function copyContent(content){
-        console.log(1);
         $('.js-copyContentIn').html(content.html());
     }
 });

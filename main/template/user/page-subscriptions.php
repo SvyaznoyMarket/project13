@@ -37,7 +37,7 @@ array_walk($userChannels, function($ch) use (&$channelsByType) {
                             <? /** @var $channel \Model\User\SubscriptionEntity */ ?>
 
                             <input class="jsCustomRadio customInput customInput-bigCheck js-modalShow" id="channel_<?= $channel->getType().$channel->getChannelId() ?>" type="checkbox"  name="channel[<?= $i ?>][is_confirmed]" <?= $channel->getIsConfirmed() ? 'checked' : '' ?> />
-                            <label class="private-sections__label" for="channel_<?= $channel->getType().$channel->getChannelId() ?>"><?= $channel->getChannel()->getName() ?></label>
+                            <label class="private-sections__label label-for-customInput" for="channel_<?= $channel->getType().$channel->getChannelId() ?>"><?= $channel->getChannel()->getName() ?></label>
                             <input type="hidden" name="channel[<?= $i ?>][channel_id]" value="<?= $channel->getChannelId() ?>" />
                             <input type="hidden" name="channel[<?= $i ?>][type]" value="<?= $channel->getType() ?>" />
                             <input type="hidden" name="channel[<?= $i ?>][email]" value="<?= $channel->getEmail() ?>" />
@@ -75,9 +75,9 @@ array_walk($userChannels, function($ch) use (&$channelsByType) {
                     <span class="private-sections__modal-email-desc">На этот email мы будем отправлять сообщения подписки</span>
                 </fieldset>
                 <input class="customInput" type="checkbox" id="private-sections__modal-checkbox">
-                <label class="private-sections__modal-checkbox" for="private-sections__modal-checkbox">
-                    <span>Все подписки будут автоматически отправляться на этот адрес</span>
-                    <span>Запомнить этот email для входа в личный кабинет</span>
+                <label class="private-sections__modal-checkbox label-for-customInput" for="private-sections__modal-checkbox">
+                    <span class="">Запомнить этот email для входа в личный кабинет <br>
+                    Все подписки будут автоматически отправляться на этот адрес</span>
                 </label>
                 <input class="private-sections__modal-send" type="submit" value="Подписаться">
             </form>
