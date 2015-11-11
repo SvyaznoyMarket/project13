@@ -34,6 +34,7 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
     if ($c->degradation > 1) {
         $c->product['reviewEnabled'] = false;
         $c->product['couponEnabledInCard'] = false;
+        $c->product['viewedEnabled'] = false;
         $c->mainMenu['recommendationsEnabled'] = false;
         $c->product['getModel'] = false;
     }

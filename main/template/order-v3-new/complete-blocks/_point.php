@@ -50,7 +50,7 @@ $f  = function (
                             <? endif ?>
                     </span>
 
-                    <? if ($order->comment) : ?>
+                    <? if (false && $order->comment) : ?>
                         <div class="orderPayment_msg_adding">Дополнительные пожелания:<br/> «<?= $order->comment ?>»</div>
                     <? endif ?>
                 </div>
@@ -88,7 +88,7 @@ $f  = function (
                 <div class="orderPayment_msg_info info-phrase">
                     Адрес и дату доставки вашего заказа уточнит по&nbsp;телефону наш менеджер.
                 </div>
-                <? if ($order->comment) : ?>
+                <? if (false && $order->comment) : ?>
                     <div class="orderPayment_msg_adding">Дополнительные пожелания:<br/> «<?= $order->comment ?>»</div>
                 <? endif ?>
                 <div class="orderPayment_msg_info">

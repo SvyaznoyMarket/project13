@@ -24,7 +24,7 @@ if ((bool)$siblingCategories) {
     echo $helper->render('product-category/__sibling-list',
         [
             'categories'        => $siblingCategories, // категории-соседи
-            'catalogConfig'     => $catalogConfig,
+            'catalogConfig'     => isset($catalogConfig) ? $catalogConfig : null,
             'currentCategory'   => $categoryWithChilds
         ]);
     /* <!--/ TCHIBO - слайдер-меню разделов Чибо -->*/
@@ -49,8 +49,10 @@ if ($category->isTchibo()) {
 
 /** @var Category[] $categoryByUi */
 $categoryByUi = [];
-foreach ($categoryWithChilds->getChild() as $ct) {
-    $categoryByUi[$ct->getUi()] = $ct;
+if ($categoryWithChilds) {
+    foreach ($categoryWithChilds->getChild() as $ct) {
+        $categoryByUi[$ct->getUi()] = $ct;
+    }
 }
 
 ?>
