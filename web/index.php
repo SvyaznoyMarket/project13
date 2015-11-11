@@ -131,26 +131,26 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
 
 });
 
-// восстановление параметров родительского запроса для SSI, родительский запрос передается в headers x-uri
-if (isset($_GET['SSI']) && (true === $_GET['SSI'])) {
+\App::logger()->info(['message' => 'Start app', 'env' => \App::$env, 'ssi' => isset($_GET['SSI']) ? $_GET['SSI'] : false]);
+
+// ssi
+if (('/index.php' !== $_SERVER['SCRIPT_NAME']) && (0 === strpos($_SERVER['SCRIPT_NAME'], '/ssi'))) {
+    // восстановление параметров родительского запроса для SSI, родительский запрос передается в headers x-uri
     $queryStrPosition = strpos($_SERVER['HTTP_X_URI'], '?');
     $parent_query = substr($_SERVER['HTTP_X_URI'], $queryStrPosition === false ? 0 : $queryStrPosition + 1);
     parse_str($parent_query, $params);
     $_GET = array_merge($_GET, $params);
-}
 
-\App::logger()->info(['message' => 'Start app', 'env' => \App::$env]);
-
-// request
-$request =
-    $_SERVER['SCRIPT_NAME'] === '/ssi.php'
-    ? \Http\Request::create(
+    // request
+    $request = \Http\Request::create(
         '/ssi' . (!empty($_GET['path']) ? $_GET['path'] : ''),
         'GET',
         $_GET
-    )
-    : \App::request()
-;
+    );
+} else {
+    // request
+    $request = \App::request();
+}
 
 // degradation
 call_user_func(include realpath(__DIR__ . '/../config/degradation.php'), $config, $request);

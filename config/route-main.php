@@ -15,8 +15,8 @@ return [
         'pattern' => '/ssi/user-config',
         'action'  => ['Ssi\UserConfigAction', 'execute'],
     ],
-    'ssi-cached.mainMenu' => [
-        'pattern' => '/ssi-cached/main-menu',
+    'ssi.mainMenu' => [
+        'pattern' => '/ssi/navigation',
         'action'  => ['MainMenu\Get', 'execute'],
     ],
 

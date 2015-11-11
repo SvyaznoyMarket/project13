@@ -19,5 +19,4 @@ class Get {
 
         return new \Http\Response($content);
     }
-
 } 

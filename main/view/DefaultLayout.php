@@ -232,7 +232,7 @@ class DefaultLayout extends Layout {
      */
     public function slotNavigation() {
         if ('on' === \App::request()->headers->get('SSI')) {
-            return \App::helper()->render('__ssi-cached', ['path' => '/main-menu']);
+            return \App::helper()->render('__ssi-cached', ['path' => '/navigation']);
         } else {
             return $this->render('common/_navigation', ['menu' => $this->getGlobalParam('menu')]);
         }
