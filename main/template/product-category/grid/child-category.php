@@ -43,7 +43,21 @@ foreach ($gridCells as $cell) {
         $contentHeight = $height;
     }
 }
+
+$titleBackgroundStyle = '';
+if ($category->isTchibo()) {
+    $titleBackgroundStyle = $category->getMediaSource('category_wide_940x150', 'category_wide')->url
+    ? sprintf("background-image: url('%s')",
+    $category->getMediaSource('category_wide_940x150', 'category_wide')->url)
+    : '';
+}
+
 ?>
+
+<? if ($titleBackgroundStyle) : ?>
+    <h1 class="bTitlePage_tchibo js-pageTitle" style="<?= $titleBackgroundStyle ?>"><?= $category->getName() ?></h1>
+<? endif ?>
+
 <!-- TCHIBO - листинг Чибо -->
 <div class="tchiboProducts" style="position: relative; height: <?= $contentHeight ?>px; margin: 0 0 10px 7px;">
 <?= $helper->render('grid/__show', [
