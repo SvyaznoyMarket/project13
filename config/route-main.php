@@ -15,6 +15,10 @@ return [
         'pattern' => '/ssi/user-config',
         'action'  => ['Ssi\UserConfigAction', 'execute'],
     ],
+    'ssi-cached.mainMenu' => [
+        'pattern' => '/ssi-cached/main-menu',
+        'action'  => ['MainMenu\Get', 'execute'],
+    ],
 
     'mainMenu.recommendation' => [
         'pattern' => '/main_menu/recommendations/{rootCategoryId}/{childIds}',

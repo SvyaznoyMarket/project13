@@ -132,7 +132,7 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
 });
 
 // восстановление параметров родительского запроса для SSI, родительский запрос передается в headers x-uri
-if ($_SERVER['SCRIPT_NAME'] === '/ssi.php') {
+if (isset($_GET['SSI']) && (true === $_GET['SSI'])) {
     $queryStrPosition = strpos($_SERVER['HTTP_X_URI'], '?');
     $parent_query = substr($_SERVER['HTTP_X_URI'], $queryStrPosition === false ? 0 : $queryStrPosition + 1);
     parse_str($parent_query, $params);

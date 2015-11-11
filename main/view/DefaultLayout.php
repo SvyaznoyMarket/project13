@@ -231,7 +231,11 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotNavigation() {
-        return $this->render('common/_navigation-new', ['menu' => $this->getGlobalParam('menu')]);
+        if ('on' === \App::request()->headers->get('SSI')) {
+            return \App::helper()->render('__ssi-cached', ['path' => '/main-menu']);
+        } else {
+            return $this->render('common/_navigation', ['menu' => $this->getGlobalParam('menu')]);
+        }
     }
 
     public function slotUserbarContent() {
