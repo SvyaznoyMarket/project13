@@ -340,6 +340,7 @@ $c->cart['productLimit'] = 0;
 $c->cart['sessionName'] = 'cart';
 $c->cart['checkStock'] = false;
 $c->cart['updateTime'] = 1; // обновлять корзину, если данные в ней устарели более, чем на 1 минуту
+$c->cart['oneClickOnly'] = false; // важно! только при деградации true
 
 $c->payment['creditEnabled'] = true;
 $c->payment['blockedIds'] = [];
@@ -378,10 +379,8 @@ $c->order['maxSumOnlinePaypal'] = 5000;
 $c->order['excludedError'] = [705, 708, 735, 759, 800];
 $c->order['addressAutocomplete'] = true;
 // предоплата (SITE-2959)
-$c->order['prepayment'] = [
-    'enabled'    => true,
-    'labelId'    => 15, // id шильдика "предоплата"
-];
+$c->order['prepayment']['enabled'] = true;
+$c->order['prepayment']['labelId'] = 15; // id шильдика "предоплата"
 $c->order['splitSessionKey'] = 'order_split';
 $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
 $c->order['sessionInfoOnComplete'] = true; // краткая инфа о заказе

@@ -72,6 +72,8 @@ class ProductButtonAction {
             'ecommerceData' => $product->ecommerceData()
         ];
 
+        $isOneClickOnly = \Session\AbTest\ABHelperTrait::isOneClickOnly();
+
         if (!$product->getIsBuyable()) {
             $data['disabled'] = true;
             $data['url'] = '#';
@@ -128,8 +130,8 @@ class ProductButtonAction {
             $data['value'] = 'В корзине';
         } else {
             // Внимание!!! Генерация URL адреса для покупки также происходит в web/js/dev/common/UserCustomBindings.js
-            $data['url'] = $this->getBuyUrl($helper, $product, $sender, $sender2);
-            $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton';
+            $data['url'] = $isOneClickOnly ? '' : $this->getBuyUrl($helper, $product, $sender, $sender2);
+            $data['class'] .= ' btnBuy__eLink js-orderButton ' . ($isOneClickOnly ? 'jsOneClickButton' : 'jsBuyButton');
             $data['value'] = 'Купить';
             if (in_array($location, ['product-card', 'userbar'])) {
                 $data['value'] = 'Купить';

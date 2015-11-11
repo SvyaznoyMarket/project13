@@ -179,6 +179,7 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
 
     <!-- сравнить, добавить в виш лист -->
     <ul class="product-card-tools">
+        <? if (!\Session\AbTest\ABHelperTrait::isOneClickOnly()): ?>
         <li class="product-card-tools__i product-card-tools__i--onclick">
             <?= $helper->render('cart/__button-product-oneClick', [
                 'product' => $product,
@@ -188,6 +189,7 @@ $price = ($product->getRootCategory() && $product->getRootCategory()->getPriceCh
                 'location'  => 'product-card',
             ]) ?>
         </li>
+        <? endif ?>
 
         <li class="product-card-tools__i product-card-tools__i--compare js-compareProduct"
             data-bind="compareButtonBinding: compare"
