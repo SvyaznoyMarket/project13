@@ -19,6 +19,7 @@ $c->routePrefix = '';
 
 $c->debug = false;
 $c->logger['pretty'] = false;
+$c->logger['emptyChance'] = 0;
 $c->appName = 'Enter';
 
 $c->authToken['name']     = '_token';
