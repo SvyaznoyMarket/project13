@@ -198,4 +198,18 @@ trait ABHelperTrait {
     public function isInfinityScroll() {
         return 'on' === \App::abTest()->getTest('infinity_scroll')->getChosenCase()->getKey();
     }
+
+    /**
+     * @return bool
+     */
+    public static function isOneClickOnly() {
+        $config = \App::config();
+        $user = \App::user();
+
+        return
+            (true === $config->cart['oneClickOnly'])
+            && ($config->region['defaultId'] === $user->getRegion()->id)
+            && !$user->getCart()->count()
+        ;
+    }
 }
