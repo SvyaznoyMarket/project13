@@ -2,6 +2,8 @@
 
 namespace Controller\OrderV3OneClick;
 
+use Curl\TimeoutException;
+
 class DeliveryAction {
 
     public function __construct() {
@@ -150,8 +152,8 @@ class DeliveryAction {
                     $splitData,
                     $i * \App::config()->coreV2['timeout']
                 );
-            } catch (\Exception $e) {
-                if ($e->getCode() == \Curl\Client::CODE_TIMEOUT) \App::exception()->remove($e);
+            } catch (TimeoutException $e) {
+                \App::exception()->remove($e);
             }
 
             if ($orderDeliveryData) break; // если получен ответ прекращаем попытки

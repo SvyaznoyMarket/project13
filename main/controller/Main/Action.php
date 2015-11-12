@@ -210,6 +210,14 @@ class Action {
 
         $rrClient->execute();
 
+        // собираем статистику для RichRelevance
+        try {
+            \App::richRelevanceClient()->query('recsForPlacements', [
+                'placements' => 'home_page',
+            ]);
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+        }
 
         // если нет персональных рекомендаций, то выдадим половину популярных за персональные
         if (empty($ids['personal']) && !empty($ids['popular'])) {

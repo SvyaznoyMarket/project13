@@ -406,6 +406,26 @@ class App {
     }
 
     /**
+     * @return \RichRelevance\Client
+     */
+    public static function richRelevanceClient()
+    {
+        static $instance;
+
+        if (!$instance) {
+
+            $config = [
+                'apiUrl'        => self::config()->richRelevance['apiUrl'],
+                'timeout'       => self::config()->richRelevance['timeout'],
+            ];
+
+            $instance = new \RichRelevance\Client($config, self::curl());
+        }
+
+        return $instance;
+    }
+
+    /**
      * @return \RetailRocket\Manager
      */
     public static function retailrocket() {

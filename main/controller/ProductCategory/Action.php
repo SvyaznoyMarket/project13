@@ -184,6 +184,16 @@ class Action {
             $scmsClient->execute();
         }
 
+        // собираем статистику для RichRelevance
+        try {
+            \App::richRelevanceClient()->query('recsForPlacements', [
+                'placements'    => 'category_page',
+                'categoryId'    => $category->getId()
+            ]);
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+        }
+
         // роутим на специфичные категории
         if ($category->isPandora()) {
             \App::config()->debug && \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);

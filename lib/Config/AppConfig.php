@@ -9,6 +9,17 @@ require_once __DIR__ . '/Oauth/TwitterConfig.php';
 
 
 class AppConfig {
+
+    public $richRelevance = [
+        'enabled'       => false,
+        'apiKey'        => '',
+        'apiClientKey'  => '',
+        'apiUrl'        => '',
+        'timeout'       => 0,
+        'retryCount'    => 0,
+        'jsUrl'         => '',
+    ];
+
     /** @var int */
     public $degradation; // для отладки - неспользовать!
     /** Проект Lite
