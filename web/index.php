@@ -136,10 +136,12 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
 // ssi
 if (('/index.php' !== $_SERVER['SCRIPT_NAME']) && (0 === strpos($_SERVER['SCRIPT_NAME'], '/ssi'))) {
     // восстановление параметров родительского запроса для SSI, родительский запрос передается в headers x-uri
-    $queryStrPosition = strpos($_SERVER['HTTP_X_URI'], '?');
-    $parent_query = substr($_SERVER['HTTP_X_URI'], $queryStrPosition === false ? 0 : $queryStrPosition + 1);
-    parse_str($parent_query, $params);
-    $_GET = array_merge($_GET, $params);
+    if ($xUri = (isset($_SERVER['HTTP_X_URI']) ? $_SERVER['HTTP_X_URI'] : null)) {
+        $queryStrPosition = strpos($xUri, '?');
+        $parentQuery = substr($xUri, $queryStrPosition === false ? 0 : $queryStrPosition + 1);
+        parse_str($parentQuery, $params);
+        $_GET = array_merge($_GET, $params);
+    }
 
     // request
     $request = \Http\Request::create(
