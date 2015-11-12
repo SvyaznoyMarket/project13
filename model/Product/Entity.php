@@ -99,8 +99,6 @@ class Entity {
     /** @var string */
     protected $tagline;
     /** @var string */
-    protected $announce;
-    /** @var string */
     protected $description;
     /** @var float */
     protected $rating;
@@ -150,8 +148,6 @@ class Entity {
     }
 
     public function importFromCore($data = []) {
-        $templateHelper = new \Helper\TemplateHelper();
-
         if (isset($data['id'])) $this->setId($data['id']);
         else if (isset($data['core_id'])) $this->setId($data['core_id']);
         if (isset($data['ui'])) $this->setUi($data['ui']);
@@ -183,10 +179,6 @@ class Entity {
         if (array_key_exists('set_id', $data)) $this->setSetId($data['set_id']);
         if (array_key_exists('is_primary_line', $data)) $this->setIsPrimaryLine($data['is_primary_line']);
         if (array_key_exists('score', $data)) $this->setScore($data['score']);
-        if (isset($data['name'])) $this->setName($templateHelper->unescape($data['name'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
-        if (array_key_exists('name_web', $data)) $this->setWebName($templateHelper->unescape($data['name_web'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
-        if (array_key_exists('prefix', $data)) $this->setPrefix($templateHelper->unescape($data['prefix'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
-        if (array_key_exists('announce', $data)) $this->setAnnounce($data['announce']);
         if (array_key_exists('rating', $data)) $this->setRating($data['rating']);
         if (array_key_exists('rating_count', $data)) $this->setRatingCount($data['rating_count']);
         if (array_key_exists('type', $data) && (bool)$data['type']) $this->setType(new Type\Entity($data['type']));
@@ -208,10 +200,15 @@ class Entity {
     }
 
     public function importFromScms($data = []) {
-        if (!empty($data['slug'])) $this->token = (string)$data['slug'];
-        if (!empty($data['url'])) $this->link = (string)$data['url'];
-        if (!empty($data['tagline'])) $this->tagline = (string)$data['tagline'];
-        if (!empty($data['description'])) $this->description = (string)$data['description'];
+        $templateHelper = new \Helper\TemplateHelper();
+
+        if (isset($data['slug'])) $this->token = (string)$data['slug'];
+        if (isset($data['url'])) $this->link = (string)$data['url'];
+        if (isset($data['name'])) $this->setName($templateHelper->unescape($data['name'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
+        if (isset($data['name_web'])) $this->setWebName($templateHelper->unescape($data['name_web'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
+        if (isset($data['name_prefix'])) $this->setPrefix($templateHelper->unescape($data['name_prefix'])); // Редакция в 1С не использует HTML сущности и теги в данном поле
+        if (isset($data['tagline'])) $this->tagline = (string)$data['tagline'];
+        if (isset($data['description'])) $this->description = (string)$data['description'];
 
         if (!empty($data['medias']) && is_array($data['medias'])) {
             foreach ($data['medias'] as $media) {
@@ -408,20 +405,6 @@ class Entity {
      */
     public function getToken() {
         return $this->token;
-    }
-
-    /**
-     * @param string $announce
-     */
-    public function setAnnounce($announce) {
-        $this->announce = (string)$announce;
-    }
-
-    /** Краткое описание товара
-     * @return string
-     */
-    public function getAnnounce() {
-        return $this->announce;
     }
 
     /**

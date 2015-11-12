@@ -34,7 +34,7 @@ class Entity extends \Model\Order\Entity {
      * @return bool
      */
     public function isCompleted() {
-        return $this->status && in_array($this->status, [StatusEntity::ID_READY]);
+        return $this->status && in_array($this->status->id, [StatusEntity::ID_READY]);
     }
 
     /**

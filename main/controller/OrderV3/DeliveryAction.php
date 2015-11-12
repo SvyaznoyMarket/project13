@@ -202,7 +202,7 @@ class DeliveryAction extends OrderV3 {
                 }
 
                 $orderDelivery = new Entity($newSplit);
-                \RepositoryManager::order()->prepareOrderDeliveryMedias($orderDelivery);
+                \RepositoryManager::order()->prepareOrderDeliveryProducts($orderDelivery);
                 \App::coreClientV2()->execute();
 
                 return $orderDelivery;
@@ -296,7 +296,7 @@ class DeliveryAction extends OrderV3 {
             throw new \Exception('Отстуствуют данные по заказам');
         }
 
-        \RepositoryManager::order()->prepareOrderDeliveryMedias($orderDelivery);
+        \RepositoryManager::order()->prepareOrderDeliveryProducts($orderDelivery);
 
         \App::coreClientV2()->execute();
 

@@ -37,6 +37,7 @@ namespace EnterApplication\Action\ProductCard
             ;
 
             // главное меню
+            /** @var Query\MainMenu\GetByTagList|null $menuQuery */
             $menuQuery =
                 ('on' !== \App::request()->headers->get('SSI'))
                 ? (new Query\MainMenu\GetByTagList(['site-web']))->prepare()
@@ -390,7 +391,7 @@ namespace EnterApplication\Action\ProductCard
             $this->removeCurl();
 
             // обработка ошибок
-            if ($menuQuery->error) {
+            if ($menuQuery && $menuQuery->error) {
                 $menuQuery->response->items = \App::dataStoreClient()->query('/main-menu.json')['item'];
 
                 \App::logger()->error(['error' => $menuQuery->error, 'sender' => __FILE__ . ' ' .  __LINE__], ['main_menu', 'controller']);
