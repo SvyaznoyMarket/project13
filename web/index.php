@@ -156,6 +156,9 @@ if (('/index.php' !== $_SERVER['SCRIPT_NAME']) && (0 === strpos($_SERVER['SCRIPT
 
 // degradation
 call_user_func(include realpath(__DIR__ . '/../config/degradation.php'), $config, $request);
+if ($c->degradation) {
+    \App::logger()->info(['message' => 'degradation', 'value' => $c->degradation]);
+}
 
 // router
 $router = \App::router();
