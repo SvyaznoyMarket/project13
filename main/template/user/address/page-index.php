@@ -1,7 +1,8 @@
 <?php
 /**
- * @var $page                              \View\User\Address\IndexPage
- * @var $helper                            \Helper\TemplateHelper
+ * @var $page      \View\User\Address\IndexPage
+ * @var $helper    \Helper\TemplateHelper
+ * @var $addresses \Model\User\Address\Entity[]
  */
 ?>
 
@@ -13,38 +14,29 @@
         <div class="private-sections private-sections_gray grid">
             <h1 class="private-sections__head">Адреса доставки</h1>
             <div class="grid__col grid__col_2">
-                    <ul class="address-list">
-                        <li class=" address-list__item js-btnDelContainer js-copyContentFrom">
-                                <div class="address-list__mode">Домашний</div>
+                <ul class="address-list">
+                <? foreach ($addresses as $address): ?>
+                    <li class=" address-list__item js-btnDelContainer js-copyContentFrom">
+                        <? if ($address->description): ?><div class="address-list__mode"><?= $helper->escape($address->description) ?></div><? endif ?>
 
-                                <ul class="address-list-details">
-                                    <li class="address-list-details__item">Мытищи</li>
-                                    <li class="address-list-details__item">ул. Линии Октябрьской Железной Дороги
-                                    </li>
-                                    <li class="address-list-details__item">дом 16 корпус 2 квартира 245</li>
-                                </ul>
-                            <a class="address-list__item-del js-btnDelModal js-modalShow" href="#"></a>
-                        </li>
+                        <ul class="address-list-details">
+                            <? if ($address->region): ?><li class="address-list-details__item"><?= $helper->escape($address->region->name) ?></li><? endif ?>
+                            <li class="address-list-details__item"><?= $helper->escape(implode(' ', [$address->streetType, $address->street])) ?></li>
+                            <li class="address-list-details__item"><?= $helper->escape(implode(' ', [$address->building, $address->apartment])) ?></li>
+                        </ul>
+                        <a class="address-list__item-del js-btnDelModal js-modalShow" href="#"></a>
+                    </li>
+                <? endforeach ?>
+                </ul>
 
-                        <li class="address-list__item js-btnDelContainer js-copyContentFrom">
-                                <ul class="address-list-details">
-                                    <li class="address-list-details__item">Мытищи</li>
-                                    <li class="address-list-details__item">ул. Линии Октябрьской Железной Дороги
-                                    </li>
-                                    <li class="address-list-details__item">дом 16 корпус 2 квартира 245</li>
-                                </ul>
-                            <a class="address-list__item-del js-btnDelModal js-modalShow" href="#"></a>
-                        </li>
-                    </ul>
-
-            <!--#####Вывести если адреса отсутствуют
-
+                <? if (!$addresses): ?>
                 <div class="item-none item-none_statis">
                     <div class="item-none__img-block">
                         <img src="/styles/personal-page/img/no-address.png" alt="#">
                     </div>
                     <span class="item-none__txt">Чтобы не пришлось вводить адрес в следующий раз, добавь и сохрани его на этой странице. Можно добавить несколько адресов.</span>
-                </div>-->
+                </div>
+                <? endif ?>
             </div>
 
             <div class="grid__col grid__col_2">
