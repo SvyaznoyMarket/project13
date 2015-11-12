@@ -622,6 +622,10 @@ return [
         'pattern' => '/private/address',
         'action'  => ['User\Address\IndexAction', 'execute'],
     ],
+    'user.address.create' => [
+        'pattern' => '/private/address/create',
+        'action'  => ['User\Address\CreateAction', 'execute'],
+    ],
     'user.message' => [
         'pattern' => '/private/messages',
         'action'  => ['User\Message\IndexAction', 'execute'],

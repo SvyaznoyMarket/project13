@@ -40,35 +40,36 @@
             </div>
 
             <div class="grid__col grid__col_2">
-                    <div class="new-address js-private-sections-container">
-                        <div class="new-address__row">
-                            <div class="new-address__title">Добавить новый адрес</div>
-                            <a class="new-address__map-show js-mapShow js-private-sections-button" href="#">Показать карту</a>
-                        </div>
-                        <div class="new-address__map-block js-private-sections-body">
-                            Вставить сюда карту
-                        </div>
-                        <form class="new-address__form" action="#" name="name">
-                            <label class="new-address__form-item">
-                                <input class="new-address__form-input" placeholder="Название" type="text">
-                            </label>
-                            <label class="new-address__form-item">
-                                <input class="new-address__form-input" placeholder="Регион" type="text">
-                            </label>
-                            <label class="new-address__form-item">
-                                <input class="new-address__form-input" placeholder="Улица" type="text">
-                            </label>
-                            <label class="new-address__form-item new-address__form-item_half">
-                                <input class="new-address__form-input" placeholder="Дом" type="text">
-                            </label>
-                            <label class="new-address__form-item new-address__form-item_half">
-                                <input class="new-address__form-input" placeholder="Квартира" type="text">
-                            </label>
-
-                            <input class="new-address__form-send" type="submit">
-                        </form>
+                <div class="new-address js-private-sections-container">
+                    <div class="new-address__row">
+                        <div class="new-address__title">Добавить новый адрес</div>
+                        <a class="new-address__map-show js-mapShow js-private-sections-button" href="#">Показать карту</a>
                     </div>
+                    <div class="new-address__map-block js-private-sections-body">
+                        Вставить сюда карту
+                    </div>
+                    <form class="new-address__form" action="<?= $helper->url('user.address.create') ?>" name="name" method="post">
+                        <input type="hidden" name="address[kladrId]" value="">
 
+                        <label class="new-address__form-item">
+                            <input class="new-address__form-input" name="address[description]" placeholder="Название" type="text">
+                        </label>
+                        <label class="new-address__form-item">
+                            <input class="new-address__form-input" name="address[regionId]" placeholder="Регион" type="text">
+                        </label>
+                        <label class="new-address__form-item">
+                            <input class="new-address__form-input" name="address[street]" placeholder="Улица" type="text">
+                        </label>
+                        <label class="new-address__form-item new-address__form-item_half">
+                            <input class="new-address__form-input" name="address[building]" placeholder="Дом" type="text">
+                        </label>
+                        <label class="new-address__form-item new-address__form-item_half">
+                            <input class="new-address__form-input" name="address[apartment]" placeholder="Квартира" type="text">
+                        </label>
+
+                        <input class="new-address__form-send" type="submit">
+                    </form>
+                </div>
             </div>
 
         </div>
@@ -78,10 +79,8 @@
                 <header class="private-sections__modal-head">
                     Удалить адрес?
                 </header>
-                    <div class="js-copyContentIn">
-
-                    </div>
-                    <button class="address-list__item-del_big js-btnContainerDel js-modal-close">Удалить</button>
+                <div class="js-copyContentIn"></div>
+                <button class="address-list__item-del_big js-btnContainerDel js-modal-close">Удалить</button>
                 <a class="private-sections__modal-close js-modal-close" href="#"></a>
             </article>
         </div>

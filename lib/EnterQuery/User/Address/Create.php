@@ -12,7 +12,15 @@ namespace EnterQuery\User\Address
         /** @var string */
         public $userUi;
         /** @var string */
-        public $data = [];
+        public $data = [
+            'kladrId'     => null,
+            'regionId'    => null,
+            'street'      => null,
+            'streetType'  => null,
+            'building'    => null,
+            'apartment'   => null,
+            'description' => null,
+        ];
         /** @var Response */
         public $response;
 
@@ -25,7 +33,7 @@ namespace EnterQuery\User\Address
             $this->response = new Response();
 
             $this->userUi = $userUi;
-            $this->data = $data;
+            $this->data = array_merge($this->data, $data);
         }
 
         /**
@@ -33,14 +41,21 @@ namespace EnterQuery\User\Address
          */
         public function prepare()
         {
-            $data = array_merge(['user_uid' => $this->userUi], $this->data);
-
             $this->prepareCurlQuery(
                 $this->buildUrl(
                     'api/address/create',
                     []
                 ),
-                $data, // data
+                [
+                    'user_uid'    => $this->userUi,
+                    'kladr_id'    => $this->data['kladrId'],
+                    'geo_id'      => $this->data['regionId'],
+                    'street'      => $this->data['street'],
+                    'street_type' => $this->data['streetType'],
+                    'building'    => $this->data['building'],
+                    'apartment'   => $this->data['apartment'],
+                    'description' => $this->data['description'],
+                ], // data
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
