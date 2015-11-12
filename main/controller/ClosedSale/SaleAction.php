@@ -74,6 +74,10 @@ class SaleAction
 
         $products = $currentSale->products;
 
+        // получаем все продукты
+        \RepositoryManager::product()->prepareProductQueries($products, 'model media label brand category');
+        $this->scmsClient->execute();
+
         // исключаем модельные ряды по названию товара, пока нет времени это сделать на стороне scms
         $productName = null;
         foreach ($products as $key => $product ) {
@@ -83,10 +87,6 @@ class SaleAction
                 $productName = $product->getName();
             }
         }
-
-        // получаем все продукты
-        \RepositoryManager::product()->prepareProductQueries($products, 'model media label brand category');
-        $this->scmsClient->execute();
 
         // убираем товары, которые нельзя купить
         /** @var \Model\Product\Entity[] $products */
