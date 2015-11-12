@@ -26,7 +26,8 @@ class AppConfig {
     public $debug;
     /** @var array */
     public $logger = [
-        'pretty' => null,
+        'pretty'      => null,
+        'emptyChance' => null, // вероятность нулевого логирования (при высоких нагрузках)
     ];
     /**
      * @var string

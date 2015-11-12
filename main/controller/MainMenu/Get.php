@@ -8,8 +8,6 @@ class Get {
      * @return \Http\JsonResponse
      */
     public function execute(\Http\Request $request) {
-        $templating = \App::templating();
-
         $regionId = $request->query->get('regionId');
         $region = new \Model\Region\Entity(['id' => $regionId]);
 

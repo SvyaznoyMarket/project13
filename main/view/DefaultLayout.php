@@ -28,7 +28,10 @@ class DefaultLayout extends Layout {
         parent::__construct();
 
         // Меню нужно в нескольких рендерингах, поэтому запрашиваем его сразу
-        $this->setGlobalParam('menu', (new Menu($this))->generate(\App::user()->getRegion()));
+
+        if ('on' !== \App::request()->headers->get('SSI')) {
+            $this->setGlobalParam('menu', (new Menu($this))->generate(\App::user()->getRegion()));
+        }
 
         $this->setTitle('Enter - это выход!');
         $this->addMeta('yandex-verification', '623bb356993d4993');
@@ -232,7 +235,15 @@ class DefaultLayout extends Layout {
      */
     public function slotNavigation() {
         if ('on' === \App::request()->headers->get('SSI')) {
-            return \App::helper()->render('__ssi-cached', ['path' => '/navigation']);
+            return \App::helper()->render(
+                '__ssi-cached',
+                [
+                    'path'  => '/navigation',
+                    'query' => [
+                        'regionId' => \App::user()->getRegion()->id ?: \App::config()->region['defaultId'],
+                    ],
+                ]
+            );
         } else {
             return $this->render('common/_navigation', ['menu' => $this->getGlobalParam('menu')]);
         }

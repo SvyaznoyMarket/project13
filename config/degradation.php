@@ -47,5 +47,8 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
     // агрессивное кеширование
     if ($c->degradation > 3) {
         $c->region['cache'] = true;
+        if (!$c->debug) {
+            $c->logger['emptyChance'] = 67;
+        }
     }
 };

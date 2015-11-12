@@ -37,7 +37,11 @@ namespace EnterApplication\Action\ProductCard
             ;
 
             // главное меню
-            $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare();
+            $menuQuery =
+                ('on' !== \App::request()->headers->get('SSI'))
+                ? (new Query\MainMenu\GetByTagList(['site-web']))->prepare()
+                : null
+            ;
 
             // выполнение запросов
             $curl->execute();
@@ -76,7 +80,11 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // дерево категорий для меню
-            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($regionQuery->response->region['id'], 3))->prepare();
+            $categoryRootTreeQuery =
+                ('on' !== \App::request()->headers->get('SSI'))
+                ? (new Query\Product\Category\GetRootTree($regionQuery->response->region['id'], 3))->prepare()
+                : null
+            ;
 
             // пользователь и его подписки
             /** @var Query\User\GetByToken $userQuery */
