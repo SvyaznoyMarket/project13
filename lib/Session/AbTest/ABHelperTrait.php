@@ -209,7 +209,7 @@ trait ABHelperTrait {
         return
             (true === $config->cart['oneClickOnly'])
             && ($config->region['defaultId'] === $user->getRegion()->id)
-            && !$user->getCart()->count()
+            //&& !$user->getCart()->count()
         ;
     }
 }
