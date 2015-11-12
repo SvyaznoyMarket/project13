@@ -171,6 +171,10 @@ class DeliveryAction {
             throw new \Exception('Отстуствуют данные по заказам');
         }
 
+        \RepositoryManager::order()->prepareOrderDeliveryProducts($orderDelivery);
+
+        \App::coreClientV2()->execute();
+
         // сохраняем в сессию расчет доставки
         $this->session->set($this->splitSessionKey, $orderDeliveryData);
 

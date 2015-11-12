@@ -147,7 +147,7 @@ class Repository {
      * Подготавливает запрос для получения medias товаров заказов и, после выполнения запроса, задаёт medias для товаров
      * @param \Model\OrderDelivery\Entity $orderDelivery
      */
-    public function prepareOrderDeliveryMedias(\Model\OrderDelivery\Entity $orderDelivery) {
+    public function prepareOrderDeliveryProducts(\Model\OrderDelivery\Entity $orderDelivery) {
         $productIds = [];
         foreach ($orderDelivery->orders as $order) {
             foreach ($order->products as $product) {
@@ -178,7 +178,11 @@ class Repository {
                     // случае объекты товаров будут разные)
                     foreach($orderDelivery->orders as $order) {
                         foreach ($order->products as $orderProduct) {
-                            if ($orderProduct->id == $product['core_id']) {
+                            if (isset($product['core_id']) && $orderProduct->id == $product['core_id']) {
+                                $orderProduct->link = isset($product['url']) ? (string)$product['url'] : '';
+                                $orderProduct->name = isset($product['name']) ? (string)$product['name'] : '';
+                                $orderProduct->name_web = isset($product['name_web']) ? (string)$product['name_web'] : '';
+                                $orderProduct->prefix = isset($product['name_prefix']) ? (string)$product['name_prefix'] : '';
                                 $orderProduct->medias = $medias;
                             }
                         }
