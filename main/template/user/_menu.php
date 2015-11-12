@@ -12,7 +12,7 @@ $activeMenuCss = 'active';
 <div class="personal__menu">
     <ul class="personal-navs">
         <li class="personal-navs__i <?= in_array($route, ['user.recommend']) ? $activeMenuCss : '' ?>">
-            <a href="<?= $helper->url('user.recommend') ?>" class="personal-navs__lk">Ваше все</a>
+            <a href="<?= $helper->url('user.recommend') ?>" class="personal-navs__lk">Моё всё</a>
         </li>
         <li class="personal-navs__i <?= in_array($route, ['user.order', 'user.orders']) ? $activeMenuCss : '' ?>">
             <a href="<?= $helper->url('user.orders') ?>" class="personal-navs__lk">Заказы</a>
@@ -35,7 +35,7 @@ $activeMenuCss = 'active';
         <li class="personal-navs__i <?= $route == 'user.edit' ? $activeMenuCss : '' ?>">
             <a href="<?= $helper->url('user.edit') ?>" class="personal-navs__lk">Личные данные</a>
         </li>
-        <li class="personal-navs__i right-nav">
+        <li class="personal-navs__i personal-navs__i_lawyer">
             <a href="http://my.enter.ru/pravo" target="_blank" class="personal-navs__lk">Адвокат клиента</a>
         </li>
     </ul>
