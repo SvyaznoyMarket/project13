@@ -72,11 +72,14 @@ class CompleteAction extends OrderV3 {
                         if (!$number) continue;
 
                         $this->sessionOrders[$number] = $item['order'];
+                        $onlinePaymentStatusByNumber[$number] = true;
+                        /*
                         try {
                             $onlinePaymentStatusByNumber[$number] = $now <= new \DateTime($item['online_payment_expired']);
                         } catch (\Exception $e) {
                             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
                         }
+                        */
                     }
                 },
                 function(\Exception $e) {
