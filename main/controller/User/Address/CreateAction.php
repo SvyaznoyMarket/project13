@@ -23,7 +23,10 @@ class CreateAction extends \Controller\User\PrivateAction {
 
         $formData = [
             'description' => null,
+            'kladrId'     => null,
+            'zipCode'     => null,
             //'regionId' => null,
+            'streetType'  => null,
             'street'      => null,
             'building'    => null,
             'apartment'   => null,

@@ -14,6 +14,7 @@ namespace EnterQuery\User\Address
         /** @var string */
         public $data = [
             'kladrId'     => null,
+            'zipCode'     => null,
             'regionId'    => null,
             'street'      => null,
             'streetType'  => null,
@@ -49,6 +50,7 @@ namespace EnterQuery\User\Address
                 [
                     'user_uid'    => $this->userUi,
                     'kladr_id'    => $this->data['kladrId'],
+                    'zip_code'    => $this->data['zipCode'],
                     'geo_id'      => $this->data['regionId'],
                     'street'      => $this->data['street'],
                     'street_type' => $this->data['streetType'],

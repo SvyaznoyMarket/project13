@@ -6,6 +6,12 @@
  */
 ?>
 
+<?
+$region = \App::user()->getRegion();
+?>
+
+<div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ) ?>"></div>
+
 <div class="personal">
     <?= $page->render('user/_menu', ['page' => $page]) ?>
 
@@ -48,20 +54,47 @@
                     <div class="new-address__map-block js-private-sections-body">
                         Вставить сюда карту
                     </div>
-                    <form class="new-address__form" action="<?= $helper->url('user.address.create') ?>" name="name" method="post">
-                        <input type="hidden" name="address[kladrId]" value="">
+                    <form class="new-address__form id-address-form" action="<?= $helper->url('user.address.create') ?>" name="name" method="post">
+                        <input type="hidden" name="address[kladrId]" data-field="kladrId" value="">
+                        <input type="hidden" name="address[zipCode]" data-field="zipCode" value="">
+                        <input type="hidden" name="address[streetType]" data-field="streetType" value="">
 
                         <label class="new-address__form-item">
                             <input class="new-address__form-input" name="address[description]" placeholder="Название" type="text">
                         </label>
                         <label class="new-address__form-item">
-                            <input class="new-address__form-input" name="address[regionId]" placeholder="Регион" type="text">
+                            <input
+                                class="new-address__form-input js-user-address"
+                                name="address[regionId]"
+                                placeholder="Регион"
+                                type="text"
+                                data-field="city"
+                                data-relation="<?= $helper->json(['form' => '.id-address-form'])?>"
+                                value="<?= $region->name ?>"
+                            >
                         </label>
                         <label class="new-address__form-item">
-                            <input class="new-address__form-input" name="address[street]" placeholder="Улица" type="text">
+                            <input
+                                class="new-address__form-input js-user-address"
+                                name="address[street]"
+                                placeholder="Улица"
+                                type="text"
+                                data-parent-kladr-id="<?= $region->kladrId ?>"
+                                data-field="street"
+                                data-parent-field="city"
+                                data-relation="<?= $helper->json(['form' => '.id-address-form'])?>"
+                            >
                         </label>
                         <label class="new-address__form-item new-address__form-item_half">
-                            <input class="new-address__form-input" name="address[building]" placeholder="Дом" type="text">
+                            <input
+                                class="new-address__form-input js-user-address"
+                                name="address[building]"
+                                placeholder="Дом"
+                                type="text"
+                                data-field="building"
+                                data-parent-field="street"
+                                data-relation="<?= $helper->json(['form' => '.id-address-form'])?>"
+                            >
                         </label>
                         <label class="new-address__form-item new-address__form-item_half">
                             <input class="new-address__form-input" name="address[apartment]" placeholder="Квартира" type="text">
