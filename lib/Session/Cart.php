@@ -588,7 +588,7 @@ namespace Session {
             }
 
             foreach ($expected as $expectedKey => $expectedValue) {
-                if (!isset($actual[$expectedKey]) || $actual[$expectedKey] === '') {
+                if (!isset($actual[$expectedKey])) {
                     return false;
                 }
 
@@ -617,27 +617,27 @@ namespace Session {
             $categoryNames = array_map(function(Entity $category) { return $category->name; }, $backendProduct->getCategory() );
 
             return [
-                'id'                => $backendProduct->id,
-                'ui'                => $backendProduct->ui,
-                'article'           => $backendProduct->getArticle(),
-                'barcode'           => $backendProduct->barcode,
-                'name'              => $backendProduct->getName(),
-                'brandName'         => $backendProduct->getBrand() ? $backendProduct->getBrand()->getName() : '',
-                'price'             => $backendProduct->getPrice(),
-                'image'             => $backendProduct->getMainImageUrl('product_120'),
-                'url'               => $backendProduct->getLink(),
+                'id'                => (int)$backendProduct->id,
+                'ui'                => (string)$backendProduct->ui,
+                'article'           => (string)$backendProduct->getArticle(),
+                'barcode'           => (string)$backendProduct->barcode,
+                'name'              => (string)$backendProduct->getName(),
+                'brandName'         => $backendProduct->getBrand() ? (string)$backendProduct->getBrand()->getName() : '',
+                'price'             => (float)$backendProduct->getPrice(),
+                'image'             => (string)$backendProduct->getMainImageUrl('product_120'),
+                'url'               => (string)$backendProduct->getLink(),
                 'isSlot'            => (bool)$backendProduct->getSlotPartnerOffer(),
-                'isOnlyFromPartner' => $backendProduct->isOnlyFromPartner(),
+                'isOnlyFromPartner' => (bool)$backendProduct->isOnlyFromPartner(),
                 'isAvailable'       => (bool)$backendProduct->isAvailable(),
                 'rootCategory' => [
-                    'id'    => $backendProduct->getRootCategory() ? $backendProduct->getRootCategory()->getId() : null,
-                    'name'  => $backendProduct->getRootCategory() ? $backendProduct->getRootCategory()->getName() : null
+                    'id'    => $backendProduct->getRootCategory() ? (int)$backendProduct->getRootCategory()->getId() : 0,
+                    'name'  => $backendProduct->getRootCategory() ? (string)$backendProduct->getRootCategory()->getName() : ''
                 ],
                 'category'     => [
-                    'id'    => $backendProduct->getParentCategory() ? $backendProduct->getParentCategory()->getId() : null,
-                    'name'  => $backendProduct->getParentCategory() ? $backendProduct->getParentCategory()->getName() : null
+                    'id'    => $backendProduct->getParentCategory() ? (int)$backendProduct->getParentCategory()->getId() : 0,
+                    'name'  => $backendProduct->getParentCategory() ? (string)$backendProduct->getParentCategory()->getName() : ''
                 ],
-                'categoryPath'  => implode(' / ', $categoryNames)
+                'categoryPath'  => (string)implode(' / ', $categoryNames)
             ];
         }
         
