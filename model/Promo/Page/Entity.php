@@ -49,6 +49,8 @@ class Entity {
             $this->link = '/' . (string)$link['static_page']['token'];
         } else if (is_string($link)) {
             $this->link = $link['url'];
+        } else if (isset($link['product']['url'])) {
+            $this->link = (string)$link['product']['url'];
         }
     }
 
