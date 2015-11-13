@@ -405,6 +405,8 @@ namespace Model\OrderDelivery\Entity {
         ];
         /** @var int */
         public $prepaid_sum = 0;
+        /** @var int */
+        public $is_online_payment_available;
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
 
@@ -526,6 +528,7 @@ namespace Model\OrderDelivery\Entity {
             }
 
             if (isset($data['prepaid_sum'])) $this->prepaid_sum = (int)$data['prepaid_sum'];
+            if (array_keys($data, 'is_online_payment_available')) $this->is_online_payment_available = (int)$data['is_online_payment_available'];
         }
 
         /** Это заказ партнерский?
