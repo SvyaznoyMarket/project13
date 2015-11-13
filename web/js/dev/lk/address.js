@@ -22,19 +22,38 @@ $(function(){
         onAutocompleteResponse = function(request, response) {
             var
                 $el = $(this),
+                url = $el.data('url'),
                 type = $el.data('field'),
-                query = $.extend({}, { limit: 10, name: request.term }, getParent($el))
+                query
             ;
 
-            console.log('kladr.query.request', query);
+            if (url && url.length) {
+                $.ajax({
+                    url: url,
+                    dataType: 'json',
+                    data: {
+                        q: request.term
+                    },
+                    success: function(result) {
+                        var data = result.data ? result.data.slice(0, 15) : [];
 
-            $.kladr.api(query, function (data) {
-                console.log('kladr.query.response', data);
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: {id: item.kladrId, name: item.name, regionId: item.id} };
+                        }));
+                    }
+                });
+            } else {
+                query = $.extend({}, { limit: 10, name: request.term }, getParent($el));
+                console.log('kladr.query.request', query);
 
-                response($.map(data, function (el) {
-                    return { label: (type == 'street' ? el.name + ' ' + el.typeShort + '.' : el.name)  , value: el }
-                }))
-            });
+                $.kladr.api(query, function (result) {
+                    console.log('kladr.query.response', result);
+
+                    response($.map(result, function (item) {
+                        return { label: (type == 'street' ? item.name + ' ' + item.typeShort + '.' : item.name), value: item };
+                    }));
+                });
+            }
         },
 
         getParent = function($el) {
@@ -70,6 +89,9 @@ $(function(){
                         $form.find('[data-parent-field="' + type  + '"]').data('parent-kladr-id', ui.item.value.id);
                         // sets hidden input values
                         $form.find('[data-field="zipCode"]').val(ui.item.value.zip);
+                        if ('city' === type) {
+                            $form.find('[data-field="regionId"]').val(ui.item.value.regionId);
+                        }
                         if ('street' === type) {
                             $form.find('[data-field="streetType"]').val(ui.item.value.typeShort);
                         }
