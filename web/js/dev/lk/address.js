@@ -4,6 +4,7 @@ $(function(){
         $body = $('body'),
         $mainContainer = $('#personal-container'),
         $deleteAddressPopupTemplate = $('#tpl-user-deleteAddressPopup'),
+        $form = $('.js-userAddress-form'),
 
         region = $('#page-config').data('value').user.region,
         kladrConfig = $('#kladr-config').data('value'),
@@ -168,6 +169,13 @@ $(function(){
             showPopup('#' + $popup.attr('id'));
         } catch (error) {
             console.error(error);
+        }
+    });
+
+    // не отправлять форму по нажатию на ENTER
+    $form.find('[data-field]').on('keypress', function(e) {
+        if (e.which == 13) {
+            e.preventDefault();
         }
     });
 });
