@@ -15,7 +15,7 @@ $region = \App::user()->getRegion();
 <div class="personal">
     <?= $page->render('user/_menu', ['page' => $page]) ?>
 
-    <div class="personalPage">
+    <div id="personal-container" class="personalPage">
 
         <div class="private-sections private-sections_gray grid">
             <h1 class="private-sections__head">Адреса доставки</h1>
@@ -30,7 +30,14 @@ $region = \App::user()->getRegion();
                             <li class="address-list-details__item"><?= $helper->escape(implode(' ', [$address->streetType, $address->street])) ?></li>
                             <li class="address-list-details__item"><?= $helper->escape(implode(' ', [$address->building, $address->apartment])) ?></li>
                         </ul>
-                        <a class="address-list__item-del js-btnDelModal js-modalShow" href="#"></a>
+                        <a
+                            class="address-list__item-del js-user-deleteAddress"
+                            href="#"
+                            data-value="<?= $helper->json([
+                                'url'     => $helper->url('user.address.delete', ['addressId' => $address->id]),
+                                'address' => $address,
+                            ])?>"
+                        ></a>
                     </li>
                 <? endforeach ?>
                 </ul>
@@ -109,16 +116,9 @@ $region = \App::user()->getRegion();
 
         </div>
 
-        <div class="private-sections__modal js-modalLk">
-            <article class="private-sections__modal-body private-sections__modal-body_small">
-                <header class="private-sections__modal-head">
-                    Удалить адрес?
-                </header>
-                <div class="js-copyContentIn"></div>
-                <button class="address-list__item-del_big js-btnContainerDel js-modal-close">Удалить</button>
-                <a class="private-sections__modal-close js-modal-close" href="#"></a>
-            </article>
-        </div>
+        <script id="tpl-user-deleteAddressPopup" type="text/html" data-partial="<?= $helper->json([]) ?>">
+            <?= file_get_contents(\App::config()->templateDir . '/user/address/_deleteAddress-popup.mustache') ?>
+        </script>
 
     </div>
 </div>

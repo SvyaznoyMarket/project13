@@ -626,6 +626,10 @@ return [
         'pattern' => '/private/address/create',
         'action'  => ['User\Address\CreateAction', 'execute'],
     ],
+    'user.address.delete' => [
+        'pattern' => '/private/address/delete',
+        'action'  => ['User\Address\DeleteAction', 'execute'],
+    ],
     'user.message' => [
         'pattern' => '/private/messages',
         'action'  => ['User\Message\IndexAction', 'execute'],

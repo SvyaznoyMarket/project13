@@ -11,7 +11,7 @@ namespace EnterQuery\User\Address
 
         /** @var string */
         public $userUi;
-        /** @var string */
+        /** @var array */
         public $data = [
             'kladrId'     => null,
             'zipCode'     => null,

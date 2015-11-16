@@ -124,7 +124,7 @@
 
         </div>
 
-        <div class="private-sections__modal js-modalLk">
+        <div class="private-sections__modal js-modal">
             <article class="private-sections__modal-body private-sections__modal-body_small">
                 <header class="private-sections__modal-head">
                     Удалить адрес?

@@ -34,7 +34,7 @@ array_walk($userChannels, function($ch) use (&$channelsByType) {
                         <? foreach ($val as $channel) : ?>
                             <? /** @var $channel \Model\User\SubscriptionEntity */ ?>
 
-                            <input class="jsCustomRadio customInput customInput-bigCheck js-modalShow" id="channel_<?= $channel->getType().$channel->getChannelId() ?>" type="checkbox"  name="channel[<?= $i ?>][is_confirmed]" <?= $channel->getIsConfirmed() ? 'checked' : '' ?> />
+                            <input class="jsCustomRadio customInput customInput-bigCheck" id="channel_<?= $channel->getType().$channel->getChannelId() ?>" type="checkbox"  name="channel[<?= $i ?>][is_confirmed]" <?= $channel->getIsConfirmed() ? 'checked' : '' ?> />
                             <label class="private-sections__label label-for-customInput" for="channel_<?= $channel->getType().$channel->getChannelId() ?>"><?= $channel->getChannel()->getName() ?></label>
                             <input type="hidden" name="channel[<?= $i ?>][channel_id]" value="<?= $channel->getChannelId() ?>" />
                             <input type="hidden" name="channel[<?= $i ?>][type]" value="<?= $channel->getType() ?>" />
@@ -58,7 +58,7 @@ array_walk($userChannels, function($ch) use (&$channelsByType) {
 
     </div>
 
-    <div class="private-sections__modal js-modalLk">
+    <div class="private-sections__modal js-modal">
         <article class="private-sections__modal-body">
             <header class="private-sections__modal-head">
                 Подписаться на

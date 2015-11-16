@@ -1,0 +1,21 @@
+<div id="deleteAddress-popup" class="private-sections__modal js-modal">
+    <article class="private-sections__modal-body private-sections__modal-body_small">
+        <header class="private-sections__modal-head">
+            Удалить адрес?
+        </header>
+
+        <form action="{{url}}" method="post">
+            {{#address.description}}<div class="address-list__mode">{{address.description}}</div>{{/address.description}}
+
+            <ul class="address-list-details">
+                {{#address.region}}<li class="address-list-details__item">{{address.region.name}}</li>{{/address.region}}
+                <li class="address-list-details__item">{{address.streetType}} {{address.street}}</li>
+                <li class="address-list-details__item">{{address.building}} {{address.apartment}}</li>
+            </ul>
+
+            <button type="submit" class="address-list__item-del_big js-modal-close">Удалить</button>
+        </form>
+
+        <a class="private-sections__modal-close js-modal-close" href="#"></a>
+    </article>
+</div>
