@@ -61,10 +61,16 @@ class SliderAction {
         $helper = new \Helper\TemplateHelper();
         $cartButtonAction = new \View\Cart\ProductButtonAction();
 
+        if ('user' === $request->get('template')) {
+            $template = 'user/enterprize/_slider';
+        } else {
+            $template = 'enterprize/_slider';
+        }
+
         return new \Http\JsonResponse([
             'success' => true,
             'productCount'  => count($products),
-            'content' => $helper->renderWithMustache('enterprize/_slider', [
+            'content' => $helper->renderWithMustache($template, [
                 'products'     => array_map(function(\Model\Product\Entity $product) use (&$helper, &$enterpizeCoupon, &$cartButtonAction) {
                     return [
                         'url'           => $product->getLink(),
