@@ -244,25 +244,6 @@ namespace Session {
                     }
                 });
 
-                // Проверка на ограничение кол-ва добавляемых товаров
-                call_user_func(function() use($productLimit, $sessionCart, $setProductResultActionsById) {
-                    if (!$productLimit) {
-                        return;
-                    }
-
-                    $addProductCount = count(array_filter($setProductResultActionsById, function($action) {
-                        return $action === 'add';
-                    }));
-
-                    // Ограничивает добавление только одиночных товаров для возможности полноценного добавления товаров
-                    // из набор пакетов
-                    if ($addProductCount == 1 && count($sessionCart['product']) > $productLimit) {
-                        $e = new \Session\CartProductLimitException('Превышен лимит на добавление в корзину новых товаров');
-                        $e->productLimit = $productLimit;
-                        throw $e;
-                    }
-                });
-
                 // Обновление сессионных товаров
                 call_user_func(function() use(&$sessionCart, &$resultProducts, $setProductResultActionsById, $backendProductsByUi, $backendProductsById) {
                     foreach ($sessionCart['product'] as $key => $sessionProduct) {
@@ -307,6 +288,25 @@ namespace Session {
                     }
                 });
 
+                // Проверка на ограничение кол-ва добавляемых товаров
+                call_user_func(function() use($productLimit, $sessionCart, $setProductResultActionsById) {
+                    if (!$productLimit) {
+                        return;
+                    }
+
+                    $addProductCount = count(array_filter($setProductResultActionsById, function($action) {
+                        return $action === 'add';
+                    }));
+
+                    // Ограничивает добавление только одиночных товаров для возможности полноценного добавления товаров
+                    // из набор пакетов
+                    if ($addProductCount == 1 && count($this->excludeGoneSessionProducts($sessionCart['product'])) > $productLimit) {
+                        $e = new \Session\CartProductLimitException('Превышен лимит на добавление в корзину новых товаров');
+                        $e->productLimit = $productLimit;
+                        throw $e;
+                    }
+                });
+
                 // Переиндексируем массив для исправления возможных ошибок
                 call_user_func(function() use(&$sessionCart) {
                     $sessionProductsById = [];
@@ -339,7 +339,7 @@ namespace Session {
                                     'id'       => $product['id'],
                                     'quantity' => $product['quantity'],
                                 ];
-                            }, $sessionCart['product']),
+                            }, $this->excludeGoneSessionProducts($sessionCart['product'])),
                         ],
                         function ($response) use (&$sessionCart, &$isPriceUpdated) {
                             if (!isset($response['product_list'])) {
@@ -397,7 +397,7 @@ namespace Session {
          * @return int
          */
         public function count() {
-            return count($this->getSessionCart()['product']);
+            return count($this->excludeGoneSessionProducts($this->getSessionCart()['product']));
         }
     
         /**
@@ -405,7 +405,7 @@ namespace Session {
          */
         public function getProductsById() {
             $cartProducts = [];
-            foreach ($this->getSessionCart()['product'] as $sessionProduct) {
+            foreach ($this->excludeGoneSessionProducts($this->getSessionCart()['product']) as $sessionProduct) {
                 $cartProducts[$sessionProduct['id']] = new \Model\Cart\Product\Entity($sessionProduct);
             }
     
@@ -417,7 +417,7 @@ namespace Session {
          */
         public function getProductsByUi() {
             $cartProducts = [];
-            foreach ($this->getSessionCart()['product'] as $sessionProduct) {
+            foreach ($this->excludeGoneSessionProducts($this->getSessionCart()['product']) as $sessionProduct) {
                 $cartProducts[$sessionProduct['ui']] = new \Model\Cart\Product\Entity($sessionProduct);
             }
     
@@ -429,7 +429,7 @@ namespace Session {
          * @return bool
          */
         public function hasProduct($productId) {
-            foreach ($this->getSessionCart()['product'] as $product) {
+            foreach ($this->excludeGoneSessionProducts($this->getSessionCart()['product']) as $product) {
                 if ($product['id'] == $productId) {
                     return true;
                 }
@@ -444,7 +444,7 @@ namespace Session {
          */
         public function getProductQuantity($productId) {
             $productId = (int)$productId;
-            foreach ($this->getSessionCart()['product'] as $product) {
+            foreach ($this->excludeGoneSessionProducts($this->getSessionCart()['product']) as $product) {
                 if ($product['id'] == $productId) {
                     return (int)$product['quantity'];
                 }
@@ -459,7 +459,7 @@ namespace Session {
          */
         public function getCreditProductIds(){
             $ids = [];
-            foreach ($this->getSessionCart()['product'] as $product) {
+            foreach ($this->excludeGoneSessionProducts($this->getSessionCart()['product']) as $product) {
                 if (isset($product['credit']['enabled']) && (true == $product['credit']['enabled'])) $ids[] = $product['id'];
             }
             return $ids;
@@ -502,7 +502,7 @@ namespace Session {
                         'increaseUrl'        => $helper->url('cart.product.setList', ['products' => [['ui' => $cartProduct['ui'], 'quantity' => '+1']]]),
                         'sender'             => $cartProduct['sender']
                     ];
-                }, $sessionCart['product'])),
+                }, $this->excludeGoneSessionProducts($sessionCart['product']))),
                 'sum' => $sessionCart['sum'],
                 'link' => \App::router()->generate('order'),
             ];
@@ -557,7 +557,7 @@ namespace Session {
                                     'quantity' => $item['quantity'],
                                 ];
                             },
-                            $this->getSessionCart()['product']
+                            $this->excludeGoneSessionProducts($this->getSessionCart()['product'])
                         ),
                         'sum'     => $this->getSessionCart()['sum'],
                     ],
@@ -573,7 +573,7 @@ namespace Session {
         private function hasSessionProductWithoutExpectedData() {
             $sessionCart = $this->getSessionCart();
             $expectedSessionProductStub = $this->createSessionProductFromBackendProduct(new \Model\Product\Entity());
-            foreach ($sessionCart['product'] as $sessionProduct) {
+            foreach ($this->excludeGoneSessionProducts($sessionCart['product']) as $sessionProduct) {
                 if (!$this->isActualLikeExpectedArray($sessionProduct, $expectedSessionProductStub)) {
                     return true;
                 }
@@ -588,7 +588,7 @@ namespace Session {
             }
 
             foreach ($expected as $expectedKey => $expectedValue) {
-                if (!isset($actual[$expectedKey]) || $actual[$expectedKey] === '') {
+                if (!isset($actual[$expectedKey])) {
                     return false;
                 }
 
@@ -617,30 +617,36 @@ namespace Session {
             $categoryNames = array_map(function(Entity $category) { return $category->name; }, $backendProduct->getCategory() );
 
             return [
-                'id'                => $backendProduct->id,
-                'ui'                => $backendProduct->ui,
-                'article'           => $backendProduct->getArticle(),
-                'barcode'           => $backendProduct->barcode,
-                'name'              => $backendProduct->getName(),
-                'brandName'         => $backendProduct->getBrand() ? $backendProduct->getBrand()->getName() : '',
-                'price'             => $backendProduct->getPrice(),
-                'image'             => $backendProduct->getMainImageUrl('product_120'),
-                'url'               => $backendProduct->getLink(),
+                'id'                => (int)$backendProduct->id,
+                'ui'                => (string)$backendProduct->ui,
+                'article'           => (string)$backendProduct->getArticle(),
+                'barcode'           => (string)$backendProduct->barcode,
+                'name'              => (string)$backendProduct->getName(),
+                'brandName'         => $backendProduct->getBrand() ? (string)$backendProduct->getBrand()->getName() : '',
+                'price'             => (float)$backendProduct->getPrice(),
+                'image'             => (string)$backendProduct->getMainImageUrl('product_120'),
+                'url'               => (string)$backendProduct->getLink(),
                 'isSlot'            => (bool)$backendProduct->getSlotPartnerOffer(),
-                'isOnlyFromPartner' => $backendProduct->isOnlyFromPartner(),
+                'isOnlyFromPartner' => (bool)$backendProduct->isOnlyFromPartner(),
                 'isAvailable'       => (bool)$backendProduct->isAvailable(),
                 'rootCategory' => [
-                    'id'    => $backendProduct->getRootCategory() ? $backendProduct->getRootCategory()->getId() : null,
-                    'name'  => $backendProduct->getRootCategory() ? $backendProduct->getRootCategory()->getName() : null
+                    'id'    => $backendProduct->getRootCategory() ? (int)$backendProduct->getRootCategory()->getId() : 0,
+                    'name'  => $backendProduct->getRootCategory() ? (string)$backendProduct->getRootCategory()->getName() : ''
                 ],
                 'category'     => [
-                    'id'    => $backendProduct->getParentCategory() ? $backendProduct->getParentCategory()->getId() : null,
-                    'name'  => $backendProduct->getParentCategory() ? $backendProduct->getParentCategory()->getName() : null
+                    'id'    => $backendProduct->getParentCategory() ? (int)$backendProduct->getParentCategory()->getId() : 0,
+                    'name'  => $backendProduct->getParentCategory() ? (string)$backendProduct->getParentCategory()->getName() : ''
                 ],
-                'categoryPath'  => implode(' / ', $categoryNames)
+                'categoryPath'  => (string)implode(' / ', $categoryNames)
             ];
         }
         
+        private function excludeGoneSessionProducts(array $sessionProducts) {
+            return array_filter($sessionProducts, function($sessionProduct) {
+                return !$sessionProduct['isGone'];
+            });
+        }
+
         private function getSessionCart() {
             $sessionCart = $this->storage->get($this->sessionName);
     
