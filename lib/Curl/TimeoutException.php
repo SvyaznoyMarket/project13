@@ -3,6 +3,6 @@
 namespace Curl;
 
 
-class TimeoutException extends \Exception {
+class TimeoutException extends Exception {
 
 }

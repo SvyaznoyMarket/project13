@@ -69,6 +69,16 @@ class IndexAction {
             }
         });
 
+        // собираем статистику для RichRelevance
+        try {
+            \App::richRelevanceClient()->query('recsForPlacements', [
+                'placements'    => 'item_page',
+                'productId'     => $product->getId()
+            ]);
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+        }
+
         // товар для Подари Жизнь
         $lifeGiftProduct = null;
         if (
