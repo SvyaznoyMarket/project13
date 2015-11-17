@@ -159,6 +159,16 @@ class Action {
 
         \App::coreClientV2()->execute();
 
+        // собираем статистику для RichRelevance
+        try {
+            \App::richRelevanceClient()->query('recsForPlacements', [
+                'placements'    => 'search_page',
+                'searchTerm'    => $searchQuery
+            ]);
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+        }
+
         $categoriesById = array_filter($categoriesById);
         if (!(bool)$categoriesById && $selectedCategory) {
             $categoriesById[$selectedCategory->getId()] = $selectedCategory;

@@ -2,6 +2,7 @@
 
 namespace Controller\OrderV3;
 
+use Curl\TimeoutException;
 use Model\OrderDelivery\Entity;
 use Model\OrderDelivery\Error;
 use Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
@@ -258,8 +259,8 @@ class DeliveryAction extends OrderV3 {
                     $splitData,
                     $i * \App::config()->coreV2['timeout']
                 );
-            } catch (\Exception $e) {
-                if ($e->getCode() == \Curl\Client::CODE_TIMEOUT) \App::exception()->remove($e);
+            } catch (TimeoutException $e) {
+                \App::exception()->remove($e);
 
                 // когда удалили последний товар
                 if ($e->getCode() == 600) {
