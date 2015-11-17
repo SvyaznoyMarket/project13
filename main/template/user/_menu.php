@@ -11,8 +11,8 @@ $activeMenuCss = 'active';
 <!-- навигация по личному кабинету -->
 <div class="personal__menu">
     <ul class="personal-navs">
-        <li class="personal-navs__i <?= in_array($route, ['user.recommend']) ? $activeMenuCss : '' ?>">
-            <a href="<?= $helper->url('user.recommend') ?>" class="personal-navs__lk">Моё всё</a>
+        <li class="personal-navs__i <?= in_array($route, ['user', 'user.recommend']) ? $activeMenuCss : '' ?>">
+            <a href="<?= $helper->url('user') ?>" class="personal-navs__lk">Моё всё</a>
         </li>
         <li class="personal-navs__i <?= in_array($route, ['user.order', 'user.orders']) ? $activeMenuCss : '' ?>">
             <a href="<?= $helper->url('user.orders') ?>" class="personal-navs__lk">Заказы</a>
