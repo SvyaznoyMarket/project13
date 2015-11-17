@@ -44,11 +44,13 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->cart['oneClickOnly'] = true;
     }
 
-    // агрессивное кеширование
+    // агрессивное кеширование, отключение связанных товаров
     if ($c->degradation > 3) {
         $c->region['cache'] = true;
         if (!$c->debug) {
             $c->logger['emptyChance'] = 67;
         }
+
+        $c->product['pullRecommendation'] = false;
     }
 };
