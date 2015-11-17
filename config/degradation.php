@@ -54,11 +54,13 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         }
 
         $c->product['pullRecommendation'] = false;
+        $c->mainMenu['maxLevel'] = 2;
     }
 
     // отключение редиректа
     if ($c->degradation > 4) {
         $c->redirect301['enabled'] = false;
         $c->product['breadcrumbsEnabled'] = false;
+        $c->mainMenu['maxLevel'] = 1;
     }
 };

@@ -439,7 +439,8 @@ class AppConfig {
 
     /** @var array */
     public $mainMenu = [
-        'recommendationsEnabled'    => null
+        'recommendationsEnabled' => null,
+        'maxLevel'               => null,
     ];
     /** @var bool */
     public $newOrder;

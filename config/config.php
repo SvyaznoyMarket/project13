@@ -372,6 +372,7 @@ $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {ch
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
 
 $c->mainMenu['recommendationsEnabled'] = true;
+$c->mainMenu['maxLevel'] = 3;
 
 $c->newOrder = true;
 $c->order['cookieName'] = 'last_order';
