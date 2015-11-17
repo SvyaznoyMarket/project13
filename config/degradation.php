@@ -59,5 +59,6 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
     // отключение редиректа
     if ($c->degradation > 4) {
         $c->redirect301['enabled'] = false;
+        $c->product['breadcrumbsEnabled'] = false;
     }
 };
