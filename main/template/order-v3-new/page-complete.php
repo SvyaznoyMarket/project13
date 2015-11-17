@@ -327,7 +327,7 @@ $f = function(
                                 }                            }
 
                         ?>
-                            <? if ($isSordex): ?><div>Заказ Sordex</div><? endif ?>
+                            <? if ($isSordex): ?><div class="orderLn_status-sordex">Заказ Sordex</div><? endif ?>
                         <? endif ?>
                     </div>
                     <? endif ?>
