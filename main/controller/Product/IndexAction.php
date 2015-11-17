@@ -69,6 +69,16 @@ class IndexAction {
             }
         });
 
+        // собираем статистику для RichRelevance
+        try {
+            \App::richRelevanceClient()->query('recsForPlacements', [
+                'placements'    => 'item_page',
+                'productId'     => $product->getId()
+            ]);
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+        }
+
         // товар для Подари Жизнь
         $lifeGiftProduct = null;
         if (
@@ -173,7 +183,11 @@ class IndexAction {
         });
 
         // SITE-5035
-        $similarProducts = \RepositoryManager::product()->createProducts($actionResponse->similarProductQuery->response->products, $actionResponse->similarProductDescriptionQuery->response->products);
+        $similarProducts =
+            ($actionResponse->similarProductQuery && $actionResponse->similarProductDescriptionQuery)
+            ? \RepositoryManager::product()->createProducts($actionResponse->similarProductQuery->response->products, $actionResponse->similarProductDescriptionQuery->response->products)
+            : []
+        ;
 
         // наборы
         /** @var \Model\Product\Entity[] $kit */

@@ -184,6 +184,16 @@ class Action {
             $scmsClient->execute();
         }
 
+        // собираем статистику для RichRelevance
+        try {
+            \App::richRelevanceClient()->query('recsForPlacements', [
+                'placements'    => 'category_page',
+                'categoryId'    => $category->getId()
+            ]);
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+        }
+
         // роутим на специфичные категории
         if ($category->isPandora()) {
             \App::config()->debug && \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
@@ -616,7 +626,7 @@ class Action {
         /** @var \Model\Product\Entity[] $smartChoiceProductsById */
         $smartChoiceProductsById = [];
         call_user_func(function() use(&$smartChoiceData, &$smartChoiceProductsById, $filters, $catalogJson, $repository) {
-            if (!isset($catalogJson['smartchoice']) || !$catalogJson['smartchoice']) {
+            if (!\App::config()->product['smartChoiceEnabled'] || !isset($catalogJson['smartchoice']) || !$catalogJson['smartchoice']) {
                 return;
             }
 

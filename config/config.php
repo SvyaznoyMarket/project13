@@ -312,6 +312,7 @@ $c->product['showAccessories']          = true;
 $c->product['showRelated']              = true;
 $c->product['getModel']                 = true;
 $c->product['deliveryCalc']             = true;
+$c->product['smartChoiceEnabled']       = true;
 $c->product['itemsInSlider']            = 5;
 $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;
@@ -456,5 +457,12 @@ $c->siteVersionSwitcher['cookieName'] = 'mobile';
 $c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;
 
 $c->bandit['enabled'] = false;
+
+$c->richRelevance['enabled'] = true;
+$c->richRelevance['timeout'] = .3;
+$c->richRelevance['apiKey'] = '951a5607dc020e11';
+$c->richRelevance['apiClientKey'] = '911c9da5198d9f42';
+$c->richRelevance['apiUrl']    = 'http://recs.richrelevance.com/rrserver/api/rrPlatform/';
+$c->richRelevance['jsUrl']    = '//media.richrelevance.com/rrserver/js/1.1/p13n.js';
 
 return $c;

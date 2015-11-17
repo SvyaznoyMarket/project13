@@ -1243,6 +1243,21 @@ class Entity {
     }
 
     /**
+     * @return bool
+     */
+    public function hasSordexPartner() {
+        $return = false;
+        foreach ($this->partnersOffer as $offer) {
+            if ('22cda64d-352a-11e5-93fc-288023e9c8ac' === $offer['id']) {
+                $return = true;
+                break;
+            }
+        }
+
+        return $return;
+    }
+
+    /**
      * @param string $seoTitle
      */
     public function setSeoTitle($seoTitle) {

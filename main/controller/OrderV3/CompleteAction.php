@@ -5,6 +5,7 @@ namespace Controller\OrderV3;
 use EnterApplication\CurlTrait;
 use Session\AbTest\ABHelperTrait;
 use Model\Order\Entity;
+use Model\Order\Product\Entity as Product;
 use Model\PaymentMethod\PaymentEntity;
 use Model\Point\PointEntity;
 use Session\ProductPageSenders;
@@ -207,6 +208,21 @@ class CompleteAction extends OrderV3 {
                     $this->getCurl()->execute();
                 } catch (\Exception $e) {
                     \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' . __LINE__], ['order']);
+                }
+            }
+
+            // собираем статистику для RichRelevance
+            foreach ($orders as $order) {
+                try {
+                    \App::richRelevanceClient()->query('recsForPlacements', [
+                        'placements' => 'purchase_complete_page',
+                        'productId' => implode('|', array_map(function(Product $p) { return $p->getId(); }, $order->getProduct())),
+                        'o'         => $order->getNumberErp(), // Какой формат?
+                        'q'         => implode('|', array_map(function(Product $p) { return $p->getQuantity(); }, $order->getProduct())),
+                        'pp'         => implode('|', array_map(function(Product $p) { return $p->getPrice(); }, $order->getProduct())),
+                    ]);
+                } catch (\Exception $e) {
+                    \App::exception()->remove($e);
                 }
             }
 

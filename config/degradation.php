@@ -36,6 +36,7 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->product['viewedEnabled'] = false;
         $c->mainMenu['recommendationsEnabled'] = false;
         $c->product['getModel'] = false;
+        $c->product['smartChoiceEnabled'] = false;
     }
 
     // отключение расчета доставки, корзины в Москве (только одноклик)
@@ -44,11 +45,18 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->cart['oneClickOnly'] = true;
     }
 
-    // агрессивное кеширование
+    // агрессивное кеширование, отключение связанных товаров
     if ($c->degradation > 3) {
         $c->region['cache'] = true;
         if (!$c->debug) {
             $c->logger['emptyChance'] = 67;
         }
+
+        $c->product['pullRecommendation'] = false;
+    }
+
+    // отключение редиректа
+    if ($c->degradation > 4) {
+        $c->redirect301['enabled'] = false;
     }
 };

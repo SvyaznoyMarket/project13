@@ -64,18 +64,19 @@ class Client {
         $connection = $this->create($url, $data, $timeout);
         $response = curl_exec($connection);
         try {
-            if (curl_errno($connection) > 0) {
-                // TODO-zra refactor to CurlException
-                throw new \RuntimeException(curl_error($connection), curl_errno($connection));
+            if (curl_errno($connection) === self::CODE_TIMEOUT) {
+                throw new TimeoutException(curl_error($connection), curl_errno($connection));
+            } else if (curl_errno($connection) > 0) {
+                throw new Exception(curl_error($connection), curl_errno($connection));
             }
             $info = curl_getinfo($connection);
 
             if ($info['http_code'] >= 300) {
-                throw new \RuntimeException('Invalid http code: ' . $info['http_code'], (int)$info['http_code']);
+                throw new Exception('Invalid http code: ' . $info['http_code'], (int)$info['http_code']);
             }
 
             if (null === $response) {
-                throw new \RuntimeException(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($data)));
+                throw new Exception(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($data)));
             }
             $header = [];
             $this->parseResponse($connection, $response, $header);
@@ -98,7 +99,7 @@ class Client {
             ], ['curl']);
 
             return $decodedResponse;
-        } catch (\RuntimeException $e) {
+        } catch (Exception $e) {
             curl_close($connection);
             $spend = \Debug\Timer::stop('curl');
 
