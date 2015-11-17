@@ -78,9 +78,8 @@ $helper = new \Helper\TemplateHelper();
                         <ul class="grid-scroll-list address-list">
                         <? foreach ($addresses as $address): ?>
                             <li class="grid-scroll-list__item address-list__item">
-                                <a class="address-list__item-link" href="" target="_blank">
+                                <a class="address-list__item-link" href="<?= $helper->url('user.address') ?>" target="_blank">
                                     <? if ($address->description): ?><div class="address-list__mode"><?= $helper->escape($address->description) ?></div><? endif ?>
-
                                     <ul class="address-list-details">
                                         <? if ($address->region): ?><li class="address-list-details__item"><?= $address->region->name ?></li><? endif ?>
                                         <li class="address-list-details__item">
@@ -117,16 +116,17 @@ $helper = new \Helper\TemplateHelper();
                     </header>
 
                     <div class="grid-scroll js-private-sections-body">
+                    <? if (false): ?>
                         <ul class="grid-scroll-list message-list">
                             <li class="grid-scroll-list__item message-list__item message-list__item_new">
                                 <a class="message-list__link clearfix" href="#" target="_blank">
                                     <div class="message-list__left">
                                         <div class="message-list__title">
-                                            Заказ #COXD-123456 накаав дылваолдыва
+                                            Заказ #COXD-123456
                                         </div>
 
                                         <p class="message-list__text">
-                                            Ваш заказ передан в транспортную компанию! Ваш Enter! приятных гадин
+                                            Ваш заказ передан в транспортную компанию!
                                         </p>
                                     </div>
 
@@ -135,25 +135,6 @@ $helper = new \Helper\TemplateHelper();
                                     </div>
                                 </a>
                             </li>
-
-                            <li class="grid-scroll-list__item message-list__item">
-                                <a class="message-list__link clearfix" href="#" target="_blank">
-                                    <div class="message-list__left">
-                                        <div class="message-list__title">
-                                            Заказ #COXD-123456 накаав дылваолдыва
-                                        </div>
-
-                                        <p class="message-list__text">
-                                            Ваш заказ передан в транспортную компанию! Ваш Enter! приятных гадин
-                                        </p>
-                                    </div>
-
-                                    <div class="message-list__date">
-                                        17.08.2015
-                                    </div>
-                                </a>
-                            </li>
-
                             <li class="grid-scroll-list__item message-list__item">
                                 <a class="message-list__link clearfix" href="#" target="_blank">
                                     <div class="message-list__left">
@@ -172,6 +153,7 @@ $helper = new \Helper\TemplateHelper();
                                 </a>
                             </li>
                         </ul>
+                    <? endif ?>
                     </div>
                 </div>
             </div>

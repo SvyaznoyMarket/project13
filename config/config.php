@@ -347,7 +347,7 @@ $c->payment['creditEnabled'] = true;
 $c->payment['blockedIds'] = [];
 
 $c->user['corporateRegister'] = true;
-$c->user['defaultRoute'] = 'user.recommend';
+$c->user['defaultRoute'] = 'user';
 
 $c->database['host']     = 'site-db';
 $c->database['name']     = 'enter';
