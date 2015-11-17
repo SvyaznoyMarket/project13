@@ -36,6 +36,7 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->product['viewedEnabled'] = false;
         $c->mainMenu['recommendationsEnabled'] = false;
         $c->product['getModel'] = false;
+        $c->product['smartChoiceEnabled'] = false;
     }
 
     // отключение расчета доставки, корзины в Москве (только одноклик)

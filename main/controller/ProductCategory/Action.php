@@ -616,7 +616,7 @@ class Action {
         /** @var \Model\Product\Entity[] $smartChoiceProductsById */
         $smartChoiceProductsById = [];
         call_user_func(function() use(&$smartChoiceData, &$smartChoiceProductsById, $filters, $catalogJson, $repository) {
-            if (!isset($catalogJson['smartchoice']) || !$catalogJson['smartchoice']) {
+            if (!\App::config()->product['smartChoiceEnabled'] || !isset($catalogJson['smartchoice']) || !$catalogJson['smartchoice']) {
                 return;
             }
 

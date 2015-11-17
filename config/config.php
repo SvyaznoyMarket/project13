@@ -312,6 +312,7 @@ $c->product['showAccessories']          = true;
 $c->product['showRelated']              = true;
 $c->product['getModel']                 = true;
 $c->product['deliveryCalc']             = true;
+$c->product['smartChoiceEnabled']       = true;
 $c->product['itemsInSlider']            = 5;
 $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;
