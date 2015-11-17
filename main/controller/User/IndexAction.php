@@ -34,6 +34,11 @@ class IndexAction extends PrivateAction {
         $addressQuery->userUi = $userEntity->getUi();
         $addressQuery->prepare();
 
+        // запрос избранного
+        $favoriteListQuery = new Query\User\Favorite\Get();
+        $favoriteListQuery->userUi = $userEntity->getUi();
+        $favoriteListQuery->prepare();
+
         $curl->execute();
 
         // заказы
@@ -109,10 +114,35 @@ class IndexAction extends PrivateAction {
             }
         }
 
+        // избранное
+        $productUis = [];
+        $favoriteProductsByUi = [];
+        foreach ($favoriteListQuery->response->products as $item) {
+            $ui = isset($item['uid']) ? (string)$item['uid'] : null;
+            if (!$ui) continue;
+
+            $favoriteProductsByUi[$ui] = new \Model\Favorite\Product\Entity($item);
+            $productUis[] = $ui;
+        }
+        $productUis = array_unique($productUis);
+
+        /** @var \Model\Product\Entity[] $productsByUi */
+        $productsByUi = [];
+        if ($productUis) {
+            foreach ($productUis as $productUi) {
+                $productsByUi[$productUi] = new \Model\Product\Entity(['ui' => $productUi]);
+            }
+            \RepositoryManager::product()->prepareProductQueries($productsByUi, 'media label');
+        }
+
+        \App::coreClientV2()->execute();
+
         $page = new \View\User\IndexPage();
         $page->setParam('orders', $orders);
         $page->setParam('coupons', $coupons);
         $page->setParam('addresses', $addresses);
+        $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
+        $page->setParam('productsByUi', $productsByUi);
 
         return new \Http\Response($page->show());
     }
