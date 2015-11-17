@@ -161,10 +161,12 @@ class Action {
 
         // собираем статистику для RichRelevance
         try {
-            \App::richRelevanceClient()->query('recsForPlacements', [
-                'placements'    => 'search_page',
-                'searchTerm'    => $searchQuery
-            ]);
+            if (\App::config()->product['pushRecommendation']) {
+                \App::richRelevanceClient()->query('recsForPlacements', [
+                    'placements'    => 'search_page',
+                    'searchTerm'    => $searchQuery
+                ]);
+            }
         } catch (\Exception $e) {
             \App::exception()->remove($e);
         }

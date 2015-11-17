@@ -61,7 +61,9 @@ class ShowAction {
         $category = $this->getCategory($categoryToken, $slice, $region);
         $sliceFiltersForSearchClientRequest = \RepositoryManager::slice()->getSliceFiltersForSearchClientRequest($slice, $category->getId() ? true : false);
 
-        $this->prepareEntityBranch($category, $sliceToken, $sliceFiltersForSearchClientRequest, $region);
+        if (\App::config()->product['breadcrumbsEnabled']) {
+            $this->prepareEntityBranch($category, $sliceToken, $sliceFiltersForSearchClientRequest, $region);
+        }
         $this->prepareProductFilter($filters, $category, $sliceFiltersForSearchClientRequest, $region);
         /** @var \Model\Product\Category\Entity[] $sliceCategories */
         $sliceCategories = [];

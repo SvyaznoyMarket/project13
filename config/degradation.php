@@ -37,6 +37,7 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->mainMenu['recommendationsEnabled'] = false;
         $c->product['getModel'] = false;
         $c->product['smartChoiceEnabled'] = false;
+        $c->product['pushRecommendation'] = false;
     }
 
     // отключение расчета доставки, корзины в Москве (только одноклик)
@@ -53,10 +54,13 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         }
 
         $c->product['pullRecommendation'] = false;
+        $c->mainMenu['maxLevel'] = 2;
     }
 
     // отключение редиректа
     if ($c->degradation > 4) {
         $c->redirect301['enabled'] = false;
+        $c->product['breadcrumbsEnabled'] = false;
+        $c->mainMenu['maxLevel'] = 1;
     }
 };

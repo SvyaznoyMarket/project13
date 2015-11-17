@@ -64,10 +64,12 @@ class IndexAction {
 
         // собираем статистику для RichRelevance
         try {
-            \App::richRelevanceClient()->query('recsForPlacements', [
-                'placements'    => 'cart_page',
-                'productId'    => implode('|', array_keys($cart->getProductsById()))
-            ]);
+            if (\App::config()->product['pushRecommendation']) {
+                \App::richRelevanceClient()->query('recsForPlacements', [
+                    'placements'    => 'cart_page',
+                    'productId'    => implode('|', array_keys($cart->getProductsById()))
+                ]);
+            }
         } catch (\Exception $e) {
             \App::exception()->remove($e);
         }

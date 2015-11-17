@@ -313,6 +313,7 @@ $c->product['showRelated']              = true;
 $c->product['getModel']                 = true;
 $c->product['deliveryCalc']             = true;
 $c->product['smartChoiceEnabled']       = true;
+$c->product['breadcrumbsEnabled']       = true;
 $c->product['itemsInSlider']            = 5;
 $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;
@@ -371,6 +372,7 @@ $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {ch
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
 
 $c->mainMenu['recommendationsEnabled'] = true;
+$c->mainMenu['maxLevel'] = 3;
 
 $c->newOrder = true;
 $c->order['cookieName'] = 'last_order';

@@ -328,6 +328,7 @@ class AppConfig {
         'getModel'               => null, // запрашивать модели для товара
         'deliveryCalc'           => null, // расчитывать доставку в карточке товара
         'smartChoiceEnabled'     => null,
+        'breadcrumbsEnabled'     => null,
         'itemsInSlider'          => null,
         'itemsInCategorySlider'  => null,
         'totalCount'             => null,
@@ -438,7 +439,8 @@ class AppConfig {
 
     /** @var array */
     public $mainMenu = [
-        'recommendationsEnabled'    => null
+        'recommendationsEnabled' => null,
+        'maxLevel'               => null,
     ];
     /** @var bool */
     public $newOrder;
