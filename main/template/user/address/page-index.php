@@ -27,8 +27,13 @@ $region = \App::user()->getRegion();
 
                         <ul class="address-list-details">
                             <? if ($address->region): ?><li class="address-list-details__item"><?= $helper->escape($address->region->name) ?></li><? endif ?>
-                            <li class="address-list-details__item"><?= $helper->escape(implode(' ', [$address->streetType, $address->street])) ?></li>
-                            <li class="address-list-details__item"><?= $helper->escape(implode(' ', [$address->building, $address->apartment])) ?></li>
+                            <li class="address-list-details__item">
+                                <? if ($address->street): ?><?= (($address->streetType && (false === strpos($address->street, $address->streetType . '.'))) ? ($address->streetType . '.') : '') ?><?= $address->street ?><? endif ?>
+                            </li>
+                            <li class="address-list-details__item">
+                                <? if ($address->building): ?><?= (!empty($address->buildingType) ? $address->buildingType : 'д.') ?><?= $address->building ?><? endif ?>
+                                <? if ($address->apartment): ?>кв.<?= $address->apartment ?><? endif ?>
+                            </li>
                         </ul>
                         <a
                             class="address-list__item-del js-user-deleteAddress"
