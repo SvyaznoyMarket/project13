@@ -53,4 +53,9 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
 
         $c->product['pullRecommendation'] = false;
     }
+
+    // отключение редиректа
+    if ($c->degradation > 4) {
+        $c->redirect301['enabled'] = false;
+    }
 };

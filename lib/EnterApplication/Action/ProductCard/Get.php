@@ -27,7 +27,11 @@ namespace EnterApplication\Action\ProductCard
             ;
 
             // редирект
-            $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare(); // TODO: throw Exception
+            $redirectQuery =
+                $config->abTest['enabled']
+                ? (new Query\Redirect\GetByUrl($request->urlPath))->prepare()
+                : null
+            ;
 
             // аб-тест
             $abTestQuery =
