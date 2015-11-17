@@ -29,7 +29,7 @@ $f = function(
                 <?= $helper->escape($product->getWebName()) ?>
             </div>
 
-            <div class="orderOneClick_hd_pr"><strong><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+            <div class="orderOneClick_hd_pr"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></div>
         </div>
     </div>
 
@@ -37,23 +37,38 @@ $f = function(
         <input type="hidden" value="changeUserInfo" name="action" />
 
         <fieldset class="orderU_flds">
-
-            <div>
-                <div class="orderU_fld">
-                    <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[mobile]" value="<?= $user ? $helper->escape(preg_replace('/^8/', '+7', $user->getMobilePhone())) : '' ?>" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx">
-                    <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
+            <div class="">
+                <div class="order-ctrl order-ctrl_width required" data-field-container="phone">
+                    <label class="order-ctrl__txt js-order-ctrl__txt" data-message="">*Телефон</label>
+                    <input class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsOrderV3PhoneField" name="user_info[mobile]" value="<?= $user ? $helper->escape(preg_replace('/^8/', '+7', $user->getMobilePhone())) : '' ?>" placeholder="+7 (___) ___-__-__" data-field="phone" data-text-default="*Телефон" value="+71111111111" data-mask="+7 (xxx) xxx-xx-xx" required="required">
                     <span class="errTx" style="display: none">Неверный формат телефона</span>
                 </div>
 
-                <div class="orderU_fld">
-                    <input class="orderU_tx textfield jsOrderV3EmailField jsOrderV3EmailRequired" type="text" name="user_info[email]" value="<?= $user ? $helper->escape($user->getEmail()) : '' ?>" placeholder="mail@domain.com">
-                    <label class="orderU_lbl orderU_lbl-str" for="">E-mail</label>
+                <div class="order-ctrl order-ctrl_width required" data-field-container="email">
+                    <label class="order-ctrl__txt js-order-ctrl__txt" data-message="">*E-mail</label>
+                    <input class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsOrderV3EmailField jsOrderV3EmailRequired" name="user_info[email]" value="<?= $user ? $helper->escape($user->getEmail()) : '' ?>" placeholder="mail@domain.com" data-field="email" data-text-default="*E-mail" required="required">
                     <span class="errTx" style="display: none">Неверный формат email</span>
                 </div>
 
-                <div class="orderU_fld">
-                    <label class="orderU_lbl" for="">Имя</label>
-                    <input class="orderU_tx textfield jsOrderV3NameField" type="text" name="user_info[first_name]" value="<?= $user ? $helper->escape($user->getName()) : '' ?>" placeholder="">
+                <div class="order-ctrl order-ctrl_width" data-field-container="first_name">
+                    <label class="order-ctrl__txt js-order-ctrl__txt">Имя</label>
+                    <input name="user_info[first_name]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsOrderV3NameField" data-field="first_name" name="user_info[first_name]" value="<?= $user ? $helper->escape($user->getName()) : '' ?>">
+                </div>
+
+                <div class="order-discount order-discount_inline">
+                    <span class="order-discount__tl">Код скидки/фишки, подарочный сертификат</span>
+
+                    <div class="order-ctrl">
+                        <input class="order-ctrl__input id-discountInput-standarttype3" value="">
+                        <label class="order-ctrl__lbl nohide"></label>
+                    </div>
+
+                    <button class="order-btn order-btn--default jsApplyDiscount-1509" data-value="{&quot;block_name&quot;:&quot;standarttype3&quot;}" data-relation="{&quot;number&quot;:&quot;.id-discountInput-standarttype3&quot;}">Применить</button>
+                
+                    <div class="order-discount__pin">
+                        <label class="order-discount__pin-label">Пин код</label>
+                        <input class="order-discount__pin-input order-ctrl__input jsCertificatePinInput" type="text" name="" value="">
+                    </div>
                 </div>
             </div>
         </fieldset>

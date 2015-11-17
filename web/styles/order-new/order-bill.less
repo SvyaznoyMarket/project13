@@ -360,6 +360,36 @@
 
         .inline-block(middle);
     }
+
+    &_inline {
+        margin: 15px 0;
+        .order-discount__tl {
+            text-align: left;
+            display: block;
+            margin: 0 0 5px;
+        }
+        .order-ctrl {
+            width: 239px;
+        }
+
+        .order-discount__pin {
+            margin: 5px 0 0;
+            width: 239px;
+            text-align: right;
+            &-label {
+                font-size: 12px;
+                line-height: 23px;
+                .inline-block(top);
+                margin-right: 10px;
+            }
+            &-input {
+                height: 23px;
+                line-height: 23px;
+                width: 68px;
+                .inline-block(top);
+            }
+        }
+    }
 }
 .order-wishes {
     margin: 25px 0 10px;
