@@ -186,10 +186,12 @@ class Action {
 
         // собираем статистику для RichRelevance
         try {
-            \App::richRelevanceClient()->query('recsForPlacements', [
-                'placements'    => 'category_page',
-                'categoryId'    => $category->getId()
-            ]);
+            if (\App::config()->product['pushRecommendation']) {
+                \App::richRelevanceClient()->query('recsForPlacements', [
+                    'placements'    => 'category_page',
+                    'categoryId'    => $category->getId()
+                ]);
+            }
         } catch (\Exception $e) {
             \App::exception()->remove($e);
         }

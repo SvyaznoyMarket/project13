@@ -215,9 +215,11 @@ class Action {
 
         // собираем статистику для RichRelevance
         try {
-            \App::richRelevanceClient()->query('recsForPlacements', [
-                'placements' => 'home_page',
-            ]);
+            if (\App::config()->product['pushRecommendation']) {
+                \App::richRelevanceClient()->query('recsForPlacements', [
+                    'placements' => 'home_page',
+                ]);
+            }
         } catch (\Exception $e) {
             \App::exception()->remove($e);
         }
