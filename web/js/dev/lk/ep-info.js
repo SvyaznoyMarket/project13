@@ -1,4 +1,6 @@
 $(function(){
+    var $body = $('body');
+
     $(document).on('click', function(e){
         if($('.js-ep-item-info').hasClass('active')){
             if($(e.target).closest('.js-ep-item-info').length || $(e.target).closest('.js-ep-item').length){
@@ -19,6 +21,9 @@ $(function(){
             itemInfo = container.find('.js-ep-item-info'),
             itemMargin = container.find('.js-ep-item-margin'),
             itemTop = container.find('.js-ep-item-top'),
+            dataSlider = $this.data('slider'),
+            relations = $this.data('relation'),
+            $sliderContainer = (relations && relations.container) ? $(relations.container) : null;
             margin = 0;
 
         $this.addClass('active')
@@ -43,6 +48,35 @@ $(function(){
             }
         }
 
+        if ($body.data('enterprizeSliderXhr')) { // если до этого была загрузка слайдера - прибиваем
+            try {
+                $body.data('enterprizeSliderXhr').abort();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        var xhr = $.get(dataSlider.url);
+        xhr.done(function(response) {
+            if ($sliderContainer && response.content) {
+                console.log($sliderContainer);
+                $sliderContainer.removeClass('mLoader').html(response.content)
+                    .find('.mLoader').removeClass('mLoader');
+
+                $sliderContainer.find('.js-epInfoSlide').goodsSlider({
+                    leftArrowSelector: '.js-ep-info__product-prev',
+                    rightArrowSelector: '.js-ep-info__product-next',
+                    sliderWrapperSelector: '.js-ep-info__product-slide',
+                    sliderSelector: '.js-ep-info__product-list',
+                    itemSelector: '.js-ep-info__product-item'
+                });
+            }
+        });
+        xhr.always(function() {
+            $body.data('enterprizeSliderXhr', null);
+        });
+
+        $body.data('enterprizeSliderXhr', xhr);
     });
 
 });

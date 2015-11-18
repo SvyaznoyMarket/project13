@@ -19,7 +19,18 @@
             <div class="js-ep-container">
                 <ul class="private-ep-list clearfix">
                 <? foreach ($couponChunk as $coupon): ?>
-                    <li class="private-ep-list__cell js-ep-item">
+                <?
+                    $sliderContainerId = sprintf('id-coupon-container-%s', $coupon->getToken() ? md5($coupon->getToken()) : uniqid());
+                ?>
+                    <li
+                        class="private-ep-list__cell js-ep-item"
+                        data-slider="<?= $helper->json([
+                            'url' => $helper->url('enterprize.slider', ['enterprizeToken' => $coupon->getToken(), 'template' => 'user']),
+                        ]) ?>"
+                        data-relation="<?= $helper->json([
+                            'container' => '.' . $sliderContainerId,
+                        ]) ?>"
+                    >
                         <div class="private-ep-list__item ">
                             <span class="ep-coupon" style="background-image: url(<?= $coupon->getBackgroundImage() ?>);">
                                 <span class="ep-coupon__inner">
@@ -75,10 +86,7 @@
                                     Посмотреть все
                                 </a>
                             </div>
-                            <div class="js-slider-2 ep-info__product-slide" data-position="Private.enterprize" data-slider="<?= $helper->json([
-                                'url' => $helper->url('enterprize.slider', ['enterprizeToken' => $coupon->getToken(), 'template' => 'user']),
-                            ]) ?>">
-                            </div>
+                            <div class="<?= $sliderContainerId ?> ep-info__product-slide" data-position="Private.enterprize"></div>
                         </div>
                     </div>
                 <? endforeach ?>

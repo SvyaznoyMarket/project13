@@ -13,12 +13,4 @@
         sliderSelector: '.goods-slider-list',
         itemSelector: '.goods-slider-list__i'
     });
-
-    $('.js-epInfoSlide').goodsSlider({
-        leftArrowSelector: '.js-ep-info__product-prev',
-        rightArrowSelector: '.js-ep-info__product-next',
-        sliderWrapperSelector: '.js-ep-info__product-slide',
-        sliderSelector: '.js-ep-info__product-list',
-        itemSelector: '.js-ep-info__product-item'
-    });
 }(jQuery);
