@@ -25,7 +25,7 @@ class CreateAction extends \Controller\User\PrivateAction {
             'description' => null,
             'kladrId'     => null,
             'zipCode'     => null,
-            //'regionId' => null,
+            'regionId'    => null,
             'streetType'  => null,
             'street'      => null,
             'building'    => null,
@@ -58,7 +58,7 @@ class CreateAction extends \Controller\User\PrivateAction {
                 throw $error;
             }
         } catch (\Exception $e) {
-            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['wishlist']);
+            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['user.address']);
         }
 
         $response =  new \Http\RedirectResponse(\App::router()->generate('user.address'));

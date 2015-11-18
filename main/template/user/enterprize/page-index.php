@@ -85,6 +85,17 @@
                 </div>
             </div>
         <? endforeach ?>
+
+        <? if (!$couponsByRow): ?>
+            <ul class="private-ep-list">
+                <li class="private-ep-list__cell js-ep-item">
+                    <div class="private-ep-list__item ">
+                        <span class="ep-coupon" style="background-image: url(/styles/personal-page/img/fishki.png);"></span>
+                        <div class="private-ep-list__img-desc">Получи фишки EnterPrize</div>
+                    </div>
+                </li>
+            </ul>
+        <? endif ?>
         </div>
     </div>
 
