@@ -5,6 +5,10 @@
  */
 ?>
 
+<?
+$messages = [];
+?>
+
 <div class="personal">
     <?= $page->render('user/_menu', ['page' => $page]) ?>
 
@@ -13,6 +17,7 @@
         <div class="private-sections private-sections_gray grid js-messageContainer">
             <h1 class="private-sections__head">Сообщения</h1>
 
+            <? if ($messages): ?>
             <div class="management-message">
                 <form action="#" name="message">
                     <fieldset class="management-message__item">
@@ -26,8 +31,9 @@
                     <input class="management-message__item management-message__item_btn js-messageRemove" type="submit" value="Удалить">
                 </form>
             </div>
+            <? endif ?>
             <div class="grid__col">
-
+                <? if (false): ?>
                 <ul class="message-list">
                     <li class="message-list__item message-list__item_new-center js-message">
                         <a class="message-list__link clearfix" href="#" target="_blank">
@@ -106,20 +112,19 @@
                             </div>
                         </a>
                     </li>
-
                 </ul>
+                <? endif ?>
 
-
-                <!--#####Вывести если сообщения отсутствуют
-
-                    <div class="item-none item-none_statis">
-                        <div class="item-none__img-block">
-                            <img src="/styles/personal-page/img/no-message.png" alt="#">
-                        </div>
-                        <span class="item-none__txt">
-                            У вас еще нет сообщений
-                        </span>
-                    </div>-->
+                <? if (!$messages): ?>
+                <div class="item-none item-none_statis">
+                    <div class="item-none__img-block">
+                        <img src="/styles/personal-page/img/no-message.png" alt="#">
+                    </div>
+                    <span class="item-none__txt">
+                        У вас еще нет сообщений
+                    </span>
+                </div>
+                <? endif ?>
             </div>
 
         </div>
@@ -127,7 +132,7 @@
         <div class="private-sections__modal js-modal">
             <article class="private-sections__modal-body private-sections__modal-body_small">
                 <header class="private-sections__modal-head">
-                    Удалить адрес?
+                    Удалить Собщение?
                 </header>
                 <div class="js-copyContentIn">
 
@@ -136,6 +141,5 @@
                 <a class="private-sections__modal-close js-modal-close" href="#"></a>
             </article>
         </div>
-
     </div>
 </div>
