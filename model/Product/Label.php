@@ -34,7 +34,11 @@ class Label {
         if (isset($data['uid'])) $this->uid = $data['uid'];
         if (isset($data['name'])) $this->name = $data['name'];
         if (isset($data['affects_price'])) $this->affectPrice = $data['affects_price'];
-        if (isset($data['expires_at']) && is_string($data['expires_at']) && ('3f781954-122c-4555-940f-66d731242d33' !== $this->uid)) {
+        if (
+            isset($data['expires_at'])
+            && is_string($data['expires_at'])
+            && !in_array($this->uid, ['0d7ebd2d-39fc-4973-9f4d-a81869862180', '3f781954-122c-4555-940f-66d731242d33'])
+        ) {
             $this->expires = new \DateTime($data['expires_at']);
         }
         if (isset($data['medias']) && is_array($data['medias'])) {
