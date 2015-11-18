@@ -639,6 +639,7 @@
 }
 
 .private-ep-list {
+    position: relative;
 
     &__cell{
         position: relative;
@@ -937,28 +938,26 @@
 
     font-size: 0;
 
-    &:after{
-        content: '';
-
+    &__marker{
         position: absolute;
         bottom: 100%;
-        right: 220px;
+        left: 220px;
 
         border: 12px solid transparent;
         border-bottom: 9px solid #ffa400;
         z-index: 1;
-    }
 
-    &:before{
-        content: '';
+        &:before{
+            content: '';
 
-        position: absolute;
-        bottom: 100%;
-        right: 222px;
+            position: absolute;
+            top: -9px;
+            right: -10px;
 
-        border: 10px solid transparent;
-        border-bottom: 8px solid #FFFFFF;
-        z-index: 2;
+            border: 10px solid transparent;
+            border-bottom: 8px solid #FFFFFF;
+            z-index: 2;
+        }
     }
 
     &:first-child {

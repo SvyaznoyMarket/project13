@@ -19,6 +19,7 @@ $(function(){
             container = $this.closest('.js-ep-container'),
             pointReport = $this.closest('.js-ep-pointReport'),
             itemInfo = container.find('.js-ep-item-info'),
+            itemMarker = itemInfo.find('.js-epInfoMarker'),
             itemMargin = container.find('.js-ep-item-margin'),
             itemTop = container.find('.js-ep-item-top'),
             dataSlider = $this.data('slider'),
@@ -29,6 +30,8 @@ $(function(){
         ;
 
         console.info('$sliderContainer', $sliderContainer);
+        console.info($this.width() / 2);
+        
 
         $this.addClass('active')
             .siblings()
@@ -38,6 +41,8 @@ $(function(){
             .toggleClass('active')
             .siblings().add(container.siblings('.js-ep-container').find('.js-ep-item-info'))
             .removeClass('active');
+
+        itemMarker.css('left', $this.position().left + $this.width() / 2);
 
         if(pointReport){
             if(itemInfo.hasClass('active')){
