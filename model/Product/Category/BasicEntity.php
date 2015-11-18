@@ -85,10 +85,15 @@ abstract class BasicEntity {
     }
 
     /**
+     * @param array|mixed $queryParams
      * @return string
      */
-    public function getLink() {
-        return $this->link;
+    public function getLink($queryParams = []) {
+        if ($queryParams) {
+            return $this->link . (strpos($this->link, '?') === false ? '?' : '&') . http_build_query($queryParams);
+        } else {
+            return $this->link;
+        }
     }
 
     /**
