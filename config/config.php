@@ -24,6 +24,7 @@ $c->routePrefix = '';
 
 $c->debug = false;
 $c->logger['pretty'] = false;
+$c->logger['emptyChance'] = 0;
 $c->appName = 'Enter';
 
 $c->authToken['name']     = '_token';
@@ -317,6 +318,8 @@ $c->product['showAccessories']          = true;
 $c->product['showRelated']              = true;
 $c->product['getModel']                 = true;
 $c->product['deliveryCalc']             = true;
+$c->product['smartChoiceEnabled']       = true;
+$c->product['breadcrumbsEnabled']       = true;
 $c->product['itemsInSlider']            = 5;
 $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;
@@ -346,6 +349,7 @@ $c->cart['productLimit'] = 0;
 $c->cart['sessionName'] = 'cart';
 $c->cart['checkStock'] = false;
 $c->cart['updateTime'] = 1; // обновлять корзину, если данные в ней устарели более, чем на 1 минуту
+$c->cart['oneClickOnly'] = false; // важно! только при деградации true
 
 $c->payment['creditEnabled'] = true;
 $c->payment['blockedIds'] = [];
@@ -375,6 +379,7 @@ $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {ch
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
 
 $c->mainMenu['recommendationsEnabled'] = false;
+$c->mainMenu['maxLevel'] = 3;
 
 $c->newOrder = true;
 $c->order['cookieName'] = 'last_order';
@@ -385,10 +390,8 @@ $c->order['maxSumOnlinePaypal'] = 5000;
 $c->order['excludedError'] = [705, 708, 735, 759, 800];
 $c->order['addressAutocomplete'] = true;
 // предоплата (SITE-2959)
-$c->order['prepayment'] = [
-    'enabled'    => true,
-    'labelId'    => 15, // id шильдика "предоплата"
-];
+$c->order['prepayment']['enabled'] = true;
+$c->order['prepayment']['labelId'] = 15; // id шильдика "предоплата"
 $c->order['splitSessionKey'] = 'order_split';
 $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
 $c->order['sessionInfoOnComplete'] = true; // краткая инфа о заказе
@@ -463,5 +466,12 @@ $c->siteVersionSwitcher['cookieName'] = 'mobile';
 $c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;
 
 $c->bandit['enabled'] = false;
+
+$c->richRelevance['enabled'] = true;
+$c->richRelevance['timeout'] = .3;
+$c->richRelevance['apiKey'] = '951a5607dc020e11';
+$c->richRelevance['apiClientKey'] = '911c9da5198d9f42';
+$c->richRelevance['apiUrl']    = 'http://recs.richrelevance.com/rrserver/api/rrPlatform/';
+$c->richRelevance['jsUrl']    = '//media.richrelevance.com/rrserver/js/1.1/p13n.js';
 
 return $c;

@@ -62,6 +62,18 @@ class IndexAction {
             $client->execute();
         }
 
+        // собираем статистику для RichRelevance
+        try {
+            if (\App::config()->product['pushRecommendation']) {
+                \App::richRelevanceClient()->query('recsForPlacements', [
+                    'placements'    => 'cart_page',
+                    'productId'    => implode('|', array_keys($cart->getProductsById()))
+                ]);
+            }
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+        }
+
         $updateResultProducts = $cart->update([], true);
 
         $page = $orderWithCart ? new \View\OrderV3\CartPage() : new \View\Cart\IndexPage();

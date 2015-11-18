@@ -219,6 +219,8 @@ class OrderEntity {
      * @var int
      */
     private $prepaid_sum;
+    /** @var int */
+    private $is_online_payment_available;
 
     /** TODO принимать \Model\OrderDelivery\Entity\Order и \Model\OrderDelivery\Entity\UserInfo
      * @param array $arr
@@ -350,6 +352,8 @@ class OrderEntity {
         if (!empty($arr['order']['prepaid_sum'])) { // SITE-6256
             $this->meta_data['prepaid_sum'] = $arr['order']['prepaid_sum'];
         }
+
+        if (isset($arr['order']['is_online_payment_available'])) $this->is_online_payment_available = $arr['order']['is_online_payment_available'];
     }
 
     /** Возвращает мета-данные для партнеров

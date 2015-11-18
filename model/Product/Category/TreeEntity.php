@@ -165,25 +165,24 @@ class TreeEntity extends BasicEntity {
     }
 
     /**
-     * Рекурсивно находит child по uid
+     * Рекурсивно находит потомка по uid
      * @param $uid
      *
      * @return TreeEntity|null
      */
-    public function findChild($uid)
-    {
+    public function findDescendant($uid) {
+        $entities = [$this];
+        while ($entities) {
+            /** @var TreeEntity $entity */
+            $entity = array_shift($entities);
 
-        function recursiveFind(TreeEntity $array, $uid) {
-            foreach ( $array->getChild() as $value ) {
-                if ( is_array($value) ) {
-                    recursiveFind($value, $uid);
-                }
-                if ($value->getUi() === $uid) {
-                    return $value;
-                }
+            if ($entity->ui === $uid) {
+                return $entity;
             }
+
+            $entities = array_merge($entities, $entity->getChild());
         }
 
-        return recursiveFind($this, $uid);
+        return null;
     }
 }

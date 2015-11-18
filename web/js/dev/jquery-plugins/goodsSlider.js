@@ -275,8 +275,6 @@
 					var $slider = $(this);
 
 					$slider.find('a:not(.jsBuyButton)').on('click', function(e){
-						e.preventDefault();
-
 						var link = $(this).attr('href'),
 							sender = $slider.data('slider') ? $slider.data('slider').sender : {},
 							productIndex = $(this).closest('li').index(),
@@ -293,8 +291,7 @@
 							category: 'Recommendations',
 							action: 'click',
 							label: position,
-							value: productIndex,
-							hitCallback: link
+							value: productIndex
 						})
 					});
 				},

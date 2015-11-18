@@ -513,7 +513,7 @@
 
     // сохранение комментария
     $orderContent.on('blur focus', '.jsOrderV3CommentField', function(){
-        if (comment != $(this).val()) {
+        if ((comment != $(this).val()) && $(this).data('autoUpdate')) {
             comment = $(this).val();
             changeOrderComment($(this).val());
         }

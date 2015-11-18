@@ -44,11 +44,9 @@ trait CoreQueryTrait
         }
 
         if (isset($result['error'])) {
-            $error = (array)$result['error'] + ['code' => null, 'message' => null];
+            $error = (array)$result['error'] + ['code' => null, 'message' => null, 'detail' => null];
             $exception = new Exception($error['message'], $error['code']);
-            if (isset($error['detail']) && is_array($error['detail'])) {
-                $exception->setDetail($error['detail']);
-            }
+            $exception->setDetail(is_array($error['detail']) ? $error['detail'] : []);
         }
 
         if ($exception) {

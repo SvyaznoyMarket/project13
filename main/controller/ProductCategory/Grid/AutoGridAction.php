@@ -61,7 +61,7 @@ class AutoGridAction
         \RepositoryManager::productCategory()->prepareTreeCollectionByRoot(
             $category->getRootOfParents()->getId(),
             $region,
-            3,
+            0,
             function($data) use (&$rootCategoryInMenu) {
                 $data = is_array($data) ? reset($data) : [];
                 if (isset($data['id'])) {
@@ -73,7 +73,8 @@ class AutoGridAction
         // выполнение 2-го пакета запросов в ядро
         $client->execute();
 
-        $catalogCategories = $rootCategoryInMenu->findChild($category->ui);
+        $catalogCategories = $rootCategoryInMenu->findDescendant($category->ui);
+        $catalogCategories = $catalogCategories ? $catalogCategories->getChild() : [];
 
         // перевариваем данные изображений для слайдера в $slideData
         foreach ($promo->getPages() as $promoPage) {
@@ -109,7 +110,7 @@ class AutoGridAction
 
         $page->setParam('category', $category);
         $page->setParam('categoryWithChilds', $categoryWithChilds);
-        $page->setParam('catalogCategories', $catalogCategories ? $catalogCategories->getChild() : []);
+        $page->setParam('catalogCategories', $catalogCategories);
         $page->setParam('slideData', $slideData);
         $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
         return new Response($page->show());

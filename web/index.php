@@ -115,7 +115,7 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
                 $response = $action->execute();
             }
         } else {
-//            \App::sclubManager()->set($response);
+            //\App::sclubManager()->set($response);
         }
 
         // debug panel
@@ -131,29 +131,34 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
 
 });
 
-// восстановление параметров родительского запроса для SSI, родительский запрос передается в headers x-uri
-if ($_SERVER['SCRIPT_NAME'] === '/ssi.php') {
-    $queryStrPosition = strpos($_SERVER['HTTP_X_URI'], '?');
-    $parent_query = substr($_SERVER['HTTP_X_URI'], $queryStrPosition === false ? 0 : $queryStrPosition + 1);
-    parse_str($parent_query, $params);
-    $_GET = array_merge($_GET, $params);
-}
+\App::logger()->info(['message' => 'Start app', 'env' => \App::$env, 'ssi' => isset($_GET['SSI']) ? $_GET['SSI'] : false]);
 
-\App::logger()->info(['message' => 'Start app', 'env' => \App::$env]);
+// ssi
+if (('/index.php' !== $_SERVER['SCRIPT_NAME']) && (0 === strpos($_SERVER['SCRIPT_NAME'], '/ssi'))) {
+    // восстановление параметров родительского запроса для SSI, родительский запрос передается в headers x-uri
+    if ($xUri = (isset($_SERVER['HTTP_X_URI']) ? $_SERVER['HTTP_X_URI'] : null)) {
+        $queryStrPosition = strpos($xUri, '?');
+        $parentQuery = substr($xUri, $queryStrPosition === false ? 0 : $queryStrPosition + 1);
+        parse_str($parentQuery, $params);
+        $_GET = array_merge($_GET, $params);
+    }
 
-// request
-$request =
-    $_SERVER['SCRIPT_NAME'] === '/ssi.php'
-    ? \Http\Request::create(
+    // request
+    $request = \Http\Request::create(
         '/ssi' . (!empty($_GET['path']) ? $_GET['path'] : ''),
         'GET',
         $_GET
-    )
-    : \App::request()
-;
+    );
+} else {
+    // request
+    $request = \App::request();
+}
 
 // degradation
 call_user_func(include realpath(__DIR__ . '/../config/degradation.php'), $config, $request);
+if ($c->degradation) {
+    \App::logger()->info(['message' => 'degradation', 'value' => $c->degradation]);
+}
 
 // router
 $router = \App::router();

@@ -108,8 +108,6 @@
 				isNewWindow = $el.attr('target') == '_blank',
 				sender = $el.data('sender');
 
-			$body.trigger('TLT_processDOMEvent', [event]);
-
 			$body.trigger('trackGoogleEvent', {
 				category: 'RR_взаимодействие',
 				action: 'Перешел на карточку товара',

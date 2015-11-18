@@ -3,6 +3,7 @@
 namespace Curl;
 
 class Exception extends \RuntimeException {
+
     private $content;
 
     /**

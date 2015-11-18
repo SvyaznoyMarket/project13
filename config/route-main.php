@@ -15,6 +15,14 @@ return [
         'pattern' => '/ssi/user-config',
         'action'  => ['Ssi\UserConfigAction', 'execute'],
     ],
+    'ssi.navigation' => [
+        'pattern' => '/ssi/navigation',
+        'action'  => ['MainMenu\Get', 'execute'],
+    ],
+    'ssi.main.categoryBlock' => [
+        'pattern' => '/ssi/main/category-block',
+        'action'  => ['Main\CategoryBlock', 'execute'],
+    ],
 
     'mainMenu.recommendation' => [
         'pattern' => '/main_menu/recommendations/{rootCategoryId}/{childIds}',

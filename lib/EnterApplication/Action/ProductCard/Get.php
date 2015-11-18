@@ -27,7 +27,11 @@ namespace EnterApplication\Action\ProductCard
             ;
 
             // редирект
-            $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare(); // TODO: throw Exception
+            $redirectQuery =
+                $config->abTest['enabled']
+                ? (new Query\Redirect\GetByUrl($request->urlPath))->prepare()
+                : null
+            ;
 
             // аб-тест
             $abTestQuery =
@@ -37,7 +41,12 @@ namespace EnterApplication\Action\ProductCard
             ;
 
             // главное меню
-            $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare();
+            /** @var Query\MainMenu\GetByTagList|null $menuQuery */
+            $menuQuery =
+                ('on' !== \App::request()->headers->get('SSI'))
+                ? (new Query\MainMenu\GetByTagList(['site-web']))->prepare()
+                : null
+            ;
 
             // выполнение запросов
             $curl->execute();
@@ -66,7 +75,7 @@ namespace EnterApplication\Action\ProductCard
                     $productDescriptionQuery->filter->tag = true;
                     $productDescriptionQuery->prepare();
 
-                    if ($config->product['getModel']) {
+                    if (true || $config->product['getModel']) {
                         $productModelQuery = new Query\Product\Model\GetByTokenList([$request->productCriteria['token']], $regionQuery->response->region['id']);
                         $productModelQuery->prepare();
                     }
@@ -76,7 +85,11 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // дерево категорий для меню
-            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($regionQuery->response->region['id'], 3))->prepare();
+            $categoryRootTreeQuery =
+                ('on' !== \App::request()->headers->get('SSI'))
+                ? (new Query\Product\Category\GetRootTree($regionQuery->response->region['id'], 3))->prepare()
+                : null
+            ;
 
             // пользователь и его подписки
             /** @var Query\User\GetByToken $userQuery */
@@ -382,7 +395,7 @@ namespace EnterApplication\Action\ProductCard
             $this->removeCurl();
 
             // обработка ошибок
-            if ($menuQuery->error) {
+            if ($menuQuery && $menuQuery->error) {
                 $menuQuery->response->items = \App::dataStoreClient()->query('/main-menu.json')['item'];
 
                 \App::logger()->error(['error' => $menuQuery->error, 'sender' => __FILE__ . ' ' .  __LINE__], ['main_menu', 'controller']);

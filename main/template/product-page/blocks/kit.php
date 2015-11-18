@@ -23,7 +23,7 @@ $f = function (
                     <a class="set-section-package-i__img" href="<?= $arrItem['url'] ?>"><img src="<?= $arrItem['image'] ?>"></a><!--/ изображение товара -->
 
                     <div class="set-section-package-i__desc rown">
-                        <div class="name"><a class="" href="<?= $arrItem['image'] ?>"><?= $helper->escape($arrItem['name']) ?></a></div><!--/ название товара -->
+                        <div class="name"><a class="" href="<?= $arrItem['url'] ?>"><?= $helper->escape($arrItem['name']) ?></a></div><!--/ название товара -->
 
                     <? if ($arrItem['height']!='' || $arrItem['width']!='' || $arrItem['depth']!='') : ?>
 
