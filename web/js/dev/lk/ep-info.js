@@ -23,8 +23,12 @@ $(function(){
             itemTop = container.find('.js-ep-item-top'),
             dataSlider = $this.data('slider'),
             relations = $this.data('relation'),
-            $sliderContainer = (relations && relations.container) ? $(relations.container) : null;
-            margin = 0;
+            $sliderContainer = (relations && relations.container) ? $(relations.container) : null,
+            xhr,
+            margin = 0
+        ;
+
+        console.info('$sliderContainer', $sliderContainer);
 
         $this.addClass('active')
             .siblings()
@@ -56,27 +60,34 @@ $(function(){
             }
         }
 
-        var xhr = $.get(dataSlider.url);
-        xhr.done(function(response) {
-            if ($sliderContainer && response.content) {
-                console.log($sliderContainer);
-                $sliderContainer.removeClass('mLoader').html(response.content)
-                    .find('.mLoader').removeClass('mLoader');
+        $('.js-user-slider-container').hide();
 
-                $sliderContainer.find('.js-epInfoSlide').goodsSlider({
-                    leftArrowSelector: '.js-ep-info__product-prev',
-                    rightArrowSelector: '.js-ep-info__product-next',
-                    sliderWrapperSelector: '.js-ep-info__product-slide',
-                    sliderSelector: '.js-ep-info__product-list',
-                    itemSelector: '.js-ep-info__product-item'
-                });
-            }
-        });
-        xhr.always(function() {
-            $body.data('enterprizeSliderXhr', null);
-        });
+        if ($sliderContainer && $sliderContainer.data('loaded')) {
+            $sliderContainer.show();
+        } else {
+            xhr = $.get(dataSlider.url);
+            xhr.done(function(response) {
+                if ($sliderContainer && response.content) {
+                    console.log($sliderContainer);
+                    $sliderContainer.removeClass('mLoader').html(response.content)
+                        .find('.mLoader').removeClass('mLoader');
 
-        $body.data('enterprizeSliderXhr', xhr);
+                    $sliderContainer.show(100).data('loaded', true);
+                    $sliderContainer.find('.js-epInfoSlide').goodsSlider({
+                        leftArrowSelector: '.js-ep-info__product-prev',
+                        rightArrowSelector: '.js-ep-info__product-next',
+                        sliderWrapperSelector: '.js-ep-info__product-slide',
+                        sliderSelector: '.js-ep-info__product-list',
+                        itemSelector: '.js-ep-info__product-item'
+                    });
+                }
+            });
+            xhr.always(function() {
+                $body.data('enterprizeSliderXhr', null);
+            });
+
+            $body.data('enterprizeSliderXhr', xhr);
+        }
     });
 
 });

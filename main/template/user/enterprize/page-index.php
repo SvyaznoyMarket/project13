@@ -52,6 +52,7 @@
                 <div class="private-ep-list__info clearfix">
                 <? foreach ($couponChunk as $coupon): ?>
                 <?
+                    $sliderContainerId = sprintf('id-coupon-container-%s', $coupon->getToken() ? md5($coupon->getToken()) : uniqid());
                     $discount = $coupon->getDiscount();
                 ?>
                     <div class="grid__cell grid__cell_2 ep-info js-ep-item-info">
@@ -69,7 +70,7 @@
                             <div class="ep-info__desc-timer">
                                 <p class="ep-info__desc-timer-desc">До конца действия осталось</p>
 
-                                <div class="ep-info__desc-timer-report js-countdown-out js-countdown" <?= ($discount ? $discount->getDateDiff()->format('%D:%H:%I:%S') : null) ?>></div>
+                                <div class="ep-info__desc-timer-report js-countdown-out js-countdown" data-expires="<?= (($discount && $discount->getEndDate()) ? $discount->getEndDate()->getTimestamp() : null) ?>"></div>
                             </div>
                             <p class="ep-info__desc-txt">
                                 <?= $coupon->setSegmentDescription() ?>
@@ -82,11 +83,11 @@
                                     Действует на товары
                                 </h4>
 
-                                <a class="ep-info__product-all" href="#">
-                                    Посмотреть все
-                                </a>
+                                <? if ($coupon->getLink()): ?>
+                                    <a class="ep-info__product-all" href="<?= $coupon->getLink() ?>">Посмотреть все</a>
+                                <? endif ?>
                             </div>
-                            <div class="<?= $sliderContainerId ?> ep-info__product-slide" data-position="Private.enterprize"></div>
+                            <div class="<?= $sliderContainerId ?> js-user-slider-container ep-info__product-slide" data-position="Private.enterprize"></div>
                         </div>
                     </div>
                 <? endforeach ?>

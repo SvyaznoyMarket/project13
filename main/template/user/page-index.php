@@ -202,7 +202,7 @@ $helper = new \Helper\TemplateHelper();
                                             </span>
                                         </span>
 
-                                        <div class="private-ep-list__dutation js-countdown-out js-countdown" data-expires="<?= ($discount ? $discount->getDateDiff()->format('%D:%H:%I:%S') : null) ?>"></div>
+                                        <div class="private-ep-list__dutation js-countdown-out js-countdown" data-expires="<?= (($discount && $discount->getEndDate()) ? $discount->getEndDate()->getTimestamp() : null) ?>"></div>
                                     </div>
                                 </li>
                             <? endforeach ?>
