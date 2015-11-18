@@ -187,23 +187,22 @@ $helper = new \Helper\TemplateHelper();
                             ?>
                                 <li class="grid-scroll-list__col js-ep-item">
                                     <div class="grid-scroll-list__item private-ep-list__item">
-                                    <span class="ep-coupon"
-                                          style="background-image: url('<?= $coupon->getBackgroundImage() ?>');">
-                                        <span class="ep-coupon__inner">
-                                            <span class="ep-coupon__ico"><? if ($image = $coupon->getImage()): ?><img
-                                                    src="<?= $image ?>"><? endif ?></span>
-                                            <span class="ep-coupon__desc"><?= $coupon->getName() ?></span>
-                                            <span class="ep-coupon__price">
-                                                <?= $helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
-                                                <? if ($coupon->getIsCurrency()): ?>
-                                                    <span class="rubl">p</span>
-                                                <? endif ?>
+                                        <span class="ep-coupon"
+                                              style="background-image: url('<?= $coupon->getBackgroundImage() ?>');">
+                                            <span class="ep-coupon__inner">
+                                                <span class="ep-coupon__ico"><? if ($image = $coupon->getImage()): ?><img
+                                                        src="<?= $image ?>"><? endif ?></span>
+                                                <span class="ep-coupon__desc"><?= $coupon->getName() ?></span>
+                                                <span class="ep-coupon__price">
+                                                    <?= $helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
+                                                    <? if ($coupon->getIsCurrency()): ?>
+                                                        <span class="rubl">p</span>
+                                                    <? endif ?>
+                                                </span>
                                             </span>
                                         </span>
-                                    </span>
 
-                                        <div class="private-ep-list__dutation js-countdown-out js-countdown"
-                                             data-expires="<?= ($discount ? $discount->getDateDiff()->format('%D:%H:%I:%S') : null) ?>"></div>
+                                        <div class="private-ep-list__dutation js-countdown-out js-countdown" data-expires="<?= ($discount ? $discount->getDateDiff()->format('%D:%H:%I:%S') : null) ?>"></div>
                                     </div>
                                 </li>
                             <? endforeach ?>
