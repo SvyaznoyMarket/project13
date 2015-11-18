@@ -89,17 +89,21 @@ class Action {
 
         // подготовка 3-го пакета запросов
 
-        \RepositoryManager::productCategory()->prepareEntityHasChildren($category);
+        if (\App::config()->product['breadcrumbsEnabled']) { // TODO: надо вообще выпилить
+            \RepositoryManager::productCategory()->prepareEntityHasChildren($category);
+        }
 
         $client->execute();
 
         // запрашиваем дерево категорий
-        if ($category->isV2Root()) {
-            // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
-            \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region, $this->convertFiltersToSearchClientRequestFormat(\RepositoryManager::productFilter()->getFilterValuesFromHttpRequest($request)));
-        } else {
-            // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
-            \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region);
+        if (\App::config()->product['breadcrumbsEnabled']) { // TODO: надо вообще выпилить
+            if ($category->isV2Root()) {
+                // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
+                \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region, $this->convertFiltersToSearchClientRequestFormat(\RepositoryManager::productFilter()->getFilterValuesFromHttpRequest($request)));
+            } else {
+                // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
+                \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region);
+            }
         }
 
         // запрашиваем фильтры и извлекаем из них бренды
@@ -182,6 +186,18 @@ class Action {
             );
 
             $scmsClient->execute();
+        }
+
+        // собираем статистику для RichRelevance
+        try {
+            if (\App::config()->product['pushRecommendation']) {
+                \App::richRelevanceClient()->query('recsForPlacements', [
+                    'placements'    => 'category_page',
+                    'categoryId'    => $category->getId()
+                ]);
+            }
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
         }
 
         // роутим на специфичные категории
@@ -616,7 +632,7 @@ class Action {
         /** @var \Model\Product\Entity[] $smartChoiceProductsById */
         $smartChoiceProductsById = [];
         call_user_func(function() use(&$smartChoiceData, &$smartChoiceProductsById, $filters, $catalogJson, $repository) {
-            if (!isset($catalogJson['smartchoice']) || !$catalogJson['smartchoice']) {
+            if (!\App::config()->product['smartChoiceEnabled'] || !isset($catalogJson['smartchoice']) || !$catalogJson['smartchoice']) {
                 return;
             }
 

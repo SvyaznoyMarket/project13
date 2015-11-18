@@ -8,6 +8,7 @@ $c->debug = true;
 //$c->eventService['url'] = 'http://event.ent3.ru/';
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/apitest/';
+$c->richRelevance['jsUrl'] = '//media.richrelevance.com/rrserver/js/1.1/p13n_unoptimized.js';
 
 $c->jsonLog['enabled'] = false;
 $c->analytics['enabled'] = false;

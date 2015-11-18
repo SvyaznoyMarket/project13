@@ -229,6 +229,32 @@ class Repository {
     }
 
     /**
+     * @param array|mixed $coreItems
+     * @param array|mixed $scmsDescriptionItems
+     * @return \Model\Product\Entity[]
+     */
+    public function createProducts($coreItems = [], $scmsDescriptionItems = []) {
+        $scmsDescriptionItemsByUi = [];
+        foreach ($scmsDescriptionItems as $scmsDescriptionItem) {
+            if (isset($scmsDescriptionItem['uid'])) {
+                $scmsDescriptionItemsByUi[$scmsDescriptionItem['uid']] = $scmsDescriptionItem;
+            }
+        }
+
+        $products = [];
+        foreach ($coreItems as $coreItem) {
+            // SITE-5975
+            if (isset($coreItem['ui']) && isset($scmsDescriptionItemsByUi[$coreItem['ui']])) {
+                $product = new \Model\Product\Entity($coreItem);
+                $product->importFromScms($scmsDescriptionItemsByUi[$coreItem['ui']]);
+                $products[] = $product;
+            }
+        }
+
+        return $products;
+    }
+
+    /**
      * @param Entity[] $partProducts
      * @return array
      */

@@ -134,17 +134,29 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotInfoBox() {
-        return \App::mustache()->render('main/infoBox', [
-            'categories' => array_values(array_map(function(\Model\Product\Category\Entity $category) {
-                return [
-                    'name' => $category->name,
-                    'url' => $category->getLink(),
-                    'image' => [
-                        'url' => $category->getMediaSource('category_163x163')->url,
+        if ('on' === \App::request()->headers->get('SSI')) {
+            return \App::helper()->render(
+                '__ssi-cached',
+                [
+                    'path'  => '/main/category-block',
+                    'query' => [
+                        'regionId' => \App::user()->getRegion()->id ?: \App::config()->region['defaultId'],
                     ],
-                ];
-            }, $this->getParam('infoBoxCategoriesByUis')))
-        ]);
+                ]
+            );
+        } else {
+            return \App::mustache()->render('main/infoBox', [
+                'categories' => array_values(array_map(function (\Model\Product\Category\Entity $category) {
+                    return [
+                        'name' => $category->name,
+                        'url' => $category->getLink(),
+                        'image' => [
+                            'url' => $category->getMediaSource('category_163x163')->url,
+                        ],
+                    ];
+                }, $this->getParam('infoBoxCategoriesByUis')))
+            ]);
+        }
     }
 
     public function slotMyThings($data) {

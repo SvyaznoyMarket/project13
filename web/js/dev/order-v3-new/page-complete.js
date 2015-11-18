@@ -143,7 +143,7 @@
                         }
                     }
 
-                    DCLoans(data.vars.partnerID, 'getCredit', { products: productArr, order: data.vars.number, codeTT: data.vars.region }, function(result){
+                    DCLoans(data.vars.partnerID, 'getCredit', { products: productArr, order: data.vars.number, codeTT: data.vars.region, phone: data.vars.phone }, function(result){
                        console.log(result);
                     }, false);
             });

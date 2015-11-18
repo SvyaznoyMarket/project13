@@ -32,6 +32,7 @@ $f = function(
     $formUrl = \App::router()->generate('orderV3.paymentForm');
     $showStatus = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
     $showPaymentStatus = ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']));
+    $showPartner = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
 ?>
     <div class="order__wrap">
     <section class="orderCnt jsOrderV3PageComplete order-page">
@@ -311,6 +312,22 @@ $f = function(
                             <strong class="orderLn_status-new"><?= $order->status->name ?></strong>
                         <? else:?>
                             <strong>Не известен</strong>
+                        <? endif ?>
+
+                        <? if ($showPartner): ?>
+                        <?
+                            $isSordex = false;
+                            foreach ($order->product as $orderProduct) {
+                                /** @var \Model\Product\Entity|null $product */
+                                $product = isset($products[$orderProduct->getId()]) ? $products[$orderProduct->getId()] : null;
+                                if (!$product) continue;
+                                if ($product->hasSordexPartner()) {
+                                    $isSordex = true;
+                                    break;
+                                }                            }
+
+                        ?>
+                            <? if ($isSordex): ?><div class="orderLn_status-sordex">Заказ Sordex</div><? endif ?>
                         <? endif ?>
                     </div>
                     <? endif ?>

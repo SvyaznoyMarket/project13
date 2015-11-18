@@ -19,7 +19,6 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->pickpoint['retryCount'] = 1;
 
         $c->product['recommendationProductLimit'] = 7;
-        $c->product['creditEnabledInCard'] = false;
         $c->cart['productLimit'] = 7;
 
         $c->banner['checkStatus'] = false;
@@ -36,6 +35,9 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->product['viewedEnabled'] = false;
         $c->mainMenu['recommendationsEnabled'] = false;
         $c->product['getModel'] = false;
+        $c->product['smartChoiceEnabled'] = false;
+        $c->product['pushRecommendation'] = false;
+        $c->product['creditEnabledInCard'] = false;
     }
 
     // отключение расчета доставки, корзины в Москве (только одноклик)
@@ -44,8 +46,21 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->cart['oneClickOnly'] = true;
     }
 
-    // агрессивное кеширование
+    // агрессивное кеширование, отключение связанных товаров
     if ($c->degradation > 3) {
         $c->region['cache'] = true;
+        if (!$c->debug) {
+            $c->logger['emptyChance'] = 67;
+        }
+
+        $c->product['pullRecommendation'] = false;
+        $c->mainMenu['maxLevel'] = 2;
+    }
+
+    // отключение редиректа
+    if ($c->degradation > 4) {
+        $c->redirect301['enabled'] = false;
+        $c->product['breadcrumbsEnabled'] = false;
+        $c->mainMenu['maxLevel'] = 1;
     }
 };

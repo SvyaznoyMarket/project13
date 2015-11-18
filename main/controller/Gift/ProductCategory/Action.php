@@ -45,15 +45,17 @@ class Action {
             }
         });
 
+        /*
         \RepositoryManager::menu()->prepareCollection(function($data) use (&$categories) {
             $categories = $data;
         });
+        */
 
         // выполнение 2-го пакета запросов
         $client->execute();
 
         $this->createTagFilterProperties($filters);
-        $this->createCategoryFilterProperties($filters, $categories);
+        //$this->createCategoryFilterProperties($filters, $categories);
 
         $shop = null;
         try {

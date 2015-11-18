@@ -76,6 +76,9 @@ $helper = \App::closureTemplating()->getParam('helper');
 		</ul>
 		<? endif ?>
 
+		<!-- Для корректной работы ajax-листинга -->
+		<form class="js-category-filter" action="<?= $page->url('sale.one', ['uid' => $currentSale->uid]) ?>" style="display: none;"></form>
+
 		<?= $helper->render( 'product/__listAction', [
 			'pager' => $productPager,
 			'productSorting' => $productSorting,

@@ -16,7 +16,7 @@ $pages = array_slice($promo->getPages(), 0, 3);
 
         <? foreach ($pages as $promoPage) : ?>
 
-            <? $matches = []; preg_match('/\[(-?\d+)\](.*)/', $promoPage->getName(), $matches) ?>
+            <? $matches = []; preg_match('/\[(.+)\](.*)/', $promoPage->getName(), $matches) ?>
 
             <div class="s-sales-grid__cell">
                 <a class="s-sales-grid__link" href="<?= $promoPage->getLink() ?>">

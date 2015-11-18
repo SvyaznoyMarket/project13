@@ -406,6 +406,26 @@ class App {
     }
 
     /**
+     * @return \RichRelevance\Client
+     */
+    public static function richRelevanceClient()
+    {
+        static $instance;
+
+        if (!$instance) {
+
+            $config = [
+                'apiUrl'        => self::config()->richRelevance['apiUrl'],
+                'timeout'       => self::config()->richRelevance['timeout'],
+            ];
+
+            $instance = new \RichRelevance\Client($config, self::curl());
+        }
+
+        return $instance;
+    }
+
+    /**
      * @return \RetailRocket\Manager
      */
     public static function retailrocket() {
@@ -473,6 +493,13 @@ class App {
             $config[$name] = $config['default'];
         }
 
+        // если есть вероятность нулевого журналирования, то ...
+        if ($emptyChance = self::$config->logger['emptyChance']) {
+            if (rand(0, 100) <= $emptyChance) {
+                $name = 'empty';
+            }
+        }
+
         if (!isset(self::$loggers[$name])) {
             switch ($name) {
                 case 'timer':
@@ -487,9 +514,11 @@ class App {
                 case 'custom':
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/custom.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
                     break;
+                case 'empty':
+                    self::$loggers[$name] = new \Logger\NullLogger();
+                    break;
                 default:
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/app.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
-                    //$instances[$name] = new \Logger\NullLogger();
                     break;
             }
         }
