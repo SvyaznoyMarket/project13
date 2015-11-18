@@ -98,7 +98,7 @@ $(function(){
                         console.info('autocomplete.select', 'ui.item.value', ui.item.value);
 
                         // sets value
-                        $el.val(ui.item.label);
+                        $el.val(ui.item.value.name);
                         // sets parent kladr id
                         $form.find('[data-parent-field="' + type  + '"]').data('parent-kladr-id', ui.item.value.id);
                         // sets hidden input values
