@@ -182,9 +182,9 @@ $helper = new \Helper\TemplateHelper();
                     <div class="grid-scroll js-private-sections-body">
                         <ul class="grid-scroll-list grid-scroll-list_2col private-ep-list">
                             <? foreach ($coupons as $coupon): ?>
-                                <?
+                            <?
                                 $discount = $coupon->getDiscount();
-                                ?>
+                            ?>
                                 <li class="grid-scroll-list__col js-ep-item">
                                     <div class="grid-scroll-list__item private-ep-list__item">
                                     <span class="ep-coupon"
@@ -208,43 +208,21 @@ $helper = new \Helper\TemplateHelper();
                                 </li>
                             <? endforeach ?>
 
+                            <? if (!$coupons): ?>
                             <li class="grid-scroll-list__col">
                                 <div class="grid-scroll-list__item private-ep-list__item">
-                                         <span class="ep-coupon"
-                                               style="background-image: url(/styles/personal-page/img/fishki.png);">
-                                         </span>
-
+                                     <span class="ep-coupon" style="background-image: url(/styles/personal-page/img/fishki.png);"></span>
                                     <div class="private-ep-list__img-desc">Получи фишки EnterPrize</div>
                                 </div>
                             </li>
 
                             <li class="grid-scroll-list__col">
-                                     <span class="private-ep-list__desc">
-                                         Фишки EnterPrize используются для получения скидок. У каждой фишки свои условия и срок действия скидки. Использовать фишку можно только один раз, для этого нужно применить ее к заказу при оформлении. Узнай больше на странице EnterPrize.
-                                     </span>
+                                 <span class="private-ep-list__desc">
+                                     Фишки EnterPrize используются для получения скидок. У каждой фишки свои условия и срок действия скидки. Использовать фишку можно только один раз, для этого нужно применить ее к заказу при оформлении. Узнай больше на странице EnterPrize.
+                                 </span>
                             </li>
+                            <? endif ?>
                         </ul>
-
-                        <? if (!$coupons): ?>
-                            <ul class="grid-scroll-list grid-scroll-list_2col private-ep-list">
-                                <li class="grid-scroll-list__col">
-                                    <div class="grid-scroll-list__item private-ep-list__item">
-                                    <span class="ep-coupon"
-                                          style="background-image: url('/styles/personal-page/img/fishki.png');">
-                                    </span>
-
-                                        <div class="private-ep-list__img-desc">Получи фишки EnterPrize</div>
-                                    </div>
-                                </li>
-
-                                <li class="grid-scroll-list__col">
-                                <span class="private-ep-list__desc">
-                                    Фишки EnterPrize используются для получения скидок. У каждой фишки свои условия и срок действия скидки. Использовать фишку можно только один раз, для этого нужно применить ее к заказу при оформлении. Узнай больше на странице EnterPrize.
-                                </span>
-                                </li>
-                            </ul>
-                        <? endif ?>
-
                     </div>
                 </div>
             </div>

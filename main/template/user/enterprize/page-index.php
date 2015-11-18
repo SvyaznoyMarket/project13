@@ -85,6 +85,10 @@
                 </div>
             </div>
         <? endforeach ?>
+
+        <? if (!$couponsByRow): ?>
+            <!-- TODO -->
+        <? endif ?>
         </div>
     </div>
 
