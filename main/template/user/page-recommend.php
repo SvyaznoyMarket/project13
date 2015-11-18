@@ -293,7 +293,9 @@ $helper = new \Helper\TemplateHelper();
             </div>
 
             <div class="private-ep-list__info clearfix">
+
                 <div class="grid__cell grid__cell_2-big private-ep-list__item-info ep-info js-ep-item-info">
+                    <span class="ep-info__marker js-epInfoMarker"></span>
                     <div class="ep-info__desc">
                         <h4 class="ep-info__desc-title">Фишка со скидкой 15% на Текстиль</h4>
 
@@ -321,6 +323,7 @@ $helper = new \Helper\TemplateHelper();
                     </div>
 
                     <div class="ep-info__product ep-info__product_big">
+                        <span class="ep-info__marker js-epInfoMarker"></span>
                         <div class="ep-info__row clearfix">
                             <h4 class="ep-info__product-title">
                                 Действует на товары
@@ -623,6 +626,7 @@ $helper = new \Helper\TemplateHelper();
                 </div>
 
                 <div class="grid__cell grid__cell_2-big private-ep-list__item-info ep-info js-ep-item-info">
+
                     <div class="ep-info__desc">
                         <h4 class="ep-info__desc-title">Фишка со скидкой 15% на Текстиль</h4>
 

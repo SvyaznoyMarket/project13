@@ -56,6 +56,7 @@
                     $discount = $coupon->getDiscount();
                 ?>
                     <div class="grid__cell grid__cell_2 ep-info js-ep-item-info">
+                        <span class="ep-info__marker js-epInfoMarker"></span>
                         <div class="ep-info__desc">
                             <h4 class="ep-info__desc-title"><?= $coupon->getName() ?></h4>
 
