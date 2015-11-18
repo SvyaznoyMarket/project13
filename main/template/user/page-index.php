@@ -192,12 +192,7 @@ $helper = new \Helper\TemplateHelper();
                                         </span>
                                     </span>
 
-                                    <div class="private-ep-list__dutation js-coupon-date" data-value="<?= $helper->json(['date' => ($discount && ($endDate = $discount->getEndDate())) ? $endDate->getTimestamp() : null ]) ?>">
-                                        <span data-name="day">3 д</span>
-                                        <span data-name="hour">19 ч</span>
-                                        <span data-name="minute">52 мин</span>
-                                        <span data-name="second">51 с</span>
-                                    </div>
+                                    <div class="private-ep-list__dutation js-countdown-out js-countdown" data-expires="<?= ($discount ? $discount->getDateDiff()->format('%D:%H:%I:%S') : null) ?>"></div>
                                 </div>
                             </li>
                         <? endforeach ?>

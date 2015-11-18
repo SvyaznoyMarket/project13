@@ -58,12 +58,7 @@
                             <div class="ep-info__desc-timer">
                                 <p class="ep-info__desc-timer-desc">До конца действия осталось</p>
 
-                                <div class="ep-info__desc-timer-report js-coupon-date" data-value="<?= $helper->json(['date' => ($discount && ($endDate = $discount->getEndDate())) ? $endDate->getTimestamp() : null ]) ?>">
-                                    <span data-name="day">3 д</span>
-                                    <span data-name="hour">19 ч</span>
-                                    <span data-name="minute">52 мин</span>
-                                    <span data-name="second">51 с</span>
-                                </div>
+                                <div class="ep-info__desc-timer-report js-countdown-out js-countdown" <?= ($discount ? $discount->getDateDiff()->format('%D:%H:%I:%S') : null) ?>></div>
                             </div>
                             <p class="ep-info__desc-txt">
                                 <?= $coupon->setSegmentDescription() ?>
