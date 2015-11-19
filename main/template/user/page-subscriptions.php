@@ -1,17 +1,12 @@
 <?php
 /**
- * @var $page          \View\User\OrderPage
- * @var $subscriptions \Model\User\SubscriptionEntity[]
- * @var $flash         mixed|null
+ * @var $page                          \View\User\OrderPage
+ * @var $channelsById                  \Model\Subscribe\Channel\Entity[]
+ * @var $subscriptions                 \Model\User\SubscriptionEntity[]
+ * @var $subscription                  \Model\User\SubscriptionEntity
+ * @var $subscriptionsGroupedByChannel array
+ * @var $flash                         mixed|null
  */
-?>
-
-<?
-$subscriptionsByType = [];
-// сортировка каналов по типам
-array_walk($subscriptions, function(\Model\User\SubscriptionEntity $subscription) use (&$subscriptionsByType) {
-    $subscriptionsByType[$subscription->type][] = $subscription;
-});
 ?>
 
 <?= $page->render('user/_menu', ['page' => $page]) ?>
@@ -23,36 +18,36 @@ array_walk($subscriptions, function(\Model\User\SubscriptionEntity $subscription
         <div class="grid__col grid__col_2">
 
 
-            <? if ($flash !== null) : ?>
+            <? if (false && $flash !== null) : ?>
                 <p class="<?= $flash['type'] == 'success' ? 'green' : 'red' ?>"><?= $flash['message'] ?></p>
             <? endif; ?>
 
             <div class="personalSubscr">
                 <div class="personalSubscr_row">
-                    <? foreach ($subscriptionsByType as $key => $subscriptionChunk): ?>
-                        <? $i = 0; foreach ($subscriptionChunk as $subscription): $i++ ?>
-                        <?
-                            /** @var $subscription \Model\User\SubscriptionEntity */
-                            if (!$subscription->channel) continue;
-                            $elementId = sprintf('channel-%s_%s', $subscription->type, $subscription->channelId);
-                        ?>
-                            <input
-                                class="js-user-subscribe-input jsCustomRadio customInput customInput-bigCheck"
-                                id="<?= $elementId ?>"
-                                type="checkbox"
-                                name="channel[<?= $i ?>]"
-                                <?= $subscription->isConfirmed ? 'checked' : '' ?>
-                                data-url="<?= $page->url('user.subscriptions') ?>"
-                                data-value="<?= $page->json([
-                                    'subscribe' => [
-                                        'channel_id' => $subscription->channelId,
-                                        'type'       => $subscription->type,
-                                        'email'      => $subscription->email,
-                                    ]
-                                ])?>"
-                            />
-                            <label class="private-sections__label label-for-customInput" for="<?= $elementId ?>"><?= $subscription->channel->name ?></label>
-                        <? endforeach ?>
+                    <? $i = 0; foreach ($channelsById as $channel): $i++ ?>
+                    <?
+                        $subscription = isset($subscriptionsGroupedByChannel[$channel->id]) ? $subscriptionsGroupedByChannel[$channel->id] : null;
+                        if (!$channel->isActive && !$subscription) continue;
+
+                        $elementId = sprintf('channel-%s', md5(json_encode($channel, JSON_UNESCAPED_UNICODE)));
+                    ?>
+                        <input
+                            class="js-user-subscribe-input jsCustomRadio customInput customInput-bigCheck"
+                            id="<?= $elementId ?>"
+                            type="checkbox"
+                            name="channel[<?= $i ?>]"
+                            <?= $subscription ? 'checked' : '' ?>
+                            data-set-url="<?= $page->url('user.subscriptions') ?>"
+                            data-delete-url="<?= $page->url('user.subscriptions', ['delete' => true]) ?>"
+                            data-value="<?= $page->json([
+                                'subscribe' => [
+                                    'channel_id' => $channel->id,
+                                    'type'       => 'email',
+                                    'email'      => $user->getEntity()->getEmail(),
+                                ]
+                            ])?>"
+                        />
+                        <label class="private-sections__label label-for-customInput" for="<?= $elementId ?>"><?= $channel->name ?></label>
                     <? endforeach ?>
                 </div>
             </div>
