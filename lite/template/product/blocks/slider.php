@@ -141,12 +141,7 @@ $f = function (
                         $urlParams['sender2'] = $sender2;
                     }
 
-                    $link = $helper->url(
-                        'product',
-                        array_merge(
-                            ['productPath' => $product->getPath()],
-                            $urlParams
-                        ));
+                    $link = $product->getLink($urlParams);
 
                     // Retailrocket
                     $isRetailrocketProduct = in_array($product->getId(), $retailrocketIds);

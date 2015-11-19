@@ -10,8 +10,7 @@ $f = function(
     \Model\Product\Entity $product,
     $sender = null
 ) {
-    $link = $helper->url('product', [
-        'productPath' => $product->getPath(),
+    $link = $product->getLink([
         'sender'      => [
             'name'     => @$sender['name'],
             'method'   => @$sender['method'],

@@ -33,7 +33,7 @@ class CategoryPage extends LiteLayout
 
         return $this->render('category/_filters',[
             'category'      => $category,
-            'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
+            'baseUrl'       => $category->getLink(),
             'productFilter' => $productFilter,
             'openFilter'    => false,
             'promoStyle'    => $promoStyle,

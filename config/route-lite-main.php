@@ -214,44 +214,44 @@ return [
 
     // каталог товаров
     'product.category' => [
-        'pattern' => '/catalog/{categoryPath}',
+        'pattern' => '/catalog/{categoryId}',
         'action'  => ['ProductCategory\Action', 'category'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+        'require' => ['categoryId' => '\d+'],
     ],
     // бесконечная листалка в категориях
     'product.category.sliderInfinity' => [
-        'pattern' => '/catalog/{categoryPath}/_sliderInfinity',
+        'pattern' => '/catalog/{categoryId}/_sliderInfinity',
         'action'  => ['ProductCategory\Action', 'category'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+        'require' => ['categoryId' => '\d+'],
     ],
     // слайдер товаров
     'product.category.slider' => [
-        'pattern' => '/ajax/catalog/{categoryPath}/_slider',
+        'pattern' => '/ajax/catalog/{categoryId}/_slider',
         'action'  => ['ProductCategory\Action', 'slider'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+        'require' => ['categoryId' => '\d+'],
     ],
     // каталог товаров с бесконечной прокруткой
     'product.category.infinity' => [
-        'pattern' => '/ajax/catalog/{categoryPath}/_infinity',
+        'pattern' => '/ajax/catalog/{categoryId}/_infinity',
         'action'  => ['ProductCategory\Action', 'category'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+        'require' => ['categoryId' => '\d+'],
     ],
     // каталог товаров бренда
     'product.category.brand' => [
-        'pattern' => '/catalog/{categoryPath}/{brandToken}',
+        'pattern' => '/catalog/{categoryId}/{brandToken}',
         'action'  => ['ProductCategory\Action', 'category'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
+        'require' => ['categoryId' => '\d+', 'brandToken' => '[\w\d-_]+'],
     ],
     // каталог товаров бренда
     'product.category.brand.infinity' => [
-        'pattern' => '/ajax/catalog/{categoryPath}/{brandToken}/_infinity',
+        'pattern' => '/ajax/catalog/{categoryId}/{brandToken}/_infinity',
         'action'  => ['ProductCategory\Action', 'category'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
+        'require' => ['categoryId' => '\d+', 'brandToken' => '[\w\d-_]+'],
     ],
     'product.category.brand.sliderInfinity' => [
-        'pattern' => '/catalog/{categoryPath}/{brandToken}/_sliderInfinity',
+        'pattern' => '/catalog/{categoryId}/{brandToken}/_sliderInfinity',
         'action'  => ['ProductCategory\Action', 'category'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
+        'require' => ['categoryId' => '\d+', 'brandToken' => '[\w\d-_]+'],
     ],
 
     // каталог товаров
@@ -262,9 +262,9 @@ return [
 
     // карточка товара
     'product' => [
-        'pattern' => '/product/{productPath}',
+        'pattern' => '/catalog/{businessUnit}/{barcode}-{article}/model',
         'action'  => ['Product\IndexAction', 'execute'],
-        'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
+        'require' => ['businessUnit' => '[^\/]+', 'barcode' => '\d+', 'article' => '[\d]+\-[\d]+'],
     ],
     // расчет доставки товара
     'old.product.delivery' => [
@@ -497,8 +497,8 @@ return [
 
     // срезы
     'slice.category' => [
-        'pattern' => '/slices/{sliceToken}/{categoryToken}',
-        'require' => ['sliceToken' => '[\w\d-_]+', 'categoryToken' => '[\w\d-_]+'],
+        'pattern' => '/slices/{sliceToken}/{categoryId}',
+        'require' => ['sliceToken' => '[\w\d-_]+', 'categoryId' => '\d+'],
         'action'  => ['Slice\ShowAction', 'execute'],
     ],
     'slice.show' => [
