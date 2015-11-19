@@ -10,11 +10,10 @@ class IndexAction {
     public static $actionResponse; // осторожно, вынужденный г*код
 
     /**
-     * @param string $productPath
      * @param \Http\Request $request
      * @return \Http\Response
      */
-    public function execute($productPath, \Http\Request $request) {
+    public function execute(\Http\Request $request) {
         $actionResponse = self::$actionResponse;
 
         // регион
