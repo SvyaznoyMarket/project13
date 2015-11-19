@@ -8,6 +8,11 @@
 
 <?
 $region = \App::user()->getRegion();
+$mapOptions = [
+    'latitude'  => $region->getLatitude(),
+    'longitude' => $region->getLongitude(),
+    'zoom'      => 10,
+];
 ?>
 
 <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ) ?>"></div>
@@ -63,9 +68,7 @@ $region = \App::user()->getRegion();
                         <div class="new-address__title">Добавить новый адрес</div>
                         <a class="new-address__map-show js-mapShow js-private-sections-button" href="#">Показать карту</a>
                     </div>
-                    <div class="new-address__map-block js-private-sections-body">
-                        Вставить сюда карту
-                    </div>
+                    <div id="yandex-map-container" class="new-address__map-block js-private-sections-body" data-option="<?= $helper->json($mapOptions)?>"></div>
                     <? include __DIR__ . '/_form.php' ?>
                 </div>
             </div>

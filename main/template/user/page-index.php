@@ -205,7 +205,7 @@ $helper = new \Helper\TemplateHelper();
                             <? if (!$coupons): ?>
                             <li class="grid-scroll-list__col">
                                 <div class="grid-scroll-list__item private-ep-list__item">
-                                    <span class="ep-coupon" style="background-image: url(/styles/personal-page/img/fishki.png);"></span>
+                                    <span class="ep-coupon" style="background-image: url('/styles/personal-page/img/fishki.png');"></span>
                                     <div class="private-ep-list__img-desc">Получи фишки EnterPrize</div>
                                 </div>
                             </li>
