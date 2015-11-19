@@ -39,6 +39,14 @@ class IndexAction extends PrivateAction {
         $favoriteListQuery->userUi = $userEntity->getUi();
         $favoriteListQuery->prepare();
 
+        // запрос подписок и каналов подписок
+        $subscribeChannelQuery = new Query\Subscribe\Channel\Get();
+        $subscribeChannelQuery->prepare();
+
+        $subscribeQuery = new Query\Subscribe\GetByUserToken();
+        $subscribeQuery->userToken = $userEntity->getToken();
+        $subscribeQuery->prepare();
+
         $curl->execute();
 
         // заказы
@@ -137,12 +145,44 @@ class IndexAction extends PrivateAction {
 
         \App::coreClientV2()->execute();
 
+        // подписки и каналы подписок
+        $userEmail = $userEntity->getEmail() ?: null;
+        /** @var \Model\User\SubscriptionEntity[] $subscriptions */
+        $subscriptions = [];
+        /** @var \Model\Subscribe\Channel\Entity[] $channelsById */
+        $channelsById = [];
+        $subscriptionsGroupedByChannel = [];
+        foreach ($subscribeChannelQuery->response->channels as $item) {
+            if (empty($item['id'])) continue;
+
+            $channel = new \Model\Subscribe\Channel\Entity($item);
+            $channelsById[$channel->id] = $channel;
+        }
+        foreach ($subscribeQuery->response->subscribes as $item) {
+            $subscriptions[] = new \Model\User\SubscriptionEntity($item);
+        }
+        foreach ($subscriptions as $subscription) {
+            if (('email' === $subscription->type) && $userEmail && ($userEmail !== $subscription->email)) {
+                // пропустить подписки, у которых email не совпадает с email-ом пользователя
+                continue;
+            }
+
+            /** @var \Model\Subscribe\Channel\Entity|null $channel */
+            $channel = ($subscription->channelId && isset($channelsById[$subscription->channelId])) ? $channelsById[$subscription->channelId] : null;
+            if ($channel) {
+                $subscription->channel = $channel;
+                $subscriptionsGroupedByChannel[$channel->id][] = $subscription;
+            }
+        }
+
         $page = new \View\User\IndexPage();
         $page->setParam('orders', $orders);
         $page->setParam('coupons', $coupons);
         $page->setParam('addresses', $addresses);
         $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);
         $page->setParam('productsByUi', $productsByUi);
+        $page->setParam('subscriptionsGroupedByChannel', $subscriptionsGroupedByChannel);
+        $page->setParam('channelsById', $channelsById);
 
         return new \Http\Response($page->show());
     }

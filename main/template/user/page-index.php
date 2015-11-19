@@ -1,14 +1,15 @@
 <?php
 /**
- * @var $page                 \View\User\OrderPage
- * @var $user                 \Session\User
- * @var $orders               \Model\Order\Entity[]
- * @var $coupons              \Model\EnterprizeCoupon\Entity[]
- * @var $addresses            \Model\User\Address\Entity[]
- * @var $product              \Model\Product\Entity|null
- * @var $favoriteProductsByUi \Model\Favorite\Product\Entity[]
- * @var $recommendedProducts  \Model\Product\Entity[]
- * @var $viewedProducts       \Model\Product\Entity[]
+ * @var $page                          \View\User\OrderPage
+ * @var $user                          \Session\User
+ * @var $orders                        \Model\Order\Entity[]
+ * @var $coupons                       \Model\EnterprizeCoupon\Entity[]
+ * @var $addresses                     \Model\User\Address\Entity[]
+ * @var $product                       \Model\Product\Entity|null
+ * @var $favoriteProductsByUi          \Model\Favorite\Product\Entity[]
+ * @var $channelsById                  \Model\Subscribe\Channel\Entity[]
+ * @var $subscription                  \Model\User\SubscriptionEntity
+ * @var $subscriptionsGroupedByChannel array
  */
 ?>
 
@@ -301,35 +302,41 @@ $helper = new \Helper\TemplateHelper();
 
                     <div class="grid-scroll js-private-sections-body">
                         <ul class="grid-scroll-list subscribe-list">
-                            <li class="grid-scroll-list__item subscribe-list__item">
-                                <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep"
-                                       checked/>
-                                <label class="customLabel" for="subscribe-ep">Новости EnterPrize</label>
-                            </li>
+                        <? $i = 0; foreach ($channelsById as $channel): $i++ ?>
+                        <?
+                            $subscription = isset($subscriptionsGroupedByChannel[$channel->id]) ? $subscriptionsGroupedByChannel[$channel->id] : null;
+                            if (!$channel->isActive && !$subscription) continue;
 
+                            $elementId = sprintf('channel-%s', md5(json_encode($channel, JSON_UNESCAPED_UNICODE)));
+                        ?>
+                            <li class="grid-scroll-list__item subscribe-list__item">
+                                <input
+                                    class="js-user-subscribe-input customInput customInput-checkbox"
+                                    id="<?= $elementId ?>"
+                                    type="checkbox"
+                                    name="channel[<?= $i ?>]"
+                                    <?= $subscription ? 'checked' : '' ?>
+                                    data-set-url="<?= $page->url('user.subscriptions') ?>"
+                                    data-delete-url="<?= $page->url('user.subscriptions', ['delete' => true]) ?>"
+                                    data-value="<?= $page->json([
+                                        'subscribe' => [
+                                            'channel_id' => $channel->id,
+                                            'type'       => 'email',
+                                            'email'      => $user->getEntity()->getEmail(),
+                                        ]
+                                    ])?>"
+                                />
+                                <label class="customLabel" for="<?= $elementId ?>"><?= $channel->name ?></label>
+                            </li>
+                        <? endforeach ?>
+
+                            <? if (false): ?>
                             <li class="grid-scroll-list__item subscribe-list__item">
                                 <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep-2"
                                        disabled/>
-                                <label class="customLabel" for="subscribe-ep-2">Новости EnterPrize Новости EnterPrize
-                                    Новости EnterPrize Новости EnterPrize Новости EnterPrize Новости EnterPrize</label>
+                                <label class="customLabel" for="subscribe-ep-2">Новости EnterPrize 1</label>
                             </li>
-
-                            <li class="grid-scroll-list__item subscribe-list__item">
-                                <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep-3"
-                                       checked/>
-                                <label class="customLabel" for="subscribe-ep-3">Новости EnterPrize</label>
-                            </li>
-
-                            <li class="grid-scroll-list__item subscribe-list__item">
-                                <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep-4"/>
-                                <label class="customLabel" for="subscribe-ep-4">Новости EnterPrize</label>
-                            </li>
-
-                            <li class="grid-scroll-list__item subscribe-list__item">
-                                <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep-5"
-                                       checked/>
-                                <label class="customLabel" for="subscribe-ep-5">Новости EnterPrize</label>
-                            </li>
+                            <? endif ?>
                         </ul>
                     </div>
                 </div>
