@@ -40,7 +40,7 @@ namespace EnterQuery\Coupon\Series
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode);
 
-                    $this->response->couponSeries = isset($result[0]['uid']) ? $result : null;
+                    $this->response->couponSeries = isset($result[0]['uid']) ? $result : [];
 
                     return $result; // for cache
                 },

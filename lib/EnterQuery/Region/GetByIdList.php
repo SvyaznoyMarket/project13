@@ -37,7 +37,7 @@ namespace EnterQuery\Region
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->regions = $result;
+                    $this->response->regions = is_array($result) ? $result : [];
 
                     return $result; // for cache
                 }
