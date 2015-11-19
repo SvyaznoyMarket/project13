@@ -247,7 +247,7 @@ class User {
         if ($userEntity) {
             $subscriptions = $userEntity->getSubscriptions();
             foreach ($subscriptions as $sub) {
-                if ($sub->getChannelId() == $channelId && $sub->getIsConfirmed() == true) {
+                if ($sub->channelId == $channelId && ($sub->isConfirmed == true)) {
                     $isSubscribed = true;
                     break;
                 }

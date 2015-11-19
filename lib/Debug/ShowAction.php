@@ -206,7 +206,6 @@ class ShowAction {
         $debug->add('server', isset($_SERVER) ? $_SERVER : [], 86);
 
 
-
         $debugData = [];
         foreach ($debug->getAll() as $item) {
             $debugData[$item['name']] = ['value' => $item['value'], 'type' => $item['type']];

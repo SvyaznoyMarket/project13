@@ -1,17 +1,16 @@
 <?php
 /**
- * @var $page           \View\User\OrderPage
- * @var $userChannels   \Model\User\SubscriptionEntity[]|array
- * @var $flash          mixed|null
+ * @var $page          \View\User\OrderPage
+ * @var $subscriptions \Model\User\SubscriptionEntity[]
+ * @var $flash         mixed|null
  */
 ?>
 
 <?
-$i = 0; $channelsByType = [];
+$subscriptionsByType = [];
 // сортировка каналов по типам
-array_walk($userChannels, function($ch) use (&$channelsByType) {
-    /** @var $ch \Model\User\SubscriptionEntity */
-    $channelsByType[$ch->getType()][] = $ch;
+array_walk($subscriptions, function(\Model\User\SubscriptionEntity $subscription) use (&$subscriptionsByType) {
+    $subscriptionsByType[$subscription->type][] = $subscription;
 });
 ?>
 
@@ -28,25 +27,35 @@ array_walk($userChannels, function($ch) use (&$channelsByType) {
                 <p class="<?= $flash['type'] == 'success' ? 'green' : 'red' ?>"><?= $flash['message'] ?></p>
             <? endif; ?>
 
-            <form action="" method="post" class="personalSubscr">
-                <fieldset class="personalSubscr_row">
-                    <? foreach ($channelsByType as $key => $val) : ?>
-                        <? foreach ($val as $channel) : ?>
-                            <? /** @var $channel \Model\User\SubscriptionEntity */ ?>
-
-                            <input class="jsCustomRadio customInput customInput-bigCheck" id="channel_<?= $channel->getType().$channel->getChannelId() ?>" type="checkbox"  name="channel[<?= $i ?>][is_confirmed]" <?= $channel->getIsConfirmed() ? 'checked' : '' ?> />
-                            <label class="private-sections__label label-for-customInput" for="channel_<?= $channel->getType().$channel->getChannelId() ?>"><?= $channel->getChannel()->getName() ?></label>
-                            <input type="hidden" name="channel[<?= $i ?>][channel_id]" value="<?= $channel->getChannelId() ?>" />
-                            <input type="hidden" name="channel[<?= $i ?>][type]" value="<?= $channel->getType() ?>" />
-                            <input type="hidden" name="channel[<?= $i ?>][email]" value="<?= $channel->getEmail() ?>" />
-                            <? $i++ ?>
-
-                        <? endforeach; ?>
-                    <? endforeach; ?>
-
-                </fieldset>
-
-            </form>
+            <div class="personalSubscr">
+                <div class="personalSubscr_row">
+                    <? foreach ($subscriptionsByType as $key => $subscriptionChunk): ?>
+                        <? $i = 0; foreach ($subscriptionChunk as $subscription): $i++ ?>
+                        <?
+                            /** @var $subscription \Model\User\SubscriptionEntity */
+                            if (!$subscription->channel) continue;
+                            $elementId = sprintf('channel-%s_%s', $subscription->type, $subscription->channelId);
+                        ?>
+                            <input
+                                class="js-user-subscribe-input jsCustomRadio customInput customInput-bigCheck"
+                                id="<?= $elementId ?>"
+                                type="checkbox"
+                                name="channel[<?= $i ?>]"
+                                <?= $subscription->isConfirmed ? 'checked' : '' ?>
+                                data-url="<?= $page->url('user.subscriptions') ?>"
+                                data-value="<?= $page->json([
+                                    'subscribe' => [
+                                        'channel_id' => $subscription->channelId,
+                                        'type'       => $subscription->type,
+                                        'email'      => $subscription->email,
+                                    ]
+                                ])?>"
+                            />
+                            <label class="private-sections__label label-for-customInput" for="<?= $elementId ?>"><?= $subscription->channel->name ?></label>
+                        <? endforeach ?>
+                    <? endforeach ?>
+                </div>
+            </div>
         </div>
 
         <div class="grid__col grid__col_2">

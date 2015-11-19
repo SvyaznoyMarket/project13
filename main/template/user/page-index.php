@@ -276,13 +276,13 @@ $helper = new \Helper\TemplateHelper();
                         </ul>
 
                         <? if (!$favoriteProductsByUi): ?>
-                            <div class="item-none">
+                        <div class="item-none">
                             <span class="item-none__txt">
                             Добавляй товары в избранное
                             <br>
                             и узнавай об изменении цены и наличии
                             </span>
-                            </div>
+                        </div>
                         <? endif ?>
                     </div>
                 </div>
