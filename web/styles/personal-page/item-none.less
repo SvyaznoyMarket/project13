@@ -1,0 +1,46 @@
+//Стили для блока-заглушки
+.item-none{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  max-height: 100px;
+  margin: auto;
+
+  text-align: center;
+
+  &_statis{
+    position: static;
+    max-height: none;
+  }
+
+  &__txt{
+    display: block;
+    margin-bottom: 3px;
+
+    font-size: 18px;
+  }
+
+  &__link{
+    border-bottom: 1px dotted #000;
+
+    font-size: 16px;
+
+    &:hover{
+      text-decoration: none;
+    }
+  }
+
+  &__img-block{
+    position: relative;
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+
+    img{
+      display: inline-block;
+    }
+  }
+}
