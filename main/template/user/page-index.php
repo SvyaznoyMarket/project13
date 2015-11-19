@@ -335,29 +335,40 @@ $helper = new \Helper\TemplateHelper();
                 </div>
             </div>
         </div>
-
-
     </div>
+
+    <div>
+    <?= $helper->render('product/__slider', [
+        'type'      => 'viewed',
+        'title'     => 'Вы смотрели',
+        'products'  => [],
+        'limit'     => \App::config()->product['itemsInSlider'],
+        'page'      => 1,
+        'url'       => $page->url('product.recommended'),
+        'class'     => 'slideItem-viewed',
+        'isCompact' => true,
+        'sender'    => [
+            'name'     => 'enter',
+            'position' => 'Viewed',
+            'from'     => 'categoryPage'
+        ],
+    ]) ?>
+    </div>
+
+    <?= $page->render('user/_menu', ['page' => $page]) ?>
+
 
     <? if (false): ?>
         <div class=" js-slider-2 viewed-slider" data-position="Basket"
              data-slider="{&quot;limit&quot;:null,&quot;url&quot;:null,&quot;type&quot;:null,&quot;sender&quot;:{&quot;name&quot;:&quot;retailrocket&quot;,&quot;method&quot;:&quot;PersonalRecommendation&quot;,&quot;position&quot;:&quot;Basket&quot;,&quot;from&quot;:null},&quot;sender2&quot;:&quot;&quot;}">
 
             <div class="viewed-slider__row clearfix">
-                <h3 class="viewed-slider__title">
-                    Вы смотрели
-                </h3>
-
-                <? if (false): ?>
-                    <span class="viewed-slider__pagination">
-                Страница <span class="js-viewed-slider-page">1</span> из <span class="js-viewed-slider-allPage">1</span>
-            </span>
-                <? endif ?>
+                <h3 class="viewed-slider__title">Вы смотрели</h3>
+                <span class="viewed-slider__pagination">Страница <span class="js-viewed-slider-page">1</span> из <span class="js-viewed-slider-allPage">1</span></span>
             </div>
 
             <div class="goods-slider__inn viewed-slider__row">
                 <ul class="goods-slider-list viewed-slider__list clearfix">
-
                     <li class="goods-slider-list__i viewed-slider__item">
                         <div class="viewed-slider__item-inner">
                             <div class="viewed-slider__img-block">
@@ -379,7 +390,6 @@ $helper = new \Helper\TemplateHelper();
                             <div class="viewed-slider__buy">Купить</div>
                         </div>
                     </li>
-
                     <li class="goods-slider-list__i viewed-slider__item">
                         <div class="viewed-slider__item-inner">
                             <div class="viewed-slider__img-block">
@@ -403,7 +413,6 @@ $helper = new \Helper\TemplateHelper();
                             </div>
                         </div>
                     </li>
-
                     <li class="goods-slider-list__i viewed-slider__item">
                         <div class="viewed-slider__item-inner">
                             <div class="viewed-slider__img-block">
@@ -427,7 +436,6 @@ $helper = new \Helper\TemplateHelper();
                             </div>
                         </div>
                     </li>
-
                     <li class="goods-slider-list__i viewed-slider__item">
                         <div class="viewed-slider__item-inner">
                             <div class="viewed-slider__img-block">
@@ -451,7 +459,6 @@ $helper = new \Helper\TemplateHelper();
                             </div>
                         </div>
                     </li>
-
                     <li class="goods-slider-list__i viewed-slider__item">
                         <div class="viewed-slider__item-inner">
                             <div class="viewed-slider__img-block">
@@ -475,7 +482,6 @@ $helper = new \Helper\TemplateHelper();
                             </div>
                         </div>
                     </li>
-
                     <li class="goods-slider-list__i viewed-slider__item">
                         <div class="viewed-slider__item-inner">
                             <div class="viewed-slider__img-block">
@@ -499,7 +505,6 @@ $helper = new \Helper\TemplateHelper();
                             </div>
                         </div>
                     </li>
-
                     <li class="goods-slider-list__i viewed-slider__item">
                         <div class="viewed-slider__item-inner">
                             <div class="viewed-slider__img-block">
@@ -523,7 +528,6 @@ $helper = new \Helper\TemplateHelper();
                             </div>
                         </div>
                     </li>
-
                     <li class="goods-slider-list__i viewed-slider__item">
                         <div class="viewed-slider__item-inner">
                             <div class="viewed-slider__img-block">
@@ -547,7 +551,6 @@ $helper = new \Helper\TemplateHelper();
                             </div>
                         </div>
                     </li>
-
                     <li class="goods-slider-list__i viewed-slider__item">
                         <div class="viewed-slider__item-inner">
                             <div class="viewed-slider__img-block">
@@ -571,7 +574,6 @@ $helper = new \Helper\TemplateHelper();
                             </div>
                         </div>
                     </li>
-
                     <li class="goods-slider-list__i viewed-slider__item">
                         <div class="viewed-slider__item-inner">
                             <div class="viewed-slider__img-block">
@@ -595,7 +597,6 @@ $helper = new \Helper\TemplateHelper();
                             </div>
                         </div>
                     </li>
-
                     <li class="goods-slider-list__i viewed-slider__item">
                         <div class="viewed-slider__item-inner">
                             <div class="viewed-slider__img-block">
@@ -619,40 +620,11 @@ $helper = new \Helper\TemplateHelper();
                             </div>
                         </div>
                     </li>
-
                 </ul>
 
                 <div class="goods-slider__btn goods-slider__btn--prev viewed-slider__prev disabled mDisabled"></div>
                 <div class="goods-slider__btn goods-slider__btn--next viewed-slider__next"></div>
             </div>
-
-            <?= $page->render('user/_menu', ['page' => $page]) ?>
-
-            <?= $helper->render(
-                'product-page/blocks/slider',
-                [
-                    'type' => 'main',
-                    'title' => 'Мы рекомендуем',
-                    'products' => $recommendedProducts,
-                    'limit' => \App::config()->product['itemsInSlider'],
-                    'page' => 1,
-                    'class' => '',
-                    'sender' => [
-                        'name' => 'retailrocket',
-                        'position' => 'UserRecommended',
-                        'method' => 'PersonalRecommendation',
-                    ],
-                ]
-            ) ?>
-
-            <?= $helper->render('product-page/blocks/slider', [
-                'type' => 'viewed',
-                'title' => 'Вы смотрели',
-                'products' => $viewedProducts,
-                'limit' => \App::config()->product['itemsInSlider'],
-                'page' => 1,
-                'class' => 'slideItem-7item goods-slider_mark',
-            ]) ?>
         </div>
     <? endif ?>
 

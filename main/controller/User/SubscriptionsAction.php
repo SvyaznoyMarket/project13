@@ -21,23 +21,27 @@ class SubscriptionsAction extends PrivateAction {
         $this->session = \App::session();
     }
 
+    /**
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
+     */
     public function execute(\Http\Request $request) {
         if ($request->isMethod('post')) {
             $responseData = [];
 
             try {
                 $this->setData($request);
-                $this->session->flash(['type' => 'success', 'message' => 'Параметры подписок сохранены']);
+                //$this->session->flash(['type' => 'success', 'message' => 'Параметры подписок сохранены']);
                 $responseData['success'] = true;
             } catch (\Curl\Exception $e) {
                 \App::logger()->error($e, ['curl', 'error']);
-                $this->session->flash(['type' => 'error', 'message' => 'Не удалось сохранить параметры подписок']);
+                //$this->session->flash(['type' => 'error', 'message' => 'Не удалось сохранить параметры подписок']);
                 $responseData['error'] = $e;
 
                 \App::exception()->remove($e);
             } catch (\Exception $e) {
                 \App::logger()->error($e, ['error']);
-                $this->session->flash(['type' => 'error', 'message' => 'Не удалось сохранить параметры подписок']);
+                //$this->session->flash(['type' => 'error', 'message' => 'Не удалось сохранить параметры подписок']);
                 $responseData['error'] = $e;
             }
             return
@@ -57,7 +61,9 @@ class SubscriptionsAction extends PrivateAction {
 
         $page = new \View\User\SubscriptionsPage();
         $page->setParam('subscriptions', $data['subscriptions']);
-        $page->setParam('flash', $this->session->flash());
+        $page->setParam('subscriptionsGroupedByChannel', $data['subscriptionsGroupedByChannel']);
+        $page->setParam('channelsById', $data['channelsById']);
+        //$page->setParam('flash', $this->session->flash());
 
         return new \Http\Response($page->show());
 
@@ -70,8 +76,10 @@ class SubscriptionsAction extends PrivateAction {
 
         //\App::logger()->debug('Exec ' . __METHOD__);
 
+        /** @var \Model\User\SubscriptionEntity[] $subscriptions */
         $subscriptions = [];
-        $channelCollection = [];
+        $channelsById = [];
+        $subscriptionsGroupedByChannel = [];
 
         $this->client->addQuery(
             'subscribe/get',
@@ -93,9 +101,12 @@ class SubscriptionsAction extends PrivateAction {
             'subscribe/get-channel',
             [],
             [],
-            function ($data) use (&$channelCollection) {
+            function ($data) use (&$channelsById) {
                 foreach ($data as $item) {
-                    $channelCollection[] = new \Model\Subscribe\Channel\Entity($item);
+                    if (empty($item['id'])) continue;
+
+                    $channel = new \Model\Subscribe\Channel\Entity($item);
+                    $channelsById[$channel->id] = $channel;
                 }
             },
             function(\Exception $e) {
@@ -107,22 +118,24 @@ class SubscriptionsAction extends PrivateAction {
 
         $userEmail = $this->user->getEntity()->getEmail() ?: null;
         foreach ($subscriptions as $subscription) {
-            /** @var \Model\User\SubscriptionEntity $subscription */
             if (('email' === $subscription->type) && $userEmail && ($userEmail !== $subscription->email)) {
                 // пропустить подписки, у которых email не совпадает с email-ом пользователя
                 continue;
             }
 
-            if ($subscription->channelId) {
-                $channels = array_filter($channelCollection, function (\Model\Subscribe\Channel\Entity $channel) use ($subscription) {
-                    return $subscription->channelId == $channel->id;
-                });
-                $subscription->channel = reset($channels);
+            /** @var \Model\Subscribe\Channel\Entity|null $channel */
+            $channel = ($subscription->channelId && isset($channelsById[$subscription->channelId])) ? $channelsById[$subscription->channelId] : null;
+            if ($channel) {
+                $subscription->channel = $channel;
+                $subscriptionsGroupedByChannel[$channel->id][] = $subscription;
             }
         }
 
-        return ['subscriptions' => $subscriptions];
-
+        return [
+            'subscriptions'                 => $subscriptions,
+            'subscriptionsGroupedByChannel' => $subscriptionsGroupedByChannel,
+            'channelsById'                  => $channelsById,
+        ];
     }
 
     /** Сохраняет данные подписок
@@ -132,16 +145,29 @@ class SubscriptionsAction extends PrivateAction {
     private function setData(\Http\Request $request) {
 
         $formData = $request->get('subscribe');
+        $isDelete = (bool)$request->get('delete');
 
-        $response = $this->client->query(
-            'subscribe/set',
-            [
-                'token' => $this->user->getToken(),
-            ],
-            [
-                $formData,
-            ]
-        );
+        if ($isDelete) {
+            $response = $this->client->query(
+                'subscribe/set',
+                [
+                    'token' => $this->user->getToken(),
+                ],
+                [
+                    $formData,
+                ]
+            );
+        } else {
+            $response = $this->client->query(
+                'subscribe/delete',
+                [
+                    'token' => $this->user->getToken(),
+                ],
+                [
+                    $formData,
+                ]
+            );
+        }
 
         if (!isset($response['confirmed']) || $response['confirmed'] == false) {
             throw new \Exception('Не удалось сохранить подписку');

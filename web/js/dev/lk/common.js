@@ -17,20 +17,19 @@
     $('body').on('click', '.js-user-subscribe-input', function(event) {
         var
             $el = $(this),
-            url = $el.data('url'),
-            data = $el.data('value')
+            data = $el.data('value'),
+            isChecked = !!$el.is('checked'),
+            url = isChecked ? $el.data('setUrl') : $el.data('deleteUrl')
         ;
-        console.info('ok');
 
         try {
             if (!url) {
                 throw {message: 'Нет url'};
             }
 
-            data.subscribe.is_confirmed = !$el.is('checked');
-
             $.post(url, data).done(function(response) {
-                console.info('response');
+                if (!response.success) {
+                }
             });
         } catch(error) { console.error(error) };
     });
