@@ -326,11 +326,11 @@ return [
         'action'  => ['Tag\Action', 'index'],
     ],
     'tag.category' => [
-        'pattern' => '/tags/{tagToken}/{categoryToken}',
+        'pattern' => '/tags/{tagToken}/{categoryId}',
         'action'  => ['Tag\Action', 'index'],
     ],
     'tag.category.infinity' => [
-        'pattern' => '/tags/{tagToken}/{categoryToken}/_infinity',
+        'pattern' => '/tags/{tagToken}/{categoryId}/_infinity',
         'action'  => ['Tag\Action', 'index'],
     ],
     'product.rating.create_total' => [
