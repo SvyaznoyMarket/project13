@@ -157,7 +157,7 @@ $helper = new \Helper\TemplateHelper();
                     </header>
 
                     <div class="grid-scroll js-private-sections-body">
-                        <ul class="grid-scroll-list message-list">
+                        <!--<ul class="grid-scroll-list message-list">
                             <li class="grid-scroll-list__item message-list__item message-list__item_new">
                                 <a class="message-list__link clearfix" href="#" target="_blank">
                                     <div class="message-list__left">
@@ -211,7 +211,20 @@ $helper = new \Helper\TemplateHelper();
                                     </div>
                                 </a>
                             </li>
-                        </ul>
+                        </ul>-->
+
+                        <!--Если нет сообщений, вывести блок .item-none-->
+
+
+                                         <div class="item-none item-none_message">
+                                             <div class="item-none__img-block">
+                                                 <img src="/styles/personal-page/img/no-message.png" alt="#">
+                                             </div>
+                                            <span class="item-none__txt">
+                                                У вас еще нет сообщений
+                                            </span>
+                                           </div>
+
                     </div>
                 </div>
             </div>
