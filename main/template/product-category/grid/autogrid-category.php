@@ -24,7 +24,7 @@ if ((bool)$siblingCategories) {
     echo $helper->render('product-category/__sibling-list',
         [
             'categories'        => $siblingCategories, // категории-соседи
-            'catalogConfig'     => $catalogConfig,
+            'catalogConfig'     => isset($catalogConfig) ? $catalogConfig : null,
             'currentCategory'   => $categoryWithChilds
         ]);
     /* <!--/ TCHIBO - слайдер-меню разделов Чибо -->*/

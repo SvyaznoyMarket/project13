@@ -10,11 +10,10 @@ class IndexAction {
     public static $actionResponse; // осторожно, вынужденный г*код
 
     /**
-     * @param string $productPath
      * @param \Http\Request $request
      * @return \Http\Response
      */
-    public function execute($productPath, \Http\Request $request) {
+    public function execute(\Http\Request $request) {
         $actionResponse = self::$actionResponse;
 
         // регион
@@ -68,6 +67,18 @@ class IndexAction {
                 $product->importModelFromScms($actionResponse->productModelQuery->response->products[0]);
             }
         });
+
+        // собираем статистику для RichRelevance
+        try {
+            if (\App::config()->product['pushRecommendation']) {
+                \App::richRelevanceClient()->query('recsForPlacements', [
+                    'placements'    => 'item_page',
+                    'productId'     => $product->getId()
+                ]);
+            }
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+        }
 
         // товар для Подари Жизнь
         $lifeGiftProduct = null;
@@ -173,21 +184,11 @@ class IndexAction {
         });
 
         // SITE-5035
-        $similarProducts = [];
-        call_user_func(function() use($actionResponse, &$similarProducts) {
-            // SITE-5975 Не отображать товары, по которым scms или ядро не вернуло данных
-            if (empty($actionResponse->similarProductQuery->response->products) || empty($actionResponse->similarProductDescriptionQuery->response->products[0])) {
-                return;
-            }
-
-            $similarProductDescriptionUis = array_column($actionResponse->similarProductDescriptionQuery->response->products, 'uid');
-
-            foreach ($actionResponse->similarProductQuery->response->products as $product) {
-                if (in_array($product['ui'], $similarProductDescriptionUis, true)) {
-                    $similarProducts[] = new \Model\Product\Entity($product);
-                }
-            }
-        });
+        $similarProducts =
+            ($actionResponse->similarProductQuery && $actionResponse->similarProductDescriptionQuery)
+            ? \RepositoryManager::product()->createProducts($actionResponse->similarProductQuery->response->products, $actionResponse->similarProductDescriptionQuery->response->products)
+            : []
+        ;
 
         // наборы
         /** @var \Model\Product\Entity[] $kit */

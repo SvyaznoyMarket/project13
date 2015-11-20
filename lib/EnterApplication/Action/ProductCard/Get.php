@@ -27,7 +27,11 @@ namespace EnterApplication\Action\ProductCard
             ;
 
             // редирект
-            $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare(); // TODO: throw Exception
+            $redirectQuery =
+                $config->abTest['enabled']
+                ? (new Query\Redirect\GetByUrl($request->urlPath))->prepare()
+                : null
+            ;
 
             // аб-тест
             $abTestQuery =
@@ -37,7 +41,12 @@ namespace EnterApplication\Action\ProductCard
             ;
 
             // главное меню
-            $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare();
+            /** @var Query\MainMenu\GetByTagList|null $menuQuery */
+            $menuQuery =
+                ('on' !== \App::request()->headers->get('SSI'))
+                ? (new Query\MainMenu\GetByTagList(['site-web']))->prepare()
+                : null
+            ;
 
             // выполнение запросов
             $curl->execute();
@@ -46,9 +55,9 @@ namespace EnterApplication\Action\ProductCard
             $this->checkRegionQuery($regionQuery);
 
             // товар
-            /** @var Query\Product\GetByToken $productQuery */
-            /** @var Query\Product\GetDescriptionByTokenList $productDescriptionQuery */
-            /** @var Query\Product\Model\GetByTokenList $productModelQuery */
+            /** @var Query\Product\GetByToken|Query\Product\GetByBarcode $productQuery */
+            /** @var Query\Product\GetDescriptionByTokenList|Query\Product\GetDescriptionByBarcodeList $productDescriptionQuery */
+            /** @var Query\Product\Model\GetByTokenList|Query\Product\Model\GetByBarcodeList $productModelQuery */
             call_user_func(function() use (&$productQuery, &$productDescriptionQuery, &$productModelQuery, $regionQuery, $request, &$config) {
                 if ($request->productCriteria['token']) {
                     $productQuery = new Query\Product\GetByToken($request->productCriteria['token'], $regionQuery->response->region['id']);
@@ -66,8 +75,28 @@ namespace EnterApplication\Action\ProductCard
                     $productDescriptionQuery->filter->tag = true;
                     $productDescriptionQuery->prepare();
 
-                    if ($config->product['getModel']) {
+                    if ($config->product['getModelInCard']) {
                         $productModelQuery = new Query\Product\Model\GetByTokenList([$request->productCriteria['token']], $regionQuery->response->region['id']);
+                        $productModelQuery->prepare();
+                    }
+                } else if ($request->productCriteria['barcode']) { // Используется в ветке lite
+                    $productQuery = new Query\Product\GetByBarcode($request->productCriteria['barcode'], $regionQuery->response->region['id']);
+                    $productQuery->prepare();
+
+                    $productDescriptionQuery = new Query\Product\GetDescriptionByBarcodeList();
+                    $productDescriptionQuery->barcodes = [$request->productCriteria['barcode']];
+                    $productDescriptionQuery->filter->trustfactor = true;
+                    $productDescriptionQuery->filter->category = true;
+                    $productDescriptionQuery->filter->media = true;
+                    $productDescriptionQuery->filter->seo = true;
+                    $productDescriptionQuery->filter->property = true;
+                    $productDescriptionQuery->filter->label = true;
+                    $productDescriptionQuery->filter->brand = true;
+                    $productDescriptionQuery->filter->tag = true;
+                    $productDescriptionQuery->prepare();
+
+                    if (true || $config->product['getModel']) {
+                        $productModelQuery = new Query\Product\Model\GetByBarcodeList([$request->productCriteria['barcode']], $regionQuery->response->region['id']);
                         $productModelQuery->prepare();
                     }
                 } else {
@@ -76,7 +105,11 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // дерево категорий для меню
-            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($regionQuery->response->region['id'], 3))->prepare();
+            $categoryRootTreeQuery =
+                ('on' !== \App::request()->headers->get('SSI'))
+                ? (new Query\Product\Category\GetRootTree($regionQuery->response->region['id'], 3))->prepare()
+                : null
+            ;
 
             // пользователь и его подписки
             /** @var Query\User\GetByToken $userQuery */
@@ -325,8 +358,12 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // категория товаров
-            call_user_func(function() use (&$categoryQuery, $regionQuery, $productDescriptionQuery) {
-                if (empty($productDescriptionQuery->response->products[0]['categories']) || !is_array($productDescriptionQuery->response->products[0]['categories'])) {
+            call_user_func(function() use (&$categoryQuery, $regionQuery, $productDescriptionQuery, &$config) {
+                if (
+                    empty($productDescriptionQuery->response->products[0]['categories'])
+                    || !is_array($productDescriptionQuery->response->products[0]['categories'])
+                    || !$config->product['breadcrumbsEnabled']
+                ) {
                     return;
                 }
 
@@ -382,7 +419,7 @@ namespace EnterApplication\Action\ProductCard
             $this->removeCurl();
 
             // обработка ошибок
-            if ($menuQuery->error) {
+            if ($menuQuery && $menuQuery->error) {
                 $menuQuery->response->items = \App::dataStoreClient()->query('/main-menu.json')['item'];
 
                 \App::logger()->error(['error' => $menuQuery->error, 'sender' => __FILE__ . ' ' .  __LINE__], ['main_menu', 'controller']);
@@ -449,11 +486,11 @@ namespace EnterApplication\Action\ProductCard\Get
 
     class Response
     {
-        /** @var Query\Product\GetByToken */
+        /** @var Query\Product\GetByToken|Query\Product\GetByBarcode */
         public $productQuery;
-        /** @var Query\Product\GetDescriptionByTokenList */
+        /** @var Query\Product\GetDescriptionByTokenList|Query\Product\GetDescriptionByBarcodeList */
         public $productDescriptionQuery;
-        /** @var Query\Product\Model\GetByTokenList */
+        /** @var Query\Product\Model\GetByTokenList|Query\Product\Model\GetByBarcodeList */
         public $productModelQuery;
         /** @var Query\User\GetByToken|null */
         public $userQuery;

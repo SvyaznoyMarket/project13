@@ -8,7 +8,7 @@ class Entity {
     /** @var string */
     private $name;
     /** @var \Model\Promo\Page\Entity[] */
-    private $pages;
+    private $pages = [];
 
     /**
      * @param array $data

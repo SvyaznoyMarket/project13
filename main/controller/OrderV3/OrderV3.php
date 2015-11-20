@@ -54,9 +54,7 @@ class OrderV3 {
                 throw new \Exception\NotFoundException('Товар не найден');
             }
 
-            $params = [
-                'productPath' => $products[0]->getPath(),
-            ];
+            $params = [];
 
             $sessionProduct = reset($sessionData['product']);
 
@@ -68,7 +66,7 @@ class OrderV3 {
                 $params['sender2'] = $sessionProduct['sender2'];
             }
 
-            return new \Http\RedirectResponse(\App::router()->generate('product', $params) . '#one-click' . (isset($sessionData['shop']) && $sessionData['shop'] ? '-' . $sessionData['shop'] : ''));
+            return new \Http\RedirectResponse($products[0]->getLink($params) . '#one-click' . (isset($sessionData['shop']) && $sessionData['shop'] ? '-' . $sessionData['shop'] : ''));
         }
 
         return null;

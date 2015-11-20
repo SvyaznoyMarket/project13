@@ -76,7 +76,8 @@ foreach ($categoryWithChilds->getChild() as $ct) {
             /** @var \Model\Product\Category\TreeEntity $catalogCategory */
             $imgSrc = null;
 
-            if ($catalogCategory->ui === Category::UI_TCHIBO_COLLECTIONS) {
+            if ($catalogCategory->ui === Category::UI_TCHIBO_COLLECTIONS
+                || $catalogCategory->ui === Category::UI_TCHIBO_SALE) {
                 unset($catalogCategories[$key]);
                 continue;
             }

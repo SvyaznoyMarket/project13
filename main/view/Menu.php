@@ -47,7 +47,9 @@ class Menu {
 
             // Получаем дерево категорий
             \RepositoryManager::productCategory()->prepareTreeCollection(
-                $region, 3, 0,
+                $region,
+                \App::config()->mainMenu['maxLevel'] ?: 3,
+                0,
                 function($data) use (&$categoriesTree) {
                     if (is_array($data) && !empty($data)) {
                         foreach($data as $dataItem) {

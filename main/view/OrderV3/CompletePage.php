@@ -66,6 +66,7 @@ class CompletePage extends Layout {
                     'number' => $order->getNumber(),
                     'region' => $order->getShopId() ? $order->getShopId() : ( 'r_' . \App::user()->getRegion()->getParentId() ?: \App::user()->getRegion()->getId() ),
                     'items'  => [],
+                    'phone'  => preg_replace('/^8/', '', $order->mobilePhone),
                 ];
 
                 foreach ($order->getProduct() as $orderProduct) {

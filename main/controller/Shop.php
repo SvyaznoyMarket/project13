@@ -31,7 +31,7 @@ class Shop {
         $scmsClient->addQuery(
             'api/static-page',
             [
-                'token' => ['delivery'],
+                'token' => ['shops'],
                 'geo_town_id' => \App::user()->getRegion()->id,
                 'tags' => ['site-web'],
             ],

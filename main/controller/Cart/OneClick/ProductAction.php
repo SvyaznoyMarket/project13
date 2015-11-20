@@ -26,9 +26,8 @@ class ProductAction {
         }
 
         $params = $request->query->all();
-        $params['productPath'] = $products[0]->getPath();
         unset($params['shopId']);
 
-        return new \Http\RedirectResponse(\App::router()->generate('product', $params) . '#one-click' . ($request->get('shopId') ? '-' . $request->get('shopId') : ''));
+        return new \Http\RedirectResponse($products[0]->getLink($params) . '#one-click' . ($request->get('shopId') ? '-' . $request->get('shopId') : ''));
     }
 }
