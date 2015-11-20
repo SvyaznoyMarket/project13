@@ -26,9 +26,9 @@
                             </div>
                         {{/isUserOwner}}
 
-                        <a class="ep-info__product-buy">
-                            Купить
-                        </a>
+                        {{#cartButton}}
+                            {{>cart/_button-product}}
+                        {{/cartButton}}
                     </div>
                 </li>
             {{/products}}

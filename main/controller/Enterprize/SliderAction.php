@@ -71,7 +71,7 @@ class SliderAction {
             'success' => true,
             'productCount'  => count($products),
             'content' => $helper->renderWithMustache($template, [
-                'products'     => array_map(function(\Model\Product\Entity $product) use (&$helper, &$enterpizeCoupon, &$cartButtonAction) {
+                'products'     => array_map(function(\Model\Product\Entity $product) use (&$helper, &$enterpizeCoupon, &$cartButtonAction, &$request) {
                     return [
                         'url'           => $product->getLink(),
                         'price'         => $helper->formatPrice($product->getPrice()),
@@ -90,7 +90,12 @@ class SliderAction {
                                 null,
                                 [],
                                 false,
-                                'slider'
+                                'slider',
+                                [],
+                                false,
+                                true,
+                                [],
+                                'user' === $request->get('template') ? 'ep-info__product-buy' : null
                             )
                             : null
                         ,

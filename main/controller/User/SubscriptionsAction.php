@@ -145,12 +145,16 @@ class SubscriptionsAction extends PrivateAction {
      */
     private function setData(\Http\Request $request) {
 
-        $formData = $request->get('subscribe');
+        $formData = is_array($request->get('subscribe')) ? $request->get('subscribe') : [];
         $isDelete = (bool)$request->get('delete');
+
+        $formData += [
+            'is_confirmed' => true,
+        ];
 
         if ($isDelete) {
             $response = $this->client->query(
-                'subscribe/set',
+                'subscribe/delete',
                 [
                     'token' => $this->user->getToken(),
                 ],
@@ -160,7 +164,7 @@ class SubscriptionsAction extends PrivateAction {
             );
         } else {
             $response = $this->client->query(
-                'subscribe/delete',
+                'subscribe/set',
                 [
                     'token' => $this->user->getToken(),
                 ],

@@ -100,10 +100,10 @@ $helper = new \Helper\TemplateHelper();
                             <? endforeach ?>
                         </ul>
 
-                        <? if (false): ?>
+                        <? if (!$addresses): ?>
                             <div class="item-none">
                                 <span class="item-none__txt">Мы пока не знаем куда доставить ваши товары</span>
-                                <a class="item-none__link" href="#">Добавить адрес доставки</a>
+                                <a class="item-none__link" href="<?= $helper->url('user.address') ?>">Добавить адрес доставки</a>
                             </div>
                         <? endif ?>
                     </div>
