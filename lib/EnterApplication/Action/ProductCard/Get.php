@@ -75,7 +75,7 @@ namespace EnterApplication\Action\ProductCard
                     $productDescriptionQuery->filter->tag = true;
                     $productDescriptionQuery->prepare();
 
-                    if (true || $config->product['getModel']) {
+                    if ($config->product['getModelInCard']) {
                         $productModelQuery = new Query\Product\Model\GetByTokenList([$request->productCriteria['token']], $regionQuery->response->region['id']);
                         $productModelQuery->prepare();
                     }

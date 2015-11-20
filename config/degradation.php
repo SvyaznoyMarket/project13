@@ -34,7 +34,7 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->product['couponEnabledInCard'] = false;
         $c->product['viewedEnabled'] = false;
         $c->mainMenu['recommendationsEnabled'] = false;
-        $c->product['getModel'] = false;
+        $c->product['getModelInListing'] = false;
         $c->product['smartChoiceEnabled'] = false;
         $c->product['pushRecommendation'] = false;
         $c->product['creditEnabledInCard'] = false;
@@ -69,6 +69,7 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
     // отключение редиректа
     if ($c->degradation > 4) {
         $c->redirect301['enabled'] = false;
+        $c->product['getModelInCard'] = false;
         $c->product['pullMainRecommendation'] = false;
         $c->product['breadcrumbsEnabled'] = false;
         $c->mainMenu['maxLevel'] = 1;
