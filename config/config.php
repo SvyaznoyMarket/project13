@@ -310,7 +310,8 @@ $c->search['categoriesLimit'] = 200;
 $c->product['itemsPerPage']             = 20;
 $c->product['showAccessories']          = true;
 $c->product['showRelated']              = true;
-$c->product['getModel']                 = true;
+$c->product['getModelInListing']        = true;
+$c->product['getModelInCard']           = true;
 $c->product['deliveryCalc']             = true;
 $c->product['smartChoiceEnabled']       = true;
 $c->product['breadcrumbsEnabled']       = true;
@@ -333,6 +334,7 @@ $c->product['lowerPriceNotification'] = true;
 $c->product['itemsPerPageJewel']      = 24;
 $c->product['itemsPerRowJewel']       = 4;
 $c->product['pullRecommendation']     = true;
+$c->product['pullMainRecommendation'] = true;
 $c->product['pushRecommendation']     = true;
 $c->product['viewedEnabled']          = true;
 

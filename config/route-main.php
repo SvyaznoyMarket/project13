@@ -685,12 +685,6 @@ return [
         'method'  => ['POST'],
     ],
 
-    // qrcode
-    'qrcode' => [
-        'pattern' => '/qr/{qrcode}',
-        'action'  => ['Qrcode\Action', 'execute'],
-    ],
-
     'debug.query' => [
         'pattern' => '/debug/query',
         'action'  => ['QueryAction', 'index'],
