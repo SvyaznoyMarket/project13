@@ -256,7 +256,6 @@ $helper = new \Helper\TemplateHelper();
                     </div>
 
                     <div class="ep-info__product ep-info__product_big">
-                        <span class="ep-info__marker js-epInfoMarker"></span>
                         <div class="ep-info__row clearfix">
                             <h4 class="ep-info__product-title">
                                 Действует на товары

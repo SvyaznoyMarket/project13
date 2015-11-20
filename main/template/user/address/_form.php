@@ -50,7 +50,7 @@
     </label>
     <label class="new-address__form-item new-address__form-item_half">
         <input
-            class="new-address__form-input js-user-address"
+            class="new-address__form-input new-address__form-input_half js-user-address"
             name="address[building]"
             placeholder="Дом"
             type="text"
@@ -59,7 +59,7 @@
             data-relation="<?= $helper->json(['form' => '.id-address-form'])?>"
         >
     </label>
-    <label class="new-address__form-item new-address__form-item_half">
+    <label class="new-address__form-item new-address__form-item_half new-address__form-item_half-odd">
         <input
             class="new-address__form-input"
             name="address[apartment]"

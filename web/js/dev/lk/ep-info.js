@@ -42,7 +42,7 @@ $(function(){
             .siblings().add(container.siblings('.js-ep-container').find('.js-ep-item-info'))
             .removeClass('active');
 
-        itemMarker.css('left', $this.position().left + $this.width() / 2);
+        itemMarker.css('left', ($this.offset().left - container.offset().left) + $this.width() / 2);
 
         if(pointReport){
             if(itemInfo.hasClass('active')){
