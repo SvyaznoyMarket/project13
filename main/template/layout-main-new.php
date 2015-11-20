@@ -63,9 +63,11 @@
 
             <?= $page->render('main/_infoBlocks') ?>
 
+            <? if (\App::config()->product['pullMainRecommendation']): ?>
             <div class="clearfix jsDivForRecommend js-showTopBar">
                 <?= $page->slotRecommendations() ?>
             </div>
+            <? endif ?>
 
             <?= $page->slotInfoBox() ?>
 
