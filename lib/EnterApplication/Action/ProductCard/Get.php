@@ -338,8 +338,12 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // категория товаров
-            call_user_func(function() use (&$categoryQuery, $regionQuery, $productDescriptionQuery) {
-                if (empty($productDescriptionQuery->response->products[0]['categories']) || !is_array($productDescriptionQuery->response->products[0]['categories'])) {
+            call_user_func(function() use (&$categoryQuery, $regionQuery, $productDescriptionQuery, &$config) {
+                if (
+                    empty($productDescriptionQuery->response->products[0]['categories'])
+                    || !is_array($productDescriptionQuery->response->products[0]['categories'])
+                    || !$config->product['breadcrumbsEnabled']
+                ) {
                     return;
                 }
 
