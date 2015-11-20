@@ -8,6 +8,11 @@
 
 <?
 $region = \App::user()->getRegion();
+$mapOptions = [
+    'latitude'  => $region->getLatitude(),
+    'longitude' => $region->getLongitude(),
+    'zoom'      => 10,
+];
 ?>
 
 <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ) ?>"></div>
@@ -23,7 +28,7 @@ $region = \App::user()->getRegion();
                 <ul class="address-list">
                 <? foreach ($addresses as $address): ?>
                     <li class=" address-list__item js-btnDelContainer js-copyContentFrom">
-                        <? if ($address->description): ?><div class="address-list__mode"><?= $helper->escape($address->description) ?></div><? endif ?>
+                        <? if (false && $address->description): ?><div class="address-list__mode"><?= $helper->escape($address->description) ?></div><? endif ?>
 
                         <ul class="address-list-details">
                             <? if ($address->region): ?><li class="address-list-details__item"><?= $helper->escape($address->region->name) ?></li><? endif ?>
@@ -63,9 +68,7 @@ $region = \App::user()->getRegion();
                         <div class="new-address__title">Добавить новый адрес</div>
                         <a class="new-address__map-show js-mapShow js-private-sections-button" href="#">Показать карту</a>
                     </div>
-                    <div class="new-address__map-block js-private-sections-body">
-                        Вставить сюда карту
-                    </div>
+                    <div id="yandex-map-container" class="new-address__map-block js-private-sections-body" data-option="<?= $helper->json($mapOptions)?>"></div>
                     <? include __DIR__ . '/_form.php' ?>
                 </div>
             </div>

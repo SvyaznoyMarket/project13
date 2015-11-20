@@ -101,7 +101,7 @@
                 <li class="private-ep-list__cell js-ep-item">
                     <div class="private-ep-list__item ">
                         <span class="ep-coupon" style="background-image: url(/styles/personal-page/img/fishki.png);"></span>
-                        <div class="private-ep-list__img-desc">Получи фишки EnterPrize</div>
+                        <a href="<?= $helper->url('enterprize') ?>" class="private-ep-list__img-desc">Получи фишки EnterPrize</a>
                     </div>
                 </li>
             </ul>

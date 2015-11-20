@@ -37,7 +37,7 @@ namespace EnterQuery\Coupon
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->coupons = isset($result['detail'][0]) ? $result['detail'] : null;
+                    $this->response->coupons = isset($result['detail'][0]) ? $result['detail'] : [];
 
                     return $result; // for cache
                 },

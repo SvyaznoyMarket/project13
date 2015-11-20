@@ -1,14 +1,15 @@
 <?php
 /**
- * @var $page                 \View\User\OrderPage
- * @var $user                 \Session\User
- * @var $orders               \Model\Order\Entity[]
- * @var $coupons              \Model\EnterprizeCoupon\Entity[]
- * @var $addresses            \Model\User\Address\Entity[]
- * @var $product              \Model\Product\Entity|null
- * @var $favoriteProductsByUi \Model\Favorite\Product\Entity[]
- * @var $recommendedProducts  \Model\Product\Entity[]
- * @var $viewedProducts       \Model\Product\Entity[]
+ * @var $page                          \View\User\OrderPage
+ * @var $user                          \Session\User
+ * @var $orders                        \Model\Order\Entity[]
+ * @var $coupons                       \Model\EnterprizeCoupon\Entity[]
+ * @var $addresses                     \Model\User\Address\Entity[]
+ * @var $product                       \Model\Product\Entity|null
+ * @var $favoriteProductsByUi          \Model\Favorite\Product\Entity[]
+ * @var $channelsById                  \Model\Subscribe\Channel\Entity[]
+ * @var $subscription                  \Model\User\SubscriptionEntity
+ * @var $subscriptionsGroupedByChannel array
  */
 ?>
 
@@ -34,11 +35,8 @@ $helper = new \Helper\TemplateHelper();
                             <? foreach ($orders as $order): ?>
                                 <li class="grid-scroll-list__item order-list__item">
                                     <div class="order-list__data">
-                                        <a class="order-list__data-number"
-                                           href="<?= $helper->url('user.order', ['orderId' => $order->id]) ?>"><?= $order->numberErp ?></a>
-
-                                        <div
-                                            class="order-list__data-date"><?= $order->createdAt ? $order->createdAt->format('d.m.Y') : '' ?></div>
+                                        <a class="order-list__data-number" href="<?= $helper->url('user.order', ['orderId' => $order->id]) ?>"><?= $order->numberErp ?></a>
+                                        <div class="order-list__data-date"><?= $order->createdAt ? $order->createdAt->format('d.m.Y') : '' ?></div>
                                     </div>
 
                                     <div class="order-list__price">
@@ -50,9 +48,7 @@ $helper = new \Helper\TemplateHelper();
                                     <div class="order-list__status">
                                         <div class="order-list__status-confrm">Создан</div>
                                         <? if ($order->prepaidSum): ?>
-                                            <div class="order-list__status-payment order-list__status-payment_warn">
-                                                Требуется предоплата
-                                            </div>
+                                            <div class="order-list__status-payment order-list__status-payment_warn">Требуется предоплата</div>
                                         <? elseif ($status = $order->status): ?>
                                             <div class="order-list__status-payment"><?= $status->name ?></div>
                                         <? endif ?>
@@ -86,9 +82,8 @@ $helper = new \Helper\TemplateHelper();
                                 <li class="grid-scroll-list__item address-list__item">
                                     <a class="address-list__item-link" href="<?= $helper->url('user.address') ?>"
                                        target="_blank">
-                                        <? if ($address->description): ?>
-                                            <div
-                                                class="address-list__mode"><?= $helper->escape($address->description) ?></div><? endif ?>
+                                        <? if (false && $address->description): ?>
+                                            <div class="address-list__mode"><?= $helper->escape($address->description) ?></div><? endif ?>
                                         <ul class="address-list-details">
                                             <? if ($address->region): ?>
                                                 <li class="address-list-details__item"><?= $address->region->name ?></li><? endif ?>
@@ -210,8 +205,8 @@ $helper = new \Helper\TemplateHelper();
                             <? if (!$coupons): ?>
                             <li class="grid-scroll-list__col">
                                 <div class="grid-scroll-list__item private-ep-list__item">
-                                     <span class="ep-coupon" style="background-image: url(/styles/personal-page/img/fishki.png);"></span>
-                                    <div class="private-ep-list__img-desc">Получи фишки EnterPrize</div>
+                                    <span class="ep-coupon" style="background-image: url('/styles/personal-page/img/fishki.png');"></span>
+                                    <a href="<?= $helper->url('enterprize') ?>" class="private-ep-list__img-desc">Получи фишки EnterPrize</a>
                                 </div>
                             </li>
 
@@ -233,8 +228,7 @@ $helper = new \Helper\TemplateHelper();
                     </a>
 
                     <header class="private-sections__head">
-                        <a class="private-sections__head-link" href="<?= $helper->url('user.favorites') ?>"
-                           target="_blank">Избранное</a>
+                        <a class="private-sections__head-link" href="<?= $helper->url('user.favorites') ?>" target="_blank">Избранное</a>
                     </header>
 
                     <div class="grid-scroll js-private-sections-body">
@@ -248,8 +242,7 @@ $helper = new \Helper\TemplateHelper();
                                 <span class="favorite-list__link">
                                     <div class="favorite-list__views favorite-list__cell">
                                         <a href="<?= $product->getLink() ?>" target="_blank">
-                                            <img src="<?= $product->getImageUrl(1) ?>" class="image"
-                                                 alt="<?= $helper->escape($product->getName()) ?>">
+                                            <img src="<?= $product->getImageUrl(1) ?>" class="image" alt="<?= $helper->escape($product->getName()) ?>">
                                         </a>
                                     </div>
 
@@ -266,8 +259,7 @@ $helper = new \Helper\TemplateHelper();
 
                                     <div class="favorite-list__price favorite-list__cell">
                                         <? if ($product->getPrice()): ?>
-                                            <?= $helper->formatPrice($product->getPrice()) ?> <span
-                                                class="rubl">p</span>
+                                            <?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span>
                                         <? endif ?>
                                     </div>
                                 </span>
@@ -295,46 +287,65 @@ $helper = new \Helper\TemplateHelper();
                     </a>
 
                     <header class="private-sections__head">
-                        <a class="private-sections__head-link" href="<?= $helper->url('user.subscriptions') ?>"
-                           target="_blank">Подписки</a>
+                        <a class="private-sections__head-link" href="<?= $helper->url('user.subscriptions') ?>" target="_blank">Подписки</a>
                     </header>
 
                     <div class="grid-scroll js-private-sections-body">
                         <ul class="grid-scroll-list subscribe-list">
-                            <li class="grid-scroll-list__item subscribe-list__item">
-                                <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep"
-                                       checked/>
-                                <label class="customLabel" for="subscribe-ep">Новости EnterPrize</label>
-                            </li>
+                        <? $i = 0; foreach ($channelsById as $channel): $i++ ?>
+                        <?
+                            $subscription = isset($subscriptionsGroupedByChannel[$channel->id]) ? $subscriptionsGroupedByChannel[$channel->id] : null;
+                            if (!$channel->isActive && !$subscription) continue;
 
+                            $elementId = sprintf('channel-%s', md5(json_encode($channel, JSON_UNESCAPED_UNICODE)));
+                        ?>
                             <li class="grid-scroll-list__item subscribe-list__item">
-                                <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep-2"
-                                       disabled/>
-                                <label class="customLabel" for="subscribe-ep-2">Новости EnterPrize Новости EnterPrize
-                                    Новости EnterPrize Новости EnterPrize Новости EnterPrize Новости EnterPrize</label>
+                                <input
+                                    class="js-user-subscribe-input customInput customInput-checkbox"
+                                    id="<?= $elementId ?>"
+                                    type="checkbox"
+                                    name="channel[<?= $i ?>]"
+                                    <?= $subscription ? 'checked' : '' ?>
+                                    data-set-url="<?= $page->url('user.subscriptions') ?>"
+                                    data-delete-url="<?= $page->url('user.subscriptions', ['delete' => true]) ?>"
+                                    data-value="<?= $page->json([
+                                        'subscribe' => [
+                                            'channel_id' => $channel->id,
+                                            'type'       => 'email',
+                                            'email'      => $user->getEntity()->getEmail(),
+                                        ]
+                                    ])?>"
+                                />
+                                <label class="customLabel" for="<?= $elementId ?>"><?= $channel->name ?></label>
                             </li>
+                        <? endforeach ?>
 
+                            <? if (false): ?>
                             <li class="grid-scroll-list__item subscribe-list__item">
-                                <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep-3"
-                                       checked/>
-                                <label class="customLabel" for="subscribe-ep-3">Новости EnterPrize</label>
+                                <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep-2" disabled/>
+                                <label class="customLabel" for="subscribe-ep-2">Новости EnterPrize 1</label>
                             </li>
-
-                            <li class="grid-scroll-list__item subscribe-list__item">
-                                <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep-4"/>
-                                <label class="customLabel" for="subscribe-ep-4">Новости EnterPrize</label>
-                            </li>
-
-                            <li class="grid-scroll-list__item subscribe-list__item">
-                                <input class="customInput customInput-checkbox" type="checkbox" id="subscribe-ep-5"
-                                       checked/>
-                                <label class="customLabel" for="subscribe-ep-5">Новости EnterPrize</label>
-                            </li>
+                            <? endif ?>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div>
+        <?= $helper->render('product/__slider', [
+            'type'           => 'personal',
+            'title'          => 'Мы рекомендуем',
+            'products'       => [],
+            'url'       => $page->url('recommended', [
+                'types'  => ['personal'],
+                'sender' => [
+                    'position' => 'Basket',
+                ],
+                'showLimit' => 6,
+            ]),
+        ]) ?>
     </div>
 
     <div>
@@ -355,7 +366,7 @@ $helper = new \Helper\TemplateHelper();
     ]) ?>
     </div>
 
-    <?= $page->render('user/_menu', ['page' => $page]) ?>
+    <?//= $page->render('user/_menu', ['page' => $page]) ?>
 
 
     <? if (false): ?>

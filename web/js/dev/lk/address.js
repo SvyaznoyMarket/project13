@@ -6,8 +6,26 @@ $(function(){
         $deleteAddressPopupTemplate = $('#tpl-user-deleteAddressPopup'),
         $form = $('.js-userAddress-form'),
 
+        $mapContainer = $('#yandex-map-container'),
+        map,
+        geocode,
+        placemark,
+
         region = $('#page-config').data('value').user.region,
         kladrConfig = $('#kladr-config').data('value'),
+
+        initMap = function(options) {
+            map = new ymaps.Map("yandex-map-container", {
+                center: [options.latitude, options.longitude],
+                zoom: options.zoom,
+                controls: ['zoomControl', 'fullscreenControl', 'geolocationControl', 'typeSelector']
+            },{
+                autoFitToViewport: 'always',
+                suppressMapOpenBlock: true
+            });
+
+            map.controls.remove('searchControl');
+        },
 
         showPopup = function(selector) {
             $('body').append('<div class="overlay"></div>');
@@ -86,7 +104,8 @@ $(function(){
                 $el = $(this),
                 type = $el.data('field'),
                 relations = $el.data('relation'),
-                $form = $(relations['form'])
+                $form = $(relations['form']),
+                address
             ;
 
             $el.autocomplete(
@@ -114,6 +133,47 @@ $(function(){
                             || ('building' === type)
                         ) {
                             $form.find('[data-field="kladrId"]').val(ui.item.value.id)
+                        }
+
+                        // map
+                        console.info('ymaps', ymaps);
+                        console.info('map', map);
+                        if (ymaps && map) {
+                            try {
+                                address = [
+                                    $form.find('[data-field="city"]').val(),
+                                    $form.find('[data-field="streetType"]').val() + ' ' + $form.find('[data-field="street"]').val(),
+                                    $form.find('[data-field="building"]').val(),
+                                ].join(',');
+                                console.info('address', address);
+
+                                geocode = ymaps.geocode(address);
+                                console.info('geocode', geocode);
+
+                                geocode.then(function(res) {
+                                    console.info('res', res);
+
+                                    var
+                                        zoom = ('building' === type) ? 16 : 14,
+                                        obj = res.geoObjects.get(0),
+                                        center = obj ? obj.geometry.getCoordinates() : null
+                                    ;
+                                    console.info('obj', obj);
+                                    console.info('center', center);
+
+                                    if (center) {
+                                        map.setCenter(center, zoom);
+                                        //map.geoObjects.removeAll();
+
+                                        if (!placemark) {
+                                            placemark = new ymaps.Placemark(center, {}, {});
+                                            map.geoObjects.add(placemark);
+                                        } else {
+                                            placemark.geometry.setCoordinates(center);
+                                        }
+                                    }
+                                });
+                            } catch (error) { console.error(error); }
                         }
 
                         return false;
@@ -178,4 +238,11 @@ $(function(){
             e.preventDefault();
         }
     });
+
+    if ($mapContainer.length && $mapContainer.data('option'))
+    setTimeout(function() {
+        ymaps.ready(function() {
+            initMap($mapContainer.data('option'));
+        })
+    }, 2300);
 });

@@ -58,6 +58,7 @@
         <? if (\App::abTest()->isOrderMinSumRestriction()) : ?>
         <!-- Минимальная сумма заказа -->
         <div class="deliv-free-info" data-bind="visible: isMinOrderSumVisible()">
+            <span class="deliv-free-info__min-sum">Минимальная стоимость заказа 990 <span class="rubl">p</span></span>
             <span class="deliv-free-info__intro">До оформления заказа осталось</span>
             <span class="deliv-free-info__remain-sum"><span data-bind="text: minOrderSum - cart().sum()"><?= \App::config()->minOrderSum ?></span>&thinsp;<span class="rubl">p</span></span>
             <a href="/slices/all_labels" class="deliv-free-info__sale-lnk">Выбрать товары по суперцене</a>

@@ -78,6 +78,7 @@ class SubscriptionsAction extends PrivateAction {
 
         /** @var \Model\User\SubscriptionEntity[] $subscriptions */
         $subscriptions = [];
+        /** @var \Model\Subscribe\Channel\Entity[] $channelsById */
         $channelsById = [];
         $subscriptionsGroupedByChannel = [];
 
@@ -88,8 +89,8 @@ class SubscriptionsAction extends PrivateAction {
             ],
             [],
             function ($data) use (&$subscriptions) {
-                foreach ($data as $channel) {
-                    $subscriptions[] = new \Model\User\SubscriptionEntity($channel);
+                foreach ($data as $item) {
+                    $subscriptions[] = new \Model\User\SubscriptionEntity($item);
                 }
             },
             function(\Exception $e) {
