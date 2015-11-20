@@ -46,6 +46,7 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
 
     // отключение расчета доставки, корзины в Москве (только одноклик)
     if ($c->degradation > 2) {
+        $c->eventService['enabled'] = false;
         $c->product['deliveryCalc'] = false;
         $c->cart['oneClickOnly'] = true;
 
@@ -68,6 +69,7 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
     // отключение редиректа
     if ($c->degradation > 4) {
         $c->redirect301['enabled'] = false;
+        $c->product['pullMainRecommendation'] = false;
         $c->product['breadcrumbsEnabled'] = false;
         $c->mainMenu['maxLevel'] = 1;
 
