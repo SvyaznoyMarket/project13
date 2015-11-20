@@ -13,6 +13,7 @@
     <input type="hidden" name="address[streetType]" data-field="streetType" value="">
     <input type="hidden" name="address[zipCode]" data-field="zipCode" value="">
 
+    <? if (false): ?>
     <label class="new-address__form-item">
         <input
             class="new-address__form-input"
@@ -22,6 +23,7 @@
             data-field="description"
         >
     </label>
+    <? endif ?>
     <label class="new-address__form-item">
         <input
             class="new-address__form-input js-user-address"

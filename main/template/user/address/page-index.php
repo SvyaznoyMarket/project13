@@ -28,7 +28,7 @@ $mapOptions = [
                 <ul class="address-list">
                 <? foreach ($addresses as $address): ?>
                     <li class=" address-list__item js-btnDelContainer js-copyContentFrom">
-                        <? if ($address->description): ?><div class="address-list__mode"><?= $helper->escape($address->description) ?></div><? endif ?>
+                        <? if (false && $address->description): ?><div class="address-list__mode"><?= $helper->escape($address->description) ?></div><? endif ?>
 
                         <ul class="address-list-details">
                             <? if ($address->region): ?><li class="address-list-details__item"><?= $helper->escape($address->region->name) ?></li><? endif ?>

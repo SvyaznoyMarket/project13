@@ -82,7 +82,7 @@ $helper = new \Helper\TemplateHelper();
                                 <li class="grid-scroll-list__item address-list__item">
                                     <a class="address-list__item-link" href="<?= $helper->url('user.address') ?>"
                                        target="_blank">
-                                        <? if ($address->description): ?>
+                                        <? if (false && $address->description): ?>
                                             <div class="address-list__mode"><?= $helper->escape($address->description) ?></div><? endif ?>
                                         <ul class="address-list-details">
                                             <? if ($address->region): ?>
