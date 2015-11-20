@@ -262,9 +262,9 @@ return [
 
     // карточка товара
     'product' => [
-        'pattern' => '/catalog/{businessUnit}/{barcode}-{article}/model',
+        'pattern' => '/catalog{businessUnit}/{barcode}-{article}/model',
         'action'  => ['Product\IndexAction', 'execute'],
-        'require' => ['businessUnit' => '[^\/]+', 'barcode' => '\d+', 'article' => '[\d]+\-[\d]+'],
+        'require' => ['businessUnit' => '(?:\/[^\/]+)?', 'barcode' => '\d+', 'article' => '[\d]+\-[\d]+'],
     ],
     // расчет доставки товара
     'old.product.delivery' => [
