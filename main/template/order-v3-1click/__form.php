@@ -80,7 +80,11 @@ $f = function(
                 <div id="js-order-content" class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery"></div>
             </div>
         </fieldset>
+        <fieldset class="order-agreement__check jsAcceptAgreementContainer">
+            <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" value="" required="required">
 
+            <label class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">Я ознакомлен и согласен с информацией<br>с информацией о продавце и его офертой</label>
+        </fieldset>
         <fieldset class="orderU_fldsbottom">
             <input type="hidden" name="sender" value="<?= $helper->json($sender) ?>" />
             <input type="hidden" name="sender2" value="<?= $helper->escape($sender2) ?>" />
