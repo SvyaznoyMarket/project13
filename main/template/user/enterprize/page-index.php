@@ -31,16 +31,14 @@
                             'container' => '.' . $sliderContainerId,
                         ]) ?>"
                     >
-                        <div class="private-ep-list__item ">
+                        <div class="private-ep-list__item">
                             <span class="ep-coupon" style="background-image: url(<?= $coupon->getBackgroundImage() ?>);">
                                 <span class="ep-coupon__inner">
                                     <span class="ep-coupon__ico"><? if ($image = $coupon->getImage()): ?><img src="<?= $image ?>"><? endif ?></span>
                                     <span class="ep-coupon__desc"><?= $coupon->getName() ?></span>
                                     <span class="ep-coupon__price">
                                         <?= $helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
-                                        <? if ($coupon->getIsCurrency()): ?>
-                                            <span class="rubl">p</span>
-                                        <? endif ?>
+                                        <? if ($coupon->getIsCurrency()): ?><span class="rubl">p</span><? endif ?>
                                     </span>
                                 </span>
                             </span>
@@ -70,12 +68,9 @@
                             </div>
                             <div class="ep-info__desc-timer">
                                 <p class="ep-info__desc-timer-desc">До конца действия осталось</p>
-
                                 <div class="ep-info__desc-timer-report js-countdown-out js-countdown" data-expires="<?= (($discount && $discount->getEndDate()) ? $discount->getEndDate()->getTimestamp() : null) ?>"></div>
                             </div>
-                            <p class="ep-info__desc-txt">
-                                <?= $coupon->setSegmentDescription() ?>
-                            </p>
+                            <p class="ep-info__desc-txt"><?= $coupon->setSegmentDescription() ?></p>
                         </div>
 
                         <div class="ep-info__product">
