@@ -6,10 +6,9 @@
             <div class="slidesBox_t jsSlidesWideName">Новая коллекция Pandora</div>
 
             <ul class="slidesBox_dott">
-                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Новая коллекция Pandora"></li>
-                <li class="slidesBox_dott_i" data-name="Игры на свежем воздухе"></li>
+                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Black&White"></li>
+                <li class="slidesBox_dott_i" data-name="Комфорт в автомобиле"></li>
                 <li class="slidesBox_dott_i" data-name="MyDiamonds"></li>
-                <li class="slidesBox_dott_i" data-name="Звуки лета"></li>
             </ul>
         </div>
 
@@ -20,53 +19,54 @@
         <ul class="slidesBox_lst clearfix jsSlidesWideHolder">
 
             <li class="slidesBox_i jsSlidesWideItem">
-                <a href="/catalog/jewel/pandora-1320">
-                    <img src="styles/mainpage/img/pandora/banner-pandora.jpg" alt="" class="slidesBox_img">
+                <a href="/catalog/tchibo/dlya-genshchin-blackwhite-a5ff">
+                    <img src="styles/mainpage/img/blackandwhite/blackandwhite.jpg" alt="" class="slidesBox_img">
                 </a>
 
-                <ul class="slidesBox_items">
+                <ul class="slidesBox_items" style="bottom:30px;">
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Крылья ангела Pandora 791737CZ</div>
+                            <div class="slideItem_flt_i">Мини-мяч для пляжного американского футбола Tchibo </div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-krilya-angela-pandora-791737cz-2034001000576" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/p-1.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/mini-myach-dlya-plyagnogo-amerikanskogo-futbola-tchibo-2200501000792" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501000792.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Розовый ограненный кристалл Pandora 791729NBP</div>
+                            <div class="slideItem_flt_i">Набор для игры в напольный дартс Tchibo </div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-rozoviy-ogranenniy-kristall-pandora-791729nbp-2034001000491" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/p-2.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/nabor-dlya-igri-v-napolniy-darts-tchibo-2200501000846" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501000846.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Подвеска-шарм Королевское сердце Pandora 791739CZ</div>
+                            <div class="slideItem_flt_i">Настенный держатель для бумаги Tchibo</div>
                         </div>
 
-                        <a href="/product/jewel/podveska-sharm-korolevskoe-serdtse-pandora-791739cz-2034001000590" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/p-3.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/nastenniy-dergatel-dlya-bumagi-tchibo-2200501000389" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501001164.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Серебряное кольцо с кубическим цирконием Волшебные перья Pandora 190960CZ-58</div>
+                            <div class="slideItem_flt_i">Шахматы викингов Tchibo</div>
                         </div>
 
-                        <a href="/product/jewel/pandora-serebryanoe-koltso-s-kubicheskim-tsirkoniem-volshebnie-perya-pandora-190960cz-54-2034001001030-18" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/p-4.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/shahmati-vikingov-tchibo-2200501000785" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501000785.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Серьги-пуссеты из серебра с золотом Путь любви Pandora 290583CZ</div>
+                            <div class="slideItem_flt_i">Развивающая игра с магнитами "Рыбалка" Tchibo </div>
                         </div>
 
-                        <a href="/product/jewel/sergi-pusseti-iz-serebra-s-zolotom-put-lyubvi-pandora-290583cz-2034001000231" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/p-5.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/razvivayushchaya-igra-s-magnitami-ribalka-tchibo-2200501001164" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501000389.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
+
                 </ul>
 
-                <a href="/catalog/jewel/pandora-1320" class="slidesBox_btnview">Посмотреть<br/>коллекцию</a>
+                <a href="/catalog/tchibo/dlya-detey-igri-na-svegem-vozduhe-e58d" class="slidesBox_btnview" style="bottom:30px;">Посмотреть<br/>коллекцию</a>
             </li>
 
             <li class="slidesBox_i jsSlidesWideItem">
@@ -119,6 +119,7 @@
 
                 <a href="/catalog/tchibo/dlya-detey-igri-na-svegem-vozduhe-e58d" class="slidesBox_btnview" style="bottom:30px;">Посмотреть<br/>коллекцию</a>
             </li>
+
             <li class="slidesBox_i jsSlidesWideItem">
                 <a href="/slices/MyDiamonds">
                     <img src="styles/mainpage/img/b-main_MyDiamonds.jpg" alt="" class="slidesBox_img">
@@ -168,55 +169,7 @@
 
                 <a href="/slices/MyDiamonds" class="slidesBox_btnview">Посмотреть<br/>коллекцию</a>
             </li>
-            <li class="slidesBox_i jsSlidesWideItem">
-                <a href="/catalog/tchibo/dlya-sporta-i-otdiha-zvuki-leta-2675">
-                    <img src="styles/mainpage/img/b-main_zvyki-leta.jpg" alt="" class="slidesBox_img">
-                </a>
 
-                <ul class="slidesBox_items" style="bottom: 30px;">
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Стереоколонки Tchibo, цвет черный</div>
-                        </div>
-
-                        <a href="/product/tchibo/stereokolonki-tchibo-tsvet-cherniy-2200701050306" class="slidesBox_items_lk"><img src="styles/mainpage/img/zvuki-leta/zv1.jpg" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Bluetooth-колонка со световыми эффектами Tchibo</div>
-                        </div>
-
-                        <a href="/product/tchibo/bluetooth-kolonka-so-svetovimi-effektami-tchibo-2200701050375" class="slidesBox_items_lk"><img src="styles/mainpage/img/zvuki-leta/zv2.jpg" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Портативная колонка Tchibo, цвет черный</div>
-                        </div>
-
-                        <a href="/product/tchibo/portativnaya-kolonka-tchibo-tsvet-cherniy-2200701050283" class="slidesBox_items_lk"><img src="styles/mainpage/img/zvuki-leta/zv3.jpg" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Пульт управления съемкой для смартфона Tchibo</div>
-                        </div>
-
-                        <a href="/product/tchibo/pult-upravleniya-semkoy-dlya-smartfona-tchibo-2200701050252" class="slidesBox_items_lk"><img src="styles/mainpage/img/zvuki-leta/zv4.jpg" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Стереонаушники Tchibo, цвет белый</div>
-                        </div>
-
-                        <a href="/product/tchibo/stereonaushniki-tchibo-tsvet-beliy-2200701050399" class="slidesBox_items_lk" ><img src="styles/mainpage/img/zvuki-leta/zv5.jpg" alt="" class="slidesBox_items_img"></a>
-                    </li>
-                </ul>
-
-                <a href="/catalog/tchibo/dlya-sporta-i-otdiha-zvuki-leta-2675" class="slidesBox_btnview" style="bottom: 30px;">Посмотреть<br/>коллекцию</a>
-            </li>
         </ul>
     </div>
 </div>
