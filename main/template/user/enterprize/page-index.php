@@ -63,11 +63,17 @@
 
                     $sliderContainerId = sprintf('id-coupon-container-%s', $coupon->getToken() ? md5($coupon->getToken()) : uniqid());
                     $discount = $coupon->getDiscount();
+                    $linkName = $coupon->getLinkName() ? $coupon->getLinkName() : $coupon->getName();
                 ?>
                     <div class="grid__cell grid__cell_2 ep-info js-ep-item-info">
                         <span class="ep-info__marker js-epInfoMarker"></span>
                         <div class="ep-info__desc">
-                            <h4 class="ep-info__desc-title"><?= $coupon->getName() ?></h4>
+                            <h4 class="ep-info__desc-title">
+                                Фишка со скидкой <?= $helper->formatPrice($coupon->getPrice()) ?><?= !$coupon->getIsCurrency() ? '%' : ' <span class="rubl">p</span>' ?>
+                                <? if ($linkName): ?>
+                                    <br /><?= ' на ' ?><?= $linkName ?>
+                                <? endif ?>
+                            </h4>
 
                             <div class="ep-info__desc-duration">
                             <? if ($date = $coupon->getStartDate()): ?>
