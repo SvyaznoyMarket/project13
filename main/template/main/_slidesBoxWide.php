@@ -26,98 +26,98 @@
                 <ul class="slidesBox_items" style="bottom:30px;">
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Мини-мяч для пляжного американского футбола Tchibo </div>
+                            <div class="slideItem_flt_i">Рюкзак 2 в 1 Tchibo</div>
                         </div>
 
-                        <a href="/product/tchibo/mini-myach-dlya-plyagnogo-amerikanskogo-futbola-tchibo-2200501000792" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501000792.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/ryukzak-2-v-1-tchibo-2201908002181" class="slidesBox_items_lk"><img src="styles/mainpage/img/blackandwhite/2201908002181.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Набор для игры в напольный дартс Tchibo </div>
+                            <div class="slideItem_flt_i">Платье Tchibo</div>
                         </div>
 
-                        <a href="/product/tchibo/nabor-dlya-igri-v-napolniy-darts-tchibo-2200501000846" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501000846.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/plate-tchibo-2201906019617" class="slidesBox_items_lk"><img src="styles/mainpage/img/blackandwhite/2201906019617.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Настенный держатель для бумаги Tchibo</div>
+                            <div class="slideItem_flt_i">Пуловер Tchibo</div>
                         </div>
 
-                        <a href="/product/tchibo/nastenniy-dergatel-dlya-bumagi-tchibo-2200501000389" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501001164.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/tchibo-pulover-tchibo-2201906019815-44-46" class="slidesBox_items_lk"><img src="styles/mainpage/img/blackandwhite/2201906019815.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Шахматы викингов Tchibo</div>
+                            <div class="slideItem_flt_i">Сумка-рюкзак Tchibo</div>
                         </div>
 
-                        <a href="/product/tchibo/shahmati-vikingov-tchibo-2200501000785" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501000785.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/sumka-ryukzak-tchibo-2201908002211" class="slidesBox_items_lk"><img src="styles/mainpage/img/blackandwhite/2201908002211.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Развивающая игра с магнитами "Рыбалка" Tchibo </div>
+                            <div class="slideItem_flt_i">Двусторонний жилет Tchibo</div>
                         </div>
 
-                        <a href="/product/tchibo/razvivayushchaya-igra-s-magnitami-ribalka-tchibo-2200501001164" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501000389.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/tchibo-dvustoronniy-gilet-tchibo-2201906019563-46" class="slidesBox_items_lk"><img src="styles/mainpage/img/blackandwhite/2201906019563.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                 </ul>
 
-                <a href="/catalog/tchibo/dlya-detey-igri-na-svegem-vozduhe-e58d" class="slidesBox_btnview" style="bottom:30px;">Посмотреть<br/>коллекцию</a>
+                <a href="/catalog/tchibo/dlya-genshchin-blackwhite-a5ff" class="slidesBox_btnview" style="bottom:30px;">Посмотреть<br/>коллекцию</a>
             </li>
 
             <li class="slidesBox_i jsSlidesWideItem">
-                <a href="/catalog/tchibo/dlya-detey-igri-na-svegem-vozduhe-e58d">
-                    <img src="styles/mainpage/img/b-main_kids-play.jpg" alt="" class="slidesBox_img">
+                <a href="/catalog/tchibo/dlya-sporta-i-otdiha-komfort-v-avtomobile-5be9">
+                    <img src="styles/mainpage/img/main-car/banner_main_car_Tchibo.jpg" alt="" class="slidesBox_img">
                 </a>
 
                 <ul class="slidesBox_items" style="bottom:30px;">
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Мини-мяч для пляжного американского футбола Tchibo </div>
+                            <div class="slideItem_flt_i">Подкладка под детское автокресло Tchibo</div>
                         </div>
 
-                        <a href="/product/tchibo/mini-myach-dlya-plyagnogo-amerikanskogo-futbola-tchibo-2200501000792" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501000792.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/podkladka-pod-detskoe-avtokreslo-tchibo-2200301000312" class="slidesBox_items_lk"><img src="styles/mainpage/img/main-car/2200301000312.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Набор для игры в напольный дартс Tchibo </div>
+                            <div class="slideItem_flt_i">Автомобильные шторки Tchibo</div>
                         </div>
 
-                        <a href="/product/tchibo/nabor-dlya-igri-v-napolniy-darts-tchibo-2200501000846" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501000846.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/avtomobilnie-shtorki-tchibo-2-sht-2200301000329" class="slidesBox_items_lk"><img src="styles/mainpage/img/main-car/2200301000329.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Настенный держатель для бумаги Tchibo</div>
+                            <div class="slideItem_flt_i">Крючки-вешалки автомобильные Tchibo</div>
                         </div>
 
-                        <a href="/product/tchibo/nastenniy-dergatel-dlya-bumagi-tchibo-2200501000389" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501001164.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/doityourself/kryuchki-veshalki-avtomobilnie-tchibo-2-sht-2200301000138" class="slidesBox_items_lk"><img src="styles/mainpage/img/main-car/2200301000138.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Шахматы викингов Tchibo</div>
+                            <div class="slideItem_flt_i">Защита спинки сиденья Tchibo</div>
                         </div>
 
-                        <a href="/product/tchibo/shahmati-vikingov-tchibo-2200501000785" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501000785.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/zashchita-spinki-sidenya-tchibo-2200301000282" class="slidesBox_items_lk"><img src="styles/mainpage/img/main-car/2200301000282.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
                         <div class="slideItem_flt">
-                            <div class="slideItem_flt_i">Развивающая игра с магнитами "Рыбалка" Tchibo </div>
+                            <div class="slideItem_flt_i">Автомобильная вешалка Tchibo</div>
                         </div>
 
-                        <a href="/product/tchibo/razvivayushchaya-igra-s-magnitami-ribalka-tchibo-2200501001164" class="slidesBox_items_lk"><img src="styles/mainpage/img/kids-play/2200501000389.jpg" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/tchibo/avtomobilnaya-veshalka-tchibo-2200301000336" class="slidesBox_items_lk"><img src="styles/mainpage/img/main-car/2200301000336.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                 </ul>
 
-                <a href="/catalog/tchibo/dlya-detey-igri-na-svegem-vozduhe-e58d" class="slidesBox_btnview" style="bottom:30px;">Посмотреть<br/>коллекцию</a>
+                <a href="/catalog/tchibo/dlya-sporta-i-otdiha-komfort-v-avtomobile-5be9" class="slidesBox_btnview" style="bottom:30px;">Посмотреть<br/>коллекцию</a>
             </li>
 
             <li class="slidesBox_i jsSlidesWideItem">
