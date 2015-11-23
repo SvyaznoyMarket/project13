@@ -94,7 +94,7 @@
                                     <a class="ep-info__product-all" href="<?= $coupon->getLink() ?>">Посмотреть все</a>
                                 <? endif ?>
                             </div>
-                            <div class="<?= $sliderContainerId ?> js-user-slider-container ep-info__product-slide" data-position="Private.enterprize"></div>
+                            <div class="mLoader <?= $sliderContainerId ?> js-user-slider-container ep-info__product-slide" data-position="Private.enterprize"></div>
                         </div>
                     </div>
                 <? endforeach ?>

@@ -231,7 +231,7 @@ $helper = new \Helper\TemplateHelper();
 
                             <? if (!$coupons): ?>
                                 <li class="grid-scroll-list__col">
-                                    <a class="private-ep-list__link-block" href="#" target="_blank">
+                                    <a class="private-ep-list__link-block" href="<?= \App::router()->generate('enterprize') ?>" target="_blank">
                                         <div class="grid-scroll-list__item private-ep-list__item">
                                             <span class="ep-coupon" style="background-image: url('/styles/personal-page/img/fishki.png');"></span>
                                             <span class="private-ep-list__img-desc">Получи фишки EnterPrize</span>
@@ -240,7 +240,7 @@ $helper = new \Helper\TemplateHelper();
                                 </li>
 
                                 <li class="grid-scroll-list__col">
-                                    <a href="#" target="_blank">
+                                    <a href="<?= \App::router()->generate('enterprize') ?>" target="_blank">
                                          <span class="private-ep-list__desc">
                                              Фишки EnterPrize используются для получения скидок. У каждой фишки свои условия и срок действия скидки. Использовать фишку можно только один раз, для этого нужно применить ее к заказу при оформлении. Узнай больше на странице EnterPrize.
                                          </span>
