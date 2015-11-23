@@ -25,6 +25,8 @@ $(function(){
             });
 
             map.controls.remove('searchControl');
+            map.controls.remove('typeSelector');
+            map.controls.remove('geolocationControl');
         },
 
         showPopup = function(selector) {
@@ -244,5 +246,5 @@ $(function(){
         ymaps.ready(function() {
             initMap($mapContainer.data('option'));
         })
-    }, 2300);
+    }, 2800);
 });
