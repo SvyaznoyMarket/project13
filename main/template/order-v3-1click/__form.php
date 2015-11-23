@@ -68,7 +68,7 @@ $f = function(
         <fieldset class="order-agreement__check jsAcceptAgreementContainer">
             <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" value="" required="required">
 
-            <label class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">Я ознакомлен и согласен с информацией<br>с информацией о продавце и его офертой</label>
+            <label class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">Я ознакомлен и согласен с информацией<br>о продавце и его офертой</label>
         </fieldset>
         <fieldset class="orderU_fldsbottom">
             <input type="hidden" name="sender" value="<?= $helper->json($sender) ?>" />
