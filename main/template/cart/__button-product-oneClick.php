@@ -11,8 +11,8 @@ return function (
 ) {
     if (
         !$product->getIsBuyable()
+        || (5 === $product->getStatusId()) // SITE-2924
         || (!$shop && ($product->getPartnersOffer() /* SITE-3877 */ || $product->getKit() || ($product->getKit() && !$product->getIsKitLocked())))
-        || 5 === $product->getStatusId() // SITE-2924
         || (\App::abTest()->isOrderMinSumRestriction() && $product->getPrice() < \App::config()->minOrderSum)
     ) {
         return;

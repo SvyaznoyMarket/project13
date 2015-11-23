@@ -69,9 +69,11 @@ $f = function(
             <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" value="" required="required">
 
             <label class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">Я ознакомлен и согласен <br>
-                <a class="brb-dt order-agreement__check-link " href="/termsgit " target="_blank">
-                    с информацией о продавце и его офертой
-                </a>
+            <? if ($link = $product->getPartnerOfferLink()): ?>
+                <a class="brb-dt order-agreement__check-link " href="<?= $link ?>" target="_blank">с информацией о продавце и его офертой</a>
+            <? else: ?>
+                с <a href="/terms" target="_blank">условиями продажи</a> и <a href="/legal" target="_blank">правовой информацией</a>
+            <? endif ?>
             </label>
         </fieldset>
         <fieldset class="orderU_fldsbottom">
