@@ -70,7 +70,7 @@
                                 <p class="ep-info__desc-timer-desc">До конца действия осталось</p>
                                 <div class="ep-info__desc-timer-report js-countdown-out js-countdown" data-expires="<?= (($discount && $discount->getEndDate()) ? $discount->getEndDate()->getTimestamp() : null) ?>"></div>
                             </div>
-                            <p class="ep-info__desc-txt"><?= $coupon->setSegmentDescription() ?></p>
+                            <p class="ep-info__desc-txt"><?= $coupon->getSegmentDescription() ?></p>
                         </div>
 
                         <div class="ep-info__product">
