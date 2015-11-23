@@ -1,6 +1,6 @@
 <!-- фильтр "Бренды и параметры" -->
 <div class="filter filter-options fltr">
-    <form id="productCatalog-filter-form" class="fltrSet js-category-filter" action="/catalog/children/disney-baby-5854" method="GET">
+    <form id="productCatalog-filter-form" class="fltrSet js-category-filter" action="/catalog/5854" method="GET">
         <div class="filter-price" style="padding-bottom: 10px;">
             <div class="fltrSet_tggl js-category-filter-otherParamsToggleButton">
                 <span class="fltrSet_tggl_tx">Бренды и параметры</span>
@@ -90,7 +90,7 @@
 
 <!-- фильтр "Ювелирный" -->
 <div class="filter filter-components fltr">
-    <form id="productCatalog-filter-form" class="js-category-filter js-category-filter-v3" action="/catalog/jewel/zolotie-ukrasheniya-3299" method="GET">
+    <form id="productCatalog-filter-form" class="js-category-filter js-category-filter-v3" action="/catalog/3299" method="GET">
 
         <!-- фильтр по компонентам -->
         <div class="fltrSet js-category-filter-toggle-container">
@@ -176,20 +176,20 @@
                     <div class="fltrBtnBox_dd fltrBtnBox_dd-l">
                         <ul class="fltrBtnBox_dd_inn lstdotted js-category-v2-filter-dropBox-content">
                             <li class="lstdotted_i">
-                                <a class="dotted js-category-v2-filter-price-link" href="/catalog/electronics/telefoni-897?f-price-to=12800">
+                                <a class="dotted js-category-v2-filter-price-link" href="/catalog/897?f-price-to=12800">
                                     <span class="txmark1">до</span> 12&thinsp;800
                                 </a>
                             </li>
 
                             <li class="lstdotted_i">
-                                <a class="dotted js-category-v2-filter-price-link" href="/catalog/electronics/telefoni-897?f-price-from=12801&amp;f-price-to=25200">
+                                <a class="dotted js-category-v2-filter-price-link" href="/catalog/897?f-price-from=12801&amp;f-price-to=25200">
                                     <span class="txmark1">от</span> 12&thinsp;801
                                     <span class="txmark1">до</span> 25&thinsp;200
                                 </a>
                             </li>
 
                             <li class="lstdotted_i">
-                                <a class="dotted js-category-v2-filter-price-link" href="/catalog/electronics/telefoni-897?f-price-from=50001">
+                                <a class="dotted js-category-v2-filter-price-link" href="/catalog/897?f-price-from=50001">
                                     <span class="txmark1">от</span> 50&thinsp;001
                                 </a>
                             </li>
@@ -291,7 +291,7 @@
 
 <!-- фильтр по брендам -->
 <div class="filter filter-brands fltrBtn">
-    <form id="productCatalog-filter-form" class="js-category-filter" action="/catalog/electronics/telefoni-897" data-count-url="" method="GET">
+    <form id="productCatalog-filter-form" class="js-category-filter" action="/catalog/897" data-count-url="" method="GET">
         <!-- бренды -->
         <div class="fltrBtn_kit fltrBtn_kit--mark">
             <div class="fltrBtn_tggl fltrBtn_kit_l">
@@ -353,20 +353,20 @@
                     <div class="fltrBtnBox_dd fltrBtnBox_dd-l">
                         <ul class="fltrBtnBox_dd_inn lstdotted js-category-v2-filter-dropBox-content">
                             <li class="lstdotted_i">
-                                <a class="dotted js-category-v2-filter-price-link" href="/catalog/electronics/telefoni-897?f-price-to=12800">
+                                <a class="dotted js-category-v2-filter-price-link" href="/catalog/897?f-price-to=12800">
                                     <span class="txmark1">до</span> 12&thinsp;800
                                 </a>
                             </li>
 
                             <li class="lstdotted_i">
-                                <a class="dotted js-category-v2-filter-price-link" href="/catalog/electronics/telefoni-897?f-price-from=12801&amp;f-price-to=25200">
+                                <a class="dotted js-category-v2-filter-price-link" href="/catalog/897?f-price-from=12801&amp;f-price-to=25200">
                                     <span class="txmark1">от</span> 12&thinsp;801
                                     <span class="txmark1">до</span> 25&thinsp;200
                                 </a>
                             </li>
 
                             <li class="lstdotted_i">
-                                <a class="dotted js-category-v2-filter-price-link" href="/catalog/electronics/telefoni-897?f-price-from=50001">
+                                <a class="dotted js-category-v2-filter-price-link" href="/catalog/897?f-price-from=50001">
                                     <span class="txmark1">от</span> 50&thinsp;001
                                 </a>
                             </li>

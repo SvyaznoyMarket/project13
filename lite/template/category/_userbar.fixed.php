@@ -14,7 +14,7 @@
         <div class="header__center table-cell">
             <div class="header__line header__line_top">
                 <ul class="bread-crumbs bread-crumbs_mini">
-                    <li class="bread-crumbs__item"><a href="/catalog/electronics" class="bread-crumbs__link underline">Электроника</a></li>
+                    <li class="bread-crumbs__item"><a href="/catalog/788" class="bread-crumbs__link underline">Электроника</a></li>
                     <li class="bread-crumbs__item">Игры и консоли</li>
                 </ul>
             </div>
