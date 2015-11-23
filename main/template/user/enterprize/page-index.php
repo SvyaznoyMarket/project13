@@ -63,11 +63,15 @@
 
                     $sliderContainerId = sprintf('id-coupon-container-%s', $coupon->getToken() ? md5($coupon->getToken()) : uniqid());
                     $discount = $coupon->getDiscount();
+                    $linkName = $coupon->getLinkName() ? $coupon->getLinkName() : $coupon->getName();
                 ?>
                     <div class="grid__cell grid__cell_2 ep-info js-ep-item-info">
                         <span class="ep-info__marker js-epInfoMarker"></span>
                         <div class="ep-info__desc">
-                            <h4 class="ep-info__desc-title"><?= $coupon->getName() ?></h4>
+                            <h4 class="ep-info__desc-title">
+                                Фишка со скидкой <?= $helper->formatPrice($coupon->getPrice()) ?><?= !$coupon->getIsCurrency() ? '%' : ' <span class="rubl">p</span>' ?>
+                                <? if ($linkName): ?><br /><?= ' на ' ?><?= $linkName ?><? endif ?>
+                            </h4>
 
                             <div class="ep-info__desc-duration">
                             <? if ($date = $coupon->getStartDate()): ?>
@@ -81,7 +85,10 @@
                                 <p class="ep-info__desc-timer-desc">До конца действия осталось</p>
                                 <div class="ep-info__desc-timer-report js-countdown-out js-countdown" data-expires="<?= (($discount && $discount->getEndDate()) ? $discount->getEndDate()->getTimestamp() : null) ?>"></div>
                             </div>
-                            <p class="ep-info__desc-txt"><?= $coupon->getSegmentDescription() ?></p>
+                            <p class="ep-info__desc-txt">
+                                <?= $coupon->getSegmentDescription() ?>
+                                Минимальная сумма заказа <?= $coupon->getMinOrderSum() ?: 0 ?> <span class="rubl">p</span>
+                            </p>
                         </div>
 
                         <div class="ep-info__product">
