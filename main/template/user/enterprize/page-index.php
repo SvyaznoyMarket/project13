@@ -19,37 +19,48 @@
             <div class="js-ep-container">
                 <ul class="private-ep-list clearfix">
                 <? foreach ($couponChunk as $coupon): ?>
-                <?
-                    $sliderContainerId = sprintf('id-coupon-container-%s', $coupon->getToken() ? md5($coupon->getToken()) : uniqid());
-                ?>
-                    <li
-                        class="private-ep-list__cell js-ep-item"
-                        data-slider="<?= $helper->json([
-                            'url' => $helper->url('enterprize.slider', ['enterprizeToken' => $coupon->getToken(), 'template' => 'user']),
-                        ]) ?>"
-                        data-relation="<?= $helper->json([
-                            'container' => '.' . $sliderContainerId,
-                        ]) ?>"
-                    >
-                        <div class="private-ep-list__item">
-                            <span class="ep-coupon" style="background-image: url(<?= $coupon->getBackgroundImage() ?>);">
-                                <span class="ep-coupon__inner">
-                                    <span class="ep-coupon__ico"><? if ($image = $coupon->getImage()): ?><img src="<?= $image ?>"><? endif ?></span>
-                                    <span class="ep-coupon__desc"><?= $coupon->getName() ?></span>
-                                    <span class="ep-coupon__price">
-                                        <?= $helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
-                                        <? if ($coupon->getIsCurrency()): ?><span class="rubl">p</span><? endif ?>
+                    <? if ($coupon): ?>
+                    <?
+                        $sliderContainerId = sprintf('id-coupon-container-%s', $coupon->getToken() ? md5($coupon->getToken()) : uniqid());
+                    ?>
+                        <li
+                            class="private-ep-list__cell js-ep-item"
+                            data-slider="<?= $helper->json([
+                                'url' => $helper->url('enterprize.slider', ['enterprizeToken' => $coupon->getToken(), 'template' => 'user']),
+                            ]) ?>"
+                            data-relation="<?= $helper->json([
+                                'container' => '.' . $sliderContainerId,
+                            ]) ?>"
+                        >
+                            <div class="private-ep-list__item">
+                                <span class="ep-coupon" style="background-image: url(<?= $coupon->getBackgroundImage() ?>);">
+                                    <span class="ep-coupon__inner">
+                                        <span class="ep-coupon__ico"><? if ($image = $coupon->getImage()): ?><img src="<?= $image ?>"><? endif ?></span>
+                                        <span class="ep-coupon__desc"><?= $coupon->getName() ?></span>
+                                        <span class="ep-coupon__price">
+                                            <?= $helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
+                                            <? if ($coupon->getIsCurrency()): ?><span class="rubl">p</span><? endif ?>
+                                        </span>
                                     </span>
                                 </span>
-                            </span>
-                        </div>
-                    </li>
+                            </div>
+                        </li>
+                    <? else: ?>
+                        <li class="private-ep-list__cell js-ep-item">
+                            <div class="private-ep-list__item ">
+                                <span class="ep-coupon" style="background-image: url(/styles/personal-page/img/fishki.png);"></span>
+                                <a href="<?= $helper->url('enterprize') ?>" class="private-ep-list__img-desc">Получи фишки EnterPrize</a>
+                            </div>
+                        </li>
+                    <? endif ?>
                 <? endforeach ?>
                 </ul>
 
                 <div class="private-ep-list__info clearfix">
                 <? foreach ($couponChunk as $coupon): ?>
                 <?
+                    if (!$coupon) continue;
+
                     $sliderContainerId = sprintf('id-coupon-container-%s', $coupon->getToken() ? md5($coupon->getToken()) : uniqid());
                     $discount = $coupon->getDiscount();
                 ?>
@@ -70,7 +81,7 @@
                                 <p class="ep-info__desc-timer-desc">До конца действия осталось</p>
                                 <div class="ep-info__desc-timer-report js-countdown-out js-countdown" data-expires="<?= (($discount && $discount->getEndDate()) ? $discount->getEndDate()->getTimestamp() : null) ?>"></div>
                             </div>
-                            <p class="ep-info__desc-txt"><?= $coupon->setSegmentDescription() ?></p>
+                            <p class="ep-info__desc-txt"><?= $coupon->getSegmentDescription() ?></p>
                         </div>
 
                         <div class="ep-info__product">
@@ -90,17 +101,6 @@
                 </div>
             </div>
         <? endforeach ?>
-
-        <? if (!$couponsByRow): ?>
-            <ul class="private-ep-list">
-                <li class="private-ep-list__cell js-ep-item">
-                    <div class="private-ep-list__item ">
-                        <span class="ep-coupon" style="background-image: url(/styles/personal-page/img/fishki.png);"></span>
-                        <a href="<?= $helper->url('enterprize') ?>" class="private-ep-list__img-desc">Получи фишки EnterPrize</a>
-                    </div>
-                </li>
-            </ul>
-        <? endif ?>
         </div>
     </div>
 

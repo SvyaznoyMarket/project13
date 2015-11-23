@@ -25,6 +25,8 @@ $(function(){
             });
 
             map.controls.remove('searchControl');
+            map.controls.remove('typeSelector');
+            map.controls.remove('geolocationControl');
         },
 
         showPopup = function(selector) {
@@ -96,6 +98,7 @@ $(function(){
             ;
 
             console.info('parent', { type: $.kladr.type[type], parentType: parentType, parentId: parentId });
+
             return { type: $.kladr.type[type], parentType: parentType, parentId: parentId };
         },
 
@@ -105,7 +108,74 @@ $(function(){
                 type = $el.data('field'),
                 relations = $el.data('relation'),
                 $form = $(relations['form']),
-                address
+                address,
+                setValue = function(event, ui) {
+                    console.info('autocomplete.select', 'ui.item.value', ui.item.value);
+
+                    // sets value
+                    $el.val(ui.item.value.name);
+                    // sets parent kladr id
+                    $form.find('[data-parent-field="' + type  + '"]').data('parent-kladr-id', ui.item.value.id);
+                    // sets hidden input values
+                    $form.find('[data-field="zipCode"]').val(ui.item.value.zip);
+                    if ('city' === type) {
+                        $form.find('[data-field="regionId"]').val(ui.item.value.regionId);
+                    }
+                    if ('street' === type) {
+                        $form.find('[data-field="streetType"]').val(ui.item.value.typeShort);
+                    }
+                    if (
+                        !$form.find('[data-field="building"]').val()
+                        || ('building' === type)
+                    ) {
+                        $form.find('[data-field="kladrId"]').val(ui.item.value.id)
+                    }
+
+                    // map
+                    console.info('ymaps', ymaps);
+                    console.info('map', map);
+                    if (ymaps && map) {
+                        try {
+                            address = [
+                                $form.find('[data-field="city"]').val(),
+                                $form.find('[data-field="streetType"]').val() + ' ' + $form.find('[data-field="street"]').val(),
+                                $form.find('[data-field="building"]').val(),
+                            ].join(',');
+                            console.info('address', address);
+
+                            geocode = ymaps.geocode(address);
+                            console.info('geocode', geocode);
+
+                            geocode.then(function(res) {
+                                console.info('res', res);
+
+                                var
+                                    zoom = ('building' === type) ? 16 : 14,
+                                    obj = res.geoObjects.get(0),
+                                    center = obj ? obj.geometry.getCoordinates() : null
+                                    ;
+                                console.info('obj', obj);
+                                console.info('center', center);
+
+                                if (center) {
+                                    map.setCenter(center, zoom);
+                                    //map.geoObjects.removeAll();
+
+                                    if (!placemark) {
+                                        placemark = new ymaps.Placemark(center, {}, {});
+                                        map.geoObjects.add(placemark);
+                                    } else {
+                                        placemark.geometry.setCoordinates(center);
+                                    }
+                                }
+                            });
+                        } catch (error) { console.error(error); }
+                    }
+
+                    return false;
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
             ;
 
             $el.autocomplete(
@@ -113,76 +183,8 @@ $(function(){
                     source: onAutocompleteResponse.bind($el),
                     minLength: 1,
                     open: function(event, ui) {},
-                    select: function(event, ui) {
-                        console.info('autocomplete.select', 'ui.item.value', ui.item.value);
-
-                        // sets value
-                        $el.val(ui.item.value.name);
-                        // sets parent kladr id
-                        $form.find('[data-parent-field="' + type  + '"]').data('parent-kladr-id', ui.item.value.id);
-                        // sets hidden input values
-                        $form.find('[data-field="zipCode"]').val(ui.item.value.zip);
-                        if ('city' === type) {
-                            $form.find('[data-field="regionId"]').val(ui.item.value.regionId);
-                        }
-                        if ('street' === type) {
-                            $form.find('[data-field="streetType"]').val(ui.item.value.typeShort);
-                        }
-                        if (
-                            !$form.find('[data-field="building"]').val()
-                            || ('building' === type)
-                        ) {
-                            $form.find('[data-field="kladrId"]').val(ui.item.value.id)
-                        }
-
-                        // map
-                        console.info('ymaps', ymaps);
-                        console.info('map', map);
-                        if (ymaps && map) {
-                            try {
-                                address = [
-                                    $form.find('[data-field="city"]').val(),
-                                    $form.find('[data-field="streetType"]').val() + ' ' + $form.find('[data-field="street"]').val(),
-                                    $form.find('[data-field="building"]').val(),
-                                ].join(',');
-                                console.info('address', address);
-
-                                geocode = ymaps.geocode(address);
-                                console.info('geocode', geocode);
-
-                                geocode.then(function(res) {
-                                    console.info('res', res);
-
-                                    var
-                                        zoom = ('building' === type) ? 16 : 14,
-                                        obj = res.geoObjects.get(0),
-                                        center = obj ? obj.geometry.getCoordinates() : null
-                                    ;
-                                    console.info('obj', obj);
-                                    console.info('center', center);
-
-                                    if (center) {
-                                        map.setCenter(center, zoom);
-                                        //map.geoObjects.removeAll();
-
-                                        if (!placemark) {
-                                            placemark = new ymaps.Placemark(center, {}, {});
-                                            map.geoObjects.add(placemark);
-                                        } else {
-                                            placemark.geometry.setCoordinates(center);
-                                        }
-                                    }
-                                });
-                            } catch (error) { console.error(error); }
-                        }
-
-                        return false;
-                    },
-                    focus: function(event, ui) {
-                        this.value = ui.item.label;
-                        event.preventDefault();
-                        event.stopPropagation();
-                    },
+                    select: setValue,
+                    focus: setValue,
                     change: function(event, ui) {},
                     messages: {
                         noResults: '',
@@ -244,5 +246,5 @@ $(function(){
         ymaps.ready(function() {
             initMap($mapContainer.data('option'));
         })
-    }, 2300);
+    }, 2800);
 });

@@ -46,6 +46,8 @@ class IndexAction extends \Controller\User\PrivateAction {
             }
         }
 
+        // добавляем ссылку на получение купонов
+        $coupons[] = null;
         $couponsByRow = array_chunk($coupons, 4);
 
         $page = new \View\User\Enterprize\IndexPage();
