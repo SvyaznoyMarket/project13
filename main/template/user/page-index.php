@@ -29,7 +29,11 @@ $helper = new \Helper\TemplateHelper();
                     <a href="#" class="private-sections__button  js-private-sections-button">
                         <span class="private-sections__button-icon js-private-sections-icon"></span>
                     </a>
-                    <header class="private-sections__head js-ep-item-top-header">Текущие заказы</header>
+                    <header class="private-sections__head js-ep-item-top-header">
+                        <a class="private-sections__head-link" href="<?= $helper->url('user.orders') ?>" target="_blank">
+                            Текущие заказы
+                        </a>
+                    </header>
                     <div class="grid-scroll js-private-sections-body">
                         <ul class="grid-scroll-list order-list">
                             <? foreach ($orders as $order): ?>
@@ -74,7 +78,11 @@ $helper = new \Helper\TemplateHelper();
                         <span class="private-sections__button-icon js-private-sections-icon"></span>
                     </a>
 
-                    <header class="private-sections__head">Адреса</header>
+                    <header class="private-sections__head">
+                        <a class="private-sections__head-link" href="<?= $helper->url('user.address') ?>" target="_blank">
+                            Адреса
+                        </a>
+                    </header>
 
                     <div class="grid-scroll js-private-sections-body">
                         <ul class="grid-scroll-list address-list">
@@ -159,6 +167,15 @@ $helper = new \Helper\TemplateHelper();
                                 </li>
                             </ul>
                         <? endif ?>
+
+                        <div class="item-none item-none_message">
+                            <div class="item-none__img-block">
+                                <img src="/styles/personal-page/img/no-message.png" alt="#">
+                            </div>
+                            <span class="item-none__txt">
+                                У вас еще нет сообщений
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -172,7 +189,11 @@ $helper = new \Helper\TemplateHelper();
                         <span class="private-sections__button-icon js-private-sections-icon"></span>
                     </a>
 
-                    <header class="private-sections__head">Горящие фишки</header>
+                    <header class="private-sections__head">
+                        <a class="private-sections__head-link" href="<?= $helper->url('user.enterprize') ?>" target="_blank">
+                            Горящие фишки
+                        </a>
+                    </header>
 
                     <div class="grid-scroll js-private-sections-body">
                         <ul class="grid-scroll-list grid-scroll-list_2col private-ep-list">
@@ -209,18 +230,22 @@ $helper = new \Helper\TemplateHelper();
                             <? endforeach ?>
 
                             <? if (!$coupons): ?>
-                            <li class="grid-scroll-list__col">
-                                <div class="grid-scroll-list__item private-ep-list__item">
-                                    <span class="ep-coupon" style="background-image: url('/styles/personal-page/img/fishki.png');"></span>
-                                    <a href="<?= $helper->url('enterprize') ?>" class="private-ep-list__img-desc">Получи фишки EnterPrize</a>
-                                </div>
-                            </li>
+                                <li class="grid-scroll-list__col">
+                                    <a class="private-ep-list__link-block" href="#" target="_blank">
+                                        <div class="grid-scroll-list__item private-ep-list__item">
+                                            <span class="ep-coupon" style="background-image: url('/styles/personal-page/img/fishki.png');"></span>
+                                            <span class="private-ep-list__img-desc">Получи фишки EnterPrize</span>
+                                        </div>
+                                    </a>
+                                </li>
 
-                            <li class="grid-scroll-list__col">
-                                 <span class="private-ep-list__desc">
-                                     Фишки EnterPrize используются для получения скидок. У каждой фишки свои условия и срок действия скидки. Использовать фишку можно только один раз, для этого нужно применить ее к заказу при оформлении. Узнай больше на странице EnterPrize.
-                                 </span>
-                            </li>
+                                <li class="grid-scroll-list__col">
+                                    <a href="#" target="_blank">
+                                         <span class="private-ep-list__desc">
+                                             Фишки EnterPrize используются для получения скидок. У каждой фишки свои условия и срок действия скидки. Использовать фишку можно только один раз, для этого нужно применить ее к заказу при оформлении. Узнай больше на странице EnterPrize.
+                                         </span>
+                                    </a>
+                                </li>
                             <? endif ?>
                         </ul>
                     </div>

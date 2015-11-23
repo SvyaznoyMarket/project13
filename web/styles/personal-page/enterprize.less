@@ -89,9 +89,18 @@
   }
 
   &__img-desc{
+    display: block;
+
     font-size: 14px;
     line-height: 16px;
     text-align: center;
+  }
+
+  &__link-block{
+
+    &:hover{
+      text-decoration: none;
+    }
   }
 
   &__desc{
@@ -307,7 +316,7 @@
     }
 
     &_min{
-      width: 139px;
+      width: 145px;
     }
   }
 
@@ -337,6 +346,8 @@
     font-size: 11px;
     text-align: center;
     margin-bottom: 5px;
+    height: 25px;
+    overflow: hidden;
 
     &:hover{
       text-decoration: none;

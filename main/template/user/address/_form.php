@@ -69,5 +69,5 @@
         >
     </label>
 
-    <input class="new-address__form-send" type="submit">
+    <input class="new-address__form-send" type="submit" value="Сохранить">
 </form>
