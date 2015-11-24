@@ -36,6 +36,11 @@
             value="<?= $region->name ?>"
         >
     </label>
+
+    <span class="new-address__form-error">
+        <!--Вывеси ошибку о неправельном адресе-->
+    </span>
+
     <label class="new-address__form-item">
         <input
             class="new-address__form-input js-user-address"
