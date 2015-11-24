@@ -17,16 +17,15 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->scmsSeo['retryCount'] = 1;
         $c->crm['retryCount'] = 1;
         $c->pickpoint['retryCount'] = 1;
-
         $c->product['recommendationProductLimit'] = 7;
-        $c->product['creditEnabledInCard'] = false;
         $c->cart['productLimit'] = 7;
-
         $c->banner['checkStatus'] = false;
-
         $c->abTest['enabled'] = false;
-
         $c->subscribe['getChannel'] = false;
+
+        if (!$c->debug) {
+            $c->logger['emptyChance'] = 20;
+        }
     }
 
     // отключение функционала
@@ -35,22 +34,48 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->product['couponEnabledInCard'] = false;
         $c->product['viewedEnabled'] = false;
         $c->mainMenu['recommendationsEnabled'] = false;
-        $c->product['getModel'] = false;
+        $c->product['getModelInListing'] = false;
+        $c->product['smartChoiceEnabled'] = false;
+        $c->product['pushRecommendation'] = false;
+        $c->product['creditEnabledInCard'] = false;
+
+        if (!$c->debug) {
+            $c->logger['emptyChance'] = 40;
+        }
     }
 
     // отключение расчета доставки, корзины в Москве (только одноклик)
     if ($c->degradation > 2) {
+        $c->eventService['enabled'] = false;
         $c->product['deliveryCalc'] = false;
         $c->cart['oneClickOnly'] = true;
+
+        if (!$c->debug) {
+            $c->logger['emptyChance'] = 60;
+        }
     }
 
     // агрессивное кеширование, отключение связанных товаров
     if ($c->degradation > 3) {
         $c->region['cache'] = true;
-        if (!$c->debug) {
-            $c->logger['emptyChance'] = 67;
-        }
-
         $c->product['pullRecommendation'] = false;
+        $c->mainMenu['maxLevel'] = 2;
+
+        if (!$c->debug) {
+            $c->logger['emptyChance'] = 80;
+        }
+    }
+
+    // отключение редиректа
+    if ($c->degradation > 4) {
+        $c->redirect301['enabled'] = false;
+        $c->product['getModelInCard'] = false;
+        $c->product['pullMainRecommendation'] = false;
+        $c->product['breadcrumbsEnabled'] = false;
+        $c->mainMenu['maxLevel'] = 1;
+
+        if (!$c->debug) {
+            $c->logger['emptyChance'] = 90;
+        }
     }
 };

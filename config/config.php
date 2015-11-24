@@ -310,8 +310,11 @@ $c->search['categoriesLimit'] = 200;
 $c->product['itemsPerPage']             = 20;
 $c->product['showAccessories']          = true;
 $c->product['showRelated']              = true;
-$c->product['getModel']                 = true;
+$c->product['getModelInListing']        = true;
+$c->product['getModelInCard']           = true;
 $c->product['deliveryCalc']             = true;
+$c->product['smartChoiceEnabled']       = true;
+$c->product['breadcrumbsEnabled']       = true;
 $c->product['itemsInSlider']            = 5;
 $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;
@@ -331,6 +334,7 @@ $c->product['lowerPriceNotification'] = true;
 $c->product['itemsPerPageJewel']      = 24;
 $c->product['itemsPerRowJewel']       = 4;
 $c->product['pullRecommendation']     = true;
+$c->product['pullMainRecommendation'] = true;
 $c->product['pushRecommendation']     = true;
 $c->product['viewedEnabled']          = true;
 
@@ -370,6 +374,7 @@ $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {ch
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
 
 $c->mainMenu['recommendationsEnabled'] = true;
+$c->mainMenu['maxLevel'] = 3;
 
 $c->newOrder = true;
 $c->order['cookieName'] = 'last_order';

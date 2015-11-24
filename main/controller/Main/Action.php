@@ -93,8 +93,11 @@ class Action {
         // товары, услуги, категории
         /** @var $productsById \Model\Product\Entity[] */
         $productsById = [];
-
-        $productsIdsFromRR = $this->getProductIdsFromRR($request);
+        $productsIdsFromRR =
+            $config->product['pullMainRecommendation']
+            ? $this->getProductIdsFromRR($request)
+            : []
+        ;
         foreach ($productsIdsFromRR as $arr) {
             foreach ($arr as $key => $val) {
                 $productsById[(int)$val] = new \Model\Product\Entity(['id' => (int)$val]);
@@ -103,8 +106,9 @@ class Action {
         unset($val, $key, $arr);
 
         $productsById = array_filter($productsById);
-
-        \RepositoryManager::product()->prepareProductQueries($productsById, 'model media label brand category');
+        if ($productsById) {
+            \RepositoryManager::product()->prepareProductQueries($productsById, 'model media label brand category');
+        }
 
         $infoBoxCategoriesByUis = [];
         if ('on' !== \App::request()->headers->get('SSI')) {
@@ -215,9 +219,11 @@ class Action {
 
         // собираем статистику для RichRelevance
         try {
-            \App::richRelevanceClient()->query('recsForPlacements', [
-                'placements' => 'home_page',
-            ]);
+            if (\App::config()->product['pushRecommendation']) {
+                \App::richRelevanceClient()->query('recsForPlacements', [
+                    'placements' => 'home_page',
+                ]);
+            }
         } catch (\Exception $e) {
             \App::exception()->remove($e);
         }

@@ -32,7 +32,7 @@ $isKitPage = (bool)$product->getKit();
 $isProductAvailable = $product->isAvailable();
 
 $secondaryGroupedProperties = $product->getSecondaryGroupedProperties(['Комплектация']);
-$equipment = $product->getEquipmentProperty() ? preg_split('/(\r?\n)+/', trim($product->getEquipmentProperty()->getStringValue())) : null;
+$equipment = $product->getEquipmentProperty() ? preg_split('/(\r?\n)+/', trim($product->getEquipmentProperty()->getStringValue())) : [];
 foreach ($equipment as $key => $value) {
     $equipment[$key] = preg_replace('/\s*<br \/>$/', '', trim(mb_strtoupper(mb_substr($value, 0, 1)) . mb_substr($value, 1)));
 }

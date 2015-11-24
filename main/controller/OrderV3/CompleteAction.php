@@ -214,13 +214,15 @@ class CompleteAction extends OrderV3 {
             // собираем статистику для RichRelevance
             foreach ($orders as $order) {
                 try {
-                    \App::richRelevanceClient()->query('recsForPlacements', [
-                        'placements' => 'purchase_complete_page',
-                        'productId' => implode('|', array_map(function(Product $p) { return $p->getId(); }, $order->getProduct())),
-                        'o'         => $order->getNumberErp(), // Какой формат?
-                        'q'         => implode('|', array_map(function(Product $p) { return $p->getQuantity(); }, $order->getProduct())),
-                        'pp'         => implode('|', array_map(function(Product $p) { return $p->getPrice(); }, $order->getProduct())),
-                    ]);
+                    if (\App::config()->product['pushRecommendation']) {
+                        \App::richRelevanceClient()->query('recsForPlacements', [
+                            'placements' => 'purchase_complete_page',
+                            'productId' => implode('|', array_map(function(Product $p) { return $p->getId(); }, $order->getProduct())),
+                            'o'         => $order->getNumberErp(), // Какой формат?
+                            'q'         => implode('|', array_map(function(Product $p) { return $p->getQuantity(); }, $order->getProduct())),
+                            'pp'         => implode('|', array_map(function(Product $p) { return $p->getPrice(); }, $order->getProduct())),
+                        ]);
+                    }
                 } catch (\Exception $e) {
                     \App::exception()->remove($e);
                 }

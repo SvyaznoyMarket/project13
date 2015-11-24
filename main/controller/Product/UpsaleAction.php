@@ -40,10 +40,12 @@ class UpsaleAction extends BasicRecommendedAction {
             $recommendationRR = $this->getProductsIdsFromRetailrocket($product, $request, $this->retailrocketMethodName);
 
             try {
-                \App::richRelevanceClient()->query('recsForPlacements', [
-                    'placements' => 'add_to_cart_page',
-                    'productId' => $productId,
-                ]);
+                if (\App::config()->product['pushRecommendation']) {
+                    \App::richRelevanceClient()->query('recsForPlacements', [
+                        'placements' => 'add_to_cart_page',
+                        'productId' => $productId,
+                    ]);
+                }
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
             }

@@ -71,10 +71,12 @@ class IndexAction {
 
         // собираем статистику для RichRelevance
         try {
-            \App::richRelevanceClient()->query('recsForPlacements', [
-                'placements'    => 'item_page',
-                'productId'     => $product->getId()
-            ]);
+            if (\App::config()->product['pushRecommendation']) {
+                \App::richRelevanceClient()->query('recsForPlacements', [
+                    'placements'    => 'item_page',
+                    'productId'     => $product->getId()
+                ]);
+            }
         } catch (\Exception $e) {
             \App::exception()->remove($e);
         }
