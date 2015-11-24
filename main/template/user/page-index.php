@@ -50,7 +50,10 @@ $helper = new \Helper\TemplateHelper();
                                     </div>
 
                                     <div class="order-list__status">
-                                        <div class="order-list__status-confrm">Создан</div>
+                                        <? if ($status = $order->paymentStatus): ?>
+                                            <div class="order-list__status-confrm"><?= $status->name ?></div>
+                                        <? endif ?>
+
                                         <? if ($order->prepaidSum): ?>
                                             <div class="order-list__status-payment order-list__status-payment_warn">Требуется предоплата</div>
                                         <? elseif ($status = $order->status): ?>
