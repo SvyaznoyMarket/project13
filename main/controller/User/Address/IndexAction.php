@@ -57,8 +57,17 @@ class IndexAction extends \Controller\User\PrivateAction {
             }
         }
 
+        $flash = \App::session()->flash();
+        $errors = isset($flash['errors']) ? $flash['errors'] : null;
+        $form =
+            ((isset($flash['form']) && is_array($flash['form'])) ? $flash['form'] : [])
+            + ['street' => null, 'building' => null, 'apartment' => null]
+        ;
+
         $page = new \View\User\Address\IndexPage();
         $page->setParam('addresses', $addresses);
+        $page->setParam('errors', $errors);
+        $page->setParam('form', $form);
 
         return new \Http\Response($page->show());
     }

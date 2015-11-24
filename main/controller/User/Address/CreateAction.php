@@ -40,7 +40,10 @@ class CreateAction extends \Controller\User\PrivateAction {
         ];
         try {
             if (empty($formData['street'])) {
-                $responseData['errors'][] = ['field' => 'street', 'message' => 'Не указана улица'];
+                $responseData['errors']['street'] = ['field' => 'street', 'message' => 'Не указана улица'];
+            }
+            if (empty($formData['building'])) {
+                $responseData['errors']['building'] = ['field' => 'building', 'message' => 'Не указан дом'];
             }
 
             if ($responseData['errors']) {
@@ -55,9 +58,18 @@ class CreateAction extends \Controller\User\PrivateAction {
             $curl->execute();
 
             if ($error = $createQuery->error) {
+                if ($error instanceof \EnterQuery\Exception) {
+                    $detail = $error->getDetail();
+                    if (isset($detail[0]['propertyPath']) && ('kladrId' === $detail[0]['propertyPath'])) {
+                        $responseData['errors']['street'] = ['field' => 'street', 'message' => 'Выберите адрес из подсказок'];
+                    }
+                }
+
                 throw $error;
             }
         } catch (\Exception $e) {
+            \App::session()->flash(['errors' => $responseData['errors'], 'form' => $formData]);
+
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['user.address']);
         }
 

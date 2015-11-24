@@ -4,6 +4,8 @@
  * @var $helper    \Helper\TemplateHelper
  * @var $addresses \Model\User\Address\Entity[]
  * @var $region    \Model\Region\Entity
+ * @var $errors    array
+ * @var $form      array
  */
 ?>
 
@@ -24,6 +26,7 @@
         >
     </label>
     <? endif ?>
+
     <label class="new-address__form-item">
         <input
             class="new-address__form-input js-user-address"
@@ -37,14 +40,16 @@
         >
     </label>
 
-    <span class="new-address__form-error">
-        <!--Вывеси ошибку о неправельном адресе-->
-    </span>
-
+    <? if (!empty($errors['street']['message'])): ?>
+        <span class="new-address__form-error">
+            <?= $errors['street']['message'] ?>
+        </span>
+    <? endif ?>
     <label class="new-address__form-item">
         <input
             class="new-address__form-input js-user-address"
             name="address[street]"
+            value="<?= $helper->escape($form['street']) ?>"
             placeholder="Улица"
             type="text"
             data-parent-kladr-id="<?= $region->kladrId ?>"
@@ -53,10 +58,17 @@
             data-relation="<?= $helper->json(['form' => '.id-address-form'])?>"
         >
     </label>
+
+    <? if (!empty($errors['building']['message'])): ?>
+        <span class="new-address__form-error">
+            <?= $errors['building']['message'] ?>
+        </span>
+    <? endif ?>
     <label class="new-address__form-item new-address__form-item_half">
         <input
             class="new-address__form-input new-address__form-input_half js-user-address"
             name="address[building]"
+            value="<?= $helper->escape($form['building']) ?>"
             placeholder="Дом"
             type="text"
             data-field="building"
@@ -68,6 +80,7 @@
         <input
             class="new-address__form-input"
             name="address[apartment]"
+            value="<?= $helper->escape($form['apartment']) ?>"
             placeholder="Квартира"
             type="text"
             data-field="apartment"
