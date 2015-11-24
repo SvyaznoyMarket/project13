@@ -46,11 +46,13 @@
                             </div>
                         </li>
                     <? else: ?>
-                        <li class="private-ep-list__cell js-ep-item">
-                            <div class="private-ep-list__item ">
-                                <span class="ep-coupon" style="background-image: url(/styles/personal-page/img/fishki.png);"></span>
-                                <a href="<?= $helper->url('enterprize') ?>" class="private-ep-list__img-desc">Получи фишки EnterPrize</a>
-                            </div>
+                        <li class="private-ep-list__cell">
+                            <a href="<?= $helper->url('enterprize') ?>" class="private-ep-list__link-block" target="_blank">
+                                <div class="private-ep-list__item ">
+                                    <span class="ep-coupon" style="background-image: url(/styles/personal-page/img/fishki.png);"></span>
+                                    <span class="private-ep-list__img-desc">Получи фишки EnterPrize</span>
+                                </div>
+                            </a>
                         </li>
                     <? endif ?>
                 <? endforeach ?>

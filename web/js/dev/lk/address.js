@@ -197,9 +197,9 @@ $(function(){
                     this._renderItemData(ul, item);
                 }.bind(this));
                 if ('street' === $el.data('field')) {
-                    ul.addClass('ui-autocomplete-street');
+                    ul.addClass('ui-new-address__street');
                 } else {
-                    ul.addClass('ui-autocomplete-house-or-apartment');
+                    ul.addClass('ui-new-address__city');
                 }
             };
         }
