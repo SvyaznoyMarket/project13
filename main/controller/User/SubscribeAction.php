@@ -35,7 +35,7 @@ class SubscribeAction extends PrivateAction {
         $error = null;
         $smsTmpCheck = null;
         $emailTmpCheck = null;
-        
+
         if ($request->isMethod('post')) {
 
             $userData = [

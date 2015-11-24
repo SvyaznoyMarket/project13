@@ -11,12 +11,14 @@
 ?>
 
 <div id="personal-container" class="personal">
-    <?= $page->render('user/_menu', ['page' => $page]) ?>
 
+    <?= $page->render('user/_menu', ['page' => $page]) ?>
     <div class="personal__favorits id-favorite-container js-favorite-container disabled" data-disabled-class="disabled">
         <div class="personal-favorit__top">
             <?= $helper->render('user/favorite/__action', ['containerId' => 'id-favorite-container', 'wishlists' => $wishlists]) ?>
         </div>
+
+
         <? foreach ($favoriteProductsByUi as $favoriteProduct): ?>
         <?
             if (!$product = @$productsByUi[$favoriteProduct->ui]) continue;
@@ -24,6 +26,8 @@
         ?>
             <?= $helper->render('user/favorite/__product', ['rowId' => $rowId, 'containerId' => 'id-favorite-container', 'product' => $product]) ?>
         <? endforeach ?>
+
+
     </div>
 
 
