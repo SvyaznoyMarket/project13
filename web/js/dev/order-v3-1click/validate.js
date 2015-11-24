@@ -79,12 +79,14 @@
 			console.warn('Validation errors', $validationErrors);
 		}
 
-		$pageNew.on('blur', 'input', function(){
+		$pageNew.on('blur', 'input[type="text"]', function(){
 			validate()
 		}).on('keyup', '.jsOrderV3PhoneField', function(){
             var val = $(this).val();
             if (val[val.length-1] != '_') validate();
-        });
+        }).on('change', 'input[type="checkbox"], input[type="radio"]', function(){
+			validate()
+		});
 
 		$form.on('submit', function(e){
 			e.preventDefault();

@@ -55,11 +55,11 @@ class DeliveryAction extends OrderV3 {
                     $result['OrderDeliveryModel'] = $orderDeliveryModel;
                 }
 
-                $page = new \View\OrderV3\DeliveryPage();
-                $page->setParam('orderDelivery', $orderDeliveryModel);
-                $page->setParam('bonusCards', $bonusCards);
-                $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner());
-                $result['page'] = $page->slotContent();
+                $result['page'] = \App::closureTemplating()->render(self::isOrderWithCart() ? 'order-v3-new/page-delivery-with-user' : 'order-v3-new/page-delivery', [
+                    'orderDelivery'              => $orderDeliveryModel,
+                    'bonusCards'                 => $bonusCards,
+                    'hasProductsOnlyFromPartner' => $this->hasProductsOnlyFromPartner()
+                ]);
 
             } catch (\Curl\Exception $e) {
                 \App::exception()->remove($e);
