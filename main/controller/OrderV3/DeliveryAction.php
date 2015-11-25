@@ -85,6 +85,7 @@ class DeliveryAction extends OrderV3 {
         }
 
         try {
+            $useNodeMQ = true;
 
             $this->logger(['action' => 'view-page-delivery']);
 
@@ -103,7 +104,10 @@ class DeliveryAction extends OrderV3 {
             }
 
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
-            $orderDelivery = $this->getSplit($data);
+            // $orderDelivery = $this->getSplit($data);
+
+            $validateOrders = $useNodeMQ ? false : true;
+            $orderDelivery = $useNodeMQ ? new \Model\OrderDelivery\Entity([], $validateOrders) : $this->getSplit($data);
 
             foreach($orderDelivery->orders as $order) {
                 $this->logger(['delivery-self-price' => $order->delivery->price]);
@@ -176,7 +180,7 @@ class DeliveryAction extends OrderV3 {
         $cartRepository = new \Model\Cart\Repository();
 
         $previousSplit = $this->session->get($this->splitSessionKey);
-        
+
         if (!$this->cart->count()) throw new \Exception('Пустая корзина', 302);
 
         if ($data) {

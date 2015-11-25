@@ -43,70 +43,73 @@ namespace Model\OrderDelivery {
          */
         public $errors = [];
 
-        public function __construct(array $data = []) {
+        public function __construct(array $data = [], $validateOrders = true) {
 
-            if (isset($data['delivery_groups']) && is_array($data['delivery_groups'])) {
-                foreach ($data['delivery_groups'] as $item) {
-                    if (!isset($item['id'])) continue;
+            if ($validateOrders) {
+                if (isset($data['delivery_groups']) && is_array($data['delivery_groups'])) {
+                    foreach ($data['delivery_groups'] as $item) {
+                        if (!isset($item['id'])) continue;
 
-                    $this->delivery_groups[(string)$item['id']] = new Entity\DeliveryGroup($item);
+                        $this->delivery_groups[(string)$item['id']] = new Entity\DeliveryGroup($item);
+                    }
+                } else {
+                    throw new \Exception('Отстуствуют данные по группам доставки');
                 }
-            } else {
-                throw new \Exception('Отстуствуют данные по группам доставки');
-            }
 
-            if (isset($data['delivery_methods']) && is_array($data['delivery_methods'])) {
-                foreach ($data['delivery_methods'] as $item) {
-                    if (!isset($item['token'])) continue;
+                if (isset($data['delivery_methods']) && is_array($data['delivery_methods'])) {
+                    foreach ($data['delivery_methods'] as $item) {
+                        if (!isset($item['token'])) continue;
 
-                    $this->delivery_methods[(string)$item['token']] = new Entity\DeliveryMethod($item);
+                        $this->delivery_methods[(string)$item['token']] = new Entity\DeliveryMethod($item);
+                    }
+                } else {
+                    throw new \Exception('Отстуствуют данные методам доставки');
                 }
-            } else {
-                throw new \Exception('Отстуствуют данные методам доставки');
-            }
 
-            if (isset($data['points']) && is_array($data['points'])) {
-                foreach ($data['points'] as $itemToken => $item) {
-                    $item['token'] = $itemToken;
+                if (isset($data['points']) && is_array($data['points'])) {
+                    foreach ($data['points'] as $itemToken => $item) {
+                        $item['token'] = $itemToken;
 
-                    $this->points[$item['token']] = new Entity\Point($item);
+                        $this->points[$item['token']] = new Entity\Point($item);
+                    }
                 }
-            }
 
-            if (isset($data['payment_methods']) && is_array($data['payment_methods'])) {
-                foreach ($data['payment_methods'] as $item) {
-                    $this->payment_methods[$item['id']] = new Entity\PaymentMethod($item);
+                if (isset($data['payment_methods']) && is_array($data['payment_methods'])) {
+                    foreach ($data['payment_methods'] as $item) {
+                        $this->payment_methods[$item['id']] = new Entity\PaymentMethod($item);
+                    }
+                } else {
+                    throw new \Exception('Отстуствуют данные по методам оплаты');
                 }
-            } else {
-                throw new \Exception('Отстуствуют данные по методам оплаты');
-            }
 
-            if (isset($data['orders']) && is_array($data['orders']) && (bool)$data['orders']) {
-                foreach ($data['orders'] as $key => $item) {
-                    $this->orders[$key] = new Entity\Order($item, $this);
+                if (isset($data['orders']) && is_array($data['orders']) && (bool)$data['orders']) {
+                    foreach ($data['orders'] as $key => $item) {
+                        $this->orders[$key] = new Entity\Order($item, $this);
+                    }
+                } else {
+                    //throw new \Exception('Отстуствуют данные по заказам');
                 }
-            } else {
-                //throw new \Exception('Отстуствуют данные по заказам');
-            }
 
-            if (isset($data['user_info'])) $this->user_info = new Entity\UserInfo($data['user_info']);
+                if (isset($data['user_info'])) $this->user_info = new Entity\UserInfo($data['user_info']);
 
-            if (isset($data['total_cost'])) {
-                $this->total_cost = (float)$data['total_cost'];
-            } else {
-                throw new \Exception('Отстуствует общая стоимость заказа');
-            }
-            if (isset($data['total_view_cost'])) {
-                $this->total_view_cost = (float)$data['total_view_cost'];
-            } else {
-                //throw new \Exception('Отстуствует total_view_cost заказа');
-            }
+                if (isset($data['total_cost'])) {
+                    $this->total_cost = (float)$data['total_cost'];
+                } else {
+                    throw new \Exception('Отстуствует общая стоимость заказа');
+                }
+                if (isset($data['total_view_cost'])) {
+                    $this->total_view_cost = (float)$data['total_view_cost'];
+                } else {
+                    //throw new \Exception('Отстуствует total_view_cost заказа');
+                }
 
-            if (isset($data['errors']) && is_array($data['errors'])) {
-                foreach ($data['errors'] as $error) {
-                    $this->errors[] = new Error($error, $this);
+                if (isset($data['errors']) && is_array($data['errors'])) {
+                    foreach ($data['errors'] as $error) {
+                        $this->errors[] = new Error($error, $this);
+                    }
                 }
             }
+
 
             $this->validate();
             $this->validateOrders();
