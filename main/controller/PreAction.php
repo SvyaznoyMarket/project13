@@ -84,9 +84,9 @@ class PreAction {
                     \App::exception()->remove($e);
                 }
             );
-
-            \App::scmsSeoClient()->execute(\App::config()->scmsSeo['retryTimeout']['tiny']);
         }
+
+        \App::scmsSeoClient()->execute(\App::config()->scmsSeo['retryTimeout']['tiny']);
 
         if (!$redirectUrl) {
             try {
