@@ -34,6 +34,7 @@ $f = function(
 
 ?>
 <section id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
+<? if ($orderCount != 0) : ?>
     <h1 class="orderCnt_t">Самовывоз и доставка</h1>
 
     <? if ($orderCount != 1) : ?>
@@ -331,7 +332,7 @@ $f = function(
             </div>
         </div>
     <? endif ?>
-
+<? endif; ?>
 </section>
 
 <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json($initialMapCords)?>"></div>
