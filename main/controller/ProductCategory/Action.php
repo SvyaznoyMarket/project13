@@ -89,14 +89,14 @@ class Action {
 
         // подготовка 3-го пакета запросов
 
-        if (\App::config()->product['breadcrumbsEnabled']) { // TODO: надо вообще выпилить
+        if (true || \App::config()->product['breadcrumbsEnabled']) { // TODO: надо вообще выпилить
             \RepositoryManager::productCategory()->prepareEntityHasChildren($category);
         }
 
         $client->execute();
 
         // запрашиваем дерево категорий
-        if (\App::config()->product['breadcrumbsEnabled']) { // TODO: надо вообще выпилить
+        if (true || \App::config()->product['breadcrumbsEnabled']) { // TODO: надо вообще выпилить
             if ($category->isV2Root()) {
                 // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
                 \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region, $this->convertFiltersToSearchClientRequestFormat(\RepositoryManager::productFilter()->getFilterValuesFromHttpRequest($request)));
