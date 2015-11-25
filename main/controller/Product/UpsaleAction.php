@@ -37,21 +37,25 @@ class UpsaleAction extends BasicRecommendedAction {
 
             // получаем ids связанных товаров
             // SITE-2818 Список связанных товаров дозаполняем товарами, полученными от RR по методу CrossSellItemToItems
-            $recommendationRR = $this->getProductsIdsFromRetailrocket($product, $request, $this->retailrocketMethodName);
+            $recommendationRR = [];
 
             try {
                 if (\App::config()->product['pushRecommendation']) {
-                    \App::richRelevanceClient()->query('recsForPlacements', [
-                        'placements' => 'add_to_cart_page',
+                    $richResponse = \App::richRelevanceClient()->query('recsForPlacements', [
+                        'placements' => 'add_to_cart_page.one',
                         'productId' => $productId,
                     ]);
+                    if (isset($richResponse['add_to_cart_page.one'])) {
+                        $recommendationRR = $richResponse['add_to_cart_page.one'];
+                    }
                 }
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
             }
 
             if (is_array($recommendationRR)) {
-                $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, array_filter(array_unique(array_merge($product->getRelatedId(), $recommendationRR))));
+                // используем рекомендации только от richRelevance
+                 $products = array_map(function($productId) { return new \Model\Product\Entity(['id' => $productId]); }, array_filter($recommendationRR));
             }
 
             if (!$products) {

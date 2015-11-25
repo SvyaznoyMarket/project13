@@ -57,6 +57,7 @@ class Client implements \Core\ClientInterface {
     public function query($action, array $params = [], array $data = [], $timeout = null) {
 
         $response = [];
+        $result = [];
 
         if (!\App::config()->richRelevance['enabled']) {
             return [];
@@ -77,7 +78,13 @@ class Client implements \Core\ClientInterface {
 
         \Debug\Timer::stop(self::NAME);
 
-        return $response;
+        if (isset($response['placements']) && is_array($response['placements'])) {
+            foreach ($response['placements'] as $placement) {
+                $result[$placement['placement']] = array_map(function($el) { return $el['id']; }, $placement['recommendedProducts']);
+            }
+        }
+
+        return $result;
     }
 
     /**
