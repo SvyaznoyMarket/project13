@@ -3,7 +3,7 @@
         var
             $el = $(this),
             data = $el.data('value'),
-            isChecked = !!$el.is('checked'),
+            isChecked = !!$el.is(':checked'),
             url = isChecked ? $el.data('setUrl') : $el.data('deleteUrl')
         ;
 
