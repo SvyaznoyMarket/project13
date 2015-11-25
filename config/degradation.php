@@ -22,6 +22,7 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->banner['checkStatus'] = false;
         $c->abTest['enabled'] = false;
         $c->subscribe['getChannel'] = false;
+        $c->product['couponEnabledInCard'] = false;
 
         if (!$c->debug) {
             $c->logger['emptyChance'] = 20;
@@ -31,7 +32,6 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
     // отключение функционала
     if ($c->degradation > 1) {
         $c->product['reviewEnabled'] = false;
-        $c->product['couponEnabledInCard'] = false;
         $c->product['viewedEnabled'] = false;
         $c->mainMenu['recommendationsEnabled'] = false;
         $c->product['getModelInListing'] = false;
