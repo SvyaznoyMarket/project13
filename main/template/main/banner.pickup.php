@@ -5,6 +5,7 @@
     $region = \App::user()->getRegion();
     $pathInfo = \App::request()->getPathInfo();
     $bannerNumber = (int)rand(0, 1);
+    $bannerNumber = 1; // SITE-6445
 ?>
 <? if (0 === $bannerNumber): ?>
     <? if (in_array($region->id, [
