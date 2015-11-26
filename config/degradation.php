@@ -25,12 +25,13 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->product['couponEnabledInCard'] = false;
 
         if (!$c->debug) {
-            $c->logger['emptyChance'] = 20;
+            $c->logger['emptyChance'] = 30;
         }
     }
 
     // отключение функционала
     if ($c->degradation > 1) {
+        $c->region['cache'] = true;
         $c->product['reviewEnabled'] = false;
         $c->product['viewedEnabled'] = false;
         $c->mainMenu['recommendationsEnabled'] = false;
@@ -40,7 +41,7 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->product['creditEnabledInCard'] = false;
 
         if (!$c->debug) {
-            $c->logger['emptyChance'] = 40;
+            $c->logger['emptyChance'] = 50;
         }
     }
 
@@ -52,30 +53,29 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         $c->product['deliveryCalc'] = false;
 
         if (!$c->debug) {
-            $c->logger['emptyChance'] = 60;
+            $c->logger['emptyChance'] = 70;
         }
     }
 
     // агрессивное кеширование, отключение связанных товаров
     if ($c->degradation > 3) {
-        $c->cart['oneClickOnly'] = true;
-        $c->region['cache'] = true;
+        $c->mainMenu['maxLevel'] = 1;
         $c->product['pullRecommendation'] = false;
 
         if (!$c->debug) {
-            $c->logger['emptyChance'] = 80;
+            $c->logger['emptyChance'] = 90;
         }
     }
 
     // отключение редиректа
     if ($c->degradation > 4) {
+        $c->cart['oneClickOnly'] = true;
         $c->redirect301['enabled'] = false;
         $c->product['getModelInCard'] = false;
         $c->product['breadcrumbsEnabled'] = false;
-        $c->mainMenu['maxLevel'] = 1;
 
         if (!$c->debug) {
-            $c->logger['emptyChance'] = 90;
+            $c->logger['emptyChance'] = 95;
         }
     }
 };

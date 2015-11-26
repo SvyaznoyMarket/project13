@@ -47,7 +47,7 @@
         }
     ;
 
-    $body.on('click', '.overlay',function() {
+    $body.on('click', '.overlay', function() {
         var selector = $(this).data('popup');
         hidePopup(selector);
     });

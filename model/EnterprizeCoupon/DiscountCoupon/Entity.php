@@ -184,4 +184,8 @@ class Entity {
     public function setEndDate($endDate) {
         $this->endDate = $endDate;
     }
+
+    public function getDateDiff() {
+        return $this->endDate ? date_diff($this->endDate, new \DateTime(), true) : null;
+    }
 }

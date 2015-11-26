@@ -641,7 +641,9 @@ class Entity {
         return $this->isPhoneConfirmed;
     }
 
-    /** Получение подписок пользователя
+    /**
+     * @deprecated
+     * Получение подписок пользователя
      * @return \Model\User\SubscriptionEntity[]|[]
      */
     public function getSubscriptions(){

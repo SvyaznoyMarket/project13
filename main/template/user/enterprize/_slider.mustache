@@ -1,0 +1,40 @@
+<div class="js-epInfoSlide ep-info__product-slide {{#user.isMember}}slideItem--sale{{/user.isMember}} {{#isUserOwner}}slideItem--center{{/isUserOwner}}" data-slider="{{&dataSlider}}">
+    <div class="ep-info__product-list-outer js-ep-info__product-slide mLoader">
+        <ul class="ep-info__product-list js-ep-info__product-list clearfix">
+            {{#products}}
+                <li class="js-ep-info__product-item ep-info__product-item ep-info__product-item_min">
+                    <div class="ep-info__product-item-inner">
+                            {{#isUserOwner}}<a href="{{url}}">{{/isUserOwner}}
+                                <div class="ep-info__product-img-block">
+                                    <img alt="{{name}}" src="{{image}}" class="slideItem_img">
+                                </div>
+
+
+                                <div class="ep-info__product-img-title">
+                                    {{name}}
+                                </div>
+                            {{#isUserOwner}}</a>{{/isUserOwner}}
+
+                        {{#isUserOwner}}
+                            <div class="ep-info__product-price">
+                                <div class="ep-info__product-price-old">
+                                    <span>{{&price}}</span> <span class="rubl">p</span>
+                                </div>
+                                <div class="ep-info__product-price-new">
+                                    <span>{{&discountPrice}} <span class="rubl">p</span></span>
+                                </div>
+                            </div>
+                        {{/isUserOwner}}
+
+                        {{#cartButton}}
+                            {{>cart/_button-product}}
+                        {{/cartButton}}
+                    </div>
+                </li>
+            {{/products}}
+        </ul>
+    </div>
+
+    <a class="ep-info__product-btn ep-info__product-btn_prev js-ep-info__product-prev mDisabled"></a>
+    <a class="ep-info__product-btn ep-info__product-btn_next js-ep-info__product-next"></a>
+</div>

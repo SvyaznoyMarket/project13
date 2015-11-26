@@ -61,11 +61,17 @@ class SliderAction {
         $helper = new \Helper\TemplateHelper();
         $cartButtonAction = new \View\Cart\ProductButtonAction();
 
+        if ('user' === $request->get('template')) {
+            $template = 'user/enterprize/_slider';
+        } else {
+            $template = 'enterprize/_slider';
+        }
+
         return new \Http\JsonResponse([
             'success' => true,
             'productCount'  => count($products),
-            'content' => $helper->renderWithMustache('enterprize/_slider', [
-                'products'     => array_map(function(\Model\Product\Entity $product) use (&$helper, &$enterpizeCoupon, &$cartButtonAction) {
+            'content' => $helper->renderWithMustache($template, [
+                'products'     => array_map(function(\Model\Product\Entity $product) use (&$helper, &$enterpizeCoupon, &$cartButtonAction, &$request) {
                     return [
                         'url'           => $product->getLink(),
                         'price'         => $helper->formatPrice($product->getPrice()),
@@ -84,7 +90,12 @@ class SliderAction {
                                 null,
                                 [],
                                 false,
-                                'slider'
+                                'slider',
+                                [],
+                                false,
+                                true,
+                                [],
+                                'user' === $request->get('template') ? 'ep-info__product-buy' : null
                             )
                             : null
                         ,
