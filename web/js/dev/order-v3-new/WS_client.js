@@ -58,33 +58,29 @@
             try {
                 m = event.data;
                 m = JSON.parse(m);
-
-                if ( m.channel && m.message && m.channel === RESULT_CHANNEL ) {
-                    this.onResult(m.message);
-                } else if ( m.channel && m.message && m.channel === ACCEPT_NEW_REQUEST_CHANNEL ) {
-                    this.onAcceptNewRequest(m.message);
-                } else {
-                    console.warn('WS_Client: Несуществующий канал или отсутствует тело сообщения: ' + event.data);
-                    this.errorCb(m);
-                    this.alwaysCb();
-
-                    delete this.alwaysCb;
-                    delete this.doneCb;
-                    delete this.errorCb;
-                    delete this.message;
-                }
-
             } catch( err ) {
                 console.warn('WS_Client неверный формат сообщения: ' + err);
                 this.errorCb(m);
-                this.alwaysCb();
-
-                delete this.alwaysCb;
-                delete this.doneCb;
-                delete this.errorCb;
-                delete this.message;
-                // this.sendMessage();
             }
+
+            if ( m.channel && m.message && m.channel === RESULT_CHANNEL ) {
+                return this.onResult(m.message);
+            } else if ( m.channel && m.message && m.channel === ACCEPT_NEW_REQUEST_CHANNEL ) {
+                return this.onAcceptNewRequest(m.message);
+            } else {
+                console.warn('WS_Client: Несуществующий канал или отсутствует тело сообщения: ' + m);
+                this.errorCb(m);
+            }
+
+            this.alwaysCb();
+            this.clear();
+        };
+
+        WS_Client.prototype.clear = function() {
+            delete this.alwaysCb;
+            delete this.doneCb;
+            delete this.errorCb;
+            delete this.message;
         };
 
         WS_Client.prototype.onResult = function( result ) {
@@ -94,21 +90,12 @@
                 console.info('WS_Client waiting server accept: Превышен размер очереди. Сообщение не обработано');
             } else if ( result.error ) {
                 this.errorCb(result.error);
-                this.alwaysCb();
-
-                delete this.alwaysCb;
-                delete this.doneCb;
-                delete this.errorCb;
-                delete this.message;
             } else {
                 this.doneCb(result.result);
-                this.alwaysCb();
-
-                delete this.alwaysCb;
-                delete this.doneCb;
-                delete this.errorCb;
-                delete this.message;
             }
+
+            this.alwaysCb();
+            this.clear();
         };
 
         WS_Client.prototype.send = function( options ) {
