@@ -59,7 +59,7 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
 
     // агрессивное кеширование, отключение связанных товаров
     if ($c->degradation > 3) {
-        $c->cart['oneClickOnly'] = true;
+        $c->mainMenu['maxLevel'] = 1;
         $c->product['pullRecommendation'] = false;
 
         if (!$c->debug) {
@@ -69,10 +69,10 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
 
     // отключение редиректа
     if ($c->degradation > 4) {
+        $c->cart['oneClickOnly'] = true;
         $c->redirect301['enabled'] = false;
         $c->product['getModelInCard'] = false;
         $c->product['breadcrumbsEnabled'] = false;
-        $c->mainMenu['maxLevel'] = 1;
 
         if (!$c->debug) {
             $c->logger['emptyChance'] = 95;
