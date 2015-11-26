@@ -3,7 +3,7 @@
         <div class="slidesBox_btn slidesBox_btn-l jsSlidesWideButton jsSlidesWideLeft"></div>
 
         <div class="slidesBox_h_c">
-            <div class="slidesBox_t jsSlidesWideName">Новая коллекция Pandora</div>
+            <div class="slidesBox_t jsSlidesWideName">Black&White</div>
 
             <ul class="slidesBox_dott">
                 <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Black&White"></li>
