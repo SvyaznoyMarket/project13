@@ -75,7 +75,7 @@ class DeliveryAction extends OrderV3 {
                 if (302 === $e->getCode()) {
                     $result['redirect'] = \App::router()->generate('cart');
                 } else if (!$previousSplit) {
-                    $result['redirect'] = \App::router()->generate('orderV3.delivery');
+                    $result['redirect'] = \App::router()->generate('cart');
                 }
             }
 
@@ -99,12 +99,12 @@ class DeliveryAction extends OrderV3 {
                 //$data['action'] = 'changeUserInfo'; // SITE-6209
                 $data['action'] = null;
                 $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+            }
+
+            if (@$previousSplit['user_info']['phone'] !== '') {
+                $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
             } else {
-                if (isset($previousSplit['user_info'])) {
-                    $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
-                } else {
-                    $data['user_info'] = $userData;
-                }
+                $data['user_info'] = $userData;
             }
 
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
@@ -204,7 +204,7 @@ class DeliveryAction extends OrderV3 {
                 if ($data['action'] == 'changeAddress') {
                     $dataToValidate = array_replace_recursive($previousSplit['user_info'], ['address' => $data['params']]);
                 } else {
-                    $dataToValidate = $data['user_info'];
+                    $dataToValidate = $data['user_info'] + $this->session->get('user_info_split');
                 }
 
                 // провалидируем
@@ -244,6 +244,8 @@ class DeliveryAction extends OrderV3 {
 
             if ($userData) {
                 $splitData += ['user_info' => $userData];
+            } elseif ($this->session->get('user_info_split')) {
+                $splitData += ['user_info' => $this->session->get('user_info_split')];
             }
 
             if (!empty($this->cart->getCreditProductIds())) $splitData['payment_method_id'] = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT;
