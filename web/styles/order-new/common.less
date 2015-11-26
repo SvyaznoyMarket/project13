@@ -56,31 +56,31 @@
 }
 
 .spinner-blackfriday {
-    width: 420px !important;
-    padding: 80px 10px 10px;
-    margin-left: -210px;
-    margin-top: -60px;
+    width: 100% !important;
+    height: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
     .box-sizing(border-box);
     position: fixed !important;
 
     text-align: center;
 
     color: #868686;
-    background: url('@{base-url}/order-new/img/bf-gif.gif') no-repeat 50% 10px #fff;
-    .box-shadow(0 0 20px rgba(0, 0, 0, 0.3));
+
+    background-color: rgba(255, 255, 255, 0.9);
     &:before {
-        font-size: 14px;
+        font-size: 16px;
 
         display: block;
+        padding-top: 70px;
+        width: 360px;
+        background: url('@{base-url}/order-new/img/bf-gif.gif') no-repeat 50% 10px;
 
-        margin: 0 0 10px;
-
-        content: 'Пожалуйста подождите';
-    }
-    &:after {
-        display: block;
-
-        content: 'В связи с проведением Black Friday возможны задержки в работе сайта';
+        content: "Пожалуйста подождите! В связи с проведением Black Friday возможны задержки в работе сайта";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -70px 0 0 -180px;
     }
     & > div {
         display: none;
