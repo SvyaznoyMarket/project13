@@ -72,6 +72,13 @@
 
             } catch( err ) {
                 console.warn('WS_Client неверный формат сообщения: ' + err);
+                this.errorCb(event.data);
+                this.alwaysCb();
+
+                delete this.alwaysCb;
+                delete this.doneCb;
+                delete this.errorCb;
+                delete this.message;
                 // this.sendMessage();
             }
         };
