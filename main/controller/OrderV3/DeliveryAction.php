@@ -85,8 +85,6 @@ class DeliveryAction extends OrderV3 {
         }
 
         try {
-            $useNodeMQ = true;
-
             $this->logger(['action' => 'view-page-delivery']);
 
             $data = null;
@@ -106,8 +104,8 @@ class DeliveryAction extends OrderV3 {
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
             // $orderDelivery = $this->getSplit($data);
 
-            $validateOrders = $useNodeMQ ? false : true;
-            $orderDelivery = $useNodeMQ ? new \Model\OrderDelivery\Entity([], $validateOrders) : $this->getSplit($data);
+            $useNodeMQ = \App::config()->useNodeMQ;
+            $orderDelivery = $useNodeMQ ? new \Model\OrderDelivery\Entity([], !$useNodeMQ) : $this->getSplit($data);
 
             foreach($orderDelivery->orders as $order) {
                 $this->logger(['delivery-self-price' => $order->delivery->price]);

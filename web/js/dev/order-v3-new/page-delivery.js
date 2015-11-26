@@ -14,7 +14,7 @@
         $inputs       = $('.js-order-ctrl__input'),
         $offertaPopup = $('.js-order-oferta-popup').eq(0),
         comment       = '',
-        useNodeMQ     = false,
+        useNodeMQ     = $('#page-config').data('value')['useNodeMQ'],
         ws_client     = null,
         validator     = null,
 

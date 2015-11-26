@@ -1,10 +1,6 @@
 !function( window ) {
     var
-        configuration = {
-            host: 'localhost',
-            // host: 'api.enter.ru',
-            port: '8888'
-        };
+        configuration = $('#page-config').data('value')['nodeMQConfig'];
 
     window.WS_Client = (function() {
 
@@ -20,7 +16,7 @@
             }
 
             // constructor body
-            this.client    = new WebSocket('ws://' + configuration.host + ':' + configuration.port + '/', 'echo-protocol');
+            this.client    = new WebSocket('ws://' + configuration['host'] + ':' + configuration['port'] + '/', 'echo-protocol');
             this.connected = false;
 
             console.info('WS_Client created');

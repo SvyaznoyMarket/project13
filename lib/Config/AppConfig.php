@@ -22,6 +22,16 @@ class AppConfig {
 
     /** @var int */
     public $degradation; // для отладки - неспользовать!
+
+    /**
+     * Использование очереди для обработки запросов (через websockets)
+     * @var bool
+     */
+    public $useNodeMQ = false;
+    public $nodeMQ = [
+        'host'   => null,
+        'port'  => null
+    ];
     /** Проект Lite
      * @var bool
      */

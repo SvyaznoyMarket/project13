@@ -174,7 +174,18 @@ try {
     // если предыдущие контроллеры не вернули Response, ...
     if (!$response instanceof \Http\Response) {
         // \App::logger()->info(['message' => 'Match route', 'route' => $request->attributes->get('route'), 'uri' => $request->getRequestUri(), 'method' => $request->getMethod()], ['router']);
-        \App::logger()->info(['message' => 'Match route', 'action' => $request->get('action'), 'route' => $request->attributes->get('route'), 'uri' => $request->getRequestUri(), 'method' => $request->getMethod(), 'query' => (array)$request->query->all(), 'data' => $request->request->all()], ['router']);
+        \App::logger()->info(
+            [
+                'message' => 'Match route',
+                'action' => $request->get('action'),
+                'route' => $request->attributes->get('route'),
+                'uri' => $request->getRequestUri(),
+                'method' => $request->getMethod(),
+                'query' => $request->query->all(),
+                'data' => $request->request->all()
+            ],
+            ['router']
+        );
 
         // action resolver
         $resolver = \App::actionResolver();
