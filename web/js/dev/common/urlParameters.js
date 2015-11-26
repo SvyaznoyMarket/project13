@@ -4,7 +4,7 @@
         params = {}
     ;
 
-    if (true || ('/' == window.location.pathname)) {
+    if ('/' == window.location.pathname) {
         params = ENTER.utils.parseUrlParams(window.location.href);
         window.docCookies.setItem('urlParams', JSON.stringify(params), 60 * 5, '/');
     }
