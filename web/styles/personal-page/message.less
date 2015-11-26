@@ -1,0 +1,136 @@
+.message-list {
+
+  &__link{
+    display: block;
+
+    &:hover{
+      text-decoration: none;
+    }
+  }
+
+  &__item {
+    position: relative;
+    .clearfix();
+
+    width: 100%;
+    margin: 0 0 10px;
+    padding: 10px 22px;
+
+    background: @white;
+
+    .box-sizing(border-box);
+    .drop-shadow(0, 0, 3px, .1);
+
+    &_new{
+
+      &:before {
+        position: absolute;
+        top: 15px;
+        left: 5px;
+
+        width: 8px;
+        height: 8px;
+
+        content: '';
+
+        background: #f99b1c;
+
+        .rounded(50%);
+      }
+    }
+
+    &_new-center{
+
+      &:before {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        left: 7px;
+
+        width: 8px;
+        height: 8px;
+
+        content: '';
+
+        background: #f99b1c;
+
+        .rounded(50%);
+      }
+    }
+  }
+  &__left {
+    float: left;
+
+    width: 200px;
+
+    &_big{
+      width: 80%;
+      padding-left: 40px;
+    }
+  }
+  &__date {
+    float: right;
+
+    color: @textGrey;
+
+    span{
+      display: block;
+
+      text-align: right;
+    }
+  }
+  &__title {
+    font-size: 14px;
+    line-height: 1.2;
+
+    position: relative;
+
+    margin: 0 0 10px;
+  }
+  &__text {
+    margin: 0;
+
+    color: @textGrey;
+  }
+
+  &__checkbox{
+    position: absolute;
+    left: 25px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+
+    width: 20px;
+    height: 20px;
+  }
+}
+
+//Управление списком сообщений
+.management-message{
+  position: relative;
+  display: block;
+  margin-bottom: 10px;
+
+  padding-left: 25px;
+
+  .clearfix;
+  .box-sizing();
+
+  &__item{
+    float: left;
+    margin-right: 20px;
+
+    font-size: 14px;
+
+    &_btn{
+      margin-top: 1px;
+
+      border: none;
+      border-bottom: 1px dotted #000;
+      padding: 0;
+
+      background: none;
+    }
+  }
+}

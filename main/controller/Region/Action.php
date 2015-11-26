@@ -111,8 +111,10 @@ class Action {
                     if ($i >= $limit) break;
 
                     $data[] = [
-                        'name'  => $item['name'] . ((!empty($item['region']['name']) && ($item['name'] != $item['region']['name'])) ? (" ({$item['region']['name']})") : ''),
-                        'url'   => $router->generate('region.change', ['regionId' => $item['id']]),
+                        'id'      => $item['id'],
+                        'kladrId' => isset($item['kladr_id']) ? $item['kladr_id'] : null,
+                        'name'    => $item['name'] . ((!empty($item['region']['name']) && ($item['name'] != $item['region']['name'])) ? (" ({$item['region']['name']})") : ''),
+                        'url'     => $router->generate('region.change', ['regionId' => $item['id']]),
                     ];
                     $i++;
                 }

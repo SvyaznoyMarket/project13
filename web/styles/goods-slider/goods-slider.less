@@ -85,9 +85,6 @@
 
         background-repeat: no-repeat;
         background-position: 50% 50%;
-
-        .opacity(.6);
-        .transition(all .2s ease);
         &--prev {
             left: 0;
 
@@ -127,39 +124,94 @@
             margin-right: 8px;
         }
     }
-    &&--top{
+    &&--top {
         border-top: 1px solid #c7c7c7;
-        .product-section__h3{
-            padding-left: 10px;
+        .product-section__h3 {
             margin: 10px 0 10px;
+            padding-left: 10px;
         }
         .goods-slider__inn {
             width: 700px;
-            margin-bottom: 0px;
+            margin-bottom: 0;
         }
-        .goods-slider-list__i{
+        .goods-slider-list__i {
             margin-right: 10px;
             margin-left: 10px;
         }
         .goods-slider-list__action {
-            .inline-block();
-            height: 100px;
             width: 100px;
+            height: 100px;
             margin: 0 0 5px;
 
-            &:after{
-                content: '';
-                .inline-block(middle);
-                height: 100%;
+            .inline-block();
+            &:after {
                 width: 0;
+                height: 100%;
+
+                content: '';
+
+                .inline-block(middle);
             }
         }
-
         .goods-slider-list__img {
-            max-height: 100px;
             max-width: 95%;
+            max-height: 100px;
+
             .inline-block(middle);
         }
+    }
+    &_mark {
+        margin-bottom: 30px;
+        padding: 10px;
 
+        background: #f7f7f7;
+        .product-section__h3 {
+            font-size: 20px;
+            font-weight: normal;
+
+            margin: 0 0 15px;
+
+            color: #363636;
+        }
+        .goods-slider__inn {
+            width: 100%;
+            margin-bottom: 0;
+        }
+        .btnBuy {
+            .opacity(0);
+        }
+        .goods-slider-list__i {
+            position: relative;
+
+            width: 145px;
+            margin: 0 10px 0 0;
+            padding: 10px 0;
+
+            border: 1px solid @white;
+            background-color: @white;
+
+            .drop-shadow(0, 0, 3px, .1);
+            .box-sizing(border-box);
+            &:hover {
+                border-color: #f99b1c;
+                .btnBuy {
+                    .opacity(1);
+                }
+            }
+        }
+        .goods-slider-list__name {
+            padding: 0 5px;
+        }
+        .goods-slider__btn {
+            width: 20px;
+            height: 34px;
+            margin-top: 5px;
+
+            background-color: rgba(255, 255, 255, .80);
+            background-position: 50% 50%;
+
+            .rounded(3px);
+            .drop-shadow(0, 0, 3px, .2);
+        }
     }
 }

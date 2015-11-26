@@ -93,7 +93,6 @@ $btnTypes = array(
                         <span class="searchdd_tx"><span class="undrlh" data-bind="text: name"></span></span>
                     </a>
                     <!-- /ko -->
-                    </a>
                 </div>
                 <!--/ саджест поиска -->
             </div>
