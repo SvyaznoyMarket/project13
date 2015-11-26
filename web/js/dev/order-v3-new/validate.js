@@ -108,6 +108,8 @@
 			// запоминаем значение номера карты Много.ру
 			if ($mnogoRuInput) docCookies.setItem('enter_mnogo_ru', $mnogoRuInput.val(), 31536e3, '/');
             console.log('mnogo.ru', docCookies.getItem('enter_mnogo_ru'))
+
+			ENTER.utils.overloadPreloader.show();
 		}
     });
 
