@@ -96,8 +96,6 @@ namespace Model\OrderDelivery {
                     //throw new \Exception('Отстуствуют данные по заказам');
                 }
 
-                if (isset($data['user_info'])) $this->user_info = new Entity\UserInfo($data['user_info']);
-
                 if (isset($data['total_cost'])) {
                     $this->total_cost = (float)$data['total_cost'];
                 } else {
@@ -116,6 +114,7 @@ namespace Model\OrderDelivery {
                 }
             }
 
+            if (isset($data['user_info'])) $this->user_info = new Entity\UserInfo($data['user_info']);
 
             $this->validate();
             $this->validateOrders();

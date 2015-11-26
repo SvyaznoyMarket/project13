@@ -89,8 +89,12 @@ class DeliveryAction extends OrderV3 {
 
             $data = null;
             $previousSplit = $this->session->get($this->splitSessionKey);
+            $userData = $this->session->get('user_info_split');
+
             if (!self::isOrderWithCart()) {
-                if (!$previousSplit) return new \Http\RedirectResponse(\App::router()->generate('cart'));
+                if (!$userData) {
+                    return new \Http\RedirectResponse(\App::router()->generate('cart'));
+                }
                 // сохраняем данные пользователя
                 //$data['action'] = 'changeUserInfo'; // SITE-6209
                 $data['action'] = null;
@@ -98,6 +102,8 @@ class DeliveryAction extends OrderV3 {
             } else {
                 if (isset($previousSplit['user_info'])) {
                     $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+                } else {
+                    $data['user_info'] = $userData;
                 }
             }
 
@@ -105,7 +111,15 @@ class DeliveryAction extends OrderV3 {
             // $orderDelivery = $this->getSplit($data);
 
             $useNodeMQ = \App::config()->useNodeMQ;
-            $orderDelivery = $useNodeMQ ? new \Model\OrderDelivery\Entity([], !$useNodeMQ) : $this->getSplit($data);
+
+            if ($useNodeMQ) {
+                $orderDelivery = new \Model\OrderDelivery\Entity(['user_info' => $data['user_info']], !$useNodeMQ);
+            } else {
+                $orderDelivery = $this->getSplit(null, $data['user_info']);
+                if ($orderDelivery->errors) {
+                    $this->session->flash($orderDelivery->errors);
+                }
+            }
 
             foreach($orderDelivery->orders as $order) {
                 $this->logger(['delivery-self-price' => $order->delivery->price]);
