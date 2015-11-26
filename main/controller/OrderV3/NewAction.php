@@ -48,6 +48,7 @@ class NewAction extends OrderV3 {
 
                 $post = $request->request->all();
                 $this->session->set('user_info_split', $post['user_info']);
+                $this->session->set($this->splitSessionKey, []);
 
                 return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
             }

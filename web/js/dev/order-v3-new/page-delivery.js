@@ -145,6 +145,13 @@
                 },
 
                 done = function( data ) {
+                    console.info('done callback', data);
+                    if ( data.result &&  data.result.redirect ) {
+                        console.info('REDIRECT', data.result.error.message, data.result.redirect);
+                        // window.location.href = data.result.redirect;
+                        return;
+                    }
+
                     //console.log("Query: %s", data.result.OrderDeliveryRequest);
                     console.log("Model:", data.result.OrderDeliveryModel);
 
