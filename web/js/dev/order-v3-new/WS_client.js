@@ -88,6 +88,7 @@
 
             if ( result.error && result.error.code === 409 ) {
                 console.info('WS_Client waiting server accept: Превышен размер очереди. Сообщение не обработано');
+                return;
             } else if ( result.error ) {
                 this.errorCb(result.error);
             } else {

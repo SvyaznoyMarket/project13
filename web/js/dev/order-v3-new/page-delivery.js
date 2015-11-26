@@ -148,7 +148,7 @@
                     console.info('done callback', data);
                     if ( data.result &&  data.result.redirect ) {
                         console.info('REDIRECT', data.result.error.message, data.result.redirect);
-                        // window.location.href = data.result.redirect;
+                        window.location.href = data.result.redirect;
                         return;
                     }
 
