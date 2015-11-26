@@ -56,7 +56,8 @@
                 m;
 
             try {
-                m = JSON.parse(event.data);
+                m = event.data;
+                m = JSON.parse(m);
 
                 if ( m.channel && m.message && m.channel === RESULT_CHANNEL ) {
                     this.onResult(m.message);
@@ -64,11 +65,18 @@
                     this.onAcceptNewRequest(m.message);
                 } else {
                     console.warn('WS_Client: Несуществующий канал или отсутствует тело сообщения: ' + event.data);
+                    this.errorCb(m);
+                    this.alwaysCb();
+
+                    delete this.alwaysCb;
+                    delete this.doneCb;
+                    delete this.errorCb;
+                    delete this.message;
                 }
 
             } catch( err ) {
                 console.warn('WS_Client неверный формат сообщения: ' + err);
-                this.errorCb(event.data);
+                this.errorCb(m);
                 this.alwaysCb();
 
                 delete this.alwaysCb;
@@ -132,6 +140,7 @@
                 host: window.location.host,
                 pathname: '/order/delivery',
                 headers: {
+                    'Accept': '*/*',
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                     'X-Requested-With': 'XMLHttpRequest'
                 },
