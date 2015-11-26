@@ -209,4 +209,9 @@
 
     });
 
+	$(document).keyup(function(e) {
+		if (e.keyCode == 27) {
+			$('.orderCompl_btn', $pageDelivery).removeAttr('disabled');
+		}
+	});
 }(jQuery));
