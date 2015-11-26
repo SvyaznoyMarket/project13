@@ -47,8 +47,7 @@ class NewAction extends OrderV3 {
                 }
 
                 $post = $request->request->all();
-                $splitResult = (new DeliveryAction())->getSplit(null, @$post['user_info']);
-                if ($splitResult->errors) $this->session->flash($splitResult->errors);
+                $this->session->set('user_info_split', $post['user_info']);
 
                 return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
             }
