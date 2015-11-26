@@ -43,6 +43,12 @@ namespace Model\OrderDelivery {
          */
         public $errors = [];
 
+        /**
+         * Entity constructor.
+         *
+         * @param array $data
+         * @param bool|true $validateOrders Для создания пустого Entity (false разрешает создание)
+         */
         public function __construct(array $data = [], $validateOrders = true) {
 
             if ($validateOrders) {

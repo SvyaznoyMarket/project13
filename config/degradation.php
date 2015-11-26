@@ -59,7 +59,6 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
 
     // агрессивное кеширование, отключение связанных товаров
     if ($c->degradation > 3) {
-        $c->cart['oneClickOnly'] = true;
         $c->product['pullRecommendation'] = false;
 
         if (!$c->debug) {
@@ -67,8 +66,13 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
         }
     }
 
+    if ($c->degradation == 4)  {
+        $c->useNodeMQ = true;
+    }
+
     // отключение редиректа
     if ($c->degradation > 4) {
+        $c->cart['oneClickOnly'] = true;
         $c->redirect301['enabled'] = false;
         $c->product['getModelInCard'] = false;
         $c->product['breadcrumbsEnabled'] = false;
