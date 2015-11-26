@@ -145,7 +145,7 @@ return function(
             <? endif ?>
 
             <div class="orderCompl orderCompl-v2 clearfix">
-                <button class="orderCompl_btn btnsubmit js-show-spinner" type="submit">Далее</button>
+                <button class="orderCompl_btn btnsubmit" type="submit">Далее</button>
             </div>
 
         </form>

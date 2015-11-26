@@ -317,7 +317,7 @@ $f = function(
                 </label>
             </div><br/>
 
-            <button class="orderCompl_btn btnsubmit js-show-spinner">Оформить</button>
+            <button class="orderCompl_btn btnsubmit">Оформить</button>
         </form>
     </div>
 

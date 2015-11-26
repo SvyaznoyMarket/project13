@@ -896,6 +896,7 @@
                         valid = false;
                     },
                     onValid: function() {
+                        ENTER.utils.overloadPreloader.show();
                         $form.submit();
                     }
                 });
