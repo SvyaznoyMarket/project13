@@ -253,6 +253,58 @@
         line-height: 14px;
 
         margin: 0 0 10px;
+
+        &--optimal{
+            position: relative;
+
+            margin-right: -10px;
+
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+
+        }
+
+        &--optimal-help{
+            position: absolute;
+            right: 0;
+
+            width: 15px;
+            height: 15px;
+
+            .rounded(50%);
+            border: 1px solid #afafaf;
+
+            text-align: center;
+            line-height: 15px;
+            color: #afafaf;
+            font-size: 12px;
+
+            &:hover {
+                border-color: #ffa400;
+
+                color: #ffa400;
+
+                .fltrBtn_ln--optimal-txt{
+                    display: block;
+
+                    position: absolute;
+
+                    width: 270px;
+
+                    padding: 10px;
+                    background: #f2f2f2;
+                    .box-sizing();
+
+                    white-space: normal;
+                    color: #000;
+
+                }
+            }
+        }
+
+        &--optimal-txt{
+            display: none;
+        }
     }
     // параметры фильтрации
     &_param {
@@ -349,6 +401,8 @@
             }
         }
     }
+    
+
 }
 
 .lte-ie9 .fltrBtn_btn_img {
