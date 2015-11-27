@@ -56,6 +56,7 @@ class DeliveryAction extends OrderV3 {
                 }
 
                 $result['page'] = \App::closureTemplating()->render(self::isOrderWithCart() ? 'order-v3-new/page-delivery-with-user' : 'order-v3-new/page-delivery', [
+                    'ajax'                       => true,
                     'orderDelivery'              => $orderDeliveryModel,
                     'bonusCards'                 => $bonusCards,
                     'hasProductsOnlyFromPartner' => $this->hasProductsOnlyFromPartner()

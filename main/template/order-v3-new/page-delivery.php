@@ -10,7 +10,8 @@ use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity $orderDelivery,
-    $error = null
+    $error = null,
+    $ajax = null
 ) {
     $orderCount = count($orderDelivery->orders);
     $region = \App::user()->getRegion();
@@ -33,7 +34,9 @@ $f = function(
     ];
 
 ?>
-<section id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
+<? if (is_null($ajax)) : ?>
+        <section id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
+<? endif ?>
 <? if ($orderCount != 0) : ?>
     <h1 class="orderCnt_t">Самовывоз и доставка</h1>
 
@@ -333,13 +336,16 @@ $f = function(
         </div>
     <? endif ?>
 <? endif; ?>
-</section>
+<? if (is_null($ajax)) : ?>
+    </section>
+
 
 <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json($initialMapCords)?>"></div>
 <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>
 <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE); ?>></div>
 <?= App::config()->debug ? $helper->jsonInScriptTag($orderDelivery, 'initialOrderModel') : '' ?>
 <div id="jsUserAddress" data-value="<?= $helper->json($orderDelivery->user_info->address) ?>"></div>
+<? endif ?>
 
 <div class="popup popup-simple js-order-oferta-popup">
     <a href="" class="close"></a>
@@ -380,5 +386,6 @@ $f = function(
 </div>
 
 <?= $helper->render('order-v3-new/__delivery-analytics', ['orderDelivery' => $orderDelivery]) ?>
+
 
 <? }; return $f;
