@@ -66,6 +66,9 @@ return function(\Config\AppConfig $c, \Http\Request $request = null) {
             $c->logger['emptyChance'] = 90;
         }
     }
+    if ($c->degradation === 4) {
+        $c->useNodeMQ = true;
+    }
 
     // отключение редиректа
     if ($c->degradation > 4) {
