@@ -80,7 +80,7 @@ class Client implements \Core\ClientInterface {
 
         if (isset($response['placements']) && is_array($response['placements'])) {
             foreach ($response['placements'] as $placement) {
-                $result[$placement['placement']] = array_map(function($el) { return $el['id']; }, $placement['recommendedProducts']);
+                $result[$placement['placement']] = $placement;
             }
         }
 
