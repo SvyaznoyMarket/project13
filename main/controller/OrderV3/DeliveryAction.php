@@ -99,10 +99,12 @@ class DeliveryAction extends OrderV3 {
                 // сохраняем данные пользователя
                 //$data['action'] = 'changeUserInfo'; // SITE-6209
                 $data['action'] = null;
-                $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+                if ($this->session->get($this->splitSessionKey)) {
+                    $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+                }
             }
 
-            if (@$previousSplit['user_info']['phone'] !== '') {
+            if ((@$previousSplit['user_info']['phone'] !== '') && $this->session->get($this->splitSessionKey)) {
                 $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
             } else {
                 $data['user_info'] = $userData;

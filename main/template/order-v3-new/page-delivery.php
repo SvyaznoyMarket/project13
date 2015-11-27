@@ -344,7 +344,9 @@ $f = function(
 <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>
 <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE); ?>></div>
 <?= App::config()->debug ? $helper->jsonInScriptTag($orderDelivery, 'initialOrderModel') : '' ?>
-<div id="jsUserAddress" data-value="<?= $helper->json($orderDelivery->user_info->address) ?>"></div>
+    <? if ($orderDelivery->user_info): ?>
+    <div id="jsUserAddress" data-value="<?= $helper->json($orderDelivery->user_info->address) ?>"></div>
+    <? endif ?>
 <? endif ?>
 
 <div class="popup popup-simple js-order-oferta-popup">
