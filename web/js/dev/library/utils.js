@@ -781,6 +781,12 @@
 
 					isInited = true;
 				}
+			},
+			hide: function() {
+				if (spinner) {
+					spinner.stop();
+					spinner = null;
+				}
 			}
 		};
 	}();
