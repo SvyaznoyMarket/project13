@@ -121,7 +121,8 @@
         WS_Client.prototype.getMessage = function() {
             return {
                 cookies: {
-                    enter: docCookies.getItem('enter')
+                    enter: docCookies.getItem('enter'),
+                    geoshop: docCookies.getItem('geoshop')
                 },
                 method: 'POST',
                 // host: 'www.enter.ru',
