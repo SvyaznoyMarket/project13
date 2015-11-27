@@ -123,6 +123,12 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
             (new \Debug\ShowAction())->execute($request, $response);
         }
 
+        try {
+            $response->headers->clearCookie('urlParams', '/');
+        } catch (\Exception $e) {
+            \App::logger()->error($e, ['cookie.urlParams']);
+        }
+
         $response->send();
     }
 
