@@ -682,7 +682,6 @@
             data = $el.data('value'),
             relations = $el.data('relation'),
             $formContainer = relations['formContainer'] && $(relations['formContainer']),
-            $discountContainer = relations['discountContainer'] && $(relations['discountContainer']),
             $sumContainer = relations['sumContainer'] && $(relations['sumContainer']),
             sum = $el.data('sum')
         ;

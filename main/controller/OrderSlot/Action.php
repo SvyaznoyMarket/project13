@@ -156,7 +156,7 @@ class Action {
 
         foreach ($cartSplitResponse['orders'] as $order) {
             $data[] = array_merge(
-                (new OrderEntity(array_merge($cartSplitResponse, ['order' => $order]), json_decode($sender, true), $sender2))->getOrderData(),
+                (new OrderEntity(array_merge($cartSplitResponse, ['order' => $order]), json_decode($sender, true), $sender2))->getOrderData(true),
                 [
                     'mobile' => $phone,
                     'email' => $email,

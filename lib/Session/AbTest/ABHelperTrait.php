@@ -51,28 +51,6 @@ trait ABHelperTrait {
         return !in_array(\App::request()->attributes->get('route'), ['slice.category', 'slice.show'], true) || \App::request()->attributes->get('sliceToken') !== 'all_labels' || \App::abTest()->getTest('salePercentage')->getChosenCase()->getKey() !== 'hide';
     }
 
-    /** Онлайн-мотивация при покупке?
-     * @param $ordersCount int Количество заказов
-     * @return bool
-     */
-    public static function isOnlineMotivation($ordersCount = 0){
-        $case = \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey();
-        if ($case === 'default') {
-            $case = 'on';
-        }
-
-        return (int)$ordersCount == 1 && in_array($case, ['on', 'online_motivation_coupon', 'online_motivation_discount']);
-    }
-
-    public function getOnlineMotivationKey() {
-        $case = \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey();
-        if ($case === 'default') {
-            $case = 'on';
-        }
-
-        return $case;
-    }
-
     /**
      * @return int
      */
