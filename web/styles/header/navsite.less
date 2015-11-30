@@ -137,8 +137,8 @@
 
     text-align: left;
 
-    border: 1px solid @darkgrey4;
-    border-top-width: 6px;
+    border: 1px solid @black;
+    border-top-width: 4px;
     background: @white;
     //    .transition(all .3s ease);
     // &:hover {
@@ -159,11 +159,11 @@
             .navsite2_lk {
                 text-decoration: none;
 
-                background: #e3e3e3;
+                background: #f2f2f2;
             }
         }
     }
-    &-new {
+    /*&-new {
         .navsite2_i {
             &:hover {
                 .navsite2_lk {
@@ -177,7 +177,7 @@
                 }
             }
         }
-    }
+    }*/
     &_lk {
         font-size: 14px;
         line-height: 1.2;
@@ -189,6 +189,8 @@
 
         width: 185px;
         padding: 5px 10px;
+
+        color: #363636;
         &:hover {
             .navsite2_tx {
                 text-decoration: none;
@@ -224,7 +226,7 @@
 
 .navsite3 {
     position: absolute;
-    top: -6px;
+    top: -4px;
     left: -1px;
 
     display: block;
@@ -238,11 +240,25 @@
     transition-delay: 110ms;
     transition-property: visibility;
 
-    border: 1px solid @darkgrey4;
-    border-top-width: 6px;
-    background: url('@{base-url}/mainpage/img/nav-shadow.png') repeat-y 204px 0 @white;
-
+    border: 1px solid @black;
+    border-top-width: 4px;
+    background: #FFFFFF;
+    
     .opacity(100);
+    
+    &:after{
+        content: '';
+        
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 205px;
+        
+        height: 100%;
+        border-left: 1px dotted #afafaf;
+        
+    }
+    
     &_i {
         padding: 5px 10px;
         &-tl {
@@ -255,6 +271,8 @@
     }
     &_lk {
         font-size: 12px;
+        color: #363636;
+
         &:hover {
             text-decoration: none;
 
