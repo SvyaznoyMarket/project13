@@ -5,11 +5,11 @@ namespace Model\Product;
 class RichRelevanceProduct extends Entity
 {
     /**
-     * @var string
+     * @var string|null
      */
     public $clickUrl;
     /**
-     * @var string
+     * @var string|null
      */
     public $clickTrackingUrl;
 
@@ -18,5 +18,15 @@ class RichRelevanceProduct extends Entity
         parent::__construct($data);
         if (array_key_exists('clickURL', $data)) $this->clickUrl = $data['clickURL'];
         if (array_key_exists('clickTrackingURL', $data)) $this->clickTrackingUrl = $data['clickTrackingURL'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getOnClickTag()
+    {
+        return $this->clickTrackingUrl
+            ? sprintf(' onclick="(new Image).src=\'%s\';" ', $this->clickTrackingUrl)
+            : '';
     }
 }

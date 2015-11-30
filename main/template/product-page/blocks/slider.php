@@ -119,7 +119,7 @@ $f = function (
                     $addToCartJS = null;
                     $onclick = null;
                     if ($product instanceof \Model\Product\RichRelevanceProduct) {
-                        $onclick = " onclick = \"(new Image).src='{$product->clickTrackingUrl}';\" ";
+                        $onclick = $product->getOnClickTag();
                     }
                     if ($isRetailrocketRecommendation && !empty($retailrocketMethod) && $isRetailrocketProduct) {
 

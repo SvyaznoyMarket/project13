@@ -86,49 +86,35 @@ class IndexPage extends \View\DefaultLayout {
 
         /**
          * @var $products               \Model\Product\Entity[]
-         * @var $personalIds            int[]
-         * @var $personalForWalkingIds  int[]
+         * @var $recommendations         \Model\RichRelevance\RichRecommendation[]
          */
 
         $return = '';
-        $sender = ['name' => 'retailrocket'];
+        $sender = ['name' => 'rich'];
 
         $products = $this->getParam('productList');
+        $recommendations = $this->getParam('rrProducts');
+        $popular = $recommendations['home_page.rr1'];
+        $personal = $recommendations['home_page.rr2'];
         if (empty($products)) return '';
-        $personalIds = @$this->getParam('rrProducts')['personal'];
-        $personalForWalkingIds = @$this->getParam('rrProducts')['personal'];
-        $names = [];
 
-        // Удаление продуктов с одинаковыми именами из массива персональных рекомендаций
-        array_walk ( $personalForWalkingIds , function ($id, $key) use (&$personalIds, &$names, $products) {
-            // Имя продукта
-            if (!$products[$id] instanceof \Model\Product\Entity) return;
-            $currentProductName = trim($products[$id]->getName());
-            if (array_search($currentProductName, $names) === false) {
-                // Если такого имени нет в массиве имён, то добавляем имя в массив
-                $names[$id] = $currentProductName;
-            } else {
-                // Если такое имя уже есть, то удаляем продукт из массива персональных рекомендаций
-                unset($personalIds[$key]);
-            }
-        } );
 
-        if (!empty($this->getParam('rrProducts')['popular'])) {
-            $return .= $this->render('main/_slidesBox', [
-                'blockname' => 'ПОПУЛЯРНЫЕ ТОВАРЫ',
-                'class' => 'slidesBox slidesBox-items slidesBox-items-l',
-                'productList' => $this->getParam('productList'),
-                'rrProducts' => (array)@$this->getParam('rrProducts')['popular'],
-                'sender' => $sender + ['position' => 'MainPopular', 'method' => 'ItemsToMain']
-            ]);
-            $return .= $this->render('main/_slidesBox', [
-                'blockname' => 'МЫ РЕКОМЕНДУЕМ',
-                'class' => 'slidesBox slidesBox-bg2 slidesBox-items slidesBox-items-r',
-                'productList' => $this->getParam('productList'),
-                'rrProducts' => (array)$personalIds,
-                'sender' => $sender + ['position' => 'MainRecommended', 'method' => 'Personal']
-            ]);
-        }
+        $return .= $this->render('main/_slidesBox', [
+            'blockname' => $popular->message,
+            'class' => 'slidesBox slidesBox-items slidesBox-items-l',
+            'productList' => $products,
+            'rrProducts' => $popular->getProductIds(),
+            'sender' => $sender + ['position' => $popular->placement, 'method' => 'ItemsToMain'],
+            'recommendationItem'    => $popular
+        ]);
+        $return .= $this->render('main/_slidesBox', [
+            'blockname' => $personal->message,
+            'class' => 'slidesBox slidesBox-bg2 slidesBox-items slidesBox-items-r',
+            'productList' => $products,
+            'rrProducts' => $personal->getProductIds(),
+            'sender' => $sender + ['position' => $personal->placement, 'method' => 'Personal'],
+            'recommendationItem'    => $personal
+        ]);
 
         return $return;
     }

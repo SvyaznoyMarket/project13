@@ -3,9 +3,10 @@
  * @var $page           \View\Main\IndexPage
  * @var $blockname      string
  * @var $class          string|null
- * @var $productList    \Model\Product\Entity[]
- * @var $product        \Model\Product\Entity
+ * @var $productList    \Model\Product\RichRelevanceProduct[]
+ * @var $product        \Model\Product\RichRelevanceProduct
  * @var $rrProducts     array
+ * @var $recommendationItem     \Model\RichRelevance\RichRecommendation
  */
 
 // МЫ РЕКОМЕНДУЕМ
@@ -18,27 +19,6 @@ foreach ($rrProducts as &$value) {
         unset($value);
     }
 } if (isset($value)) unset($value);
-
-/* Сортируем блок "Популярные товары" */
-if (false && @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ') {
-    try {
-        usort($rrProducts, function (\Model\Product\Entity $a, \Model\Product\Entity $b) {
-            if ($b->getIsBuyable() != $a->getIsBuyable()) {
-                return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
-            } else if ($b->getPrice() != $a->getPrice()) {
-                return $b->getPrice() - $a->getPrice();
-            } else if ($b->isInShopOnly() != $a->isInShopOnly()) {
-                //return ($b->isInShopOnly() ? -1 : 1) - ($a->isInShopOnly() ? -1 : 1); // потом те, которые можно зарезервировать
-            } else if ($b->isInShopShowroomOnly() != $a->isInShopShowroomOnly()) {// потом те, которые есть на витрине
-                return ($b->isInShopShowroomOnly() ? -1 : 1) - ($a->isInShopShowroomOnly() ? -1 : 1);
-            } else {
-                return (int)rand(-1, 1);
-            }
-        });
-    } catch (\Exception $e) {}
-}
-
-if (@$blockname == 'МЫ РЕКОМЕНДУЕМ') $rrProducts = \Controller\Product\ProductHelperTrait::filterByModelId($rrProducts);
 
 $rrProducts = array_filter($rrProducts, function($p){
     /** @var \Model\Product\Entity $p */
@@ -54,7 +34,7 @@ $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
 
 ?>
 
-<div class="<?= $class ?> jsMainSlidesRetailRocket" data-block="<?= @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ' ? 'MainPopular' : 'MainRecommended' ?>">
+<div class="<?= $class ?> jsMainSlidesRetailRocket" data-block="<?= $recommendationItem->placement ?>">
     <div class="slidesBox_h">
         <div class="slidesBox_btn slidesBox_btn-l jsMainSlidesButton jsMainSlidesLeftButton"></div>
 
@@ -79,14 +59,18 @@ $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
                 <? foreach ($block as $product) : ?>
                 <? if (!$product) continue ?>
                 <? $productLink = $product->getLink() . '?' . http_build_query([
-                    'sender[name]'      => 'retailrocket',
-                    'sender[position]'  => @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ' ? 'MainPopular' : 'MainRecommended',
-                    'sender[method]'    => @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ' ? 'ItemsToMain' : 'PersonalRecommendation',
+                    'sender[name]'      => 'rich',
+                    'sender[position]'  => $recommendationItem->placement,
                     'sender[from]'      => 'MainPage'
                 ]) ?>
                 <div class="item jsProductContainer" data-position="<?= $i ?>" data-ecommerce='<?= $product->ecommerceData() ?>'>
-                    <a href="<?= $productLink ?>" class="item_imgw" <?= $linkTarget ?>><img src="<?= $product->getMainImageUrl('product_160') ?>" class="item_img" alt="<?= $product->getName() ?>"/></a>
-                    <div class="item_n"><a href="<?= $productLink ?>" <?= $linkTarget ?>><?= $helper->escape($product->getName()) ?></a></div>
+                    <a href="<?= $productLink ?>"
+                       class="item_imgw" <?= $linkTarget ?>
+                        <?= $product->getOnClickTag() ?>
+                    >
+                        <img src="<?= $product->getMainImageUrl('product_160') ?>" class="item_img" alt="<?= $product->getName() ?>"/>
+                    </a>
+                    <div class="item_n"><a href="<?= $productLink ?>" <?= $linkTarget ?> <?= $product->getOnClickTag() ?>><?= $helper->escape($product->getName()) ?></a></div>
                     <div class="item_pr"><?= $helper->formatPrice($product->getPrice()) ?>&nbsp;<span class="rubl">p</span></div>
                     <?= $helper->render('cart/__button-product', [
                         'product'        => $product,

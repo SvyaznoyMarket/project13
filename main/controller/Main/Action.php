@@ -93,19 +93,18 @@ class Action {
         // товары, услуги, категории
         /** @var $productsById \Model\Product\Entity[] */
         $productsById = [];
-        $productsIdsFromRR =
+        $recommendations =
             $config->product['pullMainRecommendation']
-            ? $this->getProductIdsFromRR($request)
+            ? $this->getRichRecommendations()
             : []
         ;
-        foreach ($productsIdsFromRR as $arr) {
-            foreach ($arr as $key => $val) {
-                $productsById[(int)$val] = new \Model\Product\Entity(['id' => (int)$val]);
+        foreach ($recommendations as $recommendation) {
+            foreach ($recommendation->products as $product) {
+                $productsById[$product->id] = $product;
             }
         }
-        unset($val, $key, $arr);
+        unset($recommendation, $product);
 
-        $productsById = array_filter($productsById);
         if ($productsById) {
             \RepositoryManager::product()->prepareProductQueries($productsById, 'model media label brand category');
         }
@@ -141,7 +140,7 @@ class Action {
         $page->setParam('banners', array_values($bannersByUi));
         $page->setParam('infoBoxCategoriesByUis', array_filter($infoBoxCategoriesByUis));
         $page->setParam('productList', $productsById);
-        $page->setParam('rrProducts', isset($productsIdsFromRR) ? $productsIdsFromRR : []);
+        $page->setParam('rrProducts', $recommendations);
 
         return new \Http\Response($page->show());
     }
@@ -171,6 +170,16 @@ class Action {
         $page->setParam('productList', $productsById);
         $page->setParam('rrProducts', isset($rrProducts) ? $rrProducts : []);
         return new \Http\JsonResponse(['result' => $page->slotRecommendations()]);
+    }
+
+    /**
+     * @return \Model\RichRelevance\RichRecommendation[]
+     */
+    public function getRichRecommendations()
+    {
+        return \App::richRelevanceClient()->query('recsForPlacements', [
+            'placements' => 'home_page.rr1|home_page.rr2',
+        ]);
     }
 
     /** Возвращает массив рекомендаций (ids)
