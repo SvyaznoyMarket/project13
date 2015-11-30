@@ -63,4 +63,11 @@ class RichRecommendation
 
         return $result;
     }
+
+    public function replaceProducts(array $products)
+    {
+        foreach ($this->products as &$product) {
+            if (isset($products[$product->id])) $product = $products[$product->id];
+        }
+    }
 }

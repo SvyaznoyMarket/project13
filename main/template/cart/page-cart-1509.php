@@ -64,10 +64,10 @@ $helper = new \Helper\TemplateHelper();
                 <?= $helper->render(
                     'product-page/blocks/slider',
                     [
-                        'type'      => 'alsoBought',
+                        'type'      => 'cart_page.rr3',
                         'products'  => [],
                         'url'       => $page->url('cart.recommended', [
-                            'types'  => ['alsoBought', 'personal'],
+                            'types'  => ['cart_page.rr1', 'cart_page.rr3'],
                             'sender' => [
                                 'position' => 'Basket',
                             ],
@@ -80,10 +80,10 @@ $helper = new \Helper\TemplateHelper();
             <?= $helper->render(
                 'product-page/blocks/slider',
                 [
-                    'type'      => 'personal',
+                    'type'      => 'cart_page.rr1',
                     'products'  => [],
                     'url'       => $page->url('cart.recommended', [
-                        'types'  => ['alsoBought', 'personal'],
+                        'types'  => ['cart_page.rr1', 'cart_page.rr3'],
                         'sender' => [
                             'position' => 'Basket',
                         ],
@@ -99,10 +99,10 @@ $helper = new \Helper\TemplateHelper();
                 <?= $helper->render(
                     'product-page/blocks/slider',
                     [
-                        'type'      => 'popular',
+                        'type'      => 'cart_page.rr1',
                         'products'  => [],
                         'url'       => $page->url('cart.recommended', [
-                            'types'  => ['personal', 'popular'],
+                            'types'  => ['cart_page.rr1', 'cart_page.rr2'],
                             'sender' => [
                                 'position' => 'Basket',
                             ],
@@ -117,26 +117,10 @@ $helper = new \Helper\TemplateHelper();
             <?= $helper->render(
                 'product-page/blocks/slider',
                 [
-                    'type'      => 'personal',
+                    'type'      => 'cart_page.rr2',
                     'products'  => [],
                     'url'       => $page->url('cart.recommended', [
-                        'types'  => ['personal', 'popular'],
-                        'sender' => [
-                            'position' => 'Basket',
-                        ],
-                    ]),
-                ]
-            ) ?>
-            </div>
-
-            <div class="basketLine">
-            <?= $helper->render(
-                'product-page/blocks/slider',
-                [
-                    'type'      => 'popular',
-                    'products'  => [],
-                    'url'       => $page->url('cart.recommended', [
-                        'types'  => ['personal', 'popular'],
+                        'types'  => ['cart_page.rr1', 'cart_page.rr2'],
                         'sender' => [
                             'position' => 'Basket',
                         ],
