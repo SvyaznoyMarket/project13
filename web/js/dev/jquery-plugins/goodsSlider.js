@@ -25,7 +25,21 @@
 			 * @return bool
 			 */
 			isRecommendation = function isRecommendation( type ) {
-				return -1 != $.inArray(type, ['alsoBought', 'similar', 'alsoViewed', 'main', 'search', 'popular', 'personal'/*, 'viewed'*/]);
+				return -1 != $.inArray(type, [
+							'alsoBought',
+							'similar',
+							'alsoViewed',
+							'main',
+							'search',
+							'popular',
+							'personal',
+							'cart_page.rr1',
+							'cart_page.rr2',
+							'item_page.cross_sell',
+							'item_page.rr1',
+							'item_page.rr2',
+							'personal_page.top'
+						]);
 			};
 		// end of functions
 

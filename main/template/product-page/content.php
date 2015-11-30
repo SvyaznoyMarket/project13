@@ -89,7 +89,7 @@ $showReview = \App::config()->product['reviewEnabled'];
 	<div class="product-section section-border">
         <? if (\App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product-page/blocks/slider', [
-                'type'           => 'alsoBought',
+                'type'           => 'item_page.cross_sell',
                 'title'          => 'С этим товаром покупают',
                 'products'       => [],
                 'limit'          => \App::config()->product['itemsInSlider'],
@@ -97,7 +97,7 @@ $showReview = \App::config()->product['reviewEnabled'];
 //                'additionalData' => $additionalData,
                 'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
                 'sender'         => [
-                    'name'     => 'retailrocket',
+                    'name'     => 'rich',
                     'position' => $isProductAvailable ? 'ProductAccessories' : 'ProductMissing', // все правильно - так и надо!
                 ],
                 'sender2' => $buySender2,
@@ -198,14 +198,14 @@ $showReview = \App::config()->product['reviewEnabled'];
 	<div class="product-section product-section--inn" id="similar">
         <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product-page/blocks/slider', [
-                'type'     => 'similar',
+                'type'     => 'item_page.rr1',
                 'title'    => 'Похожие товары',
                 'products' => [],
                 'limit'    => \App::config()->product['itemsInSlider'],
                 'page'     => 1,
                 'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
                 'sender'   => [
-                    'name'     => 'retailrocket',
+                    'name'     => 'rich',
                     'position' => 'ProductSimilar',
                 ],
                 'sender2' => $buySender2,

@@ -48,4 +48,19 @@ class RichRecommendation
             $this->products
         );
     }
+
+    /**
+     * @return array
+     */
+    public function getProductsById()
+    {
+        $result = [];
+
+        foreach ($this->products as $product)
+        {
+            $result[$product->id] = $product;
+        }
+
+        return $result;
+    }
 }

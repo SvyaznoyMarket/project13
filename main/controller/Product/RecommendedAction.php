@@ -9,7 +9,6 @@ class RecommendedAction {
 
         $client = \App::retailrocketClient();
         $templating = \App::closureTemplating();
-        $region = \App::user()->getRegion();
 
         $productLimitInSlice = 15;
 
@@ -36,9 +35,11 @@ class RecommendedAction {
 
             // получение ид рекомендаций
             $sender = null;
+            $recommendations = [];
+            $productsById = [];
             foreach ($sendersByType as &$sender) {
-                if ('retailrocket' == $sender['name']) {
-                    if ('alsoBought' == $sender['type']) {
+                if ('rich' == $sender['name']) {
+                    /*if ('alsoBought' == $sender['type']) {
                         $sender['method'] = 'CrossSellItemToItems';
                         $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [], function($data) use (&$sender, &$productIds, &$productLimitInSlice) {
                             if (!is_array($data)) return;
@@ -62,6 +63,15 @@ class RecommendedAction {
                             $sender['items'] = array_slice($data, 0, $productLimitInSlice);
                             $productIds = array_merge($productIds, $sender['items']);
                         });
+                    }*/
+
+                    $recommendations = \App::richRelevanceClient()->query('recsForPlacements', [
+                        'placements' => 'item_page.cross_sell|item_page.rr1|item_page.rr2',
+                        'productId' => $productId,
+                    ]);
+
+                    foreach ($recommendations as $recommendation) {
+                        $productsById = array_replace($productsById, $recommendation->getProductsById());
                     }
                 }
 
@@ -90,12 +100,15 @@ class RecommendedAction {
             $productIds = array_filter(array_values(array_unique($productIds)));
 
             /** @var \Model\Product\Entity[] $productsById */
-            $productsById = [];
-            call_user_func(function() use(&$productsById, &$productIds) {
-                foreach ($productIds as $productId) {
-                    $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
-                }
-            });
+
+            if (!$productsById) {
+                call_user_func(
+                    function () use (&$productsById, &$productIds) {
+                        foreach ($productIds as $productId) {
+                            $productsById[$productId] = new \Model\Product\Entity(['id' => $productId]);
+                        }
+                    });
+            }
 
             \RepositoryManager::product()->prepareProductQueries($productsById, 'media label category brand');
             $client->execute();
@@ -106,7 +119,7 @@ class RecommendedAction {
              */
             $product = ($productId && isset($productsById[$productId])) ? $productsById[$productId] : null;
             if ($productId && !$product) {
-                throw new \Exception(sprintf('Товар #%s не найден', $productId));
+                // throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
             // SITE-3221 Исключить повторяющиеся товары из рекомендаций RR
@@ -123,12 +136,17 @@ class RecommendedAction {
             $recommendData = [];
             foreach ($sendersByType as $type => $sender) {
                 $products = [];
-                foreach ($sender['items'] as $id) {
+
+                foreach ($recommendations[$type]->products as $recProduct) {
                     /** @var \Model\Product\Entity|null $iProduct */
-                    $iProduct = isset($productsById[$id]) ? $productsById[$id] : null;
+                    $iProduct = isset($productsById[$recProduct->id]) ? $productsById[$recProduct->id] : null;
                     if (!$iProduct || !$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly() || (5 == $iProduct->getStatusId())) continue;
 
                     $products[] = $iProduct;
+                }
+
+                if ($type == 'viewed') {
+                    $products = $productsById;
                 }
 
                 if (!(bool)$products) {
@@ -137,24 +155,6 @@ class RecommendedAction {
                     ];
 
                     continue;
-                }
-
-                // сортировка
-                if ('viewed' != $sender['type']) {
-                    try {
-                        // TODO: вынести в репозиторий
-                        usort($products, function(\Model\Product\Entity $a, \Model\Product\Entity $b) {
-                            if ($b->getIsBuyable() != $a->getIsBuyable()) {
-                                return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
-                            } else if ($b->isInShopOnly() != $a->isInShopOnly()) {
-                                //return ($b->isInShopOnly() ? -1 : 1) - ($a->isInShopOnly() ? -1 : 1); // потом те, которые можно зарезервировать
-                            } else if ($b->isInShopShowroomOnly() != $a->isInShopShowroomOnly()) {// потом те, которые есть на витрине
-                                return ($b->isInShopShowroomOnly() ? -1 : 1) - ($a->isInShopShowroomOnly() ? -1 : 1);
-                            } else {
-                                return (int)rand(-1, 1);
-                            }
-                        });
-                    } catch (\Exception $e) {}
                 }
 
                 $cssClass = '';
@@ -178,7 +178,7 @@ class RecommendedAction {
                 $recommendData[$type] = [
                     'success'   => true,
                     'content'   => $templating->render($template, [
-                        'title'          => $this->getTitleByType($type),
+                        'title'          => isset($recommendations[$type]) ? $recommendations[$type]->message : $this->getTitleByType($type),
                         'products'       => $products,
                         'sender'         => $sender,
                         'sender2'        => (string)$request->get('sender2'),
