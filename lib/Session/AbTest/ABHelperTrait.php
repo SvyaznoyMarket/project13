@@ -212,4 +212,11 @@ trait ABHelperTrait {
             //&& !$user->getCart()->count()
         ;
     }
+
+    /**
+     * @return bool
+     */
+    public function isOrderWithDeliveryInterval() {
+        return 'enabled' === \App::abTest()->getTest('show_order_delivery_interval')->getChosenCase()->getKey();
+    }
 }
