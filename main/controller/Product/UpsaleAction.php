@@ -58,15 +58,7 @@ class UpsaleAction extends BasicRecommendedAction {
                 \App::exception()->remove($e);
             }
 
-            if (is_array(@$recommendationRR['recommendedProducts'])) {
-                // используем рекомендации только от richRelevance
-                 $products = array_map(
-                     function($item) {
-                         return new RichRelevanceProduct($item);
-                     },
-                     array_filter($recommendationRR['recommendedProducts'])
-                 );
-            }
+            $products = $recommendationRR->products;
 
             if (!$products) {
                 throw new \Exception('Not fount related IDs for this product.');
@@ -95,12 +87,12 @@ class UpsaleAction extends BasicRecommendedAction {
                 'content' => \App::closureTemplating()->render(
                     'product-page/blocks/slider',
                     [
-                        'title'    => $recommendationRR['strategyMessage'],
+                        'title'    => $recommendationRR->message,
                         'products' => $products,
                         'class'    => 'goods-slider--top',
                         'sender'   => [
                             'name'     => 'rich',
-                            'position' => $recommendationRR['placement'],
+                            'position' => $recommendationRR->placement,
                             'method'   => '',
                         ],
                         'sender2'      => (string)$request->get('sender2'),

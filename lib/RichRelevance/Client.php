@@ -3,6 +3,8 @@
 namespace RichRelevance;
 
 use Curl\TimeoutException;
+use Model\Product\RichRelevanceProduct;
+use Model\RichRelevance\RichRecommendation;
 
 class Client implements \Core\ClientInterface {
 
@@ -52,7 +54,7 @@ class Client implements \Core\ClientInterface {
      * @param array      $params
      * @param array      $data
      * @param float|null $timeout
-     * @return mixed
+     * @return RichRecommendation[]
      */
     public function query($action, array $params = [], array $data = [], $timeout = null) {
 
@@ -80,7 +82,7 @@ class Client implements \Core\ClientInterface {
 
         if (isset($response['placements']) && is_array($response['placements'])) {
             foreach ($response['placements'] as $placement) {
-                $result[$placement['placement']] = $placement;
+                $result[$placement['placement']] = new RichRecommendation($placement);
             }
         }
 

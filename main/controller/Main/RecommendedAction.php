@@ -4,6 +4,11 @@
 namespace controller\Main;
 
 
+/**
+ * @deprecated
+ * Class RecommendedAction
+ * @package controller\Main
+ */
 class RecommendedAction {
 
     /**
