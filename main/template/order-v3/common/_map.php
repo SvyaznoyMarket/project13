@@ -176,12 +176,14 @@
                                         <img src="" class="pick-point-item__img" data-bind="attr: { src: icon }" />
                                         <span class="pick-point-item__name" data-bind="text: listName"></span>
 
+                                        <? if (false): ?>
                                         <span class="pick-point-item__help">
                                             ?
                                             <span class="pick-point-item__help-txt">
                                                 Как пользоваться постаматом
                                             </span>
                                         </span>
+                                        <? endif ?>
                                     </div>
 
                                     <div class="pick-point-item__addr">
