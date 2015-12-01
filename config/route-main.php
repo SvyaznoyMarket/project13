@@ -229,6 +229,11 @@ return [
         'action'  => ['Slice\ShowAction', 'execute'],
         'require' => ['sliceToken' => '[\w\d-_]+'],
     ],
+    'product.category.slice.brand' => [
+        'pattern' => '/catalog/slice/{sliceToken}/brand-{brandToken}',
+        'action'  => ['Slice\ShowAction', 'execute'],
+        'require' => ['sliceToken' => '[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
+    ],
 
     // tchibo
     'tchibo' => [
@@ -594,7 +599,6 @@ return [
         'pattern' => '/private/orders',
         'action'  => ['User\Order\IndexAction', 'execute'],
     ],
-    // редактирование данных пользователя
     'user.favorites' => [
         'pattern' => '/private/favorites',
         'action'  => ['User\FavoriteAction', 'get'],
@@ -618,6 +622,26 @@ return [
         'pattern' => '/private/notification/add-product',
         'action'  => ['User\Notification\AddProductAction', 'execute'],
         'method'  => ['POST'],
+    ],
+    'user.address' => [
+        'pattern' => '/private/address',
+        'action'  => ['User\Address\IndexAction', 'execute'],
+    ],
+    'user.address.create' => [
+        'pattern' => '/private/address/create',
+        'action'  => ['User\Address\CreateAction', 'execute'],
+    ],
+    'user.address.delete' => [
+        'pattern' => '/private/address/delete',
+        'action'  => ['User\Address\DeleteAction', 'execute'],
+    ],
+    'user.message' => [
+        'pattern' => '/private/messages',
+        'action'  => ['User\Message\IndexAction', 'execute'],
+    ],
+    'user.enterprize' => [
+        'pattern' => '/private/enterprize',
+        'action'  => ['User\Enterprize\IndexAction', 'execute'],
     ],
 
     // маршрутизатор нескольких запросов
@@ -664,12 +688,6 @@ return [
         'pattern' => '/event/push',
         'action'  => ['EventAction', 'push'],
         'method'  => ['POST'],
-    ],
-
-    // qrcode
-    'qrcode' => [
-        'pattern' => '/qr/{qrcode}',
-        'action'  => ['Qrcode\Action', 'execute'],
     ],
 
     'debug.query' => [

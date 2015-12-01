@@ -19,7 +19,7 @@ if (!isset($showRegisterForm)) $showRegisterForm = true;
     <div class="popup popup-auth js-login-content" data-state="default" id="auth-block">
         <span class="close close-auth">Закрыть</span>
         
-        <div class="authWrap">
+        <div class="authWrap 123">
             <?= $page->render('user/_login-form', ['redirect_to' => $redirect_to]) ?>
             <?= $page->render('user/_register-form') ?>
         </div>

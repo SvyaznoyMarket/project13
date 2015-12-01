@@ -55,9 +55,9 @@ namespace EnterApplication\Action\ProductCard
             $this->checkRegionQuery($regionQuery);
 
             // товар
-            /** @var Query\Product\GetByToken $productQuery */
-            /** @var Query\Product\GetDescriptionByTokenList $productDescriptionQuery */
-            /** @var Query\Product\Model\GetByTokenList $productModelQuery */
+            /** @var Query\Product\GetByToken|Query\Product\GetByBarcode $productQuery */
+            /** @var Query\Product\GetDescriptionByTokenList|Query\Product\GetDescriptionByBarcodeList $productDescriptionQuery */
+            /** @var Query\Product\Model\GetByTokenList|Query\Product\Model\GetByBarcodeList $productModelQuery */
             call_user_func(function() use (&$productQuery, &$productDescriptionQuery, &$productModelQuery, $regionQuery, $request, &$config) {
                 if ($request->productCriteria['token']) {
                     $productQuery = new Query\Product\GetByToken($request->productCriteria['token'], $regionQuery->response->region['id']);
@@ -77,6 +77,26 @@ namespace EnterApplication\Action\ProductCard
 
                     if ($config->product['getModelInCard']) {
                         $productModelQuery = new Query\Product\Model\GetByTokenList([$request->productCriteria['token']], $regionQuery->response->region['id']);
+                        $productModelQuery->prepare();
+                    }
+                } else if ($request->productCriteria['barcode']) { // Используется в ветке lite
+                    $productQuery = new Query\Product\GetByBarcode($request->productCriteria['barcode'], $regionQuery->response->region['id']);
+                    $productQuery->prepare();
+
+                    $productDescriptionQuery = new Query\Product\GetDescriptionByBarcodeList();
+                    $productDescriptionQuery->barcodes = [$request->productCriteria['barcode']];
+                    $productDescriptionQuery->filter->trustfactor = true;
+                    $productDescriptionQuery->filter->category = true;
+                    $productDescriptionQuery->filter->media = true;
+                    $productDescriptionQuery->filter->seo = true;
+                    $productDescriptionQuery->filter->property = true;
+                    $productDescriptionQuery->filter->label = true;
+                    $productDescriptionQuery->filter->brand = true;
+                    $productDescriptionQuery->filter->tag = true;
+                    $productDescriptionQuery->prepare();
+
+                    if (true || $config->product['getModel']) {
+                        $productModelQuery = new Query\Product\Model\GetByBarcodeList([$request->productCriteria['barcode']], $regionQuery->response->region['id']);
                         $productModelQuery->prepare();
                     }
                 } else {
@@ -466,11 +486,11 @@ namespace EnterApplication\Action\ProductCard\Get
 
     class Response
     {
-        /** @var Query\Product\GetByToken */
+        /** @var Query\Product\GetByToken|Query\Product\GetByBarcode */
         public $productQuery;
-        /** @var Query\Product\GetDescriptionByTokenList */
+        /** @var Query\Product\GetDescriptionByTokenList|Query\Product\GetDescriptionByBarcodeList */
         public $productDescriptionQuery;
-        /** @var Query\Product\Model\GetByTokenList */
+        /** @var Query\Product\Model\GetByTokenList|Query\Product\Model\GetByBarcodeList */
         public $productModelQuery;
         /** @var Query\User\GetByToken|null */
         public $userQuery;

@@ -120,7 +120,7 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isOrderWithCart() {
-        return 'enabled' === \App::abTest()->getTest('order_with_cart')->getChosenCase()->getKey();
+        return true ; //'enabled' === \App::abTest()->getTest('order_with_cart')->getChosenCase()->getKey();
     }
 
     /**
@@ -211,5 +211,12 @@ trait ABHelperTrait {
             && ($config->region['defaultId'] === $user->getRegion()->id)
             //&& !$user->getCart()->count()
         ;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOrderWithDeliveryInterval() {
+        return 'enabled' === \App::abTest()->getTest('show_order_delivery_interval')->getChosenCase()->getKey();
     }
 }

@@ -9,7 +9,9 @@
                     <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/credit">Покупка в кредит</a></li>
                 <? endif ?>
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="http://my.enter.ru/job">Работа у нас</a></li>
-                <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/b2b">Корпоративным клиентам</a></li>
+                <? if (false): ?>
+                    <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/b2b">Корпоративным клиентам</a></li>
+                <? endif ?>
                 <li class="footer_cmpn_i footer_cmpn_i-last"><a class="footer_cmpn_lk" href="/research">ЦСИ</a></li>
             </ul>
         </div>

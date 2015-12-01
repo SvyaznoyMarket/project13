@@ -3,7 +3,6 @@
  * Licensed under the MIT license
  */
 (function(root, factory) {
-
   /* CommonJS */
   if (typeof exports == 'object')  module.exports = factory()
 
@@ -184,7 +183,7 @@
         left: o.left,
         top: o.top
       })
-        
+
       if (target) {
         target.insertBefore(el, target.firstChild||null)
       }
@@ -347,3 +346,9 @@
   return Spinner
 
 }));
+
+$(function() {
+  $('.js-show-spinner').on('click', function() {
+    ENTER.utils.overloadPreloader.show();
+  });
+});

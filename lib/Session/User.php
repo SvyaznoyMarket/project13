@@ -222,7 +222,12 @@ class User {
     public function getRegionId() {
         $cookieName = \App::config()->region['cookieName'];
 
-        return \App::request()->cookies->has($cookieName) ? (int)\App::request()->cookies->get($cookieName): \App::config()->region['defaultId'];
+        $regionId = \App::request()->cookies->has($cookieName) ? (int)\App::request()->cookies->get($cookieName) : \App::config()->region['defaultId'];
+        if (2041 == $regionId) {
+            $regionId = \App::config()->region['defaultId'];
+        }
+
+        return $regionId;
     }
 
     /**
@@ -247,7 +252,7 @@ class User {
         if ($userEntity) {
             $subscriptions = $userEntity->getSubscriptions();
             foreach ($subscriptions as $sub) {
-                if ($sub->getChannelId() == $channelId && $sub->getIsConfirmed() == true) {
+                if ($sub->channelId == $channelId && ($sub->isConfirmed == true)) {
                     $isSubscribed = true;
                     break;
                 }

@@ -14,33 +14,37 @@ class ShowAction {
      * @param \Http\Request $request
      * @param string        $sliceToken
      * @param string|null   $categoryToken
+     * @param string|null   $brandToken
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
-    public function execute(\Http\Request $request, $sliceToken, $categoryToken = null) {
+    public function execute(\Http\Request $request, $sliceToken, $categoryToken = null, $brandToken = null) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        /** @var $slice \Model\Slice\Entity|null */
-        $slice = null;
-        \RepositoryManager::slice()->prepareEntityByToken(
-            $sliceToken,
-            function($data) use (&$slice, $sliceToken) {
-                if (is_array($data) && $data) {
-                    $data['token'] = $sliceToken;
-                    $slice = new \Model\Slice\Entity($data);
+        /** @var $slice \Model\Slice\Entity */
+        $slice = call_user_func(function() use($sliceToken) {
+            $slice = null;
+            \RepositoryManager::slice()->prepareEntityByToken(
+                $sliceToken,
+                function($data) use (&$slice, $sliceToken) {
+                    if (is_array($data) && $data) {
+                        $data['token'] = $sliceToken;
+                        $slice = new \Model\Slice\Entity($data);
+                    }
+                },
+                function(\Exception $e) {
+                    \App::exception()->remove($e);
                 }
-            },
-            function (\Exception $e) {
-                \App::exception()->remove($e);
+            );
+            
+            \App::scmsSeoClient()->execute();
+    
+            if (!$slice) {
+                throw new \Exception\NotFoundException(sprintf('Срез @%s не найден', $sliceToken));
             }
-        );
-
-
-        \App::scmsSeoClient()->execute();
-
-        if (!$slice) {
-            throw new \Exception\NotFoundException(sprintf('Срез @%s не найден', $sliceToken));
-        }
+            
+            return $slice;
+        });
 
         // добывание фильтров из среза
         $sliceRequestFilters = [];
@@ -59,12 +63,64 @@ class ShowAction {
         $shop = $this->getShop();
         $region = $this->getRegion(isset($sliceRequestFilters['region']) ? $sliceRequestFilters['region'] : null);
         $category = $this->getCategory($categoryToken, $slice, $region);
-        $sliceFiltersForSearchClientRequest = \RepositoryManager::slice()->getSliceFiltersForSearchClientRequest($slice, $category->getId() ? true : false);
+        $sliceFiltersForSearchClientRequest = \RepositoryManager::slice()->getSliceFiltersForSearchClientRequest($slice, $category->getId() ? true : false, (bool)$brandToken);
 
-        if (\App::config()->product['breadcrumbsEnabled']) {
-            $this->prepareEntityBranch($category, $sliceToken, $sliceFiltersForSearchClientRequest, $region);
-        }
-        $this->prepareProductFilter($filters, $category, $sliceFiltersForSearchClientRequest, $region);
+        $this->prepareEntityBranch($category, $sliceToken, $sliceFiltersForSearchClientRequest, $region);
+
+        $filters = [];
+        /** @var \Model\Brand\Entity|null $brand */
+        $brand = null;
+        /** @var \Model\Seo\Hotlink\Entity[] $hotlinks */
+        $hotlinks = [];
+        \RepositoryManager::productFilter()->prepareCollectionByCategory($category->getId() ? $category : null, $region, $sliceFiltersForSearchClientRequest, function($data) use (&$filters, &$brand, &$hotlinks, $sliceFiltersForSearchClientRequest, $brandToken, $slice) {
+            if (is_array($data)) {
+                foreach ($data as $item) {
+                    $filter = new \Model\Product\Filter\Entity($item);
+                    
+                    if ($filter->isBrand()) {
+                        foreach ($filter->getOption() as $option) {
+                            if ($brandToken && $option->getToken() === $brandToken) {
+                                $brand = $slice->getBrandByToken($brandToken);
+                                if (!$brand) {
+                                    $brand = new \Model\Brand\Entity();
+                                }
+
+                                $brand->id = $option->id;
+                                $brand->token = $option->token;
+                                $brand->name = $option->name;
+
+                                if (!$brand->title) {
+                                    $brand->title = $slice->getName() . ' ' . $brand->name . ' – купить в интернет-магазине Enter.ru';
+                                }
+
+                                if (!$brand->metaDescription) {
+                                    $brand->metaDescription = $slice->getName() . ' ' . $brand->name . ' — большой выбор, узнать цены, прочитать отзывы. Возможность купить в кредит.';
+                                }
+
+                                if (!$brand->heading) {
+                                    $brand->heading = $slice->getName() . ' ' . $brand->name;
+                                }
+                            }
+                            
+                            if ($this->isSeoSlice()) {
+                                $hotlinks[] = new \Model\Seo\Hotlink\Entity([
+                                    'url' => \App::router()->generate('product.category.slice.brand', [
+                                        'sliceToken' => $slice->getToken(),
+                                        'brandToken' => $option->token,
+                                    ]),
+                                    'name' => $option->name,
+                                ]);
+                            }
+                        }
+                    }
+                    
+                    if (!$this->hasFilterInFiltersForSearchClientRequest($filter->getId(), $sliceFiltersForSearchClientRequest)) {
+                        $filters[] = $filter;
+                    }
+                }
+            }
+        });
+
         /** @var \Model\Product\Category\Entity[] $sliceCategories */
         $sliceCategories = [];
         if (!$request->isXmlHttpRequest()) {
@@ -73,6 +129,10 @@ class ShowAction {
         }
 
         \App::coreClientV2()->execute();
+
+        if ($brandToken && !$brand) {
+            throw new \Exception\NotFoundException('Не найден бренд ' . $brandToken);
+        }
 
         // если есть категории в фильтре среза
         if ($sliceCategories) {
@@ -129,9 +189,15 @@ class ShowAction {
             }
         }
 
-        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category->getId() ? $category : null, null, $request, $shop);
+        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category->getId() ? $category : null, $brand, $request, $shop);
         $productPager = $this->getProductPager($productFilter, $sliceFiltersForSearchClientRequest, $productSorting, $pageNum, $region);
         $category->setProductCount($productPager->count());
+        
+        if ($productPager->getPage() > $productPager->getLastPage()) {
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => $productPager->getLastPage(),
+            ]));
+        }
 
         call_user_func(function() use(&$category) {
             $userChosenCategoryView = \App::request()->cookies->get('categoryView');
@@ -154,12 +220,6 @@ class ShowAction {
             }
         });
 
-        if ($productPager->getPage() > $productPager->getLastPage()) {
-            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
-                'page' => $productPager->getLastPage(),
-            ]));
-        }
-
         // SITE-5770
         $cartButtonSender = [];
         if ('all_labels' === $slice->getToken()) {
@@ -167,6 +227,26 @@ class ShowAction {
                 'from'     => $request->getUri(),
                 'position' => 'Listing',
             ];
+        }
+
+        $heading = $brand ? $brand->heading : $slice->getName();
+
+        if ($brand) {
+            $seoContent = $brand->content;
+        } else {
+            if ($slice->categoryUid) {
+                $seoContent = $slice->getContent();
+            } else {
+                $seoContent = $slice->getContent();
+
+                if (!$seoContent && !$this->isSeoSlice()) {
+                    $seoContent = $category->getSeoContent();
+                }
+            }
+        }
+
+        if (!$slice->categoryUid && $pageNum > 1) {
+            $seoContent = '';
         }
 
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
@@ -194,34 +274,22 @@ class ShowAction {
                     $productSorting
                 ),
                 'page'           => [
-                    'title' => $slice->getName()
+                    'title' => $heading
                 ],
                 'countProducts'  => $productPager->count(),
             ]);
         }
-
+        
         $page = new \View\Slice\ShowPage();
+        
+        $page->setTitle($brand ? $brand->title : $slice->getTitle());
+        $page->addMeta('description', $brand ? $brand->metaDescription : $slice->getMetaDescription());
+        $page->addMeta('keywords', $brand ? '' : $slice->getMetaKeywords());
+        
+        $page->setParam('heading', $heading);
         $page->setParam('category', $category);
-
-        if ($slice->categoryUid) {
-            $page->setParam('seoContent', $slice->getContent());
-        } else {
-            $page->setParam('hotlinks', $category->getSeoHotlinks());
-
-            $seoContent = $slice->getContent();
-
-            if (!$seoContent) {
-                $seoContent = $category->getSeoContent();
-            }
-
-            if ($pageNum > 1) {
-                $seoContent = '';
-            }
-
-            $page->setParam('seoContent', $seoContent);
-        }
-
         $page->setParam('slice', $slice);
+        $page->setParam('baseUrl', $brand ? \App::router()->generate('product.category.slice', ['sliceToken' => $slice->getToken()]) : \App::helper()->url());
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productFilter', $productFilter);
@@ -229,6 +297,8 @@ class ShowAction {
         $page->setParam('hasCategoryChildren', !$this->isSeoSlice()); // SITE-3558
         $page->setParam('cartButtonSender', $cartButtonSender);
         $page->setParam('sliceCategories', $sliceCategories);
+        $page->setParam('seoContent', $seoContent);
+        $page->setParam('hotlinks', $hotlinks);
         $page->setGlobalParam('shop', $shop);
 
         return new \Http\Response($page->show());
@@ -517,21 +587,7 @@ class ShowAction {
         });
     }
 
-    private function prepareProductFilter(&$filters, Entity $category, array $sliceFiltersForSearchClientRequest, \Model\Region\Entity $region = null) {
-        $filters = [];
-        \RepositoryManager::productFilter()->prepareCollectionByCategory($category->getId() ? $category : null, $region, $sliceFiltersForSearchClientRequest, function($data) use (&$filters, $sliceFiltersForSearchClientRequest) {
-            if (is_array($data)) {
-                foreach ($data as $item) {
-                    $filter = new \Model\Product\Filter\Entity($item);
-                    if (!$this->hasFilterInFiltersForSearchClientRequest($filter->getId(), $sliceFiltersForSearchClientRequest)) {
-                        $filters[] = $filter;
-                    }
-                }
-            }
-        });
-    }
-
     private function isSeoSlice() {
-        return in_array(\App::request()->get('route'), ['product.category.slice']);
+        return in_array(\App::request()->get('route'), ['product.category.slice', 'product.category.slice.brand'], true);
     }
 }
