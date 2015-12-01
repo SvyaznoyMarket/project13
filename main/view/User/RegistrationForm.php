@@ -11,6 +11,8 @@ class RegistrationForm {
     private $email;
     /** @var string */
     private $phone;
+    /** @var string */
+    public $gaClientId = '';
 
     /** @var array */
     private $errors = array(
@@ -40,6 +42,7 @@ class RegistrationForm {
         if (array_key_exists('first_name', $data)) $this->setFirstName($data['first_name']);
         if (array_key_exists('email', $data)) $this->setEmail($data['email']);
         if (array_key_exists('phone', $data)) $this->setPhone($data['phone']);
+        if (array_key_exists('gaClientId', $data)) $this->gaClientId = $data['gaClientId'];
     }
 
     /**

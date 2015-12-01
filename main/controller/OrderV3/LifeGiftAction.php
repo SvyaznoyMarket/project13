@@ -99,6 +99,11 @@ class LifeGiftAction {
 
         if ($this->user && $this->user->getToken()) $params['user_token'] = $this->user->getToken();
 
+        $gaClientId = $request->get('gaClientId');
+        if ($gaClientId) {
+            $params['ga_client_id'] = $gaClientId;
+        }
+
         try {
             $result = \App::coreClientV2()->query('order/create-packet2', $params, [$orderData], \App::config()->coreV2['hugeTimeout']);
             if (is_array($result) && isset($result[0])) $order = new \Model\Order\CreatedEntity($result[0]);

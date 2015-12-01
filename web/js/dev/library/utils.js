@@ -496,6 +496,43 @@
 	};
 
 	utils.analytics = {
+		ga: {
+			/**
+			 * Пример использования:
+			 * ENTER.utils.analytics.ga.getClientId(function(gaClientId) {
+			 *     gaClientId; // Строка, содержащая id клиента или пустая строка
+			 * });
+			 *
+			 * @param {Function} onFinish
+			 * @param {Number} [timeout=undefined] Время, по истечению которого будет вызвана функция onFinish (вне зависимости от того, был ли получен clientId или нет)
+			 * @return undefined
+			 */
+			getClientId: function(onFinish, timeout) {
+				var timer;
+
+				if (ga) {
+					ga(function(tracker) {
+						if (timer) {
+							clearTimeout(timer);
+						}
+
+						if (onFinish) {
+							onFinish((tracker.get('clientId') || '') + '');
+							onFinish = null;
+						}
+					});
+				}
+
+				if (timeout) {
+					timer = setTimeout(function() {
+						if (onFinish) {
+							onFinish('');
+							onFinish = null;
+						}
+					}, timeout);
+				}
+			}
+		},
 
 		/**
 		 * Проверка доступности трекеров

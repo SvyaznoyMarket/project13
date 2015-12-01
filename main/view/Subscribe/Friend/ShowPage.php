@@ -13,7 +13,7 @@ class ShowPage extends \View\DefaultLayout {
     }
 
     public function slotBodyDataAttribute() {
-        return 'infopage';
+        return 'friend';
     }
 
     public function slotContent() {

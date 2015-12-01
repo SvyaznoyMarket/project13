@@ -16,6 +16,7 @@ class AddProductAction extends \Controller\User\PrivateAction {
 
         $productId = $request->get('productId');
         $channelId = $request->get('channelId');
+        $gaClientId = $request->get('gaClientId');
 
         $responseData = [
             'errors' => [],
@@ -27,6 +28,7 @@ class AddProductAction extends \Controller\User\PrivateAction {
             $createQuery->channelId = $channelId;
             $createQuery->productId = $productId;
             $createQuery->regionId = $region->getId();
+            $createQuery->gaClientId = $gaClientId;
             $createQuery->prepare();
 
             $curl->execute();

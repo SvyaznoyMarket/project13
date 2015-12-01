@@ -252,19 +252,25 @@ class FormAction {
         if ($form->isValid()) {
             $userToken = $data['token'];
             $data = $session->get($sessionName, []);
-            //if ($data['isPhoneConfirmed'] && $data['isEmailConfirmed']) {
+
+            $params = [
+                'client_id' => \App::config()->coreV2['client_id'],
+                'token'     => $userToken,
+            ];
+
+            if ($form->gaClientId) {
+                $params['ga_client_id'] = $form->gaClientId;
+            }
+
             if ($data['isEmailConfirmed']) {
                 // пользователь все подтвердил, пробуем создать купон
                 $link = \App::router()->generate('enterprize.create');
                 (new \Controller\Enterprize\CouponAction())->create($request, $data);
 
                 $notice = 'Купон отправлен на ваш email';
-            } elseif (!$data['isEmailConfirmed']) {
+            } else {
                 try {
-                    $confirm = $client->query('confirm/email', [
-                            'client_id' => \App::config()->coreV2['client_id'],
-                            'token'     => $userToken,
-                        ], [
+                    $confirm = $client->query('confirm/email', $params, [
                             'email'    => $data['email'],
                             'template' => 'enter_prize',
                         ], \App::config()->coreV2['hugeTimeout']
@@ -287,65 +293,6 @@ class FormAction {
                         'needAuth' => $needAuth && !\App::user()->getEntity() ? true : false,
                     ]);
                 }
-            } elseif ($data['isPhoneConfirmed']) {
-                // просим подтвердит email
-                $link = \App::router()->generate('enterprize.confirmEmail.show');
-                try {
-                    if (!isset($data['email']) || empty($data['email'])) {
-                        throw new \Exception('Не получен email');
-                    }
-
-                    $confirm = $client->query(
-                        'confirm/email',
-                        [
-                            'client_id' => \App::config()->coreV2['client_id'],
-                            'token'     =>  $userToken,
-                        ],
-                        [
-                            'email'    => $data['email'],
-                            'template' => 'enter_prize',
-                        ],
-                        \App::config()->coreV2['hugeTimeout']
-                    );
-                    \App::logger()->info(['core.response' => $confirm], ['coupon', 'confirm/email']);
-
-                    $notice = 'Для завершения регистрации, пожалуйста, перейдите по ссылке в письме, отправленном на Ваш почтовый адрес.';
-
-                } catch (\Exception $e) {
-                    \App::exception()->remove($e);
-                    \App::session()->set('flash', ['error' => $e->getMessage()]);
-                }
-            } else {
-                // просим подтвердить телефон
-                $link = \App::router()->generate('enterprize.confirmPhone.show');
-                try {
-                    if (!isset($data['mobile']) || empty($data['mobile'])) {
-                        throw new \Exception('Не получен мобильный телефон');
-                    }
-
-                    $confirm = $client->query(
-                        'confirm/mobile',
-                        [
-                            'client_id' => \App::config()->coreV2['client_id'],
-                            'token'     => $userToken,
-                        ],
-                        [
-                            'mobile' => $data['mobile'],
-                        ],
-                        \App::config()->coreV2['hugeTimeout']
-                    );
-                    \App::logger()->info(['core.response' => $confirm], ['coupon', 'confirm/mobile']);
-
-                } catch (\Exception $e) {
-                    \App::exception()->remove($e);
-                    \App::session()->set('flash', ['error' => $e->getMessage()]);
-                }
-            }
-
-            // Подготавливаем данные для отслеживания регистрации в EnterPrize для Flocktory
-            $userSex = '';
-            if ($user) {
-                $userSex = (1 == $user->getSex()) ? 'm' : (2 == $user->getSex() ? 'f' : '');
             }
 
             // задаем регистрационный флаг
@@ -369,7 +316,7 @@ class FormAction {
                 }
 
                 // пишем в хранилище
-                $storageResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id']], $regData);
+                \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id']], $regData);
 
             } catch (\Exception $e) {
                 \App::logger()->error($e, ['coupon/register-in-enter-prize', 'user_id']);

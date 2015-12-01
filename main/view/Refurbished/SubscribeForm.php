@@ -5,6 +5,8 @@ namespace View\Refurbished;
 class SubscribeForm {
     /** @var string */
     private $email;
+    /** @var string */
+    public $gaClientId = '';
     /** @var array */
     private $errors = array(
         'global'  => null,
@@ -17,6 +19,7 @@ class SubscribeForm {
 
     public function fromArray(array $data) {
         if (array_key_exists('email', $data)) $this->setEmail($data['email']);
+        if (array_key_exists('gaClientId', $data)) $this->gaClientId = $data['gaClientId'];
     }
 
     /**

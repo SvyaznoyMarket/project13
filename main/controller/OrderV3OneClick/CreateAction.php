@@ -38,6 +38,11 @@ class CreateAction {
             $params['token'] = $this->user->getEntity()->getToken();
         }
 
+        $gaClientId = $request->get('gaClientId');
+        if ($gaClientId) {
+            $params['ga_client_id'] = $gaClientId;
+        }
+
         $params += ['request_id' => \App::$id]; // SITE-4445
 
         try {

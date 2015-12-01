@@ -151,6 +151,21 @@ module.exports = function (grunt, options) {
             tasks: ['concat:shopJS', 'uglify:shopJS', 'jsmin-sourcemap:shop']
         },
 
+        corporateJS:{
+            files: [ pathDev + 'corporate/*.js'],
+            tasks: ['concat:corporateJS', 'uglify:corporateJS', 'jsmin-sourcemap:corporate']
+        },
+
+        refurbishedJS:{
+            files: [ pathDev + 'refurbished/*.js'],
+            tasks: ['concat:refurbishedJS', 'uglify:refurbishedJS', 'jsmin-sourcemap:refurbished']
+        },
+
+        friendJS:{
+            files: [ pathDev + 'friend/*.js'],
+            tasks: ['concat:friendJS', 'uglify:friendJS', 'jsmin-sourcemap:friend']
+        },
+
         watch3dJS:{
             files: [ pathDev + 'watch3d/*.js'],
             tasks: ['concat:watch3dJS', 'uglify:watch3dJS']

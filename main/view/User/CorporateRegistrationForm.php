@@ -40,6 +40,9 @@ class CorporateRegistrationForm {
     private $corpEmail;
     /** @var string */
     private $corpPhone;
+    /** @var string */
+    public $gaClientId = '';
+    /** @var array */
     private $errors = array(
         'global'             => null,
         'first_name'         => null,
@@ -86,6 +89,7 @@ class CorporateRegistrationForm {
         if (array_key_exists('corp_okved', $data)) $this->setCorpOKVED($data['corp_okved']);
         if (array_key_exists('corp_email', $data)) $this->setCorpEmail($data['corp_email']);
         if (array_key_exists('corp_phone', $data)) $this->setCorpPhone($data['corp_phone']);
+        if (array_key_exists('gaClientId', $data)) $this->gaClientId = $data['gaClientId'];
     }
 
     /**

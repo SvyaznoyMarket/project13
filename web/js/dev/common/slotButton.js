@@ -110,6 +110,10 @@
 			$confirm = $('.js-slotButton-popup-confirm', $form),
 			$goToProduct = $('.js-slotButton-popup-goToProduct', $form);
 
+		ENTER.utils.analytics.ga.getClientId(function(gaClientId) {
+			$('.js-slotButton-popup-gaClientId', $popup).val(gaClientId);
+		});
+
 		$popup.lightbox_me({
 			centered: true,
 			sticky: true,

@@ -7,6 +7,8 @@ class LoginForm extends \Form\FormAbstract {
     private $username;
     /** @var string */
     private $password;
+    /** @var string */
+    public $gaClientId = '';
     /** @var array */
     protected $errors = array(
         'global'   => null,
@@ -23,6 +25,7 @@ class LoginForm extends \Form\FormAbstract {
     public function fromArray(array $data) {
         if (array_key_exists('username', $data)) $this->setUsername($data['username']);
         if (array_key_exists('password', $data)) $this->setPassword($data['password']);
+        if (array_key_exists('gaClientId', $data)) $this->gaClientId = $data['gaClientId'];
     }
 
     /**

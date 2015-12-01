@@ -104,6 +104,21 @@ module.exports = {
         dest: '<%= pathProd %>shop.js'
     },
 
+    corporateJS : {
+        src: ['<%= pathDev %>corporate/*.js'],
+        dest: '<%= pathProd %>corporate.js'
+    },
+
+    refurbishedJS : {
+        src: ['<%= pathDev %>refurbished/*.js'],
+        dest: '<%= pathProd %>refurbished.js'
+    },
+
+    friendJS : {
+        src: ['<%= pathDev %>friend/*.js'],
+        dest: '<%= pathProd %>friend.js'
+    },
+
     watch3dJS : {
         src: ['<%= pathDev %>watch3d/*.js'],
         dest: '<%= pathProd %>watch3d.js'

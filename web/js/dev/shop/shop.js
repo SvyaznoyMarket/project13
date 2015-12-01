@@ -88,6 +88,11 @@ $(function($){
 
 				isPopupCreated = true;
 
+				var gaClientId = '';
+				ENTER.utils.analytics.ga.getClientId(function(gaClientIdArg) {
+					gaClientId = gaClientIdArg;
+				});
+
 				$('.js-shop-email-popup-send', $popup).click(function(e) {
 					e.preventDefault();
 					$form.submit();
@@ -106,7 +111,8 @@ $(function($){
 						type: $form.attr('method'),
 						url: $form.attr('action'),
 						data: {
-							email: $('.js-shop-email-popup-input', $form).val()
+							email: $('.js-shop-email-popup-input', $form).val(),
+							gaClientId: gaClientId
 						},
 						complete: function() {
 							$form.removeClass(loadingClass);

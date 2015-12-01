@@ -9,7 +9,7 @@
 	var discountSubscribing = function( e ){
 		e.preventDefault();
 
-		var form = $('#subscribe-form'),
+		var form = $('.js-refurbished-form'),
 			wholemessage = form.serializeArray();
 		// end of vars
 
@@ -35,10 +35,14 @@
 	};
 
 	$(document).ready(function(){
-		if ( !$('#subscribe-form').length ) {
+		if ( !$('.js-refurbished-form').length ) {
 			return false;
 		}
-		
-		$('#subscribe-form').bind('submit', discountSubscribing);
+
+		$('.js-refurbished-form').bind('submit', discountSubscribing);
+
+		ENTER.utils.analytics.ga.getClientId(function(gaClientId) {
+			$('.js-refurbished-form-gaClientId').val(gaClientId);
+		});
 	});
 }());

@@ -15,16 +15,19 @@ namespace EnterQuery\Subscribe
         public $channelId;
         /** @var string|null */
         public $userToken;
+        /** @var string */
+        public $gaClientId = '';
         /** @var Response */
         public $response;
 
-        public function __construct($email = null, $channelId = null, $userToken = null)
+        public function __construct($email = null, $channelId = null, $userToken = null, $gaClientId = '')
         {
             $this->response = new Response();
 
             $this->email = $email;
             $this->channelId = $channelId;
             $this->userToken = $userToken;
+            $this->gaClientId = $gaClientId;
         }
 
         /**
@@ -38,6 +41,9 @@ namespace EnterQuery\Subscribe
             ];
             if ($this->userToken) {
                 $queryParams['token'] = $this->userToken;
+            }
+            if ($this->gaClientId) {
+                $queryParams['ga_client_id'] = $this->gaClientId;
             }
 
             $this->prepareCurlQuery(

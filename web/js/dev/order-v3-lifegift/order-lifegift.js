@@ -100,4 +100,8 @@
 				console.log('SERVER RESP:', data)
 			});
 	});
+
+	ENTER.utils.analytics.ga.getClientId(function(gaClientId) {
+		$('.js-lifeGift-orderForm-gaClientId').val(gaClientId);
+	});
 }(jQuery));

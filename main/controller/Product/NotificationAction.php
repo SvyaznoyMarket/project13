@@ -37,6 +37,8 @@ class NotificationAction {
         $email = null;
         try {
             $email = trim((string)$request->get('email'));
+            $gaClientId = $request->get('gaClientId');
+
             if (empty($email)) {
                 throw new \Exception('Не передан email для подписки');
             }
@@ -69,6 +71,10 @@ class NotificationAction {
 
             if ($userEntity) {
                 $params['token'] = $userEntity->getToken();
+            }
+
+            if ($gaClientId) {
+                $params['ga_client_id'] = $gaClientId;
             }
 
             $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e) use(&$exception) {
@@ -117,6 +123,10 @@ class NotificationAction {
 
                     if ($userEntity) {
                         $params['token'] = $userEntity->getToken();
+                    }
+
+                    if ($gaClientId) {
+                        $params['ga_client_id'] = $gaClientId;
                     }
 
                     $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e) use(&$exception) {

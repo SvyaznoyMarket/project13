@@ -24,7 +24,15 @@ class NewAction {
 
         if ($form) {
             try {
-                $createResult = \App::coreClientV2()->query('user/create', [], $form);
+                $params = [];
+
+                if (!empty($form['detail']['gaClientId'])) {
+                    $params['ga_client_id'] = $form['detail']['gaClientId'];
+                }
+
+                unset($form['detail']['gaClientId']);
+
+                $createResult = \App::coreClientV2()->query('user/create', $params, $form);
                 if (is_array($createResult) && isset($createResult['token'])) {
                     $updateResult = \App::coreClientV2()->query('user/update', ['token' => $createResult['token']], ['detail' => $form['detail']]);
                 }

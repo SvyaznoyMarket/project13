@@ -20,13 +20,20 @@ class Send {
                 throw new \Controller\Exception('Не введён email');
             }
 
+            $params = [
+                'email' => $email,
+                'uid'   => $pointUi,
+            ];
+
+            $gaClientId = $request->request->get('gaClientId');
+            if ($gaClientId) {
+                $params['ga_client_id'] = $gaClientId;
+            }
+
             $coreClient = \App::coreClientV2();
             $coreClient->addQuery(
                 'notification/send-point-shop-contacts',
-                [
-                    'email' => $email,
-                    'uid'   => $pointUi,
-                ],
+                $params,
                 [],
                 null,
                 function(\Exception $e) use(&$exception) {

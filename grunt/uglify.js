@@ -147,6 +147,21 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'shop.min.js'
         },
 
+        corporateJS: {
+            src: pathDev + 'corporate/*.js',
+            dest: pathProd + 'corporate.min.js'
+        },
+
+        refurbishedJS: {
+            src: pathDev + 'refurbished/*.js',
+            dest: pathProd + 'refurbished.min.js'
+        },
+
+        friendJS: {
+            src: pathDev + 'friend/*.js',
+            dest: pathProd + 'friend.min.js'
+        },
+
         watch3dJS: {
             src: pathDev + 'watch3d/*.js',
             dest: pathProd + 'watch3d.min.js'

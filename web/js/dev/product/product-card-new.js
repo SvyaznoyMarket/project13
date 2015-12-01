@@ -298,46 +298,71 @@
         $('#reviewFormRating').val(++rate)
     });
 
-    // отправка отзыва
-    $('#reviewForm').on('submit', function(e){
-        var $form = $(this),
-            textareaErrClass = 'form-ctrl__textarea--err',
-            inputErrClass = 'form-ctrl__input--err',
-            textareaLblErrClass = 'form-ctrl__textarea-lbl--err';
-        e.preventDefault();
-        $.ajax({
-            type: 'post',
-            url: $(this).attr('action'),
-            data: $(this).serializeArray(),
-            dataType: 'json',
-            success: function(data){
-                if (data.error) {
-                    console.log('errors in review form', data);
-                    $.each(data.form.error, function(i,val){
-                        var $field = $form.find('[name="review['+ val.field +']"]');
-                        $field.removeClass(textareaErrClass).removeClass(inputErrClass); // снимаем ошибки
-                        if (val.message) {
-                            if ($field.is('textarea')) {
-                                $field.addClass(textareaErrClass);
-                                $field.siblings('.' + textareaLblErrClass).show();
+    !function(){
+        var gaClientId = '';
+        // отправка отзыва
+        $('#reviewForm').on('submit', function(e){
+            var $form = $(this),
+                textareaErrClass = 'form-ctrl__textarea--err',
+                inputErrClass = 'form-ctrl__input--err',
+                textareaLblErrClass = 'form-ctrl__textarea-lbl--err';
+            e.preventDefault();
+            $.ajax({
+                type: 'post',
+                url: $(this).attr('action'),
+                data: $(this).serializeArray(),
+                dataType: 'json',
+                success: function(data){
+                    if (data.error) {
+                        console.log('errors in review form', data);
+                        $.each(data.form.error, function(i,val){
+                            var $field = $form.find('[name="review['+ val.field +']"]');
+                            $field.removeClass(textareaErrClass).removeClass(inputErrClass); // снимаем ошибки
+                            if (val.message) {
+                                if ($field.is('textarea')) {
+                                    $field.addClass(textareaErrClass);
+                                    $field.siblings('.' + textareaLblErrClass).show();
+                                }
+                                if ($field.is('input')) $field.addClass(inputErrClass);
+                            } else {
+                                $field.siblings('.' + textareaLblErrClass).hide();
                             }
-                            if ($field.is('input')) $field.addClass(inputErrClass);
-                        } else {
-                            $field.siblings('.' + textareaLblErrClass).hide();
-                        }
-                    });
-                } else if (data.success) {
-                    var $successDiv = $('.jsReviewSuccessAdd');
-                    $('.jsReviewFormInner').hide();
-                    $('.jsReviewForm2').animate({'height': $successDiv.height()});
-                    $successDiv.fadeIn();
+                        });
+                    } else if (data.success) {
+                        var $successDiv = $('.jsReviewSuccessAdd');
+                        $('.jsReviewFormInner').hide();
+                        $('.jsReviewForm2').animate({'height': $successDiv.height()});
+                        $successDiv.fadeIn();
+                        ENTER.utils.analytics.ga.getClientId(function(gaClientIdArg) {
+                            gaClientId = gaClientIdArg;
+                        });
+                    }
+                },
+                complete: function(data) {
+                    //console.log('complete', data);
                 }
-            },
-            complete: function(data) {
-                //console.log('complete', data);
-            }
+            });
         });
-    });
+
+        $body.on('click', '.jsSubscribeAfterReview', function() {
+
+            if (!$('.js-registerForm-subscribe').is(':checked')) return;
+            $.ajax({
+                type: "POST",
+                url: '/subscribe/create',
+                data: { channel: 1, email: $('#reviewFormEmail').val(), gaClientId: gaClientId },
+                success: function(data) {
+                    if (data.success) {
+                        $('.jsReviewSuccessJustSubscribed').lightbox_me(popupDefaults);
+                    } else {
+                        $('.jsReviewSuccessSubscribed').lightbox_me(popupDefaults);
+                        if (data.code != 910) $('.jsReviewSuccessSubscribed .popup-form-success__txt').text(data.error)
+                    }
+                }
+            });
+        })
+    }();
+
 
     $body.on('click', '.jsReviewVote', function(e){
         var $button = $(e.target),
@@ -417,24 +442,4 @@
     $body.on('click', '.jsProductCardNewLabelInfo', function(){
         $('.jsProductCardNewLabelPopup').toggleClass('info-popup--open');
     });
-
-    //
-    $body.on('click', '.jsSubscribeAfterReview', function() {
-
-        if (!$('.js-registerForm-subscribe').is(':checked')) return;
-        $.ajax({
-            type: "POST",
-            url: '/subscribe/create',
-            data: { channel: 1, email: $('#reviewFormEmail').val() },
-            success: function(data) {
-                if (data.success) {
-                    $('.jsReviewSuccessJustSubscribed').lightbox_me(popupDefaults);
-                } else {
-                    $('.jsReviewSuccessSubscribed').lightbox_me(popupDefaults);
-                    if (data.code != 910) $('.jsReviewSuccessSubscribed .popup-form-success__txt').text(data.error)
-                }
-            }
-        });
-    })
-
 })(jQuery);

@@ -18,12 +18,13 @@ class FacebookProvider implements ProviderInterface {
     /**
      * @param string $redirect_to
      * @param string $subscribe "1" - если пользователь подписался на рассылку, пустая строка в противном случае
+     * @param string $gaClientId ID клиента в google analytics
      * @return string
      */
-    public function getLoginUrl($redirect_to = '', $subscribe = '') {
+    public function getLoginUrl($redirect_to = '', $subscribe = '', $gaClientId = '') {
         return 'https://www.facebook.com/dialog/oauth?' . http_build_query([
             'client_id'     => $this->config->clientId,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, 'subscribe' => $subscribe, 'redirect_to' => $redirect_to], true),
+            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, 'subscribe' => $subscribe, 'gaClientId' => $gaClientId, 'redirect_to' => $redirect_to], true),
             'response_type' => 'code',
             'scope'         => 'email,user_birthday'
         ]);
@@ -41,12 +42,12 @@ class FacebookProvider implements ProviderInterface {
             return null;
         }
 
-        $response = $this->query($this->getAccessTokenUrl($code, $request->get('redirect_to'), $request->get('subscribe')), [], false, true);
+        $response = $this->query($this->getAccessTokenUrl($code, $request->get('redirect_to'), $request->get('subscribe'), $request->get('gaClientId')), [], false, true);
 
         parse_str($response, $response);
 
         if (empty($response['access_token'])) {
-            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code, $request->get('redirect_to'), $request->get('subscribe')), 'response' => $response], ['oauth']);
+            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code, $request->get('redirect_to'), $request->get('subscribe'), $request->get('gaClientId')), 'response' => $response], ['oauth']);
             return null;
         }
         $accessToken = $response['access_token'];
@@ -69,12 +70,13 @@ class FacebookProvider implements ProviderInterface {
      * @param $code
      * @param string $redirect_to
      * @param string $subscribe "1" - если пользователь подписался на рассылку, пустая строка в противном случае
+     * @param string $gaClientId ID клиента в google analytics
      * @return string
      */
-    private function getAccessTokenUrl($code, $redirect_to = '', $subscribe = '') {
+    private function getAccessTokenUrl($code, $redirect_to = '', $subscribe = '', $gaClientId = '') {
         return 'https://graph.facebook.com/oauth/access_token?' . http_build_query([
             'client_id'     => $this->config->clientId,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, 'subscribe' => $subscribe, 'redirect_to' => $redirect_to], true),
+            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, 'subscribe' => $subscribe, 'gaClientId' => $gaClientId, 'redirect_to' => $redirect_to], true),
             'client_secret' => $this->config->secretKey,
             'code'          => $code,
         ]);

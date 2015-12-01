@@ -9,7 +9,8 @@
 			$popup,
 			$email,
 			$error,
-			$subscribe;
+			$subscribe,
+			gaClientId = '';
 
 		/**
 		 * Показать окно подписки на снижение цены
@@ -37,6 +38,10 @@
 					e.preventDefault();
 					hidePopup();
 				});
+
+				ENTER.utils.analytics.ga.getClientId(function(gaClientIdArg) {
+					gaClientId = gaClientIdArg;
+				});
 			}
 
 			$popup.fadeIn(300);
@@ -55,7 +60,7 @@
 		function submit(e) {
 			e.preventDefault();
 
-			$.get(data.submitUrl + (data.submitUrl.indexOf('?') == -1 ? '?' : '&') + 'email=' + encodeURIComponent($email.val()) + '&subscribe=' + (checkSubscribe() ? 1 : 0), function(res) {
+			$.get(data.submitUrl + (data.submitUrl.indexOf('?') == -1 ? '?' : '&') + 'email=' + encodeURIComponent($email.val()) + '&subscribe=' + (checkSubscribe() ? 1 : 0) + '&gaClientId=' + gaClientId, function(res) {
 				if ( !res.success ) {
 					$email.addClass('red');
 

@@ -7,6 +7,8 @@ $oauthEnabled = \App::config()->oauthEnabled;
 ?>
 
 <form class="authForm authForm_register js-registerForm" action="<?= $page->url('user.register') ?>" method="post" style="/*display: none*/">
+    <input type="hidden" name="register[gaClientId]" class="js-registerForm-gaClientId" />
+
     <fieldset class="authForm_fld authForm_fld-scrll">
         <!-- секция регистрации -->
         <div class="authForm_inn">

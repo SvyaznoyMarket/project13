@@ -309,6 +309,7 @@ $f = function(
         <?= \App::templating()->render('order-v3/common/_blackfriday', ['version' => 2]) ?>
 
         <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
+            <input type="hidden" name="gaClientId" class="js-orderForm-gaClientId" />
 
             <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
                 <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" value="" />

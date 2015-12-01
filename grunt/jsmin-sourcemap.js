@@ -178,6 +178,27 @@ module.exports = function (grunt, options) {
                 srcRoot: '/js',
                 cwd: 'web/js'
         },
+        corporate: {
+            src: ['dev/corporate/*.js'],
+                dest: 'prod/corporate.js',
+                destMap: 'prod/corporate.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+        refurbished: {
+            src: ['dev/refurbished/*.js'],
+                dest: 'prod/refurbished.js',
+                destMap: 'prod/refurbished.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+        friend: {
+            src: ['dev/friend/*.js'],
+                dest: 'prod/friend.js',
+                destMap: 'prod/friend.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
         watch3d: {
             src: ['dev/watch3d/*.js'],
                 dest: 'prod/watch3d.js',

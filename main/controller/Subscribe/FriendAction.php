@@ -53,6 +53,7 @@ class FriendAction {
         $controllerRequest->userToken = $userEntity ? $userEntity->getToken() : null;
         $controllerRequest->channelId = $channelId;
         $controllerRequest->email = is_string($request->get('email')) ? $request->get('email') : null;
+        $controllerRequest->gaClientId = $request->get('gaClientId');
 
         $controllerResponse = $controller->execute($controllerRequest);
 

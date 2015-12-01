@@ -104,6 +104,10 @@ class Action {
                     $authSource = 'phone';
                 }
 
+                if ($form->gaClientId) {
+                    $params['ga_client_id'] = $form->gaClientId;
+                }
+
                 try {
                     $result = \App::coreClientV2()->query(
                         'user/auth',
@@ -371,6 +375,12 @@ class Action {
             }
 
             if ($form->isValid()) {
+                $params = [];
+
+                if ($form->gaClientId) {
+                    $params['ga_client_id'] = $form->gaClientId;
+                }
+
                 $data = [
                     'first_name' => $form->getFirstName(),
                     'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
@@ -388,7 +398,7 @@ class Action {
                 }
 
                 try {
-                    $result = \App::coreClientV2()->query('user/create', [], $data, 2 * \App::config()->coreV2['timeout']);
+                    $result = \App::coreClientV2()->query('user/create', $params, $data, 2 * \App::config()->coreV2['timeout']);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }
@@ -880,6 +890,14 @@ class Action {
                 $phone = preg_replace('/^\+7/', '8', $phone);
                 $phone = preg_replace('/[^\d]/', '', $phone);
 
+                $params = [
+                    'geo_id' => \App::user()->getRegion()->getId(),
+                ];
+
+                if ($form->gaClientId) {
+                    $params['ga_client_id'] = $form->gaClientId;
+                }
+
                 $data = [
                     'first_name'    => $form->getFirstName(),
                     'last_name'     => $form->getLastName(),
@@ -911,9 +929,7 @@ class Action {
                 try {
                     $result = \App::coreClientV2()->query(
                         'user/create-legal',
-                        [
-                            'geo_id' => \App::user()->getRegion()->getId(),
-                        ],
+                        $params,
                         $data,
                         \App::config()->coreV2['hugeTimeout']
                     );
@@ -1044,9 +1060,16 @@ class Action {
                 throw new \Exception($errorMsg);
             }
 
-            $result = \App::coreClientV2()->query('user/reset-password', [
+            $params = [
                 ($isEmail ? 'email' : 'mobile') => $username,
-            ]);
+            ];
+
+            $gaClientId = $request->get('forgot')['gaClientId'];
+            if ($gaClientId) {
+                $params['ga_client_id'] = $gaClientId;
+            }
+
+            $result = \App::coreClientV2()->query('user/reset-password', $params);
             if (isset($result['confirmed']) && $result['confirmed']) {
                 return new \Http\JsonResponse([
                     'error' => null,

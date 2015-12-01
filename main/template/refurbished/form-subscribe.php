@@ -12,7 +12,9 @@ if (empty($redirect)) $redirect = $request->getRequestUri();
 if (!isset($form)) $form = new \View\Refurbished\SubscribeForm();
 ?>
 
-<form id="subscribe-form" action="<?= $page->url('refurbished.subscribe') ?>" class="form" method="post">
+<form id="subscribe-form" action="<?= $page->url('refurbished.subscribe') ?>" class="form js-refurbished-form" method="post">
+    <input type="hidden" name="subscriber[gaClientId]" class="js-refurbished-form-gaClientId" />
+
     <input type="hidden" name="redirect_to" value="<?= $page->escape($redirect) ?>"/>
     <div class="font14 mb70">
         <? if ($error = $form->getError('global')) echo $page->render('_formError', array('error' => $error)) ?>

@@ -19,6 +19,8 @@ if (empty($rootCategories)) $rootCategories = [];
         <h2 class="bTitle" id="bCorpRegFormHead">Регистрация юридического лица</h2>
         <form class="bCorpRegForm" action="<?= $page->url('user.registerCorporate') ?>" method="post">
 
+            <input type="hidden" name="register[gaClientId]" class="js-registerCorporateForm-gaClientId" />
+
             <? if ($error = $form->getError('global')) echo $page->render('_formError', ['error' => $error]) ?>
 
             <label class="bCorpRegForm__eLabel">Фамилия:</label>

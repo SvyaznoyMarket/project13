@@ -5,6 +5,8 @@ namespace View\Enterprize;
 class Form extends FormRegistration {
     /** @var string */
     protected $guid;
+    /** @var string */
+    public $gaClientId = '';
     /** @var array */
     protected $errors = array(
         'global'    => null,
@@ -25,6 +27,7 @@ class Form extends FormRegistration {
             $guid = !empty($data['enterprizeToken']) ? $data['enterprizeToken'] : $data['guid'];
             $this->setEnterprizeCoupon($guid);
         }
+        if (array_key_exists('gaClientId', $data)) $this->gaClientId = $data['gaClientId'];
     }
 
     /**

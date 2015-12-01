@@ -47,6 +47,13 @@
         }
     ;
 
+    ENTER.utils.analytics.ga.getClientId(function(gaClientId) {
+        $('.js-notification-link').each(function(index, link) {
+            var $link = $(link);
+            $link.attr('href', ENTER.utils.setURLParam('gaClientId', gaClientId, $link.attr('href')));
+        });
+    });
+
     $body.on('click', '.overlay', function() {
         var selector = $(this).data('popup');
         hidePopup(selector);

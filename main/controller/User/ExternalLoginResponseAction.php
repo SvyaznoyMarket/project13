@@ -146,6 +146,14 @@ class ExternalLoginResponseAction {
 
                 //тут пытаемся создать пользователя
                 try {
+                    $gaClientId = $request->query->get('gaClientId');
+
+                    $params = [];
+
+                    if ($gaClientId) {
+                        $params['ga_client_id'] = $gaClientId;
+                    }
+
                     $data = [
                         'first_name'=>$profile->getFirstName(),
                         'last_name'=>$profile->getLastName(),
@@ -155,7 +163,7 @@ class ExternalLoginResponseAction {
                         'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null
                     ];
 
-                    $result = \App::coreClientV2()->query('user/create', [], $data, \App::config()->coreV2['hugeTimeout']);
+                    $result = \App::coreClientV2()->query('user/create', $params, $data, \App::config()->coreV2['hugeTimeout']);
 
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
@@ -194,12 +202,18 @@ class ExternalLoginResponseAction {
                     }
 
                     if ($request->query->get('subscribe') === '1' && isset($data['email']) && $data['email'] != '') {
-                        \App::coreClientV2()->query('subscribe/create', [
+                        $params = [
                             'email'      => $data['email'],
                             'geo_id'     => \App::user()->getRegion()->getId(),
                             'channel_id' => 1,
                             'token'      => \App::user()->getToken(),
-                        ]);
+                        ];
+
+                        if ($gaClientId) {
+                            $params['ga_client_id'] = $gaClientId;
+                        }
+
+                        \App::coreClientV2()->query('subscribe/create', $params);
                     }
 
                     return $response;

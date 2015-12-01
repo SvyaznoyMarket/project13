@@ -40,8 +40,11 @@
     <div class="suppliers-collab__info supplierToHide">По всем вопросам звоните +7 (495) 775-00-06</div>
 
         <form   id="b2bRegisterForm"
+                class="js-supplierForm"
                 action="<?= \App::helper()->url('supplier.new') ?>"
                 method="post">
+
+            <input type="hidden" name="detail[gaClientId]" class="js-supplierForm-gaClientId" />
             
             <div id="weCan" class="suppliers__slogan supplierToHide">Мы умеем продавать!</div>
 

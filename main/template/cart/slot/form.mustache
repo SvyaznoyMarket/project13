@@ -2,6 +2,7 @@
     <a href="#" class="js-slotButton-popup-close popup--request__close" title="Закрыть"></a>
 
     <form action="{{orderCreateUrl}}" method="post">
+        <input type="hidden" name="gaClientId" class="js-slotButton-popup-gaClientId" />
         <input type="hidden" name="productId" value="{{productId}}" />
         <input type="hidden" name="sender" value="{{sender}}" />
         <input type="hidden" name="sender2" value="{{sender2}}" />

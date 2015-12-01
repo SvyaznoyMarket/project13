@@ -27,7 +27,7 @@ class Action {
 
             $cartSplitResponse = $this->queryCartSplit($request->request->get('productId'));
 
-            $orderCreatePacketParams = $this->getOrderCreatePacketParams();
+            $orderCreatePacketParams = $this->getOrderCreatePacketParams($request->request->get('gaClientId'));
             $orderCreatePacketData = $this->getOrderCreatePacketData($cartSplitResponse, $phone, $request->request->get('email'), $request->request->get('name'), $request->request->get('sender'), (string)$request->request->get('sender2'));
 
             $orderCreatePacketResponse = \App::coreClientV2()->query(
@@ -138,12 +138,16 @@ class Action {
         return $cartSplitResponse;
     }
 
-    private function getOrderCreatePacketParams() {
+    private function getOrderCreatePacketParams($gaClientId) {
         $params = [];
         $user = \App::user();
 
         if ($user->getEntity() && $user->getEntity()->getToken()) {
             $params['token'] = $user->getEntity()->getToken();
+        }
+
+        if ($gaClientId) {
+            $params['ga_client_id'] = $gaClientId;
         }
 
         $params += ['request_id' => \App::$id]; // SITE-4445

@@ -192,6 +192,10 @@
                     if (spinner) spinner.stop();
 
                     bindMask();
+
+                    ENTER.utils.analytics.ga.getClientId(function(gaClientId) {
+                        $('.js-orderForm-gaClientId').val(gaClientId);
+                    });
                 };
 
             if (-1 !== $.inArray(action, ['changeDate', 'changeInterval', 'changeOrderComment'])) hideContent = false;
@@ -279,33 +283,33 @@
                     map.setBounds(map.geoObjects.getBounds());
                     // точки становятся видимыми только при увеличения зума
                     /*map.events.once('boundschange', function(event){
-                        if (event.get('oldZoom') < event.get('newZoom')) {
-                            map.geoObjects.each(function(point) { point.options.set('visible', true)})
-                        }
-                    })*/
+                     if (event.get('oldZoom') < event.get('newZoom')) {
+                     map.geoObjects.each(function(point) { point.options.set('visible', true)})
+                     }
+                     })*/
                 }
 
             }
-		},
+        },
 
-		showOfertaPopup = function showOfertaPopupF() {
-			$offertaPopup.lightbox_me();
-		},
+        showOfertaPopup = function showOfertaPopupF() {
+            $offertaPopup.lightbox_me();
+        },
 
-		tabsOfertaAction = function tabsOfertaActionF(that) {
-			var $self = $(that),
-				tabContent = $('.js-tab-oferta-content'),
-				tab_id = $(that).attr('data-tab');
+        tabsOfertaAction = function tabsOfertaActionF(that) {
+            var $self = $(that),
+                tabContent = $('.js-tab-oferta-content'),
+                tab_id = $(that).attr('data-tab');
 
-			$('.js-oferta-tab').removeClass('orderOferta_tabs_i-cur');
-			tabContent.removeClass('orderOferta_tabcnt-cur');
+            $('.js-oferta-tab').removeClass('orderOferta_tabs_i-cur');
+            tabContent.removeClass('orderOferta_tabcnt-cur');
 
-			$self.addClass('orderOferta_tabs_i-cur');
-			$("#"+tab_id).addClass('orderOferta_tabcnt-cur');
+            $self.addClass('orderOferta_tabs_i-cur');
+            $("#"+tab_id).addClass('orderOferta_tabcnt-cur');
         },
         lblPosition = function lblPosition() {
-          var $this = $(this),
-              $label = $this.parent().find('.js-order-ctrl__txt');
+            var $this = $(this),
+                $label = $this.parent().find('.js-order-ctrl__txt');
 
             if ($this.is(":focus") || ($this.val() !== '')) {
                 $label.addClass('top');
@@ -399,7 +403,7 @@
                 }
             }).always(function(){});
         }
-    ;
+        ;
 
     // TODO change all selectors to .jsMethod
 
@@ -410,14 +414,14 @@
         e.preventDefault();
     });
 
-	$orderContent.on('click', '.jsAddressRootNode', function() {
-		ENTER.OrderV3.address.inputFocus(true);
+    $orderContent.on('click', '.jsAddressRootNode', function() {
+        ENTER.OrderV3.address.inputFocus(true);
         $(this).find('.jsSmartAddressInput').focus();
-	});
+    });
 
-	$orderContent.on('blur', '.jsSmartAddressInput', function() {
-		ENTER.OrderV3.address.inputFocus(false);
-	});
+    $orderContent.on('blur', '.jsSmartAddressInput', function() {
+        ENTER.OrderV3.address.inputFocus(false);
+    });
 
     // клик по "изменить дату" и "изменить место"
     $orderContent.on('click', '.orderCol_date, .js-order-changePlace-link', function(e) {
@@ -437,9 +441,9 @@
     });
 
     // клик по способу доставки
-	$body.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
+    $body.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
         var token = $(this).data('token');
-            //map = $(this).parent().next();
+        //map = $(this).parent().next();
         // переключение списка магазинов
         $('.selShop_l').hide();
         $('.selShop_l[data-token='+token+']').show();
@@ -467,7 +471,7 @@
     // клик по способу доставки
     $orderContent.on('click', '.jsDeliveryChange:not(.active)', function() {
         var $elem = $(this);
-            changeDelivery($elem.closest('.jsOrderRow').data('block_name'), $elem.data('delivery_method_token'));
+        changeDelivery($elem.closest('.jsOrderRow').data('block_name'), $elem.data('delivery_method_token'));
 
     });
 
@@ -574,7 +578,7 @@
             $el = $(this),
             relations = $el.data('relation'),
             value = $el.data('value') || {}
-        ;
+            ;
 
         value['number'] = $(relations['number']).val().trim();
 
@@ -607,27 +611,27 @@
         if (!$('.jsAcceptAgreement').is(':checked')) $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
     });
 
-	/* Оферта */
-	$body.on('click', '.js-order-oferta-popup-btn', function(e){
-		var href = $(this).data('value');
-		e.preventDefault();
-		if (href != '') {
-			console.log('OLD href', href);
-			if (window.location.host != 'www.enter.ru') href = href.replace(/^.*enter.ru/, ''); /* для работы на demo-серверах */
-			console.log('NEW href', href);
-			$.ajax({
-				url: ENTER.utils.setURLParam('ajax', 1, href),
-				success: function(data) {
-					$offertaPopup.find('.orderOferta_tl:first').html(data.content || '');
-					showOfertaPopup();
-				}
-			})
-		}
-	});
+    /* Оферта */
+    $body.on('click', '.js-order-oferta-popup-btn', function(e){
+        var href = $(this).data('value');
+        e.preventDefault();
+        if (href != '') {
+            console.log('OLD href', href);
+            if (window.location.host != 'www.enter.ru') href = href.replace(/^.*enter.ru/, ''); /* для работы на demo-серверах */
+            console.log('NEW href', href);
+            $.ajax({
+                url: ENTER.utils.setURLParam('ajax', 1, href),
+                success: function(data) {
+                    $offertaPopup.find('.orderOferta_tl:first').html(data.content || '');
+                    showOfertaPopup();
+                }
+            })
+        }
+    });
 
-	$body.on('click', '.js-oferta-tab', function(){
-		tabsOfertaAction(this)
-	});
+    $body.on('click', '.js-oferta-tab', function(){
+        tabsOfertaAction(this)
+    });
 
     // Попап с сообщением о минимальной сумма заказа
     $('.jsMinOrderSumPopup').lightbox_me({
@@ -636,34 +640,34 @@
         centered: true
     });
 
-	// ДЛЯ АБ-ТЕСТА ПО МОТИВАЦИИ ОНЛАЙН-ОПЛАТЫ
-	$body.on('click', '.jsPaymentMethodRadio', function(){
-		var $this = $(this),
-			block_name = $this.closest('.orderRow').data('block_name'),
-			method = $this.val();
+    // ДЛЯ АБ-ТЕСТА ПО МОТИВАЦИИ ОНЛАЙН-ОПЛАТЫ
+    $body.on('click', '.jsPaymentMethodRadio', function(){
+        var $this = $(this),
+            block_name = $this.closest('.orderRow').data('block_name'),
+            method = $this.val();
         if (method == 'by_online_credit') {
             $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Кредит']);
             $body.trigger('trackGoogleEvent', ['Credit', 'Выбор опции', 'Оформление заказа']);
         }
         if (method == 'by_online') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Онлайн-оплата']);
-		changePaymentMethod(block_name, method, 'true')
-	});
+        changePaymentMethod(block_name, method, 'true')
+    });
 
-	$body.on('change', '.jsPaymentMethodSelect', function(e){
-		var $this = $(this),
-			block_name = $this.closest('.orderRow').data('block_name'),
-			selectedMethod = $this.find(':selected').val();
-		changePaymentMethod(block_name, selectedMethod, 'true');
+    $body.on('change', '.jsPaymentMethodSelect', function(e){
+        var $this = $(this),
+            block_name = $this.closest('.orderRow').data('block_name'),
+            selectedMethod = $this.find(':selected').val();
+        changePaymentMethod(block_name, selectedMethod, 'true');
         console.log('[G changed', e);
         if (selectedMethod == 'by_credit_card') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2', '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
-		e.preventDefault();
-	});
+        e.preventDefault();
+    });
 
     $body.on('change', '.js-order-paymentMethod', function(e) {
         var
             $el = $(this),
             params = $el.is('select') ? $el.find(':selected').data('value') : $el.data('value')
-        ;
+            ;
         console.info({'$el': $el, 'data': params});
 
         sendChanges('changePaymentMethod', params);
@@ -685,7 +689,7 @@
             $discountContainer = relations['discountContainer'] && $(relations['discountContainer']),
             $sumContainer = relations['sumContainer'] && $(relations['sumContainer']),
             sum = $el.data('sum')
-        ;
+            ;
 
         try {
             if (!url) {
@@ -711,7 +715,7 @@
             data,
             relations,
             $formContainer
-        ;
+            ;
 
         if ($el.data('checked')) {
             url = $el.data('url');
@@ -785,22 +789,22 @@
     //вызов попапа подтверждения удаления товара из заказа
     $body.on('click','.js-del-popup-show',function(){
         var $this = $(this);
-            $this.parent().find('.js-del-popup').show();
-		$body.append("<div class='order-popup__overlay js-order-overlay'></div>");
+        $this.parent().find('.js-del-popup').show();
+        $body.append("<div class='order-popup__overlay js-order-overlay'></div>");
     });
     $body.on('click','.js-del-popup-close',function(){
         var $this = $(this);
         $this.closest('.js-del-popup').hide();
-		$('.js-order-overlay').remove();
+        $('.js-order-overlay').remove();
     });
     //закрытие алертов к заказу
     $body.on('click','.js-order-err-close',function(){
         $(this).closest('.order-error').hide();
     });
-	$body.on('click','.js-order-overlay',function(){
-		$body.find('.js-del-popup').hide();
-		$(this).remove();
-	});
+    $body.on('click','.js-order-overlay',function(){
+        $body.find('.js-del-popup').hide();
+        $(this).remove();
+    });
 
     // автокомплит адреса
     $body.on('focus', '.js-order-deliveryAddress', function() {
@@ -914,7 +918,7 @@
             $form      = $el.attr('form') && $('#' + $el.attr('form')),
             formResult = { errors: [] },
             valid      = true
-        ;
+            ;
         console.info($el, $form, formResult);
 
         try {
@@ -949,6 +953,10 @@
         var $el = $(this);
 
         $el.val($el.val().replace(/[^0-9]+/g, ''));
+    });
+
+    ENTER.utils.analytics.ga.getClientId(function(gaClientId) {
+        $('.js-orderForm-gaClientId').val(gaClientId);
     });
 
     // console.log(ENTER.config.pageConfig.useNodeMQ);

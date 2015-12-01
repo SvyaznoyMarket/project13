@@ -21,10 +21,6 @@ class IndexPage extends \View\DefaultLayout {
         return parent::slotBodyClassAttribute() . ' enterprize';
     }
 
-    public function slotContentHead() {
-        return parent::slotContentHead() . $this->render('enterprize/_auth');
-    }
-
     public function slotAuth() {
         return $this->render('_auth', ['oauthEnabled' => \App::config()->oauthEnabled, 'showRegisterForm' => false]);
     }

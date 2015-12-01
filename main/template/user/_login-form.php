@@ -10,6 +10,8 @@ if (!isset($redirect_to)) $redirect_to = null;
 ?>
 
 <form class="authForm authForm_login js-authForm" data-state="default" action="<?= $page->url($form->getRoute()) ?>" method="post">
+    <input type="hidden" name="signin[gaClientId]" class="js-authForm-gaClientId" />
+
     <fieldset class="authForm_fld authForm_fld-scrll">
         <!-- секция входа -->
         <div class="authForm_inn">
@@ -35,13 +37,13 @@ if (!isset($redirect_to)) $redirect_to = null;
                 <ul class="authForm_socn_lst">
                     <? if ($oauthEnabled['facebook']): ?>
                         <li class="authForm_socn_i">
-                            <a class="authForm_socn_lk authForm_socn_lk-fb" href="<?= $page->url('user.login.external', ['providerName' => 'facebook']) ?>" >Войти через FB</a>
+                            <a class="authForm_socn_lk authForm_socn_lk-fb js-authForm-socnetLink" href="<?= $page->url('user.login.external', ['providerName' => 'facebook']) ?>" >Войти через FB</a>
                         </li>
                     <? endif ?>
 
                     <? if ($oauthEnabled['vkontakte']): ?>
                         <li class="authForm_socn_i">
-                            <a class="authForm_socn_lk authForm_socn_lk-vk" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte']) ?>" >Войти через VK</a>
+                            <a class="authForm_socn_lk authForm_socn_lk-vk js-authForm-socnetLink" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte']) ?>" >Войти через VK</a>
                         </li>
                     <? endif ?>
                 </ul>

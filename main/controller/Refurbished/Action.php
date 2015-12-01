@@ -52,6 +52,10 @@ class Action {
                     $params['token'] = $userEntity->getToken();
                 }
 
+                if ($form->gaClientId) {
+                    $params['ga_client_id'] = $form->gaClientId;
+                }
+
                 $exception = null;
                 $client->addQuery('subscribe/create', $params, [], function($data) {}, function(\Exception $e) use(&$exception) {
                     $exception = $e;

@@ -46,12 +46,17 @@
 				$subscribe.attr('checked', 'checked');
 			}
 
-			changeSocnetLinks($subscribe.length && $subscribe[0].checked);
+			setSubscribeParamToSocialNetLinks($subscribe.length && $subscribe[0].checked);
 
 			$subscribe.change(function(e) {
-				changeSocnetLinks(e.currentTarget.checked);
+				setSubscribeParamToSocialNetLinks(e.currentTarget.checked);
 			});
 		}();
+
+		ENTER.utils.analytics.ga.getClientId(function(gaClientId) {
+			setParamToLinks('gaClientId', gaClientId ? gaClientId : null, $('.js-registerForm-socnetLink, .js-authForm-socnetLink'));
+			$('.js-authForm-gaClientId, .js-registerForm-gaClientId, .js-resetForm-gaClientId').val(gaClientId);
+		});
 
 		// изменение состояния блока авторизации
 		$authContent.on('changeState', function(e, state) {
@@ -190,10 +195,19 @@
 		$('.js-registerForm .js-phoneField').mask('+7 (nnn) nnn-nn-nn');
 	}
 
-	function changeSocnetLinks(isSubscribe) {
-		$('.js-registerForm-socnetLink').each(function(index, link) {
+	function setSubscribeParamToSocialNetLinks(isSubscribe) {
+		setParamToLinks('subscribe', isSubscribe ? '1' : null, $('.js-registerForm-socnetLink'));
+	}
+
+	/**
+	 * @param name
+	 * @param value Если null, то параметр name будет удалён из URL адреса
+	 * @param {jQuery} $links
+	 */
+	function setParamToLinks(name, value, $links) {
+		$links.each(function(index, link) {
 			var $link = $(link);
-			$link.attr('href', ENTER.utils.setURLParam('subscribe', isSubscribe ? '1' : null, $link.attr('href')));
+			$link.attr('href', ENTER.utils.setURLParam(name, value, $link.attr('href')));
 		});
 	}
 }(window.ENTER));

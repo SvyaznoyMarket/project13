@@ -25,6 +25,7 @@ namespace EnterApplication\Action\Subscribe
             $createQuery->email = $request->email;
             $createQuery->channelId = $request->channelId;
             $createQuery->userToken = $request->userToken;
+            $createQuery->gaClientId = $request->gaClientId;
             $createQuery->prepare();
 
             $curl->execute();
@@ -74,6 +75,8 @@ namespace EnterApplication\Action\Subscribe\Create
         public $userToken;
         /** @var string|null */
         public $channelId;
+        /** @var string */
+        public $gaClientId = '';
     }
 
     class Response

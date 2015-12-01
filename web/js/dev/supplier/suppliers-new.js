@@ -5,7 +5,7 @@
         $title = $authPopup.find('.jsAuthFormLoginTitle'),
         authClass = 'supplier-login',
         inputErrorClass = 'error',
-        $registerForm = $('#b2bRegisterForm'),
+        $registerForm = $('.js-supplierForm'),
         validate,
         $inputs = $registerForm.find('input'),
         $detailName = $registerForm.find('[name=detail\\[name\\]]'),
@@ -33,6 +33,10 @@
 
         return $registerForm.find('input.error').length == 0 && $agreed.is(':checked');
     };
+
+    ENTER.utils.analytics.ga.getClientId(function(gaClientId) {
+        $('.js-supplierForm-gaClientId').val(gaClientId);
+    });
 
     // Показ модифицированного окна логина
     $supplierLoginButton.on('click', function(){

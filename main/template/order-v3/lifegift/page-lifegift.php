@@ -19,6 +19,7 @@ return function(
         </div>
 
         <form action="" class="orderU clearfix jsOrderForm" method="post">
+            <input type="hidden" name="gaClientId" class="js-lifeGift-orderForm-gaClientId" />
 
             <fieldset class="orderU_flds">
                 <legend class="orderLgift_st">Подарок</legend>

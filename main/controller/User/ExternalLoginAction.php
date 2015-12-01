@@ -25,6 +25,6 @@ class ExternalLoginAction {
         }
 
         $redirectTo = (rawurldecode($request->get('redirect_to'))) ? rawurldecode($request->get('redirect_to')) : rawurldecode($request->headers->get('referer'));
-        return new \Http\RedirectResponse($provider->getLoginUrl($redirectTo, $request->query->get('subscribe')));
+        return new \Http\RedirectResponse($provider->getLoginUrl($redirectTo, $request->query->get('subscribe'), $request->query->get('gaClientId')));
     }
 }

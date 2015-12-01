@@ -16,6 +16,7 @@ $f = function(
 
 <form class="subscribe-form" action="<?= $helper->url('subscribe.friend.create') . ('bottom' === $location ? '#bottom' : '') ?>" method="post">
     <input type="hidden" name="channel" value="<?= $channelId ?>">
+    <input type="hidden" name="gaClientId" class="js-friend-form-gaClientId" />
 
     <div class="subscribe-form-group<? if ($error): ?> error<? endif ?>">
         <label>Ваш e-mail</label>

@@ -66,6 +66,10 @@ $(function() {
 					if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
 				});
 
+				ENTER.utils.analytics.ga.getClientId(function(gaClientId) {
+					$('.js-order-oneclick-form-gaClientId', $popup).val(gaClientId);
+				});
+
 				$popup.lightbox_me({
 					centered: true,
 					sticky: false,

@@ -23,6 +23,7 @@ class CreateAction extends OrderV3 {
         $coreResponse = null;   // ответ о ядра
         $ordersData = [];       // данные для отправки на ядро
         $params = [];           // параметры запроса на ядро
+        $gaClientId = $request->get('gaClientId');
 
         $splitResult = $this->session->get($this->splitSessionKey, []);
         $orderDelivery = new Entity($splitResult);
@@ -34,6 +35,10 @@ class CreateAction extends OrderV3 {
         // SITE-6071
         if ('call-center' === $this->session->get(\App::config()->order['channelSessionKey'])) {
             $params['client_id'] = 'call-center'; // call center
+        }
+
+        if ($gaClientId) {
+            $params['ga_client_id'] = $gaClientId;
         }
 
         $params += ['request_id' => \App::$id]; // SITE-4445
@@ -60,7 +65,7 @@ class CreateAction extends OrderV3 {
             $this->session->set($this->splitSessionKey, $splitResult);
 
             if ($userInfo['subscribe'] && $userInfo['email']) {
-                $this->addSubscribeRequest($subscribeResult, $userInfo['email']);
+                $this->addSubscribeRequest($subscribeResult, $userInfo['email'], $gaClientId);
             }
         }
 
@@ -176,19 +181,23 @@ class CreateAction extends OrderV3 {
         }
     }
 
-    private function addSubscribeRequest(&$subscribeResult, $email) {
+    private function addSubscribeRequest(&$subscribeResult, $email, $gaClientId) {
 
-        $subscribeParams = [
+        $params = [
             'email'      => $email,
             'geo_id'     => $this->user->getRegion()->getId(),
             'channel_id' => 1,
         ];
 
         if ($userEntity = $this->user->getEntity()) {
-            $subscribeParams['token'] = $userEntity->getToken();
+            $params['token'] = $userEntity->getToken();
         }
 
-        $this->client->addQuery('subscribe/create', $subscribeParams, [], function($data) use (&$subscribeResult) {
+        if ($gaClientId) {
+            $params['ga_client_id'] = $gaClientId;
+        }
+
+        $this->client->addQuery('subscribe/create', $params, [], function($data) use (&$subscribeResult) {
             if (isset($data['subscribe_id']) && isset($data['subscribe_id'])) $subscribeResult = true;
         }, function(\Exception $e) use (&$subscribeResult) {
             \App::exception()->remove($e);
