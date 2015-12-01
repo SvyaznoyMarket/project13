@@ -45,7 +45,7 @@ namespace EnterQuery\Order
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->orders = isset($result['orders'][0]) ? $result['orders'] : null;
+                    $this->response->orders = isset($result['orders'][0]) ? $result['orders'] : [];
                     $this->response->count = isset($result['total']) ? $result['total'] : null;
 
                     return $result; // for cache

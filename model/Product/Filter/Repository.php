@@ -150,7 +150,6 @@ class Repository {
      * @param \Model\Brand\Entity|null $brand
      * @param \Http\Request $request
      * @param \Model\Shop\Entity|null $shop
-     * @param bool $unsetBrandFilterImages
      * @param \Closure|null $isPreserveImagesForProperty
      * @return \Model\Product\Filter
      */

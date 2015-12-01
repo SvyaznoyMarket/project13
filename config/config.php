@@ -316,7 +316,8 @@ $c->search['categoriesLimit'] = 200;
 $c->product['itemsPerPage']             = 20;
 $c->product['showAccessories']          = true;
 $c->product['showRelated']              = true;
-$c->product['getModel']                 = true;
+$c->product['getModelInListing']        = true;
+$c->product['getModelInCard']           = true;
 $c->product['deliveryCalc']             = true;
 $c->product['smartChoiceEnabled']       = true;
 $c->product['breadcrumbsEnabled']       = true;
@@ -339,6 +340,7 @@ $c->product['lowerPriceNotification'] = true;
 $c->product['itemsPerPageJewel']      = 24;
 $c->product['itemsPerRowJewel']       = 4;
 $c->product['pullRecommendation']     = false;
+$c->product['pullMainRecommendation'] = true;
 $c->product['pushRecommendation']     = true;
 $c->product['viewedEnabled']          = true;
 
@@ -356,7 +358,7 @@ $c->payment['blockedIds'] = [];
 
 $c->user['enabled'] = false;
 $c->user['corporateRegister'] = true;
-$c->user['defaultRoute'] = 'user.recommend';
+$c->user['defaultRoute'] = 'user';
 
 $c->database['host']     = 'site-db';
 $c->database['name']     = 'enter';
@@ -473,5 +475,11 @@ $c->richRelevance['apiKey'] = '951a5607dc020e11';
 $c->richRelevance['apiClientKey'] = '911c9da5198d9f42';
 $c->richRelevance['apiUrl']    = 'http://recs.richrelevance.com/rrserver/api/rrPlatform/';
 $c->richRelevance['jsUrl']    = '//media.richrelevance.com/rrserver/js/1.1/p13n.js';
+
+$c->useNodeMQ = false;
+$c->nodeMQ = [
+	'host'	=> 'api.enter.ru',
+	'port'		=> '8888'
+];
 
 return $c;

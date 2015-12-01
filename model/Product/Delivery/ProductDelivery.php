@@ -10,12 +10,6 @@ use Validator\DateTime;
 
 class ProductDelivery {
 
-    const TOKEN_SELF = 'self';
-    const TOKEN_NOW = 'now';
-    const TOKEN_PICKPOINT = 'self_partner_pickpoint';
-
-    const TOKEN_STANDART = 'standart';
-
     /** @var Interval[] */
     public $intervals = [];
     /** @var Shop[] */
@@ -72,9 +66,7 @@ class ProductDelivery {
      */
     public function getPickup() {
         return array_filter($this->deliveries, function (Delivery $delivery) {
-            return $delivery->token == self::TOKEN_NOW
-                || $delivery->token == self::TOKEN_SELF
-                || $delivery->token == self::TOKEN_PICKPOINT;
+            return $delivery->isPickup;
         });
     }
 
@@ -83,7 +75,7 @@ class ProductDelivery {
      */
     public function getDelivery() {
         return array_filter($this->deliveries, function (Delivery $delivery) {
-            return $delivery->token == self::TOKEN_STANDART;
+            return !$delivery->isPickup;
         });
     }
 
@@ -129,6 +121,7 @@ class Delivery {
     public $token;
     public $name;
     public $price;
+    public $isPickup = false;
     /** @var DeliveryDate[] */
     public $dates = [];
     /** @var DateInterval|null */
@@ -139,6 +132,7 @@ class Delivery {
         if (isset($arr['token'])) $this->token = $arr['token'];
         if (isset($arr['name'])) $this->name = $arr['name'];
         if (isset($arr['price'])) $this->price = $arr['price'];
+        if (isset($arr['is_pickup'])) $this->isPickup = (bool)$arr['is_pickup'];
         if (isset($arr['date_list']) && is_array($arr['date_list'])) {
             foreach ($arr['date_list'] as $dateData) $this->dates[] = new DeliveryDate($dateData, $productDelivery);
         }

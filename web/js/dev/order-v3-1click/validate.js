@@ -26,11 +26,15 @@
 				var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 				return re.test(email) && !/[а-яА-Я]/.test(email);
 			},
+
 			validate = function validateF(){
+				console.log('validate');
 				var isValid = true,
 					$phoneInput = $('[name=user_info\\[mobile\\]]'),
 					$emailInput = $('[name=user_info\\[email\\]]'),
 					$deliveryMethod = $('.orderCol_delivrLst_i-act span'),
+					$acceptOffer = $('.jsAcceptAgreement'),
+					accept = $acceptOffer.prop('checked'),
 					phone = $phoneInput.val().replace(/\s+/g, '');
 
 				if (!/\+7\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
@@ -50,6 +54,14 @@
 					$emailInput.removeClass(errorClass).siblings('.errTx').hide();
 				}
 
+	            if ( !accept ) {
+	                $acceptOffer.closest('.jsAcceptAgreementContainer').addClass('error');
+	            	isValid = false;
+	                return false;
+	            } else {
+	            	$acceptOffer.closest('.jsAcceptAgreementContainer').removeClass('error');
+	            }
+
 				/*if ($deliveryMethod.text() == 'Самовывоз' && $('.orderCol_addrs_tx').text().replace(/\s/g, '') == '') {
 				 error.push('Не выбран адрес доставки или самовывоза');
 				 }
@@ -67,12 +79,14 @@
 			console.warn('Validation errors', $validationErrors);
 		}
 
-		$pageNew.on('blur', 'input', function(){
+		$pageNew.on('blur', 'input[type="text"]', function(){
 			validate()
 		}).on('keyup', '.jsOrderV3PhoneField', function(){
             var val = $(this).val();
             if (val[val.length-1] != '_') validate();
-        });
+        }).on('change', 'input[type="checkbox"], input[type="radio"]', function(){
+			validate()
+		});
 
 		$form.on('submit', function(e){
 			e.preventDefault();

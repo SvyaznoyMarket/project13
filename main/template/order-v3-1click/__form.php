@@ -65,12 +65,15 @@ $f = function(
                 <div id="js-order-content" class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery"></div>
             </div>
         </fieldset>
-        <fieldset class="order-agreement__check">
-            <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" required="required">
+        <fieldset class="order-agreement__check jsAcceptAgreementContainer">
+            <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" value="" required="required">
 
-            <label class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">
-                <span>Я ознакомлен и согласен с информацией<br>
-                    с информацией о продавце и его офертой</span>
+            <label class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">Я ознакомлен и согласен <br>
+            <? if ($link = $product->getPartnerOfferLink()): ?>
+                <a class="brb-dt order-agreement__check-link" href="<?= $link ?>" target="_blank">с информацией о продавце и его офертой</a>
+            <? else: ?>
+                с <a class="brb-dt order-agreement__check-link" href="/terms" target="_blank">условиями продажи</a> и <a class="brb-dt order-agreement__check-link" href="/legal" target="_blank">правовой информацией</a>
+            <? endif ?>
             </label>
         </fieldset>
         <fieldset class="orderU_fldsbottom">

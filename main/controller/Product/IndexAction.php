@@ -230,8 +230,8 @@ class IndexAction {
         if ($actionResponse->subscribeChannelQuery) {
             foreach ($actionResponse->subscribeChannelQuery->response->channels as $item) {
                 $channel = new \Model\Subscribe\Channel\Entity($item);
-                if (1 == $channel->getId()) {
-                    $actionChannelName = $channel->getName();
+                if (1 == $channel->id) {
+                    $actionChannelName = $channel->name;
                     break;
                 }
             }

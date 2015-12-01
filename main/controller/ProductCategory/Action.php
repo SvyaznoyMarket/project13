@@ -91,19 +91,19 @@ class Action {
 
         if (\App::config()->product['breadcrumbsEnabled']) { // TODO: надо вообще выпилить
             \RepositoryManager::productCategory()->prepareEntityHasChildren($category);
+        } else {
+            $category->setHasChild(in_array($category->id, [80, 443, 1, 788, 320, 923, 2545, 185, 224, 1438, 647, 4506]));
         }
 
         $client->execute();
 
         // запрашиваем дерево категорий
-        if (\App::config()->product['breadcrumbsEnabled']) { // TODO: надо вообще выпилить
-            if ($category->isV2Root()) {
-                // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
-                \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region, $this->convertFiltersToSearchClientRequestFormat(\RepositoryManager::productFilter()->getFilterValuesFromHttpRequest($request)));
-            } else {
-                // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
-                \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region);
-            }
+        if ($category->isV2Root()) {
+            // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
+            \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region, $this->convertFiltersToSearchClientRequestFormat(\RepositoryManager::productFilter()->getFilterValuesFromHttpRequest($request)));
+        } else {
+            // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
+            \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region);
         }
 
         // запрашиваем фильтры и извлекаем из них бренды

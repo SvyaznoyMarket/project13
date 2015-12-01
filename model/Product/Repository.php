@@ -199,7 +199,7 @@ class Repository {
                 }
             );
 
-            if (\App::config()->product['getModel'] && in_array('model', $options, true)) {
+            if (\App::config()->product['getModelInListing'] && in_array('model', $options, true)) {
                 \App::scmsClient()->addQuery(
                     'api/product/get-models',
                     [

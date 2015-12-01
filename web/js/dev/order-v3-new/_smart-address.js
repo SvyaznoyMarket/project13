@@ -57,7 +57,7 @@
 				else if (self.apartmentName() == '') self.apartmentName(val);
 			}
 			// обработка автодополнения
-			else if (typeof val == 'object') {
+			else if ( val && typeof val == 'object' ) {
 				if (val.contentType == 'street') {
 					self.streetName(val.name).streetId(val.id).streetType(val.type).streetTypeShort(val.typeShort)
 				}
@@ -226,7 +226,7 @@
 	address = new AddressModel();
 
 	// Заполняем модель данными при загрузке или рефреше страницы
-	if (typeof initialAddressData == 'object') {
+	if (initialAddressData && typeof initialAddressData == 'object') {
 		if (initialAddressData.street) {
 			var regexResult = initialAddressData.street.match(/(.+)\s+(.+)$/);
 			if (regexResult) {

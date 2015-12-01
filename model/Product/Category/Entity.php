@@ -503,7 +503,7 @@ class Entity extends BasicEntity {
      *
      * @return Entity|null
      */
-    private function getClosestFromAncestors(array $expectedUis) {
+    public function getClosestFromAncestors(array $expectedUis) {
         /** @var Entity[] $ancestors */
         $ancestors = $this->ancestor;
         $ancestors[] = $this;

@@ -123,11 +123,13 @@ $f = function(
         <? endif ?>
     </div>
 
+    <? if (false): ?>
     <div onClick="window.location.href='/b2b'" class="bB2bSec">
         <div class="bB2bSecBlue">Корпоративным клиентам</div>
         Специальные условия на десятки тысяч товаров.<br/>
         <a href="/b2b">Специальные условия</a> сотрудничества для наших партнеров.
     </div>
+    <? endif ?>
 
     <div class="bB2bSec" style="margin-left: 35px;">
         <div class="bB2bSecBlue">Мобильные приложения</div>

@@ -1,40 +1,48 @@
-.order-error{
-    border: 1px solid;
-    padding: 10px;
-    margin-top: 20px;
+.order-error {
     font-size: 16px;
+
     position: relative;
 
-    &--hint{
-        background-color: #fff6e5;
+    margin-top: 20px;
+    padding: 10px;
+
+    border: 1px solid;
+    &--hint {
         color: #f99b1c;
+        background-color: #fff6e5;
     }
-    &--warning{
-        background-color: #fbeceb;
+    &--warning {
         color: #db4437;
+        background-color: #fbeceb;
     }
-    &--success{
-        background-color: #e5f5e9;
+    &--success {
         color: #009925;
+        background-color: #e5f5e9;
     }
-    &__closer{
-        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat  -27px -53px;
+    &__closer {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+
         width: 10px;
         height: 10px;
-        .inline-block(middle);
-        position: absolute;
-        cursor: pointer;
-        top: 50%;
         margin-top: -5px;
-        right: 10px;
+
+        cursor: pointer;
+
+        background: url('@{base-url}/order-new/img/order-sprite.png') no-repeat  -27px -53px;
+
+        .inline-block(middle);
     }
     a {
-        color: inherit;
         text-decoration: none;
+
+        color: inherit;
         border-bottom: 1px solid;
-        &:hover{
-            color: inherit;
+        &:hover {
             text-decoration: none;
+
+            color: inherit;
         }
     }
 }
