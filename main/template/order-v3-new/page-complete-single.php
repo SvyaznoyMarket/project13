@@ -24,8 +24,7 @@ return function(
     $isOnlinePaymentPossible =
         (bool)$orderPayment
         ? (
-            array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $orderPayment->groups)
-            && !$order->isPaid()
+            !$order->isPaid()
             && !$order->isCredit()
             && !$order->isPaidBySvyaznoy()
         )

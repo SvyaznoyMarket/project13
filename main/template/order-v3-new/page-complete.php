@@ -62,9 +62,10 @@ $f = function(
                         !isset($onlinePaymentStatusByNumber[$order->number])
                         || (true === $onlinePaymentStatusByNumber[$order->number])
                     )
-                    && ((bool)$paymentEntity ? array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $paymentEntity->groups) : false)
                     && ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']))
                     && !$order->isPaid()
+                    && !$order->isCredit()
+                    && !$order->isPaidBySvyaznoy()
                 ;
 
                 $sumContainerId = sprintf('id-onlineDiscountSum-container', $order->id);
