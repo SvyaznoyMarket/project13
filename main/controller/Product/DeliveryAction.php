@@ -171,6 +171,17 @@ class DeliveryAction {
                 if (isset($item['delivery_mode_list'])) foreach ($item['delivery_mode_list'] as $deliveryItem) {
                     if (!isset($deliveryItem['date_list']) || !is_array($deliveryItem['date_list'])) continue;
 
+                    try {
+                        if (!empty($deliveryItem['date_interval']) && \App::abTest()->isOrderWithDeliveryInterval() && ($date = key($deliveryItem['date_list']))) {
+                            $deliveryItem['date_interval'] = [
+                                'from' => $date,
+                                'to'   => (new \DateTime($date))->modify('+2 day')->format('Y-m-d'),
+                            ];
+                        }
+                    } catch (\Exception $e) {
+                        \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
+                    }
+
                     $delivery = [
                         'id'    => $deliveryItem['id'],
                         'token' => $deliveryItem['token'],
@@ -180,9 +191,11 @@ class DeliveryAction {
 
                     $firstDate = reset($deliveryItem['date_list']);
                     $firstDate = isset($firstDate['date']) ? new \DateTime($firstDate['date']) : null;
-                    $delivery['date'] = $firstDate ?
-                        ['value' => $firstDate->format('d.m.Y'), 'name' => $helper->humanizeDate($firstDate)]
-                        : [];
+                    $delivery['date'] =
+                        $firstDate
+                        ? ['value' => $firstDate->format('d.m.Y'), 'name' => $helper->humanizeDate($firstDate)]
+                        : []
+                    ;
                     $delivery['days'] = $helper->getDaysDiff($firstDate);
 
                     $day = 0;
