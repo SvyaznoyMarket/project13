@@ -141,6 +141,47 @@
 
         text-align: center;
     }
+
+    &__help{
+        position: absolute;
+        right: 4px;
+        top: 25px;
+        z-index: 10;
+
+        width: 15px;
+        height: 15px;
+
+        .rounded(50%);
+        border: 1px solid #afafaf;
+
+        text-align: center;
+        line-height: 15px;
+        color: #afafaf;
+        font-size: 12px;
+
+        &:hover{
+            border-color: #ffa400;
+            color: #ffa400;
+
+            .pick-point-item__help-txt{
+                position: absolute;
+
+                display: block;
+                width: 195px;
+                padding: 10px;
+                background: #f2f2f2;
+                .box-sizing();
+                white-space: normal;
+                color: #000;
+                text-align: left;
+            }
+        }
+    }
+
+    &__help-txt{
+        display: none;
+    }
+
     &__img {
         max-width: 100%;
     }

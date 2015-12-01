@@ -14,6 +14,8 @@
         $inputs       = $('.js-order-ctrl__input'),
         $offertaPopup = $('.js-order-oferta-popup').eq(0),
         comment       = '',
+        useNodeMQ     = $('#page-config').data('value')['useNodeMQ'],
+        ws_client     = null,
         validator     = null,
 
         spinner = typeof Spinner == 'function' ? new Spinner({
@@ -135,70 +137,97 @@
         sendChanges = function sendChangesF (action, params) {
             console.info('Sending action "%s" with params:', action, params);
 
-            var hideContent = true;
+            var hideContent = true,
+
+                before = function() {
+                    if (hideContent) $orderContent.fadeOut(500);
+                    if (spinner) spinner.spin(body)
+                },
+
+                done = function( data ) {
+                    console.info('done callback', data);
+                    if ( data.result &&  data.result.redirect ) {
+                        console.info('REDIRECT', data.result.error.message, data.result.redirect);
+                        window.location.href = data.result.redirect;
+                        return;
+                    }
+
+                    //console.log("Query: %s", data.result.OrderDeliveryRequest);
+                    console.log("Model:", data.result.OrderDeliveryModel);
+
+                    $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
+                    $offertaPopup.remove();
+                    $orderContent.empty().html(data.result.page);
+                    $offertaPopup = $('.js-order-oferta-popup').eq(0);
+
+                    if ($orderContent.find('.jsAddressRootNode').length > 0) {
+                        $.each($orderContent.find('.jsAddressRootNode'), function(i,val){
+                            ko.applyBindings(ENTER.OrderV3.address, val);
+                        });
+                        if (typeof ENTER.OrderV3.constructors.smartAddressInit == 'function') ENTER.OrderV3.constructors.smartAddressInit();
+                    }
+
+                    // Новый самовывоз
+                    ENTER.OrderV3.koModels = [];
+                    $.each($orderContent.find('.jsNewPoints'), function(i,val) {
+                        var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
+                            points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map);
+                        ENTER.OrderV3.koModels.push(points);
+                        ko.applyBindings(points, val);
+                    });
+
+                    // Попап с сообщением о минимальной сумма заказа
+                    $orderContent.find('.jsMinOrderSumPopup').lightbox_me({
+                        closeClick: false,
+                        closeEsc: false,
+                        centered: true
+                    });
+
+                    $inputs = $('.js-order-ctrl__input');
+                    $.each($inputs, lblPosition);
+                },
+
+                always = function() {
+                    $orderContent.stop(true, true).fadeIn(200);
+                    if (spinner) spinner.stop();
+
+                    bindMask();
+                };
 
             if (-1 !== $.inArray(action, ['changeDate', 'changeInterval', 'changeOrderComment'])) hideContent = false;
 
-            $.ajax({
-                type: 'POST',
-                data: {
-                    'action' : action,
-                    'params' : params
-                },
-                beforeSend: function() {
-                    if (hideContent) $orderContent.fadeOut(500);
-                    if (spinner) spinner.spin(body)
-                }
-            }).fail(function(jqXHR){
-                var response = $.parseJSON(jqXHR.responseText);
-                if (response.result) {
-                    console.error(response.result);
-                }
-                if (response.result.redirect) {
-                    window.location.href = response.result.redirect;
-                }
-            }).done(function(data) {
-
-                //console.log("Query: %s", data.result.OrderDeliveryRequest);
-                console.log("Model:", data.result.OrderDeliveryModel);
-
-                $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
-                $offertaPopup.remove();
-                $orderContent.empty().html(data.result.page);
-                $offertaPopup = $('.js-order-oferta-popup').eq(0);
-
-				if ($orderContent.find('.jsAddressRootNode').length > 0) {
-					$.each($orderContent.find('.jsAddressRootNode'), function(i,val){
-						ko.applyBindings(ENTER.OrderV3.address, val);
-					});
-					if (typeof ENTER.OrderV3.constructors.smartAddressInit == 'function') ENTER.OrderV3.constructors.smartAddressInit();
-				}
-
-                // Новый самовывоз
-                ENTER.OrderV3.koModels = [];
-                $.each($orderContent.find('.jsNewPoints'), function(i,val) {
-                    var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
-                        points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map);
-                    ENTER.OrderV3.koModels.push(points);
-                    ko.applyBindings(points, val);
+            if ( useNodeMQ ) {
+                console.log(ws_client);
+                ws_client.send({
+                    data: {
+                        'action' : action,
+                        'params' : params
+                    },
+                    done: done,
+                    fail: function( error ) {
+                        console.log(error);
+                    },
+                    beforeSend: before,
+                    always: always
                 });
-
-                // Попап с сообщением о минимальной сумма заказа
-                $orderContent.find('.jsMinOrderSumPopup').lightbox_me({
-                    closeClick: false,
-                    closeEsc: false,
-                    centered: true
-                });
-
-                $inputs = $('.js-order-ctrl__input');
-                $.each($inputs, lblPosition);
-
-            }).always(function(){
-                $orderContent.stop(true, true).fadeIn(200);
-                if (spinner) spinner.stop();
-
-                bindMask();
-            });
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        'action' : action,
+                        'params' : params
+                    },
+                    beforeSend: before
+                }).fail(function(jqXHR){
+                    var response = $.parseJSON(jqXHR.responseText);
+                    if (response.result) {
+                        console.error(response.result);
+                    }
+                    if (response.result.redirect) {
+                        window.location.href = response.result.redirect;
+                    }
+                }).done(done).always(always);
+            }
 
         },
         log = function logF(data){
@@ -921,4 +950,21 @@
 
         $el.val($el.val().replace(/[^0-9]+/g, ''));
     });
+
+    // console.log(ENTER.config.pageConfig.useNodeMQ);
+    // console.log(!!window.WebSocket);
+    // console.log(ENTER.config.pageConfig.currentRoute === 'orderV3.delivery');
+    if ( ENTER.config.pageConfig.useNodeMQ && !!window.WebSocket && ENTER.config.pageConfig.currentRoute === 'orderV3.delivery' ) {
+        console.info('start...');
+
+        ws_client = new WS_Client(function() {
+            useNodeMQ = true;
+            sendChanges();
+        }, function() {
+            useNodeMQ = false;
+            sendChanges();
+        });
+    }
+
+
 })(jQuery);

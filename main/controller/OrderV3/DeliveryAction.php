@@ -56,6 +56,7 @@ class DeliveryAction extends OrderV3 {
                 }
 
                 $result['page'] = \App::closureTemplating()->render(self::isOrderWithCart() ? 'order-v3-new/page-delivery-with-user' : 'order-v3-new/page-delivery', [
+                    'ajax'                       => true,
                     'orderDelivery'              => $orderDeliveryModel,
                     'bonusCards'                 => $bonusCards,
                     'hasProductsOnlyFromPartner' => $this->hasProductsOnlyFromPartner()
@@ -75,7 +76,7 @@ class DeliveryAction extends OrderV3 {
                 if (302 === $e->getCode()) {
                     $result['redirect'] = \App::router()->generate('cart');
                 } else if (!$previousSplit) {
-                    $result['redirect'] = \App::router()->generate('orderV3.delivery');
+                    $result['redirect'] = \App::router()->generate('cart');
                 }
             }
 
@@ -85,25 +86,43 @@ class DeliveryAction extends OrderV3 {
         }
 
         try {
-
             $this->logger(['action' => 'view-page-delivery']);
 
             $data = null;
             $previousSplit = $this->session->get($this->splitSessionKey);
+            $userData = $this->session->get('user_info_split');
+
             if (!self::isOrderWithCart()) {
-                if (!$previousSplit) return new \Http\RedirectResponse(\App::router()->generate('cart'));
+                if (!$userData) {
+                    return new \Http\RedirectResponse(\App::router()->generate('cart'));
+                }
                 // сохраняем данные пользователя
                 //$data['action'] = 'changeUserInfo'; // SITE-6209
                 $data['action'] = null;
-                $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
-            } else {
-                if (isset($previousSplit['user_info'])) {
+                if ($this->session->get($this->splitSessionKey)) {
                     $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
                 }
             }
 
+            if ((@$previousSplit['user_info']['phone'] !== '') && $this->session->get($this->splitSessionKey)) {
+                $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+            } else {
+                $data['user_info'] = $userData;
+            }
+
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
-            $orderDelivery = $this->getSplit($data);
+            // $orderDelivery = $this->getSplit($data);
+
+            $useNodeMQ = \App::config()->useNodeMQ;
+
+            if ($useNodeMQ) {
+                $orderDelivery = new \Model\OrderDelivery\Entity(['user_info' => $data['user_info']], !$useNodeMQ);
+            } else {
+                $orderDelivery = $this->getSplit(null, $data['user_info']);
+                if ($orderDelivery->errors) {
+                    $this->session->flash($orderDelivery->errors);
+                }
+            }
 
             foreach($orderDelivery->orders as $order) {
                 $this->logger(['delivery-self-price' => $order->delivery->price]);
@@ -176,7 +195,7 @@ class DeliveryAction extends OrderV3 {
         $cartRepository = new \Model\Cart\Repository();
 
         $previousSplit = $this->session->get($this->splitSessionKey);
-        
+
         if (!$this->cart->count()) throw new \Exception('Пустая корзина', 302);
 
         if ($data) {
@@ -188,7 +207,7 @@ class DeliveryAction extends OrderV3 {
                 if ($data['action'] == 'changeAddress') {
                     $dataToValidate = array_replace_recursive($previousSplit['user_info'], ['address' => $data['params']]);
                 } else {
-                    $dataToValidate = $data['user_info'];
+                    $dataToValidate = $data['user_info'] + $this->session->get('user_info_split');
                 }
 
                 // провалидируем
@@ -228,6 +247,8 @@ class DeliveryAction extends OrderV3 {
 
             if ($userData) {
                 $splitData += ['user_info' => $userData];
+            } elseif ($this->session->get('user_info_split')) {
+                $splitData += ['user_info' => $this->session->get('user_info_split')];
             }
 
             if (!empty($this->cart->getCreditProductIds())) $splitData['payment_method_id'] = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT;
