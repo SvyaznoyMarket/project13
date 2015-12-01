@@ -340,8 +340,8 @@ $c->product['lowerPriceNotification'] = true;
 $c->product['itemsPerPageJewel']      = 24;
 $c->product['itemsPerRowJewel']       = 4;
 $c->product['pullRecommendation']     = false;
-$c->product['pullMainRecommendation'] = true;
-$c->product['pushRecommendation']     = true;
+$c->product['pullMainRecommendation'] = false;
+$c->product['pushRecommendation']     = false;
 $c->product['viewedEnabled']          = true;
 
 $c->banner['timeout'] = 5000;
