@@ -199,6 +199,7 @@ class Entity {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
             }
         }
+
         if (isset($data['delivery'][0]['delivery_date_interval']['from']) && isset($data['delivery'][0]['delivery_date_interval']['to'])) {
             try {
                 $this->deliveryDateInterval = [
@@ -206,6 +207,17 @@ class Entity {
                 ];
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
+            }
+        } else if (\App::abTest()->isOrderWithDeliveryInterval() && $this->deliveredAt) {
+            try {
+                $dateTo = clone $this->deliveredAt;
+                $dateTo->modify('+2 day');
+
+                $this->deliveryDateInterval = [
+                    'name' => sprintf('с %s по %s', $this->deliveredAt->format('d.m'), $dateTo->format('d.m')),
+                ];
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
             }
         }
         if (array_key_exists('store_id', $data)) $this->setStoreId($data['store_id']);

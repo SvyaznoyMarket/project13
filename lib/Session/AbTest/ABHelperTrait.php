@@ -216,7 +216,7 @@ trait ABHelperTrait {
     /**
      * @return bool
      */
-    public function isOrderWithDeliveryInterval() {
+    public function isOrderWithDeliveryInterval() { // SITE-6435
         return 'enabled' === \App::abTest()->getTest('show_order_delivery_interval')->getChosenCase()->getKey();
     }
 }

@@ -95,9 +95,10 @@ class ProductDelivery {
         try {
             if ($pickup && !$pickup->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && ($minDate = $pickup->getMinDate())) {
                 $dateTo = clone $minDate->date;
+                $dateTo->modify('+2 day');
                 $pickup->dateInterval = new \Model\Product\Delivery\DateInterval();
                 $pickup->dateInterval->from = $minDate->date;
-                $pickup->dateInterval->to = $dateTo->modify('+2 day');
+                $pickup->dateInterval->to = $dateTo;
             }
         } catch (\Exception $e) {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['delivery']);
