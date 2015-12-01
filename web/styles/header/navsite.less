@@ -27,38 +27,18 @@
       }
     }
     &:nth-last-child(6) ~ li {
-      &:hover {
-        .navsite2 {
-          left: -141px;
-          &_i {
-            &-child {
-              .navsite2_lk {
-                &:hover {
-                  &:before {
-                    z-index: 9;
-                    right: 198px;
 
-                    margin-top: -8px;
-
-                    .pseudo-corner-left(8px, @white, 50%);
-                  }
-                  &:after {
-                    .pseudo-corner-right(0, transparent, 50%);
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
       .navsite3 {
-        left: -200px;
-
-        width: 195px;
-        padding-right: 209px;
+        left: auto;
+        /* width: 195px; */
+        padding-right: 100%;
         padding-left: 0;
+        /* background-position: 198px; */
+        right: -1%;
 
-        background-position: 198px;
+        &:after{
+          left: 194px;
+        }
       }
     }
     &-child {
@@ -138,10 +118,7 @@
   border: 1px solid @black;
   border-top-width: 4px;
   background: @white;
-  //    .transition(all .3s ease);
-  // &:hover {
-  //  width: 415px;
-  // }
+
   &_i {
     &:hover ,
     &.hover {
@@ -161,19 +138,6 @@
       }
     }
   }
-  /*&-new {
-      .navsite2_i {
-          &:hover {
-              .navsite2_lk {
-                  &:after {
-                      right: -3px;
-                      margin-top: -8px;
-                      .pseudo-corner-right(8px, @white, 50%);
-                  }
-              }
-          }
-      }
-  }*/
   &_lk {
     font-size: 14px;
     line-height: 1.2;
@@ -196,29 +160,6 @@
     }
   }
 }
-.navsite_i {
-  &:nth-last-child(6) ~ li {
-    .navsite2.navsite2-new {
-      .navsite2_i {
-        &:hover {
-          .navsite2_lk {
-            &:after {
-              .pseudo-corner-right(0px, transparent, 50%);
-            }
-            &:before {
-              left: -3px;
-
-              margin-top: -8px;
-
-              .pseudo-corner-left(8px, @white, 50%);
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 
 .navsite3 {
   position: absolute;
