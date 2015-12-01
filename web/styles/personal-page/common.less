@@ -281,11 +281,12 @@
 
 .order-list {
     &__item {
-        font-size: 14px;
+        position: relative;
 
         display: table;
-
         width: 100%;
+
+        font-size: 14px;
     }
 
     &__data {
@@ -323,6 +324,98 @@
                 color: #d45745;
             }
         }
+    }
+
+    &__pay{
+        display: inline-block;
+
+        color: #f99b1c;
+        border-bottom: 1px solid #f99b1c;
+
+        &:hover{
+            text-decoration: none;
+        }
+    }
+
+    &__toggler{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+
+        white-space: nowrap;
+        cursor: pointer;
+
+        &:after{
+            content: '';
+            display: inline-block;
+            vertical-align: middle;
+            margin-top: 5px;
+
+            border: 5px solid transparent;
+            border-top-color: @textGrey;
+
+        }
+
+        &:hover{
+
+            .order-list__toggler-popup{
+                position: absolute;
+                top: 102%;
+                right: -20px;
+                z-index: 10;
+
+                display: block;
+                min-width: 110px;
+                min-height: 30px;
+                padding: 5px;
+
+                .box-sizing();
+                border: 1px solid #ebebeb;
+                background: #FFFFFF;
+
+                font-size: 12px;
+                color: @textGrey;
+                text-align: center;
+
+                &:after{
+                    content: '';
+
+                    position: absolute;
+                    bottom: 100%;
+                    right: 17px;
+
+                    border: 7px solid transparent;
+                    border-bottom-color: #FFFFFF;
+                }
+
+                &:before{
+                    content: '';
+
+                    position: absolute;
+                    bottom: 100%;
+                    right: 17px;
+
+                    border: 7px solid transparent;
+                    border-bottom-color: @textGrey;
+                }
+            }
+        }
+    }
+
+    &__toggler-txt{
+        display: inline-block;
+        vertical-align: middle;
+
+        font-size: 14px;
+        color: @textGrey;
+
+        &:hover{
+            text-decoration: none;
+        }
+    }
+
+    &__toggler-popup{
+        display: none;
     }
 }
 

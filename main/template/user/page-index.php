@@ -17,7 +17,7 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 
-<div class="personalPage personal">
+<div class="personalPage personal" id="personal-container">
 
     <?= $page->render('user/_menu', ['page' => $page]) ?>
 
@@ -59,6 +59,16 @@ $helper = new \Helper\TemplateHelper();
                                         <? elseif ($status = $order->status): ?>
                                             <div class="order-list__status-payment"><?= $status->name ?></div>
                                         <? endif ?>
+
+                                            <a href="#" class="order-list__pay">Оплатить онлайн</a>
+                                    </div>
+
+                                    <div class="order-list__toggler">
+                                        <span class="order-list__toggler-txt">Еще</span>
+
+                                        <div class="order-list__toggler-popup js-orderCancel">
+                                            Отменить заказ
+                                        </div>
                                     </div>
                                 </li>
                             <? endforeach ?>
@@ -724,4 +734,7 @@ $helper = new \Helper\TemplateHelper();
         </div>
     <? endif ?>
 
+    <script id="tpl-user-deleteOrderPopup" type="text/html" data-partial="<?= $helper->json([]) ?>">
+        <?= file_get_contents(\App::config()->templateDir . '/user/order/_deleteOrder-popup.mustache') ?>
+    </script>
 </div>

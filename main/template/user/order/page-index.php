@@ -43,7 +43,7 @@ $recommendationsHtml = [
 ];
 ?>
 
-<div class="personal">
+<div class="personal" id="personal-container">
     <?= $page->render('user/_menu', ['page' => $page]) ?>
 
     <? foreach ($ordersByYear as $year => $orders): ?>
@@ -65,6 +65,16 @@ $recommendationsHtml = [
 
                 <? foreach ($orders as $order): ?>
                     <div class="personal-order__item">
+
+                        <div class="personal-order__toggler">
+                            <span class="personal-order__toggler-txt">Еще</span>
+
+                            <div class="personal-order__toggler-popup js-orderCancel">
+                                Отменить заказ
+                            </div>
+
+                        </div>
+
                         <div class="personal-order__cell">
                             <a class="personal-order__num" href="<?= $page->url('user.order', ['orderId' => $order->id ]) ?>"><?= $order->numberErp ?></a>
                             <span class="personal-order__date"><?= $order->createdAt ? $order->createdAt->format('d.m.Y') : '' ?></span>
@@ -136,5 +146,9 @@ $recommendationsHtml = [
     <? foreach ($recommendationsHtml as $recommendationHtml): ?>
         <?= $recommendationHtml ?>
     <? endforeach ?>
+
+    <script id="tpl-user-deleteOrderPopup" type="text/html" data-partial="<?= $helper->json([]) ?>">
+        <?= file_get_contents(\App::config()->templateDir . '/user/order/_deleteOrder-popup.mustache') ?>
+    </script>
 
 </div>
