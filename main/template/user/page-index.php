@@ -10,6 +10,8 @@
  * @var $channelsById                  \Model\Subscribe\Channel\Entity[]
  * @var $subscription                  \Model\User\SubscriptionEntity
  * @var $subscriptionsGroupedByChannel array
+ * @var $onlinePaymentAvailableByNumberErp   bool[]
+ * @var $paymentEntitiesByNumberErp          \Model\PaymentMethod\PaymentEntity[]
  */
 ?>
 
@@ -37,6 +39,9 @@ $helper = new \Helper\TemplateHelper();
                     <div class="grid-scroll js-private-sections-body">
                         <ul class="grid-scroll-list order-list">
                             <? foreach ($orders as $order): ?>
+                            <?
+                                $paymentContainerId = sprintf('order-paymentContainer-%s', md5($order->id . '-' . $order->numberErp));
+                            ?>
                                 <li class="grid-scroll-list__item order-list__item">
                                     <div class="order-list__data">
                                         <a class="order-list__data-number" href="<?= $helper->url('user.order', ['orderId' => $order->id]) ?>"><?= $order->numberErp ?></a>
@@ -60,7 +65,13 @@ $helper = new \Helper\TemplateHelper();
                                             <div class="order-list__status-payment"><?= $status->name ?></div>
                                         <? endif ?>
 
-                                            <a href="#" class="order-list__pay">Оплатить онлайн</a>
+                                        <? if (isset($onlinePaymentAvailableByNumberErp[$order->numberErp]) && $onlinePaymentAvailableByNumberErp[$order->numberErp]): ?>
+                                            <a
+                                                href="#"
+                                                class="js-payment-popup-show order-list__pay"
+                                                data-relation="<?= $helper->json(['container' => '.' . $paymentContainerId]) ?>"
+                                            >Оплатить онлайн</a>
+                                        <? endif ?>
                                     </div>
 
                                     <div class="order-list__toggler">
@@ -70,6 +81,12 @@ $helper = new \Helper\TemplateHelper();
                                             Отменить заказ
                                         </div>
                                     </div>
+
+                                    <? if (!empty($paymentEntitiesByNumberErp[$order->numberErp])): ?>
+                                        <div class="<?= $paymentContainerId ?>">
+                                            <?= $helper->render('user/order/__onlinePayment-popup', ['order' => $order, 'paymentEntity' => $paymentEntitiesByNumberErp[$order->numberErp]]) ?>
+                                        </div>
+                                    <? endif ?>
                                 </li>
                             <? endforeach ?>
                         </ul>

@@ -12,7 +12,7 @@
  * @var $point                               \Model\Point\PointEntity
  * @var $pointsByUi                          \Model\Point\PointEntity[]
  * @var $onlinePaymentAvailableByNumberErp   bool[]
- * @var \Model\PaymentMethod\PaymentEntity[] $paymentEntitiesByNumberErp
+ * @var $paymentEntitiesByNumberErp          \Model\PaymentMethod\PaymentEntity[]
  * @var $viewedProducts                      \Model\Product\Entity[]
  */
 ?>
