@@ -21,7 +21,7 @@
         '</td></tr></tbody></table>',
         productUi = $('#product-info').data('ui');
 
-    ENTER.DeliveryPoints = function DeliveryPointsF (points, mapParam) {
+    ENTER.DeliveryPoints = function DeliveryPointsF (points, mapParam, enableFitsAllProducts) {
 
         var self = this,
             pointsBounds,
@@ -119,6 +119,7 @@
         self.availablePoints = ko.observableArray([]);
         /* Список выбранных типов точек */
         self.choosenTokens = ko.observableArray([]);
+        self.fitsAllProducts = ko.observable(Boolean(enableFitsAllProducts));
         /* Список выбранной цены доставки */
         self.choosenCosts = ko.observableArray([]);
         /* Список выбранных дат */
@@ -128,20 +129,6 @@
         self.latitudeMax = ko.observable();
         self.longitudeMin = ko.observable();
         self.longitudeMax = ko.observable();
-
-        /* Текст для дропдауна с точками самовывоза */
-        self.pointsText = ko.computed(function(){
-            switch (self.choosenTokens().length) {
-                case 0:
-                    return 'Все точки';
-                case 1:
-                    return $.grep(self.availablePoints(), function(point){ return self.choosenTokens()[0] == point['token'] })[0]['dropdownName'];
-                case 2: case 3: case 4:
-                    return self.choosenTokens().length + ' точки';
-                default:
-                    return self.choosenTokens().length + ' точек';
-            }
-        });
 
         /* Текст для дропдауна со стоимостью */
         self.costsText = ko.computed(function(){
@@ -162,6 +149,7 @@
             var tokens = self.choosenTokens(),
                 costs = self.choosenCosts(),
                 dates = self.choosenDates(),
+                fitsAllProducts = self.fitsAllProducts(),
                 arr;
 
             /* Фильтруем */
@@ -172,6 +160,7 @@
                 if (costs.length && costs.indexOf(point.cost) == -1) return false;
                 /* Если не попадает в список выбранных дат */
                 if (dates.length && dates.indexOf(point.humanNearestDay) == -1) return false;
+                if (fitsAllProducts && !point.fitsAllProducts) return false;
                 /* В итоге проверяем на попадание в видимые границы карты */
                 return self.isPointInBounds(point);
             });
@@ -214,6 +203,16 @@
             });
         });
 
+        self.fitsAllProducts.subscribe(function(fitsAllProducts){
+            map.geoObjects.each(function(geoObject){
+                if (fitsAllProducts) {
+                    geoObject.options.set('visible', geoObject.properties.get('fitsAllProducts'));
+                } else {
+                    geoObject.options.set('visible', true);
+                }
+            });
+        });
+
 
         self.setMapCenter = function (point) {
             console.log(point);
@@ -242,10 +241,9 @@
 
     };
 
-    ENTER.Placemark = function(point, visible, buyButtonClass) {
+    ENTER.Placemark = function(point, enableFitsAllProducts, buyButtonClass) {
 
-        var visibility = typeof visible == 'undefined' ? true : visible,
-            balloonContent, placemark;
+        var balloonContent, placemark;
 
         if (!buyButtonClass) buyButtonClass = 'jsChangePoint';
 
@@ -279,14 +277,15 @@
             // balloonContentHeader: point.name,
             balloonContentBody: balloonContent,
             hintContent: point.name,
-            enterToken: point.token // Дополняем собственными свойствами
+            enterToken: point.token, // Дополняем собственными свойствами
+            fitsAllProducts: point.fitsAllProducts // Дополняем собственными свойствами
         }, {
             balloonMaxWidth: 390,
             iconLayout: 'default#image',
             iconImageHref: point.marker.iconImageHref,
             iconImageSize: point.marker.iconImageSize,
             iconImageOffset: point.marker.iconImageOffset,
-            visible: visibility,
+            visible: !enableFitsAllProducts || point.fitsAllProducts,
             zIndex: point.token == 'shops' ? 1000 : 0
         });
 

@@ -239,7 +239,7 @@
                     // добавляем видимые точки на карту
                     $.each(mapData.points, function(i, point){
                         try {
-                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButton'));
+                            yMap.geoObjects.add(new ENTER.Placemark(point, mapData.enableFitsAllProducts, 'jsOneClickButton'));
                         } catch (e) {
                             console.error('Ошибка добавления точки на карту', e);
                         }

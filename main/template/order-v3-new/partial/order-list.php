@@ -252,7 +252,8 @@ $f = function (
 
                     <?= \App::templating()->render('order-v3/common/_map', [
                         'dataPoints' => $dataPoints,
-                        'page' => 'order'
+                        'page' => 'order',
+                        'enableFitsAllProducts' => count($order->products) > 1 ? true : false,
                     ]) ?>
 
                     <!--/ способ доставки -->

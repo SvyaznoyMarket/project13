@@ -291,8 +291,9 @@ $f = function(
             <? endif ?>
 
             <?= \App::templating()->render('order-v3/common/_map', [
-                'dataPoints'    => $dataPoints,
-                'page'          => 'order'
+                'dataPoints'            => $dataPoints,
+                'page'                  => 'order',
+                'enableFitsAllProducts' => count($order->products) > 1 ? true : false,
             ]) ?>
 
             <!--/ способ доставки -->
