@@ -229,6 +229,11 @@ return [
         'action'  => ['Slice\ShowAction', 'execute'],
         'require' => ['sliceToken' => '[\w\d-_]+'],
     ],
+    'product.category.slice.brand' => [
+        'pattern' => '/catalog/slice/{sliceToken}/brand-{brandToken}',
+        'action'  => ['Slice\ShowAction', 'execute'],
+        'require' => ['sliceToken' => '[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
+    ],
 
     // tchibo
     'tchibo' => [

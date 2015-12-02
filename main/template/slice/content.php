@@ -2,6 +2,7 @@
 /**
  * @var $page             \View\Search\IndexPage
  * @var $request          \Http\Request
+ * @var $heading          string
  * @var $productFilter    \Model\Product\Filter
  * @var $category         \Model\Product\Category\Entity
  * @var $slice            \Model\Slice\Entity
@@ -10,6 +11,8 @@
  * @var $productView      string
  * @var $hasCategoryChildren bool
  * @var $cartButtonSender array
+ * @var $seoContent       string
+ * @var $hotlinks         array
  **/
 ?>
 
@@ -23,14 +26,14 @@ $helper = new \Helper\TemplateHelper();
 
     <?= $helper->render('slice/__breadcrumbs', ['category' => $category, 'slice' => $slice]) // хлебные крошки ?>
 
-    <h1 class="bTitlePage js-pageTitle"><?= $slice->getName() ?></h1>
+    <h1 class="bTitlePage js-pageTitle"><?= $heading ?></h1>
 
     <? if ($productPager->getLastPage() > 1 && $hasCategoryChildren): // SITE-2644, SITE-3558 ?>
         <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
     <? endif ?>
 
     <?= $helper->render('product-category/__filter', [
-        'baseUrl'       => $helper->url(),
+        'baseUrl'       => $baseUrl,
         'productFilter' => $productFilter,
         'openFilter'    => false,
         'productPager'  => $productPager,
@@ -63,9 +66,10 @@ $helper = new \Helper\TemplateHelper();
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
     </div>
 
-    <? if(!empty($seoContent)): ?>
+    <? if (!empty($seoContent) || (bool)$hotlinks): ?>
         <div class="bSeoText">
             <?= $seoContent ?>
+            <?= $helper->render('product-category/__hotlink', ['hotlinks' => $hotlinks]) ?>
         </div>
     <? endif ?>
 </div>

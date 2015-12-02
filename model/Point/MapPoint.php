@@ -52,6 +52,16 @@ class MapPoint extends BasicPoint {
         if (isset($data['cost'])) $this->cost = $data['cost'];
         if (isset($data['nearestDay'])) $this->nearestDay = $data['nearestDay'];
         if (isset($data['dateInterval'])) $this->dateInterval = $data['dateInterval'];
+        try {
+            if (!$this->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && $this->nearestDay) {
+                $this->dateInterval = [
+                    'from' => $this->nearestDay,
+                    'to'   => (new \DateTime($this->nearestDay))->modify('+2 day')->format('Y-m-d'),
+                ];
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
+        }
 
         /* Это уже лишнее но пусть будет пока тут */
         if (isset($data['blockName'])) $this->blockName = $data['blockName'];

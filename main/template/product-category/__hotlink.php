@@ -4,7 +4,7 @@
  */
 return function(
     array $hotlinks,
-    $promoStyle
+    $promoStyle = []
 ) {
 
     if (empty($hotlinks)) return '';
