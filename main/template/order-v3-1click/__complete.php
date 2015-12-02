@@ -25,8 +25,7 @@ $f = function(
     $isOnlinePaymentPossible =
         (bool)$orderPayment
             ? (
-            array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $orderPayment->groups)
-            && !$order->isPaid()
+            !$order->isPaid()
             && !$order->isCredit()
             && !$order->isPaidBySvyaznoy()
         )
@@ -46,7 +45,7 @@ $f = function(
         </div>
 
         <? if ($isOnlinePaymentPossible): ?>
-            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'title' => 'Оплатить онлайн' . (false ? 'со скидкой 15%' : '')]) ?>
+            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'title' => 'Оплатить онлайн со скидкой']) ?>
         <? endif ?>
     </div>
 <? endforeach ?>

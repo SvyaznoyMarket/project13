@@ -190,10 +190,10 @@
                 </div>
 
                 <div class="personalTable_cell l">
-                    <? if ($order->getPaySum() != $order->getSum() ) : ?>
+                    <? if ($order->totalPaySum != $order->getSum() ) : ?>
                         <span class="colorGrey td-lineth"><?= $page->helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span><br/>
                     <? endif ?>
-                    <?= $page->helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span>
+                    <?= $page->helper->formatPrice($order->totalPaySum) ?> <span class="rubl">p</span>
                 </div>
             </div>
         </div>
@@ -204,9 +204,8 @@
 <aside class="personalPage_right">
 
     <? if ($order->getPaymentStatusId() == 2) : // Оплачено ?>
-
         <ul class="paySumm">
-            <li>Сумма заказа: <span class="paySumm_val"><?= $page->helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></span></li>
+            <li>Сумма заказа: <span class="paySumm_val"><?= $page->helper->formatPrice($order->totalPaySum) ?> <span class="rubl">p</span></span></li>
         </ul>
 
         <div class="payComplete"></div>

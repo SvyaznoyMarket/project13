@@ -3,119 +3,75 @@
 /**
  * @param \Helper\TemplateHelper $helper
  * @param \Model\OrderDelivery\Entity\Order $order
- * @param \Model\OrderDelivery\Entity $orderDelivery
  */
 $f = function (
     \Helper\TemplateHelper $helper,
-    \Model\OrderDelivery\Entity\Order $order,
-    \Model\OrderDelivery\Entity $orderDelivery
+    \Model\OrderDelivery\Entity\Order $order
 ) {
-    /** @var \Model\OrderDelivery\Entity\PaymentMethod $paymentMethod */
-
     $isOrderWithCart = \App::abTest()->isOrderWithCart();
-
-    $paymentMethodsByDiscount = [];
-    foreach ($order->possible_payment_methods as $paymentMethod) {
-        $index = $paymentMethod->discount ? 0 : 1;
-        if (in_array($paymentMethod->id, ['1', '2'])) {
-            $paymentMethodsByDiscount[$index]['При получении'][$paymentMethod->id] = $paymentMethod;
-            if ('1' == $paymentMethod->id) {
-                $paymentMethod->name = 'наличными';
-            } else if ('2' == $paymentMethod->id) {
-                $paymentMethod->name = 'банковской картой';
-            }
-        } else {
-            $paymentMethodsByDiscount[$index][][$paymentMethod->id] = $paymentMethod;
-        }
-    }
-    ksort($paymentMethodsByDiscount);
 ?>
     <div class="payments-types-table <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
-
         <div class="payments-types-table__head"><strong>Способы оплаты</strong></div>
 
         <div class="paymentMethods">
-            <? foreach ($paymentMethodsByDiscount as $discountIndex => $paymentMethodChunk): ?>
-            <ul class="payment-methods__lst <? if (0 === $discountIndex): ?>payment-methods__lst_discount<? endif ?>">
-                <? foreach ($paymentMethodChunk as $groupIndex => $paymentMethods): ?>
-                <?
-                    $paymentMethod = reset($paymentMethods);
+            <? foreach ((new \View\Partial\PaymentMethods())->execute($helper, $order->possible_payment_methods, $order->payment_method_id)['paymentMethodGroups'] as $paymentMethodGroup): ?>
+                <ul class="payment-methods__lst <? if ($paymentMethodGroup['discount']): ?>payment-methods__lst_discount<? endif ?>">
+                    <? foreach ($paymentMethodGroup['paymentMethodGroups'] as $paymentMethodGroup2): ?>
+                        <li class="payment-methods__i">
+                            <?
+                            $elementId = sprintf('order_%s-paymentMethod_%s', md5($order->block_name), $paymentMethodGroup2['paymentMethods'][0]['id']);
+                            ?>
 
-                    $elementId = sprintf('order_%s-paymentMethod_%s', md5($order->block_name), md5($groupIndex));
-                    $checked = in_array($order->payment_method_id, array_keys($paymentMethods));
-                ?>
-                    <li class="payment-methods__i">
-                    <? if (count($paymentMethods) > 1): ?>
                             <input
                                 id="<?= $elementId ?>"
                                 type="radio"
                                 name="payment-type-<?= md5($order->block_name) ?>[]"
-                                value="<?= $paymentMethod->id ?>"
-                                <? if ($paymentMethod->is_online): ?>data-online="true"<? endif ?>
+                                value="<?= $paymentMethodGroup2['paymentMethods'][0]['id'] ?>"
+                                <? if ($paymentMethodGroup2['paymentMethods'][0]['isOnline']): ?>
+                                    data-online="true"
+                                <? endif ?>
                                 data-value="<?= $helper->json([
                                     'block_name'        => $order->block_name,
-                                    'payment_method_id' => $paymentMethod->id,
+                                    'payment_method_id' => $paymentMethodGroup2['paymentMethods'][0]['id'],
                                 ]) ?>"
                                 class="customInput customInput-defradio2 js-order-paymentMethod js-customInput"
-                                <?= $checked ? 'checked' : '' ?>
-                            />
-                            <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>"><?= $groupIndex ?></label>
-                            <select class="customSel-inner js-order-paymentMethod">
-                            <? foreach ($paymentMethods as $paymentMethod): ?>
-                            <?
-                                $checked = $order->payment_method_id == $paymentMethod->id;
-                            ?>
-                                <option
-                                    value="<?= $paymentMethod->id ?>"
-                                    <?= $checked ? 'selected' : '' ?>
-                                    <? if ($paymentMethod->is_online): ?>data-online="true"<? endif ?>
-                                    data-value="<?= $helper->json([
-                                        'block_name'        => $order->block_name,
-                                        'payment_method_id' => $paymentMethod->id,
-                                    ]) ?>"
-                                ><?= $paymentMethod->name ?></option>
-                            <? endforeach ?>
-                            </select>
-                    <? else: ?>
-                    <?
-                        $paymentMethod = reset($paymentMethods);
+                                <?= $paymentMethodGroup2['selected'] ? 'checked' : '' ?>
+                                />
 
-                        $elementId = sprintf('order_%s-paymentMethod_%s', md5($order->block_name), $paymentMethod->id);
-                        $checked = $order->payment_method_id == $paymentMethod->id;
-                    ?>
-                        <input
-                            id="<?= $elementId ?>"
-                            type="radio"
-                            name="payment-type-<?= md5($order->block_name) ?>[]"
-                            value="<?= $paymentMethod->id ?>"
-                            <? if ($paymentMethod->is_online): ?>data-online="true"<? endif ?>
-                            data-value="<?= $helper->json([
-                                'block_name'        => $order->block_name,
-                                'payment_method_id' => $paymentMethod->id,
-                            ]) ?>"
-                            class="customInput customInput-defradio2 js-order-paymentMethod js-customInput"
-                            <?= $checked ? 'checked' : '' ?>
-                        />
-                        <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $checked ? 'mChecked' : '' ?>">
-                            <?= $paymentMethod->name ?>
-                            <? if ($image = $paymentMethod->icon): ?>
-                                <img class="payment-methods__img" src="<?= $image ?>">
+                            <? if (count($paymentMethodGroup2['paymentMethods']) > 1): ?>
+                                <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $paymentMethodGroup2['selected'] ? 'mChecked' : '' ?>"><?= $helper->escape($paymentMethodGroup2['name']) ?></label>
+
+                                <select class="customSel-inner js-order-paymentMethod">
+                                    <? foreach ($paymentMethodGroup2['paymentMethods'] as $paymentMethod): ?>
+                                        <option
+                                            value="<?= $paymentMethod['id'] ?>"
+                                            <?= $paymentMethod['selected'] ? 'selected' : '' ?>
+                                            <? if ($paymentMethod['isOnline']): ?>
+                                                data-online="true"
+                                            <? endif ?>
+                                            data-value="<?= $helper->json([
+                                                'block_name'        => $order->block_name,
+                                                'payment_method_id' => $paymentMethod['id'],
+                                            ]) ?>"
+                                            ><?= $helper->escape($paymentMethod['name']) ?></option>
+                                    <? endforeach ?>
+                                </select>
+                            <? else: ?>
+                                <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2 <?= $paymentMethodGroup2['selected'] ? 'mChecked' : '' ?>">
+                                    <?= $helper->escape($paymentMethodGroup2['paymentMethods'][0]['name']) ?>
+                                    <? if ($paymentMethodGroup2['paymentMethods'][0]['icon']): ?>
+                                        <img class="payment-methods__img" src="<?= $helper->escape($paymentMethodGroup2['paymentMethods'][0]['icon']) ?>" alt="<?= $helper->escape($paymentMethodGroup2['paymentMethods'][0]['name']) ?>" />
+                                    <? endif ?>
+                                </label>
                             <? endif ?>
-                        </label>
-                    <? endif ?>
-                    </li>
-                <? endforeach ?>
-            </ul>
-                <? if (0 === $discountIndex): ?>
-                    <div class="payment-methods__discount discount">
-                        <span class="discount__pay-type">Онлайн-оплата</span>
-                        <span class="discount__val">Скидка 15%</span>
-                    </div>
-                <? endif ?>
+                        </li>
+                    <? endforeach ?>
+                </ul>
+
+                <?= $helper->renderWithMustache('order-v3-new/paymentMethod/discount', ['discount' => $paymentMethodGroup['discount']]) ?>
             <? endforeach ?>
         </div>
     </div>
-
 <? };
 
 return $f;
