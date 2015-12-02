@@ -54,6 +54,7 @@ return function(
                     <ul class="tchibo-nav-list-sub nav-default-sub">
                     <? foreach ($category->getChild() as $child):
                         $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId());
+                        if ($child->getProductCount() === 0) continue
                         ?>
 
                         <li class="tchibo-nav-list-sub__item nav-default-sub__item <? if ($activeChild): ?> tchibo-nav-list-sub__item_active<? endif ?>">
