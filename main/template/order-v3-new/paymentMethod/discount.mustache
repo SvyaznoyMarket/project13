@@ -1,0 +1,24 @@
+{{#discount}}
+    <div class="payment-methods__discount discount">
+        <span class="discount__pay-type">Онлайн-оплата</span>
+        <span class="discount__val">
+            Скидка
+
+            <span class="discount__val__price">
+                {{value}}
+
+                {{#unit}}
+                    <span class="discount__unit">
+                        {{#isRub}}
+                            <span class="rubl">p</span>
+                        {{/isRub}}
+
+                        {{^isRub}}
+                            {{value}}
+                        {{/isRub}}
+                    </span>
+                {{/unit}}
+            </span>
+        </span>
+    </div>
+{{/discount}}

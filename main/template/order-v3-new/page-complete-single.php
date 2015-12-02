@@ -12,7 +12,6 @@ return function(
     $banks,
     $creditData,
     $subscribe,
-    $motivationAction,
     $errors
 ) {
     /** @var \Model\Product\Entity[] $products */
@@ -25,8 +24,7 @@ return function(
     $isOnlinePaymentPossible =
         (bool)$orderPayment
         ? (
-            array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $orderPayment->groups)
-            && !$order->isPaid()
+            !$order->isPaid()
             && !$order->isCredit()
             && !$order->isPaidBySvyaznoy()
         )
@@ -73,7 +71,7 @@ return function(
             <? endif ?>
 
             <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked): ?>
-                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true, 'title' => 'Оплатить онлайн' . (false ? 'со скидкой 15%' : '')]) ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true, 'title' => 'Оплатить онлайн со скидкой']) ?>
             <? endif ?>
 
         </div>
