@@ -173,12 +173,15 @@ class IndexAction extends \Controller\User\PrivateAction {
             }
         }
 
-        /** @var array */
+        /** @var \Model\PaymentMethod\PaymentEntity[] $paymentEntitiesByNumberErp */
+        $paymentEntitiesByNumberErp = [];
         $onlinePaymentAvailableByNumberErp = [];
         foreach ($paymentMethodQueries as $paymentMethodQuery) {
-            foreach ($paymentMethodQuery->response->paymentMethodsByOrderNumberErp as $numberErp => $items) {
-                foreach ($items as $item) {
-                    if (5 == $item['id']) {
+            foreach ($paymentMethodQuery->response->dataByErp as $numberErp => $item) {
+                $paymentEntity = new \Model\PaymentMethod\PaymentEntity($item);
+                $paymentEntitiesByNumberErp[$numberErp] = $paymentEntity;
+                foreach ($paymentEntity->methods as $paymentMethod) {
+                    if ($paymentMethod->isOnline) {
                         $onlinePaymentAvailableByNumberErp[$numberErp] = true;
                         break;
                     }
@@ -193,6 +196,7 @@ class IndexAction extends \Controller\User\PrivateAction {
         $page->setParam('pointsByUi', $pointsByUi);
         $page->setParam('viewedProducts', array_values($viewedProductsById));
         $page->setParam('onlinePaymentAvailableByNumberErp', $onlinePaymentAvailableByNumberErp);
+        $page->setParam('paymentEntitiesByNumberErp', $paymentEntitiesByNumberErp);
 
         return new \Http\Response($page->show());
     }

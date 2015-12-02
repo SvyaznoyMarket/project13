@@ -13,7 +13,6 @@ class PaymentEntity {
     public $methods = [];
 
     public function __construct($arr) {
-
         if (isset($arr['groups']) && is_array($arr['groups'])) {
             foreach ($arr['groups'] as $key => $group) {
                 $this->groups[(string)$key] = new PaymentGroupEntity($group);
