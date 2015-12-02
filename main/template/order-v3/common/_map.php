@@ -71,7 +71,6 @@
                             <div class="drop-filter-box__dd-inn drop-filter-box__dd_optimal">
                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
                                     <div class="fltrBtn_ln fltrBtn_ln--optimal">
-                                    <? if (false): ?>
                                     <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput" type="checkbox" id="fltrBtn__optimal">
                                     <label class="customLabel customLabel-defcheck2 " for="fltrBtn__optimal">
                                         <span class="customLabel_btx">Оптимально для заказа</span>
@@ -83,9 +82,7 @@
                                         </span>
                                         </span>
                                     </label>
-                                    <? endif ?>
-
-                                       </div>
+                                </div>
                                     <? foreach ($uniqueTokens as $token) : ?>
 
                                         <div class="fltrBtn_ln ">
