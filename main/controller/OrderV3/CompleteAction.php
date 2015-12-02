@@ -271,7 +271,6 @@ class CompleteAction extends OrderV3 {
         $page->setParam('orders', $orders);
         $page->setParam('onlinePaymentStatusByNumber', $onlinePaymentStatusByNumber);
         $page->setParam('ordersPayment', $ordersPayment);
-        $page->setParam('motivationAction', $this->getMotivationAction($orders, $ordersPayment));
         $page->setParam('products', $products);
         $page->setParam('productsById', $products);
         $page->setParam('userEntity', $this->user->getEntity());
@@ -295,8 +294,7 @@ class CompleteAction extends OrderV3 {
         $orderId = $request->request->get('order');
         $orderNumber = $request->request->get('number');
         $backUrl = $request->request->get('url') ?: \App::router()->generate('orderV3.complete', ['refresh' => 1], true);
-        $action = ['payment_sum' => null, 'alias' => null];
-        $action = array_merge($action, is_array($request->request->get('action')) ? $request->request->get('action') : []); // акция по мотивации онлайн-оплаты
+        $action = $request->request->get('action');
 
         $privateClient = \App::coreClientPrivate();
 
@@ -313,8 +311,8 @@ class CompleteAction extends OrderV3 {
             'order_id'  => $orderId,
         ];
 
-        if ($action['alias']) {
-            $data['action_alias'] = $action['alias'];
+        if ($action) {
+            $data['action_alias'] = $action;
         }
 
         $result = $privateClient->query('site-integration/payment-config',
@@ -436,48 +434,4 @@ class CompleteAction extends OrderV3 {
             return false;
         }
     }
-
-    /** Возвращает акцию по мотивации к покупке онлайн на основании АБ-теста и возможных акций из ядра
-     *  Для тестирования первой строкой вписать return 'online_motivation_discount'; или return 'online_motivation_coupon';
-     * @param   $orders         \Model\Order\Entity[]
-     * @param   $ordersPayment  \Model\PaymentMethod\PaymentEntity[]
-     * @return  string|null
-     */
-    private function getMotivationAction($orders, $ordersPayment) {
-        /** @var $order \Model\Order\Entity */
-        if (count($orders) != 1 || count($ordersPayment) != 1) {
-            return null;
-        }
-
-        $order = reset($orders);
-        // если пользователь выбрал что-то отличное от оплаты наличными, то не предлагаем ему акцию
-        if ($order->paymentId != \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH) {
-            return null;
-        }
-
-        // если резерв сегодня, то не мотивируем
-        foreach ($orders as $iOrder) {
-            $delivery = $iOrder->getDelivery();
-            if (!$delivery || !$delivery->getDeliveredAt() || $delivery->isShipping) continue;
-
-            if ($delivery->pointUi && ((new \DateTime())->format('d.m.Y') === $delivery->getDeliveredAt()->format('d.m.Y'))) { // сегодня
-                return null;
-            }
-        }
-
-        // достанем список методов из первого возможного метода "прямо сейчас"
-        $orderPayment = reset($ordersPayment);
-        $onlineMethods = $orderPayment instanceof \Model\PaymentMethod\PaymentEntity ? $orderPayment->getOnlineMethods() : null;
-        if (empty($onlineMethods)) {
-            return null;
-        }
-
-        $key = \App::abTest()->getOnlineMotivationKey();
-        if ($onlineMethods[0]->getAction($key)) {
-            return $key;
-        }
-
-        return null;
-    }
-
 }

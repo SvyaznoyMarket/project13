@@ -213,7 +213,7 @@ class OrderEntity {
      * Цена заказа при онлайн-оплате
      * @var float
      */
-    private $total_view_cost;
+    private $total_cost;
     /**
      * Сумма предоплаты
      * @var int
@@ -344,7 +344,7 @@ class OrderEntity {
 
         if (isset($arr['order']['delivery']['box_ui'])) $this->box_ui = $arr['order']['delivery']['box_ui'];
 
-        if (isset($arr['order']['total_view_cost'])) $this->total_view_cost = $arr['order']['total_view_cost'];
+        if (isset($arr['order']['total_cost'])) $this->total_cost = $arr['order']['total_cost'];
 
         // meta data
         if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2, $cartProducts);
@@ -440,7 +440,7 @@ class OrderEntity {
     /** Возвращает данные для создания заказа на ядре
      * @return array
      */
-    public function getOrderData() {
+    public function getOrderData($renameTotalCostToTotalViewCost = false) {
         $data = [];
 
         // создаем заказ с оплатой наличными, если выбран кредит, а предпочтительный метод записываем в meta
@@ -451,6 +451,10 @@ class OrderEntity {
         $this->meta_data['split_version'] = 2;
 
         foreach (get_object_vars($this) as $key => $value) {
+            if ($renameTotalCostToTotalViewCost && $key === 'total_cost') {
+                $key = 'total_view_cost';
+            }
+
             if (
                 (null !== $value)
                 || ('delivery_date_interval' === $key)

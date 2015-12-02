@@ -31,16 +31,13 @@ class PaymentMethodEntity {
     public $isAvailableToPickpoint;
     /** @var  \Model\PaymentMethod\PaymentGroup\PaymentGroupEntity */
     public $paymentGroup;
-    /** Возможные маркетинговые акции
-     * @var array */
-    public $availableActions = [];
-    /** @var array|null */
+    /** @var \Model\Discount|null */
     public $discount;
 
     /** @var string|null */
     public $icon;
 
-    public function __construct($arr, &$groups) {
+    public function __construct($arr, &$groups = null) {
 
         if (isset($arr['id'])) {
             $this->id = (int)$arr['id'];
@@ -58,13 +55,15 @@ class PaymentMethodEntity {
 
         if (isset($arr['available_to_pickpoint'])) $this->isAvailableToPickpoint = (bool)$arr['available_to_pickpoint'];
 
-        if (isset($arr['discount']['value'])) $this->discount = $arr['discount'];
+        if (isset($arr['discount']['value'])) $this->discount = new \Model\Discount($arr['discount']);
 
-        if (isset($arr['payment_method_group_id'])) {
-            $id = (string)$arr['payment_method_group_id'];
-            if(!isset($groups[$id])) throw new \Exception('Для метода нет группы оплаты');
-            $this->paymentGroup = $groups[$id];
-        } else throw new \Exception('Для метода нет группы оплаты');
+        if ($groups !== null) {
+            if (isset($arr['payment_method_group_id'])) {
+                $id = (string)$arr['payment_method_group_id'];
+                if(!isset($groups[$id])) throw new \Exception('Для метода нет группы оплаты');
+                $this->paymentGroup = $groups[$id];
+            } else throw new \Exception('Для метода нет группы оплаты');
+        }
 
         switch ($this->id) {
             case 5: $this->icon = '/styles/order-new/img/payment/pay-card.png'; break;
@@ -75,50 +74,9 @@ class PaymentMethodEntity {
             case 14: $this->icon = '/styles/order/img/svyaznoy.png'; break;
             case 16: $this->icon = '/styles/order-new/img/payment/pay-yandex.png'; break;
         }
-
-        if (isset($arr['available_actions']) && is_array($arr['available_actions'])) $this->availableActions = $arr['available_actions'];
-    }
-
-    /**
-     * Возвращает акцию по ее алиасу
-     * @param $alias string
-     * @return array|null
-     */
-    public function getAction($alias) {
-        foreach ($this->availableActions as $arr) {
-            if (isset($arr['alias']) && $alias == $arr['alias']) return $arr;
-        }
-        return null;
-    }
-
-    /**
-     * Возвращает online_motivation_discount-акцию
-     * @return array|null
-     */
-    public function getOnlineDiscountAction() {
-        $return = null;
-
-        foreach ($this->availableActions as $item) {
-            if (isset($item['alias']) && ('online_motivation_discount' === $item['alias'])) {
-                $return = $item + ['payment_sum' => null];
-                break;
-            }
-        }
-
-        return $return;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getOnlineDiscountActionSum() {
-        $action = $this->getOnlineDiscountAction();
-
-        return isset($action['payment_sum']) ? $action['payment_sum'] : null;
     }
 
     public function isSvyaznoyClub() {
         return $this->id == self::PAYMENT_SVYAZNOY_CLUB;
     }
-
-} 
+}

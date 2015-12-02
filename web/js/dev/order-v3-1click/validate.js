@@ -252,7 +252,9 @@
 				url = $el.data('url'),
 				data = $el.data('value'),
 				relations = $el.data('relation'),
-				$formContainer = relations['formContainer'] && $(relations['formContainer'])
+				$formContainer = relations['formContainer'] && $(relations['formContainer']),
+				$sumContainer = relations['sumContainer'] && $(relations['sumContainer']),
+				sum = $el.data('sum')
 			;
 
 			try {
@@ -264,6 +266,10 @@
 				}
 
 				loadPaymentForm($formContainer, url, data);
+
+            if (sum && sum.value) {
+                $sumContainer.html(sum.value);
+            }
 			} catch(error) { console.error(error); };
 
 			//e.preventDefault();

@@ -34,7 +34,7 @@ $f = function(
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
-                    Онлайн-оплата<? if (false): ?> со скидкой 15%<? endif ?>
+                    Оплатить онлайн со скидкой
                 </div>
 
                 <div class="orderPayment_msg_shop orderPayment_pay">
@@ -45,7 +45,7 @@ $f = function(
                         value="<?= $paymentMethod->id ?>"
                         data-url="<?= $formUrl ?>"
                         data-value="<?= $helper->json([
-                            'action' => $paymentMethod->getOnlineDiscountAction() ?: null,
+                            'action' => $paymentMethod->discount ? $paymentMethod->discount->action : null,
                             'method' => $paymentMethod->id,
                             'order'  => $order->id,
                             'number' => $order->number,
