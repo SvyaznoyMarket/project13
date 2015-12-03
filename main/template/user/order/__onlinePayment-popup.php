@@ -63,7 +63,7 @@ $onlinePaymentMethods = array_filter($paymentEntity->methods, function(\Model\Pa
                                     'method' => $paymentMethodGroup2['paymentMethods'][0]['id'],
                                     'order'  => $order->id,
                                     'number' => $order->number,
-                                    'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context], true),
+                                    'url'    => \App::router()->generate('user.orders', [], true),
                                 ]) ?>"
                                 <? if ($sum = (empty($paymentMethodGroup['discount']['sum']) ? $order->paySum : $paymentMethodGroup['discount']['sum'])): ?>
                                     data-sum="<?= $helper->json([

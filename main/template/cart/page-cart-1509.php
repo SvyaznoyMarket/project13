@@ -43,7 +43,6 @@ $helper = new \Helper\TemplateHelper();
 
     <!--<div class="backShop fl mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">&lt; <a class="underline" href="<?/*= $backlink */?>">Вернуться к покупкам</a></div>-->
 
-
         <div class="order-cart__btn mNoPrint jsKnockoutCart" data-bind="visible: cart().sum() > 0" style="display: none">
             <a href="<?= (@$orderUrl ?: $page->url('order')) ?>" class="btn-type btn-type--buy btn-type--order" data-bind="visible: !isMinOrderSumVisible()">Оформить заказ</a>
         </div>
