@@ -201,6 +201,25 @@ trait ABHelperTrait {
     }
 
     /**
+     * Дизайн блока "Вы смотрели" на главной
+     * @return int
+     */
+    public function getViewedOnMainCase()
+    {
+        switch (\App::abTest()->getTest('viewed_on_main')->getChosenCase()->getKey()) {
+            case 'default_view':
+                return 1;
+            case 'modern_view':
+                return 2;
+            case 'season_view':
+                return 3;
+            case 'disabled':
+            default:
+                return 0;
+        }
+    }
+
+    /**
      * @return string
      */
     public function getOrderButtonLocation() {

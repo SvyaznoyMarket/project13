@@ -1,0 +1,198 @@
+.newyear-gifts {
+    margin: 0 -10px 30px;
+    position: relative;
+
+    background: url('@{base-url}/mainpage/img/newyear-gifts/сhristmas_tree.png') no-repeat 50% 55px;
+    &__title {
+        font-family: 'Enter';
+        font-size: 48px;
+
+        text-align: center;
+
+        color: #51c9ef;
+    }
+
+    &:before {
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 60px;
+        z-index: 5;
+        background: -moz-linear-gradient(left, rgba(255,255,255,1) 52%, rgba(255,255,255,0) 100%);
+        background: -webkit-gradient(left top, right top, color-stop(52%, rgba(255,255,255,1)), color-stop(100%, rgba(255,255,255,0)));
+        background: -webkit-linear-gradient(left, rgba(255,255,255,1) 52%, rgba(255,255,255,0) 100%);
+        background: -o-linear-gradient(left, rgba(255,255,255,1) 52%, rgba(255,255,255,0) 100%);
+        background: -ms-linear-gradient(left, rgba(255,255,255,1) 52%, rgba(255,255,255,0) 100%);
+        background: linear-gradient(to right, rgba(255,255,255,1) 52%, rgba(255,255,255,0) 100%);
+    }
+
+    &:after {
+        position: absolute;
+        content: '';
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 60px;
+        z-index: 5;
+        background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 48%);
+        background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255,255,255,0)), color-stop(0%, rgba(255,255,255,0)), color-stop(48%, rgba(255,255,255,1)));
+        background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 48%);
+        background: -o-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 48%);
+        background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 48%);
+        background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 48%);
+    }
+
+    &__btn {
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 30px;
+        margin-top: 30px;
+        cursor: pointer;
+        z-index: 7;
+
+        &.disabled {
+            .opacity(0);
+        }
+
+        &_prev {
+            left: 0;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAABTUlEQVR4Ab2WJVAFURSGcS+4O5Tn7x25+2i49QKZPljvM1gfKp7QSsah4tZwd7s7G9E9M1yp35z/eMhfj9PpjOJAoJYQh5RS6SHCE+rz+UoV0c7Hf2DmfhGNmZNNy4jePv4hALhtw4LBYCwFAi0W7Pzjd4ikGgABRjwxpRJNAECkbZrH44lXiLOK6FUBbBBRkW2YGVXETkvqsUHULJEahoisiG71N4RR1dYlKcQ1UyriEgCk2IYVFBTEKKI+UyriNTNXSIwLZ+ZGRnxRiDqBu0VSyeXKZaJ9DTSI5nNycmJFQEYc01IZ4LSMyCeDATRZKXJnMLdJo5rAiLqsnj/+jE6b/wcKJAugRKNfBEWeNopoAQDipEx5Yn9Rer1fl56wOTDisqg5yNvXNw1Wzw8rlU6kDVY+AuRDSj5GZYOeEQdFg/6LVWTb3ipiY1l6ByYboi0DEZqOAAAAAElFTkSuQmCC');
+        }
+
+        &_next {
+            right: 0;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAABUElEQVR42q2WPUoEQRCFR/FnNfAvdcQJJpsdmN7u6u4BWQXNjRQvoOAtXMEjKAoewEDwBIaGZhoYKhiYiAqKLK76BtrE9HVB0TDBR71+NVWd/A9nzDryoiiKsYQNQOacyI815hNnL4kRTuvDAH11zi3RwDRNJwC8g+xvK3KjtZ6moSLSRYV9gPs4T2lgnufjAO010pHv0ulsxoBOQfJVuM+Huq7nWeYQ7q8E7AXQL+QZvg1TRABHIXe7qdJb+yxa71LAAJ2E4+dB+r2IFLR0abcXxJjHxnXkZZZlLRY6giq3UOEAwDfkPi29LMtZAI9DKz1571doqFJq0YrcAjhAxddVVc3wriu1GobHhzfmIAZwjQbGlxxMEWNOCFOItiEbm//1OFdFdpjhEH98xR+wYQUA1PtbAVbrjYSJWmQ5zpIKrkZdo4AcEYs+/lMk+mPpF8O5oV6EQLJmAAAAAElFTkSuQmCC');
+        }
+    }
+}
+
+.newyear-gifts-slider-wrap {
+    width: 896px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.newyear-gifts-slider {
+    position: relative;
+    z-index: 3;
+    left: 0;
+    width: 10000px;
+
+    margin: 36px 0 0;
+    padding: 47px 0 0;
+    color: #363636;
+
+    background: url('@{base-url}/mainpage/img/newyear-gifts/christmas-line.png') repeat-x 6px 0;
+
+    .clearfix();
+    &__item {
+        float: left;
+
+        width: 224px;
+
+        text-align: center;
+    }
+    &__image {
+        display: flex;
+
+        width: 172px;
+        height: 172px;
+        margin: 0 auto 20px;
+
+        border-radius: 50%;
+        background: @white;
+
+        justify-content: center;
+        align-items: center;
+        box-shadow: 8px 0 30px rgba(0, 0, 0, 0.4) inset, -10px 0 35px rgba(165, 194, 221, 1) inset;
+
+        .image {
+        	max-height: 90px;
+        	max-width: 90px;
+        }
+    }
+
+    &__name {
+        display: block;
+        color: #363636;
+        margin: 0 20px 5px;
+        height: 31px;
+        overflow: hidden;
+    }
+
+    &__price {
+        text-align: center;
+        margin: 0 0 5px;
+
+        &-current {
+            .inline-block(baseline);
+            font-size: 21px;
+            margin-right: 10px;
+        }
+
+        &-old {
+            .inline-block(baseline);
+            font-size: 16px;
+        }
+    }
+
+    .btnBuy__eLink {
+        background: #f99b1c;
+        border: 1px solid #f08a00;
+        color: #ffffff;
+        padding: 4px 10px;
+        line-height: 1;
+        font-size: 14px;
+        width: auto;
+
+        &.mDisabled{
+            color: #cbcbcb;
+            border: 1px solid #f1f0f0;
+            background: #f1f0f0;
+        }
+    }
+}
+
+.i-newyear-gifts-light {
+    position: absolute;
+
+    display: block;
+
+    background: url('@{base-url}/mainpage/img/newyear-gifts/christmas-light.png') no-repeat 0 0;
+    .animation(blink, 3s, 0, ease-in, infinite);
+
+    &_blue {
+        .sprite-temp(-1px,-1px,62px,62px);
+        left: 440px;
+        top: 80px;
+        -webkit-animation-delay: 2s;
+        -moz-animation-delay: 2s;
+        -o-animation-delay: 2s;
+        animation-delay: 2s;
+    }
+
+    &_green {
+        .sprite-temp(-1px,-65px,64px,64px);
+        right: 213px;
+        top: 130px;
+        -webkit-animation-delay: 2s;
+        -moz-animation-delay: 2s;
+        -o-animation-delay: 2s;
+        animation-delay: 2s;
+    }
+
+    &_orange {
+        .sprite-temp(-1px,-131px,58px,57px);
+        left: 224px;
+        top: 122px;
+    }
+
+    &_red {
+        .sprite-temp(-1px,-190px,92px,94px);
+        right: 325px;
+        top: 65px;
+    }
+}

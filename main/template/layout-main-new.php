@@ -40,7 +40,7 @@
         <!-- шапка -->
         <div class="header">
             <?= $page->render('main/banner.pickup') ?>
-            
+
             <div style="position: relative;">
                 <div class="header__inn">
                     <?= $page->slotTopbar() ?>
@@ -59,24 +59,29 @@
 
             <div class="inn">
 
-            <?= $page->render('main/_banner2', ['banners' => $page->getParam('banners'), []]) ?>
+                <?= $page->render('main/_banner2', ['banners' => $page->getParam('banners'), []]) ?>
 
-            <?= $page->render('main/_infoBlocks') ?>
+                <?= $page->render('main/_infoBlocks') ?>
 
-            <? if (\App::config()->product['pullMainRecommendation']): ?>
-            <div class="clearfix jsDivForRecommend js-showTopBar">
-                <?= $page->slotRecommendations() ?>
+                <? if (\App::config()->product['pullMainRecommendation']): ?>
+                <div class="clearfix jsDivForRecommend js-showTopBar">
+                    <?= $page->slotRecommendations() ?>
+                </div>
+                <? endif ?>
+
+                <?= $page->slotInfoBox() ?>
+
+                <?= $page->render('main/_viewed.modern') ?>
+
+                <?= $page->render('main/_slidesBoxWide') ?>
+
+                <?= $page->render('main/_popularBrands') ?>
+
+                <?= $page->render('main/_viewed.season') ?>
+
+                <?= $page->render('main/_viewed.default') ?>
+
             </div>
-            <? endif ?>
-
-            <?= $page->slotInfoBox() ?>
-
-            <?= $page->render('main/_slidesBoxWide') ?>
-
-            <?= $page->render('main/_popularBrands') ?>
-
-            </div>
-
         </div><!--/ Контент -->
     </div><!--/ Шаблон -->
 

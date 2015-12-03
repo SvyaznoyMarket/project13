@@ -366,6 +366,10 @@ return [
         'pattern' => '/ajax/product/map/{productId}/{productUi}',
         'action'  => ['Product\DeliveryAction', 'map']
     ],
+    'product.viewed' => [
+        'pattern'   => '/ajax/product/viewed',
+        'action'    => ['Product\ViewedAction', 'execute']
+    ],
 
     // теги
     'tag' => [
