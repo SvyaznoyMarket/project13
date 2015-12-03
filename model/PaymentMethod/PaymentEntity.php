@@ -60,16 +60,12 @@ class PaymentEntity {
      * @return int|null
      */
     public function getPaymentSumByMethodId($methodId) {
-        $sum = null;
-
         foreach ($this->methods as $method) {
-            if ($methodId !== $method->id) continue;
-
-            if ($action = $method->getOnlineDiscountAction()) {
-                $sum = $action['payment_sum'];
+            if ($methodId === $method->id && $method->discount) {
+                return $method->discount->sum;
             }
         }
 
-        return $sum ?: null;
+        return null;
     }
 }

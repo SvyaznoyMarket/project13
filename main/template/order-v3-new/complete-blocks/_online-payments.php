@@ -11,7 +11,7 @@ $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Order\Entity $order,
     \Model\PaymentMethod\PaymentEntity $orderPayment = null,
-    $title = 'Онлайн-оплата'
+    $title = 'Оплатить онлайн со скидкой'
 ) {
     if (!$orderPayment || !$orderPayment->methods) {
         return '';
@@ -29,14 +29,15 @@ $f = function(
         $checkedPaymentMethodId = $paymentMethod->id;
     }
 
-    $paymentMethodsByDiscount = [];
-    foreach ($paymentMethods as $paymentMethod) {
-        $index = $paymentMethod->discount ? 0 : 1;
-        $paymentMethodsByDiscount[$index][] = $paymentMethod;
-    }
-    ksort($paymentMethodsByDiscount);
-
     $formUrl = \App::router()->generate('orderV3.paymentForm');
+
+    $sum = ($checkedPaymentMethodId && $orderPayment) ? ($orderPayment->getPaymentSumByMethodId($checkedPaymentMethodId)) : null;
+    if (empty($sum)) {
+        $sum = $order->paySum;
+    }
+
+    $containerId = 'id-paymentForm-container';
+    $sumContainerId = 'id-onlineSum-container';
 ?>
 
     <div class="orderPayment orderPayment--static orderPaymentWeb id-orderPaymentPreview-container">
@@ -49,12 +50,6 @@ $f = function(
                     <?= $title ?>
                 </div>
                 <div class="order-payment__sum-msg">
-                <?
-                    $sum = ($checkedPaymentMethodId && $orderPayment) ? ($orderPayment->getPaymentSumByMethodId($checkedPaymentMethodId)) : null;
-                    if (!$sum) {
-                        $sum = $order->paySum;
-                    }
-                ?>
                     К оплате <span class="order-payment__sum"><?= $helper->formatPrice($sum) ?> <span class="rubl">p</span></span>
                 </div>
                 <div class="orderPayment_msg_shop orderPayment_pay">
@@ -86,68 +81,62 @@ $f = function(
                     <?= $title ?>
                 </div>
                 <div class="order-payment__sum-msg">
-                    К оплате <span class="order-payment__sum"><span class="id-onlineSum-container"><?= $helper->formatPrice($sum) ?></span> <span class="rubl">p</span></span>
+                    К оплате <span class="order-payment__sum"><span class="<?= $sumContainerId ?>"><?= $helper->formatPrice($sum) ?></span> <span class="rubl">p</span></span>
                 </div>
 
-                <? foreach ($paymentMethodsByDiscount as $discountIndex => $paymentMethods): ?>
-                <ul class="payment-methods__lst <? if (0 === $discountIndex): ?>payment-methods__lst_discount<? endif ?>">
-                    <? foreach ($paymentMethods as $paymentMethod): ?>
-                    <?
-                        $elementId = sprintf('order_%s-paymentMethod_%s', $order->id, $paymentMethod->id);
-                        $checked = $checkedPaymentMethodId == $paymentMethod->id;
-                    ?>
-                    <li class="payment-methods__i">
-                        <input
-                            id="<?= $elementId ?>"
-                            type="radio"
-                            name="onlinePaymentMethodId"
-                            value="<?= $paymentMethod->id ?>"
-                            data-url="<?= $formUrl ?>"
-                            data-value="<?= $helper->json([
-                                'action' => $paymentMethod->getOnlineDiscountAction() ?: null,
-                                'method' => $paymentMethod->id,
-                                'order'  => $order->id,
-                                'number' => $order->number,
-                                'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context], true),
-                            ]) ?>"
-                            <? if ($sum = ($paymentMethod->getOnlineDiscountActionSum() ?: $order->paySum)): ?>
-                                data-sum="<?= $helper->json([
-                                    'name'  => isset($paymentMethod->discount['value']) ? ('Скидка ' . $paymentMethod->discount['value'] .'%') : null,
-                                    'value' => $helper->formatPrice($sum)
-                                ])?>"
-                            <? endif ?>
-                            data-relation="<?= $helper->json([
-                                'formContainer'     => '.id-paymentForm-container',
-                                'discountContainer' => '.id-onlineDiscount-container',
-                                'sumContainer'      => '.id-onlineSum-container',
-                            ]) ?>"
-                            class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
-                            <? if ($checked): ?>
-                                data-checked="true"
-                                checked="checked"
-                            <? endif ?>
-                        />
-                        <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2<? if ($checked): ?> mChecked<? endif ?>">
-                            <?= $paymentMethod->name ?>
-                            <? if ($image = $paymentMethod->icon): ?>
-                                <img class="payment-methods__img" src="<?= $image ?>" />
-                            <? endif ?>
-                        </label>
-                    </li>
-                    <? endforeach ?>
-                </ul>
+                <? foreach ((new \View\Partial\PaymentMethods())->execute($helper, $paymentMethods, $checkedPaymentMethodId)['paymentMethodGroups'] as $paymentMethodGroup): ?>
+                    <ul class="payment-methods__lst <? if ($paymentMethodGroup['discount']): ?>payment-methods__lst_discount<? endif ?>">
+                        <? foreach ($paymentMethodGroup['paymentMethodGroups'] as $paymentMethodGroup2): ?>
+                            <? if (count($paymentMethodGroup2['paymentMethods']) == 1): ?>
+                                <?
+                                $elementId = sprintf('order_%s-paymentMethod_%s', $order->id, $paymentMethodGroup2['paymentMethods'][0]['id']);
+                                $name = 'onlinePaymentMethodId';
+                                ?>
 
-                    <? if (0 === $discountIndex): ?>
-                    <div class="payment-methods__discount discount">
-                        <div class="id-onlineDiscount-container">
-                            <span class="discount__pay-type">Онлайн-оплата</span>
-                            <span class="discount__val">Скидка 15%</span>
-                        </div>
-                    </div>
-                    <? endif ?>
+                                <li class="payment-methods__i">
+                                    <input
+                                        id="<?= $elementId ?>"
+                                        type="radio"
+                                        name="<?= $name ?>"
+                                        value="<?= $paymentMethodGroup2['paymentMethods'][0]['id'] ?>"
+                                        data-url="<?= $formUrl ?>"
+                                        data-value="<?= $helper->json([
+                                            'action' => isset($paymentMethodGroup['discount']) ? $paymentMethodGroup['discount']['action'] : null,
+                                            'method' => $paymentMethodGroup2['paymentMethods'][0]['id'],
+                                            'order'  => $order->id,
+                                            'number' => $order->number,
+                                            'url'    => \App::router()->generate('orderV3.complete', ['context' => $order->context], true),
+                                        ]) ?>"
+                                        <? if ($sum = (empty($paymentMethodGroup['discount']['sum']) ? $order->paySum : $paymentMethodGroup['discount']['sum'])): ?>
+                                            data-sum="<?= $helper->json([
+                                                'value' => $helper->formatPrice($sum)
+                                            ])?>"
+                                        <? endif ?>
+                                        data-relation="<?= $helper->json([
+                                            'formContainer'     => '.' . $containerId,
+                                            'sumContainer'      => '.' . $sumContainerId,
+                                        ]) ?>"
+                                        class="customInput customInput-defradio2 js-customInput js-order-onlinePaymentMethod"
+                                        <? if ($paymentMethodGroup2['paymentMethods'][0]['selected']): ?>
+                                            checked="checked"
+                                            data-checked="true"
+                                        <? endif ?>
+                                        />
+                                    <label for="<?= $elementId ?>" class="customLabel customLabel-defradio2<? if ($paymentMethodGroup2['paymentMethods'][0]['selected']): ?> mChecked<? endif ?>">
+                                        <?= $helper->escape($paymentMethodGroup2['paymentMethods'][0]['name']) ?>
+                                        <? if ($paymentMethodGroup2['paymentMethods'][0]['icon']): ?>
+                                            <img class="payment-methods__img" src="<?= $helper->escape($paymentMethodGroup2['paymentMethods'][0]['icon']) ?>" alt="<?= $helper->escape($paymentMethodGroup2['paymentMethods'][0]['name']) ?>" />
+                                        <? endif ?>
+                                    </label>
+                                </li>
+                            <? endif ?>
+                        <? endforeach ?>
+                    </ul>
+
+                    <?= $helper->renderWithMustache('order-v3-new/paymentMethod/discount', ['discount' => $paymentMethodGroup['discount']]) ?>
                 <? endforeach ?>
 
-                <div class="orderPayment_msg_shop orderPayment_pay id-paymentForm-container">
+                <div class="orderPayment_msg_shop orderPayment_pay <?= $containerId ?>">
                     <!--<button class="orderPayment_btn btn3">Оплатить</button>-->
                 </div>
                 <p class="orderPayment_msg_hint">Вы будете перенаправлены на сайт платежной системы.</p>

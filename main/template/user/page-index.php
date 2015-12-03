@@ -49,8 +49,9 @@ $helper = new \Helper\TemplateHelper();
                                     </div>
 
                                     <div class="order-list__price">
-                                        <? if ($order->paySum): ?>
-                                            <?= $helper->formatPrice($order->paySum) ?> <span class="rubl">p</span>
+
+                                        <? if ($order->totalPaySum): ?>
+                                            <?= $helper->formatPrice($order->totalPaySum) ?> <span class="rubl">p</span>
                                         <? endif ?>
                                     </div>
 
