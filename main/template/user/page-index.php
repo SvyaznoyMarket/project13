@@ -75,6 +75,7 @@ $helper = new \Helper\TemplateHelper();
                                         <? endif ?>
                                     </div>
 
+                                    <? if (false): ?>
                                     <div class="order-list__toggler">
                                         <span class="order-list__toggler-txt">Еще</span>
 
@@ -82,6 +83,7 @@ $helper = new \Helper\TemplateHelper();
                                             Отменить заказ
                                         </div>
                                     </div>
+                                    <? endif ?>
 
                                     <? if (!empty($paymentEntitiesByNumberErp[$order->numberErp])): ?>
                                         <div class="<?= $paymentContainerId ?>">
