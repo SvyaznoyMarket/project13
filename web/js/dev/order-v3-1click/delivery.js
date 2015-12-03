@@ -138,7 +138,7 @@
                     // добавляем точки на карту
                     $.each(mapData.points, function(i, point){
                         try {
-                            map.geoObjects.add(new ENTER.Placemark(point, true));
+                            map.geoObjects.add(new ENTER.Placemark(point, mapData.enableFitsAllProducts));
                         } catch (e) {
                             console.error('Ошибка добавления точки на карту', e, point);
                         }

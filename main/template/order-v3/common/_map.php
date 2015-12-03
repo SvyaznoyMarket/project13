@@ -1,11 +1,15 @@
 <?
 /**
- * @var $dataPoints \View\PointsMap\MapView
- * @var $product    \Model\Product\Entity
- * @var $visible    bool
- * @var $class      string
- * @var $page       string (order|product)
+ * @var $dataPoints            \View\PointsMap\MapView
+ * @var $product               \Model\Product\Entity
+ * @var $visible               bool
+ * @var $class                 string
+ * @var $page                  string (order|product)
+ * @var $enableFitsAllProducts bool
  */
+    if (!isset($enableFitsAllProducts)) {
+        $enableFitsAllProducts = false;
+    }
 
     $helper = \App::helper();
     $uniqId = uniqid();
@@ -22,7 +26,8 @@
         'latitude'  => $dataPoints->mapConfig['latitude'],
         'longitude' => $dataPoints->mapConfig['longitude'],
         'zoom'      => $dataPoints->mapConfig['zoom'],
-        'points'    => $dataPoints->points
+        'points'    => $dataPoints->points,
+        'enableFitsAllProducts' => $enableFitsAllProducts,
     ];
 
     $uniqueCosts = $dataPoints->getUniquePointCosts();
@@ -61,31 +66,31 @@
                 <div class="drop-filter-kit drop-filter-kit-box js-category-v2-filter-otherGroups">
 
                     <!-- Точка самовывоза -->
-                    <div class="drop-filter-box js-category-v2-filter-dropBox jsOrderV3Dropbox" data-bind="css: { picked: choosenTokens().length > 0 }">
+                    <div class="drop-filter-box js-category-v2-filter-dropBox jsOrderV3Dropbox" data-bind="css: { picked: choosenTokens().length > 0 || fitsAllProducts }">
                         <div class="drop-filter-box__tggl js-category-v2-filter-dropBox-opener">
-                            <span class="drop-filter-box__tggl-tx" data-bind="text: pointsText">Все точки</span>
+                            <span class="drop-filter-box__tggl-tx">Компании</span>
                             <i class="drop-filter-box__tggl-corner"></i>
                         </div>
 
                         <div class="drop-filter-box__dd 1234 js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
                             <div class="drop-filter-box__dd-inn drop-filter-box__dd_optimal">
                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
-                                    <div class="fltrBtn_ln fltrBtn_ln--optimal">
-                                    <? if (false): ?>
-                                    <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput" type="checkbox" id="fltrBtn__optimal">
-                                    <label class="customLabel customLabel-defcheck2 " for="fltrBtn__optimal">
-                                        <span class="customLabel_btx">Оптимально для заказа</span>
-                                        <span class="fltrBtn_ln--optimal-help">
-                                            ?
-                                            <span class="fltrBtn_ln--optimal-txt">
-                                            Показать точки, оптимально подобранные под размер и вес вашего заказа.
-                                            Вероятность разбиения заказа минимальна.
-                                        </span>
-                                        </span>
-                                    </label>
+                                    <? if ($enableFitsAllProducts): ?>
+                                        <div class="fltrBtn_ln fltrBtn_ln--optimal">
+                                            <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput" type="checkbox" id="fltrBtn__optimal" data-bind="checked: fitsAllProducts" />
+                                            <label class="customLabel customLabel-defcheck2 " for="fltrBtn__optimal">
+                                                <span class="customLabel_btx">Оптимально для заказа</span>
+                                                <span class="fltrBtn_ln--optimal-help">
+                                                    ?
+                                                    <span class="fltrBtn_ln--optimal-txt">
+                                                    Показать точки, оптимально подобранные под размер и вес вашего заказа.
+                                                    Вероятность разбиения заказа минимальна.
+                                                </span>
+                                                </span>
+                                            </label>
+                                        </div>
                                     <? endif ?>
 
-                                       </div>
                                     <? foreach ($uniqueTokens as $token) : ?>
 
                                         <div class="fltrBtn_ln ">

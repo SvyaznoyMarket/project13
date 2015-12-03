@@ -171,7 +171,7 @@
                     ENTER.OrderV3.koModels = [];
                     $.each($orderContent.find('.jsNewPoints'), function(i,val) {
                         var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
-                            points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map);
+                            points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map, pointData.enableFitsAllProducts);
                         ENTER.OrderV3.koModels.push(points);
                         ko.applyBindings(points, val);
                     });
@@ -266,7 +266,7 @@
                 // добавляем точки на карту
                 $.each(mapData.points, function(i, point){
                     try {
-                        map.geoObjects.add(new ENTER.Placemark(point, true));
+                        map.geoObjects.add(new ENTER.Placemark(point, mapData.enableFitsAllProducts));
                     } catch (e) {
                         console.error('Ошибка добавления точки на карту', e, point);
                     }

@@ -29,6 +29,8 @@ class MapPoint extends BasicPoint {
     public $dateInterval;
     /** @var string */
     public $humanNearestDay;
+    /** @var bool */
+    public $fitsAllProducts = false;
     /** @var bool Является ли точка пикпоинтом */
     public $isPickpoint;
 
@@ -52,6 +54,7 @@ class MapPoint extends BasicPoint {
         if (isset($data['cost'])) $this->cost = $data['cost'];
         if (isset($data['nearestDay'])) $this->nearestDay = $data['nearestDay'];
         if (isset($data['dateInterval'])) $this->dateInterval = $data['dateInterval'];
+        if (isset($data['fitsAllProducts'])) $this->fitsAllProducts = $data['fitsAllProducts'];
         try {
             if (!$this->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && $this->nearestDay) {
                 $this->dateInterval = [
