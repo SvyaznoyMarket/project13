@@ -24,12 +24,6 @@ class IndexAction {
             \App::session()->set(\App::config()->order['channelSessionKey'], $orderChannel);
         }
 
-        $orderWithCart = self::isOrderWithCart();
-
-        if ($orderWithCart) {
-            \App::session()->remove(\App::config()->order['splitSessionKey']);
-        }
-
         // подготовка 1-го пакета запросов
 
         // запрашиваем пользователя, если он авторизован
@@ -76,7 +70,7 @@ class IndexAction {
 
         $updateResultProducts = $cart->update([], true);
 
-        $page = $orderWithCart ? new \View\OrderV3\CartPage() : new \View\Cart\IndexPage();
+        $page = new \View\Cart\IndexPage();
         $page->setParam('sales', $sales);
         $page->setParam('orderUrl', \App::router()->generate('order'));
         $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
