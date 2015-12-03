@@ -1,18 +1,19 @@
 <?php
 /**
- * @var $page                              \View\User\Order\IndexPage
- * @var $helper                            \Helper\TemplateHelper
- * @var $user                              \Session\User
- * @var $orderCount                        int
- * @var $ordersByYear                      array
- * @var $orders                            \Model\User\Order\Entity[]
- * @var $orderProduct                      \Model\Order\Product\Entity|null
- * @var $product                           \Model\Product\Entity|null
- * @var $productsById                      \Model\Product\Entity[]
- * @var $point                             \Model\Point\PointEntity
- * @var $pointsByUi                        \Model\Point\PointEntity[]
- * @var $onlinePaymentAvailableByNumberErp bool[]
- * @var $viewedProducts                    \Model\Product\Entity[]
+ * @var $page                                \View\User\Order\IndexPage
+ * @var $helper                              \Helper\TemplateHelper
+ * @var $user                                \Session\User
+ * @var $orderCount                          int
+ * @var $ordersByYear                        array
+ * @var $orders                              \Model\User\Order\Entity[]
+ * @var $orderProduct                        \Model\Order\Product\Entity|null
+ * @var $product                             \Model\Product\Entity|null
+ * @var $productsById                        \Model\Product\Entity[]
+ * @var $point                               \Model\Point\PointEntity
+ * @var $pointsByUi                          \Model\Point\PointEntity[]
+ * @var $onlinePaymentAvailableByNumberErp   bool[]
+ * @var $paymentEntitiesByNumberErp          \Model\PaymentMethod\PaymentEntity[]
+ * @var $viewedProducts                      \Model\Product\Entity[]
  */
 ?>
 
@@ -43,7 +44,7 @@ $recommendationsHtml = [
 ];
 ?>
 
-<div class="personal">
+<div class="personal" id="personal-container">
     <?= $page->render('user/_menu', ['page' => $page]) ?>
 
     <? foreach ($ordersByYear as $year => $orders): ?>
@@ -64,7 +65,20 @@ $recommendationsHtml = [
                 <? endif ?>
 
                 <? foreach ($orders as $order): ?>
+                <?
+                    $paymentContainerId = sprintf('order-paymentContainer-%s', md5($order->id . '-' . $order->numberErp));
+                ?>
                     <div class="personal-order__item">
+
+                        <div class="personal-order__toggler">
+                            <span class="personal-order__toggler-txt">Еще</span>
+
+                            <div class="personal-order__toggler-popup js-orderCancel">
+                                Отменить заказ
+                            </div>
+
+                        </div>
+
                         <div class="personal-order__cell">
                             <a class="personal-order__num" href="<?= $page->url('user.order', ['orderId' => $order->id ]) ?>"><?= $order->numberErp ?></a>
                             <span class="personal-order__date"><?= $order->createdAt ? $order->createdAt->format('d.m.Y') : '' ?></span>
@@ -114,8 +128,12 @@ $recommendationsHtml = [
                                 <span class="personal-order__status"><?= $paymentStatus->name ?></span>
                             <? endif ?>
 
-                            <? if (false && isset($onlinePaymentAvailableByNumberErp[$order->numberErp]) && $onlinePaymentAvailableByNumberErp[$order->numberErp]): ?>
-                                <span class="personal-order__pay-status online">Оплатить онлайн</span>
+                            <? if (isset($onlinePaymentAvailableByNumberErp[$order->numberErp]) && $onlinePaymentAvailableByNumberErp[$order->numberErp]): ?>
+                                <a
+                                    href="#"
+                                    class="js-payment-popup-show personal-order__pay-status online"
+                                    data-relation="<?= $helper->json(['container' => '.' . $paymentContainerId]) ?>"
+                                >Оплатить онлайн</a>
                             <? endif ?>
                         </div>
                         <div class="personal-order__cell">
@@ -126,6 +144,12 @@ $recommendationsHtml = [
                             <? endif ?>
                         </div>
                     </div>
+
+                    <? if (!empty($paymentEntitiesByNumberErp[$order->numberErp])): ?>
+                    <div class="<?= $paymentContainerId ?>">
+                        <?= $helper->render('user/order/__onlinePayment-popup', ['order' => $order, 'paymentEntity' => $paymentEntitiesByNumberErp[$order->numberErp]]) ?>
+                    </div>
+                    <? endif ?>
                 <? endforeach ?>
             </div>
         </div>
@@ -136,5 +160,9 @@ $recommendationsHtml = [
     <? foreach ($recommendationsHtml as $recommendationHtml): ?>
         <?= $recommendationHtml ?>
     <? endforeach ?>
+
+    <script id="tpl-user-deleteOrderPopup" type="text/html" data-partial="<?= $helper->json([]) ?>">
+        <?= file_get_contents(\App::config()->templateDir . '/user/order/_deleteOrder-popup.mustache') ?>
+    </script>
 
 </div>

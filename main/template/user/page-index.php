@@ -10,6 +10,8 @@
  * @var $channelsById                  \Model\Subscribe\Channel\Entity[]
  * @var $subscription                  \Model\User\SubscriptionEntity
  * @var $subscriptionsGroupedByChannel array
+ * @var $onlinePaymentAvailableByNumberErp   bool[]
+ * @var $paymentEntitiesByNumberErp          \Model\PaymentMethod\PaymentEntity[]
  */
 ?>
 
@@ -17,7 +19,7 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 
-<div class="personalPage personal">
+<div class="personalPage personal" id="personal-container">
 
     <?= $page->render('user/_menu', ['page' => $page]) ?>
 
@@ -37,6 +39,9 @@ $helper = new \Helper\TemplateHelper();
                     <div class="grid-scroll js-private-sections-body">
                         <ul class="grid-scroll-list order-list">
                             <? foreach ($orders as $order): ?>
+                            <?
+                                $paymentContainerId = sprintf('order-paymentContainer-%s', md5($order->id . '-' . $order->numberErp));
+                            ?>
                                 <li class="grid-scroll-list__item order-list__item">
                                     <div class="order-list__data">
                                         <a class="order-list__data-number" href="<?= $helper->url('user.order', ['orderId' => $order->id]) ?>"><?= $order->numberErp ?></a>
@@ -60,7 +65,31 @@ $helper = new \Helper\TemplateHelper();
                                         <? elseif ($status = $order->status): ?>
                                             <div class="order-list__status-payment"><?= $status->name ?></div>
                                         <? endif ?>
+
+                                        <? if (isset($onlinePaymentAvailableByNumberErp[$order->numberErp]) && $onlinePaymentAvailableByNumberErp[$order->numberErp]): ?>
+                                            <a
+                                                href="#"
+                                                class="js-payment-popup-show order-list__pay"
+                                                data-relation="<?= $helper->json(['container' => '.' . $paymentContainerId]) ?>"
+                                            >Оплатить онлайн</a>
+                                        <? endif ?>
                                     </div>
+
+                                    <? if (false): ?>
+                                    <div class="order-list__toggler">
+                                        <span class="order-list__toggler-txt">Еще</span>
+
+                                        <div class="order-list__toggler-popup js-orderCancel">
+                                            Отменить заказ
+                                        </div>
+                                    </div>
+                                    <? endif ?>
+
+                                    <? if (!empty($paymentEntitiesByNumberErp[$order->numberErp])): ?>
+                                        <div class="<?= $paymentContainerId ?>">
+                                            <?= $helper->render('user/order/__onlinePayment-popup', ['order' => $order, 'paymentEntity' => $paymentEntitiesByNumberErp[$order->numberErp]]) ?>
+                                        </div>
+                                    <? endif ?>
                                 </li>
                             <? endforeach ?>
                         </ul>
@@ -725,4 +754,7 @@ $helper = new \Helper\TemplateHelper();
         </div>
     <? endif ?>
 
+    <script id="tpl-user-deleteOrderPopup" type="text/html" data-partial="<?= $helper->json([]) ?>">
+        <?= file_get_contents(\App::config()->templateDir . '/user/order/_deleteOrder-popup.mustache') ?>
+    </script>
 </div>

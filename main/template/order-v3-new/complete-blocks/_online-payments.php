@@ -88,10 +88,10 @@ $f = function(
                     <ul class="payment-methods__lst <? if ($paymentMethodGroup['discount']): ?>payment-methods__lst_discount<? endif ?>">
                         <? foreach ($paymentMethodGroup['paymentMethodGroups'] as $paymentMethodGroup2): ?>
                             <? if (count($paymentMethodGroup2['paymentMethods']) == 1): ?>
-                                <?
+                            <?
                                 $elementId = sprintf('order_%s-paymentMethod_%s', $order->id, $paymentMethodGroup2['paymentMethods'][0]['id']);
                                 $name = 'onlinePaymentMethodId';
-                                ?>
+                            ?>
 
                                 <li class="payment-methods__i">
                                     <input
