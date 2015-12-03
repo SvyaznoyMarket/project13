@@ -30,7 +30,7 @@ class MapPoint extends BasicPoint {
     /** @var string */
     public $humanNearestDay;
     /** @var bool */
-    public $fitsAllProducts = true;
+    public $fitsAllProducts = false;
     /** @var bool Является ли точка пикпоинтом */
     public $isPickpoint;
 

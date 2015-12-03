@@ -374,6 +374,10 @@ namespace Model\OrderDelivery\Entity {
          * @var array
          */
         public $possible_points = [];
+        /**
+         * @var bool[]
+         */
+        public $uniqueFitsAllProductsValuesOfPoints = [];
         /** Возможные точки самовывоза (ссылка на Point)
          * @var Point
          */
@@ -492,10 +496,14 @@ namespace Model\OrderDelivery\Entity {
                                     : null
                                 ),
                                 'cost'            => (int)$pointItem['cost'],
-                                'fitsAllProducts' => (bool)$pointItem['fits_all_products'],
+                                'fitsAllProducts' => isset($pointItem['fits_all_products']) ? (bool)$pointItem['fits_all_products'] : false,
                             ];
 
                             $this->possible_points[$pointType][] =  $point;
+
+                            if (!in_array($point['fitsAllProducts'], $this->uniqueFitsAllProductsValuesOfPoints, true)) {
+                                $this->uniqueFitsAllProductsValuesOfPoints[] = $point['fitsAllProducts'];
+                            }
                         }
                     }
                 }
