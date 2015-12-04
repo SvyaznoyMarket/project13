@@ -11,7 +11,7 @@
         <div class="pick-point-item__addr">
             {{#point.subway.name}}
 
-                <div class="pick-point-item__metro" style=" background-color: orange">
+                <div class="pick-point-item__metro" {{#point.subway.line.color}}style="background-color: {{point.subway.line.color}}"{{/point.subway.line.color}}>
                     <div class="pick-point-item__metro-inn">м. {{point.subway.name}}</div>
                 </div>
             {{/point.subway.name}}
