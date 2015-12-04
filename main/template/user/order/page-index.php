@@ -70,7 +70,7 @@ $recommendationsHtml = [
                 ?>
                     <div class="personal-order__item">
 
-                        <? if ($order->status && (\Model\Order\StatusEntity::ID_CANCEL != $order->status->id)): ?>
+                        <? if ($order->status && (!in_array($order->status->id, [\Model\Order\StatusEntity::ID_CANCEL, \Model\Order\StatusEntity::ID_READY]))): ?>
                         <div class="personal-order__toggler">
                             <span class="personal-order__toggler-txt">Еще</span>
                             <div class="personal-order__toggler-popup">
