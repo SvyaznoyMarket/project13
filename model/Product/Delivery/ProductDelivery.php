@@ -95,7 +95,7 @@ class ProductDelivery {
         try {
             if ($pickup && !$pickup->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && ($minDate = $pickup->getMinDate())) {
                 $dateTo = clone $minDate->date;
-                $dateTo->modify('+2 day');
+                $dateTo->modify('+3 day');
                 $pickup->dateInterval = new \Model\Product\Delivery\DateInterval();
                 $pickup->dateInterval->from = $minDate->date;
                 $pickup->dateInterval->to = $dateTo;

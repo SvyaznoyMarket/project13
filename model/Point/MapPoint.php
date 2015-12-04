@@ -59,7 +59,7 @@ class MapPoint extends BasicPoint {
             if (!$this->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && $this->nearestDay) {
                 $this->dateInterval = [
                     'from' => $this->nearestDay,
-                    'to'   => (new \DateTime($this->nearestDay))->modify('+2 day')->format('Y-m-d'),
+                    'to'   => (new \DateTime($this->nearestDay))->modify('+3 day')->format('Y-m-d'),
                 ];
             }
         } catch (\Exception $e) {

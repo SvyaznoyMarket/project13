@@ -227,7 +227,7 @@ class Entity {
         } else if (\App::abTest()->isOrderWithDeliveryInterval() && $this->deliveredAt) {
             try {
                 $dateTo = clone $this->deliveredAt;
-                $dateTo->modify('+2 day');
+                $dateTo->modify('+3 day');
 
                 $this->deliveryDateInterval = [
                     'name' => sprintf('с %s по %s', $this->deliveredAt->format('d.m'), $dateTo->format('d.m')),

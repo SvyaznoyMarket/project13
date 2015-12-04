@@ -175,7 +175,7 @@ class DeliveryAction {
                         if (!empty($deliveryItem['date_interval']) && \App::abTest()->isOrderWithDeliveryInterval() && ($date = key($deliveryItem['date_list']))) {
                             $deliveryItem['date_interval'] = [
                                 'from' => $date,
-                                'to'   => (new \DateTime($date))->modify('+2 day')->format('Y-m-d'),
+                                'to'   => (new \DateTime($date))->modify('+3 day')->format('Y-m-d'),
                             ];
                         }
                     } catch (\Exception $e) {
