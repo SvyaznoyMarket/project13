@@ -70,6 +70,7 @@ $recommendationsHtml = [
                 ?>
                     <div class="personal-order__item">
 
+                        <? if ($order->status && (\Model\Order\StatusEntity::ID_CANCEL != $order->status->id)): ?>
                         <div class="personal-order__toggler">
                             <span class="personal-order__toggler-txt">Еще</span>
                             <div class="personal-order__toggler-popup">
@@ -83,6 +84,7 @@ $recommendationsHtml = [
                                 >Отменить заказ</a>
                             </div>
                         </div>
+                        <? endif ?>
 
                         <div class="personal-order__cell">
                             <a class="personal-order__num" href="<?= $page->url('user.order', ['orderId' => $order->id ]) ?>"><?= $order->numberErp ?></a>
