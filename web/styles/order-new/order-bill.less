@@ -17,22 +17,26 @@
 
         color: @txtColor;
     }
-    &__wrap{
+    &__wrap {
         display: table;
+
         width: 100%;
     }
-    &__goods{
-        padding-left: 10px;
+    &__goods {
+        position: relative;
+
+        display: table-cell;
+
         width: 470px;
         height: 100%;
-        display: table-cell;
         padding-bottom: 163px;//высота 2х строк скидки по способу оплаты+заголовок - max их может быть 2.
-        position: relative;
+        padding-left: 10px;
     }
     &__seller {
         font-size: 14px;
 
         position: relative;
+
         margin-bottom: 13px;
     }
     &__oferta {
@@ -48,7 +52,7 @@
 
         .inline-block(middle);
     }
-    &__delivery-details{
+    &__delivery-details {
         display: table-cell;
     }
     &__adds {
@@ -286,27 +290,25 @@
         display: table-cell;
 
         min-width: 10px;
-
         padding: 10px;
 
         text-align: center;
         vertical-align: middle;
     }
+    &__img {
+        &_font {
+            font-family: Tahoma, sans-serif;
+            font-size: 24px;
 
-    &__img{
-
-        &_font{
             display: block;
 
             min-width: 38px;
 
-            font-size: 24px;
-            font-family: Tahoma, sans-serif;
-            color: #fe4c40;
             text-align: center;
+
+            color: #fe4c40;
         }
     }
-
     &__del {
         font-size: 0;
 
@@ -442,7 +444,6 @@
     }
 }
 .order-agreement {
-
     &__check {
         font-size: 12px;
 
@@ -452,14 +453,11 @@
 
         color: @txtColor;
     }
-
-    &__check-link{
-
-        &:hover{
+    &__check-link {
+        &:hover {
             text-decoration: none;
         }
     }
-
     &__oferta {
         cursor: pointer;
 

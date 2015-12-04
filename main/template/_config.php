@@ -34,7 +34,9 @@ if (\App::config()->partners['soloway']['enabled']) {
 
 $routerRules = \App::router()->getRules();
 $config = array_merge([
-    'adfoxEnabled'     => $appConfig->adFox['enabled'],
+    'useNodeMQ'             => $appConfig->useNodeMQ,
+    'nodeMQConfig'          => $appConfig->nodeMQ,
+    'adfoxEnabled'          => $appConfig->adFox['enabled'],
     'jsonLog'               => $appConfig->jsonLog['enabled'],
     'routeUrl'              => $router->generate('route'),
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],

@@ -24,7 +24,7 @@ $f = function(
     <div class="ep-list__row clearfix js-enterprize-coupon-parent">
         <? foreach ($couponsInChunk as $columnNum => $coupon): $i++ ?>
 
-            <?
+        <?
             /** @var \Model\EnterprizeCoupon\Entity[] $couponsInChunk */
             $itemClass = 'ep-list__i js-enterprize-coupon';
             if (!($i % 4)) {
@@ -37,20 +37,17 @@ $f = function(
             $isNotMember = !$coupon->isForNotMember() && !$isEnterprizeMember;
 
             $expiredDays = null;
-            $discount = $coupon->getDiscount();
-            if ($discount && $discount->getTo()) {
+            if (($discount = $coupon->getDiscount()) && ($endDate = $discount->getEndDate())) {
                 try {
-                    if ($discount->getEndDate()) {
-                        $expiredDays = $discount->getEndDate()->diff(new \DateTime('now'))->days;
-                        if (0 === $expiredDays) {
-                            $expiredDays = 1;
-                        }
+                    $expiredDays = $endDate->diff(new \DateTime('now'))->days;
+                    if (0 === $expiredDays) {
+                        $expiredDays = 1;
                     }
                 } catch (\Exception $e) {}
             }
 
             $dataValue = CouponTrait::getCouponData($coupon);
-            ?>
+        ?>
 
             <div class="<?= $itemClass . ($isNotMember ? ' mMembers' : '') ?>"
                  data-value="<?= $helper->json($dataValue) ?>"
@@ -68,7 +65,8 @@ $f = function(
                             <? endif ?>
 
                             <? if ($coupon->getPrice()): ?>
-                                <span class="ep-coupon__price"><?= $helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
+                                <span class="ep-coupon__price">
+                                    <?= $helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
                                     <? if ($coupon->getIsCurrency()): ?>
                                         <span class="rubl">p</span>
                                     <? endif ?>

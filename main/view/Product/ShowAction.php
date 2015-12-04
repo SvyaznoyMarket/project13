@@ -46,7 +46,13 @@ class ShowAction {
             }
         });
 
-        if (!$product->isInShopOnly() && $isFurniture && $product->getState() && $product->getState()->getIsStore() && !$product->getSlotPartnerOffer()) {
+        if (
+            !$product->isInShopOnly()
+            && $isFurniture
+            && $product->getState() && $product->getState()->getIsStore()
+            && !$product->getSlotPartnerOffer()
+            && (!$category || !$category->getClosestFromAncestors(['b8569e65-e31e-47a1-af20-5b06aff9f189'])) // SITE-6460
+        ) {
             $inStoreLabel = ['name' => 'Товар со склада', 'inStore' => true]; // SITE-3131
         } else {
             $inStoreLabel = null;

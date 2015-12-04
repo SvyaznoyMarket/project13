@@ -14,6 +14,7 @@ class ProductButtonAction {
      * @param bool $useNewStyles
      * @param bool $inShowroomAsButton
      * @param \Model\Product\ShopState\Entity[] $shopStates
+     * @param string $cssClass
      * @return array
      */
     public function execute(
@@ -26,8 +27,13 @@ class ProductButtonAction {
         $sender2 = '',
         $useNewStyles = false,
         $inShowroomAsButton = true,
-        array $shopStates = []
+        array $shopStates = [],
+        $cssClass = null
     ) {
+        if (null === $cssClass) {
+            $cssClass = 'btnBuy__eLink';
+        }
+
         $data = [
             'disabled'   => false,
             'url'        => null,
@@ -90,7 +96,7 @@ class ProductButtonAction {
         } else if (5 == $product->getStatusId()) { // SITE-2924
             $data['disabled'] = true;
             $data['url'] = '#';
-            $data['class'] .= ' btnBuy__eLink mDisabled js-orderButton jsBuyButton';
+            $data['class'] .= ' ' . $cssClass . ' mDisabled js-orderButton jsBuyButton';
             $data['value'] = 'Нет';
         } else if ($slotPartnerOffer = $product->getSlotPartnerOffer()) {
             $data['isSlot'] = true;
@@ -113,7 +119,7 @@ class ProductButtonAction {
         } else if ($product->isGifteryCertificate()) {
             $data['isGiftery'] = true;
             $data['url'] = '#';
-            $data['class'] .= ' btnBuy__eLink giftery-show-widget';
+            $data['class'] .= ' ' . $cssClass . ' giftery-show-widget';
             $data['value'] = 'Купить';
         } else if ($product->isInShopStockOnly() && \App::user()->getRegion()->getForceDefaultBuy()) { // Резерв товара
             $data['url'] = $product->getLink() . '#one-click';
@@ -122,16 +128,16 @@ class ProductButtonAction {
         } else if ($product->getKit() && !$product->getIsKitLocked()) {
             $data['isKit'] = $location === 'slider' ? false : true; // SITE-5040
             $data['value'] = 'Купить';
-            $data['class'] .= ' btnBuy__eLink js-orderButton js-kitButton';
+            $data['class'] .= ' ' . $cssClass . ' js-orderButton js-kitButton';
             $data['url'] = $this->getKitBuyUrl($helper, $product, $sender, $sender2);
 		} else if (\App::user()->getCart()->hasProduct($product->getId()) && !$noUpdate) {
             $data['url'] = $helper->url('cart');
-            $data['class'] .= ' btnBuy__eLink mBought';
+            $data['class'] .= ' ' . $cssClass . ' mBought';
             $data['value'] = 'В корзине';
         } else {
             // Внимание!!! Генерация URL адреса для покупки также происходит в web/js/dev/common/UserCustomBindings.js
             $data['url'] = $this->getBuyUrl($helper, $product, $sender, $sender2);
-            $data['class'] .= ' btnBuy__eLink js-orderButton ' . ($isOneClickOnly ? 'jsOneClickButton' : 'jsBuyButton');
+            $data['class'] .= ' ' . $cssClass . ' js-orderButton ' . ($isOneClickOnly ? 'jsOneClickButton' : 'jsBuyButton');
             $data['value'] = 'Купить';
             if (in_array($location, ['product-card', 'userbar'])) {
                 $data['value'] = 'Купить';

@@ -112,7 +112,7 @@ class IndexAction extends \Controller\User\PrivateAction {
 
         /** @var Query\PaymentMethod\GetByOrderNumberErp[] $paymentMethodQueries */
         $paymentMethodQueries = [];
-        foreach (array_chunk($orderNumberErps, 4) as $numbersInChunk) {
+        foreach (array_chunk($orderNumberErps, 8) as $numbersInChunk) {
             $paymentMethodQuery = new Query\PaymentMethod\GetByOrderNumberErp();
             $paymentMethodQuery->regionId = $region->getId();
             $paymentMethodQuery->numberErps = $numbersInChunk;
@@ -173,12 +173,15 @@ class IndexAction extends \Controller\User\PrivateAction {
             }
         }
 
-        /** @var array */
+        /** @var \Model\PaymentMethod\PaymentEntity[] $paymentEntitiesByNumberErp */
+        $paymentEntitiesByNumberErp = [];
         $onlinePaymentAvailableByNumberErp = [];
         foreach ($paymentMethodQueries as $paymentMethodQuery) {
-            foreach ($paymentMethodQuery->response->paymentMethodsByOrderNumberErp as $numberErp => $items) {
-                foreach ($items as $item) {
-                    if (5 == $item['id']) {
+            foreach ($paymentMethodQuery->response->dataByErp as $numberErp => $item) {
+                $paymentEntity = new \Model\PaymentMethod\PaymentEntity($item);
+                $paymentEntitiesByNumberErp[$numberErp] = $paymentEntity;
+                foreach ($paymentEntity->methods as $paymentMethod) {
+                    if ($paymentMethod->isOnline) {
                         $onlinePaymentAvailableByNumberErp[$numberErp] = true;
                         break;
                     }
@@ -193,6 +196,7 @@ class IndexAction extends \Controller\User\PrivateAction {
         $page->setParam('pointsByUi', $pointsByUi);
         $page->setParam('viewedProducts', array_values($viewedProductsById));
         $page->setParam('onlinePaymentAvailableByNumberErp', $onlinePaymentAvailableByNumberErp);
+        $page->setParam('paymentEntitiesByNumberErp', $paymentEntitiesByNumberErp);
 
         return new \Http\Response($page->show());
     }

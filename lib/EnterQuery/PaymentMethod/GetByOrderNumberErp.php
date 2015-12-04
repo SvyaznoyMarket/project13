@@ -59,6 +59,7 @@ namespace EnterQuery\PaymentMethod
                 function($response, $statusCode) {
                     $result = (array)$this->decodeResponse($response, $statusCode)['result'];
 
+                    $this->response->dataByErp = $result;
                     foreach ($result as $orderNumberErp => $item) {
                         $this->response->paymentMethodsByOrderNumberErp[$orderNumberErp] =
                             isset($item['methods'][0])
@@ -72,7 +73,6 @@ namespace EnterQuery\PaymentMethod
                             : []
                         ;
                     }
-
 
                     return $result; // for cache
                 },
@@ -93,5 +93,7 @@ namespace EnterQuery\PaymentMethod\GetByOrderNumberErp
         public $paymentMethodsByOrderNumberErp = [];
         /** @var array */
         public $paymentGroupsByOrderNumberErp = [];
+        /** @var array */
+        public $dataByErp = [];
     }
 }

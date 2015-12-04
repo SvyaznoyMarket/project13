@@ -27,6 +27,8 @@ class Entity {
     public $categoryUid;
     /** @var string|null */
     private $content;
+    /** @var \Model\Brand\Entity[] */
+    public $brands = [];
 
     public function __construct(array $data = []) {
         if (isset($data['token'])) $this->setToken($data['token']);
@@ -44,6 +46,12 @@ class Entity {
             $this->setShowProductState($data['show_state']);
         } else {
             $this->setShowProductState(true);
+        }
+        
+        if (isset($data['brands']) && is_array($data['brands'])) {
+            $this->brands = array_map(function($item) {
+                return new \Model\Brand\Entity($item);
+            }, $data['brands']);
         }
     }
 
@@ -206,5 +214,19 @@ class Entity {
      */
     public function getContent() {
         return $this->content;
+    }
+
+    /**
+     * @param string $token
+     * @return \Model\Brand\Entity|null
+     */
+    public function getBrandByToken($token) {
+        foreach ($this->brands as $brand) {
+            if ($brand->token === $token) {
+                return $brand;
+            }
+        }
+        
+        return null;
     }
 }

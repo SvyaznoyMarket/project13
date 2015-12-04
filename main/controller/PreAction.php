@@ -84,9 +84,9 @@ class PreAction {
                     \App::exception()->remove($e);
                 }
             );
-
-            \App::scmsSeoClient()->execute(\App::config()->scmsSeo['retryTimeout']['tiny']);
         }
+
+        \App::scmsSeoClient()->execute(\App::config()->scmsSeo['retryTimeout']['tiny']);
 
         if (!$redirectUrl) {
             try {
@@ -105,6 +105,25 @@ class PreAction {
                 }
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);
+            }
+
+            // подмешиваем в запрос данные из куки urlParams SITE-6456
+            try {
+                if (
+                    ($cookieValue = $request->cookies->get('urlParams'))
+                    && ($cookieValue = json_decode($cookieValue, true))
+                    && is_array($cookieValue)
+                ) {
+                    foreach ($cookieValue as $k => $v) {
+                        if ($request->query->has($k)) {
+                            continue;
+                        }
+
+                        $request->query->set($k, $v);
+                    }
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['partner']);
             }
 
             return null;

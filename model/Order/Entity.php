@@ -64,6 +64,8 @@ class Entity {
     public $homePhone;
     /** @var int */
     public $paymentStatusId;
+    /** @var PaymentStatusEntity|null */
+    public $paymentStatus;
     /** @var int */
     public $paymentId;
     /** @var string */
@@ -74,8 +76,6 @@ class Entity {
     public $certificatePrice;
     /** @var int */
     public $certificatePin;
-    /** @var int */
-    public $sum;
     /** @var bool */
     public $isDelivery;
     /** @var bool */
@@ -124,8 +124,26 @@ class Entity {
     public $product = [];
     /** @var \Model\Order\Delivery\Entity[] */
     public $delivery = [];
-    /** @var int */
+    /**
+     * Сумма без скидок
+     * @var int
+     */
+    public $sum;
+    /**
+     * Сумма со скидками, но без скидки за онлайн оплату
+     * @var float
+     */
     public $paySum;
+    /**
+     * Сумма со скидками и со спидкой за онлайн оплату. Заполнена только, если была произведена онлайн оплата.
+     * @var float
+     */
+    public $paySumWithOnlineDiscount;
+    /**
+     * self::$paySumWithOnlineDiscount или self::$paySum
+     * @var float
+     */
+    public $totalPaySum;
     /** @var int */
     public $discountSum;
     /** @var Credit\Entity|null */
@@ -181,6 +199,7 @@ class Entity {
         if (array_key_exists('phone', $data)) $this->setHomePhone($data['phone']);
         if (array_key_exists('mobile', $data)) $this->setMobilePhone($data['mobile']);
         if (array_key_exists('payment_status_id', $data)) $this->setPaymentStatusId($data['payment_status_id']);
+        if (isset($data['payment_status']['id'])) $this->paymentStatus = new PaymentStatusEntity($data['payment_status']);
         if (array_key_exists('payment_id', $data)) $this->setPaymentId($data['payment_id']);
         if (array_key_exists('payment_detail', $data)) $this->setPaymentDetail($data['payment_detail']);
         if (array_key_exists('certificate', $data)) $this->setCertificateNumber($data['certificate']);
@@ -247,6 +266,14 @@ class Entity {
             }
         }
         if (array_key_exists('pay_sum', $data)) $this->setPaySum($data['pay_sum']);
+        if (array_key_exists('payment_sum', $data)) $this->paySumWithOnlineDiscount = (float)$data['payment_sum'];
+
+        if ($this->paySumWithOnlineDiscount) {
+            $this->totalPaySum = $this->paySumWithOnlineDiscount;
+        } else {
+            $this->totalPaySum = $this->paySum;
+        }
+
         if (array_key_exists('discount_sum', $data)) $this->setDiscountSum($data['discount_sum']);
         if (array_key_exists('credit', $data) && (bool)$data['credit']) $this->setCredit(new Credit\Entity($data['credit']));
         if (array_key_exists('subway_id', $data)) $this->setSubwayId($data['subway_id']);
@@ -602,14 +629,14 @@ class Entity {
     }
 
     /**
-     * @param int $paySum
+     * @param float $paySum
      */
     public function setPaySum($paySum) {
-        $this->paySum = $paySum;
+        $this->paySum = (float)$paySum;
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getPaySum() {
         return $this->paySum;

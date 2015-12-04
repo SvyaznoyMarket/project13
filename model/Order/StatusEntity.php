@@ -5,6 +5,7 @@ namespace Model\Order;
 
 class StatusEntity {
     const ID_READY = 20;
+    const ID_CANCEL = 100;
 
     /** @var string */
     public $id;

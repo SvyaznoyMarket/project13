@@ -10,7 +10,8 @@ use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity $orderDelivery,
-    $error = null
+    $error = null,
+    $ajax = null
 ) {
     $orderCount = count($orderDelivery->orders);
     $region = \App::user()->getRegion();
@@ -33,7 +34,10 @@ $f = function(
     ];
 
 ?>
-<section id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
+<? if (is_null($ajax)) : ?>
+        <section id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
+<? endif ?>
+<? if ($orderCount != 0) : ?>
     <h1 class="orderCnt_t">Самовывоз и доставка</h1>
 
     <? if ($orderCount != 1) : ?>
@@ -129,7 +133,15 @@ $f = function(
                             <?= $discount->name; ?>
                         </div>
 
-                        <span class="orderCol_data orderCol_data-summ orderCol_i_data-sale">-<?= $discount->discount ?> <span class="rubl">p</span></span>
+                        <span class="orderCol_data orderCol_data-summ orderCol_i_data-sale">
+                            -<?= $helper->formatPrice($discount->discount) ?>
+
+                            <? if ($discount->unit === 'rub'): ?>
+                                <span class="rubl">p</span>
+                            <? else: ?>
+                                <?= $helper->escape($discount->unit) ?>
+                            <? endif ?>
+                        </span>
                         <? if ($discount->number !== null) : ?><span class="orderCol_data orderCol_data-del jsDeleteDiscount" data-value="<?= $discount->number ?>">удалить</span><? endif ?>
                     </div>
 
@@ -160,7 +172,7 @@ $f = function(
                     <span class="orderCol_summ"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price).' <span class="rubl">p</span>' ?></span>
                     <span class="orderCol_summt orderCol_summt-m"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
 
-                    <span class="orderCol_summ"><?= $helper->formatPrice($order->total_view_cost) ?> <span class="rubl">p</span></span>
+                    <span class="orderCol_summ"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
                     <span class="orderCol_summt">Итого:</span>
                 </div>
             </div>
@@ -260,7 +272,7 @@ $f = function(
                     <? endif ?>
                 </div>
 
-                <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order, 'orderDelivery' => $orderDelivery]) ?>
+                <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?>
 
             <? else: ?>
                 <div class="orderCol_delivrIn orderCol_delivrIn-empty jsSmartAddressBlock">
@@ -274,13 +286,14 @@ $f = function(
 
                 </div>
 
-                <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order, 'orderDelivery' => $orderDelivery]) ?>
+                <?= $helper->render('order-v3-new/__payment-methods', ['order' => $order]) ?>
 
             <? endif ?>
 
             <?= \App::templating()->render('order-v3/common/_map', [
-                'dataPoints'    => $dataPoints,
-                'page'          => 'order'
+                'dataPoints'            => $dataPoints,
+                'page'                  => 'order',
+                'enableFitsAllProducts' => count($order->uniqueFitsAllProductsValuesOfPoints) > 1 ? true : false,
             ]) ?>
 
             <!--/ способ доставки -->
@@ -297,7 +310,7 @@ $f = function(
     </div>
 
     <div class="orderComplSumm">
-        <span class="l">Итого <strong><?= $orderCount ?></strong> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <strong><?= $helper->formatPrice($orderDelivery->total_view_cost) ?> <span class="rubl">p</span></strong></span>
+        <span class="l">Итого <strong><?= $orderCount ?></strong> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <strong><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span></strong></span>
     </div>
 
     <div class="orderCompl orderCompl-v2 clearfix">
@@ -331,14 +344,19 @@ $f = function(
             </div>
         </div>
     <? endif ?>
+<? endif; ?>
+<? if (is_null($ajax)) : ?>
+    </section>
 
-</section>
 
 <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json($initialMapCords)?>"></div>
 <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>
 <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE); ?>></div>
 <?= App::config()->debug ? $helper->jsonInScriptTag($orderDelivery, 'initialOrderModel') : '' ?>
-<div id="jsUserAddress" data-value="<?= $helper->json($orderDelivery->user_info->address) ?>"></div>
+    <? if ($orderDelivery->user_info): ?>
+    <div id="jsUserAddress" data-value="<?= $helper->json($orderDelivery->user_info->address) ?>"></div>
+    <? endif ?>
+<? endif ?>
 
 <div class="popup popup-simple js-order-oferta-popup">
     <a href="" class="close"></a>
@@ -379,5 +397,6 @@ $f = function(
 </div>
 
 <?= $helper->render('order-v3-new/__delivery-analytics', ['orderDelivery' => $orderDelivery]) ?>
+
 
 <? }; return $f;

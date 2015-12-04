@@ -13,7 +13,6 @@ class PaymentEntity {
     public $methods = [];
 
     public function __construct($arr) {
-
         if (isset($arr['groups']) && is_array($arr['groups'])) {
             foreach ($arr['groups'] as $key => $group) {
                 $this->groups[(string)$key] = new PaymentGroupEntity($group);
@@ -61,16 +60,12 @@ class PaymentEntity {
      * @return int|null
      */
     public function getPaymentSumByMethodId($methodId) {
-        $sum = null;
-
         foreach ($this->methods as $method) {
-            if ($methodId !== $method->id) continue;
-
-            if ($action = $method->getOnlineDiscountAction()) {
-                $sum = $action['payment_sum'];
+            if ($methodId === $method->id && $method->discount) {
+                return $method->discount->sum;
             }
         }
 
-        return $sum ?: null;
+        return null;
     }
 }

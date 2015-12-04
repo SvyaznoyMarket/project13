@@ -25,7 +25,7 @@ class Repository {
      * Получение фильтров среза
      * @return array
      */
-    public function getSliceFiltersForSearchClientRequest(\Model\Slice\Entity $slice, $excludeCategory = false) {
+    public function getSliceFiltersForSearchClientRequest(\Model\Slice\Entity $slice, $excludeCategory = false, $excludeBrand = false) {
         $sliceRequestFilters = [];
         parse_str($slice->getFilterQuery(), $sliceRequestFilters);
 
@@ -40,13 +40,15 @@ class Repository {
             } elseif (0 === strpos($k, \View\Product\FilterForm::$name)) {
                 $parts = array_pad(explode('-', $k), 3, null);
 
-                if (!isset($values[$parts[1]])) {
-                    $values[$parts[1]] = [];
-                }
-                if (('from' == $parts[2]) || ('to' == $parts[2])) {
-                    $values[$parts[1]][$parts[2]] = $v;
-                } else {
-                    $values[$parts[1]][] = $v;
+                if (!$excludeBrand || $parts[1] !== 'brand') {
+                    if (!isset($values[$parts[1]])) {
+                        $values[$parts[1]] = [];
+                    }
+                    if (('from' == $parts[2]) || ('to' == $parts[2])) {
+                        $values[$parts[1]][$parts[2]] = $v;
+                    } else {
+                        $values[$parts[1]][] = $v;
+                    }
                 }
             } elseif (0 === strpos($k, 'tag-')) {
                 // добавляем теги в фильтр

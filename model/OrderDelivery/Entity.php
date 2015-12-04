@@ -23,7 +23,7 @@ namespace Model\OrderDelivery {
          */
         public $orders = [];
         /** Методы оплаты
-         * @var Entity\PaymentMethod[]
+         * @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity[]
          */
         public $payment_methods = [];
         /** Информация о клиенте
@@ -34,79 +34,78 @@ namespace Model\OrderDelivery {
          * @var float
          */
         public $total_cost;
-        /** Общая стоимость заказов
-         * @var float
-         */
-        public $total_view_cost;
-        /** Общая стоимость заказов
-         * @var float
+        /**
+         * @var array
          */
         public $errors = [];
 
-        public function __construct(array $data = []) {
+        /**
+         * Entity constructor.
+         *
+         * @param array $data
+         * @param bool|true $validateOrders Для создания пустого Entity (false разрешает создание)
+         */
+        public function __construct(array $data = [], $validateOrders = true) {
 
-            if (isset($data['delivery_groups']) && is_array($data['delivery_groups'])) {
-                foreach ($data['delivery_groups'] as $item) {
-                    if (!isset($item['id'])) continue;
+            if ($validateOrders) {
+                if (isset($data['delivery_groups']) && is_array($data['delivery_groups'])) {
+                    foreach ($data['delivery_groups'] as $item) {
+                        if (!isset($item['id'])) continue;
 
-                    $this->delivery_groups[(string)$item['id']] = new Entity\DeliveryGroup($item);
+                        $this->delivery_groups[(string)$item['id']] = new Entity\DeliveryGroup($item);
+                    }
+                } else {
+                    throw new \Exception('Отстуствуют данные по группам доставки');
                 }
-            } else {
-                throw new \Exception('Отстуствуют данные по группам доставки');
-            }
 
-            if (isset($data['delivery_methods']) && is_array($data['delivery_methods'])) {
-                foreach ($data['delivery_methods'] as $item) {
-                    if (!isset($item['token'])) continue;
+                if (isset($data['delivery_methods']) && is_array($data['delivery_methods'])) {
+                    foreach ($data['delivery_methods'] as $item) {
+                        if (!isset($item['token'])) continue;
 
-                    $this->delivery_methods[(string)$item['token']] = new Entity\DeliveryMethod($item);
+                        $this->delivery_methods[(string)$item['token']] = new Entity\DeliveryMethod($item);
+                    }
+                } else {
+                    throw new \Exception('Отстуствуют данные методам доставки');
                 }
-            } else {
-                throw new \Exception('Отстуствуют данные методам доставки');
-            }
 
-            if (isset($data['points']) && is_array($data['points'])) {
-                foreach ($data['points'] as $itemToken => $item) {
-                    $item['token'] = $itemToken;
+                if (isset($data['points']) && is_array($data['points'])) {
+                    foreach ($data['points'] as $itemToken => $item) {
+                        $item['token'] = $itemToken;
 
-                    $this->points[$item['token']] = new Entity\Point($item);
+                        $this->points[$item['token']] = new Entity\Point($item);
+                    }
                 }
-            }
 
-            if (isset($data['payment_methods']) && is_array($data['payment_methods'])) {
-                foreach ($data['payment_methods'] as $item) {
-                    $this->payment_methods[$item['id']] = new Entity\PaymentMethod($item);
+                if (isset($data['payment_methods']) && is_array($data['payment_methods'])) {
+                    foreach ($data['payment_methods'] as $item) {
+                        $this->payment_methods[$item['id']] = new \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity($item);
+                    }
+                } else {
+                    throw new \Exception('Отстуствуют данные по методам оплаты');
                 }
-            } else {
-                throw new \Exception('Отстуствуют данные по методам оплаты');
-            }
 
-            if (isset($data['orders']) && is_array($data['orders']) && (bool)$data['orders']) {
-                foreach ($data['orders'] as $key => $item) {
-                    $this->orders[$key] = new Entity\Order($item, $this);
+                if (isset($data['orders']) && is_array($data['orders']) && (bool)$data['orders']) {
+                    foreach ($data['orders'] as $key => $item) {
+                        $this->orders[$key] = new Entity\Order($item, $this);
+                    }
+                } else {
+                    //throw new \Exception('Отстуствуют данные по заказам');
                 }
-            } else {
-                //throw new \Exception('Отстуствуют данные по заказам');
+
+                if (isset($data['total_cost'])) {
+                    $this->total_cost = (float)$data['total_cost'];
+                } else {
+                    throw new \Exception('Отстуствует общая стоимость заказа');
+                }
+
+                if (isset($data['errors']) && is_array($data['errors'])) {
+                    foreach ($data['errors'] as $error) {
+                        $this->errors[] = new Error($error, $this);
+                    }
+                }
             }
 
             if (isset($data['user_info'])) $this->user_info = new Entity\UserInfo($data['user_info']);
-
-            if (isset($data['total_cost'])) {
-                $this->total_cost = (float)$data['total_cost'];
-            } else {
-                throw new \Exception('Отстуствует общая стоимость заказа');
-            }
-            if (isset($data['total_view_cost'])) {
-                $this->total_view_cost = (float)$data['total_view_cost'];
-            } else {
-                //throw new \Exception('Отстуствует total_view_cost заказа');
-            }
-
-            if (isset($data['errors']) && is_array($data['errors'])) {
-                foreach ($data['errors'] as $error) {
-                    $this->errors[] = new Error($error, $this);
-                }
-            }
 
             $this->validate();
             $this->validateOrders();
@@ -359,7 +358,7 @@ namespace Model\OrderDelivery\Entity {
          */
         public $possible_delivery_groups = [];
         /** Возможные методы оплаты
-         * @var PaymentMethod[]
+         * @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity[]
          */
         public $possible_payment_methods = [];
         /** Возможные дни доставки
@@ -375,6 +374,10 @@ namespace Model\OrderDelivery\Entity {
          * @var array
          */
         public $possible_points = [];
+        /**
+         * @var bool[]
+         */
+        public $uniqueFitsAllProductsValuesOfPoints = [];
         /** Возможные точки самовывоза (ссылка на Point)
          * @var Point
          */
@@ -383,10 +386,6 @@ namespace Model\OrderDelivery\Entity {
          * @var float
          */
         public $total_cost;
-        /** Стоимость заказа (со скидками) для показа
-         * @var float
-         */
-        public $total_view_cost;
         /** Стоимость заказа (без скидок)
          * @var float
          */
@@ -445,8 +444,16 @@ namespace Model\OrderDelivery\Entity {
                     if ($id == PaymentMethodEntity::PAYMENT_CREDIT && !\App::config()->payment['creditEnabled']) continue;
                     if ('10' == $id) continue; // подарочный сертификат
 
-                    if (isset($orderDelivery->payment_methods[$id])) $this->possible_payment_methods[$id] = &$orderDelivery->payment_methods[$id];
+                    if (isset($orderDelivery->payment_methods[$id])) $this->possible_payment_methods[$id] = clone $orderDelivery->payment_methods[$id];
                     else throw new \Exception('Не существует метода оплаты для заказа');
+                }
+            }
+
+            if (isset($data['payment_methods']) && is_array($data['payment_methods'])) {
+                foreach ($data['payment_methods'] as $id => $payment_method) {
+                    if (isset($this->possible_payment_methods[$id]) && isset($payment_method['discount']['value'])) {
+                        $this->possible_payment_methods[$id]->discount = new \Model\Discount($payment_method['discount']);
+                    }
                 }
             }
 
@@ -463,7 +470,6 @@ namespace Model\OrderDelivery\Entity {
             if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) $this->possible_intervals = (array)$data['possible_intervals'];
 
             if (isset($data['total_cost'])) $this->total_cost = (float)$data['total_cost'];
-            if (isset($data['total_view_cost'])) $this->total_view_cost = (float)$data['total_view_cost'];
             if (isset($data['total_original_cost'])) $this->total_original_cost = (float)$data['total_original_cost'];
 
             if (isset($data['possible_point_data']) && is_array($data['possible_point_data'])) {
@@ -482,17 +488,22 @@ namespace Model\OrderDelivery\Entity {
                             //$pointItem['nearest_day'] = null; // fixture
 
                             $point = [
-                                'point'         => &$orderDelivery->points[$pointType]->list[$pointItem['id']],
-                                'nearestDay'    => $pointItem['nearest_day'],
-                                'dateInterval'  => (
+                                'point'           => &$orderDelivery->points[$pointType]->list[$pointItem['id']],
+                                'nearestDay'      => $pointItem['nearest_day'],
+                                'dateInterval'    => (
                                     (isset($pointItem['date_interval']) && is_array($pointItem['date_interval']))
                                     ? ($pointItem['date_interval'] + ['from' => null, 'to' => null])
                                     : null
                                 ),
-                                'cost'          => (int)$pointItem['cost']
+                                'cost'            => (int)$pointItem['cost'],
+                                'fitsAllProducts' => isset($pointItem['fits_all_products']) ? (bool)$pointItem['fits_all_products'] : false,
                             ];
 
                             $this->possible_points[$pointType][] =  $point;
+
+                            if (!in_array($point['fitsAllProducts'], $this->uniqueFitsAllProductsValuesOfPoints, true)) {
+                                $this->uniqueFitsAllProductsValuesOfPoints[] = $point['fitsAllProducts'];
+                            }
                         }
                     }
                 }
@@ -519,12 +530,17 @@ namespace Model\OrderDelivery\Entity {
             }
 
             // SITE-4744 если выбран способ оплаты со скидкой, то добавить discount
-            if ($this->payment_method_id && ($paymentMethod = isset($this->possible_payment_methods[$this->payment_method_id]) ? $this->possible_payment_methods[$this->payment_method_id] : null) && $paymentMethod->discount) {
-                $discount = new Order\Discount();
-                $discount->discount = $this->total_cost - $this->total_view_cost;
-                $discount->type = 'online';
-                $discount->name = sprintf("Скидка %s%s", $paymentMethod->discount['value'], $paymentMethod->discount['unit']);
-                $this->discounts[] = $discount;
+            if ($this->payment_method_id && isset($this->possible_payment_methods[$this->payment_method_id])) {
+                $paymentMethod = $this->possible_payment_methods[$this->payment_method_id];
+
+                if ($paymentMethod->discount) {
+                    $discount = new Order\Discount();
+                    $discount->discount = $paymentMethod->discount->value;
+                    $discount->unit = $paymentMethod->discount->unit;
+                    $discount->type = 'online';
+                    $discount->name = 'Скидка за онлайн оплату';
+                    $this->discounts[] = $discount;
+                }
             }
 
             if (isset($data['prepaid_sum'])) $this->prepaid_sum = (float)$data['prepaid_sum'];
@@ -536,39 +552,6 @@ namespace Model\OrderDelivery\Entity {
          */
         public function isPartnerOffer() {
             return $this->seller instanceof Order\Seller && $this->seller->ui != Order\Seller::UI_ENTER;
-        }
-    }
-
-    class PaymentMethod {
-        /** @var string */
-        public $id;
-        /** @var string */
-        public $name;
-        /** @var string */
-        public $description;
-        /** @var string */
-        public $icon;
-        /** @var bool */
-        public $is_online;
-        /** @var array|null */
-        public $discount;
-
-        public function __construct(array $data = []) {
-            if (isset($data['id'])) $this->id = (string)$data['id'];
-            if (isset($data['name'])) $this->name = (string)$data['name'];
-            if (isset($data['description'])) $this->description = (string)$data['description'];
-            if (isset($data['is_online'])) $this->is_online = (bool)$data['is_online'];
-            if (isset($data['discount']['value'])) $this->discount = $data['discount'];
-
-            switch ($this->id) {
-                case '5': $this->icon = '/styles/order-new/img/payment/pay-card.png'; break;
-                case '8': $this->icon = '/styles/order-new/img/payment/pay-psb.png'; break;
-                case '11': $this->icon = '/styles/order-new/img/payment/pay-webmoney.png'; break;
-                case '12': $this->icon = '/styles/order-new/img/payment/pay-qiwi.png'; break;
-                case '13': $this->icon = '/styles/order-new/img/payment/pay-paypal.png'; break;
-                case '14': $this->icon = '/styles/order-new/img/payment/pay-svyaznoy.png'; break;
-                case '16': $this->icon = '/styles/order-new/img/payment/pay-yandex.png'; break;
-            }
         }
     }
 
@@ -841,8 +824,10 @@ namespace Model\OrderDelivery\Entity\Order {
     class Discount {
         /** @var string */
         public $name;
-        /** @var int */
+        /** @var float */
         public $discount;
+        /** @var string */
+        public $unit = 'rub';
         /** @var string */
         public $type;
         /** @var string */

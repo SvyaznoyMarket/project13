@@ -253,6 +253,65 @@
         line-height: 14px;
 
         margin: 0 0 10px;
+
+        &--optimal{
+            position: relative;
+
+            margin-right: -10px;
+
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+
+            .customInput-defcheck2:checked{
+                + .customLabel {
+                    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABfElEQVQoFY2SPUgDQRCF397tXRJjkyDB3yKKuZQKwUAULWzSCxEEg6WFaKdYBBtB0MJCIZYhYC0WtqnEJioiBPODGLQSizQGJdm7dfcMJyFGvGK53Tff7Oy8IYVCQS+Xy/uEkCTn3Icun9BrQs+GQqFNWqlUDgzDWA+HwxBCFwSQCYvF4kapVIIiopb/BLgJVj2DeZOCEQzIxElFZuh2A2d1sHwKyC2AP56CiAQyntr1NOuw6i8g3hEQzftdIvsAu1qD9pwB032g02kQT8DWZHmwXi/BziMwL2ZgveVtgd3uQKtmYFpukNgJyHDcPpeLDSkDs1CCCdD3O7DcIti1KOnhCCZ08Gga6mjCARwIqgdqZBfMPwe9+QR+vwdKPsHHV0GNlTbgBxJ/pGcQytQhGsIqrddEwxeDOrHdAbRB9qZvEjR2DMs/Dy16IB7e/ytEW047bVfGlsCH4iBufwcg2i19qkmfssJp2X8nqBvQistSl8u1JUdDzN+/Z+8LA7CbCjTWOR8AAAAASUVORK5CYII=
+                    );
+                }
+            }
+        }
+
+        &--optimal-help{
+            position: absolute;
+            right: 0;
+
+            width: 15px;
+            height: 15px;
+
+            .rounded(50%);
+            border: 1px solid #afafaf;
+
+            text-align: center;
+            line-height: 15px;
+            color: #afafaf;
+            font-size: 12px;
+
+            &:hover {
+                border-color: #ffa400;
+
+                color: #ffa400;
+
+                .fltrBtn_ln--optimal-txt{
+                    display: block;
+
+                    position: absolute;
+
+                    width: 270px;
+
+                    padding: 10px;
+                    background: #f2f2f2;
+                    .box-sizing();
+
+                    white-space: normal;
+                    color: #000;
+                    text-align: left;
+
+                }
+            }
+        }
+
+        &--optimal-txt{
+            display: none;
+        }
     }
     // параметры фильтрации
     &_param {
@@ -349,6 +408,8 @@
             }
         }
     }
+    
+
 }
 
 .lte-ie9 .fltrBtn_btn_img {

@@ -199,9 +199,16 @@
 
             $body.trigger('trackUserAction', ['15_1 Оформить_успешно_Доставка_ОБЯЗАТЕЛЬНО']);
 			$(this).attr('disabled', true); // блокируем кнопку "Отправить"
-			setTimeout(function() {	$form.submit(); }, 1000 ); // быстрая обертка для отправки аналитики, иногда не успевает отправляться
+			setTimeout(function() {
+				$form.submit();
+			}, 1000 ); // быстрая обертка для отправки аналитики, иногда не успевает отправляться
         }
 
     });
 
+	$(document).keyup(function(e) {
+		if (e.keyCode == 27) {
+			$('.orderCompl_btn', $pageDelivery).removeAttr('disabled');
+		}
+	});
 }(jQuery));
