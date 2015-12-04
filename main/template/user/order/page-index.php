@@ -72,11 +72,16 @@ $recommendationsHtml = [
 
                         <div class="personal-order__toggler">
                             <span class="personal-order__toggler-txt">Еще</span>
-
-                            <div class="personal-order__toggler-popup js-orderCancel">
-                                Отменить заказ
+                            <div class="personal-order__toggler-popup">
+                                <a
+                                    href="#"
+                                    class="js-orderCancel"
+                                    data-value="<?= $helper->json([
+                                        'url'   => $helper->url('user.order.cancel'),
+                                        'order' => ['numberErp' => $order->numberErp, 'id' => $order->id],
+                                    ]) ?>"
+                                >Отменить заказ</a>
                             </div>
-
                         </div>
 
                         <div class="personal-order__cell">

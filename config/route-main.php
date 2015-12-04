@@ -599,6 +599,10 @@ return [
         'pattern' => '/private/orders',
         'action'  => ['User\Order\IndexAction', 'execute'],
     ],
+    'user.order.cancel' => [
+        'pattern' => '/private/orders/cancel',
+        'action'  => ['User\Order\CancelAction', 'execute'],
+    ],
     'user.favorites' => [
         'pattern' => '/private/favorites',
         'action'  => ['User\FavoriteAction', 'get'],
