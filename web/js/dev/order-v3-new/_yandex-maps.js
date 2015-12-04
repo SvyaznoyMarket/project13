@@ -51,7 +51,7 @@
 
         $.each($('.jsNewPoints'), function(i,val) {
             var pointData = JSON.parse($(this).find('script.jsMapData').html()),
-                points = new ENTER.DeliveryPoints(pointData.points, E.map);
+                points = new ENTER.DeliveryPoints(pointData.points, E.map, pointData.enableFitsAllProducts);
 
             E.koModels.push(points);
             ko.applyBindings(points, val);

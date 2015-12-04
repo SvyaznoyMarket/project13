@@ -31,7 +31,7 @@
             trail: 62, // Afterglow percentage
             shadow: false, // Whether to render a shadow
             hwaccel: true, // Whether to use hardware acceleration
-            className: 'spinner-blackfriday', // The CSS class to assign to the spinner
+            className: 'spinner', // The CSS class to assign to the spinner
             zIndex: 2e9, // The z-index (defaults to 2000000000)
             top: '50%', // Top position relative to parent
             left: '50%' // Left position relative to parent
@@ -171,7 +171,7 @@
                     ENTER.OrderV3.koModels = [];
                     $.each($orderContent.find('.jsNewPoints'), function(i,val) {
                         var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
-                            points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map);
+                            points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map, pointData.enableFitsAllProducts);
                         ENTER.OrderV3.koModels.push(points);
                         ko.applyBindings(points, val);
                     });
@@ -266,7 +266,7 @@
                 // добавляем точки на карту
                 $.each(mapData.points, function(i, point){
                     try {
-                        map.geoObjects.add(new ENTER.Placemark(point, true));
+                        map.geoObjects.add(new ENTER.Placemark(point, mapData.enableFitsAllProducts));
                     } catch (e) {
                         console.error('Ошибка добавления точки на карту', e, point);
                     }
@@ -924,7 +924,6 @@
                         valid = false;
                     },
                     onValid: function() {
-                        ENTER.utils.overloadPreloader.show();
                         $form.submit();
                     }
                 });

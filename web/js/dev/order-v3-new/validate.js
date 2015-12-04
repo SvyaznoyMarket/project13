@@ -108,8 +108,6 @@
 			// запоминаем значение номера карты Много.ру
 			if ($mnogoRuInput) docCookies.setItem('enter_mnogo_ru', $mnogoRuInput.val(), 31536e3, '/');
             console.log('mnogo.ru', docCookies.getItem('enter_mnogo_ru'))
-
-			ENTER.utils.overloadPreloader.show();
 		}
     });
 
@@ -202,7 +200,6 @@
             $body.trigger('trackUserAction', ['15_1 Оформить_успешно_Доставка_ОБЯЗАТЕЛЬНО']);
 			$(this).attr('disabled', true); // блокируем кнопку "Отправить"
 			setTimeout(function() {
-				ENTER.utils.overloadPreloader.show();
 				$form.submit();
 			}, 1000 ); // быстрая обертка для отправки аналитики, иногда не успевает отправляться
         }

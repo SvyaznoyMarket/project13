@@ -53,6 +53,9 @@ class ShowPage extends \View\DefaultLayout {
                 'way' => $way,
                 'subway' => [
                     'name' => $point->subway ? $point->subway->getName() : null,
+                    'line' => [
+                        'color' => $point->subway && $point->subway->getLine() ? $point->subway->getLine()->getColor() : null,
+                    ],
                 ],
                 'images' => array_values(array_filter(array_map(function(\Model\Media $media) {
                     if ($media->provider !== 'image') {

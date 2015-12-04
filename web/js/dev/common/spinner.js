@@ -346,9 +346,3 @@
   return Spinner
 
 }));
-
-$(function() {
-  $('.js-show-spinner').on('click', function() {
-    ENTER.utils.overloadPreloader.show();
-  });
-});

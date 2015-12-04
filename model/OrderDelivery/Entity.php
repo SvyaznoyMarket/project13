@@ -374,6 +374,10 @@ namespace Model\OrderDelivery\Entity {
          * @var array
          */
         public $possible_points = [];
+        /**
+         * @var bool[]
+         */
+        public $uniqueFitsAllProductsValuesOfPoints = [];
         /** Возможные точки самовывоза (ссылка на Point)
          * @var Point
          */
@@ -484,17 +488,22 @@ namespace Model\OrderDelivery\Entity {
                             //$pointItem['nearest_day'] = null; // fixture
 
                             $point = [
-                                'point'         => &$orderDelivery->points[$pointType]->list[$pointItem['id']],
-                                'nearestDay'    => $pointItem['nearest_day'],
-                                'dateInterval'  => (
+                                'point'           => &$orderDelivery->points[$pointType]->list[$pointItem['id']],
+                                'nearestDay'      => $pointItem['nearest_day'],
+                                'dateInterval'    => (
                                     (isset($pointItem['date_interval']) && is_array($pointItem['date_interval']))
                                     ? ($pointItem['date_interval'] + ['from' => null, 'to' => null])
                                     : null
                                 ),
-                                'cost'          => (int)$pointItem['cost']
+                                'cost'            => (int)$pointItem['cost'],
+                                'fitsAllProducts' => isset($pointItem['fits_all_products']) ? (bool)$pointItem['fits_all_products'] : false,
                             ];
 
                             $this->possible_points[$pointType][] =  $point;
+
+                            if (!in_array($point['fitsAllProducts'], $this->uniqueFitsAllProductsValuesOfPoints, true)) {
+                                $this->uniqueFitsAllProductsValuesOfPoints[] = $point['fitsAllProducts'];
+                            }
                         }
                     }
                 }

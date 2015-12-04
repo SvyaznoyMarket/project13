@@ -71,7 +71,7 @@ $f = function(
                             </div>
                             <? if (!\App::user()->isSubscribed(1)): ?>
                             <div class="order-receiver__subscribe">
-                                <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="user_info[subscribe]" value="">
+                                <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="user_info[subscribe]" value="1">
                                 <label class="customLabel customLabel-checkbox" for="sale">
                                     <img class="order-receiver__chip" src="/styles/order-new/img/chip-s.png" alt="">
                                     <span class="order-receiver__subscribe-txt">Подпишись на рассылку и получи скидку<br/>на следующую покупку</span>
