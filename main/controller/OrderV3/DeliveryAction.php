@@ -32,7 +32,6 @@ class DeliveryAction extends OrderV3 {
         }
 
         if ($request->isXmlHttpRequest()) {
-
             $splitData = [];
 
             try {
@@ -55,7 +54,7 @@ class DeliveryAction extends OrderV3 {
                     $result['OrderDeliveryModel'] = $orderDeliveryModel;
                 }
 
-                $result['page'] = \App::closureTemplating()->render(self::isOrderWithCart() ? 'order-v3-new/page-delivery-with-user' : 'order-v3-new/page-delivery', [
+                $result['page'] = \App::closureTemplating()->render('order-v3-new/page-delivery-with-user', [
                     'ajax'                       => true,
                     'orderDelivery'              => $orderDeliveryModel,
                     'bonusCards'                 => $bonusCards,
@@ -92,16 +91,14 @@ class DeliveryAction extends OrderV3 {
             $previousSplit = $this->session->get($this->splitSessionKey);
             $userData = $this->session->get('user_info_split');
 
-            if (!self::isOrderWithCart()) {
-                if (!$userData) {
-                    return new \Http\RedirectResponse(\App::router()->generate('cart'));
-                }
-                // сохраняем данные пользователя
-                //$data['action'] = 'changeUserInfo'; // SITE-6209
-                $data['action'] = null;
-                if ($this->session->get($this->splitSessionKey)) {
-                    $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
-                }
+            if (!$userData) {
+                return new \Http\RedirectResponse(\App::router()->generate('cart'));
+            }
+            // сохраняем данные пользователя
+            //$data['action'] = 'changeUserInfo'; // SITE-6209
+            $data['action'] = null;
+            if ($this->session->get($this->splitSessionKey)) {
+                $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
             }
 
             if ((@$previousSplit['user_info']['phone'] !== '') && $this->session->get($this->splitSessionKey)) {

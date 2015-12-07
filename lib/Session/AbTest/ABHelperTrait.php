@@ -98,7 +98,7 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isOrderWithCart() {
-        return true ; //'enabled' === \App::abTest()->getTest('order_with_cart')->getChosenCase()->getKey();
+        return false; //'enabled' === \App::abTest()->getTest('order_with_cart')->getChosenCase()->getKey();
     }
 
     /**
