@@ -40,7 +40,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('cart/page-cart', $this->params);
+        return $this->render('cart/page-cart-1509', $this->params);
     }
 
     public function slotBodyDataAttribute() {

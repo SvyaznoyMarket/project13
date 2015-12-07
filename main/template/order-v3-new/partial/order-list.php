@@ -26,7 +26,67 @@ $f = function (
             <div class="order-bill__head">Заказ №<?= ($i) ?></div>
             <!-- левая часть блока заказа - список заказанных товаров-->
             <div class="order-bill__wrap">
-            <div class="order-bill__goods">
+            <div class="order-bill__goods">                <!-- введенные скидки, купоны -->
+
+
+                <? if ((bool)$order->discounts || $order->certificate['par'] !== null) : ?>
+                    <div class="payment-discount"><!-- контейнер купонов, max их может быть 2 (инфо от редакции)-->
+
+                        <div class="order-discount__head">Скидки</div>
+
+                        <? foreach ($order->discounts as $discount) : ?>
+                            <div class="order-discount__item jsOrderV3Discount">
+                                <div class="order-discount__cell">
+                                    <? if (null !== $discount->number) : ?>
+                                        <span class="order-discount__del jsDeleteDiscount" data-value="<?= $discount->number ?>">удалить</span>
+                                    <? endif ?>
+                                </div>
+                                <? if ('online' === $discount->type): ?>
+                                    <a href="" class="order-discount__lk">
+                                        <span class="order-discount__img order-discount__img_font">%</span>
+                                    </a>
+                                <? else: ?>
+                                    <a href="" class="order-discount__lk">
+                                        <img class="order-discount__img" src="/styles/order-new/img/chip.png" alt="">
+                                    </a>
+                                <? endif ?>
+
+                                <div class="order-discount__name">
+                                    <?= $discount->name ?>
+                                </div>
+
+                                <div class="order-discount__val">
+                                    -<?= $helper->formatPrice($discount->discount) ?>
+
+                                    <? if ($discount->unit === 'rub'): ?>
+                                        <span class="rubl">p</span>
+                                    <? else: ?>
+                                        <?= $helper->escape($discount->unit) ?>
+                                    <? endif ?>
+                                </div>
+                            </div>
+                        <? endforeach ?>
+
+                        <? if ($order->certificate['par'] !== null) : ?>
+
+                            <div class="order-discount__item clearfix">
+                                <div class="order-discount__cell">
+                                    <span class="order-discount__del jsDeleteCertificate">удалить</span>
+                                </div>
+                                <a href="" class="order-discount__lk">
+                                    <img class="order-discount__img" src="/styles/order/img/enter.png" alt="">
+                                </a>
+
+                                <div class="order-discount__name">Подарочный сертификат <?= $order->certificate['par'] ?> <span class="rubl">p</span></div>
+
+                            <span
+                                class="order-discount__val">-<?= $order->certificate['par'] ?>
+                                <span class="rubl">p</span></span>
+                            </div>
+                        <? endif ?>
+                    </div>
+                <? endif ?>
+                <!-- END: введенные скидки, купоны -->
                 <div class="order-bill__body">
                 <? if ($order->seller): ?>
                     <div class="order-bill__seller">продавец: <?= $order->seller->name ?>
@@ -85,67 +145,7 @@ $f = function (
                     </div>
                 <? endforeach ?>
                 </div>
-                <!-- введенные скидки, купоны -->
 
-
-                <? if ((bool)$order->discounts || $order->certificate['par'] !== null) : ?>
-                    <div class="payment-discount"><!-- контейнер купонов, max их может быть 2 (инфо от редакции)-->
-
-                    <div class="order-discount__head">Скидки</div>
-
-                    <? foreach ($order->discounts as $discount) : ?>
-                        <div class="order-discount__item jsOrderV3Discount">
-                            <div class="order-discount__cell">
-                                <? if (null !== $discount->number) : ?>
-                                    <span class="order-discount__del jsDeleteDiscount" data-value="<?= $discount->number ?>">удалить</span>
-                                <? endif ?>
-                            </div>
-                            <? if ('online' === $discount->type): ?>
-                                <a href="" class="order-discount__lk">
-                                    <span class="order-discount__img order-discount__img_font">%</span>
-                                </a>
-                            <? else: ?>
-                                <a href="" class="order-discount__lk">
-                                    <img class="order-discount__img" src="/styles/order-new/img/chip.png" alt="">
-                                </a>
-                            <? endif ?>
-
-                            <div class="order-discount__name">
-                                <?= $discount->name ?>
-                            </div>
-
-                            <div class="order-discount__val">
-                                -<?= $helper->formatPrice($discount->discount) ?>
-
-                                <? if ($discount->unit === 'rub'): ?>
-                                    <span class="rubl">p</span>
-                                <? else: ?>
-                                    <?= $helper->escape($discount->unit) ?>
-                                <? endif ?>
-                            </div>
-                        </div>
-                    <? endforeach ?>
-
-                    <? if ($order->certificate['par'] !== null) : ?>
-
-                        <div class="order-discount__item clearfix">
-                            <div class="order-discount__cell">
-                                <span class="order-discount__del jsDeleteCertificate">удалить</span>
-                            </div>
-                            <a href="" class="order-discount__lk">
-                                <img class="order-discount__img" src="/styles/order/img/enter.png" alt="">
-                            </a>
-
-                            <div class="order-discount__name">Подарочный сертификат <?= $order->certificate['par'] ?> <span class="rubl">p</span></div>
-
-                            <span
-                                class="order-discount__val">-<?= $order->certificate['par'] ?>
-                                <span class="rubl">p</span></span>
-                        </div>
-                    <? endif ?>
-                    </div>
-                <? endif ?>
-                <!-- END: введенные скидки, купоны -->
             </div>
             <!-- END левая часть блока заказа - список заказанных товаров-->
 

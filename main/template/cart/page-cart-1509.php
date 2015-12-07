@@ -15,10 +15,12 @@ $helper = new \Helper\TemplateHelper();
 </div>
 */ ?>
 <div class="order__wrap order-page">
+    <? if (false): ?>
     <div class="pagehead">
         <h1>Корзина</h1>
         <div class="clear"></div>
     </div>
+    <? endif ?>
     <div class="jsKnockoutCart order-cart" data-bind="visible: cart().sum() == 0" style="display: none">
         <?= $page->render('cart/_cart-empty') ?>
     </div>
