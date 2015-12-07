@@ -24,7 +24,7 @@ class DeliveryPage extends Layout {
     }
 
     public function slotContent() {
-        return \App::closureTemplating()->render(self::isOrderWithCart() ? 'order-v3-new/page-delivery-with-user' : 'order-v3-new/page-delivery', $this->params);
+        return \App::closureTemplating()->render('order-v3-new/page-delivery-with-user', $this->params);
     }
 
     public function slotBodyDataAttribute() {

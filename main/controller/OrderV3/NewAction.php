@@ -16,10 +16,6 @@ class NewAction extends OrderV3 {
      * @return \Http\Response
      */
     public function execute(\Http\Request $request) {
-        if (self::isOrderWithCart()) {
-            return (new \Controller\Cart\IndexAction())->execute($request);
-        }
-
         $response = parent::execute($request);
         if ($response) {
             return $response;

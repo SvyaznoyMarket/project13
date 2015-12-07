@@ -29,7 +29,7 @@ $f = function(
             'isPassed' => false,
         ],
         3 => [
-            'name'     => 'Способы оплаты',
+            'name'     => 'Оплата',
             'url'      => $helper->url('orderV3.complete'),
             'isActive' => false,
             'isPassed' => false,
