@@ -13,6 +13,8 @@ $f = function(
     $sender2 = ''
 ) {
     $user = \App::user()->getEntity();
+
+    $inputSelectorId = 'id-discountInput-' . md5($product->id . '-' . $product->ui);
 ?>
 <div class="orderOneClick">
     <span class="orderOneClick_t">Оформление заказа</span>
@@ -56,13 +58,18 @@ $f = function(
                     <span class="order-discount__tl">Код скидки/фишки, подарочный сертификат</span>
 
                     <div class="order-ctrl">
-                        <input class="order-ctrl__input id-discountInput-standarttype3" value="">
+                        <input class="order-ctrl__input id-discountInput-standarttype3 <?= $inputSelectorId ?>" value="">
                         <label class="order-ctrl__lbl nohide"></label>
                     </div>
 
-                    <button class="order-btn order-btn--default jsApplyDiscount-1509" data-value="{&quot;block_name&quot;:&quot;standarttype3&quot;}" data-relation="{&quot;number&quot;:&quot;.id-discountInput-standarttype3&quot;}">Применить</button>
+                    <button
+                        class="order-btn order-btn--default jsApplyDiscount-1509"
+                        data-relation="<?= $helper->json([
+                            'number' => '.' . $inputSelectorId,
+                        ]) ?>"
+                    >Применить</button>
                 
-                    <div class="order-discount__pin">
+                    <div class="jsCertificatePinField order-discount__pin" style="display: none;">
                         <label class="order-discount__pin-label">Пин код</label>
                         <input class="order-discount__pin-input order-ctrl__input jsCertificatePinInput" type="text" name="" value="">
                     </div>
