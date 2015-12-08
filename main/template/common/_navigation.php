@@ -81,7 +81,7 @@ $hamburgerJsClass = $page->isMenuHamburger() ? ' jsHamburgerIcon ' : '';
                                                     <li class="navsite3_i"><a href="<?= $menu3->link ?>" class="navsite3_lk"><?= $menu3->name ?></a></li>
                                                 <? endforeach ?>
 
-                                                <li class="navsite3_i jsMenuRecommendation"<? if ($menu2->id): ?> data-parent-category-id="<?= $menu2->id ?>"<? endif ?>></li>
+                                                <li class="navsite3_i navsite3_i-rec jsMenuRecommendation"<? if ($menu2->id): ?> data-parent-category-id="<?= $menu2->id ?>"<? endif ?>></li>
                                             </ul>
                                         <? endif ?>
 
