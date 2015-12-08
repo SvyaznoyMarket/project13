@@ -159,7 +159,7 @@ $f = function (
                     ]) ?>"
                 >
                 <? endif ?>
-                <div class="slideItem_i__child">
+                <div class="slideItem_i__child slideItem_i__child-bd">
                     <? if ('top' == $namePosition): ?>
                         <div class="slideItem_n">
                             <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>><?= $helper->escape($product->getName()) ?></a>
@@ -182,7 +182,7 @@ $f = function (
                             </div>
                         <? endif ?>
 
-                        <div class="slideItem_pr"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
+                        <div class="slideItem_pr slideItem_pr-block"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 
                         <?= $helper->render('cart/__button-product', [
                             'product'        => $product,
