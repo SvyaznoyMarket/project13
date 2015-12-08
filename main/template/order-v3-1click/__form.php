@@ -42,12 +42,12 @@ $f = function(
             <div class="">
                 <div class="order-ctrl order-ctrl_width required" data-field-container="phone">
                     <input class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsOrderV3PhoneField" name="user_info[mobile]" value="<?= $user ? $helper->escape(preg_replace('/^8/', '+7', $user->getMobilePhone())) : '' ?>" placeholder="+7 (___) ___-__-__" data-field="phone" data-text-default="*Телефон" value="+71111111111" data-mask="+7 (xxx) xxx-xx-xx" required="required">
-                    <span class="errTx" style="display: none">Неверный формат телефона</span>
+                    <span class="errTx errTx_onclick" style="display: none">Неверный формат телефона</span>
                 </div>
 
                 <div class="order-ctrl order-ctrl_width required" data-field-container="email">
                     <input class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsOrderV3EmailField jsOrderV3EmailRequired" name="user_info[email]" value="<?= $user ? $helper->escape($user->getEmail()) : '' ?>" placeholder="*Email" data-field="email" data-text-default="*E-mail" required="required">
-                    <span class="errTx" style="display: none">Неверный формат email</span>
+                    <span class="errTx errTx_onclick" style="display: none">Неверный формат email</span>
                 </div>
 
                 <div class="order-ctrl order-ctrl_width" data-field-container="first_name">
