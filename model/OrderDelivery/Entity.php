@@ -842,10 +842,12 @@ namespace Model\OrderDelivery\Entity\Order {
         }
 
         private function validate() {
+            /*
             foreach (get_object_vars($this) as $name => $value) {
                 // для некоторых скидок может и не быть number (бесплатная доставка)
-                //if ($this->$name === null && $name !== 'number') throw new ValidateException("Для скидки не указан $name");
+                if ($this->$name === null && $name !== 'number') throw new ValidateException("Для скидки не указан $name");
             }
+            */
         }
     }
 

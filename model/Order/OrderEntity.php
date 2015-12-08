@@ -279,6 +279,17 @@ class OrderEntity {
         } else {
             $this->delivery_date_interval = null;
         }
+        // SITE-6435
+        if (!$this->delivery_date_interval && $this->delivery_date && \App::abTest()->isOrderWithDeliveryInterval()) {
+            try {
+                $this->delivery_date_interval = [
+                    'from' => (new \DateTime($this->delivery_date))->format('Y-m-d'),
+                    'to'   => (new \DateTime($this->delivery_date))->modify('+3 day')->format('Y-m-d'),
+                ];
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e], ['order']);
+            }
+        }
 
         if (isset($arr['order']['delivery']['point']['id'])) {
             $this->shop_id = $arr['order']['delivery']['point']['id'];
