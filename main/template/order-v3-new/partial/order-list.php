@@ -190,7 +190,13 @@ $f = function (
                         <? if ($date = $order->delivery->date): ?>
                             <? if (\App::abTest()->isOrderWithDeliveryInterval() && !$order->delivery->use_user_address): ?>
                             <?
-                                $date = sprintf('с %s по %s', $date->format('d.m'), $date->modify('+3 day')->format('d.m'));
+                                try {
+                                    $date =
+                                        $order->delivery->dateInterval
+                                        ? sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'))
+                                        : sprintf('с %s по %s', $date->format('d.m'), $date->modify('+3 day')->format('d.m'))
+                                    ;
+                                } catch (\Exception $e) {}
                             ?>
                                 <div class="order-delivery__date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $date ?></div>
                             <? else: ?>
