@@ -22,6 +22,9 @@
                 <li><a class="footer-discounts__link" href="/sberbank_spasibo"><i class="i-discount i-discount-sb"></i></a></li>
                 <li><a class="footer-discounts__link" href="/mnogo-ru"><i class="i-discount i-discount-mnogoru"></i></a></li>
             </ul>
+            <a class="footer__referral" href="/partner">
+                Зарабатывайте с Enter
+            </a>
             <ul class="footer_socnet clearfix">
                 <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="https://www.facebook.com/enter.ru"><i class="i-share i-share-fb"></i></a></li>
                 <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="https://twitter.com/enter_ru"><i class="i-share i-share-tw"></i></a></li>
