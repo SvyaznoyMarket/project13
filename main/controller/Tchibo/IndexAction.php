@@ -98,7 +98,7 @@ class IndexAction {
         // получим данные для меню
         /** @var \Model\Product\Category\TreeEntity $rootCategoryInMenu */
         $rootCategoryInMenu = null;
-        \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($category->getId(), $region, 3, function($data) use (&$rootCategoryInMenu) {
+        \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($category->getId(), $region, 4, function($data) use (&$rootCategoryInMenu) {
             $data = is_array($data) ? reset($data) : [];
             if (isset($data['id'])) {
                 $rootCategoryInMenu = new \Model\Product\Category\TreeEntity($data);
