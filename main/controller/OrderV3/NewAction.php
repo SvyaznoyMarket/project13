@@ -25,6 +25,17 @@ class NewAction extends OrderV3 {
         $page->setParam('step', 1);
         $post = null;
 
+        $orderDelivery = null;
+        try {
+            $previousSplit = $this->session->get($this->splitSessionKey);
+            if (is_array($previousSplit)) {
+                $orderDelivery = new \Model\OrderDelivery\Entity($previousSplit);
+            }
+        } catch(\Exception $e) {
+            \App::logger()->error($e->getMessage(), ['curl', 'cart/split']);
+        }
+        $page->setParam('orderDelivery', $orderDelivery);
+
         try {
             if ($request->isMethod('GET')) {
                 try {
