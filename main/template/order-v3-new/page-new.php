@@ -40,9 +40,7 @@ return function(
                                 </label>
                                 <input name="user_info[email]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-email" data-field="email" data-text-default="*E-mail" value="<?= $userEntity ? $userEntity->getEmail() : $orderDelivery->user_info->email ?>" required="required" />
                             </div>
-                            <? if (!\App::user()->isSubscribed(1)): ?>
-                                <div class="order-receiver__hint order-receiver__hint_double">Получать эксклюзивные предложения <br>и информацию о заказе</div>
-                            <? endif ?>
+                            <div class="order-receiver__hint order-receiver__hint_double">Получать эксклюзивные предложения <br>и информацию о заказе</div>
                         </div>
 
                         <div class="order-ctrl-wrapper">
