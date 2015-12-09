@@ -841,10 +841,12 @@ namespace Model\OrderDelivery\Entity\Order {
         }
 
         private function validate() {
+            /*
             foreach (get_object_vars($this) as $name => $value) {
                 // для некоторых скидок может и не быть number (бесплатная доставка)
-                //if ($this->$name === null && $name !== 'number') throw new ValidateException("Для скидки не указан $name");
+                if ($this->$name === null && $name !== 'number') throw new ValidateException("Для скидки не указан $name");
             }
+            */
         }
     }
 
@@ -857,6 +859,8 @@ namespace Model\OrderDelivery\Entity\Order {
         public $price;
         /** @var \DateTime */
         public $date;
+        /** @var array */
+        public $dateInterval;
         /** @var array|null */
         public $interval;
         /** @var bool */
@@ -869,6 +873,7 @@ namespace Model\OrderDelivery\Entity\Order {
             if (isset($data['point']['id'])) $this->point = new Delivery\Point($data['point']);
             if (isset($data['price'])) $this->price = (float)$data['price'];
             if (isset($data['date'])) $this->date = \DateTime::createFromFormat('U', $data['date']);
+            if (isset($data['date_interval']) && is_array($data['date_interval'])) $this->dateInterval = array_merge(['from' => null, 'to' => null], $data['date_interval']);
             if (isset($data['interval']) && is_array($data['interval'])) $this->interval = array_merge(['from' => null, 'to' => null], $data['interval']);
             if (isset($data['use_user_address'])) $this->use_user_address = (bool)$data['use_user_address'];
 

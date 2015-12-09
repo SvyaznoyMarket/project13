@@ -179,18 +179,32 @@ $f = function (
 
                 <!-- изменить/выбрать место - если у нас самовывоз-->
                 <? if (!$order->delivery->use_user_address) {?>
-                    <span class="js-order-changePlace-link order-delivery__change-place"
-                          data-content="#id-order-changePlace-content-<?= $order->id ?>">
-                                        <?= (!$order->delivery->point) ? 'Указать место самовывоза' : 'Изменить место самовывоза' ?>
-                            </span>
+                    <span class="js-order-changePlace-link order-delivery__change-place" data-content="#id-order-changePlace-content-<?= $order->id ?>">
+                        <?= (!$order->delivery->point) ? 'Указать место самовывоза' : 'Изменить место самовывоза' ?>
+                    </span>
                 <? } ?>
                 <!-- -->
                     <!-- дата доставки -->
                     <div class="order-delivery__info">
                         <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
-                        <? if ($order->delivery->date): ?>
-                            <div class="order-delivery__date orderCol_date"
-                                 data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y', $order->delivery->date->format('U'))) ?></div>
+                        <? if ($date = $order->delivery->date): ?>
+                            <? if (\App::abTest()->isOrderWithDeliveryInterval() && !$order->delivery->use_user_address): ?>
+                            <?
+                                try {
+                                    $date =
+                                        $order->delivery->dateInterval
+                                        ? sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'))
+                                        : sprintf('с %s по %s', $date->format('d.m'), $date->modify('+3 day')->format('d.m'))
+                                    ;
+                                } catch (\Exception $e) {}
+                            ?>
+                                <div class="order-delivery__date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $date ?></div>
+                            <? else: ?>
+                            <?
+                                $date = mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y', $date->format('U')));
+                            ?>
+                                <div class="order-delivery__date orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $date ?></div>
+                            <? endif ?>
                         <? endif ?>
 
                         <?= $helper->render('order-v3-new/__calendar', [
