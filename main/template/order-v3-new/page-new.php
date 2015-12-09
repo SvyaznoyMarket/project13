@@ -57,15 +57,7 @@ return function(
                                 </label>
                                 <input name="user_info[email]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-email" data-field="email" data-text-default="*E-mail" value="<?= $email ?>" required="required" />
                             </div>
-                            <? if (!\App::user()->isSubscribed(1)): ?>
-                                <div class="order-receiver__subscribe">
-                                    <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="user_info[subscribe]" value="1">
-                                    <label class="customLabel customLabel-checkbox" for="sale">
-                                        <img class="order-receiver__chip" src="/styles/order-new/img/chip-s.png" alt="">
-                                        <span class="order-receiver__subscribe-txt">Подпишись на рассылку и получи скидку<br/>на следующую покупку</span>
-                                    </label>
-                                </div>
-                            <? endif ?>
+                            <div class="order-receiver__hint order-receiver__hint_double">Получать эксклюзивные предложения <br>и информацию о заказе</div>
                         </div>
 
                         <div class="order-ctrl-wrapper">
