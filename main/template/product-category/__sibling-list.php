@@ -60,7 +60,7 @@ return function(
                         <li class="tchibo-nav-list-sub__item nav-default-sub__item <? if ($activeChild): ?> tchibo-nav-list-sub__item_active<? endif ?>">
                             <a class="tchibo-nav-list-sub__link nav-default-sub__link"
                                href="<?= $child->getLink() ?>"<? if (in_array($child->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$child->getId()] ?>"<? endif ?>>
-                                <?= $child->getName() ?><? if ($child->isNew) : ?> <span class="itemNew">NEW!</span><? endif ?>
+                                <?= $child->getName() ?><? if ($child->isNew) : ?> <span class="itemNew">NEW</span><? endif ?>
                             </a>
 
 
