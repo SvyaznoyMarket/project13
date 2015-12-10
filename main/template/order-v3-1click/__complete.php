@@ -24,12 +24,10 @@ $f = function(
 
     $isOnlinePaymentPossible =
         (bool)$orderPayment
-            ? (
-            !$order->isPaid()
-            && !$order->isCredit()
-            && !$order->isPaidBySvyaznoy()
-        )
-        : false
+        && $orderPayment->getOnlineMethods()
+        && !$order->isPaid()
+        && !$order->isCredit()
+        && !$order->isPaidBySvyaznoy()
     ;
 ?>
 
