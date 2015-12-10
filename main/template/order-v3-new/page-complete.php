@@ -12,7 +12,6 @@ use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity, \Model\PaymentMethod
  * @param $banks
  * @param $creditData
  * @param $subscribe
- * @param bool[] $onlinePaymentStatusByNumber
  */
 $f = function(
     \Helper\TemplateHelper $helper,
@@ -23,8 +22,7 @@ $f = function(
     $sessionIsReaded,
     $banks,
     $creditData,
-    $subscribe,
-    $onlinePaymentStatusByNumber = []
+    $subscribe
 ) {
     $page = new \View\OrderV3\CompletePage();
     array_map(function(\Model\PaymentMethod\PaymentEntity &$entity) {$entity->unsetSvyaznoyClub();}, $ordersPayment); // fix for SITE-5229 (see comments)
@@ -59,10 +57,6 @@ $f = function(
                 });
                 $isOnlinePaymentPossible =
                     $onlinePaymentMethods
-                    && (
-                        !isset($onlinePaymentStatusByNumber[$order->number])
-                        || (true === $onlinePaymentStatusByNumber[$order->number])
-                    )
                     && ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']))
                     && !$order->isPaid()
                     && !$order->isCredit()
