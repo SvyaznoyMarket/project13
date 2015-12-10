@@ -15,8 +15,6 @@ $f = function(
     $user = \App::user()->getEntity();
 
     $inputSelectorId = 'id-discountInput-' . md5($product->id . '-' . $product->ui);
-
-    $hasDiscountField = 'new_with_discount' === \App::abTest()->getOneClickView();
 ?>
 <div class="orderOneClick">
     <span class="orderOneClick_t">Оформление заказа</span>
@@ -56,7 +54,6 @@ $f = function(
                     <input name="user_info[first_name]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsOrderV3NameField" placeholder="Имя" data-field="first_name" name="user_info[first_name]" value="<?= $user ? $helper->escape($user->getName()) : '' ?>">
                 </div>
 
-                <? if ($hasDiscountField): ?>
                 <div class="order-discount order-discount_inline">
                     <span class="order-discount__tl">Код скидки/фишки, подарочный сертификат</span>
 
@@ -77,7 +74,6 @@ $f = function(
                         <input class="order-discount__pin-input order-ctrl__input jsCertificatePinInput" type="text" name="" value="">
                     </div>
                 </div>
-                <? endif ?>
             </div>
         </fieldset>
 
