@@ -1,4 +1,7 @@
 <?
+
+use Model\Product\Category\Entity as Category;
+
 /**
  * @var $page \View\DefaultLayout
  * @var $menu \Model\Menu\Entity[]|\Model\Menu\BasicMenuEntity[]
@@ -50,18 +53,20 @@ $hamburgerJsClass = $page->isMenuHamburger() ? ' jsHamburgerIcon ' : '';
                     <li class="navsite_i <?= ((bool)$menu1->children) ? 'navsite_i-child' : '' ?> <?= $lastMenu1 == $menu1 ? 'navsite_i-last': '' ?> js-mainmenu-level1-item" <? if ($recommendUrl): ?> data-recommend-url="<?= $recommendUrl ?>"<? endif ?>>
                         <? if ($menu1->char) : ?>
                             <a href="<?= $menu1->link ?>" class="navsite_lk">
-                                <div class="navsite_icon"><?= $menu1->char?></div>
+                                <div class="navsite_icon"><?= $menu1->char ?></div>
                                 <div class="navsite_tx">
-                                    <span><?= $menu1->name?></span>
-                                    <div class="navsite_tx-new">
-                                        <span>NEW</span>
-                                    </div>
+                                    <span><?= $menu1->name ?></span>
+                                    <? if ($menu1->ui === Category::UI_ODEZHDA) : ?>
+                                        <div class="navsite_tx-new">
+                                            <span>NEW</span>
+                                        </div>
+                                    <? endif ?>
                                 </div>
                             </a>
                         <? else : ?>
                             <a href="<?= $menu1->link ?>" class="navsite_lk">
                                 <div class="navsite_imgw"><img class="navsite_img" src="<?= $menu1->image ?>" alt=""></div>
-                                <span class="navsite_tx"><?= $menu1->name?></span>
+                                <span class="navsite_tx"><?= $menu1->name ?></span>
                             </a>
                         <? endif ?>
 
