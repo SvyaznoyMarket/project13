@@ -38,8 +38,24 @@ return function(
             <!-- дата доставки -->
             <div class="orderCol_delivrIn date clearfix" style="padding-left: 0;">
                 <? if (!$shopId): ?>
-                    <? if ($order->delivery->date): ?>
-                        <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y, %A', $order->delivery->date->format('U'))) ?></div>
+                    <? if ($date = $order->delivery->date): ?>
+                        <? if (\App::abTest()->isOrderWithDeliveryInterval() && !$order->delivery->use_user_address): ?>
+                        <?
+                            try {
+                                $date =
+                                    $order->delivery->dateInterval
+                                    ? sprintf('с %s по %s', (new \DateTime($order->delivery->dateInterval['from']))->format('d.m'), (new \DateTime($order->delivery->dateInterval['to']))->format('d.m'))
+                                    : sprintf('с %s по %s', $date->format('d.m'), $date->modify('+3 day')->format('d.m'))
+                                ;
+                            } catch (\Exception $e) {}
+                        ?>
+                            <div class="" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $date ?></div>
+                        <? else: ?>
+                        <?
+                            $date = mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y, %A', $order->delivery->date->format('U')));
+                        ?>
+                            <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= $date ?></div>
+                        <? endif ?>
                     <? endif ?>
 
                     <?= $helper->render('order-v3/__calendar', [

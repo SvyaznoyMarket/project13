@@ -57,8 +57,6 @@ class CompleteAction extends OrderV3 {
 
         $this->pushEvent(['step' => 3]);
 
-        $onlinePaymentStatusByNumber = [];
-
         if ($context) {
             $now = new \DateTime();
             $this->client->addQuery(
@@ -67,20 +65,12 @@ class CompleteAction extends OrderV3 {
                     'hash' => $context,
                 ],
                 [],
-                function($data) use (&$onlinePaymentStatusByNumber, &$now) {
+                function($data) use (&$now) {
                     foreach ($data as $item) {
                         $number = isset($item['order']['number']) ? $item['order']['number'] : null;
                         if (!$number) continue;
 
                         $this->sessionOrders[$number] = $item['order'];
-                        $onlinePaymentStatusByNumber[$number] = true;
-                        /*
-                        try {
-                            $onlinePaymentStatusByNumber[$number] = $now <= new \DateTime($item['online_payment_expired']);
-                        } catch (\Exception $e) {
-                            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
-                        }
-                        */
                     }
                 },
                 function(\Exception $e) {
@@ -269,7 +259,6 @@ class CompleteAction extends OrderV3 {
         });
 
         $page->setParam('orders', $orders);
-        $page->setParam('onlinePaymentStatusByNumber', $onlinePaymentStatusByNumber);
         $page->setParam('ordersPayment', $ordersPayment);
         $page->setParam('products', $products);
         $page->setParam('productsById', $products);
