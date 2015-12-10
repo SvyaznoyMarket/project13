@@ -18,20 +18,20 @@ return function(
         <div class="order-ctrl <?= ( $couponErrors ? 'error' : '' ) ?>">
             <input class="order-ctrl__input <?= $inputSelectorId ?>" value="<?= $couponNumber ?>" >
             <label class="order-ctrl__lbl nohide">
-                    <? foreach ($couponErrors as $err) : ?>
-                        <? if ($err->code == 404) : ?>
-                            Скидки с таким кодом<br>не существует
-                        <? elseif ($err->code == 1001) : ?>
-                            Купон неприменим<br>к данному заказу
-                        <? elseif ($err->code == 1022) : ?>
-                           Купон уже был использован<br>или истек срок действия
-                        <? else : ?>
-                            <?= $err->message ?>
-                        <? endif ?>
-                    <? endforeach ?>
+            <? foreach ($couponErrors as $err) : ?>
+                <? if ($err->code == 404) : ?>
+                    Скидки с таким кодом<br>не существует
+                <? elseif ($err->code == 1001) : ?>
+                    Купон неприменим<br>к данному заказу
+                <? elseif ($err->code == 1022) : ?>
+                   Купон уже был использован<br>или истек срок действия
+                <? else : ?>
+                    <?= $err->message ?>
+                <? endif ?>
+            <? endforeach ?>
             </label>
         </div>
-        <div class="order-discount__pin" style="display: none">
+        <div class="jsCertificatePinField order-discount__pin" style="display: none">
             <div class="order-ctrl">
                 <label class="order-ctrl__lbl js-order-ctrl__lbl">PIN:</label>
                 <input class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input jsCertificatePinInput" type="text" name="" value="" placeholder="PIN">
