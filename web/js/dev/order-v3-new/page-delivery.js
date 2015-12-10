@@ -554,21 +554,6 @@
     });
 
     // применить скидку
-    $orderContent.on('click', '.jsApplyDiscount', function(e){
-        var $this = $(this),
-            $orderBlock = $this.closest('.orderRow'),
-            block_name = $orderBlock.data('block_name'),
-            number = $this.parent().siblings('input').val().trim();
-
-        // проверяем код PandaPay если есть совпадение маски и нет применённых дискаунтов
-        if (/SN.{10}/.test(number) && $orderBlock.find('.jsOrderV3Discount').length == 0) checkPandaPay($this, number);
-        // иначе стандартный вариант
-        else if (number != '') applyDiscount(block_name, number);
-
-        e.preventDefault();
-    });
-
-    // применить скидку
     $orderContent.on('click', '.jsApplyDiscount-1509', function(e){
         var
             $el = $(this),

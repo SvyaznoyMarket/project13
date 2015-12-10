@@ -5,6 +5,7 @@ return function(
     \Model\OrderDelivery\Entity $orderDelivery,
     $shopId = null
 ) {
+    $hasDiscountField = 'new_with_hidden_discount' === \App::abTest()->getOneClickView();
 ?>
 
 

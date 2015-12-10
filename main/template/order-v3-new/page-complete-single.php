@@ -23,12 +23,10 @@ return function(
     // Онлайн оплата возможна при существовании такой группы
     $isOnlinePaymentPossible =
         (bool)$orderPayment
-        ? (
-            !$order->isPaid()
-            && !$order->isCredit()
-            && !$order->isPaidBySvyaznoy()
-        )
-        : false;
+        && $orderPayment->getOnlineMethods()
+        && !$order->isPaid()
+        && !$order->isCredit()
+        && !$order->isPaidBySvyaznoy();
     // При создании заказа выбрана онлайн-оплата
     $isOnlinePaymentChecked =
         ($orderPayment && $order->getPaymentId() && isset($orderPayment->methods[$order->getPaymentId()]))
