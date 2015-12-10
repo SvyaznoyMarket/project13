@@ -51,7 +51,12 @@ $hamburgerJsClass = $page->isMenuHamburger() ? ' jsHamburgerIcon ' : '';
                         <? if ($menu1->char) : ?>
                             <a href="<?= $menu1->link ?>" class="navsite_lk">
                                 <div class="navsite_icon"><?= $menu1->char?></div>
-                                <span class="navsite_tx"><?= $menu1->name?></span>
+                                <div class="navsite_tx">
+                                    <span><?= $menu1->name?></span>
+                                    <div class="navsite_tx-new">
+                                        <span>NEW</span>
+                                    </div>
+                                </div>
                             </a>
                         <? else : ?>
                             <a href="<?= $menu1->link ?>" class="navsite_lk">
