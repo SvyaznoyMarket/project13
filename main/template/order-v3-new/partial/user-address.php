@@ -25,12 +25,35 @@ $f = function(
     $required = (bool)$order->isPartnerOffer();
 ?>
 <div class="order-delivery__block deliv-addr jsSmartAddressBlock <?= $containerId ?>">
+
+    <!-- регион доставки -->
+    <div class="order-region">Ваш регион: <span class="order-region__change jsChangeRegion"><?= \App::user()->getRegion()->getName() ?></span></div>
+    <!--END регион доставки -->
+
     <div class="order-ctrl fullwidth">
-        <label class="order-ctrl__txt js-order-ctrl__txt "><?= ($required ? '*' : '') ?>Улица</label>
+        <div class="order-ctrl__custom-select">
+            <span class="order-ctrl__custom-select-item_title">
+                Выбрать адрес
+            </span>
+
+            <ul class="order-ctrl__custom-select-list">
+                <li class="order-ctrl__custom-select-item">Lorem ipsum dolor sit amet.</li>
+                <li class="order-ctrl__custom-select-item">Lorem ipsum dolor sit amet.</li>
+                <li class="order-ctrl__custom-select-item">Lorem ipsum dolor sit amet.</li>
+                <li class="order-ctrl__custom-select-item">Lorem ipsum dolor sit amet.</li>
+                <li class="order-ctrl__custom-select-item">Lorem ipsum dolor sit amet.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="order-ctrl fullwidth">
+        <label class="order-ctrl__txt js-order-ctrl__txt"><?= ($required ? '*' : '') ?>Улица</label>
+        <span class="order-ctrl__address-error">Выберите адрес из списка</span>
         <input
             type="text"
             value="<?= $address['street'] ?>"
-            class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress"
+            class="order-ctrl__input order-ctrl__input_float-label error js-order-ctrl__input js-order-deliveryAddress"
             data-field="street"
             <?= ($required ? 'required' : '') ?>
             data-value="<?= $helper->json($dataValue) ?>"
@@ -44,7 +67,7 @@ $f = function(
         <input
             type="text"
             value="<?= $address['building'] ?>"
-            class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-deliveryAddress"
+            class="order-ctrl__input order-ctrl__input_float-label error js-order-ctrl__input js-order-deliveryAddress"
             data-field="building"
             <?= ($required ? 'required' : '') ?>
             data-value="<?= $helper->json($dataValue) ?>"
@@ -62,6 +85,11 @@ $f = function(
             data-value="<?= $helper->json($dataValue) ?>"
             data-relation="<?= $helper->json(['container' => '.' . $containerId])?>"
         />
+    </div>
+
+    <div class="order-ctrl order-ctrl_last">
+        <input class="customInput customInput-checkbox" type="checkbox" id="orderCtrlCheck">
+        <label class="customLabel order-ctrl__check" for="orderCtrlCheck">Сохранить адрес</label>
     </div>
 </div>
 <? }; return $f;
