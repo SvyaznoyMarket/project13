@@ -53,13 +53,17 @@
       }
       .navsite3 {
         left: -200px;
+        right: -1%;
 
         width: 195px;
-        padding-right: 209px;
+        padding-right: 100%;
         padding-left: 0;
 
-        background-position: 198px;
+        &:after{
+          left: 194px;
+        }
       }
+
     }
     &-child {
       &:hover {
@@ -175,8 +179,6 @@
     &:hover {
       .navsite2_tx {
         text-decoration: none;
-
-        border-bottom: 1px solid @darkgrey5;
       }
     }
   }
@@ -219,12 +221,28 @@
 
   &_i {
     padding: 5px 10px;
+
+    &:hover{
+      background: #f2f2f2;
+    }
+
     &-tl {
       font-size: 14px;
 
       margin: 0 0 5px;
 
       text-align: center;
+
+      &:hover{
+        background: none;
+      }
+    }
+
+    &-rec{
+
+      &:hover{
+        background: none;
+      }
     }
 
   }
@@ -234,8 +252,6 @@
 
     &:hover {
       text-decoration: none;
-
-      border-bottom: 1px solid @darkgrey5;
     }
   }
 }
