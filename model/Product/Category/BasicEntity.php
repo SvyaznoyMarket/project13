@@ -29,6 +29,7 @@ abstract class BasicEntity {
     const UI_AKSESSUARY                 = '5e78849d-01e8-4509-8bfe-85f8e148b37d';
     const UI_IGRY_I_KONSOLI             = 'ed807fca-962b-4b75-9813-d5efbb8ef586';
     const UI_AVTO                       = 'f0d53c46-d4fc-413f-b5b3-a2b57b93a717';
+    const UI_ODEZHDA                    = 'df56d956-3b07-4fca-ad47-d116a0f5104e';
 
     // TCHIBO
     const UI_TCHIBO_COLLECTIONS         = 'de9f59d7-bade-4a77-9190-060cf5b834e3';
