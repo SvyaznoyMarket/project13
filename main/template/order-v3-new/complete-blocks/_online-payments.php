@@ -4,14 +4,12 @@
  * @param \Helper\TemplateHelper $helper
  * @param \Model\Order\Entity $order
  * @param \Model\PaymentMethod\PaymentEntity|null $orderPayment
- * @param string $title
  * @return string
  */
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Order\Entity $order,
-    \Model\PaymentMethod\PaymentEntity $orderPayment = null,
-    $title = 'Оплатить онлайн со скидкой'
+    \Model\PaymentMethod\PaymentEntity $orderPayment = null
 ) {
     if (!$orderPayment || !$orderPayment->methods) {
         return '';
@@ -20,6 +18,10 @@ $f = function(
     /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity[] $paymentMethods */
     $paymentMethods = array_filter($orderPayment->methods, function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod) {
         return $paymentMethod->isOnline;
+    });
+
+    $isOnlinePaymentMethodDiscountExists = (bool)array_filter($paymentMethods, function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod) {
+        return $paymentMethod->discount;
     });
 
     // SITE-6304
@@ -38,6 +40,11 @@ $f = function(
 
     $containerId = 'id-paymentForm-container';
     $sumContainerId = 'id-onlineSum-container';
+
+    $title = 'Оплатить онлайн';
+    if ($isOnlinePaymentMethodDiscountExists) {
+        $title .= ' со скидкой';
+    }
 ?>
 
     <div class="orderPayment orderPayment--static orderPaymentWeb id-orderPaymentPreview-container">
