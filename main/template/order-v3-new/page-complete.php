@@ -63,6 +63,10 @@ $f = function(
                     && !$order->isPaidBySvyaznoy()
                 ;
 
+                $isOnlinePaymentMethodDiscountExists = (bool)array_filter($onlinePaymentMethods, function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod) {
+                    return $paymentMethod->discount;
+                });
+
                 $sumContainerId = sprintf('id-onlineDiscountSum-container', $order->id);
 
                 // SITE-6304
@@ -188,7 +192,10 @@ $f = function(
                                         <div class="js-payment-popup-closer payments-popup__closer"></div>
 
                                         <div class="orderPayment_msg_head">
-                                            Оплатить онлайн со скидкой
+                                            Оплатить онлайн
+                                            <? if ($isOnlinePaymentMethodDiscountExists): ?>
+                                                со скидкой
+                                            <? endif ?>
                                         </div>
                                         <div class="order-payment__sum-msg">
                                         <?

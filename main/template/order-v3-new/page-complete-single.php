@@ -69,7 +69,7 @@ return function(
             <? endif ?>
 
             <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked): ?>
-                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true, 'title' => 'Оплатить онлайн со скидкой']) ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
             <? endif ?>
 
         </div>
