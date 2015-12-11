@@ -202,7 +202,7 @@ trait ABHelperTrait {
      * @return string
      */
     public function getOrderButtonLocation() {
-        return \App::abTest()->getTest('show_order_delivery_interval')->getChosenCase()->getKey();
+        return \App::abTest()->getTest('order_button_location')->getChosenCase()->getKey();
     }
 
     /**
