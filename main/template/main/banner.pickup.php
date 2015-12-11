@@ -5,9 +5,9 @@
     $region = \App::user()->getRegion();
     $pathInfo = \App::request()->getPathInfo();
     if (time() > 1450193400) { // SITE-6508
-        $bannerNumber = 1;
-    } else {
         $bannerNumber = (int)rand(0, 1);
+    } else {
+        $bannerNumber = 1;
     }
 ?>
 <? if (0 === $bannerNumber): ?>
