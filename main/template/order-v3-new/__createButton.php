@@ -9,6 +9,7 @@ $f = function(
     $order = null,
     $orderCount = 1
 ) {
+    $buttonLocation = \App::abTest()->getOrderButtonLocation();
 ?>
 <div class="order-agreement">
     <?= \App::templating()->render('order-v3/common/_blackfriday', ['version' => 2]) ?>
