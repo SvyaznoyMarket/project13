@@ -136,22 +136,25 @@ $showReview = \App::config()->product['reviewEnabled'];
             <?= $helper->render('product-page/blocks/properties', ['product' => $product]) ?>
 
             <? if ($hasMedia || $product->getDescription()) : ?>
+                <div class="product-section__grids">
+                    <div class="product-section__desc">
+                        <div class="product-section__tl">Описание</div>
+                        <?= $helper->render('product-page/blocks/guides', ['trustfactors' => $trustfactors]) ?>
+                        <div class="product-section__content"><?= $product->getDescription() ?></div>
+                    </div>
 
-                <div class="product-section__desc">
-                    <div class="product-section__tl">Описание</div>
-                    <?= $helper->render('product-page/blocks/guides', ['trustfactors' => $trustfactors]) ?>
-                    <div class="product-section__content"><?= $product->getDescription() ?></div>
+                    <div class="product-section__notice">
+                        <span class="product-section__notice-desc">
+                            Технические характеристики товара могут отличаться.<br>
+                            Уточняйте информацию при оформлении заказа<br>
+                            у оператора контакт-центра или на кассе магазина<br>
+                            перед оплатой заказа
+                        </span>
+                    </div>
                 </div>
 
             <? endif ?>
-            <div class="product-section__notice">
-                <span class="product-section__notice-desc">
-                    Технические характеристики товара могут отличаться.<br>
-                    Уточняйте информацию при оформлении заказа<br>
-                    у оператора контакт-центра или на кассе магазина<br>
-                    перед оплатой заказа
-                </span>
-            </div>
+
         </div>
         <!--/ характеристики/описание товара -->
 
