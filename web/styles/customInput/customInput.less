@@ -31,17 +31,35 @@
     cursor: pointer;
 
     .inline-block();
+    
     &-bigradio{
         height: 29px;
         padding: 5px 10px 5px 38px;
     }
+    
     &_img{
         padding: 0 2px;
 
         .inline-block-middle();
     }
+    
     &_tx{
         .inline-block-middle();
+    }
+    
+    &_sure{
+        width: 100%;
+
+        padding-left: 40px;
+    }
+    
+    &__sure{
+        position: absolute;
+        left: 0;
+        top: 3px;
+
+        color: #f99b1c;
+        font-size: 18px;
     }
 }
 //
@@ -80,6 +98,13 @@
 
         border: 1px solid #868686;
         .rounded(3px);
+    }
+}
+
+.customInput-checkbox + .customLabel{
+
+    &:before{
+        left: 12px;
     }
 }
 

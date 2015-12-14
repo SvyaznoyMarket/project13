@@ -17,6 +17,8 @@ $f = function(
     $inputSelectorId = 'id-discountInput-' . md5($product->id . '-' . $product->ui);
 
     $hasDiscountField = 'new_with_discount' === \App::abTest()->getOneClickView();
+
+    $hasDiscountField = true;
 ?>
 <div class="orderOneClick">
     <span class="orderOneClick_t">Оформление заказа</span>
@@ -33,7 +35,10 @@ $f = function(
                 <?= $helper->escape($product->getWebName()) ?>
             </div>
 
-            <div class="orderOneClick_hd_pr"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></div>
+            <div class="orderOneClick_hd_pr">
+                <span class="orderOneClick_hd_pr__old">1233 <span class="rubl">p</span></span>
+                <span class="orderOneClick_hd_pr__new"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span>
+            </div>
         </div>
     </div>
 
@@ -57,7 +62,9 @@ $f = function(
                 </div>
 
                 <? if ($hasDiscountField): ?>
+
                 <div class="order-discount order-discount_inline">
+                    <div class="order-discount__current">1234</div>
                     <span class="order-discount__tl">Код скидки/фишки, подарочный сертификат</span>
 
                     <div class="order-ctrl">
@@ -81,17 +88,19 @@ $f = function(
             </div>
         </fieldset>
 
-        <fieldset class="orderU_flds">
+        <!--<fieldset class="orderU_flds">
             <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения<span class="orderU_lgnd_tgglnote js-order-oneclick-delivery-toggle-btn-note">скрыть</span></legend>
 
             <div class="js-order-oneclick-delivery-toggle" style="display: none;">
                 <div id="js-order-content" class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery"></div>
             </div>
-        </fieldset>
+        </fieldset>-->
+
         <fieldset class="order-agreement__check jsAcceptAgreementContainer">
             <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" value="" required="required">
 
-            <label class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">Я ознакомлен и согласен <br>
+            <label class="customLabel customLabel-checkbox customLabel-checkbox_sure customLabel_sure jsAcceptTerms" for="accept">Я ознакомлен и согласен <br>
+                <span class="customLabel__sure">*</span>
             <? if ($link = $product->getPartnerOfferLink()): ?>
                 <a class="brb-dt order-agreement__check-link" href="<?= $link ?>" target="_blank">с информацией о продавце и его офертой</a>
             <? else: ?>
@@ -99,6 +108,7 @@ $f = function(
             <? endif ?>
             </label>
         </fieldset>
+
         <fieldset class="orderU_fldsbottom">
             <input type="hidden" name="sender" value="<?= $helper->json($sender) ?>" />
             <input type="hidden" name="sender2" value="<?= $helper->escape($sender2) ?>" />
