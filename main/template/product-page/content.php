@@ -147,7 +147,7 @@ $showReview = \App::config()->product['reviewEnabled'];
             <div class="product-section__notice">
                 <span class="product-section__notice-desc">
                     Технические характеристики товара могут отличаться.<br>
-                    Уточняйте информацию при оформлении заказа,<br>
+                    Уточняйте информацию при оформлении заказа<br>
                     у оператора контакт-центра или на кассе магазина<br>
                     перед оплатой заказа
                 </span>
