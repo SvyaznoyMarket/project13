@@ -1,270 +1,282 @@
 .orderOneClick {
 
-	&_t {
-		font-size: 20px;
-		margin: 0 0 20px;
-	}
+  &__fin-sum{
+    text-align: center;
+    font-size: 14px;
+  }
 
-	&_hd {
-		margin: 20px 0 0;
+  &__fin-sum-num{
+    font-size: 18px;
+  }
 
-		&_l {
-			.inline-block-middle();
-			max-width: 100%;
-			max-height: 100%;
-		}
+  &_t {
+    font-size: 20px;
+    margin: 0 0 20px;
+  }
 
-		&_r {
-			.inline-block-middle();
-			margin: 0 0 0 15px;
-			font-size: 14px;
-			width: 260px;
-			overflow: hidden;
-			word-wrap: break-word;
-		}
-		&_wr{
-			.inline-block-middle();
-			width: 80px;
-			height: 80px;
-			text-align: center;
-			&:after{
-				content:"";
-				height: 100%;
-				width: 0;
-				.inline-block-middle();
-			}
-		}
+  &_hd {
+    margin: 20px 0 0;
 
-		&_n {
-			line-height: 1.2;
-			margin: 0 0 15px;
-		}
+    &_l {
+      .inline-block-middle();
+      max-width: 100%;
+      max-height: 100%;
+    }
 
-		&_pr {
-			font-size: 18px;
+    &_r {
+      .inline-block-middle();
+      margin: 0 0 0 15px;
+      font-size: 14px;
+      width: 260px;
+      overflow: hidden;
+      word-wrap: break-word;
+    }
+    &_wr {
+      .inline-block-middle();
+      width: 80px;
+      height: 80px;
+      text-align: center;
+      &:after {
+        content: "";
+        height: 100%;
+        width: 0;
+        .inline-block-middle();
+      }
+    }
 
-		  &__old{
-			height: 20px;
-			display: block;
+    &_n {
+      line-height: 1.2;
+      margin: 0 0 15px;
+    }
 
-			font-size: 14px;
-			color: #868686;
-			text-decoration: line-through;
-		  }
+    &_pr {
+      font-size: 18px;
 
-		  &__new{
-			display: block;
-		  }
-		}
-	}
+      &__old {
+        height: 20px;
+        display: block;
 
-	&_dlvr {
-		display: none;
-	}
+        font-size: 14px;
+        color: #868686;
+        text-decoration: line-through;
+      }
 
-	&_cmpl {
-		&_t {
-			font-size: 30px;
-			margin-bottom: 15px;
-			margin-top:0;
-		}
+      &__new {
+        display: block;
+      }
+    }
+  }
 
-		.orderCompl_btn {
-		    .inline-block();
-		    height: 40px;
-		    line-height: 40px;
+  &_dlvr {
+    display: none;
+  }
 
-		    &:hover {
-		    	text-decoration: none;
-		    }
-		}
-	}
-	&_recall{
-		font-size: 14px;
-	}
+  &_cmpl {
+    &_t {
+      font-size: 30px;
+      margin-bottom: 15px;
+      margin-top: 0;
+    }
 
-	.orderOneClick_cmpl.orderU_fldsbottom {
-		padding-top: 0;
-		font-size: 20px;
-		text-align: left;
-	}
+    .orderCompl_btn {
+      .inline-block();
+      height: 40px;
+      line-height: 40px;
 
-	.orderU {
-		&_flds {
-			display: block;
-			margin: 0;
-		}
-		&_lgnd {
-			font-size: 20px;
-			margin: 0 0 15px;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+  &_recall {
+    font-size: 14px;
+  }
 
-			&-tggl {
-				color: #808080;
-				border-bottom: 1px dotted #808080;
-				cursor: pointer;
-				.inline-block();
-				font-size: 16px;
+  .orderOneClick_cmpl.orderU_fldsbottom {
+    padding-top: 0;
+    font-size: 20px;
+    text-align: left;
+  }
 
-				&-cur {
-					color: @black;
-					border-bottom: none;
-				}
-			}
-			&_tgglnote {
-				color: #808080;
-				border-bottom: 1px dotted #808080;
-				cursor: pointer;
-				display: none;
-				font-size: 16px;
-				margin-left: 10px;
-				&-cur {
-					.inline-block();
-				}
-			}
-		}
-		&_lbl {
-			font-size: 14px;
-		}
-		&_fldsbottom {
-		    margin: 0;
-		    padding: 8px 0 0;
+  .orderU {
+    &_flds {
+      display: block;
+      margin: 0;
+    }
+    &_lgnd {
+      font-size: 20px;
+      margin: 0 0 15px;
 
-		  	text-align: center;
-		}
-	}
+      &-tggl {
+        color: #808080;
+        border-bottom: 1px dotted #808080;
+        cursor: pointer;
+        .inline-block();
+        font-size: 16px;
 
-	.orderCol {
-		&-r {
-			float: none;
-		    width: 347px;
-		}
-		&_delivrLst {
-		    background: #fff;
-		    width: 368px;
-		    border-bottom: 1px solid #e6e6e6;
-		}
-		&_lk {
-		    vertical-align: middle;
-		}
-
-		&_delivrIn {
-		    background: none;
-		    border: medium none;
-		    padding: 10px 10px 1px;
-		    position: relative;
-
-		    &-pl {
-		    	background: #fff;
-		    	.rounded(4px);
-		    	padding: 10px 10px 1px;
-		    	border: 1px solid #d3d3d3;
-		    }
-            &.date{
-                padding-top: 0;
-
-                .orderCol_date{
-                    margin-right: 10px;
-                }
-            }
-		}
-
-		&_n {
-		    font-size: 16px;
-		    width: 480px;
-		    vertical-align: middle;
-		}
-
-		&_f {
-			border-width: 1px 0;
-			background: none;
-			margin: 0 0 40px;
-		}
-
-		&_data {
-    		color: #000;
-    		padding-right: 10px;
-    		margin-top: 10px;
-    	}
-
-		&_cnt {
-		    border-top: medium none;
-		    padding: 10px 0 15px;
-		}
-
-		&_addrs {
-		    margin: 0 0 10px 10px;
-		    .ui-autocomplete{
-		    	height: 100px;
-		    }
-		}
-
-		&_tm {
-		    margin: 0 0 10px;
-		}
-
-		.customSel {
-			background-color: #fff;
-		}
-
-        .customSel_cl {
-            background: none;
+        &-cur {
+          color: @black;
+          border-bottom: none;
         }
-
-		&_date {
-			background-color: #fff;
-		}
-
-		&_summt {
-		    float: right;
-		    font-size: 16px;
-		    margin: 0 0 10px;
-		    width: 109px;
-		}
-        &-single{
-            border-top: 1px solid #e6e6e6;
-            .orderCol_delivrIn{
-
-            }
+      }
+      &_tgglnote {
+        color: #808080;
+        border-bottom: 1px dotted #808080;
+        cursor: pointer;
+        display: none;
+        font-size: 16px;
+        margin-left: 10px;
+        &-cur {
+          .inline-block();
         }
-	}
+      }
+    }
+    &_lbl {
+      font-size: 14px;
+    }
+    &_fldsbottom {
+      margin: 0;
+      padding: 8px 0 0;
 
-	.orderRow {
-	    border-top: medium none;
-	}
+      text-align: center;
+    }
+  }
 
-	.orderCol_delivrLst_i {
-	    border-bottom:none;
-	    padding: 10px 10px 10px 0;
-	    width: auto;
-	    margin-bottom: -1px;
+  .orderCol {
 
-	    &:first-child {
-	    	border-top: 1px solid #e6e6e6;
-	    	padding-bottom: 9px;
-	    	&.orderCol_delivrLst_i-act {
-	    		padding-bottom: 10px;
-	    	}
-	    }
+    width: 100%;
 
-	    &:last-child {
-	    	&.orderCol_delivrLst_i-act {
-	    		border-right: 1px solid #e6e6e6;
-	    	}
-	    }
-	}
+    &-r {
+      float: none;
+      width: 347px;
+    }
+    &_delivrLst {
+      background: #fff;
+      width: 368px;
+      border-bottom: 4px solid #e8e8e8;
+    }
+    &_lk {
+      vertical-align: middle;
+    }
 
-	.orderCol_delivrLst_i-act {
-	    background: #f6f6f6;
-	    border-top: 1px solid #e6e6e6;
-	    cursor: default;
-	    font-weight: bold;
-	}
+    &_delivrIn {
+      background: none;
+      border: medium none;
+      padding: 10px 10px 1px;
+      position: relative;
 
-	&__order-link{
-		text-decoration: none;
-		border-bottom: 1px solid;
-		&:hover{
-			text-decoration: none;
-		}
-	}
+      &-pl {
+        background: #fff;
+        padding: 10px 10px 1px;
+        border: 1px solid #d3d3d3;
+      }
+      &.date {
+        padding-top: 0;
+
+        .orderCol_date {
+          margin-right: 10px;
+        }
+      }
+    }
+
+    &_n {
+      font-size: 16px;
+      width: 480px;
+      vertical-align: middle;
+    }
+
+    &_f {
+      border-width: 1px 0;
+      background: none;
+      margin: 0 0 40px;
+    }
+
+    &_data {
+      color: #000;
+      padding-right: 10px;
+      margin-top: 10px;
+    }
+
+    &_cnt {
+      border-top: medium none;
+      padding: 10px 0 15px;
+    }
+
+    &_addrs {
+      margin: 0 0 10px 10px;
+      .ui-autocomplete {
+        height: 100px;
+      }
+    }
+
+    &_tm {
+      margin: 0 0 10px;
+    }
+
+    .customSel {
+      background-color: #fff;
+    }
+
+    .customSel_cl {
+      background: none;
+    }
+
+    &_date {
+      background-color: #fff;
+    }
+
+    &_summt {
+      float: right;
+      font-size: 16px;
+      margin: 0 0 10px;
+      width: 109px;
+    }
+    &-single {
+      border-top: 1px solid #e6e6e6;
+      .orderCol_delivrIn {
+
+      }
+    }
+  }
+
+  .orderRow {
+    border-top: medium none;
+  }
+
+  .orderCol_delivrLst_i {
+    border-bottom: none;
+    padding: 10px 10px 10px 0;
+    width: auto;
+    margin-bottom: -4px;
+
+  }
+
+  &__order-link {
+    text-decoration: none;
+    border-bottom: 1px solid;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .orderCol_delivrLst_i {
+    border: none;
+    border-bottom: 4px solid #e8e8e8;
+
+    &.orderCol_delivrLst_i-act {
+      border-bottom: 4px solid @orange-2;
+      background: #fff;
+
+      cursor: default;
+      font-weight: bold;
+    }
+  }
+
+  .order-discount__current{
+    border-top: 4px solid #e8e8e8;
+  }
+
+  .orderCnt{
+    padding-bottom: 0;
+  }
 }

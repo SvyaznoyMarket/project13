@@ -326,6 +326,38 @@
         }
     }
 
+    &__ep-img-block{
+        float: left;
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+    }
+
+    &__ep-coupon-img{
+        max-width: 100%;
+        height: 30px;
+
+        -webkit-background-size: 100%;
+        background-size: 100%;
+    }
+
+    &__ep-coupon-icon{
+        left: 0;
+        bottom: 0;
+        top: 0;
+        right: 0;
+
+        width: 20px;
+        max-height: 20px;
+        margin: auto;
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+
     &__del {
         font-size: 0;
 
@@ -362,6 +394,15 @@
 
         border-top: 1px dotted #afafaf;
         padding: 20px 0 10px;
+
+        font-size: 12px;
+
+        .clearfix;
+    }
+
+    &__current-txt{
+        float: left;
+        max-width: 85%;
 
         font-size: 12px;
     }

@@ -18,7 +18,6 @@ $f = function(
 
     $hasDiscountField = 'new_with_discount' === \App::abTest()->getOneClickView();
 
-    $hasDiscountField = true;
 ?>
 <div class="orderOneClick">
     <span class="orderOneClick_t">Оформление заказа</span>
@@ -64,7 +63,18 @@ $f = function(
                 <? if ($hasDiscountField): ?>
 
                 <div class="order-discount order-discount_inline">
-                    <div class="order-discount__current">1234</div>
+                    <div class="order-discount__current">
+                        <div class="order-discount__ep-img-block">
+                                    <span class="ep-coupon order-discount__ep-coupon-img" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
+                                                <span class="ep-coupon__ico order-discount__ep-coupon-icon">
+                                                    <img src="http://scms.enter.ru/uploads/media/e1/d7/a8/61389c42d60a432bd426ad08a0306fe0ca638ff7.png">
+                                                </span>
+                                    </span>
+                        </div>
+                        <div class="order-discount__current-txt">
+                            Применена "Фишка со скидкой 10% на Новогодние украшения и подарки"
+                        </div>
+                    </div>
                     <span class="order-discount__tl">Код скидки/фишки, подарочный сертификат</span>
 
                     <div class="order-ctrl">
@@ -88,13 +98,13 @@ $f = function(
             </div>
         </fieldset>
 
-        <!--<fieldset class="orderU_flds">
-            <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения<span class="orderU_lgnd_tgglnote js-order-oneclick-delivery-toggle-btn-note">скрыть</span></legend>
+        <fieldset class="orderU_flds">
+            <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения и скидки<span class="orderU_lgnd_tgglnote js-order-oneclick-delivery-toggle-btn-note">скрыть</span></legend>
 
             <div class="js-order-oneclick-delivery-toggle" style="display: none;">
                 <div id="js-order-content" class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery"></div>
             </div>
-        </fieldset>-->
+        </fieldset>
 
         <fieldset class="order-agreement__check jsAcceptAgreementContainer">
             <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" value="" required="required">
