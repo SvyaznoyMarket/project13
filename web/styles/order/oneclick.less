@@ -1,6 +1,8 @@
 .orderOneClick {
 
   &__fin-sum{
+    margin-top: 20px;
+
     text-align: center;
     font-size: 14px;
   }
@@ -151,9 +153,10 @@
       width: 347px;
     }
     &_delivrLst {
-      background: #fff;
       width: 368px;
+
       border-bottom: 4px solid #e8e8e8;
+      background: #fff;
     }
     &_lk {
       vertical-align: middle;
@@ -233,9 +236,6 @@
     }
     &-single {
       border-top: 1px solid #e6e6e6;
-      .orderCol_delivrIn {
-
-      }
     }
   }
 
@@ -273,10 +273,48 @@
   }
 
   .order-discount__current{
-    border-top: 4px solid #e8e8e8;
+    border: none;
+    padding: 15px 0;
   }
 
   .orderCnt{
     padding-bottom: 0;
+  }
+
+  .order-discount__tl{
+    display: block;
+    margin: 10px 0 0;
+
+    text-align: center;
+    font-size: 16px;
+  }
+
+  .order-discount{
+    width: 100%;
+
+    border-top: 4px solid #e8e8e8;
+  }
+
+  .order-discount__pin{
+    display: block;
+    width: 45%;
+    margin-top: 10px;
+
+    text-align: right;
+  }
+
+  .order-discount__pin-label{
+    display: inline-block;
+    vertical-align: top;
+    width: 40%;
+    margin-right: 10px;
+
+    font-size: 12px;
+  }
+
+  .order-discount__pin-input{
+    width: 70px;
+    line-height: 23px;
+    height: 25px;
   }
 }

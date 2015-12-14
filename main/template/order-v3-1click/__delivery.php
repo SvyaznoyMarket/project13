@@ -101,43 +101,13 @@ return function(
                     </div>
                 </div>
             <? else: ?>
-                <div class="orderCol_delivrIn orderCol_delivrIn-pl">
-                    <div class="orderCol_delivrIn_t clearfix">
+<!--                    <div class="orderCol_delivrIn_t clearfix">
                         <strong>Адрес</strong>
-                    </div>
+                    </div>-->
 
                     <div class="orderCol_addrs" style="margin-left: 0;">
                         <?= $helper->render('order-v3/common/_smartaddress') ?>
                     </div>
-
-                </div>
-
-                <div class="order-delivery__block <?= ($order->delivery->point && $order->delivery->point->isSvyaznoy()) ? 'warn' : ''  ?> <?= $order->delivery->point ? 'plain' : 'empty' ?>">
-
-                    <? if ($order->delivery->point) { ?>
-                        <div class="order-delivery__shop">
-                            <?= strtr(@$order->delivery->delivery_method->name, ['Hermes DPD' => 'Hermes']) ?>
-                        </div>
-                    <? }; ?>
-                    <div class="order__addr">
-                        <div class="order__point">
-                            <div class="order__point-addr" <? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
-                                        <span class="order__addr-tx">
-                                            <? if (isset($point->subway[0])): ?><?= $point->subway[0]->name ?><br/><? endif ?>
-                                            <? if (isset($point->address)): ?><?= $point->address ?><? endif ?>
-                                        </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="order-delivery__point-info">
-                        <? if (isset($point->regtime)): ?>Режим работы: <?= $point->regtime ?><? endif ?>
-                    </div>
-
-                    <? if ($order->delivery->point && $order->delivery->point->isSvyaznoy()) : ?>
-                        <span class="order-warning">В магазинах «Связной» не принимаются бонусы «Спасибо от Сбербанка»</span>
-                    <? endif ?>
-                </div>
 
             <? endif ?>
 
@@ -155,7 +125,9 @@ return function(
         </div>
         <!--/ информация о доставке -->
 
-        <div class="order-discount order-discount_inline">
+        <div class="order-discount">
+
+            <span class="order-discount__tl">Код скидки/фишки, подарочный сертификат</span>
             <div class="order-discount__current">
                 <div class="order-discount__ep-img-block">
                                     <span class="ep-coupon order-discount__ep-coupon-img" style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);">
@@ -168,8 +140,6 @@ return function(
                     Применена "Фишка со скидкой 10% на Новогодние украшения и подарки"
                 </div>
             </div>
-            <span class="order-discount__tl">Код скидки/фишки, подарочный сертификат</span>
-
             <div class="order-ctrl">
                 <input class="order-ctrl__input id-discountInput-standarttype3 <?= $inputSelectorId ?>" value="">
                 <label class="order-ctrl__lbl nohide"></label>
@@ -182,13 +152,13 @@ return function(
                 ]) ?>"
                 >Применить</button>
 
-            <div class="jsCertificatePinField order-discount__pin" style="display: none;">
+            <div class="jsCertificatePinField order-discount__pin">
                 <label class="order-discount__pin-label">Пин код</label>
                 <input class="order-discount__pin-input order-ctrl__input jsCertificatePinInput" type="text" name="" value="">
             </div>
         </div>
 
-        <div class="orderOneClick__fin-sum">
+        <div  class="orderOneClick__fin-sum">
             <span>Сумма заказа:</span>
             <span class="orderOneClick__fin-sum-num">4200 <span class="rubl">p</span></span>
         </div>
