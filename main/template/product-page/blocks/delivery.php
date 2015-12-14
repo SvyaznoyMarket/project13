@@ -1,4 +1,5 @@
 <?php
+
 $f = function (
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product
@@ -6,18 +7,15 @@ $f = function (
 
     if (!$product->getIsBuyable() || !$product->delivery) return;
 
-    $deliveryPickup = $product->delivery->getPickupWithMinDate() ? $product->delivery->getPickupWithMinDate() : null;
-    $deliveryDelivery = $product->delivery->getDeliveryWithMinDate() ? $product->delivery->getDeliveryWithMinDate() : null;
+    /** @var \Model\Product\Delivery\Delivery|null $deliveryPickup */
+    $deliveryPickup = $product->delivery->getPickupWithMinDate() ?: null;
+    /** @var \Model\Product\Delivery\Delivery|null $deliveryDelivery */
+    $deliveryDelivery = $product->delivery->getDeliveryWithMinDate() ?: null;
 
 ?>
     <!-- в наличии -->
-    <div class="buy-now-inshop <?= $deliveryPickup ? 'jsShowDeliveryMap' : 'buy-now-inshop--text' ?>"
-         data-product-id="<?= $product->getId() ?>"
-         data-product-ui="<?= $product->getUi() ?>"
-         <? if (!$deliveryPickup) : ?>style="cursor: default"<? endif ?>
-        >
+    <div class="buy-now-inshop <?= $deliveryPickup ? 'jsShowDeliveryMap' : 'buy-now-inshop--text' ?>" data-product-id="<?= $product->getId() ?>" data-product-ui="<?= $product->getUi() ?>" <? if (!$deliveryPickup) : ?>style="cursor: default"<? endif ?>>
         <span class="buy-now-inshop__tl">В наличии</span>
-
         <? if ($deliveryPickup) : ?>
             <div class="buy-now-inshop__line jsDeliveryPickupAvailable">
                 Самовывоз

@@ -34,7 +34,10 @@ $f = function(
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
-                    Оплатить онлайн со скидкой
+                    Оплатить онлайн
+                    <? if ($paymentMethod->discount): ?>
+                        со скидкой
+                    <? endif ?>
                 </div>
 
                 <div class="orderPayment_msg_shop orderPayment_pay">

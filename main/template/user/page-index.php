@@ -10,6 +10,8 @@
  * @var $channelsById                  \Model\Subscribe\Channel\Entity[]
  * @var $subscription                  \Model\User\SubscriptionEntity
  * @var $subscriptionsGroupedByChannel array
+ * @var $onlinePaymentAvailableByNumberErp   bool[]
+ * @var $paymentEntitiesByNumberErp          \Model\PaymentMethod\PaymentEntity[]
  */
 ?>
 
@@ -17,7 +19,7 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 
-<div class="personalPage personal">
+<div class="personalPage personal" id="personal-container">
 
     <?= $page->render('user/_menu', ['page' => $page]) ?>
 
@@ -37,6 +39,9 @@ $helper = new \Helper\TemplateHelper();
                     <div class="grid-scroll js-private-sections-body">
                         <ul class="grid-scroll-list order-list">
                             <? foreach ($orders as $order): ?>
+                            <?
+                                $paymentContainerId = sprintf('order-paymentContainer-%s', md5($order->id . '-' . $order->numberErp));
+                            ?>
                                 <li class="grid-scroll-list__item order-list__item">
                                     <div class="order-list__data">
                                         <a class="order-list__data-number" href="<?= $helper->url('user.order', ['orderId' => $order->id]) ?>"><?= $order->numberErp ?></a>
@@ -60,7 +65,38 @@ $helper = new \Helper\TemplateHelper();
                                         <? elseif ($status = $order->status): ?>
                                             <div class="order-list__status-payment"><?= $status->name ?></div>
                                         <? endif ?>
+
+                                        <? if (isset($onlinePaymentAvailableByNumberErp[$order->numberErp]) && $onlinePaymentAvailableByNumberErp[$order->numberErp]): ?>
+                                            <a
+                                                href="#"
+                                                class="js-payment-popup-show order-list__pay"
+                                                data-relation="<?= $helper->json(['container' => '.' . $paymentContainerId]) ?>"
+                                            >Оплатить онлайн</a>
+                                        <? endif ?>
                                     </div>
+
+                                    <? if ($order->isCancelRequestAvailable): ?>
+                                    <div class="order-list__toggler">
+                                        <span class="order-list__toggler-txt">Еще</span>
+
+                                        <div class="order-list__toggler-popup">
+                                            <a
+                                                href="#"
+                                                class="js-orderCancel"
+                                                data-value="<?= $helper->json([
+                                                    'url'   => $helper->url('user.order.cancel'),
+                                                    'order' => ['numberErp' => $order->numberErp, 'id' => $order->id],
+                                                ]) ?>"
+                                            >Отменить заказ</a>
+                                        </div>
+                                    </div>
+                                    <? endif ?>
+
+                                    <? if (!empty($paymentEntitiesByNumberErp[$order->numberErp])): ?>
+                                        <div class="<?= $paymentContainerId ?>">
+                                            <?= $helper->render('user/order/__onlinePayment-popup', ['order' => $order, 'paymentEntity' => $paymentEntitiesByNumberErp[$order->numberErp]]) ?>
+                                        </div>
+                                    <? endif ?>
                                 </li>
                             <? endforeach ?>
                         </ul>
@@ -454,275 +490,7 @@ $helper = new \Helper\TemplateHelper();
 
     <?//= $page->render('user/_menu', ['page' => $page]) ?>
 
-
-    <? if (false): ?>
-        <div class=" js-slider-2 viewed-slider" data-position="Basket"
-             data-slider="{&quot;limit&quot;:null,&quot;url&quot;:null,&quot;type&quot;:null,&quot;sender&quot;:{&quot;name&quot;:&quot;retailrocket&quot;,&quot;method&quot;:&quot;PersonalRecommendation&quot;,&quot;position&quot;:&quot;Basket&quot;,&quot;from&quot;:null},&quot;sender2&quot;:&quot;&quot;}">
-
-            <div class="viewed-slider__row clearfix">
-                <h3 class="viewed-slider__title">Вы смотрели</h3>
-                <span class="viewed-slider__pagination">Страница <span class="js-viewed-slider-page">1</span> из <span class="js-viewed-slider-allPage">1</span></span>
-            </div>
-
-            <div class="goods-slider__inn viewed-slider__row">
-                <ul class="goods-slider-list viewed-slider__list clearfix">
-                    <li class="goods-slider-list__i viewed-slider__item">
-                        <div class="viewed-slider__item-inner">
-                            <div class="viewed-slider__img-block">
-                                <img src="#" alt="#">
-
-                                <p class="viewed-slider__img-title">Lorem ipsum door sit amet, consectetur
-                                    adipisicing.</p>
-                            </div>
-                            <div class="viewed-slider__price">
-                                <div class="viewed-slider__price-old">
-                                    <span>3809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                                <div class="viewed-slider__price-new">
-                                    <span>2809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                            </div>
-                            <div class="viewed-slider__buy">Купить</div>
-                        </div>
-                    </li>
-                    <li class="goods-slider-list__i viewed-slider__item">
-                        <div class="viewed-slider__item-inner">
-                            <div class="viewed-slider__img-block">
-                                <img src="#" alt="#">
-
-                                <p class="viewed-slider__img-title">Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing.</p>
-                            </div>
-                            <div class="viewed-slider__price">
-                                <div class="viewed-slider__price-old">
-                                    <span>3809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                                <div class="viewed-slider__price-new">
-                                    <span>2809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                            </div>
-                            <div class="viewed-slider__buy">
-                                Купить
-                            </div>
-                        </div>
-                    </li>
-                    <li class="goods-slider-list__i viewed-slider__item">
-                        <div class="viewed-slider__item-inner">
-                            <div class="viewed-slider__img-block">
-                                <img src="#" alt="#">
-
-                                <p class="viewed-slider__img-title">Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing.</p>
-                            </div>
-                            <div class="viewed-slider__price">
-                                <div class="viewed-slider__price-old">
-                                    <span>3809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                                <div class="viewed-slider__price-new">
-                                    <span>2809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                            </div>
-                            <div class="viewed-slider__buy">
-                                Купить
-                            </div>
-                        </div>
-                    </li>
-                    <li class="goods-slider-list__i viewed-slider__item">
-                        <div class="viewed-slider__item-inner">
-                            <div class="viewed-slider__img-block">
-                                <img src="#" alt="#">
-
-                                <p class="viewed-slider__img-title">Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing.</p>
-                            </div>
-                            <div class="viewed-slider__price">
-                                <div class="viewed-slider__price-old">
-                                    <span>3809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                                <div class="viewed-slider__price-new">
-                                    <span>2809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                            </div>
-                            <div class="viewed-slider__buy">
-                                Купить
-                            </div>
-                        </div>
-                    </li>
-                    <li class="goods-slider-list__i viewed-slider__item">
-                        <div class="viewed-slider__item-inner">
-                            <div class="viewed-slider__img-block">
-                                <img src="#" alt="#">
-
-                                <p class="viewed-slider__img-title">Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing.</p>
-                            </div>
-                            <div class="viewed-slider__price">
-                                <div class="viewed-slider__price-old">
-                                    <span>3809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                                <div class="viewed-slider__price-new">
-                                    <span>2809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                            </div>
-                            <div class="viewed-slider__buy">
-                                Купить
-                            </div>
-                        </div>
-                    </li>
-                    <li class="goods-slider-list__i viewed-slider__item">
-                        <div class="viewed-slider__item-inner">
-                            <div class="viewed-slider__img-block">
-                                <img src="#" alt="#">
-
-                                <p class="viewed-slider__img-title">Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing.</p>
-                            </div>
-                            <div class="viewed-slider__price">
-                                <div class="viewed-slider__price-old">
-                                    <span>3809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                                <div class="viewed-slider__price-new">
-                                    <span>2809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                            </div>
-                            <div class="viewed-slider__buy">
-                                Купить
-                            </div>
-                        </div>
-                    </li>
-                    <li class="goods-slider-list__i viewed-slider__item">
-                        <div class="viewed-slider__item-inner">
-                            <div class="viewed-slider__img-block">
-                                <img src="#" alt="#">
-
-                                <p class="viewed-slider__img-title">Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing.</p>
-                            </div>
-                            <div class="viewed-slider__price">
-                                <div class="viewed-slider__price-old">
-                                    <span>3809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                                <div class="viewed-slider__price-new">
-                                    <span>2809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                            </div>
-                            <div class="viewed-slider__buy">
-                                Купить
-                            </div>
-                        </div>
-                    </li>
-                    <li class="goods-slider-list__i viewed-slider__item">
-                        <div class="viewed-slider__item-inner">
-                            <div class="viewed-slider__img-block">
-                                <img src="#" alt="#">
-
-                                <p class="viewed-slider__img-title">Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing.</p>
-                            </div>
-                            <div class="viewed-slider__price">
-                                <div class="viewed-slider__price-old">
-                                    <span>3809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                                <div class="viewed-slider__price-new">
-                                    <span>2809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                            </div>
-                            <div class="viewed-slider__buy">
-                                Купить
-                            </div>
-                        </div>
-                    </li>
-                    <li class="goods-slider-list__i viewed-slider__item">
-                        <div class="viewed-slider__item-inner">
-                            <div class="viewed-slider__img-block">
-                                <img src="#" alt="#">
-
-                                <p class="viewed-slider__img-title">Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing.</p>
-                            </div>
-                            <div class="viewed-slider__price">
-                                <div class="viewed-slider__price-old">
-                                    <span>3809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                                <div class="viewed-slider__price-new">
-                                    <span>2809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                            </div>
-                            <div class="viewed-slider__buy">
-                                Купить
-                            </div>
-                        </div>
-                    </li>
-                    <li class="goods-slider-list__i viewed-slider__item">
-                        <div class="viewed-slider__item-inner">
-                            <div class="viewed-slider__img-block">
-                                <img src="#" alt="#">
-
-                                <p class="viewed-slider__img-title">Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing.</p>
-                            </div>
-                            <div class="viewed-slider__price">
-                                <div class="viewed-slider__price-old">
-                                    <span>3809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                                <div class="viewed-slider__price-new">
-                                    <span>2809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                            </div>
-                            <div class="viewed-slider__buy">
-                                Купить
-                            </div>
-                        </div>
-                    </li>
-                    <li class="goods-slider-list__i viewed-slider__item">
-                        <div class="viewed-slider__item-inner">
-                            <div class="viewed-slider__img-block">
-                                <img src="#" alt="#">
-
-                                <p class="viewed-slider__img-title">Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing.</p>
-                            </div>
-                            <div class="viewed-slider__price">
-                                <div class="viewed-slider__price-old">
-                                    <span>3809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                                <div class="viewed-slider__price-new">
-                                    <span>2809</span>
-                                    <span class="rubl">p</span>
-                                </div>
-                            </div>
-                            <div class="viewed-slider__buy">
-                                Купить
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-
-                <div class="goods-slider__btn goods-slider__btn--prev viewed-slider__prev disabled mDisabled"></div>
-                <div class="goods-slider__btn goods-slider__btn--next viewed-slider__next"></div>
-            </div>
-        </div>
-    <? endif ?>
-
+    <script id="tpl-user-deleteOrderPopup" type="text/html" data-partial="<?= $helper->json([]) ?>">
+        <?= file_get_contents(\App::config()->templateDir . '/user/order/_deleteOrder-popup.mustache') ?>
+    </script>
 </div>

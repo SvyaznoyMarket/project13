@@ -5,7 +5,8 @@ return function(
     \Session\User $user,
     $hasProductsOnlyFromPartner,
     array $bonusCards,
-    $error = null
+    $error = null,
+    \Model\OrderDelivery\Entity $orderDelivery = null
 ) {
     /** @var $bonusCards \Model\Order\BonusCard\Entity[] */
     $userEntity = $user->getEntity();
@@ -14,6 +15,22 @@ return function(
     $userBonusCard = null;
 
     $oauthEnabled = \App::config()->oauthEnabled;
+
+    $phone =
+        $orderDelivery
+        ? $orderDelivery->user_info->phone
+        : ($userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : null)
+    ;
+    $email =
+        $orderDelivery
+        ? $orderDelivery->user_info->email
+        : ($userEntity ? $userEntity->getEmail() : null)
+    ;
+    $firstName =
+        $orderDelivery
+        ? $orderDelivery->user_info->first_name
+        : ($userEntity ? $userEntity->getFirstName() : null)
+    ;
 ?>
 
     <div class="order__wrap">
@@ -28,7 +45,7 @@ return function(
                         <div class="order-ctrl-wrapper">
                             <div class="order-ctrl required" data-field-container="phone">
                                 <label class="order-ctrl__txt js-order-ctrl__txt" data-message="">*Телефон</label>
-                                <input name="user_info[phone]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-phone" name="user_info[phone]" data-field="phone" data-text-default="*Телефон" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : $orderDelivery->user_info->phone ?>" data-mask="+7 (xxx) xxx-xx-xx" <? if (!$userEntity): ?> data-event="true"<? endif ?> required="required" />
+                                <input name="user_info[phone]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-phone" name="user_info[phone]" data-field="phone" data-text-default="*Телефон" value="<?= $phone ?>" data-mask="+7 (xxx) xxx-xx-xx" <? if (!$userEntity): ?> data-event="true"<? endif ?> required="required" />
                             </div>
 
                             <div class="order-receiver__hint">Для смс о состоянии заказа</div>
@@ -38,23 +55,15 @@ return function(
                             <div class="order-ctrl required" data-field-container="email">
                                 <label class="order-ctrl__txt js-order-ctrl__txt" data-message="">*E-mail</span>
                                 </label>
-                                <input name="user_info[email]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-email" data-field="email" data-text-default="*E-mail" value="<?= $userEntity ? $userEntity->getEmail() : $orderDelivery->user_info->email ?>" required="required" />
+                                <input name="user_info[email]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input js-order-email" data-field="email" data-text-default="*E-mail" value="<?= $email ?>" required="required" />
                             </div>
-                            <? if (!\App::user()->isSubscribed(1)): ?>
-                                <div class="order-receiver__subscribe">
-                                    <input type="checkbox" class="customInput customInput-checkbox" id="sale" name="user_info[subscribe]" value="1">
-                                    <label class="customLabel customLabel-checkbox" for="sale">
-                                        <img class="order-receiver__chip" src="/styles/order-new/img/chip-s.png" alt="">
-                                        <span class="order-receiver__subscribe-txt">Подпишись на рассылку и получи скидку<br/>на следующую покупку</span>
-                                    </label>
-                                </div>
-                            <? endif ?>
+                            <div class="order-receiver__hint order-receiver__hint_double">Получать эксклюзивные предложения <br>и информацию о заказе</div>
                         </div>
 
                         <div class="order-ctrl-wrapper">
                             <div class="order-ctrl" data-field-container="first_name">
                                 <label class="order-ctrl__txt js-order-ctrl__txt">Имя</label>
-                                <input name="user_info[first_name]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input" data-field="first_name" value="<?= $userEntity ? $userEntity->getFirstName() : $orderDelivery->user_info->first_name ?>" />
+                                <input name="user_info[first_name]" class="order-ctrl__input order-ctrl__input_float-label js-order-ctrl__input" data-field="first_name" value="<?= $firstName ?>" />
                             </div>
                         </div>
 

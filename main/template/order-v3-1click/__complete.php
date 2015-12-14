@@ -24,12 +24,10 @@ $f = function(
 
     $isOnlinePaymentPossible =
         (bool)$orderPayment
-            ? (
-            !$order->isPaid()
-            && !$order->isCredit()
-            && !$order->isPaidBySvyaznoy()
-        )
-        : false
+        && $orderPayment->getOnlineMethods()
+        && !$order->isPaid()
+        && !$order->isCredit()
+        && !$order->isPaidBySvyaznoy()
     ;
 ?>
 
@@ -45,7 +43,7 @@ $f = function(
         </div>
 
         <? if ($isOnlinePaymentPossible): ?>
-            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'title' => 'Оплатить онлайн со скидкой']) ?>
+            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment]) ?>
         <? endif ?>
     </div>
 <? endforeach ?>

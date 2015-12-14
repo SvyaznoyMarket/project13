@@ -2,11 +2,9 @@
 
 namespace Model\Product\Delivery;
 
-
 use Model\Shop\Entity as Shop; // TODO BasicShopEntity
 use Model\Region\BasicRegionEntity as Region;
 use Point\PickpointPoint;
-use Validator\DateTime;
 
 class ProductDelivery {
 
@@ -93,6 +91,19 @@ class ProductDelivery {
                 }
             }
         }
+
+        try {
+            if ($pickup && !$pickup->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && ($minDate = $pickup->getMinDate())) {
+                $dateTo = clone $minDate->date;
+                $dateTo->modify('+3 day');
+                $pickup->dateInterval = new \Model\Product\Delivery\DateInterval();
+                $pickup->dateInterval->from = $minDate->date;
+                $pickup->dateInterval->to = $dateTo;
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['delivery']);
+        }
+
         return $pickup;
     }
 

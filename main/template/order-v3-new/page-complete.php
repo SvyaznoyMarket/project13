@@ -12,7 +12,6 @@ use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity, \Model\PaymentMethod
  * @param $banks
  * @param $creditData
  * @param $subscribe
- * @param bool[] $onlinePaymentStatusByNumber
  */
 $f = function(
     \Helper\TemplateHelper $helper,
@@ -23,8 +22,7 @@ $f = function(
     $sessionIsReaded,
     $banks,
     $creditData,
-    $subscribe,
-    $onlinePaymentStatusByNumber = []
+    $subscribe
 ) {
     $page = new \View\OrderV3\CompletePage();
     array_map(function(\Model\PaymentMethod\PaymentEntity &$entity) {$entity->unsetSvyaznoyClub();}, $ordersPayment); // fix for SITE-5229 (see comments)
@@ -58,15 +56,16 @@ $f = function(
                     return $paymentMethod->isOnline;
                 });
                 $isOnlinePaymentPossible =
-                    (
-                        !isset($onlinePaymentStatusByNumber[$order->number])
-                        || (true === $onlinePaymentStatusByNumber[$order->number])
-                    )
+                    $onlinePaymentMethods
                     && ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']))
                     && !$order->isPaid()
                     && !$order->isCredit()
                     && !$order->isPaidBySvyaznoy()
                 ;
+
+                $isOnlinePaymentMethodDiscountExists = (bool)array_filter($onlinePaymentMethods, function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod) {
+                    return $paymentMethod->discount;
+                });
 
                 $sumContainerId = sprintf('id-onlineDiscountSum-container', $order->id);
 
@@ -193,7 +192,10 @@ $f = function(
                                         <div class="js-payment-popup-closer payments-popup__closer"></div>
 
                                         <div class="orderPayment_msg_head">
-                                            Оплатить онлайн со скидкой
+                                            Оплатить онлайн
+                                            <? if ($isOnlinePaymentMethodDiscountExists): ?>
+                                                со скидкой
+                                            <? endif ?>
                                         </div>
                                         <div class="order-payment__sum-msg">
                                         <?
@@ -209,10 +211,10 @@ $f = function(
                                             <ul class="payment-methods__lst <? if ($paymentMethodGroup['discount']): ?>payment-methods__lst_discount<? endif ?>">
                                                 <? foreach ($paymentMethodGroup['paymentMethodGroups'] as $paymentMethodGroup2): ?>
                                                     <? if (count($paymentMethodGroup2['paymentMethods']) == 1): ?>
-                                                        <?
+                                                    <?
                                                         $elementId = sprintf('order_%s-paymentMethod_%s', $order->id, $paymentMethodGroup2['paymentMethods'][0]['id']);
                                                         $name = sprintf('paymentMethodId_%s', $order->id);
-                                                        ?>
+                                                    ?>
 
                                                         <li class="payment-methods__i">
                                                             <input

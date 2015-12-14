@@ -137,39 +137,41 @@ $f = function (
                             'name'     => $product->getName(),
                             'isUpsale' => $product->getIsUpsale(),
                         ]) ?>" >
+                        <div class="goods-slider-list__i-inner">
+                            <? if ($product->getLabel()) : ?>
+                                <img class="sticker-img" src="<?= $product->getLabel()->getImageUrl() ?>" alt="<?= $product->getLabel()->getName() ?>">
+                            <? endif ?>
 
-                        <? if ($product->getLabel()) : ?>
-                            <img class="sticker-img" src="<?= $product->getLabel()->getImageUrl() ?>" alt="<?= $product->getLabel()->getName() ?>">
-                        <? endif ?>
-
-                        <a id="<?= $elementId ?>" class="goods-slider-list__link" href="<?= $link ?>" target="_blank">
+                            <a id="<?= $elementId ?>" class="goods-slider-list__link" href="<?= $link ?>" target="_blank">
 
                     <span class="goods-slider-list__action">
                         <img class="goods-slider-list__img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>">
                     </span>
 
-                            <span class="goods-slider-list__name"><?= $helper->escape($product->getName()) ?></span>
-                        </a>
+                                <span class="goods-slider-list__name"><?= $helper->escape($product->getName()) ?></span>
+                            </a>
 
-                        <div class="goods-slider-list__price-old">
-                            <? if ($product->getPriceOld()) : ?>
-                                <span class="line-through"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
-                            <? endif ?>
+                            <div class="goods-slider-list__price-old">
+                                <? if ($product->getPriceOld()) : ?>
+                                    <span class="line-through"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
+                                <? endif ?>
+                            </div>
+
+                            <div class="goods-slider-list__price-now"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></div>
+
+                            <?= $helper->render('cart/__button-product', [
+                                'product'        => $product,
+                                'onClick'        => $addToCartJS ? $addToCartJS : null,
+                                'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
+                                'sender'         => $sender,
+                                'noUpdate'       => true,
+                                'location'       => 'slider',
+                                'sender2'       => $sender2,
+                            ]) // Кнопка купить ?>
+
+                            <!--                <a href="" class="btn-type btn-type--buy btn-type--light">Купить</a>-->
                         </div>
 
-                        <div class="goods-slider-list__price-now"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></div>
-
-                        <?= $helper->render('cart/__button-product', [
-                            'product'        => $product,
-                            'onClick'        => $addToCartJS ? $addToCartJS : null,
-                            'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
-                            'sender'         => $sender,
-                            'noUpdate'       => true,
-                            'location'       => 'slider',
-                            'sender2'       => $sender2,
-                        ]) // Кнопка купить ?>
-
-                        <!--                <a href="" class="btn-type btn-type--buy btn-type--light">Купить</a>-->
                     </li>
 
                 <? endforeach ?>

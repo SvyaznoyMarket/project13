@@ -174,6 +174,8 @@ class Entity {
     public $context;
     /** @var int|null */
     public $prepaidSum;
+    /** @var bool */
+    public $isCancelRequestAvailable;
 
     /**
      * @param array $data
@@ -215,6 +217,7 @@ class Entity {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
             }
         }
+
         if (isset($data['delivery'][0]['delivery_date_interval']['from']) && isset($data['delivery'][0]['delivery_date_interval']['to'])) {
             try {
                 $this->deliveryDateInterval = [
@@ -222,6 +225,17 @@ class Entity {
                 ];
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
+            }
+        } else if (\App::abTest()->isOrderWithDeliveryInterval() && $this->deliveredAt) {
+            try {
+                $dateTo = clone $this->deliveredAt;
+                $dateTo->modify('+3 day');
+
+                $this->deliveryDateInterval = [
+                    'name' => sprintf('с %s по %s', $this->deliveredAt->format('d.m'), $dateTo->format('d.m')),
+                ];
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
             }
         }
         if (array_key_exists('store_id', $data)) $this->setStoreId($data['store_id']);
@@ -286,6 +300,7 @@ class Entity {
         if (array_key_exists('seller', $data) && !empty($data['seller'])) $this->seller = new Seller($data['seller']);
         if (!empty($data['context'])) $this->context = (string)$data['context'];
         if (!empty($this->meta_data['prepaid_sum'])) $this->prepaidSum = (float)$this->meta_data['prepaid_sum'];
+        if (array_key_exists('is_cancel_request_available', $data)) $this->isCancelRequestAvailable = (bool)$data['is_cancel_request_available'];
     }
 
     public function dump() {

@@ -27,9 +27,11 @@
 .slideItem {
     position: relative;
     z-index: 10;
+
     &_t {
         font-size: 18px;
     }
+
     &_cntr {
         font-size: 12px;
 
@@ -37,17 +39,20 @@
 
         text-align: right;
     }
+
     &_inn {
         overflow: hidden;
 
         width: 650px;
         margin: 0 auto;
     }
+
     &_lst {
         position: relative;
 
         width: 5000px;
     }
+
     &_i {
         position: relative;
 
@@ -56,12 +61,37 @@
 
         width: 120px;
         margin: 10px 5px;
+
+        &__name{
+
+            &:hover{
+                text-decoration: none;
+            }
+        }
+
         &__child {
             display: block;
 
             margin: 3px 0;
         }
+        
+        &__child-bd{
+            padding: 10px 5px;
+            border: 1px solid transparent;
+
+            &:hover{
+                border: 1px solid #f99b1c;
+            }
+        }
+
+        & .slideItem_i__child-bd{
+            .btnBuy{
+                display: block;
+                margin-top: 5px;
+            }
+        }
     }
+
     &_imgw {
         display: table-cell;
 
@@ -71,12 +101,14 @@
 
         vertical-align: middle;
     }
+
     &_img {
         max-width: 94%;
         max-height: 99%;
         .inline-block();
         vertical-align: middle;
     }
+
     &_n {
         font-size: 11px;
         line-height: 1.1;
@@ -86,6 +118,7 @@
         height: 37px;
         margin: 5px 0 10px;
     }
+
     &_pr {
         font-size: 14px;
 
@@ -93,6 +126,13 @@
 
         .inline-block();
     }
+
+    &_pr-block{
+        display: block;
+
+        text-align: center;
+    }
+
     .btnBuy {
         .inline-block();
         .rounded(3px);
@@ -100,7 +140,6 @@
             font-size: 12px;
 
             width: auto;
-            padding: 0;
             padding: 0 4px;
 
             border-color: #f08a00;
@@ -120,6 +159,7 @@
             }
         }
     }
+
     &_btn {
         position: absolute;
         top: 50%;
@@ -146,11 +186,13 @@
             display: none;
         }
     }
+
     &_stick {
         position: absolute;
         z-index: 1;
         top: 0;
     }
+
     &_flt {
         position: absolute;
         left: 0;
@@ -217,6 +259,7 @@
             }
         }
     }
+
     &__ep-price {
         position: absolute;
         top: 0;
@@ -423,6 +466,14 @@
         background: #ededed;
 
         .rounded(3px);
+
+        .slideItem_i__child-bd{
+
+            &:hover{
+                border-color: transparent;
+            }
+        }
+
         .slideItem_inn {
             overflow: hidden;
 

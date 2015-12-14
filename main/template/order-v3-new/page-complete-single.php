@@ -23,12 +23,10 @@ return function(
     // Онлайн оплата возможна при существовании такой группы
     $isOnlinePaymentPossible =
         (bool)$orderPayment
-        ? (
-            !$order->isPaid()
-            && !$order->isCredit()
-            && !$order->isPaidBySvyaznoy()
-        )
-        : false;
+        && $orderPayment->getOnlineMethods()
+        && !$order->isPaid()
+        && !$order->isCredit()
+        && !$order->isPaidBySvyaznoy();
     // При создании заказа выбрана онлайн-оплата
     $isOnlinePaymentChecked =
         ($orderPayment && $order->getPaymentId() && isset($orderPayment->methods[$order->getPaymentId()]))
@@ -71,7 +69,7 @@ return function(
             <? endif ?>
 
             <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked): ?>
-                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true, 'title' => 'Оплатить онлайн со скидкой']) ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
             <? endif ?>
 
         </div>

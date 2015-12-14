@@ -49,12 +49,49 @@ class IndexAction extends PrivateAction {
 
         $curl->execute();
 
+        // номера заказов
+        $orderNumberErps = [];
+
         // заказы
         /** @var \Model\Order\Entity[] $orders */
         $orders = [];
         foreach ($orderQuery->response->orders as $item) {
             if (empty($item['id'])) continue;
-            $orders[] = new \Model\Order\Entity($item);
+
+            $order = new \Model\Order\Entity($item);
+
+            $orderNumberErps[] = $order->numberErp;
+            $orders[] = $order;
+        }
+
+        // запрос методов оплат для заказов
+        /** @var Query\PaymentMethod\GetByOrderNumberErp[] $paymentMethodQueries */
+        $paymentMethodQueries = [];
+        foreach (array_chunk($orderNumberErps, 10) as $numbersInChunk) {
+            $paymentMethodQuery = new Query\PaymentMethod\GetByOrderNumberErp();
+            $paymentMethodQuery->regionId = \App::user()->getRegionId();
+            $paymentMethodQuery->numberErps = $numbersInChunk;
+            $paymentMethodQuery->noDiscount = true;
+            $paymentMethodQuery->prepare();
+            $paymentMethodQueries[] = $paymentMethodQuery;
+        }
+
+        $curl->execute();
+
+        /** @var \Model\PaymentMethod\PaymentEntity[] $paymentEntitiesByNumberErp */
+        $paymentEntitiesByNumberErp = [];
+        $onlinePaymentAvailableByNumberErp = [];
+        foreach ($paymentMethodQueries as $paymentMethodQuery) {
+            foreach ($paymentMethodQuery->response->dataByErp as $numberErp => $item) {
+                $paymentEntity = new \Model\PaymentMethod\PaymentEntity($item);
+                $paymentEntitiesByNumberErp[$numberErp] = $paymentEntity;
+                foreach ($paymentEntity->methods as $paymentMethod) {
+                    if ($paymentMethod->isOnline) {
+                        $onlinePaymentAvailableByNumberErp[$numberErp] = true;
+                        break;
+                    }
+                }
+            }
         }
 
         // купоны, сгруппированные по сериям
@@ -177,6 +214,8 @@ class IndexAction extends PrivateAction {
 
         $page = new \View\User\IndexPage();
         $page->setParam('orders', $orders);
+        $page->setParam('onlinePaymentAvailableByNumberErp', $onlinePaymentAvailableByNumberErp);
+        $page->setParam('paymentEntitiesByNumberErp', $paymentEntitiesByNumberErp);
         $page->setParam('coupons', $coupons);
         $page->setParam('addresses', $addresses);
         $page->setParam('favoriteProductsByUi', $favoriteProductsByUi);

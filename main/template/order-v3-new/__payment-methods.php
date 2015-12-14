@@ -10,8 +10,8 @@ $f = function (
 ) {
     $isOrderWithCart = \App::abTest()->isOrderWithCart();
 ?>
-    <div class="payments-types-table <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
-        <div class="payments-types-table__head"><strong>Оплата</strong></div>
+    <div class="payments-types-table order-payment <?= ($isOrderWithCart ? 'order-payment' : '') ?>">
+        <div class="payments-types-table__head">Оплата</div>
 
         <div class="paymentMethods">
             <? foreach ((new \View\Partial\PaymentMethods())->execute($helper, $order->possible_payment_methods, $order->payment_method_id)['paymentMethodGroups'] as $paymentMethodGroup): ?>
