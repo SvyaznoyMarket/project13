@@ -3,10 +3,12 @@
         <div class="slidesBox_btn slidesBox_btn-l jsSlidesWideButton jsSlidesWideLeft"></div>
 
         <div class="slidesBox_h_c">
-            <div class="slidesBox_t jsSlidesWideName">Black&White</div>
+            <div class="slidesBox_t jsSlidesWideName">Pandora</div>
 
             <ul class="slidesBox_dott">
-                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Black&White"></li>
+                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Pandora"></li>
+
+                <li class="slidesBox_dott_i" data-name="Black&White"></li>
                 <li class="slidesBox_dott_i" data-name="Комфорт в автомобиле"></li>
                 <li class="slidesBox_dott_i" data-name="MyDiamonds"></li>
             </ul>
@@ -17,6 +19,56 @@
 
     <div class="slidesBox_inn">
         <ul class="slidesBox_lst clearfix jsSlidesWideHolder">
+
+            <li class="slidesBox_i jsSlidesWideItem">
+                <a href="/catalog/jewel/pandora-1320">
+                    <img src="styles/mainpage/img/pandora-1320/banner-pandora.jpg" alt="" class="slidesBox_img">
+                </a>
+
+                <ul class="slidesBox_items" style="bottom:30px;">
+                    <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Подвеска-шарм Самая лучшая мама Pandora 791112</div>
+                        </div>
+
+                        <a href="/product/jewel/podveska-sharm-samaya-luchshaya-mama-pandora-791112-2030000148608" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora-1320/2.png" alt="" class="slidesBox_items_img"></a>
+                    </li>
+
+                    <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Подвеска-шарм Мешочек денег Pandora 790332</div>
+                        </div>
+
+                        <a href="/product/jewel/podveska-sharm-meshochek-deneg-pandora-790332-2030000062652" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora-1320/3.png" alt="" class="slidesBox_items_img"></a>
+                    </li>
+
+                    <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Подвеска-шарм Розовые сердца Pandora 791250CZS</div>
+                        </div>
+
+                        <a href="/product/jewel/podveska-sharm-rozovie-serdtsa-pandora-791250czs-2030000183364" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora-1320/1.png" alt="" class="slidesBox_items_img"></a>
+                    </li>
+
+                    <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Серебряный браслет Pandora Moments 590702HV-21</div>
+                        </div>
+
+                        <a href="/product/jewel/pandora-serebryaniy-braslet-pandora-moments-590702hv-18-2030000135325-21" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora-1320/5.png" alt="" class="slidesBox_items_img"></a>
+                    </li>
+
+                    <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Двойной кожаный браслет с замком из серебра Pandora Moments 590705CMP-D1</div>
+                        </div>
+
+                        <a href="/product/jewel/dvoynoy-koganiy-braslet-s-zamkom-iz-serebra-pandora-moments-590705cmp-d1-2030000135363" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora-1320/4.png" alt="" class="slidesBox_items_img"></a>
+                    </li>
+
+                </ul>
+
+            </li>
 
             <li class="slidesBox_i jsSlidesWideItem">
                 <a href="/catalog/tchibo/dlya-genshchin-blackwhite-a5ff">
