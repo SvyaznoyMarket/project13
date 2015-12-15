@@ -24,8 +24,9 @@ $f = function(
     <div class="order-agreement__check" data-field-container="accept">
         <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" data-field="accept" value="" required="required" />
 
-        <label  class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">
-            Я ознакомлен и согласен<br><span class="<? if ($orderCount == 1) { ?>order-agreement__oferta<? } ?> js-order-oferta-popup-btn" data-value="<?= $order->seller->offer ?>" >с информацией о продавце и его офертой</span>
+        <label  class="customLabel customLabel_sure customLabel-checkbox jsAcceptTerms" for="accept">
+            <span class="customLabel__sure">*</span>
+            Я ознакомлен и согласен<br><span class="order-agreement__oferta js-order-oferta-popup-btn" data-value="<?= $order->seller->offer ?>" >с информацией о продавце и его офертой</span>
         </label>
     </div>
     <button class="btn-type btn-type--buy btn-type--order" type="submit" form="js-orderForm">Оформить</button>
