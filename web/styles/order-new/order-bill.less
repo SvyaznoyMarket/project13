@@ -472,7 +472,51 @@
 
         border-bottom: 1px dotted;
     }
+
+    &_fix-btn{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+
+        padding: 20px 0 30px;
+        background: #fff;
+
+        &.fixed{
+            position: fixed;
+
+            .box-shadow(0 0 12px 0 rgba(0, 0, 0, 0.20));
+        }
+    }
+
+    &_top{
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        font-size: 0;
+
+        .order-agreement__check{
+            display: inline-block;
+            vertical-align: middle;
+            width: auto;
+            margin-right: 15px;
+
+            padding: 0;
+
+            text-align: left;
+        }
+
+        .btn-type--order{
+            display: inline-block;
+            vertical-align: middle;
+            width: 160px;
+        }
+    }
 }
+
+
 .order-popup {
     position: fixed;
     z-index: 1002;
