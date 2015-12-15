@@ -10,8 +10,16 @@ $f = function(
     $orderCount = 1
 ) {
     $buttonLocation = \App::abTest()->getOrderButtonLocation();
+
+    $cssClass = '';
+
+    if('fixed' === $buttonLocation){
+        $cssClass = 'order-agreement_fix-btn js-fixBtn';
+    }else if('top' === $buttonLocation){
+        $cssClass = 'order-agreement_top';
+    }
 ?>
-<div class="order-agreement">
+<div class="order-agreement <?=$cssClass?>">
     <?= \App::templating()->render('order-v3/common/_blackfriday', ['version' => 2]) ?>
     <div class="order-agreement__check" data-field-container="accept">
         <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" data-field="accept" value="" required="required" />
@@ -20,7 +28,6 @@ $f = function(
             Я ознакомлен и согласен<br><span class="<? if ($orderCount == 1) { ?>order-agreement__oferta<? } ?> js-order-oferta-popup-btn" data-value="<?= $order->seller->offer ?>" >с информацией о продавце и его офертой</span>
         </label>
     </div>
-    <br/>
     <button class="btn-type btn-type--buy btn-type--order" type="submit" form="js-orderForm">Оформить</button>
 </div>
 

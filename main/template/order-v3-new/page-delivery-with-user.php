@@ -38,7 +38,7 @@ $f = function(
     $buttonLocation = \App::abTest()->getOrderButtonLocation();
 ?>
     <div class="order__wrap">
-        <section id="js-order-content" class="order-page orderCnt jsOrderV3PageDelivery">
+        <section id="js-order-content" class="order-page orderCnt <?= ('fixed' === $buttonLocation ? 'orderCnt_fix-btn js-fixBtnWrap' : '') ?> jsOrderV3PageDelivery">
             <div class="pagehead"><h1 class="orderCnt_t">Самовывоз и доставка</h1></div>
 
             <? if ($orderCount != 1) : ?>
@@ -59,9 +59,7 @@ $f = function(
                     <span class="order-total__txt">Итого <?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму</span> <span class="order-total__sum"><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span>
                 </div>
 
-                <? if ('default' === $buttonLocation): ?>
                     <?= $helper->render('order-v3-new/__createButton', ['orderCount' => $orderCount, 'order' => $order]) ?>
-                <? endif ?>
             </form>
 
             <? if (\App::abTest()->isOrderMinSumRestriction() && \App::config()->minOrderSum > $orderDelivery->getProductsSum()) : ?>
