@@ -746,8 +746,17 @@
         $.each($inputs, lblPosition);
     });
 
-    $body.on('focus', '.js-order-ctrl__input', lblPosition);
-    $body.on('blur', '.js-order-ctrl__input', lblPosition);
+    $body.on('focus', '.js-order-ctrl__input', function(){
+        $.each($inputs, lblPosition);
+    });
+    $body.on('blur', '.js-order-ctrl__input', function(){
+        $.each($inputs, lblPosition);
+    });
+
+    $body.on('input', '.js-order-ctrl__input', function(){
+        $.each($inputs, lblPosition);
+    });
+
 
     //показать блок редактирования товара - новая версия
     $body.on('click', '.js-show-edit',function(){
@@ -887,9 +896,10 @@
     });
 
     // синхронизация между полями доставки между заказами
-    $body.find('.js-order-deliveryAddress').on('keyup', function(){
+    $body.on('input', '.js-order-deliveryAddress', function(){
         var field = $(this).data('field');
         $('[data-field=' + field + ']').val($(this).val());
+        console.log(123);
     });
 
     $body.on('click', '[form="js-orderForm"]', function(e) {
