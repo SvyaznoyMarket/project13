@@ -142,6 +142,7 @@ class CreateAction extends OrderV3 {
 
         // устанавливаем флаг первичного просмотра страницы
         $this->session->set(self::SESSION_IS_READED_KEY, false);
+        $this->session->set(self::SESSION_IS_READED_AFTER_ALL_ONLINE_ORDERS_ARE_PAID_KEY, false);
 
         $response = new \Http\RedirectResponse(\App::router()->generate('orderV3.complete'));
 

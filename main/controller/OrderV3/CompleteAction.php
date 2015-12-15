@@ -17,11 +17,13 @@ class CompleteAction extends OrderV3 {
 
     private $sessionOrders;
     private $sessionIsReaded;
+    private $sessionIsReadedAfterAllOnlineOrdersArePaid;
 
     public function __construct() {
         parent::__construct();
         $this->sessionOrders = $this->session->get(\App::config()->order['sessionName'] ? : 'lastOrder');
         $this->sessionIsReaded = $this->session->get(self::SESSION_IS_READED_KEY);
+        $this->sessionIsReadedAfterAllOnlineOrdersArePaid = $this->session->get(self::SESSION_IS_READED_AFTER_ALL_ONLINE_ORDERS_ARE_PAID_KEY);
     }
 
     /**
@@ -246,6 +248,11 @@ class CompleteAction extends OrderV3 {
         $sessionIsReaded = !($this->sessionIsReaded === false);
         $this->session->remove(self::SESSION_IS_READED_KEY);
 
+        $sessionIsReadedAfterAllOnlineOrdersArePaid = $this->sessionIsReadedAfterAllOnlineOrdersArePaid !== false;
+        if ($this->areAllOnlineOrdersPaid($orders, $ordersPayment)) {
+            $this->session->remove(self::SESSION_IS_READED_AFTER_ALL_ONLINE_ORDERS_ARE_PAID_KEY);
+        }
+
         /** @var string[] $creditDoneOrderIds */
         $creditDoneOrderIds = call_user_func(function() {
             $return = [];
@@ -270,12 +277,31 @@ class CompleteAction extends OrderV3 {
         $page->setParam('errors', array_merge( $page->getParam('errors', []), $errors));
 
         $page->setParam('sessionIsReaded', $sessionIsReaded);
+        $page->setParam('sessionIsReadedAfterAllOnlineOrdersArePaid', $sessionIsReadedAfterAllOnlineOrdersArePaid);
         $page->setGlobalParam('creditDoneOrderIds', $creditDoneOrderIds);
 
         $response = (bool)$orders ? new \Http\Response($page->show()) : new \Http\RedirectResponse($page->url('homepage'));
         $response->headers->setCookie(new \Http\Cookie('enter_order_v3_wanna', 0, 0, '/order',\App::config()->session['cookie_domain'], false, false)); // кнопка "Хочу быстрее"
 
         return $response;
+    }
+
+    /**
+     * @param \Model\Order\Entity[] $orders
+     * @param \Model\PaymentMethod\PaymentEntity[] $ordersPayment
+     * @return bool
+     */
+    private function areAllOnlineOrdersPaid($orders, $ordersPayment) {
+        foreach ($orders as $order) {
+            /** @var \Model\PaymentMethod\PaymentEntity|null $paymentEntity */
+            $paymentEntity = isset($ordersPayment[$order->getNumber()]) ? $ordersPayment[$order->getNumber()] : null;
+
+            if ($paymentEntity && isset($paymentEntity->methods[$order->getPaymentId()]) && $paymentEntity->methods[$order->getPaymentId()]->isOnline && !$order->isPaid()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function getPaymentForm(\Http\Request $request) {

@@ -187,9 +187,16 @@
 
 					if (typeof ENTER.utils.sendOrderToGA == 'function' && result.orderAnalytics) {
 						ENTER.utils.sendOrderToGA(result.orderAnalytics);
+
 						ENTER.utils.analytics.soloway.send({
 							action: 'orderComplete',
 							orders: result.orderAnalytics.orders
+						});
+
+						ENTER.utils.analytics.flocktory.send({
+							action: 'postcheckout',
+							orders: result.orderAnalytics.orders,
+							spot: 'slot'
 						});
 					}
 				},
