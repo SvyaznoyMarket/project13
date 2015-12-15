@@ -168,11 +168,11 @@
                     }
 
                     // Новый самовывоз
-                    ENTER.OrderV3.koModels = [];
+                    ENTER.OrderV3.koModels = {};
                     $.each($orderContent.find('.jsNewPoints'), function(i,val) {
                         var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
                             points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map, pointData.enableFitsAllProducts);
-                        ENTER.OrderV3.koModels.push(points);
+                        ENTER.OrderV3.koModels[$(this).data('id')] = points;
                         ko.applyBindings(points, val);
                     });
 
@@ -244,11 +244,10 @@
         showMap = function($elem) {
             var $currentMap = $elem.find('.js-order-map').first(),
                 $parent = $elem.parent(),
-                mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
                 mapOptions = ENTER.OrderV3.mapOptions,
                 map = ENTER.OrderV3.map;
 
-            if (mapData && typeof map.getType == 'function') {
+            if (typeof map.getType == 'function') {
 
                 $elem.lightbox_me({
                     centered: true,
@@ -264,9 +263,11 @@
                 map.container.fitToViewport();
 
                 // добавляем точки на карту
-                $.each(mapData.points, function(i, point){
+                $.each(ENTER.OrderV3.koModels[$elem.data('id')].availablePoints(), function(i, point){
                     try {
-                        map.geoObjects.add(new ENTER.Placemark(point, mapData.enableFitsAllProducts));
+                        if (point.geoObject) {
+                            map.geoObjects.add(point.geoObject);
+                        }
                     } catch (e) {
                         console.error('Ошибка добавления точки на карту', e, point);
                     }

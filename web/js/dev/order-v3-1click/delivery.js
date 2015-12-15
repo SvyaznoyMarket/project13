@@ -134,11 +134,11 @@
 
                         // Новый самовывоз
                         console.log('Applying knockout bindings');
-                        ENTER.OrderV31Click.koModels = [];
+                        ENTER.OrderV31Click.koModels = {};
                         $.each($orderContent.find('.jsNewPoints'), function(i,val) {
                             var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
                                 points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV31Click.map);
-                            ENTER.OrderV31Click.koModels.push(points);
+                            ENTER.OrderV31Click.koModels[$(this).data('id')] = points;
                             ko.applyBindings(points, val);
                         })
 
@@ -156,11 +156,10 @@
 			},
 			showMap = function(elem) {
 				var $currentMap = elem.find('.js-order-map').first(),
-                    mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
 					mapOptions = ENTER.OrderV31Click.mapOptions,
 					map = ENTER.OrderV31Click.map;
 
-				if (mapData && typeof map.getType == 'function') {
+				if (typeof map.getType == 'function') {
 
 					if (!elem.is(':visible')) elem.show();
 
@@ -168,11 +167,12 @@
 					map.setCenter([mapOptions.latitude, mapOptions.longitude], mapOptions.zoom);
 					$currentMap.append(ENTER.OrderV31Click.$map.show());
 					map.container.fitToViewport();
-
                     // добавляем точки на карту
-                    $.each(mapData.points, function(i, point){
+                    $.each(ENTER.OrderV31Click.koModels[elem.data('id')].availablePoints(), function(i, point){
                         try {
-                            map.geoObjects.add(new ENTER.Placemark(point, mapData.enableFitsAllProducts));
+							if (point.geoObject) {
+								map.geoObjects.add(point.geoObject);
+							}
                         } catch (e) {
                             console.error('Ошибка добавления точки на карту', e, point);
                         }
