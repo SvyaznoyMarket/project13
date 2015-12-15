@@ -52,16 +52,17 @@ class Analytics {
                     'typeId' => $order->getDelivery()->getTypeId(),
                     'price'  => $order->getDelivery()->getPrice(),
                 ],
-                //'firstName'    => $order->getFirstName(),
-                //'lastName'     => $order->getLastName(),
                 'interval'     => $order->getInterval() ? [
                     'start' => $order->getInterval()->getStart(),
                     'end'   => $order->getInterval()->getEnd(),
                 ] : null,
                 'isCorporative' => $order->getIsLegal(),
-                'phonenumber'   => $order->getMobilePhone(),
                 'paySum'        => $order->getPaySum(),
                 'sum'           => $order->getSum(),
+                'firstName'     => $order->getFirstName(),
+                'lastName'      => $order->getLastName(),
+                'email'         => $order->email,
+                'phone'         => $order->getMobilePhone(),
                 'shop'          => $order->getShopId() ? [
                     'id' => $order->getShopId(),
                 ] : null,
@@ -72,7 +73,10 @@ class Analytics {
                 'coupon_number' => $order->getCouponNumber(),
                 'is_partner'    => $order->getIsPartner(),
                 'isSlot'        => $order->isSlot(),
-                'isCredit'      => $order->isCredit()
+                'isCredit'      => $order->isCredit(),
+                'user' => [
+                    'sex'       => $order->sex,
+                ],
             ];
 
             foreach ($order->getProduct() as $orderProduct) {
@@ -106,6 +110,11 @@ class Analytics {
                             'link'  => $category->getLink(),
                         ];
                     }, $product->getCategory()),
+                    'images' => [
+                        '120x120' => [
+                            'url' => $product->getMainImageUrl('product_120'),
+                        ],
+                    ],
                     'isSlot' => (bool)$product->getSlotPartnerOffer(),
                     'isOnlyFromPartner' => $product->isOnlyFromPartner(),
                     'inCompare' => (bool)$compareProduct,

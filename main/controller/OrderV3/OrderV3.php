@@ -11,6 +11,7 @@ class OrderV3 {
 
     /** Флаг первичного просмотра страницы */
     const SESSION_IS_READED_KEY = 'orderV3_is_readed';
+    const SESSION_IS_READED_AFTER_ALL_ONLINE_ORDERS_ARE_PAID_KEY = 'orderV3_is_readed_after_all_online_orders_are_paid';
 
     /** @var \Core\ClientV2 */
     protected $client;

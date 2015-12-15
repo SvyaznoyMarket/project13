@@ -31,6 +31,7 @@ $f = function(
     $showStatus = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
     $showPaymentStatus = ('call-center' !== \App::session()->get(\App::config()->order['channelSessionKey']));
     $showPartner = ('call-center' === \App::session()->get(\App::config()->order['channelSessionKey']));
+//    $hasOrdersWithCheckedOnlinePayment = false;
 ?>
     <div class="order__wrap">
     <section class="orderCnt jsOrderV3PageComplete order-page">
@@ -75,6 +76,10 @@ $f = function(
                     /** @var \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $paymentMethod */
                     $checkedPaymentMethodId = $paymentMethod->id;
                 }
+
+//                if ($paymentEntity && isset($paymentEntity->methods[$order->getPaymentId()]) && $paymentEntity->methods[$order->getPaymentId()]->isOnline) {
+//                    $hasOrdersWithCheckedOnlinePayment = true;
+//                }
             ?>
 
                 <div class="orderLn table <? if ($showStatus): ?>orderLn--status<? endif ?>" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
@@ -331,6 +336,7 @@ $f = function(
         </div>
     </section>
     </div>
+
     <? if (!$sessionIsReaded): ?>
         <span class="js-orderV3New-complete-subscribe" data-value="<?=$helper->json(['subscribe' => $subscribe, 'email' => isset($orders[0]->email) ? $orders[0]->email : null])?>"></span>
 
@@ -350,11 +356,7 @@ $f = function(
 
         echo $helper->render('order/__saleAnalytics', ['orders' => $orders]);
 
-        // Flocktory popup
-        echo $helper->render('order-v3/partner-counter/_flocktory-complete',[
-            'orders'    => $orders,
-            'products'  => $products,
-        ]);
+        echo $helper->render('order-v3/partner-counter/_flocktory-complete');
         ?>
     <? endif ?>
 

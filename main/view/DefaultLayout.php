@@ -2,6 +2,7 @@
 
 namespace View;
 
+use Helper\TemplateHelper;
 use Session\AbTest\ABHelperTrait;
 use Session\AbTest\AbTest;
 use Model\Product\Category\Entity as Category;
@@ -342,13 +343,7 @@ class DefaultLayout extends Layout {
             }
 
             $return .= $this->googleAnalyticsJS();
-
-            if (\App::config()->flocktory['precheckout']) {
-                // формирование данных для скрипта
-                $return .= $this->slotFlocktoryPrecheckout($this->flPrecheckoutData);
-                // загрузка самого скрипта
-                $return .= sprintf('<div id="flocktoryScriptJS" class="jsanalytics" data-vars="%s" ></div>', \App::config()->flocktory['site_id']);
-            }
+            $return .= $this->flocktoryScriptJS();
 
             if (\App::config()->partners['TagMan']['enabled']) {
                 $return .= '<div id="TagManJS" class="jsanalytics"></div>';
@@ -363,19 +358,53 @@ class DefaultLayout extends Layout {
         return $return;
     }
 
-    /**
-     * Flocktory pre-checkout data layer
-     *
-     * @param array $data
-     *
-     * @return string
-     */
-    public function slotFlocktoryPrecheckout(array $data = []) {
-        $dataString = '';
-        foreach ($data as $key => $value) {
-            $dataString .= sprintf('data-%s="%s" ', $key, $value);
+    protected function flocktoryScriptJS() {
+        $html = '';
+
+        if (\App::config()->flocktory['exchange'] || \App::config()->flocktory['precheckout'] || \App::config()->flocktory['postcheckout']) {
+            if (\App::config()->flocktory['precheckout']) {
+
+                $helper = new TemplateHelper();
+
+                // user
+                call_user_func(function() use(&$html, $helper) {
+                    $attributes = '';
+                    $userEntity = \App::user()->getEntity();
+
+                    if ($userEntity) {
+                        if ($userEntity->getEmail()) {
+                            $attributes .= 'data-fl-user-email="' . $helper->escape($userEntity->getEmail()) . '" ';
+                        }
+
+                        if ($userEntity->getName()) {
+                            $attributes .= 'data-fl-user-name="' . $helper->escape($userEntity->getName()) . '" ';
+                        }
+                    }
+
+                    if (!$userEntity || !$userEntity->isEnterprizeMember()) {
+                        $attributes .= 'data-fl-action="precheckout" ';
+                        $attributes .= 'data-fl-spot="no_enterprize_reg" ';
+                    }
+
+                    if ($attributes) {
+                        $html .= '<div class="i-flocktory" ' . $attributes . '></div>';
+                    }
+                });
+
+                call_user_func(function() use(&$html, $helper) {
+                    $attributes = '';
+                    foreach ($this->flPrecheckoutData as $key => $value) {
+                        $attributes .= 'data-' . $helper->escape($key) . '="' . $helper->escape($value) . '" ';
+                    }
+
+                    $html .= '<div class="i-flocktory" ' . $attributes . '></div>';
+                });
+            }
+
+            $html .= sprintf('<div id="flocktoryScriptJS" class="jsanalytics" data-vars="%s" ></div>', \App::config()->flocktory['site_id']);
         }
-        return sprintf('<div class="i-flocktory js-flocktory-data-layer"></div><div class="i-flocktory" %s ></div>', $dataString);
+
+        return $html;
     }
 
     public function googleAnalyticsJS(){
