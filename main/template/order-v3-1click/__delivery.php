@@ -72,7 +72,9 @@ return function(
 
             </div>
             <!--/ дата доставки -->
-
+            <!-- регион доставки -->
+            <div class="order-region">Ваш регион: <span class="order-region__change jsChangeRegion"><?= \App::user()->getRegion()->getName() ?></span></div>
+            <!--END регион доставки -->
             <!-- способ доставки -->
             <? if (!$order->delivery->use_user_address): ?>
                 <? $point = $order->delivery->point ? $orderDelivery->points[$order->delivery->point->token]->list[$order->delivery->point->id] : null ?>
