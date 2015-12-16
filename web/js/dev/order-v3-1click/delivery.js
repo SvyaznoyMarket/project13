@@ -234,7 +234,7 @@
 
 		// клик по "изменить дату" и "изменить место"
 		$orderContent.on('click', '.orderCol_date, .js-order-changePlace-link', function(e) {
-			var $elem = $(this).parent().parent().next();
+			var $elem = $('.jsNewPoints[data-order-id="' + $(this).data('order-id') + '"]');
 			e.stopPropagation();
 			$('.popupFl').hide();
 

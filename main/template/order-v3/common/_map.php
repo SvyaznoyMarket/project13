@@ -39,7 +39,7 @@
 
     ?>
 
-    <div class="selShop popupFl pick-point <?= $class ?>" style="display: <?= $visible ? 'block' : 'none';  ?>" data-block_name="<?= isset($order) ? $order->block_name : '' ?>" data-id="<?= $helper->escape($uniqId) ?>">
+    <div class="selShop popupFl pick-point <?= $class ?>" style="display: <?= $visible ? 'block' : 'none';  ?>" data-block_name="<?= isset($order) ? $order->block_name : '' ?>" data-id="<?= $helper->escape($uniqId) ?>" data-order-id="<?= isset($order) ? $helper->escape($order->id) : '' ?>">
 
         <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= 'map-' . $uniqId ?>"></div>
 
