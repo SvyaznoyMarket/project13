@@ -22,6 +22,8 @@ $f = function (
                 <span class="buy-now-inshop__mark">
                     <? if ($deliveryPickup->dateInterval): ?>
                         <?= sprintf('%s %s,', $deliveryPickup->dateInterval->from ? ('с ' . $deliveryPickup->dateInterval->from->format('d.m')) : '', $deliveryPickup->dateInterval->to ? (' по ' . $deliveryPickup->dateInterval->to->format('d.m')) : '') ?>
+                    <? elseif ($deliveryPickup->dayRange): ?>
+                        <?= sprintf('%s-%s %s', $deliveryPickup->dayRange['from'], $deliveryPickup->dayRange['to'], $helper->numberChoice($deliveryPickup->dayRange['to'], ['день', 'дня', 'дней'])) ?>
                     <? else: ?>
                         <?= mb_strtolower($helper->humanizeDate($deliveryPickup->getMinDate()->date)) ?>,
                     <? endif ?>

@@ -124,7 +124,12 @@ $f = function(
                                     <?= $deliveryText ?>
 
                                 <? endif ?>
-                                <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
+
+                                <? if ($order->dayRange): ?>
+                                    <?= sprintf('%s-%s %s', $order->dayRange['from'], $order->dayRange['to'], $helper->numberChoice($order->dayRange['to'], ['день', 'дня', 'дней'])) ?>
+                                <? elseif ($order->interval): ?>
+                                    <?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?>
+                                <? endif ?>
                             </div>
                         </div>
                     </div>
