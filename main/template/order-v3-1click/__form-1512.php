@@ -18,6 +18,8 @@ $f = function(
 
     $hasDiscountField = 'new_with_discount' === \App::abTest()->getOneClickView();
 
+    $showDelivery = true;
+
 ?>
 <div class="orderOneClick">
     <span class="orderOneClick_t">Оформление заказа</span>
@@ -75,7 +77,7 @@ $f = function(
                             Применена "Фишка со скидкой 10% на Новогодние украшения и подарки"
                         </div>
                     </div>
-                    <span class="order-discount__tl">Код скидки/фишки, подарочный сертификат</span>
+                    <span class="order-discount__tl <?= (false === $showDelivery ? 'order-discount__tl_min' : '') ?>">Код скидки/фишки, подарочный сертификат</span>
 
                     <div class="order-ctrl">
                         <input class="order-ctrl__input id-discountInput-standarttype3 <?= $inputSelectorId ?>" value="">
@@ -98,8 +100,8 @@ $f = function(
             </div>
         </fieldset>
 
-        <fieldset class="orderU_flds">
-            <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения и скидки<span class="orderU_lgnd_tgglnote js-order-oneclick-delivery-toggle-btn-note">скрыть</span></legend>
+        <fieldset class="orderU_flds orderU_flds--delivery" <?= (false === $showDelivery ? 'style="display:none;"' : '') ?>>
+            <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения и скидки</legend>
 
             <div class="js-order-oneclick-delivery-toggle" style="display: none;">
                 <div id="js-order-content" class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery"></div>
