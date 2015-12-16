@@ -21,9 +21,9 @@ $f = function (
                 Самовывоз
                 <span class="buy-now-inshop__mark">
                     <? if ($deliveryPickup->dateInterval): ?>
-                        <?= sprintf('%s %s,', $deliveryPickup->dateInterval->from ? ('с ' . $deliveryPickup->dateInterval->from->format('d.m')) : '', $deliveryPickup->dateInterval->to ? (' по ' . $deliveryPickup->dateInterval->to->format('d.m')) : '') ?>
+                        <span data-date="<?= $helper->json($deliveryPickup->dateInterval) ?>"><?= sprintf('%s %s,', $deliveryPickup->dateInterval->from ? ('с ' . $deliveryPickup->dateInterval->from->format('d.m')) : '', $deliveryPickup->dateInterval->to ? (' по ' . $deliveryPickup->dateInterval->to->format('d.m')) : '') ?></span>
                     <? elseif ($deliveryPickup->dayRange): ?>
-                        <?= sprintf('%s-%s %s', $deliveryPickup->dayRange['from'], $deliveryPickup->dayRange['to'], $helper->numberChoice($deliveryPickup->dayRange['to'], ['день', 'дня', 'дней'])) ?>
+                    <span data-date="<?= $helper->json($deliveryPickup->getMinDate() ? $deliveryPickup->getMinDate()->date->format('Y-m-d') : null) ?>"><?= sprintf('%s-%s %s', $deliveryPickup->dayRange['from'], $deliveryPickup->dayRange['to'], $helper->numberChoice($deliveryPickup->dayRange['to'], ['день', 'дня', 'дней'])) ?></span>
                     <? else: ?>
                         <?= mb_strtolower($helper->humanizeDate($deliveryPickup->getMinDate()->date)) ?>,
                     <? endif ?>

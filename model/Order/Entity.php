@@ -232,12 +232,13 @@ class Entity {
             try {
                 $date = clone $this->deliveredAt;
 
-                $this->dayRange['from'] = $date->diff((new \DateTime())->setTime(0, 0, 0))->days;
-                $this->dayRange['to'] = $this->dayRange['from'] + 3;
-
-                $this->deliveryDateInterval = [
-                    'name' => sprintf('%s-%s %s', $this->dayRange['from'], $this->dayRange['to'], \App::helper()->numberChoice($this->dayRange['to'], ['день', 'дня', 'дней'])),
-                ];
+                if ($dayFrom = $date->diff((new \DateTime())->setTime(0, 0, 0))->days) {
+                    $this->dayRange['from'] = $dayFrom;
+                    $this->dayRange['to'] = $this->dayRange['from'] + 3;
+                    $this->deliveryDateInterval = [
+                        'name' => sprintf('%s-%s %s', $this->dayRange['from'], $this->dayRange['to'], \App::helper()->numberChoice($this->dayRange['to'], ['день', 'дня', 'дней'])),
+                    ];
+                }
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['cart.split']);
             }

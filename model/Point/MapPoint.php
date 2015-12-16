@@ -61,8 +61,10 @@ class MapPoint extends BasicPoint {
         try {
             if (!$this->dateInterval && \App::abTest()->isOrderWithDeliveryInterval()) {
                 $date = new \DateTime($this->nearestDay);
-                $this->dayRange['from'] = $date->diff((new \DateTime())->setTime(0, 0, 0))->days;
-                $this->dayRange['to'] = $this->dayRange['from'] + 3;
+                if ($dayFrom = $date->diff((new \DateTime())->setTime(0, 0, 0))->days) {
+                    $this->dayRange['from'] = $dayFrom;
+                    $this->dayRange['to'] = $this->dayRange['from'] + 3;
+                }
             }
         } catch (\Exception $e) {}
 

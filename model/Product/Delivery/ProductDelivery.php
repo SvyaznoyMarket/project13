@@ -93,8 +93,8 @@ class ProductDelivery {
         }
 
         try {
-            if ($pickup && !$pickup->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && ($minDate = $pickup->getMinDate())) {
-                $pickup->dayRange['from'] = $minDate->date->diff((new \DateTime())->setTime(0, 0, 0))->days;
+            if ($pickup && !$pickup->dateInterval && \App::abTest()->isOrderWithDeliveryInterval() && ($minDate = $pickup->getMinDate()) && ($dayFrom = $minDate->date->diff((new \DateTime())->setTime(0, 0, 0))->days)) {
+                $pickup->dayRange['from'] = $dayFrom;
                 $pickup->dayRange['to'] = $pickup->dayRange['from'] + 3;
             }
         } catch (\Exception $e) {
