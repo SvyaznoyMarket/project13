@@ -203,7 +203,8 @@ class Entity implements GeoPointInterface {
      * @param string $image
      */
     public function setImage($image) {
-        $this->image = (string)$image;
+        // Пропускаем url через Source для подмены URL в ветке lite
+        $this->image = (new \Model\Media\Source(['url' => $image]))->url;
     }
 
     /**

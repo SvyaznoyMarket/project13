@@ -100,7 +100,8 @@ class Entity {
      * @param string $url
      */
     public function setImageUrl($url) {
-        $this->imageUrl = (string)$url;
+        // Пропускаем url через Source для подмены URL в ветке lite
+        $this->imageUrl = (new \Model\Media\Source(['url' => $url]))->url;
     }
 
     /**
