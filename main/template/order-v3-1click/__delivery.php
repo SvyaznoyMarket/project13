@@ -48,7 +48,7 @@ return function(
                                 $shownDate = sprintf('%s-%s %s', $order->delivery->dayRange['from'], $order->delivery->dayRange['to'], $helper->numberChoice($order->delivery->dayRange['to'], ['день', 'дня', 'дней']));
                             }
                         ?>
-                            <div class="" data-content="#id-order-changeDate-content-<?= $order->id ?>" data-date="<?= $date->format('Y-m-d') ?>"><?= $shownDate ?></div>
+                            <span class="orderCol__term" data-content="#id-order-changeDate-content-<?= $order->id ?>" data-date="<?= $date->format('Y-m-d') ?>"><?= $shownDate ?></span>
                         <? else: ?>
                         <?
                             $shownDate = mb_strtolower(\Util\Date::strftimeRu('%e %B2 %Y, %A', $order->delivery->date->format('U')));

@@ -226,7 +226,10 @@ class Entity {
         if (isset($data['delivery'][0]['delivery_date_interval']['from']) && isset($data['delivery'][0]['delivery_date_interval']['to'])) {
             try {
                 $this->deliveryDateInterval = [
-                    'name' => sprintf('с %s по %s', (new \DateTime($data['delivery'][0]['delivery_date_interval']['from']))->format('d.m'), (new \DateTime($data['delivery'][0]['delivery_date_interval']['to']))->format('d.m')),
+                    'name' =>
+                        !empty($data['delivery'][0]['delivery_date_interval']['name'])
+                        ? $data['delivery'][0]['delivery_date_interval']['name']
+                        : sprintf('с %s по %s', (new \DateTime($data['delivery'][0]['delivery_date_interval']['from']))->format('d.m'), (new \DateTime($data['delivery'][0]['delivery_date_interval']['to']))->format('d.m')),
                 ];
             } catch (\Exception $e) {
                 \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['order']);
