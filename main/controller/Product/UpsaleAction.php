@@ -2,6 +2,8 @@
 
 namespace Controller\Product;
 
+use Model\RetailRocket\RetailRocketRecommendation;
+
 class UpsaleAction extends BasicRecommendedAction {
 
     protected $retailrocketMethodName = 'CrossSellItemToItems';
@@ -43,14 +45,28 @@ class UpsaleAction extends BasicRecommendedAction {
             $recommendationRR = [];
 
             try {
-                if (\App::config()->product['pushRecommendation']) {
-                    $richResponse = \App::richRelevanceClient()->query('recsForPlacements', [
-                        'placements' => 'add_to_cart_page.one',
-                        'productId' => $productId,
-                    ]);
-                    if (isset($richResponse['add_to_cart_page.one'])) {
-                        $recommendationRR = $richResponse['add_to_cart_page.one'];
+
+                if (\App::abTest()->isRichRelRecommendations()) {
+                    if (\App::config()->product['pushRecommendation']) {
+                        $richResponse = \App::richRelevanceClient()->query(
+                            'recsForPlacements',
+                            [
+                                'placements' => 'add_to_cart_page.one',
+                                'productId' => $productId,
+                            ]
+                        );
+                        if (isset($richResponse['add_to_cart_page.one'])) {
+                            $recommendationRR = $richResponse['add_to_cart_page.one'];
+                        }
                     }
+                } else {
+                    $client = \App::retailrocketClient();
+                    $ids = $client->query('Recomendation/' . $this->retailrocketMethodName, $product ? $product->id : null);
+                    $recommendationRR = new RetailRocketRecommendation([
+                        'products'  => $ids,
+                        'placement' => 'upsale',
+                        'message'   => 'С этим товаром покупают'
+                    ]);
                 }
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
@@ -89,7 +105,7 @@ class UpsaleAction extends BasicRecommendedAction {
                         'products' => $products,
                         'class'    => 'goods-slider--top',
                         'sender'   => [
-                            'name'     => 'rich',
+                            'name'     => $recommendationRR->getSenderName(),
                             'position' => $recommendationRR->getPlacement(),
                             'method'   => '',
                         ],
