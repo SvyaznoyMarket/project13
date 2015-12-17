@@ -29,6 +29,7 @@ class Autoloader {
                     $path = $basePath . '/lite';
                     break;
                 case 'Model':
+                    $class = lcfirst($class);
                     $path = $basePath . '/lite';
                     break;
             }
